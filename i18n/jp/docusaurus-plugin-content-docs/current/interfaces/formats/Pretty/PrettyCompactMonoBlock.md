@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettyCompactMonoBlock 形式に関するドキュメント'
+description: 'PrettyCompactMonoBlock フォーマットに関するドキュメント'
 input_format: false
 keywords: ['PrettyCompactMonoBlock']
 output_format: true
@@ -18,13 +18,14 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md)形式とは異なり、最大`10,000`行がバッファリングされ、
-[ブロック](/development/architecture#block)ごとではなく単一のテーブルとして出力されます。
+[`PrettyCompact`](./PrettyCompact.md) 形式とは異なり、最大で `10,000` 行をバッファリングしてから 1 つのテーブルとしてまとめて出力し、[ブロック](/development/architecture#block) 単位では出力しません。
+
 
 
 ## 使用例 {#example-usage}
 
 
+
 ## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+<PrettyFormatSettings/>

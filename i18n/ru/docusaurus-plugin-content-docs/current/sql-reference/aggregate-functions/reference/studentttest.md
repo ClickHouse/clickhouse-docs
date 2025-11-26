@@ -1,5 +1,5 @@
 ---
-description: 'Применяет t‑критерий Стьюдента к выборкам из двух генеральных совокупностей.'
+description: 'Применяет t-критерий Стьюдента к выборкам из двух генеральных совокупностей.'
 sidebar_label: 'studentTTest'
 sidebar_position: 194
 slug: /sql-reference/aggregate-functions/reference/studentttest
@@ -17,28 +17,28 @@ doc_type: 'reference'
 studentTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равно 0, то значение в этой строке относится к выборке из первой генеральной совокупности. В противном случае оно относится к выборке из второй генеральной совокупности.
-Нулевая гипотеза заключается в том, что математические ожидания совокупностей равны. Предполагается нормальное распределение с равными дисперсиями.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке из первой генеральной совокупности. В противном случае оно относится к выборке из второй генеральной совокупности.
+Нулевая гипотеза заключается в том, что средние значения генеральных совокупностей равны. Предполагается нормальное распределение с одинаковыми дисперсиями.
 
-**Arguments**
+**Аргументы**
 
-* `sample_data` — Выборочные данные. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_data` — Данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 * `sample_index` — Индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
-**Parameters**
+**Параметры**
 
 * `confidence_level` — Уровень доверия для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
 
-**Returned values**
+**Возвращаемые значения**
 
-[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указано необязательное значение `confidence_level`):
+[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный параметр `confidence_level`):
 
 * вычисленная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
 * вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 * [вычисленная нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
 * [вычисленная верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
 
-**Example**
+**Пример**
 
 Входная таблица:
 

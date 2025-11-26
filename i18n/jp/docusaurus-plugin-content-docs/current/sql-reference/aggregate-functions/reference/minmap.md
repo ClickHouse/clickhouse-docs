@@ -1,5 +1,5 @@
 ---
-description: '`key` 配列で指定されたキーに基づき、`value` 配列から最小値を計算します。'
+description: '`key` 配列で指定されたキーごとに、`value` 配列から最小値を計算します。'
 sidebar_position: 169
 slug: /sql-reference/aggregate-functions/reference/minmap
 title: 'minMap'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # minMap
 
-`key` 配列で指定されたキーに対応する `value` 配列要素の最小値を計算します。
+`key` 配列で指定されたキーに基づいて、`value` 配列の最小値を計算します。
 
 **構文**
 
@@ -26,8 +26,8 @@ Alias: `minMappedArrays`
 
 :::note
 
-* キー配列と値配列からなるタプルを渡すことは、キーの配列と値の配列を個別に渡すことと同じ意味になります。
-* 集計される各行において、`key` と `value` の要素数は同じでなければなりません。
+* キー配列と値配列のタプルを渡すことは、キーの配列と値の配列をそれぞれ渡すことと同等です。
+* 集計対象となる各行について、`key` と `value` の要素数は同じでなければなりません。
   :::
 
 **パラメータ**
@@ -35,9 +35,9 @@ Alias: `minMappedArrays`
 * `key` — キーの配列。[Array](../../data-types/array.md)。
 * `value` — 値の配列。[Array](../../data-types/array.md)。
 
-**戻り値**
+**返り値**
 
-* 2つの配列からなるタプルを返します。1つ目はソートされた順序のキー、2つ目は対応するキーに対して計算された値です。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
+* 2 つの配列からなるタプルを返します。キーはソート済みで、値は対応するキーごとに計算されたものです。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
 
 **例**
 
@@ -48,7 +48,7 @@ SELECT minMap(a, b)
 FROM VALUES('a Array(Int32), b Array(Int64)', ([1, 2], [2, 2]), ([2, 3], [1, 1]))
 ```
 
-結果：
+結果:
 
 ```text
 ┌─minMap(a, b)──────┐

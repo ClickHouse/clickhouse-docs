@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md) 的唯一区别在于,数据字段以字符串形式输出,而非类型化的 JSON 值。
+与 [`JSONEachRow`](./JSONEachRow.md) 的唯一区别在于，数据字段会以字符串形式输出，而不是输出为带类型的 JSON 值。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用名为 `football.json` 的 JSON 文件,其中包含以下数据:
+### 插入数据
+
+使用一个包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -43,18 +44,18 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":"2021","home_team":"Newport County","away_team":"Rochdale","home_team_goals":"0","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Oldham Athletic","away_team":"Crawley Town","home_team_goals":"3","away_team_goals":"3"}
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
-{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}
+{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `JSONStringsEachRow` 格式读取数据:
+以 `JSONStringsEachRow` 格式读取数据：
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONStringsEachRow
 ```
 
-输出将为 JSON 格式:
+输出将为 JSON 格式：
 
 
 ```json

@@ -10,20 +10,21 @@ doc_type: 'reference'
 
 # QUALIFY 句
 
-ウィンドウ関数の結果に対してフィルタ処理を行うための句です。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
+ウィンドウ関数の結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価より前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
 
-`QUALIFY` 句では、`SELECT` 句で定義したエイリアスを用いて、そのウィンドウ関数の結果を参照できます。また、クエリの結果セットには含めない追加のウィンドウ関数を定義し、その結果に基づいてフィルタリングを行うこともできます。
+`QUALIFY` 句では、`SELECT` 句内で定義したエイリアスを使用して、そのウィンドウ関数の結果を参照できます。あるいは、クエリ結果としては返さない追加のウィンドウ関数の結果に対してフィルタリングを行うこともできます。
 
 
 
 ## 制限事項 {#limitations}
 
-評価対象のウィンドウ関数が存在しない場合、`QUALIFY`は使用できません。代わりに`WHERE`を使用してください。
+評価するウィンドウ関数が存在しない場合は、`QUALIFY` は使用できません。代わりに `WHERE` を使用してください。
 
 
-## 例 {#examples}
 
-例:
+## 例
+
+例：
 
 ```sql
 SELECT number, COUNT() OVER (PARTITION BY number % 3) AS partition_count

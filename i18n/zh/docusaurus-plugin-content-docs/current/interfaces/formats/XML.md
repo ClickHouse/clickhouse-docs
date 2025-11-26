@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'XML 格式文档'
+description: 'XML 格式参考文档'
 input_format: false
 keywords: ['XML']
 output_format: true
@@ -9,7 +9,7 @@ title: 'XML'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
@@ -17,17 +17,18 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-`XML` 格式仅适用于输出,不支持解析。
+`XML` 格式仅适用于输出，不适用于解析。 
 
-如果列名格式不符合要求,则使用 'field' 作为元素名称。通常,XML 结构遵循 JSON 结构。
-与 JSON 类似,无效的 UTF-8 序列会被替换为替换字符 `�`,以确保输出文本由有效的 UTF-8 序列组成。
+如果列名不符合可接受的格式，则使用 `field` 作为元素名称。总体而言，XML 结构遵循 JSON 结构。
+与 JSON 相同，无效的 UTF-8 序列会被替换为替换字符 `�`，使输出文本只包含有效的 UTF-8 序列。
 
-在字符串值中,字符 `<` 和 `&` 会被转义为 `<` 和 `&`。
+在字符串值中，字符 `<` 和 `&` 会分别转义为 `<` 和 `&`。
 
-数组输出为 `<array><elem>Hello</elem><elem>World</elem>...</array>`,元组输出为 `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`。
+数组会输出为 `<array><elem>Hello</elem><elem>World</elem>...</array>`，元组会输出为 `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`。
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 示例：
 
@@ -95,6 +96,7 @@ doc_type: 'reference'
 
 
 ## 格式设置 {#format-settings}
+
 
 
 ## XML {#xml}

@@ -1,6 +1,6 @@
 ---
 description: 'Системная таблица, содержащая данные профилирования на уровне процессоров
-  (которые можно получить из вывода `EXPLAIN PIPELINE`)'
+  (которые можно увидеть в `EXPLAIN PIPELINE`)'
 keywords: ['system table', 'processors_profile_log', 'EXPLAIN PIPELINE']
 slug: /operations/system-tables/processors_profile_log
 title: 'system.processors_profile_log'
@@ -14,7 +14,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-Эта таблица содержит данные профилирования на уровне процессоров (их можно увидеть в [`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md#explain-pipeline)).
+Эта таблица содержит профилирующие данные на уровне процессоров (которые можно увидеть в [`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md#explain-pipeline)).
 
 Столбцы:
 
@@ -26,14 +26,14 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `parent_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — ID родительских процессоров.
 * `plan_step` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ID шага плана запроса, который создал этот процессор. Значение равно нулю, если процессор не был добавлен ни одним шагом.
 * `plan_group` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Группа процессора, если он был создан шагом плана запроса. Группа — это логическое разбиение процессоров, добавленных одним и тем же шагом плана запроса. Группа используется только для улучшения читаемости результата EXPLAIN PIPELINE.
-* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — ID исходного запроса (для распределённого выполнения запроса).
+* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — ID исходного запроса (для распределённого выполнения запросов).
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
 * `name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Имя процессора.
 * `elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество микросекунд, в течение которых выполнялся этот процессор.
-* `input_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество микросекунд, в течение которых процессор ожидал данные (от другого процессора).
-* `output_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество микросекунд, в течение которых процессор ожидал, потому что выходной порт был заполнен.
-* `input_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк, потреблённых процессором.
-* `input_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество байт, потреблённых процессором.
+* `input_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество микросекунд, в течение которых этот процессор ожидал данные (от другого процессора).
+* `output_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество микросекунд, в течение которых этот процессор ожидал, потому что выходной порт был заполнен.
+* `input_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк, обработанных процессором.
+* `input_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество байт, обработанных процессором.
 * `output_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк, сгенерированных процессором.
 * `output_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество байт, сгенерированных процессором.
   **Пример**
@@ -85,8 +85,8 @@ ORDER BY name ASC
 
 Здесь видно, что:
 
-* `ExpressionTransform` выполнял функцию `sleep(1)`, поэтому его `work` будет выполняться 1e6 мкс, и, соответственно, `elapsed_us` &gt; 1e6.
-* `SourceFromSingleChunk` должен ждать, потому что `ExpressionTransform` не принимает никаких данных во время выполнения `sleep(1)`, поэтому он будет в состоянии `PortFull` в течение 1e6 мкс, и, соответственно, `output_wait_elapsed_us` &gt; 1e6.
+* `ExpressionTransform` выполнял функцию `sleep(1)`, поэтому выполнение его `work` займет 1e6 мкс, и, следовательно, `elapsed_us` &gt; 1e6.
+* `SourceFromSingleChunk` должен ждать, потому что `ExpressionTransform` не принимает данные во время выполнения `sleep(1)`, поэтому он будет в состоянии `PortFull` в течение 1e6 мкс, и, следовательно, `output_wait_elapsed_us` &gt; 1e6.
 * `LimitsCheckingTransform`/`NullSource`/`LazyOutputFormat` должны ждать, пока `ExpressionTransform` выполнит `sleep(1)`, чтобы обработать результат, поэтому `input_wait_elapsed_us` &gt; 1e6.
 
 **См. также**

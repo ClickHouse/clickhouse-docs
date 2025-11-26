@@ -1,15 +1,15 @@
 ---
 alias: []
-description: 'Null フォーマットに関するドキュメント'
+description: 'Null フォーマットのドキュメント'
 input_format: false
-keywords: ['Null', 'フォーマット']
+keywords: ['Null', 'format']
 output_format: true
 slug: /interfaces/formats/Null
 title: 'Null'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| Input | Output | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
@@ -17,20 +17,21 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`Null`フォーマットでは、何も出力されません。
-これは一見奇妙に思えるかもしれませんが、何も出力されないにもかかわらず、クエリは処理され、
-コマンドラインクライアントを使用する場合はデータがクライアントに送信されることに注意してください。
+`Null` フォーマットでは、何も出力されません。  
+一見すると奇妙に思えるかもしれませんが、何も出力されない場合でもクエリ自体は処理されており、  
+コマンドラインクライアントを使用している場合は、データがクライアントに送信される点に注意してください。
 
 :::tip
-`Null`フォーマットはパフォーマンステストに有用です。
+`Null` フォーマットは、パフォーマンス測定や性能テストに役立ちます。
 :::
 
 
-## 使用例 {#example-usage}
 
-### データの読み取り {#reading-data}
+## 使用例
 
-以下のデータを持つ`football`テーブルを考えます:
+### データの読み取り
+
+次のデータを含むテーブル `football` を例にします。
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -54,7 +55,7 @@ doc_type: 'reference'
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-`Null`フォーマットを使用してデータを読み取ります:
+`Null` フォーマットを使用してデータを読み込みます：
 
 ```sql
 SELECT *
@@ -65,7 +66,7 @@ FORMAT Null
 このクエリはデータを処理しますが、何も出力しません。
 
 ```response
-0 rows in set. Elapsed: 0.154 sec.
+0行のセット。経過時間: 0.154秒
 ```
 
 

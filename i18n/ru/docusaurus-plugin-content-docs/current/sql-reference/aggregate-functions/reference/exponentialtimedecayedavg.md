@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
+## exponentialTimeDecayedAvg
 
-Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в точке `t`.
+Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в момент времени `t`.
 
 **Синтаксис**
 
@@ -20,16 +20,16 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **Аргументы**
 
-- `v` — значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `t` — время. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
+* `v` — значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `t` — время. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
-**Возвращаемое значение**
+**Возвращаемые значения**
 
-- Экспоненциально сглаженное взвешенное скользящее среднее в точке `t`. [Float64](../../data-types/float.md).
+* Возвращает экспоненциально сглаженное взвешенное скользящее среднее в момент времени с индексом `t`. [Float64](../../data-types/float.md).
 
 **Примеры**
 
@@ -51,7 +51,7 @@ FROM
     );
 ```
 
-Результат:
+Ответ:
 
 
 ```sql

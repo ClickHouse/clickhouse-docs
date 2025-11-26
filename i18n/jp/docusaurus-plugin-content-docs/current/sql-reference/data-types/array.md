@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse における Array データ型に関するドキュメント'
+description: 'ClickHouse の Array データ型に関するドキュメント'
 sidebar_label: 'Array(T)'
 sidebar_position: 32
 slug: /sql-reference/data-types/array
@@ -11,25 +11,25 @@ doc_type: 'reference'
 
 # Array(T)
 
-`T` 型の要素からなる配列で、配列の開始インデックスは 1 です。`T` には、配列型を含む任意のデータ型を指定できます。
+`T` 型の要素からなる配列で、配列の先頭インデックスは 1 です。`T` は配列を含む任意のデータ型になり得ます。
 
 
 
-## 配列の作成 {#creating-an-array}
+## 配列の作成
 
-配列を作成するには、関数を使用します：
+関数を使用して配列を作成できます：
 
 ```sql
 array(T)
 ```
 
-角括弧を使用することもできます。
+角括弧（[]）を使用することもできます。
 
 ```sql
 []
 ```
 
-配列作成の例：
+配列の作成例：
 
 ```sql
 SELECT array(1, 2) AS x, toTypeName(x)
@@ -52,13 +52,13 @@ SELECT [1, 2] AS x, toTypeName(x)
 ```
 
 
-## データ型の操作 {#working-with-data-types}
+## データ型の扱い
 
-配列を動的に作成する際、ClickHouseは列挙されたすべての引数を格納できる最小のデータ型として引数の型を自動的に定義します。[Nullable](/sql-reference/data-types/nullable)またはリテラル[NULL](/operations/settings/formats#input_format_null_as_default)値が含まれる場合、配列要素の型も[Nullable](../../sql-reference/data-types/nullable.md)になります。
+配列をその場で作成する場合、ClickHouse は、指定されたすべての引数を格納できる中で最も狭いデータ型を自動的に選択します。[Nullable](/sql-reference/data-types/nullable) やリテラルの [NULL](/operations/settings/formats#input_format_null_as_default) 値が含まれている場合、配列要素の型も [Nullable](../../sql-reference/data-types/nullable.md) になります。
 
-ClickHouseがデータ型を判定できない場合、例外が生成されます。例えば、文字列と数値を同時に含む配列を作成しようとした場合(`SELECT array(1, 'a')`)にこれが発生します。
+ClickHouse がデータ型を決定できない場合は、例外をスローします。例えば、文字列と数値を同時に含む配列を作成しようとした場合（`SELECT array(1, 'a')`）にこのような状況が発生します。
 
-自動データ型検出の例:
+自動データ型推定の例:
 
 ```sql
 SELECT array(1, 2, NULL) AS x, toTypeName(x)
@@ -70,21 +70,21 @@ SELECT array(1, 2, NULL) AS x, toTypeName(x)
 └────────────┴───────────────────────────────┘
 ```
 
-互換性のないデータ型の配列を作成しようとすると、ClickHouseは例外をスローします:
+互換性のないデータ型の配列を作成しようとすると、ClickHouse は例外を発生させます。
 
 ```sql
 SELECT array(1, 'a')
 ```
 
 ```text
-Received exception from server (version 1.1.54388):
-Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
+サーバーから例外を受信しました (バージョン 1.1.54388):
+Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: UInt8 型と String 型に共通のスーパータイプが存在しません。一部が String/FixedString 型であり、一部がそうでないためです。
 ```
 
 
-## 配列のサイズ {#array-size}
+## 配列サイズ
 
-配列全体を読み込むことなく、`size0`サブカラムを使用して配列のサイズを取得できます。多次元配列の場合は`sizeN-1`を使用できます。ここで`N`は対象とする次元を表します。
+`size0` サブカラムを使用すると、列全体を読み込むことなく配列のサイズを取得できます。多次元配列の場合は `sizeN-1` を使用できます。ここで `N` は取得したい次元の番号です。
 
 **例**
 
@@ -98,7 +98,7 @@ INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
 SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─arr.size0─┬─arr.size1─┬─arr.size2─┐
@@ -107,9 +107,9 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
 
-## Arrayからネストされたサブカラムを読み取る {#reading-nested-subcolumns-from-array}
+## Array からのネストされたサブカラムの読み取り
 
-`Array`内のネストされた型`T`がサブカラムを持つ場合（例えば、[名前付きタプル](./tuple.md)の場合）、同じサブカラム名を使用して`Array(T)`型からそのサブカラムを読み取ることができます。サブカラムの型は、元のサブカラムの型の`Array`になります。
+`Array` 内のネストされた型 `T` がサブカラムを持つ場合（たとえば [named tuple](./tuple.md) である場合など）、`Array(T)` 型から同じサブカラム名を使ってサブカラムを読み取ることができます。サブカラムの型は、元のサブカラムの型を要素とする `Array` 型になります。
 
 **例**
 

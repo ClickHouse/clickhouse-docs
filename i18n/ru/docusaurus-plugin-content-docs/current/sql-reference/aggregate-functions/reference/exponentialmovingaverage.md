@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет экспоненциальное скользящее среднее значений за заданный период времени.'
+description: 'Вычисляет экспоненциальное скользящее среднее значений за заданный промежуток времени.'
 sidebar_position: 132
 slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
 title: 'exponentialMovingAverage'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialMovingAverage {#exponentialmovingaverage}
+## exponentialMovingAverage
 
-Вычисляет экспоненциальное скользящее среднее значений для указанного времени.
+Вычисляет экспоненциальное скользящее среднее значений за заданный интервал времени.
 
 **Синтаксис**
 
@@ -18,20 +18,20 @@ doc_type: 'reference'
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-Каждое значение `value` соответствует определённому `timeunit`. Период полураспада `x` — это временной интервал, при котором экспоненциальные веса уменьшаются вдвое. Функция возвращает взвешенное среднее: чем старше временная точка, тем меньший вес присваивается соответствующему значению.
+Каждому `value` соответствует определённый `timeunit`. Период полураспада `x` — это временной интервал, при котором экспоненциальные веса уменьшаются вдвое. Функция возвращает взвешенное среднее: чем старше точка по времени, тем меньший вес получает соответствующее значение.
 
 **Аргументы**
 
-- `value` — Значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `timeunit` — Единица времени. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md). Единица времени — это не временная метка (в секундах), а индекс временного интервала. Может быть вычислена с помощью [intDiv](/sql-reference/functions/arithmetic-functions#intDiv).
+* `value` — Значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `timeunit` — Временная единица. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md). Временная единица — это не временная метка (секунды), а индекс временного интервала. Может быть вычислена с помощью [intDiv](/sql-reference/functions/arithmetic-functions#intDiv).
 
 **Параметры**
 
-- `x` — Период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — Период полураспада. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает [экспоненциально сглаженное скользящее среднее](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` единиц времени в самой поздней временной точке.
+* Возвращает [экспоненциально сглаженное скользящее среднее](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` единиц времени в самой поздней точке времени.
 
 Тип: [Float64](/sql-reference/data-types/float).
 
@@ -40,7 +40,7 @@ exponentialMovingAverage(x)(value, timeunit)
 Входная таблица:
 
 ```text
-┌──temperature─┬─timestamp──┐
+┌──температура─┬─временная_метка──┐
 │          95  │         1  │
 │          95  │         2  │
 │          95  │         3  │

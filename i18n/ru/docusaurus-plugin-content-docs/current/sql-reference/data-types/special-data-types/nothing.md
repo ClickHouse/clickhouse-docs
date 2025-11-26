@@ -1,5 +1,5 @@
 ---
-description: 'Документация о специальном типе данных Nothing'
+description: 'Документация по специальному типу данных «Nothing»'
 sidebar_label: 'Nothing'
 sidebar_position: 60
 slug: /sql-reference/data-types/special-data-types/nothing
@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 # Nothing
 
-Единственное назначение этого типа данных — описывать случаи, когда значение не ожидается. Поэтому вы не можете создать значение типа `Nothing`.
+Единственное назначение этого типа данных — служить для представления случаев, когда значение не предполагается. Поэтому вы не можете создать значение типа `Nothing`.
 
-Например, литерал [NULL](/sql-reference/syntax#null) имеет тип `Nullable(Nothing)`. См. подробнее о [Nullable](../../../sql-reference/data-types/nullable.md).
+Например, литерал [NULL](/sql-reference/syntax#null) имеет тип `Nullable(Nothing)`. Подробнее см. в разделе [Nullable](../../../sql-reference/data-types/nullable.md).
 
 Тип `Nothing` также может использоваться для обозначения пустых массивов:
 

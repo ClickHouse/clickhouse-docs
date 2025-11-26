@@ -1,13 +1,13 @@
 ---
-description: '用于机器生成日志数据的新分析型基准测试'
-sidebar_label: 'Brown University 基准测试'
+description: '用于机器生成日志数据的新分析基准测试'
+sidebar_label: '布朗大学基准测试'
 slug: /getting-started/example-datasets/brown-benchmark
-title: 'Brown University 基准测试'
-keywords: ['Brown University Benchmark', 'MgBench', '日志数据基准测试', '机器生成数据', '入门']
+title: '布朗大学基准测试'
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
 doc_type: 'guide'
 ---
 
-`MgBench` 是一个用于机器生成日志数据的新分析型基准测试，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
+`MgBench` 是一个针对机器生成日志数据的新分析基准测试，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
 
 下载数据：
 
@@ -95,14 +95,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbe
 ```
 
 
-## 运行基准测试查询 {#run-benchmark-queries}
+## 运行基准查询
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: 自午夜以来每个 Web 服务器的 CPU/网络利用率是多少?
+-- Q1.1: 自午夜以来每台 Web 服务器的 CPU/网络利用率是多少?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -127,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: 过去一天中哪些计算机实验室机器处于离线状态?
+-- Q1.2: 过去一天中哪些计算机实验室机器处于离线状态？
 
 SELECT machine_name,
        log_time
@@ -141,7 +141,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定工作站在过去 10 天内的每小时平均指标是多少?
+-- Q1.3: 特定工作站在过去 10 天内的每小时平均指标是多少？
 
 SELECT dt,
        hr,
@@ -174,7 +174,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 在 1 个月内,每个服务器因磁盘 I/O 阻塞的频率是多少?
+-- Q1.4: 在一个月内,每台服务器被磁盘 I/O 阻塞的次数是多少?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -189,7 +189,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 哪些外部可访问的虚拟机内存不足?
+-- Q1.5: 哪些外部可访问的虚拟机曾出现内存不足?
 
 SELECT machine_name,
        dt,
@@ -210,8 +210,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: 所有文件服务器的每小时总网络流量是多少?
-
+-- Q1.6: 所有文件服务器的每小时网络流量总和是多少?
 ```
 
 
@@ -250,7 +249,7 @@ ORDER BY log_time;
 ````
 
 ```sql
--- Q2.2: 在特定的两周期间内,用户密码文件是否泄露?
+-- Q2.2: 在特定的两周期间内，用户密码文件是否泄露？
 
 SELECT *
 FROM logs2
@@ -287,7 +286,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 在过去 3 个月中,哪些客户端发出了过多的请求?
+-- Q2.4: 在过去 3 个月内，哪些客户端发出了过多的请求？
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -313,7 +312,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: 平均和最大数据传输速率(Gbps)是多少?
+-- Q2.6: 平均和最大数据传输速率（Gbps）是多少？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -326,7 +325,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: 周末室内温度是否达到冰点?
+-- Q3.1: 周末室内温度是否达到冰点？
 
 SELECT *
 FROM logs3
@@ -336,7 +335,7 @@ WHERE event_type = 'temperature'
 ```
 
 ```sql
--- Q3.4: 在过去 6 个月中，每扇门被打开的频率是多少？
+-- Q3.4: 过去 6 个月内，每扇门被打开的频率是多少？
 
 SELECT device_name,
        device_floor,
@@ -350,14 +349,14 @@ ORDER BY ct DESC;
 ```
 
 
-下面的查询 3.5 使用了 UNION。设置合并 SELECT 查询结果的方式。该设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时才会生效。
+下面的查询 3.5 使用了 UNION。该设置用于指定合并 SELECT 查询结果的方式。只有在使用 UNION 且未显式指定 UNION ALL 或 UNION DISTINCT 时，才会应用此设置。
 
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 建筑物内哪些位置在冬季和夏季会出现较大温差?
+-- Q3.5: 建筑物内哪些位置在冬季和夏季出现较大温度波动?
 
 WITH temperature AS (
   SELECT dt,
@@ -411,7 +410,7 @@ WHERE dt >= DATE '2019-06-01'
 ```
 
 ```sql
--- Q3.6: 每个设备类别的月度用电量指标是什么?
+-- Q3.6: 每个设备类别的月度用电量指标是什么？
 
 SELECT yr,
        mo,
@@ -455,4 +454,4 @@ ORDER BY yr,
          mo;
 ```
 
-这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询，请参见[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询（参见[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)）。

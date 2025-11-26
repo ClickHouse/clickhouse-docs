@@ -1,5 +1,6 @@
 ---
-description: '表示 MergeTree 表中索引和标记文件的内容。可用于内部检查。'
+description: '表示 MergeTree 表中索引文件和标记文件（marks 文件）的内容。
+  可用于内部检查。'
 sidebar_label: 'mergeTreeIndex'
 sidebar_position: 77
 slug: /sql-reference/table-functions/mergeTreeIndex
@@ -11,11 +12,11 @@ doc_type: 'reference'
 
 # mergeTreeIndex 表函数
 
-表示 MergeTree 表索引文件和标记文件的内容，可用于内部查看和分析。
+用于表示 MergeTree 表的索引文件和标记文件的内容，可用于内部检查。
 
 
 
-## 语法 {#syntax}
+## 语法
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
@@ -24,26 +25,28 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 ## 参数 {#arguments}
 
-| 参数          | 描述                                              |
-| ------------- | ------------------------------------------------- |
-| `database`    | 要读取索引和标记的数据库名称。                     |
-| `table`       | 要读取索引和标记的表名称。                         |
-| `with_marks`  | 是否在结果中包含标记列。                           |
-| `with_minmax` | 是否在结果中包含最小最大值索引。                   |
+| 参数          | 说明                                                   |
+|---------------|--------------------------------------------------------|
+| `database`    | 要读取其索引和标记的数据库名称。                       |
+| `table`       | 要读取其索引和标记的表名称。                           |
+| `with_marks`  | 是否在结果中包含带标记的列。                           |
+| `with_minmax` | 是否在结果中包含最小-最大索引。                        |
+
 
 
 ## 返回值 {#returned_value}
 
-一个表对象,包含源表的主索引值和 min-max 索引值(如果启用)的列、源表数据部分中所有可能文件的标记值(如果启用)的列,以及虚拟列:
+一个表对象，其列包括：源表主索引值以及（若启用）min-max 索引值的列、源表各个数据分片中所有可能文件（若启用了 marks）的标记值列，以及虚拟列：
 
-- `part_name` - 数据部分名称。
-- `mark_number` - 数据部分中当前标记的编号。
-- `rows_in_granule` - 当前颗粒中的行数。
+- `part_name` - 数据分片的名称。
+- `mark_number` - 数据分片中当前标记的编号。
+- `rows_in_granule` - 当前粒度中的行数。
 
-当列在数据部分中不存在,或其某个子流的标记未写入时(例如在紧凑部分中),标记列可能包含 `(NULL, NULL)` 值。
+当某列在数据分片中不存在，或其某个子流的标记未被写入（例如在 compact 分片中）时，marks 列可能包含 `(NULL, NULL)` 值。
 
 
-## 使用示例 {#usage-example}
+
+## 使用示例
 
 ```sql
 CREATE TABLE test_table

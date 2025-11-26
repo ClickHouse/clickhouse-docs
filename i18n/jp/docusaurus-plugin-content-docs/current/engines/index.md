@@ -7,5 +7,5 @@ doc_type: 'landing-page'
 
 | Page                                               | Description                                                                                                                                                                       |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Database Engines](../engines/database-engines/index.md) | ClickHouse のデータベースエンジンでは、テーブルの扱い方やデータの保存・管理方法を定義できます。ClickHouse で利用可能なさまざまなデータベースエンジンについて学びましょう。 |
-| [Table Engines](../engines/table-engines/index.md)       | ClickHouse のテーブルエンジンは、データの保存・書き込み・読み取り方法を決定する基本的な概念です。ClickHouse で利用可能なさまざまなテーブルエンジンについて学びましょう。  |
+| [Database Engines](../engines/database-engines/index.md) | ClickHouse のデータベースエンジンは、テーブルの扱い方やデータの保存・管理方法を決定する役割を持ちます。ClickHouse で利用可能なさまざまなデータベースエンジンについて詳しく学ぶことができます。 |
+| [Table Engines](../engines/table-engines/index.md)       | ClickHouse のテーブルエンジンは、データの保存、書き込み、読み取り方法を決定する基本概念です。ClickHouse で利用可能なさまざまなテーブルエンジンについて詳しく学ぶことができます。  |

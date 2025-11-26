@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctJSONPaths
 
-Вычисляет список уникальных путей, хранящихся в [JSON](../../data-types/newjson.md)-столбце.
+Вычисляет список уникальных путей, хранящихся в столбце [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -18,7 +18,7 @@ distinctJSONPaths(json)
 
 **Аргументы**
 
-* `json` — столбец типа [JSON](../../data-types/newjson.md).
+* `json` — столбец [JSON](../../data-types/newjson.md).
 
 **Возвращаемое значение**
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-Вычисляет список уникальных путей и их типов, содержащихся в столбце [JSON](../../data-types/newjson.md).
+Вычисляет список различных путей и их типов, хранящихся в столбце [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -63,7 +63,7 @@ distinctJSONPathsAndTypes(json)
 
 **Возвращаемое значение**
 
-* Отсортированная карта путей и типов [Map(String, Array(String))](../../data-types/map.md).
+* Отсортированное отображение путей и типов в виде [Map(String, Array(String))](../../data-types/map.md).
 
 **Пример**
 
@@ -89,7 +89,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 
 **Примечание**
 
-Если описание JSON содержит пути с указанными типами, эти пути всегда будут включены в результат функций `distinctJSONPaths/distinctJSONPathsAndTypes`, даже если во входных данных не было значений для этих путей.
+Если JSON-описание содержит пути с указанными типами, эти пути всегда будут включены в результат работы функций `distinctJSONPaths` и `distinctJSONPathsAndTypes`, даже если во входных данных не было значений для этих путей.
 
 ```sql
 DROP TABLE IF EXISTS test_json;

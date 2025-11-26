@@ -1,90 +1,89 @@
 ---
-sidebar_label: 'Коннектор JDBC для Kafka Connect'
+sidebar_label: 'JDBC-коннектор Kafka Connect'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
-description: 'Использование Sink-коннектора JDBC с Kafka Connect и ClickHouse'
-title: 'Коннектор JDBC'
+description: 'Использование синк-коннектора JDBC с Kafka Connect и ClickHouse'
+title: 'JDBC-коннектор'
 doc_type: 'guide'
-keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
+keywords: ['kafka', 'kafka connect', 'jdbc', 'интеграция', 'конвейер данных']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 
-# JDBC-коннектор
+# JDBC connector
 
 :::note
-Этот коннектор следует использовать только в том случае, если ваши данные имеют простую структуру и состоят из примитивных типов данных, например int. Специфичные для ClickHouse типы, такие как maps, не поддерживаются.
+Этот коннектор следует использовать только в том случае, если ваши данные простые и состоят из примитивных типов данных, например `int`. Специфичные для ClickHouse типы, такие как `map`, не поддерживаются.
 :::
 
 В наших примерах мы используем дистрибутив Kafka Connect от Confluent.
 
-Ниже описывается простая установка, при которой сообщения извлекаются из одного топика Kafka и вставляются в виде строк в таблицу ClickHouse. Мы рекомендуем использовать Confluent Cloud, который предлагает щедрый бесплатный тарифный план для тех, у кого нет собственной среды Kafka.
+Ниже мы описываем простую установку, при которой сообщения считываются из одного Kafka-топика и вставляются в таблицу ClickHouse. Мы рекомендуем Confluent Cloud, который предоставляет щедрый бесплатный тариф для тех, у кого нет собственного Kafka-окружения.
 
-Обратите внимание, что для JDBC-коннектора требуется схема (вы не можете использовать простой JSON или CSV с JDBC-коннектором). Хотя схема может быть закодирована в каждом сообщении, [настоятельно рекомендуется использовать реестр схем Confluent](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas), чтобы избежать связанных с этим накладных расходов. Предоставленный скрипт вставки автоматически определяет схему из сообщений и добавляет её в реестр — таким образом, этот скрипт можно повторно использовать для других наборов данных. Предполагается, что ключи Kafka являются строками. Дополнительные сведения о схемах Kafka можно найти [здесь](https://docs.confluent.io/platform/current/schema-registry/index.html).
+Обратите внимание, что для коннектора JDBC требуется схема (нельзя использовать обычный JSON или CSV с JDBC-коннектором). Хотя схема может быть закодирована в каждом сообщении, [настойчиво рекомендуется использовать Confluent Schema Registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas), чтобы избежать связанных накладных расходов. Предоставленный скрипт вставки автоматически выводит схему из сообщений и добавляет её в реестр — таким образом, этот скрипт может быть повторно использован для других наборов данных. Предполагается, что ключи Kafka имеют тип `String`. Дополнительные сведения о схемах Kafka можно найти [здесь](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 ### Лицензия {#license}
-
-JDBC-коннектор распространяется под [лицензией Confluent Community License](https://www.confluent.io/confluent-community-license)
+JDBC Connector распространяется под [Confluent Community License](https://www.confluent.io/confluent-community-license)
 
 ### Шаги {#steps}
-
 #### Соберите данные для подключения {#gather-your-connection-details}
-
 <ConnectionDetails />
 
 #### 1. Установите Kafka Connect и коннектор {#1-install-kafka-connect-and-connector}
 
-Мы предполагаем, что вы загрузили пакет Confluent и установили его локально. Следуйте инструкциям по установке коннектора, как описано [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/#install-the-jdbc-connector).
+Предполагается, что вы скачали пакет Confluent и установили его локально. Следуйте инструкциям по установке коннектора, описанным [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/#install-the-jdbc-connector).
 
-Если вы используете метод установки confluent-hub, ваши локальные конфигурационные файлы будут обновлены.
+Если вы используете метод установки через confluent-hub, ваши локальные конфигурационные файлы будут обновлены.
 
-Для отправки данных в ClickHouse из Kafka мы используем компонент Sink коннектора.
+Для отправки данных из Kafka в ClickHouse мы используем sink-компонент коннектора.
 
-#### 2. Загрузите и установите JDBC-драйвер {#2-download-and-install-the-jdbc-driver}
+#### 2. Скачайте и установите JDBC-драйвер {#2-download-and-install-the-jdbc-driver}
 
-Загрузите и установите JDBC-драйвер ClickHouse `clickhouse-jdbc-<version>-shaded.jar` [отсюда](https://github.com/ClickHouse/clickhouse-java/releases). Установите его в Kafka Connect, следуя инструкциям [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers). Другие драйверы могут работать, но не были протестированы.
+Скачайте и установите JDBC-драйвер ClickHouse `clickhouse-jdbc-<version>-shaded.jar` [отсюда](https://github.com/ClickHouse/clickhouse-java/releases). Установите его в Kafka Connect, следуя инструкциям [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers). Другие драйверы могут работать, но не были протестированы.
 
 :::note
 
-Распространённая проблема: в документации предлагается скопировать jar-файл в `share/java/kafka-connect-jdbc/`. Если у вас возникают проблемы с обнаружением драйвера в Connect, скопируйте драйвер в `share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/`. Или измените `plugin.path`, чтобы включить драйвер — см. ниже.
+Типичная проблема: в документации предлагается скопировать JAR в `share/java/kafka-connect-jdbc/`. Если вы сталкиваетесь с проблемами при обнаружении драйвера Connect, скопируйте драйвер в `share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/`. Либо измените `plugin.path`, чтобы включить драйвер — см. ниже.
 
 :::
 
 #### 3. Подготовьте конфигурацию {#3-prepare-configuration}
 
-Следуйте [этим инструкциям](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) для настройки Connect в соответствии с вашим типом установки, обращая внимание на различия между автономным и распределённым кластером. При использовании Confluent Cloud применима распределённая настройка.
+Следуйте [этим инструкциям](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) для настройки Connect, соответствующей вашему типу установки, учитывая различия между автономным и распределённым кластером. При использовании Confluent Cloud актуальна распределённая конфигурация.
 
-Следующие параметры относятся к использованию JDBC-коннектора с ClickHouse. Полный список параметров можно найти [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html):
+Следующие параметры важны для использования JDBC-коннектора с ClickHouse. Полный список параметров можно найти [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html):
 
 
-- `_connection.url_` - должен иметь вид `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
-- `connection.user` - пользователь с правами на запись в целевую базу данных
-- `table.name.format` - таблица ClickHouse для вставки данных. Должна существовать.
-- `batch.size` - количество строк для отправки в одном пакете. Убедитесь, что установлено достаточно большое значение. Согласно [рекомендациям](/sql-reference/statements/insert-into#performance-considerations) ClickHouse, минимальным значением следует считать 1000.
-- `tasks.max` - коннектор JDBC Sink поддерживает выполнение одной или нескольких задач. Это можно использовать для повышения производительности. Вместе с размером пакета это является основным средством повышения производительности.
-- `value.converter.schemas.enable` - установите false при использовании реестра схем, true если вы встраиваете схемы в сообщения.
-- `value.converter` - установите в соответствии с типом данных, например, для JSON используйте `io.confluent.connect.json.JsonSchemaConverter`.
-- `key.converter` - установите `org.apache.kafka.connect.storage.StringConverter`. Мы используем строковые ключи.
-- `pk.mode` - не применимо к ClickHouse. Установите none.
-- `auto.create` - не поддерживается и должно быть false.
-- `auto.evolve` - рекомендуется установить false для этого параметра, хотя в будущем он может поддерживаться.
-- `insert.mode` - установите "insert". Другие режимы в настоящее время не поддерживаются.
-- `key.converter` - установите в соответствии с типами ваших ключей.
-- `value.converter` - установите в зависимости от типа данных в вашем топике. Эти данные должны иметь поддерживаемую схему - форматы JSON, Avro или Protobuf.
 
-При использовании нашего примера набора данных для тестирования убедитесь, что установлены следующие параметры:
+* `_connection.url_` - должен иметь формат `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
+* `connection.user` - пользователь с правами записи в целевую базу данных
+* `table.name.format` - таблица ClickHouse, в которую выполняется вставка данных. Таблица должна уже существовать.
+* `batch.size` - количество строк, отправляемых в одном пакете. Убедитесь, что задано достаточно большое значение. Согласно [рекомендациям](/sql-reference/statements/insert-into#performance-considerations) ClickHouse минимальным следует считать значение 1000.
+* `tasks.max` - коннектор JDBC Sink поддерживает запуск одной или нескольких задач. Это можно использовать для увеличения производительности. Вместе с размером пакета это ваши основные средства повышения производительности.
+* `value.converter.schemas.enable` - установите в false при использовании реестра схем, в true — если вы встраиваете схемы в сообщения.
+* `value.converter` - установите в соответствии с вашим типом данных, например, для JSON — `io.confluent.connect.json.JsonSchemaConverter`.
+* `key.converter` - установите `org.apache.kafka.connect.storage.StringConverter`. Мы используем строковые ключи.
+* `pk.mode` - не актуален для ClickHouse. Установите none.
+* `auto.create` - не поддерживается и должен иметь значение false.
+* `auto.evolve` - мы рекомендуем значение false для этого параметра, хотя поддержка может появиться в будущем.
+* `insert.mode` - установите "insert". Другие режимы в настоящее время не поддерживаются.
+* `key.converter` - укажите в соответствии с типами ваших ключей.
+* `value.converter` - укажите на основе типа данных в вашем топике. Эти данные должны иметь поддерживаемую схему — форматы JSON, Avro или Protobuf.
 
-- `value.converter.schemas.enable` - установите false, так как мы используем реестр схем. Установите true, если вы встраиваете схему в каждое сообщение.
-- `key.converter` - установите "org.apache.kafka.connect.storage.StringConverter". Мы используем строковые ключи.
-- `value.converter` - установите "io.confluent.connect.json.JsonSchemaConverter".
-- `value.converter.schema.registry.url` - установите URL сервера схем вместе с учетными данными для сервера схем через параметр `value.converter.schema.registry.basic.auth.user.info`.
+Если вы используете наш пример набора данных для тестирования, убедитесь, что заданы следующие параметры:
 
-Примеры файлов конфигурации для примера данных Github можно найти [здесь](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), при условии, что Connect запущен в автономном режиме, а Kafka размещена в Confluent Cloud.
+* `value.converter.schemas.enable` - установите в false, так как мы используем реестр схем. Установите в true, если вы встраиваете схему в каждое сообщение.
+* `key.converter` - установите "org.apache.kafka.connect.storage.StringConverter". Мы используем строковые ключи.
+* `value.converter` - установите "io.confluent.connect.json.JsonSchemaConverter".
+* `value.converter.schema.registry.url` - укажите URL сервера реестра схем, а также учетные данные для этого сервера через параметр `value.converter.schema.registry.basic.auth.user.info`.
+
+Примеры файлов конфигурации для тестового набора данных GitHub можно найти [здесь](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), при условии, что Connect запускается в режиме standalone, а Kafka размещена в Confluent Cloud.
 
 #### 4. Создание таблицы ClickHouse {#4-create-the-clickhouse-table}
 
-Убедитесь, что таблица создана, удалив её, если она уже существует из предыдущих примеров. Ниже показан пример, совместимый с сокращенным набором данных Github. Обратите внимание на отсутствие типов Array или Map, которые в настоящее время не поддерживаются:
+Убедитесь, что таблица создана, удалив её, если она уже существует из предыдущих примеров. Ниже приведён пример, совместимый с уменьшенным набором данных GitHub. Обратите внимание на отсутствие каких-либо типов Array или Map, которые в настоящее время не поддерживаются:
+
 
 
 ```sql
@@ -115,29 +114,29 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Запуск Kafka Connect {#5-start-kafka-connect}
+#### 5. Запустите Kafka Connect
 
-Запустите Kafka Connect в режиме [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) или [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster).
+Запустите Kafka Connect в [автономном](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) или [распределённом](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) режиме.
 
 ```bash
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Добавление данных в Kafka {#6-add-data-to-kafka}
+#### 6. Добавьте данные в Kafka
 
-Вставьте сообщения в Kafka, используя предоставленные [скрипт и конфигурацию](https://github.com/ClickHouse/kafka-samples/tree/main/producer). Вам потребуется изменить файл github.config, добавив учетные данные Kafka. В настоящее время скрипт настроен для работы с Confluent Cloud.
+Отправьте сообщения в Kafka, используя предоставленные [скрипт и конфигурацию](https://github.com/ClickHouse/kafka-samples/tree/main/producer). Вам нужно будет изменить файл конфигурации github.config, чтобы указать свои учетные данные Kafka. По умолчанию скрипт настроен для работы с Confluent Cloud.
 
 ```bash
 python producer.py -c github.config
 ```
 
-Этот скрипт можно использовать для вставки любого ndjson-файла в топик Kafka. Он автоматически попытается определить схему. Предоставленная примерная конфигурация вставит только 10 тысяч сообщений — при необходимости [измените это значение](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/producer/github.config#L25). Эта конфигурация также удаляет все несовместимые поля типа Array из набора данных при вставке в Kafka.
+Этот скрипт можно использовать для записи любого файла ndjson в топик Kafka. Он попытается автоматически вывести схему. Приведённая примерная конфигурация запишет только 10 000 сообщений — при необходимости [измените здесь](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/producer/github.config#L25). Эта конфигурация также удаляет все несовместимые поля типа Array из набора данных при отправке в Kafka.
 
-Это необходимо для того, чтобы коннектор JDBC мог преобразовывать сообщения в операторы INSERT. Если вы используете собственные данные, убедитесь, что либо вставляете схему с каждым сообщением (установив параметр \_value.converter.schemas.enable \_в значение true), либо что ваш клиент публикует сообщения со ссылкой на схему в реестре.
+Это необходимо для того, чтобы коннектор JDBC мог преобразовывать сообщения в операторы INSERT. Если вы используете собственные данные, убедитесь, что вы либо добавляете схему к каждому сообщению (установив &#95;value.converter.schemas.enable &#95;в true), либо что ваш клиент публикует сообщения, ссылающиеся на схему в реестре.
 
-Kafka Connect должен начать потреблять сообщения и вставлять строки в ClickHouse. Обратите внимание, что предупреждения вида "[JDBC Compliant Mode] Transaction is not supported." являются ожидаемыми и могут быть проигнорированы.
+Kafka Connect должен начать считывать сообщения и вставлять строки в ClickHouse. Обратите внимание, что предупреждения вида &quot;[JDBC Compliant Mode] Transaction is not supported.&quot; являются ожидаемыми и их можно игнорировать.
 
-Простой запрос к целевой таблице "Github" должен подтвердить успешную вставку данных.
+Простой запрос к целевой таблице &quot;Github&quot; должен подтвердить, что данные были вставлены.
 
 ```sql
 SELECT count() FROM default.github;
@@ -149,11 +148,11 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### Рекомендуемые материалы для дальнейшего изучения {#recommended-further-reading}
+### Рекомендуемые дополнительные материалы
 
 
-* [Параметры конфигурации коннектора-приёмника Kafka](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
-* [Подробный разбор Kafka Connect: коннектор-источник JDBC](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)
-* [Подробный разбор коннектора-приёмника Kafka Connect JDBC: работа с первичными ключами](https://rmoff.net/2021/03/12/kafka-connect-jdbc-sink-deep-dive-working-with-primary-keys/)
-* [Kafka Connect в действии: JDBC Sink](https://www.youtube.com/watch?v=b-3qN_tlYR4&t=981s) — для тех, кто предпочитает смотреть, а не читать.
-* [Подробный разбор Kafka Connect: конвертеры и сериализация](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)
+* [Параметры конфигурации приёмника Kafka (Kafka Sink Configuration Parameters)](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
+* [Подробный разбор Kafka Connect – JDBC Source Connector (Kafka Connect Deep Dive – JDBC Source Connector)](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)
+* [Подробный разбор Kafka Connect JDBC Sink: работа с первичными ключами (Kafka Connect JDBC Sink deep-dive: Working with Primary Keys)](https://rmoff.net/2021/03/12/kafka-connect-jdbc-sink-deep-dive-working-with-primary-keys/)
+* [Kafka Connect в действии: JDBC Sink (Kafka Connect in Action: JDBC Sink)](https://www.youtube.com/watch?v=b-3qN_tlYR4&t=981s) — для тех, кто предпочитает видео чтению.
+* [Подробный разбор Kafka Connect – конвертеры и сериализация (Kafka Connect Deep Dive – Converters and Serialization Explained)](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)

@@ -1,5 +1,5 @@
 ---
-description: 'dense_rank 窗口函数文档'
+description: 'dense_rank 窗口函数的文档'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 # dense&#95;rank
 
-在其分区内为当前行进行排名且名次之间没有空缺。换句话说，如果遇到的新行的值等于之前某一行的值，则它将获得下一个连续的名次，排名中不会出现间隔。
+在其分区内为当前行进行连续排名（无空缺）。换句话说，如果遇到的新行的值等于之前某一行的值，那么它将获得紧接其后的下一个名次，且名次序列中不会出现空缺。
 
-[rank](./rank.md) 函数提供相同的效果，但排名中会存在空缺。
+[rank](./rank.md) 函数提供相同的行为，但在排名中会产生空缺。
 
 **语法**
 
@@ -25,11 +25,11 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详情，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更多详细信息，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-* 当前行在其分区内的序号，且排名中没有空缺。[UInt64](../data-types/int-uint.md)。
+* 分区内当前行的序号值，且排名连续无间断。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 

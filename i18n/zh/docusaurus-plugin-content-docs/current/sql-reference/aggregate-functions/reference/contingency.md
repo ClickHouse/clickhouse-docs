@@ -1,5 +1,5 @@
 ---
-description: '`contingency` 函数计算列联系数，这是一种用于衡量表中两列之间关联程度的数值。其计算方式与 `cramersV` 函数类似，但平方根内所用的分母不同。'
+description: '`contingency` 函数计算列联系数（contingency coefficient），用于度量数据表中两列之间的关联程度。其计算方式与 `cramersV` 函数类似，但平方根内的分母不同。'
 sidebar_position: 116
 slug: /sql-reference/aggregate-functions/reference/contingency
 title: 'contingency'
@@ -8,12 +8,12 @@ doc_type: 'reference'
 
 # contingency
 
-函数 `contingency` 计算[列联系数（contingency coefficient）](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)，该值用于衡量表中两列之间的关联程度。其计算方式与[`cramersV` 函数](./cramersv.md)类似，但在平方根中使用了不同的分母。
+`contingency` 函数用于计算[列联系数（contingency coefficient）](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)，该值用于衡量表中两列之间的关联强度。它的计算方式与 [`cramersV` 函数](./cramersv.md)类似，但在平方根中的分母不同。
 
 **语法**
 
 ```sql
-contingency(column1, column2)
+列联表(column1, column2)
 ```
 
 **参数**
@@ -28,7 +28,7 @@ contingency(column1, column2)
 
 **示例**
 
-下面要比较的两列之间的关联性较弱。我们还包含了 `cramersV` 的结果（作为对比）：
+下面所比较的两列之间的关联度较弱。我们还给出了 `cramersV` 的结果（用于对比）：
 
 ```sql
 SELECT

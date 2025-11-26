@@ -1,5 +1,5 @@
 ---
-description: '`system.metrics` および `system.events` テーブルのメトリクス値の履歴を保持し、定期的にディスクにフラッシュされるシステムテーブル。'
+description: 'テーブル `system.metrics` と `system.events` に由来するメトリクス値の履歴を保持し、定期的にディスクにフラッシュされるシステムテーブル。'
 keywords: ['システムテーブル', 'metric_log']
 slug: /operations/system-tables/metric_log
 title: 'system.metric_log'
@@ -13,11 +13,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-`system.metrics` と `system.events` テーブルにあるメトリクス値の履歴を保持しており、定期的にディスクにフラッシュされます。
+`system.metrics` および `system.events` テーブルのメトリクス値の履歴を保持しており、定期的にディスクにフラッシュされます。
 
-列:
+Columns:
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行するサーバーのホスト名。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントの日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時刻。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のイベント時刻。
@@ -29,7 +29,7 @@ SELECT * FROM system.metric_log LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                                                        clickhouse.eu-central1.internal
 event_date:                                                      2020-09-05
@@ -57,16 +57,16 @@ CurrentMetric_DistributedFilesToInsert:                          0
 ```
 
 **スキーマ**
-このテーブルは、XML タグ `<schema_type>` を使用して、さまざまなスキーマタイプを指定できます。デフォルトのスキーマタイプは `wide` であり、各メトリクスまたはプロファイルイベントは個別のカラムとして保存されます。このスキーマは、単一カラムの読み取りに対して最も高いパフォーマンスと効率を発揮します。
+このテーブルは、XML タグ `<schema_type>` を使用して、異なるスキーマ種別に構成できます。デフォルトのスキーマ種別は `wide` であり、各メトリクスまたはプロファイルイベントが個別の列として保存されます。このスキーマは、単一列の読み取りに対して最も高いパフォーマンスと効率を発揮します。
 
-`transposed` スキーマは、メトリクスやイベントを行として保存する `system.asynchronous_metric_log` に類似した形式でデータを保存します。このスキーマは、マージ時のリソース消費を削減できるため、リソースが限られた環境で有用です。
+`transposed` スキーマは、メトリクスやイベントが行として保存される `system.asynchronous_metric_log` と類似した形式でデータを保存します。このスキーマは、マージ時のリソース消費を削減するため、リソースの限られた環境での利用に有効です。
 
-さらに、互換性のためのスキーマとして `transposed_with_wide_view` があり、実データは転置スキーマ (`system.transposed_metric_log`) を持つテーブルに保存され、その上に `wide` スキーマを使用するビューを作成します。このビューは転置テーブルを参照してクエリを実行するようになっているため、`wide` スキーマから `transposed` スキーマへの移行に役立ちます。
+互換性のためのスキーマとして `transposed_with_wide_view` も存在します。これは、転置スキーマ（`system.transposed_metric_log`）を持つテーブルに実データを保存し、その上に wide スキーマを使用したビューを作成します。このビューは転置テーブルをクエリするため、`wide` スキーマから `transposed` スキーマへの移行に役立ちます。
 
-**関連情報**
+**関連項目**
 
-* [metric&#95;log 設定](../../operations/server-configuration-parameters/settings.md#metric_log) — 設定の有効化および無効化。
+* [metric&#95;log 設定](../../operations/server-configuration-parameters/settings.md#metric_log) — 設定の有効化と無効化。
 * [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — 定期的に計算されるメトリクスを含みます。
-* [system.events](/operations/system-tables/events) — 発生した多数のイベントを含みます。
-* [system.metrics](../../operations/system-tables/metrics.md) — 即時計算されるメトリクスを含みます。
+* [system.events](/operations/system-tables/events) — 発生した各種イベントを含みます。
+* [system.metrics](../../operations/system-tables/metrics.md) — 即時に計算されるメトリクスを含みます。
 * [Monitoring](../../operations/monitoring.md) — ClickHouse モニタリングの基本概念。

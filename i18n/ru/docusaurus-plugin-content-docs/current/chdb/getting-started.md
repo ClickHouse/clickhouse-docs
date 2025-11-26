@@ -2,7 +2,7 @@
 title: 'Начало работы с chDB'
 sidebar_label: 'Начало работы'
 slug: /chdb/getting-started
-description: 'chDB — это внутрипроцессный OLAP-движок SQL на базе ClickHouse'
+description: 'chDB — это внутрипроцессный SQL OLAP-движок на базе ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
@@ -12,12 +12,12 @@ doc_type: 'guide'
 # Начало работы с chDB
 
 В этом руководстве мы разберёмся, как быстро начать работу с вариантом chDB для Python.
-Мы начнём с выполнения запроса к JSON-файлу в S3, затем создадим таблицу в chDB на основе этого файла и выполним несколько запросов к данным.
-Мы также рассмотрим, как получать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas. 
+Мы начнём с выполнения запроса к JSON‑файлу в S3, затем создадим таблицу в chDB на основе этого JSON‑файла и выполним несколько запросов к данным.
+Мы также посмотрим, как возвращать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas. 
 
 
 
-## Настройка {#setup}
+## Настройка
 
 Сначала создадим виртуальное окружение:
 
@@ -26,20 +26,20 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-Теперь установим chDB.
-Убедитесь, что установлена версия 2.0.3 или выше:
+А теперь установим chDB.
+Убедитесь, что у вас версия 2.0.3 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-Теперь установим [ipython](https://ipython.org/):
+Теперь установим [IPython](https://ipython.org/):
 
 ```bash
 pip install ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в остальной части руководства. Запустить его можно следующей командой:
+Мы будем использовать `ipython` для выполнения команд далее в этом руководстве. Его можно запустить, выполнив:
 
 ```bash
 ipython
@@ -52,11 +52,11 @@ pip install pandas pyarrow
 ```
 
 
-## Запрос JSON-файла в S3 {#querying-a-json-file-in-s3}
+## Запрос к JSON‑файлу в S3
 
-Теперь рассмотрим, как выполнить запрос к JSON-файлу, хранящемуся в корзине S3.
-[Набор данных дизлайков YouTube](/getting-started/example-datasets/youtube-dislikes) содержит более 4 миллиардов строк с дизлайками видео на YouTube до 2021 года.
-Мы будем работать с одним из JSON-файлов из этого набора данных.
+Теперь рассмотрим, как выполнять запросы к JSON‑файлу, который хранится в бакете S3.
+Набор данных [YouTube dislikes dataset](/getting-started/example-datasets/youtube-dislikes) содержит более 4 миллиардов строк о дизлайках под видео на YouTube до 2021 года.
+Мы будем работать с одним из JSON‑файлов из этого набора данных.
 
 Импортируйте chdb:
 
@@ -64,7 +64,7 @@ pip install pandas pyarrow
 import chdb
 ```
 
-Можно написать следующий запрос для описания структуры одного из JSON-файлов:
+Мы можем выполнить следующий запрос, чтобы описать структуру одного из файлов JSON:
 
 ```python
 chdb.query(
@@ -110,7 +110,7 @@ chdb.query(
 "video_badges","Nullable(String)"
 ```
 
-Также можно подсчитать количество строк в этом файле:
+Также можно посчитать число строк в этом файле:
 
 ```python
 chdb.query(
@@ -128,9 +128,9 @@ chdb.query(
 336432
 ```
 
-Этот файл содержит чуть более 300 000 записей.
+Этот файл содержит чуть больше 300 000 записей.
 
-chdb пока не поддерживает передачу параметров запроса, но можно извлечь путь и передать его через f-строку.
+chdb пока не поддерживает передачу параметров запроса, но мы можем извлечь путь и передать его через f-строку.
 
 ```python
 path = 's3://clickhouse-public-datasets/youtube/original/files/youtubedislikes_20211127161229_18654868.1637897329_vid.json.zst'
@@ -146,14 +146,14 @@ chdb.query(
 ```
 
 :::warning
-Это допустимо для переменных, определенных в вашей программе, но не используйте это с пользовательским вводом, иначе ваш запрос будет уязвим для SQL-инъекций.
+Это допустимо делать с переменными, определёнными в вашей программе, но не делайте этого с пользовательским вводом, иначе ваш запрос будет подвержен SQL‑инъекциям.
 :::
 
 
-## Настройка формата вывода {#configuring-the-output-format}
+## Настройка формата вывода
 
 Формат вывода по умолчанию — `CSV`, но его можно изменить с помощью параметра `output_format`.
-chDB поддерживает форматы данных ClickHouse, а также [некоторые собственные](/chdb/reference/data-formats.md), включая `DataFrame`, который возвращает Pandas DataFrame:
+chDB поддерживает форматы данных ClickHouse, а также [собственные форматы](/chdb/reference/data-formats.md), включая `DataFrame`, который возвращает объект Pandas DataFrame:
 
 ```python
 result = chdb.query(
@@ -176,7 +176,7 @@ print(result)
 1            True    35307
 ```
 
-Или если нужно получить таблицу Apache Arrow:
+Или если нам нужна таблица Apache Arrow:
 
 ```python
 result = chdb.query(
@@ -203,18 +203,18 @@ count(): [[315746,20686]]
 ```
 
 
-## Создание таблицы из JSON-файла {#creating-a-table-from-json-file}
+## Создание таблицы из JSON-файла
 
 Теперь рассмотрим, как создать таблицу в chDB.
-Для этого нужно использовать другой API, поэтому сначала импортируем его:
+Для этого нам нужно использовать другой API, поэтому сначала импортируем его:
 
 ```python
 from chdb import session as chs
 ```
 
-Далее инициализируем сессию.
-Если нужно сохранить сессию на диск, необходимо указать имя директории.
-Если оставить это поле пустым, база данных будет храниться в памяти и будет потеряна при завершении процесса Python.
+Затем инициализируем сессию.
+Если мы хотим, чтобы сессия сохранялась на диск, нужно указать имя каталога.
+Если оставить это значение пустым, база данных будет находиться только в памяти и будет утрачена, как только мы остановим процесс Python.
 
 ```python
 sess = chs.Session("gettingStarted.chdb")
@@ -226,22 +226,22 @@ sess = chs.Session("gettingStarted.chdb")
 sess.query("CREATE DATABASE IF NOT EXISTS youtube")
 ```
 
-Теперь можно создать таблицу `dislikes` на основе схемы из JSON-файла, используя конструкцию `CREATE...EMPTY AS`.
-Используем настройку [`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable), чтобы типы столбцов не были автоматически преобразованы в `Nullable`.
+Теперь мы можем создать таблицу `dislikes` на основе схемы из файла JSON, используя приём `CREATE...EMPTY AS`.
+Мы будем использовать настройку [`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable), чтобы типы столбцов не были автоматически сделаны `Nullable`.
 
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes
-  ORDER BY fetch_date
-  EMPTY AS
-  SELECT *
+  ORDER BY fetch_date 
+  EMPTY AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
 )
 ```
 
-Затем можно использовать оператор `DESCRIBE` для проверки схемы:
+Затем мы можем использовать оператор `DESCRIBE`, чтобы изучить схему:
 
 ```python
 sess.query(f"""
@@ -282,27 +282,27 @@ sess.query(f"""
 "video_badges","String"
 ```
 
-Далее заполним эту таблицу:
+Далее заполним таблицу:
 
 ```python
 sess.query(f"""
   INSERT INTO youtube.dislikes
-  SELECT *
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
 )
 ```
 
-Также можно выполнить оба этих шага за один раз, используя конструкцию `CREATE...AS`.
-Создадим другую таблицу, используя эту конструкцию:
+Мы также можем выполнить оба этих шага за один раз, используя конструкцию `CREATE...AS`.
+Давайте создадим другую таблицу с использованием этой конструкции:
 
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes2
-  ORDER BY fetch_date
-  AS
-  SELECT *
+  ORDER BY fetch_date 
+  AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
@@ -310,9 +310,9 @@ sess.query(f"""
 ```
 
 
-## Выполнение запросов к таблице {#querying-a-table}
+## Выполнение запроса к таблице
 
-Наконец, выполним запрос к таблице:
+Теперь давайте сделаем запрос к таблице:
 
 ```sql
 df = sess.query("""
@@ -328,7 +328,7 @@ df
 ```
 
 ```text
-                             uploader  viewCount  likeCount  dislikeCount
+                             загрузчик  количествоПросмотров  количествоЛайков  количествоДизлайков
 0                             Jeremih  139066569     812602         37842
 1                     TheKillersMusic  109313116     529361         11931
 2  LetsGoMartin- Canciones Infantiles  104747788     236615        141467
@@ -341,17 +341,17 @@ df
 9                    RC Cars OFF Road   31952962     101503         49489
 ```
 
-Предположим, что нам нужно добавить в DataFrame дополнительный столбец для вычисления соотношения лайков и дизлайков.
-Для этого можно написать следующий код:
+Предположим, что затем мы добавим в DataFrame дополнительный столбец, чтобы вычислить отношение числа лайков к числу дизлайков.
+Мы могли бы написать следующий код:
 
 ```python
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
 
-## Запросы к Pandas DataFrame {#querying-a-pandas-dataframe}
+## Выполнение запросов к DataFrame Pandas
 
-Затем можно выполнить запрос к этому DataFrame из chDB:
+Затем мы можем выполнять запросы к этому DataFrame из chDB:
 
 ```python
 chdb.query(
@@ -377,15 +377,15 @@ chdb.query(
 9                    RC Cars OFF Road          2.051021
 ```
 
-Подробнее о запросах к Pandas DataFrame см. в [руководстве разработчика по работе с Pandas](guides/querying-pandas.md).
+Также вы можете подробнее узнать о выполнении запросов к DataFrame в Pandas в [руководстве для разработчиков по запросам в Pandas](guides/querying-pandas.md).
 
 
-## Следующие шаги {#next-steps}
+## Дальнейшие шаги {#next-steps}
 
-Надеемся, это руководство дало вам хорошее представление о chDB.
-Чтобы узнать больше о работе с ним, ознакомьтесь со следующими руководствами для разработчиков:
+Надеемся, это руководство дало вам хорошее общее представление о chDB. 
+Чтобы узнать больше о том, как его использовать, см. следующие руководства для разработчиков:
 
-- [Выполнение запросов к Pandas DataFrames](guides/querying-pandas.md)
-- [Выполнение запросов к Apache Arrow](guides/querying-apache-arrow.md)
-- [Использование chDB в JupySQL](guides/jupysql.md)
-- [Использование chDB с существующей базой данных clickhouse-local](guides/clickhouse-local.md)
+* [Выполнение запросов к DataFrame в Pandas](guides/querying-pandas.md)
+* [Выполнение запросов к Apache Arrow](guides/querying-apache-arrow.md)
+* [Использование chDB в JupySQL](guides/jupysql.md)
+* [Использование chDB с существующей базой данных clickhouse-local](guides/clickhouse-local.md)

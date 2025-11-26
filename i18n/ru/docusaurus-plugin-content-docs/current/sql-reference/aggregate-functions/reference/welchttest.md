@@ -1,5 +1,5 @@
 ---
-description: 'Применяет t-критерий Уэлча к выборкам из двух генеральных совокупностей.'
+description: 'Применяет t‑критерий Уэлча к выборкам из двух генеральных совокупностей.'
 sidebar_label: 'welchTTest'
 sidebar_position: 214
 slug: /sql-reference/aggregate-functions/reference/welchttest
@@ -17,26 +17,26 @@ doc_type: 'reference'
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок содержатся в столбце `sample_data`. Если `sample_index` равен 0, значение в этой строке относится к выборке из первой генеральной совокупности. В противном случае оно относится к выборке из второй генеральной совокупности.\
-Нулевая гипотеза состоит в том, что средние значения генеральных совокупностей равны. Предполагается нормальное распределение. Генеральные совокупности могут иметь неравные дисперсии.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке из первой совокупности. В противном случае оно относится к выборке из второй совокупности.
+Нулевая гипотеза заключается в том, что средние значения совокупностей равны. Предполагается нормальное распределение. Дисперсии совокупностей могут быть неравными.
 
 **Аргументы**
 
-* `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-* `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — Данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — Индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-* `confidence_level` — уровень доверия для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
+* `confidence_level` — Уровень доверия, используемый для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
-[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный параметр `confidence_level`):
+[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный параметр `confidence_level`)
 
 * вычисленная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
 * вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-* вычисленная нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
-* вычисленная верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 

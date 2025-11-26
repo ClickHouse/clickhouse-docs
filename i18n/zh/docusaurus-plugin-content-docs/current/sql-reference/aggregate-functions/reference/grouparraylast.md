@@ -1,5 +1,5 @@
 ---
-description: '创建由最后一个参数的值构成的数组。'
+description: '生成包含最后一个参数值的数组。'
 sidebar_position: 142
 slug: /sql-reference/aggregate-functions/reference/grouparraylast
 title: 'groupArrayLast'
@@ -13,7 +13,7 @@ doc_type: 'reference'
 创建一个由最后若干个参数值组成的数组。
 例如，`groupArrayLast(1)(x)` 等价于 `[anyLast (x)]`。
 
-在某些情况下，仍然可以依赖执行顺序。这适用于以下场景：当 `SELECT` 来自一个使用了 `ORDER BY` 的子查询，并且该子查询的结果集足够小时。
+在某些情况下，仍然可以依赖执行顺序。这适用于以下场景：当 `SELECT` 来自使用了 `ORDER BY` 的子查询，且该子查询的结果足够小时。
 
 **示例**
 

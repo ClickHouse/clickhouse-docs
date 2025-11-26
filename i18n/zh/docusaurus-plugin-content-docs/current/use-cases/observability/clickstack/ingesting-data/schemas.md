@@ -2,20 +2,20 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 使用的表和模式 - ClickHouse 可观测性技术栈'
+description: 'ClickStack 使用的表和模式 - ClickHouse Observability Stack'
 sidebar_label: '表和模式'
 title: 'ClickStack 使用的表和模式'
 doc_type: 'reference'
-keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
+keywords: ['clickstack', 'schema', '数据模型', '表设计', '日志']
 ---
 
-ClickStack 的 OpenTelemetry (OTel) 采集器使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并写入数据。
+ClickStack 的 OpenTelemetry (OTel) collector 使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并插入数据。
 
-在 `default` 数据库中，会为每种数据类型创建下列表。用户可以通过修改运行 OTel 采集器的镜像上的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库。
+对于 `default` 数据库中的每种数据类型，都会创建下列表。用户可以通过修改为运行 OTel collector 的镜像配置的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库。
 
 
 
-## 日志 {#logs}
+## 日志
 
 ```sql
 CREATE TABLE otel_logs
@@ -52,7 +52,7 @@ ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
 
-## 追踪 {#traces}
+## 链路追踪
 
 ```sql
 CREATE TABLE otel_traces
@@ -92,9 +92,9 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
 
-## 指标 {#metrics}
+## 指标
 
-### Gauge 指标 {#gauge}
+### Gauge 型指标
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -132,7 +132,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Sum 指标 {#sum}
+### Sum 指标
 
 
 ```sql
@@ -173,7 +173,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 直方图指标 {#histogram}
+### 直方图指标
 
 
 ```sql
@@ -218,10 +218,10 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 指数直方图 {#exponential-histograms}
+### 指数直方图
 
 :::note
-HyperDX 目前尚不支持获取/显示指数直方图指标。用户可以在指标源中进行配置,但后续版本将提供支持。
+HyperDX 目前尚不支持获取或展示指数直方图指标。用户可以在指标数据源中对其进行配置，未来版本将会提供支持。
 :::
 
 
@@ -272,7 +272,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 汇总表 {#summary-table}
+### 汇总表
 
 
 ```sql
@@ -310,7 +310,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-## 会话 {#sessions}
+## 会话
 
 ```sql
 CREATE TABLE hyperdx_sessions

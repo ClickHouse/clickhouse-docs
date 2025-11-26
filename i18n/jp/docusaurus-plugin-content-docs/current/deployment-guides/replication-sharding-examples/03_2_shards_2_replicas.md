@@ -3,7 +3,7 @@ slug: /architecture/cluster-deployment
 sidebar_label: 'レプリケーションとスケーリング'
 sidebar_position: 100
 title: 'レプリケーションとスケーリング'
-description: 'このチュートリアルでは、シンプルな ClickHouse クラスターの構築方法を学びます。'
+description: 'このチュートリアルでは、シンプルな ClickHouse クラスターのセットアップ方法を学びます。'
 doc_type: 'guide'
 keywords: ['クラスター展開', 'レプリケーション', 'シャーディング', '高可用性', 'スケーラビリティ']
 ---
@@ -19,8 +19,8 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> この例では、レプリケーションとスケールの両方に対応したシンプルな ClickHouse クラスターの構築方法を説明します。\
-> このクラスターは 2 つのシャードと 2 つのレプリカに加え、クラスター内の調整とクォーラムの維持を行う 3 ノード構成の ClickHouse Keeper クラスターで構成されます。
+> この例では、レプリケーションとスケーリングの両方に対応したシンプルな ClickHouse クラスターの構成方法について説明します。\
+> これは 2 つのシャードと 2 つのレプリカ、およびクラスター内のコーディネーションとクォーラム維持を行う 3 ノード構成の ClickHouse Keeper クラスターで構成されます。
 
 これからセットアップするクラスターのアーキテクチャは、次の図のとおりです。
 
@@ -38,18 +38,19 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 <VerticalStepper level="h2">
 
 
-## ディレクトリ構造とテスト環境のセットアップ {#set-up}
+## ディレクトリ構造とテスト環境のセットアップ
 
 <ExampleFiles />
 
-このチュートリアルでは、[Docker compose](https://docs.docker.com/compose/)を使用してClickHouseクラスタをセットアップします。このセットアップは、個別のローカルマシン、仮想マシン、またはクラウドインスタンスでも動作するように変更可能です。
+このチュートリアルでは、[Docker Compose](https://docs.docker.com/compose/) を使用して
+ClickHouse クラスターをセットアップします。この構成は、
+個別のローカルマシン、仮想マシン、あるいはクラウドインスタンスでも動作するように調整できます。
 
-この例のディレクトリ構造をセットアップするには、以下のコマンドを実行します:
+この例用のディレクトリ構造を用意するために、次のコマンドを実行します。
 
 ```bash
 mkdir cluster_2S_2R
 cd cluster_2S_2R
-
 ```
 
 
@@ -68,7 +69,7 @@ done
 
 ```
 
-`clickhouse-cluster`ディレクトリに以下の`docker-compose.yml`ファイルを追加します:
+以下の`docker-compose.yml`ファイルを`clickhouse-cluster`ディレクトリに追加します:
 
 ```
 
@@ -165,7 +166,7 @@ services:
       - "127.0.0.1:9183:9181"
 ```
 
-次のサブディレクトリとファイルを作成してください：
+次のサブディレクトリとファイルを作成してください。
 
 ```bash
 for i in {01..04}; do
@@ -179,11 +180,11 @@ done
 <ConfigExplanation />
 
 
-## ClickHouseノードの設定 {#configure-clickhouse-servers}
+## ClickHouse ノードを構成する
 
-### サーバーのセットアップ {#server-setup}
+### サーバーのセットアップ
 
-次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている各空の設定ファイル`config.xml`を変更します。以下で強調表示されている行は、各ノードに固有の内容に変更する必要があります:
+次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d` にある空の設定ファイル `config.xml` を各ノードごとに編集します。以下で強調表示されている行は、各ノードに固有の設定となるよう変更する必要があります。
 
 ```xml
 <clickhouse replace="true">
@@ -259,20 +260,20 @@ done
 </clickhouse>
 ```
 
-| ディレクトリ                                                 | ファイル                                                                                                                                                                             |
+| Directory                                                 | File                                                                                                                                                                             |
 | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-03/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-03/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-04/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-04/etc/clickhouse-server/config.d/config.xml) |
 
-上記の設定ファイルの各セクションについては、以下で詳しく説明します。
+上記の設定ファイルの各セクションについて、以下でより詳しく説明します。
 
-#### ネットワークとログ {#networking}
+#### ネットワークとロギング
 
 <ListenHost />
 
-ログ設定は`<logger>`ブロックで定義されます。この設定例では、1000Mで3回ローテーションするデバッグログが提供されます:
+ロギングの設定は `<logger>` ブロック内で定義します。このサンプル設定では、上限サイズ 1000M、最大 3 世代までローテーションされるデバッグログを出力します。
 
 
 ```xml
@@ -285,24 +286,24 @@ done
 </logger>
 ```
 
-ロギング設定の詳細については、デフォルトのClickHouse[設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に含まれるコメントを参照してください。
+ログ設定の詳細については、デフォルトの ClickHouse [設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) に含まれているコメントを参照してください。
 
-#### クラスタ設定 {#cluster-config}
+#### クラスター設定
 
-クラスタの設定は`<remote_servers>`ブロックで行います。
-ここでは、クラスタ名`cluster_2S_2R`が定義されています。
+クラスターの設定は `<remote_servers>` ブロックで定義します。
+ここでクラスター名 `cluster_2S_2R` が定義されています。
 
-`<cluster_2S_2R></cluster_2S_2R>`ブロックは、`<shard></shard>`および`<replica></replica>`設定を使用してクラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリは、`ON CLUSTER`句を使用してクラスタ全体で実行されるクエリです。デフォルトでは、分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries`設定で無効にすることもできます。
+`<cluster_2S_2R></cluster_2S_2R>` ブロックは、`<shard></shard>` および `<replica></replica>` 設定を使ってクラスターのレイアウトを定義し、`ON CLUSTER` 句を使用してクラスター全体で実行される分散 DDL クエリのテンプレートとして機能します。デフォルトでは分散 DDL クエリは許可されていますが、`allow_distributed_ddl_queries` 設定で無効にすることもできます。
 
-`internal_replication`をtrueに設定することで、データはレプリカの1つのみに書き込まれます。
+`internal_replication` は true に設定されており、データはレプリカのうち 1 つのみに書き込まれます。
 
 ```xml
 <remote_servers>
-   <!-- クラスタ名(ドットを含めないでください) -->
+   <!-- クラスタ名（ドットを含めないこと） -->
   <cluster_2S_2R>
       <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
       <shard>
-          <!-- オプション。レプリカの1つのみにデータを書き込むかどうか。デフォルト: false(すべてのレプリカにデータを書き込む)。 -->
+          <!-- オプション。レプリカの1つのみにデータを書き込むかどうか。デフォルト: false（全レプリカにデータを書き込む） -->
           <internal_replication>true</internal_replication>
           <replica>
               <host>clickhouse-01</host>
@@ -328,14 +329,18 @@ done
 </remote_servers>
 ```
 
-`<cluster_2S_2R></cluster_2S_2R>`セクションは、クラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリは、`ON CLUSTER`句を使用してクラスタ全体で実行されるクエリです。
+`<cluster_2S_2R></cluster_2S_2R>` セクションはクラスタの構成を定義し、
+分散 DDL クエリのためのテンプレートとして機能します。分散 DDL クエリとは、
+`ON CLUSTER` 句を使用してクラスタ全体に対して実行されるクエリのことです。
 
-#### Keeper設定 {#keeper-config-explanation}
+#### Keeper の設定
 
-`<ZooKeeper>`セクションは、ClickHouse Keeper(またはZooKeeper)が実行されている場所をClickHouseに伝えます。
-ClickHouse Keeperクラスタを使用しているため、クラスタの各`<node>`を、`<host>`および`<port>`タグを使用してそれぞれホスト名とポート番号とともに指定する必要があります。
+`<ZooKeeper>` セクションは、ClickHouse Keeper（または ZooKeeper）がどこで動作しているかを
+ClickHouse に伝えます。
+ClickHouse Keeper クラスタを使用しているため、クラスタの各 `<node>` を、
+それぞれのホスト名およびポート番号と合わせて `<host>` と `<port>` タグで指定する必要があります。
 
-ClickHouse Keeperのセットアップについては、チュートリアルの次のステップで説明します。
+ClickHouse Keeper のセットアップについては、このチュートリアルの次のステップで説明します。
 
 ```xml
 <zookeeper>
@@ -355,12 +360,15 @@ ClickHouse Keeperのセットアップについては、チュートリアルの
 ```
 
 :::note
-ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行することは可能ですが、本番環境では、ClickHouse Keeperを専用ホスト上で実行することを強く推奨します。
+ClickHouse Server と同じサーバー上で ClickHouse Keeper を実行することは可能ですが、
+本番環境では ClickHouse Keeper を専用ホスト上で実行することを強く推奨します。
 :::
 
-#### マクロ設定 {#macros-config-explanation}
+#### Macros の設定
 
-さらに、`<macros>`セクションは、レプリケートされたテーブルのパラメータ置換を定義するために使用されます。これらは`system.macros`にリストされ、クエリ内で`{shard}`や`{replica}`のような置換を使用できるようにします。
+さらに、`<macros>` セクションは、レプリケートテーブル向けの
+パラメータ置換を定義するために用いられます。これらは `system.macros` に一覧され、
+クエリ内で `{shard}` や `{replica}` といった置換を利用できるようにします。
 
 ```xml
 <macros>
@@ -369,9 +377,9 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 </macros>
 ```
 
-### ユーザー設定 {#cluster-configuration}
+### ユーザー設定
 
-次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d`にある各空の設定ファイル`users.xml`を以下のように変更します:
+次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` にある空の設定ファイル `users.xml` を、それぞれ以下の内容で編集します。
 
 
 ```xml title="/users.d/users.xml"
@@ -414,59 +422,59 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 </clickhouse>
 ```
 
-この例では、説明を簡単にするために、デフォルトユーザーはパスワードなしで設定されています。
-しかし、実際の運用ではこの設定は推奨されません。
+この例では、簡略化のためにデフォルトユーザーはパスワードなしで構成されています。
+実運用環境では、これは推奨されません。
 
 :::note
-この例では、クラスタ内のすべてのノードで、`users.xml` ファイルは同一です。
+この例では、クラスター内のすべてのノードで、`users.xml` ファイルの内容は同一です。
 :::
 
 
-## ClickHouse Keeperの設定 {#configure-clickhouse-keeper-nodes}
+## ClickHouse Keeper を構成する {#configure-clickhouse-keeper-nodes}
 
-次に、コーディネーションに使用されるClickHouse Keeperを設定します。
+次に、クラスタ内のコーディネーションに使用される ClickHouse Keeper を構成します。
 
-### Keeperのセットアップ {#configuration-explanation}
+### Keeper のセットアップ {#configuration-explanation}
 
-<KeeperConfig />
+<KeeperConfig/>
 
-| ディレクトリ                                               | ファイル                                                                                                                                                                                         |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ディレクトリ                                                        | ファイル                                                                                                                                                                                         |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
 | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
 | `fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
 
-<KeeperConfigExplanation />
+<KeeperConfigExplanation/>
 
-<CloudTip />
+<CloudTip/>
 
 
-## セットアップのテスト {#test-the-setup}
 
-マシン上でDockerが実行されていることを確認してください。
-`cluster_2S_2R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスタを起動します:
+## セットアップをテストする
+
+お使いのマシンで Docker が動作していることを確認してください。
+`cluster_2S_2R` ディレクトリのルートディレクトリで `docker-compose up` コマンドを実行してクラスターを起動します：
 
 ```bash
 docker-compose up -d
 ```
 
-DockerがClickHouseとKeeperのイメージをプルし始め、
-その後コンテナが起動する様子が表示されます:
+Docker が ClickHouse と Keeper のイメージのプルを開始し、その後コンテナが起動する様子が確認できるはずです。
 
 ```bash
-[+] Running 8/8
- ✔ Network   cluster_2s_2r_default     Created
- ✔ Container clickhouse-keeper-03      Started
- ✔ Container clickhouse-keeper-02      Started
- ✔ Container clickhouse-keeper-01      Started
- ✔ Container clickhouse-01             Started
- ✔ Container clickhouse-02             Started
- ✔ Container clickhouse-04             Started
- ✔ Container clickhouse-03             Started
+[+] 8/8 実行中
+ ✔ Network   cluster_2s_2r_default     作成済み
+ ✔ Container clickhouse-keeper-03      起動済み
+ ✔ Container clickhouse-keeper-02      起動済み
+ ✔ Container clickhouse-keeper-01      起動済み
+ ✔ Container clickhouse-01             起動済み
+ ✔ Container clickhouse-02             起動済み
+ ✔ Container clickhouse-04             起動済み
+ ✔ Container clickhouse-03             起動済み
 ```
 
-クラスタが実行されていることを確認するには、いずれかのノードに接続して
-以下のクエリを実行します。最初のノードに接続するコマンドを以下に示します:
+クラスターが稼働していることを確認するには、いずれかのノードに接続して
+次のクエリを実行します。最初のノードに接続するためのコマンドは次のとおりです。
 
 
 ```bash
@@ -474,13 +482,13 @@ DockerがClickHouseとKeeperのイメージをプルし始め、
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-成功すると ClickHouseクライアントのプロンプトが表示されます。
+成功すると、ClickHouse クライアントのプロンプトが表示されます。
 
 ```response
 cluster_2S_2R node 1 :)
 ```
 
-次のクエリを実行して、各ホストにどのクラスタトポロジーが定義されているかを確認します。
+どのホストにどのクラスタートポロジーが定義されているかを確認するには、次のクエリを実行します。
 
 ```sql title="Query"
 SELECT 
@@ -502,7 +510,7 @@ FROM system.clusters;
    └───────────────┴───────────┴─────────────┴───────────────┴──────┘
 ```
 
-ClickHouse Keeper クラスターのステータスを確認するには、次のクエリを実行します：
+ClickHouse Keeper クラスターのステータスを確認するには、次のクエリを実行してください。
 
 ```sql title="Query"
 SELECT *
@@ -521,15 +529,17 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus />
 
-これで、2 つのシャードと 2 つのレプリカを持つ ClickHouse クラスターのセットアップが完了しました。
+これで、2つのシャードと2つのレプリカを備えた ClickHouse クラスターのセットアップが完了しました。
 次のステップでは、クラスター内にテーブルを作成します。
 
 
-## データベースの作成 {#creating-a-database}
+## データベースを作成する
 
-クラスタが正しく設定され、実行されていることを確認したので、[英国不動産価格](/getting-started/example-datasets/uk-price-paid)のサンプルデータセットチュートリアルで使用されているものと同じテーブルを再作成します。このデータセットは、1995年以降のイングランドとウェールズにおける不動産の支払価格約3000万行で構成されています。
+クラスターが正しくセットアップされて稼働していることを確認できたので、
+[UK property prices](/getting-started/example-datasets/uk-price-paid)
+サンプルデータセットのチュートリアルで使用したものと同じテーブルを再作成します。これは、1995年以降のイングランドおよびウェールズの不動産物件の支払価格を約 3,000 万行分含んでいます。
 
-各ホストのクライアントに接続するには、別々のターミナルタブまたはウィンドウから以下の各コマンドを実行します:
+別々のターミナルタブまたはウィンドウから、次の各コマンドを実行して、それぞれのホストのクライアントに接続します。
 
 ```bash
 docker exec -it clickhouse-01 clickhouse-client
@@ -538,13 +548,13 @@ docker exec -it clickhouse-03 clickhouse-client
 docker exec -it clickhouse-04 clickhouse-client
 ```
 
-各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのデータベース以外にまだデータベースが作成されていないことを確認できます:
+各ホスト上の clickhouse-client から以下のクエリを実行して、デフォルトのものを除いて、まだデータベースが作成されていないことを確認できます。
 
-```sql title="クエリ"
+```sql title="Query"
 SHOW DATABASES;
 ```
 
-```response title="レスポンス"
+```response title="Response"
    ┌─name───────────────┐
 1. │ INFORMATION_SCHEMA │
 2. │ default            │
@@ -553,15 +563,15 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-`clickhouse-01`クライアントから、`ON CLUSTER`句を使用して以下の**分散**DDLクエリを実行し、`uk`という名前の新しいデータベースを作成します:
+`clickhouse-01` クライアントから、`ON CLUSTER` 句を指定した次の **分散** DDL クエリを実行して、`uk` という名前の新しいデータベースを作成します。
 
 ```sql
-CREATE DATABASE IF NOT EXISTS uk
+CREATE DATABASE IF NOT EXISTS uk 
 -- highlight-next-line
 ON CLUSTER cluster_2S_2R;
 ```
 
-各ホストのクライアントから以前と同じクエリを再度実行して、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されたことを確認できます:
+各ホストのクライアントから再度、先ほどと同じクエリを実行することで、クエリ自体は `clickhouse-01` からしか実行していないにもかかわらず、クラスタ全体にデータベースが作成されていることを確認できます。
 
 ```sql
 SHOW DATABASES;
@@ -579,11 +589,11 @@ SHOW DATABASES;
 ```
 
 
-## クラスタ上にテーブルを作成する {#creating-a-table}
+## クラスター上にテーブルを作成する
 
-データベースが作成されたので、次にレプリケーション機能を持つテーブルを作成します。
+データベースを作成したので、次にレプリケーション付きのテーブルを作成します。
 
-いずれかのホストクライアントから以下のクエリを実行します：
+いずれかのホストのクライアントから次のクエリを実行します。
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
@@ -610,36 +620,41 @@ ENGINE = ReplicatedMergeTree('/clickhouse/tables/{database}/{table}/{shard}', '{
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-これは[UK property prices](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと同一ですが、`ON CLUSTER`句と`ReplicatedMergeTree`エンジンの使用が異なる点に注意してください。
+先ほどのクエリは、`ON CLUSTER` 句と `ReplicatedMergeTree` エンジンの使用を除けば、
+[UK property prices](/getting-started/example-datasets/uk-price-paid) のサンプルデータセットチュートリアルで
+元の `CREATE` 文に使われていたクエリと同一であることに注意してください。
 
-`ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL（データ定義言語）クエリの分散実行を目的として設計されており、これらのスキーマ変更がクラスタ内のすべてのノードに適用されることを保証します。
+`ON CLUSTER` 句は、`CREATE`、`DROP`、`ALTER`、`RENAME` といった
+DDL（Data Definition Language）クエリを分散実行するために設計されており、
+これらのスキーマ変更がクラスター内のすべてのノードに適用されることを保証します。
 
-[`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)エンジンは通常の`MergeTree`テーブルエンジンと同様に動作しますが、データのレプリケーションも行います。
-以下の2つのパラメータを指定する必要があります：
+[`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)
+エンジンは、通常の `MergeTree` テーブルエンジンと同様に動作しますが、データのレプリケーションも行います。
+このエンジンでは 2 つのパラメーターを指定する必要があります：
 
-- `zoo_path`: テーブルのメタデータへのKeeper/ZooKeeperパス。
-- `replica_name`: テーブルのレプリカ名。
+* `zoo_path`: Keeper/ZooKeeper 上のテーブルメタデータへのパス。
+* `replica_name`: テーブルのレプリカ名。
 
 <br />
 
-`zoo_path`パラメータは任意の値に設定できますが、以下のプレフィックスを使用する規約に従うことを推奨します
+`zoo_path` パラメーターには任意の値を設定できますが、慣例として次のようなプレフィックスを使用することが推奨されます。
 
 ```text
 /clickhouse/tables/{shard}/{database}/{table}
 ```
 
-ここで：
+ここで:
 
-- `{database}`と`{table}`は自動的に置換されます。
-- `{shard}`と`{replica}`は、各ClickHouseノードの`config.xml`ファイルで事前に[定義](#macros-config-explanation)されたマクロです。
+* `{database}` と `{table}` は自動的に置き換えられます。
+* `{shard}` と `{replica}` は、各 ClickHouse ノードの `config.xml` ファイル内であらかじめ[定義](#macros-config-explanation)されたマクロです。
 
-各ホストのクライアントから以下のクエリを実行して、クラスタ全体でテーブルが作成されたことを確認できます：
+次のクエリを各ホストのクライアントから実行して、テーブルがクラスター全体に作成されていることを確認できます。
 
-```sql title="クエリ"
+```sql title="Query"
 SHOW TABLES IN uk;
 ```
 
-```response title="レスポンス"
+```response title="Response"
    ┌─name────────────────┐
 1. │ uk_price_paid_local │
    └─────────────────────┘
@@ -648,11 +663,11 @@ SHOW TABLES IN uk;
 
 ## 分散テーブルへのデータ挿入 {#inserting-data-using-distributed}
 
-テーブルにデータを挿入する際、`ON CLUSTER`は使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML（データ操作言語）クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを使用する必要があります。
-2シャードと1レプリカでクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルは異なるホストに配置されたシャードにアクセスできるテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
+テーブルにデータを挿入する際、`ON CLUSTER`は使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML(データ操作言語)クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを使用する必要があります。
+2シャード1レプリカのクラスタ構築[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルは異なるホスト上に配置されたシャードにアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
 分散テーブルは、クラスタ内のすべてのシャードに対するインターフェースとして機能します。
 
-いずれかのホストクライアントから、前のステップで作成した既存のレプリケートテーブルを使用して分散テーブルを作成するために、次のクエリを実行します：
+いずれかのホストクライアントから、前のステップで作成した既存のレプリケートテーブルを使用して分散テーブルを作成するため、以下のクエリを実行します:
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -660,7 +675,7 @@ ON CLUSTER cluster_2S_2R
 ENGINE = Distributed('cluster_2S_2R', 'uk', 'uk_price_paid_local', rand());
 ```
 
-各ホストで、`uk`データベースに次のテーブルが表示されるようになります：
+各ホストで、`uk`データベース内に以下のテーブルが表示されます:
 
 ```sql
    ┌─name──────────────────────┐
@@ -669,7 +684,7 @@ ENGINE = Distributed('cluster_2S_2R', 'uk', 'uk_price_paid_local', rand());
    └───────────────────────────┘
 ```
 
-いずれかのホストクライアントから、次のクエリを使用して`uk_price_paid_distributed`テーブルにデータを挿入できます：
+いずれかのホストクライアントから、以下のクエリを使用して`uk_price_paid_distributed`テーブルにデータを挿入できます:
 
 ```sql
 INSERT INTO uk.uk_price_paid_distributed
@@ -710,7 +725,7 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-挿入されたデータがクラスタのノード全体に均等に分散されていることを確認するために、次のクエリを実行します：
+挿入されたデータがクラスタのノード間で均等に分散されていることを確認するため、以下のクエリを実行します:
 
 ```sql
 SELECT count(*)
@@ -732,14 +747,14 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 </VerticalStepper>
 
 
-## まとめ {#conclusion}
+## 結論 {#conclusion}
 
-2つのシャードと2つのレプリカを持つこのクラスタトポロジの利点は、スケーラビリティと耐障害性の両方を提供することです。
-データは別々のホストに分散されるため、ノードごとのストレージとI/O要件が削減され、クエリは両方のシャードで並列処理されることで、パフォーマンスとメモリ効率が向上します。
-重要な点として、各シャードが別のノードにバックアップレプリカを持つため、クラスタは1つのノードの損失に耐え、中断することなくクエリの処理を継続できます。
+2 つのシャードと 2 つのレプリカを持つこのクラスター構成の利点は、スケーラビリティとフォールトトレランスの両方を提供できる点にあります。
+データは個別のホストに分散されるため、ノードあたりのストレージおよび I/O 要件が削減される一方で、クエリは両方のシャードで並列に処理され、パフォーマンスとメモリ効率が向上します。
+重要な点として、各シャードには別ノード上にバックアップレプリカが存在するため、クラスターはノード 1 台の喪失を許容し、中断することなくクエリ処理を継続できます。
 
-このクラスタトポロジの主な欠点は、ストレージオーバーヘッドの増加です。各シャードが複製されるため、レプリカを持たない構成と比較して2倍のストレージ容量が必要になります。
-さらに、クラスタは単一ノードの障害には耐えられますが、どのノードが障害を起こし、シャードがどのように分散されているかによっては、2つのノードが同時に失われるとクラスタが動作不能になる可能性があります。
-このトポロジは可用性とコストのバランスを取っており、より高いレプリケーション係数のコストをかけずに、ある程度の耐障害性が必要な本番環境に適しています。
+このクラスター構成の主な欠点は、ストレージのオーバーヘッドが増加することです。各シャードが複製されるため、レプリカなしの構成と比べて 2 倍のストレージ容量が必要になります。
+さらに、クラスターは単一ノード障害には耐えられるものの、どのノードが障害を起こすかとシャードの分散状況によっては、2 ノードが同時に失われるとクラスターが動作不能になる可能性があります。
+この構成は、可用性とコストのバランスをとるものであり、より高いレプリケーション係数に伴うコストをかけずに、一定のフォールトトレランスが求められる本番環境に適しています。
 
-ClickHouse Cloudがスケーラビリティと耐障害性の両方を提供しながらクエリを処理する方法については、[「Parallel Replicas」](/deployment-guides/parallel-replicas)のセクションを参照してください。
+ClickHouse Cloud がどのようにクエリを処理し、スケーラビリティとフォールトトレランスを両立しているかについては、「[Parallel Replicas](/deployment-guides/parallel-replicas)」セクションを参照してください。

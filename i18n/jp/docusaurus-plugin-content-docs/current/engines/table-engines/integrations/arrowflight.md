@@ -1,5 +1,5 @@
 ---
-description: 'このエンジンを使用すると、Apache Arrow Flight を介してリモートデータセットにクエリを実行できます。'
+description: 'このエンジンを使用すると、Apache Arrow Flight 経由でリモートデータセットにクエリを実行できます。'
 sidebar_label: 'ArrowFlight'
 sidebar_position: 186
 slug: /engines/table-engines/integrations/arrowflight
@@ -11,12 +11,12 @@ doc_type: 'reference'
 
 # ArrowFlight テーブルエンジン
 
-ArrowFlight テーブルエンジンにより、ClickHouse は [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルを介してリモートデータセットをクエリできます。
-この統合により、ClickHouse は外部の Flight 対応サーバーから、カラム指向の Arrow 形式で高い性能でデータを取得できるようになります。
+ArrowFlight テーブルエンジンを使用すると、ClickHouse は [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコル経由でリモートのデータセットに対してクエリを実行できます。
+この統合により、ClickHouse は外部の Flight 対応サーバーから、列指向の Arrow 形式で高いパフォーマンスでデータを取得できます。
 
 
 
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
@@ -25,17 +25,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
 
 **エンジンパラメータ**
 
-- `host:port` — リモートArrow Flightサーバーのアドレス。
-- `dataset_name` — Flightサーバー上のデータセットの識別子。
-- `username` - ベーシック認証で使用するユーザー名。
-- `password` - ベーシック認証で使用するパスワード。
-  `username`と`password`が指定されていない場合は認証が使用されません
-  (Arrow Flightサーバーが認証なしのアクセスを許可している場合のみ動作します)。
+* `host:port` — リモート Arrow Flight サーバーのアドレス。
+* `dataset_name` — Flight サーバー上のデータセットの識別子。
+* `username` - HTTP ベーシック認証で使用するユーザー名。
+* `password` - HTTP ベーシック認証で使用するパスワード。
+  `username` と `password` が指定されていない場合は認証を行わないことを意味します
+  （その場合、Arrow Flight サーバー側で未認証アクセスが許可されている必要があります）。
 
 
-## 使用例 {#usage-example}
+## 使用例
 
-この例では、リモートのArrow Flightサーバーからデータを読み取るテーブルを作成する方法を示します:
+この例では、リモートの Arrow Flight サーバーからデータを読み込むテーブルを作成する方法を示します。
 
 ```sql
 CREATE TABLE remote_flight_data
@@ -46,7 +46,7 @@ CREATE TABLE remote_flight_data
 ) ENGINE = ArrowFlight('127.0.0.1:9005', 'sample_dataset');
 ```
 
-リモートデータをローカルテーブルと同様にクエリします:
+リモートデータに対して、ローカルテーブルと同じようにクエリを実行します：
 
 ```sql
 SELECT * FROM remote_flight_data ORDER BY id;
@@ -63,11 +63,12 @@ SELECT * FROM remote_flight_data ORDER BY id;
 
 ## 注意事項 {#notes}
 
-- ClickHouseで定義されたスキーマは、Flightサーバーが返すスキーマと一致している必要があります。
-- このエンジンは、フェデレーテッドクエリ、データ仮想化、ストレージとコンピュートの分離に適しています。
+* ClickHouseで定義されたスキーマは、Flight サーバーによって返されるスキーマと一致している必要があります。
+* このエンジンは、フェデレーションクエリ、データ仮想化、ストレージとコンピュートの分離に適しています。
 
 
-## 関連項目 {#see-also}
 
-- [Apache Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html)
-- [ClickHouseのArrowフォーマット統合](/interfaces/formats/Arrow)
+## 関連情報 {#see-also}
+
+* [Apache Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html)
+* [ClickHouse における Arrow フォーマットの統合](/interfaces/formats/Arrow)

@@ -1,5 +1,5 @@
 ---
-description: '返回在时间索引 `t` 与 `t-1` 处计算得到的指数平滑移动平均值中的较大者。'
+description: '返回时间索引 `t` 处与 `t-1` 处计算得到的指数平滑移动平均值中的最大值。'
 sidebar_position: 135
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax
 title: 'exponentialTimeDecayedMax'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
+## exponentialTimeDecayedMax
 
-返回时间索引 `t` 处计算的指数平滑移动平均值与 `t-1` 处的最大值。
+返回在时间索引为 `t` 处与时间索引为 `t-1` 处计算得到的指数平滑移动平均值中的最大值。
 
 **语法**
 
@@ -20,20 +20,20 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **参数**
 
-- `value` — 值。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 时间单位。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
+* `value` — 数值。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `timeunit` — 时间单位。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
-**参数**
+**参数说明**
 
-- `x` — 半衰期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半衰期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回 `t` 和 `t-1` 时刻指数平滑加权移动平均值的最大值。[Float64](../../data-types/float.md)。
+* 返回在时刻 `t` 和 `t-1` 的指数平滑加权移动平均值中的最大值。[Float64](../../data-types/float.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -51,7 +51,7 @@ FROM
     );
 ```
 
-结果:
+结果：
 
 
 ```response

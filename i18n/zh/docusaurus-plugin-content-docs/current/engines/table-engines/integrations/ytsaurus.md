@@ -1,5 +1,5 @@
 ---
-description: '用于从 YTsaurus 集群导入数据的表引擎。'
+description: '一种支持从 YTsaurus 集群导入数据的表引擎。'
 sidebar_label: 'YTsaurus'
 sidebar_position: 185
 slug: /engines/table-engines/integrations/ytsaurus
@@ -17,11 +17,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-YTsaurus 表引擎可用于从 YTsaurus 集群导入数据。
+YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
 
 
 
-## 创建表 {#creating-a-table}
+## 创建数据表
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -32,30 +32,31 @@ YTsaurus 表引擎可用于从 YTsaurus 集群导入数据。
 ```
 
 :::info
-这是一个实验性功能,在未来版本中可能会以不向后兼容的方式发生变化。
-通过设置 [`allow_experimental_ytsaurus_table_engine`](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) 来启用 YTsaurus 表引擎。
+这是一个实验性功能，将来版本中可能发生不兼容的变更。
+要启用 YTsaurus 表引擎，
+请设置 [`allow_experimental_ytsaurus_table_engine`](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)。
 
-您可以使用以下方式:
+可以通过以下方式进行设置：
 
-`SET allow_experimental_ytsaurus_table_engine = 1`.
+`SET allow_experimental_ytsaurus_table_engine = 1`。
 :::
 
 **引擎参数**
 
-- `http_proxy_url` — YTsaurus HTTP 代理的 URL。
-- `cypress_path` — 数据源的 Cypress 路径。
-- `oauth_token` — OAuth 令牌。
+* `http_proxy_url` — YTsaurus HTTP 代理的 URL。
+* `cypress_path` — 指向数据源的 Cypress 路径。
+* `oauth_token` — OAuth 令牌。
 
 
-## 使用示例 {#usage-example}
+## 使用示例
 
-显示创建 YTsaurus 表的查询:
+以下是一个用于创建 YTsaurus 表的查询：
 
-```sql title="查询"
+```sql title="Query"
 SHOW CREATE TABLE yt_saurus;
 ```
 
-```sql title="响应"
+```sql title="Response"
 CREATE TABLE yt_saurus
 (
     `a` UInt32,
@@ -64,13 +65,13 @@ CREATE TABLE yt_saurus
 ENGINE = YTsaurus('http://localhost:8000', '//tmp/table', 'password')
 ```
 
-要从表中返回数据,请运行:
+要查询表中的数据，请运行：
 
-```sql title="查询"
+```sql title="Query"
 SELECT * FROM yt_saurus;
 ```
 
-```response title="响应"
+```response title="Response"
  ┌──a─┬─b──┐
  │ 10 │ 20 │
  └────┴────┘
@@ -79,40 +80,40 @@ SELECT * FROM yt_saurus;
 
 ## 数据类型 {#data-types}
 
-### 基础数据类型 {#primitive-data-types}
+### 基本数据类型 {#primitive-data-types}
 
-| YTsaurus 数据类型          | ClickHouse 数据类型      |
-| --------------------------- | ------------------------- |
-| `int8`                      | `Int8`                    |
-| `int16`                     | `Int16`                   |
-| `int32`                     | `Int32`                   |
-| `int64`                     | `Int64`                   |
-| `uint8`                     | `UInt8`                   |
-| `uint16`                    | `UInt16`                  |
-| `uint32`                    | `UInt32`                  |
-| `uint64`                    | `UInt64`                  |
-| `float`                     | `Float32`                 |
-| `double`                    | `Float64`                 |
-| `boolean`                   | `Bool`                    |
-| `string`                    | `String`                  |
-| `utf8`                      | `String`                  |
-| `json`                      | `JSON`                    |
-| `yson(type_v3)`             | `JSON`                    |
-| `uuid`                      | `UUID`                    |
-| `date32`                    | `Date`(暂不支持) |
-| `datetime64`                | `Int64`                   |
-| `timestamp64`               | `Int64`                   |
-| `interval64`                | `Int64`                   |
-| `date`                      | `Date`(暂不支持) |
-| `datetime`                  | `DateTime`                |
-| `timestamp`                 | `DateTime64(6)`           |
-| `interval`                  | `UInt64`                  |
-| `any`                       | `String`                  |
-| `null`                      | `Nothing`                 |
-| `void`                      | `Nothing`                 |
-| `T` with `required = False` | `Nullable(T)`             |
+| YTsaurus 数据类型 | ClickHouse 数据类型     |
+| ------------------ | ----------------------- |
+| `int8`             | `Int8`                  |
+| `int16`            | `Int16`                 |
+| `int32`            | `Int32`                 |
+| `int64`            | `Int64`                 |
+| `uint8`            | `UInt8`                 |
+| `uint16`           | `UInt16`                |
+| `uint32`           | `UInt32`                |
+| `uint64`           | `UInt64`                |
+| `float`            | `Float32`               |
+| `double`           | `Float64`               |
+| `boolean`          | `Bool`                  |
+| `string`           | `String`                |
+| `utf8`             | `String`                |
+| `json`             | `JSON`                  |
+| `yson(type_v3)`    | `JSON`                  |
+| `uuid`             | `UUID`                  |
+| `date32`           | `Date`（尚不支持）     |
+| `datetime64`       | `Int64`                 |
+| `timestamp64`      | `Int64`                 |
+| `interval64`       | `Int64`                 |
+| `date`             | `Date`（尚不支持）     |
+| `datetime`         | `DateTime`              |
+| `timestamp`        | `DateTime64(6)`         |
+| `interval`         | `UInt64`                |
+| `any`              | `String`                |
+| `null`             | `Nothing`               |
+| `void`             | `Nothing`               |
+| `T` 且 `required = False` | `Nullable(T)`   |
 
-### 复合数据类型 {#composite-data-types}
+### 复合类型 {#composite-data-types}
 
 | YTsaurus 数据类型 | ClickHouse 数据类型 |
 | ------------------ | -------------------- |
@@ -122,7 +123,7 @@ SELECT * FROM yt_saurus;
 | `struct`           | `NamedTuple`         |
 | `tuple`            | `Tuple`              |
 | `variant`          | `Variant`            |
-| `dict`             | `Array(Tuple(...))   |
+| `dict`             | `Array(Tuple(...))`  |
 | `tagged`           | `T`                  |
 
 **另请参阅**

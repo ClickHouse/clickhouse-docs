@@ -1,20 +1,20 @@
 ---
-description: 'TPC-DS ベンチマーク用データセットとクエリ。'
+description: 'TPC-DS ベンチマークデータセットとクエリ。'
 sidebar_label: 'TPC-DS'
 slug: /getting-started/example-datasets/tpcds
 title: 'TPC-DS (2012)'
 doc_type: 'guide'
-keywords: ['サンプルデータセット', 'tpcds', 'ベンチマーク', 'サンプルデータ', 'パフォーマンステスト']
+keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
-[Star Schema Benchmark (SSB)](star-schema.md) と同様に、TPC-DS は [TPC-H](tpch.md) をベースにしていますが、逆のアプローチを取っており、複雑なスノーフレークスキーマ（8 テーブルではなく 24 テーブル）でデータを管理することで、必要な `JOIN` の数を増やしています。
-データ分布は偏っており（例: 正規分布およびポアソン分布）、ランダムな値代入を伴う 99 個のレポーティングおよびアドホッククエリが含まれています。
+[Star Schema Benchmark (SSB)](star-schema.md) と同様に、TPC-DS は [TPC-H](tpch.md) をベースにしていますが、採用しているアプローチは対照的です。つまり、データを複雑なスノーフレーク・スキーマ（8 テーブルではなく 24 テーブル）で格納することで、必要な JOIN の数を増やしています。
+データ分布は偏っており（例えば正規分布やポアソン分布など）、ランダムな置換を含む 99 種類のレポート系およびアドホックなクエリが含まれています。
 
 参考文献
 
 * [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-まず、TPC-DS リポジトリをチェックアウトし、データ生成ツールをコンパイルします。
+まず、TPC-DS リポジトリをチェックアウトしてデータジェネレーターをコンパイルします。
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -22,7 +22,7 @@ cd tpcds-kit/tools
 make
 ```
 
-次に、データを生成します。パラメータ `-scale` はスケール係数を指定します。
+次に、データを生成します。`-scale` パラメータはスケール係数を指定します。
 
 ```bash
 ./dsdgen -scale 1
@@ -31,11 +31,11 @@ make
 次に、同じスケールファクターを使用してクエリを生成します：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sqlに99個のクエリを生成
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sql に99個のクエリを生成
 ```
 
 では、ClickHouse でテーブルを作成します。
-`tools/tpcds.sql` にある元のテーブル定義をそのまま使用することも、プライマリキーインデックスを適切に定義し、必要に応じて LowCardinality 型カラムを用いるように「チューニング」したテーブル定義を使用することもできます。
+`tools/tpcds.sql` にある元のテーブル定義をそのまま使用するか、適切な箇所でプライマリキーインデックスと LowCardinality 型のカラムを定義した「チューニング済み」のテーブル定義を使用できます。
 
 
 ```sql
@@ -593,6 +593,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 その後、生成されたクエリを実行します。
 
 ::::warning
-TPC-DS は相関サブクエリを多用しますが、これは執筆時点（2024 年 9 月）では ClickHouse ではサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-そのため、上記のベンチマーククエリの多くはエラーが発生して失敗します。
+TPC-DS は相関サブクエリを多用しますが、これは現時点（2024 年 9 月）では ClickHouse でサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+その結果、上記のベンチマーククエリの多くはエラーとなり失敗します。
 ::::

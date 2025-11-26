@@ -3,43 +3,44 @@ slug: /use-cases/observability
 title: 'Наблюдаемость'
 pagination_prev: null
 pagination_next: null
-description: 'Целевая страница руководства по сценарию использования «Наблюдаемость»'
-keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+description: 'Целевая страница руководства по сценарию использования наблюдаемости'
+keywords: ['наблюдаемость', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
 doc_type: 'guide'
 ---
 
-ClickHouse обеспечивает непревзойденные скорость, масштабируемость и экономичность для систем наблюдаемости. Это руководство предлагает два варианта в зависимости от ваших потребностей:
+ClickHouse обеспечивает непревзойденные показатели скорости, масштабируемости и экономичности для задач наблюдаемости. В этом руководстве предлагаются два варианта в зависимости от ваших потребностей:
 
 
 
-## ClickStack — стек наблюдаемости ClickHouse {#clickstack}
+## ClickStack - стек наблюдаемости ClickHouse {#clickstack}
 
-Стек наблюдаемости ClickHouse — это наш **рекомендуемый подход** для большинства пользователей.
+ClickHouse Observability Stack — наш **рекомендуемый подход** для большинства пользователей.
 
-**ClickStack** — это платформа наблюдаемости промышленного уровня, построенная на базе ClickHouse и OpenTelemetry (OTel), объединяющая логи, трассировки, метрики и сессии в единое высокопроизводительное масштабируемое решение, которое работает как на однонодовых развертываниях, так и в **мультипетабайтном** масштабе.
+**ClickStack** — это платформа наблюдаемости промышленного уровня на базе ClickHouse и OpenTelemetry (OTel), объединяющая логи, трейсы, метрики и пользовательские сессии в одном высокопроизводительном и масштабируемом решении, которое подходит как для одноузловых развертываний, так и для **многопетабайтного** масштаба.
 
-| Раздел                                                                  | Описание                                        |
-| ----------------------------------------------------------------------- | ----------------------------------------------- |
-| [Overview](/use-cases/observability/clickstack/overview)                | Введение в ClickStack и его ключевые возможности |
-| [Getting Started](/use-cases/observability/clickstack/getting-started)  | Руководство по быстрому началу работы и базовая настройка |
-| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | Примеры наборов данных и сценарии использования |
-| [Architecture](/use-cases/observability/clickstack/architecture)        | Обзор архитектуры системы и компонентов         |
-| [Deployment](/use-cases/observability/clickstack/deployment)            | Руководства и варианты развертывания            |
-| [Configuration](/use-cases/observability/clickstack/config)             | Подробные параметры и настройки конфигурации    |
-| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data)    | Рекомендации по загрузке данных в ClickStack    |
-| [Search](/use-cases/observability/clickstack/search)                    | Поиск и запросы к данным наблюдаемости          |
-| [Production](/use-cases/observability/clickstack/production)            | Лучшие практики для промышленного развертывания |
+| Раздел | Описание |
+|---------|-------------|
+| [Overview](/use-cases/observability/clickstack/overview) | Введение в ClickStack и его ключевые возможности |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | Краткое руководство по началу работы и базовой настройке |
+| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | Примеры наборов данных и сценариев их использования |
+| [Architecture](/use-cases/observability/clickstack/architecture) | Обзор архитектуры системы и её компонентов |
+| [Deployment](/use-cases/observability/clickstack/deployment) | Руководства и варианты развертывания |
+| [Configuration](/use-cases/observability/clickstack/config) | Подробные параметры конфигурации и варианты настроек |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Рекомендации по приёму данных в ClickStack |
+| [Search](/use-cases/observability/clickstack/search) | Как выполнять поиск и строить запросы по данным наблюдаемости |
+| [Production](/use-cases/observability/clickstack/production) | Рекомендации и лучшие практики промышленного развертывания |
 
 
-## Создание собственного стека {#build-your-own-stack}
 
-Для пользователей с **особыми требованиями** — такими как высокоспециализированные конвейеры приёма данных, проектирование схем или экстремальные потребности в масштабировании — мы предоставляем руководство по созданию собственного стека наблюдаемости с ClickHouse в качестве основной базы данных.
+## Собственная сборка стека {#build-your-own-stack}
 
-| Страница                                                              | Описание                                                                                                                                                            |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Introduction](/use-cases/observability/introduction)                 | Данное руководство предназначено для пользователей, которые хотят создать собственное решение для наблюдаемости с использованием ClickHouse, с акцентом на логи и трассировки. |
-| [Schema design](/use-cases/observability/schema-design)               | Узнайте, почему пользователям рекомендуется создавать собственную схему для логов и трассировок, а также ознакомьтесь с рекомендациями по её разработке.                |
-| [Managing data](/observability/managing-data)                         | Развёртывания ClickHouse для наблюдаемости неизбежно включают большие наборы данных, которыми необходимо управлять. ClickHouse предлагает функции для управления данными. |
-| [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | Сбор и экспорт логов и трассировок с использованием OpenTelemetry в ClickHouse.                                                                           |
-| [Using Visualization Tools](/observability/grafana)                   | Узнайте, как использовать инструменты визуализации наблюдаемости для ClickHouse, включая HyperDX и Grafana.                                                         |
-| [Demo Application](/observability/demo-application)                   | Изучите демонстрационное приложение OpenTelemetry, адаптированное для работы с ClickHouse для логов и трассировок.                                                  |
+Для пользователей с **особыми требованиями** — такими как высокоспециализированные конвейеры ингестии, схемы данных или жёсткие требования к масштабируемости — мы предоставляем рекомендации по созданию пользовательского стека наблюдаемости с ClickHouse в качестве основной базы данных.
+
+| Страница                                                    | Описание                                                                                                                                                                      |
+|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Introduction](/use-cases/observability/introduction)            | Это руководство предназначено для пользователей, которые хотят построить собственное решение для наблюдаемости на базе ClickHouse с фокусом на логах и трейcах.              |
+| [Schema design](/use-cases/observability/schema-design)          | Узнайте, почему пользователям рекомендуется создавать собственную схему для логов и трейcов, а также ознакомьтесь с лучшими практиками по её проектированию.                 |
+| [Managing data](/observability/managing-data)          | Развертывания ClickHouse для наблюдаемости неизбежно включают большие объёмы данных, которыми необходимо управлять. ClickHouse предоставляет возможности для управления данными. |
+| [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | Сбор и экспорт логов и трейcов с использованием OpenTelemetry и ClickHouse.                                                            |
+| [Using Visualization Tools](/observability/grafana)    | Узнайте, как использовать инструменты визуализации для наблюдаемости в ClickHouse, включая HyperDX и Grafana.                          |
+| [Demo Application](/observability/demo-application)    | Ознакомьтесь с OpenTelemetry Demo Application — форком, адаптированным для работы с ClickHouse для логов и трейcов.                     |

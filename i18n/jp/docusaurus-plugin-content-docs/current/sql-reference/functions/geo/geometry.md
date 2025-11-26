@@ -1,5 +1,5 @@
 ---
-description: 'ジオメトリ関数のドキュメント'
+description: 'ジオメトリ関数に関するドキュメント'
 sidebar_label: 'ジオメトリ'
 slug: /sql-reference/functions/geo/geometry
 title: 'ジオメトリを扱う関数'
@@ -8,24 +8,23 @@ doc_type: 'reference'
 
 
 
-## Geometry {#geometry}
+## ジオメトリ {#geometry}
 
-Geometry関数を使用すると、POLYGON、LINESTRING、MULTIPOLYGON、MULTILINESTRING、RING、POINTなどの幾何学型の周長と面積を計算できます。幾何学データはGeometry型で使用します。入力値が`NULL`の場合、以下のすべての関数は0を返します。
+ジオメトリ関数を使用すると、POLYGON、LINESTRING、MULTIPOLYGON、MULTILINESTRING、RING、POINT などのジオメトリ型に対して周長および面積を計算できます。ジオメトリは Geometry 型で扱います。入力値が `NULL` の場合、以下のすべての関数は 0 を返します。
+
 
 
 ## perimeterCartesian {#perimetercartesian}
 
-デカルト座標系(平面座標系)における指定されたGeometryオブジェクトの周長を計算します。
+与えられた Geometry オブジェクトの周長を、デカルト（平面）座標系で計算します。
 
 **構文**
 perimeterCartesian(geom)
 
 **入力値**
-
-- `geom` — Geometryオブジェクト。[Geometry](../../data-types/geo.md)。
+- `geom` — Geometry オブジェクト。[Geometry](../../data-types/geo.md)。
 
 **戻り値**
-
 - 数値 — 座標系の単位で表されるオブジェクトの周長。[Float64](../../data-types/float.md)。
 
 **例**
@@ -39,20 +38,19 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 └──────────────────────────┘
 
 
+
 ## areaCartesian {#areacartesian}
 
-デカルト座標系における指定されたGeometryオブジェクトの面積を計算します。
+与えられた Geometry オブジェクトの面積をデカルト座標系で計算します。
 
 **構文**
 areaCartesian(geom)
 
 **入力値**
+- `geom` — Geometry オブジェクト。[Geometry](../../data-types/geo.md) 型。
 
-- `geom` — Geometryオブジェクト。[Geometry](../../data-types/geo.md)。
-
-**戻り値**
-
-- 数値 — 座標系単位でのオブジェクトの面積。[Float64](../../data-types/float.md)。
+**返される値**
+- 数値 — 座標系の単位で表されるオブジェクトの面積。[Float64](../../data-types/float.md) 型。
 
 **例**
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
@@ -65,19 +63,18 @@ SELECT areaCartesian(geom) FROM geo_dst;
 └─────────────────────┘
 
 
+
 ## perimeterSpherical {#perimeterspherical}
 
-球面上のGeometryオブジェクトの周長を計算します。
+球面上の Geometry オブジェクトの周長を計算します。
 
 **構文**
 perimeterSpherical(geom)
 
 **入力値**
-
-- `geom` — Geometryオブジェクト。[Geometry](../../data-types/geo.md)。
+- `geom` — Geometry オブジェクト。[Geometry](../../data-types/geo.md)。
 
 **戻り値**
-
 - 数値 — 周長。[Float64](../../data-types/float.md)。
 
 **例**
@@ -91,19 +88,18 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 └──────────────────────────┘
 
 
+
 ## areaSpherical {#areaspherical}
 
-球面上のGeometryオブジェクトの面積を計算します。
+球面上にある Geometry オブジェクトの面積を計算します。
 
 **構文**
 areaSpherical(geom)
 
 **入力値**
-
-- `geom` — ジオメトリ。[Geometry](../../data-types/geo.md)。
+- `geom` — Geometry 型。[Geometry](../../data-types/geo.md)。
 
 **戻り値**
-
 - 数値 — 面積。[Float64](../../data-types/float.md)。
 
 **例**

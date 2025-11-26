@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 # EXISTS
 
-Оператор `EXISTS` проверяет, сколько записей содержится в результате подзапроса. Если результат пуст, оператор возвращает `0`. В противном случае возвращается `1`.
+Оператор `EXISTS` проверяет количество записей в результате подзапроса. Если результат пуст, оператор возвращает `0`. В противном случае он возвращает `1`.
 
 `EXISTS` также может использоваться в предложении [WHERE](../../sql-reference/statements/select/where.md).
 
@@ -23,7 +23,7 @@ EXISTS(subquery)
 
 **Пример**
 
-Запрос, проверяющий наличие значений в подзапросе:
+Запрос, проверяющий существование значений в подзапросе:
 
 ```sql
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
@@ -51,7 +51,7 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 └─────────┘
 ```
 
-Запрос с подзапросом, возвращающим пустой результат:
+Запрос с подзапросом, который возвращает пустой результат:
 
 ```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);

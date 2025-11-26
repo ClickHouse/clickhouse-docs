@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: '集成 Claude Desktop'
-title: '使用 Claude Desktop 设置 ClickHouse MCP 服务器'
+title: '为 Claude Desktop 设置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 ClickHouse MCP 服务器来配置 Claude Desktop。'
+description: '本指南说明如何为 Claude Desktop 设置 ClickHouse MCP 服务器。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -19,9 +19,9 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# 使用 Claude Desktop 配合 ClickHouse MCP 服务器
+# 在 Claude Desktop 中使用 ClickHouse MCP 服务器
 
-> 本指南介绍如何使用 uv 为 Claude Desktop 配置 ClickHouse MCP 服务器,
+> 本指南介绍如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器,
 > 并将其连接到 ClickHouse 示例数据集。
 
 <iframe
@@ -40,26 +40,29 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 ## 安装 uv {#install-uv}
 
-您需要安装 [uv](https://docs.astral.sh/uv/) 以便遵循本指南中的操作说明。如果您不想使用 uv,则需要更新 MCP Server 配置以使用其他包管理器。
+你需要先安装 [uv](https://docs.astral.sh/uv/)，才能按照本指南中的步骤进行操作。
+如果你不打算使用 uv，则需要更新 MCP Server 配置以改用其他包管理器。
+
 
 
 ## 下载 Claude Desktop {#download-claude-desktop}
 
-您还需要安装 Claude Desktop 应用程序,可从 [Claude Desktop 网站](https://claude.ai/desktop)下载。
+你还需要安装 Claude Desktop 应用程序，可以从 [Claude Desktop 网站](https://claude.ai/desktop) 下载。
 
 
-## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
-安装 Claude Desktop 后,接下来需要配置 [ClickHouse MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)。
-可以通过 [Claude Desktop 配置文件](https://claude.ai/docs/configuration)来完成配置。
+## 配置 ClickHouse MCP 服务器
 
-要找到此文件,首先进入设置页面(在 Mac 上使用快捷键 `Cmd+,`),然后点击左侧菜单中的 `Developer` 选项卡。
-随后将看到以下界面,需要点击 `Edit config` 按钮:
+在你安装好 Claude Desktop 之后，就可以开始配置 [ClickHouse MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 了。
+我们可以通过 [Claude Desktop 配置文件](https://claude.ai/docs/configuration) 来完成配置。
 
-<Image img={ClaudeDesktopConfig} alt='Claude Desktop 配置' size='md' />
+要找到这个文件，先进入设置页面（在 Mac 上按 `Cmd+,`），然后点击左侧菜单中的 `Developer` 选项卡。
+接着你会看到如下界面，此时需要点击 `Edit config` 按钮：
 
-这将打开包含配置文件(`claude_desktop_config.json`)的目录。
-首次打开该文件时,其内容可能如下所示:
+<Image img={ClaudeDesktopConfig} alt="Claude Desktop 配置" size="md" />
+
+这会打开一个包含配置文件（`claude_desktop_config.json`）的目录。
+你第一次打开该文件时，其中很可能包含以下内容：
 
 ```json
 {
@@ -67,8 +70,8 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 }
 ```
 
-`mcpServers` 字典以 MCP 服务器名称作为键,以配置选项字典作为值。
-例如,连接到 ClickHouse Playground 的 ClickHouse MCP 服务器配置如下:
+`mcpServers` 字典以 MCP Server 的名称作为键，以配置选项的字典作为值。\
+例如，连接到 ClickHouse Playground 的 ClickHouse MCP Server 配置如下：
 
 ```json
 {
@@ -98,16 +101,16 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 }
 ```
 
-更新配置后,需要重启 Claude Desktop 以使更改生效。
+更新配置后，你需要重新启动 Claude Desktop 才能使更改生效。
 
 :::warning
-根据 `uv` 的安装方式,重启 Claude Desktop 时可能会收到以下错误:
+具体取决于你安装 `uv` 的方式，在重新启动 Claude Desktop 时你可能会遇到如下错误：
 
 ```text
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
-如果出现此错误,需要将 `command` 更新为 `uv` 的完整路径。例如,如果通过 Cargo 安装,路径为 `/Users/<username>/.cargo/bin/uv`
+如果发生这种情况，你需要更新 `command`，将 `uv` 的完整路径填入其中。比如，如果你是通过 Cargo 安装的，路径会是 `/Users/&lt;username&gt;/.cargo/bin/uv`
 :::
 
 
@@ -131,7 +134,7 @@ Claude 会在首次调用时要求我们确认使用 MCP 服务器中的每个�
   size='md'
 />
 
-下面您可以看到一段包含对 ClickHouse MCP 服务器工具调用的对话示例:
+下面您可以看到包含对 ClickHouse MCP 服务器的一些工具调用的对话片段:
 
 <Image img={ClaudeConversation} alt='Claude 对话' size='md' />
 

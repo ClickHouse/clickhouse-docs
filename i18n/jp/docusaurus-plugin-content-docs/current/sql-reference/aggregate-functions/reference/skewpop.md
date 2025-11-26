@@ -1,5 +1,5 @@
 ---
-description: '値の系列の歪度を計算します。'
+description: 'データ系列の歪度を計算します。'
 sidebar_position: 185
 slug: /sql-reference/aggregate-functions/reference/skewpop
 title: 'skewPop'

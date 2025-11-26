@@ -1,23 +1,23 @@
 ---
-description: '在同一名称下归为一组的设置集合。'
-sidebar_label: '设置配置文件'
+description: '在同一名称下分组的设置集合。'
+sidebar_label: '设置配置集'
 sidebar_position: 61
 slug: /operations/settings/settings-profiles
-title: '设置配置文件'
+title: '设置配置集'
 doc_type: 'reference'
 ---
 
 # 设置配置文件
 
-设置配置文件是按同一名称归组的一组设置。
+设置配置文件是按同一名称分组的一组设置。
 
 :::note
-ClickHouse 还支持用于管理设置配置文件的[基于 SQL 的工作流](/operations/access-rights#access-control-usage)，我们推荐使用这种方式。
+ClickHouse 也支持用于管理设置配置文件的[基于 SQL 的工作流程](/operations/access-rights#access-control-usage)。建议优先使用该方式。
 :::
 
-配置文件可以有任意名称。你可以为不同用户指定相同的配置文件。在设置配置文件中最重要的一项配置是 `readonly=1`，它可以确保只读访问。
+配置文件可以有任意名称。可以为不同用户指定相同的配置文件。在设置配置文件中，最重要的一项是 `readonly=1`，它可以确保只读访问。
 
-设置配置文件之间可以相互继承。要使用继承功能，请在配置文件中其他设置之前声明一个或多个 `profile` 设置。如果同一个设置在不同配置文件中都有定义，则会采用最后定义的那个值。
+设置配置文件之间可以相互继承。要使用继承，请在配置文件中列出的其他设置之前，先指定一个或多个 `profile` 设置。如果某个设置在不同的配置文件中都有定义，则以最后定义的为准。
 
 要应用配置文件中的所有设置，请设置 `profile` 参数。
 
@@ -34,11 +34,11 @@ SET profile = 'web'
 示例：
 
 ```xml
-<!-- 设置配置 -->
+<!-- 设置配置文件 -->
 <profiles>
     <!-- 默认设置 -->
     <default>
-        <!-- 执行单个查询时的最大线程数。 -->
+        <!-- 执行单个查询时的最大线程数 -->
         <max_threads>8</max_threads>
     </default>
 
@@ -77,8 +77,8 @@ SET profile = 'web'
 </profiles>
 ```
 
-该示例指定了两个配置文件：`default` 和 `web`。
+该示例定义了两个配置文件：`default` 和 `web`。
 
-`default` 配置文件具有特殊用途：它必须始终存在，并在服务器启动时被应用。换句话说，`default` 配置文件包含默认设置。
+`default` 配置文件有一个特殊用途：它必须始终存在，并在启动服务器时应用。换句话说，`default` 配置文件包含默认设置。
 
-`web` 配置文件是一个普通配置文件，可以通过 `SET` 查询或在 HTTP 查询中使用 URL 参数进行设置。
+`web` 配置文件是一个常规配置文件，可以通过 `SET` 查询或在 HTTP 查询中使用 URL 参数来设置。

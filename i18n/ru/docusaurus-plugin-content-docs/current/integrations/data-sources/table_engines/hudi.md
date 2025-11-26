@@ -5,7 +5,7 @@ title: 'Hudi'
 hide_title: true
 description: 'Страница, описывающая табличный движок Hudi'
 doc_type: 'reference'
-keywords: ['табличный движок hudi', 'apache hudi', 'интеграция с озером данных']
+keywords: ['табличный движок Hudi', 'apache hudi', 'интеграция с озером данных']
 ---
 
 import HudiTableEngine from '@site/docs/engines/table-engines/integrations/hudi.md';

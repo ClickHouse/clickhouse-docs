@@ -1,14 +1,14 @@
 ---
-description: 'Документация для формата TabSeparatedWithNamesAndTypes'
+description: 'Документация по формату TabSeparatedWithNamesAndTypes'
 keywords: ['TabSeparatedWithNamesAndTypes']
 slug: /interfaces/formats/TabSeparatedWithNamesAndTypes
 title: 'TabSeparatedWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним                                       |
-|-------|--------|------------------------------------------------|
-|     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
+| Входные данные | Выходные данные | Псевдоним                                     |
+|----------------|-----------------|-----------------------------------------------|
+|       ✔        |        ✔        | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
 
 
@@ -17,20 +17,20 @@ doc_type: 'reference'
 Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записываются в первую строку, а типы столбцов — во вторую.
 
 :::note
+- Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в значение `1`,
+столбцы из входных данных будут сопоставляться со столбцами в таблице по их именам, а столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`.
+В противном случае первая строка будет пропущена.
+- Если настройка [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в значение `1`,
+типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
+:::
 
-- Если параметр [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в `1`,
-  столбцы из входных данных будут сопоставлены со столбцами таблицы по именам. Столбцы с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
-  В противном случае первая строка будет пропущена.
-- Если параметр [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлен в `1`,
-  типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
-  :::
 
 
-## Пример использования {#example-usage}
+## Пример использования
 
-### Вставка данных {#inserting-data}
+### Вставка данных
 
-Используя следующий TSV-файл с именем `football.tsv`:
+Используем следующий TSV-файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -54,15 +54,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `TabSeparatedWithNamesAndTypes`:
+Прочитайте данные в формате `TabSeparatedWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -70,7 +70,7 @@ FROM football
 FORMAT TabSeparatedWithNamesAndTypes
 ```
 
-Результат будет выведен в формате с разделением табуляцией с двумя строками заголовков для имён и типов столбцов:
+Вывод будет в формате с разделителями табуляции и двумя строками заголовков для имен столбцов и их типов:
 
 
 ```tsv
@@ -96,4 +96,4 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

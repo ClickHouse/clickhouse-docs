@@ -27,25 +27,25 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```
 
-**Параметры движка**
+**Параметры двигателя**
 
-- `host:port` — адрес сервера MySQL.
-- `database` — имя удалённой базы данных.
-- `user` — пользователь MySQL.
-- `password` — пароль пользователя.
+* `host:port` — адрес MySQL-сервера.
+* `database` — имя удалённой базы данных.
+* `user` — пользователь MySQL.
+* `password` — пароль пользователя.
 
 
 ## Поддержка типов данных {#data_types-support}
 
 | MySQL                            | ClickHouse                                                   |
-| -------------------------------- | ------------------------------------------------------------ |
+|----------------------------------|--------------------------------------------------------------|
 | UNSIGNED TINYINT                 | [UInt8](../../sql-reference/data-types/int-uint.md)          |
 | TINYINT                          | [Int8](../../sql-reference/data-types/int-uint.md)           |
 | UNSIGNED SMALLINT                | [UInt16](../../sql-reference/data-types/int-uint.md)         |
@@ -60,22 +60,23 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-Все остальные типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
+Все остальные типы данных MySQL преобразуются в тип [String](../../sql-reference/data-types/string.md).
 
 Поддерживается тип [Nullable](../../sql-reference/data-types/nullable.md).
 
 
-## Поддержка глобальных переменных {#global-variables-support}
 
-Для лучшей совместимости можно обращаться к глобальным переменным в стиле MySQL, используя синтаксис `@@identifier`.
+## Поддержка глобальных переменных
+
+Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — через `@@identifier`.
 
 Поддерживаются следующие переменные:
 
-- `version`
-- `max_allowed_packet`
+* `version`
+* `max_allowed_packet`
 
 :::note
-В настоящее время эти переменные являются заглушками и не соответствуют реальным значениям.
+На данный момент эти переменные являются заглушками и ни к чему не привязаны.
 :::
 
 Пример:
@@ -85,22 +86,22 @@ SELECT @@version;
 ```
 
 
-## Примеры использования {#examples-of-use}
+## Примеры использования
 
 Таблица в MySQL:
 
 ```text
 mysql> USE test;
-Database changed
+База данных изменена
 
 mysql> CREATE TABLE `mysql_table` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `float` FLOAT NOT NULL,
     ->   PRIMARY KEY (`int_id`));
-Query OK, 0 rows affected (0,09 sec)
+Запрос выполнен, затронуто строк: 0 (0,09 сек.)
 
 mysql> insert into mysql_table (`int_id`, `float`) VALUES (1,2);
-Query OK, 1 row affected (0,00 sec)
+Запрос выполнен, затронута 1 строка (0,00 сек.)
 
 mysql> select * from mysql_table;
 +------+-----+
@@ -108,10 +109,10 @@ mysql> select * from mysql_table;
 +------+-----+
 |      1 |     2 |
 +------+-----+
-1 row in set (0,00 sec)
+Строк в результате: 1 (0,00 сек.)
 ```
 
-База данных в ClickHouse, обменивающаяся данными с сервером MySQL:
+База данных ClickHouse, обменивающаяся данными с сервером MySQL:
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;

@@ -1,23 +1,23 @@
 ---
-description: 'COVID-19 Open-Data 是一个大型开源数据库，包含 COVID-19 流行病学数据以及人口统计、经济状况和政府应对等相关因素'
-sidebar_label: 'COVID-19 开放数据'
+description: 'COVID-19 Open-Data 是一个大型开源数据库，包含 COVID-19 流行病学数据以及人口统计数据、经济指标和政府响应等相关因素'
+sidebar_label: 'COVID-19 open-data'
 slug: /getting-started/example-datasets/covid19
 title: 'COVID-19 Open-Data'
-keywords: ['COVID-19 数据', '流行病学数据', '健康数据集', '示例数据集', '入门']
+keywords: ['COVID-19 data', 'epidemiological data', 'health dataset', 'example dataset', 'getting started']
 doc_type: 'guide'
 ---
 
-COVID-19 Open-Data 旨在构建最大规模的 COVID-19 流行病学数据库，并提供一组强大而全面的协变量。它包含与人口统计、经济、流行病学、地理、健康、住院、人员流动、政府应对措施、天气等相关的、来自公开渠道且已授权的开放数据。
+COVID-19 Open-Data 旨在构建最大规模的新冠肺炎（Covid-19）流行病学数据库，并配备一组功能强大且种类广泛的协变量。它包含与人口统计、经济、流行病学、地理、健康、住院情况、流动性、政府响应、天气等相关的开放、公开来源且具备许可的数据。
 
-详细信息见 GitHub [此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
+详细信息见 GitHub 仓库[此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
 
-将这些数据导入 ClickHouse 非常容易……
+将这些数据插入 ClickHouse 非常容易……
 
 :::note
-以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。您也可以轻松在本地环境中运行它们。
+以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。你也可以在本地安装的实例上轻松运行这些命令。
 :::
 
-1. 我们先来看一下这些数据的样子：
+1. 我们先来看一下这些数据的结构：
 
 ```sql
 DESCRIBE url(
@@ -26,7 +26,7 @@ DESCRIBE url(
 );
 ```
 
-该 CSV 文件有 10 列：
+该 CSV 文件包含 10 列：
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -45,7 +45,7 @@ DESCRIBE url(
 返回了 10 行数据。耗时：0.745 秒。
 ```
 
-2. 现在来查看几行数据：
+2. 现在让我们查看几行数据：
 
 ```sql
 SELECT *
@@ -53,7 +53,7 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-请注意，`url` 函数可以轻松从 CSV 文件中读取数据：
+请注意，`url` 函数可以方便地从 CSV 文件中读取数据：
 
 
 ```response
@@ -68,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们已经了解了数据的格式，接下来创建一个表：
+3. 现在我们已经了解了数据的情况，可以创建一张表了：
 
 ```sql
 CREATE TABLE covid19 (
@@ -87,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 以下命令将整个数据集插入 `covid19` 表：
+4. 以下命令会将整个数据集插入到 `covid19` 表中：
 
 ```sql
 INSERT INTO covid19
@@ -109,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. 这个过程很快——来看一下插入了多少行：
+5. 这一步很快就能完成——来看一下插入了多少行：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -118,11 +118,11 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 1253万                          │
+│ 1253 万                         │
 └─────────────────────────────────┘
 ```
 
-6. 我们来看一下记录的 Covid-19 病例总数：
+6. 我们来看一下共记录了多少例新冠肺炎病例：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -131,12 +131,12 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 13.9亿                                      │
+│ 13.9 亿                                     │
 └────────────────────────────────────────────┘
 ```
 
 
-7. 你会注意到有很多日期上的值为 0——要么是周末，要么是并非每天都上报数据的日期。我们可以使用窗口函数来对新增病例的每日平均值进行平滑处理：
+7. 你会注意到数据中有很多日期都是 0 —— 要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新增病例的日均值：
 
 ```sql
 SELECT
@@ -147,7 +147,7 @@ SELECT
 FROM covid19;
 ```
 
-8. 此查询用于确定每个地区的最新值。由于并非所有国家每天都有上报数据，因此不能使用 `max(date)`，而是通过 `ROW_NUMBER` 取出最后一行：
+8. 此查询用于确定每个地区的最新值。我们不能使用 `max(date)`，因为并非所有国家都会每天上报数据，所以我们使用 `ROW_NUMBER` 来获取最后一行记录：
 
 ```sql
 WITH latest_deaths_data AS
@@ -166,7 +166,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. 我们可以使用 `lagInFrame` 来计算每天新增病例的 `LAG` 值。在此查询中，我们按位置 `US_DC` 进行过滤：
+9. 我们可以使用 `lagInFrame` 来确定每天新增病例的滞后值（`LAG`）。在此查询中，我们按 `US_DC` 这一地点进行过滤：
 
 ```sql
 SELECT
@@ -178,7 +178,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-返回结果如下：
+响应如下所示：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -200,7 +200,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. 此查询计算每天新增病例的百分比变化，并在结果集中包含一个简单的列，用于标记是 `increase` 还是 `decrease`：
+10. 此查询计算每日新增病例数的百分比变化，并在结果集中包含一个标记为 `increase` 或 `decrease` 的简单列：
 
 ```sql
 WITH confirmed_lag AS (
@@ -231,7 +231,7 @@ FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
 ```
 
-结果如下所示。
+结果如下：
 
 
 ```response
@@ -266,5 +266,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-正如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中提到的那样，自 2022 年 9 月 15 日起，该数据集已不再更新。
+正如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所提到的，该数据集自 2022 年 9 月 15 日起不再更新。
 :::

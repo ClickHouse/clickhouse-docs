@@ -2,16 +2,16 @@
 slug: /use-cases/observability/clickstack/integration-guides
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack - ClickHouse Observability Stack 向けデータ取り込み'
+description: 'ClickStack 向けのデータインジェスト - ClickHouse Observability Stack'
 title: 'インテグレーションガイド'
 doc_type: 'landing-page'
-keywords: ['ClickStack data ingestion', 'observability data ingestion', 'ClickStack integration guides']
+keywords: ['ClickStack のデータインジェスト', '可観測性データのインジェスト', 'ClickStack インテグレーションガイド']
 ---
 
-ClickStack は、お使いの ClickHouse インスタンスにオブザーバビリティデータを取り込むための複数の方法を提供します。本セクションでは、さまざまなログ、トレース、メトリクスソース向けのクイックスタートガイドを紹介します。
+ClickStack は、可観測性データを ClickHouse インスタンスに取り込むための複数の方法を提供します。ここでは、さまざまなログ、トレース、メトリクスのソース向けクイックスタートガイドを紹介します。
 
 :::note
-これらのインテグレーションガイドのいくつかは、簡易テストのために ClickStack の組み込み OpenTelemetry Collector を使用します。本番環境へのデプロイでは、独自の OTel Collector を実行し、そのデータを ClickStack の OTLP エンドポイントに送信することを推奨します。本番環境での構成については、[Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。
+これらのインテグレーションガイドのいくつかでは、簡易なテストのために ClickStack に組み込まれている OpenTelemetry Collector を使用します。本番環境へのデプロイでは、独自の OTel collector を稼働させ、ClickStack の OTLP エンドポイントにデータを送信することを推奨します。本番構成については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。
 :::
 
 | セクション | 説明 |

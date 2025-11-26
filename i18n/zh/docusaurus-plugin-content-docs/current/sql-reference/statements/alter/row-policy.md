@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # ALTER ROW POLICY
 
-修改行级策略。
+修改行策略。
 
 语法：
 

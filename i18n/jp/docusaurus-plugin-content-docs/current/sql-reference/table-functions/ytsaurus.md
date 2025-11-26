@@ -1,5 +1,5 @@
 ---
-description: 'テーブル関数を使用すると、YTsaurus クラスターからデータを読み取ることができます。'
+description: 'table 関数を使用すると、YTsaurus クラスターからデータを読み取れます。'
 sidebar_label: 'ytsaurus'
 sidebar_position: 85
 slug: /sql-reference/table-functions/ytsaurus
@@ -18,30 +18,30 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 ```
 
 :::info
-これは実験的機能であり、将来のリリースで後方互換性のない変更が行われる可能性があります。
-YTsaurusテーブル関数を使用するには、[allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)設定で有効化してください。
-`set allow_experimental_ytsaurus_table_function = 1`コマンドを実行してください。
+これは実験的な機能であり、今後のリリースで後方互換性のない形で変更される可能性があります。
+YTsaurus テーブル関数の使用を有効にするには、[allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) 設定を有効にします。
+`set allow_experimental_ytsaurus_table_function = 1` コマンドを実行します。
 :::
 
 
 ## 引数 {#arguments}
 
-- `http_proxy_url` — YTsaurus HTTPプロキシのURL。
-- `cypress_path` — データソースへのCypressパス。
-- `oauth_token` — OAuthトークン。
+- `http_proxy_url` — YTsaurus の HTTP プロキシの URL。
+- `cypress_path` — データソースへの Cypress パス。
+- `oauth_token` — OAuth トークン。
 - `format` — データソースの[フォーマット](/interfaces/formats)。
 
 **戻り値**
 
-YTsaurusクラスター内の指定されたCypressパスからデータを読み取るための、指定された構造を持つテーブル。
+YTsaurus クラスター内の指定された ytsaurus cypress パスからデータを読み取るための、指定した構造を持つテーブル。
 
 **関連項目**
 
-- [ytsaurusエンジン](/engines/table-engines/integrations/ytsaurus.md)
+- [ytsaurus エンジン](/engines/table-engines/integrations/ytsaurus.md)

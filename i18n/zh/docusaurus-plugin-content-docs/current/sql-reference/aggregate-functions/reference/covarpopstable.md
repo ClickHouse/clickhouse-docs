@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 # covarPopStable
 
-计算总体协方差:
+计算总体协方差的值：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-该函数类似于 [covarPop](../reference/covarpop.md) 函数,但使用数值稳定算法。因此,`covarPopStable` 比 `covarPop` 慢,但能产生更精确的结果。
+该函数与 [covarPop](../reference/covarpop.md) 函数类似，但使用数值稳定的算法。因此，`covarPopStable` 比 `covarPop` 更慢，但能得到更精确的结果。
 
 **语法**
 
@@ -26,16 +26,16 @@ covarPop(x, y)
 
 **参数**
 
-- `x` — 第一个变量。[(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
-- `y` — 第二个变量。[(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 第一个变量。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 第二个变量。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- `x` 和 `y` 之间的总体协方差。[Float64](../../data-types/float.md)。
+- `x` 与 `y` 之间的总体协方差。[Float64](../../data-types/float.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 DROP TABLE IF EXISTS series;
@@ -54,7 +54,7 @@ FROM
 );
 ```
 
-结果:
+结果：
 
 ```reference
 ┌─covarPopStable(x_value, y_value)─┐

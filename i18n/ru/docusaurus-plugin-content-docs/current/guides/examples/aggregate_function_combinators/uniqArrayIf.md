@@ -12,28 +12,29 @@ doc_type: 'reference'
 # uniqArrayIf {#uniqarrayif}
 
 
+
 ## Описание {#description}
 
-Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) можно применять к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-для подсчёта количества уникальных значений в массивах для строк, в которых
-условие истинно, используя агрегатную функцию-комбинатор `uniqArrayIf`.
+Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) могут быть применены к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+для подсчёта количества уникальных значений в массивах для строк, удовлетворяющих
+условию, с использованием агрегатной функции-комбинатора `uniqArrayIf`.
 
-:::note Комбинаторы `-If` и `-Array` можно комбинировать. Однако `Array` должен идти первым, затем `If`.
+:::note
+-`If` и -`Array` можно комбинировать. Однако сначала должен идти `Array`, затем `If`.
 :::
 
-Это полезно, когда нужно подсчитать уникальные элементы в массиве на основе
-определённых условий без использования `arrayJoin`.
+Это полезно, когда нужно посчитать уникальные элементы в массиве на основе 
+определённых условий, не используя `arrayJoin`.
 
 
-## Примеры использования {#example-usage}
 
-### Подсчет уникальных просмотренных товаров по типу сегмента и уровню вовлеченности {#count-unique-products}
+## Пример использования
 
-В этом примере мы используем таблицу с данными о покупательских сессиях пользователей для подсчета
-количества уникальных товаров, просмотренных пользователями определенного сегмента с
-метрикой вовлеченности по времени, проведенному в сессии.
+### Подсчёт уникальных товаров, просмотренных по типу сегмента и уровню вовлечённости
 
-```sql title="Запрос"
+В этом примере мы используем таблицу с данными пользовательских сессий в интернет‑магазине, чтобы подсчитать количество уникальных товаров, просмотренных пользователями определённого сегмента, при этом метрикой вовлечённости является время, проведённое в сессии.
+
+```sql title="Query"
 CREATE TABLE user_shopping_sessions
 (
     session_date Date,
@@ -50,14 +51,14 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- Подсчет уникальных просмотренных товаров по типу сегмента и уровню вовлеченности
-SELECT
+-- Подсчёт уникальных просмотренных продуктов по типу сегмента и уровню вовлечённости
+SELECT 
     session_date,
-    -- Подсчет уникальных товаров, просмотренных в длительных сессиях новыми клиентами
+    -- Подсчёт уникальных продуктов, просмотренных новыми клиентами в длительных сессиях
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,
-    -- Подсчет уникальных товаров, просмотренных возвращающимися клиентами
+    -- Подсчёт уникальных продуктов, просмотренных возвращающимися клиентами
     uniqArrayIf(viewed_products, user_segment = 'returning') AS returning_customer_products,
-    -- Подсчет уникальных товаров, просмотренных во всех сессиях
+    -- Подсчёт уникальных продуктов, просмотренных во всех сессиях
     uniqArray(viewed_products) AS total_unique_products
 FROM user_shopping_sessions
 GROUP BY session_date
@@ -65,15 +66,15 @@ ORDER BY session_date
 FORMAT Vertical;
 ```
 
-```response title="Результат"
-Row 1:
+```response title="Response"
+Строка 1:
 ──────
 session_date:                2024-01-01
 new_customer⋯ed_products:    2
 returning_customer_products: 3
 total_unique_products:       6
 
-Row 2:
+Строка 2:
 ──────
 session_date:                2024-01-02
 new_customer⋯ed_products:    2
@@ -83,7 +84,6 @@ total_unique_products:       7
 
 
 ## См. также {#see-also}
-
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
-- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

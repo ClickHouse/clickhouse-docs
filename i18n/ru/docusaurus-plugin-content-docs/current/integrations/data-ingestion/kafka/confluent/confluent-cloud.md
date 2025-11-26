@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Коннектор Kafka Sink для Confluent Cloud'
+sidebar_label: 'Коннектор Kafka Sink в Confluent Cloud'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: 'Руководство по использованию полностью управляемого коннектора ClickHouse Kafka Sink в Confluent Cloud'
+description: 'Руководство по использованию полностью управляемого коннектора ClickHouse Sink в Confluent Cloud'
 title: 'Интеграция Confluent Cloud с ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -16,7 +16,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 
 
-# Интеграция ClickHouse с Confluent Cloud
+# Интеграция Confluent Cloud с ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -33,44 +33,37 @@ import Image from '@theme/IdealImage';
 
 
 ## Предварительные требования {#prerequisites}
-
 Предполагается, что вы знакомы со следующим:
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
+* Confluent Cloud
 
-- [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
-- Confluent Cloud
 
 
-## Официальный Kafka-коннектор от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
+## Официальный коннектор Kafka от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
 #### Создание топика {#create-a-topic}
-
-Создание топика в Confluent Cloud довольно простое, подробные инструкции доступны [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
+Создать топик в Confluent Cloud довольно просто; подробные инструкции приведены [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Важные замечания {#important-notes}
 
-- Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Изменить это поведение можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-- Большее количество партиций не всегда означает более высокую производительность — подробности и рекомендации по производительности см. в нашем предстоящем руководстве.
+* Имя топика Kafka должно совпадать с именем таблицы в ClickHouse. Настроить это соответствие можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+* Большее число партиций не всегда означает более высокую производительность — следите за нашим будущим руководством с дополнительной информацией и рекомендациями по производительности.
 
-#### Сбор параметров подключения {#gather-your-connection-details}
-
+#### Соберите параметры подключения {#gather-your-connection-details}
 <ConnectionDetails />
 
 #### Установка коннектора {#install-connector}
-
 Установите полностью управляемый ClickHouse Sink Connector в Confluent Cloud, следуя [официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
 
 #### Настройка коннектора {#configure-the-connector}
-
-При настройке ClickHouse Sink Connector необходимо указать следующие параметры:
-
-- имя хоста сервера ClickHouse
+Во время настройки ClickHouse Sink Connector вам потребуется указать следующие параметры:
+- имя хоста (hostname) сервера ClickHouse
 - порт сервера ClickHouse (по умолчанию 8443)
 - имя пользователя и пароль для сервера ClickHouse
 - имя базы данных в ClickHouse, в которую будут записываться данные
 - имя топика в Kafka, который будет использоваться для записи данных в ClickHouse
 
-Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для настройки интервалов опроса, размеров пакетов и других параметров оптимизации производительности.
+Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для задания интервалов опроса, размеров пакетов и других параметров с целью оптимизации производительности.
 
 #### Известные ограничения {#known-limitations}
-
-- См. список [ограничений коннекторов в официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)
+* См. список [ограничений коннектора в официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

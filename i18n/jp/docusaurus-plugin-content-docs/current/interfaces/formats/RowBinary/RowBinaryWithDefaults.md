@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'RowBinaryWithDefaults 形式に関するドキュメント'
+description: 'RowBinaryWithDefaults フォーマットに関するドキュメント'
 input_format: true
 keywords: ['RowBinaryWithDefaults']
 output_format: false
@@ -18,27 +18,28 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 ## 説明 {#description}
 
-[`RowBinary`](./RowBinary.md)形式と同様ですが、各カラムの前にデフォルト値を使用するかどうかを示す追加のバイトが付加されます。
+[`RowBinary`](./RowBinary.md) 形式と似ていますが、各列の前に 1 バイトが追加され、そのバイトでデフォルト値を使用するかどうかを示します。
 
 
-## 使用例 {#example-usage}
 
-例:
+## 使用例
 
-```sql title="クエリ"
+例：
+
+```sql title="Query"
 SELECT * FROM FORMAT('RowBinaryWithDefaults', 'x UInt32 default 42, y UInt32', x'010001000000')
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌──x─┬─y─┐
 │ 42 │ 1 │
 └────┴───┘
 ```
 
-- カラム `x` には、デフォルト値を使用することを示す1バイト `01` のみが存在し、このバイトの後に他のデータは提供されていません。
-- カラム `y` のデータは、カラムに実際の値が存在し、後続のデータ `01000000` から読み取る必要があることを示すバイト `00` で始まります。
+* 列 `x` には、デフォルト値を使用すべきことを示す 1 バイトの `01` だけがあり、このバイト以降には一切データがありません。
+* 列 `y` では、データはバイト `00` から始まっており、これは列に実際の値が存在し、その値を後続のデータ `01000000` から読み取る必要があることを示します。
 
 
 ## フォーマット設定 {#format-settings}
 
-<RowBinaryFormatSettings />
+<RowBinaryFormatSettings/>

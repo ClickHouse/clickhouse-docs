@@ -17,14 +17,16 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
+Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся как строки, а не как значения JSON с указанием типа.
+
 
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON-файл со следующими данными с именем `football.json`:
+JSON‑файл со следующими данными, названный `football.json`:
+
 
 
 ```json
@@ -198,15 +200,15 @@ doc_type: 'reference'
 }
 ```
 
-Вставка данных:
+Введите данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `JSONStrings`:
+Прочитайте данные с помощью формата `JSONStrings`:
 
 ```sql
 SELECT *
@@ -214,7 +216,7 @@ FROM football
 FORMAT JSONStrings
 ```
 
-Результат будет представлен в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 {
@@ -245,7 +247,6 @@ FORMAT JSONStrings
                     "type": "Int8"
             }
     ],
-
 ```
 
 
@@ -405,4 +406,4 @@ FORMAT JSONStrings
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

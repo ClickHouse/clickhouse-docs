@@ -1,5 +1,5 @@
 ---
-description: '计算 JSON 列中存储的唯一路径列表。'
+description: '计算 JSON 列中所有不同路径的列表。'
 sidebar_position: 216
 slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
 title: 'distinctJSONPaths'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctJSONPaths
 
-计算存储在 [JSON](../../data-types/newjson.md) 列中的不同路径列表。
+计算存储在 [JSON](../../data-types/newjson.md) 列中的唯一路径列表。
 
 **语法**
 
@@ -22,7 +22,7 @@ distinctJSONPaths(json)
 
 **返回值**
 
-* 已排序的路径列表 [Array(String)](../../data-types/array.md)。
+* 排序后的路径列表 [Array(String)](../../data-types/array.md)。
 
 **示例**
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-计算存储在 [JSON](../../data-types/newjson.md) 列中的唯一路径及其类型列表。
+计算存储在 [JSON](../../data-types/newjson.md) 列中的所有不同路径及其对应类型的列表。
 
 **语法**
 
@@ -63,7 +63,7 @@ distinctJSONPathsAndTypes(json)
 
 **返回值**
 
-* 排序后的路径与类型映射 [Map(String, Array(String))](../../data-types/map.md)。
+* 排序后的路径和类型映射 [Map(String, Array(String))](../../data-types/map.md)。
 
 **示例**
 
@@ -89,7 +89,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 
 **注意**
 
-如果 JSON 声明中包含具有指定类型的路径，则即使输入数据在这些路径上没有值，这些路径也将始终包含在 `distinctJSONPaths/distinctJSONPathsAndTypes` 函数的结果中。
+如果 JSON 声明中包含带有指定类型的路径，即使输入数据中没有这些路径的值，这些路径也会始终出现在 `distinctJSONPaths/distinctJSONPathsAndTypes` 函数的结果中。
 
 ```sql
 DROP TABLE IF EXISTS test_json;

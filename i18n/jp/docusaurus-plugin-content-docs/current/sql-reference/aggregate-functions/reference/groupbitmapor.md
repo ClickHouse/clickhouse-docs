@@ -1,5 +1,5 @@
 ---
-description: 'ビットマップカラムの OR を計算し、結果を UInt64 型のカーディナリティとして返します。サフィックス -State を付与した場合は、ビットマップオブジェクトを返します。これは `groupBitmapMerge` と同等です。'
+description: 'ビットマップ列の OR 演算を行い、型 UInt64 の要素数（カーディナリティ）を返します。-State サフィックスを付与すると、ビットマップオブジェクトを返します。これは `groupBitmapMerge` と同等です。'
 sidebar_position: 150
 slug: /sql-reference/aggregate-functions/reference/groupbitmapor
 title: 'groupBitmapOr'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmapOr
 
-ビットマップ列の OR を計算し、その結果の基数（cardinality）を `UInt64` 型で返します。末尾に `-State` のサフィックスを付けると、[bitmap object](../../../sql-reference/functions/bitmap-functions.md) を返します。これは `groupBitmapMerge` と同等です。
+ビットマップ列の OR を計算し、`UInt64` 型の基数（要素数）を返します。末尾に `-State` のサフィックスを付けると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。これは `groupBitmapMerge` と同等です。
 
 ```sql
 groupBitmapOr(expr)
@@ -16,7 +16,7 @@ groupBitmapOr(expr)
 
 **引数**
 
-`expr` – `AggregateFunction(groupBitmap, UInt*)` 型を返す式。
+`expr` – 評価結果が `AggregateFunction(groupBitmap, UInt*)` 型となる式。
 
 **戻り値**
 

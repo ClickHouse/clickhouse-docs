@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
 title: 'argMinIf'
-description: 'argMinIf 组合子使用示例'
-keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
+description: 'argMinIf 组合器的使用示例'
+keywords: ['argMin', 'if', '组合器', '示例', 'argMinIf']
 sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
@@ -12,19 +12,23 @@ doc_type: 'reference'
 # argMinIf {#argminif}
 
 
+
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`argMin`](/sql-reference/aggregate-functions/reference/argmin) 函数，通过 `argMinIf` 聚合组合器函数，在满足条件的行中查找与 `val` 最小值对应的 `arg` 值。
+可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+函数，从而在条件为 true 的行中，找到其 `val` 取最小值时对应的 `arg` 值，
+即通过使用 `argMinIf` 聚合函数组合器实现该目的。
 
-当需要在数据集中查找与最小值关联的值，但仅限于满足特定条件的行时，`argMinIf` 函数非常有用。
+当需要在数据集中查找与最小值关联的值，但只针对满足特定条件的行时，`argMinIf` 函数非常有用。
 
 
-## 使用示例 {#example-usage}
 
-在此示例中,我们将创建一个存储产品价格及其时间戳的表,
-并使用 `argMinIf` 查找每个产品在有库存时的最低价格。
+## 示例用法
 
-```sql title="查询"
+在本示例中，我们将创建一张表，用于存储商品价格及其时间戳，
+并使用 `argMinIf` 在商品有库存时找出每个商品的最低价格。
+
+```sql title="Query"
 CREATE TABLE product_prices(
     product_id UInt32,
     price Decimal(10,2),
@@ -47,13 +51,13 @@ FROM product_prices
 GROUP BY product_id;
 ```
 
-`argMinIf` 函数将查找每个产品对应于最早时间戳的价格,
-但仅考虑 `in_stock = 1` 的行。例如:
+`argMinIf` 函数会为每个产品找出具有最早时间戳的价格，
+但只会考虑 `in_stock = 1` 的行。比如：
 
-- 产品 1:在有库存的行中,10.99 对应最早的时间戳 (10:00:00)
-- 产品 2:在有库存的行中,20.99 对应最早的时间戳 (11:00:00)
+* 产品 1：在有库存的行中，10.99 的时间戳最早（10:00:00）
+* 产品 2：在有库存的行中，20.99 的时间戳最早（11:00:00）
 
-```response title="响应"
+```response title="Response"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │
@@ -62,8 +66,7 @@ GROUP BY product_id;
 
 
 ## 另请参阅 {#see-also}
-
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

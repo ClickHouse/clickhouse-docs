@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # Cassandra 集成
 
-用户可以使用字典与 Cassandra 集成。详情参见[此处](/sql-reference/dictionaries#cassandra)。
+用户可以通过字典与 Cassandra 集成。更多详情请参阅[此处](/sql-reference/dictionaries#cassandra)。

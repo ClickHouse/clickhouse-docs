@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 # timeSeriesData テーブル関数
 
-`timeSeriesData(db_name.time_series_table)` - テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) であるテーブル `db_name.time_series_table` が使用する [data](../../engines/table-engines/integrations/time-series.md#data-table) テーブルを返します。
+`timeSeriesData(db_name.time_series_table)` - テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) である `db_name.time_series_table` テーブルで使用されている [data](../../engines/table-engines/integrations/time-series.md#data-table) テーブルを返します。
 
 ```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries DATA data_table
 ```
 
-この関数は、*data* テーブルが内側（inner）のテーブルである場合でも動作します。
+この関数は、*data* テーブルが内部テーブルの場合でも動作します。
 
 ```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries DATA INNER UUID '01234567-89ab-cdef-0123-456789abcdef'

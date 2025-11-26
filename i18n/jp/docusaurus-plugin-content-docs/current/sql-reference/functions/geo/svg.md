@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## Svg {#svg}
+## Svg
 
-Geoデータから選択されたSVG要素タグの文字列を返します。
+Geo データから特定の SVG 要素タグの文字列を返します。
 
 **構文**
 
@@ -18,23 +18,23 @@ Geoデータから選択されたSVG要素タグの文字列を返します。
 Svg(geometry,[style])
 ```
 
-エイリアス: `SVG`, `svg`
+Aliases: `SVG`, `svg`
 
-**パラメータ**
+**パラメーター**
 
-- `geometry` — Geoデータ。[Geo](../../data-types/geo)。
-- `style` — オプションのスタイル名。[String](../../data-types/string)。
+* `geometry` — ジオデータ。[Geo](../../data-types/geo)。
+* `style` — オプションのスタイル名。[String](../../data-types/string)。
 
-**戻り値**
+**返される値**
 
-- ジオメトリのSVG表現。[String](../../data-types/string)。
-  - SVG円
-  - SVGポリゴン
-  - SVGパス
+* ジオメトリの SVG 表現。[String](../../data-types/string)。
+  * SVG の円
+  * SVG の多角形
+  * SVG のパス
 
 **例**
 
-**円**
+**Circle**
 
 クエリ:
 
@@ -50,13 +50,13 @@ SELECT SVG((0., 0.))
 
 **ポリゴン**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 ```
 
-結果:
+結果：
 
 ```response
 <polygon points="0,0 0,10 10,10 10,0 0,0" style=""/>
@@ -64,7 +64,7 @@ SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 
 **パス**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT SVG([[(0., 0.), (10, 0), (10, 10), (0, 10)], [(4., 4.), (5, 4), (5, 5), (4, 5)]])

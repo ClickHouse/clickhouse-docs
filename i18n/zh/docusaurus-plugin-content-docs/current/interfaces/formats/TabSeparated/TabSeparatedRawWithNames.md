@@ -18,18 +18,19 @@ doc_type: 'reference'
 ## 描述 {#description}
 
 与 [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 格式不同，
-此格式写入行时不进行转义。
+该格式在写入行数据时不会对内容进行转义。
 
 :::note
-使用此格式解析时，每个字段中不允许包含制表符或换行符。
+使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用以下名为 `football.tsv` 的 tsv 文件:
+### 插入数据
+
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -52,15 +53,15 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `TabSeparatedRawWithNames` 格式读取数据:
+使用 `TabSeparatedRawWithNames` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -68,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRawWithNames
 ```
 
-输出将为制表符分隔格式,包含单行表头:
+输出将采用制表符分隔的格式，且只有一行表头：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals

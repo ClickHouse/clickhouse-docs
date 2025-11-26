@@ -1,5 +1,5 @@
 ---
-description: '数値データ列の近似分位数を計算します。'
+description: '数値データ列の近似的な分位数を計算します。'
 sidebar_position: 170
 slug: /sql-reference/aggregate-functions/reference/quantile
 title: 'quantile'
@@ -8,13 +8,13 @@ doc_type: 'reference'
 
 # quantile
 
-数値データ列の近似的な[分位点 (quantile)](https://en.wikipedia.org/wiki/Quantile) を計算します。
+数値データシーケンスの近似的な[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
-この関数は、最大 8192 のリザーバのサイズを持つ[リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)と乱数生成器を用いてサンプリングを行います。結果は非決定的です。厳密な分位点を取得するには、[quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 関数を使用してください。
+この関数は、最大サイズ 8192 の[リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)と乱数生成器を用いてサンプリングを行います。結果は非決定的です。厳密な分位点を取得するには、[quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 関数を使用してください。
 
-1 つのクエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来の効率より低い形で動作します）。このような場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
+1 つのクエリ内で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来の性能より非効率になります）。このような場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
 
-数値列が空の場合、`quantile` は NaN を返しますが、`quantile*` の各バリアントは、その種類に応じて NaN かシーケンス型のデフォルト値のいずれかを返すことに注意してください。
+数値シーケンスが空の場合、`quantile` は NaN を返しますが、`quantile*` の各バリアントは、そのバリアントに応じて NaN またはシーケンス型のデフォルト値のいずれかを返すことに注意してください。
 
 **構文**
 
@@ -26,16 +26,16 @@ quantile(level)(expr)
 
 **引数**
 
-* `level` — 分位数のレベル。省略可能なパラメータ。0 から 1 の間の定数の浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。デフォルト値: 0.5。`level=0.5` の場合、この関数は [median](https://en.wikipedia.org/wiki/Median) を計算します。
-* `expr` — 結果が数値の [データ型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date)、または [DateTime](/sql-reference/data-types/datetime) となる、列値に対する式。
+* `level` — 分位点のレベル。省略可能なパラメーター。0 から 1 の間の定数浮動小数点数。`level` の値は `[0.01, 0.99]` の範囲で使用することを推奨します。デフォルト値: 0.5。`level=0.5` の場合、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+* `expr` — 数値[データ型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date) または [DateTime](/sql-reference/data-types/datetime) を結果とする、列値に対する式。
 
-**返される値**
+**戻り値**
 
-* 指定されたレベルの近似的な分位数。
+* 指定されたレベルの近似的な分位点。
 
-Type:
+型:
 
-* 数値データ型の入力の場合は [Float64](/sql-reference/data-types/float)。
+* 数値データ型入力に対しては [Float64](/sql-reference/data-types/float)。
 * 入力値が `Date` 型の場合は [Date](/sql-reference/data-types/date)。
 * 入力値が `DateTime` 型の場合は [DateTime](/sql-reference/data-types/datetime)。
 

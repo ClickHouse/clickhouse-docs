@@ -5,7 +5,7 @@ title: 'MongoDB'
 hide_title: true
 description: 'Страница, описывающая интеграцию с движком MongoDB'
 doc_type: 'reference'
-keywords: ['mongodb', 'nosql', 'интеграция', 'источник данных', 'документная база данных']
+keywords: ['mongodb', 'nosql', 'integration', 'data source', 'document database']
 ---
 
 import MongoDBEngine from '@site/docs/engines/table-engines/integrations/mongodb.md';

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Easypanel'
 slug: /integrations/easypanel
-keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
-description: '自身が管理するサーバーに ClickHouse をデプロイすることができます。'
+keywords: ['clickhouse', 'Easypanel', 'デプロイメント', '連携', 'インストール']
+description: 'Easypanel を使用して自前のサーバー上に ClickHouse をデプロイできます。'
 title: 'Easypanel で ClickHouse をデプロイする'
 doc_type: 'guide'
 ---
@@ -10,19 +10,19 @@ doc_type: 'guide'
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Easypanel を使った ClickHouse のデプロイ
+# Easypanel への ClickHouse のデプロイ
 
 <CommunityMaintainedBadge/>
 
-[Easypanel](https://easypanel.io) は、モダンなサーバー管理パネルです。Easypanel を使うことで、自身のサーバー上に ClickHouse をデプロイできます。
+[Easypanel](https://easypanel.io) はモダンなサーバーコントロールパネルです。これを利用して自身のサーバー上に ClickHouse をデプロイできます。
 
-[![Easypanel にデプロイ](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
+[![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
 
 
 ## 手順 {#instructions}
 
-1. クラウドプロバイダー上でUbuntuを実行する仮想マシンを作成します。
-2. Webサイトの手順に従ってEasypanelをインストールします。
+1. クラウドプロバイダー上で Ubuntu が動作する VM を作成します。
+2. Web サイトの手順に従って Easypanel をインストールします。
 3. 新しいプロジェクトを作成します。
-4. 専用テンプレートを使用してClickHouseをインストールします。
+4. 専用のテンプレートを使用して ClickHouse をインストールします。

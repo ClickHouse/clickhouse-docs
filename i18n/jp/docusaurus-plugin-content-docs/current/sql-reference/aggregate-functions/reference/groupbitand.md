@@ -1,5 +1,5 @@
 ---
-description: '一連の数値に対してビット単位の `AND` 演算を適用します。'
+description: '数値列に対してビットごとの `AND` を適用します。'
 sidebar_position: 147
 slug: /sql-reference/aggregate-functions/reference/groupbitand
 title: 'groupBitAnd'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitAnd
 
-一連の数値に対してビット単位の `AND` 演算を適用します。
+数値の集合に対してビット単位の `AND` 演算を行います。
 
 ```sql
 groupBitAnd(expr)
@@ -16,7 +16,7 @@ groupBitAnd(expr)
 
 **引数**
 
-`expr` – 評価結果が `UInt*` または `Int*` 型となる式。
+`expr` – `UInt*` または `Int*` 型を結果とする式。
 
 **戻り値**
 
@@ -24,7 +24,7 @@ groupBitAnd(expr)
 
 **例**
 
-テストデータ：
+テストデータ:
 
 ```text
 2進数      10進数
@@ -40,7 +40,7 @@ groupBitAnd(expr)
 SELECT groupBitAnd(num) FROM t
 ```
 
-ここで、`num` はテストデータを格納した列です。
+ここで、`num` はテストデータが入っている列です。
 
 結果：
 

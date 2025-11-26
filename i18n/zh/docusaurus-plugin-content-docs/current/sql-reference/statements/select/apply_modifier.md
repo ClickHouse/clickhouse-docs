@@ -1,5 +1,5 @@
 ---
-description: '本文档介绍 APPLY 修饰符，该修饰符允许对查询外层表表达式返回的每一行调用某个函数。'
+description: '本文档介绍 APPLY 修饰符，它允许对查询的外层表表达式返回的每一行调用某个函数。'
 sidebar_label: 'APPLY'
 slug: /sql-reference/statements/select/apply-modifier
 title: 'APPLY 修饰符'
@@ -11,17 +11,18 @@ doc_type: 'reference'
 
 # APPLY 修饰符 {#apply}
 
-> 允许对查询外部表表达式返回的每一行调用指定函数。
+> 允许对查询的外部表表达式返回的每一行调用某个函数。
 
 
-## 语法 {#syntax}
+
+## 语法
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
 
 
-## 示例 {#example}
+## 示例
 
 ```sql
 CREATE TABLE columns_transformers (i Int64, j Int16, k Int64) ENGINE = MergeTree ORDER by (i);

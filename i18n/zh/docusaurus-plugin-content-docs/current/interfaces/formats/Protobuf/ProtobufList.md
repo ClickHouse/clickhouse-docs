@@ -20,10 +20,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 描述 {#description}
 
-`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似,但数据行表示为包含在名为 "Envelope" 的固定消息中的子消息序列。
+`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似，但每一行表示为一系列子消息，这些子消息包含在一个名称固定为 "Envelope" 的消息中。
 
 
-## 使用示例 {#example-usage}
+
+## 示例用法
 
 例如：
 
@@ -35,7 +36,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-其中文件 `schemafile.proto` 的内容如下：
+其中 `schemafile.proto` 文件内容如下：
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";

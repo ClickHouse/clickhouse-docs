@@ -1,30 +1,30 @@
 ---
-description: '聚合函数，用于在指定网格上的时间序列数据上计算类似 PromQL 的 irate。'
+description: '在指定网格上的时间序列数据上计算类似 PromQL irate 的聚合函数。'
 sidebar_position: 223
 slug: /sql-reference/aggregate-functions/reference/timeSeriesInstantRateToGrid
 title: 'timeSeriesInstantRateToGrid'
 doc_type: 'reference'
 ---
 
-聚合函数，将时间序列数据作为时间戳和值的成对输入，并在由起始时间戳、结束时间戳和步长定义的规则时间网格上，从这些数据计算[类似 PromQL 的 irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate)。对于网格上的每一个点，用于计算 `irate` 的样本都限制在指定的时间窗口内。
+该聚合函数将时间序列数据作为时间戳与数值的成对输入，并在由起始时间戳、结束时间戳和步长定义的规则时间网格上，从这些数据中计算 [类似 PromQL 的 irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate)。对于网格上的每个点，用于计算 `irate` 的样本都在指定的时间窗口内进行选取。
 
 参数：
 
 * `start timestamp` - 指定网格的起始时间。
 * `end timestamp` - 指定网格的结束时间。
-* `grid step` - 指定网格的步长（以秒为单位）。
-* `staleness` - 指定被考虑样本允许的最大“陈旧度”（以秒为单位）。陈旧度窗口是一个左开右闭区间。
+* `grid step` - 指定网格的步长（单位：秒）。
+* `staleness` - 指定被纳入计算的样本允许的最大“陈旧度”（单位：秒）。陈旧度窗口是左开右闭区间。
 
 参数（Arguments）：
 
-* `timestamp` - 样本的时间戳。
-* `value` - 与该 `timestamp` 对应的时间序列值。
+* `timestamp` - 样本的时间戳
+* `value` - 与该 `timestamp` 对应的时间序列数值
 
-返回值：\
-指定网格上的 `irate` 值，类型为 `Array(Nullable(Float64))`。返回的数组对每个时间网格点包含一个值。如果在对应窗口内没有足够的样本来计算某个网格点的瞬时速率值，则该值为 NULL。
+返回值：
+指定网格上的 `irate` 值，类型为 `Array(Nullable(Float64))`。返回的数组中每个时间网格点对应一个值。如果在窗口内没有足够的样本为某个网格点计算瞬时速率值，则该值为 NULL。
 
-示例：\
-下面的查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210] 上计算 `irate` 值：
+示例：
+以下查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210] 上计算 `irate` 值：
 
 ```sql
 WITH
@@ -54,7 +54,7 @@ FROM
    └─────────────────────────────────────────┘
 ```
 
-还可以将多个时间戳和值样本以长度相同的数组形式传入。使用数组参数时，同一个查询如下所示：
+同样还可以将多个时间戳和值样本以长度相同的数组形式传入。使用数组参数的同一查询如下：
 
 ```sql
 WITH
@@ -68,5 +68,5 @@ SELECT timeSeriesInstantRateToGrid(start_ts, end_ts, step_seconds, window_second
 ```
 
 :::note
-此函数为实验性功能，可通过将 `allow_experimental_ts_to_grid_aggregate_function` 设置为 `true` 来启用。
+该函数为实验性功能，可通过将参数 `allow_experimental_ts_to_grid_aggregate_function` 设置为 `true` 来启用。
 :::

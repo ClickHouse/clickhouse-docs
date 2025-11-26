@@ -1,5 +1,5 @@
 ---
-description: '集約関数コンビネータのドキュメント'
+description: '集約関数コンビネータに関するリファレンス'
 sidebar_label: 'コンビネータ'
 sidebar_position: 37
 slug: /sql-reference/aggregate-functions/combinators
@@ -9,35 +9,37 @@ doc_type: 'reference'
 
 
 
-# 集約関数コンビネータ
+# 集約関数のコンビネーター
 
-集約関数の名前の末尾には接尾辞を付けることができ、これによって集約関数の動作が変わります。
+集約関数の名前には、接尾辞を付けることができます。これにより、その集約関数の挙動が変化します。
 
 
 
 ## -If {#-if}
 
-接尾辞 -If は、任意の集約関数名に付加することができます。この場合、集約関数は追加の引数として条件(Uint8型)を受け取ります。集約関数は、条件を満たす行のみを処理します。条件が一度も満たされなかった場合は、デフォルト値(通常はゼロまたは空文字列)を返します。
+サフィックス -If は、任意の集約関数名に付与できます。この場合、集約関数は追加の引数として条件（`UInt8` 型）を受け取ります。集約関数は、その条件が真となる行だけを処理します。条件が一度も真とならなかった場合、デフォルト値（通常はゼロまたは空文字列）を返します。
 
-例: `sumIf(column, cond)`、`countIf(cond)`、`avgIf(x, cond)`、`quantilesTimingIf(level1, level2)(x, cond)`、`argMinIf(arg, val, cond)` など。
+例: `sumIf(column, cond)`, `countIf(cond)`, `avgIf(x, cond)`, `quantilesTimingIf(level1, level2)(x, cond)`, `argMinIf(arg, val, cond)` など。
 
-条件付き集約関数を使用すると、サブクエリや `JOIN` を使用することなく、複数の条件に対する集約を一度に計算できます。例えば、条件付き集約関数を使用してセグメント比較機能を実装することができます。
+条件付き集約関数を使用すると、サブクエリや `JOIN` を使わずに、複数の条件に対する集約値を同時に計算できます。たとえば、条件付き集約関数を用いてセグメント比較機能を実装できます。
+
 
 
 ## -Array {#-array}
 
--Array接尾辞は、任意の集約関数に付加できます。この場合、集約関数は'T'型の引数ではなく'Array(T)'型(配列)の引数を受け取ります。集約関数が複数の引数を受け取る場合、これらは同じ長さの配列である必要があります。配列を処理する際、集約関数は元の集約関数と同様に、すべての配列要素に対して動作します。
+-Array サフィックスは、任意の集約関数に付加できます。この場合、集約関数は引数として型 'T' ではなく、型 'Array(T)'（配列）を取ります。集約関数が複数の引数を受け取る場合、これらの引数はすべて長さが等しい配列でなければなりません。配列を処理する際、集約関数は、すべての配列要素に対して元の集約関数と同様に動作します。
 
-例1: `sumArray(arr)` - すべての'arr'配列のすべての要素を合計します。この例では、より簡潔に`sum(arraySum(arr))`と記述できます。
+例 1: `sumArray(arr)` - すべての 'arr' 配列に含まれるすべての要素を合計します。この例では、より単純に `sum(arraySum(arr))` と書くこともできます。
 
-例2: `uniqArray(arr)` – すべての'arr'配列内の一意な要素の数をカウントします。これはより簡単な方法で実現できます: `uniq(arrayJoin(arr))`。ただし、クエリに'arrayJoin'を追加できない場合もあります。
+例 2: `uniqArray(arr)` – すべての 'arr' 配列に含まれる一意な要素の数を数えます。これは、より簡単な方法として `uniq(arrayJoin(arr))` でも実行できますが、常にクエリに 'arrayJoin' を追加できるとは限りません。
 
--Ifと-Arrayは組み合わせることができます。ただし、'Array'を先に、次に'If'を配置する必要があります。例: `uniqArrayIf(arr, cond)`、`quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、'cond'引数は配列になりません。
+-If と -Array は組み合わせて使用できます。ただし、'Array' を先に、次に 'If' を付ける必要があります。例: `uniqArrayIf(arr, cond)`, `quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、'cond' 引数は配列型の引数にはなりません。
 
 
-## -Map {#-map}
 
--Map接尾辞は任意の集約関数に付加できます。これにより、Map型を引数として受け取り、指定された集約関数を使用してマップの各キーの値を個別に集約する集約関数が作成されます。結果もMap型となります。
+## -Map
+
+`-Map` サフィックスは、任意の集約関数に付加して使用できます。これにより、引数として `Map` 型を受け取り、指定した集約関数を用いてマップ内の各キーに対応する値を個別に集約する集約関数が作成されます。結果も `Map` 型となります。
 
 **例**
 
@@ -69,9 +71,9 @@ GROUP BY timeslot;
 ```
 
 
-## -SimpleState {#-simplestate}
+## -SimpleState
 
-このコンビネータを適用すると、集約関数は同じ値を異なる型で返します。これは [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md) であり、[AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルで使用するためにテーブルに格納できます。
+このコンビネータを適用すると、集約関数は同じ値を返しますが、型が異なるようになります。これは、テーブルに保存して [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルで使用できる [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md) 型です。
 
 **構文**
 
@@ -81,7 +83,7 @@ GROUP BY timeslot;
 
 **引数**
 
-- `x` — 集約関数のパラメータ。
+* `x` — 集約関数のパラメータ。
 
 **戻り値**
 
@@ -95,7 +97,7 @@ GROUP BY timeslot;
 WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ```
 
-結果:
+結果：
 
 ```text
 ┌─toTypeName(c)────────────────────────┬─c─┐
@@ -106,49 +108,54 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 ## -State {#-state}
 
-このコンビネータを適用すると、集約関数は結果値([uniq](/sql-reference/aggregate-functions/reference/uniq)関数のユニーク値の数など)を返さず、集約の中間状態を返します(`uniq`の場合、ユニーク値の数を計算するためのハッシュテーブル)。これは`AggregateFunction(...)`型であり、さらなる処理に使用したり、後で集約を完了するためにテーブルに保存したりできます。
+このコンビネータを適用すると、集約関数は結果の値（[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数における一意な値の個数など）ではなく、集約の中間状態（`uniq` では、一意な値の数を計算するためのハッシュテーブル）を返します。これは `AggregateFunction(...)` 型であり、さらなる処理に利用したり、テーブルに保存して後から集約処理を完了させたりできます。
 
 :::note
-中間状態におけるデータの順序が変わる可能性があるため、-MapStateは同じデータに対して不変ではないことに注意してください。ただし、これはデータの取り込みには影響しません。
+同一のデータに対しても、-MapState は中間状態におけるデータの順序が変化しうるため不変ではないことに注意してください。ただし、これはこのデータのインジェストには影響しません。
 :::
 
-これらの状態を扱うには、以下を使用します:
+これらの状態を扱うには、次を使用します。
 
-- [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md)テーブルエンジン
-- [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation)関数
-- [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate)関数
-- [-Merge](#-merge)コンビネータ
-- [-MergeState](#-mergestate)コンビネータ
+- [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルエンジン
+- [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation) 関数
+- [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate) 関数
+- [-Merge](#-merge) コンビネータ
+- [-MergeState](#-mergestate) コンビネータ
+
 
 
 ## -Merge {#-merge}
 
-このコンビネータを適用すると、集約関数は中間集約状態を引数として受け取り、それらの状態を結合して集約を完了し、結果の値を返します。
+このコンビネータを適用すると、集約関数は引数として中間集約状態を受け取り、それらを結合して集約を完了し、その結果の値を返します。
+
 
 
 ## -MergeState {#-mergestate}
 
--Mergeコンビネータと同じ方法で中間集計状態をマージします。ただし、結果の値を返すのではなく、-Stateコンビネータと同様に中間集計状態を返します。
+`-Merge` コンビネータと同様に中間集約状態をマージします。ただし、結果の値は返さず、`-State` コンビネータと同様に中間集約状態を返します。
+
 
 
 ## -ForEach {#-foreach}
 
-テーブル用の集計関数を配列用の集計関数に変換します。対応する配列要素を集計し、結果の配列を返します。例えば、配列 `[1, 2]`、`[3, 4, 5]`、`[6, 7]` に対して `sumForEach` を適用すると、対応する配列要素を加算した結果 `[10, 13, 5]` が返されます。
+テーブルに対する集約関数を、対応する配列要素ごとに集約を行い、その結果を配列で返す配列向けの集約関数に変換します。たとえば、配列 `[1, 2]`、`[3, 4, 5]`、`[6, 7]` に対する `sumForEach` は、対応する配列要素を加算した結果として `[10, 13, 5]` を返します。
+
 
 
 ## -Distinct {#-distinct}
 
-引数の一意な組み合わせは、それぞれ一度だけ集計されます。重複する値は無視されます。
-例: `sum(DISTINCT x)` (または `sumDistinct(x)`)、`groupArray(DISTINCT x)` (または `groupArrayDistinct(x)`)、`corrStable(DISTINCT x, y)` (または `corrStableDistinct(x, y)`) など。
+引数の一意な組み合わせごとに、集約は 1 回だけ行われます。重複する値は無視されます。
+例: `sum(DISTINCT x)`（または `sumDistinct(x)`）、`groupArray(DISTINCT x)`（または `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（または `corrStableDistinct(x, y)`）など。
 
 
-## -OrDefault {#-ordefault}
+
+## -OrDefault
 
 集約関数の動作を変更します。
 
-集約関数に入力値がない場合、このコンビネータは戻り値のデータ型のデフォルト値を返します。空の入力データを受け取ることができる集約関数に適用されます。
+集約関数に入力値がまったくない場合、このコンビネータを使用すると、その戻り値のデータ型に対するデフォルト値を返します。空の入力データを取り得る集約関数に適用できます。
 
-`-OrDefault`は他のコンビネータと組み合わせて使用できます。
+`-OrDefault` は他のコンビネータと併用できます。
 
 **構文**
 
@@ -158,23 +165,23 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 **引数**
 
-- `x` — 集約関数のパラメータ。
+* `x` — 集約関数のパラメータ。
 
 **戻り値**
 
-集約対象がない場合、集約関数の戻り値型のデフォルト値を返します。
+集約する対象が何もない場合、集約関数の戻り値の型に対するデフォルト値を返します。
 
-型は使用する集約関数によって異なります。
+型は使用する集約関数に依存します。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
 
-結果:
+結果：
 
 ```text
 ┌─avg(number)─┬─avgOrDefault(number)─┐
@@ -182,7 +189,7 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 └─────────────┴──────────────────────┘
 ```
 
-また、`-OrDefault`は他のコンビネータと組み合わせて使用することもできます。これは集約関数が空の入力を受け付けない場合に便利です。
+また `-OrDefault` は他のコンビネータと組み合わせて使用できます。これは、集約関数が空の入力を受け付けない場合に有用です。
 
 クエリ:
 
@@ -194,7 +201,7 @@ FROM
 )
 ```
 
-結果:
+結果：
 
 ```text
 ┌─avgOrDefaultIf(x, greater(x, 10))─┐
@@ -203,13 +210,13 @@ FROM
 ```
 
 
-## -OrNull {#-ornull}
+## -OrNull
 
 集約関数の動作を変更します。
 
-このコンビネータは、集約関数の結果を[Nullable](../../sql-reference/data-types/nullable.md)データ型に変換します。集約関数が計算する値を持たない場合、[NULL](/operations/settings/formats#input_format_null_as_default)を返します。
+このコンビネータは、集約関数の結果を [Nullable](../../sql-reference/data-types/nullable.md) データ型に変換します。集約関数に集計対象の値が存在しない場合は、[NULL](/operations/settings/formats#input_format_null_as_default) を返します。
 
-`-OrNull`は他のコンビネータと組み合わせて使用できます。
+`-OrNull` は他のコンビネータと組み合わせて使用できます。
 
 **構文**
 
@@ -219,26 +226,26 @@ FROM
 
 **引数**
 
-- `x` — 集約関数のパラメータ。
+* `x` — 集約関数のパラメーター。
 
-**返される値**
+**戻り値**
 
-- `Nullable`データ型に変換された集約関数の結果。
-- 集約するものがない場合は`NULL`。
+* 集約関数の結果を `Nullable` データ型に変換した値。
+* 集約対象の値が存在しない場合は `NULL`。
 
 型: `Nullable(集約関数の戻り値の型)`。
 
 **例**
 
-集約関数の末尾に`-orNull`を追加します。
+集約関数名の末尾に `-orNull` を追加します。
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE number > 10
 ```
 
-結果:
+結果：
 
 ```text
 ┌─sumOrNull(number)─┬─toTypeName(sumOrNull(number))─┐
@@ -246,7 +253,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 └───────────────────┴───────────────────────────────┘
 ```
 
-また、`-OrNull`は他のコンビネータと組み合わせて使用できます。これは、集約関数が空の入力を受け付けない場合に便利です。
+`-OrNull` は他のコンビネータと組み合わせて使用することもできます。これは、集約関数が空の入力を許容しない場合に有用です。
 
 クエリ:
 
@@ -258,7 +265,7 @@ FROM
 )
 ```
 
-結果:
+結果：
 
 ```text
 ┌─avgOrNullIf(x, greater(x, 10))─┐
@@ -267,9 +274,9 @@ FROM
 ```
 
 
-## -Resample {#-resample}
+## -Resample
 
-データをグループに分割し、それぞれのグループ内でデータを個別に集計できます。グループは、1つのカラムの値を区間に分割することで作成されます。
+データをグループに分割し、その各グループ内で個別にデータを集計できるようにします。グループは、1 列の値を区間ごとに分割することで作成されます。
 
 ```sql
 <aggFunction>Resample(start, end, step)(<aggFunction_params>, resampling_key)
@@ -277,22 +284,22 @@ FROM
 
 **引数**
 
-- `start` — `resampling_key`値の全体区間の開始値。
-- `stop` — `resampling_key`値の全体区間の終了値。全体区間には`stop`値は含まれません`[start, stop)`。
-- `step` — 全体区間を部分区間に分割するためのステップ。`aggFunction`は各部分区間に対して独立して実行されます。
-- `resampling_key` — データを区間に分割するために使用される値を持つカラム。
-- `aggFunction_params` — `aggFunction`のパラメータ。
+* `start` — `resampling_key` の値に対する対象となる全区間の開始値。
+* `stop` — `resampling_key` の値に対する対象となる全区間の終了値。この全区間には `stop` の値は含まれず、`[start, stop)` となります。
+* `step` — 全区間をサブ区間に分割する際のステップ幅。`aggFunction` はそれぞれのサブ区間ごとに独立して実行されます。
+* `resampling_key` — データを区間に分割するために使用される値を持つカラム。
+* `aggFunction_params` — `aggFunction` のパラメータ。
 
 **戻り値**
 
-- 各部分区間に対する`aggFunction`の結果の配列。
+* 各サブ区間に対する `aggFunction` の結果の配列。
 
 **例**
 
-次のデータを持つ`people`テーブルを考えます:
+次のデータを持つ `people` テーブルを想定します。
 
 ```text
-┌─name───┬─age─┬─wage─┐
+┌─名前───┬─年齢─┬─賃金─┐
 │ John   │  16 │   10 │
 │ Alice  │  30 │   15 │
 │ Mary   │  35 │    8 │
@@ -302,9 +309,9 @@ FROM
 └────────┴─────┴──────┘
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間にある人々の名前を取得しましょう。年齢には整数表現を使用するため、`[30, 59]`と`[60,74]`の区間の年齢が得られます。
+`[30,60)` および `[60,75)` の区間に年齢が含まれる人の名前を取得しましょう。年齢は整数で表現しているため、実際には `[30, 59]` および `[60,74]` の区間の年齢が対象になります。
 
-名前を配列に集計するために、[groupArray](/sql-reference/aggregate-functions/reference/grouparray)集計関数を使用します。この関数は1つの引数を取ります。今回の場合は`name`カラムです。`groupArrayResample`関数は、年齢別に名前を集計するために`age`カラムを使用します。必要な区間を定義するために、`groupArrayResample`関数に`30, 75, 30`の引数を渡します。
+名前を配列に集約するには、集約関数 [groupArray](/sql-reference/aggregate-functions/reference/grouparray) を使用します。この関数は 1 つの引数を取ります。ここでは `name` 列を渡します。`groupArrayResample` 関数では、`age` 列を使用して年齢ごとに名前を集約します。必要な区間を定義するために、`groupArrayResample` 関数には引数として `30, 75, 30` を渡します。
 
 ```sql
 SELECT groupArrayResample(30, 75, 30)(name, age) FROM people
@@ -316,11 +323,11 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM people
 └───────────────────────────────────────────────┘
 ```
 
-結果を見てみましょう。
+結果を確認します。
 
-`John`は若すぎるためサンプルから除外されています。他の人々は指定された年齢区間に従って分布しています。
+`John` は年齢が若すぎるため、サンプルには含まれていません。他の人たちは、指定した年齢区間に従って分布しています。
 
-次に、指定された年齢区間における人数の合計と平均賃金を計算してみましょう。
+次に、指定した年齢区間ごとに、総人数と平均賃金を求めましょう。
 
 ```sql
 SELECT
@@ -338,16 +345,18 @@ FROM people
 
 ## -ArgMin {#-argmin}
 
-接尾辞 -ArgMin は、任意の集約関数名に付加できます。この場合、集約関数は追加の引数を受け取ります。この引数は比較可能な任意の式である必要があります。集約関数は、指定された追加の式が最小値となる行のみを処理します。
+接尾辞 -ArgMin は、任意の集約関数の名前に付加できます。この場合、その集約関数は追加の引数を 1 つ受け取り、この引数には任意の比較可能な式を指定できます。集約関数は、指定された追加の式が最小値となる行だけを処理します。
 
-例: `sumArgMin(column, expr)`、`countArgMin(expr)`、`avgArgMin(x, expr)` など。
+例: `sumArgMin(column, expr)`, `countArgMin(expr)`, `avgArgMin(x, expr)` など。
+
 
 
 ## -ArgMax {#-argmax}
 
--ArgMin接尾辞と同様ですが、指定された追加式の最大値を持つ行のみを処理します。
+サフィックス -ArgMin と同様ですが、指定された追加の式に対して最大値を持つ行だけを処理します。
+
 
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseでの集約コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

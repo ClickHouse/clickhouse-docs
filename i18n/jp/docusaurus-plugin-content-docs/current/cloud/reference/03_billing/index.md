@@ -2,17 +2,17 @@
 slug: /cloud/manage/billing
 title: '請求'
 description: '請求に関する目次ページ。'
-keywords: ['billing', 'payment thresholds', 'trouble shooting', 'marketplace']
+keywords: ['請求', '支払いしきい値', 'トラブルシューティング', 'マーケットプレイス']
 doc_type: 'landing-page'
 ---
 
-このセクションでは、請求に関連するトピックを扱っており、次のページが含まれます。
+本セクションでは請求に関連するトピックを扱い、次のページが含まれます。
 
 | Page                                  | Description                                                          |
 |---------------------------------------|----------------------------------------------------------------------|
-| [Overview](/cloud/manage/billing/overview)                       | 料金の例と請求に関する FAQ。                      | 
-| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 支払いのしきい値の仕組みとその調整方法について説明します。 |
-| [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | 一般的な請求の問題のトラブルシューティング方法を説明します。                                  |
-| [Marketplace](/cloud/manage/marketplace/)                    | マーケットプレイス関連トピックへのランディングページ。                 |
+| [Overview](/cloud/manage/billing/overview)                       | 請求に関する料金例と FAQ。                      | 
+| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 支払いしきい値の仕組みとその調整方法について説明します。 |
+| [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | よくある請求関連の問題のトラブルシューティング。                                  |
+| [Marketplace](/cloud/manage/marketplace/)                    | マーケットプレイス関連トピックのランディングページ。                 |
 
 https://clickhouse.com/docs/cloud/

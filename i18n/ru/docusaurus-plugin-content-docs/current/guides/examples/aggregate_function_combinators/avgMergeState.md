@@ -14,22 +14,24 @@ import TabItem from '@theme/TabItem';
 # avgMergeState {#avgMergeState}
 
 
+
 ## Описание {#description}
 
 Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state)
-может применяться к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
+может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
 для объединения частичных агрегатных состояний типа `AverageFunction(avg, T)` и
-возвращает новое промежуточное состояние агрегации.
+формирования нового промежуточного агрегатного состояния.
 
 
-## Пример использования {#example-usage}
+
+## Пример использования
 
 Комбинатор `MergeState` особенно полезен в сценариях многоуровневой агрегации,
-когда требуется объединить предварительно агрегированные состояния и сохранить их в виде
-состояний (а не финализировать) для дальнейшей обработки. Для иллюстрации рассмотрим
-пример, в котором мы преобразуем отдельные метрики производительности серверов
-в иерархические агрегации на нескольких уровнях: уровень сервера → уровень региона
-→ уровень дата-центра.
+когда требуется объединять предварительно агрегированные состояния и сохранять их
+в виде состояний (а не финализировать) для дальнейшей обработки. Для примера
+рассмотрим случай, в котором мы преобразуем отдельные метрики производительности
+серверов в иерархические агрегации на нескольких уровнях: уровень сервера →
+уровень региона → уровень датацентра.
 
 Сначала создадим таблицу для хранения исходных данных:
 
@@ -46,8 +48,8 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-Создадим целевую таблицу агрегации на уровне сервера и определим инкрементное
-материализованное представление, выполняющее роль триггера вставки в неё:
+Мы создадим целевую агрегирующую таблицу на уровне сервера и определим инкрементальное
+материализованное представление, выполняющее роль триггера вставки для неё:
 
 ```sql
 CREATE TABLE server_performance
@@ -71,7 +73,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-Сделаем то же самое для уровней региона и дата-центра:
+Сделаем то же самое для уровня региона и уровня дата-центра:
 
 ```sql
 CREATE TABLE region_performance
@@ -92,7 +94,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- таблица и материализованное представление уровня дата-центра
+-- таблица и материализованное представление на уровне дата-центра
 
 CREATE TABLE datacenter_performance
 (
@@ -111,7 +113,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-Затем вставим примеры исходных данных в исходную таблицу:
+Затем вставим пример сырых данных в исходную таблицу:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -124,7 +126,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-Напишем три запроса для каждого из уровней:
+Мы напишем по три запроса для каждого уровня:
 
 
 <Tabs>
@@ -171,7 +173,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     ```
   </TabItem>
 
-  <TabItem value="Datacenter level" label="Уровень дата-центра">
+  <TabItem value="Datacenter level" label="Уровень датацентра">
     ```sql
     SELECT
         datacenter,
@@ -199,7 +201,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Давайте ещё раз проверим производительность на уровне датацентра. Обратите внимание, что вся цепочка агрегации обновилась автоматически:
+Давайте ещё раз проверим производительность на уровне дата-центра. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
 
 ```sql
 SELECT
@@ -218,8 +220,7 @@ ORDER BY datacenter;
 ```
 
 
-## См. также {#see-also}
-
+## Смотрите также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

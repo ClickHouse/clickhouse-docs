@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/janai
-sidebar_label: 'Jan.ai を統合する'
-title: 'Jan.ai と連携した ClickHouse MCP サーバーのセットアップ'
+sidebar_label: 'Jan.ai との連携'
+title: 'Jan.ai と ClickHouse MCP サーバーのセットアップ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Jan.ai と ClickHouse MCP サーバーを連携してセットアップする方法を説明します。'
+description: 'このガイドでは、Jan.ai を ClickHouse MCP サーバーと連携させるためのセットアップ方法について説明します。'
 keywords: ['AI', 'Jan.ai', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -27,81 +27,85 @@ import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
 
-# Jan.aiでClickHouse MCPサーバーを使用する
+# Jan.ai で ClickHouse MCP Server を使用する
 
-> このガイドでは、[Jan.ai](https://jan.ai/docs)でClickHouse MCPサーバーを使用する方法を説明します。
+> このガイドでは、ClickHouse MCP Server を [Jan.ai](https://jan.ai/docs) と組み合わせて使用する方法について説明します。
 
 <VerticalStepper headerLevel="h2">
 
 
-## Jan.aiのインストール {#install-janai}
+## Jan.ai をインストールする {#install-janai}
 
-Jan.aiは、完全オフラインで動作するオープンソースのChatGPT代替ツールです。
-Jan.aiは[Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または[Linux](https://jan.ai/docs/desktop/linux)向けにダウンロードできます。
+Jan.ai は、100% オフラインで動作するオープンソースの ChatGPT の代替ツールです。
+[Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または [Linux](https://jan.ai/docs/desktop/linux) 向けに Jan.ai をダウンロードできます。
 
-ネイティブアプリケーションのため、ダウンロード後すぐに起動できます。
-
-
-## Jan.aiにLLMを追加する {#add-llm-to-janai}
-
-設定メニューからモデルを有効にできます。
-
-OpenAIを有効にするには、以下のようにAPIキーを指定する必要があります:
-
-<Image img={OpenAIModels} alt='OpenAIモデルを有効にする' size='md' />
+ネイティブアプリなので、ダウンロードが完了したらすぐに起動できます。
 
 
-## MCPサーバーの有効化 {#enable-mcp-servers}
 
-本ドキュメント執筆時点では、MCPサーバーはJan.aiの実験的機能です。
-実験的機能のトグルを切り替えることで有効化できます:
+## Jan.ai に LLM を追加する {#add-llm-to-janai}
 
-<Image img={MCPServers} alt='MCPサーバーを有効化' size='md' />
+設定メニューからモデルを有効化できます。
 
-トグルを押すと、左側のメニューに`MCP Servers`が表示されます。
+OpenAI を有効にするには、以下のように API キーを入力する必要があります。
 
-
-## ClickHouse MCPサーバーの設定 {#configure-clickhouse-mcp-server}
-
-`MCP Servers`メニューをクリックすると、接続可能なMCPサーバーの一覧が表示されます:
-
-<Image img={MCPServersList} alt='MCPサーバー一覧' size='md' />
-
-これらのサーバーはデフォルトですべて無効になっていますが、トグルをクリックすることで有効化できます。
-
-ClickHouse MCPサーバーをインストールするには、`+`アイコンをクリックし、以下の内容でフォームに入力します:
-
-<Image img={MCPForm} alt='MCPサーバーの追加' size='md' />
-
-入力が完了したら、ClickHouse Serverがまだ有効になっていない場合は、トグルを切り替えます:
-
-<Image img={MCPEnabled} alt='MCPサーバーの有効化' size='md' />
-
-これでClickHouse MCPサーバーのツールがチャットダイアログに表示されます:
-
-<Image img={MCPTool} alt='ClickHouse MCPサーバーのツール' size='md' />
+<Image img={OpenAIModels} alt="OpenAI モデルを有効化" size="md"/>
 
 
-## Jan.aiを使用したClickHouse MCPサーバーとの対話 {#chat-to-clickhouse-mcp-server}
 
-ClickHouseに保存されているデータについて対話してみましょう。
-質問してみます:
+## MCP サーバーを有効化する {#enable-mcp-servers}
+
+本記事の執筆時点では、MCP Servers は Jan.ai における実験的な機能です。
+実験的機能のトグルスイッチをオンにすることで有効化できます。
+
+<Image img={MCPServers} alt="MCP サーバーを有効化" size="md"/>
+
+トグルをオンにすると、左側のメニューに `MCP Servers` が表示されます。
+
+
+
+## ClickHouse MCP Server を構成する {#configure-clickhouse-mcp-server}
+
+`MCP Servers` メニューをクリックすると、接続可能な MCP サーバーの一覧が表示されます。
+
+<Image img={MCPServersList} alt="MCP サーバー一覧" size="md"/>
+
+これらのサーバーはすべてデフォルトで無効になっていますが、トグルをクリックして有効化できます。
+
+ClickHouse MCP Server をインストールするには、`+` アイコンをクリックし、次の情報でフォームに入力します。
+
+<Image img={MCPForm} alt="MCP サーバーを追加" size="md"/>
+
+入力が完了したら、まだ有効になっていない場合は ClickHouse Server のトグルをオンにする必要があります。
+
+<Image img={MCPEnabled} alt="MCP サーバーを有効化" size="md"/>
+
+これで、ClickHouse MCP Server のツールがチャットダイアログ上に表示されるようになります。
+
+<Image img={MCPTool} alt="ClickHouse MCP Server ツール" size="md"/>
+
+
+
+## Jan.ai で ClickHouse MCP サーバーとチャットする {#chat-to-clickhouse-mcp-server}
+
+ClickHouse に保存されているデータについて、会話してみましょう。
+質問を入力してみます：
 
 <Image img={Question} alt='質問' size='md' />
 
-Jan.aiはツールを呼び出す前に確認を求めます:
+ツールを呼び出す前に、Jan.ai から確認が求められます：
 
-<Image img={MCPToolConfirm} alt='ツールの確認' size='md' />
+<Image img={MCPToolConfirm} alt='ツール呼び出しの確認' size='md' />
 
-次に、実行されたツール呼び出しのリストが表示されます:
+その後、実行されたツール呼び出しの一覧が表示されます：
 
 <Image img={ToolsCalled} alt='呼び出されたツール' size='md' />
 
-ツール呼び出しをクリックすると、呼び出しの詳細を確認できます:
+ツール呼び出しをクリックすると、その呼び出し内容の詳細を確認できます：
 
-<Image img={ToolsCalledExpanded} alt='呼び出されたツール(展開)' size='md' />
+<Image img={ToolsCalledExpanded} alt='ツール呼び出しの詳細' size='md' />
 
-そして、その下に結果が表示されます:
+その下に、実行結果が表示されます：
 
 <Image img={Result} alt='結果' size='md' />
 

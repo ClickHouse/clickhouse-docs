@@ -10,36 +10,36 @@ doc_type: 'reference'
 ---
 
 | 入力 | 出力  | エイリアス |
-|-------|---------|--------|
-| ✗     | ✔       |        |
+|------|-------|------------|
+| ✗    | ✔     |            |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress)と同様ですが、すべての値が文字列に変換されます。
-すべてのデータ型を一貫した文字列表現で扱う必要がある場合に有用です。
+[`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress) と同様ですが、すべての値が文字列に変換されます。
+すべてのデータ型を一貫した文字列表現にする必要がある場合に便利です。
 
-主な特徴:
+主な特長:
+- `JSONCompactEachRowWithProgress` と同じ構造
+- すべての値が文字列として表現される（数値や配列なども、すべて引用符付きの文字列）
+- 進捗状況の更新、合計値、例外処理を含む
+- 文字列ベースのデータを好む、または必要とするクライアントに有用
 
-- `JSONCompactEachRowWithProgress`と同じ構造
-- すべての値が文字列として表現されます(数値、配列などもすべて引用符で囲まれた文字列になります)
-- 進捗状況の更新、合計、例外処理を含みます
-- 文字列ベースのデータを必要とする、または優先するクライアントに有用です
 
 
-## 使用例 {#example-usage}
+## 使用例
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT *
 FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2)
 LIMIT 5
 FORMAT JSONCompactStringsEachRowWithProgress
 ```
 
-```response title="レスポンス"
+```response title="Response"
 {"meta":[{"name":"a","type":"Array(Int8)"},{"name":"d","type":"Decimal(9, 4)"},{"name":"c","type":"Tuple(DateTime64(3), UUID)"}]}
 {"row":["[-8]", "46848.5225", "('2064-06-11 14:00:36.578','b06f4fa1-22ff-f84f-a1b7-a5807d983ae6')"]}
 {"row":["[-76]", "-85331.598", "('2038-06-16 04:10:27.271','2bb0de60-3a2c-ffc0-d7a7-a5c88ed8177c')"]}
@@ -51,4 +51,4 @@ FORMAT JSONCompactStringsEachRowWithProgress
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

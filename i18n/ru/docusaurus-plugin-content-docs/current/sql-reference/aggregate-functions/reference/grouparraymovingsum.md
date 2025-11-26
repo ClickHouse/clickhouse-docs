@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет скользящую сумму для входных значений.'
+description: 'Вычисляет движущуюся сумму входных значений.'
 sidebar_position: 144
 slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
 title: 'groupArrayMovingSum'
@@ -8,14 +8,14 @@ doc_type: 'reference'
 
 # groupArrayMovingSum
 
-Вычисляет скользящую сумму по входным значениям.
+Вычисляет скользящую сумму входных значений.
 
 ```sql
-groupArrayMovingSum(числа_для_суммирования)
-groupArrayMovingSum(размер_окна)(числа_для_суммирования)
+groupArrayMovingSum(numbers_for_summing)
+groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-Функция может принимать размер окна в качестве параметра. Если он не указан, функция использует размер окна, равный количеству строк в столбце.
+Функция может принимать размер окна в качестве параметра. Если он не указан, функция использует размер окна, равный числу строк в столбце.
 
 **Аргументы**
 

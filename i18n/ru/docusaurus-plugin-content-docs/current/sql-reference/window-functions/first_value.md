@@ -1,5 +1,5 @@
 ---
-description: 'Документация об оконной функции first_value'
+description: 'Документация для оконной функции first_value'
 sidebar_label: 'first_value'
 sidebar_position: 3
 slug: /sql-reference/window-functions/first_value
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # first&#95;value
 
-Возвращает первое значение, вычисленное в пределах упорядоченного окна. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать, чтобы изменить это поведение.
+Возвращает первое значение, вычисленное в пределах упорядоченного окна. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для переопределения этого поведения.
 
 **Синтаксис**
 
@@ -25,12 +25,12 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 :::note
 Использование необязательного модификатора `RESPECT NULLS` после `first_value(column_name)` гарантирует, что аргументы `NULL` не будут пропускаться.
-См. раздел [Обработка NULL](../aggregate-functions/index.md/#null-processing) для получения дополнительной информации.
+См. раздел [NULL processing](../aggregate-functions/index.md/#null-processing) для получения дополнительной информации об обработке значений `NULL`.
 
 Псевдоним: `firstValueRespectNulls`
 :::
 
-Более подробную информацию о синтаксисе оконных функций см. в разделе [Оконные функции — Синтаксис](./index.md/#syntax).
+Более подробную информацию о синтаксисе оконных функций см. в разделе: [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 

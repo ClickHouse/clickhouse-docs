@@ -1,23 +1,23 @@
 ---
-description: '来自 Sensor.Community 的超过 200 亿条数据记录，这是一个由社区贡献者驱动的全球传感器网络，致力于创建开放环境数据。'
+description: '来自 Sensor.Community 的超过 200 亿条传感器观测记录，这是一个由社区贡献者驱动的全球传感器网络，致力于创建开放环境数据。'
 sidebar_label: '环境传感器数据'
 slug: /getting-started/example-datasets/environmental-sensors
 title: '环境传感器数据'
 doc_type: 'guide'
-keywords: ['环境传感器', 'Sensor.Community', '空气质量数据', '环境数据', '快速入门']
+keywords: ['environmental sensors', 'Sensor.Community', 'air quality data', 'environmental data', 'getting started']
 ---
 
 import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
-[Sensor.Community](https://sensor.community/en/) 是一个由贡献者驱动的全球传感器网络，用于创建开放环境数据。数据由分布在全球各地的传感器采集。任何人都可以购买一个传感器，并将其放置在任意位置。用于下载数据的 API 位于 [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) 上，数据在 [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) 许可下免费提供。
+[Sensor.Community](https://sensor.community/en/) 是一个由贡献者驱动的全球传感器网络，用于采集并开放环境数据（Open Environmental Data）。数据由遍布全球的传感器采集。任何人都可以购买一个传感器并将其放置在任意位置。用于下载数据的 API 位于 [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)，并在 [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) 许可下免费提供。
 
 :::important
-该数据集包含超过 200 亿条记录，因此除非你的资源能够处理这样的数据量，否则请谨慎直接复制粘贴下面的命令。下面的命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的一个 **生产** 实例上执行的。
+该数据集包含超过 200 亿条记录，因此除非您的资源可以处理这种规模的数据量，否则请谨慎直接复制粘贴下面的命令。下面的命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产**实例上执行的。
 :::
 
-1. 数据存放在 S3 中，因此我们可以使用 `s3` 表函数从文件创建一张表。我们也可以直接在其上查询这些数据。在尝试将数据插入 ClickHouse 之前，先看几行数据：
+1. 数据存放在 S3 中，因此我们可以使用 `s3` 表函数根据这些文件创建一张表。我们也可以直接在其所在位置查询这些数据。在尝试将数据插入 ClickHouse 之前，先看几行数据：
 
 ```sql
 SELECT *
@@ -29,7 +29,7 @@ LIMIT 10
 SETTINGS format_csv_delimiter = ';';
 ```
 
-数据存储在 CSV 文件中，但使用分号作为分隔符。行数据如下所示：
+数据存储在 CSV 文件中，但使用分号作为分隔符。行的格式如下：
 
 
 ```response
@@ -47,7 +47,7 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. 我们将在 ClickHouse 中使用以下 `MergeTree` 表来存储数据：
+2. 我们将使用以下 `MergeTree` 表用于在 ClickHouse 中存储数据：
 
 
 ```sql
@@ -77,9 +77,9 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloud 服务中有一个名为 `default` 的集群。我们将使用 `s3Cluster` 表函数，它会在集群中的各个节点上并行读取 S3 文件。（如果你没有集群，只需使用 `s3` 函数并去掉集群名称。）
+3. ClickHouse Cloud 服务中有一个名为 `default` 的集群。我们将使用 `s3Cluster` 表函数，它会在集群中的各个节点上并行读取 S3 文件。（如果你没有集群，只需使用 `s3` 函数并移除集群名称。）
 
-此查询会运行一段时间——未压缩的数据量约为 1.67 TB：
+此查询将会执行一段时间——未压缩的数据量大约为 1.67T：
 
 ```sql
 INSERT INTO sensors
@@ -117,13 +117,13 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-这是返回结果——显示了行数和处理速度。其写入速度超过每秒 600 万行！
+以下是返回结果——展示了行数和处理速度。它的写入速率超过每秒 600 万行！
 
 ```response
-返回 0 行。耗时：3419.330 秒。已处理 206.9 亿行，1.67 TB（605 万行/秒，488.52 MB/秒）
+返回 0 行。耗时:3419.330 秒。已处理 206.9 亿行,1.67 TB(每秒 605 万行,488.52 MB/秒)
 ```
 
-4. 让我们看看 `sensors` 表需要多少磁盘存储空间：
+4. 来看一下 `sensors` 表需要多少磁盘空间：
 
 ```sql
 SELECT
@@ -140,7 +140,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67T 被压缩到仅 310 GiB，共计 206.9 亿行：
+1.67T 的数据被压缩到 310 GiB，共 206.9 亿行：
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -148,7 +148,7 @@ ORDER BY size DESC;
 └───────────┴────────────┴──────────────┴────────────┴─────────────┴────────────┘
 ```
 
-5. 既然数据已经导入 ClickHouse，让我们开始分析。请注意，随着部署的传感器数量不断增加，数据量也会随时间增长：
+5. 现在数据已经写入 ClickHouse，让我们来分析一下。请注意，随着部署的传感器越来越多，数据量会随时间增加：
 
 ```sql
 SELECT
@@ -159,11 +159,11 @@ GROUP BY date
 ORDER BY date ASC;
 ```
 
-我们可以在 SQL Console 中创建图表来可视化结果：
+我们可以在 SQL 控制台中创建图表来可视化结果：
 
 <Image img={no_events_per_day} size="md" alt="每天的事件数量" />
 
-6. 此查询用于统计过于炎热且潮湿的天数：
+6. 此查询会统计过于炎热潮湿的天数：
 
 ```sql
 WITH
@@ -174,7 +174,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-下面是结果的可视化：
+下图展示了结果：
 
 
 <Image img={sensors_02} size="md" alt="炎热潮湿的天气"/>

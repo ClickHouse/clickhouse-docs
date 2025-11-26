@@ -4,8 +4,8 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве вы узнаете, как выполнять запросы к данным в Microsoft OneLake.'
-keywords: ['OneLake', 'Data Lake', 'Fabric']
+description: 'В этом руководстве мы покажем, как выполнять запросы к данным в Microsoft OneLake.'
+keywords: ['OneLake', 'озеро данных', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -14,37 +14,38 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (OneLake, Unity, Glue, Polaris и т. д.). В этом руководстве описаны шаги, которые позволят вам выполнять запросы к данным, хранящимся в Microsoft OneLake, с помощью ClickHouse и [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview).
+ClickHouse поддерживает интеграцию с несколькими каталогами (OneLake, Unity, Glue, Polaris и т. д.). В этом руководстве показано, как выполнять запросы к данным, хранящимся в Microsoft OneLake, с использованием ClickHouse и [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview).
 
-Microsoft OneLake поддерживает несколько форматов таблиц для lakehouse-хранилища. В ClickHouse вы можете выполнять запросы к таблицам Iceberg.
+Microsoft OneLake поддерживает несколько форматов таблиц для своей архитектуры lakehouse. С помощью ClickHouse вы можете выполнять запросы к таблицам Iceberg.
 
 :::note
-Поскольку эта функция находится в бета-версии, её необходимо включить с помощью:
+Поскольку эта функция находится на стадии бета-тестирования, её необходимо включить с помощью:
 `SET allow_database_iceberg = 1;`
 :::
 
 
-## Сбор требований OneLake {#gathering-requirements}
+## Сбор необходимых параметров для OneLake {#gathering-requirements}
 
-Перед выполнением запросов к таблице в Microsoft Fabric необходимо собрать следующую информацию:
+Прежде чем выполнять запросы к таблице в Microsoft Fabric, вам необходимо собрать следующую информацию:
 
-- Идентификатор арендатора OneLake (ваш Entra ID)
-- Идентификатор клиента
-- Секрет клиента
-- Идентификатор хранилища и идентификатор элемента данных
+- Идентификатор арендатора OneLake (tenant ID, ваш Entra ID)
+- Идентификатор приложения (client ID)
+- Секрет клиента (client secret)
+- Идентификатор склада данных (warehouse ID) и идентификатор элемента данных (data item ID)
 
-См. [документацию Microsoft OneLake](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) для получения справки по поиску этих значений.
+Обратитесь к [документации Microsoft OneLake](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites), чтобы узнать, как получить эти значения.
 
 
-## Создание подключения между OneLake и ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
-Имея необходимую информацию, указанную выше, вы можете создать подключение между Microsoft OneLake и ClickHouse, но сначала необходимо включить каталоги:
+## Создание подключения между OneLake и ClickHouse
+
+Имея необходимую выше информацию, вы можете создать подключение между Microsoft OneLake и ClickHouse, но перед этим нужно включить каталоги:
 
 ```sql
 SET allow_database_iceberg=1
 ```
 
-### Подключение к OneLake {#connect-onelake}
+### Подключение к OneLake
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -60,9 +61,9 @@ onelake_client_secret = '<client_secret>'
 ```
 
 
-## Запросы к OneLake с помощью ClickHouse {#querying-onelake-using-clickhouse}
+## Выполнение запросов к OneLake с помощью ClickHouse
 
-Теперь, когда соединение установлено, можно начать выполнять запросы к OneLake:
+Теперь, когда соединение установлено, вы можете начать выполнять запросы к OneLake:
 
 ```sql
 SHOW TABLES FROM onelake_catalog
@@ -78,9 +79,9 @@ Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
    └───────────────────────────────┘
 ```
 
-Если вы используете клиент Iceberg, будут отображаться только таблицы Delta с включенным Uniform:
+Если вы используете клиент Iceberg, будут отображаться только таблицы Delta, для которых включён Uniform:
 
-Для запроса к таблице:
+Чтобы выполнить запрос к таблице:
 
 ```sql
 SELECT *
@@ -115,16 +116,15 @@ source_file:           green_tripdata_2017-05.parquet
 ```
 
 :::note Требуются обратные кавычки
-Обратные кавычки необходимы, так как ClickHouse не поддерживает более одного пространства имен.
+Обратные кавычки требуются, так как ClickHouse не поддерживает более одного пространства имен.
 :::
 
-Для просмотра DDL таблицы:
+Чтобы просмотреть DDL таблицы:
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
 Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
-
 ```
 
 
@@ -162,9 +162,9 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
 ```
 
 
-## Загрузка данных из Data Lake в ClickHouse {#loading-data-from-onelake-into-clickhouse}
+## Загрузка данных из озера данных (Data Lake) в ClickHouse
 
-Для загрузки данных из OneLake в ClickHouse:
+Если вам нужно загрузить данные из OneLake в ClickHouse:
 
 ```sql
 CREATE TABLE trips
@@ -177,6 +177,6 @@ Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
 Ok.
 
-0 строк в наборе. Прошло: 32.570 сек. Обработано 11.74 млн строк, 275.37 МБ (360.36 тыс. строк/с., 8.45 МБ/с.)
-Пиковое использование памяти: 1.31 ГиБ.
+0 rows in set. Elapsed: 32.570 sec. Processed 11.74 million rows, 275.37 MB (360.36 thousand rows/s., 8.45 MB/s.)
+Peak memory usage: 1.31 GiB.
 ```

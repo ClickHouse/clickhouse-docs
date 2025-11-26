@@ -9,33 +9,33 @@ doc_type: 'reference'
 
 
 
-## flipCoordinates {#flipcoordinates}
+## flipCoordinates
 
-`flipCoordinates`関数は、点、リング、ポリゴン、またはマルチポリゴンの座標を入れ替えます。これは、例えば緯度と経度の順序が異なる座標系間で変換する際に便利です。
+`flipCoordinates` 関数は、ポイント、リング、ポリゴン、またはマルチポリゴンの座標を入れ替えます。これは、たとえば緯度と経度の順序が異なる座標系間で変換する場合に役立ちます。
 
 ```sql
 flipCoordinates(coordinates)
 ```
 
-### 入力パラメータ {#input-parameters}
+### 入力パラメータ
 
-- `coordinates` — 点`(x, y)`を表すタプル、またはリング、ポリゴン、マルチポリゴンを表すそのようなタプルの配列。サポートされる入力型は以下の通りです:
-  - [**Point**](../../data-types/geo.md#point): `x`と`y`が[Float64](../../data-types/float.md)値であるタプル`(x, y)`
-  - [**Ring**](../../data-types/geo.md#ring): 点の配列`[(x1, y1), (x2, y2), ...]`
-  - [**Polygon**](../../data-types/geo.md#polygon): リングの配列`[ring1, ring2, ...]`(各リングは点の配列)
-  - [**Multipolygon**](../../data-types/geo.md#multipolygon): ポリゴンの配列`[polygon1, polygon2, ...]`
+* `coordinates` — 点 `(x, y)` を表すタプル、またはリング、ポリゴン、マルチポリゴンを表すそのようなタプルからなる配列。サポートされる入力型は次のとおりです:
+  * [**Point**](../../data-types/geo.md#point): `x` と `y` が [Float64](../../data-types/float.md) 値であるタプル `(x, y)`。
+  * [**Ring**](../../data-types/geo.md#ring): `[(x1, y1), (x2, y2), ...]` のような点の配列。
+  * [**Polygon**](../../data-types/geo.md#polygon): `[ring1, ring2, ...]` のようなリングの配列で、各リングは点の配列です。
+  * [**Multipolygon**](../../data-types/geo.md#multipolygon): `[polygon1, polygon2, ...]` のようなポリゴンの配列です。
 
-### 戻り値 {#returned-value}
+### 返り値
 
-この関数は、座標が入れ替えられた入力を返します。例:
+この関数は、座標を入れ替えた結果を返します。たとえば:
 
-- 点`(x, y)`は`(y, x)`になります
-- リング`[(x1, y1), (x2, y2)]`は`[(y1, x1), (y2, x2)]`になります
-- ポリゴンやマルチポリゴンのようなネストされた構造は再帰的に処理されます
+* 点 `(x, y)` は `(y, x)` になります。
+* リング `[(x1, y1), (x2, y2)]` は `[(y1, x1), (y2, x2)]` になります。
+* ポリゴンやマルチポリゴンのようなネストされた構造は再帰的に処理されます。
 
-### 例 {#examples}
+### 例
 
-#### 例1: 単一の点の入れ替え {#example-1}
+#### 例 1: 単一の点の座標を入れ替える
 
 ```sql
 SELECT flipCoordinates((10, 20)) AS flipped_point
@@ -47,7 +47,7 @@ SELECT flipCoordinates((10, 20)) AS flipped_point
 └───────────────┘
 ```
 
-#### 例2: 点の配列(リング)の入れ替え {#example-2}
+#### 例 2: 点の配列（リング）を反転する
 
 ```sql
 SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
@@ -59,7 +59,7 @@ SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
 └───────────────────────────┘
 ```
 
-#### 例3: ポリゴンの入れ替え {#example-3}
+#### 例 3：多角形の反転
 
 ```sql
 SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_polygon
@@ -71,7 +71,7 @@ SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_
 └──────────────────────────────────────────────┘
 ```
 
-#### 例4: マルチポリゴンの入れ替え {#example-4}
+#### 例 4: マルチポリゴンを反転する
 
 ```sql
 SELECT flipCoordinates([[[10, 20], [30, 40]], [[50, 60], [70, 80]]]) AS flipped_multipolygon

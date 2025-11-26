@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'DWARF フォーマットのドキュメント'
+description: 'DWARF 形式のドキュメント'
 input_format: true
 keywords: ['DWARF']
 output_format: false
@@ -17,54 +17,54 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`DWARF`フォーマットは、ELFファイル(実行可能ファイル、ライブラリ、またはオブジェクトファイル)からDWARFデバッグシンボルを解析します。
-`dwarfdump`に似ていますが、はるかに高速(数百MB/秒)でSQLをサポートしています。
-`.debug_info`セクション内の各デバッグ情報エントリ(DIE)に対して1行を生成し、
-ツリー内の子要素のリストを終了するためにDWARFエンコーディングが使用する「null」エントリも含まれます。
+`DWARF` 形式は、ELF ファイル（実行ファイル、ライブラリ、またはオブジェクトファイル）から DWARF デバッグシンボルをパースします。  
+これは `dwarfdump` と似ていますが、はるかに高速（毎秒数百MB）であり、さらに SQL をサポートしています。  
+`.debug_info` セクション内の各 Debug Information Entry（DIE）ごとに 1 行を生成し、  
+DWARF エンコーディングがツリー内の子リストの終端に使用する「null」エントリも含みます。
 
 :::info
-`.debug_info`は_ユニット_で構成されており、これはコンパイル単位に対応します:
+`.debug_info` は *unit* から成り、それぞれがコンパイル単位に対応します:
+- 各 unit は *DIE* のツリーであり、ルートとして `compile_unit` DIE を持ちます。
+- 各 DIE は *tag* と *attribute* のリストを持ちます。
+- 各 attribute は *name* と *value*（および値のエンコード方法を指定する *form*）を持ちます。
 
-- 各ユニットは*DIE*のツリーであり、`compile_unit` DIEをルートとします。
-- 各DIEは_タグ_と_属性_のリストを持ちます。
-- 各属性は_名前_と_値_を持ちます(また、値のエンコード方法を指定する_形式_も持ちます)。
+DIE はソースコード中の対象を表し、その *tag* によって何を表す DIE なのかが分かります。例えば次のようなものがあります:
 
-DIEはソースコードからの要素を表し、その_タグ_がどのような種類の要素であるかを示します。例えば、以下があります:
+- 関数（tag = `subprogram`）
+- クラス / 構造体 / 列挙体（`class_type` / `structure_type` / `enumeration_type`）
+- 変数（`variable`）
+- 関数引数（`formal_parameter`）
 
-- 関数(tag = `subprogram`)
-- クラス/構造体/列挙型(`class_type`/`structure_type`/`enumeration_type`)
-- 変数(`variable`)
-- 関数引数(`formal_parameter`)。
-
-ツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIEは、そのクラスのメソッドを表す`subprogram` DIEを含むことができます。
+このツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIE は、そのクラスのメソッドを表す `subprogram` DIE を子として含むことができます。
 :::
 
-`DWARF`フォーマットは以下のカラムを出力します:
+`DWARF` 形式は次の列を出力します:
 
-- `offset` - `.debug_info`セクション内のDIEの位置
-- `size` - エンコードされたDIEのバイト数(属性を含む)
-- `tag` - DIEの型。慣例的な「DW*TAG*」接頭辞は省略されています
-- `unit_name` - このDIEを含むコンパイル単位の名前
-- `unit_offset` - `.debug_info`セクション内でこのDIEを含むコンパイル単位の位置
-- `ancestor_tags` - ツリー内の現在のDIEの祖先のタグの配列。最も内側から最も外側の順
-- `ancestor_offsets` - 祖先のオフセット。`ancestor_tags`と並行
-- 利便性のために属性配列から複製されたいくつかの一般的な属性:
+- `offset` - `.debug_info` セクション内での DIE の位置
+- `size` - エンコードされた DIE のバイト数（attribute を含む）
+- `tag` - DIE の種別。慣例的な `DW_TAG_` 接頭辞は省略されます
+- `unit_name` - この DIE を含むコンパイル単位の名前
+- `unit_offset` - この DIE を含むコンパイル単位の `.debug_info` セクション内での位置
+- `ancestor_tags` - ツリー内で現在の DIE の祖先にあたる tag の配列。内側から外側への順
+- `ancestor_offsets` - 祖先の offset。`ancestor_tags` と並行な配列
+- いくつかの一般的な attribute を利便性のために attribute 配列から複製した列:
   - `name`
-  - `linkage_name` - マングルされた完全修飾名。通常は関数のみが持ちます(ただし、すべての関数ではありません)
-  - `decl_file` - このエンティティが宣言されたソースコードファイルの名前
-  - `decl_line` - このエンティティが宣言されたソースコード内の行番号
-- 属性を記述する並行配列:
-  - `attr_name` - 属性の名前。慣例的な「DW*AT*」接頭辞は省略されています
-  - `attr_form` - 属性のエンコードおよび解釈方法。慣例的なDW*FORM*接頭辞は省略されています
-  - `attr_int` - 属性の整数値。属性が数値を持たない場合は0
-  - `attr_str` - 属性の文字列値。属性が文字列値を持たない場合は空
+  - `linkage_name` - マングル済みの完全修飾名。通常は関数のみが持ちます（ただしすべての関数ではありません）
+  - `decl_file` - このエンティティが宣言されたソースコードファイル名
+  - `decl_line` - このエンティティが宣言されたソースコード上の行番号
+- attribute を表す並行配列:
+  - `attr_name` - attribute の名前。慣例的な `DW_AT_` 接頭辞は省略されます
+  - `attr_form` - attribute のエンコードおよび解釈方法。慣例的な `DW_FORM_` 接頭辞は省略されます
+  - `attr_int` - attribute の整数値。数値を持たない attribute の場合は 0
+  - `attr_str` - attribute の文字列値。文字列値を持たない attribute の場合は空文字列
 
 
-## 使用例 {#example-usage}
 
-`DWARF`フォーマットを使用して、最も多くの関数定義を持つコンパイル単位を見つけることができます（テンプレートのインスタンス化やインクルードされたヘッダーファイルからの関数を含む）：
+## 使用例
 
-```sql title="クエリ"
+`DWARF` フォーマットを使用すると、テンプレートのインスタンス化やインクルードされたヘッダーファイル内の関数を含め、最も多くの関数定義を含むコンパイル単位を特定できます。
+
+```sql title="Query"
 SELECT
     unit_name,
     count() AS c
@@ -75,15 +75,15 @@ ORDER BY c DESC
 LIMIT 3
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─unit_name──────────────────────────────────────────────────┬─────c─┐
 │ ./src/Core/Settings.cpp                                    │ 28939 │
 │ ./src/AggregateFunctions/AggregateFunctionSumMap.cpp       │ 23327 │
 │ ./src/AggregateFunctions/AggregateFunctionUniqCombined.cpp │ 22649 │
 └────────────────────────────────────────────────────────────┴───────┘
 
-3 rows in set. Elapsed: 1.487 sec. Processed 139.76 million rows, 1.12 GB (93.97 million rows/s., 752.77 MB/s.)
-Peak memory usage: 271.92 MiB.
+3行のセット。経過時間: 1.487秒。処理済み: 1億3976万行、1.12 GB (9397万行/秒、752.77 MB/秒)
+ピークメモリ使用量: 271.92 MiB。
 ```
 
 

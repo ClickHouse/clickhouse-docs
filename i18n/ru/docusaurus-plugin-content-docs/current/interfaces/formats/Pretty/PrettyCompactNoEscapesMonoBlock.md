@@ -11,20 +11,21 @@ doc_type: 'reference'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход | Алиас |
-| ---- | ----- | ----- |
-| ✗    | ✔     |       |
+| Вход | Выход | Псевдоним |
+| ---- | ----- | --------- |
+| ✗    | ✔     |           |
 
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что буферизирует до `10 000` строк,
-а затем выводит их в виде единой таблицы, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что до `10,000` строк накапливаются в буфере, а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
 
 
-## Пример использования {#example-usage}
+
+## Примеры использования {#example-usage}
 
 
-## Настройки формата {#format-settings}
 
-<PrettyFormatSettings />
+## Параметры форматирования {#format-settings}
+
+<PrettyFormatSettings/>

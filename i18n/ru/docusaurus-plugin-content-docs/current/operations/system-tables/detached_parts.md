@@ -9,8 +9,8 @@ doc_type: 'reference'
 
 Содержит информацию об отсоединённых частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Столбец `reason` указывает, по какой причине часть была отсоединена.
 
-Для частей, отсоединённых пользователем, причина не указана (значение пустое). Такие части можно снова присоединить с помощью команды [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
+Для частей, отсоединённых пользователем, причина не указана. Такие части можно снова присоединить командой [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
 
-Описание остальных столбцов см. в разделе [system.parts](../../operations/system-tables/parts.md).
+Описание остальных столбцов см. в [system.parts](../../operations/system-tables/parts.md).
 
-Если имя части некорректно, значения некоторых столбцов могут быть `NULL`. Такие части можно удалить с помощью команды [ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/partition#drop-detached-partitionpart).
+Если имя части некорректно, значения некоторых столбцов могут быть `NULL`. Такие части можно удалить командой [ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/partition#drop-detached-partitionpart).

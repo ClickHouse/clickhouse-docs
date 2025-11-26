@@ -1,27 +1,28 @@
 # Установка ClickHouse с помощью tgz-архивов
 
-> Рекомендуется использовать официальные предкомпилированные `tgz`-архивы для всех дистрибутивов Linux, в которых невозможна установка пакетов `deb` или `rpm`.
+> Рекомендуется использовать официальные предкомпилированные `tgz`-архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
 
 <VerticalStepper>
 
 
 ## Загрузка и установка последней стабильной версии {#install-latest-stable}
 
-Необходимую версию можно загрузить с помощью `curl` или `wget` из репозитория https://packages.clickhouse.com/tgz/.
-После этого загруженные архивы следует распаковать и установить с помощью установочных скриптов.
+Необходимую версию можно скачать с помощью `curl` или `wget` из репозитория по адресу https://packages.clickhouse.com/tgz/.
+После этого загруженные архивы нужно распаковать и установить с помощью установочных скриптов.
 
 Ниже приведён пример установки последней стабильной версии.
 
 :::note
-Для промышленных окружений рекомендуется использовать последнюю `stable`-версию.
+Для продуктивных (production) сред рекомендуется использовать последнюю стабильную версию (`stable`).
 Номер релиза можно найти на этой [странице GitHub](https://github.com/ClickHouse/ClickHouse/tags)
 с постфиксом `-stable`.
 :::
 
 
-## Получение последней версии ClickHouse {#get-latest-version}
 
-Получите последнюю версию ClickHouse из GitHub и сохраните её в переменной `LATEST_VERSION`.
+## Получите последнюю версию ClickHouse
+
+Получите последнюю версию ClickHouse с GitHub и сохраните её в переменной `LATEST_VERSION`.
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -30,7 +31,7 @@ export LATEST_VERSION
 ```
 
 
-## Определение архитектуры системы {#detect-system-architecture}
+## Определите архитектуру системы
 
 Определите архитектуру системы и задайте переменную ARCH соответствующим образом:
 
@@ -38,14 +39,14 @@ export LATEST_VERSION
 case $(uname -m) in
   x86_64) ARCH=amd64 ;;         # Для 64-битных процессоров Intel/AMD
   aarch64) ARCH=arm64 ;;        # Для 64-битных процессоров ARM
-  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Выход при неподдерживаемой архитектуре
+  *) echo "Неизвестная архитектура $(uname -m)"; exit 1 ;; # Выход при неподдерживаемой архитектуре
 esac
 ```
 
 
-## Загрузка tar-архивов для каждого компонента ClickHouse {#download-tarballs}
+## Загрузка tar-архивов для каждого компонента ClickHouse
 
-Загрузите tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается загрузить пакеты для конкретной архитектуры, а затем переходит к универсальным.
+Скачайте tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается использовать пакеты, специфичные для архитектуры, затем при необходимости переходит к универсальным.
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -58,9 +59,9 @@ done
 
 ## Извлечение и установка пакетов {#extract-and-install}
 
-Выполните следующие команды для извлечения и установки пакетов:
-
+Выполните следующие команды для распаковки и установки этих пакетов:
 - `clickhouse-common-static`
+
 
 
 ```bash
@@ -74,7 +75,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# Извлечение и установка пакета с отладочными символами
+# Извлеките и установите пакет отладочных символов
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -84,7 +85,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# Извлечение и установка пакета сервера с конфигурацией
+# Извлечение и установка серверного пакета с конфигурацией
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure

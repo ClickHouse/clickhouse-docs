@@ -1,33 +1,35 @@
 ---
-description: '详细介绍如何在 Azure Blob Storage 端点上执行备份和恢复'
+description: '介绍如何在 Azure Blob Storage 端点上执行备份和恢复'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: '在 Azure Blob Storage 上执行备份与恢复'
+title: '使用 Azure Blob Storage 进行备份与恢复'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# 备份/恢复到 Azure Blob 存储 {#backup-to-azure-blob-storage}
+# 使用 Azure Blob Storage 进行备份/恢复 {#backup-to-azure-blob-storage}
+
 
 
 ## 语法 {#syntax}
 
-<Syntax />
+<Syntax/>
 
 
-## 配置 BACKUP / RESTORE 使用 AzureBlobStorage 端点 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
-要将备份写入 AzureBlobStorage 容器,需要以下信息:
+## 配置 BACKUP / RESTORE 以使用 AzureBlobStorage 端点
 
-- AzureBlobStorage 端点连接字符串 / URL
-- 容器
-- 路径
-- 账户名称(如果指定了 URL)
-- 账户密钥(如果指定了 URL)
+要将备份写入 AzureBlobStorage 容器，需要以下信息：
 
-备份目标位置的指定格式如下:
+* AzureBlobStorage 端点连接字符串 / URL，
+* 容器，
+* 路径，
+* 账户名称（如果指定了 URL），
+* 账户密钥（如果指定了 URL）
+
+备份目标将被指定为：
 
 ```sql
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')

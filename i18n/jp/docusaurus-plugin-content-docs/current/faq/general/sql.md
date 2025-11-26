@@ -1,43 +1,43 @@
 ---
-title: 'ClickHouse はどのような SQL 構文をサポートしていますか?'
+title: 'ClickHouse はどのような SQL 構文をサポートしていますか？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/sql
 description: 'ClickHouse は SQL 構文を 100% サポートしています'
 doc_type: 'reference'
-keywords: ['SQL syntax', 'ANSI SQL']
+keywords: ['SQL 構文', 'ANSI SQL']
 ---
 
 # ClickHouse はどのような SQL 構文をサポートしていますか？
 
-ClickHouse は、次のような機能を含む SQL 構文を完全にサポートしています。
+ClickHouse は SQL 構文を完全にサポートしており、次のような機能が含まれます。
 
-- SQL/JSON および JSON データ型 (SQL-2023)
+- SQL/JSON と JSON データ型 (SQL-2023)
 - ウィンドウ関数 (SQL-2003)
-- 共通テーブル式および再帰クエリ (SQL-1999)
+- 共通テーブル式 (CTE) と再帰クエリ (SQL-1999)
 - ROLLUP、CUBE、GROUPING SETS (SQL-1999)
-- RBAC を完全にサポート (SQL-1999)
+- RBAC の完全サポート (SQL-1999)
 - 相関サブクエリ (SQL-1992)
 
 このサポートは、TPC-H および TPC-DS ベンチマーク、ならびに SQLTest によって検証されています。
 
-ClickHouse は、以下のような多くの機能を ISO/IEC によって標準化される前に導入しました。
+ClickHouse は、ISO/IEC によって標準化される以前から、次のような多くの機能を導入してきました。
 
 - 条件付き集約関数
 - `any` 集約関数
-- `least` および `greatest`
+- `least` と `greatest`
 - `GROUP BY ALL`
-- エイリアスの拡張的な活用
-- 数値リテラルでのアンダースコアの使用
+- エイリアスの拡張的な利用
+- 数値リテラル内でのアンダースコア
 
-ClickHouse は、使い勝手を大きく向上させる機能を数多く導入することで SQL を拡張しています。
+ClickHouse は、次のような大きな利便性向上機能を導入することで、SQL を拡張しています。
 
 - エイリアスの自由な利用
-- WITH 句内部でのエイリアス
+- WITH 句内でのエイリアス
 - 集約関数コンビネータ
 - パラメータ化された集約関数
 - 近似集約関数
-- ネイティブおよびビッグ整数の数値型、拡張精度の Decimal
+- ネイティブおよびビッグ整数の数値データ型、拡張精度の decimal
 - 配列操作のための高階関数
 - ARRAY JOIN 句および arrayJoin 関数
 - 配列集約
@@ -46,8 +46,8 @@ ClickHouse は、使い勝手を大きく向上させる機能を数多く導入
 - AS OF JOIN
 - ANY/ALL JOIN
 - JSON の自然な構文
-- カラムリスト末尾のトレーリングカンマ
-- FROM ... SELECT という句順序
-- 型安全なクエリパラメータおよびパラメータ化されたビュー
+- カラムリスト末尾のカンマ
+- FROM ... SELECT の句順
+- 型安全なクエリパラメータおよびパラメータ化ビュー
 
-これらの一部は、今後の SQL 標準に取り込まれる可能性がありますが、ClickHouse のユーザーはすでに利用できます。
+これらの一部は、今後の SQL 標準に取り込まれる可能性がありますが、ClickHouse ではすでに利用可能です。

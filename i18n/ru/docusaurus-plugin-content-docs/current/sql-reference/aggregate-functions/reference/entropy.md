@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # entropy
 
-Вычисляет [энтропию по Шеннону](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) для столбца значений.
+Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) для столбца значений.
 
 **Синтаксис**
 
@@ -18,11 +18,11 @@ entropy(val)
 
 **Аргументы**
 
-* `val` — столбец со значениями любого типа.
+* `val` — столбец значений любого типа.
 
 **Возвращаемое значение**
 
-* Энтропия Шеннона.
+* энтропия Шеннона.
 
 Тип: [Float64](../../../sql-reference/data-types/float.md).
 

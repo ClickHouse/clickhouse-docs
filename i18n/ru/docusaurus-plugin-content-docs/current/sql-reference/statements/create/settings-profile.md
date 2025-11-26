@@ -1,13 +1,13 @@
 ---
-description: 'Документация по профилям настроек'
+description: 'Документация по профилю настроек'
 sidebar_label: 'ПРОФИЛЬ НАСТРОЕК'
 sidebar_position: 43
 slug: /sql-reference/statements/create/settings-profile
-title: 'CREATE SETTINGS PROFILE — создание профиля настроек'
+title: 'CREATE SETTINGS PROFILE'
 doc_type: 'reference'
 ---
 
-Создаёт [профили настроек](../../../guides/sre/user-management/index.md#settings-profiles-management), которые можно назначить пользователю или роли.
+Создает [профили настроек](../../../guides/sre/user-management/index.md#settings-profiles-management), которые могут быть назначены пользователю или роли.
 
 Синтаксис:
 
@@ -19,10 +19,10 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
     [TO {{role1 | user1 [, role2 | user2 ...]} | NONE | ALL | ALL EXCEPT {role1 | user1 [, role2 | user2 ...]}}]
 ```
 
-Клауза `ON CLUSTER` позволяет создавать профили настроек на кластере; см. раздел [Распределённый DDL](../../../sql-reference/distributed-ddl.md).
+Клауза `ON CLUSTER` позволяет создавать профили настроек в кластере, см. [распределённый DDL](../../../sql-reference/distributed-ddl.md).
 
 
-## Пример {#example}
+## Пример
 
 Создайте пользователя:
 
@@ -30,7 +30,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
 CREATE USER robin IDENTIFIED BY 'password';
 ```
 
-Создайте профиль настроек `max_memory_usage_profile` со значением и ограничениями для параметра `max_memory_usage` и назначьте его пользователю `robin`:
+Создайте профиль настроек `max_memory_usage_profile` с заданным значением и ограничениями для параметра `max_memory_usage` и назначьте его пользователю `robin`:
 
 ```sql
 CREATE

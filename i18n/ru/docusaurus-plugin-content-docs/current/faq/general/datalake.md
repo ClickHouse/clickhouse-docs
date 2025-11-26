@@ -1,19 +1,19 @@
 ---
-title: 'Поддерживает ли ClickHouse озёра данных?'
+title: 'Поддерживает ли ClickHouse озера данных?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/datalake
-description: 'ClickHouse поддерживает озёра данных, включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive'
+description: 'ClickHouse поддерживает озера данных, включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive'
 doc_type: 'reference'
-keywords: ['data lake', 'lakehouse']
+keywords: ['озеро данных', 'lakehouse']
 ---
 
-# Поддерживает ли ClickHouse озёра данных (Data Lakes)?
+# Поддерживает ли ClickHouse озёра данных?
 
-ClickHouse поддерживает озёра данных, включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive.
+ClickHouse поддерживает озёра данных (Data Lakes), включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive.
 
-Он обеспечивает поддержку **чтения** и **записи**, полную совместимость с отсечением по партициям (partition pruning), отсечением на основе статистики, эволюцией схемы, позиционными удалениями, удалениями по равенству (equality deletes), time travel и интроспекцией.
+Он поддерживает операции **чтения** и **записи** и обеспечивает полную совместимость с отсечением по партициям (partition pruning), отсечением на основе статистики (statistics-based pruning), эволюцией схемы (schema evolution), позиционными удалениями (positional deletes), удалениями по равенству (equality deletes), time travel и интроспекцией.
 
-Озёра данных в ClickHouse поддерживаются с помощью каталогов **Unity**, **AWS Glue**, **REST**, **Polaris** и **Hive Metastore**, а также на уровне отдельных таблиц.
+Озёра данных в ClickHouse поддерживаются с каталогами **Unity**, **AWS Glue**, **Rest**, **Polaris** и **Hive Metastore**, а также с отдельными таблицами.
 
-Производительность запросов к озёрам данных отличается высочайшим уровнем благодаря распределённой обработке, эффективному нативному Parquet-ридеру и кэшированию файлов с данными.
+Производительность запросов по озёрам данных на высочайшем уровне благодаря распределённой обработке, эффективному встроенному считывателю Parquet и кэшированию файлов данных.

@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Neon Postgres'
-description: '将 Neon Postgres 实例设置为 ClickPipes 的数据源'
+description: '将 Neon Postgres 实例配置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/neon-postgres
-title: 'Neon Postgres 源设置指南'
+title: 'Neon Postgres 数据源配置指南'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', '数据导入', '实时同步']
+keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 ---
 
 import neon_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-commands.png'
@@ -17,16 +17,18 @@ import Image from '@theme/IdealImage';
 
 # Neon Postgres 源端设置指南
 
-本文档介绍如何设置 Neon Postgres，以便在 ClickPipes 中将其用作复制源。
-在进行本次设置前，请确保你已登录 [Neon 控制台](https://console.neon.tech/app/projects)。
+本文档介绍如何配置 Neon Postgres，使其可在 ClickPipes 中用作数据复制源。
+在进行本次设置前，请确保已登录到 [Neon 控制台](https://console.neon.tech/app/projects)。
 
 
 
-## 创建具有权限的用户 {#creating-a-user-with-permissions}
+## 创建具有权限的用户
 
-让我们为 ClickPipes 创建一个新用户,并赋予其适用于 CDC 的必要权限,同时创建一个用于复制的发布。
+为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
+并创建一个我们将用于复制的发布（publication）。
 
-为此,您可以前往 **SQL Editor** 选项卡。在这里,我们可以运行以下 SQL 命令:
+为此，你可以前往 **SQL Editor** 选项卡。
+在这里，我们可以运行以下 SQL 命令：
 
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
@@ -34,45 +36,30 @@ import Image from '@theme/IdealImage';
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Give replication permission to the USER
+-- 为用户授予复制权限
   ALTER USER clickpipes_user REPLICATION;
 
--- Create a publication. We will use this when creating the mirror
+-- 创建发布。创建镜像时将使用此发布
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-<Image
-  size='lg'
-  img={neon_commands}
-  alt='用户和发布命令'
-  border
-/>
+<Image size="lg" img={neon_commands} alt="用户和发布命令" border />
 
-点击 **Run** 以创建发布和用户。
+点击 **Run**，即可创建一个发布和一个用户。
 
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制
 
-在 Neon 中,您可以通过 UI 界面启用逻辑复制。这是 ClickPipes CDC 复制数据的必要条件。
-进入 **Settings** 选项卡,然后转到 **Logical Replication** 部分。
+在 Neon 中，可以通过 UI 启用逻辑复制。这是 ClickPipes 的 CDC 复制数据所必需的。
+前往 **Settings** 选项卡，然后进入 **Logical Replication** 部分。
 
-<Image
-  size='lg'
-  img={neon_enable_replication}
-  alt='启用逻辑复制'
-  border
-/>
+<Image size="lg" img={neon_enable_replication} alt="启用逻辑复制" border />
 
-点击 **Enable** 按钮即可完成此处的设置。启用后,您将看到如下成功消息。
+点击 **Enable** 即可完成此步骤。启用后，应会看到如下成功提示。
 
-<Image
-  size='lg'
-  img={neon_enabled_replication}
-  alt='逻辑复制已启用'
-  border
-/>
+<Image size="lg" img={neon_enabled_replication} alt="逻辑复制已启用" border />
 
-接下来验证您的 Neon Postgres 实例中的以下设置:
+接下来在 Neon Postgres 实例中验证以下设置：
 
 ```sql
 SHOW wal_level; -- 应为 logical
@@ -81,24 +68,24 @@ SHOW max_replication_slots; -- 应为 10
 ```
 
 
-## IP 白名单（适用于 Neon 企业版）{#ip-whitelisting-for-neon-enterprise-plan}
+## IP 白名单（适用于 Neon 企业计划） {#ip-whitelisting-for-neon-enterprise-plan}
+如果您使用的是 Neon 企业计划，可以将 [ClickPipes IP](../../index.md#list-of-static-ips) 加入白名单，从而允许 ClickPipes 将数据复制到您的 Neon Postgres 实例。
+为此，您可以点击 **Settings** 选项卡并进入 **IP Allow** 部分。
 
-如果您使用 Neon 企业版，可以将 [ClickPipes IP 地址](../../index.md#list-of-static-ips)添加到白名单，以允许从 ClickPipes 向您的 Neon Postgres 实例进行数据复制。
-要执行此操作,请点击 **Settings** 选项卡并进入 **IP Allow** 部分。
-
-<Image size='lg' img={neon_ip_allow} alt='允许 IP 地址界面' border />
-
-
-## 复制连接详细信息 {#copy-connection-details}
-
-现在我们已经准备好用户、发布并启用了复制功能,可以复制连接详细信息以创建新的 ClickPipe。
-前往 **Dashboard**,在显示连接字符串的文本框中,
-将视图切换为 **Parameters Only**。下一步中我们将需要这些参数。
-
-<Image size='lg' img={neon_conn_details} alt='连接详细信息' border />
+<Image size="lg" img={neon_ip_allow} alt="Allow IPs screen" border/>
 
 
-## 下一步操作 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 Postgres 实例时使用的连接详细信息,因为在创建 ClickPipe 过程中需要用到这些信息。
+## 复制连接信息 {#copy-connection-details}
+现在我们已经创建了用户、准备好了 publication 并启用了复制，可以复制连接信息来创建一个新的 ClickPipe。
+前往 **Dashboard**，在显示连接字符串的文本框中，
+将视图切换为 **Parameters Only**。我们在下一步会用到这些参数。
+
+<Image size="lg" img={neon_conn_details} alt="连接信息" border/>
+
+
+
+## 后续步骤 {#whats-next}
+
+现在你可以[创建你的 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud。
+请务必记录下在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 时你将需要这些信息。

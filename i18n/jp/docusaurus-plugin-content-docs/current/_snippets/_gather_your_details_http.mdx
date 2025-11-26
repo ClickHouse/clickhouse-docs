@@ -2,21 +2,21 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_https from '@site/static/images/_snippets/connection-details-https.png';
 import Image from '@theme/IdealImage';
 
-HTTP(S) を使用して ClickHouse に接続するには、次の情報が必要です：
+HTTP(S) で ClickHouse に接続するには、次の情報が必要です。
 
-| パラメータ                   | 説明                                                            |
-| ----------------------- | ------------------------------------------------------------- |
-| `HOST` と `PORT`         | 通常、TLS を使用する場合はポート 8443、TLS を使用しない場合はポート 8123 を使用します。         |
-| `DATABASE NAME`         | 既定では、`default` という名前のデータベースが用意されています。接続したいデータベースの名前を指定してください。 |
-| `USERNAME` と `PASSWORD` | 既定のユーザー名は `default` です。ユースケースに適したユーザー名を使用してください。              |
+| Parameter(s)              | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `HOST` and `PORT`         | 通常、TLS を使用する場合のポートは 8443、TLS を使用しない場合のポートは 8123 です。          |
+| `DATABASE NAME`           | 既定で `default` という名前のデータベースが用意されています。接続したいデータベースの名前を使用してください。 |
+| `USERNAME` and `PASSWORD` | 既定のユーザー名は `default` です。用途に応じて適切なユーザー名を使用してください。              |
 
-ClickHouse Cloud サービスの詳細は、ClickHouse Cloud コンソールで確認できます。
-サービスを選択し、**Connect** をクリックします：
+ClickHouse Cloud サービスに関する詳細情報は、ClickHouse Cloud コンソールで確認できます。
+サービスを選択し、**Connect** をクリックします。
 
-<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud サービスの接続ボタン" border />
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud サービスの Connect ボタン" border />
 
-**HTTPS** を選択します。接続情報は、例として示される `curl` コマンド内に表示されます。
+**HTTPS** を選択します。接続情報は、サンプルの `curl` コマンド内に表示されます。
 
-<Image img={connection_details_https} size="md" alt="ClickHouse Cloud HTTPS 接続情報" border />
+<Image img={connection_details_https} size="md" alt="ClickHouse Cloud HTTPS 接続詳細" border />
 
-セルフマネージド版の ClickHouse を使用している場合、接続情報は ClickHouse 管理者が設定します。
+自己管理型の ClickHouse を使用している場合、接続情報は ClickHouse 管理者によって設定されます。

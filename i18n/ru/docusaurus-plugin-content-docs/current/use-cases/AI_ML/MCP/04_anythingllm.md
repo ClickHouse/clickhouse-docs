@@ -4,7 +4,7 @@ sidebar_label: 'Интеграция AnythingLLM'
 title: 'Настройка сервера ClickHouse MCP с AnythingLLM и ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве показано, как настроить AnythingLLM для работы с сервером ClickHouse MCP с использованием Docker.'
+description: 'В этом руководстве описано, как настроить работу AnythingLLM с сервером ClickHouse MCP с использованием Docker.'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -19,55 +19,55 @@ import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
 
 
-# Использование MCP-сервера ClickHouse с AnythingLLM
+# Использование сервера MCP ClickHouse с AnythingLLM
 
-> В этом руководстве описывается, как настроить [AnythingLLM](https://anythingllm.com/) с MCP-сервером ClickHouse с помощью Docker
-> и подключить его к примерам наборов данных ClickHouse.
+> В этом руководстве описано, как настроить [AnythingLLM](https://anythingllm.com/) с сервером MCP ClickHouse с использованием Docker
+> и подключить его к демонстрационным наборам данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
 
 
-## Установка Docker {#install-docker}
+## Установите Docker {#install-docker}
 
-Для запуска LibreChat и сервера MCP необходим Docker. Чтобы установить Docker:
-
+Вам понадобится Docker, чтобы запустить LibreChat и MCP-сервер. Чтобы установить Docker:
 1. Перейдите на сайт [docker.com](https://www.docker.com/products/docker-desktop)
 2. Скачайте Docker Desktop для вашей операционной системы
-3. Установите Docker, следуя инструкциям для вашей операционной системы
-4. Откройте Docker Desktop и убедитесь, что приложение запущено
-   <br />
-   Дополнительную информацию см. в [документации Docker](https://docs.docker.com/get-docker/).
+3. Установите Docker Desktop, следуя инструкциям для вашей операционной системы
+4. Откройте Docker Desktop и убедитесь, что он запущен
+<br/>
+Для получения дополнительной информации см. [документацию Docker](https://docs.docker.com/get-docker/).
 
 
-## Загрузка Docker-образа AnythingLLM {#pull-anythingllm-docker-image}
 
-Выполните следующую команду для загрузки Docker-образа AnythingLLM на ваш компьютер:
+## Загрузка Docker-образа AnythingLLM
+
+Выполните следующую команду, чтобы загрузить Docker-образ AnythingLLM на локальную машину:
 
 ```bash
 docker pull anythingllm/anythingllm
 ```
 
 
-## Настройка расположения хранилища {#setup-storage-location}
+## Настройка расположения хранилища
 
 Создайте каталог для хранилища и инициализируйте файл окружения:
 
 ```bash
 export STORAGE_LOCATION=$PWD/anythingllm && \
 mkdir -p $STORAGE_LOCATION && \
-touch "$STORAGE_LOCATION/.env"
+touch "$STORAGE_LOCATION/.env" 
 ```
 
 
-## Настройка конфигурационного файла MCP Server {#configure-mcp-server-config-file}
+## Настройка файла конфигурации сервера MCP
 
-Создайте директорию `plugins`:
+Создайте каталог `plugins`:
 
 ```bash
 mkdir -p "$STORAGE_LOCATION/plugins"
 ```
 
-Создайте файл `anythingllm_mcp_servers.json` в директории `plugins` и добавьте следующее содержимое:
+Создайте файл с именем `anythingllm_mcp_servers.json` в каталоге `plugins` и добавьте в него следующее содержимое:
 
 ```json
 {
@@ -92,13 +92,14 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 }
 ```
 
-Если вы хотите работать с собственными данными, используйте [хост, имя пользователя и пароль](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
-вашего сервиса ClickHouse Cloud.
+Если вы хотите изучить свои данные, вы можете сделать это, используя
+[host, имя пользователя и пароль](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
+собственного сервиса ClickHouse Cloud.
 
 
-## Запуск Docker-контейнера AnythingLLM {#start-anythingllm-docker-container}
+## Запустите Docker-контейнер AnythingLLM
 
-Выполните следующую команду для запуска Docker-контейнера AnythingLLM:
+Запустите Docker-контейнер AnythingLLM следующей командой:
 
 ```bash
 docker run -p 3001:3001 \
@@ -113,23 +114,24 @@ mintplexlabs/anythingllm
 Выберите модель, которую хотите использовать, и укажите свой API-ключ.
 
 
-## Ожидание запуска MCP-серверов {#wait-for-mcp-servers-to-start-up}
+## Дождитесь запуска MCP Servers {#wait-for-mcp-servers-to-start-up}
 
-Нажмите на значок инструментов в нижнем левом углу интерфейса:
+Нажмите значок инструмента в левой нижней части интерфейса:
 
-<Image img={ToolIcon} alt='Значок инструментов' size='md' />
+<Image img={ToolIcon} alt="Значок инструмента" size="md"/>
 
-Нажмите на `Agent Skills` и перейдите в раздел `MCP Servers`.
-Дождитесь, пока для `Mcp ClickHouse` не отобразится состояние `On`
+Нажмите `Agent Skills` и перейдите к разделу `MCP Servers`. 
+Дождитесь, пока состояние `Mcp ClickHouse` не изменится на `On`.
 
-<Image img={MCPServers} alt='MCP-серверы готовы' size='md' />
+<Image img={MCPServers} alt="MCP servers готовы" size="md"/>
+
 
 
 ## Чат с ClickHouse MCP Server в AnythingLLM {#chat-with-clickhouse-mcp-server-with-anythingllm}
 
-Теперь можно начать чат.
-Чтобы сделать MCP Servers доступными в чате, необходимо добавить префикс `@agent` к первому сообщению в диалоге.
+Теперь мы готовы начать чат.
+Чтобы серверы MCP были доступны в чате, необходимо предварить первое сообщение в диалоге префиксом `@agent`.
 
-<Image img={Conversation} alt='Conversation' size='md' />
+<Image img={Conversation} alt='Чат' size='md' />
 
 </VerticalStepper>

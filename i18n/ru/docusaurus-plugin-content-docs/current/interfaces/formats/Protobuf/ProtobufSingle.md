@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация по формату ProtobufSingle'
+description: 'Документация о формате ProtobufSingle'
 input_format: true
 keywords: ['ProtobufSingle']
 output_format: true
@@ -20,10 +20,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## Описание {#description}
 
-Формат `ProtobufSingle` аналогичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения и парсинга отдельных сообщений Protobuf без разделителей длины.
+Формат `ProtobufSingle` аналогичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения и парсинга одиночных Protobuf‑сообщений без префикса длины.
+
 
 
 ## Пример использования {#example-usage}
 
 
-## Настройки формата {#format-settings}
+
+## Параметры форматирования {#format-settings}

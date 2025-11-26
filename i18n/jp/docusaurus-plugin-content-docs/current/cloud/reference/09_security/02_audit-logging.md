@@ -11,31 +11,31 @@ keywords: ['監査ログ', 'セキュリティ', 'コンプライアンス', '�
 
 ## コンソール監査ログイベント {#console-audit-log-events}
 
-組織に対してキャプチャされるイベントの種類は、**Organization**、**Service**、**User**の3つのカテゴリに分類されます。監査ログの詳細、およびエクスポート方法やAPI統合の追加方法については、上記のガイドセクションにある[コンソール監査ログ](/cloud/security/audit-logging/console-audit-log)のドキュメントを参照してください。
+組織で記録されるイベントは、**Organization**、**Service**、**User** の 3 つのカテゴリに分類されます。監査ログの概要やエクスポート方法、API 連携の追加方法については、上記の Guides セクションにある [console audit log](/cloud/security/audit-logging/console-audit-log) ドキュメントを参照してください。
 
 以下のイベントが監査ログに記録されます。
 
 ### Organization {#organization}
 
-- 組織が作成されました
-- 組織が削除されました
-- 組織名が変更されました
+- Organization の作成
+- Organization の削除
+- Organization 名の変更
 
 ### Service {#service}
 
-- サービスが作成されました
-- サービスが削除されました
-- サービスが停止されました
-- サービスが開始されました
-- サービス名が変更されました
-- サービスIPアクセスリストが変更されました
-- サービスパスワードがリセットされました
+- Service の作成
+- Service の削除
+- Service の停止
+- Service の開始
+- Service 名の変更
+- Service の IP アクセスリストの変更
+- Service パスワードのリセット
 
 ### User {#user}
 
-- ユーザーロールが変更されました
-- ユーザーが組織から削除されました
-- ユーザーが組織に招待されました
-- ユーザーが組織に参加しました
-- ユーザー招待が削除されました
-- ユーザーが組織から退出しました
+- User のロール変更
+- Organization からの User の削除
+- Organization への User の招待
+- Organization への User の参加
+- User 招待の削除
+- Organization からの User の離脱

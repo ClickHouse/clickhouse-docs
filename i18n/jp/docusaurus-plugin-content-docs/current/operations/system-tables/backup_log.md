@@ -1,6 +1,6 @@
 ---
-description: '`BACKUP` および `RESTORE` 操作に関する情報を記録したログエントリを格納するシステムテーブル。'
-keywords: ['システムテーブル', 'backup_log']
+description: '`BACKUP` および `RESTORE` 操作に関する情報を含むログエントリを格納するシステムテーブル。'
+keywords: ['system table', 'backup_log']
 slug: /operations/system-tables/backup_log
 title: 'system.backup_log'
 doc_type: 'reference'
@@ -15,15 +15,15 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 `BACKUP` および `RESTORE` 操作に関する情報を含むログエントリを保持します。
 
-Columns:
+列:
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行したサーバーのホスト名。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — エントリの日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — エントリの日付と時刻。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのエントリの時刻。
 * `id` ([String](../../sql-reference/data-types/string.md)) — バックアップまたはリストア操作の識別子。
 * `name` ([String](../../sql-reference/data-types/string.md)) — バックアップストレージの名前（`FROM` 句または `TO` 句の内容）。
-* `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 操作ステータス。とりうる値:
+* `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 操作のステータス。取りうる値は次のとおりです:
   * `'CREATING_BACKUP'`
   * `'BACKUP_CREATED'`
   * `'BACKUP_FAILED'`
@@ -35,16 +35,16 @@ Columns:
 * `end_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 操作の終了時刻。
 * `num_files` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップに保存されているファイル数。
 * `total_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップに保存されているファイルの合計サイズ。
-* `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップ内のエントリ数。すなわち、バックアップがフォルダとして保存されている場合はそのフォルダ内のファイル数、アーカイブとして保存されている場合はそのアーカイブ内のファイル数です。増分バックアップである場合や、空ファイルまたは重複を含む場合には `num_files` と同一ではありません。常に次が成り立ちます: `num_entries <= num_files`。
+* `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップ内のエントリ数。つまり、バックアップがフォルダとして保存されている場合はそのフォルダ内のファイル数、バックアップがアーカイブとして保存されている場合はそのアーカイブ内のファイル数。増分バックアップである場合や空ファイルや重複を含む場合、`num_files` と一致しないことがあります。常に次の関係が成り立ちます: `num_entries <= num_files`。
 * `uncompressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップの非圧縮サイズ。
-* `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップの圧縮サイズ。バックアップがアーカイブとして保存されていない場合は `uncompressed_size` と同じ値になります。
+* `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — バックアップの圧縮サイズ。バックアップがアーカイブとして保存されていない場合は `uncompressed_size` と等しくなります。
 * `files_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — リストア操作中に読み取られたファイル数。
 * `bytes_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — リストア操作中に読み取られたファイルの合計サイズ。
 
-**例**
+**Example**
 
 ```sql
-BACKUP TABLE test_db.my_table TO Disk('backups_disk', '1.zip')
+バックアップ TABLE test_db.my_table TO Disk('backups_disk', '1.zip')
 ```
 
 ```response
@@ -59,7 +59,7 @@ SELECT * FROM system.backup_log WHERE id = 'e5b74ecb-f6f1-426a-80be-872f90043885
 
 
 ```response
-Row 1:
+1 行目:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -78,7 +78,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-Row 2:
+2 行目:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -100,7 +100,7 @@ bytes_read:              0
 ```
 
 ```sql
-RESTORE TABLE test_db.my_table FROM Disk('backups_disk', '1.zip')
+ディスク('backups_disk', '1.zip')から test_db.my_table テーブルを復元
 ```
 
 ```response
@@ -114,7 +114,7 @@ SELECT * FROM system.backup_log WHERE id = 'cdf1f731-52ef-42da-bc65-2e1bfcd4ce90
 ```
 
 ```response
-Row 1:
+行 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -133,7 +133,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-Row 2:
+行 2:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -153,7 +153,7 @@ files_read:              57
 bytes_read:              4290364870
 ```
 
-これは本質的に、システムテーブル `system.backups` に記載されている内容と同じです。
+これは、基本的にはシステムテーブル `system.backups` に記載されている内容と同じです。
 
 ```sql
 SELECT * FROM system.backups ORDER BY start_time
@@ -162,8 +162,8 @@ SELECT * FROM system.backups ORDER BY start_time
 
 ```response
 ┌─id───────────────────────────────────┬─name──────────────────────────┬─status─────────┬─error─┬──────────start_time─┬────────────end_time─┬─num_files─┬─total_size─┬─num_entries─┬─uncompressed_size─┬─compressed_size─┬─files_read─┬─bytes_read─┐
-│ e5b74ecb-f6f1-426a-80be-872f90043885 │ Disk('backups_disk', '1.zip') │ BACKUP_CREATED │       │ 2023-08-19 11:05:21 │ 2023-08-19 11:08:56 │        57 │ 4290364870 │          46 │        4290362365 │      3525068304 │          0 │          0 │
-│ cdf1f731-52ef-42da-bc65-2e1bfcd4ce90 │ Disk('backups_disk', '1.zip') │ RESTORED       │       │ 2023-08-19 11:09:19 │ 2023-08-19 11:09:29 │        57 │ 4290364870 │          46 │        4290362365 │      4290362365 │         57 │ 4290364870 │
+│ e5b74ecb-f6f1-426a-80be-872f90043885 │ Disk('backups_disk', '1.zip') │ バックアップ作成 │       │ 2023-08-19 11:05:21 │ 2023-08-19 11:08:56 │        57 │ 4290364870 │          46 │        4290362365 │      3525068304 │          0 │          0 │
+│ cdf1f731-52ef-42da-bc65-2e1bfcd4ce90 │ Disk('backups_disk', '1.zip') │ 復元済み         │       │ 2023-08-19 11:09:19 │ 2023-08-19 11:09:29 │        57 │ 4290364870 │          46 │        4290362365 │      4290362365 │         57 │ 4290364870 │
 └──────────────────────────────────────┴───────────────────────────────┴────────────────┴───────┴─────────────────────┴─────────────────────┴───────────┴────────────┴─────────────┴───────────────────┴─────────────────┴────────────┴────────────┘
 ```
 

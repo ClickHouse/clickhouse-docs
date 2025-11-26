@@ -1,5 +1,5 @@
 ---
-description: '包含 ClickHouse 仓库所有提交和变更的数据集'
+description: '包含 ClickHouse 仓库所有提交和更改的数据集'
 sidebar_label: 'GitHub 仓库'
 slug: /getting-started/example-datasets/github
 title: '在 ClickHouse 中使用 GitHub 数据编写查询'
@@ -14,24 +14,24 @@ import superset_commits_authors from '@site/static/images/getting-started/exampl
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-该数据集包含 ClickHouse 仓库的所有提交记录及其变更。它可以使用 ClickHouse 提供的原生 `git-import` 工具生成。
+该数据集包含 ClickHouse 仓库的所有提交和变更。它可以使用 ClickHouse 自带的原生 `git-import` 工具生成。
 
-生成的数据会为下列每个表生成一个 `tsv` 文件：
+生成的数据会为下列每个表各提供一个 `tsv` 文件：
 
 * `commits` - 带统计信息的提交记录。
-* `file_changes` - 每次提交中发生更改的文件，包含与更改相关的信息和统计数据。
-* `line_changes` - 每次提交中每个已更改文件里的每一行更改，包含该行的完整信息以及该行上一次更改的信息。
+* `file_changes` - 每次提交中发生变更的文件，以及关于这些变更的详细信息和统计数据。
+* `line_changes` - 每个提交中每个已变更文件里每一行的变更记录，包含该行的完整信息以及此前对此行的变更信息。
 
-截至 2022 年 11 月 8 日，每个 TSV 文件的大致大小和行数如下：
+截至 2022 年 11 月 8 日，每个 TSV 的文件大小和行数大致如下：
 
 * `commits` - 7.8M - 266,051 行
 * `file_changes` - 53M - 266,051 行
 * `line_changes` - 2.7G - 7,535,157 行
 
 
-## 生成数据 {#generating-the-data}
+## 生成数据
 
-此步骤为可选项。我们免费提供数据 - 请参阅[下载并插入数据](#downloading-and-inserting-the-data)。
+此步骤是可选的。我们免费提供这些数据——请参见[下载并插入数据](#downloading-and-inserting-the-data)。
 
 ```bash
 git clone git@github.com:ClickHouse/ClickHouse.git
@@ -39,15 +39,15 @@ cd ClickHouse
 clickhouse git-import --skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' --skip-commits-with-messages '^Merge branch '
 ```
 
-对于 ClickHouse 代码仓库,此过程大约需要 3 分钟完成(基于 2022 年 11 月 8 日在 MacBook Pro 2021 上的测试结果)。
+在 2021 款 MacBook Pro 上，此操作针对 ClickHouse 仓库大约需要 3 分钟即可完成（以 2022 年 11 月 8 日为准）。
 
-可通过工具的原生帮助命令获取完整的可用选项列表。
+可以通过工具内置的帮助获取可用选项的完整列表。
 
 ```bash
 clickhouse git-import -h
 ```
 
-该帮助信息还提供了上述各表的 DDL 语句,例如:
+本帮助文档还为上述每个表提供了 DDL，例如：
 
 ```sql
 CREATE TABLE git.commits
@@ -68,27 +68,27 @@ CREATE TABLE git.commits
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-**这些查询应适用于任何代码仓库。欢迎自行探索并分享您的发现** 以下是关于执行时间的一些参考指标(截至 2022 年 11 月):
+**这些查询应该适用于任何代码仓库。欢迎自由探索并报告你的发现。** 关于执行时间的一些说明（截至 2022 年 11 月）：
 
-- Linux - `~/clickhouse git-import` - 160 mins
+* Linux - `~/clickhouse git-import` - 160 分钟
 
 
-## 下载并插入数据 {#downloading-and-inserting-the-data}
+## 下载并插入数据
 
-以下数据可用于重现工作环境。此外,该数据集也可在 play.clickhouse.com 上获取 - 详情请参阅[查询](#queries)。
+以下数据可用于复现一个可用的环境。或者，可以在 play.clickhouse.com 中获取该数据集——有关更多详细信息，请参阅[查询](#queries)。
 
-以下仓库的生成文件如下:
+下列代码仓库对应的生成文件如下：
 
-- ClickHouse (2022年11月8日)
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
-- Linux (2022年11月8日)
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
+* ClickHouse（2022 年 11 月 8 日）
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz) - 2.5 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz) - 4.5 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz) - 127.4 MB
+* Linux（2022 年 11 月 8 日）
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz) - 44 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz) - 467 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz) - 1.1 G
 
-要插入这些数据,请执行以下查询来准备数据库:
+要插入这些数据，请先执行以下查询来准备数据库：
 
 ```sql
 DROP DATABASE IF EXISTS git;
@@ -183,9 +183,9 @@ CREATE TABLE git.line_changes
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-使用 `INSERT INTO SELECT` 和 [s3 函数](/sql-reference/table-functions/s3)插入数据。例如,以下示例将 ClickHouse 文件插入到各自对应的表中:
+使用 `INSERT INTO SELECT` 和 [s3 函数](/sql-reference/table-functions/s3) 插入数据。如下示例中，我们将 ClickHouse 文件插入到各自对应的表中：
 
-_commits_
+*commits*
 
 
 ```sql
@@ -195,13 +195,13 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 0 rows in set. Elapsed: 1.826 sec. Processed 62.78 thousand rows, 8.50 MB (34.39 thousand rows/s., 4.66 MB/s.)
 ```
 
-*file&#95;changes*
+*文件更改*
 
 ```sql
 INSERT INTO git.file_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz', 'TSV', 'change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6), path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), lines_added UInt32, lines_deleted UInt32, hunks_added UInt32, hunks_removed UInt32, hunks_changed UInt32, commit_hash String, author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-0 rows in set. Elapsed: 2.688 sec. Processed 266.05 thousand rows, 48.30 MB (98.97 thousand rows/s., 17.97 MB/s.)
+结果集包含 0 行。耗时：2.688 秒。已处理 266.05 千行，48.30 MB（98.97 千行/秒，17.97 MB/秒）。
 ```
 
 *line&#95;changes*
@@ -210,21 +210,21 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 INSERT INTO git.line_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz', 'TSV', '    sign Int8, line_number_old UInt32, line_number_new UInt32, hunk_num UInt32, hunk_start_line_number_old UInt32, hunk_start_line_number_new UInt32, hunk_lines_added UInt32,\n    hunk_lines_deleted UInt32, hunk_context LowCardinality(String), line LowCardinality(String), indent UInt8, line_type Enum(\'Empty\' = 0, \'Comment\' = 1, \'Punct\' = 2, \'Code\' = 3), prev_commit_hash String, prev_author LowCardinality(String), prev_time DateTime, file_change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6),\n    path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), file_lines_added UInt32, file_lines_deleted UInt32, file_hunks_added UInt32, file_hunks_removed UInt32, file_hunks_changed UInt32, commit_hash String,\n    author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-返回 0 行。用时:50.535 秒。已处理 754 万行,2.09 GB(14.911 万行/秒,41.40 MB/秒)。
+0 行已写入。耗时：50.535 秒。处理了 754 万行，2.09 GB（每秒 149.11 千行，41.40 MB/s）。
 ```
 
 
-## 查询 {#queries}
+## 查询
 
-该工具通过其帮助输出提供了多个查询示例。除了这些查询外,我们还回答了一些额外的补充问题。这些查询按复杂度大致递增排列,而非工具中的任意顺序。
+该工具会在其帮助输出中给出若干查询示例。我们在此基础上对这些查询逐一作答，并补充了一些额外的相关问题。这些查询的大致复杂度是递增的，而不是按照工具的任意顺序排列。
 
-此数据集可在 [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) 的 `git_clickhouse` 数据库中获取。我们为所有查询提供了指向此环境的链接,并根据需要调整数据库名称。请注意,由于数据收集时间的差异,play 环境的结果可能与此处展示的结果有所不同。
+该数据集可在 [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) 的 `git_clickhouse` 数据库中获取。我们为所有查询都提供了指向该环境的链接，并在需要时调整数据库名称。请注意，由于数据采集时间不同，play 环境中的结果可能与此处展示的结果有所差异。
 
-### 单个文件的历史记录 {#history-of-a-single-file}
+### 单个文件的历史记录
 
-这是最简单的查询。在此示例中,我们查看 `StorageReplicatedMergeTree.cpp` 的所有提交消息。由于最新的消息通常更有价值,因此我们按时间倒序排列。
+这是最简单的一类查询。在这里，我们查看 `StorageReplicatedMergeTree.cpp` 的所有提交说明。因为最新的说明通常更有参考价值，我们按时间从新到旧排序。
 
-[在线运行](https://sql.clickhouse.com?query_id=COAZRFX2YFULDBXRQTCQ1S)
+[play](https://sql.clickhouse.com?query_id=COAZRFX2YFULDBXRQTCQ1S)
 
 ```sql
 SELECT
@@ -241,30 +241,29 @@ FROM git.file_changes
 WHERE path = 'src/Storages/StorageReplicatedMergeTree.cpp'
 ORDER BY time DESC
 LIMIT 10
-
 ```
 
 
-┌────────────────时间──┬─提交──────────┬─变更&#95;类型──┬─作者────────────────┬─路径────────────────────────────────────────┬─旧&#95;路径──┬─新增&#95;行数──┬─删除&#95;行数────┬─提交&#95;消息────────────────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ 修复在 Deleting 状态下访问数据片段的问题                 │
-│ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ 改进 DataPartStorage 的 const 语义                      │
-│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ 移除 DataPartStorageBuilder                            │
-│ 2022-10-21 13:35:37 │ 851f556d65a │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 移除未使用的参数                                      │
-│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ Replicated merge tree 的优化与整理                    │
-│ 2022-10-21 12:25:19 │ 4e76629aafc │ Modify      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 针对 -Wshorten-64-to-32 的修复                         │
-│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ 优化与整理                                            │
-│ 2022-10-19 13:34:20 │ e5408aac991 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ 简化逻辑                                              │
-│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ 更新 StorageReplicatedMergeTree.cpp                  │
-│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ 更新 StorageReplicatedMergeTree.cpp                  │
+┌────────────────时间─┬─提交────────┬─变更&#95;类型─────┬─作者─────────────────┬─路径────────────────────────────────────────┬─旧&#95;路径────┬─新增&#95;行数────┬─删除&#95;行数────────┬─提交&#95;消息─────────────────────────────────────────────┐
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ 修改        │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ 修复在 Deleting 状态下访问数据片段的问题                  │
+│ 2022-10-23 16:24:20 │ b40d9200d20 │ 修改        │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ 改进 DataPartStorage 的 const 语义                      │
+│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ 修改        │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ 移除 DataPartStorageBuilder                          │
+│ 2022-10-21 13:35:37 │ 851f556d65a │ 修改        │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 移除未使用的参数                                      │
+│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ 修改        │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ ReplicatedMergeTree 代码整理                         │
+│ 2022-10-21 12:25:19 │ 4e76629aafc │ 修改        │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 针对 -Wshorten-64-to-32 的修复                        │
+│ 2022-10-19 13:59:28 │ 05e6b94b541 │ 修改        │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ 小幅优化                                              │
+│ 2022-10-19 13:34:20 │ e5408aac991 │ 修改        │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ 简化逻辑                                              │
+│ 2022-10-18 15:36:11 │ 7befe2825c9 │ 修改        │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ 更新 StorageReplicatedMergeTree.cpp                  │
+│ 2022-10-18 15:35:44 │ 0623ad4e374 │ 修改        │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ 更新 StorageReplicatedMergeTree.cpp                  │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴─────────────────────────────────────────────┴──────────┴─────────────┴───────────────┴──────────────────────────────────────────────────┘
 
-10 行结果，耗时 0.006 秒。已处理 12.10 千行，1.60 MB（1.93 百万行/秒，255.40 MB/秒）。
+共 10 行。耗时：0.006 秒。已处理 12.10 千行，1.60 MB（1.93 百万行/秒，255.40 MB/秒）。
 
 ````
 
-我们还可以查看行变更，排除重命名操作，即不显示文件重命名前使用不同名称时的变更：
+我们还可以按行查看变更，并排除重命名的情况；也就是说，当文件之前使用的是其他名称时，我们不会显示重命名前的变更：
 
-[play](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
+[在线运行](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
 
 ```sql
 SELECT
@@ -295,17 +294,17 @@ LIMIT 10
 │ 2022-04-21 20:19:13 │ 9133e398b8c │ 1 │ 11 │ 12 │ Nikolai Kochetov │ #include <Storages/MergeTree/DataPartStorageOnDisk.h> │
 └─────────────────────┴─────────────┴──────┴─────────────────┴─────────────────┴──────────────────┴───────────────────────────────────────────────────────┘
 
-返回 10 行。耗时:0.258 秒。处理了 754 万行,654.92 MB(每秒 2924 万行,2.54 GB/s)。
+返回 10 行。耗时：0.258 秒。处理了 754 万行，654.92 MB（每秒 2924 万行，2.54 GB/s）。
 
 ````
 
-注意:存在此查询的更复杂变体,可以在考虑重命名的情况下查找[文件的逐行提交历史](#line-by-line-commit-history-of-a-file)。
+注意：此查询存在一个更复杂的变体，在考虑重命名的情况下查找[文件的逐行提交历史](#line-by-line-commit-history-of-a-file)。
 
 ### 查找当前活动文件 {#find-the-current-active-files}
 
-这对于后续分析很重要,当我们只想考虑仓库中的当前文件时。我们将此集合估算为未被重命名或删除(然后重新添加/重命名)的文件。
+这对于后续分析很重要，当我们只想考虑仓库中的当前文件时。我们将此集合估计为未被重命名或删除（然后重新添加/重命名）的文件。
 
-**注意:在重命名过程中,`dbms`、`libs`、`tests/testflows/` 目录下的文件似乎存在损坏的提交历史记录。因此我们也排除这些文件。**
+**注意：在 `dbms`、`libs`、`tests/testflows/` 目录下的文件重命名期间，提交历史似乎出现了中断。因此我们也排除这些文件。**
 
 [play](https://sql.clickhouse.com?query_id=2HNFWPCFWEEY92WTAPMA7W)
 
@@ -347,7 +346,7 @@ LIMIT 10
 │ src/Dictionaries/Embedded/GeodataProviders/Types.h              │
 └─────────────────────────────────────────────────────────────────┘
 
-10 行。耗时：0.085 秒。已处理 532.10 千行，8.68 MB（6.30 百万行/秒，102.64 MB/秒）。
+10 行。耗时：0.085 秒。处理了 532.10 千行，8.68 MB（6.30 百万行/秒，102.64 MB/秒）。
 
 ````
 
@@ -386,22 +385,22 @@ FROM
 返回 1 行。耗时:0.089 秒。处理了 532.10 千行,8.68 MB(601 万行/秒,97.99 MB/秒)。
 ````
 
-请注意，我们在导入过程中跳过了若干目录，即：
+请注意，我们在导入过程中跳过了若干目录的导入，例如：
 
 `--skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/'`
 
-将此模式应用于 `git list-files` 时，会得到 18155 个文件。
+将此模式应用于 `git list-files` 时，会得到 18155 个匹配项。
 
 ```bash
 git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' | wc -l
    18155
 ```
 
-**因此，我们当前的解决方案只是对当前文件的一种估计**
+**因此，我们当前的解决方案本质上只是对当前文件状态的一种近似估算**
 
-这里出现的差异由几个因素造成：
+这里出现差异的原因有以下几个：
 
-* 重命名可能与对文件的其他修改同时发生。这些在 `file_changes` 中被列为单独的事件，但具有相同的时间。`argMax` 函数无法区分这些事件——它会选择第一个值。插入的自然顺序（唯一可用于确定正确顺序的手段）在 `union` 之后不会被保留，因此可能会错误地选中某个修改事件。例如，下面的 `src/Functions/geometryFromColumn.h` 文件在被重命名为 `src/Functions/geometryConverters.h` 之前经历了多次修改。我们当前的解决方案可能会将一个 `Modify` 事件选为最新更改，导致 `src/Functions/geometryFromColumn.h` 被保留。
+* 重命名操作可能会与对文件的其他修改同时发生。这些事件在 `file_changes` 中会以相同时间戳的独立事件形式记录。`argMax` 函数无法区分这些事件——它只会选择第一个值。插入数据的自然顺序（唯一可用于确定正确顺序的依据）在执行 `union` 时无法保证被保留，因此可能会选中某个修改事件。例如，在下面的示例中，`src/Functions/geometryFromColumn.h` 文件在被重命名为 `src/Functions/geometryConverters.h` 之前，经历了多次修改。我们当前的解决方案可能会将某个 Modify 事件选作最新变更，从而导致 `src/Functions/geometryFromColumn.h` 被保留。
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 
@@ -418,19 +417,19 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 
 
 ┌─change&#95;type─┬─path───────────────────────────────┬─old&#95;path───────────────────────────┬────────────────time─┬─commit&#95;hash──────────────────────────────┐
-│ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
-│ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
+│ 添加       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
+│ 修改       │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
+│ 重命名     │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
 └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
-11 行结果。耗时 0.030 秒。处理 266.05 千行，6.61 MB（8.89 百万行/秒，220.82 MB/秒）。
+11 行。耗时：0.030 秒。处理了 266.05 千行，6.61 MB（8.89 百万行/秒，220.82 MB/秒）。
 
 ```
 - 提交历史记录不完整 - 缺少删除事件。来源和原因待确定。
@@ -439,9 +438,9 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 
 ### 列出修改次数最多的文件 {#list-files-with-most-modifications}
 
-仅限于当前文件,我们将修改次数定义为删除和添加操作的总和。
+仅限当前文件，我们将修改次数定义为删除和添加操作的总和。
 
-[试用](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
+[play](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
 ```
 
 
@@ -494,7 +493,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
 ```
 
-### 提交通常发生在星期几? {#what-day-of-the-week-do-commits-usually-occur}
+### 提交通常集中在一周中的哪一天？
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -514,14 +513,14 @@ GROUP BY dayOfWeek(time) AS day_of_week
 │           6 │  4617 │
 │           7 │  5166 │
 └─────────────┴───────┘
-7 rows in set. Elapsed: 0.262 sec. Processed 62.78 thousand rows, 251.14 KB (239.73 thousand rows/s., 958.93 KB/s.)
+返回 7 行。用时:0.262 秒。已处理 62.78 千行,251.14 KB(239.73 千行/秒,958.93 KB/秒)。
 ```
 
-这符合预期,周五的生产力会有所下降。很高兴看到大家在周末也在提交代码!非常感谢我们的贡献者!
+这很合理，周五的生产力会有所下降。周末还有人提交代码，真是太好了！非常感谢我们的贡献者！
 
-### 子目录/文件的历史记录 - 代码行数、提交次数和贡献者数量随时间的变化 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+### 子目录/文件的历史记录 —— 随时间变化的代码行数、提交次数和贡献者数量
 
-如果不进行过滤,此查询将产生大量结果,难以显示或可视化。因此,在以下示例中,我们允许对文件或子目录进行过滤。这里使用 `toStartOfWeek` 函数按周分组 - 可根据需要进行调整。
+如果不加过滤，这将产生一个庞大的查询结果，既难以展示，也不便于可视化。因此，在下面的示例中，我们支持按文件或子目录进行过滤。这里我们按周分组，使用 `toStartOfWeek` 函数 —— 可根据需要进行调整。
 
 [play](https://sql.clickhouse.com?query_id=REZRXDVU7CAWT5WKNJSTNY)
 
@@ -537,37 +536,36 @@ WHERE path LIKE 'src/Storages%'
 GROUP BY toStartOfWeek(time) AS week
 ORDER BY week ASC
 LIMIT 10
-
 ```
 
 
-┌───────week─┬─lines_added─┬─lines_deleted─┬─num_commits─┬─authors─┐
-│ 2020-03-29 │ 49 │ 35 │ 4 │ 3 │
-│ 2020-04-05 │ 940 │ 601 │ 55 │ 14 │
-│ 2020-04-12 │ 1472 │ 607 │ 32 │ 11 │
-│ 2020-04-19 │ 917 │ 841 │ 39 │ 12 │
-│ 2020-04-26 │ 1067 │ 626 │ 36 │ 10 │
-│ 2020-05-03 │ 514 │ 435 │ 27 │ 10 │
-│ 2020-05-10 │ 2552 │ 537 │ 48 │ 12 │
-│ 2020-05-17 │ 3585 │ 1913 │ 83 │ 9 │
-│ 2020-05-24 │ 2851 │ 1812 │ 74 │ 18 │
-│ 2020-05-31 │ 2771 │ 2077 │ 77 │ 16 │
+┌───────week─┬─lines&#95;added─┬─lines&#95;deleted─┬─num&#95;commits─┬─authors─┐
+│ 2020-03-29 │          49 │            35 │           4 │       3 │
+│ 2020-04-05 │         940 │           601 │          55 │      14 │
+│ 2020-04-12 │        1472 │           607 │          32 │      11 │
+│ 2020-04-19 │         917 │           841 │          39 │      12 │
+│ 2020-04-26 │        1067 │           626 │          36 │      10 │
+│ 2020-05-03 │         514 │           435 │          27 │      10 │
+│ 2020-05-10 │        2552 │           537 │          48 │      12 │
+│ 2020-05-17 │        3585 │          1913 │          83 │       9 │
+│ 2020-05-24 │        2851 │          1812 │          74 │      18 │
+│ 2020-05-31 │        2771 │          2077 │          77 │      16 │
 └────────────┴─────────────┴───────────────┴─────────────┴─────────┘
-返回 10 行。用时:0.043 秒。处理了 26.605 万行,15.85 MB(每秒 612 万行,364.61 MB/秒)。
+结果集包含 10 行。耗时: 0.043 秒。已处理 266.05 千行数据，15.85 MB（6.12 百万行/秒，364.61 MB/秒）。
 
 ````
 
-这些数据的可视化效果很好。下面我们使用 Superset 进行展示。
+此数据的可视化效果很好。下面我们使用 Superset。
 
-**新增和删除的代码行:**
+**新增和删除的代码行数：**
 
-<Image img={superset_github_lines_added_deleted} alt="新增和删除的代码行" size="md"/>
+<Image img={superset_github_lines_added_deleted} alt="新增和删除的代码行数" size="md"/>
 
-**提交次数和作者数:**
+**提交次数和作者数：**
 
 <Image img={superset_commits_authors} alt="提交次数和作者数" size="md"/>
 
-### 列出作者数最多的文件 {#list-files-with-maximum-number-of-authors}
+### 列出作者数量最多的文件                                             
 
 仅限当前文件。
 
@@ -619,12 +617,12 @@ LIMIT 10
 │ src/Interpreters/InterpreterSelectQuery.cpp │          59 │
 └─────────────────────────────────────────────┴─────────────┘
 
-返回 10 行。用时:0.239 秒。处理了 79.815 万行,14.13 MB(每秒 335 万行,59.22 MB/秒)。
+10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
 ````
 
-### 仓库中最早的代码行 {#oldest-lines-of-code-in-the-repository}
+### 代码库中最早的代码行
 
-仅限当前文件。
+仅针对当前文件。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -665,24 +663,24 @@ ORDER BY latest_change ASC
 LIMIT 10
 
 ┌─file_path───────────────────────────────────┬─line────────────────────────────────────────────────────────┬───────latest_change─┬─any(file_change_type)─┐
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ 修改                │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ 修改                │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ 添加                   │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ 添加                   │
 └─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┴─────────────────────┴───────────────────────┘
 
-10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
+返回 10 行。用时:1.101 秒。已处理 807 万行,905.86 MB(733 万行/秒,823.13 MB/秒)。
 ```
 
-### 历史记录最长的文件 {#files-with-longest-history}
+### 历史最久的文件
 
-仅限当前文件。
+仅限当前存在的文件。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -719,7 +717,6 @@ WHERE path IN (current_files)
 GROUP BY path
 ORDER BY c DESC
 LIMIT 10
-
 ```
 
 
@@ -736,15 +733,15 @@ LIMIT 10
 │ 350 │ src/CMakeLists.txt                          │ 2022-10-24 09:22:37 │
 └─────┴─────────────────────────────────────────────┴─────────────────────┘
 
-10 行结果。耗时: 0.124 秒。已处理 798.15 千行, 14.71 MB (6.44 百万行/秒, 118.61 MB/秒)。
+10 行。耗时：0.124 秒。处理了 798.15 千行，14.71 MB（6.44 百万行/秒，118.61 MB/秒）。
 
 ````
 
-我们的核心数据结构 Merge Tree 显然在持续演进中,具有悠久的修改历史!
+我们的核心数据结构 Merge Tree 显然在持续演进,具有悠久的修改历史!
 
-### 贡献者在文档和代码方面的月度分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+### 贡献者在文档和代码方面的月内分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
 
-**在数据采集过程中,由于提交历史记录非常混乱,`docs/` 文件夹的变更已被过滤。因此,此查询的结果并不准确。**
+**在数据采集期间,由于提交历史记录非常混乱,`docs/` 文件夹的更改已被过滤。因此,此查询的结果并不准确。**
 
 我们是否在每月的特定时间(例如发布日期前后)编写更多文档?我们可以使用 `countIf` 函数计算一个简单的比率,并使用 `bar` 函数将结果可视化。
 
@@ -802,17 +799,17 @@ FROM
 │  31 │ █████████████████████████████████▏                              │
 └─────┴─────────────────────────────────────────────────────────────────┘
 
-共 31 行。耗时 0.043 秒。已处理 754 万行，40.53 MB（1.7671 亿行/秒，950.40 MB/秒）。
+31 行结果。耗时 0.043 秒。已处理 7.54 百万行，40.53 MB（176.71 百万行/秒，950.40 MB/秒）。
 
 ````
 
-月末可能会稍多一些,但总体上保持了良好的均匀分布。同样,由于在数据插入期间对文档进行了过滤,这个结果并不可靠。
+也许在月末时会稍微多一些，但总体上分布依然较为均匀。不过，由于在插入数据时应用了文档过滤器进行筛选，这些结果并不完全可靠。
 
-### 影响范围最广的作者 {#authors-with-the-most-diverse-impact}
+### 影响覆盖最为多元的作者 {#authors-with-the-most-diverse-impact}
 
-我们在这里将多样性定义为作者贡献过的不同文件数量。
+在这里，我们将多样性定义为某位作者参与贡献的唯一文件数量。
 
-[play](https://sql.clickhouse.com?query_id=MT8WBABUKYBYSBA78W5TML)
+[运行](https://sql.clickhouse.com?query_id=MT8WBABUKYBYSBA78W5TML)
 
 ```sql
 SELECT
@@ -840,7 +837,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
 ````
 
-让我们看看最近工作中谁的提交最为多样。与其按日期筛选，我们只考虑某位作者最近的 N 次提交（本例中为 3，你可以自行修改）：
+让我们来看看谁最近的提交记录最丰富多样。与其按日期限制，我们将只关注某个作者最近的 N 次提交记录（在本例中我们使用的是 3，你可以根据需要修改）：
 
 [play](https://sql.clickhouse.com?query_id=4Q3D67FWRIVWTY8EIDDE5U)
 
@@ -883,12 +880,12 @@ LIMIT 10
 │ liyang               │        36 │
 └──────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
+10 行在集合中。耗时：0.106 秒。处理了 266.05 千行，21.04 MB（252 万行/秒，198.93 MB/秒）。
 ```
 
-### 作者最常修改的文件 {#favorite-files-for-an-author}
+### 特定作者的常用文件
 
-这里我们选择创始人 [Alexey Milovidov](https://github.com/alexey-milovidov),并将分析范围限定为当前文件。
+这里我们选择创始人 [Alexey Milovidov](https://github.com/alexey-milovidov)，并仅对当前文件进行分析。
 
 [play](https://sql.clickhouse.com?query_id=OKGZBACRHVGCRAGCZAJKMF)
 
@@ -938,12 +935,12 @@ LIMIT 10
 │ programs/install/Install.cpp                │  37 │
 └─────────────────────────────────────────────┴─────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
+返回 10 行。用时:0.106 秒。已处理 79.815 万行,13.97 MB(751 万行/秒,131.41 MB/秒)。
 ```
 
-这个结果是合理的,因为 Alexey 一直负责维护变更日志。但如果我们使用文件的基本名称来识别他常修改的文件 - 这样可以处理文件重命名的情况,并且更侧重于代码贡献。
+这很合理，因为 Alexey 一直负责维护变更日志。不过，如果我们改用文件的基本名（basename）来识别他最受欢迎的文件呢？这样即使文件被重命名也仍然适用，并且能更侧重反映代码贡献。
 
-[play](https://sql.clickhouse.com?query_id=P9PBDZGOSVTKXEXU73ZNAJ)
+[运行](https://sql.clickhouse.com?query_id=P9PBDZGOSVTKXEXU73ZNAJ)
 
 ```sql
 SELECT
@@ -954,7 +951,6 @@ WHERE (author = 'Alexey Milovidov') AND (file_extension IN ('h', 'cpp', 'sql'))
 GROUP BY basename(path) AS base
 ORDER BY c DESC
 LIMIT 10
-
 ```
 
 
@@ -970,19 +966,19 @@ LIMIT 10
 │ Settings.h                     │ 225 │
 │ TCPHandler.cpp                 │ 205 │
 └────────────────────────────────┴─────┘
-10 行结果。耗时: 0.032 秒。处理了 266.05 千行，5.68 MB（8.22 百万行/秒，175.50 MB/秒）。
+10 行。耗时 0.032 秒。已处理 266.05 千行，5.68 MB（8.22 百万行/秒，175.50 MB/秒）。
 
 ````
 
 这可能更能反映他的兴趣领域。
 
-### 作者数最少的最大文件 {#largest-files-with-lowest-number-of-authors}
+### 作者数量最少的大型文件 {#largest-files-with-lowest-number-of-authors}
 
-为此,我们首先需要识别最大的文件。通过从提交历史中对每个文件进行完整重建来估算将会非常耗费资源!
+为此，我们首先需要找出最大的文件。若要基于提交历史，对每个文件进行完整重建来估算大小，代价会非常高！
 
-为了进行估算,假设我们仅限于当前文件,我们将新增行数求和并减去删除行数。然后可以计算文件长度与作者数量的比率。
+为了进行估算，在假定只关注当前存在的文件的前提下，我们将新增的行数累加，并减去删除的行数。然后就可以计算文件长度与作者数量的比值。
 
-[play](https://sql.clickhouse.com?query_id=PVSDOHZYUMRDDUZFEYJC7J)
+[运行](https://sql.clickhouse.com?query_id=PVSDOHZYUMRDDUZFEYJC7J)
 
 ```sql
 WITH current_files AS
@@ -1032,10 +1028,10 @@ LIMIT 10
 │ src/Analyzer/QueryAnalysisPass.cpp                                    │      5686 │           1 │               5686 │
 └───────────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-返回 10 行。耗时:0.138 秒。处理了 79.815 万行,16.57 MB(579 万行/秒,120.11 MB/秒)。
+结果集包含 10 行。耗时：0.138 秒。已处理 798.15 千行，16.57 MB（5.79 百万行/秒，120.11 MB/秒）。
 ````
 
-文本字典可能不太现实，那就通过按文件扩展名过滤，只保留代码吧！
+文本字典可能不太现实，因此我们通过文件扩展名过滤器将范围限制为只处理代码！
 
 [试一试](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
 
@@ -1090,7 +1086,7 @@ LIMIT 10
 返回 10 行。用时:0.140 秒。已处理 79.815 万行,16.84 MB(570 万行/秒,120.32 MB/秒)。
 ```
 
-这里存在一定的新近偏差——较新的文件被提交的机会更少。那如果我们只考虑至少已有 1 年历史的文件呢？
+这里存在一定的“近期偏差”——较新的文件获得提交的机会更少。如果我们将范围限制为至少已有 1 年历史的文件呢？
 
 [play](https://sql.clickhouse.com?query_id=RMHHZEDHFUCBGRQVQA2732)
 
@@ -1146,13 +1142,13 @@ LIMIT 10
 │ 2020-11-06 15:45:13 │ src/Storages/Rocksdb/StorageEmbeddedRocksdb.cpp                │       611 │           2 │              305.5 │
 └─────────────────────┴────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-10 行结果。耗时：0.143 秒。处理了 798.15 千行，18.00 MB（5.58 百万行/秒，125.87 MB/秒）。
+10 行结果。耗时 0.143 秒。已处理 798.15 千行，18.00 MB（5.58 百万行/秒，125.87 MB/秒）。
 
 ````
 
 ### 按时间、星期、作者分布的提交和代码行数;针对特定子目录 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
 
-我们将其解释为按星期统计的代码行数增删情况。在本例中,我们关注 [Functions 目录](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
+我们将其解释为按星期统计的新增和删除代码行数。在本例中,我们关注 [Functions 目录](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
 
 [play](https://sql.clickhouse.com?query_id=PF3KEMYG5CVLJGCFYQEGB1)
 
@@ -1179,9 +1175,9 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
 ````
 
-按一天中的时间：
+按一天中的不同时段，
 
-[运行示例](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
+[试一试](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
 
 
 ```sql
@@ -1224,7 +1220,7 @@ GROUP BY toHour(time) AS hourOfDay
 24 rows in set. Elapsed: 0.039 sec. Processed 266.05 thousand rows, 14.66 MB (6.77 million rows/s., 372.89 MB/s.)
 ```
 
-鉴于我们的大部分开发团队位于阿姆斯特丹，这样的分布是合理的。`bar` 函数可以帮助我们将这些分布可视化：
+考虑到我们的开发团队大部分位于阿姆斯特丹，这样的分布是合理的。`bar` 函数有助于我们将这些分布可视化：
 
 [play](https://sql.clickhouse.com?query_id=9AZ8CENV8N91YGW7T6IB68)
 
@@ -1248,7 +1244,7 @@ FROM
 ```
 
 
-┌─hourOfDay─┬─commits───────────────────────┬─lines&#95;added────────────────────────────────────────┬─lines&#95;deleted──────────────────────────────────────┐
+┌─小时─┬─提交次数───────────────────────────┬─新增行数────────────────────────────────────────────┬─删除行数────────────────────────────────────────────┐
 │         0 │ ████████▊                     │ ██████▊                                            │ ███████████▎                                       │
 │         1 │ ███████████▎                  │ ███▌                                               │ ██████▍                                            │
 │         2 │ ████████                      │ ███▊                                               │ █████                                              │
@@ -1275,15 +1271,15 @@ FROM
 │        23 │ ████████████▌                 │ █████▌                                             │ █████▋                                             │
 └───────────┴───────────────────────────────┴────────────────────────────────────────────────────┴────────────────────────────────────────────────────┘
 
-共 24 行。耗时: 0.038 秒。已处理 266.05 千行，14.66 MB（7.09 百万行/秒，390.69 MB/秒）。
+结果共 24 行。耗时 0.038 秒，处理了 266.05 千行，14.66 MB（7.09 百万行/秒，390.69 MB/秒）。
 
 ```
 
-### 显示作者倾向于重写其他作者代码的作者矩阵 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
+### 作者矩阵，用于展示哪些作者倾向于重写其他作者的代码 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
 
-`sign = -1` 表示代码删除。我们排除了标点符号和空行的插入。
+其中 `sign = -1` 表示一次代码删除。我们会排除标点符号以及插入空行的情况。
 
-[play](https://sql.clickhouse.com?query_id=448O8GWAHY3EM6ZZ7AGLAM)
+[在 ClickHouse Play 中运行](https://sql.clickhouse.com?query_id=448O8GWAHY3EM6ZZ7AGLAM)
 ```
 
 
@@ -1324,24 +1320,20 @@ LIMIT 100
 │ Anton Popov          │ Amos Bird        │  2127 │
 └──────────────────────┴──────────────────┴───────┘
 
-20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
+返回 20 行。用时:0.098 秒。已处理 754 万行,42.16 MB(7667 万行/秒,428.99 MB/秒)。
 ```
 
-使用桑基图（SuperSet）可以很好地将这些数据可视化。注意,我们将 `LIMIT BY` 增加到 3,以获取每个作者的前 3 名代码删除者,从而提高可视化效果的多样性。
+使用 Sankey（桑基）图（Superset）可以更直观地展示这些数据。注意，我们将 `LIMIT BY` 提高到 3，以便为每位作者获取删除代码最多的前 3 人，从而让可视化结果更加多样。
 
-<Image img={superset_authors_matrix} alt='Superset authors matrix' size='md' />
+<Image img={superset_authors_matrix} alt="Superset 作者矩阵" size="md" />
 
-显然 Alexey 喜欢删除其他人的代码。让我们排除他,以获得更均衡的代码删除视图。
+Alexey 显然很喜欢删除别人的代码。让我们把他排除掉，以便更均衡地查看代码删除情况。
 
-<Image
-  img={superset_authors_matrix_v2}
-  alt='Superset authors matrix v2'
-  size='md'
-/>
+<Image img={superset_authors_matrix_v2} alt="Superset 作者矩阵 v2" size="md" />
 
-### 每周各天贡献占比最高的是谁? {#who-is-the-highest-percentage-contributor-per-day-of-week}
+### 一周中的哪一天，谁的贡献占比最高？
 
-如果仅按提交数量来统计:
+如果只按提交次数来看的话：
 
 [play](https://sql.clickhouse.com?query_id=WXPKFJCAHOKYKEVTWNFVCY)
 
@@ -1369,11 +1361,11 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 2400 │
 └─────────────┴──────────────────┴──────┘
 
-7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
+返回 7 行。耗时：0.012 秒。已处理 62.78 千行，395.47 KB（5.44 百万行/秒，34.27 MB/秒）
 ```
 
 
-可以看到,贡献时间最长的贡献者——我们的创始人 Alexey 在这里可能具有一些优势。让我们将分析范围限定在最近一年。
+好的，我们来看看这里对资历最深的贡献者——我们的创始人 Alexey——可能有什么优势。我们将分析范围限定在过去一年。
 
 [play](https://sql.clickhouse.com?query_id=8YRJGHFTNJAWJ96XCJKKEH)
 
@@ -1402,12 +1394,12 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 243 │
 └─────────────┴──────────────────┴─────┘
 
-7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
+7 行结果。耗时 0.004 秒。处理了 21.82 千行，140.02 KB（4.88 百万行/秒，31.29 MB/秒）。
 ```
 
-这种分析仍然过于简单,无法真实反映人们的工作情况。
+这仍然有点太简单，不能充分反映大家的工作情况。
 
-一个更好的指标是计算每天的最大贡献者在最近一年总工作量中所占的比例。注意,我们对代码的删除和添加同等对待。
+一个更好的指标可能是：在过去一年完成的全部工作量中，统计每天的头号贡献者所占的比例。请注意，我们将删除代码和添加代码视为同等工作量。
 
 [play](https://sql.clickhouse.com?query_id=VQF4KMRDSUEXGS1JFVDJHV)
 
@@ -1452,12 +1444,12 @@ INNER JOIN
 │           7 │ Robert Schulze      │  0.3617405888930302 │
 └─────────────┴─────────────────────┴─────────────────────┘
 
-7 rows in set. Elapsed: 0.014 sec. Processed 106.12 thousand rows, 1.38 MB (7.61 million rows/s., 98.65 MB/s.)
+返回 7 行。用时:0.014 秒。已处理 10.612 万行,1.38 MB(761 万行/秒,98.65 MB/秒)
 ```
 
-### 代码库中代码年龄的分布 {#distribution-of-code-age-across-repository}
+### 仓库中代码年龄的分布
 
-我们将分析限定在当前文件。为简洁起见,我们将结果限制为深度 2,每个根文件夹显示 5 个文件。可根据需要进行调整。
+我们将分析范围限定为当前存在的文件。为简洁起见，我们将结果限制为深度为 2，且每个根文件夹最多显示 5 个文件。可根据需要进行调整。
 
 [play](https://sql.clickhouse.com?query_id=6YWAUQYPZINZDJGBEZBNWG)
 
@@ -1540,9 +1532,9 @@ LIMIT 5 BY root
 ```
 
 
-### 某位作者的代码被其他作者删除的百分比是多少? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+### 某位作者编写的代码中，有多少百分比被其他作者删除了？
 
-对于这个问题,我们需要用某位作者编写的代码行数除以该作者被其他贡献者删除的代码行数。
+对于这个问题，我们需要将某位作者编写的代码行数，除以其被其他贡献者删除的代码行总数。
 
 [play](https://sql.clickhouse.com?query_id=T4DTWTB36WFSEYAZLMGRNF)
 
@@ -1587,12 +1579,12 @@ LIMIT 10
 │ kreuzerkrieg       │  3406 │           2468 │  0.724603640634175 │
 └────────────────────┴───────┴────────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
+返回 10 行。用时:0.126 秒。已处理 1507 万行,73.51 MB(1.1997 亿行/秒,585.16 MB/秒)。
 ```
 
-### 列出被重写次数最多的文件? {#list-files-that-were-rewritten-most-number-of-times}
+### 被重写次数最多的文件列表？
 
-解决这个问题最简单的方法是统计每个路径(仅限当前文件)的代码行修改次数,例如:
+解决这个问题最简单的方法，可能就是按路径（仅限当前仍存在的文件）统计每个文件的行修改次数，例如：
 
 ```sql
 WITH current_files AS
@@ -1626,7 +1618,6 @@ WHERE (file_extension IN ('h', 'cpp', 'sql')) AND (path IN (current_files))
 GROUP BY path
 ORDER BY c DESC
 LIMIT 10
-
 ```
 
 
@@ -1643,13 +1634,13 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │  8197 │
 └────────────────────────────────────────────────────────┴───────┘
 
-10 行。耗时: 0.160 秒。已处理 8.07 百万行，98.99 MB（50.49 百万行/秒，619.49 MB/秒）。
+10 行结果。耗时：0.160 秒。处理了 8.07 百万行，98.99 MB（50.49 百万行/秒，619.49 MB/秒）。
 
 ````
 
-然而,这并未捕捉到"重写"的概念,即在任何提交中文件的大部分内容发生变化。这需要一个更复杂的查询。如果我们将重写定义为文件中超过 50% 的内容被删除且超过 50% 的内容被添加,您可以根据自己对重写的理解来调整查询。
+然而,这并未捕获"重写"的概念,即在任何提交中文件的大部分内容发生变化。这需要一个更复杂的查询。如果我们将重写定义为文件中超过 50% 的内容被删除且超过 50% 的内容被添加,您可以根据自己对重写的理解来调整查询。
 
-该查询仅限于当前文件。我们通过按 `path` 和 `commit_hash` 分组来列出所有文件变更,返回添加和删除的行数。使用窗口函数,我们通过执行累积求和来估算文件在任意时刻的总大小,并将任何变更对文件大小的影响估算为 `添加的行数 - 删除的行数`。利用这一统计数据,我们可以计算每次变更中文件被添加或删除的百分比。最后,我们统计每个文件中构成重写的文件变更数量,即 `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`。请注意,我们要求文件超过 50 行,以避免将文件的早期提交计为重写。这也避免了对极小文件的偏差,因为这些文件更有可能被重写。
+该查询仅限于当前文件。我们通过按 `path` 和 `commit_hash` 分组来列出所有文件更改,返回添加和删除的行数。使用窗口函数,我们通过执行累积求和并将任何更改对文件大小的影响估算为 `添加的行数 - 删除的行数` 来估算文件在任意时刻的总大小。利用此统计信息,我们可以计算每次更改中文件被添加或删除内容的百分比。最后,我们统计每个文件中构成重写的文件更改次数,即 `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`。请注意,我们要求文件超过 50 行,以避免将文件的早期提交计为重写。这也避免了对极小文件的偏差,因为这些文件更有可能被重写。
 
 [play](https://sql.clickhouse.com?query_id=5PL1QLNSH6QQTR8H9HINNP)
 
@@ -1721,30 +1712,30 @@ LIMIT 10
 ````
 
 
-┌─path──────────────────────────────────────────────────┬─num_rewrites─┐
-│ src/Storages/WindowView/StorageWindowView.cpp │ 8 │
-│ src/Functions/array/arrayIndex.h │ 7 │
-│ src/Dictionaries/CacheDictionary.cpp │ 6 │
-│ src/Dictionaries/RangeHashedDictionary.cpp │ 5 │
-│ programs/client/Client.cpp │ 4 │
-│ src/Functions/polygonPerimeter.cpp │ 4 │
-│ src/Functions/polygonsEquals.cpp │ 4 │
-│ src/Functions/polygonsWithin.cpp │ 4 │
-│ src/Processors/Formats/Impl/ArrowColumnToCHColumn.cpp │ 4 │
-│ src/Functions/polygonsSymDifference.cpp │ 4 │
+┌─path──────────────────────────────────────────────────┬─num&#95;rewrites─┐
+│ src/Storages/WindowView/StorageWindowView.cpp         │            8 │
+│ src/Functions/array/arrayIndex.h                      │            7 │
+│ src/Dictionaries/CacheDictionary.cpp                  │            6 │
+│ src/Dictionaries/RangeHashedDictionary.cpp            │            5 │
+│ programs/client/Client.cpp                            │            4 │
+│ src/Functions/polygonPerimeter.cpp                    │            4 │
+│ src/Functions/polygonsEquals.cpp                      │            4 │
+│ src/Functions/polygonsWithin.cpp                      │            4 │
+│ src/Processors/Formats/Impl/ArrowColumnToCHColumn.cpp │            4 │
+│ src/Functions/polygonsSymDifference.cpp               │            4 │
 └───────────────────────────────────────────────────────┴──────────────┘
 
-10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
+10 行结果。耗时：0.299 秒。已处理 798.15 千行，31.52 MB（2.67 百万行/秒，105.29 MB/s）。
 
 ````
 
-### 代码在星期几最有可能保留在仓库中? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+### 代码在星期几最有可能保留在代码仓库中?                                                                                
 
 为此,我们需要唯一标识每一行代码。由于同一行可能在文件中多次出现,我们使用路径和行内容来进行估算。
 
-我们查询添加的代码行,并将其与删除的代码行进行连接——筛选出删除时间晚于添加时间的情况。这样我们就得到了已删除的代码行,从而可以计算这两个事件之间的时间间隔。
+我们查询添加的代码行,将其与删除的代码行进行连接——筛选出删除时间晚于添加时间的情况。这样我们就得到了已删除的代码行,从而可以计算这两个事件之间的时间间隔。
 
-最后,我们对该数据集进行聚合,按星期几计算代码行在仓库中保留的平均天数。
+最后,我们对该数据集进行聚合,按星期几计算代码行在代码仓库中保留的平均天数。
 
 [play](https://sql.clickhouse.com?query_id=GVF23LEZTNZI22BT8LZBBE)
 
@@ -1797,13 +1788,13 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 │                 7 │  70904 │  220.0266134491707 │
 └───────────────────┴────────┴────────────────────┘
 
-7 rows in set. Elapsed: 3.965 sec. Processed 15.07 million rows, 1.92 GB (3.80 million rows/s., 483.50 MB/s.)
+返回 7 行。耗时:3.965 秒。处理了 1507 万行,1.92 GB(每秒 380 万行,483.50 MB/s)。
 ````
 
-### 按平均代码年龄排序的文件 {#files-sorted-by-average-code-age}
+### 按平均代码年龄排序的文件
 
-此查询使用与[代码在星期几最有可能保留在仓库中](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository)相同的原理——通过路径和行内容来唯一标识每一行代码。
-这使我们能够确定代码行从添加到删除之间的时间间隔。不过,我们仅筛选当前文件和代码,并计算每个文件所有代码行的平均时间。
+此查询使用与 [What weekday does the code have the highest chance to stay in the repository](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) 相同的原理——通过路径和行内容来唯一标识一行代码。
+这使我们能够确定一行代码从被添加到被删除之间的时间间隔。不过，我们仅保留当前仍存在的文件和代码行，并对每个文件中各行的时间间隔取平均值。
 
 [play](https://sql.clickhouse.com?query_id=3CYYT7HEHWRFHVCM9JCKSU)
 
@@ -1888,14 +1879,14 @@ LIMIT 10
 │ src/Interpreters/createBlockSelector.cpp                        │               795 │
 └─────────────────────────────────────────────────────────────────┴───────────────────┘
 
-10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
+返回 10 行。用时:3.134 秒。已处理 1613 万行,1.83 GB(515 万行/秒,582.99 MB/秒)。
 ```
 
-### 谁倾向于编写更多测试 / CPP 代码 / 注释？ {#who-tends-to-write-more-tests--cpp-code--comments}
+### 谁往往会写更多测试 / C++ 代码 / 注释？
 
-有多种方法可以解决这个问题。聚焦于代码与测试的比率,该查询相对简单——统计对包含 `tests` 的文件夹的贡献次数,并计算其与总贡献的比率。
+我们可以用几种方式来回答这个问题。若聚焦于代码与测试的比例，这个查询相对简单——统计对包含 `tests` 的文件夹的贡献次数，并计算其在总贡献中的比例。
 
-注意,我们将范围限制为变更超过 20 次的用户,以聚焦于常规提交者并避免一次性贡献造成的偏差。
+注意，我们只统计变更次数超过 20 次的用户，以聚焦于经常提交代码的开发者，并避免一次性贡献导致的偏差。
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -1910,7 +1901,6 @@ GROUP BY author
 HAVING code > 20
 ORDER BY code DESC
 LIMIT 20
-
 ```
 
 
@@ -1937,13 +1927,13 @@ LIMIT 20
 │ Alexander Kuzmenkov  │  298 │  2092 │ 0.8753138075313808 │
 └──────────────────────┴──────┴───────┴────────────────────┘
 
-结果共 20 行。耗时：0.034 秒。已处理 266.05 千行，4.65 MB（7.93 百万行/秒，138.76 MB/秒）。
+共 20 行。耗时：0.034 秒。已处理 266.05 千行，4.65 MB（7.93 百万行/秒，138.76 MB/秒）。
 
 ````
 
-我们可以将这个分布绘制成直方图。
+我们可以将该分布绘制为直方图。
 
-[play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
+[运行](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
 
 ```sql
 WITH (
@@ -1970,26 +1960,26 @@ SELECT
 
 
 ┌──────────────lower─┬──────────────upper─┬─bar───────────────────────────┐
-│ 0.6187853312074214 │ 0.6410053888179964 │ █████ │
-│ 0.6410053888179964 │ 0.6764177968945693 │ █████ │
-│ 0.6764177968945693 │ 0.7237343804750673 │ █████ │
-│ 0.7237343804750673 │ 0.7740802855073157 │ █████▋ │
-│ 0.7740802855073157 │ 0.807297655565091 │ ████████▋ │
-│ 0.807297655565091 │ 0.8338381996094653 │ ██████▎ │
-│ 0.8338381996094653 │ 0.8533566747727687 │ ████████▋ │
-│ 0.8533566747727687 │ 0.871392376017531 │ █████████▍ │
-│ 0.871392376017531 │ 0.904916108899021 │ ████████████████████████████▋ │
-│ 0.904916108899021 │ 0.9358408629263851 │ █████████████████▌ │
+│ 0.6187853312074214 │ 0.6410053888179964 │ █████                         │
+│ 0.6410053888179964 │ 0.6764177968945693 │ █████                         │
+│ 0.6764177968945693 │ 0.7237343804750673 │ █████                         │
+│ 0.7237343804750673 │ 0.7740802855073157 │ █████▋                        │
+│ 0.7740802855073157 │  0.807297655565091 │ ████████▋                     │
+│  0.807297655565091 │ 0.8338381996094653 │ ██████▎                       │
+│ 0.8338381996094653 │ 0.8533566747727687 │ ████████▋                     │
+│ 0.8533566747727687 │  0.871392376017531 │ █████████▍                    │
+│  0.871392376017531 │  0.904916108899021 │ ████████████████████████████▋ │
+│  0.904916108899021 │ 0.9358408629263851 │ █████████████████▌            │
 └────────────────────┴────────────────────┴───────────────────────────────┘
-10 rows in set. Elapsed: 0.051 sec. Processed 266.05 thousand rows, 4.65 MB (5.24 million rows/s., 91.64 MB/s.)
+10 行结果。耗时：0.051 秒。处理了 266.05 千行，4.65 MB（5.24 百万行/秒，91.64 MB/秒）。
 
 ````
 
-大多数贡献者编写的代码都比测试多,这符合预期。
+大多数贡献者编写的代码都比测试多，这也在情理之中。
 
-那么在贡献代码时,谁添加的注释最多呢?
+那么，在提交代码时，谁添加的注释最多呢？
 
-[play](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
+[运行](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
 
 ```sql
 SELECT
@@ -2024,14 +2014,14 @@ LIMIT 10
 │ kssenii            │ 0.07455322590796751 │  131143 │
 │ Artur              │ 0.12383737231074826 │  121484 │
 └────────────────────┴─────────────────────┴─────────┘
-10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
+返回 10 行。耗时：0.290 秒。处理了 754 万行，394.57 MB（每秒 2600 万行，1.36 GB/秒）。
 ````
 
-注意,我们按代码贡献量排序。所有主要贡献者的注释比例都出人意料地高,这也是我们的代码如此易读的原因之一。
+请注意，我们是按代码贡献排序的。对于我们所有主要贡献者来说，这个比例都出乎意料地高，这也是我们的代码如此易读的部分原因。
 
-### 作者提交的代码/注释比例如何随时间变化? {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
+### 从代码/注释比例来看，作者的提交随时间会如何变化？
 
-按作者计算这一指标非常简单,
+按作者维度计算这一点非常简单，
 
 
 ```sql
@@ -2050,7 +2040,7 @@ ORDER BY
     time ASC
 LIMIT 10
 
-┌─author──────────────────────┬─code_lines─┬─comments─┬─────────ratio_code─┬───────week─┐
+┌─作者────────────────────────┬─代码行数───┬─注释行数─┬─────────代码占比───┬────────周──┐
 │ 1lann                       │          8 │        0 │                  1 │ 2022-03-06 │
 │ 20018712                    │          2 │        0 │                  1 │ 2020-09-13 │
 │ 243f6a8885a308d313198a2e037 │          0 │        2 │                  0 │ 2020-12-06 │
@@ -2063,14 +2053,14 @@ LIMIT 10
 │ ANDREI STAROVEROV           │         32 │       12 │ 0.7272727272727273 │ 2021-05-09 │
 └─────────────────────────────┴────────────┴──────────┴────────────────────┴────────────┘
 
-10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
+10 行结果。耗时：0.145 秒。处理了 7.54 百万行、51.09 MB 的数据（51.83 百万行/秒，351.44 MB/秒）。
 ```
 
-不过，理想情况下，我们希望看到，从作者开始第一次提交那天起，所有作者整体上的变化趋势。他们会逐渐减少自己写的注释数量吗？
+不过，理想情况下，我们希望看到的是：从作者开始第一次提交的那天起，所有作者整体上的这一指标是如何变化的。他们会不会逐渐减少自己写的注释数量？
 
-为此，我们首先计算每位作者随时间变化的注释比例——类似于 [Who tends to write more tests / CPP code / comments?](#who-tends-to-write-more-tests--cpp-code--comments)。然后将其与每位作者的首次提交日期进行关联，从而可以按周偏移量来计算注释比例。
+为此，我们首先计算每位作者随时间变化的注释比例——类似于 [Who tends to write more tests / CPP code / comments?](#who-tends-to-write-more-tests--cpp-code--comments) 中的做法。然后将其与每位作者的起始提交日期进行关联，从而能够按相对于起始日期的周偏移量来计算注释比例。
 
-在计算出所有作者的按周偏移量平均值后，我们再通过每隔 10 周采样一次的方式来抽取结果。
+在计算出所有作者按周偏移量的平均值之后，我们每隔 10 周对这些结果进行一次抽样。
 
 [play](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
 
@@ -2143,17 +2133,17 @@ LIMIT 20
 │         190 │ 0.20677550885049117 │
 └─────────────┴─────────────────────┘
 
-20 行结果。耗时：0.167 秒。处理了 1507 万行，101.74 MB（9051 万行/秒，610.98 MB/秒）。
+20 行结果。耗时 0.167 秒，已处理 1,507 万行，101.74 MB（9,051 万行/秒，610.98 MB/秒）。
 
 ````
 
-令人鼓舞的是,我们的注释百分比保持相当稳定,并不会随着作者贡献时间的延长而降低。
+令人鼓舞的是，我们的注释占比相当稳定，并不会随着作者贡献时间的延长而下降。
 
-### 代码被重写前的平均时间和中位数(代码衰减的半衰期)是多少? {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
+### 代码在被重写前的平均时间是多少？中位数（代码“衰减”的半衰期）又是多少？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
 
-我们可以使用与[列出被重写次数最多或被最多作者重写的文件](#list-files-that-were-rewritten-most-number-of-times)相同的原理来识别重写,但需要考虑所有文件。使用窗口函数来计算每个文件两次重写之间的时间间隔。由此,我们可以计算所有文件的平均值和中位数。
+我们可以使用与[List files that were rewritten most number of time or by most of authors](#list-files-that-were-rewritten-most-number-of-times)相同的思路来识别重写，但这里要考虑所有文件。使用窗口函数来计算每个文件两次重写之间的时间。基于此，我们可以计算所有文件的平均值和中位数。
 
-[play](https://sql.clickhouse.com?query_id=WSHUEPJP9TNJUH7QITWWOR)
+[运行](https://sql.clickhouse.com?query_id=WSHUEPJP9TNJUH7QITWWOR)
 
 ```sql
 WITH
@@ -2208,15 +2198,15 @@ FROM rewrites
 ````
 
 
-1 row in set. Elapsed: 0.388 sec. Processed 266.05 thousand rows, 22.85 MB (685.82 thousand rows/s., 58.89 MB/s.)
+1 行结果。耗时：0.388 秒。已处理 266.05 千行，22.85 MB（685.82 千行/秒，58.89 MB/秒）。
 
 ````
 
-### 从代码最有可能被重写的角度来看,什么时候写代码最不合适? {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### 从代码最有可能被重写的角度来看，什么时候是写代码的“最糟糕时间点”？                                                                                                   
 
-类似于[代码被重写前的平均时间和中位数(代码衰减的半衰期)是多少?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay)和[列出被重写次数最多或被最多作者重写的文件](#list-files-that-were-rewritten-most-number-of-times),但我们按星期几进行聚合。可根据需要进行调整,例如按年份中的月份。
+类似于[代码在被重写前的平均时间和中位时间（代码衰减的半衰期）是多少？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay)以及[列出被重写次数最多，或被最多作者重写的文件](#list-files-that-were-rewritten-most-number-of-times)，只是这里按一周中的星期几进行聚合。也可以根据需要调整，例如按一年中的月份聚合。
 
-[play](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
+[运行示例](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
 
 ```sql
 WITH
@@ -2273,12 +2263,12 @@ GROUP BY dayOfWeek
 │         7 │            46 │
 └───────────┴───────────────┘
 
-7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
+结果集共 7 行。耗时：0.466 秒。已处理 7.54 百万行，701.52 MB（16.15 百万行/秒，1.50 GB/秒）。
 ````
 
-### 哪些作者的代码最具"粘性"? {#which-authors-code-is-the-most-sticky}
+### 哪位作者的代码“粘性”最高？
 
-我们将"粘性"定义为作者的代码在被重写之前保持的时间长度。类似于前面的问题[代码被重写前的平均时间和中位数(代码衰减的半衰期)是多少?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) - 使用相同的重写指标,即文件 50% 的添加和 50% 的删除。我们计算每个作者的平均重写时间,并且只考虑贡献了两个以上文件的贡献者。
+我们将「粘性」定义为某位作者的代码在被重写之前能保留多长时间。类似于前面的问题 [代码在被重写前的平均时间是多少，以及其中位数（代码衰减的半衰期）？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) —— 使用相同的重写度量标准，即对同一文件进行 50% 的新增和 50% 的删除。我们按作者计算平均重写时间，并且只考虑贡献了超过两个文件的作者。
 
 [play](https://sql.clickhouse.com?query_id=BKHLVVWN5SET1VTIFQ8JVK)
 
@@ -2351,14 +2341,14 @@ LIMIT 10
 │ Alexey Zatelepin    │               22.5 │         4 │
 └─────────────────────┴────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.555 sec. Processed 7.54 million rows, 720.60 MB (13.58 million rows/s., 1.30 GB/s.)
+10 行结果。耗时 0.555 秒。处理了 7.54 百万行，720.60 MB（13.58 百万行/秒，1.30 GB/秒）。
 ```
 
-### 作者最长连续提交天数 {#most-consecutive-days-of-commits-by-an-author}
+### 作者连续提交天数最多的记录
 
-此查询首先需要计算作者提交代码的日期。通过使用窗口函数按作者分区,可以计算提交之间的天数间隔。对于每次提交,如果距离上次提交的时间为 1 天,则将其标记为连续(1),否则标记为 0,并将此结果存储在 `consecutive_day` 中。
+该查询首先需要我们计算每位作者发生提交的日期。通过使用按作者分区的窗口函数，我们可以计算其各次提交之间相隔的天数。对于每一次提交，如果距离上一次提交正好相隔 1 天，则将其标记为连续（1），否则标记为 0——并将该结果存储在 `consecutive_day` 中。
 
-后续的数组函数用于计算每个作者最长的连续 1 序列。首先,使用 `groupArray` 函数收集作者的所有 `consecutive_day` 值。然后将这个由 1 和 0 组成的数组按 0 值拆分为多个子数组。最后,计算最长的子数组长度。
+随后使用数组函数来计算每位作者最长的连续 1 序列。首先使用 `groupArray` 函数收集某个作者的全部 `consecutive_day` 值。然后，将这个由 1 和 0 组成的数组按值 0 拆分为多个子数组。最后，我们计算最长的子数组。
 
 [play](https://sql.clickhouse.com?query_id=S3E64UYCAMDAYJRSXINVFR)
 
@@ -2407,12 +2397,12 @@ LIMIT 10
 │ Nikita Vasilev   │                   11 │
 └──────────────────┴──────────────────────┘
 
-10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
+共返回 10 行。耗时：0.025 秒。已处理 62.78 千行，395.47 KB（2.54 百万行/秒，16.02 MB/秒）。
 ```
 
-### 文件的逐行提交历史 {#line-by-line-commit-history-of-a-file}
+### 文件的逐行提交历史记录
 
-文件可以被重命名。当发生重命名时,会产生一个重命名事件,其中 `path` 列设置为文件的新路径,`old_path` 列表示之前的位置,例如:
+文件可能会被重命名。发生这种情况时，会产生一个重命名事件，其中 `path` 列被设置为文件的新路径，而 `old_path` 列表示之前的位置，例如：
 
 [play](https://sql.clickhouse.com?query_id=AKTW3Z8JZAPQ4H9BH2ZFRX)
 
@@ -2430,14 +2420,14 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 │ 2020-04-03 16:14:31 │ src/Storages/StorageReplicatedMergeTree.cpp │ dbms/Storages/StorageReplicatedMergeTree.cpp │ 06446b4f08a142d6f1bc30664c47ded88ab51782 │ dbms/ → src/   │
 └─────────────────────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────┴────────────────┘
 
-1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
+共 1 行。耗时：0.135 秒。已处理 266.05 千行，20.73 MB（1.98 百万行/秒，154.04 MB/秒）。
 ```
 
-这使得查看文件的完整历史变得困难,因为没有单一的值将所有行或文件变更关联起来。
+这使得查看文件的完整历史变得比较困难，因为我们没有一个单一的值来关联所有的行或文件变更。
 
-为了解决这个问题,可以使用用户定义函数(UDF)。目前这些函数不支持递归,因此要追踪文件的历史,必须定义一系列相互显式调用的 UDF。
+为了解决这个问题，我们可以使用用户自定义函数（UDF）。目前这些函数还不能递归调用，因此，为了确定一个文件的历史，我们必须定义一系列相互显式调用的 UDF。
 
-这意味着只能追踪到最大深度的重命名——下面的示例深度为 5。文件被重命名超过这个次数的情况不太可能发生,因此目前这已足够。
+这意味着我们只能在设定的最大深度内追踪重命名——下面的示例最大深度为 5。文件被重命名次数超过这一上限的情况不太可能发生，因此目前这已经足够了。
 
 
 ```sql
@@ -2449,7 +2439,7 @@ CREATE FUNCTION file_path_history_04 AS (n) -> if(isNull(n), [], arrayConcat([n]
 CREATE FUNCTION file_path_history_05 AS (n) -> if(isNull(n), [], [n]);
 ```
 
-通过调用 `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')`，我们递归遍历重命名历史，每一层调用都会使用 `old_path` 调用下一层。结果通过 `arrayConcat` 进行合并。
+通过调用 `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')`，我们递归遍历重命名历史，每一级函数调用都会使用 `old_path` 调用下一层。最终结果通过 `arrayConcat` 合并。
 
 例如，
 
@@ -2460,10 +2450,10 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-返回 1 行。耗时:0.074 秒。已处理 34.406 万行,6.27 MB(465 万行/秒,84.71 MB/秒)。
+结果集包含 1 行。耗时：0.074 秒。已处理 344.06 千行记录，6.27 MB（4.65 百万行/秒，84.71 MB/秒）。
 ```
 
-我们现在可以利用此功能来汇总某个文件整个历史中的所有提交记录。在下面的示例中，我们为每个 `path` 值展示一条提交记录。
+我们现在可以利用这一功能来汇总某个文件整个历史中的提交记录。在本示例中，我们针对每个 `path` 值各展示一个提交记录。
 
 ```sql
 SELECT
@@ -2479,23 +2469,23 @@ ORDER BY time DESC
 LIMIT 1 BY path
 FORMAT PrettyCompactMonoBlock
 
-┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path─────────────────────────────────────────────┬─commit_message──────────────────────────────────────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ 修复访问处于 Deleting 状态的数据部分                                            │
-│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ 删除空行                                                                        │
-│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ 尝试添加重命名主键列的功能,但最终禁用了该功能                                   │
+┌────────────────时间─┬─提交────────┬─变更类型────┬─作者───────────────┬─路径─────────────────────────────────────────────┬─提交说明────────────────────────────────────────────────────────────────────────┐
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ 修改        │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ 修复在 Deleting 状态下访问数据部分的问题                                        │
+│ 2020-04-03 15:21:24 │ 38a50f44d34 │ 修改        │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ 删除空行                                                                        │
+│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ 修改        │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ 曾尝试支持重命名主键列，但最终只是禁用了这一功能                                 │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 
-返回 3 行。耗时:0.170 秒。已处理 611.53 千行,41.76 MB(3.60 百万行/秒,246.07 MB/秒)。
+3 行结果。耗时：0.170 秒。已处理 611.53 千行，41.76 MB（3.60 百万行/秒，246.07 MB/秒）。
 ```
 
 
-## 未解决的问题 {#unsolved-questions}
+## 未解决的问题
 
-### Git blame {#git-blame}
+### Git blame
 
-由于目前无法在数组函数中保持状态,因此很难获得精确的结果。未来可以通过 `arrayFold` 或 `arrayReduce` 实现,这些函数允许在每次迭代时保持状态。
+由于当前无法在数组函数中保持状态，因此要获得精确结果相当困难。通过使用 `arrayFold` 或 `arrayReduce` 可以实现这一点，这些函数允许在每次迭代时保留状态。
 
-一个近似解决方案足以进行高层次分析,示例如下:
+一个近似解，足以用于宏观分析，大致如下：
 
 ```sql
 SELECT
@@ -2530,7 +2520,7 @@ LIMIT 20
 │              19 │ s-kat                │ #include <Storages/MergeTree/PinnedPartUUIDs.h>               │
 │              20 │ Nikita Mikhaylov     │ #include <Storages/MergeTree/MergeMutateExecutor.h>           │
 └─────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────┘
-返回 20 行。耗时:0.547 秒。处理了 788 万行,679.20 MB(每秒 1442 万行,1.24 GB/秒)。
+20 行结果，耗时 0.547 秒。处理了 7.88 百万行数据，679.20 MB（14.42 百万行/秒，1.24 GB/秒）。
 ```
 
-我们欢迎提供精确和改进的解决方案。
+我们欢迎在此提供严谨准确和改进完善的解决方案。

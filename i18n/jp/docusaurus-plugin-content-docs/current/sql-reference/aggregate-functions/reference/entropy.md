@@ -1,5 +1,5 @@
 ---
-description: '列に含まれる値のシャノンエントロピーを計算します。'
+description: '値のカラムのシャノンエントロピーを計算します。'
 sidebar_position: 131
 slug: /sql-reference/aggregate-functions/reference/entropy
 title: 'entropy'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # entropy
 
-値の列に対して [Shannon エントロピー](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) を計算します。
+列内の値に対して[シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))を計算します。
 
 **構文**
 
@@ -18,11 +18,11 @@ entropy(val)
 
 **引数**
 
-* `val` — 任意の型の値を格納する列。
+* `val` — 任意の型の値を持つ列。
 
-**戻り値**
+**返される値**
 
-* シャノンエントロピー。
+* シャノンのエントロピー。
 
 型: [Float64](../../../sql-reference/data-types/float.md)。
 
@@ -38,7 +38,7 @@ INSERT INTO entropy VALUES (1, 'A'), (1, 'A'), (1,'A'), (1,'A'), (2,'B'), (2,'B'
 SELECT entropy(vals), entropy(strings) FROM entropy;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─entropy(vals)─┬─entropy(strings)─┐

@@ -9,7 +9,7 @@ title: 'LineAsStringWithNames'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
@@ -17,12 +17,13 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`LineAsStringWithNames`フォーマットは[`LineAsString`](./LineAsString.md)フォーマットに似ていますが、カラム名を含むヘッダー行を出力します。
+`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、列名を含むヘッダー行を出力します。
 
 
-## 使用例 {#example-usage}
 
-```sql title="クエリ"
+## 使用例
+
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32
@@ -34,7 +35,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNames;
 ```
 
-```response title="応答"
+```response title="Response"
 name    value
 John    30
 Jane    25

@@ -3,8 +3,8 @@ slug: /use-cases/observability/clickstack/sdks/browser
 pagination_prev: null
 pagination_next: null
 sidebar_position: 0
-description: 'Browser SDK для ClickStack — стек наблюдаемости ClickHouse'
-title: 'Browser JS'
+description: 'Браузерный SDK для ClickStack — стек наблюдаемости ClickHouse'
+title: 'Браузерный JS'
 doc_type: 'guide'
 keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'frontend']
 ---
@@ -12,15 +12,13 @@ keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'fronten
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Браузерный SDK ClickStack позволяет инструментировать ваше фронтенд‑приложение для
-отправки событий в ClickStack. Это даёт возможность просматривать сетевые
-запросы и исключения вместе с бэкенд‑событиями на единой временной шкале.
+Браузерный SDK ClickStack позволяет инструментировать ваше frontend-приложение,
+чтобы оно отправляло события в ClickStack. Это даёт возможность просматривать сетевые
+запросы и исключения вместе с backend-событиями в единой временной шкале.
 
-Кроме того, он автоматически захватывает и коррелирует данные session replay, чтобы
-вы могли визуально шаг за шагом просматривать и отлаживать то, что видел пользователь при работе с вашим
-приложением.
+Кроме того, он автоматически захватывает и коррелирует данные воспроизведения сессий, чтобы вы могли пошагово просматривать и отлаживать то, что видел пользователь во время работы с вашим приложением.
 
-В этом руководстве интегрируются следующие элементы:
+В этом руководстве интегрируются следующие компоненты:
 
 * **Console Logs**
 * **Session Replays**
@@ -30,14 +28,14 @@ import TabItem from '@theme/TabItem';
 
 ## Начало работы {#getting-started}
 
-<br />
+<br/>
 
 <Tabs groupId="install">
 <TabItem value="package_import" label="Импорт пакета" default>
 
 **Установка через импорт пакета (рекомендуется)**
 
-Используйте следующую команду для установки [пакета для браузера](https://www.npmjs.com/package/@hyperdx/browser).
+Используйте следующую команду для установки [браузерного пакета](https://www.npmjs.com/package/@hyperdx/browser).
 
 ```shell
 npm install @hyperdx/browser
@@ -46,38 +44,38 @@ npm install @hyperdx/browser
 **Инициализация ClickStack**
 
 ```javascript
-import HyperDX from "@hyperdx/browser"
+import HyperDX from '@hyperdx/browser';
 
 HyperDX.init({
-  url: "http://localhost:4318",
-  apiKey: "YOUR_INGESTION_API_KEY",
-  service: "my-frontend-app",
-  tracePropagationTargets: [/api.myapp.domain/i], // Укажите для связывания трассировок от фронтенда к бэкенд-запросам
-  consoleCapture: true, // Захват логов консоли (по умолчанию false)
-  advancedNetworkCapture: true // Захват полных заголовков и тел HTTP-запросов/ответов (по умолчанию false)
-})
+    url: 'http://localhost:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-frontend-app',
+    tracePropagationTargets: [/api.myapp.domain/i], // Настройте, чтобы связывать трассировки от фронтенда с запросами бэкенда
+    consoleCapture: true, // Собирать логи консоли (по умолчанию false)
+    advancedNetworkCapture: true, // Собирать полные HTTP-заголовки и тела запросов/ответов (по умолчанию false)
+});
 ```
 
 </TabItem>
-<TabItem value="script_tag" label="Тег скрипта">
+<TabItem value="script_tag" label="Script Tag">
 
-**Установка через тег скрипта (альтернативный способ)**
+**Установка через Script Tag (альтернативный вариант)**
 
-Вы также можете подключить и установить скрипт через тег скрипта вместо
+Вы также можете подключить и установить скрипт через script-тег вместо
 установки через NPM. Это создаст глобальную переменную `HyperDX`, которую можно
 использовать так же, как NPM-пакет.
 
-Этот способ рекомендуется, если ваш сайт не использует сборщик.
+Этот вариант рекомендуется, если ваш сайт сейчас не собирается с помощью bundler.
 
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
 <script>
   window.HyperDX.init({
-    url: "http://localhost:4318",
-    apiKey: "YOUR_INGESTION_API_KEY",
-    service: "my-frontend-app",
-    tracePropagationTargets: [/api.myapp.domain/i] // Укажите для связывания трассировок от фронтенда к бэкенд-запросам
-  })
+    url: 'http://localhost:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-frontend-app',
+    tracePropagationTargets: [/api.myapp.domain/i], // Настройте, чтобы связывать трассировки от фронтенда с запросами бэкенда
+  });
 </script>
 ```
 
@@ -86,111 +84,112 @@ HyperDX.init({
 
 ### Параметры {#options}
 
-- `apiKey` — ваш ключ API приёма данных ClickStack.
-- `service` — имя сервиса, под которым события будут отображаться в интерфейсе HyperDX.
-- `tracePropagationTargets` — список регулярных выражений для сопоставления с HTTP-запросами
-  с целью связывания трассировок фронтенда и бэкенда. Добавляет дополнительный
-  заголовок `traceparent` ко всем запросам, соответствующим любому из шаблонов. Следует
-  указать домен вашего бэкенд API (например, `api.yoursite.com`).
-- `consoleCapture` — (необязательно) захват всех логов консоли (по умолчанию `false`).
-- `advancedNetworkCapture` — (необязательно) захват полных заголовков и тел
-  запросов/ответов (по умолчанию false).
-- `url` — (необязательно) URL коллектора OpenTelemetry, требуется только для
-  самостоятельно размещённых экземпляров.
-- `maskAllInputs` — (необязательно) маскировать ли все поля ввода при воспроизведении
+- `apiKey` - Ваш ключ API для приёма данных ClickStack (ingestion API key).
+- `service` - Имя сервиса, под которым события будут отображаться в интерфейсе HyperDX.
+- `tracePropagationTargets` - Список шаблонов регулярных выражений для сопоставления с HTTP-
+  запросами, чтобы связывать трассировки фронтенда и бэкенда; добавляет
+  дополнительный заголовок `traceparent` ко всем запросам, соответствующим любому из шаблонов. Должен
+  быть установлен в домен вашего бэкенд-API (например, `api.yoursite.com`).
+- `consoleCapture` - (Необязательно) Собирать все логи консоли (по умолчанию `false`).
+- `advancedNetworkCapture` - (Необязательно) Собирать полные заголовки и тела
+  запросов/ответов (по умолчанию `false`).
+- `url` - (Необязательно) URL коллектора OpenTelemetry, требуется только для
+  самостоятельно размещённых инсталляций.
+- `maskAllInputs` - (Необязательно) Маскировать ли все поля ввода в записи
   сессии (по умолчанию `false`).
-- `maskAllText` — (необязательно) маскировать ли весь текст при воспроизведении
-  сессии (по умолчанию `false`).
-- `disableIntercom` — (необязательно) отключить ли интеграцию с Intercom (по умолчанию `false`)
-- `disableReplay` — (необязательно) отключить ли воспроизведение сессий (по умолчанию `false`)
+- `maskAllText` - (Необязательно) Маскировать ли весь текст в записи сессии (по
+  умолчанию `false`).
+- `disableIntercom` - (Необязательно) Отключить ли интеграцию с Intercom (по умолчанию `false`)
+- `disableReplay` - (Необязательно) Отключить ли запись сессий (по умолчанию `false`)
 
 
-## Дополнительная конфигурация {#additional-configuration}
 
-### Привязка информации о пользователе или метаданных {#attach-user-information-or-metadata}
+## Дополнительная конфигурация
 
-Привязка информации о пользователе позволит вам искать и фильтровать сессии и события
-в интерфейсе HyperDX. Эту функцию можно вызвать в любой момент во время клиентской сессии. Текущая
-клиентская сессия и все события, отправленные после вызова, будут связаны
+### Добавление информации о пользователе или метаданных
+
+Добавление информации о пользователе позволит выполнять поиск и фильтрацию сеансов и событий
+в интерфейсе HyperDX. Этот вызов можно сделать в любой момент в течение клиентского сеанса.
+Текущий клиентский сеанс и все события, отправленные после вызова, будут связаны
 с информацией о пользователе.
 
-Параметры `userEmail`, `userName` и `teamName` заполнят интерфейс сессий соответствующими
-значениями, но их можно опустить. Любые другие дополнительные значения могут быть
-указаны и использованы для поиска событий.
+`userEmail`, `userName` и `teamName` заполнят интерфейс сеансов
+соответствующими значениями, но являются необязательными. Можно указать любые другие дополнительные значения
+и использовать их для поиска событий.
 
 ```javascript
 HyperDX.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
   userName: user.name,
-  teamName: user.team.name
+  teamName: user.team.name,
   // Другие пользовательские свойства...
-})
+});
 ```
 
-### Автоматический перехват ошибок React error boundary {#auto-capture-react-error-boundary-errors}
+### Автоматический захват ошибок в React error boundary
 
-Если вы используете React, вы можете автоматически перехватывать ошибки, возникающие внутри
-границ ошибок React, передав ваш компонент границы ошибок
+Если вы используете React, вы можете автоматически отслеживать ошибки, которые возникают внутри
+React error boundary, передав свой компонент error boundary
 в функцию `attachToReactErrorBoundary`.
 
 ```javascript
-// Импортируйте ваш ErrorBoundary (мы используем react-error-boundary в качестве примера)
-import { ErrorBoundary } from "react-error-boundary"
+// Импортируйте ErrorBoundary (в качестве примера используется react-error-boundary)
+import { ErrorBoundary } from 'react-error-boundary';
 
-// Это подключится к компоненту ErrorBoundary и будет перехватывать любые ошибки, которые возникают
-// внутри любого его экземпляра.
-HyperDX.attachToReactErrorBoundary(ErrorBoundary)
+// Это подключится к компоненту ErrorBoundary и будет перехватывать все ошибки,
+// возникающие в любом его экземпляре.
+HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
-### Отправка пользовательских действий {#send-custom-actions}
+### Отправка пользовательских действий
 
-Для явного отслеживания конкретного события приложения (например, регистрация, отправка формы
-и т.д.) вы можете вызвать функцию `addAction` с именем события и необязательными
-метаданными события.
+Чтобы явно отслеживать конкретное событие приложения (например,
+регистрацию, отправку формы и т.п.), вы можете вызвать функцию `addAction`
+с именем события и необязательными метаданными для него.
 
 Пример:
 
 ```javascript
-HyperDX.addAction("Form-Completed", {
-  formId: "signup-form",
-  formName: "Signup Form",
-  formType: "signup"
-})
+HyperDX.addAction('Form-Completed', {
+  formId: 'signup-form',
+  formName: 'Форма регистрации',
+  formType: 'signup',
+});
 ```
 
-### Динамическое включение перехвата сетевого трафика {#enable-network-capture-dynamically}
+### Динамическое включение захвата сетевого трафика
 
-Для динамического включения или отключения перехвата сетевого трафика просто вызовите функцию `enableAdvancedNetworkCapture` или `disableAdvancedNetworkCapture` по мере необходимости.
+Чтобы динамически включить или отключить захват сетевого трафика, вызовите функцию `enableAdvancedNetworkCapture` или `disableAdvancedNetworkCapture` по мере необходимости.
 
 ```javascript
-HyperDX.enableAdvancedNetworkCapture()
+HyperDX.enableAdvancedNetworkCapture();
 ```
 
-### Включение измерения времени ресурсов для CORS-запросов {#enable-resource-timing-for-cors-requests}
+### Включение измерения времени ресурсов для CORS-запросов
 
-Если ваше фронтенд-приложение выполняет API-запросы к другому домену, вы можете
-опционально включить отправку [заголовка](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) `Timing-Allow-Origin` с запросом. Это позволит ClickStack перехватывать детальную
-информацию о времени загрузки ресурсов для запроса, такую как поиск DNS, загрузка ответа
-и т.д. через [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
+Если ваше фронтенд‑приложение выполняет API-запросы к другому домену, вы
+можете опционально добавить к запросу заголовок [`Timing-Allow-Origin`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin). Это позволит ClickStack собирать детализированную
+информацию о таймингах ресурсов для запроса, такую как разрешение DNS-имени,
+загрузка ответа и т. д., с помощью [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
 
-Если вы используете `express` с пакетом `cors`, вы можете использовать следующий
-фрагмент кода для включения заголовка:
+Если вы используете `express` с пакетами `cors`, вы можете использовать следующий
+фрагмент кода, чтобы включить этот заголовок:
 
 ```javascript
-var cors = require("cors")
-var onHeaders = require("on-headers")
+var cors = require('cors');
+var onHeaders = require('on-headers');
 
 // ... весь ваш код
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {
-    var allowOrigin = res.getHeader("Access-Control-Allow-Origin")
+    var allowOrigin = res.getHeader('Access-Control-Allow-Origin');
     if (allowOrigin) {
-      res.setHeader("Timing-Allow-Origin", allowOrigin)
+      res.setHeader('Timing-Allow-Origin', allowOrigin);
     }
-  })
-  next()
-})
-app.use(cors())
+  });
+  next();
+});
+app.use(cors());
 ```

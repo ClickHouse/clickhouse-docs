@@ -1,5 +1,5 @@
 ---
-description: '对一系列数值执行按位 `OR` 运算。'
+description: '对一系列数字进行按位 `OR` 运算。'
 sidebar_position: 152
 slug: /sql-reference/aggregate-functions/reference/groupbitor
 title: 'groupBitOr'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitOr
 
-对一组数字进行按位 `OR` 运算。
+对一系列数字执行按位 `OR` 运算。
 
 ```sql
 groupBitOr(expr)
@@ -20,7 +20,7 @@ groupBitOr(expr)
 
 **返回值**
 
-返回 `UInt*` 或 `Int*` 类型的值。
+`UInt*` 或 `Int*` 类型的值。
 
 **示例**
 
@@ -40,7 +40,7 @@ groupBitOr(expr)
 SELECT groupBitOr(num) FROM t
 ```
 
-其中 `num` 是存放测试数据的列。
+其中 `num` 是测试数据所在的列。
 
 结果：
 

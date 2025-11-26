@@ -1,6 +1,6 @@
 ---
 description: 'MacOS に ClickHouse をインストールする'
-keywords: ['ClickHouse', 'install', 'MacOS']
+keywords: ['ClickHouse', 'インストール', 'MacOS']
 sidebar_label: 'MacOS'
 slug: /install/macOS
 title: 'Homebrew を使用して ClickHouse をインストールする'

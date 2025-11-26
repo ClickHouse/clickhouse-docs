@@ -1,6 +1,6 @@
 ---
-description: 'Документация по логическому типу данных Boolean в ClickHouse'
-sidebar_label: 'Boolean'
+description: 'Документация по булевому типу данных в ClickHouse'
+sidebar_label: 'Булевый'
 sidebar_position: 33
 slug: /sql-reference/data-types/boolean
 title: 'Bool'
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Bool
 
-Тип `bool` внутренне хранится в виде UInt8. Возможные значения: `true` (1), `false` (0).
+Тип `bool` внутренне хранится как UInt8. Возможные значения: `true` (1), `false` (0).
 
 ```sql
 SELECT true AS col, toTypeName(col);

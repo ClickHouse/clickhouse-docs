@@ -1,5 +1,5 @@
 ---
-description: '`theilsU` 函数用于计算 Theil 的 U 不确定性系数，该系数衡量表中两列之间的关联程度。'
+description: '`theilsU` 函数用于计算 Theil 的 U 不确定性系数，用来衡量表中两列之间的相关性。'
 sidebar_position: 201
 slug: /sql-reference/aggregate-functions/reference/theilsu
 title: 'theilsU'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # theilsU
 
-`theilsU` 函数用于计算 [Theil&#39;s U 不确定性系数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)，用于度量表中两列之间的关联程度。其取值范围从 −1.0（100% 负相关，或完全相反）到 +1.0（100% 正相关，或完全一致）。值为 0.0 表示不存在关联。
+`theilsU` 函数计算 [Theil&#39;s U 不确定性系数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)，用于度量表中两列之间的关联程度。其取值范围为 −1.0（100% 负相关，或完全反向）到 +1.0（100% 正相关，或完全一致）。值为 0.0 表示没有关联。
 
 **语法**
 
@@ -22,13 +22,13 @@ theilsU(column1, column2)
 
 **返回值**
 
-* 一个介于 -1 和 1 之间的值
+* 介于 -1 和 1 之间的值
 
 **返回类型** 始终为 [Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
-下面被比较的两列之间仅有较弱的关联，因此 `theilsU` 的值为负数：
+下面被比较的这两列之间只有较弱的相关性，因此 `theilsU` 的值为负值：
 
 ```sql
 SELECT

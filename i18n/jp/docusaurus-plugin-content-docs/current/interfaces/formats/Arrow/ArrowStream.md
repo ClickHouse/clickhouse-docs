@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'ArrowStream フォーマットに関するドキュメント'
+description: 'ArrowStream 形式に関するドキュメント'
 input_format: true
 keywords: ['ArrowStream']
 output_format: true
@@ -17,10 +17,12 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`ArrowStream`は、Apache Arrowの「ストリームモード」形式です。メモリ内ストリーム処理用に設計されています。
+`ArrowStream` は Apache Arrow の「ストリームモード」形式です。メモリ内のストリーム処理向けに設計されています。
+
 
 
 ## 使用例 {#example-usage}
 
 
-## フォーマット設定 {#format-settings}
+
+## 形式設定 {#format-settings}

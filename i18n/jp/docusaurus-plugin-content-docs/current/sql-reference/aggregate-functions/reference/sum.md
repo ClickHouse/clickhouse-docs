@@ -1,5 +1,5 @@
 ---
-description: '合計を計算します。数値型に対してのみ使用できます。'
+description: '合計を計算します。数値に対してのみ使用できます。'
 sidebar_position: 195
 slug: /sql-reference/aggregate-functions/reference/sum
 title: 'sum'
@@ -18,11 +18,11 @@ sum(num)
 
 **パラメータ**
 
-* `num`: 数値型のカラム。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md) のいずれか。
+* `num`: 数値の列。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-* 値の合計。型は [(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md) のいずれか。
+* 値の合計。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **例**
 
@@ -48,7 +48,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-`sum` 関数を使用して、従業員の給与総額を集計します。
+`sum` 関数を使用して、従業員の給与総額を取得します。
 
 クエリ:
 
@@ -56,7 +56,7 @@ INSERT INTO employees VALUES
 SELECT sum(salary) FROM employees;
 ```
 
-結果：
+結果:
 
 ```response
    ┌─sum(salary)─┐

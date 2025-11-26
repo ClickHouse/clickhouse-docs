@@ -1,53 +1,57 @@
 ---
-description: 'ClickHouse における分散トレースおよびメトリクス収集のための OpenTelemetry 利用ガイド'
-sidebar_label: 'OpenTelemetry による ClickHouse のトレース'
+description: 'ClickHouse における OpenTelemetry を用いた分散トレーシングおよびメトリクス収集のためのガイド'
+sidebar_label: 'OpenTelemetry による ClickHouse のトレーシング'
 sidebar_position: 62
 slug: /operations/opentelemetry
-title: 'OpenTelemetry による ClickHouse のトレース'
+title: 'OpenTelemetry による ClickHouse のトレーシング'
 doc_type: 'guide'
 ---
 
-[OpenTelemetry](https://opentelemetry.io/) は、分散アプリケーションからトレースやメトリクスを収集するためのオープン標準です。ClickHouse は OpenTelemetry を部分的にサポートしています。
+[OpenTelemetry](https://opentelemetry.io/) は、分散アプリケーションからトレースとメトリクスを収集するためのオープンな標準仕様です。ClickHouse は OpenTelemetry を一部サポートしています。
 
 
 
-## ClickHouseへのトレースコンテキストの提供 {#supplying-trace-context-to-clickhouse}
+## ClickHouse へのトレースコンテキストの指定 {#supplying-trace-context-to-clickhouse}
 
-ClickHouseは、[W3C勧告](https://www.w3.org/TR/trace-context/)に記載されているトレースコンテキストHTTPヘッダーを受け入れます。また、ClickHouseサーバー間またはクライアントとサーバー間の通信に使用されるネイティブプロトコル経由でのトレースコンテキストも受け入れます。手動テストの場合、Trace Context勧告に準拠したトレースコンテキストヘッダーは、`--opentelemetry-traceparent`および`--opentelemetry-tracestate`フラグを使用して`clickhouse-client`に提供できます。
+ClickHouse は、[W3C 勧告](https://www.w3.org/TR/trace-context/) で説明されているトレースコンテキスト HTTP ヘッダーを受け付けます。また、ClickHouse サーバー間やクライアントとサーバー間の通信に使用されるネイティブプロトコルを介して渡されるトレースコンテキストも受け付けます。手動でテストする場合、Trace Context 勧告に準拠したトレースコンテキストヘッダーは、`clickhouse-client` に対して `--opentelemetry-traceparent` および `--opentelemetry-tracestate` フラグを使用して指定できます。
 
-親トレースコンテキストが提供されない場合、または提供されたトレースコンテキストが上記のW3C標準に準拠していない場合、ClickHouseは[opentelemetry_start_trace_probability](/operations/settings/settings#opentelemetry_start_trace_probability)設定によって制御される確率で新しいトレースを開始できます。
+親トレースコンテキストが指定されていない場合、または指定されたトレースコンテキストが上記の W3C 標準に準拠していない場合、ClickHouse は新しいトレースを開始します。その発生確率は、[opentelemetry_start_trace_probability](/operations/settings/settings#opentelemetry_start_trace_probability) 設定で制御されます。
+
 
 
 ## トレースコンテキストの伝播 {#propagating-the-trace-context}
 
-トレースコンテキストは、以下の場合にダウンストリームサービスに伝播されます:
+トレースコンテキストは、次の場合に下流のサービスへ伝播されます。
 
-- [Distributed](../engines/table-engines/special/distributed.md) テーブルエンジンを使用する場合など、リモート ClickHouse サーバーへのクエリ。
+* [Distributed](../engines/table-engines/special/distributed.md) テーブルエンジンを使用する場合など、リモートの ClickHouse サーバーに対してクエリを実行する場合。
 
-- [url](../sql-reference/table-functions/url.md) テーブル関数。トレースコンテキスト情報は HTTP ヘッダーで送信されます。
+* [url](../sql-reference/table-functions/url.md) テーブル関数を使用する場合。この場合、トレースコンテキスト情報は HTTP ヘッダーで送信されます。
 
 
-## ClickHouse自体のトレーシング {#tracing-the-clickhouse-itself}
 
-ClickHouseは、各クエリおよびクエリプランニングや分散クエリなどの一部のクエリ実行ステージに対して`トレーススパン`を作成します。
+## ClickHouse 自体のトレース {#tracing-the-clickhouse-itself}
 
-トレーシング情報を活用するには、[Jaeger](https://jaegertracing.io/)や[Prometheus](https://prometheus.io/)などのOpenTelemetryをサポートする監視システムにエクスポートする必要があります。ClickHouseは特定の監視システムへの依存を避け、システムテーブルを通じてトレーシングデータのみを提供します。[標準で要求される](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#span)OpenTelemetryトレーススパン情報は、[system.opentelemetry_span_log](../operations/system-tables/opentelemetry_span_log.md)テーブルに格納されます。
+ClickHouse は、各クエリおよびクエリ計画や分散クエリなど一部のクエリ実行ステージごとに `trace spans` を作成します。
 
-このテーブルはサーバー設定で有効化する必要があります。デフォルト設定ファイル`config.xml`内の`opentelemetry_span_log`要素を参照してください。デフォルトで有効化されています。
+トレース情報を有用にするには、[Jaeger](https://jaegertracing.io/) や [Prometheus](https://prometheus.io/) など、OpenTelemetry をサポートするモニタリングシステムにエクスポートする必要があります。ClickHouse は特定のモニタリングシステムへの依存を避け、代わりにシステムテーブルを通じてのみトレースデータを提供します。標準で[要求されている](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#span) OpenTelemetry のトレーススパン情報は、[system.opentelemetry_span_log](../operations/system-tables/opentelemetry_span_log.md) テーブルに保存されます。
 
-タグまたは属性は、キーと値を含む2つの並列配列として保存されます。これらを操作するには[ARRAY JOIN](../sql-reference/statements/select/array-join.md)を使用してください。
+このテーブルを利用するには、サーバー設定で有効化されている必要があります。デフォルトの設定ファイル `config.xml` 内の `opentelemetry_span_log` 要素を参照してください。デフォルトでは有効になっています。
+
+タグまたは属性は、キーと値を含む 2 つの並列配列として保存されます。これらを扱うには [ARRAY JOIN](../sql-reference/statements/select/array-join.md) を使用します。
+
 
 
 ## Log-query-settings {#log-query-settings}
 
-[log_query_settings](settings/settings.md) 設定を使用すると、クエリ実行中のクエリ設定の変更をログに記録できます。有効にすると、クエリ設定に対するすべての変更がOpenTelemetryスパンログに記録されます。この機能は、クエリパフォーマンスに影響を与える可能性のある設定変更を追跡する際に、本番環境で特に有用です。
+[log_query_settings](settings/settings.md) 設定を有効にすると、クエリの実行中に行われたクエリ設定の変更内容をログとして記録できるようになります。有効化されている場合、クエリ設定に対して行われたあらゆる変更は OpenTelemetry のスパンログに記録されます。この機能は、本番環境においてクエリ性能に影響を与えうる設定変更を追跡するのに特に有用です。
 
 
-## 監視システムとの統合 {#integration-with-monitoring-systems}
 
-現時点では、ClickHouseから監視システムへトレーシングデータをエクスポートする既製のツールは提供されていません。
+## 監視システムとの統合
 
-テスト目的であれば、[system.opentelemetry_span_log](../operations/system-tables/opentelemetry_span_log.md)テーブルに対して[URL](../engines/table-engines/special/url.md)エンジンを使用したマテリアライズドビューを設定することで、受信したログデータをトレースコレクターのHTTPエンドポイントへプッシュするエクスポート機能を構築できます。例えば、`http://localhost:9411`で実行中のZipkinインスタンスに最小限のスパンデータをZipkin v2 JSON形式でプッシュする場合は、以下のようにします:
+現時点では、ClickHouse から監視システムへトレースデータをエクスポートするための既製ツールは用意されていません。
+
+テスト用途として、[system.opentelemetry&#95;span&#95;log](../operations/system-tables/opentelemetry_span_log.md) テーブルに対して [URL](../engines/table-engines/special/url.md) エンジンを使用したマテリアライズドビューをセットアップすることで、受信したログデータをトレースコレクターの HTTP エンドポイントに送信できます。例えば、`http://localhost:9411` で稼働している Zipkin インスタンスに、Zipkin v2 の JSON フォーマットで最小限の span データを送信するには、次のようにします。
 
 ```sql
 CREATE MATERIALIZED VIEW default.zipkin_spans
@@ -68,9 +72,9 @@ SELECT
 FROM system.opentelemetry_span_log
 ```
 
-エラーが発生した場合、エラーが発生したログデータの部分は通知なく失われます。データが到着しない場合は、サーバーログでエラーメッセージを確認してください。
+エラーが発生した場合、そのエラーが発生した対象のログデータの一部は、エラーを通知することなく失われます。データが届かない場合は、サーバーログでエラーメッセージを確認してください。
 
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseで可観測性ソリューションを構築する - パート2 - トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- ブログ: [ClickHouse を用いたオブザーバビリティソリューションの構築 - パート 2: トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

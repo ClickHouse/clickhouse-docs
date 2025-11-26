@@ -1,6 +1,6 @@
 ---
 description: 'ALTER NAMED COLLECTION 语句文档'
-sidebar_label: 'NAMED COLLECTION'
+sidebar_label: 'NAMED COLLECTION（命名集合）'
 slug: /sql-reference/statements/alter/named-collection
 title: 'ALTER NAMED COLLECTION'
 doc_type: 'reference'
@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # ALTER NAMED COLLECTION
 
-此查询用于修改已有的命名集合。
+此查询用于修改现有的命名集合。
 
 **语法**
 

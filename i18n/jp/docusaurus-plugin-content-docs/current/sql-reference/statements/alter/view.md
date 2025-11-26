@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY ステートメントに関するドキュメント'
+description: 'ALTER TABLE ... MODIFY QUERY ステートメントのドキュメント'
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 # ALTER TABLE ... MODIFY QUERY ステートメント
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) の作成時に指定した `SELECT` クエリを、取り込み処理を中断することなく変更できます。
+`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 
-このコマンドは、`TO [db.]name` 句付きで作成されたマテリアライズドビューを変更するために用意されています。これは基盤となるストレージテーブルの構造や、マテリアライズドビューのカラム定義は変更しません。そのため、`TO [db.]name` 句なしで作成されたマテリアライズドビューに対しては、このコマンドの適用範囲は非常に限定的です。
+このコマンドは、`TO [db.]name` 句を伴って作成されたマテリアライズドビューを変更するためのものです。基盤となるストレージテーブルの構造や、マテリアライズドビューのカラム定義は変更しないため、`TO [db.]name` 句を指定せずに作成されたマテリアライズドビューに対しては、このコマンドの適用範囲はごく限られます。
 
-**TO テーブルを使用する例**
+**TO テーブルを使用した例**
 
 ```sql
 CREATE TABLE events (ts DateTime, event_type String)
@@ -53,8 +53,8 @@ ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- マテリアライズドビューとTO句で指定された
--- (宛先テーブル)のカラムは一致している必要がないため、次のALTER文は挿入処理を中断しません。
+-- マテリアライズドビューと TO
+-- (宛先テーブル) のカラムは一致する必要がないため、次の ALTER は挿入処理を中断しません。
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -124,7 +124,7 @@ ORDER BY ts, event&#95;type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! `MODIFY ORDER BY` の実行中に PRIMARY KEY が暗黙的に導入されました。
+-- !!! `MODIFY ORDER BY` の実行中に PRIMARY KEY が暗黙的に設定されました。
 
 SHOW CREATE TABLE events&#95;by&#95;day FORMAT TSVRaw
 
@@ -141,9 +141,9 @@ PRIMARY KEY (event&#95;type, ts)
 ORDER BY (event&#95;type, ts, browser)
 SETTINGS index&#95;granularity = 8192
 
--- !!! カラム定義は変更されていませんが問題にはなりません。参照しているのは
--- MATERIALIZED VIEW ではなく、TO（ストレージ）テーブルだからです。
--- SELECT 句は更新されています。
+-- !!! カラム定義は変更されていませんが問題ありません。クエリしているのは
+-- MATERIALIZED VIEW ではなく、TO 句で指定したストレージテーブルです。
+-- SELECT 句が更新されています。
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -169,7 +169,7 @@ browser
 
 **TOテーブルを使用しない例**
 
-この方法は非常に制限的で、新しいカラムを追加することなく`SELECT`セクションのみを変更できるだけです。
+この方法は非常に制限的であり、新しいカラムを追加することなく`SELECT`セクションのみを変更することができます。
 ```
 
 
@@ -207,4 +207,4 @@ SELECT * FROM mv;
 
 ## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズドビュー](../create/view.md#refreshable-materialized-view)のリフレッシュパラメータを変更します。詳細は[リフレッシュパラメータの変更](../create/view.md#changing-refresh-parameters)を参照してください。
+`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズドビュー](../create/view.md#refreshable-materialized-view)のリフレッシュパラメーターを変更します。詳しくは[リフレッシュパラメーターの変更](../create/view.md#changing-refresh-parameters)を参照してください。

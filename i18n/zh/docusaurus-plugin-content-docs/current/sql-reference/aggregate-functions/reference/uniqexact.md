@@ -1,5 +1,5 @@
 ---
-description: '计算不同参数取值的精确个数。'
+description: '计算不同参数取值的精确数量。'
 sidebar_position: 207
 slug: /sql-reference/aggregate-functions/reference/uniqexact
 title: 'uniqExact'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # uniqExact
 
-精确计算参数中不同取值的数量。
+计算参数的不同取值的精确数量。
 
 ```sql
 uniqExact(x[, ...])
@@ -16,7 +16,7 @@ uniqExact(x[, ...])
 
 如果确实需要精确结果，请使用 `uniqExact` 函数。否则，请使用 [uniq](/sql-reference/aggregate-functions/reference/uniq) 函数。
 
-`uniqExact` 函数比 `uniq` 占用更多内存，因为随着不同值数量的增加，其状态大小会无界增长。
+`uniqExact` 函数比 `uniq` 使用更多内存，因为其状态大小会随着不同取值数量的增加而无限增长。
 
 **参数**
 
@@ -24,7 +24,7 @@ uniqExact(x[, ...])
 
 **示例**
 
-在本示例中，我们将使用 `uniqExact` 函数统计 [OpenSky 数据集](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&) 中唯一机型代码（飞机机型的简短标识符）的数量。
+在本示例中，我们将使用 `uniqExact` 函数来统计 [opensky 数据集](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&) 中唯一机型代码（用于标识飞机类型的简短标识符）的数量。
 
 ```sql title="Query"
 SELECT uniqExact(typecode) FROM opensky.opensky

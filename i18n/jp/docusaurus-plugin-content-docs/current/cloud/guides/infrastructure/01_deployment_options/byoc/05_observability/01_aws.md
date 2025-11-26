@@ -1,8 +1,8 @@
 ---
-title: 'AWS における BYOC の可観測性'
+title: 'AWS での BYOC のオブザーバビリティ'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'AWS'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
+keywords: ['BYOC', 'クラウド', '自前クラウド（BYOC）', 'AWS']
 description: '独自のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
 doc_type: 'reference'
 ---
@@ -13,37 +13,37 @@ import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 
-## オブザーバビリティ {#observability}
+## オブザーバビリティ
 
-### 組み込み監視ツール {#built-in-monitoring-tools}
+### 組み込みの監視ツール
 
-ClickHouse BYOC では、さまざまなユースケースに対応する複数のアプローチを提供します。
+ClickHouse BYOC は、さまざまなユースケースに対応する複数のアプローチを提供しています。
 
-#### オブザーバビリティダッシュボード {#observability-dashboard}
+#### オブザーバビリティダッシュボード
 
-ClickHouse Cloud には、メモリ使用量、クエリ実行率、I/O などのメトリクスを表示する高度なオブザーバビリティダッシュボードが含まれています。これは、ClickHouse Cloud の Web コンソールの **Monitoring** セクションからアクセスできます。
-
-<br />
-
-<Image img={byoc3} size='lg' alt='オブザーバビリティダッシュボード' border />
+ClickHouse Cloud には、メモリ使用量、クエリレート、I/O などのメトリクスを表示する高度なオブザーバビリティダッシュボードが用意されています。ClickHouse Cloud の Web コンソールの **Monitoring** セクションからアクセスできます。
 
 <br />
 
-#### 高度なダッシュボード {#advanced-dashboard}
-
-`system.metrics`、`system.events`、`system.asynchronous_metrics` などのシステムテーブルから取得したメトリクスを利用してダッシュボードをカスタマイズし、サーバーのパフォーマンスやリソース使用状況を詳細に監視できます。
+<Image img={byoc3} size="lg" alt="オブザーバビリティダッシュボード" border />
 
 <br />
 
-<Image img={byoc4} size='lg' alt='高度なダッシュボード' border />
+#### 高度なダッシュボード
+
+`system.metrics`、`system.events`、`system.asynchronous_metrics` などのシステムテーブルからメトリクスを取得してダッシュボードをカスタマイズすることで、サーバーのパフォーマンスやリソース使用状況を詳細に監視できます。
 
 <br />
 
-#### BYOC Prometheus スタックへのアクセス {#prometheus-access}
+<Image img={byoc4} size="lg" alt="高度なダッシュボード" border />
 
-ClickHouse BYOC は、お使いの Kubernetes クラスター上に Prometheus スタックをデプロイします。そこからメトリクスにアクセスしてスクレイプし、独自の監視スタックと統合できます。
+<br />
 
-Private Load balancer を有効化し、URL を取得するには、ClickHouse サポートにお問い合わせください。この URL はプライベートネットワーク経由でのみアクセス可能であり、認証はサポートされていない点にご注意ください。
+#### BYOC Prometheus スタックへのアクセス
+
+ClickHouse BYOC は、Prometheus スタックを Kubernetes クラスター上にデプロイします。そこからメトリクスへアクセスしてスクレイプし、お使いの監視スタックと統合できます。
+
+プライベートロードバランサーを有効化し、URL を取得するには ClickHouse サポートにお問い合わせください。この URL はプライベートネットワーク経由でのみアクセス可能であり、認証をサポートしていない点に注意してください。
 
 **サンプル URL**
 
@@ -51,15 +51,15 @@ Private Load balancer を有効化し、URL を取得するには、ClickHouse �
 https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 ```
 
-#### Prometheus 連携 {#prometheus-integration}
+#### Prometheus 連携
 
 <DeprecatedBadge />
 
-代わりに、上記セクションの Prometheus スタックとの連携をご利用ください。ClickHouse Server のメトリクスに加えて、K8S のメトリクスやその他のサービスのメトリクスも提供します。
+代わりに、上記セクションの Prometheus スタック連携を使用してください。ClickHouse Server のメトリクスに加え、K8S メトリクスやその他のサービスのメトリクスも取得できます。
 
-ClickHouse Cloud は、監視用のメトリクスをスクレイプできる Prometheus エンドポイントを提供します。これにより、Grafana や Datadog などのツールと連携し、可視化することができます。
+ClickHouse Cloud は、監視用にメトリクスをスクレイプできる Prometheus エンドポイントを提供します。これにより、Grafana や Datadog などのツールと連携して可視化できます。
 
-**HTTPS エンドポイント /metrics_all 経由のサンプルリクエスト**
+**https エンドポイント /metrics&#95;all を利用したリクエスト例**
 
 ```bash
 curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud:8443/metrics_all
@@ -78,7 +78,7 @@ ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server
 # HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの経過時間(秒)
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定の誤りの可能性を示します
+# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定ミスの可能性を示す
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
 # HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST
@@ -87,14 +87,14 @@ ClickHouseErrorMetric_FILE_DOESNT_EXIST{hostname="c-jet-ax-16-server-43d5baj-0",
 # HELP ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE UNKNOWN_ACCESS_TYPE
 # TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter
 ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 8
-# HELP ClickHouse_CustomMetric_TotalNumberOfErrors 最後の再起動以降のサーバー上のエラー総数
+# HELP ClickHouse_CustomMetric_TotalNumberOfErrors 最後の再起動以降のサーバーエラーの総数
 # TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
 ```
 
 **認証**
 
-認証には ClickHouse のユーザー名とパスワードの組を使用できます。メトリクスのスクレイピング専用に、必要最小限の権限だけを付与したユーザーを作成することを推奨します。少なくとも、すべてのレプリカに対して `system.custom_metrics` テーブルの `READ` 権限が必要です。例えば：
+認証には ClickHouse のユーザー名とパスワードの組み合わせを使用できます。メトリクスのスクレイプ専用で、必要最小限の権限のみを持つユーザーを作成することを推奨します。少なくとも、すべてのレプリカに対する `system.custom_metrics` テーブルへの `READ` 権限が必要です。例：
 
 ```sql
 GRANT REMOTE ON *.* TO scrapping_user;
@@ -117,7 +117,7 @@ GRANT SELECT(description, metric, value) ON system.metrics TO scrapping_user;
 
 **Prometheus の設定**
 
-以下に設定例を示します。`targets` エンドポイントは、ClickHouse サービスに接続する際に使用するエンドポイントと同じです。
+以下に設定例を示します。`targets` エンドポイントは、ClickHouse サービスにアクセスする際に使用するものと同じです。
 
 ```bash
 global:
@@ -138,4 +138,4 @@ scrape_configs:
    honor_labels: true
 ```
 
-[こちらのブログ記事](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring)および [ClickHouse 向け Prometheus セットアップドキュメント](/integrations/prometheus) もご参照ください。
+[こちらのブログ記事](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring)および[ClickHouse 向け Prometheus セットアップドキュメント](/integrations/prometheus)もあわせてご覧ください。

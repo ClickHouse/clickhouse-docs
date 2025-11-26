@@ -1,5 +1,5 @@
 ---
-description: '2つの母集団からの標本に対してマン–ホイットニーの順位和検定を適用します。'
+description: '2つの母集団からの標本に対してマン–ホイットニーのU検定を適用します。'
 sidebar_label: 'mannWhitneyUTest'
 sidebar_position: 161
 slug: /sql-reference/aggregate-functions/reference/mannwhitneyutest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # mannWhitneyUTest
 
-2つの母集団からの標本に対して、Mann-Whitneyの順位和検定を適用します。
+2つの母集団からのサンプルに対して、Mann-Whitney の順位検定を適用します。
 
 **構文**
 
@@ -17,23 +17,23 @@ doc_type: 'reference'
 mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_index)
 ```
 
-両サンプルの値は `sample_data` 列にあります。`sample_index` が 0 の場合、その行の値は第1母集団からのサンプルに属します。そうでない場合は第2母集団からのサンプルに属します。
-帰無仮説は、2つの母集団が同一の確率分布に従うというものです。また、片側仮説についても検定できます。この検定では、データが正規分布に従うという仮定は置きません。
+両方のサンプルの値は `sample_data` 列にあります。`sample_index` が 0 の場合、その行の値は第 1 集団のサンプルに属します。そうでない場合は第 2 集団のサンプルに属します。
+帰無仮説は、2 つの集団が確率的に等しいというものです。片側検定も実行できます。この検定では、データが正規分布に従うという仮定は置きません。
 
 **引数**
 
-* `sample_data` — サンプルデータ。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `sample_data` — サンプルデータ。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)。
 * `sample_index` — サンプルインデックス。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
 
-* `alternative` — 対立仮説。（省略可能、デフォルト: `'two-sided'`。）[String](../../../sql-reference/data-types/string.md)。
-  * `'two-sided'`；
-  * `'greater'`；
+* `alternative` — 対立仮説。（省略可、デフォルト: `'two-sided'`。）[String](../../../sql-reference/data-types/string.md)。
+  * `'two-sided'`;
+  * `'greater'`;
   * `'less'`。
-* `continuity_correction` — 0 以外の場合、p 値の計算における正規近似に連続性補正が適用されます。（省略可能、デフォルト: 1。）[UInt64](../../../sql-reference/data-types/int-uint.md)。
+* `continuity_correction` — 0 以外の場合、p 値の正規近似において連続性補正を適用します。（省略可、デフォルト: 1。）[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
-**戻り値**
+**返される値**
 
 2 要素の [Tuple](../../../sql-reference/data-types/tuple.md):
 

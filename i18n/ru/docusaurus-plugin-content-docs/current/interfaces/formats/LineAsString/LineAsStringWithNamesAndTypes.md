@@ -6,7 +6,7 @@ keywords: ['LineAsStringWithNamesAndTypes']
 output_format: true
 slug: /interfaces/formats/LineAsStringWithNamesAndTypes
 title: 'LineAsStringWithNamesAndTypes'
-doc_type: 'справочник'
+doc_type: 'reference'
 ---
 
 | Вход | Выход | Псевдоним |
@@ -17,11 +17,12 @@ doc_type: 'справочник'
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` аналогичен формату [`LineAsString`](./LineAsString.md),
-но выводит две строки заголовка: одну с именами столбцов, другую — с типами.
+Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
+но выводит две строки заголовков: одну с именами столбцов, другую — с их типами.
 
 
-## Пример использования {#example-usage}
+
+## Пример использования
 
 ```sql
 CREATE TABLE example (
@@ -35,7 +36,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
-```response title="Результат"
+```response title="Response"
 name    value
 String    Int32
 John    30
@@ -44,4 +45,4 @@ Peter    35
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

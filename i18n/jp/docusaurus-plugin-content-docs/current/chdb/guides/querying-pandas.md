@@ -1,6 +1,6 @@
 ---
 title: 'chDB で Pandas DataFrame をクエリする方法'
-sidebar_label: 'Pandas へのクエリ'
+sidebar_label: 'Pandas のクエリ'
 slug: /chdb/guides/pandas
 description: 'chDB で Pandas DataFrame をクエリする方法を学ぶ'
 keywords: ['chDB', 'Pandas']
@@ -8,54 +8,54 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-[Pandas](https://pandas.pydata.org/) は、Python におけるデータ操作と分析のための広く利用されているライブラリです。
-chDB のバージョン 2 では、Pandas DataFrame に対するクエリのパフォーマンスを改善し、`Python` テーブル関数を導入しました。
-このガイドでは、`Python` テーブル関数を使用して Pandas にクエリを実行する方法を学びます。
+[Pandas](https://pandas.pydata.org/) は、Python におけるデータ操作や分析のための広く利用されているライブラリです。
+chDB のバージョン 2 では、Pandas DataFrame をクエリする際のパフォーマンスを向上し、`Python` テーブル関数を導入しました。
+このガイドでは、`Python` テーブル関数を使用して Pandas をクエリする方法を説明します。
 
 
 
-## セットアップ {#setup}
+## セットアップ
 
-まず、仮想環境を作成しましょう：
+まずは仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上がインストールされていることを確認してください：
+次に chDB をインストールします。
+バージョン 2.0.2 以上がインストールされていることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いて、Pandasとその他いくつかのライブラリをインストールします：
+それでは、Pandas と他のいくつかのライブラリをインストールしていきます。
 
 ```bash
 pip install pandas requests ipython
 ```
 
-このガイドの以降のコマンドを実行するには`ipython`を使用します。以下のコマンドで起動できます：
+このガイドの残りのコマンドは、`ipython` を使用して実行します。以下を実行して起動してください。
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトやお好みのノートブック環境でコードを実行することもできます。
+このコードは Python スクリプトやお使いのノートブックでも使用できます。
 
 
-## URLからPandas DataFrameを作成する {#creating-a-pandas-dataframe-from-a-url}
+## URL から Pandas DataFrame を作成する
 
-[StatsBomb GitHubリポジトリ](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file)からデータをクエリします。
-まず、requestsとpandasをインポートします:
+[StatsBomb の GitHub リポジトリ](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file)からデータを取得してみましょう。
+まず `requests` と `pandas` をインポートします。
 
 ```python
 import requests
 import pandas as pd
 ```
 
-次に、試合のJSONファイルの1つをDataFrameに読み込みます:
+次に、試合データの JSON ファイルの 1 つを DataFrame に読み込みます。
 
 ```python
 response = requests.get(
@@ -64,7 +64,7 @@ response = requests.get(
 matches_df = pd.json_normalize(response.json(), sep='_')
 ```
 
-扱うデータを確認してみましょう:
+どんなデータを扱うのか確認してみましょう。
 
 ```python
 matches_df.iloc[0]
@@ -116,7 +116,7 @@ referee_country_name                                                       Brazi
 Name: 0, dtype: object
 ```
 
-次に、イベントのJSONファイルの1つを読み込み、そのDataFrameに`match_id`という列を追加します:
+次に、events の JSON ファイルのうち 1つを読み込み、その DataFrame に `match_id` という列も追加します。
 
 ```python
 response = requests.get(
@@ -126,7 +126,7 @@ events_df = pd.json_normalize(response.json(), sep='_')
 events_df["match_id"] = 3943077
 ```
 
-再度、最初の行を確認してみましょう:
+もう一度、先頭の行を確認してみましょう。
 
 ```python
 with pd.option_context("display.max_rows", None):
@@ -159,23 +159,23 @@ Name: 0, dtype: object
 ```
 
 
-## Pandas DataFrameのクエリ {#querying-pandas-dataframes}
+## Pandas DataFrame をクエリする
 
-次に、chDBを使用してこれらのDataFrameにクエリを実行する方法を見ていきましょう。
-まず、ライブラリをインポートします：
+次に、これらの DataFrame を chDB でどのようにクエリするかを見ていきます。
+まずはライブラリをインポートします。
 
 ```python
 import chdb
 ```
 
-`Python`テーブル関数を使用することで、Pandas DataFrameにクエリを実行できます：
+`Python` テーブル関数を使用すると、Pandas の DataFrame をクエリできます。
 
 ```sql
 SELECT *
 FROM Python(<name-of-variable>)
 ```
 
-例えば、`matches_df`の列を一覧表示したい場合は、次のように記述します：
+では、`matches_df` に含まれる列を一覧表示したい場合は、次のように書けます。
 
 ```python
 chdb.query("""
@@ -230,7 +230,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-次に、以下のクエリを記述することで、複数の試合を担当した審判を特定できます：
+次に、以下のクエリを実行すると、どの審判が複数の試合を担当したかを調べることができます。
 
 ```python
 chdb.query("""
@@ -256,7 +256,7 @@ ORDER BY count DESC
 9                  Raphael Claus      2
 ```
 
-次に、`events_df`を調べてみましょう。
+それでは、`events_df` を確認してみましょう。
 
 ```python
 chdb.query("""
@@ -284,10 +284,10 @@ LIMIT 10
 ```
 
 
-## Pandas DataFrameの結合 {#joining-pandas-dataframes}
+## Pandas の DataFrame を結合する
 
-クエリ内で複数のDataFrameを結合することもできます。
-例えば、試合の概要を取得するには、以下のクエリを記述します:
+クエリ内で DataFrame 同士を結合することもできます。
+たとえば、試合の概要を取得するには、次のようなクエリを書くことができます。
 
 ```python
 chdb.query("""
@@ -304,8 +304,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Argentina
-away_team_away_team_name     Colombia
+home_team_home_team_name    アルゼンチン
+away_team_away_team_name     コロンビア
 home_score                          1
 away_score                          0
 home_passes                       527
@@ -316,40 +316,40 @@ Name: 0, dtype: object
 ```
 
 
-## DataFrameからテーブルにデータを投入する {#populating-a-table-from-a-dataframe}
+## DataFrame からテーブルにデータを投入する
 
-DataFrameからClickHouseテーブルを作成し、データを投入することもできます。
-chDBでテーブルを作成する場合は、Stateful Session APIを使用する必要があります。
+DataFrame から ClickHouse のテーブルを作成してデータを投入することもできます。
+chDB でテーブルを作成する場合は、Stateful Session API を使用する必要があります。
 
-sessionモジュールをインポートします:
+セッションモジュールをインポートしましょう:
 
 ```python
 from chdb import session as chs
 ```
 
-セッションを初期化します:
+セッションを初期化する：
 
 ```python
 sess = chs.Session()
 ```
 
-次に、データベースを作成します:
+次に、データベースを作成します。
 
 ```python
 sess.query("CREATE DATABASE statsbomb")
 ```
 
-次に、`events_df`に基づいて`events`テーブルを作成します:
+次に、`events_df` に基づいて `events` テーブルを作成します。
 
 ```python
 sess.query("""
 CREATE TABLE statsbomb.events ORDER BY id AS
-SELECT *
+SELECT * 
 FROM Python(events_df)
 """)
 ```
 
-その後、パス受信者の上位を返すクエリを実行できます:
+次に、パスの受信数が最も多い相手を取得するクエリを実行します。
 
 ```python
 sess.query("""
@@ -377,9 +377,9 @@ LIMIT 10
 ```
 
 
-## Pandas DataFrameとテーブルの結合 {#joining-a-pandas-dataframe-and-table}
+## Pandas DataFrame とテーブルの結合
 
-最後に、結合クエリを更新して`matches_df` DataFrameと`statsbomb.events`テーブルを結合することもできます:
+最後に、`matches_df` DataFrame と `statsbomb.events` テーブルを結合するように、結合クエリを更新することもできます。
 
 ```python
 sess.query("""

@@ -1,5 +1,5 @@
 ---
-description: 'ParquetMetadata 格式文档'
+description: 'ParquetMetadata 格式说明文档'
 keywords: ['ParquetMetadata']
 slug: /interfaces/formats/ParquetMetadata
 title: 'ParquetMetadata'
@@ -10,38 +10,37 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-用于读取 Parquet 文件元数据的特殊格式 (https://parquet.apache.org/docs/file-format/metadata/)。始终输出一行,包含以下结构/内容:
-
-- `num_columns` - 列数
-- `num_rows` - 总行数
-- `num_row_groups` - 行组总数
-- `format_version` - Parquet 格式版本,始终为 1.0 或 2.6
-- `total_uncompressed_size` - 数据的未压缩字节总大小,计算方式为所有行组的 total_byte_size 之和
-- `total_compressed_size` - 数据的压缩字节总大小,计算方式为所有行组的 total_compressed_size 之和
-- `columns` - 列元数据列表,包含以下结构:
+用于读取 Parquet 文件元数据（https://parquet.apache.org/docs/file-format/metadata/）的特殊格式。它始终只输出一行，结构/内容如下：
+- `num_columns` - 列的数量
+- `num_rows` - 行的总数
+- `num_row_groups` - 行组的总数
+- `format_version` - Parquet 格式版本，始终为 1.0 或 2.6
+- `total_uncompressed_size` - 数据的未压缩字节总大小，按所有行组的 total_byte_size 之和计算
+- `total_compressed_size` - 数据的压缩字节总大小，按所有行组的 total_compressed_size 之和计算
+- `columns` - 列元数据列表，其结构如下：
   - `name` - 列名
-  - `path` - 列路径(嵌套列的路径与名称不同)
-  - `max_definition_level` - 最大定义级别
-  - `max_repetition_level` - 最大重复级别
+  - `path` - 列路径（对嵌套列与列名不同）
+  - `max_definition_level` - 最大定义级别（definition level）
+  - `max_repetition_level` - 最大重复级别（repetition level）
   - `physical_type` - 列的物理类型
   - `logical_type` - 列的逻辑类型
-  - `compression` - 该列使用的压缩方式
-  - `total_uncompressed_size` - 列的未压缩字节总大小,计算方式为所有行组中该列的 total_uncompressed_size 之和
-  - `total_compressed_size` - 列的压缩字节总大小,计算方式为所有行组中该列的 total_compressed_size 之和
-  - `space_saved` - 压缩节省的空间百分比,计算方式为 (1 - total_compressed_size/total_uncompressed_size)
-  - `encodings` - 该列使用的编码列表
-- `row_groups` - 行组元数据列表,包含以下结构:
+  - `compression` - 此列使用的压缩方式
+  - `total_uncompressed_size` - 列的未压缩字节总大小，按该列在所有行组中的 total_uncompressed_size 之和计算
+  - `total_compressed_size` - 列的压缩字节总大小，按该列在所有行组中的 total_compressed_size 之和计算
+  - `space_saved` - 由于压缩节省的空间百分比，计算公式为 (1 - total_compressed_size/total_uncompressed_size)。
+  - `encodings` - 此列使用的编码列表
+- `row_groups` - 行组元数据列表，其结构如下：
   - `num_columns` - 行组中的列数
   - `num_rows` - 行组中的行数
   - `total_uncompressed_size` - 行组的未压缩字节总大小
   - `total_compressed_size` - 行组的压缩字节总大小
-  - `columns` - 列块元数据列表,包含以下结构:
+  - `columns` - 列块元数据列表，其结构如下：
     - `name` - 列名
     - `path` - 列路径
     - `total_compressed_size` - 列的压缩字节总大小
-    - `total_uncompressed_size` - 列块的未压缩字节总大小
-    - `have_statistics` - 布尔标志,指示列块元数据是否包含列统计信息
-    - `statistics` - 列块统计信息(如果 have_statistics = false,则所有字段均为 NULL),包含以下结构:
+    - `total_uncompressed_size` - 行组的未压缩字节总大小
+    - `have_statistics` - 布尔标志，指示列块元数据是否包含列统计信息
+    - `statistics` - 列块统计信息（如果 have_statistics = false，则所有字段为 NULL），其结构如下：
       - `num_values` - 列块中非 NULL 值的数量
       - `null_count` - 列块中 NULL 值的数量
       - `distinct_count` - 列块中不同值的数量
@@ -49,13 +48,14 @@ doc_type: 'reference'
       - `max` - 列块的最大值
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 示例：
 
 ```sql
-SELECT *
-FROM file(data.parquet, ParquetMetadata)
+SELECT * 
+FROM file(data.parquet, ParquetMetadata) 
 FORMAT PrettyJSONEachRow
 ```
 

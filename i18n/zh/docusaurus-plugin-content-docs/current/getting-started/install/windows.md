@@ -1,9 +1,9 @@
 ---
-description: '在 Windows 上使用 WSL 安装 ClickHouse'
+description: '使用 WSL 在 Windows 上安装 ClickHouse'
 keywords: ['ClickHouse', '安装', 'Redhat', 'rpm']
 sidebar_label: 'Windows'
 slug: /install/windows
-title: '在 Windows 上使用 WSL 安装 ClickHouse'
+title: '使用 WSL 在 Windows 上安装 ClickHouse'
 hide_title: true
 doc_type: 'guide'
 ---

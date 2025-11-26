@@ -10,14 +10,14 @@ doc_type: 'reference'
 
 構文: `groupArrayLast(max_size)(x)`
 
-末尾の引数値から成る配列を作成します。
-例えば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
+引数のうち最後の値からなる配列を作成します。
+たとえば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
 
-場合によっては、実行順序に依然として依存できます。これは、サブクエリの結果が十分に小さい場合に、そのサブクエリ内で `ORDER BY` を使用している `SELECT` の結果に対して適用されます。
+場合によっては、依然として実行順序に依存できます。これは、サブクエリの結果が十分に小さい場合に、`ORDER BY` を使用するサブクエリに対する `SELECT` のケースに適用されます。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
@@ -31,7 +31,7 @@ SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
 └─────────┘
 ```
 
-`groupArray` と比べると：
+`groupArray` と比較すると、
 
 ```sql
 SELECT groupArray(2)(number+1) numbers FROM numbers(10)

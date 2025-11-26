@@ -12,87 +12,80 @@ import private_gov_architecture from '@site/static/images/cloud/reference/privat
 
 ## Обзор {#overview}
 
-ClickHouse Private — это самостоятельно развертываемый пакет, состоящий из той же проприетарной версии ClickHouse, которая используется в ClickHouse Cloud, и нашего ClickHouse Operator, настроенного для разделения вычислительных ресурсов и хранилища. Он развертывается в средах Kubernetes с хранилищем, совместимым с S3.
+ClickHouse Private — это самостоятельно развертываемый пакет, включающий ту же проприетарную версию ClickHouse, которая используется в ClickHouse Cloud, а также наш ClickHouse Operator, настроенные для разделения вычислений и хранилища. Он разворачивается в Kubernetes‑окружениях с S3‑совместимым хранилищем.
 
-В настоящее время этот пакет доступен для AWS и IBM Cloud, развертывание на физических серверах появится в ближайшее время.
+В настоящее время этот пакет доступен в AWS и IBM Cloud; в скором времени появится поддержка развертываний на физических серверах (bare metal).
 
-:::note Примечание
-ClickHouse Private предназначен для крупных предприятий с наиболее строгими требованиями к соответствию нормативным требованиям и обеспечивает полный контроль и управление выделенной инфраструктурой. Эта опция доступна только при [обращении к нам](https://clickhouse.com/company/contact?loc=nav).
+:::note Note
+ClickHouse Private предназначен для крупных предприятий с наиболее строгими требованиями к соответствию нормативным требованиям (compliance) и обеспечивает полный контроль и управление их выделенной инфраструктурой. Этот вариант доступен только при [обращении к нам](https://clickhouse.com/company/contact?loc=nav).
 :::
 
 
-## Преимущества перед open-source {#benefits-over-os}
 
-Следующие возможности отличают ClickHouse Private от самостоятельно управляемых развертываний open source:
+## Преимущества по сравнению с open source {#benefits-over-os}
+
+Следующие возможности отличают ClickHouse Private от самостоятельно управляемых open source-развертываний:
 
 <VerticalStepper headerLevel="h3">
 
 ### Повышенная производительность {#enhanced-performance}
+- Нативное разделение вычислительных ресурсов и хранилища данных
+- Проприетарные облачные функции, такие как [shared merge tree](/cloud/reference/shared-merge-tree) и [warehouse](/cloud/reference/warehouses)
 
-- Встроенное разделение вычислений и хранения
-- Проприетарные облачные возможности, такие как [shared merge tree](/cloud/reference/shared-merge-tree) и функциональность [warehouse](/cloud/reference/warehouses)
-
-### Протестировано и проверено в различных сценариях использования и условиях {#tested-proven-through-variety-of-use-cases}
-
+### Проверено и подтверждено на множестве сценариев и в различных условиях {#tested-proven-through-variety-of-use-cases}
 - Полностью протестировано и проверено в ClickHouse Cloud
 
-### Полнофункциональная дорожная карта с регулярным добавлением новых возможностей {#full-featured-roadmap}
-
-Дополнительные возможности, которые скоро появятся:
-
+### Полноценный план развития с регулярным добавлением новых функций {#full-featured-roadmap}
+Дополнительные возможности, которые появятся в ближайшее время:
 - API для программного управления ресурсами
-  - Автоматическое резервное копирование
-  - Автоматическое вертикальное масштабирование
-- Интеграция с провайдером идентификации
+  - Автоматизированное создание резервных копий
+  - Автоматизированные операции вертикального масштабирования
+- Интеграция с провайдерами идентификации
 
 </VerticalStepper>
 
 
+
 ## Архитектура {#architecture}
 
-ClickHouse Private полностью автономен в вашей среде развёртывания и состоит из вычислительных ресурсов, управляемых в Kubernetes, и хранилища в S3-совместимом решении для хранения данных.
+ClickHouse Private полностью автономен в пределах вашей среды развертывания и состоит из вычислительных ресурсов, управляемых в Kubernetes, и хранилища в совместимом с S3 объектном хранилище.
 
 <br />
 
-<Image
-  img={private_gov_architecture}
-  size='md'
-  alt='Архитектура ClickHouse Private'
-  background='black'
-/>
+<Image img={private_gov_architecture} size="md" alt="Архитектура ClickHouse Private" background='black'/>
 
 <br />
 
 
-## Процесс подключения {#onboarding-process}
 
-Клиенты могут начать процесс подключения, обратившись к [нам](https://clickhouse.com/company/contact?loc=nav). Для соответствующих требованиям клиентов мы предоставим подробное руководство по развертыванию окружения и доступ к образам и Helm-чартам для развертывания.
+## Процесс онбординга {#onboarding-process}
+
+Клиенты могут начать процесс онбординга, связавшись с [нами](https://clickhouse.com/company/contact?loc=nav). Для подходящих клиентов мы предоставим подробное руководство по развертыванию окружения и доступ к образам и Helm-чартам для этого развертывания.
+
 
 
 ## Общие требования {#general-requirements}
 
-Этот раздел содержит обзор ресурсов, необходимых для развертывания ClickHouse Private. Подробные руководства по развертыванию предоставляются в процессе подключения. Типы и размеры экземпляров/серверов зависят от варианта использования.
+Этот раздел предназначен для обзора ресурсов, необходимых для развертывания ClickHouse Private. Конкретные руководства по развертыванию предоставляются в рамках процесса онбординга. Типы и размеры экземпляров/серверов зависят от варианта использования.
 
-### ClickHouse Private на AWS {#clickhouse-private-aws}
+### ClickHouse Private в AWS {#clickhouse-private-aws}
 
 Необходимые ресурсы:
-
 - [ECR](https://docs.aws.amazon.com/ecr/) для получения образов и Helm-чартов
 - Кластер [EKS](https://docs.aws.amazon.com/eks/) с [CNI](https://github.com/aws/amazon-vpc-cni-k8s), [EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver), [DNS](https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html), [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md), [IMDS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html) для аутентификации и провайдером [OIDC](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
-- Серверные узлы работают под управлением Amazon Linux
-- Для оператора требуется группа узлов x86
+- Серверные узлы на базе Amazon Linux
+- Оператору требуется группа узлов x86
 - Бакет S3 в том же регионе, что и кластер EKS
-- Если требуется ingress, также необходимо настроить NLB
-- Одна роль AWS на кластер ClickHouse для операций clickhouse-server/keeper
+- Если требуется входной шлюз, необходимо также настроить NLB
+- Одна роль AWS для каждого кластера ClickHouse для операций clickhouse-server/keeper
 
-### ClickHouse Private на IBM Cloud {#clickhouse-private-ibm-cloud}
+### ClickHouse Private в IBM Cloud {#clickhouse-private-ibm-cloud}
 
 Необходимые ресурсы:
-
 - [Container Registry](https://cloud.ibm.com/docs/Registry?topic=Registry-getting-started) для получения образов и Helm-чартов
 - [Cloud Kubernetes Service](https://cloud.ibm.com/docs/containers?topic=containers-getting-started) с [CNI](https://www.ibm.com/docs/en/cloud-private/3.2.x?topic=networking-kubernetes-network-model), [Cloud Block Storage for VPC](https://cloud.ibm.com/docs/containers?topic=containers-vpc-block), [Cloud DNS](https://www.ibm.com/products/dns) и [Cluster Autoscaler](https://cloud.ibm.com/docs/containers?topic=containers-cluster-scaling-install-addon-enable)
-- Серверные узлы работают под управлением Ubuntu
-- Для оператора требуется группа узлов x86
+- Серверные узлы на базе Ubuntu
+- Оператору требуется группа узлов x86
 - [Cloud Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) в том же регионе, что и кластер Cloud Kubernetes Service
-- Если требуется ingress, также необходимо настроить NLB
-- Одна сервисная учетная запись на кластер ClickHouse для операций clickhouse-server/keeper
+- Если требуется входной шлюз, необходимо также настроить NLB
+- Одна учетная запись службы для каждого кластера ClickHouse для операций clickhouse-server/keeper

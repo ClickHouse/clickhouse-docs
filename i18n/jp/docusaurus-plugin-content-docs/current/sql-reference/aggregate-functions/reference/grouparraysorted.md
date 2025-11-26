@@ -1,5 +1,5 @@
 ---
-description: '最初の N 個の要素を昇順に並べた配列を返します。'
+description: '昇順で先頭 N 個の要素を含む配列を返します。'
 sidebar_position: 146
 slug: /sql-reference/aggregate-functions/reference/grouparraysorted
 title: 'groupArraySorted'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupArraySorted
 
-先頭の N 個の要素を昇順に並べた配列を返します。
+先頭 N 個の要素を昇順に並べた配列を返します。
 
 ```sql
 groupArraySorted(N)(column)
@@ -16,9 +16,9 @@ groupArraySorted(N)(column)
 
 **引数**
 
-* `N` – 返す要素の数。
+* `N` – 返す要素数。
 
-* `column` – 値（Integer、String、Float およびその他の Generic 型）。
+* `column` – 値（Integer、String、Float などの汎用的な型）。
 
 **例**
 
@@ -34,7 +34,7 @@ SELECT groupArraySorted(10)(number) FROM numbers(100)
 └──────────────────────────────┘
 ```
 
-列内のすべての数値を `String` 型の文字列表現として取得します。
+列内のすべての数値を文字列として取得します。
 
 ```sql
 SELECT groupArraySorted(5)(str) FROM (SELECT toString(number) AS str FROM numbers(5));

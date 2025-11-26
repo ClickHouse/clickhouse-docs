@@ -18,13 +18,15 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что буферизируется до `10 000` строк,
-которые затем выводятся в виде единой таблицы, а не [блоками](/development/architecture#block).
+Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что до `10,000` строк накапливаются в буфере,
+а затем выводятся в виде одной таблицы, а не по [блокам](/development/architecture#block).
+
 
 
 ## Пример использования {#example-usage}
 
 
-## Настройки формата {#format-settings}
 
-<PrettyFormatSettings />
+## Настройки форматирования {#format-settings}
+
+<PrettyFormatSettings/>

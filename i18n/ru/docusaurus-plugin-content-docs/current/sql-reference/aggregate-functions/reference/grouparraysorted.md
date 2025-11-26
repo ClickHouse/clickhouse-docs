@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupArraySorted
 
-Возвращает массив с первыми N элементами в порядке возрастания.
+Возвращает массив из первых N элементов в порядке возрастания.
 
 ```sql
 groupArraySorted(N)(column)
@@ -16,9 +16,9 @@ groupArraySorted(N)(column)
 
 **Аргументы**
 
-* `N` – Количество элементов, которые нужно вернуть.
+* `N` – Количество возвращаемых элементов.
 
-* `column` – Значение (Integer, String, Float и другие обобщённые типы).
+* `column` – Значение столбца (Integer, String, Float и другие обобщённые типы).
 
 **Пример**
 
@@ -34,7 +34,7 @@ SELECT groupArraySorted(10)(number) FROM numbers(100)
 └──────────────────────────────┘
 ```
 
-Возвращает строковые представления всех чисел в столбце:
+Возвращает все строковые представления всех чисел в столбце:
 
 ```sql
 SELECT groupArraySorted(5)(str) FROM (SELECT toString(number) AS str FROM numbers(5));

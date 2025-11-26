@@ -2,8 +2,8 @@
 sidebar_label: 'Fabi.ai'
 slug: /integrations/fabi.ai
 keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'analytics']
-description: 'Fabi.ai — это единая платформа для совместного анализа данных. Вы можете использовать SQL, Python, AI и no-code, чтобы создавать дашборды и рабочие процессы обработки данных быстрее, чем когда-либо прежде'
-title: 'Подключение ClickHouse к Fabi.ai'
+description: 'Fabi.ai — это единая платформа для совместного анализа данных. Вы можете использовать SQL, Python, ИИ и no-code, чтобы создавать дашборды и рабочие процессы с данными быстрее, чем когда-либо раньше.'
+title: 'Подключите ClickHouse к Fabi.ai'
 doc_type: 'guide'
 ---
 
@@ -20,7 +20,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> — это единая платформа для совместного анализа данных. Вы можете использовать SQL, Python, ИИ и no-code, чтобы создавать дашборды и конвейеры обработки данных быстрее, чем когда-либо прежде. В сочетании с масштабируемостью и производительностью ClickHouse вы сможете за считаные минуты создать и поделиться своим первым высокопроизводительным дашбордом на огромном наборе данных.
+<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> — это универсальная платформа для совместной работы с данными. Вы можете использовать SQL, Python, ИИ и инструменты no-code, чтобы создавать дашборды и рабочие процессы с данными быстрее, чем когда‑либо. В сочетании с масштабируемостью и мощностью ClickHouse вы сможете за считаные минуты создать и поделиться своим первым высокопроизводительным дашбордом на огромном наборе данных.
 
 <Image size="md" img={fabi_01} alt="Платформа Fabi.ai для исследования данных и построения рабочих процессов" border />
 
@@ -31,30 +31,33 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 <ConnectionDetails />
 
 
+
 ## Создайте аккаунт Fabi.ai и подключите ClickHouse {#connect-to-clickhouse}
 
-Войдите или создайте аккаунт Fabi.ai: https://app.fabi.ai/
+Войдите в свой аккаунт Fabi.ai или создайте новый: https://app.fabi.ai/
 
-1. При первом создании аккаунта вам будет предложено подключить базу данных. Если у вас уже есть аккаунт, нажмите на панель источников данных слева в любом Smartbook и выберите «Add Data Source».
-
-   <Image size='lg' img={fabi_02} alt='Добавить источник данных' border />
+1. При первом входе в аккаунт вам будет предложено подключить базу данных. Если аккаунт уже есть, нажмите на панель источников данных слева в любом Smartbook и выберите пункт Add Data Source.
+   
+   <Image size="lg" img={fabi_02} alt="Добавить источник данных" border />
 
 2. Затем вам будет предложено ввести параметры подключения.
 
-   <Image size='md' img={fabi_03} alt='Форма учетных данных ClickHouse' border />
+   <Image size="md" img={fabi_03} alt="Форма с учетными данными ClickHouse" border />
 
-3. Поздравляем! Вы успешно интегрировали ClickHouse с Fabi.ai.
+3. Поздравляем! Теперь вы подключили ClickHouse к Fabi.ai.
 
 
-## Выполнение запросов к ClickHouse {#querying-clickhouse}
 
-После подключения Fabi.ai к ClickHouse перейдите в любой [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) и создайте SQL-ячейку. Если к вашему экземпляру Fabi.ai подключён только один источник данных, SQL-ячейка автоматически будет использовать ClickHouse по умолчанию. В противном случае вы можете выбрать источник для запроса из выпадающего списка.
+## Выполнение запросов к ClickHouse. {#querying-clickhouse}
 
-<Image size='lg' img={fabi_04} alt='Выполнение запросов к ClickHouse' border />
+После того как вы подключили Fabi.ai к ClickHouse, откройте любой [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) и создайте SQL-ячейку. Если к вашему экземпляру Fabi.ai подключен только один источник данных, SQL-ячейка автоматически выберет ClickHouse, иначе вы можете указать источник для запроса в выпадающем списке источников.
+
+   <Image size="lg" img={fabi_04} alt="Выполнение запросов к ClickHouse" border />
+
 
 
 ## Дополнительные ресурсы {#additional-resources}
 
 Документация [Fabi.ai](https://www.fabi.ai): https://docs.fabi.ai/introduction
 
-Видеоуроки по началу работы с [Fabi.ai](https://www.fabi.ai): https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl
+Вводные обучающие видеоролики по работе с [Fabi.ai](https://www.fabi.ai): https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl

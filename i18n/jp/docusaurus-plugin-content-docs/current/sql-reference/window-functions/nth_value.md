@@ -1,5 +1,5 @@
 ---
-description: 'nth_value ウィンドウ関数のリファレンス'
+description: 'nth_value ウィンドウ関数のドキュメント'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # nth&#95;value
 
-順序付けされたフレーム内の n 番目の行（オフセット）に対して評価された最初の非 NULL 値を返します。
+順序付けられたフレーム内の n 行目（オフセット）に対応して評価された、最初の非 NULL 値を返します。
 
 **構文**
 
@@ -21,20 +21,20 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については [Window Functions - Syntax](./index.md/#syntax) を参照してください。
+ウィンドウ関数の構文の詳細は、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
 **パラメータ**
 
 * `x` — 列名。
-* `offset` — 現在行と比較して評価する n 行目。
+* `offset` — 現在行と比較する n 番目の行。
 
-**返される値**
+**戻り値**
 
-* 並べ替えられたフレーム内で、n 行目（offset）に対して評価される、最初の NULL ではない値。
+* 並び順が定義されたフレーム内で、n 番目の行（`offset`）に対して評価される最初の NULL 以外の値。
 
 **例**
 
-この例では、`nth-value` 関数を使用して、プレミアリーグのサッカー選手の給与に関する架空のデータセットから、3 番目に高い給与を求めます。
+この例では、`nth-value` 関数を使用して、プレミアリーグのサッカー選手の架空の給与データセットから 3 番目に高い給与を求めます。
 
 クエリ:
 

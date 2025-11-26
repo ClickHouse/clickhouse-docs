@@ -2,7 +2,7 @@
 slug: /guides/developer/lightweight-delete
 title: '轻量级删除'
 keywords: ['轻量级删除']
-description: '提供 ClickHouse 中轻量级删除功能的概述'
+description: '概述 ClickHouse 中的轻量级删除功能'
 doc_type: 'reference'
 ---
 

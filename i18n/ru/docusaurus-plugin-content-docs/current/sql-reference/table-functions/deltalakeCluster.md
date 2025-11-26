@@ -1,5 +1,5 @@
 ---
-description: 'Расширение табличной функции deltaLake.'
+description: 'Это расширение табличной функции deltaLake.'
 sidebar_label: 'deltaLakeCluster'
 sidebar_position: 46
 slug: /sql-reference/table-functions/deltalakeCluster
@@ -9,15 +9,15 @@ doc_type: 'reference'
 
 
 
-# Функция таблицы deltaLakeCluster
+# Табличная функция deltaLakeCluster
 
-Это расширение функции таблицы [deltaLake](sql-reference/table-functions/deltalake.md).
+Это расширение табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
 
-Позволяет параллельно обрабатывать файлы из таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 одновременно на нескольких узлах в указанном кластере. На инициирующем узле создаётся соединение со всеми узлами кластера, и каждый файл динамически распределяется между ними. На рабочем узле он запрашивает у инициатора следующую задачу и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут завершены.
+Позволяет параллельно обрабатывать файлы из таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 одновременно с нескольких узлов заданного кластера. На инициаторе создаётся подключение ко всем узлам в кластере, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут выполнены.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -30,31 +30,34 @@ deltaLakeAzureCluster(cluster_name, connection_string|storage_account_url, conta
 deltaLakeAzureCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
-`deltaLakeS3Cluster` является псевдонимом `deltaLakeCluster`, обе функции работают с S3.
+`deltaLakeS3Cluster` — это псевдоним `deltaLakeCluster`, оба используются с S3.
 
 
 ## Аргументы {#arguments}
 
-- `cluster_name` — имя кластера, используемое для формирования набора адресов и параметров подключения к удалённым и локальным серверам.
+- `cluster_name` — имя кластера, которое используется для формирования набора адресов и параметров подключения к удалённым и локальным серверам.
 
-- Описание остальных аргументов совпадает с описанием аргументов табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
+- Описание всех остальных аргументов аналогично описанию аргументов в эквивалентной табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
+
 
 
 ## Возвращаемое значение {#returned_value}
 
-Таблица с указанной структурой для чтения данных из указанной таблицы Delta Lake в S3 на кластере.
+Таблица с указанной структурой для чтения данных с кластера из указанной таблицы Delta Lake в S3.
+
 
 
 ## Виртуальные столбцы {#virtual-columns}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+- `_file` — имя файла. Тип: `LowCardinality(String)`.
+- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 
-## Связанные разделы {#related}
 
-- [Движок deltaLake](engines/table-engines/integrations/deltalake.md)
-- [Табличная функция deltaLake](sql-reference/table-functions/deltalake.md)
+## См. также {#related}
+
+- [движок Delta Lake](engines/table-engines/integrations/deltalake.md)
+- [табличная функция Delta Lake](sql-reference/table-functions/deltalake.md)

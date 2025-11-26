@@ -5,7 +5,7 @@ title: 'Redis'
 description: 'Страница с описанием табличной функции Redis'
 doc_type: 'reference'
 hide_title: true
-keywords: ['redis', 'кэш', 'интеграция', 'источник данных', 'хранилище ключ-значение']
+keywords: ['redis', 'cache', 'integration', 'data source', 'key-value store']
 ---
 
 import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';

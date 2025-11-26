@@ -1,18 +1,18 @@
 ---
-title: 'ClickHouse でフェデレーテッドクエリは利用できますか？'
+title: 'ClickHouse は連合クエリをサポートしていますか？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/federated
-description: 'ClickHouse では、フェデレーテッドクエリおよびハイブリッドクエリに幅広く対応しています'
+description: 'ClickHouse は幅広い種類の連合クエリおよびハイブリッドクエリをサポートしています'
 doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
 
 # ClickHouse はフェデレーテッドクエリをサポートしていますか？
 
-ClickHouse は、分析データベースの中でもフェデレーテッドクエリおよびハイブリッドなクエリ実行を最も包括的にサポートしています。
+ClickHouse は、分析用データベースの中でもフェデレーテッドクエリおよびハイブリッドクエリ実行について、最も包括的なサポートを提供します。
 
-外部データベースに対するクエリをサポートしています:
+ClickHouse は外部データベースに対するクエリをサポートしています：
 
 - PostgreSQL
 - MySQL
@@ -22,9 +22,9 @@ ClickHouse は、分析データベースの中でもフェデレーテッドク
 - 任意の JDBC データソース
 - 任意の Arrow Flight データソース
 - Kafka や RabbitMQ などのストリーミングデータソース
-- Iceberg、Delta Lake、Apache Hudi、Apache Paimon などのデータレイク
-- AWS S3、GCS、Minio、Cloudflare R2、Azure Blob Storage、Alicloud OSS、Tencent COS などの共有ストレージ上にある外部ファイルやローカルストレージ上の外部ファイルなど、幅広いデータ形式のファイル
+- Iceberg、Delta Lake、Apache Hudi、Apache Paimon などの Data Lake
+- AWS S3、GCS、Minio、Cloudflare R2、Azure Blob Storage、Alicloud OSS、Tencent COS などの共有ストレージ上にある外部ファイル、ならびにローカルストレージ上の外部ファイル（幅広いデータフォーマットに対応）
 
-ClickHouse は、単一のクエリの中で複数の異なるデータソースを結合できます。また、ローカルリソースと、クエリの一部をリモートマシンにオフロードする仕組みを組み合わせたハイブリッドなクエリ実行オプションも提供します。
+ClickHouse は、1 つのクエリ内で複数の異なるデータソースを結合できます。また、ローカルリソースを活用しつつ、クエリの一部をリモートマシンにオフロードするハイブリッドクエリ実行オプションも提供します。
 
-興味深いことに、ClickHouse はデータを移動させることなく、外部データソース上のクエリを高速化できます。例えば、MySQL に対する集約クエリは ClickHouse 上で実行した方が高速に処理されます。これは、データ移動のオーバーヘッドよりも、より高速なクエリエンジンの効果が上回るためです。
+興味深いことに、ClickHouse はデータを移動することなく外部データソース上のクエリを高速化できます。たとえば、MySQL 上の集計クエリは ClickHouse 上で実行するとより高速に処理されます。これは、データ移動のオーバーヘッドが、より高速なクエリエンジンによって相殺されるためです。

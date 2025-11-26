@@ -1,5 +1,5 @@
 ---
-description: '指定されたカラム内の、おおよそ最頻出の値の配列を返します。結果の配列は、（値そのものではなく）値のおおよその出現頻度が高い順にソートされます。'
+description: '指定された列の値のうち、おおよそ出現頻度の高いものを要素とする配列を返します。結果の配列は、値そのものではなく、値のおおよその出現頻度の降順でソートされます。'
 sidebar_position: 202
 slug: /sql-reference/aggregate-functions/reference/topk
 title: 'topK'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 # topK
 
-指定された列内で、おおよそ最も頻出する値の配列を返します。返される配列は、値そのものではなく、値の出現頻度の概算値に基づく降順でソートされています。
+指定したカラム内で、おおよそ最も頻出する値の配列を返します。結果の配列は、値そのものではなく、値のおおよその出現頻度の高い順（降順）にソートされます。
 
-TopK を求めるために [Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しており、これは [Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) における reduce-and-combine アルゴリズムに基づいています。
+TopK を解析するために [Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しており、これは [Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) の reduce-and-combine アルゴリズムに基づいています。
 
 ```sql
 topK(N)(column)
@@ -18,23 +18,23 @@ topK(N, load_factor)(column)
 topK(N, load_factor, 'counts')(column)
 ```
 
-この関数は結果が保証されるわけではありません。特定の状況ではエラーが発生する場合があり、最頻値ではない値を頻出値として返すことがあります。
+この関数は、結果が常に正確であることは保証されません。特定の状況ではエラーが発生し、最頻値ではない値を最頻値として返すことがあります。
 
-`N < 10` の値を使用することを推奨します。`N` を大きくするとパフォーマンスが低下します。`N` の最大値は `65536` です。
+`N < 10` の値を使用することを推奨します。`N` の値が大きいとパフォーマンスが低下します。`N` の最大値は `65536` です。
 
 **パラメータ**
 
 * `N` — 返す要素数。省略可能。デフォルト値: 10。
-* `load_factor` — 値のために確保されるセルの数を定義します。もし uniq(column) &gt; N * load&#95;factor の場合、topK 関数の結果は近似値になります。省略可能。デフォルト値: 3。
-* `counts` — 結果に近似的な件数と誤差値を含めるかどうかを定義します。
+* `load_factor` — 値のために予約するセルの数を定義します。もし `uniq(column) > N * load_factor` の場合、`topK` 関数の結果は近似値になります。省略可能。デフォルト値: 3。
+* `counts` — 結果に近似的な件数と誤差の値を含めるかどうかを定義します。
 
 **引数**
 
-* `column` — 出現頻度を計算する対象の値。
+* `column` — 出現頻度を計算する対象の値を含む列。
 
 **例**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを使用し、`AirlineID` 列において最も頻繁に出現する値を 3 つ取得します。
+[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを使用し、`AirlineID` 列で最も頻繁に出現する値を 3 つ選択します。
 
 ```sql
 SELECT topK(3)(AirlineID) AS res

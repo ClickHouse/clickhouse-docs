@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация о формате PrettyMonoBlock'
+description: 'Документация по формату PrettyMonoBlock'
 input_format: false
 keywords: ['PrettyMonoBlock']
 output_format: true
@@ -18,13 +18,14 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`Pretty`](/interfaces/formats/Pretty) тем, что буферизирует до `10 000` строк,
-которые затем выводятся в виде единой таблицы, а не [блоками](/development/architecture#block).
+Отличается от формата [`Pretty`](/interfaces/formats/Pretty) тем, что до `10 000` строк буферизуются, после чего результат выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
+
 
 
 ## Пример использования {#example-usage}
 
 
-## Настройки формата {#format-settings}
 
-<PrettyFormatSettings />
+## Параметры форматирования {#format-settings}
+
+<PrettyFormatSettings/>

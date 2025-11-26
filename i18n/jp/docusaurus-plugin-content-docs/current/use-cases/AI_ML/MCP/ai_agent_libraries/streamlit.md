@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/streamlit-agent
-sidebar_label: 'Streamlit を統合する'
-title: 'Streamlit で ClickHouse バックエンドの AI エージェントを構築する方法'
+sidebar_label: 'Streamlit と連携する'
+title: 'Streamlit を使って ClickHouse バックエンドの AI Agent を構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Streamlit と ClickHouse MCP Server を使って Web ベースの AI エージェントを構築する方法を学びます'
+description: 'Streamlit と ClickHouse MCP Server を使用して、Web ベースの AI Agent を構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,13 +12,13 @@ doc_type: 'guide'
 
 
 
-# Streamlit を使って ClickHouse をバックエンドに持つ AI エージェントを構築する方法
+# Streamlit を使って ClickHouse をバックエンドにした AI エージェントを構築する方法
 
-このガイドでは、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を利用して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる、[Streamlit](https://streamlit.io/) ベースの Web AI エージェントの構築方法を解説します。
+このガイドでは、[Streamlit](https://streamlit.io/) を使用して、[ClickHouse の SQL playground](https://sql.clickhouse.com/) に対して [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を通じて対話できる、Web ベースの AI エージェントを構築する方法を説明します。
 
-:::note 例となるアプリケーション
-この例では、ClickHouse のデータを問い合わせるためのチャットインターフェイスを備えた、本格的な Web アプリケーションを作成します。
-この例のソースコードは、[examples リポジトリ](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit)で参照できます。
+:::note サンプルアプリケーション
+この例では、ClickHouse のデータにクエリを実行するためのチャットインターフェースを提供する、完成した Web アプリケーションを作成します。
+このサンプルのソースコードは、[examples リポジトリ](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit)で確認できます。
 :::
 
 
@@ -27,25 +27,28 @@ doc_type: 'guide'
 
 - システムにPythonがインストールされている必要があります。
   [`uv`](https://docs.astral.sh/uv/getting-started/installation/)がインストールされている必要があります
-- Anthropic APIキー、または他のLLMプロバイダーのAPIキーが必要です
+- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキーが必要です
 
-以下の手順でStreamlitアプリケーションを作成できます。
+以下の手順でStreamlitアプリケーションを作成します。
 
 <VerticalStepper headerLevel="h2">
 
 
-## ライブラリのインストール {#install-libraries}
+## ライブラリのインストール
 
-以下のコマンドを実行して、必要なライブラリをインストールします：
+次のコマンドを実行して、必要なライブラリをインストールします。
 
 ```bash
 pip install streamlit agno ipywidgets
 ```
 
 
-## ユーティリティファイルの作成 {#create-utilities}
+## ユーティリティファイルを作成
 
-2つのユーティリティ関数を含む`utils.py`ファイルを作成します。1つ目はAgnoエージェントからのストリーム応答を処理するための非同期関数ジェネレータです。2つ目はStreamlitアプリケーションにスタイルを適用する関数です。
+2つのユーティリティ関数を含む `utils.py` ファイルを作成します。1つ目は、
+Agno エージェントからのストリーミングレスポンスを処理するための
+非同期ジェネレーター関数です。2つ目は、Streamlit
+アプリケーションにスタイルを適用するための関数です。
 
 ```python title="utils.py"
 import streamlit as st
@@ -69,23 +72,23 @@ def apply_styles():
 ```
 
 
-## 認証情報の設定 {#setup-credentials}
+## 認証情報のセットアップ
 
-Anthropic API キーを環境変数として設定します：
+Anthropic の API キーを環境変数として設定してください。
 
 ```bash
 export ANTHROPIC_API_KEY="your_api_key_here"
 ```
 
 :::note 別の LLM プロバイダーを使用する場合
-Anthropic API キーをお持ちでない場合、または別の LLM プロバイダーを使用したい場合は、
-[Agno "Integrations" ドキュメント](https://docs.agentops.ai/v2/integrations/ag2)で認証情報の設定手順を参照してください
+Anthropic の API キーを持っておらず、別の LLM プロバイダーを使用したい場合は、
+資格情報の設定手順については [Agno「Integrations」ドキュメント](https://docs.agentops.ai/v2/integrations/ag2) を参照してください。
 :::
 
 
-## 必要なライブラリのインポート {#import-libraries}
+## 必要なライブラリをインポートする
 
-まず、メインのStreamlitアプリケーションファイル(例: `app.py`)を作成し、以下のインポート文を追加します:
+まずメインの Streamlit アプリケーションファイル（例: `app.py`）を作成し、次のインポート文を追加します。
 
 ```python
 from utils import apply_styles
@@ -108,9 +111,9 @@ from queue import Queue
 ```
 
 
-## エージェントストリーミング関数を定義する {#define-agent-function}
+## エージェントのストリーミング関数を定義する
 
-[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)に接続し、レスポンスをストリーミングするメインエージェント関数を追加します:
+[ClickHouse の SQL Playground](https://sql.clickhouse.com/) に接続し、レスポンスをストリーミングするメインのエージェント関数を追加します。
 
 ```python
 async def stream_clickhouse_agent(message):
@@ -121,7 +124,7 @@ async def stream_clickhouse_agent(message):
             "CLICKHOUSE_PASSWORD": "",
             "CLICKHOUSE_SECURE": "true"
         }
-
+    
     server_params = StdioServerParameters(
         command="uv",
         args=[
@@ -132,7 +135,7 @@ async def stream_clickhouse_agent(message):
         ],
         env=env
     )
-
+    
     async with stdio_client(server_params) as (read, write):
         async with ClientSession(read, write) as session:
             mcp_tools = MCPTools(timeout_seconds=60, session=session)
@@ -141,15 +144,15 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    あなたはClickHouseアシスタントです。ユーザーがClickHouseを使用してデータのクエリと理解を行えるよう支援してください。
-                    - ClickHouse MCPツールを使用してSQLクエリを実行する
-                    - 関連する場合は結果をMarkdownテーブルで表示する
-                    - 出力を簡潔で有用、かつ適切にフォーマットされた状態に保つ
+                    あなたはClickHouseアシスタントです。ClickHouseを使用したデータのクエリと理解をサポートしてください。
+                    - ClickHouse MCPツールを使用してSQLクエリを実行してください
+                    - 該当する場合は結果をマークダウンテーブル形式で表示してください
+                    - 出力は簡潔で有用、かつ適切にフォーマットされた状態を保ってください
                 """),
                 markdown=True,
                 show_tool_calls=True,
                 storage=JsonStorage(dir_path="tmp/team_sessions_json"),
-                add_datetime_to_instructions=True,
+                add_datetime_to_instructions=True, 
                 add_history_to_messages=True,
             )
             chunks = await agent.arun(message, stream=True)
@@ -159,9 +162,9 @@ async def stream_clickhouse_agent(message):
 ```
 
 
-## 同期ラッパー関数の追加 {#add-wrapper-functions}
+## 同期用ラッパー関数を追加する
 
-Streamlitで非同期ストリーミングを処理するヘルパー関数を追加します:
+Streamlit で非同期ストリーミング処理を扱うためのヘルパー関数を追加します。
 
 ```python
 def run_agent_query_sync(message):
@@ -182,12 +185,12 @@ async def _agent_stream_to_queue(message, queue):
 ```
 
 
-## Streamlitインターフェースの作成 {#create-interface}
+## Streamlit インターフェイスを作成
 
-StreamlitのUIコンポーネントとチャット機能を追加します:
+Streamlit の UI コンポーネントとチャット機能を追加します。
 
 ```python
-st.title("ClickHouseベースのAIエージェント")
+st.title("ClickHouseを基盤としたAIエージェント")
 
 if st.button("💬 新しいチャット"):
   st.session_state.messages = []
@@ -202,7 +205,7 @@ for message in st.session_state.messages:
   with st.chat_message(message["role"]):
     st.markdown(message["content"])
 
-if prompt := st.chat_input("ご用件をどうぞ"):
+if prompt := st.chat_input("何かご質問はありますか?"):
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.chat_message("user"):
     st.markdown(prompt)
@@ -214,7 +217,7 @@ if prompt := st.chat_input("ご用件をどうぞ"):
 
 ## アプリケーションの実行 {#run-application}
 
-ClickHouse AIエージェントWebアプリケーションを起動するには、ターミナルから以下のコマンドを実行してください：
+ClickHouse AIエージェントWebアプリケーションを起動するには、ターミナルから以下のコマンドを実行します。
 
 ```bash
 uv run \
@@ -225,6 +228,6 @@ uv run \
   streamlit run app.py --server.headless true
 ```
 
-これによりWebブラウザが開き、`http://localhost:8501`に移動します。そこでAIエージェントと対話し、ClickHouseのSQLプレイグラウンドで利用可能なサンプルデータセットについて質問できます。
+これによりWebブラウザが開き、`http://localhost:8501`に移動します。ここでAIエージェントと対話し、ClickHouseのSQLプレイグラウンドで利用可能なサンプルデータセットについて質問できます。
 
 </VerticalStepper>

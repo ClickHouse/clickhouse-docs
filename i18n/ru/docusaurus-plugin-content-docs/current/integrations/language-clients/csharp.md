@@ -3,8 +3,8 @@ sidebar_label: 'C#'
 sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
-description: 'Официальный клиент C# для подключения к ClickHouse.'
-title: 'C#-драйвер ClickHouse'
+description: 'Официальный клиентский драйвер C# для подключения к ClickHouse.'
+title: 'Клиентский драйвер C# для ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -14,38 +14,40 @@ integration:
 
 
 
-# Клиент ClickHouse для C\#
+# Клиент ClickHouse для C#
 
-Официальный клиент C\# для подключения к ClickHouse.
+Официальный клиент на C# для подключения к ClickHouse.
 Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-cs).
-Изначально разработан [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
+Изначально разработан [Олегом В. Козлюком](https://github.com/DarkWanderer).
 
 
 
 ## Руководство по миграции {#migration-guide}
 
-1. Обновите файл `.csproj`, указав новое имя пакета `ClickHouse.Driver` и [последнюю версию на NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
-2. Обновите все ссылки с `ClickHouse.Client` на `ClickHouse.Driver` в вашей кодовой базе.
+1. Обновите файл `.csproj`, указав новое имя пакета `ClickHouse.Driver` и [последнюю версию из NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
+2. Обновите все ссылки на `ClickHouse.Client` во всём проекте, заменив их на `ClickHouse.Driver`.
 
 ---
+
 
 
 ## Поддерживаемые версии .NET {#supported-net-versions}
 
-`ClickHouse.Driver` поддерживает следующие версии .NET:
+`ClickHouse.Driver` поддерживает следующие версии платформы .NET:
 
-- .NET Framework 4.6.2
-- .NET Framework 4.8
-- .NET Standard 2.1
-- .NET 6.0
-- .NET 8.0
-- .NET 9.0
-- .NET 10.0
+* .NET Framework 4.6.2
+* .NET Framework 4.8
+* .NET Standard 2.1
+* .NET 6.0
+* .NET 8.0
+* .NET 9.0
+* .NET 10.0
 
 ---
 
 
-## Установка {#installation}
+
+## Установка
 
 Установите пакет из NuGet:
 
@@ -53,16 +55,16 @@ integration:
 dotnet add package ClickHouse.Driver
 ```
 
-Или с помощью диспетчера пакетов NuGet:
+Или с помощью менеджера пакетов NuGet:
 
 ```bash
 Install-Package ClickHouse.Driver
 ```
 
----
+***
 
 
-## Быстрый старт {#quick-start}
+## Быстрый старт
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -87,59 +89,59 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 }
 ```
 
----
+***
 
 
-## Использование {#usage}
+## Использование
 
-### Параметры строки подключения {#connection-string}
+### Параметры строки подключения
 
-| Параметр            | Описание                                 | По умолчанию                               |
-| ------------------- | ---------------------------------------- | ------------------------------------------ |
-| `Host`              | Адрес сервера ClickHouse                 | `localhost`                                |
-| `Port`              | Порт сервера ClickHouse                  | `8123` или `8443` (в зависимости от `Protocol`) |
-| `Database`          | Начальная база данных                    | `default`                                  |
-| `Username`          | Имя пользователя для аутентификации      | `default`                                  |
-| `Password`          | Пароль для аутентификации                | _(пусто)_                                  |
-| `Protocol`          | Протокол подключения (`http` или `https`)| `http`                                     |
-| `Compression`       | Включает сжатие Gzip                     | `true`                                     |
-| `UseSession`        | Включает постоянную серверную сессию     | `false`                                    |
-| `SessionId`         | Пользовательский идентификатор сессии    | Случайный GUID                             |
-| `Timeout`           | Таймаут HTTP (в секундах)                | `120`                                      |
-| `UseServerTimezone` | Использовать часовой пояс сервера для столбцов datetime | `true`                      |
-| `UseCustomDecimals` | Использовать `ClickHouseDecimal` для десятичных чисел     | `false`                    |
+| Parameter           | Description                                             | Default                                         |
+| ------------------- | ------------------------------------------------------- | ----------------------------------------------- |
+| `Host`              | Адрес сервера ClickHouse                                | `localhost`                                     |
+| `Port`              | Порт сервера ClickHouse                                 | `8123` или `8443` (в зависимости от `Protocol`) |
+| `Database`          | Начальная база данных                                   | `default`                                       |
+| `Username`          | Имя пользователя для аутентификации                     | `default`                                       |
+| `Password`          | Пароль для аутентификации                               | *(пусто)*                                       |
+| `Protocol`          | Протокол подключения (`http` или `https`)               | `http`                                          |
+| `Compression`       | Включает сжатие Gzip                                    | `true`                                          |
+| `UseSession`        | Включает постоянную серверную сессию                    | `false`                                         |
+| `SessionId`         | Пользовательский идентификатор сессии                   | Случайный GUID                                  |
+| `Timeout`           | HTTP‑тайм‑аут (в секундах)                              | `120`                                           |
+| `UseServerTimezone` | Использовать часовой пояс сервера для столбцов datetime | `true`                                          |
+| `UseCustomDecimals` | Использовать `ClickHouseDecimal` для десятичных чисел   | `false`                                         |
 
 **Пример:** `Host=clickhouse;Port=8123;Username=default;Password=;Database=default`
 
-:::note Сессии
+:::note Sessions
 
-Флаг `UseSession` включает сохранение серверной сессии, позволяя использовать операторы `SET` и временные таблицы. Сессия будет сброшена после 60 секунд неактивности (таймаут по умолчанию). Время жизни сессии можно продлить, установив параметры сессии через операторы ClickHouse.
+Флаг `UseSession` включает сохранение серверной сессии, что позволяет использовать операторы `SET` и временные таблицы. Сессия будет сброшена после 60 секунд неактивности (тайм‑аут по умолчанию). Время жизни сессии можно увеличить, задав настройки сессии через операторы ClickHouse.
 
-Класс `ClickHouseConnection` обычно позволяет параллельную работу (несколько потоков могут выполнять запросы одновременно). Однако включение флага `UseSession` ограничит это одним активным запросом на соединение в любой момент времени (ограничение на стороне сервера).
+Класс `ClickHouseConnection` обычно поддерживает параллельную работу (несколько потоков могут выполнять запросы одновременно). Однако включение флага `UseSession` ограничит это одним активным запросом на подключение в каждый момент времени (ограничение на стороне сервера).
 
 :::
 
----
+***
 
-### Время жизни соединения и пулинг {#connection-lifetime}
+### Время жизни подключения и пул подключений
 
-`ClickHouse.Driver` использует `System.Net.Http.HttpClient` внутри. `HttpClient` имеет пул соединений для каждой конечной точки. Как следствие:
+`ClickHouse.Driver` использует под капотом `System.Net.Http.HttpClient`. `HttpClient` имеет пул подключений на каждую конечную точку. В результате:
 
-- Объект `ClickHouseConnection` не имеет соответствия 1:1 с TCP-соединениями — несколько сессий базы данных будут мультиплексироваться через несколько (2 по умолчанию) TCP-соединений на сервер.
-- Соединения могут оставаться активными после удаления объекта `ClickHouseConnection`.
-- Это поведение можно настроить, передав специальный `HttpClient` с пользовательским `HttpClientHandler`.
+* Объект `ClickHouseConnection` не имеет соответствия 1:1 с TCP‑подключениями — несколько сессий базы данных будут мультиплексироваться через несколько (2 по умолчанию) TCP‑подключений к серверу.
+* Подключения могут оставаться активными после того, как объект `ClickHouseConnection` был уничтожен (`disposed`).
+* Такое поведение можно настроить, передав специализированный `HttpClient` с пользовательским `HttpClientHandler`.
 
-Для сред с внедрением зависимостей существует специальный конструктор `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`, который позволяет обобщить настройки HTTP-клиента.
+Для DI‑окружений существует отдельный конструктор `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`, который позволяет унифицировать настройки HTTP‑клиента.
 
 **Рекомендации:**
 
-- `ClickHouseConnection` представляет «сессию» с сервером. Он выполняет обнаружение возможностей путем запроса версии сервера (поэтому при открытии возникают небольшие накладные расходы), но в целом безопасно создавать и уничтожать такие объекты несколько раз.
-- Рекомендуемое время жизни соединения — один объект соединения на крупную «транзакцию», охватывающую несколько запросов. При запуске соединения возникают небольшие накладные расходы, поэтому не рекомендуется создавать объект соединения для каждого запроса.
-- Если приложение работает с большими объемами транзакций и требует частого создания/уничтожения объектов `ClickHouseConnection`, рекомендуется использовать `IHttpClientFactory` или статический экземпляр `HttpClient` для управления соединениями.
+* `ClickHouseConnection` представляет собой «сессию» с сервером. Он выполняет обнаружение поддерживаемых возможностей, запрашивая версию сервера (поэтому при открытии есть небольшие накладные расходы), но в целом безопасно многократно создавать и уничтожать такие объекты.
+* Рекомендуемый срок жизни подключения — один объект подключения на одну большую «транзакцию», охватывающую несколько запросов. Поскольку при запуске подключения есть небольшой оверхед, не рекомендуется создавать объект подключения для каждого запроса.
+* Если приложение обрабатывает большие объёмы транзакций и ему часто нужно создавать/уничтожать объекты `ClickHouseConnection`, рекомендуется использовать `IHttpClientFactory` или статический экземпляр `HttpClient` для управления подключениями.
 
----
+***
 
-### Создание таблицы {#creating-a-table}
+### Создание таблицы
 
 Создайте таблицу, используя стандартный синтаксис SQL:
 
@@ -158,11 +160,11 @@ using (var connection = new ClickHouseConnection(connectionString))
 }
 ```
 
----
+***
 
-### Вставка данных {#inserting-data}
+### Вставка данных
 
-Вставьте данные, используя параметризованные запросы:
+Вставляйте данные с помощью параметризованных запросов:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -181,15 +183,15 @@ using (var connection = new ClickHouseConnection(connectionString))
 }
 ```
 
----
+***
 
-### Массовая вставка {#bulk-insert}
+### Пакетная вставка
 
-Использование `ClickHouseBulkCopy` требует:
+Для использования `ClickHouseBulkCopy` необходимо:
 
-- Целевое соединение (экземпляр `ClickHouseConnection`)
-- Имя целевой таблицы (свойство `DestinationTableName`)
-- Источник данных (`IDataReader` или `IEnumerable<object[]>`)
+* Целевое подключение (экземпляр `ClickHouseConnection`)
+* Имя целевой таблицы (свойство `DestinationTableName`)
+* Источник данных (`IDataReader` или `IEnumerable<object[]>`)
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -197,7 +199,6 @@ using ClickHouse.Driver.Copy;
 
 using var connection = new ClickHouseConnection(connectionString);
 connection.Open();
-
 ```
 
 
@@ -344,99 +345,96 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
-`ClickHouse.Driver` поддерживает следующие типы данных ClickHouse с соответствующими сопоставлениями типов .NET:
+`ClickHouse.Driver` поддерживает следующие типы данных ClickHouse с их соответствиями типам .NET:
 
 ### Логические типы {#boolean-types}
 
-- `Bool` → `bool`
+* `Bool` → `bool`
 
 ### Числовые типы {#numeric-types}
 
-**Знаковые целые числа:**
+**Знаковые целые:**
+* `Int8` → `sbyte`
+* `Int16` → `short`
+* `Int32` → `int`
+* `Int64` → `long`
+* `Int128` → `BigInteger`
+* `Int256` → `BigInteger`
 
-- `Int8` → `sbyte`
-- `Int16` → `short`
-- `Int32` → `int`
-- `Int64` → `long`
-- `Int128` → `BigInteger`
-- `Int256` → `BigInteger`
+**Беззнаковые целые:**
+* `UInt8` → `byte`
+* `UInt16` → `ushort`
+* `UInt32` → `uint`
+* `UInt64` → `ulong`
+* `UInt128` → `BigInteger`
+* `UInt256` → `BigInteger`
 
-**Беззнаковые целые числа:**
-
-- `UInt8` → `byte`
-- `UInt16` → `ushort`
-- `UInt32` → `uint`
-- `UInt64` → `ulong`
-- `UInt128` → `BigInteger`
-- `UInt256` → `BigInteger`
-
-**Числа с плавающей точкой:**
-
-- `Float32` → `float`
-- `Float64` → `double`
+**Числа с плавающей запятой:**
+* `Float32` → `float`
+* `Float64` → `double`
 
 **Десятичные числа:**
-
-- `Decimal` → `decimal`
-- `Decimal32` → `decimal`
-- `Decimal64` → `decimal`
-- `Decimal128` → `decimal`
-- `Decimal256` → `BigDecimal`
+* `Decimal` → `decimal`
+* `Decimal32` → `decimal`
+* `Decimal64` → `decimal`
+* `Decimal128` → `decimal`
+* `Decimal256` → `BigDecimal`
 
 ### Строковые типы {#string-types}
 
-- `String` → `string`
-- `FixedString` → `string`
+* `String` → `string`
+* `FixedString` → `string`
 
 ### Типы даты и времени {#date-time-types}
 
-- `Date` → `DateTime`
-- `Date32` → `DateTime`
-- `DateTime` → `DateTime`
-- `DateTime32` → `DateTime`
-- `DateTime64` → `DateTime`
+* `Date` → `DateTime`
+* `Date32` → `DateTime`
+* `DateTime` → `DateTime`
+* `DateTime32` → `DateTime`
+* `DateTime64` → `DateTime`
 
 ### Сетевые типы {#network-types}
 
-- `IPv4` → `IPAddress`
-- `IPv6` → `IPAddress`
+* `IPv4` → `IPAddress`
+* `IPv6` → `IPAddress`
 
 ### Географические типы {#geographic-types}
 
-- `Point` → `Tuple`
-- `Ring` → `Массив точек`
-- `Polygon` → `Массив колец`
+* `Point` → `Tuple`
+* `Ring` → массив точек
+* `Polygon` → массив колец
 
 ### Сложные типы {#complex-types}
 
-- `Array(T)` → `Массив любого типа`
-- `Tuple(T1, T2, ...)` → `Кортеж любых типов`
-- `Nullable(T)` → `Nullable-версия любого типа`
-- `Map(K, V)` → `Dictionary<K, V>`
+* `Array(T)` → массив произвольного типа
+* `Tuple(T1, T2, ...)` → кортеж произвольных типов
+* `Nullable(T)` → вариант любого типа, допускающий значение `NULL`
+* `Map(K, V)` → `Dictionary&lt;K, V&gt;`
 
 ---
 
 ### Обработка DateTime {#datetime-handling}
 
-`ClickHouse.Driver` корректно обрабатывает часовые пояса и свойство `DateTime.Kind`. В частности:
+`ClickHouse.Driver` пытается корректно обрабатывать часовые пояса и свойство `DateTime.Kind`. В частности:
 
-- Значения `DateTime` возвращаются в формате UTC. Пользователь может затем преобразовать их самостоятельно или использовать метод `ToLocalTime()` для экземпляра `DateTime`.
-- При вставке значения `DateTime` обрабатываются следующим образом:
-  - `UTC` `DateTime` вставляются «как есть», поскольку ClickHouse хранит их внутренне в формате UTC.
-  - `Local` `DateTime` преобразуются в UTC в соответствии с настройками локального часового пояса пользователя.
-  - `Unspecified` `DateTime` считаются находящимися в часовом поясе целевого столбца и, следовательно, преобразуются в UTC в соответствии с этим часовым поясом.
-- Для столбцов без указанного часового пояса по умолчанию используется часовой пояс клиента (устаревшее поведение). Флаг `UseServerTimezone` в строке подключения может использоваться для применения часового пояса сервера.
+* Значения `DateTime` возвращаются в UTC. Пользователь затем может преобразовать их самостоятельно или использовать метод `ToLocalTime()` у экземпляра `DateTime`.
+* При вставке значения `DateTime` обрабатываются следующим образом:
+  * `UTC`-значения `DateTime` вставляются «как есть», потому что ClickHouse хранит их во внутреннем представлении в UTC.
+  * `Local`-значения `DateTime` преобразуются в UTC в соответствии с локальными настройками часового пояса пользователя.
+  * `Unspecified`-значения `DateTime` считаются находящимися в часовом поясе целевого столбца и, следовательно, преобразуются в UTC в соответствии с этим часовым поясом.
+* Для столбцов без явно указанного часового пояса по умолчанию используется часовой пояс клиента (устаревшее поведение). Чтобы использовать часовой пояс сервера, вместо этого можно задать флаг `UseServerTimezone` в строке подключения.
 
 ---
 
 
-## Логирование и диагностика {#logging-and-diagnostics}
 
-Клиент ClickHouse .NET интегрируется с абстракциями `Microsoft.Extensions.Logging` для обеспечения легковесного логирования по запросу. При включении драйвер выдаёт структурированные сообщения о событиях жизненного цикла соединения, выполнении команд, транспортных операциях и массовой загрузке данных. Логирование полностью опционально — приложения, не настроившие логгер, продолжают работать без дополнительных накладных расходов.
+## Журналирование и диагностика
 
-### Быстрый старт {#logging-quick-start}
+Клиент ClickHouse для .NET интегрируется с абстракциями `Microsoft.Extensions.Logging`, предоставляя легковесное, включаемое по необходимости журналирование. При его включении драйвер генерирует структурированные сообщения для событий жизненного цикла соединений, выполнения команд, транспортных операций и массовых загрузок (bulk copy). Ведение журналов полностью опционально — приложения, которые не настраивают логгер, продолжают работать без дополнительных накладных расходов.
 
-#### Использование ClickHouseConnection {#logging-clickhouseconnection}
+### Быстрый старт
+
+#### Использование ClickHouseConnection
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -458,9 +456,9 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### Использование appsettings.json {#logging-appsettings-config}
+#### Использование appsettings.json
 
-Вы можете настроить уровни логирования с помощью стандартной конфигурации .NET:
+Можно настроить уровни логирования с помощью стандартной конфигурации .NET:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -488,7 +486,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### Использование конфигурации в памяти {#logging-inmemory-config}
+#### Использование конфигурации в оперативной памяти
 
 Вы также можете настроить детализацию логирования по категориям в коде:
 
@@ -524,59 +522,58 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-### Категории и источники {#logging-categories}
+### Категории и эмиттеры
 
-Драйвер использует выделенные категории, чтобы вы могли точно настроить уровни логирования для каждого компонента:
+Драйвер использует отдельные категории, чтобы вы могли тонко настраивать уровни логирования для каждого компонента:
 
-| Категория                      | Источник               | Основные события                                                                                                      |
+| Категория                      | Источник               | Описание                                                                                                              |
 | ------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Жизненный цикл соединения, выбор фабрики HTTP-клиента, открытие/закрытие соединения, управление сессиями.            |
-| `ClickHouse.Driver.Command`    | `ClickHouseCommand`    | Начало/завершение выполнения запроса, время выполнения, идентификаторы запросов, статистика сервера, детали ошибок.  |
-| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | Низкоуровневые HTTP-запросы потоковой передачи, флаги сжатия, коды статуса ответа, сбои транспорта.                  |
-| `ClickHouse.Driver.BulkCopy`   | `ClickHouseBulkCopy`   | Загрузка метаданных, пакетные операции, количество строк, завершение загрузки.                                        |
+| `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Жизненный цикл соединения, выбор фабрики HTTP‑клиента, открытие/закрытие соединений, управление сессиями.             |
+| `ClickHouse.Driver.Command`    | `ClickHouseCommand`    | Начало и завершение выполнения запросов, замеры времени, идентификаторы запросов, статистика сервера и детали ошибок. |
+| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | Низкоуровневые HTTP‑запросы с потоковой передачей, флаги сжатия, коды статуса ответов и сбои транспортного уровня.    |
+| `ClickHouse.Driver.BulkCopy`   | `ClickHouseBulkCopy`   | Загрузка метаданных, пакетные операции, количество строк и завершение операций загрузки.                              |
 
-#### Пример: диагностика проблем с соединением {#logging-config-example}
+#### Пример: диагностика проблем с подключением
 
 ```json
 {
-  "Logging": {
-    "LogLevel": {
-      "ClickHouse.Driver.Connection": "Trace",
-      "ClickHouse.Driver.Transport": "Trace"
+    "Logging": {
+        "LogLevel": {
+            "ClickHouse.Driver.Connection": "Trace",
+            "ClickHouse.Driver.Transport": "Trace"
+        }
     }
-  }
 }
 ```
 
-Это будет логировать:
+Это приведёт к логированию:
 
-- Выбор фабрики HTTP-клиента (пул по умолчанию или одиночное соединение)
-- Конфигурацию HTTP-обработчика (SocketsHttpHandler или HttpClientHandler)
-- Настройки пула соединений (MaxConnectionsPerServer, PooledConnectionLifetime и т. д.)
-- Настройки таймаутов (ConnectTimeout, Expect100ContinueTimeout и т. д.)
-- Конфигурацию SSL/TLS
-- События открытия/закрытия соединения
-- Отслеживание идентификатора сессии
+* выбора фабрики HTTP-клиентов (пул по умолчанию или одиночное соединение)
+* конфигурации HTTP-обработчика (SocketsHttpHandler или HttpClientHandler)
+* параметров пула соединений (MaxConnectionsPerServer, PooledConnectionLifetime и т. д.)
+* настроек таймаутов (ConnectTimeout, Expect100ContinueTimeout и т. д.)
+* конфигурации SSL/TLS
+* событий открытия/закрытия соединений
+* отслеживания идентификаторов сеансов
 
-### Режим отладки: трассировка сети и диагностика {#logging-debugmode}
+### Режим отладки: трассировка сети и диагностика
 
-Для помощи в диагностике сетевых проблем библиотека драйвера включает вспомогательный инструмент, который активирует низкоуровневую трассировку внутренних механизмов сети .NET. Чтобы включить его, необходимо передать LoggerFactory с уровнем, установленным в Trace, и установить EnableDebugMode в true (или включить вручную через класс `ClickHouse.Driver.Diagnostic.TraceHelper`). Предупреждение: это создаст чрезвычайно подробные логи и повлияет на производительность. Не рекомендуется включать режим отладки в production-среде.
+Чтобы упростить диагностику сетевых проблем, библиотека драйвера включает вспомогательный компонент, который позволяет включить низкоуровневую трассировку внутренних сетевых механизмов .NET. Чтобы включить его, необходимо передать LoggerFactory с уровнем Trace и установить EnableDebugMode в true (или включить вручную через класс `ClickHouse.Driver.Diagnostic.TraceHelper`). Предупреждение: это приведёт к генерации чрезвычайно подробных логов и повлияет на производительность. Не рекомендуется включать режим отладки в продакшене.
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
+        .SetMinimumLevel(LogLevel.Trace); // Уровень логирования должен быть Trace, чтобы видеть сетевые события
 });
-
 ```
 
 
 var settings = new ClickHouseClientSettings()
 {
 LoggerFactory = loggerFactory,
-EnableDebugMode = true, // Включить трассировку сетевого взаимодействия низкого уровня
+EnableDebugMode = true, // Включить низкоуровневую трассировку сети
 };
 
 ````

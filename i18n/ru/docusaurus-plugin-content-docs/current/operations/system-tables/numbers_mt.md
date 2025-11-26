@@ -1,12 +1,13 @@
 ---
-description: 'Системная таблица, аналогичная `system.numbers`, но с параллельным чтением, при котором числа могут возвращаться в любом порядке.'
+description: 'Системная таблица, аналогичная `system.numbers`, но чтение из неё выполняется параллельно,
+  а числа могут возвращаться в произвольном порядке.'
 keywords: ['system table', 'numbers_mt']
 slug: /operations/system-tables/numbers_mt
 title: 'system.numbers_mt'
 doc_type: 'reference'
 ---
 
-То же, что и [`system.numbers`](../../operations/system-tables/numbers.md), но с параллельным чтением. Числа могут возвращаться в любом порядке.
+То же, что и [`system.numbers`](../../operations/system-tables/numbers.md), но чтение из неё выполняется параллельно. Числа могут возвращаться в произвольном порядке.
 
 Используется для тестирования.
 
@@ -30,5 +31,5 @@ SELECT * FROM system.numbers_mt LIMIT 10;
 │      9 │
 └────────┘
 
-Получено 10 строк. Затрачено: 0,001 сек.
+10 строк в наборе. Затрачено: 0.001 сек.
 ```

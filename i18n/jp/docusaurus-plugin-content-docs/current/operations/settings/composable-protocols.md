@@ -1,5 +1,5 @@
 ---
-description: 'Composable protocols（コンポーザブルプロトコル）により、ClickHouse サーバーへの TCP アクセスをより柔軟に設定できます。'
+description: 'コンポーザブルプロトコルにより、ClickHouse サーバーへの TCP アクセスをより柔軟に構成できます。'
 sidebar_label: 'コンポーザブルプロトコル'
 sidebar_position: 64
 slug: /operations/settings/composable-protocols
@@ -9,18 +9,19 @@ doc_type: 'reference'
 
 
 
-# コンポーズ可能なプロトコル
+# 合成可能なプロトコル
 
 
 
 ## 概要 {#overview}
 
-コンポーザブルプロトコルを使用すると、ClickHouseサーバーへのTCPアクセスをより柔軟に設定できます。この設定は、従来の設定と併用することも、置き換えることも可能です。
+Composable プロトコルを使用すると、ClickHouse サーバーへの TCP アクセスをより柔軟に設定できます。この設定は、従来の設定と併用することも、置き換えることもできます。
 
 
-## 組み合わせ可能なプロトコルの設定 {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
 
-組み合わせ可能なプロトコルはXML設定ファイルで設定できます。プロトコルセクションはXML設定ファイル内で`protocols`タグで表されます:
+## コンポーザブルプロトコルの設定
+
+コンポーザブルプロトコルは、XML 設定ファイル内で設定できます。`protocols` セクションは、XML 設定ファイル内で `protocols` タグによって表されます。
 
 ```xml
 <protocols>
@@ -28,14 +29,14 @@ doc_type: 'reference'
 </protocols>
 ```
 
-### プロトコルレイヤーの設定 {#basic-modules-define-protocol-layers}
+### プロトコル層の構成
 
-基本モジュールを使用してプロトコルレイヤーを定義できます。例えば、HTTPレイヤーを定義するには、`protocols`セクションに新しい基本モジュールを追加します:
+基本モジュールを使用してプロトコル層を定義できます。たとえば、HTTP 層を定義するには、`protocols` セクションに新しい基本モジュールを追加します。
 
 ```xml
 <protocols>
 
-  <!-- plain_httpモジュール -->
+  <!-- plain_http モジュール -->
   <plain_http>
     <type>http</type>
   </plain_http>
@@ -43,29 +44,29 @@ doc_type: 'reference'
 </protocols>
 ```
 
-モジュールは以下の項目に従って設定できます:
+モジュールは次のように構成できます:
 
-- `plain_http` - 他のレイヤーから参照可能な名前
-- `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを指定します。
-  以下の定義済みプロトコルハンドラーが用意されています:
-  - `tcp` - ネイティブClickHouseプロトコルハンドラー
-  - `http` - HTTP ClickHouseプロトコルハンドラー
-  - `tls` - TLS暗号化レイヤー
-  - `proxy1` - PROXYv1レイヤー
-  - `mysql` - MySQL互換プロトコルハンドラー
-  - `postgres` - PostgreSQL互換プロトコルハンドラー
-  - `prometheus` - Prometheusプロトコルハンドラー
-  - `interserver` - ClickHouseサーバー間ハンドラー
+* `plain_http` - 別のレイヤーから参照できる名前
+* `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを示します。
+  あらかじめ定義されているプロトコルハンドラーは次のとおりです:
+  * `tcp` - ネイティブな ClickHouse プロトコルハンドラー
+  * `http` - HTTP ClickHouse プロトコルハンドラー
+  * `tls` - TLS 暗号化レイヤー
+  * `proxy1` - PROXYv1 レイヤー
+  * `mysql` - MySQL 互換プロトコルハンドラー
+  * `postgres` - PostgreSQL 互換プロトコルハンドラー
+  * `prometheus` - Prometheus プロトコルハンドラー
+  * `interserver` - ClickHouse インターサーバーハンドラー
 
 :::note
-`gRPC`プロトコルハンドラーは`組み合わせ可能なプロトコル`には実装されていません
+`gRPC` プロトコルハンドラーは `Composable protocols` には実装されていません。
 :::
 
-### エンドポイントの設定 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
+### エンドポイントの設定
 
-エンドポイント(リスニングポート)は`<port>`タグとオプションの`<host>`タグで指定します。
-例えば、先ほど追加したHTTPレイヤーにエンドポイントを設定するには、
-次のように設定を変更します:
+エンドポイント（リッスンポート）は `<port>` と、オプションの `<host>` タグで指定されます。
+たとえば、先ほど追加した HTTP レイヤー上にエンドポイントを構成するには、
+設定を次のように変更できます:
 
 ```xml
 <protocols>
@@ -82,12 +83,11 @@ doc_type: 'reference'
 </protocols>
 ```
 
-`<host>`タグが省略された場合、ルート設定の`<listen_host>`が使用されます。
+`&lt;host&gt;` タグが省略された場合は、ルート設定の `&lt;listen_host&gt;` が使用されます。
 
-### レイヤーシーケンスの設定 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
+### レイヤーシーケンスの設定
 
-レイヤーシーケンスは`<impl>`タグを使用し、別のモジュールを参照することで定義します。例えば、plain_httpモジュールの上にTLSレイヤーを設定するには、
-次のように設定をさらに変更します:
+レイヤーシーケンスは `&lt;impl&gt;` タグを使用し、別のモジュールを参照して定義します。たとえば、plain&#95;http モジュールの上に TLS レイヤーを構成するには、設定を次のようにさらに変更できます。
 
 ```xml
 <protocols>
@@ -97,7 +97,7 @@ doc_type: 'reference'
     <type>http</type>
   </plain_http>
 
-  <!-- plain_httpモジュールの上にtlsレイヤーとして設定されたhttpsモジュール -->
+  <!-- plain_httpモジュール上にTLSレイヤーとして設定されたhttpsモジュール -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>
@@ -108,9 +108,9 @@ doc_type: 'reference'
 </protocols>
 ```
 
-### レイヤーへのエンドポイントの接続 {#endpoint-can-be-attached-to-any-layer}
+### エンドポイントをレイヤーに関連付ける
 
-エンドポイントは任意のレイヤーに接続できます。例えば、HTTP(ポート8123)とHTTPS(ポート8443)のエンドポイントを定義できます:
+エンドポイントは任意のレイヤーに関連付けることができます。たとえば、HTTP（ポート 8123）および HTTPS（ポート 8443）のエンドポイントを定義できます。
 
 ```xml
 <protocols>
@@ -131,9 +131,9 @@ doc_type: 'reference'
 </protocols>
 ```
 
-### 追加エンドポイントの定義 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+### 追加のエンドポイントの定義
 
-追加のエンドポイントは、任意のモジュールを参照し`<type>`タグを省略することで定義できます。例えば、`plain_http`モジュールに対して`another_http`エンドポイントを次のように定義できます:
+追加のエンドポイントは、任意のモジュールを参照して `<type>` タグを省略することで定義できます。たとえば、`plain_http` モジュール用に `another_http` エンドポイントを次のように定義できます。
 
 ```xml
 <protocols>
@@ -156,7 +156,6 @@ doc_type: 'reference'
     <host>127.0.0.1</host>
     <port>8223</port>
   </another_http>
-
 ```
 
 
@@ -165,7 +164,7 @@ doc_type: 'reference'
 
 ### 追加のレイヤーパラメータの指定 {#some-modules-can-contain-specific-for-its-layer-parameters}
 
-一部のモジュールには追加のレイヤーパラメータを含めることができます。例えば、TLSレイヤーでは秘密鍵（`privateKeyFile`）と証明書ファイル（`certificateFile`）を以下のように指定できます：
+一部のモジュールでは、追加のレイヤーパラメータを含めることができます。例えば、TLSレイヤーでは、秘密鍵(`privateKeyFile`)と証明書ファイル(`certificateFile`)を以下のように指定できます:
 
 ```xml
 <protocols>

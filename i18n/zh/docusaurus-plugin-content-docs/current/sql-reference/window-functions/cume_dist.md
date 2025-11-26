@@ -1,15 +1,15 @@
 ---
-description: 'cume_dist 窗口函数文档'
+description: 'cume_dist 窗口函数参考文档'
 sidebar_label: 'cume_dist'
 sidebar_position: 11
 slug: /sql-reference/window-functions/cume_dist
 title: 'cume_dist'
-doc_type: 'reference'
+doc_type: '参考'
 ---
 
 # cume&#95;dist
 
-计算某个值在一组值中的累积分布，即值小于或等于当前行值的行所占的百分比。可用于确定某个值在分区中的相对位置。
+计算某个值在一组值中的累积分布，即其值小于或等于当前行值的行数所占的百分比。可用于确定某个值在分区中的相对位置。
 
 **语法**
 
@@ -21,9 +21,9 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-默认且必需的窗口框架定义为 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+默认且必需的窗口框架定义是 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 
-有关窗口函数语法的更多详情，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更多详情，请参阅 [Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
@@ -31,7 +31,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 **示例**
 
-以下示例计算某个团队内部薪资的累积分布：
+以下示例计算团队内部薪资的累积分布：
 
 查询：
 
@@ -83,4 +83,4 @@ FROM salaries;
 cume_dist = (小于等于当前行值的行数) / (分区内的总行数)
 ```
 
-具有相同值的行（同级）会被分配相同的累积分布值，该值对应于该同级组中的最高排名。
+具有相同值（同行）的行会获得相同的累积分布值，该值对应于该同行组中的最高位置。

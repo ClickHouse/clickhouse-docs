@@ -17,19 +17,20 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`XML`形式は出力専用であり、パース(解析)には適していません。
+`XML` 形式は出力専用であり、入力のパースには使用できません。
 
-カラム名が適切な形式でない場合、要素名として'field'が使用されます。一般的に、XML構造はJSON構造に従います。
-JSONと同様に、無効なUTF-8シーケンスは置換文字`�`に変更されるため、出力テキストは有効なUTF-8シーケンスで構成されます。
+列名が妥当な形式でない場合、要素名として単に `field` が使用されます。一般的に、XML 構造は JSON 構造に従います。
+JSON と同様に、不正な UTF-8 シーケンスは置換文字 `�` に置き換えられるため、出力テキストは有効な UTF-8 シーケンスだけで構成されます。
 
-文字列値では、文字`<`と`&`はそれぞれ`<`と`&`としてエスケープされます。
+文字列値では、文字 `<` と `&` はそれぞれ `<` および `&` としてエスケープされます。
 
-配列は`<array><elem>Hello</elem><elem>World</elem>...</array>`として出力され、タプルは`<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`として出力されます。
+配列は `<array><elem>Hello</elem><elem>World</elem>...</array>` のように、タプルは `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>` のように出力されます。
 
 
-## 使用例 {#example-usage}
 
-例:
+## 使用例
+
+例：
 
 ```xml
 <?xml version='1.0' encoding='UTF-8' ?>
@@ -95,6 +96,7 @@ JSONと同様に、無効なUTF-8シーケンスは置換文字`�`に変更さ
 
 
 ## フォーマット設定 {#format-settings}
+
 
 
 ## XML {#xml}

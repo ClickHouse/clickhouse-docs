@@ -13,6 +13,6 @@ keywords: ['postgresql', 'データベース統合', '外部テーブル', 'デ�
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-> データモデリングや同等の概念に関するアドバイスを含む、PostgreSQL から ClickHouse への包括的な移行ガイドは [こちら](/migrations/postgresql/overview)をご参照ください。以下では、ClickHouse と PostgreSQL を接続する方法について説明します。
+> データモデリングや同等の概念に関するアドバイスを含む、PostgreSQL から ClickHouse への包括的な移行ガイドは [こちら](/migrations/postgresql/overview)で確認できます。以下では、ClickHouse と PostgreSQL を接続する方法を説明します。
 
 <PostgreSQL />

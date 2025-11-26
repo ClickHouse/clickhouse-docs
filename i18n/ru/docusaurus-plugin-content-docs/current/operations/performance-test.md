@@ -1,5 +1,5 @@
 ---
-description: 'Руководство по тестированию и бенчмаркингу производительности оборудования с ClickHouse'
+description: 'Руководство по тестированию и оценке производительности оборудования с ClickHouse'
 sidebar_label: 'Тестирование оборудования'
 sidebar_position: 54
 slug: /operations/performance-test
@@ -11,12 +11,12 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-Вы можете запустить базовый тест производительности ClickHouse на любом сервере, не устанавливая пакеты ClickHouse.
+Вы можете запустить базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
 
 
-## Автоматический запуск {#automated-run}
+## Автоматизированный запуск
 
-Вы можете запустить бенчмарк с помощью одного скрипта.
+Вы можете запустить бенчмарк одним скриптом.
 
 1. Скачайте скрипт.
 
@@ -31,6 +31,6 @@ chmod a+x ./hardware.sh
 ./hardware.sh
 ```
 
-3. Скопируйте результат и отправьте его на адрес feedback@clickhouse.com
+3. Скопируйте полученный вывод и отправьте его на [feedback@clickhouse.com](mailto:feedback@clickhouse.com)
 
-Все результаты опубликованы здесь: https://clickhouse.com/benchmark/hardware/
+Все результаты публикуются здесь: [https://clickhouse.com/benchmark/hardware/](https://clickhouse.com/benchmark/hardware/)

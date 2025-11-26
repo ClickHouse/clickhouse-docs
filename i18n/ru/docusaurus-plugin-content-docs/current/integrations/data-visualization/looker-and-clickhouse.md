@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Looker'
 slug: /integrations/looker
-keywords: ['clickhouse', 'looker', 'подключение', 'интеграция', 'интерфейс']
-description: 'Looker — это корпоративная платформа для BI, аналитических приложений и встраиваемой аналитики, которая помогает в режиме реального времени исследовать данные и делиться полученными инсайтами.'
+keywords: ['clickhouse', 'looker', 'подключение', 'интеграция', 'ui']
+description: 'Looker — это корпоративная платформа для BI, приложений для работы с данными и встроенной аналитики, которая помогает в реальном времени изучать данные и делиться полученными инсайтами.'
 title: 'Looker'
 doc_type: 'guide'
 integration:
@@ -23,77 +23,58 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker может подключаться к ClickHouse Cloud или локальному развертыванию с использованием официального источника данных ClickHouse.
+Looker может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse с помощью официального источника данных ClickHouse.
 
 
 
-## 1. Соберите данные для подключения {#1-gather-your-connection-details}
-
+## 1. Получите параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. Создание источника данных ClickHouse {#2-create-a-clickhouse-data-source}
 
-Перейдите в раздел Admin -> Database -> Connections и нажмите кнопку «Add Connection» в правом верхнем углу.
+## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 
-<Image
-  size='md'
-  img={looker_01}
-  alt="Добавление нового подключения в интерфейсе управления базами данных Looker"
-  border
-/>
-<br />
+Перейдите в Admin -> Database -> Connections и нажмите кнопку «Add Connection» в правом верхнем углу.
 
-Укажите имя для источника данных и выберите `ClickHouse` из выпадающего списка диалектов. Введите учетные данные в форму.
+<Image size="md" img={looker_01} alt="Добавление нового подключения в интерфейсе управления базами данных Looker" border />
+<br/>
 
-<Image
-  size='md'
-  img={looker_02}
-  alt='Указание учетных данных ClickHouse в форме подключения Looker'
-  border
-/>
-<br />
+Задайте имя для источника данных и выберите `ClickHouse` в выпадающем списке диалектов. Введите свои учетные данные в форме.
+
+<Image size="md" img={looker_02} alt="Указание учетных данных ClickHouse в форме подключения Looker" border />
+<br/>
 
 Если вы используете ClickHouse Cloud или ваше развертывание требует SSL, убедитесь, что SSL включен в дополнительных настройках.
 
-<Image
-  size='md'
-  img={looker_03}
-  alt='Включение SSL для подключения ClickHouse в настройках Looker'
-  border
-/>
-<br />
+<Image size="md" img={looker_03} alt="Включение SSL для подключения ClickHouse в настройках Looker" border />
+<br/>
 
-Сначала протестируйте подключение, а затем, после успешного завершения теста, подключитесь к новому источнику данных ClickHouse.
+Сначала протестируйте подключение и, после успешной проверки, подключитесь к новому источнику данных ClickHouse.
 
-<Image
-  size='md'
-  img={looker_04}
-  alt='Тестирование и подключение к источнику данных ClickHouse'
-  border
-/>
-<br />
+<Image size="md" img={looker_04} alt="Тестирование и подключение к источнику данных ClickHouse" border />
+<br/>
 
 Теперь вы сможете подключить источник данных ClickHouse к проекту Looker.
+
 
 
 ## 3. Известные ограничения {#3-known-limitations}
 
 1. Следующие типы данных по умолчанию обрабатываются как строки:
-   - Array — сериализация работает некорректно из-за ограничений драйвера JDBC
-   - Decimal\* — можно изменить на числовой тип в модели
-   - LowCardinality(...) — можно изменить на соответствующий тип в модели
-   - Enum8, Enum16
-   - UUID
-   - Tuple
-   - Map
-   - JSON
-   - Nested
-   - FixedString
-   - Геотипы
-     - MultiPolygon
-     - Polygon
-     - Point
-     - Ring
-2. [Функция симметричных агрегатов](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates) не поддерживается
-3. [Полное внешнее соединение](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer) еще не реализовано в драйвере
+   * Array — сериализация работает некорректно из-за ограничений драйвера JDBC
+   * Decimal* — в модели можно привести к числовому типу
+   * LowCardinality(...) — в модели можно привести к соответствующему типу
+   * Enum8, Enum16
+   * UUID
+   * Tuple
+   * Map
+   * JSON
+   * Nested
+   * FixedString
+   * Географические типы данных
+     * MultiPolygon
+     * Polygon
+     * Point
+     * Ring
+2. [Функция симметрической агрегации](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates) не поддерживается
+3. [Полное внешнее соединение (full outer join)](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer) пока не реализовано в драйвере

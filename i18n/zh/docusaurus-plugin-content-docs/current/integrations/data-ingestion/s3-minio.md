@@ -2,7 +2,7 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: '说明如何将 MinIO 与 ClickHouse 配合使用的页面'
+description: '介绍如何在 ClickHouse 中使用 MinIO 的页面'
 title: '使用 MinIO'
 doc_type: 'guide'
 integration:
@@ -17,9 +17,9 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-所有 S3 函数和表都与 [MinIO](https://min.io/) 兼容。用户在自托管的 MinIO 存储上可能会获得更高的吞吐量，特别是在网络本地性最优的情况下。
+所有 S3 函数和表都与 [MinIO](https://min.io/) 兼容。在自托管的 MinIO 存储上，用户通常可以获得更高的吞吐量，尤其是在网络拓扑与存储部署位置高度贴近时。
 
-同时，使用 S3 作为存储后端的 MergeTree 配置也兼容，只需在配置中进行一些小的更改：
+基于对象存储的 MergeTree 配置同样可以兼容使用，只需在配置中进行少量修改即可：
 
 ```xml
 <clickhouse>
@@ -47,5 +47,5 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 ```
 
 :::tip
-注意 endpoint 标签中的双斜杠，这是用于指定存储桶根路径所必需的。
+请注意 `endpoint` 标签中的双斜杠，这是用于指定 bucket 根目录所必需的。
 :::

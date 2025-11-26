@@ -24,177 +24,168 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-修改配置的最简单方式是在 Grafana 界面的插件配置页面中进行，但也可以通过 [使用 YAML 文件进行预配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) 来设置数据源。
+修改配置最简便的方式是在 Grafana 界面的插件配置页面中进行，但也可以通过 [使用 YAML 文件进行预配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) 来管理数据源。
 
-本页展示了 ClickHouse 插件中可用的配置选项列表，以及为使用 YAML 文件预配置数据源而提供的配置片段示例。
+本页列出了 ClickHouse 插件中可用于配置的选项，并提供了适用于使用 YAML 预配置数据源的配置片段。
 
-若需快速了解所有选项，可以在[此处](#all-yaml-options)查看完整的配置选项列表。
+若需快速了解所有选项，可以在[此处](#all-yaml-options)找到完整的配置选项列表。
 
 
 
-## 通用设置 {#common-settings}
+## 常用设置
 
-配置界面示例:
+示例配置界面：
 
-<Image
-  size='sm'
-  img={config_common}
-  alt='安全原生配置示例'
-  border
-/>
+<Image size="sm" img={config_common} alt="安全原生配置示例" border />
 
-通用设置的 YAML 配置示例:
+常用设置的示例配置 YAML：
 
 ```yaml
 jsonData:
-  host: 127.0.0.1 # (必填) 服务器地址。
-  port: 9000 # (必填) 服务器端口。原生协议默认端口:安全连接为 9440,非安全连接为 9000。HTTP 协议默认端口:安全连接为 8443,非安全连接为 8123。
+  host: 127.0.0.1 # (必需) 服务器地址。
+  port: 9000      # (必需) 服务器端口。native 协议默认使用 9440(安全)和 9000(非安全)。HTTP 协议默认使用 8443(安全)和 8123(非安全)。
 
-  protocol: native # (必填) 连接使用的协议。可设置为 "native" 或 "http"。
-  secure: false # 如果连接是安全的,设置为 true。
+  protocol: native # (必需) 连接协议。可设置为 "native" 或 "http"。
+  secure: false    # 安全连接时设置为 true。
 
-  username: default # 用于身份验证的用户名。
+  username: default # 身份验证用户名。
 
-  tlsSkipVerify: <boolean> # 设置为 true 时跳过 TLS 验证。
-  tlsAuth: <boolean> # 设置为 true 以启用 TLS 客户端身份验证。
-  tlsAuthWithCACert: <boolean> # 如果提供了 CA 证书,设置为 true。验证自签名 TLS 证书时必需。
+  tlsSkipVerify:     <boolean> # 设置为 true 时跳过 TLS 验证。
+  tlsAuth:           <boolean> # 设置为 true 启用 TLS 客户端身份验证。
+  tlsAuthWithCACert: <boolean> # 提供 CA 证书时设置为 true。验证自签名 TLS 证书时必需。
 
 secureJsonData:
-  password: secureExamplePassword # 用于身份验证的密码。
+  password: secureExamplePassword # 身份验证密码。
 
-  tlsCACert: <string> # TLS CA 证书
+  tlsCACert:     <string> # TLS CA 证书
   tlsClientCert: <string> # TLS 客户端证书
-  tlsClientKey: <string> # TLS 客户端密钥
+  tlsClientKey:  <string> # TLS 客户端密钥
 ```
 
-注意:从 UI 保存配置时会添加 `version` 属性。该属性显示保存配置时使用的插件版本。
+请注意，当从 UI 保存配置时，会自动添加一个 `version` 属性。该属性表示保存该配置时所使用的插件版本。
 
-### HTTP 协议 {#http-protocol}
+### HTTP 协议
 
-如果选择通过 HTTP 协议连接,将显示更多设置。
+如果选择通过 HTTP 协议进行连接，将会显示更多配置选项。
 
-<Image size='md' img={config_http} alt='额外的 HTTP 配置选项' border />
+<Image size="md" img={config_http} alt="额外的 HTTP 配置选项" border />
 
-#### HTTP 路径 {#http-path}
+#### HTTP 路径
 
-如果您的 HTTP 服务器在不同的 URL 路径下公开,可以在此处添加该路径。
+如果你的 HTTP 服务器是通过其他 URL 路径对外提供服务的，可以在此处进行设置。
 
 ```yaml
 jsonData:
-  # 不包含第一个斜杠
+  # 不包含开头的斜杠
   path: additional/path/example
 ```
 
-#### 自定义 HTTP 标头 {#custom-http-headers}
+#### 自定义 HTTP 头
 
-您可以向发送到服务器的请求添加自定义标头。
+您可以为发送到服务器的请求添加自定义 HTTP 请求头。
 
-标头可以是明文或安全的。
-所有标头键以明文存储,而安全标头值保存在安全配置中(类似于 `password` 字段)。
+请求头可以是明文或安全类型。
+所有请求头的键都会以明文形式存储，而安全类型请求头的值会保存在安全配置中（类似于 `password` 字段）。
 
-:::warning 通过 HTTP 传输安全值
-虽然安全标头值在配置中安全存储,但如果禁用安全连接,该值仍将通过 HTTP 发送。
+:::warning 通过 HTTP 传输的安全值
+尽管安全类型请求头的值会安全地存储在配置中，但如果未启用安全连接，该值仍会通过 HTTP 发送。
 :::
 
-明文/安全标头的 YAML 示例:
+明文/安全请求头的 YAML 示例：
 
 ```yaml
 jsonData:
   httpHeaders:
-    - name: X-Example-Plain-Header
-      value: plain text value
-      secure: false
-    - name: X-Example-Secure-Header
-      # "value" 被排除
-      secure: true
+  - name: X-Example-Plain-Header
+    value: 纯文本值
+    secure: false
+  - name: X-Example-Secure-Header
+    # "value" 已排除
+    secure: true
 secureJsonData:
-  secureHttpHeaders.X-Example-Secure-Header: secure header value
+  secureHttpHeaders.X-Example-Secure-Header: 安全请求头值
 ```
 
 
-## 附加设置 {#additional-settings}
+## 附加设置
 
 这些附加设置为可选项。
 
-<Image
-  size='sm'
-  img={config_additional}
-  alt='附加设置示例'
-  border
-/>
+<Image size="sm" img={config_additional} alt="附加设置示例" border />
 
-YAML 示例:
+YAML 示例：
 
 ```yaml
 jsonData:
   defaultDatabase: default # 查询构建器加载的默认数据库。默认值为 "default"。
-  defaultTable: <string> # 查询构建器加载的默认表。
+  defaultTable: <string>   # 查询构建器加载的默认表。
 
-  dialTimeout: 10 # 连接服务器时的拨号超时时间,单位为秒。默认值为 "10"。
-  queryTimeout: 60 # 运行查询时的查询超时时间,单位为秒。默认值为 60。此设置需要用户权限,如果遇到权限错误,请尝试将其设置为 "0" 以禁用。
-  validateSql: false # 设置为 true 时,将在 SQL 编辑器中验证 SQL。
+  dialTimeout: 10    # 连接服务器时的拨号超时时间(秒)。默认值为 "10"。
+  queryTimeout: 60   # 执行查询时的超时时间(秒)。默认值为 60。此配置需要用户具有相应权限,如果遇到权限错误,可尝试将其设置为 "0" 以禁用超时限制。
+  validateSql: false # 设置为 true 时,将在 SQL 编辑器中验证 SQL 语句。
 ```
 
-### OpenTelemetry {#opentelemetry}
+### OpenTelemetry
 
-OpenTelemetry (OTel) 已深度集成到该插件中。
-OpenTelemetry 数据可以通过我们的[导出器插件](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)导出到 ClickHouse。
-为获得最佳使用效果,建议同时为[日志](#logs)和[追踪](#traces)配置 OTel。
+OpenTelemetry（OTel）已在该插件中深度集成。
+可以使用我们的 [exporter 导出器插件](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)将 OpenTelemetry 数据导出到 ClickHouse。
+为获得最佳使用效果，建议同时为[日志](#logs)和[追踪](#traces)配置 OTel。
 
-还需要配置这些默认值以启用[数据链接](./query-builder.md#data-links),该功能可实现强大的可观测性工作流。
+若要启用[数据链接](./query-builder.md#data-links)，还需要配置这些默认值。数据链接是一项支持强大可观测性工作流的功能。
 
-### 日志 {#logs}
+### Logs
 
-为了加快[日志查询构建](./query-builder.md#logs),您可以为日志查询设置默认数据库/表以及列。这将使查询构建器预加载一个可运行的日志查询,从而加快在探索页面上浏览可观测性数据的速度。
+为了加快[日志查询构建](./query-builder.md#logs)，可以为日志查询设置默认的数据库/表以及列。
+这会在查询构建器中预加载一条可直接运行的日志查询，从而加快在 Explore 页面中的浏览速度，提升可观测性体验。
 
-如果您使用 OpenTelemetry,应启用"**使用 OTel**"开关,并将**默认日志表**设置为 `otel_logs`。
-这将自动覆盖默认列以使用所选的 OTel 模式版本。
+如果你在使用 OpenTelemetry，应启用“**Use OTel**”开关，并将 **default log table** 设置为 `otel_logs`。
+这会自动根据所选的 OTel 架构版本覆盖默认列设置。
 
-虽然日志不强制要求使用 OpenTelemetry,但使用统一的日志/追踪数据集有助于通过[数据链接](./query-builder.md#data-links)实现更流畅的可观测性工作流。
+虽然日志并不强制要求使用 OpenTelemetry，但将日志和追踪统一到同一数据集，有助于通过[数据链接](./query-builder.md#data-links)实现更顺畅的可观测性工作流。
 
-日志配置界面示例:
+日志配置示例界面：
 
-<Image size='sm' img={config_logs} alt='日志配置' border />
+<Image size="sm" img={config_logs} alt="Logs config" border />
 
-日志配置 YAML 示例:
+日志配置 YAML 示例：
 
 ```yaml
 jsonData:
   logs:
     defaultDatabase: default # 默认日志数据库。
-    defaultTable: otel_logs # 默认日志表。如果您使用 OTel,应将其设置为 "otel_logs"。
+    defaultTable: otel_logs  # 默认日志表。如果使用 OTel,应设置为 "otel_logs"。
 
-    otelEnabled: false # 如果启用了 OTel,设置为 true。
-    otelVersion: latest # 要使用的 otel collector 模式版本。版本显示在 UI 中,但 "latest" 将使用插件中最新的可用版本。
+    otelEnabled: false  # 启用 OTel 时设置为 true。
+    otelVersion: latest # 要使用的 OTel collector 架构版本。版本显示在 UI 中,"latest" 将使用插件中的最新可用版本。
 
-    # 打开新日志查询时要选择的默认列。如果启用了 OTel,将被忽略。
-    timeColumn: <string> # 日志的主时间列。
-    levelColumn: <string> # 日志的级别/严重性。值通常类似于 "INFO"、"error" 或 "Debug"。
+    # 打开新日志查询时选择的默认列。启用 OTel 时将被忽略。
+    timeColumn:       <string> # 日志的主时间列。
+    levelColumn:   <string> # 日志的级别/严重性。值通常为 "INFO"、"error" 或 "Debug"。
     messageColumn: <string> # 日志的消息/内容。
 ```
 
-### 追踪 {#traces}
+### Traces（链路追踪）
 
-为了加快[追踪查询构建](./query-builder.md#traces),您可以为追踪查询设置默认数据库/表以及列。这将使查询构建器预加载一个可运行的追踪搜索查询,从而加快在探索页面上浏览可观测性数据的速度。
+为了加快[构建链路追踪查询](./query-builder.md#traces)的速度，可以为链路查询设置默认的数据库/数据表以及列。这样会在查询构建器中预先加载一条可直接运行的链路搜索查询，从而在可观测性场景下浏览 Explore 页面时更加高效。
 
-如果您使用 OpenTelemetry,应启用"**使用 OTel**"开关,并将**默认追踪表**设置为 `otel_traces`。
-这将自动覆盖默认列以使用所选的 OTel 模式版本。
-虽然不强制要求使用 OpenTelemetry,但使用其模式进行追踪时,此功能效果最佳。
+如果使用 OpenTelemetry，应启用“**Use OTel**”开关，并将**默认 trace 表**设置为 `otel_traces`。
+这将自动重写默认列，以使用所选的 OTel 模式版本。
+虽然 OpenTelemetry 并非必需，但在为链路追踪使用其模式时，该功能效果最佳。
 
-追踪配置界面示例:
+链路追踪配置界面示例：
 
-<Image size='sm' img={config_traces} alt='追踪配置' border />
+<Image size="sm" img={config_traces} alt="Traces config" border />
 
-追踪配置 YAML 示例:
+链路追踪配置 YAML 示例：
 
 ```yaml
 jsonData:
   traces:
-    defaultDatabase: default # 默认追踪数据库。
-    defaultTable: otel_traces # 默认追踪表。如果您使用 OTel,应将其设置为 "otel_traces"。
+    defaultDatabase: default  # 默认追踪数据库。
+    defaultTable: otel_traces # 默认追踪表。如果您使用 OTel,此项应设置为 "otel_traces"。
 
-    otelEnabled: false # 如果启用了 OTel,设置为 true。
-    otelVersion: latest # 要使用的 otel collector 模式版本。版本显示在 UI 中,但 "latest" 将使用插件中最新的可用版本。
+    otelEnabled: false  # 如果启用 OTel,则设置为 true。
+    otelVersion: latest # 要使用的 OTel collector 架构版本。版本将显示在 UI 中,但 "latest" 会使用插件中的最新可用版本。
 ```
 
 
@@ -207,8 +198,8 @@ jsonData:
     durationTimeColumn:  <string>    # 持续时间列。
     durationUnitColumn:  <time unit> # 持续时间单位。可以设置为 "seconds"、"milliseconds"、"microseconds" 或 "nanoseconds"。对于 OTel,默认值为 "nanoseconds"。
     startTimeColumn:     <string>    # 开始时间列。这是跟踪 span 的主要时间列。
-    tagsColumn:          <string>    # 标签列。预期为 map 类型。
-    serviceTagsColumn:   <string>    # 服务标签列。预期为 map 类型。
+    tagsColumn:          <string>    # 标签列。此列应为 map 类型。
+    serviceTagsColumn:   <string>    # 服务标签列。此列应为 map 类型。
 
 ````
 
@@ -217,11 +208,11 @@ jsonData:
 列别名是一种便捷的方式,可以使用不同的名称和类型查询数据。
 通过别名,您可以将嵌套模式展平,以便在 Grafana 中轻松选择。
 
-在以下情况下,别名可能对您有用:
-- 您了解您的模式及其大部分嵌套属性/类型
+在以下情况下,别名可能适用于您:
+- 您了解模式及其大部分嵌套属性/类型
 - 您将数据存储在 Map 类型中
 - 您将 JSON 存储为字符串
-- 您经常应用函数来转换所选的列
+- 您经常应用函数来转换所选列
 
 #### 表定义的 ALIAS 列 {#table-defined-alias-columns}
 
@@ -245,9 +236,9 @@ CREATE TABLE alias_example (
 
 默认情况下,Grafana 将根据 `DESC table` 的响应提供列建议。
 在某些情况下,您可能希望完全覆盖 Grafana 看到的列。
-这有助于在选择列时在 Grafana 中隐藏您的模式,根据表的复杂性,这可以改善用户体验。
+这有助于在选择列时对 Grafana 隐藏您的模式,根据表的复杂性,这可以改善用户体验。
 
-与表定义的别名相比,这种方法的好处是您可以轻松更新它们,而无需修改表。在某些模式中,这可能有数千个条目,这可能会使底层表定义变得混乱。它还允许隐藏您希望用户忽略的列。
+与表定义的别名相比,这种方法的优势在于您可以轻松更新它们,而无需修改表。在某些模式中,别名可能有数千个条目,这可能会使底层表定义变得混乱。它还允许隐藏您希望用户忽略的列。
 
 Grafana 要求别名表具有以下列结构:
 
@@ -259,7 +250,7 @@ CREATE TABLE aliases (
 )
 ```
 
-以下是我们如何使用别名表复制 `ALIAS` 列的行为:
+以下是如何使用别名表复制 `ALIAS` 列的行为:
 
 ```sql
 CREATE TABLE example_table (
@@ -294,12 +285,12 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 两种类型的别名都可用于执行复杂的类型转换或 JSON 字段提取。
 
 
-## 所有 YAML 选项 {#all-yaml-options}
+## 所有 YAML 选项
 
-以下是该插件提供的所有 YAML 配置选项。
-部分字段显示示例值,其他字段仅显示字段类型。
+以下是该插件支持的所有 YAML 配置选项。
+部分字段给出了示例值，而其他字段仅展示字段的类型。
 
-有关使用 YAML 配置数据源的更多信息,请参阅 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+有关使用 YAML 预配置数据源的更多信息，请参阅 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
 ```yaml
 datasources:
@@ -321,11 +312,11 @@ datasources:
       queryTimeout: 60
       validateSql: false
       httpHeaders:
-        - name: X-Example-Plain-Header
-          value: plain text value
-          secure: false
-        - name: X-Example-Secure-Header
-          secure: true
+      - name: X-Example-Plain-Header
+        value: plain text value
+        secure: false
+      - name: X-Example-Secure-Header
+        secure: true
       logs:
         defaultDatabase: default
         defaultTable: otel_logs
@@ -350,8 +341,8 @@ datasources:
         tagsColumn: <string>
         serviceTagsColumn: <string>
     secureJsonData:
-      tlsCACert: <string>
+      tlsCACert:     <string>
       tlsClientCert: <string>
-      tlsClientKey: <string>
+      tlsClientKey:  <string>
       secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```

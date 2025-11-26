@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/minSimpleState'
 title: 'minSimpleState'
-description: 'Пример использования агрегатного комбинатора minSimpleState'
-keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
+description: 'Пример использования комбинатора minSimpleState'
+keywords: ['min', 'состояние', 'простое', 'комбинатор', 'примеры', 'minSimpleState']
 sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
@@ -12,20 +12,24 @@ doc_type: 'reference'
 # minSimpleState {#minsimplestate}
 
 
+
 ## Описание {#description}
 
-Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может применяться к функции [`min`](/sql-reference/aggregate-functions/reference/min)
-для получения минимального значения среди всех входных значений. Возвращает
+Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)
+для получения минимального значения по всем входным значениям. Он возвращает 
 результат типа [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 
-## Пример использования {#example-usage}
 
-Рассмотрим практический пример с использованием таблицы, которая отслеживает ежедневные показания температуры. Для каждого местоположения необходимо сохранять самую низкую зарегистрированную температуру.
-Использование типа `SimpleAggregateFunction` с `min` автоматически обновляет
-сохраненное значение при обнаружении более низкой температуры.
+## Пример использования
 
-Создайте исходную таблицу для необработанных показаний температуры:
+Рассмотрим практический пример с таблицей, в которой хранятся ежедневные
+измерения температуры. Для каждой точки измерения нам нужно хранить
+наименьшую зафиксированную температуру. Использование типа
+`SimpleAggregateFunction` с `min` автоматически обновляет хранимое значение,
+когда встречается более низкая температура.
+
+Создайте исходную таблицу для сырых измерений температуры:
 
 ```sql
 CREATE TABLE raw_temperature_readings
@@ -39,7 +43,7 @@ CREATE TABLE raw_temperature_readings
 ORDER BY (location_id, recorded_at);
 ```
 
-Создайте агрегатную таблицу, которая будет хранить минимальные температуры:
+Создайте агрегирующую таблицу для хранения минимальных температур:
 
 ```sql
 CREATE TABLE temperature_extremes
@@ -53,8 +57,8 @@ ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
 ```
 
-Создайте инкрементное материализованное представление, которое будет действовать как триггер вставки
-для вставляемых данных и поддерживать минимальную и максимальную температуры для каждого местоположения.
+Создайте инкрементальное материализованное представление, которое будет действовать как триггер вставки
+для вставляемых данных и поддерживать актуальные минимальные и максимальные значения температур для каждого местоположения.
 
 ```sql
 CREATE MATERIALIZED VIEW temperature_extremes_mv
@@ -62,23 +66,23 @@ TO temperature_extremes
 AS SELECT
     location_id,
     location_name,
-    minSimpleState(temperature) AS min_temp,     -- Использование комбинатора SimpleState
-    maxSimpleState(temperature) AS max_temp      -- Использование комбинатора SimpleState
+    minSimpleState(temperature) AS min_temp,     -- Используется комбинатор SimpleState
+    maxSimpleState(temperature) AS max_temp      -- Используется комбинатор SimpleState
 FROM raw_temperature_readings
 GROUP BY location_id, location_name;
 ```
 
-Вставьте начальные показания температуры:
+Добавьте несколько начальных значений температуры:
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-(1, 'North', 5),
-(2, 'South', 15),
-(3, 'West', 10),
-(4, 'East', 8);
+(1, 'Север', 5),
+(2, 'Юг', 15),
+(3, 'Запад', 10),
+(4, 'Восток', 8);
 ```
 
-Эти показания автоматически обрабатываются материализованным представлением. Проверим
+Эти данные автоматически обрабатываются материализованным представлением. Проверим
 текущее состояние:
 
 ```sql
@@ -86,38 +90,38 @@ SELECT
     location_id,
     location_name,
     min_temp,     -- Прямой доступ к значениям SimpleAggregateFunction
-    max_temp      -- Нет необходимости в функции финализации с SimpleAggregateFunction
+    max_temp      -- Функция финализации не нужна при использовании SimpleAggregateFunction
 FROM temperature_extremes
 ORDER BY location_id;
 ```
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ North         │        5 │        5 │
-│           2 │ South         │       15 │       15 │
-│           3 │ West          │       10 │       10 │
-│           4 │ East          │        8 │        8 │
+│           1 │ Север         │        5 │        5 │
+│           2 │ Юг            │       15 │       15 │
+│           3 │ Запад         │       10 │       10 │
+│           4 │ Восток        │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-Вставьте дополнительные данные:
+Добавьте ещё данные:
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-    (1, 'North', 3),
-    (2, 'South', 18),
-    (3, 'West', 10),
-    (1, 'North', 8),
-    (4, 'East', 2);
+    (1, 'Север', 3),
+    (2, 'Юг', 18),
+    (3, 'Запад', 10),
+    (1, 'Север', 8),
+    (4, 'Восток', 2);
 ```
 
-Просмотрите обновленные экстремальные значения после добавления новых данных:
+Просмотрите обновлённые экстремумы после поступления новых данных:
 
 ```sql
 SELECT
     location_id,
     location_name,
-    min_temp,
+    min_temp,  
     max_temp
 FROM temperature_extremes
 ORDER BY location_id;
@@ -125,33 +129,31 @@ ORDER BY location_id;
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ North         │        3 │        8 │
-│           1 │ North         │        5 │        5 │
-│           2 │ South         │       18 │       18 │
-│           2 │ South         │       15 │       15 │
-│           3 │ West          │       10 │       10 │
-│           3 │ West          │       10 │       10 │
-│           4 │ East          │        2 │        2 │
-│           4 │ East          │        8 │        8 │
+│           1 │ Север         │        3 │        8 │
+│           1 │ Север         │        5 │        5 │
+│           2 │ Юг            │       18 │       18 │
+│           2 │ Юг            │       15 │       15 │
+│           3 │ Запад         │       10 │       10 │
+│           3 │ Запад         │       10 │       10 │
+│           4 │ Восток        │        2 │        2 │
+│           4 │ Восток        │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-Обратите внимание, что выше для каждого местоположения присутствует два значения. Это происходит потому, что
-куски еще не были объединены (и агрегированы движком `AggregatingMergeTree`). Чтобы получить
-окончательный результат из частичных состояний, необходимо добавить `GROUP BY`:
+Обратите внимание, что выше для каждой локации у нас по два вставленных значения. Это связано с тем, что части еще не были объединены (и агрегированы с помощью `AggregatingMergeTree`). Чтобы получить итоговый результат из частичных состояний, нужно добавить `GROUP BY`:
 
 ```sql
 SELECT
     location_id,
     location_name,
-    min(min_temp) AS min_temp,  -- Агрегация по всем кускам
-    max(max_temp) AS max_temp   -- Агрегация по всем кускам
+    min(min_temp) AS min_temp,  -- Агрегирование по всем партам 
+    max(max_temp) AS max_temp   -- Агрегирование по всем партам
 FROM temperature_extremes
 GROUP BY location_id, location_name
 ORDER BY location_id;
 ```
 
-Теперь получаем ожидаемый результат:
+Теперь мы видим ожидаемый результат:
 
 
 ```sql
@@ -165,12 +167,11 @@ ORDER BY location_id;
 
 :::note
 С `SimpleState` вам не нужно использовать комбинатор `Merge` для объединения
-частичных состояний агрегирования.
+частичных агрегатных состояний.
 :::
 
 
 ## См. также {#see-also}
-
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [Комбинатор `SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [Тип `SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)
+- [`комбинатор SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [`тип SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
-description: 'quantilesTimingIf コンビネータを使用する例'
+description: 'quantilesTimingIf コンビネータの使用例'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
@@ -12,15 +12,18 @@ doc_type: 'reference'
 # quantilesTimingIf {#quantilestimingif}
 
 
+
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)関数に適用することで、条件が真である行のタイミング値の分位数を`quantilesTimingIf`集約コンビネータ関数を使用して計算できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターを [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+関数に適用することで、`quantilesTimingIf` 集約コンビネーター関数を使い、条件が真である行のタイミング値の分位数を計算できます。
 
 
-## 使用例 {#example-usage}
 
-この例では、異なるエンドポイントのAPI応答時間を格納するテーブルを作成し、
-`quantilesTimingIf`を使用して成功したリクエストの応答時間の分位数を計算します。
+## 使用例
+
+この例では、さまざまなエンドポイントに対する API 応答時間を格納するテーブルを作成し、
+成功したリクエストの応答時間の分位数を計算するために `quantilesTimingIf` を使用します。
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -62,27 +65,26 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingIf`関数は、成功したリクエスト(is_successful = 1)に対してのみ分位数を計算します。
-返される配列には、以下の分位数が順番に含まれます:
+`quantilesTimingIf` 関数は、成功したリクエスト（is&#95;successful = 1）のみを対象に分位数を計算します。
+返される配列には、次の分位数がこの順序で含まれます：
 
-- 0(最小値)
-- 0.25(第1四分位数)
-- 0.5(中央値)
-- 0.75(第3四分位数)
-- 0.95(95パーセンタイル)
-- 0.99(99パーセンタイル)
-- 1.0(最大値)
+* 0（最小値）
+* 0.25（第1四分位数）
+* 0.5（中央値）
+* 0.75（第3四分位数）
+* 0.95（95パーセンタイル）
+* 0.99（99パーセンタイル）
+* 1.0（最大値）
 
 ```response title="Response"
-   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
-1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └──────────┴─────────────────────────────────────────────────────────────────────┘
+   ┌─エンドポイント─┬─応答時間分位数─────────────────────────────────────────────┐
+1. │ 注文     │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ 製品     │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ ユーザー │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
 
 ## 関連項目 {#see-also}
-
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

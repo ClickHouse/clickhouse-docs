@@ -1,19 +1,19 @@
 ---
-title: 'Основные концепции'
+title: 'Концепции'
 slug: /concepts
-description: 'Главная страница раздела концепций'
+description: 'Обзорная страница раздела «Концепции»'
 pagination_next: null
 pagination_prev: null
 keywords: ['concepts', 'OLAP', 'fast']
 doc_type: 'landing-page'
 ---
 
-В этом разделе документации мы разберём ключевые концепции, которые делают ClickHouse таким быстрым и эффективным. 
+В этом разделе документации мы рассмотрим основные концепции, объясняющие, почему ClickHouse такой быстрый и эффективный. 
 
-| Страница                                                         | Описание                                                                              |
-|------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| [Why is ClickHouse so Fast?](./why-clickhouse-is-so-fast.mdx)     | Узнайте, за счёт чего ClickHouse достигает такой высокой скорости.                    
-| [What is OLAP?](./olap.md)                                       | Узнайте, что такое Online Analytical Processing (OLAP).                               
-| [Why is ClickHouse unique?](../about-us/distinctive-features.md) | Узнайте, чем ClickHouse отличается от других систем.                                  
-| [Glossary](./glossary.md)                                        | На этой странице представлен глоссарий терминов, которые вы будете часто встречать в документации. 
-| [FAQ](../faq/index.md)                                           | Список наиболее часто задаваемых вопросов о ClickHouse.         
+| Страница                                                         | Описание                                                                               |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| [Why is ClickHouse so Fast?](./why-clickhouse-is-so-fast.mdx)     | Узнайте, что делает ClickHouse таким быстрым.                                          |
+| [What is OLAP?](./olap.md)                                       | Узнайте, что такое Online Analytical Processing.                                       |
+| [Why is ClickHouse unique?](../about-us/distinctive-features.md) | Узнайте, что делает ClickHouse уникальным.                                             |
+| [Glossary](./glossary.md)                                        | На этой странице представлен глоссарий терминов, которые вы часто будете встречать в документации. |
+| [FAQ](../faq/index.md)                                           | Сборник наиболее часто задаваемых вопросов о ClickHouse.                              |         

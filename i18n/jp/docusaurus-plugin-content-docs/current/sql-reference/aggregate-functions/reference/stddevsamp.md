@@ -10,10 +10,10 @@ doc_type: 'reference'
 
 結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根と等しくなります。
 
-別名: `STDDEV_SAMP`。
+エイリアス: `STDDEV_SAMP`。
 
 :::note
-この関数は数値的に不安定なアルゴリズムを使用します。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`stddevSampStable`](../reference/stddevsampstable.md) 関数を使用してください。処理は遅くなりますが、計算誤差をより小さく抑えられます。
+この関数は数値的に不安定なアルゴリズムを使用します。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`stddevSampStable`](../reference/stddevsampstable.md) 関数を使用してください。こちらは動作が遅くなりますが、計算誤差をより小さく抑えることができます。
 :::
 
 **構文**
@@ -32,7 +32,7 @@ stddevSamp(x)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS test_data;
@@ -49,7 +49,7 @@ SELECT
 FROM test_data;
 ```
 
-結果：
+結果:
 
 ```response
 ┌─stddevSamp(population)─┐

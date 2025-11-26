@@ -1,5 +1,5 @@
 ---
-description: '辞書に関するドキュメント'
+description: '辞書のドキュメント'
 sidebar_label: 'DICTIONARY'
 sidebar_position: 38
 slug: /sql-reference/statements/create/dictionary
@@ -7,11 +7,11 @@ title: 'CREATE DICTIONARY'
 doc_type: 'reference'
 ---
 
-指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)、および[有効期間](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を備えた新しい[辞書](../../../sql-reference/dictionaries/index.md)を作成します。
+指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)、および[有効期間](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を持つ新しい[辞書](../../../sql-reference/dictionaries/index.md)を作成します。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
@@ -29,23 +29,23 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Comment'
 ```
 
-ディクショナリ構造は属性で構成されます。ディクショナリ属性の指定方法はテーブルカラムと同様です。属性で必須のプロパティは型のみで、その他のプロパティにはすべてデフォルト値を設定できます。
+辞書の構造は属性から構成されます。辞書属性はテーブルのカラムと同様に指定します。必須の属性プロパティは型のみであり、それ以外のプロパティにはデフォルト値を使用できます。
 
-`ON CLUSTER`句を使用すると、クラスタ上でディクショナリを作成できます。詳細は[分散DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
+`ON CLUSTER` 句を使用すると、クラスタ全体に辞書を作成できます。詳細は [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-ディクショナリの[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)に応じて、1つ以上の属性をディクショナリキーとして指定できます。
+辞書の [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory) に応じて、1 つ以上の属性を辞書キーとして指定できます。
 
 
-## SOURCE {#source}
+## ソース
 
-ディクショナリのソースとして以下を使用できます:
+辞書のソースには、次のようなものを使用できます。
 
-- 現在のClickHouseサービス内のテーブル
-- リモートのClickHouseサービス内のテーブル
-- HTTP(S)経由でアクセス可能なファイル
-- 別のデータベース
+* 現在の ClickHouse サービス内のテーブル
+* リモートの ClickHouse サービス内のテーブル
+* HTTP(S) 経由で利用可能なファイル
+* 別のデータベース
 
-### 現在のClickHouseサービス内のテーブルからディクショナリを作成する {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+### 現在の ClickHouse サービス内のテーブルから辞書を作成する
 
 入力テーブル `source_table`:
 
@@ -56,7 +56,7 @@ COMMENT 'Comment'
 └────┴────────┘
 ```
 
-ディクショナリの作成:
+辞書の作成：
 
 ```sql
 CREATE DICTIONARY id_value_dictionary
@@ -70,7 +70,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-ディクショナリの出力:
+辞書を出力する：
 
 ```sql
 SHOW CREATE DICTIONARY id_value_dictionary;
@@ -89,7 +89,7 @@ LAYOUT(FLAT())
 ```
 
 :::note
-[ClickHouse Cloud](https://clickhouse.com)のSQLコンソールを使用する場合、ディクショナリを作成する際にユーザー(`default`または`default_role`ロールを持つその他のユーザー)とパスワードを指定する必要があります。
+[ClickHouse Cloud](https://clickhouse.com) の SQL コンソールを使用する場合、ディクショナリを作成するときには、ユーザー名（`default` またはロール `default_role` を持つ任意のユーザー）とパスワードを必ず指定してください。
 :::
 
 ```sql
@@ -117,9 +117,9 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### リモートのClickHouseサービス内のテーブルからディクショナリを作成する {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### リモートの ClickHouse サービス上のテーブルからディクショナリを作成する
 
-入力テーブル(リモートのClickHouseサービス内) `source_table`:
+リモートの ClickHouse サービス上の入力テーブル `source_table`:
 
 ```text
 ┌─id─┬─value──┐
@@ -128,7 +128,7 @@ LIFETIME(MIN 0 MAX 1000);
 └────┴────────┘
 ```
 
-ディクショナリの作成:
+辞書を作成する:
 
 ```sql
 CREATE DICTIONARY id_value_dictionary
@@ -142,7 +142,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### HTTP(S)経由でアクセス可能なファイルからディクショナリを作成する {#create-a-dictionary-from-a-file-available-by-https}
+### HTTP(S) 経由で取得可能なファイルから辞書を作成する
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -158,11 +158,11 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### 別のデータベースからディクショナリを作成する {#create-a-dictionary-from-another-database}
+### 別のデータベースから辞書を作成する
 
-詳細は[ディクショナリソース](/sql-reference/dictionaries#dbms)を参照してください。
+詳細については、[Dictionary sources](/sql-reference/dictionaries#dbms) を参照してください。
 
 **関連項目**
 
-- 詳細については、[ディクショナリ](../../../sql-reference/dictionaries/index.md)セクションを参照してください。
-- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — このテーブルには[ディクショナリ](../../../sql-reference/dictionaries/index.md)に関する情報が含まれています。
+* 詳細は、[Dictionaries](../../../sql-reference/dictionaries/index.md) セクションを参照してください。
+* [system.dictionaries](../../../operations/system-tables/dictionaries.md) — このテーブルには [Dictionaries](../../../sql-reference/dictionaries/index.md) に関する情報が含まれています。

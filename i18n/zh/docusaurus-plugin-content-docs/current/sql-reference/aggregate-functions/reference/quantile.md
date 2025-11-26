@@ -8,13 +8,13 @@ doc_type: 'reference'
 
 # quantile
 
-计算数值序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
+计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-该函数使用蓄水池大小最多为 8192 的[蓄水池抽样](https://en.wikipedia.org/wiki/Reservoir_sampling)，以及用于抽样的随机数生成器。其结果是非确定性的。若要获得精确分位数，请使用 [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 函数。
+此函数对数值序列应用[水库抽样](https://en.wikipedia.org/wiki/Reservoir_sampling)，水库大小最多为 8192，并使用随机数生成器进行抽样。结果是非确定性的。若要获得精确分位数，请使用 [quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 函数。
 
-在查询中使用多个具有不同分位水平的 `quantile*` 函数时，其内部状态不会被合并（也就是说，查询的执行效率会低于本可达到的效率）。在这种情况下，请使用 [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 函数。
+在查询中对不同分位水平使用多个 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于理论最优）。在这种情况下，请使用 [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 函数。
 
-请注意，对于空的数值序列，`quantile` 将返回 NaN，而其 `quantile*` 变体将根据具体变体返回 NaN 或该序列类型的默认值。
+请注意，对于空的数值序列，`quantile` 将返回 NaN，而其 `quantile*` 变体则可能返回 NaN，或根据具体变体返回该序列类型的默认值。
 
 **语法**
 
@@ -26,18 +26,18 @@ quantile(level)(expr)
 
 **参数**
 
-* `level` — 分位数水平。可选参数。取值为 0 到 1 之间的常量浮点数。推荐在 `[0.01, 0.99]` 范围内设置 `level`。默认值：0.5。在 `level=0.5` 时，函数计算[中位数](https://en.wikipedia.org/wiki/Median)。
-* `expr` — 作用于列值的表达式，结果为数值型[数据类型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date) 或 [DateTime](/sql-reference/data-types/datetime)。
+* `level` — 分位数的级别。可选参数。取值为 0 到 1 的常量浮点数。建议将 `level` 的取值范围设置为 `[0.01, 0.99]`。默认值：0.5。当 `level=0.5` 时，函数计算[中位数](https://en.wikipedia.org/wiki/Median)。
+* `expr` — 针对列值的表达式，结果为数值型[数据类型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date) 或 [DateTime](/sql-reference/data-types/datetime)。
 
 **返回值**
 
-* 指定分位数水平的近似分位数。
+* 指定级别的近似分位数。
 
 类型：
 
-* 数值数据类型输入时为 [Float64](/sql-reference/data-types/float)。
-* 输入值为 `Date` 类型时为 [Date](/sql-reference/data-types/date)。
-* 输入值为 `DateTime` 类型时为 [DateTime](/sql-reference/data-types/datetime)。
+* 对于数值型输入数据类型，返回 [Float64](/sql-reference/data-types/float)。
+* 如果输入值类型为 `Date`，则返回 [Date](/sql-reference/data-types/date)。
+* 如果输入值类型为 `DateTime`，则返回 [DateTime](/sql-reference/data-types/datetime)。
 
 **示例**
 
@@ -66,7 +66,7 @@ SELECT quantile(val) FROM t
 └───────────────┘
 ```
 
-**另见**
+**另请参阅**
 
 * [median](/sql-reference/aggregate-functions/reference/median)
 * [quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles)

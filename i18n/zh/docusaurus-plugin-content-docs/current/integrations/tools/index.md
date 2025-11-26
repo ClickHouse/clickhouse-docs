@@ -2,7 +2,7 @@
 slug: /integrations/tools
 keywords: ['Retool', 'Easypanel', 'Splunk']
 title: '工具'
-description: '工具部分的首页'
+description: '工具部分的概览页'
 doc_type: 'landing-page'
 ---
 
@@ -12,4 +12,4 @@ doc_type: 'landing-page'
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|
 | [SQL Client](/integrations/sql-clients) | 如何将 ClickHouse 与各种常见的数据库管理、分析和可视化工具集成                                                                   |
 | [Data Integrations](/integrations/tools/data-integrations)    | ClickHouse 的数据集成方案 |
-| [Misc](/integrations/audit-splunk)     | ClickHouse 的其他工具与实用程序                                                                               |
+| [Misc](/integrations/audit-splunk)     | ClickHouse 的其他工具                                                                               |

@@ -1,9 +1,9 @@
 ---
-description: '表设置修改文档'
-sidebar_label: 'SETTING'
+description: '表设置变更说明文档'
+sidebar_label: '设置'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
-title: '表设置修改'
+title: '表设置变更'
 doc_type: 'reference'
 ---
 
@@ -11,28 +11,28 @@ doc_type: 'reference'
 
 # 表设置操作
 
-有一组用于更改表设置的查询语句。您可以修改设置或将其重置为默认值。单个查询可以一次更改多个设置。
-如果具有指定名称的设置不存在，则查询会抛出异常。
+有一组查询语句可用于更改表设置。可以修改设置或将其重置为默认值。单条查询语句可以同时更改多个设置。
+如果指定名称的设置不存在，则查询会抛出异常。
 
 **语法**
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
+ALTER TABLE [db].name [ON CLUSTER cluster] 修改|重置 设置 ...
 ```
 
 :::note\
-这些查询仅适用于 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 表。
+这些查询仅适用于 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 类型的表。
 :::
 
 
-## MODIFY SETTING {#modify-setting}
+## MODIFY SETTING
 
-修改表设置。
+更改表设置。
 
 **语法**
 
 ```sql
-MODIFY SETTING setting_name=value [, ...]
+修改设置 setting_name=value [, ...]
 ```
 
 **示例**
@@ -44,14 +44,15 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 ```
 
 
-## RESET SETTING {#reset-setting}
+## RESET SETTING
 
-将表设置重置为默认值。如果设置已处于默认状态,则不执行任何操作。
+将表设置重置为默认值。\
+如果某个设置已经处于默认状态，则不会执行任何操作。
 
 **语法**
 
 ```sql
-RESET SETTING setting_name [, ...]
+重置 设置 setting_name [, ...]
 ```
 
 **示例**
@@ -65,4 +66,4 @@ ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 
 **另请参阅**
 
-- [MergeTree 设置](../../../operations/settings/merge-tree-settings.md)
+* [MergeTree 设置](../../../operations/settings/merge-tree-settings.md)

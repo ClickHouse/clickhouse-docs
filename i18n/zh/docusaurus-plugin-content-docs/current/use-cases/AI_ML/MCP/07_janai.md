@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/janai
 sidebar_label: '集成 Jan.ai'
-title: '使用 Jan.ai 配置 ClickHouse MCP 服务器'
+title: '使用 Jan.ai 设置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何在 Jan.ai 中配置 ClickHouse MCP 服务器。'
+description: '本指南介绍如何将 Jan.ai 与 ClickHouse MCP 服务器进行设置。'
 keywords: ['AI', 'Jan.ai', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -29,57 +29,61 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
 
 # 在 Jan.ai 中使用 ClickHouse MCP 服务器
 
-> 本指南说明如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP 服务器。
+> 本指南介绍如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP 服务器。
 
 <VerticalStepper headerLevel="h2">
 
 
 ## 安装 Jan.ai {#install-janai}
 
-Jan.ai 是一个开源的 ChatGPT 替代方案,可完全离线运行。
-您可以下载适用于 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 的 Jan.ai。
+Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
+可以为 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 下载 Jan.ai。
 
-它是一个原生应用程序,下载后即可启动。
+这是一个原生应用，下载完成后即可启动使用。
+
 
 
 ## 将 LLM 添加到 Jan.ai {#add-llm-to-janai}
 
-我们可以通过设置菜单启用模型。
+我们可以在设置菜单中启用模型。
 
-要启用 OpenAI,需要提供 API 密钥,如下所示:
+要启用 OpenAI，我们需要提供一个 API 密钥，如下所示：
 
-<Image img={OpenAIModels} alt='启用 OpenAI 模型' size='md' />
+<Image img={OpenAIModels} alt="启用 OpenAI 模型" size="md"/>
+
 
 
 ## 启用 MCP 服务器 {#enable-mcp-servers}
 
-在撰写本文时,MCP 服务器是 Jan.ai 中的实验性功能。
-我们可以通过切换实验性功能来启用它们:
+在撰写本文时，MCP 服务器仍然是 Jan.ai 中的一项实验性功能。
+我们可以通过打开实验性功能开关来启用它们：
 
-<Image img={MCPServers} alt='启用 MCP 服务器' size='md' />
+<Image img={MCPServers} alt="Enable MCP servers" size="md"/>
 
-切换该开关后,我们将在左侧菜单中看到 `MCP Servers`。
+启用该开关后，我们会在左侧菜单中看到 `MCP Servers`。
 
 
-## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
-点击 `MCP Servers` 菜单后,可以看到可连接的 MCP 服务器列表:
+## 配置 ClickHouse MCP Server {#configure-clickhouse-mcp-server}
 
-<Image img={MCPServersList} alt='MCP 服务器列表' size='md' />
+点击 `MCP Servers` 菜单后，我们会看到可连接的 MCP 服务器列表：
 
-这些服务器默认处于禁用状态,可以通过点击开关来启用。
+<Image img={MCPServersList} alt="MCP 服务器列表" size="md"/>
 
-要安装 ClickHouse MCP 服务器,需要点击 `+` 图标,然后填写以下表单内容:
+这些服务器默认都是禁用状态，但我们可以通过点击开关来启用它们。
 
-<Image img={MCPForm} alt='添加 MCP 服务器' size='md' />
+要安装 ClickHouse MCP Server，我们需要点击 `+` 图标，然后按如下方式填写表单：
 
-完成后,如果 ClickHouse 服务器尚未启用,需要切换开关将其启用:
+<Image img={MCPForm} alt="添加 MCP 服务器" size="md"/>
 
-<Image img={MCPEnabled} alt='启用 MCP 服务器' size='md' />
+完成上述操作后，如果 ClickHouse MCP Server 还未启用，我们需要将其开关切换为启用：
 
-此时 ClickHouse MCP 服务器的工具将显示在聊天对话框中:
+<Image img={MCPEnabled} alt="启用 MCP 服务器" size="md"/>
 
-<Image img={MCPTool} alt='ClickHouse MCP 服务器工具' size='md' />
+现在 ClickHouse MCP Server 的工具会出现在聊天对话框中：
+
+<Image img={MCPTool} alt="ClickHouse MCP Server 工具" size="md"/>
+
 
 
 ## 使用 Jan.ai 与 ClickHouse MCP 服务器对话 {#chat-to-clickhouse-mcp-server}
@@ -101,7 +105,7 @@ Jan.ai 在调用工具之前会请求确认:
 
 <Image img={ToolsCalledExpanded} alt='已调用工具的展开视图' size='md' />
 
-在下方可以看到查询结果:
+然后在下方,我们可以看到结果:
 
 <Image img={Result} alt='结果' size='md' />
 

@@ -1,9 +1,9 @@
 ---
-description: 'OpenCelliD データを ClickHouse に読み込み、Apache Superset を ClickHouse に接続して、そのデータに基づくダッシュボードを構築する方法を学びます'
-sidebar_label: '基地局'
+description: 'OpenCelliD データを ClickHouse にロードし、Apache Superset を ClickHouse に接続して、そのデータに基づくダッシュボードを構築する方法を解説します'
+sidebar_label: '携帯電話基地局'
 slug: /getting-started/example-datasets/cell-towers
-title: '基地局データセットを使用した地理データ'
-keywords: ['基地局データ', '地理データ', 'OpenCelliD', '地理空間データセット', '入門']
+title: '携帯電話基地局データセットを用いた地理データ'
+keywords: ['携帯電話基地局データ', '地理データ', 'OpenCelliD', '地理空間データセット', 'はじめに']
 doc_type: 'guide'
 ---
 
@@ -30,54 +30,47 @@ import superset_umts_netherlands from '@site/static/images/getting-started/examp
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 
 
-## 目的 {#goal}
+## 目標 {#goal}
 
-このガイドでは、以下の方法を学習します:
+このガイドでは次の内容を学びます:
+- OpenCelliD データを ClickHouse に読み込む
+- Apache Superset を ClickHouse に接続する
+- データセットに含まれるデータを基にダッシュボードを構築する
 
-- OpenCelliDデータをClickHouseに読み込む
-- Apache SupersetをClickHouseに接続する
-- データセット内の利用可能なデータに基づいてダッシュボードを構築する
+このガイドで作成するダッシュボードのプレビューは次のとおりです:
 
-このガイドで作成するダッシュボードのプレビューは以下の通りです:
-
-<Image
-  img={cell_towers_1}
-  size='md'
-  alt='mcc 204における無線タイプ別の基地局ダッシュボード'
-/>
+<Image img={cell_towers_1} size="md" alt="MCC 204 における無線種別別の携帯電話基地局ダッシュボード"/>
 
 
-## データセットの取得 {#get-the-dataset}
 
-このデータセットは[OpenCelliD](https://www.opencellid.org/)から提供されています。OpenCelliDは世界最大の携帯電話基地局のオープンデータベースです。
+## データセットを入手する {#get-the-dataset}
 
-2021年時点で、世界中の携帯電話基地局(GSM、LTE、UMTSなど)に関する4000万件以上のレコードが含まれており、地理座標とメタデータ(国コード、ネットワークなど)が記録されています。
+このデータセットは [OpenCelliD](https://www.opencellid.org/) に由来するもので、OpenCelliD は世界最大のセルタワーのオープンデータベースです。
 
-OpenCelliDプロジェクトはCreative Commons Attribution-ShareAlike 4.0 International Licenseの下でライセンスされており、同じライセンス条件の下でこのデータセットのスナップショットを再配布しています。最新版のデータセットはサインイン後にダウンロード可能です。
+2021 年時点で、世界中のセルタワー（GSM、LTE、UMTS など）に関する 4,000 万件以上のレコードを含み、地理座標およびメタデータ（国コード、ネットワークなど）が格納されています。
+
+OpenCelliD プロジェクトは Creative Commons Attribution-ShareAlike 4.0 International License の下でライセンスされており、本ガイドではこのデータセットのスナップショットを同じライセンス条件の下で再配布しています。最新バージョンのデータセットは、サインイン後にダウンロード可能です。
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-### サンプルデータの読み込み {#load-the-sample-data}
+### サンプルデータを読み込む {#load-the-sample-data}
 
-ClickHouse CloudではS3からこのデータセットを簡単にアップロードできる機能を提供しています。ClickHouse Cloudの組織にログインするか、[ClickHouse.cloud](https://clickhouse.cloud)で無料トライアルを作成してください。
+ClickHouse Cloud では、このデータセットを S3 から簡単に取り込むことができます。ClickHouse Cloud の組織にログインするか、[ClickHouse.cloud](https://clickhouse.cloud) で無料トライアルを作成します。
+<ActionsMenu menu="Load Data" />
 
-<ActionsMenu menu='Load Data' />
+**Sample data** タブから **Cell Towers** データセットを選択し、**Load data** を実行します:
 
-**Sample data**タブから**Cell Towers**データセットを選択し、**Load data**をクリックします:
+<Image img={cloud_load_data_sample} size='md' alt='セルタワーのデータセットを読み込む' />
 
-<Image img={cloud_load_data_sample} size='md' alt='携帯電話基地局データセットの読み込み' />
-
-### cell_towersテーブルのスキーマの確認 {#examine-the-schema-of-the-cell_towers-table}
-
+### cell_towers テーブルのスキーマを確認する {#examine-the-schema-of-the-cell_towers-table}
 ```sql
 DESCRIBE TABLE cell_towers
 ```
 
 <SQLConsoleDetail />
 
-これは`DESCRIBE`の出力結果です。このガイドの後半で、フィールド型の選択について説明します。
-
+これは `DESCRIBE` の出力です。このガイドの後半で、各フィールドの型選択について説明します。
 ```response
 ┌─name──────────┬─type──────────────────────────────────────────────────────────────────┬
 │ radio         │ Enum8('' = 0, 'CDMA' = 1, 'GSM' = 2, 'LTE' = 3, 'NR' = 4, 'UMTS' = 5) │
@@ -98,7 +91,7 @@ DESCRIBE TABLE cell_towers
 ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="セルフマネージド">
+<TabItem value="selfmanaged" label="Self-managed">
 
 1. テーブルを作成します:
 
@@ -123,7 +116,7 @@ CREATE TABLE cell_towers
 ENGINE = MergeTree ORDER BY (radio, mcc, net, created);
 ```
 
-2. 公開S3バケットからデータセットをインポートします(686 MB):
+2. 公開 S3 バケットからデータセット（686 MB）をインポートします:
 
 ```sql
 INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amazonaws.com/cell_towers/cell_towers.csv.xz', 'CSVWithNames')
@@ -133,9 +126,10 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </Tabs>
 
 
-## サンプルクエリの実行 {#examples}
 
-1. タイプ別の基地局数:
+## いくつかのサンプルクエリを実行する
+
+1. 種類別の基地局数:
 
 ```sql
 SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
@@ -150,10 +144,10 @@ SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
 │ NR    │      867 │
 └───────┴──────────┘
 
-5 rows in set. Elapsed: 0.011 sec. Processed 43.28 million rows, 43.28 MB (3.83 billion rows/s., 3.83 GB/s.)
+5 行の結果。経過時間: 0.011 秒。処理行数: 4,328 万行、処理データ量: 43.28 MB（1 秒あたり 38.3 億行、3.83 GB/秒）。
 ```
 
-2. [モバイル国コード(MCC)](https://en.wikipedia.org/wiki/Mobile_country_code)別の基地局数:
+2. [モバイル国コード（MCC）](https://en.wikipedia.org/wiki/Mobile_country_code)ごとの基地局数：
 
 ```sql
 SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
@@ -173,19 +167,19 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 │ 311 │ 1332798 │
 └─────┴─────────┘
 
-10 rows in set. Elapsed: 0.019 sec. Processed 43.28 million rows, 86.55 MB (2.33 billion rows/s., 4.65 GB/s.)
+10 行が返されました。経過時間: 0.019 秒。処理: 4,328 万行、86.55 MB（2.33 10億行/秒、4.65 GB/秒）。
 ```
 
-上記のクエリと[MCCリスト](https://en.wikipedia.org/wiki/Mobile_country_code)に基づくと、最も多くの基地局を保有する国は、アメリカ合衆国、ドイツ、ロシアです。
+上記のクエリと [MCC リスト](https://en.wikipedia.org/wiki/Mobile_country_code) に基づくと、携帯電話基地局数が最も多い国は、アメリカ、ドイツ、ロシアです。
 
-これらの値をデコードするために、ClickHouseで[Dictionary](../../sql-reference/dictionaries/index.md)を作成することを推奨します。
+これらの値をデコードするには、ClickHouse で [Dictionary](../../sql-reference/dictionaries/index.md) を作成するとよいでしょう。
 
 
-## ユースケース: 地理データの組み込み {#use-case}
+## ユースケース：地理データを取り込む {#use-case}
 
 [`pointInPolygon`](/sql-reference/functions/geo/coordinates.md/#pointinpolygon) 関数を使用します。
 
-1. ポリゴンを格納するテーブルを作成します:
+1. ポリゴンを保存するテーブルを作成します。
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
@@ -196,7 +190,7 @@ ORDER BY polygon;
 ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="セルフマネージド">
+<TabItem value="selfmanaged" label="Self-managed">
 
 ```sql
 CREATE TEMPORARY TABLE
@@ -206,7 +200,8 @@ moscow (polygon Array(Tuple(Float64, Float64)));
 </TabItem>
 </Tabs>
 
-2. これはモスクワのおおよその形状です(「新モスクワ」を除く):
+2. これはモスクワのおおまかな形状です（「ニュー・モスクワ」を含まない）。
+
 
 
 ```sql
@@ -261,7 +256,7 @@ INSERT INTO moscow VALUES ([(37.84172564285271, 55.78000432402266),
 (37.84172564285271, 55.78000432402266)]);
 ```
 
-3. モスクワに基地局がいくつあるか確認します:
+3. モスクワにある携帯電話基地局の数を確認します。
 
 ```sql
 SELECT count() FROM cell_towers
@@ -273,145 +268,118 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 │  310463 │
 └─────────┘
 
-1 rows in set. Elapsed: 0.067 sec. Processed 43.28 million rows, 692.42 MB (645.83 million rows/s., 10.33 GB/s.)
+結果セットには 1 行が含まれています。経過時間: 0.067秒。43.28 百万行、692.42 MB を処理しました (645.83 百万行/秒、10.33 GB/秒)。
 ```
 
 
 ## スキーマの確認 {#review-of-the-schema}
 
-Supersetで可視化を構築する前に、使用する列を確認してください。このデータセットは主に、世界中の携帯電話基地局の位置(経度と緯度)と無線技術の種類を提供します。列の説明は[コミュニティフォーラム](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186)で確認できます。構築する可視化で使用される列については、以下で説明します。
+Superset で可視化を作成する前に、使用するカラムを確認しておきます。このデータセットは主に、世界中の携帯電話基地局の位置情報（経度と緯度）と無線方式を提供します。カラムの説明は [community forum](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186) にあります。これから作成する可視化で使用するカラムについては、以下で説明します。
 
-以下は、OpenCelliDフォーラムから引用した列の説明です:
+以下は、OpenCelliD フォーラムから引用したカラムの説明です。
 
-| 列 | 説明                                          |
-| ------ | ---------------------------------------------------- |
-| radio  | 技術世代: CDMA、GSM、UMTS、5G NR        |
-| mcc    | 携帯電話国番号: `204`はオランダ        |
-| lon    | 経度: 緯度と組み合わせて基地局のおおよその位置を示す |
-| lat    | 緯度: 経度と組み合わせて基地局のおおよその位置を示す |
+| Column       | Description                                            |
+|--------------|--------------------------------------------------------|
+| radio        | 技術世代: CDMA, GSM, UMTS, 5G NR                       |
+| mcc          | Mobile Country Code: `204` はオランダを表す            |
+| lon          | 経度: 緯度と組み合わせて、おおよその基地局位置を示す  |
+| lat          | 緯度: 経度と組み合わせて、おおよその基地局位置を示す  |
 
 :::tip mcc
-MCCを確認するには、[携帯電話国番号](https://en.wikipedia.org/wiki/Mobile_country_code)を参照し、**Mobile country code**列の3桁の数字を使用してください。
+自分の MCC を調べるには [Mobile network codes](https://en.wikipedia.org/wiki/Mobile_country_code) を確認し、**Mobile country code** カラム内の 3 桁の数字を使用してください。
 :::
 
-このテーブルのスキーマは、ディスク上のコンパクトな保存とクエリ速度を考慮して設計されています。
+このテーブルのスキーマは、ディスク上でのコンパクトな保存とクエリ速度を重視して設計されています。
+- `radio` データは文字列ではなく `Enum8` (`UInt8`) として保存されています。
+- `mcc`（Mobile country code）は、値の範囲が 1 ～ 999 と分かっているため `UInt16` として保存されています。
+- `lon` と `lat` は `Float64` です。
 
-- `radio`データは文字列ではなく`Enum8`(`UInt8`)として保存されます。
-- `mcc`(携帯電話国番号)は、範囲が1〜999であることがわかっているため、`UInt16`として保存されます。
-- `lon`と`lat`は`Float64`です。
-
-このガイドのクエリや可視化では他のフィールドは使用されませんが、興味がある場合は上記のリンク先のフォーラムで説明されています。
+その他のフィールドは、このガイド内のクエリや可視化では使用しませんが、興味があれば前述のフォーラムに説明があります。
 
 
-## Apache Supersetでビジュアライゼーションを構築する {#build-visualizations-with-apache-superset}
 
-SupersetはDockerから簡単に実行できます。既にSupersetを実行している場合は、`pip install clickhouse-connect`でClickHouse Connectを追加するだけです。Supersetをインストールする必要がある場合は、すぐ下の**Launch Apache Superset in Docker**を開いてください。
+## Apache Superset を使って可視化を作成する {#build-visualizations-with-apache-superset}
+
+Superset は Docker から簡単に実行できます。すでに Superset を実行している場合は、`pip install clickhouse-connect` で ClickHouse Connect を追加するだけで済みます。Superset をインストールする必要がある場合は、直下の **Launch Apache Superset in Docker** を参照してください。
 
 <SupersetDocker />
 
-OpenCelliDデータセットを使用してSupersetダッシュボードを構築するには、以下の手順を実行します:
+OpenCelliD データセットを使って Superset ダッシュボードを作成するには、次の手順を実行します:
+- ClickHouse サービスを Superset の **database** として追加する
+- テーブル **cell_towers** を Superset の **dataset** として追加する
+- いくつかの **charts** を作成する
+- それらのチャートを **dashboard** に追加する
 
-- ClickHouseサービスをSupersetの**データベース**として追加する
-- テーブル**cell_towers**をSupersetの**データセット**として追加する
-- いくつかの**チャート**を作成する
-- チャートを**ダッシュボード**に追加する
-
-### ClickHouseサービスをSupersetデータベースとして追加する {#add-your-clickhouse-service-as-a-superset-database}
+### ClickHouse サービスを Superset の database として追加する {#add-your-clickhouse-service-as-a-superset-database}
 
 <ConnectionDetails />
 
-Supersetでは、データベースタイプを選択し、接続詳細を提供することでデータベースを追加できます。Supersetを開き、**+**を探してください。そこには**Data**メニューがあり、その中に**Connect database**オプションがあります。
+  Superset では、database の種類を選択し、接続情報を指定することで database を追加できます。Superset を開き、**+** を探してください。**Data** に続いて **Connect database** オプションがあるメニューが表示されます。
 
-<Image img={add_a_database} size='md' alt='データベースを追加' />
-リストから**ClickHouse Connect**を選択します:
+  <Image img={add_a_database} size="md" alt="データベースを追加する"/>
 
-<Image
-  img={choose_clickhouse_connect}
-  size='md'
-  alt='データベースタイプとしてClickHouse Connectを選択'
-/>
+  一覧から **ClickHouse Connect** を選択します:
+
+  <Image img={choose_clickhouse_connect} size="md" alt="ClickHouse Connect をデータベース種別として選択する"/>
 
 :::note
-**ClickHouse Connect**がオプションにない場合は、インストールする必要があります。コマンドは`pip install clickhouse-connect`で、詳細情報は[こちら](https://pypi.org/project/clickhouse-connect/)で確認できます。
+  **ClickHouse Connect** が選択肢に表示されない場合は、インストールする必要があります。コマンドは `pip install clickhouse-connect` で、詳細は[こちら](https://pypi.org/project/clickhouse-connect/)を参照してください。
 :::
 
-#### 接続詳細を追加する {#add-your-connection-details}
+#### 接続情報を追加する {#add-your-connection-details}
 
 :::tip
-ClickHouse CloudやSSLの使用を強制する他のClickHouseシステムに接続する際は、必ず**SSL**を有効にしてください。
+  ClickHouse Cloud や、SSL の利用を必須としているその他の ClickHouse システムに接続する場合は、必ず **SSL** をオンに設定してください。
 :::
 
-<Image
-  img={add_clickhouse_as_superset_datasource}
-  size='md'
-  alt='ClickHouseをSupersetデータソースとして追加'
-/>
+  <Image img={add_clickhouse_as_superset_datasource} size="md" alt="Superset のデータソースとして ClickHouse を追加する"/>
 
-### テーブル**cell_towers**をSupersetの**データセット**として追加する {#add-the-table-cell_towers-as-a-superset-dataset}
+### テーブル **cell_towers** を Superset の **dataset** として追加する {#add-the-table-cell_towers-as-a-superset-dataset}
 
-Supersetでは、**データセット**はデータベース内のテーブルにマッピングされます。データセットの追加をクリックし、ClickHouseサービス、テーブルを含むデータベース(`default`)を選択し、`cell_towers`テーブルを選択します:
+  Superset では、**dataset** は database 内のテーブルに対応します。dataset を追加し、ClickHouse サービス、テーブルを含む database (`default`)、そして `cell_towers` テーブルを選択します:
 
-<Image
-  img={add_cell_towers_table_as_dataset}
-  size='md'
-  alt='cell_towersテーブルをデータセットとして追加'
-/>
+<Image img={add_cell_towers_table_as_dataset} size="md" alt="cell_towers テーブルを dataset として追加する"/>
 
-### いくつかの**チャート**を作成する {#create-some-charts}
+### **charts** を作成する {#create-some-charts}
 
-Supersetでチャートを追加する際は、データセット(`cell_towers`)とチャートタイプを指定する必要があります。OpenCelliDデータセットは携帯基地局の経度と緯度座標を提供しているため、**マップ**チャートを作成します。**deck.gl Scatterplot**タイプは、地図上の密集したデータポイントに適しているため、このデータセットに適しています。
+Superset でチャートを追加する際は、dataset（`cell_towers`）とチャートタイプを指定する必要があります。OpenCelliD データセットには基地局の経度と緯度が含まれているため、ここでは **Map** チャートを作成します。**deck.gl Scatterplot** タイプは、地図上の高密度なデータポイントを扱うのに適しているため、このデータセットに向いています。
 
-<Image
-  img={create_a_map_in_superset}
-  size='md'
-  alt='Supersetでマップを作成'
-/>
+<Image img={create_a_map_in_superset} size="md" alt="Superset で地図を作成する"/>
 
 #### マップに使用するクエリを指定する {#specify-the-query-used-for-the-map}
 
-deck.gl Scatterplotには経度と緯度が必要で、クエリに1つ以上のフィルタを適用することもできます。この例では、2つのフィルタが適用されています。1つはUMTS無線を持つ携帯基地局用、もう1つはオランダに割り当てられたモバイル国コード用です。
+deck.gl Scatterplot では経度と緯度が必要であり、さらに 1 つ以上のフィルターをクエリに適用できます。この例では 2 つのフィルターを適用しています。1 つは UMTS 無線を持つ基地局用、もう 1 つはオランダに割り当てられた Mobile country code 用です。
 
-フィールド`lon`と`lat`には経度と緯度が含まれています:
+フィールド `lon` と `lat` には、それぞれ経度と緯度が格納されています:
 
-<Image
-  img={specify_long_and_lat}
-  size='md'
-  alt='経度と緯度のフィールドを指定'
-/>
+<Image img={specify_long_and_lat} size="md" alt="経度と緯度のフィールドを指定する"/>
 
-`mcc` = `204`のフィルタを追加します(または他の`mcc`値に置き換えます):
+`mcc` = `204` のフィルターを追加します（または他の任意の `mcc` 値に置き換えてもかまいません）:
 
-<Image img={superset_mcc_2024} size='md' alt='MCC 204でフィルタ' />
+<Image img={superset_mcc_2024} size="md" alt="MCC 204 でフィルタリングする"/>
 
-`radio` = `'UMTS'`のフィルタを追加します(または他の`radio`値に置き換えます。選択肢は`DESCRIBE TABLE cell_towers`の出力で確認できます):
+`radio` = `'UMTS'` のフィルターを追加します（または他の任意の `radio` 値に置き換えてもかまいません。`DESCRIBE TABLE cell_towers` の出力で選択肢を確認できます）:
 
-<Image
-  img={superset_radio_umts}
-  size='md'
-  alt='radioがUMTSに等しいフィルタ'
-/>
+<Image img={superset_radio_umts} size="md" alt="radio が UMTS のものだけをフィルタリングする"/>
 
-これは`radio = 'UMTS'`と`mcc = 204`でフィルタするチャートの完全な設定です:
+これは、`radio = 'UMTS'` と `mcc = 204` でフィルタリングするチャートの完全な設定です:
 
-<Image
-  img={superset_umts_netherlands}
-  size='md'
-  alt='MCC 204のUMTS無線のチャート'
-/>
+<Image img={superset_umts_netherlands} size="md" alt="MCC 204 における UMTS 無線のチャート"/>
 
-**UPDATE CHART**をクリックしてビジュアライゼーションをレンダリングします。
+**UPDATE CHART** をクリックして可視化を描画します。
 
-### チャートを**ダッシュボード**に追加する {#add-the-charts-to-a-dashboard}
+### チャートを **dashboard** に追加する {#add-the-charts-to-a-dashboard}
 
-このスクリーンショットは、LTE、UMTS、GSM無線を持つ携帯基地局の位置を示しています。チャートはすべて同じ方法で作成され、ダッシュボードに追加されます。
+このスクリーンショットは、LTE、UMTS、GSM の無線を持つ基地局の位置を示しています。これらのチャートはすべて同じ手順で作成し、ダッシュボードに追加します。
 
 
-<Image img={superset_cell_tower_dashboard} size="md" alt="MCC 204 における無線方式別基地局ダッシュボード"/>
+
+<Image img={superset_cell_tower_dashboard} size="md" alt="mcc 204 における無線種別ごとの基地局のダッシュボード"/>
 
 :::tip
-このデータは [Playground](https://sql.clickhouse.com) でもインタラクティブにクエリできます。
+このデータは、[Playground](https://sql.clickhouse.com) で対話的にクエリを実行することもできます。
 
-この [例](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM)では、ユーザー名とクエリ内容が自動的に入力されます。
+この[サンプル](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM)を開くと、ユーザー名だけでなくクエリも自動的に入力されています。
 
-Playground ではテーブルを作成できませんが、すべてのクエリを実行でき、Superset も利用できます（ホスト名とポート番号を調整してください）。
+Playground ではテーブルを作成することはできませんが、すべてのクエリを実行でき、さらに Superset も使用できます（ホスト名とポート番号を調整してください）。
 :::

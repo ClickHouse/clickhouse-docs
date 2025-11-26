@@ -3,7 +3,7 @@ sidebar_label: 'DbVisualizer'
 slug: /integrations/dbvisualizer
 description: 'DbVisualizer — это инструмент для работы с базами данных с расширенной поддержкой ClickHouse.'
 title: 'Подключение DbVisualizer к ClickHouse'
-keywords: ['DbVisualizer', 'визуализация баз данных', 'SQL‑клиент', 'JDBC‑драйвер', 'инструмент для работы с базами данных']
+keywords: ['DbVisualizer', 'визуализация баз данных', 'SQL-клиент', 'JDBC-драйвер', 'инструмент для работы с базами данных']
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -22,52 +22,51 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## Запуск или скачивание DbVisualizer {#start-or-download-dbvisualizer}
+## Запустите или скачайте DbVisualizer {#start-or-download-dbvisualizer}
 
-DbVisualizer можно скачать по адресу https://www.dbvis.com/download/
+DbVisualizer можно скачать с сайта https://www.dbvis.com/download/
 
 
-## 1. Соберите данные для подключения {#1-gather-your-connection-details}
+
+## 1. Соберите параметры подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
 
+
 ## 2. Встроенное управление JDBC-драйверами {#2-built-in-jdbc-driver-management}
 
-DbVisualizer включает самые актуальные JDBC-драйверы для ClickHouse. В нём встроено полноценное управление JDBC-драйверами, которое обеспечивает доступ как к последним версиям драйверов, так и к предыдущим релизам.
+DbVisualizer включает в себя самые актуальные JDBC-драйверы для ClickHouse. В нем реализовано полнофункциональное встроенное управление JDBC-драйверами, обеспечивающее доступ как к последним релизам, так и к предыдущим версиям драйверов.
 
-<Image
-  img={dbvisualizer_driver_manager}
-  size='lg'
-  border
-  alt='Интерфейс менеджера драйверов DbVisualizer с конфигурацией JDBC-драйвера ClickHouse'
-/>
+<Image img={dbvisualizer_driver_manager} size="lg" border alt="Интерфейс управления драйверами DbVisualizer с конфигурацией JDBC-драйвера ClickHouse" />
+
 
 
 ## 3. Подключение к ClickHouse {#3-connect-to-clickhouse}
 
-Для подключения базы данных через DbVisualizer необходимо сначала создать и настроить соединение с базой данных.
+Чтобы подключиться к базе данных с помощью DbVisualizer, сначала необходимо создать и настроить подключение к базе данных.
 
-1. Создайте новое соединение через **Database->Create Database Connection** и выберите драйвер для вашей базы данных из всплывающего меню.
+1. Создайте новое подключение через **Database->Create Database Connection** и выберите драйвер для вашей базы данных во всплывающем меню.
 
-2. Откроется вкладка **Object View** для нового соединения.
+2. Откроется вкладка **Object View** для нового подключения.
 
-3. Введите имя соединения в поле **Name** и при необходимости добавьте описание в поле **Notes**.
+3. Введите имя подключения в поле **Name** и при необходимости укажите его описание в поле **Notes**.
 
-4. Оставьте для параметра **Database Type** значение **Auto Detect**.
+4. Оставьте значение поля **Database Type** равным **Auto Detect**.
 
-5. Если выбранный драйвер в поле **Driver Type** отмечен зелёной галочкой, он готов к использованию. Если галочка отсутствует, возможно, потребуется настроить драйвер в **Driver Manager**.
+5. Если выбранный драйвер в **Driver Type** отмечен зеленой галочкой, он готов к использованию. Если он не отмечен зеленой галочкой, возможно, потребуется настроить драйвер в **Driver Manager**.
 
-6. Введите информацию о сервере базы данных в оставшиеся поля.
+6. Укажите информацию о сервере базы данных в оставшихся полях.
 
-7. Убедитесь, что сетевое соединение с указанным адресом и портом может быть установлено, нажав кнопку **Ping Server**.
+7. Убедитесь, что можно установить сетевое соединение с указанными адресом и портом, нажав кнопку **Ping Server**.
 
-8. Если результат проверки Ping Server показывает, что сервер доступен, нажмите **Connect** для подключения к серверу базы данных.
+8. Если результат **Ping Server** показывает, что сервер доступен, нажмите **Connect**, чтобы подключиться к серверу базы данных.
 
 :::tip
-См. раздел [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) для получения рекомендаций при возникновении проблем с подключением к базе данных.
+См. раздел [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) с рекомендациями по устранению проблем при подключении к базе данных.
 
 
-## Дополнительная информация {#learn-more}
 
-Дополнительную информацию о DbVisualizer можно найти в [документации DbVisualizer](https://www.dbvis.com/docs/ug/).
+## Подробнее {#learn-more}
+
+Дополнительные сведения о DbVisualizer см. в [документации DbVisualizer](https://www.dbvis.com/docs/ug/).

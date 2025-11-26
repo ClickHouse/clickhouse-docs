@@ -2,41 +2,41 @@
 slug: /use-cases/observability/clickstack/integrations/kubernetes
 pagination_prev: null
 pagination_next: null
-description: 'Интеграция Kubernetes для ClickStack — стека наблюдаемости ClickHouse'
+description: 'Интеграция Kubernetes с ClickStack — стеком наблюдаемости ClickHouse'
 title: 'Kubernetes'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
-ClickStack использует коллектор OpenTelemetry (OTel) для сбора логов, метрик и событий Kubernetes из кластеров Kubernetes и их пересылки в ClickStack. Мы поддерживаем родной формат логов OTel и не требуем дополнительной вендор-специфичной конфигурации.
+ClickStack использует OTel collector (OpenTelemetry) для сбора логов, метрик и событий Kubernetes из кластеров Kubernetes и передачи их в ClickStack. Мы поддерживаем нативный формат логов OTel и не требуем дополнительной, зависящей от поставщика, конфигурации.
 
-В этом руководстве рассматривается интеграция следующих компонентов:
+В этом руководстве рассматриваются следующие компоненты:
 
 - **Логи**
 - **Инфраструктурные метрики**
 
 :::note
-Чтобы отправлять метрики уровня приложения или APM/трейсы, вам также необходимо добавить соответствующую языковую интеграцию в ваше приложение.
+Чтобы отправлять метрики уровня приложения или APM/трейсы, вам также необходимо добавить к своему приложению соответствующую языковую интеграцию.
 :::
 
-В данном руководстве предполагается, что вы развернули [коллектор ClickStack OTel в режиме шлюза](/use-cases/observability/clickstack/ingesting-data/otel-collector), защищённый ключом API для приёма данных.
+В данном руководстве предполагается, что вы развернули [ClickStack OTel collector в режиме шлюза](/use-cases/observability/clickstack/ingesting-data/otel-collector), защищённый ключом API для приёма данных (ingestion API key).
 
 
 
-## Создание конфигурационных файлов Helm-чарта OTel {#creating-the-otel-helm-chart-config-files}
+## Создание файлов конфигурации Helm-чарта OTel
 
-Для сбора логов и метрик как с каждого узла, так и с самого кластера, необходимо развернуть два отдельных коллектора OpenTelemetry. Один будет развернут как DaemonSet для сбора логов и метрик с каждого узла, а другой — как Deployment для сбора логов и метрик с самого кластера.
+Чтобы собирать логи и метрики как с каждого узла, так и с самого кластера, нужно развернуть два отдельных OTel collector. Один будет развернут в виде ДемонСета для сбора логов и метрик с каждого узла, а второй — в виде Развертывания для сбора логов и метрик с самого кластера.
 
-### Создание секрета с API-ключом {#create-api-key-secret}
+### Создание секрета с ключом API
 
-Создайте новый секрет Kubernetes с [API-ключом для приема данных](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) из HyperDX. Он будет использоваться установленными ниже компонентами для безопасной передачи данных в ваш коллектор ClickStack OTel:
+Создайте новый секрет Kubernetes с [ключом API для приёма данных (ingestion API key)](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) из HyperDX. Он будет использоваться компонентами, установленными ниже, для безопасной ингестии в ваш OTel collector ClickStack:
 
 ```shell
 kubectl create secret generic hyperdx-secret \
---from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
+--from-literal=HYPERDX_API_KEY=<ключ_api_приёма> \
 ```
 
-Дополнительно создайте ConfigMap с расположением вашего коллектора ClickStack OTel:
+Кроме того, создайте ConfigMap, в которой будет указан адрес вашего ClickStack OTel collector:
 
 
 ```shell
@@ -44,11 +44,11 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # e.g. kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
 ```
 
-### Создание конфигурации DaemonSet {#creating-the-daemonset-configuration}
+### Создание конфигурации ДемонСета {#creating-the-daemonset-configuration}
 
-DaemonSet будет собирать логи и метрики с каждого узла кластера, но не будет собирать события Kubernetes или метрики на уровне кластера.
+ДемонСет будет собирать логи и метрики с каждого узла кластера, но не будет собирать события Kubernetes или метрики на уровне кластера.
 
-Загрузите манифест DaemonSet:
+Скачайте манифест ДемонСета:
 
 ```shell
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
@@ -65,7 +65,7 @@ mode: daemonset
 ```
 
 
-# Требуется для использования метрик утилизации CPU/памяти kubeletstats
+# Требуется для использования метрик утилизации ЦП/памяти kubeletstats
 
 clusterRole:
 create: true
@@ -81,18 +81,18 @@ enabled: true
 
 # Настраивает процессор Kubernetes для добавления метаданных Kubernetes.
 
-# Добавляет процессор k8sattributes во все конвейеры и добавляет необходимые правила в ClusterRole.
+# Добавляет процессор k8sattributes во все конвейеры и добавляет необходимые правила в РольКластера.
 
 # Подробнее: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
 
 kubernetesAttributes:
-enabled: true # При включении процессор извлечёт все метки связанного пода и добавит их как атрибуты ресурса. # Точное имя метки будет использоваться в качестве ключа.
-extractAllPodLabels: true # При включении процессор извлечёт все аннотации связанного пода и добавит их как атрибуты ресурса. # Точное имя аннотации будет использоваться в качестве ключа.
+enabled: true # При включении процессор извлечёт все метки связанного пода и добавит их как атрибуты ресурса. # Точное имя метки будет ключом.
+extractAllPodLabels: true # При включении процессор извлечёт все аннотации связанного пода и добавит их как атрибуты ресурса. # Точное имя аннотации будет ключом.
 extractAllPodAnnotations: true
 
-# Настраивает коллектор для сбора метрик узлов, подов и контейнеров с API-сервера на kubelet.
+# Настраивает коллектор для сбора метрик узла, пода и контейнера с API-сервера на кубелете.
 
-# Добавляет приёмник kubeletstats в конвейер метрик и добавляет необходимые правила в ClusterRole.
+# Добавляет приёмник kubeletstats в конвейер метрик и добавляет необходимые правила в РольКластера.
 
 # Подробнее: https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
 
@@ -114,7 +114,7 @@ extraEnvs:
   key: YOUR_OTEL_COLLECTOR_ENDPOINT
 
 config:
-receivers: # Настраивает дополнительные метрики kubelet
+receivers: # Настраивает дополнительные метрики кубелета
 kubeletstats:
 collection_interval: 20s
 auth_type: 'serviceAccount'
@@ -164,7 +164,7 @@ exporters: - otlphttp
 
 ### Создание конфигурации развёртывания {#creating-the-deployment-configuration}
 
-Для сбора событий Kubernetes и метрик на уровне кластера необходимо развернуть отдельный коллектор OpenTelemetry в качестве развёртывания.
+Для сбора событий Kubernetes и метрик на уровне кластера необходимо развернуть отдельный коллектор OpenTelemetry в виде Развёртывания.
 
 Загрузите манифест развёртывания:
 
@@ -186,30 +186,30 @@ image:
 ```
 
 
-# Требуется только один такой коллектор — большее количество приведет к дублированию данных
+# Требуется только один такой коллектор — большее количество приведёт к дублированию данных
 
 replicaCount: 1
 
 presets:
 kubernetesAttributes:
-enabled: true # При включении процессор извлечет все метки связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя метки будет использоваться в качестве ключа.
-extractAllPodLabels: true # При включении процессор извлечет все аннотации связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя аннотации будет использоваться в качестве ключа.
+enabled: true # При включении процессор извлечёт все метки связанного пода и добавит их как атрибуты ресурса. # Точное имя метки будет использовано в качестве ключа.
+extractAllPodLabels: true # При включении процессор извлечёт все аннотации связанного пода и добавит их как атрибуты ресурса. # Точное имя аннотации будет использовано в качестве ключа.
 extractAllPodAnnotations: true
 
 # Настраивает коллектор для сбора событий Kubernetes.
 
-# Добавляет приемник k8sobject в конвейер журналов и по умолчанию собирает события Kubernetes.
+# Добавляет k8sobject receiver в конвейер логов и по умолчанию собирает события Kubernetes.
 
-# Дополнительная информация: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+# Подробнее: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
 
 kubernetesEvents:
 enabled: true
 
-# Настраивает приемник Kubernetes Cluster для сбора метрик уровня кластера.
+# Настраивает Kubernetes Cluster Receiver для сбора метрик на уровне кластера.
 
-# Добавляет приемник k8s_cluster в конвейер метрик и добавляет необходимые правила в ClusterRole.
+# Добавляет k8s_cluster receiver в конвейер метрик и добавляет необходимые правила в ClusterRole.
 
-# More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
+# Подробнее: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
 
 clusterMetrics:
 enabled: true
@@ -249,36 +249,36 @@ exporters: - otlphttp
 ```
 
 
-## Развертывание сборщика OpenTelemetry {#deploying-the-otel-collector}
+## Развертывание коллектора OpenTelemetry
 
-Сборщик OpenTelemetry можно развернуть в кластере Kubernetes с помощью
-[OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
+Теперь вы можете развернуть коллектор OpenTelemetry в своем кластере Kubernetes с
+помощью [Helm-чарта OpenTelemetry](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
 
 Добавьте репозиторий Helm для OpenTelemetry:
 
 ```shell
-helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Добавить репозиторий Helm для OTel
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Добавить репозиторий helm для OTel
 ```
 
-Установите чарт с приведенной выше конфигурацией:
+Установите чарт с приведённой выше конфигурацией:
 
 ```shell copy
 helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
 helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
 ```
 
-Теперь метрики, логи и события Kubernetes из вашего кластера Kubernetes должны
-появиться в HyperDX.
+Теперь в HyperDX должны отображаться метрики, логи и события Kubernetes из вашего кластера.
 
 
 ## Передача тегов ресурсов в поды (рекомендуется) {#forwarding-resouce-tags-to-pods}
 
-Для сопоставления журналов, метрик и трассировок уровня приложения с метаданными Kubernetes
-(например, имя пода, пространство имён и т. д.) необходимо передать метаданные Kubernetes
+Чтобы коррелировать логи, метрики и трейсы на уровне приложения с метаданными Kubernetes
+(например, именем пода, пространством имен и т. д.), нужно передать метаданные Kubernetes
 в приложение с помощью переменной окружения `OTEL_RESOURCE_ATTRIBUTES`.
 
-Ниже приведён пример развёртывания, которое передаёт метаданные Kubernetes
-в приложение с использованием переменных окружения:
+Ниже приведен пример Развертывания, которое передает метаданные Kubernetes в
+приложение с использованием переменных окружения:
+
 
 
 ```yaml
@@ -306,7 +306,7 @@ spec:
           image: my-image
           env:
             # ... другие переменные окружения
-            # Сбор метаданных K8s из downward API для передачи в приложение
+            # Сбор метаданных K8s через downward API для передачи в приложение
             - name: POD_NAME
               valueFrom:
                 fieldRef:

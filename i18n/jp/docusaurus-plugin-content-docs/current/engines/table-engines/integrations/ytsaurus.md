@@ -1,5 +1,5 @@
 ---
-description: 'YTsaurus クラスターのデータをインポートできるテーブルエンジン。'
+description: 'YTsaurus クラスターからデータを取り込むためのテーブルエンジン。'
 sidebar_label: 'YTsaurus'
 sidebar_position: 185
 slug: /engines/table-engines/integrations/ytsaurus
@@ -17,11 +17,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-YTsaurus テーブルエンジンを使用すると、YTsaurus クラスタからデータを取り込むことができます。
+YTsaurus テーブルエンジンを使用すると、YTsaurus クラスターからデータを取り込むことができます。
 
 
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -32,30 +32,30 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスタか�
 ```
 
 :::info
-これは実験的機能であり、将来のリリースで後方互換性のない変更が行われる可能性があります。
-YTsaurusテーブルエンジンを使用するには、設定[`allow_experimental_ytsaurus_table_engine`](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)を有効にしてください。
+これは実験的な機能であり、将来のリリースで後方互換性のない形で変更される可能性があります。
+設定 [`allow_experimental_ytsaurus_table_engine`](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) を使用して、YTsaurus テーブルエンジンを有効にします。
 
-以下のように設定します:
+次のように設定します。
 
-`SET allow_experimental_ytsaurus_table_engine = 1`.
+`SET allow_experimental_ytsaurus_table_engine = 1`。
 :::
 
 **エンジンパラメータ**
 
-- `http_proxy_url` — YTsaurus HTTPプロキシのURL。
-- `cypress_path` — データソースへのCypressパス。
-- `oauth_token` — OAuthトークン。
+* `http_proxy_url` — YTsaurus HTTP プロキシの URL。
+* `cypress_path` — データソースへの Cypress パス。
+* `oauth_token` — OAuth トークン。
 
 
-## 使用例 {#usage-example}
+## 使用例
 
-YTsaurusテーブルを作成するクエリの例を示します：
+YTsaurus テーブルを作成するクエリの例です。
 
-```sql title="クエリ"
+```sql title="Query"
 SHOW CREATE TABLE yt_saurus;
 ```
 
-```sql title="レスポンス"
+```sql title="Response"
 CREATE TABLE yt_saurus
 (
     `a` UInt32,
@@ -64,13 +64,13 @@ CREATE TABLE yt_saurus
 ENGINE = YTsaurus('http://localhost:8000', '//tmp/table', 'password')
 ```
 
-テーブルからデータを取得するには、次のクエリを実行します：
+テーブルのデータを取得するには、次を実行します。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT * FROM yt_saurus;
 ```
 
-```response title="レスポンス"
+```response title="Response"
  ┌──a─┬─b──┐
  │ 10 │ 20 │
  └────┴────┘
@@ -79,42 +79,42 @@ SELECT * FROM yt_saurus;
 
 ## データ型 {#data-types}
 
-### プリミティブデータ型 {#primitive-data-types}
+### プリミティブ型 {#primitive-data-types}
 
-| YTsaurusデータ型          | ClickHouseデータ型      |
-| --------------------------- | ------------------------- |
-| `int8`                      | `Int8`                    |
-| `int16`                     | `Int16`                   |
-| `int32`                     | `Int32`                   |
-| `int64`                     | `Int64`                   |
-| `uint8`                     | `UInt8`                   |
-| `uint16`                    | `UInt16`                  |
-| `uint32`                    | `UInt32`                  |
-| `uint64`                    | `UInt64`                  |
-| `float`                     | `Float32`                 |
-| `double`                    | `Float64`                 |
-| `boolean`                   | `Bool`                    |
-| `string`                    | `String`                  |
-| `utf8`                      | `String`                  |
-| `json`                      | `JSON`                    |
-| `yson(type_v3)`             | `JSON`                    |
-| `uuid`                      | `UUID`                    |
-| `date32`                    | `Date`(未サポート) |
-| `datetime64`                | `Int64`                   |
-| `timestamp64`               | `Int64`                   |
-| `interval64`                | `Int64`                   |
-| `date`                      | `Date`(未サポート) |
-| `datetime`                  | `DateTime`                |
-| `timestamp`                 | `DateTime64(6)`           |
-| `interval`                  | `UInt64`                  |
-| `any`                       | `String`                  |
-| `null`                      | `Nothing`                 |
-| `void`                      | `Nothing`                 |
-| `T` with `required = False` | `Nullable(T)`             |
+| YTsaurus データ型 | ClickHouse データ型      |
+| ------------------ | ----------------------- |
+| `int8`             | `Int8`                  |
+| `int16`            | `Int16`                 |
+| `int32`            | `Int32`                 |
+| `int64`            | `Int64`                 |
+| `uint8`            | `UInt8`                 |
+| `uint16`           | `UInt16`                |
+| `uint32`           | `UInt32`                |
+| `uint64`           | `UInt64`                |
+| `float`            | `Float32`               |
+| `double`           | `Float64`               |
+| `boolean`          | `Bool`                  |
+| `string`           | `String`                |
+| `utf8`             | `String`                |
+| `json`             | `JSON`                  |
+| `yson(type_v3)`    | `JSON`                  |
+| `uuid`             | `UUID`                  |
+| `date32`           | `Date`（まだサポートされていません）|
+| `datetime64`       | `Int64`                 |
+| `timestamp64`      | `Int64`                 |
+| `interval64`       | `Int64`                 |
+| `date`             | `Date`（まだサポートされていません）|
+| `datetime`         | `DateTime`              |
+| `timestamp`        | `DateTime64(6)`         |
+| `interval`         | `UInt64`                |
+| `any`              | `String`                |
+| `null`             | `Nothing`               |
+| `void`             | `Nothing`               |
+| `T`（`required = False` の場合）| `Nullable(T)`   |
 
 ### 複合型 {#composite-data-types}
 
-| YTsaurusデータ型 | ClickHouseデータ型 |
+| YTsaurus データ型 | ClickHouse データ型 |
 | ------------------ | -------------------- |
 | `decimal`          | `Decimal`            |
 | `optional`         | `Nullable`           |
@@ -128,5 +128,5 @@ SELECT * FROM yt_saurus;
 **関連項目**
 
 - [ytsaurus](../../../sql-reference/table-functions/ytsaurus.md) テーブル関数
-- [ytsaurusデータスキーマ](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
-- [ytsaurusデータ型](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)
+- [ytsaurus データスキーマ](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
+- [ytsaurus データ型](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)

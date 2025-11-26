@@ -1,9 +1,10 @@
 ---
-description: 'Движок таблицы File хранит данные в файле в одном из поддерживаемых форматов (`TabSeparated`, `Native` и т. д.).'
+description: 'Табличный движок File хранит данные в файле в одном из поддерживаемых
+  форматов (`TabSeparated`, `Native` и т. д.).'
 sidebar_label: 'File'
 sidebar_position: 40
 slug: /engines/table-engines/special/file
-title: 'Движок таблицы File'
+title: 'Табличный движок File'
 doc_type: 'reference'
 ---
 
@@ -17,45 +18,45 @@ doc_type: 'reference'
 
 - Экспорт данных из ClickHouse в файл.
 - Преобразование данных из одного формата в другой.
-- Обновление данных в ClickHouse посредством редактирования файла на диске.
+- Обновление данных в ClickHouse путём редактирования файла на диске.
 
 :::note
-В настоящее время этот движок недоступен в ClickHouse Cloud, вместо него [используйте табличную функцию S3](/sql-reference/table-functions/s3.md).
+Этот движок в настоящее время недоступен в ClickHouse Cloud, пожалуйста, [используйте вместо него табличную функцию S3](/sql-reference/table-functions/s3.md).
 :::
 
 
 
-## Использование в ClickHouse Server {#usage-in-clickhouse-server}
+## Использование на сервере ClickHouse
 
 ```sql
 File(Format)
 ```
 
-Параметр `Format` указывает один из доступных форматов файлов. Для выполнения
-запросов `SELECT` формат должен поддерживать ввод данных, а для выполнения
-запросов `INSERT` — вывод данных. Доступные форматы перечислены в разделе
-[Форматы](/interfaces/formats#formats-overview).
+Параметр `Format` задаёт один из доступных форматов файлов. Для выполнения
+запросов `SELECT` формат должен поддерживать чтение (input), а для выполнения
+запросов `INSERT` — запись (output). Доступные форматы перечислены в разделе
+[Formats](/interfaces/formats#formats-overview).
 
-ClickHouse не позволяет указывать путь в файловой системе для `File`. Используется папка, определённая параметром [path](../../../operations/server-configuration-parameters/settings.md) в конфигурации сервера.
+ClickHouse не позволяет указывать путь в файловой системе для `File`. Будет использована папка, определённая настройкой [path](../../../operations/server-configuration-parameters/settings.md) в конфигурации сервера.
 
-При создании таблицы с помощью `File(Format)` в этой папке создаётся пустой подкаталог. Когда данные записываются в таблицу, они помещаются в файл `data.Format` в этом подкаталоге.
+При создании таблицы с использованием `File(Format)` в этой папке создаётся пустая поддиректория. Когда данные записываются в эту таблицу, они помещаются в файл `data.Format` в этой поддиректории.
 
-Вы можете вручную создать этот подкаталог и файл в файловой системе сервера, а затем [присоединить](../../../sql-reference/statements/attach.md) их к таблице с соответствующим именем, чтобы можно было запрашивать данные из этого файла.
+Вы можете вручную создать эту поддиректорию и файл в файловой системе сервера, а затем [ATTACH](../../../sql-reference/statements/attach.md) их к информации о таблице с совпадающим именем, чтобы иметь возможность выполнять запросы к данным в этом файле.
 
 :::note
-Будьте осторожны с этой функциональностью, поскольку ClickHouse не отслеживает внешние изменения в таких файлах. Результат одновременной записи через ClickHouse и вне ClickHouse не определён.
+Будьте осторожны с этой функциональностью, так как ClickHouse не отслеживает внешние изменения таких файлов. Результат одновременной записи через ClickHouse и вне ClickHouse неопределён.
 :::
 
 
-## Пример {#example}
+## Пример
 
-**1.** Создайте таблицу `file_engine_table`:
+**1.** Настройте таблицу `file_engine_table`:
 
 ```sql
 CREATE TABLE file_engine_table (name String, value UInt32) ENGINE=File(TabSeparated)
 ```
 
-По умолчанию ClickHouse создаст директорию `/var/lib/clickhouse/data/default/file_engine_table`.
+По умолчанию ClickHouse создаст папку `/var/lib/clickhouse/data/default/file_engine_table`.
 
 **2.** Вручную создайте файл `/var/lib/clickhouse/data/default/file_engine_table/data.TabSeparated` со следующим содержимым:
 
@@ -65,7 +66,7 @@ one 1
 two 2
 ```
 
-**3.** Выполните запрос данных:
+**3.** Выполните запрос к данным:
 
 ```sql
 SELECT * FROM file_engine_table
@@ -79,9 +80,9 @@ SELECT * FROM file_engine_table
 ```
 
 
-## Использование в ClickHouse-local {#usage-in-clickhouse-local}
+## Использование в clickhouse-local
 
-В [clickhouse-local](../../../operations/utilities/clickhouse-local.md) движок File принимает путь к файлу в дополнение к параметру `Format`. Стандартные потоки ввода/вывода можно указать, используя числовые или понятные имена, такие как `0` или `stdin`, `1` или `stdout`. Возможно чтение и запись сжатых файлов на основе дополнительного параметра движка или расширения файла (`gz`, `br` или `xz`).
+В [clickhouse-local](../../../operations/utilities/clickhouse-local.md) движок File, помимо параметра `Format`, принимает путь к файлу. Потоки ввода/вывода по умолчанию можно указывать с помощью числовых или понятных имён, таких как `0` или `stdin`, `1` или `stdout`. Можно читать и записывать сжатые файлы, исходя из дополнительного параметра движка или расширения файла (`gz`, `br` или `xz`).
 
 **Пример:**
 
@@ -90,23 +91,25 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 ```
 
 
-## Детали реализации {#details-of-implementation}
+## Подробности реализации {#details-of-implementation}
 
-- Несколько запросов `SELECT` могут выполняться одновременно, но запросы `INSERT` будут ожидать друг друга.
-- Поддерживается создание нового файла запросом `INSERT`.
-- Если файл существует, `INSERT` добавляет в него новые значения.
-- Не поддерживается:
+- Несколько запросов `SELECT` могут выполняться одновременно, но запросы `INSERT` выполняются последовательно.
+- Поддерживается создание нового файла с помощью запроса `INSERT`.
+- Если файл существует, `INSERT` будет дописывать в него новые значения.
+- Не поддерживаются:
   - `ALTER`
   - `SELECT ... SAMPLE`
   - Индексы
   - Репликация
 
 
+
 ## PARTITION BY {#partition-by}
 
-`PARTITION BY` — необязательный параметр. Позволяет создавать отдельные файлы путём разбиения данных по ключу партиционирования. В большинстве случаев ключ партиционирования не требуется, а если он необходим, то обычно достаточно партиционирования по месяцам. Партиционирование не ускоряет выполнение запросов (в отличие от выражения ORDER BY). Не следует использовать слишком детальное партиционирование. Не разбивайте данные по идентификаторам или именам клиентов (вместо этого укажите идентификатор или имя клиента первым столбцом в выражении ORDER BY).
+`PARTITION BY` — необязательное выражение. Можно создавать отдельные файлы, разбивая данные на партиции по ключу партиционирования (partition key). В большинстве случаев ключ партиционирования не нужен, а если он и требуется, как правило, нет необходимости делать его более детализированным, чем до уровня месяца. Партиционирование не ускоряет выполнение запросов (в отличие от выражения ORDER BY). Никогда не используйте слишком мелкое партиционирование. Не разделяйте данные на партиции по идентификаторам или именам клиентов (вместо этого сделайте идентификатор или имя клиента первым столбцом в выражении ORDER BY).
 
-Для партиционирования по месяцам используйте выражение `toYYYYMM(date_column)`, где `date_column` — столбец с датой типа [Date](/sql-reference/data-types/date.md). Имена партиций в этом случае имеют формат `"YYYYMM"`.
+Для партиционирования по месяцам используйте выражение `toYYYYMM(date_column)`, где `date_column` — это столбец с датой типа данных [Date](/sql-reference/data-types/date.md). Имена партиций в этом случае имеют формат `"YYYYMM"`.
+
 
 
 ## Виртуальные столбцы {#virtual-columns}
@@ -117,10 +120,11 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
 
+
 ## Настройки {#settings}
 
-- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) — позволяет выбирать пустые данные из несуществующего файла. По умолчанию отключена.
-- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) — позволяет очищать файл перед вставкой данных. По умолчанию отключена.
+- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) — позволяет выполнять выборку из несуществующего файла, возвращая пустой набор данных. По умолчанию отключена.
+- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) — позволяет усекать файл перед вставкой в него данных. По умолчанию отключена.
 - [engine_file_allow_create_multiple_files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключена.
 - [engine_file_skip_empty_files](/operations/settings/settings.md#engine_file_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключена.
-- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) — метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap`. Метод mmap не применяется к clickhouse-server (он предназначен для clickhouse-local). Значение по умолчанию: `pread` для clickhouse-server, `mmap` для clickhouse-local.
+- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) — метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap`. Метод `mmap` не применяется к clickhouse-server (предназначен для clickhouse-local). Значение по умолчанию: `pread` для clickhouse-server, `mmap` для clickhouse-local.

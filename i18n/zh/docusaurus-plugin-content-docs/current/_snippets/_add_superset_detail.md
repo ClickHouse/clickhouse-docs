@@ -3,7 +3,7 @@
 
 Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/) 的说明文档。从 GitHub 克隆 Apache Superset 代码仓库后,您可以运行最新的开发代码或指定的标签版本。我们推荐使用 2.0.0 版本,因为它是最新的正式发布版本(未标记为 `pre-release`)。
 
-在运行 `docker compose` 之前需要完成以下几项任务:
+运行 `docker compose` 之前需要完成以下几项任务:
 
 1. 添加官方 ClickHouse Connect 驱动
 2. 获取 Mapbox API 密钥并将其添加为环境变量(可选)
@@ -14,22 +14,22 @@ Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://super
 :::
 
 
-## 官方 ClickHouse Connect 驱动程序 {#official-clickhouse-connect-driver}
+## 官方 ClickHouse Connect 驱动程序
 
-要在 Superset 部署中使用 ClickHouse Connect 驱动程序,请将其添加到本地 requirements 文件:
+要在 Superset 部署中启用 ClickHouse Connect 驱动程序，请将其添加到本地 requirements 文件中：
 
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
 
-## Mapbox {#mapbox}
+## Mapbox
 
-此步骤为可选项。您可以在没有 Mapbox API 密钥的情况下在 Superset 中绘制位置数据,但系统会提示您添加密钥,且地图背景图像将无法显示(您只能看到数据点,无法看到地图背景)。如需使用,Mapbox 提供免费套餐。
+此步骤是可选的。你可以在不提供 Mapbox API 密钥的情况下在 Superset 中绘制地理位置信息，但你会看到一条提示信息，建议你添加密钥，而且地图的背景图像会缺失（你只能看到数据点，而看不到地图底图）。如果你想使用，Mapbox 提供了免费套餐。
 
-本指南中创建的部分示例可视化会使用位置数据,例如经度和纬度。Superset 支持 Mapbox 地图。要使用 Mapbox 可视化功能,您需要一个 Mapbox API 密钥。请注册 [Mapbox 免费套餐](https://account.mapbox.com/auth/signup/) 并生成 API 密钥。
+部分示例可视化（指南中引导你创建的那些）会使用位置信息，例如经纬度数据。Superset 内置对 Mapbox 地图的支持。要使用 Mapbox 可视化，你需要一个 Mapbox API 密钥。注册 [Mapbox 免费套餐](https://account.mapbox.com/auth/signup/)，并生成一个 API 密钥。
 
-将 API 密钥配置到 Superset:
+将该 API 密钥提供给 Superset 使用：
 
 ```bash
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev

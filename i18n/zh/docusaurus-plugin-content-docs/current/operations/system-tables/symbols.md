@@ -1,17 +1,17 @@
 ---
-description: '包含用于对 `clickhouse` 二进制文件进行自省的信息，仅对 C++ 专家和 ClickHouse 工程师有用的系统表。'
-keywords: ['system table', 'symbols']
+description: '对 C++ 专家和 ClickHouse 工程师有用的 system 表，包含用于对 `clickhouse` 可执行文件进行内省的信息。'
+keywords: ['system 表', '符号']
 slug: /operations/system-tables/symbols
 title: 'system.symbols'
 doc_type: 'reference'
 ---
 
-包含用于对 `clickhouse` 二进制文件进行自省的信息。访问该表需要具有 introspection 权限。
-此表仅对 C++ 专家和 ClickHouse 工程师有用。
+包含用于对 `clickhouse` 可执行文件进行内省的信息。访问该表需要具有 introspection 权限。
+此表仅适用于 C++ 专家和 ClickHouse 工程师。
 
 列：
 
-* `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制文件中的符号名称。该名称为经修饰（mangled）的名称。可以使用 `demangle(symbol)` 将其转换为可读名称。
+* `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制文件中的符号名称。该名称是经过重整（mangled）的。你可以使用 `demangle(symbol)` 来获得可读名称。
 * `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制文件中的起始地址。
 * `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制文件中的结束地址。
 * `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。

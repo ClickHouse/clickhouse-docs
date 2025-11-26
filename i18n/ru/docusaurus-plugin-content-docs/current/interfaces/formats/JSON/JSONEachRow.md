@@ -7,22 +7,23 @@ title: 'JSONEachRow'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним            |
+| Вход | Выход | Алиас                |
 |------|-------|----------------------|
 | ✔    | ✔     | `JSONLines`, `NDJSON` |
 
 
 
-## Description {#description}
+## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку как отдельный JSON-объект, разделённый символом новой строки.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, при этом объекты разделяются символами перевода строки.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используем JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используйте JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -44,15 +45,15 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `JSONEachRow`:
+Прочитайте данные в формате `JSONEachRow`:
 
 ```sql
 SELECT *
@@ -60,7 +61,7 @@ FROM football
 FORMAT JSONEachRow
 ```
 
-Результат будет выведен в формате JSON:
+Результат будет в формате JSON:
 
 
 ```json
@@ -83,7 +84,7 @@ FORMAT JSONEachRow
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Импорт столбцов данных с неизвестными именами будет пропущен, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) равен 1.
+Столбцы данных с неизвестными именами не будут импортированы, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение 1.
 
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

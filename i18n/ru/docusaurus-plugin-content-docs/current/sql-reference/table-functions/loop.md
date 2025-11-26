@@ -1,5 +1,5 @@
 ---
-description: 'Табличная функция loop в ClickHouse предназначена для возврата результатов запроса в бесконечном цикле.'
+description: 'Табличная функция loop в ClickHouse используется для бесконечного вывода результатов запроса.'
 slug: /sql-reference/table-functions/loop
 title: 'loop'
 doc_type: 'reference'
@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 
 
-# Табличная функция `loop`
+# Табличная функция loop
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -23,21 +23,23 @@ SELECT ... FROM loop(other_table_function(...));
 
 ## Аргументы {#arguments}
 
-| Аргумент                    | Описание                                                                                                             |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `database`                  | Имя базы данных.                                                                                                     |
-| `table`                     | Имя таблицы.                                                                                                         |
-| `other_table_function(...)` | Другая табличная функция. Пример: `SELECT * FROM loop(numbers(10));` `other_table_function(...)` здесь — `numbers(10)`. |
+| Аргумент                    | Описание                                                                                                            |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database`                  | имя базы данных.                                                                                                     |
+| `table`                     | имя таблицы.                                                                                                         |
+| `other_table_function(...)` | другая табличная функция. Пример: `SELECT * FROM loop(numbers(10));` здесь `other_table_function(...)` — это `numbers(10)`. |
+
 
 
 ## Возвращаемые значения {#returned_values}
 
-Бесконечный цикл возврата результатов запроса.
+Бесконечный цикл, возвращающий результаты запроса.
 
 
-## Примеры {#examples}
 
-Выборка данных из ClickHouse:
+## Примеры
+
+Получение данных из ClickHouse:
 
 ```sql
 SELECT * FROM loop(test_database, test_table);
@@ -45,7 +47,7 @@ SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-Или с использованием других табличных функций:
+Или с помощью других табличных функций:
 
 ```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;

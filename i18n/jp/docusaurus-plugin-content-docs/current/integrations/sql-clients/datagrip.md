@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'DataGrip'
 slug: /integrations/datagrip
-description: 'DataGrip は、ClickHouse をネイティブにサポートするデータベース IDE です。'
-title: 'DataGrip を ClickHouse に接続する'
+description: 'DataGrip は、ClickHouse を標準でサポートするデータベース IDE です。'
+title: 'DataGrip から ClickHouse へ接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -20,83 +20,67 @@ import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# DataGrip を ClickHouse に接続する
+# DataGrip から ClickHouse へ接続する
 
 <CommunityMaintainedBadge/>
 
 
 
-## DataGripの起動またはダウンロード {#start-or-download-datagrip}
+## DataGrip の起動またはダウンロード {#start-or-download-datagrip}
 
-DataGripは https://www.jetbrains.com/datagrip/ から入手できます
+DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードできます。
 
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
 
+## 1. 接続情報を確認する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. ClickHouseドライバーの読み込み {#2-load-the-clickhouse-driver}
 
-1. DataGripを起動し、**Data Sources and Drivers**ダイアログの**Data Sources**タブで**+**アイコンをクリックします
+## 2. ClickHouse ドライバを読み込む {#2-load-the-clickhouse-driver}
 
-<Image
-  img={datagrip_5}
-  size='lg'
-  border
-  alt='DataGripのData Sourcesタブで+アイコンがハイライトされている'
-/>
+1. DataGrip を起動し、**Data Sources and Drivers** ダイアログの **Data Sources** タブで **+** アイコンをクリックします。
 
-**ClickHouse**を選択します
+<Image img={datagrip_5} size="lg" border alt="+ アイコンがハイライトされた DataGrip の Data Sources タブ" />
 
-:::tip
-接続を確立すると順序が変わるため、ClickHouseがまだリストの最上部に表示されていない場合があります。
-:::
+  **ClickHouse** を選択します。
 
-<Image
-  img={datagrip_6}
-  size='sm'
-  border
-  alt='DataGripでデータソースリストからClickHouseを選択している'
-/>
+  :::tip
+  接続を追加していくと並び順が変わるため、ClickHouse がまだリストの先頭に表示されていない場合があります。
+  :::
 
-- **Drivers**タブに切り替えて、ClickHouseドライバーを読み込みます
+<Image img={datagrip_6} size="sm" border alt="DataGrip でデータソース一覧から ClickHouse を選択している画面" />
 
-  DataGripはダウンロードサイズを最小限に抑えるため、ドライバーを同梱していません。**Drivers**タブで
-  **Complete Support**リストから**ClickHouse**を選択し、**+**記号を展開します。**Provided Driver**オプションから**Latest stable**ドライバーを選択します:
+- **Drivers** タブに切り替えて、ClickHouse ドライバを読み込みます。
 
-<Image
-  img={datagrip_1}
-  size='lg'
-  border
-  alt='DataGripのDriversタブでClickHouseドライバーのインストールを表示している'
-/>
+  DataGrip ではダウンロードサイズを小さく抑えるため、ドライバは同梱されていません。**Drivers** タブで
+  **Complete Support** リストから **ClickHouse** を選択し、**+** 記号を展開します。**Provided Driver** オプションから **Latest stable** ドライバを選択します。
+
+<Image img={datagrip_1} size="lg" border alt="ClickHouse ドライバのインストールを表示している DataGrip の Drivers タブ" />
 
 
-## 3. ClickHouseに接続する {#3-connect-to-clickhouse}
 
-- データベース接続の詳細を指定し、**Test Connection**をクリックします。
-  ステップ1で収集した接続詳細(ホストURL、ポート、ユーザー名、パスワード、データベース名)を入力し、接続をテストします。
+## 3. ClickHouse に接続する {#3-connect-to-clickhouse}
+
+- データベース接続情報を入力し、**Test Connection** をクリックします。  
+ステップ 1 で接続情報を取得しているので、ホスト URL、ポート、ユーザー名、パスワード、データベース名を入力し、その後に接続テストを実行します。
 
 :::tip
-**Host**フィールドには、`https://`などのプロトコルプレフィックスを含めず、ホスト名のみを入力してください(例: `your-host.clickhouse.cloud`)。
+**Host** フィールドには、`https://` のようなプロトコルを付けずにホスト名のみを入力します（例: `your-host.clickhouse.cloud`）。
 
-ClickHouse Cloud接続の場合、ホストの下にある**URL**フィールドに`?ssl=true`を追加する必要があります。完全なJDBC URLは次のようになります:
+ClickHouse Cloud に接続する場合は、ホストの下にある **URL** フィールドに `?ssl=true` を必ず追加してください。最終的な JDBC URL は次のようになります。
 
 `jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true`
 
-ClickHouse Cloudはすべての接続にSSL暗号化が必須です。`?ssl=true`パラメータがない場合、正しい認証情報を使用していても「Connection reset」エラーが発生します。
+ClickHouse Cloud は、すべての接続に SSL 暗号化を要求します。`?ssl=true` パラメータがない場合、認証情報が正しくても「Connection reset」エラーが発生します。
 
-JDBC URL設定の詳細については、[ClickHouse JDBCドライバ](https://github.com/ClickHouse/clickhouse-java)リポジトリを参照してください。
+JDBC URL の設定の詳細については、[ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) リポジトリを参照してください。
 :::
 
-<Image
-  img={datagrip_7}
-  border
-  alt='ClickHouse設定を含むDataGrip接続詳細フォーム'
-/>
+<Image img={datagrip_7} border alt="ClickHouse の設定が入力された DataGrip の接続詳細フォーム" />
 
 
-## 詳細情報 {#learn-more}
 
-DataGripの詳細については、DataGripドキュメントを参照してください。
+## さらに詳しく {#learn-more}
+
+詳しくは DataGrip のドキュメントを参照してください。

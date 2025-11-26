@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 # fuzzQuery テーブル関数
 
-指定されたクエリ文字列にランダムな変化を加えます。
+指定されたクエリ文字列にランダムなゆらぎを与えます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 fuzzQuery(query[, max_query_length[, random_seed]])
@@ -24,19 +24,21 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 
 ## 引数 {#arguments}
 
-| 引数           | 説明                                                               |
-| ------------------ | ------------------------------------------------------------------------- |
-| `query`            | (String) - ファジングを実行する対象のクエリ。                    |
-| `max_query_length` | (UInt64) - ファジング処理中にクエリが取り得る最大長。 |
-| `random_seed`      | (UInt64) - 安定した結果を生成するためのランダムシード。                    |
+| 引数               | 説明                                                                          |
+|--------------------|-------------------------------------------------------------------------------|
+| `query`            | (String) - ファジングの対象となるソースクエリ。                               |
+| `max_query_length` | (UInt64) - ファジング処理中にクエリが取り得る最大長。                         |
+| `random_seed`      | (UInt64) - 安定した結果を得るために使用する乱数シード。                       |
 
 
-## 戻り値 {#returned_value}
 
-摂動を加えたクエリ文字列を含む単一列のテーブルオブジェクト。
+## 返される値 {#returned_value}
+
+摂動が加えられたクエリ文字列を 1 列だけ含むテーブルオブジェクト。
 
 
-## 使用例 {#usage-example}
+
+## 使用例
 
 ```sql
 SELECT * FROM fuzzQuery('SELECT materialize(\'a\' AS key) GROUP BY key') LIMIT 2;

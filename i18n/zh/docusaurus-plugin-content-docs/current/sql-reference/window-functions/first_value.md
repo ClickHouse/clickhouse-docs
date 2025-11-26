@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 # first&#95;value
 
-返回其有序窗口帧内计算得到的第一个值。默认情况下会跳过 NULL 参数，但可以使用 `RESPECT NULLS` 修饰符来更改这一行为。
+返回在其排序窗口内计算得到的第一个值。默认情况下会跳过 NULL 参数，不过可以使用 `RESPECT NULLS` 修饰符来改变此行为。
 
 **语法**
 
 ```sql
 first_value (列名) [[RESPECT NULLS] | [IGNORE NULLS]]
   OVER ([[PARTITION BY 分组列] [ORDER BY 排序列] 
-        [ROWS 或 RANGE 限定组内行范围的表达式]] | [窗口名称])
+        [ROWS or RANGE 限定组内行的表达式]] | [窗口名称])
 FROM 表名
 WINDOW 窗口名称 as ([PARTITION BY 分组列] [ORDER BY 排序列])
 ```
@@ -24,21 +24,21 @@ WINDOW 窗口名称 as ([PARTITION BY 分组列] [ORDER BY 排序列])
 别名：`any`。
 
 :::note
-在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 可确保不会跳过值为 `NULL` 的参数。
-更多信息请参阅 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
+在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保不会忽略 `NULL` 参数。
+更多信息参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
 
 别名：`firstValueRespectNulls`
 :::
 
-关于窗口函数语法的更多细节，请参阅 [窗口函数 - 语法](./index.md/#syntax)。
+关于窗口函数语法的更多细节，请参见 [Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-* 在其排序窗口帧中计算得到的第一个值。
+* 在其有序窗口帧内计算得到的第一个值。
 
 **示例**
 
-在此示例中，`first_value` 函数用于从一个虚构的英超联赛球员薪资数据集中找出工资最高的球员。
+在此示例中，使用 `first_value` 函数从一个虚构的英超联赛足球运动员薪资数据集中找出薪资最高的球员。
 
 查询：
 

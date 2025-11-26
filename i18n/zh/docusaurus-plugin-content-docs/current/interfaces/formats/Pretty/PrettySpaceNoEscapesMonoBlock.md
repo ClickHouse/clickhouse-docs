@@ -18,13 +18,15 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) 格式的区别在于,它会缓冲最多 `10,000` 行数据,
-然后将其作为单个表输出,而不是按[块](/development/architecture#block)输出。
+与 [`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) 格式不同之处在于，会先最多缓冲 `10,000` 行数据，
+然后将其作为一张完整的表输出，而不是按[数据块](/development/architecture#block)输出。
+
 
 
 ## 使用示例 {#example-usage}
 
 
+
 ## 格式设置 {#format-settings}
 
-<PrettyFormatSettings />
+<PrettyFormatSettings/>

@@ -1,5 +1,5 @@
 ---
-description: '对两个总体的样本进行 Welch t 检验。'
+description: '对来自两个总体的样本执行 Welch t 检验。'
 sidebar_label: 'welchTTest'
 sidebar_position: 214
 slug: /sql-reference/aggregate-functions/reference/welchttest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # welchTTest
 
-对来自两个总体的样本执行 Welch t 检验。
+将 Welch t 检验应用于来自两个总体的样本。
 
 **语法**
 
@@ -17,24 +17,24 @@ doc_type: 'reference'
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-两个样本的值均存储在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于来自第一总体的样本；否则，该值属于来自第二总体的样本。
+两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于来自第一总体的样本，否则属于来自第二总体的样本。
 
-零假设是两个总体的均值相等。假定服从正态分布。两个总体可以具有不等方差。
+原假设是两个总体的均值相等。假定总体服从正态分布，总体方差可以不相等。
 
 **参数**
 
 * `sample_data` — 样本数据。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 * `sample_index` — 样本索引。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
-**可选参数**
+**参数**
 
-* `confidence_level` — 用于计算置信区间的置信水平。[Float](../../../sql-reference/data-types/float.md)。
+* `confidence_level` — 用于计算置信区间的置信水平（可选）。[Float](../../../sql-reference/data-types/float.md)。
 
 **返回值**
 
-返回包含两个或四个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)（如果指定了可选的 `confidence_level`）：
+包含两个或四个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)（如果指定了可选的 `confidence_level`）。
 
-* 计算得到的 t-统计量。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 t 统计量。[Float64](../../../sql-reference/data-types/float.md)。
 * 计算得到的 p 值。[Float64](../../../sql-reference/data-types/float.md)。
 * 计算得到的置信区间下界。[Float64](../../../sql-reference/data-types/float.md)。
 * 计算得到的置信区间上界。[Float64](../../../sql-reference/data-types/float.md)。

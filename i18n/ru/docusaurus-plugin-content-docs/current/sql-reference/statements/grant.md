@@ -12,108 +12,108 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Оператор GRANT
 
-- Предоставляет [привилегии](#privileges) учетным записям пользователей или ролям ClickHouse.
+- Предоставляет [привилегии](#privileges) учетным записям пользователей ClickHouse или ролям.
 - Назначает роли учетным записям пользователей или другим ролям.
 
-Чтобы отозвать привилегии, используйте оператор [REVOKE](../../sql-reference/statements/revoke.md). Также можно вывести список выданных привилегий с помощью оператора [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants).
+Чтобы отозвать привилегии, используйте оператор [REVOKE](../../sql-reference/statements/revoke.md). Вы также можете просмотреть список предоставленных привилегий с помощью оператора [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants).
 
 
 
-## Синтаксис предоставления привилегий {#granting-privilege-syntax}
+## Синтаксис предоставления прав
 
 ```sql
-GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
+GRANT [ON CLUSTER имя_кластера] привилегия[(имя_колонки [,...])] [,...] ON {бд.таблица[*]|бд[*].*|*.*|таблица[*]|*} TO {пользователь | роль | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
 ```
 
-- `privilege` — тип привилегии.
-- `role` — роль пользователя ClickHouse.
-- `user` — учетная запись пользователя ClickHouse.
+* `privilege` — тип привилегии.
+* `role` — роль пользователя ClickHouse.
+* `user` — учетная запись пользователя ClickHouse.
 
-Конструкция `WITH GRANT OPTION` предоставляет пользователю `user` или роли `role` разрешение на выполнение запроса `GRANT`. Пользователи могут предоставлять привилегии той же или меньшей области действия, которой они обладают.
-Конструкция `WITH REPLACE OPTION` заменяет старые привилегии новыми для пользователя `user` или роли `role`. Если она не указана, привилегии добавляются к существующим.
+Предложение `WITH GRANT OPTION` предоставляет `user` или `role` право на выполнение запроса `GRANT`. Пользователи могут предоставлять привилегии той же или более узкой области действия, чем их собственные.
+Предложение `WITH REPLACE OPTION` заменяет старые привилегии новыми для `user` или `role`; если оно не указано, новые привилегии просто добавляются к существующим.
 
 
-## Синтаксис назначения ролей {#assigning-role-syntax}
+## Синтаксис назначения ролей
 
 ```sql
 GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_USER} [,...] [WITH ADMIN OPTION] [WITH REPLACE OPTION]
 ```
 
-- `role` — роль пользователя ClickHouse.
-- `user` — учетная запись пользователя ClickHouse.
+* `role` — роль пользователя в ClickHouse.
+* `user` — учетная запись пользователя ClickHouse.
 
-Секция `WITH ADMIN OPTION` предоставляет привилегию [ADMIN OPTION](#admin-option) пользователю `user` или роли `role`.
-Секция `WITH REPLACE OPTION` заменяет старые роли новой ролью для пользователя `user` или роли `role`. Если секция не указана, роли добавляются к существующим.
+Оператор `WITH ADMIN OPTION` предоставляет привилегию [ADMIN OPTION](#admin-option) для `user` или `role`.
+Оператор `WITH REPLACE OPTION` заменяет существующие роли новой ролью для `user` или `role`; если он не указан, новые роли просто добавляются.
 
 
-## Синтаксис GRANT CURRENT GRANTS {#grant-current-grants-syntax}
+## Синтаксис команды GRANT CURRENT GRANTS
 
 ```sql
 GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*}) | ON {db.table|db.*|*.*|table|*}} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
 ```
 
-- `privilege` — тип привилегии.
-- `role` — роль пользователя ClickHouse.
-- `user` — учетная запись пользователя ClickHouse.
+* `privilege` — Тип привилегии.
+* `role` — Роль пользователя ClickHouse.
+* `user` — Учетная запись пользователя ClickHouse.
 
-Оператор `CURRENT GRANTS` позволяет предоставить все указанные привилегии заданному пользователю или роли.
-Если привилегии не указаны, заданный пользователь или роль получит все доступные привилегии пользователя `CURRENT_USER`.
+Использование оператора `CURRENT GRANTS` позволяет выдать все указанные привилегии заданному пользователю или роли.
+Если ни одна привилегия не указана, то заданный пользователь или роль получит все доступные привилегии для `CURRENT_USER`.
 
 
-## Использование {#usage}
+## Использование
 
-Для использования `GRANT` ваша учетная запись должна иметь привилегию `GRANT OPTION`. Вы можете предоставлять привилегии только в пределах привилегий вашей учетной записи.
+Чтобы использовать `GRANT`, ваша учётная запись должна иметь право `GRANT OPTION`. Вы можете предоставлять привилегии только в пределах собственных прав вашей учётной записи.
 
-Например, администратор предоставил привилегии учетной записи `john` с помощью запроса:
+Например, администратор предоставил привилегии учётной записи `john` следующим запросом:
 
 ```sql
 GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 ```
 
-Это означает, что `john` имеет разрешение на выполнение:
+Это означает, что у `john` есть привилегия выполнять:
 
-- `SELECT x,y FROM db.table`.
-- `SELECT x FROM db.table`.
-- `SELECT y FROM db.table`.
+* `SELECT x,y FROM db.table`.
+* `SELECT x FROM db.table`.
+* `SELECT y FROM db.table`.
 
-`john` не может выполнить `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также недоступен. При обработке этого запроса ClickHouse не возвращает никаких данных, даже `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`. В этом случае ClickHouse возвращает все данные.
+`john` не может выполнять `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также ему недоступен. При обработке этого запроса ClickHouse не возвращает никаких данных, даже `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`. В этом случае ClickHouse возвращает все данные.
 
-Также `john` имеет привилегию `GRANT OPTION`, поэтому он может предоставлять другим пользователям привилегии той же или меньшей области действия.
+Также у `john` есть привилегия `GRANT OPTION`, поэтому он может выдавать другим пользователям привилегии того же или меньшего объёма.
 
-Доступ к базе данных `system` всегда разрешен (поскольку эта база данных используется для обработки запросов).
+Доступ к базе данных `system` всегда разрешён (так как эта база данных используется для обработки запросов).
 
 :::note
-Хотя существует множество системных таблиц, к которым новые пользователи могут получить доступ по умолчанию, они могут не иметь доступа ко всем системным таблицам по умолчанию без предоставления привилегий.
+Хотя существует много системных таблиц, к которым новые пользователи по умолчанию имеют доступ, без явной выдачи привилегий они могут не иметь доступа ко всем системным таблицам.
 Кроме того, доступ к некоторым системным таблицам, таким как `system.zookeeper`, ограничен для пользователей ClickHouse Cloud по соображениям безопасности.
 :::
 
-Вы можете предоставить несколько привилегий нескольким учетным записям в одном запросе. Запрос `GRANT SELECT, INSERT ON *.* TO john, robin` позволяет учетным записям `john` и `robin` выполнять запросы `INSERT` и `SELECT` для всех таблиц во всех базах данных на сервере.
+Вы можете выдать несколько привилегий нескольким учётным записям в одном запросе. Запрос `GRANT SELECT, INSERT ON *.* TO john, robin` позволяет учётным записям `john` и `robin` выполнять запросы `INSERT` и `SELECT` для всех таблиц во всех базах данных на сервере.
 
 
-## Подстановочные права доступа {#wildcard-grants}
+## Привилегии с подстановками
 
-При указании привилегий вы можете использовать звездочку (`*`) вместо имени таблицы или базы данных. Например, запрос `GRANT SELECT ON db.* TO john` позволяет пользователю `john` выполнять запрос `SELECT` ко всем таблицам в базе данных `db`.
-Также вы можете опустить имя базы данных. В этом случае привилегии предоставляются для текущей базы данных.
-Например, `GRANT SELECT ON * TO john` предоставляет привилегию на все таблицы в текущей базе данных, `GRANT SELECT ON mytable TO john` предоставляет привилегию на таблицу `mytable` в текущей базе данных.
+При указании привилегий вы можете использовать звёздочку (`*`) вместо имени таблицы или базы данных. Например, запрос `GRANT SELECT ON db.* TO john` позволяет пользователю `john` выполнять запрос `SELECT` для всех таблиц в базе данных `db`.
+Также можно опустить имя базы данных. В этом случае привилегии выдаются для текущей базы данных.
+Например, `GRANT SELECT ON * TO john` выдаёт привилегию на все таблицы в текущей базе данных, а `GRANT SELECT ON mytable TO john` — привилегию на таблицу `mytable` в текущей базе данных.
 
 :::note
 Функциональность, описанная ниже, доступна начиная с версии ClickHouse 24.10.
 :::
 
-Вы также можете размещать звездочки в конце имени таблицы или базы данных. Эта возможность позволяет предоставлять привилегии на абстрактный префикс пути таблицы.
-Пример: `GRANT SELECT ON db.my_tables* TO john`. Этот запрос позволяет пользователю `john` выполнять запрос `SELECT` ко всем таблицам базы данных `db` с префиксом `my_tables*`.
+Вы также можете использовать звёздочку в конце имени таблицы или базы данных. Эта возможность позволяет выдавать привилегии по абстрактному префиксу имени таблицы.
+Пример: `GRANT SELECT ON db.my_tables* TO john`. Этот запрос позволяет пользователю `john` выполнять запрос `SELECT` для всех таблиц базы данных `db` с префиксом `my_tables*`.
 
 Дополнительные примеры:
 
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- предоставлено
-SELECT * FROM db.my_tables_0 -- предоставлено
-SELECT * FROM db.my_tables_1 -- предоставлено
+SELECT * FROM db.my_tables -- разрешено
+SELECT * FROM db.my_tables_0 -- разрешено
+SELECT * FROM db.my_tables_1 -- разрешено
 
-SELECT * FROM db.other_table -- не предоставлено
-SELECT * FROM db2.my_tables -- не предоставлено
+SELECT * FROM db.other_table -- запрещено
+SELECT * FROM db2.my_tables -- запрещено
 ```
 
 `GRANT SELECT ON db*.* TO john`
@@ -126,13 +126,13 @@ SELECT * FROM db.other_table -- предоставлено
 SELECT * FROM db2.my_tables -- предоставлено
 ```
 
-Все вновь созданные таблицы в пределах предоставленных путей автоматически наследуют все права доступа от своих родительских элементов.
+Все вновь создаваемые таблицы в рамках предоставленных путей автоматически наследуют все привилегии от своих родительских объектов.
 Например, если вы выполните запрос `GRANT SELECT ON db.* TO john`, а затем создадите новую таблицу `db.new_table`, пользователь `john` сможет выполнить запрос `SELECT * FROM db.new_table`.
 
-Вы можете указывать звездочку **только** для префиксов:
+Вы можете указывать звёздочку **только** для префиксов:
 
 ```sql
-GRANT SELECT ON db.* TO john -- правильно
+GRANT SELECT ON db.* TO john -- correct
 GRANT SELECT ON db*.* TO john -- правильно
 
 GRANT SELECT ON *.my_table TO john -- неправильно
@@ -144,11 +144,12 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
 
 ## Привилегии {#privileges}
 
-Привилегия — это разрешение, предоставляемое пользователю на выполнение определённых типов запросов.
+Привилегия — это право, предоставляемое пользователю для выполнения определённых видов запросов.
 
 Привилегии имеют иерархическую структуру, и набор разрешённых запросов зависит от области действия привилегии.
 
-Иерархия привилегий в ClickHouse представлена ниже:
+Иерархия привилегий в ClickHouse показана ниже:
+
 
 
 * [`ALL`](#all)
@@ -240,7 +241,7 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
     * `DROP VIEW`
     * `DROP WORKLOAD`
   * [`INSERT`](#insert)
-  * [`INTROSPECTION`](#introspection)
+  * [`ИНТРОСПЕКЦИЯ`](#introspection)
     * `addressToLine`
     * `addressToLineWithInlines`
     * `addressToSymbol`
@@ -248,7 +249,7 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
   * `KILL QUERY`
   * `KILL TRANSACTION`
   * `ПЕРЕМЕЩЕНИЕ РАЗДЕЛА МЕЖДУ ШАРДАМИ`
-  * [`АДМИНИСТРАТОР ИМЕНОВАННЫХ КОЛЛЕКЦИЙ`](#named-collection-admin)
+  * [`NAMED COLLECTION ADMIN`](#named-collection-admin)
     * `ALTER NAMED COLLECTION`
     * `CREATE NAMED COLLECTION`
     * `DROP NAMED COLLECTION`
@@ -349,50 +350,50 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
   * `UNDROP TABLE`
 * [`NONE`](#none)
 
-Примеры работы с этой иерархией:
+Примеры обработки этой иерархии:
 
-- Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
-- `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
+* Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
+* `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
 
-Привилегии применяются на разных уровнях. Уровень определяет доступный синтаксис для привилегии.
+Привилегии применяются на разных уровнях. Знание уровня определяет доступный для привилегии синтаксис.
 
-Уровни (от низшего к высшему):
+Уровни (от нижнего к высшему):
 
-- `COLUMN` — привилегия может быть предоставлена для столбца, таблицы, базы данных или глобально.
-- `TABLE` — привилегия может быть предоставлена для таблицы, базы данных или глобально.
-- `VIEW` — привилегия может быть предоставлена для представления, базы данных или глобально.
-- `DICTIONARY` — привилегия может быть предоставлена для словаря, базы данных или глобально.
-- `DATABASE` — привилегия может быть предоставлена для базы данных или глобально.
-- `GLOBAL` — привилегия может быть предоставлена только глобально.
-- `GROUP` — группирует привилегии разных уровней. При предоставлении привилегии уровня `GROUP` предоставляются только те привилегии из группы, которые соответствуют используемому синтаксису.
+* `COLUMN` — привилегия может быть выдана для столбца, таблицы, базы данных или глобально.
+* `TABLE` — привилегия может быть выдана для таблицы, базы данных или глобально.
+* `VIEW` — привилегия может быть выдана для представления, базы данных или глобально.
+* `DICTIONARY` — привилегия может быть выдана для словаря, базы данных или глобально.
+* `DATABASE` — привилегия может быть выдана для базы данных или глобально.
+* `GLOBAL` — привилегия может быть выдана только глобально.
+* `GROUP` — группирует привилегии разных уровней. Когда выдаётся привилегия уровня `GROUP`, выдаются только те привилегии из группы, которые соответствуют используемому синтаксису.
 
 Примеры допустимого синтаксиса:
 
-- `GRANT SELECT(x) ON db.table TO user`
-- `GRANT SELECT ON db.* TO user`
+* `GRANT SELECT(x) ON db.table TO user`
+* `GRANT SELECT ON db.* TO user`
 
 Примеры недопустимого синтаксиса:
 
-- `GRANT CREATE USER(x) ON db.table TO user`
-- `GRANT CREATE USER ON db.* TO user`
+* `GRANT CREATE USER(x) ON db.table TO user`
+* `GRANT CREATE USER ON db.* TO user`
 
-Специальная привилегия [ALL](#all) предоставляет все привилегии учетной записи пользователя или роли.
+Специальная привилегия [ALL](#all) предоставляет все привилегии учётной записи пользователя или роли.
 
-По умолчанию учетная запись пользователя или роль не имеет привилегий.
+По умолчанию учётная запись пользователя или роль не имеет привилегий.
 
-Если у пользователя или роли нет привилегий, это отображается как привилегия [NONE](#none).
+Если пользователь или роль не имеет привилегий, это отображается как привилегия [NONE](#none).
 
-Некоторые запросы по своей реализации требуют набор привилегий. Например, для выполнения запроса [RENAME](../../sql-reference/statements/optimize.md) необходимы следующие привилегии: `SELECT`, `CREATE TABLE`, `INSERT` и `DROP TABLE`.
+Некоторые запросы по своей реализации требуют набора привилегий. Например, для выполнения запроса [RENAME](../../sql-reference/statements/optimize.md) требуются следующие привилегии: `SELECT`, `CREATE TABLE`, `INSERT` и `DROP TABLE`.
 
-### SELECT {#select}
+### SELECT
 
-Позволяет выполнять запросы [SELECT](../../sql-reference/statements/select/index.md).
+Разрешает выполнение запросов [SELECT](../../sql-reference/statements/select/index.md).
 
 Уровень привилегии: `COLUMN`.
 
 **Описание**
 
-Пользователь с этой привилегией может выполнять запросы `SELECT` для указанного списка столбцов в указанной таблице и базе данных. Если пользователь включает в запрос другие столбцы, кроме указанных, запрос не возвращает данных.
+Пользователь, которому выдана эта привилегия, может выполнять запросы `SELECT` к заданному списку столбцов в указанной таблице и базе данных. Если пользователь включает другие столбцы, помимо указанных, запрос не возвращает данные.
 
 Рассмотрим следующую привилегию:
 
@@ -400,17 +401,17 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
 GRANT SELECT(x,y) ON db.table TO john
 ```
 
-Эта привилегия позволяет `john` выполнять любой запрос `SELECT`, который обращается к данным из столбцов `x` и/или `y` в `db.table`, например `SELECT x FROM db.table`. `john` не может выполнить `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также недоступен. При обработке этого запроса ClickHouse не возвращает никаких данных, даже из столбцов `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`, в этом случае ClickHouse возвращает все данные.
+Эта привилегия позволяет пользователю `john` выполнять любые запросы `SELECT`, которые затрагивают данные из столбцов `x` и/или `y` в `db.table`, например, `SELECT x FROM db.table`. `john` не может выполнять `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также недоступен. При обработке такого запроса ClickHouse не возвращает никакие данные, даже `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`, в этом случае ClickHouse возвращает все данные.
 
-### INSERT {#insert}
+### INSERT
 
 Позволяет выполнять запросы [INSERT](../../sql-reference/statements/insert-into.md).
 
-Уровень привилегии: `COLUMN`.
+Уровень привилегий: `COLUMN`.
 
 **Описание**
 
-Пользователь с этой привилегией может выполнять запросы `INSERT` для указанного списка столбцов в указанной таблице и базе данных. Если пользователь включает в запрос другие столбцы, кроме указанных, запрос не вставляет никаких данных.
+Пользователь, которому выдана эта привилегия, может выполнять запросы `INSERT` над указанным списком столбцов в заданных таблице и базе данных. Если пользователь включает в запрос другие столбцы, помимо указанных, данные не вставляются.
 
 **Пример**
 
@@ -418,64 +419,64 @@ GRANT SELECT(x,y) ON db.table TO john
 GRANT INSERT(x,y) ON db.table TO john
 ```
 
-Предоставленная привилегия позволяет `john` вставлять данные в столбцы `x` и/или `y` в `db.table`.
+Предоставленная привилегия позволяет пользователю `john` вставлять данные в столбцы `x` и/или `y` в `db.table`.
 
-### ALTER {#alter}
+### ALTER
 
 Позволяет выполнять запросы [ALTER](../../sql-reference/statements/alter/index.md) в соответствии со следующей иерархией привилегий:
 
 
 - `ALTER`. Уровень: `COLUMN`.
   - `ALTER TABLE`. Уровень: `GROUP`
-  - `ALTER UPDATE`. Уровень: `COLUMN`. Псевдонимы: `UPDATE`
-  - `ALTER DELETE`. Уровень: `COLUMN`. Псевдонимы: `DELETE`
+  - `ALTER UPDATE`. Уровень: `COLUMN`. Синонимы: `UPDATE`
+  - `ALTER DELETE`. Уровень: `COLUMN`. Синонимы: `DELETE`
   - `ALTER COLUMN`. Уровень: `GROUP`
-  - `ALTER ADD COLUMN`. Уровень: `COLUMN`. Псевдонимы: `ADD COLUMN`
-  - `ALTER DROP COLUMN`. Уровень: `COLUMN`. Псевдонимы: `DROP COLUMN`
-  - `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Псевдонимы: `MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Псевдонимы: `COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Псевдонимы: `CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Псевдонимы: `RENAME COLUMN`
-  - `ALTER INDEX`. Уровень: `GROUP`. Псевдонимы: `INDEX`
-  - `ALTER ORDER BY`. Уровень: `TABLE`. Псевдонимы: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`. Уровень: `TABLE`. Псевдонимы: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`. Уровень: `TABLE`. Псевдонимы: `ADD INDEX`
-  - `ALTER DROP INDEX`. Уровень: `TABLE`. Псевдонимы: `DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Псевдонимы: `MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`. Уровень: `TABLE`. Псевдонимы: `CLEAR INDEX`
-  - `ALTER CONSTRAINT`. Уровень: `GROUP`. Псевдонимы: `CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Псевдонимы: `ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Псевдонимы: `DROP CONSTRAINT`
-  - `ALTER TTL`. Уровень: `TABLE`. Псевдонимы: `ALTER MODIFY TTL`, `MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Псевдонимы: `MATERIALIZE TTL`
-  - `ALTER SETTINGS`. Уровень: `TABLE`. Псевдонимы: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
-  - `ALTER MOVE PARTITION`. Уровень: `TABLE`. Псевдонимы: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
-  - `ALTER FETCH PARTITION`. Уровень: `TABLE`. Псевдонимы: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
-  - `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Псевдонимы: `FREEZE PARTITION`
+  - `ALTER ADD COLUMN`. Уровень: `COLUMN`. Синонимы: `ADD COLUMN`
+  - `ALTER DROP COLUMN`. Уровень: `COLUMN`. Синонимы: `DROP COLUMN`
+  - `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Синонимы: `MODIFY COLUMN`
+  - `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Синонимы: `COMMENT COLUMN`
+  - `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Синонимы: `CLEAR COLUMN`
+  - `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Синонимы: `RENAME COLUMN`
+  - `ALTER INDEX`. Уровень: `GROUP`. Синонимы: `INDEX`
+  - `ALTER ORDER BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
+  - `ALTER SAMPLE BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
+  - `ALTER ADD INDEX`. Уровень: `TABLE`. Синонимы: `ADD INDEX`
+  - `ALTER DROP INDEX`. Уровень: `TABLE`. Синонимы: `DROP INDEX`
+  - `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Синонимы: `MATERIALIZE INDEX`
+  - `ALTER CLEAR INDEX`. Уровень: `TABLE`. Синонимы: `CLEAR INDEX`
+  - `ALTER CONSTRAINT`. Уровень: `GROUP`. Синонимы: `CONSTRAINT`
+  - `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Синонимы: `ADD CONSTRAINT`
+  - `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Синонимы: `DROP CONSTRAINT`
+  - `ALTER TTL`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY TTL`, `MODIFY TTL`
+  - `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Синонимы: `MATERIALIZE TTL`
+  - `ALTER SETTINGS`. Уровень: `TABLE`. Синонимы: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
+  - `ALTER MOVE PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
+  - `ALTER FETCH PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
+  - `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Синонимы: `FREEZE PARTITION`
   - `ALTER VIEW`. Уровень: `GROUP`
-  - `ALTER VIEW REFRESH`. Уровень: `VIEW`. Псевдонимы: `REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Псевдонимы: `ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Псевдонимы: `ALTER TABLE MODIFY SQL SECURITY`
+  - `ALTER VIEW REFRESH`. Уровень: `VIEW`. Синонимы: `REFRESH VIEW`
+  - `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY QUERY`
+  - `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY SQL SECURITY`
 
-Примеры работы с этой иерархией:
+Примеры трактовки этой иерархии:
 
-- Привилегия `ALTER` включает в себя все остальные привилегии `ALTER*`.
-- `ALTER CONSTRAINT` включает в себя привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
+- Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
+- `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
 
 **Примечания**
 
 - Привилегия `MODIFY SETTING` позволяет изменять настройки движка таблицы. Она не влияет на настройки или параметры конфигурации сервера.
 - Для операции `ATTACH` требуется привилегия [CREATE](#create).
 - Для операции `DETACH` требуется привилегия [DROP](#drop).
-- Чтобы остановить мутацию с помощью запроса [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию на запуск этой мутации. Например, чтобы остановить запрос `ALTER UPDATE`, требуется привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
+- Чтобы остановить мутацию запросом [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию на запуск этой мутации. Например, если вы хотите остановить запрос `ALTER UPDATE`, вам нужна привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
 
 ### BACKUP {#backup}
 
-Разрешает выполнение [`BACKUP`] в запросах. Дополнительную информацию о резервном копировании см. в разделе [«Резервное копирование и восстановление»](../../operations/backup.md).
+Позволяет выполнять [`BACKUP`] в запросах. Дополнительную информацию о резервных копиях см. в разделе ["Резервное копирование и восстановление"](../../operations/backup.md).
 
 ### CREATE {#create}
 
-Разрешает выполнение DDL-запросов [CREATE](../../sql-reference/statements/create/index.md) и [ATTACH](../../sql-reference/statements/attach.md) в соответствии со следующей иерархией привилегий:
+Позволяет выполнять [CREATE](../../sql-reference/statements/create/index.md) и [ATTACH](../../sql-reference/statements/attach.md) DDL-запросы в соответствии со следующей иерархией привилегий:
 
 - `CREATE`. Уровень: `GROUP`
   - `CREATE DATABASE`. Уровень: `DATABASE`
@@ -487,70 +488,69 @@ GRANT INSERT(x,y) ON db.table TO john
 
 **Примечания**
 
-- Для удаления созданной таблицы пользователю требуется привилегия [DROP](#drop).
+- Чтобы удалить созданную таблицу, пользователю нужна привилегия [DROP](#drop).
 
 ### CLUSTER {#cluster}
 
-Разрешает выполнение запросов `ON CLUSTER`.
+Позволяет выполнять запросы с `ON CLUSTER`.
 
-
-```sql title="Синтаксис"
-GRANT CLUSTER ON *.* TO <username>
+```sql title="Syntax"
+GRANT CLUSTER ON *.* TO <имя_пользователя>
 ```
 
-По умолчанию для выполнения запросов с `ON CLUSTER` пользователю требуется привилегия `CLUSTER`.
-При попытке использовать `ON CLUSTER` в запросе без предварительного предоставления привилегии `CLUSTER` вы получите следующую ошибку:
+По умолчанию для запросов с `ON CLUSTER` требуется, чтобы у пользователя была привилегия `CLUSTER`.
+Если вы попытаетесь использовать `ON CLUSTER` в запросе, не предоставив заранее привилегию `CLUSTER`, вы получите следующую ошибку:
 
 ```text
-Недостаточно привилегий. Для выполнения этого запроса необходимо иметь привилегию CLUSTER ON *.*.
+Недостаточно привилегий. Для выполнения этого запроса необходимо иметь право CLUSTER ON *.*. 
 ```
 
-Поведение по умолчанию можно изменить, установив параметр `on_cluster_queries_require_cluster_grant`
-в секции `access_control_improvements` файла `config.xml` (см. ниже) в значение `false`.
+Поведение по умолчанию можно изменить, установив настройку `on_cluster_queries_require_cluster_grant`,
+расположенную в разделе `access_control_improvements` файла `config.xml` (см. ниже), в значение `false`.
 
 ```yaml title="config.xml"
 <access_control_improvements>
-<on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
+    <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
 </access_control_improvements>
 ```
 
-### DROP {#drop}
+### DROP
 
 Позволяет выполнять запросы [DROP](../../sql-reference/statements/drop.md) и [DETACH](../../sql-reference/statements/detach.md) в соответствии со следующей иерархией привилегий:
 
-- `DROP`. Уровень: `GROUP`
-  - `DROP DATABASE`. Уровень: `DATABASE`
-  - `DROP TABLE`. Уровень: `TABLE`
-  - `DROP VIEW`. Уровень: `VIEW`
-  - `DROP DICTIONARY`. Уровень: `DICTIONARY`
+* `DROP`. Уровень: `GROUP`
+  * `DROP DATABASE`. Уровень: `DATABASE`
+  * `DROP TABLE`. Уровень: `TABLE`
+  * `DROP VIEW`. Уровень: `VIEW`
+  * `DROP DICTIONARY`. Уровень: `DICTIONARY`
 
-### TRUNCATE {#truncate}
+### TRUNCATE
 
 Позволяет выполнять запросы [TRUNCATE](../../sql-reference/statements/truncate.md).
 
 Уровень привилегии: `TABLE`.
 
-### OPTIMIZE {#optimize}
+### OPTIMIZE
 
 Позволяет выполнять запросы [OPTIMIZE TABLE](../../sql-reference/statements/optimize.md).
 
 Уровень привилегии: `TABLE`.
 
-### SHOW {#show}
+### SHOW
 
 Позволяет выполнять запросы `SHOW`, `DESCRIBE`, `USE` и `EXISTS` в соответствии со следующей иерархией привилегий:
 
-- `SHOW`. Уровень: `GROUP`
-  - `SHOW DATABASES`. Уровень: `DATABASE`. Позволяет выполнять запросы `SHOW DATABASES`, `SHOW CREATE DATABASE`, `USE <database>`.
-  - `SHOW TABLES`. Уровень: `TABLE`. Позволяет выполнять запросы `SHOW TABLES`, `EXISTS <table>`, `CHECK <table>`.
-  - `SHOW COLUMNS`. Уровень: `COLUMN`. Позволяет выполнять запросы `SHOW CREATE TABLE`, `DESCRIBE`.
-  - `SHOW DICTIONARIES`. Уровень: `DICTIONARY`. Позволяет выполнять запросы `SHOW DICTIONARIES`, `SHOW CREATE DICTIONARY`, `EXISTS <dictionary>`.
+* `SHOW`. Уровень: `GROUP`
+  * `SHOW DATABASES`. Уровень: `DATABASE`. Позволяет выполнять запросы `SHOW DATABASES`, `SHOW CREATE DATABASE`, `USE <database>`.
+  * `SHOW TABLES`. Уровень: `TABLE`. Позволяет выполнять запросы `SHOW TABLES`, `EXISTS <table>`, `CHECK <table>`.
+  * `SHOW COLUMNS`. Уровень: `COLUMN`. Позволяет выполнять запросы `SHOW CREATE TABLE`, `DESCRIBE`.
+  * `SHOW DICTIONARIES`. Уровень: `DICTIONARY`. Позволяет выполнять запросы `SHOW DICTIONARIES`, `SHOW CREATE DICTIONARY`, `EXISTS <dictionary>`.
 
 **Примечания**
 
-Пользователь имеет привилегию `SHOW`, если у него есть любая другая привилегия, относящаяся к указанной таблице, словарю или базе данных.
+Пользователь обладает привилегией `SHOW`, если у него есть какая-либо другая привилегия, относящаяся к указанной таблице, словарю или базе данных.
 
-### KILL QUERY {#kill-query}
+### KILL QUERY
 
 Позволяет выполнять запросы [KILL](../../sql-reference/statements/kill.md#kill-query) в соответствии со следующей иерархией привилегий:
 
@@ -560,7 +560,7 @@ GRANT CLUSTER ON *.* TO <username>
 
 Привилегия `KILL QUERY` позволяет одному пользователю завершать запросы других пользователей.
 
-### ACCESS MANAGEMENT {#access-management}
+### ACCESS MANAGEMENT
 
 Позволяет пользователю выполнять запросы для управления пользователями, ролями и политиками строк.
 
@@ -590,58 +590,58 @@ GRANT CLUSTER ON *.* TO <username>
     - `SHOW_SETTINGS_PROFILES`. Уровень: `GLOBAL`. Псевдонимы: `SHOW PROFILES`, `SHOW CREATE SETTINGS PROFILE`, `SHOW CREATE PROFILE`
   - `ALLOW SQL SECURITY NONE`. Уровень: `GLOBAL`. Псевдонимы: `CREATE SQL SECURITY NONE`, `SQL SECURITY NONE`, `SECURITY NONE`
 
-Привилегия `ROLE ADMIN` позволяет пользователю назначать и отзывать любые роли, включая те, которые не были назначены пользователю с правами администратора.
+Привилегия `ROLE ADMIN` позволяет пользователю назначать и отзывать любые роли, включая те, которые не были назначены этому пользователю с опцией ADMIN.
 
 ### SYSTEM {#system}
 
-Позволяет пользователю выполнять запросы [SYSTEM](../../sql-reference/statements/system.md) согласно следующей иерархии привилегий.
+Позволяет пользователю выполнять запросы [SYSTEM](../../sql-reference/statements/system.md) в соответствии со следующей иерархией привилегий.
 
 
-- `SYSTEM`. Level: `GROUP`
-  - `SYSTEM SHUTDOWN`. Level: `GLOBAL`. Aliases: `SYSTEM KILL`, `SHUTDOWN`
-  - `SYSTEM DROP CACHE`. Aliases: `DROP CACHE`
-    - `SYSTEM DROP DNS CACHE`. Level: `GLOBAL`. Aliases: `SYSTEM DROP DNS`, `DROP DNS CACHE`, `DROP DNS`
-    - `SYSTEM DROP MARK CACHE`. Level: `GLOBAL`. Aliases: `SYSTEM DROP MARK`, `DROP MARK CACHE`, `DROP MARKS`
-    - `SYSTEM DROP UNCOMPRESSED CACHE`. Level: `GLOBAL`. Aliases: `SYSTEM DROP UNCOMPRESSED`, `DROP UNCOMPRESSED CACHE`, `DROP UNCOMPRESSED`
-  - `SYSTEM RELOAD`. Level: `GROUP`
-    - `SYSTEM RELOAD CONFIG`. Level: `GLOBAL`. Aliases: `RELOAD CONFIG`
-    - `SYSTEM RELOAD DICTIONARY`. Level: `GLOBAL`. Aliases: `SYSTEM RELOAD DICTIONARIES`, `RELOAD DICTIONARY`, `RELOAD DICTIONARIES`
-      - `SYSTEM RELOAD EMBEDDED DICTIONARIES`. Level: `GLOBAL`. Aliases: `RELOAD EMBEDDED DICTIONARIES`
-  - `SYSTEM MERGES`. Level: `TABLE`. Aliases: `SYSTEM STOP MERGES`, `SYSTEM START MERGES`, `STOP MERGES`, `START MERGES`
-  - `SYSTEM TTL MERGES`. Level: `TABLE`. Aliases: `SYSTEM STOP TTL MERGES`, `SYSTEM START TTL MERGES`, `STOP TTL MERGES`, `START TTL MERGES`
-  - `SYSTEM FETCHES`. Level: `TABLE`. Aliases: `SYSTEM STOP FETCHES`, `SYSTEM START FETCHES`, `STOP FETCHES`, `START FETCHES`
-  - `SYSTEM MOVES`. Level: `TABLE`. Aliases: `SYSTEM STOP MOVES`, `SYSTEM START MOVES`, `STOP MOVES`, `START MOVES`
-  - `SYSTEM SENDS`. Level: `GROUP`. Aliases: `SYSTEM STOP SENDS`, `SYSTEM START SENDS`, `STOP SENDS`, `START SENDS`
-    - `SYSTEM DISTRIBUTED SENDS`. Level: `TABLE`. Aliases: `SYSTEM STOP DISTRIBUTED SENDS`, `SYSTEM START DISTRIBUTED SENDS`, `STOP DISTRIBUTED SENDS`, `START DISTRIBUTED SENDS`
-    - `SYSTEM REPLICATED SENDS`. Level: `TABLE`. Aliases: `SYSTEM STOP REPLICATED SENDS`, `SYSTEM START REPLICATED SENDS`, `STOP REPLICATED SENDS`, `START REPLICATED SENDS`
-  - `SYSTEM REPLICATION QUEUES`. Level: `TABLE`. Aliases: `SYSTEM STOP REPLICATION QUEUES`, `SYSTEM START REPLICATION QUEUES`, `STOP REPLICATION QUEUES`, `START REPLICATION QUEUES`
-  - `SYSTEM SYNC REPLICA`. Level: `TABLE`. Aliases: `SYNC REPLICA`
-  - `SYSTEM RESTART REPLICA`. Level: `TABLE`. Aliases: `RESTART REPLICA`
-  - `SYSTEM FLUSH`. Level: `GROUP`
-    - `SYSTEM FLUSH DISTRIBUTED`. Level: `TABLE`. Aliases: `FLUSH DISTRIBUTED`
-    - `SYSTEM FLUSH LOGS`. Level: `GLOBAL`. Aliases: `FLUSH LOGS`
+
+- `SYSTEM`. Уровень: `GROUP`
+  - `SYSTEM SHUTDOWN`. Уровень: `GLOBAL`. Синонимы: `SYSTEM KILL`, `SHUTDOWN`
+  - `SYSTEM DROP CACHE`. Синонимы: `DROP CACHE`
+    - `SYSTEM DROP DNS CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM DROP DNS`, `DROP DNS CACHE`, `DROP DNS`
+    - `SYSTEM DROP MARK CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM DROP MARK`, `DROP MARK CACHE`, `DROP MARKS`
+    - `SYSTEM DROP UNCOMPRESSED CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM DROP UNCOMPRESSED`, `DROP UNCOMPRESSED CACHE`, `DROP UNCOMPRESSED`
+  - `SYSTEM RELOAD`. Уровень: `GROUP`
+    - `SYSTEM RELOAD CONFIG`. Уровень: `GLOBAL`. Синонимы: `RELOAD CONFIG`
+    - `SYSTEM RELOAD DICTIONARY`. Уровень: `GLOBAL`. Синонимы: `SYSTEM RELOAD DICTIONARIES`, `RELOAD DICTIONARY`, `RELOAD DICTIONARIES`
+      - `SYSTEM RELOAD EMBEDDED DICTIONARIES`. Уровень: `GLOBAL`. Синонимы: `RELOAD EMBEDDED DICTIONARIES`
+  - `SYSTEM MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MERGES`, `SYSTEM START MERGES`, `STOP MERGES`, `START MERGES`
+  - `SYSTEM TTL MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP TTL MERGES`, `SYSTEM START TTL MERGES`, `STOP TTL MERGES`, `START TTL MERGES`
+  - `SYSTEM FETCHES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP FETCHES`, `SYSTEM START FETCHES`, `STOP FETCHES`, `START FETCHES`
+  - `SYSTEM MOVES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MOVES`, `SYSTEM START MOVES`, `STOP MOVES`, `START MOVES`
+  - `SYSTEM SENDS`. Уровень: `GROUP`. Синонимы: `SYSTEM STOP SENDS`, `SYSTEM START SENDS`, `STOP SENDS`, `START SENDS`
+    - `SYSTEM DISTRIBUTED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP DISTRIBUTED SENDS`, `SYSTEM START DISTRIBUTED SENDS`, `STOP DISTRIBUTED SENDS`, `START DISTRIBUTED SENDS`
+    - `SYSTEM REPLICATED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATED SENDS`, `SYSTEM START REPLICATED SENDS`, `STOP REPLICATED SENDS`, `START REPLICATED SENDS`
+  - `SYSTEM REPLICATION QUEUES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATION QUEUES`, `SYSTEM START REPLICATION QUEUES`, `STOP REPLICATION QUEUES`, `START REPLICATION QUEUES`
+  - `SYSTEM SYNC REPLICA`. Уровень: `TABLE`. Синонимы: `SYNC REPLICA`
+  - `SYSTEM RESTART REPLICA`. Уровень: `TABLE`. Синонимы: `RESTART REPLICA`
+  - `SYSTEM FLUSH`. Уровень: `GROUP`
+    - `SYSTEM FLUSH DISTRIBUTED`. Уровень: `TABLE`. Синонимы: `FLUSH DISTRIBUTED`
+    - `SYSTEM FLUSH LOGS`. Уровень: `GLOBAL`. Синонимы: `FLUSH LOGS`
 
 Привилегия `SYSTEM RELOAD EMBEDDED DICTIONARIES` неявно предоставляется привилегией `SYSTEM RELOAD DICTIONARY ON *.*`.
 
 ### INTROSPECTION {#introspection}
 
-Разрешает использование функций [интроспекции](../../operations/optimizing-performance/sampling-query-profiler.md).
+Позволяет использовать функции [интроспекции](../../operations/optimizing-performance/sampling-query-profiler.md).
 
-- `INTROSPECTION`. Level: `GROUP`. Aliases: `INTROSPECTION FUNCTIONS`
-  - `addressToLine`. Level: `GLOBAL`
-  - `addressToLineWithInlines`. Level: `GLOBAL`
-  - `addressToSymbol`. Level: `GLOBAL`
-  - `demangle`. Level: `GLOBAL`
+- `INTROSPECTION`. Уровень: `GROUP`. Синонимы: `INTROSPECTION FUNCTIONS`
+  - `addressToLine`. Уровень: `GLOBAL`
+  - `addressToLineWithInlines`. Уровень: `GLOBAL`
+  - `addressToSymbol`. Уровень: `GLOBAL`
+  - `demangle`. Уровень: `GLOBAL`
 
 ### SOURCES {#sources}
 
-Разрешает использование внешних источников данных. Применяется к [движкам таблиц](../../engines/table-engines/index.md) и [табличным функциям](/sql-reference/table-functions).
+Позволяет использовать внешние источники данных. Применяется к [движкам таблиц](../../engines/table-engines/index.md) и [табличным функциям](/sql-reference/table-functions).
 
-- `READ`. Level: `GLOBAL_WITH_PARAMETER`
-- `WRITE`. Level: `GLOBAL_WITH_PARAMETER`
+- `READ`. Уровень: `GLOBAL_WITH_PARAMETER`  
+- `WRITE`. Уровень: `GLOBAL_WITH_PARAMETER`
 
 Возможные параметры:
-
 - `AZURE`
 - `FILE`
 - `HDFS`
@@ -661,26 +661,27 @@ GRANT CLUSTER ON *.* TO <username>
 - `URL`
 
 
+
 :::note
-Разделение привилегий READ/WRITE для источников доступно начиная с версии 25.7 и только при включенной серверной настройке
+Разделение прав доступа READ/WRITE для источников доступно начиная с версии 25.7 и только при включённой настройке сервера
 `access_control_improvements.enable_read_write_grants`
 
-В противном случае следует использовать синтаксис `GRANT AZURE ON *.* TO user`, который эквивалентен новому `GRANT READ, WRITE ON AZURE TO user`
+В противном случае следует использовать синтаксис `GRANT AZURE ON *.* TO user`, который эквивалентен новому `GRANT READ, WRITE ON AZURE TO user`.
 :::
 
 Примеры:
 
-- Для создания таблицы с [движком таблиц MySQL](../../engines/table-engines/integrations/mysql.md) требуются привилегии `CREATE TABLE (ON db.table_name)` и `MYSQL`.
-- Для использования [табличной функции mysql](../../sql-reference/table-functions/mysql.md) требуются привилегии `CREATE TEMPORARY TABLE` и `MYSQL`.
+* Чтобы создать таблицу с [табличным движком MySQL](../../engines/table-engines/integrations/mysql.md), необходимы привилегии `CREATE TABLE (ON db.table_name)` и `MYSQL`.
+* Чтобы использовать [табличную функцию mysql](../../sql-reference/table-functions/mysql.md), необходимы привилегии `CREATE TEMPORARY TABLE` и `MYSQL`.
 
-### Привилегии с фильтрацией источников {#source-filter-grants}
+### Права доступа с фильтрацией по источникам
 
 :::note
-Эта функция доступна начиная с версии 25.8 и только при включенной серверной настройке
+Эта функциональность доступна начиная с версии 25.8 и только при включённой настройке сервера
 `access_control_improvements.enable_read_write_grants`
 :::
 
-Можно предоставить доступ к конкретным URI источников, используя фильтры на основе регулярных выражений. Это позволяет осуществлять детальный контроль над тем, к каким внешним источникам данных пользователи могут получить доступ.
+Вы можете предоставлять доступ к конкретным URI источников, используя фильтры на основе регулярных выражений. Это позволяет гибко и детализированно контролировать, к каким внешним источникам данных имеют доступ пользователи.
 
 **Синтаксис:**
 
@@ -688,17 +689,17 @@ GRANT CLUSTER ON *.* TO <username>
 GRANT READ ON S3('regexp_pattern') TO user
 ```
 
-Эта привилегия позволит пользователю читать только из URI S3, соответствующих указанному шаблону регулярного выражения.
+Это разрешение позволит пользователю читать только из S3‑URI, которые соответствуют указанному шаблону регулярного выражения.
 
 **Примеры:**
 
-Предоставление доступа к конкретным путям в корзине S3:
+Предоставить доступ к определённым путям в бакете S3:
 
 ```sql
--- Разрешить пользователю читать только из путей s3://foo/
+-- Разрешить пользователю чтение только из путей s3://foo/
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- Разрешить пользователю читать файлы по определенным шаблонам
+-- Разрешить пользователю чтение из файлов по определённым шаблонам
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
 -- Одному пользователю можно предоставить несколько фильтров
@@ -707,18 +708,18 @@ GRANT READ ON S3('s3://bar/.*') TO john
 ```
 
 :::warning
-Фильтр источника принимает **regexp** в качестве параметра, поэтому привилегия
+Фильтр источника принимает **regexp** в качестве параметра, поэтому грант
 `GRANT READ ON URL('http://www.google.com') TO john;`
 
-разрешит запросы
+позволит выполнять запросы
 
 ```sql
 SELECT * FROM url('https://www.google.com');
 SELECT * FROM url('https://www-google.com');
 ```
 
-потому что `.` интерпретируется как `любой одиночный символ` в регулярных выражениях.
-Это может привести к потенциальной уязвимости. Правильная привилегия должна быть
+поскольку `.` в регулярных выражениях (`regexp`) интерпретируется как «любой одиночный символ» (`Any Single Character`).
+Это может привести к уязвимости. Корректная инструкция GRANT должна быть:
 
 ```sql
 GRANT READ ON URL('https://www\.google\.com') TO john;
@@ -726,46 +727,46 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 
 :::
 
-**Повторное предоставление с GRANT OPTION:**
+**Повторная выдача прав с `GRANT OPTION`:**
 
-Если исходная привилегия имеет `WITH GRANT OPTION`, её можно повторно предоставить с помощью `GRANT CURRENT GRANTS`:
+Если исходный `GRANT` был выполнен с `WITH GRANT OPTION`, права можно выдать повторно с помощью `GRANT CURRENT GRANTS`:
 
 ```sql
--- Исходная привилегия с GRANT OPTION
+-- Исходное предоставление прав с GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- Теперь John может повторно предоставить этот доступ другим
+-- Теперь John может передать эти права другим пользователям
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 
 **Важные ограничения:**
 
-- **Частичный отзыв не допускается:** Нельзя отозвать подмножество предоставленного шаблона фильтра. При необходимости нужно отозвать всю привилегию целиком и предоставить её заново с новыми шаблонами.
-- **Привилегии с подстановочными знаками не допускаются:** Нельзя использовать `GRANT READ ON *('regexp')` или аналогичные шаблоны только с подстановочными знаками. Необходимо указать конкретный источник.
+* **Частичный отзыв прав не допускается:** Нельзя отозвать только подмножество выданного шаблона фильтра. Необходимо отозвать весь `GRANT` и при необходимости выдать его снова с новыми шаблонами.
+* **`GRANT` с подстановочными символами не допускается:** Нельзя использовать `GRANT READ ON *('regexp')` или аналогичные шаблоны, состоящие только из подстановочных символов. Должен быть указан конкретный источник.
 
-### dictGet {#dictget}
+### dictGet
 
-- `dictGet`. Псевдонимы: `dictHas`, `dictGetHierarchy`, `dictIsIn`
+* `dictGet`. Псевдонимы: `dictHas`, `dictGetHierarchy`, `dictIsIn`
 
 Позволяет пользователю выполнять функции [dictGet](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), [dictHas](../../sql-reference/functions/ext-dict-functions.md#dicthas), [dictGetHierarchy](../../sql-reference/functions/ext-dict-functions.md#dictgethierarchy), [dictIsIn](../../sql-reference/functions/ext-dict-functions.md#dictisin).
 
-Уровень привилегии: `DICTIONARY`.
+Уровень привилегий: `DICTIONARY`.
 
 **Примеры**
 
-- `GRANT dictGet ON mydb.mydictionary TO john`
-- `GRANT dictGet ON mydictionary TO john`
+* `GRANT dictGet ON mydb.mydictionary TO john`
+* `GRANT dictGet ON mydictionary TO john`
 
-### displaySecretsInShowAndSelect {#displaysecretsinshowandselect}
+### displaySecretsInShowAndSelect
 
-Позволяет пользователю просматривать секреты в запросах `SHOW` и `SELECT`, если включены как
-[серверная настройка `display_secrets_in_show_and_select`](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select),
-так и
-[настройка формата `format_display_secrets_in_show_and_select`](../../operations/settings/formats#format_display_secrets_in_show_and_select).
+Позволяет пользователю просматривать секреты в запросах `SHOW` и `SELECT`, если одновременно включены
+[`display_secrets_in_show_and_select` настройка сервера](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select)
+и
+[`format_display_secrets_in_show_and_select` настройка формата](../../operations/settings/formats#format_display_secrets_in_show_and_select).
 
-### NAMED COLLECTION ADMIN {#named-collection-admin}
+### NAMED COLLECTION ADMIN
 
-Позволяет выполнять определенную операцию над указанной именованной коллекцией. До версии 23.7 эта привилегия называлась NAMED COLLECTION CONTROL, а после версии 23.7 была добавлена NAMED COLLECTION ADMIN, при этом NAMED COLLECTION CONTROL сохранена в качестве псевдонима.
+Позволяет выполнять определённую операцию над указанной именованной коллекцией. До версии 23.7 привилегия называлась NAMED COLLECTION CONTROL, а после 23.7 была добавлена NAMED COLLECTION ADMIN, при этом NAMED COLLECTION CONTROL сохранена как псевдоним.
 
 
 - `NAMED COLLECTION ADMIN`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION CONTROL`
@@ -776,17 +777,16 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
   - `SHOW NAMED COLLECTIONS SECRETS`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `SHOW NAMED COLLECTIONS SECRETS`
   - `NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION USAGE, USE NAMED COLLECTION`
 
-В отличие от всех остальных привилегий (CREATE, DROP, ALTER, SHOW), привилегия NAMED COLLECTION была добавлена только в версии 23.7, в то время как остальные были добавлены ранее — в версии 22.12.
+В отличие от всех остальных привилегий (CREATE, DROP, ALTER, SHOW) привилегия `NAMED COLLECTION` была добавлена только в версии 23.7, тогда как все остальные были добавлены ранее — в 22.12.
 
 **Примеры**
 
-Предположим, что именованная коллекция называется abc. Предоставим привилегию CREATE NAMED COLLECTION пользователю john.
-
+Предположим, именованная коллекция называется abc. Выдаем привилегию `CREATE NAMED COLLECTION` пользователю john.
 - `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
 ### TABLE ENGINE {#table-engine}
 
-Позволяет использовать указанный движок таблицы при её создании. Применяется к [движкам таблиц](../../engines/table-engines/index.md).
+Разрешает использование указанного движка таблицы при создании таблицы. Применяется к [движкам таблиц](../../engines/table-engines/index.md).
 
 **Примеры**
 
@@ -795,19 +795,19 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### ALL {#all}
 
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
-Предоставляет все привилегии на регулируемую сущность учётной записи пользователя или роли.
+Предоставляет все привилегии на объект пользователю или роли.
 
 :::note
-Привилегия `ALL` не поддерживается в ClickHouse Cloud, где пользователь `default` имеет ограниченные права. Пользователи могут предоставить максимальные права другому пользователю, назначив роль `default_role`. Подробнее см. [здесь](/cloud/security/manage-cloud-users).
-Пользователи также могут использовать `GRANT CURRENT GRANTS` от имени пользователя default для достижения эффекта, аналогичного `ALL`.
+Привилегия `ALL` не поддерживается в ClickHouse Cloud, где пользователь `default` имеет ограниченные права. Пользователи могут выдать максимальные права пользователю, назначив ему роль `default_role`. См. подробности [здесь](/cloud/security/manage-cloud-users).
+Пользователи также могут использовать `GRANT CURRENT GRANTS` от имени пользователя `default`, чтобы добиться эффекта, аналогичного `ALL`.
 :::
 
 ### NONE {#none}
 
-Не предоставляет никаких привилегий.
+Не выдает никаких привилегий.
 
 ### ADMIN OPTION {#admin-option}
 
-Привилегия `ADMIN OPTION` позволяет пользователю предоставлять свою роль другому пользователю.
+Привилегия `ADMIN OPTION` позволяет пользователю выдавать свою роль другому пользователю.

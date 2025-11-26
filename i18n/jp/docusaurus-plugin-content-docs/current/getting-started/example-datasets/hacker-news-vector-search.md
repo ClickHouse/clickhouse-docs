@@ -1,26 +1,28 @@
 ---
-description: '2,800 万件以上の Hacker News 投稿とそのベクトル埋め込み表現を含むデータセット'
+description: '2,800万件以上の Hacker News 投稿とそのベクトル埋め込み表現を含むデータセット'
 sidebar_label: 'Hacker News ベクトル検索データセット'
 slug: /getting-started/example-datasets/hackernews-vector-search-dataset
 title: 'Hacker News ベクトル検索データセット'
-keywords: ['セマンティック検索', 'ベクトル類似度', '近似最近傍探索', '埋め込み表現']
+keywords: ['セマンティック検索', 'ベクトル類似度', '近似最近傍探索', '埋め込み']
 doc_type: 'guide'
 ---
 
 
 
-## Introduction {#introduction}
+## はじめに {#introduction}
 
-[Hacker Newsデータセット](https://news.ycombinator.com/)には、2,874万件の投稿とそのベクトル埋め込みが含まれています。埋め込みは、[SentenceTransformers](https://sbert.net/)モデルの[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)を使用して生成されました。各埋め込みベクトルの次元数は`384`です。
+[Hacker News データセット](https://news.ycombinator.com/) には、2,874 万件の投稿とそのベクトル埋め込みが含まれています。埋め込みは [SentenceTransformers](https://sbert.net/) モデル [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) を使用して生成されています。各埋め込みベクトルの次元数は `384` です。
 
-このデータセットは、ユーザー生成のテキストデータを基盤とした大規模な実環境のベクトル検索アプリケーションにおける、設計、サイジング、およびパフォーマンスの各側面を検証するために使用できます。
+このデータセットは、ユーザー生成のテキストデータを基盤にした、大規模で実運用レベルのベクトル検索アプリケーションにおける設計、スケーリング、およびパフォーマンスの各側面を検討するために利用できます。
+
 
 
 ## データセットの詳細 {#dataset-details}
 
-ベクトル埋め込みを含む完全なデータセットは、ClickHouseによって単一の`Parquet`ファイルとして[S3バケット](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet)で提供されています。
+ベクトル埋め込み付きの完全なデータセットは、ClickHouse により単一の `Parquet` ファイルとして [S3 バケット](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet) で提供されています。
 
-このデータセットのストレージおよびメモリ要件を見積もるために、まず[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してサイジング演習を実行することを推奨します。
+このデータセットのストレージおよびメモリ要件を見積もるため、まずサイジングを行うことを推奨します。その際は、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
+
 
 
 ## 手順 {#steps}
@@ -29,7 +31,7 @@ doc_type: 'guide'
 
 ### テーブルの作成 {#create-table}
 
-投稿とその埋め込みベクトル、および関連する属性を格納する`hackernews`テーブルを作成します:
+投稿とその埋め込みベクトル、および関連する属性を格納するための `hackernews` テーブルを作成します:
 
 ```sql
 CREATE TABLE hackernews
@@ -55,21 +57,21 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-`id`は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、事後フィルタリング/事前フィルタリングと組み合わせたベクトル類似度検索に利用できます。
+`id` は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、ポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を理解するために利用できます。
 
 ### データの読み込み {#load-table}
 
-`Parquet`ファイルからデータセットを読み込むには、以下のSQLステートメントを実行します:
+`Parquet` ファイルからデータセットを読み込むには、以下のSQL文を実行します:
 
 ```sql
 INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet');
 ```
 
-テーブルへの2,874万行の挿入には数分かかります。
+テーブルへの2874万行の挿入には数分かかります。
 
-### ベクトル類似度インデックスの構築 {#build-vector-similarity-index}
+### ベクトル類似性インデックスの構築 {#build-vector-similarity-index}
 
-`hackernews`テーブルの`vector`カラムにベクトル類似度インデックスを定義して構築するには、以下のSQLを実行します:
+`hackernews` テーブルの `vector` 列にベクトル類似性インデックスを定義および構築するには、以下のSQLを実行します:
 
 ```sql
 ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
@@ -78,14 +80,14 @@ ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 
 ```
 
 インデックス作成と検索のパラメータおよびパフォーマンスに関する考慮事項は、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)に記載されています。
-上記のステートメントは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-ユーザーは、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、これらのパラメータの最適な値を慎重に選択する必要があります。
+上記の文では、HNSWハイパーパラメータ `M` と `ef_construction` にそれぞれ64と512の値を使用しています。
+選択した値に対応するインデックス構築時間と検索結果の品質を評価することで、これらのパラメータの最適な値を慎重に選択する必要があります。
 
-インデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、2,874万件の完全なデータセットに対して数分から数時間かかる場合があります。
+インデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、2874万件の完全なデータセットに対して数分から数時間かかる場合があります。
 
 ### ANN検索の実行 {#perform-ann-search}
 
-ベクトル類似度インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
+ベクトル類似性インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
 
 ```sql title="Query"
 SELECT id, title, text
@@ -99,11 +101,11 @@ LIMIT 10
 
 ### 検索クエリの埋め込みベクトル生成 {#generating-embeddings-for-search-query}
 
-[Sentence Transformers](https://www.sbert.net/)は、文や段落の意味を捉えるための、ローカルで使いやすい埋め込みモデルを提供します。
+[Sentence Transformers](https://www.sbert.net/) は、文や段落の意味を捉えるための、ローカルで使いやすい埋め込みモデルを提供します。
 
-このHackerNewsデータセットには、[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)モデルから生成されたベクトル埋め込みが含まれています。
+このHackerNewsデータセットには、[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) モデルから生成されたベクトル埋め込みが含まれています。
 
-以下に、`sentence_transformers` Pythonパッケージを使用してプログラム的に埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数の引数として渡されます。
+以下に、`sentence_transformers` Pythonパッケージを使用してプログラム的に埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索埋め込みベクトルは、`SELECT` クエリ内の [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 関数の引数として渡されます。
 
 ```python
 from sentence_transformers import SentenceTransformer
@@ -118,13 +120,13 @@ model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
 while True:
-    # Take the search query from user
-    print("Enter a search query :")
+    # ユーザーから検索クエリを取得
+    print("検索クエリを入力してください:")
     input_query = sys.stdin.readline();
     texts = [input_query]
 
-    # Run the model and obtain search vector
-    print("Generating the embedding for ", input_query);
+    # モデルを実行して検索ベクトルを取得
+    print("埋め込みベクトルを生成中:", input_query);
     embeddings = model.encode(texts)
 
 ```
@@ -210,43 +212,47 @@ rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probab
 ````
 
 
-## 要約デモアプリケーション {#summarization-demo-application}
+## 要約デモアプリケーション
 
-上記の例では、ClickHouseを使用したセマンティック検索とドキュメント検索を実演しました。
+前述の例では、ClickHouse を用いたセマンティック検索とドキュメント検索を紹介しました。
 
-次に、非常にシンプルながら高い可能性を秘めた生成AIのサンプルアプリケーションを紹介します。
+次に、非常にシンプルながら高いポテンシャルを持つ生成 AI のサンプルアプリケーションを紹介します。
 
-このアプリケーションは以下の手順を実行します:
+このアプリケーションは以下の手順を実行します。
 
-1. ユーザーから_トピック_を入力として受け取る
-2. `SentenceTransformers`とモデル`all-MiniLM-L6-v2`を使用して、_トピック_の埋め込みベクトルを生成する
-3. `hackernews`テーブルに対してベクトル類似度検索を使用し、高い関連性を持つ投稿/コメントを取得する
-4. `LangChain`とOpenAI `gpt-3.5-turbo` Chat APIを使用して、ステップ3で取得したコンテンツを**要約**する。
-   ステップ3で取得した投稿/コメントは_コンテキスト_としてChat APIに渡され、生成AIにおける重要な連携要素となる。
+1. ユーザーから入力として *topic*（トピック）を受け取る
+2. `SentenceTransformers` とモデル `all-MiniLM-L6-v2` を用いて、その *topic* の埋め込みベクトルを生成する
+3. `hackernews` テーブル上でのベクトル類似度検索を使って、関連性の高い投稿・コメントを取得する
+4. `LangChain` と OpenAI `gpt-3.5-turbo` Chat API を使用して、ステップ #3 で取得したコンテンツを**要約**する。\
+   ステップ #3 で取得した投稿・コメントは *context*（コンテキスト）として Chat API に渡され、生成 AI を実現するための重要な要素となる。
 
-以下に、要約アプリケーションの実行例を最初に示し、その後に要約アプリケーションのコードを示します。アプリケーションを実行するには、環境変数`OPENAI_API_KEY`にOpenAI APIキーを設定する必要があります。OpenAI APIキーは、https://platform.openai.com で登録後に取得できます。
+要約アプリケーションを実行した例を以下に示し、その後に要約アプリケーションのコードを掲載します。
+アプリケーションを実行するには、環境変数 `OPENAI_API_KEY` に OpenAI API キーを設定する必要があります。
+OpenAI API キーは [https://platform.openai.com](https://platform.openai.com) で登録することで取得できます。
 
-このアプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話のマイニング、法的文書、医療記録、会議の議事録、財務諸表など、複数の企業ドメインに適用可能な生成AIのユースケースを実演しています。
+このアプリケーションは、以下のような複数のエンタープライズ領域に適用可能な生成 AI のユースケースを示しています：
+顧客感情の分析、テクニカルサポートの自動化、ユーザー会話の分析、法的文書、医療記録、
+会議の文字起こし、財務諸表など
 
 ```shell
 $ python3 summarize.py
 
-検索トピックを入力してください:
-ClickHouseのパフォーマンス体験
+Enter a search topic :
+ClickHouse performance experiences
 
-埋め込みを生成中 ---->  ClickHouseのパフォーマンス体験
+Generating the embedding for ---->  ClickHouse performance experiences
 
-関連記事を取得するためにClickHouseにクエリを実行中...
+Querying ClickHouse to retrieve relevant articles...
 
-chatgpt-3.5-turboモデルを初期化中...
+Initializing chatgpt-3.5-turbo model...
 
-ClickHouseから取得した検索結果を要約中...
+Summarizing search results retrieved from ClickHouse...
 
-chatgpt-3.5からの要約:
-議論は、ClickHouseをTimescaleDB、Apache Spark、AWS Redshift、QuestDBなどの様々なデータベースと比較することに焦点を当てており、ClickHouseのコスト効率の高いパフォーマンスと分析アプリケーションへの適合性を強調しています。ユーザーは、大規模な分析ワークロードを処理する際のClickHouseのシンプルさ、速度、リソース効率を称賛していますが、DMLやバックアップの難しさなどの課題も言及されています。ClickHouseは、リアルタイム集計計算機能と堅実なエンジニアリングで認識されており、DruidやMemSQLなどの他のデータベースとの比較も行われています。全体として、ClickHouseはリアルタイムデータ処理、分析、大量のデータを効率的に処理するための強力なツールと見なされており、その印象的なパフォーマンスとコスト効率の高さで人気を集めています。
+Summary from chatgpt-3.5:
+この議論では、ClickHouseをTimescaleDB、Apache Spark、AWS Redshift、QuestDBなどの各種データベースと比較し、ClickHouseのコスト効率に優れた高性能と分析アプリケーションへの適性を強調しています。ユーザーは、大規模分析ワークロードを処理する際のClickHouseのシンプルさ、速度、リソース効率を高く評価していますが、DMLやバックアップの難しさといった課題も指摘されています。ClickHouseはリアルタイム集計計算機能と堅牢なエンジニアリングで評価されており、DruidやMemSQLなどの他のデータベースとの比較も行われています。総じて、ClickHouseはリアルタイムデータ処理、分析、大量データの効率的な処理のための強力なツールとして認識されており、その卓越したパフォーマンスとコスト効率の高さで人気を博しています。
 ```
 
-上記アプリケーションのコード:
+上記アプリケーションのコードは次のとおりです。
 
 ```python
 print("初期化中...")
@@ -281,11 +287,11 @@ while True:
     input_query = sys.stdin.readline();
     texts = [input_query]
 
-    # モデルを実行し、検索または参照ベクトルを取得
+    # モデルを実行して検索ベクトルまたは参照ベクトルを取得
     print("埋め込みを生成中 ----> ", input_query);
     embeddings = model.encode(texts)
 
-    print("ClickHouseにクエリを実行中...")
+    print("ClickHouseへクエリ実行中...")
     params = {'v1':list(embeddings[0]), 'v2':100}
     result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
@@ -318,7 +324,6 @@ while True:
 """
 
     prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
-
 ```
 
 

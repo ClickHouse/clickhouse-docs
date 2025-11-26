@@ -1,8 +1,8 @@
 ---
 sidebar_title: 'クエリインサイト'
 slug: /cloud/get-started/query-insights
-description: 'クエリのデバッグとパフォーマンス最適化を容易にするために、system.query_log データを可視化します'
-keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
+description: 'system.query_log データを可視化し、クエリのデバッグとパフォーマンスの最適化を容易にします'
+keywords: ['クエリインサイト', 'クエリログ', 'クエリログ UI', 'system.query_log インサイト']
 title: 'クエリインサイト'
 doc_type: 'guide'
 ---
@@ -15,70 +15,48 @@ import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_dr
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
 
-# クエリインサイト
+# Query Insights
 
-**Query Insights** 機能は、さまざまな可視化やテーブルを通じて、ClickHouse の組み込みクエリログをより活用しやすくします。ClickHouse の `system.query_log` テーブルは、クエリ最適化、デバッグ、クラスター全体の健全性とパフォーマンスの監視のための主要な情報源です。
+**Query Insights** 機能は、さまざまな可視化やテーブルを通じて、ClickHouse の組み込みクエリログをより簡単に活用できるようにします。ClickHouse の `system.query_log` テーブルは、クエリ最適化、デバッグ、クラスタ全体の健全性とパフォーマンスの監視にとって重要な情報源です。
 
 
 
 ## クエリ概要 {#query-overview}
 
-サービスを選択すると、左サイドバーの**Monitoring**ナビゲーション項目が展開され、新しい**Query insights**サブ項目が表示されます。このオプションをクリックすると、Query insightsページが開きます:
+サービスを選択すると、左サイドバーの **Monitoring** ナビゲーション項目が展開され、新たに **Query insights** というサブ項目が表示されます。このオプションをクリックすると、新しい Query insights ページが開きます。
 
-<Image
-  img={insights_overview}
-  size='md'
-  alt='Query Insights UIの概要'
-  border
-/>
+<Image img={insights_overview} size="md" alt="Query Insights UI Overview" border/>
+
 
 
 ## トップレベルメトリクス {#top-level-metrics}
 
-上部の統計ボックスには、選択された期間における基本的なトップレベルのクエリメトリクスが表示されます。その下には、選択された時間枠内でクエリの種類(select、insert、その他)ごとに分類されたクエリ量、レイテンシ、エラー率を表す3つの時系列チャートが表示されます。レイテンシチャートは、p50、p90、p99のレイテンシを表示するように調整することができます:
+上部の統計ボックスは、選択した期間におけるいくつかの基本的なクエリのトップレベルメトリクスを表しています。その下には、クエリ種別（select、insert、other）ごとに分解されたクエリ数、レイテンシ、エラー率を、選択した時間範囲にわたって可視化する 3 つの時系列チャートが表示されます。レイテンシチャートではさらに、p50、p90、p99 のレイテンシを表示するように切り替えることができます。
 
-<Image
-  img={insights_latency}
-  size='md'
-  alt='Query Insights UIレイテンシチャート'
-  border
-/>
+<Image img={insights_latency} size="md" alt="Query Insights UI Latency Chart" border/>
+
 
 
 ## 最近のクエリ {#recent-queries}
 
-トップレベルメトリクスの下には、選択した期間における(正規化されたクエリハッシュとユーザーでグループ化された)クエリログエントリを表示するテーブルがあります:
+トップレベルのメトリクスの下には、選択した時間範囲におけるクエリログのエントリ（正規化されたクエリハッシュとユーザーごとにグループ化）がテーブルで表示されます。
 
-<Image
-  img={insights_recent}
-  size='md'
-  alt='Query Insights UI 最近のクエリテーブル'
-  border
-/>
+<Image img={insights_recent} size="md" alt="Query Insights UI Recent Queries Table" border/>
 
-最近のクエリは、利用可能な任意のフィールドでフィルタリングおよびソートできます。また、テーブル名、p90、p99レイテンシなどの追加フィールドを表示または非表示にするようテーブルを設定することもできます。
+最近のクエリは、利用可能な任意のフィールドでフィルタおよびソートできます。テーブルでは、テーブル名や p90 / p99 レイテンシなどの追加フィールドを表示または非表示にするように設定することもできます。
+
 
 
 ## クエリのドリルダウン {#query-drill-down}
 
-最近のクエリテーブルからクエリを選択すると、選択したクエリに関する詳細なメトリクスと情報を含むフライアウトが開きます:
+最近のクエリテーブルからクエリを選択すると、選択したクエリに固有のメトリクスと情報を含むフライアウトが開きます。
 
-<Image
-  img={insights_drilldown}
-  size='md'
-  alt='Query Insights UIのクエリドリルダウン'
-  border
-/>
+<Image img={insights_drilldown} size="md" alt="Query Insights UI Query Drill down" border/>
 
-フライアウトから確認できるように、この特定のクエリは過去24時間で3000回以上実行されています。**Query info**タブ内のすべてのメトリクスは集計されたメトリクスですが、**Query history**タブを選択することで個別の実行結果のメトリクスも表示できます:
+フライアウトから分かるように、このクエリは過去24時間に 3,000 回以上実行されています。**Query info** タブに表示されるメトリクスはすべて集計メトリクスですが、**Query history** タブを選択することで、各実行ごとのメトリクスも表示できます。
 
-<Image
-  img={insights_query_info}
-  size='sm'
-  alt='Query Insights UIのクエリ情報'
-  border
-/>
+<Image img={insights_query_info} size="sm" alt="Query Insights UI Query Information" border/>
 
 <br />
 
-このペインから、各クエリ実行の`Settings`と`Profile Events`項目を展開して追加情報を表示することができます。
+このペインからは、各クエリ実行の `Settings` および `Profile Events` 項目を展開して、追加情報を表示できます。

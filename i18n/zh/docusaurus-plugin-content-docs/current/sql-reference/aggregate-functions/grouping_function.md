@@ -13,21 +13,21 @@ doc_type: 'reference'
 
 ## GROUPING {#grouping}
 
-[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是 GROUP BY 的修饰符。两者都用于计算小计。ROLLUP 接受一个有序的列列表,例如 `(day, month, year)`,在聚合的每个层级计算小计,最后计算总计。CUBE 计算指定列所有可能组合的小计。GROUPING 用于识别 ROLLUP 或 CUBE 返回的行中,哪些是超聚合行,哪些是未经修饰的 GROUP BY 会返回的普通行。
+[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是对 GROUP BY 的修饰符，它们都会计算小计。ROLLUP 接收一个有序的列列表，例如 `(day, month, year)`，并在聚合的每个层级计算小计，最后再计算总计。CUBE 则会针对所指定列的所有可能组合计算小计。GROUPING 用于识别由 ROLLUP 或 CUBE 返回的哪些行是更高层级的聚合行（superaggregate），哪些则是未使用修饰符的 GROUP BY 本应返回的普通分组结果行。
 
-GROUPING 函数接受多个列作为参数,并返回一个位掩码。
+GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask）值。 
+- `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
+- `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
 
-- `1` 表示该行是由 `ROLLUP` 或 `CUBE` 修饰符对 `GROUP BY` 产生的小计行
-- `0` 表示该行是由 `ROLLUP` 或 `CUBE` 返回的非小计行
 
 
-## GROUPING SETS {#grouping-sets}
+## GROUPING SETS
 
-默认情况下,CUBE 修饰符会计算传递给 CUBE 的列的所有可能组合的小计。GROUPING SETS 允许您指定要计算的特定组合。
+默认情况下，CUBE 修饰符会对传入 CUBE 的所有列的所有可能组合计算小计。GROUPING SETS 允许你指定要计算的具体组合。
 
-分析层次化数据是 ROLLUP、CUBE 和 GROUPING SETS 修饰符的典型应用场景。本示例中的表包含了两个数据中心安装的 Linux 发行版及其版本的数据。按发行版、版本和位置查看数据可能很有价值。
+对层次化数据进行分析是使用 ROLLUP、CUBE 和 GROUPING SETS 修饰符的典型用例。这里的示例是一张表，包含了在两个数据中心中安装的 Linux 发行版及其版本的信息。按发行版、版本和数据中心位置来查看这些数据可能是有价值的。
 
-### 加载示例数据 {#load-sample-data}
+### 加载示例数据
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -53,7 +53,7 @@ VALUES ('Schenectady', 'Arch','2022.08.05',50),
 ```
 
 ```sql
-SELECT
+SELECT 
     *
 FROM
     servers;
@@ -73,17 +73,17 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10 rows in set. Elapsed: 0.409 sec.
+10 行数据。耗时: 0.409 秒。
 ```
 
-### 简单查询 {#simple-queries}
+### 简单查询
 
-按发行版获取每个数据中心的服务器数量:
+按分布情况统计每个数据中心中的服务器数量：
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -100,12 +100,12 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-4 rows in set. Elapsed: 0.212 sec.
+返回 4 行。耗时：0.212 秒。
 ```
 
 ```sql
 SELECT
-    datacenter,
+    datacenter, 
     SUM (quantity) qty
 FROM
     servers
@@ -119,12 +119,12 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-2 rows in set. Elapsed: 0.277 sec.
+返回 2 行。用时:0.277 秒。 
 ```
 
 ```sql
 SELECT
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -139,7 +139,7 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-2 rows in set. Elapsed: 0.352 sec.
+查询返回 2 行。用时：0.352 秒。 
 ```
 
 
@@ -155,17 +155,17 @@ FROM
 │ 445 │
 └─────┘
 
-1 row in set. Elapsed: 0.244 sec.
+返回 1 行。耗时:0.244 秒。 
 ```
 
-### 使用 GROUPING SETS 比较多个 GROUP BY 语句 {#comparing-multiple-group-by-statements-with-grouping-sets}
+### 对比多个 GROUP BY 语句与 GROUPING SETS
 
-不使用 CUBE、ROLLUP 或 GROUPING SETS 分解数据:
+在不使用 CUBE、ROLLUP 或 GROUPING SETS 的情况下对数据进行拆分：
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -174,7 +174,7 @@ GROUP BY
     distro
 UNION ALL
 SELECT
-    datacenter,
+    datacenter, 
     null,
     SUM (quantity) qty
 FROM
@@ -184,7 +184,7 @@ GROUP BY
 UNION ALL
 SELECT
     null,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -218,15 +218,15 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 rows in set. Elapsed: 0.527 sec.
+9 行在集合中。耗时：0.527 秒。 
 ```
 
-使用 GROUPING SETS 获取相同信息:
+通过 GROUPING SETS 获取相同的信息：
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -258,12 +258,12 @@ GROUP BY
 │            │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 rows in set. Elapsed: 0.427 sec.
+9 行在集合中。耗时：0.427 秒。
 ```
 
-### 比较 CUBE 与 GROUPING SETS {#comparing-cube-with-grouping-sets}
+### 将 CUBE 与 GROUPING SETS 进行比较
 
-下一个查询中的 CUBE,即 `CUBE(datacenter,distro,version)` 提供的层次结构可能不合理。跨两个发行版查看版本没有意义(因为 Arch 和 RHEL 的发布周期和版本命名标准不同)。接下来的 GROUPING SETS 示例更为合适,因为它将 `distro` 和 `version` 分组在同一个集合中。
+下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
 
 
 ```sql
@@ -324,11 +324,11 @@ ORDER BY
 │ Westport    │ RHEL   │            │           150 │
 └─────────────┴────────┴────────────┴───────────────┘
 
-返回 39 行。用时：0.355 秒。 
+39 行结果集。执行时间:0.355 秒。 
 ```
 
 :::note
-在上面的示例中，当版本没有关联到某个发行版（distro）时，可能不太合理；如果我们跟踪的是内核版本，则可能就说得通，因为内核版本可以与任一发行版关联。使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
+当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
 :::
 
 

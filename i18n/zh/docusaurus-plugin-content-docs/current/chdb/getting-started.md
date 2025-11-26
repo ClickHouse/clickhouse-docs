@@ -1,6 +1,6 @@
 ---
-title: 'chDB 入门'
-sidebar_label: '入门'
+title: '开始使用 chDB'
+sidebar_label: '快速开始'
 slug: /chdb/getting-started
 description: 'chDB 是由 ClickHouse 驱动的进程内 SQL OLAP 引擎'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
@@ -11,15 +11,15 @@ doc_type: 'guide'
 
 # chDB 入门
 
-在本指南中，我们将使用 chDB 的 Python 版本快速上手。
-我们会先在 S3 上查询一个 JSON 文件，然后基于该 JSON 文件在 chDB 中创建一张表，并对其中的数据执行一些查询。
-我们还将了解如何让查询结果以不同格式返回，包括 Apache Arrow 和 Pandas，最后我们会学习如何查询 Pandas DataFrame。 
+在本指南中，我们将快速上手 chDB 的 Python 版本。
+我们会先查询存储在 S3 上的 JSON 文件，然后基于该 JSON 文件在 chDB 中创建一张表，并对其中的数据执行一些查询。
+我们还将了解如何让查询结果以不同格式返回数据，包括 Apache Arrow 和 Pandas，最后我们会学习如何查询 Pandas DataFrame。 
 
 
 
-## 设置 {#setup}
+## 环境准备
 
-首先创建一个虚拟环境:
+先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
@@ -27,44 +27,44 @@ source .venv/bin/activate
 ```
 
 接下来安装 chDB。
-请确保版本为 2.0.3 或更高版本:
+请确保安装的版本为 2.0.3 或更高：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-然后安装 [ipython](https://ipython.org/):
+接下来我们要安装 [ipython](https://ipython.org/)：
 
 ```bash
 pip install ipython
 ```
 
-本指南后续部分将使用 `ipython` 来运行命令,可以通过以下命令启动:
+在本指南的其余部分，我们将使用 `ipython` 来运行命令。你可以通过运行以下命令来启动它：
 
 ```bash
 ipython
 ```
 
-本指南还将使用 Pandas 和 Apache Arrow,因此也需要安装这些库:
+在本指南中我们还将使用 Pandas 和 Apache Arrow，因此现在也一并安装这些库：
 
 ```bash
 pip install pandas pyarrow
 ```
 
 
-## 查询 S3 中的 JSON 文件 {#querying-a-json-file-in-s3}
+## 在 S3 中查询 JSON 文件
 
-现在让我们来看看如何查询存储在 S3 存储桶中的 JSON 文件。
-[YouTube 踩数据集](/getting-started/example-datasets/youtube-dislikes)包含截至 2021 年超过 40 亿条 YouTube 视频的踩记录。
-我们将使用该数据集中的一个 JSON 文件。
+现在来看看如何查询存储在 S3 存储桶中的 JSON 文件。
+[YouTube dislikes 数据集](/getting-started/example-datasets/youtube-dislikes) 包含了截至 2021 年的超过 40 亿行 YouTube 视频点踩记录。
+我们将使用该数据集中的一个 JSON 文件进行演示。
 
-导入 chdb:
+导入 chdb：
 
 ```python
 import chdb
 ```
 
-我们可以编写以下查询来描述其中一个 JSON 文件的结构:
+我们可以编写如下查询语句来描述其中一个 JSON 文件的结构：
 
 ```python
 chdb.query(
@@ -110,7 +110,7 @@ chdb.query(
 "video_badges","Nullable(String)"
 ```
 
-我们还可以统计该文件中的行数:
+我们还可以统计该文件的行数：
 
 ```python
 chdb.query(
@@ -130,7 +130,7 @@ chdb.query(
 
 该文件包含略多于 30 万条记录。
 
-chdb 目前尚不支持传递查询参数,但我们可以提取路径并通过 f-String 传递。
+chdb 目前还不支持传递查询参数，但我们可以先将路径提取出来，然后通过 f 字符串传入。
 
 ```python
 path = 's3://clickhouse-public-datasets/youtube/original/files/youtubedislikes_20211127161229_18654868.1637897329_vid.json.zst'
@@ -146,14 +146,14 @@ chdb.query(
 ```
 
 :::warning
-对于程序中定义的变量这样做是可以的,但不要对用户提供的输入这样做,否则您的查询将面临 SQL 注入风险。
+在程序中对已定义的变量这样做是可以的，但绝不要对用户提供的输入这么做，否则你的查询将暴露在 SQL 注入攻击之下。
 :::
 
 
-## 配置输出格式 {#configuring-the-output-format}
+## 配置输出格式
 
-默认输出格式为 `CSV`,但可以通过 `output_format` 参数进行更改。
-chDB 支持 ClickHouse 数据格式,以及[一些自有格式](/chdb/reference/data-formats.md),包括 `DataFrame`,该格式返回 Pandas DataFrame:
+默认输出格式为 `CSV`，但我们可以通过 `output_format` 参数进行修改。
+chDB 支持 ClickHouse 的数据格式，以及[其自定义的一些格式](/chdb/reference/data-formats.md)，其中包括 `DataFrame`，可返回一个 Pandas DataFrame：
 
 ```python
 result = chdb.query(
@@ -176,7 +176,7 @@ print(result)
 1            True    35307
 ```
 
-如果想要获取 Apache Arrow 表:
+或者，如果我们想要获取一个 Apache Arrow 表作为返回值：
 
 ```python
 result = chdb.query(
@@ -203,45 +203,45 @@ count(): [[315746,20686]]
 ```
 
 
-## 从 JSON 文件创建表 {#creating-a-table-from-json-file}
+## 从 JSON 文件创建表
 
-接下来,我们来看看如何在 chDB 中创建表。
-为此需要使用不同的 API,首先导入它:
+接下来，我们来看一下如何在 chDB 中创建一个表。
+我们需要使用另一个 API 来完成这个操作，所以先把它导入进来：
 
 ```python
 from chdb import session as chs
 ```
 
-接下来,我们将初始化一个会话。
-如果希望将会话持久化到磁盘,需要提供一个目录名称。
-如果留空,数据库将存储在内存中,并在 Python 进程终止后立即丢失。
+接下来，我们将初始化一个会话。
+如果希望会话持久化到磁盘，就需要提供一个目录名称。
+如果将其留空，数据库将只在内存中存在，并会在我们终止 Python 进程时被清空。
 
 ```python
 sess = chs.Session("gettingStarted.chdb")
 ```
 
-接下来,我们将创建一个数据库:
+接下来，我们创建一个数据库：
 
 ```python
 sess.query("CREATE DATABASE IF NOT EXISTS youtube")
 ```
 
-现在我们可以使用 `CREATE...EMPTY AS` 技术,基于 JSON 文件的架构创建一个 `dislikes` 表。
-我们将使用 [`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable) 设置,以避免所有列类型都被设为 `Nullable`。
+现在我们可以基于 JSON 文件中的 schema，使用 `CREATE...EMPTY AS` 方法创建一个 `dislikes` 表。
+我们将使用 [`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable) 设置，这样列类型就不会全部变成 `Nullable`。
 
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes
-  ORDER BY fetch_date
-  EMPTY AS
-  SELECT *
+  ORDER BY fetch_date 
+  EMPTY AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
 )
 ```
 
-然后我们可以使用 `DESCRIBE` 子句来检查架构:
+然后我们可以使用 `DESCRIBE` 子句来查看表结构：
 
 ```python
 sess.query(f"""
@@ -282,27 +282,27 @@ sess.query(f"""
 "video_badges","String"
 ```
 
-接下来,我们来填充该表:
+接下来，我们往这张表里写入数据：
 
 ```python
 sess.query(f"""
   INSERT INTO youtube.dislikes
-  SELECT *
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
 )
 ```
 
-我们也可以使用 `CREATE...AS` 技术一次性完成这两个步骤。
-让我们使用该技术创建另一个表:
+我们也可以使用 `CREATE...AS` 技巧，把这两个步骤合并为一步完成。
+让我们用这种技巧创建另一张表：
 
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes2
-  ORDER BY fetch_date
-  AS
-  SELECT *
+  ORDER BY fetch_date 
+  AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
@@ -310,9 +310,9 @@ sess.query(f"""
 ```
 
 
-## 查询表 {#querying-a-table}
+## 查询表
 
-最后，让我们查询该表：
+最后，我们来查询一下这张表：
 
 ```sql
 df = sess.query("""
@@ -328,7 +328,7 @@ df
 ```
 
 ```text
-                             uploader  viewCount  likeCount  dislikeCount
+                             上传者  观看次数  点赞数  踩数
 0                             Jeremih  139066569     812602         37842
 1                     TheKillersMusic  109313116     529361         11931
 2  LetsGoMartin- Canciones Infantiles  104747788     236615        141467
@@ -341,17 +341,17 @@ df
 9                    RC Cars OFF Road   31952962     101503         49489
 ```
 
-假设我们需要向 DataFrame 添加一个额外的列来计算点赞数与点踩数的比率。
-我们可以编写以下代码：
+假设我们接着在 DataFrame 中添加一列，用来计算点赞与点踩的比率。
+我们可以编写如下代码：
 
 ```python
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
 
-## 查询 Pandas DataFrame {#querying-a-pandas-dataframe}
+## 查询 Pandas DataFrame
 
-然后我们可以通过 chDB 查询该 DataFrame:
+然后我们可以使用 chDB 查询该 DataFrame：
 
 ```python
 chdb.query(
@@ -377,15 +377,15 @@ chdb.query(
 9                    RC Cars OFF Road          2.051021
 ```
 
-您还可以在 [查询 Pandas 开发者指南](guides/querying-pandas.md) 中了解更多关于查询 Pandas DataFrame 的信息。
+你也可以在[《Pandas 查询开发者指南》](guides/querying-pandas.md)中了解更多关于查询 Pandas DataFrame 的内容。
 
 
 ## 后续步骤 {#next-steps}
 
-希望本指南为您提供了 chDB 的全面概览。
-如需了解更多使用方法,请参阅以下开发者指南:
+本指南希望已为你提供了 chDB 的整体概览。  
+要进一步了解其用法，请参阅以下开发指南：
 
-- [查询 Pandas DataFrames](guides/querying-pandas.md)
-- [查询 Apache Arrow](guides/querying-apache-arrow.md)
-- [在 JupySQL 中使用 chDB](guides/jupysql.md)
-- [将 chDB 与现有 clickhouse-local 数据库配合使用](guides/clickhouse-local.md)
+* [查询 Pandas DataFrame](guides/querying-pandas.md)
+* [查询 Apache Arrow](guides/querying-apache-arrow.md)
+* [在 JupySQL 中使用 chDB](guides/jupysql.md)
+* [在现有的 clickhouse-local 数据库中使用 chDB](guides/clickhouse-local.md)

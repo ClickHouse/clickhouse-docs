@@ -1,5 +1,5 @@
 ---
-description: '对 bitmap 列执行 OR 运算，返回 UInt64 类型的基数值。如果添加后缀 -State，则返回一个 bitmap 对象。这等价于 `groupBitmapMerge`。'
+description: '对 bitmap 列进行 OR 运算，返回 UInt64 类型的基数。如果添加 -State 后缀，则返回一个 bitmap 对象。这等价于 `groupBitmapMerge`。'
 sidebar_position: 150
 slug: /sql-reference/aggregate-functions/reference/groupbitmapor
 title: 'groupBitmapOr'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmapOr
 
-计算位图列的按位或，并返回其基数（cardinality），类型为 UInt64。如果添加后缀 -State，则返回一个[位图对象](../../../sql-reference/functions/bitmap-functions.md)。这等价于 `groupBitmapMerge`。
+计算位图列的按位或，并以 UInt64 类型返回其基数；如果添加后缀 -State，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。这等价于 `groupBitmapMerge`。
 
 ```sql
 groupBitmapOr(expr)
@@ -16,7 +16,7 @@ groupBitmapOr(expr)
 
 **参数**
 
-`expr` – 一个表达式，其返回类型为 `AggregateFunction(groupBitmap, UInt*)`。
+`expr` – 结果类型为 `AggregateFunction(groupBitmap, UInt*)` 的表达式。
 
 **返回值**
 

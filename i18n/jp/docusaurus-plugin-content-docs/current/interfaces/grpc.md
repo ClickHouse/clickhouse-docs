@@ -1,9 +1,9 @@
 ---
-description: 'ClickHouse の gRPC インターフェースに関するドキュメント'
-sidebar_label: 'gRPC インターフェース'
+description: 'ClickHouse の gRPC インターフェイスに関するドキュメント'
+sidebar_label: 'gRPC インターフェイス'
 sidebar_position: 25
 slug: /interfaces/grpc
-title: 'gRPC インターフェース'
+title: 'gRPC インターフェイス'
 doc_type: 'reference'
 ---
 
@@ -15,23 +15,24 @@ doc_type: 'reference'
 
 ## はじめに {#grpc-interface-introduction}
 
-ClickHouseは[gRPC](https://grpc.io/)インターフェースをサポートしています。gRPCは、HTTP/2と[Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers)を使用するオープンソースのリモートプロシージャコールシステムです。ClickHouseのgRPC実装は以下の機能をサポートしています:
+ClickHouse は [gRPC](https://grpc.io/) インターフェースをサポートしています。gRPC は、HTTP/2 と [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers) を使用するオープンソースのリモートプロシージャコールシステムです。ClickHouse における gRPC の実装は、次の機能をサポートします。
 
 - SSL
 - 認証
 - セッション
 - 圧縮
-- 同一チャネルを通じた並列クエリ
+- 同一チャネル経由での並列クエリ
 - クエリのキャンセル
-- 進捗状況とログの取得
+- 進捗およびログの取得
 - 外部テーブル
 
-インターフェースの仕様は[clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)に記載されています。
+このインターフェースの仕様は [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) に記載されています。
 
 
-## gRPC設定 {#grpc-interface-configuration}
 
-gRPCインターフェースを使用するには、メインの[サーバー設定](../operations/configuration-files.md)で`grpc_port`を設定します。その他の設定オプションについては、以下の例を参照してください:
+## gRPC 構成
+
+gRPC インターフェイスを使用するには、メインの[サーバー構成](../operations/configuration-files.md)で `grpc_port` を設定します。その他の構成オプションについては、以下の例を参照してください。
 
 ```xml
 <grpc_port>9100</grpc_port>
@@ -49,47 +50,47 @@ gRPCインターフェースを使用するには、メインの[サーバー設
         <ssl_ca_cert_file>/path/to/ssl_ca_cert_file</ssl_ca_cert_file>
 
         <!-- デフォルトの圧縮アルゴリズム(クライアントが別のアルゴリズムを指定しない場合に適用されます。QueryInfoのresult_compressionを参照)。
-             サポートされているアルゴリズム: none, deflate, gzip, stream_gzip -->
+             サポートされるアルゴリズム: none, deflate, gzip, stream_gzip -->
         <compression>deflate</compression>
 
         <!-- デフォルトの圧縮レベル(クライアントが別のレベルを指定しない場合に適用されます。QueryInfoのresult_compressionを参照)。
-             サポートされているレベル: none, low, medium, high -->
+             サポートされるレベル: none, low, medium, high -->
         <compression_level>medium</compression_level>
 
-        <!-- 送受信メッセージサイズの制限(バイト単位)。-1は無制限を意味します -->
+        <!-- 送受信メッセージサイズの上限(バイト単位)。-1は無制限を意味します -->
         <max_send_message_size>-1</max_send_message_size>
         <max_receive_message_size>-1</max_receive_message_size>
 
-        <!-- 詳細なログを取得する場合は有効にします -->
+        <!-- 詳細なログを取得する場合に有効化してください -->
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
 
 
-## 組み込みクライアント {#grpc-client}
+## 組み込みクライアント
 
-提供されている[仕様](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)を使用して、gRPCがサポートする任意のプログラミング言語でクライアントを作成できます。
-または、組み込みのPythonクライアントを使用することもできます。これはリポジトリの[utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py)に配置されています。組み込みクライアントには[grpcioおよびgrpcio-tools](https://grpc.io/docs/languages/python/quickstart) Pythonモジュールが必要です。
+提供されている[仕様](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)に基づき、gRPC がサポートしている任意のプログラミング言語でクライアントを実装できます。
+あるいは、組み込みの Python クライアントを使用することもできます。これはリポジトリ内の [utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py) に配置されています。組み込みクライアントを使用するには、Python モジュール [grpcio および grpcio-tools](https://grpc.io/docs/languages/python/quickstart) が必要です。
 
-クライアントは以下の引数をサポートしています:
+クライアントは以下の引数をサポートします。
 
-- `--help` – ヘルプメッセージを表示して終了します。
-- `--host HOST, -h HOST` – サーバー名。デフォルト値: `localhost`。IPv4またはIPv6アドレスも使用できます。
-- `--port PORT` – 接続先のポート。このポートはClickHouseサーバー設定で有効にする必要があります(`grpc_port`を参照)。デフォルト値: `9100`。
-- `--user USER_NAME, -u USER_NAME` – ユーザー名。デフォルト値: `default`。
-- `--password PASSWORD` – パスワード。デフォルト値: 空文字列。
-- `--query QUERY, -q QUERY` – 非対話モード使用時に処理するクエリ。
-- `--database DATABASE, -d DATABASE` – デフォルトデータベース。指定されていない場合、サーバー設定で設定されている現在のデータベースが使用されます(デフォルトでは`default`)。
-- `--format OUTPUT_FORMAT, -f OUTPUT_FORMAT` – 結果出力[形式](formats.md)。対話モードのデフォルト値: `PrettyCompact`。
-- `--debug` – デバッグ情報の表示を有効にします。
+* `--help` – ヘルプメッセージを表示して終了します。
+* `--host HOST, -h HOST` – サーバー名。デフォルト値: `localhost`。IPv4 または IPv6 アドレスも使用できます。
+* `--port PORT` – 接続先ポート。このポートは ClickHouse サーバー設定で有効化されている必要があります（`grpc_port` を参照）。デフォルト値: `9100`。
+* `--user USER_NAME, -u USER_NAME` – ユーザー名。デフォルト値: `default`。
+* `--password PASSWORD` – パスワード。デフォルト値: 空文字列。
+* `--query QUERY, -q QUERY` – 非対話モードで実行するクエリ。
+* `--database DATABASE, -d DATABASE` – デフォルトデータベース。指定されていない場合は、サーバー設定で現在設定されているデータベースが使用されます（デフォルトは `default`）。
+* `--format OUTPUT_FORMAT, -f OUTPUT_FORMAT` – 結果の出力[フォーマット](formats.md)。対話モードでのデフォルト値: `PrettyCompact`。
+* `--debug` – デバッグ情報の表示を有効にします。
 
-対話モードでクライアントを実行するには、`--query`引数なしで呼び出します。
+対話モードでクライアントを実行するには、`--query` 引数を付けずに実行します。
 
-バッチモードでは、クエリデータを`stdin`経由で渡すことができます。
+バッチモードでは、クエリデータを `stdin` 経由で渡すことができます。
 
-**クライアント使用例**
+**クライアントの使用例**
 
-以下の例では、テーブルを作成し、CSVファイルからデータを読み込みます。その後、テーブルの内容をクエリします。
+次の例では、テーブルを作成し、CSV ファイルからデータをロードします。その後、そのテーブルの内容をクエリします。
 
 ```bash
 ./clickhouse-grpc-client.py -q "CREATE TABLE grpc_example_table (id UInt32, text String) ENGINE = MergeTree() ORDER BY id;"
@@ -99,11 +100,11 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 ./clickhouse-grpc-client.py --format PrettyCompact -q "SELECT * FROM grpc_example_table;"
 ```
 
-結果:
+結果：
 
 ```text
 ┌─id─┬─text──────────────────┐
 │  0 │ Input data for        │
-│  1 │ gRPC protocol example │
+│  1 │ gRPCプロトコルの例     │
 └────┴───────────────────────┘
 ```

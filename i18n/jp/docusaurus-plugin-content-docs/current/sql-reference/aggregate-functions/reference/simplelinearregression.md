@@ -1,5 +1,5 @@
 ---
-description: '単純な（1 次元の）線形回帰を実行します。'
+description: '単回帰（1次元の線形回帰）を行います。'
 sidebar_position: 183
 slug: /sql-reference/aggregate-functions/reference/simplelinearregression
 title: 'simpleLinearRegression'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # simpleLinearRegression
 
-単回帰（1 次元）線形回帰を実行します。
+単回帰（1次元の線形回帰）を実行します。
 
 ```sql
 simpleLinearRegression(x, y)
@@ -21,7 +21,7 @@ simpleLinearRegression(x, y)
 
 戻り値:
 
-得られる直線 `y = k*x + b` の定数 `(k, b)`。
+得られた直線 `y = k*x + b` の定数 `(k, b)`。
 
 **例**
 

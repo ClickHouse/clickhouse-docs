@@ -9,38 +9,40 @@ title: 'JSONAsString'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力  | エイリアス |
-|-------|---------|-------|
-| ✔     | ✗       |       |
+| Input | 出力  | 別名 |
+|-------|-------|------|
+| ✔     | ✗     |      |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-このフォーマットでは、単一のJSONオブジェクトが単一の値として解釈されます。
-入力に複数のJSONオブジェクト（カンマ区切り）が含まれる場合、それらは個別の行として解釈されます。
-入力データが角括弧で囲まれている場合は、JSONオブジェクトの配列として解釈されます。
+この形式では、1 つの JSON オブジェクトが 1 つの値として解釈されます。  
+入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それぞれが別々の行として解釈されます。  
+入力データが角括弧で囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
 
 :::note
-このフォーマットは、[String](/sql-reference/data-types/string.md)型の単一フィールドを持つテーブルに対してのみ解析可能です。
-残りのカラムは[`DEFAULT`](/sql-reference/statements/create/table.md/#default)または[`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)のいずれかに設定するか、省略する必要があります。
+この形式をパースできるのは、型が [String](/sql-reference/data-types/string.md) の単一フィールドだけを持つテーブルに対してのみです。  
+残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定するか、  
+省略する必要があります。 
 :::
 
-JSONオブジェクト全体をStringにシリアライズすれば、[JSON関数](/sql-reference/functions/json-functions.md)を使用して処理できます。
+JSON オブジェクト全体を String にシリアライズしたら、[JSON 関数](/sql-reference/functions/json-functions.md) を利用して処理できます。
 
 
-## 使用例 {#example-usage}
 
-### 基本的な例 {#basic-example}
+## 使用例
 
-```sql title="クエリ"
+### 基本的な例
+
+```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
 CREATE TABLE json_as_string (json String) ENGINE = Memory;
 INSERT INTO json_as_string (json) FORMAT JSONAsString {"foo":{"bar":{"x":"y"},"baz":1}},{},{"any json stucture":1}
 SELECT * FROM json_as_string;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─json──────────────────────────────┐
 │ {"foo":{"bar":{"x":"y"},"baz":1}} │
 │ {}                                │
@@ -48,16 +50,16 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### JSONオブジェクトの配列 {#an-array-of-json-objects}
+### JSON オブジェクトの配列
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
 INSERT INTO json_square_brackets FORMAT JSONAsString [{"id": 1, "name": "name1"}, {"id": 2, "name": "name2"}];
 
 SELECT * FROM json_square_brackets;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─field──────────────────────┐
 │ {"id": 1, "name": "name1"} │
 │ {"id": 2, "name": "name2"} │
@@ -65,4 +67,4 @@ SELECT * FROM json_square_brackets;
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

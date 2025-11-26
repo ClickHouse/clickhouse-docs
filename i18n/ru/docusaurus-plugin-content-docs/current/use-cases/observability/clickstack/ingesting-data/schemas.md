@@ -2,20 +2,20 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'Таблицы и схемы, используемые ClickStack — стек наблюдаемости ClickHouse'
+description: 'Таблицы и схемы, используемые в ClickStack — ClickHouse Observability Stack'
 sidebar_label: 'Таблицы и схемы'
-title: 'Таблицы и схемы, используемые ClickStack'
+title: 'Таблицы и схемы, используемые в ClickStack'
 doc_type: 'reference'
 keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-Коллектор ClickStack OpenTelemetry (OTel) использует [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) для создания таблиц в ClickHouse и для вставки данных.
+OTel collector ClickStack использует [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) для создания таблиц в ClickHouse и записи данных.
 
-Следующие таблицы создаются для каждого типа данных в базе данных `default`. Пользователи могут изменить целевую базу данных, настроив переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` в образе, в котором запускается коллектор OTel.
+Следующие таблицы создаются для каждого типа данных в базе данных `default`. Пользователи могут изменить целевую базу данных, указав другое значение переменной среды `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` для образа, в котором работает OTel collector.
 
 
 
-## Журналы {#logs}
+## Логи
 
 ```sql
 CREATE TABLE otel_logs
@@ -52,7 +52,7 @@ ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
 
-## Трассировки {#traces}
+## Трейсы
 
 ```sql
 CREATE TABLE otel_traces
@@ -92,9 +92,9 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
 
-## Метрики {#metrics}
+## Метрики
 
-### Метрики Gauge {#gauge}
+### Метрики типа gauge
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -132,7 +132,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Метрики Sum {#sum}
+### Метрики типа Sum
 
 
 ```sql
@@ -173,7 +173,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Метрики-гистограммы {#histogram}
+### Метрики‑гистограммы
 
 
 ```sql
@@ -218,10 +218,10 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Экспоненциальные гистограммы {#exponential-histograms}
+### Экспоненциальные гистограммы
 
 :::note
-HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Пользователи могут настроить их в источнике метрик, однако поддержка планируется в будущем.
+HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Пользователи могут настраивать их в источнике метрик, но поддержка будет добавлена в будущем.
 :::
 
 
@@ -272,7 +272,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Итоговая таблица {#summary-table}
+### Сводная таблица
 
 
 ```sql
@@ -310,7 +310,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-## Сеансы {#sessions}
+## Сессии
 
 ```sql
 CREATE TABLE hyperdx_sessions

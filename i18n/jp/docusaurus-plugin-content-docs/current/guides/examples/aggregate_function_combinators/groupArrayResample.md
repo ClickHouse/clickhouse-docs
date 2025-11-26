@@ -2,9 +2,9 @@
 slug: '/examples/aggregate-function-combinators/groupArrayResample'
 title: 'groupArrayResample'
 description: 'groupArray で Resample コンビネータを使用する例'
-keywords: ['groupArray', 'Resample', 'combinator', 'examples', 'groupArrayResample']
+keywords: ['groupArray', 'Resample', 'コンビネータ', '使用例', 'groupArrayResample']
 sidebar_label: 'groupArrayResample'
-doc_type: 'reference'
+doc_type: 'リファレンス'
 ---
 
 
@@ -12,22 +12,23 @@ doc_type: 'reference'
 # groupArrayResample {#grouparrayresample}
 
 
+
 ## 説明 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
-コンビネータを[`groupArray`](/sql-reference/aggregate-functions/reference/sum)集約関数に適用することで、
-指定されたキー列の範囲を固定数の区間（`N`）に分割し、
-各区間に含まれるデータポイントから代表値（最小キーに対応する値）を1つ選択して、
-結果の配列を構築できます。
-これにより、すべての値を収集するのではなく、データのダウンサンプリングされたビューが作成されます。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+コンビネータは、[`groupArray`](/sql-reference/aggregate-functions/reference/sum) 集約関数に適用して、
+指定したキー列の範囲を固定数 (`N`) の区間に分割し、
+各区間に含まれるデータポイントから、キーが最小のものに対応する代表値を 1 つ選び、それらで結果の配列を構成できます。
+これにより、すべての値を収集するのではなく、データをダウンサンプリングしたビューが得られます。
 
 
-## 使用例 {#example-usage}
 
-例を見てみましょう。従業員の`name`、`age`、`wage`を含むテーブルを作成し、データを挿入します：
+## 使用例
+
+例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、そこにいくつかのデータを挿入してみます。
 
 ```sql
-CREATE TABLE employee_data
+CREATE TABLE employee_data 
 (
     name String,
     age UInt8,
@@ -44,12 +45,13 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間に含まれる人の名前を取得してみましょう。年齢には整数表現を使用しているため、実際には`[30, 59]`と`[60,74]`の区間になります。
+`[30,60)` と `[60,75)` の区間に年齢が含まれる人の名前を取得しましょう。
+年齢は整数で表現しているので、実際には `[30, 59]` と `[60,74]` の区間の年齢が対象になります。
 
-名前を配列に集約するには、`groupArray`集約関数を使用します。
-この関数は1つの引数を取ります。今回の場合、それはname列です。`groupArrayResample`
-関数はage列を使用して、年齢ごとに名前を集約する必要があります。必要な区間を定義するために、
-`groupArrayResample`関数に`30`、`75`、`30`を引数として渡します：
+名前を配列に集約するには、`groupArray` 集約関数を使います。
+この関数は 1 つだけ引数を取ります。この場合は name 列です。`groupArrayResample`
+関数では、age 列を使って年齢ごとに名前を集約します。必要な区間を定義するために、
+`groupArrayResample` 関数に `30`, `75`, `30` を引数として渡します。
 
 ```sql
 SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
@@ -63,6 +65,5 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 
 
 ## 関連項目 {#see-also}
-
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

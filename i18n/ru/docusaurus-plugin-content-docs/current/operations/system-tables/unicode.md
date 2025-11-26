@@ -1,6 +1,6 @@
 ---
-description: 'Системная таблица, содержащая список символов Unicode и их свойства.'
-keywords: ['системная таблица', 'unicode']
+description: 'Системная таблица, содержащая список символов Unicode и их свойств.'
+keywords: ['системная таблица', 'Unicode']
 slug: /operations/system-tables/unicode
 title: 'system.unicode'
 doc_type: 'reference'
@@ -8,31 +8,31 @@ doc_type: 'reference'
 
 # system.unicode
 
-Виртуальная таблица `system.unicode` предоставляет информацию о символах Unicode и их свойствах ([https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)). Эта таблица генерируется на лету.
+Таблица `system.unicode` — это виртуальная таблица, которая предоставляет информацию о символах Unicode и их свойствах ([https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)). Эта таблица генерируется на лету.
 
 Столбцы
 
 :::note
-Имена свойств кодовых точек Unicode в документации ICU приведены в стиле snake&#95;case.
+Имена свойств кодовых точек Unicode в документации ICU преобразованы в snake case.
 :::
 
 * `code_point` ([String](../../sql-reference/data-types/string.md)) — Представление кодовой точки в UTF-8.
 * `code_point_value` ([Int32](../../sql-reference/data-types/int-uint.md)) — Числовое значение кодовой точки.
 * `notation` ([String](../../sql-reference/data-types/string.md)) — Обозначение кодовой точки в Unicode.
-* Бинарные свойства ([UInt8](../../sql-reference/data-types/int-uint.md)) — Бинарные (булевы) свойства кодовой точки.
+* Binary Properties ([UInt8](../../sql-reference/data-types/int-uint.md)) — Бинарные свойства кодовой точки.
   * `alphabetic`, `ascii_hex_digit`, `case_ignorable`...
-* Перечислимые свойства ([Int32](../../sql-reference/data-types/int-uint.md)) — Перечислимые свойства кодовой точки.
+* Enumerated Properties ([Int32](../../sql-reference/data-types/int-uint.md)) — Перечислимые свойства кодовой точки.
   * `bidi_class`, `bidi_paired_bracket_type`, `block`...
-* Строковые свойства ([String](../../sql-reference/data-types/string.md)) — Строковые свойства (ASCII String, Unicode String или кодовая точка) кодовой точки.
+* String Properties ([String](../../sql-reference/data-types/string.md)) — Строковые свойства (ASCII String, Unicode String или кодовая точка) кодовой точки.
   * `case_folding`, `decomposition_mapping`, `name`...
 
 :::note
-Отображение устроено несколько особым образом, см. документацию ICU. Например, simple&#95;uppercase&#95;mapping и uppercase&#95;mapping — это не совсем одно и то же. При этом отображения, зависящие от языка, не реализованы (например, в турецком верхний регистр для i — это &quot;İ&quot; (U+0130)).
+Отображение (mapping) несколько специфично, см. документацию ICU. Например, simple&#95;uppercase&#95;mapping и uppercase&#95;mapping — не совсем одно и то же. Языкозависимые преобразования не реализованы (например, в турецком верхний регистр для i — это &quot;İ&quot; (U+0130)).
 :::
 
 * `numeric_value` ([Float64](../../sql-reference/data-types/float.md)) — Числовое значение кодовой точки.
 * `script_extensions` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — Расширения письма (script extensions) для кодовой точки.
-* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — Тип идентификатора для кодовой точки.
+* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — Тип идентификатора кодовой точки.
 * `general_category_mask` ([Int32](../../sql-reference/data-types/int-uint.md)) — Маска общей категории кодовой точки.
 
 **Пример**

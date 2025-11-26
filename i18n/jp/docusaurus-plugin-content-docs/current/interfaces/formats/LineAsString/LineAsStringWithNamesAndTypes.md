@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'LineAsStringWithNamesAndTypes フォーマットに関するドキュメント'
+description: 'LineAsStringWithNamesAndTypes 形式に関するドキュメント'
 input_format: false
 keywords: ['LineAsStringWithNamesAndTypes']
 output_format: true
@@ -9,7 +9,7 @@ title: 'LineAsStringWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| Input | Output | 別名 |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
@@ -17,10 +17,12 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-`LineAsStringWithNames`フォーマットは[`LineAsString`](./LineAsString.md)フォーマットに似ていますが、2つのヘッダー行を出力します：1つはカラム名、もう1つは型です。
+`LineAsStringWithNames` フォーマットは [`LineAsString`](./LineAsString.md) フォーマットに似ていますが、
+2 行のヘッダー行を出力します。1 行目は列名、2 行目は型です。
 
 
-## 使用例 {#example-usage}
+
+## 使用例
 
 ```sql
 CREATE TABLE example (
@@ -34,7 +36,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 name    value
 String    Int32
 John    30

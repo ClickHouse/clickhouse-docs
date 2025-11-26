@@ -1,6 +1,6 @@
 ---
-description: '此表包含有关 ClickHouse 服务器的警告信息。'
-keywords: [ 'system table', 'warnings' ]
+description: '此表包含有关 ClickHouse 服务器的警告消息。'
+keywords: [ '系统表', '警告' ]
 slug: /operations/system-tables/system_warnings
 title: 'system.warnings'
 doc_type: 'reference'
@@ -13,12 +13,12 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-该表显示 ClickHouse 服务器的相关警告。
-同一类型的警告会合并为一条警告。
-例如，如果已附加数据库的数量 N 超过可配置阈值 T，将显示一条包含当前值 N 的记录，而不是 N 条单独的记录。
-如果当前值降到阈值以下，则会从表中删除该记录。
+该表显示 ClickHouse 服务器的警告信息。
+相同类型的警告会合并为一条记录。
+例如，如果已挂载数据库的数量 N 超过可配置的阈值 T，则会显示一条包含当前值 N 的记录，而不是 N 条单独的记录。
+如果当前值降到阈值以下，则会从表中移除该记录。
 
-可以通过以下设置对该表进行配置：
+可以通过以下设置配置该表：
 
 * [max&#95;table&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
 * [max&#95;database&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
@@ -33,7 +33,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 列：
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — 警告信息。
-* `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化该信息的格式字符串。
+* `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化该警告信息的格式字符串。
 
 **示例**
 
@@ -48,11 +48,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 ```text
 Row 1:
 ──────
-message:               活跃数据分片数量超过 10。
-message_format_string: 活跃数据分片数量超过 {}。
+message:               活跃分区数超过 10 个。
+message_format_string: 活跃分区数超过 {}。
 
 Row 2:
 ──────
-message:               已挂载数据库数量超过 2。
-message_format_string: 已挂载数据库数量超过 {}。
+message:               已挂载数据库数超过 2 个。
+message_format_string: 已挂载数据库数超过 {}。
 ```

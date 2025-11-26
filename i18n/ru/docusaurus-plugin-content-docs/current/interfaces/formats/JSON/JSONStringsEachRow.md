@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся в виде строк, а не в виде типизированных значений JSON.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся как строки, а не как типизированные JSON-значения.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используя JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используем JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -43,18 +44,18 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":"2021","home_team":"Newport County","away_team":"Rochdale","home_team_goals":"0","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Oldham Athletic","away_team":"Crawley Town","home_team_goals":"3","away_team_goals":"3"}
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
-{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}
+{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `JSONStringsEachRow`:
+Прочитайте данные в формате `JSONStringsEachRow`:
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONStringsEachRow
 ```
 
-Результат будет в формате JSON:
+Вывод будет в формате JSON:
 
 
 ```json
@@ -86,4 +87,4 @@ FORMAT JSONStringsEachRow
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

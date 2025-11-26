@@ -1,34 +1,36 @@
 ---
 slug: /cloud/get-started
 title: 'ClickHouse Cloud を使い始める'
-description: 'ClickHouse Cloud の利用開始に関する完全ガイド — 機能の概要からデプロイと最適化まで'
+description: 'ClickHouse Cloud のはじめ方を、機能の理解からデプロイと最適化まで網羅的に解説するガイド'
 hide_title: true
 doc_type: 'guide'
-keywords: ['オンボーディング', '導入', 'クラウドセットアップ', 'クイックスタート', '概要']
+keywords: ['オンボーディング', 'はじめに', 'クラウド設定', 'クイックスタート', '概要']
 ---
 
 
 
-# ClickHouse Cloudを始める
+# ClickHouse Cloud を始める
 
-ClickHouse Cloudを初めて使用する方で、どこから始めればよいかわからない場合は、このドキュメントのセクションで、迅速に立ち上げて実行するために必要なすべてをご案内します。ClickHouse Cloudを探索する際の各ステップをガイドするため、この入門セクションを3つのサブセクションに分けて構成しています。
+ClickHouse Cloud を初めて使用する方で、どこから始めればよいかわからない場合、このドキュメントセクションでは、迅速に稼働させるために必要なすべての手順を説明します。ClickHouse Cloud を探索する過程で各ステップをガイドできるよう、この入門セクションを3つのサブセクションに分けて構成しています。
 
 <VerticalStepper headerLevel="h2">
 
 
-## ClickHouse Cloudについて {#discover-clickhouse-cloud}
+## ClickHouse Cloud を知る {#discover-clickhouse-cloud}
 
-- ClickHouse Cloudとは何か、およびオープンソース版との違いについて[詳しく見る](/cloud/overview)
-- ClickHouse Cloudの主なユースケースを[確認する](/cloud/get-started/cloud/use-cases/overview)
+- [ClickHouse Cloud が何であり、オープンソース版とどのように異なるかを学ぶ](/cloud/overview)
+- [ClickHouse Cloud の主なユースケースを把握する](/cloud/get-started/cloud/use-cases/overview)
 
 
-## ClickHouse Cloudのセットアップ {#get-set-up-with-clickhouse-cloud}
 
-ClickHouse Cloudについて理解したところで、ClickHouse Cloudへのデータ取り込みプロセスを順を追って説明し、利用可能な主要機能を紹介するとともに、知っておくべき一般的なベストプラクティスについてご案内します。
+## ClickHouse Cloud をセットアップする {#get-set-up-with-clickhouse-cloud}
 
-トピックには以下が含まれます:
+ClickHouse Cloud が何かを理解したところで、ここからはデータを ClickHouse Cloud に取り込むまでの手順を順を追って説明し、利用可能な主な機能を紹介するとともに、知っておきたい一般的なベストプラクティスもいくつかご案内します。
+
+以下のトピックを扱います:
 
 - 各種プラットフォームからの[移行ガイド](/integrations/migration/overview)
+
 
 
 ## ClickHouse Cloudデプロイメントのチューニング {#evaluate-clickhouse-cloud}

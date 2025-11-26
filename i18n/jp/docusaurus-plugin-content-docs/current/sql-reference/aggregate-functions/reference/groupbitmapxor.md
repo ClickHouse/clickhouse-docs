@@ -1,5 +1,5 @@
 ---
-description: 'ビットマップ列の XOR を計算し、そのカーディナリティを UInt64 型で返します。サフィックス -State を付けて使用した場合は、ビットマップオブジェクトを返します'
+description: 'ビットマップ列の XOR を計算し、そのカーディナリティを UInt64 型で返します。サフィックス「-State」と併用した場合は、ビットマップオブジェクトを返します'
 sidebar_position: 151
 slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
 title: 'groupBitmapXor'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmapXor
 
-`groupBitmapXor` はビットマップ列の XOR を計算し、そのカーディナリティ（要素数）を UInt64 型の値として返します。`-State` というサフィックスを付けて使用した場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
+`groupBitmapXor` はビットマップ列の XOR を計算し、その結果の基数（cardinality）を `UInt64` 型で返します。`-State` 接尾辞付きで使用した場合は、[bitmap オブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 
 ```sql
 groupBitmapXor(expr)

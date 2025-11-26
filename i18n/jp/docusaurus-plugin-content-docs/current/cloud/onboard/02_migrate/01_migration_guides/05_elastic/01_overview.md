@@ -10,4 +10,4 @@ doc_type: 'landing-page'
 
 # Elasticsearch から ClickHouse への移行
 
-オブザーバビリティ関連のユースケースについては、[Elasticsearch から ClickStack](/use-cases/observability/clickstack/migration/elastic) への移行に関するドキュメントを参照してください。
+オブザーバビリティのユースケースについては、[Elasticsearch から ClickStack への移行](/use-cases/observability/clickstack/migration/elastic) の移行ドキュメントを参照してください。

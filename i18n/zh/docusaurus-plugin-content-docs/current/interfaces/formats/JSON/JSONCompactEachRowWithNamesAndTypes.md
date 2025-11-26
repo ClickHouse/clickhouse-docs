@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 格式不同,该格式会额外输出两个标题行,分别包含列名和类型信息,类似于 [TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md) 格式。
+不同于 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 格式的是，它还会输出两行表头，包含列名和列类型，类似于 [TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md) 格式。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用以下 JSON 文件,文件名为 `football.json`:
+### 插入数据
+
+使用包含以下数据的 JSON 文件，将其命名为 `football.json`：
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -48,15 +49,15 @@ doc_type: 'reference'
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `JSONCompactEachRowWithNamesAndTypes` 格式读取数据:
+通过 `JSONCompactEachRowWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -64,12 +65,12 @@ FROM football
 FORMAT JSONCompactEachRowWithNamesAndTypes
 ```
 
-输出为 JSON 格式:
+输出将为 JSON 格式：
 
 
 ```json
-["日期", "赛季", "主队", "客队", "主队进球", "客队进球"]
-["日期", "Int16", "LowCardinality(String)", "LowCardinality(String)", "Int8", "Int8"]
+["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
+["Date", "Int16", "LowCardinality(String)", "LowCardinality(String)", "Int8", "Int8"]
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]
 ["2022-04-30", 2021, "Swindon Town", "Barrow", 2, 1]
 ["2022-04-30", 2021, "Tranmere Rovers", "Oldham Athletic", 2, 0]
@@ -93,9 +94,9 @@ FORMAT JSONCompactEachRowWithNamesAndTypes
 ## 格式设置 {#format-settings}
 
 :::note
-如果将设置 [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设为 `1`,
-输入数据中的列将按名称映射到表中的列,若设置 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 1,则会跳过名称未知的列。
-否则,将跳过第一行。
-如果将设置 [`input_format_with_types_use_header`](/operations/settings/settings-formats.md/#input_format_with_types_use_header) 设为 `1`,
-输入数据中的类型将与表中相应列的类型进行比较。否则,将跳过第二行。
+如果将设置 [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设为 `1`，
+则输入数据中的列会按名称映射到表中的列；如果将设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`，则具有未知名称的列会被跳过。
+否则，第一行将被跳过。
+如果将设置 [`input_format_with_types_use_header`](/operations/settings/settings-formats.md/#input_format_with_types_use_header) 设为 `1`，
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
 :::

@@ -8,9 +8,9 @@ title: 'Клиентская библиотека C++'
 doc_type: 'reference'
 ---
 
-# Клиентская библиотека C++
+# Клиентская библиотека на C++
 
-См. README в репозитории [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
+См. файл README в репозитории [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
 
 # Асинхронный фреймворк userver
 

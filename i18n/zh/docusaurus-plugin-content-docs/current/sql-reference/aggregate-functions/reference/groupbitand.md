@@ -1,5 +1,5 @@
 ---
-description: '对一组数字执行按位 `AND` 运算。'
+description: '对一组数值执行按位 `AND` 运算。'
 sidebar_position: 147
 slug: /sql-reference/aggregate-functions/reference/groupbitand
 title: 'groupBitAnd'
@@ -16,11 +16,11 @@ groupBitAnd(expr)
 
 **参数**
 
-`expr` – 一个计算结果为 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 其计算结果为 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 
-返回一个 `UInt*` 或 `Int*` 类型的值。
+`UInt*` 或 `Int*` 类型的值。
 
 **示例**
 
@@ -40,7 +40,7 @@ groupBitAnd(expr)
 SELECT groupBitAnd(num) FROM t
 ```
 
-其中 `num` 是包含测试数据的列。
+其中 `num` 是存放测试数据的列。
 
 结果：
 

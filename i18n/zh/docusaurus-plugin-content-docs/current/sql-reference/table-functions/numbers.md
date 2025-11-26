@@ -3,19 +3,19 @@ slug: /sql-reference/table-functions/numbers
 sidebar_position: 145
 sidebar_label: 'numbers'
 title: 'numbers'
-description: '返回仅包含一个 `number` 列、其中存储可指定整数的表。'
+description: '返回仅包含单个 `number` 列的表，该列中包含可指定的整数。'
 doc_type: 'reference'
 ---
 
 # numbers 表函数
 
-`numbers(N)` – 返回一张仅包含一个名为 &#39;number&#39; 的列（UInt64）的表，该列包含从 0 到 N-1 的整数。
-`numbers(N, M)` - 返回一张仅包含一个名为 &#39;number&#39; 的列（UInt64）的表，该列包含从 N 到 (N + M - 1) 的整数。
-`numbers(N, M, S)` - 返回一张仅包含一个名为 &#39;number&#39; 的列（UInt64）的表，该列包含从 N 到 (N + M - 1)，步长为 S 的整数。
+`numbers(N)` – 返回一张仅包含单个 &#39;number&#39; 列（UInt64 类型）的表，其中包含从 0 到 N-1 的整数。
+`numbers(N, M)` - 返回一张仅包含单个 &#39;number&#39; 列（UInt64 类型）的表，其中包含从 N 到 (N + M - 1) 的整数。
+`numbers(N, M, S)` - 返回一张仅包含单个 &#39;number&#39; 列（UInt64 类型）的表，其中包含从 N 到 (N + M - 1)，步长为 S 的整数。
 
-与 `system.numbers` 表类似，它可用于测试和生成连续值，其中 `numbers(N, M)` 比 `system.numbers` 的效率更高。
+与 `system.numbers` 表类似，它可以用于测试和生成连续数值，`numbers(N, M)` 比 `system.numbers` 更高效。
 
-下面的查询是等价的：
+以下查询是等价的：
 
 ```sql
 SELECT * FROM numbers(10);

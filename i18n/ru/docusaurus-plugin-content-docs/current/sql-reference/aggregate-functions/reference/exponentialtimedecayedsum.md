@@ -1,5 +1,5 @@
 ---
-description: 'Возвращает сумму значений экспоненциально сглаженного скользящего среднего временного ряда в момент времени с индексом `t`.'
+description: 'Возвращает сумму значений экспоненциально сглаженного скользящего среднего для временного ряда в момент времени с индексом `t`.'
 sidebar_position: 136
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum
 title: 'exponentialTimeDecayedSum'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+## exponentialTimeDecayedSum
 
-Возвращает сумму экспоненциально сглаженных значений скользящего среднего временного ряда в момент времени с индексом `t`.
+Возвращает сумму значений экспоненциально сглаженного скользящего среднего временного ряда в момент времени с индексом `t`.
 
 **Синтаксис**
 
@@ -20,16 +20,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **Аргументы**
 
-- `v` — значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `t` — время. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
+* `v` — значение. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `t` — время. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — временной интервал, необходимый для уменьшения веса значения до 1/e. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — разность во времени, при которой вес значения убывает до 1/e. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
-**Возвращаемое значение**
+**Возвращаемые значения**
 
-- Возвращает сумму экспоненциально сглаженных значений скользящего среднего в заданный момент времени. [Float64](../../data-types/float.md).
+* Возвращает сумму значений экспоненциально сглаженного скользящего среднего в заданной точке во времени. [Float64](../../data-types/float.md).
 
 **Пример**
 
@@ -37,16 +37,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 ```sql
 SELECT
-    value,
-    time,
-    round(exp_smooth, 3),
-    bar(exp_smooth, 0, 10, 50) AS bar
+    значение,
+    время,
+    round(эксп_сглаживание, 3),
+    диаграмма(эксп_сглаживание, 0, 10, 50) AS диаграмма
 FROM
     (
     SELECT
-    (number = 0) OR (number >= 25) AS value,
-    number AS time,
-    exponentialTimeDecayedSum(10)(value, time) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS exp_smooth
+    (number = 0) OR (number >= 25) AS значение,
+    number AS время,
+    exponentialTimeDecayedSum(10)(значение, время) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS эксп_сглаживание
     FROM numbers(50)
     );
 ```

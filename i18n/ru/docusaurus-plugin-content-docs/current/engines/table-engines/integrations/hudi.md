@@ -3,7 +3,7 @@ description: 'Этот движок обеспечивает доступ тол
 sidebar_label: 'Hudi'
 sidebar_position: 86
 slug: /engines/table-engines/integrations/hudi
-title: 'Табличный движок Hudi'
+title: 'Движок таблиц Hudi'
 doc_type: 'reference'
 ---
 
@@ -11,13 +11,13 @@ doc_type: 'reference'
 
 # Табличный движок Hudi
 
-Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/), размещённым в Amazon S3.
+Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
 
 
-## Создание таблицы {#create-table}
+## Создание таблицы
 
-Обратите внимание, что таблица Hudi должна уже существовать в S3, данная команда не принимает DDL-параметры для создания новой таблицы.
+Имейте в виду, что таблица Hudi должна уже существовать в S3: эта команда не принимает DDL‑параметры для создания новой таблицы.
 
 ```sql
 CREATE TABLE hudi_table
@@ -26,10 +26,10 @@ CREATE TABLE hudi_table
 
 **Параметры движка**
 
-- `url` — URL бакета с путём к существующей таблице Hudi.
-- `aws_access_key_id`, `aws_secret_access_key` — Долгосрочные учётные данные пользователя аккаунта [AWS](https://aws.amazon.com/). Используются для аутентификации запросов. Параметр необязательный. Если учётные данные не указаны, они берутся из файла конфигурации.
+* `url` — URL бакета с путём к существующей таблице Hudi.
+* `aws_access_key_id`, `aws_secret_access_key` — долгосрочные учетные данные пользователя учётной записи [AWS](https://aws.amazon.com/). Их можно использовать для аутентификации запросов. Параметр является необязательным. Если учетные данные не указаны, используются значения из файла конфигурации.
 
-Параметры движка можно указать с помощью [именованных коллекций](/operations/named-collections.md).
+Параметры движка можно задать с помощью [Named Collections](/operations/named-collections.md).
 
 **Пример**
 
@@ -58,4 +58,4 @@ CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 
 ## См. также {#see-also}
 
-- [Табличная функция hudi](/sql-reference/table-functions/hudi.md)
+- [табличная функция Hudi](/sql-reference/table-functions/hudi.md)

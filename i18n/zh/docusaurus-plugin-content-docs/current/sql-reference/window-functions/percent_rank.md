@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # percent&#95;rank
 
-返回窗口分区内各行的相对排名（即百分位数）。
+返回窗口分区内各行的相对排名（即百分位排名）。
 
 **语法**
 
@@ -25,7 +25,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 默认且必需的窗口框架定义为 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 
-关于窗口函数语法的更多详细信息，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+关于窗口函数语法的更多详细说明，请参见：[Window Functions - Syntax](./index.md/#syntax)。
 
 **示例**
 

@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Dataflow と ClickHouse の統合'
+sidebar_label: 'Google Dataflow と ClickHouse の統合'
 slug: /integrations/google-dataflow/dataflow
 sidebar_position: 1
-description: 'Google Dataflow を使用して ClickHouse にデータを取り込めます'
+description: 'ユーザーは Google Dataflow を使用して ClickHouse にデータを取り込むことができます'
 title: 'Google Dataflow と ClickHouse の統合'
 doc_type: 'guide'
 keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apache Beam ClickHouse', 'ClickHouseIO connector', 'Google Cloud ClickHouse integration']
@@ -15,35 +15,32 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-[Google Dataflow](https://cloud.google.com/dataflow) は、フルマネージドなストリームおよびバッチのデータ処理サービスです。Java または Python で記述されたパイプラインをサポートしており、Apache Beam SDK の上に構築されています。
+[Google Dataflow](https://cloud.google.com/dataflow) は、フルマネージドなストリーミングおよびバッチのデータ処理サービスです。Java または Python で記述されたパイプラインをサポートしており、Apache Beam SDK 上に構築されています。
 
-Google Dataflow を ClickHouse と組み合わせて使用する主な方法は 2 つあり、いずれも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を利用します。
-次の 2 つです:
+Google Dataflow を ClickHouse と組み合わせて利用する主な方法は 2 つあり、どちらも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を利用します。
+それらは次のとおりです:
 - [Java runner](#1-java-runner)
 - [Predefined templates](#2-predefined-templates)
 
 
 
-## Javaランナー {#1-java-runner}
+## Java runner {#1-java-runner}
+[Java runner](./java-runner) を使用すると、Apache Beam SDK の `ClickHouseIO` 統合を用いて、カスタム Dataflow パイプラインを実装できます。このアプローチではパイプラインロジックを柔軟かつ詳細に制御できるため、ETL プロセスを特定の要件に合わせて最適化できます。
+ただし、このオプションを利用するには、Java プログラミングの知識と Apache Beam フレームワークへの習熟が必要です。
 
-[Javaランナー](./java-runner)を使用すると、Apache Beam SDKの`ClickHouseIO`統合を利用してカスタムDataflowパイプラインを実装できます。このアプローチでは、パイプラインロジックに対する完全な柔軟性と制御が提供され、特定の要件に合わせてETLプロセスをカスタマイズできます。
-ただし、このオプションにはJavaプログラミングの知識とApache Beamフレームワークへの習熟が必要です。
+### Key features {#key-features}
+- 高度なカスタマイズ性。
+- 複雑または高度なユースケースに最適。
+- コーディングおよび Beam API の理解が必要。
 
-### 主な機能 {#key-features}
-
-- 高度なカスタマイズが可能
-- 複雑または高度なユースケースに最適
-- コーディングとBeam APIの理解が必要
 
 
 ## 事前定義済みテンプレート {#2-predefined-templates}
+ClickHouse は、BigQuery から ClickHouse へのデータインポートなど、特定のユースケース向けに設計された[事前定義済みテンプレート](./templates)を提供しています。これらのテンプレートはすぐに利用可能で、連携プロセスを簡素化するため、ノーコードソリューションを好むユーザーにとって最適な選択肢です。
 
-ClickHouseは、BigQueryからClickHouseへのデータインポートなど、特定のユースケース向けに設計された[事前定義済みテンプレート](./templates)を提供しています。これらのテンプレートはすぐに使用でき、統合プロセスを簡素化するため、ノーコードソリューションを好むユーザーにとって最適な選択肢となります。
+### 主な特長 {#key-features-1}
+- Beam によるコーディングは不要
+- シンプルなユースケース向けに、迅速かつ容易にセットアップ可能
+- プログラミング経験がほとんどないユーザーにも適している
 
-### 主な特徴 {#key-features-1}
-
-- Beamのコーディングは不要です。
-- シンプルなユースケースに対する迅速かつ簡単なセットアップが可能です。
-- プログラミングの専門知識が最小限のユーザーにも適しています。
-
-両方のアプローチはGoogle CloudおよびClickHouseエコシステムと完全に互換性があり、技術的な専門知識とプロジェクト要件に応じた柔軟性を提供します。
+どちらのアプローチも Google Cloud と ClickHouse エコシステムに完全に対応しており、技術的な専門性やプロジェクト要件に応じた柔軟性を提供します。

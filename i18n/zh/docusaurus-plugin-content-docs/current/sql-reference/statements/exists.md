@@ -13,4 +13,4 @@ doc_type: 'reference'
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
 ```
 
-返回一个 `UInt8` 类型的单列：如果表或数据库不存在，则该列只包含值 `0`；如果指定数据库中存在该表，则只包含值 `1`。
+返回一个 `UInt8` 类型的单列：如果表或数据库不存在，则该列仅包含值 `0`；如果指定数据库中存在该表，则该列仅包含值 `1`。

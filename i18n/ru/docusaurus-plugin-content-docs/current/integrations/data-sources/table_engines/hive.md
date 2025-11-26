@@ -4,7 +4,7 @@ sidebar_label: 'Hive'
 title: 'Hive'
 hide_title: true
 description: 'Страница, описывающая табличный движок Hive'
-doc_type: 'справочник'
+doc_type: 'reference'
 keywords: ['hive', 'табличный движок', 'интеграция']
 ---
 

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Коннектор-приёмник Kafka на платформе Confluent'
+sidebar_label: 'Sink-коннектор Kafka на платформе Confluent'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: 'Использование коннектора-приёмника ClickHouse с Kafka Connect и ClickHouse'
+description: 'Использование sink-коннектора ClickHouse с Kafka Connect и ClickHouse'
 title: 'Интеграция Confluent Cloud с ClickHouse'
-keywords: ['интеграция Confluent ClickHouse', 'коннектор ClickHouse Kafka', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'пользовательский коннектор Confluent']
+keywords: ['Интеграция Confluent с ClickHouse', 'коннектор Kafka ClickHouse', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'пользовательский коннектор Confluent']
 doc_type: 'guide'
 ---
 
@@ -30,57 +30,51 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 
 ## Предварительные требования {#prerequisites}
-
-Предполагается, что вы знакомы с:
-
-- [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
-- Confluent Platform и [пользовательскими коннекторами](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
+Мы исходим из того, что вы знакомы со следующим:
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
+* Платформой Confluent и [пользовательскими коннекторами (Custom Connectors)](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
 
 
-## Официальный Kafka-коннектор от ClickHouse для Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
-### Установка на Confluent Platform {#installing-on-confluent-platform}
+## Официальный коннектор Kafka от ClickHouse для Confluent Platform
 
-Это краткое руководство по началу работы с ClickHouse Sink Connector на Confluent Platform.
-Подробную информацию см. в [официальной документации Confluent](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
+### Установка на Confluent Platform
 
-#### Создание топика {#create-a-topic}
+Это краткое руководство, которое поможет вам начать работу с ClickHouse Sink Connector на Confluent Platform.
+За дополнительной информацией обратитесь к [официальной документации Confluent](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 
-Создание топика на Confluent Platform довольно простое, подробные инструкции доступны [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
+#### Создание топика
 
-#### Важные замечания {#important-notes}
+Создание топика на Confluent Platform достаточно простое, подробные инструкции приведены [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-- Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Изменить это можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-- Большее количество партиций не всегда означает более высокую производительность — подробности и советы по производительности см. в нашем предстоящем руководстве.
+#### Важные замечания
 
-#### Установка коннектора {#install-connector}
+* Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Настроить это поведение можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+* Большее количество партиций не всегда означает более высокую производительность — см. наше следующее руководство для получения дополнительных сведений и рекомендаций по оптимизации производительности.
 
-Вы можете скачать коннектор из нашего [репозитория](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) — не стесняйтесь оставлять комментарии и сообщать о проблемах там же!
+#### Установка коннектора
+
+Вы можете скачать коннектор из нашего [репозитория](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) — там же вы можете оставлять комментарии и создавать issues!
 
 Перейдите в «Connector Plugins» → «Add plugin» и используйте следующие настройки:
 
 ```text
-'Connector Class' — 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
-'Connector type' — Sink
-'Sensitive properties' — 'password'. Это обеспечит маскировку записей пароля ClickHouse во время конфигурации.
+'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
+'Connector type' - Sink
+'Sensitive properties' - 'password'. Это обеспечит маскировку паролей ClickHouse при настройке конфигурации.
 ```
 
 Пример:
 
-<Image
-  img={AddCustomConnectorPlugin}
-  size='md'
-  alt='Интерфейс Confluent Platform с настройками для добавления пользовательского коннектора ClickHouse'
-  border
-/>
+<Image img={AddCustomConnectorPlugin} size="md" alt="Интерфейс Confluent Platform с настройками для добавления пользовательского коннектора ClickHouse" border />
 
-#### Сбор данных для подключения {#gather-your-connection-details}
+#### Соберите данные подключения
 
 <ConnectionDetails />
 
-#### Настройка коннектора {#configure-the-connector}
+#### Настройте коннектор
 
-Перейдите в `Connectors` → `Add Connector` и используйте следующие настройки (обратите внимание, что значения приведены только в качестве примера):
+Перейдите в `Connectors` -&gt; `Add Connector` и используйте следующие настройки (обратите внимание, что значения приведены только в качестве примера):
 
 ```json
 {
@@ -100,23 +94,23 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 }
 ```
 
-#### Указание конечных точек подключения {#specify-the-connection-endpoints}
+#### Укажите конечные точки подключения
 
-Необходимо указать список разрешенных конечных точек, к которым коннектор может получить доступ.
-При добавлении исходящих сетевых конечных точек необходимо использовать полное доменное имя (FQDN).
+Вам нужно задать список разрешённых конечных точек, к которым коннектор может обращаться.
+При добавлении конечных точек исходящего (egress) сетевого трафика необходимо использовать полное доменное имя (FQDN).
 Пример: `u57swl97we.eu-west-1.aws.clickhouse.com:8443`
 
 :::note
 Необходимо указать порт HTTP(S). Коннектор пока не поддерживает нативный протокол.
 :::
 
-[Читайте документацию.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#cc-byoc-endpoints)
+[Прочитайте документацию.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#cc-byoc-endpoints)
 
-Всё готово!
+На этом настройка завершена.
 
-#### Известные ограничения {#known-limitations}
+#### Известные ограничения
 
-- Пользовательские коннекторы должны использовать публичные интернет-конечные точки. Статические IP-адреса не поддерживаются.
-- Вы можете переопределить некоторые свойства пользовательских коннекторов. См. полный [список в официальной документации.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)
-- Пользовательские коннекторы доступны только в [некоторых регионах AWS](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)
-- См. список [ограничений пользовательских коннекторов в официальной документации](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#limitations)
+* Custom Connectors должны использовать конечные точки в публичном интернете. Статические IP‑адреса не поддерживаются.
+* Вы можете переопределить некоторые свойства Custom Connector. См. полный [список в официальной документации.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)
+* Custom Connectors доступны только в [некоторых регионах AWS](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)
+* См. список [ограничений Custom Connectors в официальной документации](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#limitations)

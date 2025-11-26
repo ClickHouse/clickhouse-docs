@@ -6,39 +6,39 @@ title: 'timeSeriesDerivToGrid'
 doc_type: 'reference'
 ---
 
-この集約関数は、時刻と値のペアからなる時系列データを受け取り、開始タイムスタンプ、終了タイムスタンプ、およびステップで定義される規則的な時間グリッド上で、そのデータから [PromQL 風の導関数 (derivative)](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv) を計算します。グリッド上の各点について、`deriv` を計算するためのサンプルは、指定された時間ウィンドウ内のものが考慮されます。
+タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、そのデータから [PromQL 風の導関数 (derivative)](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv) を計算する集約関数です。グリッド上の各ポイントについて、`deriv` を計算するためのサンプルは、指定された時間ウィンドウ内のものが対象となります。
 
-パラメータ:
+Parameters:
 
-* `start timestamp` - グリッドの開始時刻を指定します。
-* `end timestamp` - グリッドの終了時刻を指定します。
+* `start timestamp` - グリッドの開始を指定します。
+* `end timestamp` - グリッドの終了を指定します。
 * `grid step` - グリッドのステップを秒単位で指定します。
-* `staleness` - 対象とするサンプルの許容される最大の「staleness」を秒単位で指定します。staleness ウィンドウは左開区間・右閉区間です。
+* `staleness` - 対象とするサンプルに許容される最大の「staleness」を秒単位で指定します。staleness ウィンドウは左開・右閉区間です。
 
-引数:
+Arguments:
 
 * `timestamp` - サンプルのタイムスタンプ
 * `value` - `timestamp` に対応する時系列の値
 
-戻り値:
-指定されたグリッド上の `deriv` の値を `Array(Nullable(Float64))` として返します。返される配列は、各時間グリッド点ごとに 1 つの値を含みます。特定のグリッド点について導関数を計算するのに十分なサンプルがウィンドウ内に存在しない場合、その値は NULL になります。
+Return value:
+指定されたグリッド上の `deriv` の値を `Array(Nullable(Float64))` として返します。返される配列には、時間グリッド上の各ポイントごとに 1 つの値が含まれます。特定のグリッドポイントについて、そのウィンドウ内に導関数の値を計算するのに十分なサンプルが存在しない場合、その値は NULL になります。
 
-例:
+Example:
 次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] 上の `deriv` の値を計算します:
 
 ```sql
 WITH
     -- 注記: 140と190の間隔は、windowパラメータに基づいてts = 150、165、180の値がどのように補完されるかを示すためのものです
     [110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
-    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- 上記のタイムスタンプに対応する値の配列
+    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- 上記タイムスタンプに対応する値の配列
     90 AS start_ts,       -- タイムスタンプグリッドの開始位置
     90 + 120 AS end_ts,   -- タイムスタンプグリッドの終了位置
-    15 AS step_seconds,   -- タイムスタンプグリッドの間隔(秒)
-    45 AS window_seconds  -- 「staleness」ウィンドウ
+    15 AS step_seconds,   -- タイムスタンプグリッドの間隔（秒）
+    45 AS window_seconds  -- "staleness"ウィンドウ（秒）
 SELECT timeSeriesDerivToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- このサブクエリは、タイムスタンプと値の配列を`timestamp`、`value`の行に変換します
+    -- このサブクエリは、タイムスタンプと値の配列を`timestamp`、`value`の行形式に変換します
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -54,7 +54,7 @@ FROM
    └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-また、同じ長さの配列として複数のタイムスタンプと値のサンプルを渡すことも可能です。配列引数を用いた同じクエリは次のようになります。
+また、同じ長さの配列としてタイムスタンプと値の複数サンプルを渡すこともできます。配列引数を用いた同じクエリは次のとおりです。
 
 ```sql
 WITH
@@ -68,5 +68,5 @@ SELECT timeSeriesDerivToGrid(start_ts, end_ts, step_seconds, window_seconds)(tim
 ```
 
 :::note
-この関数は実験的な機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
+この関数は実験的な機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効化してください。
 :::

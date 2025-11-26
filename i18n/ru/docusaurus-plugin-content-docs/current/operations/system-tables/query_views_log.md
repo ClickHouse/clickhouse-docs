@@ -1,6 +1,6 @@
 ---
-description: 'Системная таблица, содержащая информацию о зависимых представлениях, которые выполняются при выполнении запроса, например, о типе представления или времени его выполнения.'
-keywords: ['системная таблица', 'query_views_log']
+description: 'Системная таблица, содержащая информацию о зависимых представлениях, выполняемых при выполнении запроса, например о типе представления или времени выполнения.'
+keywords: ['system table', 'query_views_log']
 slug: /operations/system-tables/query_views_log
 title: 'system.query_views_log'
 doc_type: 'reference'
@@ -13,31 +13,31 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит информацию о зависимых представлениях, выполнявшихся при выполнении запроса, например, о типе представления или времени его выполнения.
+Содержит информацию о зависимых представлениях, выполняемых при выполнении запроса, например о типе представления или времени выполнения.
 
-Чтобы включить логирование:
+Чтобы начать логирование:
 
 1. Настройте параметры в разделе [query_views_log](../../operations/server-configuration-parameters/settings.md#query_views_log).
 2. Установите [log_query_views](/operations/settings/settings#log_query_views) в 1.
 
-Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query_views_log](../../operations/server-configuration-parameters/settings.md#query_views_log). Для принудительного сброса используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
+Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе серверных настроек [query_views_log](../../operations/server-configuration-parameters/settings.md#query_views_log). Чтобы принудительно выполнить сброс, используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
 
-ClickHouse не удаляет данные из таблицы автоматически. Дополнительные сведения см. во вводном разделе [Introduction](/operations/system-tables/overview#system-tables-introduction).
+ClickHouse не удаляет данные из таблицы автоматически. Подробности см. во вводном разделе [Introduction](/operations/system-tables/overview#system-tables-introduction).
 
 Вы можете использовать настройку [log_queries_probability](/operations/settings/settings#log_queries_probability)) для уменьшения количества запросов, регистрируемых в таблице `query_views_log`.
 
 Столбцы:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата последнего события представления.
+- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата, когда произошло последнее событие представления.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время окончания выполнения представления.
 - `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время окончания выполнения представления с точностью до микросекунд.
 - `view_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Длительность выполнения представления (сумма его стадий) в миллисекундах.
-- `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — ID исходного запроса (для распределённого выполнения запроса).
+- `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — ID исходного запроса (для распределённого выполнения запросов).
 - `view_name` ([String](../../sql-reference/data-types/string.md)) — Имя представления.
 - `view_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID представления.
 - `view_type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип представления. Возможные значения:
-  - `'Default' = 1` — [Обычные представления](/sql-reference/statements/create/view#normal-view). Не должны появляться в этом логе.
+  - `'Default' = 1` — [Обычные представления](/sql-reference/statements/create/view#normal-view). Не должны появляться в этом журнале.
   - `'Materialized' = 2` — [Материализованные представления](/sql-reference/statements/create/view#materialized-view).
   - `'Live' = 3` — [Live-представления](../../sql-reference/statements/create/view.md#live-view).
 - `view_query` ([String](../../sql-reference/data-types/string.md)) — Запрос, выполняемый представлением.
@@ -49,13 +49,13 @@ ClickHouse не удаляет данные из таблицы автомати
 - `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — Максимальная разница между объёмом выделенной и освобождённой памяти в контексте этого представления.
 - `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — ProfileEvents, измеряющие различные метрики. Их описание можно найти в таблице [system.events](/operations/system-tables/events).
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — Статус представления. Возможные значения:
-  - `'QueryStart' = 1` — Успешное начало выполнения представления. Не должен появляться.
+  - `'QueryStart' = 1` — Успешный запуск выполнения представления. Не должен появляться.
   - `'QueryFinish' = 2` — Успешное завершение выполнения представления.
-  - `'ExceptionBeforeStart' = 3` — Исключение перед началом выполнения представления.
+  - `'ExceptionBeforeStart' = 3` — Исключение до начала выполнения представления.
   - `'ExceptionWhileProcessing' = 4` — Исключение во время выполнения представления.
 - `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — Код исключения.
 - `exception` ([String](../../sql-reference/data-types/string.md)) — Сообщение об исключении.
-- `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [Стек вызовов](https://en.wikipedia.org/wiki/Stack_trace). Пустая строка, если запрос был успешно выполнен.
+- `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [Трассировка стека](https://en.wikipedia.org/wiki/Stack_trace). Пустая строка, если запрос был успешно завершён.
 
 **Пример**
 
@@ -97,5 +97,6 @@ stack_trace:
 
 **См. также**
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }

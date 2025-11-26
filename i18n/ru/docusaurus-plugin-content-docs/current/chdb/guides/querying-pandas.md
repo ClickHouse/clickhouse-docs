@@ -1,20 +1,20 @@
 ---
-title: 'Как выполнять запросы к DataFrame библиотеки Pandas с помощью chDB'
+title: 'Как выполнять запросы к датафреймам Pandas с помощью chDB'
 sidebar_label: 'Запросы к Pandas'
 slug: /chdb/guides/pandas
-description: 'Узнайте, как выполнять запросы к DataFrame библиотеки Pandas с помощью chDB'
+description: 'Узнайте, как выполнять запросы к датафреймам Pandas с помощью chDB'
 keywords: ['chDB', 'Pandas']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 [Pandas](https://pandas.pydata.org/) — это популярная библиотека для обработки и анализа данных в Python.
-Во второй версии chDB мы улучшили производительность выполнения запросов к DataFrame библиотеки Pandas и добавили табличную функцию `Python`.
-В этом руководстве мы рассмотрим, как выполнять запросы к Pandas с помощью табличной функции `Python`.
+Во второй версии chDB мы улучшили производительность выполнения запросов к датафреймам Pandas и представили табличную функцию `Python`.
+В этом руководстве мы рассмотрим, как выполнять запросы к Pandas с использованием табличной функции `Python`.
 
 
 
-## Настройка {#setup}
+## Настройка
 
 Сначала создадим виртуальное окружение:
 
@@ -30,32 +30,32 @@ source .venv/bin/activate
 pip install "chdb>=2.0.2"
 ```
 
-Теперь установим Pandas и несколько других библиотек:
+Теперь установим Pandas и ещё несколько библиотек:
 
 ```bash
 pip install pandas requests ipython
 ```
 
-Для выполнения команд в остальной части руководства мы будем использовать `ipython`. Запустить его можно следующей командой:
+Для выполнения команд в оставшейся части руководства мы будем использовать `ipython`; запустить его можно командой:
 
 ```bash
 ipython
 ```
 
-Вы также можете использовать этот код в Python-скрипте или в вашей любимой среде для работы с notebook.
+Вы также можете использовать этот код в скрипте на Python или в вашем любимом ноутбуке (например, Jupyter Notebook).
 
 
-## Создание Pandas DataFrame из URL {#creating-a-pandas-dataframe-from-a-url}
+## Создание DataFrame Pandas из URL
 
-Мы будем запрашивать данные из [репозитория StatsBomb на GitHub](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file).
-Сначала импортируем библиотеки requests и pandas:
+Мы будем получать данные из [репозитория StatsBomb на GitHub](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file).
+Сначала импортируем requests и pandas:
 
 ```python
 import requests
 import pandas as pd
 ```
 
-Затем загрузим один из JSON-файлов с матчами в DataFrame:
+Затем загрузим один из JSON-файлов с данными матчей в DataFrame:
 
 ```python
 response = requests.get(
@@ -82,41 +82,41 @@ last_updated                                           2024-07-15T15:50:08.67135
 last_updated_360                                                             None
 match_week                                                                      6
 competition_competition_id                                                    223
-competition_country_name                                            South America
-competition_competition_name                                         Copa America
+competition_country_name                                            Южная Америка
+competition_competition_name                                         Кубок Америки
 season_season_id                                                              282
 season_season_name                                                           2024
 home_team_home_team_id                                                        779
-home_team_home_team_name                                                Argentina
-home_team_home_team_gender                                                   male
+home_team_home_team_name                                                Аргентина
+home_team_home_team_gender                                                   мужской
 home_team_home_team_group                                                    None
 home_team_country_id                                                           11
-home_team_country_name                                                  Argentina
+home_team_country_name                                                  Аргентина
 home_team_managers              [{'id': 5677, 'name': 'Lionel Sebastián Scalon...
 away_team_away_team_id                                                        769
-away_team_away_team_name                                                 Colombia
-away_team_away_team_gender                                                   male
+away_team_away_team_name                                                 Колумбия
+away_team_away_team_gender                                                   мужской
 away_team_away_team_group                                                    None
 away_team_country_id                                                           49
-away_team_country_name                                                   Colombia
+away_team_country_name                                                   Колумбия
 away_team_managers              [{'id': 5905, 'name': 'Néstor Gabriel Lorenzo'...
 metadata_data_version                                                       1.1.0
 metadata_shot_fidelity_version                                                  2
 metadata_xy_fidelity_version                                                    2
 competition_stage_id                                                           26
-competition_stage_name                                                      Final
+competition_stage_name                                                      Финал
 stadium_id                                                                   5337
 stadium_name                                                    Hard Rock Stadium
 stadium_country_id                                                            241
-stadium_country_name                                     United States of America
+stadium_country_name                                                          США
 referee_id                                                                   2638
 referee_name                                                        Raphael Claus
 referee_country_id                                                             31
-referee_country_name                                                       Brazil
+referee_country_name                                                     Бразилия
 Name: 0, dtype: object
 ```
 
-Далее загрузим один из JSON-файлов с событиями и добавим в этот DataFrame столбец `match_id`:
+Далее мы загрузим один из файлов JSON с событиями, а также добавим в этот датафрейм столбец `match_id`:
 
 ```python
 response = requests.get(
@@ -145,13 +145,13 @@ second                                                                  0
 possession                                                              1
 duration                                                              0.0
 type_id                                                                35
-type_name                                                     Starting XI
+type_name                                                     Стартовый состав
 possession_team_id                                                    779
-possession_team_name                                            Argentina
+possession_team_name                                            Аргентина
 play_pattern_id                                                         1
-play_pattern_name                                            Regular Play
+play_pattern_name                                            Регулярная игра
 team_id                                                               779
-team_name                                                       Argentina
+team_name                                                       Аргентина
 tactics_formation                                                   442.0
 tactics_lineup          [{'player': {'id': 6909, 'name': 'Damián Emili...
 match_id                                                          3943077
@@ -159,23 +159,23 @@ Name: 0, dtype: object
 ```
 
 
-## Запросы к Pandas DataFrames {#querying-pandas-dataframes}
+## Выполнение запросов к датафреймам Pandas
 
-Далее рассмотрим, как выполнять запросы к этим DataFrames с помощью chDB.
+Теперь давайте посмотрим, как выполнять запросы к этим датафреймам с помощью chDB.
 Импортируем библиотеку:
 
 ```python
 import chdb
 ```
 
-Для выполнения запросов к Pandas DataFrames используется табличная функция `Python`:
+Запросы к DataFrame Pandas можно выполнять с помощью табличной функции `Python`:
 
 ```sql
 SELECT *
 FROM Python(<name-of-variable>)
 ```
 
-Например, чтобы вывести список столбцов в `matches_df`, можно написать следующее:
+Итак, если бы мы захотели вывести список столбцов в `matches_df`, мы могли бы написать следующее:
 
 ```python
 chdb.query("""
@@ -230,7 +230,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-Теперь можно узнать, какие судьи обслуживали более одного матча, выполнив следующий запрос:
+С помощью следующего запроса мы можем узнать, какие судьи обслуживали более одного матча:
 
 ```python
 chdb.query("""
@@ -256,7 +256,7 @@ ORDER BY count DESC
 9                  Raphael Claus      2
 ```
 
-Теперь рассмотрим `events_df`.
+Теперь давайте рассмотрим `events_df`.
 
 ```python
 chdb.query("""
@@ -284,10 +284,10 @@ LIMIT 10
 ```
 
 
-## Объединение Pandas DataFrames {#joining-pandas-dataframes}
+## Объединение DataFrame в Pandas
 
-Мы также можем объединять DataFrames в запросе.
-Например, чтобы получить обзор матча, можно написать следующий запрос:
+Мы также можем объединять несколько DataFrame в одном запросе.
+Например, чтобы получить общее представление о матче, мы могли бы написать следующий запрос:
 
 ```python
 chdb.query("""
@@ -316,18 +316,18 @@ Name: 0, dtype: object
 ```
 
 
-## Заполнение таблицы из DataFrame {#populating-a-table-from-a-dataframe}
+## Заполнение таблицы из DataFrame
 
-Также можно создавать и заполнять таблицы ClickHouse из DataFrame.
-Для создания таблицы в chDB необходимо использовать API сессий с сохранением состояния (Stateful Session API).
+Мы также можем создавать и заполнять таблицы ClickHouse из объектов DataFrame.
+Если мы хотим создать таблицу в chDB, нам нужно использовать Stateful Session API.
 
-Импортируем модуль сессий:
+Давайте импортируем модуль session:
 
 ```python
 from chdb import session as chs
 ```
 
-Инициализируем сессию:
+Инициализируйте сеанс:
 
 ```python
 sess = chs.Session()
@@ -339,17 +339,17 @@ sess = chs.Session()
 sess.query("CREATE DATABASE statsbomb")
 ```
 
-Затем создадим таблицу `events` на основе `events_df`:
+Затем создайте таблицу `events` из `events_df`:
 
 ```python
 sess.query("""
 CREATE TABLE statsbomb.events ORDER BY id AS
-SELECT *
+SELECT * 
 FROM Python(events_df)
 """)
 ```
 
-Теперь можно выполнить запрос, который возвращает получателей с наибольшим количеством передач:
+Затем мы можем выполнить запрос, который вернёт получателя с наибольшим числом передач:
 
 ```python
 sess.query("""
@@ -377,9 +377,9 @@ LIMIT 10
 ```
 
 
-## Объединение Pandas DataFrame и таблицы {#joining-a-pandas-dataframe-and-table}
+## Объединение DataFrame Pandas и таблицы
 
-Наконец, мы можем обновить наш запрос на объединение, чтобы соединить DataFrame `matches_df` с таблицей `statsbomb.events`:
+Наконец, мы можем обновить наш запрос, чтобы объединить DataFrame `matches_df` с таблицей `statsbomb.events`:
 
 ```python
 sess.query("""
@@ -396,8 +396,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Argentina
-away_team_away_team_name     Colombia
+home_team_home_team_name    Аргентина
+away_team_away_team_name     Колумбия
 home_score                          1
 away_score                          0
 home_passes                       527

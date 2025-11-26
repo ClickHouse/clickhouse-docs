@@ -1,5 +1,5 @@
 ---
-description: 'Linux 環境から macOS システム向けに ClickHouse をクロスコンパイルするためのガイド'
+description: 'Linux 上で macOS システム向けの ClickHouse をクロスコンパイルするためのガイド'
 sidebar_label: 'Linux で macOS 向けにビルド'
 sidebar_position: 20
 slug: /development/build-cross-osx
@@ -9,23 +9,23 @@ doc_type: 'guide'
 
 
 
-# macOS 向けに Linux 上で ClickHouse をビルドする方法
+# Linux 上で macOS 向けの ClickHouse をビルドする方法
 
-このドキュメントは、Linux マシンを使用して、OS X 上で動作する `clickhouse` バイナリをビルドしたい場合を対象としています。
+このドキュメントは、Linux マシンを使って OS X 上で実行する `clickhouse` バイナリをビルドしたい場合の手順です。
 主なユースケースは、Linux マシン上で実行される継続的インテグレーション（CI）チェックです。
-ClickHouse を直接 macOS 上でビルドしたい場合は、[ネイティブビルド手順](../development/build-osx.md)に従ってください。
+ClickHouse を直接 macOS 上でビルドしたい場合は、[ネイティブビルド手順](../development/build-osx.md)を参照してください。
 
 macOS 向けのクロスビルドは [ビルド手順](../development/build.md) に基づいているため、まずそちらに従ってください。
 
 以下のセクションでは、`x86_64` macOS 向けに ClickHouse をビルドする手順を説明します。
-ARM アーキテクチャをターゲットとする場合は、`x86_64` をすべて `aarch64` に置き換えてください。
+ARM アーキテクチャをターゲットにする場合は、すべての `x86_64` を `aarch64` に置き換えてください。
 たとえば、手順全体を通して `x86_64-apple-darwin` を `aarch64-apple-darwin` に置き換えます。
 
 
 
-## クロスコンパイルツールセットのインストール {#install-cross-compilation-toolset}
+## クロスコンパイル用ツールセットをインストールする
 
-`cctools`のインストールパスを`${CCTOOLS}`として記憶しておきましょう
+`cctools` をインストールしたパスを `${CCTOOLS}` として覚えておきましょう。
 
 ```bash
 mkdir ~/cctools
@@ -46,7 +46,7 @@ git checkout 2a3e1c2a6ff54a30f898b70cfb9ba1692a55fad7
 make install
 ```
 
-また、macOS X SDKを作業ツリーにダウンロードする必要があります。
+また、作業ツリー内に macOS X SDK をダウンロードする必要があります。
 
 ```bash
 cd ClickHouse/cmake/toolchain/darwin-x86_64
@@ -54,7 +54,7 @@ curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11
 ```
 
 
-## ClickHouseのビルド {#build-clickhouse}
+## ClickHouse をビルドする
 
 ```bash
 cd ClickHouse
@@ -64,4 +64,4 @@ CC=clang-19 CXX=clang++-19 cmake -DCMAKE_AR:FILEPATH=${CCTOOLS}/bin/x86_64-apple
 ninja
 ```
 
-生成されるバイナリはMach-O実行可能形式であり、Linux上では実行できません。
+生成されるバイナリは Mach-O 形式の実行ファイルとなり、Linux 上では実行できません。

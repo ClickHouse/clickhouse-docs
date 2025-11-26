@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse C++ 客户端库及其与 u-server 框架集成的相关文档'
+description: 'ClickHouse C++ 客户端库及其与 u-server 框架集成的文档'
 sidebar_label: 'C++ 客户端库'
 sidebar_position: 24
 slug: /interfaces/cpp

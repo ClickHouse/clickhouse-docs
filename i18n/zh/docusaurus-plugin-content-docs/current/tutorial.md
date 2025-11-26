@@ -2,9 +2,9 @@
 slug: /tutorial
 sidebar_label: '高级教程'
 title: '高级教程'
-description: '了解如何使用纽约市出租车示例数据集在 ClickHouse 中导入和查询数据。'
+description: '学习如何使用纽约市出租车示例数据集在 ClickHouse 中摄取和查询数据。'
 sidebar_position: 0.5
-keywords: ['clickhouse', '安装', '教程', '字典', '字典', '示例', '高级', '出租车', '纽约', '纽约市']
+keywords: ['clickhouse', '安装', '教程', '字典', '字典表', '示例', '高级', '出租车', '纽约', 'nyc']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -17,154 +17,155 @@ doc_type: 'guide'
 
 ## 概述 {#overview}
 
-了解如何使用纽约市出租车示例数据集在 ClickHouse 中导入和查询数据。
+了解如何使用纽约市出租车示例数据集在 ClickHouse 中摄取和查询数据。
 
-### 前提条件 {#prerequisites}
+### 前置条件 {#prerequisites}
 
-完成本教程需要访问正在运行的 ClickHouse 服务。相关说明请参阅[快速入门](/get-started/quick-start)指南。
+您需要访问正在运行的 ClickHouse 服务才能完成本教程。有关说明,请参阅[快速入门](/get-started/quick-start)指南。
 
 <VerticalStepper>
 
 
 ## 创建新表 {#create-a-new-table}
 
-纽约市出租车数据集包含数百万次出租车行程的详细信息,列包括小费金额、通行费、支付类型等。创建一个表来存储这些数据。
+纽约市出租车数据集包含数百万次出租车行程的详细信息，其中的列包括小费金额、过路费、支付方式等。创建一个表来存储这些数据。
 
-1. 连接到 SQL 控制台:
-   - 对于 ClickHouse Cloud,从下拉菜单中选择一个服务,然后从左侧导航菜单中选择 **SQL Console**。
-   - 对于自管理的 ClickHouse,通过 `https://_hostname_:8443/play` 连接到 SQL 控制台。详细信息请咨询您的 ClickHouse 管理员。
+1. 连接到 SQL 控制台：
+    - 对于 ClickHouse Cloud，从下拉菜单中选择一个服务，然后在左侧导航菜单中选择 **SQL Console**。
+    - 对于自托管的 ClickHouse，在 `https://_hostname_:8443/play` 上连接到 SQL 控制台。请向你的 ClickHouse 管理员确认详细信息。
 
-2. 在 `default` 数据库中创建以下 `trips` 表:
-   ```sql
-   CREATE TABLE trips
-   (
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   )
-   ENGINE = MergeTree
-   PARTITION BY toYYYYMM(pickup_date)
-   ORDER BY pickup_datetime;
-   ```
+2. 在 `default` 数据库中创建以下 `trips` 表：
+    ```sql
+    CREATE TABLE trips
+    (
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    )
+    ENGINE = MergeTree
+    PARTITION BY toYYYYMM(pickup_date)
+    ORDER BY pickup_datetime;
+    ```
+
 
 
 ## 添加数据集 {#add-the-dataset}
 
-现在您已经创建了表,接下来从 S3 中的 CSV 文件添加纽约市出租车数据。
+表已经创建好之后，接下来从 S3 中的 CSV 文件中添加纽约市出租车数据。
 
-1. 以下命令将从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入约 2,000,000 行数据:
+1. 以下命令会从 S3 中的两个文件：`trips_1.tsv.gz` 和 `trips_2.tsv.gz`，向你的 `trips` 表插入约 2,000,000 行数据：
 
-   ```sql
-   INSERT INTO trips
-   SELECT * FROM s3(
-       'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
-       'TabSeparatedWithNames', "
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   ") SETTINGS input_format_try_infer_datetimes = 0
-   ```
+    ```sql
+    INSERT INTO trips
+    SELECT * FROM s3(
+        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
+        'TabSeparatedWithNames', "
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    ") SETTINGS input_format_try_infer_datetimes = 0
+    ```
 
-2. 等待 `INSERT` 完成。下载 150 MB 数据可能需要一些时间。
+2. 等待 `INSERT` 完成。下载 150 MB 数据可能需要一点时间。
 
-3. 插入完成后,验证操作是否成功:
+3. 插入完成后，验证是否成功：
+    ```sql
+    SELECT count() FROM trips
+    ```
 
-   ```sql
-   SELECT count() FROM trips
-   ```
+    此查询应返回 1,999,657 行。
 
-   此查询应返回 1,999,657 行。
 
 
 ## 分析数据 {#analyze-the-data}
 
-运行一些查询来分析数据。您可以参考以下示例或尝试编写自己的 SQL 查询。
+运行查询以分析数据。您可以参考以下示例或尝试编写自己的 SQL 查询。
 
-- 计算平均小费金额:
+- 计算平均小费金额：
 
   ```sql
   SELECT round(avg(tip_amount), 2) FROM trips
@@ -183,7 +184,7 @@ doc_type: 'guide'
     </p>
   </details>
 
-- 根据乘客数量计算平均费用:
+- 根据乘客数量计算平均费用：
 
   ```sql
   SELECT
@@ -197,7 +198,7 @@ doc_type: 'guide'
   <summary>预期输出</summary>
   <p>
 
-  `passenger_count` 的范围从 0 到 9:
+  `passenger_count` 的范围为 0 到 9：
 
   ```response
   ┌─passenger_count─┬─average_total_amount─┐
@@ -217,7 +218,7 @@ doc_type: 'guide'
     </p>
   </details>
 
-- 计算每个街区的每日接客次数:
+- 计算每个街区的每日接客次数：
 
   ```sql
   SELECT
@@ -249,7 +250,7 @@ doc_type: 'guide'
     </p>
   </details>
 
-- 计算每次行程的时长(以分钟为单位),然后按行程时长对结果进行分组:
+- 计算每次行程的时长（以分钟为单位），然后按行程时长对结果进行分组：
   ```sql
   SELECT
       avg(tip_amount) AS avg_tip,
@@ -281,7 +282,7 @@ doc_type: 'guide'
     </p>
     </details>
 
-- 显示每个街区按小时统计的上车次数：
+- 显示每个社区按小时统计的接客次数：
 
   ```sql
   SELECT
@@ -341,7 +342,7 @@ doc_type: 'guide'
 
 
 
-7. 查询前往拉瓜迪亚（LaGuardia）或 JFK 机场的行程：
+7. 查询前往 LaGuardia 或 JFK 机场的行程：
     ```sql
     SELECT
         pickup_datetime,
@@ -383,26 +384,26 @@ doc_type: 'guide'
 
 
 
-## 创建字典 {#create-a-dictionary}
+## 创建字典
 
-字典是存储在内存中的键值对映射。详细信息请参阅[字典](/sql-reference/dictionaries/index.md)
+字典是在内存中存储的键值对映射。详情请参见 [Dictionaries](/sql-reference/dictionaries/index.md)
 
-创建一个与 ClickHouse 服务中的表关联的字典。
-该表和字典基于一个 CSV 文件,该文件为纽约市的每个街区包含一行数据。
+在你的 ClickHouse 服务中创建一个与表关联的字典。
+该表和字典基于一个 CSV 文件，其中每一行代表纽约市的一个社区。
 
-这些街区映射到纽约市五个行政区的名称(布朗克斯、布鲁克林、曼哈顿、皇后区和史泰登岛),以及纽瓦克机场 (EWR)。
+这些社区会被映射到纽约市五个行政区（Bronx、Brooklyn、Manhattan、Queens 和 Staten Island）的名称，以及纽瓦克机场（EWR）。
 
-以下是您使用的 CSV 文件的表格格式摘录。文件中的 `LocationID` 列映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列:
+下面是你正在使用的 CSV 文件的一个片段，以表格形式展示。文件中的 `LocationID` 列会映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列：
 
-| LocationID | Borough       | Zone                    | service_zone |
-| ---------- | ------------- | ----------------------- | ------------ |
-| 1          | EWR           | Newark Airport          | EWR          |
-| 2          | Queens        | Jamaica Bay             | Boro Zone    |
-| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-| 4          | Manhattan     | Alphabet City           | Yellow Zone  |
-| 5          | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------- | ------------- | ----------------------- | ---------------- |
+| 1          | EWR           | Newark Airport          | EWR              |
+| 2          | Queens        | Jamaica Bay             | Boro Zone        |
+| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+| 4          | Manhattan     | Alphabet City           | Yellow Zone      |
+| 5          | Staten Island | Arden Heights           | Boro Zone        |
 
-1. 运行以下 SQL 命令,该命令创建一个名为 `taxi_zone_dictionary` 的字典,并从 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
+1. 运行以下 SQL 命令，创建一个名为 `taxi_zone_dictionary` 的字典，并从存储在 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
 
 ```sql
 CREATE DICTIONARY taxi_zone_dictionary
@@ -419,24 +420,23 @@ LAYOUT(HASHED_ARRAY())
 ```
 
 :::note
-将 `LIFETIME` 设置为 0 可禁用自动更新,以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下,您可能需要进行不同的配置。详细信息请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+将 `LIFETIME` 设置为 0 会禁用自动更新，从而避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可以根据需要进行不同配置。详情请参阅 [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
 :::
 
-3. 验证是否成功。以下命令应返回 265 行,即每个街区一行:
-
+3. 验证其是否生效。下面的查询应返回 265 行，即每个 neighborhood 一行：
    ```sql
    SELECT * FROM taxi_zone_dictionary
    ```
 
-4. 使用 `dictGet` 函数([或其变体](./sql-reference/functions/ext-dict-functions.md))从字典中检索值。您需要传入字典的名称、要获取的值以及键(在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列)。
+4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中检索值。您需要传入字典名称、要获取的字段以及键（在本示例中为 `taxi_zone_dictionary` 表中的 `LocationID` 列）。
 
-   例如,以下查询返回 `LocationID` 为 132 的 `Borough`,对应于 JFK 机场):
+   例如，下面的查询会返回 `LocationID` 为 132 的 `Borough`，该值对应于 JFK 机场：
 
    ```sql
    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
    ```
 
-   JFK 位于皇后区。请注意,检索该值的时间基本为 0:
+   JFK 位于 Queens。注意检索该值所耗时间基本为 0：
 
    ```response
    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -446,19 +446,17 @@ LAYOUT(HASHED_ARRAY())
    1 rows in set. Elapsed: 0.004 sec.
    ```
 
-5. 使用 `dictHas` 函数检查字典中是否存在某个键。例如,以下查询返回 `1`(在 ClickHouse 中表示"真"):
-
+5. 使用 `dictHas` 函数检查字典中是否存在某个键。例如，下面的查询返回 `1`（在 ClickHouse 中表示 “true”）：
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 132)
    ```
 
-6. 以下查询返回 0,因为 4567 不是字典中 `LocationID` 的值:
-
+6. 下面的查询返回 0，因为 4567 不是字典中 `LocationID` 的取值：
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 4567)
    ```
 
-7. 在查询中使用 `dictGet` 函数检索行政区的名称。例如:
+7. 使用 `dictGet` 函数在查询中检索 borough 的名称。例如：
    ```sql
    SELECT
        count(1) AS total,
@@ -470,7 +468,7 @@ LAYOUT(HASHED_ARRAY())
    ```
 
 
-此查询按行政区汇总了以 LaGuardia 或 JFK 机场为终点的出租车行程数量。结果如下所示，可以注意到有相当多的行程其上车街区未知：
+此查询汇总了各行政区在拉瓜迪亚机场或 JFK 机场结束的出租车行程次数。结果如下所示，可以注意到有相当多行程的上车区域是未知的：
 
 ```response
 ┌─total─┬─borough_name──┐
@@ -520,7 +518,7 @@ LAYOUT(HASHED_ARRAY())
     ```
 
     :::note
-    请注意,上述 `JOIN` 查询的输出与之前使用 `dictGetOrDefault` 的查询相同(除了不包含 `Unknown` 值)。在底层实现中,ClickHouse 实际上是在为 `taxi_zone_dictionary` 字典调用 `dictGet` 函数,但 `JOIN` 语法对 SQL 开发人员来说更加熟悉。
+    请注意,上述 `JOIN` 查询的输出结果与之前使用 `dictGetOrDefault` 的查询相同(除了不包含 `Unknown` 值)。在底层实现中,ClickHouse 实际上是在为 `taxi_zone_dictionary` 字典调用 `dictGet` 函数,但 `JOIN` 语法对 SQL 开发人员来说更加熟悉。
     :::
 
 2.  此查询返回小费金额最高的 1000 次行程,然后对每一行与字典执行内连接:
@@ -542,9 +540,9 @@ LAYOUT(HASHED_ARRAY())
 
 ## 后续步骤 {#next-steps}
 
-通过以下文档深入了解 ClickHouse：
+通过以下文档进一步了解 ClickHouse：
 
-- [ClickHouse 主索引介绍](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引在查询时高效定位相关数据。
-- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等。
-- [ClickHouse 数据可视化](./integrations/data-visualization/index.md)：将您常用的 UI/BI 工具连接到 ClickHouse。
-- [SQL 参考文档](./sql-reference/index.md)：浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
+- [ClickHouse 主索引（Primary Index）简介](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引在查询期间高效定位相关数据。 
+- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等多种方式。
+- [在 ClickHouse 中可视化数据](./integrations/data-visualization/index.md)：将您常用的 UI/BI 工具连接到 ClickHouse。
+- [SQL 参考](./sql-reference/index.md)：浏览 ClickHouse 中用于转换、处理和分析数据的 SQL 函数。

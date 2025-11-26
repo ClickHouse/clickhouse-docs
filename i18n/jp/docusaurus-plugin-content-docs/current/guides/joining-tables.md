@@ -1,7 +1,7 @@
 ---
-title: 'ClickHouse における JOIN の利用'
-description: 'ClickHouse でテーブルを結合する方法'
-keywords: ['joins', 'テーブルの結合']
+title: 'ClickHouse における JOIN の使い方'
+description: 'ClickHouse でテーブルを JOIN する方法'
+keywords: ['JOIN', 'テーブル結合']
 slug: /guides/joining-tables
 doc_type: 'guide'
 ---
@@ -13,15 +13,15 @@ import joins_3 from '@site/static/images/guides/joins-3.png';
 import joins_4 from '@site/static/images/guides/joins-4.png';
 import joins_5 from '@site/static/images/guides/joins-5.png';
 
-ClickHouse には、多様な結合アルゴリズムを備えた[完全な `JOIN` 機能のサポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)があります。性能を最大化するために、本ガイドで示す結合最適化の推奨事項に従うことをお勧めします。
+ClickHouse は[完全な `JOIN` サポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を提供しており、幅広い結合アルゴリズムを利用できます。パフォーマンスを最大化するために、本ガイドで挙げる結合最適化の推奨事項に従うことをお勧めします。
 
-* 最適なパフォーマンスを得るには、特にミリ秒単位の性能が求められるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目指すべきです。1 つのクエリ内の結合は最大でも 3〜4 個を目安としてください。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、Dictionaries、マテリアライズドビューなど、結合を最小限に抑えるためのさまざまな手法について詳しく説明しています。
-* 現在、ClickHouse は結合の順序を自動的に並べ替えません。常に、最も小さいテーブルが JOIN の右辺に来るようにしてください。ほとんどの結合アルゴリズムでは右側のテーブルがメモリ上に保持されるため、これによりクエリのメモリオーバーヘッドを最小限に抑えられます。
-* クエリで、以下に示すような `LEFT ANY JOIN` のような「直接的な結合」が必要な場合は、可能な限り [Dictionaries](/dictionary) の使用を推奨します。
+* 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN は最大 3〜4 個を目安にします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
+* 現在、ClickHouse は JOIN の順序を並べ替えません。常に最も小さいテーブルが JOIN の右側に来るようにしてください。ほとんどの結合アルゴリズムでは右側のテーブルがメモリ上に保持されるため、これによりクエリのメモリオーバーヘッドを最小限にできます。
+* クエリが、以下に示すような `LEFT ANY JOIN` のような直接結合を必要とする場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
 
 <Image img={joins_1} size="sm" alt="Left any join" />
 
-* 内部結合を実行する場合、`IN` 句を用いたサブクエリとして記述した方が、より効率的であることがよくあります。以下のクエリは機能的には同等であり、いずれも「質問文には ClickHouse が含まれていないが、`comments` には含まれている `posts` の数」を求めています。
+* 内部結合を実行する場合、多くのケースで `IN` 句を使用したサブクエリとして記述した方がより効率的です。次のクエリを考えてみてください。これらは機能的には同等であり、いずれも質問文には ClickHouse が含まれていないが `comments` には含まれている `posts` の件数を取得します。
 
 ```sql
 SELECT count()
@@ -37,9 +37,9 @@ WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILI
 Peak memory usage: 1.23 GiB.
 ```
 
-`ANY INNER JOIN` を使用している点に注意してください。単なる `INNER JOIN` を使うとデカルト積になってしまうため、各 post につき 1 件だけマッチする形にしたいのです。
+`INNER JOIN` ではなく `ANY INNER JOIN` を使用しているのは、直積（cartesian product）を避けたい、つまり各 post につき 1 件だけマッチさせたいからです。
 
-この結合はサブクエリを用いて書き換えることができ、パフォーマンスを大幅に向上できます。
+この結合はサブクエリを使って書き換えることができ、大幅なパフォーマンス向上が見込めます。
 
 ```sql
 SELECT count()
@@ -57,9 +57,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 
-ClickHouse はすべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な場合には常に、関係するすべての句に手動で条件を適用することを推奨します。こうすることで、`JOIN` されるデータ量を最小化できます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいとします。
+ClickHouse は、すべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な限りすべてのサブ句に条件を手動で適用することを常に推奨しています。こうすることで、`JOIN` するデータ量を最小限に抑えられます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいものとします。
 
-大きいテーブルを左側に置いた素朴なクエリは、完了までに 56 秒かかります。
+左側に大きなテーブルを置いた素朴なクエリは、完了までに 56 秒かかります。
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -73,11 +73,11 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ```
 
 
-結果セット内の行数: 1 行。経過時間: 56.642 秒。処理 252.30 百万行、1.62 GB (4.45 百万行/秒、28.60 MB/秒)。
+1 行の結果。経過時間: 56.642秒。252.30 百万行、1.62 GBを処理しました (4.45 百万行/秒、28.60 MB/秒)。
 
 ````
 
-この結合の順序を変更することで、パフォーマンスが劇的に改善され1.5秒になります:
+この結合の順序を変更することで、パフォーマンスが1.5秒まで劇的に改善されます:
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -92,7 +92,7 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
 ````
 
-左側のテーブルにフィルターを追加すると、パフォーマンスはさらに向上し、0.5 秒にまで短縮されます。
+左側のテーブルにフィルターを追加すると、処理時間はさらに短縮され、0.5秒になります。
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -104,11 +104,11 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 │  261915 │
 └─────────┘
 
-1行が結果セットに含まれています。経過時間: 0.597秒。処理された行数: 8114万行、1.31 GB (1億3582万行/秒、2.19 GB/秒)
-ピークメモリ使用量: 249.42 MiB。
+1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
+ピークメモリ使用量: 249.42 MiB.
 ```
 
-このクエリは、前述したように `INNER JOIN` をサブクエリに移動し、外側および内側の両方のクエリでフィルタを維持することで、さらに最適化できます。
+前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルタを保持することで、このクエリをさらに改善できます。
 
 ```sql
 SELECT count() AS upvotes
@@ -130,65 +130,67 @@ Peak memory usage: 250.66 MiB.
 
 ## JOIN アルゴリズムの選択 {#choosing-a-join-algorithm}
 
-ClickHouse は複数の [join アルゴリズム](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)をサポートしています。これらのアルゴリズムは通常、メモリ使用量とパフォーマンスのトレードオフを行います。以下は、相対的なメモリ消費量と実行時間に基づいた ClickHouse の join アルゴリズムの概要です:
+ClickHouse は、いくつかの[JOIN アルゴリズム](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)をサポートしています。これらのアルゴリズムは、一般的にメモリ使用量とパフォーマンスの間にトレードオフの関係があります。以下では、ClickHouse の JOIN アルゴリズムを、相対的なメモリ消費量と実行時間に基づいて概観します。
 
 <br />
 
-<Image img={joins_2} size='lg' alt='join のメモリ使用量と速度' />
+<Image img={joins_2} size="lg" alt="JOIN におけるメモリ別スピード"/>
 
 <br />
 
-これらのアルゴリズムは、join クエリの計画と実行方法を決定します。デフォルトでは、ClickHouse は使用される join タイプと厳密性、および結合されるテーブルのエンジンに基づいて、direct または hash join アルゴリズムを使用します。また、ClickHouse はリソースの可用性と使用状況に応じて、実行時に使用する join アルゴリズムを適応的に選択し、動的に変更するように設定することもできます。`join_algorithm=auto` の場合、ClickHouse はまず hash join アルゴリズムを試行し、そのアルゴリズムのメモリ制限を超えた場合、アルゴリズムは実行中に partial merge join に切り替えられます。トレースログを通じて、どのアルゴリズムが選択されたかを確認できます。ClickHouse では、`join_algorithm` 設定を使用して、ユーザー自身が希望する join アルゴリズムを指定することもできます。
+これらのアルゴリズムは、JOIN クエリがどのように計画および実行されるかを決定します。デフォルトでは、ClickHouse は使用される JOIN の種類と厳密さ、および結合対象テーブルのエンジンに基づいて、direct JOIN または hash JOIN アルゴリズムを使用します。また、ClickHouse を構成して、リソースの利用可能性と使用状況に応じて、実行時に使用する JOIN アルゴリズムを自動的に選択し動的に切り替えることもできます。`join_algorithm=auto` の場合、ClickHouse は最初に hash JOIN アルゴリズムを試し、そのアルゴリズムのメモリ制限を超えた場合には、その場でアルゴリズムを partial merge JOIN に切り替えます。どのアルゴリズムが選択されたかは、トレースログで確認できます。また ClickHouse では、`join_algorithm` 設定を通じて、ユーザーが希望する JOIN アルゴリズムを明示的に指定することも可能です。
 
-各 join アルゴリズムでサポートされる `JOIN` タイプを以下に示します。最適化を行う前に考慮する必要があります:
-
-<br />
-
-<Image img={joins_3} size='lg' alt='join の機能' />
+各 JOIN アルゴリズムでサポートされる `JOIN` タイプを以下に示します。最適化を行う前に考慮してください。
 
 <br />
 
-各 `JOIN` アルゴリズムの詳細な説明は、長所、短所、スケーリング特性を含めて[こちら](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)で確認できます。
-
-適切な join アルゴリズムの選択は、メモリとパフォーマンスのどちらを最適化したいかによって異なります。
-
-
-## JOIN性能の最適化 {#optimizing-join-performance}
-
-主要な最適化指標がパフォーマンスであり、可能な限り高速にJOINを実行したい場合は、以下の決定木を使用して適切なJOINアルゴリズムを選択できます:
+<Image img={joins_3} size="lg" alt="JOIN の機能"/>
 
 <br />
 
-<Image img={joins_4} size='lg' alt='JOINフローチャート' />
+各 `JOIN` アルゴリズムの詳細な説明は、その長所・短所・スケーリング特性とともに[こちら](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)で確認できます。
+
+適切な JOIN アルゴリズムの選択は、メモリ使用量とパフォーマンスのどちらを優先して最適化するかによって決まります。
+
+
+
+## JOIN のパフォーマンス最適化 {#optimizing-join-performance}
+
+主な最適化指標がパフォーマンスであり、JOIN をできるだけ高速に実行したい場合は、適切な JOIN アルゴリズムを選択するために次の意思決定ツリーを使用できます。
 
 <br />
 
-- **(1)** 右側テーブルのデータを辞書などのインメモリ低レイテンシキーバリューデータ構造に事前ロード可能で、JOINキーが基盤となるキーバリューストレージのキー属性と一致し、`LEFT ANY JOIN`のセマンティクスで十分な場合、**direct join**が適用可能であり、最速のアプローチを提供します。
-
-- **(2)** テーブルの[物理的な行順序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)がJOINキーのソート順序と一致する場合は、状況次第です。この場合、**full sorting merge join**はソートフェーズを[スキップ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order)するため、メモリ使用量が大幅に削減され、さらにデータサイズとJOINキー値の分布によっては、一部のハッシュJOINアルゴリズムよりも高速な実行時間を実現します。
-
-- **(3)** **parallel hash join**の[追加メモリ使用オーバーヘッド](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#summary)を考慮しても右側テーブルがメモリに収まる場合、このアルゴリズムまたはハッシュJOINの方が高速になる可能性があります。これはデータサイズ、データ型、およびJOINキー列の値分布に依存します。
-
-- **(4)** 右側テーブルがメモリに収まらない場合も、状況次第です。ClickHouseは3つのメモリ非依存JOINアルゴリズムを提供しています。3つすべてが一時的にデータをディスクに書き出します。**Full sorting merge join**と**partial merge join**はデータの事前ソートが必要です。**Grace hash join**は代わりにデータからハッシュテーブルを構築します。データ量、データ型、およびJOINキー列の値分布に基づいて、データからハッシュテーブルを構築する方がデータをソートするよりも高速な場合があります。その逆もあります。
-
-Partial merge joinは、大規模テーブルを結合する際のメモリ使用量を最小化するように最適化されていますが、JOIN速度が犠牲になり、かなり低速です。これは特に、左側テーブルの物理的な行順序がJOINキーのソート順序と一致しない場合に顕著です。
-
-Grace hash joinは3つのメモリ非依存JOINアルゴリズムの中で最も柔軟性が高く、[grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759)設定により、メモリ使用量とJOIN速度の適切な制御を提供します。データ量によっては、両アルゴリズムのメモリ使用量がほぼ同等になるように[バケット](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2)数を選択した場合、grace hashはpartial mergeアルゴリズムよりも高速または低速になる可能性があります。grace hash joinのメモリ使用量をfull sorting mergeのメモリ使用量とほぼ同等に設定した場合、当社のテスト実行では常にfull sorting mergeの方が高速でした。
-
-3つのメモリ非依存アルゴリズムのうちどれが最速かは、データ量、データ型、およびJOINキー列の値分布に依存します。どのアルゴリズムが最速かを判断するには、現実的なデータ量と内容でベンチマークを実行することが常に最善です。
-
-
-## メモリの最適化 {#optimizing-for-memory}
-
-最速の実行時間ではなく、最小のメモリ使用量でjoinを最適化したい場合は、以下のデシジョンツリーを使用できます:
+<Image img={joins_4} size="lg" alt="join flowchart"/>
 
 <br />
 
-<Image img={joins_5} size='lg' alt='Joinメモリ最適化デシジョンツリー' />
+- **(1)** 右側のテーブルのデータを、辞書などのインメモリ低レイテンシーなキー・バリュー型データ構造にあらかじめロードでき、JOIN キーが基盤となるキー・バリューストレージのキー属性と一致し、かつ `LEFT ANY JOIN` のセマンティクスで十分な場合は、**direct join** が適用可能で、最も高速なアプローチとなります。
+
+- **(2)** テーブルの [物理行順序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) が JOIN キーのソート順序と一致している場合は、判断が分かれます。このケースでは、**full sorting merge join** はソートフェーズを[スキップ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order)し、その結果、メモリ使用量が大幅に削減されるとともに、データサイズや JOIN キー値の分布によっては、いくつかのハッシュ JOIN アルゴリズムよりも高速に実行されます。
+
+- **(3)** 右側のテーブルが、**parallel hash join** の[追加のメモリ使用量オーバーヘッド](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#summary)を考慮してもメモリに収まる場合は、このアルゴリズム、もしくは hash join のほうが高速になることがあります。これは、データサイズ、データ型、および JOIN キーカラムの値分布に依存します。
+
+- **(4)** 右側のテーブルがメモリに収まらない場合も、やはり状況により変わります。ClickHouse には、メモリ制約を受けない 3 つの JOIN アルゴリズムが用意されています。これら 3 つはいずれも一時的にデータをディスクにスピルします。**full sorting merge join** と **partial merge join** は、事前にデータをソートする必要があります。**grace hash join** は代わりにデータからハッシュテーブルを構築します。データ量、データ型、および JOIN キーカラムの値分布に応じて、データからハッシュテーブルを構築するほうがデータをソートするより高速となるシナリオもあれば、その逆もあります。
+
+partial merge join は、大規模なテーブルを結合する際のメモリ使用量を最小化するよう最適化されていますが、その代償として JOIN の速度はかなり遅くなります。特に、左側テーブルの物理行順序が JOIN キーのソート順序と一致しない場合に顕著です。
+
+grace hash join は、3 つのメモリ制約非依存 JOIN アルゴリズムの中で最も柔軟であり、[grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) 設定によってメモリ使用量と JOIN 速度のトレードオフをうまく制御できます。データ量に応じて、[バケット](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2)の数が両アルゴリズムのメモリ使用量がおおむね揃うように選択されている場合には、grace hash が partial merge アルゴリズムより高速になることもあれば、遅くなることもあります。grace hash join のメモリ使用量が full sorting merge のメモリ使用量とおおむね揃うように設定されている場合、われわれのテストでは常に full sorting merge のほうが高速でした。
+
+3 つのメモリ制約非依存アルゴリズムのうちどれが最速かは、データ量、データ型、および JOIN キーカラムの値分布によって決まります。どのアルゴリズムが最速かを判断するには、現実的なデータ量・データでベンチマークを実行するのが最善です。
+
+
+
+## メモリ使用量の最適化 {#optimizing-for-memory}
+
+最速の実行時間ではなくメモリ使用量の最小化を目的に結合を最適化したい場合は、代わりに次の決定木を使用できます。
 
 <br />
 
-- **(1)** テーブルの物理的な行順序がjoinキーのソート順序と一致する場合、**full sorting merge join**のメモリ使用量は最小限になります。さらに、ソートフェーズが[無効化](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order)されるため、join速度が向上するという追加の利点があります。
-- **(2)** **grace hash join**は、join速度を犠牲にして多数の[バケット](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2)を[設定](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759)することで、非常に低いメモリ使用量に調整できます。**partial merge join**は意図的に少量のメインメモリを使用します。外部ソートを有効にした**full sorting merge join**は、一般的にpartial merge joinよりも多くのメモリを使用しますが(行順序がキーのソート順序と一致しない場合)、join実行時間が大幅に改善されるという利点があります。
+<Image img={joins_5} size="lg" alt="結合のメモリ最適化の決定木" />
 
-上記の詳細については、以下の[ブログシリーズ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を参照してください。
+<br />
+
+- **(1)** テーブルの物理行順序が結合キーのソート順序と一致している場合、**full sorting merge join** のメモリ使用量はこれ以上ないほど低く抑えられます。さらに、ソートフェーズが[無効化される](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order)ことで、結合速度も良好になります。
+- **(2)** **grace hash join** は、結合速度を犠牲にして多数の [bucket](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) を[設定](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759)することで、非常に低いメモリ使用量になるようにチューニングできます。**partial merge join** は、意図的に少量のメインメモリしか使用しません。外部ソートを有効にした **full sorting merge join** は（行順序がキーのソート順序と一致していないと仮定すると）、一般的に partial merge join より多くのメモリを使用しますが、その代わりに結合の実行時間が大幅に向上します。
+
+上記の内容についてさらに詳しい情報が必要なユーザーには、次の [ブログシリーズ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)をお勧めします。

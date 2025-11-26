@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # system.settings
 
-Содержит информацию о сеансовых настройках для текущего пользователя.
+Содержит информацию о настройках сессии для текущего пользователя.
 
 Столбцы:
 
@@ -18,24 +18,24 @@ doc_type: 'reference'
 * `value` ([String](../../sql-reference/data-types/string.md)) — Значение настройки.
 * `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, была ли настройка явно задана в конфигурации или явно изменена.
 * `description` ([String](../../sql-reference/data-types/string.md)) — Краткое описание настройки.
-* `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки, если оно задано через [ограничения](/operations/settings/constraints-on-settings). Если у настройки нет минимального значения, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
-* `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки, если оно задано через [ограничения](/operations/settings/constraints-on-settings). Если у настройки нет максимального значения, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
-* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — Список запрещённых значений.
+* `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки, если оно задано через [constraints](/operations/settings/constraints-on-settings). Если для настройки не задано минимальное значение, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
+* `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки, если оно задано через [constraints](/operations/settings/constraints-on-settings). Если для настройки не задано максимальное значение, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
+* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — Список недопустимых значений.
 * `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, может ли текущий пользователь изменять настройку:
-  * `0` — Текущий пользователь может изменять настройку.
-  * `1` — Текущий пользователь не может изменять настройку.
+  * `0` — Текущий пользователь может изменить настройку.
+  * `1` — Текущий пользователь не может изменить настройку.
 * `default` ([String](../../sql-reference/data-types/string.md)) — Значение настройки по умолчанию.
-* `alias_for` ([String](../../sql-reference/data-types/string.md)) — Имя исходной настройки, если данная настройка является псевдонимом для другой настройки.
+* `alias_for` ([String](../../sql-reference/data-types/string.md)) — Имя исходной настройки, если данная настройка является псевдонимом другой настройки.
 * `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, является ли настройка устаревшей.
-* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — Уровень поддержки для этой функции. Функции ClickHouse разделены по уровням, которые различаются в зависимости от текущего статуса их разработки и ожидаемого поведения при их использовании. Значения:
-  * `'Production'` — Функция стабильна, безопасна для использования и не имеет проблем при взаимодействии с другими **production**-функциями.
-  * `'Beta'` — Функция стабильна и безопасна. Результат использования её совместно с другими функциями неизвестен и корректность не гарантируется. Тестирование и отчёты приветствуются.
+* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — Уровень поддержки этой возможности. Возможности ClickHouse организованы по уровням, которые различаются в зависимости от текущего статуса их разработки и ожидаемого поведения при их использовании. Значения:
+  * `'Production'` — Функция стабильна, безопасна в использовании и не имеет проблем во взаимодействии с другими **production**‑функциями.
+  * `'Beta'` — Функция стабильна и безопасна. Результат её совместного использования с другими функциями неизвестен и корректность не гарантируется. Тестирование и отчёты приветствуются.
   * `'Experimental'` — Функция находится в разработке. Предназначена только для разработчиков и энтузиастов ClickHouse. Функция может как работать, так и не работать и может быть удалена в любой момент.
   * `'Obsolete'` — Больше не поддерживается. Либо уже удалена, либо будет удалена в будущих релизах.
 
 **Пример**
 
-Следующий пример показывает, как получить информацию о настройках, в имени которых содержится `min_i`.
+В следующем примере показано, как получить информацию о настройках, имя которых содержит `min_i`.
 
 ```sql
 SELECT *
@@ -92,14 +92,14 @@ Row 3:
 name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
 value:       0
 changed:     0
-description: Устанавливает минимальное число строк в блоке, который может быть вставлен в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете избыточного расхода памяти.
+description: Задает минимальное количество строк в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
 
-Возможные значения:
+Possible values:
 
 * Любое положительное целое число.
-* 0 — объединение блоков отключено.
+* 0 — объединение отключено.
 
-**См. также**
+**See Also**
 
 * [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
   min:         ᴺᵁᴸᴸ
@@ -116,14 +116,14 @@ Row 4:
 name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
 value:       0
 changed:     0
-description: Устанавливает минимальный размер блока в байтах, который может быть вставлен в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете избыточного расхода памяти.
+description: Задает минимальное количество байт в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
 
-Возможные значения:
+Possible values:
 
 * Любое положительное целое число.
-* 0 — объединение блоков отключено.
+* 0 — объединение отключено.
 
-**См. также**
+**See also**
 
 * [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
   min:         ᴺᵁᴸᴸ
@@ -137,10 +137,10 @@ description: Устанавливает минимальный размер бл
 
 ````
 
-Использование `WHERE changed` может быть полезно, например, когда необходимо проверить:
+Использование `WHERE changed` может быть полезно, например, для проверки:
 
 - Корректно ли загружены настройки из конфигурационных файлов и применяются ли они.
-- Настройки, которые были изменены в текущей сессии.
+- Настроек, которые изменились в текущей сессии.
 
 <!-- -->
 
@@ -151,6 +151,6 @@ SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 **См. также**
 
 * [Настройки](/operations/system-tables/overview#system-tables-introduction)
-* [Права доступа для запросов](/operations/settings/permissions-for-queries)
-* [Ограничения на настройки](../../operations/settings/constraints-on-settings.md)
-* оператор [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings)
+* [Права на выполнение запросов](/operations/settings/permissions-for-queries)
+* [Ограничения для настроек](../../operations/settings/constraints-on-settings.md)
+* Оператор [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings)

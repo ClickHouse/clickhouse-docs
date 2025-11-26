@@ -1,9 +1,9 @@
 ---
-description: 'EXISTS 文のドキュメント'
+description: 'EXISTS ステートメントのリファレンス'
 sidebar_label: 'EXISTS'
 sidebar_position: 45
 slug: /sql-reference/statements/exists
-title: 'EXISTS 文'
+title: 'EXISTS ステートメント'
 doc_type: 'reference'
 ---
 
@@ -13,4 +13,4 @@ doc_type: 'reference'
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
 ```
 
-単一の `UInt8` 型カラムを返します。指定したデータベース内にテーブルやデータベースが存在しない場合は値 `0` を、テーブルが存在する場合は値 `1` を含みます。
+単一の `UInt8` 型のカラムを返します。テーブルまたはデータベースが存在しない場合は値 `0` のみを、指定したデータベース内にテーブルが存在する場合は値 `1` のみを含みます。

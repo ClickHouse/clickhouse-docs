@@ -1,5 +1,5 @@
 ---
-description: 'N 個の変数の標本共分散行列を返します。'
+description: 'N個の変数の標本共分散行列を返します。'
 sidebar_position: 125
 slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
 title: 'covarSampMatrix'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # covarSampMatrix
 
-N 個の変数に関する標本共分散行列を返します。
+N 個の変数からなる標本共分散行列を返します。
 
 **構文**
 
@@ -18,7 +18,7 @@ covarSampMatrix(x[, ...])
 
 **引数**
 
-* `x` — 可変個数の引数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 可変個のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **戻り値**
 
@@ -26,7 +26,7 @@ covarSampMatrix(x[, ...])
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS test;

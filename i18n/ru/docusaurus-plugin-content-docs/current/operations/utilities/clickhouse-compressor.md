@@ -1,15 +1,15 @@
 ---
-description: "Документация по clickhouse-compressor"
+description: 'Документация по ClickHouse Compressor'
 slug: /operations/utilities/clickhouse-compressor
-title: "clickhouse-compressor"
-doc_type: "reference"
+title: 'clickhouse-compressor'
+doc_type: 'reference'
 ---
 
 Простая программа для сжатия и распаковки данных.
 
-### Примеры {#examples}
+### Примеры
 
-Сжатие данных с использованием LZ4:
+Сжатие данных с помощью LZ4:
 
 ```bash
 $ ./clickhouse-compressor < input_file > output_file
@@ -21,13 +21,13 @@ $ ./clickhouse-compressor < input_file > output_file
 $ ./clickhouse-compressor --decompress < input_file > output_file
 ```
 
-Сжатие данных с использованием ZSTD на уровне 5:
+Сжимайте данные с помощью ZSTD с уровнем сжатия 5:
 
 ```bash
 $ ./clickhouse-compressor --codec 'ZSTD(5)' < input_file > output_file
 ```
 
-Сжатие данных с использованием Delta для четырёх байт и ZSTD на уровне 10.
+Сжимайте данные с дельтой 4 байта и ZSTD уровня 10.
 
 ```bash
 $ ./clickhouse-compressor --codec 'Delta(4)' --codec 'ZSTD(10)' < input_file > output_file

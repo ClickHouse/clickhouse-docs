@@ -15,31 +15,31 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-类似于 [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress),但所有值都转换为字符串。
-当需要所有数据类型具有一致的字符串表示形式时,此格式非常有用。
+类似于 [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress)，但所有值都会被转换为字符串。
+当您需要对所有数据类型采用统一的字符串表示形式时，这会非常有用。
 
-主要特性:
+主要特性：
+- 与 `JSONCompactEachRowWithProgress` 具有相同的结构
+- 所有值都以字符串形式表示（数字、数组等全部为带引号的字符串）
+- 包含进度更新、汇总信息以及异常处理
+- 适用于偏好或要求以字符串形式处理数据的客户端
 
-- 与 `JSONCompactEachRowWithProgress` 结构相同
-- 所有值均以字符串形式表示(数字、数组等都是带引号的字符串)
-- 包含进度更新、总计和异常处理
-- 适用于偏好或要求使用基于字符串的数据的客户端
 
 
-## 使用示例 {#example-usage}
+## 示例用法
 
-### 插入数据 {#inserting-data}
+### 插入数据
 
-```sql title="查询"
+```sql title="Query"
 SELECT *
 FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2)
 LIMIT 5
 FORMAT JSONCompactStringsEachRowWithProgress
 ```
 
-```response title="响应"
+```response title="Response"
 {"meta":[{"name":"a","type":"Array(Int8)"},{"name":"d","type":"Decimal(9, 4)"},{"name":"c","type":"Tuple(DateTime64(3), UUID)"}]}
 {"row":["[-8]", "46848.5225", "('2064-06-11 14:00:36.578','b06f4fa1-22ff-f84f-a1b7-a5807d983ae6')"]}
 {"row":["[-76]", "-85331.598", "('2038-06-16 04:10:27.271','2bb0de60-3a2c-ffc0-d7a7-a5c88ed8177c')"]}

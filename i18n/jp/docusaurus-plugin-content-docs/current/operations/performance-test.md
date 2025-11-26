@@ -1,9 +1,9 @@
 ---
 description: 'ClickHouse を用いたハードウェア性能テストとベンチマークのガイド'
-sidebar_label: 'ハードウェアのテスト'
+sidebar_label: 'ハードウェアテスト'
 sidebar_position: 54
 slug: /operations/performance-test
-title: 'ClickHouse でハードウェアをテストする方法'
+title: 'ClickHouse でハードウェア性能をテストする方法'
 doc_type: 'guide'
 ---
 
@@ -11,12 +11,12 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-ClickHouse パッケージをインストールしなくても、どのサーバー上でも基本的な ClickHouse の性能テストを実行できます。
+ClickHouse パッケージをインストールしなくても、どのサーバー上でも ClickHouse の基本的な性能テストを実行できます。
 
 
-## 自動実行 {#automated-run}
+## 自動実行
 
-単一のスクリプトでベンチマークを実行できます。
+ベンチマークは 1 つのスクリプトだけで実行できます。
 
 1. スクリプトをダウンロードします。
 
@@ -31,6 +31,6 @@ chmod a+x ./hardware.sh
 ./hardware.sh
 ```
 
-3. 出力結果をコピーして feedback@clickhouse.com に送信してください
+3. 出力結果をコピーして [feedback@clickhouse.com](mailto:feedback@clickhouse.com) 宛に送信してください
 
-すべての結果はこちらで公開されています: https://clickhouse.com/benchmark/hardware/
+すべての結果は以下で公開されています: [https://clickhouse.com/benchmark/hardware/](https://clickhouse.com/benchmark/hardware/)

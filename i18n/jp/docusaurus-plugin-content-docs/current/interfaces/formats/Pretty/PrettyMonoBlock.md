@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettyMonoBlock 形式に関するドキュメント'
+description: 'PrettyMonoBlock 形式のドキュメント'
 input_format: false
 keywords: ['PrettyMonoBlock']
 output_format: true
@@ -18,13 +18,14 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`Pretty`](/interfaces/formats/Pretty)形式とは異なり、最大`10,000`行がバッファリングされた後、
-[ブロック](/development/architecture#block)単位ではなく単一のテーブルとして出力されます。
+[`Pretty`](/interfaces/formats/Pretty) フォーマットとは異なり、最大 `10,000` 行をバッファリングしてから 1 つのテーブルとしてまとめて出力し、[ブロック](/development/architecture#block) ごとには出力しません。
+
 
 
 ## 使用例 {#example-usage}
 
 
-## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+## 書式設定 {#format-settings}
+
+<PrettyFormatSettings/>

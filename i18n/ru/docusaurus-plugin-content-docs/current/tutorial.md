@@ -1,168 +1,169 @@
 ---
 slug: /tutorial
-sidebar_label: 'Расширенное руководство'
-title: 'Расширенное руководство'
-description: 'Узнайте, как загружать данные и выполнять по ним запросы в ClickHouse на примере набора данных о нью‑йоркском такси.'
+sidebar_label: 'Продвинутое руководство'
+title: 'Продвинутое руководство'
+description: 'Узнайте, как выполнять приём и запросы к данным в ClickHouse на примере набора данных о нью-йоркских такси.'
 sidebar_position: 0.5
-keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
+keywords: ['clickhouse', 'установка', 'руководство', 'словарь', 'словари', 'пример', 'продвинутое', 'такси', 'нью-йорк', 'nyc']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 
 
-# Продвинутое руководство
+# Расширенное руководство
 
 
 
-## Обзор {#overview}
+## Overview {#overview}
 
-Узнайте, как загружать и запрашивать данные в ClickHouse на примере набора данных о такси Нью-Йорка.
+Узнайте, как выполнять приём и запросы данных в ClickHouse на примере набора данных о такси Нью-Йорка.
 
-### Предварительные требования {#prerequisites}
+### Prerequisites {#prerequisites}
 
-Для выполнения этого руководства необходим доступ к работающему экземпляру ClickHouse. Инструкции см. в руководстве [Быстрый старт](/get-started/quick-start).
+Для выполнения данного руководства необходим доступ к работающему сервису ClickHouse. Инструкции см. в руководстве [Быстрый старт](/get-started/quick-start).
 
 <VerticalStepper>
 
 
 ## Создание новой таблицы {#create-a-new-table}
 
-Набор данных о такси Нью-Йорка содержит информацию о миллионах поездок на такси, включая столбцы с суммой чаевых, дорожными сборами, типом оплаты и другими данными. Создайте таблицу для хранения этих данных.
+Набор данных о такси Нью‑Йорка содержит сведения о миллионах поездок, включая такие столбцы, как сумма чаевых, платные дороги, тип оплаты и многое другое. Создайте таблицу для хранения этих данных.
 
-1. Подключитесь к SQL-консоли:
-   - Для ClickHouse Cloud выберите сервис из выпадающего меню, затем выберите **SQL Console** в левом навигационном меню.
-   - Для самостоятельно управляемого ClickHouse подключитесь к SQL-консоли по адресу `https://_hostname_:8443/play`. Уточните детали у администратора ClickHouse.
+1. Подключитесь к SQL‑консоли:
+    - Для ClickHouse Cloud выберите сервис в раскрывающемся списке, затем выберите **SQL Console** в левой панели навигации.
+    - Для самостоятельно развернутого ClickHouse подключитесь к SQL‑консоли по адресу `https://_hostname_:8443/play`. Уточните детали у администратора ClickHouse.
 
 2. Создайте следующую таблицу `trips` в базе данных `default`:
-   ```sql
-   CREATE TABLE trips
-   (
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   )
-   ENGINE = MergeTree
-   PARTITION BY toYYYYMM(pickup_date)
-   ORDER BY pickup_datetime;
-   ```
+    ```sql
+    CREATE TABLE trips
+    (
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    )
+    ENGINE = MergeTree
+    PARTITION BY toYYYYMM(pickup_date)
+    ORDER BY pickup_datetime;
+    ```
 
 
-## Добавление набора данных {#add-the-dataset}
 
-Теперь, когда таблица создана, добавьте данные о такси Нью-Йорка из CSV-файлов в S3.
+## Добавьте набор данных {#add-the-dataset}
 
-1. Следующая команда вставляет ~2 000 000 строк в таблицу `trips` из двух файлов в S3: `trips_1.tsv.gz` и `trips_2.tsv.gz`:
+Теперь, когда вы создали таблицу, добавьте данные о поездках на такси в Нью‑Йорке из CSV‑файлов в S3.
 
-   ```sql
-   INSERT INTO trips
-   SELECT * FROM s3(
-       'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
-       'TabSeparatedWithNames', "
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   ") SETTINGS input_format_try_infer_datetimes = 0
-   ```
+1. Следующая команда вставляет около 2 000 000 строк в вашу таблицу `trips` из двух разных файлов в S3: `trips_1.tsv.gz` и `trips_2.tsv.gz`:
 
-2. Дождитесь завершения операции `INSERT`. Загрузка 150 МБ данных может занять некоторое время.
+    ```sql
+    INSERT INTO trips
+    SELECT * FROM s3(
+        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
+        'TabSeparatedWithNames', "
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    ") SETTINGS input_format_try_infer_datetimes = 0
+    ```
 
-3. После завершения вставки проверьте результат:
+2. Дождитесь завершения выполнения команды `INSERT`. Загрузка 150 МБ данных может занять некоторое время.
 
-   ```sql
-   SELECT count() FROM trips
-   ```
+3. Когда вставка завершится, убедитесь, что всё прошло успешно:
+    ```sql
+    SELECT count() FROM trips
+    ```
 
-   Запрос должен вернуть 1 999 657 строк.
+    Этот запрос должен вернуть 1 999 657 строк.
+
 
 
 ## Анализ данных {#analyze-the-data}
 
-Выполните несколько запросов для анализа данных. Изучите следующие примеры или попробуйте свой собственный SQL-запрос.
+Выполните несколько запросов для анализа данных. Изучите приведённые примеры или попробуйте свой собственный SQL-запрос.
 
 - Вычислите средний размер чаевых:
 
@@ -197,7 +198,7 @@ doc_type: 'guide'
   <summary>Ожидаемый результат</summary>
   <p>
 
-  Значение `passenger_count` находится в диапазоне от 0 до 9:
+  Значение `passenger_count` варьируется от 0 до 9:
 
   ```response
   ┌─passenger_count─┬─average_total_amount─┐
@@ -217,7 +218,7 @@ doc_type: 'guide'
     </p>
   </details>
 
-- Вычислите ежедневное количество посадок по районам:
+- Вычислите ежедневное количество поездок по районам:
 
   ```sql
   SELECT
@@ -341,7 +342,7 @@ doc_type: 'guide'
 
 
 
-7. Выберите поездки до аэропортов LaGuardia или JFK:
+7. Выберите поездки до аэропортов Ла-Гуардия или JFK:
     ```sql
     SELECT
         pickup_datetime,
@@ -362,7 +363,7 @@ doc_type: 'guide'
     ```
 
     <details>
-    <summary>Ожидаемый вывод</summary>
+    <summary>Ожидаемый результат</summary>
     <p>
 
     ```response
@@ -383,26 +384,26 @@ doc_type: 'guide'
 
 
 
-## Создание словаря {#create-a-dictionary}
+## Создание словаря
 
-Словарь — это отображение пар ключ-значение, хранящихся в памяти. Подробнее см. в разделе [Словари](/sql-reference/dictionaries/index.md)
+Словарь — это отображение пар «ключ-значение», хранящихся в памяти. Подробности см. в разделе [Dictionaries](/sql-reference/dictionaries/index.md).
 
 Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse.
-Таблица и словарь основаны на CSV-файле, содержащем по одной строке для каждого района Нью-Йорка.
+Таблица и словарь основаны на CSV‑файле, который содержит строку для каждого района (neighborhood) Нью‑Йорка.
 
-Районы сопоставлены с названиями пяти боро Нью-Йорка (Bronx, Brooklyn, Manhattan, Queens и Staten Island), а также с аэропортом Newark (EWR).
+Районы сопоставляются с названиями пяти боро Нью‑Йорка (Bronx, Brooklyn, Manhattan, Queens и Staten Island), а также аэропорта Newark (EWR).
 
-Ниже приведен фрагмент используемого CSV-файла в табличном формате. Столбец `LocationID` в файле соответствует столбцам `pickup_nyct2010_gid` и `dropoff_nyct2010_gid` в таблице `trips`:
+Ниже приведён фрагмент используемого CSV‑файла в табличном формате. Столбец `LocationID` в файле сопоставляется со столбцами `pickup_nyct2010_gid` и `dropoff_nyct2010_gid` в таблице `trips`:
 
-| LocationID | Borough       | Zone                    | service_zone |
-| ---------- | ------------- | ----------------------- | ------------ |
-| 1          | EWR           | Newark Airport          | EWR          |
-| 2          | Queens        | Jamaica Bay             | Boro Zone    |
-| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-| 4          | Manhattan     | Alphabet City           | Yellow Zone  |
-| 5          | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------- | ------------- | ----------------------- | ---------------- |
+| 1          | EWR           | Newark Airport          | EWR              |
+| 2          | Queens        | Jamaica Bay             | Boro Zone        |
+| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+| 4          | Manhattan     | Alphabet City           | Yellow Zone      |
+| 5          | Staten Island | Arden Heights           | Boro Zone        |
 
-1. Выполните следующую SQL-команду, которая создает словарь с именем `taxi_zone_dictionary` и заполняет его из CSV-файла в S3. URL файла: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`.
+1. Выполните следующую SQL‑команду, которая создаёт словарь с именем `taxi_zone_dictionary` и заполняет его из CSV‑файла в S3. URL‑адрес файла: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`.
 
 ```sql
 CREATE DICTIONARY taxi_zone_dictionary
@@ -419,41 +420,38 @@ LAYOUT(HASHED_ARRAY())
 ```
 
 :::note
-Установка `LIFETIME` в 0 отключает автоматические обновления, чтобы избежать ненужного трафика к нашему S3-бакету. В других случаях можно настроить это иначе. Подробнее см. в разделе [Обновление данных словаря с помощью LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+Установка `LIFETIME` в значение 0 отключает автоматические обновления, чтобы избежать лишнего трафика в наш S3‑бакет. В других случаях вы можете настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 :::
 
-3. Проверьте, что всё работает. Следующий запрос должен вернуть 265 строк — по одной строке для каждого района:
-
+3. Проверьте, что всё сработало. Следующий запрос должен вернуть 265 строк, по одной строке для каждого района:
    ```sql
    SELECT * FROM taxi_zone_dictionary
    ```
 
-4. Используйте функцию `dictGet` ([или её варианты](./sql-reference/functions/ext-dict-functions.md)) для получения значения из словаря. Вы передаете имя словаря, требуемое значение и ключ (в нашем примере это столбец `LocationID` словаря `taxi_zone_dictionary`).
+4. Используйте функцию `dictGet` ([или её вариации](./sql-reference/functions/ext-dict-functions.md)) для получения значения из словаря. Вы передаёте имя словаря, имя атрибута (значения, которое хотите получить) и ключ (в нашем примере это столбец `LocationID` таблицы `taxi_zone_dictionary`).
 
-   Например, следующий запрос возвращает `Borough`, чей `LocationID` равен 132, что соответствует аэропорту JFK:
+   Например, следующий запрос возвращает `Borough`, чей `LocationID` равен 132 и соответствует аэропорту JFK:
 
    ```sql
    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
    ```
 
-   JFK находится в Queens. Обратите внимание, что время получения значения практически равно 0:
+   JFK находится в Куинсе. Обратите внимание, что время получения значения практически равно 0:
 
    ```response
    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
    │ Queens                                          │
    └─────────────────────────────────────────────────┘
 
-   1 rows in set. Elapsed: 0.004 sec.
+   1 строка в наборе. Затрачено: 0.004 сек.
    ```
 
-5. Используйте функцию `dictHas`, чтобы проверить, присутствует ли ключ в словаре. Например, следующий запрос возвращает `1` (что означает «истина» в ClickHouse):
-
+5. Используйте функцию `dictHas`, чтобы проверить, присутствует ли ключ в словаре. Например, следующий запрос возвращает `1` (что в ClickHouse означает «true»):
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 132)
    ```
 
 6. Следующий запрос возвращает 0, потому что 4567 не является значением `LocationID` в словаре:
-
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 4567)
    ```
@@ -470,7 +468,7 @@ LAYOUT(HASHED_ARRAY())
    ```
 
 
-Этот запрос подсчитывает количество поездок на такси по каждому боро, которые завершаются либо в аэропорту LaGuardia, либо в аэропорту JFK. Результат выглядит следующим образом; обратите внимание, что есть довольно много поездок, для которых район посадки неизвестен:
+Этот запрос подсчитывает количество поездок на такси по районам, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK. Результат выглядит следующим образом: обратите внимание, что есть довольно много поездок, для которых район посадки неизвестен:
 
 ```response
 ┌─total─┬─borough_name──┐
@@ -520,10 +518,10 @@ LAYOUT(HASHED_ARRAY())
     ```
 
     :::note
-    Обратите внимание, что результат приведенного выше запроса с `JOIN` совпадает с предыдущим запросом, использовавшим `dictGetOrDefault` (за исключением того, что значения `Unknown` не включены). Внутри ClickHouse фактически вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но синтаксис `JOIN` более привычен для SQL-разработчиков.
+    Обратите внимание, что результат приведённого выше запроса с `JOIN` совпадает с предыдущим запросом, использовавшим `dictGetOrDefault` (за исключением того, что значения `Unknown` не включены). Внутри ClickHouse фактически вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но синтаксис `JOIN` более привычен для SQL-разработчиков.
     :::
 
-2.  Этот запрос возвращает строки для 1000 поездок с наибольшей суммой чаевых, а затем выполняет внутреннее соединение каждой строки со словарем:
+2.  Этот запрос возвращает строки для 1000 поездок с наибольшей суммой чаевых, затем выполняет внутреннее соединение каждой строки со словарём:
     ```sql
     SELECT *
     FROM trips
@@ -540,11 +538,11 @@ LAYOUT(HASHED_ARRAY())
 </VerticalStepper>
 
 
-## Следующие шаги {#next-steps}
+## Дальнейшие шаги {#next-steps}
 
-Узнайте больше о ClickHouse из следующей документации:
+Узнайте больше о ClickHouse из следующих разделов документации:
 
-- [Введение в первичные индексы в ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Узнайте, как ClickHouse использует разреженные первичные индексы для эффективного поиска релевантных данных при выполнении запросов.
-- [Интеграция внешних источников данных](/integrations/index.mdx): Ознакомьтесь с вариантами интеграции источников данных, включая файлы, Kafka, PostgreSQL, конвейеры данных и многие другие.
-- [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите ваш любимый инструмент UI/BI к ClickHouse.
-- [Справочник SQL](./sql-reference/index.md): Ознакомьтесь с SQL-функциями, доступными в ClickHouse для преобразования, обработки и анализа данных.
+- [Введение в первичные индексы в ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Узнайте, как ClickHouse использует разрежённые первичные индексы для эффективного поиска релевантных данных при выполнении запросов. 
+- [Интеграция внешнего источника данных](/integrations/index.mdx): Ознакомьтесь с вариантами интеграции источников данных, включая файлы, Kafka, PostgreSQL, конвейеры обработки данных и многие другие.
+- [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите любимый UI/BI‑инструмент к ClickHouse.
+- [Справочник по SQL](./sql-reference/index.md): Просмотрите доступные в ClickHouse функции SQL для преобразования, обработки и анализа данных.

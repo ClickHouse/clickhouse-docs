@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/elixir
 pagination_prev: null
 pagination_next: null
 sidebar_position: 1
-description: 'ClickStack 的 Elixir SDK - ClickHouse 可观测性技术栈'
+description: '适用于 ClickStack 的 Elixir SDK - ClickHouse 可观测性栈'
 title: 'Elixir'
 doc_type: 'guide'
 keywords: ['Elixir ClickStack SDK', 'Elixir 可观测性', 'HyperDX Elixir', 'Elixir 日志 SDK', 'ClickStack Elixir 集成']
@@ -22,11 +22,11 @@ _🚧 OpenTelemetry 指标和链路追踪支持即将推出！_
 
 
 
-## 入门 {#getting-started}
+## 入门
 
-### 安装 ClickStack 日志后端包 {#install-hyperdx-logger-backend-package}
+### 安装 ClickStack logger 后端包
 
-通过在 `mix.exs` 的依赖项列表中添加 `hyperdx` 来安装该包：
+可以通过在 `mix.exs` 中将 `hyperdx` 添加到依赖列表中来安装该包：
 
 ```elixir
 def deps do
@@ -36,9 +36,9 @@ def deps do
 end
 ```
 
-### 配置日志 {#configure-logger}
+### 配置日志记录器
 
-在 `config.exs` 文件中添加以下内容：
+将以下内容添加到你的 `config.exs` 文件中：
 
 
 ```elixir
@@ -49,13 +49,13 @@ config :logger,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
 
-### 配置环境变量 {#configure-environment-variables}
+### 配置环境变量
 
-之后,您需要在 shell 中配置以下环境变量,以将遥测数据发送到 ClickStack:
+接下来，你需要在 shell 中配置以下环境变量，以将遥测数据上报到 ClickStack：
 
 ```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+export HYPERDX_API_KEY='<您的摄取_API_密钥>' \
+OTEL_SERVICE_NAME='<您的应用或服务名称>'
 ```
 
-_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,可以设置为任意名称。_
+*`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，它可以是任何你想要的名称。*

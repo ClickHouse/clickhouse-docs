@@ -1,5 +1,5 @@
 ---
-description: '母集団分散共分散を計算します'
+description: '母集団の共分散を計算します'
 sidebar_position: 121
 slug: /sql-reference/aggregate-functions/reference/covarpop
 title: 'covarPop'
@@ -10,14 +10,14 @@ doc_type: 'reference'
 
 # covarPop
 
-母集団共分散を計算します:
+母集団共分散を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算において[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarPopStable`](../reference/covarpopstable.md)関数を使用してください。処理速度は遅くなりますが、計算誤差を低減できます。
+この関数は数値的に不安定なアルゴリズムを使用しています。計算において[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarPopStable`](../reference/covarpopstable.md)関数を使用してください。処理速度は遅くなりますが、計算誤差を低く抑えることができます。
 :::
 
 **構文**
@@ -37,7 +37,7 @@ covarPop(x, y)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 DROP TABLE IF EXISTS series;
@@ -50,7 +50,7 @@ SELECT covarPop(x_value, y_value)
 FROM series;
 ```
 
-結果:
+結果：
 
 ```reference
 ┌─covarPop(x_value, y_value)─┐

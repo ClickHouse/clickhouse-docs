@@ -1,8 +1,8 @@
 ---
-description: 'Документация по распределенному DDL'
-sidebar_label: 'Распределенный DDL'
+description: 'Документация по Distributed DDL'
+sidebar_label: 'Distributed DDL'
 slug: /sql-reference/other/distributed-ddl
-title: 'Страница распределенного DDL'
+title: 'Страница для Distributed DDL'
 doc_type: 'reference'
 ---
 

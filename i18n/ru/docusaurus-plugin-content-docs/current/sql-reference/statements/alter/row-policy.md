@@ -1,5 +1,5 @@
 ---
-description: 'Документация по команде ALTER ROW POLICY'
+description: 'Документация по ALTER ROW POLICY'
 sidebar_label: 'ROW POLICY'
 sidebar_position: 47
 slug: /sql-reference/statements/alter/row-policy

@@ -1,10 +1,10 @@
 ---
 slug: /best-practices/avoid-optimize-final
 sidebar_position: 10
-sidebar_label: '避免 OPTIMIZE FINAL'
-title: '避免 OPTIMIZE FINAL'
-description: '本文说明为何应在 ClickHouse 中避免使用 OPTIMIZE FINAL 子句'
-keywords: ['避免 OPTIMIZE FINAL', '后台合并']
+sidebar_label: '避免使用 OPTIMIZE FINAL'
+title: '避免使用 OPTIMIZE FINAL'
+description: '说明为什么在 ClickHouse 中应当避免使用 OPTIMIZE FINAL 子句的页面'
+keywords: ['避免使用 OPTIMIZE FINAL', '后台合并']
 hide_title: true
 doc_type: 'guide'
 ---

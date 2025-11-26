@@ -1,6 +1,6 @@
 ---
-description: 'ClickHouse SQL リファレンスのドキュメント'
-keywords: ['clickhouse', 'ドキュメント', 'sql リファレンス', 'sql ステートメント', 'sql', '構文']
+description: 'ClickHouse SQL リファレンス ドキュメント'
+keywords: ['clickhouse', 'ドキュメント', 'SQL リファレンス', 'SQL ステートメント', 'SQL', 'SQL 構文']
 slug: /sql-reference
 title: 'SQL リファレンス'
 doc_type: 'reference'
@@ -17,9 +17,9 @@ import LinksDeployment from './sql-reference-links.json'
 
 # ClickHouse SQL リファレンス
 
-ClickHouse は、SQL に基づく宣言的なクエリ言語をサポートしており、多くの点で ANSI SQL 標準と同一です。
+ClickHouse は、SQL に基づく宣言的なクエリ言語をサポートしており、多くの点で ANSI SQL 標準と同等です。
 
-サポートされるクエリには、GROUP BY、ORDER BY、FROM 句内のサブクエリ、JOIN 句、IN 演算子、ウィンドウ関数、スカラーサブクエリが含まれます。
+サポートされているクエリには、GROUP BY、ORDER BY、FROM 句内のサブクエリ、JOIN 句、IN 演算子、ウィンドウ関数、およびスカラーサブクエリが含まれます。
 
 <HorizontalDivide />
 

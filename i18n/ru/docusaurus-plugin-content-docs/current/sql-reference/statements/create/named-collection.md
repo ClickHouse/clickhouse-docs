@@ -28,7 +28,7 @@ key_name3 = 'some value' [[NOT] OVERRIDABLE],
 **Пример**
 
 ```sql
-CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
+CREATE NAMED COLLECTION foobar AS a = '1', b = '2' ДОПУСКАЕТ ПЕРЕОПРЕДЕЛЕНИЕ;
 ```
 
 **Связанные операторы**

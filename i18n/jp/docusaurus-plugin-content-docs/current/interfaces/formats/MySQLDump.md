@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'MySQLDump 形式のドキュメント'
+description: 'MySQLDump フォーマットに関するドキュメント'
 input_format: true
 keywords: ['MySQLDump']
 output_format: false
@@ -9,27 +9,28 @@ title: 'MySQLDump'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力  | エイリアス |
+| 入力 | 出力 | エイリアス |
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-ClickHouseはMySQL [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)の読み取りをサポートしています。
+ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) の読み取りをサポートしています。
 
-ダンプ内の単一テーブルに属するすべての`INSERT`クエリからデータを読み取ります。
-複数のテーブルが存在する場合、デフォルトでは最初のテーブルからデータを読み取ります。
+ダンプ内で、1 つのテーブルに対応する `INSERT` クエリからすべてのデータを読み取ります。
+テーブルが複数ある場合、既定では最初のテーブルからデータを読み取ります。
 
 :::note
-この形式はスキーマ推論をサポートしています。ダンプに指定されたテーブルの`CREATE`クエリが含まれている場合、その構造から推論されます。含まれていない場合は、`INSERT`クエリのデータからスキーマが推論されます。
+この形式はスキーマ推論をサポートします。ダンプに指定されたテーブルに対する `CREATE` クエリが含まれている場合は、そのクエリからテーブル構造を推論し、含まれていない場合は `INSERT` クエリのデータからスキーマを推論します。
 :::
 
 
-## 使用例 {#example-usage}
 
-以下のSQLダンプファイルがあるとします:
+## 使用例
+
+次の SQL ダンプファイルがあるとします。
 
 ```sql title="dump.sql"
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -56,26 +57,26 @@ CREATE TABLE `test2` (
 INSERT INTO `test2` VALUES (1),(2),(3);
 ```
 
-次のクエリを実行できます:
+次のクエリを実行します。
 
-```sql title="クエリ"
-DESCRIBE TABLE file(dump.sql, MySQLDump)
+```sql title="Query"
+DESCRIBE TABLE file(dump.sql, MySQLDump) 
 SETTINGS input_format_mysql_dump_table_name = 'test2'
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─name─┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ x    │ Nullable(Int32) │              │                    │         │                  │                │
 └──────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT *
 FROM file(dump.sql, MySQLDump)
 SETTINGS input_format_mysql_dump_table_name = 'test2'
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─x─┐
 │ 1 │
 │ 2 │
@@ -86,6 +87,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 
 ## フォーマット設定 {#format-settings}
 
-[`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 設定を使用して、データを読み取るテーブル名を指定できます。
-`input_format_mysql_dump_map_columns` 設定が `1` に設定されており、ダンプに指定されたテーブルの `CREATE` クエリまたは `INSERT` クエリ内のカラム名が含まれている場合、入力データのカラムは名前によってテーブルのカラムにマッピングされます。
-[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合、不明な名前を持つカラムはスキップされます。
+[`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 設定を使用して、データの読み取り元となるテーブル名を指定できます。
+`input_format_mysql_dump_map_columns` 設定が `1` に設定されており、ダンプに指定したテーブルの `CREATE` クエリ、または `INSERT` クエリ内でカラム名が指定されている場合、入力データのカラムは名前に基づいてテーブルのカラムにマッピングされます。
+[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合、不明な名前のカラムはスキップされます。

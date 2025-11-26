@@ -11,8 +11,8 @@ doc_type: 'reference'
 
 # RENAME ステートメント
 
-データベース、テーブル、またはディクショナリの名前を変更します。1つのクエリで複数のエンティティの名前を変更できます。
-複数のエンティティを対象とした `RENAME` クエリはアトミックな操作ではないことに注意してください。エンティティ名をアトミックに入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用します。
+データベース、テーブル、またはディクショナリの名前を変更します。1 つのクエリで複数のエンティティの名前を変更できます。
+複数のエンティティを対象とした `RENAME` クエリはアトミックな操作ではないことに注意してください。エンティティ名をアトミックに入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
 
 **構文**
 
@@ -21,7 +21,7 @@ RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 ```
 
 
-## RENAME DATABASE {#rename-database}
+## RENAME DATABASE
 
 データベースの名前を変更します。
 
@@ -32,12 +32,12 @@ RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 ```
 
 
-## RENAME TABLE {#rename-table}
+## RENAME TABLE
 
-1つ以上のテーブルの名前を変更します。
+1 つ以上のテーブルの名前を変更します。
 
-テーブルの名前変更は軽量な操作です。`TO`の後に異なるデータベースを指定すると、テーブルはそのデータベースに移動されます。ただし、データベースのディレクトリは同じファイルシステム上に存在する必要があります。そうでない場合、エラーが返されます。
-1つのクエリで複数のテーブルの名前を変更する場合、この操作はアトミックではありません。部分的に実行される可能性があり、他のセッションのクエリで`Table ... does not exist ...`エラーが発生することがあります。
+テーブル名の変更は軽量な処理です。`TO` の後に別のデータベースを指定した場合、テーブルはそのデータベースに移動されます。ただし、データベースのディレクトリは同一のファイルシステム上に存在している必要があります。そうでない場合はエラーが返されます。
+1 つのクエリで複数のテーブル名を変更する場合、この操作はアトミックではありません。部分的にのみ実行される可能性があり、別のセッションで実行されるクエリが `Table ... does not exist ...` エラーを受け取る場合があります。
 
 **構文**
 
@@ -51,16 +51,16 @@ RENAME TABLE [db1.]name1 TO [db2.]name2 [,...] [ON CLUSTER cluster]
 RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-また、より簡潔なSQLを使用することもできます:
+また、より簡潔な SQL を使うこともできます：
 
 ```sql
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
 
-## RENAME DICTIONARY {#rename-dictionary}
+## RENAME DICTIONARY
 
-1つまたは複数のディクショナリの名前を変更します。このクエリを使用して、データベース間でディクショナリを移動することもできます。
+1つまたは複数の辞書の名前を変更します。このクエリは、辞書を別のデータベースに移動するためにも使用できます。
 
 **構文**
 
@@ -70,4 +70,4 @@ RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 
 **関連項目**
 
-- [ディクショナリ](../../sql-reference/dictionaries/index.md)
+* [辞書](../../sql-reference/dictionaries/index.md)

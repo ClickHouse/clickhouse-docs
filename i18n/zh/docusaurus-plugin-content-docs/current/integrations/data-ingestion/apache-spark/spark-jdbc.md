@@ -3,7 +3,7 @@ sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
 description: 'Apache Spark 与 ClickHouse 集成简介'
-keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', '数据迁移', '数据']
 title: 'Spark JDBC'
 doc_type: 'guide'
 ---
@@ -19,8 +19,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 JDBC 是 Spark 中最常用的数据源之一。
-在本节中，我们将详细介绍如何使用
-[ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc)。
+在本节中，我们将介绍如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 集成。
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -40,7 +39,7 @@ public static void main(String[] args) {
         String query = "select * from example_table where id > 2";
 
         //---------------------------------------------------------------------------------------------------
-        // 通过 JDBC 从 ClickHouse 读取表数据
+        // 使用 JDBC 从 ClickHouse 读取表数据
         //---------------------------------------------------------------------------------------------------
         Properties jdbcProperties = new Properties();
         jdbcProperties.put("user", "default");
@@ -51,7 +50,7 @@ public static void main(String[] args) {
         df1.show();
 
         //---------------------------------------------------------------------------------------------------
-        // 通过 load 方法从 ClickHouse 读取表数据
+        // 使用 load 方法从 ClickHouse 读取表数据
         //---------------------------------------------------------------------------------------------------
         Dataset<Row> df2 = spark.read()
                 .format("jdbc")
@@ -80,7 +79,7 @@ object ReadData extends App {
   val query: String = "select * from example_table where id > 2"
 
   //---------------------------------------------------------------------------------------------------
-  // 通过 JDBC 从 ClickHouse 读取表数据
+  // 使用 JDBC 从 ClickHouse 读取表数据
   //---------------------------------------------------------------------------------------------------
   val connectionProperties = new Properties()
   connectionProperties.put("user", "default")
@@ -91,7 +90,7 @@ object ReadData extends App {
 
   df1.show()
   //---------------------------------------------------------------------------------------------------
-  // 通过 load 方法从 ClickHouse 读取表数据
+  // 使用 load 方法从 ClickHouse 读取表数据
   //---------------------------------------------------------------------------------------------------
   val df2: Dataset[Row] = spark.read
     .format("jdbc")
@@ -251,17 +250,17 @@ object WriteData extends App {
     StructType(schema)
   )
 
-  //---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
   // 使用 jdbc 方法将 DataFrame 写入 ClickHouse
-  //---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
     .mode(SaveMode.Append)
     .jdbc(jdbcUrl, "example_table", jdbcProperties)
 
-  //---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
   // 使用 save 方法将 DataFrame 写入 ClickHouse
-  //---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
     .format("jdbc")
@@ -272,7 +271,7 @@ object WriteData extends App {
     .option("password", "123456")
     .save()
 
-  // 停止 Spark 会话
+  // 停止 Spark 会话// 停止 Spark 会话
   spark.stop()
 
 }
@@ -339,7 +338,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver"
            );
-   -- resultTable 可以使用 df.createTempView 或 Spark SQL 创建
+   -- resultTable 可以通过 df.createTempView 或 Spark SQL 创建
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
 
@@ -349,12 +348,15 @@ df.write \
 </Tabs>
 
 
-## 并行性 {#parallelism}
+## 并行度 {#parallelism}
 
-使用 Spark JDBC 时,Spark 会以单分区方式读取数据。要实现更高的并发度,必须指定 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions` 参数,这些参数用于描述从多个工作节点并行读取数据时如何对表进行分区。
-有关 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)的更多信息,请参阅 Apache Spark 官方文档。
+使用 Spark JDBC 时，Spark 默认只使用单个分区读取数据。要获得更高的并行度，你需要指定
+`partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，用于定义在由多个 worker 并行读取时如何对表进行分区。
+如需了解更多信息，请参阅 Apache Spark 官方文档中的
+[JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
+
 
 
 ## JDBC 限制 {#jdbc-limitations}
 
-- 目前,您只能使用 JDBC 将数据插入到已存在的表中(当前无法在 DataFrame 插入时自动创建表,这与 Spark 使用其他连接器时的行为不同)。
+* 截至目前，通过 JDBC 只能将数据插入到已存在的表中（目前无法像 Spark 使用其他连接器那样，在插入 DataFrame 时自动创建表）。

@@ -1,12 +1,12 @@
 ---
 title: '语言集成索引'
 slug: /chdb/install
-description: 'chDB 语言集成索引页'
+description: 'chDB 语言集成索引页面'
 keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
 doc_type: 'landing-page'
 ---
 
-下文提供了在以下编程语言和运行环境中配置 chDB 的说明：
+以下提供了针对下列语言和运行时环境的 chDB 安装与配置指南：
 
 | 语言                                   | API 参考                            |
 |----------------------------------------|-------------------------------------|

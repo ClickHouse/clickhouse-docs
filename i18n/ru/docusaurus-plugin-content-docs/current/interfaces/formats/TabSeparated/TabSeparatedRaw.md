@@ -20,15 +20,16 @@ doc_type: 'reference'
 Отличается от формата [`TabSeparated`](/interfaces/formats/TabSeparated) тем, что строки записываются без экранирования.
 
 :::note
-При парсинге в этом формате символы табуляции и перевода строки не допускаются в полях.
+При разборе этого формата символы табуляции и перевода строки внутри каждого поля не допускаются.
 :::
 
-Сравнение форматов `TabSeparatedRaw` и `RawBlob` см. в разделе [Сравнение Raw-форматов](../RawBLOB.md/#raw-formats-comparison)
+Сравнение форматов `TabSeparatedRaw` и `RawBlob` см. в разделе [Сравнение форматов Raw](../RawBLOB.md/#raw-formats-comparison).
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
+
+### Вставка данных
 
 Используем следующий TSV-файл с именем `football.tsv`:
 
@@ -52,15 +53,15 @@ doc_type: 'reference'
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `TabSeparatedRaw`:
+Считайте данные в формате `TabSeparatedRaw`:
 
 ```sql
 SELECT *
@@ -68,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRaw
 ```
 
-Результат будет выведен в формате с разделителями-табуляциями:
+Вывод будет в формате с разделителями-табуляциями:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4

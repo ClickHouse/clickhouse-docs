@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 # percent&#95;rank
 
-ウィンドウパーティション内の行の相対的な順位（パーセンタイル）を返します。
+ウィンドウパーティション内の行の相対順位（パーセンタイル）を返します。
 
 **構文**
 
-エイリアス: `percentRank`（大文字と小文字が区別されます）
+エイリアス: `percentRank`（大文字小文字を区別します）
 
 ```sql
 percent_rank ()
@@ -25,7 +25,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 デフォルトかつ必須のウィンドウフレーム定義は `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` です。
 
-ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
+ウィンドウ関数の構文の詳細については [Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
 **例**
 
@@ -57,7 +57,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果:
+結果：
 
 ```response
 

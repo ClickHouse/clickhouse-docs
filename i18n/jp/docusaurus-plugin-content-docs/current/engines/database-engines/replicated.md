@@ -1,23 +1,23 @@
 ---
-description: 'このエンジンは Atomic エンジンを基盤としています。ZooKeeper に書き込まれる DDL ログを通じたメタデータのレプリケーションをサポートし、特定のデータベースに属するすべてのレプリカ上で実行されます。'
-sidebar_label: 'Replicated'
+description: "このエンジンは Atomic エンジンに基づいています。ZooKeeper に書き込まれる DDL ログを介してメタデータのレプリケーションを行い、あるデータベースに属するすべてのレプリカで実行されます。"
+sidebar_label: "Replicated"
 sidebar_position: 30
 slug: /engines/database-engines/replicated
-title: 'Replicated'
-doc_type: 'reference'
+title: "Replicated"
+doc_type: "reference"
 ---
 
 
 
 # Replicated
 
-このエンジンは [Atomic](../../engines/database-engines/atomic.md) エンジンを基盤としています。ZooKeeper に書き込まれる DDL ログを通じてメタデータのレプリケーションを行い、その DDL は対象データベースに属するすべてのレプリカ上で実行されます。
+このエンジンは [Atomic](../../engines/database-engines/atomic.md) エンジンをベースとしています。ZooKeeper に書き込まれる DDL ログを介したメタデータのレプリケーションをサポートしており、特定のデータベースに対するすべてのレプリカで実行されます。
 
-1 つの ClickHouse サーバー上で、複数のレプリケーテッドデータベースを同時に稼働・更新できます。ただし、同じレプリケーテッドデータベースのレプリカを、1 台のサーバー上に複数作成することはできません。
+1 つの ClickHouse サーバー上で、複数のレプリケートされたデータベースを同時に稼働させて更新することができます。ただし、同じレプリケートされたデータベースのレプリカを、1 つの ClickHouse サーバー上に複数置くことはできません。
 
 
 
-## データベースの作成 {#creating-a-database}
+## データベースの作成
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -25,37 +25,38 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 **エンジンパラメータ**
 
-- `zoo_path` — ZooKeeperパス。同じZooKeeperパスは同じデータベースに対応します。
-- `shard_name` — シャード名。データベースレプリカは`shard_name`によってシャードにグループ化されます。
-- `replica_name` — レプリカ名。同じシャードのすべてのレプリカでレプリカ名は異なる必要があります。
+* `zoo_path` — ZooKeeper のパス。同じ ZooKeeper パスは同じデータベースに対応します。
+* `shard_name` — シャード名。データベースレプリカは `shard_name` によってシャードにグループ化されます。
+* `replica_name` — レプリカ名。同一シャード内のすべてのレプリカで `replica_name` は異なる必要があります。
 
-パラメータは省略可能で、省略された場合はデフォルト値で置き換えられます。
+パラメータは省略可能です。省略した場合、指定されなかったパラメータにはデフォルト値が使用されます。
 
-`zoo_path`にマクロ`{uuid}`が含まれている場合、明示的なUUIDを指定するか、CREATE文に[ON CLUSTER](../../sql-reference/distributed-ddl.md)を追加して、すべてのレプリカがこのデータベースに対して同じUUIDを使用するようにする必要があります。
+`zoo_path` にマクロ `{uuid}` が含まれている場合は、明示的な UUID を指定するか、すべてのレプリカがこのデータベースに対して同じ UUID を使用することを保証するために、CREATE 文に [ON CLUSTER](../../sql-reference/distributed-ddl.md) を追加する必要があります。
 
-[ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication)テーブルの場合、引数が指定されていない場合はデフォルトの引数が使用されます:`/clickhouse/tables/{uuid}/{shard}`と`{replica}`。これらはサーバー設定の[default_replica_path](../../operations/server-configuration-parameters/settings.md#default_replica_path)と[default_replica_name](../../operations/server-configuration-parameters/settings.md#default_replica_name)で変更できます。マクロ`{uuid}`はテーブルのuuidに展開され、`{shard}`と`{replica}`はデータベースエンジンの引数からではなく、サーバー設定の値に展開されます。ただし、将来的にはReplicatedデータベースの`shard_name`と`replica_name`を使用できるようになる予定です。
-
-
-## 仕様と推奨事項 {#specifics-and-recommendations}
-
-`Replicated`データベースを使用したDDLクエリは、[ON CLUSTER](../../sql-reference/distributed-ddl.md)クエリと同様に動作しますが、若干の違いがあります。
-
-まず、DDLリクエストはイニシエーター(ユーザーから最初にリクエストを受信したホスト)での実行を試みます。リクエストが実行されない場合、ユーザーは即座にエラーを受け取り、他のホストは実行を試みません。イニシエーターでリクエストが正常に完了した場合、他のすべてのホストは完了するまで自動的に再試行します。イニシエーターは他のホストでクエリが完了するのを待機し([distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)以内)、各ホストのクエリ実行ステータスを含むテーブルを返します。
-
-エラー発生時の動作は[distributed_ddl_output_mode](../../operations/settings/settings.md#distributed_ddl_output_mode)設定によって制御されます。`Replicated`データベースの場合は`null_status_on_timeout`に設定することを推奨します。つまり、一部のホストが[distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)内にリクエストを実行できなかった場合、例外をスローせず、テーブル内でそれらのホストに対して`NULL`ステータスを表示します。
-
-[system.clusters](../../operations/system-tables/clusters.md)システムテーブルには、レプリケートされたデータベースと同じ名前のクラスターが含まれており、データベースのすべてのレプリカで構成されています。このクラスターはレプリカの作成/削除時に自動的に更新され、[Distributed](/engines/table-engines/special/distributed)テーブルに使用できます。
-
-データベースの新しいレプリカを作成する際、このレプリカは自身でテーブルを作成します。レプリカが長期間利用できず、レプリケーションログから遅れている場合、ローカルメタデータとZooKeeper内の現在のメタデータを照合し、余分なテーブルとデータを別の非レプリケートデータベースに移動し(誤って不要なものを削除しないため)、不足しているテーブルを作成し、名前が変更されている場合はテーブル名を更新します。データは`ReplicatedMergeTree`レベルでレプリケートされます。つまり、テーブルがレプリケートされていない場合、データはレプリケートされません(データベースはメタデータのみを管理します)。
-
-[`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md)クエリは許可されていますが、レプリケートされません。データベースエンジンは現在のレプリカに対してのみパーティション/パートの追加/取得/削除を行います。ただし、テーブル自体がレプリケートされたテーブルエンジンを使用している場合、`ATTACH`使用後にデータがレプリケートされます。
-
-テーブルのレプリケーションを維持せずにクラスターの設定のみが必要な場合は、[Cluster Discovery](../../operations/cluster-discovery.md)機能を参照してください。
+[ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) テーブルでは、引数が指定されていない場合、デフォルトの引数 `/clickhouse/tables/{uuid}/{shard}` および `{replica}` が使用されます。これらはサーバー設定 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) および [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name) で変更できます。マクロ `{uuid}` はテーブルの UUID に展開され、`{shard}` と `{replica}` はデータベースエンジンの引数ではなくサーバー設定の値に展開されます。ただし将来的には、Replicated データベースの `shard_name` および `replica_name` も使用できるようになる予定です。
 
 
-## 使用例 {#usage-example}
+## 詳細と推奨事項 {#specifics-and-recommendations}
 
-3つのホストでクラスタを作成：
+`Replicated` データベースでの DDL クエリは、[ON CLUSTER](../../sql-reference/distributed-ddl.md) クエリと同様の方法で動作しますが、いくつかの細かな違いがあります。
+
+まず、DDL リクエストはイニシエーター（ユーザーから最初にリクエストを受け取ったホスト）での実行を試みます。リクエストの実行に失敗した場合、ユーザーには直ちにエラーが返され、他のホストは実行を試みません。リクエストがイニシエーターで正常に完了した場合、他のすべてのホストは完了するまで自動的に再試行します。イニシエーターは、他のホスト上でクエリが完了するのを（[distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout) を超えない範囲で）待機し、その後、各ホストでのクエリ実行ステータスを含むテーブルを返します。
+
+エラー発生時の挙動は、[distributed_ddl_output_mode](../../operations/settings/settings.md#distributed_ddl_output_mode) 設定によって制御されます。`Replicated` データベースに対しては、これを `null_status_on_timeout` に設定することを推奨します。つまり、いくつかのホストが [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout) 以内にリクエストを実行できなかった場合でも、例外をスローせず、それらのホストについてはテーブル内で `NULL` ステータスを表示します。
+
+[system.clusters](../../operations/system-tables/clusters.md) システムテーブルには、レプリケートされたデータベースと同名のクラスターが含まれており、そのクラスターはデータベースのすべてのレプリカで構成されています。このクラスターはレプリカの作成・削除時に自動的に更新され、[Distributed](/engines/table-engines/special/distributed) テーブルとして利用できます。
+
+新しいデータベースレプリカを作成する際、このレプリカは自身でテーブルを作成します。レプリカが長時間利用不能でレプリケーションログから大きく遅延している場合には、自身のローカルメタデータを ZooKeeper の現在のメタデータと照合し、余分なテーブルとそのデータを（不要なものを誤って削除しないように）別の非レプリケートデータベースに移動し、欠けているテーブルを作成し、テーブル名が変更されている場合はテーブル名を更新します。データは `ReplicatedMergeTree` レベルでレプリケートされます。つまり、テーブルが Replicated 系のテーブルエンジンを使用していない場合、そのデータはレプリケートされません（データベースはメタデータのみを担当します）。
+
+[`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md) クエリは許可されていますが、レプリケートはされません。データベースエンジンは現在のレプリカに対してのみパーティション／パートの追加・取得・削除を行います。ただし、テーブル自体が Replicated 系のテーブルエンジンを使用している場合は、`ATTACH` を使用した後にデータがレプリケートされます。
+
+テーブルレプリケーションを維持せずにクラスターのみを構成する必要がある場合は、[Cluster Discovery](../../operations/cluster-discovery.md) 機能を参照してください。
+
+
+
+## 使用例
+
+3 つのホストを持つクラスターの作成:
 
 ```sql
 node1 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','shard1','replica1');
@@ -63,13 +64,13 @@ node2 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','shard1','other_repli
 node3 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','{replica}');
 ```
 
-暗黙的なパラメータでクラスタ上にデータベースを作成：
+暗黙的パラメータを使用してクラスタ上にデータベースを作成する：
 
 ```sql
 CREATE DATABASE r ON CLUSTER default ENGINE=Replicated;
 ```
 
-DDLクエリの実行：
+DDL クエリを実行する:
 
 ```sql
 CREATE TABLE r.rmt (n UInt64) ENGINE=ReplicatedMergeTree ORDER BY n;
@@ -83,7 +84,7 @@ CREATE TABLE r.rmt (n UInt64) ENGINE=ReplicatedMergeTree ORDER BY n;
 └──────────────────────┴─────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-システムテーブルの表示：
+システムテーブルを表示する:
 
 ```sql
 SELECT cluster, shard_num, replica_num, host_name, host_address, port, is_local
@@ -113,20 +114,20 @@ node1 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 └───────┴───────────────┘
 ```
 
-別のホストへのレプリカの追加：
+別のホストにレプリカを追加する:
 
 ```sql
 node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 ```
 
-`zoo_path`でマクロ`{uuid}`を使用している場合の別のホストへのレプリカの追加：
+`zoo_path` でマクロ `{uuid}` を使用している場合に、さらに 1 台のホストにレプリカを追加するには:
 
 ```sql
 node1 :) SELECT uuid FROM system.databases WHERE database='r';
-node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
+node4 :) CREATE DATABASE r UUID '<前のクエリのuuid>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
 ```
 
-クラスタ構成は次のようになります：
+クラスター構成は次のようになります。
 
 
 ```text
@@ -138,7 +139,7 @@ node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('
 └─────────┴───────────┴─────────────┴───────────┴──────────────┴──────┴──────────┘
 ```
 
-分散テーブルも新しいホストからデータを受け取るようになります。
+分散テーブルにも新しいホストからデータが取り込まれます。
 
 ```sql
 node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY host;
@@ -152,25 +153,25 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 ```
 
 
-## 設定 {#settings}
+## 設定
 
-以下の設定がサポートされています:
+サポートされている設定は次のとおりです:
 
-| 設定                                                                      | デフォルト                        | 説明                                                                                                                                                           |
-| ---------------------------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `max_broken_tables_ratio`                                                    | 1                              | 古くなったテーブルと全テーブルの比率がこの値を超える場合、レプリカを自動的に復旧しない                                                                           |
-| `max_replication_lag_to_enqueue`                                             | 50                             | レプリケーションラグがこの値を超える場合、レプリカはクエリ実行の試行時に例外をスローする                                                                               |
-| `wait_entry_commited_timeout_sec`                                            | 3600                           | タイムアウトを超過したが開始ホストがまだ実行していない場合、レプリカはクエリのキャンセルを試みる                                                                       |
-| `collection_name`                                                            |                                | クラスタ認証のすべての情報が定義されているサーバー設定内のコレクション名                                                                |
-| `check_consistency`                                                          | true                           | ローカルメタデータとKeeper内のメタデータの整合性をチェックし、不整合がある場合はレプリカの復旧を実行する                                                                      |
-| `max_retries_before_automatic_recovery`                                      | 10                             | レプリカを喪失としてマークしスナップショットから復旧する前に、キューエントリの実行を試行する最大回数(0は無限を意味する)                                         |
-| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 有効にすると、Replicatedデータベース内のDDL処理時に、可能であればリフレッシュ可能なマテリアライズドビューの一時テーブルのDDL作成と交換をスキップする |
-| `logs_to_keep`                                                               | 1000                           | Replicatedデータベース用にZooKeeperに保持するログのデフォルト数                                                                                                  |
-| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper内のデータベースへのパス。引数が省略された場合、データベース作成時に使用される                                                                        |
-| `default_replica_shard_name`                                                 | `{shard}`                      | データベース内のレプリカのシャード名。引数が省略された場合、データベース作成時に使用される                                                                |
-| `default_replica_name`                                                       | `{replica}`                    | データベース内のレプリカの名前。引数が省略された場合、データベース作成時に使用される                                                                      |
+| Setting                                                                      | Default                        | Description                                                                               |
+| ---------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `max_broken_tables_ratio`                                                    | 1                              | 停止状態（stale）のテーブル数と全テーブル数の比率がこの値より大きい場合、レプリカを自動復旧しない                                       |
+| `max_replication_lag_to_enqueue`                                             | 50                             | レプリケーション遅延がこの値より大きい場合、レプリカはクエリを実行しようとすると例外をスローする                                          |
+| `wait_entry_commited_timeout_sec`                                            | 3600                           | タイムアウトを超過した場合、イニシエータホストがまだそのクエリを実行していなければ、レプリカはそのクエリのキャンセルを試みる                            |
+| `collection_name`                                                            |                                | クラスタ認証に関するすべての情報が定義されている、サーバー設定内のコレクションの名前                                                |
+| `check_consistency`                                                          | true                           | ローカルメタデータと Keeper 内のメタデータの整合性をチェックし、不整合がある場合はレプリカの復旧を行う                                   |
+| `max_retries_before_automatic_recovery`                                      | 10                             | レプリカを失われたものとしてマークしスナップショットから復旧する前に、キューエントリの実行を試行する最大回数（0 は無制限を意味する）                       |
+| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 有効にすると、Replicated データベースで DDL を処理する際、可能な場合はリフレッシュ可能なマテリアライズドビューの一時テーブルの DDL の作成と交換をスキップする |
+| `logs_to_keep`                                                               | 1000                           | Replicated データベースに対して ZooKeeper に保持するログのデフォルト件数。                                          |
+| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper におけるデータベースへのパス。データベース作成時に引数が省略された場合に使用される。                                      |
+| `default_replica_shard_name`                                                 | `{shard}`                      | データベース内のレプリカのシャード名。データベース作成時に引数が省略された場合に使用される。                                            |
+| `default_replica_name`                                                       | `{replica}`                    | データベース内のレプリカ名。データベース作成時に引数が省略された場合に使用される。                                                 |
 
-デフォルト値は設定ファイルで上書きできます
+デフォルト値は設定ファイルで上書きできます。
 
 ```xml
 <clickhouse>

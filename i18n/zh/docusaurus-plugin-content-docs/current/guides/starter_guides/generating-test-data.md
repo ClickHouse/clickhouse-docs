@@ -2,10 +2,10 @@
 sidebar_label: '生成随机测试数据'
 title: '在 ClickHouse 中生成随机测试数据'
 slug: /guides/generating-test-data
-description: '了解如何在 ClickHouse 中生成随机测试数据'
+description: '了解 ClickHouse 中随机测试数据的生成方法'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['random data', 'test data']
+keywords: ['随机数据', '测试数据']
 ---
 
 
@@ -13,15 +13,15 @@ keywords: ['random data', 'test data']
 # 在 ClickHouse 中生成随机测试数据
 
 在测试新用例或对实现进行基准测试时，生成随机数据非常有用。
-ClickHouse 提供了[用于生成随机数据的丰富函数](/sql-reference/functions/random-functions)，在许多情况下无需使用外部数据生成器。
+ClickHouse 提供了[用于生成随机数据的丰富函数](/sql-reference/functions/random-functions)，在很多情况下可以避免依赖外部数据生成器。
 
-本指南通过多个示例展示如何在 ClickHouse 中根据不同的随机性要求生成随机数据集。
+本指南提供了多个示例，展示如何在 ClickHouse 中根据不同的随机性需求生成随机数据集。
 
 
 
-## 简单均匀分布数据集 {#simple-uniform-dataset}
+## 简单均匀分布数据集
 
-**使用场景**:快速生成包含随机时间戳和事件类型的用户事件数据集。
+**使用场景**：快速生成包含随机时间戳和事件类型的用户事件数据集。
 
 ```sql
 CREATE TABLE user_events (
@@ -41,16 +41,16 @@ SELECT
 FROM numbers(1000000);
 ```
 
-- `rand() % 10000`:10,000 个用户的均匀分布
-- `arrayJoin(...)`:从三种事件类型中随机选择一种
-- 时间戳分布在过去 24 小时内
+* `rand() % 10000`：表示对 1 万个用户的均匀分布
+* `arrayJoin(...)`：从三种事件类型中随机选择一种
+* 时间戳分布在过去 24 小时内
 
----
+***
 
 
-## 指数分布 {#exponential-distribution}
+## 指数分布
 
-**使用场景**:模拟购买金额,其中大部分值较低,但少数值较高。
+**使用场景**：用于模拟购买金额，其中大多数金额较低，但有少数金额较高。
 
 ```sql
 CREATE TABLE purchases (
@@ -68,15 +68,15 @@ SELECT
 FROM numbers(500000);
 ```
 
-- 在最近时间段内均匀分布的时间戳
-- `randExponential(1/10)` — 大部分总额接近 0,以 15 作为最小值进行偏移 ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4])
+* 在最近一段时间内均匀分布的时间戳
+* `randExponential(1/10)` — 大多数结果接近 0，然后整体加上 15 作为最小值（[ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]）
 
----
+***
 
 
-## 时间分布事件（泊松分布）{#poisson-distribution}
+## 时间分布的事件（泊松）
 
-**使用场景**：模拟在特定时段（如高峰时段）集中到达的事件。
+**适用场景**：模拟在特定时间段（例如高峰时段）附近集中发生的事件。
 
 ```sql
 CREATE TABLE events (
@@ -93,14 +93,14 @@ SELECT
 FROM numbers(200000);
 ```
 
-- 事件在正午时段达到峰值，偏差服从泊松分布
+* 事件在中午前后达到峰值，偏差服从泊松分布
 
----
+***
 
 
-## 时变正态分布 {#time-varying-normal-distribution}
+## 随时间变化的正态分布
 
-**用例**:模拟随时间变化的系统指标(例如 CPU 使用率)。
+**使用场景**：模拟会随时间变化的系统指标（如 CPU 使用率）。
 
 ```sql
 CREATE TABLE cpu_metrics (
@@ -120,15 +120,15 @@ SELECT
 FROM numbers(10000);
 ```
 
-- `usage` 遵循日周期正弦波叠加随机波动
-- 值限定在 \[0,100] 范围内
+* `usage` 呈昼夜正弦波形变化并叠加随机扰动
+* 数值被限定在 [0,100] 区间内
 
----
+***
 
 
-## 分类和嵌套数据 {#categorical-and-nested-data}
+## 分类和嵌套数据
 
-**用例**：创建包含多值兴趣的用户配置文件。
+**使用场景**：创建具有多值兴趣字段的用户画像。
 
 ```sql
 CREATE TABLE user_profiles (
@@ -146,31 +146,31 @@ SELECT
 FROM numbers(20000);
 ```
 
-- 随机数组长度为 1–3
-- 每个用户的每个兴趣有三个评分
+* 长度在 1–3 之间的随机数组
+* 每个兴趣对应三个用户分数
 
 :::tip
-阅读博客文章 [在 ClickHouse 中生成随机数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 了解更多示例。
+阅读博客文章 [Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 以获取更多示例。
 :::
 
 
-## 生成随机表 {#generating-random-tables}
+## 生成随机表
 
-[`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 函数与 [`generateRandom`](/sql-reference/table-functions/generate) 表引擎结合使用时特别有用,可用于测试、基准测试或创建具有任意模式的模拟数据。
+当与 [`generateRandom`](/sql-reference/table-functions/generate) 表引擎结合使用时，[`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 函数在测试、基准测试或使用任意模式创建模拟数据等场景中尤为有用。
 
-首先让我们使用 `generateRandomStructure` 函数查看随机结构的样子:
+我们先通过使用 `generateRandomStructure` 函数来看看一个随机结构是什么样子：
 
 ```sql
 SELECT generateRandomStructure(5);
 ```
 
-您可能会看到类似这样的结果:
+你可能会看到类似如下内容：
 
 ```response
 c1 UInt32, c2 Array(String), c3 DateTime, c4 Nullable(Float64), c5 Map(String, Int16)
 ```
 
-您也可以使用种子值来每次获得相同的结构:
+你也可以使用固定的随机种子，这样每次都会得到相同的结构：
 
 ```sql
 SELECT generateRandomStructure(3, 42);
@@ -180,21 +180,21 @@ SELECT generateRandomStructure(3, 42);
 c1 String, c2 Array(Nullable(Int32)), c3 Tuple(UInt8, Date)
 ```
 
-现在让我们创建一个实际的表并用随机数据填充它:
+现在我们来创建一个真正的表，并向其中填充一些随机数据：
 
 ```sql
 CREATE TABLE my_test_table
 ENGINE = MergeTree
 ORDER BY tuple()
-AS SELECT *
+AS SELECT * 
 FROM generateRandom(
     'col1 UInt32, col2 String, col3 Float64, col4 DateTime',
-    1,  -- 数据生成的种子值
-    10  -- 不同随机值的数量
+    1,  -- 数据生成种子
+    10  -- 不同随机值数量
 )
 LIMIT 100;  -- 100 行
 
--- 步骤 2: 查询您的新表
+-- 步骤 2：查询新表
 SELECT * FROM my_test_table LIMIT 5;
 ```
 
@@ -208,8 +208,8 @@ SELECT * FROM my_test_table LIMIT 5;
 └────────────┴───────────┴──────────────────────────┴─────────────────────┘
 ```
 
-让我们结合这两个函数来创建一个完全随机的表。
-首先,查看我们将获得什么结构:
+让我们把这两个函数结合起来，生成一个完全随机的数据表。
+首先，看看会得到怎样的结构：
 
 ```sql
 SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
@@ -221,13 +221,13 @@ SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-现在使用该结构创建表,并使用 `DESCRIBE` 语句查看我们创建的内容:
+现在根据该结构创建表，并使用 `DESCRIBE` 语句查看我们创建的内容：
 
 ```sql
 CREATE TABLE fully_random_table
 ENGINE = MergeTree
 ORDER BY tuple()
-AS SELECT *
+AS SELECT * 
 FROM generateRandom(generateRandomStructure(7, 123), 1, 10)
 LIMIT 1000;
 

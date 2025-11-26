@@ -1,5 +1,5 @@
 ---
-description: '表引擎相关文档'
+description: '表引擎文档'
 slug: /engines/table-engines/
 toc_folder_title: '表引擎'
 toc_priority: 26
@@ -12,56 +12,56 @@ doc_type: 'reference'
 
 # 表引擎
 
-表引擎（表的类型）决定了：
+表引擎（表的类型）决定：
 
-- 数据如何以及在何处存储、写入和读取。
-- 支持哪些查询，以及如何支持。
+- 数据存储在何处以及以何种方式存储、写入到哪里以及从哪里读取。
+- 支持哪些查询，以及具体如何执行这些查询。
 - 并发访问数据的方式。
-- 索引（如果存在）的使用方式。
-- 是否支持多线程执行请求。
-- 数据复制参数。
+- 是否以及如何使用索引（如果存在）。
+- 是否可以进行多线程的请求执行。
+- 数据复制的相关参数。
 
 
 
-## 引擎系列 {#engine-families}
+## 引擎家族 {#engine-families}
 
 ### MergeTree {#mergetree}
 
-适用于高负载任务的最通用且功能最强大的表引擎。这些引擎的共同特点是支持快速数据插入和后续的后台数据处理。`MergeTree` 系列引擎支持数据复制(通过引擎的 [Replicated\*](/engines/table-engines/mergetree-family/replication) 版本)、分区、辅助数据跳过索引以及其他引擎不支持的功能。
+用于高负载任务的最通用且功能最全面的表引擎。这些引擎的共同特性是支持快速写入数据，并在后台对数据进行后续处理。`MergeTree` 系列引擎支持数据复制（通过引擎的 [Replicated\*](/engines/table-engines/mergetree-family/replication) 版本）、分区、二级数据跳过索引，以及其他在其他引擎中不支持的特性。
 
-该系列中的引擎:
+该家族中的引擎：
 
-| MergeTree 引擎                                                                                    |
-| ---------------------------------------------------------------------------------------------------- |
-| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                       |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                     |
-| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                         |
-| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                 |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)                   |
+| MergeTree 引擎                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------|
+| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                          |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                               |
+| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                                     |
+| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                         |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)               |
 | [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) |
-| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                       |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                   |
+| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
 ### Log {#log}
 
-具有最小功能的轻量级[引擎](../../engines/table-engines/log-family/index.md)。当需要快速写入大量小表(最多约 100 万行)并随后整体读取时,这些引擎最为有效。
+轻量级的 [引擎](../../engines/table-engines/log-family/index.md)，仅提供最基础的功能。当需要快速写入许多小表（最多约 100 万行），并在之后整体读取它们时，这些引擎最为高效。
 
-该系列中的引擎:
+该家族中的引擎：
 
-| Log 引擎                                              |
-| -------------------------------------------------------- |
-| [TinyLog](/engines/table-engines/log-family/tinylog)     |
+| Log 引擎                                                                |
+|----------------------------------------------------------------------------|
+| [TinyLog](/engines/table-engines/log-family/tinylog)       |
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
-| [Log](/engines/table-engines/log-family/log)             |
+| [Log](/engines/table-engines/log-family/log)                   |
 
 ### 集成引擎 {#integration-engines}
 
-用于与其他数据存储和处理系统通信的引擎。
+用于与其他数据存储和处理系统进行交互的引擎。
 
-该系列中的引擎:
+该家族中的引擎：
 
 | 集成引擎                                                             |
-| ------------------------------------------------------------------------------- |
+|---------------------------------------------------------------------------------|
 | [ODBC](../../engines/table-engines/integrations/odbc.md)                        |
 | [JDBC](../../engines/table-engines/integrations/jdbc.md)                        |
 | [MySQL](../../engines/table-engines/integrations/mysql.md)                      |
@@ -78,10 +78,11 @@ doc_type: 'reference'
 
 ### 特殊引擎 {#special-engines}
 
-该系列中的引擎:
+该家族中的引擎：
 
 
-| 特殊引擎                                               |
+
+| 特殊表引擎                                               |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
 | [Dictionary](/engines/table-engines/special/dictionary)       |
@@ -104,18 +105,18 @@ doc_type: 'reference'
 
 ## 虚拟列 {#table_engines-virtual_columns}
 
-虚拟列是表引擎的内置属性,在引擎源代码中定义。
+虚拟列是表引擎的内置属性，在引擎的源代码中定义。
 
-您不应在 `CREATE TABLE` 查询中指定虚拟列,在 `SHOW CREATE TABLE` 和 `DESCRIBE TABLE` 查询结果中也无法看到它们。虚拟列是只读的,因此无法向虚拟列插入数据。
+不应在 `CREATE TABLE` 查询中指定虚拟列，并且在 `SHOW CREATE TABLE` 和 `DESCRIBE TABLE` 的查询结果中也看不到它们。虚拟列是只读的，因此无法向虚拟列中插入数据。
 
-要从虚拟列中查询数据,必须在 `SELECT` 查询中指定其名称。`SELECT *` 不会返回虚拟列的值。
+要从虚拟列中读取数据，必须在 `SELECT` 查询中显式指定其名称。`SELECT *` 不会返回虚拟列中的值。
 
-如果创建的表中包含与表虚拟列同名的列,则该虚拟列将变得不可访问。我们不建议这样做。为避免冲突,虚拟列名称通常以下划线作为前缀。
+如果在创建表时定义了一个与该表某个虚拟列同名的列，则该虚拟列将变得不可访问。不推荐这样做。为避免冲突，虚拟列名称通常会以下划线作为前缀。
 
-- `_table` — 包含读取数据的表名称。类型:[String](../../sql-reference/data-types/string.md)。
+- `_table` — 包含读取数据所在表的名称。类型：[String](../../sql-reference/data-types/string.md)。
 
-  无论使用何种表引擎,每个表都包含一个名为 `_table` 的通用虚拟列。
+    无论使用哪种表引擎，每个表都包含一个名为 `_table` 的通用虚拟列。
 
-  当查询使用 Merge 表引擎的表时,可以在 `WHERE/PREWHERE` 子句中对 `_table` 设置常量条件(例如 `WHERE _table='xyz'`)。在这种情况下,读取操作仅对满足 `_table` 条件的表执行,因此 `_table` 列起到索引的作用。
+    在使用 Merge 表引擎查询表时，可以在 `WHERE/PREWHERE` 子句中对 `_table` 设置常量条件（例如，`WHERE _table='xyz'`）。在这种情况下，只会对满足 `_table` 条件的这些表执行读取操作，因此 `_table` 列在此处充当索引。
 
-  当使用格式为 `SELECT ... FROM (... UNION ALL ...)` 的查询时,可以通过指定 `_table` 列来确定返回的行来自哪个实际表。
+    当使用类似 `SELECT ... FROM (... UNION ALL ...)` 格式的查询时，可以通过指定 `_table` 列来确定返回的行来自哪个实际表。

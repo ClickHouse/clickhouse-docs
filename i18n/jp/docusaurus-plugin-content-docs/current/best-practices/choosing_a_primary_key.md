@@ -13,35 +13,35 @@ import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> このページでは「ordering key」という用語を「primary key」と同じ意味で入れ替えて使用しています。厳密には[ClickHouse では両者は異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)が、本ドキュメントにおいてはどちらも同じものとして扱って構いません。ここでいう ordering key とは、テーブルの `ORDER BY` 句で指定された列を指します。
+> このページでは、用語「ordering key」を「primary key」と同義で使用します。厳密には[ClickHouse ではこれらは異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)が、本ドキュメントの範囲では同じものとして扱って構いません。このとき ordering key は、テーブルの `ORDER BY` で指定された列を指します。
 
-ClickHouse の primary key は、Postgres のような OLTP データベースにおける同様の用語に慣れている方にとっては[挙動が大きく異なる](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)ことに注意してください。
+ClickHouse の primary key は、Postgres のような OLTP データベースで類似の用語に慣れている方にとっては[挙動が大きく異なる](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)点に注意してください。
 
-ClickHouse において効果的な primary key を選択することは、クエリ性能およびストレージ効率にとって極めて重要です。ClickHouse はデータをパーツに分割して管理し、それぞれのパーツは独自の疎な primary index を保持します。このインデックスにより走査するデータ量が削減され、クエリが大幅に高速化されます。さらに、primary key はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適に並べ替えられたデータはより高い圧縮率を実現でき、その結果として I/O が削減され、性能がさらに向上します。
+ClickHouse で効果的な primary key を選択することは、クエリ性能とストレージ効率の両方にとって極めて重要です。ClickHouse はデータをパーツと呼ばれる単位に分割して保持し、各パーツは独自の疎な primary index を持ちます。このインデックスにより、スキャンするデータ量を削減してクエリを大幅に高速化できます。さらに、primary key はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適に並んだデータはより高い圧縮率を実現でき、その結果として I/O が削減され、性能が一層向上します。
 
-1. ordering key を選択する際は、クエリフィルタ（`WHERE` 句）で頻繁に使用される列、特に大量の行を除外できる列を優先してください。
-2. テーブル内の他のデータと非常に相関の高い列も有用です。連続した配置によって圧縮率が向上し、`GROUP BY` や `ORDER BY` の処理中のメモリ効率も改善されます。
+1. ordering key を選ぶ際は、クエリフィルタ（`WHERE` 句）で頻繁に使用される列、特に大量の行を除外する列を優先してください。
+2. テーブル内の他のデータと高い相関がある列も有用です。連続した配置により、`GROUP BY` や `ORDER BY` 処理中の圧縮率およびメモリ効率が向上するためです。
 
 <br />
 
-ordering key を選ぶ際に役立つ、いくつかの単純なルールを適用できます。以下のルールは互いに矛盾することもあるため、記載順に検討してください。**このプロセスを通じて複数のキー候補を洗い出すことができ、通常は 4〜5 個あれば十分です**:
+ordering key を選ぶ際に役立つ、いくつかの単純なルールを適用できます。以下のルールは互いに矛盾する場合があるため、ここに示す順序で検討してください。**このプロセスから複数の候補キーを洗い出すことができ、通常は 4〜5 個あれば十分です。**
 
 :::note Important
-ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び順は、projections と呼ばれる機能を用いることで、データ挿入の後（または前）にテーブルへ付与できますが、その結果としてデータが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
+ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び順は、projections と呼ばれる機能を用いて、データ挿入の前後を問わずテーブルに付与できます。ただし、その結果データが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
 :::
 
 
-## 例 {#example}
+## 例
 
-以下の `posts_unordered` テーブルを考えます。このテーブルには、Stack Overflow の投稿ごとに1行が含まれています。
+次の `posts_unordered` テーブルを考えます。これは Stack Overflow の投稿 1 件ごとに 1 行のデータを含んでいます。
 
-このテーブルには主キーがありません。これは `ORDER BY tuple()` で示されています。
+このテーブルには、`ORDER BY tuple()` で示されているように、プライマリキーがありません。
 
 ```sql
 CREATE TABLE posts_unordered
 (
   `Id` Int32,
-  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4,
+  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 
   'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
   `AcceptedAnswerId` UInt32,
   `CreationDate` DateTime,
@@ -68,7 +68,7 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-ユーザーが2024年以降に投稿された質問の数を計算したいとします。これが最も一般的なアクセスパターンであるとします。
+あるユーザーが、2024年以降に送信された質問の件数を計算したいとします。そのための処理が、そのユーザーにとって最も一般的なアクセスパターンであると仮定します。
 
 ```sql
 SELECT count()
@@ -79,12 +79,12 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 │  192611 │
 └─────────┘
 --highlight-next-line
-1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
+1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (10.9億行/秒、6.61 GB/秒)
 ```
 
-このクエリで読み取られた行数とバイト数に注目してください。主キーがない場合、クエリはデータセット全体をスキャンする必要があります。
+このクエリで読み込まれた行数とバイト数に注目してください。プライマリキーがない場合、クエリはデータセット全体をスキャンする必要があります。
 
-`EXPLAIN indexes=1` を使用すると、インデックスがないためフルテーブルスキャンが行われていることが確認できます。
+`EXPLAIN indexes=1` を使用すると、インデックスが存在しないためにテーブル全体がスキャンされていることが確認できます。
 
 ```sql
 EXPLAIN indexes = 1
@@ -103,13 +103,13 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 5 rows in set. Elapsed: 0.003 sec.
 ```
 
-同じデータを含むテーブル `posts_ordered` が、`ORDER BY` を `(PostTypeId, toDate(CreationDate))` として定義されているとします。つまり、
+同じデータを含む `posts_ordered` というテーブルがあり、そのテーブルの `ORDER BY` が `(PostTypeId, toDate(CreationDate))` として定義されていると仮定します。つまり、
 
 ```sql
 CREATE TABLE posts_ordered
 (
   `Id` Int32,
-  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6,
+  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 
   'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
 ...
 )
@@ -117,19 +117,18 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-`PostTypeId` のカーディナリティは8であり、順序キーの最初のエントリとして論理的な選択となります。日付粒度のフィルタリングで十分である（datetime フィルタにも有効です）と認識されるため、キーの2番目のコンポーネントとして `toDate(CreationDate)` を使用します。これにより、日付は16ビットで表現できるため、より小さなインデックスが生成され、フィルタリングが高速化されます。
+`PostTypeId` はカーディナリティが 8 であり、ソートキーの最初の要素として論理的に適した選択です。日付粒度でのフィルタリングで十分である可能性が高いと判断できるため（それでも日時でのフィルタの恩恵は受けます）、キーの 2 番目の構成要素として `toDate(CreationDate)` を使用します。これは日付を 16 ビットで表現できるため、より小さいインデックスが生成され、フィルタリングが高速になります。
 
-以下のアニメーションは、Stack Overflow の投稿テーブルに対して最適化されたスパース主インデックスがどのように作成されるかを示しています。個々の行をインデックス化する代わりに、インデックスは行のブロックを対象とします。
+次のアニメーションは、Stack Overflow の posts テーブルに対して最適化されたスパースなプライマリインデックスがどのように作成されるかを示しています。個々の行をインデックスする代わりに、行のブロックを対象とします。
 
-<Image img={create_primary_key} size='lg' alt='Primary key' />
+<Image img={create_primary_key} size="lg" alt="プライマリキー" />
 
-この順序キーを持つテーブルで同じクエリを実行すると、
+このソートキーを持つテーブルに対して同じクエリを繰り返し実行した場合:
 
 ```sql
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
-
 ```
 
 
@@ -137,11 +136,11 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 │  192611 │
 └─────────┘
 --highlight-next-line
-1 行が結果セットに含まれます。経過時間: 0.013 秒。処理済み 196.53 千行、1.77 MB (14.64 百万行/秒、131.78 MB/秒)。
+1 行が結果セットに含まれます。経過時間: 0.013 秒。処理件数: 196.53 千行、1.77 MB（14.64 百万行/秒、131.78 MB/秒）。
 
 ````
 
-このクエリはスパースインデックスを活用することで、読み取るデータ量を大幅に削減し、実行時間を4倍高速化します。読み取られる行数とバイト数が削減されていることに注目してください。 
+このクエリはスパースインデックスを活用し、読み取るデータ量を大幅に削減することで、実行時間を4倍高速化します。読み取る行数とバイト数の削減に注目してください。 
 
 インデックスの使用状況は `EXPLAIN indexes=1` で確認できます。
 
@@ -170,14 +169,14 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 13 rows in set. Elapsed: 0.004 sec.
 ````
 
-さらに、疎インデックスが、例のクエリでマッチを含む可能性のない行ブロックをどのようにすべて刈り込む（除外する）かを可視化します：
+さらに、疎インデックスが、サンプルクエリで一致する可能性のないすべての行ブロックをどのように除外するかを視覚的に示します。
 
 <Image img={primary_key} size="lg" alt="Primary key" />
 
 :::note
-テーブル内のすべての列は、指定されたオーダリングキーの値に基づいてソートされます。これは、その列がキー自体に含まれているかどうかに関係ありません。たとえば、`CreationDate` がキーとして使用されている場合、他のすべての列の値の並び順は、`CreationDate` 列の値の並び順に対応します。複数のオーダリングキーを指定することもでき、その場合の並び順は `SELECT` クエリの `ORDER BY` 句と同じセマンティクスになります。
+テーブル内のすべてのカラムは、指定されたオーダリングキーの値に基づいてソートされます。これは、そのカラムがキー自体に含まれているかどうかに関係ありません。たとえば、`CreationDate` がキーとして使用されている場合、他のすべてのカラムの値の順序は、`CreationDate` カラムの値の順序に対応します。複数のオーダリングキーを指定することもでき、その場合、`SELECT` クエリの `ORDER BY` 句と同じセマンティクスで並べ替えが行われます。
 :::
 
-主キーの選択に関する包括的な上級ガイドは[こちら](/guides/best-practices/sparse-primary-indexes)にあります。
+プライマリキーの選択に関する詳細な上級者向けガイドは[こちら](/guides/best-practices/sparse-primary-indexes)にあります。
 
-オーダリングキーが圧縮をどのように改善し、ストレージをさらに最適化するかをより深く理解するには、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) と [Column Compression Codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) に関する公式ガイドを参照してください。
+オーダリングキーがどのように圧縮率を高め、ストレージをさらに最適化するかについてより深く理解するには、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) および [Column Compression Codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) に関する公式ガイドを参照してください。

@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon Glue'
 sidebar_position: 1
 slug: /integrations/glue
-description: 'Интеграция ClickHouse с Amazon Glue'
+description: 'Интеграция ClickHouse и Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Интеграция Amazon Glue с ClickHouse и Spark'
 doc_type: 'guide'
@@ -26,65 +26,43 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## Установка {#installation}
 
-Для интеграции кода Glue с ClickHouse можно использовать официальный коннектор Spark в Glue одним из следующих способов:
-
-- Установка коннектора ClickHouse Glue из AWS Marketplace (рекомендуется).
-- Ручное добавление JAR-файлов коннектора Spark в задание Glue.
+Чтобы интегрировать ваш код Glue с ClickHouse, вы можете использовать наш официальный Spark-коннектор в Glue одним из следующих способов:
+- Установить ClickHouse Glue Connector из AWS Marketplace (рекомендуется).
+- Вручную добавить JAR-файлы Spark Connector в вашу задачу Glue.
 
 <Tabs>
 <TabItem value="AWS Marketplace" label="AWS Marketplace" default>
 
-1. <h3 id='subscribe-to-the-connector'>Подписка на коннектор</h3>
-   Чтобы получить доступ к коннектору в вашей учетной записи, подпишитесь на ClickHouse AWS Glue
-   Connector в AWS Marketplace.
+1. <h3 id="subscribe-to-the-connector">Оформить подписку на коннектор</h3>
+Чтобы получить доступ к коннектору в вашем аккаунте, оформите подписку на ClickHouse AWS Glue Connector в AWS Marketplace.
 
-2. <h3 id='grant-required-permissions'>Предоставление необходимых разрешений</h3>
-   Убедитесь, что IAM-роль задания Glue имеет необходимые разрешения, как описано
-   в [руководстве](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors)
-   по минимальным привилегиям.
+2. <h3 id="grant-required-permissions">Предоставить необходимые права</h3>
+Убедитесь, что роль IAM вашей задачи Glue имеет необходимые права, как описано в [руководстве](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors) по минимальным привилегиям.
 
-3. <h3 id='activate-the-connector'>
-     Активация коннектора и создание подключения
-   </h3>
-   Вы можете активировать коннектор и создать подключение напрямую, перейдя по
-   [этой
-   ссылке](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:1.0.0&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"),
-   которая откроет страницу создания подключения Glue с предварительно заполненными ключевыми полями.
-   Укажите имя подключения и нажмите «Создать» (на этом этапе не требуется указывать
-   параметры подключения к ClickHouse).
+3. <h3 id="activate-the-connector">Активировать коннектор и создать подключение</h3>
+Вы можете активировать коннектор и создать подключение напрямую, перейдя по [этой ссылке](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:1.0.0&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), которая откроет страницу создания подключения Glue с заранее заполненными ключевыми полями. Задайте имя подключению и нажмите «Создать» (на этом этапе не нужно указывать параметры подключения к ClickHouse).
 
-4. <h3 id='use-in-glue-job'>Использование в задании Glue</h3>
-   В задании Glue выберите вкладку `Job details` и разверните окно `Advanced
-   properties`. В разделе `Connections` выберите только что созданное подключение.
-   Коннектор автоматически добавит необходимые JAR-файлы в среду выполнения задания.
+4. <h3 id="use-in-glue-job">Использовать в задаче Glue</h3>
+В вашей задаче Glue выберите вкладку `Job details` и разверните окно `Advanced properties`. В разделе `Connections` выберите подключение, которое вы только что создали. Коннектор автоматически добавит необходимые JAR-файлы в среду выполнения задачи.
 
-<Image
-  img={notebook_connections_config}
-  size='md'
-  alt='Конфигурация подключений Glue Notebook'
-  force='true'
-/>
+<Image img={notebook_connections_config} size='md' alt='Конфигурация подключений Glue Notebook' force='true' />
 
 :::note
-JAR-файлы, используемые в коннекторе Glue, собраны для `Spark 3.3`, `Scala 2` и `Python 3`. Убедитесь, что при настройке задания Glue выбраны эти версии.
+JAR-файлы, используемые в Glue Connector, собраны для `Spark 3.3`, `Scala 2` и `Python 3`. Убедитесь, что вы выбираете эти версии при настройке задачи Glue.
 :::
 
 </TabItem>
-<TabItem value="Manual Installation" label="Ручная установка">
-Чтобы добавить необходимые JAR-файлы вручную, выполните следующие действия:
-1. Загрузите следующие JAR-файлы в корзину S3: `clickhouse-jdbc-0.6.X-all.jar` и `clickhouse-spark-runtime-3.X_2.X-0.8.X.jar`.
-2. Убедитесь, что задание Glue имеет доступ к этой корзине.
-3. На вкладке `Job details` прокрутите вниз и разверните выпадающий список `Advanced properties`, затем укажите путь к JAR-файлам в поле `Dependent JARs path`:
+<TabItem value="Manual Installation" label="Manual Installation">
+Чтобы добавить необходимые JAR-файлы вручную, выполните следующие шаги:
+1. Загрузите следующие JAR-файлы в бакет S3 — `clickhouse-jdbc-0.6.X-all.jar` и `clickhouse-spark-runtime-3.X_2.X-0.8.X.jar`.
+2. Убедитесь, что задача Glue имеет доступ к этому бакету.
+3. На вкладке `Job details` прокрутите вниз, разверните выпадающий список `Advanced properties` и укажите путь к JAR-файлам в поле `Dependent JARs path`:
 
-<Image
-  img={dependent_jars_path_option}
-  size='md'
-  alt='Параметры пути к JAR-файлам в Glue Notebook'
-  force='true'
-/>
+<Image img={dependent_jars_path_option} size='md' alt='Параметры пути к JAR-файлам в Glue Notebook' force='true' />
 
 </TabItem>
 </Tabs>
+
 
 
 ## Примеры {#example}
@@ -115,7 +93,7 @@ object ClickHouseGlueExample {
       .config("spark.sql.catalog.clickhouse.user", "default")
       .config("spark.sql.catalog.clickhouse.password", "<your-password>")
       .config("spark.sql.catalog.clickhouse.database", "default")
-      // для ClickHouse cloud
+      // для ClickHouse Cloud
       .config("spark.sql.catalog.clickhouse.option.ssl", "true")
       .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
       .getOrCreate
@@ -214,7 +192,7 @@ df.writeTo("clickhouse.default.example_table").append()
 
 
 
-# Считывание DataFrame из ClickHouse
+# Чтение DataFrame из ClickHouse
 
 df&#95;read = spark.sql(&quot;select * from clickhouse.default.example&#95;table&quot;)
 logger.info(str(df.take(10)))

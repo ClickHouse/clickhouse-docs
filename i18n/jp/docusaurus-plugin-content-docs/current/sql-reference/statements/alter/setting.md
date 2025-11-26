@@ -1,6 +1,6 @@
 ---
 description: 'テーブル設定の変更に関するドキュメント'
-sidebar_label: '設定'
+sidebar_label: 'SETTING'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
 title: 'テーブル設定の変更'
@@ -12,7 +12,7 @@ doc_type: 'reference'
 # テーブル設定の操作
 
 テーブル設定を変更するためのクエリがいくつか用意されています。設定を変更したり、デフォルト値にリセットしたりできます。1 つのクエリで複数の設定を同時に変更できます。
-指定した名前の設定が存在しない場合、クエリは例外をスローします。
+指定した名前の設定が存在しない場合、クエリは例外を送出します。
 
 **構文**
 
@@ -25,14 +25,14 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 :::
 
 
-## MODIFY SETTING {#modify-setting}
+## MODIFY SETTING
 
-テーブル設定を変更します。
+テーブルの設定を変更します。
 
 **構文**
 
 ```sql
-MODIFY SETTING setting_name=value [, ...]
+MODIFY SETTING 設定名=値 [, ...]
 ```
 
 **例**
@@ -44,9 +44,9 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 ```
 
 
-## RESET SETTING {#reset-setting}
+## RESET SETTING
 
-テーブル設定をデフォルト値にリセットします。設定が既にデフォルト状態の場合は、何も実行されません。
+テーブル設定をデフォルト値にリセットします。設定がすでにデフォルト状態の場合は、何も行われません。
 
 **構文**
 
@@ -65,4 +65,4 @@ ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 
 **関連項目**
 
-- [MergeTree設定](../../../operations/settings/merge-tree-settings.md)
+* [MergeTree の設定](../../../operations/settings/merge-tree-settings.md)

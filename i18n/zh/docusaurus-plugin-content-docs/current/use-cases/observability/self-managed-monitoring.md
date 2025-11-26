@@ -12,35 +12,33 @@ import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integ
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
 
-# 自管理监控 {#cloud-monitoring}
+# 自主管理监控 {#cloud-monitoring}
 
-本指南为评估 ClickHouse 开源版本的企业团队提供生产部署中监控和可观测性能力的全面信息。企业客户经常询问开箱即用的监控功能、与现有可观测性技术栈(包括 Datadog 和 AWS CloudWatch 等工具)的集成,以及 ClickHouse 监控与自托管部署的对比。
+本指南为评估 ClickHouse 开源版的企业团队提供有关生产环境部署的监控与可观测性能力的全面信息。企业客户经常会询问开箱即用的监控特性、与现有可观测性技术栈（包括 Datadog 和 AWS CloudWatch 等工具）的集成方式，以及 ClickHouse 的监控功能与自托管部署方案相比有何差异。
 
 ### 基于 Prometheus 的集成架构 {#prometheus}
+ClickHouse 会根据您的部署模型，通过不同的端点暴露 Prometheus 兼容的指标，每种方式都有各自的运维特性：
 
-ClickHouse 根据您的部署模型通过不同的端点公开 Prometheus 兼容的指标,每种方式都具有不同的运维特性:
+**自主管理 / OSS ClickHouse**
 
-**自管理/开源 ClickHouse**
+可直接通过 ClickHouse 服务器上的标准 /metrics 端点访问服务器的 Prometheus 端点。此方式提供：
+- 完整指标暴露：完整的、未经内置过滤的 ClickHouse 指标集合
+- 实时指标：在被抓取时直接从系统表生成
 
-通过 ClickHouse 服务器上的标准 /metrics 端点访问直接服务器 Prometheus 端点。此方法提供:
+**直接访问系统** 
 
-- 完整的指标公开:提供全部可用的 ClickHouse 指标,无内置过滤
-- 实时指标:在抓取时直接从系统表生成
+查询生产系统表，会增加监控负载，并使系统无法进入节省成本的空闲状态
 
-**直接系统访问**
-
-查询生产系统表会增加监控负载并阻止节省成本的空闲状态
-
-<ObservabilityIntegrations />
+<ObservabilityIntegrations/>
 
 ### ClickStack 部署选项 {#clickstack-deployment}
 
-- [Helm](/use-cases/observability/clickstack/deployment/helm):推荐用于基于 Kubernetes 的调试环境。允许通过 `values.yaml` 进行特定环境配置、资源限制和扩展。
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose):单独部署每个组件(ClickHouse、HyperDX、OTel 收集器、MongoDB)。
-- [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only):独立的 HyperDX 容器。
+- [Helm](/use-cases/observability/clickstack/deployment/helm)：推荐用于基于 Kubernetes 的调试环境。允许通过 `values.yaml` 进行特定于环境的配置、资源限制和伸缩。
+- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)：单独部署各组件（ClickHouse、HyperDX、OTel collector、MongoDB）。
+- [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)：独立的 HyperDX 容器。
 
-有关完整的部署选项和架构详细信息,请参阅 [ClickStack 文档](/use-cases/observability/clickstack/overview)和[数据摄取指南](/use-cases/observability/clickstack/ingesting-data/overview)。
+有关完整的部署选项和架构详情，请参阅 [ClickStack 文档](/use-cases/observability/clickstack/overview)和[数据摄取指南](/use-cases/observability/clickstack/ingesting-data/overview)。
 
-<DirectIntegrations />
+<DirectIntegrations/>
 
-<CommunityMonitoring />
+<CommunityMonitoring/>

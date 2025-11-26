@@ -2,7 +2,7 @@
 slug: '/examples/aggregate-function-combinators/sumIf'
 title: 'sumIf'
 description: 'sumIf コンビネータの使用例'
-keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
+keywords: ['sum', 'if', 'コンビネータ', '例', 'sumIf']
 sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
@@ -12,17 +12,21 @@ doc_type: 'reference'
 # sumIf {#sumif}
 
 
+
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`sum`](/sql-reference/aggregate-functions/reference/sum)関数に適用することで、条件が真となる行の値の合計を計算できます。この機能は`sumIf`集約コンビネータ関数として提供されています。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは [`sum`](/sql-reference/aggregate-functions/reference/sum)
+関数に適用でき、条件が真となる行の値だけを合計する
+`sumIf` 集約コンビネーター関数を使用して計算できます。
 
 
-## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
-`sumIf`を使用して成功した取引の総売上金額を計算します。
+## 使用例
 
-```sql title="クエリ"
+この例では、成功フラグ付きの売上データを保存するテーブルを作成し、
+`sumIf` を使用して成功したトランザクションの総売上金額を計算します。
+
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -42,22 +46,22 @@ SELECT
 FROM sales;
 ```
 
-`sumIf`関数は`is_successful = 1`の場合の金額のみを合計します。
-この場合、100.50 + 200.75 + 300.00 + 175.25が合計されます。
+`sumIf` 関数は、`is_successful = 1` の行の金額のみを合計します。
+この場合、次の値を合計します: 100.50 + 200.75 + 300.00 + 175.25。
 
-```response title="レスポンス"
+```response title="Response"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### 価格変動方向別の取引量を計算 {#calculate-trading-vol-price-direction}
+### 価格方向別に出来高を計算する
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/)で利用可能な`stock`テーブルを使用して、
-2002年の価格変動方向別の取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用して、
+2002 年前半における価格方向別の出来高を計算します。
 
-```sql title="クエリ"
-SELECT
+```sql title="Query"
+SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
     formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
@@ -71,26 +75,26 @@ ORDER BY month;
 
 ```markdown
     ┌──────month─┬─volume_on_up_days─┬─volume_on_down_days─┬─volume_on_neutral_days─┬─total_volume──┐
-
-1.  │ 2002-01-01 │ 26.07 billion │ 30.74 billion │ 781.80 million │ 57.59 billion │
-2.  │ 2002-02-01 │ 20.84 billion │ 29.60 billion │ 642.36 million │ 51.09 billion │
-3.  │ 2002-03-01 │ 28.81 billion │ 23.57 billion │ 762.60 million │ 53.14 billion │
-4.  │ 2002-04-01 │ 24.72 billion │ 30.99 billion │ 763.92 million │ 56.47 billion │
-5.  │ 2002-05-01 │ 25.09 billion │ 30.57 billion │ 858.57 million │ 56.52 billion │
-6.  │ 2002-06-01 │ 29.10 billion │ 30.88 billion │ 875.71 million │ 60.86 billion │
-7.  │ 2002-07-01 │ 32.27 billion │ 41.73 billion │ 747.32 million │ 74.75 billion │
-8.  │ 2002-08-01 │ 28.57 billion │ 27.49 billion │ 1.17 billion │ 57.24 billion │
-9.  │ 2002-09-01 │ 23.37 billion │ 31.02 billion │ 775.66 million │ 55.17 billion │
-10. │ 2002-10-01 │ 38.57 billion │ 34.05 billion │ 956.48 million │ 73.57 billion │
-11. │ 2002-11-01 │ 34.90 billion │ 25.47 billion │ 998.34 million │ 61.37 billion │
-12. │ 2002-12-01 │ 22.99 billion │ 28.65 billion │ 1.14 billion │ 52.79 billion │
+ 1. │ 2002-01-01 │ 260.7億     │ 307.4億       │ 7億8180万         │ 575.9億 │
+ 2. │ 2002-02-01 │ 208.4億     │ 296.0億       │ 6億4236万         │ 510.9億 │
+ 3. │ 2002-03-01 │ 288.1億     │ 235.7億       │ 7億6260万         │ 531.4億 │
+ 4. │ 2002-04-01 │ 247.2億     │ 309.9億       │ 7億6392万         │ 564.7億 │
+ 5. │ 2002-05-01 │ 250.9億     │ 305.7億       │ 8億5857万         │ 565.2億 │
+ 6. │ 2002-06-01 │ 291.0億     │ 308.8億       │ 8億7571万         │ 608.6億 │
+ 7. │ 2002-07-01 │ 322.7億     │ 417.3億       │ 7億4732万         │ 747.5億 │
+ 8. │ 2002-08-01 │ 285.7億     │ 274.9億       │ 11.7億           │ 572.4億 │
+ 9. │ 2002-09-01 │ 233.7億     │ 310.2億       │ 7億7566万         │ 551.7億 │
+10. │ 2002-10-01 │ 385.7億     │ 340.5億       │ 9億5648万         │ 735.7億 │
+11. │ 2002-11-01 │ 349.0億     │ 254.7億       │ 9億9834万         │ 613.7億 │
+12. │ 2002-12-01 │ 229.9億     │ 286.5億       │ 11.4億           │ 527.9億 │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 銘柄別の取引量を計算 {#calculate-trading-volume}
+### 株式銘柄別の取引量を計算する
 
 
-この例では、[ClickHouse Playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用して、当時の大手テクノロジー企業 3 社について、2006 年の銘柄別取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用し、
+2006 年における当時の大手テクノロジー企業 3 社の銘柄シンボルごとの取引量を算出します。
 
 ```sql title="Query"
 SELECT 
@@ -125,6 +129,5 @@ ORDER BY month;
 
 
 ## 関連項目 {#see-also}
-
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If` コンビネーター](/sql-reference/aggregate-functions/combinators#-if)

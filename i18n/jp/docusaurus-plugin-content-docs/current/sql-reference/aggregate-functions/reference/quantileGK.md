@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 # quantileGK
 
-数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて計算します。Greenwald-Khanna アルゴリズムは、データストリーム上の分位数を高効率に計算するためのアルゴリズムです。このアルゴリズムは 2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。大規模なデータストリームに対してリアルタイムに高精度な分位数計算が必要とされるデータベースやビッグデータシステムで広く利用されています。このアルゴリズムは非常に効率的であり、必要とする空間計算量は O(log n)、各要素あたりの時間計算量は O(log log n) です（n は入力サイズ）。また精度も非常に高く、高い確率で近似的な分位数値を提供します。
+数値データ系列の[分位数](https://en.wikipedia.org/wiki/Quantile)を、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて計算します。Greenwald-Khanna アルゴリズムは、データストリームに対する分位数を高効率に計算するためのアルゴリズムです。2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。大量のデータストリームに対してリアルタイムに正確な分位数を計算する必要があるデータベースやビッグデータシステムで広く利用されています。このアルゴリズムは非常に効率的で、必要な空間計算量は O(log n)、1 要素あたりの時間計算量は O(log log n) です（ここで n は入力のサイズ）。また、精度も非常に高く、高い確率で分位数の近似値を提供します。
 
-`quantileGK` は、近似分位数の結果の精度をユーザーが制御できるという点で、ClickHouse の他の分位数関数とは異なります。
+`quantileGK` は、近似分位数結果の精度をユーザーが制御できる点で、ClickHouse の他の分位数関数とは異なります。
 
 **構文**
 
@@ -18,23 +18,23 @@ doc_type: 'reference'
 quantileGK(accuracy, level)(expr)
 ```
 
-別名: `medianGK`。
+Alias: `medianGK`.
 
 **引数**
 
-* `accuracy` — 分位数の精度。正の整数定数。値が大きいほど誤差は小さくなります。例えば、`accuracy` 引数を 100 に設定すると、計算された分位数の誤差は高い確率で 1% を超えません。計算された分位数の精度とアルゴリズムの計算量の間にはトレードオフがあります。accuracy の値を大きくすると分位数をより正確に計算できますが、その分多くのメモリと計算リソースが必要になります。一方で、accuracy の値を小さくすると、若干精度は低下しますが、より高速かつメモリ効率の高い計算が可能です。
+* `accuracy` — 分位数の精度を表します。正の整数の定数です。値が大きいほど誤差は小さくなります。例えば、`accuracy` 引数を 100 に設定した場合、計算される分位数の誤差は高い確率で 1% 以下になります。計算される分位数の精度とアルゴリズムの計算量との間にはトレードオフがあります。`accuracy` を大きくすると分位数を正確に計算するためにより多くのメモリと計算リソースが必要になりますが、`accuracy` を小さくすると計算はより高速かつメモリ効率が良くなる一方で、精度はやや低くなります。
 
-* `level` — 分位数のレベル。省略可能なパラメータ。0 から 1 の範囲の定数浮動小数点数。デフォルト値: 0.5。`level=0.5` の場合、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+* `level` — 分位数のレベル。省略可能なパラメータ。0 から 1 の範囲の浮動小数点数の定数です。デフォルト値: 0.5。`level=0.5` の場合、この関数は [median](https://en.wikipedia.org/wiki/Median) を計算します。
 
-* `expr` — 数値[データ型](/sql-reference/data-types)、[Date](../../../sql-reference/data-types/date.md) または [DateTime](../../../sql-reference/data-types/datetime.md) を結果とする列値に対する式。
+* `expr` — 数値[データ型](/sql-reference/data-types)、[Date](../../../sql-reference/data-types/date.md) または [DateTime](../../../sql-reference/data-types/datetime.md) のいずれかを結果とする、列の値に対する式。
 
 **戻り値**
 
 * 指定されたレベルと精度の分位数。
 
-型:
+Type:
 
-* 数値データ型を入力とする場合は [Float64](../../../sql-reference/data-types/float.md)。
+* 数値データ型入力に対しては [Float64](../../../sql-reference/data-types/float.md)。
 * 入力値が `Date` 型の場合は [Date](../../../sql-reference/data-types/date.md)。
 * 入力値が `DateTime` 型の場合は [DateTime](../../../sql-reference/data-types/datetime.md)。
 

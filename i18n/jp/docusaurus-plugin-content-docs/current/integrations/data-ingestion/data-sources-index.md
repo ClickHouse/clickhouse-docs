@@ -8,10 +8,10 @@ doc_type: 'landing-page'
 
 # データソース
 
-ClickHouse では、さまざまなデータソースからデータベースにデータを簡単に取り込めます。
-詳しくは、以下のページを参照してください。
+ClickHouse を使用すると、さまざまなソースからデータベースにデータを簡単に取り込むことができます。
+詳細については、以下のページを参照してください。
 
-| データソース                                                                 |
+| データソース                                                                   |
 |-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
@@ -32,6 +32,6 @@ ClickHouse では、さまざまなデータソースからデータベースに
 | [SQLite](/integrations/sqlite)                                        |
 | [NATS](/integrations/nats)                                            |
 | [EMQX](/integrations/emqx)                                            |
-| [ローカルファイルの挿入](/integrations/data-ingestion/insert-local-files) |
+| [ローカルファイルのインポート](/integrations/data-ingestion/insert-local-files) |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |
 | [ODBC](/integrations/data-ingestion/dbms/odbc-with-clickhouse)        |

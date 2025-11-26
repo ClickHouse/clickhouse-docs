@@ -1,7 +1,7 @@
 ---
-description: 'Документация по типу данных JSON в ClickHouse, который предоставляет
-  встроенную поддержку работы с данными в формате JSON'
-keywords: ['json', 'тип данных']
+description: 'Документация по типу данных JSON в ClickHouse, который обеспечивает
+  встроенную поддержку работы с JSON-данными'
+keywords: ['json', 'data type']
 sidebar_label: 'JSON'
 sidebar_position: 63
 slug: /sql-reference/data-types/newjson
@@ -13,7 +13,7 @@ import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link'
 
 <Link to="/docs/best-practices/use-json-where-appropriate" style={{display: 'flex', textDecoration: 'none', width: 'fit-content'}}>
-  <CardSecondary badgeState="success" badgeText="" description="Ознакомьтесь с нашим руководством по лучшим практикам использования JSON: в нём приведены примеры, рассмотрены расширенные возможности и даны рекомендации по использованию типа JSON." icon="book" infoText="Подробнее" infoUrl="/docs/best-practices/use-json-where-appropriate" title="Ищете руководство?" />
+  <CardSecondary badgeState="success" badgeText="" description="Ознакомьтесь с нашим руководством по лучшим практикам работы с JSON, где приведены примеры, описаны расширенные возможности и рекомендации по использованию типа JSON." icon="book" infoText="Подробнее" infoUrl="/docs/best-practices/use-json-where-appropriate" title="Ищете руководство?" />
 </Link>
 
 <br />
@@ -21,10 +21,10 @@ import Link from '@docusaurus/Link'
 Тип `JSON` хранит документы в формате JavaScript Object Notation (JSON) в одном столбце.
 
 :::note
-В ClickHouse Open-Source тип данных `JSON` помечен как готовый к промышленной эксплуатации, начиная с версии 25.3. Не рекомендуется использовать этот тип в продуктивной среде в более ранних версиях.
+В ClickHouse Open-Source тип данных JSON признан готовым для промышленного использования начиная с версии 25.3. Не рекомендуется использовать этот тип в продакшене в более ранних версиях.
 :::
 
-Чтобы объявить столбец типа `JSON`, можно использовать следующий синтаксис:
+Чтобы объявить столбец типа `JSON`, используйте следующий синтаксис:
 
 ```sql
 <column_name> JSON
@@ -39,95 +39,95 @@ import Link from '@docusaurus/Link'
 
 Где параметры в приведённом выше синтаксисе определяются следующим образом:
 
-| Параметр                    | Описание                                                                                                                                                                                                                                                                                                                                     | Значение по умолчанию |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `max_dynamic_paths`         | Необязательный параметр, задающий, сколько путей может храниться отдельно в виде подстолбцов в одном отдельно хранимом блоке данных (например, в одной части данных таблицы MergeTree). <br /><br />Если этот предел превышен, все остальные пути будут сохранены совместно в одной структуре.                                               | `1024`                |
-| `max_dynamic_types`         | Необязательный параметр в диапазоне от `1` до `255`, задающий, сколько различных типов данных может храниться в одном столбце пути типа `Dynamic` в пределах одного отдельно хранимого блока данных (например, одной части данных таблицы MergeTree). <br /><br />Если этот предел превышен, все новые типы будут приведены к типу `String`. | `32`                  |
-| `some.path TypeName`        | Необязательная подсказка типа для конкретного пути в JSON. Такие пути всегда будут храниться как подстолбцы с указанным типом.                                                                                                                                                                                                               |                       |
-| `SKIP path.to.skip`         | Необязательная подсказка для конкретного пути, который следует пропустить при разборе JSON. Такие пути никогда не будут сохранены в столбце JSON. Если указанный путь является вложенным объектом JSON, будет пропущен весь вложенный объект.                                                                                                |                       |
-| `SKIP REGEXP 'path_regexp'` | Необязательная подсказка с регулярным выражением, которое используется для пропуска путей при разборе JSON. Все пути, которые соответствуют этому регулярному выражению, никогда не будут сохранены в столбце JSON.                                                                                                                          |                       |
+| Параметр                    | Описание                                                                                                                                                                                                                                                                                                                                 | Значение по умолчанию |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `max_dynamic_paths`         | Необязательный параметр, задающий, сколько путей может храниться отдельно в виде подстолбцов в одном отдельно хранимом блоке данных (например, в одной части данных таблицы MergeTree). <br /><br />Если этот лимит превышен, все остальные пути будут сохранены вместе в одной общей структуре.                                         | `1024`                |
+| `max_dynamic_types`         | Необязательный параметр в диапазоне от `1` до `255`, задающий, сколько различных типов данных может храниться внутри одного столбца пути типа `Dynamic` в одном отдельно хранимом блоке данных (например, в одной части данных таблицы MergeTree). <br /><br />Если этот лимит превышен, все новые типы будут приведены к типу `String`. | `32`                  |
+| `some.path TypeName`        | Необязательная подсказка типа для конкретного пути в JSON. Такие пути всегда будут храниться как подстолбцы с указанным типом.                                                                                                                                                                                                           |                       |
+| `SKIP path.to.skip`         | Необязательная подсказка для конкретного пути, который должен быть пропущен при разборе JSON. Такие пути никогда не будут сохранены в столбце JSON. Если указанный путь является вложенным объектом JSON, весь вложенный объект будет пропущен.                                                                                          |                       |
+| `SKIP REGEXP 'path_regexp'` | Необязательная подсказка с регулярным выражением, которое используется для пропуска путей при разборе JSON. Все пути, соответствующие этому регулярному выражению, никогда не будут сохранены в столбце JSON.                                                                                                                            |                       |
 
 
-## Создание JSON {#creating-json}
+## Создание JSON
 
 В этом разделе мы рассмотрим различные способы создания `JSON`.
 
-### Использование `JSON` в определении столбца таблицы {#using-json-in-a-table-column-definition}
+### Использование `JSON` в определении столбца таблицы
 
-```sql title="Запрос (Пример 1)"
+```sql title="Query (Example 1)"
 CREATE TABLE test (json JSON) ENGINE = Memory;
 INSERT INTO test VALUES ('{"a" : {"b" : 42}, "c" : [1, 2, 3]}'), ('{"f" : "Hello, World!"}'), ('{"a" : {"b" : 43, "e" : 10}, "c" : [4, 5, 6]}');
 SELECT json FROM test;
 ```
 
-```text title="Ответ (Пример 1)"
+```text title="Response (Example 1)"
 ┌─json────────────────────────────────────────┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}          │
-│ {"f":"Hello, World!"}                       │
+│ {"f":"Привет, мир!"}                        │
 │ {"a":{"b":"43","e":"10"},"c":["4","5","6"]} │
 └─────────────────────────────────────────────┘
 ```
 
-```sql title="Запрос (Пример 2)"
+```sql title="Query (Example 2)"
 CREATE TABLE test (json JSON(a.b UInt32, SKIP a.e)) ENGINE = Memory;
 INSERT INTO test VALUES ('{"a" : {"b" : 42}, "c" : [1, 2, 3]}'), ('{"f" : "Hello, World!"}'), ('{"a" : {"b" : 43, "e" : 10}, "c" : [4, 5, 6]}');
 SELECT json FROM test;
 ```
 
-```text title="Ответ (Пример 2)"
+```text title="Response (Example 2)"
 ┌─json──────────────────────────────┐
 │ {"a":{"b":42},"c":["1","2","3"]}  │
-│ {"a":{"b":0},"f":"Hello, World!"} │
+│ {"a":{"b":0},"f":"Привет, мир!"} │
 │ {"a":{"b":43},"c":["4","5","6"]}  │
 └───────────────────────────────────┘
 ```
 
-### Использование CAST с `::JSON` {#using-cast-with-json}
+### Использование CAST с `::JSON`
 
-Можно приводить различные типы, используя специальный синтаксис `::JSON`.
+Можно приводить различные типы данных с помощью специального синтаксиса `::JSON`.
 
-#### Приведение из `String` в `JSON` {#cast-from-string-to-json}
+#### CAST из типа `String` в тип `JSON`
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
-#### Приведение из `Tuple` в `JSON` {#cast-from-tuple-to-json}
+#### Приведение типа из `Tuple` к `JSON`
 
-```sql title="Запрос"
+```sql title="Query"
 SET enable_named_columns_in_function_tuple = 1;
 SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
-#### Приведение из `Map` в `JSON` {#cast-from-map-to-json}
+#### Преобразование (CAST) из `Map` в `JSON`
 
-```sql title="Запрос"
+```sql title="Query"
 SET use_variant_as_common_type=1;
 SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Привет, мир!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
 :::note
-Пути JSON хранятся в развёрнутом виде. Это означает, что при форматировании объекта JSON из пути вида `a.b.c`
-невозможно определить, должен ли объект быть построен как `{ "a.b.c" : ... }` или `{ "a": { "b": { "c": ... } } }`.
-Наша реализация всегда предполагает последний вариант.
+JSON-пути хранятся в плоском виде. Это означает, что когда JSON-объект формируется на основе пути вида `a.b.c`,
+невозможно однозначно определить, должен ли объект быть восстановлен как `{ "a.b.c" : ... }` или как `{ "a": { "b": { "c": ... } } }`.
+Наша реализация всегда будет предполагать второй вариант.
 
 Например:
 
@@ -135,7 +135,7 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
-вернёт:
+вернет:
 
 ```response
    ┌─json───────────────────┐
@@ -155,21 +155,21 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 :::
 
 
-## Чтение путей JSON как подстолбцов {#reading-json-paths-as-sub-columns}
+## Чтение JSON-путей как подстолбцов
 
 Тип `JSON` поддерживает чтение каждого пути как отдельного подстолбца.
-Если тип запрашиваемого пути не указан в объявлении типа JSON,
-то подстолбец этого пути всегда будет иметь тип [Dynamic](/sql-reference/data-types/dynamic.md).
+Если тип запрашиваемого пути не указан в объявлении типа `JSON`,
+то подстолбец для этого пути всегда будет иметь тип [Dynamic](/sql-reference/data-types/dynamic.md).
 
 Например:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE test (json JSON(a.b UInt32, SKIP a.e)) ENGINE = Memory;
 INSERT INTO test VALUES ('{"a" : {"b" : 42, "g" : 42.42}, "c" : [1, 2, 3], "d" : "2020-01-01"}'), ('{"f" : "Hello, World!", "d" : "2020-01-02"}'), ('{"a" : {"b" : 43, "e" : 10, "g" : 43.43}, "c" : [4, 5, 6]}');
 SELECT json FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json────────────────────────────────────────────────────────┐
 │ {"a":{"b":42,"g":42.42},"c":["1","2","3"],"d":"2020-01-01"} │
 │ {"a":{"b":0},"d":"2020-01-02","f":"Hello, World!"}          │
@@ -177,11 +177,11 @@ SELECT json FROM test;
 └─────────────────────────────────────────────────────────────┘
 ```
 
-```sql title="Запрос (чтение путей JSON как подстолбцов)"
+```sql title="Query (Reading JSON paths as sub-columns)"
 SELECT json.a.b, json.a.g, json.c, json.d FROM test;
 ```
 
-```text title="Ответ (чтение путей JSON как подстолбцов)"
+```text title="Response (Reading JSON paths as sub-columns)"
 ┌─json.a.b─┬─json.a.g─┬─json.c──┬─json.d─────┐
 │       42 │ 42.42    │ [1,2,3] │ 2020-01-01 │
 │        0 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ    │ 2020-01-02 │
@@ -189,13 +189,13 @@ SELECT json.a.b, json.a.g, json.c, json.d FROM test;
 └──────────┴──────────┴─────────┴────────────┘
 ```
 
-Также можно использовать функцию `getSubcolumn` для чтения подстолбцов из типа JSON:
+Вы также можете использовать функцию `getSubcolumn`, чтобы читать подколонки из типа JSON:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT getSubcolumn(json, 'a.b'), getSubcolumn(json, 'a.g'), getSubcolumn(json, 'c'), getSubcolumn(json, 'd') FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─getSubcolumn(json, 'a.b')─┬─getSubcolumn(json, 'a.g')─┬─getSubcolumn(json, 'c')─┬─getSubcolumn(json, 'd')─┐
 │                        42 │ 42.42                     │ [1,2,3]                 │ 2020-01-01              │
 │                         0 │ ᴺᵁᴸᴸ                      │ ᴺᵁᴸᴸ                    │ 2020-01-02              │
@@ -203,13 +203,13 @@ SELECT getSubcolumn(json, 'a.b'), getSubcolumn(json, 'a.g'), getSubcolumn(json, 
 └───────────────────────────┴───────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
 
-Если запрашиваемый путь не найден в данных, он будет заполнен значениями `NULL`:
+Если запрошенный путь отсутствует в данных, он будет заполнен значениями `NULL`:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT json.non.existing.path FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json.non.existing.path─┐
 │ ᴺᵁᴸᴸ                   │
 │ ᴺᵁᴸᴸ                   │
@@ -217,9 +217,9 @@ SELECT json.non.existing.path FROM test;
 └────────────────────────┘
 ```
 
-Проверим типы данных возвращаемых подстолбцов:
+Проверим типы данных возвращённых подстолбцов:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeName(json.d) FROM test;
 ```
 
@@ -235,7 +235,7 @@ SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeNam
 Как мы видим, для `a.b` тип — `UInt32`, как и было задано в объявлении типа JSON,
 а для всех остальных подстолбцов тип — `Dynamic`.
 
-Также можно читать подстолбцы типа `Dynamic`, используя специальный синтаксис `json.some.path.:TypeName`:
+Также можно читать подстолбцы столбца типа `Dynamic`, используя специальный синтаксис `json.some.path.:TypeName`:
 
 ```sql title="Query"
 SELECT
@@ -254,7 +254,7 @@ FROM test
 └─────────────────────┴───────────────────────┴────────────────┴─────────────────────┘
 ```
 
-Подстолбцы типа `Dynamic` могут быть приведены к любому типу данных. В этом случае будет сгенерировано исключение, если внутренний тип в `Dynamic` не может быть приведён к запрошенному типу:
+Подстолбцы типа `Dynamic` можно привести к любому типу данных. При этом будет сгенерировано исключение, если внутренний тип в `Dynamic` не может быть приведён к запрошенному типу:
 
 ```sql title="Query"
 SELECT json.a.g::UInt64 AS uint 
@@ -276,7 +276,7 @@ FROM test;
 
 ```text title="Response"
 Получено исключение от сервера:
-Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
+Код: 48. DB::Exception: Получено от localhost:9000. DB::Exception: 
 Преобразование между числовыми типами и UUID не поддерживается. 
 Вероятно, переданный UUID не заключен в кавычки: 
 при выполнении 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
@@ -284,21 +284,21 @@ Code: 48. DB::Exception: Received from localhost:9000. DB::Exception:
 ```
 
 :::note
-Для эффективного чтения подстолбцов из частей Compact MergeTree убедитесь, что настройка MergeTree [write&#95;marks&#95;for&#95;substreams&#95;in&#95;compact&#95;parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts) включена.
+Чтобы эффективно считывать подстолбцы из частей Compact MergeTree, убедитесь, что настройка MergeTree [write&#95;marks&#95;for&#95;substreams&#95;in&#95;compact&#95;parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts) включена.
 :::
 
 
-## Чтение подобъектов JSON как подстолбцов {#reading-json-sub-objects-as-sub-columns}
+## Чтение вложенных объектов JSON как подстолбцов
 
-Тип `JSON` поддерживает чтение вложенных объектов в виде подстолбцов типа `JSON` с помощью специального синтаксиса `json.^some.path`:
+Тип `JSON` поддерживает чтение вложенных объектов как подстолбцов типа `JSON` с использованием специального синтаксиса `json.^some.path`:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
 INSERT INTO test VALUES ('{"a" : {"b" : {"c" : 42, "g" : 42.42}}, "c" : [1, 2, 3], "d" : {"e" : {"f" : {"g" : "Hello, World", "h" : [1, 2, 3]}}}}'), ('{"f" : "Hello, World!", "d" : {"e" : {"f" : {"h" : [4, 5, 6]}}}}'), ('{"a" : {"b" : {"c" : 43, "e" : 10, "g" : 43.43}}, "c" : [4, 5, 6]}');
 SELECT json FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json──────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":"42","g":42.42}},"c":["1","2","3"],"d":{"e":{"f":{"g":"Hello, World","h":["1","2","3"]}}}} │
 │ {"d":{"e":{"f":{"h":["4","5","6"]}}},"f":"Hello, World!"}                                                 │
@@ -306,11 +306,11 @@ SELECT json FROM test;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json.^`a`.b───────────────────┬─json.^`d`.e.f──────────────────────────┐
 │ {"c":"42","g":42.42}          │ {"g":"Hello, World","h":["1","2","3"]} │
 │ {}                            │ {"h":["4","5","6"]}                    │
@@ -319,76 +319,76 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-Чтение подобъектов в виде подстолбцов может быть неэффективным, поскольку может потребоваться практически полное сканирование данных JSON.
+Чтение вложенных объектов как подстолбцов может быть неэффективным, так как для этого может потребоваться практически полное сканирование данных JSON.
 :::
 
 
-## Определение типов для путей {#type-inference-for-paths}
+## Определение типов для путей
 
-При парсинге `JSON` ClickHouse пытается определить наиболее подходящий тип данных для каждого пути JSON.
-Это работает аналогично [автоматическому выводу схемы из входных данных](/interfaces/schema-inference.md)
+Во время разбора `JSON` ClickHouse пытается определить наиболее подходящий тип данных для каждого пути в JSON.
+Это работает аналогично [автоматическому определению схемы по входным данным](/interfaces/schema-inference.md)
 и управляется теми же настройками:
 
-- [input_format_try_infer_dates](/operations/settings/formats#input_format_try_infer_dates)
-- [input_format_try_infer_datetimes](/operations/settings/formats#input_format_try_infer_datetimes)
-- [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)
-- [input_format_json_try_infer_numbers_from_strings](/operations/settings/formats#input_format_json_try_infer_numbers_from_strings)
-- [input_format_json_infer_incomplete_types_as_strings](/operations/settings/formats#input_format_json_infer_incomplete_types_as_strings)
-- [input_format_json_read_numbers_as_strings](/operations/settings/formats#input_format_json_read_numbers_as_strings)
-- [input_format_json_read_bools_as_strings](/operations/settings/formats#input_format_json_read_bools_as_strings)
-- [input_format_json_read_bools_as_numbers](/operations/settings/formats#input_format_json_read_bools_as_numbers)
-- [input_format_json_read_arrays_as_strings](/operations/settings/formats#input_format_json_read_arrays_as_strings)
-- [input_format_json_infer_array_of_dynamic_from_array_of_different_types](/operations/settings/formats#input_format_json_infer_array_of_dynamic_from_array_of_different_types)
+* [input&#95;format&#95;try&#95;infer&#95;dates](/operations/settings/formats#input_format_try_infer_dates)
+* [input&#95;format&#95;try&#95;infer&#95;datetimes](/operations/settings/formats#input_format_try_infer_datetimes)
+* [schema&#95;inference&#95;make&#95;columns&#95;nullable](/operations/settings/formats#schema_inference_make_columns_nullable)
+* [input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings](/operations/settings/formats#input_format_json_try_infer_numbers_from_strings)
+* [input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings](/operations/settings/formats#input_format_json_infer_incomplete_types_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_numbers_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_bools_as_strings)
+* [input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers](/operations/settings/formats#input_format_json_read_bools_as_numbers)
+* [input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings](/operations/settings/formats#input_format_json_read_arrays_as_strings)
+* [input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types](/operations/settings/formats#input_format_json_infer_array_of_dynamic_from_array_of_different_types)
 
 Рассмотрим несколько примеров:
 
-```sql title="Запрос"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
+```sql title="Query"
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─paths_with_types─────────────────┐
 │ {'a':'Date','b':'DateTime64(9)'} │
 └──────────────────────────────────┘
 ```
 
-```sql title="Запрос"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
+```sql title="Query"
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─paths_with_types────────────┐
 │ {'a':'String','b':'String'} │
 └─────────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types settings schema_inference_make_columns_nullable=1;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─paths_with_types───────────────┐
 │ {'a':'Array(Nullable(Int64))'} │
 └────────────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types settings schema_inference_make_columns_nullable=0;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─paths_with_types─────┐
 │ {'a':'Array(Int64)'} │
 └──────────────────────┘
 ```
 
 
-## Обработка массивов JSON-объектов {#handling-arrays-of-json-objects}
+## Обработка массивов JSON-объектов
 
-JSON-пути, содержащие массив объектов, разбираются как тип `Array(JSON)` и вставляются в столбец `Dynamic` для данного пути.
-Чтобы прочитать массив объектов, его можно извлечь из столбца `Dynamic` как подстолбец:
+JSON-пути, содержащие массив объектов, интерпретируются как тип `Array(JSON)` и записываются в столбец `Dynamic` для этого пути.
+Чтобы прочитать массив объектов, вы можете извлечь его из столбца `Dynamic` в виде подстолбца:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
 INSERT INTO test VALUES
 ('{"a" : {"b" : [{"c" : 42, "d" : "Hello", "f" : [[{"g" : 42.42}]], "k" : {"j" : 1000}}, {"c" : 43}, {"e" : [1, 2, 3], "d" : "My", "f" : [[{"g" : 43.43, "h" : "2020-01-01"}]],  "k" : {"j" : 2000}}]}}'),
@@ -397,19 +397,19 @@ INSERT INTO test VALUES
 SELECT json FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ {"a":{"b":[{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
+│ {"a":{"b":[{"c":"42","d":"Привет","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"Мой","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
 │ {"a":{"b":["1","2","3"]}}                                                                                                                                               │
-│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"World","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
+│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"Мир","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT json.a.b, dynamicType(json.a.b) FROM test;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json.a.b──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─dynamicType(json.a.b)────────────────────────────────────┐
 │ ['{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}}','{"c":"43"}','{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}'] │ Array(JSON(max_dynamic_types=16, max_dynamic_paths=256)) │
 │ [1,2,3]                                                                                                                                                           │ Array(Nullable(Int64))                                   │
@@ -417,13 +417,13 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────┘
 ```
 
-Как можно заметить, параметры `max_dynamic_types`/`max_dynamic_paths` вложенного типа `JSON` были уменьшены по сравнению со значениями по умолчанию.
-Это необходимо для предотвращения неконтролируемого роста количества подстолбцов во вложенных массивах JSON-объектов.
+Как вы, возможно, заметили, параметры `max_dynamic_types`/`max_dynamic_paths` вложенного типа `JSON` были уменьшены по сравнению со значениями по умолчанию.
+Это необходимо, чтобы избежать неконтролируемого увеличения числа подстолбцов во вложенных массивах объектов JSON.
 
 Попробуем прочитать подстолбцы из вложенного столбца `JSON`:
 
-```sql title="Запрос"
-SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test;
+```sql title="Query"
+SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test; 
 ```
 
 
@@ -435,7 +435,7 @@ SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JS
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-Мы можем избавиться от необходимости явно указывать имена подстолбцов `Array(JSON)`, используя специальный синтаксис:
+Мы можем избежать необходимости указывать имена подстолбцов типа `Array(JSON)`, используя специальный синтаксис:
 
 ```sql title="Query"
 SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
@@ -449,7 +449,7 @@ SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-Количество `[]` после пути указывает уровень массива. Например, `json.path[][]` будет преобразовано в `json.path.:Array(Array(JSON))`.
+Количество скобок `[]` после пути указывает уровень массива. Например, `json.path[][]` будет преобразовано в `json.path.:Array(Array(JSON))`.
 
 Давайте проверим пути и типы внутри нашего `Array(JSON)`:
 
@@ -481,7 +481,7 @@ SELECT json.a.b[].c.:Int64, json.a.b[].f[][].g.:Float64, json.a.b[].f[][].h.:Dat
 └────────────────────────────────────┴──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
 
-Мы также можем читать подколонки подобъектов из вложенного столбца `JSON`:
+Также можно считывать подстолбцы вложенных объектов из вложенного столбца `JSON`:
 
 ```sql title="Query"
 SELECT json.a.b[].^k FROM test
@@ -496,96 +496,94 @@ SELECT json.a.b[].^k FROM test
 ```
 
 
-## Обработка JSON-ключей со значением NULL {#handling-json-keys-with-nulls}
+## Обработка JSON-ключей со значением NULL
 
 В нашей реализации JSON значение `null` и отсутствие значения считаются эквивалентными:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json1─┬─json2─┬─equals(json1, json2)─┐
 │ {}    │ {}    │                    1 │
 └───────┴───────┴──────────────────────┘
 ```
 
-Это означает, что невозможно определить, содержали ли исходные JSON-данные какой-либо путь со значением NULL или не содержали его вообще.
+Это означает, что невозможно определить, содержали ли исходные данные JSON какой‑либо путь со значением NULL или не содержали его вовсе.
 
 
-## Обработка JSON-ключей с точками {#handling-json-keys-with-dots}
+## Обработка ключей JSON с точками
 
-Внутри колонка JSON хранит все пути и значения в плоском виде. Это означает, что по умолчанию эти 2 объекта считаются идентичными:
+Внутренне столбец JSON хранит все пути и значения в виде плоской структуры. Это означает, что по умолчанию следующие два объекта считаются одинаковыми:
 
 ```json
 {"a" : {"b" : 42}}
 {"a.b" : 42}
 ```
 
-Оба они будут храниться внутри как пара пути `a.b` и значения `42`. При форматировании JSON всегда формируются вложенные объекты на основе частей пути, разделенных точкой:
+Оба они во внутреннем представлении хранятся как пара: путь `a.b` и значение `42`. При форматировании JSON мы всегда формируем вложенные объекты на основе частей пути, разделённых точкой:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT '{"a" : {"b" : 42}}'::JSON AS json1, '{"a.b" : 42}'::JSON AS json2, JSONAllPaths(json1), JSONAllPaths(json2);
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json1────────────┬─json2────────────┬─JSONAllPaths(json1)─┬─JSONAllPaths(json2)─┐
 │ {"a":{"b":"42"}} │ {"a":{"b":"42"}} │ ['a.b']             │ ['a.b']             │
 └──────────────────┴──────────────────┴─────────────────────┴─────────────────────┘
 ```
 
-Как видно, исходный JSON `{"a.b" : 42}` теперь отформатирован как `{"a" : {"b" : 42}}`.
+Как видите, исходный JSON `{"a.b" : 42}` теперь имеет вид `{"a" : {"b" : 42}}`.
 
-Это ограничение также приводит к ошибке при разборе валидных JSON-объектов, таких как:
+Это ограничение также приводит к ошибке при разборе корректных JSON-объектов, подобных этому:
 
-```sql title="Запрос"
-SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json;
+```sql title="Query"
+SELECT '{"a.b" : 42, "a" : {"b" : "Привет, мир!"}}'::JSON AS json;
 ```
 
-```text title="Ответ"
-Code: 117. DB::Exception: Cannot insert data into JSON column: Duplicate path found during parsing JSON object: a.b. You can enable setting type_json_skip_duplicated_paths to skip duplicated paths during insert: In scope SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
+```text title="Response"
+Код: 117. DB::Exception: Невозможно вставить данные в JSON-колонку: При разборе JSON-объекта обнаружен дублирующийся путь: a.b. Вы можете включить настройку type_json_skip_duplicated_paths, чтобы пропускать дублирующиеся пути при вставке: В области видимости SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
 ```
 
-Если вы хотите сохранить ключи с точками и избежать их форматирования как вложенных объектов, можно включить
-настройку [json_type_escape_dots_in_keys](/operations/settings/formats#json_type_escape_dots_in_keys) (доступна начиная с версии `25.8`). В этом случае при разборе все точки в JSON-ключах будут
-экранированы в `%2E` и деэкранированы обратно при форматировании.
+Если вы хотите сохранить ключи с точками и избежать их интерпретации как вложенные объекты, вы можете включить настройку [json&#95;type&#95;escape&#95;dots&#95;in&#95;keys](/operations/settings/formats#json_type_escape_dots_in_keys) (доступна, начиная с версии `25.8`). В этом случае при разборе JSON все точки в ключах будут экранированы в `%2E` и разэкранированы обратно при форматировании.
 
-```sql title="Запрос"
+```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
 SELECT '{"a" : {"b" : 42}}'::JSON AS json1, '{"a.b" : 42}'::JSON AS json2, JSONAllPaths(json1), JSONAllPaths(json2);
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json1────────────┬─json2────────┬─JSONAllPaths(json1)─┬─JSONAllPaths(json2)─┐
 │ {"a":{"b":"42"}} │ {"a.b":"42"} │ ['a.b']             │ ['a%2Eb']           │
 └──────────────────┴──────────────┴─────────────────────┴─────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
 SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, JSONAllPaths(json);
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json──────────────────────────────────┬─JSONAllPaths(json)─┐
 │ {"a.b":"42","a":{"b":"Hello World!"}} │ ['a%2Eb','a.b']    │
 └───────────────────────────────────────┴────────────────────┘
 ```
 
-Чтобы прочитать ключ с экранированной точкой как подколонку, необходимо использовать экранированную точку в имени подколонки:
+Чтобы прочитать ключ с экранированной точкой как подстолбец, нужно использовать экранированную точку в имени подстолбца:
 
-```sql title="Запрос"
+```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
 SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`, json.a.b;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json──────────────────────────────────┬─json.a%2Eb─┬─json.a.b─────┐
 │ {"a.b":"42","a":{"b":"Hello World!"}} │ 42         │ Hello World! │
 └───────────────────────────────────────┴────────────┴──────────────┘
 ```
 
-Примечание: из-за ограничений парсера и анализатора идентификаторов подколонка `` json.`a.b` `` эквивалентна подколонке `json.a.b` и не будет читать путь с экранированной точкой:
+Примечание: из-за ограничений парсера и анализатора идентификаторов подколонка `` json.`a.b` `` эквивалентна подколонке `json.a.b` и не распознаёт путь с экранированной точкой:
 
 
 ```sql title="Query"
@@ -599,7 +597,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`,
 └───────────────────────────────────────┴────────────┴──────────────┴──────────────┘
 ```
 
-Кроме того, если вы хотите указать подсказку для JSON‑пути, который содержит ключи с точками (или использовать её в разделах `SKIP`/`SKIP REGEX`), необходимо использовать экранированные точки в подсказке:
+Кроме того, если вы хотите указать подсказку для JSON-пути, содержащего ключи с точками (или использовать эту подсказку в секциях `SKIP`/`SKIP REGEX`), необходимо экранировать точки в подсказке:
 
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
@@ -624,18 +622,18 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 ```
 
 
-## Чтение типа JSON из данных {#reading-json-type-from-data}
+## Чтение типа JSON из данных
 
 Все текстовые форматы
 ([`JSONEachRow`](/interfaces/formats/JSONEachRow),
 [`TSV`](/interfaces/formats/TabSeparated),
 [`CSV`](/interfaces/formats/CSV),
 [`CustomSeparated`](/interfaces/formats/CustomSeparated),
-[`Values`](/interfaces/formats/Values) и т. д.) поддерживают чтение типа `JSON`.
+[`Values`](/interfaces/formats/Values) и т. д.) поддерживают чтение значений типа `JSON`.
 
 Примеры:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d.e, SKIP REGEXP \'b.*\')', '
 {"json" : {"a" : {"b" : {"c" : 1, "d" : [0, 1]}}, "b" : "2020-01-01", "c" : 42, "d" : {"e" : {"f" : ["s1", "s2"]}, "i" : [1, 2, 3]}}}
 {"json" : {"a" : {"b" : {"c" : 2, "d" : [2, 3]}}, "b" : [1, 2, 3], "c" : null, "d" : {"e" : {"g" : 43}, "i" : [4, 5, 6]}}}
@@ -645,7 +643,7 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 ')
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
@@ -655,7 +653,7 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 └───────────────────────────────────────────────────────────────┘
 ```
 
-Для текстовых форматов, таких как `CSV`/`TSV` и т. д., `JSON` парсится из строки, содержащей JSON-объект:
+Для текстовых форматов, таких как `CSV`/`TSV`/и т. д., `JSON` разбирается из строки, содержащей объект JSON:
 
 
 ```sql title="Query"
@@ -678,24 +676,24 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ```
 
 
-## Достижение лимита динамических путей внутри JSON {#reaching-the-limit-of-dynamic-paths-inside-json}
+## Достижение предела динамических путей внутри JSON
 
-Тип данных `JSON` может хранить только ограниченное количество путей в виде отдельных подстолбцов.
-По умолчанию этот лимит составляет `1024`, но его можно изменить в объявлении типа с помощью параметра `max_dynamic_paths`.
+Тип данных `JSON` может хранить только ограниченное количество путей как отдельных внутренних подстолбцов.
+По умолчанию этот предел равен `1024`, но вы можете изменить его в объявлении типа с помощью параметра `max_dynamic_paths`.
 
-При достижении лимита все новые пути, вставляемые в столбец `JSON`, будут храниться в единой общей структуре данных.
-Такие пути по-прежнему можно читать как подстолбцы,
+Когда предел достигнут, все новые пути, вставляемые в столбец `JSON`, будут храниться в единой общей структуре данных.
+По-прежнему можно считывать такие пути как подстолбцы,
 но это может быть менее эффективно ([см. раздел об общей структуре данных](#shared-data-structure)).
-Этот лимит необходим для предотвращения создания огромного количества различных подстолбцов, которые могут сделать таблицу непригодной для использования.
+Этот предел необходим для того, чтобы избежать чрезмерно большого числа различных подстолбцов, которое может сделать таблицу непригодной к использованию.
 
-Рассмотрим, что происходит при достижении лимита в различных сценариях.
+Рассмотрим, что происходит при достижении предела в нескольких различных сценариях.
 
-### Достижение лимита при парсинге данных {#reaching-the-limit-during-data-parsing}
+### Достижение предела во время разбора данных
 
-При парсинге объектов `JSON` из данных, когда лимит достигается для текущего блока данных,
-все новые пути сохраняются в общей структуре данных. Для анализа можно использовать следующие две функции интроспекции: `JSONDynamicPaths`, `JSONSharedDataPaths`:
+Во время разбора `JSON`-объектов из данных, когда предел достигнут для текущего блока данных,
+все новые пути будут храниться в общей структуре данных. Мы можем использовать следующие две функции интроспекции: `JSONDynamicPaths`, `JSONSharedDataPaths`:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONEachRow, 'json JSON(max_dynamic_paths=3)', '
 {"json" : {"a" : {"b" : 42}, "c" : [1, 2, 3]}}
 {"json" : {"a" : {"b" : 43}, "d" : "2020-01-01"}}
@@ -705,7 +703,7 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 ')
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─json───────────────────────────────────────────────────────────┬─JSONDynamicPaths(json)─┬─JSONSharedDataPaths(json)─┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}                             │ ['a.b','c','d']        │ []                        │
 │ {"a":{"b":"43"},"d":"2020-01-01"}                              │ ['a.b','c','d']        │ []                        │
@@ -715,19 +713,19 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 └────────────────────────────────────────────────────────────────┴────────────────────────┴───────────────────────────┘
 ```
 
-Как видно, после вставки путей `e` и `f.g` лимит был достигнут,
+Как мы видим, после вставки путей `e` и `f.g` лимит был достигнут,
 и они были помещены в общую структуру данных.
 
-### При слиянии частей данных в движках таблиц MergeTree {#during-merges-of-data-parts-in-mergetree-table-engines}
+### Во время слияний кусков данных в табличных движках MergeTree
 
-При слиянии нескольких частей данных в таблице `MergeTree` столбец `JSON` в результирующей части данных может достичь лимита динамических путей
-и не сможет хранить все пути из исходных частей в виде подстолбцов.
-В этом случае ClickHouse определяет, какие пути останутся подстолбцами после слияния, а какие будут сохранены в общей структуре данных.
-В большинстве случаев ClickHouse пытается сохранить пути с
-наибольшим количеством ненулевых значений и переместить наиболее редкие пути в общую структуру данных. Однако это зависит от реализации.
+Во время слияния нескольких кусков данных в таблице `MergeTree` столбец `JSON` в результирующем куске данных может достичь лимита динамических путей
+и не сможет хранить все пути из исходных кусков в виде подстолбцов.
+В этом случае ClickHouse выбирает, какие пути останутся подстолбцами после слияния, а какие будут сохранены в общей структуре данных.
+В большинстве случаев ClickHouse старается сохранять пути, которые содержат
+наибольшее число ненулевых значений, а самые редкие пути переносить в общую структуру данных. Однако это зависит от реализации.
 
 Рассмотрим пример такого слияния.
-Сначала создадим таблицу со столбцом `JSON`, установим лимит динамических путей равным `3`, а затем вставим значения с `5` различными путями:
+Сначала создадим таблицу со столбцом `JSON`, установим лимит динамических путей, равный `3`, а затем вставим значения с `5` разными путями:
 
 
 ```sql title="Query"
@@ -740,7 +738,7 @@ INSERT INTO test SELECT number, formatRow('JSONEachRow', number as d) FROM numbe
 INSERT INTO test SELECT number, formatRow('JSONEachRow', number as e) FROM numbers(1);
 ```
 
-Каждая вставка создаст отдельную часть данных, где колонка `JSON` будет содержать только один путь:
+Каждая операция вставки будет создавать отдельную часть данных со столбцом `JSON`, содержащим один путь:
 
 ```sql title="Query"
 SELECT
@@ -763,7 +761,7 @@ ORDER BY _part ASC
 └─────────┴───────────────┴───────────────────┴───────────┘
 ```
 
-Теперь давайте объединим все части и посмотрим, что получится:
+Теперь давайте объединим все части воедино и посмотрим, что из этого получится:
 
 ```sql title="Query"
 SELECT
@@ -782,92 +780,95 @@ ORDER BY _part ASC
 └─────────┴───────────────┴───────────────────┴───────────┘
 ```
 
-Как мы видим, ClickHouse сохранил наиболее часто встречающиеся пути `a`, `b` и `c`, а пути `d` и `e` переместил в общую структуру данных.
+Как мы видим, ClickHouse сохранил наиболее частые пути `a`, `b` и `c` и перенёс пути `d` и `e` в общую структуру данных.
 
 
-## Структура общих данных {#shared-data-structure}
+## Общая структура данных {#shared-data-structure}
 
-Как было описано в предыдущем разделе, при достижении лимита `max_dynamic_paths` все новые пути сохраняются в единой структуре общих данных.
-В этом разделе мы рассмотрим детали структуры общих данных и способы чтения из неё подстолбцов путей.
+Как было описано в предыдущем разделе, когда достигается предел `max_dynamic_paths`, все новые пути сохраняются в одной общей структуре данных.
+В этом разделе мы рассмотрим детали общей структуры данных и то, как мы читаем из неё подстолбцы путей.
 
-Подробную информацию о функциях, используемых для проверки содержимого столбца JSON, см. в разделе ["функции интроспекции"](/sql-reference/data-types/newjson#introspection-functions).
+См. раздел ["функции интроспекции"](/sql-reference/data-types/newjson#introspection-functions) для подробностей о функциях, используемых для анализа содержимого столбца JSON.
 
-### Структура общих данных в памяти {#shared-data-structure-in-memory}
+### Общая структура данных в памяти {#shared-data-structure-in-memory}
 
-В памяти структура общих данных представляет собой подстолбец типа `Map(String, String)`, который хранит отображение плоского пути JSON на бинарно закодированное значение.
-Для извлечения подстолбца пути выполняется перебор всех строк в этом столбце `Map` с поиском запрошенного пути и его значений.
+В памяти общая структура данных — это просто подстолбец с типом `Map(String, String)`, который хранит отображение от развёрнутого JSON-пути к двоично закодированному значению.
+Чтобы извлечь из него подстолбец пути, мы просто итерируемся по всем строкам в этом столбце `Map` и пытаемся найти требуемый путь и его значения.
 
-### Структура общих данных в частях MergeTree {#shared-data-structure-in-merge-tree-parts}
+### Общая структура данных в частях MergeTree {#shared-data-structure-in-merge-tree-parts}
 
-В таблицах [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) данные хранятся в частях данных, которые размещаются на диске (локальном или удалённом). При этом данные на диске могут храниться иначе, чем в памяти.
-В настоящее время существует 3 различных варианта сериализации структуры общих данных в частях данных MergeTree: `map`, `map_with_buckets`
+В таблицах [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) мы храним данные в частях данных, которые содержат всё на диске (локальном или удалённом). При этом данные на диске могут храниться иначе, чем в памяти.
+В настоящее время в частях данных MergeTree используются три разных варианта сериализации общей структуры данных: `map`, `map_with_buckets`
 и `advanced`.
 
 Версия сериализации управляется настройками MergeTree
 [object_shared_data_serialization_version](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version)
-и [object_shared_data_serialization_version_for_zero_level_parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts)
-(часть нулевого уровня — это часть, создаваемая при вставке данных в таблицу; при слияниях части имеют более высокий уровень).
+и [object_shared_data_serialization_version_for_zero_level_parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts) 
+(часть нулевого уровня — это часть, создаваемая при вставке данных в таблицу; во время слияний части получают более высокий уровень).
 
-Примечание: изменение сериализации структуры общих данных поддерживается только
-для [версии сериализации объектов](../../operations/settings/merge-tree-settings.md#object_serialization_version) `v3`
+Примечание: изменение формата сериализации общей структуры данных поддерживается только
+для `v3` [версии сериализации объектов](../../operations/settings/merge-tree-settings.md#object_serialization_version)
 
 #### Map {#shared-data-map}
 
-В версии сериализации `map` общие данные сериализуются как единый столбец типа `Map(String, String)`, так же как они хранятся в
-памяти. Для чтения подстолбца пути из этого типа сериализации ClickHouse читает весь столбец `Map` и
-извлекает запрошенный путь в памяти.
+В версии сериализации `map` общие данные сериализуются как один столбец с типом `Map(String, String)` так же, как и в
+памяти. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse читает целиком столбец `Map` и
+извлекает требуемый путь в памяти.
 
 Эта сериализация эффективна для записи данных и чтения всего столбца `JSON`, но неэффективна для чтения подстолбцов путей.
 
-#### Map с корзинами {#shared-data-map-with-buckets}
+#### Map with buckets {#shared-data-map-with-buckets} 
 
-В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («корзин») типа `Map(String, String)`.
-Каждая такая корзина содержит только подмножество путей. Для чтения подстолбца пути из этого типа сериализации ClickHouse
-читает весь столбец `Map` из одной корзины и извлекает запрошенный путь в памяти.
+В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («buckets») с типом `Map(String, String)`.
+Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse
+читает целиком столбец `Map` из одного бакета и извлекает требуемый путь в памяти.
 
 Эта сериализация менее эффективна для записи данных и чтения всего столбца `JSON`, но более эффективна для чтения подстолбцов путей,
-поскольку читает данные только из необходимых корзин.
+поскольку считываются данные только из нужных бакетов.
 
-Количество корзин `N` управляется настройками MergeTree [object_shared_data_buckets_for_compact_part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (8 по умолчанию)
-и [object_shared_data_buckets_for_wide_part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (32 по умолчанию).
+Количество бакетов `N` управляется настройками MergeTree [object_shared_data_buckets_for_compact_part](
+../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
+и [object_shared_data_buckets_for_wide_part](
+../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
 
 #### Advanced {#shared-data-advanced}
 
-В версии сериализации `advanced` общие данные сериализуются в специальной структуре данных, которая максимизирует производительность
+В версии сериализации `advanced` общие данные сериализуются в специальной структуре данных, которая максимально повышает производительность
 чтения подстолбцов путей за счёт хранения дополнительной информации, позволяющей читать только данные запрошенных путей.
-Эта сериализация также поддерживает корзины, поэтому каждая корзина содержит только подмножество путей.
+Эта сериализация также поддерживает бакеты, поэтому каждый бакет содержит только подмножество путей.
 
 Эта сериализация довольно неэффективна для записи данных (поэтому не рекомендуется использовать её для частей нулевого уровня), чтение всего столбца `JSON` немного менее эффективно по сравнению с сериализацией `map`, но она очень эффективна для чтения подстолбцов путей.
 
-Примечание: из-за хранения дополнительной информации внутри структуры данных размер дискового хранилища при этой сериализации больше по сравнению с
+Примечание: из-за хранения дополнительной информации внутри структуры данных размер занимаемого дискового пространства при этой сериализации больше по сравнению с
 сериализациями `map` и `map_with_buckets`.
 
-Более подробный обзор новых сериализаций общих данных и деталей реализации см. в [статье блога](https://clickhouse.com/blog/json-data-type-gets-even-better).
+Более подробный обзор новых сериализаций общей структуры данных и деталей реализации см. в [публикации в блоге](https://clickhouse.com/blog/json-data-type-gets-even-better).
 
 
-## Функции интроспекции {#introspection-functions}
+
+## Функции интроспекции
 
 Существует несколько функций, которые помогают исследовать содержимое столбца JSON:
 
-- [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
-- [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
-- [`JSONDynamicPaths`](../functions/json-functions.md#JSONDynamicPaths)
-- [`JSONDynamicPathsWithTypes`](../functions/json-functions.md#JSONDynamicPathsWithTypes)
-- [`JSONSharedDataPaths`](../functions/json-functions.md#JSONSharedDataPaths)
-- [`JSONSharedDataPathsWithTypes`](../functions/json-functions.md#JSONSharedDataPathsWithTypes)
-- [`distinctDynamicTypes`](../aggregate-functions/reference/distinctdynamictypes.md)
-- [`distinctJSONPaths and distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
+* [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
+* [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
+* [`JSONDynamicPaths`](../functions/json-functions.md#JSONDynamicPaths)
+* [`JSONDynamicPathsWithTypes`](../functions/json-functions.md#JSONDynamicPathsWithTypes)
+* [`JSONSharedDataPaths`](../functions/json-functions.md#JSONSharedDataPaths)
+* [`JSONSharedDataPathsWithTypes`](../functions/json-functions.md#JSONSharedDataPathsWithTypes)
+* [`distinctDynamicTypes`](../aggregate-functions/reference/distinctdynamictypes.md)
+* [`distinctJSONPaths and distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
 
 **Примеры**
 
-Рассмотрим содержимое набора данных [GH Archive](https://www.gharchive.org/) за дату `2020-01-01`:
+Давайте исследуем содержимое набора данных [GH Archive](https://www.gharchive.org/) за `2020-01-01`:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT arrayJoin(distinctJSONPaths(json))
-FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject)
+FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject) 
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─arrayJoin(distinctJSONPaths(json))─────────────────────────┐
 │ actor.avatar_url                                           │
 │ actor.display_login                                        │
@@ -985,20 +986,20 @@ SETTINGS date_time_input_format = 'best_effort'
 ```
 
 
-## ALTER MODIFY COLUMN для типа JSON {#alter-modify-column-to-json-type}
+## ALTER MODIFY COLUMN к типу JSON
 
-Можно изменить существующую таблицу и преобразовать тип столбца в новый тип `JSON`. В настоящее время поддерживается только изменение `ALTER` из типа `String`.
+Можно изменить существующую таблицу и сменить тип столбца на новый тип `JSON`. На данный момент поддерживается только `ALTER` для столбцов типа `String`.
 
 **Пример**
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE test (json String) ENGINE=MergeTree ORDER BY tuple();
 INSERT INTO test VALUES ('{"a" : 42}'), ('{"a" : 43, "b" : "Hello"}'), ('{"a" : 44, "b" : [1, 2, 3]}'), ('{"c" : "2020-01-01"}');
 ALTER TABLE test MODIFY COLUMN json JSON;
 SELECT json, json.a, json.b, json.c FROM test;
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─json─────────────────────────┬─json.a─┬─json.b──┬─json.c─────┐
 │ {"a":"42"}                   │ 42     │ ᴺᵁᴸᴸ    │ ᴺᵁᴸᴸ       │
 │ {"a":"43","b":"Hello"}       │ 43     │ Hello   │ ᴺᵁᴸᴸ       │
@@ -1008,13 +1009,13 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
-## Сравнение значений типа JSON {#comparison-between-values-of-the-json-type}
+## Сравнение значений типа JSON
 
-Объекты JSON сравниваются аналогично Map.
+Объекты JSON сравниваются аналогично значениям типа `Map`.
 
 Например:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE test (json1 JSON, json2 JSON) ENGINE=Memory;
 INSERT INTO test FORMAT JSONEachRow
 {"json1" : {}, "json2" : {}}
@@ -1030,7 +1031,7 @@ INSERT INTO test FORMAT JSONEachRow
 SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─json1──────┬─json2───────────────┬─less(json1, json2)─┬─equals(json1, json2)─┬─greater(json1, json2)─┐
 │ {}         │ {}                  │                  0 │                    1 │                     0 │
 │ {"a":"42"} │ {}                  │                  0 │                    0 │                     1 │
@@ -1044,20 +1045,21 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 └────────────┴─────────────────────┴────────────────────┴──────────────────────┴───────────────────────┘
 ```
 
-**Примечание:** если два пути содержат значения разных типов данных, они сравниваются согласно [правилу сравнения](/sql-reference/data-types/variant#comparing-values-of-variant-data) типа данных `Variant`.
+**Примечание:** когда два пути содержат значения разных типов данных, они сравниваются в соответствии с [правилом сравнения](/sql-reference/data-types/variant#comparing-values-of-variant-data) типа данных `Variant`.
 
 
-## Советы по эффективному использованию типа JSON {#tips-for-better-usage-of-the-json-type}
+## Рекомендации по более эффективному использованию типа JSON {#tips-for-better-usage-of-the-json-type}
 
-Перед созданием столбца типа `JSON` и загрузкой в него данных учтите следующие рекомендации:
+Прежде чем создавать столбец `JSON` и загружать в него данные, учитывайте следующие рекомендации:
 
-- Проанализируйте ваши данные и укажите как можно больше подсказок путей с типами. Это значительно повысит эффективность хранения и чтения.
-- Определите, какие пути вам понадобятся, а какие не потребуются. Укажите ненужные пути в секции `SKIP`, а при необходимости — в секции `SKIP REGEXP`. Это улучшит эффективность хранения.
-- Не устанавливайте слишком высокие значения параметра `max_dynamic_paths`, так как это может снизить эффективность хранения и чтения.
-  Хотя это во многом зависит от системных параметров, таких как объём памяти, процессор и т. д., общая рекомендация — не устанавливать значение `max_dynamic_paths` больше 10 000 для локального файлового хранилища и 1024 для удалённого файлового хранилища.
+- Проанализируйте свои данные и укажите как можно больше подсказок по путям с указанием типов. Это сделает хранение и чтение гораздо более эффективными.
+- Продумайте, какие пути вам понадобятся, а какие — никогда. Укажите пути, которые вам не нужны, в разделе `SKIP`, а при необходимости — в разделе `SKIP REGEXP`. Это улучшит эффективность хранения.
+- Не устанавливайте параметр `max_dynamic_paths` на слишком большие значения, так как это может сделать хранение и чтение менее эффективными. 
+  Хотя это сильно зависит от системных параметров, таких как память, CPU и т.д., в качестве общего ориентира не следует устанавливать `max_dynamic_paths` более 10 000 для хранилища на локальной файловой системе и 1024 для хранилища на удалённой файловой системе.
+
 
 
 ## Дополнительные материалы {#further-reading}
 
-- [Как мы создали новый мощный тип данных JSON для ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
-- [Испытание с миллиардом JSON-документов: ClickHouse против MongoDB, Elasticsearch и других](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)
+- [Как мы разработали новый мощный тип данных JSON для ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
+- [Испытание «миллиард JSON‑документов»: ClickHouse против MongoDB, Elasticsearch и других](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)

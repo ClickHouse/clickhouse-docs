@@ -1,5 +1,5 @@
 ---
-description: '在集群内的多个节点上，并行处理与指定路径匹配的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符模式，并将读文件任务分派给各个工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此反复，直到所有任务完成（所有文件均已读取）。'
+description: '在集群中的多个节点上同时处理匹配指定路径的文件。发起节点会与工作节点建立连接，展开文件路径中的 glob 模式，并将文件读取任务委派给各工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此循环，直到所有任务完成（所有文件都被读取）。'
 sidebar_label: 'fileCluster'
 sidebar_position: 61
 slug: /sql-reference/table-functions/fileCluster
@@ -11,16 +11,16 @@ doc_type: 'reference'
 
 # fileCluster 表函数
 
-允许在集群中的多个节点上同时处理与指定路径匹配的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符，并将读文件任务分派给各个工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，并重复这一过程，直到所有任务完成（所有文件都被读取）。
+允许在集群中的多个节点上并行处理与指定路径匹配的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符（globs），并将读文件任务分派给各个工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此循环，直到所有任务完成（所有文件都被读取）。
 
 :::note    
-只有当所有节点上与初始指定路径匹配的文件集合完全相同，且这些文件在各个节点上的内容保持一致时，此函数才能_正确_运行。  
-如果这些文件在不同节点之间存在差异，则返回值将无法预先确定，并取决于各个工作节点向发起节点请求任务的顺序。
+仅当所有节点上与最初指定路径匹配的文件集合完全相同，且这些文件的内容在不同节点之间保持一致时，该函数才能_正确_运行。  
+如果这些文件在不同节点之间存在差异，则返回值无法预先确定，并且取决于各工作节点向发起节点请求任务的先后顺序。
 :::
 
 
 
-## 语法 {#syntax}
+## 语法
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
@@ -29,29 +29,30 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 
 ## 参数 {#arguments}
 
-| 参数             | 描述                                                                                                                                                                        |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cluster_name`       | 集群名称,用于构建远程和本地服务器的地址集和连接参数。                                                                  |
-| `path`               | 文件相对于 [user_files_path](/operations/server-configuration-parameters/settings.md#user_files_path) 的相对路径。文件路径还支持[通配符](#globs-in-path)。 |
-| `format`             | 文件的[格式](/sql-reference/formats)。类型:[String](../../sql-reference/data-types/string.md)。                                                                           |
-| `structure`          | 表结构,格式为 `'UserID UInt64, Name String'`。用于确定列名和类型。类型:[String](../../sql-reference/data-types/string.md)。                             |
-| `compression_method` | 压缩方法。支持的压缩类型包括 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                     |
+| 参数                 | 说明                                                                                                                                                                               |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cluster_name`       | 用于构建到远程和本地服务器的一组地址和连接参数的集群名称。                                                                                                                         |
+| `path`               | 从 [user_files_path](/operations/server-configuration-parameters/settings.md#user_files_path) 开始的文件相对路径。文件路径同样支持使用 [globs](#globs-in-path)。                  |
+| `format`             | 文件的[格式](/sql-reference/formats)。类型：[String](../../sql-reference/data-types/string.md)。                                                                                  |
+| `structure`          | 以 `'UserID UInt64, Name String'` 形式指定的表结构。用于确定列名和类型。类型：[String](../../sql-reference/data-types/string.md)。                                               |
+| `compression_method` | 压缩方法。支持的压缩类型包括 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                             |
 
 
-## 返回值 {#returned_value}
 
-返回一个具有指定格式和结构的表,其数据来自匹配指定路径的文件。
+## 返回值
+
+具有指定格式和结构，并包含来自匹配指定路径的文件的数据的表。
 
 **示例**
 
-假设有一个名为 `my_cluster` 的集群,且 `user_files_path` 配置项的值如下:
+假设集群名为 `my_cluster`，并且设置 `user_files_path` 的值如下：
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
     <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
 
-同时,假设每个集群节点的 `user_files_path` 目录中都存在 `test1.csv` 和 `test2.csv` 文件,且这些文件在不同节点上的内容完全相同:
+此外，假设在每个集群节点的 `user_files_path` 目录下都有 `test1.csv` 和 `test2.csv` 文件，并且各节点上的文件内容完全相同：
 
 ```bash
 $ cat /var/lib/clickhouse/user_files/test1.csv
@@ -63,14 +64,14 @@ $ cat /var/lib/clickhouse/user_files/test2.csv
     22,"file22"
 ```
 
-例如,可以在每个集群节点上执行以下两个查询来创建这些文件:
+例如，可以在集群的每个节点上执行以下两个查询来创建这些文件：
 
 ```sql
 INSERT INTO TABLE FUNCTION file('file1.csv', 'CSV', 'i UInt32, s String') VALUES (1,'file1'), (11,'file11');
 INSERT INTO TABLE FUNCTION file('file2.csv', 'CSV', 'i UInt32, s String') VALUES (2,'file2'), (22,'file22');
 ```
 
-现在,通过 `fileCluster` 表函数读取 `test1.csv` 和 `test2.csv` 的数据内容:
+现在，通过 `fileCluster` 表函数读取 `test1.csv` 和 `test2.csv` 的数据内容：
 
 ```sql
 SELECT * FROM fileCluster('my_cluster', 'file{1,2}.csv', 'CSV', 'i UInt32, s String') ORDER BY i, s
@@ -90,9 +91,10 @@ SELECT * FROM fileCluster('my_cluster', 'file{1,2}.csv', 'CSV', 'i UInt32, s Str
 
 ## 路径中的通配符 {#globs-in-path}
 
-FileCluster 支持 [File](../../sql-reference/table-functions/file.md#globs-in-path) 表函数支持的所有模式。
+FileCluster 同样支持 [File](../../sql-reference/table-functions/file.md#globs-in-path) 表函数所支持的所有模式。
 
 
-## 相关内容 {#related}
 
-- [File 表函数](../../sql-reference/table-functions/file.md)
+## 相关 {#related}
+
+- [file 表函数](../../sql-reference/table-functions/file.md)

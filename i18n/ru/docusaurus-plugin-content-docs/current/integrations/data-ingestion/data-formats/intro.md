@@ -3,7 +3,7 @@ slug: /integrations/data-formats
 sidebar_label: 'Обзор'
 sidebar_position: 1
 keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
-title: 'Импорт из различных форматов данных в ClickHouse'
+title: 'Импорт данных из различных форматов в ClickHouse'
 description: 'Страница, описывающая, как импортировать данные из различных форматов в ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,26 +13,26 @@ doc_type: 'guide'
 
 # Импорт данных из различных форматов в ClickHouse
 
-В этом разделе документации представлены примеры загрузки данных из различных типов файлов.
+В этом разделе документации вы найдёте примеры загрузки данных из различных типов файлов.
 
-### [**Бинарные форматы**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
+### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-Экспорт и загрузка бинарных форматов, таких как ClickHouse Native, MessagePack, Protocol Buffers и Cap'n Proto.
+Экспорт и импорт двоичных форматов, таких как ClickHouse Native, MessagePack, Protocol Buffers и Cap'n Proto.
 
-### [**CSV и TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
+### [**CSV and TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-Импорт и экспорт форматов семейства CSV, включая TSV, с настраиваемыми заголовками и разделителями.
+Импорт и экспорт семейства CSV-форматов, включая TSV, с настраиваемыми заголовками и разделителями.
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-Загрузка и экспорт JSON в различных форматах, включая объекты и построчный формат NDJSON.
+Загрузка и экспорт JSON в различных вариантах, включая объекты и построчный NDJSON.
 
-### [**Данные Parquet**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
+### [**Parquet data**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-Работа с распространёнными форматами Apache, такими как Parquet и Arrow.
+Обработка распространённых форматов Apache, таких как Parquet и Arrow.
 
-### [**Данные SQL**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
+### [**SQL data**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-Необходимо импортировать SQL-дамп в MySQL или PostgreSQL? Здесь вы найдёте решение.
+Нужен SQL-дамп для импорта в MySQL или PostgreSQL? Вы по адресу.
 
-Если вы хотите подключить инструмент бизнес-аналитики, такой как Grafana, Tableau и другие, обратитесь к разделу [Визуализация](../../data-visualization/index.md) документации.
+Если вы хотите подключить BI-инструмент, например Grafana, Tableau или другие, обратитесь к разделу документации [Visualize category](../../data-visualization/index.md).

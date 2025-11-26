@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Form フォーマットに関するドキュメント'
+description: 'Form フォーマットのドキュメント'
 input_format: true
 keywords: ['Form']
 output_format: false
@@ -9,31 +9,31 @@ title: 'Form'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-`Form`フォーマットは、application/x-www-form-urlencoded形式の単一レコードを読み取るために使用できます。
-データは`key1=value1&key2=value2`の形式でフォーマットされます。
+`Form` フォーマットは、データが `key1=value1&key2=value2` のように整形された application/x-www-form-urlencoded 形式の単一レコードを読み取るために使用できます。
 
 
-## 使用例 {#example-usage}
 
-`user_files`パスに配置された、URLエンコードされたデータを含むファイル`data.tmp`がある場合:
+## 使用例
+
+URL エンコードされたデータを含む `data.tmp` ファイルが `user_files` パスに配置されているとします。
 
 ```text title="data.tmp"
 t_page=116&c.e=ls7xfkpm&c.tti.m=raf&rt.start=navigation&rt.bmr=390%2C11%2C10
 ```
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT * FROM file(data.tmp, Form) FORMAT vertical;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 Row 1:
 ──────
 t_page:   116
@@ -44,4 +44,4 @@ rt.bmr:   390,11,10
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

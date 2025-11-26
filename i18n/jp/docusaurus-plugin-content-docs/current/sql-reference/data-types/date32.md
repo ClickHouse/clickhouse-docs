@@ -1,5 +1,5 @@
 ---
-description: 'Date 型と比べて、より広い範囲の日付を格納できる ClickHouse の Date32 データ型に関するドキュメント'
+description: 'ClickHouse における Date32 データ型に関するドキュメント。Date 型と比べて、より広い範囲の日付を保存できます'
 sidebar_label: 'Date32'
 sidebar_position: 14
 slug: /sql-reference/data-types/date32
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Date32
 
-日付を表す型です。サポートする日付範囲は [DateTime64](../../sql-reference/data-types/datetime64.md) と同じです。ネイティブバイトオーダーの符号付き 32 ビット整数として保存され、値は `1900-01-01` からの経過日数を表します。**重要！** 0 は `1970-01-01` を表し、負の値は `1970-01-01` より前の日付を表します。
+日付型です。[DateTime64](../../sql-reference/data-types/datetime64.md) と同じ日付範囲をサポートします。ネイティブバイトオーダーの符号付き 32 ビット整数として保存され、その値は `1900-01-01` からの経過日数を表します。**重要!** 0 は `1970-01-01` を表し、負の値は `1970-01-01` より前の日付を表します。
 
 **例**
 

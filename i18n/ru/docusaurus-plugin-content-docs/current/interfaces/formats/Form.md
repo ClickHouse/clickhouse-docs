@@ -9,7 +9,7 @@ title: 'Form'
 doc_type: 'reference'
 ---
 
-| Ввод | Вывод | Псевдоним |
+| Вход | Выход | Алиас |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
@@ -17,23 +17,24 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Формат `Form` используется для чтения одной записи в формате application/x-www-form-urlencoded,
-в котором данные представлены в виде `key1=value1&key2=value2`.
+Формат `Form` может использоваться для чтения одной записи в формате `application/x-www-form-urlencoded`, 
+в котором данные представлены как `key1=value1&key2=value2`.
 
 
-## Пример использования {#example-usage}
 
-Рассмотрим файл `data.tmp`, размещенный в директории `user_files`, который содержит URL-кодированные данные:
+## Пример использования
+
+Предположим, что файл `data.tmp` размещён в каталоге `user_files` и содержит некоторые данные в URL-кодировке:
 
 ```text title="data.tmp"
 t_page=116&c.e=ls7xfkpm&c.tti.m=raf&rt.start=navigation&rt.bmr=390%2C11%2C10
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT * FROM file(data.tmp, Form) FORMAT vertical;
 ```
 
-```response title="Результат"
+```response title="Response"
 Row 1:
 ──────
 t_page:   116
@@ -44,4 +45,4 @@ rt.bmr:   390,11,10
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

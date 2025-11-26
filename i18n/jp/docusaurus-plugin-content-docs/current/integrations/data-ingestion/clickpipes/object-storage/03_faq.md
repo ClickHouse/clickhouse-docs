@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'FAQ'
-description: 'オブジェクトストレージ用 ClickPipes に関する FAQ'
+sidebar_label: 'FAQ（よくある質問）'
+description: 'オブジェクトストレージ向け ClickPipes に関する FAQ'
 slug: /integrations/clickpipes/object-storage/faq
 sidebar_position: 1
-title: 'FAQ'
+title: 'FAQ（よくある質問）'
 doc_type: 'reference'
 integration:
   - support_level: 'core'
@@ -12,18 +12,18 @@ integration:
 
 
 
-## よくある質問 {#faq}
+## FAQ {#faq}
 
 <details>
-<summary>ClickPipesは`gs://`プレフィックス付きのGCSバケットをサポートしていますか?</summary>
+<summary>ClickPipes は `gs://` で始まる GCS バケットをサポートしますか？</summary>
 
-いいえ。相互運用性の観点から、`gs://`バケットプレフィックスを`https://storage.googleapis.com/`に置き換えていただく必要があります。
+いいえ。相互運用性の観点から、`gs://` バケットプレフィックスを `https://storage.googleapis.com/` に置き換えていただく必要があります。
 
 </details>
 
 <details>
-<summary>GCSパブリックバケットにはどのような権限が必要ですか?</summary>
+<summary>GCS のパブリックバケットにはどのような権限が必要ですか？</summary>
 
-`allUsers`には適切なロールの割り当てが必要です。`roles/storage.objectViewer`ロールをバケットレベルで付与する必要があります。このロールは`storage.objects.list`権限を提供し、ClickPipesがバケット内のすべてのオブジェクトを一覧表示できるようにします。これはオンボーディングとデータ取り込みに必要です。このロールには`storage.objects.get`権限も含まれており、バケット内の個々のオブジェクトの読み取りまたはダウンロードに必要です。詳細については、[Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles)を参照してください。
+`allUsers` には、適切なロールを割り当てる必要があります。`roles/storage.objectViewer` ロールをバケットレベルで付与してください。このロールは `storage.objects.list` 権限を提供し、ClickPipes がオンボーディングおよびインジェストのために、バケット内のすべてのオブジェクトを一覧表示できるようにします。また、このロールには `storage.objects.get` 権限も含まれており、バケット内の個々のオブジェクトを読み取ったりダウンロードしたりする際に必要です。詳細については、[Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) を参照してください。
 
 </details>

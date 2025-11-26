@@ -17,12 +17,13 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似,但会输出包含列名的标题行。
+`LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似，但会额外输出包含列名的表头行。
 
 
-## 使用示例 {#example-usage}
 
-```sql title="查询"
+## 使用示例
+
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32
@@ -34,7 +35,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNames;
 ```
 
-```response title="响应"
+```response title="Response"
 name    value
 John    30
 Jane    25

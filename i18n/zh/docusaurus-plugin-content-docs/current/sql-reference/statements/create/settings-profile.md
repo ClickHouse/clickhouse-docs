@@ -1,13 +1,13 @@
 ---
-description: '设置配置文件文档'
-sidebar_label: 'SETTINGS PROFILE'
+description: '设置配置文件的文档'
+sidebar_label: '设置配置文件'
 sidebar_position: 43
 slug: /sql-reference/statements/create/settings-profile
 title: 'CREATE SETTINGS PROFILE'
 doc_type: 'reference'
 ---
 
-创建可分配给用户或角色的[设置配置文件](../../../guides/sre/user-management/index.md#settings-profiles-management)。
+创建[设置配置文件](../../../guides/sre/user-management/index.md#settings-profiles-management)，并可将其分配给用户或角色。
 
 语法：
 
@@ -19,18 +19,18 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
     [TO {{role1 | user1 [, role2 | user2 ...]} | NONE | ALL | ALL EXCEPT {role1 | user1 [, role2 | user2 ...]}}]
 ```
 
-`ON CLUSTER` 子句用于在集群范围内创建设置配置文件，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
+`ON CLUSTER` 子句用于在集群范围内创建设置概要文件，参见 [分布式 DDL](../../../sql-reference/distributed-ddl.md)。
 
 
-## 示例 {#example}
+## 示例
 
-创建用户:
+创建用户：
 
 ```sql
 CREATE USER robin IDENTIFIED BY 'password';
 ```
 
-创建 `max_memory_usage_profile` 设置配置文件,为 `max_memory_usage` 设置值和约束条件,并将其分配给用户 `robin`:
+创建 `max_memory_usage_profile` 设置配置文件，为 `max_memory_usage` 设置指定数值和约束条件，并将其分配给用户 `robin`：
 
 ```sql
 CREATE

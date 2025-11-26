@@ -1,24 +1,24 @@
 ---
-description: 'YouTube 動画の低評価数のコレクション。'
+description: 'YouTube 動画の低評価データのコレクション。'
 sidebar_label: 'YouTube 低評価'
 slug: /getting-started/example-datasets/youtube-dislikes
 title: 'YouTube 低評価データセット'
 doc_type: 'guide'
-keywords: ['example dataset', 'youtube', 'sample data', 'video analytics', 'dislikes']
+keywords: ['サンプルデータセット', 'youtube', 'サンプルデータ', '動画分析', '低評価']
 ---
 
-2021 年 11 月、YouTube はすべての動画から公開されていた ***低評価*** 数を非表示にしました。クリエイターは引き続き低評価数を確認できますが、視聴者が見ることができるのは、その動画が受け取った ***高評価*** 数のみです。
+2021 年 11 月、YouTube はすべての動画から公開されていた***低評価***数を非表示にしました。クリエイターは依然として低評価数を確認できますが、視聴者が確認できるのは動画が受け取った***高評価***数だけです。
 
 :::important
-このデータセットには 45.5 億件以上のレコードが含まれているため、下記のコマンドをそのままコピー＆ペーストする場合は、そのボリュームを処理できるリソースがあるか十分に注意してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **本番環境**インスタンスで実行しました。
+このデータセットには 45.5 億件以上のレコードが含まれているため、下記のコマンドをそのままコピー＆ペーストする前に、ご利用中のリソースでこの規模のデータ量を扱えるか十分ご注意ください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **本番** インスタンス上で実行されたものです。
 :::
 
-データは JSON 形式で、[archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) からダウンロードできます。同じデータを S3 上にも用意しており、ClickHouse Cloud インスタンスにより効率的にダウンロードできるようにしています。
+データは JSON 形式で、[archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) からダウンロードできます。同じデータを S3 上にも用意しており、ClickHouse Cloud インスタンスへより効率的にダウンロードできるようにしています。
 
-以下は ClickHouse Cloud にテーブルを作成し、データを挿入する手順です。
+ClickHouse Cloud 上にテーブルを作成し、データを投入する手順は以下のとおりです。
 
 :::note
-以下の手順はローカルにインストールした ClickHouse でも問題なく動作します。唯一の変更点は、（クラスタを構成していない限り）`s3cluster` の代わりに `s3` 関数を使用することです。クラスタを構成している場合は、`default` をクラスタ名に変更してください。
+以下の手順は、ローカルにインストールした ClickHouse でもそのまま利用できます。唯一の違いは、`s3cluster` の代わりに `s3` 関数を使用する点です（すでにクラスタを構成済みの場合はこの限りではなく、その場合は `default` をクラスタ名に変更してください）。
 :::
 
 
@@ -27,9 +27,9 @@ keywords: ['example dataset', 'youtube', 'sample data', 'video analytics', 'disl
 
 <VerticalStepper headerLevel="h3">
 
-### データの探索 {#data-exploration}
+### データ探索 {#data-exploration}
 
-データの内容を確認してみましょう。`s3cluster`テーブル関数はテーブルを返すため、結果を`DESCRIBE`で確認できます:
+データの構造を確認します。`s3cluster` テーブル関数はテーブルを返すため、結果を `DESCRIBE` で確認できます:
 
 ```sql
 DESCRIBE s3(
@@ -38,7 +38,7 @@ DESCRIBE s3(
 );
 ```
 
-ClickHouseはJSONファイルから以下のスキーマを推論します:
+ClickHouse は JSON ファイルから以下のスキーマを推論します:
 
 ```response
 ┌─name────────────────┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -68,7 +68,7 @@ ClickHouseはJSONファイルから以下のスキーマを推論します:
 
 ### テーブルの作成 {#create-the-table}
 
-推論されたスキーマに基づいて、データ型を整理し、主キーを追加しました。
+推論されたスキーマに基づいて、データ型を整理し、プライマリキーを追加しました。
 以下のテーブルを定義します:
 
 ```sql
@@ -102,11 +102,11 @@ ORDER BY (uploader, upload_date)
 
 ### データの挿入 {#insert-data}
 
-以下のコマンドは、S3ファイルからレコードをストリーミングして`youtube`テーブルに挿入します。
+以下のコマンドは、S3 ファイルからレコードをストリーミングして `youtube` テーブルに挿入します。
 
 
 :::important
-これは大量のデータ（46.5億行）を挿入します。データセット全体が不要な場合は、必要な行数を指定した`LIMIT`句を追加してください。
+この操作では46億5,000万行という大量のデータが挿入されます。全データセットが不要な場合は、必要な行数を指定して `LIMIT` 句を追加してください。
 :::
 
 ```sql
@@ -140,16 +140,16 @@ FROM s3(
 )
 ```
 
-`INSERT`コマンドに関する補足事項:
+`INSERT` コマンドに関するいくつかの補足:
 
-- `parseDateTimeBestEffortUSOrZero`関数は、受信する日付フィールドが適切な形式でない可能性がある場合に便利です。`fetch_date`が正しく解析されない場合、値は`0`に設定されます
-- `upload_date`列には有効な日付が含まれていますが、「4 hours ago」のような文字列も含まれており、これは明らかに有効な日付ではありません。元の値を`upload_date_str`に保存し、`toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))`で解析を試みることにしました。解析に失敗した場合は`0`が返されます
-- テーブルに`NULL`値が入らないように`ifNull`を使用しました。受信値が`NULL`の場合、`ifNull`関数は値を空文字列に設定します
+* 受信する日付フィールドが正しいフォーマットになっていない可能性がある場合、`parseDateTimeBestEffortUSOrZero` 関数が役立ちます。`fetch_date` を正しくパースできなかった場合、その値は `0` に設定されます
+* `upload_date` 列には有効な日付が含まれていますが、「4 hours ago」のような文字列も含まれており、これは明らかに有効な日付ではありません。そこで、元の値を `upload_date_str` に保存し、`toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` を使ってパースを試みることにしました。パースに失敗した場合は単に `0` が返されます
+* テーブル内に `NULL` 値が入らないようにするために `ifNull` を使用しました。入力値が `NULL` の場合、`ifNull` 関数はその値を空文字列に置き換えます
 
-### 行数のカウント {#count-row-numbers}
+### 行数をカウントする
 
-ClickHouse CloudのSQLコンソールで新しいタブを開き（または新しい`clickhouse-client`ウィンドウを開き）、カウントが増加するのを確認してください。
-45.6億行の挿入には、サーバーリソースに応じて時間がかかります。（設定を調整しない場合、約4.5時間かかります。）
+ClickHouse Cloud の SQL Console で新しいタブを開くか（または新しい `clickhouse-client` ウィンドウを開く）、カウントが増えていく様子を確認します。
+サーバーリソースにもよりますが、45.6 億行を挿入するにはしばらく時間がかかります（設定を特にチューニングしない場合、およそ 4.5 時間かかります）。
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -158,13 +158,13 @@ FROM youtube
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 4.56 billion                    │
+│ 45.6億                          │
 └─────────────────────────────────┘
 ```
 
-### データの探索 {#explore-the-data}
+### データを探索する
 
-データが挿入されたら、お気に入りの動画やチャンネルの低評価数をカウントしてみましょう。ClickHouseがアップロードした動画の数を確認してみます:
+データが挿入されたら、好きな動画やチャンネルの「低評価」の数を数えてみましょう。ClickHouse によってアップロードされた動画がいくつあるか見てみましょう：
 
 ```sql
 SELECT count()
@@ -177,14 +177,14 @@ WHERE uploader = 'ClickHouse';
 │      84 │
 └─────────┘
 
-1 row in set. Elapsed: 0.570 sec. Processed 237.57 thousand rows, 5.77 MB (416.54 thousand rows/s., 10.12 MB/s.)
+1行が結果セットに含まれています。経過時間: 0.570秒。処理された行数: 237.57千行、5.77 MB (416.54千行/秒、10.12 MB/秒)
 ```
 
 :::note
-上記のクエリが非常に高速に実行されるのは、プライマリキーの最初の列として`uploader`を選択したためです。そのため、処理が必要な行数は237,000行のみでした。
+上記のクエリがこれほど高速に実行できるのは、プライマリキーの最初のカラムとして `uploader` を選択したためで、処理する必要があったのが 237k 行だけだったからです。
 :::
 
-ClickHouse動画の高評価と低評価を見てみましょう:
+ClickHouse の動画に対する「高評価」と「低評価」の状況を見てみましょう。
 
 ```sql
 SELECT
@@ -196,7 +196,7 @@ WHERE uploader = 'ClickHouse'
 ORDER BY dislike_count DESC;
 ```
 
-結果は次のようになります:
+レスポンスは以下のようになります：
 
 ```response
 ┌─title────────────────────────────────────────────────────────────────────────────────────────────────┬─like_count─┬─dislike_count─┐
@@ -208,10 +208,10 @@ ORDER BY dislike_count DESC;
 │ 10 Good Reasons to Use ClickHouse                                                                    │         27 │             2 │
 ...
 
-84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
+84行のセット。経過時間: 0.013秒。処理: 155.65千行、16.94 MB (11.96百万行/秒、1.30 GB/秒)
 ```
 
-`title`または`description`フィールドに**ClickHouse**を含む動画を検索した結果は次のとおりです:
+次に、`title` フィールドまたは `description` フィールドに **ClickHouse** を含む動画の検索例を示します。
 
 
 ```sql
@@ -228,7 +228,7 @@ ORDER BY
     view_count DESC;
 ```
 
-このクエリは全ての行を処理し、2つの文字列カラムを解析する必要があります。それでも、秒間415万行という良好なパフォーマンスが得られます:
+このクエリは全行を処理し、2つの文字列カラムを解析する必要があります。それでも、4.15M行/秒という良好なパフォーマンスが得られます:
 
 ```response
 1174 rows in set. Elapsed: 1099.368 sec. Processed 4.56 billion rows, 1.98 TB (4.15 million rows/s., 1.80 GB/s.)
@@ -246,11 +246,11 @@ ORDER BY
 </VerticalStepper>
 
 
-## 質問 {#questions}
+## 質問
 
-### コメントを無効にすると、「いいね」または「よくないね」がクリックされる確率は低下するか？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
+### コメントを無効にすると、ユーザーが高評価や低評価を実際にクリックする可能性は低くなりますか？
 
-コメントが無効になっている場合、動画に対する感情を表現するために「いいね」または「よくないね」を押す傾向は高まるか？
+コメントが無効になっている場合、ユーザーは動画に対する気持ちを表すために高評価や低評価をクリックしやすくなるのでしょうか？
 
 ```sql
 SELECT
@@ -301,9 +301,9 @@ ORDER BY
 22 rows in set. Elapsed: 8.460 sec. Processed 4.56 billion rows, 77.48 GB (538.73 million rows/s., 9.16 GB/s.)
 ```
 
-コメントを有効にすることは、より高いエンゲージメント率と相関関係があるようです。
+コメントを有効にすると、エンゲージメント率が高くなる傾向があります。
 
-### 動画数は時間の経過とともにどのように変化するか - 注目すべきイベント {#how-does-the-number-of-videos-change-over-time---notable-events}
+### 動画本数は時間の経過とともにどのように推移し、どのような顕著なイベントがあるか？
 
 ```sql
 SELECT
@@ -340,11 +340,11 @@ ORDER BY month ASC;
 │ 2006-10-01 │    404873 │     897590 │  27357846117 │
 ```
 
-[新型コロナウイルス流行時期におけるアップロード者数の急増](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)が確認できます。
+アップローダー数のスパイクが[COVID-19 前後の時期に顕著です](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)。
 
-### 字幕の経時的増加とその時期 {#more-subtitles-over-time-and-when}
+### 時間の経過とともに字幕が増えたタイミング
 
-音声認識技術の進歩により、動画への字幕作成がかつてないほど容易になりました。YouTubeは2009年後半に自動キャプション機能を追加しましたが、その時期に急増は見られたのでしょうか？
+音声認識技術の進歩により、動画に字幕を付けることはこれまでになく容易になりました。YouTube は 2009 年末に自動キャプション機能を追加しましたが、そのタイミングで増加が起きたのでしょうか？
 
 ```sql
 SELECT
@@ -377,10 +377,10 @@ ORDER BY month ASC;
 
 ```
 
-データ結果は2009年に急増を示しています。この時期、YouTubeはコミュニティキャプション機能を廃止していました。この機能により、他のユーザーの動画に字幕をアップロードすることが可能でした。
-これをきっかけに、クリエイターが聴覚障害者や難聴者向けに動画へ字幕を追加する非常に成功したキャンペーンが展開されました。
+データを見ると、2009年に急増があることがわかります。どうやらその頃、YouTube は他の人が投稿した動画に字幕をアップロードできる「コミュニティ字幕」機能を廃止していたようです。
+これをきっかけに、難聴者やろう者の視聴者のために、クリエイターが自分の動画に字幕を付けることを促すキャンペーンが展開され、大きな成果を上げました。
 
-### 時系列での上位アップローダー {#top-uploaders-over-time}
+### 時系列で見たアップロード数の多いユーザー
 
 ```sql
 WITH uploaders AS
@@ -424,7 +424,7 @@ ORDER BY
 │ 2008-09-01 │ WWE                        │     3717092 │   0.07872802579349912 │
 ```
 
-### 視聴回数の増加に伴う「いいね」比率の変化 {#how-do-like-ratio-changes-as-views-go-up}
+### 再生回数が増えると高評価率はどう変化しますか？
 
 ```sql
 SELECT
@@ -449,30 +449,30 @@ ORDER BY
 
 ```response
 ┌─view_range────────┬─is_comments_enabled─┬─like_ratio─┐
-│ < 10.00           │ false               │       0.66 │
-│ < 10.00           │ true                │       0.66 │
-│ < 100.00          │ false               │          3 │
-│ < 100.00          │ true                │       3.95 │
-│ < 1.00 thousand   │ false               │       8.45 │
-│ < 1.00 thousand   │ true                │      13.07 │
-│ < 10.00 thousand  │ false               │      18.57 │
-│ < 10.00 thousand  │ true                │      30.92 │
-│ < 100.00 thousand │ false               │      23.55 │
-│ < 100.00 thousand │ true                │      42.13 │
-│ < 1.00 million    │ false               │      19.23 │
-│ < 1.00 million    │ true                │      37.86 │
-│ < 10.00 million   │ false               │      12.13 │
-│ < 10.00 million   │ true                │      30.72 │
-│ < 100.00 million  │ false               │       6.67 │
-│ < 100.00 million  │ true                │      23.32 │
-│ < 1.00 billion    │ false               │       3.08 │
-│ < 1.00 billion    │ true                │      20.69 │
-│ < 10.00 billion   │ false               │       1.77 │
-│ < 10.00 billion   │ true                │       19.5 │
+│ < 10.00           │ 無効                │       0.66 │
+│ < 10.00           │ 有効                │       0.66 │
+│ < 100.00          │ 無効                │          3 │
+│ < 100.00          │ 有効                │       3.95 │
+│ < 1.00 thousand   │ 無効                │       8.45 │
+│ < 1.00 thousand   │ 有効                │      13.07 │
+│ < 10.00 thousand  │ 無効                │      18.57 │
+│ < 10.00 thousand  │ 有効                │      30.92 │
+│ < 100.00 thousand │ 無効                │      23.55 │
+│ < 100.00 thousand │ 有効                │      42.13 │
+│ < 1.00 million    │ 無効                │      19.23 │
+│ < 1.00 million    │ 有効                │      37.86 │
+│ < 10.00 million   │ 無効                │      12.13 │
+│ < 10.00 million   │ 有効                │      30.72 │
+│ < 100.00 million  │ 無効                │       6.67 │
+│ < 100.00 million  │ 有効                │      23.32 │
+│ < 1.00 billion    │ 無効                │       3.08 │
+│ < 1.00 billion    │ 有効                │      20.69 │
+│ < 10.00 billion   │ 無効                │       1.77 │
+│ < 10.00 billion   │ 有効                │       19.5 │
 └───────────────────┴─────────────────────┴────────────┘
 ```
 
-### 視聴回数の分布 {#how-are-views-distributed}
+### ビューはどのように分散されるか
 
 
 ```sql

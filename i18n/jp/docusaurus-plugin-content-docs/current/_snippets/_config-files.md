@@ -1,8 +1,8 @@
-:::important ベストプラクティス
-構成ファイルを追加・編集して ClickHouse Server を設定する場合は、次のようにしてください:
+:::important best practices
+ClickHouse Server の設定ファイルを追加・編集して構成する場合は、次の点に注意してください:
 
-- ファイルを `/etc/clickhouse-server/config.d/` ディレクトリに追加する
-- ファイルを `/etc/clickhouse-server/users.d/` ディレクトリに追加する
-- `/etc/clickhouse-server/config.xml` ファイルは変更しない
-- `/etc/clickhouse-server/users.xml` ファイルは変更しない
+- ファイルは `/etc/clickhouse-server/config.d/` ディレクトリに追加する
+- ファイルは `/etc/clickhouse-server/users.d/` ディレクトリに追加する
+- `/etc/clickhouse-server/config.xml` ファイルは変更せず、そのままにしておく
+- `/etc/clickhouse-server/users.xml` ファイルは変更せず、そのままにしておく 
 :::

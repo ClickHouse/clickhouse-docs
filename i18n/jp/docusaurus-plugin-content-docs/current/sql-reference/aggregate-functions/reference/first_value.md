@@ -1,5 +1,5 @@
 ---
-description: 'any のエイリアスですが、Window Functions との互換性のために導入されました。Window Functions では、場合によっては `NULL` 値を処理する必要があります。なお、デフォルトではすべての ClickHouse 集約関数は NULL 値を無視します。'
+description: 'これは any のエイリアスですが、ウィンドウ関数との互換性のために導入されました。ウィンドウ関数では、`NULL` 値を処理する必要がある場合があります（デフォルトでは、すべての ClickHouse 集約関数は `NULL` 値を無視します）。'
 sidebar_position: 137
 slug: /sql-reference/aggregate-functions/reference/first_value
 title: 'first_value'
@@ -10,15 +10,15 @@ doc_type: 'reference'
 
 # first_value
 
-これは [`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたもので、Window Functions では `NULL` 値を処理する必要がある場合があります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
+これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたものです。Window Functions では `NULL` 値を処理する必要が生じることがあります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
 
-[Window Functions](../../window-functions/index.md) 使用時と通常の集約の両方で、NULL 値を考慮する修飾子（`RESPECT NULLS`）を指定することができます。
+この関数は、NULL を考慮する修飾子（`RESPECT NULLS`）の指定をサポートしており、[Window Functions](../../window-functions/index.md) および通常の集約処理の両方で使用できます。
 
-`any` と同様に、Window Functions を使用しない場合、入力ストリームが順序付けられていなければ結果は不定となり、戻り値の型は入力の型と一致します（Null が返されるのは、入力が Nullable である場合、または -OrNull コンビネータが追加されている場合のみです）。
+`any` と同様に、Window Functions を使用しない場合、ソースストリームがソートされていなければ結果は不定となり、戻り値の型は入力の型と一致します（NULL が返されるのは、入力が Nullable 型である場合、または -OrNull コンビネータが追加されている場合のみです）。
 
 
 
-## 例 {#examples}
+## 使用例
 
 ```sql
 CREATE TABLE test_data
@@ -31,7 +31,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### 例1 {#example1}
+### 例 1
 
 デフォルトでは、NULL値は無視されます。
 
@@ -45,9 +45,9 @@ SELECT first_value(b) FROM test_data;
 └────────┘
 ```
 
-### 例2 {#example2}
+### 例 2
 
-NULL値は無視されます。
+NULL 値は無視されます。
 
 ```sql
 SELECT first_value(b) ignore nulls FROM test_data
@@ -59,9 +59,9 @@ SELECT first_value(b) ignore nulls FROM test_data
 └──────────────────────┘
 ```
 
-### 例3 {#example3}
+### 例 3
 
-NULL値は保持されます。
+NULL 値が許容されます。
 
 ```sql
 SELECT first_value(b) respect nulls FROM test_data
@@ -73,9 +73,9 @@ SELECT first_value(b) respect nulls FROM test_data
 └───────────────────────┘
 ```
 
-### 例4 {#example4}
+### 例 4
 
-`ORDER BY`を使用したサブクエリによる安定化された結果。
+`ORDER BY` を含むサブクエリを使用して結果を安定させた例。
 
 ```sql
 SELECT

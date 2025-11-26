@@ -9,25 +9,26 @@ title: 'XML'
 doc_type: 'reference'
 ---
 
-| Ввод | Вывод | Синоним |
-|-------|--------|--------|
-| ✗     | ✔      |        |
+| Вход | Выход | Псевдоним |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 
 
 ## Описание {#description}
 
-Формат `XML` подходит только для вывода данных, но не для парсинга.
+Формат `XML` предназначен только для вывода и не подходит для парсинга. 
 
-Если имя столбца имеет недопустимый формат, в качестве имени элемента используется просто 'field'. В целом структура XML соответствует структуре JSON.
-Как и в случае с JSON, некорректные последовательности UTF-8 заменяются символом замены `�`, поэтому выходной текст будет состоять из валидных последовательностей UTF-8.
+Если имя столбца имеет недопустимый формат, в качестве имени элемента используется просто `field`. В целом структура XML соответствует структуре JSON.
+Как и в случае с JSON, недопустимые последовательности UTF-8 заменяются символом подстановки `�`, чтобы выходной текст состоял из корректных последовательностей UTF-8.
 
 В строковых значениях символы `<` и `&` экранируются как `<` и `&`.
 
 Массивы выводятся как `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи — как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
 
 
-## Пример использования {#example-usage}
+
+## Пример использования
 
 Пример:
 
@@ -52,7 +53,7 @@ doc_type: 'reference'
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>bathroom interior design</SearchPhrase>
+                        <SearchPhrase>дизайн интерьера ванной</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -60,31 +61,31 @@ doc_type: 'reference'
                         <field>1655</field>
                 </row>
                 <row>
-                        <SearchPhrase>2014 spring fashion</SearchPhrase>
+                        <SearchPhrase>весенняя мода 2014</SearchPhrase>
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>freeform photos</SearchPhrase>
+                        <SearchPhrase>фото в свободной форме</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>
-                        <SearchPhrase>angelina jolie</SearchPhrase>
+                        <SearchPhrase>анджелина джоли</SearchPhrase>
                         <field>1245</field>
                 </row>
                 <row>
-                        <SearchPhrase>omsk</SearchPhrase>
+                        <SearchPhrase>омск</SearchPhrase>
                         <field>1112</field>
                 </row>
                 <row>
-                        <SearchPhrase>photos of dog breeds</SearchPhrase>
+                        <SearchPhrase>фото пород собак</SearchPhrase>
                         <field>1091</field>
                 </row>
                 <row>
-                        <SearchPhrase>curtain designs</SearchPhrase>
+                        <SearchPhrase>дизайн штор</SearchPhrase>
                         <field>1064</field>
                 </row>
                 <row>
-                        <SearchPhrase>baku</SearchPhrase>
+                        <SearchPhrase>баку</SearchPhrase>
                         <field>1000</field>
                 </row>
         </data>
@@ -94,7 +95,8 @@ doc_type: 'reference'
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}
+
 
 
 ## XML {#xml}

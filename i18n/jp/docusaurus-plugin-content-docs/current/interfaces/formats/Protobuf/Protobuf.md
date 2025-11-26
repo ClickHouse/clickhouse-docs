@@ -9,28 +9,28 @@ title: 'Protobuf'
 doc_type: 'guide'
 ---
 
-| 入力 | 出力 | エイリアス |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 
 
-## 説明 {#description}
+## 説明
 
-`Protobuf`フォーマットは[Protocol Buffers](https://protobuf.dev/)フォーマットです。
+`Protobuf` フォーマットは [Protocol Buffers](https://protobuf.dev/) フォーマットです。
 
-このフォーマットは外部フォーマットスキーマを必要とし、クエリ間でキャッシュされます。
+このフォーマットでは、クエリ間でキャッシュされる外部フォーマットスキーマが必要です。
 
-ClickHouseは以下をサポートしています:
+ClickHouse は次をサポートします。
 
-- `proto2`と`proto3`の両方の構文
-- `Repeated`/`optional`/`required`フィールド
+* `proto2` と `proto3` の両方の構文
+* `Repeated`/`optional`/`required` フィールド
 
-テーブルカラムとProtocol Buffersのメッセージタイプのフィールド間の対応関係を見つけるため、ClickHouseはそれらの名前を比較します。
-この比較は大文字小文字を区別せず、`_`(アンダースコア)と`.`(ドット)の文字は同等とみなされます。
-カラムの型とProtocol Buffersメッセージのフィールドの型が異なる場合、必要な変換が適用されます。
+テーブルのカラムと Protocol Buffers のメッセージ型のフィールドを対応付けるために、ClickHouse はそれらの名前を比較します。
+この比較では大文字小文字を区別せず、`_`（アンダースコア）と `.`（ドット）の文字は同一とみなされます。
+カラムと Protocol Buffers メッセージのフィールドの型が異なる場合は、必要な変換が適用されます。
 
-ネストされたメッセージがサポートされています。例えば、以下のメッセージタイプのフィールド`z`の場合:
+ネストされたメッセージもサポートされています。例えば、次のメッセージ型のフィールド `z` の場合:
 
 ```capnp
 message MessageType {
@@ -44,11 +44,11 @@ message MessageType {
 };
 ```
 
-ClickHouseは`x.y.z`(または`x_y_z`や`X.y_Z`など)という名前のカラムを見つけようとします。
+ClickHouse は `x.y.z`（または `x_y_z` や `X.y_Z` など）という名前のカラムを探します。
 
-ネストされたメッセージは[ネストされたデータ構造](/sql-reference/data-types/nested-data-structures/index.md)の入力または出力に適しています。
+ネストされたメッセージは、[ネストされたデータ構造](/sql-reference/data-types/nested-data-structures/index.md) の入出力に適しています。
 
-以下のようなprotobufスキーマで定義されたデフォルト値は適用されず、代わりに[テーブルのデフォルト値](/sql-reference/statements/create/table#default_values)が使用されます:
+次に示すような protobuf スキーマで定義されたデフォルト値は適用されず、その代わりに [テーブルのデフォルト値](/sql-reference/statements/create/table#default_values) が使用されます。
 
 ```capnp
 syntax = "proto2";
@@ -58,7 +58,7 @@ message MessageType {
 }
 ```
 
-メッセージに[oneof](https://protobuf.dev/programming-guides/proto3/#oneof)が含まれ、`input_format_protobuf_oneof_presence`が設定されている場合、ClickHouseはoneofのどのフィールドが見つかったかを示すカラムを埋めます。
+メッセージに [oneof](https://protobuf.dev/programming-guides/proto3/#oneof) が含まれていて、`input_format_protobuf_oneof_presence` が設定されている場合、ClickHouse はどの oneof フィールドが検出されたかを示す列に値を設定します。
 
 ```capnp
 syntax = "proto3";
@@ -87,27 +87,28 @@ SELECT * FROM string_or_string
    └─────────┴─────────┴──────────────┘
 ```
 
-存在を示すカラムの名前はoneofの名前と同じでなければなりません。ネストされたメッセージもサポートされています([basic-examples](#basic-examples)を参照)。
-許可される型はInt8、UInt8、Int16、UInt16、Int32、UInt32、Int64、UInt64、Enum、Enum8、またはEnum16です。
-Enum(およびEnum8またはEnum16)は、oneofの可能なすべてのタグに加えて、不在を示す0を含む必要があります。文字列表現は問いません。
+存在を示す列の名前は、`oneof` の名前と同一でなければなりません。ネストされたメッセージもサポートされます（[basic-examples](#basic-examples) を参照）。
 
-設定[`input_format_protobuf_oneof_presence`](/operations/settings/settings-formats.md#input_format_protobuf_oneof_presence)はデフォルトで無効になっています。
+使用可能な型は Int8、UInt8、Int16、UInt16、Int32、UInt32、Int64、UInt64、Enum、Enum8、Enum16 です。
+Enum（および Enum8 や Enum16）には、すべての `oneof` で取り得るタグに加えて、存在しないことを示す 0 を含める必要があります。文字列表現は任意です。
 
-ClickHouseは`length-delimited`フォーマットでprotobufメッセージを入出力します。
-これは、各メッセージの前にその長さを[可変幅整数(varint)](https://developers.google.com/protocol-buffers/docs/encoding#varints)として書き込む必要があることを意味します。
+設定 [`input_format_protobuf_oneof_presence`](/operations/settings/settings-formats.md#input_format_protobuf_oneof_presence) はデフォルトで無効です。
+
+ClickHouse は `length-delimited` 形式で protobuf メッセージを入力および出力します。
+これは、各メッセージの前に、その長さを [可変長整数 (varint)](https://developers.google.com/protocol-buffers/docs/encoding#varints) として書き込む必要があることを意味します。
 
 
 ## 使用例 {#example-usage}
 
-### データの読み書き {#basic-examples}
+### データの読み取りと書き込み {#basic-examples}
 
 :::note サンプルファイル
-この例で使用するファイルは[examplesリポジトリ](https://github.com/ClickHouse/formats/ProtoBuf)から入手できます
+この例で使用するファイルは[examplesリポジトリ](https://github.com/ClickHouse/formats/ProtoBuf)で入手できます
 :::
 
-この例では、`protobuf_message.bin`ファイルからClickHouseテーブルにデータを読み込みます。その後、`Protobuf`形式を使用して`protobuf_message_from_clickhouse.bin`というファイルに書き戻します。
+この例では、ファイル`protobuf_message.bin`からClickHouseテーブルにデータを読み取ります。その後、`Protobuf`形式を使用して`protobuf_message_from_clickhouse.bin`というファイルに書き戻します。
 
-`schemafile.proto`ファイルが以下のように定義されているとします:
+ファイル`schemafile.proto`が以下のように与えられているとします:
 
 ```capnp
 syntax = "proto3";
@@ -123,10 +124,10 @@ message MessageType {
 <details>
 <summary>バイナリファイルの生成</summary>
   
-`Protobuf`形式でのデータのシリアライズおよびデシリアライズ方法をすでにご存知の場合は、この手順をスキップできます。
+`Protobuf`形式でデータをシリアライズおよびデシリアライズする方法をすでに理解している場合は、この手順をスキップできます。
 
 Pythonを使用してデータを`protobuf_message.bin`にシリアライズし、ClickHouseに読み込みます。
-他の言語を使用する場合は、["How to read/write length-delimited Protobuf messages in popular languages"](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages)も参照してください。
+他の言語を使用したい場合は、["How to read/write length-delimited Protobuf messages in popular languages"](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages)も参照してください。
 
 以下のコマンドを実行して、`schemafile.proto`と同じディレクトリに`schemafile_pb2.py`という名前のPythonファイルを生成します。このファイルには、`UserData` Protobufメッセージを表すPythonクラスが含まれています:
 
@@ -134,7 +135,7 @@ Pythonを使用してデータを`protobuf_message.bin`にシリアライズし�
 protoc --python_out=. schemafile.proto
 ```
 
-次に、`schemafile_pb2.py`と同じディレクトリに`generate_protobuf_data.py`という名前の新しいPythonファイルを作成します。以下のコードを貼り付けます:
+次に、`schemafile_pb2.py`と同じディレクトリに`generate_protobuf_data.py`という名前の新しいPythonファイルを作成します。以下のコードを貼り付けてください:
 
 ```python
 import schemafile_pb2  # Module generated by 'protoc'
@@ -169,7 +170,7 @@ output_filename = "protobuf_messages.bin"
 # バイナリファイルをバイナリ書き込みモード（'wb'）で開く
 with open(output_filename, "wb") as f:
     for item in data_to_serialize:
-        # 現在のユーザー用の Protobuf メッセージインスタンスを作成
+        # 現在のユーザー用の Protobuf メッセージインスタンスを作成する
         message = create_user_data_message(
             item["name"],
             item["surname"],
@@ -177,21 +178,21 @@ with open(output_filename, "wb") as f:
             item["phoneNumbers"]
         )
 
-        # メッセージをシリアル化
+        # メッセージをシリアライズする
         serialized_data = message.SerializeToString()
 
-        # シリアル化されたデータの長さを取得
+        # シリアライズされたデータの長さを取得する
         message_length = len(serialized_data)
 
-        # Protobuf ライブラリの内部関数 _VarintBytes を使用して長さをエンコード
+        # Protobuf ライブラリの内部関数 _VarintBytes を使用して長さをエンコードする
         length_prefix = _VarintBytes(message_length)
 
         # 長さプレフィックスを書き込む
         f.write(length_prefix)
-        # シリアル化されたメッセージデータを書き込む
+        # シリアライズされたメッセージデータを書き込む
         f.write(serialized_data)
 
-print(f"Protobuf メッセージ（長さ区切り）を {output_filename} に書き込みました")
+print(f"長さ区切り（length-delimited）の Protobuf メッセージを書き込みました: {output_filename}")
 
 
 
@@ -271,7 +272,7 @@ Protobufスキーマを使用して、ClickHouseからファイル`protobuf_mess
 
 ### ClickHouse Cloudを使用したデータの読み書き {#basic-examples-cloud}
 
-ClickHouse Cloudでは、Protobufスキーマファイルをアップロードすることはできません。ただし、`format_protobuf_schema`設定を使用してクエリ内でスキーマを指定できます。この例では、ローカルマシンからシリアライズされたデータを読み取り、ClickHouse Cloudのテーブルに挿入する方法を示します。
+ClickHouse CloudではProtobufスキーマファイルをアップロードできません。ただし、`format_protobuf_schema`設定を使用してクエリ内でスキーマを指定できます。この例では、ローカルマシンからシリアライズされたデータを読み取り、ClickHouse Cloudのテーブルに挿入する方法を示します。
 
 前の例と同様に、ClickHouse CloudでProtobufスキーマに従ってテーブルを作成します:
 
@@ -287,13 +288,13 @@ ENGINE = MergeTree()
 ORDER BY tuple()
 ```
 
-`format_schema_source`設定は、`format_schema`設定のソースを定義します
+設定`format_schema_source`は、設定`format_schema`のソースを定義します
 
 使用可能な値:
 
 - 'file'（デフォルト）: Cloudではサポートされていません
 - 'string': `format_schema`はスキーマのリテラルコンテンツです。
-- 'query': `format_schema`はスキーマを取得するためのクエリです。
+- 'query': `format_schema`はスキーマを取得するクエリです。
 
 ### `format_schema_source='string'` {#format-schema-source-string}
 
@@ -334,16 +335,16 @@ ORDER BY tuple();
 INSERT INTO testing.protobuf_schema VALUES ('syntax = "proto3";message MessageType {  string name = 1;  string surname = 2;  uint32 birthDate = 3;  repeated string phoneNumbers = 4;};');
 ```
 
-スキーマを実行するクエリとして指定し、ClickHouse Cloudにデータを挿入します:
+実行するクエリ内でスキーマを指定して、ClickHouse Cloud にデータを挿入します:
 
 ```bash
-cat protobuf_messages.bin | clickhouse client --host <hostname> --secure --password <password> --query "INSERT INTO testing.protobuf_messages SETTINGS format_schema_source='SELECT schema FROM testing.protobuf_schema', format_schema='schemafile:MessageType' FORMAT Protobuf"
+cat protobuf_messages.bin | clickhouse client --host <ホスト名> --secure --password <パスワード> --query "INSERT INTO testing.protobuf_messages SETTINGS format_schema_source='SELECT schema FROM testing.protobuf_schema', format_schema='schemafile:MessageType' FORMAT Protobuf"
 ```
 
-テーブルに挿入されたデータを取得します:
+テーブルに挿入されたデータを選択します:
 
 ```sql
-clickhouse client --host <hostname> --secure --password <password> --query "SELECT * FROM testing.protobuf_messages"
+clickhouse client --host <ホスト名> --secure --password <パスワード> --query "SELECT * FROM testing.protobuf_messages"
 ```
 
 ```response
@@ -352,37 +353,38 @@ Javier Rodriguez 20001015 ['(555) 891-2046','(555) 738-5129']
 Mei Ling 19980616 ['(555) 956-1834','(555) 403-7682']
 ```
 
-### 自動生成スキーマの使用 {#using-autogenerated-protobuf-schema}
+### 自動生成されたスキーマの使用
 
-データに対する外部Protobufスキーマがない場合でも、自動生成されたスキーマを使用してProtobuf形式でデータを出力/入力できます。これには`format_protobuf_use_autogenerated_schema`設定を使用します。
+データ用の外部の Protobuf スキーマがない場合でも、自動生成されたスキーマを使用して Protobuf 形式で
+データを出力／入力できます。この場合は `format_protobuf_use_autogenerated_schema` 設定を使用します。
 
-例:
+例：
 
 ```sql
-SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1
+SELECT * FROM test.hits FORMAT Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1
 ```
 
-この場合、ClickHouseは[`structureToProtobufSchema`](/sql-reference/functions/other-functions#structureToProtobufSchema)関数を使用してテーブル構造に基づいてProtobufスキーマを自動生成します。その後、このスキーマを使用してデータをProtobuf形式でシリアライズします。
+この場合、ClickHouse は関数 [`structureToProtobufSchema`](/sql-reference/functions/other-functions#structureToProtobufSchema) を使用して、テーブル構造に基づいて Protobuf スキーマを自動生成します。次に、このスキーマを用いてデータを Protobuf 形式でシリアライズします。
 
-自動生成されたスキーマを使用してProtobufファイルを読み取ることもできます。この場合、ファイルは同じスキーマを使用して作成されている必要があります:
+自動生成されたスキーマを使って Protobuf ファイルを読み込むこともできます。この場合、そのファイルは同一のスキーマを使用して作成されている必要があります。
 
 ```bash
 $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_protobuf_use_autogenerated_schema=1 FORMAT Protobuf"
 ```
 
-[`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema)設定はデフォルトで有効になっており、[`format_schema`](/operations/settings/formats#format_schema)が設定されていない場合に適用されます。
+設定 [`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema) はデフォルトで有効であり、[`format_schema`](/operations/settings/formats#format_schema) が設定されていない場合に適用されます。
 
-[`output_format_schema`](/operations/settings/formats#output_format_schema)設定を使用して、入出力時に自動生成されたスキーマをファイルに保存することもできます。例:
+入力/出力時に、設定 [`output_format_schema`](/operations/settings/formats#output_format_schema) を使用して自動生成されたスキーマをファイルに保存することもできます。たとえば、次のようにします。
 
 ```sql
-SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1, output_format_schema='path/to/schema/schema.proto'
+SELECT * FROM test.hits FORMAT Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1, output_format_schema='path/to/schema/schema.proto'
 ```
 
-この場合、自動生成されたProtobufスキーマは`path/to/schema/schema.capnp`ファイルに保存されます。
+この場合、自動生成された Protobuf スキーマは `path/to/schema/schema.capnp` ファイルに保存されます。
 
-### Protobufキャッシュの削除 {#drop-protobuf-cache}
+### Protobuf キャッシュの削除
 
-[`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path)から読み込まれたProtobufスキーマを再読み込みするには、[`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format)ステートメントを使用します。
+[`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path) から読み込まれた Protobuf スキーマを再読み込みするには、[`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format) ステートメントを使用します。
 
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE FOR Protobuf

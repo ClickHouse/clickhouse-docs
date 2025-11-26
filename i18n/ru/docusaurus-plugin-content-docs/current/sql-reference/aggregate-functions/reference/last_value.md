@@ -1,5 +1,6 @@
 ---
-description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать NULL.'
+description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но может
+  принимать значение NULL.'
 sidebar_position: 160
 slug: /sql-reference/aggregate-functions/reference/last_value
 title: 'last_value'
@@ -10,13 +11,13 @@ doc_type: 'reference'
 
 # last_value
 
-Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать значение NULL.
-В основном должна использоваться с [оконными функциями](../../window-functions/index.md).
-Без оконных функций результат будет случайным, если входной поток не упорядочен.
+Выбирает последнее встреченное значение, аналогично `anyLast`, но допускает значение NULL.
+Чаще всего используется с [оконными функциями](../../window-functions/index.md).
+Без оконных функций результат будет случайным, если исходный поток не упорядочен.
 
 
 
-## примеры {#examples}
+## Примеры
 
 ```sql
 CREATE TABLE test_data
@@ -29,9 +30,9 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### Пример 1 {#example1}
+### Пример 1
 
-Значение NULL игнорируется по умолчанию.
+По умолчанию значение NULL игнорируется.
 
 ```sql
 SELECT last_value(b) FROM test_data
@@ -43,7 +44,7 @@ SELECT last_value(b) FROM test_data
 └────────────────────────────┘
 ```
 
-### Пример 2 {#example2}
+### Пример 2
 
 Значение NULL игнорируется.
 
@@ -57,9 +58,9 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-### Пример 3 {#example3}
+### Пример 3
 
-Значение NULL учитывается.
+Допускается значение NULL.
 
 ```sql
 SELECT last_value(b) respect nulls FROM test_data
@@ -71,7 +72,7 @@ SELECT last_value(b) respect nulls FROM test_data
 └─────────────────────────────┘
 ```
 
-### Пример 4 {#example4}
+### Пример 4
 
 Стабильный результат при использовании подзапроса с `ORDER BY`.
 

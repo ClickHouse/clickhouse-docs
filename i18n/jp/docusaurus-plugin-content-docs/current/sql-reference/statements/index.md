@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # ClickHouse の SQL ステートメント
 
-ユーザーは SQL ステートメントを使用して ClickHouse を操作します。ClickHouse は [SELECT](select/index.md) や [CREATE](create/index.md) といった一般的な SQL ステートメントをサポートするだけでなく、[KILL](kill.md) や [OPTIMIZE](optimize.md) のような特殊なステートメントも提供します。
+ユーザーは SQL ステートメントを使用して ClickHouse と対話します。ClickHouse は [SELECT](select/index.md) や [CREATE](create/index.md) などの一般的な SQL ステートメントをサポートしているだけでなく、[KILL](kill.md) や [OPTIMIZE](optimize.md) のような特殊なステートメントも提供します。

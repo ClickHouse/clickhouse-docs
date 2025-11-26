@@ -12,23 +12,27 @@ doc_type: 'reference'
 # anyIf {#avgif}
 
 
+
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数,以从指定列中选择首个满足给定条件的元素。
+可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`any`](/sql-reference/aggregate-functions/reference/any)
+聚合函数，从给定列中选出首个满足指定条件的元素。
 
 
-## 使用示例 {#example-usage}
 
-在此示例中,我们将创建一个存储销售数据及成功标志的表,并使用 `anyIf` 选择金额高于和低于 200 的第一个 `transaction_id`。
+## 示例用法
 
-首先创建表并插入数据:
+在本示例中，我们将创建一个用于存储带有成功标志的销售数据的表，
+并使用 `anyIf` 分别选出金额大于 200 和小于 200 的首个 `transaction_id`。
 
-```sql title="查询"
+我们首先创建一个表并向其中插入数据：
+
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple();
 
@@ -48,7 +52,7 @@ SELECT
 FROM sales;
 ```
 
-```response title="响应"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
@@ -56,6 +60,5 @@ FROM sales;
 
 
 ## 另请参阅 {#see-also}
-
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

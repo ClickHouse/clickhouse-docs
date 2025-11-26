@@ -7,21 +7,21 @@ keywords: ['chdb', 'data formats']
 doc_type: 'reference'
 ---
 
-在数据格式方面，chDB 与 ClickHouse 的功能实现完全兼容（100%）。
+在数据格式方面，chDB 与 ClickHouse 的特性 100% 兼容。
 
-输入格式用于解析提供给 `INSERT` 的数据，以及对诸如 `File`、`URL` 或 `S3` 等基于文件的表执行 `SELECT` 时的数据解析。
-输出格式用于组织 `SELECT` 的结果，并将数据通过 `INSERT` 写入基于文件的表。
-除了 ClickHouse 支持的数据格式之外，chDB 还额外支持：
+输入格式用于解析提供给 `INSERT` 的数据，以及从诸如 `File`、`URL` 或 `S3` 这类基于文件的表中执行 `SELECT` 时的数据。
+输出格式用于组织 `SELECT` 的结果，并用于向基于文件的表执行 `INSERT` 操作。
+除了 ClickHouse 支持的数据格式之外，chDB 还支持：
 
-- 将 `ArrowTable` 作为输出格式，对应的 Python 类型为 `pyarrow.Table`
-- 将 `DataFrame` 作为输入和输出格式，对应的 Python 类型为 `pandas.DataFrame`。示例参见 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- 将 `Debug` 作为输出格式使用（是 `CSV` 的别名），但会启用来自 ClickHouse 的详细调试输出。
+- 将 `ArrowTable` 作为输出格式，其类型为 Python `pyarrow.Table`
+- 将 `DataFrame` 作为输入和输出格式，其类型为 Python `pandas.DataFrame`。示例参见 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- 将 `Debug` 作为输出格式（是 `CSV` 的别名），但启用了来自 ClickHouse 的详细调试输出。
 
 ClickHouse 所支持的数据格式包括：
 
 | 格式                                         | 输入 | 输出 |
 | ------------------------------------------ | -- | -- |
-| TabSeparated                               | ✔  | ✔  |
+| 制表符分隔                                      | ✔  | ✔  |
 | TabSeparatedRaw                            | ✔  | ✔  |
 | TabSeparatedWithNames                      | ✔  | ✔  |
 | TabSeparatedWithNamesAndTypes              | ✔  | ✔  |
@@ -34,14 +34,14 @@ ClickHouse 所支持的数据格式包括：
 | CSVWithNamesAndTypes                       | ✔  | ✔  |
 | CustomSeparated                            | ✔  | ✔  |
 | CustomSeparatedWithNames                   | ✔  | ✔  |
-| CustomSeparatedWithNamesAndTypes           | ✔  | ✔  |
+| 自定义分隔（包含名称和类型）                             | ✔  | ✔  |
 | SQLInsert                                  | ✗  | ✔  |
-| 值                                          | ✔  | ✔  |
-| 垂直领域                                       | ✗  | ✔  |
+| 参数                                         | ✔  | ✔  |
+| 垂直                                         | ✗  | ✔  |
 | JSON                                       | ✔  | ✔  |
 | JSONAsString                               | ✔  | ✗  |
 | JSONAsObject                               | ✔  | ✗  |
-| JSON 字符串                                   | ✔  | ✔  |
+| JSONStrings                                | ✔  | ✔  |
 | JSONColumns                                | ✔  | ✔  |
 | JSONColumnsWithMetadata                    | ✔  | ✔  |
 | JSONCompact                                | ✔  | ✔  |
@@ -63,7 +63,7 @@ ClickHouse 所支持的数据格式包括：
 | JSONObjectEachRow                          | ✔  | ✔  |
 | BSONEachRow                                | ✔  | ✔  |
 | TSKV                                       | ✔  | ✔  |
-| 美观                                         | ✗  | ✔  |
+| 美化                                         | ✗  | ✔  |
 | PrettyNoEscapes                            | ✗  | ✔  |
 | PrettyMonoBlock                            | ✗  | ✔  |
 | PrettyNoEscapesMonoBlock                   | ✗  | ✔  |
@@ -93,11 +93,11 @@ ClickHouse 所支持的数据格式包括：
 | RowBinaryWithNamesAndTypes                 | ✔  | ✔  |
 | RowBinaryWithDefaults                      | ✔  | ✗  |
 | 原生                                         | ✔  | ✔  |
-| NULL                                       | ✗  | ✔  |
+| Null                                       | ✗  | ✔  |
 | XML                                        | ✗  | ✔  |
 | CapnProto                                  | ✔  | ✔  |
 | LineAsString                               | ✔  | ✔  |
-| Regexp（正则表达式）                              | ✔  | ✗  |
+| 正则表达式                                      | ✔  | ✗  |
 | RawBLOB                                    | ✔  | ✔  |
 | MsgPack                                    | ✔  | ✔  |
 | MySQLDump                                  | ✔  | ✗  |
@@ -105,4 +105,4 @@ ClickHouse 所支持的数据格式包括：
 | Markdown                                   | ✗  | ✔  |
 | 表单                                         | ✔  | ✗  |
 
-有关更多信息和示例，请参见 [ClickHouse 输入和输出数据格式](/interfaces/formats)。
+有关更多信息和示例，请参阅 [ClickHouse 输入和输出数据格式](/interfaces/formats)。

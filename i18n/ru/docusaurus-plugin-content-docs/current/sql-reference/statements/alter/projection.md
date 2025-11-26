@@ -7,23 +7,23 @@ title: 'Проекции'
 doc_type: 'reference'
 ---
 
-Проекции хранят данные в формате, который оптимизирует выполнение запросов. Эта функциональность полезна для:
-- выполнения запросов по столбцу, который не является частью первичного ключа;
-- предварительной агрегации столбцов, что сокращает как вычислительные затраты, так и операции ввода-вывода (I/O).
+Проекции хранят данные в формате, который оптимизирует выполнение запросов. Этот механизм полезен для:
+- Выполнения запросов по столбцу, который не является частью первичного ключа
+- Предварительной агрегации столбцов, что снижает как вычислительные затраты, так и нагрузку на операции ввода-вывода (I/O)
 
-Вы можете определить одну или несколько проекций для таблицы, и во время анализа запроса ClickHouse без изменения исходного запроса пользователя выберет проекцию, для которой требуется просканировать наименьший объём данных.
+Вы можете определить одну или несколько проекций для таблицы, и во время анализа запроса ClickHouse выберет проекцию с наименьшим объемом данных для сканирования, не изменяя запрос, заданный пользователем.
 
-:::note Disk usage
+:::note Использование диска
 
-Проекции создают внутренне новую скрытую таблицу, что означает, что потребуется больше операций ввода-вывода и больше дискового пространства.
-Например, если для проекции определён другой первичный ключ, все данные из исходной таблицы будут продублированы.
+При использовании проекций внутренне создаётся новая скрытая таблица, что означает, что потребуется больше операций ввода-вывода и дискового пространства.
+Например, если в проекции определён первичный ключ, отличный от исходного, все данные из исходной таблицы будут продублированы.
 :::
 
-Более подробные технические детали о внутреннем устройстве проекций можно найти на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
+Более технические подробности об устройстве проекций можно найти на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
 
 
 
-## Пример фильтрации без использования первичных ключей {#example-filtering-without-using-primary-keys}
+## Пример фильтрации без использования первичного ключа
 
 Создание таблицы:
 
@@ -39,7 +39,7 @@ ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
 
-С помощью `ALTER TABLE` можно добавить проекцию к существующей таблице:
+С помощью команды `ALTER TABLE` можно добавить проекцию к существующей таблице:
 
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
@@ -51,7 +51,7 @@ ORDER BY user_name
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
 ```
 
-Вставка данных:
+Добавление данных:
 
 ```sql
 INSERT INTO visits_order SELECT
@@ -62,8 +62,8 @@ INSERT INTO visits_order SELECT
 FROM numbers(1, 100);
 ```
 
-Проекция позволит быстро фильтровать данные по `user_name`, даже если в исходной таблице `user_name` не был определён как `PRIMARY_KEY`.
-При выполнении запроса ClickHouse определит, что при использовании проекции будет обработано меньше данных, так как данные упорядочены по `user_name`.
+Проекция позволит нам быстро фильтровать по `user_name`, даже если в исходной таблице `user_name` не был определён как `PRIMARY_KEY`.
+Во время выполнения запроса ClickHouse определил, что при использовании проекции будет обработано меньше данных, так как данные упорядочены по `user_name`.
 
 ```sql
 SELECT
@@ -73,14 +73,14 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-Чтобы проверить, использует ли запрос проекцию, можно обратиться к таблице `system.query_log`. В поле `projections` содержится имя использованной проекции или пустое значение, если проекция не использовалась:
+Чтобы убедиться, что запрос использует проекцию, мы можем просмотреть таблицу `system.query_log`. В столбце `projections` указано имя использованной проекции или пустое значение, если проекция не применялась:
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## Пример запроса с предварительной агрегацией {#example-pre-aggregation-query}
+## Пример запроса предварительной агрегации
 
 Создание таблицы с проекцией:
 
@@ -103,7 +103,7 @@ ENGINE = MergeTree()
 ORDER BY user_agent
 ```
 
-Вставка данных:
+Добавление данных:
 
 ```sql
 INSERT INTO visits SELECT
@@ -123,7 +123,7 @@ INSERT INTO visits SELECT
 FROM numbers(100, 500);
 ```
 
-Выполним первый запрос с использованием `GROUP BY` по полю `user_agent`. Этот запрос не будет использовать определённую проекцию, поскольку предварительная агрегация не соответствует требуемой.
+Мы выполним первый запрос с использованием `GROUP BY` по полю `user_agent`; этот запрос не будет использовать заданную проекцию, так как предагрегация не соответствует условиям запроса.
 
 ```sql
 SELECT
@@ -133,7 +133,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Чтобы использовать проекцию, можно выполнять запросы, которые выбирают часть или все поля предварительной агрегации и `GROUP BY`.
+Чтобы использовать проекцию, мы можем выполнять запросы, которые выбирают часть или все поля предагрегации и группировки (`GROUP BY`).
 
 ```sql
 SELECT
@@ -151,16 +151,16 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Как упоминалось ранее, можно просмотреть таблицу `system.query_log`. В поле `projections` содержится имя использованной проекции или пустое значение, если проекция не использовалась:
+Как уже отмечалось, мы можем просмотреть таблицу `system.query_log`. В поле `projections` указано имя использованной проекции или пустое значение, если проекция не использовалась:
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## Обычная проекция с полем `_part_offset` {#normal-projection-with-part-offset-field}
+## Обычная проекция с полем `_part_offset`
 
-Создание таблицы с обычной проекцией, которая использует поле `_part_offset`:
+Создание таблицы с обычной проекцией, использующей поле `_part_offset`:
 
 ```sql
 CREATE TABLE events
@@ -180,15 +180,15 @@ ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
 
-Вставка тестовых данных:
+Добавление тестовых данных:
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### Использование `_part_offset` в качестве вторичного индекса {#normal-projection-secondary-index}
+### Использование `_part_offset` в качестве вторичного индекса
 
-Поле `_part_offset` сохраняет своё значение при слияниях и мутациях, что делает его ценным для вторичной индексации. Это можно использовать в запросах:
+Поле `_part_offset` сохраняет свое значение при слияниях и мутациях, что делает его полезным для вторичного индексирования. Это можно использовать в запросах:
 
 ```sql
 SELECT
@@ -203,35 +203,38 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# Работа с проекциями
+# Управление проекциями
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 
 
 
-## ADD PROJECTION {#add-projection}
+## ДОБАВИТЬ ПРОЕКЦИЮ {#add-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` — добавляет описание проекции в метаданные таблицы.
+`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] )` — добавляет в метаданные таблицы описание проекции.
+
 
 
 ## DROP PROJECTION {#drop-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - Удаляет описание проекции из метаданных таблицы и удаляет файлы проекции с диска. Реализована как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` — удаляет из метаданных таблицы описание проекции и соответствующие файлы проекции на диске. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+
 
 
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - Запрос перестраивает проекцию `name` в партиции `partition_name`. Реализуется как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - запрос перестраивает проекцию `name` в партиции `partition_name`. Реализован как [мутация](/sql-reference/statements/alter/index.md#mutations).
+
 
 
 ## CLEAR PROJECTION {#clear-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` — удаляет файлы проекции с диска, не удаляя её описание. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` — удаляет файлы проекции с диска, не удаляя её описания. Эта операция реализована как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-Команды `ADD`, `DROP` и `CLEAR` являются лёгкими в том смысле, что они только изменяют метаданные или удаляют файлы.
+Команды `ADD`, `DROP` и `CLEAR` являются «лёгкими» в том смысле, что они только изменяют метаданные или удаляют файлы.
 
-Кроме того, они реплицируются, синхронизируя метаданные проекций через ClickHouse Keeper или ZooKeeper.
+Также они реплицируются, синхронизируя метаданные проекций через ClickHouse Keeper или ZooKeeper.
 
 :::note
-Манипуляции с проекциями поддерживаются только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](/engines/table-engines/mergetree-family/replication.md) варианты).
+Управление проекциями поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::

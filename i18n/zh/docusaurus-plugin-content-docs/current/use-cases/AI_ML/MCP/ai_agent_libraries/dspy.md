@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
 sidebar_label: '集成 DSPy'
-title: '如何使用 DSPy 和 ClickHouse MCP Server 构建 AI Agent'
+title: '如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 DSPy 和 ClickHouse MCP Server 构建 AI Agent'
+description: '了解如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
 keywords: ['ClickHouse', 'MCP', 'DSPy']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,9 +12,9 @@ doc_type: 'guide'
 
 
 
-# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体
+# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI Agent
 
-在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 智能体，并借助 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL 在线体验环境](https://sql.clickhouse.com/) 进行交互。
+在本指南中，你将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 智能体（AI Agent），使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
 
 
@@ -22,20 +22,20 @@ doc_type: 'guide'
 
 - 您需要在系统上安装 Python。
 - 您需要在系统上安装 `pip`。
-- 您需要 Anthropic API 密钥,或其他 LLM 提供商的 API 密钥
+- 您需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥
 
 您可以通过 Python REPL 或脚本运行以下步骤。
 
 :::note 示例笔记本
-此示例可在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb) 中以笔记本形式找到。
+此示例以笔记本形式提供在[示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)中。
 :::
 
 <VerticalStepper headerLevel="h2">
 
 
-## 安装依赖库 {#install-libraries}
+## 安装依赖库
 
-使用 `pip` 运行以下命令来安装所需的依赖库:
+使用 `pip` 运行以下命令来安装所需的依赖库：
 
 ```shell
 pip install -q --upgrade pip
@@ -44,9 +44,9 @@ pip install -q mcp
 ```
 
 
-## 设置凭据 {#setup-credentials}
+## 配置凭据
 
-接下来,您需要提供 Anthropic API 密钥:
+接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os
@@ -54,11 +54,11 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥,并且想要使用其他 LLM 提供商,
-您可以在 [DSPy 文档](https://dspy.ai/#__tabbed_1_1) 中找到设置凭据的说明
+如果你没有 Anthropic API 密钥，但想要使用其他 LLM 提供商，
+可以在 [DSPy 文档](https://dspy.ai/#__tabbed_1_1) 中找到设置凭据的说明。
 :::
 
-接下来,定义连接到 ClickHouse SQL 演练场所需的凭据:
+接下来，定义连接到 ClickHouse SQL playground 所需的凭据：
 
 ```python
 env = {
@@ -71,9 +71,9 @@ env = {
 ```
 
 
-## 初始化 MCP 服务器 {#initialize-mcp}
+## 初始化 MCP Server
 
-现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 演练场。
+现在配置 ClickHouse MCP Server，使其指向 ClickHouse SQL Playground。
 
 ```python
 from mcp import ClientSession, StdioServerParameters
@@ -93,27 +93,27 @@ server_params = StdioServerParameters(
 ```
 
 
-## 初始化 LLM {#initialize-llm}
+## 初始化 LLM
 
-接下来，使用以下代码初始化 LLM：
+接下来，使用以下这一行代码来初始化 LLM：
 
 ```python
 dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
 ```
 
 
-## 运行代理 {#run-the-agent}
+## 运行代理程序
 
-最后,初始化并运行代理:
+最后，初始化并运行代理程序：
 
 ```python
 class DataAnalyst(dspy.Signature):
-    """你是一名数据分析师。你将被问及问题,需要尝试使用可用的工具来回答这些问题。"""
+    """你是一名数据分析师。你将收到问题,需要尝试使用可用的工具来回答这些问题。"""
 
     user_request: str = dspy.InputField()
     process_result: str = dspy.OutputField(
         desc=(
-            "查询的答案"
+            "查询结果"
         )
     )
 
@@ -129,18 +129,18 @@ async with stdio_client(server_params) as (read, write):
             dspy_tools.append(dspy.Tool.from_mcp_tool(session, tool))
 
         react = dspy.ReAct(DataAnalyst, tools=dspy_tools)
-        result = await react.acall(user_request="What's the most popular Amazon product category")
+        result = await react.acall(user_request="亚马逊最受欢迎的产品类别是什么")
         print_dspy_result(result)
 ```
 
-```response title="响应"
+```response title="Response"
 ================================================================================
 🤖 DSPy ReAct 结果
 ================================================================================
 
 📍 步骤 1
 ----------------------------------------
-🧠 思考:我需要查找有关 Amazon 产品类别的信息,并确定哪个类别最受欢迎。首先,我应该探索可用的数据库,看看是否有任何与 Amazon 相关的数据。
+🧠 思考:我需要查找 Amazon 产品类别的相关信息,并确定哪个类别最受欢迎。首先,我应该查看有哪些可用的数据库,看看是否有 Amazon 相关的数据。
 
 🔧 工具:list_databases
 
@@ -178,7 +178,7 @@ sta...
 
 📍 步骤 2
 ----------------------------------------
-🧠 思考:太好了!我可以看到有一个"amazon"数据库可用。这正是我需要的,可以查找有关 Amazon 产品类别的信息。让我探索 amazon 数据库中的表,看看有哪些数据可用。
+🧠 思考:太好了!我看到有一个"amazon"数据库可用。这正是我查找 Amazon 产品类别信息所需要的。让我查看 amazon 数据库中的表,看看有哪些可用数据。
 
 🔧 工具:list_tables
    参数:{'database': 'amazon'}
@@ -197,7 +197,7 @@ sta...
 
 📍 步骤 3
 ----------------------------------------
-🧠 思考:完美!我找到了 amazon_reviews 表,其中包含 product_category 列。该表拥有超过 1.5 亿行 Amazon 评论数据,这应该能很好地反映产品的受欢迎程度。要找到最受欢迎的 Amazon 产品类别,我需要统计每个类别的评论数量,并按数量降序排列。评论数量最多的类别将被视为最受欢迎的类别。
+🧠 思考:完美!我找到了 amazon_reviews 表,其中包含 product_category 列。该表拥有超过 1.5 亿行 Amazon 评论数据,这应该能够很好地反映产品的受欢迎程度。要找到最受欢迎的 Amazon 产品类别,我需要统计每个类别的评论数量,并按数量降序排列。评论数量最多的类别将被视为最受欢迎的类别。
 
 🔧 工具:run_select_query
    参数:{'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
@@ -212,7 +212,7 @@ sta...
 
 📍 步骤 4
 ----------------------------------------
-🧠 思考:完美!我已经找到了用户问题的答案。根据 Amazon 评论数据,我可以清楚地看到"Books"是最受欢迎的 Amazon 产品类别,拥有 19,530,930 条评论,其次是"Digital_Ebook_Purchase",拥有 17,622,107 条评论。数据显示了基于每个类别收到的评论数量的产品类别受欢迎程度的明确排名。我现在拥有回答用户问题所需的所有信息。
+🧠 思考:完美!我已经找到了用户问题的答案。根据 Amazon 评论数据,我可以清楚地看到"Books"是最受欢迎的 Amazon 产品类别,拥有 19,530,930 条评论,其次是"Digital_Ebook_Purchase",拥有 17,622,107 条评论。数据显示了基于每个类别收到的评论数量的产品类别受欢迎程度排名。我现在已经掌握了回答用户问题所需的全部信息。
 
 🔧 工具:finish
 
@@ -221,16 +221,15 @@ sta...
 
 🎯 推理过程
 ----------------------------------------
-为了回答关于最受欢迎的 Amazon 产品类别的问题,我访问了 Amazon 数据库,并找到了一个名为"amazon_reviews"的表,其中包含超过 1.5 亿条评论记录。该表包含一个"product_category"列,使我能够根据评论数量分析产品的受欢迎程度。我运行了一个查询来统计每个产品类别的评论数量,并按数量降序排列。这里的假设是,评论数量较多的类别表明受欢迎程度较高,因为更多的评论通常与更多的购买和客户参与度相关。
+为了回答关于最受欢迎的 Amazon 产品类别的问题,我访问了 Amazon 数据库并找到了一个名为"amazon_reviews"的表,其中包含超过 1.5 亿条评论记录。该表包含一个"product_category"列,使我能够根据评论数量分析产品的受欢迎程度。我运行了一个查询来统计每个产品类别的评论数量,并按数量降序排列。这里的假设是,评论数量较多的类别表明受欢迎程度较高,因为更多的评论通常意味着更多的购买量和更高的客户参与度。
 
 ✅ 最终结果
 ----------------------------------------
 根据包含超过 1.5 亿条记录的 Amazon 评论数据,最受欢迎的 Amazon 产品类别是 **Books**,拥有 19,530,930 条评论。
-
 ```
 
 
-以下是按评论数量排名的最受欢迎的 10 大 Amazon 商品类别：
+以下是按评论数量排名的前 10 个最受欢迎 Amazon 产品类别：
 
 1. **Books** - 19,530,930 条评论
 2. **Digital&#95;Ebook&#95;Purchase** - 17,622,107 条评论
@@ -243,7 +242,7 @@ sta...
 9. **Video DVD** - 5,069,014 条评论
 10. **Mobile&#95;Apps** - 5,033,164 条评论
 
-# 值得注意的是，Books 和 Digital Ebook Purchase（两个相关类别）合计超过 3,700 万条评论，这表明阅读类商品在 Amazon 平台上非常受欢迎。
+# 值得注意的是，Books 和 Digital Ebook Purchase 这两个相关类别合计超过 3,700 万条评论，这表明在 Amazon 平台上，阅读类商品的受欢迎程度非常高。
 
 ```
 </VerticalStepper>

@@ -1,5 +1,5 @@
 ---
-description: '计算最小 `val` 值对应的 `arg` 值。如果存在多行的 `val` 相同且都是最小值，则返回哪个关联的 `arg` 是不确定的。'
+description: '计算最小 `val` 值对应的 `arg` 值。如果存在多行记录的 `val` 具有相同的最小值，则返回哪一个对应的 `arg` 是非确定性的。'
 sidebar_position: 110
 slug: /sql-reference/aggregate-functions/reference/argmin
 title: 'argMin'
@@ -8,8 +8,8 @@ doc_type: 'reference'
 
 # argMin
 
-计算在 `val` 取最小值时对应的 `arg` 值。如果存在多行记录的 `val` 相等且为最小值，则返回哪个关联的 `arg` 是不确定的。
-`arg` 部分和 `min` 部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)工作，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在有非 `Null` 值可用的情况下返回非 `Null` 值。
+计算具有最小 `val` 值时对应的 `arg` 值。如果存在多行的 `val` 相同且为最小值，则最终返回哪一行的 `arg` 是不确定的。
+`arg` 部分和 `min` 部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)工作，它们在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 值。
 
 **语法**
 
@@ -24,9 +24,9 @@ argMin(arg, val)
 
 **返回值**
 
-* 与最小 `val` 值对应的 `arg` 值。
+* `val` 最小值对应的 `arg`。
 
-类型：与 `arg` 类型相同。
+类型：与 `arg` 相同。
 
 **示例**
 
@@ -34,9 +34,9 @@ argMin(arg, val)
 
 ```text
 ┌─user─────┬─salary─┐
-│ 总监 │   5000 │
-│ 经理  │   3000 │
-│ 工人   │   1000 │
+│ director │   5000 │
+│ manager  │   3000 │
+│ worker   │   1000 │
 └──────────┴────────┘
 ```
 
@@ -54,7 +54,7 @@ SELECT argMin(user, salary) FROM salary
 └──────────────────────┘
 ```
 
-**进阶示例**
+**扩展示例**
 
 
 ```sql
@@ -84,12 +84,12 @@ SELECT argMin(a, b), min(b) FROM test;
 
 SELECT argMin(tuple(a), b) FROM test;
 ┌─argMin(tuple(a), b)─┐
-│ (NULL)              │ -- 仅包含一个 `NULL` 值的 `Tuple` 本身不是 `NULL`,因此聚合函数不会因该 `NULL` 值而跳过该行
+│ (NULL)              │ -- 仅包含 `NULL` 值的 `Tuple` 本身不是 `NULL`,因此聚合函数不会因该 `NULL` 值而跳过该行
 └─────────────────────┘
 
 SELECT (argMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA─┬─argMinB─┐
-│ ᴺᵁᴸᴸ    │       0 │ -- 可以使用 `Tuple` 获取对应 max(b) 的两列(所有列 - tuple(*))
+│ ᴺᵁᴸᴸ    │       0 │ -- 可以使用 `Tuple` 获取对应 max(b) 的所有列(all - tuple(*))
 └─────────┴─────────┘
 
 SELECT argMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
@@ -109,10 +109,10 @@ SELECT argMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 
 SELECT argMin(a, tuple(b)) FROM test;
 ┌─argMin(a, tuple(b))─┐
-│ d                   │ -- 可以在 `min` 中使用 `Tuple` 以不跳过 b 为 `NULL` 值的行
+│ d                   │ -- `Tuple` 可用于 `min` 中以不跳过 b 为 `NULL` 值的行
 └─────────────────────┘
 ```
 
-**另请参阅**
+**另请参见**
 
 * [Tuple](/sql-reference/data-types/tuple.md)

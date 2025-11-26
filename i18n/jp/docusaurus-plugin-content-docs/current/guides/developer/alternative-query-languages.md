@@ -1,46 +1,46 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: '別のクエリ言語'
-title: '別のクエリ言語'
-description: 'ClickHouse で別のクエリ言語を利用する'
-keywords: ['alternative query languages', 'query dialects', 'MySQL dialect', 'PostgreSQL dialect', 'developer guide']
+sidebar_label: '代替クエリ言語'
+title: '代替クエリ言語'
+description: 'ClickHouse で別のクエリ言語を使用する'
+keywords: ['代替クエリ言語', 'クエリ言語の方言', 'MySQL 方言', 'PostgreSQL 方言', '開発者ガイド']
 doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-標準SQLに加えて、ClickHouseはデータをクエリするためのさまざまな代替クエリ言語をサポートしています。
+標準的な SQL に加えて、ClickHouse はデータをクエリするためのさまざまな別のクエリ言語をサポートしています。
 
-現在サポートされている方言は次のとおりです：
+現在サポートされている方言は次のとおりです。
 
 * `clickhouse`: ClickHouse のデフォルトの [SQL 方言](../../chdb/reference/sql-reference.md)
 * `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 * `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-どのクエリ言語が使用されるかは、`dialect` 設定によって制御されます。
+どのクエリ言語を使用するかは、`dialect` の設定によって制御されます。
 
 
-## Standard SQL {#standard-sql}
+## 標準SQL
 
-Standard SQLは、ClickHouseのデフォルトのクエリ言語です。
+標準SQLは ClickHouse のデフォルトのクエリ言語です。
 
 ```sql
 SET dialect = 'clickhouse'
 ```
 
 
-## パイプライン型リレーショナルクエリ言語（PRQL） {#pipelined-relational-query-language-prql}
+## パイプライン型リレーショナルクエリ言語 (PRQL)
 
 <ExperimentalBadge />
 
-PRQLを有効にするには：
+PRQL を有効にするには:
 
 ```sql
 SET allow_experimental_prql_dialect = 1; -- このSET文はClickHouseバージョン >= v25.1の場合のみ必要です
 SET dialect = 'prql'
 ```
 
-PRQLクエリの例：
+PRQL クエリの例：
 
 ```prql
 from trips
@@ -50,14 +50,14 @@ aggregate {
 }
 ```
 
-内部的には、ClickHouseはPRQLクエリを実行する際にPRQLからSQLへのトランスパイルを使用しています。
+内部的には、ClickHouse は PRQL クエリを実行する際、PRQL を SQL にトランスパイルして処理します。
 
 
-## Kustoクエリ言語（KQL） {#kusto-query-language-kql}
+## Kusto クエリ言語 (KQL)
 
 <ExperimentalBadge />
 
-KQLを有効にするには：
+KQL を有効にするには、次の手順に従います。
 
 ```sql
 SET allow_experimental_kusto_dialect = 1; -- このSET文はClickHouseバージョン25.1以降でのみ必要です
@@ -83,4 +83,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-KQLクエリでは、ClickHouseで定義されているすべての関数にアクセスできない場合があります。
+KQL クエリからは、ClickHouse で定義されているすべての関数を利用できない場合があります。

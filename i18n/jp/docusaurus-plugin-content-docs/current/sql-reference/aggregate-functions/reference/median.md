@@ -1,5 +1,5 @@
 ---
-description: '`median*` 関数は、対応する `quantile*` 関数のエイリアスであり、数値データサンプルの中央値を計算します。'
+description: '`median*` 関数は、対応する `quantile*` 関数のエイリアスです。数値データサンプルの中央値を計算します。'
 sidebar_position: 167
 slug: /sql-reference/aggregate-functions/reference/median
 title: 'median'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 # median
 
-`median*` 関数は、対応する `quantile*` 関数のエイリアスです。数値データ標本の中央値を計算します。
+`median*` 関数は、対応する `quantile*` 関数のエイリアスです。数値データのサンプルに対する中央値を計算します。
 
-関数：
+関数:
 
 * `median` — [quantile](/sql-reference/aggregate-functions/reference/quantile) のエイリアス。
 * `medianDeterministic` — [quantileDeterministic](/sql-reference/aggregate-functions/reference/quantiledeterministic) のエイリアス。
@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 **例**
 
-入力テーブル：
+入力テーブル:
 
 ```text
 ┌─val─┐
@@ -36,13 +36,13 @@ doc_type: 'reference'
 └─────┘
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─medianDeterministic(val, 1)─┐

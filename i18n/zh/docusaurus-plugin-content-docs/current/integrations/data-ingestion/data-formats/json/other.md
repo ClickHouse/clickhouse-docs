@@ -1,30 +1,30 @@
 ---
-title: 'JSON 的其他建模方式'
+title: 'JSON 建模的其他方法'
 slug: /integrations/data-formats/json/other-approaches
-description: 'JSON 建模的其他方式'
+description: '对 JSON 建模的其他方法'
 keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
 
 
-# 建模 JSON 的其他方法
+# 对 JSON 建模的其他方法
 
-**下面介绍的是在 ClickHouse 中对 JSON 建模的一些替代方案。这些内容出于完整性考虑而记录，主要适用于引入 JSON 类型之前的阶段，因此在大多数使用场景下通常不推荐使用或已不再适用。**
+**以下是在 ClickHouse 中对 JSON 建模的替代方法。这些方法为了文档完整性而被记录下来，主要适用于 JSON 类型尚未出现之前的阶段，因此在大多数用例中通常不推荐使用或不再适用。**
 
-:::note 采用对象级别的方法
-在同一个 schema 中，可以针对不同对象采用不同的技术。例如，某些对象最适合使用 `String` 类型来处理，而另一些则更适合使用 `Map` 类型。请注意，一旦选择了 `String` 类型，就不再需要做更多的 schema 决策。相反，也可以在 `Map` 的某个键下嵌套子对象——包括用 `String` 表示的 JSON——如下所示：
+:::note 采用对象级建模方法
+在同一个 schema 中，可以对不同对象采用不同的技术。例如，一些对象最适合使用 `String` 类型，另一些则适合使用 `Map` 类型。请注意，一旦使用了 `String` 类型，就不再需要做进一步的 schema 决策。相反，我们也可以在 `Map` 的某个 key 下嵌套子对象——包括用 `String` 表示的 JSON——如下所示：
 :::
 
 
 
-## 使用 String 类型 {#using-string}
+## 使用 String 类型
 
-如果对象高度动态、结构不可预测且包含任意嵌套对象,用户应使用 `String` 类型。可以在查询时使用 JSON 函数提取值,如下所示。
+如果对象高度动态、没有可预测的结构并且包含任意嵌套对象，建议使用 `String` 类型。可以在查询时使用 JSON 函数提取值，如下所示。
 
-对于动态 JSON 数据,使用上述结构化方法处理通常不可行,因为这些 JSON 可能会发生变化或其模式尚不明确。为了获得最大的灵活性,用户可以简单地将 JSON 存储为 `String`,然后根据需要使用函数提取字段。这代表了处理 JSON 的另一个极端,与将其作为结构化对象处理完全相反。这种灵活性会带来显著的代价——主要是查询语法复杂性的增加以及性能的下降。
+对于那些使用动态 JSON 的用户来说，采用前文所述的结构化方式处理数据通常不可行，因为这些 JSON 要么会发生变化，要么其模式（schema）并不清晰。为了获得最大灵活性，用户可以简单地将 JSON 以 `String` 的形式存储，然后在需要时使用函数提取字段。这代表了与将 JSON 作为结构化对象处理相反的一种极端做法。这种灵活性是有代价的，存在显著缺点——主要是查询语法复杂性增加以及性能下降。
 
-如前所述,对于[原始 person 对象](/integrations/data-formats/json/schema#static-vs-dynamic-json),我们无法确保 `tags` 列的结构。我们插入原始行(包括 `company.labels`,暂时忽略它),将 `tags` 列声明为 `String`:
+如前所述，对于[原始 person 对象](/integrations/data-formats/json/schema#static-vs-dynamic-json)，我们无法保证 `tags` 列的结构。我们插入原始记录（包括暂时忽略的 `company.labels`），并将 `Tags` 列声明为 `String`：
 
 ```sql
 CREATE TABLE people
@@ -44,13 +44,13 @@ ENGINE = MergeTree
 ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"面向分析的实时数据仓库","labels":{"type":"数据库系统","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"数据库","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-Ok.
-1 row in set. Elapsed: 0.002 sec.
+完成。
+1 行记录。耗时：0.002 秒。
 ```
 
-我们可以查询 `tags` 列,可以看到 JSON 已作为字符串插入:
+我们可以查询 `tags` 列，可以看到 JSON 已作为字符串被插入：
 
 ```sql
 SELECT tags
@@ -60,10 +60,10 @@ FROM people
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回 1 行。用时:0.001 秒。
 ```
 
-可以使用 [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) 函数从此 JSON 中检索值。请看以下简单示例:
+[`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) 函数可用于从该 JSON 数据中提取值。请看下面这个简单示例：
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
@@ -72,12 +72,12 @@ SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.002 sec.
+返回 1 行。用时：0.002 秒。
 ```
 
-请注意,这些函数需要同时引用 `String` 列 `tags` 和要提取的 JSON 路径。嵌套路径需要嵌套函数,例如 `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` 用于提取 `tags.car.year` 列。可以通过 [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) 和 [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE) 函数简化嵌套路径的提取。
+请注意，这些函数既需要对 `String` 列 `tags` 的引用，也需要指定要从 JSON 中提取的路径。对于嵌套路径，需要将函数嵌套使用，例如 `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')`，它会提取列 `tags.car.year` 的值。通过函数 [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) 和 [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE) 可以简化对嵌套路径的提取。
 
-考虑 `arxiv` 数据集的极端情况,我们将整个内容视为 `String`。
+再考虑一个极端情况：在 `arxiv` 数据集中，我们将整个正文（body）视为一个 `String`。
 
 ```sql
 CREATE TABLE arxiv (
@@ -86,7 +86,7 @@ CREATE TABLE arxiv (
 ENGINE = MergeTree ORDER BY ()
 ```
 
-要插入到此模式中,我们需要使用 `JSONAsString` 格式:
+要向该表插入数据，我们需要使用 `JSONAsString` 格式：
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -96,10 +96,10 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 ```
 
 
-假设我们希望按年份统计发布的论文数量。对比以下仅使用字符串的查询与使用[结构化版本](/integrations/data-formats/json/inference#creating-tables)模式的查询:
+假设我们希望按年份统计论文发表数量。对比如下两条查询语句：一条仅使用字符串，另一条使用该模式的[结构化版本](/integrations/data-formats/json/inference#creating-tables)：
 
 ```sql
--- 使用结构化模式
+-- 使用结构化架构
 SELECT
     toYear(parseDateTimeBestEffort(versions.created[1])) AS published_year,
     count() AS c
@@ -121,7 +121,7 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-返回 10 行。耗时:0.264 秒。处理了 231 万行,153.57 MB(875 万行/秒,582.58 MB/秒)。
+返回 10 行。用时:0.264 秒。已处理 231 万行,153.57 MB(875 万行/秒,582.58 MB/秒)。
 
 -- 使用非结构化字符串
 
@@ -146,49 +146,40 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-返回 10 行。耗时:1.281 秒。处理了 249 万行,4.22 GB(194 万行/秒,3.29 GB/秒)。
-峰值内存使用:205.98 MiB。
+返回 10 行。用时:1.281 秒。已处理 249 万行,4.22 GB(194 万行/秒,3.29 GB/秒)。
+峰值内存使用量:205.98 MiB。
 ```
 
-注意这里使用 XPath 表达式来过滤 JSON,即 `JSON_VALUE(body, '$.versions[0].created')`。
+请注意，这里使用了一个 XPath 表达式来按 method 字段过滤 JSON，即 `JSON_VALUE(body, '$.versions[0].created')`。
 
-字符串函数明显慢于使用索引的显式类型转换(慢 10 倍以上)。上述查询始终需要全表扫描并处理每一行。虽然这些查询在像这样的小数据集上仍然很快,但在较大的数据集上性能会下降。
+字符串函数比带索引的显式类型转换明显更慢（慢超过 10 倍）。上述查询始终需要对整张表进行全表扫描并处理每一行。尽管在像本例这样的小数据集上这些查询仍然很快，但在更大的数据集上性能会明显下降。
 
-这种方法的灵活性以明显的性能和语法成本为代价,应仅用于模式中高度动态的对象。
+这种方法的灵活性带来了显著的性能和语法开销，只应在模式中对象高度动态的情况下使用。
 
-### 简单 JSON 函数 {#simple-json-functions}
+### 简单 JSON 函数
 
-上述示例使用 JSON\* 系列函数。这些函数使用基于 [simdjson](https://github.com/simdjson/simdjson) 的完整 JSON 解析器,该解析器解析严格,能够区分嵌套在不同层级的相同字段。这些函数能够处理语法正确但格式不规范的 JSON,例如键之间有双空格。
+上面的示例使用了 JSON* 函数族。这些函数使用基于 [simdjson](https://github.com/simdjson/simdjson) 的完整 JSON 解析器，解析严格，并且会区分位于不同嵌套层级的同名字段。这些函数能够处理语法正确但格式不佳的 JSON，例如键之间存在双空格。
 
-还有一组更快且更严格的函数可用。这些 `simpleJSON*` 函数通过对 JSON 的结构和格式做出严格假设,可能提供更优的性能。具体来说:
+还提供了一组更快且更严格的函数。这些 `simpleJSON*` 函数通过对 JSON 的结构和格式做出严格假设，从而提供潜在的更佳性能。具体而言：
 
-- 字段名必须是常量
-- 字段名的编码必须一致,例如 `simpleJSONHas('{"abc":"def"}', 'abc') = 1`,但 `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
-- 字段名在所有嵌套结构中必须唯一。不区分嵌套层级,匹配不加区分。如果有多个匹配字段,将使用第一个出现的字段。
-- 字符串字面量之外不能有特殊字符。这包括空格。以下内容无效且无法解析。
+* 字段名必须是常量
+* 字段名的编码必须一致，例如 `simpleJSONHas('{"abc":"def"}', 'abc') = 1`，但 `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
+* 字段名在所有嵌套结构中必须唯一。不区分嵌套层级，匹配不加区分地进行。如果存在多个匹配字段，将使用首次出现的字段。
+* 字符串字面量之外不能出现特殊字符，包括空格。下面的示例是无效的，无法被解析。
 
   ```json
-  {
-    "@timestamp": 893964617,
-    "clientip": "40.135.0.0",
-    "request": {
-      "method": "GET",
-      "path": "/images/hm_bg.jpg",
-      "version": "HTTP/1.0"
-    },
-    "status": 200,
-    "size": 24736
-  }
+  {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
+  "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
   ```
 
-而以下内容将正确解析:
+而下面的示例将会被正确解析：
 
 
 ````json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
-在某些情况下,如果性能至关重要且您的 JSON 满足上述要求,则可以使用这些函数。以下示例展示了使用 `simpleJSON*` 函数重写的前述查询:
+在某些情况下,如果性能至关重要且您的 JSON 满足上述要求,则可以使用这些函数。以下示例展示了使用 `simpleJSON*` 函数重写的早期查询:
 
 ```sql
 SELECT
@@ -212,32 +203,32 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-返回 10 行。用时:0.964 秒。已处理 248 万行,4.21 GB(258 万行/秒,4.36 GB/秒)。
+返回 10 行。用时:0.964 秒。处理了 248 万行,4.21 GB(258 万行/秒,4.36 GB/秒)。
 峰值内存使用:211.49 MiB。
 ````
 
-上面的查询使用 `simpleJSONExtractString` 提取 `created` 键，利用了这样一个事实：对于发布时间我们只需要第一个值。在这种情况下，为了获得性能提升，可以接受 `simpleJSON*` 函数的这些局限性。
+上述查询使用 `simpleJSONExtractString` 来提取 `created` 键，利用了我们在发布日期上只需要第一个值这一点。在这种情况下，为了获得性能提升，可以接受 `simpleJSON*` 函数带来的局限性。
 
 
-## 使用 Map 类型 {#using-map}
+## 使用 Map 类型
 
-如果对象用于存储任意键,且这些键大多为同一类型,请考虑使用 `Map` 类型。理想情况下,唯一键的数量不应超过几百个。`Map` 类型也可用于包含子对象的对象,前提是子对象的类型具有一致性。通常,我们建议将 `Map` 类型用于标签和标记,例如日志数据中的 Kubernetes pod 标签。
+如果对象用于存储任意键，并且这些键大多为同一类型，可以考虑使用 `Map` 类型。理想情况下，唯一键的数量不应超过数百个。对于包含子对象的对象，在这些子对象的类型足够统一的前提下，也可以考虑使用 `Map` 类型。一般来说，我们推荐使用 `Map` 类型来存储标签和标记（labels / tags），例如日志数据中的 Kubernetes pod（容器组）标签。
 
-尽管 `Map` 提供了一种表示嵌套结构的简单方法,但它也有一些显著的限制:
+尽管 `Map` 提供了一种简单的方式来表示嵌套结构，但它也有一些显著的限制：
 
-- 所有字段必须是相同类型。
-- 访问子列需要使用特殊的 map 语法,因为这些字段不作为列存在。整个对象_本身_就是一个列。
-- 访问子列会加载整个 `Map` 值,即所有同级元素及其各自的值。对于较大的 map,这可能导致显著的性能损失。
+* 所有字段必须是相同的类型。
+* 由于字段本身并不存在为列，因此访问子列需要使用特殊的 map 语法。整个对象本身*就是*一列。
+* 访问某个子列会加载整个 `Map` 值，即所有同级字段及其对应的值。对于较大的 map，这可能会带来显著的性能损失。
 
-:::note String 键
-将对象建模为 `Map` 时,使用 `String` 键来存储 JSON 键名。因此 map 始终为 `Map(String, T)`,其中 `T` 取决于数据。
+:::note String keys
+在将对象建模为 `Map` 时，使用 `String` 键来存储 JSON 键名。因此 map 始终是 `Map(String, T)`，其中 `T` 取决于数据。
 :::
 
-#### 原始值 {#primitive-values}
+#### 原始类型值
 
-`Map` 最简单的应用是当对象包含相同原始类型的值时。在大多数情况下,这涉及为值 `T` 使用 `String` 类型。
+`Map` 最简单的用法是对象将同一种原始类型作为值。在大多数情况下，这意味着对值 `T` 使用 `String` 类型。
 
-考虑我们[之前的 person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json),其中 `company.labels` 对象被确定为动态的。重要的是,我们只期望将 String 类型的键值对添加到此对象中。因此我们可以将其声明为 `Map(String, String)`:
+回顾我们[前面的人物 JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)，其中 `company.labels` 对象被判定为动态。需要强调的是，我们只期望向该对象添加 String 类型的键值对。因此我们可以将其声明为 `Map(String, String)`：
 
 ```sql
 CREATE TABLE people
@@ -257,7 +248,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-我们可以插入原始的完整 JSON 对象:
+我们可以插入原始完整的 JSON 对象：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -265,10 +256,10 @@ INSERT INTO people FORMAT JSONEachRow
 
 Ok.
 
-1 row in set. Elapsed: 0.002 sec.
+已插入 1 行。耗时：0.002 秒。
 ```
 
-查询请求对象中的这些字段需要使用 map 语法,例如:
+在请求对象中查询这些字段时，需要使用映射（map）语法，例如：
 
 ```sql
 SELECT company.labels FROM people
@@ -277,7 +268,7 @@ SELECT company.labels FROM people
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回 1 行。用时：0.001 秒。
 
 SELECT company.labels['type'] AS type FROM people
 
@@ -285,16 +276,16 @@ SELECT company.labels['type'] AS type FROM people
 │ database systems │
 └──────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回 1 行。用时：0.001 秒。
 ```
 
-可以使用完整的 `Map` 函数集来查询此类型,详见[此处](/sql-reference/functions/tuple-map-functions.md)。如果您的数据类型不一致,可以使用函数执行[必要的类型转换](/sql-reference/functions/type-conversion-functions)。
+完整的 `Map` 函数集可用于对其进行查询，相关说明见[此处](/sql-reference/functions/tuple-map-functions.md)。如果你的数据类型不一致，可以使用相应函数执行[必要的类型强制转换](/sql-reference/functions/type-conversion-functions)。
 
-#### 对象值 {#object-values}
+#### 对象值
 
-`Map` 类型也可用于包含子对象的对象,前提是子对象的类型具有一致性。
+对于具有子对象的对象，只要其子对象的类型保持一致，也可以考虑使用 `Map` 类型。
 
-假设我们的 `persons` 对象的 `tags` 键需要一致的结构,其中每个 `tag` 的子对象都有 `name` 和 `time` 列。这样的 JSON 文档的简化示例可能如下所示:
+假设我们的 `persons` 对象中的 `tags` 键需要一个结构一致的子对象，其中每个 `tag` 的子对象都包含 `name` 和 `time` 列。此类 JSON 文档的简化示例如下所示：
 
 
 ```json
@@ -316,7 +307,7 @@ SELECT company.labels['type'] AS type FROM people
 }
 ```
 
-这可以通过 `Map(String, Tuple(name String, time DateTime))` 来进行建模，如下所示：
+这可以使用 `Map(String, Tuple(name String, time DateTime))` 进行建模，如下所示：
 
 ```sql
 CREATE TABLE people
@@ -346,12 +337,12 @@ FORMAT JSONEachRow
 1 行数据。用时:0.001 秒。
 ```
 
-在这种情况下使用 `Map` 类型通常并不常见，这也表明应当对数据进行重新建模，使动态键名不再包含子对象。例如，上述结构可以重新建模为如下形式，从而可以使用 `Array(Tuple(key String, name String, time DateTime))`。
+在这种场景下使用 Map 比较少见，这表明应当重新设计数据模型，使具有动态键名的对象不再包含子对象。比如，可以将上述结构重新建模为如下形式，从而使用 `Array(Tuple(key String, name String, time DateTime))`。
 
 ```json
 {
   "id": 1,
-  "name": "Clicky McCliickHouse",
+  "name": "Clicky McClickHouse",
   "username": "Clicky",
   "email": "clicky@clickhouse.com",
   "tags": [
@@ -370,11 +361,11 @@ FORMAT JSONEachRow
 ```
 
 
-## 使用 Nested 类型 {#using-nested}
+## 使用 Nested 类型
 
-[Nested 类型](/sql-reference/data-types/nested-data-structures/nested)可用于对很少变化的静态对象进行建模,是 `Tuple` 和 `Array(Tuple)` 的替代方案。我们通常建议避免将此类型用于 JSON,因为其行为往往令人困惑。`Nested` 的主要优势在于其子列可以用于排序键。
+[Nested 类型](/sql-reference/data-types/nested-data-structures/nested) 可用于表示很少发生变化的静态对象，可作为 `Tuple` 和 `Array(Tuple)` 的一种替代方案。我们通常建议避免在处理 JSON 时使用此类型，因为它的行为往往令人困惑。`Nested` 的主要优势在于其子列可以用于排序键。
 
-下面我们提供一个使用 Nested 类型对静态对象进行建模的示例。考虑以下简单的 JSON 日志条目:
+下面我们给出一个使用 Nested 类型来表示静态对象的示例。考虑如下这个简单的 JSON 日志条目：
 
 ```json
 {
@@ -390,10 +381,10 @@ FORMAT JSONEachRow
 }
 ```
 
-我们可以将 `request` 键声明为 `Nested` 类型。与 `Tuple` 类似,我们需要指定子列。
+我们可以将 `request` 字段声明为 `Nested`。与 `Tuple` 类似，我们需要指定其中的子列。
 
 ```sql
--- default
+-- 默认
 SET flatten_nested=1
 CREATE table http
 (
@@ -405,13 +396,13 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten_nested {#flatten_nested}
+### flatten&#95;nested
 
-设置 `flatten_nested` 控制嵌套类型的行为。
+`flatten_nested` 设置用于控制 `Nested` 类型的行为。
 
-#### flatten_nested=1 {#flatten_nested1}
+#### flatten&#95;nested=1
 
-值为 `1`(默认值)时不支持任意级别的嵌套。使用此值时,最容易将嵌套数据结构理解为多个长度相同的 [Array](/sql-reference/data-types/array) 列。字段 `method`、`path` 和 `version` 实际上都是独立的 `Array(Type)` 列,但有一个关键约束:**`method`、`path` 和 `version` 字段的长度必须相同。** 使用 `SHOW CREATE TABLE` 可以看到这一点:
+当值为 `1`（默认）时，不支持任意深度的嵌套。在该设置下，最简单的理解方式是：将嵌套数据结构视为多个长度相同的 [Array](/sql-reference/data-types/array) 列。字段 `method`、`path` 和 `version` 实际上分别是独立的 `Array(Type)` 列，但有一个关键约束：**`method`、`path` 和 `version` 字段的长度必须相同。** 如果使用 `SHOW CREATE TABLE`，就可以看到这一点：
 
 ```sql
 SHOW CREATE TABLE http
@@ -430,7 +421,7 @@ ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
 
-下面我们向此表插入数据:
+接下来，我们向该表插入：
 
 ```sql
 SET input_format_import_nested_json = 1;
@@ -439,32 +430,37 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-这里需要注意几个重要点:
+这里有几点需要特别注意：
 
-- 我们需要使用设置 `input_format_import_nested_json` 将 JSON 作为嵌套结构插入。如果不使用此设置,我们需要展平 JSON,即:
+* 我们需要启用配置项 `input_format_import_nested_json` 才能将 JSON 作为嵌套结构插入。否则，就必须先将 JSON 展平，例如：
 
   ```sql
   INSERT INTO http FORMAT JSONEachRow
   {"timestamp":897819077,"clientip":"45.212.12.0","request":{"method":["GET"],"path":["/french/images/hm_nav_bar.gif"],"version":["HTTP/1.0"]},"status":200,"size":3305}
   ```
-
-- 嵌套字段 `method`、`path` 和 `version` 需要作为 JSON 数组传递,即:
+* 嵌套字段 `method`、`path` 和 `version` 需要以 JSON 数组的形式传入，例如：
 
   ```json
   {
     "@timestamp": 897819077,
     "clientip": "45.212.12.0",
     "request": {
-      "method": ["GET"],
-      "path": ["/french/images/hm_nav_bar.gif"],
-      "version": ["HTTP/1.0"]
+      "method": [
+        "GET"
+      ],
+      "path": [
+        "/french/images/hm_nav_bar.gif"
+      ],
+      "version": [
+        "HTTP/1.0"
+      ]
     },
     "status": 200,
     "size": 3305
   }
   ```
 
-可以使用点表示法查询列:
+列可以使用点号表示法进行查询：
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -472,19 +468,19 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
-1 row in set. Elapsed: 0.002 sec.
+结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
 
-注意,对子列使用 `Array` 意味着可以充分利用完整的 [Array 函数](/sql-reference/functions/array-functions),包括 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 子句——当列包含多个值时非常有用。
+请注意，对子列使用 `Array` 意味着可以充分利用完整的 [Array 函数](/sql-reference/functions/array-functions) 功能集，包括 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 子句——在列中包含多个值时非常有用。
 
-#### flatten_nested=0 {#flatten_nested0}
+#### flatten&#95;nested=0
 
-这允许任意级别的嵌套,意味着嵌套列保持为单个 `Tuple` 数组——实际上它们等同于 `Array(Tuple)`。
+这允许任意级别的嵌套，并意味着嵌套列会保持为一个由 `Tuple` 组成的单个数组——实质上它们与 `Array(Tuple)` 相同。
 
-**这是将 JSON 与 `Nested` 配合使用的首选方式,通常也是最简单的方式。如下所示,它只要求所有对象都是列表。**
+**这是在配合 `Nested` 使用 JSON 时的首选方式，并且通常是最简单的方式。正如下文所示，它只要求所有对象以列表的形式组织起来。**
 
-下面,我们重新创建表并重新插入一行数据:
+在下面的示例中，我们重新创建表并重新插入一行数据：
 
 ```sql
 CREATE TABLE http
@@ -500,7 +496,7 @@ ORDER BY (status, timestamp)
 
 SHOW CREATE TABLE http
 
--- 注意 Nested 类型被保留
+-- 注意：Nested 类型已保留。
 CREATE TABLE default.http
 (
     `timestamp` Int32,
@@ -517,11 +513,11 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-这里有几个重要注意事项:
+这里有几点重要说明：
 
-- 插入时不需要设置 `input_format_import_nested_json`。
-- `SHOW CREATE TABLE` 中保留了 `Nested` 类型。该列底层实际上是 `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
-- 因此,我们需要将 `request` 作为数组插入,即:
+* 在插入数据时，不需要设置 `input_format_import_nested_json`。
+* `Nested` 类型会在 `SHOW CREATE TABLE` 中保留不变。在底层，这一列实际上是一个 `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
+* 因此，我们必须将 `request` 作为数组插入，例如：
 
   ```json
   {
@@ -539,7 +535,7 @@ FORMAT JSONEachRow
   }
   ```
 
-可以继续使用点表示法查询列:
+可以同样使用点号表示法来查询这些列：
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -547,12 +543,12 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
-1 row in set. Elapsed: 0.002 sec.
+结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
-### 示例 {#example}
+### 示例
 
-上述数据的更大示例可在 S3 公共存储桶中获取:`s3://datasets-documentation/http/`。
+上述数据的更大规模示例可在 S3 的公共存储桶中获取，路径为：`s3://datasets-documentation/http/`。
 
 ```sql
 SELECT *
@@ -572,12 +568,12 @@ FORMAT PrettyJSONEachRow
     "size": "24736"
 }
 
-1 row in set. Elapsed: 0.312 sec.
+返回 1 行。用时：0.312 秒。
 ```
 
-考虑到 JSON 的约束和输入格式,我们使用以下查询插入此示例数据集。这里设置 `flatten_nested=0`。
+鉴于 JSON 的约束条件和输入格式，我们使用如下查询插入此示例数据集。在这里，我们将 `flatten_nested` 设置为 0。
 
-以下语句将插入 1000 万行数据,因此可能需要几分钟才能执行完成。如有需要可以应用 `LIMIT`:
+下面的语句会插入 1000 万行，因此执行可能需要几分钟时间。如有需要，请添加 `LIMIT`：
 
 ```sql
 INSERT INTO http
@@ -586,7 +582,7 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 'JSONEachRow');
 ```
 
-查询此数据需要将 request 字段作为数组访问。下面,我们汇总了固定时间段内的错误和 HTTP 方法。
+要查询这些数据，我们需要以数组形式访问请求字段。下面，我们将在固定时间段内汇总错误和 HTTP 方法。
 
 
 ```sql
@@ -608,11 +604,11 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### 使用成对数组 {#using-pairwise-arrays}
+### 使用成对数组
 
-成对数组在将 JSON 表示为字符串的灵活性与更结构化方法的性能之间提供了平衡。该模式的灵活性在于可以将任何新字段添加到根级别。但是,这需要更复杂的查询语法,并且与嵌套结构不兼容。
+成对数组在将 JSON 表示为 `String` 的灵活性与更结构化方案的性能之间提供了一种折中。该模式比较灵活，因为可以在根级别添加任意新的字段。不过，这也需要明显更复杂的查询语法，并且与嵌套结构不兼容。
 
-例如,考虑以下表:
+例如，考虑下列表：
 
 ```sql
 CREATE TABLE http_with_arrays (
@@ -622,7 +618,7 @@ CREATE TABLE http_with_arrays (
 ENGINE = MergeTree  ORDER BY tuple();
 ```
 
-要向此表插入数据,我们需要将 JSON 结构化为键和值的列表。以下查询演示了如何使用 `JSONExtractKeysAndValues` 来实现此目的:
+要向此表中插入数据，我们需要将 JSON 结构化为键和值的列表。下面的查询演示了如何使用 `JSONExtractKeysAndValues` 来实现这一点：
 
 ```sql
 SELECT
@@ -632,15 +628,15 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 LIMIT 1
 FORMAT Vertical
 
-Row 1:
+第 1 行:
 ──────
 keys:   ['@timestamp','clientip','request','status','size']
 values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","version":"HTTP/1.0"}','200','24736']
 
-1 row in set. Elapsed: 0.416 sec.
+返回 1 行。耗时: 0.416 秒。
 ```
 
-请注意 request 列如何保持为以字符串表示的嵌套结构。我们可以向根级别插入任何新键。我们还可以在 JSON 本身中具有任意差异。要向本地表插入数据,请执行以下操作:
+请注意，`request` 列仍然是以字符串形式表示的嵌套结构。我们可以在根对象上插入任意新的键，JSON 本身也可以存在任意差异。要插入到本地表中，请执行以下操作：
 
 ```sql
 INSERT INTO http_with_arrays
@@ -652,7 +648,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-查询此结构需要使用 [`indexOf`](/sql-reference/functions/array-functions#indexOf) 函数来识别所需键的索引(该索引应与值的顺序一致)。这可用于访问 values 数组列,即 `values[indexOf(keys, 'status')]`。我们仍然需要对 request 列使用 JSON 解析方法 - 在本例中为 `simpleJSONExtractString`。
+要对这种结构进行查询，需要使用 [`indexOf`](/sql-reference/functions/array-functions#indexOf) 函数来确定所需键的索引（该索引应当与对应值的顺序保持一致）。然后即可用它来访问 values 数组列，即 `values[indexOf(keys, 'status')]`。我们仍然需要一种对 request 列进行 JSON 解析的方法——在这里使用的是 `simpleJSONExtractString`。
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,
@@ -670,12 +666,11 @@ GROUP BY method, status ORDER BY c DESC LIMIT 5;
 │    500 │ POST   │   115 │
 │    400 │ GET    │    81 │
 └────────┴────────┴───────┘
-
 ```
 
 
-结果共 5 行。耗时：0.383 秒。已处理 822 万行，1.97 GB（2145 万行/秒，5.15 GB/秒）。
-峰值内存使用：51.35 MiB。
+5 行结果。耗时：0.383 秒。已处理 8.22 百万行，1.97 GB（21.45 百万行/秒，5.15 GB/秒）。
+峰值内存占用：51.35 MiB。
 
 ```
 ```

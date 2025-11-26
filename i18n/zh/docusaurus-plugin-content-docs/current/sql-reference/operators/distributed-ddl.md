@@ -1,8 +1,8 @@
 ---
-description: 'Distributed DDL 文档'
-sidebar_label: 'Distributed DDL'
+description: '分布式 DDL 文档'
+sidebar_label: '分布式 DDL'
 slug: /sql-reference/other/distributed-ddl
-title: 'Distributed DDL 页面'
+title: '分布式 DDL 页面'
 doc_type: 'reference'
 ---
 

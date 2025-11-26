@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
 title: 'avgResample'
-description: 'avg での Resample コンビネータの使用例'
+description: 'avg と Resample コンビネータを組み合わせて使用する例'
 keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
 sidebar_label: 'avgResample'
 doc_type: 'reference'
@@ -12,27 +12,29 @@ doc_type: 'reference'
 # countResample {#countResample}
 
 
+
 ## 説明 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
-コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
-区間でカウントできます。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+コンビネーターは、[`count`](/sql-reference/aggregate-functions/reference/count)
+集約関数に適用することで、指定したキー列の値を固定数（`N`）の
+区間に分けてカウントできます。
 
 
-## 使用例 {#example-usage}
 
-### 基本的な例 {#basic-example}
+## 使用例
 
-例を見てみましょう。従業員の`name`、`age`、`wage`を含むテーブルを作成し、データを挿入します:
+### 基本的な例
+
+例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、そこにいくつかのデータを挿入してみます。
 
 ```sql
-CREATE TABLE employee_data
+CREATE TABLE employee_data 
 (
     name String,
     age UInt8,
     wage Float32
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -45,8 +47,8 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間にある人々の平均賃金を取得しましょう(`[`は閉区間、`)`は開区間)。年齢には整数表現を使用するため、実際には`[30, 59]`と`[60,74]`の区間の年齢が対象となります。
-これを行うには、`avg`集約関数に`Resample`コンビネータを適用します。
+`[30,60)` と `[60,75)` の区間（`[` は排他的、`)` は包括的）に年齢が入っている人々の平均賃金を求めてみましょう。年齢には整数表現を使用しているため、実際には `[30, 59]` と `[60,74]` の区間の年齢が対象になります。
+これを行うには、`avg` 集約関数に `Resample` コンビネーターを適用します。
 
 ```sql
 WITH avg_wage AS
@@ -67,6 +69,5 @@ FROM avg_wage;
 
 
 ## 関連項目 {#see-also}
-
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

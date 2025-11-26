@@ -1,34 +1,34 @@
 ---
-description: 'Документация по оператору PARALLEL WITH'
+description: 'Документация по предложению PARALLEL WITH'
 sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
 slug: /sql-reference/statements/parallel_with
-title: 'Оператор PARALLEL WITH'
+title: 'Предложение PARALLEL WITH'
 doc_type: 'reference'
 ---
 
 
 
-# Оператор PARALLEL WITH
+# Предложение PARALLEL WITH
 
-Позволяет выполнять несколько выражений параллельно.
+Позволяет выполнять несколько операторов параллельно.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
-statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
+инструкция1 PARALLEL WITH инструкция2 [PARALLEL WITH инструкция3 ...]
 ```
 
-Выполняет операторы `statement1`, `statement2`, `statement3`, ... параллельно друг с другом. Вывод этих операторов игнорируется.
+Выполняет операторы `statement1`, `statement2`, `statement3`, ... параллельно друг с другом. Результат выполнения этих операторов отбрасывается.
 
-Параллельное выполнение операторов во многих случаях может быть быстрее, чем последовательное выполнение тех же операторов. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` вероятно будет быстрее, чем `statement1; statement2; statement3`.
+Параллельное выполнение операторов во многих случаях может быть быстрее, чем их последовательный запуск. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` скорее всего будет выполнено быстрее, чем `statement1; statement2; statement3`.
 
 
-## Примеры {#examples}
+## Примеры
 
-Создаёт две таблицы параллельно:
+Создаёт две таблицы одновременно:
 
 ```sql
 CREATE TABLE table1(x Int32) ENGINE = MergeTree ORDER BY tuple()
@@ -47,13 +47,13 @@ DROP TABLE table2;
 
 ## Настройки {#settings}
 
-Настройка [max_threads](../../operations/settings/settings.md#max_threads) определяет количество создаваемых потоков.
+Параметр [max_threads](../../operations/settings/settings.md#max_threads) определяет, сколько потоков будет создано.
+
 
 
 ## Сравнение с UNION {#comparison-with-union}
 
-Конструкция `PARALLEL WITH` в некоторой степени похожа на [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть несколько отличий:
-
-- `PARALLEL WITH` не возвращает результаты выполнения своих операндов, а может только пробросить исключение от них, если оно возникло;
+Конструкция `PARALLEL WITH` немного похожа на [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
+- `PARALLEL WITH` не возвращает результатов выполнения своих операндов, он может только пробросить исключение из них, если оно произошло;
 - `PARALLEL WITH` не требует, чтобы его операнды имели одинаковый набор результирующих столбцов;
 - `PARALLEL WITH` может выполнять любые операторы (не только `SELECT`).

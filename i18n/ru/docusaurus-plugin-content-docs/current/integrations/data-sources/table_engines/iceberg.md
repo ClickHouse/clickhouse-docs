@@ -2,9 +2,9 @@
 slug: /integrations/iceberg
 sidebar_label: 'Iceberg'
 title: 'Iceberg'
-description: 'Страница, описывающая табличную функцию IcebergFunction, которую можно использовать для интеграции ClickHouse с форматом таблиц Iceberg'
+description: 'Страница, описывающая IcebergFunction, которую можно использовать для интеграции ClickHouse с форматом таблиц Iceberg'
 doc_type: 'guide'
-keywords: ['табличная функция Iceberg', 'apache iceberg', 'формат озера данных']
+keywords: ['табличная функция Iceberg', 'Apache Iceberg', 'формат озера данных']
 hide_title: true
 ---
 

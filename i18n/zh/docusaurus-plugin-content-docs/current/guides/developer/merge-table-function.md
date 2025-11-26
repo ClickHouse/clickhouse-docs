@@ -2,37 +2,37 @@
 slug: /guides/developer/merge-table-function
 sidebar_label: 'Merge 表函数'
 title: 'Merge 表函数'
-description: '同时查询多个表。'
+description: '同时查询多张表。'
 doc_type: 'reference'
 keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-[Merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge)允许我们并行地查询多个表。
-其实现方式是创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表，并通过对各表列取并集并推导出公共数据类型来确定该表的结构。
+[Merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge) 允许我们并行查询多张表。
+它通过创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表来实现这一点，该表的结构是通过对这些表的列取并集，并推断其公共数据类型而得到的。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
-## 设置表 {#setup-tables}
+## 设置数据表
 
-我们将借助 [Jeff Sackmann 的网球数据集](https://github.com/JeffSackmann/tennis_atp)来学习如何使用此函数。
-我们将处理包含 1960 年代以来比赛数据的 CSV 文件,但会为每个十年创建略有不同的架构。
-我们还将为 1990 年代添加几个额外的列。
+我们将借助 [Jeff Sackmann 的网球数据集](https://github.com/JeffSackmann/tennis_atp) 来学习如何使用这个函数。
+我们将处理包含自 20 世纪 60 年代起比赛记录的 CSV 文件，但会为每个十年创建略有不同的表结构。
+我们还会为 20 世纪 90 年代的数据额外增加几列。
 
-导入语句如下所示:
+导入语句如下：
 
 ```sql
 CREATE OR REPLACE TABLE atp_matches_1960s ORDER BY tourney_id AS
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1968..1969}.csv')
-SETTINGS schema_inference_make_columns_nullable=0,
+SETTINGS schema_inference_make_columns_nullable=0, 
          schema_inference_hints='winner_seed Nullable(String), loser_seed Nullable(UInt8)';
 
-CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS
+CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS 
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, splitByWhitespace(score) AS score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1970..1979}.csv')
-SETTINGS schema_inference_make_columns_nullable=0,
+SETTINGS schema_inference_make_columns_nullable=0, 
          schema_inference_hints='winner_seed Nullable(UInt8), loser_seed Nullable(UInt8)';
 
 CREATE OR REPLACE TABLE atp_matches_1980s ORDER BY tourney_id AS
@@ -51,9 +51,9 @@ SETTINGS schema_inference_make_columns_nullable=0,
 ```
 
 
-## 多表模式 {#schema-multiple-tables}
+## 多个表的结构
 
-我们可以运行以下查询来并排列出每个表中的列及其类型,从而更容易看出差异。
+我们可以运行以下查询，将每个表中的列及其类型并排列出，便于对比差异。
 
 ```sql
 SELECT * EXCEPT(position) FROM (
@@ -84,16 +84,16 @@ SETTINGS output_format_pretty_max_value_width=25;
 └─────────────┴──────────────────┴─────────────────┴──────────────────┴───────────────────────────┘
 ```
 
-下面逐一说明这些差异:
+让我们逐一来看差异：
 
-- 1970年代将 `winner_seed` 的类型从 `Nullable(String)` 更改为 `Nullable(UInt8)`,将 `score` 从 `String` 更改为 `Array(String)`。
-- 1980年代将 `winner_seed` 和 `loser_seed` 从 `Nullable(UInt8)` 更改为 `Nullable(UInt16)`。
-- 1990年代将 `surface` 从 `String` 更改为 `Enum('Hard', 'Grass', 'Clay', 'Carpet')`,并添加了 `walkover` 和 `retirement` 列。
+* 1970s 将 `winner_seed` 的类型从 `Nullable(String)` 更改为 `Nullable(UInt8)`，并将 `score` 的类型从 `String` 更改为 `Array(String)`。
+* 1980s 将 `winner_seed` 和 `loser_seed` 的类型从 `Nullable(UInt8)` 更改为 `Nullable(UInt16)`。
+* 1990s 将 `surface` 的类型从 `String` 更改为 `Enum('Hard', 'Grass', 'Clay', 'Carpet')`，并新增 `walkover` 和 `retirement` 两列。
 
 
-## 使用 merge 查询多个表 {#querying-multiple-tables}
+## 使用 merge 查询多张表
 
-让我们编写一个查询来查找 John McEnroe 战胜 1 号种子选手的比赛:
+让我们写一个查询，找出 John McEnroe 在对阵头号种子选手时获胜的比赛：
 
 ```sql
 SELECT loser_name, score
@@ -119,8 +119,8 @@ AND loser_seed = 1;
 └───────────────┴─────────────────────────────────┘
 ```
 
-接下来,假设我们想要过滤这些比赛,找出 McEnroe 种子排名为 3 号或更低的比赛。
-这稍微复杂一些,因为 `winner_seed` 在不同表中使用了不同的数据类型:
+接下来，假设我们想要筛选这些比赛，只保留 McEnroe 种子排名为 3 号或更低的记录。
+这会稍微棘手一些，因为 `winner_seed` 在不同的表中使用了不同的类型：
 
 ```sql
 SELECT loser_name, score, winner_seed
@@ -134,9 +134,9 @@ AND multiIf(
 );
 ```
 
-我们使用 [`variantType`](/docs/sql-reference/functions/other-functions#variantType) 函数检查每行 `winner_seed` 的类型,然后使用 [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) 提取其底层值。
-当类型为 `String` 时,我们将其转换为数字后再进行比较。
-查询运行结果如下所示:
+我们使用 [`variantType`](/docs/sql-reference/functions/other-functions#variantType) 函数检查每一行中 `winner_seed` 的类型，然后使用 [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) 提取其对应的实际值。
+当类型为 `String` 时，我们将其转换为数值类型再进行比较。
+运行该查询的结果如下：
 
 ```text
 ┌─loser_name────┬─score─────────┬─winner_seed─┐
@@ -148,10 +148,10 @@ AND multiIf(
 ```
 
 
-## 使用 merge 时如何确定行来自哪个表？ {#which-table-merge}
+## 在使用 merge 时，行是来自哪个表？
 
-如果我们想知道行来自哪个表该怎么办？
-我们可以使用 `_table` 虚拟列来实现,如下面的查询所示:
+如果我们想知道每一行是从哪个表来的怎么办？
+我们可以使用 `_table` 虚拟列来实现，如下面的查询所示：
 
 ```sql
 SELECT _table, loser_name, score, winner_seed
@@ -174,7 +174,7 @@ AND multiIf(
 └───────────────────┴───────────────┴───────────────┴─────────────┘
 ```
 
-我们还可以在查询中使用此虚拟列来统计 `walkover` 列的值:
+我们还可以在查询中使用该虚拟列，对 `walkover` 列中的值进行计数：
 
 ```sql
 SELECT _table, walkover, count()
@@ -193,8 +193,8 @@ ORDER BY _table;
 └───────────────────┴──────────┴─────────┘
 ```
 
-可以看到,除了 `atp_matches_1990s` 之外,其他所有表的 `walkover` 列都是 `NULL`。
-当 `walkover` 列为 `NULL` 时,我们需要更新查询来检查 `score` 列是否包含字符串 `W/O`:
+我们可以看到，除了 `atp_matches_1990s` 之外，其他所有数据集中的 `walkover` 列都是 `NULL`。
+如果 `walkover` 列为 `NULL`，我们需要在查询中增加一项检查，判断 `score` 列中是否包含字符串 `W/O`：
 
 ```sql
 SELECT _table,
@@ -214,7 +214,7 @@ GROUP BY ALL
 ORDER BY _table;
 ```
 
-如果 `score` 的底层类型是 `Array(String)`,我们需要遍历数组查找 `W/O`;而如果类型是 `String`,则只需在字符串中搜索 `W/O` 即可。
+如果 `score` 的底层类型是 `Array(String)`，我们就必须遍历数组并查找 `W/O`；而如果它的类型是 `String`，则只需在该字符串中搜索 `W/O` 即可。
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

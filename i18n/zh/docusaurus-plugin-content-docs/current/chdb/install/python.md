@@ -3,30 +3,32 @@ title: '在 Python 中安装 chDB'
 sidebar_label: 'Python'
 slug: /chdb/install/python
 description: '如何在 Python 中安装 chDB'
-keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', '安装']
 doc_type: 'guide'
 ---
 
 
 
-## 要求 {#requirements}
+## 系统要求 {#requirements}
 
-- Python 3.8+
-- 支持的平台:macOS 和 Linux(x86_64 和 ARM64)
+- Python 3.8+ 
+- 支持的平台：macOS 和 Linux（x86_64 和 ARM64）
 
 
-## 安装 {#install}
+
+## 安装
 
 ```bash
 pip install chdb
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法 {#usage} 
 
 ### 命令行界面 {#command-line-interface}
 
-直接从命令行运行 SQL 查询:
+通过命令行直接运行 SQL 查询：
+
 
 
 ```bash
@@ -35,7 +37,7 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 ```
 
 
-# 带格式的查询
+# 使用格式化输出进行查询
 
 python3 -m chdb &quot;SELECT version()&quot; JSON
 
@@ -56,15 +58,15 @@ print(result)
 
 # 获取查询统计信息
 
-print(f&quot;Rows read: {result.rows_read()}&quot;)
-print(f&quot;Bytes read: {result.bytes_read()}&quot;)
-print(f&quot;Execution time: {result.elapsed()} seconds&quot;)
+print(f&quot;读取的行数: {result.rows_read()}&quot;)
+print(f&quot;读取的字节数: {result.bytes_read()}&quot;)
+print(f&quot;执行时间: {result.elapsed()} 秒&quot;)
 
 ````
 
-### 基于连接的 API（推荐） {#connection-based-api}
+### 基于连接的 API(推荐) {#connection-based-api}
 
-为了更好地管理资源和提升性能：
+为了更好地管理资源和提升性能:
 
 ```python
 import chdb
@@ -73,7 +75,7 @@ import chdb
 
 # 创建连接（默认为内存数据库）
 conn = chdb.connect(":memory:")
-# 或使用基于文件的数据库：conn = chdb.connect("mydata.db")
+# 或使用基于文件的连接：conn = chdb.connect("mydata.db")
 
 
 
@@ -88,8 +90,8 @@ cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3"
 
 
 # 以不同方式获取结果
-print(cur.fetchone())    # 单行结果：(0, '0')
-print(cur.fetchmany(2))  # 多行结果：((1, '1'), (2, '2'))
+print(cur.fetchone())    # 单行记录：(0, '0')
+print(cur.fetchmany(2))  # 多行记录：((1, '1'), (2, '2'))
 
 
 
@@ -105,7 +107,7 @@ for row in cur:
 
 
 
-# 务必关闭资源
+# 始终关闭资源
 
 cur.close()
 conn.close()
@@ -114,11 +116,12 @@ conn.close()
 ```
 
 
-## 数据输入方法 {#data-input}
+## 数据导入方式 {#data-input}
 
 ### 基于文件的数据源 {#file-based-data-sources}
 
-chDB 支持 70 多种数据格式,可直接查询文件:
+chDB 支持 70 多种数据格式，可直接对文件进行查询：
+
 
 
 ```python
@@ -179,7 +182,7 @@ print(json_result)
 
 
 
-# 便于调试的 Pretty 格式
+# 适用于调试的 Pretty 格式
 
 pretty&#95;result = chdb.query(&#39;SELECT * FROM system.numbers LIMIT 3&#39;, &#39;Pretty&#39;)
 print(pretty&#95;result)
@@ -209,7 +212,7 @@ tbl2=df2
 print(result_df)
 
 
-# 对结果 DataFrame 执行查询
+# 在结果 DataFrame 上执行查询
 
 summary = result&#95;df.query(&#39;SELECT b, sum(a) FROM **table** GROUP BY b&#39;)
 print(summary)
@@ -241,7 +244,7 @@ df = pd.DataFrame({
 })
 
 
-# 支持 JSON 的直接 DataFrame 查询
+# 支持 JSON 的 DataFrame 直接查询
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -273,7 +276,7 @@ ORDER BY score DESC
 
 ### 有状态会话 {#stateful-sessions}
 
-会话可在多个操作之间保持查询状态,从而支持复杂的工作流:
+会话可在多个操作间保持查询状态,从而支持复杂的工作流:
 
 ```python
 from chdb import session
@@ -286,7 +289,7 @@ sess = session.Session()
 
 
 
-# 或在指定路径下创建持久会话
+# 或使用指定路径的持久化会话
 # sess = session.Session("/path/to/data")
 
 
@@ -330,15 +333,15 @@ sess.query("""
 
 
 
-# 查询该视图
+# 查询视图
 result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
 print(result)
 
 
 
-# Session 自动管理资源
+# Session 会自动管理资源
 
-sess.close()  # 可选 - 对象删除时会自动关闭
+sess.close()  # 可选——在对象被删除时会自动关闭
 
 ```
 
@@ -382,13 +385,13 @@ print(f"chDB driver version: {dbapi.get_client_info()}")
 
 
 
-# 创建连接
+# 建立连接
 conn = dbapi.connect()
 cursor = conn.cursor()
 
 
 
-# 执行带参数的查询
+# 使用参数执行查询
 cursor.execute("""
     SELECT number, number * ? as doubled 
     FROM system.numbers 
@@ -398,24 +401,24 @@ cursor.execute("""
 
 
 # 获取元数据
-print("列信息:", cursor.description)
-print("行数:", cursor.rowcount)
+print("列描述：", cursor.description)
+print("行数：", cursor.rowcount)
 
 
 
 # 获取结果
-print("第一行：", cursor.fetchone())
-print("接下来的 2 行：", cursor.fetchmany(2))
+print("第一行:", cursor.fetchone())
+print("接下来的 2 行:", cursor.fetchmany(2))
 
 
 
-# 获取剩余的行
+# 获取其余的行
 for row in cursor.fetchall():
-    print("行:", row)
+    print("Row:", row)
 
 
 
-# 批量操作
+# 批处理操作
 
 data = [(1, &#39;Alice&#39;), (2, &#39;Bob&#39;), (3, &#39;Charlie&#39;)]
 cursor.execute(&quot;&quot;&quot;
@@ -482,7 +485,7 @@ print(result)
 
 ```
 
-#### 自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
+#### 使用自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
 
 ```
 
@@ -497,16 +500,16 @@ def calculate_bmi(height_str, weight_str):
 ```
 
 
-# 用于数据验证的 UDF
+# 数据验证 UDF
 
-@chdb*udf(return_type="UInt8")
+@chdb_udf(return_type="UInt8")
 def is_valid_email(email):
-import re
-pattern = r'^[a-zA-Z0-9.*%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-return 1 if re.match(pattern, email) else 0
+    import re
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return 1 if re.match(pattern, email) else 0
 
 
-# 在复杂查询中的应用
+# 在复杂查询中的用法
 
 result = query(&quot;&quot;&quot;
 SELECT
@@ -536,7 +539,7 @@ print(result)
 
 
 ```python
-# 结构良好且具有错误处理的 UDF
+# 结构完善且具备错误处理的 UDF
 @chdb_udf(return_type="String")
 def safe_json_extract(json_str, path):
     import json
@@ -578,7 +581,7 @@ sess = session.Session()
 ````
 
 
-# 创建大型数据集
+# 准备大型数据集
 sess.query("""
     CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
@@ -612,13 +615,13 @@ while True:
     if chunk is None:
         break
     
-    # 处理数据块
+    # 处理分片数据
     lines = chunk.data().strip().split('\n')
     for line in lines:
         if line:  # 跳过空行
             processed_count += 1
     
-    print(f"Processed {processed_count} records so far...")
+    print(f"到目前为止共处理了 {processed_count} 条记录...")
     
 stream.close()  # 重要：显式清理
 
@@ -630,12 +633,12 @@ import pyarrow as pa
 from deltalake import write_deltalake
 
 
-# 以 Arrow 格式流式传输结果
+# 以 Arrow 格式流式返回结果
 stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
 
 
-# 使用自定义批量大小创建 RecordBatchReader
+# 使用自定义批次大小创建 RecordBatchReader
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
 
@@ -701,7 +704,7 @@ result = chdb.query("""
 
 
 
-# 在 DataFrame 上使用窗口函数
+# DataFrame 上的窗口函数
 
 window&#95;result = chdb.query(&quot;&quot;&quot;
 SELECT
@@ -809,7 +812,7 @@ result = chdb.query("""
         length(profile.preferences) as pref_count,
         profile.location.city as city
     FROM Python(df_with_json)
-    SETTINGS pandas_analyze_sample = 1000  -- 为 JSON 检测分析所有行
+    SETTINGS pandas_analyze_sample = 1000  -- 为 JSON 检测分析全部行
 """, "Pretty")
 print(result)
 
@@ -835,30 +838,29 @@ print(complex&#95;json)
 ```
 
 
-## 性能与优化 {#performance-optimization}
+## 性能与优化
 
-### 基准测试 {#benchmarks}
+### 基准测试
 
-chDB 的性能始终优于其他嵌入式引擎：
+chDB 在性能上持续优于其他嵌入式引擎：
 
-- **DataFrame 操作**：分析查询速度比传统 DataFrame 库快 2-5 倍
-- **Parquet 处理**：与领先的列式引擎性能相当
-- **内存效率**：内存占用低于其他替代方案
+* **DataFrame 操作**：在分析查询场景下，比传统 DataFrame 库快 2-5 倍
+* **Parquet 处理**：性能可与主流列式引擎相媲美
+* **内存效率**：相比其他方案具有更低的内存占用
 
-[更多基准测试结果详情](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
+[更多基准测试结果](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
-### 性能优化建议 {#performance-tips}
+### 性能优化建议
 
 ```python
 import chdb
-
 ```
 
 
 # 1. 使用合适的输出格式
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 用于分析
 arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 用于与其他系统互操作
-native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 之间的数据交换
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 间数据交换
 
 
 
@@ -875,14 +877,14 @@ fast_result = chdb.query("""
 
 
 
-# 3. 在大型数据集上使用流式处理
+# 3. 利用流式处理应对大型数据集
 from chdb import session
 
 sess = session.Session()
 
 
 
-# 准备大型数据集
+# 设置大规模数据集
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -894,7 +896,7 @@ sess.query("""
 
 
 
-# 使用固定内存进行流式处理
+# 使用固定内存的流式处理
 total_amount = 0
 processed_rows = 0
 
@@ -908,13 +910,13 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
                 total_amount += row['total']
                 processed_rows += 1
         
-        print(f"已处理 {processed_rows} 条客户记录，当前累计金额：{total_amount}")
+        print(f"Processed {processed_rows} customer records, running total: {total_amount}")
         
-        # 为演示进行的提前终止
+        # 为演示目的提前终止
         if processed_rows > 1000:
             break
 
-print(f"最终结果：共处理 {processed_rows} 位客户，总金额：{total_amount}")
+print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
 
 
 
@@ -944,5 +946,5 @@ sess.close()
 
 ## GitHub 仓库 {#github-repository}
 
-- **主仓库**:[chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **问题与支持**:在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues)报告问题
+- **主仓库**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
+- **问题与支持**: 请在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues) 中提交 Issue

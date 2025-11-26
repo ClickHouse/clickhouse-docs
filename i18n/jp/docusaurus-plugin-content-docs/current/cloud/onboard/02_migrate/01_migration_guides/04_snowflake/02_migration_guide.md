@@ -16,22 +16,18 @@ import Image from '@theme/IdealImage';
 
 > 本ガイドでは、SnowflakeからClickHouseへデータを移行する方法について説明します。
 
-SnowflakeとClickHouse間でデータを移行するには、転送用の中間ストレージとしてS3などのオブジェクトストアを使用する必要があります。移行プロセスでは、Snowflakeの`COPY INTO`コマンドとClickHouseの`INSERT INTO SELECT`コマンドも使用します。
+SnowflakeとClickHouse間でデータを移行するには、転送用の中間ストレージとしてS3などのオブジェクトストアを使用する必要があります。移行プロセスでは、Snowflakeの`COPY INTO`コマンドとClickHouseの`INSERT INTO SELECT`コマンドを使用します。
 
 <VerticalStepper headerLevel="h2">
 
 
-## Snowflakeからデータをエクスポートする {#1-exporting-data-from-snowflake}
+## Snowflake からデータをエクスポートする
 
-<Image
-  img={migrate_snowflake_clickhouse}
-  size='md'
-  alt='SnowflakeからClickHouseへの移行'
-/>
+<Image img={migrate_snowflake_clickhouse} size="md" alt="Snowflake から ClickHouse への移行" />
 
-Snowflakeからデータをエクスポートするには、上図に示すように外部ステージの使用が必要です。
+上の図に示されているように、Snowflake からデータをエクスポートするには外部ステージを利用する必要があります。
 
-次のスキーマを持つSnowflakeテーブルをエクスポートする場合を考えてみましょう:
+次のスキーマを持つ Snowflake テーブルをエクスポートするとします。
 
 ```sql
 CREATE TABLE MYDATASET (
@@ -42,34 +38,34 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-このテーブルのデータをClickHouseデータベースに移動するには、まずこのデータを外部ステージにコピーする必要があります。データをコピーする際は、型情報の共有が可能で、精度を保持し、圧縮効率が高く、分析で一般的に使用されるネスト構造をネイティブにサポートするParquetを中間フォーマットとして推奨します。
+このテーブルのデータを ClickHouse データベースに移行するには、まずこのデータを外部ステージにコピーする必要があります。データをコピーする際の中間フォーマットとしては、Parquet の利用を推奨します。Parquet であれば、型情報を共有でき、精度を保持できるうえ、圧縮効率も高く、分析で一般的なネスト構造もネイティブにサポートしているためです。
 
-以下の例では、SnowflakeでParquetと必要なファイルオプションを表す名前付きファイルフォーマットを作成します。次に、コピーしたデータセットを格納するバケットを指定します。最後に、データセットをバケットにコピーします。
+以下の例では、Parquet と必要なファイルオプションを表現するために、Snowflake 上で名前付きファイルフォーマットを作成します。次に、コピーされたデータセットを格納するバケットを指定します。最後に、そのデータセットをバケットにコピーします。
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- コピー先のS3バケットを指定する外部ステージを作成
+-- コピー先のS3バケットを指定する外部ステージを作成する
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- すべてのファイルに"mydataset"プレフィックスを適用し、最大ファイルサイズを150MBに指定
--- カラム名を取得するには`header=true`パラメータが必要
+-- すべてのファイルに "mydataset" プレフィックスを適用し、最大ファイルサイズを150MBに指定する
+-- カラム名を取得するには `header=true` パラメータが必須
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
-最大ファイルサイズ150MBで約5TBのデータセットを、同じAWS `us-east-1`リージョンに配置された2X-Large Snowflakeウェアハウスを使用してS3バケットにコピーする場合、約30分かかります。
+約 5TB のデータセットで最大ファイルサイズが 150MB、かつ同じ AWS `us-east-1` リージョン内にある 2X-Large Snowflake ウェアハウスを使用する場合、S3 バケットへのデータのコピーには約 30 分かかります。
 
 
-## ClickHouseへのインポート {#2-importing-to-clickhouse}
+## ClickHouse へのインポート
 
-中間オブジェクトストレージにデータがステージングされた後、[s3テーブル関数](/sql-reference/table-functions/s3)などのClickHouse関数を使用して、以下のようにテーブルにデータを挿入できます。
+データが中間オブジェクトストレージにステージングされたら、以下のように [s3 テーブル関数](/sql-reference/table-functions/s3) などの ClickHouse の関数を使用して、テーブルにデータを挿入できます。
 
-この例ではAWS S3用の[s3テーブル関数](/sql-reference/table-functions/s3)を使用していますが、Google Cloud Storage用には[gcsテーブル関数](/sql-reference/table-functions/gcs)を、Azure Blob Storage用には[azureBlobStorageテーブル関数](/sql-reference/table-functions/azureBlobStorage)を使用できます。
+この例では AWS S3 向けの [s3 テーブル関数](/sql-reference/table-functions/s3) を使用していますが、Google Cloud Storage には [gcs テーブル関数](/sql-reference/table-functions/gcs)、Azure Blob Storage には [azureBlobStorage テーブル関数](/sql-reference/table-functions/azureBlobStorage) を使用できます。
 
-以下のターゲットテーブルスキーマを想定します:
+対象となるテーブルのスキーマを次のように想定します：
 
 ```sql
 CREATE TABLE default.mydataset
@@ -83,7 +79,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp)
 ```
 
-次に、`INSERT INTO SELECT`コマンドを使用して、S3からClickHouseテーブルにデータを挿入できます:
+次に、`INSERT INTO SELECT` コマンドを使用して、S3 上のデータを ClickHouse のテーブルに挿入します。
 
 ```sql
 INSERT INTO mydataset
@@ -99,20 +95,20 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- 値がnullの場合、カラムをデフォルト値として挿入
+SETTINGS input_format_null_as_default = 1, -- 値がnullの場合、カラムにデフォルト値を挿入
 input_format_parquet_case_insensitive_column_matching = 1 -- ソースデータとターゲットテーブル間のカラムマッチングで大文字小文字を区別しない
 ```
 
-:::note ネストされたカラム構造に関する注意
-元のSnowflakeテーブルスキーマの`VARIANT`および`OBJECT`カラムは、デフォルトでJSON文字列として出力されるため、ClickHouseに挿入する際にキャストする必要があります。
+:::note ネストした列構造に関する注意
+元の Snowflake テーブルスキーマ内の `VARIANT` 列と `OBJECT` 列は、デフォルトでは JSON 文字列として出力されます。そのため、ClickHouse に挿入する際には、これらをキャストする必要があります。
 
-`some_file`などのネスト構造は、Snowflakeによるコピー時にJSON文字列に変換されます。このデータをインポートする際は、上記のように[JSONExtract関数](/sql-reference/functions/json-functions#JSONExtract)を使用して、ClickHouseでの挿入時にこれらの構造をタプルに変換する必要があります。
+`some_file` のようなネストした構造は、Snowflake によるコピー処理の際に JSON 文字列へと変換されます。このデータをインポートするには、上記の [JSONExtract 関数](/sql-reference/functions/json-functions#JSONExtract) を使用して、ClickHouse への挿入時にこれらの構造を Tuple 型に変換する必要があります。
 :::
 
 
-## データエクスポートの成功を確認する {#3-testing-successful-data-export}
+## データエクスポートの成功を検証する {#3-testing-successful-data-export}
 
-データが正しく挿入されたかどうかを確認するには、新しいテーブルに対して`SELECT`クエリを実行します。
+データが正しく挿入されたかどうかを検証するには、新しいテーブルに対して`SELECT`クエリを実行します。
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;

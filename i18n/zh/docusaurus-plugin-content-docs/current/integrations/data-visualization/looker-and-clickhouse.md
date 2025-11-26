@@ -2,7 +2,7 @@
 sidebar_label: 'Looker'
 slug: /integrations/looker
 keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
-description: 'Looker 是一个企业级平台，用于 BI、数据应用和嵌入式分析，可帮助你实时探索和共享洞察。'
+description: 'Looker 是一个企业级平台，面向 BI、数据应用和嵌入式分析，帮助你实时探索和分享数据洞察。'
 title: 'Looker'
 doc_type: 'guide'
 integration:
@@ -23,77 +23,58 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse。
+Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管的 ClickHouse 部署。
 
 
 
-## 1. 收集连接详细信息 {#1-gather-your-connection-details}
-
+## 1. 收集连接信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
+
 
 
 ## 2. 创建 ClickHouse 数据源 {#2-create-a-clickhouse-data-source}
 
-导航至 Admin -> Database -> Connections,然后点击右上角的 "Add Connection" 按钮。
+导航到 Admin -> Database -> Connections，然后单击右上角的 “Add Connection” 按钮。
 
-<Image
-  size='md'
-  img={looker_01}
-  alt="在 Looker 的数据库管理界面中添加新连接"
-  border
-/>
-<br />
+<Image size="md" img={looker_01} alt="在 Looker 的数据库管理界面中添加新连接" border />
+<br/>
 
-为您的数据源选择一个名称,并从 dialect 下拉菜单中选择 `ClickHouse`。在表单中输入您的凭据信息。
+为数据源选择一个名称，并在 “Dialect” 下拉列表中选择 `ClickHouse`。在表单中输入连接凭据。
 
-<Image
-  size='md'
-  img={looker_02}
-  alt='在 Looker 连接表单中指定 ClickHouse 凭据'
-  border
-/>
-<br />
+<Image size="md" img={looker_02} alt="在 Looker 连接表单中填写 ClickHouse 凭据" border />
+<br/>
 
-如果您使用的是 ClickHouse Cloud 或您的部署需要 SSL,请确保在附加设置中开启 SSL。
+如果您使用的是 ClickHouse Cloud，或者部署需要 SSL，请确保在附加设置中启用 SSL。
 
-<Image
-  size='md'
-  img={looker_03}
-  alt='在 Looker 设置中为 ClickHouse 连接启用 SSL'
-  border
-/>
-<br />
+<Image size="md" img={looker_03} alt="在 Looker 设置中为 ClickHouse 连接启用 SSL" border />
+<br/>
 
-首先测试您的连接,测试完成后,连接到您的新 ClickHouse 数据源。
+请先测试连接，测试通过后，再连接到新的 ClickHouse 数据源。
 
-<Image
-  size='md'
-  img={looker_04}
-  alt='测试并连接到 ClickHouse 数据源'
-  border
-/>
-<br />
+<Image size="md" img={looker_04} alt="测试并连接到 ClickHouse 数据源" border />
+<br/>
 
-现在您应该能够将 ClickHouse 数据源附加到您的 Looker 项目了。
+现在，您应该可以将 ClickHouse 数据源关联到 Looker 项目中。
+
 
 
 ## 3. 已知限制 {#3-known-limitations}
 
-1. 以下数据类型默认按字符串处理:
-   - Array - 由于 JDBC 驱动程序限制,序列化无法正常工作
-   - Decimal\* - 可在模型中更改为数值类型
-   - LowCardinality(...) - 可在模型中更改为相应类型
-   - Enum8, Enum16
-   - UUID
-   - Tuple
-   - Map
-   - JSON
-   - Nested
-   - FixedString
-   - Geo types
-     - MultiPolygon
-     - Polygon
-     - Point
-     - Ring
-2. 不支持[对称聚合功能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)
-3. 驱动程序中尚未实现[全外连接](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer)
+1. 以下数据类型默认按字符串类型处理：
+   * Array - 由于 JDBC 驱动的限制，序列化无法按预期工作
+   * Decimal* - 可以在模型中修改为数值类型
+   * LowCardinality(...) - 可以在模型中修改为合适的数据类型
+   * Enum8, Enum16
+   * UUID
+   * Tuple
+   * Map
+   * JSON
+   * Nested
+   * FixedString
+   * Geo 类型
+     * MultiPolygon
+     * Polygon
+     * Point
+     * Ring
+2. 不支持 [Symmetric aggregate（对称聚合）功能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)
+3. 驱动程序中尚未实现 [Full outer join（完全外连接）](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer)

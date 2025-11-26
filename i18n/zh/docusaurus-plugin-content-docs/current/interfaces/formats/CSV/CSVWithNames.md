@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'CSV 格式文档'
+description: 'CSVWithNames 格式文档'
 input_format: true
 keywords: ['CSVWithNames']
 output_format: true
@@ -15,20 +15,21 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-同时输出包含列名的标题行,类似于 [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)。
+此外会输出包含列名的表头行，类似于 [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 使用示例
+
+### 插入数据
 
 :::tip
-从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始,ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行,因此不需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
+从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的表头，因此无需再使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
 :::
 
-使用以下名为 `football.csv` 的 CSV 文件:
+使用以下名为 `football.csv` 的 CSV 文件：
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -51,7 +52,7 @@ date,season,home_team,away_team,home_team_goals,away_team_goals
 2022-05-07,2021,Walsall,Swindon Town,0,3
 ```
 
-创建表:
+创建表：
 
 ```sql
 CREATE TABLE football
@@ -67,15 +68,15 @@ ENGINE = MergeTree
 ORDER BY (date, home_team);
 ```
 
-使用 `CSVWithNames` 格式插入数据:
+使用 `CSVWithNames` 格式插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `CSVWithNames` 格式读取数据:
+使用 `CSVWithNames` 格式读取数据：
 
 ```sql
 SELECT *
@@ -83,7 +84,7 @@ FROM football
 FORMAT CSVWithNames
 ```
 
-输出将是带有单个标题行的 CSV:
+输出将是一个只有一行表头的 CSV 文件：
 
 
 ```csv
@@ -111,7 +112,7 @@ FORMAT CSVWithNames
 ## 格式设置 {#format-settings}
 
 :::note
-如果将设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设为 `1`,
-输入数据中的列将按名称映射到表中的列,若设置 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`,则会跳过名称未知的列。
-否则,将跳过第一行。
+如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
+则输入数据中的列会按照名称映射到表中的列；如果将 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
+否则，第一行将会被跳过。
 :::

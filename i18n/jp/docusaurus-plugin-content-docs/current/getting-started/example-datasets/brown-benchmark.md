@@ -3,13 +3,13 @@ description: '機械生成ログデータ向けの新しい分析ベンチマー
 sidebar_label: 'Brown University ベンチマーク'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Brown University ベンチマーク'
-keywords: ['Brown University ベンチマーク', 'MgBench', 'ログデータベンチマーク', '機械生成データ', '入門']
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
 doc_type: 'guide'
 ---
 
-`MgBench` は、機械生成ログデータ向けの新しい分析用ベンチマークであり、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) によって開発されました。
+`MgBench` は機械生成ログデータ向けの新しい分析ベンチマークであり、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) によって提案されました。
 
-データをダウンロード：
+データのダウンロード:
 
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
@@ -21,7 +21,7 @@ wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-データベースとテーブルを作成する：
+データベースおよびテーブルを作成します：
 
 ```sql
 CREATE DATABASE mgbench;
@@ -86,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-データを挿入:
+データを挿入する:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -95,14 +95,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbe
 ```
 
 
-## ベンチマーククエリの実行 {#run-benchmark-queries}
+## ベンチマーク用クエリを実行する
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: 深夜0時以降の各Webサーバーにおける CPU/ネットワーク使用率は？
+-- Q1.1: 深夜0時以降の各Webサーバーの CPU/ネットワーク使用率は？
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -127,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: 過去1日間でオフラインになっているコンピュータラボのマシンは？
+-- Q1.2: 過去1日間でオフラインだったコンピュータラボのマシンはどれか?
 
 SELECT machine_name,
        log_time
@@ -141,7 +141,36 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定のワークステーションにおける過去10日間の時間別平均メトリクスは？
+-- Q1.3: 特定のワークステーションにおける過去10日間の時間別平均メトリクスを取得する
+
+SELECT dt,
+       hr,
+       AVG(load_fifteen) AS load_fifteen_avg,
+       AVG(load_five) AS load_five_avg,
+       AVG(load_one) AS load_one_avg,
+       AVG(mem_free) AS mem_free_avg,
+       AVG(swap_free) AS swap_free_avg
+FROM (
+  SELECT CAST(log_time AS DATE) AS dt,
+         EXTRACT(HOUR FROM log_time) AS hr,
+         load_fifteen,
+         load_five,
+         load_one,
+         mem_free,
+         swap_free
+  FROM logs1
+  WHERE machine_name = 'babbage'
+    AND load_fifteen IS NOT NULL
+    AND load_five IS NOT NULL
+    AND load_one IS NOT NULL
+    AND mem_free IS NOT NULL
+    AND swap_free IS NOT NULL
+    AND log_time >= TIMESTAMP '2017-01-01 00:00:00'
+) AS r
+GROUP BY dt,
+         hr
+ORDER BY dt,
+         hr;
 
 SELECT dt,
        hr,
@@ -174,7 +203,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 1ヶ月間で、各サーバーがディスクI/Oでブロックされた頻度は？
+-- Q1.4: 1か月間で、各サーバーがディスクI/Oでブロックされた回数は？
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -189,7 +218,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 外部からアクセス可能なVMのうち、メモリ不足が発生したものは？
+-- Q1.5: 外部からアクセス可能なVMのうち、メモリ不足が発生したものはどれか？
 
 SELECT machine_name,
        dt,
@@ -210,8 +239,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: すべてのファイルサーバーにおける時間別の総ネットワークトラフィックは？
-
+-- Q1.6: すべてのファイルサーバーの1時間あたりの総ネットワークトラフィック量は？
 ```
 
 
@@ -240,7 +268,7 @@ LIMIT 10;
 ````
 
 ```sql
--- Q2.1: 過去2週間でサーバーエラーを引き起こしたリクエストはどれですか？
+-- Q2.1: 過去2週間でサーバーエラーを引き起こしたリクエストはどれか？
 
 SELECT *
 FROM logs2
@@ -250,7 +278,7 @@ ORDER BY log_time;
 ````
 
 ```sql
--- Q2.2: 特定の2週間の期間中に、ユーザーパスワードファイルが漏洩したか?
+-- Q2.2: 特定の2週間において、ユーザーパスワードファイルの漏洩は発生したか？
 
 SELECT *
 FROM logs2
@@ -262,7 +290,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: 過去1か月間のトップレベルリクエストの平均パス深度は？
+-- Q2.3: 過去1ヶ月間のトップレベルリクエストの平均パス深度は？
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -287,7 +315,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 過去3ヶ月間で、過剰な数のリクエストを行ったクライアントはどれですか?
+-- Q2.4: 過去3か月間で、過剰な数のリクエストを行ったクライアントはどれか?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -299,7 +327,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: 日次のユニークビジター数は？
+-- Q2.5: 日次のユニークビジター数は?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -313,7 +341,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: 平均および最大データ転送速度（Gbps）は？
+-- Q2.6: 平均および最大データ転送速度（Gbps）はいくつか？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -326,7 +354,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: 週末に室内温度が氷点下に達しましたか？
+-- Q3.1: 週末に室内温度が氷点下に達したか?
 
 SELECT *
 FROM logs3
@@ -336,7 +364,7 @@ WHERE event_type = 'temperature'
 ```
 
 ```sql
--- Q3.4: 過去6ヶ月間で、各ドアが開けられた回数は？
+-- Q3.4: 過去6か月間で、各ドアが開けられた頻度は?
 
 SELECT device_name,
        device_floor,
@@ -350,14 +378,14 @@ ORDER BY ct DESC;
 ```
 
 
-以下のクエリ3.5は UNION を使用します。SELECT クエリ結果を結合するモードを設定します。この設定は、UNION ALL または UNION DISTINCT を明示的に指定せずに UNION を使用した場合にのみ有効になります。
+以下のクエリ 3.5 は UNION を使用します。SELECT クエリ結果の結合モードを設定します。この設定が使用されるのは、UNION ALL または UNION DISTINCT を明示的に指定していない UNION と併用する場合にのみです。
 
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 建物内で冬季と夏季に大きな温度変動が発生する場所はどこですか?
+-- Q3.5: 冬季と夏季に建物内のどこで大きな温度変動が発生するか?
 
 WITH temperature AS (
   SELECT dt,
@@ -411,7 +439,7 @@ WHERE dt >= DATE '2019-06-01'
 ```
 
 ```sql
--- Q3.6: 各デバイスカテゴリの月次電力消費メトリクスを取得する
+-- Q3.6: 各デバイスカテゴリの月次電力消費量メトリクスは?
 
 SELECT yr,
        mo,
@@ -455,4 +483,4 @@ ORDER BY yr,
          mo;
 ```
 
-このデータは、[Playground](https://sql.clickhouse.com) および [example](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND) で対話的にクエリを実行することも可能です。
+このデータは、[Playground](https://sql.clickhouse.com) でのインタラクティブなクエリや、[こちらの例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)としても利用できます。

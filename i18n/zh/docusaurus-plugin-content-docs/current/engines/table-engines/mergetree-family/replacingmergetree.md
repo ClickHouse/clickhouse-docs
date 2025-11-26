@@ -1,5 +1,5 @@
 ---
-description: '与 MergeTree 不同，它会删除具有相同排序键值（表的 `ORDER BY` 子句，而非 `PRIMARY KEY`）的重复条目。'
+description: '不同于 MergeTree，它会移除具有相同排序键值（表定义中的 `ORDER BY` 部分，而不是 `PRIMARY KEY`）的重复记录。'
 sidebar_label: 'ReplacingMergeTree'
 sidebar_position: 40
 slug: /engines/table-engines/mergetree-family/replacingmergetree
@@ -11,19 +11,19 @@ doc_type: 'reference'
 
 # ReplacingMergeTree 表引擎
 
-该引擎与 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) 的不同之处在于，它会删除具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)值的重复记录（基于表的 `ORDER BY` 子句，而不是 `PRIMARY KEY`）。
+该引擎与 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) 的不同之处在于，它会删除具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)值的重复记录（指表的 `ORDER BY` 子句，而非 `PRIMARY KEY`）。
 
-数据去重仅在合并期间发生。合并在后台于不确定的时间执行，因此无法对其进行规划。部分数据可能会保持未处理状态。尽管可以通过 `OPTIMIZE` 查询触发一次临时合并，但不要依赖这种方式，因为 `OPTIMIZE` 查询会读取和写入大量数据。
+数据去重仅在合并期间发生。合并在后台于未知时间执行，因此无法提前规划，且部分数据可能长时间保持未处理状态。尽管可以通过 `OPTIMIZE` 查询触发一次临时合并，但不要依赖这种方式，因为 `OPTIMIZE` 查询会读写大量数据。
 
-因此，`ReplacingMergeTree` 适用于在后台清理重复数据以节省空间，但并不保证完全没有重复记录。
+因此，`ReplacingMergeTree` 适用于在后台清理重复数据以节省存储空间，但并不能保证数据中完全不存在重复项。
 
 :::note
-关于 ReplacingMergeTree 的详细指南（包括最佳实践以及如何优化性能）请参见[此文](/guides/replacing-merge-tree)。
+关于 ReplacingMergeTree 的详细指南（包括最佳实践以及性能优化方法）可在[此处](/guides/replacing-merge-tree)查阅。
 :::
 
 
 
-## 创建表 {#creating-a-table}
+## 创建数据表
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -39,28 +39,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-有关请求参数的描述,请参阅[语句说明](../../../sql-reference/statements/create/table.md)。
+有关请求参数的说明，请参阅[语句说明](../../../sql-reference/statements/create/table.md)。
 
 :::note
-行的唯一性由 `ORDER BY` 表部分决定,而非 `PRIMARY KEY`。
+行的唯一性是由表的 `ORDER BY` 子句决定的，而不是由 `PRIMARY KEY` 决定。
 :::
 
 
-## ReplacingMergeTree 参数 {#replacingmergetree-parameters}
+## ReplacingMergeTree 参数
 
-### `ver` {#ver}
+### `ver`
 
-`ver` — 版本号列。类型为 `UInt*`、`Date`、`DateTime` 或 `DateTime64`。可选参数。
+`ver` — 带有版本号的列。类型为 `UInt*`、`Date`、`DateTime` 或 `DateTime64`。可选参数。
 
-合并时,`ReplacingMergeTree` 从所有具有相同排序键的行中仅保留一行:
+在合并时，`ReplacingMergeTree` 会在所有具有相同排序键的行中只保留一行：
 
-- 如果未设置 `ver`,则保留选择集中的最后一行。选择集是参与合并的数据分区集合中的行集合。最近创建的分区(最后一次插入)将是选择集中的最后一个。因此,去重后,每个唯一排序键将保留最近一次插入的最后一行。
-- 如果指定了 `ver`,则保留版本号最大的行。如果多行的 `ver` 相同,则对这些行应用"未指定 `ver`"的规则,即保留最近插入的行。
+* 如果未设置 `ver`，则保留选集中最后一行。一次选集是指参与该次合并的多个数据 part 中的一组行。最新创建的 part（最后一次插入）会排在选集的最后。因此，去重后，对于每个唯一排序键，将保留最近一次插入中的最后一行。
+* 如果指定了 `ver`，则保留具有最大版本号的行。如果多行的 `ver` 相同，则对这些行应用“未指定 `ver` 时”的规则，即保留最新插入的那一行。
 
-示例:
+示例：
 
 ```sql
--- 不使用 ver - 最后插入的行"获胜"
+-- 没有 ver - 最后插入的'获胜'
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -80,7 +80,7 @@ SELECT * FROM myFirstReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 
 
--- 使用 ver - 具有最大 ver 值的行"获胜"
+-- 有 ver - 具有最大 ver 的行'获胜'
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -100,27 +100,27 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted` {#is_deleted}
+### `is_deleted`
 
-`is_deleted` — 合并期间用于确定该行中的数据是表示状态还是将被删除的列名;`1` 表示"已删除"行,`0` 表示"状态"行。
+`is_deleted` — 在合并过程中用于确定该行数据表示的是当前状态还是应被删除的列名；`1` 表示“删除”行，`0` 表示“状态”行。
 
 列数据类型 — `UInt8`。
 
 :::note
-`is_deleted` 只能在使用 `ver` 时启用。
+只有在使用 `ver` 时才可以启用 `is_deleted`。
 
-无论对数据执行何种操作,都应增加版本号。如果两个插入的行具有相同的版本号,则保留最后插入的行。
+无论对数据执行何种操作，都应增加版本号。如果插入的两行数据具有相同的版本号，则会保留最后插入的那一行。
 
-默认情况下,即使某行是删除行,ClickHouse 也会为某个键保留最后一行。这样可以安全地插入任何版本号较低的未来行,并且删除行仍将被应用。
+默认情况下，即使最后一行是删除行，ClickHouse 也会为某个键保留最后一行。这样可以确保将来插入版本号更低的行时，仍然可以安全插入，并且删除行依然会被应用。
 
-要永久删除此类删除行,请启用表设置 `allow_experimental_replacing_merge_with_cleanup` 并执行以下任一操作:
+要永久删除此类删除行，请启用表设置 `allow_experimental_replacing_merge_with_cleanup`，并执行以下任一操作：
 
-1. 设置表设置 `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`、`min_age_to_force_merge_on_partition_only` 和 `min_age_to_force_merge_seconds`。如果分区中的所有数据分区都早于 `min_age_to_force_merge_seconds`,ClickHouse 将把它们全部合并为单个数据分区并删除所有删除行。
+1. 设置表设置项 `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`、`min_age_to_force_merge_on_partition_only` 和 `min_age_to_force_merge_seconds`。如果某个分区中的所有 part 的存在时间都超过 `min_age_to_force_merge_seconds`，ClickHouse 会将它们全部合并为单个 part 并移除所有删除行。
 
 2. 手动运行 `OPTIMIZE TABLE table [PARTITION partition | PARTITION ID 'partition_id'] FINAL CLEANUP`。
    :::
 
-示例:
+示例：
 
 ```sql
 -- 使用 ver 和 is_deleted
@@ -137,15 +137,14 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
-
 ```
 
 
 select * from myThirdReplacingMT final;
 
-0 rows in set. Elapsed: 0.003 sec.
+0 行记录。耗时：0.003 秒。
 
--- 删除带有 is&#95;deleted 标记的行
+-- 删除带有 is&#95;deleted 的行
 OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
 
 INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
@@ -160,16 +159,16 @@ select * from myThirdReplacingMT final;
 ```
 
 
-## Query clauses {#query-clauses}
+## 查询子句 {#query-clauses}
 
-创建 `ReplacingMergeTree` 表时需要使用与创建 `MergeTree` 表相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。
+在创建 `ReplacingMergeTree` 表时，需要使用与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。
 
 <details markdown="1">
 
 <summary>已弃用的建表方法</summary>
 
 :::note
-请勿在新项目中使用此方法,如有可能,请将旧项目迁移至上述方法。
+不要在新项目中使用此方法，如有可能，请将旧项目迁移到上面所述的方法。
 :::
 
 ```sql
@@ -183,16 +182,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 除 `ver` 之外的所有参数与 `MergeTree` 中的含义相同。
 
-- `ver` - 版本列。可选参数。详细说明请参阅上文。
-
+- `ver` - 版本列。可选参数。相关说明参见上文。
 </details>
 
 
-## 查询时去重与 FINAL {#query-time-de-duplication--final}
 
-在合并时,ReplacingMergeTree 使用 `ORDER BY` 列(用于创建表)的值作为唯一标识符来识别重复行,并仅保留最高版本。然而,这仅提供最终一致性 - 它不保证行一定会被去重,您不应依赖此机制。因此,由于更新和删除的行会被纳入查询,查询可能会产生不正确的结果。
+## 查询时去重 &amp; FINAL
 
-为了获得正确的结果,用户需要在后台合并的基础上补充查询时去重和删除移除操作。这可以通过使用 `FINAL` 操作符来实现。例如,请参考以下示例:
+在合并阶段，ReplacingMergeTree 使用 `ORDER BY` 列（用于创建表）中的值作为唯一标识来识别重复行，并仅保留版本最高的那一行。不过，这种方式只能在最终状态上接近正确——它并不保证所有重复行都会被去重，因此不应将其作为严格依赖。由于更新和删除记录在查询时仍可能被计算在内，查询结果因此可能不正确。
+
+为了获得准确的结果，用户需要在后台合并的基础上，再配合查询时去重以及删除记录的剔除。这可以通过使用 `FINAL` 运算符来实现。例如，考虑以下示例：
 
 ```sql
 CREATE TABLE rmt_example
@@ -205,10 +204,10 @@ ORDER BY number
 INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
 FROM numbers(1000000000)
 
-0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
+返回 0 行。耗时：19.958 秒。处理了 10 亿行，8.00 GB（每秒 5011 万行，400.84 MB/s）。
 ```
 
-不使用 `FINAL` 进行查询会产生不正确的计数(确切结果会因合并情况而异):
+在不使用 `FINAL` 的情况下进行查询会返回不正确的计数结果（具体数值会因合并情况而异）：
 
 ```sql
 SELECT count()
@@ -218,10 +217,10 @@ FROM rmt_example
 │     200 │
 └─────────┘
 
-1 row in set. Elapsed: 0.002 sec.
+返回 1 行。耗时: 0.002 秒。
 ```
 
-添加 FINAL 会产生正确的结果:
+添加 FINAL 后即可得到正确的结果：
 
 ```sql
 SELECT count()
@@ -232,7 +231,7 @@ FINAL
 │     100 │
 └─────────┘
 
-1 row in set. Elapsed: 0.002 sec.
+1 行在集合中。耗时: 0.002 秒。
 ```
 
-有关 `FINAL` 的更多详细信息,包括如何优化 `FINAL` 性能,我们建议阅读 [ReplacingMergeTree 详细指南](/guides/replacing-merge-tree)。
+若需了解 `FINAL` 的更多细节，包括如何优化 `FINAL` 的性能，建议阅读我们的 [ReplacingMergeTree 详细指南](/guides/replacing-merge-tree)。

@@ -1,19 +1,19 @@
 ---
-description: 'Руководство по настройке защищённого SSL/TLS-соединения между ClickHouse и ZooKeeper'
+description: 'Руководство по настройке защищённого взаимодействия по SSL/TLS между ClickHouse и ZooKeeper'
 sidebar_label: 'Защищённое взаимодействие с Zookeeper'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'Необязательное защищённое взаимодействие между ClickHouse и Zookeeper'
+title: 'Опциональное защищённое взаимодействие между ClickHouse и Zookeeper'
 doc_type: 'guide'
 ---
 
-# Опциональное защищённое взаимодействие ClickHouse с Zookeeper
+# Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-Для взаимодействия с клиентом ClickHouse по SSL необходимо указать `ssl.keyStore.location`, `ssl.keyStore.password`, а также `ssl.trustStore.location` и `ssl.trustStore.password`. Эти параметры доступны, начиная с версии Zookeeper 3.5.2.
+Необходимо указать `ssl.keyStore.location`, `ssl.keyStore.password` и `ssl.trustStore.location`, `ssl.trustStore.password` для взаимодействия с клиентом ClickHouse через SSL. Эти параметры доступны, начиная с версии Zookeeper 3.5.2.
 
 Вы можете добавить `zookeeper.crt` в список доверенных сертификатов.
 
@@ -52,13 +52,13 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-Запустите `clickhouse-server`. В логах вы должны увидеть следующее:
+Запустите `clickhouse-server`. В логах вы увидите:
 
 ```text
 <Trace> ZooKeeper: инициализирован, хосты: secure://localhost:2281
 ```
 
-Префикс `secure://` указывает, что соединение защищено с помощью SSL.
+Префикс `secure://` указывает на то, что соединение защищено с помощью SSL.
 
 Чтобы убедиться, что трафик шифруется, запустите `tcpdump` на защищённом порту:
 
@@ -72,10 +72,10 @@ tcpdump -i any dst port 2281 -nnXS
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-При незашифрованном соединении в выводе `tcpdump` вы увидите что-то вроде следующего:
+При незашифрованном соединении в выводе команды `tcpdump` вы увидите что-то вроде этого:
 
 ```text
 ..../zookeeper/quota.
 ```
 
-При использовании зашифрованного соединения вы не должны этого видеть.
+При защищённом соединении этого быть не должно.

@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse における Nullable データ型修飾子に関するドキュメント'
+description: 'ClickHouse における Nullable データ型修飾子に関するリファレンス'
 sidebar_label: 'Nullable(T)'
 sidebar_position: 44
 slug: /sql-reference/data-types/nullable
@@ -11,28 +11,29 @@ doc_type: 'reference'
 
 # Nullable(T)
 
-`T` で許可されている通常の値に加えて、「欠損値」を表す特別なマーカー ([NULL](../../sql-reference/syntax.md)) を格納できるようにします。例えば、`Nullable(Int8)` 型のカラムは `Int8` 型の値を格納でき、値を持たない行には `NULL` を格納します。
+`T` で許可されている通常の値に加えて、「値が存在しない」ことを示す特別なマーカー（[NULL](../../sql-reference/syntax.md)）を保存できます。例えば、`Nullable(Int8)` 型のカラムには `Int8` 型の値を保存でき、値を持たない行には `NULL` が保存されます。
 
-`T` には、複合データ型である [Array](../../sql-reference/data-types/array.md)、[Map](../../sql-reference/data-types/map.md)、[Tuple](../../sql-reference/data-types/tuple.md) のいずれも指定できませんが、複合データ型の要素としては `Nullable` 型の値を含めることができます（例: `Array(Nullable(Int8))`）。
+`T` としては、複合データ型である [Array](../../sql-reference/data-types/array.md)、[Map](../../sql-reference/data-types/map.md)、[Tuple](../../sql-reference/data-types/tuple.md) のいずれも指定できませんが、複合データ型の要素として `Nullable` 型の値を含めることはできます（例: `Array(Nullable(Int8))`）。
 
-`Nullable` 型のフィールドは、テーブルのインデックスに含めることはできません。
+`Nullable` 型のフィールドはテーブルのインデックスに含めることはできません。
 
-ClickHouse サーバーの設定で別途指定されていない限り、任意の `Nullable` 型のデフォルト値は `NULL` です。
+ClickHouse サーバーの設定で別途指定しない限り、任意の `Nullable` 型のデフォルト値は `NULL` です。
 
 
 
-## ストレージの特性 {#storage-features}
+## ストレージ機能 {#storage-features}
 
-テーブルカラムに`Nullable`型の値を格納する際、ClickHouseは値を含む通常のファイルに加えて、`NULL`マスクを持つ別個のファイルを使用します。マスクファイル内のエントリにより、ClickHouseは各テーブル行について`NULL`と対応するデータ型のデフォルト値を区別できます。追加ファイルが存在するため、`Nullable`カラムは通常の同等のカラムと比較して追加のストレージ容量を消費します。
+テーブル列に `Nullable` 型の値を格納するために、ClickHouse は値を格納する通常のファイルとは別に、`NULL` マスクを含むファイルを使用します。マスクファイル内のエントリによって、ClickHouse は各テーブル行について、`NULL` と、そのデータ型に対応するデフォルト値とを区別できます。追加のファイルが必要になるため、`Nullable` 列は、同等の通常列と比較して、より多くのストレージ容量を消費します。
 
-:::note  
-`Nullable`の使用はほぼ常にパフォーマンスに悪影響を及ぼすため、データベースを設計する際にはこの点を念頭に置いてください。
+:::note    
+`Nullable` の使用は、ほとんど常にパフォーマンスを低下させます。この点を念頭に置いてデータベースを設計してください。
 :::
 
 
-## NULLの検索 {#finding-null}
 
-`null`サブカラムを使用することで、カラム全体を読み込むことなく、カラム内の`NULL`値を検索できます。対応する値が`NULL`の場合は`1`を返し、それ以外の場合は`0`を返します。
+## NULL の検索
+
+列全体を読み取ることなく、`null` サブカラムを使って列内の `NULL` 値を特定できます。対応する値が `NULL` の場合は `1` を、それ以外の場合は `0` を返します。
 
 **例**
 
@@ -58,7 +59,7 @@ SELECT n.null FROM nullable;
 ```
 
 
-## 使用例 {#usage-example}
+## 使用例
 
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE TinyLog

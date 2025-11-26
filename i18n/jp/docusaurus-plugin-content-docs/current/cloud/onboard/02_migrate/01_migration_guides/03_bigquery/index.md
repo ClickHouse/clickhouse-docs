@@ -8,10 +8,10 @@ keywords: ['BigQuery', 'migration']
 doc_type: 'landing-page'
 ---
 
-このセクションでは、BigQuery と ClickHouse Cloud の類似点と相違点、さらになぜ移行を検討すべきか、その方法について学びます。
+このセクションでは、BigQuery と ClickHouse Cloud の共通点と相違点、BigQuery からの移行を検討する理由、その具体的な方法について説明します。
 
-| ページ                                                                              | 説明                                                                                                                                                    |
+| Page                                                                              | Description                                                                                                                                            |
 |-----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [BigQuery と ClickHouse Cloud の比較](/migrations/bigquery/biquery-vs-clickhouse-cloud)                          | ClickHouse Cloud におけるリソースの構成方法は、BigQuery のリソース階層と類似しています。本記事では、その具体的な違いについて説明します。 | 
-| [BigQuery から ClickHouse Cloud への移行](/migrations/bigquery/migrating-to-clickhouse-cloud) | BigQuery から ClickHouse Cloud へ移行を検討すべき理由について解説します。                                                                           |
-| [データのロード](/migrations/bigquery/loading-data)                                                 | BigQuery から ClickHouse へデータを移行する方法を示すガイドです。                                                                                   |
+| [BigQuery vs ClickHouse Cloud](/migrations/bigquery/biquery-vs-clickhouse-cloud)                          | ClickHouse Cloud におけるリソース構成は、BigQuery のリソース階層と似ています。このページでは、両者の具体的な違いについて説明します。 | 
+| [Migrating from BigQuery to ClickHouse Cloud](/migrations/bigquery/migrating-to-clickhouse-cloud) | なぜ BigQuery から ClickHouse Cloud へ移行することを検討すべきなのかについて説明します。                                                                           |
+| [Loading Data](/migrations/bigquery/loading-data)                                                 | BigQuery から ClickHouse へデータを移行する方法を解説するガイドです。                                                                                   |

@@ -14,23 +14,23 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 [`TabSeparated`](./TabSeparated.md) 格式不同,该格式将列名写入第一行,列类型写入第二行。
+与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于：第一行写入列名，第二行写入列类型。
 
 :::note
+- 如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，  
+则会根据列名将输入数据中的列映射到表中的列；如果将 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列将被跳过。  
+否则，第一行将被跳过。
+- 如果将 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，  
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
+:::
 
-- 如果设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 为 `1`,
-  输入数据中的列将按名称映射到表中的列。如果设置 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`,则会跳过未知名称的列。
-  否则,将跳过第一行。
-- 如果设置 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 为 `1`,
-  输入数据中的类型将与表中相应列的类型进行比较。否则,将跳过第二行。
-  :::
 
 
-## 使用示例 {#example-usage}
+## 使用示例
 
-### 插入数据 {#inserting-data}
+### 插入数据
 
-使用以下名为 `football.tsv` 的 TSV 文件:
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -54,15 +54,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `TabSeparatedWithNamesAndTypes` 格式读取数据:
+以 `TabSeparatedWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -70,7 +70,7 @@ FROM football
 FORMAT TabSeparatedWithNamesAndTypes
 ```
 
-输出将采用制表符分隔格式,包含两个标题行,分别表示列名和类型:
+输出将采用制表符分隔的格式，并包含两行表头，分别表示列名和列类型：
 
 
 ```tsv

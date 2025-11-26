@@ -1,5 +1,5 @@
 ---
-description: 'ログエントリを含むシステムテーブル。'
+description: 'ログエントリを保持するシステムテーブル。'
 keywords: ['system table', 'text_log']
 slug: /operations/system-tables/text_log
 title: 'system.text_log'
@@ -13,18 +13,18 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-ログエントリを含むテーブルです。このテーブルに記録されるログレベルは、サーバー設定 `text_log.level` によって制限できます。
+ログエントリを含むテーブルです。このテーブルに出力されるログレベルは、`text_log.level` サーバー設定で制限できます。
 
-カラム:
+列:
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
 * `event_date` (Date) — エントリの日付。
 * `event_time` (DateTime) — エントリの時刻。
 * `event_time_microseconds` (DateTime64) — マイクロ秒精度でのエントリの時刻。
-* `microseconds` (UInt32) — エントリのマイクロ秒部分。
-* `thread_name` (String) — ログを出力したスレッド名。
+* `microseconds` (UInt32) — エントリのマイクロ秒。
+* `thread_name` (String) — ログ出力を行ったスレッド名。
 * `thread_id` (UInt64) — OS のスレッド ID。
-* `level` (`Enum8`) — エントリレベル。取り得る値は次のとおりです:
+* `level` (`Enum8`) — エントリのレベル。取りうる値:
   * `1` または `'Fatal'`。
   * `2` または `'Critical'`。
   * `3` または `'Error'`。
@@ -37,19 +37,19 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `logger_name` (LowCardinality(String)) — ロガー名（例: `DDLWorker`）。
 * `message` (String) — メッセージ本体。
 * `revision` (UInt32) — ClickHouse のリビジョン。
-* `source_file` (LowCardinality(String)) — ログを出力したソースファイル。
-* `source_line` (UInt64) — ログを出力したソース行番号。
-* `message_format_string` (LowCardinality(String)) — メッセージのフォーマットに使用された書式文字列。
-* `value1` (String) — メッセージのフォーマットに使用された引数 1。
-* `value2` (String) — メッセージのフォーマットに使用された引数 2。
-* `value3` (String) — メッセージのフォーマットに使用された引数 3。
-* `value4` (String) — メッセージのフォーマットに使用された引数 4。
-* `value5` (String) — メッセージのフォーマットに使用された引数 5。
-* `value6` (String) — メッセージのフォーマットに使用された引数 6。
-* `value7` (String) — メッセージのフォーマットに使用された引数 7。
-* `value8` (String) — メッセージのフォーマットに使用された引数 8。
-* `value9` (String) — メッセージのフォーマットに使用された引数 9。
-* `value10` (String) — メッセージのフォーマットに使用された引数 10。
+* `source_file` (LowCardinality(String)) — ログ出力を行ったソースファイル。
+* `source_line` (UInt64) — ログ出力を行ったソースコード行番号。
+* `message_format_string` (LowCardinality(String)) — メッセージの整形に使用されたフォーマット文字列。
+* `value1` (String) - メッセージの整形に使用された引数 1。
+* `value2` (String) - メッセージの整形に使用された引数 2。
+* `value3` (String) - メッセージの整形に使用された引数 3。
+* `value4` (String) - メッセージの整形に使用された引数 4。
+* `value5` (String) - メッセージの整形に使用された引数 5。
+* `value6` (String) - メッセージの整形に使用された引数 6。
+* `value7` (String) - メッセージの整形に使用された引数 7。
+* `value8` (String) - メッセージの整形に使用された引数 8。
+* `value9` (String) - メッセージの整形に使用された引数 9。
+* `value10` (String) - メッセージの整形に使用された引数 10。
 
 **例**
 
@@ -58,7 +58,7 @@ SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
 ```text
-Row 1:
+行 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10

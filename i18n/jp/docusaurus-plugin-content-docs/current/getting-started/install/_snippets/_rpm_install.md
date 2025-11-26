@@ -5,46 +5,46 @@
 <VerticalStepper>
 
 
-## RPMリポジトリのセットアップ {#setup-the-rpm-repository}
+## RPM リポジトリの設定
 
-以下のコマンドを実行して公式リポジトリを追加してください:
+次のコマンドを実行して公式リポジトリを追加します：
 
 ```bash
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
 ```
 
-`zypper`パッケージマネージャーを使用するシステム(openSUSE、SLES)の場合は、以下を実行してください:
+`zypper` パッケージマネージャー（openSUSE、SLES）を使用するシステムでは、次を実行してください：
 
 ```bash
 sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
 sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
-以下の手順では、使用しているパッケージマネージャーに応じて`yum install`を`zypper install`に置き換えてください。
+以下の手順では、利用しているパッケージマネージャに応じて、`yum install` を `zypper install` に置き換えて構いません。
 
 
-## ClickHouseサーバーとクライアントのインストール {#install-clickhouse-server-and-client-1}
+## ClickHouse サーバーとクライアントをインストールする
 
-ClickHouseをインストールするには、以下のコマンドを実行してください:
+ClickHouse をインストールするには、次のコマンドを実行します。
 
 ```bash
 sudo yum install -y clickhouse-server clickhouse-client
 ```
 
-- 必要に応じて、`stable`を`lts`に置き換えることで、異なる[リリース種別](/knowledgebase/production)を使用できます。
-- [packages.clickhouse.com/rpm](https://packages.clickhouse.com/rpm/stable)からパッケージを手動でダウンロードしてインストールすることも可能です。
-- 特定のバージョンを指定する場合は、パッケージ名の末尾に`-$version`を追加してください。
-  例:
+* 必要に応じて `stable` を `lts` に置き換えることで、異なる[リリース種別](/knowledgebase/production)を利用できます。
+* [packages.clickhouse.com/rpm](https://packages.clickhouse.com/rpm/stable) からパッケージを手動でダウンロードしてインストールできます。
+* 特定のバージョンを指定するには、パッケージ名の末尾に `-$version` を追加します。
+  例えば次のようにします。
 
 ```bash
 sudo yum install clickhouse-server-22.8.7.34
 ```
 
 
-## ClickHouseサーバーの起動 {#start-clickhouse-server-1}
+## ClickHouse サーバーを起動する
 
-ClickHouseサーバーを起動するには、以下を実行します:
+ClickHouse サーバーを起動するには、以下を実行します。
 
 ```bash
 sudo systemctl enable clickhouse-server
@@ -52,35 +52,35 @@ sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
 ```
 
-ClickHouseクライアントを起動するには、以下を実行します:
+ClickHouse クライアントを起動するには、次のコマンドを実行します。
 
 ```sql
 clickhouse-client
 ```
 
-サーバーにパスワードを設定した場合は、以下を実行する必要があります:
+サーバーにパスワードを設定している場合は、次のコマンドを実行してください。
 
 ```bash
 clickhouse-client --password
 ```
 
 
-## スタンドアロンClickHouse Keeperのインストール {#install-standalone-clickhouse-keeper-1}
+## スタンドアロン ClickHouse Keeper をインストールする
 
 :::tip
-本番環境では、ClickHouse Keeperを専用ノードで実行することを強く推奨します。
-テスト環境で、ClickHouse ServerとClickHouse Keeperを同じサーバー上で実行する場合は、
-ClickHouse KeeperはClickHouse Serverに含まれているため、別途インストールする必要はありません。
+本番環境では、ClickHouse Keeper を専用ノード上で実行することを強く推奨します。
+テスト環境で同じサーバー上で ClickHouse Server と ClickHouse Keeper を実行する場合は、
+ClickHouse Server に ClickHouse Keeper が同梱されているため、ClickHouse Keeper を別途インストールする必要はありません。
 :::
 
-スタンドアロンのClickHouse Keeperサーバーに`clickhouse-keeper`をインストールするには、次のコマンドを実行します:
+スタンドアロンの ClickHouse Keeper サーバーに `clickhouse-keeper` をインストールするには、次のコマンドを実行します。
 
 ```bash
 sudo yum install -y clickhouse-keeper
 ```
 
 
-## ClickHouse Keeperの有効化と起動 {#enable-and-start-clickhouse-keeper-1}
+## ClickHouse Keeperを有効化して起動する {#enable-and-start-clickhouse-keeper-1}
 
 ```bash
 sudo systemctl enable clickhouse-keeper

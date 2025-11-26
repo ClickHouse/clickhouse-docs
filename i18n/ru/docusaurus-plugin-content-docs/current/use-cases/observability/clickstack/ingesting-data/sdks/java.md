@@ -6,14 +6,14 @@ sidebar_position: 3
 description: 'Java SDK для ClickStack — стек наблюдаемости ClickHouse'
 title: 'Java'
 doc_type: 'guide'
-keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java SDK наблюдаемости', 'Интеграция ClickStack с Java', 'Мониторинг Java-приложений']
+keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java SDK для наблюдаемости', 'интеграция ClickStack с Java', 'мониторинг Java-приложений']
 ---
 
-ClickStack использует стандарт OpenTelemetry для сбора данных телеметрии (логов и
-трейсов). Трейсы генерируются автоматически с помощью автоматической инструментации, поэтому ручная
-инструментация не требуется, чтобы получить ценность от трассировки.
+ClickStack использует стандарт OpenTelemetry для сбора телеметрических данных (логов и
+трейсов). Трейсы генерируются автоматически с помощью автоматической
+инструментации, поэтому ручная инструментация не требуется, чтобы получать ценность от трассировки.
 
-**В этом руководстве описывается интеграция:**
+**В этом руководстве интегрируются:**
 
 <table>
   <tbody>
@@ -27,46 +27,46 @@ ClickStack использует стандарт OpenTelemetry для сбора
 
 
 
-## Начало работы {#getting-started}
+## Начало работы
 
 :::note
 В настоящее время интеграция совместима только с **Java 8+**
 :::
 
-### Загрузка агента OpenTelemetry Java {#download-opentelemtry-java-agent}
+### Скачивание Java-агента OpenTelemetry
 
-Загрузите [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
-и поместите JAR-файл в выбранный каталог. JAR-файл содержит агент
-и библиотеки инструментирования. Также можно использовать следующую команду для
-загрузки агента:
+Скачайте [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
+и поместите JAR-файл в выбранный вами каталог. Этот JAR-файл содержит агент
+и библиотеки инструментирования. Вы также можете использовать следующую команду,
+чтобы скачать агент:
 
 ```shell
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-### Настройка переменных окружения {#configure-environment-variables}
+### Настройка переменных окружения
 
-После этого необходимо настроить следующие переменные окружения в вашей оболочке для отправки телеметрии в ClickStack:
+Далее вам нужно будет настроить в своей оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
 
 ```shell
-export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
+export JAVA_TOOL_OPTIONS="-javaagent:ПУТЬ/К/opentelemetry-javaagent.jar" \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<ВАШ_API_КЛЮЧ_ИНГЕСТИИ>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+OTEL_SERVICE_NAME='<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>'
 ```
 
-_Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса в приложении HyperDX. Можно указать любое имя._
+*Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса в приложении HyperDX; можно задать любое удобное вам имя.*
 
 Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
 
-### Запуск приложения с агентом OpenTelemetry Java {#run-the-application-with-otel-java-agent}
+### Запуск приложения с Java-агентом OpenTelemetry
 
 ```shell
 java -jar target/<APPLICATION_JAR_FILE>
 ```
 
 <br />
-Подробнее об инструментировании Java OpenTelemetry:
-[https://opentelemetry.io/docs/instrumentation/java/](https://opentelemetry.io/docs/instrumentation/java/)
+
+Подробнее об инструментировании Java в OpenTelemetry см.: [https://opentelemetry.io/docs/instrumentation/java/](https://opentelemetry.io/docs/instrumentation/java/)

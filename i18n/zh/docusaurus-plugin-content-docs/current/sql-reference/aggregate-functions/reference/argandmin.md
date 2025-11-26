@@ -1,5 +1,5 @@
 ---
-description: '计算 `val` 为最小值时对应的 `arg` 和 `val`。如果有多行记录的最小 `val` 相同，返回哪一行对应的 `arg` 和 `val` 是不确定的。'
+description: '计算最小 `val` 值所对应的 `arg` 和 `val`。如果存在多行记录的最小 `val` 值相同，则返回哪一行对应的 `arg` 和 `val` 是不确定的。'
 sidebar_position: 111
 slug: /sql-reference/aggregate-functions/reference/argandmin
 title: 'argAndMin'
@@ -8,11 +8,11 @@ doc_type: 'reference'
 
 # argAndMin
 
-计算 `val` 取最小值时对应的 `arg` 和 `val`。如果存在多行记录的 `val` 相同且都是最小值，则具体返回哪一行对应的 `arg` 和 `val` 是不确定的。
-`arg` 和 `min` 这两个部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)工作，在处理过程中它们都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 值。
+计算最小 `val` 值对应的 `arg` 和 `val`。如果有多行记录的最小 `val` 值相同，则返回哪一行对应的 `arg` 和 `val` 是不确定的。
+`arg` 和 `min` 两部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)起作用，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 结果。
 
 :::note
-与 `argMin` 的唯一区别在于，`argAndMin` 同时返回参数和数值。
+与 `argMin` 的唯一区别是 `argAndMin` 会同时返回参数和数值。
 :::
 
 **语法**
@@ -29,9 +29,9 @@ argAndMin(arg, val)
 **返回值**
 
 * 与最小 `val` 值对应的 `arg` 值。
-* `val` 的最小值。
+* 最小的 `val` 值。
 
-类型：按顺序与 `arg`、`val` 类型相匹配的元组（tuple）。
+类型：与 `arg`、`val` 类型依次对应的元组。
 
 **示例**
 
@@ -59,7 +59,7 @@ SELECT argAndMin(user, salary) FROM salary
 └─────────────────────────┘
 ```
 
-**扩展示例**
+**详细示例**
 
 
 ```sql
@@ -94,12 +94,12 @@ SELECT argAndMin(tuple(a), b) FROM test;
 
 SELECT (argAndMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA──┬─argMinB─┐
-│ (NULL,0) │       0 │ -- 您可以使用 `Tuple` 获取对应 min(b) 的两列(全部列 - tuple(*))
+│ (NULL,0) │       0 │ -- 可以使用 `Tuple` 获取对应 min(b) 的两列(全部列 - tuple(*))
 └──────────┴─────────┘
 
 SELECT argAndMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
 ┌─argAndMin(a, b)─┬─min(b)─┐
-│ ('',0)          │   ᴺᵁᴸᴸ │ -- 由于过滤条件,所有聚合行都至少包含一个 `NULL` 值,因此所有行都被跳过,结果为 `NULL`
+│ ('',0)          │   ᴺᵁᴸᴸ │ -- 由于过滤条件,所有聚合行至少包含一个 `NULL` 值,因此所有行都被跳过,结果为 `NULL`
 └─────────────────┴────────┘
 
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;
@@ -109,12 +109,12 @@ SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;
 
 SELECT argAndMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 ┌─argAndMin((a, b), (b, a))─┬─min((b, a))─┐
-│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin 在此处返回 ((NULL,0),(0,NULL)),因为 `Tuple` 允许不跳过 `NULL` 值,此时 min(tuple(b, a)) 是该数据集的最小值
+│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin 在此返回 ((NULL,0),(0,NULL)),因为 `Tuple` 允许不跳过 `NULL` 值,此时 min(tuple(b, a)) 是该数据集的最小值
 └───────────────────────────┴─────────────┘
 
 SELECT argAndMin(a, tuple(b)) FROM test;
 ┌─argAndMin(a, (b))─┐
-│ ('a',(1))         │ -- `Tuple` 可以在 `min` 中使用,以不跳过 b 中包含 `NULL` 值的行
+│ ('a',(1))         │ -- 可在 `min` 中使用 `Tuple` 以不跳过 b 为 `NULL` 值的行。
 └───────────────────┘
 ```
 

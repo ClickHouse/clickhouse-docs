@@ -1,5 +1,5 @@
 ---
-description: '最大の `val` 値に対応する `arg` と `val` を計算します。最大値となる同じ `val` を持つ行が複数ある場合、どの行に対応する `arg` および `val` が返されるかは保証されません。'
+description: '`val` の最大値に対応する `arg` と `val` の値を計算します。最大値となる `val` を持つ行が複数ある場合、どの行に対応する `arg` と `val` が返されるかは決定的ではありません。'
 sidebar_position: 111
 slug: /sql-reference/aggregate-functions/reference/argandmax
 title: 'argAndMax'
@@ -8,8 +8,8 @@ doc_type: 'reference'
 
 # argAndMax
 
-最大の`val`値に対応する`arg`と`val`の値を計算します。最大値となる同じ`val`を持つ行が複数存在する場合、どの`arg`と`val`が返されるかは非決定的です。
-`arg`と`max`の両方は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に[`Null`をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null`でない値が利用可能な場合は`Null`でない値を返します。
+最大の`val`値に対応する`arg`と`val`の値を計算します。最大値となる`val`が等しい行が複数存在する場合、どの`arg`と`val`の組み合わせが返されるかは非決定的です。
+`arg`と`max`の両方の部分は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に[`Null`をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null`でない値が利用可能な場合は`Null`でない値を返します。
 
 :::note
 `argMax`との唯一の違いは、`argAndMax`が引数と値の両方を返す点です。
@@ -24,9 +24,9 @@ argAndMax(arg, val)
 **引数**
 
 * `arg` — 引数。
-* `val` — 値。
+* `val` — 値
 
-**返り値**
+**戻り値**
 
 * 最大の `val` に対応する `arg` の値。
 * `val` の最大値
@@ -39,9 +39,9 @@ argAndMax(arg, val)
 
 ```text
 ┌─user─────┬─salary─┐
-│ ディレクター │   5000 │
-│ マネージャー  │   3000 │
-│ ワーカー   │   1000 │
+│ director │   5000 │
+│ manager  │   3000 │
+│ worker   │   1000 │
 └──────────┴────────┘
 ```
 
@@ -83,7 +83,7 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), argAndMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─argAndMax(a, b)─┬─max(b)─┐
-│ b            │ ('b',2)         │      3 │ -- argMax = b は最初の非NULL値であるため。max(b)は別の行からのものです！
+│ b            │ ('b',2)         │      3 │ -- argMax = b は最初の非NULL値であるため、max(b)は別の行から取得されます！
 └──────────────┴─────────────────┴────────┘
 
 SELECT argAndMax(tuple(a), b) FROM test;
@@ -93,12 +93,12 @@ SELECT argAndMax(tuple(a), b) FROM test;
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA──┬─argMaxB─┐
-│ (NULL,3) │       3 │ -- Tupleを使用して、対応するmax(b)の両方（すべて - tuple(*)）の列を取得できます
+│ (NULL,3) │       3 │ -- Tupleを使用して、対応するmax(b)の両方の列（すべて - tuple(*)）を取得できます
 └──────────┴─────────┘
 
 SELECT argAndMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argAndMax(a, b)─┬─max(b)─┐
-│ ('',0)          │   ᴺᵁᴸᴸ │-- フィルタにより、すべての集約行に少なくとも1つの`NULL`値が含まれるため、すべての行がスキップされ、結果は`NULL`になります
+│ ('',0)          │   ᴺᵁᴸᴸ │-- フィルタにより集約されたすべての行に少なくとも1つの`NULL`値が含まれるため、すべての行がスキップされ、結果は`NULL`になります
 └─────────────────┴────────┘
 
 SELECT argAndMax(a, (b,a)) FROM test;
@@ -108,7 +108,7 @@ SELECT argAndMax(a, (b,a)) FROM test;
 
 SELECT argAndMax(a, tuple(b)) FROM test;
 ┌─argAndMax(a, (b))─┐
-│ ('b',(2))         │ -- `Max`内で`Tuple`を使用することで、`Max`でのNULLのスキップを防ぐことができます
+│ ('b',(2))         │ -- `Max`内で`Tuple`を使用することで、`Max`でNULLをスキップしないようにできます
 └───────────────────┘
 ```
 

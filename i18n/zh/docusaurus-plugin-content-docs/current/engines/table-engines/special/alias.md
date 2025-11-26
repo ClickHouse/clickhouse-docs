@@ -1,5 +1,5 @@
 ---
-description: 'Alias 表引擎创建指向另一张表的透明代理。所有操作都会转发到目标表，而别名本身不存储任何数据。'
+description: 'Alias 表引擎会创建到另一张表的透明代理。所有操作都会被转发到目标表，而别名表自身不存储任何数据。'
 sidebar_label: 'Alias'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
@@ -11,18 +11,18 @@ doc_type: 'reference'
 
 # Alias 表引擎
 
-`Alias` 引擎会创建一个指向另一张表的代理。所有读写操作都会被转发到目标表，而别名本身不存储任何数据，只维护对目标表的引用。
+`Alias` 引擎会创建一个指向另一张表的代理表。所有读写操作都会转发到目标表，而别名表本身不存储任何数据，只维护对目标表的引用。
 
 
 
-## 创建表 {#creating-a-table}
+## 创建表
 
 ```sql
-CREATE TABLE [db_name.]alias_name
-ENGINE = Alias(target_table)
+CREATE TABLE [数据库名.]别名表名
+ENGINE = Alias(目标表)
 ```
 
-或指定显式数据库名称:
+或者显式地指定数据库名称：
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -30,52 +30,53 @@ ENGINE = Alias(target_db, target_table)
 ```
 
 :::note
-`Alias` 表不支持显式列定义。列将自动从目标表继承。这确保别名始终与目标表的架构保持一致。
+`Alias` 表不支持显式定义列。列会自动从目标表继承，这可以确保别名表始终与目标表的表结构保持一致。
 :::
 
 
 ## 引擎参数 {#engine-parameters}
 
-- **`target_db (可选)`** — 包含目标表的数据库名称。
+- **`target_db (optional)`** — 目标表所在数据库的名称。
 - **`target_table`** — 目标表名称。
+
 
 
 ## 支持的操作 {#supported-operations}
 
-`Alias` 表引擎支持所有主要操作。
+`Alias` 表引擎支持所有主要操作。 
+### 目标表上的操作 {#operations-on-target}
 
-### 目标表操作 {#operations-on-target}
+这些操作会被转发到目标表：
 
-以下操作会代理到目标表:
+| Operation | Support | Description |
+|-----------|---------|-------------|
+| `SELECT` | ✅ | 从目标表读取数据 |
+| `INSERT` | ✅ | 向目标表写入数据 |
+| `INSERT SELECT` | ✅ | 向目标表执行批量插入 |
+| `ALTER TABLE ADD COLUMN` | ✅ | 向目标表添加列 |
+| `ALTER TABLE MODIFY SETTING` | ✅ | 修改目标表设置 |
+| `ALTER TABLE PARTITION` | ✅ | 在目标表上执行分区操作（DETACH/ATTACH/DROP） |
+| `ALTER TABLE UPDATE` | ✅ | 更新目标表中的行（变更，mutation） |
+| `ALTER TABLE DELETE` | ✅ | 从目标表删除行（变更，mutation） |
+| `OPTIMIZE TABLE` | ✅ | 优化目标表（合并数据分片） |
+| `TRUNCATE TABLE` | ✅ | 截断目标表 |
 
-| 操作                         | 支持 | 描述                                         |
-| ---------------------------- | ------- | --------------------------------------------------- |
-| `SELECT`                     | ✅      | 从目标表读取数据                         |
-| `INSERT`                     | ✅      | 向目标表写入数据                          |
-| `INSERT SELECT`              | ✅      | 批量插入到目标表                      |
-| `ALTER TABLE ADD COLUMN`     | ✅      | 向目标表添加列                         |
-| `ALTER TABLE MODIFY SETTING` | ✅      | 修改目标表设置                        |
-| `ALTER TABLE PARTITION`      | ✅      | 对目标表执行分区操作(DETACH/ATTACH/DROP) |
-| `ALTER TABLE UPDATE`         | ✅      | 更新目标表中的行(变更操作)              |
-| `ALTER TABLE DELETE`         | ✅      | 从目标表删除行(变更操作)            |
-| `OPTIMIZE TABLE`             | ✅      | 优化目标表(合并数据部分)                 |
-| `TRUNCATE TABLE`             | ✅      | 清空目标表                               |
+### 对别名本身的操作 {#operations-on-alias}
 
-### 别名自身操作 {#operations-on-alias}
+这些操作只影响别名，**不会**影响目标表：
 
-以下操作仅影响别名,**不会**影响目标表:
-
-| 操作      | 支持 | 描述                                           |
-| -------------- | ------- | ----------------------------------------------------- |
-| `DROP TABLE`   | ✅      | 仅删除别名,目标表保持不变   |
-| `RENAME TABLE` | ✅      | 仅重命名别名,目标表保持不变 |
+| Operation | Support | Description |
+|-----------|---------|-------------|
+| `DROP TABLE` | ✅ | 仅删除别名，目标表保持不变 |
+| `RENAME TABLE` | ✅ | 仅重命名别名，目标表保持不变 |
 
 
-## 使用示例 {#usage-examples}
 
-### 基本别名创建 {#basic-alias-creation}
+## 用法示例
 
-在同一数据库中创建简单别名:
+### 创建基本别名
+
+在同一数据库中创建一个简单的别名：
 
 ```sql
 -- 创建源表
@@ -86,7 +87,7 @@ CREATE TABLE source_data (
 ) ENGINE = MergeTree
 ORDER BY id;
 
--- 插入一些数据
+-- 插入数据
 INSERT INTO source_data VALUES (1, 'one', 10.1), (2, 'two', 20.2);
 
 -- 创建别名
@@ -103,9 +104,9 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-### 跨数据库别名 {#cross-database-alias}
+### 跨数据库别名
 
-创建指向不同数据库中表的别名:
+创建一个指向其他数据库中某张表的别名：
 
 ```sql
 -- 创建数据库
@@ -126,14 +127,14 @@ CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 -- 或使用 database.table 格式
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
--- 两个别名的工作方式完全相同
+-- 两个别名的工作方式相同
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### 通过别名进行写操作 {#write-operations}
+### 通过别名进行写入操作
 
-所有写操作都会转发到目标表:
+所有写入操作都会转发到目标表：
 
 ```sql
 CREATE TABLE metrics (
@@ -145,25 +146,25 @@ ORDER BY ts;
 
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
--- 通过别名插入
-INSERT INTO metrics_alias VALUES
+-- 通过别名插入数据
+INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
 
--- 使用 SELECT 插入
-INSERT INTO metrics_alias
-SELECT now(), 'disk_usage', number * 10
-FROM system.numbers
+-- 使用 SELECT 语句插入数据
+INSERT INTO metrics_alias 
+SELECT now(), 'disk_usage', number * 10 
+FROM system.numbers 
 LIMIT 5;
 
--- 验证数据在目标表中
+-- 验证数据已写入目标表
 SELECT count() FROM metrics;  -- 返回 7
 SELECT count() FROM metrics_alias;  -- 返回 7
 ```
 
-### 模式修改 {#schema-modification}
+### 表结构修改
 
-ALTER 操作会修改目标表的模式:
+`ALTER` 操作会修改目标表的表结构：
 
 ```sql
 CREATE TABLE users (
@@ -189,9 +190,9 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
-### 数据变更 {#data-mutations}
+### 数据变更
 
-支持 UPDATE 和 DELETE 操作:
+支持 `UPDATE` 和 `DELETE` 操作：
 
 ```sql
 CREATE TABLE products (
@@ -204,18 +205,18 @@ ORDER BY id;
 
 CREATE TABLE products_alias ENGINE = Alias('products');
 
-INSERT INTO products_alias VALUES
+INSERT INTO products_alias VALUES 
     (1, 'item_one', 100.0, 'active'),
     (2, 'item_two', 200.0, 'active'),
     (3, 'item_three', 300.0, 'inactive');
 
--- 通过别名更新
+-- 通过别名进行更新
 ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 
--- 通过别名删除
+-- 通过别名进行删除
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- 更改应用于目标表
+-- 变更将应用到目标表
 SELECT * FROM products ORDER BY id;
 ```
 
@@ -226,9 +227,9 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-### 分区操作 {#partition-operations}
+### 分区操作
 
-对于分区表,分区操作会被转发:
+对于分区表，分区操作会转发：
 
 
 ```sql
@@ -242,7 +243,7 @@ ORDER BY date;
 
 CREATE TABLE logs_alias ENGINE = Alias('logs');
 
-INSERT INTO logs_alias VALUES
+INSERT INTO logs_alias VALUES 
     ('2024-01-15', 'INFO', 'message1'),
     ('2024-02-15', 'ERROR', 'message2'),
     ('2024-03-15', 'INFO', 'message3');
@@ -258,9 +259,9 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 SELECT count() FROM logs_alias;  -- 返回 3
 ```
 
-### 表优化 {#table-optimization}
+### 表优化
 
-OPTIMIZE 操作会在目标表中合并数据片段：
+OPTIMIZE 操作会在目标表中合并数据分片：
 
 ```sql
 CREATE TABLE events (
@@ -271,30 +272,30 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- 多次插入会创建多个数据片段
+-- 多次插入创建多个数据部分
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- 检查数据片段数量
-SELECT count() FROM system.parts
-WHERE database = currentDatabase()
-  AND table = 'events'
+-- 检查数据部分数量
+SELECT count() FROM system.parts 
+WHERE database = currentDatabase() 
+  AND table = 'events' 
   AND active;
 
--- 通过别名执行 OPTIMIZE
+-- 通过别名表优化
 OPTIMIZE TABLE events_alias FINAL;
 
--- 目标表中的数据片段已合并
-SELECT count() FROM system.parts
-WHERE database = currentDatabase()
-  AND table = 'events'
-  AND active;  -- Returns 1
+-- 数据部分在目标表中合并
+SELECT count() FROM system.parts 
+WHERE database = currentDatabase() 
+  AND table = 'events' 
+  AND active;  -- 返回 1
 ```
 
-### 别名管理 {#alias-management}
+### 别名管理
 
-可以独立重命名或删除别名：
+可以分别对别名进行重命名或删除：
 
 ```sql
 CREATE TABLE important_data (
@@ -313,9 +314,9 @@ RENAME TABLE old_alias TO new_alias;
 -- 为同一张表创建另一个别名
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- 删除其中一个别名（目标表和其他别名保持不变）
+-- 删除一个别名（目标表和其他别名保持不变）
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- 仍然可正常工作
-SELECT count() FROM important_data;  -- 数据完好，返回 2
+SELECT * FROM another_alias;  -- 仍然有效
+SELECT count() FROM important_data;  -- 数据完整，返回 2
 ```

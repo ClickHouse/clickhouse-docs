@@ -3,100 +3,97 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'SDK Next.js для ClickStack — стек наблюдаемости ClickHouse'
+description: 'SDK Next.js для ClickStack — стека наблюдаемости ClickHouse'
 title: 'Next.js'
-doc_type: 'guide'
+doc_type: 'руководство'
 keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack может получать нативные трассы OpenTelemetry из ваших
-[serverless-функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+ClickStack может осуществлять приём нативных трасс OpenTelemetry из ваших
+[серверлесс‑функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
 в Next 13.2+.
 
 Это руководство охватывает интеграцию:
 
-* **консольных логов**
-* **трейсов**
+* **Консольных логов**
+* **Трассировок**
 
 :::note
-Если вам нужен session replay или мониторинг на стороне браузера, вместо этого установите [Browser integration](/use-cases/observability/clickstack/sdks/browser).
+Если вам нужно воспроизведение сессий и мониторинг в браузере, вместо этого установите [интеграцию для браузера](/use-cases/observability/clickstack/sdks/browser).
 :::
 
 
-## Установка {#installing}
+## Установка
 
-### Включение хука инструментирования (требуется для версий 15 и ниже) {#enable-instrumentation-hook}
+### Включение хука инструментирования (обязательно для v15 и ниже)
 
-Для начала работы необходимо включить хук инструментирования Next.js, установив `experimental.instrumentationHook = true;` в файле `next.config.js`.
+Для начала включите хук инструментирования Next.js, установив `experimental.instrumentationHook = true;` в файле `next.config.js`.
 
 **Пример:**
 
 ```javascript
 const nextConfig = {
   experimental: {
-    instrumentationHook: true
+    instrumentationHook: true,
   },
-  // Игнорировать предупреждения пакетов otel
+  // Игнорировать предупреждения пакетов OTel 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
-    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
+    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack },
   ) => {
     if (isServer) {
-      config.ignoreWarnings = [{ module: /opentelemetry/ }]
+      config.ignoreWarnings = [{ module: /opentelemetry/ }];
     }
-    return config
-  }
-}
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 ```
 
-### Установка ClickHouse OpenTelemetry SDK {#install-sdk}
+### Установите ClickHouse OpenTelemetry SDK
 
 <Tabs groupId="npm">
-<TabItem value="npm" label="NPM" default>
+  <TabItem value="npm" label="NPM" default>
+    ```shell
+    npm install @hyperdx/node-opentelemetry 
+    ```
+  </TabItem>
 
-```shell
-npm install @hyperdx/node-opentelemetry
-```
-
-</TabItem>
-<TabItem value="yarn" label="Yarn" default>
-
-```shell
-yarn add @hyperdx/node-opentelemetry
-```
-
-</TabItem>
+  <TabItem value="yarn" label="Yarn" default>
+    ```shell
+    yarn add @hyperdx/node-opentelemetry 
+    ```
+  </TabItem>
 </Tabs>
 
-### Создание файлов инструментирования {#create-instrumentation-files}
+### Создайте файлы инструментирования
 
-Создайте файл с именем `instrumentation.ts` (или `.js`) в корневой директории проекта Next.js со следующим содержимым:
+Создайте файл `instrumentation.ts` (или `.js`) в корневом каталоге проекта Next.js со следующим содержимым:
 
 ```javascript
 export async function register() {
-  if (process.env.NEXT_RUNTIME === "nodejs") {
-    const { init } = await import("@hyperdx/node-opentelemetry")
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: "<YOUR_INGESTION_API_KEY>", // опционально настраивается через переменную окружения `HYPERDX_API_KEY`
-      service: "<MY_SERVICE_NAME>", // опционально настраивается через переменную окружения `OTEL_SERVICE_NAME`
-      additionalInstrumentations: [] // опционально, по умолчанию: []
-    })
+      apiKey: '<YOUR_INGESTION_API_KEY>', // опционально: настраивается через переменную окружения `HYPERDX_API_KEY`
+      service: '<MY_SERVICE_NAME>', // опционально: настраивается через переменную окружения `OTEL_SERVICE_NAME`
+      additionalInstrumentations: [], // опционально; по умолчанию: []
+    });
   }
 }
 ```
 
-Это позволит Next.js импортировать инструментирование OpenTelemetry для любого вызова serverless-функции.
+Это позволит Next.js импортировать инструментирование OpenTelemetry для любого вызова серверлесс‑функции.
 
-### Настройка переменных окружения {#configure-environment-variables}
+### Настройка переменных окружения
 
-Если вы отправляете трассировки напрямую в ClickStack, необходимо запустить сервер Next.js
-со следующими переменными окружения, чтобы направить спаны в коллектор OTel:
+Если вы отправляете трейсы напрямую в ClickStack, вам потребуется запустить сервер Next.js
+со следующими переменными окружения, чтобы направить спаны в OTel collector:
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
@@ -105,5 +102,4 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
 
-При развертывании в Vercel убедитесь, что все указанные выше переменные окружения настроены
-для вашего развертывания.
+Если вы развёртываете приложение на Vercel, убедитесь, что все перечисленные выше переменные окружения заданы для этого развёртывания.

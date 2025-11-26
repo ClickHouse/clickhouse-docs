@@ -1,5 +1,5 @@
 ---
-description: 'ParquetMetadata フォーマットに関するドキュメント'
+description: 'ParquetMetadata 形式のドキュメント'
 keywords: ['ParquetMetadata']
 slug: /interfaces/formats/ParquetMetadata
 title: 'ParquetMetadata'
@@ -8,54 +8,54 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-Parquetファイルのメタデータ(https://parquet.apache.org/docs/file-format/metadata/)を読み取るための特殊なフォーマットです。常に以下の構造/内容を持つ1行を出力します:
-
-- `num_columns` - カラム数
-- `num_rows` - 総行数
-- `num_row_groups` - 総行グループ数
-- `format_version` - Parquetフォーマットバージョン、常に1.0または2.6
-- `total_uncompressed_size` - データの総非圧縮バイトサイズ、全行グループのtotal_byte_sizeの合計として計算されます
-- `total_compressed_size` - データの総圧縮バイトサイズ、全行グループのtotal_compressed_sizeの合計として計算されます
-- `columns` - 以下の構造を持つカラムメタデータのリスト:
-  - `name` - カラム名
-  - `path` - カラムパス(ネストされたカラムの場合は名前と異なります)
+Parquet ファイルメタデータ (https://parquet.apache.org/docs/file-format/metadata/) を読み取るための特別なフォーマットです。常に次の構造/内容を持つ 1 行を出力します:
+- `num_columns` - 列数
+- `num_rows` - 行の総数
+- `num_row_groups` - 行グループの総数
+- `format_version` - Parquet フォーマットバージョン。常に 1.0 または 2.6
+- `total_uncompressed_size` - すべての行グループの total_byte_size の合計として計算される、データの非圧縮バイトサイズの総量
+- `total_compressed_size` - すべての行グループの total_compressed_size の合計として計算される、データの圧縮バイトサイズの総量
+- `columns` - 次の構造を持つ列メタデータのリスト:
+  - `name` - 列名
+  - `path` - 列パス (ネストされた列の場合は name と異なります)
   - `max_definition_level` - 最大定義レベル
-  - `max_repetition_level` - 最大繰り返しレベル
-  - `physical_type` - カラムの物理型
-  - `logical_type` - カラムの論理型
-  - `compression` - このカラムに使用される圧縮方式
-  - `total_uncompressed_size` - カラムの総非圧縮バイトサイズ、全行グループのカラムのtotal_uncompressed_sizeの合計として計算されます
-  - `total_compressed_size` - カラムの総圧縮バイトサイズ、全行グループのカラムのtotal_compressed_sizeの合計として計算されます
-  - `space_saved` - 圧縮によって節約された容量の割合、(1 - total_compressed_size/total_uncompressed_size)として計算されます
-  - `encodings` - このカラムに使用されるエンコーディングのリスト
-- `row_groups` - 以下の構造を持つ行グループメタデータのリスト:
-  - `num_columns` - 行グループ内のカラム数
+  - `max_repetition_level` - 最大反復レベル
+  - `physical_type` - 列の物理型
+  - `logical_type` - 列の論理型
+  - `compression` - この列で使用される圧縮方式
+  - `total_uncompressed_size` - すべての行グループにおける当該列の total_uncompressed_size の合計として計算される、列の非圧縮バイトサイズの総量
+  - `total_compressed_size` - すべての行グループにおける当該列の total_compressed_size の合計として計算される、列の圧縮バイトサイズの総量
+  - `space_saved` - 圧縮によって節約された容量の割合。(1 - total_compressed_size/total_uncompressed_size) として計算されます
+  - `encodings` - この列で使用されるエンコーディングのリスト
+- `row_groups` - 次の構造を持つ行グループメタデータのリスト:
+  - `num_columns` - 行グループ内の列数
   - `num_rows` - 行グループ内の行数
-  - `total_uncompressed_size` - 行グループの総非圧縮バイトサイズ
-  - `total_compressed_size` - 行グループの総圧縮バイトサイズ
-  - `columns` - 以下の構造を持つカラムチャンクメタデータのリスト:
-    - `name` - カラム名
-    - `path` - カラムパス
-    - `total_compressed_size` - カラムの総圧縮バイトサイズ
-    - `total_uncompressed_size` - 行グループの総非圧縮バイトサイズ
-    - `have_statistics` - カラムチャンクメタデータにカラム統計が含まれているかを示すブール値フラグ
-    - `statistics` - カラムチャンク統計(have_statistics = falseの場合、全フィールドはNULL)、以下の構造を持ちます:
-      - `num_values` - カラムチャンク内の非NULL値の数
-      - `null_count` - カラムチャンク内のNULL値の数
-      - `distinct_count` - カラムチャンク内の一意な値の数
+  - `total_uncompressed_size` - 行グループの非圧縮バイトサイズの総量
+  - `total_compressed_size` - 行グループの圧縮バイトサイズの総量
+  - `columns` - 次の構造を持つカラムチャンクメタデータのリスト:
+    - `name` - 列名
+    - `path` - 列パス
+    - `total_compressed_size` - 列の圧縮バイトサイズの総量
+    - `total_uncompressed_size` - 行グループの非圧縮バイトサイズの総量
+    - `have_statistics` - カラムチャンクメタデータに列統計が含まれるかどうかを示すブールフラグ
+    - `statistics` - カラムチャンク統計 (have_statistics = false の場合、すべてのフィールドは NULL) で、次の構造を持ちます:
+      - `num_values` - カラムチャンク内の非 NULL 値の数
+      - `null_count` - カラムチャンク内の NULL 値の数
+      - `distinct_count` - カラムチャンク内の異なる値の数
       - `min` - カラムチャンクの最小値
       - `max` - カラムチャンクの最大値
 
 
-## 使用例 {#example-usage}
 
-例:
+## 使用例
+
+例：
 
 ```sql
-SELECT *
-FROM file(data.parquet, ParquetMetadata)
+SELECT * 
+FROM file(data.parquet, ParquetMetadata) 
 FORMAT PrettyJSONEachRow
 ```
 

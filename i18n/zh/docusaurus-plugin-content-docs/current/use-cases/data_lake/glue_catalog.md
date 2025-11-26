@@ -4,7 +4,8 @@ sidebar_label: 'AWS Glue 目录'
 title: 'AWS Glue 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将引导您完成使用 ClickHouse 和 AWS Glue Data Catalog 查询存储在 S3 存储桶中的数据的步骤。'
+description: '在本指南中，我们将向你演示如何使用 ClickHouse 和 AWS Glue Data Catalog
+ 来查询存储在 S3 存储桶中的数据。'
 keywords: ['Glue', '数据湖']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,47 +15,48 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个目录服务（如 Unity、Glue、Polaris 等）集成。在本指南中，我们将向您演示如何使用 ClickHouse 和 Glue 数据目录查询存储在 S3 存储桶中的数据。
+ClickHouse 支持与多个 catalog（如 Unity、Glue、Polaris 等）集成。在本指南中，我们将演示如何使用 ClickHouse 结合 Glue Data Catalog 查询存储在 S3 存储桶中的数据。
 
 :::note
-Glue 支持多种不同的表格式，但此集成目前仅支持 Iceberg 表格式。
+Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
 :::
 
 
 ## 在 AWS 中配置 Glue {#configuring}
 
-要连接到 Glue 目录,您需要确定目录所在的区域并提供访问密钥和密钥。
+要连接到 Glue 目录，您需要确定目录所在的区域，并提供访问密钥 ID 和秘密访问密钥。 
 
 :::note
-目前,Glue 目录仅支持访问密钥和密钥身份验证,但我们将在未来支持其他身份验证方式。
+目前，Glue 目录仅支持通过访问密钥 ID 和秘密访问密钥进行访问，但我们将在未来支持更多身份验证方式。
 :::
 
 
-## 在 Glue 数据目录与 ClickHouse 之间创建连接 {#connecting}
 
-配置好 Unity Catalog 并完成身份验证后,即可在 ClickHouse 与 Unity Catalog 之间建立连接。
+## 在 Glue 数据目录与 ClickHouse 之间创建连接
 
-```sql title="查询"
+在完成 Unity Catalog 配置并设置好身份验证后，即可在 ClickHouse 与 Unity Catalog 之间建立连接。
+
+```sql title="Query"
 CREATE DATABASE glue
 ENGINE = DataLakeCatalog
-SETTINGS
-    catalog_type = 'glue',
-    region = 'us-west-2',
-    aws_access_key_id = '<access-key>',
-    aws_secret_access_key = '<secret-key>'
+SETTINGS 
+    catalog_type = 'glue', 
+    region = 'us-west-2', 
+    aws_access_key_id = '<访问密钥>', 
+    aws_secret_access_key = '<私密访问密钥>'
 ```
 
 
-## 使用 ClickHouse 查询 Glue 数据目录 {#query-glue-catalog}
+## 使用 ClickHouse 查询 Glue 数据目录
 
-连接建立后,即可开始查询 Glue:
+现在连接已经建立，可以开始查询 Glue：
 
-```sql title="查询"
+```sql title="Query"
 USE glue;
 SHOW TABLES;
 ```
 
-```sql title="响应"
+```sql title="Response"
    ┌─name───────────────────────────────────┐
 1. │ iceberg-benchmark.hitsiceberg          │
 2. │ iceberg-benchmark.hitsparquet          │
@@ -63,19 +65,20 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-从上面可以看到,部分表并非 Iceberg 表,例如 `iceberg-benchmark.hitsparquet`。由于目前仅支持 Iceberg,因此无法查询这些表。
+你可以在上方看到，部分表并不是 Iceberg 表，例如
+`iceberg-benchmark.hitsparquet`。这些表无法被查询，因为目前只支持 Iceberg。
 
-查询表的方法:
+要查询一张表：
 
-```sql title="查询"
+```sql title="Query"
 SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-由于 ClickHouse 不支持多个命名空间,因此必须使用反引号。
+需要使用反引号，因为 ClickHouse 不支持同时使用多个命名空间。
 :::
 
-要查看表的 DDL,请运行以下查询:
+要查看该表的 DDL，请运行以下查询：
 
 ```sql
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
@@ -202,7 +205,8 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## 将数据湖中的数据加载到 ClickHouse {#loading-data-into-clickhouse}
 
-如果需要将 Databricks 中的数据加载到 ClickHouse,请先创建一个本地 ClickHouse 表:
+如果需要将 Databricks 中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
+
 
 
 ```sql title="Query"

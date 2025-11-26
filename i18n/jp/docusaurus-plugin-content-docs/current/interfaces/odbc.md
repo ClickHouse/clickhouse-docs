@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # ODBC ドライバー
 
-ClickHouse をデータソースとして利用するには、[公式の ODBC ドライバー](https://github.com/ClickHouse/clickhouse-odbc) を使用してください。
+ClickHouse をデータソースとして利用するには、[公式 ODBC ドライバー](https://github.com/ClickHouse/clickhouse-odbc) を使用してください。

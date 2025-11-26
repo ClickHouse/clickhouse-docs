@@ -3,8 +3,8 @@ sidebar_label: 'Metabase'
 sidebar_position: 131
 slug: /integrations/metabase
 keywords: ['Metabase']
-description: 'Metabase は、データに関する質問を行うための、使いやすいオープンソースの UI ツールです。'
-title: 'Metabase を ClickHouse に接続する'
+description: 'Metabase は、データについての疑問を簡単に投げかけられるオープンソースの UI ツールです。'
+title: 'Metabase と ClickHouse を接続する'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
@@ -29,127 +29,92 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Metabase は、データに対してクエリを実行するための、使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで利用できます。Metabase は、ダウンロードした JDBC ドライバーを使用して ClickHouse に接続し、そのドライバーを `plugins` フォルダに配置します。
+Metabase は、データに関する疑問を解消するための、使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は、JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダに配置します。
 
 
 
 ## 目標 {#goal}
 
-このガイドでは、Metabaseを使用してClickHouseデータに対してクエリを実行し、その結果を可視化します。可視化結果の一例は次のようになります:
+このガイドでは、Metabase を使って ClickHouse のデータに対していくつかクエリを実行し、その結果を可視化します。可視化結果の 1 つは次のようになります：
 
-<Image
-  size='md'
-  img={metabase_08}
-  alt='ClickHouseのデータを表示するMetabaseの円グラフ'
-  border
-/>
-<p />
+  <Image size="md" img={metabase_08} alt="ClickHouse のデータを表示している Metabase の円グラフ可視化" border />
+<p/>
 
-:::tip データの追加
-使用するデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択することをお勧めします。同じドキュメントカテゴリには他にも複数のデータセットが用意されています。
+:::tip データを追加する
+作業に使えるデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選んでもよいでしょう。同じドキュメントカテゴリ内に、他にもいくつか利用できるデータセットがあります。
 :::
 
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
 
+## 1. 接続情報を確認する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. Metabase用ClickHouseプラグインのダウンロード {#2--download-the-clickhouse-plugin-for-metabase}
 
-1. `plugins`フォルダが存在しない場合は、`metabase.jar`を保存した場所のサブフォルダとして作成してください。
+## 2.  Metabase 用の ClickHouse プラグインをダウンロードする {#2--download-the-clickhouse-plugin-for-metabase}
 
-2. このプラグインは`clickhouse.metabase-driver.jar`という名前のJARファイルです。最新版のJARファイルは<a href="https://github.com/clickhouse/metabase-clickhouse-driver/release" target="_blank">https://github.com/clickhouse/metabase-clickhouse-driver/releases/latest</a>からダウンロードしてください。
+1. `plugins` フォルダがない場合は、`metabase.jar` を保存している場所のサブフォルダとして `plugins` フォルダを作成します。
 
-3. `clickhouse.metabase-driver.jar`を`plugins`フォルダに保存してください。
+2. プラグインは `clickhouse.metabase-driver.jar` という名前の JAR ファイルです。最新版の JAR ファイルを <a href="https://github.com/clickhouse/metabase-clickhouse-driver/release" target="_blank">https://github.com/clickhouse/metabase-clickhouse-driver/releases/latest</a> からダウンロードします。
 
-4. ドライバが正しく読み込まれるように、Metabaseを起動(または再起動)してください。
+3. `clickhouse.metabase-driver.jar` を `plugins` フォルダに保存します。
 
-5. <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>でMetabaseにアクセスしてください。初回起動時にはウェルカム画面が表示され、一連の質問に回答する必要があります。データベースの選択を求められた場合は、「**I'll add my data later**」を選択してください:
+4. Metabase を起動（または再起動）して、ドライバが正しく読み込まれるようにします。
 
-
-## 3. MetabaseをClickHouseに接続する {#3--connect-metabase-to-clickhouse}
-
-1. 右上隅の歯車アイコンをクリックし、**Admin Settings**を選択して<a href="http://localhost:3000/admin/settings/setup" target="_blank">Metabase管理ページ</a>にアクセスします。
-
-2. **Add a database**をクリックします。または、**Databases**タブをクリックして**Add database**ボタンを選択することもできます。
-
-3. ドライバのインストールが正常に完了していれば、**Database type**のドロップダウンメニューに**ClickHouse**が表示されます:
-
-   <Image
-     size='md'
-     img={metabase_01}
-     alt='ClickHouseがオプションとして表示されているMetabaseのデータベース選択画面'
-     border
-   />
-
-4. データベースに**Display name**を設定します。これはMetabaseの設定項目であるため、任意の名前を使用できます。
-
-5. ClickHouseデータベースの接続詳細を入力します。ClickHouseサーバーがSSLを使用するように設定されている場合は、セキュア接続を有効にしてください。例:
-
-   <Image
-     size='md'
-     img={metabase_02}
-     alt='ClickHouseデータベース用のMetabase接続詳細フォーム'
-     border
-   />
-
-6. **Save**ボタンをクリックすると、Metabaseがデータベースをスキャンしてテーブルを検出します。
+5. <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a> で Metabase にアクセスします。初回起動時にはウェルカム画面が表示され、いくつかの質問に順に回答する必要があります。データベースの選択を求められた場合は、「**I'll add my data later**」を選択します。
 
 
-## 4. SQLクエリを実行する {#4-run-a-sql-query}
 
-1. 右上隅の**Exit admin**ボタンをクリックして、**Admin settings**を終了します。
+## 3.  Metabase を ClickHouse に接続する {#3--connect-metabase-to-clickhouse}
 
-2. 右上隅の**+ New**メニューをクリックすると、質問の作成、SQLクエリの実行、ダッシュボードの構築が可能であることが確認できます:
+1. 右上の歯車アイコンをクリックし、**Admin Settings** を選択して、<a href="http://localhost:3000/admin/settings/setup" target="_blank">Metabase 管理ページ</a>に移動します。
 
-   <Image
-     size='sm'
-     img={metabase_03}
-     alt='質問、SQLクエリ、ダッシュボードを作成するオプションを表示するMetabaseの新規メニュー'
-     border
-   />
+2. **Add a database** をクリックします。 または、**Databases** タブをクリックし、**Add database** ボタンを選択します。
 
-3. 例えば、以下は`uk_price_paid`という名前のテーブルに対して実行されたSQLクエリで、1995年から2022年までの年別平均支払価格を返します:
+3. ドライバーのインストールが正しく行われていれば、**Database type** のドロップダウンメニューに **ClickHouse** が表示されます。
 
-   <Image
-     size='md'
-     img={metabase_04}
-     alt='英国不動産価格データに対するクエリを表示するMetabase SQLエディタ'
-     border
-   />
+    <Image size="md" img={metabase_01} alt="ClickHouse がオプションとして表示されている Metabase のデータベース選択画面" border />
+
+4. データベースに **Display name** を付けます。これは Metabase 側の設定なので、任意の名前を使用できます。
+
+5. ClickHouse データベースの接続情報を入力します。ClickHouse サーバーが SSL を使用するように構成されている場合は、安全な接続を有効にします。例:
+
+    <Image size="md" img={metabase_02} alt="ClickHouse データベース用の Metabase 接続情報フォーム" border />
+
+6. **Save** ボタンをクリックすると、Metabase がデータベース内のテーブルをスキャンします。
+
+
+
+## 4. SQL クエリを実行する {#4-run-a-sql-query}
+
+1. 右上隅にある **Exit admin** ボタンをクリックして、**Admin settings** を閉じます。
+
+2. 右上隅の **+ New** メニューをクリックすると、質問の作成、SQL クエリの実行、ダッシュボードの作成ができることを確認できます。
+
+    <Image size="sm" img={metabase_03} alt="Metabase の New メニューに、質問、SQL クエリ、ダッシュボードを作成するオプションが表示されている" border />
+
+3. 例として、`uk_price_paid` というテーブルに対して、1995 年から 2022 年までの年ごとの平均支払価格を返す SQL クエリは次のようになります。
+
+    <Image size="md" img={metabase_04} alt="UK price paid データに対するクエリを表示している Metabase の SQL エディタ" border />
+
 
 
 ## 5. 質問を作成する {#5-ask-a-question}
 
-1. **+ New**をクリックし、**Question**を選択します。データベースとテーブルを選択することで質問を作成できます。例えば、以下の質問は`default`データベース内の`uk_price_paid`というテーブルに対して実行されています。これは、グレーター・マンチェスター州内の町別に平均価格を計算する簡単な質問です:
+1. **+ New** をクリックして、**Question** を選択します。データベースとテーブルを基点として質問を作成できることに注目してください。たとえば、次の質問は `default` データベース内の `uk_price_paid` というテーブルに対して作成されています。以下は、Greater Manchester 郡内の町ごとの平均価格を計算するシンプルな質問です。
 
-   <Image
-     size='md'
-     img={metabase_06}
-     alt='英国価格データを使用したMetabase質問ビルダーのインターフェース'
-     border
-   />
+    <Image size="md" img={metabase_06} alt="UK の価格データを用いた Metabase のクエスチョンビルダーインターフェース" border />
 
-2. **Visualize**ボタンをクリックすると、結果が表形式で表示されます。
+2. **Visualize** ボタンをクリックして、結果を表形式ビューで表示します。
 
-   <Image
-     size='md'
-     img={metabase_07}
-     alt='町別の平均価格を表形式で表示したMetabaseの可視化'
-     border
-   />
+    <Image size="md" img={metabase_07} alt="町ごとの平均価格の表形式結果を表示している Metabase の可視化" border />
 
-3. 結果の下にある**Visualization**ボタンをクリックして、可視化を棒グラフ(または他の利用可能なオプション)に変更します:
+3. 結果の下にある **Visualization** ボタンをクリックして、可視化を棒グラフ（または他の利用可能なオプション）に変更します。
 
-   <Image
-     size='md'
-     img={metabase_08}
-     alt='グレーター・マンチェスターの町別平均価格を示すMetabase円グラフの可視化'
-     border
-   />
+    <Image size="md" img={metabase_08} alt="Greater Manchester における町ごとの平均価格を示す Metabase の円グラフ可視化" border />
 
 
-## さらに詳しく {#learn-more}
 
-Metabaseおよびダッシュボードの構築方法の詳細については、<a href="https://www.metabase.com/docs/latest/" target="_blank">Metabaseのドキュメント</a>を参照してください。
+## 詳細はこちら {#learn-more}
+
+Metabase の詳細やダッシュボードの作成方法については、<a href="https://www.metabase.com/docs/latest/" target="_blank">Metabase ドキュメントをご覧ください</a>。

@@ -15,16 +15,17 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-在此格式中,ClickHouse 将每一行输出为一个独立的、以换行符分隔的 JSON 对象。
+在这种格式下，ClickHouse 将每一行输出为单独的、以换行符分隔的 JSON 对象。
 
-此格式也称为 `JSONEachRow`、`NDJSON`(换行符分隔 JSON)或 `JSONL`(`JSONLines`)。这些名称都是同一格式的别名,可以互换使用。
+此格式也被称为 `JSONEachRow`、`NDJSON`（Newline Delimited JSON）或 `JSONL`（`JSONLines`）。这些名称都是同一格式的别名，可以互换使用。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用包含以下数据的 JSON 文件,命名为 `football.json`:
+### 插入数据
+
+使用一个名为 `football.json`、包含以下数据的 JSON 文件：
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -46,15 +47,15 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `JSONLines` 格式读取数据:
+采用 `JSONLines` 格式读取数据：
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONLines
 ```
 
-输出将为 JSON 格式:
+输出将为 JSON 格式：
 
 
 ```json
@@ -85,7 +86,7 @@ FORMAT JSONLines
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-如果将 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1，则在导入时会跳过名称未知的数据列。
+在导入数据时，如果将设置 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 1，则会跳过名称未知的数据列。
 
 
 ## 格式设置 {#format-settings}

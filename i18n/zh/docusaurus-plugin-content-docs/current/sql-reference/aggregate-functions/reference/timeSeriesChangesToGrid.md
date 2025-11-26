@@ -1,30 +1,30 @@
 ---
-description: '在指定网格上，对时间序列数据计算类似 PromQL 的变化次数的聚合函数。'
+description: '聚合函数，用于在指定网格上对时间序列数据计算类似 PromQL 的 changes。'
 sidebar_position: 229
 slug: /sql-reference/aggregate-functions/reference/timeSeriesChangesToGrid
 title: 'timeSeriesChangesToGrid'
 doc_type: 'reference'
 ---
 
-该聚合函数将时间序列数据作为时间戳和值的成对输入，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据中计算[类似 PromQL 的变化次数](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)。对于网格上的每个点，用于计算 `changes` 的样本会在指定的时间窗口内进行考虑。
+聚合函数，接收由时间戳和值组成的时间序列数据对，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 changes](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)。对于网格上的每个点，用于计算 `changes` 的样本会在指定的时间窗口内进行选取和计算。
 
-参数：
+Parameters:
 
 * `start timestamp` - 指定网格的起始时间
 * `end timestamp` - 指定网格的结束时间
 * `grid step` - 指定网格的步长（秒）
-* `staleness` - 指定被考虑样本的最大“staleness”（秒）
+* `staleness` - 指定参与计算样本允许的最大“陈旧时间”（秒）
 
-参数（Arguments）：
+Arguments:
 
 * `timestamp` - 样本的时间戳
-* `value` - 与该 `timestamp` 对应的时间序列值
+* `value` - 对应该 `timestamp` 的时间序列值
 
-返回值：
-指定网格上的 `changes` 值，类型为 `Array(Nullable(Float64))`。返回的数组对每个时间网格点包含一个值。如果在某个网格点对应的窗口中没有样本可用于计算该点的 `changes` 值，则该值为 NULL。
+Return value:
+在指定网格上的 `changes` 值，类型为 `Array(Nullable(Float64))`。返回数组中每个元素对应一个时间网格点。如果在对应时间窗口内没有样本可用于计算某个网格点的 changes 值，则该元素为 NULL。
 
-示例：
-下面的查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上计算 `changes` 值：
+Example:
+以下查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上计算 `changes` 值：
 
 ```sql
 WITH
@@ -34,7 +34,7 @@ WITH
     90 AS start_ts,       -- 时间戳网格起始值
     90 + 135 AS end_ts,   -- 时间戳网格结束值
     15 AS step_seconds,   -- 时间戳网格步长
-    45 AS window_seconds  -- "过期"窗口
+    45 AS window_seconds  -- "陈旧性"窗口
 SELECT timeSeriesChangesToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
@@ -54,7 +54,7 @@ FROM
    └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-也可以将多组时间戳和值作为长度相同的数组传入。使用数组参数时，同一查询如下：
+也可以将多组时间戳和数值样本作为长度相同的数组传入。使用数组参数的同一查询如下：
 
 ```sql
 WITH
@@ -68,5 +68,5 @@ SELECT timeSeriesChangesToGrid(start_ts, end_ts, step_seconds, window_seconds)(t
 ```
 
 :::note
-此函数为实验性功能，可通过设置 `allow_experimental_ts_to_grid_aggregate_function=true` 来启用。
+此函数为实验性功能，可通过将 `allow_experimental_ts_to_grid_aggregate_function` 设置为 `true` 来启用。
 :::

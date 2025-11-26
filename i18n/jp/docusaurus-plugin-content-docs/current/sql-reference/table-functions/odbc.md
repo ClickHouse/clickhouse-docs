@@ -1,5 +1,5 @@
 ---
-description: 'ODBC を介して接続されているテーブルを返します。'
+description: 'ODBC を介して接続されたテーブルを返します。'
 sidebar_label: 'odbc'
 sidebar_position: 150
 slug: /sql-reference/table-functions/odbc
@@ -15,39 +15,40 @@ doc_type: 'reference'
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
-odbc(datasource, external_database, external_table)
-odbc(datasource, external_table)
-odbc(named_collection)
+odbc(データソース, 外部データベース, 外部テーブル)
+odbc(データソース, 外部テーブル)
+odbc(名前付きコレクション)
 ```
 
 
 ## 引数 {#arguments}
 
-| 引数                | 説明                                                                  |
-| ------------------- | -------------------------------------------------------------------- |
-| `datasource`        | `odbc.ini`ファイル内の接続設定を含むセクションの名前。                        |
-| `external_database` | 外部DBMS内のデータベース名。                                        |
-| `external_table`    | `external_database`内のテーブル名。                                |
+| Argument            | Description                                                            |
+|---------------------|------------------------------------------------------------------------|
+| `datasource` | `odbc.ini` ファイル内の接続設定セクション名。 |
+| `external_database` | 外部 DBMS 内のデータベース名。                                |
+| `external_table`    | `external_database` 内のテーブル名。                            |
 
-これらのパラメータは[名前付きコレクション](operations/named-collections.md)を使用して渡すこともできます。
+これらのパラメータは、[named collections](operations/named-collections.md) を使用して渡すこともできます。
 
-ODBC接続を安全に実装するため、ClickHouseは独立したプログラム`clickhouse-odbc-bridge`を使用します。ODBCドライバが`clickhouse-server`から直接読み込まれると、ドライバの問題によってClickHouseサーバがクラッシュする可能性があります。ClickHouseは必要に応じて`clickhouse-odbc-bridge`を自動的に起動します。ODBCブリッジプログラムは`clickhouse-server`と同じパッケージからインストールされます。
+ODBC 接続を安全に実装するために、ClickHouse は別プログラムである `clickhouse-odbc-bridge` を使用します。ODBC ドライバを `clickhouse-server` から直接ロードすると、ドライバの問題によって ClickHouse サーバーがクラッシュする可能性があります。ClickHouse は必要に応じて自動的に `clickhouse-odbc-bridge` を起動します。ODBC ブリッジプログラムは、`clickhouse-server` と同じパッケージからインストールされます。
 
-外部テーブルの`NULL`値を持つフィールドは、基本データ型のデフォルト値に変換されます。例えば、リモートのMySQLテーブルフィールドが`INT NULL`型の場合、0(ClickHouseの`Int32`データ型のデフォルト値)に変換されます。
+外部テーブルのうち値が `NULL` のフィールドは、基になるデータ型のデフォルト値に変換されます。たとえば、リモートの MySQL テーブルフィールドが `INT NULL` 型の場合、0（ClickHouse の `Int32` データ型におけるデフォルト値）に変換されます。
 
 
-## 使用例 {#usage-example}
 
-**ODBC経由でローカルのMySQLインストールからデータを取得する**
+## 使用例
 
-この例はUbuntu Linux 18.04およびMySQLサーバー5.7で検証されています。
+**ODBC を介してローカルの MySQL インストールからデータを取得する**
 
-unixODBCとMySQL Connectorがインストールされていることを確認してください。
+この例は Ubuntu Linux 18.04 および MySQL サーバー 5.7 で動作確認されています。
 
-デフォルトでは(パッケージからインストールした場合)、ClickHouseはユーザー`clickhouse`として起動します。そのため、MySQLサーバーでこのユーザーを作成して設定する必要があります。
+`unixODBC` と MySQL Connector がインストールされていることを確認します。
+
+デフォルトでは (パッケージからインストールした場合)、ClickHouse はユーザー `clickhouse` として起動します。したがって、MySQL サーバー側でこのユーザーを作成し、構成する必要があります。
 
 ```bash
 $ sudo mysql
@@ -58,7 +59,7 @@ mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
-次に、`/etc/odbc.ini`で接続を設定します。
+次に、`/etc/odbc.ini` で接続設定を行います。
 
 ```bash
 $ cat /etc/odbc.ini
@@ -71,17 +72,17 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-unixODBCインストールの`isql`ユーティリティを使用して接続を確認できます。
+unixODBC のインストールに含まれる `isql` ユーティリティを使用して接続を確認できます。
 
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Connected!                            |
+| 接続しました!                            |
 |                                       |
 ...
 ```
 
-MySQLのテーブル:
+MySQL のテーブル：
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -104,7 +105,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseでMySQLテーブルからデータを取得する:
+ClickHouse で MySQL テーブルからデータを取得する:
 
 ```sql
 SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
@@ -119,5 +120,5 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 
 ## 関連項目 {#see-also}
 
-- [ODBC辞書](/sql-reference/dictionaries#dbms)
-- [ODBCテーブルエンジン](/engines/table-engines/integrations/odbc)
+- [ODBC 辞書](/sql-reference/dictionaries#dbms)
+- [ODBC テーブルエンジン](/engines/table-engines/integrations/odbc)

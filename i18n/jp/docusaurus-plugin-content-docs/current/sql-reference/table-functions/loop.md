@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse の loop テーブル関数は、クエリ結果を無限に繰り返し返すために使用されます。'
+description: 'ClickHouse の loop テーブル関数は、クエリ結果を無限ループで繰り返し返すために使用されます。'
 slug: /sql-reference/table-functions/loop
 title: 'loop'
 doc_type: 'reference'
@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -23,21 +23,23 @@ SELECT ... FROM loop(other_table_function(...));
 
 ## 引数 {#arguments}
 
-| 引数                        | 説明                                                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `database`                  | データベース名                                                                                                       |
-| `table`                     | テーブル名                                                                                                          |
-| `other_table_function(...)` | その他のテーブル関数。例: `SELECT * FROM loop(numbers(10));` この場合の `other_table_function(...)` は `numbers(10)` です。 |
+| 引数                        | 説明                                                                                                                 |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database`                  | データベース名。                                                                                                     |
+| `table`                     | テーブル名。                                                                                                         |
+| `other_table_function(...)` | 他のテーブル関数。この場合の例: `SELECT * FROM loop(numbers(10));` において、`other_table_function(...)` は `numbers(10)`。 |
+
 
 
 ## 戻り値 {#returned_values}
 
-クエリ結果を返すための無限ループです。
+クエリ結果を返し続ける無限ループ。
 
 
-## 例 {#examples}
 
-ClickHouseからデータを選択:
+## 例
+
+ClickHouse からデータを取得する：
 
 ```sql
 SELECT * FROM loop(test_database, test_table);
@@ -45,7 +47,7 @@ SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-または他のテーブル関数を使用:
+または、他のテーブル関数を使用する場合:
 
 ```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;

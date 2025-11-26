@@ -1,5 +1,6 @@
 ---
-description: 'この関数は、例外安全性をテストするために使用できます。指定した確率で生成時に例外をスローします。'
+description: 'この関数は、例外安全性をテストするために使用できます。
+  指定した確率で生成時に例外をスローします。'
 sidebar_position: 101
 slug: /sql-reference/aggregate-functions/reference/aggthrow
 title: 'aggThrow'
@@ -8,7 +9,7 @@ doc_type: 'reference'
 
 # aggThrow
 
-この関数は、例外安全性をテストする目的で使用できます。指定した確率で生成時に例外をスローします。
+この関数は、例外安全性をテストするために使用できます。指定した確率で、生成時に例外をスローします。
 
 **構文**
 
@@ -32,9 +33,9 @@ aggThrow(throw_prob)
 SELECT number % 2 AS even, aggThrow(number) FROM numbers(10) GROUP BY even;
 ```
 
-結果：
+結果:
 
 ```response
-例外を受信しました:
+例外を受信しました：
 コード: 503. DB::Exception: 集約関数 aggThrow が正常に例外をスローしました: AggregatingTransform の実行中。(AGGREGATE_FUNCTION_THROW)
 ```

@@ -2,32 +2,32 @@
 description: 'GROUPING 集約関数に関するドキュメント。'
 slug: /sql-reference/aggregate-functions/grouping_function
 title: 'GROUPING'
-doc_type: 'reference'
+doc_type: 'リファレンス'
 ---
 
 
 
-# グルーピング
+# グループ化
 
 
 
 ## GROUPING {#grouping}
 
-[ROLLUP](../statements/select/group-by.md/#rollup-modifier)と[CUBE](../statements/select/group-by.md/#cube-modifier)はGROUP BYの修飾子です。これらはいずれも小計を計算します。ROLLUPは、例えば`(day, month, year)`のような順序付き列リストを受け取り、集計の各レベルで小計を計算した後、総計を算出します。CUBEは指定された列のすべての可能な組み合わせについて小計を計算します。GROUPINGは、ROLLUPまたはCUBEによって返される行のうち、どれが上位集計であり、どれが修飾されていないGROUP BYによって返される通常の行であるかを識別します。
+[ROLLUP](../statements/select/group-by.md/#rollup-modifier) と [CUBE](../statements/select/group-by.md/#cube-modifier) は GROUP BY の修飾子です。これらはいずれも小計を計算します。ROLLUP は `(day, month, year)` のような順序付きのカラムリストを受け取り、集約の各レベルで小計を計算し、最後に総計を計算します。CUBE は、指定されたカラムのあらゆる組み合わせに対して小計を計算します。GROUPING は、ROLLUP または CUBE によって返される行のうち、どれがスーパー集約（より上位レベルの集約行）であり、どれが修飾されていない GROUP BY によって返される行に相当するかを識別します。
 
-GROUPING関数は複数の列を引数として受け取り、ビットマスクを返します。
+GROUPING 関数は複数のカラムを引数として取り、ビットマスクを返します。 
+- `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
+- `0` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計ではないことを示します
 
-- `1`は、`GROUP BY`の`ROLLUP`または`CUBE`修飾子によって返される行が小計であることを示します
-- `0`は、`ROLLUP`または`CUBE`によって返される行が小計ではないことを示します
 
 
-## GROUPING SETS {#grouping-sets}
+## GROUPING SETS
 
-デフォルトでは、CUBE修飾子はCUBEに渡されたカラムのすべての可能な組み合わせについて小計を計算します。GROUPING SETSを使用すると、計算する特定の組み合わせを指定できます。
+デフォルトでは、`CUBE` 修飾子は、`CUBE` に渡された列のあらゆる組み合わせに対して小計を計算します。`GROUPING SETS` を使用すると、計算する組み合わせを明示的に指定できます。
 
-階層データの分析は、ROLLUP、CUBE、およびGROUPING SETS修飾子の優れたユースケースです。ここでのサンプルは、2つのデータセンターにインストールされているLinuxディストリビューションとそのバージョンに関するデータを含むテーブルです。ディストリビューション、バージョン、およびロケーション別にデータを確認することは有用である可能性があります。
+階層データの分析は、`ROLLUP`、`CUBE`、`GROUPING SETS` 修飾子の代表的なユースケースの 1 つです。ここでのサンプルは、2 つのデータセンターにインストールされている Linux ディストリビューションとそのバージョンに関するデータを含むテーブルです。ディストリビューション別、バージョン別、ロケーション別にデータを確認することが有用な場合があります。
 
-### サンプルデータの読み込み {#load-sample-data}
+### サンプルデータの読み込み
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -53,7 +53,7 @@ VALUES ('Schenectady', 'Arch','2022.08.05',50),
 ```
 
 ```sql
-SELECT
+SELECT 
     *
 FROM
     servers;
@@ -73,17 +73,17 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10 rows in set. Elapsed: 0.409 sec.
+10行のセット。経過時間: 0.409秒。
 ```
 
-### シンプルなクエリ {#simple-queries}
+### 簡単なクエリ
 
-各データセンターのディストリビューション別サーバー数を取得します:
+分布別に各データセンター内のサーバー数を取得します。
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -100,12 +100,12 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-4 rows in set. Elapsed: 0.212 sec.
+4行のセット。経過時間: 0.212秒。
 ```
 
 ```sql
 SELECT
-    datacenter,
+    datacenter, 
     SUM (quantity) qty
 FROM
     servers
@@ -119,12 +119,12 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-2 rows in set. Elapsed: 0.277 sec.
+2行のデータセット。経過時間: 0.277秒 
 ```
 
 ```sql
 SELECT
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -139,7 +139,7 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-2 rows in set. Elapsed: 0.352 sec.
+2行が設定されています。経過時間: 0.352秒。 
 ```
 
 
@@ -155,17 +155,17 @@ FROM
 │ 445 │
 └─────┘
 
-1 row in set. Elapsed: 0.244 sec.
+1 行。経過時間: 0.244 秒 
 ```
 
-### GROUPING SETSを使用した複数のGROUP BY文の比較 {#comparing-multiple-group-by-statements-with-grouping-sets}
+### 複数の GROUP BY と GROUPING SETS の比較
 
-CUBE、ROLLUP、またはGROUPING SETSを使用せずにデータを分解する場合:
+CUBE、ROLLUP、GROUPING SETS を使わずにデータを集計する場合:
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -174,7 +174,7 @@ GROUP BY
     distro
 UNION ALL
 SELECT
-    datacenter,
+    datacenter, 
     null,
     SUM (quantity) qty
 FROM
@@ -184,7 +184,7 @@ GROUP BY
 UNION ALL
 SELECT
     null,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -218,15 +218,15 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 rows in set. Elapsed: 0.527 sec.
+9行のセット。経過時間: 0.527秒。 
 ```
 
-GROUPING SETSを使用して同じ情報を取得する場合:
+GROUPING SETS を使って同じ情報を取得する場合：
 
 ```sql
 SELECT
     datacenter,
-    distro,
+    distro, 
     SUM (quantity) qty
 FROM
     servers
@@ -261,9 +261,9 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### CUBEとGROUPING SETSの比較 {#comparing-cube-with-grouping-sets}
+### GROUPING SETS との比較
 
-次のクエリの`CUBE(datacenter,distro,version)`は、適切でない階層を生成します。2つのディストリビューション間でバージョンを比較することは意味がありません(ArchとRHELは異なるリリースサイクルとバージョン命名規則を持つため)。この後に続くGROUPING SETSの例の方が適切です。`distro`と`version`を同じセット内でグループ化するためです。
+次のクエリにおける CUBE `CUBE(datacenter,distro,version)` は、意味のある階層にはなりません。Arch と RHEL ではリリースサイクルやバージョン命名規則が異なるため、2 つのディストリビューションをまたいでバージョンを見ることには意味がありません。この後に続く GROUPING SETS の例のほうが適切であり、`distro` と `version` を同じセット内でグループ化しています。
 
 
 ```sql
@@ -324,11 +324,11 @@ ORDER BY
 │ Westport    │ RHEL   │            │           150 │
 └─────────────┴────────┴────────────┴───────────────┘
 
-39行のセット。経過時間: 0.355秒 
+39 rows in set. Elapsed: 0.355 sec. 
 ```
 
 :::note
-上記の例では、`distro` と関連付けられていない場合、`version` という列はあまり意味をなさないかもしれません。カーネルバージョンを追跡しているのであれば話は別で、カーネルバージョンはどちらの `distro` にも関連付けることができるため、意味を持つと言えます。次の例のように `GROUPING SETS` を使用する方が、より適切な選択となる場合があります。
+上記の例におけるバージョンは、ディストリビューションと結び付いていない場合には、あまり意味をなさないかもしれません。カーネルバージョンを追跡しているのであれば、カーネルバージョンはどちらのディストリビューションにも結び付けられるため、意味を持つと言えるでしょう。次の例で示すように `GROUPING SETS` を使用する方が、より適切な選択肢となる場合があります。
 :::
 
 

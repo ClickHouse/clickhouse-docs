@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Parquet 形式のドキュメント'
+description: 'Parquet 形式に関するドキュメント'
 input_format: true
 keywords: ['Parquet']
 output_format: true
@@ -17,67 +17,69 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[Apache Parquet](https://parquet.apache.org/)は、Hadoopエコシステムで広く普及しているカラム型ストレージフォーマットです。ClickHouseは、このフォーマットの読み取りおよび書き込み操作をサポートしています。
-
-
-## データ型のマッピング {#data-types-matching-parquet}
-
-以下の表は、Parquetデータ型とClickHouseの[データ型](/sql-reference/data-types/index.md)の対応関係を示しています。
-
-| Parquet型(論理型、変換型、または物理型) | ClickHouseデータ型                                                                       |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `BOOLEAN`                                      | [Bool](/sql-reference/data-types/boolean.md)                                               |
-| `UINT_8`                                       | [UInt8](/sql-reference/data-types/int-uint.md)                                             |
-| `INT_8`                                        | [Int8](/sql-reference/data-types/int-uint.md)                                              |
-| `UINT_16`                                      | [UInt16](/sql-reference/data-types/int-uint.md)                                            |
-| `INT_16`                                       | [Int16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md) |
-| `UINT_32`                                      | [UInt32](/sql-reference/data-types/int-uint.md)                                            |
-| `INT_32`                                       | [Int32](/sql-reference/data-types/int-uint.md)                                             |
-| `UINT_64`                                      | [UInt64](/sql-reference/data-types/int-uint.md)                                            |
-| `INT_64`                                       | [Int64](/sql-reference/data-types/int-uint.md)                                             |
-| `DATE`                                         | [Date32](/sql-reference/data-types/date.md)                                                |
-| `TIMESTAMP`, `TIME`                            | [DateTime64](/sql-reference/data-types/datetime64.md)                                      |
-| `FLOAT`                                        | [Float32](/sql-reference/data-types/float.md)                                              |
-| `DOUBLE`                                       | [Float64](/sql-reference/data-types/float.md)                                              |
-| `INT96`                                        | [DateTime64(9, 'UTC')](/sql-reference/data-types/datetime64.md)                            |
-| `BYTE_ARRAY`, `UTF8`, `ENUM`, `BSON`           | [String](/sql-reference/data-types/string.md)                                              |
-| `JSON`                                         | [JSON](/sql-reference/data-types/newjson.md)                                               |
-| `FIXED_LEN_BYTE_ARRAY`                         | [FixedString](/sql-reference/data-types/fixedstring.md)                                    |
-| `DECIMAL`                                      | [Decimal](/sql-reference/data-types/decimal.md)                                            |
-| `LIST`                                         | [Array](/sql-reference/data-types/array.md)                                                |
-| `MAP`                                          | [Map](/sql-reference/data-types/map.md)                                                    |
-| struct                                         | [Tuple](/sql-reference/data-types/tuple.md)                                                |
-| `FLOAT16`                                      | [Float32](/sql-reference/data-types/float.md)                                              |
-| `UUID`                                         | [FixedString(16)](/sql-reference/data-types/fixedstring.md)                                |
-| `INTERVAL`                                     | [FixedString(12)](/sql-reference/data-types/fixedstring.md)                                |
-
-Parquetファイルを書き込む際、対応するParquet型が存在しないデータ型は、最も近い利用可能な型に変換されます:
-
-| ClickHouseデータ型                                                   | Parquet型                                        |
-| ---------------------------------------------------------------------- | --------------------------------------------------- |
-| [IPv4](/sql-reference/data-types/ipv4.md)                              | `UINT_32`                                           |
-| [IPv6](/sql-reference/data-types/ipv6.md)                              | `FIXED_LEN_BYTE_ARRAY`(16バイト)                   |
-| [Date](/sql-reference/data-types/date.md)(16ビット)                    | `DATE`(32ビット)                                    |
-| [DateTime](/sql-reference/data-types/datetime.md)(32ビット、秒単位)   | `TIMESTAMP`(64ビット、ミリ秒単位)                 |
-| [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md) | `FIXED_LEN_BYTE_ARRAY`(16/32バイト、リトルエンディアン) |
-
-配列はネスト可能であり、引数として`Nullable`型の値を持つことができます。`Tuple`型と`Map`型もネスト可能です。
-
-ClickHouseテーブルのカラムのデータ型は、挿入されるParquetデータの対応するフィールドと異なる場合があります。データ挿入時、ClickHouseは上記の表に従ってデータ型を解釈し、その後ClickHouseテーブルのカラムに設定されているデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。例えば、`UINT_32`のParquetカラムは[IPv4](/sql-reference/data-types/ipv4.md)のClickHouseカラムに読み込むことができます。
-
-
-一部の Parquet 型には、完全に対応する ClickHouse 型が存在しません。これらは次のように読み取られます。
-* `TIME`（一日の時刻）はタイムスタンプとして読み取られます。例: `10:23:13.000` は `1970-01-01 10:23:13.000` になります。
-* `TIMESTAMP` / `TIME` で `isAdjustedToUTC=false` のものはローカルの壁時計時刻（あるローカルタイムゾーンにおける年・月・日・時・分・秒・サブ秒フィールドであり、どのタイムゾーンをローカルと見なすかには依存しない）であり、SQL の `TIMESTAMP WITHOUT TIME ZONE` と同じです。ClickHouse はこれを、UTC タイムスタンプであるかのように読み取ります。例: ローカルの壁時計の読みを表す `2025-09-29 18:42:13.000` は、時点を表す `2025-09-29 18:42:13.000`（`DateTime64(3, 'UTC')`）になります。String に変換すると、年・月・日・時・分・秒・サブ秒は正しく表示され、それを UTC ではなく何らかのローカルタイムゾーンでの時刻として解釈できます。直感に反して、型を `DateTime64(3, 'UTC')` から `DateTime64(3)` に変更しても状況は改善しません。どちらの型も時計の読みではなく「時点」を表すためですが、`DateTime64(3)` はローカルタイムゾーンを用いて誤ったフォーマットになってしまいます。
-* `INTERVAL` は現在、Parquet ファイルでエンコードされているとおりの時間間隔の生のバイナリ表現を持つ `FixedString(12)` として読み取られます。
+[Apache Parquet](https://parquet.apache.org/) は、Hadoop エコシステムで広く利用されているカラムナストレージフォーマットです。ClickHouse は、このフォーマットの読み書きをサポートしています。
 
 
 
-## 使用例 {#example-usage}
+## データ型の対応 {#data-types-matching-parquet}
 
-### データの挿入 {#inserting-data}
+以下の表は、Parquet のデータ型が ClickHouse の[データ型](/sql-reference/data-types/index.md)にどのように対応するかを示します。
 
-以下のデータを含む`football.parquet`という名前のParquetファイルを使用します:
+| Parquet type (logical, converted, or physical) | ClickHouse data type |
+|------------------------------------------------|----------------------|
+| `BOOLEAN` | [Bool](/sql-reference/data-types/boolean.md) |
+| `UINT_8` | [UInt8](/sql-reference/data-types/int-uint.md) |
+| `INT_8` | [Int8](/sql-reference/data-types/int-uint.md) |
+| `UINT_16` | [UInt16](/sql-reference/data-types/int-uint.md) |
+| `INT_16` | [Int16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md) |
+| `UINT_32` | [UInt32](/sql-reference/data-types/int-uint.md) |
+| `INT_32` | [Int32](/sql-reference/data-types/int-uint.md) |
+| `UINT_64` | [UInt64](/sql-reference/data-types/int-uint.md) |
+| `INT_64` | [Int64](/sql-reference/data-types/int-uint.md) |
+| `DATE` | [Date32](/sql-reference/data-types/date.md) |
+| `TIMESTAMP`, `TIME` | [DateTime64](/sql-reference/data-types/datetime64.md) |
+| `FLOAT` | [Float32](/sql-reference/data-types/float.md) |
+| `DOUBLE` | [Float64](/sql-reference/data-types/float.md) |
+| `INT96` | [DateTime64(9, 'UTC')](/sql-reference/data-types/datetime64.md) |
+| `BYTE_ARRAY`, `UTF8`, `ENUM`, `BSON` | [String](/sql-reference/data-types/string.md) |
+| `JSON` | [JSON](/sql-reference/data-types/newjson.md) |
+| `FIXED_LEN_BYTE_ARRAY` | [FixedString](/sql-reference/data-types/fixedstring.md) |
+| `DECIMAL` | [Decimal](/sql-reference/data-types/decimal.md) |
+| `LIST` | [Array](/sql-reference/data-types/array.md) |
+| `MAP` | [Map](/sql-reference/data-types/map.md) |
+| struct | [Tuple](/sql-reference/data-types/tuple.md) |
+| `FLOAT16` | [Float32](/sql-reference/data-types/float.md) |
+| `UUID` | [FixedString(16)](/sql-reference/data-types/fixedstring.md) |
+| `INTERVAL` | [FixedString(12)](/sql-reference/data-types/fixedstring.md) |
+
+Parquet ファイルを書き出す際、対応する Parquet 型が存在しないデータ型は、利用可能な最も近い型に変換されます。
+
+| ClickHouse data type | Parquet type |
+|----------------------|--------------|
+| [IPv4](/sql-reference/data-types/ipv4.md) | `UINT_32` |
+| [IPv6](/sql-reference/data-types/ipv6.md) | `FIXED_LEN_BYTE_ARRAY` (16 bytes) |
+| [Date](/sql-reference/data-types/date.md) (16 bits) | `DATE` (32 bits) |
+| [DateTime](/sql-reference/data-types/datetime.md) (32 bits, seconds) | `TIMESTAMP` (64 bits, milliseconds) |
+| [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md) | `FIXED_LEN_BYTE_ARRAY` (16/32 bytes, little-endian) |
+
+`Array` は入れ子にでき、引数として `Nullable` 型の値を持つことができます。`Tuple` 型および `Map` 型も入れ子にできます。
+
+ClickHouse テーブルのカラムのデータ型は、挿入される Parquet データ内の対応するフィールドの型と異なる場合があります。データ挿入時、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルのカラムに設定されているデータ型へ[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。たとえば、`UINT_32` の Parquet カラムは [IPv4](/sql-reference/data-types/ipv4.md) 型の ClickHouse カラムとして読み取ることができます。
+
+
+
+一部の Parquet 型には、対応する ClickHouse 型が存在しません。それらは次のように読み取られます。
+* `TIME`（時刻）は `timestamp` として読み取られます。例: `10:23:13.000` は `1970-01-01 10:23:13.000` になります。
+* `isAdjustedToUTC=false` の `TIMESTAMP`/`TIME` はローカルのウォールクロック時刻（どのタイムゾーンをローカルとみなすかにかかわらず、ローカルタイムゾーンにおける年・月・日・時・分・秒およびサブ秒フィールド）であり、SQL の `TIMESTAMP WITHOUT TIME ZONE` と同じです。ClickHouse はこれを、あたかも UTC の `timestamp` であるかのように読み取ります。例: `2025-09-29 18:42:13.000`（ローカルの時計の読み値を表す）は `2025-09-29 18:42:13.000`（ある時点を表す `DateTime64(3, 'UTC')`）になります。String に変換すると、年・月・日・時・分・秒およびサブ秒は正しい値として表示され、それを UTC ではなく何らかのローカルタイムゾーンの時刻として解釈できます。直感に反して、型を `DateTime64(3, 'UTC')` から `DateTime64(3)` に変更しても状況は改善しません。どちらの型も時計の読み値ではなくある時点を表すためですが、`DateTime64(3)` はローカルタイムゾーンを用いて誤ってフォーマットされてしまいます。
+* `INTERVAL` は現在、Parquet ファイル内でエンコードされているとおりの時間間隔の生のバイナリ表現を持つ `FixedString(12)` として読み取られます。
+
+
+
+## 使用例
+
+### データの挿入
+
+次のデータを含む `football.parquet` という名前の Parquet ファイルを使用します：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -101,15 +103,15 @@ ClickHouseテーブルのカラムのデータ型は、挿入されるParquetデ
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-データを挿入します:
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`Parquet`形式を使用してデータを読み取ります:
+`Parquet` 形式でデータを読み込みます。
 
 ```sql
 SELECT *
@@ -119,40 +121,41 @@ FORMAT Parquet
 ```
 
 :::tip
-Parquetはバイナリ形式であるため、ターミナル上で人間が読める形式では表示されません。Parquetファイルを出力するには`INTO OUTFILE`を使用してください。
+Parquet はバイナリ形式であり、ターミナル上では人間が読める形で表示されません。Parquet ファイルを出力するには `INTO OUTFILE` を使用します。
 :::
 
-Hadoopとデータを交換する場合は、[`HDFSテーブルエンジン`](/engines/table-engines/integrations/hdfs.md)を使用できます。
+Hadoop とデータを交換するには、[`HDFS table engine`](/engines/table-engines/integrations/hdfs.md) を使用できます。
 
 
 ## フォーマット設定 {#format-settings}
 
 
-| 設定                                                                             | 概要                                                                                                                                                                      | デフォルト                                                                                                                                                                                                                                                                                                                   |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `input_format_parquet_case_insensitive_column_matching`                        | Parquet の列と CH の列を照合する際、大文字小文字を区別しません。                                                                                                                                  | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_preserve_order`                                          | Parquet ファイルから読み込む際に行の並び替えは行わないでください。通常、処理が大幅に遅くなります。                                                                                                                   | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_filter_push_down`                                        | Parquet ファイルを読み込む際には、WHERE/PREWHERE 式と Parquet メタデータ内の最小値／最大値の統計情報に基づいて、行グループ全体をスキップします。                                                                                | `1`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_bloom_filter_push_down`                                  | Parquet ファイルを読み込む際には、WHERE 句の条件式および Parquet メタデータ内のブルームフィルタに基づいて、行グループ全体をスキップします。                                                                                       | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_use_native_reader`                                       | Parquet ファイルの読み込み時に、Arrow リーダーではなくネイティブリーダーを使用する。                                                                                                                       | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_allow_missing_columns`                                   | Parquet 入力フォーマットの読み取り時に欠落列を許容する                                                                                                                                         | `1`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_local_file_min_bytes_for_seek`                           | Parquet 入力フォーマットで、`read with ignore` による読み取りではなくシークを行うかどうかを判断するための、ローカル読み取り（ファイル）に必要な最小バイト数                                                                             | `8192`                                                                                                                                                                                                                                                                                                                  |
-| `input_format_parquet_enable_row_group_prefetch`                               | Parquet のパース中に row group のプリフェッチを有効にします。現在のところ、プリフェッチに対応しているのは単一スレッドでのパースのみです。                                                                                          | `1`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference` | Parquet 形式のスキーマ推論時に、サポートされていない型の列をスキップする                                                                                                                                | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_max_block_size`                                          | Parquet リーダーが読み込むブロックの最大サイズ。                                                                                                                                            | `65409`                                                                                                                                                                                                                                                                                                                 |
-| `input_format_parquet_prefer_block_bytes`                                      | Parquet リーダーによって出力されるブロックの平均バイト数                                                                                                                                        | `16744704`                                                                                                                                                                                                                                                                                                              |
-| `input_format_parquet_enable_json_parsing`                                     | Parquet ファイルを読み込む際、JSON 列を ClickHouse の JSON カラムとして解析します。                                                                                                               | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_row_group_size`                                         | ターゲットとなる行グループのサイズ（行数）。                                                                                                                                                  | `1000000`                                                                                                                                                                                                                                                                                                               |
-| `output_format_parquet_row_group_size_bytes`                                   | 圧縮前のターゲット行グループのサイズ（バイト単位）。                                                                                                                                              | `536870912`                                                                                                                                                                                                                                                                                                             |
-| `output_format_parquet_string_as_string`                                       | String 列には Binary ではなく、Parquet の String 型を使用します。                                                                                                                        | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_fixed_string_as_fixed_byte_array`                       | FixedString 列には、Binary の代わりに Parquet の FIXED&#95;LEN&#95;BYTE&#95;ARRAY 型を使用してください。                                                                                     | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_version`                                                | 出力フォーマットに使用する Parquet フォーマットのバージョン。サポートされているバージョン: 1.0、2.4、2.6、2.latest（デフォルト）                                                                                          | `2.latest`                                                                                                                                                                                                                                                                                                              |
-| `output_format_parquet_compression_method`                                     | Parquet 出力フォーマットで使用する圧縮方式。サポートされているコーデック: snappy、lz4、brotli、zstd、gzip、none（非圧縮）                                                                                         | `zstd`                                                                                                                                                                                                                                                                                                                  |
-| `output_format_parquet_compliant_nested_types`                                 | Parquet ファイルスキーマでは、リスト要素の名前として &#39;item&#39; ではなく &#39;element&#39; を使用します。これは Arrow ライブラリ実装に由来する歴史的な経緯によるものです。一般的には互換性が向上しますが、一部の古いバージョンの Arrow では互換性の問題が生じる可能性があります。 | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_use_custom_encoder`                                     | 高速な Parquet エンコーダー実装を使用します。                                                                                                                                             | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_parallel_encoding`                                      | 複数スレッドで Parquet エンコードを実行します。`output_format_parquet_use_custom_encoder` を有効にする必要があります。                                                                                   | `1`                                                                                                                                                                                                                                                                                                                     |
-| `output_format_parquet_data_page_size`                                         | 圧縮前の、バイト単位で指定する目標ページサイズ。                                                                                                                                                | `1048576`                                                                                                                                                                                                                                                                                                               |
-| `output_format_parquet_batch_size`                                             | ページサイズを、この行数ごとに確認します。値の平均サイズが数 KB を超えるカラムがある場合は、この値を小さくすることを検討してください。                                                                                                   | `1024`                                                                                                                                                                                                                                                                                                                  |
-| `output_format_parquet_write_page_index`                                       | Parquet ファイルにページインデックスを書き込む機能を追加。                                                                                                                                       | `1`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_import_nested`                                           | 廃止された設定であり、何の効果もありません。                                                                                                                                                  | `0`                                                                                                                                                                                                                                                                                                                     |
-| `input_format_parquet_local_time_as_utc`                                       | true                                                                                                                                                                    | isAdjustedToUTC=false の Parquet タイムスタンプに対するスキーマ推論で使用されるデータ型を決定します。true の場合は DateTime64(..., &#39;UTC&#39;)、false の場合は DateTime64(...) になります。ClickHouse にはローカルのウォールクロック時刻用のデータ型がないため、どちらの挙動も完全には正しくありません。直感に反して、&#39;true&#39; の方がおそらく誤りが少ない選択肢です。これは、&#39;UTC&#39; のタイムスタンプを String としてフォーマットすると、正しいローカル時刻の表現が得られるためです。 |
+
+| 設定                                                                             | 概要                                                                                                                                                                | デフォルト                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `input_format_parquet_case_insensitive_column_matching`                        | Parquet の列と CH の列を照合する際に、大文字と小文字を区別しないようにします。                                                                                                                     | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_preserve_order`                                          | Parquet ファイルを読み取る際に行の並べ替えは行わないでください。通常、処理が大幅に遅くなります。                                                                                                              | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_filter_push_down`                                        | Parquet ファイルを読み込む際、WHERE/PREWHERE 句と Parquet メタデータ内の最小値/最大値の統計量に基づいて、行グループ全体をスキップします。                                                                             | `1`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_bloom_filter_push_down`                                  | Parquet ファイルを読み取る際、WHERE 句の条件式と Parquet メタデータ内のブルームフィルターに基づいて、行グループ全体をスキップします。                                                                                    | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_use_native_reader`                                       | Parquet ファイルの読み込み時に、Arrow リーダーではなくネイティブリーダーを使用します。                                                                                                                | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_allow_missing_columns`                                   | Parquet 入力フォーマット読み込み時に欠落列を許可する                                                                                                                                    | `1`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_local_file_min_bytes_for_seek`                           | Parquet 入力形式で、無視しながら読み進めるのではなくシークを行うために必要なローカル読み取り（ファイル）の最小バイト数                                                                                                   | `8192`                                                                                                                                                                                                                                                                                                                       |
+| `input_format_parquet_enable_row_group_prefetch`                               | Parquet のパース中に行グループのプリフェッチを有効にします。現在は、単一スレッドでのパース時にのみプリフェッチが可能です。                                                                                                 | `1`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference` | Parquet 形式でのスキーマ推論時に、未サポートの型の列をスキップする                                                                                                                             | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_max_block_size`                                          | Parquet リーダーにおけるブロックサイズの最大値。                                                                                                                                      | `65409`                                                                                                                                                                                                                                                                                                                      |
+| `input_format_parquet_prefer_block_bytes`                                      | Parquet リーダーの出力ブロックの平均バイト数                                                                                                                                        | `16744704`                                                                                                                                                                                                                                                                                                                   |
+| `input_format_parquet_enable_json_parsing`                                     | Parquet ファイルを読み込む際は、JSON 列を ClickHouse の JSON カラムとしてパースします。                                                                                                       | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_row_group_size`                                         | 行数で指定する行グループの目標サイズ。                                                                                                                                               | `1000000`                                                                                                                                                                                                                                                                                                                    |
+| `output_format_parquet_row_group_size_bytes`                                   | 圧縮前の行グループの目標サイズ（バイト単位）。                                                                                                                                           | `536870912`                                                                                                                                                                                                                                                                                                                  |
+| `output_format_parquet_string_as_string`                                       | String 列には Binary ではなく Parquet の String 型を使用してください。                                                                                                               | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_fixed_string_as_fixed_byte_array`                       | FixedString 列には Binary 型ではなく、Parquet の FIXED&#95;LEN&#95;BYTE&#95;ARRAY 型を使用してください。                                                                               | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_version`                                                | 出力フォーマットに使用する Parquet フォーマットのバージョン。サポートされているバージョン: 1.0、2.4、2.6、および 2.latest（デフォルト）。                                                                               | `2.latest`                                                                                                                                                                                                                                                                                                                   |
+| `output_format_parquet_compression_method`                                     | Parquet 出力フォーマットの圧縮方式。サポートされるコーデック：snappy、lz4、brotli、zstd、gzip、none（非圧縮）                                                                                          | `zstd`                                                                                                                                                                                                                                                                                                                       |
+| `output_format_parquet_compliant_nested_types`                                 | Parquet ファイルのスキーマでは、リスト要素には &#39;item&#39; ではなく &#39;element&#39; という名前を使用します。これは Arrow ライブラリの実装に起因する歴史的な経緯です。一般的には互換性が向上しますが、一部の古いバージョンの Arrow とは互換性がない可能性があります。 | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_use_custom_encoder`                                     | より高速な Parquet エンコーダー実装を使用する。                                                                                                                                      | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_parallel_encoding`                                      | 複数スレッドで Parquet エンコードを行います。output&#95;format&#95;parquet&#95;use&#95;custom&#95;encoder を有効にする必要があります。                                                            | `1`                                                                                                                                                                                                                                                                                                                          |
+| `output_format_parquet_data_page_size`                                         | 圧縮前のターゲットページのサイズ（バイト単位）。                                                                                                                                          | `1048576`                                                                                                                                                                                                                                                                                                                    |
+| `output_format_parquet_batch_size`                                             | この行数ごとにページサイズをチェックします。値の平均サイズが数KBを超える列がある場合は、この値を小さくすることを検討してください。                                                                                                | `1024`                                                                                                                                                                                                                                                                                                                       |
+| `output_format_parquet_write_page_index`                                       | Parquet ファイルにページインデックスを書き込む機能を追加します。                                                                                                                              | `1`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_import_nested`                                           | この設定は廃止されており、指定しても何の効果もありません。                                                                                                                                     | `0`                                                                                                                                                                                                                                                                                                                          |
+| `input_format_parquet_local_time_as_utc`                                       | true                                                                                                                                                              | isAdjustedToUTC=false の Parquet タイムスタンプに対して、スキーマ推論時に使用されるデータ型を決定します。true の場合は DateTime64(..., &#39;UTC&#39;)、false の場合は DateTime64(...) になります。ClickHouse にはローカルの壁時計時刻を表すデータ型がないため、どちらの動作も完全には正しくありません。直感に反して、&#39;true&#39; の方がまだ誤りが少ない選択肢と考えられます。これは、&#39;UTC&#39; タイムスタンプを String としてフォーマットすると、正しいローカル時刻を表す文字列表現が得られるためです。 |

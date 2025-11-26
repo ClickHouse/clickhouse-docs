@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo — это простой в использовании, открытый инструмент с пользовательским интерфейсом для анализа и исследования ваших данных.'
+description: 'Explo — это простой в использовании инструмент с открытым исходным кодом и графическим интерфейсом, который упрощает получение ответов на вопросы о ваших данных.'
 title: 'Подключение Explo к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -36,111 +36,119 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Клиентская аналитика для любых платформ. Создана для наглядной визуализации. Спроектирована для простоты.
+Клиентская аналитика для любой платформы. Создана для красивой визуализации. Спроектирована с упором на простоту.
 
 
 
 ## Цель {#goal}
 
-В этом руководстве вы подключите свои данные из ClickHouse к Explo и визуализируете результаты. Диаграмма будет выглядеть следующим образом:
+В этом руководстве вы подключите данные из ClickHouse к Explo и визуализируете результаты. Диаграмма будет выглядеть так:
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
-<Image img={explo_15} size='md' alt='Панель управления Explo' />
-
-<p />
+<p/>
 
 :::tip Добавьте данные
-Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать именно его. В той же категории документации доступны и другие наборы данных.
+Если у вас ещё нет набора данных для работы, вы можете добавить один из примерных наборов. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров.
 :::
 
 
-## 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
+## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. Подключение Explo к ClickHouse {#2--connect-explo-to-clickhouse}
+
+## 2.  Подключение Explo к ClickHouse {#2--connect-explo-to-clickhouse}
 
 1. Зарегистрируйтесь в Explo.
 
-2. Нажмите на вкладку **data** на левой боковой панели Explo.
+2. Нажмите на вкладку **Data** в левой боковой панели Explo.
 
-<Image img={explo_01} size='sm' alt='Вкладка Data' border />
+<Image img={explo_01} size="sm" alt="Вкладка Data" border />
 
 3. Нажмите **Connect Data Source** в правом верхнем углу.
 
-<Image img={explo_02} size='sm' alt='Подключение источника данных' border />
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
-4. Заполните информацию на странице **Getting Started**.
+4. Заполните данные на странице **Getting Started**.
 
-<Image img={explo_03} size='md' alt='Начало работы' border />
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
-5. Выберите **Clickhouse**.
+5. Выберите **ClickHouse**.
 
-<Image img={explo_04} size='md' alt='Clickhouse' border />
+<Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. Введите **учетные данные Clickhouse**.
+6. Введите свои учетные данные **ClickHouse**.
 
-<Image img={explo_05} size='md' alt='Учетные данные' border />
+<Image img={explo_05} size="md" alt="Credentials" border />
 
 7. Настройте параметры **Security**.
 
-<Image img={explo_06} size='md' alt='Безопасность' border />
+<Image img={explo_06} size="md" alt="Security" border />
 
-8. В ClickHouse **добавьте IP-адреса Explo в белый список**.
-   `54.211.43.19, 52.55.98.121, 3.214.169.94, и 54.156.141.148`
-
-
-## 3. Создание дашборда {#3-create-a-dashboard}
-
-1. Перейдите на вкладку **Dashboard** на левой панели навигации.
-
-<Image img={explo_07} size='sm' alt='Дашборд' border />
-
-2. Нажмите **Create Dashboard** в правом верхнем углу и укажите название дашборда. Готово, дашборд создан!
-
-<Image img={explo_08} size='sm' alt='Создание дашборда' border />
-
-3. Вы должны увидеть экран, похожий на этот:
-
-<Image img={explo_09} size='md' alt='Дашборд Explo' border />
+8. В ClickHouse **добавьте IP-адреса Explo в whitelist**.
+`
+54.211.43.19, 52.55.98.121, 3.214.169.94 и 54.156.141.148
+`
 
 
-## 4. Выполнение SQL-запроса {#4-run-a-sql-query}
 
-1. Получите имя таблицы на правой боковой панели под названием схемы. Затем введите следующую команду в редактор набора данных:
-   `SELECT * FROM YOUR_TABLE_NAME
-LIMIT 100`
+## 3. Создайте дашборд {#3-create-a-dashboard}
 
-<Image img={explo_10} size='md' alt='Explo Dashboard' border />
+1. Перейдите на вкладку **Dashboard** в левой панели навигации.
 
-2. Нажмите кнопку запуска и перейдите на вкладку предварительного просмотра, чтобы увидеть данные.
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
-<Image img={explo_11} size='md' alt='Explo Dashboard' border />
+2. Нажмите **Create Dashboard** в правом верхнем углу и задайте имя дашборду. Дашборд создан!
 
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
-## 5. Создание диаграммы {#5-build-a-chart}
+3. Теперь вы увидите экран, похожий на этот:
 
-1. Перетащите значок столбчатой диаграммы с левой панели на экран.
-
-<Image img={explo_16} size='sm' alt='Панель управления Explo' border />
-
-2. Выберите набор данных. Вы увидите экран, похожий на следующий:
-
-<Image img={explo_12} size='sm' alt='Панель управления Explo' border />
-
-3. Укажите **county** для оси X и **Price** для оси Y следующим образом:
-
-<Image img={explo_13} size='sm' alt='Панель управления Explo' border />
-
-4. Измените тип агрегации на **AVG**.
-
-<Image img={explo_14} size='sm' alt='Панель управления Explo' border />
-
-5. Теперь у нас есть средняя цена домов в разбивке по округам!
-
-<Image img={explo_15} size='md' alt='Панель управления Explo' />
+<Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
 
-## Дополнительная информация {#learn-more}
 
-Дополнительную информацию о Explo и о том, как создавать дашборды, можно найти в <a href="https://docs.explo.co/" target="_blank">документации Explo</a>.
+## 4. Выполните SQL-запрос {#4-run-a-sql-query}
+
+1. Найдите имя таблицы в правой боковой панели под заголовком схемы. Затем введите следующую команду в редактор датасета:
+`
+SELECT * FROM YOUR_TABLE_NAME
+LIMIT 100
+`
+
+<Image img={explo_10} size="md" alt="Панель управления Explo" border />
+
+2. Нажмите кнопку `Run` и перейдите на вкладку `Preview`, чтобы просмотреть данные.
+
+<Image img={explo_11} size="md" alt="Панель управления Explo" border />
+
+
+
+## 5. Построение графика {#5-build-a-chart}
+
+1. С левой стороны экрана перетащите значок столбчатой диаграммы на область построения.
+
+<Image img={explo_16} size="sm" alt="Explo Dashboard" border />
+
+2. Выберите набор данных. Теперь вы должны увидеть экран, похожий на следующий:
+
+<Image img={explo_12} size="sm" alt="Explo Dashboard" border />
+
+3. Укажите **county** в разделе X Axis и **Price** в разделе Y Axis следующим образом:
+
+<Image img={explo_13} size="sm" alt="Explo Dashboard" border />
+
+4. Теперь измените тип агрегации на **AVG**.
+
+<Image img={explo_14} size="sm" alt="Explo Dashboard" border />
+
+5. Теперь у нас есть средняя стоимость домов с разбивкой по округам!
+
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
+
+
+
+## Узнать больше {#learn-more}
+
+Найдите более подробную информацию об Explo и о том, как создавать дашборды, в <a href="https://docs.explo.co/" target="_blank">документации Explo</a>.

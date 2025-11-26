@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONStringsEachRow 形式に関するドキュメント'
+description: 'JSONStringsEachRow フォーマットに関するドキュメント'
 input_format: false
 keywords: ['JSONStringsEachRow']
 output_format: true
@@ -9,7 +9,7 @@ title: 'JSONStringsEachRow'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md)との違いは、データフィールドが型付けされたJSON値ではなく文字列として出力される点のみです。
+[`JSONEachRow`](./JSONEachRow.md) との違いは、データフィールドが型付きのJSON値ではなく文字列として出力される点だけです。
 
 
-## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+## 使用例
 
-以下のデータを含む `football.json` という名前のJSONファイルを使用します:
+### データの挿入
+
+以下のデータを含む JSON ファイルを `football.json` として用意します:
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -43,18 +44,18 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":"2021","home_team":"Newport County","away_team":"Rochdale","home_team_goals":"0","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Oldham Athletic","away_team":"Crawley Town","home_team_goals":"3","away_team_goals":"3"}
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
-{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}
+{"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-データを挿入します:
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`JSONStringsEachRow` 形式を使用してデータを読み取ります:
+`JSONStringsEachRow` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONStringsEachRow
 ```
 
-出力はJSON形式になります:
+出力は JSON 形式です:
 
 
 ```json

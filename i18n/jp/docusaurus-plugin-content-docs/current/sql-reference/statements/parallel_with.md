@@ -1,5 +1,5 @@
 ---
-description: 'PARALLEL WITH 句のリファレンス'
+description: 'PARALLEL WITH 句に関するドキュメント'
 sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
 slug: /sql-reference/statements/parallel_with
@@ -11,24 +11,24 @@ doc_type: 'reference'
 
 # PARALLEL WITH 句
 
-複数のステートメントを並列実行することを可能にします。
+複数のステートメントを並列実行できます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
-ステートメント `statement1`、`statement2`、`statement3`、... を並列実行します。これらのステートメントの出力は破棄されます。
+`statement1`、`statement2`、`statement3`、… の各ステートメントを互いに並列で実行します。これらのステートメントの出力結果は破棄されます。
 
-多くの場合、ステートメントを並列実行することで、同じステートメントを順次実行するよりも高速化できます。例えば、`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` は `statement1; statement2; statement3` よりも高速になる可能性が高いです。
+多くの場合、同じステートメントを単純に順番に実行するよりも、並列に実行した方が高速になる場合があります。例えば、`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` は、`statement1; statement2; statement3` より高速になる可能性が高いです。
 
 
-## 例 {#examples}
+## 例
 
-2つのテーブルを並列で作成します：
+2 つのテーブルを並列に作成します：
 
 ```sql
 CREATE TABLE table1(x Int32) ENGINE = MergeTree ORDER BY tuple()
@@ -36,7 +36,7 @@ PARALLEL WITH
 CREATE TABLE table2(y String) ENGINE = MergeTree ORDER BY tuple();
 ```
 
-2つのテーブルを並列で削除します：
+2つのテーブルを並列に削除します：
 
 ```sql
 DROP TABLE table1
@@ -50,10 +50,10 @@ DROP TABLE table2;
 [max_threads](../../operations/settings/settings.md#max_threads) 設定は、起動されるスレッド数を制御します。
 
 
-## UNIONとの比較 {#comparison-with-union}
 
-`PARALLEL WITH`句は、オペランドを並列で実行する[UNION](select/union.md)と似ていますが、いくつかの違いがあります:
+## UNION との比較 {#comparison-with-union}
 
-- `PARALLEL WITH`はオペランドの実行結果を返さず、例外が発生した場合にのみそれを再スローします;
-- `PARALLEL WITH`はオペランドが同じ結果列のセットを持つ必要がありません;
-- `PARALLEL WITH`は任意のステートメントを実行できます(`SELECT`に限定されません)。
+`PARALLEL WITH` 句は、そのオペランドを並列実行するという点で [UNION](select/union.md) と少し似ています。ただし、いくつかの違いがあります。
+- `PARALLEL WITH` はオペランドの実行結果を一切返さず、発生した例外を再スローすることしかできません。
+- `PARALLEL WITH` は、オペランドが同じ結果列の集合を持つ必要はありません。
+- `PARALLEL WITH` は、任意のステートメント（`SELECT` だけでなく）を実行できます。

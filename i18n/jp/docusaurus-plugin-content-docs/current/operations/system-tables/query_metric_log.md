@@ -1,5 +1,5 @@
 ---
-description: '個々のクエリごとのメモリおよびメトリクス値の履歴を保持するシステムテーブルであり、テーブル `system.events` の値が定期的にディスクにフラッシュされます。'
+description: '`system.events` テーブルのメモリおよびメトリック値について、クエリごとの履歴を保持し、定期的にディスクにフラッシュするシステムテーブル。'
 keywords: ['システムテーブル', 'query_metric_log']
 slug: /operations/system-tables/query_metric_log
 title: 'system.query_metric_log'
@@ -13,11 +13,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-個々のクエリについて、テーブル `system.events` から取得したメモリ使用量およびメトリクス値の履歴を保持しており、定期的にディスクへフラッシュします。
+個々のクエリに対して `system.events` テーブルから取得されたメモリおよびメトリック値の履歴を保持し、定期的にディスクへフラッシュします。
 
-クエリが開始されると、`query_metric_log_interval` ミリ秒（デフォルトは 1000）ごとにデータが収集されます。クエリの実行時間が `query_metric_log_interval` を超える場合は、終了時にもデータが収集されます。
+クエリが開始されると、`query_metric_log_interval` ミリ秒（デフォルトでは 1000 ミリ秒に設定）ごとの一定間隔でデータが収集されます。クエリの実行時間が `query_metric_log_interval` より長い場合は、クエリ終了時にもデータが収集されます。
 
-列:
+カラム:
 
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリの ID。
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
@@ -51,9 +51,9 @@ ProfileEvent_FailedSelectQuery:                                  0
 
 **関連項目**
 
-* [query&#95;metric&#95;log setting](../../operations/server-configuration-parameters/settings.md#query_metric_log) — この設定の有効化／無効化。
+* [query&#95;metric&#95;log 設定](../../operations/server-configuration-parameters/settings.md#query_metric_log) — この設定の有効化および無効化について。
 * [query&#95;metric&#95;log&#95;interval](../../operations/settings/settings.md#query_metric_log_interval)
-* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — 定期的に計算されるメトリクスが含まれます。
-* [system.events](/operations/system-tables/events) — 発生したさまざまなイベントが記録されます。
-* [system.metrics](../../operations/system-tables/metrics.md) — 即時に計算されるメトリクスが含まれます。
-* [Monitoring](../../operations/monitoring.md) — ClickHouse の監視に関する基本概念。
+* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — 定期的に計算されるメトリクスを格納します。
+* [system.events](/operations/system-tables/events) — 発生した各種イベントの回数を格納します。
+* [system.metrics](../../operations/system-tables/metrics.md) — 即時に計算されるメトリクスを格納します。
+* [Monitoring](../../operations/monitoring.md) — ClickHouse における監視の基本概念。

@@ -11,20 +11,21 @@ doc_type: 'reference'
 
 # Табличная функция view
 
-Преобразует подзапрос в таблицу. Эта функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Получающаяся таблица не хранит данные, а только указанный запрос `SELECT`. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
+Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а содержит только указанный запрос `SELECT`. При чтении из таблицы ClickHouse выполняет этот запрос и удаляет из результата все ненужные столбцы.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
-view(subquery)
+view(подзапрос)
 ```
 
 
 ## Аргументы {#arguments}
 
-- `subquery` — запрос `SELECT`.
+- `subquery` — запрос типа `SELECT`.
+
 
 
 ## Возвращаемое значение {#returned_value}
@@ -32,16 +33,17 @@ view(subquery)
 - Таблица.
 
 
-## Примеры {#examples}
+
+## Примеры
 
 Входная таблица:
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ January  │   31 │
-│  2 │ February │   29 │
-│  3 │ March    │   31 │
-│  4 │ April    │   30 │
+│  1 │ Январь   │   31 │
+│  2 │ Февраль  │   29 │
+│  3 │ Март     │   31 │
+│  4 │ Апрель   │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -55,14 +57,14 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ January  │
-│ February │
-│ March    │
-│ April    │
+│ Январь  │
+│ Февраль │
+│ Март    │
+│ Апрель    │
 └──────────┘
 ```
 
-Функцию `view` можно использовать в качестве параметра табличных функций [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
+Вы можете использовать функцию `view` в качестве параметра табличных функций [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -73,6 +75,6 @@ SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
 
-## Связанные разделы {#related}
+## См. также {#related}
 
-- [Движок таблиц View](/engines/table-engines/special/view/)
+- [Табличный движок View](/engines/table-engines/special/view/)

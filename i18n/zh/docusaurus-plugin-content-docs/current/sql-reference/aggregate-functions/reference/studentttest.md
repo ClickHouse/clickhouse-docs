@@ -1,5 +1,5 @@
 ---
-description: '对来自两个总体的样本应用 Student t 检验。'
+description: '对来自两个总体的样本进行 Student t 检验。'
 sidebar_label: 'studentTTest'
 sidebar_position: 194
 slug: /sql-reference/aggregate-functions/reference/studentttest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # studentTTest
 
-对来自两个总体的样本执行 Student&#39;s t 检验。
+对来自两个总体的样本进行 Student t 检验。
 
 **语法**
 
@@ -17,8 +17,8 @@ doc_type: 'reference'
 studentTTest([confidence_level])(sample_data, sample_index)
 ```
 
-两个样本的数值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于第一总体的样本；否则，该值属于第二总体的样本。
-原假设为两总体的均值相等。假定样本来自方差相等的正态分布总体。
+两个样本的数值都存储在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的数值属于第一总体的样本；否则，该数值属于第二总体的样本。\
+原假设是两个总体的均值相等。假定总体服从正态分布且方差相等。
 
 **参数**
 
@@ -33,10 +33,10 @@ studentTTest([confidence_level])(sample_data, sample_index)
 
 [Tuple](../../../sql-reference/data-types/tuple.md)，包含两个或四个元素（如果指定了可选的 `confidence_level`）：
 
-* 计算得到的 t 统计量。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 t-统计量。[Float64](../../../sql-reference/data-types/float.md)。
 * 计算得到的 p 值。[Float64](../../../sql-reference/data-types/float.md)。
-* [计算得到的置信区间下界。[Float64](../../../sql-reference/data-types/float.md)。]
-* [计算得到的置信区间上界。[Float64](../../../sql-reference/data-types/float.md)。]
+* 计算得到的置信区间下界。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的置信区间上界。[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
@@ -69,5 +69,5 @@ SELECT studentTTest(sample_data, sample_index) FROM student_ttest;
 
 **另请参阅**
 
-* [Student t 检验](https://en.wikipedia.org/wiki/Student%27s_t-test)
+* [Student&#39;s t 检验](https://en.wikipedia.org/wiki/Student%27s_t-test)
 * [welchTTest 函数](/sql-reference/aggregate-functions/reference/welchttest)

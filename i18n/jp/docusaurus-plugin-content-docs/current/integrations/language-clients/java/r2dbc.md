@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'R2DBC ドライバー'
+sidebar_label: 'R2DBC ドライバ'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', 'ドライバー', '連携', 'r2dbc']
-description: 'ClickHouse R2DBC ドライバー'
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'ClickHouse R2DBC ドライバ'
 slug: /integrations/java/r2dbc
-title: 'R2DBC ドライバー'
+title: 'R2DBC ドライバ'
 doc_type: 'reference'
 ---
 
@@ -13,27 +13,27 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# R2DBC ドライバ
+# R2DBC ドライバー
 
 
 
-## R2DBCドライバー {#r2dbc-driver}
+## R2DBC ドライバー
 
-ClickHouse用非同期Javaクライアントの[R2DBC](https://r2dbc.io/)ラッパーです。
+ClickHouse 用の非同期 Java クライアントに対する [R2DBC](https://r2dbc.io/) ラッパーです。
 
-### 環境要件 {#environment-requirements}
+### 動作環境
 
-- [OpenJDK](https://openjdk.java.net) バージョン8以上
+* [OpenJDK](https://openjdk.java.net) バージョン 8 以上
 
-### セットアップ {#setup}
+### セットアップ
 
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- SPI 0.9.1.RELEASEの場合はclickhouse-r2dbc_0.9.1に変更してください -->
+    <!-- SPI 0.9.1.RELEASEを使用する場合はclickhouse-r2dbc_0.9.1に変更 -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- すべての依存関係を含むuber jarを使用します。より小さなjarにする場合はclassifierをhttpまたはgrpcに変更してください -->
+    <!-- 全依存関係を含むuber jarを使用。jarサイズを小さくする場合はclassifierをhttpまたはgrpcに変更 -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -44,7 +44,7 @@ ClickHouse用非同期Javaクライアントの[R2DBC](https://r2dbc.io/)ラッ�
 </dependency>
 ```
 
-### ClickHouseへの接続 {#connect-to-clickhouse}
+### ClickHouse に接続する
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### クエリ {#query}
+### クエリ
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### 挿入 {#insert}
+### 挿入
 
 ```java showLineNumbers
 connection

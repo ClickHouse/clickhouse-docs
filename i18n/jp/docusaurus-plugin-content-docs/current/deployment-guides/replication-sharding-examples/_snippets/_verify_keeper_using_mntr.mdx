@@ -1,25 +1,25 @@
 `mntr` コマンドは、ClickHouse Keeper が稼働していることを確認し、
-3 つの Keeper ノード間の相互関係に関する状態情報を取得するためによく使用されます。
-この例で使用している構成では、3 つのノードが協調して動作しています。
-ノード同士でリーダーを選出し、残りのノードはフォロワーとなります。
+3 つの Keeper ノード間の関係に関する状態情報を取得するためにも一般的に使用されます。
+この例で使用している構成では、3 つのノードが連携して動作しています。
+ノード間でリーダーが 1 つ選出され、残りのノードはフォロワーになります。
 
-`mntr` コマンドは、パフォーマンスに関する情報や、特定のノードが
-フォロワーかリーダーかといった情報を返します。
+`mntr` コマンドは、パフォーマンスに関する情報と、特定のノードが
+フォロワーなのかリーダーなのかを示す情報を返します。
 
 :::tip
-Keeper に `mntr` コマンドを送信するために `netcat` をインストールする必要がある場合があります。
-ダウンロード情報については [nmap.org](https://nmap.org/ncat/) ページを参照してください。
+Keeper に `mntr` コマンドを送信するには、`netcat` をインストールする必要がある場合があります。
+ダウンロード情報については [nmap.org](https://nmap.org/ncat/) のページを参照してください。
 :::
 
-各 Keeper ノードの状態を確認するには、`clickhouse-keeper-01`、`clickhouse-keeper-02`、
-`clickhouse-keeper-03` の各ホスト上で、シェルから以下のコマンドを実行します。
-`clickhouse-keeper-01` 向けのコマンドを以下に示します：
+各 Keeper ノードの状態を確認するために、`clickhouse-keeper-01`、`clickhouse-keeper-02`、
+`clickhouse-keeper-03` のそれぞれのシェルから以下のコマンドを実行します。
+`clickhouse-keeper-01` 用のコマンドを以下に示します。`
 
 ```bash
 docker exec -it clickhouse-keeper-01  /bin/sh -c 'echo mntr | nc 127.0.0.1 9181'
 ```
 
-以下はフォロワーノードからの応答例です。
+以下はフォロワーノードからのレスポンス例です。
 
 ```response title="Response"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
@@ -42,7 +42,7 @@ zk_open_file_descriptor_count   46
 zk_max_file_descriptor_count    18446744073709551615
 ```
 
-以下は、リーダーノードからの応答例です。
+以下はリーダーノードからのレスポンス例です。
 
 ```response title="Response"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726

@@ -32,45 +32,38 @@ import Image from '@theme/IdealImage';
 
 
 
-## 前置条件 {#prerequisites}
-
-我们假设您已熟悉：
-
-- [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
-- Confluent Cloud
+## 前提条件 {#prerequisites}
+我们假设您已经熟悉以下内容：
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
+* Confluent Cloud
 
 
-## 来自 ClickHouse 的官方 Kafka 连接器与 Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-#### 创建主题 {#create-a-topic}
+## ClickHouse 与 Confluent Cloud 的官方 Kafka 连接器 {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-在 Confluent Cloud 上创建主题非常简单,详细说明请参见[此处](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)。
+#### 创建 Topic {#create-a-topic}
+在 Confluent Cloud 上创建 topic 相当简单，详细步骤请参见[此文档](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)。
 
 #### 重要说明 {#important-notes}
 
-- Kafka 主题名称必须与 ClickHouse 表名称相同。如需调整此设置,可使用转换器(例如 [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html))。
-- 更多分区并不总是意味着更高的性能 - 有关更多详细信息和性能提示,请参阅我们即将发布的指南。
+* Kafka topic 名称必须与 ClickHouse 表名相同。可以通过使用 transformer（例如 [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)）来调整这一行为。
+* 分区数量更多并不总是意味着性能更好——更多细节和性能调优建议请参阅我们即将发布的指南。
 
-#### 收集连接详细信息 {#gather-your-connection-details}
-
+#### 收集连接信息 {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### 安装连接器 {#install-connector}
+#### 安装 Connector {#install-connector}
+按照[官方文档](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)在 Confluent Cloud 上安装完全托管的 ClickHouse Sink Connector。
 
-按照[官方文档](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)在 Confluent Cloud 上安装完全托管的 ClickHouse Sink 连接器。
-
-#### 配置连接器 {#configure-the-connector}
-
-在配置 ClickHouse Sink 连接器时,您需要提供以下详细信息:
-
-- ClickHouse 服务器的主机名
-- ClickHouse 服务器的端口(默认为 8443)
+#### 配置 Connector {#configure-the-connector}
+在配置 ClickHouse Sink Connector 时，需要提供以下信息：
+- ClickHouse 服务器的 hostname
+- ClickHouse 服务器的端口（默认是 8443）
 - ClickHouse 服务器的用户名和密码
-- ClickHouse 中将写入数据的数据库名称
-- Kafka 中将用于向 ClickHouse 写入数据的主题名称
+- 用于写入数据的 ClickHouse 数据库名称
+- 在 Kafka 中用于向 ClickHouse 写入数据的 topic 名称
 
-Confluent Cloud 用户界面支持高级配置选项,可调整轮询间隔、批处理大小和其他参数以优化性能。
+Confluent Cloud 的 UI 支持高级配置选项，可调整轮询间隔、批大小和其他参数以优化性能。
 
 #### 已知限制 {#known-limitations}
-
-- 请参阅[官方文档中的连接器限制列表](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)
+* 请参阅[官方文档中的 Connector 限制列表](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

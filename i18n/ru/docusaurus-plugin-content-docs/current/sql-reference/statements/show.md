@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 :::note
 
-`SHOW CREATE (TABLE|DATABASE|USER)` скрывает конфиденциальные данные, если не включены следующие настройки:
+`SHOW CREATE (TABLE|DATABASE|USER)` скрывает секреты, если не включены следующие настройки:
 
 - [`display_secrets_in_show_and_select`](../../operations/server-configuration-parameters/settings/#display_secrets_in_show_and_select) (настройка сервера)
 - [`format_display_secrets_in_show_and_select` ](../../operations/settings/formats/#format_display_secrets_in_show_and_select) (настройка формата)  
@@ -19,73 +19,73 @@ doc_type: 'reference'
 
 
 
-## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
+## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE
 
 Эти операторы возвращают один столбец типа String,
-содержащий запрос `CREATE`, который использовался для создания указанного объекта.
+содержащий запрос `CREATE`, который был использован для создания указанного объекта.
 
-### Синтаксис {#syntax}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|view [INTO OUTFILE filename] [FORMAT format]
 ```
 
 :::note
-Если использовать этот оператор для получения запроса `CREATE` системных таблиц,
-будет возвращён _фиктивный_ запрос, который только объявляет структуру таблицы
-и не может быть использован для её создания.
+Если вы используете этот оператор, чтобы получить запрос `CREATE` для системных таблиц,
+вы получите *фиктивный* запрос, который только описывает структуру таблицы
+и не может быть использован для создания таблицы.
 :::
 
 
-## SHOW DATABASES {#show-databases}
+## SHOW DATABASES
 
-Эта инструкция выводит список всех баз данных.
+Эта команда выводит список всех баз данных.
 
-### Синтаксис {#syntax-1}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
-Эквивалентна запросу:
+Он идентичен запросу:
 
 ```sql
 SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
-### Примеры {#examples}
+### Примеры
 
-В этом примере используется `SHOW` для получения имён баз данных, содержащих последовательность символов 'de':
+В этом примере мы используем `SHOW`, чтобы получить имена баз данных, в которых присутствует последовательность символов &#39;de&#39;:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DATABASES LIKE '%de%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name────┐
 │ default │
 └─────────┘
 ```
 
-Также можно выполнить поиск без учёта регистра:
+Мы также можем сделать это без учета регистра:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DATABASES ILIKE '%DE%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name────┐
 │ default │
 └─────────┘
 ```
 
-Или получить имена баз данных, не содержащих 'de':
+Или получите имена баз данных, которые не содержат &#39;de&#39; в названиях:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DATABASES NOT LIKE '%de%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name───────────────────────────┐
 │ _temporary_and_external_tables │
 │ system                         │
@@ -94,77 +94,77 @@ SHOW DATABASES NOT LIKE '%de%'
 └────────────────────────────────┘
 ```
 
-Наконец, можно получить имена только первых двух баз данных:
+Наконец, можно получить имена только двух первых баз данных:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DATABASES LIMIT 2
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name───────────────────────────┐
 │ _temporary_and_external_tables │
 │ default                        │
 └────────────────────────────────┘
 ```
 
-### См. также {#see-also}
+### См. также
 
-- [`CREATE DATABASE`](/sql-reference/statements/create/database)
+* [`CREATE DATABASE`](/sql-reference/statements/create/database)
 
 
-## SHOW TABLES {#show-tables}
+## SHOW TABLES
 
-Оператор `SHOW TABLES` выводит список таблиц.
+Оператор `SHOW TABLES` отображает список таблиц.
 
-### Синтаксис {#syntax-2}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
+```sql title="Syntax"
+SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<шаблон>'] [LIMIT <N>] [INTO OUTFILE <имя_файла>] [FORMAT <формат>]
 ```
 
-Если секция `FROM` не указана, запрос возвращает список таблиц из текущей базы данных.
+Если предложение `FROM` не указано, запрос возвращает список таблиц из текущей базы данных.
 
-Этот оператор эквивалентен запросу:
+Данный оператор эквивалентен следующему запросу:
 
 ```sql
-SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
+SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<шаблон>'] [LIMIT <N>] [INTO OUTFILE <имя_файла>] [FORMAT <формат>]
 ```
 
-### Примеры {#examples-1}
+### Примеры
 
-В этом примере используется оператор `SHOW TABLES` для поиска всех таблиц, содержащих 'user' в имени:
+В этом примере мы используем оператор `SHOW TABLES`, чтобы найти все таблицы, в именах которых содержится &#39;user&#39;:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW TABLES FROM system LIKE '%user%'
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─name─────────────┐
 │ user_directories │
 │ users            │
 └──────────────────┘
 ```
 
-Также можно выполнить поиск без учёта регистра:
+Мы также можем сделать это, не учитывая регистр:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW TABLES FROM system ILIKE '%USER%'
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─name─────────────┐
 │ user_directories │
 │ users            │
 └──────────────────┘
 ```
 
-Или найти таблицы, не содержащие букву 's' в имени:
+Или, чтобы найти таблицы, в именах которых нет буквы &#39;s&#39;:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW TABLES FROM system NOT LIKE '%s%'
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─name─────────┐
 │ metric_log   │
 │ metric_log_0 │
@@ -172,85 +172,85 @@ SHOW TABLES FROM system NOT LIKE '%s%'
 └──────────────┘
 ```
 
-Наконец, можно получить имена только первых двух таблиц:
+Наконец, мы можем получить имена лишь первых двух таблиц:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW TABLES FROM system LIMIT 2
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─name───────────────────────────┐
 │ aggregate_function_combinators │
 │ asynchronous_metric_log        │
 └────────────────────────────────┘
 ```
 
-### См. также {#see-also-1}
+### См. также
 
-- [`Create Tables`](/sql-reference/statements/create/table)
-- [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
+* [`CREATE TABLE`](/sql-reference/statements/create/table)
+* [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
 
-## SHOW COLUMNS {#show_columns}
+## SHOW COLUMNS
 
-Оператор `SHOW COLUMNS` выводит список столбцов.
+Оператор `SHOW COLUMNS` отображает список столбцов.
 
-### Синтаксис {#syntax-3}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW [EXTENDED] [FULL] COLUMNS {FROM | IN} <table> [{FROM | IN} <db>] [{[NOT] {LIKE | ILIKE} '<pattern>' | WHERE <expr>}] [LIMIT <N>] [INTO
 OUTFILE <filename>] [FORMAT <format>]
 ```
 
-Имя базы данных и таблицы можно указать в сокращенной форме `<db>.<table>`,
+Имя базы данных и таблицы может быть указано в сокращённой форме как `<db>.<table>`,
 то есть `FROM tab FROM db` и `FROM db.tab` эквивалентны.
 Если база данных не указана, запрос возвращает список столбцов из текущей базы данных.
 
-Также доступны два необязательных ключевых слова: `EXTENDED` и `FULL`. Ключевое слово `EXTENDED` в настоящее время не имеет эффекта
-и существует для совместимости с MySQL. Ключевое слово `FULL` добавляет в вывод столбцы collation, comment и privilege.
+Также есть два необязательных ключевых слова: `EXTENDED` и `FULL`. Ключевое слово `EXTENDED` в настоящее время не оказывает никакого эффекта
+и существует для совместимости с MySQL. Ключевое слово `FULL` приводит к тому, что в вывод включаются столбцы с информацией о сортировке (collation), комментариях и правах доступа.
 
 Оператор `SHOW COLUMNS` возвращает результирующую таблицу со следующей структурой:
 
-| Столбец     | Описание                                                                                                                      | Тип                |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `field`     | Имя столбца                                                                                                                   | `String`           |
-| `type`      | Тип данных столбца. Если запрос выполнен через протокол MySQL wire protocol, отображается эквивалентное имя типа в MySQL. | `String`           |
-| `null`      | `YES`, если тип данных столбца Nullable, иначе `NO`                                                                           | `String`           |
-| `key`       | `PRI`, если столбец входит в первичный ключ, `SOR`, если столбец входит в ключ сортировки, иначе пусто       | `String`           |
-| `default`   | Выражение по умолчанию для столбца, если он имеет тип `ALIAS`, `DEFAULT` или `MATERIALIZED`, иначе `NULL`.                    | `Nullable(String)` |
-| `extra`     | Дополнительная информация, в настоящее время не используется                                                                  | `String`           |
-| `collation` | (только если указано ключевое слово `FULL`) Сопоставление столбца, всегда `NULL`, так как в ClickHouse нет сопоставлений на уровне столбцов | `Nullable(String)` |
-| `comment`   | (только если указано ключевое слово `FULL`) Комментарий к столбцу                                                             | `String`           |
-| `privilege` | (только если указано ключевое слово `FULL`) Привилегия для этого столбца, в настоящее время недоступна  | `String`           |
+| Column      | Description                                                                                                                           | Type               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `field`     | Имя столбца                                                                                                                           | `String`           |
+| `type`      | Тип данных столбца. Если запрос был выполнен по протоколу MySQL wire, то отображается эквивалентное имя типа в MySQL.                 | `String`           |
+| `null`      | `YES`, если тип данных столбца Nullable, иначе `NO`                                                                                   | `String`           |
+| `key`       | `PRI`, если столбец является частью первичного ключа, `SOR`, если столбец является частью сортировочного ключа, иначе пусто           | `String`           |
+| `default`   | Выражение по умолчанию для столбца, если его тип — `ALIAS`, `DEFAULT` или `MATERIALIZED`, иначе `NULL`.                               | `Nullable(String)` |
+| `extra`     | Дополнительная информация, в настоящее время не используется                                                                          | `String`           |
+| `collation` | (только если указано ключевое слово `FULL`) Сортировка столбца, всегда `NULL`, так как в ClickHouse нет сортировок на уровне столбцов | `Nullable(String)` |
+| `comment`   | (только если указано ключевое слово `FULL`) Комментарий к столбцу                                                                     | `String`           |
+| `privilege` | (только если указано ключевое слово `FULL`) Права доступа к этому столбцу, в настоящее время недоступны                               | `String`           |
 
-### Примеры {#examples-2}
+### Примеры
 
-В этом примере используется оператор `SHOW COLUMNS` для получения информации обо всех столбцах таблицы 'orders',
-начинающихся с 'delivery\_':
+В этом примере мы используем оператор `SHOW COLUMNS`, чтобы получить информацию обо всех столбцах в таблице &#39;orders&#39;,
+начиная с &#39;delivery&#95;&#39;:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─field───────────┬─type─────┬─null─┬─key─────┬─default─┬─extra─┐
 │ delivery_date   │ DateTime │    0 │ PRI SOR │ ᴺᵁᴸᴸ    │       │
 │ delivery_status │ Bool     │    0 │         │ ᴺᵁᴸᴸ    │       │
 └─────────────────┴──────────┴──────┴─────────┴─────────┴───────┘
 ```
 
-### См. также {#see-also-2}
+### См. также
 
-- [`system.columns`](../../operations/system-tables/columns.md)
+* [`system.columns`](../../operations/system-tables/columns.md)
 
 
-## SHOW DICTIONARIES {#show-dictionaries}
+## SHOW DICTIONARIES
 
-Оператор `SHOW DICTIONARIES` выводит список [словарей](../../sql-reference/dictionaries/index.md).
+Оператор `SHOW DICTIONARIES` отображает список [словарей](../../sql-reference/dictionaries/index.md).
 
-### Синтаксис {#syntax-4}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
@@ -262,15 +262,15 @@ SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <file
 SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <pattern>] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-### Примеры {#examples-3}
+### Примеры
 
-Следующий запрос выбирает первые две строки из списка словарей в базе данных `system`, имена которых содержат `reg`.
+Следующий запрос выбирает первые две строки из списка таблиц базы данных `system`, имена которых содержат `reg`.
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─name─────────┐
 │ regions      │
 │ region_names │
@@ -278,55 +278,55 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 ```
 
 
-## SHOW INDEX {#show-index}
+## SHOW INDEX
 
-Отображает список первичных индексов и индексов пропуска данных таблицы.
+Отображает список первичных и индексов пропуска данных таблицы.
 
-Этот оператор существует в основном для совместимости с MySQL. Системные таблицы [`system.tables`](../../operations/system-tables/tables.md) (для
+Этот оператор существует главным образом для совместимости с MySQL. Системные таблицы [`system.tables`](../../operations/system-tables/tables.md) (для
 первичных ключей) и [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md) (для индексов пропуска данных)
-предоставляют эквивалентную информацию в более привычном для ClickHouse формате.
+предоставляют эквивалентную информацию, но в более естественной для ClickHouse форме.
 
-### Синтаксис {#syntax-5}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM | IN} <db>] [WHERE <expr>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-Имя базы данных и таблицы можно указать в сокращенной форме как `<db>.<table>`, т. е. `FROM tab FROM db` и `FROM db.tab`
-эквивалентны. Если база данных не указана, запрос использует текущую базу данных.
+Имя базы данных и таблицы может быть указано в сокращённой форме как `<db>.<table>`, т.е. `FROM tab FROM db` и `FROM db.tab` являются
+эквивалентными. Если база данных не указана, в запросе используется текущая база данных.
 
-Необязательное ключевое слово `EXTENDED` в настоящее время не имеет эффекта и существует для совместимости с MySQL.
+Необязательное ключевое слово `EXTENDED` в данный момент не оказывает никакого эффекта и существует для совместимости с MySQL.
 
 Оператор возвращает результирующую таблицу со следующей структурой:
 
-| Столбец         | Описание                                                                                                                 | Тип                |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------ |
-| `table`         | Имя таблицы.                                                                                                             | `String`           |
-| `non_unique`    | Всегда `1`, так как ClickHouse не поддерживает ограничения уникальности.                                                 | `UInt8`            |
-| `key_name`      | Имя индекса, `PRIMARY`, если индекс является индексом первичного ключа.                                                  | `String`           |
-| `seq_in_index`  | Для индекса первичного ключа — позиция столбца, начиная с `1`. Для индекса пропуска данных — всегда `1`.                | `UInt8`            |
-| `column_name`   | Для индекса первичного ключа — имя столбца. Для индекса пропуска данных — `''` (пустая строка), см. поле "expression".  | `String`           |
-| `collation`     | Сортировка столбца в индексе: `A` для возрастающей, `D` для убывающей, `NULL`, если не отсортирован.                    | `Nullable(String)` |
-| `cardinality`   | Оценка кардинальности индекса (количество уникальных значений в индексе). В настоящее время всегда 0.                   | `UInt64`           |
-| `sub_part`      | Всегда `NULL`, так как ClickHouse не поддерживает префиксы индексов, как MySQL.                                         | `Nullable(String)` |
-| `packed`        | Всегда `NULL`, так как ClickHouse не поддерживает упакованные индексы (как MySQL).                                       | `Nullable(String)` |
-| `null`          | В настоящее время не используется                                                                                        |                    |
-| `index_type`    | Тип индекса, например `PRIMARY`, `MINMAX`, `BLOOM_FILTER` и т. д.                                                       | `String`           |
-| `comment`       | Дополнительная информация об индексе, в настоящее время всегда `''` (пустая строка).                                    | `String`           |
-| `index_comment` | `''` (пустая строка), так как индексы в ClickHouse не могут иметь поле `COMMENT` (как в MySQL).                          | `String`           |
-| `visible`       | Видимость индекса для оптимизатора, всегда `YES`.                                                                        | `String`           |
-| `expression`    | Для индекса пропуска данных — выражение индекса. Для индекса первичного ключа — `''` (пустая строка).                   | `String`           |
+| Column          | Description                                                                                                            | Type               |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `table`         | Имя таблицы.                                                                                                           | `String`           |
+| `non_unique`    | Всегда `1`, так как ClickHouse не поддерживает ограничения уникальности.                                               | `UInt8`            |
+| `key_name`      | Имя индекса, `PRIMARY`, если индекс является индексом первичного ключа.                                                | `String`           |
+| `seq_in_index`  | Для индекса первичного ключа — позиция столбца, начиная с `1`. Для индекса пропуска данных — всегда `1`.               | `UInt8`            |
+| `column_name`   | Для индекса первичного ключа — имя столбца. Для индекса пропуска данных — `''` (пустая строка), см. поле «expression». | `String`           |
+| `collation`     | Сортировка столбца в индексе: `A` — по возрастанию, `D` — по убыванию, `NULL` — без сортировки.                        | `Nullable(String)` |
+| `cardinality`   | Оценка кардинальности индекса (количество уникальных значений в индексе). В настоящее время всегда равно 0.            | `UInt64`           |
+| `sub_part`      | Всегда `NULL`, потому что ClickHouse не поддерживает префиксы индексов, как MySQL.                                     | `Nullable(String)` |
+| `packed`        | Всегда `NULL`, потому что ClickHouse не поддерживает упакованные индексы (как MySQL).                                  | `Nullable(String)` |
+| `null`          | В данный момент не используется                                                                                        |                    |
+| `index_type`    | Тип индекса, например `PRIMARY`, `MINMAX`, `BLOOM_FILTER` и т. д.                                                      | `String`           |
+| `comment`       | Дополнительная информация об индексе, в настоящее время всегда `''` (пустая строка).                                   | `String`           |
+| `index_comment` | `''` (пустая строка), так как индексы в ClickHouse не могут иметь поле `COMMENT` (как в MySQL).                        | `String`           |
+| `visible`       | Показывает, виден ли индекс оптимизатору, — всегда `YES`.                                                              | `String`           |
+| `expression`    | Для индекса пропуска данных — выражение индекса. Для индекса первичного ключа — `''` (пустая строка).                  | `String`           |
 
-### Примеры {#examples-4}
+### Примеры
 
-В этом примере используется оператор `SHOW INDEX` для получения информации обо всех индексах в таблице 'tbl'
+В этом примере мы используем оператор `SHOW INDEX`, чтобы получить информацию обо всех индексах в таблице &#39;tbl&#39;.
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW INDEX FROM 'tbl'
 ```
 
 
-```text title="Ответ"
+```text title="Response"
 ┌─table─┬─non_unique─┬─key_name─┬─seq_in_index─┬─column_name─┬─collation─┬─cardinality─┬─sub_part─┬─packed─┬─null─┬─index_type───┬─comment─┬─index_comment─┬─visible─┬─expression─┐
 │ tbl   │          1 │ blf_idx  │ 1            │ 1           │ ᴺᵁᴸᴸ      │ 0           │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ │ BLOOM_FILTER │         │               │ YES     │ d, b       │
 │ tbl   │          1 │ mm1_idx  │ 1            │ 1           │ ᴺᵁᴸᴸ      │ 0           │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ │ MINMAX       │         │               │ YES     │ a, c, d    │
@@ -337,19 +337,19 @@ SHOW INDEX FROM 'tbl'
 └───────┴────────────┴──────────┴──────────────┴─────────────┴───────────┴─────────────┴──────────┴────────┴──────┴──────────────┴─────────┴───────────────┴─────────┴────────────┘
 ```
 
-### См. также {#see-also-3}
+### См. также
 
-- [`system.tables`](../../operations/system-tables/tables.md)
-- [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
+* [`system.tables`](../../operations/system-tables/tables.md)
+* [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
 
 
-## SHOW PROCESSLIST {#show-processlist}
+## SHOW PROCESSLIST
 
-Выводит содержимое таблицы [`system.processes`](/operations/system-tables/processes), которая содержит список запросов, выполняющихся в данный момент, за исключением самих запросов `SHOW PROCESSLIST`.
+Выводит содержимое таблицы [`system.processes`](/operations/system-tables/processes), в которой хранится список запросов, обрабатываемых в данный момент, за исключением запросов `SHOW PROCESSLIST`.
 
-### Синтаксис {#syntax-6}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW PROCESSLIST [INTO OUTFILE filename] [FORMAT format]
 ```
 
@@ -365,184 +365,187 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 :::
 
 
-## SHOW GRANTS {#show-grants}
+## SHOW GRANTS
 
-Оператор `SHOW GRANTS` отображает привилегии пользователя.
+Оператор `SHOW GRANTS` отображает привилегии, предоставленные пользователю.
 
-### Синтаксис {#syntax-7}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 ```
 
-Если пользователь не указан, запрос возвращает привилегии текущего пользователя.
+Если пользователь не указан, запрос возвращает привилегии для текущего пользователя.
 
-Модификатор `WITH IMPLICIT` позволяет отображать неявные привилегии (например, `GRANT SELECT ON system.one`).
+Модификатор `WITH IMPLICIT` позволяет отображать неявно предоставленные привилегии (например, `GRANT SELECT ON system.one`).
 
-Модификатор `FINAL` объединяет все привилегии пользователя и его назначенных ролей (с наследованием).
+Модификатор `FINAL` объединяет все привилегии, выданные пользователю и его ролям (с учетом наследования).
 
 
-## SHOW CREATE USER {#show-create-user}
+## SHOW CREATE USER
 
-Оператор `SHOW CREATE USER` показывает параметры, которые использовались при [создании пользователя](../../sql-reference/statements/create/user.md).
+Оператор `SHOW CREATE USER` выводит параметры, которые были заданы при [создании пользователя](../../sql-reference/statements/create/user.md).
 
-### Синтаксис {#syntax-8}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
+```sql title="Syntax"
+SHOW CREATE USER [имя1 [, имя2 ...] | CURRENT_USER]
 ```
 
 
-## SHOW CREATE ROLE {#show-create-role}
+## SHOW CREATE ROLE
 
-Оператор `SHOW CREATE ROLE` показывает параметры, которые использовались при [создании роли](../../sql-reference/statements/create/role.md).
+Оператор `SHOW CREATE ROLE` выводит параметры, использованные при [создании роли](../../sql-reference/statements/create/role.md).
 
-### Синтаксис {#syntax-9}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW CREATE ROLE name1 [, name2 ...]
+```sql title="Syntax"
+SHOW CREATE ROLE имя1 [, имя2 ...]
 ```
 
 
-## SHOW CREATE ROW POLICY {#show-create-row-policy}
+## SHOW CREATE ROW POLICY
 
-Оператор `SHOW CREATE ROW POLICY` показывает параметры, которые использовались при [создании политики доступа к строкам](../../sql-reference/statements/create/row-policy.md).
+Оператор `SHOW CREATE ROW POLICY` выводит параметры, которые были использованы при [создании политики строк](../../sql-reference/statements/create/row-policy.md).
 
-### Синтаксис {#syntax-10}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
 
 
-## SHOW CREATE QUOTA {#show-create-quota}
+## SHOW CREATE QUOTA
 
-Инструкция `SHOW CREATE QUOTA` показывает параметры, которые использовались при [создании квоты](../../sql-reference/statements/create/quota.md).
+Оператор `SHOW CREATE QUOTA` отображает параметры, использованные при [создании квоты](../../sql-reference/statements/create/quota.md).
 
-### Синтаксис {#syntax-11}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
 
-## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
+## SHOW CREATE SETTINGS PROFILE
 
-Оператор `SHOW CREATE SETTINGS PROFILE` показывает параметры, которые использовались при [создании профиля настроек](../../sql-reference/statements/create/settings-profile.md).
+Оператор `SHOW CREATE SETTINGS PROFILE` выводит параметры, которые были использованы при [создании профиля настроек](../../sql-reference/statements/create/settings-profile.md).
 
-### Синтаксис {#syntax-12}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
+```sql title="Syntax"
+SHOW CREATE [SETTINGS] PROFILE имя1 [, имя2 ...]
 ```
 
 
-## SHOW USERS {#show-users}
+## SHOW USERS
 
-Оператор `SHOW USERS` возвращает список имён [учётных записей пользователей](../../guides/sre/user-management/index.md#user-account-management).
-Для просмотра параметров учётных записей пользователей обратитесь к системной таблице [`system.users`](/operations/system-tables/users).
+Оператор `SHOW USERS` возвращает список имен [учетных записей пользователей](../../guides/sre/user-management/index.md#user-account-management).
+Чтобы просмотреть параметры учетных записей пользователей, обратитесь к системной таблице [`system.users`](/operations/system-tables/users).
 
-### Синтаксис {#syntax-13}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW USERS
 ```
 
 
 ## SHOW ROLES {#show-roles}
 
-Оператор `SHOW ROLES` возвращает список [ролей](../../guides/sre/user-management/index.md#role-management).
-Для просмотра других параметров см. системные таблицы [`system.roles`](/operations/system-tables/roles) и [`system.role_grants`](/operations/system-tables/role_grants).
+Оператор `SHOW ROLES` возвращает список [ролей](../../guides/sre/user-management/index.md#role-management). 
+Для просмотра дополнительных параметров 
+см. системные таблицы [`system.roles`](/operations/system-tables/roles) и [`system.role_grants`](/operations/system-tables/role_grants).
 
 ### Синтаксис {#syntax-14}
 
 
-```sql title="Синтаксис"
+
+```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
 ```
 
-## SHOW PROFILES {#show-profiles}
+## SHOW PROFILES
 
 Оператор `SHOW PROFILES` возвращает список [профилей настроек](../../guides/sre/user-management/index.md#settings-profiles-management).
-Для просмотра параметров учётных записей пользователей обратитесь к системной таблице [`settings_profiles`](/operations/system-tables/settings_profiles).
+Для просмотра параметров учетных записей пользователей см. системную таблицу [`settings_profiles`](/operations/system-tables/settings_profiles).
 
-### Синтаксис {#syntax-15}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW [SETTINGS] PROFILES
 ```
 
 
-## SHOW POLICIES {#show-policies}
+## SHOW POLICIES
 
-Оператор `SHOW POLICIES` возвращает список [политик доступа к строкам](../../guides/sre/user-management/index.md#row-policy-management) для указанной таблицы.
-Для просмотра параметров учётных записей пользователей см. системную таблицу [`system.row_policies`](/operations/system-tables/row_policies).
+Оператор `SHOW POLICIES` возвращает список [политик строк](../../guides/sre/user-management/index.md#row-policy-management) для указанной таблицы.
+Чтобы просмотреть параметры учетных записей пользователей, см. системную таблицу [`system.row_policies`](/operations/system-tables/row_policies).
 
-### Синтаксис {#syntax-16}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
 
 
-## SHOW QUOTAS {#show-quotas}
+## SHOW QUOTAS
 
 Оператор `SHOW QUOTAS` возвращает список [квот](../../guides/sre/user-management/index.md#quotas-management).
-Для просмотра параметров квот обратитесь к системной таблице [`system.quotas`](/operations/system-tables/quotas).
+Для просмотра параметров квот см. системную таблицу [`system.quotas`](/operations/system-tables/quotas).
 
-### Синтаксис {#syntax-17}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW QUOTAS
 ```
 
 
 ## SHOW QUOTA {#show-quota}
 
-Оператор `SHOW QUOTA` возвращает информацию о потреблении [квоты](../../operations/quotas.md) для всех пользователей или для текущего пользователя.
-Для просмотра других параметров см. системные таблицы [`system.quotas_usage`](/operations/system-tables/quotas_usage) и [`system.quota_usage`](/operations/system-tables/quota_usage).
+Оператор `SHOW QUOTA` возвращает информацию об использовании [квот](../../operations/quotas.md) для всех пользователей или только для текущего пользователя. 
+Для просмотра дополнительных параметров используйте системные таблицы [`system.quotas_usage`](/operations/system-tables/quotas_usage) и [`system.quota_usage`](/operations/system-tables/quota_usage).
 
 ### Синтаксис {#syntax-18}
 
 
-```sql title="Синтаксис"
+
+```sql title="Syntax"
 SHOW [CURRENT] QUOTA
 ```
 
-## SHOW ACCESS {#show-access}
+## SHOW ACCESS
 
-Оператор `SHOW ACCESS` показывает всех [пользователей](../../guides/sre/user-management/index.md#user-account-management), [роли](../../guides/sre/user-management/index.md#role-management), [профили](../../guides/sre/user-management/index.md#settings-profiles-management) и т. д., а также все их [привилегии](../../sql-reference/statements/grant.md#privileges).
+Оператор `SHOW ACCESS` отображает всех [пользователей](../../guides/sre/user-management/index.md#user-account-management), [роли](../../guides/sre/user-management/index.md#role-management), [профили](../../guides/sre/user-management/index.md#settings-profiles-management) и т.д., а также все их [права доступа](../../sql-reference/statements/grant.md#privileges).
 
-### Синтаксис {#syntax-19}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW ACCESS
 ```
 
 
-## SHOW CLUSTER(S) {#show-clusters}
+## SHOW CLUSTER(S)
 
 Оператор `SHOW CLUSTER(S)` возвращает список кластеров.
 Все доступные кластеры перечислены в таблице [`system.clusters`](../../operations/system-tables/clusters.md).
 
 :::note
-Запрос `SHOW CLUSTER name` выводит столбцы `cluster`, `shard_num`, `replica_num`, `host_name`, `host_address` и `port` из таблицы `system.clusters` для указанного имени кластера.
+Запрос `SHOW CLUSTER name` отображает поля `cluster`, `shard_num`, `replica_num`, `host_name`, `host_address` и `port` таблицы `system.clusters` для кластера с указанным именем.
 :::
 
-### Синтаксис {#syntax-20}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW CLUSTER '<name>'
 SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
-### Примеры {#examples-5}
+### Примеры
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW CLUSTERS;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─cluster──────────────────────────────────────┐
 │ test_cluster_two_shards                      │
 │ test_cluster_two_shards_internal_replication │
@@ -553,21 +556,21 @@ SHOW CLUSTERS;
 └──────────────────────────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW CLUSTERS LIKE 'test%' LIMIT 1;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─cluster─────────────────┐
 │ test_cluster_two_shards │
 └─────────────────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW CLUSTER 'test_shard_localhost' FORMAT Vertical;
 ```
 
-```text title="Ответ"
+```text title="Response"
 Row 1:
 ──────
 cluster:                 test_shard_localhost
@@ -579,32 +582,32 @@ port:                    9000
 ```
 
 
-## SHOW SETTINGS {#show-settings}
+## SHOW SETTINGS
 
 Оператор `SHOW SETTINGS` возвращает список системных настроек и их значений.
-Он выбирает данные из таблицы [`system.settings`](../../operations/system-tables/settings.md).
+Он запрашивает данные из таблицы [`system.settings`](../../operations/system-tables/settings.md).
 
-### Синтаксис {#syntax-21}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
+```sql title="Syntax"
+SHOW [CHANGED] SETTINGS LIKE|ILIKE <имя>
 ```
 
-### Условия {#clauses}
+### Условия
 
-`LIKE|ILIKE` позволяют указать шаблон соответствия для имени настройки. Он может содержать подстановочные символы, такие как `%` или `_`. Условие `LIKE` чувствительно к регистру, `ILIKE` — нечувствительно.
+`LIKE|ILIKE` позволяют задать шаблон для имени настройки. Он может содержать шаблонные символы, такие как `%` или `_`. Условие `LIKE` чувствительно к регистру, `ILIKE` — нечувствительно.
 
-При использовании условия `CHANGED` запрос возвращает только настройки, отличающиеся от значений по умолчанию.
+Когда используется условие `CHANGED`, запрос возвращает только те настройки, которые были изменены по сравнению со значениями по умолчанию.
 
-### Примеры {#examples-6}
+### Примеры
 
 Запрос с условием `LIKE`:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW SETTINGS LIKE 'send_timeout';
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name─────────┬─type────┬─value─┐
 │ send_timeout │ Seconds │ 300   │
 └──────────────┴─────────┴───────┘
@@ -612,137 +615,137 @@ SHOW SETTINGS LIKE 'send_timeout';
 
 Запрос с условием `ILIKE`:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW SETTINGS ILIKE '%CONNECT_timeout%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name────────────────────────────────────┬─type─────────┬─value─┐
-│ connect_timeout                         │ Seconds      │ 10    │
-│ connect_timeout_with_failover_ms        │ Milliseconds │ 50    │
-│ connect_timeout_with_failover_secure_ms │ Milliseconds │ 100   │
+│ connect_timeout                         │ Секунды      │ 10    │
+│ connect_timeout_with_failover_ms        │ Миллисекунды │ 50    │
+│ connect_timeout_with_failover_secure_ms │ Миллисекунды │ 100   │
 └─────────────────────────────────────────┴──────────────┴───────┘
 ```
 
-Запрос с условием `CHANGED`:
+Запрос с предложением `CHANGED`:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─name─────────────┬─type───┬─value───────┐
 │ max_memory_usage │ UInt64 │ 10000000000 │
 └──────────────────┴────────┴─────────────┘
 ```
 
 
-## SHOW SETTING {#show-setting}
+## SHOW SETTING
 
 Оператор `SHOW SETTING` выводит значение указанной настройки.
 
-### Синтаксис {#syntax-22}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW SETTING <name>
+```sql title="Syntax"
+SHOW SETTING <имя>
 ```
 
-### См. также {#see-also-4}
+### См. также
 
-- таблица [`system.settings`](../../operations/system-tables/settings.md)
+* таблица [`system.settings`](../../operations/system-tables/settings.md)
 
 
-## SHOW FILESYSTEM CACHES {#show-filesystem-caches}
+## Просмотр кэшей файловой системы
 
-### Примеры {#examples-7}
+### Примеры
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW FILESYSTEM CACHES
 ```
 
-```text title="Результат"
-┌─Caches────┐
+```text title="Response"
+┌─Кэши──────┐
 │ s3_cache  │
 └───────────┘
 ```
 
-### См. также {#see-also-5}
+### См. также
 
-- Таблица [`system.settings`](../../operations/system-tables/settings.md)
+* таблица [`system.settings`](../../operations/system-tables/settings.md)
 
 
-## SHOW ENGINES {#show-engines}
+## SHOW ENGINES
 
 Оператор `SHOW ENGINES` выводит содержимое таблицы [`system.table_engines`](../../operations/system-tables/table_engines.md),
-которая содержит описание движков таблиц, поддерживаемых сервером, и информацию о поддерживаемых ими функциях.
+которая содержит описание движков таблиц, поддерживаемых сервером, и информацию о поддерживаемых ими возможностях.
 
-### Синтаксис {#syntax-23}
+### Синтаксис
 
-```sql title="Синтаксис"
-SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
+```sql title="Syntax"
+SHOW ENGINES [INTO OUTFILE имя_файла] [FORMAT формат]
 ```
 
-### См. также {#see-also-6}
+### См. также
 
-- таблица [system.table_engines](../../operations/system-tables/table_engines.md)
+* таблица [system.table&#95;engines](../../operations/system-tables/table_engines.md)
 
 
-## SHOW FUNCTIONS {#show-functions}
+## SHOW FUNCTIONS
 
 Оператор `SHOW FUNCTIONS` выводит содержимое таблицы [`system.functions`](../../operations/system-tables/functions.md).
 
-### Синтаксис {#syntax-24}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 ```
 
-Если указано условие `LIKE` или `ILIKE`, запрос возвращает список системных функций, имена которых соответствуют указанному шаблону `<pattern>`.
+Если указан оператор `LIKE` или `ILIKE`, запрос возвращает список системных функций, имена которых соответствуют указанному шаблону `<pattern>`.
 
-### См. также {#see-also-7}
+### См. также
 
-- таблица [`system.functions`](../../operations/system-tables/functions.md)
+* Таблица [`system.functions`](../../operations/system-tables/functions.md)
 
 
-## SHOW MERGES {#show-merges}
+## SHOW MERGES
 
 Оператор `SHOW MERGES` возвращает список слияний.
 Все слияния перечислены в таблице [`system.merges`](../../operations/system-tables/merges.md):
 
-| Column              | Description                                                |
-| ------------------- | ---------------------------------------------------------- |
-| `table`             | Имя таблицы.                                                |
-| `database`          | Имя базы данных, в которой находится таблица.                  |
-| `estimate_complete` | Расчётное время до завершения (в секундах).               |
-| `elapsed`           | Время, прошедшее с момента начала слияния (в секундах).     |
-| `progress`          | Процент выполненной работы (0-100 процентов).          |
-| `is_mutation`       | 1, если этот процесс является мутацией части.                      |
-| `size_compressed`   | Общий размер сжатых данных объединяемых частей. |
+| Column              | Description                                             |
+| ------------------- | ------------------------------------------------------- |
+| `table`             | Имя таблицы.                                            |
+| `database`          | Имя базы данных, в которой находится таблица.           |
+| `estimate_complete` | Оценочное время до завершения (в секундах).             |
+| `elapsed`           | Время, прошедшее (в секундах) с момента начала слияния. |
+| `progress`          | Процент выполненной работы (0–100 %).                   |
+| `is_mutation`       | 1, если этот процесс является мутацией части данных.    |
+| `size_compressed`   | Общий размер сжатых данных объединённых частей.         |
 | `memory_usage`      | Потребление памяти процессом слияния.                   |
 
-### Синтаксис {#syntax-25}
+### Синтаксис
 
-```sql title="Синтаксис"
+```sql title="Syntax"
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
-### Примеры {#examples-8}
+### Примеры
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW MERGES;
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─table──────┬─database─┬─estimate_complete─┬─elapsed─┬─progress─┬─is_mutation─┬─size_compressed─┬─memory_usage─┐
 │ your_table │ default  │              0.14 │    0.36 │    73.01 │           0 │        5.40 MiB │    10.25 MiB │
 └────────────┴──────────┴───────────────────┴─────────┴──────────┴─────────────┴─────────────────┴──────────────┘
 ```
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW MERGES LIKE 'your_t%' LIMIT 1;
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─table──────┬─database─┬─estimate_complete─┬─elapsed─┬─progress─┬─is_mutation─┬─size_compressed─┬─memory_usage─┐
 │ your_table │ default  │              0.14 │    0.36 │    73.01 │           0 │        5.40 MiB │    10.25 MiB │
 └────────────┴──────────┴───────────────────┴─────────┴──────────┴─────────────┴─────────────────┴──────────────┘

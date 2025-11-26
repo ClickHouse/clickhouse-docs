@@ -1,9 +1,8 @@
 ---
-description: 'Обзор сторонних инструментов, библиотек и интеграций, доступных
-  для ClickHouse'
+description: 'Обзор сторонних инструментов, библиотек и интеграций для ClickHouse'
 sidebar_position: 24
 slug: /interfaces/third-party/
-toc_folder_title: 'Сторонние'
+toc_folder_title: 'Сторонние решения'
 title: 'Сторонние интерфейсы'
 doc_type: 'landing-page'
 ---
@@ -18,5 +17,5 @@ doc_type: 'landing-page'
 - [Прокси](../../interfaces/third-party/proxy.md)
 
 :::note
-Универсальные инструменты, которые поддерживают распространённые API, такие как [ODBC](../../interfaces/odbc.md) или [JDBC](../../interfaces/jdbc.md), обычно также могут работать с ClickHouse, но не перечислены здесь, поскольку их слишком много.
+Универсальные инструменты, которые поддерживают распространённые API, такие как [ODBC](../../interfaces/odbc.md) или [JDBC](../../interfaces/jdbc.md), обычно также могут работать с ClickHouse, но здесь не перечислены, так как их слишком много.
 :::

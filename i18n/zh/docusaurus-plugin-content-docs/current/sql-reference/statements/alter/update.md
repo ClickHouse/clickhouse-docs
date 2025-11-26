@@ -12,20 +12,20 @@ doc_type: 'reference'
 # ALTER TABLE ... UPDATE 语句
 
 ```sql
-ALTER TABLE [数据库.]表 [ON CLUSTER 集群] UPDATE 列1 = 表达式1 [, ...] [IN PARTITION 分区id] WHERE 筛选表达式
+ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
 
-对符合指定过滤表达式的数据进行变更。该功能作为一次 [mutation](/sql-reference/statements/alter/index.md#mutations) 实现。
+对符合指定过滤表达式的数据进行修改。实现为一种 [mutation](/sql-reference/statements/alter/index.md#mutations)。
 
 :::note\
-`ALTER TABLE` 前缀使得此语法区别于大多数其他支持 SQL 的系统。其目的是表明，与 OLTP 数据库中的类似查询不同，这是一个开销较大的操作，并非为频繁使用而设计。
+`ALTER TABLE` 前缀使得此语法不同于大多数支持 SQL 的其他系统。其目的是强调，与 OLTP 数据库中的类似查询不同，这是一种开销较大的操作，并不适合频繁使用。
 :::
 
-`filter_expr` 必须是 `UInt8` 类型。该查询会将满足 `filter_expr` 计算结果为非零值的行中指定列的值更新为相应表达式的值。更新时通过 `CAST` 运算符将值转换为列类型。不支持更新参与主键或分区键计算的列。
+`filter_expr` 必须是 `UInt8` 类型。该查询会将满足 `filter_expr` 取非零值的行中指定列的值更新为相应表达式的值。这些值会通过 `CAST` 运算符转换为列的类型。不支持更新用于计算主键或分区键的列。
 
-一个查询可以包含多个命令，用逗号分隔。
+一个查询中可以包含多个以逗号分隔的命令。
 
-查询处理的同步性由 [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置决定。默认是异步的。
+查询处理的同步性由 [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置决定。默认情况下是异步的。
 
 **另请参阅**
 
@@ -36,4 +36,4 @@ ALTER TABLE [数据库.]表 [ON CLUSTER 集群] UPDATE 列1 = 表达式1 [, ...]
 
 ## 相关内容 {#related-content}
 
-- 博客：[ClickHouse 中的更新和删除操作处理](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+- 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

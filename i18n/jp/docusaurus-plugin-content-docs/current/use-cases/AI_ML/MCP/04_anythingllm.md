@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'AnythingLLM を統合する'
-title: 'ClickHouse MCP サーバーを AnythingLLM および ClickHouse Cloud と連携してセットアップする'
+title: 'AnythingLLM および ClickHouse Cloud 向けの ClickHouse MCP サーバーをセットアップする'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、Docker を使用して ClickHouse MCP サーバーと連携する AnythingLLM をセットアップする方法を説明します。'
@@ -22,52 +22,52 @@ import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png'
 # AnythingLLMでClickHouse MCPサーバーを使用する
 
 > 本ガイドでは、Dockerを使用してClickHouse MCPサーバーと[AnythingLLM](https://anythingllm.com/)をセットアップし、
-> ClickHouseのサンプルデータセットに接続する方法を説明します。
+> ClickHouseのサンプルデータセットに接続する方法について説明します。
 
 <VerticalStepper headerLevel="h2">
 
 
-## Dockerのインストール {#install-docker}
+## Docker をインストールする {#install-docker}
 
-LibreChatとMCPサーバーを実行するには、Dockerが必要です。Dockerを入手するには、以下の手順に従ってください。
+LibreChat と MCP サーバーを実行するには Docker が必要です。Docker を入手するには、次の手順を実行します。
+1. [docker.com](https://www.docker.com/products/docker-desktop) にアクセスします
+2. お使いのオペレーティングシステム向けの Docker Desktop をダウンロードします
+3. オペレーティングシステムのインストール手順に従って Docker をインストールします
+4. Docker Desktop を開き、起動していることを確認します
+<br/>
+詳細については、[Docker のドキュメント](https://docs.docker.com/get-docker/)を参照してください。
 
-1. [docker.com](https://www.docker.com/products/docker-desktop)にアクセスします
-2. お使いのオペレーティングシステム用のDocker Desktopをダウンロードします
-3. お使いのオペレーティングシステムの手順に従ってDockerをインストールします
-4. Docker Desktopを開き、実行されていることを確認します
-   <br />
-   詳細については、[Dockerドキュメント](https://docs.docker.com/get-docker/)を参照してください。
 
 
-## AnythingLLM Dockerイメージの取得 {#pull-anythingllm-docker-image}
+## AnythingLLM の Docker イメージをプルする
 
-以下のコマンドを実行して、AnythingLLM Dockerイメージをマシンに取得します：
+次のコマンドを実行して、AnythingLLM の Docker イメージをローカル環境にプルします。
 
 ```bash
 docker pull anythingllm/anythingllm
 ```
 
 
-## ストレージの場所を設定する {#setup-storage-location}
+## ストレージの場所を設定する
 
-ストレージ用のディレクトリを作成し、環境ファイルを初期化します:
+ストレージ用のディレクトリを作成し、環境ファイルを初期化します。
 
 ```bash
 export STORAGE_LOCATION=$PWD/anythingllm && \
 mkdir -p $STORAGE_LOCATION && \
-touch "$STORAGE_LOCATION/.env"
+touch "$STORAGE_LOCATION/.env" 
 ```
 
 
-## MCPサーバー設定ファイルの構成 {#configure-mcp-server-config-file}
+## MCP サーバー設定ファイルの設定
 
-`plugins`ディレクトリを作成します:
+`plugins` ディレクトリを作成します。
 
 ```bash
 mkdir -p "$STORAGE_LOCATION/plugins"
 ```
 
-`plugins`ディレクトリ内に`anythingllm_mcp_servers.json`というファイルを作成し、以下の内容を追加します:
+`plugins` ディレクトリに `anythingllm_mcp_servers.json` という名前のファイルを作成し、以下の内容を記述します。
 
 ```json
 {
@@ -92,12 +92,14 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 }
 ```
 
-独自のデータを探索する場合は、ご利用のClickHouse Cloudサービスの[ホスト、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)を使用してください。
+ご自身のデータを探索したい場合は、
+ご利用の ClickHouse Cloud サービスの [ホスト名、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
+を使用して行えます。
 
 
-## AnythingLLM Dockerコンテナの起動 {#start-anythingllm-docker-container}
+## AnythingLLM の Docker コンテナを起動する
 
-以下のコマンドを実行して、AnythingLLM Dockerコンテナを起動します。
+次のコマンドを実行して、AnythingLLM の Docker コンテナを起動します。
 
 ```bash
 docker run -p 3001:3001 \
@@ -108,27 +110,28 @@ docker run -p 3001:3001 \
 mintplexlabs/anythingllm
 ```
 
-起動後、ブラウザで`http://localhost:3001`にアクセスしてください。
-使用するモデルを選択し、APIキーを入力します。
+起動したら、ブラウザで `http://localhost:3001` にアクセスします。
+利用したいモデルを選択し、API キーを入力します。
 
 
 ## MCP サーバーの起動を待つ {#wait-for-mcp-servers-to-start-up}
 
-UI の左下にあるツールアイコンをクリックします：
+UI 左下にあるツールアイコンをクリックします。
 
-<Image img={ToolIcon} alt='ツールアイコン' size='md' />
+<Image img={ToolIcon} alt="ツールアイコン" size="md"/>
 
-`Agent Skills` をクリックし、`MCP Servers` セクションを確認します。
-`Mcp ClickHouse` が `On` に設定されるまで待ちます。
+`Agent Skills` をクリックし、`MCP Servers` セクションを確認します。  
+`Mcp ClickHouse` が `On` になるまで待ちます。
 
-<Image img={MCPServers} alt='MCP サーバー準備完了' size='md' />
+<Image img={MCPServers} alt="MCP サーバーの準備完了" size="md"/>
 
 
-## AnythingLLMでClickHouse MCPサーバーとチャットする {#chat-with-clickhouse-mcp-server-with-anythingllm}
+
+## AnythingLLM で ClickHouse MCP Server とチャットする {#chat-with-clickhouse-mcp-server-with-anythingllm}
 
 これでチャットを開始する準備が整いました。
-MCPサーバーをチャットで利用できるようにするには、会話の最初のメッセージの先頭に`@agent`を付ける必要があります。
+チャットで MCP Server を利用できるようにするには、会話の最初のメッセージの先頭に `@agent` を付ける必要があります。
 
-<Image img={Conversation} alt='Conversation' size='md' />
+<Image img={Conversation} alt='会話' size='md' />
 
 </VerticalStepper>

@@ -3,7 +3,7 @@ slug: /native-protocol/basics
 sidebar_position: 1
 title: 'Основы'
 description: 'Основы нативного протокола'
-keywords: ['нативный протокол', 'TCP-протокол', 'основы протокола', 'двоичный протокол', 'взаимодействие клиент-сервер']
+keywords: ['нативный протокол', 'протокол TCP', 'основы протокола', 'двоичный протокол', 'клиент-серверное взаимодействие']
 doc_type: 'guide'
 ---
 
@@ -12,33 +12,34 @@ doc_type: 'guide'
 # Основы
 
 :::note
-Справочник по клиентскому протоколу пока в разработке.
+Справочник по клиентскому протоколу находится в разработке.
 
-Большинство примеров приведены только на Go.
+Большинство примеров приведено только на Go.
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Данный документ описывает двоичный протокол для TCP‑клиентов ClickHouse.
+Этот документ описывает бинарный протокол для TCP‑клиентов ClickHouse.
 
 
 ## Varint {#varint}
 
-Для длин, кодов пакетов и в других случаях используется кодирование _unsigned varint_.
+Для длин, кодов пакетов и в других случаях используется кодирование в формате *unsigned varint*.
 Используйте [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) и [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-_Signed_ varint не используется.
+*Signed* varint не используется.
 :::
+
 
 
 ## Строка {#string}
 
-Строки переменной длины кодируются как _(length, value)_, где _length_ — это [varint](#varint), а _value_ — строка в кодировке UTF-8.
+Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — строка в кодировке UTF-8.
 
 :::important
-Проверяйте длину для предотвращения исчерпания памяти (OOM):
+Проверяйте длину, чтобы избежать OOM:
 
 `0 ≤ len < MAX`
 :::
@@ -49,12 +50,12 @@ _Signed_ varint не используется.
 ```go
 s := "Hello, world!"
 
-// Запись длины строки как uvarint.
+// Записываем длину строки как uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Запись значения строки.
+// Записываем значение строки.
 buf = append(buf, s...)
 ```
 
@@ -67,13 +68,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Чтение длины.
+// Читаем длину.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Проверка n для предотвращения OOM или исключения времени выполнения в make().
+// Проверяем n, чтобы предотвратить OOM или исключение времени выполнения в make().
 const maxSize = 1024 * 1024 * 10 // 10 МБ
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -119,13 +120,14 @@ data := []byte{
 </Tabs>
 
 
-## Целые числа {#integers}
+
+## Целые числа
 
 :::tip
-ClickHouse использует порядок байтов **Little Endian** для целых чисел фиксированного размера.
+ClickHouse использует **Little Endian** для целых чисел фиксированной длины.
 :::
 
-### Int32 {#int32}
+### Int32
 
 ```go
 v := int32(1000)
@@ -140,23 +142,20 @@ fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="Шестнадцатеричный дамп">
+  <TabItem value="hexdump" label="Hex-дамп">
+    ```hexdump
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
+  </TabItem>
 
-```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
-
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
-6AMAAAAAAAA
-```
-
-</TabItem>
+  <TabItem value="base64" label="Base64">
+    ```text
+    6AMAAAAAAAA
+    ```
+  </TabItem>
 </Tabs>
 
 
 ## Boolean {#boolean}
 
-Логические значения представлены одним байтом: `1` соответствует `true`, а `0` — `false`.
+Булевы значения представлены одним байтом: значение `1` соответствует `true`, а `0` — `false`.

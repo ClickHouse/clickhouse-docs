@@ -2,8 +2,8 @@
 sidebar_label: 'Deepnote'
 sidebar_position: 11
 slug: /integrations/deepnote
-keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
-description: 'Эффективно выполняйте запросы к крупным наборам данных, анализируйте и моделируйте их в привычной среде блокнота.'
+keywords: ['clickhouse', 'Deepnote', 'подключение', 'интеграция', 'блокнот']
+description: 'Эффективно выполняйте запросы к сверхкрупным наборам данных, анализируйте их и создавайте модели в привычной среде блокнота.'
 title: 'Подключите ClickHouse к Deepnote'
 doc_type: 'guide'
 integration:
@@ -24,41 +24,41 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> — это совместный блокнот для работы с данными, созданный для команд, чтобы находить и делиться аналитическими выводами. Помимо совместимости с Jupyter, он работает в облаке и предоставляет вам единое место для эффективного совместного анализа и работы над проектами по обработке данных.
+<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> — это совместный ноутбук для работы с данными, созданный для команд, чтобы находить и совместно использовать аналитические выводы. Помимо совместимости с Jupyter, он работает в облаке и предоставляет единое централизованное пространство для совместной работы и эффективной реализации проектов в области data science.
 
-В этом руководстве предполагается, что у вас уже есть учетная запись Deepnote и запущенный экземпляр ClickHouse.
+В этом руководстве предполагается, что у вас уже есть аккаунт Deepnote и запущенный экземпляр ClickHouse.
 
 
 
 ## Интерактивный пример {#interactive-example}
-
-Если вы хотите изучить интерактивный пример выполнения запросов к ClickHouse из блокнотов данных Deepnote, нажмите на кнопку ниже, чтобы запустить шаблонный проект, подключённый к [песочнице ClickHouse](../../../getting-started/playground.md).
+Если вы хотите изучить интерактивный пример выполнения запросов к ClickHouse из ноутбуков с данными в Deepnote, нажмите кнопку ниже, чтобы создать шаблон проекта, подключённый к [песочнице ClickHouse](../../../getting-started/playground.md).
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Запустить в Deepnote" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
 
+
 ## Подключение к ClickHouse {#connect-to-clickhouse}
 
-1. В Deepnote перейдите в раздел «Integrations» и нажмите на плитку ClickHouse.
+1. В Deepnote выберите раздел «Integrations» и нажмите на плитку ClickHouse.
 
-<Image size='lg' img={deepnote_01} alt='Плитка интеграции ClickHouse' border />
+<Image size="lg" img={deepnote_01} alt="Плитка интеграции ClickHouse" border />
 
-2. Укажите параметры подключения для вашего экземпляра ClickHouse:
+2. Укажите параметры подключения к вашему экземпляру ClickHouse:
+<ConnectionDetails />
 
-   <ConnectionDetails />
+   <Image size="md" img={deepnote_02} alt="Диалоговое окно с параметрами ClickHouse" border />
 
-   <Image size='md' img={deepnote_02} alt='Диалоговое окно с параметрами ClickHouse' border />
+   **_ПРИМЕЧАНИЕ:_** Если ваше подключение к ClickHouse защищено списком контроля доступа по IP-адресам (IP Access List), возможно, вам потребуется разрешить IP-адреса Deepnote. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 
-   **_ПРИМЕЧАНИЕ:_** Если подключение к ClickHouse защищено списком разрешённых IP-адресов, вам может потребоваться добавить IP-адреса Deepnote в список разрешённых. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
-
-3. Поздравляем! Вы успешно интегрировали ClickHouse в Deepnote.
+3. Готово! ClickHouse интегрирован с Deepnote.
 
 
-## Использование интеграции ClickHouse {#using-clickhouse-integration}
 
-1. Начните с подключения к интеграции ClickHouse в правой части вашего ноутбука.
+## Использование интеграции с ClickHouse. {#using-clickhouse-integration}
 
-   <Image size='lg' img={deepnote_03} alt='Диалоговое окно сведений ClickHouse' border />
+1. Для начала подключитесь к интеграции с ClickHouse в правой части блокнота.
 
-2. Теперь создайте новый блок запросов ClickHouse и выполните запрос к базе данных. Результаты запроса будут сохранены в виде DataFrame и помещены в переменную, указанную в блоке SQL.
-3. Вы также можете преобразовать любой существующий [блок SQL](https://docs.deepnote.com/features/sql-cells) в блок ClickHouse.
+   <Image size="lg" img={deepnote_03} alt="Диалоговое окно с информацией о ClickHouse" border />
+
+2. Теперь создайте новый блок запроса ClickHouse и выполните запрос к базе данных. Результаты запроса будут сохранены в формате DataFrame и помещены в переменную, указанную в SQL-блоке.
+3. Вы также можете преобразовать любой существующий [SQL-блок](https://docs.deepnote.com/features/sql-cells) в блок ClickHouse.

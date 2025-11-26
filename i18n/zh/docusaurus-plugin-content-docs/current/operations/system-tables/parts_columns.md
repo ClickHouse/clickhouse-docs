@@ -1,6 +1,6 @@
 ---
-description: '包含 MergeTree 表数据片段及列信息的系统表。'
-keywords: ['system table', 'parts_columns']
+description: '包含 MergeTree 表各数据部分及其列信息的系统表。'
+keywords: ['系统表', 'parts_columns']
 slug: /operations/system-tables/parts_columns
 title: 'system.parts_columns'
 doc_type: 'reference'
@@ -8,99 +8,99 @@ doc_type: 'reference'
 
 # system.parts_columns
 
-包含 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的数据部分及其列的信息。
+包含 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的各个数据 part 及其列的信息。
 
-每一行描述一个数据部分。
+每一行对应一个数据 part。
 
 列：
 
-* `partition` ([String](../../sql-reference/data-types/string.md)) — 分区名称。要了解分区的概念，请参阅 [ALTER](/sql-reference/statements/alter) 查询的说明。
+* `partition` ([String](../../sql-reference/data-types/string.md)) — 分区名称。若要了解什么是分区，请参见 [ALTER](/sql-reference/statements/alter) 语句的说明。
 
   格式：
 
-  * `YYYYMM` 用于按月自动分区。
-  * `any_string` 用于进行手动分区。
+  * `YYYYMM` 表示按月自动分区。
+  * `any_string` 表示手动指定分区。
 
 * `name` ([String](../../sql-reference/data-types/string.md)) — 数据部分的名称。
 
-* `part_type` ([String](../../sql-reference/data-types/string.md)) — 数据部分的存储格式。
+* `part_type` ([String](../../sql-reference/data-types/string.md)) — 数据片段的存储格式。
 
-  可选值：
+  可能的值：
 
-  * `Wide` — 每一列都以单独的文件形式存储在文件系统中。
-  * `Compact` — 所有列都存储在文件系统中的同一个文件中。
+  * `Wide` — 在文件系统中，每一列都存储在单独的文件中。
+  * `Compact` — 在文件系统中，所有列都存储在同一个文件中。
 
-    数据存储格式由 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置控制。
+    数据存储格式由 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置项控制。
 
-* `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志，指示数据部分是否为活动状态。若数据部分为活动状态，则会在表中使用；否则会被删除。合并后会保留非活动的数据部分。
+* `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 指示数据片段是否处于活动状态的标志。如果数据片段处于活动状态，则会在表中使用；否则会被删除。合并后，非活动数据片段会保留。
 
-* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 标记（mark）的数量。要获取某个数据部分中大致的行数，将 `marks` 乘以索引粒度（通常为 8192）（该提示对自适应粒度无效）。
+* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 标记数。要估算一个数据部分中的大致行数，将 `marks` 乘以索引粒度（通常为 8192）（对于自适应粒度，此提示不适用）。
 
 * `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 行数。
 
-* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 所有数据部分文件的总大小（以字节计）。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 所有数据部分文件的总大小（以字节为单位）。
 
-* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据分片中压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据分片中压缩数据的总大小。不包括所有辅助文件（例如标记文件）。
 
-* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据部分中未压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据部分中未压缩数据的总大小。不包括所有辅助文件（例如标记文件）。
 
-* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 包含标记的文件的大小。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `marks` 文件的大小。
 
-* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 数据部分所在目录的修改时间。通常与该数据部分的创建时间相对应。
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 存放数据部分的目录的修改时间。通常对应于该数据部分的创建时间。
 
-* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 数据分片变为非活动状态的时间。
+* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 数据片段变为非活跃状态的时间。
 
-* `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 数据分片被引用或使用的位置数量。值大于 2 表示该数据分片正被查询或合并操作使用。
+* `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 数据部分被引用的次数。值大于 2 表示该数据部分正在被查询或参与合并。
 
 * `min_date` ([Date](../../sql-reference/data-types/date.md)) — 数据部分中日期键的最小值。
 
-* `max_date` ([Date](../../sql-reference/data-types/date.md)) — 数据分片中日期键的最大日期值。
+* `max_date` ([Date](../../sql-reference/data-types/date.md)) — 该数据片段中日期键的最大值。
 
 * `partition_id` ([String](../../sql-reference/data-types/string.md)) — 分区 ID。
 
-* `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 合并生成当前部分的所有数据部分中最小的块编号。
+* `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 合并后构成当前数据部分的源数据部分的最小编号。
 
-* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 合并后构成当前数据部分的数据片段中最大的编号。
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 合并后构成当前数据片段的所有数据片段中编号的最大值。
 
-* `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 合并树的深度。0 表示当前数据片段是通过插入生成的，而不是由合并其他数据片段生成的。
+* `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 合并树的深度。0 表示当前数据片段是由插入生成的，而不是通过合并其他片段生成的。
 
-* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 用于确定应对数据分片应用哪些变更的数字（会应用那些版本号高于 `data_version` 的变更）。
+* `data_version`（[UInt64](../../sql-reference/data-types/int-uint.md)）— 用于确定应对数据分片应用哪些变更的数字（会应用版本号高于当前 `data_version` 的变更）。
 
 * `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 主键值在内存中占用的字节数。
 
-* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 为主键值预留的内存量（以字节为单位）。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 为主键值分配的内存字节数。
 
 * `database` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
 
 * `table` ([String](../../sql-reference/data-types/string.md)) — 表的名称。
 
-* `engine` ([String](../../sql-reference/data-types/string.md)) — 表引擎名称（不含参数）。
+* `engine` ([String](../../sql-reference/data-types/string.md)) — 不带参数的表引擎的名称。
 
-* `disk_name` ([String](../../sql-reference/data-types/string.md)) — 存储该数据部分的磁盘名称。
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) — 用于存储数据部分的磁盘名称。
 
-* `path` ([String](../../sql-reference/data-types/string.md)) — 数据分片文件所在目录的绝对路径。
+* `path` ([String](../../sql-reference/data-types/string.md)) — 存放数据分片文件的文件夹的绝对路径。
 
-* `column` ([String](../../sql-reference/data-types/string.md)) — 列名。
+* `column` ([String](../../sql-reference/data-types/string.md)) — 列名称。
 
 * `type` ([String](../../sql-reference/data-types/string.md)) — 列的数据类型。
 
-* `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列在表中的序号，从 1 开始计数。
+* `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列在表中的序号，从 1 开始。
 
-* `default_kind`（[String](../../sql-reference/data-types/string.md)）— 表示默认值的表达式类型（`DEFAULT`、`MATERIALIZED`、`ALIAS`），如果未定义则为空字符串。
+* `default_kind`（[String](../../sql-reference/data-types/string.md)）— 默认值所使用的表达式类型（`DEFAULT`、`MATERIALIZED`、`ALIAS`），如果未定义则为空字符串。
 
-* `default_expression` ([String](../../sql-reference/data-types/string.md)) — 默认值表达式，如果未定义，则为空字符串。
+* `default_expression` ([String](../../sql-reference/data-types/string.md)) — 默认值表达式；如果未定义，则为空字符串。
 
-* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列在磁盘上的总字节数。
+* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列在磁盘上的总大小，单位为字节。
 
-* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列中压缩数据的总大小（以字节为单位）。
+* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列中压缩数据的总大小，以字节为单位。
 
 * `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列中解压缩后数据的总大小（以字节为单位）。
 
-* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 标记列的大小，以字节为单位。
+* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 列标记数据的大小（字节）。
 
-* `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 是 `bytes_on_disk` 的别名。
+* `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `bytes_on_disk` 的别名。
 
-* `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 是 `marks_bytes` 的别名。
+* `marks_size`（[UInt64](../../sql-reference/data-types/int-uint.md)）— `marks_bytes` 的别名。
 
 **示例**
 

@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse における Tuple データ型に関するドキュメント'
+description: 'ClickHouse の Tuple データ型に関するドキュメント'
 sidebar_label: 'Tuple(T1, T2, ...)'
 sidebar_position: 34
 slug: /sql-reference/data-types/tuple
@@ -11,23 +11,23 @@ doc_type: 'reference'
 
 # Tuple(T1, T2, ...)
 
-それぞれが個別の[型](/sql-reference/data-types)を持つ要素から構成されるタプルです。Tuple 型には少なくとも 1 つの要素が含まれている必要があります。
+それぞれが個別の[型](/sql-reference/data-types)を持つ要素からなるタプルです。Tuple には少なくとも 1 つの要素が含まれている必要があります。
 
-タプルはカラムを一時的にグループ化するために使用されます。クエリで `IN` 式を使用する場合や、ラムダ関数の特定の仮引数を指定する場合にカラムをグループ化できます。詳細は、[IN 演算子](../../sql-reference/operators/in.md)および[高階関数](/sql-reference/functions/overview#higher-order-functions)のセクションを参照してください。
+タプルは一時的な列のグループ化に使用されます。クエリで `IN` 式を使用する場合や、ラムダ関数の特定の仮引数を指定する場合に、列をグループ化できます。詳細は、[IN 演算子](../../sql-reference/operators/in.md) と [高階関数](/sql-reference/functions/overview#higher-order-functions) のセクションを参照してください。
 
-タプルはクエリ結果として出力されることがあります。この場合、JSON 以外のテキストフォーマットでは、値は丸かっこ内でカンマ区切りで出力されます。JSON フォーマットでは、タプルは配列（角かっこ）として出力されます。
+タプルはクエリ結果として返されることがあります。この場合、JSON 以外のテキスト形式では、値は丸かっこ内でカンマ区切りになります。JSON 形式では、タプルは配列（角かっこ内）として出力されます。
 
 
 
-## タプルの作成 {#creating-tuples}
+## タプルの作成
 
-関数を使用してタプルを作成できます：
+関数を使用してタプルを作成できます。
 
 ```sql
 tuple(T1, T2, ...)
 ```
 
-タプル作成の例：
+タプルの作成例:
 
 ```sql
 SELECT tuple(1, 'a') AS x, toTypeName(x)
@@ -39,7 +39,7 @@ SELECT tuple(1, 'a') AS x, toTypeName(x)
 └─────────┴───────────────────────────┘
 ```
 
-タプルは単一の要素を含むことができます
+タプルは 1 つの要素だけを含むこともできます
 
 例：
 
@@ -53,9 +53,9 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-`tuple()` 関数を呼び出さずに複数の要素からなるタプルを作成するには、構文 `(tuple_element1, tuple_element2)` を使用できます。
+構文 `(tuple_element1, tuple_element2)` を使うと、`tuple()` 関数を呼び出さずに複数の要素から成るタプルを作成できます。
 
-例：
+例:
 
 ```sql
 SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple;
@@ -68,11 +68,11 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 ```
 
 
-## データ型の検出 {#data-type-detection}
+## データ型の自動判定
 
-タプルを動的に作成する際、ClickHouseは提供された引数値を保持できる最小の型としてタプル引数の型を推論します。値が[NULL](/operations/settings/formats#input_format_null_as_default)の場合、推論される型は[Nullable](../../sql-reference/data-types/nullable.md)となります。
+タプルをその場で作成する場合、ClickHouse はタプルの引数の値を保持できる最小の型として、その引数の型を推論します。値が [NULL](/operations/settings/formats#input_format_null_as_default) の場合、推論される型は [Nullable](../../sql-reference/data-types/nullable.md) になります。
 
-自動データ型検出の例:
+自動的なデータ型判定の例:
 
 ```sql
 SELECT tuple(1, NULL) AS x, toTypeName(x)
@@ -85,16 +85,16 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 ```
 
 
-## タプル要素の参照 {#referring-to-tuple-elements}
+## タプル要素の参照
 
-タプル要素は名前またはインデックスで参照できます:
+タプル要素は名前またはインデックスで参照できます。
 
 ```sql
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- 名前で参照
-SELECT a.2 FROM named_tuples; -- インデックスで参照
+SELECT a.s FROM named_tuples; -- 名前による参照
+SELECT a.2 FROM named_tuples; -- インデックスによる参照
 ```
 
 結果:
@@ -112,11 +112,11 @@ SELECT a.2 FROM named_tuples; -- インデックスで参照
 ```
 
 
-## Tupleの比較演算 {#comparison-operations-with-tuple}
+## Tuple による比較演算
 
-2つのタプルは、左から右へ順に要素を比較することで比較されます。最初のタプルの要素が2番目のタプルの対応する要素より大きい（小さい）場合、最初のタプルは2番目より大きい（小さい）と判定されます。それ以外の場合（両方の要素が等しい場合）は、次の要素が比較されます。
+2 つのタプルは、左から右へ順に要素を比較していきます。最初のタプルの要素が 2 番目のタプルの対応する要素より大きい（または小さい）場合、最初のタプルは 2 番目のタプルより大きい（または小さい）とみなされます。そうでない場合（両方の要素が等しい場合）は、次の要素を比較します。
 
-例：
+例:
 
 ```sql
 SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,2,1) c3;
@@ -128,7 +128,7 @@ SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,
 └────┴────┴────┘
 ```
 
-実用例：
+実際の使用例:
 
 ```sql
 CREATE TABLE test
@@ -174,7 +174,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 各キーについて最大のdurationを持つ値を見つけます。durationが等しい場合は最大のvalueを選択します
+-- 各キーについて最大のdurationを持つvalueを検索します。durationが同じ場合は最大のvalueを選択します
 
 SELECT
     key,

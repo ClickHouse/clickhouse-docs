@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'BSONEachRow 格式的文档'
+description: 'BSONEachRow 格式文档'
 input_format: true
 keywords: ['BSONEachRow']
 output_format: true
@@ -17,42 +17,44 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-`BSONEachRow` 格式将数据解析为一系列二进制 JSON (BSON) 文档序列,文档之间没有任何分隔符。
-每一行格式化为单个文档,每一列格式化为单个 BSON 文档字段,列名作为键。
+`BSONEachRow` 格式将数据解析为一系列二进制 JSON（BSON）文档，文档之间没有任何分隔符。
+每一行被格式化为一个单独的文档，每一列被格式化为该文档中的一个 BSON 字段，字段名为该列的名称。
+
 
 
 ## 数据类型匹配 {#data-types-matching}
 
-对于输出,使用以下 ClickHouse 类型与 BSON 类型之间的对应关系:
+用于输出时，使用以下 ClickHouse 类型与 BSON 类型之间的对应关系：
 
-| ClickHouse 类型                                                                                       | BSON 类型                                                                                                     |
-| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| [Bool](/sql-reference/data-types/boolean.md)                                                          | `\x08` boolean                                                                                                |
+| ClickHouse 类型                                                                                                       | BSON 类型                                                                                                     |
+|-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| [Bool](/sql-reference/data-types/boolean.md)                                                                  | `\x08` boolean                                                                                                |
 | [Int8/UInt8](/sql-reference/data-types/int-uint.md)/[Enum8](/sql-reference/data-types/enum.md)        | `\x10` int32                                                                                                  |
-| [Int16/UInt16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md)     | `\x10` int32                                                                                                  |
-| [Int32](/sql-reference/data-types/int-uint.md)                                                        | `\x10` int32                                                                                                  |
-| [UInt32](/sql-reference/data-types/int-uint.md)                                                       | `\x12` int64                                                                                                  |
-| [Int64/UInt64](/sql-reference/data-types/int-uint.md)                                                 | `\x12` int64                                                                                                  |
-| [Float32/Float64](/sql-reference/data-types/float.md)                                                 | `\x01` double                                                                                                 |
+| [Int16/UInt16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md)      | `\x10` int32                                                                                                  |
+| [Int32](/sql-reference/data-types/int-uint.md)                                                                | `\x10` int32                                                                                                  |
+| [UInt32](/sql-reference/data-types/int-uint.md)                                                               | `\x12` int64                                                                                                  |
+| [Int64/UInt64](/sql-reference/data-types/int-uint.md)                                                         | `\x12` int64                                                                                                  |
+| [Float32/Float64](/sql-reference/data-types/float.md)                                                         | `\x01` double                                                                                                 |
 | [Date](/sql-reference/data-types/date.md)/[Date32](/sql-reference/data-types/date32.md)               | `\x10` int32                                                                                                  |
-| [DateTime](/sql-reference/data-types/datetime.md)                                                     | `\x12` int64                                                                                                  |
-| [DateTime64](/sql-reference/data-types/datetime64.md)                                                 | `\x09` datetime                                                                                               |
-| [Decimal32](/sql-reference/data-types/decimal.md)                                                     | `\x10` int32                                                                                                  |
-| [Decimal64](/sql-reference/data-types/decimal.md)                                                     | `\x12` int64                                                                                                  |
-| [Decimal128](/sql-reference/data-types/decimal.md)                                                    | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
-| [Decimal256](/sql-reference/data-types/decimal.md)                                                    | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
-| [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                               | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
-| [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                               | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
-| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary, `\x00` binary subtype 或 \x02 string(如果启用了 output_format_bson_string_as_string 设置) |
-| [UUID](/sql-reference/data-types/uuid.md)                                                             | `\x05` binary, `\x04` uuid subtype, size = 16                                                                 |
-| [Array](/sql-reference/data-types/array.md)                                                           | `\x04` array                                                                                                  |
-| [Tuple](/sql-reference/data-types/tuple.md)                                                           | `\x04` array                                                                                                  |
-| [Named Tuple](/sql-reference/data-types/tuple.md)                                                     | `\x03` document                                                                                               |
-| [Map](/sql-reference/data-types/map.md)                                                               | `\x03` document                                                                                               |
-| [IPv4](/sql-reference/data-types/ipv4.md)                                                             | `\x10` int32                                                                                                  |
-| [IPv6](/sql-reference/data-types/ipv6.md)                                                             | `\x05` binary, `\x00` binary subtype                                                                          |
+| [DateTime](/sql-reference/data-types/datetime.md)                                                             | `\x12` int64                                                                                                  |
+| [DateTime64](/sql-reference/data-types/datetime64.md)                                                         | `\x09` datetime                                                                                               |
+| [Decimal32](/sql-reference/data-types/decimal.md)                                                             | `\x10` int32                                                                                                  |
+| [Decimal64](/sql-reference/data-types/decimal.md)                                                             | `\x12` int64                                                                                                  |
+| [Decimal128](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
+| [Decimal256](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
+| [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
+| [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
+| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary, `\x00` binary subtype，或 \x02 string（如果启用了设置 output_format_bson_string_as_string） |
+| [UUID](/sql-reference/data-types/uuid.md)                                                                     | `\x05` binary, `\x04` uuid subtype, size = 16                                                                 |
+| [Array](/sql-reference/data-types/array.md)                                                                   | `\x04` array                                                                                                  |
+| [Tuple](/sql-reference/data-types/tuple.md)                                                                   | `\x04` array                                                                                                  |
+| [Named Tuple](/sql-reference/data-types/tuple.md)                                                             | `\x03` document                                                                                               |
+| [Map](/sql-reference/data-types/map.md)                                                                       | `\x03` document                                                                                               |
+| [IPv4](/sql-reference/data-types/ipv4.md)                                                                     | `\x10` int32                                                                                                  |
+| [IPv6](/sql-reference/data-types/ipv6.md)                                                                     | `\x05` binary, `\x00` binary subtype                                                                          |
 
-对于输入,使用以下 BSON 类型与 ClickHouse 类型之间的对应关系:
+用于输入时，使用以下 BSON 类型与 ClickHouse 类型之间的对应关系：
+
 
 
 | BSON 类型                                | ClickHouse 类型                                                                                                                                                                                                                             |
@@ -74,23 +76,23 @@ doc_type: 'reference'
 | `\x10` int32                             | [Int32/UInt32](/sql-reference/data-types/int-uint.md)/[Decimal32](/sql-reference/data-types/decimal.md)/[IPv4](/sql-reference/data-types/ipv4.md)/[Enum8/Enum16](/sql-reference/data-types/enum.md) |
 | `\x12` int64                             | [Int64/UInt64](/sql-reference/data-types/int-uint.md)/[Decimal64](/sql-reference/data-types/decimal.md)/[DateTime64](/sql-reference/data-types/datetime64.md)                                                       |
 
-不支持其他 BSON 类型。此外，支持在不同整数类型之间进行转换。  
-例如，可以将 BSON `int32` 值以 [`UInt8`](../../sql-reference/data-types/int-uint.md) 的形式插入到 ClickHouse 中。
+其他 BSON 类型不支持。此外，它还会在不同整数类型之间执行转换。  
+例如，可以将 BSON `int32` 值作为 [`UInt8`](../../sql-reference/data-types/int-uint.md) 写入 ClickHouse。
 
-`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` 等大整数和小数可以从具有 `\x00` 二进制子类型的 BSON Binary 值中解析出来。  
-在这种情况下，该格式会验证二进制数据的大小是否等于期望值的大小。
+`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` 等大整数和十进制数可以从带有 `\x00` 二进制子类型的 BSON Binary 值中解析。  
+在这种情况下，此格式会校验二进制数据的大小是否等于期望值的大小。
 
 :::note
-此格式在大端序（Big-Endian）平台上无法正常工作。
+此格式在大端平台上无法正常工作。
 :::
 
 
 
-## 使用示例 {#example-usage}
+## 示例用法
 
-### 插入数据 {#inserting-data}
+### 插入数据
 
-使用包含以下数据的 BSON 文件,文件名为 `football.bson`:
+使用一个名为 `football.bson` 的 BSON 文件，其中包含以下数据：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -114,15 +116,15 @@ doc_type: 'reference'
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `BSONEachRow` 格式读取数据:
+使用 `BSONEachRow` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -131,13 +133,13 @@ FORMAT BSONEachRow
 ```
 
 :::tip
-BSON 是一种二进制格式,无法在终端上以人类可读的形式显示。请使用 `INTO OUTFILE` 输出 BSON 文件。
+BSON 是一种二进制格式，无法在终端中以人类可读的形式显示。请使用 `INTO OUTFILE` 导出 BSON 文件。
 :::
 
 
 ## 格式设置 {#format-settings}
 
-| 设置                                                                                                                                                                                               | 说明                                                                                  | 默认值 |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------- |
-| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | 对 String 列使用 BSON String 类型而非 Binary 类型。                                   | `false` |
-| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | 在 BSONEachRow 格式的模式推断时允许跳过不支持类型的列。 | `false` |
+| 设置                                                                                                                                                                                                  | 描述                                                                                         | 默认值   |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|----------|
+| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | 对于 String 列，使用 BSON String 类型而不是 Binary 类型。                                   | `false`  |
+| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | 在对 BSONEachRow 格式进行模式推断时，允许跳过具有不支持类型的列。                           | `false`  |

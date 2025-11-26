@@ -1,5 +1,5 @@
 ---
-description: '类似于 covarSamp，但运算速度较慢，计算误差更小。'
+description: '类似于 covarSamp，但计算速度更慢，计算误差更小。'
 sidebar_position: 126
 slug: /sql-reference/aggregate-functions/reference/covarsampstable
 title: 'covarSampStable'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # covarSampStable
 
-计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。与 [covarSamp](../reference/covarsamp.md) 类似，但计算速度较慢，数值误差更小。
+计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。与 [covarSamp](../reference/covarsamp.md) 类似，但计算速度更慢，计算误差更小。
 
 **语法**
 
@@ -23,7 +23,7 @@ covarSampStable(x, y)
 
 **返回值**
 
-* `x` 和 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `inf`。[Float64](../../data-types/float.md)。
+* `x` 与 `y` 之间的样本协方差。若 `n <= 1`，则返回 `inf`。返回类型：[Float64](../../data-types/float.md)。
 
 **示例**
 

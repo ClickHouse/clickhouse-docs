@@ -1,10 +1,10 @@
-为了使复制功能正常工作，需要设置并配置一个 ClickHouse Keeper 集群。ClickHouse Keeper 提供用于数据复制的协调系统，可作为 ZooKeeper 的替代方案（也可以使用 ZooKeeper）。不过，推荐使用 ClickHouse Keeper，因为它提供了更好的保证和可靠性，并且比 ZooKeeper 使用更少的资源。为了实现高可用性并保持法定人数，建议至少运行三个 ClickHouse Keeper 节点。
+为了使复制正常工作，需要部署并配置一个 ClickHouse Keeper 集群。ClickHouse Keeper 提供用于数据复制的协调系统，可作为 ZooKeeper 的替代方案（也可以继续使用 ZooKeeper）。不过推荐使用 ClickHouse Keeper，因为它在可靠性和一致性方面提供了更好的保证，并且比 ZooKeeper 占用更少资源。为了实现高可用性并维持仲裁（quorum），建议至少运行三个 ClickHouse Keeper 节点。
 
 :::note
-ClickHouse Keeper 可以与 ClickHouse 一起运行在集群的任意节点上，不过推荐将其运行在专用节点上，这样可以在不依赖数据库集群的情况下独立对 ClickHouse Keeper 集群进行扩缩容和管理。
+ClickHouse Keeper 可以与 ClickHouse 一样运行在集群的任意节点上，不过推荐将其部署在专用节点上，以便可以独立于数据库集群对 ClickHouse Keeper 集群进行伸缩和管理。
 :::
 
-在示例文件夹的根目录下使用以下命令，为每个 ClickHouse Keeper 节点创建 `keeper_config.xml` 文件：
+在示例文件夹的根目录执行以下命令，为每个 ClickHouse Keeper 节点创建 `keeper_config.xml` 文件：
 
 ```bash
 for i in {01..03}; do
@@ -12,7 +12,7 @@ for i in {01..03}; do
 done
 ```
 
-修改在每个节点目录 `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper` 中创建的空配置文件。下面高亮的行需要根据对应节点进行相应修改：
+修改在每个节点目录 `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper` 中创建的空配置文件。下面高亮的行需要根据各个节点进行相应修改：
 
 ```xml title="/clickhouse-keeper/keeper_config.xml"
 <clickhouse replace="true">

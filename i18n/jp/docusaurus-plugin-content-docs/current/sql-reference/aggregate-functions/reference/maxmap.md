@@ -1,5 +1,5 @@
 ---
-description: '`key` 配列で指定されたキーに基づいて、`value` 配列から最大値を計算します。'
+description: '`key` 配列で指定されたキーごとに、`value` 配列の最大値を計算します。'
 sidebar_position: 165
 slug: /sql-reference/aggregate-functions/reference/maxmap
 title: 'maxMap'
@@ -26,8 +26,8 @@ Alias: `maxMappedArrays`
 
 :::note
 
-* キー配列と値配列のタプルを渡すことは、キー配列と値配列をそれぞれ 2 つ渡すことと同じです。
-* 集計対象となる各行について、`key` と `value` の要素数は同じでなければなりません。
+* キー配列と値配列のタプルを渡すことは、キー配列と値配列の 2 つを渡すことと同じです。
+* 合計される各行について、`key` と `value` の要素数は同じでなければなりません。
   :::
 
 **パラメータ**
@@ -35,9 +35,9 @@ Alias: `maxMappedArrays`
 * `key` — キーの配列。[Array](../../data-types/array.md)。
 * `value` — 値の配列。[Array](../../data-types/array.md)。
 
-**返り値**
+**戻り値**
 
-* 2 つの配列からなるタプルを返します。ソートされたキー配列と、それぞれのキーに対して計算された値の配列です。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
+* 2 つの配列からなるタプルを返します。ソート順のキー配列と、それぞれのキーに対応して計算された値の配列です。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
 
 **例**
 
@@ -48,7 +48,7 @@ SELECT maxMap(a, b)
 FROM VALUES('a Array(Char), b Array(Int64)', (['x', 'y'], [2, 2]), (['y', 'z'], [3, 1]))
 ```
 
-結果：
+結果:
 
 ```text
 ┌─maxMap(a, b)───────────┐

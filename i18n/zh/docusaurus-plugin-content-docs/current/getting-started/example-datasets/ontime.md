@@ -1,10 +1,10 @@
 ---
-description: '包含航空公司航班准点表现数据的数据集'
-sidebar_label: 'OnTime 航空航班数据'
+description: '包含航空航班准点表现的数据集'
+sidebar_label: 'OnTime 航空航班准点数据'
 slug: /getting-started/example-datasets/ontime
 title: 'OnTime'
 doc_type: 'guide'
-keywords: ['示例数据集', '航班数据', '样本数据', '航空公司绩效', '基准测试']
+keywords: ['示例数据集', '航班数据', '示例数据', '航空公司绩效', '基准']
 ---
 
 此数据集包含来自美国交通统计局（Bureau of Transportation Statistics）的数据。
@@ -12,6 +12,7 @@ keywords: ['示例数据集', '航班数据', '样本数据', '航空公司绩�
 
 
 ## 创建表 {#creating-a-table}
+
 
 
 ```sql
@@ -134,7 +135,7 @@ CREATE TABLE `ontime`
 
 
 
-## 从原始数据导入 {#import-from-raw-data}
+## 从原始数据导入
 
 下载数据：
 
@@ -148,12 +149,12 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-（如果服务器出现内存不足或其他问题，请移除 `-P $(nproc)` 部分）
+（如果你的服务器出现内存不足或其他问题，请去掉 `-P $(nproc)` 这一部分）
 
 
-## 从已保存的副本导入 {#import-from-a-saved-copy}
+## 从已保存的副本导入
 
-或者，您可以通过以下查询从已保存的副本导入数据：
+或者，可以使用以下查询从已保存的副本导入数据：
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
@@ -162,7 +163,7 @@ INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazo
 该快照创建于 2022-05-29。
 
 
-## 查询 {#queries}
+## 查询
 
 Q0.
 
@@ -176,7 +177,7 @@ FROM
 );
 ```
 
-Q1. 2000年至2008年按星期几统计的航班数量
+Q1. 2000 年至 2008 年每日航班数量
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -186,7 +187,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 2000-2008年期间延误超过10分钟的航班数量,按星期几分组
+Q2. 2000–2008 年间按星期几分组的、延误超过 10 分钟的航班数量
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -196,7 +197,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 2000-2008年期间按机场统计的延误次数
+Q3. 2000–2008 年各机场的航班延误次数
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -207,7 +208,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年按承运商统计的延误次数
+Q4. 2007 年各航空公司的延误次数
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -217,7 +218,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. 2007年按承运商统计的延误百分比
+Q5. 2007 年各航空公司的延误比例
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -243,7 +244,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同一查询的优化版本:
+同一查询的优化版本：
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -253,33 +254,33 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 前一个查询扩展到更大年份范围的版本,2000-2008年
+Q6. 先前请求的更大年份范围：2000–2008 年
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 AS c3
+SELECT 航空公司, c, c2, c*100.0/c2 AS c3
 FROM
 (
     SELECT
-        IATA_CODE_Reporting_Airline AS Carrier,
+        IATA_CODE_Reporting_Airline AS 航空公司,
         count(*) AS c
     FROM ontime
     WHERE DepDelay>10
         AND Year>=2000 AND Year<=2008
-    GROUP BY Carrier
+    GROUP BY 航空公司
 ) q
 JOIN
 (
     SELECT
-        IATA_CODE_Reporting_Airline AS Carrier,
+        IATA_CODE_Reporting_Airline AS 航空公司,
         count(*) AS c2
     FROM ontime
     WHERE Year>=2000 AND Year<=2008
-    GROUP BY Carrier
-) qq USING Carrier
+    GROUP BY 航空公司
+) qq USING (航空公司)
 ORDER BY c3 DESC;
 ```
 
-同一查询的优化版本:
+同一查询的优化版本：
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -289,7 +290,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 按年份统计延误超过10分钟的航班百分比
+Q7. 各年份延误超过 10 分钟的航班占比
 
 ```sql
 SELECT Year, c1/c2
@@ -313,7 +314,7 @@ JOIN
 ORDER BY Year;
 ```
 
-同一查询的优化版本:
+同一查询的优化版本：
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -322,7 +323,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 不同年份范围内按直连城市数量统计的最热门目的地
+Q8. 各年份区间中按直连城市数量排名的最热门目的地
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -332,7 +333,7 @@ GROUP BY DestCityName
 ORDER BY u DESC LIMIT 10;
 ```
 
-Q9.
+问题9。
 
 ```sql
 SELECT Year, count(*) AS c1
@@ -340,7 +341,7 @@ FROM ontime
 GROUP BY Year;
 ```
 
-Q10.
+问题10。
 
 
 ```sql
@@ -359,7 +360,7 @@ ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-附加内容：
+额外内容：
 
 ```sql
 SELECT avg(cnt)
@@ -397,9 +398,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-你也可以在 Playground 中动手操作这些数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+你还可以在 Playground 中体验这些数据，参见[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-该性能测试由 Vadim Tkachenko 创建。参见：
+此性能测试由 Vadim Tkachenko 创建。参见：
 
 * [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
 * [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)

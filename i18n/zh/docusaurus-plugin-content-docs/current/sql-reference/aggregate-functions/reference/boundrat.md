@@ -1,12 +1,12 @@
 ---
-description: '用于计算一组值中最左端和最右端点之间斜率的聚合函数。'
+description: '在一组值中计算最左端和最右端点之间斜率的聚合函数。'
 sidebar_position: 114
 slug: /sql-reference/aggregate-functions/reference/boundingRatio
 title: 'boundingRatio'
 doc_type: 'reference'
 ---
 
-用于计算一组值中最左端和最右端点之间斜率的聚合函数。
+在一组值中计算最左端和最右端点之间斜率的聚合函数。
 
 示例：
 
@@ -34,7 +34,7 @@ FROM numbers(10)
 └────────┴───────────────────────┘
 ```
 
-`boundingRatio()` 函数返回最左端点与最右端点连线的斜率，在上述数据中，这两个点分别为 `(0,0)` 和 `(9,13.5)`。
+`boundingRatio()` 函数返回最左端点和最右端点之间连线的斜率。在上述数据中，这两个点分别是 `(0,0)` 和 `(9,13.5)`。
 
 ```sql
 SELECT boundingRatio(number, number * 1.5)

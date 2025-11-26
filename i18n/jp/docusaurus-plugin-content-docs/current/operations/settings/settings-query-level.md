@@ -1,8 +1,8 @@
 ---
 description: 'クエリ単位の設定'
-sidebar_label: 'クエリ単位のセッション設定'
+sidebar_label: 'クエリレベルのセッション設定'
 slug: /operations/settings/query-level
-title: 'クエリ単位のセッション設定'
+title: 'クエリレベルのセッション設定'
 doc_type: 'reference'
 ---
 
@@ -10,36 +10,47 @@ doc_type: 'reference'
 
 ## 概要 {#overview}
 
-特定の設定でステートメントを実行する方法は複数あります。
-設定は階層構造で構成されており、後続の各階層が前の階層の設定値を上書きします。
+特定の設定を指定してステートメントを実行する方法はいくつかあります。
+設定はレイヤー状に構成されており、後続の各レイヤーが前のレイヤーでの設定値を上書きします。
+
 
 
 ## 優先順位 {#order-of-priority}
 
-設定を定義する際の優先順位は以下の通りです:
+設定を定義する際の優先順位は次のとおりです。
 
-1. ユーザーに直接設定を適用する、または設定プロファイル内で適用する
-   - SQL(推奨)
-   - `/etc/clickhouse-server/users.d`に1つ以上のXMLまたはYAMLファイルを追加する
+1. 設定をユーザーに直接、または設定プロファイル内で適用する
+
+    - SQL（推奨）
+    - 1 つ以上の XML または YAML ファイルを `/etc/clickhouse-server/users.d` に追加する
 
 2. セッション設定
-   - ClickHouse Cloud SQLコンソールまたは対話モードの`clickhouse client`から`SET setting=value`を送信します。同様に、HTTPプロトコルでClickHouseセッションを使用することもできます。これを行うには、`session_id` HTTPパラメータを指定する必要があります。
+
+    - ClickHouse Cloud の SQL コンソール、または対話モードの `clickhouse client` から
+    `SET setting=value` を送信します。同様に、HTTP プロトコルで ClickHouse セッションを
+    使用できます。その場合は、`session_id` HTTP パラメーターを指定する必要があります。
 
 3. クエリ設定
-   - 非対話モードで`clickhouse client`を起動する際に、起動パラメータ`--setting=value`を設定します。
-   - HTTP APIを使用する場合は、CGIパラメータ(`URL?setting_1=value&setting_2=value...`)を渡します。
-   - SELECTクエリの[SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)句で設定を定義します。設定値はそのクエリにのみ適用され、クエリ実行後はデフォルト値または以前の値にリセットされます。
+
+    - `clickhouse client` を非対話モードで起動する際に、起動パラメーター
+    `--setting=value` を指定します。
+    - HTTP API を使用する場合、CGI パラメーター（`URL?setting_1=value&setting_2=value...`）を渡します。
+    - SELECT クエリの
+    [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
+    句で設定を定義します。設定値はそのクエリにのみ適用され、クエリ実行後はデフォルト値
+    または以前の値にリセットされます。
 
 
-## 設定をデフォルト値に変換する {#converting-a-setting-to-its-default-value}
 
-設定を変更した後にデフォルト値に戻したい場合は、値を`DEFAULT`に設定します。構文は以下の通りです:
+## 設定をデフォルト値に戻す
+
+設定を変更して元のデフォルト値に戻したい場合は、値を `DEFAULT` に設定します。構文は次のとおりです。
 
 ```sql
 SET setting_name = DEFAULT
 ```
 
-例えば、`async_insert`のデフォルト値は`0`です。この値を`1`に変更した場合:
+たとえば、`async_insert` のデフォルト値は `0` です。これを `1` に変更したとします。
 
 ```sql
 SET async_insert = 1;
@@ -47,7 +58,7 @@ SET async_insert = 1;
 SELECT value FROM system.settings where name='async_insert';
 ```
 
-結果は以下の通りです:
+レスポンスは以下のとおりです：
 
 ```response
 ┌─value──┐
@@ -55,7 +66,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-以下のコマンドで値を0に戻します:
+次のコマンドで値を 0 にリセットします。
 
 ```sql
 SET async_insert = DEFAULT;
@@ -63,7 +74,7 @@ SET async_insert = DEFAULT;
 SELECT value FROM system.settings where name='async_insert';
 ```
 
-設定がデフォルト値に戻りました:
+設定はデフォルト値に戻りました。
 
 ```response
 ┌─value───┐
@@ -72,36 +83,37 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-## カスタム設定 {#custom_settings}
+## カスタム設定
 
-共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義することができます。
+共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義できます。
 
-カスタム設定名は、事前定義されたプレフィックスのいずれかで始まる必要があります。これらのプレフィックスのリストは、サーバー設定ファイルの[custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes)パラメータで宣言する必要があります。
+カスタム設定名は、あらかじめ定義されたプレフィックスのいずれかで始まる必要があります。これらのプレフィックスの一覧は、サーバー設定ファイル内で [custom&#95;settings&#95;prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) パラメータとして宣言する必要があります。
 
 ```xml
 <custom_settings_prefixes>custom_</custom_settings_prefixes>
 ```
 
-カスタム設定を定義するには、`SET`コマンドを使用します:
+カスタム設定を行うには、`SET` コマンドを使用します。
 
 ```sql
 SET custom_a = 123;
 ```
 
-カスタム設定の現在の値を取得するには、`getSetting()`関数を使用します:
+カスタム設定の現在の値を取得するには、`getSetting()` 関数を使用してください。
 
 ```sql
 SELECT getSetting('custom_a');
 ```
 
 
-## 例 {#examples}
+## 例
 
-これらの例はすべて `async_insert` 設定の値を `1` に設定し、実行中のシステムで設定を確認する方法を示しています。
+これらの例ではすべて、`async_insert` 設定の値を `1` に設定し、
+実行中のシステムで設定を確認する方法を示します。
 
-### SQLを使用してユーザーに直接設定を適用する {#using-sql-to-apply-a-setting-to-a-user-directly}
+### SQL を使用して設定をユーザーに直接適用する
 
-これは `async_insert = 1` の設定でユーザー `ingester` を作成します:
+これは、設定 `async_inset = 1` を持つユーザー `ingester` を作成します。
 
 ```sql
 CREATE USER ingester
@@ -110,10 +122,10 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-#### 設定プロファイルと割り当てを確認する {#examine-the-settings-profile-and-assignment}
+#### 設定プロファイルとその割り当てを確認する
 
 ```sql
-SHOW ACCESS
+アクセスを表示
 ```
 
 
@@ -126,16 +138,16 @@ SHOW ACCESS
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### SQLを使用して設定プロファイルを作成しユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
+### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる
 
-以下は、`async_insert = 1`という設定を持つプロファイル`log_ingest`を作成します:
+これは、`async_inset = 1` という設定を持つ `log_ingest` プロファイルを作成します:
 
 ```sql
 CREATE
 SETTINGS PROFILE log_ingest SETTINGS async_insert = 1
 ```
 
-以下は、ユーザー`ingester`を作成し、設定プロファイル`log_ingest`を割り当てます:
+ユーザー `ingester` を作成し、そのユーザーに設定プロファイル `log_ingest` を割り当てます：
 
 ```sql
 CREATE USER ingester
@@ -144,7 +156,7 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS PROFILE log_ingest
 ```
 
-### XMLを使用して設定プロファイルとユーザーを作成する {#using-xml-to-create-a-settings-profile-and-user}
+### XML を使用して設定プロファイルおよびユーザーを作成する
 
 
 ```xml title=/etc/clickhouse-server/users.d/users.xml
@@ -200,7 +212,7 @@ SHOW ACCESS
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### セッションに設定を割り当てる {#assign-a-setting-to-a-session}
+### セッションに設定を適用する
 
 ```sql
 SET async_insert =1;
@@ -213,7 +225,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-### クエリ実行時に設定を割り当てる {#assign-a-setting-during-a-query}
+### クエリ実行時に設定を指定する
 
 ```sql
 INSERT INTO YourTable
@@ -225,5 +237,5 @@ VALUES (...)
 
 ## 関連項目 {#see-also}
 
-- ClickHouseの設定に関する説明は、[Settings](/operations/settings/settings.md)ページを参照してください。
-- [グローバルサーバー設定](/operations/server-configuration-parameters/settings.md)
+- ClickHouse の設定については、[Settings](/operations/settings/settings.md) ページを参照してください。
+- [サーバーのグローバル設定](/operations/server-configuration-parameters/settings.md)

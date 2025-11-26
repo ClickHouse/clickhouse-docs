@@ -15,25 +15,26 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-类似于 [`Template`],但会跳过输入流中分隔符和值之间的空白字符。
-但是,如果格式字符串包含空白字符,则这些字符必须在输入流中出现。
-还允许指定空占位符(`${}` 或 `${:None}`)将某些分隔符拆分为多个部分,以忽略它们之间的空格。
-这些占位符仅用于跳过空白字符。
-如果所有行中列值的顺序相同,则可以使用此格式读取 `JSON`。
+与 [`Template`] 类似，但会跳过输入流中分隔符与值之间的空白字符。  
+但是，如果格式字符串本身包含空白字符，则会在输入流中严格匹配这些空白字符。  
+还允许指定空占位符（`${}` 或 `${:None}`），用于将某个分隔符拆分为多个部分，从而忽略这些部分之间的空格。  
+这些占位符仅用于跳过空白字符。  
+如果所有行中列值的顺序相同，则可以使用此格式读取 `JSON`。
 
 :::note
-此格式仅适用于输入。
+此格式仅支持输入。
 :::
 
 
-## 使用示例 {#example-usage}
 
-以下请求可用于插入格式 [JSON](/interfaces/formats/JSON) 输出示例中的数据:
+## 示例用法
+
+以下请求可用于根据其 [JSON](/interfaces/formats/JSON) 格式的输出示例插入数据：
 
 ```sql
-INSERT INTO table_name
+INSERT INTO table_name 
 SETTINGS
     format_template_resultset = '/some/path/resultset.format',
     format_template_row = '/some/path/row.format',

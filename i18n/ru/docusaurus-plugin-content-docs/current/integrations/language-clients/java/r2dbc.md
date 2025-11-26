@@ -17,15 +17,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 
 
-## Драйвер R2DBC {#r2dbc-driver}
+## Драйвер R2DBC
 
-Обёртка [R2DBC](https://r2dbc.io/) для асинхронного Java-клиента ClickHouse.
+[R2DBC](https://r2dbc.io/) — обёртка асинхронного Java‑клиента для ClickHouse.
 
-### Требования к окружению {#environment-requirements}
+### Требования к среде
 
-- [OpenJDK](https://openjdk.java.net) версии >= 8
+* [OpenJDK](https://openjdk.java.net) версии 8 и выше
 
-### Настройка {#setup}
+### Установка
 
 ```xml
 <dependency>
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### Подключение к ClickHouse {#connect-to-clickhouse}
+### Подключение к ClickHouse
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Запрос {#query}
+### Запрос
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### Вставка {#insert}
+### Вставка
 
 ```java showLineNumbers
 connection

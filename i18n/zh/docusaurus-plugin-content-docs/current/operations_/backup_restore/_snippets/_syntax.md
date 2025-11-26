@@ -11,14 +11,14 @@ VIEW view_name                  [AS view_name_in_backup] |
 ALL [EXCEPT {TABLES|DATABASES}...] } [,...]
 --- 
 [ON CLUSTER 'cluster_name']
---- 备份或恢复的目标位置/源位置
+--- 备份或恢复的目标位置或源位置
 TO|FROM 
 File('<path>/<filename>') | 
 Disk('<disk_name>', '<path>/') | 
 S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>', '<extra_credentials>') |
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
---- 其他设置
+--- 附加设置
 [SETTINGS ...]
 ```
 
-**有关各个命令的详细说明，请参阅[“命令摘要”](/operations/backup/overview/#command-summary)。**
+**有关各命令的详细信息，请参阅[《命令汇总》](/operations/backup/overview/#command-summary)。**

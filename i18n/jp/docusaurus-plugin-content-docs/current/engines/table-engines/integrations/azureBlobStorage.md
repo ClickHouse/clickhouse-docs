@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 # AzureBlobStorage テーブルエンジン
 
-このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムと統合するための機能を提供します。
+このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合機能を提供します。
 
 
 
-## テーブルの作成 {#create-table}
+## テーブルを作成する
 
 ```sql
 CREATE TABLE azure_blob_storage_table (name String, value UInt32)
@@ -24,24 +24,24 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-### エンジンパラメータ {#engine-parameters}
+### エンジンパラメータ
 
-- `endpoint` — コンテナとプレフィックスを含むAzureBlobStorageエンドポイントURL。使用する認証方法で必要な場合は、オプションでaccount_nameを含めることができます（`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`）。または、これらのパラメータはstorage_account_url、account_name、containerを使用して個別に指定することもできます。プレフィックスを指定する場合は、endpointを使用してください。
-- `endpoint_contains_account_name` - このフラグは、特定の認証方法でのみ必要となるaccount_nameがendpointに含まれているかどうかを指定するために使用されます（デフォルト：true）。
-- `connection_string|storage_account_url` — connection_stringにはアカウント名とキーが含まれます（[接続文字列の作成](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)）。または、ここでストレージアカウントURLを指定し、アカウント名とアカウントキーを個別のパラメータとして指定することもできます（パラメータaccount_nameとaccount_keyを参照）。
-- `container_name` - コンテナ名
-- `blobpath` - ファイルパス。読み取り専用モードでは次のワイルドカードをサポートします：`*`、`**`、`?`、`{abc,def}`、`{N..M}`（`N`、`M`は数値、`'abc'`、`'def'`は文字列）。
-- `account_name` - storage_account_urlを使用する場合、ここでアカウント名を指定できます
-- `account_key` - storage_account_urlを使用する場合、ここでアカウントキーを指定できます
-- `format` — ファイルの[フォーマット](/interfaces/formats.md)。
-- `compression` — サポートされる値：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。デフォルトでは、ファイル拡張子によって圧縮形式を自動検出します（`auto`に設定した場合と同じ）。
-- `partition_strategy` – オプション：`WILDCARD`または`HIVE`。`WILDCARD`はパス内に`{_partition_id}`を必要とし、これはパーティションキーに置き換えられます。`HIVE`はワイルドカードを許可せず、パスをテーブルルートと見なし、Snowflake IDをファイル名、ファイルフォーマットを拡張子としてHive形式のパーティションディレクトリを生成します。デフォルトは`WILDCARD`です。
-- `partition_columns_in_data_file` - `HIVE`パーティション戦略でのみ使用されます。パーティションカラムがデータファイルに書き込まれることを期待するかどうかをClickHouseに指示します。デフォルトは`false`です。
-- `extra_credentials` - 認証に`client_id`と`tenant_id`を使用します。extra_credentialsが指定された場合、`account_name`と`account_key`よりも優先されます。
+* `endpoint` — コンテナおよびプレフィックスを含む Azure Blob Storage のエンドポイント URL。使用する認証方式で必要な場合は、任意で account&#95;name を含めることもできます（`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`）。あるいは、これらのパラメータを storage&#95;account&#95;url、account&#95;name、container を用いて個別に指定することもできます。プレフィックスを指定する場合は、endpoint を使用する必要があります。
+* `endpoint_contains_account_name` - endpoint に account&#95;name が含まれているかどうかを指定するためのフラグです。これは特定の認証方式でのみ必要となります（デフォルト: true）。
+* `connection_string|storage_account_url` — connection&#95;string にはアカウント名とキーを含めます（[Create connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json\&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account) を参照）。あるいは、ここにはストレージアカウントの URL を指定し、アカウント名およびアカウントキーを別のパラメータとして指定することもできます（account&#95;name および account&#95;key パラメータを参照）。
+* `container_name` - コンテナ名。
+* `blobpath` - ファイルパス。読み取り専用モードで、次のワイルドカードをサポートします: `*`, `**`, `?`, `{abc,def}`, `{N..M}`。ここで `N`, `M` は数値、`'abc'`, `'def'` は文字列です。
+* `account_name` - storage&#95;account&#95;url を使用する場合、ここでアカウント名を指定できます。
+* `account_key` - storage&#95;account&#95;url を使用する場合、ここでアカウントキーを指定できます。
+* `format` — ファイルの[フォーマット](/interfaces/formats.md)。
+* `compression` — サポートされる値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子から圧縮形式を自動検出します（`auto` を設定した場合と同じです）。
+* `partition_strategy` – オプション: `WILDCARD` または `HIVE`。`WILDCARD` はパス内に `{_partition_id}` を必要とし、これはパーティションキーに置き換えられます。`HIVE` はワイルドカードを許可せず、パスをテーブルルートとみなし、Snowflake ID をファイル名、ファイルフォーマットを拡張子とする Hive 形式のパーティションディレクトリを生成します。デフォルトは `WILDCARD` です。
+* `partition_columns_in_data_file` - `HIVE` パーティション戦略でのみ使用されます。ClickHouse がパーティションカラムもデータファイル内に書き込むことを想定すべきかどうかを指定します。デフォルトは `false` です。
+* `extra_credentials` - 認証には `client_id` および `tenant_id` を使用します。extra&#95;credentials が指定されている場合、`account_name` および `account_key` よりも優先されます。
 
-**例**
+**Example**
 
-ローカルのAzure Storage開発にはAzuriteエミュレータを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。Azuriteのローカルインスタンスを使用する場合、以下のコマンドでは`http://azurite1:10000`を`http://localhost:10000`に置き換える必要がある場合があります。ここではAzuriteがホスト`azurite1`で利用可能であることを前提としています。
+ユーザーはローカルの Azure Storage 開発用に Azurite エミュレーターを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。ローカルインスタンスの Azurite を使用する場合、以下のコマンドでは Azurite がホスト `azurite1` で利用可能であると仮定しているため、`http://azurite1:10000` を `http://localhost:10000` に置き換える必要がある場合があります。
 
 ```sql
 CREATE TABLE test_table (key UInt64, data String)
@@ -65,25 +65,26 @@ SELECT * FROM test_table;
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
-- `_size` — ファイルのサイズ(バイト単位)。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
+- `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` になります。
+- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
 
 
-## 認証 {#authentication}
 
-現在、3つの認証方法があります:
+## 認証
 
-- `Managed Identity` - `endpoint`、`connection_string`、または`storage_account_url`を指定することで使用できます。
-- `SAS Token` - `endpoint`、`connection_string`、または`storage_account_url`を指定することで使用できます。URLに'?'が含まれることで識別されます。例については[azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens)を参照してください。
-- `Workload Identity` - `endpoint`または`storage_account_url`を指定することで使用できます。設定で`use_workload_identity`パラメータが設定されている場合、認証には([workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications))が使用されます。
+現在、認証方法は 3 つあります:
 
-### データキャッシュ {#data-cache}
+* `Managed Identity` — `endpoint`、`connection_string`、または `storage_account_url` を指定することで利用できます。
+* `SAS Token` — `endpoint`、`connection_string`、または `storage_account_url` を指定することで利用できます。URL 内に &#39;?&#39; が含まれていることで識別されます。例については [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens) を参照してください。
+* `Workload Identity` — `endpoint` または `storage_account_url` を指定することで利用できます。設定で `use_workload_identity` パラメータが指定されている場合、認証には [workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications) が使用されます。
 
-`Azure`テーブルエンジンは、ローカルディスク上でのデータキャッシュをサポートしています。
-ファイルシステムキャッシュの設定オプションと使用方法については、この[セクション](/operations/storing-data.md/#using-local-cache)を参照してください。
-キャッシュはストレージオブジェクトのパスとETagに基づいて作成されるため、ClickHouseが古いキャッシュバージョンを読み取ることはありません。
+### データキャッシュ
 
-キャッシュを有効にするには、`filesystem_cache_name = '<name>'`と`enable_filesystem_cache = 1`の設定を使用します。
+`Azure` テーブルエンジンはローカルディスク上でのデータキャッシュをサポートします。
+ファイルシステムキャッシュの設定オプションと利用方法については、この [セクション](/operations/storing-data.md/#using-local-cache) を参照してください。
+キャッシュはストレージオブジェクトのパスと ETag に基づいて行われるため、ClickHouse は古いキャッシュバージョンを読み込みません。
+
+キャッシュを有効にするには、`filesystem_cache_name = '<name>'` と `enable_filesystem_cache = 1` の設定を使用します。
 
 ```sql
 SELECT *
@@ -91,36 +92,36 @@ FROM azureBlobStorage('DefaultEndpointsProtocol=http;AccountName=devstoreaccount
 SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 ```
 
-1. ClickHouse設定ファイルに以下のセクションを追加します:
+1. ClickHouse の設定ファイルに以下のセクションを追加します:
 
 ```xml
 <clickhouse>
     <filesystem_caches>
         <cache_for_azure>
-            <path>path to cache directory</path>
+            <path>キャッシュディレクトリへのパス</path>
             <max_size>10Gi</max_size>
         </cache_for_azure>
     </filesystem_caches>
 </clickhouse>
 ```
 
-2. ClickHouseの`storage_configuration`セクションからキャッシュ設定(およびキャッシュストレージ)を再利用します。[こちらで説明されています](/operations/storing-data.md/#using-local-cache)
+2. ClickHouse の `storage_configuration` セクションで定義されたキャッシュ設定（およびキャッシュストレージ）を再利用します。詳細は[こちら](/operations/storing-data.md/#using-local-cache)を参照してください。
 
-### PARTITION BY {#partition-by}
+### PARTITION BY
 
-`PARTITION BY` — オプション。ほとんどの場合、パーティションキーは不要です。必要な場合でも、通常は月単位より細かいパーティションキーは必要ありません。パーティショニングはクエリを高速化しません(ORDER BY式とは対照的です)。過度に細かいパーティショニングは決して使用すべきではありません。クライアント識別子や名前でデータをパーティション化しないでください(代わりに、クライアント識別子や名前をORDER BY式の最初の列にしてください)。
+`PARTITION BY` — 任意です。ほとんどの場合、パーティションキーは不要であり、必要な場合でも月単位より細かいパーティションキーが必要になることは通常ありません。パーティショニングは（ORDER BY 式とは対照的に）クエリの高速化には寄与しません。パーティションを細かくし過ぎてはいけません。データをクライアント識別子やクライアント名でパーティション分割しないでください（代わりに、クライアント識別子または名前を ORDER BY 式の先頭のカラムにします）。
 
-月単位でパーティション化するには、`toYYYYMM(date_column)`式を使用します。ここで`date_column`は[Date](/sql-reference/data-types/date.md)型の日付を持つ列です。この場合のパーティション名は`"YYYYMM"`形式になります。
+月単位でパーティショニングするには、`toYYYYMM(date_column)` 式を使用します。ここで `date_column` は型が [Date](/sql-reference/data-types/date.md) の日付カラムです。ここでのパーティション名は `"YYYYMM"` 形式になります。
 
-#### パーティション戦略 {#partition-strategy}
+#### パーティション戦略
 
-`WILDCARD`(デフォルト): ファイルパス内の`{_partition_id}`ワイルドカードを実際のパーティションキーに置き換えます。読み取りはサポートされていません。
+`WILDCARD`（デフォルト）：ファイルパス内の `{_partition_id}` ワイルドカードを実際のパーティションキーに置き換えます。読み取りはサポートされていません。
 
-`HIVE`は読み取りと書き込みのためにHiveスタイルのパーティショニングを実装します。読み取りは再帰的なglobパターンを使用して実装されます。書き込みは次の形式でファイルを生成します: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
+`HIVE` は読み取りと書き込みのための Hive スタイルのパーティショニングを実装します。読み取りは再帰的なグロブパターンを用いて行われます。書き込みでは、次の形式でファイルを生成します: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
 
-注意: `HIVE`パーティション戦略を使用する場合、`use_hive_partitioning`設定は効果がありません。
+注意: `HIVE` パーティション戦略を使用する場合、`use_hive_partitioning` 設定は影響しません。
 
-`HIVE`パーティション戦略の例:
+`HIVE` パーティション戦略の例:
 
 ```sql
 arthur :) create table azure_table (year UInt16, country String, counter UInt8) ENGINE=AzureBlobStorage(account_name='devstoreaccount1', account_key='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==', storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='hive_partitioned', format='Parquet', compression='auto', partition_strategy='hive') PARTITION BY (year, country);
@@ -128,14 +129,13 @@ arthur :) create table azure_table (year UInt16, country String, counter UInt8) 
 arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2);
 
 arthur :) select _path, * from azure_table;
-
 ```
 
 
-┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
+┌─&#95;path──────────────────────────────────────────────────────────────────────┬─年─┬─国─┬─カウンタ─┐
 
-1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ ロシア  │       1 │
-2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ ブラジル │       2 │
+1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
+2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
    └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
 
 ```

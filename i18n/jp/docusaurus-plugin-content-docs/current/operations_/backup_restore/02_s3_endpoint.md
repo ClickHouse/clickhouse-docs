@@ -9,14 +9,16 @@ doc_type: 'guide'
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# S3エンドポイントへの/からのBACKUP / RESTORE {#backup-to-a-local-disk}
+# S3 エンドポイントを利用したバックアップ / リストア {#backup-to-a-local-disk}
 
-本記事では、S3エンドポイントを介したS3バケットへのバックアップおよびS3バケットからの復元について説明します。
+この記事では、S3 エンドポイント経由で S3 バケットにバックアップを保存したり、S3 バケット上のバックアップからリストアしたりする方法について説明します。
+
 
 
 ## 構文 {#syntax}
 
-<Syntax />
+<Syntax/>
+
 
 
 ## 使用例 {#usage-examples}
@@ -104,7 +106,7 @@ LIMIT 100
 
 #### 増分バックアップの取得 {#take-an-incremental-backup}
 
-このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup`とベースバックアップの場所が追加されています。増分バックアップの保存先はベースと同じディレクトリではなく、同じエンドポイントでバケット内の異なるターゲットディレクトリになることに注意してください。ベースバックアップは`my_backup`にあり、増分バックアップは`my_incremental`に書き込まれます:
+このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup`とベースバックアップの場所が追加されています。増分バックアップの保存先はベースと同じディレクトリではなく、同じエンドポイントでバケット内の異なるターゲットディレクトリであることに注意してください。ベースバックアップは`my_backup`にあり、増分は`my_incremental`に書き込まれます:
 
 ```sql
 BACKUP TABLE test_db.test_table TO S3(
@@ -128,7 +130,7 @@ SETTINGS base_backup = S3(
 #### 増分バックアップからの復元 {#restore-from-the-incremental-backup}
 
 このコマンドは、増分バックアップを新しいテーブル`test_table_restored`に復元します。  
-増分バックアップを復元する際には、ベースバックアップも含まれることに注意してください。
+増分バックアップを復元する際、ベースバックアップも含まれることに注意してください。
 復元時には**増分バックアップ**のみを指定します:
 
 
@@ -148,7 +150,7 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 
 #### 件数の検証 {#verify-the-count}
 
-元のテーブル`data`には2回の挿入が行われました。1回目は1,000行、2回目は100行で、合計1,100行です。
+元のテーブル`data`には2回の挿入が行われ、1回目は1,000行、2回目は100行で、合計1,100行です。
 復元されたテーブルに1,100行が含まれていることを検証します:
 
 ```sql
@@ -173,7 +175,7 @@ SELECT throwIf((
    ) != (
    SELECT groupArray(tuple(*))
    FROM test_db.test_table_restored
-), 'BACKUP/RESTORE後のデータが一致しません')
+), 'Data does not match after BACKUP/RESTORE')
 ```
 
 </VerticalStepper>

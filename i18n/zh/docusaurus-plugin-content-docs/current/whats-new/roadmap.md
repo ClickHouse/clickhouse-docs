@@ -2,21 +2,22 @@
 title: '路线图'
 slug: /whats-new/roadmap
 sidebar_position: 50
-description: '当前和历史 ClickHouse 路线图'
+description: 'ClickHouse 当前和过去的路线图'
 doc_type: 'landing-page'
-keywords: ['roadmap', '未来功能', '开发计划', '即将发布的版本', '产品方向']
+keywords: ['路线图', '未来特性', '开发计划', '即将发布版本', '产品方向']
 ---
 
 
 
 ## 当前路线图 {#current-roadmap}
 
-当前路线图已发布以供公开讨论:
+当前路线图已发布，并开放讨论：
 
 - [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 
 
-## 往期路线图 {#previous-roadmaps}
+
+## 历史路线图 {#previous-roadmaps}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

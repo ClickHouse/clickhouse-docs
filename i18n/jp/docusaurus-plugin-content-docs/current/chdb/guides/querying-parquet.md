@@ -1,64 +1,64 @@
 ---
-title: 'Parquet ファイルをクエリする方法'
+title: 'Parquet ファイルのクエリ方法'
 sidebar_label: 'Parquet ファイルのクエリ'
 slug: /chdb/guides/querying-parquet
-description: 'chDB を使用して Parquet ファイルをクエリする方法を学びます。'
+description: 'chDB を使用して Parquet ファイルにクエリを実行する方法を学びます。'
 keywords: ['chdb', 'parquet']
 doc_type: 'guide'
 ---
 
-世界中の多くのデータは Amazon S3 バケットに保存されています。
-このガイドでは、chDB を使用してそうしたデータにクエリを実行する方法を学びます。
+世界中のデータの多くは Amazon S3 バケット内に保存されています。
+このガイドでは、chDB を使用してそうしたデータに対してクエリを実行する方法を学びます。
 
 
 
-## セットアップ {#setup}
+## セットアップ
 
-まず、仮想環境を作成しましょう：
+まず仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上がインストールされていることを確認してください：
+では、chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いて、IPythonをインストールします：
+では、次に IPython をインストールします。
 
 ```bash
 pip install ipython
 ```
 
-このガイドの以降のコマンドを実行するために`ipython`を使用します。次のコマンドで起動できます：
+このガイドの以降のコマンドは `ipython` 上で実行します。`ipython` を起動するには、次のコマンドを実行してください：
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトまたはお好みのノートブック環境でコードを使用することもできます。
+このコードは、Python スクリプトやお使いのノートブックでも使用できます。
 
 
-## Parquetメタデータの探索 {#exploring-parquet-metadata}
+## Parquet メタデータを探索する
 
-[Amazonレビュー](/getting-started/example-datasets/amazon-reviews)データセットのParquetファイルを探索していきます。
-まず、`chDB`をインストールしましょう:
+[Amazon reviews](/getting-started/example-datasets/amazon-reviews) データセットの Parquet ファイルを探索していきます。
+その前に、まずは `chDB` をインストールしましょう。
 
 ```python
 import chdb
 ```
 
-Parquetファイルをクエリする際、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata)入力フォーマットを使用することで、ファイルの内容ではなくParquetメタデータを返すことができます。
-このフォーマットを使用した際に返されるフィールドを確認するために、`DESCRIBE`句を使用してみましょう:
+Parquet ファイルに対してクエリを実行する際には、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata) 入力フォーマットを使用することで、ファイルの内容ではなく Parquet メタデータを返すことができます。
+このフォーマットを使用した場合にどのようなフィールドが返されるかを確認するために、`DESCRIBE` 句を使ってみましょう。
 
 ```python
 query = """
 DESCRIBE s3(
-  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet',
+  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet', 
   ParquetMetadata
 )
 SETTINGS describe_compact_output=1
@@ -79,14 +79,14 @@ columns Array(Tuple(name String, path String, max_definition_level UInt64, max_r
 row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
-次に、このファイルのメタデータを見てみましょう。
-`columns`と`row_groups`はどちらも多くのプロパティを含むタプルの配列であるため、ここでは除外します。
+それでは、このファイルのメタデータを確認してみましょう。
+`columns` と `row_groups` には、多くのプロパティを持つタプルの配列が含まれているため、ここではそれらは除外します。
 
 ```python
 query = """
 SELECT * EXCEPT(columns, row_groups)
 FROM s3(
-  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet',
+  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet', 
   ParquetMetadata
 )
 """
@@ -106,11 +106,11 @@ total_uncompressed_size: 14615827169
 total_compressed_size:   9272262304
 ```
 
-この出力から、このParquetファイルには4000万行以上のデータがあり、42個の行グループに分割され、各行には15列のデータがあることがわかります。
-行グループは、データを行単位で論理的に水平分割したものです。
-各行グループには関連するメタデータがあり、クエリツールはそのメタデータを利用してファイルを効率的にクエリできます。
+この出力から、この Parquet ファイルには 4,000 万行を超えるデータが含まれており、42 個の row group に分割され、1 行あたり 15 列のデータがあることが分かります。
+row group は、データを行単位で論理的に水平分割したものです。
+各 row group にはメタデータが関連付けられており、クエリツールはそのメタデータを利用してファイルを効率的に検索できます。
 
-行グループの1つを見てみましょう:
+それでは、row group の 1 つを見てみましょう。
 
 ```python
 query = """
@@ -123,7 +123,7 @@ WITH rowGroups AS (
     ARRAY JOIN row_groups AS rg
     LIMIT 1
 )
-SELECT tupleElement(c, 'name') AS name, tupleElement(c, 'total_compressed_size') AS total_compressed_size,
+SELECT tupleElement(c, 'name') AS name, tupleElement(c, 'total_compressed_size') AS total_compressed_size, 
        tupleElement(c, 'total_uncompressed_size') AS total_uncompressed_size,
        tupleElement(tupleElement(c, 'statistics'), 'min') AS min,
        tupleElement(tupleElement(c, 'statistics'), 'max') AS max
@@ -155,10 +155,10 @@ chdb.query(query, 'DataFrame')
 ```
 
 
-## Parquetファイルのクエリ {#querying-parquet-files}
+## Parquet ファイルのクエリ
 
 次に、ファイルの内容をクエリしてみましょう。
-上記のクエリから`ParquetMetadata`を削除し、全レビューにおける最も多い`star_rating`を計算することで実現できます:
+これを行うには、先ほどのクエリから `ParquetMetadata` を削除して調整し、たとえばすべてのレビューにおける最も頻出する `star_rating` を計算します。
 
 ```python
 query = """
@@ -182,5 +182,5 @@ chdb.query(query, 'DataFrame')
 4            5  27078664                   27.08 million
 ```
 
-興味深いことに、5つ星のレビューは他のすべての評価を合わせたよりも多くなっています。
-Amazonの商品を気に入っている人が多いか、気に入らない場合は単に評価を投稿していないようです。
+興味深いことに、星5つのレビューは他のすべての評価を合計した数よりも多くなっています！
+Amazonの商品を気に入っているか、そうでない場合はそもそも評価を投稿していないようです。

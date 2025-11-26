@@ -2,7 +2,7 @@
 slug: /cloud/billing/marketplace/aws-marketplace-payg
 title: 'AWS Marketplace PAYG'
 description: 'Оформите подписку на ClickHouse Cloud через AWS Marketplace (PAYG).'
-keywords: ['aws', 'marketplace', 'биллинг', 'PAYG']
+keywords: ['aws', 'marketplace', 'billing', 'PAYG']
 doc_type: 'guide'
 ---
 
@@ -17,110 +17,94 @@ import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
 import Image from '@theme/IdealImage';
 
-Начните работу с ClickHouse Cloud на [AWS Marketplace](https://aws.amazon.com/marketplace) с помощью публичного предложения PAYG (Pay-as-you-go, оплата по мере использования).
+Начните работу с ClickHouse Cloud в [AWS Marketplace](https://aws.amazon.com/marketplace) через публичное предложение по модели PAYG (Pay-as-you-go, оплата по мере использования).
 
 
 ## Предварительные требования {#prerequisites}
 
-- Учетная запись AWS с правами на совершение покупок, предоставленными администратором биллинга.
-- Для совершения покупки необходимо войти в AWS Marketplace под этой учетной записью.
-- Для подключения организации ClickHouse к подписке необходимо обладать правами администратора этой организации.
+- Учетная запись AWS с правами на совершение покупок, предоставленными вашим администратором по биллингу.
+- Для совершения покупки вы должны войти в AWS Marketplace под этой учетной записью.
+- Чтобы подключить организацию ClickHouse к вашей подписке, вы должны быть администратором этой организации.
 
 :::note
-Одна учетная запись AWS может иметь только одну подписку «ClickHouse Cloud - Pay As You Go», которая может быть привязана только к одной организации ClickHouse.
+Одна учетная запись AWS может оформить только одну подписку «ClickHouse Cloud - Pay As You Go», которую можно связать только с одной организацией ClickHouse.
 :::
 
 
-## Шаги для регистрации {#steps-to-sign-up}
+
+## Этапы регистрации {#steps-to-sign-up}
 
 <VerticalStepper headerLevel="h3">
 
-### Поиск ClickHouse Cloud - Pay As You Go {#search-payg}
+### Найдите ClickHouse Cloud - Pay As You Go {#search-payg}
 
-Перейдите на [AWS Marketplace](https://aws.amazon.com/marketplace) и найдите "ClickHouse Cloud - Pay As You Go".
+Перейдите в [AWS Marketplace](https://aws.amazon.com/marketplace) и найдите «ClickHouse Cloud - Pay As You Go».
 
-<Image
-  img={aws_marketplace_payg_1}
-  alt='Поиск ClickHouse на AWS Marketplace'
-  border
-/>
+<Image img={aws_marketplace_payg_1} alt="Поиск ClickHouse в AWS Marketplace" border/>
 
-### Просмотр вариантов покупки {#purchase-options}
+### Просмотрите варианты покупки {#purchase-options}
 
-Нажмите на [листинг](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu), а затем на **View purchase options**.
+Нажмите на [страницу продукта](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu), а затем на **View purchase options**.
 
-<Image
-  img={aws_marketplace_payg_2}
-  alt='Просмотр вариантов покупки на AWS Marketplace'
-  border
-/>
+<Image img={aws_marketplace_payg_2} alt="Варианты покупки в AWS Marketplace" border/>
 
-### Оформление подписки {#subscribe}
+### Оформите подписку {#subscribe}
 
-На следующем экране нажмите subscribe.
+На следующем экране нажмите **Subscribe**.
 
 :::note
-**Номер заказа на покупку (PO)** является необязательным и может быть пропущен.
+**Номер заказа на покупку (PO)** указывать необязательно, его можно не заполнять.
 :::
 
-<Image img={aws_marketplace_payg_3} alt='Оформление подписки на AWS Marketplace' border />
+<Image img={aws_marketplace_payg_3} alt="Оформление подписки в AWS Marketplace" border/>
 
-### Настройка учетной записи {#set-up-your-account}
+### Настройте свою учетную запись {#set-up-your-account}
 
-Обратите внимание, что на данном этапе настройка не завершена, и выставление счетов для вашей организации ClickHouse Cloud через маркетплейс еще не активировано. Теперь необходимо нажать на Set up your account в вашей подписке на маркетплейсе, чтобы перейти в ClickHouse Cloud и завершить настройку.
+Обратите внимание, что на данном этапе настройка еще не завершена, и вашей организации ClickHouse Cloud пока не выставляются счета через Marketplace. Теперь вам нужно нажать **Set up your account** в вашей подписке Marketplace, чтобы перейти в ClickHouse Cloud и завершить настройку.
 
-<Image img={aws_marketplace_payg_4} alt='Настройка учетной записи' border />
+<Image img={aws_marketplace_payg_4} alt="Настройка учетной записи" border/>
 
-После перенаправления в ClickHouse Cloud вы можете либо войти с существующей учетной записью, либо зарегистрировать новую. Этот шаг очень важен для связывания вашей организации ClickHouse Cloud с выставлением счетов через AWS Marketplace.
+После перенаправления в ClickHouse Cloud вы можете войти под существующей учетной записью или зарегистрировать новую. Этот шаг очень важен, поскольку он позволяет привязать вашу организацию ClickHouse Cloud к выставлению счетов через AWS Marketplace.
 
 :::note[Новые пользователи ClickHouse Cloud]
-Если вы новый пользователь ClickHouse Cloud, следуйте приведенным ниже шагам.
+Если вы новый пользователь ClickHouse Cloud, выполните действия, приведенные ниже.
 :::
 
 <details>
 <summary><strong>Шаги для новых пользователей</strong></summary>
 
-Если вы новый пользователь ClickHouse Cloud, нажмите Register внизу страницы. Вам будет предложено создать нового пользователя и подтвердить адрес электронной почты. После подтверждения электронной почты вы можете покинуть страницу входа в ClickHouse Cloud и войти, используя новое имя пользователя, на https://console.clickhouse.cloud.
+Если вы новый пользователь ClickHouse Cloud, нажмите **Register** в нижней части страницы. Вам будет предложено создать нового пользователя и подтвердить адрес электронной почты. После подтверждения электронной почты вы можете закрыть страницу входа в ClickHouse Cloud и войти, используя новое имя пользователя, на https://console.clickhouse.cloud.
 
-<Image img={aws_marketplace_payg_5} size='md' alt='Регистрация в ClickHouse Cloud' />
+<Image img={aws_marketplace_payg_5} size="md" alt="Регистрация в ClickHouse Cloud"/>
 
 :::note[Новые пользователи]
-Вам также потребуется предоставить базовую информацию о вашей компании. См. скриншоты ниже.
+Вам также потребуется предоставить некоторую основную информацию о вашей компании. См. скриншоты ниже.
 :::
 
-<Image img={aws_marketplace_payg_6} size='md' alt='Прежде чем начать' />
+<Image img={aws_marketplace_payg_6} size="md" alt="Прежде чем начать"/>
 
-<Image img={aws_marketplace_payg_7} size='md' alt='Прежде чем начать (продолжение)' />
+<Image img={aws_marketplace_payg_7} size="md" alt="Прежде чем начать, продолжение"/>
 
 </details>
 
 Если вы уже являетесь пользователем ClickHouse Cloud, просто войдите, используя свои учетные данные.
 
-### Добавление подписки Marketplace к организации {#add-marketplace-subscription}
+### Добавьте подписку Marketplace к организации {#add-marketplace-subscription}
 
-После успешного входа вы можете решить, создать ли новую организацию для выставления счетов по этой подписке на маркетплейсе или выбрать существующую организацию для выставления счетов по этой подписке.
+После успешного входа вы можете выбрать: создать новую организацию для выставления счетов по этой подписке Marketplace или использовать существующую организацию для выставления счетов по этой подписке. 
 
-<Image
-  img={aws_marketplace_payg_8}
-  size='md'
-  alt='Добавление подписки маркетплейса'
-  border
-/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Добавление подписки Marketplace" border/>
 
-После завершения этого шага ваша организация будет подключена к этой подписке AWS, и все использование будет оплачиваться через вашу учетную запись AWS.
+После завершения этого шага ваша организация будет подключена к этой подписке AWS, и все потребление будет выставляться на оплату через ваш аккаунт AWS.
 
-Вы можете подтвердить на странице выставления счетов организации в интерфейсе ClickHouse, что выставление счетов действительно теперь связано с AWS Marketplace.
+На странице выставления счетов организации в интерфейсе ClickHouse вы можете убедиться, что биллинг теперь действительно связан с AWS Marketplace.
 
-<Image
-  img={aws_marketplace_payg_9}
-  size='lg'
-  alt='Подтверждение страницы выставления счетов'
-  border
-/>
+<Image img={aws_marketplace_payg_9} size="lg" alt="Подтверждение на странице выставления счетов" border/>
 
 </VerticalStepper>
 
 
+
 ## Поддержка {#support}
 
-При возникновении каких-либо проблем обращайтесь в [службу поддержки](https://clickhouse.com/support/program).
+Если у вас возникнут какие-либо проблемы, обращайтесь в [нашу службу поддержки](https://clickhouse.com/support/program).

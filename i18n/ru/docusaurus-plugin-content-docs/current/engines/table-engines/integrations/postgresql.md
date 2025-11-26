@@ -1,30 +1,29 @@
 ---
-description: 'Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным,
-  хранящимся на удалённом сервере PostgreSQL.'
+description: 'Табличный движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.'
 sidebar_label: 'PostgreSQL'
 sidebar_position: 160
 slug: /engines/table-engines/integrations/postgresql
-title: 'Движок таблицы PostgreSQL'
+title: 'Табличный движок PostgreSQL'
 doc_type: 'guide'
 ---
 
 
 
-# Движок таблицы PostgreSQL
+# Движок таблиц PostgreSQL
 
 Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
 
 :::note
-На данный момент поддерживаются только версии PostgreSQL 12 и выше.
+В настоящее время поддерживаются только версии PostgreSQL 12 и выше.
 :::
 
 :::tip
-Пользователям ClickHouse Cloud рекомендуется использовать [ClickPipes](/integrations/clickpipes) для потоковой загрузки данных из Postgres в ClickHouse. Он изначально поддерживает высокопроизводительную вставку и при этом обеспечивает разделение ответственности с возможностью независимо масштабировать ресурсы подсистемы загрузки и кластера.
+Пользователям ClickHouse Cloud рекомендуется использовать [ClickPipes](/integrations/clickpipes) для потоковой передачи данных из Postgres в ClickHouse. Это обеспечивает встроенную поддержку высокопроизводительной вставки, при этом сохраняя разделение зон ответственности за счёт возможности независимо масштабировать ингестию и ресурсы кластера.
 :::
 
 
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -35,25 +34,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = PostgreSQL({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-Подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table) см. в соответствующем разделе.
+См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
-Структура таблицы может отличаться от структуры исходной таблицы PostgreSQL:
+Структура таблицы может отличаться от исходной структуры таблицы PostgreSQL:
 
-- Имена столбцов должны совпадать с именами в исходной таблице PostgreSQL, но можно использовать только некоторые из этих столбцов в любом порядке.
-- Типы столбцов могут отличаться от типов в исходной таблице PostgreSQL. ClickHouse пытается [привести](../../../engines/database-engines/postgresql.md#data_types-support) значения к типам данных ClickHouse.
-- Настройка [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет способ обработки столбцов Nullable. Значение по умолчанию: 1. Если установлено значение 0, табличная функция не создает столбцы Nullable и вставляет значения по умолчанию вместо null. Это также применимо к значениям NULL внутри массивов.
+* Имена столбцов должны совпадать с исходной таблицей PostgreSQL, но вы можете использовать только часть этих столбцов и в любом порядке.
+* Типы столбцов могут отличаться от типов в исходной таблице PostgreSQL. ClickHouse пытается [привести](../../../engines/database-engines/postgresql.md#data_types-support) значения к типам данных ClickHouse.
+* Настройка [external&#95;table&#95;functions&#95;use&#95;nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать столбцы с типом Nullable. Значение по умолчанию: 1. При значении 0 табличная функция не создаёт столбцы Nullable и вставляет значения по умолчанию вместо null. Это также относится к значениям NULL внутри массивов.
 
 **Параметры движка**
 
-- `host:port` — адрес сервера PostgreSQL.
-- `database` — имя удаленной базы данных.
-- `table` — имя удаленной таблицы.
-- `user` — пользователь PostgreSQL.
-- `password` — пароль пользователя.
-- `schema` — схема таблицы, отличная от схемы по умолчанию. Необязательный параметр.
-- `on_conflict` — стратегия разрешения конфликтов. Пример: `ON CONFLICT DO NOTHING`. Необязательный параметр. Примечание: добавление этого параметра снижает эффективность вставки.
+* `host:port` — адрес сервера PostgreSQL.
+* `database` — имя удалённой базы данных.
+* `table` — имя удалённой таблицы.
+* `user` — пользователь PostgreSQL.
+* `password` — пароль пользователя.
+* `schema` — схема таблицы, отличная от схемы по умолчанию. Необязательный параметр.
+* `on_conflict` — стратегия разрешения конфликтов. Пример: `ON CONFLICT DO NOTHING`. Необязательный параметр. Примечание: добавление этой опции сделает вставку менее эффективной.
 
-Для производственной среды рекомендуется использовать [именованные коллекции](/operations/named-collections.md) (доступны начиная с версии 21.11). Пример:
+Для продакшен-среды рекомендуется использовать [именованные коллекции](/operations/named-collections.md) (доступно начиная с версии 21.11). Ниже приведён пример:
 
 ```xml
 <named_collections>
@@ -67,38 +66,38 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 </named_collections>
 ```
 
-Некоторые параметры могут быть переопределены аргументами в виде пар ключ-значение:
+Некоторые параметры можно переопределить, передав аргументы вида «ключ–значение»:
 
 ```sql
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
 
-## Детали реализации {#implementation-details}
+## Особенности реализации
 
-Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL в режиме только для чтения с фиксацией после каждого запроса `SELECT`.
+Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
 
-Простые условия `WHERE`, такие как `=`, `!=`, `>`, `>=`, `<`, `<=` и `IN`, выполняются на сервере PostgreSQL.
+Простые выражения `WHERE`, такие как `=`, `!=`, `>`, `>=`, `<`, `<=` и `IN`, выполняются на сервере PostgreSQL.
 
-Все объединения, агрегации, сортировка, условия `IN [ array ]` и ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к PostgreSQL.
+Все соединения, агрегации, сортировка, условия `IN [ array ]`, а также ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к PostgreSQL.
 
-Запросы `INSERT` на стороне PostgreSQL выполняются как `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` внутри транзакции PostgreSQL с автоматической фиксацией после каждого оператора `INSERT`.
+Запросы `INSERT` на стороне PostgreSQL выполняются как `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` внутри транзакции PostgreSQL с автоматической фиксацией (auto-commit) после каждого оператора `INSERT`.
 
-Типы `Array` PostgreSQL преобразуются в массивы ClickHouse.
+Типы `Array` в PostgreSQL преобразуются в массивы ClickHouse.
 
 :::note
-Обратите внимание: в PostgreSQL данные массива, созданные как `type_name[]`, могут содержать многомерные массивы различной размерности в разных строках таблицы одного столбца. Однако в ClickHouse допускаются только многомерные массивы с одинаковым количеством измерений во всех строках таблицы одного столбца.
+Будьте внимательны: в PostgreSQL массивы, созданные как `type_name[]`, могут содержать многомерные массивы с разным числом измерений в разных строках таблицы в одном и том же столбце. В ClickHouse же допускаются только многомерные массивы с одинаковым числом измерений во всех строках таблицы в одном и том же столбце.
 :::
 
-Поддерживается использование нескольких реплик, которые должны быть перечислены через `|`. Например:
+Поддерживается несколько реплик, которые должны быть перечислены через `|`. Например:
 
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgres{2|3|4}:5432`, 'clickhouse', 'test_replicas', 'postgres', 'mysecretpassword');
 ```
 
-Поддерживается приоритет реплик для источника словаря PostgreSQL. Чем больше число в конфигурации, тем ниже приоритет. Наивысший приоритет имеет значение `0`.
+Поддерживается приоритизация реплик для источника словаря PostgreSQL. Чем больше число в карте, тем ниже приоритет. Наивысший приоритет — `0`.
 
-В приведенном ниже примере реплика `example01-1` имеет наивысший приоритет:
+В примере ниже реплика `example01-1` имеет наивысший приоритет:
 
 ```xml
 <postgresql>
@@ -122,9 +121,9 @@ CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgre
 ```
 
 
-## Пример использования {#usage-example}
+## Пример использования
 
-### Таблица в PostgreSQL {#table-in-postgresql}
+### Таблица в PostgreSQL
 
 ```text
 postgres=# CREATE TABLE "public"."test" (
@@ -147,9 +146,9 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
-### Создание таблицы в ClickHouse и подключение к созданной выше таблице PostgreSQL {#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above}
+### Создание таблицы в ClickHouse и подключение к таблице PostgreSQL, созданной выше
 
-В этом примере используется [движок таблиц PostgreSQL](/engines/table-engines/integrations/postgresql.md) для подключения таблицы ClickHouse к таблице PostgreSQL и выполнения операторов SELECT и INSERT в базе данных PostgreSQL:
+В этом примере используется [движок таблицы PostgreSQL](/engines/table-engines/integrations/postgresql.md) для подключения таблицы ClickHouse к таблице PostgreSQL и выполнения операторов SELECT и INSERT над базой данных PostgreSQL:
 
 ```sql
 CREATE TABLE default.postgresql_table
@@ -161,9 +160,9 @@ CREATE TABLE default.postgresql_table
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### Вставка начальных данных из таблицы PostgreSQL в таблицу ClickHouse с помощью запроса SELECT {#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query}
+### Вставка начальных данных из таблицы PostgreSQL в таблицу ClickHouse с использованием запроса SELECT
 
-[Табличная функция postgresql](/sql-reference/table-functions/postgresql.md) копирует данные из PostgreSQL в ClickHouse, что часто используется для повышения производительности запросов путем выполнения запросов или аналитики в ClickHouse, а не в PostgreSQL, а также может применяться для миграции данных из PostgreSQL в ClickHouse. Поскольку мы будем копировать данные из PostgreSQL в ClickHouse, используем движок таблиц MergeTree в ClickHouse и назовем таблицу postgresql_copy:
+[Табличная функция postgresql](/sql-reference/table-functions/postgresql.md) копирует данные из PostgreSQL в ClickHouse. Её часто используют для повышения производительности запросов за счёт выполнения запросов и аналитики в ClickHouse, а не в PostgreSQL, а также для миграции данных из PostgreSQL в ClickHouse. Поскольку мы будем копировать данные из PostgreSQL в ClickHouse, мы используем в ClickHouse табличный движок MergeTree и назовём таблицу postgresql&#95;copy:
 
 ```sql
 CREATE TABLE default.postgresql_copy
@@ -181,17 +180,17 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### Вставка инкрементальных данных из таблицы PostgreSQL в таблицу ClickHouse {#inserting-incremental-data-from-postgresql-table-into-clickhouse-table}
+### Вставка инкрементальных данных из таблицы PostgreSQL в таблицу ClickHouse
 
-Если после первоначальной вставки выполняется постоянная синхронизация между таблицей PostgreSQL и таблицей ClickHouse, можно использовать условие WHERE в ClickHouse для вставки только данных, добавленных в PostgreSQL на основе временной метки или уникального последовательного идентификатора.
+Если после первоначальной вставки вы выполняете дальнейшую синхронизацию между таблицей PostgreSQL и таблицей ClickHouse, вы можете использовать предложение WHERE в ClickHouse, чтобы вставлять только данные, добавленные в PostgreSQL, на основе метки времени или уникального последовательного идентификатора.
 
-Для этого потребуется отслеживать максимальный идентификатор или временную метку, добавленные ранее, например следующим образом:
+Для этого потребуется отслеживать максимальный идентификатор или метку времени, добавленные ранее, например, следующим образом:
 
 ```sql
 SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 ```
 
-Затем вставляем значения из таблицы PostgreSQL, превышающие максимальное значение:
+Затем вставляем значения из таблицы PostgreSQL, которые больше текущего максимума
 
 ```sql
 INSERT INTO default.postgresql_copy
@@ -199,7 +198,7 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'po
 WHERE int_id > maxIntID;
 ```
 
-### Выборка данных из результирующей таблицы ClickHouse {#selecting-data-from-the-resulting-clickhouse-table}
+### Выбор данных из полученной таблицы ClickHouse
 
 ```sql
 SELECT * FROM postgresql_copy WHERE str IN ('test');
@@ -211,7 +210,7 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 └────────────────┴──────┴────────┘
 ```
 
-### Использование нестандартной схемы {#using-non-default-schema}
+### Использование схемы, отличной от схемы по умолчанию
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -228,11 +227,11 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 **См. также**
 
-- [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
-- [Использование PostgreSQL в качестве источника словаря](/sql-reference/dictionaries#mysql)
+* [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
+* [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#mysql)
 
 
-## Связанный контент {#related-content}
+## Связанные материалы {#related-content}
 
-- Блог: [ClickHouse и PostgreSQL — идеальное сочетание для работы с данными — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Блог: [ClickHouse и PostgreSQL — идеальное сочетание для работы с данными — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- Блог: [ClickHouse и PostgreSQL — союз, заключённый в раю данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Блог: [ClickHouse и PostgreSQL — союз, заключённый в раю данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

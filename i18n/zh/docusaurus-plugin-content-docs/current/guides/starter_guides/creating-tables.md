@@ -3,8 +3,8 @@ sidebar_position: 1
 sidebar_label: '创建表'
 title: '在 ClickHouse 中创建表'
 slug: /guides/creating-tables
-description: '学习在 ClickHouse 中如何创建表'
-keywords: ['创建表', 'CREATE TABLE', '表的创建', '数据库指南', 'MergeTree 引擎']
+description: '学习在 ClickHouse 中创建表'
+keywords: ['创建表', 'CREATE TABLE', '表创建', '数据库指南', 'MergeTree 引擎']
 doc_type: 'guide'
 ---
 
@@ -12,16 +12,16 @@ doc_type: 'guide'
 
 # 在 ClickHouse 中创建表
 
-与大多数数据库一样，ClickHouse 会在逻辑上将表归类到**数据库**中。使用 `CREATE DATABASE` 命令在 ClickHouse 中创建一个新的数据库：
+与大多数数据库一样，ClickHouse 会将表按逻辑分组到**数据库**中。使用 `CREATE DATABASE` 命令在 ClickHouse 中创建一个新数据库：
 
 ```sql
 CREATE DATABASE IF NOT EXISTS helloworld
 ```
 
-同样，使用 `CREATE TABLE` 来定义一个新表。如果未指定数据库名称，该表将会创建在
-`default` 数据库中。
+同样地，使用 `CREATE TABLE` 来定义一张新表。如果未指定数据库名称，则会在
+`default` 数据库中创建该表。
 
-下面这个名为 `my_first_table` 的表将创建在 `helloworld` 数据库中：
+下面名为 `my_first_table` 的表创建在 `helloworld` 数据库中：
 
 ```sql
 CREATE TABLE helloworld.my_first_table
@@ -35,36 +35,36 @@ ENGINE = MergeTree()
 PRIMARY KEY (user_id, timestamp)
 ```
 
-在上面的示例中，`my_first_table` 是一个具有四列的 `MergeTree` 表：
+在上面的示例中，`my_first_table` 是一个包含四列的 `MergeTree` 表：
 
-* `user_id`：一个 32 位无符号整数
-* `message`：`String` 数据类型，用来替代其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等类型
+* `user_id`：32 位无符号整数
+* `message`：`String` 数据类型，用于替代其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等类型
 * `timestamp`：`DateTime` 值，表示某一时间点
-* `metric`：一个 32 位浮点数
+* `metric`：32 位浮点数
 
 :::note
-表引擎决定以下内容：
+表引擎决定：
 
-* 数据的存储方式和存储位置
+* 数据如何存储以及存储在何处
 * 支持哪些查询
-* 数据是否会被复制
+* 数据是否进行复制
 
-有许多引擎可供选择，但对于单节点 ClickHouse 服务器上的简单表，[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 通常是首选。
+可以选择的引擎有很多，但对于单节点 ClickHouse 服务器上的简单表，[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 通常是首选。
 :::
 
 
 ## 主键简介 {#a-brief-intro-to-primary-keys}
 
-在继续之前,理解主键在 ClickHouse 中的工作原理非常重要(主键的实现方式可能出乎意料!):
+在继续之前，理解 ClickHouse 中主键的工作方式非常重要（主键的实现方式可能会出乎意料！）：
 
-- ClickHouse 中的主键对表中的每一行**_并不具有唯一性_**
+- 在 ClickHouse 中，表中每一行的主键**_不要求唯一_**
 
-ClickHouse 表的主键决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据(称为**索引粒度**)会在主键索引文件中创建一个条目。这种粒度概念创建了一个可以轻松载入内存的**稀疏索引**,粒度表示在 `SELECT` 查询期间处理的最小列数据单元。
+ClickHouse 表的主键决定数据在写入磁盘时的排序方式。每 8,192 行或 10MB 的数据（称为**索引粒度**）会在主键索引文件中创建一条条目。这个粒度概念形成了一个**稀疏索引**，可以轻松放入内存中，而每个粒度表示在执行 `SELECT` 查询时需要处理的最小列数据带。
 
-主键可以使用 `PRIMARY KEY` 参数定义。如果定义表时未指定 `PRIMARY KEY`,则主键将变为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`,则主键必须是排序顺序的前缀。
+可以使用 `PRIMARY KEY` 参数来定义主键。如果在定义表时没有显式指定 `PRIMARY KEY`，那么主键将是 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则主键必须是排序键的前缀。
 
-主键也是排序键,它是一个 `(user_id, timestamp)` 元组。因此,存储在每个列文件中的数据将先按 `user_id` 排序,再按 `timestamp` 排序。
+主键同时也是排序键，在此示例中是一个 `(user_id, timestamp)` 元组。因此，每个列文件中存储的数据都会先按 `user_id` 排序，然后按 `timestamp` 排序。
 
 :::tip
-有关更多详细信息,请查看 ClickHouse Academy 中的[数据建模培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328860/?utm_source=clickhouse&utm_medium=docs)。
+如需了解更多细节，请查看 ClickHouse Academy 中的 [Modeling Data 培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328860/?utm_source=clickhouse&utm_medium=docs)。
 :::

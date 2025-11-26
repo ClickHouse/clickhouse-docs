@@ -1,5 +1,5 @@
 ---
-description: '符号なし整数型カラムを対象にビットマップまたは集約計算を行い、型 UInt64 の基数（cardinality）を返します。末尾に -State サフィックスを付けた場合は、ビットマップオブジェクトを返します。'
+description: '符号なし整数列に対するビットマップまたは集約計算を行い、UInt64 型の基数（要素数）を返します。サフィックスに -State を付けた場合は、ビットマップオブジェクトを返します。'
 sidebar_position: 148
 slug: /sql-reference/aggregate-functions/reference/groupbitmap
 title: 'groupBitmap'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmap
 
-符号なし整数型のカラムに対してビットマップまたは集約の計算を行い、`UInt64` 型の要素数を返します。サフィックスとして `-State` を付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
+符号なし整数列に対してビットマップまたは集計計算を実行し、`UInt64` 型のカーディナリティ値を返します。サフィックスとして `-State` を付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 
 ```sql
 groupBitmap(expr)

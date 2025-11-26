@@ -2,8 +2,8 @@
 sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
-description: 'Введение в Apache Spark и ClickHouse'
-keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'миграция', 'данные']
+description: 'Введение в Apache Spark с ClickHouse'
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'миграция данных']
 title: 'Spark JDBC'
 doc_type: 'guide'
 ---
@@ -18,9 +18,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-JDBC — один из самых часто используемых источников данных в Spark.
-В этом разделе мы подробно рассмотрим, как
-использовать [официальный JDBC-коннектор ClickHouse](/integrations/language-clients/java/jdbc) совместно со Spark.
+JDBC является одним из самых распространённых источников данных в Spark.
+В этом разделе мы подробнее расскажем о том,
+как использовать [официальный JDBC-коннектор ClickHouse](/integrations/language-clients/java/jdbc) в Spark.
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -198,7 +198,7 @@ df.show()
         Dataset<Row> df = spark.createDataFrame(rows, schema);
 
         //---------------------------------------------------------------------------------------------------
-        // Запись df в ClickHouse с помощью метода jdbc
+        // Запись df в ClickHouse методом jdbc
         //---------------------------------------------------------------------------------------------------
 
         df.write()
@@ -206,7 +206,7 @@ df.show()
                 .jdbc(jdbcUrl, "example_table", jdbcProperties);
 
         //---------------------------------------------------------------------------------------------------
-        // Запись df в ClickHouse с помощью метода save
+        // Запись df в ClickHouse методом save
         //---------------------------------------------------------------------------------------------------
 
         df.write()
@@ -252,7 +252,7 @@ object WriteData extends App {
   )
 
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Запись df в ClickHouse с помощью метода jdbc
+  // Запись df в ClickHouse методом jdbc
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
@@ -260,7 +260,7 @@ object WriteData extends App {
     .jdbc(jdbcUrl, "example_table", jdbcProperties)
 
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Запись df в ClickHouse с помощью метода save
+  // Запись df в ClickHouse методом save
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
@@ -292,7 +292,7 @@ jar_files = [
 ```
 
 
-# Инициализация сеанса Spark с JAR-файлами
+# Инициализация Spark-сессии с JAR-файлами
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -339,7 +339,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver"
            );
-   -- resultTable можно создать с помощью df.createTempView или с помощью Spark SQL
+   -- resultTable could be created with df.createTempView or with Spark SQL
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
 
@@ -351,12 +351,14 @@ df.write \
 
 ## Параллелизм {#parallelism}
 
-При использовании Spark JDBC данные читаются с использованием одной партиции. Для достижения более высокого уровня параллелизма необходимо указать параметры
-`partitionColumn`, `lowerBound`, `upperBound` и `numPartitions`, которые определяют способ партиционирования таблицы при
-параллельном чтении несколькими рабочими узлами.
-Дополнительную информацию о [конфигурациях JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option) см. в официальной документации Apache Spark.
+При использовании Spark JDBC Spark читает данные, используя один раздел (partition). Чтобы добиться более высокой степени параллелизма, необходимо указать
+`partitionColumn`, `lowerBound`, `upperBound` и `numPartitions`, которые определяют, как разбивать таблицу на разделы при
+параллельном чтении несколькими исполнителями (workers).
+Дополнительную информацию см. в официальной документации Apache Spark
+по [параметрам JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
+
 
 
 ## Ограничения JDBC {#jdbc-limitations}
 
-- В настоящее время с помощью JDBC можно вставлять данные только в существующие таблицы (автоматическое создание таблицы при вставке DataFrame, как это реализовано в Spark для других коннекторов, пока не поддерживается).
+* На данный момент с помощью JDBC можно вставлять данные только в уже существующие таблицы (нет возможности автоматически создавать таблицу при вставке DataFrame, как это делает Spark с другими подключениями).

@@ -1,5 +1,5 @@
 ---
-description: 'Табличная функция позволяет читать данные из кластера YTsaurus.'
+description: 'Табличная функция позволяет считывать данные из кластера YTsaurus.'
 sidebar_label: 'ytsaurus'
 sidebar_position: 85
 slug: /sql-reference/table-functions/ytsaurus
@@ -14,21 +14,21 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 <ExperimentalBadge/>
 
-Табличная функция позволяет читать данные из кластера YTsaurus.
+Табличная функция ytsaurus позволяет считывать данные из кластера YTsaurus.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
 ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 ```
 
 :::info
-Это экспериментальная функция, которая может быть изменена с нарушением обратной совместимости в будущих релизах.
-Чтобы включить использование табличной функции YTsaurus,
-используйте настройку [allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine).
-Выполните команду `set allow_experimental_ytsaurus_table_function = 1`.
+Это экспериментальная функция, которая в будущих релизах может измениться с нарушением обратной совместимости.
+Включите использование табличной функции YTsaurus
+с помощью параметра [allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine).
+Введите команду `set allow_experimental_ytsaurus_table_function = 1`.
 :::
 
 
@@ -36,13 +36,13 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 
 - `http_proxy_url` — URL HTTP-прокси YTsaurus.
 - `cypress_path` — путь Cypress к источнику данных.
-- `oauth_token` — токен OAuth.
+- `oauth_token` — OAuth-токен.
 - `format` — [формат](/interfaces/formats) источника данных.
 
 **Возвращаемое значение**
 
-Таблица с указанной структурой для чтения данных по заданному пути Cypress в кластере YTsaurus.
+Таблица заданной структуры для чтения данных по указанному пути Cypress в кластере YTsaurus.
 
 **См. также**
 
-- [движок ytsaurus](/engines/table-engines/integrations/ytsaurus.md)
+- [движок YTsaurus](/engines/table-engines/integrations/ytsaurus.md)

@@ -13,19 +13,20 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-| 入力 | 出力 | 別名 |
-| -- | -- | -- |
-| ✔  | ✔  |    |
+| 入力 | 出力 | エイリアス |
+| -- | -- | ----- |
+| ✔  | ✔  |       |
 
 
 ## 説明 {#description}
 
-`ProtobufList`フォーマットは[`Protobuf`](./Protobuf.md)フォーマットに類似していますが、行は"Envelope"という固定名を持つメッセージに含まれる一連のサブメッセージとして表現されます。
+`ProtobufList` フォーマットは [`Protobuf`](./Protobuf.md) フォーマットと似ていますが、行は固定名「Envelope」を持つメッセージ内に含まれるサブメッセージの列として表現されます。
 
 
-## 使用例 {#example-usage}
 
-例:
+## 使用例
+
+例えば、次のようにします。
 
 ```sql
 SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafile:MessageType'
@@ -35,7 +36,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-ファイル `schemafile.proto` は次のようになります:
+ファイル `schemafile.proto` は次のような内容です：
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";

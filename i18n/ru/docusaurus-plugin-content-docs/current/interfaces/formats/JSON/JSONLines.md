@@ -7,24 +7,25 @@ title: 'JSONLines'
 doc_type: 'reference'
 ---
 
-| Входные данные | Выходные данные | Псевдоним                               |
-|----------------|-----------------|-----------------------------------------|
-| ✔              | ✔               | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
+| Input | Output | Псевдоним                                   |
+|-------|--------|----------------------------------------------|
+| ✔     | ✔      | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
 
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку как отдельный JSON-объект, разделённый символом новой строки.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, разделённого символом новой строки.
 
-Этот формат также известен как `JSONEachRow`, `NDJSON` (Newline Delimited JSON) или `JSONL` (`JSONLines`). Все эти названия являются псевдонимами одного формата и могут использоваться взаимозаменяемо.
+Этот формат также известен как `JSONEachRow`, `NDJSON` (Newline Delimited JSON) или `JSONL` (`JSONLines`). Все эти названия являются синонимами одного и того же формата и могут использоваться взаимозаменяемо.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используем JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используя JSON‑файл со следующими данными с именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -46,15 +47,15 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `JSONLines`:
+Считывайте данные в формате `JSONLines`:
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONLines
 ```
 
-Результат будет выведен в формате JSON:
+Результат будет в формате JSON:
 
 
 ```json
@@ -85,7 +86,7 @@ FORMAT JSONLines
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Импортируемые столбцы с неизвестными именами будут пропущены, если настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение 1.
+Импорт столбцов с неизвестными именами будет пропускаться, если для настройки [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлено значение 1.
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

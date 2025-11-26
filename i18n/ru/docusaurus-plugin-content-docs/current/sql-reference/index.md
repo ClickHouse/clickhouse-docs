@@ -1,8 +1,8 @@
 ---
 description: 'Справочная документация по SQL в ClickHouse'
-keywords: ['clickhouse', 'документация', 'справочник sql', 'операторы sql', 'sql', 'синтаксис']
+keywords: ['clickhouse', 'документация', 'sql-справочник', 'операторы sql', 'sql', 'синтаксис']
 slug: /sql-reference
-title: 'Справочник SQL'
+title: 'Справочник по SQL'
 doc_type: 'reference'
 ---
 
@@ -19,7 +19,7 @@ import LinksDeployment from './sql-reference-links.json'
 
 ClickHouse поддерживает декларативный язык запросов на основе SQL, который во многих случаях идентичен стандарту ANSI SQL.
 
-Поддерживаются запросы с GROUP BY, ORDER BY, подзапросами в секции FROM, оператором JOIN, оператором IN, оконными функциями и скалярными подзапросами.
+Поддерживаются запросы с GROUP BY, ORDER BY, подзапросами в FROM, клаузой JOIN, оператором IN, оконными функциями и скалярными подзапросами.
 
 <HorizontalDivide />
 

@@ -10,23 +10,22 @@ doc_type: 'reference'
 
 ## Геометрия {#geometry}
 
-Геометрические функции позволяют вычислять периметр и площадь для геометрических типов, таких как POLYGON, LINESTRING, MULTIPOLYGON, MULTILINESTRING, RING и POINT. Используйте геометрические объекты типа Geometry. Если входное значение равно `NULL`, все перечисленные ниже функции вернут 0.
+Функции для работы с геометрией позволяют вычислять периметр и площадь для геометрических типов, таких как POLYGON, LINESTRING, MULTIPOLYGON, MULTILINESTRING, RING и POINT. Используйте геометрические объекты в типе данных Geometry. Если входное значение равно `NULL`, все приведённые ниже функции вернут 0.
+
 
 
 ## perimeterCartesian {#perimetercartesian}
 
-Вычисляет периметр заданного геометрического объекта в декартовой (плоской) системе координат.
+Вычисляет периметр заданного объекта типа Geometry в декартовой (плоской) системе координат.
 
 **Синтаксис**
 perimeterCartesian(geom)
 
-**Входные параметры**
+**Входные значения**
+- `geom` — объект типа Geometry. [Geometry](../../data-types/geo.md).
 
-- `geom` — геометрический объект. [Geometry](../../data-types/geo.md).
-
-**Возвращаемое значение**
-
-- Периметр объекта в единицах системы координат. [Float64](../../data-types/float.md).
+**Возвращаемые значения**
+- Number — периметр объекта в единицах системы координат. [Float64](../../data-types/float.md).
 
 **Пример**
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
@@ -35,24 +34,23 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 
 Результат:
 ┌─perimeterCartesian(geom)─┐
-│ 4.0 │
+│              4.0          │
 └──────────────────────────┘
+
 
 
 ## areaCartesian {#areacartesian}
 
-Вычисляет площадь заданного геометрического объекта в декартовой системе координат.
+Вычисляет площадь заданного объекта Geometry в декартовой системе координат.
 
 **Синтаксис**
 areaCartesian(geom)
 
-**Входные параметры**
+**Входные значения**
+- `geom` — объект типа Geometry. [Geometry](../../data-types/geo.md).
 
-- `geom` — геометрический объект. [Geometry](../../data-types/geo.md).
-
-**Возвращаемое значение**
-
-- Число — площадь объекта в единицах системы координат. [Float64](../../data-types/float.md).
+**Возвращаемые значения**
+- Number — площадь объекта в единицах координатной системы. [Float64](../../data-types/float.md).
 
 **Пример**
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
@@ -65,20 +63,19 @@ SELECT areaCartesian(geom) FROM geo_dst;
 └─────────────────────┘
 
 
+
 ## perimeterSpherical {#perimeterspherical}
 
-Вычисляет периметр геометрического объекта на поверхности сферы.
+Вычисляет периметр объекта Geometry на поверхности сферы.
 
 **Синтаксис**
 perimeterSpherical(geom)
 
-**Входные параметры**
+**Входные значения**
+- `geom` — объект Geometry. [Geometry](../../data-types/geo.md).
 
-- `geom` — геометрический объект. [Geometry](../../data-types/geo.md).
-
-**Возвращаемое значение**
-
-- Периметр. [Float64](../../data-types/float.md).
+**Возвращаемые значения**
+- Число — периметр. [Float64](../../data-types/float.md).
 
 **Пример**
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
@@ -91,20 +88,19 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 └──────────────────────────┘
 
 
+
 ## areaSpherical {#areaspherical}
 
-Вычисляет площадь геометрического объекта на поверхности сферы.
+Вычисляет площадь объекта типа Geometry на поверхности сферы.
 
 **Синтаксис**
 areaSpherical(geom)
 
-**Входные параметры**
+**Входные значения**
+- `geom` — объект типа Geometry. [Geometry](../../data-types/geo.md).
 
-- `geom` — геометрия. [Geometry](../../data-types/geo.md).
-
-**Возвращаемое значение**
-
-- Число — площадь. [Float64](../../data-types/float.md).
+**Возвращаемые значения**
+- Number — площадь. [Float64](../../data-types/float.md).
 
 **Пример**
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();

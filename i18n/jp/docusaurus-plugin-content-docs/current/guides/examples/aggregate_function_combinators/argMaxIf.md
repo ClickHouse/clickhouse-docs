@@ -2,7 +2,7 @@
 slug: '/examples/aggregate-function-combinators/argMaxIf'
 title: 'argMaxIf'
 description: 'argMaxIf コンビネータの使用例'
-keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
+keywords: ['argMax', 'if', 'コンビネータ', '例', 'argMaxIf']
 sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
@@ -12,18 +12,23 @@ doc_type: 'reference'
 # argMaxIf {#argmaxif}
 
 
+
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`argMax`](/sql-reference/aggregate-functions/reference/argmax)関数に適用することで、条件が真である行において`val`の最大値に対応する`arg`の値を求めることができます。これには`argMaxIf`集約コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+関数に適用して、条件が真である行のうち `val` の値が最大となる行に対応する `arg` の値を、
+`argMaxIf` 集約コンビネータ関数を使って求めることができます。
 
-`argMaxIf`関数は、データセット内で最大値に関連付けられた値を求める必要があるものの、特定の条件を満たす行のみを対象としたい場合に有用です。
+`argMaxIf` 関数は、データセット内で最大値に対応する値を見つける必要があるが、
+特定の条件を満たす行のみを対象にしたい場合に便利です。
 
 
-## 使用例 {#example-usage}
 
-この例では、製品売上のサンプルデータセットを使用して、`argMaxIf`の動作を実演します。最も高い価格を持つ製品名を検索しますが、少なくとも10回販売された製品のみを対象とします。
+## 使用例
 
-```sql title="クエリ"
+この例では、製品売上のサンプルデータセットを使用して `argMaxIf` の動作を示します。少なくとも 10 回販売された製品のみを対象に、その中で最も価格の高い製品名を求めます。
+
+```sql title="Query"
 CREATE TABLE product_sales
 (
     product_name String,
@@ -42,9 +47,10 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-`argMaxIf`関数は、少なくとも10回販売されたすべての製品(sales_count >= 10)の中で、最も高い価格を持つ製品名を返します。この場合、人気製品の中で最も高い価格(999.99)を持つため、'Laptop'が返されます。
+`argMaxIf` 関数は、少なくとも 10 回販売されたすべての商品（sales&#95;count &gt;= 10）の中から、価格が最も高い商品の名前を返します。
+この場合、人気のある商品の中で最も価格が高い（999.99）ため、&#39;Laptop&#39; が返されます。
 
-```response title="レスポンス"
+```response title="Response"
    ┌─most_expensi⋯lar_product─┐
 1. │ Laptop                   │
    └──────────────────────────┘
@@ -52,8 +58,7 @@ FROM product_sales;
 
 
 ## 関連項目 {#see-also}
-
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

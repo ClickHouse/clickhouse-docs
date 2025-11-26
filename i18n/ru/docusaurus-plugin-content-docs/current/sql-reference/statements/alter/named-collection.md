@@ -1,5 +1,5 @@
 ---
-description: 'Документация по оператору ALTER NAMED COLLECTION'
+description: 'Справочник по ALTER NAMED COLLECTION'
 sidebar_label: 'NAMED COLLECTION'
 slug: /sql-reference/statements/alter/named-collection
 title: 'ALTER NAMED COLLECTION'

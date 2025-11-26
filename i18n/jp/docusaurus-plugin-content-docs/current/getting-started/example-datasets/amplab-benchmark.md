@@ -1,17 +1,17 @@
 ---
-description: 'データウェアハウスソリューションのパフォーマンスを比較するために使用されるベンチマーク用データセット。'
+description: 'データウェアハウスソリューションの性能を比較するために使用されるベンチマーク用データセット。'
 sidebar_label: 'AMPLab ビッグデータベンチマーク'
 slug: /getting-started/example-datasets/amplab-benchmark
 title: 'AMPLab ビッグデータベンチマーク'
-keywords: ['AMPLab benchmark', 'big data benchmark', 'データウェアハウスのパフォーマンス', 'ベンチマークデータセット', 'getting started']
+keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
 doc_type: 'guide'
 ---
 
 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/) を参照してください。
 
-[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントにサインアップしてください。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) で新しいアクセスキーを取得します。
+[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントに登録してください。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) から新しいアクセスキーを取得します。
 
-コンソールで次を実行します：
+コンソールで次を実行します。
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -26,7 +26,7 @@ $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
 ```
 
-以下の ClickHouse クエリを実行します。
+次の ClickHouse クエリを実行してください。
 
 ```sql
 CREATE TABLE rankings_tiny
@@ -90,7 +90,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-コンソールに戻ってください。
+コンソールに戻ります。
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -101,7 +101,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-データサンプルを取得するクエリ：
+サンプルデータを取得するためのクエリ：
 
 
 ```sql

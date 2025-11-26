@@ -7,6 +7,6 @@ title: 'ネイティブインターフェイス (TCP)'
 doc_type: 'reference'
 ---
 
-# ネイティブインターフェイス (TCP)
+# ネイティブインターフェース (TCP)
 
-ネイティブプロトコルは、[コマンドラインクライアント](../interfaces/cli.md)、分散クエリ処理におけるサーバー間通信、その他の C++ プログラムで利用されます。残念ながら、ClickHouse のネイティブプロトコルにはまだ正式な仕様がありませんが、ClickHouse のソースコード（[このあたり](https://github.com/ClickHouse/ClickHouse/tree/master/src/Client)からたどることができます）や TCP トラフィックを傍受・解析することで、リバースエンジニアリングすることが可能です。
+ネイティブプロトコルは、[コマンドラインクライアント](../interfaces/cli.md)、分散クエリ処理中のサーバー間通信、およびその他の C++ プログラムで使用されます。残念ながら、ClickHouse のネイティブプロトコルにはまだ正式な仕様がありませんが、ClickHouse のソースコード（[このあたり](https://github.com/ClickHouse/ClickHouse/tree/master/src/Client) から始まります）からリバースエンジニアリングすることや、TCP トラフィックを傍受して解析することで明らかにすることができます。

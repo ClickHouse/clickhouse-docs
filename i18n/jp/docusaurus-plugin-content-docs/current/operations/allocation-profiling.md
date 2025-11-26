@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse におけるメモリアロケーションプロファイリングの詳細ページ'
+description: 'ClickHouse におけるアロケーションプロファイリングを詳しく説明するページ'
 sidebar_label: 'アロケーションプロファイリング'
 slug: /operations/allocation-profiling
 title: 'アロケーションプロファイリング'
@@ -12,22 +12,22 @@ import TabItem from '@theme/TabItem';
 
 # アロケーションプロファイリング
 
-ClickHouse はグローバルアロケーターとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用します。jemalloc には、アロケーションのサンプリングおよびプロファイリング用のツールが付属しています。  
-アロケーションプロファイリングをより便利に行えるように、ClickHouse および Keeper では、設定ファイル、クエリ設定、`SYSTEM` コマンド、および Keeper の four-letter word (4LW) コマンドを用いてサンプリングを制御できます。  
+ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用しています。jemalloc には、アロケーションのサンプリングおよびプロファイリング用のツールが付属しています。  
+アロケーションプロファイリングをより手軽に行えるように、ClickHouse と Keeper では、設定ファイルやクエリ設定、`SYSTEM` コマンド、Keeper の four letter word (4LW) コマンドを使用してサンプリングを制御できます。  
 さらに、サンプルは `JemallocSample` 型として `system.trace_log` テーブルに収集できます。
 
 :::note
 
-このガイドはバージョン 25.9 以降に適用されます。
+このガイドはバージョン 25.9 以降に適用されます。  
 それ以前のバージョンについては、[25.9 より前のバージョン向けアロケーションプロファイリング](/operations/allocation-profiling-old.md) を参照してください。
 
 :::
 
 
 
-## アロケーションのサンプリング {#sampling-allocations}
+## アロケーションのサンプリング
 
-`jemalloc`でアロケーションをサンプリングおよびプロファイリングする場合は、`jemalloc_enable_global_profiler`設定を有効にしてClickHouse/Keeperを起動する必要があります。
+`jemalloc` でアロケーションのサンプリングおよびプロファイリングを行うには、`jemalloc_enable_global_profiler` 設定を有効にして ClickHouse/Keeper を起動する必要があります。
 
 ```xml
 <clickhouse>
@@ -35,19 +35,19 @@ ClickHouse はグローバルアロケーターとして [jemalloc](https://gith
 </clickhouse>
 ```
 
-`jemalloc`はアロケーションをサンプリングし、その情報を内部に保存します。
+`jemalloc` はアロケーションをサンプリングし、その情報を内部に保持します。
 
-また、`jemalloc_enable_profiler`設定を使用することで、クエリごとにアロケーションのプロファイリングを有効にすることもできます。
+`jemalloc_enable_profiler` 設定を使用することで、クエリ単位のアロケーションを有効にすることもできます。
 
 :::warning 警告
-ClickHouseはアロケーション負荷の高いアプリケーションであるため、jemallocのサンプリングによってパフォーマンスオーバーヘッドが発生する可能性があります。
+ClickHouse はアロケーションが多いアプリケーションであるため、jemalloc のサンプリングによりパフォーマンス上のオーバーヘッドが発生する可能性があります。
 :::
 
 
-## `system.trace_log`へのjemallocサンプルの保存 {#storing-jemalloc-samples-in-system-trace-log}
+## `system.trace_log` に jemalloc サンプルを保存する
 
-すべてのjemallocサンプルを`system.trace_log`に`JemallocSample`タイプとして保存できます。
-グローバルに有効化するには、設定`jemalloc_collect_global_profile_samples_in_trace_log`を使用します。
+すべての jemalloc サンプルを `JemallocSample` 型として `system.trace_log` に格納できます。
+これをグローバルに有効化するには、設定項目 `jemalloc_collect_global_profile_samples_in_trace_log` を使用します。
 
 ```xml
 <clickhouse>
@@ -56,14 +56,14 @@ ClickHouseはアロケーション負荷の高いアプリケーションであ�
 ```
 
 :::warning 警告
-ClickHouseはメモリ割り当てが頻繁に発生するアプリケーションであるため、system.trace_logにすべてのサンプルを収集すると高負荷が発生する可能性があります。
+ClickHouse はメモリ割り当てを多用するアプリケーションであるため、`system.trace_log` ですべてのサンプルを収集すると高負荷になる可能性があります。
 :::
 
-クエリごとに有効化する場合は、`jemalloc_collect_profile_samples_in_trace_log`設定を使用します。
+`jemalloc_collect_profile_samples_in_trace_log` 設定を使用して、クエリごとに有効化することもできます。
 
-### `system.trace_log`を使用したクエリのメモリ使用量分析の例 {#example-analyzing-memory-usage-trace-log}
+### `system.trace_log` を使用してクエリのメモリ使用量を分析する例
 
-まず、jemallocプロファイラを有効にしてクエリを実行し、サンプルを`system.trace_log`に収集する必要があります:
+まず、jemalloc プロファイラを有効にしてクエリを実行し、そのクエリのサンプルを `system.trace_log` に収集する必要があります。
 
 ```sql
 SELECT *
@@ -82,17 +82,17 @@ Peak memory usage: 12.65 MiB.
 ```
 
 :::note
-ClickHouseが`jemalloc_enable_global_profiler`で起動された場合、`jemalloc_enable_profiler`を有効にする必要はありません。
-`jemalloc_collect_global_profile_samples_in_trace_log`と`jemalloc_collect_profile_samples_in_trace_log`についても同様です。
+ClickHouse を起動するときに `jemalloc_enable_global_profiler` を有効にしている場合、`jemalloc_enable_profiler` を有効にする必要はありません。\
+`jemalloc_collect_global_profile_samples_in_trace_log` と `jemalloc_collect_profile_samples_in_trace_log` についても同様です。
 :::
 
-`system.trace_log`をフラッシュします:
+ここで `system.trace_log` をフラッシュします。
 
 ```sql
 SYSTEM FLUSH LOGS trace_log
 ```
 
-次に、実行したクエリの各時点でのメモリ使用量を取得するためにクエリを実行します:
+そして、各時点において実行したクエリのメモリ使用量を取得するためにクエリします。
 
 ```sql
 WITH per_bucket AS
@@ -116,7 +116,7 @@ FROM per_bucket
 ORDER BY bucket_time
 ```
 
-メモリ使用量が最も高かった時刻を見つけることもできます:
+メモリ使用量が最大だった時刻も確認できます：
 
 ```sql
 SELECT
@@ -146,7 +146,7 @@ FROM
 )
 ```
 
-この結果を使用して、その時点で最も活発なメモリ割り当てがどこから発生していたかを確認できます:
+その結果を使って、その時点でどこが最も活発に割り当てを行っていたかを確認できます。
 
 
 ```sql
@@ -181,53 +181,50 @@ ORDER BY per_trace_sum ASC
 ```
 
 
-## ヒーププロファイルのフラッシュ {#flushing-heap-profiles}
+## ヒーププロファイルのフラッシュ
 
-デフォルトでは、ヒーププロファイルファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse のプロセスID、`_seqnum_` は現在のヒーププロファイルのグローバルシーケンス番号です。  
-Keeper の場合、デフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.heap` であり、同じ規則に従います。
+デフォルトでは、ヒーププロファイル用ファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse の PID、`_seqnum_` は現在のヒーププロファイルに対応するグローバルなシーケンス番号です。\
+Keeper のデフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.heap` で、同じルールに従います。
 
-以下を実行することで、`jemalloc` に現在のプロファイルをフラッシュするよう指示できます:
+`jemalloc` に現在のプロファイルをフラッシュさせるには、次を実行します。
 
 <Tabs groupId="binary">
-<TabItem value="clickhouse" label="ClickHouse">
-    
-```sql
-SYSTEM JEMALLOC FLUSH PROFILE
-```
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```sql
+    SYSTEM JEMALLOC FLUSH PROFILE
+    ```
 
-フラッシュされたプロファイルの場所が返されます。
+    フラッシュされたプロファイルの保存先パスが返されます。
+  </TabItem>
 
-</TabItem>
-<TabItem value="keeper" label="Keeper">
-    
-```sh
-echo jmfp | nc localhost 9181
-```
-
-</TabItem>
+  <TabItem value="keeper" label="Keeper">
+    ```sh
+    echo jmfp | nc localhost 9181
+    ```
+  </TabItem>
 </Tabs>
 
-`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、異なる場所を指定できます。  
-例えば、ファイル名のプレフィックスが `my_current_profile` となる `/data` フォルダにプロファイルを生成したい場合、以下の環境変数を設定して ClickHouse/Keeper を実行できます:
+`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、別の保存場所を指定できます。\
+例えば、`/data` ディレクトリ内に、ファイル名のプレフィックスを `my_current_profile` としてプロファイルを生成したい場合は、次の環境変数を指定して ClickHouse/Keeper を実行します。
 
 ```sh
 MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
-生成されるファイル名には、プレフィックスに続いてプロセスIDとシーケンス番号が付加されます。
+生成されるファイル名には、プレフィックスに続いて PID とシーケンス番号が付加されます。
 
 
-## ヒーププロファイルの解析 {#analyzing-heap-profiles}
+## ヒーププロファイルの分析
 
-ヒーププロファイルが生成された後、それらを解析する必要があります。
-そのために、`jemalloc`のツールである[jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in)を使用できます。これは複数の方法でインストールできます:
+ヒーププロファイルが生成されたら、それらを分析する必要があります。\
+そのために、`jemalloc` のツールである [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in) を使用できます。次のいずれかの方法でインストールできます。
 
-- システムのパッケージマネージャーを使用する
-- [jemallocリポジトリ](https://github.com/jemalloc/jemalloc)をクローンし、ルートフォルダから`autogen.sh`を実行する。これにより、`bin`フォルダ内に`jeprof`スクリプトが提供されます
+* システムのパッケージマネージャーを使用する
+* [jemalloc リポジトリ](https://github.com/jemalloc/jemalloc)をクローンし、ルートディレクトリで `autogen.sh` を実行する。これにより、`bin` ディレクトリ内に `jeprof` スクリプトが作成されます
 
 :::note
-`jeprof`はスタックトレースを生成するために`addr2line`を使用しますが、これは非常に遅くなる可能性があります。
-その場合は、このツールの[代替実装](https://github.com/gimli-rs/addr2line)をインストールすることを推奨します。
+`jeprof` はスタックトレースを生成するために `addr2line` を使用しますが、処理が非常に遅くなる場合があります。\
+そのような場合には、このツールの[代替実装](https://github.com/gimli-rs/addr2line)をインストールすることを推奨します。
 
 ```bash
 git clone https://github.com/gimli-rs/addr2line.git --depth=1 --branch=0.23.0
@@ -236,78 +233,79 @@ cargo build --features bin --release
 cp ./target/release/addr2line path/to/current/addr2line
 ```
 
-あるいは、`llvm-addr2line`も同様に機能します。
+また、`llvm-addr2line` も同様に問題なく動作します。
 
 :::
 
-`jeprof`を使用してヒーププロファイルから生成できる形式は多数あります。
-使用方法とツールが提供する各種オプションについての情報は、`jeprof --help`を実行することを推奨します。
+`jeprof` を使用して、ヒーププロファイルからさまざまな形式を生成できます。
+ツールの使い方や提供される各種オプションについては、`jeprof --help` を実行して確認することを推奨します。
 
-一般的に、`jeprof`コマンドは次のように使用されます:
+一般的に、`jeprof` コマンドは次のように使用します。
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 ```
 
-2つのプロファイル間でどのアロケーションが発生したかを比較したい場合は、`base`引数を設定できます:
+2つのプロファイルを比較して、その間にどの割り当てが発生したかを確認したい場合は、`base` 引数を指定します。
 
 ```sh
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
-### 例 {#examples}
+### 例
 
-- 各プロシージャを1行ずつ記述したテキストファイルを生成したい場合:
+* 各プロシージャを1行ごとに記述したテキストファイルを生成したい場合:
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --text > result.txt
 ```
 
-- コールグラフを含むPDFファイルを生成したい場合:
+* コールグラフを含む PDF ファイルを生成したい場合:
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
 
-### フレームグラフの生成 {#generating-flame-graph}
+### フレームグラフの生成
 
-`jeprof`を使用すると、フレームグラフを構築するための折りたたまれたスタックを生成できます。
+`jeprof` を使用すると、フレームグラフの作成に必要な折り畳みスタック（collapsed stacks）を生成できます。
 
-`--collapsed`引数を使用する必要があります:
+`--collapsed` 引数を使用する必要があります。
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 ```
 
-その後、折りたたまれたスタックを可視化するために、さまざまなツールを使用できます。
+その後は、コラプスされたスタックを可視化するために利用できるツールが多数あります。
 
-最も人気があるのは[FlameGraph](https://github.com/brendangregg/FlameGraph)で、`flamegraph.pl`というスクリプトが含まれています:
+最も広く使われているのは [FlameGraph](https://github.com/brendangregg/FlameGraph) で、`flamegraph.pl` というスクリプトが含まれています。
 
 ```sh
-cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
+cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="メモリ割り当てフレームグラフ" --width 2400 > result.svg
 ```
 
-もう1つの興味深いツールは[speedscope](https://www.speedscope.app/)で、収集されたスタックをよりインタラクティブな方法で解析できます。
+もう 1 つ便利なツールに [speedscope](https://www.speedscope.app/) があり、収集したスタックをよりインタラクティブに分析できます。
 
 
-## プロファイラーの追加オプション {#additional-options-for-profiler}
+## プロファイラ用の追加オプション {#additional-options-for-profiler}
 
-`jemalloc`には、プロファイラーに関連する多数のオプションが用意されています。これらは`MALLOC_CONF`環境変数を変更することで制御できます。
-例えば、割り当てサンプル間の間隔は`lg_prof_sample`で制御できます。  
-Nバイトごとにヒーププロファイルをダンプする場合は、`lg_prof_interval`を使用して有効にできます。
+`jemalloc` にはプロファイラに関連する多くのオプションがあり、`MALLOC_CONF` 環境変数を変更することで制御できます。
+例えば、メモリ割り当てサンプル間の間隔は `lg_prof_sample` で制御できます。  
+ヒーププロファイルを N バイトごとにダンプしたい場合は、`lg_prof_interval` を有効にします。  
 
-オプションの完全なリストについては、`jemalloc`の[リファレンスページ](https://jemalloc.net/jemalloc.3.html)を確認することを推奨します。
+利用可能なオプションの完全な一覧については、`jemalloc` の [リファレンスページ](https://jemalloc.net/jemalloc.3.html) を参照してください。
 
 
-## その他のリソース {#other-resources}
 
-ClickHouse/Keeperは、`jemalloc`関連のメトリクスをさまざまな方法で公開しています。
+## その他のリソース
+
+ClickHouse/Keeper は、`jemalloc` 関連のメトリクスをさまざまな方法で公開します。
 
 :::warning 警告
-これらのメトリクスは互いに同期されておらず、値にずれが生じる可能性があることに注意してください。
+これらのメトリクスは相互に同期されておらず、値がずれる可能性があることを認識しておくことが重要です。
 :::
 
-### システムテーブル `asynchronous_metrics` {#system-table-asynchronous_metrics}
+### システムテーブル `asynchronous_metrics`
 
 ```sql
 SELECT *
@@ -318,21 +316,21 @@ FORMAT Vertical
 
 [リファレンス](/operations/system-tables/asynchronous_metrics)
 
-### システムテーブル `jemalloc_bins` {#system-table-jemalloc_bins}
+### システムテーブル `jemalloc_bins`
 
-すべてのアリーナから集約された、jemallocアロケータによる異なるサイズクラス(ビン)でのメモリ割り当てに関する情報を含みます。
+すべてのアリーナから集約された、さまざまなサイズクラス（bin）における jemalloc アロケータによるメモリ割り当てに関する情報を含みます。
 
 [リファレンス](/operations/system-tables/jemalloc_bins)
 
-### Prometheus {#prometheus}
+### Prometheus
 
-`asynchronous_metrics`のすべての`jemalloc`関連メトリクスは、ClickHouseとKeeperの両方でPrometheusエンドポイントを使用して公開されています。
+`asynchronous_metrics` に含まれるすべての `jemalloc` 関連メトリクスは、ClickHouse と Keeper の両方で Prometheus エンドポイントからも公開されます。
 
 [リファレンス](/operations/server-configuration-parameters/settings#prometheus)
 
-### Keeperの`jmst` 4LWコマンド {#jmst-4lw-command-in-keeper}
+### Keeper における `jmst` 4LW コマンド
 
-Keeperは、[基本的なアロケータ統計](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics)を返す`jmst` 4LWコマンドをサポートしています:
+Keeper は `jmst` 4LW コマンドをサポートしており、[基本的なアロケータ統計情報](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics)を返します。
 
 ```sh
 echo jmst | nc localhost 9181

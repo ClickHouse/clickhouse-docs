@@ -1,5 +1,5 @@
 ---
-description: 'E2K アーキテクチャ向け ClickHouse をソースからビルドするためのガイド'
+description: 'E2K アーキテクチャ向けに ClickHouse をソースコードからビルドするためのガイド'
 sidebar_label: 'Linux での E2K 向けビルド'
 sidebar_position: 35
 slug: /development/build-e2k
@@ -9,15 +9,15 @@ doc_type: 'guide'
 
 
 
-# Linux 上での E2K 向けビルド
+# E2K 向け Linux 上でのビルド
 
-ClickHouse は E2K (Elbrus-2000) をまだ非常に実験的な段階でサポートしており、`boost`、`croaring`、`libunwind`、`zstd` などの E2K 向けにカスタムビルドされたライブラリを用いる場合に限り、ネイティブモードかつ最小限の構成でのみコンパイルできます。
+ClickHouse は E2K (Elbrus-2000) を非常に実験的にサポートしており、boost、croaring、libunwind、zstd などの e2k 向けにカスタムビルドされたライブラリを使用した最小限の構成で、ネイティブモードでのみコンパイル可能です。
 
 
 
-## ClickHouseのビルド {#build-clickhouse}
+## ClickHouse をビルドする
 
-ビルドに必要なLLVMのバージョンは20.1.8以上である必要があります。
+ビルドに必要な LLVM のバージョンは 20.1.8 以上が必要です。
 
 ```bash
 cd ClickHouse
@@ -31,4 +31,4 @@ cmake -DCMAKE_CROSSCOMPILING=OFF -DCOMPILER_CACHE=disabled \
 ninja -j8
 ```
 
-生成されるバイナリは、E2K CPUアーキテクチャを搭載したLinux上でのみ実行可能です。
+生成されたバイナリは、E2K CPU アーキテクチャの Linux 環境でのみ実行できます。

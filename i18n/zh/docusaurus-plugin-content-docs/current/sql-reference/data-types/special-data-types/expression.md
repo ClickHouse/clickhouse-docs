@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # 表达式
 
-表达式用于在高阶函数中表示 lambda 表达式。
+在高阶函数中，表达式用于表示 lambda。

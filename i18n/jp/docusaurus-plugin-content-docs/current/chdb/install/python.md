@@ -1,8 +1,8 @@
 ---
-title: 'Python 向け chDB のインストール'
+title: 'Python 用 chDB のインストール'
 sidebar_label: 'Python'
 slug: /chdb/install/python
-description: 'Python 向け chDB のインストール方法'
+description: 'Python 用 chDB のインストール方法'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
@@ -11,22 +11,24 @@ doc_type: 'guide'
 
 ## 要件 {#requirements}
 
-- Python 3.8以上
-- サポート対象プラットフォーム: macOSおよびLinux (x86_64およびARM64)
+- Python 3.8+ 
+- サポートされるプラットフォーム: macOS および Linux（x86_64 および ARM64）
 
 
-## インストール {#install}
+
+## インストール
 
 ```bash
 pip install chdb
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法 {#usage} 
 
-### コマンドラインインターフェース {#command-line-interface}
+### コマンドラインインターフェイス {#command-line-interface}
 
-コマンドラインから直接SQLクエリを実行できます:
+コマンドラインから直接 SQL クエリを実行します：
+
 
 
 ```bash
@@ -35,7 +37,7 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 ```
 
 
-# フォーマット指定付きのクエリ
+# フォーマット指定でクエリを実行する
 
 python3 -m chdb &quot;SELECT version()&quot; JSON
 
@@ -62,7 +64,7 @@ print(f&quot;Execution time: {result.elapsed()} seconds&quot;)
 
 ````
 
-### 接続ベースのAPI（推奨） {#connection-based-api}
+### 接続ベースAPI（推奨） {#connection-based-api}
 
 リソース管理とパフォーマンスを向上させるため：
 
@@ -71,9 +73,9 @@ import chdb
 ````
 
 
-# 接続を作成（デフォルトではメモリ内）
+# 接続を作成（デフォルトではインメモリ）
 conn = chdb.connect(":memory:")
-# ファイルベースを使用することも可能: conn = chdb.connect("mydata.db")
+# またはファイルベース接続を使用: conn = chdb.connect("mydata.db")
 
 
 
@@ -82,7 +84,7 @@ cur = conn.cursor()
 
 
 
-# クエリの実行
+# クエリを実行する
 cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3")
 
 
@@ -93,7 +95,7 @@ print(cur.fetchmany(2))  # 複数行: ((1, '1'), (2, '2'))
 
 
 
-# メタデータを取得する
+# メタデータを取得
 print(cur.column_names())  # ['number', 'str']
 print(cur.column_types())  # ['UInt64', 'String']
 
@@ -105,7 +107,7 @@ for row in cur:
 
 
 
-# リソースは必ずクローズすること
+# 必ずリソースを閉じる
 
 cur.close()
 conn.close()
@@ -118,17 +120,18 @@ conn.close()
 
 ### ファイルベースのデータソース {#file-based-data-sources}
 
-chDBは、ファイルに対する直接クエリのために70種類以上のデータフォーマットをサポートしています:
+chDB は、ファイルを直接クエリするための 70 以上のデータ形式をサポートしています。
+
 
 
 ```python
 import chdb
-# データを準備
+# データを準備する
 # ...
 ```
 
 
-# Parquet ファイルにクエリを実行
+# Parquet ファイルをクエリ
 result = chdb.query("""
     SELECT customer_id, sum(amount) as total
     FROM file('sales.parquet', Parquet) 
@@ -139,7 +142,7 @@ result = chdb.query("""
 
 
 
-# ヘッダー行付きCSVをクエリする
+# ヘッダー行付き CSV をクエリする
 result = chdb.query("""
     SELECT * FROM file('data.csv', CSVWithNames) 
     WHERE column1 > 100
@@ -147,7 +150,7 @@ result = chdb.query("""
 
 
 
-# 複数のファイル形式
+# 複数のファイルフォーマット
 
 result = chdb.query(&quot;&quot;&quot;
 SELECT * FROM file(&#39;logs*.jsonl&#39;, JSONEachRow)
@@ -173,13 +176,13 @@ arrow_table = chdb.query('SELECT \* FROM system.numbers LIMIT 5', 'ArrowTable')
 print(type(arrow_table)) # <class 'pyarrow.lib.Table'>
 
 
-# API 用 JSON
+# API 向けの JSON
 json_result = chdb.query('SELECT version()', 'JSON')
 print(json_result)
 
 
 
-# デバッグ用の Pretty 形式
+# デバッグ用の Pretty 表示形式
 
 pretty&#95;result = chdb.query(&#39;SELECT * FROM system.numbers LIMIT 3&#39;, &#39;Pretty&#39;)
 print(pretty&#95;result)
@@ -209,7 +212,7 @@ tbl2=df2
 print(result_df)
 
 
-# 結果のDataFrameにクエリを実行する
+# 結果の DataFrame にクエリを実行する
 
 summary = result&#95;df.query(&#39;SELECT b, sum(a) FROM **table** GROUP BY b&#39;)
 print(summary)
@@ -241,7 +244,7 @@ df = pd.DataFrame({
 })
 
 
-# JSON 対応の DataFrame への直接クエリ
+# JSON サポート付きの DataFrame 直接クエリ
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -273,7 +276,7 @@ ORDER BY score DESC
 
 ### ステートフルセッション {#stateful-sessions}
 
-セッションは複数の操作間でクエリの状態を保持し、複雑なワークフローを実現します：
+セッションは複数の操作間でクエリの状態を維持し、複雑なワークフローを実現します：
 
 ```python
 from chdb import session
@@ -281,7 +284,7 @@ from chdb import session
 ````
 
 
-# 一時セッション（自動クリーンアップ）
+# 一時的なセッション（自動クリーンアップ）
 sess = session.Session()
 
 
@@ -291,7 +294,7 @@ sess = session.Session()
 
 
 
-# データベースとテーブルの作成
+# データベースとテーブルを作成する
 sess.query("CREATE DATABASE IF NOT EXISTS analytics ENGINE = Atomic")
 sess.query("USE analytics")
 
@@ -307,7 +310,7 @@ sess.query("""
 
 
 
-# データを挿入
+# データの挿入
 sess.query("""
     INSERT INTO sales VALUES 
         (1, 'Laptop', 999.99, '2024-01-15'),
@@ -330,7 +333,7 @@ sess.query("""
 
 
 
-# ビューに対してクエリを実行する
+# ビューをクエリする
 result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
 print(result)
 
@@ -338,7 +341,7 @@ print(result)
 
 # セッションはリソースを自動管理する
 
-sess.close()  # 省略可能 - オブジェクト削除時に自動的にクローズされる
+sess.close()  # 省略可 - オブジェクトの破棄時に自動的にクローズされる
 
 ```
 
@@ -354,7 +357,7 @@ sess = session.Session(
 ```
 
 
-# クエリパフォーマンスの最適化
+# クエリ性能の最適化
 
 result = sess.query(&quot;&quot;&quot;
 SELECT product, sum(amount) as total
@@ -377,18 +380,18 @@ import chdb.dbapi as dbapi
 ````
 
 
-# ドライバ情報の確認
+# ドライバー情報を確認する
 print(f"chDB driver version: {dbapi.get_client_info()}")
 
 
 
-# 接続を作成
+# 接続を確立する
 conn = dbapi.connect()
 cursor = conn.cursor()
 
 
 
-# パラメータ付きクエリを実行する
+# パラメータを指定してクエリを実行する
 cursor.execute("""
     SELECT number, number * ? as doubled 
     FROM system.numbers 
@@ -397,7 +400,7 @@ cursor.execute("""
 
 
 
-# メタデータを取得
+# メタデータの取得
 print("Column descriptions:", cursor.description)
 print("Row count:", cursor.rowcount)
 
@@ -409,13 +412,13 @@ print("Next 2 rows:", cursor.fetchmany(2))
 
 
 
-# 残りの行を取得
+# 残りの行を取得する
 for row in cursor.fetchall():
     print("Row:", row)
 
 
 
-# バッチ処理
+# バッチ操作
 
 data = [(1, &#39;Alice&#39;), (2, &#39;Bob&#39;), (3, &#39;Charlie&#39;)]
 cursor.execute(&quot;&quot;&quot;
@@ -434,7 +437,7 @@ data
 
 ### ユーザー定義関数（UDF） {#user-defined-functions}
 
-カスタムPython関数でSQLを拡張します：
+カスタムPython関数を使用してSQLを拡張します：
 
 #### 基本的なUDFの使用方法 {#basic-udf-usage}
 
@@ -458,7 +461,7 @@ def reverse_string(text):
 
 
 
-# JSON処理関数  
+# JSON 処理用関数  
 @chdb_udf()
 def extract_json_field(json_str, field):
     import json
@@ -470,7 +473,7 @@ def extract_json_field(json_str, field):
 
 
 
-# クエリでのUDFの使用
+# クエリでUDFを使用する
 
 result = query("""
 SELECT
@@ -488,7 +491,7 @@ print(result)
 
 
 ```python
-# 特定の戻り値型を持つUDF
+# 戻り値の型を指定したUDF
 @chdb_udf(return_type="Float64")
 def calculate_bmi(height_str, weight_str):
     height = float(height_str) / 100  # cmをmに変換
@@ -497,7 +500,7 @@ def calculate_bmi(height_str, weight_str):
 ```
 
 
-# データ検証用のUDF
+# データ検証用UDF
 
 @chdb*udf(return_type="UInt8")
 def is_valid_email(email):
@@ -506,7 +509,7 @@ pattern = r'^[a-zA-Z0-9.*%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 return 1 if re.match(pattern, email) else 0
 
 
-# 複雑なクエリでの使用
+# 複雑なクエリでの利用
 
 result = query(&quot;&quot;&quot;
 SELECT
@@ -527,16 +530,16 @@ print(result)
 
 #### UDFのベストプラクティス {#udf-best-practices}
 
-1. **ステートレス関数**: UDFは副作用のない純粋関数にする必要があります
+1. **ステートレス関数**: UDFは副作用のない純粋関数として実装してください
 2. **関数内でのインポート**: 必要なモジュールはすべてUDF内でインポートする必要があります
 3. **文字列の入出力**: すべてのUDFパラメータは文字列です（TabSeparated形式）
-4. **エラー処理**: 堅牢なUDFにするためにtry-catchブロックを含めてください
-5. **パフォーマンス**: UDFは各行ごとに呼び出されるため、パフォーマンスを最適化してください
+4. **エラー処理**: 堅牢なUDFを実現するためにtry-catchブロックを含めてください
+5. **パフォーマンス**: UDFは各行に対して呼び出されるため、パフォーマンスの最適化が重要です
 ```
 
 
 ```python
-# エラー処理を備えた適切に構造化されたUDF
+# エラー処理を含む適切に構造化されたUDF
 @chdb_udf(return_type="String")
 def safe_json_extract(json_str, path):
     import json
@@ -568,7 +571,7 @@ SELECT safe_json_extract(
 
 ### ストリーミングクエリ処理 {#streaming-queries}
 
-一定のメモリ使用量で大規模データセットを処理：
+一定のメモリ使用量で大規模なデータセットを処理:
 
 ```python
 from chdb import session
@@ -578,7 +581,7 @@ sess = session.Session()
 ````
 
 
-# 大規模データセットの準備
+# 大規模データセットをセットアップ
 sess.query("""
     CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
@@ -587,7 +590,7 @@ sess.query("""
 
 
 
-# 例 1: コンテキストマネージャーを用いた基本的なストリーミング
+# 例 1: コンテキストマネージャーを用いた基本的なストリーミング処理
 total_rows = 0
 with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
     for chunk in stream:
@@ -595,7 +598,7 @@ with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
         total_rows += chunk_rows
         print(f"Processed chunk: {chunk_rows} rows")
         
-        # 必要に応じて早期終了する
+        # 必要に応じて早期に処理を終了
         if total_rows > 100000:
             break
 
@@ -603,7 +606,7 @@ print(f"Total rows processed: {total_rows}")
 
 
 
-# 例 2: 明示的なクリーンアップを伴う手動イテレーション
+# 例2: 明示的なクリーンアップを行う手動イテレーション
 stream = sess.send_query("SELECT * FROM large_data WHERE id % 100 = 0", "JSONEachRow")
 processed_count = 0
 
@@ -618,9 +621,9 @@ while True:
         if line:  # 空行をスキップ
             processed_count += 1
     
-    print(f"Processed {processed_count} records so far...")
+    print(f"これまでに {processed_count} 件のレコードを処理しました...")
     
-stream.close()  # 重要: 明示的なクリーンアップ処理
+stream.close()  # 重要: 明示的にクリーンアップする
 
 
 
@@ -630,12 +633,12 @@ import pyarrow as pa
 from deltalake import write_deltalake
 
 
-# 結果を Arrow 形式でストリーミング取得する
+# 結果を Arrow フォーマットでストリーミングする
 stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
 
 
-# カスタムのバッチサイズで RecordBatchReader を作成する
+# カスタムバッチサイズで RecordBatchReader を作成する
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
 
@@ -663,7 +666,7 @@ import pandas as pd
 ````
 
 
-# ネストされたデータを含む複雑な DataFrame
+# ネストされたデータを含む複雑なDataFrame
 
 df = pd.DataFrame({
 "customer_id": [1, 2, 3, 4, 5, 6],
@@ -679,7 +682,7 @@ df = pd.DataFrame({
 })
 
 
-# JSON操作による高度なクエリ
+# JSON 操作による高度なクエリ
 result = chdb.query("""
     SELECT 
         customer_name,
@@ -701,7 +704,7 @@ result = chdb.query("""
 
 
 
-# DataFrame に対するウィンドウ関数
+# データフレーム上のウィンドウ関数
 
 window&#95;result = chdb.query(&quot;&quot;&quot;
 SELECT
@@ -720,7 +723,7 @@ print(window&#95;result)
 
 #### PyReaderを使用したカスタムデータソース {#custom-data-sources-pyreader}
 
-特殊なデータソース用のカスタムデータリーダーを実装します：
+特殊なデータソース用のカスタムデータリーダーを実装します:
 
 ```python
 import chdb
@@ -761,7 +764,7 @@ class DatabaseReader(chdb.PyReader):
     def read(self, col_names: List[str], count: int) -> List[List[Any]]:
         """データをバッチで読み込み"""
         if self.cursor >= len(self.data["id"]):
-            return []  # データなし
+            return []  # これ以上データなし
         
         end_pos = min(self.cursor + min(count, self.batch_size), len(self.data["id"]))
         
@@ -771,7 +774,7 @@ class DatabaseReader(chdb.PyReader):
             if col in self.data:
                 result.append(self.data[col][self.cursor:end_pos])
             else:
-                # 欠落している列を処理
+                # 欠損列を処理
                 result.append([None] * (end_pos - self.cursor))
         
         self.cursor = end_pos
@@ -779,7 +782,7 @@ class DatabaseReader(chdb.PyReader):
 
 ### JSON型推論と処理 {#json-type-inference-handling}
 
-chDBは複雑なネストされたデータ構造を自動的に処理します：
+chDBは複雑なネストされたデータ構造を自動的に処理します:
 
 ```python
 import pandas as pd
@@ -787,7 +790,7 @@ import chdb
 ````
 
 
-# 混在するJSONオブジェクトを含むDataFrame
+# 混合JSONオブジェクトを含むDataFrame
 
 df_with_json = pd.DataFrame({
 "user_id": [1, 2, 3, 4],
@@ -800,7 +803,7 @@ df_with_json = pd.DataFrame({
 })
 
 
-# 設定で JSON 推論を制御する
+# 設定でJSON推論を制御する
 result = chdb.query("""
     SELECT 
         user_id,
@@ -809,7 +812,7 @@ result = chdb.query("""
         length(profile.preferences) as pref_count,
         profile.location.city as city
     FROM Python(df_with_json)
-    SETTINGS pandas_analyze_sample = 1000  -- JSON 検出のためにすべての行を分析する
+    SETTINGS pandas_analyze_sample = 1000  -- JSON検出のために全行を分析
 """, "Pretty")
 print(result)
 
@@ -835,34 +838,33 @@ print(complex&#95;json)
 ```
 
 
-## パフォーマンスと最適化 {#performance-optimization}
+## パフォーマンスと最適化
 
-### ベンチマーク {#benchmarks}
+### ベンチマーク
 
-chDBは他の組み込みエンジンを一貫して上回るパフォーマンスを発揮します：
+chDB は他の組み込みエンジンと比べて一貫して高い性能を発揮します。
 
-- **DataFrame操作**: 分析クエリにおいて従来のDataFrameライブラリより2～5倍高速
-- **Parquet処理**: 主要なカラムナエンジンに匹敵する性能
-- **メモリ効率**: 代替手段よりも低いメモリフットプリント
+* **DataFrame 操作**: 分析クエリにおいて、従来の DataFrame ライブラリの 2〜5 倍の高速性
+* **Parquet 処理**: 主要なカラム型エンジンと同等の性能
+* **メモリ効率**: 他の選択肢と比べてメモリフットプリントが小さい
 
 [ベンチマーク結果の詳細](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
-### パフォーマンスのヒント {#performance-tips}
+### パフォーマンス最適化のヒント
 
 ```python
 import chdb
-
 ```
 
 
-# 1. 適切な出力フォーマットを使用する
+# 1. 適切な出力形式を使用する
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 分析用
-arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 他システムとの相互運用向け
-native_result = chdb.query("SELECT * FROM large_table", "Native")   # chDB 同士のやり取り用
+arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 他ツールとの連携用
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # chDB 同士の連携用
 
 
 
-# 2. 設定でクエリを最適化する
+# 2. 設定を使ってクエリを最適化する
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -875,7 +877,7 @@ fast_result = chdb.query("""
 
 
 
-# 3. 大規模データセットにはストリーミングを活用する
+# 3. 大規模データセット向けにストリーミングを活用する
 from chdb import session
 
 sess = session.Session()
@@ -894,7 +896,7 @@ sess.query("""
 
 
 
-# 一定のメモリ使用量で行うストリーム処理
+# メモリ使用量を一定に保つストリーム処理
 total_amount = 0
 processed_rows = 0
 
@@ -908,26 +910,26 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
                 total_amount += row['total']
                 processed_rows += 1
         
-        print(f"{processed_rows} 件の顧客レコードを処理しました。現在の合計: {total_amount}")
+        print(f"{processed_rows}件の顧客レコードを処理しました。現在の合計金額: {total_amount}")
         
-        # デモのための早期終了
+        # デモのため早期に終了
         if processed_rows > 1000:
             break
 
-print(f"最終結果: {processed_rows} 件の顧客を処理しました。合計金額: {total_amount}")
+print(f"最終結果: {processed_rows}件の顧客を処理しました。合計金額: {total_amount}")
 
 
 
-# 外部システム（例: Delta Lake）へのストリーミング
+# 外部システムへのストリーム送信（例：Delta Lake）
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
 
 
-# バッチ単位で処理する
+# バッチ単位で処理を行う
 
 for batch in batch&#95;reader:
-print(f&quot;Processing batch with {batch.num_rows} rows...&quot;)
+print(f&quot;{batch.num_rows} 行のバッチを処理しています...&quot;)
 
 # 各バッチを変換またはエクスポートする
 
@@ -942,7 +944,7 @@ sess.close()
 ```
 
 
-## GitHubリポジトリ {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **問題報告とサポート**: 問題は[GitHubリポジトリ](https://github.com/chdb-io/chdb/issues)で報告してください
+- **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues) の Issue ページで報告してください

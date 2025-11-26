@@ -10,10 +10,11 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 `JSONEachRow`/`JSONStringsEachRow` 不同,ClickHouse 还会以 JSON 值的形式输出进度信息。
+与 `JSONEachRow`/`JSONStringsEachRow` 不同，ClickHouse 还会以 JSON 值的形式返回进度信息。
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

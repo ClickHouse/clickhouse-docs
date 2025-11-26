@@ -8,13 +8,13 @@ title: 'SQLAlchemy サポート'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect には、コアドライバをベースに実装された SQLAlchemy ダイアレクト（`clickhousedb`）が含まれています。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40+ および 2.0.x をサポートします。
+ClickHouse Connect には、コアドライバー上に実装された SQLAlchemy ダイアレクト（`clickhousedb`）が含まれています。これは SQLAlchemy Core API を主な対象としており、SQLAlchemy 1.4.40 以降および 2.0.x をサポートします。
 
 
 
-## SQLAlchemyで接続する {#sqlalchemy-connect}
+## SQLAlchemy で接続する
 
-`clickhousedb://`または`clickhousedb+connect://`のURLを使用してエンジンを作成します。クエリパラメータはClickHouseの設定、クライアントオプション、HTTP/TLSトランスポートオプションにマッピングされます。
+`clickhousedb://` または `clickhousedb+connect://` のいずれかの URL を使用してエンジンを作成します。クエリパラメータは、ClickHouse の設定、クライアントオプション、および HTTP/TLS トランスポートオプションに対応します。
 
 ```python
 from sqlalchemy import create_engine, text
@@ -30,16 +30,16 @@ with engine.begin() as conn:
 
 URL/クエリパラメータに関する注意事項:
 
-- ClickHouse設定: クエリパラメータとして渡します(例: `use_skip_indexes=0`)。
-- クライアントオプション: `compression`(`compress`のエイリアス)、`query_limit`、タイムアウトなど。
-- HTTP/TLSオプション: HTTPプールとTLSのオプション(例: `ch_http_max_field_name_size=99999`、`ca_cert=certifi`)。
+* ClickHouse の設定: クエリパラメータとして指定します（例: `use_skip_indexes=0`）。
+* クライアントオプション: `compression`（`compress` のエイリアス）、`query_limit`、タイムアウトなど。
+* HTTP/TLS オプション: HTTP プールおよび TLS 向けのオプション（例: `ch_http_max_field_name_size=99999`、`ca_cert=certifi`）。
 
-サポートされているオプションの完全なリストについては、以下のセクションの[接続引数と設定](driver-api.md#connection-arguments)を参照してください。これらのオプションはSQLAlchemy DSN経由でも指定できます。
+サポートされているオプションの一覧については、以下のセクションにある [Connection arguments and Settings](driver-api.md#connection-arguments) を参照してください。これらのオプションは SQLAlchemy の DSN 経由で指定することもできます。
 
 
-## コアクエリ {#sqlalchemy-core-queries}
+## コアクエリ
 
-このダイアレクトは、結合、フィルタ、順序付け、limit/offset、および `DISTINCT` を含む SQLAlchemy Core の `SELECT` クエリをサポートしています。
+このダイアレクトは、結合、フィルタリング、並べ替え、LIMIT/OFFSET、および `DISTINCT` を含む SQLAlchemy Core の `SELECT` クエリをサポートします。
 
 ```python
 from sqlalchemy import MetaData, Table, select
@@ -47,17 +47,16 @@ from sqlalchemy import MetaData, Table, select
 metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
-
 ```
 
 
-# 基本的なSELECT
+# 基本的な SELECT 文
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
 
 
-# JOIN（INNER / LEFT OUTER / FULL OUTER / CROSS）
+# JOIN（INNER／LEFT OUTER／FULL OUTER／CROSS）
 
 with engine.begin() as conn:
 stmt = (
@@ -68,7 +67,7 @@ rows = conn.execute(stmt).fetchall()
 
 ````
 
-`WHERE`句を必須とする軽量な`DELETE`がサポートされています:
+必須の `WHERE` 句付きの軽量な `DELETE` がサポートされています:
 
 ```python
 from sqlalchemy import delete
@@ -78,9 +77,9 @@ with engine.begin() as conn:
 ````
 
 
-## DDLとリフレクション {#sqlalchemy-ddl-reflection}
+## DDL とリフレクション
 
-提供されているDDLヘルパーと型/エンジン構造を使用して、データベースとテーブルを作成できます。テーブルリフレクション(カラム型とエンジンを含む)がサポートされています。
+提供されている DDL ヘルパーと型／エンジン構成を使用して、データベースとテーブルを作成できます。テーブルリフレクション（カラム型やエンジンを含む）にも対応しています。
 
 ```python
 import sqlalchemy as db
@@ -110,22 +109,23 @@ with engine.begin() as conn:
     assert reflected.engine is not None
 ```
 
-リフレクションされたカラムには、サーバー上に存在する場合、`clickhousedb_default_type`、`clickhousedb_codec_expression`、`clickhousedb_ttl_expression`などのダイアレクト固有の属性が含まれます。
+反映されたカラムには、サーバー側で定義されている場合、`clickhousedb_default_type`、`clickhousedb_codec_expression`、`clickhousedb_ttl_expression` などの SQL ダイアレクト固有の属性が含まれます。
 
 
-## 挿入（CoreおよびBasic ORM） {#sqlalchemy-inserts}
+## INSERT（Core と基本的な ORM） {#sqlalchemy-inserts}
 
-挿入はSQLAlchemy Coreを介して動作するほか、利便性のためにシンプルなORMモデルでも使用できます。
+データの挿入は、SQLAlchemy Core だけでなく、利便性のためにシンプルな ORM モデルからも行えます。
+
 
 
 ```python
-# コア挿入
+# Core による INSERT
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 ```
 
 
-# 基本的な ORM による挿入
+# 基本的な ORM による INSERT
 
 from sqlalchemy.orm import declarative&#95;base, Session
 
@@ -148,12 +148,11 @@ session.commit()
 ```
 
 
-## スコープと制限事項 {#scope-and-limitations}
-
-- コア機能: `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT`を含む`SELECT`などのSQLAlchemy Core機能を有効にします。
-- `WHERE`句を伴う`DELETE`のみ: このダイアレクトは軽量な`DELETE`をサポートしますが、誤ってテーブル全体を削除することを防ぐため、明示的な`WHERE`句が必要です。テーブルをクリアするには、`TRUNCATE TABLE`を使用してください。
-- `UPDATE`非対応: ClickHouseは追記最適化されています。このダイアレクトは`UPDATE`を実装していません。データを変更する必要がある場合は、上流で変換を適用して再挿入するか、明示的なテキストSQL（例: `ALTER TABLE ... UPDATE`）を自己責任で使用してください。
-- DDLとリフレクション: データベースとテーブルの作成がサポートされており、リフレクションはカラム型とテーブルエンジンのメタデータを返します。ClickHouseはこれらの制約を強制しないため、従来の主キー/外部キー/インデックスのメタデータは存在しません。
-- ORMスコープ: 宣言的モデルと`Session.add(...)`/`bulk_save_objects(...)`による挿入は利便性のために機能します。高度なORM機能（リレーションシップ管理、unit-of-work更新、カスケード、eager/lazy読み込みセマンティクス）はサポートされていません。
-- 主キーのセマンティクス: `Column(..., primary_key=True)`はSQLAlchemyによってオブジェクトの識別にのみ使用されます。ClickHouseのサーバー側制約は作成されません。テーブルエンジンを介して`ORDER BY`（およびオプションの`PRIMARY KEY`）を定義してください（例: `MergeTree(order_by=...)`）。
-- トランザクションとサーバー機能: 2フェーズトランザクション、シーケンス、`RETURNING`、高度な分離レベルはサポートされていません。`engine.begin()`はステートメントをグループ化するためのPythonコンテキストマネージャーを提供しますが、実際のトランザクション制御は実行しません（commit/rollbackは何も行いません）。
+## 適用範囲と制限事項 {#scope-and-limitations}
+- 主な対象: `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）を伴う `SELECT`、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT` など、SQLAlchemy Core の機能を利用できるようにすること。
+- `WHERE` 付きの `DELETE` のみ: このダイアレクトは軽量な `DELETE` をサポートしますが、テーブル全件削除を誤って行うことを避けるため、明示的な `WHERE` 句が必須です。テーブルを空にしたい場合は、`TRUNCATE TABLE` を使用してください。
+- `UPDATE` は非対応: ClickHouse は追記最適化型です。このダイアレクトは `UPDATE` を実装していません。データを変更する必要がある場合は、上流で変換を行って再挿入するか、自己責任で明示的なテキスト SQL（例: `ALTER TABLE ... UPDATE`）を使用してください。
+- DDL とリフレクション: データベースおよびテーブルの作成がサポートされており、リフレクションによりカラム型とテーブルエンジンのメタデータが取得できます。ClickHouse はそれらの制約を強制しないため、従来型の PK/FK/インデックスのメタデータは存在しません。
+- ORM の範囲: 宣言的モデルおよび `Session.add(...)`/`bulk_save_objects(...)` による挿入は利便性のために動作します。高度な ORM 機能（リレーション管理、ユニット・オブ・ワークによる更新、カスケード、eager/lazy ローディングのセマンティクス）はサポートされません。
+- 主キーの意味付け: `Column(..., primary_key=True)` は SQLAlchemy においてオブジェクト識別のためだけに使用されます。ClickHouse サーバー側の制約を作成するものではありません。`ORDER BY`（および任意で `PRIMARY KEY`）はテーブルエンジン（例: `MergeTree(order_by=...)`）を通じて定義してください。
+- トランザクションとサーバー機能: 二相トランザクション、シーケンス、`RETURNING`、および高度な分離レベルはサポートされません。`engine.begin()` は、ステートメントをまとめるための Python のコンテキストマネージャーを提供しますが、実際のトランザクション制御は行わず（commit/rollback は何も行いません）。

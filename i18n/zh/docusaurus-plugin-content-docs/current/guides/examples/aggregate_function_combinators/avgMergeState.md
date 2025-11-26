@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMergeState'
 title: 'avgMergeState'
-description: 'avgMergeState 组合器用法示例'
+description: '使用 avgMergeState 聚合函数组合器的示例'
 keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
 sidebar_label: 'avgMergeState'
 doc_type: 'reference'
@@ -14,16 +14,21 @@ import TabItem from '@theme/TabItem';
 # avgMergeState {#avgMergeState}
 
 
+
 ## 描述 {#description}
 
-[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 组合器可应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，用于合并 `AverageFunction(avg, T)` 类型的部分聚合状态，并返回新的中间聚合状态。
+[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 组合器
+可用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
+函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态，
+并返回一个新的中间聚合状态。
 
 
-## 使用示例 {#example-usage}
 
-`MergeState` 组合器在多级聚合场景中特别有用,适用于需要组合预聚合状态并将其保持为状态(而非最终化)以便进一步处理的情况。为了说明这一点,我们将通过一个示例来演示如何将单个服务器性能指标转换为跨多个层级的分层聚合:服务器层级 → 区域层级 → 数据中心层级。
+## 示例用法
 
-首先创建一个表来存储原始数据:
+`MergeState` 组合子在多级聚合场景中特别有用，在这些场景中，你需要将预聚合状态进行合并，并继续以状态的形式保留它们（而不是将其最终计算完成），以便进行后续处理。为此，我们来看一个示例，将单个服务器性能指标转换为跨多个层级的分层聚合：服务器层级 → 区域层级 → 数据中心层级。
+
+首先，我们创建一张表来存储原始数据：
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -38,7 +43,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-接下来创建服务器层级的聚合目标表,并定义一个增量物化视图作为其插入触发器:
+我们将创建一个服务器层面的聚合目标表，并为其定义一个 Incremental 物化视图，使其充当插入触发器：
 
 ```sql
 CREATE TABLE server_performance
@@ -62,7 +67,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-对区域层级和数据中心层级执行相同的操作:
+我们也会对区域级和数据中心级执行相同的操作：
 
 ```sql
 CREATE TABLE region_performance
@@ -83,7 +88,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- 数据中心层级表和物化视图
+-- 数据中心级别表和物化视图
 
 CREATE TABLE datacenter_performance
 (
@@ -102,7 +107,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-然后向源表插入示例原始数据:
+接下来，我们将在源表中插入一些示例原始数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -115,7 +120,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-接下来为每个层级编写三个查询:
+针对每个层级，我们将编写三个查询：
 
 
 <Tabs>
@@ -181,7 +186,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
   </TabItem>
 </Tabs>
 
-我们还可以插入更多数据：
+我们可以再插入一些数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -190,7 +195,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-让我们再次检查数据中心层面的性能。请注意，整个聚合链是如何自动更新的：
+让我们再检查一下数据中心层面的性能。注意整个聚合链是如何自动更新的：
 
 ```sql
 SELECT
@@ -210,7 +215,6 @@ ORDER BY datacenter;
 
 
 ## 另请参阅 {#see-also}
-
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

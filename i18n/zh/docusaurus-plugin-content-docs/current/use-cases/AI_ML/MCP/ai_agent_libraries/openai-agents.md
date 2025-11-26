@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
 sidebar_label: '集成 OpenAI'
-title: '如何使用 ClickHouse MCP Server 构建 OpenAI Agent'
+title: '如何使用 ClickHouse MCP Server 构建 OpenAI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建可与 ClickHouse MCP Server 交互的 OpenAI Agent。'
+description: '了解如何构建一个可以与 ClickHouse MCP Server 交互的 OpenAI 智能体。'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,28 +14,28 @@ doc_type: 'guide'
 
 # 如何使用 ClickHouse MCP Server 构建 OpenAI Agent
 
-在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) agent，使其可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 交互。
 
-:::note 示例 Notebook
-该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中以 Notebook 形式查看。
+:::note 示例笔记本
+该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中找到对应的笔记本。
 :::
 
 
 
 ## 前置条件 {#prerequisites}
 
-- 您需要在系统上安装 Python。
-- 您需要在系统上安装 `pip`。
-- 您需要一个 OpenAI API 密钥
+- 系统需已安装 Python。
+- 系统需已安装 `pip`。
+- 需要一个 OpenAI API 密钥
 
-您可以通过 Python REPL 或脚本运行以下步骤。
+您可以通过 Python REPL 或脚本执行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
 
-## 安装库 {#install-libraries}
+## 安装库
 
-通过运行以下命令安装所需的库:
+运行以下命令安装所需库：
 
 ```python
 pip install -q --upgrade pip
@@ -43,24 +43,24 @@ pip install -q openai-agents
 ```
 
 
-## 设置凭据 {#setup-credentials}
+## 设置凭据
 
-接下来,您需要提供 OpenAI API 密钥:
+接下来，您需要提供 OpenAI API 密钥：
 
 ```python
 import os, getpass
-os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
+os.environ["OPENAI_API_KEY"] = getpass.getpass("输入 OpenAI API 密钥：")
 ```
 
 ```response title="Response"
-Enter OpenAI API Key: ········
+输入 OpenAI API 密钥:········
 ```
 
 
-## 初始化 MCP 服务器和 OpenAI 代理 {#initialize-mcp-and-agent}
+## 初始化 MCP Server 和 OpenAI 代理
 
-现在配置 ClickHouse MCP 服务器指向 ClickHouse SQL 演练场,
-初始化您的 OpenAI 代理并向其提问:
+现在将 ClickHouse MCP Server 配置为连接到 ClickHouse SQL playground，
+初始化你的 OpenAI 代理并向它提问：
 
 ```python
 from agents.mcp import MCPServer, MCPServerStdio
@@ -68,7 +68,7 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """仅过滤重要事件的简化版本"""
+    """简化版本，仅过滤重要事件"""
 
     # 工具调用
     if (hasattr(chunk, 'type') and
@@ -81,7 +81,7 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # 处理字符串和已解析的输出
+                # 处理字符串和已解析输出
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
@@ -105,11 +105,11 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 else:
-                    # 回退 - 仅打印原始输出
+                    # 回退处理 - 直接打印原始输出
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # 如果解析失败则回退到原始输出
+                # 解析失败时回退到原始输出
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -120,7 +120,7 @@ def simple_render_chunk(chunk):
             except (AttributeError, IndexError):
                 print(f"💬 Response: {str(chunk.item)[:100]}...")
 
-    # 用于流式传输的文本增量
+    # 流式传输的文本增量
     elif (hasattr(chunk, 'type') and
           chunk.type == 'raw_response_event' and
           hasattr(chunk, 'data') and
@@ -129,7 +129,7 @@ def simple_render_chunk(chunk):
         print(chunk.data.delta, end='', flush=True)
 
 async with MCPServerStdio(
-        name="ClickHouse SQL Playground",
+        name="ClickHouse SQL 演练场",
         params={
             "command": "uv",
             "args": [
@@ -142,13 +142,13 @@ async with MCPServerStdio(
         }, client_session_timeout_seconds = 60
 ) as server:
     agent = Agent(
-        name="Assistant",
+        name="助手",
         instructions="使用工具查询 ClickHouse 并根据这些文件回答问题。",
         mcp_servers=[server],
     )
 
-    message = "2025 年迄今为止最大的 GitHub 项目是什么?"
-    print(f"\n\n正在运行: {message}")
+    message = "2025 年迄今为止最大的 GitHub 项目是什么？"
+    print(f"\n\nRunning: {message}")
     with trace("最大项目工作流"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
@@ -185,7 +185,7 @@ log...
 🔧 工具：run_select_query({"query":"SELECT repo_name, MAX(stars) FROM github.top_repos_mv"})
 ✅ 结果：{
   "status": "error",
-  "message": "Query failed: HTTPDriver for https://sql-clickhouse.clickhouse....
+  "message": "查询失败：HTTPDriver for https://sql-clickhouse.clickhouse....
 🔧 工具：run_select_query({"query":"SELECT repo_name, stars FROM github.top_repos ORDER BY stars DESC LIMIT 1"})
 ✅ 结果：{
   "repo_name": "sindresorhus/awesome",

@@ -11,22 +11,22 @@ doc_type: 'reference'
 
 # Map(K, V)
 
-Тип данных `Map(K, V)` хранит пары ключ-значение.
+Тип данных `Map(K, V)` хранит пары «ключ–значение».
 
-В отличие от других баз данных, в ClickHouse элементы типа Map не обязаны иметь уникальные ключи, т.е. Map может содержать два элемента с одинаковым ключом.
+В отличие от других баз данных, в ClickHouse элементы типа Map не обязаны быть уникальными, то есть Map может содержать два элемента с одинаковым ключом.
 (Причина в том, что Map внутренне реализован как `Array(Tuple(K, V))`.)
 
-Можно использовать синтаксис `m[k]` для получения значения по ключу `k` в Map `m`.
-При этом `m[k]` последовательно просматривает Map, т.е. время выполнения операции линейно зависит от размера Map.
+Вы можете использовать синтаксис `m[k]`, чтобы получить значение для ключа `k` в Map `m`.
+Также операция `m[k]` последовательно сканирует Map, то есть время выполнения линейно зависит от размера Map.
 
 **Параметры**
 
-* `K` — Тип ключей Map. Произвольный тип, за исключением [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md) с вложенным типом [Nullable](../../sql-reference/data-types/nullable.md).
-* `V` — Тип значений Map. Произвольный тип.
+* `K` — тип ключей Map. Произвольный тип, за исключением [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md), совмещённых с типами [Nullable](../../sql-reference/data-types/nullable.md).
+* `V` — тип значений Map. Произвольный тип.
 
 **Примеры**
 
-Создание таблицы со столбцом типа Map:
+Создайте таблицу со столбцом типа Map:
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -68,9 +68,9 @@ SELECT m['key1'] FROM tab;
 ```
 
 
-## Преобразование Tuple в Map {#converting-tuple-to-map}
+## Преобразование Tuple в Map
 
-Значения типа `Tuple()` можно преобразовать в значения типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
+Значения типа `Tuple()` можно привести к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
 
 **Пример**
 
@@ -84,14 +84,14 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 
 ```text
 ┌─map───────────────────────────┐
-│ {1:'Ready',2:'Steady',3:'Go'} │
+│ {1:'Готово',2:'Внимание',3:'Марш'} │
 └───────────────────────────────┘
 ```
 
 
-## Чтение подстолбцов Map {#reading-subcolumns-of-map}
+## Чтение подстолбцов Map
 
-Чтобы избежать чтения всей структуры map, в некоторых случаях можно использовать подстолбцы `keys` и `values`.
+Чтобы избежать чтения всего столбца Map, в некоторых случаях можно использовать подстолбцы `keys` и `values`.
 
 **Пример**
 
@@ -101,8 +101,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   аналогично mapKeys(m)
-SELECT m.values FROM tab; -- аналогично mapValues(m)
+SELECT m.keys FROM tab; --   то же, что mapKeys(m)
+SELECT m.values FROM tab; -- то же, что mapValues(m)
 ```
 
 Результат:
@@ -119,11 +119,11 @@ SELECT m.values FROM tab; -- аналогично mapValues(m)
 
 **См. также**
 
-- Функция [map()](/sql-reference/functions/tuple-map-functions#map)
-- Функция [CAST()](/sql-reference/functions/type-conversion-functions#cast)
-- [Комбинатор -Map для типа данных Map](../aggregate-functions/combinators.md#-map)
+* Функция [map()](/sql-reference/functions/tuple-map-functions#map)
+* Функция [CAST()](/sql-reference/functions/type-conversion-functions#cast)
+* [-Map-комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
 
 
-## Связанный контент {#related-content}
+## Связанные материалы {#related-content}
 
-- Блог: [Построение решения для наблюдаемости с ClickHouse — Часть 2: Трассировки](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- Блог: [Решение для наблюдаемости на базе ClickHouse — часть 2: трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

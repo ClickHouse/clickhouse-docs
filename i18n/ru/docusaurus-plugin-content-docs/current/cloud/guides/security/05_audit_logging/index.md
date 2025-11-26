@@ -1,17 +1,17 @@
 ---
-sidebar_label: 'Ведение журналов аудита'
+sidebar_label: 'Аудит‑логирование'
 slug: /cloud/security/audit_logging
-title: 'Ведение журналов аудита'
+title: 'Аудит‑логирование'
 hide_title: true
-description: 'Страница оглавления раздела ClickHouse Cloud о ведении журналов аудита'
+description: 'Страница оглавления раздела ClickHouse Cloud по аудит‑логированию'
 doc_type: 'landing-page'
-keywords: ['ведение журналов аудита', 'соответствие требованиям', 'безопасность', 'логирование', 'мониторинг']
+keywords: ['аудит‑логирование', 'соответствие требованиям', 'безопасность', 'логирование', 'мониторинг']
 ---
 
 # Журналы аудита
 
-| Page                                                                | Description                                                                        |
+| Страница                                                            | Описание                                                                           |
 |---------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Console audit log](/cloud/security/audit-logging/console-audit-log)    | Доступ к событиям аудита и их просмотр в консоли ClickHouse Cloud                 | 
-| [Database audit logs](/cloud/security/audit-logging/database-audit-log) | Журналы аудита активности в базе данных                                            |
-| [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook)   | Примеры журналов и запросов, которые клиенты могут использовать при разработке своей программы безопасности в модели BYOC |
+| [Console audit log](/cloud/security/audit-logging/console-audit-log)    | Доступ к событиям аудита в консоли ClickHouse Cloud и их просмотр                 | 
+| [Database audit logs](/cloud/security/audit-logging/database-audit-log) | Журналы, относящиеся к операциям с базой данных                                   |
+| [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook)   | Примеры журналов и запросов, которые клиенты могут использовать при разработке программы безопасности BYOC |

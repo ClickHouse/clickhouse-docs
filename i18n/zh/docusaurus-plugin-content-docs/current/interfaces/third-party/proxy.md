@@ -1,5 +1,5 @@
 ---
-description: '介绍适用于 ClickHouse 的第三方代理解决方案'
+description: '描述可用于 ClickHouse 的第三方代理解决方案'
 sidebar_label: '代理'
 sidebar_position: 29
 slug: /interfaces/third-party/proxy
@@ -17,36 +17,38 @@ doc_type: 'reference'
 
 [chproxy](https://github.com/Vertamedia/chproxy) 是一个用于 ClickHouse 数据库的 HTTP 代理和负载均衡器。
 
-特性：
+功能特性：
 
-- 按用户路由和响应缓存。
-- 灵活的限制配置。
-- 自动 SSL 证书续期。
+- 按用户划分的路由和响应缓存。
+- 灵活的限制机制。
+- 自动续期 SSL 证书。
 
-使用 Go 语言实现。
+由 Go 语言实现。
+
 
 
 ## KittenHouse {#kittenhouse}
 
-[KittenHouse](https://github.com/VKCOM/kittenhouse) 是一个位于 ClickHouse 与应用服务器之间的本地代理,用于在应用端无法或不便缓冲 INSERT 数据时使用。
+[KittenHouse](https://github.com/VKCOM/kittenhouse) 旨在在无法或不方便在应用程序端对 `INSERT` 数据进行缓冲时，作为 ClickHouse 与应用服务器之间的本地代理。
 
-特性:
+特性：
 
-- 内存和磁盘数据缓冲。
-- 按表路由。
-- 负载均衡和健康检查。
+- 内存与磁盘级数据缓冲。
+- 基于表的路由。
+- 负载均衡与健康检查。
 
-使用 Go 实现。
+使用 Go 语言实现。
+
 
 
 ## ClickHouse-Bulk {#clickhouse-bulk}
 
-[ClickHouse-Bulk](https://github.com/nikepan/clickhouse-bulk) 是一个简单的 ClickHouse 插入数据收集器。
+[ClickHouse-Bulk](https://github.com/nikepan/clickhouse-bulk) 是一个简单的 ClickHouse 数据写入收集器。
 
-功能特性:
+功能：
 
-- 按阈值或时间间隔对请求进行分组并发送。
+- 将请求分组，并按阈值或时间间隔批量发送。
 - 支持多个远程服务器。
 - 支持基本身份验证。
 
-使用 Go 语言实现。
+用 Go 编写。

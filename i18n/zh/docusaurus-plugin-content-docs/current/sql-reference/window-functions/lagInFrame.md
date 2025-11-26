@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 # lagInFrame
 
-返回在有序窗口帧中、相对于当前行向前指定物理偏移量的那一行上计算得到的值。
+返回在有序窗口帧内、位于当前行之前指定物理偏移量处那一行所计算得到的值。
 
 :::warning
-`lagInFrame` 的行为不同于标准 SQL 的 `lag` 窗口函数。
-ClickHouse 窗口函数 `lagInFrame` 会遵循窗口帧的定义。
-要获得与 `lag` 完全相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+`lagInFrame` 的行为与标准 SQL 的 `lag` 窗口函数不同。
+ClickHouse 窗口函数 `lagInFrame` 会遵从窗口帧的定义。
+若要获得与 `lag` 完全相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 :::
 
 **语法**
@@ -27,21 +27,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详情，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更多细节，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **参数**
 
 * `x` — 列名。
-* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 - 默认为 `1`）。
-* `default` — 当计算得到的行超出窗口帧边界时返回的值。（可选 - 省略时为列类型的默认值）。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认值为 `1`）。
+* `default` — 当计算行超出窗口帧边界时返回的值。（可选 — 省略时使用列类型的默认值）。
 
 **返回值**
 
-* 在有序窗口帧中，相对于当前行向前指定物理偏移量位置的那一行上所得到的值。
+* 在有序窗口帧中，相对于当前行具有指定物理偏移量的那一行上所计算得到的值。
 
 **示例**
 
-此示例查看某只股票的历史数据，并使用 `lagInFrame` 函数计算该股票收盘价的逐日差值和百分比变化。
+此示例查看某只股票的历史数据，并使用 `lagInFrame` 函数来计算该股票收盘价的逐日差值和百分比变动。
 
 查询：
 

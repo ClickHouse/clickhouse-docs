@@ -1,9 +1,9 @@
 ---
-description: 'テーブル TTL の操作方法に関するドキュメント'
+description: 'テーブル TTL の操作に関するリファレンス'
 sidebar_label: 'TTL'
 sidebar_position: 44
 slug: /sql-reference/statements/alter/ttl
-title: 'テーブル TTL の操作'
+title: 'テーブル TTL の操作方法'
 doc_type: 'reference'
 ---
 
@@ -12,23 +12,23 @@ doc_type: 'reference'
 # テーブル TTL の操作
 
 :::note
-古いデータの管理に TTL を使用する方法の詳細については、ユーザーガイド [Manage Data with TTL](/guides/developer/ttl.md) を参照してください。以下では、既存の TTL ルールを変更または削除する方法を説明します。
+古いデータを管理するための TTL の使い方についての詳細をお探しの場合は、ユーザーガイドの [Manage Data with TTL](/guides/developer/ttl.md) を参照してください。以下では、既存の TTL ルールを変更または削除する方法を示します。
 :::
 
 
 
-## MODIFY TTL {#modify-ttl}
+## TTL の変更
 
-次の形式のリクエストで[テーブルTTL](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl)を変更できます:
+次の形式のクエリを使用して、[テーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) を変更できます。
 
 ```sql
 ALTER TABLE [db.]table_name [ON CLUSTER cluster] MODIFY TTL ttl_expression;
 ```
 
 
-## REMOVE TTL {#remove-ttl}
+## TTL の削除
 
-TTLプロパティは次のクエリでテーブルから削除できます:
+TTL プロパティは、次のクエリを使用してテーブルから削除できます。
 
 ```sql
 ALTER TABLE [db.]table_name [ON CLUSTER cluster] REMOVE TTL
@@ -36,7 +36,7 @@ ALTER TABLE [db.]table_name [ON CLUSTER cluster] REMOVE TTL
 
 **例**
 
-テーブル`TTL`を持つテーブルを考えます:
+`TTL` が設定されたテーブルを考えます:
 
 ```sql
 CREATE TABLE table_with_ttl
@@ -55,14 +55,14 @@ INSERT INTO table_with_ttl VALUES (now(), 1, 'username1');
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
 ```
 
-`OPTIMIZE`を実行して`TTL`クリーンアップを強制します:
+`TTL` のクリーンアップを強制的に実行するには、`OPTIMIZE` を実行します:
 
 ```sql
 OPTIMIZE TABLE table_with_ttl FINAL;
 SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 ```
 
-2行目がテーブルから削除されました。
+テーブルの 2 行目が削除されました。
 
 ```text
 ┌─────────event_time────┬──UserID─┬─────Comment──┐
@@ -70,13 +70,13 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 └───────────────────────┴─────────┴──────────────┘
 ```
 
-次のクエリでテーブル`TTL`を削除します:
+次のクエリでテーブルの `TTL` 設定を削除します。
 
 ```sql
 ALTER TABLE table_with_ttl REMOVE TTL;
 ```
 
-削除された行を再挿入し、`OPTIMIZE`で再度`TTL`クリーンアップを強制します:
+削除した行を再挿入し、`OPTIMIZE` を実行して `TTL` のクリーンアップを再度強制します:
 
 ```sql
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
@@ -84,7 +84,7 @@ OPTIMIZE TABLE table_with_ttl FINAL;
 SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 ```
 
-`TTL`が存在しないため、2行目は削除されません:
+`TTL` がなくなったため、2 行目は削除されません：
 
 ```text
 ┌─────────event_time────┬──UserID─┬─────Comment──┐
@@ -95,5 +95,5 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 
 **関連項目**
 
-- [TTL式](../../../sql-reference/statements/create/table.md#ttl-expression)の詳細。
-- [TTLを使用した](/sql-reference/statements/alter/ttl)カラムの変更。
+* [TTL 式](../../../sql-reference/statements/create/table.md#ttl-expression) の詳細について。
+* 列を [TTL 付きで変更する](/sql-reference/statements/alter/ttl)。

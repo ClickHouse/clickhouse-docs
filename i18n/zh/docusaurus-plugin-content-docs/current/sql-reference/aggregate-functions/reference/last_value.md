@@ -1,5 +1,5 @@
 ---
-description: '选择最后出现的值，类似于 `anyLast`，但可以接受 NULL 值。'
+description: '选择最后出现的值，类似于 `anyLast`，但允许 NULL 值。'
 sidebar_position: 160
 slug: /sql-reference/aggregate-functions/reference/last_value
 title: 'last_value'
@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 # last_value
 
-选择遇到的最后一个值，与 `anyLast` 类似，但可以返回 NULL。
-通常应当与[窗口函数](../../window-functions/index.md)一起使用。
-如果不使用窗口函数且源数据流未排序，则结果是随机的。
+选择最后出现的值，与 `anyLast` 类似，但可以接受 NULL。
+它主要应与[窗口函数](../../window-functions/index.md)一起使用。
+如果不使用窗口函数且源数据流未排序，则结果将是随机的。
 
 
 
-## 示例 {#examples}
+## 示例
 
 ```sql
 CREATE TABLE test_data
@@ -29,9 +29,9 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### 示例 1 {#example1}
+### 示例 1
 
-默认忽略 NULL 值。
+默认情况下会忽略 NULL 值。
 
 ```sql
 SELECT last_value(b) FROM test_data
@@ -43,12 +43,12 @@ SELECT last_value(b) FROM test_data
 └────────────────────────────┘
 ```
 
-### 示例 2 {#example2}
+### 示例 2
 
-忽略 NULL 值。
+NULL 值会被忽略。
 
 ```sql
-SELECT last_value(b) ignore nulls FROM test_data
+SELECT last_value(b) IGNORE NULLS FROM test_data
 ```
 
 ```text
@@ -57,12 +57,12 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-### 示例 3 {#example3}
+### 示例 3
 
 接受 NULL 值。
 
 ```sql
-SELECT last_value(b) respect nulls FROM test_data
+SELECT last_value(b) RESPECT NULLS FROM test_data
 ```
 
 ```text
@@ -71,9 +71,9 @@ SELECT last_value(b) respect nulls FROM test_data
 └─────────────────────────────┘
 ```
 
-### 示例 4 {#example4}
+### 示例 4
 
-使用带 `ORDER BY` 的子查询稳定结果。
+使用包含 `ORDER BY` 的子查询来稳定结果。
 
 ```sql
 SELECT

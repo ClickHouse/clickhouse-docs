@@ -4,8 +4,9 @@ sidebar_label: 'Nessie カタログ'
 title: 'Nessie カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Nessie カタログを使用してデータにクエリを実行する手順を説明します。'
-keywords: ['Nessie', 'REST', 'トランザクショナル', 'データレイク', 'Iceberg', 'Git ライク']
+description: 'このガイドでは、ClickHouse と Nessie カタログを使用して
+ データに対してクエリを実行する手順を説明します。'
+keywords: ['Nessie', 'REST', 'トランザクショナル', 'データレイク', 'Iceberg', 'Git 風']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,43 +16,43 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge />
 
 :::note
-Nessie Catalog との統合は、Iceberg テーブルでのみ利用できます。
-この統合機能は、AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
+Nessie Catalog との連携は Iceberg テーブルに対してのみ動作します。
+この連携機能は AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
-ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [Nessie](https://projectnessie.org/) カタログを使用してデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ（Unity、Glue、REST、Polaris など）との連携をサポートしています。このガイドでは、ClickHouse と [Nessie](https://projectnessie.org/) カタログを使用してデータをクエリする手順を説明します。
 
 Nessie はデータレイク向けのオープンソースのトランザクションカタログで、次の機能を提供します。
 
-* ブランチとコミットによる **Git 風** のデータバージョン管理
-* **テーブル間トランザクション** と可視性に関する保証
-* Iceberg REST カタログ仕様に準拠した **REST API**
+* ブランチとコミットによる **Git に着想を得た** データバージョン管理
+* **テーブル間トランザクション** と可視性の保証
+* Iceberg REST カタログ仕様に準拠した **REST API** 準拠
 * Hive、Spark、Dremio、Trino などをサポートする **オープンデータレイク** アプローチ
-* Docker または Kubernetes 上での **本番運用対応の** デプロイ
+* Docker または Kubernetes 上での **本番運用対応の** デプロイメント
 
 :::note
-この機能は実験的機能であるため、次の設定で有効化する必要があります。
+この機能は実験的な機能のため、次の設定で有効化する必要があります。
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
 
-## ローカル開発環境のセットアップ {#local-development-setup}
+## ローカル開発環境のセットアップ
 
-ローカル開発およびテストには、コンテナ化されたNessieセットアップを使用できます。このアプローチは、学習、プロトタイピング、開発環境に最適です。
+ローカルでの開発およびテストには、コンテナ化された Nessie 環境を使用できます。この方法は、学習、プロトタイピング、および開発環境に最適です。
 
-### 前提条件 {#local-prerequisites}
+### 前提条件
 
-1. **DockerおよびDocker Compose**: Dockerがインストールされ、実行されていることを確認してください
-2. **サンプルセットアップ**: 公式のNessie docker-composeセットアップを使用できます
+1. **Docker と Docker Compose**: Docker がインストールされ、起動していることを確認する
+2. **サンプルセットアップ**: 公式の Nessie の docker-compose セットアップを使用できます
 
-### ローカルNessieカタログのセットアップ {#setting-up-local-nessie-catalog}
+### ローカル Nessie Catalog のセットアップ
 
-公式の[Nessie docker-composeセットアップ](https://projectnessie.org/guides/setting-up/)を使用できます。これは、Nessie、インメモリバージョンストア、およびオブジェクトストレージ用のMinIOを含む完全な環境を提供します。
+Nessie、インメモリ版のバージョンストア、およびオブジェクトストレージ用の MinIO を含む完全な環境を提供する、公式の [Nessie docker-compose セットアップ](https://projectnessie.org/guides/setting-up/) を使用できます。
 
-**ステップ1:** サンプルを実行するための新しいフォルダを作成し、以下の設定で`docker-compose.yml`ファイルを作成します:
+**ステップ 1:** 例を実行するための新しいディレクトリを作成し、その中に次の構成を含む `docker-compose.yml` ファイルを作成します:
 
 ```yaml
-version: "3.8"
+version: '3.8'
 
 services:
   nessie:
@@ -104,13 +105,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: "0:0" # Ensures root permissions
+    user: '0:0'  # Ensures root permissions
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import # Mount dataset folder
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
     networks:
       - iceberg_net
     environment:
@@ -132,35 +133,34 @@ networks:
     driver: bridge
 ```
 
-**ステップ2:** 以下のコマンドを実行してサービスを起動します:
+**ステップ 2：** サービスを起動するには、次のコマンドを実行します。
 
 ```bash
 docker compose up -d
 ```
 
-**ステップ3:** すべてのサービスが準備完了になるまで待機します。ログを確認できます:
+**ステップ 3:** すべてのサービスの起動が完了するまで待ちます。ログを確認できます：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Nessieセットアップはインメモリバージョンストアを使用するため、最初にサンプルデータをIcebergテーブルにロードする必要があります。ClickHouseを通じてクエリを実行する前に、環境がテーブルを作成し、データを投入済みであることを確認してください。
+Nessie のセットアップではインメモリのバージョンストアを使用しており、事前にサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse 経由でクエリを実行する前に、環境でテーブルが作成され、データが投入されていることを確認してください。
 :::
 
-### ローカルNessieカタログへの接続 {#connecting-to-local-nessie-catalog}
+### ローカル Nessie カタログへの接続
 
-ClickHouseコンテナに接続します:
+ClickHouse コンテナに接続します:
 
 ```bash
 docker exec -it nessie-clickhouse clickhouse-client
 ```
 
-次に、Nessieカタログへのデータベース接続を作成します:
+次に、Nessie カタログへのデータベース接続を作成します。
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
-
 ```
 
 
@@ -172,9 +172,9 @@ SETTINGS catalog&#95;type = &#39;rest&#39;, storage&#95;endpoint = &#39;[http://
 ```
 
 
-## ClickHouseを使用したNessieカタログテーブルのクエリ {#querying-nessie-catalog-tables-using-clickhouse}
+## ClickHouse から Nessie カタログテーブルをクエリする
 
-接続が確立されたので、Nessieカタログを介したクエリを開始できます。例:
+接続が確立できたので、Nessie カタログ経由でクエリを実行できるようになりました。たとえば、次のように実行します。
 
 ```sql
 USE demo;
@@ -182,22 +182,22 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ(タクシーデータセットなど)が含まれている場合、次のようなテーブルが表示されます:
+セットアップにサンプルデータ（タクシーのデータセットなど）が含まれている場合、次のようなテーブルが表示されます：
 
-```sql title="レスポンス"
+```sql title="Response"
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
 ```
 
 :::note
-テーブルが表示されない場合、通常は次のいずれかを意味します:
+テーブルが表示されない場合、通常は次のいずれかが原因です：
 
-1. 環境がまだサンプルテーブルを作成していない
-2. Nessieカタログサービスが完全に初期化されていない
-3. サンプルデータの読み込みプロセスが完了していない
+1. 環境でサンプルテーブルがまだ作成されていない
+2. Nessie カタログサービスが完全に初期化されていない
+3. サンプルデータのロード処理が完了していない
 
-Nessieログを確認してカタログのアクティビティを確認できます:
+カタログの動作状況を確認するには、Nessie のログを参照してください：
 
 ```bash
 docker-compose logs nessie
@@ -205,29 +205,29 @@ docker-compose logs nessie
 
 :::
 
-テーブルをクエリするには(利用可能な場合):
+テーブル（存在する場合）に対してクエリを実行するには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="レスポンス"
+```sql title="Response"
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
 ```
 
-:::note バッククォートが必要
-ClickHouseは複数の名前空間をサポートしていないため、バッククォートが必要です。
+:::note Backticks required
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルのDDLを確認するには:
+テーブルの DDL を確認するには：
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="レスポンス"
+```sql title="Response"
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -256,9 +256,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Data LakeからClickHouseへのデータロード {#loading-data-from-your-data-lake-into-clickhouse}
+## データレイクから ClickHouse へのデータ読み込み
 
-NessieカタログからClickHouseにデータをロードする場合は、まずローカルのClickHouseテーブルを作成します:
+Nessie カタログから ClickHouse へデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 
 ```sql
 CREATE TABLE taxis
@@ -288,9 +288,9 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-次に、`INSERT INTO SELECT`を使用してNessieカタログテーブルからデータをロードします:
+次に、`INSERT INTO SELECT` 文を使用して、Nessie カタログのテーブルからデータをロードします。
 
 ```sql
-INSERT INTO taxis
+INSERT INTO taxis 
 SELECT * FROM demo.`default.taxis`;
 ```

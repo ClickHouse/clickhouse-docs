@@ -10,8 +10,8 @@ doc_type: 'reference'
 # largestTriangleThreeBuckets
 
 Применяет алгоритм [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) к входным данным.
-Алгоритм используется для даунсэмплинга временных рядов при визуализации. Он предназначен для работы с рядами, отсортированными по координате `x`.
-Он работает, разбивая отсортированный ряд на бакеты и затем находя наибольший треугольник в каждом бакете. Количество бакетов равно количеству точек в результирующем ряду.
+Алгоритм используется для даунсэмплинга данных временного ряда при визуализации. Он предназначен для работы с рядами, отсортированными по координате x.
+Алгоритм работает, разбивая отсортированный ряд на корзины (buckets), а затем находя наибольший треугольник в каждой корзине. Количество корзин равно количеству точек в результирующем ряду.
 Функция сортирует данные по `x`, а затем применяет алгоритм даунсэмплинга к отсортированным данным.
 
 **Синтаксис**
@@ -20,18 +20,18 @@ doc_type: 'reference'
 largestTriangleThreeBuckets(n)(x, y)
 ```
 
-Alias: `lttb`.
+Псевдоним: `lttb`.
 
 **Аргументы**
 
 * `x` — координата x. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md), [Decimal](../../../sql-reference/data-types/decimal.md), [Date](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [DateTime](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md).
 * `y` — координата y. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md), [Decimal](../../../sql-reference/data-types/decimal.md), [Date](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [DateTime](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md).
 
-Значения NaN во входной серии игнорируются, то есть любые значения NaN исключаются из анализа. Это гарантирует, что функция работает только с корректными числовыми данными.
+Значения NaN во входной последовательности игнорируются, то есть любые значения NaN исключаются из анализа. Это гарантирует, что функция работает только с корректными числовыми данными.
 
 **Параметры**
 
-* `n` — количество точек в результирующей серии. [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `n` — количество точек в результирующей последовательности. [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 

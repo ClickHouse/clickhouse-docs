@@ -1,5 +1,5 @@
 ---
-description: 'Dynamic カラムに格納されている一意なデータ型の一覧を算出します。'
+description: 'Dynamic カラムに格納されている重複のないデータ型の一覧を計算します。'
 sidebar_position: 215
 slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
 title: 'distinctDynamicTypes'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctDynamicTypes
 
-[Dynamic](../../data-types/dynamic.md) 列に格納されている異なるデータ型の一覧を取得します。
+[Dynamic](../../data-types/dynamic.md) カラムに格納されている異なるデータ型の一覧を返します。
 
 **構文**
 
@@ -22,7 +22,7 @@ distinctDynamicTypes(dynamic)
 
 **戻り値**
 
-* データ型名をソートしたリスト [Array(String)](../../data-types/array.md)。
+* データ型名のソートされたリスト [Array(String)](../../data-types/array.md)。
 
 **例**
 
@@ -38,7 +38,7 @@ INSERT INTO test_dynamic VALUES (42), (NULL), ('Hello'), ([1, 2, 3]), ('2020-01-
 SELECT distinctDynamicTypes(d) FROM test_dynamic;
 ```
 
-結果：
+結果:
 
 ```reference
 ┌─distinctDynamicTypes(d)──────────────────────────────────────┐

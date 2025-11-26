@@ -1,5 +1,5 @@
 ---
-description: '计算 bitmap 列的按位异或值，并返回其基数（UInt64 类型）；如果使用后缀 -State，则返回 bitmap 对象'
+description: '对 bitmap 列执行 XOR 运算并返回 UInt64 类型的基数；如果带有 -State 后缀，则返回一个 bitmap 对象'
 sidebar_position: 151
 slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
 title: 'groupBitmapXor'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmapXor
 
-`groupBitmapXor` 计算一个 bitmap 列的按位异或，并返回其基数，类型为 UInt64。如果使用后缀 -State，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。
+`groupBitmapXor` 计算 bitmap 列按位异或后的结果的基数，并以 UInt64 类型返回。如果使用后缀 -State，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。
 
 ```sql
 groupBitmapXor(expr)
@@ -16,11 +16,11 @@ groupBitmapXor(expr)
 
 **参数**
 
-`expr` – 其结果类型为 `AggregateFunction(groupBitmap, UInt*)` 的表达式。
+`expr` – 结果类型为 `AggregateFunction(groupBitmap, UInt*)` 的表达式。
 
 **返回值**
 
-`UInt64` 类型的值。
+类型为 `UInt64` 的值。
 
 **示例**
 

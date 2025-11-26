@@ -1,9 +1,9 @@
 ---
 slug: /optimize/bulk-inserts
-sidebar_label: '一括挿入'
-title: '一括挿入'
-description: '各INSERTに含めるデータ量を増やしてINSERT回数を減らすことで、必要な書き込み回数を削減できます。'
-keywords: ['bulk insert', 'batch insert', 'insert optimization']
+sidebar_label: 'バルクインサート'
+title: 'バルクインサート'
+description: '各インサートにより多くのデータを含めつつ、インサート回数を減らすことで、必要な書き込み回数を削減できます。'
+keywords: ['バルクインサート', 'バッチインサート', 'INSERT の最適化']
 doc_type: 'guide'
 ---
 

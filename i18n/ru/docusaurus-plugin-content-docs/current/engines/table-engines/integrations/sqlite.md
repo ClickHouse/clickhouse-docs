@@ -1,5 +1,5 @@
 ---
-description: 'Табличный движок позволяет импортировать данные из и экспортировать в SQLite, а также выполнять запросы к таблицам SQLite напрямую из ClickHouse.'
+description: 'Движок позволяет импортировать данные в SQLite и экспортировать их из SQLite, а также поддерживает выполнение запросов к таблицам SQLite непосредственно из ClickHouse.'
 sidebar_label: 'SQLite'
 sidebar_position: 185
 slug: /engines/table-engines/integrations/sqlite
@@ -10,15 +10,15 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблицы SQLite
+# Движок таблиц SQLite
 
 <CloudNotSupportedBadge/>
 
-Этот движок позволяет выполнять импорт и экспорт данных между ClickHouse и SQLite, а также поддерживает выполнение запросов к таблицам SQLite непосредственно из ClickHouse.
+Этот движок позволяет импортировать данные в SQLite и экспортировать их из неё, а также выполнять запросы к таблицам SQLite непосредственно из ClickHouse.
 
 
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -30,13 +30,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 **Параметры движка**
 
-- `db_path` — путь к файлу SQLite с базой данных.
-- `table` — имя таблицы в базе данных SQLite.
+* `db_path` — Путь к файлу базы данных SQLite.
+* `table` — Название таблицы в базе данных SQLite.
 
 
-## Пример использования {#usage-example}
+## Пример использования
 
-Запрос для отображения структуры таблицы SQLite:
+Пример запроса для создания таблицы SQLite:
 
 ```sql
 SHOW CREATE TABLE sqlite_db.table2;
@@ -51,7 +51,7 @@ CREATE TABLE SQLite.table2
 ENGINE = SQLite('sqlite.db','table2');
 ```
 
-Запрос для получения данных из таблицы:
+Возвращает данные из таблицы:
 
 ```sql
 SELECT * FROM sqlite_db.table2 ORDER BY col1;
@@ -67,5 +67,5 @@ SELECT * FROM sqlite_db.table2 ORDER BY col1;
 
 **См. также**
 
-- Движок [SQLite](../../../engines/database-engines/sqlite.md)
-- Табличная функция [sqlite](../../../sql-reference/table-functions/sqlite.md)
+* Движок таблицы [SQLite](../../../engines/database-engines/sqlite.md)
+* Табличная функция [sqlite](../../../sql-reference/table-functions/sqlite.md)

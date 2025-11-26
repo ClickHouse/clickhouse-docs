@@ -2,8 +2,8 @@
 sidebar_position: 1
 sidebar_label: '自动伸缩'
 slug: /manage/scaling
-description: '在 ClickHouse Cloud 中配置自动伸缩功能'
-keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', 'bursts']
+description: '在 ClickHouse Cloud 中配置自动伸缩'
+keywords: ['自动伸缩', '自动扩缩容', '扩缩容', '水平扩展', '垂直扩展', '突发流量']
 title: '自动伸缩'
 doc_type: 'guide'
 ---
@@ -19,157 +19,140 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # 自动伸缩
 
-伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise（标准 1:4 规格）层级中的服务可以通过以编程方式调用 API，或在 UI 上更改设置来进行水平伸缩，从而调整系统资源。这些服务还可以进行**垂直自动伸缩**，以满足应用程序的需求。
+伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 :::note
-Scale 和 Enterprise 层级支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规模是固定的，不允许垂直或水平伸缩。用户可以升级到 Scale 或 Enterprise 层级来对其服务进行伸缩。
+Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。用户可以升级到 Scale 或 Enterprise 层级来对其服务进行伸缩。
 :::
 
 
 
-## ClickHouse Cloud 中扩缩容的工作原理 {#how-scaling-works-in-clickhouse-cloud}
+## ClickHouse Cloud 中的扩缩容工作原理 {#how-scaling-works-in-clickhouse-cloud}
 
-目前,ClickHouse Cloud 为 Scale 层级服务提供垂直自动扩缩容和手动水平扩缩容功能。
+目前，ClickHouse Cloud 在 Scale 层级服务上支持垂直自动扩缩容和手动水平扩缩容。
 
-对于 Enterprise 层级服务,扩缩容的工作方式如下:
+对于 Enterprise 层级服务，扩缩容行为如下：
 
-- **水平扩缩容**:Enterprise 层级的所有标准和自定义配置文件均支持手动水平扩缩容。
-- **垂直扩缩容**:
-  - 标准配置文件 (1:4) 支持垂直自动扩缩容。
-  - 自定义配置文件(`highMemory` 和 `highCPU`)不支持垂直自动扩缩容或手动垂直扩缩容。但可以通过联系技术支持对这些服务进行垂直扩缩容。
+- **水平扩缩容**：在 Enterprise 层级的所有标准和自定义配置中均支持手动水平扩缩容。
+- **垂直扩缩容**：
+  - 标准配置（1:4）支持垂直自动扩缩容。
+  - 自定义配置（`highMemory` 和 `highCPU`）不支持垂直自动扩缩容或手动垂直扩缩容。不过，仍然可以通过联系支持团队对这些服务进行垂直扩缩容。
 
 :::note
-ClickHouse Cloud 中的扩缩容采用我们称之为["先建后断" (MBB)](/cloud/features/mbb) 的方法。
-该方法会在移除旧副本之前先添加一个或多个新规格的副本,从而防止扩缩容操作期间出现任何容量损失。
-通过消除移除现有副本和添加新副本之间的间隙,MBB 实现了更加平滑且干扰更少的扩缩容过程。
-这在扩容场景中尤其有益,因为当高资源利用率触发对额外容量的需求时,过早移除副本只会加剧资源限制。
-作为该方法的一部分,我们会等待最多一小时,让旧副本上的所有现有查询完成后再移除它们。
-这在确保现有查询完成的同时,也保证了旧副本不会停留过长时间。
+ClickHouse Cloud 中的扩缩容采用我们称之为 ["先建后拆" (Make Before Break, MBB)](/cloud/features/mbb) 的方式。
+在移除旧副本之前，会先添加一个或多个新规格的副本，从而在扩缩容操作期间避免任何容量损失。
+通过消除移除现有副本与添加新副本之间的空档期，MBB 能够带来更加平滑、干扰更小的扩缩容过程。
+在扩容场景中，MBB 尤其有用：当高资源利用率触发额外容量需求时，如果过早移除副本只会进一步加剧资源紧张。
+作为这一机制的一部分，我们会最多等待一小时，让旧副本上已有的查询执行完成后才将其移除。
+这样既保证了现有查询有机会完成，又能避免旧副本长时间滞留。
 
-请注意,作为此变更的一部分:
-
-1. 历史系统表数据作为扩缩容事件的一部分最多保留 30 天。此外,作为迁移到新组织层级的一部分,AWS 或 GCP 上服务早于 2024 年 12 月 19 日的系统表数据,以及 Azure 上服务早于 2025 年 1 月 14 日的系统表数据将不会被保留。
-2. 对于使用 TDE(透明数据加密)的服务,系统表数据目前在 MBB 操作后不会被保留。我们正在努力消除此限制。
-   :::
+请注意，作为此次变更的一部分：
+1. 在扩缩容事件中，系统表的历史数据最多保留 30 天。此外，作为向新的组织层级迁移的一部分，AWS 或 GCP 上服务在 2024 年 12 月 19 日之前的系统表数据，以及 Azure 上服务在 2025 年 1 月 14 日之前的系统表数据将不会被保留。
+2. 对于启用了 TDE（Transparent Data Encryption，透明数据加密）的服务，目前在 MBB 操作后不会保留系统表数据。我们正在努力消除这一限制。
+:::
 
 ### 垂直自动扩缩容 {#vertical-auto-scaling}
 
-<ScalePlanFeatureBadge feature='Automatic vertical scaling' />
+<ScalePlanFeatureBadge feature="自动垂直扩缩容"/>
 
-Scale 和 Enterprise 服务支持基于 CPU 和内存使用率的自动扩缩容。我们持续监控服务在回溯窗口(过去 30 小时)内的历史使用情况以做出扩缩容决策。如果使用率上升或下降超过特定阈值,我们会相应地扩缩容服务以匹配需求。
+Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩容。我们会在回溯窗口（跨度为过去 30 小时）内持续监控服务的历史使用情况，以此做出扩缩容决策。如果使用率高于或低于某些阈值，我们会对服务进行相应扩缩容，以匹配负载需求。
 
-对于非 MBB 服务,当 CPU 使用率超过 50-75% 范围内的上限阈值(实际阈值取决于集群规模)时,基于 CPU 的自动扩缩容会触发。此时,分配给集群的 CPU 会翻倍。如果 CPU 使用率降至上限阈值的一半以下(例如,在上限阈值为 50% 的情况下降至 25%),CPU 分配会减半。
+对于非 MBB 服务，当 CPU 使用率超过 50-75% 范围内的上限阈值时（具体阈值取决于集群规模），基于 CPU 的自动扩缩容将被触发。此时，集群的 CPU 配额会被翻倍。如果 CPU 使用率降到上限阈值一半以下（例如上限阈值为 50% 时降到 25%），则 CPU 配额会减半。
 
-对于已采用 MBB 扩缩容方法的服务,扩容在 CPU 阈值达到 75% 时触发,缩容在该阈值的一半(即 37.5%)时触发。
+对于已采用 MBB 扩缩容策略的服务，扩容会在 CPU 使用率达到 75% 阈值时触发，缩容则在该阈值的一半（即 37.5%）时触发。
 
-基于内存的自动扩缩容会将集群扩展到最大内存使用量的 125%,如果遇到 OOM(内存不足)错误,则扩展到 150%。
+基于内存的自动扩缩容会将集群扩展至最大内存使用量的 125%，如果遇到 OOM（out of memory，内存耗尽）错误，则最多扩展到 150%。
 
-系统会选择 CPU 或内存建议中**较大**的一个,分配给服务的 CPU 和内存以 `1` 个 CPU 和 `4 GiB` 内存的同步增量进行扩缩容。
+会从 CPU 和内存的扩缩容建议中选择**较大**的那个，同时为服务分配的 CPU 和内存会以 `1` CPU 和 `4 GiB` 内存为步长同步调整。
 
 ### 配置垂直自动扩缩容 {#configuring-vertical-auto-scaling}
 
-具有 **Admin** 角色的组织成员可以调整 ClickHouse Cloud Scale 或 Enterprise 服务的扩缩容配置。要配置垂直自动扩缩容,请转到服务的 **Settings** 选项卡,并调整最小和最大内存以及 CPU 设置,如下所示。
+拥有 **Admin** 角色的组织成员可以调整 ClickHouse Cloud Scale 或 Enterprise 服务的扩缩容配置。要配置垂直自动扩缩容，请进入服务的 **Settings** 选项卡，并按如下所示调整最小和最大内存以及 CPU 设置。
 
 :::note
-所有层级的单副本服务均不支持扩缩容。
+单副本服务在所有层级中都无法进行扩缩容。
 :::
 
-<Image img={auto_scaling} size='lg' alt='Scaling settings page' border />
+<Image img={auto_scaling} size="lg" alt="扩缩容设置页面" border/>
 
-将副本的 **Maximum memory** 设置为高于 **Minimum memory** 的值。服务将根据需要在这些边界内进行扩缩容。这些设置在初始服务创建流程中也可用。服务中的每个副本将被分配相同的内存和 CPU 资源。
+将副本的 **Maximum memory** 设置为高于 **Minimum memory** 的值。随后，服务会在这些边界范围内根据需要自动扩缩容。在初始创建服务流程中也可以设置这些参数。服务中的每个副本都会被分配相同的内存和 CPU 资源。
 
-您也可以选择将这些值设置为相同,实质上是将服务"固定"到特定配置。这样做将立即强制扩缩容到您选择的目标规格。
+你也可以选择将这两个值设置为相同，从而将服务“锁定”在一个固定配置上。这样做会立即将服务扩缩容到你选择的目标规格。
 
-需要注意的是,这将禁用集群上的任何自动扩缩容,并且您的服务将无法应对超出这些设置的 CPU 或内存使用率增加。
+需要注意的是，这会禁用集群上的任何自动扩缩容功能，你的服务也将无法再针对 CPU 或内存使用率超出这些设置的情况获得保护。
 
 :::note
-对于 Enterprise 层级服务,标准 1:4 配置文件支持垂直自动扩缩容。
-自定义配置文件在发布时不支持垂直自动扩缩容或手动垂直扩缩容。
-但可以通过联系技术支持对这些服务进行垂直扩缩容。
+对于 Enterprise 层级服务，标准 1:4 配置将支持垂直自动扩缩容。
+自定义配置在首发时不支持垂直自动扩缩容或手动垂直扩缩容。
+不过，仍然可以通过联系支持团队对这些服务进行垂直扩缩容。
 :::
+
 
 
 ## 手动水平扩展 {#manual-horizontal-scaling}
 
-<ScalePlanFeatureBadge feature='Manual horizontal scaling' />
+<ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
-您可以使用 ClickHouse Cloud [公共 API](https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) 通过更新服务的扩展设置来扩展您的服务,或从云控制台调整副本数量。
+可以使用 ClickHouse Cloud 的 [公共 API](https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) 通过更新服务的伸缩设置来扩展服务，或者在云控制台中调整副本数量。
 
-**Scale** 和 **Enterprise** 层级还支持单副本服务。服务一旦横向扩展后,可以缩减至最少一个副本。请注意,单副本服务的可用性较低,不建议用于生产环境。
+**Scale** 和 **Enterprise** 级别也支持单副本服务。服务在横向扩容之后，可以再缩容至最少单个副本。请注意，单副本服务的可用性较低，不建议用于生产环境。
 
 :::note
-服务最多可以水平扩展至 20 个副本。如果您需要更多副本,请联系我们的支持团队。
+服务在水平方向最多可以扩展到 20 个副本。如果需要更多副本，请联系我们的支持团队。
 :::
 
 ### 通过 API 进行水平扩展 {#horizontal-scaling-via-api}
 
-要水平扩展集群,请通过 API 发出 `PATCH` 请求以调整副本数量。下面的截图显示了将 `3` 副本集群扩展到 `6` 副本的 API 调用及相应的响应。
+要对集群进行水平扩展，可通过 API 发出 `PATCH` 请求来调整副本数量。下面的截图展示了一个将 `3` 副本集群扩容到 `6` 副本的 API 调用以及对应的响应。
 
-<Image
-  img={scaling_patch_request}
-  size='lg'
-  alt='扩展 PATCH 请求'
-  border
-/>
+<Image img={scaling_patch_request} size="lg" alt="扩展 PATCH 请求" border/>
 
-_更新 `numReplicas` 的 `PATCH` 请求_
+*用于更新 `numReplicas` 的 `PATCH` 请求*
 
-<Image
-  img={scaling_patch_response}
-  size='md'
-  alt='扩展 PATCH 响应'
-  border
-/>
+<Image img={scaling_patch_response} size="md" alt="扩展 PATCH 响应" border/>
 
-_`PATCH` 请求的响应_
+*来自 `PATCH` 请求的响应*
 
-如果您在一个扩展请求正在进行时发出新的扩展请求或连续发出多个请求,扩展服务将忽略中间状态并收敛到最终的副本数量。
+如果在已有扩展操作正在进行时再次发起新的扩展请求或连续发起多个请求，伸缩服务将忽略中间状态，并收敛到最终的副本数量。
 
 ### 通过 UI 进行水平扩展 {#horizontal-scaling-via-ui}
 
-要从 UI 水平扩展服务,您可以在 **Settings** 页面调整服务的副本数量。
+要在 UI 中对服务进行水平扩展，可以在 **Settings** 页面中调整该服务的副本数量。
 
-<Image
-  img={scaling_configure}
-  size='md'
-  alt='扩展配置设置'
-  border
-/>
+<Image img={scaling_configure} size="md" alt="扩展配置设置" border/>
 
-_ClickHouse Cloud 控制台中的服务扩展设置_
+*ClickHouse Cloud 控制台中的服务扩展设置*
 
-服务扩展完成后,云控制台中的指标仪表板应显示服务的正确分配。下面的截图显示集群已扩展至总内存 `96 GiB`,即 `6` 个副本,每个副本分配 `16 GiB` 内存。
+服务扩展完成后，云控制台中的指标仪表盘应显示该服务正确的资源分配。下面的截图展示了集群扩展到总内存 `96 GiB` 的情况，即 `6` 个副本，每个副本分配 `16 GiB` 内存。
 
-<Image
-  img={scaling_memory_allocation}
-  size='md'
-  alt='扩展内存分配'
-  border
-/>
+<Image img={scaling_memory_allocation} size="md" alt="内存扩展分配" border />
+
 
 
 ## 自动空闲 {#automatic-idling}
-
-在**设置**页面中,您可以选择是否允许服务在不活动时自动进入空闲状态,如上图所示(即当服务未执行任何用户提交的查询时)。自动空闲可降低服务成本,因为当服务暂停时,您无需为计算资源付费。
+在 **Settings** 页面中，你还可以选择是否允许在服务处于非活动状态时自动进入空闲，如上图所示（即服务当前未执行任何用户提交的查询时）。自动空闲可以降低服务成本，因为当服务暂停时，你无需为计算资源付费。
 
 :::note
-在某些特殊情况下,例如当服务具有大量数据分片(parts)时,服务将不会自动进入空闲状态。
+在某些特殊情况下，例如当服务包含大量数据片段（parts）时，服务不会被自动置为空闲。
 
-服务可能会进入空闲状态,在此状态下会暂停[可刷新物化视图](/materialized-view/refreshable-materialized-view)的刷新、来自 [S3Queue](/engines/table-engines/integrations/s3queue) 的消费以及新合并操作的调度。现有的合并操作将在服务转换到空闲状态之前完成。为确保可刷新物化视图和 S3Queue 消费的持续运行,请禁用空闲状态功能。
+服务可能进入一种空闲状态，在该状态下会暂停刷新[可刷新的物化视图](/materialized-view/refreshable-materialized-view)、从 [S3Queue](/engines/table-engines/integrations/s3queue) 中消费数据，以及调度新的合并操作。现有的合并操作会在服务转换为空闲状态之前完成。若要确保可刷新的物化视图和 S3Queue 消费能够持续运行，请禁用自动空闲功能。
 :::
 
-:::danger 何时不应使用自动空闲
-仅当您的使用场景可以容忍查询响应延迟时才使用自动空闲,因为当服务暂停时,与服务的连接将超时。自动空闲非常适合不经常使用且可以容忍延迟的服务。不建议将其用于支持频繁使用的面向客户功能的服务。
+:::danger 不应使用自动空闲的场景
+仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
 :::
 
 
-## 处理工作负载峰值 {#handling-bursty-workloads}
 
-如果您预计工作负载即将出现峰值,可以使用 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 提前扩容服务以应对峰值,并在需求回落后进行缩容。
+## 处理工作负载峰值
 
-要了解每个副本当前使用的 CPU 核心数和内存,可以运行以下查询:
+如果您预期即将出现工作负载峰值，可以使用
+[ClickHouse Cloud API](/cloud/manage/api/api-overview)
+提前将服务向上扩容以应对这一峰值，并在需求回落后再缩容。
+
+要了解每个副本当前使用的 CPU 核心数和内存使用情况，可以运行下面的查询：
 
 ```sql
 SELECT *

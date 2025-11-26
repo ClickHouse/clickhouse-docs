@@ -1,25 +1,25 @@
 ---
-description: 'PromQL 風の irate および idelta 計算のために時系列データを再サンプリングする集約関数'
+description: 'PromQL風の irate および idelta 計算のために時系列データを再サンプリングする集約関数'
 sidebar_position: 224
 slug: /sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples
 title: 'timeSeriesLastTwoSamples'
 doc_type: 'reference'
 ---
 
-タイムスタンプと値のペアとして時系列データを受け取り、最新サンプルを最大 2 件までのみ保持する集約関数です。
+タイムスタンプと値のペアとして渡された時系列データから、最大で直近2件のサンプルのみを保持する集約関数です。
 
 引数:
 
 * `timestamp` - サンプルのタイムスタンプ
 * `value` - `timestamp` に対応する時系列の値\
-  また、同じサイズの配列 (`Array`) として、複数のタイムスタンプと値のサンプルを渡すことも可能です。
+  また、同じサイズの配列として、複数のタイムスタンプと値のサンプルを渡すこともできます。
 
 戻り値:
-`Tuple(Array(DateTime), Array(Float64))` - 長さが 0 から 2 のいずれかで、互いに同じ長さを持つ 2 つの配列からなるタプル。1 番目の配列にはサンプリングされた時系列のタイムスタンプが、2 番目の配列にはそれに対応する時系列の値が格納されます。
+`Tuple(Array(DateTime), Array(Float64))` - 長さが 0 から 2 の範囲の、同じ長さを持つ 2 つの配列から成るペア。1 つ目の配列にはサンプリングされた時系列のタイムスタンプが含まれ、2 つ目の配列にはそれに対応する時系列の値が含まれます。
 
 例:
-この集約関数は、グリッドに揃えたタイムスタンプに対して再サンプリングした時系列データを保存する、Materialized View と集約テーブルでの利用を想定しています。
-以下に、生データ用のテーブルと、再サンプリングデータを保存するテーブルの例を示します。
+この集約関数は、グリッドに揃えたタイムスタンプに対して再サンプリングされた時系列データを保存するマテリアライズドビューと集約テーブルでの利用を想定しています。
+以下の生データ用テーブルと、再サンプリングされたデータを保存するテーブルの例を考えます。
 
 ```sql
 -- 生データ用テーブル
@@ -32,11 +32,11 @@ CREATE TABLE t_raw_timeseries
 ENGINE = MergeTree()
 ORDER BY (metric_id, timestamp);
 
--- より大きな時間ステップ(15秒)にリサンプリングされたデータ用テーブル
+-- より大きな時間間隔（15秒）にリサンプリングされたデータ用テーブル
 CREATE TABLE t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
-    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- 15秒に整列したタイムスタンプ
+    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- 15秒に整列されたタイムスタンプ
     samples AggregateFunction(timeSeriesLastTwoSamples, DateTime64(3, 'UTC'), Float64)
 )
 ENGINE = AggregatingMergeTree()
@@ -51,13 +51,13 @@ CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_se
 )
 AS SELECT
     metric_id,
-    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- タイムスタンプを次のグリッドポイントに切り上げる
+    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- タイムスタンプを次のグリッドポイントに切り上げ
     initializeAggregation('timeSeriesLastTwoSamplesState', timestamp, value) AS samples
 FROM t_raw_timeseries
 ORDER BY metric_id, grid_timestamp;
 ```
 
-いくつかのテストデータを挿入し、&#39;2024-12-12 12:00:12&#39; から &#39;2024-12-12 12:00:30&#39; までのデータを読み込みます
+いくつかテストデータを挿入し、&#39;2024-12-12 12:00:12&#39; から &#39;2024-12-12 12:00:30&#39; の間のデータを読み取ります
 
 ```sql
 -- データを挿入
@@ -95,10 +95,10 @@ ORDER BY metric_id, timestamp;
 3    2024-12-12 12:00:30.869    25
 ```
 
-タイムスタンプ &#39;2024-12-12 12:00:15&#39; および &#39;2024-12-12 12:00:30&#39; に対応する最新 2 件のサンプルをクエリします:
+タイムスタンプ &#39;2024-12-12 12:00:15&#39; および &#39;2024-12-12 12:00:30&#39; の直近 2 件のサンプルをクエリします：
 
 ```sql
--- リサンプリングされたデータの確認
+-- リサンプリングされたデータを確認
 SELECT metric_id, grid_timestamp, (finalizeAggregation(samples).1 as timestamp, finalizeAggregation(samples).2 as value) 
 FROM t_resampled_timeseries_15_sec
 WHERE metric_id = 3 AND grid_timestamp BETWEEN '2024-12-12 12:00:15' AND '2024-12-12 12:00:30'
@@ -110,15 +110,15 @@ ORDER BY metric_id, grid_timestamp;
 3    2024-12-12 12:00:30    (['2024-12-12 12:00:29.969','2024-12-12 12:00:29.069'],[14,6])
 ```
 
-集約テーブルには、15 秒ごとに揃えた各タイムスタンプについて、直近 2 件の値のみが保存されます。これにより、生テーブルに保存されているデータよりもはるかに少ないデータを読み取るだけで、PromQL 風の `irate` および `idelta` を計算できます。
+集約テーブルは、15 秒間隔に揃えられた各タイムスタンプについて、最新 2 つの値のみを保存します。これにより、生データのテーブルに保存されているデータ量よりはるかに少ないデータを読み込むだけで、PromQL の `irate` や `idelta` と同様の計算を行うことができます。
 
 ```sql
 -- 生データからideltaとirateを計算
 WITH
     '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- タイムスタンプグリッドの開始時刻
     start_ts + INTERVAL 60 SECOND AS end_ts,   -- タイムスタンプグリッドの終了時刻
-    15 AS step_seconds,   -- タイムスタンプグリッドのステップ（秒）
-    45 AS window_seconds  -- 「staleness」ウィンドウ（秒）
+    15 AS step_seconds,   -- タイムスタンプグリッドのステップ間隔
+    45 AS window_seconds  -- 「staleness」ウィンドウ
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value),
@@ -138,7 +138,7 @@ GROUP BY metric_id;
 WITH
     '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- タイムスタンプグリッドの開始時刻
     start_ts + INTERVAL 60 SECOND AS end_ts,   -- タイムスタンプグリッドの終了時刻
-    15 AS step_seconds,   -- タイムスタンプグリッドのステップ幅
+    15 AS step_seconds,   -- タイムスタンプグリッドのステップ間隔
     45 AS window_seconds  -- 「staleness」ウィンドウ
 SELECT
     metric_id,
@@ -160,5 +160,5 @@ GROUP BY metric_id;
 ```
 
 :::note
-この関数は実験的な機能です。使用するには、`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効化してください。
+この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効化してください。
 :::

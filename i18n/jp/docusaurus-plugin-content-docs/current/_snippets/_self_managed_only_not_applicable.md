@@ -3,5 +3,5 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge />
 
 :::note
-このページの内容は [ClickHouse Cloud](https://clickhouse.com/cloud) には適用されません。ここで説明している手順が必要になるのは、ユーザー自身で管理する ClickHouse 環境のみです。
+このページは [ClickHouse Cloud](https://clickhouse.com/cloud) には該当しません。ここで説明している手順が必要となるのは、自己管理型の ClickHouse デプロイメントの場合のみです。
 :::

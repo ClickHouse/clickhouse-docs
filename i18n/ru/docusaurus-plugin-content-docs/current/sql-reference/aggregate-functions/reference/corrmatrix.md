@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # corrMatrix
 
-Вычисляет корреляционную матрицу для N переменных.
+Вычисляет матрицу корреляции для N переменных.
 
 **Синтаксис**
 
@@ -18,11 +18,11 @@ corrMatrix(x[, ...])
 
 **Аргументы**
 
-* `x` — произвольное число аргументов. [`(U)Int8/16/32/64`](../../data-types/int-uint.md), [`Float*`](../../data-types/float.md).
+* `x` — переменное число аргументов. [`(U)Int8/16/32/64`](../../data-types/int-uint.md), [`Float*`](../../data-types/float.md).
 
 **Возвращаемое значение**
 
-* Корреляционная матрица. [`Array`](../../data-types/array.md)([`Array`](../../data-types/array.md)([`Float64`](../../data-types/float.md))).
+* Матрица корреляции. [`Array`](../../data-types/array.md)([`Array`](../../data-types/array.md)([`Float64`](../../data-types/float.md))).
 
 **Пример**
 

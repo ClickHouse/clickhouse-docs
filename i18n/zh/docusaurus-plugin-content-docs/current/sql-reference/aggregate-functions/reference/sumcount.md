@@ -1,12 +1,12 @@
 ---
-description: '同时计算数值的总和和行数。该函数由 ClickHouse 查询优化器使用：如果在一个查询中存在多个 `sum`、`count` 或 `avg` 函数，则可以将它们替换为一个 `sumCount` 函数，从而复用计算。通常不需要显式调用该函数。'
+description: '同时计算数值之和和行数。该函数被 ClickHouse 查询优化器使用：如果一个查询中存在多个 `sum`、`count` 或 `avg` 函数，它们可以被替换为单个 `sumCount` 函数以重用计算。通常无需显式调用该函数。'
 sidebar_position: 196
 slug: /sql-reference/aggregate-functions/reference/sumcount
 title: 'sumCount'
 doc_type: 'reference'
 ---
 
-同时计算数值的总和和行数。该函数由 ClickHouse 查询优化器使用：如果在一个查询中存在多个 `sum`、`count` 或 `avg` 函数，则可以将它们替换为一个 `sumCount` 函数，从而复用计算。通常不需要显式调用该函数。
+同时计算数值之和和行数。该函数被 ClickHouse 查询优化器使用：如果一个查询中存在多个 `sum`、`count` 或 `avg` 函数，它们可以被替换为单个 `sumCount` 函数以重用计算。通常无需显式调用该函数。
 
 **语法**
 
@@ -16,11 +16,11 @@ sumCount(x)
 
 **参数**
 
-* `x` — 输入值，必须为 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md) 类型。
+* `x` — 输入值，必须是 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-* 元组 `(sum, count)`，其中 `sum` 为数值的总和，`count` 为值非 NULL 的行数。
+* 元组 `(sum, count)`，其中 `sum` 是数值之和，`count` 是非 NULL 值行的行数。
 
 类型：[Tuple](../../../sql-reference/data-types/tuple.md)。
 

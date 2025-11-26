@@ -1,7 +1,7 @@
 ---
 title: 'Интеграция ClickHouse с Kafka с использованием именованных коллекций'
 description: 'Как использовать именованные коллекции для подключения ClickHouse к Kafka'
-keywords: ['именованная коллекция', 'руководство', 'kafka']
+keywords: ['именованные коллекции', 'пошаговая инструкция', 'Kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
@@ -14,27 +14,27 @@ doc_type: 'guide'
 
 ## Введение {#introduction}
 
-В этом руководстве мы рассмотрим, как подключить ClickHouse к Kafka с использованием именованных коллекций. Использование конфигурационного файла для именованных коллекций предоставляет несколько преимуществ:
+В этом руководстве мы рассмотрим, как подключить ClickHouse к Kafka с использованием именованных коллекций. Использование файла конфигурации для именованных коллекций дает несколько преимуществ:
+- Централизованное и более простое управление настройками.
+- Изменения настроек можно вносить без изменения SQL-определений таблиц.
+- Более удобный просмотр и отладка конфигурации за счет анализа одного файла конфигурации.
 
-- Централизованное и более простое управление параметрами конфигурации.
-- Изменения параметров можно вносить без изменения определений SQL-таблиц.
-- Упрощенный просмотр и устранение неполадок конфигураций путем проверки единого конфигурационного файла.
-
-Данное руководство протестировано на Apache Kafka 3.4.1 и ClickHouse 24.5.1.
-
-
-## Предварительные требования {#assumptions}
-
-В этом документе предполагается, что у вас есть:
-
-1. Работающий кластер Kafka.
-2. Настроенный и работающий кластер ClickHouse.
-3. Базовые знания SQL и знакомство с конфигурацией ClickHouse и Kafka.
+Это руководство было проверено на Apache Kafka 3.4.1 и ClickHouse 24.5.1.
 
 
-## Предварительные требования {#prerequisites}
 
-Убедитесь, что пользователь, создающий именованную коллекцию, имеет необходимые права доступа:
+## Предварительные условия {#assumptions}
+
+В этом документе предполагается, что у вас уже есть:
+1. Работоспособный кластер Kafka.
+2. Развернутый и запущенный кластер ClickHouse.
+3. Базовые знания SQL и опыт работы с конфигурациями ClickHouse и Kafka.
+
+
+
+## Предварительные требования
+
+Убедитесь, что пользователь, создающий именованную коллекцию, обладает необходимыми правами доступа:
 
 ```xml
 <access_management>1</access_management>
@@ -43,18 +43,18 @@ doc_type: 'guide'
 <show_named_collections_secrets>1</show_named_collections_secrets>
 ```
 
-Подробнее о настройке контроля доступа см. в [Руководстве по управлению пользователями](./../../../guides/sre/user-management/index.md).
+См. руководство [User Management Guide](./../../../guides/sre/user-management/index.md) для получения подробной информации о включении управления доступом.
 
 
-## Конфигурация {#configuration}
+## Конфигурация
 
-Добавьте следующий раздел в файл `config.xml` ClickHouse:
+Добавьте следующий раздел в файл конфигурации ClickHouse `config.xml`:
 
 ```xml
-<!-- Именованные коллекции для интеграции с Kafka -->
+<!-- Именованные коллекции для интеграции Kafka -->
 <named_collections>
     <cluster_1>
-        <!-- Параметры движка Kafka ClickHouse -->
+        <!-- Параметры движка ClickHouse Kafka -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -76,7 +76,7 @@ doc_type: 'guide'
     </cluster_1>
 
     <cluster_2>
-        <!-- Параметры движка Kafka ClickHouse -->
+        <!-- Параметры движка ClickHouse Kafka -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -99,25 +99,25 @@ doc_type: 'guide'
 </named_collections>
 ```
 
-### Примечания к конфигурации {#configuration-notes}
+### Примечания по конфигурации
 
-1. Укажите адреса Kafka и соответствующие параметры конфигурации в соответствии с настройками вашего кластера Kafka.
-2. Раздел перед `<kafka>` содержит параметры движка Kafka ClickHouse. Полный список параметров см. в разделе [Параметры движка Kafka](/engines/table-engines/integrations/kafka).
-3. Раздел внутри `<kafka>` содержит расширенные параметры конфигурации Kafka. Дополнительные параметры см. в документации [librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
-4. В данном примере используется протокол безопасности `SASL_SSL` и механизм `PLAIN`. Настройте эти параметры в соответствии с конфигурацией вашего кластера Kafka.
+1. Настройте адреса Kafka и связанные параметры в соответствии с конфигурацией вашего кластера Kafka.
+2. Раздел перед `<kafka>` содержит параметры движка Kafka в ClickHouse. Полный список параметров смотрите в разделе [параметры движка Kafka](/engines/table-engines/integrations/kafka).
+3. Раздел внутри `<kafka>` содержит расширенные параметры конфигурации Kafka. Дополнительные параметры смотрите в [документации по конфигурации librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
+4. В этом примере используется протокол безопасности `SASL_SSL` и механизм `PLAIN`. При необходимости скорректируйте эти параметры в соответствии с конфигурацией вашего кластера Kafka.
 
 
-## Создание таблиц и баз данных {#creating-tables-and-databases}
+## Создание таблиц и баз данных
 
-Создайте необходимые базы данных и таблицы в кластере ClickHouse. Если ClickHouse работает в режиме одного узла, опустите часть SQL-команды, относящуюся к кластеру, и используйте любой другой движок вместо `ReplicatedMergeTree`.
+Создайте необходимые базы данных и таблицы в вашем кластере ClickHouse. Если вы запускаете ClickHouse на отдельном узле, опустите часть SQL-команды, относящуюся к кластеру, и используйте любой другой движок вместо `ReplicatedMergeTree`.
 
-### Создание базы данных {#create-the-database}
+### Создание базы данных
 
 ```sql
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### Создание таблиц Kafka {#create-kafka-tables}
+### Создайте таблицы Kafka
 
 Создайте первую таблицу Kafka для первого кластера Kafka:
 
@@ -143,9 +143,9 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### Создание реплицируемых таблиц {#create-replicated-tables}
+### Создание реплицируемых таблиц
 
-Создайте таблицу для первой таблицы Kafka:
+Создайте первую таблицу Kafka:
 
 ```sql
 CREATE TABLE kafka_testing.first_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTER
@@ -157,7 +157,7 @@ CREATE TABLE kafka_testing.first_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CL
 ORDER BY id;
 ```
 
-Создайте таблицу для второй таблицы Kafka:
+Создайте вторую таблицу Kafka:
 
 ```sql
 CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTER
@@ -169,24 +169,24 @@ CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_C
 ORDER BY id;
 ```
 
-### Создание материализованных представлений {#create-materialized-views}
+### Создание материализованных представлений
 
-Создайте материализованное представление для вставки данных из первой таблицы Kafka в первую реплицируемую таблицу:
+Создайте материализованное представление, которое будет вставлять данные из первой таблицы Kafka в первую реплицируемую таблицу:
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
-SELECT
+SELECT 
     id,
     first_name,
     last_name
 FROM first_kafka_table;
 ```
 
-Создайте материализованное представление для вставки данных из второй таблицы Kafka во вторую реплицируемую таблицу:
+Создайте материализованное представление, которое будет вставлять данные из второй таблицы Kafka во вторую реплицированную таблицу:
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
-SELECT
+SELECT 
     id,
     first_name,
     last_name
@@ -194,14 +194,14 @@ FROM second_kafka_table;
 ```
 
 
-## Проверка настройки {#verifying-the-setup}
+## Проверка настройки
 
-Теперь вы должны увидеть соответствующие группы потребителей в ваших кластерах Kafka:
+Теперь в ваших кластерах Kafka должны появиться соответствующие группы потребителей:
 
-- `cluster_1_clickhouse_consumer` в `cluster_1`
-- `cluster_2_clickhouse_consumer` в `cluster_2`
+* `cluster_1_clickhouse_consumer` в `cluster_1`
+* `cluster_2_clickhouse_consumer` в `cluster_2`
 
-Выполните следующие запросы на любом из узлов ClickHouse, чтобы просмотреть данные в обеих таблицах:
+Выполните следующие запросы на любом из узлов ClickHouse, чтобы увидеть данные в обеих таблицах:
 
 ```sql
 SELECT * FROM first_replicated_table LIMIT 10;
@@ -211,9 +211,9 @@ SELECT * FROM first_replicated_table LIMIT 10;
 SELECT * FROM second_replicated_table LIMIT 10;
 ```
 
-### Примечание {#note}
+### Примечание
 
-В данном руководстве данные, поступающие в оба топика Kafka, одинаковы. В вашем случае они будут различаться. Вы можете добавить любое количество кластеров Kafka.
+В этом руководстве данные, поступающие в оба топика Kafka, одинаковы. В вашем случае они будут различаться. Вы можете добавить столько кластеров Kafka, сколько потребуется.
 
 Пример вывода:
 
@@ -225,4 +225,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-На этом завершается настройка интеграции ClickHouse с Kafka с использованием именованных коллекций. Централизуя конфигурации Kafka в файле `config.xml` ClickHouse, вы можете более удобно управлять настройками и вносить в них изменения, обеспечивая упрощённую и эффективную интеграцию.
+На этом настройка интеграции ClickHouse с Kafka с использованием именованных коллекций завершена. Вынеся конфигурацию Kafka в файл `config.xml` ClickHouse, вы сможете проще управлять настройками и корректировать их по мере необходимости, обеспечивая более удобную и эффективную интеграцию.

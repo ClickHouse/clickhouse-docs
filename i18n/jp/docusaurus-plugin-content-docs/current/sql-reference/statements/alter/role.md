@@ -1,5 +1,5 @@
 ---
-description: 'ロールに関するドキュメント'
+description: 'ロールのドキュメント'
 sidebar_label: 'ROLE'
 sidebar_position: 46
 slug: /sql-reference/statements/alter/role

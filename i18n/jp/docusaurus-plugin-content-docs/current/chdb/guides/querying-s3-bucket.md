@@ -2,57 +2,57 @@
 title: 'S3 バケット内のデータをクエリする方法'
 sidebar_label: 'S3 データのクエリ'
 slug: /chdb/guides/querying-s3
-description: 'chDB を使用して S3 バケット内のデータをクエリする方法を学びます。'
+description: 'chDB を使って S3 バケット内のデータをクエリする方法を学びます。'
 keywords: ['chdb', 's3']
 doc_type: 'guide'
 ---
 
 世界中のデータの多くは Amazon S3 バケットに保存されています。
-このガイドでは、chDB を使ってそのデータに対してクエリを実行する方法を説明します。
+このガイドでは、chDB を使ってそのデータに対してクエリを実行する方法を学びます。
 
 
 
-## セットアップ {#setup}
+## セットアップ
 
-まず、仮想環境を作成しましょう：
+まず仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上がインストールされていることを確認してください：
+それでは chDB をインストールします。
+chDB のバージョンが 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いて、IPythonをインストールします：
+それでは、IPython をインストールします：
 
 ```bash
 pip install ipython
 ```
 
-このガイドの以降のコマンドを実行するために`ipython`を使用します。次のコマンドで起動できます：
+このガイドの残りの手順で実行するコマンドは `ipython` を使います。次のコマンドを実行して `ipython` を起動してください。
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトまたはお好みのノートブック環境でコードを使用することもできます。
+このコードは Python スクリプトやお使いのノートブックでも使用できます。
 
 
-## S3バケット内のファイル一覧 {#listing-files-in-an-s3-bucket}
+## S3 バケット内のファイル一覧を取得する
 
-まず、[Amazonレビューを含むS3バケット](/getting-started/example-datasets/amazon-reviews)内のすべてのファイルを一覧表示してみましょう。
-これには、[`s3`テーブル関数](/sql-reference/table-functions/s3)を使用し、ファイルへのパスまたは複数のファイルを指定するワイルドカードを渡します。
+まずは [Amazon レビューを含む S3 バケット](/getting-started/example-datasets/amazon-reviews) 内のすべてのファイルを一覧表示してみます。
+これを行うには、[`s3` テーブル関数](/sql-reference/table-functions/s3) を使用し、ファイルへのパス、または複数ファイルにマッチするワイルドカードを引数として指定します。
 
 :::tip
-バケット名のみを渡すと例外がスローされます。
+バケット名だけを渡すと、例外がスローされます。
 :::
 
-また、[`One`](/interfaces/formats/One)入力フォーマットを使用することで、ファイルが解析されず、ファイルごとに1行が返されるようにします。これにより、`_file`仮想カラムでファイル名に、`_path`仮想カラムでパスにアクセスできます。
+また、ファイルがパースされないように [`One`](/interfaces/formats/One) 入力フォーマットも使用します。これにより、ファイルごとに 1 行だけが返され、`_file` 仮想カラムからファイルを、`_path` 仮想カラムからパスを参照できます。
 
 ```python
 import chdb
@@ -79,20 +79,20 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-このバケットにはParquetファイルのみが含まれています。
+このバケットには Parquet ファイルのみが格納されています。
 
 
-## S3バケット内のファイルへのクエリ {#querying-files-in-an-s3-bucket}
+## S3 バケット内のファイルをクエリする
 
-次に、これらのファイルに対してクエリを実行する方法を学びましょう。
-各ファイルの行数をカウントする場合は、以下のクエリを実行します:
+次に、これらのファイルに対してどのようにクエリを実行するかを見ていきます。
+各ファイルの行数を数えたい場合は、次のクエリを実行できます。
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount
+    formatReadableQuantity(count) AS readableCount    
 FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
@@ -101,32 +101,32 @@ SETTINGS output_format_pretty_row_numbers=0
 
 ```text
 ┌─_file───────────────────────────────┬────count─┬─readableCount───┐
-│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 28.03 million   │
-│ amazon_reviews_1990s.snappy.parquet │   639532 │ 639.53 thousand │
-│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 6.11 million    │
-│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 41.91 million   │
-│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 11.54 million   │
-│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 14.73 million   │
-│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 44.13 million   │
-│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 3.87 million    │
+│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 2803万          │
+│ amazon_reviews_1990s.snappy.parquet │   639532 │ 63万9532        │
+│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 611万           │
+│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 4190万          │
+│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 1154万          │
+│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 1472万          │
+│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 4412万          │
+│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 386万           │
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-S3バケットのHTTP URIを渡すことも可能で、同じ結果が得られます:
+S3 バケットの HTTP URI を指定することもでき、その場合も同じ結果が得られます。
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount
+    formatReadableQuantity(count) AS readableCount    
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-`DESCRIBE`句を使用して、これらのParquetファイルのスキーマを確認してみましょう:
+これらの Parquet ファイルのスキーマを `DESCRIBE` 句を使って確認してみましょう。
 
 ```python
 chdb.query("""
@@ -155,7 +155,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-次に、レビュー数に基づいて上位の製品カテゴリを算出し、平均星評価も計算してみましょう:
+それでは、レビュー数に基づいて上位の商品カテゴリを集計し、あわせて平均星評価も計算してみましょう。
 
 ```python
 chdb.query("""
@@ -168,14 +168,14 @@ LIMIT 10
 
 
 ```text
-    ┌─商品カテゴリ─┬──レビュー数─┬──平均─┐
+    ┌─product_category─┬──reviews─┬──avg─┐
  1. │ おもちゃ         │  4864056 │ 4.21 │
  2. │ アパレル         │  5906085 │ 4.11 │
- 3. │ 荷物             │   348644 │ 4.22 │
- 4. │ キッチン         │  4880297 │ 4.21 │
+ 3. │ 旅行用品         │   348644 │ 4.22 │
+ 4. │ キッチン用品     │  4880297 │ 4.21 │
  5. │ 書籍             │ 19530930 │ 4.34 │
- 6. │ アウトドア       │  2302327 │ 4.24 │
- 7. │ ビデオ           │   380596 │ 4.19 │
+ 6. │ アウトドア用品   │  2302327 │ 4.24 │
+ 7. │ 映像             │   380596 │ 4.19 │
  8. │ 食料品           │  2402365 │ 4.31 │
  9. │ 靴               │  4366757 │ 4.24 │
 10. │ ジュエリー       │  1767667 │ 4.14 │
@@ -183,10 +183,10 @@ LIMIT 10
 ```
 
 
-## プライベートS3バケット内のファイルへのクエリ {#querying-files-in-a-private-s3-bucket}
+## プライベートな S3 バケット内のファイルをクエリする
 
-プライベートS3バケット内のファイルに対してクエリを実行する場合、アクセスキーとシークレットキーを渡す必要があります。
-これらの認証情報は`s3`テーブル関数に渡すことができます:
+プライベートな S3 バケット内のファイルをクエリする場合、アクセスキーとシークレットアクセスキーを指定する必要があります。
+これらの認証情報は `s3` テーブル関数に渡すことができます。
 
 ```python
 chdb.query("""
@@ -198,7 +198,7 @@ LIMIT 10
 ```
 
 :::note
-このクエリは公開バケットを対象としているため動作しません!
+このクエリはパブリックバケットであるため動作しません。
 :::
 
-別の方法として[名前付きコレクション](/operations/named-collections)を使用することもできますが、このアプローチはまだchDBではサポートされていません。
+別の方法として [named collections](/operations/named-collections) を使用することもできますが、この方法は chDB ではまだサポートされていません。

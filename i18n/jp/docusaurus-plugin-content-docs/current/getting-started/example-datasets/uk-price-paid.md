@@ -1,21 +1,21 @@
 ---
-description: 'イングランドおよびウェールズの不動産売買価格データを含む UK 不動産価格データセットを使って、頻繁に実行するクエリのパフォーマンスをプロジェクションで向上させる方法を学びます'
+description: 'イングランドおよびウェールズの不動産物件の支払価格データを含む UK property データセットを使用して、頻繁に実行するクエリのパフォーマンスを projections 機能で向上させる方法を解説します'
 sidebar_label: 'UK 不動産価格'
 slug: /getting-started/example-datasets/uk-price-paid
 title: 'UK 不動産価格データセット'
 doc_type: 'guide'
-keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'getting started']
+keywords: ['サンプルデータセット', 'uk 不動産', 'サンプルデータ', '不動産', 'はじめに']
 ---
 
-このデータには、イングランドおよびウェールズの不動産に対して支払われた価格が含まれています。データは 1995 年以降のものが利用可能で、非圧縮形式でのデータセットのサイズは約 4 GiB あります（ClickHouse では約 278 MiB にまで圧縮されます）。
+このデータには、イングランドおよびウェールズの不動産物件に対して支払われた価格が含まれています。データは 1995 年以降のものが利用可能で、データセットの非圧縮サイズは約 4 GiB です（ClickHouse では約 278 MiB で格納されます）。
 
-- 出典: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
+- 取得元: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
 - 項目の説明: https://www.gov.uk/guidance/about-the-price-paid-data
 - HM Land Registry のデータを含みます © Crown copyright and database right 2021。このデータは Open Government Licence v3.0 の下でライセンスされています。
 
 
 
-## テーブルの作成 {#create-table}
+## テーブルを作成
 
 ```sql
 CREATE DATABASE uk;
@@ -42,18 +42,18 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
 
-## データの前処理と挿入 {#preprocess-import-data}
+## データの前処理と挿入
 
-`url`関数を使用してClickHouseにデータをストリーミングします。まず、受信データの一部を前処理する必要があります。これには以下が含まれます：
+`url` 関数を使用して、データを ClickHouse にストリーミングします。まず、受信データの一部を前処理する必要があります。内容は次のとおりです:
 
-- `postcode`を2つの異なる列（`postcode1`と`postcode2`）に分割します。これにより、ストレージとクエリの効率が向上します
-- `time`フィールドを日付に変換します。このフィールドには00:00の時刻のみが含まれているためです
-- [UUid](../../sql-reference/data-types/uuid.md)フィールドは分析に不要なため無視します
-- [transform](../../sql-reference/functions/other-functions.md#transform)関数を使用して、`type`と`duration`をより読みやすい`Enum`フィールドに変換します
-- `is_new`フィールドを単一文字の文字列（`Y`/`N`）から0または1の値を持つ[UInt8](/sql-reference/data-types/int-uint)フィールドに変換します
-- 最後の2つの列はすべて同じ値（0）を持つため削除します
+* `postcode` を 2 つの別のカラム `postcode1` と `postcode2` に分割する（ストレージ効率とクエリ効率が向上するため）
+* `time` フィールドが 00:00 の時刻しか含まないため、日付に変換する
+* 分析には不要なため、[UUID](../../sql-reference/data-types/uuid.md) フィールドを無視する
+* [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用して、`type` と `duration` を、より読みやすい `Enum` フィールドに変換する
+* `is_new` フィールドを、1 文字の文字列 (`Y`/`N`) から、0 または 1 を持つ [UInt8](/sql-reference/data-types/int-uint) フィールドに変換する
+* すべて同じ値（0）であるため、最後の 2 つのカラムを削除する
 
-`url`関数は、Webサーバーからデータをストリーミングし、ClickHouseテーブルに挿入します。以下のコマンドは、`uk_price_paid`テーブルに500万行を挿入します：
+`url` 関数は、ウェブサーバーから ClickHouse のテーブルにデータをストリーミングします。次のコマンドは、`uk_price_paid` テーブルに 500 万行を挿入します:
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -94,19 +94,19 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-データの挿入が完了するまでお待ちください。ネットワーク速度によっては1～2分かかります。
+データの挿入が完了するまで待ってください。ネットワーク速度によっては、1～2分ほどかかることがあります。
 
 
-## データの検証 {#validate-data}
+## データを検証する
 
-挿入された行数を確認して、正常に動作したか検証しましょう:
+挿入された行数を確認して、正しく動作したかどうかを検証します。
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリを実行した時点で、データセットには27,450,499行が含まれていました。ClickHouseでのテーブルのストレージサイズを確認しましょう:
+このクエリを実行した時点で、データセットの行数は 27,450,499 行でした。ClickHouse のテーブルのストレージサイズを確認してみましょう。
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -114,14 +114,14 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-テーブルのサイズはわずか221.43 MiBです!
+テーブルサイズがわずか 221.43 MiB であることに注目してください。
 
 
-## クエリを実行する {#run-queries}
+## いくつかのクエリを実行する
 
-データを分析するためにいくつかのクエリを実行してみましょう:
+データを分析するために、いくつかのクエリを実行します。
 
-### クエリ1. 年別の平均価格 {#average-price}
+### クエリ 1. 年ごとの平均価格
 
 ```sql runnable
 SELECT
@@ -134,7 +134,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### クエリ2. ロンドンにおける年別の平均価格 {#average-price-london}
+### クエリ 2. ロンドンの年ごとの平均価格
 
 ```sql runnable
 SELECT
@@ -148,9 +148,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に何かが起こりました!しかし、それはおそらく驚くことではないでしょう...
+2020年には住宅価格に何かが起きました！とはいえ、おそらく驚くことではないでしょう……
 
-### クエリ3. 最も高額な地域 {#most-expensive-neighborhoods}
+### クエリ3. 最も価格の高い地域
 
 ```sql runnable
 SELECT
@@ -172,8 +172,8 @@ LIMIT 100
 
 ## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
 
-プロジェクションを使用してこれらのクエリを高速化できます。このデータセットを使用した例については、["プロジェクション"](/data-modeling/projections)を参照してください。
+これらのクエリはプロジェクションを使用することで高速化できます。このデータセットを使った例については [Projections](/data-modeling/projections) を参照してください。
 
-### プレイグラウンドで試す {#playground}
+### Playground で試してみる {#playground}
 
-このデータセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用できます。
+このデータセットは [Online Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) からも利用できます。

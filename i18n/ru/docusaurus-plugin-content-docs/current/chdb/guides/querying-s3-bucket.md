@@ -7,22 +7,22 @@ keywords: ['chdb', 's3']
 doc_type: 'guide'
 ---
 
-Значительная часть данных в мире хранится в бакетах Amazon S3.
+Значительная часть мировых данных хранится в бакетах Amazon S3.
 В этом руководстве вы узнаете, как выполнять запросы к этим данным с помощью chDB.
 
 
 
-## Настройка {#setup}
+## Настройка
 
-Сначала создадим виртуальное окружение:
+Сначала создайте виртуальное окружение:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Теперь установим chDB.
-Убедитесь, что установлена версия 2.0.2 или выше:
+Теперь установите chDB.
+Убедитесь, что у вас установлена версия не ниже 2.0.2:
 
 ```bash
 pip install "chdb>=2.0.2"
@@ -34,25 +34,25 @@ pip install "chdb>=2.0.2"
 pip install ipython
 ```
 
-Для выполнения команд в остальной части руководства мы будем использовать `ipython`. Запустить его можно следующей командой:
+Мы будем использовать `ipython` для выполнения команд далее в этом руководстве, который можно запустить следующей командой:
 
 ```bash
 ipython
 ```
 
-Код также можно использовать в скрипте Python или в вашей любимой среде для работы с ноутбуками.
+Вы также можете использовать код в скрипте Python или в вашем любимом ноутбуке (например, Jupyter Notebook).
 
 
-## Получение списка файлов в S3-бакете {#listing-files-in-an-s3-bucket}
+## Получение списка файлов в бакете S3
 
-Начнем с получения списка всех файлов в [S3-бакете, содержащем отзывы Amazon](/getting-started/example-datasets/amazon-reviews).
-Для этого можно использовать [табличную функцию `s3`](/sql-reference/table-functions/s3) и передать путь к файлу или шаблон для набора файлов.
+Начнём с получения списка всех файлов в [бакете S3, который содержит отзывы Amazon](/getting-started/example-datasets/amazon-reviews).
+Для этого мы можем использовать [табличную функцию `s3`](/sql-reference/table-functions/s3) и передать путь к файлу или шаблон (wildcard) для набора файлов.
 
 :::tip
-Если передать только имя бакета, будет выброшено исключение.
+Если передать только имя бакета, будет сгенерировано исключение.
 :::
 
-Также будет использован входной формат [`One`](/interfaces/formats/One), чтобы файл не парсился. Вместо этого для каждого файла возвращается одна строка, и можно получить доступ к имени файла через виртуальную колонку `_file`, а к пути — через виртуальную колонку `_path`.
+Мы также будем использовать формат ввода [`One`](/interfaces/formats/One), чтобы файл не парсился: вместо этого по каждому файлу будет возвращена одна строка, и мы сможем получить доступ к файлу через виртуальный столбец `_file`, а к пути — через виртуальный столбец `_path`.
 
 ```python
 import chdb
@@ -82,17 +82,17 @@ SETTINGS output_format_pretty_row_numbers=0
 Этот бакет содержит только файлы Parquet.
 
 
-## Запрос файлов в бакете S3 {#querying-files-in-an-s3-bucket}
+## Выполнение запросов к файлам в бакете S3
 
-Далее рассмотрим, как выполнять запросы к этим файлам.
-Чтобы подсчитать количество строк в каждом из этих файлов, можно выполнить следующий запрос:
+Теперь давайте узнаем, как выполнять запросы к этим файлам.
+Если мы хотим посчитать количество строк в каждом из этих файлов, мы можем выполнить следующий запрос:
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount
+    formatReadableQuantity(count) AS readableCount    
 FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
@@ -101,32 +101,32 @@ SETTINGS output_format_pretty_row_numbers=0
 
 ```text
 ┌─_file───────────────────────────────┬────count─┬─readableCount───┐
-│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 28.03 million   │
-│ amazon_reviews_1990s.snappy.parquet │   639532 │ 639.53 thousand │
-│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 6.11 million    │
-│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 41.91 million   │
-│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 11.54 million   │
-│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 14.73 million   │
-│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 44.13 million   │
-│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 3.87 million    │
+│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 28,03 млн       │
+│ amazon_reviews_1990s.snappy.parquet │   639532 │ 639,53 тыс.     │
+│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 6,11 млн        │
+│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 41,91 млн       │
+│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 11,54 млн       │
+│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 14,73 млн       │
+│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 44,13 млн       │
+│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 3,87 млн        │
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-Также можно передать HTTP URI бакета S3 и получить те же результаты:
+Мы также можем передать HTTP-URI бакета S3 и получим те же результаты:
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount
+    formatReadableQuantity(count) AS readableCount    
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-Рассмотрим схему этих файлов Parquet с помощью оператора `DESCRIBE`:
+Давайте рассмотрим схему этих файлов Parquet с помощью оператора `DESCRIBE`:
 
 ```python
 chdb.query("""
@@ -155,7 +155,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-Теперь вычислим топ категорий товаров по количеству отзывов, а также рассчитаем средний рейтинг:
+Теперь вычислим категории товаров с наибольшим числом отзывов, а также среднюю оценку в звёздах:
 
 ```python
 chdb.query("""
@@ -183,9 +183,9 @@ LIMIT 10
 ```
 
 
-## Запрос файлов из приватного S3-бакета {#querying-files-in-a-private-s3-bucket}
+## Выполнение запросов к файлам в приватном бакете S3
 
-Для запроса файлов из приватного S3-бакета необходимо передать ключ доступа и секретный ключ.
+Если мы выполняем запросы к файлам в приватном бакете S3, необходимо передать ключ доступа и секретный ключ.
 Эти учетные данные можно передать в табличную функцию `s3`:
 
 ```python
@@ -198,7 +198,7 @@ LIMIT 10
 ```
 
 :::note
-Этот запрос не будет работать, так как это публичный бакет!
+Этот запрос не будет работать, потому что это публичный бакет!
 :::
 
-Альтернативный способ — использование [именованных коллекций](/operations/named-collections), однако этот подход пока не поддерживается в chDB.
+Альтернативный способ — использовать [именованные коллекции](/operations/named-collections), но этот подход пока не поддерживается в chDB.

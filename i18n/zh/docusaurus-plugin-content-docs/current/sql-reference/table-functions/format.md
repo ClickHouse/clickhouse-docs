@@ -1,5 +1,5 @@
 ---
-description: '根据指定的输入格式从参数解析数据。如果未指定 `structure` 参数，则从数据中推断其结构。'
+description: '根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取该结构。'
 slug: /sql-reference/table-functions/format
 sidebar_position: 65
 sidebar_label: 'format'
@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 # format 表函数
 
-根据指定的输入格式从参数中解析数据。如果未指定结构参数，则从数据中自动提取。
+根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取结构。
 
 
 
-## 语法 {#syntax}
+## 语法
 
 ```sql
 format(format_name, [structure], data)
@@ -25,16 +25,18 @@ format(format_name, [structure], data)
 ## 参数 {#arguments}
 
 - `format_name` — 数据的[格式](/sql-reference/formats)。
-- `structure` - 表的结构。可选参数。格式为 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 字符串字面量或返回包含指定格式数据字符串的常量表达式。
+- `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
+- `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
+
 
 
 ## 返回值 {#returned_value}
 
-返回一个表,包含根据指定格式和指定或提取的结构从 `data` 参数解析出的数据。
+一个数据表，包含根据指定格式和指定或提取的结构从 `data` 参数中解析得到的数据。
 
 
-## 示例 {#examples}
+
+## 示例
 
 不带 `structure` 参数：
 
@@ -54,10 +56,10 @@ $$)
 
 ```response
 ┌───b─┬─a─────┐
-│ 111 │ Hello │
-│ 123 │ World │
-│ 112 │ Hello │
-│ 124 │ World │
+│ 111 │ 你好  │
+│ 123 │ 世界  │
+│ 112 │ 你好  │
+│ 124 │ 世界  │
 └─────┴───────┘
 ```
 
@@ -82,7 +84,7 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-带 `structure` 参数：
+使用 `structure` 参数：
 
 **查询：**
 
@@ -100,10 +102,10 @@ $$)
 
 ```response
 ┌─a─────┬───b─┐
-│ Hello │ 111 │
-│ World │ 123 │
-│ Hello │ 112 │
-│ World │ 124 │
+│ 你好  │ 111 │
+│ 世界  │ 123 │
+│ 你好  │ 112 │
+│ 世界  │ 124 │
 └───────┴─────┘
 ```
 

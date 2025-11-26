@@ -1,10 +1,10 @@
 ---
-description: 'Руководство по сборке ClickHouse из исходного кода на системах macOS'
+description: 'Руководство по сборке ClickHouse из исходных кодов в системах macOS'
 sidebar_label: 'Сборка на macOS для macOS'
 sidebar_position: 15
 slug: /development/build-osx
 title: 'Сборка на macOS для macOS'
-keywords: ['MacOS', 'Mac', 'сборка']
+keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
 
@@ -12,21 +12,21 @@ doc_type: 'guide'
 
 # Как собрать ClickHouse на macOS для macOS
 
-:::info Вам не обязательно собирать ClickHouse самому!
-Вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/#quick-start).
+:::info Вам не нужно собирать ClickHouse самостоятельно!
+Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](https://clickhouse.com/#quick-start).
 :::
 
-ClickHouse можно скомпилировать на архитектурах x86_64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или выше.
+ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или более поздней версии.
 
 В качестве компилятора поддерживается только Clang из Homebrew.
 
 
 
-## Установка предварительных требований {#install-prerequisites}
+## Установка необходимых компонентов
 
 Сначала ознакомьтесь с общей [документацией по предварительным требованиям](developer-instruction.md).
 
-Затем установите [Homebrew](https://brew.sh/) и выполните команду
+Затем установите [Homebrew](https://brew.sh/) и запустите
 
 Затем выполните:
 
@@ -36,14 +36,15 @@ brew install ccache cmake ninja libtool gettext llvm lld binutils grep findutils
 ```
 
 :::note
-Apple по умолчанию использует файловую систему, не учитывающую регистр символов. Хотя обычно это не влияет на компиляцию (особенно сборка с нуля будет работать), это может вызвать проблемы при выполнении файловых операций, таких как `git mv`.
-Для серьезной разработки на macOS убедитесь, что исходный код хранится на томе с файловой системой, учитывающей регистр символов, например, см. [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
+Apple по умолчанию использует файловую систему, нечувствительную к регистру. Хотя это обычно не влияет на компиляцию (особенно на разовые сборки через `make`), тем не менее это может приводить к некорректной работе таких операций с файлами, как `git mv`.
+Для серьёзной разработки на macOS убедитесь, что исходный код хранится на томе диска, чувствительном к регистру. См., например, [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
 :::
 
 
 ## Сборка ClickHouse {#build-clickhouse}
 
 Для сборки необходимо использовать компилятор Clang из Homebrew:
+
 
 
 ```bash
@@ -56,17 +57,17 @@ cmake --build build
 ```
 
 :::note
-Если при линковке вы сталкиваетесь с ошибками `ld: archive member '/' not a mach-o file in ...`, вам может понадобиться
+Если при линковке вы сталкиваетесь с ошибками вида `ld: archive member '/' not a mach-o file in ...`, вам может понадобиться
 использовать llvm-ar, указав флаг `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar`.
 :::
 
 
-## Предостережения {#caveats}
+## Особенности
 
-Если вы планируете запускать `clickhouse-server`, необходимо увеличить системную переменную `maxfiles`.
+Если вы планируете запускать `clickhouse-server`, убедитесь, что значение системной переменной `maxfiles` увеличено.
 
 :::note
-Для этого потребуются права sudo.
+Для этого потребуется sudo.
 :::
 
 Создайте файл `/Library/LaunchDaemons/limit.maxfiles.plist` со следующим содержимым:
@@ -95,13 +96,13 @@ cmake --build build
 </plist>
 ```
 
-Установите корректные права доступа для файла:
+Установите для файла правильные права доступа:
 
 ```bash
 sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-Проверьте корректность файла:
+Убедитесь, что файл корректен:
 
 ```bash
 plutil /Library/LaunchDaemons/limit.maxfiles.plist
@@ -113,4 +114,4 @@ plutil /Library/LaunchDaemons/limit.maxfiles.plist
 sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-Для проверки используйте команды `ulimit -n` или `launchctl limit maxfiles`.
+Чтобы проверить, работает ли всё, выполните команду `ulimit -n` или `launchctl limit maxfiles`.

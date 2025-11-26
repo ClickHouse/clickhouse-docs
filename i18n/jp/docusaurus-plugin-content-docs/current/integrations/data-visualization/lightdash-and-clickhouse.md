@@ -3,7 +3,7 @@ sidebar_label: 'Lightdash'
 sidebar_position: 131
 slug: /integrations/lightdash
 keywords: ['clickhouse', 'lightdash', 'データ可視化', 'BI', 'セマンティックレイヤー', 'dbt', 'セルフサービス分析', '接続']
-description: 'Lightdash は dbt 上に構築された最新のオープンソース BI ツールで、チームがセマンティックレイヤーを介して ClickHouse のデータを探索および可視化できるようにします。ここでは、dbt を基盤とした高速でガバナンスの効いた分析を実現するために、Lightdash を ClickHouse に接続する方法を説明します。'
+description: 'Lightdash は dbt 上に構築されたモダンなオープンソース BI ツールであり、セマンティックレイヤーを通じてチームが ClickHouse 上のデータを探索および可視化できるようにします。このガイドでは、dbt を活用した高速でガバナンスの効いたアナリティクスを実現するために、Lightdash を ClickHouse に接続する方法を説明します。'
 title: 'Lightdash を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -26,177 +26,177 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Lightdash は、dbt のオープン性と ClickHouse のパフォーマンスを組み合わせた、モダンなデータチーム向けの **AI ファーストな BI プラットフォーム** です。ClickHouse を Lightdash に接続することで、チームは dbt セマンティックレイヤーに基づいた **AI を活用したセルフサービス型の分析エクスペリエンス** を利用でき、あらゆる問いに対してガバナンスの効いた一貫したメトリクスで回答できるようになります。
+Lightdash は、dbt のオープン性と ClickHouse のパフォーマンスを兼ね備えた、モダンなデータチーム向けの **AI ファーストの BI プラットフォーム** です。ClickHouse を Lightdash に接続すると、dbt のセマンティックレイヤーに基づいた **AI を活用したセルフサービス型の分析エクスペリエンス** を実現でき、すべての質問に対してガバナンスされた一貫性のあるメトリクスで回答できます。
 
-開発者は、オープンなアーキテクチャ、バージョン管理された YAML モデル、そして GitHub から IDE まで既存のワークフローに直接適合する各種連携機能により、Lightdash を高く評価しています。
+開発者は、オープンなアーキテクチャ、バージョン管理された YAML モデル、GitHub から IDE までワークフローに直接組み込める各種インテグレーションにより、Lightdash を高く評価しています。
 
-このパートナーシップにより、**ClickHouse の高速性** と **Lightdash の優れた開発者エクスペリエンス** が融合し、AI を活用したデータの探索・可視化・インサイトの自動化がこれまで以上に容易になります。
+このパートナーシップにより、**ClickHouse の高速性** と **Lightdash の開発者エクスペリエンス** が組み合わさり、AI を活用してインサイトを探索・可視化・自動化することがこれまでになく容易になります。
 
 
 
-## LightdashとClickHouseでインタラクティブなダッシュボードを構築する {#build-an-interactive-dashboard}
+## Lightdash と ClickHouse でインタラクティブなダッシュボードを構築する {#build-an-interactive-dashboard}
 
-このガイドでは、**Lightdash**を**ClickHouse**に接続してdbtモデルを探索し、インタラクティブなダッシュボードを構築する方法を説明します。  
-以下の例は、ClickHouseのデータを活用した完成済みダッシュボードです。
+このガイドでは、**Lightdash** を **ClickHouse** に接続して dbt モデルを探索し、インタラクティブなダッシュボードを構築する方法を説明します。  
+以下の例は、ClickHouse のデータを基盤として構築された完成済みダッシュボードを示しています。
 
-<Image size='md' img={lightdash_02} alt='Lightdashダッシュボードの例' border />
+<Image size='md' img={lightdash_02} alt='Lightdash ダッシュボードの例' border />
 
 <VerticalStepper headerLevel="h3">
 
-### 接続情報の収集 {#connection-data-required}
+### 接続情報を収集する {#connection-data-required}
 
-LightdashとClickHouseの接続を設定する際には、以下の情報が必要です:
+Lightdash と ClickHouse 間の接続を設定する際には、次の情報が必要です。
 
-- **Host:** ClickHouseデータベースが稼働しているアドレス
-- **User:** ClickHouseデータベースのユーザー名
-- **Password:** ClickHouseデータベースのパスワード
-- **DB name:** ClickHouseデータベースの名前
-- **Schema:** dbtがプロジェクトのコンパイルと実行に使用するデフォルトスキーマ（`profiles.yml`に記載）
-- **Port:** ClickHouse HTTPSインターフェースのポート（デフォルト: `8443`）
-- **Secure:** セキュアな接続にHTTPS/SSLを使用する場合、このオプションを有効にします
-- **Retries:** Lightdashが失敗したClickHouseクエリを再試行する回数（デフォルト: `3`）
-- **Start of week:** レポート週の開始曜日を選択します。デフォルトではウェアハウスの設定に従います
+- **Host:** ClickHouse データベースが稼働しているアドレス
+- **User:** ClickHouse データベースのユーザー名
+- **Password:** ClickHouse データベースのパスワード
+- **DB name:** ClickHouse データベース名
+- **Schema:** dbt がプロジェクトをコンパイル・実行する際に使用するデフォルトスキーマ（`profiles.yml` に記載）
+- **Port:** ClickHouse の HTTPS インターフェイスのポート（デフォルト: `8443`）
+- **Secure:** HTTPS/SSL を使用して安全な接続を行うために有効化するオプション
+- **Retries:** Lightdash が失敗した ClickHouse クエリを再試行する回数（デフォルト: `3`）
+- **Start of week:** レポーティング上の週の開始曜日。デフォルトではウェアハウスの設定が使用されます
 
 <ConnectionDetails />
 
 ---
 
-### ClickHouse用のdbtプロファイルの設定 {#configuring-your-dbt-profile-for-clickhouse}
+### ClickHouse 用に dbt プロファイルを設定する {#configuring-your-dbt-profile-for-clickhouse}
 
-Lightdashでは、接続は既存の**dbtプロジェクト**に基づいています。  
-ClickHouseに接続するには、ローカルの`~/.dbt/profiles.yml`ファイルに有効なClickHouseターゲット設定が含まれていることを確認してください。
+Lightdash では、接続は既存の **dbt プロジェクト** を基盤として構成されます。  
+ClickHouse に接続するには、ローカルの `~/.dbt/profiles.yml` に有効な ClickHouse ターゲット設定が含まれていることを確認してください。
 
 例:
 
 <Image
   size='md'
   img={lightdash_01}
-  alt='lightdash-clickhouseプロジェクトのprofiles.yml設定例'
+  alt='lightdash-clickhouse プロジェクト向け profiles.yml 設定例'
   border
 />
 <br />
 
-### ClickHouseに接続されたLightdashプロジェクトの作成 {#creating-a-lightdash-project-connected-to-clickhouse}
+### ClickHouse に接続された Lightdash プロジェクトを作成する {#creating-a-lightdash-project-connected-to-clickhouse}
 
-dbtプロファイルがClickHouse用に設定されたら、**dbtプロジェクト**をLightdashに接続する必要があります。
+dbt プロファイルを ClickHouse 用に設定したら、**dbt プロジェクト** を Lightdash に接続する必要があります。
 
-このプロセスはすべてのデータウェアハウスで共通であるため、ここでは詳細には触れません。dbtプロジェクトをインポートするための公式Lightdashガイドに従ってください:
+この手順はすべてのデータウェアハウスで共通なため、ここでは詳細は説明しません。dbt プロジェクトのインポートについては、公式の Lightdash ガイドを参照してください。
 
-[Import a dbt project → Lightdash Docs](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#2-import-a-dbt-project?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+[dbt プロジェクトをインポートする → Lightdash ドキュメント](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#2-import-a-dbt-project?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
-dbtプロジェクトを接続すると、Lightdashは`profiles.yml`ファイルからClickHouse設定を自動的に検出します。接続テストが成功すると、dbtモデルの探索とClickHouseを活用したダッシュボードの構築を開始できます。
-
----
-
-### LightdashでClickHouseデータを探索する {#exploring-your-clickhouse-data-in-lightdash}
-
-接続されると、Lightdashは自動的にdbtモデルを同期し、以下を公開します:
-
-- YAMLで定義された**ディメンション**と**メジャー**
-- メトリクス、結合、探索などの**セマンティックレイヤーロジック**
-- リアルタイムClickHouseクエリを活用した**ダッシュボード**
-
-これで、ダッシュボードの構築、インサイトの共有、さらには**Ask AI**を使用してClickHouse上で直接ビジュアライゼーションを生成できます。手動でSQLを記述する必要はありません。
+dbt プロジェクトを接続すると、Lightdash は `profiles.yml` から ClickHouse の設定を自動的に検出します。接続テストが成功すれば、dbt モデルの探索や、ClickHouse を基盤としたダッシュボードの構築を開始できます。
 
 ---
 
-### Lightdashでメトリクスとディメンションを定義する {#defining-metrics-and-dimensions-in-lightdash}
+### Lightdash で ClickHouse のデータを探索する {#exploring-your-clickhouse-data-in-lightdash}
 
-Lightdashでは、すべての**メトリクス**と**ディメンション**はdbtモデルの`.yml`ファイルに直接定義されます。これにより、ビジネスロジックがバージョン管理され、一貫性が保たれ、完全に透明化されます。
+接続が完了すると、Lightdash は dbt モデルを自動的に同期し、次の内容を利用できるようにします。
+
+- YAML で定義された **ディメンション** と **メジャー**
+- メトリクス、結合、エクスプロアなどの **セマンティックレイヤーのロジック**
+- リアルタイムの ClickHouse クエリによって駆動される **ダッシュボード**
+
+これでダッシュボードの作成やインサイトの共有に加え、**Ask AI** を使用して ClickHouse 上に直接可視化を生成することもできます。手動で SQL を記述する必要はありません。
+
+---
+
+### Lightdash でメトリクスとディメンションを定義する {#defining-metrics-and-dimensions-in-lightdash}
+
+Lightdash では、すべての **メトリクス** と **ディメンション** は dbt モデルの `.yml` ファイル内で直接定義します。これにより、ビジネスロジックがバージョン管理され、一貫性が保たれ、完全に透明になります。
 
 <Image
   size='md'
   img={lightdash_03}
-  alt='.ymlファイルでメトリクスを定義する例'
+  alt='.yml ファイル内でメトリクスを定義している例'
   border
 />
 <br />
 
-YAMLでこれらを定義することで、チームがダッシュボードと分析全体で同じ定義を使用することが保証されます。例えば、`total_order_count`、`total_revenue`、`avg_order_value`などの再利用可能なメトリクスをdbtモデルのすぐ隣に作成できます。UIでの重複は不要です。
+これらを YAML で定義することで、チーム全体がダッシュボードや分析において同じ定義を使用できるようになります。たとえば、`total_order_count`、`total_revenue`、`avg_order_value` のような再利用可能なメトリクスを dbt モデルのすぐそばに定義でき、UI 上で重複定義する必要がありません。
 
-これらの定義方法の詳細については、以下のLightdashガイドを参照してください:
+これらの定義方法について詳しくは、次の Lightdash ガイドを参照してください。
 
-- [How to create metrics](https://docs.lightdash.com/guides/how-to-create-metrics?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
-- [How to create dimensions](https://docs.lightdash.com/guides/how-to-create-dimensions?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+- [メトリクスの作成方法](https://docs.lightdash.com/guides/how-to-create-metrics?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+- [ディメンションの作成方法](https://docs.lightdash.com/guides/how-to-create-dimensions?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
 ### テーブルからデータをクエリする {#querying-your-data-from-tables}
 
-dbtプロジェクトがLightdashに接続され同期されると、**テーブル**（または「explores」）から直接データの探索を開始できます。  
-各テーブルはdbtモデルを表し、YAMLで定義したメトリクスとディメンションが含まれています。
+dbt プロジェクトが Lightdash に接続されて同期されると、**テーブル**（「エクスプロア」）から直接データを探索できるようになります。  
+各テーブルは 1 つの dbt モデルに対応しており、YAML で定義したメトリクスとディメンションを含みます。
 
-**Explore**ページは5つの主要なエリアで構成されています:
+**Explore** ページは、5 つの主要な領域で構成されています。
 
 
-1. **ディメンションとメトリクス** — 選択したテーブルで利用可能なすべてのフィールド
-2. **フィルター** — クエリによって返されるデータを制限
-3. **チャート** — クエリ結果を視覚化
-4. **結果** — ClickHouseデータベースから返される生データを表示
-5. **SQL** — 結果の背後にある生成されたSQLクエリを検査
+1. **Dimensions and Metrics** — 選択したテーブルで利用可能なすべてのフィールドです
+2. **Filters** — クエリで返されるデータを制限します
+3. **Chart** — クエリ結果を可視化します
+4. **Results** — ClickHouse データベースから返された生データを表示します
+5. **SQL** — 結果の背後で生成された SQL クエリを確認します
 
 <Image
   size='lg'
   img={lightdash_04}
-  alt='ディメンション、フィルター、チャート、結果、SQLを表示するLightdash Exploreビュー'
+  alt='ディメンション、フィルター、チャート、結果、および SQL が表示された Lightdash の Explore ビュー'
   border
 />
 
-ここから、フィールドのドラッグアンドドロップ、フィルターの追加、テーブル、棒グラフ、時系列などの可視化タイプの切り替えを行いながら、インタラクティブにクエリを構築および調整できます。
+ここからは、フィールドのドラッグ＆ドロップ、フィルターの追加、テーブル・棒グラフ・時系列などの可視化タイプの切り替えによって、対話的にクエリを構築・調整できます。
 
-Exploreとテーブルからのクエリ方法の詳細については、以下を参照してください:  
-[テーブルとExploreページの紹介 → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/using-explores#an-intro-to-tables-and-the-explore-page?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+Explore の詳細や、テーブルからどのようにクエリを実行するかについては、次を参照してください。  
+[テーブルと Explore ページの概要 → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/using-explores#an-intro-to-tables-and-the-explore-page?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
-### ダッシュボードの構築 {#building-dashboards}
+### ダッシュボードを作成する {#building-dashboards}
 
-データを探索し、可視化を保存したら、それらを**ダッシュボード**にまとめてチームと共有できます。
+データを探索して可視化を保存したら、それらを組み合わせてチームと共有するための **ダッシュボード** を作成できます。
 
-Lightdashのダッシュボードは完全にインタラクティブです — フィルターの適用、タブの追加、リアルタイムのClickHouseクエリによって駆動されるチャートの表示が可能です。
+Lightdash のダッシュボードは完全にインタラクティブで、フィルターを適用したり、タブを追加したり、リアルタイムの ClickHouse クエリに基づくチャートを表示したりできます。
 
-また、**ダッシュボード内から直接**新しいチャートを作成することもでき、プロジェクトを整理された状態に保つことができます。この方法で作成されたチャートは**そのダッシュボード専用**であり、プロジェクト内の他の場所で再利用することはできません。
+また、**ダッシュボード内から直接** 新しいチャートを作成することもでき、プロジェクトを整理された状態に保ち、不要なチャートを増やさないのに役立ちます。この方法で作成されたチャートは **そのダッシュボード専用** であり、プロジェクト内の他の場所では再利用できません。
 
-ダッシュボード専用チャートを作成するには:
+ダッシュボード専用チャートを作成するには、次の手順を実行します。
 
-1. **タイルを追加**をクリック
-2. **新しいチャート**を選択
-3. チャートビルダーで可視化を構築
-4. 保存 — ダッシュボードの下部に表示されます
+1. **Add tile** をクリックします
+2. **New chart** を選択します
+3. チャートビルダーで可視化を作成します
+4. 保存します — ダッシュボードの一番下に表示されます
 
 <Image
   size='lg'
   img={lightdash_05}
-  alt='Lightdashダッシュボード内でのチャートの作成と整理'
+  alt='Lightdash ダッシュボード内でチャートを作成および整理している画面'
   border
 />
 
-ダッシュボードの作成と整理方法の詳細については、こちらを参照してください:  
+ダッシュボードの作成と整理方法の詳細については、次を参照してください。  
 [ダッシュボードの構築 → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/dashboards?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
-### Ask AI: dbtによって駆動されるセルフサービス分析 {#ask-ai}
+### Ask AI: dbt を活用したセルフサービス分析 {#ask-ai}
 
-Lightdashの**AI Agents**は、データ探索を真にセルフサービス化します。  
-クエリを記述する代わりに、ユーザーは_「月次収益成長率はどうでしたか?」_のような平易な言葉で質問するだけで、AI Agentが自動的に適切な可視化を生成し、dbtで定義されたメトリクスとモデルを参照して正確性と一貫性を確保します。
+Lightdash の **AI Agents** により、データ探索は真のセルフサービスになります。  
+ユーザーはクエリを記述する代わりに、_「月次の売上成長率はどうでしたか？」_ のように自然な言葉で質問するだけでよく、AI Agent が dbt で定義したメトリクスやモデルを参照しながら、正確性と一貫性を保った適切な可視化を自動生成します。
 
-これはdbtで使用しているのと同じセマンティックレイヤーによって駆動されており、すべての回答がガバナンスされ、説明可能で、高速であることを意味します — すべてClickHouseによって支えられています。
+これは、dbt で使用しているのと同じセマンティックレイヤーによって動作しているため、すべての回答はガバナンスが効いた形で、説明可能かつ高速に提供されます。そのすべてを ClickHouse が支えています。
 
 <Image
   size='lg'
   img={lightdash_06}
-  alt='dbtメトリクスによって駆動される自然言語クエリを表示するLightdash Ask AIインターフェース'
+  alt='dbt のメトリクスを利用した自然言語クエリを表示している Lightdash Ask AI インターフェース'
   border
 />
 
 :::tip
-AI Agentsの詳細については、こちらを参照してください: [AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+AI Agents の詳細については、次を参照してください: [AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 :::
 
 </VerticalStepper>
 
 
-## 詳細情報 {#learn-more}
+## 詳細はこちら {#learn-more}
 
-dbtプロジェクトをLightdashに接続する詳細については、[Lightdash Docs → ClickHouseセットアップ](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)を参照してください。
+dbt プロジェクトを Lightdash に接続する方法の詳細については、[Lightdash ドキュメント「ClickHouse セットアップ」](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)を参照してください。

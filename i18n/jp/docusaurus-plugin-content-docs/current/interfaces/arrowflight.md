@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse の Apache Arrow Flight インターフェイスに関するドキュメント。Flight SQL クライアントから ClickHouse への接続を可能にします'
+description: 'ClickHouse の Apache Arrow Flight インターフェイスに関するドキュメントで、Flight SQL クライアントから ClickHouse への接続を可能にします'
 sidebar_label: 'Arrow Flight インターフェイス'
 sidebar_position: 26
 slug: /interfaces/arrowflight
@@ -11,34 +11,36 @@ doc_type: 'reference'
 
 # Apache Arrow Flight インターフェイス
 
-ClickHouse は、[Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルをサポートしています。これは、gRPC 上で Arrow IPC フォーマットを使用して効率的にカラムナー形式のデータを転送するために設計された、高性能な RPC フレームワークです。
+ClickHouse は、Arrow IPC フォーマットを gRPC 上で利用して効率的なカラム型データ転送を行う、高性能な RPC フレームワークである [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルとの連携をサポートしています。
 
-このインターフェイスにより、Flight SQL クライアントは ClickHouse に対してクエリを実行し、結果を Arrow フォーマットで取得できます。これにより、分析ワークロードに対して高スループットかつ低レイテンシを実現できます。
+このインターフェイスにより、Flight SQL クライアントは ClickHouse に対してクエリを実行し、結果を Arrow フォーマットで取得できます。これにより、分析ワークロード向けに高スループットかつ低レイテンシなクエリ処理が可能になります。
 
 
 
 ## 機能 {#features}
 
-- Arrow Flight SQLプロトコル経由でのSQLクエリ実行
-- Apache Arrow形式でのクエリ結果のストリーミング
-- Arrow Flightをサポートする BIツールおよびカスタムデータアプリケーションとの統合
-- gRPC上での軽量かつ高性能な通信
+* Arrow Flight SQL プロトコル経由で SQL クエリを実行
+* クエリ結果を Apache Arrow 形式でストリーミング配信
+* Arrow Flight をサポートする BI ツールや独自のデータアプリケーションとの統合
+* gRPC を用いた軽量かつ高性能な通信
+
 
 
 ## 制限事項 {#limitations}
 
-Arrow Flightインターフェースは現在実験的機能であり、活発に開発が進められています。既知の制限事項は以下の通りです:
+Arrow Flight インターフェイスは現在、実験的な段階であり、活発に開発が進められています。既知の制限事項には次のようなものがあります。
 
-- ClickHouse固有の複雑なSQL機能に対するサポートが限定的
-- すべてのArrow Flight SQLメタデータ操作が未実装
-- リファレンス実装に組み込みの認証やTLS設定が存在しない
+* ClickHouse 固有の複雑な SQL 機能に対するサポートが限定的です
+* すべての Arrow Flight SQL メタデータ操作がまだ実装されていません
+* リファレンス実装には、組み込みの認証機能や TLS 設定はありません
 
-互換性の問題が発生した場合、または貢献をご希望の場合は、ClickHouseリポジトリで[issueを作成](https://github.com/ClickHouse/ClickHouse/issues)してください。
+互換性の問題が発生した場合やコントリビュートを希望される場合は、ClickHouse リポジトリで[issue を作成](https://github.com/ClickHouse/ClickHouse/issues)してください。
 
 
-## Arrow Flightサーバーの実行 {#running-server}
 
-セルフマネージド型のClickHouseインスタンスでArrow Flightサーバーを有効化するには、サーバー設定に以下の構成を追加します：
+## Arrow Flight サーバーの実行
+
+自己管理の ClickHouse インスタンスで Arrow Flight サーバーを有効化するには、サーバー設定に次の構成を追加します。
 
 ```xml
 <clickhouse>
@@ -46,16 +48,16 @@ Arrow Flightインターフェースは現在実験的機能であり、活発�
 </clickhouse>
 ```
 
-ClickHouseサーバーを再起動します。正常に起動すると、以下のようなログメッセージが表示されます：
+ClickHouse サーバーを再起動します。起動に成功すると、次のようなログメッセージが表示されます。
 
 ```bash
-{} <Information> Application: Arrow Flight compatibility protocol: 0.0.0.0:9005
+{} <Information> Application: Arrow Flight互換プロトコル: 0.0.0.0:9005
 ```
 
 
-## Arrow Flight SQLを介したClickHouseへの接続 {#connecting-to-clickhouse}
+## Arrow Flight SQL を使用して ClickHouse に接続する
 
-Arrow Flight SQLをサポートする任意のクライアントを使用できます。例えば、`pyarrow`を使用する場合:
+Arrow Flight SQL をサポートする任意のクライアントを利用できます。たとえば、`pyarrow` を使う場合は次のとおりです。
 
 ```python
 import pyarrow.flight
@@ -71,22 +73,23 @@ for batch in reader:
 
 ## 互換性 {#compatibility}
 
-Arrow Flightインターフェースは、Arrow Flight SQLをサポートするツールと互換性があります。以下を使用して構築されたカスタムアプリケーションも含まれます：
+Arrow Flight インターフェースは、次のような技術スタックで構築されたカスタムアプリケーションを含め、Arrow Flight SQL をサポートするツールと互換性があります。
 
-- Python（`pyarrow`）
-- Java（`arrow-flight`）
-- C++およびその他のgRPC互換言語
+* Python (`pyarrow`)
+* Java (`arrow-flight`)
+* C++ およびその他の gRPC 互換言語
 
-使用するツールにネイティブのClickHouseコネクタが利用可能な場合（例：JDBC、ODBC）は、パフォーマンスやフォーマットの互換性のために特にArrow Flightが必要でない限り、ネイティブコネクタの使用を推奨します。
+利用しているツール向けにネイティブな ClickHouse コネクタ（例: JDBC、ODBC）が利用可能な場合、パフォーマンスやフォーマット互換性の理由で Arrow Flight が明示的に必要な場合を除き、そちらを優先して使用してください。
+
 
 
 ## クエリのキャンセル {#query-cancellation}
 
-長時間実行されるクエリは、クライアント側からgRPC接続を切断することでキャンセルできます。より高度なキャンセル機能のサポートは今後予定されています。
+長時間実行中のクエリは、クライアント側で gRPC 接続を閉じることでキャンセルできます。より高度なキャンセル機能のサポートの追加が計画されています。
 
 ---
 
-詳細については、以下を参照してください：
+詳しくは次を参照してください。
 
-- [Apache Arrow Flight SQL仕様](https://arrow.apache.org/docs/format/FlightSql.html)
-- [ClickHouse GitHub Issue #7554](https://github.com/ClickHouse/ClickHouse/issues/7554)
+* [Apache Arrow Flight SQL specification](https://arrow.apache.org/docs/format/FlightSql.html)
+* [ClickHouse GitHub Issue #7554](https://github.com/ClickHouse/ClickHouse/issues/7554)

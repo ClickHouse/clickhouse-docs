@@ -2,7 +2,7 @@
 slug: /cloud/guides/data-masking
 sidebar_label: 'データマスキング'
 title: 'ClickHouse におけるデータマスキング'
-description: 'ClickHouse におけるデータマスキングのガイド'
+description: 'ClickHouse におけるデータマスキングに関するガイド'
 keywords: ['データマスキング']
 doc_type: 'guide'
 ---
@@ -11,43 +11,43 @@ doc_type: 'guide'
 
 # ClickHouse におけるデータマスキング
 
-データマスキングとは、データ保護のための手法であり、元のデータを、形式と構造を維持したまま、個人を特定できる情報 (PII) や機密情報を取り除いた別のデータに置き換えるものです。
+データマスキングはデータ保護のための手法であり、元のデータの形式や構造は維持したまま、個人を特定できる情報 (PII) や機密情報を取り除いた別バージョンのデータに置き換えるものです。
 
-このガイドでは、ClickHouse でデータをマスクする方法を解説します。
+このガイドでは、ClickHouse でデータをマスクする方法を説明します。
 
 
 
-## 文字列置換関数の使用 {#using-string-functions}
+## 文字列置換関数を使用する
 
-基本的なデータマスキングのユースケースでは、`replace`ファミリーの関数がデータをマスキングする便利な方法を提供します:
+基本的なデータマスキングのユースケースでは、`replace` 系の関数を使うと、データをマスクする簡便な方法になります。
 
-| 関数                                                                                 | 説明                                                                                                                                            |
-| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceOne)             | 検索対象文字列内でパターンが最初に出現する箇所を、指定された置換文字列で置き換えます。                                                  |
-| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceAll)             | 検索対象文字列内でパターンが出現するすべての箇所を、指定された置換文字列で置き換えます。                                                       |
-| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceRegexpOne) | 検索対象文字列内で正規表現パターン(re2構文)に一致する部分文字列が最初に出現する箇所を、指定された置換文字列で置き換えます。 |
-| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceRegexpAll) | 検索対象文字列内で正規表現パターン(re2構文)に一致する部分文字列が出現するすべての箇所を、指定された置換文字列で置き換えます。      |
+| Function                                                                                 | Description                                                            |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceOne)             | haystack 文字列の中で、パターンに最初に一致した部分を、指定した置換文字列に置き換えます。                      |
+| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceAll)             | haystack 文字列の中で、パターンに一致したすべての部分を、指定した置換文字列に置き換えます。                     |
+| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceRegexpOne) | haystack の中で、正規表現パターン（re2 構文）に一致する部分文字列のうち最初に一致したものを、指定した置換文字列に置き換えます。 |
+| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceRegexpAll) | haystack の中で、正規表現パターン（re2 構文）に一致するすべての部分文字列を、指定した置換文字列に置き換えます。         |
 
-例えば、`replaceOne`関数を使用して、名前「John Smith」をプレースホルダー`[CUSTOMER_NAME]`に置き換えることができます:
+例えば、`replaceOne` 関数を使用して、名前 &quot;John Smith&quot; をプレースホルダー `[CUSTOMER_NAME]` に置き換えることができます。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT replaceOne(
-    'Customer John Smith called about his account',
+    '顧客のJohn Smithがアカウントについて問い合わせてきました',
     'John Smith',
     '[CUSTOMER_NAME]'
 ) AS anonymized_text;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─anonymized_text───────────────────────────────────┐
-│ Customer [CUSTOMER_NAME] called about his account │
+│ 顧客 [CUSTOMER_NAME] がアカウントについて問い合わせました │
 └───────────────────────────────────────────────────┘
 ```
 
-より汎用的には、`replaceRegexpAll`を使用して任意の顧客名を置き換えることができます:
+より一般的には、`replaceRegexpOne` を使用すると任意の顧客名を置き換えることができます。
 
-```sql title="クエリ"
-SELECT
+```sql title="Query"
+SELECT 
     replaceRegexpAll(
         'Customer John Smith called. Later, Mary Johnson and Bob Wilson also called.',
         '\\b[A-Z][a-z]+ [A-Z][a-z]+\\b',
@@ -55,15 +55,15 @@ SELECT
     ) AS anonymized_text;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─anonymized_text───────────────────────────────────────────────────────────────────────┐
-│ [CUSTOMER_NAME] Smith called. Later, [CUSTOMER_NAME] and [CUSTOMER_NAME] also called. │
+│ [CUSTOMER_NAME] Smithが電話をかけてきました。その後、[CUSTOMER_NAME]と[CUSTOMER_NAME]も電話をかけてきました。 │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-または、`replaceRegexpAll`関数を使用して、社会保障番号の最後の4桁のみを残してマスキングすることもできます。
+あるいは、`replaceRegexpAll` 関数を使用して社会保障番号の一部をマスクし、最後の 4 桁だけを残すこともできます。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT replaceRegexpAll(
     'SSN: 123-45-6789',
     '(\d{3})-(\d{2})-(\d{4})',
@@ -71,24 +71,24 @@ SELECT replaceRegexpAll(
 ) AS masked_ssn;
 ```
 
-上記のクエリでは、`\3`を使用して第3キャプチャグループを結果文字列に代入しており、次のような結果が生成されます:
+上記のクエリでは、`\3` が 3 番目のキャプチャグループを結果の文字列に置換するために使用されており、その結果として次のような文字列が生成されます。
 
-```response title="レスポンス"
+```response title="Response"
 ┌─masked_ssn───────┐
 │ SSN: XXX-XX-6789 │
 └──────────────────┘
 ```
 
 
-## マスク化された`VIEW`の作成 {#masked-views}
+## マスクされた `VIEW` の作成
 
-[`VIEW`](/sql-reference/statements/create/view)は、前述の文字列関数と組み合わせて使用することで、機密データを含むカラムに変換を適用し、ユーザーに提示する前に処理することができます。
-この方法により、元のデータは変更されず、ビューをクエリするユーザーにはマスク化されたデータのみが表示されます。
+[`VIEW`](/sql-reference/statements/create/view) は、前述の文字列関数と組み合わせて使用することで、ユーザーに表示する前に機微なデータを含むカラムに対して変換処理を適用できます。
+この方法では、元のデータは変更されず、ビューをクエリするユーザーにはマスク済みのデータのみが表示されます。
 
-例として、顧客注文の記録を保存するテーブルがあるとします。
-従業員グループが情報を閲覧できるようにしたいが、顧客の完全な情報は見せたくない場合を考えます。
+例として、顧客の注文レコードを保存しているテーブルがあるとします。
+特定の従業員グループが情報を閲覧できるようにしたい一方で、顧客の詳細情報をすべて見せたくはありません。
 
-以下のクエリを実行して、サンプルテーブル`orders`を作成し、架空の顧客注文レコードを挿入します:
+以下のクエリを実行して、サンプルテーブル `orders` を作成し、いくつかの架空の顧客注文レコードを挿入します。
 
 ```sql
 CREATE TABLE orders (
@@ -111,7 +111,7 @@ INSERT INTO orders VALUES
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-`masked_orders`という名前のビューを作成します:
+`masked_orders` という名前のビューを作成します。
 
 ```sql
 CREATE VIEW masked_orders AS
@@ -126,11 +126,11 @@ SELECT
 FROM orders;
 ```
 
-上記のビュー作成クエリの`SELECT`句では、部分的にマスク化したい機密情報を含むフィールドである`name`、`email`、`phone`、`shipping_address`に対して、`replaceRegexpOne`を使用した変換を定義しています。
+上記のビュー作成クエリの `SELECT` 句では、`name`、`email`、`phone`、`shipping_address` フィールドに対して `replaceRegexpOne` を使用した変換処理を定義しています。これらは、部分的にマスキングしたい機微情報を含むフィールドです。
 
-ビューからデータを選択します:
+ビューからデータを取得します:
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT * FROM masked_orders
 ```
 
@@ -145,10 +145,10 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
-ビューから返されるデータは一部マスクされており、機微な情報が難読化されていることがわかります。
-閲覧者が持つ情報への特権アクセスレベルに応じて、難読化の度合いが異なる複数のビューを作成することもできます。
+ビューから返されるデータは一部マスキングされており、機密情報が秘匿されていることに注意してください。
+また、閲覧者が持つ情報への特権アクセスレベルに応じて、マスキングの度合いが異なる複数のビューを作成することもできます。
 
-ユーザーがマスクされたデータを返すビューにのみアクセスでき、マスクされていない元データを持つテーブルにはアクセスできないようにするには、[Role Based Access Control](/cloud/security/console-roles) を使用して、特定のロールだけがビューに対して `SELECT` できる権限を持つように構成する必要があります。
+ユーザーがマスキングされたデータを返すビューにのみアクセスでき、元のマスキングされていないデータを保持するテーブルにはアクセスできないようにするには、[Role Based Access Control](/cloud/security/console-roles) を使用して、特定のロールに対してビューに対する `SELECT` 権限だけを付与するようにしてください。
 
 まずロールを作成します:
 
@@ -162,30 +162,31 @@ CREATE ROLE masked_orders_viewer;
 GRANT SELECT ON masked_orders TO masked_orders_viewer;
 ```
 
-ClickHouse のロールは累積的に付与されるため、マスクされたビューのみを参照できるようにしたいユーザーが、いかなるロール経由でもベーステーブルに対する `SELECT` 権限を持たないようにする必要があります。
+ClickHouse のロールは付与が累積される性質があるため、マスクされたビューのみを閲覧できるべきユーザーが、いかなるロール経由でもベーステーブルに対する `SELECT` 権限を持たないようにする必要があります。
 
-そのため、安全のためにベーステーブルへのアクセスを明示的に取り消す必要があります。
+そのため、安全を期すためにベーステーブルへのアクセスを明示的に取り消すべきです。
 
 ```sql
 REVOKE SELECT ON orders FROM masked_orders_viewer;
 ```
 
-最後に、そのロールを該当するユーザーに割り当てます：
+最後に、そのロールを該当するユーザーに割り当てます。
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
 ```
 
-これにより、`masked_orders_viewer` ロールを持つユーザーは、ビュー上のマスク済みデータのみを閲覧でき、テーブルにある元のマスクされていないデータを閲覧することはできません。
+これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスクされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
 
 
-## `MATERIALIZED`カラムとカラムレベルのアクセス制限を使用する {#materialized-ephemeral-column-restrictions}
+## `MATERIALIZED` カラムとカラムレベルのアクセス制限を使用する
 
-別のビューを作成したくない場合は、マスク化されたバージョンのデータを元のデータと並行して保存することができます。
-これを行うには、[マテリアライズドカラム](/sql-reference/statements/create/table#materialized)を使用できます。
-このようなカラムの値は、行が挿入される際に指定されたマテリアライズド式に従って自動的に計算されるため、マスク化されたバージョンのデータを持つ新しいカラムを作成するために使用できます。
+別のビューを作成したくない場合は、マスクしたデータを元のデータと並べて保存できます。
+そのためには、[マテリアライズドカラム](/sql-reference/statements/create/table#materialized) を使用します。
+このようなカラムの値は、行が挿入されるときに指定したマテリアライズド式に従って自動的に計算され、
+それを利用してマスク済みデータを含む新しいカラムを作成できます。
 
-前の例を参考に、マスク化されたデータ用の別の`VIEW`を作成する代わりに、`MATERIALIZED`を使用してマスク化されたカラムを作成します:
+先ほどの例では、マスクされたデータ用に別の `VIEW` を作成する代わりに、ここでは `MATERIALIZED` を使用してマスクされたカラムを作成します。
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -213,10 +214,10 @@ INSERT INTO orders VALUES
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-次のselectクエリを実行すると、マスク化されたデータが挿入時に「マテリアライズ」され、元のマスク化されていないデータと並行して保存されていることがわかります。
-ClickHouseはデフォルトで`SELECT *`クエリにマテリアライズドカラムを自動的に含めないため、マスク化されたカラムを明示的に選択する必要があります。
+ここで次の SELECT クエリを実行すると、マスクされたデータが挿入時にマテリアライズされ、元のマスクされていないデータと並んで保存されていることが分かります。
+ClickHouse では、デフォルトでは `SELECT *` クエリに materialized カラムが自動的に含まれないため、マスクされたカラムを明示的に指定して選択する必要があります。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT
     *,
     name_masked,
@@ -238,9 +239,9 @@ ORDER BY user_id ASC
    └─────────┴───────────────┴───────────────────────────┴──────────────┴──────────────┴────────────┴────────────────────────────────────┴──────────────┴────────────────────┴──────────────┴────────────────────────────┘
 ```
 
-マスクされたデータを含むカラムにのみユーザーがアクセスできるようにするには、再度 [Role Based Access Control](/cloud/security/console-roles) を利用し、特定のロールには `orders` テーブルのマスクされたカラムに対する `SELECT` 権限だけが付与されるようにします。
+マスクされたデータを含む列にのみユーザーがアクセスできるようにするには、再度 [Role Based Access Control](/cloud/security/console-roles) を使用して、特定のロールには `orders` テーブルのマスクされた列に対する `SELECT` 権限のみが付与されるようにします。
 
-先ほど作成したロールを再作成します:
+先ほど作成したロールを再作成します：
 
 ```sql
 DROP ROLE IF EXISTS masked_order_viewer;
@@ -253,7 +254,7 @@ CREATE ROLE masked_order_viewer;
 GRANT SELECT ON orders TO masked_data_reader;
 ```
 
-機密性の高い列へのアクセスを取り消します。
+機密情報を含むカラムへのアクセス権を取り消します：
 
 ```sql
 REVOKE SELECT(name) ON orders FROM masked_data_reader;
@@ -262,15 +263,15 @@ REVOKE SELECT(phone) ON orders FROM masked_data_reader;
 REVOKE SELECT(shipping_address) ON orders FROM masked_data_reader;
 ```
 
-最後に、そのロールを適切なユーザーに割り当てます。
+最後に、該当するユーザーにそのロールを割り当てます。
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
 ```
 
 `orders` テーブルにマスク済みデータのみを保存したい場合は、
-マスクされていない機密性の高いカラムを [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral) としてマークできます。
-これにより、この型に指定したカラムはテーブルに保存されないことが保証されます。
+マスクされていない機密性の高いカラムに [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral) を指定できます。
+これにより、この種類のカラムはテーブルに保存されなくなります。
 
 
 ```sql
@@ -299,7 +300,7 @@ INSERT INTO orders (user_id, name, email, phone, total_amount, order_date, shipp
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-先ほどと同じクエリを実行すると、マテリアライズされたマスク済みデータだけがテーブルに挿入されたことが分かります。
+先ほどと同じクエリを実行すると、今度はマテリアライズされたマスク済みデータのみがテーブルに挿入されていることが確認できます。
 
 ```sql title="Query"
 SELECT
@@ -323,24 +324,24 @@ ORDER BY user_id ASC
 ```
 
 
-## ログデータに対するクエリマスキングルールの使用 {#use-query-masking-rules}
+## クエリマスキングルールでログデータをマスクする
 
-ログデータを特にマスキングしたいClickHouse OSSのユーザーは、[クエリマスキングルール](/operations/server-configuration-parameters/settings#query_masking_rules)（ログマスキング）を使用してデータをマスキングできます。
+ClickHouse OSS のユーザーで、特にログデータをマスクしたい場合は、[query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules)（ログマスキング）を利用してデータをマスクできます。
 
-これを行うには、サーバー設定で正規表現ベースのマスキングルールを定義します。
-これらのルールは、サーバーログやシステムテーブル（`system.query_log`、`system.text_log`、`system.processes`など）に保存される前に、クエリとすべてのログメッセージに適用されます。
+そのためには、サーバー設定で正規表現ベースのマスキングルールを定義します。
+これらのルールは、サーバーログやシステムテーブル（`system.query_log`、`system.text_log`、`system.processes` など）に保存される前に、クエリおよびすべてのログメッセージに対して適用されます。
 
-これにより、機密データが**ログ**に漏洩することを防ぐことができます。
-ただし、クエリ結果のデータはマスキングされません。
+これにより、機密データが **ログ** に書き出されるのを防ぐことができます（ログに対してのみ有効です）。
+ただし、クエリ結果内のデータはマスクされない点に注意してください。
 
-例えば、社会保障番号をマスキングするには、[サーバー設定](/operations/configuration-files)に以下のルールを追加します:
+例えば、社会保障番号をマスクするには、[server configuration](/operations/configuration-files) に次のルールを追加できます。
 
 ```yaml
 <query_masking_rules>
-<rule>
-<name>SSNを隠す</name>
-<regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
-<replace>000-00-0000</replace>
-</rule>
+    <rule>
+        <name>SSNを非表示</name>
+        <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
+        <replace>000-00-0000</replace>
+    </rule>
 </query_masking_rules>
 ```

@@ -1,9 +1,9 @@
 ---
-description: 'Табличный движок Alias создает прозрачный прокси к другой таблице. Все операции перенаправляются в целевую таблицу, при этом сам псевдоним не хранит данные.'
+description: 'Движок таблицы Alias создает прозрачный прокси к другой таблице. Все операции перенаправляются в целевую таблицу, при этом сам алиас не хранит никаких данных.'
 sidebar_label: 'Alias'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
-title: 'Табличный движок Alias'
+title: 'Движок таблицы Alias'
 doc_type: 'reference'
 ---
 
@@ -11,18 +11,18 @@ doc_type: 'reference'
 
 # Движок таблицы Alias
 
-Движок `Alias` создаёт прокси для другой таблицы. Все операции чтения и записи перенаправляются в целевую таблицу, при этом сам псевдоним не хранит данные и лишь поддерживает ссылку на целевую таблицу.
+Движок `Alias` создает прокси к другой таблице. Все операции чтения и записи перенаправляются в целевую таблицу, при этом сама таблица-алиас не хранит данные и лишь содержит ссылку на целевую таблицу.
 
 
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы
 
 ```sql
 CREATE TABLE [db_name.]alias_name
 ENGINE = Alias(target_table)
 ```
 
-Или с явным указанием имени базы данных:
+Либо с явным указанием имени базы данных:
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -30,50 +30,51 @@ ENGINE = Alias(target_db, target_table)
 ```
 
 :::note
-Таблица `Alias` не поддерживает явное определение столбцов. Столбцы автоматически наследуются из целевой таблицы. Это гарантирует, что алиас всегда соответствует схеме целевой таблицы.
+Таблица `Alias` не поддерживает явное задание столбцов. Столбцы автоматически наследуются от целевой таблицы. Это гарантирует, что псевдоним всегда соответствует схеме целевой таблицы.
 :::
 
 
 ## Параметры движка {#engine-parameters}
 
-- **`target_db (необязательный)`** — имя базы данных, содержащей целевую таблицу.
-- **`target_table`** — имя целевой таблицы.
+- **`target_db (optional)`** — Имя базы данных, содержащей целевую таблицу.
+- **`target_table`** — Имя целевой таблицы.
+
 
 
 ## Поддерживаемые операции {#supported-operations}
 
-Движок таблиц `Alias` поддерживает все основные операции.
+Движок таблицы `Alias` поддерживает все основные операции. 
+### Операции с целевой таблицей {#operations-on-target}
 
-### Операции над целевой таблицей {#operations-on-target}
+Эти операции пробрасываются в целевую таблицу:
 
-Эти операции передаются целевой таблице:
+| Operation | Support | Description |
+|-----------|---------|-------------|
+| `SELECT` | ✅ | Чтение данных из целевой таблицы |
+| `INSERT` | ✅ | Запись данных в целевую таблицу |
+| `INSERT SELECT` | ✅ | Пакетная вставка в целевую таблицу |
+| `ALTER TABLE ADD COLUMN` | ✅ | Добавление столбцов в целевую таблицу |
+| `ALTER TABLE MODIFY SETTING` | ✅ | Изменение настроек целевой таблицы |
+| `ALTER TABLE PARTITION` | ✅ | Операции с партициями (DETACH/ATTACH/DROP) для целевой таблицы |
+| `ALTER TABLE UPDATE` | ✅ | Обновление строк в целевой таблице (мутация) |
+| `ALTER TABLE DELETE` | ✅ | Удаление строк из целевой таблицы (мутация) |
+| `OPTIMIZE TABLE` | ✅ | Оптимизация целевой таблицы (слияние частей) |
+| `TRUNCATE TABLE` | ✅ | Очистка целевой таблицы |
 
-| Операция                     | Поддержка | Описание                                                       |
-| ---------------------------- | --------- | -------------------------------------------------------------- |
-| `SELECT`                     | ✅        | Чтение данных из целевой таблицы                               |
-| `INSERT`                     | ✅        | Запись данных в целевую таблицу                                |
-| `INSERT SELECT`              | ✅        | Пакетная вставка в целевую таблицу                             |
-| `ALTER TABLE ADD COLUMN`     | ✅        | Добавление столбцов в целевую таблицу                          |
-| `ALTER TABLE MODIFY SETTING` | ✅        | Изменение настроек целевой таблицы                             |
-| `ALTER TABLE PARTITION`      | ✅        | Операции с партициями (DETACH/ATTACH/DROP) над целевой таблицей |
-| `ALTER TABLE UPDATE`         | ✅        | Обновление строк в целевой таблице (мутация)                   |
-| `ALTER TABLE DELETE`         | ✅        | Удаление строк из целевой таблицы (мутация)                    |
-| `OPTIMIZE TABLE`             | ✅        | Оптимизация целевой таблицы (слияние кусков)                   |
-| `TRUNCATE TABLE`             | ✅        | Очистка целевой таблицы                                        |
+### Операции с самим алиасом {#operations-on-alias}
 
-### Операции над самим псевдонимом {#operations-on-alias}
+Эти операции затрагивают только алиас, а **не** целевую таблицу:
 
-Эти операции влияют только на псевдоним, **не затрагивая** целевую таблицу:
-
-| Операция       | Поддержка | Описание                                                               |
-| -------------- | --------- | ---------------------------------------------------------------------- |
-| `DROP TABLE`   | ✅        | Удаление только псевдонима, целевая таблица остаётся без изменений     |
-| `RENAME TABLE` | ✅        | Переименование только псевдонима, целевая таблица остаётся без изменений |
+| Operation | Support | Description |
+|-----------|---------|-------------|
+| `DROP TABLE` | ✅ | Удаляет только алиас, целевая таблица остаётся без изменений |
+| `RENAME TABLE` | ✅ | Переименовывает только алиас, целевая таблица остаётся без изменений |
 
 
-## Примеры использования {#usage-examples}
 
-### Создание простого псевдонима {#basic-alias-creation}
+## Примеры использования
+
+### Создание простого псевдонима
 
 Создайте простой псевдоним в той же базе данных:
 
@@ -103,16 +104,16 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-### Псевдоним для таблицы в другой базе данных {#cross-database-alias}
+### Псевдоним для другой базы данных
 
-Создайте псевдоним, указывающий на таблицу в другой базе данных:
+Создайте псевдоним, который ссылается на таблицу в другой базе данных:
 
 ```sql
--- Создать базы данных
+-- Создание баз данных
 CREATE DATABASE db1;
 CREATE DATABASE db2;
 
--- Создать исходную таблицу в db1
+-- Создание исходной таблицы в db1
 CREATE TABLE db1.events (
     timestamp DateTime,
     event_type String,
@@ -120,10 +121,10 @@ CREATE TABLE db1.events (
 ) ENGINE = MergeTree
 ORDER BY timestamp;
 
--- Создать псевдоним в db2, указывающий на db1.events
+-- Создание псевдонима в db2, ссылающегося на db1.events
 CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 
--- Или используя формат database.table
+-- Или с использованием формата database.table
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
 -- Оба псевдонима работают одинаково
@@ -131,7 +132,7 @@ INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### Операции записи через псевдоним {#write-operations}
+### Операции записи через алиас
 
 Все операции записи перенаправляются в целевую таблицу:
 
@@ -146,24 +147,24 @@ ORDER BY ts;
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
 -- Вставка через псевдоним
-INSERT INTO metrics_alias VALUES
+INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
 
 -- Вставка с помощью SELECT
-INSERT INTO metrics_alias
-SELECT now(), 'disk_usage', number * 10
-FROM system.numbers
+INSERT INTO metrics_alias 
+SELECT now(), 'disk_usage', number * 10 
+FROM system.numbers 
 LIMIT 5;
 
--- Проверить, что данные находятся в целевой таблице
+-- Проверка наличия данных в целевой таблице
 SELECT count() FROM metrics;  -- Возвращает 7
 SELECT count() FROM metrics_alias;  -- Возвращает 7
 ```
 
-### Изменение схемы {#schema-modification}
+### Изменение схемы
 
-Операции ALTER изменяют схему целевой таблицы:
+Операции `ALTER` изменяют схему целевой таблицы:
 
 ```sql
 CREATE TABLE users (
@@ -177,7 +178,7 @@ CREATE TABLE users_alias ENGINE = Alias('users');
 -- Добавить столбец через псевдоним
 ALTER TABLE users_alias ADD COLUMN email String DEFAULT '';
 
--- Столбец добавлен в целевую таблицу
+-- Столбец добавляется в целевую таблицу
 DESCRIBE users;
 ```
 
@@ -189,7 +190,7 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
-### Мутации данных {#data-mutations}
+### Модификации данных
 
 Поддерживаются операции UPDATE и DELETE:
 
@@ -204,31 +205,31 @@ ORDER BY id;
 
 CREATE TABLE products_alias ENGINE = Alias('products');
 
-INSERT INTO products_alias VALUES
+INSERT INTO products_alias VALUES 
     (1, 'item_one', 100.0, 'active'),
     (2, 'item_two', 200.0, 'active'),
     (3, 'item_three', 300.0, 'inactive');
 
--- Обновление через псевдоним
+-- Обновление через алиас
 ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 
--- Удаление через псевдоним
+-- Удаление через алиас
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- Изменения применены к целевой таблице
+-- Изменения применяются к целевой таблице
 SELECT * FROM products ORDER BY id;
 ```
 
 ```text
 ┌─id─┬─name─────┬─price─┬─status─┐
-│  1 │ item_one │ 110.0 │ active │
-│  2 │ item_two │ 220.0 │ active │
+│  1 │ item_one │ 110.0 │ активный │
+│  2 │ item_two │ 220.0 │ активный │
 └────┴──────────┴───────┴────────┘
 ```
 
-### Операции с партициями {#partition-operations}
+### Операции с партициями
 
-Для партиционированных таблиц операции с партициями перенаправляются в целевую таблицу:
+Для партиционированных таблиц операции с партициями перенаправляются:
 
 
 ```sql
@@ -242,25 +243,25 @@ ORDER BY date;
 
 CREATE TABLE logs_alias ENGINE = Alias('logs');
 
-INSERT INTO logs_alias VALUES
+INSERT INTO logs_alias VALUES 
     ('2024-01-15', 'INFO', 'message1'),
     ('2024-02-15', 'ERROR', 'message2'),
     ('2024-03-15', 'INFO', 'message3');
 
--- Отсоединение партиции через псевдоним
+-- Отключение партиции через псевдоним
 ALTER TABLE logs_alias DETACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- Возвращает 2 (партиция 202402 отсоединена)
+SELECT count() FROM logs_alias;  -- Возвращает 2 (партиция 202402 отключена)
 
--- Присоединение партиции обратно
+-- Подключение партиции обратно
 ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
 SELECT count() FROM logs_alias;  -- Возвращает 3
 ```
 
-### Оптимизация таблицы {#table-optimization}
+### Оптимизация таблицы
 
-Операции оптимизации объединяют куски данных в целевой таблице:
+Выполните операцию `OPTIMIZE` для слияния частей в целевой таблице:
 
 ```sql
 CREATE TABLE events (
@@ -271,30 +272,30 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- Множественные вставки создают несколько кусков данных
+-- Множественные вставки создают несколько частей
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- Проверка количества кусков данных
-SELECT count() FROM system.parts
-WHERE database = currentDatabase()
-  AND table = 'events'
+-- Проверка количества частей
+SELECT count() FROM system.parts 
+WHERE database = currentDatabase() 
+  AND table = 'events' 
   AND active;
 
 -- Оптимизация через псевдоним
 OPTIMIZE TABLE events_alias FINAL;
 
--- Куски данных объединены в целевой таблице
-SELECT count() FROM system.parts
-WHERE database = currentDatabase()
-  AND table = 'events'
+-- Части объединены в целевой таблице
+SELECT count() FROM system.parts 
+WHERE database = currentDatabase() 
+  AND table = 'events' 
   AND active;  -- Возвращает 1
 ```
 
-### Управление псевдонимами {#alias-management}
+### Управление псевдонимами
 
-Псевдонимы можно переименовывать или удалять независимо:
+Псевдонимы можно переименовывать или удалять по отдельности:
 
 ```sql
 CREATE TABLE important_data (
@@ -307,15 +308,15 @@ INSERT INTO important_data VALUES (1, 'critical'), (2, 'important');
 
 CREATE TABLE old_alias ENGINE = Alias('important_data');
 
--- Переименование псевдонима (целевая таблица остается без изменений)
+-- Переименование псевдонима (целевая таблица остаётся без изменений)
 RENAME TABLE old_alias TO new_alias;
 
--- Создание еще одного псевдонима для той же таблицы
+-- Создание ещё одного псевдонима для той же таблицы
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- Удаление одного псевдонима (целевая таблица и другие псевдонимы остаются без изменений)
+-- Удаление одного псевдонима (целевая таблица и остальные псевдонимы остаются без изменений)
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- По-прежнему работает
-SELECT count() FROM important_data;  -- Данные сохранены, возвращает 2
+SELECT * FROM another_alias;  -- Всё ещё работает
+SELECT count() FROM important_data;  -- Данные целы, возвращает 2
 ```

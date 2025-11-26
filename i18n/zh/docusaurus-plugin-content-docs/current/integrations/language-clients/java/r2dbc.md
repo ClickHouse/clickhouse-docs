@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'R2DBC 驱动程序'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', '驱动程序', '集成', 'r2dbc']
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
 description: 'ClickHouse R2DBC 驱动程序'
 slug: /integrations/java/r2dbc
 title: 'R2DBC 驱动程序'
@@ -13,27 +13,27 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# R2DBC 驱动
+# R2DBC 驱动程序
 
 
 
-## R2DBC 驱动程序 {#r2dbc-driver}
+## R2DBC 驱动
 
-ClickHouse 异步 Java 客户端的 [R2DBC](https://r2dbc.io/) 封装。
+基于 [R2DBC](https://r2dbc.io/) 的 ClickHouse 异步 Java 客户端封装。
 
-### 环境要求 {#environment-requirements}
+### 环境要求
 
-- [OpenJDK](https://openjdk.java.net) 版本 >= 8
+* [OpenJDK](https://openjdk.java.net) 版本 &gt;= 8
 
-### 配置 {#setup}
+### 安装与配置
 
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- 对于 SPI 0.9.1.RELEASE 版本,请改为 clickhouse-r2dbc_0.9.1 -->
+    <!-- 若使用 SPI 0.9.1.RELEASE,请改为 clickhouse-r2dbc_0.9.1 -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- 使用包含所有依赖项的 uber jar,若需更小的 jar 包可将 classifier 改为 http 或 grpc -->
+    <!-- 使用包含所有依赖的 uber jar;如需更小的 jar 包,可将 classifier 改为 http 或 grpc -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -44,7 +44,7 @@ ClickHouse 异步 Java 客户端的 [R2DBC](https://r2dbc.io/) 封装。
 </dependency>
 ```
 
-### 连接到 ClickHouse {#connect-to-clickhouse}
+### 连接 ClickHouse
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### 查询 {#query}
+### 查询
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### 插入 {#insert}
+### INSERT 语句
 
 ```java showLineNumbers
 connection

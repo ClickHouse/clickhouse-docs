@@ -3,26 +3,26 @@ description: 'ClickHouse と ZooKeeper 間の安全な SSL/TLS 通信を構成�
 sidebar_label: 'ZooKeeper とのセキュア通信'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'ClickHouse と ZooKeeper 間のオプションのセキュア通信'
+title: 'ClickHouse と ZooKeeper 間のセキュア通信（オプション）'
 doc_type: 'guide'
 ---
 
-# ClickHouse と ZooKeeper 間のセキュア通信（オプション）
+# ClickHouse と Zookeeper 間のオプションのセキュア通信
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-SSL 経由で ClickHouse クライアントと通信するには、`ssl.keyStore.location`、`ssl.keyStore.password`、`ssl.trustStore.location`、`ssl.trustStore.password` を指定する必要があります。これらのオプションは ZooKeeper バージョン 3.5.2 以降で利用可能です。
+ClickHouse クライアントとの SSL 経由の通信のために、`ssl.keyStore.location`、`ssl.keyStore.password` および `ssl.trustStore.location`、`ssl.trustStore.password` を指定する必要があります。これらのオプションは Zookeeper バージョン 3.5.2 以降で利用可能です。
 
-`zookeeper.crt` を信頼済み証明書ストアに追加できます。
+`zookeeper.crt` を信頼済み証明書に追加できます。
 
 ```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-`config.xml` の client セクションは次のようになります。
+`config.xml` の client セクションは次のようになります：
 
 ```xml
 <client>
@@ -38,7 +38,7 @@ sudo update-ca-certificates
 </client>
 ```
 
-いくつかのクラスタ設定やマクロとあわせて、Zookeeper を ClickHouse の設定に追加します：
+クラスタ定義とマクロを含めて、ClickHouse の設定に Zookeeper を追加します:
 
 ```xml
 <clickhouse>
@@ -52,7 +52,7 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-`clickhouse-server` を起動します。ログに次のようなメッセージが出力されているはずです:
+`clickhouse-server` を起動します。ログに次のような出力が表示されるはずです：
 
 ```text
 <Trace> ZooKeeper: 初期化済み、ホスト: secure://localhost:2281
@@ -60,7 +60,7 @@ sudo update-ca-certificates
 
 `secure://` プレフィックスは、接続が SSL によって保護されていることを示します。
 
-トラフィックが暗号化されていることを確認するには、セキュアなポートで `tcpdump` を実行します。
+トラフィックが暗号化されていることを確認するには、セキュアなポート上で `tcpdump` を実行します。
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
@@ -72,7 +72,7 @@ tcpdump -i any dst port 2281 -nnXS
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-暗号化されていない接続の場合、`tcpdump` の出力には次のようなものが表示されます。
+暗号化されていない接続の場合、`tcpdump` の出力は次のようになります。
 
 ```text
 ..../zookeeper/quota.

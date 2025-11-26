@@ -1,9 +1,9 @@
 ---
-description: 'データ型バイナリエンコード仕様に関するドキュメント'
-sidebar_label: 'データ型バイナリエンコード仕様'
+description: 'データ型のバイナリ符号化仕様に関するドキュメント'
+sidebar_label: 'データ型のバイナリ符号化仕様'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
-title: 'データ型バイナリエンコード仕様'
+title: 'データ型のバイナリ符号化仕様'
 doc_type: 'reference'
 ---
 
@@ -11,13 +11,14 @@ doc_type: 'reference'
 
 # データ型のバイナリエンコーディング仕様
 
-本仕様では、ClickHouse のデータ型のバイナリエンコードおよびデコードに使用できるバイナリ形式について説明します。この形式は `Dynamic` カラムの[バイナリシリアライゼーション](dynamic.md#binary-output-format)で使用されており、対応する設定の下で入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
+本仕様では、ClickHouse のデータ型をバイナリ形式でエンコードおよびデコードするために使用できるバイナリフォーマットについて説明します。このフォーマットは `Dynamic` カラムの[バイナリシリアライズ](dynamic.md#binary-output-format)で使用され、対応する設定のもとで入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
 
-以下の表では、各データ型がバイナリ形式でどのように表現されるかを説明します。各データ型のエンコーディングは、型を示す 1 バイトと、必要に応じて追加されるいくつかの情報で構成されます。バイナリエンコーディングにおける `var_uint` は、サイズが Variable-Length Quantity 圧縮方式を用いてエンコードされていることを意味します。
+以下の表では、各データ型がバイナリ形式でどのように表現されるかを説明します。各データ型のエンコードは、型を示す 1 バイトと、必要に応じて追加されるオプションの情報から構成されます。
+バイナリエンコーディングにおける `var_uint` は、サイズが可変長数量 (Variable-Length Quantity) による圧縮方式でエンコードされることを意味します。
 
 
 
-| ClickHouse のデータ型                                                                                          | バイナリエンコーディング                                                                                                                                                                                                                                                                                                                                                               |
+| ClickHouse のデータ型                                                                                          | バイナリ符号化                                                                                                                                                                                                                                                                                                                                                                    |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Nothing`                                                                                                 | `0x00`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt8`                                                                                                   | `0x01`                                                                                                                                                                                                                                                                                                                                                                     |
@@ -53,34 +54,36 @@ doc_type: 'reference'
 | `Tuple(T1, ..., TN)`                                                                                      | `0x1F<var_uint_number_of_elements><nested_type_encoding_1>...<nested_type_encoding_N>`                                                                                                                                                                                                                                                                                     |
 | `Tuple(name1 T1, ..., nameN TN)`                                                                          | `0x20<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
 | `Set`                                                                                                     | `0x21`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Interval`                                                                                                | `0x22<interval_kind>`（[interval kind binary encoding](#interval-kind-binary-encoding)を参照）                                                                                                                                                                                                                                                                                  |
+| `Interval`                                                                                                | `0x22<interval_kind>`（[interval kind のバイナリ表現](#interval-kind-binary-encoding)を参照）                                                                                                                                                                                                                                                                                          |
 | `Nullable(T)`                                                                                             | `0x23<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
-| `関数`                                                                                                      | `0x24<var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N><return_type_encoding>`                                                                                                                                                                                                                                                          |
-| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（[集約関数パラメータのバイナリ エンコーディング](#aggregate-function-parameter-binary-encoding) を参照）                                                                           |
+| `Function`                                                                                                | `0x24<var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N><return_type_encoding>`                                                                                                                                                                                                                                                          |
+| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>` （[集約関数パラメータのバイナリ符号化](#aggregate-function-parameter-binary-encoding)を参照）                                                                                 |
 | `LowCardinality(T)`                                                                                       | `0x26<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Map(K, V)`                                                                                               | `0x27<key_type_encoding><value_type_encoding>`                                                                                                                                                                                                                                                                                                                             |
 | `IPv4`                                                                                                    | `0x28`                                                                                                                                                                                                                                                                                                                                                                     |
 | `IPv6`                                                                                                    | `0x29`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Variant(T1, ..., TN)`                                                                                    | `0x2A<var_uint_number_of_variants><variant_type_encoding_1>...<variant_type_encoding_N>`                                                                                                                                                                                                                                                                                   |
 | `Dynamic(max_types=N)`                                                                                    | `0x2B<uint8_max_types>`                                                                                                                                                                                                                                                                                                                                                    |
-| `カスタム型` (`Ring`、`Polygon` など)                                                                             | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
+| `カスタム型` (`Ring`, `Polygon` など)                                                                            | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
 | `Bool`                                                                                                    | `0x2D`                                                                                                                                                                                                                                                                                                                                                                     |
 | `SimpleAggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                      | `0x2E<var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（[集約関数パラメータのバイナリエンコーディング](#aggregate-function-parameter-binary-encoding)を参照）                                                                                               |
 | `Nested(name1 T1, ..., nameN TN)`                                                                         | `0x2F<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
 | `JSON(max_dynamic_paths=N, max_dynamic_types=M, path Type, SKIP skip_path, SKIP REGEXP skip_path_regexp)` | `0x30<uint8_serialization_version><var_int_max_dynamic_paths><uint8_max_dynamic_types><var_uint_number_of_typed_paths><var_uint_path_name_size_1><path_name_data_1><encoded_type_1>...<var_uint_number_of_skip_paths><var_uint_skip_path_size_1><skip_path_data_1>...<var_uint_number_of_skip_path_regexps><var_uint_skip_path_regexp_size_1><skip_path_data_regexp_1>...` |
 | `BFloat16`                                                                                                | `0x31`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Time`                                                                                                    | `0x32`                                                                                                                                                                                                                                                                                                                                                                     |
+| `時刻`                                                                                                      | `0x32`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
 | `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
-`JSON`型の場合、バイト`uint8_serialization_version`はシリアライゼーションのバージョンを示します。現在、バージョンは常に0ですが、将来`JSON`型に新しい引数が導入された場合は変更される可能性があります。
 
-### Interval種別のバイナリエンコーディング {#interval-kind-binary-encoding}
 
-以下の表は、`Interval`データ型の各種別がどのようにエンコードされるかを示しています。
+型 `JSON` のバイト列 `uint8_serialization_version` は、シリアル化のバージョンを示します。現時点では常に 0 ですが、将来 `JSON` 型に新しい引数が追加された場合には変更される可能性があります。
 
-| Interval種別 | バイナリエンコーディング |
-| ------------- | --------------- |
+### Interval 種別のバイナリエンコード {#interval-kind-binary-encoding}
+
+次の表は、`Interval` データ型の各種 Interval 種別がどのようにエンコードされるかを示します。
+
+| Interval kind | Binary encoding |
+|---------------|-----------------|
 | `Nanosecond`  | `0x00`          |
 | `Microsecond` | `0x01`          |
 | `Millisecond` | `0x02`          |
@@ -93,13 +96,13 @@ doc_type: 'reference'
 | `Quarter`     | `0x09`          |
 | `Year`        | `0x1A`          |
 
-### 集約関数パラメータのバイナリエンコーディング {#aggregate-function-parameter-binary-encoding}
+### 集約関数パラメータのバイナリエンコード {#aggregate-function-parameter-binary-encoding}
 
-以下の表は、`AggregateFunction`と`SimpleAggregateFunction`のパラメータがどのようにエンコードされるかを示しています。
-パラメータのエンコーディングは、パラメータの型を示す1バイトと値自体で構成されます。
+次の表は、`AggregateFunction` および `SimpleAggregateFunction` のパラメータがどのようにエンコードされるかを示します。  
+パラメータのエンコードは、パラメータの型を示す 1 バイトと、その値本体から構成されます。
 
-| パラメータ型           | バイナリエンコーディング                                                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Parameter type           | Binary encoding                                                                                                                |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `Null`                   | `0x00`                                                                                                                         |
 | `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
 | `Int64`                  | `0x02<var_int_value>`                                                                                                          |

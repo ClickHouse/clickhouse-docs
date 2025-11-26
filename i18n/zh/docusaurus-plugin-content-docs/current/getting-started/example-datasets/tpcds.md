@@ -4,12 +4,12 @@ sidebar_label: 'TPC-DS'
 slug: /getting-started/example-datasets/tpcds
 title: 'TPC-DS (2012)'
 doc_type: 'guide'
-keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
+keywords: ['示例数据集', 'tpcds', '基准测试', '示例数据', '性能测试']
 ---
 
-与 [Star Schema Benchmark (SSB)](star-schema.md) 类似，TPC-DS 基于 [TPC-H](tpch.md)，但走了相反的路线，即通过将数据存储在复杂的雪花模型中（24 张表而不是 8 张表）来增加所需的联接数量。
+与 [Star Schema Benchmark (SSB)](star-schema.md) 类似，TPC-DS 基于 [TPC-H](tpch.md)，但走了相反的路线：通过将数据存储在更复杂的雪花模式中（24 张表而不是 8 张），增加了所需的联接（join）数量。
 数据分布是偏斜的（例如正态分布和泊松分布）。
-它包含 99 个报表型和即席查询，并带有随机替换。
+它包含 99 个报表型和临时（ad-hoc）查询，并带有随机参数替换。
 
 参考资料
 
@@ -23,7 +23,7 @@ cd tpcds-kit/tools
 make
 ```
 
-然后生成数据。参数 `-scale` 用于指定规模因子。
+然后生成数据。参数 `-scale` 用于指定数据规模因子。
 
 ```bash
 ./dsdgen -scale 1
@@ -35,8 +35,8 @@ make
 ./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询
 ```
 
-现在在 ClickHouse 中创建表。
-你可以使用 tools/tpcds.sql 中的原始表定义，或者使用在合适位置正确定义主键索引并将部分列设置为 LowCardinality 类型的经过“调优”的表定义。
+现在在 ClickHouse 中创建数据表。
+你可以使用 `tools/tpcds.sql` 中的原始表定义，或者使用经过「调优」的表定义，在合适的地方正确定义主键索引，并将相应列设置为 `LowCardinality` 类型。
 
 
 ```sql
@@ -562,7 +562,7 @@ CREATE TABLE web_site (
 );
 ```
 
-数据可以按如下方式导入：
+可以按如下方式导入数据：
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
@@ -594,6 +594,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 然后运行生成的查询。
 
 ::::warning
-TPC-DS 大量使用相关子查询，而在撰写本文时（2024 年 9 月），ClickHouse 尚不支持相关子查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-因此，上述许多基准测试查询会因不支持相关子查询而报错失败。
+TPC-DS 大量使用关联子查询，而在撰写本文时（2024 年 9 月），ClickHouse 尚不支持关联子查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+因此，上述许多基准测试查询在执行时会失败并报错。
 ::::

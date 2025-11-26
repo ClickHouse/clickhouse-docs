@@ -13,28 +13,34 @@ import Image from '@theme/IdealImage';
 
 ## はじめに {#introduction}
 
-[LAION 5bデータセット](https://laion.ai/blog/laion-5b/)には、58億5千万の画像テキスト埋め込みと関連する画像メタデータが含まれています。埋め込みは`Open AI CLIP`モデル[ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14)を使用して生成されました。各埋め込みベクトルの次元数は`768`です。
+[LAION 5b データセット](https://laion.ai/blog/laion-5b/) には、58.5 億件の画像とテキストの埋め込み表現と、
+それに関連する画像メタデータが含まれています。これらの埋め込みは、`OpenAI CLIP` モデル [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) を用いて生成されています。
+各埋め込みベクトルの次元数は `768` です。
 
-このデータセットは、大規模な実世界のベクトル検索アプリケーションにおけるモデル設計、サイジング、およびパフォーマンス面のモデリングに使用できます。このデータセットは、テキストから画像への検索と画像から画像への検索の両方に使用できます。
+このデータセットは、大規模な実運用レベルのベクター検索アプリケーションにおける設計、サイジング、および
+パフォーマンス面を検討・評価するために利用できます。テキストから画像への検索と
+画像から画像への検索の両方に使用できます。
+
 
 
 ## データセットの詳細 {#dataset-details}
 
-完全なデータセットは、`npy`および`Parquet`ファイルの混合形式で[the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)から入手できます。
+完全なデータセットは、`npy` と `Parquet` ファイルの組み合わせとして [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/) から利用できます。
 
-ClickHouseは、1億ベクトルのサブセットを`S3`バケットで提供しています。
-この`S3`バケットには10個の`Parquet`ファイルが含まれており、各`Parquet`ファイルには1,000万行が格納されています。
+ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バケットで提供しています。
+この `S3` バケットには 10 個の `Parquet` ファイルが含まれており、各 `Parquet` ファイルには 1,000 万行が格納されています。
 
-このデータセットのストレージおよびメモリ要件を見積もるため、まず[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してサイジング演習を実行することを推奨します。
+このデータセットのストレージおよびメモリ要件を見積もるために、まず [ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md) を参照しながらサイジングを行うことを推奨します。
+
 
 
 ## 手順 {#steps}
 
 <VerticalStepper headerLevel="h3">
 
-### テーブルの作成 {#create-table}
+### テーブルを作成する {#create-table}
 
-埋め込みベクトルとそれに関連する属性を格納するための`laion_5b_100m`テーブルを作成します:
+埋め込みとそれに関連する属性を保存するための `laion_5b_100m` テーブルを作成します。
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -58,19 +64,19 @@ CREATE TABLE laion_5b_100m
 ) ENGINE = MergeTree ORDER BY (id)
 ```
 
-`id`は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、後フィルタリング/事前フィルタリングと組み合わせたベクトル類似性検索を理解するために利用できます。
+`id` は単にインクリメントされる整数です。追加の属性は、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、事後フィルタリング／事前フィルタリングと組み合わせたベクトル類似検索を理解するためのクエリ述語として利用できます。
 
-### データの読み込み {#load-table}
+### データをロードする {#load-table}
 
-すべての`Parquet`ファイルからデータセットを読み込むには、以下のSQLステートメントを実行します:
+すべての `Parquet` ファイルからデータセットをロードするには、次の SQL ステートメントを実行します。
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
 ```
 
-テーブルへの1億行の読み込みには数分かかります。
+1億行をテーブルにロードする処理には、数分かかります。
 
-または、特定の数のファイル/行を読み込むために、個別のSQLステートメントを実行することもできます。
+または、個別の SQL ステートメントを実行して、特定の数のファイル／行だけをロードすることもできます。
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -78,17 +84,17 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 ⋮
 ```
 
-### ブルートフォースベクトル類似性検索の実行 {#run-a-brute-force-vector-similarity-search}
+### 総当たりのベクトル類似検索を実行する {#run-a-brute-force-vector-similarity-search}
 
-KNN(k近傍法)検索またはブルートフォース検索は、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得する方法です。データセット自体のベクトルの1つを検索ベクトルとして使用できます。例えば:
+KNN（k-Nearest Neighbours）検索または総当たり検索では、データセット内の各ベクトルと検索用の埋め込みベクトルとの距離を計算し、その距離で並べ替えることで最近傍を取得します。検索ベクトルとして、データセット内のベクトルの1つを利用できます。例えば、次のようになります。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT id, url
 FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
-id = 9999の行のベクトルは、デリレストランの画像の埋め込みベクトルです。
+id = 9999 の行にあるベクトルは、デリレストランの画像に対応する埋め込みです。
 ```
 
 
@@ -118,16 +124,16 @@ id = 9999の行のベクトルは、デリレストランの画像の埋め込�
 ```
 
 #highlight-next-line
-20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
+20 行が結果セットに含まれます。経過時間: 3.968 秒。処理: 1.0038 億行、320.81 GB（2530 万行/秒、80.84 GB/秒）。
 
 ````
 
-クエリのレイテンシを記録しておき、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにします。
-1億行のデータでは、ベクトルインデックスを使用しない上記のクエリは完了までに数秒から数分かかる可能性があります。
+クエリのレイテンシを記録し、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにします。
+1億行のデータに対して、ベクトルインデックスなしで上記のクエリを実行すると、完了までに数秒から数分かかる場合があります。
 
-### ベクトル類似度インデックスの構築 {#build-vector-similarity-index}
+### ベクトル類似度インデックスの構築                                 
 
-以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`カラムにベクトル類似度インデックスを定義し構築します:
+以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`カラムにベクトル類似度インデックスを定義および構築します：
 
 ```sql
 ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
@@ -135,33 +141,33 @@ ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('
 ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ````
 
-インデックス作成と検索のパラメータおよびパフォーマンスに関する考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-ユーザーは、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、これらのパラメータの最適な値を慎重に選択する必要があります。
+インデックスの作成および検索に関するパラメータとパフォーマンス上の考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されています。
+前述のステートメントでは、HNSW のハイパーパラメータ `M` と `ef_construction` に対して、それぞれ 64 と 512 の値を使用しています。
+ユーザーは、インデックス構築時間と検索結果の品質を評価しつつ、これらのパラメータの最適な値を慎重に選定する必要があります。
 
-1億件の完全なデータセットに対してインデックスを構築し保存するには、利用可能なCPUコア数とストレージ帯域幅によっては数時間かかる可能性があります。
+利用可能な CPU コア数やストレージ帯域幅によっては、1 億件の全データセットに対するインデックスの構築と保存に数時間かかる場合もあります。
 
-### ANN検索の実行 {#perform-ann-search}
+### ANN 検索を実行する
 
-ベクトル類似度インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
+ベクトル類似度インデックスが構築されると、ベクトル検索クエリは自動的にそのインデックスを利用します。
 
 ```sql title="Query"
-SELECT id, url
+SELECT id, url 
 FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
 ```
 
-ベクトルインデックスの初回メモリロードには数秒から数分かかる可能性があります。
+ベクターインデックスをメモリに初回ロードする際には、数秒から数分かかる場合があります。
 
-### 検索クエリの埋め込みベクトル生成 {#generating-embeddings-for-search-query}
+### 検索クエリ用の埋め込みを生成する
 
-`LAION 5b`データセットの埋め込みベクトルは、`OpenAI CLIP`モデル`ViT-L/14`を使用して生成されました。
+`LAION 5b` データセットの埋め込みベクトルは、`OpenAI CLIP` モデル `ViT-L/14` を使用して生成されました。
 
-以下に、`CLIP` APIを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索用の埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数の引数として渡されます。
+以下に、`CLIP` API を使用してプログラムから埋め込みベクトルを生成する方法を示す Python スクリプトの例を示します。検索用の埋め込みベクトルは、その後 `SELECT` クエリ内の [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 関数に引数として渡されます。
 
-`clip`パッケージをインストールするには、[OpenAI GitHubリポジトリ](https://github.com/openai/clip)を参照してください。
+`clip` パッケージのインストール方法については、[OpenAI GitHub リポジトリ](https://github.com/openai/clip) を参照してください。
 
 ```python
 import torch
@@ -172,7 +178,6 @@ import clickhouse_connect
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-L/14", device=device)
-
 ```
 
 
@@ -191,7 +196,7 @@ np_arr = text_features.detach().cpu().numpy()
     result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
                             parameters=params)
 
-    # 結果をブラウザで開けるシンプルなHTMLページに書き出す。一部のURLは無効になっている可能性がある。
+    # 結果をブラウザで開けるシンプルなHTMLページに書き込む。一部のURLは無効になっている可能性がある。
     print("<html>")
     for r in result.result_rows:
         print("<img src = ", r[1], 'width="200" height="200">')

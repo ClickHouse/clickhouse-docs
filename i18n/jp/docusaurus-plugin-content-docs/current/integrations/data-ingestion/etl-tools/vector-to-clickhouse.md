@@ -2,15 +2,15 @@
 sidebar_label: 'Vector'
 sidebar_position: 220
 slug: /integrations/vector
-description: 'Vector を使用してログファイルを tail し ClickHouse に取り込む方法'
-title: 'Vector と ClickHouse の統合'
+description: 'Vector でログファイルをテールして ClickHouse に取り込む方法'
+title: 'Vector と ClickHouse の連携'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://vector.dev/'
-keywords: ['vector', 'ログ収集', 'オブザーバビリティ', 'データ取り込み', 'パイプライン']
+keywords: ['vector', 'ログ収集', '可観測性', 'データインジェスト', 'パイプライン']
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,35 +19,35 @@ import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# VectorとClickHouseの統合
+# Vector と ClickHouse の統合
 
 <PartnerBadge />
 
-本番環境のアプリケーションでは、ログをリアルタイムで分析できることが不可欠です。
-ClickHouseは、優れた圧縮性能(ログに対して[最大170倍](https://clickhouse.com/blog/log-compression-170x))と大量のデータを高速に集計する能力により、ログデータの保存と分析に秀でています。
+本番環境のアプリケーションでは、ログをリアルタイムに分析できることが極めて重要です。
+ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x)）と、大量データを高速に集計できる性能により、ログデータの保存と分析に特に優れています。
 
-本ガイドでは、人気のデータパイプライン[Vector](https://vector.dev/docs/about/what-is-vector/)を使用してNginxログファイルを監視し、ClickHouseに送信する方法を説明します。
-以下の手順は、あらゆる種類のログファイルの監視にも同様に適用できます。
+このガイドでは、広く利用されているデータパイプラインである [Vector](https://vector.dev/docs/about/what-is-vector/) を使用して Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
+以下の手順は、任意の種類のログファイルをテールする場合にもほぼ同様に適用できます。
 
 **前提条件:**
 
-- ClickHouseが既に稼働していること
-- Vectorがインストールされていること
+- ClickHouse がすでに稼働していること
+- Vector がインストールされていること
 
 <VerticalStepper headerLevel="h2">
 
 
-## データベースとテーブルの作成 {#1-create-a-database-and-table}
+## データベースとテーブルを作成する
 
-ログイベントを格納するテーブルを定義します:
+ログイベントを保存するためのテーブルを定義します。
 
-1. まず、`nginxdb`という名前の新しいデータベースを作成します:
+1. まず、`nginxdb` という名前の新しいデータベースを作成します:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS nginxdb
 ```
 
-2. ログイベント全体を単一の文字列として挿入します。明らかに、これはログデータの分析を実行するには適切な形式ではありませんが、この問題については後述の**_マテリアライズドビュー_**を使用して解決します。
+2. ログイベント全体を1つの文字列として挿入します。もちろん、この形式はログデータを分析するのに適したものではありませんが、その点は後ほ&#x3069;***マテリアライズドビュー***&#x3092;使って解決していきます。
 
 ```sql
 CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
@@ -58,16 +58,16 @@ ORDER BY tuple()
 ```
 
 :::note
-プライマリキーがまだ不要なため、**ORDER BY**は**tuple()**(空のタプル)に設定されています。
+**ORDER BY** は、まだ主キーが不要なため、空のタプルである **tuple()** に設定されています。
 :::
 
 
-## Nginxの設定 {#2--configure-nginx}
+## Nginx を構成する
 
-このステップでは、Nginxのログ記録を設定する方法を説明します。
+このステップでは、Nginx のログ出力を構成する方法を説明します。
 
-1. 以下の`access_log`プロパティは、**combined**形式でログを`/var/log/nginx/my_access.log`に送信します。
-   この値は`nginx.conf`ファイルの`http`セクションに配置します:
+1. 次の `access_log` プロパティは、ログを **combined** 形式で `/var/log/nginx/my_access.log` に出力します。
+   この値は `nginx.conf` ファイルの `http` セクションに記述します：
 
 ```bash
 http {
@@ -80,10 +80,10 @@ http {
 }
 ```
 
-2. `nginx.conf`を変更した場合は、必ずNginxを再起動してください。
+2. `nginx.conf` を変更した場合は、必ず Nginx を再起動してください。
 
-3. Webサーバー上のページにアクセスして、アクセスログにログイベントを生成します。
-   **combined**形式のログは以下のようになります:
+3. Web サーバー上のページにアクセスして、アクセスログにログイベントをいくつか生成してください。
+   **combined** 形式のログは次のようになります。
 
 ```bash
 192.168.208.1 - - [12/Oct/2021:03:31:44 +0000] "GET / HTTP/1.1" 200 615 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -92,12 +92,12 @@ http {
 ```
 
 
-## Vectorの設定 {#3-configure-vector}
+## Vector を設定する
 
-Vectorは、ログ、メトリクス、トレース（**ソース**と呼ばれる）を収集、変換し、ClickHouseとの標準互換性を含む多数のベンダー（**シンク**と呼ばれる）にルーティングします。
-ソースとシンクは、**vector.toml**という名前の設定ファイルで定義されます。
+Vector はログ、メトリクス、トレース（**sources** と呼ばれます）を収集・変換・ルーティングし、ClickHouse を含む多数の異なるベンダー（**sinks** と呼ばれます）へ送信します。
+Source と sink は **vector.toml** という名前の設定ファイルで定義します。
 
-1. 以下の**vector.toml**ファイルは、**my_access.log**の末尾を追跡する**file**タイプの**ソース**を定義し、上記で定義した**access_logs**テーブルを**シンク**として定義します：
+1. 次の **vector.toml** ファイルでは、**my&#95;access.log** の末尾を tail する **file** 型の **source** と、上で定義した **access&#95;logs** テーブルを **sink** として定義しています。
 
 ```bash
 [sources.nginx_logs]
@@ -114,71 +114,67 @@ table = "access_logs"
 skip_unknown_fields = true
 ```
 
-2. 上記の設定を使用してVectorを起動します。ソースとシンクの定義の詳細については、Vectorの[ドキュメント](https://vector.dev/docs/)を参照してください。
+2. 上記の構成を使用して Vector を起動します。ソースおよびシンクの定義についての詳細は、Vector の[ドキュメント](https://vector.dev/docs/)を参照してください。
 
-3. 以下のクエリを実行して、アクセスログがClickHouseに挿入されていることを確認します。テーブルにアクセスログが表示されます：
+3. 次のクエリを実行して、アクセスログが ClickHouse に取り込まれていることを確認します。テーブル内にアクセスログが表示されるはずです。
 
 ```sql
 SELECT * FROM nginxdb.access_logs
 ```
 
-<Image
-  img={vector01}
-  size='lg'
-  border
-  alt='ClickHouseログをテーブル形式で表示'
-/>
+<Image img={vector01} size="lg" border alt="テーブル形式で ClickHouse のログを表示する" />
 
 
-## ログの解析 {#4-parse-the-logs}
+## ログをパースする
 
-ClickHouseにログを格納することは有用ですが、各イベントを単一の文字列として保存するだけでは、十分なデータ分析を行うことができません。
-次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view)を使用してログイベントを解析する方法を見ていきます。
+ログを ClickHouse に保存できるのは有用ですが、各イベントを 1 つの文字列として保存するだけでは、十分なデータ分析は行えません。
+次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用してログイベントをどのようにパースするかを見ていきます。
 
-**マテリアライズドビュー**は、SQLにおける挿入トリガーと同様に機能します。ソーステーブルにデータ行が挿入されると、マテリアライズドビューはこれらの行に対して変換を行い、結果をターゲットテーブルに挿入します。
-マテリアライズドビューを設定することで、**access_logs**内のログイベントの解析済み表現を構成できます。
-このようなログイベントの例を以下に示します:
+**マテリアライズドビュー** は、SQL における INSERT トリガーと同様に機能します。ソーステーブルにデータ行が挿入されると、マテリアライズドビューはそれらの行を変換し、その結果をターゲットテーブルに挿入します。
+マテリアライズドビューを設定して、**access&#95;logs** 内のログイベントのパース済み表現を生成できます。
+そのようなログイベントの 1 つの例を以下に示します。
 
 ```bash
 192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 ```
 
-ClickHouseには、上記の文字列を解析するための様々な関数があります。[`splitByWhitespace`](/sql-reference/functions/splitting-merging-functions#splitByWhitespace)関数は、文字列を空白文字で解析し、各トークンを配列として返します。
-実際に動作を確認するため、以下のコマンドを実行してください:
+ClickHouse には、上記の文字列を解析するためのさまざまな関数があります。[`splitByWhitespace`](/sql-reference/functions/splitting-merging-functions#splitByWhitespace) 関数は、文字列を空白文字で分割し、各トークンを配列で返します。
+動作を確認するには、次のコマンドを実行します。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT splitByWhitespace('192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"')
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ["192.168.208.1","-","-","[12/Oct/2021:15:32:43","+0000]","\"GET","/","HTTP/1.1\"","304","0","\"-\"","\"Mozilla/5.0","(Macintosh;","Intel","Mac","OS","X","10_15_7)","AppleWebKit/537.36","(KHTML,","like","Gecko)","Chrome/93.0.4577.63","Safari/537.36\""]
 ```
 
-いくつかの文字列には余分な文字が含まれており、ユーザーエージェント(ブラウザの詳細情報)は解析する必要がありませんでしたが、結果として得られる配列は必要なものにほぼ近い形になっています。
+いくつかの文字列には余分な文字が含まれており、ユーザーエージェント（ブラウザ情報）は解析する必要はありませんでしたが、
+結果として得られた配列は、必要なものにかなり近い形になっています。
 
-`splitByWhitespace`と同様に、[`splitByRegexp`](/sql-reference/functions/splitting-merging-functions#splitByRegexp)関数は、正規表現に基づいて文字列を配列に分割します。
-以下のコマンドを実行すると、2つの文字列が返されます。
+`splitByWhitespace` と同様に、[`splitByRegexp`](/sql-reference/functions/splitting-merging-functions#splitByRegexp) 関数は、正規表現に基づいて文字列を配列に分割します。
+次のコマンドを実行します。2 つの文字列が返されます。
 
 ```sql
 SELECT splitByRegexp('\S \d+ "([^"]*)"', '192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"')
 ```
 
-返された2番目の文字列が、ログから正常に解析されたユーザーエージェントであることに注目してください:
+2 番目に返される文字列が、ログから正常に解析されたユーザーエージェントであることに注目してください。
 
 ```text
 ["192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] \"GET / HTTP/1.1\" 30"," \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36\""]
 ```
 
-最終的な`CREATE MATERIALIZED VIEW`コマンドを見る前に、データをクリーンアップするために使用されるいくつかの関数を確認しましょう。
-例えば、`RequestMethod`の値は`"GET`となっており、不要な二重引用符が含まれています。
-[`trimBoth`(エイリアス`trim`)](/sql-reference/functions/string-functions#trimBoth)関数を使用して、二重引用符を削除できます:
+最終的な `CREATE MATERIALIZED VIEW` コマンドを見る前に、データをクリーンアップするために使用する、いくつかの関数をさらに確認しておきます。
+たとえば、`RequestMethod` の値は先頭に不要な二重引用符が付いた `"GET` になっています。
+この二重引用符を削除するには、[`trimBoth`（エイリアス `trim`）](/sql-reference/functions/string-functions#trimBoth) 関数を使用できます。
 
 ```sql
 SELECT trim(LEADING '"' FROM '"GET')
 ```
 
-時刻文字列には先頭に角括弧があり、またClickHouseが日付として解析できる形式にもなっていません。
-しかし、区切り文字をコロン(**:**)からスペースに変更すれば、解析は正常に機能します:
+時刻文字列は先頭に角括弧が付いており、ClickHouse が日付として解析できる形式にもなっていません。
+しかし、区切り文字をコロン（**:**）からカンマ（**,**）に変更すると、問題なく解析できるようになります:
 
 ```sql
 SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))
@@ -186,8 +182,8 @@ SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15
 
 
 これでマテリアライズドビューを定義する準備が整いました。
-以下の定義には`POPULATE`が含まれており、**access_logs**内の既存の行が即座に処理され挿入されることを意味します。
-以下のSQLステートメントを実行してください:
+以下の定義には `POPULATE` 句が含まれており、これは **access_logs** に既に存在する行がすぐに処理され、その場で挿入されることを意味します。
+次の SQL ステートメントを実行してください:
 
 ```sql
 CREATE MATERIALIZED VIEW nginxdb.access_logs_view
@@ -224,8 +220,8 @@ FROM
   (SELECT message FROM nginxdb.access_logs)
 ```
 
-次に、正常に動作したことを確認します。
-アクセスログが列に適切に解析されて表示されるはずです:
+続いて、正しく動作しているか確認します。
+アクセスログが列ごとにきれいにパースされて表示されるはずです:
 
 ```sql
 SELECT * FROM nginxdb.access_logs_view
@@ -235,14 +231,14 @@ SELECT * FROM nginxdb.access_logs_view
   img={vector02}
   size='lg'
   border
-  alt='解析されたClickHouseログをテーブル形式で表示'
+  alt='パース済みの ClickHouse ログをテーブル形式で表示'
 />
 
 :::note
-上記の例ではデータを2つのテーブルに保存していますが、最初の`nginxdb.access_logs`テーブルを[`Null`](/engines/table-engines/special/null)テーブルエンジンを使用するように変更することもできます。
-解析されたデータは引き続き`nginxdb.access_logs_view`テーブルに格納されますが、生データはテーブルに保存されません。
+上記のレッスンではデータを 2 つのテーブルに保存しましたが、最初の `nginxdb.access_logs` テーブルを [`Null`](/engines/table-engines/special/null) テーブルエンジンを使用するように変更することもできます。
+パース済みデータは変わらず `nginxdb.access_logs_view` テーブルに格納されますが、生のデータはテーブルには保存されません。
 :::
 
 </VerticalStepper>
 
-> シンプルなインストールと迅速な設定のみを必要とするVectorを使用することで、NginxサーバーからClickHouseのテーブルにログを送信できます。マテリアライズドビューを使用することで、これらのログを列に解析し、より簡単に分析を行うことができます。
+> シンプルなインストールと短時間の設定だけで利用できる Vector を使うと、Nginx サーバーからのログを ClickHouse のテーブルに送信できます。マテリアライズドビューを使用すれば、それらのログを列にパースして、より簡単に分析できるようにできます。

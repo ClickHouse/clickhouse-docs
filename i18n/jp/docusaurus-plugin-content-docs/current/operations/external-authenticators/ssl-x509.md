@@ -9,9 +9,9 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-[SSL &#39;strict&#39; option](../server-configuration-parameters/settings.md#openssl) は、受信接続に対して証明書検証を必須にします。この場合、信頼された証明書を持つ接続のみが確立されます。信頼されていない証明書による接続は拒否されます。したがって、証明書検証によって受信接続を一意に認証することができます。証明書の `Common Name` フィールドまたは `subjectAltName extension` フィールドが、接続してきたユーザーの識別に使用されます。`subjectAltName extension` はサーバー設定内でワイルドカード &#39;*&#39; の使用を 1 個までサポートします。これにより、同一ユーザーに複数の証明書を関連付けることができます。さらに、証明書の再発行や失効は ClickHouse の設定に影響しません。
+[SSL &#39;strict&#39; option](../server-configuration-parameters/settings.md#openssl) は、受信接続に対して証明書検証を必須とします。この場合、信頼された証明書を持つ接続のみが確立されます。信頼されていない証明書による接続は拒否されます。このように、証明書検証により受信接続を一意に識別して認証できます。接続ユーザーの識別には、証明書の `Common Name` フィールドまたは `subjectAltName extension` フィールドが使用されます。`subjectAltName extension` では、サーバー設定でワイルドカード &#39;*&#39; を 1 つだけ使用できます。これにより、複数の証明書を同一ユーザーに関連付けることができます。さらに、証明書の再発行や失効は ClickHouse の設定に影響しません。
 
-SSL 証明書認証を有効にするには、各 ClickHouse ユーザーについて、`Common Name` または `Subject Alt Name` の値の一覧を設定ファイル `users.xml` に指定する必要があります。
+SSL 証明書認証を有効にするには、各 ClickHouse ユーザーに対する `Common Name` または `Subject Alt Name` の一覧を設定ファイル `users.xml` で指定する必要があります。
 
 **例**
 
@@ -44,4 +44,4 @@ SSL 証明書認証を有効にするには、各 ClickHouse ユーザーにつ�
 </clickhouse>
 ```
 
-SSL の [`chain of trust`](https://en.wikipedia.org/wiki/Chain_of_trust) が正しく機能するためには、[`caConfig`](../server-configuration-parameters/settings.md#openssl) パラメータが適切に設定されていることを確認しておくことも重要です。
+SSL の[`chain of trust`](https://en.wikipedia.org/wiki/Chain_of_trust)が正しく機能するためには、[`caConfig`](../server-configuration-parameters/settings.md#openssl)パラメータが適切に設定されていることを確認することも重要です。

@@ -4,23 +4,23 @@ title: 'Варианты развертывания с помощью Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
-description: 'Расширенные варианты конфигурации развертывания ClickStack с помощью Helm'
+description: 'Расширенные конфигурации развертывания ClickStack с помощью Helm'
 doc_type: 'guide'
-keywords: ['варианты развертывания ClickStack', 'внешний ClickHouse', 'внешний OTEL', 'минимальное развертывание', 'конфигурация Helm']
+keywords: ['варианты развертывания ClickStack', 'внешний ClickHouse', 'внешний OTel', 'минимальное развертывание', 'конфигурация Helm']
 ---
 
-В этом руководстве описаны расширенные варианты развертывания ClickStack с помощью Helm. О базовой установке см. [основное руководство по развертыванию с помощью Helm](/docs/use-cases/observability/clickstack/deployment/helm).
+В этом руководстве рассматриваются расширенные варианты развертывания ClickStack с помощью Helm. Для базовой установки см. [основное руководство по развертыванию с помощью Helm](/docs/use-cases/observability/clickstack/deployment/helm).
 
 
 
 ## Обзор {#overview}
 
-Helm-чарт ClickStack поддерживает несколько конфигураций развертывания:
-
-- **Полный стек** (по умолчанию) — все компоненты включены
+Helm-чарт ClickStack поддерживает несколько вариантов развертывания:
+- **Полный стек** (по умолчанию) — включает все компоненты
 - **Внешний ClickHouse** — использование существующего кластера ClickHouse
-- **Внешний OTEL Collector** — использование существующей инфраструктуры OTEL
-- **Минимальное развертывание** — только HyperDX с внешними зависимостями
+- **Внешний OTel collector** — использование существующей инфраструктуры OTel
+- **Минимальное развертывание** — только HyperDX, внешние зависимости
+
 
 
 ## Внешний ClickHouse {#external-clickhouse}
@@ -30,7 +30,8 @@ Helm-чарт ClickStack поддерживает несколько конфи�
 ### Вариант 1: Встроенная конфигурация (разработка/тестирование) {#external-clickhouse-inline}
 
 
-Используйте этот подход для быстрого тестирования или непродуктивных окружений:
+
+Используйте этот подход для быстрого тестирования или непромышленных окружений:
 
 ```yaml
 # values-external-clickhouse.yaml
@@ -39,7 +40,7 @@ clickhouse:
 
 otel:
   clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363" # Опционально
+  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363" # Необязательно
 
 hyperdx:
   defaultConnections: |
@@ -54,20 +55,20 @@ hyperdx:
     ]
 ```
 
-Установите с этой конфигурацией:
+Установите с данной конфигурацией:
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-### Вариант 2: Внешний секрет (рекомендуется для продуктивных окружений) {#external-clickhouse-secret}
+### Вариант 2: Внешний секрет (рекомендуется для промышленного использования) {#external-clickhouse-secret}
 
-Для продуктивных развертываний, где требуется хранить учетные данные отдельно от конфигурации Helm:
+Для промышленных развертываний, где требуется хранить учетные данные отдельно от конфигурации Helm:
 
 <VerticalStepper headerlevel='h4'>
 
 
-#### Создайте файлы конфигурации {#create-configuration}
+#### Создайте файлы конфигурации
 
 ```bash
 # Создайте connections.json
@@ -82,7 +83,6 @@ cat <<EOF > connections.json
   }
 ]
 EOF
-
 ```
 
 
@@ -139,7 +139,7 @@ kubectl create secret generic hyperdx-external-config \
 ````
 
 
-# Очистите локальные файлы
+# Очистить локальные файлы
 
 rm connections.json sources.json
 
@@ -174,7 +174,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ### Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
 
-В частности, для ClickHouse Cloud:
+Для ClickHouse Cloud:
 
 ```yaml
 # values-clickhouse-cloud.yaml
@@ -193,18 +193,19 @@ hyperdx:
   existingConfigSourcesKey: "sources.json"
 ```
 
-Полный пример подключения к ClickHouse Cloud см. в разделе [«Создание подключения к ClickHouse Cloud»](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+Полный пример подключения к ClickHouse Cloud см. в разделе [&quot;Создание подключения к ClickHouse Cloud&quot;](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 
-## Внешний коллектор OTEL {#external-otel-collector}
+## Внешний OTel collector {#external-otel-collector}
 
 
-Если у вас уже развернута инфраструктура сборщика OTEL:
+
+Если у вас уже есть инфраструктура OTel collector&#39;а:
 
 ```yaml
 # values-external-otel.yaml
 otel:
-  enabled: false  # Отключить встроенный коллектор OTEL
+  enabled: false  # Отключить встроенный OTel collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -214,10 +215,11 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 ```
 
-Инструкции по публикации конечных точек коллектора OTEL через Ingress см. в разделе [Ingress Configuration](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress).
+Инструкции по предоставлению доступа к конечным точкам OTel collector через входной шлюз см. в разделе [Ingress Configuration](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress).
 
 
 ## Минимальное развертывание {#minimal-deployment}
+
 
 
 Для организаций с уже существующей инфраструктурой разверните только HyperDX:
@@ -237,7 +239,7 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "Внешний ClickHouse",
+        "name": "External ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -257,8 +259,8 @@ helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
 
 
-## Следующие шаги {#next-steps}
+## Дальнейшие действия {#next-steps}
 
-- [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — настройка API-ключей, секретов и ingress
+- [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — настройка API-ключей, секретов и входного шлюза
 - [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — конфигурации для GKE, EKS и AKS
 - [Основное руководство по Helm](/docs/use-cases/observability/clickstack/deployment/helm) — базовая установка

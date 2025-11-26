@@ -5,7 +5,7 @@ title: 'Hudi'
 hide_title: true
 description: 'Hudi テーブルエンジンを説明するページ'
 doc_type: 'reference'
-keywords: ['Hudi テーブルエンジン', 'Apache Hudi', 'データレイク統合']
+keywords: ['Hudi テーブルエンジン', 'Apache Hudi', 'データレイク連携']
 ---
 
 import HudiTableEngine from '@site/docs/engines/table-engines/integrations/hudi.md';

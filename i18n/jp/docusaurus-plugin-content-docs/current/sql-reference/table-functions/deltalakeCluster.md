@@ -1,5 +1,5 @@
 ---
-description: 'これは deltaLake テーブル関数に対する拡張です。'
+description: 'これは deltaLake テーブル関数の拡張です。'
 sidebar_label: 'deltaLakeCluster'
 sidebar_position: 46
 slug: /sql-reference/table-functions/deltalakeCluster
@@ -13,11 +13,11 @@ doc_type: 'reference'
 
 これは [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の拡張です。
 
-指定したクラスタ内の複数ノードから、Amazon S3 上の [Delta Lake](https://github.com/delta-io/delta) テーブルのファイルを並列に処理できるようにします。イニシエーターはクラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に振り分けます。ワーカーノードは、処理すべき次のタスクをイニシエーターに問い合わせてから、それを処理します。これは、すべてのタスクが完了するまで繰り返されます。
+指定したクラスタ内の多数のノードから、Amazon S3 上の [Delta Lake](https://github.com/delta-io/delta) テーブルのファイルを並列処理できるようにします。イニシエーターはクラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り振ります。ワーカーノードは、処理すべき次のタスクについてイニシエーターに問い合わせ、そのタスクを処理します。すべてのタスクが完了するまで、これが繰り返されます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -30,31 +30,34 @@ deltaLakeAzureCluster(cluster_name, connection_string|storage_account_url, conta
 deltaLakeAzureCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
-`deltaLakeS3Cluster`は`deltaLakeCluster`のエイリアスであり、両方ともS3用です。
+`deltaLakeS3Cluster` は `deltaLakeCluster` のエイリアスであり、どちらも S3 向けです。`
 
 
 ## 引数 {#arguments}
 
-- `cluster_name` — リモートサーバーおよびローカルサーバーへのアドレスセットと接続パラメータを構築するために使用されるクラスタ名。
+- `cluster_name` — リモートおよびローカルサーバーへのアドレスや接続パラメータのセットを構成するために使用されるクラスタの名前。
 
-- その他すべての引数の説明は、同等の [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の引数説明と同じです。
+- その他すべての引数の説明は、同等の [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数における引数の説明と同一です。
 
 
-## 戻り値 {#returned_value}
 
-S3内の指定されたDelta Lakeテーブルのクラスタからデータを読み取るための、指定された構造を持つテーブル。
+## 返される値 {#returned_value}
+
+S3 内の指定された Delta Lake テーブルのうち、クラスタからデータを読み取るために指定された構造を持つテーブル。
+
 
 
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
-- `_size` — ファイルのサイズ(バイト単位)。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
-- `_etag` — ファイルのetag。型: `LowCardinality(String)`。etagが不明な場合、値は `NULL` です。
+- `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` になります。
+- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
+- `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合、値は `NULL` になります。
+
 
 
 ## 関連項目 {#related}
 
-- [deltaLakeエンジン](engines/table-engines/integrations/deltalake.md)
-- [deltaLakeテーブル関数](sql-reference/table-functions/deltalake.md)
+- [deltaLake エンジン](engines/table-engines/integrations/deltalake.md)
+- [deltaLake テーブル関数](sql-reference/table-functions/deltalake.md)

@@ -1,5 +1,5 @@
 ---
-description: '聚合函数，用于在所有区间至少有一次相交的前提下，计算一组区间相互相交的最大次数。'
+description: '聚合函数，用于计算一组区间之间的最大相交次数（在所有区间至少有一次共同相交的前提下）。'
 sidebar_position: 163
 slug: /sql-reference/aggregate-functions/reference/maxintersections
 title: 'maxIntersections'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # maxIntersections
 
-聚合函数，用于计算一组区间之间的最大相交次数（前提是所有区间至少相交一次）。
+聚合函数，用于在所有区间至少相交一次的前提下，计算一组区间之间的最大相交数量。
 
 语法为：
 
@@ -24,7 +24,7 @@ maxIntersections(start_column, end_column)
 
 **返回值**
 
-返回相交区间的最大数量。
+返回最大相交区间数。
 
 **示例**
 
@@ -43,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-这些区间如下所示：
+这些区间如下：
 
 ```response
 1 - 3
@@ -52,7 +52,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-这些区间中有三个在某个点上相交（这个公共点是 `4`，但具体数值并不重要，我们关注的是相交的次数）。区间 `(1,3)` 和 `(3,7)` 虽然共享一个端点，但在 `maxIntersections` 函数中不被视为相交。
+这些区间中有三个具有一个共同的取值（该值是 `4`，但具体是哪一个值并不重要，我们关心的是相交次数的计数）。区间 `(1,3)` 和 `(3,7)` 共享一个端点，但在 `maxIntersections` 函数中并不被视为相交。
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
@@ -64,4 +64,4 @@ SELECT maxIntersections(start, end) FROM my_events;
 3
 ```
 
-如果最大区间出现多次，可以使用 [`maxIntersectionsPosition` 函数](./maxintersectionsposition.md) 来确定这些出现的次数及其位置。
+如果存在多个最大区间，可以使用 [`maxIntersectionsPosition` 函数](./maxintersectionsposition.md) 来确定它们的数量和位置。

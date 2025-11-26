@@ -1,7 +1,7 @@
 ```sql
 -- コアコマンド
 BACKUP | RESTORE [ASYNC]
---- バックアップ/リストア対象（または除外対象）
+--- バックアップ/復元の対象（または除外対象）
 TABLE [db.]table_name           [AS [db.]table_name_in_backup] |
 DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup] |
 DATABASE database_name          [AS database_name_in_backup] |
@@ -11,7 +11,7 @@ VIEW view_name                  [AS view_name_in_backup] |
 ALL [EXCEPT {TABLES|DATABASES}...] } [,...]
 --- 
 [ON CLUSTER 'cluster_name']
---- バックアップ先またはリストア元
+--- バックアップまたは復元の保存先/復元元
 TO|FROM 
 File('<path>/<filename>') | 
 Disk('<disk_name>', '<path>/') | 
@@ -21,4 +21,4 @@ AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account
 [SETTINGS ...]
 ```
 
-**各コマンドの詳細は、[「コマンドの概要」](/operations/backup/overview/#command-summary) を参照してください。**
+**詳しくは、[「コマンドの概要」](/operations/backup/overview/#command-summary)を参照してください。**

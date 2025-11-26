@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Amazon RDS MariaDB'
-description: 'Пошаговое руководство по настройке Amazon RDS MariaDB в качестве источника данных для ClickPipes'
+description: 'Пошаговое руководство по настройке Amazon RDS MariaDB в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds_maria
-title: 'Руководство по настройке источника RDS MariaDB'
+title: 'Руководство по настройке Amazon RDS MariaDB как источника данных'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', 'загрузка данных', 'синхронизация в реальном времени']
+keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -20,36 +20,31 @@ import Image from '@theme/IdealImage';
 
 # Руководство по настройке источника RDS MariaDB
 
-Это пошаговое руководство по настройке экземпляра RDS MariaDB для репликации данных с помощью MySQL ClickPipe.
+Это пошаговое руководство по настройке экземпляра RDS MariaDB для репликации его данных с помощью MySQL ClickPipe.
 <br/>
 :::info
-Мы также рекомендуем ознакомиться с разделом часто задаваемых вопросов (FAQ) по MySQL [здесь](/integrations/data-ingestion/clickpipes/mysql/faq.md). Страница с FAQ постоянно обновляется.
+Рекомендуем также ознакомиться с разделом часто задаваемых вопросов по MySQL [здесь](/integrations/data-ingestion/clickpipes/mysql/faq.md). Страница с вопросами и ответами активно обновляется.
 :::
 
 
 
-## Включение хранения бинарного журнала {#enable-binlog-retention-rds}
+## Включение хранения двоичного лога
 
-Бинарный журнал — это набор файлов журналов, содержащих информацию об изменениях данных, внесённых в экземпляр сервера MySQL. Файлы бинарного журнала необходимы для репликации. Необходимо выполнить оба следующих шага:
+Двоичный лог — это набор файлов журнала, которые содержат информацию об изменениях данных, выполненных в экземпляре сервера MySQL. Файлы двоичного лога необходимы для репликации. Необходимо выполнить оба шага, приведённых ниже:
 
-### 1. Включение бинарного журналирования через автоматическое резервное копирование{#enable-binlog-logging-rds}
+### 1. Включение двоичного логирования через автоматическое резервное копирование
 
-Функция автоматического резервного копирования определяет, включено или выключено бинарное журналирование для MySQL. Настройка выполняется в консоли AWS:
+Функция автоматического резервного копирования определяет, включено или выключено двоичное логирование для MySQL. Её можно настроить в консоли AWS:
 
-<Image
-  img={rds_backups}
-  alt='Включение автоматического резервного копирования в RDS'
-  size='lg'
-  border
-/>
+<Image img={rds_backups} alt="Включение автоматического резервного копирования в RDS" size="lg" border />
 
-Рекомендуется установить достаточно длительный период хранения резервных копий в зависимости от сценария использования репликации.
+Рекомендуется установить срок хранения резервных копий на достаточно большое значение, в зависимости от сценария репликации.
 
-### 2. Время хранения бинарного журнала{#binlog-retention-hours-rds}
+### 2. Срок хранения binlog (в часах)
 
-Amazon RDS для MariaDB использует другой метод установки длительности хранения бинарного журнала — периода времени, в течение которого хранится файл бинарного журнала с изменениями. Если некоторые изменения не будут прочитаны до удаления файла бинарного журнала, репликация не сможет продолжиться. Значение по умолчанию для времени хранения бинарного журнала — NULL, что означает, что бинарные журналы не сохраняются.
+Amazon RDS for MariaDB использует иной способ задания длительности хранения binlog, то есть времени, в течение которого файл binlog с изменениями сохраняется. Если некоторые изменения не будут прочитаны до удаления файла binlog, репликация не сможет продолжиться. Значение по умолчанию для срока хранения binlog — NULL, что означает отсутствие хранения двоичных логов.
 
-Чтобы указать количество часов для хранения бинарных журналов в экземпляре БД, используйте функцию mysql.rds_set_configuration с периодом хранения бинарного журнала, достаточным для выполнения репликации. Рекомендуемый минимум — `24 часа`.
+Чтобы указать количество часов хранения двоичных логов на экземпляре БД, используйте функцию mysql.rds&#95;set&#95;configuration с периодом хранения binlog, достаточно длинным для выполнения репликации. Рекомендуемый минимум — `24 часа`.
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
@@ -58,96 +53,76 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 
 ## Настройка параметров binlog в группе параметров {#binlog-parameter-group-rds}
 
-Группу параметров можно найти, щелкнув по экземпляру MariaDB в консоли RDS и перейдя на вкладку `Configurations`.
+Группу параметров можно найти, если нажать на экземпляр MariaDB в консоли RDS, а затем перейти на вкладку `Configurations`.
 
-<Image
-  img={rds_config}
-  alt='Где найти группу параметров в RDS'
-  size='lg'
-  border
-/>
+<Image img={rds_config} alt="Где найти группу параметров в RDS" size="lg" border/>
 
-После перехода по ссылке группы параметров откроется страница группы параметров. В правом верхнем углу вы увидите кнопку Edit:
+После перехода по ссылке группы параметров вы попадёте на страницу группы параметров. В правом верхнем углу вы увидите кнопку Edit:
 
-<Image img={edit_button} alt='Редактирование группы параметров' size='lg' border />
+<Image img={edit_button} alt="Редактирование группы параметров" size="lg" border/>
 
-Параметры `binlog_format`, `binlog_row_metadata` и `binlog_row_image` необходимо установить следующим образом:
+Параметры `binlog_format`, `binlog_row_metadata` и `binlog_row_image` необходимо настроить следующим образом:
 
-1. `binlog_format` to `ROW`.
+1. Установите значение `binlog_format` в `ROW`.
 
-<Image img={binlog_format} alt='Формат Binlog в ROW' size='lg' border />
+<Image img={binlog_format} alt="Формат binlog — значение ROW" size="lg" border/>
 
-2. `binlog_row_metadata` to `FULL`
+2. Установите значение `binlog_row_metadata` в `FULL`.
 
-<Image
-  img={binlog_row_metadata}
-  alt='Метаданные строк Binlog в FULL'
-  size='lg'
-  border
-/>
+<Image img={binlog_row_metadata} alt="Метаданные строк binlog — значение FULL" size="lg" border/>
 
-3. `binlog_row_image` to `FULL`
+3. Установите значение `binlog_row_image` в `FULL`.
 
-<Image img={binlog_row_image} alt='Образ строк Binlog в FULL' size='lg' border />
+<Image img={binlog_row_image} alt="Снимок строк binlog — значение FULL" size="lg" border/>
 
-Затем нажмите `Save Changes` в правом верхнем углу. Для применения изменений может потребоваться перезагрузка экземпляра. Если рядом со ссылкой на группу параметров на вкладке Configurations экземпляра RDS отображается `Pending reboot`, это означает, что требуется перезагрузка экземпляра.
+Затем нажмите `Save Changes` в правом верхнем углу. Возможно, вам потребуется перезагрузить экземпляр, чтобы изменения вступили в силу. Если вы видите статус `Pending reboot` рядом со ссылкой на группу параметров на вкладке Configurations экземпляра RDS, это означает, что требуется перезагрузка экземпляра.
 
-<br />
-:::tip Если у вас кластер MariaDB, указанные выше параметры находятся в группе параметров
-[DB
-Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html),
-а не в группе параметров экземпляра БД. :::
+<br/>
+:::tip
+Если у вас кластер MariaDB, указанные выше параметры будут находиться в группе параметров [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе параметров экземпляра БД.
+:::
+
 
 
 ## Включение режима GTID {#gtid-mode-rds}
+Global Transaction Identifiers (GTID) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию с использованием бинарных логов (binlog) и делают устранение неполадок более простым. В MariaDB режим GTID включён по умолчанию, поэтому от пользователя не требуется никаких дополнительных действий для его использования.
 
-Глобальные идентификаторы транзакций (GTID) — это уникальные идентификаторы, присваиваемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию binlog и делают устранение неполадок более удобным. MariaDB включает режим GTID по умолчанию, поэтому никаких действий со стороны пользователя не требуется.
 
 
 ## Настройка пользователя базы данных {#configure-database-user-rds}
 
-Подключитесь к экземпляру RDS MariaDB от имени администратора и выполните следующие команды:
+Подключитесь к экземпляру RDS MariaDB под учетной записью администратора и выполните следующие команды:
 
-1. Создайте выделенного пользователя для ClickPipes:
+1. Создайте отдельного пользователя для ClickPipes:
 
-   ```sql
-   CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
-   ```
+    ```sql
+    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
+    ```
 
-2. Предоставьте права доступа к схеме. В следующем примере показаны права доступа для базы данных `mysql`. Повторите эти команды для каждой базы данных и хоста, которые требуется реплицировать:
+2. Выдайте права на схему. В следующем примере показаны права для базы данных `mysql`. Повторите эти команды для каждой базы данных и хоста, которые вы хотите реплицировать:
 
-   ```sql
-   GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
-   ```
+    ```sql
+    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
+    ```
 
 3. Предоставьте пользователю права на репликацию:
 
-   ```sql
-   GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
-   GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-   ```
+    ```sql
+    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+
 
 
 ## Настройка сетевого доступа {#configure-network-access}
 
 ### Контроль доступа на основе IP-адресов {#ip-based-access-control}
 
-Если вы хотите ограничить трафик к вашему экземпляру RDS, добавьте [документированные статические NAT IP-адреса](../../index.md#list-of-static-ips) в правила входящего трафика (`Inbound rules`) группы безопасности RDS.
+Если вы хотите ограничить трафик к своему экземпляру RDS, добавьте [указанные в документации статические NAT IP-адреса](../../index.md#list-of-static-ips) в раздел `Inbound rules` группы безопасности вашего RDS.
 
-<Image
-  img={security_group_in_rds_mysql}
-  alt='Где найти группу безопасности в RDS?'
-  size='lg'
-  border
-/>
+<Image img={security_group_in_rds_mysql} alt="Где найти группу безопасности в RDS?" size="lg" border/>
 
-<Image
-  img={edit_inbound_rules}
-  alt='Редактирование правил входящего трафика для указанной группы безопасности'
-  size='lg'
-  border
-/>
+<Image img={edit_inbound_rules} alt="Редактирование правил `Inbound rules` для указанной выше группы безопасности" size="lg" border/>
 
-### Частный доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
+### Приватный доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
 
-Для подключения к экземпляру RDS через частную сеть можно использовать AWS PrivateLink. Следуйте [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы установить соединение.
+Чтобы подключиться к своему экземпляру RDS через приватную сеть, вы можете использовать AWS PrivateLink. Следуйте нашему [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить соединение.

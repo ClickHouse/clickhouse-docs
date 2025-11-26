@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/aws_lambda
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
-description: 'ClickStack 用 AWS Lambda - ClickHouse 可観測性スタック'
+description: 'ClickStack 用 AWS Lambda - ClickHouse オブザーバビリティスタック'
 title: 'AWS Lambda'
 doc_type: 'guide'
 keywords: ['ClickStack', 'observability', 'aws-lambda', 'lambda-layers']
@@ -12,7 +12,7 @@ keywords: ['ClickStack', 'observability', 'aws-lambda', 'lambda-layers']
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-**このガイドで統合するもの:**
+**本ガイドで統合する対象:**
 
 <table>
   <tbody>
@@ -36,7 +36,7 @@ OpenTelemetryプロジェクトは、以下の目的で個別のLambdaレイヤ�
 
 言語固有の自動計装Lambdaレイヤーは、特定の言語向けのOpenTelemetry自動計装パッケージを使用してLambda関数コードを自動的に計装します。
 
-各言語とリージョンには独自のレイヤーARNがあります。
+各言語およびリージョンには独自のレイヤーARNがあります。
 
 LambdaがすでにOpenTelemetry SDKで計装されている場合は、この手順をスキップできます。
 
@@ -159,7 +159,7 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
 
 </Tabs>
 
-3. 以下の`collector.yaml`ファイルをプロジェクトに追加して、コレクターがClickStackに送信するように設定します：
+3. 以下の `collector.yaml` ファイルをプロジェクトに追加して、コレクターがClickStackへ送信するように設定します：
 
 
 ```yaml
@@ -199,7 +199,7 @@ service:
       exporters: [otlphttp]
 ```
 
-4. 次の環境変数を追加します：
+4. 以下の環境変数を追加します：
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
@@ -208,22 +208,31 @@ OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 
 ## インストールの確認 {#checking-the-installation}
 
-レイヤーをデプロイすると、Lambda関数から自動的に収集されたトレースがHyperDXに表示されるようになります。`decouple`および`batching`プロセッサによってテレメトリ収集に遅延が発生する可能性があるため、トレースの表示が遅れる場合があります。カスタムログやメトリクスを出力するには、各言語に対応したOpenTelemetry SDKを使用してコードをインストルメント化する必要があります。
+レイヤーをデプロイしたあと、HyperDX に Lambda 関数から収集されたトレースが自動的に表示されるようになります。`decouple` と `batching` プロセッサによってテレメトリ収集に遅延が発生する場合があるため、トレースの表示が遅れることがあります。カスタムログやメトリクスを出力するには、使用しているプログラミング言語向けの OpenTelemetry SDKs を用いてコードを計装する必要があります。
+
 
 
 ## トラブルシューティング {#troubleshoting}
 
 ### カスタムインストルメンテーションが送信されない {#custom-instrumentation-not-sending}
 
-手動で定義したトレースやその他のテレメトリが表示されない場合、互換性のないバージョンのOpenTelemetry APIパッケージを使用している可能性があります。OpenTelemetry APIパッケージのバージョンが、AWS Lambdaに含まれているバージョンと同じか、それより低いバージョンであることを確認してください。
+手動で定義したトレースやその他のテレメトリが確認できない場合は、
+互換性のないバージョンの OpenTelemetry API パッケージを使用している可能性があります。
+OpenTelemetry API パッケージが、AWS Lambda に含まれているバージョンと
+同じかそれより低いバージョンであることを確認してください。
 
-### SDKデバッグログの有効化 {#enabling-sdk-debug-logs}
+### SDK のデバッグログを有効化する {#enabling-sdk-debug-logs}
 
-環境変数`OTEL_LOG_LEVEL`を`DEBUG`に設定することで、OpenTelemetry SDKからのデバッグログを有効にします。これにより、自動インストルメンテーション層がアプリケーションを正しくインストルメント化していることを確認できます。
+`OTEL_LOG_LEVEL` 環境変数を `DEBUG` に設定して、OpenTelemetry SDK からのデバッグログを有効化します。
+これにより、自動インストルメンテーションレイヤーが
+アプリケーションを正しくインストルメントできているかを確認しやすくなります。
 
-### コレクターデバッグログの有効化 {#enabling-collector-debug-logs}
+### Collector のデバッグログを有効化する {#enabling-collector-debug-logs}
 
-コレクターの問題をデバッグするには、コレクター設定ファイルを変更して`logging`エクスポーターを追加し、テレメトリログレベルを`debug`に設定することで、コレクターLambdaレイヤーからのより詳細なログを有効にできます。
+Collector の問題をデバッグするには、Collector の設定ファイルを変更して
+`logging` エクスポーターを追加し、テレメトリのログレベルを `debug` に設定することで、
+Collector の Lambda レイヤーからのより詳細なログ出力を有効化できます。
+
 
 
 ```yaml

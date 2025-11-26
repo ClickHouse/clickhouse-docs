@@ -1,5 +1,5 @@
 ---
-description: 'Системная таблица, содержащая стек-трейсы всех потоков сервера. Позволяет разработчикам изучать состояние сервера.'
+description: 'Системная таблица, содержащая стеки вызовов всех потоков сервера. Позволяет разработчикам анализировать состояние сервера.'
 keywords: ['system table', 'stack_trace']
 slug: /operations/system-tables/stack_trace
 title: 'system.stack_trace'
@@ -15,17 +15,17 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 Содержит стек-трейсы всех потоков сервера. Позволяет разработчикам исследовать состояние сервера.
 
-Для анализа стек-кадров используйте функции интроспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle` ([функции интроспекции](../../sql-reference/functions/introspection.md)).
+Для анализа кадров стека используйте функции интроспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle` ([функции интроспекции](../../sql-reference/functions/introspection.md)).
 
 Столбцы:
 
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока.
 * `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения подробной информации о запросе, выполнявшемся согласно данным системной таблицы [query&#95;log](../system-tables/query_log.md).
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения подробной информации о выполнявшемся запросе из системной таблицы [query&#95;log](../system-tables/query_log.md).
 * `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — [Стек-трейс](https://en.wikipedia.org/wiki/Stack_trace), представляющий собой список физических адресов, по которым расположены вызываемые методы.
 
 :::tip
-Ознакомьтесь с базой знаний (Knowledge Base), где приведены полезные запросы, включая запросы для [просмотра потоков, выполняющихся в данный момент](/knowledgebase/find-expensive-queries) и [запросы, полезные для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
+Ознакомьтесь с базой знаний для примеров полезных запросов, включая [как увидеть, какие потоки выполняются в данный момент](/knowledgebase/find-expensive-queries) и [полезные запросы для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
 :::
 
 **Пример**
@@ -36,7 +36,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 SET allow_introspection_functions = 1;
 ```
 
-Извлечение символов из объектных файлов ClickHouse:
+Получение символов из объектных файлов ClickHouse:
 
 ```sql
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -44,7 +44,7 @@ WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_nam
 
 
 ```text
-Row 1:
+Строка 1:
 ──────
 thread_name: QueryPipelineEx
 thread_id:   743490
@@ -67,7 +67,7 @@ void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__fu
 void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void ThreadPoolImpl<std::__1::thread>::scheduleImpl<void>(std::__1::function<void ()>, Priority, std::__1::optional<unsigned long>, bool)::'lambda0'()>>(void*)
 ```
 
-Получение имен файлов и номеров строк в исходном коде ClickHouse:
+Получение имён файлов и номеров строк в исходном коде ClickHouse:
 
 ```sql
 WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -75,7 +75,7 @@ WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/d
 
 
 ```text
-Row 1:
+Строка 1:
 ──────
 thread_name: clickhouse-serv
 
@@ -102,7 +102,7 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 
 **См. также**
 
-* [Introspection Functions](../../sql-reference/functions/introspection.md) — Какие функции интроспекции доступны и как их использовать.
-* [system.trace&#95;log](../system-tables/trace_log.md) — Содержит трассировки стека, собираемые сэмплирующим профилировщиком запросов.
-* [arrayMap](/sql-reference/functions/array-functions#arrayMap)) — Описание и пример использования функции `arrayMap`.
+* [Introspection Functions](../../sql-reference/functions/introspection.md) — Какие функции интроспекции доступны и как ими пользоваться.
+* [system.trace&#95;log](../system-tables/trace_log.md) — Содержит трассировки стека, собранные профилировщиком запросов с выборкой.
+* [arrayMap](/sql-reference/functions/array-functions#arrayMap) — Описание и пример использования функции `arrayMap`.
 * [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — Описание и пример использования функции `arrayFilter`.

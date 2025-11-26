@@ -1,5 +1,5 @@
 ---
-description: 'サーバー内のすべてのスレッドのスタックトレースを保持するシステムテーブル。開発者がサーバーの状態をイントロスペクトするために使用できます。'
+description: 'すべてのサーバースレッドのスタックトレースを含むシステムテーブルです。開発者がサーバーの内部状態を調査できるようにします。'
 keywords: ['system table', 'stack_trace']
 slug: /operations/system-tables/stack_trace
 title: 'system.stack_trace'
@@ -13,7 +13,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-すべてのサーバースレッドのスタックトレースを含みます。開発者がサーバーの状態を調査できます。
+すべてのサーバースレッドのスタックトレースを保持します。開発者がサーバーの状態を把握するために利用できます。
 
 スタックフレームを解析するには、`addressToLine`、`addressToLineWithInlines`、`addressToSymbol`、`demangle` の各[イントロスペクション関数](../../sql-reference/functions/introspection.md)を使用します。
 
@@ -22,21 +22,21 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — スレッド名。
 * `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — スレッド識別子。
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — [query&#95;log](../system-tables/query_log.md) システムテーブルから、実行されていたクエリの詳細を取得するために使用できるクエリ識別子。
-* `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが格納されている物理アドレスの一覧を表す、[スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
+* `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが格納されている物理アドレスの一覧を表す[スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
 
 :::tip
-[現在どのスレッドが実行されているかを確認する方法](/knowledgebase/find-expensive-queries)や[トラブルシューティングに役立つクエリ](/knowledgebase/useful-queries-for-troubleshooting)など、便利なクエリについては Knowledge Base を参照してください。
+[現在実行中のスレッドを確認する方法](/knowledgebase/find-expensive-queries)や[トラブルシューティングに役立つクエリ](/knowledgebase/useful-queries-for-troubleshooting)など、便利なクエリが掲載されている Knowledge Base を参照してください。
 :::
 
 **例**
 
-イントロスペクション関数を有効にします:
+イントロスペクション関数の有効化:
 
 ```sql
 SET allow_introspection_functions = 1;
 ```
 
-ClickHouse のオブジェクトファイルからのシンボル取得:
+ClickHouse のオブジェクトファイルからシンボルを取得する:
 
 ```sql
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -67,7 +67,7 @@ void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__fu
 void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void ThreadPoolImpl<std::__1::thread>::scheduleImpl<void>(std::__1::function<void ()>, Priority, std::__1::optional<unsigned long>, bool)::'lambda0'()>>(void*)
 ```
 
-ClickHouse のソースコードにおけるファイル名と行番号の取得：
+ClickHouse ソースコード内のファイル名と行番号の取得:
 
 ```sql
 WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -103,6 +103,6 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 **関連項目**
 
 * [Introspection Functions](../../sql-reference/functions/introspection.md) — 利用可能なイントロスペクション関数とその使い方。
-* [system.trace&#95;log](../system-tables/trace_log.md) — サンプリングクエリプロファイラによって収集されたスタックトレースが格納されています。
-* [arrayMap](/sql-reference/functions/array-functions#arrayMap)) — `arrayMap` 関数の説明と使用例。
+* [system.trace&#95;log](../system-tables/trace_log.md) — サンプリングクエリプロファイラで収集されたスタックトレースを含みます。
+* [arrayMap](/sql-reference/functions/array-functions#arrayMap) — `arrayMap` 関数の説明と使用例。
 * [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — `arrayFilter` 関数の説明と使用例。

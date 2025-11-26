@@ -4,7 +4,7 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Microsoft OneLake のデータにクエリを実行する手順を説明します。'
+description: 'このガイドでは、Microsoft OneLake に格納されたデータをクエリする手順を説明します。'
 keywords: ['OneLake', 'Data Lake', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
@@ -16,35 +16,36 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 ClickHouse は複数のカタログ（OneLake、Unity、Glue、Polaris など）との連携をサポートしています。このガイドでは、ClickHouse と [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) を使用して、Microsoft OneLake に保存されたデータをクエリする手順を説明します。
 
-Microsoft OneLake は、レイクハウス向けに複数のテーブルフォーマットをサポートしています。ClickHouse を使用すると、Iceberg テーブルに対してクエリを実行できます。
+Microsoft OneLake では、レイクハウス向けに複数のテーブル形式がサポートされています。ClickHouse を使用すると、Iceberg テーブルに対してクエリを実行できます。
 
 :::note
-この機能はベータ版であるため、次の設定で有効化する必要があります。
+この機能はベータ版のため、次の設定を実行して有効化する必要があります:
 `SET allow_database_iceberg = 1;`
 :::
 
 
-## OneLakeの要件の収集 {#gathering-requirements}
+## OneLake の要件の収集 {#gathering-requirements}
 
-Microsoft Fabricでテーブルをクエリする前に、以下の情報を収集する必要があります:
+Microsoft Fabric でテーブルをクエリする前に、次の情報を収集する必要があります。
 
-- OneLakeテナントID(Entra ID)
-- クライアントID
-- クライアントシークレット
-- ウェアハウスIDおよびデータアイテムID
+- OneLake テナント ID（Entra ID）
+- クライアント ID
+- クライアント シークレット
+- ウェアハウス ID とデータ アイテム ID
 
-これらの値の確認方法については、[Microsoft OneLakeのドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
+これらの値の取得方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
 
 
-## OneLakeとClickHouse間の接続を作成する {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
-上記の必要な情報があれば、Microsoft OneLakeとClickHouse間の接続を作成できますが、その前にカタログを有効化する必要があります:
+## OneLake と ClickHouse 間の接続を確立する
+
+上記で必要な情報が揃ったので、Microsoft OneLake と ClickHouse の間に接続を確立できます。ただしその前に、カタログ機能を有効化する必要があります。
 
 ```sql
 SET allow_database_iceberg=1
 ```
 
-### OneLakeに接続する {#connect-onelake}
+### OneLakeに接続する
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -60,9 +61,9 @@ onelake_client_secret = '<client_secret>'
 ```
 
 
-## ClickHouseを使用したOneLakeのクエリ {#querying-onelake-using-clickhouse}
+## ClickHouse から OneLake をクエリする
 
-接続が確立されたので、OneLakeに対してクエリを実行できます:
+接続が確立できたので、OneLake に対してクエリを実行できます。
 
 ```sql
 SHOW TABLES FROM onelake_catalog
@@ -78,9 +79,9 @@ Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
    └───────────────────────────────┘
 ```
 
-Icebergクライアントを使用している場合、Uniformが有効化されたDeltaテーブルのみが表示されます:
+Iceberg クライアントを使用している場合は、Uniform が有効になっている Delta テーブルのみが表示されます。
 
-テーブルに対してクエリを実行するには:
+テーブルをクエリするには:
 
 ```sql
 SELECT *
@@ -114,17 +115,16 @@ congestion_surcharge:  ᴺᵁᴸᴸ
 source_file:           green_tripdata_2017-05.parquet
 ```
 
-:::note バッククォートが必要
-ClickHouseは複数の名前空間をサポートしていないため、バッククォートが必要です。
+:::note バッククォートが必須
+ClickHouse では複数のネームスペースをサポートしていないため、バッククォートが必須です。
 :::
 
-テーブルのDDLを確認するには:
+テーブルの DDL を確認するには、次を実行します。
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
 Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
-
 ```
 
 
@@ -162,9 +162,9 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
 ```
 
 
-## Data LakeからClickHouseへのデータ読み込み {#loading-data-from-onelake-into-clickhouse}
+## データレイクから ClickHouse へのデータ読み込み
 
-OneLakeからClickHouseにデータを読み込む場合:
+OneLake から ClickHouse にデータを読み込む必要がある場合:
 
 ```sql
 CREATE TABLE trips
@@ -177,6 +177,6 @@ Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
 Ok.
 
-0 rows in set. Elapsed: 32.570 sec. Processed 11.74 million rows, 275.37 MB (360.36 thousand rows/s., 8.45 MB/s.)
-Peak memory usage: 1.31 GiB.
+0 rows in set. 経過時間: 32.570秒 処理済み: 1,174万行、275.37 MB (360,360行/秒、8.45 MB/秒)
+ピークメモリ使用量: 1.31 GiB
 ```

@@ -1,6 +1,5 @@
 ---
-description: '包含超过 1 亿条记录的数据集，涵盖地图上各类地点的信息，例如商店、
-餐馆、公园、游乐场和纪念性建筑。'
+description: '包含超过 1 亿条记录的数据集，涵盖地图上各类地点的信息，例如商店、餐厅、公园、游乐场和纪念碑。'
 sidebar_label: 'Foursquare 地点'
 slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare 地点'
@@ -17,22 +16,26 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 
 ## 数据集 {#dataset}
 
-Foursquare 提供的此数据集可[下载](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)并在 Apache 2.0 许可证下免费使用。
+Foursquare 提供的数据集可[下载](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)，
+并可在 Apache 2.0 许可协议下免费使用。
 
-该数据集包含超过 1 亿条商业兴趣点(POI)记录,涵盖商店、餐厅、公园、游乐场和纪念碑等场所。此外还包含这些地点的附加元数据,如类别和社交媒体信息。
+其中包含超过 1 亿条商业兴趣点（POI）记录，
+例如商店、餐厅、公园、游乐场和纪念碑。还包括关于这些地点的补充元数据，
+例如类别和社交媒体信息。
 
 
-## 数据探索 {#data-exploration}
 
-为了探索数据,我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local),这是一个提供完整 ClickHouse 引擎的小型命令行工具。您也可以使用 ClickHouse Cloud、`clickhouse-client` 或 `chDB`。
+## 数据探索
 
-运行以下查询从存储数据的 S3 存储桶中选择数据:
+为了探索这些数据，我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)，这是一个小型命令行工具，但提供了完整的 ClickHouse 引擎能力。当然，你也可以使用 ClickHouse Cloud、`clickhouse-client`，甚至 `chDB`。
 
-```sql title="查询"
+运行以下查询，从存放数据的 S3 bucket 中查询数据：
+
+```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*') LIMIT 1
 ```
 
-```response title="响应"
+```response title="Response"
 Row 1:
 ──────
 fsq_place_id:        4e1ef76cae60cd553dec233f
@@ -57,22 +60,22 @@ facebook_id:         ᴺᵁᴸᴸ
 instagram:           ᴺᵁᴸᴸ
 twitter:             ᴺᵁᴸᴸ
 fsq_category_ids:    ['4bf58dd8d48988d1f7931735']
-fsq_category_labels: ['Travel and Transportation > Transport Hub > Airport > Plane']
+fsq_category_labels: ['旅行与交通 > 交通枢纽 > 机场 > 飞机']
 placemaker_url:      https://foursquare.com/placemakers/review-place/4e1ef76cae60cd553dec233f
 geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
 ```
 
-我们可以看到有相当多的字段值为 `ᴺᵁᴸᴸ`,因此可以在查询中添加一些额外的条件来获取更多可用数据:
+我们看到有不少字段为 `ᴺᵁᴸᴸ`，因此可以在查询中添加一些额外条件，以获取更有用的数据：
 
-```sql title="查询"
+```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
    WHERE address IS NOT NULL AND postcode IS NOT NULL AND instagram IS NOT NULL LIMIT 1
 ```
 
 
 ```response
-Row 1:
+第 1 行：
 ──────
 fsq_place_id:        59b2c754b54618784f259654
 name:                Villa 722
@@ -102,7 +105,7 @@ geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)
 ```
 
-运行以下查询，使用 `DESCRIBE` 查看数据的自动推断 schema：
+运行以下查询，使用 `DESCRIBE` 查看自动推断出的数据模式：
 
 ```sql title="Query"
 DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -144,13 +147,13 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
 ```
 
 
-## 将数据加载到 ClickHouse {#loading-the-data}
+## 将数据加载到 ClickHouse
 
-如果您希望将数据持久化到磁盘,可以使用 `clickhouse-server` 或 ClickHouse Cloud。
+如果您希望将数据持久化到磁盘上，可以使用 `clickhouse-server` 或 ClickHouse Cloud。
 
-要创建表,请运行以下命令:
+要创建数据表，请运行以下命令：
 
-```sql title="查询"
+```sql title="Query"
 CREATE TABLE foursquare_mercator
 (
     fsq_place_id String,
@@ -193,52 +196,61 @@ CREATE TABLE foursquare_mercator
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-请注意,多个列使用了 [`LowCardinality`](/sql-reference/data-types/lowcardinality) 数据类型,这会将数据类型的内部表示更改为字典编码。使用字典编码数据进行操作可以显著提高许多应用程序中 `SELECT` 查询的性能。
+请注意，在多个列上使用了 [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+数据类型，这会将这些列的数据在内部表示为字典编码形式。对于许多应用场景，
+在字典编码的数据上执行 `SELECT` 查询可以显著提升性能。
 
-此外,还创建了两个 `UInt32` `MATERIALIZED` 列 `mercator_x` 和 `mercator_y`,它们将经纬度坐标映射到 [Web Mercator 投影](https://en.wikipedia.org/wiki/Web_Mercator_projection),以便更轻松地将地图分割为瓦片:
+另外，还创建了两个 `UInt32` 类型的 `MATERIALIZED` 列，`mercator_x` 和 `mercator_y`，
+用于将经纬度坐标映射到 [Web Mercator 投影](https://en.wikipedia.org/wiki/Web_Mercator_projection)，
+以便更容易将地图划分为瓦片（tiles）：
 
 ```sql
 mercator_x UInt32 MATERIALIZED 0xFFFFFFFF * ((longitude + 180) / 360),
 mercator_y UInt32 MATERIALIZED 0xFFFFFFFF * ((1 / 2) - ((log(tan(((latitude + 90) / 360) * pi())) / 2) / pi())),
 ```
 
-让我们详细分析一下每个列的计算过程。
+下面我们来逐列解释一下上面的计算过程。
 
-**mercator_x**
+**mercator&#95;x**
 
-此列将经度值转换为 Mercator 投影中的 X 坐标:
+这一列将经度值转换为墨卡托投影中的 X 坐标：
 
-- `longitude + 180` 将经度范围从 [-180, 180] 平移到 [0, 360]
-- 除以 360 将其归一化为 0 到 1 之间的值
-- 乘以 `0xFFFFFFFF`(32 位无符号整数的最大值的十六进制表示)将此归一化值缩放到 32 位整数的完整范围
+* `longitude + 180` 将经度范围从 [-180, 180] 平移到 [0, 360]
+* 除以 360 将其归一化为 0 到 1 之间的值
+* 乘以 `0xFFFFFFFF`（最大 32 位无符号整数的十六进制表示）将该归一化值缩放到完整的 32 位整数范围
 
-**mercator_y**
+**mercator&#95;y**
 
-此列将纬度值转换为 Mercator 投影中的 Y 坐标:
+这一列将纬度值转换为墨卡托投影中的 Y 坐标：
 
-- `latitude + 90` 将纬度从 [-90, 90] 平移到 [0, 180]
-- 除以 360 并乘以 pi() 转换为弧度以用于三角函数
-- `log(tan(...))` 部分是 Mercator 投影公式的核心
-- 乘以 `0xFFFFFFFF` 缩放到完整的 32 位整数范围
+* `latitude + 90` 将纬度从 [-90, 90] 平移到 [0, 180]
+* 除以 360 并乘以 pi()，将值转换为用于三角函数的弧度
+* `log(tan(...))` 部分是墨卡托投影公式的核心
+* 乘以 `0xFFFFFFFF` 将结果缩放到完整的 32 位整数范围
 
-指定 `MATERIALIZED` 可确保 ClickHouse 在我们 `INSERT` 数据时计算这些列的值,而无需在 `INSERT` 语句中指定这些列(它们不是原始数据模式的一部分)。
+指定 `MATERIALIZED` 会确保 ClickHouse 在我们执行 `INSERT` 时自动计算这些
+列的值，而不需要在 `INSERT` 语句中显式指定这些列（它们并不是
+原始数据 schema 的一部分）。
 
-表按 `mortonEncode(mercator_x, mercator_y)` 排序,这会生成 `mercator_x`、`mercator_y` 的 Z 序空间填充曲线,从而显著提高地理空间查询性能。这种 Z 序曲线排序确保数据按空间邻近性进行物理组织:
+该表按照 `mortonEncode(mercator_x, mercator_y)` 排序，它对
+`mercator_x`、`mercator_y` 生成一条 Z-order 空间填充曲线，从而显著
+提升地理空间查询性能。这个 Z-order 曲线排序确保数据在物理上按空间邻近性
+进行组织：
 
 ```sql
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-还创建了两个 `minmax` 索引以加快搜索速度:
+同时会创建两个 `minmax` 索引，以加速查询：
 
 ```sql
 INDEX idx_x mercator_x TYPE minmax,
 INDEX idx_y mercator_y TYPE minmax
 ```
 
-如您所见,ClickHouse 拥有实时地图应用程序所需的一切功能!
+正如你所见，ClickHouse 具备构建实时地图应用所需的一切能力！
 
-运行以下查询以加载数据:
+运行以下查询以加载数据：
 
 
 ```sql
@@ -247,26 +259,17 @@ SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parq
 ```
 
 
-## 可视化数据 {#data-visualization}
+## 数据可视化 {#data-visualization}
 
-要了解此数据集的可视化效果,请访问 [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)。
-adsb.exposed 最初由联合创始人兼首席技术官 Alexey Milovidov 构建,用于可视化 ADS-B(自动相关监视广播)
-飞行数据,该数据集的规模是当前数据集的 1000 倍。在一次公司黑客马拉松活动中,Alexey 将 Foursquare 数据添加到了该工具中。
+要了解使用该数据集可以实现哪些可视化效果，请查看 [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)。
+adsb.exposed 最初由联合创始人兼 CTO Alexey Milovidov 构建，用于可视化规模大 1000 倍的 ADS-B（自动相关监视广播，Automatic Dependent Surveillance-Broadcast）航班数据。在一次公司黑客马拉松（hackathon）活动中，Alexey 将 Foursquare 数据添加到了这个工具中。
 
-以下是我们精选的一些可视化效果,供您欣赏。
+下面是我们最喜欢的一些可视化效果，如下所示。
 
-<Image
-  img={visualization_1}
-  size='md'
-  alt='欧洲兴趣点密度地图'
-/>
+<Image img={visualization_1} size="md" alt="欧洲兴趣点密度地图"/>
 
-<Image img={visualization_2} size='md' alt='日本的清酒吧' />
+<Image img={visualization_2} size="md" alt="日本的清酒酒吧"/>
 
-<Image img={visualization_3} size='md' alt='自动取款机' />
+<Image img={visualization_3} size="md" alt="ATM 自动取款机"/>
 
-<Image
-  img={visualization_4}
-  size='md'
-  alt='按国家分类的欧洲兴趣点地图'
-/>
+<Image img={visualization_4} size="md" alt="按国家分类的欧洲兴趣点地图"/>

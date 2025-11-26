@@ -1,27 +1,28 @@
 ---
-description: 'JSONCompactStringsEachRowWithNamesAndTypes 形式に関するドキュメント'
+description: 'JSONCompactStringsEachRowWithNamesAndTypes 形式のドキュメント'
 keywords: ['JSONCompactStringsEachRowWithNamesAndTypes']
 slug: /interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes
 title: 'JSONCompactStringsEachRowWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
+| Input | Output | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-`JSONCompactEachRow`形式とは異なり、[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)と同様に、列名と型を含む2つのヘッダー行も出力します。
+`JSONCompactEachRow` フォーマットとは異なり、[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes) と同様に、列名と型を含む 2 行のヘッダーも出力します。
 
 
-## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+## 使用例
 
-以下のデータを含む`football.json`という名前のJSONファイルを使用します:
+### データの挿入
+
+次のデータを含む JSON ファイル `football.json` を用意します:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -45,15 +46,15 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-データを挿入します:
+データを挿入します：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`JSONCompactStringsEachRowWithNamesAndTypes`形式を使用してデータを読み取ります:
+`JSONCompactStringsEachRowWithNamesAndTypes` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -61,7 +62,7 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-出力はJSON形式になります:
+出力は JSON 形式です：
 
 
 ```json
@@ -90,12 +91,12 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ## フォーマット設定 {#format-settings}
 
 :::note
-設定 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) が1に設定されている場合、
-入力データの列は名前によってテーブルの列にマッピングされます。設定 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が1に設定されている場合、未知の名前を持つ列はスキップされます。
+[input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) が 1 に設定されている場合、
+入力データのカラムは名前に基づいてテーブルのカラムに対応付けられます。[input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が 1 に設定されている場合、不明な名前のカラムはスキップされます。
 それ以外の場合、最初の行はスキップされます。
 :::
 
 :::note
-設定 [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) が1に設定されている場合、
-入力データの型はテーブルの対応する列の型と比較されます。それ以外の場合、2行目はスキップされます。
+[input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) が 1 に設定されている場合、
+入力データの型はテーブル内の対応するカラムの型と比較されます。そうでない場合、2 行目はスキップされます。
 :::

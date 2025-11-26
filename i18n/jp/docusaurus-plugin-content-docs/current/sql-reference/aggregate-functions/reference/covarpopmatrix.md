@@ -1,5 +1,5 @@
 ---
-description: 'N個の変数に対する母共分散行列を返します。'
+description: 'N 個の変数の母集団共分散行列を返します。'
 sidebar_position: 122
 slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
 title: 'covarPopMatrix'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # covarPopMatrix
 
-N 個の変数の母共分散行列を返します。
+N 個の変数に対する母共分散行列を返します。
 
 **構文**
 
@@ -18,15 +18,15 @@ covarPopMatrix(x[, ...])
 
 **引数**
 
-* `x` — 可変個のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 可変長の引数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **戻り値**
 
-* 母共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+* 母集団共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS test;

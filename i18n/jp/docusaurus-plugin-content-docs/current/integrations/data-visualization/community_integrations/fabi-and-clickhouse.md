@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Fabi.ai'
 slug: /integrations/fabi.ai
-keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'analytics']
-description: 'Fabi.ai はオールインワンのコラボレーション型データ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます。'
+keywords: ['clickhouse', 'Fabi.ai', '接続', '統合', 'notebook', 'UI', '分析']
+description: 'Fabi.ai は、コラボレーション対応のオールインワン・データ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます。'
 title: 'ClickHouse を Fabi.ai に接続する'
 doc_type: 'guide'
 ---
@@ -16,44 +16,47 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 
-# ClickHouse と Fabi.ai の接続
+# ClickHouse を Fabi.ai に接続する
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> は、オールインワンの共同作業型データ分析プラットフォームです。SQL、Python、AI、さらにノーコードを活用して、これまでになく速やかにダッシュボードやデータワークフローを構築できます。ClickHouse のスケーラビリティと高い処理性能を組み合わせることで、巨大なデータセットに対して、高性能な最初のダッシュボードを数分で構築・共有できます。
+<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> は、コラボレーション型のオールインワンのデータ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく迅速にダッシュボードやデータワークフローを構築できます。ClickHouse のスケールと高い処理能力を組み合わせることで、大規模なデータセットに対する高性能なダッシュボードを、初回から数分で構築・共有できます。
 
-<Image size="md" img={fabi_01} alt="Fabi.ai のデータ探索およびワークフロー プラットフォーム" border />
+<Image size="md" img={fabi_01} alt="Fabi.ai のデータ探索およびワークフロープラットフォーム" border />
 
 
 
-## 接続情報を収集する {#gather-your-connection-details}
+## 接続情報を取得する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
 
-## Create your Fabi.ai account and connect ClickHouse {#connect-to-clickhouse}
 
-Fabi.aiアカウントにログインするか、新規作成してください: https://app.fabi.ai/
+## Fabi.ai アカウントを作成し、ClickHouse に接続する {#connect-to-clickhouse}
 
-1. アカウントを初めて作成する際にデータベースへの接続を求められます。既にアカウントをお持ちの場合は、任意のSmartbookの左側にあるデータソースパネルをクリックし、「データソースを追加」を選択してください。
+Fabi.ai にログインするか、アカウントを作成します: https://app.fabi.ai/
 
-   <Image size='lg' img={fabi_02} alt='データソースを追加' border />
+1. 初めてアカウントを作成する際は、データベースへの接続設定を求められます。すでにアカウントをお持ちの場合は、任意の Smartbook の左側にあるデータソースパネルをクリックし、Add Data Source を選択します。
+   
+   <Image size="lg" img={fabi_02} alt="データソースを追加" border />
 
 2. 次に、接続情報の入力を求められます。
 
-   <Image size='md' img={fabi_03} alt='ClickHouse認証情報フォーム' border />
+   <Image size="md" img={fabi_03} alt="ClickHouse 認証情報フォーム" border />
 
-3. これでClickHouseをFabi.aiに統合できました。
-
-
-## ClickHouseへのクエリ実行 {#querying-clickhouse}
-
-Fabi.aiをClickHouseに接続したら、任意の[Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks)に移動し、SQLセルを作成します。Fabi.aiインスタンスに接続されているデータソースが1つのみの場合、SQLセルは自動的にClickHouseがデフォルトとして設定されます。複数のデータソースがある場合は、ソースドロップダウンからクエリ実行対象のソースを選択できます。
-
-<Image size='lg' img={fabi_04} alt='ClickHouseへのクエリ実行' border />
+3. これで完了です。ClickHouse が Fabi.ai に接続されました。
 
 
-## 追加リソース {#additional-resources}
+
+## ClickHouse へのクエリ実行 {#querying-clickhouse}
+
+Fabi.ai を ClickHouse に接続したら、任意の [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) を開き、SQL セルを作成します。Fabi.ai インスタンスに接続されているデータソースが 1 つだけの場合、SQL セルでは自動的に ClickHouse がデフォルトとして選択されます。複数のデータソースがある場合は、ソースのドロップダウンからクエリ対象のソースを選択できます。
+
+   <Image size="lg" img={fabi_04} alt="ClickHouse へのクエリ実行" border />
+
+
+
+## 参考資料 {#additional-resources}
 
 [Fabi.ai](https://www.fabi.ai) ドキュメント: https://docs.fabi.ai/introduction
 

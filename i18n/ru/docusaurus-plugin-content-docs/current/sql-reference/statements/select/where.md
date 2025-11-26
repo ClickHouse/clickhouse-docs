@@ -1,131 +1,134 @@
 ---
-description: 'Документация по условию `WHERE` в ClickHouse'
+description: 'Документация по оператору `WHERE` в ClickHouse'
 sidebar_label: 'WHERE'
 slug: /sql-reference/statements/select/where
-title: 'Условие WHERE'
+title: 'Оператор WHERE'
 doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
 
 
-# Оператор WHERE
+# Условие WHERE
 
-Оператор `WHERE` позволяет фильтровать данные, полученные из оператора [`FROM`](../../../sql-reference/statements/select/from.md) в `SELECT`.
+Условие `WHERE` позволяет отфильтровать данные, полученные из предложения [`FROM`](../../../sql-reference/statements/select/from.md) запроса `SELECT`.
 
-Если указан оператор `WHERE`, за ним должно следовать выражение типа `UInt8`.
-Строки, для которых это выражение даёт значение `0`, исключаются из дальнейших преобразований или из результата.
+Если используется условие `WHERE`, за ним должно следовать выражение типа `UInt8`.
+Строки, для которых это выражение даёт значение `0`, исключаются из последующих преобразований или из результата.
 
-Выражение после оператора `WHERE` часто используется с [операторами сравнения](/sql-reference/operators#comparison-operators) и [логическими операторами](/sql-reference/operators#operators-for-working-with-data-sets), а также с одной из множества [регулярных функций](/sql-reference/functions/regular-functions).
+Выражение после `WHERE` часто используется вместе с [операторами сравнения](/sql-reference/operators#comparison-operators) и [логическими операторами](/sql-reference/operators#operators-for-working-with-data-sets), либо с одной из множества [регулярных функций](/sql-reference/functions/regular-functions).
 
-Выражение `WHERE` также анализируется с точки зрения возможности использования индексов и отсечения партиций, если движок базовой таблицы это поддерживает.
+Для выражения в `WHERE` проверяется возможность использования индексов и отсечения партиций, если это поддерживает используемый движок таблицы.
 
 :::note PREWHERE
 Существует также оптимизация фильтрации под названием [`PREWHERE`](../../../sql-reference/statements/select/prewhere.md).
 PREWHERE — это оптимизация для более эффективного применения фильтрации.
-Она включена по умолчанию, даже если оператор `PREWHERE` явно не указан.
+Она включена по умолчанию, даже если конструкция `PREWHERE` явно не указана.
 :::
 
 
 
 ## Проверка на `NULL` {#testing-for-null}
 
-Если необходимо проверить значение на [`NULL`](/sql-reference/syntax#null), используйте:
-
+Если вам нужно проверить значение на [`NULL`](/sql-reference/syntax#null), используйте:
 - [`IS NULL`](/sql-reference/operators#is_null) или [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
-- [`IS NOT NULL`](/sql-reference/operators#is_not_null) или [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
+- [`IS NOT NULL`](/sql-reference/operators#is_not_null)   или [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 В противном случае выражение с `NULL` никогда не будет истинным.
 
 
+
 ## Фильтрация данных с помощью логических операторов {#filtering-data-with-logical-operators}
 
-Для объединения нескольких условий можно использовать следующие [логические функции](/sql-reference/functions/logical-functions#and) вместе с предложением `WHERE`:
+Вы можете использовать следующие [логические функции](/sql-reference/functions/logical-functions#and) в сочетании с предложением `WHERE` для объединения нескольких условий:
 
-- [`and()`](/sql-reference/functions/logical-functions#and) or `AND`
-- [`not()`](/sql-reference/functions/logical-functions#not) or `NOT`
-- [`or()`](/sql-reference/functions/logical-functions#or) или `OR`
+- [`and()`](/sql-reference/functions/logical-functions#and) или `AND`
+- [`not()`](/sql-reference/functions/logical-functions#not) или `NOT`
+- [`or()`](/sql-reference/functions/logical-functions#or) или `NOT`
 - [`xor()`](/sql-reference/functions/logical-functions#xor)
+
 
 
 ## Использование столбцов UInt8 в качестве условия {#using-uint8-columns-as-a-condition}
 
-В ClickHouse столбцы типа `UInt8` можно использовать непосредственно в качестве логических условий: `0` интерпретируется как `false`, а любое ненулевое значение (обычно `1`) — как `true`.
-Пример использования приведён в разделе [ниже](#example-uint8-column-as-condition).
+В ClickHouse столбцы `UInt8` могут напрямую использоваться в булевых условиях, где `0` — это `false`, а любое ненулевое значение (обычно `1`) — `true`.
+Пример этого приведён в разделе [ниже](#example-uint8-column-as-condition).
+
 
 
 ## Использование операторов сравнения {#using-comparison-operators}
 
 Можно использовать следующие [операторы сравнения](/sql-reference/operators#comparison-operators):
 
-| Оператор                | Функция                 | Описание                              | Пример                          |
-| ----------------------- | ----------------------- | ------------------------------------- | ------------------------------- |
-| `a = b`                 | `equals(a, b)`          | Равно                                 | `price = 100`                   |
-| `a == b`                | `equals(a, b)`          | Равно (альтернативный синтаксис)      | `price == 100`                  |
-| `a != b`                | `notEquals(a, b)`       | Не равно                              | `category != 'Electronics'`     |
-| `a <> b`                | `notEquals(a, b)`       | Не равно (альтернативный синтаксис)   | `category <> 'Electronics'`     |
-| `a < b`                 | `less(a, b)`            | Меньше                                | `price < 200`                   |
-| `a <= b`                | `lessOrEquals(a, b)`    | Меньше или равно                      | `price <= 200`                  |
-| `a > b`                 | `greater(a, b)`         | Больше                                | `price > 500`                   |
-| `a >= b`                | `greaterOrEquals(a, b)` | Больше или равно                      | `price >= 500`                  |
-| `a LIKE s`              | `like(a, b)`            | Сопоставление с шаблоном (с учётом регистра)     | `name LIKE '%top%'`             |
-| `a NOT LIKE s`          | `notLike(a, b)`         | Несоответствие шаблону (с учётом регистра) | `name NOT LIKE '%top%'`         |
-| `a ILIKE s`             | `ilike(a, b)`           | Сопоставление с шаблоном (без учёта регистра)   | `name ILIKE '%LAPTOP%'`         |
-| `a BETWEEN b AND c`     | `a >= b AND a <= c`     | Проверка диапазона (включительно)               | `price BETWEEN 100 AND 500`     |
-| `a NOT BETWEEN b AND c` | `a < b OR a > c`        | Проверка вне диапазона                   | `price NOT BETWEEN 100 AND 500` |
+| Оператор | Функция | Описание | Пример |
+|----------|----------|-------------|---------|
+| `a = b` | `equals(a, b)` | Равно | `price = 100` |
+| `a == b` | `equals(a, b)` | Равно (альтернативный синтаксис) | `price == 100` |
+| `a != b` | `notEquals(a, b)` | Не равно | `category != 'Electronics'` |
+| `a <> b` | `notEquals(a, b)` | Не равно (альтернативный синтаксис) | `category <> 'Electronics'` |
+| `a < b` | `less(a, b)` | Меньше | `price < 200` |
+| `a <= b` | `lessOrEquals(a, b)` | Меньше либо равно | `price <= 200` |
+| `a > b` | `greater(a, b)` | Больше | `price > 500` |
+| `a >= b` | `greaterOrEquals(a, b)` | Больше либо равно | `price >= 500` |
+| `a LIKE s` | `like(a, b)` | Сопоставление с шаблоном (с учётом регистра) | `name LIKE '%top%'` |
+| `a NOT LIKE s` | `notLike(a, b)` | Несоответствие шаблону (с учётом регистра) | `name NOT LIKE '%top%'` |
+| `a ILIKE s` | `ilike(a, b)` | Сопоставление с шаблоном (без учёта регистра) | `name ILIKE '%LAPTOP%'` |
+| `a BETWEEN b AND c` | `a >= b AND a <= c` | Проверка вхождения в диапазон (включительно) | `price BETWEEN 100 AND 500` |
+| `a NOT BETWEEN b AND c` | `a < b OR a > c` | Проверка выхода за пределы диапазона | `price NOT BETWEEN 100 AND 500` |
 
 
-## Сопоставление с шаблоном и условные выражения {#pattern-matching-and-conditional-expressions}
 
-Помимо операторов сравнения, в предложении `WHERE` можно использовать сопоставление с шаблоном и условные выражения.
+## Сопоставление по шаблону и условные выражения {#pattern-matching-and-conditional-expressions}
 
-| Функция     | Синтаксис                      | Учет регистра | Производительность | Оптимально для                 |
-| ----------- | ------------------------------ | -------------- | ----------- | ------------------------------ |
-| `LIKE`      | `col LIKE '%pattern%'`         | Да            | Быстро        | Точное сопоставление с учетом регистра    |
-| `ILIKE`     | `col ILIKE '%pattern%'`        | Нет             | Медленнее      | Поиск без учета регистра     |
-| `if()`      | `if(cond, a, b)`               | Н/Д            | Быстро        | Простые бинарные условия       |
-| `multiIf()` | `multiIf(c1, r1, c2, r2, def)` | Н/Д            | Быстро        | Множественные условия            |
-| `CASE`      | `CASE WHEN ... THEN ... END`   | Н/Д            | Быстро        | Условная логика стандарта SQL |
+Помимо операторов сравнения, в предложении `WHERE` можно использовать сопоставление по шаблону и условные выражения.
 
-Примеры использования см. в разделе ["Сопоставление с шаблоном и условные выражения"](#examples-pattern-matching-and-conditional-expressions).
+| Feature     | Syntax                         | Case-Sensitive | Performance | Best For                              |
+| ----------- | ------------------------------ | -------------- | ----------- | ------------------------------------- |
+| `LIKE`      | `col LIKE '%pattern%'`         | Yes            | Fast        | Точное сопоставление с учётом регистра |
+| `ILIKE`     | `col ILIKE '%pattern%'`        | No             | Slower      | Поиск без учёта регистра              |
+| `if()`      | `if(cond, a, b)`               | N/A            | Fast        | Простые бинарные условия              |
+| `multiIf()` | `multiIf(c1, r1, c2, r2, def)` | N/A            | Fast        | Несколько условий                     |
+| `CASE`      | `CASE WHEN ... THEN ... END`   | N/A            | Fast        | Условная логика по стандарту SQL      |
+
+См. раздел ["Сопоставление по шаблону и условные выражения"](#examples-pattern-matching-and-conditional-expressions) с примерами использования.
 
 
-## Выражения с литералами, столбцами или подзапросами {#expressions-with-literals-columns-subqueries}
 
-Выражение, следующее за предложением `WHERE`, также может включать [литералы](/sql-reference/syntax#literals), столбцы или подзапросы — вложенные операторы `SELECT`, возвращающие значения, используемые в условиях.
+## Выражение с литералами, столбцами или подзапросами
 
-| Тип          | Определение                  | Вычисление               | Производительность | Пример                     |
-| ------------ | ---------------------------- | ------------------------ | ------------------ | -------------------------- |
-| **Литерал**  | Фиксированное константное значение | Время написания запроса | Наивысшая          | `WHERE price > 100`        |
-| **Столбец**  | Ссылка на данные таблицы     | На каждую строку         | Высокая            | `WHERE price > cost`       |
-| **Подзапрос** | Вложенный SELECT            | Время выполнения запроса | Варьируется        | `WHERE id IN (SELECT ...)` |
+Выражение после оператора `WHERE` также может включать [литералы](/sql-reference/syntax#literals), столбцы или подзапросы — вложенные операторы `SELECT`, которые возвращают значения, используемые в условиях.
+
+| Type         | Definition                         | Evaluation                  | Performance           | Example                    |
+| ------------ | ---------------------------------- | --------------------------- | --------------------- | -------------------------- |
+| **Literal**  | Фиксированное константное значение | Во время разбора запроса    | Самое быстрое         | `WHERE price > 100`        |
+| **Column**   | Ссылка на данные таблицы           | Для каждой строки           | Быстро                | `WHERE price > cost`       |
+| **Subquery** | Вложенный SELECT                   | Во время выполнения запроса | Зависит от подзапроса | `WHERE id IN (SELECT ...)` |
 
 Вы можете комбинировать литералы, столбцы и подзапросы в сложных условиях:
 
 ```sql
--- Литерал + Столбец
+-- Литерал + столбец
 WHERE price > 100 AND category = 'Electronics'
 
--- Столбец + Подзапрос
+-- Столбец + подзапрос
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
--- Литерал + Столбец + Подзапрос
-WHERE category = 'Electronics'
+-- Литерал + столбец + подзапрос
+WHERE category = 'Electronics' 
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
-
 ```
 
 
--- Все три с логическими операторами
-WHERE (price > 100 OR category IN (SELECT category FROM featured))
-AND in_stock = true
-AND name LIKE '%Special%'
+-- Все три условия с логическими операторами
+WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
+AND in&#95;stock = true
+AND name LIKE &#39;%Special%&#39;
 
 ````
-## Примеры {#examples}
+## Примеры            
 
-### Проверка на `NULL` {#examples-testing-for-null}
+### Проверка на `NULL`                             
 
 Запросы со значениями `NULL`:
 
@@ -146,9 +149,9 @@ SELECT * FROM t_null WHERE y != 0;
 └───┴───┘
 ```
 
-### Фильтрация данных с помощью логических операторов {#example-filtering-with-logical-operators}
+### Фильтрация данных с помощью логических операторов
 
-Рассмотрим следующую таблицу и данные:
+Предположим, у нас есть следующая таблица и данные:
 
 ```sql
 CREATE TABLE products (
@@ -161,12 +164,12 @@ CREATE TABLE products (
 ORDER BY id;
 
 INSERT INTO products VALUES
-(1, 'Laptop', 999.99, 'Electronics', true),
-(2, 'Mouse', 25.50, 'Electronics', true),
-(3, 'Desk', 299.00, 'Furniture', false),
-(4, 'Chair', 150.00, 'Furniture', true),
-(5, 'Monitor', 350.00, 'Electronics', true),
-(6, 'Lamp', 45.00, 'Furniture', false);
+(1, 'Ноутбук', 999.99, 'Электроника', true),
+(2, 'Мышь', 25.50, 'Электроника', true),
+(3, 'Стол', 299.00, 'Мебель', false),
+(4, 'Стул', 150.00, 'Мебель', true),
+(5, 'Монитор', 350.00, 'Электроника', true),
+(6, 'Лампа', 45.00, 'Мебель', false);
 ```
 
 **1. `AND` — оба условия должны быть истинными:**
@@ -178,28 +181,28 @@ WHERE category = 'Electronics' AND price < 500;
 
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
-1. │  2 │ Mouse   │  25.5 │ Electronics │ true     │
-2. │  5 │ Monitor │   350 │ Electronics │ true     │
+1. │  2 │ Mouse   │  25.5 │ Электроника │ true     │
+2. │  5 │ Monitor │   350 │ Электроника │ true     │
    └────┴─────────┴───────┴─────────────┴──────────┘
 ```
 
-**2. `OR` — хотя бы одно условие должно быть истинным:**
+**2. `OR` — хотя бы одно из условий должно выполняться:**
 
 ```sql
 SELECT * FROM products
-WHERE category = 'Furniture' OR price > 500;
+WHERE category = 'Мебель' OR price > 500;
 ```
 
 ```response
    ┌─id─┬─name───┬──price─┬─category────┬─in_stock─┐
-1. │  1 │ Laptop │ 999.99 │ Electronics │ true     │
-2. │  3 │ Desk   │    299 │ Furniture   │ false    │
-3. │  4 │ Chair  │    150 │ Furniture   │ true     │
-4. │  6 │ Lamp   │     45 │ Furniture   │ false    │
+1. │  1 │ Ноутбук │ 999.99 │ Электроника │ true     │
+2. │  3 │ Стол   │    299 │ Мебель      │ false    │
+3. │  4 │ Стул   │    150 │ Мебель      │ true     │
+4. │  6 │ Лампа  │     45 │ Мебель      │ false    │
    └────┴────────┴────────┴─────────────┴──────────┘
 ```
 
-**3. `NOT` — инвертирует условие:**
+**3. `NOT` — логическое отрицание условия:**
 
 ```sql
 SELECT * FROM products
@@ -208,12 +211,12 @@ WHERE NOT in_stock;
 
 ```response
    ┌─id─┬─name─┬─price─┬─category──┬─in_stock─┐
-1. │  3 │ Desk │   299 │ Furniture │ false    │
-2. │  6 │ Lamp │    45 │ Furniture │ false    │
+1. │  3 │ Стол │   299 │ Мебель    │ false    │
+2. │  6 │ Лампа│    45 │ Мебель    │ false    │
    └────┴──────┴───────┴───────────┴──────────┘
 ```
 
-**4. `XOR` — ровно одно условие должно быть истинным (но не оба):**
+**4. `XOR` — истинным должно быть только одно из условий (но не оба):**
 
 ```sql
 SELECT *
@@ -223,16 +226,16 @@ WHERE xor(price > 200, category = 'Electronics')
 
 ```response
    ┌─id─┬─name──┬─price─┬─category────┬─in_stock─┐
-1. │  2 │ Mouse │  25.5 │ Electronics │ true     │
-2. │  3 │ Desk  │   299 │ Furniture   │ false    │
+1. │  2 │ Mouse │  25.5 │ Электроника │ true     │
+2. │  3 │ Desk  │   299 │ Мебель      │ false    │
    └────┴───────┴───────┴─────────────┴──────────┘
 ```
 
-**5. Комбинирование нескольких операторов:**
+**5. Сочетание нескольких операторов:**
 
 ```sql
 SELECT * FROM products
-WHERE (category = 'Electronics' OR category = 'Furniture')
+WHERE (category = 'Электроника' OR category = 'Мебель')
   AND in_stock = true
   AND price < 400;
 ```
@@ -240,9 +243,9 @@ WHERE (category = 'Electronics' OR category = 'Furniture')
 
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
-1. │  2 │ Mouse   │  25.5 │ Electronics │ true     │
-2. │  4 │ Chair   │   150 │ Furniture   │ true     │
-3. │  5 │ Monitor │   350 │ Electronics │ true     │
+1. │  2 │ Mouse   │  25.5 │ Электроника │ true     │
+2. │  4 │ Chair   │   150 │ Мебель   │ true     │
+3. │  5 │ Monitor │   350 │ Электроника │ true     │
    └────┴─────────┴───────┴─────────────┴──────────┘
 ```
 
@@ -255,18 +258,18 @@ WHERE and(or(category = 'Electronics', price > 100), in_stock);
 
 ```response
    ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
-1. │  1 │ Laptop  │ 999.99 │ Electronics │ true     │
-2. │  2 │ Mouse   │   25.5 │ Electronics │ true     │
-3. │  4 │ Chair   │    150 │ Furniture   │ true     │
-4. │  5 │ Monitor │    350 │ Electronics │ true     │
+1. │  1 │ Ноутбук  │ 999.99 │ Электроника │ true     │
+2. │  2 │ Мышь   │   25.5 │ Электроника │ true     │
+3. │  4 │ Стул   │    150 │ Мебель   │ true     │
+4. │  5 │ Монитор │    350 │ Электроника │ true     │
    └────┴─────────┴────────┴─────────────┴──────────┘
 ```
 
-Синтаксис с ключевыми словами SQL (`AND`, `OR`, `NOT`, `XOR`) обычно более читаем, однако функциональный синтаксис может быть полезен в сложных выражениях или при построении динамических запросов.
+Синтаксис ключевых слов SQL (`AND`, `OR`, `NOT`, `XOR`) обычно более удобочитаем, но синтаксис функций может быть полезен в сложных выражениях или при построении динамических запросов.
 
-### Использование столбцов UInt8 в качестве условия {#example-uint8-column-as-condition}
+### Использование столбцов UInt8 в качестве условия
 
-Используя таблицу из [предыдущего примера](#example-filtering-with-logical-operators), можно использовать имя столбца непосредственно в качестве условия:
+Используя таблицу из [предыдущего примера](#example-filtering-with-logical-operators), вы можете использовать имя столбца напрямую в качестве условия:
 
 ```sql
 SELECT * FROM products
@@ -275,18 +278,18 @@ WHERE in_stock
 
 ```response
    ┌─id─┬─name────┬──price─┬─category────┬─in_stock─┐
-1. │  1 │ Laptop  │ 999.99 │ Electronics │ true     │
-2. │  2 │ Mouse   │   25.5 │ Electronics │ true     │
-3. │  4 │ Chair   │    150 │ Furniture   │ true     │
-4. │  5 │ Monitor │    350 │ Electronics │ true     │
+1. │  1 │ Ноутбук  │ 999.99 │ Электроника │ true     │
+2. │  2 │ Мышь   │   25.5 │ Электроника │ true     │
+3. │  4 │ Стул   │    150 │ Мебель   │ true     │
+4. │  5 │ Монитор │    350 │ Электроника │ true     │
    └────┴─────────┴────────┴─────────────┴──────────┘
 ```
 
-### Использование операторов сравнения {#example-using-comparison-operators}
+### Использование операторов сравнения
 
-В приведенных ниже примерах используются таблица и данные из [примера](#example-filtering-with-logical-operators) выше. Результаты опущены для краткости.
+В примерах ниже используются таблица и данные из [примера](#example-filtering-with-logical-operators) выше. Результаты опущены для краткости.
 
-**1. Явное сравнение с true (`= 1` или `= true`):**
+**1. Явное сравнение с `true` (`= 1` или `= true`):**
 
 ```sql
 SELECT * FROM products
@@ -313,7 +316,7 @@ WHERE in_stock != false;
 WHERE in_stock != 0;
 ```
 
-**4. Больше чем:**
+**4. Знак «больше»:**
 
 ```sql
 SELECT * FROM products
@@ -327,7 +330,7 @@ SELECT * FROM products
 WHERE in_stock <= 0;
 ```
 
-**6. Комбинирование с другими условиями:**
+**6. Сочетание с другими условиями:**
 
 ```sql
 SELECT * FROM products
@@ -336,32 +339,32 @@ WHERE in_stock AND price < 400;
 
 **7. Использование оператора `IN`:**
 
-В приведенном ниже примере `(1, true)` является [кортежем](/sql-reference/data-types/tuple).
+В примере ниже `(1, true)` — это [кортеж](/sql-reference/data-types/tuple).
 
 ```sql
 SELECT * FROM products
 WHERE in_stock IN (1, true);
 ```
 
-Также можно использовать [массив](/sql-reference/data-types/array):
+Также для этого можно использовать [массив](/sql-reference/data-types/array):
 
 ```sql
 SELECT * FROM products
 WHERE in_stock IN [1, true];
 ```
 
-**8. Смешивание стилей сравнения:**
+**8. Комбинирование стилей сравнения:**
 
 ```sql
 SELECT * FROM products
-WHERE category = 'Electronics' AND in_stock = true;
+WHERE category = 'Электроника' AND in_stock = true;
 ```
 
-### Сопоставление с шаблоном и условные выражения {#examples-pattern-matching-and-conditional-expressions}
+### Сопоставление по шаблону и условные выражения
 
-В приведенных ниже примерах используются таблица и данные из [примера](#example-filtering-with-logical-operators) выше. Результаты опущены для краткости.
+В приведённых ниже примерах используются таблица и данные из [примера](#example-filtering-with-logical-operators) выше. Результаты опущены для краткости.
 
-#### Примеры LIKE {#like-examples}
+#### Примеры LIKE
 
 
 ```sql
@@ -373,24 +376,24 @@ SELECT * FROM products WHERE name LIKE '%o%';
 SELECT * FROM products WHERE name LIKE 'L%';
 -- Результат: Laptop, Lamp
 
--- Найти продукты с названием ровно из 4 символов
+-- Найти продукты с названием из ровно 4 символов
 SELECT * FROM products WHERE name LIKE '____';
 -- Результат: Desk, Lamp
 ```
 
-#### Примеры ILIKE {#ilike-examples}
+#### Примеры использования ILIKE
 
 ```sql
--- Поиск 'LAPTOP' без учёта регистра
+-- Поиск без учета регистра для 'LAPTOP'
 SELECT * FROM products WHERE name ILIKE '%laptop%';
 -- Результат: Laptop
 
--- Поиск по префиксу без учёта регистра
+-- Совпадение по префиксу без учета регистра
 SELECT * FROM products WHERE name ILIKE 'l%';
 -- Результат: Laptop, Lamp
 ```
 
-#### Примеры IF {#if-examples}
+#### Примеры использования IF
 
 ```sql
 -- Различные пороговые значения цены по категориям
@@ -399,14 +402,14 @@ WHERE if(category = 'Electronics', price < 500, price < 200);
 -- Результат: Mouse, Chair, Monitor
 -- (Электроника дешевле $500 ИЛИ Мебель дешевле $200)
 
--- Фильтрация по статусу наличия
+-- Фильтрация по статусу наличия на складе
 SELECT * FROM products
 WHERE if(in_stock, price > 100, true);
 -- Результат: Laptop, Chair, Monitor, Desk, Lamp
--- (Товары в наличии дороже $100 ИЛИ все товары не в наличии)
+-- (Товары в наличии дороже $100 ИЛИ все отсутствующие товары)
 ```
 
-#### Примеры multiIf {#multiif-examples}
+#### Примеры функции multiIf
 
 ```sql
 -- Множественные условия на основе категорий
@@ -417,7 +420,7 @@ WHERE multiIf(
     false
 );
 -- Результат: Mouse, Monitor, Chair
--- (Электроника < $600 ИЛИ Мебель в наличии)
+-- (Electronics < $600 ИЛИ Furniture в наличии)
 
 -- Многоуровневая фильтрация
 SELECT * FROM products
@@ -429,9 +432,9 @@ WHERE multiIf(
 -- Результат: Laptop, Chair, Monitor, Lamp
 ```
 
-#### Примеры CASE {#case-examples}
+#### Примеры конструкции CASE
 
-**Простой CASE:**
+**Простой пример CASE:**
 
 ```sql
 -- Различные правила для каждой категории
@@ -444,7 +447,7 @@ END;
 -- Результат: Mouse, Monitor, Chair
 ```
 
-**CASE с условиями:**
+**CASE с условиями поиска:**
 
 ```sql
 -- Многоуровневая логика на основе цены

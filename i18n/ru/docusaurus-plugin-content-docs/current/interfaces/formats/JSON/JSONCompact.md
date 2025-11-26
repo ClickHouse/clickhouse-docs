@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация формата JSONCompact'
+description: 'Документация по формату JSONCompact'
 input_format: true
 keywords: ['JSONCompact']
 output_format: true
@@ -9,82 +9,85 @@ title: 'JSONCompact'
 doc_type: 'reference'
 ---
 
-| Входной | Выходной | Псевдоним |
-|---------|----------|-----------|
-| ✔       | ✔        |           |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 
 
 ## Описание {#description}
 
-Отличается от [JSON](./JSON.md) только тем, что строки данных выводятся как массивы, а не как объекты.
+Отличается от [JSON](./JSON.md) лишь тем, что строки данных выводятся в виде массивов, а не объектов.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используем JSON-файл со следующими данными с именем `football.json`:
+### Добавление данных
+
+JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 {
-  "meta": [
-    {
-      "name": "date",
-      "type": "Date"
-    },
-    {
-      "name": "season",
-      "type": "Int16"
-    },
-    {
-      "name": "home_team",
-      "type": "LowCardinality(String)"
-    },
-    {
-      "name": "away_team",
-      "type": "LowCardinality(String)"
-    },
-    {
-      "name": "home_team_goals",
-      "type": "Int8"
-    },
-    {
-      "name": "away_team_goals",
-      "type": "Int8"
-    }
-  ],
-  "data": [
-    ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4],
-    ["2022-04-30", 2021, "Swindon Town", "Barrow", 2, 1],
-    ["2022-04-30", 2021, "Tranmere Rovers", "Oldham Athletic", 2, 0],
-    ["2022-05-02", 2021, "Port Vale", "Newport County", 1, 2],
-    ["2022-05-02", 2021, "Salford City", "Mansfield Town", 2, 2],
-    ["2022-05-07", 2021, "Barrow", "Northampton Town", 1, 3],
-    ["2022-05-07", 2021, "Bradford City", "Carlisle United", 2, 0],
-    ["2022-05-07", 2021, "Bristol Rovers", "Scunthorpe United", 7, 0],
-    ["2022-05-07", 2021, "Exeter City", "Port Vale", 0, 1],
-    ["2022-05-07", 2021, "Harrogate Town A.F.C.", "Sutton United", 0, 2],
-    ["2022-05-07", 2021, "Hartlepool United", "Colchester United", 0, 2],
-    ["2022-05-07", 2021, "Leyton Orient", "Tranmere Rovers", 0, 1],
-    ["2022-05-07", 2021, "Mansfield Town", "Forest Green Rovers", 2, 2],
-    ["2022-05-07", 2021, "Newport County", "Rochdale", 0, 2],
-    ["2022-05-07", 2021, "Oldham Athletic", "Crawley Town", 3, 3],
-    ["2022-05-07", 2021, "Stevenage Borough", "Salford City", 4, 2],
-    ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
-  ]
+    "meta":
+    [
+        {
+            "name": "дата",
+            "type": "Date"
+        },
+        {
+            "name": "сезон",
+            "type": "Int16"
+        },
+        {
+            "name": "команда_хозяев",
+            "type": "LowCardinality(String)"
+        },
+        {
+            "name": "команда_гостей",
+            "type": "LowCardinality(String)"
+        },
+        {
+            "name": "голы_хозяев",
+            "type": "Int8"
+        },
+        {
+            "name": "голы_гостей",
+            "type": "Int8"
+        }
+    ],
+    "data":
+    [
+        ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4],
+        ["2022-04-30", 2021, "Swindon Town", "Barrow", 2, 1],
+        ["2022-04-30", 2021, "Tranmere Rovers", "Oldham Athletic", 2, 0],
+        ["2022-05-02", 2021, "Port Vale", "Newport County", 1, 2],
+        ["2022-05-02", 2021, "Salford City", "Mansfield Town", 2, 2],
+        ["2022-05-07", 2021, "Barrow", "Northampton Town", 1, 3],
+        ["2022-05-07", 2021, "Bradford City", "Carlisle United", 2, 0],
+        ["2022-05-07", 2021, "Bristol Rovers", "Scunthorpe United", 7, 0],
+        ["2022-05-07", 2021, "Exeter City", "Port Vale", 0, 1],
+        ["2022-05-07", 2021, "Harrogate Town A.F.C.", "Sutton United", 0, 2],
+        ["2022-05-07", 2021, "Hartlepool United", "Colchester United", 0, 2],
+        ["2022-05-07", 2021, "Leyton Orient", "Tranmere Rovers", 0, 1],
+        ["2022-05-07", 2021, "Mansfield Town", "Forest Green Rovers", 2, 2],
+        ["2022-05-07", 2021, "Newport County", "Rochdale", 0, 2],
+        ["2022-05-07", 2021, "Oldham Athletic", "Crawley Town", 3, 3],
+        ["2022-05-07", 2021, "Stevenage Borough", "Salford City", 4, 2],
+        ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
+    ]
 }
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `JSONCompact`:
+Считайте данные в формате `JSONCompact`:
 
 ```sql
 SELECT *
@@ -99,31 +102,30 @@ FORMAT JSONCompact
     "meta":
     [
         {
-            "name": "date",
+            "name": "дата",
             "type": "Date"
         },
         {
-            "name": "season",
+            "name": "сезон",
             "type": "Int16"
         },
         {
-            "name": "home_team",
+            "name": "домашняя_команда",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "away_team",
+            "name": "гостевая_команда",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "home_team_goals",
+            "name": "голы_домашней_команды",
             "type": "Int8"
         },
         {
-            "name": "away_team_goals",
+            "name": "голы_гостевой_команды",
             "type": "Int8"
         }
     ],
-
 ```
 
 
@@ -164,4 +166,4 @@ FORMAT JSONCompact
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

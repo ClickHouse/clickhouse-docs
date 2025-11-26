@@ -1,6 +1,6 @@
 ---
-description: '値 0 を持つ `dummy` という UInt8 型の単一列からなる 1 行のみの system テーブル。他の DBMS に存在する `DUAL` テーブルに相当します。'
-keywords: ['system table', 'one']
+description: 'UInt8 型の `dummy` 列が 1 列だけあり、その列に値 0 が格納された行が 1 行だけ存在するシステムテーブル。他の DBMS にある `DUAL` テーブルに相当します。'
+keywords: ['システムテーブル', 'one']
 slug: /operations/system-tables/one
 title: 'system.one'
 doc_type: 'reference'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # system.one
 
-このテーブルには、値 0 を持つ UInt8 型の `dummy` 列が 1 つだけある行が 1 行だけ格納されています。
+このテーブルは 1 行 1 列のテーブルで、UInt8 型の `dummy` 列に値 0 が格納されています。
 
 このテーブルは、`SELECT` クエリで `FROM` 句が指定されていない場合に使用されます。
 
@@ -25,5 +25,5 @@ SELECT * FROM system.one LIMIT 10;
 │     0 │
 └───────┘
 
-1 rows in set. Elapsed: 0.001 sec.
+1行のデータセット。経過時間: 0.001秒
 ```

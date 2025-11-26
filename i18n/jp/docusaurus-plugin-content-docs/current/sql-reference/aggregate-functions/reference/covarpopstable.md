@@ -16,7 +16,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-[covarPop](../reference/covarpop.md)関数と似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable`は`covarPop`よりも低速ですが、より正確な結果を生成します。
+[covarPop](../reference/covarpop.md)関数と似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable`は`covarPop`よりも処理速度は遅くなりますが、より正確な結果が得られます。
 
 **構文**
 

@@ -1,5 +1,5 @@
 ---
-description: '将 Kolmogorov-Smirnov 检验应用于来自两个总体的样本。'
+description: '对来自两个总体的样本进行 Kolmogorov-Smirnov 检验。'
 sidebar_label: 'kolmogorovSmirnovTest'
 sidebar_position: 156
 slug: /sql-reference/aggregate-functions/reference/kolmogorovsmirnovtest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # kolmogorovSmirnovTest
 
-对来自两个总体的样本执行 Kolmogorov-Smirnov 检验。
+将 Kolmogorov-Smirnov 检验应用于来自两个总体的样本。
 
 **语法**
 
@@ -17,8 +17,8 @@ doc_type: 'reference'
 kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_index)
 ```
 
-两个样本的取值都存放在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的值属于第一总体的样本；否则，该值属于第二总体的样本。\
-样本必须来自一维连续型概率分布。
+两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于第一总体的样本，否则属于第二总体的样本。\
+样本必须来自连续的一维概率分布。
 
 **参数**
 
@@ -27,30 +27,30 @@ kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_ind
 
 **设置项**
 
-* `alternative` — 备择假设。（可选，默认值：`'two-sided'`。）[String](../../../sql-reference/data-types/string.md)。\
-  令 F(x) 和 G(x) 分别为第一和第二分布的累积分布函数（CDF）。
+* `alternative` — 备择假设。（可选，默认：`'two-sided'`。）[String](../../../sql-reference/data-types/string.md)。\
+  设 F(x) 和 G(x) 分别为第一和第二分布的累积分布函数（CDF）。
   * `'two-sided'`\
-    原假设是样本来自同一分布，例如对所有 x 有 `F(x) = G(x)`。\
-    备择假设是两个分布并不相同。
+    原假设为样本来自同一分布，例如对所有 x 都有 `F(x) = G(x)`。\
+    备择假设为两个分布并不相同。
   * `'greater'`\
-    原假设是第一样本中的值在*随机意义上小于*第二样本中的值，\
-    即第一分布的 CDF 位于第二分布的 CDF 之上，从而在其左侧。\
-    这实际上意味着对所有 x 有 `F(x) >= G(x)`。在这种情况下，备择假设是存在至少一个 x 使得 `F(x) < G(x)`。
+    原假设为第一样本中的值在随机意义上 *小于* 第二样本中的值，\
+    即第一个分布的 CDF 位于第二个分布之上，因此也在其左侧。\
+    这实际上意味着对所有 x 都有 `F(x) >= G(x)`。在这种情况下，备择假设为至少存在一个 x 使得 `F(x) < G(x)`。
   * `'less'`。\
-    原假设是第一样本中的值在*随机意义上大于*第二样本中的值，\
-    即第一分布的 CDF 位于第二分布的 CDF 之下，从而在其右侧。\
-    这实际上意味着对所有 x 有 `F(x) <= G(x)`。在这种情况下，备择假设是存在至少一个 x 使得 `F(x) > G(x)`。
-* `computation_method` — 用于计算 p 值的方法。（可选，默认值：`'auto'`。）[String](../../../sql-reference/data-types/string.md)。
-  * `'exact'` - 使用检验统计量的精确概率分布进行计算。除小样本外，计算开销较大且效率较低。
-  * `'asymp'`（`'asymptotic'`）- 使用近似方法进行计算。对于大样本，精确和渐近 p 值非常接近。
-  * `'auto'`  - 当样本总数的最大值小于 10&#39;000 时使用 `'exact'` 方法。
+    原假设为第一样本中的值在随机意义上 *大于* 第二样本中的值，\
+    即第一个分布的 CDF 位于第二个分布之下，因此也在其右侧。\
+    这实际上意味着对所有 x 都有 `F(x) <= G(x)`。在这种情况下，备择假设为至少存在一个 x 使得 `F(x) > G(x)`。
+* `computation_method` — 用于计算 p-value 的方法。（可选，默认：`'auto'`。）[String](../../../sql-reference/data-types/string.md)。
+  * `'exact'` - 使用检验统计量的精确概率分布进行计算。除小样本外，计算开销较大且不划算。
+  * `'asymp'` (`'asymptotic'`) - 使用近似方法进行计算。对于大样本，精确与渐近 p-value 非常接近。
+  * `'auto'`  - 当样本数量的最大值小于 10&#39;000 时使用 `'exact'` 方法。
 
 **返回值**
 
 包含两个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)：
 
 * 计算得到的统计量。[Float64](../../../sql-reference/data-types/float.md)。
-* 计算得到的 p 值。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 p-value。[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
@@ -81,7 +81,7 @@ FROM
 ```
 
 注意：
-P-value 大于 0.05（在 95% 置信水平下），因此不拒绝原假设。
+P 值大于 0.05（对应 95% 的置信水平），因此原假设不被拒绝。
 
 查询：
 
@@ -110,8 +110,8 @@ FROM
 ```
 
 
-注意：
-p 值小于 0.05（对应 95% 置信水平），因此应当拒绝原假设。
+注：
+P 值小于 0.05（对应 95% 的置信水平），因此应当拒绝原假设。
 
 **另请参阅**
 

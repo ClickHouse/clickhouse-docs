@@ -3,10 +3,10 @@ slug: /use-cases/observability/clickstack/sdks/deno
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
-description: 'SDK Deno для ClickStack — стека наблюдаемости ClickHouse'
+description: 'Deno SDK для ClickStack — стек наблюдаемости ClickHouse'
 title: 'Deno'
 doc_type: 'guide'
-keywords: ['SDK Deno для ClickStack', 'Deno OpenTelemetry', 'интеграция ClickStack с Deno', 'наблюдаемость Deno', 'SDK логирования Deno']
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'интеграция ClickStack с Deno', 'наблюдаемость в Deno', 'SDK логирования для Deno']
 ---
 
 В этом руководстве рассматривается интеграция следующих компонентов:
@@ -14,42 +14,42 @@ keywords: ['SDK Deno для ClickStack', 'Deno OpenTelemetry', 'интеграц
 - **Логи**
 
 :::note
-В настоящее время поддерживается только логирование OpenTelemetry. Для трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
+Сейчас поддерживается только логирование через OpenTelemetry. Для поддержки трассировки см. [следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
 :::
 
 
 
-## Логирование {#logging}
+## Логирование
 
-Логирование поддерживается путём экспорта пользовательского логгера для модуля `std/log`.
+Логирование поддерживается экспортом пользовательского логгера для модуля `std/log`.
 
 **Пример использования:**
 
 ```typescript
-import * as log from "https://deno.land/std@0.203.0/log/mod.ts"
-import { OpenTelemetryHandler } from "npm:@hyperdx/deno"
+import * as log from 'https://deno.land/std@0.203.0/log/mod.ts';
+import { OpenTelemetryHandler } from 'npm:@hyperdx/deno';
 
 log.setup({
   handlers: {
-    otel: new OpenTelemetryHandler("DEBUG")
+    otel: new OpenTelemetryHandler('DEBUG'),
   },
 
   loggers: {
-    "my-otel-logger": {
-      level: "DEBUG",
-      handlers: ["otel"]
-    }
-  }
-})
+    'my-otel-logger': {
+      level: 'DEBUG',
+      handlers: ['otel'],
+    },
+  },
+});
 
-log.getLogger("my-otel-logger").info("Hello from Deno!")
+log.getLogger('my-otel-logger').info('Привет из Deno!');
 ```
 
-### Запуск приложения {#run-the-application}
+### Запуск приложения
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<ВАШ_КЛЮЧ_API_ПРИЁМА>" \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
+OTEL_SERVICE_NAME="<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```

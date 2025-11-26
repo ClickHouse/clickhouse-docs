@@ -1,5 +1,5 @@
 ---
-description: 'タイムスタンプの昇順で時系列データを並べ替えます。'
+description: 'タイムスタンプで時系列データを昇順にソートします。'
 sidebar_position: 146
 slug: /sql-reference/aggregate-functions/reference/timeSeriesGroupArray
 title: 'timeSeriesGroupArray'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # timeSeriesGroupArray
 
-タイムスタンプの昇順で時系列データをソートします。
+タイムスタンプ順に時系列データを昇順で並べ替えます。
 
 **構文**
 
@@ -19,12 +19,12 @@ timeSeriesGroupArray(timestamp, value)
 **引数**
 
 * `timestamp` - サンプルのタイムスタンプ
-* `value` - 対応する `timestamp` における時系列の値
+* `value` - `timestamp` に対応する時系列の値
 
 **戻り値**
 
-この関数は、`timestamp` の昇順でソートされたタプル (`timestamp`, `value`) の配列を返します。
-同じ `timestamp` に複数の値がある場合、この関数はそれらの値のうち最大のものを選択します。
+この関数は、`timestamp` を昇順にソートしたタプル (`timestamp`, `value`) の配列を返します。
+同じ `timestamp` に複数の値がある場合、関数はそれらの中で最大の値を選択します。
 
 **例**
 
@@ -35,7 +35,7 @@ WITH
 SELECT timeSeriesGroupArray(timestamp, value)
 FROM
 (
-    -- このサブクエリは、タイムスタンプと値の配列を `timestamp`、`value` の行に変換します
+    -- このサブクエリは、タイムスタンプと値の配列を `timestamp`、`value` の行形式に変換します
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -51,7 +51,7 @@ FROM
    └──────────────────────────────────────────────┘
 ```
 
-また、同じサイズの配列として複数のタイムスタンプと値のサンプルを渡すこともできます。配列引数を用いた同じクエリは次のとおりです。
+複数のタイムスタンプと値のサンプルを、同じ長さの配列として渡すこともできます。配列引数を用いた同じクエリは次のとおりです：
 
 ```sql
 WITH
@@ -61,5 +61,5 @@ SELECT timeSeriesGroupArray(timestamps, values);
 ```
 
 :::note
-この関数は実験的機能です。有効化するには、`allow_experimental_ts_to_grid_aggregate_function=true` を設定してください。
+この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
 :::

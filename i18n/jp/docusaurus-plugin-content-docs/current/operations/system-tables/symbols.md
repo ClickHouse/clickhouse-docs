@@ -1,19 +1,19 @@
 ---
-description: 'C++ のエキスパートおよび ClickHouse エンジニア向けの、`clickhouse` バイナリのイントロスペクション用情報を含むシステムテーブル。'
+description: 'C++ のエキスパートおよび ClickHouse エンジニア向けの、`clickhouse` バイナリのイントロスペクション用情報を含む system テーブル。'
 keywords: ['system table', 'symbols']
 slug: /operations/system-tables/symbols
 title: 'system.symbols'
 doc_type: 'reference'
 ---
 
-`clickhouse` バイナリのイントロスペクション用情報を含みます。アクセスには `introspection` 権限が必要です。
+`clickhouse` バイナリのイントロスペクション用の情報を含みます。アクセスには introspection 権限が必要です。
 このテーブルは C++ のエキスパートおよび ClickHouse エンジニアにのみ有用です。
 
 カラム:
 
-* `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされています。`demangle(symbol)` を適用することで可読な名前を取得できます。
-* `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内におけるシンボルの開始アドレス。
-* `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内におけるシンボルの終了アドレス。
+* `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされた形式です。可読な名前を取得するには `demangle(symbol)` を適用できます。
+* `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内でのシンボルの開始アドレス。
+* `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内でのシンボルの終了アドレス。
 * `name` ([String](../../sql-reference/data-types/string.md)) — `event` のエイリアス。
 
 **例**

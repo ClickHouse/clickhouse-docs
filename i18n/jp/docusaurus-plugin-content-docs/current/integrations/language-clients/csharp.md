@@ -3,8 +3,8 @@ sidebar_label: 'C#'
 sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
-description: 'ClickHouse への接続用公式 C# クライアント。'
-title: 'ClickHouse C# ドライバ'
+description: 'ClickHouse に接続するための公式 C# クライアントです。'
+title: 'ClickHouse C# ドライバー'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -17,52 +17,54 @@ integration:
 # ClickHouse C# クライアント
 
 ClickHouse に接続するための公式 C# クライアントです。
-クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-cs)で公開されています。
-当初は [Oleg V. Kozlyuk](https://github.com/DarkWanderer) によって開発されました。
+クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-cs) で公開されています。
+当初は [Oleg V. Kozlyuk](https://github.com/DarkWanderer) によって開発されたものです。
 
 
 
 ## 移行ガイド {#migration-guide}
 
-1. `.csproj`ファイルを新しいパッケージ名`ClickHouse.Driver`と[NuGetの最新バージョン](https://www.nuget.org/packages/ClickHouse.Driver)に更新します。
-2. コードベース内のすべての`ClickHouse.Client`参照を`ClickHouse.Driver`に更新します。
+1. `.csproj` ファイルを、新しいパッケージ名 `ClickHouse.Driver` と [NuGet の最新バージョン](https://www.nuget.org/packages/ClickHouse.Driver) を使用するように更新します。
+2. コードベース内のすべての `ClickHouse.Client` 参照を `ClickHouse.Driver` に更新します。
 
 ---
 
 
-## サポートされている.NETバージョン {#supported-net-versions}
 
-`ClickHouse.Driver`は以下の.NETバージョンをサポートしています：
+## サポートされている .NET バージョン {#supported-net-versions}
 
-- .NET Framework 4.6.2
-- .NET Framework 4.8
-- .NET Standard 2.1
-- .NET 6.0
-- .NET 8.0
-- .NET 9.0
-- .NET 10.0
+`ClickHouse.Driver` は以下の .NET バージョンをサポートしています：
+
+* .NET Framework 4.6.2
+* .NET Framework 4.8
+* .NET Standard 2.1
+* .NET 6.0
+* .NET 8.0
+* .NET 9.0
+* .NET 10.0
 
 ---
 
 
-## インストール {#installation}
 
-NuGetからパッケージをインストールします:
+## インストール
+
+NuGet からパッケージをインストールします。
 
 ```bash
 dotnet add package ClickHouse.Driver
 ```
 
-または、NuGet Package Managerを使用する場合:
+または、NuGet パッケージ マネージャーを使用します：
 
 ```bash
 Install-Package ClickHouse.Driver
 ```
 
----
+***
 
 
-## クイックスタート {#quick-start}
+## クイックスタート
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -74,7 +76,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 }
 ```
 
-**Dapper**を使用する場合:
+**Dapper** の使用：
 
 ```csharp
 using Dapper;
@@ -87,61 +89,61 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 }
 ```
 
----
+***
 
 
-## 使用方法 {#usage}
+## 使用方法
 
-### 接続文字列パラメータ {#connection-string}
+### 接続文字列パラメータ
 
-| パラメータ           | 説明                              | デフォルト値                                    |
-| ------------------- | ---------------------------------------- | ------------------------------------------ |
-| `Host`              | ClickHouseサーバーアドレス                | `localhost`                                |
-| `Port`              | ClickHouseサーバーポート                   | `8123`または`8443`(`Protocol`に依存) |
-| `Database`          | 初期データベース                         | `default`                                  |
-| `Username`          | 認証ユーザー名                  | `default`                                  |
-| `Password`          | 認証パスワード                  | _(空)_                                  |
-| `Protocol`          | 接続プロトコル(`http`または`https`)  | `http`                                     |
-| `Compression`       | Gzip圧縮を有効化                 | `true`                                     |
-| `UseSession`        | 永続的なサーバーセッションを有効化        | `false`                                    |
-| `SessionId`         | カスタムセッションID                        | ランダムGUID                                |
-| `Timeout`           | HTTPタイムアウト(秒)                   | `120`                                      |
-| `UseServerTimezone` | datetime列でサーバータイムゾーンを使用 | `true`                                     |
-| `UseCustomDecimals` | decimal型で`ClickHouseDecimal`を使用     | `false`                                    |
+| Parameter           | Description                    | Default                            |
+| ------------------- | ------------------------------ | ---------------------------------- |
+| `Host`              | ClickHouse サーバーアドレス            | `localhost`                        |
+| `Port`              | ClickHouse サーバーポート             | `8123` または `8443` (`Protocol` に依存) |
+| `Database`          | 初期データベース                       | `default`                          |
+| `Username`          | 認証ユーザー名                        | `default`                          |
+| `Password`          | 認証パスワード                        | *(空)*                              |
+| `Protocol`          | 接続プロトコル（`http` または `https`）    | `http`                             |
+| `Compression`       | Gzip 圧縮を有効化                    | `true`                             |
+| `UseSession`        | 永続的なサーバーセッションを有効化              | `false`                            |
+| `SessionId`         | カスタムセッション ID                   | ランダムな GUID                         |
+| `Timeout`           | HTTP タイムアウト（秒）                 | `120`                              |
+| `UseServerTimezone` | datetime カラムにサーバータイムゾーンを使用     | `true`                             |
+| `UseCustomDecimals` | 10 進数に `ClickHouseDecimal` を使用 | `false`                            |
 
 **例:** `Host=clickhouse;Port=8123;Username=default;Password=;Database=default`
 
-:::note セッション
+:::note Sessions
 
-`UseSession`フラグを有効にすると、サーバーセッションが永続化され、`SET`文と一時テーブルの使用が可能になります。セッションは非アクティブ状態が60秒続くとリセットされます(デフォルトタイムアウト)。セッションの有効期間は、ClickHouse文を介してセッション設定を行うことで延長できます。
+`UseSession` フラグはサーバーセッションの永続化を有効にし、`SET` ステートメントや一時テーブルの利用を可能にします。セッションは 60 秒間操作がないとリセットされます（デフォルトのタイムアウト）。セッションの有効期間は、ClickHouse ステートメントでセッション設定を行うことで延長できます。
 
-`ClickHouseConnection`クラスは通常、並列操作を許可します(複数のスレッドが同時にクエリを実行可能)。ただし、`UseSession`フラグを有効にすると、任意の時点で接続ごとに1つのアクティブなクエリに制限されます(サーバー側の制限)。
+`ClickHouseConnection` クラスは通常、並列実行（複数スレッドでクエリを同時実行）を許可します。ただし、`UseSession` フラグを有効にすると、任意の時点で 1 接続あたり 1 件のアクティブなクエリに制限されます（サーバー側の制約）。
 
 :::
 
----
+***
 
-### 接続のライフタイムとプーリング {#connection-lifetime}
+### 接続の有効期間とプーリング
 
-`ClickHouse.Driver`は内部で`System.Net.Http.HttpClient`を使用します。`HttpClient`はエンドポイントごとの接続プールを持ちます。その結果:
+`ClickHouse.Driver` は内部的に `System.Net.Http.HttpClient` を使用します。`HttpClient` にはエンドポイントごとの接続プールがあります。その結果:
 
-- `ClickHouseConnection`オブジェクトはTCP接続と1対1でマッピングされません - 複数のデータベースセッションは、サーバーごとに複数(デフォルトでは2つ)のTCP接続を通じて多重化されます。
-- `ClickHouseConnection`オブジェクトが破棄された後も接続は存続する可能性があります。
-- この動作は、カスタム`HttpClientHandler`を持つ専用の`HttpClient`を渡すことで調整できます。
+* `ClickHouseConnection` オブジェクトは TCP 接続と 1:1 には対応せず、複数のデータベースセッションがサーバーごとに複数（デフォルトでは 2 本）の TCP 接続上で多重化されます。
+* `ClickHouseConnection` オブジェクトを破棄した後も、接続が存続する場合があります。
+* この動作は、カスタム `HttpClientHandler` を持つ独自の `HttpClient` を渡すことで調整できます。
 
-DI環境向けには、HTTPクライアント設定を汎用化できる専用コンストラクタ`ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`が用意されています。
+DI 環境向けに、HTTP クライアント設定を共通化できるコンストラクタ `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")` が用意されています。
 
 **推奨事項:**
 
-- `ClickHouseConnection`はサーバーとの「セッション」を表します。サーバーバージョンを問い合わせることで機能検出を実行するため(オープン時に若干のオーバーヘッドがあります)、一般的にこのようなオブジェクトを複数回作成・破棄しても安全です。
-- 接続の推奨ライフタイムは、複数のクエリにまたがる大規模な「トランザクション」ごとに1つの接続オブジェクトです。接続起動時に若干のオーバーヘッドがあるため、クエリごとに接続オブジェクトを作成することは推奨されません。
-- アプリケーションが大量のトランザクションを処理し、`ClickHouseConnection`オブジェクトを頻繁に作成・破棄する必要がある場合は、`IHttpClientFactory`または`HttpClient`の静的インスタンスを使用して接続を管理することを推奨します。
+* `ClickHouseConnection` はサーバーとの「セッション」を表します。サーバーバージョンを問い合わせることで機能検出を行うため（オープン時にわずかなオーバーヘッドがあります）、一般的にはこのオブジェクトを何度も作成・破棄しても問題ありません。
+* 推奨される接続の有効期間は、複数クエリにまたがる大きな「トランザクション」ごとに 1 つの接続オブジェクトとすることです。接続開始時にはわずかなオーバーヘッドがあるため、クエリごとに接続オブジェクトを作成することは推奨されません。
+* アプリケーションが大量のトランザクションを処理し、`ClickHouseConnection` オブジェクトの頻繁な作成と破棄が必要な場合は、接続管理のために `IHttpClientFactory` または静的な `HttpClient` インスタンスを使用することを推奨します。
 
----
+***
 
-### テーブルの作成 {#creating-a-table}
+### テーブルの作成
 
-標準SQL構文を使用してテーブルを作成します:
+標準的な SQL 構文を使用してテーブルを作成します:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -158,11 +160,11 @@ using (var connection = new ClickHouseConnection(connectionString))
 }
 ```
 
----
+***
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-パラメータ化クエリを使用してデータを挿入します:
+パラメータ付きクエリを使ってデータを挿入します。
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -181,15 +183,15 @@ using (var connection = new ClickHouseConnection(connectionString))
 }
 ```
 
----
+***
 
-### 一括挿入 {#bulk-insert}
+### バルクインサート
 
-`ClickHouseBulkCopy`を使用するには以下が必要です:
+`ClickHouseBulkCopy` を使用するには、次のものが必要です:
 
-- ターゲット接続(`ClickHouseConnection`インスタンス)
-- ターゲットテーブル名(`DestinationTableName`プロパティ)
-- データソース(`IDataReader`または`IEnumerable<object[]>`)
+* 対象接続（`ClickHouseConnection` インスタンス）
+* 対象テーブル名（`DestinationTableName` プロパティ）
+* データソース（`IDataReader` または `IEnumerable<object[]>`）
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -197,7 +199,6 @@ using ClickHouse.Driver.Copy;
 
 using var connection = new ClickHouseConnection(connectionString);
 connection.Open();
-
 ```
 
 
@@ -221,16 +222,16 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 :::note
 * 最適なパフォーマンスを実現するため、ClickHouseBulkCopyはタスク並列ライブラリ(TPL)を使用してデータのバッチを処理し、最大4つの並列挿入タスクを実行します(この値は調整可能です)。
 * ソースデータの列数がターゲットテーブルより少ない場合、`ColumnNames`プロパティを使用して列名をオプションで指定できます。
-* 設定可能なパラメータ: `Columns`、`BatchSize`、`MaxDegreeOfParallelism`
-* コピーを実行する前に、ターゲットテーブルの構造情報を取得するために`SELECT * FROM <table> LIMIT 0`クエリが実行されます。提供されるオブジェクトの型は、ターゲットテーブルの型と適切に一致する必要があります。
-* セッションは並列挿入と互換性がありません。`ClickHouseBulkCopy`に渡される接続はセッションを無効にする必要があるか、または`MaxDegreeOfParallelism`を`1`に設定する必要があります。
+* 設定可能なパラメータ: `Columns`、`BatchSize`、`MaxDegreeOfParallelism`。
+* コピーの前に、`SELECT * FROM <table> LIMIT 0`クエリが実行され、ターゲットテーブルの構造に関する情報が取得されます。提供されるオブジェクトの型は、ターゲットテーブルと適切に一致する必要があります。
+* セッションは並列挿入と互換性がありません。`ClickHouseBulkCopy`に渡される接続はセッションを無効にする必要があるか、`MaxDegreeOfParallelism`を`1`に設定する必要があります。
 :::
 
 ---
 
 ### SELECTクエリの実行 {#performing-select-queries}
 
-SELECTクエリを実行して結果を処理します:
+SELECTクエリを実行し、結果を処理します:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -344,99 +345,96 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ## サポートされているデータ型 {#supported-data-types}
 
-`ClickHouse.Driver`は、以下のClickHouseデータ型と対応する.NET型のマッピングをサポートしています:
+`ClickHouse.Driver` は、次の ClickHouse データ型を対応する .NET 型にマッピングしてサポートします:
 
 ### ブール型 {#boolean-types}
 
-- `Bool` → `bool`
+* `Bool` → `bool`
 
 ### 数値型 {#numeric-types}
 
 **符号付き整数:**
-
-- `Int8` → `sbyte`
-- `Int16` → `short`
-- `Int32` → `int`
-- `Int64` → `long`
-- `Int128` → `BigInteger`
-- `Int256` → `BigInteger`
+* `Int8` → `sbyte`
+* `Int16` → `short`
+* `Int32` → `int`
+* `Int64` → `long`
+* `Int128` → `BigInteger`
+* `Int256` → `BigInteger`
 
 **符号なし整数:**
+* `UInt8` → `byte`
+* `UInt16` → `ushort`
+* `UInt32` → `uint`
+* `UInt64` → `ulong`
+* `UInt128` → `BigInteger`
+* `UInt256` → `BigInteger`
 
-- `UInt8` → `byte`
-- `UInt16` → `ushort`
-- `UInt32` → `uint`
-- `UInt64` → `ulong`
-- `UInt128` → `BigInteger`
-- `UInt256` → `BigInteger`
+**浮動小数点:**
+* `Float32` → `float`
+* `Float64` → `double`
 
-**浮動小数点数:**
-
-- `Float32` → `float`
-- `Float64` → `double`
-
-**10進数:**
-
-- `Decimal` → `decimal`
-- `Decimal32` → `decimal`
-- `Decimal64` → `decimal`
-- `Decimal128` → `decimal`
-- `Decimal256` → `BigDecimal`
+**Decimal:**
+* `Decimal` → `decimal`
+* `Decimal32` → `decimal`
+* `Decimal64` → `decimal`
+* `Decimal128` → `decimal`
+* `Decimal256` → `BigDecimal`
 
 ### 文字列型 {#string-types}
 
-- `String` → `string`
-- `FixedString` → `string`
+* `String` → `string`
+* `FixedString` → `string`
 
-### 日付時刻型 {#date-time-types}
+### 日付・時刻型 {#date-time-types}
 
-- `Date` → `DateTime`
-- `Date32` → `DateTime`
-- `DateTime` → `DateTime`
-- `DateTime32` → `DateTime`
-- `DateTime64` → `DateTime`
+* `Date` → `DateTime`
+* `Date32` → `DateTime`
+* `DateTime` → `DateTime`
+* `DateTime32` → `DateTime`
+* `DateTime64` → `DateTime`
 
 ### ネットワーク型 {#network-types}
 
-- `IPv4` → `IPAddress`
-- `IPv6` → `IPAddress`
+* `IPv4` → `IPAddress`
+* `IPv6` → `IPAddress`
 
 ### 地理型 {#geographic-types}
 
-- `Point` → `Tuple`
-- `Ring` → `Pointの配列`
-- `Polygon` → `Ringの配列`
+* `Point` → `Tuple`
+* `Ring` → `Point の配列`
+* `Polygon` → `Ring の配列`
 
 ### 複合型 {#complex-types}
 
-- `Array(T)` → `任意の型の配列`
-- `Tuple(T1, T2, ...)` → `任意の型のタプル`
-- `Nullable(T)` → `任意の型のNull許容版`
-- `Map(K, V)` → `Dictionary<K, V>`
+* `Array(T)` → `任意の型の配列`
+* `Tuple(T1, T2, ...)` → `任意の型のタプル`
+* `Nullable(T)` → `任意の型の Nullable 版`
+* `Map(K, V)` → `Dictionary<K, V>`
 
 ---
 
-### DateTimeの処理 {#datetime-handling}
+### DateTime の扱い {#datetime-handling}
 
-`ClickHouse.Driver`は、タイムゾーンと`DateTime.Kind`プロパティを正しく処理します。具体的には:
+`ClickHouse.Driver` は、タイムゾーンと `DateTime.Kind` プロパティを正しく扱うように動作します。具体的には次のとおりです:
 
-- `DateTime`値はUTCとして返されます。ユーザーは自分で変換するか、`DateTime`インスタンスの`ToLocalTime()`メソッドを使用できます。
-- 挿入時、`DateTime`値は以下のように処理されます:
-  - `UTC` `DateTime`は、ClickHouseが内部的にUTCで保存するため、そのまま挿入されます。
-  - `Local` `DateTime`は、ユーザーのローカルタイムゾーン設定に従ってUTCに変換されます。
-  - `Unspecified` `DateTime`は、対象カラムのタイムゾーンにあるものとみなされ、そのタイムゾーンに従ってUTCに変換されます。
-- タイムゾーンが指定されていないカラムの場合、デフォルトでクライアントのタイムゾーンが使用されます(レガシー動作)。代わりにサーバーのタイムゾーンを使用するには、接続文字列の`UseServerTimezone`フラグを使用できます。
+* `DateTime` の値は UTC として返されます。ユーザーは自分で変換するか、`DateTime` インスタンスに対して `ToLocalTime()` メソッドを使用できます。
+* 挿入時には、`DateTime` の値は次のように処理されます:
+  * `UTC` の `DateTime` はそのまま挿入されます。ClickHouse は内部的に UTC で保持するためです。
+  * `Local` の `DateTime` は、ユーザーのローカルタイムゾーン設定に基づいて UTC に変換されます。
+  * `Unspecified` の `DateTime` は対象列のタイムゾーンに属するとみなされ、そのタイムゾーンに基づいて UTC に変換されます。
+* タイムゾーンが指定されていない列では、デフォルトでクライアントのタイムゾーンが使用されます (レガシーな動作)。代わりにサーバーのタイムゾーンを使用するには、接続文字列の `UseServerTimezone` フラグを指定できます。
 
 ---
 
 
-## ロギングと診断 {#logging-and-diagnostics}
 
-ClickHouse .NETクライアントは`Microsoft.Extensions.Logging`抽象化と統合されており、軽量でオプトイン方式のロギングを提供します。有効化すると、ドライバーは接続ライフサイクルイベント、コマンド実行、トランスポート操作、バルクコピーアップロードに関する構造化メッセージを出力します。ロギングは完全にオプションであり、ロガーを設定しないアプリケーションでも追加のオーバーヘッドなしに動作します。
+## ロギングと診断
 
-### クイックスタート {#logging-quick-start}
+ClickHouse .NET クライアントは、軽量でオプトイン型のロギング機能を提供するために、`Microsoft.Extensions.Logging` の抽象化レイヤーと統合されています。有効化すると、ドライバーは接続ライフサイクルイベント、コマンド実行、トランスポート処理、および一括コピーアップロードに関する構造化メッセージを出力します。ロギングは完全に任意であり、ロガーを構成していないアプリケーションも追加のオーバーヘッドなしでそのまま動作します。
 
-#### ClickHouseConnectionの使用 {#logging-clickhouseconnection}
+### クイックスタート
+
+#### ClickHouseConnection の使用
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -458,9 +456,9 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### appsettings.jsonの使用 {#logging-appsettings-config}
+#### appsettings.json の使用
 
-標準的な.NET構成を使用してロギングレベルを設定できます:
+標準の .NET 構成機能を使用してログ レベルを設定できます。
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -488,9 +486,9 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### インメモリ構成の使用 {#logging-inmemory-config}
+#### インメモリ設定を使用する
 
-コード内でカテゴリ別にロギングの詳細度を設定することもできます:
+コード内でカテゴリごとにログの出力レベルを設定することもできます。
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -524,59 +522,58 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-### カテゴリと出力元 {#logging-categories}
+### カテゴリと発行元
 
-ドライバーは専用のカテゴリを使用しているため、コンポーネントごとにログレベルを細かく調整できます:
+このドライバーは、コンポーネントごとにログレベルを細かく調整できるよう、専用のカテゴリを使用します。
 
-| カテゴリ                       | 出力元                 | ハイライト                                                                                           |
-| ------------------------------ | ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| `ClickHouse.Driver.Connection` | `ClickHouseConnection` | 接続ライフサイクル、HTTPクライアントファクトリの選択、接続の開閉、セッション管理。 |
-| `ClickHouse.Driver.Command`    | `ClickHouseCommand`    | クエリ実行の開始/完了、タイミング、クエリID、サーバー統計、エラー詳細。           |
-| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | 低レベルHTTPストリーミングリクエスト、圧縮フラグ、レスポンスステータスコード、トランスポート障害。 |
-| `ClickHouse.Driver.BulkCopy`   | `ClickHouseBulkCopy`   | メタデータの読み込み、バッチ操作、行数、アップロード完了。                              |
+| Category                       | Source                 | Highlights                                         |
+| ------------------------------ | ---------------------- | -------------------------------------------------- |
+| `ClickHouse.Driver.Connection` | `ClickHouseConnection` | 接続ライフサイクル、HTTP クライアント ファクトリの選択、接続の確立/切断、セッション管理。   |
+| `ClickHouse.Driver.Command`    | `ClickHouseCommand`    | クエリ実行の開始/完了、タイミング、クエリ ID、サーバー統計情報、エラー詳細。           |
+| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | 低レベルの HTTP ストリーミングリクエスト、圧縮フラグ、レスポンスステータスコード、転送エラー。 |
+| `ClickHouse.Driver.BulkCopy`   | `ClickHouseBulkCopy`   | メタデータの読み込み、バッチ処理、行数、アップロード完了。                      |
 
-#### 例: 接続問題の診断 {#logging-config-example}
+#### 例: 接続の問題の診断
 
 ```json
 {
-  "Logging": {
-    "LogLevel": {
-      "ClickHouse.Driver.Connection": "Trace",
-      "ClickHouse.Driver.Transport": "Trace"
+    "Logging": {
+        "LogLevel": {
+            "ClickHouse.Driver.Connection": "Trace",
+            "ClickHouse.Driver.Transport": "Trace"
+        }
     }
-  }
 }
 ```
 
-これにより以下がログ出力されます:
+これにより次の内容がログに記録されます：
 
-- HTTPクライアントファクトリの選択(デフォルトプール vs 単一接続)
-- HTTPハンドラー構成(SocketsHttpHandlerまたはHttpClientHandler)
-- 接続プール設定(MaxConnectionsPerServer、PooledConnectionLifetimeなど)
-- タイムアウト設定(ConnectTimeout、Expect100ContinueTimeoutなど)
-- SSL/TLS構成
-- 接続の開閉イベント
-- セッションIDの追跡
+* HTTP クライアントファクトリの選択（既定のプールか単一接続か）
+* HTTP ハンドラーの構成（SocketsHttpHandler または HttpClientHandler）
+* 接続プールの設定（MaxConnectionsPerServer、PooledConnectionLifetime など）
+* タイムアウト設定（ConnectTimeout、Expect100ContinueTimeout など）
+* SSL/TLS の構成
+* 接続のオープン／クローズ イベント
+* セッション ID の追跡
 
-### デバッグモード: ネットワークトレースと診断 {#logging-debugmode}
+### デバッグモード：ネットワークトレースと診断
 
-ネットワーク問題の診断を支援するため、ドライバーライブラリには.NETネットワーク内部の低レベルトレースを有効化するヘルパーが含まれています。これを有効化するには、レベルをTraceに設定したLoggerFactoryを渡し、EnableDebugModeをtrueに設定する必要があります(または`ClickHouse.Driver.Diagnostic.TraceHelper`クラスを介して手動で有効化します)。警告: これは極めて詳細なログを生成し、パフォーマンスに影響を与えます。本番環境でデバッグモードを有効化することは推奨されません。
+ネットワーク関連の問題の診断を支援するため、ドライバーライブラリには .NET のネットワーク内部処理を低レベルでトレースできるヘルパーが含まれています。これを有効にするには、ログレベルを Trace に設定した LoggerFactory を渡し、EnableDebugMode を true に設定する必要があります（または `ClickHouse.Driver.Diagnostic.TraceHelper` クラスを通じて手動で有効化します）。注意：これは非常に詳細なログを生成し、パフォーマンスに影響します。本番環境でデバッグモードを有効にすることは推奨されません。
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // ネットワークイベントを確認するにはTraceレベルが必要
+        .SetMinimumLevel(LogLevel.Trace); // ネットワークイベントを確認するには Trace レベルにする必要があります
 });
-
 ```
 
 
 var settings = new ClickHouseClientSettings()
 {
 LoggerFactory = loggerFactory,
-EnableDebugMode = true, // 低レベルネットワークトレースを有効化
+EnableDebugMode = true, // 低レベルのネットワークトレースを有効にする
 };
 
 ````

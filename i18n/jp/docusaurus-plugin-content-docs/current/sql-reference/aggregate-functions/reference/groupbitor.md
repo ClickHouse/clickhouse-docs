@@ -1,5 +1,5 @@
 ---
-description: '一連の数値に対してビット単位の OR 演算を適用します。'
+description: '数値の系列に対してビット単位の `OR` 演算を適用します。'
 sidebar_position: 152
 slug: /sql-reference/aggregate-functions/reference/groupbitor
 title: 'groupBitOr'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitOr
 
-一連の数値にビット単位の `OR` 演算を適用します。
+数値の系列にビット単位の `OR` 演算を適用します。
 
 ```sql
 groupBitOr(expr)
@@ -16,7 +16,7 @@ groupBitOr(expr)
 
 **引数**
 
-`expr` – 結果として `UInt*` または `Int*` 型となる式。
+`expr` – 結果が `UInt*` または `Int*` 型となる式。
 
 **戻り値**
 
@@ -42,7 +42,7 @@ SELECT groupBitOr(num) FROM t
 
 ここで、`num` はテストデータが入っている列です。
 
-結果:
+結果：
 
 ```text
 2進数      10進数

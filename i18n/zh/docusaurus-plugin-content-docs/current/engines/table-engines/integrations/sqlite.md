@@ -1,5 +1,5 @@
 ---
-description: '该引擎允许从 SQLite 导入数据并向 SQLite 导出数据，并支持在 ClickHouse 中直接查询 SQLite 表。'
+description: '该引擎允许向 SQLite 导入数据、从 SQLite 导出数据，并支持在 ClickHouse 中直接查询 SQLite 表。'
 sidebar_label: 'SQLite'
 sidebar_position: 185
 slug: /engines/table-engines/integrations/sqlite
@@ -14,11 +14,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-该引擎可从/向 SQLite 导入和导出数据，并支持在 ClickHouse 中直接查询 SQLite 表。
+该引擎用于向 SQLite 导入数据或从 SQLite 导出数据，并支持在 ClickHouse 中直接查询 SQLite 表。
 
 
 
-## 创建表 {#creating-a-table}
+## 创建数据表
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -30,13 +30,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 **引擎参数**
 
-- `db_path` — SQLite 数据库文件的路径。
-- `table` — SQLite 数据库中表的名称。
+* `db_path` — SQLite 数据库文件的路径。
+* `table` — SQLite 数据库中表的名称。
 
 
-## 使用示例 {#usage-example}
+## 使用示例
 
-显示创建 SQLite 表的查询:
+示例查询，用于创建 SQLite 表：
 
 ```sql
 SHOW CREATE TABLE sqlite_db.table2;
@@ -51,7 +51,7 @@ CREATE TABLE SQLite.table2
 ENGINE = SQLite('sqlite.db','table2');
 ```
 
-返回表中的数据:
+返回表中的数据：
 
 ```sql
 SELECT * FROM sqlite_db.table2 ORDER BY col1;
@@ -67,5 +67,5 @@ SELECT * FROM sqlite_db.table2 ORDER BY col1;
 
 **另请参阅**
 
-- [SQLite](../../../engines/database-engines/sqlite.md) 引擎
-- [sqlite](../../../sql-reference/table-functions/sqlite.md) 表函数
+* [SQLite](../../../engines/database-engines/sqlite.md) 引擎
+* [sqlite](../../../sql-reference/table-functions/sqlite.md) 表函数

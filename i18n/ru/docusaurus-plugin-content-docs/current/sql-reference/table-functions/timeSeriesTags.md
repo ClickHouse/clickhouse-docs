@@ -1,5 +1,6 @@
 ---
-description: 'табличная функция timeSeriesTags возвращает таблицу тегов, используемую таблицей `db_name.time_series_table` с движком TimeSeries.'
+description: 'табличная функция timeSeriesTags возвращает таблицу тегов, используемую таблицей `db_name.time_series_table`,
+  у которой в качестве движка используется TimeSeries.'
 sidebar_label: 'timeSeriesTags'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesTags
@@ -10,7 +11,7 @@ doc_type: 'reference'
 # Табличная функция timeSeriesTags
 
 `timeSeriesTags(db_name.time_series_table)` — возвращает таблицу [tags](../../engines/table-engines/integrations/time-series.md#tags-table),
-используемую таблицей `db_name.time_series_table`, которая в качестве движка использует [TimeSeries](../../engines/table-engines/integrations/time-series.md):
+используемую таблицей `db_name.time_series_table`, которая использует движок [TimeSeries](../../engines/table-engines/integrations/time-series.md).
 
 ```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries TAGS tags_table

@@ -1,8 +1,8 @@
-## Проверка прав администратора {#test-admin-privileges}
+## Проверьте права администратора
 
-Выйдите из системы под пользователем `default` и войдите обратно под пользователем `clickhouse_admin`.
+Выйдите из системы пользователем `default` и войдите снова под пользователем `clickhouse_admin`.
 
-Все эти команды должны выполниться успешно:
+Все перечисленные ниже действия должны выполняться успешно:
 
 ```sql
 SHOW GRANTS FOR clickhouse_admin;
@@ -35,13 +35,13 @@ DROP DATABASE db1;
 
 ## Пользователи без прав администратора {#non-admin-users}
 
-Пользователи должны иметь только необходимые привилегии, и не все должны быть администраторами. В остальной части этого документа приведены примеры сценариев и требуемых ролей.
+Пользователи должны обладать только необходимыми привилегиями, и не все должны быть администраторами. В остальной части документа приведены примеры сценариев и требуемые роли.
 
 ### Подготовка {#preparation}
 
-Создайте эти таблицы и пользователей для использования в примерах.
+Создайте таблицы и пользователей для использования в примерах.
 
-#### Создание примера базы данных, таблицы и строк {#creating-a-sample-database-table-and-rows}
+#### Создание тестовой базы данных, таблицы и строк {#creating-a-sample-database-table-and-rows}
 
 <VerticalStepper headerLevel="h5">
 
@@ -63,7 +63,7 @@ ENGINE MergeTree
 ORDER BY id;
 ```
 
-##### Заполните таблицу примерами строк {#populate}
+##### Заполните таблицу тестовыми строками {#populate}
 
 ```sql
 INSERT INTO db1.table1
@@ -93,17 +93,17 @@ Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 └────┴─────────┴─────────┘
 ```
 
-##### Создайте `column_user` {#create-a-user-with-restricted-access-to-columns}
+##### Создайте пользователя `column_user` {#create-a-user-with-restricted-access-to-columns}
 
-Создайте обычного пользователя, который будет использоваться для демонстрации ограничения доступа к определенным столбцам:
+Создайте обычного пользователя для демонстрации ограничения доступа к определённым столбцам:
 
 ```sql
 CREATE USER column_user IDENTIFIED BY 'password';
 ```
 
-##### Создайте `row_user` {#create-a-user-with-restricted-access-to-rows-with-certain-values}
+##### Создайте пользователя `row_user` {#create-a-user-with-restricted-access-to-rows-with-certain-values}
 
-Создайте обычного пользователя, который будет использоваться для демонстрации ограничения доступа к строкам с определенными значениями:
+Создайте обычного пользователя для демонстрации ограничения доступа к строкам с определёнными значениями:
 
 ```sql
 CREATE USER row_user IDENTIFIED BY 'password';
@@ -119,11 +119,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
 - привилегии будут предоставлены ролям
 - пользователи будут назначены каждой роли
 
-Роли используются для определения групп пользователей с определенными привилегиями вместо управления каждым пользователем отдельно.
+Роли используются для определения групп пользователей с определёнными привилегиями вместо управления каждым пользователем по отдельности.
 
 <VerticalStepper headerLevel="h5">
 
-##### Создайте роль для ограничения пользователей этой роли только просмотром `column1` в базе данных `db1` и таблице `table1`: {#create-column-role}
+##### Создайте роль для ограничения пользователей этой роли просмотром только `column1` в базе данных `db1` и таблице `table1`: {#create-column-role}
 
     ```sql
     CREATE ROLE column1_users;
@@ -141,7 +141,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
     GRANT column1_users TO column_user;
     ```
 
-##### Создайте роль для ограничения пользователей этой роли только просмотром выбранных строк, в данном случае только строк, содержащих `A` в `column1` {#create-row-role}
+##### Создайте роль для ограничения пользователей этой роли просмотром только выбранных строк, в данном случае только строк, содержащих `A` в `column1` {#create-row-role}
 
     ```sql
     CREATE ROLE A_rows_users;
@@ -153,7 +153,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
     GRANT A_rows_users TO row_user;
     ```
 
-##### Создайте политику для разрешения просмотра только там, где `column1` имеет значение `A` {#create-row-policy}
+##### Создайте политику для разрешения просмотра только строк, где `column1` имеет значение `A` {#create-row-policy}
 
     ```sql
     CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
@@ -174,7 +174,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 
     :::note
-    При присоединении политики к таблице система применит её, и только те пользователи и роли, которые в ней определены, смогут выполнять операции с таблицей — всем остальным будет отказано в любых операциях. Чтобы ограничительная политика строк не применялась к другим пользователям, необходимо определить дополнительную политику, которая предоставит другим пользователям и ролям стандартный или иной тип доступа.
+    При привязке политики к таблице система применит её, и только указанные в ней пользователи и роли смогут выполнять операции с таблицей — всем остальным будет запрещён любой доступ. Чтобы ограничительная политика строк не распространялась на других пользователей, необходимо определить дополнительную политику, предоставляющую им стандартный или иной тип доступа.
     :::
 
 </VerticalStepper>
@@ -186,78 +186,78 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 <VerticalStepper headerLevel="h5">
 
-##### Войдите в клиент ClickHouse под пользователем `clickhouse_admin` {#login-admin-user}
+##### Войдите в клиент ClickHouse, используя пользователя `clickhouse_admin` {#login-admin-user}
 
-```bash
-clickhouse-client --user clickhouse_admin --password password
-```
+   ```bash
+   clickhouse-client --user clickhouse_admin --password password
+   ```
 
-##### Проверьте доступ к базе данных, таблице и всем строкам под пользователем-администратором {#verify-admin-access}
+##### Проверьте доступ к базе данных, таблице и всем строкам от имени пользователя-администратора. {#verify-admin-access}
 
-```sql
-SELECT *
-FROM db1.table1
-```
+   ```sql
+   SELECT *
+   FROM db1.table1
+   ```
 
-```response
-Query id: f5e906ea-10c6-45b0-b649-36334902d31d
+   ```response
+   Query id: f5e906ea-10c6-45b0-b649-36334902d31d
 
-┌─id─┬─column1─┬─column2─┐
-│  1 │ A       │ abc     │
-│  2 │ A       │ def     │
-│  3 │ B       │ abc     │
-│  4 │ B       │ def     │
-└────┴─────────┴─────────┘
-```
+   ┌─id─┬─column1─┬─column2─┐
+   │  1 │ A       │ abc     │
+   │  2 │ A       │ def     │
+   │  3 │ B       │ abc     │
+   │  4 │ B       │ def     │
+   └────┴─────────┴─────────┘
+   ```
 
-##### Войдите в клиент ClickHouse под пользователем `column_user` {#login-column-user}
+##### Войдите в клиент ClickHouse, используя пользователя `column_user` {#login-column-user}
 
-```bash
-clickhouse-client --user column_user --password password
-```
+   ```bash
+   clickhouse-client --user column_user --password password
+   ```
 
-##### Протестируйте `SELECT` со всеми столбцами {#test-select-all-columns}
+##### Проверьте выполнение запроса `SELECT` с использованием всех столбцов {#test-select-all-columns}
 
-```sql
-SELECT *
-FROM db1.table1
-```
+   ```sql
+   SELECT *
+   FROM db1.table1
+   ```
 
-```response
-Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
+   ```response
+   Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
 
-0 rows in set. Elapsed: 0.006 sec.
+   0 rows in set. Elapsed: 0.006 sec.
 
-Received exception from server (version 22.3.2):
-Code: 497. DB::Exception: Received from localhost:9000.
-DB::Exception: column_user: Not enough privileges.
-To execute this query it's necessary to have grant
-SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
-```
+   Received exception from server (version 22.3.2):
+   Code: 497. DB::Exception: Received from localhost:9000. 
+   DB::Exception: column_user: Not enough privileges. 
+   To execute this query it's necessary to have grant 
+   SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
+   ```
 
-:::note
-Доступ запрещен, так как были указаны все столбцы, а пользователь имеет доступ только к `id` и `column1`
-:::
+   :::note
+   Доступ запрещён, так как были указаны все столбцы, а у пользователя есть доступ только к `id` и `column1`.
+   :::
 
-##### Проверьте запрос `SELECT` только с указанными и разрешенными столбцами {#verify-allowed-columns}
+##### Проверьте запрос `SELECT` только с явно указанными разрешёнными столбцами: {#verify-allowed-columns}
 
-```sql
-SELECT
-    id,
-    column1
-FROM db1.table1
-```
+   ```sql
+   SELECT
+       id,
+       column1
+   FROM db1.table1
+   ```
 
-```response
-Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
+   ```response
+   Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 
-┌─id─┬─column1─┐
-│  1 │ A       │
-│  2 │ A       │
-│  3 │ B       │
-│  4 │ B       │
-└────┴─────────┘
-```
+   ┌─id─┬─column1─┐
+   │  1 │ A       │
+   │  2 │ A       │
+   │  3 │ B       │
+   │  4 │ B       │
+   └────┴─────────┘
+   ```
 
 </VerticalStepper>
 
@@ -265,112 +265,113 @@ Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 
 <VerticalStepper headerLevel="h5">
 
-##### Войдите в клиент ClickHouse под пользователем `row_user` {#login-row-user}
+##### Войдите в клиент ClickHouse, используя пользователя `row_user` {#login-row-user}
 
-```bash
-clickhouse-client --user row_user --password password
-```
+   ```bash
+   clickhouse-client --user row_user --password password
+   ```
 
 ##### Просмотрите доступные строки {#view-available-rows}
 
-```sql
-SELECT *
-FROM db1.table1
-```
+   ```sql
+   SELECT *
+   FROM db1.table1
+   ```
 
-```response
-Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
+   ```response
+   Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
 
-┌─id─┬─column1─┬─column2─┐
-│  1 │ A       │ abc     │
-│  2 │ A       │ def     │
-└────┴─────────┴─────────┘
-```
+   ┌─id─┬─column1─┬─column2─┐
+   │  1 │ A       │ abc     │
+   │  2 │ A       │ def     │
+   └────┴─────────┴─────────┘
+   ```
 
-:::note
-Убедитесь, что возвращаются только две указанные выше строки, строки со значением `B` в `column1` должны быть исключены.
-:::
+   :::note
+   Убедитесь, что возвращаются только две строки, показанные выше; строки со значением `B` в `column1` должны быть исключены.
+   :::
 
 </VerticalStepper>
+
 
 
 ## Изменение пользователей и ролей {#modifying-users-and-roles}
 
-Пользователям можно назначить несколько ролей для получения необходимой комбинации привилегий. При использовании нескольких ролей система объединяет их для определения привилегий, в результате чего разрешения ролей суммируются.
+Пользователю можно назначить несколько ролей для получения нужной комбинации привилегий. При использовании нескольких ролей система объединяет их при определении привилегий, в результате права, предоставляемые ролями, будут суммироваться.
 
-Например, если `role1` разрешает только выборку из `column1`, а `role2` разрешает выборку из `column1` и `column2`, то пользователь получит доступ к обоим столбцам.
+Например, если одна роль `role1` разрешает выполнять `SELECT` только по `column1`, а `role2` разрешает `SELECT` по `column1` и `column2`, пользователь будет иметь доступ к обоим столбцам.
 
 <VerticalStepper headerLevel="h5">
 
-##### Используя учетную запись администратора, создайте нового пользователя с ограничениями по строкам и столбцам с ролями по умолчанию {#create-restricted-user}
+##### Используя учетную запись администратора, создайте нового пользователя с ограничением и по строкам, и по столбцам, с ролями по умолчанию {#create-restricted-user}
 
-```sql
-CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
-```
+   ```sql
+   CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
+   ```
 
-##### Удалите предыдущие привилегии для роли `A_rows_users` {#remove-prior-privileges}
+##### Удалите ранее выданные привилегии для роли `A_rows_users` {#remove-prior-privileges}
 
-```sql
-REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
-```
+   ```sql
+   REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
+   ```
 
 ##### Разрешите роли `A_row_users` выполнять выборку только из `column1` {#allow-column1-select}
 
-```sql
-GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
-```
+   ```sql
+   GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
+   ```
 
-##### Войдите в клиент ClickHouse, используя `row_and_column_user` {#login-restricted-user}
+##### Войдите в клиент ClickHouse, используя пользователя `row_and_column_user` {#login-restricted-user}
 
-```bash
-clickhouse-client --user row_and_column_user --password password;
-```
+   ```bash
+   clickhouse-client --user row_and_column_user --password password;
+   ```
 
-##### Проверка со всеми столбцами: {#test-all-columns-restricted}
+##### Проверьте выборку всех столбцов: {#test-all-columns-restricted}
 
-```sql
-SELECT *
-FROM db1.table1
-```
+   ```sql
+   SELECT *
+   FROM db1.table1
+   ```
 
-```response
-Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
+   ```response
+   Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
 
-0 rows in set. Elapsed: 0.005 sec.
+   0 rows in set. Elapsed: 0.005 sec.
 
-Received exception from server (version 22.3.2):
-Code: 497. DB::Exception: Received from localhost:9000.
-DB::Exception: row_and_column_user: Not enough privileges.
-To execute this query it's necessary to have grant
-SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
-```
+   Received exception from server (version 22.3.2):
+   Code: 497. DB::Exception: Received from localhost:9000. 
+   DB::Exception: row_and_column_user: Not enough privileges. 
+   To execute this query it's necessary to have grant 
+   SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
+   ```
 
-##### Проверка с ограниченным набором разрешенных столбцов: {#test-limited-columns}
+##### Проверьте с ограниченным набором разрешенных столбцов: {#test-limited-columns}
 
-```sql
-SELECT
-    id,
-    column1
-FROM db1.table1
-```
+   ```sql
+   SELECT
+       id,
+       column1
+   FROM db1.table1
+   ```
 
-```response
-Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
+   ```response
+   Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
 
-┌─id─┬─column1─┐
-│  1 │ A       │
-│  2 │ A       │
-└────┴─────────┘
-```
-
+   ┌─id─┬─column1─┐
+   │  1 │ A       │
+   │  2 │ A       │
+   └────┴─────────┘
+   ```
 </VerticalStepper>
 
 
-## Устранение неполадок {#troubleshooting}
 
-Иногда привилегии пересекаются или комбинируются, что приводит к неожиданным результатам. Следующие команды можно использовать для диагностики проблемы с помощью учетной записи администратора
+## Устранение неполадок
 
-### Вывод списка привилегий и ролей для пользователя {#listing-the-grants-and-roles-for-a-user}
+Иногда привилегии пересекаются или комбинируются, что приводит к неожиданным результатам. Следующие команды можно использовать для уточнения причины проблемы при работе под учетной записью администратора.
+
+### Просмотр назначенных пользователю прав и ролей
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -384,7 +385,7 @@ Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 └──────────────────────────────────────────────────────────┘
 ```
 
-### Вывод списка ролей в ClickHouse {#list-roles-in-clickhouse}
+### Просмотреть роли в ClickHouse
 
 ```sql
 SHOW ROLES
@@ -399,14 +400,14 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### Отображение политик {#display-the-policies}
+### Просмотр политик
 
 ```sql
 SHOW ROW POLICIES
 ```
 
 ```response
-Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
+Идентификатор запроса: f2c636e9-f955-4d79-8e80-af40ea227ebc
 
 ┌─name───────────────────────────────────┐
 │ A_row_filter ON db1.table1             │
@@ -414,7 +415,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### Просмотр определения политики и текущих привилегий {#view-how-a-policy-was-defined-and-current-privileges}
+### Просмотр определения политики и её текущих привилегий
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -429,51 +430,51 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 ```
 
 
-## Примеры команд для управления ролями, политиками и пользователями {#example-commands-to-manage-roles-policies-and-users}
+## Примеры команд для управления ролями, политиками и пользователями
 
-Следующие команды можно использовать для:
+Следующие команды можно использовать, чтобы:
 
-- удаления привилегий
-- удаления политик
-- отзыва ролей у пользователей
-- удаления пользователей и ролей
+* удалить привилегии
+* удалить политики
+* открепить пользователей от ролей
+* удалить пользователей и роли
   <br />
 
 :::tip
 Выполняйте эти команды от имени администратора или пользователя `default`
 :::
 
-### Отзыв привилегии у роли {#remove-privilege-from-a-role}
+### Удалить привилегию у роли
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 ```
 
-### Удаление политики {#delete-a-policy}
+### Удаление политики
 
 ```sql
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### Отзыв роли у пользователя {#unassign-a-user-from-a-role}
+### Отменить назначение роли пользователю
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### Удаление роли {#delete-a-role}
+### Удаление роли
 
 ```sql
 DROP ROLE A_rows_users;
 ```
 
-### Удаление пользователя {#delete-a-user}
+### Удаление пользователя
 
 ```sql
 DROP USER row_user;
 ```
 
 
-## Заключение {#summary}
+## Итоги {#summary}
 
-В этой статье рассмотрены основы создания пользователей и ролей SQL, а также приведены шаги по настройке и изменению привилегий для пользователей и ролей. Для получения более подробной информации обратитесь к руководствам пользователя и справочной документации.
+В этой статье были рассмотрены основы создания SQL-пользователей и ролей, а также приведены шаги по назначению и изменению привилегий для пользователей и ролей. Для получения более подробной информации по каждой теме обратитесь к нашим руководствам для пользователей и справочной документации.

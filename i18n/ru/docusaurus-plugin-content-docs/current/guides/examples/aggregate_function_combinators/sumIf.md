@@ -12,19 +12,21 @@ doc_type: 'reference'
 # sumIf {#sumif}
 
 
+
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
-для вычисления суммы значений строк, удовлетворяющих условию,
-с помощью агрегатной функции-комбинатора `sumIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
+для вычисления суммы значений по строкам, для которых условие истинно,
+используя агрегатную функцию-комбинатор `sumIf`.
 
 
-## Примеры использования {#example-usage}
 
-В этом примере мы создадим таблицу для хранения данных о продажах с флагами успешности
-и используем `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
+## Пример использования
 
-```sql title="Запрос"
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+а затем используем `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
+
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -44,27 +46,27 @@ SELECT
 FROM sales;
 ```
 
-Функция `sumIf` суммирует только те значения, для которых `is_successful = 1`.
-В данном случае будет вычислена сумма: 100.50 + 200.75 + 300.00 + 175.25.
+Функция `sumIf` будет суммировать только те значения поля `amount`, для которых `is_successful = 1`.
+В этом случае она просуммирует: 100.50 + 200.75 + 300.00 + 175.25.
 
-```response title="Результат"
+```response title="Response"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### Расчет объема торгов по направлению изменения цены {#calculate-trading-vol-price-direction}
+### Расчет торгового объема по направлению движения цены
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/),
-для расчета объема торгов по направлению изменения цены в течение 2002 года.
+В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы рассчитать торговый объем по направлению движения цены за первую половину 2002 года.
 
-```sql title="Запрос"
-SELECT
+```sql title="Query"
+SELECT 
     toStartOfMonth(date) AS month,
-    formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
-    formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
-    formatReadableQuantity(sumIf(volume, price = open)) AS volume_on_neutral_days,
-    formatReadableQuantity(sum(volume)) AS total_volume
+    formatReadableQuantity(sumIf(volume, price > open)) AS объем_в_дни_роста,
+    formatReadableQuantity(sumIf(volume, price < open)) AS объем_в_дни_падения,
+    formatReadableQuantity(sumIf(volume, price = open)) AS объем_в_нейтральные_дни,
+    formatReadableQuantity(sum(volume)) AS общий_объем
 FROM stock.stock
 WHERE date BETWEEN '2002-01-01' AND '2002-12-31'
 GROUP BY month
@@ -72,29 +74,28 @@ ORDER BY month;
 ```
 
 ```markdown
-    ┌──────month─┬─volume_on_up_days─┬─volume_on_down_days─┬─volume_on_neutral_days─┬─total_volume──┐
-
-1.  │ 2002-01-01 │ 26.07 billion │ 30.74 billion │ 781.80 million │ 57.59 billion │
-2.  │ 2002-02-01 │ 20.84 billion │ 29.60 billion │ 642.36 million │ 51.09 billion │
-3.  │ 2002-03-01 │ 28.81 billion │ 23.57 billion │ 762.60 million │ 53.14 billion │
-4.  │ 2002-04-01 │ 24.72 billion │ 30.99 billion │ 763.92 million │ 56.47 billion │
-5.  │ 2002-05-01 │ 25.09 billion │ 30.57 billion │ 858.57 million │ 56.52 billion │
-6.  │ 2002-06-01 │ 29.10 billion │ 30.88 billion │ 875.71 million │ 60.86 billion │
-7.  │ 2002-07-01 │ 32.27 billion │ 41.73 billion │ 747.32 million │ 74.75 billion │
-8.  │ 2002-08-01 │ 28.57 billion │ 27.49 billion │ 1.17 billion │ 57.24 billion │
-9.  │ 2002-09-01 │ 23.37 billion │ 31.02 billion │ 775.66 million │ 55.17 billion │
-10. │ 2002-10-01 │ 38.57 billion │ 34.05 billion │ 956.48 million │ 73.57 billion │
-11. │ 2002-11-01 │ 34.90 billion │ 25.47 billion │ 998.34 million │ 61.37 billion │
-12. │ 2002-12-01 │ 22.99 billion │ 28.65 billion │ 1.14 billion │ 52.79 billion │
+    ┌──────месяц─┬─объем_в_дни_роста─┬─объем_в_дни_падения─┬─объем_в_нейтральные_дни─┬─общий_объем──┐
+ 1. │ 2002-01-01 │ 26.07 миллиард     │ 30.74 миллиард       │ 781.80 миллион         │ 57.59 миллиард │
+ 2. │ 2002-02-01 │ 20.84 миллиард     │ 29.60 миллиард       │ 642.36 миллион         │ 51.09 миллиард │
+ 3. │ 2002-03-01 │ 28.81 миллиард     │ 23.57 миллиард       │ 762.60 миллион         │ 53.14 миллиард │
+ 4. │ 2002-04-01 │ 24.72 миллиард     │ 30.99 миллиард       │ 763.92 миллион         │ 56.47 миллиард │
+ 5. │ 2002-05-01 │ 25.09 миллиард     │ 30.57 миллиард       │ 858.57 миллион         │ 56.52 миллиард │
+ 6. │ 2002-06-01 │ 29.10 миллиард     │ 30.88 миллиард       │ 875.71 миллион         │ 60.86 миллиард │
+ 7. │ 2002-07-01 │ 32.27 миллиард     │ 41.73 миллиард       │ 747.32 миллион         │ 74.75 миллиард │
+ 8. │ 2002-08-01 │ 28.57 миллиард     │ 27.49 миллиард       │ 1.17 миллиард           │ 57.24 миллиард │
+ 9. │ 2002-09-01 │ 23.37 миллиард     │ 31.02 миллиард       │ 775.66 миллион         │ 55.17 миллиард │
+10. │ 2002-10-01 │ 38.57 миллиард     │ 34.05 миллиард       │ 956.48 миллион         │ 73.57 миллиард │
+11. │ 2002-11-01 │ 34.90 миллиард     │ 25.47 миллиард       │ 998.34 миллион         │ 61.37 миллиард │
+12. │ 2002-12-01 │ 22.99 миллиард     │ 28.65 миллиард       │ 1.14 миллиард           │ 52.79 миллиард │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Расчет объема торгов по тикеру акции {#calculate-trading-volume}
+### Рассчитать торговый объём по тикеру
 
 
-В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse Playground](https://sql.clickhouse.com/),
-чтобы вычислить объём торгов по тикеру за 2006 год для трёх крупнейших технологических
-компаний того времени.
+В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
+технологических компаний того времени.
 
 ```sql title="Query"
 SELECT 
@@ -128,7 +129,6 @@ ORDER BY month;
 ```
 
 
-## См. также {#see-also}
-
+## Смотрите также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

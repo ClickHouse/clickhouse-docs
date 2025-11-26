@@ -1,5 +1,5 @@
 ---
-description: 'Применяет ранговый критерий Манна–Уитни к выборкам из двух генеральных совокупностей.'
+description: 'Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.'
 sidebar_label: 'mannWhitneyUTest'
 sidebar_position: 161
 slug: /sql-reference/aggregate-functions/reference/mannwhitneyutest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # mannWhitneyUTest
 
-Применяет ранговый критерий Манна–Уитни к выборкам из двух генеральных совокупностей.
+Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
@@ -17,21 +17,21 @@ doc_type: 'reference'
 mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке из первой генеральной совокупности. В противном случае оно относится к выборке из второй генеральной совокупности.
-Нулевая гипотеза заключается в том, что две генеральные совокупности стохастически равны. Также могут проверяться односторонние гипотезы. Для этого теста не предполагается, что данные имеют нормальное распределение.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой совокупности. В противном случае оно принадлежит выборке из второй совокупности.
+Нулевая гипотеза состоит в том, что две совокупности стохастически равны. Также можно проверять односторонние гипотезы. Тест не предполагает, что данные имеют нормальное распределение.
 
 **Аргументы**
 
-* `sample_data` — выборочные данные. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 * `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-* `alternative` — альтернативная гипотеза. (Необязательный, по умолчанию: `'two-sided'`.) [String](../../../sql-reference/data-types/string.md).
+* `alternative` — альтернативная гипотеза (необязательный параметр, по умолчанию — `'two-sided'`). [String](../../../sql-reference/data-types/string.md).
   * `'two-sided'`;
   * `'greater'`;
   * `'less'`.
-* `continuity_correction` — если не равен 0, то применяется поправка на непрерывность в нормальной аппроксимации для p-значения. (Необязательный, по умолчанию: 1.) [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `continuity_correction` — если не равен 0, применяется поправка на непрерывность в нормальном приближении p-значения (необязательный параметр, по умолчанию — 1). [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 

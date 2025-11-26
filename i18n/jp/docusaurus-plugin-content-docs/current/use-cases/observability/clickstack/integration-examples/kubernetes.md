@@ -2,53 +2,53 @@
 slug: /use-cases/observability/clickstack/integrations/kubernetes
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 向け Kubernetes 連携 - ClickHouse Observability Stack'
+description: 'ClickStack 向けの Kubernetes 連携 - ClickHouse Observability Stack'
 title: 'Kubernetes'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
-ClickStack は OpenTelemetry (OTel) コレクターを使用して、Kubernetes クラスターからログ、メトリクス、および Kubernetes イベントを収集し、それらを ClickStack に転送します。ネイティブな OTel ログ形式をサポートしており、ベンダー固有の追加設定は不要です。
+ClickStack は OpenTelemetry (OTel) collector を使用して、Kubernetes クラスタからログ、メトリクス、および Kubernetes イベントを収集し、それらを ClickStack に転送します。ネイティブな OTel ログ形式に対応しており、ベンダー固有の追加設定は不要です。
 
-このガイドでは、次のデータを取り扱います。
+このガイドでは、次の内容を扱います:
 
-- **ログ**
-- **インフラメトリクス**
+- **Logs**
+- **Infra Metrics**
 
 :::note
-アプリケーションレベルのメトリクスや APM/トレースを送信するには、対応する言語向け連携をアプリケーション側にも追加する必要があります。
+アプリケーションレベルのメトリクスや APM/トレースを送信するには、対応する言語向けのインテグレーションをアプリケーション側にも追加する必要があります。
 :::
 
-以下のガイドでは、取り込み用 API キーで保護された [ClickStack OTel コレクターをゲートウェイとしてデプロイしている](/use-cases/observability/clickstack/ingesting-data/otel-collector) ことを前提とします。
+このガイドでは、インジェスト API key で保護された [ClickStack OTel collector をゲートウェイとして](/use-cases/observability/clickstack/ingesting-data/otel-collector) デプロイ済みであることを前提としています。
 
 
 
-## OTel Helmチャート設定ファイルの作成 {#creating-the-otel-helm-chart-config-files}
+## OTel の Helm チャート設定ファイルを作成する
 
-各ノードとクラスタ自体の両方からログとメトリクスを収集するには、2つの独立したOpenTelemetryコレクターをデプロイする必要があります。1つは各ノードからログとメトリクスを収集するためにDaemonSetとしてデプロイされ、もう1つはクラスタ自体からログとメトリクスを収集するためにDeploymentとしてデプロイされます。
+各ノードおよびクラスター自体の両方からログとメトリクスを収集するために、2 つの OpenTelemetry collector を別々にデプロイする必要があります。1 つは各ノードからログとメトリクスを収集するためのデーモンセットとしてデプロイし、もう 1 つはクラスター自体からログとメトリクスを収集するためのデプロイメントとしてデプロイします。
 
-### APIキーシークレットの作成 {#create-api-key-secret}
+### API key シークレットを作成する
 
-HyperDXの[インジェストAPIキー](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)を使用して新しいKubernetesシークレットを作成します。これは、以下にインストールされるコンポーネントがClickStack OTelコレクターに安全にデータを送信するために使用されます:
+HyperDX の [インジェスト API key](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) を使用して、新しい Kubernetes Secret を作成します。これは、以下でインストールするコンポーネントが、ClickStack の OTel collector に安全にデータをインジェストするために使用します。
 
 ```shell
 kubectl create secret generic hyperdx-secret \
---from-literal=HYPERDX_API_KEY=<インジェストAPIキー> \
+--from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
 ```
 
-さらに、ClickStack OTelコレクターの場所を指定するConfigMapを作成します:
+さらに、ClickStack の OTel collector の接続先を指定する ConfigMap を作成します：
 
 
 ```shell
 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=<OTEL_COLLECTOR_ENDPOINT>
-# 例: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
+# e.g. kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
 ```
 
-### DaemonSet設定の作成 {#creating-the-daemonset-configuration}
+### デーモンセット設定の作成 {#creating-the-daemonset-configuration}
 
-DaemonSetは、クラスタ内の各ノードからログとメトリクスを収集しますが、Kubernetesイベントやクラスタ全体のメトリクスは収集しません。
+デーモンセットはクラスタ内の各ノードからログとメトリクスを収集しますが、Kubernetesイベントやクラスタ全体のメトリクスは収集しません。
 
-DaemonSetマニフェストをダウンロードします:
+デーモンセットマニフェストをダウンロードします:
 
 ```shell
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
@@ -79,9 +79,9 @@ enabled: true
 hostMetrics:
 enabled: true
 
-# Kubernetes メタデータを追加するための Kubernetes Processor を設定します。
+# Kubernetes メタデータを追加するための Kubernetes プロセッサを設定します。
 
-# すべてのパイプラインに k8sattributes プロセッサを追加し、ClusterRole に必要なルールを追加します。
+# すべてのパイプラインに k8sattributes プロセッサを追加し、クラスター ロールに必要なルールを追加します。
 
 # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
 
@@ -90,9 +90,9 @@ enabled: true # 有効にすると、プロセッサは関連するポッドの�
 extractAllPodLabels: true # 有効にすると、プロセッサは関連するポッドのすべてのアノテーションを抽出し、リソース属性として追加します。# アノテーションの正確な名前がキーになります。
 extractAllPodAnnotations: true
 
-# kubelet 上の API サーバーからノード、ポッド、コンテナのメトリクスを収集するようにコレクターを設定します。
+# キューブレット上の API サーバーからノード、ポッド、コンテナのメトリクスを収集するようにコレクタを設定します。
 
-# メトリクスパイプラインに kubeletstats レシーバーを追加し、ClusterRole に必要なルールを追加します。
+# メトリクスパイプラインに kubeletstats レシーバーを追加し、クラスター ロールに必要なルールを追加します。
 
 # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
 
@@ -114,7 +114,7 @@ extraEnvs:
   key: YOUR_OTEL_COLLECTOR_ENDPOINT
 
 config:
-receivers: # 追加の kubelet メトリクスを設定します
+receivers: # 追加のキューブレットメトリクスを設定
 kubeletstats:
 collection_interval: 20s
 auth_type: 'serviceAccount'
@@ -164,7 +164,7 @@ exporters: - otlphttp
 
 ### デプロイメント設定の作成 {#creating-the-deployment-configuration}
 
-Kubernetes イベントとクラスタ全体のメトリクスを収集するには、デプロイメントとして別個の OpenTelemetry コレクターをデプロイする必要があります。
+Kubernetes イベントとクラスター全体のメトリクスを収集するには、デプロイメントとして別個の OpenTelemetry コレクタをデプロイする必要があります。
 
 デプロイメントマニフェストをダウンロードします:
 
@@ -196,18 +196,18 @@ enabled: true # 有効にすると、プロセッサは関連するポッドの�
 extractAllPodLabels: true # 有効にすると、プロセッサは関連するポッドのすべてのアノテーションを抽出し、リソース属性として追加します。# アノテーションの正確な名前がキーになります。
 extractAllPodAnnotations: true
 
-# Kubernetesイベントを収集するようにコレクターを設定します。
+# Kubernetesイベントを収集するようコレクターを設定します。
 
-# k8sobjectレシーバーをログパイプラインに追加し、デフォルトでKubernetesイベントを収集します。
+# k8sobject receiverをログパイプラインに追加し、デフォルトでKubernetesイベントを収集します。
 
 # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
 
 kubernetesEvents:
 enabled: true
 
-# Kubernetes Cluster Receiverを設定してクラスターレベルのメトリクスを収集します。
+# クラスターレベルのメトリクスを収集するようKubernetes Cluster Receiverを設定します。
 
-# k8s_clusterレシーバーをメトリクスパイプラインに追加し、必要なルールをClusterRoleに追加します。
+# k8s_cluster receiverをメトリクスパイプラインに追加し、必要なルールをClusterRoleに追加します。
 
 # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
 
@@ -249,35 +249,35 @@ exporters: - otlphttp
 ```
 
 
-## OpenTelemetryコレクターのデプロイ {#deploying-the-otel-collector}
+## OpenTelemetry collector のデプロイ
 
-OpenTelemetryコレクターは、[OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector)を使用してKubernetesクラスターにデプロイできるようになりました。
+OpenTelemetry collector は、[OpenTelemetry Helm チャート](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector) を使って Kubernetes クラスターにデプロイできます。
 
-OpenTelemetry Helmリポジトリを追加します:
+OpenTelemetry の Helm リポジトリを追加します。
 
 ```shell
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # OTel Helmリポジトリを追加
 ```
 
-上記の設定でチャートをインストールします:
+上記の設定でチャートをインストールします。
 
 ```shell copy
 helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
 helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
 ```
 
-これで、Kubernetesクラスターからのメトリクス、ログ、Kubernetesイベントが
-HyperDX内に表示されるようになります。
+これで、Kubernetes クラスターのメトリクス、ログ、および Kubernetes イベントが HyperDX に表示されるようになります。
 
 
-## リソースタグのPodへの転送（推奨） {#forwarding-resouce-tags-to-pods}
+## リソースタグをポッドへ転送する（推奨） {#forwarding-resouce-tags-to-pods}
 
-アプリケーションレベルのログ、メトリクス、トレースをKubernetesメタデータ
-（例：Pod名、Namespaceなど）と関連付けるには、`OTEL_RESOURCE_ATTRIBUTES`環境変数を使用して
-Kubernetesメタデータをアプリケーションに転送します。
+アプリケーションレベルのログ、メトリクス、トレースを Kubernetes メタデータ
+（例: ポッド名、ネームスペースなど）と相関付けるには、`OTEL_RESOURCE_ATTRIBUTES` 環境変数を使用して
+Kubernetes メタデータをアプリケーションへ転送することを推奨します。
 
-以下は、環境変数を使用してKubernetesメタデータを
-アプリケーションに転送するデプロイメントの例です：
+以下は、環境変数を使用して Kubernetes メタデータをアプリケーションへ
+転送するデプロイメントの例です。
+
 
 
 ```yaml
@@ -297,7 +297,7 @@ spec:
       labels:
         app: app
         # Kubernetes Attribute Processorと組み合わせることで、
-        # Podのログとメトリクスがサービス名に関連付けられることを保証します。
+        # ポッドのログとメトリクスがサービス名に関連付けられます。
         service.name: <MY_APP_NAME>
     spec:
       containers:
@@ -305,7 +305,7 @@ spec:
           image: my-image
           env:
             # ... その他の環境変数
-            # Downward APIからK8sメタデータを収集してアプリケーションに転送します
+            # Downward APIからK8sメタデータを収集してアプリに転送
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -326,7 +326,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['deployment']
-            # OTEL_RESOURCE_ATTRIBUTESを介してK8sメタデータをアプリケーションに転送します
+            # OTEL_RESOURCE_ATTRIBUTES経由でK8sメタデータをアプリに転送
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.node.name=$(NODE_NAME),k8s.deployment.name=$(DEPLOYMENT_NAME)
 ```

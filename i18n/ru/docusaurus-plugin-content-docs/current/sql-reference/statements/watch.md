@@ -14,6 +14,6 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 <DeprecatedBadge/>
 
-Данная возможность устарела и будет удалена в будущих версиях.
+Этот оператор устарел и будет удалён в будущем.
 
-Для вашего удобства старая документация размещена [здесь](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)
+Для вашего удобства старая документация доступна [здесь](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)

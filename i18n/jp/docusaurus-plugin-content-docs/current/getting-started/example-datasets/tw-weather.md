@@ -1,36 +1,36 @@
 ---
-description: '過去128年間にわたる1億3,100万行の気象観測データ'
+description: '過去128年間にわたる1億3100万行の気象観測データ'
 sidebar_label: '台湾の歴史的気象データセット'
 slug: /getting-started/example-datasets/tw-weather
 title: '台湾の歴史的気象データセット'
 doc_type: 'guide'
-keywords: ['サンプルデータセット', '天気', '台湾', 'サンプルデータ', '気候データ']
+keywords: ['サンプルデータセット', '気象', '台湾', 'サンプルデータ', '気候データ']
 ---
 
-このデータセットには、過去128年間の気象観測データが含まれています。各行には、特定の日時・気象観測所における1件の観測値が格納されています。
+このデータセットには、過去128年間にわたる歴史的な気象観測値が含まれています。各行は、特定の日時と気象観測所における1件の観測値を表しています。
 
-このデータセットの出典は[こちら](https://github.com/Raingel/historical_weather)で、気象観測所番号の一覧は[こちら](https://github.com/Raingel/weather_station_list)にあります。
+このデータセットの出典は[こちら](https://github.com/Raingel/historical_weather)で公開されており、気象観測所番号の一覧は[こちら](https://github.com/Raingel/weather_station_list)にあります。
 
-> 気象データセットのデータソースには、中央気象署が設置した気象観測所（観測所コードの先頭が C0、C1、4）および農業委員会（Council of Agriculture）に属する農業気象観測所（上記以外の観測所コード）が含まれます。
+> 気象データセットの情報源には、中央気象局が設置した気象観測所（観測所コードが C0、C1、および 4 で始まるもの）と、農業委員会に属する農業気象観測所（それ以外の観測所コード）が含まれます。
 
     - StationId
     - MeasuredDate, 観測時刻
-    - StnPres, 観測所における気圧
+    - StnPres, 観測所での気圧
     - SeaPres, 海面気圧
     - Td, 露点温度
     - RH, 相対湿度
-    - その他、利用可能な要素
+    - 利用可能なその他の要素
 
 
 
-## データのダウンロード {#downloading-the-data}
+## データのダウンロード
 
-- クリーニング、再構造化、および拡張が施された、ClickHouse用の[前処理済みバージョン](#pre-processed-data)のデータ。このデータセットは1896年から2023年までをカバーしています。
-- [元の生データをダウンロード](#original-raw-data)し、ClickHouseで必要な形式に変換します。独自の列を追加したいユーザーは、独自のアプローチを検討または実装することができます。
+* ClickHouse 用に[前処理済みのバージョン](#pre-processed-data)のデータ。クリーニング、再構造化、付加情報の付与などが行われています。このデータセットは 1896 年から 2023 年までをカバーします。
+* [元の生データをダウンロード](#original-raw-data)し、ClickHouse が要求する形式に変換します。独自の列を追加したいユーザーは、自身の手法を検討・完成させる目的で利用できます。
 
-### 前処理済みデータ {#pre-processed-data}
+### 前処理済みデータ
 
-データセットは、1行あたり1測定値の形式から、気象観測所IDと測定日ごとに1行となる形式に再構造化されています。例:
+このデータセットは、1 行あたり 1 測定値の形式から、「気象観測所 ID と観測日ごとに 1 行」という形式に再構造化されています。つまり、
 
 ```csv
 StationId,MeasuredDate,StnPres,Tx,RH,WS,WD,WSGust,WDGust,Precp,GloblRad,TxSoil0cm,TxSoil5cm,TxSoil20cm,TxSoil50cm,TxSoil100cm,SeaPres,Td,PrecpHour,SunShine,TxSoil10cm,EvapA,Visb,UVI,Cloud Amount,TxSoil30cm,TxSoil200cm,TxSoil300cm,TxSoil500cm,VaporPressure
@@ -40,21 +40,20 @@ C0X100,2016-01-01 03:00:00,1021.3,15.8,74,1.5,353.0,,,,,,,,,,,,,,,,,,,,,,,
 C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```
 
-クエリが容易で、結果のテーブルはスパース性が低くなります。また、この気象観測所では測定できないため、一部の要素がnullになっています。
+このテーブルはクエリを実行しやすく、結果として得られるテーブルはスパース性が低くなり、この気象観測所では測定できない項目はいくつかの要素が `null` になっています。
 
-このデータセットは以下のGoogle Cloud Storageの場所で利用可能です。データセットをローカルファイルシステムにダウンロードして(ClickHouseクライアントで挿入)するか、ClickHouseに直接挿入してください([URLからの挿入](#inserting-from-url)を参照)。
+このデータセットは、以下の Google Cloud Storage のロケーションで入手できます。データセットをローカルファイルシステムにダウンロードして ClickHouse クライアントで挿入するか、ClickHouse に直接挿入してください（[URL からの挿入](#inserting-from-url) を参照）。
 
 ダウンロードするには:
 
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
-
 ```
 
 
 # オプション：チェックサムを検証する
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# チェックサムが次の値と一致することを確認してください: 11b484f5bd9ddafec5cfb131eb2dd008
+# チェックサムは次の値と一致する必要があります: 11b484f5bd9ddafec5cfb131eb2dd008
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
@@ -65,7 +64,7 @@ daily_weather_preprocessed_1896_2023.csv
 
 md5sum daily&#95;weather&#95;preprocessed&#95;1896&#95;2023.csv
 
-# チェックサムは次の値と一致する必要があります: 1132248c78195c43d93f843753881754
+# チェックサムは次の値と一致している必要があります: 1132248c78195c43d93f843753881754
 
 ````
 
@@ -84,9 +83,9 @@ wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data
 ````
 
 
-# オプション: チェックサムを検証する
+# オプション：チェックサムを検証する
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# チェックサムは次の値と一致する必要があります: b66b9f137217454d655e3004d7d1b51a
+# チェックサムが次の値と一致することを確認します: b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -101,18 +100,18 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 
 cat *.csv | md5sum
 
-# チェックサムは次の値と一致している必要があります: b26db404bf84d4063fac42e576464ce1
+# チェックサムが次の値と一致することを確認してください: b26db404bf84d4063fac42e576464ce1
 
 ````
 
-#### 台湾の気象観測所データを取得する {#retrieve-the-taiwan-weather-stations}
+#### 台湾の気象観測所一覧を取得 {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 ````
 
 
-# オプション: UTF-8-BOM を削除して UTF-8 エンコーディングに変換する
+# オプション: UTF-8 BOM 付きファイルを UTF-8（BOM なし）に変換する
 
 sed -i &#39;1s/^\xEF\xBB\xBF//&#39; weather&#95;sta&#95;list.csv
 
@@ -120,9 +119,9 @@ sed -i &#39;1s/^\xEF\xBB\xBF//&#39; weather&#95;sta&#95;list.csv
 ```
 
 
-## テーブルスキーマの作成 {#create-table-schema}
+## テーブルスキーマを作成する
 
-ClickHouseでMergeTreeテーブルを作成します(ClickHouseクライアントから)。
+ClickHouse クライアントから MergeTree テーブルを作成します。
 
 ```bash
 CREATE TABLE tw_weather_data (
@@ -162,42 +161,42 @@ ORDER BY (MeasuredDate);
 ```
 
 
-## ClickHouseへのデータ挿入 {#inserting-into-clickhouse}
+## ClickHouse への挿入
 
-### ローカルファイルからの挿入 {#inserting-from-local-file}
+### ローカルファイルからの挿入
 
-ローカルファイルからデータを挿入するには、次のようにします（ClickHouseクライアントから）:
+データは、ClickHouse クライアントから次のようにローカルファイルから挿入できます。
 
 ```sql
 INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_1896_2023.csv'
 ```
 
-ここで `/path/to` は、ディスク上のローカルファイルへの具体的なユーザーパスを表します。
+ここで、`/path/to` はディスク上のローカルファイルへの特定のユーザーのパスを表します。
 
-ClickHouseへのデータ挿入後のサンプルレスポンス出力は次の通りです:
+ClickHouse へのデータ挿入後のレスポンスのサンプル出力は次のとおりです。
 
 ```response
-Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
+クエリ ID: 90e4b524-6e14-4855-817c-7e6f98fbeabb
 
-Ok.
-131985329 rows in set. Elapsed: 71.770 sec. Processed 131.99 million rows, 10.06 GB (1.84 million rows/s., 140.14 MB/s.)
-Peak memory usage: 583.23 MiB.
+OK.
+131985329 行が返されました。経過時間: 71.770 秒。処理済み 131.99 百万行、10.06 GB（1.84 百万行/秒、140.14 MB/秒）。
+最大メモリ使用量: 583.23 MiB。
 ```
 
-### URLからの挿入 {#inserting-from-url}
+### URL からのデータ挿入
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
-FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/daily_weather_preprocessed_1896_2023.csv', 'CSVWithNames')
+FROM url('https://storage.googleapis.com/taiwan-weather-observation-datasets/daily_weather_preprocessed_1896_2023.csv', 'CSVWithNames')
 
 ```
 
-これを高速化する方法については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事をご覧ください。
+高速化の方法については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事をご覧ください。
 
 
-## データ行数とサイズの確認 {#check-data-rows-and-sizes}
+## データ行数とサイズを確認する
 
-1. 挿入された行数を確認してみましょう:
+1. 何行挿入されたか確認しましょう:
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -206,11 +205,11 @@ FROM tw_weather_data;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 131.99 million                  │
+│ 131.99 百万                      │
 └─────────────────────────────────┘
 ```
 
-2. このテーブルが使用しているディスク容量を確認してみましょう:
+2. このテーブルで使用されているディスク容量を確認します:
 
 ```sql
 SELECT
@@ -227,9 +226,9 @@ WHERE (`table` = 'tw_weather_data') AND active
 ```
 
 
-## サンプルクエリ {#sample-queries}
+## サンプルクエリ
 
-### Q1: 特定の年における各気象観測所の最高露点温度を取得 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1: 特定の年について、各気象観測所ごとの最高露点温度を取得する
 
 ```sql
 SELECT
@@ -272,10 +271,10 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-30行。経過時間: 0.045秒。処理: 641万行、187.33 MB (1億4392万行/秒、4.21 GB/秒)
+30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-### Q2: 特定の期間、フィールド、気象観測所を指定した生データの取得 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2: 特定の時間範囲・フィールド・気象観測所を指定した生データの取得
 
 ```sql
 SELECT
@@ -315,8 +314,8 @@ LIMIT 10
 ```
 
 
-## クレジット {#credits}
+## 謝辞 {#credits}
 
-このデータセットの準備、クリーニング、配布にご尽力いただいた中央気象署および農業委員会農業気象観測ネットワーク(観測所)の取り組みに謝意を表します。皆様のご尽力に感謝いたします。
+本データセットの作成、整形および配布にご尽力くださった、農業委員会所属の中央気象署および農業気象観測網（観測所）の皆様に、ここに深く感謝の意を表します。
 
 Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. Application-oriented deep learning model for early warning of rice blast in Taiwan. Ecological Informatics 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]

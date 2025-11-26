@@ -1,5 +1,5 @@
 ---
-description: 'ATTACH に関するドキュメント'
+description: 'ATTACH ステートメントのドキュメント'
 sidebar_label: 'ATTACH'
 sidebar_position: 40
 slug: /sql-reference/statements/attach
@@ -7,7 +7,7 @@ title: 'ATTACH ステートメント'
 doc_type: 'reference'
 ---
 
-テーブルまたは辞書をアタッチします。たとえば、データベースを別のサーバーへ移行する際などに使用します。
+テーブルまたは辞書を ATTACH します。たとえば、データベースを別のサーバーに移行する際などに使用します。
 
 **構文**
 
@@ -15,12 +15,12 @@ doc_type: 'reference'
 ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] ...
 ```
 
-このクエリはディスク上にデータを新たに作成することはせず、データがすでに適切な場所に存在していることを前提として、指定されたテーブル、辞書、またはデータベースに関する情報をサーバーに登録するだけです。`ATTACH` クエリを実行すると、サーバーはそのテーブル、辞書、またはデータベースの存在を把握するようになります。
+このクエリはディスク上にデータを作成せず、データがすでに適切な場所にあることを前提として、指定されたテーブル、ディクショナリ、またはデータベースに関する情報だけをサーバーに追加します。`ATTACH` クエリを実行した後は、サーバーはそのテーブル、ディクショナリ、またはデータベースの存在を把握します。
 
-テーブルが以前に（[DETACH](../../sql-reference/statements/detach.md) クエリによって）切り離されていて、その構造がすでにサーバーに知られている場合は、構造を定義せずに簡略な記法を使用できます。
+テーブルが以前に ([DETACH](../../sql-reference/statements/detach.md) クエリによって) デタッチされており、その構造が既知である場合は、構造を定義せずに省略形の記法を使用できます。
 
 
-## 既存テーブルのアタッチ {#attach-existing-table}
+## 既存のテーブルをアタッチ
 
 **構文**
 
@@ -28,16 +28,16 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-このクエリはサーバー起動時に使用されます。サーバーはテーブルのメタデータを`ATTACH`クエリを含むファイルとして保存し、起動時にそれらを実行します(明示的に作成される一部のシステムテーブルを除く)。
+このクエリはサーバーの起動時に使用されます。サーバーはテーブルのメタデータを `ATTACH` クエリの形でファイルに保存し、起動時にそれらをそのまま実行します（一部のシステムテーブルを除き、それらはサーバー上で明示的に作成されます）。
 
-テーブルが永続的にデタッチされている場合、サーバー起動時に自動的に再アタッチされないため、`ATTACH`クエリを明示的に実行する必要があります。
+テーブルが恒久的に DETACH されている場合、サーバー起動時に自動的に再度 ATTACH されないため、明示的に `ATTACH` クエリを使用する必要があります。
 
 
-## 新しいテーブルの作成とデータのアタッチ {#create-new-table-and-attach-data}
+## 新しいテーブルを作成してデータをアタッチする
 
-### テーブルデータへのパスを指定する場合 {#with-specified-path-to-table-data}
+### テーブルデータのパスを指定する場合
 
-このクエリは、指定された構造で新しいテーブルを作成し、`user_files`内の指定されたディレクトリからテーブルデータをアタッチします。
+このクエリは、指定された構造で新しいテーブルを作成し、`user_files` 内の指定されたディレクトリからテーブルデータをアタッチします。
 
 **構文**
 
@@ -47,7 +47,7 @@ ATTACH TABLE name FROM 'path/to/data/' (col1 Type1, ...)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 DROP TABLE IF EXISTS test;
@@ -64,10 +64,10 @@ SELECT * FROM test;
 └──────┴────┘
 ```
 
-### テーブルUUIDを指定する場合 {#with-specified-table-uuid}
+### 指定したテーブル UUID の使用
 
-このクエリは、指定された構造で新しいテーブルを作成し、指定されたUUIDを持つテーブルからデータをアタッチします。
-[Atomic](../../engines/database-engines/atomic.md)データベースエンジンでサポートされています。
+このクエリは、指定された構造の新しいテーブルを作成し、指定された UUID を持つテーブルからデータをアタッチします。
+これは [Atomic](../../engines/database-engines/atomic.md) データベースエンジンでサポートされています。
 
 **構文**
 
@@ -76,13 +76,13 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ```
 
 
-## MergeTreeテーブルをReplicatedMergeTreeとしてアタッチする {#attach-mergetree-table-as-replicatedmergetree}
+## MergeTree テーブルを ReplicatedMergeTree としてアタッチする
 
-非レプリケートのMergeTreeテーブルをReplicatedMergeTreeとしてアタッチできます。ReplicatedMergeTreeテーブルは`default_replica_path`と`default_replica_name`設定の値で作成されます。また、レプリケートされたテーブルを通常のMergeTreeとしてアタッチすることも可能です。
+レプリケーションされていない MergeTree テーブルを ReplicatedMergeTree としてアタッチできます。ReplicatedMergeTree テーブルは、`default_replica_path` と `default_replica_name` 設定の値を用いて作成されます。また、レプリケートされたテーブルを通常の MergeTree としてアタッチすることも可能です。
 
-このクエリではZooKeeper内のテーブルデータは影響を受けません。つまり、アタッチ後に`SYSTEM RESTORE REPLICA`を使用してZooKeeperにメタデータを追加するか、`SYSTEM DROP REPLICA ... FROM ZKPATH ...`でクリアする必要があります。
+このクエリでは、ZooKeeper 内のテーブルのデータは影響を受けないことに注意してください。つまり、アタッチ後に `SYSTEM RESTORE REPLICA` を使用して ZooKeeper にメタデータを追加するか、`SYSTEM DROP REPLICA ... FROM ZKPATH ...` を使ってメタデータを削除する必要があります。
 
-既存のReplicatedMergeTreeテーブルにレプリカを追加する場合、変換されたMergeTreeテーブル内のすべてのローカルデータがデタッチされることに留意してください。
+既存の ReplicatedMergeTree テーブルにレプリカを追加しようとしている場合、変換された MergeTree テーブル内のローカルデータはすべてデタッチされることに注意してください。
 
 **構文**
 
@@ -90,7 +90,7 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ATTACH TABLE [db.]name AS [NOT] REPLICATED
 ```
 
-**テーブルをレプリケート化する**
+**テーブルをレプリケートテーブルに変換**
 
 ```sql
 DETACH TABLE test;
@@ -98,9 +98,9 @@ ATTACH TABLE test AS REPLICATED;
 SYSTEM RESTORE REPLICA test;
 ```
 
-**テーブルを非レプリケート化する**
+**テーブルを非レプリケートテーブルに変換する**
 
-テーブルのZooKeeperパスとレプリカ名を取得します:
+テーブルの ZooKeeper パスとレプリカ名を取得します:
 
 ```sql
 SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
@@ -114,7 +114,7 @@ SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 └──────────────┴────────────────────────────────────────────────────────────┘
 ```
 
-テーブルを非レプリケートとしてアタッチし、ZooKeeperからレプリカのデータを削除します:
+テーブルをレプリケーションなしとしてアタッチし、レプリカのデータを ZooKeeper から削除します:
 
 ```sql
 DETACH TABLE test;
@@ -123,23 +123,23 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 ```
 
 
-## 既存のディクショナリをアタッチする {#attach-existing-dictionary}
+## 既存の辞書をアタッチする
 
-以前にデタッチされたディクショナリをアタッチします。
+以前にデタッチした辞書を再アタッチします。
 
 **構文**
 
 ```sql
-ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
+DICTIONARY をアタッチ [存在しない場合は作成] [db.]name [クラスタ cluster 上]
 ```
 
 
-## 既存のデータベースをアタッチする {#attach-existing-database}
+## 既存のデータベースをアタッチ
 
-以前にデタッチされたデータベースをアタッチします。
+以前にデタッチしたデータベースを再度アタッチします。
 
 **構文**
 
 ```sql
-ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
+ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<データベースエンジン>] [ON CLUSTER cluster]
 ```

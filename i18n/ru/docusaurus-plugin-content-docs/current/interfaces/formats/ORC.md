@@ -9,52 +9,54 @@ title: 'ORC'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| Входной | Выходной | Псевдоним |
+|--------|----------|-----------|
+| ✔      | ✔        |           |
 
 
 
-## Description {#description}
+## Описание {#description}
 
-[Apache ORC](https://orc.apache.org/) — это колоночный формат хранения данных, широко используемый в экосистеме [Hadoop](https://hadoop.apache.org/).
+[Apache ORC](https://orc.apache.org/) — это колоночный формат хранения, широко используемый в экосистеме [Hadoop](https://hadoop.apache.org/).
+
 
 
 ## Соответствие типов данных {#data-types-matching-orc}
 
-В таблице ниже представлено соответствие поддерживаемых типов данных ORC и [типов данных](/sql-reference/data-types/index.md) ClickHouse в запросах `INSERT` и `SELECT`.
+В таблице ниже приведено сравнение поддерживаемых типов данных ORC и соответствующих типов данных [ClickHouse](/sql-reference/data-types/index.md) в запросах `INSERT` и `SELECT`.
 
-| Тип данных ORC (`INSERT`)              | Тип данных ClickHouse                                                                              | Тип данных ORC (`SELECT`) |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------ |
-| `Boolean`                             | [UInt8](/sql-reference/data-types/int-uint.md)                                                    | `Boolean`                |
+| ORC data type (`INSERT`)              | ClickHouse data type                                                                                              | ORC data type (`SELECT`) |
+|---------------------------------------|-------------------------------------------------------------------------------------------------------------------|--------------------------|
+| `Boolean`                             | [UInt8](/sql-reference/data-types/int-uint.md)                                                            | `Boolean`                |
 | `Tinyint`                             | [Int8/UInt8](/sql-reference/data-types/int-uint.md)/[Enum8](/sql-reference/data-types/enum.md)    | `Tinyint`                |
 | `Smallint`                            | [Int16/UInt16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md) | `Smallint`               |
-| `Int`                                 | [Int32/UInt32](/sql-reference/data-types/int-uint.md)                                             | `Int`                    |
-| `Bigint`                              | [Int64/UInt32](/sql-reference/data-types/int-uint.md)                                             | `Bigint`                 |
-| `Float`                               | [Float32](/sql-reference/data-types/float.md)                                                     | `Float`                  |
-| `Double`                              | [Float64](/sql-reference/data-types/float.md)                                                     | `Double`                 |
-| `Decimal`                             | [Decimal](/sql-reference/data-types/decimal.md)                                                   | `Decimal`                |
-| `Date`                                | [Date32](/sql-reference/data-types/date32.md)                                                     | `Date`                   |
-| `Timestamp`                           | [DateTime64](/sql-reference/data-types/datetime64.md)                                             | `Timestamp`              |
-| `String`, `Char`, `Varchar`, `Binary` | [String](/sql-reference/data-types/string.md)                                                     | `Binary`                 |
-| `List`                                | [Array](/sql-reference/data-types/array.md)                                                       | `List`                   |
-| `Struct`                              | [Tuple](/sql-reference/data-types/tuple.md)                                                       | `Struct`                 |
-| `Map`                                 | [Map](/sql-reference/data-types/map.md)                                                           | `Map`                    |
-| `Int`                                 | [IPv4](/sql-reference/data-types/int-uint.md)                                                     | `Int`                    |
-| `Binary`                              | [IPv6](/sql-reference/data-types/ipv6.md)                                                         | `Binary`                 |
-| `Binary`                              | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                            | `Binary`                 |
-| `Binary`                              | [Decimal256](/sql-reference/data-types/decimal.md)                                                | `Binary`                 |
+| `Int`                                 | [Int32/UInt32](/sql-reference/data-types/int-uint.md)                                                     | `Int`                    |
+| `Bigint`                              | [Int64/UInt32](/sql-reference/data-types/int-uint.md)                                                     | `Bigint`                 |
+| `Float`                               | [Float32](/sql-reference/data-types/float.md)                                                             | `Float`                  |
+| `Double`                              | [Float64](/sql-reference/data-types/float.md)                                                             | `Double`                 |
+| `Decimal`                             | [Decimal](/sql-reference/data-types/decimal.md)                                                           | `Decimal`                |
+| `Date`                                | [Date32](/sql-reference/data-types/date32.md)                                                             | `Date`                   |
+| `Timestamp`                           | [DateTime64](/sql-reference/data-types/datetime64.md)                                                     | `Timestamp`              |
+| `String`, `Char`, `Varchar`, `Binary` | [String](/sql-reference/data-types/string.md)                                                             | `Binary`                 |
+| `List`                                | [Array](/sql-reference/data-types/array.md)                                                               | `List`                   |
+| `Struct`                              | [Tuple](/sql-reference/data-types/tuple.md)                                                               | `Struct`                 |
+| `Map`                                 | [Map](/sql-reference/data-types/map.md)                                                                   | `Map`                    |
+| `Int`                                 | [IPv4](/sql-reference/data-types/int-uint.md)                                                             | `Int`                    |
+| `Binary`                              | [IPv6](/sql-reference/data-types/ipv6.md)                                                                 | `Binary`                 |
+| `Binary`                              | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                                    | `Binary`                 |
+| `Binary`                              | [Decimal256](/sql-reference/data-types/decimal.md)                                                        | `Binary`                 |
 
 - Другие типы не поддерживаются.
-- Массивы могут быть вложенными и могут содержать значения типа `Nullable` в качестве аргумента. Типы `Tuple` и `Map` также могут быть вложенными.
-- Типы данных столбцов таблицы ClickHouse не обязательно должны совпадать с соответствующими полями данных ORC. При вставке данных ClickHouse интерпретирует типы данных согласно приведённой выше таблице, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к типу данных, заданному для столбца таблицы ClickHouse.
+- Массивы могут быть вложенными и иметь в качестве аргумента значение типа `Nullable`. Типы `Tuple` и `Map` также могут быть вложенными.
+- Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями ORC. При вставке данных ClickHouse интерпретирует типы данных согласно таблице выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к типу, заданному для столбца таблицы ClickHouse.
 
 
-## Примеры использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используя ORC-файл со следующими данными с именем `football.orc`:
+### Вставка данных
+
+Используем ORC-файл с именем `football.orc` со следующими данными:
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -78,15 +80,15 @@ doc_type: 'reference'
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-Вставка данных:
+Введите данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `ORC`:
+Прочитайте данные в формате `ORC`:
 
 ```sql
 SELECT *
@@ -96,18 +98,18 @@ FORMAT ORC
 ```
 
 :::tip
-ORC — это бинарный формат, который не отображается в читаемом виде в терминале. Используйте `INTO OUTFILE` для вывода ORC-файлов.
+ORC — это бинарный формат, который не отображается в человекочитаемом виде в терминале. Используйте оператор `INTO OUTFILE` для вывода данных в файлы ORC.
 :::
 
 
 ## Настройки формата {#format-settings}
 
-| Настройка                                                                                                                                                                                              | Описание                                                                            | По умолчанию |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------- |
-| [`output_format_arrow_string_as_string`](/operations/settings/settings-formats.md/#output_format_arrow_string_as_string)                                                                             | Использовать тип Arrow String вместо Binary для столбцов String.                            | `false` |
-| [`output_format_orc_compression_method`](/operations/settings/settings-formats.md/#output_format_orc_compression_method)                                                                             | Метод сжатия, используемый в выходном формате ORC. Значение по умолчанию                            | `none`  |
-| [`input_format_arrow_case_insensitive_column_matching`](/operations/settings/settings-formats.md/#input_format_arrow_case_insensitive_column_matching)                                               | Игнорировать регистр при сопоставлении столбцов Arrow со столбцами ClickHouse.                       | `false` |
-| [`input_format_arrow_allow_missing_columns`](/operations/settings/settings-formats.md/#input_format_arrow_allow_missing_columns)                                                                     | Разрешить отсутствующие столбцы при чтении данных Arrow.                                        | `false` |
-| [`input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference) | Разрешить пропуск столбцов с неподдерживаемыми типами при выводе схемы для формата Arrow. | `false` |
+| Setting                                                                                                                                                                                                      | Description                                                                                      | Default |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|---------|
+| [`output_format_arrow_string_as_string`](/operations/settings/settings-formats.md/#output_format_arrow_string_as_string)                                                                             | Использовать тип Arrow String вместо Binary для столбцов типа String.                           | `false` |
+| [`output_format_orc_compression_method`](/operations/settings/settings-formats.md/#output_format_orc_compression_method)                                                                             | Метод сжатия, используемый в выходном формате ORC. Значение по умолчанию —                      | `none`  |
+| [`input_format_arrow_case_insensitive_column_matching`](/operations/settings/settings-formats.md/#input_format_arrow_case_insensitive_column_matching)                                               | Игнорировать регистр при сопоставлении столбцов Arrow со столбцами ClickHouse.                  | `false` |
+| [`input_format_arrow_allow_missing_columns`](/operations/settings/settings-formats.md/#input_format_arrow_allow_missing_columns)                                                                     | Разрешить отсутствующие столбцы при чтении данных в формате Arrow.                              | `false` |
+| [`input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference) | Разрешить пропуск столбцов с неподдерживаемыми типами при определении схемы для формата Arrow.  | `false` |
 
-Для обмена данными с Hadoop можно использовать [движок таблиц HDFS](/engines/table-engines/integrations/hdfs.md).
+Для обмена данными с Hadoop вы можете использовать [движок таблиц HDFS](/engines/table-engines/integrations/hdfs.md).

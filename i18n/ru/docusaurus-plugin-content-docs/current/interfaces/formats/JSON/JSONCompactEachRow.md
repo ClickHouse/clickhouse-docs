@@ -9,7 +9,7 @@ title: 'JSONCompactEachRow'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
+| Входной | Выходной | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся как массивы, а не как объекты.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используйте JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используйте JSON‑файл со следующими данными под названием `football.json`:
 
 ```json
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]
@@ -52,9 +53,9 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Прочитайте данные в формате `JSONCompactEachRow`:
+Считывайте данные в формате `JSONCompactEachRow`:
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONCompactEachRow
 ```
 
-Результат будет выведен в формате JSON:
+Результат будет в формате JSON:
 
 
 ```json
@@ -86,4 +87,4 @@ FORMAT JSONCompactEachRow
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

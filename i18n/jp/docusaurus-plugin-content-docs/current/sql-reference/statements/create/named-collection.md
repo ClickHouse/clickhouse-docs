@@ -1,5 +1,5 @@
 ---
-description: 'CREATE NAMED COLLECTION ステートメントのドキュメント'
+description: 'CREATE NAMED COLLECTION のリファレンス'
 sidebar_label: 'NAMED COLLECTION'
 slug: /sql-reference/statements/create/named-collection
 title: 'CREATE NAMED COLLECTION'
@@ -31,11 +31,11 @@ key_name3 = 'some value' [[NOT] OVERRIDABLE],
 CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
 ```
 
-**関連するステートメント**
+**関連ステートメント**
 
 * [CREATE NAMED COLLECTION](/sql-reference/statements/alter/named-collection)
 * [DROP NAMED COLLECTION](/sql-reference/statements/drop#drop-function)
 
 **関連項目**
 
-* [Named collectionsガイド](/operations/named-collections.md)
+* [Named collections のガイド](/operations/named-collections.md)

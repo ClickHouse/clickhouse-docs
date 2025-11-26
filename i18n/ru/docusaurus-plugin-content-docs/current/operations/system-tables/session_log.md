@@ -1,6 +1,5 @@
 ---
-description: 'Системная таблица, содержащая информацию обо всех успешных и неуспешных
-  событиях входа в систему и выхода из неё.'
+description: 'Системная таблица, содержащая информацию обо всех успешных и неуспешных входах в систему и выходах из неё.'
 keywords: ['system table', 'session_log']
 slug: /operations/system-tables/session_log
 title: 'system.session_log'
@@ -14,7 +13,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-Содержит сведения обо всех успешных и неуспешных событиях входа в систему и выхода из неё.
+Содержит информацию обо всех успешных и неуспешных событиях входа в систему и выхода из неё.
 
 Столбцы:
 
@@ -23,8 +22,8 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
   * `LoginFailure` — Ошибка входа.
   * `LoginSuccess` — Успешный вход.
   * `Logout` — Выход из системы.
-* `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор аутентификации — UUID, который автоматически генерируется при каждом входе пользователя.
-* `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сессии, передаваемый клиентом через интерфейс [HTTP](../../interfaces/http.md).
+* `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор аутентификации (UUID), который автоматически генерируется при каждом входе пользователя в систему.
+* `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сеанса, который передаётся клиентом через интерфейс [HTTP](../../interfaces/http.md).
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата входа/выхода.
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время входа/выхода.
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время начала входа/выхода с точностью до микросекунд.
@@ -38,23 +37,23 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
   * `KERBEROS`
   * `SSL_CERTIFICATE`
 * `profiles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список профилей, заданных для всех ролей и/или пользователей.
-* `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список ролей, к которым применяется профиль.
+* `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список ролей, для которых применяется профиль.
 * `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — Настройки, которые были изменены при входе/выходе клиента.
-* `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, использованный для входа/выхода.
-* `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт клиента, использованный для входа/выхода.
+* `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, с которого выполнялся вход/выход.
+* `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт клиента, с которого выполнялся вход/выход.
 * `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — Интерфейс, через который был инициирован вход. Возможные значения:
   * `TCP`
   * `HTTP`
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — Имя хоста клиентской машины, на которой запущен [clickhouse-client](../../interfaces/cli.md) или другой TCP-клиент.
-* `client_name` ([String](../../sql-reference/data-types/string.md)) — Имя `clickhouse-client` или другого TCP-клиента.
-* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия `clickhouse-client` или другого TCP-клиента.
-* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Основной номер версии `clickhouse-client` или другого TCP-клиента.
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Второстепенный номер версии `clickhouse-client` или другого TCP-клиента.
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Компонент версии `clickhouse-client` или другого TCP-клиента, отвечающий за номер патча.
-* `failure_reason` ([String](../../sql-reference/data-types/string.md)) — Сообщение исключения, содержащее причину неудачи входа/выхода.
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — Имя хоста клиентской машины, на которой запущен [clickhouse-client](../../interfaces/cli.md) или другой TCP‑клиент.
+* `client_name` ([String](../../sql-reference/data-types/string.md)) — Имя `clickhouse-client` или другого TCP‑клиента.
+* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия `clickhouse-client` или другого TCP‑клиента.
+* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Мажорная версия `clickhouse-client` или другого TCP‑клиента.
+* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Минорная версия `clickhouse-client` или другого TCP‑клиента.
+* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Патч‑версия `clickhouse-client` или другого TCP‑клиента.
+* `failure_reason` ([String](../../sql-reference/data-types/string.md)) — Сообщение исключения, содержащее причину ошибки входа/выхода.
 
 **Пример**
 

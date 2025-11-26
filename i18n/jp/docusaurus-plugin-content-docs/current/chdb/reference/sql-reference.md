@@ -7,7 +7,7 @@ keywords: ['chdb', 'sql reference']
 doc_type: 'reference'
 ---
 
-chdb は、ClickHouse と同じ SQL 構文、ステートメント、エンジン、および関数をサポートします。
+chdb は ClickHouse と同じ SQL 構文、ステートメント、エンジン、および関数をサポートします。
 
 | トピック                      |
 |----------------------------|
@@ -20,4 +20,4 @@ chdb は、ClickHouse と同じ SQL 構文、ステートメント、エンジ�
 | [テーブル関数](/sql-reference/table-functions)     | 
 | [ウィンドウ関数](/sql-reference/window-functions)    |
 
-詳細および使用例については、[ClickHouse SQL リファレンス](/sql-reference) を参照してください。
+詳細および例については、[ClickHouse SQL リファレンス](/sql-reference)を参照してください。

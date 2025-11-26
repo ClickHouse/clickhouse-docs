@@ -6,31 +6,31 @@ title: 'TabSeparatedWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス                                          |
+| Input | Output | エイリアス                                          |
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`TabSeparated`](./TabSeparated.md)形式とは異なり、1行目に列名が、2行目に列の型が書き込まれます。
+[`TabSeparated`](./TabSeparated.md) 形式とは異なり、最初の行にはカラム名が、2 行目にはカラム型が書き込まれます。
 
 :::note
+- [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` の場合、
+入力データのカラムは名前によってテーブル内のカラムにマッピングされます。さらに [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` の場合、名前が不明なカラムはスキップされます。
+それ以外の場合、最初の行はスキップされます。
+- [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 設定が `1` の場合、
+入力データの型はテーブル内の対応するカラムの型と比較されます。それ以外の場合、2 行目はスキップされます。
+:::
 
-- 設定[`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header)が`1`に設定されている場合、
-  入力データの列は名前によってテーブルの列にマッピングされます。設定[`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields)が1に設定されている場合、未知の名前を持つ列はスキップされます。
-  それ以外の場合、1行目はスキップされます。
-- 設定[`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header)が`1`に設定されている場合、
-  入力データの型はテーブルの対応する列の型と比較されます。それ以外の場合、2行目はスキップされます。
-  :::
 
 
-## 使用例 {#example-usage}
+## 使用例
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-以下の`football.tsv`という名前のtsvファイルを使用します：
+次の内容の `football.tsv` という tsv ファイルを使用します。
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -54,15 +54,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`TabSeparatedWithNamesAndTypes`形式でデータを読み取ります：
+`TabSeparatedWithNamesAndTypes` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -70,7 +70,7 @@ FROM football
 FORMAT TabSeparatedWithNamesAndTypes
 ```
 
-出力は、列名と型の2行のヘッダー行を含むタブ区切り形式となります：
+出力はタブ区切り形式となり、列名と型を表す 2 行のヘッダーが付きます。
 
 
 ```tsv

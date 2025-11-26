@@ -1,10 +1,10 @@
 ---
 slug: /integrations/marimo
 sidebar_label: 'marimo'
-description: 'marimo はデータを対話的に扱うための次世代 Python ノートブックです'
-title: 'ClickHouse で marimo を使用する'
+description: 'marimo はデータと対話するための次世代型 Python ノートブックです'
+title: 'ClickHouse での marimo の利用'
 doc_type: 'guide'
-keywords: ['marimo', 'ノートブック', 'データ分析', 'Python', '可視化']
+keywords: ['marimo', 'notebook', 'データ分析', 'python', '可視化']
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,58 +19,49 @@ import run_app_view from '@site/static/images/integrations/sql-clients/marimo/ru
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ClickHouse で marimo を使用する
+# ClickHouse で marimo を使う
 
 <CommunityMaintainedBadge/>
 
-[marimo](https://marimo.io/) は、SQL が組み込まれた Python 向けのオープンソースのリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古くなった状態としてマーク）し、コードと出力の一貫性を保つことで、バグの発生を未然に防ぎます。すべての marimo ノートブックはプレーンな Python として保存され、スクリプトとして実行でき、アプリとしてデプロイすることもできます。
+[marimo](https://marimo.io/) は、SQL が組み込まれた Python 向けのオープンソースのリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古い状態としてマーク）し、コードと出力の一貫性を保つことで、バグの発生を未然に防ぎます。すべての marimo ノートブックはプレーンな Python コードとして保存され、スクリプトとして実行でき、アプリとしてデプロイできます。
 
-<Image img={marimo_connect} size="md" border alt="ClickHouse に接続" />
+<Image img={marimo_connect} size="md" border alt="ClickHouse への接続" />
 
 
 
-## 1. SQLサポート付きmarimoのインストール {#install-marimo-sql}
+## 1. SQL サポート付きの marimo をインストールする
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
 
-これによりlocalhost上で動作するWebブラウザが開きます。
+これにより、localhost を開いた Web ブラウザが起動します。
 
 
-## 2. ClickHouseへの接続 {#connect-to-clickhouse}
+## 2. ClickHouse への接続 {#connect-to-clickhouse}
 
-marimoエディタの左側にあるデータソースパネルに移動し、「Add database」をクリックします。
+marimo エディタ左側のデータソースパネルを開き、「Add database」をクリックします。
 
-<Image img={add_db_panel} size='sm' border alt='新しいデータベースを追加' />
+<Image img={add_db_panel} size="sm" border alt="新しいデータベースを追加" />
 
-データベースの詳細情報の入力が求められます。
+データベースの詳細情報を入力する画面が表示されます。
 
-<Image
-  img={add_db_details}
-  size='md'
-  border
-  alt='データベースの詳細情報を入力'
-/>
+<Image img={add_db_details} size="md" border alt="データベースの詳細情報を入力" />
 
-接続を確立するために実行できるセルが表示されます。
+その後、接続を確立するために実行できるセルが追加されます。
 
-<Image
-  img={run_cell}
-  size='md'
-  border
-  alt='セルを実行してClickHouseに接続'
-/>
+<Image img={run_cell} size="md" border alt="セルを実行して ClickHouse に接続" />
 
 
-## 3. SQLの実行 {#run-sql}
 
-接続を設定したら、新しいSQLセルを作成し、clickhouseエンジンを選択します。
+## 3. SQL を実行する
 
-<Image img={choose_sql_engine} size='md' border alt='SQLエンジンの選択' />
+接続を設定したら、新しい SQL セルを作成し、ClickHouse エンジンを選択できます。
 
-このガイドでは、New York Taxiデータセットを使用します。
+<Image img={choose_sql_engine} size="md" border alt="SQL エンジンを選択" />
+
+このガイドでは、ニューヨークタクシーのデータセットを使用します。
 
 ```sql
 CREATE TABLE trips (
@@ -126,19 +117,14 @@ FROM gcs(
 SELECT * FROM trips LIMIT 1000;
 ```
 
-<Image img={results} size='lg' border alt='データフレームでの結果' />
+<Image img={results} size="lg" border alt="データフレーム内の結果" />
 
-これで、データフレームで結果を表示できるようになりました。ここでは、特定の乗車地点から最も高額な降車地点を可視化します。marimoは、これを支援する複数のUIコンポーネントを提供しています。ドロップダウンで場所を選択し、altairでグラフを作成します。
+これで、結果をデータフレームとして表示できるようになりました。ここでは、特定の `pickup` ロケーションからの最も高額なドロップオフを可視化してみます。marimo には、そのために役立つ複数の UI コンポーネントが用意されています。この例では、ロケーションの選択にドロップダウンを使用し、チャート描画には altair を使用します。
 
-<Image
-  img={dropdown_cell_chart}
-  size='lg'
-  border
-  alt='ドロップダウン、テーブル、グラフの組み合わせ'
-/>
+<Image img={dropdown_cell_chart} size="lg" border alt="ドロップダウン、テーブル、チャートの組み合わせ" />
 
-marimoのリアクティブ実行モデルはSQLクエリにも適用されるため、SQLへの変更は依存セルの下流計算を自動的にトリガーします(または、高コストな計算の場合はオプションでセルを古いものとしてマークします)。そのため、クエリが更新されるとグラフとテーブルが変更されます。
+marimo のリアクティブな実行モデルは SQL クエリにも適用されるため、SQL を変更すると、それに依存するセルの後続計算が自動的に再実行されます（高コストな計算については、オプションでセルを「古い状態」としてマークすることもできます）。そのため、クエリを更新するとチャートとテーブルも更新されます。
 
-また、App Viewに切り替えることで、データ探索用のクリーンなインターフェースを利用できます。
+また、App View を切り替えることで、データ探索に適したシンプルなインターフェースにすることもできます。
 
-<Image img={run_app_view} size='md' border alt='アプリビューの実行' />
+<Image img={run_app_view} size="md" border alt="アプリビューの実行" />

@@ -3,7 +3,7 @@ slug: /architecture/horizontal-scaling
 sidebar_label: 'Масштабирование'
 sidebar_position: 10
 title: 'Масштабирование'
-description: 'Страница с примером архитектуры, обеспечивающей масштабируемость'
+description: 'Страница с описанием примерной архитектуры, обеспечивающей масштабируемость'
 doc_type: 'guide'
 keywords: ['шардинг', 'горизонтальное масштабирование', 'распределённые данные', 'настройка кластера', 'распределение данных']
 ---
@@ -23,13 +23,13 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> В этом примере вы узнаете, как развернуть простой масштабируемый кластер ClickHouse.
-> Будет использовано пять серверов. Два из них используются для шардирования данных.
-> Оставшиеся три сервера используются для координации.
+> В этом примере вы узнаете, как настроить простой масштабируемый кластер ClickHouse.
+> В конфигурацию входит пять серверов: два используются для шардинга данных,
+> а остальные три — для координации.
 
 Архитектура кластера, который вы будете настраивать, показана ниже:
 
-<Image img={ShardingArchitecture} size="md" alt="Схема архитектуры для 2 шардов и 1 реплики" />
+<Image img={ShardingArchitecture} size="md" alt="Схема архитектуры с 2 шардами и 1 репликой" />
 
 <DedicatedKeeperServers />
 
@@ -43,22 +43,23 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 <VerticalStepper level="h2">
 
 
-## Настройка структуры каталогов и тестовой среды {#set-up}
+## Настройка структуры каталогов и тестовой среды
 
 <ExampleFiles />
 
-В этом руководстве для настройки кластера ClickHouse используется [Docker Compose](https://docs.docker.com/compose/). Данная конфигурация может быть адаптирована для работы на отдельных локальных машинах, виртуальных машинах или облачных инстансах.
+В этом руководстве вы будете использовать [Docker Compose](https://docs.docker.com/compose/)
+для развертывания кластера ClickHouse. Эту конфигурацию можно адаптировать
+для работы на отдельных локальных машинах, виртуальных машинах или облачных инстансах.
 
-Выполните следующие команды для создания структуры каталогов для этого примера:
+Выполните следующие команды, чтобы настроить структуру каталогов для этого примера:
 
 ```bash
 mkdir cluster_2S_1R
 cd cluster_2S_1R
-
 ```
 
 
-# Создание каталогов clickhouse-keeper
+# Создание директорий clickhouse-keeper
 
 for i in {01..03}; do
 mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
@@ -174,13 +175,13 @@ done
 <ConfigExplanation />
 
 
-## Настройка узлов ClickHouse {#configure-clickhouse-servers}
+## Настройка узлов ClickHouse
 
-### Настройка сервера {#server-setup}
+### Настройка сервера
 
-Теперь отредактируйте каждый пустой файл конфигурации `config.xml`, расположенный в
-`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Выделенные
-ниже строки необходимо изменить в соответствии с конкретным узлом:
+Теперь измените каждый пустой конфигурационный файл `config.xml`, расположенный в
+`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Строки, которые
+выделены ниже, необходимо изменить так, чтобы они были уникальны для каждого узла:
 
 ```xml
 <clickhouse replace="true">
@@ -192,7 +193,7 @@ done
         <count>3</count>
     </logger>
     <!--highlight-next-line-->
-    <display_name>cluster_2S_1R node 1</display_name>
+    <display_name>cluster_2S_1R узел 1</display_name>
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
@@ -251,14 +252,14 @@ done
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
 
-Каждый раздел приведенного выше конфигурационного файла подробно описан ниже.
+Каждый раздел приведённого выше файла конфигурации подробно описан ниже.
 
-#### Сеть и журналирование {#networking}
+#### Сеть и логирование
 
 <ListenHost />
 
-Журналирование настраивается в блоке `<logger>`. Данная конфигурация создает
-журнал отладки, который будет ротироваться при достижении размера 1000M три раза:
+Логирование задаётся в блоке `<logger>`. В этой примерной конфигурации
+включён отладочный лог, который будет ротироваться три раза при достижении размера 1000M:
 
 ```xml
 <logger>
@@ -270,22 +271,22 @@ done
 </logger>
 ```
 
-Дополнительную информацию о настройке журналирования см. в комментариях
-стандартного [конфигурационного файла](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) ClickHouse.
+Для получения дополнительной информации о конфигурации логирования см. комментарии в
+стандартном [конфигурационном файле](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) ClickHouse.
 
-#### Конфигурация кластера {#cluster-configuration}
+#### Конфигурация кластера
 
-Конфигурация кластера настраивается в блоке `<remote_servers>`.
-Здесь определяется имя кластера `cluster_2S_1R`.
+Конфигурация кластера задается в блоке `<remote_servers>`.
+Здесь задается имя кластера `cluster_2S_1R`.
 
 
 Блок `<cluster_2S_1R></cluster_2S_1R>` определяет структуру кластера,
 используя настройки `<shard></shard>` и `<replica></replica>`, и служит
-шаблоном для распределённых DDL-запросов — запросов, которые выполняются по всему
-кластеру с использованием конструкции `ON CLUSTER`. По умолчанию распределённые DDL-запросы
-разрешены, но их также можно отключить с помощью настройки `allow_distributed_ddl_queries`.
+шаблоном для распределённых DDL‑запросов, то есть запросов, выполняющихся по всему
+кластеру с использованием предложения `ON CLUSTER`. По умолчанию распределённые
+DDL‑запросы разрешены, но их также можно отключить параметром `allow_distributed_ddl_queries`.
 
-Параметр `internal_replication` по умолчанию оставлен равным false, так как на каждый шард приходится только одна реплика.
+Параметр `internal_replication` по умолчанию оставлен со значением `false`, поскольку в каждом шарде только одна реплика.
 
 ```xml
 <remote_servers>
@@ -308,13 +309,13 @@ done
 
 <ServerParameterTable />
 
-#### Конфигурация Keeper {#keeper-config-explanation}
+#### Конфигурация Keeper
 
-Секция `<ZooKeeper>` указывает ClickHouse, где запущен ClickHouse Keeper (или ZooKeeper).
-Поскольку мы используем кластер ClickHouse Keeper, необходимо указать каждый узел `<node>` кластера
-вместе с его именем хоста и номером порта, используя теги `<host>` и `<port>` соответственно.
+Раздел `<ZooKeeper>` указывает ClickHouse, где запущен ClickHouse Keeper (или ZooKeeper).
+Поскольку мы используем кластер ClickHouse Keeper, необходимо указать каждый `<node>` кластера,
+а также его имя хоста и номер порта с помощью тегов `<host>` и `<port>` соответственно.
 
-Настройка ClickHouse Keeper описана на следующем шаге руководства.
+Конфигурация ClickHouse Keeper описана на следующем шаге этого руководства.
 
 ```xml
 <zookeeper>
@@ -338,9 +339,9 @@ done
 в производственных средах мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных хостах.
 :::
 
-#### Конфигурация макросов {#macros-config-explanation}
+#### Конфигурация макросов
 
-Кроме того, секция `<macros>` используется для определения подстановок параметров для
+Кроме того, раздел `<macros>` используется для определения подстановок параметров для
 реплицируемых таблиц. Они перечислены в `system.macros` и позволяют использовать подстановки
 вида `{shard}` и `{replica}` в запросах.
 
@@ -352,12 +353,12 @@ done
 ```
 
 :::note
-Они будут определены индивидуально в зависимости от структуры кластера.
+Эти параметры будут определяться индивидуально в зависимости от топологии кластера.
 :::
 
-### Конфигурация пользователей {#user-config}
+### Конфигурация пользователей
 
-Теперь измените каждый пустой конфигурационный файл `users.xml`, расположенный в
+Теперь измените каждый пустой файл конфигурации `users.xml`, расположенный в каталоге
 `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d`, следующим образом:
 
 ```xml title="/users.d/users.xml"
@@ -406,11 +407,11 @@ done
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml)    |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml)    |
 
-В этом примере пользователь по умолчанию (`default`) для простоты настроен без пароля.
+В этом примере для простоты пользователь по умолчанию настроен без пароля.
 На практике такой подход не рекомендуется.
 
 :::note
-В этом примере каждый файл `users.xml` идентичен для всех узлов кластера.
+В этом примере каждый файл `users.xml` одинаков на всех узлах кластера.
 :::
 
 
@@ -419,57 +420,57 @@ done
 
 ### Настройка Keeper {#configuration-explanation}
 
-<KeeperConfig />
+<KeeperConfig/>
 
-| Директория                                              | Файл                                                                                                                                                                                         |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Каталог                                                        | Файл                                                                                                                                                                                         |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
 | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
 | `fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
 
-<KeeperConfigExplanation />
+<KeeperConfigExplanation/>
 
-<CloudTip />
+<CloudTip/>
 
 
-## Проверка настройки {#test-the-setup}
+
+## Проверьте установку
 
 Убедитесь, что Docker запущен на вашем компьютере.
-Запустите кластер командой `docker-compose up` из корневого каталога `cluster_2S_1R`:
+Запустите кластер с помощью команды `docker-compose up` из корневого каталога `cluster_2S_1R`:
 
 ```bash
 docker-compose up -d
 ```
 
-Вы увидите, как Docker начнёт загружать образы ClickHouse и Keeper,
-а затем запустит контейнеры:
+Вы должны увидеть, что Docker начинает загружать образы ClickHouse и Keeper, а затем запускать контейнеры:
 
 ```bash
-[+] Running 6/6
- ✔ Network cluster_2s_1r_default   Created
- ✔ Container clickhouse-keeper-03  Started
- ✔ Container clickhouse-keeper-02  Started
- ✔ Container clickhouse-keeper-01  Started
- ✔ Container clickhouse-01         Started
- ✔ Container clickhouse-02         Started
+[+] Запущено 6/6
+ ✔ Network cluster_2s_1r_default   Создана
+ ✔ Container clickhouse-keeper-03  Запущен
+ ✔ Container clickhouse-keeper-02  Запущен
+ ✔ Container clickhouse-keeper-01  Запущен
+ ✔ Container clickhouse-01         Запущен
+ ✔ Container clickhouse-02         Запущен
 ```
 
 Чтобы убедиться, что кластер работает, подключитесь к `clickhouse-01` или `clickhouse-02` и выполните
-следующий запрос. Ниже показана команда для подключения к первому узлу:
+следующий запрос. Ниже приведена команда для подключения к первому узлу:
 
 
 ```bash
-# Подключение к любому узлу
+# Подключитесь к любому узлу
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-Если всё прошло успешно, появится приглашение клиента ClickHouse:
+Если всё прошло успешно, вы увидите приглашение командной строки клиента ClickHouse:
 
 ```response
 cluster_2S_1R node 1 :)
 ```
 
-Выполните следующий запрос, чтобы проверить, какие топологии кластера определены для каких хостов:
+Выполните следующий запрос, чтобы проверить, какие топологии кластеров заданы для каких хостов:
 
 ```sql title="Query"
 SELECT 
@@ -508,33 +509,32 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus />
 
-Таким образом, вы успешно развернули кластер ClickHouse с одним шардом и двумя репликами.
-На следующем шаге вы создадите таблицу в кластере.
+На этом этапе вы успешно развернули кластер ClickHouse с одним шардом и двумя репликами.
+На следующем шаге вы создадите таблицу в этом кластере.
 
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных
 
-Теперь, когда вы убедились, что кластер правильно настроен и работает,
-вы создадите ту же таблицу, что использовалась в руководстве по примеру набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
-Набор данных содержит около 30 миллионов строк с ценами на недвижимость
-в Англии и Уэльсе с 1995 года.
+Теперь, когда вы убедились, что кластер корректно настроен и запущен,
+вы будете воссоздавать ту же таблицу, которая используется в учебном примере набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
+Она содержит около 30 миллионов строк с ценами сделок по объектам недвижимости
+в Англии и Уэльсе, начиная с 1995 года.
 
-Подключитесь к клиенту каждого хоста, выполнив следующие команды в отдельных вкладках
-или окнах терминала:
+Подключитесь к клиенту на каждом хосте, выполнив каждую из следующих команд в отдельных вкладках или окнах терминала:
 
 ```bash
 docker exec -it clickhouse-01 clickhouse-client
 docker exec -it clickhouse-02 clickhouse-client
 ```
 
-Вы можете выполнить приведенный ниже запрос из clickhouse-client на каждом хосте, чтобы убедиться,
-что пока не создано никаких баз данных, кроме стандартных:
+Вы можете выполнить приведённый ниже запрос через `clickhouse-client` на каждом хосте, чтобы убедиться, что
+ещё не создано ни одной базы данных, за исключением стандартных:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW DATABASES;
 ```
 
-```response title="Ответ"
+```response title="Response"
    ┌─name───────────────┐
 1. │ INFORMATION_SCHEMA │
 2. │ default            │
@@ -543,18 +543,17 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-Из клиента `clickhouse-01` выполните следующий **распределенный** DDL-запрос с использованием
-конструкции `ON CLUSTER` для создания новой базы данных с именем `uk`:
+С клиента `clickhouse-01` выполните следующий **распределённый** DDL-запрос с использованием конструкции `ON CLUSTER`, чтобы создать новую базу данных с именем `uk`:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS uk
+CREATE DATABASE IF NOT EXISTS uk 
 -- highlight-next-line
 ON CLUSTER cluster_2S_1R;
 ```
 
-Вы можете снова выполнить тот же запрос из клиента на каждом хосте,
-чтобы убедиться, что база данных была создана на всем кластере, несмотря на то, что
-запрос был выполнен только на `clickhouse-01`:
+Вы можете снова выполнить тот же запрос, что и раньше, из клиента на каждом хосте,
+чтобы убедиться, что база данных была создана во всём кластере, хотя запрос выполнялся
+только на `clickhouse-01`:
 
 ```sql
 SHOW DATABASES;
@@ -572,10 +571,10 @@ SHOW DATABASES;
 ```
 
 
-## Создание таблицы в кластере {#creating-a-table}
+## Создайте таблицу в кластере
 
-Теперь, когда база данных создана, создадим таблицу.
-Выполните следующий запрос из клиента любого хоста:
+Теперь, когда база данных создана, создайте таблицу.
+Выполните следующий запрос с любого из клиентских хостов:
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
@@ -601,30 +600,30 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-Обратите внимание, что этот запрос идентичен запросу из исходной инструкции `CREATE` в
-руководстве по примеру набора данных [цен на недвижимость в Великобритании](/getting-started/example-datasets/uk-price-paid),
+Обратите внимание, что он идентичен запросу, использованному в исходном операторе `CREATE` в учебнике по демонстрационному набору данных
+[UK property prices](/getting-started/example-datasets/uk-price-paid),
 за исключением предложения `ON CLUSTER`.
 
-Предложение `ON CLUSTER` предназначено для распределённого выполнения DDL-запросов (Data Definition Language),
-таких как `CREATE`, `DROP`, `ALTER` и `RENAME`, обеспечивая применение
-изменений схемы на всех узлах кластера.
+Предложение `ON CLUSTER` предназначено для распределённого выполнения DDL (Data Definition Language, язык описания данных)
+запросов, таких как `CREATE`, `DROP`, `ALTER` и `RENAME`, гарантируя, что такие
+изменения схемы применяются на всех узлах кластера.
 
-Вы можете выполнить приведённый ниже запрос из клиента каждого хоста, чтобы убедиться, что таблица создана во всём кластере:
+Вы можете выполнить приведённый ниже запрос из клиента на каждом хосте, чтобы убедиться, что таблица создана на всех узлах кластера:
 
-```sql title="Запрос"
+```sql title="Query"
 SHOW TABLES IN uk;
 ```
 
-```response title="Ответ"
+```response title="Response"
    ┌─name────────────────┐
 1. │ uk_price_paid_local │
    └─────────────────────┘
 ```
 
-Прежде чем вставлять данные о ценах на недвижимость в Великобритании, проведём небольшой эксперимент, чтобы увидеть,
-что происходит при вставке данных в обычную таблицу с любого из хостов.
+Прежде чем вставлять данные о стоимости недвижимости в Великобритании, проведём небольшой эксперимент, чтобы увидеть,
+что происходит при вставке данных в обычную таблицу с любого узла.
 
-Создайте тестовую базу данных и таблицу с помощью следующего запроса с любого хоста:
+Создайте тестовую базу данных и таблицу следующим запросом на любом из узлов:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_2S_1R;
@@ -637,7 +636,7 @@ ENGINE = MergeTree()
 ORDER BY id;
 ```
 
-Теперь с `clickhouse-01` выполните следующий запрос `INSERT`:
+Теперь на `clickhouse-01` выполните следующий запрос `INSERT`:
 
 ```sql
 INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
@@ -645,51 +644,51 @@ INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
 
 Переключитесь на `clickhouse-02` и выполните следующий запрос `INSERT`:
 
-```sql title="Запрос"
+```sql title="Query"
 INSERT INTO test.test_table (id, name) VALUES (1, 'Alexey Milovidov');
 ```
 
-Теперь с `clickhouse-01` или `clickhouse-02` выполните следующий запрос:
+Теперь на `clickhouse-01` или `clickhouse-02` выполните следующий запрос:
 
 ```sql
--- from clickhouse-01
+-- на clickhouse-01
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Clicky McClickface │
 --   └────┴────────────────────┘
 
---from clickhouse-02
+-- на clickhouse-02
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Alexey Milovidov   │
 --   └────┴────────────────────┘
 ```
 
-Вы заметите, что в отличие от таблицы `ReplicatedMergeTree` возвращается только та строка, которая была вставлена в таблицу на данном
+Обратите внимание, что в отличие от таблицы `ReplicatedMergeTree` будет возвращена только та строка, которая была вставлена в таблицу на данном
 конкретном хосте, а не обе строки.
 
-Чтобы читать данные из двух шардов, необходим интерфейс, который может обрабатывать запросы
-ко всем шардам, объединяя данные из обоих шардов при выполнении запросов SELECT
+Чтобы прочитать данные с двух шардов, нам нужен интерфейс, который может обрабатывать запросы
+сразу по всем шардам, объединяя данные с обоих шардов при выполнении запросов SELECT
 или вставляя данные в оба шарда при выполнении запросов INSERT.
 
-В ClickHouse этот интерфейс называется **распределённой таблицей** и создаётся с помощью
-движка таблиц [`Distributed`](/engines/table-engines/special/distributed). Рассмотрим, как он работает.
+В ClickHouse этот интерфейс называется **распределённой таблицей**, которую мы создаём с помощью
+движка таблицы [`Distributed`](/engines/table-engines/special/distributed). Давайте посмотрим, как это работает.
 
 
-## Создание распределённой таблицы {#create-distributed-table}
+## Создание распределённой таблицы
 
-Создайте распределённую таблицу следующим запросом:
+Создайте распределённую таблицу с помощью следующего запроса:
 
 ```sql
 CREATE TABLE test.test_table_dist ON CLUSTER cluster_2S_1R AS test.test_table
 ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
 ```
 
-В этом примере функция `rand()` используется в качестве ключа шардирования, чтобы
-данные при вставке случайным образом распределялись по шардам.
+В этом примере в качестве ключа шардинга выбрана функция `rand()`, чтобы
+операции вставки случайным образом распределялись по шардам.
 
-Теперь выполните запрос к распределённой таблице с любого хоста — вы получите
-обе строки, которые были вставлены на двух хостах, в отличие от предыдущего примера:
+Теперь выполните запрос к распределённой таблице с любого хоста, и вы получите
+обе строки, которые были вставлены на двух хостах, в отличие от нашего предыдущего примера:
 
 ```sql
 SELECT * FROM test.test_table_dist;
@@ -702,9 +701,9 @@ SELECT * FROM test.test_table_dist;
    └────┴────────────────────┘
 ```
 
-Выполним то же самое для данных о ценах на недвижимость в Великобритании. С любого клиента
-выполните следующий запрос для создания распределённой таблицы на основе существующей таблицы,
-которую мы создали ранее с помощью `ON CLUSTER`:
+Давайте проделаем то же самое с нашими данными о ценах на недвижимость в Великобритании. С любого из хостов-клиентов
+выполните следующий запрос, чтобы создать распределённую таблицу, используя уже существующую таблицу,
+которую мы ранее создали с помощью `ON CLUSTER`:
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -713,9 +712,9 @@ ENGINE = Distributed('cluster_2S_1R', 'uk', 'uk_price_paid_local', rand());
 ```
 
 
-## Вставка данных в распределённую таблицу {#inserting-data-into-distributed-table}
+## Вставка данных в распределённую таблицу
 
-Подключитесь к любому из хостов и вставьте данные:
+Теперь подключитесь к одному из хостов и вставьте данные:
 
 ```sql
 INSERT INTO uk.uk_price_paid_distributed
@@ -724,9 +723,9 @@ SELECT
     parseDateTimeBestEffortUS(time) AS date,
     splitByChar(' ', postcode)[1] AS postcode1,
     splitByChar(' ', postcode)[2] AS postcode2,
-    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['таунхаус', 'двухквартирный', 'отдельностоящий', 'квартира', 'другое']) AS type,
     b = 'Y' AS is_new,
-    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    transform(c, ['F', 'L', 'U'], ['полная собственность', 'долгосрочная аренда', 'неизвестно']) AS duration,
     addr1,
     addr2,
     street,
@@ -756,33 +755,32 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-После вставки данных можно проверить количество строк с помощью распределённой
-таблицы:
+После вставки данных вы можете проверить количество строк в распределённой таблице:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT count(*)
 FROM uk.uk_price_paid_distributed
 ```
 
-```response title="Ответ"
+```response title="Response"
    ┌──count()─┐
-1. │ 30212555 │ -- 30,21 млн
+1. │ 30212555 │ -- 30,21 миллиона
    └──────────┘
 ```
 
-При выполнении следующего запроса на любом из хостов вы увидите, что данные
-распределены по шардам более или менее равномерно (учитывайте, что выбор шарда для вставки
-определялся функцией `rand()`, поэтому результаты могут отличаться):
+Если вы выполните следующий запрос на любом из хостов, вы увидите, что данные были
+более или менее равномерно распределены по шардам (с учётом того, что выбор шарда, в который выполняется вставка,
+задавался с помощью `rand()`, поэтому результаты у вас могут отличаться):
 
 ```sql
--- from clickhouse-01
+-- из clickhouse-01
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
 -- 1. │ 15107353 │ -- 15,11 млн
 --    └──────────┘
 
---from clickhouse-02
+--из clickhouse-02
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
@@ -790,57 +788,53 @@ FROM uk.uk_price_paid_local
 --    └──────────┘
 ```
 
-Что произойдёт при отказе одного из хостов? Смоделируем эту ситуацию, остановив
+Что произойдёт, если один из хостов откажет? Давайте смоделируем это, выключив
 `clickhouse-01`:
 
 ```bash
 docker stop clickhouse-01
 ```
 
-Убедитесь, что хост остановлен, выполнив команду:
+Убедитесь, что хост недоступен, выполнив:
 
 ```bash
 docker-compose ps
 ```
 
-```response title="Ответ"
-NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
-clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
-clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
-clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
-clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
+```response title="Response"
+ИМЯ                    ОБРАЗ                                        КОМАНДА            СЕРВИС                 СОЗДАНО         СТАТУС          ПОРТЫ
+clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X минут назад    Работает X минут 127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
+clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X минут назад    Работает X минут 127.0.0.1:9181->9181/tcp
+clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X минут назад    Работает X минут 127.0.0.1:9182->9181/tcp
+clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X минут назад    Работает X минут 127.0.0.1:9183->9181/tcp
 ```
 
-Теперь на `clickhouse-02` выполните тот же запрос SELECT к распределённой
-таблице:
+Теперь с узла `clickhouse-02` выполните тот же запрос SELECT, который мы ранее выполняли на распределённой таблице:
 
 ```sql
 SELECT count(*)
 FROM uk.uk_price_paid_distributed
 ```
 
-```response title="Ответ"
+```response title="Response"
 Получено исключение от сервера (версия 25.5.2):
-Код: 279. DB::Exception: Получено от localhost:9000. DB::Exception: Все попытки соединения завершились неудачей. Лог:
-
+Код: 279. DB::Exception: Получено от localhost:9000. DB::Exception: Все попытки соединения не удались. Лог:
 ```
 
 
-Code: 32. DB::Exception: Попытка чтения после конца файла. (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (version 25.5.2.47 (официальная сборка))
-Code: 209. DB::NetException: Тайм-аут: время ожидания подключения истекло: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET&#95;TIMEOUT) (version 25.5.2.47 (официальная сборка))
+Code: 32. DB::Exception: Попытка чтения после конца файла. (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (version 25.5.2.47 (official build))
+Code: 209. DB::NetException: Тайм-аут: истекло время ожидания подключения: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET&#95;TIMEOUT) (version 25.5.2.47 (official build))
 #highlight-next-line
-Code: 198. DB::NetException: Не удалось определить адрес хоста: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS&#95;ERROR) (version 25.5.2.47 (официальная сборка))
+Code: 198. DB::NetException: Не удалось найти адрес хоста: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS&#95;ERROR) (version 25.5.2.47 (official build))
 
-: Во время выполнения Remote. (ALL&#95;CONNECTION&#95;TRIES&#95;FAILED)
+: При выполнении Remote. (ALL&#95;CONNECTION&#95;TRIES&#95;FAILED)
 
 ```
 
-К сожалению, наш кластер не обладает отказоустойчивостью. При отказе одного из хостов
-кластер считается неработоспособным, и запрос завершается ошибкой, в отличие от реплицируемой
-таблицы из [предыдущего примера](/architecture/replication), где
+К сожалению, наш кластер не является отказоустойчивым. Если один из хостов выходит из строя,
+кластер считается неработоспособным и запрос завершается неудачей, в отличие от реплицированной
+таблицы, которую мы рассмотрели в [предыдущем примере](/architecture/replication), где
 мы могли вставлять данные даже при отказе одного из хостов.
-
-</VerticalStepper>
 
 </VerticalStepper>
 ```
@@ -848,14 +842,14 @@ Code: 198. DB::NetException: Не удалось определить адрес
 
 ## Заключение {#conclusion}
 
-Преимущество данной топологии кластера заключается в том, что данные распределяются по
-отдельным хостам, при этом каждый узел использует вдвое меньше дискового пространства. Что ещё важнее, запросы
-обрабатываются на обоих шардах, что повышает эффективность использования
-памяти и снижает нагрузку на подсистему ввода-вывода каждого хоста.
+Преимущество такой топологии кластера заключается в том, что данные распределяются
+по отдельным хостам и используют вдвое меньше дискового пространства на узел. Что ещё важнее, запросы
+обрабатываются на обоих шардах, что эффективнее с точки зрения использования памяти
+и снижает объём операций ввода-вывода на каждый хост.
 
-Основным недостатком данной топологии кластера является, разумеется, то, что при потере одного из
-хостов обработка запросов становится невозможной.
+Основной недостаток такой топологии кластера, разумеется, в том, что потеря одного из 
+хостов не позволяет обслуживать запросы.
 
-В [следующем примере](/architecture/cluster-deployment) мы рассмотрим, как
-настроить кластер с двумя шардами и двумя репликами, обеспечивающий одновременно масштабируемость и
-отказоустойчивость.
+В [следующем примере](/architecture/cluster-deployment) мы рассмотрим, как 
+настроить кластер с двумя шардами и двумя репликами, обеспечивающий как масштабируемость,
+так и отказоустойчивость.

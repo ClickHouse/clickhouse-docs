@@ -7,12 +7,12 @@ doc_type: 'reference'
 
 # EXISTS
 
-`EXISTS` 运算符用于检查子查询结果中的记录数量。如果结果为空，则运算符返回 `0`；否则返回 `1`。
+`EXISTS` 运算符用于检查子查询结果中记录的数量。如果结果为空，则运算符返回 `0`；否则返回 `1`。
 
-`EXISTS` 也可以用于 [WHERE](../../sql-reference/statements/select/where.md) 子句中。
+`EXISTS` 也可以在 [WHERE](../../sql-reference/statements/select/where.md) 子句中使用。
 
 :::tip\
-在子查询中不支持引用主查询中的表和列。
+子查询中不支持引用主查询中的表和列。
 :::
 
 **语法**
@@ -51,7 +51,7 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 └─────────┘
 ```
 
-包含返回空结果的子查询的查询：
+带有返回空结果的子查询的查询：
 
 ```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);

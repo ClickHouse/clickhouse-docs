@@ -1,76 +1,77 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/all-in-one
-title: "Всё в одном"
+title: 'Все в одном'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 0
-description: "Развертывание ClickStack в конфигурации «Всё в одном» — стек наблюдаемости ClickHouse"
-doc_type: "guide"
-keywords: ["ClickStack", "observability", "all-in-one", "deployment"]
+description: 'Развертывание ClickStack по схеме «все в одном» — стек наблюдаемости ClickHouse'
+doc_type: 'guide'
+keywords: ['ClickStack', 'наблюдаемость', 'все-в-одном', 'развертывание']
 ---
 
-import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
-import Image from "@theme/IdealImage"
-import hyperdx_login from "@site/static/images/use-cases/observability/hyperdx-login.png"
-import hyperdx_logs from "@site/static/images/use-cases/observability/hyperdx-logs.png"
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import Image from '@theme/IdealImage';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 
-Этот комплексный Docker-образ включает все компоненты ClickStack:
+Этот универсальный Docker-образ включает все компоненты ClickStack:
 
-- **ClickHouse**
-- **HyperDX**
-- **Коллектор OpenTelemetry (OTel)** (предоставляет OTLP на портах `4317` и `4318`)
-- **MongoDB** (для сохранения состояния приложения)
+* **ClickHouse**
+* **HyperDX**
+* **Сборщик OpenTelemetry (OTel)** (экспортирует OTLP на портах `4317` и `4318`)
+* **MongoDB** (для сохранения состояния приложения)
 
-Эта конфигурация включает аутентификацию, обеспечивая сохранение дашбордов, оповещений и сохраненных поисковых запросов между сеансами и для разных пользователей.
+Этот вариант поддерживает аутентификацию, позволяя сохранять панели мониторинга, оповещения и сохранённые поисковые запросы между сеансами и пользователями.
 
-### Подходит для {#suitable-for}
+### Подходит для
 
-- Демонстраций
-- Локального тестирования полного стека
+* Демонстраций
+* Локального тестирования полного стека
 
 
-## Шаги развертывания {#deployment-steps}
-
-<br />
+## Этапы развертывания {#deployment-steps}
+<br/>
 
 <VerticalStepper headerLevel="h3">
 
 ### Развертывание с помощью Docker {#deploy-with-docker}
 
-Следующая команда запустит сборщик OpenTelemetry (на портах 4317 и 4318) и пользовательский интерфейс HyperDX (на порту 8080).
+Следующая команда запустит коллектор OpenTelemetry (на портах 4317 и 4318) и интерфейс HyperDX (на порту 8080).
 
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-### Переход к пользовательскому интерфейсу HyperDX {#navigate-to-hyperdx-ui}
+### Откройте интерфейс HyperDX {#navigate-to-hyperdx-ui}
 
-Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к пользовательскому интерфейсу HyperDX.
+Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
-Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям.
+Создайте пользователя, указав имя пользователя и пароль, соответствующий требованиям. 
 
-При нажатии на кнопку `Create` будут созданы источники данных для интегрированного экземпляра ClickHouse.
+После нажатия кнопки `Create` будут созданы источники данных для встроенного экземпляра ClickHouse.
 
-<Image img={hyperdx_login} alt='Пользовательский интерфейс HyperDX' size='lg' />
+<Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg"/>
 
-Пример использования альтернативного экземпляра ClickHouse см. в разделе [«Создание подключения к ClickHouse Cloud»](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+Пример использования альтернативного экземпляра ClickHouse см. в разделе ["Создание подключения ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-### Загрузка данных {#ingest-data}
+### Приём данных {#ingest-data}
 
-Информацию о загрузке данных см. в разделе [«Загрузка данных»](/use-cases/observability/clickstack/ingesting-data).
+Инструкции по приёму данных см. в разделе ["Приём данных"](/use-cases/observability/clickstack/ingesting-data).
 
 </VerticalStepper>
 
 
-## Сохранение данных и настроек {#persisting-data-and-settings}
 
-Для сохранения данных и настроек между перезапусками контейнера необходимо изменить приведенную выше команду docker, добавив монтирование путей `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. Например:
+## Постоянное хранение данных и настроек {#persisting-data-and-settings}
+
+Чтобы сохранять данные и настройки при перезапусках контейнера, пользователи могут изменить приведённую выше docker-команду, смонтировав каталоги `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. Например:
+
 
 
 ```shell
-# создание необходимых директорий
+# убедитесь, что каталоги существуют
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# модификация команды для монтирования путей
+# измените команду для монтирования путей
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -82,28 +83,29 @@ docker run \
 ```
 
 
-## Развертывание в production {#deploying-to-production}
+## Развертывание в продуктивной среде {#deploying-to-production}
 
-Этот вариант не следует использовать в production по следующим причинам:
+Этот вариант не следует использовать в продуктивной среде по следующим причинам:
 
-- **Непостоянное хранилище:** Все данные хранятся с использованием встроенной файловой системы overlay Docker. Такая конфигурация не обеспечивает производительность при масштабировании, и данные будут потеряны при удалении или перезапуске контейнера — если только пользователи не [смонтируют необходимые пути к файлам](#persisting-data-and-settings).
-- **Отсутствие изоляции компонентов:** Все компоненты работают в одном контейнере Docker. Это препятствует независимому масштабированию и мониторингу, а также применяет любые ограничения `cgroup` глобально ко всем процессам. В результате компоненты могут конкурировать за ресурсы CPU и память.
+- **Непостоянное хранилище данных:** Все данные сохраняются с использованием нативной overlay‑файловой системы Docker. Такая конфигурация не обеспечивает производительности при масштабировании, а данные будут потеряны при удалении или перезапуске контейнера, если только не будут [смонтированы необходимые файловые пути](#persisting-data-and-settings).
+- **Отсутствие изоляции компонентов:** Все компоненты работают в одном Docker-контейнере. Это не позволяет независимо масштабировать и мониторить их, а также означает, что любые ограничения `cgroup` применяются глобально ко всем процессам. В результате компоненты могут конкурировать за ресурсы CPU и памятью.
 
 
-## Настройка портов {#customizing-ports-deploy}
 
-Если необходимо изменить порты приложения (8080) или API (8000), на которых работает HyperDX Local, нужно модифицировать команду `docker run` для перенаправления соответствующих портов и установки нескольких переменных окружения.
+## Настройка портов
 
-Порты OpenTelemetry можно настроить простым изменением флагов перенаправления портов. Например, замена `-p 4318:4318` на `-p 4999:4318` изменит HTTP-порт OpenTelemetry на 4999.
+Если вам нужно изменить порты приложения (8080) или API (8000), на которых запускается HyperDX Local, вам потребуется изменить команду `docker run`, чтобы пробросить соответствующие порты и задать несколько переменных окружения.
+
+Порты OpenTelemetry можно изменить, просто скорректировав параметры проброса портов. Например, заменить `-p 4318:4318` на `-p 4999:4318`, чтобы изменить HTTP-порт OpenTelemetry на 4999.
 
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
 
-## Использование ClickHouse Cloud {#using-clickhouse-cloud}
+## Использование ClickHouse Cloud
 
-Данный дистрибутив можно использовать с ClickHouse Cloud. Несмотря на то, что локальный экземпляр ClickHouse всё равно будет развёрнут (но не будет использоваться), коллектор OTel можно настроить для работы с экземпляром ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD`.
+Этот дистрибутив можно использовать с ClickHouse Cloud. При этом локальный экземпляр ClickHouse по-прежнему будет развернут, но не использоваться, а OTel collector можно настроить на работу с экземпляром ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD`.
 
 Например:
 
@@ -115,14 +117,14 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-Значение `CLICKHOUSE_ENDPOINT` должно содержать HTTPS-адрес конечной точки ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+`CLICKHOUSE_ENDPOINT` должен быть HTTPS-эндпоинтом ClickHouse Cloud с указанием порта `8443`, например `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-После подключения к интерфейсу HyperDX перейдите в раздел [`Team Settings`](http://localhost:8080/team) и создайте подключение к вашему сервису ClickHouse Cloud, а затем настройте необходимые источники данных. Пример процесса настройки см. [здесь](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+После подключения к интерфейсу HyperDX перейдите в [`Team Settings`](http://localhost:8080/team) и создайте подключение к вашему сервису ClickHouse Cloud, а затем добавьте необходимые источники. Пример последовательности действий см. [здесь](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 
-## Настройка сборщика OpenTelemetry {#configuring-collector}
+## Настройка коллектора OTel
 
-При необходимости конфигурацию сборщика OTel можно изменить — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
+Конфигурацию коллектора OTel при необходимости можно изменить — см. раздел [&quot;Изменение конфигурации&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
 <JSONSupport />
 

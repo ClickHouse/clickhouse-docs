@@ -1,5 +1,6 @@
 ---
-description: 'Предоставляет интерфейс только для чтения, аналогичный таблице, для работы с таблицами Delta Lake в Amazon S3.'
+description: 'Предоставляет табличный интерфейс только для чтения к таблицам Delta Lake в
+  Amazon S3.'
 sidebar_label: 'deltaLake'
 sidebar_position: 45
 slug: /sql-reference/table-functions/deltalake
@@ -11,13 +12,13 @@ doc_type: 'reference'
 
 # Табличная функция deltaLake
 
-Предоставляет интерфейс в виде таблицы (только для чтения) к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
+Предоставляет табличный интерфейс только для чтения к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
-`deltaLake` является псевдонимом `deltaLakeS3` и поддерживается для обеспечения совместимости.
+`deltaLake` — это псевдоним `deltaLakeS3` и поддерживается для обеспечения совместимости.
 
 ```sql
 deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -32,16 +33,18 @@ deltaLakeLocal(path, [,format])
 
 ## Аргументы {#arguments}
 
-Описание аргументов соответствует описанию аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file`.
-Аргумент `format` указывает формат файлов данных в таблице Delta Lake.
+Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
+`format` обозначает формат файлов данных в таблице Delta Lake.
+
 
 
 ## Возвращаемое значение {#returned_value}
 
-Таблица с указанной структурой для чтения данных из заданной таблицы Delta Lake.
+Таблица с указанной структурой для чтения данных из указанной таблицы Delta Lake.
 
 
-## Примеры {#examples}
+
+## Примеры
 
 Выборка строк из таблицы в S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
 
@@ -71,7 +74,8 @@ LIMIT 2
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 
-## Связанные материалы {#related}
+
+## Связанные разделы {#related}
 
 - [Движок DeltaLake](engines/table-engines/integrations/deltalake.md)
-- [Табличная функция deltalakeCluster](sql-reference/table-functions/deltalakeCluster.md)
+- [Кластерная табличная функция DeltaLake](sql-reference/table-functions/deltalakeCluster.md)

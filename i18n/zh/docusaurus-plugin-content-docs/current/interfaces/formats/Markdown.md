@@ -15,12 +15,13 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-您可以使用 [Markdown](https://en.wikipedia.org/wiki/Markdown) 格式导出结果,生成可直接粘贴到 `.md` 文件中的输出:
+你可以使用 [Markdown](https://en.wikipedia.org/wiki/Markdown) 格式导出结果，生成可以直接粘贴到 `.md` 文件中的输出：
 
-Markdown 表格将自动生成,可在支持 Markdown 的平台(如 GitHub)上使用。此格式仅用于输出。
+Markdown 表格会自动生成，并且可以在支持 Markdown 的平台（例如 GitHub）上使用。此格式仅用于输出。
 
 
-## 使用示例 {#example-usage}
+
+## 示例用法
 
 ```sql
 SELECT

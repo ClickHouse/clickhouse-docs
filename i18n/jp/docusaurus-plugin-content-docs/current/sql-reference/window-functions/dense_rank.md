@@ -1,5 +1,5 @@
 ---
-description: 'dense_rank ウィンドウ関数のリファレンス'
+description: 'dense_rank ウィンドウ関数に関するドキュメント'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 # dense&#95;rank
 
-パーティション内で現在の行に対して、欠番なく順位を付けます。言い換えると、新たに出現した行の値が、これまでのいずれかの行の値と等しい場合でも、順位に飛びを生じさせることなく、次の連続した順位が割り当てられます。
+パーティション内で現在の行に対して、欠番なしで順位を付けます。言い換えると、その後に現れる行の値が、それまでの行のいずれかと等しい場合でも、順位の飛びを生じさせずに、直前の順位に続く次の順位が割り当てられます。
 
-[rank](./rank.md) 関数も同様の動作をしますが、順位に欠番が発生します。
+[rank](./rank.md) 関数も同様の動作をしますが、順位に欠番が生じます。
 
 **構文**
 
-エイリアス: `denseRank`（大文字小文字を区別）
+エイリアス: `denseRank`（大文字・小文字を区別）
 
 ```sql
 dense_rank ()
@@ -27,13 +27,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**返される値**
+**戻り値**
 
-* パーティション内における現在行の欠番のない順位を表す数値。[UInt64](../data-types/int-uint.md)。
+* パーティション内の現在の行に対する、順位に欠番のない番号。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-次の例は、動画教材 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で示されている例に基づいています。
+次の例は、動画チュートリアル [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で示されている例に基づいています。
 
 クエリ:
 

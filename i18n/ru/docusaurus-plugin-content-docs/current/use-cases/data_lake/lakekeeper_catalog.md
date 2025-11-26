@@ -4,9 +4,8 @@ sidebar_label: 'Каталог Lakekeeper'
 title: 'Каталог Lakekeeper'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве мы поэтапно покажем, как выполнять запросы
- к вашим данным с помощью ClickHouse и каталога Lakekeeper.'
-keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
+description: 'В этом руководстве мы расскажем, как выполнять запросы к вашим данным с помощью ClickHouse и каталога Lakekeeper.'
+keywords: ['Lakekeeper', 'REST', 'Tabular', 'озеро данных', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -17,40 +16,40 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 Интеграция с каталогом Lakekeeper работает только с таблицами Iceberg.
-Эта интеграция поддерживает AWS S3 и других провайдеров облачных хранилищ.
+Эта интеграция поддерживает как AWS S3, так и других поставщиков облачных хранилищ.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). В этом руководстве показано, как выполнять запросы к вашим данным с использованием ClickHouse и каталога [Lakekeeper](https://docs.lakekeeper.io/).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). В этом руководстве описаны шаги для выполнения запросов к вашим данным с помощью ClickHouse и каталога [Lakekeeper](https://docs.lakekeeper.io/).
 
-Lakekeeper — это реализация REST-каталога с открытым исходным кодом для Apache Iceberg, которая обеспечивает:
+Lakekeeper — это open-source реализация REST-каталога для Apache Iceberg, которая обеспечивает:
 
-* **Нативную реализацию на Rust** для высокой производительности и надёжности
+* **Нативную реализацию на Rust** для высокой производительности и надежности
 * **REST API**, совместимый со спецификацией REST-каталога Iceberg
-* Интеграцию с **облачными хранилищами**, совместимыми с S3
+* **Интеграцию с облачными хранилищами**, совместимыми с S3
 
 :::note
-Поскольку эта возможность является экспериментальной, вам необходимо включить её с помощью:
+Поскольку эта функциональность является экспериментальной, вы должны включить её с помощью следующей команды:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
 
-## Настройка локальной среды разработки {#local-development-setup}
+## Локальная среда разработки
 
-Для локальной разработки и тестирования можно использовать контейнеризованную установку Lakekeeper. Этот подход идеально подходит для обучения, создания прототипов и сред разработки.
+Для локальной разработки и тестирования вы можете использовать контейнеризированный экземпляр Lakekeeper. Такой подход оптимален для обучения, прототипирования и сред разработки.
 
-### Предварительные требования {#local-prerequisites}
+### Предварительные требования
 
-1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен
-2. **Пример настройки**: Можно использовать настройку docker-compose для Lakekeeper
+1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен.
+2. **Пример конфигурации**: Вы можете использовать docker-compose конфигурацию Lakekeeper.
 
-### Настройка локального каталога Lakekeeper {#setting-up-local-lakekeeper-catalog}
+### Настройка локального каталога Lakekeeper
 
-Можно использовать официальную [настройку docker-compose для Lakekeeper](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal), которая предоставляет полную среду с Lakekeeper, бэкендом метаданных PostgreSQL и MinIO для объектного хранилища.
+Вы можете использовать официальную [docker-compose конфигурацию Lakekeeper](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal), которая предоставляет полноценную среду с Lakekeeper, PostgreSQL в качестве хранилища метаданных и MinIO для объектного хранилища.
 
-**Шаг 1:** Создайте новую папку для запуска примера, затем создайте файл `docker-compose.yml` со следующей конфигурацией:
+**Шаг 1:** Создайте новую папку, в которой вы будете запускать пример, затем создайте файл `docker-compose.yml` со следующей конфигурацией:
 
 ```yaml
-version: "3.8"
+version: '3.8'
 
 services:
   lakekeeper:
@@ -144,52 +143,79 @@ services:
 
 db:
 image: bitnami/postgresql:16.3.0
-environment: - POSTGRESQL_USERNAME=postgres - POSTGRESQL_PASSWORD=postgres - POSTGRESQL_DATABASE=postgres
-healthcheck:
-test: ["CMD-SHELL", "pg_isready -U postgres -p 5432 -d postgres"]
-interval: 2s
-timeout: 10s
-retries: 5
-start_period: 10s
-volumes: - postgres_data:/bitnami/postgresql
-networks: - iceberg_net
+environment:
+
+* POSTGRESQL&#95;USERNAME=postgres
+* POSTGRESQL&#95;PASSWORD=postgres
+* POSTGRESQL&#95;DATABASE=postgres
+  healthcheck:
+  test: [&quot;CMD-SHELL&quot;, &quot;pg&#95;isready -U postgres -p 5432 -d postgres&quot;]
+  interval: 2s
+  timeout: 10s
+  retries: 5
+  start&#95;period: 10s
+  volumes:
+* postgres&#95;data:/bitnami/postgresql
+  networks:
+* iceberg&#95;net
 
 minio:
 image: bitnami/minio:2025.4.22
-environment: - MINIO_ROOT_USER=minio - MINIO_ROOT_PASSWORD=ClickHouse_Minio_P@ssw0rd - MINIO_API_PORT_NUMBER=9000 - MINIO_CONSOLE_PORT_NUMBER=9001 - MINIO_SCHEME=http - MINIO_DEFAULT_BUCKETS=warehouse-rest
-networks:
-iceberg_net:
-aliases: - warehouse-rest.minio
-ports: - "9002:9000" - "9003:9001"
-healthcheck:
-test: ["CMD", "mc", "ls", "local", "|", "grep", "warehouse-rest"]
-interval: 2s
-timeout: 10s
-retries: 3
-start_period: 15s
-volumes: - minio_data:/bitnami/minio/data
+environment:
+
+* MINIO&#95;ROOT&#95;USER=minio
+* MINIO&#95;ROOT&#95;PASSWORD=ClickHouse&#95;Minio&#95;P@ssw0rd
+* MINIO&#95;API&#95;PORT&#95;NUMBER=9000
+* MINIO&#95;CONSOLE&#95;PORT&#95;NUMBER=9001
+* MINIO&#95;SCHEME=http
+* MINIO&#95;DEFAULT&#95;BUCKETS=warehouse-rest
+  networks:
+  iceberg&#95;net:
+  aliases:
+  * warehouse-rest.minio
+    ports:
+* &quot;9002:9000&quot;
+* &quot;9003:9001&quot;
+  healthcheck:
+  test: [&quot;CMD&quot;, &quot;mc&quot;, &quot;ls&quot;, &quot;local&quot;, &quot;|&quot;, &quot;grep&quot;, &quot;warehouse-rest&quot;]
+  interval: 2s
+  timeout: 10s
+  retries: 3
+  start&#95;period: 15s
+  volumes:
+* minio&#95;data:/bitnami/minio/data
 
 clickhouse:
 image: clickhouse/clickhouse-server:head
-container_name: lakekeeper-clickhouse
-user: '0:0' # Ensures root permissions
-ports: - "8123:8123" - "9000:9000"
-volumes: - clickhouse_data:/var/lib/clickhouse - ./clickhouse/data_import:/var/lib/clickhouse/data_import # Mount dataset folder
-networks: - iceberg_net
-environment: - CLICKHOUSE_DB=default - CLICKHOUSE_USER=default - CLICKHOUSE_DO_NOT_CHOWN=1 - CLICKHOUSE_PASSWORD=
-depends_on:
-lakekeeper:
-condition: service_healthy
-minio:
-condition: service_healthy
+container&#95;name: lakekeeper-clickhouse
+user: &#39;0:0&#39;  # Гарантирует запуск с правами root
+ports:
+
+* &quot;8123:8123&quot;
+* &quot;9000:9000&quot;
+  volumes:
+* clickhouse&#95;data:/var/lib/clickhouse
+* ./clickhouse/data&#95;import:/var/lib/clickhouse/data&#95;import  # Монтирует каталог с набором данных
+  networks:
+* iceberg&#95;net
+  environment:
+* CLICKHOUSE&#95;DB=default
+* CLICKHOUSE&#95;USER=default
+* CLICKHOUSE&#95;DO&#95;NOT&#95;CHOWN=1
+* CLICKHOUSE&#95;PASSWORD=
+  depends&#95;on:
+  lakekeeper:
+  condition: service&#95;healthy
+  minio:
+  condition: service&#95;healthy
 
 volumes:
-postgres_data:
-minio_data:
-clickhouse_data:
+postgres&#95;data:
+minio&#95;data:
+clickhouse&#95;data:
 
 networks:
-iceberg_net:
+iceberg&#95;net:
 driver: bridge
 
 ````
@@ -200,25 +226,25 @@ driver: bridge
 docker compose up -d
 ````
 
-**Шаг 3:** Дождитесь готовности всех сервисов. Проверить логи можно следующим образом:
+**Шаг 3:** Дождитесь готовности всех сервисов. Вы можете проверить логи:
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Для настройки Lakekeeper необходимо предварительно загрузить тестовые данные в таблицы Iceberg. Убедитесь, что окружение создало и заполнило таблицы, прежде чем выполнять запросы к ним через ClickHouse. Доступность таблиц зависит от конкретной конфигурации docker-compose и скриптов загрузки тестовых данных.
+Настройка Lakekeeper требует предварительной загрузки демонстрационных данных в таблицы Iceberg. Убедитесь, что в среде созданы и заполнены таблицы, прежде чем выполнять к ним запросы через ClickHouse. Наличие таблиц зависит от конкретной конфигурации docker-compose и скриптов загрузки демонстрационных данных.
 :::
 
-### Подключение к локальному каталогу Lakekeeper {#connecting-to-local-lakekeeper-catalog}
+### Подключение к локальному каталогу Lakekeeper
 
-Подключитесь к контейнеру ClickHouse:
+Подключитесь к вашему контейнеру ClickHouse:
 
 ```bash
 docker exec -it lakekeeper-clickhouse clickhouse-client
 ```
 
-Затем создайте подключение к каталогу Lakekeeper:
+Затем создайте подключение к каталогу Lakekeeper в базе данных:
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -229,9 +255,9 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 ```
 
 
-## Запрос таблиц каталога Lakekeeper с помощью ClickHouse {#querying-lakekeeper-catalog-tables-using-clickhouse}
+## Выполнение запросов к таблицам каталога Lakekeeper с помощью ClickHouse
 
-Теперь, когда соединение установлено, можно начать выполнять запросы через каталог Lakekeeper. Например:
+Теперь, когда подключение установлено, вы можете начинать выполнять запросы по каталогу Lakekeeper. Например:
 
 ```sql
 USE demo;
@@ -239,22 +265,22 @@ USE demo;
 SHOW TABLES;
 ```
 
-Если в вашей установке есть демонстрационные данные (например, набор данных о такси), вы увидите таблицы вида:
+Если в вашей установке загружены примерочные данные (например, набор данных taxi), вы должны увидеть следующие таблицы:
 
-```sql title="Ответ"
+```sql title="Response"
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
 ```
 
 :::note
-Если таблицы не отображаются, это обычно означает:
+Если вы не видите таблиц, это обычно означает:
 
-1. Окружение еще не создало демонстрационные таблицы
-2. Служба каталога Lakekeeper не полностью инициализирована
-3. Процесс загрузки демонстрационных данных не завершен
+1. Среда еще не создала образцы таблиц
+2. Сервис каталога Lakekeeper еще не полностью инициализирован
+3. Процесс загрузки примерочных данных еще не завершен
 
-Вы можете проверить журналы Spark, чтобы отследить прогресс создания таблиц:
+Вы можете проверить логи Spark, чтобы отследить прогресс создания таблиц:
 
 ```bash
 docker-compose logs spark
@@ -268,14 +294,14 @@ docker-compose logs spark
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Ответ"
+```sql title="Response"
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
 ```
 
-:::note Требуются обратные кавычки
-Обратные кавычки необходимы, поскольку ClickHouse не поддерживает более одного пространства имен.
+:::note Обратные кавычки обязательны
+Обратные кавычки обязательны, потому что ClickHouse не поддерживает несколько пространств имен.
 :::
 
 Чтобы просмотреть DDL таблицы:
@@ -284,7 +310,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Ответ"
+```sql title="Response"
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -313,9 +339,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Загрузка данных из Data Lake в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## Загрузка данных из вашего озера данных (Data Lake) в ClickHouse
 
-Для загрузки данных из каталога Lakekeeper в ClickHouse сначала создайте локальную таблицу ClickHouse:
+Если вам нужно загрузить данные из каталога Lakekeeper в ClickHouse, начните с создания локальной таблицы ClickHouse:
 
 ```sql
 CREATE TABLE taxis
@@ -345,9 +371,9 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-Затем загрузите данные из таблицы каталога Lakekeeper с помощью `INSERT INTO SELECT`:
+Затем загрузите данные из таблицы каталога Lakekeeper с помощью оператора `INSERT INTO SELECT`:
 
 ```sql
-INSERT INTO taxis
+INSERT INTO taxis 
 SELECT * FROM demo.`default.taxis`;
 ```

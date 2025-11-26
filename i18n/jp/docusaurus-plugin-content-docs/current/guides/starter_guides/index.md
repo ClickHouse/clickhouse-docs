@@ -1,18 +1,18 @@
 ---
 slug: /starter-guides
 title: 'スターターガイド'
-description: 'スターターガイド用ランディングページ'
+description: 'スターターガイド用のランディングページ'
 pagination_prev: null
 pagination_next: null
 doc_type: 'landing-page'
-keywords: ['beginner', 'tutorial', 'create table', 'insert data', 'select data', 'update data', 'delete data']
+keywords: ['初心者', 'チュートリアル', 'create table', 'insert data', 'select data', 'update data', 'delete data']
 ---
 
-このセクションでは、一般的な SQL クエリである `CREATE`、`INSERT`、`SELECT` と、ミューテーションである `UPDATE` および `DELETE` に関するスターターガイドを掲載しています。
+このセクションでは、よく使われる SQL クエリ `CREATE`、`INSERT`、`SELECT` と、ミューテーションである `UPDATE` および `DELETE` のスターターガイドを掲載しています。
 
-| ページ                                              | 説明                                                                      |
-|-----------------------------------------------------|---------------------------------------------------------------------------|
-| [Create Tables](/guides/creating-tables)         | テーブルの作成方法を解説するスターターガイドです。                                |
-| [Insert Data](/guides/inserting-data)            | テーブルにデータを挿入する方法を解説するスターターガイドです。                      |
-| [Select Data](/guides/writing-queries)           | テーブルからデータを取得する方法を解説するスターターガイドです。                    |
-| [Update and Delete Data](/guides/developer/mutations) | ClickHouse におけるミューテーション ― データの更新および削除方法を解説するスターターガイドです。 |
+| ページ                                              | 説明                                                                     |
+|-----------------------------------------------------|------------------------------------------------------------------------|
+| [Create Tables](/guides/creating-tables)         | テーブルの作成方法に関するスターターガイド。                               |
+| [Insert Data](/guides/inserting-data)            | テーブルへのデータ挿入方法に関するスターターガイド。                        |
+| [Select Data](/guides/writing-queries)           | テーブルからのデータ取得方法に関するスターターガイド。                      |
+| [Update and Delete Data](/guides/developer/mutations) | ClickHouse におけるデータの更新および削除などのミューテーションに関するスターターガイド。 |

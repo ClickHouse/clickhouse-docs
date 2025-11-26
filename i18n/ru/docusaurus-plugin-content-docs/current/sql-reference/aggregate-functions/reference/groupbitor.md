@@ -1,5 +1,5 @@
 ---
-description: 'Применяет операцию побитового `OR` к последовательности чисел.'
+description: 'Применяет побитовую операцию `OR` к последовательности чисел.'
 sidebar_position: 152
 slug: /sql-reference/aggregate-functions/reference/groupbitor
 title: 'groupBitOr'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitOr
 
-Применяет побитовое «ИЛИ» к последовательности чисел.
+Применяет операцию побитового `OR` к последовательности чисел.
 
 ```sql
 groupBitOr(expr)
@@ -27,7 +27,7 @@ groupBitOr(expr)
 Тестовые данные:
 
 ```text
-двоичная   десятичная
+двоичное   десятичное
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -40,7 +40,7 @@ groupBitOr(expr)
 SELECT groupBitOr(num) FROM t
 ```
 
-где `num` — столбец с тестовыми данными.
+Где `num` — столбец с тестовыми данными.
 
 Результат:
 

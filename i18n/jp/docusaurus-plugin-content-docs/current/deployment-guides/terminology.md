@@ -1,22 +1,22 @@
 ---
 slug: /architecture/introduction
-sidebar_label: '概要'
-title: '概要'
+sidebar_label: 'はじめに'
+title: 'はじめに'
 sidebar_position: 1
-description: 'ClickHouse Support および Services 組織が ClickHouse ユーザーに提供してきたアドバイスに基づくデプロイメント例をまとめたページ'
+description: 'ClickHouse Support and Services チームが ClickHouse ユーザーに提供している推奨事項に基づいたデプロイメント例をまとめたページ'
 doc_type: 'guide'
-keywords: ['デプロイメント', 'アーキテクチャ', 'レプリケーション', 'シャーディング', 'クラスター構成']
+keywords: ['デプロイメント', 'アーキテクチャ', 'レプリケーション', 'シャーディング', 'クラスタ構成']
 ---
 
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 
-このセクションのデプロイ例は、ClickHouse の Support &amp; Services 組織が
-ClickHouse ユーザーに提供してきたアドバイスに基づいています。これらは実際に動作する例であり、
-まず試したうえで、ニーズに合わせて調整することをお勧めします。ここで紹介する例の中に、
-要件に完全に合致するものが見つかるかもしれません。
+このセクションのデプロイメント例は、ClickHouse の Support and Services チームが
+ClickHouse ユーザーに提供しているアドバイスに基づいています。これらは実際に動作する例であり、
+まず試してから、ご自身のニーズに合わせて調整することを推奨します。ここで紹介している例の中に、
+要件にぴったり合致するものが見つかるかもしれません。
 
-[example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes) には、さまざまなトポロジーの「レシピ」を用意しています。
-このセクションの例がニーズに完全には合致しない場合には、そちらもぜひ参照してください。
+[example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes) には、さまざまなトポロジに対応した「レシピ」を多数用意しており、
+このセクションの例がニーズに完全には合わない場合は、それらも確認することをお勧めします。
 
 <ReplicationShardingTerminology />
 

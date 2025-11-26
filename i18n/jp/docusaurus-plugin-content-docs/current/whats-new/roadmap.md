@@ -4,19 +4,20 @@ slug: /whats-new/roadmap
 sidebar_position: 50
 description: '現在および過去の ClickHouse のロードマップ'
 doc_type: 'landing-page'
-keywords: ['ロードマップ', '将来の機能', '開発計画', '今後のリリース', '製品の方向性']
+keywords: ['ロードマップ', '今後の機能', '開発計画', '今後のリリース予定', '製品の方向性']
 ---
 
 
 
 ## 現在のロードマップ {#current-roadmap}
 
-現在のロードマップはオープンな議論のために公開されています：
+現在のロードマップは、オープンな議論のために公開されています。
 
 - [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 
 
-## 過去のロードマップ {#previous-roadmaps}
+
+## これまでのロードマップ {#previous-roadmaps}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

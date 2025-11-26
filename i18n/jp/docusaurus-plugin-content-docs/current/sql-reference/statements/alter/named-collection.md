@@ -1,6 +1,6 @@
 ---
-description: 'ALTER NAMED COLLECTION に関するドキュメント'
-sidebar_label: 'NAMED COLLECTION'
+description: 'ALTER NAMED COLLECTION のドキュメント'
+sidebar_label: 'NAMED COLLECTION（名前付きコレクション）'
 slug: /sql-reference/statements/alter/named-collection
 title: 'ALTER NAMED COLLECTION'
 doc_type: 'reference'
@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # ALTER NAMED COLLECTION
 
-このクエリは、既存の名前付きコレクションを変更するためのものです。
+このクエリは、既存の名前付きコレクションを変更します。
 
 **構文**
 

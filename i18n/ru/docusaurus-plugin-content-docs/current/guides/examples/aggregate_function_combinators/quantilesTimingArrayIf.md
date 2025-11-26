@@ -12,20 +12,22 @@ doc_type: 'reference'
 # quantilesTimingArrayIf {#quantilestimingarrayif}
 
 
+
 ## Описание {#description}
 
-Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if)
-можно применить к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-для вычисления квантилей значений времени в массивах для строк, удовлетворяющих условию,
-с помощью агрегатной функции-комбинатора `quantilesTimingArrayIf`.
+К комбинатору [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+можно применить функцию [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+для вычисления квантилей временных значений в массивах для строк, где условие истинно,
+используя агрегатную функцию-комбинатор `quantilesTimingArrayIf`.
 
 
-## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит время отклика API для различных эндпоинтов,
+## Пример использования
+
+В этом примере мы создадим таблицу, в которой будет храниться время отклика API для разных эндпоинтов
 и используем `quantilesTimingArrayIf` для вычисления квантилей времени отклика для успешных запросов.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
@@ -44,18 +46,18 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-Функция `quantilesTimingArrayIf` вычисляет квантили только для эндпоинтов с уровнем успешности выше 95%.
-Возвращаемый массив содержит следующие квантили в указанном порядке:
+Функция `quantilesTimingArrayIf` вычисляет квантили только для эндпоинтов с долей успешных запросов более 95%.
+Возвращаемый массив содержит следующие квантили в следующем порядке:
 
-- 0 (минимум)
-- 0.25 (первый квартиль)
-- 0.5 (медиана)
-- 0.75 (третий квартиль)
-- 0.95 (95-й процентиль)
-- 0.99 (99-й процентиль)
-- 1.0 (максимум)
+* 0 (минимум)
+* 0.25 (первый квартиль)
+* 0.5 (медиана)
+* 0.75 (третий квартиль)
+* 0.95 (95-й перцентиль)
+* 0.99 (99-й перцентиль)
+* 1.0 (максимум)
 
-```response title="Результат"
+```response title="Response"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
 1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
 2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
@@ -65,6 +67,5 @@ GROUP BY endpoint;
 
 
 ## См. также {#see-also}
-
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)

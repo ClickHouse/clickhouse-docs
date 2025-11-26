@@ -3,8 +3,8 @@ slug: /best-practices/avoid-mutations
 sidebar_position: 10
 sidebar_label: 'ミューテーションを避ける'
 title: 'ミューテーションを避ける'
-description: 'ClickHouse でミューテーションを避けるべき理由を説明するページ'
-keywords: ['mutations']
+description: 'ClickHouse でミューテーションを避ける理由について説明するページ'
+keywords: ['ミューテーション']
 doc_type: 'guide'
 ---
 

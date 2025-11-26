@@ -14,12 +14,13 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Отличается от формата `JSONCompactEachRow` тем, что также выводит две строки заголовка с именами и типами столбцов, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
+Отличается от формата `JSONCompactEachRow` тем, что также выводит две строки заголовков с именами и типами столбцов, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
+
+### Вставка данных
 
 Используем JSON-файл со следующими данными с именем `football.json`:
 
@@ -45,15 +46,15 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `JSONCompactStringsEachRowWithNamesAndTypes`:
+Считайте данные в формате `JSONCompactStringsEachRowWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -61,11 +62,11 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-Результат будет выведен в формате JSON:
+Результат будет в формате JSON:
 
 
 ```json
-["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
+["дата", "сезон", "домашняя_команда", "гостевая_команда", "голы_домашней_команды", "голы_гостевой_команды"]
 ["Date", "Int16", "LowCardinality(String)", "LowCardinality(String)", "Int8", "Int8"]
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
 ["2022-04-30", "2021", "Swindon Town", "Barrow", "2", "1"]
@@ -90,12 +91,12 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ## Настройки формата {#format-settings}
 
 :::note
-Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) имеет значение 1,
-столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам. Столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) имеет значение 1.
+Если настройке [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) присвоено значение `1`,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если настройке [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) также присвоено значение `1`.
 В противном случае первая строка будет пропущена.
 :::
 
 :::note
-Если настройка [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) имеет значение 1,
-типы данных из входных данных будут сравниваться с типами данных соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
+Если настройке [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) присвоено значение `1`,
+типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::

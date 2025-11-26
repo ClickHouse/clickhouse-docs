@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация по формату Avro'
+description: 'Документация о формате Avro'
 input_format: true
 keywords: ['Avro']
 output_format: true
@@ -16,31 +16,34 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | ✔    | ✔     |           |
 
 
-## Description {#description}
+## Описание {#description}
 
-[Apache Avro](https://avro.apache.org/) — это строчно-ориентированный формат сериализации, использующий бинарное кодирование для эффективной обработки данных. Формат `Avro` поддерживает чтение и запись [файлов данных Avro](https://avro.apache.org/docs/++version++/specification/#object-container-files). Данный формат ожидает самоописываемые сообщения со встроенной схемой. Если вы используете Avro с реестром схем, обратитесь к формату [`AvroConfluent`](./AvroConfluent.md).
+[Apache Avro](https://avro.apache.org/) — это строчно-ориентированный формат сериализации, который использует двоичное кодирование для эффективной обработки данных. Формат `Avro` поддерживает чтение и запись [файлов данных Avro](https://avro.apache.org/docs/++version++/specification/#object-container-files). Этот формат ожидает самоописывающиеся сообщения со встроенной схемой. Если вы используете Avro с реестром схем, см. формат [`AvroConfluent`](./AvroConfluent.md).
+
 
 
 ## Сопоставление типов данных {#data-type-mapping}
 
-<DataTypeMapping />
+<DataTypeMapping/>
+
 
 
 ## Настройки формата {#format-settings}
 
-| Настройка                                  | Описание                                                                                                                                             | По умолчанию |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `input_format_avro_allow_missing_fields`   | Использовать значение по умолчанию вместо генерации ошибки, если поле отсутствует в схеме.                                                          | `0`          |
-| `input_format_avro_null_as_default`        | Использовать значение по умолчанию вместо генерации ошибки при вставке значения `null` в столбец, не допускающий NULL.                              | `0`          |
-| `output_format_avro_codec`                 | Алгоритм сжатия для выходных файлов Avro. Возможные значения: `null`, `deflate`, `snappy`, `zstd`.                                                  |              |
-| `output_format_avro_sync_interval`         | Частота маркеров синхронизации в файлах Avro (в байтах).                                                                                            | `16384`      |
-| `output_format_avro_string_column_pattern` | Регулярное выражение для определения столбцов `String` при сопоставлении со строковым типом Avro. По умолчанию столбцы `String` ClickHouse записываются как тип `bytes` Avro. |              |
-| `output_format_avro_rows_in_file`          | Максимальное количество строк в одном выходном файле Avro. При достижении этого ограничения создается новый файл (если система хранения поддерживает разделение файлов). | `1`          |
+| Параметр                                   | Описание                                                                                           | По умолчанию |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
+| `input_format_avro_allow_missing_fields`   | Использовать ли значение по умолчанию вместо генерации ошибки при отсутствии поля в схеме.        | `0`          |
+| `input_format_avro_null_as_default`        | Использовать ли значение по умолчанию вместо генерации ошибки при вставке значения `null` в столбец, который не допускает `NULL`. | `0` |
+| `output_format_avro_codec`                 | Алгоритм сжатия для выходных файлов Avro. Возможные значения: `null`, `deflate`, `snappy`, `zstd`. |              |
+| `output_format_avro_sync_interval`         | Частота маркеров синхронизации в файлах Avro (в байтах).                                          | `16384`      |
+| `output_format_avro_string_column_pattern` | Регулярное выражение для определения столбцов типа `String` для отображения их в строковый тип Avro. По умолчанию столбцы ClickHouse типа `String` записываются как тип Avro `bytes`. | |
+| `output_format_avro_rows_in_file`          | Максимальное количество строк в одном выходном файле Avro. При достижении этого предела создаётся новый файл (если система хранения поддерживает разбиение файлов). | `1` |
 
 
-## Примеры {#examples}
 
-### Чтение данных Avro {#reading-avro-data}
+## Примеры
+
+### Чтение данных Avro
 
 Чтобы прочитать данные из файла Avro в таблицу ClickHouse:
 
@@ -48,18 +51,18 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avro"
 ```
 
-Корневая схема загружаемого файла Avro должна иметь тип `record`.
+Корневая схема загружаемого Avro‑файла должна иметь тип `record`.
 
-Для установления соответствия между столбцами таблицы и полями схемы Avro ClickHouse сравнивает их имена.
-Сравнение чувствительно к регистру, неиспользуемые поля пропускаются.
+Чтобы найти соответствие между столбцами таблицы и полями схемы Avro, ClickHouse сравнивает их имена.
+Сравнение выполняется с учётом регистра, а неиспользуемые поля пропускаются.
 
-Типы данных столбцов таблицы ClickHouse могут отличаться от соответствующих полей вставляемых данных Avro. При вставке данных ClickHouse интерпретирует типы данных согласно приведенной выше таблице, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к соответствующему типу столбца.
+Типы данных столбцов таблицы ClickHouse могут отличаться от типов соответствующих полей во вставляемых данных Avro. При вставке данных ClickHouse интерпретирует типы данных в соответствии с таблицей выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к соответствующему типу столбца.
 
-При импорте данных, если поле не найдено в схеме и включена настройка [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields), будет использовано значение по умолчанию вместо генерации ошибки.
+При импорте данных, если поле не найдено в схеме и настройка [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) включена, вместо выдачи ошибки будет использовано значение по умолчанию.
 
-### Запись данных Avro {#writing-avro-data}
+### Запись данных в формате Avro
 
-Чтобы записать данные из таблицы ClickHouse в файл Avro:
+Чтобы записать данные из таблицы ClickHouse в Avro‑файл:
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
@@ -67,15 +70,15 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 
 Имена столбцов должны:
 
-- Начинаться с `[A-Za-z_]`
-- Содержать только символы `[A-Za-z0-9_]`
+* Начинаться с `[A-Za-z_]`
+* Далее могут содержать только `[A-Za-z0-9_]`
 
-Сжатие вывода и интервал синхронизации для файлов Avro можно настроить с помощью параметров [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) и [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) соответственно.
+Сжатие выходных данных и интервал синхронизации для файлов Avro можно настроить с помощью параметров [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) и [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) соответственно.
 
-### Определение схемы Avro {#inferring-the-avro-schema}
+### Определение схемы Avro
 
-С помощью функции ClickHouse [`DESCRIBE`](/sql-reference/statements/describe-table) можно быстро просмотреть определенный формат файла Avro, как показано в следующем примере.
-Пример включает URL публично доступного файла Avro в общедоступном S3-бакете ClickHouse:
+Используя функцию ClickHouse [`DESCRIBE`](/sql-reference/statements/describe-table), вы можете быстро просмотреть определённый формат файла Avro, как в следующем примере.
+В этом примере используется URL общедоступного файла Avro в публичном бакете S3 ClickHouse:
 
 ```sql
 DESCRIBE url('https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/hits.avro','Avro);

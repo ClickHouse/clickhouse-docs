@@ -1,28 +1,28 @@
 ---
-description: '用于配置 ClickHouse 与 ZooKeeper 之间安全 SSL/TLS 通信的指南'
+description: '在 ClickHouse 与 ZooKeeper 之间配置安全 SSL/TLS 通信的指南'
 sidebar_label: '与 ZooKeeper 的安全通信'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'ClickHouse 与 ZooKeeper 之间的可选安全通信'
+title: 'ClickHouse 与 ZooKeeper 之间可选的安全通信'
 doc_type: 'guide'
 ---
 
-# ClickHouse 与 ZooKeeper 之间的可选安全通信
+# 可选的 ClickHouse 与 Zookeeper 之间的安全通信
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-要通过 SSL 与 ClickHouse 客户端进行通信，你需要指定 `ssl.keyStore.location`、`ssl.keyStore.password` 以及 `ssl.trustStore.location`、`ssl.trustStore.password`。这些选项从 ZooKeeper 版本 3.5.2 开始可用。
+你需要在通过 SSL 与 ClickHouse 客户端通信时指定 `ssl.keyStore.location`、`ssl.keyStore.password` 以及 `ssl.trustStore.location`、`ssl.trustStore.password`。这些选项从 Zookeeper 3.5.2 版本开始可用。
 
-你可以将 `zookeeper.crt` 添加到受信任的证书列表中。
+你可以将 `zookeeper.crt` 添加到受信任证书列表中。
 
 ```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-在 `config.xml` 中，client 部分如下所示：
+`config.xml` 中的 client 配置段如下所示：`
 
 ```xml
 <client>
@@ -38,7 +38,7 @@ sudo update-ca-certificates
 </client>
 ```
 
-在 ClickHouse 配置中添加 Zookeeper，并配置一些集群和宏：
+在 ClickHouse 配置中添加 Zookeeper，并配置相应的集群和宏：
 
 ```xml
 <clickhouse>
@@ -52,15 +52,15 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-启动 `clickhouse-server`。在日志中即可看到：
+启动 `clickhouse-server`。在日志中应看到：
 
 ```text
-<Trace> ZooKeeper: 已初始化，主机：secure://localhost:2281
+<Trace> ZooKeeper: 已初始化,主机:secure://localhost:2281
 ```
 
-前缀 `secure://` 表示连接通过 SSL 进行加密保护。
+前缀 `secure://` 表示连接已通过 SSL 加密保护。
 
-要确保流量已加密，请在安全端口上运行 `tcpdump`：
+要验证流量已加密，可在该安全端口上运行 `tcpdump`：
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
@@ -72,10 +72,10 @@ tcpdump -i any dst port 2281 -nnXS
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-在未加密的连接中，您会在 `tcpdump` 的输出中看到类似如下的内容：
+在未加密的连接中，可以在 `tcpdump` 的输出中看到类似如下的内容：
 
 ```text
 ..../zookeeper/quota.
 ```
 
-在使用加密连接时，你不应该看到此信息。
+在加密连接下，你不应该看到此内容。

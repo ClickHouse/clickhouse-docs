@@ -1,5 +1,5 @@
 ---
-description: 'RowBinaryWithNames 形式に関するドキュメント'
+description: 'RowBinaryWithNames 形式のドキュメント'
 input_format: true
 keywords: ['RowBinaryWithNames']
 output_format: true
@@ -10,30 +10,31 @@ doc_type: 'reference'
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'
 
-| 入力 | 出力 | エイリアス |
-| -- | -- | ----- |
-| ✔  | ✔  |       |
+| 入力 | 出力 | 別名 |
+| -- | -- | -- |
+| ✔  | ✔  |    |
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`RowBinary`](./RowBinary.md)形式と同様ですが、以下のヘッダーが追加されています:
+[`RowBinary`](./RowBinary.md) フォーマットと類似していますが、ヘッダーが追加されています。
 
-- [`LEB128`](https://en.wikipedia.org/wiki/LEB128)でエンコードされた列数(N)
-- 列名を指定するN個の`String`
+- 列数 (N) を表す [`LEB128`](https://en.wikipedia.org/wiki/LEB128) でエンコードされた数値。
+- 列名を指定する N 個の `String`。
+
 
 
 ## 使用例 {#example-usage}
 
 
+
 ## フォーマット設定 {#format-settings}
 
-<RowBinaryFormatSettings />
+<RowBinaryFormatSettings/>
 
 :::note
-
-- [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` に設定されている場合、
-  入力データの列は名前によってテーブルの列にマッピングされ、不明な名前の列はスキップされます。
-- [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合。
+- 設定 [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) が `1` に設定されている場合、
+  入力データの列は名前に基づいてテーブルの列にマッピングされます。
+- 設定 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合は、不明な名前の列はスキップされます。
   それ以外の場合、最初の行がスキップされます。
-  :::
+:::

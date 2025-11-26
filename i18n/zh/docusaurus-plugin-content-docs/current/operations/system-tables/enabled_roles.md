@@ -11,6 +11,6 @@ doc_type: 'reference'
 列：
 
 - `role_name` ([String](../../sql-reference/data-types/string.md))) — 角色名称。
-- `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志位，指示 `enabled_role` 是否为具有 `ADMIN OPTION` 权限的角色。
-- `is_current` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志位，指示 `enabled_role` 是否为当前用户的当前角色。
-- `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志位，指示 `enabled_role` 是否为默认角色。
+- `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志，指示该 `enabled_role` 是否为具有 `ADMIN OPTION` 权限的角色。
+- `is_current` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志，指示该 `enabled_role` 是否为当前用户的当前角色。
+- `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 标志，指示该 `enabled_role` 是否为默认角色。

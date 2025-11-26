@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactStringsEachRow 格式文档'
+description: 'JSONCompactStringsEachRow 格式的文档'
 input_format: true
 keywords: ['JSONCompactStringsEachRow']
 output_format: true
@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 的唯一区别在于数据字段以字符串形式输出,而不是类型化的 JSON 值。
+与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 的区别仅在于数据字段以字符串形式输出，而不是作为带类型的 JSON 值输出。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用包含以下数据的 JSON 文件,命名为 `football.json`:
+### 插入数据
+
+使用包含以下数据的 JSON 文件，文件名为 `football.json`：
 
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
@@ -46,15 +47,15 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `JSONCompactStringsEachRow` 格式读取数据:
+使用 `JSONCompactStringsEachRow` 格式读取数据：
 
 ```sql
 SELECT *
@@ -62,7 +63,7 @@ FROM football
 FORMAT JSONCompactStringsEachRow
 ```
 
-输出结果为 JSON 格式:
+输出将为 JSON 格式：
 
 
 ```json

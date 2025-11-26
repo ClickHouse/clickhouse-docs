@@ -1,5 +1,5 @@
 ---
-description: 'Возвращает таблицу, доступ к которой осуществляется через ODBC.'
+description: 'Возвращает таблицу, подключенную через ODBC.'
 sidebar_label: 'odbc'
 sidebar_position: 150
 slug: /sql-reference/table-functions/odbc
@@ -9,45 +9,46 @@ doc_type: 'reference'
 
 
 
-# Табличная функция odbc
+# Табличная функция ODBC
 
 Возвращает таблицу, подключённую через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
-odbc(datasource, external_database, external_table)
-odbc(datasource, external_table)
-odbc(named_collection)
+odbc(источник_данных, внешняя_база_данных, внешняя_таблица)
+odbc(источник_данных, внешняя_таблица)
+odbc(именованная_коллекция)
 ```
 
 
 ## Аргументы {#arguments}
 
-| Аргумент            | Описание                                                             |
-| ------------------- | -------------------------------------------------------------------- |
-| `datasource`        | Имя секции с настройками подключения в файле `odbc.ini`.             |
-| `external_database` | Имя базы данных во внешней СУБД.                                     |
-| `external_table`    | Имя таблицы в `external_database`.                                   |
+| Аргумент            | Описание                                                            |
+|---------------------|------------------------------------------------------------------------|
+| `datasource` | Имя секции с настройками подключения в файле `odbc.ini`. |
+| `external_database` | Имя базы данных во внешней СУБД.                                |
+| `external_table`    | Имя таблицы в `external_database`.                            |
 
-Эти параметры также можно передать с помощью [именованных коллекций](operations/named-collections.md).
+Эти параметры также можно передавать с помощью [именованных коллекций](operations/named-collections.md).
 
-Для безопасной реализации ODBC-подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если драйвер ODBC загружается напрямую из `clickhouse-server`, проблемы с драйвером могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge` при необходимости. Программа ODBC bridge устанавливается из того же пакета, что и `clickhouse-server`.
+Для безопасной организации ODBC-подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC-драйвер загружается напрямую из `clickhouse-server`, проблемы драйвера могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа ODBC bridge устанавливается из того же пакета, что и `clickhouse-server`.
 
-Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для соответствующего типа данных. Например, если поле удалённой таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных `Int32` в ClickHouse).
+Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле удалённой таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
 
 
-## Пример использования {#usage-example}
 
-**Получение данных из локальной установки MySQL через ODBC**
+## Пример использования
 
-Этот пример проверен для Ubuntu Linux 18.04 и MySQL server 5.7.
+**Получение данных из локального экземпляра MySQL через ODBC**
+
+Этот пример протестирован в Ubuntu Linux 18.04 и MySQL Server 5.7.
 
 Убедитесь, что установлены unixODBC и MySQL Connector.
 
-По умолчанию (при установке из пакетов) ClickHouse запускается от имени пользователя `clickhouse`. Поэтому необходимо создать и настроить этого пользователя на сервере MySQL.
+По умолчанию (если установлен из пакетов) ClickHouse запускается от имени пользователя `clickhouse`. Поэтому необходимо создать и настроить этого пользователя на сервере MySQL.
 
 ```bash
 $ sudo mysql
@@ -58,7 +59,7 @@ mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
-Затем настройте соединение в `/etc/odbc.ini`.
+Затем настройте подключение в `/etc/odbc.ini`.
 
 ```bash
 $ cat /etc/odbc.ini
@@ -71,12 +72,12 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-Проверить соединение можно с помощью утилиты `isql` из установки unixODBC.
+Вы можете проверить подключение с помощью утилиты `isql`, входящей в состав unixODBC.
 
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Connected!                            |
+| Подключено!                           |
 |                                       |
 ...
 ```
@@ -104,7 +105,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-Получение данных из таблицы MySQL в ClickHouse:
+Извлечение данных из таблицы MySQL в ClickHouse:
 
 ```sql
 SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
@@ -120,4 +121,4 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 ## См. также {#see-also}
 
 - [Словари ODBC](/sql-reference/dictionaries#dbms)
-- [Движок таблиц ODBC](/engines/table-engines/integrations/odbc).
+- [Табличный движок ODBC](/engines/table-engines/integrations/odbc).

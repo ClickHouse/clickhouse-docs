@@ -1,5 +1,5 @@
 ---
-description: 'Javaアプリケーションから ClickHouse に接続するための JDBC ドライバーガイド'
+description: 'Java アプリケーションから ClickHouse に接続するための JDBC ドライバー利用ガイド'
 sidebar_label: 'JDBC ドライバー'
 sidebar_position: 20
 slug: /interfaces/jdbc

@@ -1,7 +1,7 @@
 ---
-description: 'Системная таблица, содержащая информацию о задачах в очередях репликации,
-  хранящихся в ClickHouse Keeper или ZooKeeper, для таблиц семейства `ReplicatedMergeTree`.'
-keywords: ['system table', 'replication_queue']
+description: 'Системная таблица, содержащая информацию о заданиях в очередях репликации,
+  хранящихся в ClickHouse Keeper или ZooKeeper для таблиц семейства `ReplicatedMergeTree`.'
+keywords: ['системная таблица', 'replication_queue']
 slug: /operations/system-tables/replication_queue
 title: 'system.replication_queue'
 doc_type: 'reference'
@@ -17,49 +17,49 @@ doc_type: 'reference'
 
 * `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 
-* `replica_name` ([String](../../sql-reference/data-types/string.md)) — Имя реплики в ClickHouse Keeper. Разные реплики одной и той же таблицы имеют разные имена.
+* `replica_name` ([String](../../sql-reference/data-types/string.md)) — Имя реплики в ClickHouse Keeper. У разных реплик одной и той же таблицы разные имена.
 
 * `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Позиция задачи в очереди.
 
 * `node_name` ([String](../../sql-reference/data-types/string.md)) — Имя узла в ClickHouse Keeper.
 
-* `type` ([String](../../sql-reference/data-types/string.md)) — Тип задачи в очереди, одно из:
+* `type` ([String](../../sql-reference/data-types/string.md)) — Тип задачи в очереди, один из:
 
-  * `GET_PART` — Получить кусок данных с другой реплики.
-  * `ATTACH_PART` — Подключить кусок данных, возможно, с нашей собственной реплики (если найден в каталоге `detached`). Это можно рассматривать как `GET_PART` с некоторыми оптимизациями, так как они почти идентичны.
-  * `MERGE_PARTS` — Слить куски данных.
-  * `DROP_RANGE` — Удалить куски данных в указанной партиции (partition) в указанном диапазоне номеров.
-  * `CLEAR_COLUMN` — ПРИМЕЧАНИЕ: Устарело. Удалить конкретный столбец в указанной партиции.
-  * `CLEAR_INDEX` — ПРИМЕЧАНИЕ: Устарело. Удалить конкретный индекс в указанной партиции.
-  * `REPLACE_RANGE` — Удалить определённый диапазон кусков данных и заменить их новыми.
-  * `MUTATE_PART` — Применить одну или несколько мутаций к куску данных.
-  * `ALTER_METADATA` — Применить изменение структуры в соответствии с глобальными путями /metadata и /columns.
+  * `GET_PART` — Получить часть с другой реплики.
+  * `ATTACH_PART` — Подключить часть, возможно, с собственной реплики (если найдена в папке `detached`). Можно рассматривать это как `GET_PART` с некоторыми оптимизациями, так как они почти идентичны.
+  * `MERGE_PARTS` — Слить части.
+  * `DROP_RANGE` — Удалить части в указанном разделе в заданном диапазоне номеров.
+  * `CLEAR_COLUMN` — ПРИМЕЧАНИЕ: Устарело. Удалить указанный столбец из заданного раздела.
+  * `CLEAR_INDEX` — ПРИМЕЧАНИЕ: Устарело. Удалить указанный индекс из заданного раздела.
+  * `REPLACE_RANGE` — Удалить определённый диапазон частей и заменить их новыми.
+  * `MUTATE_PART` — Применить одну или несколько мутаций к части.
+  * `ALTER_METADATA` — Применить изменение в соответствии с глобальными путями /metadata и /columns.
 
 * `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время, когда задача была отправлена на выполнение.
 
-* `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество реплик, ожидающих завершения задачи с подтверждением о её выполнении. Этот столбец имеет значение только для задачи `GET_PARTS`.
+* `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Число реплик, ожидающих завершения задачи с подтверждением выполнения. Этот столбец имеет смысл только для задачи `GET_PARTS`.
 
 * `source_replica` ([String](../../sql-reference/data-types/string.md)) — Имя исходной реплики.
 
-* `new_part_name` ([String](../../sql-reference/data-types/string.md)) — Имя нового куска данных.
+* `new_part_name` ([String](../../sql-reference/data-types/string.md)) — Имя новой части.
 
-* `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — Имена кусков данных для слияния или обновления.
+* `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — Имена частей для слияния или обновления.
 
 * `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, находится ли задача `DETACH_PARTS` в очереди.
 
-* `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли конкретная задача в данный момент.
+* `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли данная задача в текущий момент.
 
-* `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество неудачных попыток завершить задачу.
+* `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Число неудачных попыток выполнить задачу.
 
-* `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней возникшей ошибке (если она была).
+* `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней возникшей ошибке (если была).
 
-* `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время последней попытки выполнить задачу.
+* `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время последней попытки выполнения задачи.
 
-* `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество раз, когда действие было отложено.
+* `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество раз, когда действие откладывалось.
 
 * `postpone_reason` ([String](../../sql-reference/data-types/string.md)) — Причина, по которой задача была отложена.
 
-* `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время, когда задача была отложена в последний раз.
+* `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время последнего откладывания задачи.
 
 * `merge_type` ([String](../../sql-reference/data-types/string.md)) — Тип текущего слияния. Пусто, если это мутация.
 
@@ -71,7 +71,7 @@ SELECT * FROM system.replication_queue LIMIT 1 FORMAT Vertical;
 
 
 ```text
-Строка 1:
+Row 1:
 ──────
 database:               merge
 table:                  visits_v2
@@ -87,7 +87,7 @@ parts_to_merge:         ['20201130_121373_121378_1','20201130_121379_121379_0','
 is_detach:              0
 is_currently_executing: 0
 num_tries:              36
-last_exception:         Code: 226, e.displayText() = DB::Exception: файл меток '/opt/clickhouse/data/merge/visits_v2/tmp_fetch_20201130_121373_121384_2/CounterID.mrk' не существует (версия 20.8.7.15 (официальная сборка))
+last_exception:         Code: 226, e.displayText() = DB::Exception: Файл отметок '/opt/clickhouse/data/merge/visits_v2/tmp_fetch_20201130_121373_121384_2/CounterID.mrk' не существует (version 20.8.7.15 (official build))
 last_attempt_time:      2020-12-08 17:35:54
 num_postponed:          0
 postpone_reason:

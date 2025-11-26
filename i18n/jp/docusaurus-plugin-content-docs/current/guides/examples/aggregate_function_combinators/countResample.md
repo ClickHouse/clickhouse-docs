@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
-description: 'Resample コンビネータを count と組み合わせて使用する例'
+description: 'count と Resample コンビネータを併用する例'
 keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'
 doc_type: 'reference'
@@ -12,27 +12,28 @@ doc_type: 'reference'
 # countResample {#countResample}
 
 
+
 ## 説明 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
-コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
-区間でカウントできます。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+コンビネータは、[`count`](/sql-reference/aggregate-functions/reference/count)
+集約関数に適用して、指定したキー列の値を固定数 (`N`) の区間に分割してカウントできます。
 
 
-## 使用例 {#example-usage}
 
-### 基本的な例 {#basic-example}
+## 利用例
 
-例を見てみましょう。従業員の`name`、`age`、`wage`を含むテーブルを作成し、データを挿入します:
+### 基本的な例
+
+例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、いくつかのデータを挿入してみます。
 
 ```sql
-CREATE TABLE employee_data
+CREATE TABLE employee_data 
 (
     name String,
     age UInt8,
     wage Float32
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -45,7 +46,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間に含まれるすべての人数をカウントしてみましょう。年齢には整数表現を使用しているため、実際には`[30, 59]`と`[60,74]`の区間の年齢が対象となります。これを行うには、`count`に`Resample`コンビネータを適用します:
+年齢が `[30,60)` および `[60,75)` の範囲に含まれるすべての人を数えましょう。
+年齢は整数で表現しているため、実際には `[30, 59]` および `[60,74]` の範囲の年齢になります。
+これを行うために、`count` に対して `Resample` コンビネータを適用します。
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -59,6 +62,5 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 
 
 ## 関連項目 {#see-also}
-
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [`Resample コンビネータ`](/sql-reference/aggregate-functions/combinators#-resample)

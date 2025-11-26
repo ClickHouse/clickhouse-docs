@@ -15,16 +15,17 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## Описание {#description}
 
-Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что дополнительно выводит строку заголовка с именами столбцов, аналогично формату [`TabSeparatedWithNames`](../TabSeparated/TabSeparatedWithNames.md).
+Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит строку заголовков с именами столбцов, аналогично формату [`TabSeparatedWithNames`](../TabSeparated/TabSeparatedWithNames.md).
 
 
-## Примеры использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используя JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используя JSON-файл со следующими данными, сохранённый как `football.json`:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -47,15 +48,15 @@ doc_type: 'reference'
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNames;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `JSONCompactEachRowWithNames`:
+Считайте данные в формате `JSONCompactEachRowWithNames`:
 
 ```sql
 SELECT *
@@ -91,7 +92,7 @@ FORMAT JSONCompactEachRowWithNames
 ## Настройки формата {#format-settings}
 
 :::note
-Если параметр [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в 1,
-столбцы из входных данных будут сопоставлены со столбцами таблицы по именам. Столбцы с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
+Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в значение 1,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам. Столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) также установлена в значение 1.
 В противном случае первая строка будет пропущена.
 :::

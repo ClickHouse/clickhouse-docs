@@ -17,19 +17,20 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-`One` 格式是一种特殊的输入格式,不从文件读取任何数据,仅返回一行,该行包含一个类型为 [`UInt8`](../../sql-reference/data-types/int-uint.md)、名称为 `dummy`、值为 `0` 的列(类似于 `system.one` 表)。
-可与虚拟列 `_file/_path` 配合使用来列出所有文件,而无需读取实际数据。
+`One` 格式是一种特殊的输入格式，它不会从文件中读取任何数据，而是只返回一行数据，该行包含一列，类型为 [`UInt8`](../../sql-reference/data-types/int-uint.md)、名称为 `dummy`、值为 `0`（类似于 `system.one` 表）。
+可以配合虚拟列 `_file/_path` 使用，在不读取实际数据的情况下列出所有文件。
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 示例：
 
-```sql title="查询"
+```sql title="Query"
 SELECT _file FROM file('path/to/files/data*', One);
 ```
 
-```text title="响应"
+```text title="Response"
 ┌─_file────┐
 │ data.csv │
 └──────────┘

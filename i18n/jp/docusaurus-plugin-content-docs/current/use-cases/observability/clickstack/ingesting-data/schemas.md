@@ -2,20 +2,20 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack で使用されるテーブルとスキーマ - ClickHouse Observability Stack'
+description: 'ClickStack が使用するテーブルとスキーマ - ClickHouse Observability Stack'
 sidebar_label: 'テーブルとスキーマ'
-title: 'ClickStack で使用されるテーブルとスキーマ'
+title: 'ClickStack が使用するテーブルとスキーマ'
 doc_type: 'reference'
 keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-ClickStack OpenTelemetry (OTel) コレクターは、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse にテーブルを作成し、データを挿入します。
+ClickStack の OpenTelemetry (OTel) collector は [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して、ClickHouse にテーブルを作成し、データを挿入します。
 
-次のテーブルは、`default` データベース内の各データ型ごとに作成されます。ユーザーは、OTel コレクターをホストしているコンテナイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
+`default` データベース内の各データタイプごとに、次のテーブルが作成されます。ユーザーは、OTel collector をホストしているイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
 
 
 
-## ログ {#logs}
+## ログ
 
 ```sql
 CREATE TABLE otel_logs
@@ -52,7 +52,7 @@ ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
 
-## トレース {#traces}
+## トレース
 
 ```sql
 CREATE TABLE otel_traces
@@ -92,9 +92,9 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
 
-## メトリクス {#metrics}
+## メトリクス
 
-### ゲージメトリクス {#gauge}
+### ゲージ型メトリクス
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -132,7 +132,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### サムメトリクス {#sum}
+### 合計メトリクス
 
 
 ```sql
@@ -173,7 +173,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### ヒストグラムメトリクス {#histogram}
+### ヒストグラムメトリクス
 
 
 ```sql
@@ -218,10 +218,10 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 指数ヒストグラム {#exponential-histograms}
+### 指数ヒストグラム
 
 :::note
-HyperDXは現在、指数ヒストグラムメトリクスの取得および表示に対応していません。メトリクスソースで設定することは可能ですが、将来的にサポートされる予定です。
+HyperDX は、指数ヒストグラム形式のメトリクスの取得および表示をまだサポートしていません。メトリクスのソース側でそれらを設定することは可能ですが、今後サポートが追加される予定です。
 :::
 
 
@@ -272,7 +272,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 集約テーブル {#summary-table}
+### 概要表
 
 
 ```sql
@@ -310,7 +310,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-## セッション {#sessions}
+## セッション
 
 ```sql
 CREATE TABLE hyperdx_sessions

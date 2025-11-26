@@ -1,5 +1,5 @@
 ---
-description: '`SELECT` および `INSERT` クエリを、リモートの MySQL サーバー上に格納されているデータに対して実行できるようにします。'
+description: 'リモート MySQL サーバー上に保存されているデータに対して、`SELECT` および `INSERT` クエリを実行できるようにします。'
 sidebar_label: 'mysql'
 sidebar_position: 137
 slug: /sql-reference/table-functions/mysql
@@ -11,36 +11,36 @@ doc_type: 'reference'
 
 # mysql テーブル関数
 
-リモート MySQL サーバーに保存されているデータに対して、`SELECT` および `INSERT` クエリを実行できます。
+リモートの MySQL サーバー上のデータに対して、`SELECT` および `INSERT` クエリを実行できるようにします。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
 
-## 引数 {#arguments}
+## 引数
 
-| 引数              | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `host:port`           | MySQLサーバーのアドレス。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `database`            | リモートデータベース名。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `table`               | リモートテーブル名。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `user`                | MySQLユーザー。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `password`            | ユーザーパスワード。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `replace_query`       | `INSERT INTO`クエリを`REPLACE INTO`に変換するフラグ。指定可能な値:<br/> - `0` - クエリは`INSERT INTO`として実行されます。<br/> - `1` - クエリは`REPLACE INTO`として実行されます。                                                                                                                                                                                                                                                                                                                      |
-| `on_duplicate_clause` | `INSERT`クエリに追加される`ON DUPLICATE KEY on_duplicate_clause`式。`replace_query = 0`の場合のみ指定可能です(`replace_query = 1`と`on_duplicate_clause`を同時に渡すと、ClickHouseは例外を生成します)。<br/> 例: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`<br/> ここでの`on_duplicate_clause`は`UPDATE c2 = c2 + 1`です。`ON DUPLICATE KEY`句で使用できる`on_duplicate_clause`については、MySQLのドキュメントを参照してください。 |
+| Argument              | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `host:port`           | MySQL サーバーのアドレス。                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `database`            | リモートデータベース名。                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `table`               | リモートテーブル名。                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `user`                | MySQL ユーザー。                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `password`            | ユーザーパスワード。                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `replace_query`       | `INSERT INTO` クエリを `REPLACE INTO` に変換するフラグ。取り得る値:<br />    - `0` - クエリは `INSERT INTO` として実行されます。<br />    - `1` - クエリは `REPLACE INTO` として実行されます。                                                                                                                                                                                                                                                                  |
+| `on_duplicate_clause` | `INSERT` クエリに追加される `ON DUPLICATE KEY on_duplicate_clause` 式。`replace_query = 0` の場合にのみ指定できます（`replace_query = 1` と `on_duplicate_clause` を同時に指定した場合、ClickHouse は例外をスローします）。<br />    例: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`<br />    ここでの `on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。`ON DUPLICATE KEY` 句と併用できる `on_duplicate_clause` については MySQL のドキュメントを参照してください。 |
 
-引数は[名前付きコレクション](operations/named-collections.md)を使用して渡すこともできます。この場合、`host`と`port`は個別に指定する必要があります。このアプローチは本番環境で推奨されます。
+引数は [named collections](operations/named-collections.md) を使って渡すこともできます。この場合、`host` と `port` は別々に指定する必要があります。本番環境ではこの方法を推奨します。
 
-`=, !=, >, >=, <, <=`などの単純な`WHERE`句は、現在MySQLサーバー上で実行されます。
+`=, !=, >, >=, <, <=` のような単純な `WHERE` 句は、現在は MySQL サーバー側で実行されます。
 
-残りの条件と`LIMIT`サンプリング制約は、MySQLへのクエリが完了した後にClickHouseでのみ実行されます。
+それ以外の条件および `LIMIT` 句によるサンプリング制約は、MySQL へのクエリが終了した後に ClickHouse 内でのみ実行されます。
 
-`|`で区切って列挙する必要がある複数のレプリカをサポートします。例:
+複数のレプリカをサポートしており、`|` で列挙する必要があります。例えば:
 
 ```sql
 SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
@@ -53,22 +53,23 @@ SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 
 ```
 
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-元のMySQLテーブルと同じカラムを持つテーブルオブジェクト。
+元の MySQL テーブルと同じカラムを持つテーブルオブジェクト。
 
 :::note
-MySQLの一部のデータ型は異なるClickHouseの型にマッピングされることがあります。これはクエリレベルの設定 [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level) で制御されます。
+MySQL の一部のデータ型は、異なる ClickHouse の型にマッピングされる場合があります。これはクエリレベルの設定 [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level) で制御できます。
 :::
 
 :::note
-`INSERT`クエリにおいて、テーブル関数`mysql(...)`をカラム名リスト付きのテーブル名と区別するには、キーワード`FUNCTION`または`TABLE FUNCTION`を使用する必要があります。以下の例を参照してください。
+`INSERT` クエリでは、テーブル関数 `mysql(...)` と、カラム名リスト付きのテーブル名を区別するために、キーワード `FUNCTION` または `TABLE FUNCTION` を必ず使用する必要があります。以下の例を参照してください。
 :::
 
 
-## 例 {#examples}
 
-MySQLのテーブル:
+## 例
+
+MySQL のテーブル:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -86,13 +87,13 @@ mysql> SELECT * FROM test;
 +--------+-------+
 ```
 
-ClickHouseからデータを選択:
+ClickHouse からデータを取得する:
 
 ```sql
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
-または[名前付きコレクション](operations/named-collections.md)を使用する場合:
+または、[名前付きコレクション](operations/named-collections.md) を使用します：
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -110,7 +111,7 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
-置換と挿入:
+置換および挿入:
 
 ```sql
 INSERT INTO FUNCTION mysql('localhost:3306', 'test', 'test', 'bayonet', '123', 1) (int_id, float) VALUES (1, 3);
@@ -125,7 +126,7 @@ SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 └────────┴───────┘
 ```
 
-MySQLテーブルからClickHouseテーブルへデータをコピー:
+MySQL テーブルから ClickHouse テーブルにデータをコピーする:
 
 ```sql
 CREATE TABLE mysql_copy
@@ -141,7 +142,7 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');
 ```
 
-または、現在の最大IDに基づいてMySQLから増分バッチのみをコピーする場合:
+または、現在の最大 ID に基づいて MySQL から増分バッチのみをコピーする場合：
 
 ```sql
 INSERT INTO mysql_copy
@@ -152,8 +153,8 @@ WHERE id > (SELECT max(id) FROM mysql_copy);
 
 ## 関連項目 {#related}
 
-- ['MySQL' テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
-- [MySQL をディクショナリソースとして使用する](/sql-reference/dictionaries#mysql)
+- [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
+- [MySQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

@@ -1,5 +1,5 @@
 ---
-description: '计算最大 `val` 对应的 `arg` 值。'
+description: '计算最大 `val` 值对应的 `arg` 值。'
 sidebar_position: 109
 slug: /sql-reference/aggregate-functions/reference/argmax
 title: 'argMax'
@@ -8,8 +8,8 @@ doc_type: 'reference'
 
 # argMax
 
-计算最大 `val` 值对应的 `arg`。如果存在多行记录具有相同的最大 `val` 值，则返回哪一个对应的 `arg` 是不确定的。
-`arg` 和 `max` 两部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)工作，它们在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 值。
+计算最大 `val` 所对应的 `arg` 值。如果存在多行的最大 `val` 相同，则返回的对应 `arg` 值是不确定的。
+`arg` 和 `max` 两个部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)运行，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在存在非 `Null` 值时返回非 `Null` 值。
 
 **语法**
 
@@ -24,9 +24,9 @@ argMax(arg, val)
 
 **返回值**
 
-* 与最大 `val` 对应的 `arg` 值。
+* 与最大 `val` 值对应的 `arg`。
 
-类型：与 `arg` 类型一致。
+类型：与 `arg` 的类型相同。
 
 **示例**
 
@@ -88,7 +88,7 @@ SELECT argMax(tuple(a), b) FROM test;
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- 可以使用 Tuple 获取对应 max(b) 的两列(所有列 - tuple(*))
+│ ᴺᵁᴸᴸ    │       3 │ -- 可以使用 Tuple 获取对应 max(b) 的两列(全部列 - tuple(*))
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
@@ -98,7 +98,7 @@ SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- 有两行 b=2,在 `Max` 中使用 `Tuple` 可以获取非第一个的 `arg`
+│ c                      │ -- 有两行 b=2,在 `Max` 中使用 `Tuple` 可以获取非第一个 `arg`
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
@@ -107,6 +107,6 @@ SELECT argMax(a, tuple(b)) FROM test;
 └─────────────────────┘
 ```
 
-**另请参阅**
+**另见**
 
 * [Tuple](/sql-reference/data-types/tuple.md)

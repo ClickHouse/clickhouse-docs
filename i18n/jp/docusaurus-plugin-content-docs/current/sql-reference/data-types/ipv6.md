@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse における IPv6 データ型のドキュメント。IPv6 アドレスを 16 バイト値として格納します'
+description: 'ClickHouse における IPv6 データ型のドキュメント。IPv6 アドレスを 16 バイトの値として保存します'
 sidebar_label: 'IPv6'
 sidebar_position: 30
 slug: /sql-reference/data-types/ipv6
@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-## IPv6 {#ipv6}
+## IPv6
 
-IPv6アドレス。UInt128ビッグエンディアンとして16バイトで格納されます。
+IPv6 アドレス。16 バイトの UInt128 型（ビッグエンディアン）として格納されます。
 
-### 基本的な使用方法 {#basic-usage}
+### 基本的な使い方
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;
@@ -28,13 +28,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-または、`IPv6`ドメインをキーとして使用することもできます:
+または、`IPv6` ドメイン名をキーとして使用することもできます。
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv6`ドメインは、IPv6文字列形式でのカスタム入力をサポートしています:
+`IPv6` ドメインは、IPv6 文字列表現としてのカスタム入力をサポートします。
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '2a02:aa08:e000:3100::2')('https://clickhouse.com', '2001:44c8:129:2632:33:0:252:2')('https://clickhouse.com/docs/en/', '2a02:e980:1e::1');
@@ -50,7 +50,7 @@ SELECT * FROM hits;
 └────────────────────────────────────┴───────────────────────────────┘
 ```
 
-値はコンパクトなバイナリ形式で格納されます:
+値はコンパクトなバイナリ形式で格納されます。
 
 ```sql
 SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
@@ -62,7 +62,7 @@ SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
 └──────────────────┴──────────────────────────────────┘
 ```
 
-IPv6アドレスはIPv4アドレスと直接比較できます:
+IPv6 アドレスは IPv4 アドレスと直接比較できます。
 
 ```sql
 SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
@@ -76,4 +76,4 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 
 **関連項目**
 
-- [IPv4およびIPv6アドレスを扱う関数](../functions/ip-address-functions.md)
+* [IPv4 および IPv6 アドレスを扱うための関数](../functions/ip-address-functions.md)

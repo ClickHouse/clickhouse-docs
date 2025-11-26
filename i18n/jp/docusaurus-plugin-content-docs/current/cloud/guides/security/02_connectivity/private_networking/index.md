@@ -1,15 +1,15 @@
 ---
 slug: /cloud/security/connectivity/private-networking
-title: 'プライベートネットワーキング'
+title: 'プライベートネットワーク'
 hide_title: true
-description: 'ClickHouse Cloud のプライベートネットワーキングセクション用の目次ページ'
+description: 'ClickHouse Cloud のプライベートネットワーク関連セクションの目次ページ'
 doc_type: 'landing-page'
-keywords: ['プライベートネットワーキング', 'ネットワークセキュリティ', 'VPC', '接続', 'クラウド機能']
+keywords: ['プライベートネットワーク', 'ネットワークセキュリティ', 'VPC', '接続', 'クラウド機能']
 ---
 
 # プライベートネットワーキング
 
-ClickHouse Cloud では、お使いのサービスをクラウド上の仮想ネットワークに接続できます。各プロバイダー向けのセットアップ手順については、以下のガイドを参照してください。
+ClickHouse Cloud は、サービスをクラウド上の仮想ネットワークに接続する機能を提供します。ご利用のプロバイダー向けのセットアップ手順については、以下のガイドを参照してください。
 
 - [AWS PrivateLink](/manage/security/aws-privatelink)
 - [GCP Private Service Connect](/manage/security/gcp-private-service-connect)

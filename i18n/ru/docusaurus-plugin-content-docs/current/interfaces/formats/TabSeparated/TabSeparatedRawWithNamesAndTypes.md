@@ -10,26 +10,27 @@ doc_type: 'reference'
 ---
 
 | Вход | Выход | Псевдоним                                         |
-|------|-------|----------------------------------------------------|
+|------|-------|---------------------------------------------------|
 | ✔    | ✔     | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
 
 
 ## Описание {#description}
 
-Отличается от формата [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) тем,
-что строки записываются без экранирования.
+Отличается от формата [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md)
+тем, что строки записываются без экранирования.
 
 :::note
-При разборе данных в этом формате символы табуляции и перевода строки не допускаются в полях.
+При разборе этого формата табуляция и перевод строки внутри каждого поля не допускаются.
 :::
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используя следующий TSV-файл с именем `football.tsv`:
+### Вставка данных
+
+Используем следующий TSV‑файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -53,15 +54,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `TabSeparatedRawWithNamesAndTypes`:
+Прочитайте данные, используя формат `TabSeparatedRawWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -69,7 +70,7 @@ FROM football
 FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
-Вывод будет представлен в формате с разделением табуляцией и двумя строками заголовков для имён и типов столбцов:
+Вывод будет в формате с разделителем табуляции и двумя строками заголовка: первая содержит имена столбцов, вторая — их типы:
 
 
 ```tsv
@@ -95,4 +96,4 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

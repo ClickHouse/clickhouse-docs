@@ -1,18 +1,18 @@
 ---
-sidebar_label: 'Postgres 向け ClickPipes のメンテナンスウィンドウ'
-description: 'Postgres 向け ClickPipes のメンテナンスウィンドウ。'
+sidebar_label: 'Postgres 用 ClickPipes のメンテナンスウィンドウ'
+description: 'Postgres 用 ClickPipes のメンテナンスウィンドウ。'
 slug: /integrations/clickpipes/postgres/maintenance
-title: 'Postgres 向け ClickPipes のメンテナンスウィンドウ'
+title: 'Postgres 用 ClickPipes のメンテナンスウィンドウ'
 doc_type: 'reference'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
 # Postgres 用 ClickPipes のメンテナンス時間帯
 
-Postgres 用 ClickPipes のメンテナンス時間帯が次の日時で予定されています:
+Postgres ClickPipes のメンテナンス時間帯が次のとおり予定されています。
 
-- **日付:** 2025 年 4 月 17 日
-- **時間:** 07:00 AM - 08:00 AM UTC
+- **日付:** 2025年4月17日
+- **時間:** 07:00 ～ 08:00 (UTC)
 
-この時間帯には、ご利用の Postgres 用 ClickPipes が短時間停止します。
-メンテナンス時間帯終了後、ClickPipes は再び利用可能となり、通常どおり稼働を再開します。
+この時間帯中、お使いの Postgres ClickPipes では短時間のダウンタイムが発生します。
+ClickPipes はメンテナンス時間帯の終了後に再び利用可能となり、通常どおりの動作を再開します。

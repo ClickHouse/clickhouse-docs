@@ -1,5 +1,5 @@
 ---
-description: 'JOIN 子句文档'
+description: 'JOIN 子句说明文档'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 子句'
@@ -11,56 +11,57 @@ doc_type: 'reference'
 
 # JOIN 子句
 
-`JOIN` 子句通过使用各个表中共有的值，将一个或多个表的列组合在一起，从而生成一张新表。它是在支持 SQL 的数据库中一种常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）运算。对同一张表进行连接的特殊情况通常称为“自连接”（self-join）。
+`JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
 
 **语法**
 
 ```sql
-SELECT <表达式列表>
-FROM <左表>
-[GLOBAL] [INNER|LEFT|RIGHT|FULL|CROSS] [OUTER|SEMI|ANTI|ANY|ALL|ASOF] JOIN <右表>
-(ON <表达式列表>)|(USING <字段列表>) ...
+SELECT <expr_list>
+FROM <left_table>
+[GLOBAL] [INNER|LEFT|RIGHT|FULL|CROSS] [OUTER|SEMI|ANTI|ANY|ALL|ASOF] JOIN <right_table>
+(ON <expr_list>)|(USING <column_list>) ...
 ```
 
-`ON` 子句中的表达式和 `USING` 子句中的列被称为“连接键”（join keys）。除非另有说明，`JOIN` 会对具有相同“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
+`ON` 子句中的表达式和 `USING` 子句中的列称为“连接键”（join keys）。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
 
 
 ## 支持的 JOIN 类型 {#supported-types-of-join}
 
-支持所有标准的 [SQL JOIN](<https://en.wikipedia.org/wiki/Join_(SQL)>) 类型:
+支持所有标准的 [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)) 类型：
 
-| 类型               | 描述                                                                    |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `INNER JOIN`       | 仅返回匹配的行。                                               |
-| `LEFT OUTER JOIN`  | 除匹配的行外,还返回左表中不匹配的行。   |
-| `RIGHT OUTER JOIN` | 除匹配的行外,还返回右表中不匹配的行。  |
-| `FULL OUTER JOIN`  | 除匹配的行外,还返回两个表中不匹配的行。  |
-| `CROSS JOIN`       | 生成整个表的笛卡尔积,**不**指定"连接键"。 |
+| Type              | Description                                                                   |
+|-------------------|-------------------------------------------------------------------------------|
+| `INNER JOIN`      | 仅返回匹配的行。                                                              |
+| `LEFT OUTER JOIN` | 在返回匹配行的基础上，额外返回左表中未匹配的行。                              |
+| `RIGHT OUTER JOIN`| 在返回匹配行的基础上，额外返回右表中未匹配的行。                              |
+| `FULL OUTER JOIN` | 在返回匹配行的基础上，额外返回两个表中未匹配的行。                            |
+| `CROSS JOIN`      | 生成整个表的笛卡尔积，不指定 “join keys”。                                    |
 
-- 未指定类型的 `JOIN` 默认为 `INNER`。
-- 关键字 `OUTER` 可以安全地省略。
-- `CROSS JOIN` 的另一种语法是在 [`FROM` 子句](../../../sql-reference/statements/select/from.md) 中用逗号分隔多个表。
+- 未显式指定类型的 `JOIN` 等价于 `INNER`。
+- 关键字 `OUTER` 可以安全省略。
+- `CROSS JOIN` 的另一种语法是在 [`FROM` 子句](../../../sql-reference/statements/select/from.md) 中使用逗号分隔指定多个表。
 
-ClickHouse 中可用的其他连接类型包括:
+ClickHouse 还提供了额外的 join 类型：
 
-| 类型                                                | 描述                                                                                                                                          |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`                 | 基于"连接键"的白名单,不生成笛卡尔积。                                                                                  |
-| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`                 | 基于"连接键"的黑名单,不生成笛卡尔积。                                                                                    |
-| `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 对于标准 `JOIN` 类型,部分禁用(`LEFT` 和 `RIGHT` 的对侧)或完全禁用(`INNER` 和 `FULL`)笛卡尔积。 |
-| `ASOF JOIN`, `LEFT ASOF JOIN`                       | 使用非精确匹配连接序列。`ASOF JOIN` 的用法将在下文描述。                                                                      |
-| `PASTE JOIN`                                        | 执行两个表的水平拼接。                                                                                                   |
+| Type                                        | Description                                                                                                                               |
+|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`         | 基于 “join keys” 的允许列表（allowlist），不会生成笛卡尔积。                                                                               |
+| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`         | 基于 “join keys” 的拒绝列表（denylist），不会生成笛卡尔积。                                                                               |
+| `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 部分地（对于 `LEFT` 和 `RIGHT` 的另一侧）或完全地（对于 `INNER` 和 `FULL`）禁用标准 `JOIN` 类型中的笛卡尔积。                               |
+| `ASOF JOIN`, `LEFT ASOF JOIN`               | 以非精确匹配的方式连接序列。`ASOF JOIN` 的用法将在下文介绍。                                                                                |
+| `PASTE JOIN`                                | 对两个表执行水平方向的拼接。                                                                                                             |
 
 :::note
-当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时,`RIGHT JOIN` 和 `FULL JOIN` 仅支持 `ALL` 严格性(不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`)。
+当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN`（不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`）。
 :::
+
 
 
 ## 设置 {#settings}
 
-可以使用 [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 设置覆盖默认的连接类型。
+可以使用 [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 设置来覆盖默认的 JOIN 类型。
 
-ClickHouse 服务器执行 `ANY JOIN` 操作的行为取决于 [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys) 设置。
+ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys) 设置。
 
 **另请参阅**
 
@@ -71,29 +72,30 @@ ClickHouse 服务器执行 `ANY JOIN` 操作的行为取决于 [`any_join_distin
 - [`join_on_disk_max_files_to_merge`](../../../operations/settings/settings.md#join_on_disk_max_files_to_merge)
 - [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)
 
-使用 `cross_to_inner_join_rewrite` 设置可定义当 ClickHouse 无法将 `CROSS JOIN` 重写为 `INNER JOIN` 时的行为。默认值为 `1`,允许连接继续执行但速度会较慢。如果希望抛出错误,请将 `cross_to_inner_join_rewrite` 设置为 `0`;如果希望不执行交叉连接而是强制重写所有逗号/交叉连接,请将其设置为 `2`。当值为 `2` 时,如果重写失败,您将收到错误消息"Please, try to simplify `WHERE` section"。
+使用 `cross_to_inner_join_rewrite` 设置来定义当 ClickHouse 无法将 `CROSS JOIN` 重写为 `INNER JOIN` 时的行为。默认值为 `1`，此时允许 JOIN 继续执行，但会更慢。如果希望抛出错误，请将 `cross_to_inner_join_rewrite` 设为 `0`；若希望不执行 CROSS JOIN，而是强制重写所有逗号/CROSS JOIN，请将其设为 `2`。如果在值为 `2` 时重写失败，您将收到一条错误消息：“Please, try to simplify `WHERE` section”。
 
 
-## ON 子句条件 {#on-section-conditions}
 
-`ON` 子句可以包含使用 `AND` 和 `OR` 运算符组合的多个条件。指定连接键的条件必须:
+## ON 部分中的条件
 
-- 同时引用左表和右表
-- 使用等值运算符
+`ON` 部分可以包含多个条件，这些条件通过 `AND` 和 `OR` 运算符组合。指定连接键的条件必须：
 
-其他条件可以使用其他逻辑运算符,但必须仅引用查询的左表或右表。
+* 同时引用左表和右表
+* 使用等号运算符
 
-当满足整个复合条件时,行会被连接。如果条件不满足,根据 `JOIN` 类型,行仍可能包含在结果中。请注意,如果将相同的条件放在 `WHERE` 子句中且条件不满足,则这些行始终会从结果中被过滤掉。
+其他条件可以使用其他逻辑运算符，但它们必须引用查询中的左表或右表之一。
 
-`ON` 子句中的 `OR` 运算符使用哈希连接算法——对于 `JOIN` 中每个带有连接键的 `OR` 参数,都会创建一个单独的哈希表,因此内存消耗和查询执行时间会随着 `ON` 子句中 `OR` 表达式数量的增加而线性增长。
+只有当整个复杂条件满足时，行才会被连接。如果条件不满足，行是否仍会包含在结果中取决于 `JOIN` 类型。注意，如果将相同的条件放在 `WHERE` 部分且条件不满足，那么这些行将始终从结果中过滤掉。
+
+`ON` 子句中的 `OR` 运算符基于哈希连接算法工作——对于每个带有 `JOIN` 连接键的 `OR` 分支，都会创建一个单独的哈希表，因此随着 `ON` 子句中 `OR` 表达式数量的增加，内存消耗和查询执行时间会线性增长。
 
 :::note
-如果条件引用来自不同表的列,则目前仅支持等值运算符 (`=`)。
+如果一个条件引用了来自不同表的列，那么目前仅支持等号运算符（`=`）。
 :::
 
 **示例**
 
-考虑 `table_1` 和 `table_2`:
+考虑 `table_1` 和 `table_2`：
 
 ```response
 ┌─Id─┬─name─┐     ┌─Id─┬─text───────────┬─scores─┐
@@ -103,39 +105,39 @@ ClickHouse 服务器执行 `ANY JOIN` 操作的行为取决于 [`any_join_distin
 └────┴──────┘     └────┴────────────────┴────────┘
 ```
 
-包含一个连接键条件和 `table_2` 附加条件的查询:
+包含一个连接键条件以及针对 `table_2` 的附加条件的查询：
 
 ```sql
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
-请注意,结果包含名称为 `C` 且文本列为空的行。该行被包含在结果中是因为使用了 `OUTER` 类型的连接。
+请注意，结果中包含名称为 `C` 且文本列为空的那一行。之所以会出现在结果中，是因为使用了 `OUTER` 类型的联接。
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ Text A │
-│ B    │ Text B │
+│ A    │ 文本 A │
+│ B    │ 文本 B │
 │ C    │        │
 └──────┴────────┘
 ```
 
-包含 `INNER` 类型连接和多个条件的查询:
+使用 `INNER` 连接类型且包含多个条件的查询：
 
 ```sql
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-结果:
+结果：
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
-│ B    │ Text B │     15 │
+│ B    │ 文本 B │     15 │
 └──────┴────────┴────────┘
 ```
 
-包含 `INNER` 类型连接和 `OR` 条件的查询:
+使用 `INNER` 连接类型且条件中包含 `OR` 的查询：
 
 ```sql
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
@@ -149,7 +151,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-结果:
+结果：
 
 ```response
 ┌─a─┬──b─┬─val─┐
@@ -161,14 +163,14 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 └───┴────┴─────┘
 ```
 
-包含 `INNER` 类型连接以及 `OR` 和 `AND` 条件的查询:
+使用 `INNER` 类型 JOIN，且包含 `OR` 和 `AND` 条件的查询：
 
 :::note
 
 
-默认情况下，只要非等值条件中使用的列都来自同一张表，就会被支持。
+默认情况下，支持非等号条件，只要这些条件中使用的列都来自同一张表。
 例如，`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`，因为 `t1.b > 0` 只使用了 `t1` 的列，而 `t2.b > t2.c` 只使用了 `t2` 的列。
-不过，你也可以尝试对类似 `t1.a = t2.key AND t1.b > t2.key` 这样的条件启用实验性支持，更多细节请参见下方章节。
+不过，你也可以尝试对类似 `t1.a = t2.key AND t1.b > t2.key` 这种条件的实验性支持，更多细节请参阅下方章节。
 
 :::
 
@@ -187,13 +189,13 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 ```
 
 
-## 对来自不同表的列使用不等条件的 JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
+## 针对来自不同表的列使用非等值条件的 JOIN
 
-ClickHouse 目前支持在 `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` 中同时使用不等条件和等值条件。不等条件仅支持 `hash` 和 `grace_hash` 连接算法。不等条件不支持与 `join_use_nulls` 配合使用。
+ClickHouse 目前除等值条件外，还支持在 `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` 中使用非等值条件。非等值条件仅在 `hash` 和 `grace_hash` join 算法中受支持。使用 `join_use_nulls` 时不支持非等值条件。
 
 **示例**
 
-表 `t1`:
+表 `t1`：
 
 ```response
 ┌─key──┬─attr─┬─a─┬─b─┬─c─┐
@@ -238,13 +240,13 @@ key4    f    2    3    4            0    0    \N
 ```
 
 
-## JOIN 键中的 NULL 值 {#null-values-in-join-keys}
+## JOIN 键中的 NULL 值
 
-`NULL` 不等于任何值,包括其自身。这意味着如果一个表中的 `JOIN` 键为 `NULL` 值,它不会与另一个表中的 `NULL` 值匹配。
+`NULL` 不等于任何值，包括它本身。这意味着如果某个表中用作 `JOIN` 键的列值为 `NULL`，它不会与另一张表中同样为 `NULL` 的值相匹配。
 
 **示例**
 
-表 `A`:
+表 `A`：
 
 ```response
 ┌───id─┬─name────┐
@@ -254,7 +256,7 @@ key4    f    2    3    4            0    0    \N
 └──────┴─────────┘
 ```
 
-表 `B`:
+表 `B`：
 
 ```response
 ┌───id─┬─score─┐
@@ -276,9 +278,9 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON A.id = B.id
 └─────────┴───────┘
 ```
 
-请注意,表 `A` 中 `Charlie` 所在的行和表 `B` 中分数为 88 的行未出现在结果中,原因是 `JOIN` 键中存在 `NULL` 值。
+请注意，表 `A` 中包含 `Charlie` 的那一行，以及表 `B` 中分数为 88 的那一行，都没有出现在结果中，这是因为 `JOIN` 键中存在 `NULL` 值。
 
-如果需要匹配 `NULL` 值,可以使用 `isNotDistinctFrom` 函数来比较 `JOIN` 键。
+如果需要匹配 `NULL` 值，请使用 `isNotDistinctFrom` 函数来比较 `JOIN` 键。
 
 ```sql
 SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
@@ -286,75 +288,75 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 
 ```markdown
 ┌─name────┬─score─┐
-│ Alice │ 90 │
-│ Bob │ 0 │
-│ Charlie │ 88 │
+│ Alice   │    90 │
+│ Bob     │     0 │
+│ Charlie │    88 │
 └─────────┴───────┘
 ```
 
 
-## ASOF JOIN 用法 {#asof-join-usage}
+## ASOF JOIN 用法
 
-当需要连接没有精确匹配的记录时,`ASOF JOIN` 非常有用。
+当你需要联接那些没有精确匹配的记录时，`ASOF JOIN` 非常有用。
 
-此 JOIN 算法要求表中包含一个特殊列。该列:
+这种 JOIN 算法要求表中有一个特殊的列。该列：
 
-- 必须包含有序序列。
-- 可以是以下类型之一:[Int, UInt](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Date](../../../sql-reference/data-types/date.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[Decimal](../../../sql-reference/data-types/decimal.md)。
-- 对于 `hash` 连接算法,该列不能是 `JOIN` 子句中的唯一列。
+* 必须包含一个有序序列。
+* 可以是以下类型之一：[Int, UInt](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Date](../../../sql-reference/data-types/date.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[Decimal](../../../sql-reference/data-types/decimal.md)。
+* 在使用 `hash` JOIN 算法时，它不能是 `JOIN` 子句中唯一的列。
 
-语法 `ASOF JOIN ... ON`:
-
-```sql
-SELECT expressions_list
-FROM table_1
-ASOF LEFT JOIN table_2
-ON equi_cond AND closest_match_cond
-```
-
-可以使用任意数量的相等条件和恰好一个最接近匹配条件。例如,`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
-
-最接近匹配支持的条件:`>`、`>=`、`<`、`<=`。
-
-语法 `ASOF JOIN ... USING`:
+`ASOF JOIN ... ON` 语法：
 
 ```sql
-SELECT expressions_list
-FROM table_1
-ASOF JOIN table_2
-USING (equi_column1, ... equi_columnN, asof_column)
+SELECT 表达式列表
+FROM 表_1
+ASOF LEFT JOIN 表_2
+ON 等值条件 AND 最近匹配条件
 ```
 
-`ASOF JOIN` 使用 `equi_columnX` 进行相等连接,使用 `asof_column` 通过 `table_1.asof_column >= table_2.asof_column` 条件进行最接近匹配连接。`asof_column` 列始终是 `USING` 子句中的最后一列。
+你可以使用任意数量的等值条件，但最多只能使用一个最近匹配条件。例如：`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
 
-例如,考虑以下表:
+最近匹配所支持的条件有：`>`, `>=`, `<`, `<=`。
+
+语法 `ASOF JOIN ... USING`：
+
+```sql
+SELECT 表达式列表
+FROM 表_1
+ASOF JOIN 表_2
+USING (等值列_1, ... 等值列_N, asof_列)
+```
+
+`ASOF JOIN` 使用 `equi_columnX` 进行等值连接，并使用 `asof_column` 在满足 `table_1.asof_column >= table_2.asof_column` 条件的情况下进行最接近的匹配连接。`asof_column` 列在 `USING` 子句中始终是最后一列。
+
+例如，考虑下列表：
 
 ```text
-         table_1                           table_2
-      event   | ev_time | user_id       event   | ev_time | user_id
+         表_1                              表_2
+      事件    | 事件时间 | 用户ID       事件    | 事件时间 | 用户ID
     ----------|---------|----------   ----------|---------|----------
                   ...                               ...
-    event_1_1 |  12:00  |  42         event_2_1 |  11:59  |   42
-                  ...                 event_2_2 |  12:30  |   42
-    event_1_2 |  13:00  |  42         event_2_3 |  13:00  |   42
+    事件_1_1  |  12:00  |  42         事件_2_1  |  11:59  |   42
+                  ...                 事件_2_2  |  12:30  |   42
+    事件_1_2  |  13:00  |  42         事件_2_3  |  13:00  |   42
                   ...                               ...
 ```
 
-`ASOF JOIN` 可以从 `table_1` 中获取用户事件的时间戳,并在 `table_2` 中查找时间戳最接近 `table_1` 中事件时间戳且符合最接近匹配条件的事件。如果存在相等的时间戳值,则它们是最接近的。在这里,`user_id` 列可用于相等连接,`ev_time` 列可用于最接近匹配连接。在本例中,`event_1_1` 可以与 `event_2_1` 连接,`event_1_2` 可以与 `event_2_3` 连接,但 `event_2_2` 无法连接。
+`ASOF JOIN` 可以获取 `table_1` 中用户事件的时间戳，并在 `table_2` 中找到时间戳在满足最近匹配条件下最接近 `table_1` 中该事件时间戳的事件。如果存在相等的时间戳值，则优先视为最近匹配。在这里，`user_id` 列可用于等值连接，而 `ev_time` 列可用于按最近匹配进行连接。在我们的示例中，`event_1_1` 可以与 `event_2_1` 连接，`event_1_2` 可以与 `event_2_3` 连接，但 `event_2_2` 无法被连接。
 
 :::note
-`ASOF JOIN` 仅由 `hash` 和 `full_sorting_merge` 连接算法支持。
-[Join](../../../engines/table-engines/special/join.md) 表引擎**不**支持该功能。
+`ASOF JOIN` 仅在 `hash` 和 `full_sorting_merge` 连接算法中受支持。
+在 [Join](../../../engines/table-engines/special/join.md) 表引擎中**不**受支持。
 :::
 
 
-## PASTE JOIN 用法 {#paste-join-usage}
+## PASTE JOIN 用法
 
-`PASTE JOIN` 的结果是一个表,其中包含左子查询的所有列,后面紧跟右子查询的所有列。
-行基于它们在原始表中的位置进行匹配(行的顺序应当是确定的)。
-如果子查询返回的行数不同,多余的行将被截断。
+`PASTE JOIN` 的结果是一个表，包含左侧子查询的所有列，后面紧跟右侧子查询的所有列。
+行是根据它们在原始表中的位置一一对应匹配的（行的顺序必须是确定的）。
+如果子查询返回的行数不同，多出的行会被丢弃。
 
-示例:
+示例：
 
 ```sql
 SELECT *
@@ -376,7 +378,7 @@ PASTE JOIN
 └───┴──────┘
 ```
 
-注意:在这种情况下,如果采用并行读取,结果可能是不确定的。例如:
+注意：在这种情况下，如果以并行方式进行读取，结果可能是不确定的。例如：
 
 ```sql
 SELECT *
@@ -409,21 +411,22 @@ SETTINGS max_block_size = 2;
 
 ## 分布式 JOIN {#distributed-join}
 
-涉及分布式表的 JOIN 有两种执行方式:
+在包含分布式表的 JOIN 中，有两种执行方式：
 
-- 使用普通 `JOIN` 时,查询会被发送到远程服务器。子查询在每个服务器上运行以构建右表,然后与该表执行连接操作。换句话说,右表在每个服务器上分别构建。
-- 使用 `GLOBAL ... JOIN` 时,首先由请求服务器运行子查询来计算右表。该临时表会传递到每个远程服务器,然后在这些服务器上使用传输的临时数据运行查询。
+- 使用普通的 `JOIN` 时，查询会被发送到远程服务器。会在每个远程服务器上分别运行子查询来构造右表，然后在该表上执行 JOIN。换句话说，右表会在每个服务器上单独构建。
+- 使用 `GLOBAL ... JOIN` 时，请求方服务器首先运行子查询以计算右表。这个临时表会被传递到每个远程服务器，然后在这些服务器上基于传输过来的临时数据执行查询。
 
-使用 `GLOBAL` 时需要谨慎。更多信息请参阅[分布式子查询](/sql-reference/operators/in#distributed-subqueries)部分。
+在使用 `GLOBAL` 时要小心。更多信息请参见[分布式子查询](/sql-reference/operators/in#distributed-subqueries)一节。
 
 
-## 隐式类型转换 {#implicit-type-conversion}
 
-`INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN` 和 `FULL JOIN` 查询支持对"连接键"进行隐式类型转换。但是,如果左表和右表的连接键无法转换为单一类型,则查询无法执行(例如,不存在可以同时容纳 `UInt64` 和 `Int64` 所有值的数据类型,或者 `String` 和 `Int32` 所有值的数据类型)。
+## 隐式类型转换
+
+`INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN` 和 `FULL JOIN` 查询支持对“连接键”进行隐式类型转换。但是，如果左右表的连接键无法被转换为同一种类型，则查询无法执行（例如，没有任何一种数据类型能够同时容纳来自 `UInt64` 和 `Int64`，或 `String` 和 `Int32` 的所有值）。
 
 **示例**
 
-考虑表 `t_1`:
+考虑表 `t_1`：
 
 ```response
 ┌─a─┬─b─┬─toTypeName(a)─┬─toTypeName(b)─┐
@@ -432,7 +435,7 @@ SETTINGS max_block_size = 2;
 └───┴───┴───────────────┴───────────────┘
 ```
 
-以及表 `t_2`:
+以及表 `t_2`：
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -442,13 +445,13 @@ SETTINGS max_block_size = 2;
 └────┴──────┴───────────────┴─────────────────┘
 ```
 
-该查询
+此查询
 
 ```sql
 SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
 
-返回结果集:
+返回以下集合：
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -462,55 +465,56 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 ## 使用建议 {#usage-recommendations}
 
-### 处理空值或 NULL 单元格 {#processing-of-empty-or-null-cells}
+### 空单元格或 NULL 单元格的处理 {#processing-of-empty-or-null-cells}
 
-在连接表时,可能会出现空单元格。[join_use_nulls](../../../operations/settings/settings.md#join_use_nulls) 设置定义了 ClickHouse 如何填充这些单元格。
+在进行表关联时，可能会出现空单元格。设置 [join_use_nulls](../../../operations/settings/settings.md#join_use_nulls) 定义了 ClickHouse 如何填充这些单元格。
 
-如果 `JOIN` 键是 [Nullable](../../../sql-reference/data-types/nullable.md) 字段,则至少有一个键的值为 [NULL](/sql-reference/syntax#null) 的行将不会被连接。
+如果 `JOIN` 键列是 [Nullable](../../../sql-reference/data-types/nullable.md) 字段，则至少有一个键的值为 [NULL](/sql-reference/syntax#null) 的行不会被关联。
 
 ### 语法 {#syntax}
 
-在 `USING` 中指定的列在两个子查询中必须具有相同的名称,而其他列必须使用不同的名称。您可以使用别名来更改子查询中列的名称。
+在 `USING` 中指定的列在两个子查询中必须同名，而其他列必须使用不同的名称。你可以使用别名来更改子查询中列的名称。
 
-`USING` 子句指定一个或多个用于连接的列,这将建立这些列的相等关系。列列表设置时不使用括号。不支持更复杂的连接条件。
+`USING` 子句指定一个或多个用于关联的列，表示这些列在两侧需要相等。列列表直接列出，无需括号。不支持更复杂的关联条件。
 
 ### 语法限制 {#syntax-limitations}
 
-对于单个 `SELECT` 查询中的多个 `JOIN` 子句:
+对于单个 `SELECT` 查询中的多个 `JOIN` 子句：
 
-- 仅当连接的是表而不是子查询时,才能通过 `*` 获取所有列。
-- `PREWHERE` 子句不可用。
-- `USING` 子句不可用。
+- 仅当关联的是表而不是子查询时，才能通过 `*` 获取所有列。
+- 不支持 `PREWHERE` 子句。
+- 不支持 `USING` 子句。
 
-对于 `ON`、`WHERE` 和 `GROUP BY` 子句:
+对于 `ON`、`WHERE` 和 `GROUP BY` 子句：
 
-- 不能在 `ON`、`WHERE` 和 `GROUP BY` 子句中使用任意表达式,但您可以在 `SELECT` 子句中定义表达式,然后通过别名在这些子句中使用它。
+- 不能在 `ON`、`WHERE` 和 `GROUP BY` 子句中使用任意表达式，但你可以在 `SELECT` 子句中定义一个表达式，然后通过别名在这些子句中使用它。
 
 ### 性能 {#performance}
 
-在运行 `JOIN` 时,执行顺序相对于查询的其他阶段没有优化。连接操作(在右表中搜索)在 `WHERE` 过滤之前和聚合之前运行。
+在执行 `JOIN` 时，不会根据查询中其他阶段自动优化执行顺序。关联操作（在右表中查找）会在 `WHERE` 过滤和聚合之前执行。
 
-每次使用相同的 `JOIN` 运行查询时,子查询都会再次运行,因为结果不会被缓存。为避免这种情况,请使用特殊的 [Join](../../../engines/table-engines/special/join.md) 表引擎,它是一个始终位于 RAM 中的预准备连接数组。
+每次运行带有相同 `JOIN` 的查询时，子查询都会再次执行，因为结果不会被缓存。为避免这种情况，请使用特殊的 [Join](../../../engines/table-engines/special/join.md) 表引擎，它是一个预先构建、始终驻留在内存中的关联数组。
 
-在某些情况下,使用 [IN](../../../sql-reference/operators/in.md) 比使用 `JOIN` 更高效。
+在某些情况下，使用 [IN](../../../sql-reference/operators/in.md) 比使用 `JOIN` 更高效。
 
-如果您需要使用 `JOIN` 来连接维度表(这些是包含维度属性的相对较小的表,例如广告活动的名称),由于每次查询都会重新访问右表,`JOIN` 可能不太方便。对于这种情况,有一个"字典"功能,您应该使用它来代替 `JOIN`。有关更多信息,请参阅[字典](../../../sql-reference/dictionaries/index.md)部分。
+如果你需要通过 `JOIN` 与维度表进行关联（这些是相对较小的表，包含维度属性，例如广告活动名称），由于每次查询都会重新访问右表，`JOIN` 可能不是很方便。对于这类场景，应使用 “字典（dictionaries）” 功能来替代 `JOIN`。更多信息请参阅 [Dictionaries](../../../sql-reference/dictionaries/index.md) 章节。
 
 ### 内存限制 {#memory-limitations}
 
-默认情况下,ClickHouse 使用[哈希连接](https://en.wikipedia.org/wiki/Hash_join)算法。ClickHouse 获取右表并在 RAM 中为其创建哈希表。如果启用了 `join_algorithm = 'auto'`,则在内存消耗达到某个阈值后,ClickHouse 会回退到[归并](https://en.wikipedia.org/wiki/Sort-merge_join)连接算法。有关 `JOIN` 算法的描述,请参阅 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置。
+默认情况下，ClickHouse 使用 [hash join](https://en.wikipedia.org/wiki/Hash_join) 算法。ClickHouse 读取右表（right_table），并在内存中为其创建哈希表。如果启用了 `join_algorithm = 'auto'`，则在内存消耗超过某个阈值后，ClickHouse 会降级为 [merge](https://en.wikipedia.org/wiki/Sort-merge_join) join 算法。关于 `JOIN` 算法的说明参见 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置。
 
-如果您需要限制 `JOIN` 操作的内存消耗,请使用以下设置:
+如果你需要限制 `JOIN` 操作的内存消耗，请使用以下设置：
 
 - [max_rows_in_join](/operations/settings/settings#max_rows_in_join) — 限制哈希表中的行数。
 - [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join) — 限制哈希表的大小。
 
-当达到这些限制中的任何一个时,ClickHouse 会按照 [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置的指示执行操作。
+当达到上述任一限制时，ClickHouse 会按照 [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置中的指示进行处理。
 
 
-## 示例 {#examples}
 
-示例:
+## 示例
+
+示例：
 
 ```sql
 SELECT
@@ -554,7 +558,7 @@ LIMIT 10
 
 ## 相关内容 {#related-content}
 
-- 博客：[ClickHouse：具备完整 SQL Join 支持的超高速 DBMS - 第 1 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
-- 博客：[ClickHouse：具备完整 SQL Join 支持的超高速 DBMS - 底层原理 - 第 2 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)
-- 博客：[ClickHouse：具备完整 SQL Join 支持的超高速 DBMS - 底层原理 - 第 3 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)
-- 博客：[ClickHouse：具备完整 SQL Join 支持的超高速 DBMS - 底层原理 - 第 4 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4)
+- 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 第 1 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
+- 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 深入解析 - 第 2 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)
+- 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 深入解析 - 第 3 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)
+- 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 深入解析 - 第 4 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4)

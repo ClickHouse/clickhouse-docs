@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/groupArrayResample'
 title: 'groupArrayResample'
-description: 'Пример использования комбинатора Resample с groupArray'
-keywords: ['groupArray', 'Resample', 'combinator', 'examples', 'groupArrayResample']
+description: 'Пример использования комбинатора Resample с функцией groupArray'
+keywords: ['groupArray', 'Resample', 'комбинатор', 'примеры', 'groupArrayResample']
 sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
@@ -12,23 +12,25 @@ doc_type: 'reference'
 # groupArrayResample {#grouparrayresample}
 
 
+
 ## Описание {#description}
 
-Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
-может применяться к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum) для
-разделения диапазона указанного ключевого столбца на фиксированное число интервалов (`N`)
-и построения результирующего массива путём выбора одного представительного значения
-(соответствующего минимальному ключу) из точек данных, попадающих в каждый интервал.
-Это создаёт прореженное представление данных, а не собирает все значения.
+Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+может быть применён к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum),
+чтобы разделить диапазон заданного ключевого столбца на фиксированное количество интервалов (`N`) 
+и сформировать результирующий массив, выбирая по одному представительному значению 
+(соответствующему минимальному ключу) из точек данных, попадающих в каждый интервал.
+Он формирует укрупнённое (downsampled) представление данных вместо сбора всех значений.
 
 
-## Пример использования {#example-usage}
 
-Рассмотрим пример. Создадим таблицу, которая содержит имя (`name`), возраст (`age`) и
-зарплату (`wage`) сотрудников, и вставим в неё некоторые данные:
+## Пример использования
+
+Рассмотрим пример. Мы создадим таблицу, содержащую столбцы `name`, `age` и
+`wage` сотрудников, и вставим в неё некоторые данные:
 
 ```sql
-CREATE TABLE employee_data
+CREATE TABLE employee_data 
 (
     name String,
     age UInt8,
@@ -45,13 +47,13 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-Получим имена людей, чей возраст находится в интервалах `[30,60)`
-и `[60,75)`. Поскольку для возраста используется целочисленное представление, получаем возраста в
-интервалах `[30, 59]` и `[60,74]`.
+Получим имена людей, возраст которых лежит в интервалах `[30,60)`
+и `[60,75)`. Поскольку мы используем целочисленное представление возраста, мы получаем значения возраста в интервалах
+`[30, 59]` и `[60,74]`.
 
-Для агрегирования имён в массив используется агрегатная функция `groupArray`.
-Она принимает один аргумент. В нашем случае это столбец `name`. Функция `groupArrayResample`
-использует столбец `age` для агрегирования имён по возрасту. Чтобы определить
+Чтобы агрегировать имена в массив, используем агрегатную функцию `groupArray`.
+Она принимает один аргумент. В нашем случае это столбец с именем. Функция `groupArrayResample`
+должна использовать столбец с возрастом, чтобы агрегировать имена по возрасту. Чтобы задать
 необходимые интервалы, передаём `30`, `75`, `30` в качестве аргументов функции `groupArrayResample`:
 
 ```sql
@@ -66,6 +68,5 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 
 
 ## См. также {#see-also}
-
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)

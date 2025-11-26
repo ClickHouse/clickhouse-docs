@@ -26,7 +26,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). С разными редакциями и их возможностями можно ознакомиться [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse через JDBC.
+DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). С различными редакциями и их возможностями можно ознакомиться [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse с помощью JDBC.
 
 :::note
 Пожалуйста, используйте DBeaver версии 23.1.0 или новее для улучшенной поддержки столбцов `Nullable` в ClickHouse.
@@ -34,83 +34,67 @@ DBeaver доступен в нескольких редакциях. В этом
 
 
 
-## 1. Соберите данные для подключения к ClickHouse {#1-gather-your-clickhouse-details}
+## 1. Соберите информацию о вашем ClickHouse {#1-gather-your-clickhouse-details}
 
-DBeaver использует JDBC через HTTP(S) для подключения к ClickHouse; вам потребуются:
+DBeaver использует JDBC поверх HTTP(S) для подключения к ClickHouse; для этого вам потребуются:
 
-- адрес сервера (endpoint)
+- endpoint
 - номер порта
 - имя пользователя
 - пароль
 
 
-## 2. Загрузите DBeaver {#2-download-dbeaver}
 
-DBeaver можно загрузить по адресу https://dbeaver.io/download/
+## 2. Скачайте DBeaver {#2-download-dbeaver}
+
+DBeaver можно скачать по адресу https://dbeaver.io/download/
+
 
 
 ## 3. Добавление базы данных {#3-add-a-database}
 
 - Используйте меню **Database > New Database Connection** или значок **New Database Connection** в **Database Navigator**, чтобы открыть диалоговое окно **Connect to a database**:
 
-<Image img={dbeaver_add_database} size='md' border alt='Добавление новой базы данных' />
+<Image img={dbeaver_add_database} size="md" border alt="Добавить новую базу данных" />
 
 - Выберите **Analytical**, а затем **ClickHouse**:
 
-- Сформируйте JDBC URL. На вкладке **Main** укажите Host, Port, Username, Password и Database:
+- Сформируйте JDBC URL. На вкладке **Main** задайте Host, Port, Username, Password и Database:
 
-<Image
-  img={dbeaver_host_port}
-  size='md'
-  border
-  alt='Указание имени хоста, порта, пользователя, пароля и имени базы данных'
-/>
+<Image img={dbeaver_host_port} size="md" border alt="Укажите имя хоста, порт, пользователя, пароль и имя базы данных" />
 
-- По умолчанию свойство **SSL > Use SSL** не установлено. Если вы подключаетесь к ClickHouse Cloud или к серверу, требующему SSL на HTTP-порту, включите **SSL > Use SSL**:
+- По умолчанию свойство **SSL > Use SSL** не установлено. Если вы подключаетесь к ClickHouse Cloud или серверу, который требует SSL на HTTP-порту, включите **SSL > Use SSL**:
 
-<Image img={dbeaver_use_ssl} size='md' border alt='Включение SSL при необходимости' />
+<Image img={dbeaver_use_ssl} size="md" border alt="Включите SSL, если это требуется" />
 
-- Проверьте соединение:
+- Протестируйте подключение:
 
-<Image
-  img={dbeaver_test_connection}
-  size='md'
-  border
-  alt='Проверка соединения'
-/>
+<Image img={dbeaver_test_connection} size="md" border alt="Протестировать подключение" />
 
-Если DBeaver обнаружит, что драйвер ClickHouse не установлен, он предложит загрузить его:
+Если DBeaver обнаружит, что у вас не установлен драйвер ClickHouse, он предложит загрузить его:
 
-<Image
-  img={dbeaver_download_driver}
-  size='md'
-  border
-  alt='Загрузка драйвера ClickHouse'
-/>
+<Image img={dbeaver_download_driver} size="md" border alt="Загрузить драйвер ClickHouse" />
 
-- После загрузки драйвера снова проверьте соединение с помощью **Test**:
+- После загрузки драйвера снова нажмите **Test** для проверки подключения:
 
-<Image
-  img={dbeaver_test_connection}
-  size='md'
-  border
-  alt='Проверка соединения'
-/>
+<Image img={dbeaver_test_connection} size="md" border alt="Протестировать подключение" />
 
 
-## 4. Выполнение запросов к ClickHouse {#4-query-clickhouse}
 
-Откройте редактор запросов и выполните запрос.
+## 4. Запрос к ClickHouse {#4-query-clickhouse}
 
-- Щелкните правой кнопкой мыши по вашему подключению и выберите **SQL Editor > Open SQL Script**, чтобы открыть редактор запросов:
+Откройте редактор SQL-запросов и выполните запрос.
 
-<Image img={dbeaver_sql_editor} size='md' border alt='Открытие редактора SQL' />
+- Щёлкните правой кнопкой мыши по подключению и выберите команду **SQL Editor > Open SQL Script**, чтобы открыть редактор запросов:
+
+<Image img={dbeaver_sql_editor} size="md" border alt="Открыть редактор SQL" />
 
 - Пример запроса к `system.query_log`:
 
-<Image img={dbeaver_query_log_select} size='md' border alt='Пример запроса' />
+<Image img={dbeaver_query_log_select} size="md" border alt="Пример запроса" />
 
 
-## Дальнейшие действия {#next-steps}
 
-Изучите [вики DBeaver](https://github.com/dbeaver/dbeaver/wiki), чтобы узнать больше о возможностях DBeaver, и [документацию ClickHouse](https://clickhouse.com/docs), чтобы узнать больше о возможностях ClickHouse.
+## Дальнейшие шаги {#next-steps}
+
+Подробную информацию о возможностях DBeaver см. в его [wiki](https://github.com/dbeaver/dbeaver/wiki), а о возможностях ClickHouse — в [документации ClickHouse](https://clickhouse.com/docs).

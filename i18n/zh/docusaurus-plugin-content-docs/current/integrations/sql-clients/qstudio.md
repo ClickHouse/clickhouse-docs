@@ -4,7 +4,7 @@ sidebar_label: 'QStudio'
 description: 'QStudio 是一款免费的 SQL 工具。'
 title: '将 QStudio 连接到 ClickHouse'
 doc_type: 'guide'
-keywords: ['qstudio', 'sql 客户端', '数据库工具', '查询工具', 'ide']
+keywords: ['qstudio', 'sql 客户端', '数据库工具', '查询工具', 'IDE']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -18,17 +18,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-QStudio 是一款免费的 SQL 图形界面（GUI）工具，可用于运行 SQL 脚本、轻松浏览表、绘制图表并导出结果。它可在所有操作系统上使用，并支持连接各种数据库。
+QStudio 是一款免费的 SQL 图形界面工具，可用于运行 SQL 脚本、便捷浏览数据表、绘制图表并导出结果。它适用于任何操作系统，且可以连接任意数据库。
 
-QStudio 使用 JDBC 连接到 ClickHouse。
+QStudio 通过 JDBC 连接到 ClickHouse。
 
 
 
-## 1. 收集您的 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
+## 1. 收集 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
 
-QStudio 通过 HTTP(S) 协议使用 JDBC 连接到 ClickHouse;您需要准备以下信息:
+QStudio 通过 HTTP(S) 上的 JDBC 连接到 ClickHouse；您需要准备：
 
-- 端点地址
+- endpoint（服务地址）
 - 端口号
 - 用户名
 - 密码
@@ -36,50 +36,44 @@ QStudio 通过 HTTP(S) 协议使用 JDBC 连接到 ClickHouse;您需要准备以
 <ConnectionDetails />
 
 
+
 ## 2. 下载 QStudio {#2-download-qstudio}
 
-QStudio 可从 https://www.timestored.com/qstudio/download/ 下载
+QStudio 可从 https://www.timestored.com/qstudio/download/ 下载。
+
 
 
 ## 3. 添加数据库 {#3-add-a-database}
 
-- 首次打开 QStudio 时,点击菜单选项 **Server->Add Server** 或工具栏上的添加服务器按钮。
-- 然后设置以下详细信息:
+- 初次打开 QStudio 时，点击菜单选项 **Server->Add Server**，或者点击工具栏上的添加服务器按钮。
+- 然后设置以下详细信息：
 
-<Image
-  img={qstudio_add_connection}
-  size='lg'
-  border
-  alt='QStudio 数据库连接配置界面,显示 ClickHouse 连接设置'
-/>
+<Image img={qstudio_add_connection} size="lg" border alt="QStudio 数据库连接配置界面，显示 ClickHouse 连接设置" />
 
-1.  Server Type: Clickhouse.com
-2.  注意:Host 字段必须包含 https://
+1.   Server Type: Clickhouse.com
+2.    请注意，在 Host 中必须包含 https://
     Host: https://abc.def.clickhouse.cloud
     Port: 8443
 3.  Username: default
     Password: `XXXXXXXXXXX`
-4.  点击 Add
+ 4. 点击 Add
 
-如果 QStudio 检测到您尚未安装 ClickHouse JDBC 驱动程序,它将提示为您下载:
+如果 QStudio 检测到您尚未安装 ClickHouse JDBC 驱动程序，它会提示您下载安装：
+
 
 
 ## 4. 查询 ClickHouse {#4-query-clickhouse}
 
-- 打开查询编辑器并运行查询。您可以通过以下方式运行查询:
-- Ctrl + e - 运行选中的文本
+- 打开查询编辑器并运行查询。可以通过以下方式运行查询：
+- Ctrl + e - 运行高亮文本
 - Ctrl + Enter - 运行当前行
 
-- 查询示例:
+- 示例查询：
 
-<Image
-  img={qstudio_running_query}
-  size='lg'
-  border
-  alt='QStudio 界面显示对 ClickHouse 数据库执行示例 SQL 查询'
-/>
+<Image img={qstudio_running_query} size="lg" border alt="QStudio 界面展示针对 ClickHouse 数据库执行示例 SQL 查询的画面" />
 
 
-## 后续步骤 {#next-steps}
 
-请参阅 [QStudio](https://www.timestored.com/qstudio) 了解 QStudio 的功能,以及 [ClickHouse 文档](https://clickhouse.com/docs) 了解 ClickHouse 的功能。
+## 下一步 {#next-steps}
+
+请参阅 [QStudio](https://www.timestored.com/qstudio) 以了解 QStudio 的功能特性，并查看 [ClickHouse 文档](https://clickhouse.com/docs) 以了解 ClickHouse 的功能特性。

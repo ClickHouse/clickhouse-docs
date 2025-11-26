@@ -1,8 +1,8 @@
 ---
-description: '用于操作字典的函数文档'
+description: '字典函数文档'
 sidebar_label: '字典'
 slug: /sql-reference/functions/ext-dict-functions
-title: '用于操作字典的函数'
+title: '用于处理字典的函数'
 doc_type: 'reference'
 ---
 
@@ -11,16 +11,16 @@ doc_type: 'reference'
 # 用于操作字典的函数
 
 :::note
-对于使用 [DDL 查询](../../sql-reference/statements/create/dictionary.md) 创建的字典，`dict_name` 参数必须完整写成 `<database>.<dict_name>`。否则，将使用当前数据库。
+对于通过 [DDL 查询](../../sql-reference/statements/create/dictionary.md) 创建的字典，`dict_name` 参数必须完整写成 `<database>.<dict_name>`。否则，将使用当前数据库。
 :::
 
-有关如何连接和配置字典的信息，请参阅[字典](../../sql-reference/dictionaries/index.md)。
+有关连接和配置字典的信息，请参阅 [字典](../../sql-reference/dictionaries/index.md)。
 
 
 
-## dictGet、dictGetOrDefault、dictGetOrNull {#dictget-dictgetordefault-dictgetornull}
+## dictGet, dictGetOrDefault, dictGetOrNull
 
-从字典中检索值。
+用于从字典中获取值。
 
 ```sql
 dictGet('dict_name', attr_names, id_expr)
@@ -30,26 +30,26 @@ dictGetOrNull('dict_name', attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `attr_names` — 字典列的名称，[字符串字面量](/sql-reference/syntax#string)，或列名元组，[Tuple](/sql-reference/data-types/tuple)([字符串字面量](/sql-reference/syntax#string))。
-- `id_expr` — 键值。返回字典键类型值或 [Tuple](../data-types/tuple.md) 类型值的[表达式](/sql-reference/syntax#expressions)，具体取决于字典配置。
-- `default_value_expr` — 当字典中不包含具有 `id_expr` 键的行时返回的值。[表达式](/sql-reference/syntax#expressions)或 [Tuple](../data-types/tuple.md)([表达式](/sql-reference/syntax#expressions))，返回为 `attr_names` 属性配置的数据类型的值（或多个值）。
+* `dict_name` — 字典名称。[String literal](/sql-reference/syntax#string)。
+* `attr_names` — 字典中列的名称，[String literal](/sql-reference/syntax#string)，或列名组成的元组，[Tuple](/sql-reference/data-types/tuple)([String literal](/sql-reference/syntax#string)。
+* `id_expr` — 键值表达式。[Expression](/sql-reference/syntax#expressions)，返回字典键类型的值，或根据字典配置返回 [Tuple](../data-types/tuple.md) 类型的值。
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[Expression](/sql-reference/syntax#expressions) 或 [Tuple](../data-types/tuple.md)([Expression](/sql-reference/syntax#expressions))，返回使用为 `attr_names` 属性配置的数据类型的值（或多个值）。
 
 **返回值**
 
-- 如果 ClickHouse 成功按照[属性的数据类型](/sql-reference/dictionaries#dictionary-key-and-fields)解析属性，函数将返回与 `id_expr` 对应的字典属性值。
+* 如果 ClickHouse 按[属性的数据类型](/sql-reference/dictionaries#dictionary-key-and-fields)成功解析属性值，函数会返回与 `id_expr` 对应的字典属性的值。
 
-- 如果字典中不存在与 `id_expr` 对应的键，则：
+* 如果字典中不存在与 `id_expr` 对应的键，则：
 
-        - `dictGet` 返回字典配置中为该属性指定的 `<null_value>` 元素的内容。
-        - `dictGetOrDefault` 返回作为 `default_value_expr` 参数传递的值。
-        - `dictGetOrNull` 在字典中未找到键时返回 `NULL`。
+  * `dictGet` 返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
+  * `dictGetOrDefault` 返回作为 `default_value_expr` 参数传入的值。
+  * `dictGetOrNull` 在未在字典中找到键时返回 `NULL`。
 
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，则会抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性数据类型不匹配，则会抛出异常。
 
 **简单键字典示例**
 
-创建一个包含以下内容的文本文件 `ext-dict-test.csv`：
+创建一个名为 `ext-dict-test.csv` 的文本文件，内容如下：
 
 ```text
 1,1
@@ -58,7 +58,7 @@ dictGetOrNull('dict_name', attr_name, id_expr)
 
 第一列是 `id`，第二列是 `c1`。
 
-配置字典：
+配置该字典：
 
 ```xml
 <clickhouse>
@@ -88,7 +88,7 @@ dictGetOrNull('dict_name', attr_name, id_expr)
 </clickhouse>
 ```
 
-执行查询：
+执行以下查询：
 
 ```sql
 SELECT
@@ -108,7 +108,7 @@ LIMIT 3;
 
 **复合键字典示例**
 
-创建一个包含以下内容的文本文件 `ext-dict-mult.csv`：
+创建一个文本文件 `ext-dict-mult.csv`，内容如下：
 
 ```text
 1,1,'1'
@@ -154,7 +154,7 @@ LIMIT 3;
 </clickhouse>
 ```
 
-执行查询：
+执行以下查询：
 
 ```sql
 SELECT
@@ -192,7 +192,7 @@ INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), to
 INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
 ```
 
-创建字典：
+创建该字典：
 
 ```sql
 CREATE DICTIONARY range_key_dictionary
@@ -210,7 +210,7 @@ LAYOUT(RANGE_HASHED())
 RANGE(MIN start_date MAX end_date);
 ```
 
-执行该查询：
+执行以下查询：
 
 ```sql
 SELECT
@@ -226,20 +226,20 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 
 ```text
 (0,'2019-05-20')        0       \N      \N      (NULL,NULL)
-(1,'2019-05-20')        1       First   First   ('First','First')
-(2,'2019-05-20')        1       Second  \N      ('Second',NULL)
-(3,'2019-05-20')        1       Third   Third   ('Third','Third')
+(1,'2019-05-20')        1       第一   第一   ('第一','第一')
+(2,'2019-05-20')        1       第二  \N      ('第二',NULL)
+(3,'2019-05-20')        1       第三   第三   ('第三','第三')
 (4,'2019-05-20')        0       \N      \N      (NULL,NULL)
 ```
 
 **另请参阅**
 
-* [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [字典](../../sql-reference/dictionaries/index.md)
 
 
-## dictHas {#dicthas}
+## dictHas
 
-检查字典中是否存在指定的键。
+检查字典中是否存在指定键。
 
 ```sql
 dictHas('dict_name', id_expr)
@@ -247,18 +247,18 @@ dictHas('dict_name', id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `id_expr` — 键值。[表达式](/sql-reference/syntax#expressions),根据字典配置返回字典键类型值或 [Tuple](../data-types/tuple.md) 类型值。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `id_expr` — 键的值。[表达式](/sql-reference/syntax#expressions)，返回字典键类型的值，或根据字典配置返回 [Tuple](../data-types/tuple.md) 类型的值。
 
 **返回值**
 
-- 0,表示键不存在。[UInt8](../data-types/int-uint.md)。
-- 1,表示键存在。[UInt8](../data-types/int-uint.md)。
+* 0，如果键不存在。[UInt8](../data-types/int-uint.md)。
+* 1，如果键存在。[UInt8](../data-types/int-uint.md)。
 
 
-## dictGetHierarchy {#dictgethierarchy}
+## dictGetHierarchy
 
-创建一个数组,包含[层次字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中指定键的所有父级。
+创建一个数组，其中包含[分层字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中某个键的所有父项。
 
 **语法**
 
@@ -268,17 +268,17 @@ dictGetHierarchy('dict_name', key)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `key` — 键值。返回 [UInt64](../data-types/int-uint.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
+* `dict_name` — 字典名。[字符串字面量](/sql-reference/syntax#string)。
+* `key` — 键。[表达式](/sql-reference/syntax#expressions)，返回 [UInt64](../data-types/int-uint.md) 类型的值。
 
 **返回值**
 
-- 该键的父级。[Array(UInt64)](../data-types/array.md)。
+* 该键的父项。[Array(UInt64)](../data-types/array.md)。
 
 
-## dictIsIn {#dictisin}
+## dictIsIn
 
-通过字典中的完整层级链检查键的祖先关系。
+在字典的整个层级链中检查某个键的祖先。
 
 ```sql
 dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
@@ -286,19 +286,19 @@ dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `child_id_expr` — 要检查的键。返回 [UInt64](../data-types/int-uint.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
-- `ancestor_id_expr` — `child_id_expr` 键的推定祖先。返回 [UInt64](../data-types/int-uint.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `child_id_expr` — 要检查的键。[表达式](/sql-reference/syntax#expressions)，返回 [UInt64](../data-types/int-uint.md) 类型的值。
+* `ancestor_id_expr` — `child_id_expr` 键的假定祖先。[表达式](/sql-reference/syntax#expressions)，返回 [UInt64](../data-types/int-uint.md) 类型的值。
 
 **返回值**
 
-- 0,如果 `child_id_expr` 不是 `ancestor_id_expr` 的子节点。[UInt8](../data-types/int-uint.md)。
-- 1,如果 `child_id_expr` 是 `ancestor_id_expr` 的子节点,或者 `child_id_expr` 就是 `ancestor_id_expr`。[UInt8](../data-types/int-uint.md)。
+* 若 `child_id_expr` 不是 `ancestor_id_expr` 的子节点，则返回 0。[UInt8](../data-types/int-uint.md)。
+* 若 `child_id_expr` 是 `ancestor_id_expr` 的子节点，或者 `child_id_expr` 本身就是 `ancestor_id_expr`，则返回 1。[UInt8](../data-types/int-uint.md)。
 
 
-## dictGetChildren {#dictgetchildren}
+## dictGetChildren
 
-以索引数组的形式返回第一级子节点。这是 [dictGetHierarchy](#dictgethierarchy) 的逆向转换。
+返回第一层子节点索引的数组。它是 [dictGetHierarchy](#dictgethierarchy) 的逆变换。
 
 **语法**
 
@@ -308,16 +308,16 @@ dictGetChildren(dict_name, key)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `key` — 键值。返回 [UInt64](../data-types/int-uint.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `key` — 键。[表达式](/sql-reference/syntax#expressions)，返回 [UInt64](../data-types/int-uint.md) 类型的值。
 
 **返回值**
 
-- 该键的第一级子节点。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+* 指定键的第一层子节点。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **示例**
 
-考虑以下层级字典:
+考虑如下层级字典：
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -328,7 +328,7 @@ dictGetChildren(dict_name, key)
 └────┴───────────┘
 ```
 
-第一级子节点:
+第一层子节点：
 
 ```sql
 SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
@@ -344,9 +344,9 @@ SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers 
 ```
 
 
-## dictGetDescendant {#dictgetdescendant}
+## dictGetDescendant
 
-返回所有后代节点,效果等同于递归调用 [dictGetChildren](#dictgetchildren) 函数 `level` 次。
+返回所有后代，效果等同于将 [dictGetChildren](#dictgetchildren) 函数递归应用 `level` 次。
 
 **语法**
 
@@ -356,17 +356,17 @@ dictGetDescendants(dict_name, key, level)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `key` — 键值。返回 [UInt64](../data-types/int-uint.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
-- `level` — 层级深度。若 `level = 0` 则返回所有后代节点直到末端。[UInt8](../data-types/int-uint.md)。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `key` — 键值。[表达式](/sql-reference/syntax#expressions)，返回 [UInt64](../data-types/int-uint.md) 类型的值。
+* `level` — 层级。如果 `level = 0`，则返回直到最底层的所有后代节点。[UInt8](../data-types/int-uint.md)。
 
 **返回值**
 
-- 该键的后代节点。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+* 给定键的所有后代节点。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **示例**
 
-考虑以下层级字典:
+考虑如下分层字典：
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -377,7 +377,7 @@ dictGetDescendants(dict_name, key, level)
 └────┴───────────┘
 ```
 
-所有后代节点:
+所有子级：
 
 ```sql
 SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
@@ -392,7 +392,7 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbe
 └─────────────────────────────────────────────────────────┘
 ```
 
-第一级后代节点:
+第一层级子节点：
 
 ```sql
 SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.numbers LIMIT 4;
@@ -408,11 +408,11 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.nu
 ```
 
 
-## dictGetAll {#dictgetall}
+## dictGetAll
 
-检索[正则表达式树字典](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)中与每个键匹配的所有节点的属性值。
+从[正则表达式树字典](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)中检索所有匹配每个键的节点的属性值。
 
-除了返回 `Array(T)` 类型的值而非 `T` 类型外,该函数的行为与 [`dictGet`](#dictget-dictgetordefault-dictgetornull) 类似。
+除了返回类型为 `Array(T)` 而不是 `T` 之外，此函数的行为与 [`dictGet`](#dictget-dictgetordefault-dictgetornull) 类似。
 
 **语法**
 
@@ -422,22 +422,22 @@ dictGetAll('dict_name', attr_names, id_expr[, limit])
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `attr_names` — 字典的列名,[字符串字面量](/sql-reference/syntax#string),或列名元组,[Tuple](/sql-reference/data-types/tuple)([字符串字面量](/sql-reference/syntax#string))。
-- `id_expr` — 键值。根据字典配置返回字典键类型值数组或 [Tuple](/sql-reference/data-types/tuple) 类型值的[表达式](/sql-reference/syntax#expressions)。
-- `limit` — 返回的每个值数组的最大长度。截断时,子节点优先于父节点,否则遵循正则表达式树字典定义的列表顺序。如果未指定,数组长度不受限制。
+* `dict_name` — 字典名称。[String literal](/sql-reference/syntax#string)。
+* `attr_names` — 字典列名，[String literal](/sql-reference/syntax#string)，或列名的元组，[Tuple](/sql-reference/data-types/tuple)（元素为 [String literal](/sql-reference/syntax#string)）。
+* `id_expr` — 键值。[Expression](/sql-reference/syntax#expressions)，根据字典配置返回字典键类型值的数组，或 [Tuple](/sql-reference/data-types/tuple) 类型的值。
+* `limit` - 返回的每个值数组的最大长度。截断时，子节点优先于父节点；否则遵循为 regexp tree 字典定义的列表顺序。如果未指定，则数组长度不受限制。
 
 **返回值**
 
-- 如果 ClickHouse 成功按照字典中定义的属性数据类型解析属性,则针对 `attr_names` 指定的每个属性,返回与 `id_expr` 对应的字典属性值数组。
+* 如果 ClickHouse 能够按照字典中为该属性定义的数据类型成功解析该属性，则返回一个字典属性值的数组，该数组对 `attr_names` 指定的每个属性，给出与 `id_expr` 对应的值。
 
-- 如果字典中不存在与 `id_expr` 对应的键,则返回空数组。
+* 如果字典中没有与 `id_expr` 对应的键，则返回空数组。
 
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,则会抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性数据类型不匹配，则会抛出异常。
 
 **示例**
 
-考虑以下正则表达式树字典:
+考虑以下 regexp tree 字典：
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -487,9 +487,9 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
 ```
 
 
-## dictGetKeys {#dictgetkeys}
+## dictGetKeys
 
-返回属性值等于指定值的字典键。这是对单个属性执行 [`dictGet`](#dictget-dictgetordefault-dictgetornull) 的逆操作。
+返回其属性等于指定值的一个或多个字典键。对于单个属性，该函数是 [`dictGet`](#dictget-dictgetordefault-dictgetornull) 的反向操作。
 
 **语法**
 
@@ -499,34 +499,34 @@ dictGetKeys('dict_name', 'attr_name', value_expr);
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `attr_name` — 字典的属性列名称。[字符串字面量](/sql-reference/syntax#string)。
-- `value_expr` — 要与属性匹配的值。可转换为属性数据类型的[表达式](/sql-reference/syntax#expressions)。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `attr_name` — 字典属性列名称。[字符串字面量](/sql-reference/syntax#string)。
+* `value_expr` — 用于与属性匹配的值。[表达式](/sql-reference/syntax#expressions)，需可转换为该属性的数据类型。
 
 **返回值**
 
-- 对于单键字典:返回属性值等于 `value_expr` 的键数组。[Array(T)](../data-types/array.md),其中 `T` 是字典键的数据类型。
+* 对于单键字典：返回属性等于 `value_expr` 的键组成的数组。[Array(T)](../data-types/array.md)，其中 `T` 为字典键的数据类型。
 
-- 对于多键字典:返回属性值等于 `value_expr` 的键元组数组。[Array](../data-types/array.md)([Tuple(T1, T2, ...)](../data-types/tuple.md)),其中每个 `Tuple` 按顺序包含字典的键列。
+* 对于多键字典：返回属性等于 `value_expr` 的键元组组成的数组。[Array](../data-types/array.md)([Tuple(T1, T2, ...)](../data-types/tuple.md))，其中每个 `Tuple` 按顺序包含字典键列。
 
-- 如果字典中不存在与 `value_expr` 对应的属性值,则返回空数组。
+* 如果字典中不存在属性值为 `value_expr` 的条目，则返回空数组。
 
-如果无法解析属性值或该值无法转换为属性数据类型,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或者该值无法转换为属性的数据类型，将抛出异常。
 
 **示例**
 
-考虑以下字典:
+考虑如下字典：
 
 ```txt
  ┌─id─┬─level──┐
- │  1 │ low    │
- │  2 │ high   │
- │  3 │ medium │
- │  4 │ high   │
+ │  1 │ 低     │
+ │  2 │ 高     │
+ │  3 │ 中     │
+ │  4 │ 高     │
  └────┴────────┘
 ```
 
-现在获取所有 level 为 `high` 的 id:
+现在来获取所有等级为 `high` 的 ID：
 
 ```sql
 SELECT dictGetKeys('levels', 'level', 'high') AS ids;
@@ -539,30 +539,30 @@ SELECT dictGetKeys('levels', 'level', 'high') AS ids;
 ```
 
 :::note
-使用设置 `max_reverse_dictionary_lookup_cache_size_bytes` 来限制 `dictGetKeys` 使用的每查询反向查找缓存的大小。该缓存为每个属性值存储序列化的键元组,以避免在同一查询中重复扫描字典。该缓存不会在查询之间持久化。当达到限制时,将使用 LRU 算法淘汰条目。这对于大型字典最有效,尤其是当输入具有低基数且工作集适合缓存时。设置为 `0` 可禁用缓存。
+使用 `max_reverse_dictionary_lookup_cache_size_bytes` 设置来限制 `dictGetKeys` 在每个查询中使用的反向查找缓存大小。该缓存为每个属性值存储序列化的键元组，以避免在同一查询内重复扫描字典。该缓存不会在不同查询之间持久化。当达到限制时，条目将按 LRU 策略淘汰。对于大型字典、输入基数较低且工作集可以放入缓存的场景，该设置最为有效。将其设置为 `0` 可禁用缓存。
 
-此外,如果 `attr_name` 列的唯一值能够放入缓存,那么在大多数情况下,函数的执行时间应该与输入行数呈线性关系,再加上少量的字典扫描。
+另外，如果 `attr_name` 列中的唯一值可以完全放入缓存，那么在大多数情况下，该函数的执行时间应该与输入行数呈线性关系，并且仅需进行少量的字典扫描。
 :::
 
 
-## 其他函数 {#other-functions}
+## 其他函数
 
-ClickHouse 支持专用函数,无论字典配置如何,都可以将字典属性值转换为特定的数据类型。
+ClickHouse 支持一些特殊函数，可以在不考虑字典配置的情况下，将字典属性值转换为特定的数据类型。
 
-函数:
+函数：
 
-- `dictGetInt8`, `dictGetInt16`, `dictGetInt32`, `dictGetInt64`
-- `dictGetUInt8`, `dictGetUInt16`, `dictGetUInt32`, `dictGetUInt64`
-- `dictGetFloat32`, `dictGetFloat64`
-- `dictGetDate`
-- `dictGetDateTime`
-- `dictGetUUID`
-- `dictGetString`
-- `dictGetIPv4`, `dictGetIPv6`
+* `dictGetInt8`, `dictGetInt16`, `dictGetInt32`, `dictGetInt64`
+* `dictGetUInt8`, `dictGetUInt16`, `dictGetUInt32`, `dictGetUInt64`
+* `dictGetFloat32`, `dictGetFloat64`
+* `dictGetDate`
+* `dictGetDateTime`
+* `dictGetUUID`
+* `dictGetString`
+* `dictGetIPv4`, `dictGetIPv6`
 
-所有这些函数都有 `OrDefault` 变体。例如 `dictGetDateOrDefault`。
+所有这些函数都有带 `OrDefault` 后缀的版本。例如，`dictGetDateOrDefault`。
 
-语法:
+语法：
 
 ```sql
 dictGet[Type]('dict_name', 'attr_name', id_expr)
@@ -571,36 +571,36 @@ dictGet[Type]OrDefault('dict_name', 'attr_name', id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
-- `attr_name` — 字典列名称。[字符串字面量](/sql-reference/syntax#string)。
-- `id_expr` — 键值。根据字典配置,返回 [UInt64](../data-types/int-uint.md) 或 [Tuple](../data-types/tuple.md) 类型值的[表达式](/sql-reference/syntax#expressions)。
-- `default_value_expr` — 当字典中不包含具有 `id_expr` 键的行时返回的值。返回为 `attr_name` 属性配置的数据类型值的[表达式](/sql-reference/syntax#expressions)。
+* `dict_name` — 字典名称。[字符串字面量](/sql-reference/syntax#string)。
+* `attr_name` — 字典中列的名称。[字符串字面量](/sql-reference/syntax#string)。
+* `id_expr` — 键值。[表达式](/sql-reference/syntax#expressions)，根据字典配置返回 [UInt64](../data-types/int-uint.md) 或 [Tuple](../data-types/tuple.md) 类型的值。
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[表达式](/sql-reference/syntax#expressions)，其返回值的数据类型与为 `attr_name` 属性配置的数据类型一致。
 
 **返回值**
 
-- 如果 ClickHouse 成功按照[属性的数据类型](/sql-reference/dictionaries#dictionary-key-and-fields)解析属性,函数将返回与 `id_expr` 对应的字典属性值。
+* 如果 ClickHouse 能够按照[属性的数据类型](/sql-reference/dictionaries#dictionary-key-and-fields)成功解析该属性，则函数返回与 `id_expr` 对应的字典属性值。
 
-- 如果字典中不存在请求的 `id_expr`,则:
+* 如果字典中不存在请求的 `id_expr`，则：
 
-        - `dictGet[Type]` 返回字典配置中为该属性指定的 `<null_value>` 元素的内容。
-        - `dictGet[Type]OrDefault` 返回作为 `default_value_expr` 参数传递的值。
+  * `dictGet[Type]` 返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
+  * `dictGet[Type]OrDefault` 返回作为 `default_value_expr` 参数传入的值。
 
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,则会抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 
 
 ## 示例字典 {#example-dictionary}
 
-本节示例使用以下字典。您可以在 ClickHouse 中创建这些字典来运行下述函数的示例。
+本节示例会使用以下字典。可以在 ClickHouse 中创建它们，以运行下文所述函数的示例。
 
 <details>
-<summary>dictGet\<T\> 和 dictGet\<T\>OrDefault 函数的示例字典</summary>
+<summary>用于 dictGet\<T\> 和 dictGet\<T\>OrDefault 函数的示例字典</summary>
 
 ```sql
--- 创建包含所有必需数据类型的表
+-- 创建包含所有所需数据类型的表
 CREATE TABLE all_types_test (
     `id` UInt32,
 
-    -- 字符串类型
+    -- String 类型
     `String_value` String,
 
     -- 无符号整数类型
@@ -638,7 +638,7 @@ ORDER BY id;
 INSERT INTO all_types_test VALUES
 (
     1,                              -- id
-    'ClickHouse',                   -- 字符串
+    'ClickHouse',                   -- String
     100,                            -- UInt8
     5000,                           -- UInt16
     1000000,                        -- UInt32
@@ -649,8 +649,8 @@ INSERT INTO all_types_test VALUES
     -9223372036854775808,           -- Int64
     123.45,                         -- Float32
     987654.123456,                  -- Float64
-    '2024-01-15',                   -- 日期
-    '2024-01-15 10:30:00',          -- 日期时间
+    '2024-01-15',                   -- Date
+    '2024-01-15 10:30:00',          -- DateTime
     '192.168.1.1',                  -- IPv4
     '2001:db8::1',                  -- IPv6
     '550e8400-e29b-41d4-a716-446655440000' -- UUID
@@ -688,9 +688,9 @@ LIFETIME(MIN 300 MAX 600);
 </details>
 
 <details>
-<summary>dictGetAll 函数的示例字典</summary>
+<summary>用于 dictGetAll 的示例字典</summary>
 
-创建表以存储正则表达式树字典的数据:
+创建一个表来存储 regexp tree 字典的数据：
 
 ```sql
 CREATE TABLE regexp_os(
@@ -703,7 +703,7 @@ CREATE TABLE regexp_os(
 ENGINE = Memory;
 ```
 
-向表中插入数据:
+向该表插入数据：
 
 ```sql
 INSERT INTO regexp_os
@@ -714,7 +714,7 @@ FROM s3(
 );
 ```
 
-创建正则表达式树字典:
+创建 regexp tree 字典：
 
 ```sql
 CREATE DICTIONARY regexp_tree
@@ -737,7 +737,7 @@ LAYOUT(REGEXP_TREE);
 <details>
 <summary>范围键字典示例</summary>
 
-创建输入表:
+创建输入表：
 
 ```sql
 CREATE TABLE range_key_dictionary_source_table
@@ -751,7 +751,7 @@ CREATE TABLE range_key_dictionary_source_table
 ENGINE = TinyLog();
 ```
 
-向输入表中插入数据:
+将数据插入输入表：
 
 
 ```sql
@@ -846,13 +846,13 @@ INSERT INTO hierarchy_source VALUES
 (5, 2, 'Level 3 - Node 5'),
 (6, 3, 'Level 3 - Node 6');
 
--- 0 (根节点)
--- └── 1 (第1层 - 节点1)
---     ├── 2 (第2层 - 节点2)
---     │   ├── 4 (第3层 - 节点4)
---     │   └── 5 (第3层 - 节点5)
---     └── 3 (第2层 - 节点3)
---         └── 6 (第3层 - 节点6)
+-- 0 (Root)
+-- └── 1 (Level 1 - Node 1)
+--     ├── 2 (Level 2 - Node 2)
+--     │   ├── 4 (Level 3 - Node 4)
+--     │   └── 5 (Level 3 - Node 5)
+--     └── 3 (Level 2 - Node 3)
+--         └── 6 (Level 3 - Node 6)
 ```
 
 创建字典：
@@ -879,11 +879,11 @@ See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogene
 -->
 
 
-<!--AUTOGENERATED_START-->
+{/*AUTOGENERATED_START*/ }
 
-## dictGet {#dictGet}
+## dictGet
 
-引入版本:v18.16
+自 v18.16 引入
 
 从字典中检索值。
 
@@ -895,18 +895,18 @@ dictGet('dict_name', attr_names, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_names` — 字典列名称,或列名称元组。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回 UInt64/Tuple(T) 的表达式。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_names` — 字典中列的名称，或列名的元组。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回 UInt64/Tuple(T) 的表达式。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-如果找到键,则返回与 id_expr 对应的字典属性值。
-如果未找到键,则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+如果找到该键，则返回与 `id_expr` 对应的字典属性值。
+如果未找到该键，则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 **示例**
 
-**检索单个属性**
+**获取单个属性**
 
 ```sql title=Query
 SELECT dictGet('ext_dict_test', 'c1', toUInt64(1)) AS val
@@ -928,24 +928,24 @@ LIMIT 3;
 
 ```response title=Response
 ┌─val─────┬─type───────────┐
-│ (1,'1') │ Tuple(        ↴│
-│         │↳    c1 UInt32,↴│
-│         │↳    c2 String) │
-│ (2,'2') │ Tuple(        ↴│
-│         │↳    c1 UInt32,↴│
-│         │↳    c2 String) │
-│ (3,'3') │ Tuple(        ↴│
-│         │↳    c1 UInt32,↴│
-│         │↳    c2 String) │
+│ (1,'1') │ 元组(         ↴│
+│         │↳    c1 无符号32位整数,↴│
+│         │↳    c2 字符串) │
+│ (2,'2') │ 元组(         ↴│
+│         │↳    c1 无符号32位整数,↴│
+│         │↳    c2 字符串) │
+│ (3,'3') │ 元组(         ↴│
+│         │↳    c1 无符号32位整数,↴│
+│         │↳    c2 字符串) │
 └─────────┴────────────────┘
 ```
 
 
-## dictGetAll {#dictGetAll}
+## dictGetAll
 
-引入版本:v23.5
+引入版本：v23.5
 
-将字典属性值转换为 `All` 数据类型,不受字典配置影响。
+将字典属性的值转换为 `All` 数据类型，忽略字典的配置。
 
 **语法**
 
@@ -955,30 +955,31 @@ dictGetAll(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。一个返回字典键类型值或元组值（取决于字典配置）的表达式。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值；
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT
     'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36' AS user_agent,
 
-    -- 这将匹配所有适用的模式
+    -- 将匹配所有符合条件的模式
     dictGetAll('regexp_tree', 'os_replacement', 'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36') AS all_matches,
 
-    -- 这仅返回第一个匹配项
+    -- 仅返回第一个匹配结果
     dictGet('regexp_tree', 'os_replacement', 'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36') AS first_match;
 ```
 
@@ -989,11 +990,11 @@ SELECT
 ```
 
 
-## dictGetChildren {#dictGetChildren}
+## dictGetChildren
 
-引入版本:v21.4
+自 v21.4 引入
 
-以索引数组的形式返回第一级子节点。这是 [dictGetHierarchy](#dictgethierarchy) 的逆向转换。
+以索引数组的形式返回第一层子节点。它是 [dictGetHierarchy](#dictgethierarchy) 的逆向变换。
 
 **语法**
 
@@ -1003,16 +1004,16 @@ dictGetChildren(dict_name, key)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `key` — 要检查的键。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 字典的名称。[`String`](/sql-reference/data-types/string)
+* `key` — 要检查的键。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-返回指定键的第一级子节点。[`Array(UInt64)`](/sql-reference/data-types/array)
+返回该键的第一层子节点。[`Array(UInt64)`](/sql-reference/data-types/array)
 
 **示例**
 
-**获取字典的第一级子节点**
+**获取字典的第一层子节点**
 
 ```sql title=Query
 SELECT dictGetChildren('hierarchical_dictionary', 2);
@@ -1025,11 +1026,11 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 ```
 
 
-## dictGetDate {#dictGetDate}
+## dictGetDate
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Date` 数据类型,不受字典配置影响。
+将字典属性值转换为 `Date` 数据类型，而不受字典配置方式的影响。
 
 **语法**
 
@@ -1039,21 +1040,22 @@ dictGetDate(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetDate('all_types_dict', 'Date_value', 1)
@@ -1066,11 +1068,11 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 ```
 
 
-## dictGetDateOrDefault {#dictGetDateOrDefault}
+## dictGetDateOrDefault
 
-引入版本:v1.1
+引入自：v1.1
 
-将字典属性值转换为 `Date` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Date` 数据类型，而不考虑字典配置；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -1080,17 +1082,18 @@ dictGetDateOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典不包含 `id_expr` 键对应的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1115,52 +1118,53 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 ```
 
 
-## dictGetDateTime {#dictGetDateTime}
+## dictGetDateTime
 
-引入版本:v1.1
+引入版本：v1.1
 
-将字典属性值转换为 `DateTime` 数据类型,不受字典配置影响。
+将字典属性值转换为 `DateTime` 数据类型，不受字典配置影响。
 
 **语法**
 
 ```sql
-dictGetDateTime(dict_name, attr_name, id_expr)
+dictGetDateTime(字典名, 属性名, id表达式)
 ```
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
-```sql title=查询
+```sql title=Query
 SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 ```
 
-```response title=响应
+```response title=Response
 ┌─dictGetDateT⋯_value', 1)─┐
 │      2024-01-15 10:30:00 │
 └──────────────────────────┘
 ```
 
 
-## dictGetDateTimeOrDefault {#dictGetDateTimeOrDefault}
+## dictGetDateTimeOrDefault
 
-引入版本:v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `DateTime` 数据类型(不受字典配置影响),如果未找到键则返回提供的默认值。
+将字典属性的值转换为 `DateTime` 数据类型，而不受字典配置的影响；如果未找到该键，则返回提供的默认值。
 
 **语法**
 
@@ -1170,28 +1174,29 @@ dictGetDateTimeOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典中不包含 `id_expr` 键对应的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 -- 对于存在的键
 SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1);
 
--- 对于不存在的键,返回提供的默认值
+-- 对于不存在的键，返回提供的默认值
 SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateTime('1970-01-01 00:00:00'));
 ```
 
@@ -1205,11 +1210,11 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 ```
 
 
-## dictGetDescendants {#dictGetDescendants}
+## dictGetDescendants
 
 引入版本：v21.4
 
-返回所有后代节点，效果等同于递归调用 [`dictGetChildren`](#dictGetChildren) 函数 `level` 次。
+返回所有后代，相当于对 [`dictGetChildren`](#dictGetChildren) 函数递归调用 `level` 次。
 
 **语法**
 
@@ -1219,20 +1224,20 @@ dictGetDescendants(dict_name, key, level)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `key` — 要查询的键。[`const String`](/sql-reference/data-types/string)
-- `level` — 层级深度。如果 `level = 0` 则返回所有后代节点直到末端。[`UInt8`](/sql-reference/data-types/int-uint)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `key` — 要检查的键。[`const String`](/sql-reference/data-types/string)
+* `level` — 要检查的键所在的层级（深度）。如果 `level = 0`，则返回从该键开始直到最底层的所有后代。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回指定键的后代节点。[`Array(UInt64)`](/sql-reference/data-types/array)
+返回该键的所有后代。[`Array(UInt64)`](/sql-reference/data-types/array)
 
 **示例**
 
-**获取字典的第二级后代节点**
+**获取字典的第一层子节点**
 
-```sql title=查询
--- 考虑以下层级字典：
+```sql title=Query
+-- 考虑以下分层字典：
 -- 0 (根节点)
 -- └── 1 (第 1 级 - 节点 1)
 --     ├── 2 (第 2 级 - 节点 2)
@@ -1244,18 +1249,18 @@ dictGetDescendants(dict_name, key, level)
 SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 ```
 
-```response title=响应
+```response title=Response
 ┌─dictGetDesce⋯ary', 0, 2)─┐
 │ [3,2]                    │
 └──────────────────────────┘
 ```
 
 
-## dictGetFloat32 {#dictGetFloat32}
+## dictGetFloat32
 
-引入版本:v1.1
+自 v1.1 引入
 
-将字典属性值转换为 `Float32` 数据类型,不受字典配置影响。
+将字典属性值转换为 `Float32` 数据类型，不受字典配置的影响。
 
 **语法**
 
@@ -1265,16 +1270,17 @@ dictGetFloat32(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典的列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性的值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1292,11 +1298,11 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 ```
 
 
-## dictGetFloat32OrDefault {#dictGetFloat32OrDefault}
+## dictGetFloat32OrDefault
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Float32` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Float32` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -1306,17 +1312,18 @@ dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列（属性）名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回通过参数 `default_value_expr` 传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1324,10 +1331,10 @@ dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (-1.0)
+-- 对于不存在的键，返回指定的默认值 (-1.0)
 SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 ```
 
@@ -1341,11 +1348,11 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 ```
 
 
-## dictGetFloat64 {#dictGetFloat64}
+## dictGetFloat64
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Float64` 数据类型,不受字典配置影响。
+将字典属性值转换为 `Float64` 数据类型，而不受字典配置的影响。
 
 **语法**
 
@@ -1355,21 +1362,22 @@ dictGetFloat64(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果无法解析属性值，或者该值与属性的数据类型不匹配，ClickHouse 会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
@@ -1382,11 +1390,11 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 ```
 
 
-## dictGetFloat64OrDefault {#dictGetFloat64OrDefault}
+## dictGetFloat64OrDefault
 
-引入版本:v1.1
+自 v1.1 引入
 
-将字典属性值转换为 `Float64` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Float64` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -1396,17 +1404,18 @@ dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在以 `id_expr` 为键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1417,7 +1426,7 @@ dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 -- 对于存在的键
 SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (nan)
+-- 对于不存在的键，返回提供的默认值（nan）
 SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 ```
 
@@ -1431,11 +1440,11 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 ```
 
 
-## dictGetHierarchy {#dictGetHierarchy}
+## dictGetHierarchy
 
 引入版本：v1.1
 
-创建一个数组，包含[层次字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中指定键的所有父级。
+在[分层字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中返回一个数组，其中包含某个键的所有父节点。
 
 **语法**
 
@@ -1445,16 +1454,16 @@ dictGetHierarchy(dict_name, key)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `key` — 键值。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `key` — 键。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-返回该键的所有父级。[`Array(UInt64)`](/sql-reference/data-types/array)
+返回该键对应的所有父项。[`Array(UInt64)`](/sql-reference/data-types/array)
 
 **示例**
 
-**获取键的层次结构**
+**获取某个键的层级结构**
 
 ```sql title=Query
 SELECT dictGetHierarchy('hierarchical_dictionary', 5)
@@ -1467,11 +1476,11 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 ```
 
 
-## dictGetIPv4 {#dictGetIPv4}
+## dictGetIPv4
 
-引入版本：v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `IPv4` 数据类型，不受字典配置影响。
+将字典属性值转换为 `IPv4` 数据类型，而不受字典配置的影响。
 
 **语法**
 
@@ -1481,21 +1490,22 @@ dictGetIPv4(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性的值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，将抛出异常。
+如果 ClickHouse 无法解析属性值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
@@ -1508,11 +1518,11 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 ```
 
 
-## dictGetIPv4OrDefault {#dictGetIPv4OrDefault}
+## dictGetIPv4OrDefault
 
-引入版本：v23.1
+自 v23.1 引入
 
-将字典属性值转换为 `IPv4` 数据类型（无论字典配置如何），如果未找到键则返回提供的默认值。
+将字典属性值转换为 `IPv4` 数据类型，而不受字典配置影响；如果未找到该键，则返回提供的默认值。
 
 **语法**
 
@@ -1522,28 +1532,29 @@ dictGetIPv4OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，则会抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1);
 
--- 对于不存在的键，返回提供的默认值
+-- 对于不存在的键，返回给定的默认值
 SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0'));
 ```
 
@@ -1557,11 +1568,11 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 ```
 
 
-## dictGetIPv6 {#dictGetIPv6}
+## dictGetIPv6
 
 引入版本：v23.1
 
-将字典属性值转换为 `IPv6` 数据类型，不受字典配置影响。
+将字典属性值转换为 `IPv6` 数据类型，无论字典如何配置。
 
 **语法**
 
@@ -1571,21 +1582,22 @@ dictGetIPv6(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列（属性）的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（依赖于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，将抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
@@ -1598,11 +1610,11 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 ```
 
 
-## dictGetIPv6OrDefault {#dictGetIPv6OrDefault}
+## dictGetIPv6OrDefault
 
-引入版本:v23.1
+自 v23.1 版本引入
 
-将字典属性值转换为 `IPv6` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+无论字典如何配置，都将字典属性值转换为 `IPv6` 数据类型；如果未找到该键，则返回指定的默认值。
 
 **语法**
 
@@ -1612,28 +1624,29 @@ dictGetIPv6OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当在字典中找不到键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在 `default_value_expr` 参数中传入的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1);
 
--- 对于不存在的键,返回提供的默认值
+-- 对于不存在的键，返回指定的默认值
 SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 ```
 
@@ -1647,11 +1660,11 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 ```
 
 
-## dictGetInt16 {#dictGetInt16}
+## dictGetInt16
 
-引入版本:v1.1
+自 v1.1 引入
 
-将字典属性值转换为 `Int16` 数据类型,不受字典配置影响。
+将字典属性的值转换为 `Int16` 数据类型，而不受字典配置的影响。
 
 **语法**
 
@@ -1661,21 +1674,22 @@ dictGetInt16(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或者该值的数据类型与属性不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
@@ -1688,11 +1702,11 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 ```
 
 
-## dictGetInt16OrDefault {#dictGetInt16OrDefault}
+## dictGetInt16OrDefault
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Int16` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Int16` 数据类型，不受字典配置影响；如果未找到键，则返回指定的默认值。
 
 **语法**
 
@@ -1702,17 +1716,18 @@ dictGetInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1720,10 +1735,10 @@ dictGetInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetInt16('all_types_dict', 'Int16_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (-1)
+-- 若键不存在，则返回提供的默认值 (-1)
 SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 ```
 
@@ -1737,11 +1752,11 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 ```
 
 
-## dictGetInt32 {#dictGetInt32}
+## dictGetInt32
 
-引入版本:v1.1
+引入自：v1.1
 
-将字典属性值转换为 `Int32` 数据类型,不受字典配置影响。
+将字典的属性值转换为 `Int32` 数据类型，而不受字典配置影响。
 
 **语法**
 
@@ -1751,21 +1766,22 @@ dictGetInt32(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
@@ -1778,11 +1794,11 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 ```
 
 
-## dictGetInt32OrDefault {#dictGetInt32OrDefault}
+## dictGetInt32OrDefault
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Int32` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Int32` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -1792,28 +1808,29 @@ dictGetInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性的值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对已存在的键
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (-1)
+-- 对于不存在的键，返回指定的默认值 (-1)
 SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 ```
 
@@ -1827,11 +1844,11 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 ```
 
 
-## dictGetInt64 {#dictGetInt64}
+## dictGetInt64
 
-引入版本:v1.1
+自 v1.1 版本起提供
 
-将字典属性值转换为 `Int64` 数据类型,不受字典配置影响。
+将字典属性值转换为 `Int64` 数据类型，与字典配置无关。
 
 **语法**
 
@@ -1841,38 +1858,39 @@ dictGetInt64(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回该属性在字典配置中指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
 **使用示例**
 
-```sql title=查询
+```sql title=Query
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 ```
 
-```response title=响应
+```response title=Response
 ┌─dictGetInt64⋯_value', 1)───┐
 │       -9223372036854775807 │
 └────────────────────────────┘
 ```
 
 
-## dictGetInt64OrDefault {#dictGetInt64OrDefault}
+## dictGetInt64OrDefault
 
-引入版本:v1.1
+引入版本：v1.1
 
-将字典属性值转换为 `Int64` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `Int64` 数据类型（无论字典如何配置），如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -1882,17 +1900,18 @@ dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -1900,10 +1919,10 @@ dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (-1)
+-- 对于不存在的键，返回指定的默认值 (-1)
 SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 ```
 
@@ -1917,11 +1936,11 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 ```
 
 
-## dictGetInt8 {#dictGetInt8}
+## dictGetInt8
 
-引入版本:v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `Int8` 数据类型,不受字典配置影响。
+将字典属性值转换为 `Int8` 数据类型，不受字典配置影响。
 
 **语法**
 
@@ -1931,21 +1950,22 @@ dictGetInt8(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
@@ -1958,11 +1978,11 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 ```
 
 
-## dictGetInt8OrDefault {#dictGetInt8OrDefault}
+## dictGetInt8OrDefault
 
-引入版本:v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `Int8` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典的属性值转换为 `Int8` 数据类型，而不受字典配置影响；如果未找到键，则返回指定的默认值。
 
 **语法**
 
@@ -1972,28 +1992,29 @@ dictGetInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典的列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (-1)
+-- 对于不存在的键，返回指定的默认值 (-1)
 SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 ```
 
@@ -2007,16 +2028,16 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 ```
 
 
-## dictGetKeys {#dictGetKeys}
+## dictGetKeys
 
-引入版本：v25.11
+引入于：v25.11
 
-返回属性值等于指定值的字典键。这是对单个属性执行 `dictGet` 函数的逆操作。
+返回其属性等于指定值的字典键（或键集合）。这是在单个属性上的 `dictGet` 函数的逆操作。
 
-使用 `max_reverse_dictionary_lookup_cache_size_bytes` 设置来限制 `dictGetKeys` 所使用的每查询反向查找缓存的大小。
-该缓存为每个属性值存储序列化的键元组，以避免在同一查询内重复扫描字典。
-缓存不会跨查询持久化。当达到限制时，将使用 LRU 算法淘汰条目。
-当输入具有低基数且工作集能够容纳在缓存中时，这对大型字典最为有效。设置为 `0` 可禁用缓存。
+使用设置 `max_reverse_dictionary_lookup_cache_size_bytes` 来限制 `dictGetKeys` 在每个查询中使用的反向查找缓存大小。
+该缓存为每个属性值存储序列化的键元组，以避免在同一查询中重复扫描字典。
+该缓存不会在查询之间持久化。当达到限制时，会按 LRU 策略逐出条目。
+对于大型字典，当输入的基数较低且工作集可以装入缓存时，该机制最为有效。将其设为 `0` 可禁用缓存。
 
 **语法**
 
@@ -2026,22 +2047,22 @@ dictGetKeys('dict_name', 'attr_name', value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 要匹配的属性。[`String`](/sql-reference/data-types/string)
-- `value_expr` — 要与属性进行匹配的值。[`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 要匹配的属性名。[`String`](/sql-reference/data-types/string)
+* `value_expr` — 用于与该属性值进行匹配的值。[`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **返回值**
 
-对于单键字典：返回属性等于 `value_expr` 的键数组。对于多键字典：返回属性等于 `value_expr` 的键元组数组。如果字典中不存在与 `value_expr` 对应的属性，则返回空数组。如果 ClickHouse 无法解析属性值或该值无法转换为属性数据类型，则会抛出异常。
+对于单键字典：返回所有其属性值等于 `value_expr` 的键组成的数组。对于多键字典：返回所有其属性值等于 `value_expr` 的键元组组成的数组。如果字典中不存在属性值为 `value_expr` 的条目，则返回空数组。如果 ClickHouse 无法解析该属性的值，或者该值无法转换为属性的数据类型，则会抛出异常。
 
 **示例**
 
 
-## dictGetOrDefault {#dictGetOrDefault}
+## dictGetOrDefault
 
-引入版本:v18.16
+引入自：v18.16
 
-从字典中检索值,当键不存在时返回默认值。
+从字典中获取值，如果未找到键则返回默认值。
 
 **语法**
 
@@ -2051,34 +2072,34 @@ dictGetOrDefault('dict_name', attr_names, id_expr, default_value)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_names` — 字典的列名称,或列名称元组。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回 UInt64/Tuple(T) 的表达式。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value` — 键不存在时返回的默认值。类型必须与属性的数据类型匹配。
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_names` — 字典的列名，或列名组成的元组。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回 UInt64/Tuple(T) 的表达式。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value` — 当未找到对应键时返回的默认值。其类型必须与该属性的数据类型匹配。
 
 **返回值**
 
-如果找到键,返回与 `id_expr` 对应的字典属性值。
-如果未找到键,返回提供的 `default_value`。
+如果找到了该键，则返回与 `id_expr` 对应的字典属性值。
+如果未找到键，则返回提供的 `default_value`。
 
 **示例**
 
 **获取带默认值的值**
 
-```sql title=查询
+```sql title=Query
 SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 ```
 
-```response title=响应
+```response title=Response
 0
 ```
 
 
-## dictGetOrNull {#dictGetOrNull}
+## dictGetOrNull
 
-引入版本:v21.4
+自 v21.4 引入
 
-从字典中检索值,如果未找到键则返回 NULL。
+从字典中获取值，如果未找到键则返回 NULL。
 
 **语法**
 
@@ -2088,40 +2109,40 @@ dictGetOrNull('dict_name', 'attr_name', id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。字符串字面量。
-- `attr_name` — 要检索的列名称。字符串字面量。
-- `id_expr` — 键值。返回字典键类型值的表达式。
+* `dict_name` — 字典名称。字符串字面量。
+* `attr_name` — 要获取的列名。字符串字面量。
+* `id_expr` — 键值。返回字典键类型的值的表达式。
 
 **返回值**
 
-如果找到键,则返回与 `id_expr` 对应的字典属性值。
-如果未找到键,则返回 `NULL`。
+如果找到键，则返回与 `id_expr` 对应的字典属性值。
+如果未找到键，则返回 `NULL`。
 
 **示例**
 
 **使用范围键字典的示例**
 
-```sql title=查询
+```sql title=Query
 SELECT
     (number, toDate('2019-05-20')),
     dictGetOrNull('range_key_dictionary', 'value', number, toDate('2019-05-20')),
 FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 ```
 
-```response title=响应
+```response title=Response
 (0,'2019-05-20')  \N
-(1,'2019-05-20')  First
-(2,'2019-05-20')  Second
-(3,'2019-05-20')  Third
+(1,'2019-05-20')  第一
+(2,'2019-05-20')  第二
+(3,'2019-05-20')  第三
 (4,'2019-05-20')  \N
 ```
 
 
-## dictGetString {#dictGetString}
+## dictGetString
 
-引入版本:v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `String` 数据类型,不受字典配置影响。
+将字典属性值转换为 `String` 数据类型，而不受字典配置方式的影响。
 
 **语法**
 
@@ -2131,38 +2152,39 @@ dictGetString(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典的名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
-```sql title=查询
+```sql title=Query
 SELECT dictGetString('all_types_dict', 'String_value', 1)
 ```
 
-```response title=响应
+```response title=Response
 ┌─dictGetString(⋯_value', 1)─┐
-│ test string                │
+│ 测试字符串                 │
 └────────────────────────────┘
 ```
 
 
-## dictGetStringOrDefault {#dictGetStringOrDefault}
+## dictGetStringOrDefault
 
-引入版本:v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `String` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `String` 类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -2172,46 +2194,47 @@ dictGetStringOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetString('all_types_dict', 'String_value', 1);
 
--- 对于不存在的键,返回提供的默认值
+-- 对于不存在的键，返回指定的默认值
 SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 ```
 
 ```response title=Response
 ┌─dictGetString(⋯_value', 1)─┐
-│ test string                │
+│ 测试字符串                 │
 └────────────────────────────┘
 ┌─dictGetStringO⋯ 999, 'default')─┐
-│ default                         │
+│ 默认值                          │
 └─────────────────────────────────┘
 ```
 
 
-## dictGetUInt16 {#dictGetUInt16}
+## dictGetUInt16
 
-引入版本:v1.1
+自 v1.1 起提供
 
-将字典属性值转换为 `UInt16` 数据类型,不受字典配置影响。
+将字典属性值转换为 `UInt16` 数据类型，而不受字典配置的影响。
 
 **语法**
 
@@ -2221,21 +2244,22 @@ dictGetUInt16(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典的名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。一个返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性的值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
@@ -2248,11 +2272,11 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 ```
 
 
-## dictGetUInt16OrDefault {#dictGetUInt16OrDefault}
+## dictGetUInt16OrDefault
 
-引入版本：v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `UInt16` 数据类型（无论字典配置如何），如果未找到键则返回提供的默认值。
+将字典属性值转换为 `UInt16` 数据类型，而不受字典配置的影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -2262,17 +2286,18 @@ dictGetUInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值；
+否则返回传入 `default_value_expr` 参数的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，则会抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，将抛出异常。
 :::
 
 **示例**
@@ -2280,10 +2305,10 @@ dictGetUInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1);
 
--- 对于不存在的键，返回提供的默认值 (0)
+-- 对于不存在的键，将返回指定的默认值 0
 SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 ```
 
@@ -2297,11 +2322,11 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 ```
 
 
-## dictGetUInt32 {#dictGetUInt32}
+## dictGetUInt32
 
-引入版本:v1.1
+自 v1.1 引入
 
-将字典属性值转换为 `UInt32` 数据类型,不受字典配置影响。
+将字典属性的值转换为 `UInt32` 数据类型，与字典配置无关。
 
 **语法**
 
@@ -2311,21 +2336,22 @@ dictGetUInt32(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
@@ -2338,11 +2364,11 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 ```
 
 
-## dictGetUInt32OrDefault {#dictGetUInt32OrDefault}
+## dictGetUInt32OrDefault
 
-引入版本：v1.1
+自 v1.1 版本引入
 
-将字典属性值转换为 `UInt32` 数据类型（不受字典配置影响），如果未找到键则返回提供的默认值。
+将字典属性值转换为 `UInt32` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -2352,28 +2378,29 @@ dictGetUInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含 `id_expr` 键对应的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不存在带有键 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值；
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1);
 
--- 对于不存在的键，返回提供的默认值 (0)
+-- 对于不存在的键，如果键不存在则返回提供的默认值 (0)
 SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 ```
 
@@ -2387,11 +2414,11 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 ```
 
 
-## dictGetUInt64 {#dictGetUInt64}
+## dictGetUInt64
 
-引入版本：v1.1
+在 v1.1 中引入
 
-将字典属性值转换为 `UInt64` 数据类型，不受字典配置影响。
+将字典属性值转换为 `UInt64` 数据类型，而不受字典配置的影响。
 
 **语法**
 
@@ -2401,38 +2428,39 @@ dictGetUInt64(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值；
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素的内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，将抛出异常。
+如果 ClickHouse 无法解析该属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
-```sql title=查询
+```sql title=Query
 SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 ```
 
-```response title=响应
+```response title=Response
 ┌─dictGetUInt6⋯_value', 1)─┐
 │      9223372036854775807 │
 └──────────────────────────┘
 ```
 
 
-## dictGetUInt64OrDefault {#dictGetUInt64OrDefault}
+## dictGetUInt64OrDefault
 
-引入版本：v1.1
+自 v1.1 起引入
 
-无论字典配置如何，都将字典属性值转换为 `UInt64` 数据类型，如果未找到键则返回提供的默认值。
+将字典属性值转换为 `UInt64` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -2442,28 +2470,29 @@ dictGetUInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键的值。返回字典键类型的值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值（或一组值）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配，ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 -- 对于存在的键
 SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1);
 
--- 对于不存在的键，返回提供的默认值 (0)
+-- 对于不存在的键，返回给定的默认值 (0)
 SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 ```
 
@@ -2477,11 +2506,11 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 ```
 
 
-## dictGetUInt8 {#dictGetUInt8}
+## dictGetUInt8
 
-引入版本：v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `UInt8` 数据类型，无论字典如何配置。
+将字典属性值转换为 `UInt8` 数据类型，不受字典配置影响。
 
 **语法**
 
@@ -2491,16 +2520,17 @@ dictGetUInt8(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值，否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性的值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配，则会抛出异常。
+如果无法解析属性的值，或该值与属性的数据类型不匹配，ClickHouse 会抛出异常。
 :::
 
 **示例**
@@ -2518,11 +2548,11 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 ```
 
 
-## dictGetUInt8OrDefault {#dictGetUInt8OrDefault}
+## dictGetUInt8OrDefault
 
-引入版本:v1.1
+自 v1.1 起引入
 
-将字典属性值转换为 `UInt8` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `UInt8` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
 
@@ -2532,28 +2562,29 @@ dictGetUInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,则会抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1);
 
--- 对于不存在的键,返回提供的默认值 (0)
+-- 对于不存在的键，返回指定的默认值 (0)
 SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 ```
 
@@ -2567,11 +2598,11 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 ```
 
 
-## dictGetUUID {#dictGetUUID}
+## dictGetUUID
 
-引入版本:v1.1
+引入版本：v1.1
 
-将字典属性值转换为 `UUID` 数据类型,不受字典配置影响。
+将字典属性值转换为 `UUID` 数据类型，而不受字典配置影响。
 
 **语法**
 
@@ -2581,21 +2612,22 @@ dictGetUUID(dict_name, attr_name, id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列（属性）的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回字典配置中为该属性指定的 `<null_value>` 元素内容。
+返回与 `id_expr` 对应的字典属性值，
+否则返回在字典配置中为该属性指定的 `<null_value>` 元素内容。
 
 :::note
-如果 ClickHouse 无法解析属性值或该值与属性数据类型不匹配,将抛出异常。
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
@@ -2608,11 +2640,11 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 ```
 
 
-## dictGetUUIDOrDefault {#dictGetUUIDOrDefault}
+## dictGetUUIDOrDefault
 
-引入版本:v1.1
+自 v1.1 引入
 
-将字典属性值转换为 `UUID` 数据类型(无论字典配置如何),如果未找到键则返回提供的默认值。
+将字典属性值转换为 `UUID` 数据类型，而不受字典配置影响；如果未找到该键，则返回提供的默认值。
 
 **语法**
 
@@ -2622,17 +2654,18 @@ dictGetUUIDOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 字典列名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — 键值。返回字典键类型值或元组值的表达式(取决于字典配置)。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 当字典不包含具有 `id_expr` 键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 字典中列（属性）的名称。[`String`](/sql-reference/data-types/string) 或 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 键值。返回字典键类型值或元组值的表达式（取决于字典配置）。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 当字典中不包含以 `id_expr` 为键的行时返回的值。[`Expression`](/sql-reference/data-types/special-data-types/expression) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **返回值**
 
-返回与 `id_expr` 对应的字典属性值,否则返回作为 `default_value_expr` 参数传递的值。
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
 
 :::note
-如果无法解析属性值或值与属性数据类型不匹配,ClickHouse 将抛出异常。
+如果 ClickHouse 无法解析属性的值，或者该值与属性的数据类型不匹配，则会抛出异常。
 :::
 
 **示例**
@@ -2640,10 +2673,10 @@ dictGetUUIDOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用示例**
 
 ```sql title=Query
--- 对于存在的键
+-- 对于已存在的键
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1);
 
--- 对于不存在的键,返回提供的默认值
+-- 对于不存在的键，返回指定的默认值
 SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-0000-0000-000000000000'::UUID);
 ```
 
@@ -2657,11 +2690,11 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 ```
 
 
-## dictHas {#dictHas}
+## dictHas
 
-引入版本：v1.1
+自 v1.1 起引入
 
-检查字典中是否存在指定的键。
+检查字典中是否包含指定键。
 
 **语法**
 
@@ -2671,26 +2704,26 @@ dictHas('dict_name', id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `id_expr` — 键值。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `id_expr` — 键值。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-如果键存在则返回 `1`,否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+如果键存在则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**检查字典中是否存在某个键**
+**检查字典中某个键是否存在**
 
 ```sql title=Query
--- 考虑以下层级字典：
--- 0 (根节点)
--- └── 1 (第1层 - 节点1)
---     ├── 2 (第2层 - 节点2)
---     │   ├── 4 (第3层 - 节点4)
---     │   └── 5 (第3层 - 节点5)
---     └── 3 (第2层 - 节点3)
---         └── 6 (第3层 - 节点6)
+-- 考虑以下分层字典：
+-- 0 (根)
+-- └── 1 (层级 1 - 节点 1)
+--     ├── 2 (层级 2 - 节点 2)
+--     │   ├── 4 (层级 3 - 节点 4)
+--     │   └── 5 (层级 3 - 节点 5)
+--     └── 3 (层级 2 - 节点 3)
+--         └── 6 (层级 3 - 节点 6)
 
 SELECT dictHas('hierarchical_dictionary', 2);
 SELECT dictHas('hierarchical_dictionary', 7);
@@ -2706,11 +2739,11 @@ SELECT dictHas('hierarchical_dictionary', 7);
 ```
 
 
-## dictIsIn {#dictIsIn}
+## dictIsIn
 
-引入版本:v1.1
+引入于：v1.1
 
-检查字典中某个键通过完整层级链的祖先关系。
+在字典中沿完整层级链检查某个键的祖先。
 
 **语法**
 
@@ -2720,17 +2753,17 @@ dictIsIn(dict_name, child_id_expr, ancestor_id_expr)
 
 **参数**
 
-- `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
-- `child_id_expr` — 待检查的键。[`String`](/sql-reference/data-types/string)
-- `ancestor_id_expr` — `child_id_expr` 键的推定祖先。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 字典名称。[`String`](/sql-reference/data-types/string)
+* `child_id_expr` — 要检查的键。[`String`](/sql-reference/data-types/string)
+* `ancestor_id_expr` — `child_id_expr` 键的预期祖先。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-如果 `child_id_expr` 不是 `ancestor_id_expr` 的子节点,返回 `0`;如果 `child_id_expr` 是 `ancestor_id_expr` 的子节点或 `child_id_expr` 本身就是 `ancestor_id_expr`,返回 `1`。[`UInt8`](/sql-reference/data-types/int-uint)
+如果 `child_id_expr` 不是 `ancestor_id_expr` 的子节点则返回 `0`；如果 `child_id_expr` 是 `ancestor_id_expr` 的子节点，或 `child_id_expr` 本身就是 `ancestor_id_expr`，则返回 `1`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**检查层级关系**
+**检查层次关系**
 
 ```sql title=Query
 -- 有效的层级关系
@@ -2749,4 +2782,4 @@ SELECT dictIsIn('hierarchical_dictionary', 3, 5)
 └──────────────────────────┘
 ```
 
-<!--AUTOGENERATED_END-->
+{/*AUTOGENERATED_END*/ }

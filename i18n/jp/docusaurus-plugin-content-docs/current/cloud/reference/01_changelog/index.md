@@ -1,12 +1,12 @@
 ---
 slug: /cloud/reference/changelogs
 title: '変更履歴'
-description: 'Cloud の変更履歴ランディングページ'
+description: 'Cloud 変更履歴用ランディングページ'
 doc_type: 'landing-page'
-keywords: ['ClickHouse Cloud changelog', 'Cloud release notes', 'cloud updates', 'version history']
+keywords: ['ClickHouse Cloud 変更履歴', 'Cloud リリースノート', 'Cloud 更新情報', 'バージョン履歴']
 ---
 
-| ページ                                                       | 説明                                              |
+| ページ                                                          | 説明                                             |
 |---------------------------------------------------------------|-------------------------------------------------|
-| [Cloud の変更履歴](/whats-new/cloud)                   | ClickHouse Cloud の変更履歴                      |
-| [リリースノート](/cloud/reference/changelogs/release-notes) | すべての ClickHouse Cloud リリースのリリースノート一覧 |
+| [Cloud Changelog](/whats-new/cloud)                   | ClickHouse Cloud の変更履歴                     |
+| [Release Notes](/cloud/reference/changelogs/release-notes) | 全 ClickHouse Cloud リリースのリリースノート      |

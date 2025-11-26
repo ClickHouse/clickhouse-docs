@@ -1,5 +1,5 @@
 ---
-description: 'Interval 特殊数据类型相关文档'
+description: 'Interval 特殊数据类型文档'
 sidebar_label: 'Interval'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
@@ -11,14 +11,14 @@ doc_type: 'reference'
 
 # Interval
 
-表示时间和日期间隔的一组数据类型。它们是 [INTERVAL](/sql-reference/operators#interval) 运算符的结果类型。
+表示时间和日期间隔的一类数据类型。[INTERVAL](/sql-reference/operators#interval) 运算符所产生的结果类型。
 
 结构：
 
 * 以无符号整数值表示的时间间隔。
 * 间隔的类型。
 
-支持的时间间隔类型：
+支持的间隔类型：
 
 * `NANOSECOND`
 * `MICROSECOND`
@@ -32,7 +32,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-对于每种间隔类型，都有一个单独的数据类型。例如，`DAY` 间隔对应的数据类型是 `IntervalDay`：
+对于每种间隔类型，都有一个对应的数据类型。例如，`DAY` 间隔对应 `IntervalDay` 数据类型：
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -45,9 +45,9 @@ SELECT toTypeName(INTERVAL 4 DAY)
 ```
 
 
-## 使用说明 {#usage-remarks}
+## 使用注意事项
 
-您可以在算术运算中将 `Interval` 类型的值与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型的值结合使用。例如,您可以在当前时间上加 4 天:
+可以将 `Interval` 类型的值与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型的值一起用于算术运算。例如，可以在当前时间的基础上加 4 天：
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
@@ -59,7 +59,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 └─────────────────────┴───────────────────────────────┘
 ```
 
-也可以同时使用多个时间间隔:
+也可以同时使用多个时间区间：
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
@@ -71,7 +71,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-以及比较不同时间间隔的值:
+以及比较不同时间区间的数值：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);

@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'Crunchy Bridge Postgres'
-description: 'ClickPipes のソースとして Crunchy Bridge Postgres をセットアップする'
+description: 'ClickPipes のソースとして Crunchy Bridge Postgres を設定する'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres ソースのセットアップガイド'
-keywords: ['crunchy bridge', 'postgres', 'clickpipes', '論理レプリケーション', 'データ取り込み']
+title: 'Crunchy Bridge Postgres ソース設定ガイド'
+keywords: ['crunchy bridge', 'postgres', 'clickpipes', '論理レプリケーション', 'データインジェスト']
 doc_type: 'guide'
 ---
 
@@ -14,72 +14,64 @@ import Image from '@theme/IdealImage';
 
 # Crunchy Bridge Postgres ソース設定ガイド
 
-ClickPipes は、Postgres バージョン 12 以降をサポートしています。
+ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
 
 
-## 論理レプリケーションの有効化 {#enable-logical-replication}
+## 論理レプリケーションを有効化する
 
-Crunchy Bridgeは[デフォルト](https://docs.crunchybridge.com/how-to/logical-replication)で論理レプリケーションが有効になっています。以下の設定が正しく構成されていることを確認してください。正しく構成されていない場合は、必要に応じて調整してください。
+Crunchy Bridge では、論理レプリケーションが[既定](https://docs.crunchybridge.com/how-to/logical-replication)で有効になっています。以下の設定が正しく構成されていることを確認してください。そうでない場合は、必要に応じて調整してください。
 
 ```sql
-SHOW wal_level; -- logical である必要があります
-SHOW max_wal_senders; -- 10 である必要があります
-SHOW max_replication_slots; -- 10 である必要があります
+SHOW wal_level; -- logical に設定する必要があります
+SHOW max_wal_senders; -- 10 に設定する必要があります
+SHOW max_replication_slots; -- 10 に設定する必要があります
 ```
 
 
-## ClickPipesユーザーの作成と権限の付与 {#creating-clickpipes-user-and-granting-permissions}
+## ClickPipes 用ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
 
-`postgres`ユーザーを使用してCrunchy Bridge Postgresに接続し、以下のコマンドを実行します:
+`postgres` ユーザーで Crunchy Bridge Postgres に接続し、以下のコマンドを実行します。
 
-1. ClickPipes専用のPostgresユーザーを作成します。
+1. ClickPipes 専用の Postgres ユーザーを作成します。
 
-   ```sql
-   CREATE USER clickpipes_user PASSWORD 'some-password';
-   ```
+    ```sql
+    CREATE USER clickpipes_user PASSWORD 'some-password';
+    ```
 
-2. テーブルをレプリケートするスキーマに対して、`clickpipes_user`に読み取り専用アクセスを付与します。以下の例では`public`スキーマに対する権限付与を示しています。複数のスキーマにアクセスを付与する場合は、各スキーマに対してこれら3つのコマンドを実行してください。
+2. テーブルをレプリケートする元となるスキーマに対して、`clickpipes_user` に読み取り専用アクセス権を付与します。以下の例では、`public` スキーマに対する権限を付与しています。複数のスキーマにアクセス権を付与したい場合は、各スキーマごとにこれら 3 つのコマンドを実行してください。
 
-   ```sql
-   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-   ```
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
-3. このユーザーにレプリケーションアクセスを付与します:
+3. このユーザーにレプリケーション権限を付与します。
 
-   ```sql
-    ALTER ROLE clickpipes_user REPLICATION;
-   ```
+    ```sql
+     ALTER ROLE clickpipes_user REPLICATION;
+    ```
 
-4. 今後MIRROR(レプリケーション)を作成する際に使用するパブリケーションを作成します。
+4. 今後 MIRROR（レプリケーション）を作成する際に使用する publication を作成します。
 
-   ```sql
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-   ```
+    ```sql
+    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+    ```
 
 
-## ClickPipes IPをセーフリストに登録 {#safe-list-clickpipes-ips}
 
-Crunchy Bridgeでファイアウォールルールを追加して、[ClickPipes IP](../../index.md#list-of-static-ips)をセーフリストに登録します。
+## ClickPipes の IP アドレスを許可リストに追加する {#safe-list-clickpipes-ips}
 
-<Image
-  size='lg'
-  img={firewall_rules_crunchy_bridge}
-  alt='Crunchy Bridgeでファイアウォールルールを確認する場所'
-  border
-/>
+Crunchy Bridge で Firewall Rules を追加して、[ClickPipes IPs](../../index.md#list-of-static-ips) を許可リストに登録します。
 
-<Image
-  size='lg'
-  img={add_firewall_rules_crunchy_bridge}
-  alt='ClickPipes用のファイアウォールルールを追加'
-  border
-/>
+<Image size="lg" img={firewall_rules_crunchy_bridge} alt="Crunchy Bridge で Firewall Rules を確認できる場所" border/>
+
+<Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="ClickPipes 用の Firewall Rules を追加する" border/>
+
 
 
 ## 次のステップ {#whats-next}
 
-これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成プロセスで必要となるため、Postgresインスタンスのセットアップ時に使用した接続情報を必ず記録しておいてください。
+これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
+ClickPipe を作成する際に使用するため、Postgres インスタンスのセットアップ時に使用した接続情報を必ずメモしておいてください。

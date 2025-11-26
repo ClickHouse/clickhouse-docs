@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/ruby-on-rails
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'Ruby on Rails SDK для ClickStack — стек наблюдаемости ClickHouse'
+description: 'Ruby on Rails SDK для ClickStack — ClickHouse Observability Stack'
 title: 'Ruby on Rails'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
@@ -21,13 +21,13 @@ keywords: ['clickstack', 'sdk', 'логирование', 'интеграция'
   </tbody>
 </table>
 
-_Чтобы передавать логи в ClickStack, используйте [сборщик OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
+_Чтобы отправлять логи в ClickStack, используйте [коллектор OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
 
 
 
-## Начало работы {#getting-started}
+## Начало работы
 
-### Установка пакетов OpenTelemetry {#install-otel-packages}
+### Установка пакетов OpenTelemetry
 
 Используйте следующую команду для установки пакета OpenTelemetry.
 
@@ -35,15 +35,15 @@ _Чтобы передавать логи в ClickStack, используйте 
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-### Настройка OpenTelemetry и форматера логгера {#configure-otel-logger-formatter}
+### Настройка OpenTelemetry и форматтера логгера
 
-Далее необходимо инициализировать инструментарий трассировки OpenTelemetry
-и настроить форматер сообщений логов для логгера Rails, чтобы логи автоматически
-связывались с трассировками. Без пользовательского форматера логи не будут
-автоматически коррелироваться в ClickStack.
+Далее необходимо инициализировать инструментацию трассировки OpenTelemetry
+и настроить форматтер сообщений логов для логгера Rails, чтобы логи могли
+автоматически привязываться к трейсам. Без пользовательского форматтера логи не
+будут автоматически коррелироваться между собой в ClickStack.
 
-В папке `config/initializers` создайте файл `hyperdx.rb` и добавьте в него
-следующее:
+В папке `config/initializers` создайте файл с именем `hyperdx.rb` и добавьте в
+него следующее:
 
 
 ```ruby
@@ -54,12 +54,12 @@ require 'opentelemetry/instrumentation/all'
 require 'opentelemetry/sdk'
 
 OpenTelemetry::SDK.configure do |c|
-  c.use_all() # enables all trace instrumentation!
+  c.use_all() # включает всю инструментацию трассировки
 end
 
 Rails.application.configure do
   Rails.logger = Logger.new(STDOUT)
-  # Rails.logger.log_level = Logger::INFO # default is DEBUG, but you might want INFO or above in production
+  # Rails.logger.log_level = Logger::INFO # по умолчанию DEBUG, но в production может потребоваться INFO или выше
   Rails.logger.formatter = proc do |severity, time, progname, msg|
     span_id = OpenTelemetry::Trace.current_span.context.hex_span_id
     trace_id = OpenTelemetry::Trace.current_span.context.hex_trace_id
@@ -73,13 +73,13 @@ Rails.application.configure do
       "operation" => operation }.to_json + "\n"
   end
 
-  Rails.logger.info "Logger initialized !! 🐱"
+  Rails.logger.info "Логгер инициализирован!! 🐱"
 end
 ```
 
-### Настройка переменных окружения {#configure-environment-variables}
+### Настройте переменные окружения
 
-После этого необходимо настроить следующие переменные окружения в вашей оболочке для отправки телеметрии в ClickStack:
+После этого потребуется настроить в своей оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -88,7 +88,7 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-_Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
-в приложении HyperDX. Вы можете указать любое имя._
+*Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
+в приложении HyperDX и может быть любым удобным вам именем.*
 
-Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит API-ключ, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
+Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.

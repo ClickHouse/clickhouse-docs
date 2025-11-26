@@ -7,17 +7,17 @@ doc_type: 'guide'
 keywords: ['динамический выбор столбцов', 'регулярные выражения', 'модификатор APPLY', 'сложные запросы', 'руководство для разработчиков']
 ---
 
-[Динамический выбор столбцов](/docs/sql-reference/statements/select#dynamic-column-selection) — это мощная, но редко используемая функция ClickHouse, которая позволяет выбирать столбцы с помощью регулярных выражений вместо явного указания каждого столбца по имени. Вы также можете применять функции к столбцам, соответствующим регулярному выражению, используя модификатор `APPLY`, что делает этот механизм исключительно полезным для задач анализа и преобразования данных.
+[Динамический выбор столбцов](/docs/sql-reference/statements/select#dynamic-column-selection) — это мощная, но недостаточно широко используемая функция ClickHouse, которая позволяет выбирать столбцы с помощью регулярных выражений вместо явного указания каждого столбца. Вы также можете применять функции к столбцам, подходящим по регулярному выражению, с помощью модификатора `APPLY`, что делает её чрезвычайно полезной для задач анализа и преобразования данных.
 
-Мы изучим, как использовать эту функцию на примере [набора данных нью-йоркского такси](/docs/getting-started/example-datasets/nyc-taxi), который также доступен в [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).
+Мы изучим, как использовать эту функцию, на примере [набора данных по нью-йоркскому такси](/docs/getting-started/example-datasets/nyc-taxi), который также доступен в [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 
-## Выбор столбцов по шаблону {#selecting-columns}
+## Выбор столбцов по шаблону
 
-Начнем с типичного сценария: выбор только тех столбцов, которые содержат `_amount`, из набора данных о такси Нью-Йорка. Вместо того чтобы вручную вводить имя каждого столбца, можно использовать выражение `COLUMNS` с регулярным выражением:
+Начнём с распространённого сценария: выберем только те столбцы из набора данных NYC Taxi, в имени которых содержится `_amount`. Вместо того чтобы вручную вводить каждое имя столбца, мы можем использовать выражение `COLUMNS` с регулярным выражением:
 
 ```sql
 FROM nyc_taxi.trips
@@ -25,12 +25,12 @@ SELECT COLUMNS('.*_amount')
 LIMIT 10;
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7\&run_query=true)
 
-Этот запрос возвращает первые 10 строк, но только для столбцов, имена которых соответствуют шаблону `.*_amount` (любые символы, за которыми следует «\_amount»).
+Этот запрос возвращает первые 10 строк, но только для столбцов, имена которых совпадают с шаблоном `.*_amount` (любые символы, после которых следует «&#95;amount»).
 
 ```text
-    ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐
+    ┌─стоимость_проезда─┬─чаевые─┬─дорожные_сборы─┬─общая_сумма─┐
  1. │           9 │          0 │            0 │          9.8 │
  2. │           9 │          0 │            0 │          9.8 │
  3. │         3.5 │          0 │            0 │          4.8 │
@@ -44,17 +44,17 @@ LIMIT 10;
     └─────────────┴────────────┴──────────────┴──────────────┘
 ```
 
-Предположим, нам также нужно вернуть столбцы, содержащие термины `fee` или `tax`.
-Можно обновить регулярное выражение, чтобы включить их:
+Допустим, мы также хотим возвращать столбцы, которые содержат слова `fee` или `tax`.
+Мы можем обновить регулярное выражение, чтобы учитывать и их:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax')
 FROM nyc_taxi.trips
-ORDER BY rand()
+ORDER BY rand() 
 LIMIT 3;
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7\&run_query=true)
 
 ```text
    ┌─fare_amount─┬─mta_tax─┬─tip_amount─┬─tolls_amount─┬─ehail_fee─┬─total_amount─┐
@@ -65,19 +65,19 @@ LIMIT 3;
 ```
 
 
-## Выбор нескольких шаблонов {#selecting-multiple-patterns}
+## Выбор нескольких шаблонов
 
-В одном запросе можно комбинировать несколько шаблонов столбцов:
+Мы можем комбинировать несколько шаблонов столбцов в одном запросе:
 
 ```sql
-SELECT
+SELECT 
     COLUMNS('.*_amount'),
     COLUMNS('.*_date.*')
 FROM nyc_taxi.trips
 LIMIT 5;
 ```
 
-> [Попробуйте этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL‑песочнице](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7\&run_query=true)
 
 ```text
    ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┬─pickup_date─┬─────pickup_datetime─┬─dropoff_date─┬────dropoff_datetime─┐
@@ -90,17 +90,17 @@ LIMIT 5;
 ```
 
 
-## Применение функций ко всем столбцам {#applying-functions}
+## Применение функций ко всем столбцам
 
-Мы также можем использовать модификатор [`APPLY`](/sql-reference/statements/select) для применения функций ко всем столбцам.
-Например, если нужно найти максимальное значение для каждого из этих столбцов, можно выполнить следующий запрос:
+Мы также можем использовать модификатор [`APPLY`](/sql-reference/statements/select), чтобы применять функции сразу ко всем столбцам.
+Например, если мы хотим найти максимальное значение для каждого из этих столбцов, можно выполнить следующий запрос:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(max)
 FROM nyc_taxi.trips;
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkobWF4KQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL‑песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkobWF4KQpGUk9NIG55Y190YXhpLnRyaXBzOw\&run_query=true)
 
 ```text
    ┌─max(fare_amount)─┬─max(mta_tax)─┬─max(tip_amount)─┬─max(tolls_amount)─┬─max(ehail_fee)─┬─max(total_amount)─┐
@@ -108,14 +108,14 @@ FROM nyc_taxi.trips;
    └──────────────────┴──────────────┴─────────────────┴───────────────────┴────────────────┴───────────────────┘
 ```
 
-Или, возможно, нужно увидеть среднее значение:
+Или, возможно, мы хотим посмотреть на среднее значение:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg)
 FROM nyc_taxi.trips
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
+> [Выполнить этот запрос в SQL‑песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw\&run_query=true)
 
 ```text
    ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
@@ -123,14 +123,14 @@ FROM nyc_taxi.trips
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-Эти значения содержат много десятичных знаков, но, к счастью, это можно исправить, объединив функции в цепочку. В данном случае применим функцию avg, а затем функцию round:
+Эти значения содержат много знаков после запятой, но, к счастью, мы можем это исправить, объединив вызовы функций в цепочку. В данном случае мы применим функцию avg, а затем функцию round:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
 FROM nyc_taxi.trips;
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount))─┬─round(avg(mta_tax))─┬─round(avg(tip_amount))─┬─round(avg(tolls_amount))─┬─round(avg(ehail_fee))─┬─round(avg(total_amount))─┐
@@ -138,7 +138,7 @@ FROM nyc_taxi.trips;
    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
 ```
 
-Однако это округляет средние значения до целых чисел. Если нужно округлить, например, до 2 десятичных знаков, это также возможно. Помимо функций, модификатор `APPLY` принимает лямбда-выражения, что дает гибкость для округления средних значений функцией round до 2 десятичных знаков:
+Но это округляет средние значения до целых чисел. Если мы хотим округлить, скажем, до 2 знаков после запятой, мы тоже можем это сделать. Помимо функций, модификатор `APPLY` принимает лямбда-выражение, что дает нам гибкость и позволяет округлять средние значения до 2 знаков после запятой:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
@@ -146,7 +146,7 @@ FROM nyc_taxi.trips;
 ```
 
 
-> [Попробуйте выполнить этот запрос в SQL Playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL-песочнице](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
@@ -155,23 +155,23 @@ FROM nyc_taxi.trips;
 ```
 
 
-## Замена столбцов {#replacing-columns}
+## Замена столбцов
 
-Пока всё идёт хорошо. Но предположим, что нам нужно изменить одно из значений, оставив остальные без изменений. Например, мы хотим удвоить общую сумму и разделить налог MTA на 1.1. Это можно сделать с помощью модификатора [`REPLACE`](/sql-reference/statements/select), который заменяет указанные столбцы, оставляя остальные без изменений.
+Пока всё хорошо. Но предположим, что нам нужно изменить одно из значений, оставив остальные без изменений. Например, возможно, мы хотим удвоить итоговую сумму и разделить налог MTA на 1.1. Мы можем сделать это с помощью модификатора [`REPLACE`](/sql-reference/statements/select), который заменит один столбец, не затрагивая остальные.
 
 ```sql
-FROM nyc_taxi.trips
-SELECT
+FROM nyc_taxi.trips 
+SELECT 
   COLUMNS('.*_amount|fee|tax')
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  )
+  ) 
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
 
-> [Попробовать этот запрос в SQL playground](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
+> [Попробуйте выполнить этот запрос в SQL‑песочнице](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐
@@ -180,23 +180,23 @@ SELECT
 ```
 
 
-## Исключение столбцов {#excluding-columns}
+## Исключение столбцов
 
-Мы также можем исключить поле с помощью модификатора [`EXCEPT`](/sql-reference/statements/select). Например, чтобы удалить столбец `tolls_amount`, необходимо написать следующий запрос:
+Мы также можем исключить столбец, используя модификатор [`EXCEPT`](/sql-reference/statements/select). Например, чтобы удалить столбец `tolls_amount`, мы напишем следующий запрос:
 
 ```sql
-FROM nyc_taxi.trips
-SELECT
+FROM nyc_taxi.trips 
+SELECT 
   COLUMNS('.*_amount|fee|tax') EXCEPT(tolls_amount)
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  )
+  ) 
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
 
-> [Попробуйте этот запрос в SQL playground](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgRVhDRVBUKHRvbGxzX2Ftb3VudCkKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
+> [Попробуйте этот запрос в SQL‑песочнице](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgRVhDRVBUKHRvbGxzX2Ftb3VudCkKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐

@@ -11,20 +11,22 @@ doc_type: 'reference'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力 | 出力 | 別名 |
-| -- | -- | -- |
-| ✗  | ✔  |    |
+| 入力 | 出力 | エイリアス |
+| -- | -- | ----- |
+| ✗  | ✔  |       |
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`PrettySpace`](./PrettySpace.md)フォーマットとは異なり、[ANSIエスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code)を使用しません。
-これは、ブラウザでこのフォーマットを表示する際や、`watch`コマンドラインユーティリティを使用する際に必要となります。
+[`PrettySpace`](./PrettySpace.md) 形式とは、[ANSI エスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) を使用しない点が異なります。
+これは、この形式をブラウザで表示したり、`watch` コマンドラインユーティリティで使用したりするために必要です。
+
 
 
 ## 使用例 {#example-usage}
 
 
+
 ## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+<PrettyFormatSettings/>

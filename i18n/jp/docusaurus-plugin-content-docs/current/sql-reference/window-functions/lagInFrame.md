@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 # lagInFrame
 
-順序付けされたフレーム内で、現在の行から指定された物理オフセット分だけ前の行で評価された値を返します。
+並び替えられたフレーム内で、現在の行から指定された物理オフセット分だけ前にある行で評価された値を返します。
 
 :::warning
 `lagInFrame` の動作は、標準 SQL の `lag` ウィンドウ関数とは異なります。
-ClickHouse のウィンドウ関数 `lagInFrame` はウィンドウフレームを考慮して動作します。
+ClickHouse のウィンドウ関数 `lagInFrame` は、ウィンドウフレームの定義を厳密に考慮して動作します。
 `lag` と同一の動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
 :::
 
@@ -27,21 +27,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
+ウィンドウ関数の構文の詳細については次を参照してください: [Window Functions - Syntax](./index.md/#syntax)。
 
-**パラメータ**
+**パラメーター**
 
 * `x` — 列名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (任意 - 省略時は `1`)。
-* `default` — 計算対象の行がウィンドウフレームの範囲を超えた場合に返す値。 (任意 - 省略時は列の型のデフォルト値)。
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（省略可能 — 省略時のデフォルトは `1`）
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。（省略可能 — 省略時は列型のデフォルト値）
 
 **戻り値**
 
-* 並び替えられたフレーム内で、現在の行から指定された物理オフセットだけ前にある行で評価された値。
+* 順序付けされたフレーム内で、現在の行から指定された物理オフセットだけ前方にある行において評価される値。
 
 **例**
 
-この例では、特定の株式の過去データを参照し、`lagInFrame` 関数を使用して株価終値の前日比の差分と変化率を計算します。
+この例では、特定の銘柄の過去データを参照し、`lagInFrame` 関数を使用して株価終値の日次差分と変化率を計算します。
 
 クエリ:
 

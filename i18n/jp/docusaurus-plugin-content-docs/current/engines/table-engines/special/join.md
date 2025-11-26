@@ -1,5 +1,5 @@
 ---
-description: 'JOIN 操作で使用するためのオプションの事前構築済みデータ構造。'
+description: 'JOIN 操作で使用するためのオプションの事前構築されたデータ構造。'
 sidebar_label: 'Join'
 sidebar_position: 70
 slug: /engines/table-engines/special/join
@@ -11,15 +11,15 @@ doc_type: 'reference'
 
 # Join テーブルエンジン
 
-[JOIN](/sql-reference/statements/select/join) 演算で使用するための、任意指定可能な事前構築済みデータ構造です。
+[JOIN](/sql-reference/statements/select/join) 演算で使用するための、オプションの事前構築済みデータ構造です。
 
 :::note
-ClickHouse Cloud では、サービスがバージョン 25.4 より前で作成されている場合、`SET compatibility=25.4` を使用して互換性を少なくとも 25.4 に設定する必要があります。
+ClickHouse Cloud で、サービスがバージョン 25.4 より前に作成されている場合は、`SET compatibility=25.4` を実行して、compatibility を少なくとも 25.4 に設定する必要があります。
 :::
 
 
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -29,50 +29,51 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Join(join_strictness, join_type, k1[, k2, ...])
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細については、こちらを参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細については、説明を参照してください。
 
 
 ## エンジンパラメータ {#engine-parameters}
 
 ### `join_strictness` {#join_strictness}
 
-`join_strictness` – [JOIN の厳密性](/sql-reference/statements/select/join#supported-types-of-join)。
+`join_strictness` – [JOIN の厳密度](/sql-reference/statements/select/join#supported-types-of-join)。
 
 ### `join_type` {#join_type}
 
-`join_type` – [JOIN の型](/sql-reference/statements/select/join#supported-types-of-join)。
+`join_type` – [JOIN の種類](/sql-reference/statements/select/join#supported-types-of-join)。
 
 ### キー列 {#key-columns}
 
-`k1[, k2, ...]` – `JOIN` 操作で使用される `USING` 句のキー列。
+`k1[, k2, ...]` – `JOIN` 演算が実行される際の、`USING` 句内のキー列。
 
-`join_strictness` と `join_type` パラメータは引用符なしで入力します。例:`Join(ANY, LEFT, col1)`。これらのパラメータは、テーブルが使用される `JOIN` 操作と一致する必要があります。パラメータが一致しない場合、ClickHouse は例外をスローせず、誤ったデータを返す可能性があります。
+`join_strictness` および `join_type` パラメータは、`Join(ANY, LEFT, col1)` のように引用符なしで指定します。これらは、そのテーブルが使用される `JOIN` 演算と一致していなければなりません。パラメータが一致しない場合でも、ClickHouse は例外をスローせず、誤ったデータを返す可能性があります。
 
 
-## 仕様と推奨事項 {#specifics-and-recommendations}
+
+## 詳細と推奨事項 {#specifics-and-recommendations}
 
 ### データストレージ {#data-storage}
 
-`Join`テーブルのデータは常にRAMに配置されます。テーブルに行を挿入する際、ClickHouseはサーバーの再起動時に復元できるよう、データブロックをディスク上のディレクトリに書き込みます。
+`Join` テーブルのデータは常に RAM 上にあります。テーブルに行を挿入するとき、ClickHouse はデータブロックをディスク上のディレクトリに書き込み、サーバーの再起動時にそれらを復元できるようにします。
 
-サーバーが正常に再起動されなかった場合、ディスク上のデータブロックが失われたり破損したりする可能性があります。この場合、破損したデータを含むファイルを手動で削除する必要がある場合があります。
+サーバーが異常終了したり正しくない手順で再起動された場合、ディスク上のデータブロックが失われたり破損したりすることがあります。この場合、破損したデータを含むファイルを手動で削除する必要が生じることがあります。
 
 ### データの選択と挿入 {#selecting-and-inserting-data}
 
-`INSERT`クエリを使用して`Join`エンジンテーブルにデータを追加できます。テーブルが`ANY`厳密性で作成された場合、重複キーのデータは無視されます。`ALL`厳密性の場合、すべての行が追加されます。
+`INSERT` クエリを使用して、`Join` エンジンのテーブルにデータを追加できます。テーブルが `ANY` 厳密度で作成されている場合、重複キーのデータは無視されます。`ALL` 厳密度では、すべての行が追加されます。
 
-`Join`エンジンテーブルの主な使用例は以下の通りです:
+`Join` エンジンテーブルの主なユースケースは次のとおりです。
 
-- `JOIN`句の右側にテーブルを配置する。
-- [joinGet](/sql-reference/functions/other-functions.md/#joinGet)関数を呼び出す。この関数により、辞書と同じ方法でテーブルからデータを抽出できます。
+- `JOIN` 句の右側にテーブルを配置する。
+- [joinGet](/sql-reference/functions/other-functions.md/#joinGet) 関数を呼び出し、辞書と同じ方法でテーブルからデータを抽出する。
 
 ### データの削除 {#deleting-data}
 
-`Join`エンジンテーブルに対する`ALTER DELETE`クエリは[ミューテーション](/sql-reference/statements/alter/index.md#mutations)として実装されています。`DELETE`ミューテーションはフィルタリングされたデータを読み取り、メモリとディスクのデータを上書きします。
+`Join` エンジンテーブルに対する `ALTER DELETE` クエリは、[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。`DELETE` mutation はフィルタ済みのデータを読み取り、メモリおよびディスク上のデータを上書きします。
 
-### 制限と設定 {#join-limitations-and-settings}
+### 制限事項と設定 {#join-limitations-and-settings}
 
-テーブルを作成する際、以下の設定が適用されます:
+テーブル作成時には、次の設定が適用されます。
 
 #### `join_use_nulls` {#join_use_nulls}
 
@@ -93,30 +94,30 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 #### `join_any_take_last_row` {#join_any_take_last_row}
 
 [join_any_take_last_row](/operations/settings/settings.md/#join_any_take_last_row)
-
 #### `join_use_nulls` {#join_use_nulls-1}
 
 #### Persistent {#persistent}
 
-Joinおよび[Set](/engines/table-engines/special/set.md)テーブルエンジンの永続性を無効にします。
+Join および [Set](/engines/table-engines/special/set.md) テーブルエンジンの永続化を無効にします。
 
-I/Oオーバーヘッドを削減します。パフォーマンスを追求し、永続性を必要としないシナリオに適しています。
+I/O オーバーヘッドを削減します。性能を重視し、永続化を必要としないシナリオに適しています。
 
-可能な値:
+設定可能な値:
 
 - 1 — 有効。
 - 0 — 無効。
 
 デフォルト値: `1`。
 
-`Join`エンジンテーブルは`GLOBAL JOIN`操作では使用できません。
+`Join` エンジンテーブルは `GLOBAL JOIN` 操作では使用できません。
 
-`Join`エンジンでは、`CREATE TABLE`文で[join_use_nulls](/operations/settings/settings.md/#join_use_nulls)設定を指定できます。[SELECT](/sql-reference/statements/select/index.md)クエリは同じ`join_use_nulls`値を持つ必要があります。
+`Join` エンジンでは、`CREATE TABLE` 文内で [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) 設定を指定できます。[SELECT](/sql-reference/statements/select/index.md) クエリでも同じ `join_use_nulls` の値を使用する必要があります。
 
 
-## 使用例 {#example}
 
-左側のテーブルを作成します:
+## 使用例
+
+左側テーブルの作成：
 
 ```sql
 CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
@@ -126,7 +127,7 @@ CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
 INSERT INTO id_val VALUES (1,11)(2,12)(3,13);
 ```
 
-右側の`Join`テーブルを作成します:
+右側の `Join` テーブルを作成する：
 
 ```sql
 CREATE TABLE id_val_join(`id` UInt32, `val` UInt8) ENGINE = Join(ANY, LEFT, id);
@@ -136,7 +137,7 @@ CREATE TABLE id_val_join(`id` UInt32, `val` UInt8) ENGINE = Join(ANY, LEFT, id);
 INSERT INTO id_val_join VALUES (1,21)(1,22)(3,23);
 ```
 
-テーブルを結合します:
+テーブル結合：
 
 ```sql
 SELECT * FROM id_val ANY LEFT JOIN id_val_join USING (id);
@@ -150,7 +151,7 @@ SELECT * FROM id_val ANY LEFT JOIN id_val_join USING (id);
 └────┴─────┴─────────────────┘
 ```
 
-別の方法として、結合キーの値を指定して`Join`テーブルからデータを取得することもできます:
+代わりに、結合キーの値を指定して `Join` テーブルからデータを取得することもできます。
 
 ```sql
 SELECT joinGet('id_val_join', 'val', toUInt32(1));
@@ -162,7 +163,7 @@ SELECT joinGet('id_val_join', 'val', toUInt32(1));
 └────────────────────────────────────────────┘
 ```
 
-`Join`テーブルから行を削除します:
+`Join` テーブルから行を削除する：
 
 ```sql
 ALTER TABLE id_val_join DELETE WHERE id = 3;

@@ -12,4 +12,4 @@ doc_type: 'reference'
 categoricalInformationValue(category1, category2, ..., tag)
 ```
 
-この結果は、離散（カテゴリ）型の特徴量 `[category1, category2, ...]` が、`tag` の値を予測するための学習モデルにどのように寄与しているかを示します。
+この結果は、離散（カテゴリカル）特徴量 `[category1, category2, ...]` が、`tag` の値を予測する学習モデルにどのように寄与しているかを示します。

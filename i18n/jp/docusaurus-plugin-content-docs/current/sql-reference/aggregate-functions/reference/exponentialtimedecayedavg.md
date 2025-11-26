@@ -1,5 +1,5 @@
 ---
-description: '時系列データにおける時点 `t` の値の指数平滑化された重み付き移動平均を返します。'
+description: '時点 `t` における時系列データの値に対する、指数平滑化された加重移動平均を返します。'
 sidebar_position: 133
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg
 title: 'exponentialTimeDecayedAvg'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
+## exponentialTimeDecayedAvg
 
-時系列の値について、時点 `t` における指数平滑化加重移動平均を返します。
+時刻 `t` における時系列データの値に対する、指数平滑化された加重移動平均を返します。
 
 **構文**
 
@@ -20,16 +20,16 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **引数**
 
-- `v` — 値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)。
-- `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、または [DateTime64](../../data-types/datetime64.md)。
+* `v` — 値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 半減期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半減期の期間。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- 時点 `t` における指数平滑化加重移動平均を返します。[Float64](../../data-types/float.md)。
+* 時刻 `t` における指数平滑化された加重移動平均を返します。[Float64](../../data-types/float.md)。
 
 **例**
 
@@ -51,7 +51,7 @@ FROM
     );
 ```
 
-結果:
+レスポンス:
 
 
 ```sql

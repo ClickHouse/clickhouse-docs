@@ -1,5 +1,5 @@
 ---
-description: '计算序列的峰度。'
+description: '计算数据序列的峰度。'
 sidebar_position: 157
 slug: /sql-reference/aggregate-functions/reference/kurtpop
 title: 'kurtPop'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # kurtPop
 
-计算序列的[峰度](https://en.wikipedia.org/wiki/Kurtosis)。
+计算一个序列的[峰度](https://en.wikipedia.org/wiki/Kurtosis)。
 
 ```sql
 kurtPop(expr)
@@ -20,7 +20,7 @@ kurtPop(expr)
 
 **返回值**
 
-给定分布的峰度值。类型为 [Float64](../../../sql-reference/data-types/float.md)
+给定分布的峰度。类型 — [Float64](../../../sql-reference/data-types/float.md)
 
 **示例**
 

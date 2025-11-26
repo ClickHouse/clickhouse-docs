@@ -1,5 +1,5 @@
 ---
-title: 'Экспорт JSON'
+title: 'Экспорт данных JSON'
 slug: /integrations/data-formats/json/exporting
 description: 'Как экспортировать данные в формате JSON из ClickHouse'
 keywords: ['json', 'clickhouse', 'formats', 'exporting']
@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 # Экспорт JSON
 
-Почти любой формат JSON, используемый для импорта, может также использоваться для экспорта. Наиболее распространён [`JSONEachRow`](/interfaces/formats/JSONEachRow):
+Почти любой формат JSON, используемый для импорта, может использоваться и для экспорта. Наиболее популярный — [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -22,7 +22,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-Или мы можем использовать [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow), чтобы сэкономить место на диске, пропуская имена столбцов:
+Или мы можем использовать [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow), чтобы сэкономить место на диске за счёт опускания имён столбцов:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -35,9 +35,9 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 ```
 
 
-## Переопределение типов данных как строк {#overriding-data-types-as-strings}
+## Переопределение типов данных строковым типом
 
-ClickHouse соблюдает типы данных и экспортирует JSON в соответствии со стандартами. Однако в случаях, когда необходимо представить все значения в виде строк, можно использовать формат [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow):
+ClickHouse строго следует типам данных и экспортирует JSON в соответствии со стандартами. В случаях, когда требуется, чтобы все значения были закодированы в виде строк, можно использовать формат [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -49,7 +49,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-Теперь числовой столбец `hits` представлен в виде строки. Экспорт в виде строк поддерживается для всех форматов JSON\*, см. форматы `JSONStrings\*` и `JSONCompactStrings\*`:
+Теперь числовой столбец `hits` представлен в виде строки. Экспорт в виде строк поддерживается для всех форматов семейства JSON*, см. форматы `JSONStrings\*` и `JSONCompactStrings\*`:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -62,9 +62,9 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 ```
 
 
-## Экспорт метаданных вместе с данными {#exporting-metadata-together-with-data}
+## Экспорт метаданных вместе с данными
 
-Стандартный формат [JSON](/interfaces/formats/JSON), широко используемый в приложениях, экспортирует не только результирующие данные, но и типы столбцов, а также статистику выполнения запроса:
+Формат [JSON](/interfaces/formats/JSON), распространённый в приложениях, экспортирует не только результирующие данные, но и типы столбцов, а также статистику запроса:
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -102,7 +102,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-Формат [JSONCompact](/interfaces/formats/JSONCompact) выводит те же метаданные, но использует компактное представление для самих данных:
+Формат [JSONCompact](/interfaces/formats/JSONCompact) выводит те же метаданные, но использует более компактный формат самих данных:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -137,12 +137,12 @@ SELECT * FROM sometable FORMAT JSONCompact
 }
 ```
 
-Для кодирования всех значений в виде строк используйте варианты [`JSONStrings`](/interfaces/formats/JSONStrings) или [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings).
+Рассмотрите использование вариантов [`JSONStrings`](/interfaces/formats/JSONStrings) или [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) для кодирования всех значений в виде строк.
 
 
-## Компактный способ экспорта данных и структуры JSON {#compact-way-to-export-json-data-and-structure}
+## Компактный способ экспорта данных и их структуры в формате JSON
 
-Более эффективный способ экспортировать данные вместе с их структурой — использовать формат [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes):
+Более эффективный способ получить данные вместе с их структурой — использовать формат [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
@@ -156,32 +156,32 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-При использовании этого формата данные выводятся в компактном JSON-формате с двумя заголовочными строками, содержащими имена и типы столбцов. Этот формат можно использовать для загрузки данных в другой экземпляр ClickHouse (или другие приложения).
+Будет использован компактный формат JSON, в начале которого будут две строки заголовка с именами столбцов и их типами. Затем этот формат можно использовать для приёма данных в другой экземпляр ClickHouse (или другие приложения).
 
 
-## Экспорт JSON в файл {#exporting-json-to-a-file}
+## Экспорт JSON в файл
 
-Для сохранения экспортируемых данных JSON в файл можно использовать конструкцию [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
+Чтобы сохранить экспортируемые данные в формате JSON в файл, можно использовать клаузу [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 ```
 
 ```response
-36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
+Получено 36838935 строк. Время выполнения: 2.220 сек. Обработано 36.84 млн строк, 1.27 ГБ (16.60 млн строк/сек., 572.47 МБ/сек.)
 ```
 
-ClickHouse потребовалось всего 2 секунды для экспорта почти 37 миллионов записей в JSON-файл. Также можно выполнить экспорт с использованием конструкции `COMPRESSION` для включения сжатия на лету:
+ClickHouse потребовалось всего 2 секунды, чтобы экспортировать почти 37 миллионов записей в JSON-файл. Мы также можем выполнить экспорт, используя оператор `COMPRESSION`, чтобы включить сжатие на лету:
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 ```
 
 ```response
-36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
+Выбрано 36838935 строк. Время выполнения: 22.680 сек. Обработано 36.84 млн строк, 1.27 ГБ (1.62 млн строк/с., 56.02 МБ/с.)
 ```
 
-Это занимает больше времени, но создаёт значительно меньший сжатый файл:
+Требует больше времени на выполнение, но создаёт значительно меньший сжатый файл:
 
 ```bash
 2.2G    out.json

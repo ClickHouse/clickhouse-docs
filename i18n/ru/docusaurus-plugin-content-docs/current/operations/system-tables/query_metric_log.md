@@ -1,6 +1,5 @@
 ---
-description: 'Системная таблица, содержащая историю значений использования памяти и метрик из таблицы
-  `system.events` для отдельных запросов, периодически сохраняемую на диск.'
+description: 'Системная таблица, содержащая историю значений использования памяти и метрик из таблицы `system.events` для отдельных запросов, периодически записываемую на диск.'
 keywords: ['системная таблица', 'query_metric_log']
 slug: /operations/system-tables/query_metric_log
 title: 'system.query_metric_log'
@@ -14,17 +13,17 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-Содержит историю значений по памяти и другим метрикам из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
+Содержит историю значений использования памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
 
-После запуска запроса данные собираются с интервалом в `query_metric_log_interval` миллисекунд (по умолчанию 1000). Данные также собираются при завершении запроса, если он выполняется дольше, чем `query_metric_log_interval`.
+После запуска запроса данные собираются с периодичностью `query_metric_log_interval` миллисекунд (по умолчанию — 1000). Данные также собираются при завершении запроса, если он выполняется дольше, чем `query_metric_log_interval`.
 
 Столбцы:
 
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с точностью до микросекунд.
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, выполняющего запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время события с точностью до микросекунд.
 
 **Пример**
 
@@ -52,9 +51,9 @@ ProfileEvent_FailedSelectQuery:                                  0
 
 **См. также**
 
-* [настройка query&#95;metric&#95;log](../../operations/server-configuration-parameters/settings.md#query_metric_log) — включение и отключение параметра.
+* [параметр query&#95;metric&#95;log](../../operations/server-configuration-parameters/settings.md#query_metric_log) — включение и выключение параметра.
 * [query&#95;metric&#95;log&#95;interval](../../operations/settings/settings.md#query_metric_log_interval)
-* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — содержит периодически рассчитываемые метрики.
-* [system.events](/operations/system-tables/events) — содержит набор произошедших событий.
-* [system.metrics](../../operations/system-tables/metrics.md) — содержит метрики, рассчитываемые в режиме реального времени.
-* [Monitoring](../../operations/monitoring.md) — основные концепции мониторинга ClickHouse.
+* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — содержит периодически вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — содержит ряд произошедших событий.
+* [system.metrics](../../operations/system-tables/metrics.md) — содержит мгновенно вычисляемые метрики.
+* [Мониторинг](../../operations/monitoring.md) — основные принципы мониторинга ClickHouse.

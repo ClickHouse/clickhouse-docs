@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Часто задаваемые вопросы'
-description: 'Часто задаваемые вопросы по ClickPipes для объектного хранилища'
+description: 'Часто задаваемые вопросы о ClickPipes для объектного хранилища'
 slug: /integrations/clickpipes/object-storage/faq
 sidebar_position: 1
 title: 'Часто задаваемые вопросы'
@@ -12,18 +12,18 @@ integration:
 
 
 
-## Часто задаваемые вопросы {#faq}
+## FAQ {#faq}
 
 <details>
-<summary>Поддерживает ли ClickPipes корзины GCS с префиксом `gs://`?</summary>
+<summary>Поддерживает ли ClickPipes GCS-бакеты с префиксом `gs://`?</summary>
 
-Нет. В целях обеспечения совместимости необходимо заменить префикс корзины `gs://` на `https://storage.googleapis.com/`.
+Нет. Для обеспечения совместимости мы просим заменить префикс вашего бакета `gs://` на `https://storage.googleapis.com/`.
 
 </details>
 
 <details>
-<summary>Какие разрешения требуются для публичной корзины GCS?</summary>
+<summary>Какие разрешения требуются для публичного GCS-бакета?</summary>
 
-Для `allUsers` требуется назначение соответствующей роли. Роль `roles/storage.objectViewer` должна быть предоставлена на уровне корзины. Эта роль предоставляет разрешение `storage.objects.list`, которое позволяет ClickPipes получать список всех объектов в корзине, что необходимо для подключения и приёма данных. Эта роль также включает разрешение `storage.objects.get`, которое требуется для чтения или скачивания отдельных объектов из корзины. Дополнительную информацию см. в документации [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles).
+Для `allUsers` необходимо назначить соответствующую роль. Роль `roles/storage.objectViewer` должна быть назначена на уровне бакета. Эта роль даёт разрешение `storage.objects.list`, которое позволяет ClickPipes перечислять все объекты в бакете, что необходимо для первичного подключения и ингестии. В эту роль также входит разрешение `storage.objects.get`, которое необходимо для чтения или загрузки отдельных объектов в бакете. См. раздел [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) для получения дополнительной информации.
 
 </details>

@@ -1,28 +1,29 @@
 ---
 alias: ['JSONLines', 'NDJSON']
-description: 'JSONEachRow フォーマットに関するドキュメント'
+description: 'JSONEachRow 形式のドキュメント'
 keywords: ['JSONEachRow']
 slug: /interfaces/formats/JSONEachRow
 title: 'JSONEachRow'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | 別名                  |
+| Input | Output | 別名                  |
 |-------|--------|-----------------------|
 | ✔     | ✔      | `JSONLines`, `NDJSON` |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-この形式では、ClickHouseは各行を改行で区切られた個別のJSONオブジェクトとして出力します。
+このフォーマットでは、ClickHouse は各行を個別の改行区切り JSON オブジェクトとして出力します。
 
 
-## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+## 使用例
 
-以下のデータを含む`football.json`という名前のJSONファイルを使用します:
+### データの挿入
+
+次のデータを含む JSON ファイル `football.json` を用意します。
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -44,15 +45,15 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-データを挿入します:
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`JSONEachRow`形式を使用してデータを読み取ります:
+`JSONEachRow` 形式を使用してデータを読み込みます：
 
 ```sql
 SELECT *
@@ -60,7 +61,7 @@ FROM football
 FORMAT JSONEachRow
 ```
 
-出力はJSON形式になります:
+出力は JSON 形式です:
 
 
 ```json
@@ -83,7 +84,7 @@ FORMAT JSONEachRow
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-名前が不明なデータカラムのインポートは、設定 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が 1 に設定されている場合はスキップされます。
+[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定を 1 に設定すると、名前が不明なデータ列のインポートはスキップされます。
 
 
 ## フォーマット設定 {#format-settings}

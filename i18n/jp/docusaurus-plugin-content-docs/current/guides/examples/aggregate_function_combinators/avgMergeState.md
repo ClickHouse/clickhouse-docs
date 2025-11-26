@@ -14,16 +14,21 @@ import TabItem from '@theme/TabItem';
 # avgMergeState {#avgMergeState}
 
 
+
 ## 説明 {#description}
 
-[`MergeState`](/sql-reference/aggregate-functions/combinators#-state)コンビネータを[`avg`](/sql-reference/aggregate-functions/reference/avg)関数に適用することで、`AverageFunction(avg, T)`型の部分集約状態をマージし、新しい中間集約状態を返すことができます。
+[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) コンビネーターは
+[`avg`](/sql-reference/aggregate-functions/reference/avg)
+関数に適用することで、型 `AverageFunction(avg, T)` の部分集約状態を結合し、
+新しい中間集約状態を返すことができます。
 
 
-## 使用例 {#example-usage}
 
-`MergeState`コンビネータは、事前集計された状態を結合し、さらなる処理のために状態として保持する(最終化せずに)多段階集計シナリオで特に有用です。これを説明するために、個々のサーバーパフォーマンスメトリクスを複数レベルにわたる階層的な集計に変換する例を見ていきます:サーバーレベル → リージョンレベル → データセンターレベル。
+## 使用例
 
-まず、生データを格納するテーブルを作成します:
+`MergeState` コンビネータは、事前集計された状態を結合し、それらを（最終化せずに）後続の処理のための「状態」として保持しておきたい、多段階集計シナリオで特に有用です。例として、個々のサーバー性能メトリクスを、複数レベルにわたる階層的な集計に変換するケースを見ていきます。サーバーレベル → リージョンレベル → データセンターレベルという流れになります。
+
+まずは生データを保存するためのテーブルを作成します。
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -38,7 +43,8 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-次に、サーバーレベルの集計先テーブルを作成し、それに対する挿入トリガーとして機能するインクリメンタルマテリアライズドビューを定義します:
+サーバーレベルの集約用ターゲットテーブルを作成し、それに対する INSERT トリガーとして機能する
+インクリメンタルなマテリアライズドビューを定義します。
 
 ```sql
 CREATE TABLE server_performance
@@ -62,7 +68,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-リージョンレベルとデータセンターレベルについても同様に行います:
+リージョンレベルとデータセンターレベルについても同様に実施します。
 
 ```sql
 CREATE TABLE region_performance
@@ -102,7 +108,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-次に、サンプルの生データをソーステーブルに挿入します:
+次に、ソーステーブルにサンプルの生データを挿入します。
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -115,7 +121,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-各レベルに対して3つのクエリを記述します:
+各レベルごとに、3つのクエリを作成します。
 
 
 <Tabs>
@@ -181,7 +187,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
   </TabItem>
 </Tabs>
 
-さらにデータを挿入することもできます。
+さらにデータを挿入してみましょう:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -190,7 +196,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-データセンター単位のパフォーマンスをもう一度確認してみましょう。集計チェーン全体が自動的に更新されていることに注目してください。
+データセンターレベルのパフォーマンスをもう一度確認しましょう。集約チェーン全体が自動的に更新されていることに注目してください。
 
 ```sql
 SELECT
@@ -210,7 +216,6 @@ ORDER BY datacenter;
 
 
 ## 関連項目 {#see-also}
-
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

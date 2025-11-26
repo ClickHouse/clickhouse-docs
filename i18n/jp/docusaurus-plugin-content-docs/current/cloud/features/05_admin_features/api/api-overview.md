@@ -3,9 +3,9 @@ sidebar_label: '概要'
 sidebar_position: 1
 title: 'ClickHouse Cloud API'
 slug: /cloud/manage/api/api-overview
-description: 'ClickHouse Cloud API について学ぶ'
+description: 'ClickHouse Cloud API の概要'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', 'API の概要', 'クラウド API', 'REST API', 'プログラムによるアクセス']
+keywords: ['ClickHouse Cloud', 'API 概要', 'クラウド API', 'REST API', 'プログラムによるアクセス']
 ---
 
 
@@ -16,50 +16,57 @@ keywords: ['ClickHouse Cloud', 'API の概要', 'クラウド API', 'REST API', 
 
 ## 概要 {#overview}
 
-ClickHouse Cloud APIは、開発者がClickHouse Cloud上の組織とサービスを簡単に管理できるように設計されたREST APIです。Cloud APIを使用することで、サービスの作成と管理、APIキーのプロビジョニング、組織内のメンバーの追加や削除などが可能です。
+ClickHouse Cloud API は、開発者が ClickHouse Cloud 上の組織やサービスを簡単に管理できるように設計された REST API です。Cloud API を使用すると、サービスの作成および管理、API キーのプロビジョニング、組織メンバーの追加や削除などを行うことができます。
 
-[最初のAPIキーを作成し、ClickHouse Cloud APIの使用を開始する方法について説明します。](/cloud/manage/openapi)
+[最初の API キーを作成し、ClickHouse Cloud API の利用を開始する方法はこちら](/cloud/manage/openapi)
 
 
-## Swagger (OpenAPI) エンドポイントとUI {#swagger-openapi-endpoint-and-ui}
 
-ClickHouse Cloud APIは、クライアント側での予測可能な利用を実現するため、オープンソースの[OpenAPI仕様](https://www.openapis.org/)に基づいて構築されています。ClickHouse Cloud APIドキュメントをプログラムで利用する必要がある場合は、https://api.clickhouse.cloud/v1 を通じてJSONベースのSwaggerエンドポイントを提供しています。また、[Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger)からAPIドキュメントを参照することもできます。
+## Swagger (OpenAPI) エンドポイントと UI {#swagger-openapi-endpoint-and-ui}
 
-:::note
-組織が[新しい料金プラン](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false)のいずれかに移行済みで、OpenAPIを使用している場合は、サービス作成の`POST`リクエストから`tier`フィールドを削除する必要があります。
+ClickHouse Cloud API はオープンソースの [OpenAPI 仕様](https://www.openapis.org/) に基づいて構築されており、クライアント側から予測可能な形で利用できるようになっています。ClickHouse Cloud API のドキュメントをプログラムから利用する必要がある場合は、JSON ベースの Swagger エンドポイントを https://api.clickhouse.cloud/v1 で提供しています。API ドキュメントは [Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger) からも参照できます。
 
-サービス階層が廃止されたため、`tier`フィールドはサービスオブジェクトから削除されました。  
-これにより、`POST`、`GET`、`PATCH`サービスリクエストで返されるオブジェクトが影響を受けます。そのため、これらのAPIを利用するコードは、この変更に対応するための調整が必要になる場合があります。
+:::note 
+組織が [新しい料金プラン](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false) のいずれかに移行済みで、OpenAPI を使用している場合、サービス作成時の `POST` リクエストから `tier` フィールドを削除する必要があります。
+
+サービスオブジェクトからは、サービスティアを廃止したため `tier` フィールドが削除されています。  
+これは、`POST`、`GET`、`PATCH` の各サービスリクエストによって返されるオブジェクトに影響します。そのため、これらの API を利用するコードは、この変更に対応できるように調整が必要になる場合があります。
 :::
+
 
 
 ## レート制限 {#rate-limits}
 
-開発者は組織あたり100個のAPIキーまでに制限されています。各APIキーには10秒間のウィンドウで10リクエストの制限があります。組織のAPIキー数または10秒間のウィンドウあたりのリクエスト数の上限を引き上げたい場合は、support@clickhouse.comまでお問い合わせください
+開発者は、1 つの組織につき最大 100 個まで API キーを作成できます。各 API キーは、10 秒間に最大 10 件までリクエストを送信できます。組織ごとに許可される API キー数や 10 秒間あたりのリクエスト数の上限を引き上げたい場合は、support@clickhouse.com までお問い合わせください。
+
 
 
 ## Terraform provider {#terraform-provider}
 
-公式のClickHouse Terraform Providerを使用すると、[Infrastructure as Code](https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac)を活用して、予測可能でバージョン管理された構成を作成し、デプロイメント時のエラーを大幅に削減できます。
+公式の ClickHouse Terraform Provider を使用すると、[Infrastructure as Code](https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac)
+を用いて、デプロイメント時のエラー発生を大幅に減らせる、予測可能でバージョン管理された構成を作成できます。
 
-Terraform providerのドキュメントは[Terraformレジストリ](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)で確認できます。
+Terraform Provider のドキュメントは、[Terraform registry](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) で参照できます。
 
-ClickHouse Terraform Providerへの貢献をご希望の場合は、[GitHubリポジトリ](https://github.com/ClickHouse/terraform-provider-clickhouse)でソースコードを確認できます。
+ClickHouse Terraform Provider にコントリビュートしたい場合は、[GitHub リポジトリ内のソースコード](https://github.com/ClickHouse/terraform-provider-clickhouse)を参照してください。
 
-:::note
-組織が[新しい料金プラン](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false)のいずれかに移行された場合、[ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)のバージョン2.0.0以上を使用する必要があります。このアップグレードは、サービスの`tier`属性の変更に対応するために必要です。料金プランの移行後、`tier`フィールドは受け付けられなくなるため、これへの参照を削除する必要があります。
+:::note 
+ご利用の組織が[新しい料金プラン](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false)のいずれかに移行済みの場合、[ClickHouse Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) のバージョン 2.0.0 以上を使用する必要があります。このアップグレードは、サービスの `tier` 属性の変更を処理するために必須です。料金プラン移行後は `tier` フィールドが受け付けられなくなり、その参照は削除する必要があります。
 
-また、サービスリソースのプロパティとして`num_replicas`フィールドを指定できるようになります。
+また、サービスリソースのプロパティとして `num_replicas` フィールドを指定できるようになります。
 :::
 
 
-## TerraformとOpenAPIの新価格体系：レプリカ設定の説明 {#terraform-and-openapi-new-pricing---replica-settings-explained}
 
-各サービスが作成される際のレプリカ数は、ScaleおよびEnterpriseティアではデフォルトで3、Basicティアではデフォルトで1に設定されます。
-ScaleおよびEnterpriseティアでは、サービス作成リクエストに`numReplicas`フィールドを指定することで、この値を調整できます。
-`numReplicas`フィールドの値は、ウェアハウス内の最初のサービスでは2から20の範囲で指定する必要があります。既存のウェアハウスに作成されるサービスでは、レプリカ数を1まで減らすことができます。
+## Terraform と OpenAPI の新料金: レプリカ設定の説明 {#terraform-and-openapi-new-pricing---replica-settings-explained}
+
+各サービス作成時のデフォルトのレプリカ数は、Scale および Enterprise ティアでは 3、Basic ティアでは 1 です。
+Scale および Enterprise ティアでは、サービス作成リクエストで `numReplicas` フィールドを指定することで、この値を調整できます。
+`numReplicas` フィールドの値は、ウェアハウス内の最初のサービスについては 2 から 20 の範囲である必要があります。既存のウェアハウスに作成されるサービスについては、レプリカ数を 1 まで下げることができます。
+
 
 
 ## サポート {#support}
 
-迅速なサポートを受けるには、まず[Slackチャンネル](https://clickhouse.com/slack)にアクセスすることをお勧めします。APIとその機能に関する追加のヘルプや詳細情報が必要な場合は、https://console.clickhouse.cloud/support からClickHouseサポートまでお問い合わせください。
+迅速にサポートを受けるには、まずは [Slack チャンネル](https://clickhouse.com/slack) をご利用いただくことをおすすめします。  
+API とその機能について、さらにサポートが必要な場合や詳細情報を確認したい場合は、https://console.clickhouse.cloud/support から ClickHouse Support までお問い合わせください。

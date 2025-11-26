@@ -1,6 +1,6 @@
 ---
 description: '包含 Unicode 字符及其属性的系统表。'
-keywords: ['系统表', 'Unicode']
+keywords: ['系统表', 'unicode']
 slug: /operations/system-tables/unicode
 title: 'system.unicode'
 doc_type: 'reference'
@@ -8,34 +8,34 @@ doc_type: 'reference'
 
 # system.unicode
 
-`system.unicode` 表是一个虚拟表，用于提供 Unicode 字符及其属性的信息（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)）。该表是按需动态生成的。
+`system.unicode` 表是一个虚拟表，用于提供关于 Unicode 字符及其属性的信息（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)）。该表是动态生成的。
 
 Columns
 
 :::note
-ICU 文档中 Unicode 码位的属性名称已被转换为 snake&#95;case（蛇形命名）。
+ICU 文档中 Unicode 码点的属性名称会被转换为 snake&#95;case。
 :::
 
-* `code_point` ([String](../../sql-reference/data-types/string.md)) — 码位的 UTF-8 表示。
-* `code_point_value` ([Int32](../../sql-reference/data-types/int-uint.md)) — 码位的数值。
-* `notation` ([String](../../sql-reference/data-types/string.md)) — 码位的 Unicode 表示法。
-* Binary Properties ([UInt8](../../sql-reference/data-types/int-uint.md)) - 码位的二进制属性。
+* `code_point` ([String](../../sql-reference/data-types/string.md)) — 码点的 UTF-8 表示。
+* `code_point_value` ([Int32](../../sql-reference/data-types/int-uint.md)) — 码点的数值。
+* `notation` ([String](../../sql-reference/data-types/string.md)) — 码点的 Unicode 表示形式。
+* Binary Properties ([UInt8](../../sql-reference/data-types/int-uint.md)) - 码点的二值属性。
   * `alphabetic`, `ascii_hex_digit`, `case_ignorable`...
-* Enumerated Properties ([Int32](../../sql-reference/data-types/int-uint.md)) - 码位的枚举属性。
+* Enumerated Properties ([Int32](../../sql-reference/data-types/int-uint.md)) - 码点的枚举属性。
   * `bidi_class`, `bidi_paired_bracket_type`, `block`...
-* String Properties ([String](../../sql-reference/data-types/string.md)) - 码位的字符串属性（ASCII 字符串、Unicode 字符串或码位）
+* String Properties ([String](../../sql-reference/data-types/string.md)) - 码点的字符串属性（ASCII 字符串、Unicode 字符串或码点）
   * `case_folding`, `decomposition_mapping`, `name`...
 
 :::note
-映射规则稍有特殊之处，参见 ICU 文档。例如，simple&#95;uppercase&#95;mapping 和 uppercase&#95;mapping 并不完全相同。但未实现任何特定语言的映射（例如，在土耳其语中，i 的大写是 &quot;İ&quot; (U+0130)）。
+映射规则有一些特殊之处，详见 ICU 文档。例如，simple&#95;uppercase&#95;mapping 和 uppercase&#95;mapping 并不完全相同。但未实现任何与语言相关的映射（例如在土耳其语中，i 的大写是 &quot;İ&quot; (U+0130)）。
 :::
 
-* `numeric_value` ([Float64](../../sql-reference/data-types/float.md)) - 码位的数值。
-* `script_extensions` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - 码位的脚本扩展（script extensions）。
-* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - 码位的标识符类型。
-* `general_category_mask` ([Int32](../../sql-reference/data-types/int-uint.md)) - 码位的通用类别掩码。
+* `numeric_value` ([Float64](../../sql-reference/data-types/float.md)) - 码点的数值。
+* `script_extensions` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - 码点的书写系统扩展（script extensions）。
+* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - 码点的标识符类型。
+* `general_category_mask` ([Int32](../../sql-reference/data-types/int-uint.md)) - 码点的一般类别掩码。
 
-**Example**
+**示例**
 
 ```sql
 SELECT * FROM system.unicode WHERE code_point = 'a' LIMIT 1;

@@ -1,26 +1,27 @@
 ---
 alias: ['MD']
-description: 'Markdown 形式に関するドキュメント'
+description: 'Markdown 形式のドキュメント'
 keywords: ['Markdown']
 slug: /interfaces/formats/Markdown
 title: 'Markdown'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | 別名 |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✗     | ✔      | `MD`  |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-[Markdown](https://en.wikipedia.org/wiki/Markdown)形式を使用して結果をエクスポートし、`.md`ファイルに貼り付け可能な出力を生成できます:
+結果を [Markdown](https://en.wikipedia.org/wiki/Markdown) 形式でエクスポートし、`.md` ファイルにそのまま貼り付けられる出力を生成できます。
 
-Markdownテーブルは自動的に生成され、GitHubなどのMarkdown対応プラットフォームで使用できます。この形式は出力にのみ使用されます。
+Markdown 形式のテーブルは自動的に生成され、GitHub などの Markdown 対応プラットフォームで利用できます。この形式は出力専用です。
 
 
-## 使用例 {#example-usage}
+
+## 使用例
 
 ```sql
 SELECT
@@ -41,4 +42,4 @@ FORMAT Markdown
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

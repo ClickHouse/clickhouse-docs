@@ -1,5 +1,5 @@
 ---
-description: '0 から始まるほとんどすべての自然数を格納する、`number` という名前の単一の UInt64 型列を持つシステムテーブル。'
+description: '0 から始まるほとんどの自然数を格納する、`number` という名前の単一の UInt64 型列を持つシステムテーブル。'
 keywords: ['システムテーブル', 'numbers']
 slug: /operations/system-tables/numbers
 title: 'system.numbers'
@@ -8,11 +8,11 @@ doc_type: 'reference'
 
 # system.numbers
 
-このテーブルには、`number` という名前の単一の UInt64 列があり、ゼロから始まるほとんどすべての自然数が含まれています。
+このテーブルには、`number` という名前の単一の UInt64 列があり、0 から始まるほぼすべての自然数が含まれます。
 
-このテーブルは、テスト用途や総当たり検索を行う必要がある場合に使用できます。
+このテーブルはテスト用途や、総当たり検索を行う必要がある場合に使用できます。
 
-このテーブルに対する読み取り処理は並列化されません。
+このテーブルからの読み取りは並列化されません。
 
 **例**
 
@@ -34,10 +34,10 @@ SELECT * FROM system.numbers LIMIT 10;
 │      9 │
 └────────┘
 
-10行のセット。経過時間: 0.001秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```
 
-述語を指定して出力を制限することもできます。
+出力を条件で絞り込むこともできます。
 
 ```sql
 SELECT * FROM system.numbers < 10;
@@ -57,5 +57,5 @@ SELECT * FROM system.numbers < 10;
 │      9 │
 └────────┘
 
-10行のセット。経過時間: 0.001秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```

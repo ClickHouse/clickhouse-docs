@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет ковариацию для генеральной совокупности'
+description: 'Вычисляет значение ковариации генеральной совокупности'
 sidebar_position: 123
 slug: /sql-reference/aggregate-functions/reference/covarpopstable
 title: 'covarPopStable'
@@ -16,7 +16,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-Функция аналогична [covarPop](../reference/covarpop.md), но использует численно устойчивый алгоритм. В результате `covarPopStable` работает медленнее, чем `covarPop`, но обеспечивает более точный результат.
+Функция аналогична [covarPop](../reference/covarpop.md), но использует численно устойчивый алгоритм. В результате `covarPopStable` работает медленнее `covarPop`, но обеспечивает более точный результат.
 
 **Синтаксис**
 

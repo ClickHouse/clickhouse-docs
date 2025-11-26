@@ -1,5 +1,5 @@
 ---
-description: '计算 Pearson 相关系数。'
+description: '计算皮尔逊相关系数。'
 sidebar_position: 117
 slug: /sql-reference/aggregate-functions/reference/corr
 title: 'corr'
@@ -17,7 +17,7 @@ $$
 $$
 
 <br />
-:::note 此函数使用数值不稳定的算法。如果您需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)进行计算,请使用 [`corrStable`](../reference/corrstable.md) 函数。该函数速度较慢,但能提供更准确的结果。 :::
+:::note 此函数使用数值不稳定的算法。如果计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`corrStable`](../reference/corrstable.md) 函数。该函数速度较慢，但能提供更准确的结果。 :::
 
 **语法**
 

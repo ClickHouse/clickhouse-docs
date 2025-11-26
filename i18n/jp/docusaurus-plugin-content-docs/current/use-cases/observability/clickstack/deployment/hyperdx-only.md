@@ -1,94 +1,88 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/hyperdx-only
-title: "HyperDX のみ"
+title: 'HyperDX のみ'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: "HyperDX のみのデプロイ"
-doc_type: "guide"
-keywords:
-  [
-    "HyperDX スタンドアロンデプロイ",
-    "HyperDX ClickHouse 統合",
-    "HyperDX のみのデプロイ",
-    "HyperDX Docker インストール",
-    "ClickHouse 可視化ツール"
-  ]
+description: 'HyperDX のみをデプロイする'
+doc_type: 'guide'
+keywords: ['HyperDX 単体デプロイ', 'HyperDX と ClickHouse の統合', 'HyperDX のみをデプロイする', 'HyperDX の Docker でのインストール', 'ClickHouse 用可視化ツール']
 ---
 
-import Image from "@theme/IdealImage"
-import hyperdx_login from "@site/static/images/use-cases/observability/hyperdx-login.png"
-import hyperdx_logs from "@site/static/images/use-cases/observability/hyperdx-logs.png"
-import hyperdx_2 from "@site/static/images/use-cases/observability/hyperdx-2.png"
-import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
+import Image from '@theme/IdealImage';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
+import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-このオプションは、オブザーバビリティデータまたはイベントデータが格納された稼働中の ClickHouse インスタンスを既に保有しているユーザー向けに設計されています。
+このオプションは、すでに稼働中の ClickHouse インスタンスがあり、そこにオブザーバビリティデータまたはイベントデータが蓄積されているユーザーを対象としています。
 
-HyperDX はスタックの他のコンポーネントから独立して使用でき、OpenTelemetry (OTel) だけでなく、あらゆるデータスキーマと互換性があります。これにより、ClickHouse 上に既に構築されたカスタムオブザーバビリティパイプラインに適しています。
+HyperDX はスタックの他のコンポーネントとは独立して利用でき、OpenTelemetry (OTel) に限らず、あらゆるデータスキーマと互換性があります。これにより、すでに ClickHouse 上に構築済みのカスタムオブザーバビリティパイプラインにも適しています。
 
-完全な機能を有効にするには、ダッシュボード、保存された検索、ユーザー設定、アラートなどのアプリケーション状態を保存するための MongoDB インスタンスを提供する必要があります。
+完全な機能を有効にするには、ダッシュボード、保存済み検索、ユーザー設定、アラートなどのアプリケーション状態を保存するための MongoDB インスタンスを用意する必要があります。
 
-このモードでは、データ取り込みは完全にユーザーに委ねられます。独自にホストした OpenTelemetry コレクター、クライアントライブラリからの直接取り込み、ClickHouse ネイティブのテーブルエンジン（Kafka や S3 など）、ETL パイプライン、または ClickPipes のようなマネージド取り込みサービスを使用して、ClickHouse にデータを取り込むことができます。このアプローチは最大限の柔軟性を提供し、既に ClickHouse を運用しており、可視化、検索、アラート機能のために HyperDX を上位レイヤーとして追加したいチームに適しています。
+このモードでは、データのインジェストは完全にユーザー側の責任となります。独自にホストしている OpenTelemetry collector、クライアントライブラリからの直接インジェスト、Kafka や S3 などの ClickHouse ネイティブテーブルエンジン、ETL パイプライン、あるいは ClickPipes のようなマネージドインジェストサービスを使用して、データを ClickHouse に取り込むことができます。このアプローチは柔軟性が最も高く、すでに ClickHouse を運用していて、その上に HyperDX を重ねて可視化、検索、アラートを実現したいチームに適しています。
 
-### 適している対象 {#suitable-for}
+### 適しているユースケース
 
-- 既存の ClickHouse ユーザー
-- カスタムイベントパイプライン
+* 既存の ClickHouse ユーザー
+* カスタムイベントパイプライン
 
 
 ## デプロイ手順 {#deployment-steps}
-
-<br />
+<br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Dockerでデプロイする {#deploy-hyperdx-with-docker}
+### Docker を使用してデプロイする {#deploy-hyperdx-with-docker}
 
-以下のコマンドを実行します。必要に応じて`YOUR_MONGODB_URI`を変更してください。
+必要に応じて `YOUR_MONGODB_URI` を変更し、次のコマンドを実行します。 
 
 ```shell
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
 ```
 
-### HyperDX UIにアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI に移動する {#navigate-to-hyperdx-ui}
 
-[http://localhost:8080](http://localhost:8080)にアクセスして、HyperDX UIを開きます。
+[http://localhost:8080](http://localhost:8080) にアクセスして、HyperDX UI を開きます。
 
-要件を満たすユーザー名とパスワードを指定して、ユーザーを作成します。
+要件を満たすユーザー名とパスワードを入力してユーザーを作成します。 
 
-`Create`をクリックすると、接続詳細の入力を求められます。
+`Create` をクリックすると、接続情報の入力を求められます。
 
-<Image img={hyperdx_login} alt='HyperDX UI' size='lg' />
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-### 接続詳細を入力する {#complete-connection-details}
+### 接続情報を入力する {#complete-connection-details}
 
-独自の外部ClickHouseクラスタ(例: ClickHouse Cloud)に接続します。
+ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 
-<Image img={hyperdx_2} alt='HyperDX Login' size='md' />
+<Image img={hyperdx_2} alt="HyperDX ログイン" size="md"/>
 
-ソースの作成を求められた場合は、すべてのデフォルト値を保持し、`Table`フィールドに`otel_logs`を入力してください。その他の設定は自動検出されるため、`Save New Source`をクリックできます。
+ソースの作成を求められた場合は、すべてのデフォルト値をそのまま使用し、`Table` フィールドに `otel_logs` を入力します。その他の設定は自動検出されるはずなので、`Save New Source` をクリックします。
 
-:::note ソースの作成について
-ソースを作成するには、ClickHouse内にテーブルが存在している必要があります。データがない場合は、ClickStack OpenTelemetryコレクターをデプロイしてテーブルを作成することを推奨します。
+:::note ソースの作成
+ソースを作成するには、ClickHouse にテーブルが存在している必要があります。データがない場合は、テーブルを作成するために ClickStack の OpenTelemetry コレクターをデプロイすることを推奨します。
 :::
 
 </VerticalStepper>
 
 
-## Docker Composeの使用 {#using-docker-compose}
 
-[Docker Compose設定](/use-cases/observability/clickstack/deployment/docker-compose)を変更することで、このガイドと同じ効果を実現できます。マニフェストからOTelコレクターとClickHouseインスタンスを削除してください。
+## Docker Compose の使用 {#using-docker-compose}
+
+ユーザーは、[Docker Compose 構成](/use-cases/observability/clickstack/deployment/docker-compose) を変更することで、マニフェストから OTel collector と ClickHouse インスタンスを削除し、本ガイドと同等の効果を得ることができます。
 
 
-## ClickStack OpenTelemetryコレクター {#otel-collector}
 
-スタック内の他のコンポーネントから独立して独自のOpenTelemetryコレクターを管理している場合でも、ClickStackディストリビューションのコレクターを使用することを推奨します。これにより、デフォルトスキーマが使用され、取り込みのベストプラクティスが適用されます。
+## ClickStack OpenTelemetry collector
 
-スタンドアロンコレクターのデプロイと設定の詳細については、["OpenTelemetryによる取り込み"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)を参照してください。
+スタック内の他のコンポーネントとは独立して独自の OpenTelemetry collector を運用している場合でも、ClickStack ディストリビューションの collector を使用することを推奨します。これにより、デフォルトのスキーマが使用され、インジェストのベストプラクティスが適用されます。
+
+スタンドアロンの collector のデプロイと設定の詳細については、[&quot;Ingesting with OpenTelemetry&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
 <JSONSupport />
 
-HyperDX専用イメージの場合、ユーザーは`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`パラメータを設定するだけです。例:
+HyperDX 専用イメージの場合、`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメータを設定するだけで十分です。例:
 
 ```shell
 docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx

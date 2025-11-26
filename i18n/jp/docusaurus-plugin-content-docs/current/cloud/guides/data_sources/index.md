@@ -2,29 +2,30 @@
 slug: /cloud/guides/data-sources
 title: 'データソース'
 hide_title: true
-description: 'ClickHouse Cloud ガイドセクションの目次となるページ'
+description: 'ClickHouse Cloud ガイドセクション用の目次ページ'
 doc_type: 'landing-page'
 keywords: ['クラウドガイド', 'ドキュメント', 'ハウツー', 'クラウド機能', 'チュートリアル']
 ---
 
 
 
-## クラウド統合 {#cloud-integrations}
+## クラウド連携 {#cloud-integrations}
 
-このセクションでは、追加設定が必要な外部データソースとClickHouse Cloudを統合するためのガイドとリファレンスを提供します。
+このセクションでは、追加の設定が必要な外部データソースと ClickHouse Cloud を連携させるためのガイドおよびリファレンスを掲載します。
 
-| ページ                                                           | 説明                                                            |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [クラウドIPアドレス](/manage/data-sources/cloud-endpoints-api) | 一部のテーブル関数と接続に必要なネットワーク情報 |
-| [S3データへの安全なアクセス](/cloud/data-sources/secure-s3)    | ロールベースアクセスを使用してAWS S3の外部データソースにアクセス         |
+| ページ                                                          | 説明                                                                      |
+|-----------------------------------------------------------------|---------------------------------------------------------------------------|
+| [Cloud IP addresses](/manage/data-sources/cloud-endpoints-api)  | 一部のテーブル関数や接続で必要となるネットワーク情報                      |
+| [Accessing S3 data securely](/cloud/data-sources/secure-s3)     | ロールベースアクセスを用いて AWS S3 上の外部データソースへ安全にアクセス |
+
 
 
 ## 外部データソースへの追加接続 {#additional-connections-for-external-data-sources}
 
-### データ取り込み用のClickPipes {#clickpipes-for-data-ingestion}
+### データインジェストのための ClickPipes {#clickpipes-for-data-ingestion}
 
-ClickPipesを使用すると、複数のソースからのストリーミングデータを簡単に統合できます。詳細については、統合ドキュメントの[ClickPipes](/integrations/clickpipes)を参照してください。
+ClickPipes を使用すると、複数のソースからのストリーミングデータを容易に統合できます。詳細については、「インテグレーション」ドキュメントの [ClickPipes](/integrations/clickpipes) を参照してください。
 
 ### 外部データソースとしてのテーブル関数 {#table-functions-as-external-data-sources}
 
-ClickHouseは、外部データソースにアクセスするための複数のテーブル関数をサポートしています。詳細については、SQLリファレンスセクションの[テーブル関数](/sql-reference/table-functions)を参照してください。
+ClickHouse は、外部データソースにアクセスするための各種テーブル関数をサポートしています。詳細については、SQL リファレンスセクションの [table functions](/sql-reference/table-functions) を参照してください。

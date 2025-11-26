@@ -13,17 +13,18 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-| Ввод | Вывод | Синоним |
-| ---- | ----- | ------- |
-| ✔    | ✔     |         |
+| Ввод | Вывод | Алиас |
+| ---- | ----- | ----- |
+| ✔    | ✔     |       |
 
 
 ## Описание {#description}
 
-Формат `ProtobufList` аналогичен формату [`Protobuf`](./Protobuf.md), но строки представлены в виде последовательности подсообщений, содержащихся в сообщении с фиксированным именем «Envelope».
+Формат `ProtobufList` похож на формат [`Protobuf`](./Protobuf.md), но строки представлены в виде последовательности подсообщений, содержащихся в сообщении с фиксированным именем «Envelope».
 
 
-## Пример использования {#example-usage}
+
+## Пример использования
 
 Например:
 
@@ -51,4 +52,4 @@ message Envelope {
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

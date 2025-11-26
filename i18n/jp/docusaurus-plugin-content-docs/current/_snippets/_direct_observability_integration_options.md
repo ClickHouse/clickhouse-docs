@@ -1,33 +1,33 @@
-import Image from "@theme/IdealImage"
-import AdvancedDashboard from "@site/static/images/cloud/manage/monitoring/advanced_dashboard.png"
-import NativeAdvancedDashboard from "@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png"
+import Image from '@theme/IdealImage';
+import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
+import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-### Grafanaプラグインの直接統合 {#direct-grafana}
+### Grafana プラグインによる直接統合
 
-Grafana用のClickHouseデータソースプラグインを使用すると、システムテーブルを介してClickHouseから直接データを可視化および探索できます。このアプローチは、パフォーマンス監視や詳細なシステム分析用のカスタムダッシュボード作成に適しています。
-プラグインのインストールと設定の詳細については、ClickHouseの[データソースプラグイン](/integrations/grafana)を参照してください。事前構築されたダッシュボードとアラートルールを含むPrometheus-Grafanaミックスインを使用した完全な監視セットアップについては、[新しいPrometheus-Grafanaミックスインを使用したClickHouseの監視](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in)を参照してください。
+Grafana 向け ClickHouse データソースプラグインを使用すると、ClickHouse のシステムテーブルを利用して、ClickHouse から直接データを可視化および探索できます。このアプローチは、パフォーマンスの監視や、詳細なシステム分析のためのカスタムダッシュボードの作成に適しています。
+プラグインのインストールおよび設定の詳細については、ClickHouse の [data source plugin](/integrations/grafana) を参照してください。あらかじめ作成されたダッシュボードとアラートルールを備えた Prometheus-Grafana ミックスインを用いた完全な監視セットアップについては、[Monitor ClickHouse with the new Prometheus-Grafana mix-in](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in) を参照してください。
 
-### Datadogの直接統合 {#direct-datadog}
+### Datadog との直接統合
 
-Datadogは、システムテーブルに直接クエリを実行するエージェント用のClickhouse Monitoringプラグインを提供しています。この統合により、clusterAllReplicas機能を通じてクラスタ認識機能を備えた包括的なデータベース監視が可能になります。
+Datadog は、エージェント向けに ClickHouse Monitoring プラグインを提供しており、システムテーブルに直接クエリを実行します。この統合により、clusterAllReplicas 機能を通じてクラスタを意識した包括的なデータベース監視が可能になります。
 :::note
-この統合は、コスト最適化のためのアイドル動作との非互換性およびクラウドプロキシレイヤーの運用上の制限により、ClickHouse Cloudデプロイメントには推奨されません。
+この統合は、コスト最適化のためのアイドル動作との非互換性およびクラウドプロキシレイヤーの運用上の制約により、ClickHouse Cloud のデプロイメントでは推奨されません。
 :::
 
-### システムテーブルの直接使用 {#system-tables}
+### システムテーブルを直接利用する
 
-ユーザーは、ClickHouseのシステムテーブル、特に`system.query_log`に接続して直接クエリを実行することで、詳細なクエリパフォーマンス分析を実行できます。SQLコンソールまたはclickhouse clientを使用することで、チームは低速なクエリの特定、リソース使用状況の分析、組織全体の使用パターンの追跡が可能になります。
+特に `system.query_log` などの ClickHouse システムテーブルに接続して直接クエリを実行することで、クエリパフォーマンスの詳細な分析を行うことができます。SQL コンソールまたは clickhouse client を使用することで、チームは低速クエリを特定し、リソース使用状況を分析し、組織全体にわたる利用パターンを追跡できます。
 
 **クエリパフォーマンス分析**
 
-ユーザーは、システムテーブルのクエリログを使用してクエリパフォーマンス分析を実行できます。
+システムテーブルのクエリログを使用してクエリパフォーマンス分析を実行できます。
 
-**クエリ例**: すべてのクラスタレプリカにわたる実行時間の長い上位5件のクエリを検索:
+**クエリ例**: すべてのクラスタレプリカにまたがる実行時間の長いクエリ上位 5 件を抽出します:
 
 ```sql
 SELECT
     type,
-    event_time,
+    event_time, 
     query_duration_ms,
     query,
     read_rows,

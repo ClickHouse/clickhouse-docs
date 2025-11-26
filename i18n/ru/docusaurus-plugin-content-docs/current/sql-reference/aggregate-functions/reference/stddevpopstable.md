@@ -1,5 +1,6 @@
 ---
-description: 'Результат равен квадратному корню из значения varPop. В отличие от stddevPop, эта функция использует численно устойчивый алгоритм.'
+description: 'Результат равен квадратному корню из varPop. В отличие от stddevPop,
+  эта функция использует численно устойчивый алгоритм.'
 sidebar_position: 189
 slug: /sql-reference/aggregate-functions/reference/stddevpopstable
 title: 'stddevPopStable'
@@ -22,7 +23,7 @@ stddevPopStable(x)
 
 **Возвращаемое значение**
 
-Квадратный корень дисперсии `x`. [Float64](../../data-types/float.md).
+Квадратный корень из дисперсии значений `x`. [Float64](../../data-types/float.md).
 
 **Пример**
 

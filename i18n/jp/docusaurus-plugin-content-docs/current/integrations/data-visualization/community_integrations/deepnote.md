@@ -3,7 +3,7 @@ sidebar_label: 'Deepnote'
 sidebar_position: 11
 slug: /integrations/deepnote
 keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
-description: '慣れ親しんだノートブック環境の中で、非常に大規模なデータセットに効率的にクエリを実行し、分析やモデリングを行えます。'
+description: '慣れ親しんだノートブック環境のまま、非常に大きなデータセットを効率的にクエリし、分析とモデリングを行えます。'
 title: 'ClickHouse を Deepnote に接続する'
 doc_type: 'guide'
 integration:
@@ -24,41 +24,41 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> は、チームがインサイトを発見し共有するためのコラボレーティブなデータノートブックです。Jupyter 互換であることに加え、クラウド上で動作し、データサイエンスプロジェクトに効率的に取り組み、共同作業を行うための一元的な環境を提供します。
+<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> は、チームがインサイトを発見・共有するために構築された、チーム向けのコラボレーション型データノートブックです。Jupyter 互換であることに加えて、クラウド上で動作し、データサイエンスプロジェクトに効率的に共同で取り組むための一元的なコラボレーション環境を提供します。
 
-このガイドでは、すでに Deepnote アカウントをお持ちであり、かつ稼働中の ClickHouse インスタンスがあることを前提とします。
+このガイドでは、Deepnote のアカウントと稼働中の ClickHouse インスタンスが既に用意されていることを前提とします。
 
 
 
 ## インタラクティブな例 {#interactive-example}
+Deepnote のデータノートブックから ClickHouse に対してクエリを実行するインタラクティブな例を試したい場合は、下のボタンをクリックして、[ClickHouse playground](../../../getting-started/playground.md) と接続されたテンプレートプロジェクトを起動してください。
 
-DeepnoteデータノートブックからClickHouseへのクエリ実行を試せるインタラクティブな例を体験したい場合は、下のボタンをクリックして[ClickHouse playground](../../../getting-started/playground.md)に接続されたテンプレートプロジェクトを起動してください。
-
-[<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Deepnoteで起動" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
-
-
-## ClickHouseへの接続 {#connect-to-clickhouse}
-
-1. Deepnote内で「Integrations」概要を選択し、ClickHouseタイルをクリックします。
-
-<Image size='lg' img={deepnote_01} alt='ClickHouse統合タイル' border />
-
-2. ClickHouseインスタンスの接続詳細を入力します:
-
-   <ConnectionDetails />
-
-   <Image size='md' img={deepnote_02} alt='ClickHouse詳細ダイアログ' border />
-
-   **_注意:_** ClickHouseへの接続がIPアクセスリストで保護されている場合、DeepnoteのIPアドレスを許可する必要があります。詳細については、[Deepnoteのドキュメント](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)を参照してください。
-
-3. これでClickHouseをDeepnoteに統合できました。
+[<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Deepnote で起動" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
 
-## ClickHouse統合の使用 {#using-clickhouse-integration}
 
-1. まず、ノートブックの右側にあるClickHouse統合に接続します。
+## ClickHouse に接続する {#connect-to-clickhouse}
 
-   <Image size='lg' img={deepnote_03} alt='ClickHouse詳細ダイアログ' border />
+1. Deepnote 内で「Integrations」画面を開き、ClickHouse のタイルをクリックします。
 
-2. 次に、新しいClickHouseクエリブロックを作成し、データベースに対してクエリを実行します。クエリ結果はDataFrameとして保存され、SQLブロックで指定した変数に格納されます。
-3. 既存の[SQLブロック](https://docs.deepnote.com/features/sql-cells)をClickHouseブロックに変換することもできます。
+<Image size="lg" img={deepnote_01} alt="ClickHouse インテグレーションのタイル" border />
+
+2. ClickHouse インスタンスへの接続情報を入力します。
+<ConnectionDetails />
+
+   <Image size="md" img={deepnote_02} alt="ClickHouse 接続詳細ダイアログ" border />
+
+   **_NOTE:_** ClickHouse への接続が IP アクセスリストで保護されている場合、Deepnote の IP アドレスを許可する必要があります。詳細は [Deepnote のドキュメント](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses) を参照してください。
+
+3. 以上で、ClickHouse と Deepnote の連携が完了しました。
+
+
+
+## ClickHouse 連携を使用する {#using-clickhouse-integration}
+
+1. まず、ノートブック右側の ClickHouse 連携に接続します。
+
+   <Image size="lg" img={deepnote_03} alt="ClickHouse の詳細ダイアログ" border />
+
+2. 次に、新しい ClickHouse クエリブロックを作成してデータベースにクエリを実行します。クエリ結果は DataFrame として保存され、SQL ブロック内で指定した変数に格納されます。
+3. 既存の [SQL ブロック](https://docs.deepnote.com/features/sql-cells) を ClickHouse ブロックに変換することもできます。

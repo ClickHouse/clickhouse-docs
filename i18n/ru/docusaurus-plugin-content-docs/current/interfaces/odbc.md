@@ -1,5 +1,5 @@
 ---
-description: 'Документация по драйверу ODBC для ClickHouse'
+description: 'Документация по драйверу ODBC ClickHouse'
 sidebar_label: 'Драйвер ODBC'
 sidebar_position: 35
 slug: /interfaces/odbc

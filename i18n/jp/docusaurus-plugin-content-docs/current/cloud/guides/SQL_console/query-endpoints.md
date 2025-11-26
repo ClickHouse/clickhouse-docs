@@ -1,7 +1,7 @@
 ---
 sidebar_title: 'クエリ API エンドポイント'
 slug: /cloud/get-started/query-endpoints
-description: '保存済みクエリから REST API エンドポイントを簡単に立ち上げ'
+description: '保存済みクエリから REST API エンドポイントを簡単に公開できる'
 keywords: ['api', 'クエリ API エンドポイント', 'クエリエンドポイント', 'クエリ REST API']
 title: 'クエリ API エンドポイント'
 doc_type: 'guide'
@@ -20,38 +20,37 @@ import TabItem from '@theme/TabItem';
 
 # クエリ API エンドポイントの設定
 
-**Query API エンドポイント** 機能を使用すると、ClickHouse Cloud コンソールで保存した任意の SQL クエリから、直接 API エンドポイントを作成できます。これにより、ネイティブドライバーを使用して ClickHouse Cloud サービスに接続することなく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
+**Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールから任意の保存済み SQL クエリを元に、直接 API エンドポイントを作成できます。HTTP 経由で API エンドポイントにアクセスすることで、ネイティブドライバーを使って ClickHouse Cloud サービスに接続しなくても、保存済みクエリを実行できるようになります。
 
 
 
 ## 前提条件 {#quick-start-guide}
 
-続行する前に、以下をご確認ください：
+次の項目を用意してから先に進んでください:
+- 適切な権限を持つ API キー
+- Admin Console ロール
 
-- 適切な権限を持つAPIキー
-- Admin Consoleロール
+まだ API キーを持っていない場合は、このガイドに従って [API キーを作成](/cloud/manage/openapi) できます。
 
-まだAPIキーをお持ちでない場合は、[APIキーの作成](/cloud/manage/openapi)ガイドに従って作成してください。
-
-:::note 最小権限
-APIエンドポイントにクエリを実行するには、APIキーに`Member`組織ロールと`Query Endpoints`サービスアクセスが必要です。データベースロールはエンドポイント作成時に設定されます。
+:::note 最低限必要な権限
+API エンドポイントに対してクエリを実行するには、API キーに `Member` 組織ロールと `Query Endpoints` サービスアクセスが必要です。データベースロールはエンドポイントを作成するときに設定します。
 :::
 
 <VerticalStepper headerLevel="h3">
 
-### 保存済みクエリの作成 {#creating-a-saved-query}
+### 保存済みクエリを作成する {#creating-a-saved-query}
 
-保存済みクエリをお持ちの場合は、この手順をスキップできます。
+既に保存済みクエリがある場合は、このステップをスキップできます。
 
-新しいクエリタブを開きます。デモンストレーションのため、約45億レコードを含む[youtubeデータセット](/getting-started/example-datasets/youtube-dislikes)を使用します。
-Cloudサービスにテーブルを作成してデータを挿入するには、["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table)セクションの手順に従ってください。
+新しいクエリタブを開きます。デモンストレーションとして、約 45 億レコードを含む [youtube データセット](/getting-started/example-datasets/youtube-dislikes) を使用します。
+["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table) セクションの手順に従って、Cloud サービス上にテーブルを作成し、データを挿入してください。
 
-:::tip 行数の`LIMIT`
-サンプルデータセットのチュートリアルでは大量のデータ（46.5億行）を挿入するため、挿入に時間がかかる場合があります。
-このガイドでは、`LIMIT`句を使用してより少量のデータ（例：1000万行）を挿入することを推奨します。
+:::tip 行数を `LIMIT` で制限する
+このサンプルデータセットのチュートリアルでは 46.5 億行と非常に多くのデータを挿入するため、挿入に時間がかかる可能性があります。
+このガイドの目的のためには、`LIMIT` 句を使用して、より少ないデータ量 (たとえば 1,000 万行) を挿入することを推奨します。
 :::
 
-サンプルクエリとして、ユーザーが入力した`year`パラメータにおいて、動画あたりの平均視聴回数でトップ10のアップローダーを返します。
+例として、ユーザーが入力する `year` パラメータごとに、動画あたり平均視聴回数が多い上位 10 人のアップローダーを返すクエリを使用します。
 
 ```sql
 WITH sum(view_count) AS view_sum,
@@ -71,65 +70,65 @@ ORDER BY per_upload desc
   LIMIT 10
 ```
 
-このクエリには、上記のスニペットでハイライトされているパラメータ（`year`）が含まれていることに注意してください。
-クエリパラメータは、波括弧`{ }`とパラメータの型を使用して指定できます。
-SQLコンソールクエリエディタは、ClickHouseクエリパラメータ式を自動的に検出し、各パラメータの入力フィールドを提供します。
+このクエリには、上のスニペット内でハイライトされているパラメータ (`year`) が含まれている点に注意してください。
+クエリパラメータは、パラメータの型とともに中かっこ `{ }` を使って指定できます。
+SQL コンソールのクエリエディタは ClickHouse のクエリパラメータ式を自動的に検出し、各パラメータに対応する入力欄を提供します。
 
-SQLエディタの右側にあるクエリ変数入力ボックスで年`2010`を指定して、このクエリが正常に動作することを確認しましょう：
+SQL エディタ右側のクエリ変数入力ボックスで年に `2010` を指定し、このクエリをすばやく実行して動作を確認してみましょう:
 
-<Image img={endpoints_testquery} size='md' alt='Test the example query' />
+<Image img={endpoints_testquery} size="md" alt="サンプルクエリをテストする" />
 
-次に、クエリを保存します：
+次に、クエリを保存します:
 
-<Image img={endpoints_savequery} size='md' alt='Save example query' />
+<Image img={endpoints_savequery} size="md" alt="サンプルクエリを保存する" />
 
-保存済みクエリに関する詳細なドキュメントは、["Saving a query"](/cloud/get-started/sql-console#saving-a-query)セクションを参照してください。
+保存済みクエリに関する詳細なドキュメントは ["Saving a query"](/cloud/get-started/sql-console#saving-a-query) セクションにあります。
 
-### クエリAPIエンドポイントの設定 {#configuring-the-query-api-endpoint}
+### Query API エンドポイントの設定 {#configuring-the-query-api-endpoint}
 
-クエリAPIエンドポイントは、クエリビューから**Share**ボタンをクリックして`API Endpoint`を選択することで直接設定できます。
-エンドポイントにアクセスできるAPIキーを指定するよう求められます：
+クエリビューから、**Share** ボタンをクリックして `API Endpoint` を選択することで、Query API エンドポイントを直接設定できます。
+どの API キーに対してエンドポイントへのアクセスを許可するか指定するよう求められます:
 
-<Image img={endpoints_configure} size='md' alt='Configure query endpoint' />
+<Image img={endpoints_configure} size="md" alt="クエリエンドポイントを設定する" />
 
-APIキーを選択した後、以下を求められます：
+API キーを選択したら、次の内容を指定します:
+- クエリの実行に使用する Database ロール (`Full access`, `Read only` または `Create a custom role`)
+- クロスオリジンリソース共有 (CORS) で許可するドメイン
 
-- クエリの実行に使用するデータベースロールを選択（`Full access`、`Read only`、または`Create a custom role`）
-- クロスオリジンリソース共有（CORS）の許可ドメインを指定
+これらのオプションを選択すると、Query API エンドポイントが自動的にプロビジョニングされます。
 
-これらのオプションを選択すると、クエリAPIエンドポイントが自動的にプロビジョニングされます。
+テストリクエストを送信できるように、サンプルの `curl` コマンドが表示されます:
 
-テストリクエストを送信できるように、サンプルの`curl`コマンドが表示されます：
+<Image img={endpoints_completed} size="md" alt="エンドポイント用 curl コマンド" />
 
-<Image img={endpoints_completed} size='md' alt='Endpoint curl command' />
-
-インターフェースに表示されるcurlコマンドを以下に示します：
+参考までに、インターフェイスに表示される curl コマンドを以下に示します:
 
 ```bash
 curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
 ```
 
-### クエリAPIパラメータ {#query-api-parameters}
+### Query API パラメータ {#query-api-parameters}
 
-クエリ内のクエリパラメータは、`{parameter_name: type}`の構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストペイロードには、これらのパラメータを渡すための`queryVariables`オブジェクトが含まれます。
+クエリ内のクエリパラメータは `{parameter_name: type}` という構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストのペイロードには、これらのパラメータを渡すための `queryVariables` オブジェクトが含まれます。
 
 ### テストとモニタリング {#testing-and-monitoring}
 
-クエリAPIエンドポイントが作成されたら、`curl`または他のHTTPクライアントを使用して動作をテストできます：
+Query API エンドポイントを作成したら、`curl` やその他の HTTP クライアントを使用して、正しく動作するかテストできます:
 
-<Image img={endpoints_curltest} size='md' alt='endpoint curl test' />
+<Image img={endpoints_curltest} size="md" alt="エンドポイントの curl テスト" />
 
-最初のリクエストを送信すると、**Share**ボタンのすぐ右に新しいボタンが表示されます。これをクリックすると、クエリに関するモニタリングデータを含むフライアウトが開きます：
+最初のリクエストを送信すると、**Share** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、クエリに関するモニタリングデータを含むフライアウトパネルが開きます:
 
-<Image img={endpoints_monitoring} size='sm' alt='Endpoint monitoring' />
+<Image img={endpoints_monitoring} size="sm" alt="エンドポイントのモニタリング" />
 
 </VerticalStepper>
 
 
-## 実装の詳細 {#implementation-details}
 
-このエンドポイントは、保存されたQuery APIエンドポイントでクエリを実行します。
-複数のバージョン、柔軟なレスポンス形式、パラメータ化されたクエリ、およびオプションのストリーミングレスポンス（バージョン2のみ）をサポートしています。
+## 実装の詳細
+
+このエンドポイントは、保存済みの Query API エンドポイント上でクエリを実行します。
+複数バージョンに対応し、柔軟なレスポンス形式、パラメータ化されたクエリ、およびオプションのストリーミングレスポンス（バージョン 2 のみ）をサポートします。
 
 **エンドポイント:**
 
@@ -138,109 +137,109 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTPメソッド {#http-methods}
+### HTTP メソッド
 
-| メソッド   | 使用例                                   | パラメータ                                                     |
-| -------- | ------------------------------------------ | -------------------------------------------------------------- |
-| **GET**  | パラメータを含むシンプルなクエリ             | URLパラメータでクエリ変数を渡す（`?param_name=value`）  |
-| **POST** | 複雑なクエリまたはリクエストボディを使用する場合 | リクエストボディでクエリ変数を渡す（`queryVariables`オブジェクト） |
+| Method   | Use Case             | Parameters                                  |
+| -------- | -------------------- | ------------------------------------------- |
+| **GET**  | パラメータ付きのシンプルなクエリ     | URL パラメータでクエリ変数を渡す（`?param_name=value`）     |
+| **POST** | 複雑なクエリ、またはボディを利用する場合 | リクエストボディ内でクエリ変数を渡す（`queryVariables` オブジェクト） |
 
-**GETを使用する場合:**
+**GET を使用する場面:**
 
-- 複雑なネストされたデータを含まないシンプルなクエリ
-- パラメータを簡単にURLエンコードできる場合
-- HTTP GETセマンティクスによるキャッシングの利点を活用する場合
+* 入れ子構造を含まないシンプルなクエリ
+* パラメータを容易に URL エンコードできる場合
+* HTTP GET のセマンティクスによるキャッシュの利点を活用したい場合
 
-**POSTを使用する場合:**
+**POST を使用する場面:**
 
-- 複雑なクエリ変数（配列、オブジェクト、大きな文字列）
-- セキュリティやプライバシーのためにリクエストボディが望ましい場合
-- ストリーミングファイルアップロードまたは大容量データ
+* 配列、オブジェクト、大きな文字列などの複雑なクエリ変数
+* セキュリティ／プライバシー上、リクエストボディの利用が望ましい場合
+* ファイルのストリーミングアップロードや大容量データを送信する場合
 
-### 認証 {#authentication}
+### 認証
 
-**必須:** はい  
-**方法:** OpenAPI Key/Secretを使用したBasic認証  
-**権限:** クエリエンドポイントに対する適切な権限
+**必須:** Yes\
+**方式:** OpenAPI Key/Secret を用いた Basic 認証\
+**権限:** クエリエンドポイントに対して適切な権限が必要
 
-### リクエスト設定 {#request-configuration}
+### リクエスト構成
 
-#### URLパラメータ {#url-params}
+#### URL パラメータ
 
-| パラメータ         | 必須 | 説明                                        |
-| ----------------- | -------- | -------------------------------------------------- |
-| `queryEndpointId` | **はい**  | 実行するクエリエンドポイントの一意の識別子 |
+| Parameter         | Required | Description           |
+| ----------------- | -------- | --------------------- |
+| `queryEndpointId` | **Yes**  | 実行するクエリエンドポイントの一意な識別子 |
 
-#### クエリパラメータ {#query-params}
+#### クエリパラメータ
 
-| パラメータ             | 必須 | 説明                                                                                  | 例               |
-| --------------------- | -------- | -------------------------------------------------------------------------------------------- | --------------------- |
-| `format`              | いいえ       | レスポンス形式（すべてのClickHouse形式をサポート）                                            | `?format=JSONEachRow` |
-| `param_:name`         | いいえ       | リクエストボディがストリームの場合のクエリ変数。`:name`を変数名に置き換えてください       | `?param_year=2024`    |
-| `:clickhouse_setting` | いいえ       | サポートされている任意の[ClickHouse設定](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8`      |
+| Parameter             | Required | Description                                                                                 | Example               |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------- | --------------------- |
+| `format`              | No       | レスポンスフォーマット（すべての ClickHouse フォーマットをサポート）                                                    | `?format=JSONEachRow` |
+| `param_:name`         | No       | リクエストボディがストリームの場合のクエリ変数。`:name` を変数名に置き換える                                                  | `?param_year=2024`    |
+| `:clickhouse_setting` | No       | 任意のサポートされている [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8`      |
 
-#### ヘッダー {#headers}
+#### ヘッダー
 
-| ヘッダー                          | 必須 | 説明                                                 | 値                                      |
-| ------------------------------- | -------- | ----------------------------------------------------------- | ------------------------------------------- |
-| `x-clickhouse-endpoint-version` | いいえ       | エンドポイントのバージョンを指定                              | `1`または`2`（デフォルトは最後に保存されたバージョン） |
-| `x-clickhouse-endpoint-upgrade` | いいえ       | エンドポイントバージョンのアップグレードをトリガー（バージョンヘッダーと併用） | アップグレードする場合は`1`                              |
+| Header                          | Required | Description                         | Values                           |
+| ------------------------------- | -------- | ----------------------------------- | -------------------------------- |
+| `x-clickhouse-endpoint-version` | No       | エンドポイントのバージョンを指定                    | `1` または `2`（デフォルトは最後に保存されたバージョン） |
+| `x-clickhouse-endpoint-upgrade` | No       | エンドポイントのバージョンアップをトリガー（バージョンヘッダーと併用） | `1` を指定してアップグレード                 |
 
----
+***
 
-### リクエストボディ {#request-body}
+### リクエストボディ
 
-#### パラメータ {#params}
+#### パラメータ
 
-| パラメータ        | 型   | 必須 | 説明                       |
-| ---------------- | ------ | -------- | --------------------------------- |
-| `queryVariables` | object | いいえ       | クエリで使用される変数 |
-| `format`         | string | いいえ       | レスポンス形式                   |
+| Parameter        | Type   | Required | Description |
+| ---------------- | ------ | -------- | ----------- |
+| `queryVariables` | object | No       | クエリ内で使用する変数 |
+| `format`         | string | No       | レスポンスフォーマット |
 
-#### サポートされている形式 {#supported-formats}
+#### サポートされるフォーマット
 
-| バージョン                 | サポートされている形式                                                                                                                                                 |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **バージョン2**           | ClickHouseがサポートするすべての形式                                                                                                                                  |
-| **バージョン1（制限あり）** | TabSeparated <br/> TabSeparatedWithNames <br/> TabSeparatedWithNamesAndTypes <br/> JSON <br/> JSONEachRow <br/> CSV <br/> CSVWithNames <br/> CSVWithNamesAndTypes |
+| Version                 | Supported Formats                                                                                                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Version 2**           | ClickHouse がサポートするすべてのフォーマット                                                                                                                                             |
+| **Version 1 (limited)** | TabSeparated <br /> TabSeparatedWithNames <br /> TabSeparatedWithNamesAndTypes <br /> JSON <br /> JSONEachRow <br /> CSV <br /> CSVWithNames <br /> CSVWithNamesAndTypes |
 
----
+***
 
-### レスポンス {#responses}
+### レスポンス
 
-#### 成功 {#success}
+#### 成功時
 
-**ステータス:** `200 OK`  
-クエリが正常に実行されました。
+**Status:** `200 OK`\
+クエリは正常に実行されました。
 
-#### エラーコード {#error-codes}
+#### エラーコード
 
-| ステータスコード        | 説明                                        |
-| ------------------ | -------------------------------------------------- |
-| `400 Bad Request`  | リクエストの形式が不正です                          |
-| `401 Unauthorized` | 認証が欠落しているか、権限が不足しています |
-| `404 Not Found`    | 指定されたクエリエンドポイントが見つかりませんでした         |
+| Status Code        | Description           |
+| ------------------ | --------------------- |
+| `400 Bad Request`  | リクエストの形式が不正           |
+| `401 Unauthorized` | 認証情報の欠如、または権限不足       |
+| `404 Not Found`    | 指定されたクエリエンドポイントが存在しない |
 
-#### エラー処理のベストプラクティス {#error-handling-best-practices}
+#### エラー処理のベストプラクティス
 
-- リクエストに有効な認証情報が含まれていることを確認してください
-- 送信前に`queryEndpointId`と`queryVariables`を検証してください
-- 適切なエラーメッセージを含むエラー処理を実装してください
+* リクエストに有効な認証情報が含まれていることを確認する
+* 送信前に `queryEndpointId` と `queryVariables` を検証する
+* 適切なエラーメッセージを含むグレースフルなエラー処理を実装する
 
----
+***
 
-### エンドポイントバージョンのアップグレード {#upgrading-endpoint-versions}
+### エンドポイントバージョンのアップグレード
 
-バージョン1からバージョン2にアップグレードするには:
+Version 1 から Version 2 にアップグレードするには:
 
-1. `x-clickhouse-endpoint-upgrade`ヘッダーを`1`に設定して含めます
-2. `x-clickhouse-endpoint-version`ヘッダーを`2`に設定して含めます
+1. `x-clickhouse-endpoint-upgrade` ヘッダーを `1` に設定して含める
+2. `x-clickhouse-endpoint-version` ヘッダーを `2` に設定して含める
 
-これにより、以下を含むバージョン2の機能にアクセスできるようになります:
+これにより、以下を含む Version 2 の機能にアクセスできます:
 
-- すべてのClickHouse形式のサポート
-- レスポンスストリーミング機能
-- パフォーマンスと機能の強化
+* すべての ClickHouse フォーマットのサポート
+* レスポンスのストリーミング機能
+* パフォーマンスおよび機能の強化
 
 
 ## 例 {#examples}
@@ -558,7 +557,7 @@ fetch(
 
 ### ストリームとしてレスポンスをリクエストして解析する {#request-and-parse-the-response-as-a-stream}
 
-**Query APIエンドポイントSQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
@@ -630,7 +629,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 
 ### ファイルからテーブルへストリームを挿入する {#insert-a-stream-from-a-file-into-a-table}
 
-以下の内容で`./samples/my_first_table_2024-07-11.csv`ファイルを作成します:
+以下の内容で `./samples/my_first_table_2024-07-11.csv` ファイルを作成します:
 
 ```csv
 "user_id","json","name"
@@ -650,7 +649,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**Query APIエンドポイントSQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 INSERT INTO default.my_first_table

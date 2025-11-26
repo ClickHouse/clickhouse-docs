@@ -1,5 +1,6 @@
 ---
-description: 'Движок таблицы GenerateRandom генерирует случайные данные в соответствии с заданной схемой таблицы.'
+description: 'Движок таблицы GenerateRandom генерирует случайные данные для заданной
+  схемы таблицы.'
 sidebar_label: 'GenerateRandom'
 sidebar_position: 140
 slug: /engines/table-engines/special/generate
@@ -11,30 +12,29 @@ doc_type: 'reference'
 
 # Движок таблицы GenerateRandom
 
-Движок таблицы GenerateRandom генерирует случайные данные для заданной схемы таблицы.
+Движок таблицы GenerateRandom генерирует случайные данные в соответствии с заданной схемой таблицы.
 
 Примеры использования:
 
-- Использование в тестах для заполнения больших таблиц воспроизводимыми данными.
-- Генерация случайных входных данных для фаззинг‑тестов.
+- Используйте в тестах для заполнения больших таблиц воспроизводимыми данными.
+- Генерируйте случайные входные данные для фаззинговых тестов.
 
 
 
-## Использование в ClickHouse Server {#usage-in-clickhouse-server}
+## Использование в ClickHouse Server
 
 ```sql
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 ```
 
-Параметры `max_array_length` и `max_string_length` задают максимальную длину всех
-столбцов типа Array или Map и строк соответственно в генерируемых данных.
+Параметры `max_array_length` и `max_string_length` задают соответственно максимальную длину всех столбцов типов Array или Map и строк в генерируемых данных.
 
-Движок таблиц GenerateRandom поддерживает только запросы `SELECT`.
+Движок таблицы `Generate` поддерживает только запросы `SELECT`.
 
 Он поддерживает все [типы данных](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, за исключением `AggregateFunction`.
 
 
-## Пример {#example}
+## Пример
 
 **1.** Создайте таблицу `generate_engine_table`:
 
@@ -42,7 +42,7 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 CREATE TABLE generate_engine_table (name String, value UInt32) ENGINE = GenerateRandom(1, 5, 3)
 ```
 
-**2.** Запросите данные:
+**2.** Выполните запрос:
 
 ```sql
 SELECT * FROM generate_engine_table LIMIT 3
@@ -57,9 +57,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 ```
 
 
-## Детали реализации {#details-of-implementation}
+## Подробности реализации {#details-of-implementation}
 
-- Не поддерживается:
+- Не поддерживаются:
   - `ALTER`
   - `SELECT ... SAMPLE`
   - `INSERT`

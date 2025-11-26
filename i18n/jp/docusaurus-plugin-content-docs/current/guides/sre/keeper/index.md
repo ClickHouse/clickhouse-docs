@@ -4,7 +4,7 @@ slug: /guides/sre/keeper/clickhouse-keeper
 sidebar_label: 'ClickHouse Keeper の設定'
 sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
-description: 'ClickHouse Keeper（clickhouse-keeper）は ZooKeeper を置き換え、レプリケーションおよび分散協調機能を提供します。'
+description: 'ClickHouse Keeper（または clickhouse-keeper）は ZooKeeper を置き換え、レプリケーションおよびコーディネーション機能を提供します。'
 title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
@@ -13,111 +13,112 @@ doc_type: 'guide'
 
 # ClickHouse Keeper (clickhouse-keeper)
 
-import SelfManaged from "@site/docs/_snippets/_self_managed_only_automated.md"
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-ClickHouse Keeperは、データ[レプリケーション](/engines/table-engines/mergetree-family/replication.md)および[分散DDL](/sql-reference/distributed-ddl.md)クエリ実行のための調整システムを提供します。ClickHouse KeeperはZooKeeperと互換性があります。
+ClickHouse Keeper は、データの[レプリケーション](/engines/table-engines/mergetree-family/replication.md)と[分散 DDL](/sql-reference/distributed-ddl.md) クエリ実行のためのコーディネーションシステムを提供します。ClickHouse Keeper は ZooKeeper と互換性があります。
 
-### 実装の詳細 {#implementation-details}
+### 実装の詳細
 
-ZooKeeperは、最も初期に登場した著名なオープンソース調整システムの一つです。Javaで実装されており、シンプルかつ強力なデータモデルを持っています。ZooKeeperの調整アルゴリズムであるZooKeeper Atomic Broadcast (ZAB)は、各ZooKeeperノードが読み取りをローカルで処理するため、読み取りに対する線形化可能性の保証を提供しません。ZooKeeperとは異なり、ClickHouse KeeperはC++で記述されており、[RAFTアルゴリズム](https://raft.github.io/)の[実装](https://github.com/eBay/NuRaft)を使用しています。このアルゴリズムは読み取りと書き込みの両方に対して線形化可能性を実現し、さまざまな言語で複数のオープンソース実装が存在します。
+ZooKeeper は、最初期によく知られるようになったオープンソースのコーディネーションシステムの 1 つです。Java で実装されており、シンプルかつ強力なデータモデルを備えています。ZooKeeper のコーディネーションアルゴリズムである ZooKeeper Atomic Broadcast (ZAB) は、各 ZooKeeper ノードがローカルで読み取りを処理するため、読み取りに対して線形化可能性を保証しません。ZooKeeper と異なり、ClickHouse Keeper は C++ で実装されており、[RAFT アルゴリズム](https://raft.github.io/)の[実装](https://github.com/eBay/NuRaft)を使用しています。このアルゴリズムは読み取りおよび書き込みの線形化可能性を実現し、複数の言語でオープンソース実装が提供されています。
 
-デフォルトでは、ClickHouse KeeperはZooKeeperと同じ保証を提供します：線形化可能な書き込みと非線形化可能な読み取りです。互換性のあるクライアント・サーバープロトコルを持つため、標準的なZooKeeperクライアントを使用してClickHouse Keeperと対話できます。スナップショットとログはZooKeeperと互換性のない形式ですが、`clickhouse-keeper-converter`ツールを使用することで、ZooKeeperデータをClickHouse Keeperスナップショットに変換できます。ClickHouse Keeperのサーバー間プロトコルもZooKeeperと互換性がないため、ZooKeeperとClickHouse Keeperの混在クラスターは構築できません。
+デフォルトでは、ClickHouse Keeper は ZooKeeper と同じ保証、すなわち線形化可能な書き込みと線形化が保証されない読み取りを提供します。互換性のあるクライアント・サーバープロトコルを持つため、標準的な ZooKeeper クライアントで ClickHouse Keeper とやり取りできます。スナップショットとログは ZooKeeper と互換性のないフォーマットですが、`clickhouse-keeper-converter` ツールにより ZooKeeper のデータを ClickHouse Keeper のスナップショットに変換できます。ClickHouse Keeper のサーバー間プロトコルも ZooKeeper と互換性がないため、ZooKeeper / ClickHouse Keeper 混在クラスタは構成できません。
 
-ClickHouse Keeperは、[ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl)と同様にアクセス制御リスト（ACL）をサポートしています。ClickHouse Keeperは同じ権限セットをサポートし、同一の組み込みスキーム（`world`、`auth`、`digest`）を持っています。digest認証スキームは`username:password`のペアを使用し、パスワードはBase64でエンコードされます。
+ClickHouse Keeper は、[ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl) と同じ方法で Access Control Lists (ACL) をサポートします。ClickHouse Keeper は同じ権限セットをサポートし、`world`、`auth`、`digest` という同一の組み込みスキームを持ちます。digest 認証スキームは `username:password` のペアを使用し、パスワードは Base64 でエンコードされます。
 
 :::note
-外部統合はサポートされていません。
+外部との連携はサポートされていません。
 :::
 
-### 設定 {#configuration}
+### 設定
 
-ClickHouse Keeperは、ZooKeeperの独立した代替として、またはClickHouseサーバーの内部コンポーネントとして使用できます。いずれの場合も、設定はほぼ同じ`.xml`ファイルです。
+ClickHouse Keeper は、ZooKeeper のスタンドアロン代替として、または ClickHouse サーバーの内部コンポーネントとして利用できます。どちらの場合も、設定はほぼ同じ `.xml` ファイルです。
 
-#### Keeper設定項目 {#keeper-configuration-settings}
+#### Keeper の設定項目
 
-ClickHouse Keeperのメイン設定タグは`<keeper_server>`であり、以下のパラメータを持ちます:
+ClickHouse Keeper の主な設定タグは `<keeper_server>` で、次のパラメータがあります。
 
 
-| パラメータ                           | 説明                                                                                                                                                                                                                                         | デフォルト                                                                                                      |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `tcp_port`                          | クライアントが接続するポート。                                                                                                                                                                                                                       | `2181`                                                                                                       |
-| `tcp_port_secure`                   | クライアントとkeeper-server間のSSL接続用セキュアポート。                                                                                                                                                                                 | -                                                                                                            |
-| `server_id`                         | 一意のサーバーID。ClickHouse Keeperクラスタの各参加者は一意の番号(1、2、3など)を持つ必要があります。                                                                                                                                 | -                                                                                                            |
-| `log_storage_path`                  | 調整ログのパス。ZooKeeperと同様に、負荷の低いノードにログを保存することが推奨されます。                                                                                                                                                          | -                                                                                                            |
-| `snapshot_storage_path`             | 調整スナップショットのパス。                                                                                                                                                                                                                     | -                                                                                                            |
-| `enable_reconfiguration`            | [`reconfig`](#reconfiguration)による動的クラスタ再構成を有効化します。                                                                                                                                                                          | `False`                                                                                                      |
-| `max_memory_usage_soft_limit`       | keeperの最大メモリ使用量のソフトリミット(バイト単位)。                                                                                                                                                                                                     | `max_memory_usage_soft_limit_ratio` \* `physical_memory_amount`                                              |
-| `max_memory_usage_soft_limit_ratio` | `max_memory_usage_soft_limit`が設定されていないか、ゼロに設定されている場合、この値を使用してデフォルトのソフトリミットを定義します。                                                                                                                                     | `0.9`                                                                                                        |
-| `cgroups_memory_observer_wait_time` | `max_memory_usage_soft_limit`が設定されていないか、`0`に設定されている場合、この間隔で物理メモリ量を監視します。メモリ量が変化すると、`max_memory_usage_soft_limit_ratio`によってKeeperのメモリソフトリミットを再計算します。 | `15`                                                                                                         |
-| `http_control`                      | [HTTPコントロール](#http-control)インターフェースの設定。                                                                                                                                                                                           | -                                                                                                            |
-| `digest_enabled`                    | リアルタイムデータ整合性チェックを有効化します。                                                                                                                                                                                                             | `True`                                                                                                       |
-| `create_snapshot_on_exit`           | シャットダウン時にスナップショットを作成します。                                                                                                                                                                                                                   | -                                                                                                            |
-| `hostname_checks_enabled`           | クラスタ構成のホスト名妥当性チェックを有効化します(例: リモートエンドポイントでlocalhostが使用されている場合)。                                                                                                                                           | `True`                                                                                                       |
-| `four_letter_word_white_list`       | 4lwコマンドのホワイトリスト。                                                                                                                                                                                                                         | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
-| `enable_ipv6`                       | IPv6を有効化します。                                                                                                                                                                                                                         | `True`                                                                                                       |
+| Parameter                            | Description                                                                                                                                                                                                                                         | Default                                                                                                      |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `tcp_port`                           | クライアントが接続するためのポート。                                                                                                                                                                                                               | `2181`                                                                                                       |
+| `tcp_port_secure`                    | クライアントと keeper-server 間の SSL 接続用のセキュアポート。                                                                                                                                                                                     | -                                                                                                            |
+| `server_id`                          | 一意のサーバー ID。ClickHouse Keeper クラスターの各参加ノードは、(1, 2, 3, … のような) 一意の番号を持つ必要があります。                                                                                                                             | -                                                                                                            |
+| `log_storage_path`                   | 調停ログ (coordination logs) の保存パス。ZooKeeper と同様、ログは負荷の低いノード上に保存するのが望ましいです。                                                                                                                                    | -                                                                                                            |
+| `snapshot_storage_path`              | 調停スナップショットの保存パス。                                                                                                                                                                                                                     | -                                                                                                            |
+| `enable_reconfiguration`             | [`reconfig`](#reconfiguration) による動的なクラスター再構成を有効にします。                                                                                                                                                                        | `False`                                                                                                      |
+| `max_memory_usage_soft_limit`        | Keeper の最大メモリ使用量に対するソフトリミット (バイト単位)。                                                                                                                                                                                      | `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`                                               |
+| `max_memory_usage_soft_limit_ratio`  | `max_memory_usage_soft_limit` が未設定、または 0 に設定されている場合、この値を使用してデフォルトのソフトリミットを定義します。                                                                                                                     | `0.9`                                                                                                        |
+| `cgroups_memory_observer_wait_time`  | `max_memory_usage_soft_limit` が未設定、または `0` に設定されている場合、この間隔で物理メモリ量を監視します。メモリ量が変化した場合、`max_memory_usage_soft_limit_ratio` に基づいて Keeper のメモリのソフトリミットを再計算します。               | `15`                                                                                                         |
+| `http_control`                       | [HTTP control](#http-control) インターフェイスの設定。                                                                                                                                                                                              | -                                                                                                            |
+| `digest_enabled`                     | リアルタイムのデータ整合性チェックを有効にします。                                                                                                                                                                                                  | `True`                                                                                                       |
+| `create_snapshot_on_exit`            | シャットダウン時にスナップショットを作成します。                                                                                                                                                                                                    | -                                                                                                            |
+| `hostname_checks_enabled`            | クラスター設定に対するホスト名の妥当性チェックを有効にします (例：localhost がリモートエンドポイントと共に使用されている場合など)。                                                                                                               | `True`                                                                                                       |
+| `four_letter_word_white_list`        | 4lw コマンドのホワイトリスト。                                                                                                                                                                                                                      | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
+|`enable_ipv6`| IPv6 を有効にします。 | `True`|
 
-その他の一般的なパラメータは、ClickHouseサーバー設定(`listen_host`、`logger`など)から継承されます。
+その他の一般的なパラメータは、ClickHouse サーバーの設定 (`listen_host`、`logger` など) から継承されます。
 
-#### 内部調整設定 {#internal-coordination-settings}
+#### 内部調停設定 {#internal-coordination-settings}
 
-内部調整設定は`<keeper_server>.<coordination_settings>`セクションに配置され、以下のパラメータがあります:
+内部調停設定は `<keeper_server>.<coordination_settings>` セクションに定義されており、次のパラメータを持ちます。
+
 
 
 | Parameter                          | Description                                                                                                                                                                                                              | Default                                                                                                      |
 |------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| `operation_timeout_ms`             | 単一のクライアント操作のタイムアウト (ms)                                                                                                                                                                                | `10000`                                                                                                      |
+| `operation_timeout_ms`             | 単一クライアント操作のタイムアウト (ms)                                                                                                                                                                                   | `10000`                                                                                                      |
 | `min_session_timeout_ms`           | クライアントセッションの最小タイムアウト (ms)                                                                                                                                                                            | `10000`                                                                                                      |
 | `session_timeout_ms`               | クライアントセッションの最大タイムアウト (ms)                                                                                                                                                                            | `100000`                                                                                                     |
-| `dead_session_check_period_ms`     | ClickHouse Keeper がセッションの死活状態を確認し、死んだセッションを削除する間隔 (ms)                                                                                                                                    | `500`                                                                                                        |
-| `heart_beat_interval_ms`           | ClickHouse Keeper のリーダーがフォロワーにハートビートを送信する間隔 (ms)                                                                                                                                                 | `500`                                                                                                        |
-| `election_timeout_lower_bound_ms`  | フォロワーがこの間隔内にリーダーからハートビートを受信しなかった場合、リーダー選出を開始できます。`election_timeout_upper_bound_ms` 以下である必要があります。理想的には両者は同じ値にしないでください。                  | `1000`                                                                                                       |
-| `election_timeout_upper_bound_ms`  | フォロワーがこの間隔内にリーダーからハートビートを受信しなかった場合、リーダー選出を開始しなければなりません。                                                                                                           | `2000`                                                                                                       |
-| `rotate_log_storage_interval`      | 1 つのファイルに保存するログレコード数。                                                                                                                                                                                  | `100000`                                                                                                     |
-| `reserved_log_items`               | コンパクション前に保持する調停用ログレコード数。                                                                                                                                                                         | `100000`                                                                                                     |
+| `dead_session_check_period_ms`     | ClickHouse Keeper がデッドセッションを検出して削除する頻度 (ms)                                                                                                                                                           | `500`                                                                                                        |
+| `heart_beat_interval_ms`           | ClickHouse Keeper のリーダーがフォロワーにハートビートを送信する頻度 (ms)                                                                                                                                                 | `500`                                                                                                        |
+| `election_timeout_lower_bound_ms`  | フォロワーがこの間隔内にリーダーからのハートビートを受信しなかった場合、リーダー選出を開始できます。`election_timeout_upper_bound_ms` 以下である必要があります。理想的には両者は同一値にすべきではありません。 | `1000`                                                                                                       |
+| `election_timeout_upper_bound_ms`  | フォロワーがこの間隔内にリーダーからのハートビートを受信しなかった場合、リーダー選出を開始しなければなりません。                                                                                                         | `2000`                                                                                                       |
+| `rotate_log_storage_interval`      | 1 つのファイルに保存するログレコード数。                                                                                                                                                                                   | `100000`                                                                                                     |
+| `reserved_log_items`               | コンパクション前に保持するコーディネーションログレコード数。                                                                                                                                                              | `100000`                                                                                                     |
 | `snapshot_distance`                | ClickHouse Keeper が新しいスナップショットを作成する頻度 (ログ内のレコード数単位)。                                                                                                                                      | `100000`                                                                                                     |
 | `snapshots_to_keep`                | 保持するスナップショット数。                                                                                                                                                                                              | `3`                                                                                                          |
-| `stale_log_gap`                    | リーダーがフォロワーを古い (stale) とみなし、ログではなくスナップショットを送信するしきい値。                                                                                                                           | `10000`                                                                                                      |
-| `fresh_log_gap`                    | ノードが最新 (fresh) と見なされる条件。                                                                                                                                                                                  | `200`                                                                                                        |
-| `max_requests_batch_size`          | Raft に送信される前の、リクエスト数によるバッチの最大サイズ。                                                                                                                                                            | `100`                                                                                                        |
-| `force_sync`                       | 調停用ログへの各書き込み時に `fsync` を呼び出します。                                                                                                                                                                    | `true`                                                                                                       |
-| `quorum_reads`                     | 読み取りリクエストを、書き込みと同様に Raft コンセンサス全体を経由して実行し、ほぼ同等の速度で動作させます。                                                                                                             | `false`                                                                                                      |
-| `raft_logs_level`                  | 調停処理に関するテキストログのレベル (trace、debug など)。                                                                                                                                                               | `system default`                                                                                             |
-| `auto_forwarding`                  | フォロワーからリーダーへの書き込みリクエストのフォワードを許可します。                                                                                                                                                   | `true`                                                                                                       |
-| `shutdown_timeout`                 | 内部接続の終了を待ってからシャットダウンするまでの時間 (ms)。                                                                                                                                                             | `5000`                                                                                                       |
-| `startup_timeout`                  | サーバーが指定されたタイムアウト内に他のクォーラム参加者に接続できない場合、プロセスを終了します (ms)。                                                                                                                 | `30000`                                                                                                      |
-| `async_replication`                | 非同期レプリケーションを有効にします。すべての書き込みおよび読み取りの保証は維持されつつ、より高いパフォーマンスが得られます。後方互換性を損なわないよう、この設定はデフォルトでは無効になっています。                      | `false`                                                                                                      |
-| `latest_logs_cache_size_threshold` | 最新のログエントリ用インメモリキャッシュの合計最大サイズ。                                                                                                                                                              | `1GiB`                                                                                                       |
-| `commit_logs_cache_size_threshold` | コミットのために次に必要となるログエントリ用インメモリキャッシュの合計最大サイズ。                                                                                                                                       | `500MiB`                                                                                                     |
-| `disk_move_retries_wait_ms`        | ディスク間でファイルを移動中に障害が発生した後、再試行の間で待機する時間。                                                                                                                                               | `1000`                                                                                                       |
-| `disk_move_retries_during_init`    | 初期化中にディスク間でファイルを移動している際に障害が発生した場合の再試行回数。                                                                                                                                         | `100`                                                                                                        |
-| `experimental_use_rocksdb`         | バックエンドストレージとして RocksDB を使用します。                                                                                                                                                                      | `0`                                                                                                          |
+| `stale_log_gap`                    | リーダーがフォロワーをステイルと見なし、ログではなくスナップショットを送信する際のしきい値。                                                                                                                              | `10000`                                                                                                      |
+| `fresh_log_gap`                    | ノードが最新と見なされるタイミング。                                                                                                                                                                                      | `200`                                                                                                        |
+| `max_requests_batch_size`          | RAFT に送信される前のリクエストバッチの最大サイズ (リクエスト数)。                                                                                                                                                        | `100`                                                                                                        |
+| `force_sync`                       | 各コーディネーションログ書き込みごとに `fsync` を呼び出します。                                                                                                                                                           | `true`                                                                                                       |
+| `quorum_reads`                     | 読み取りリクエストを、書き込みと同様に RAFT コンセンサス全体を通して実行します (速度もほぼ同等です)。                                                                                                                      | `false`                                                                                                      |
+| `raft_logs_level`                  | コーディネーションに関するテキストログレベル (trace、debug など)。                                                                                                                                                        | `system default`                                                                                             |
+| `auto_forwarding`                  | フォロワーからリーダーへの書き込みリクエストのフォワードを許可します。                                                                                                                                                    | `true`                                                                                                       |
+| `shutdown_timeout`                 | 内部接続の完了およびシャットダウンまで待機する時間 (ms)。                                                                                                                                                                 | `5000`                                                                                                       |
+| `startup_timeout`                  | サーバーが指定されたタイムアウト内に他のクォーラム参加者に接続できない場合、終了します (ms)。                                                                                                                            | `30000`                                                                                                      |
+| `async_replication`                | 非同期レプリケーションを有効にします。すべての書き込みおよび読み取りの保証を維持しつつ、パフォーマンスを向上させます。後方互換性を損なわないよう、デフォルトでは無効になっています。                                       | `false`                                                                                                      |
+| `latest_logs_cache_size_threshold` | 最新ログエントリのインメモリキャッシュの合計最大サイズ                                                                                                                                                                   | `1GiB`                                                                                                       |
+| `commit_logs_cache_size_threshold` | コミットに次に必要となるログエントリのインメモリキャッシュの合計最大サイズ                                                                                                                                                | `500MiB`                                                                                                     |
+| `disk_move_retries_wait_ms`        | ディスク間でファイルを移動中に発生した失敗後、再試行の間に待機する時間                                                                                                                                                    | `1000`                                                                                                       |
+| `disk_move_retries_during_init`    | 初期化中にディスク間でファイルを移動している際に発生した失敗に対して行う再試行回数                                                                                                                                        | `100`                                                                                                        |
+| `experimental_use_rocksdb`         | バックエンドストレージとして RocksDB を使用するかどうか                                                                                                                             | `0`                                                                                                          |
 
-クォーラムの構成は `<keeper_server>.<raft_configuration>` セクションにあり、サーバーの記述が含まれます。
+クォーラム構成は `<keeper_server>.<raft_configuration>` セクションにあり、サーバーの定義が含まれます。
 
-クォーラム全体に対する唯一のパラメータは `secure` であり、クォーラム参加者間の通信に対して暗号化された接続を有効にします。ノード間の内部通信に SSL 接続が必要な場合はこのパラメータを `true` に設定し、それ以外の場合は未指定のままにできます。
+クォーラム全体に対する唯一のパラメータは `secure` であり、クォーラム参加者間の通信に対する暗号化接続を有効にします。ノード間の内部通信で SSL 接続が必要な場合はこのパラメータを `true` に設定し、それ以外の場合は未指定のままにできます。
 
-各 `<server>` の主なパラメータは次のとおりです。
+各 `<server>` に対する主なパラメータは次のとおりです。
 
 
 
-- `id` — クォーラム内のサーバー識別子。
-- `hostname` — このサーバーが配置されているホスト名。
-- `port` — このサーバーが接続を待ち受けるポート。
-- `can_become_leader` — サーバーを`learner`として設定する場合は`false`に設定します。省略した場合、値は`true`になります。
+* `id` — クォーラム内のサーバー識別子。
+* `hostname` — このサーバーが配置されているホスト名。
+* `port` — このサーバーが接続を待ち受けるポート。
+* `can_become_leader` — サーバーを `learner` として設定するには `false` を指定します。省略した場合の値は `true` です。
 
 :::note
-ClickHouse Keeperクラスターのトポロジーが変更される場合(例: サーバーの置き換え)、`server_id`から`hostname`へのマッピングを一貫して保ち、既存の`server_id`を異なるサーバーに対してシャッフルしたり再利用したりしないようにしてください(例: ClickHouse Keeperのデプロイに自動化スクリプトを使用している場合に発生する可能性があります)。
+ClickHouse Keeper クラスターのトポロジーが変更される場合（例: サーバーの置き換え）、`server_id` と `hostname` の対応関係を必ず一貫して維持し、既存の `server_id` を別のサーバーで使い回したり順番を入れ替えたりしないようにしてください（特に、ClickHouse Keeper をデプロイするために自動化スクリプトに依存している場合に発生する可能性があります）。
 
-Keeperインスタンスのホストが変更される可能性がある場合は、IPアドレスを直接指定するのではなく、ホスト名を定義して使用することを推奨します。ホスト名の変更はサーバーを削除して再度追加することと同等であり、場合によっては実行不可能なことがあります(例: クォーラムに必要なKeeperインスタンスが不足している場合)。
+Keeper インスタンスのホストが変更されうる場合は、生の IP アドレスではなくホスト名を定義して使用することを推奨します。ホスト名の変更はサーバーの削除と再追加に相当し、場合によっては実施できないことがあります（例: クォーラムを満たす Keeper インスタンス数が不足している場合）。
 :::
 
 :::note
-`async_replication`は後方互換性を損なわないようにデフォルトで無効になっています。クラスター内のすべてのKeeperインスタンスが`async_replication`をサポートするバージョン(v23.9以降)で実行されている場合は、デメリットなくパフォーマンスを向上させることができるため、有効にすることを推奨します。
+後方互換性を損なわないように、`async_replication` はデフォルトでは無効になっています。クラスター内のすべての Keeper インスタンスが `async_replication` をサポートするバージョン（v23.9 以降）で動作している場合は、パフォーマンスをデメリットなしに向上させられるため、有効化することを推奨します。
 :::
 
-3ノードのクォーラム構成の例は、`test_keeper_`プレフィックスを持つ[統合テスト](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration)で確認できます。サーバー#1の構成例:
+3 ノードでクォーラムを構成する場合の設定例は、`test_keeper_` プレフィックスが付いた [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) にあります。サーバー #1 の構成例は次のとおりです。
 
 ```xml
 <keeper_server>
@@ -152,42 +153,42 @@ Keeperインスタンスのホストが変更される可能性がある場合�
 </keeper_server>
 ```
 
-### 実行方法 {#how-to-run}
+### 実行方法
 
-ClickHouse KeeperはClickHouseサーバーパッケージにバンドルされています。`/etc/your_path_to_config/clickhouse-server/config.xml`に`<keeper_server>`の設定を追加し、通常通りClickHouseサーバーを起動するだけです。スタンドアロンのClickHouse Keeperを実行したい場合は、次のように同様の方法で起動できます:
+ClickHouse Keeper は ClickHouse サーバーパッケージに同梱されています。`<keeper_server>` の設定を `/etc/your_path_to_config/clickhouse-server/config.xml` に追加し、通常どおり ClickHouse サーバーを起動してください。ClickHouse Keeper をスタンドアロンで実行したい場合は、同様の方法で次のように起動できます。
 
 ```bash
 clickhouse-keeper --config /etc/your_path_to_config/config.xml
 ```
 
-シンボリックリンク(`clickhouse-keeper`)がない場合は、作成するか、`clickhouse`の引数として`keeper`を指定できます:
+`clickhouse-keeper` というシンボリックリンクがない場合は、それを作成するか、`clickhouse` の引数として `keeper` を指定できます。
 
 ```bash
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### 4文字コマンド {#four-letter-word-commands}
+### 4 文字コマンド
 
-ClickHouse Keeperは、Zookeeperとほぼ同じ4lwコマンドも提供しています。各コマンドは`mntr`、`stat`などの4文字で構成されています。いくつかの有用なコマンドがあります: `stat`はサーバーと接続されたクライアントに関する一般的な情報を提供し、`srvr`と`cons`はそれぞれサーバーと接続に関する詳細情報を提供します。
+ClickHouse Keeper は、ZooKeeper のものとほぼ同じ 4 文字コマンド (4lw) も提供します。各コマンドは `mntr` や `stat` などの 4 文字で構成されています。代表的なコマンドとして、`stat` はサーバーおよび接続クライアントに関する一般的な情報を返し、`srvr` と `cons` はそれぞれサーバーおよび接続に関する詳細情報を返します。
 
-4lwコマンドには、デフォルト値が`conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`であるホワイトリスト設定`four_letter_word_white_list`があります。
+4lw コマンドには、`four_letter_word_white_list` というホワイトリスト設定があり、デフォルト値は `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld` です。
 
-クライアントポートでtelnetまたはncを使用して、ClickHouse Keeperにコマンドを発行できます。
+クライアントポートに対して、telnet または nc 経由で ClickHouse Keeper にこれらのコマンドを送信できます。
 
 ```bash
 echo mntr | nc localhost 9181
 ```
 
-以下は詳細な4lwコマンドです:
+以下に 4lw コマンドの詳細を示します:
 
-- `ruok`: サーバーがエラーのない状態で実行されているかをテストします。サーバーが実行されている場合は`imok`で応答します。それ以外の場合は、まったく応答しません。`imok`の応答は、サーバーがクォーラムに参加していることを必ずしも示すものではなく、サーバープロセスがアクティブで指定されたクライアントポートにバインドされていることを示すだけです。クォーラムとクライアント接続情報に関する状態の詳細については、"stat"を使用してください。
+* `ruok`: サーバーがエラーのない状態で動作しているかをテストします。サーバーが動作している場合は `imok` と応答します。そうでない場合は一切応答しません。`imok` という応答は、サーバーがクォーラムに参加していることを必ずしも意味せず、サーバープロセスが稼働しており、指定されたクライアントポートにバインドされていることだけを示します。クォーラムに関する状態やクライアント接続情報の詳細については「stat」を使用してください。
 
 ```response
 imok
 ```
 
 
-* `mntr`: クラスターの健全性を監視するために使用できる変数の一覧を出力します。
+* `mntr`: クラスターの健全性を監視するために使用できる変数のリストを出力します。
 
 ```response
 zk_version      v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
@@ -209,7 +210,7 @@ zk_followers    0
 zk_synced_followers     0
 ```
 
-* `srvr`: サーバーの詳細情報をすべて表示します。
+* `srvr`: サーバーに関するすべての詳細を表示します。
 
 ```response
 ClickHouse Keeperバージョン: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
@@ -226,24 +227,24 @@ Zxid: 34
 * `stat`: サーバーおよび接続中のクライアントに関する概要情報を一覧表示します。
 
 ```response
-ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-Clients:
+ClickHouse Keeperバージョン: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+クライアント:
  192.168.1.1:52852(recved=0,sent=0)
  192.168.1.1:52042(recved=24,sent=48)
-Latency min/avg/max: 0/0/0
-Received: 4
-Sent : 4
-Connections: 1
-Outstanding: 0
+レイテンシ min/avg/max: 0/0/0
+受信数: 4
+送信数: 4
+接続数: 1
+未処理: 0
 Zxid: 36
-Mode: leader
-Node count: 4
+モード: leader
+ノード数: 4
 ```
 
-* `srst`: サーバー統計情報をリセットします。このコマンドは `srvr`、`mntr`、`stat` の結果に影響します。
+* `srst`: サーバーの統計情報をリセットします。このコマンドは `srvr`、`mntr`、`stat` の結果に影響を与えます。
 
 ```response
-サーバー統計がリセットされました。
+サーバー統計をリセットしました。
 ```
 
 * `conf`: サービング設定の詳細を表示します。
@@ -279,20 +280,20 @@ compress_snapshots_with_zstd_format=true
 configuration_change_tries_count=20
 ```
 
-* `cons`: このサーバーに接続しているすべてのクライアントの接続およびセッションの詳細情報を一覧表示します。受信/送信パケット数、セッション ID、操作レイテンシー、最後に実行された操作などの情報を含みます。
+* `cons`: このサーバーに接続しているすべてのクライアントの接続およびセッションに関する詳細情報を一覧表示します。受信／送信パケット数、セッション ID、操作レイテンシー、最後に実行された操作などの情報が含まれます。
 
 ```response
  192.168.1.1:52163(recved=0,sent=0,sid=0xffffffffffffffff,lop=NA,est=1636454787393,to=30000,lzxid=0xffffffffffffffff,lresp=0,llat=0,minlat=0,avglat=0,maxlat=0)
  192.168.1.1:52042(recved=9,sent=18,sid=0x0000000000000001,lop=List,est=1636454739887,to=30000,lcxid=0x0000000000000005,lzxid=0x0000000000000005,lresp=1636454739892,llat=0,minlat=0,avglat=0,maxlat=0)
 ```
 
-* `crst`: すべての接続／セッションの統計情報をリセットします。
+* `crst`: すべての接続について、接続／セッションの統計情報をリセットします。
 
 ```response
-接続統計がリセットされました。
+接続統計をリセットしました。
 ```
 
-* `envi`: サービング環境の詳細を表示します
+* `envi`: 実行環境の詳細を表示
 
 
 ```response
@@ -309,58 +310,58 @@ user.dir=/Users/JackyWoo/project/jd/clickhouse/cmake-build-debug/programs/
 user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
 ```
 
-* `dirs`: スナップショットおよびログファイルの合計サイズをバイト単位で表示します
+* `dirs`: スナップショットファイルおよびログファイルの総サイズをバイト単位で表示します
 
 ```response
 snapshot_dir_size: 0
 log_dir_size: 3875
 ```
 
-* `isro`: サーバーが読み取り専用モードで動作しているかどうかを確認します。読み取り専用モードの場合、サーバーは `ro` を返し、読み取り専用モードでない場合は `rw` を返します。
+* `isro`: サーバーが読み取り専用モードで動作しているかを確認します。サーバーは、読み取り専用モードの場合は `ro`、そうでない場合は `rw` を返します。
 
 ```response
 rw
 ```
 
-* `wchs`: サーバー上のウォッチの概要を一覧表示します。
+* `wchs`: サーバー上のウォッチの概要情報を一覧表示します。
 
 ```response
 1接続が1パスを監視中
 合計監視数:1
 ```
 
-* `wchc`: セッションごとにサーバーの watch に関する詳細情報を一覧表示します。セッション（接続）と、それに関連付けられた watch（パス）の一覧を出力します。watch の数によってはこの操作が高コストとなり（サーバーのパフォーマンスに影響する可能性があるため）慎重に使用してください。
+* `wchc`: サーバー上のウォッチ情報をセッションごとに詳細表示します。これにより、各セッション（接続）と、それに紐づくウォッチ対象（パス）の一覧が出力されます。ウォッチの数によっては、この操作は高コストになり（サーバーのパフォーマンスに影響を与える可能性がある）ため、慎重に使用してください。
 
 ```response
 0x0000000000000001
     /clickhouse/task_queue/ddl
 ```
 
-* `wchp`: サーバー上のウォッチについて、パスごとの詳細情報を一覧表示します。関連付けられたセッションとともに、パス（znode）のリストを出力します。なお、ウォッチの数によっては、この操作は高コストとなり（サーバーのパフォーマンスに影響する可能性があるため）、注意して使用してください。
+* `wchp`: サーバー上のウォッチについて、パスごとの詳細情報を一覧表示します。セッション情報と関連付けられたパス（znode）のリストを出力します。ウォッチの数によっては、この操作は負荷の高い処理となりうる（サーバーのパフォーマンスに影響を与える可能性がある）ため、注意して使用してください。
 
 ```response
 /clickhouse/task_queue/ddl
     0x0000000000000001
 ```
 
-* `dump`: 現在のセッションおよびエフェメラルノードを一覧表示します。これはリーダーノード上でのみ機能します。
+* `dump`: 未処理のセッションおよびエフェメラルノードを一覧表示します。これはリーダーノードでのみ有効です。
 
 ```response
-セッションダンプ (2):
+セッションのダンプ (2):
 0x0000000000000001
 0x0000000000000002
-エフェメラルセッション (1):
+エフェメラル付きのセッション (1):
 0x0000000000000001
  /clickhouse/task_queue/ddl
 ```
 
-* `csnp`: スナップショット作成タスクをスケジュールします。成功した場合はスケジュールされたスナップショットの最終コミット済みログインデックスを返し、失敗した場合は `Failed to schedule snapshot creation task.` を返します。`lgif` コマンドを使用すると、スナップショットが完了したかどうかを判断できます。
+* `csnp`: スナップショット作成タスクをスケジュールします。成功した場合は、スケジュールされたスナップショットの最新のコミット済みログインデックスを返し、失敗した場合は `Failed to schedule snapshot creation task.` を返します。`lgif` コマンドを使用すると、スナップショットが完了したかどうかを確認できます。
 
 ```response
 100
 ```
 
-* `lgif`: Keeper のログ情報。`first_log_idx` : ログストア内における自身の最初のログインデックス; `first_log_term` : 自身の最初のログターム; `last_log_idx` : ログストア内における自身の最後のログインデックス; `last_log_term` : 自身の最後のログターム; `last_committed_log_idx` : ステートマシンにおける自身の最後にコミットされたログインデックス; `leader_committed_log_idx` : 自身の観点から見たリーダーのコミット済みログインデックス; `target_committed_log_idx` : コミットされるべき目標のログインデックス; `last_snapshot_idx` : 直近のスナップショット内における、コミット済みログインデックスの最大値。
+* `lgif`: Keeper ログ情報。`first_log_idx` : ログストア内における自ノードの最初のログインデックス; `first_log_term` : 自ノードの最初のログターム; `last_log_idx` : ログストア内における自ノードの最後のログインデックス; `last_log_term` : 自ノードの最後のログターム; `last_committed_log_idx` : ステートマシンにおける自ノードの最後にコミットされたログインデックス; `leader_committed_log_idx` : 自ノードから見たリーダーのコミット済みログインデックス; `target_committed_log_idx` : コミットされるべき対象のログインデックス; `last_snapshot_idx` : 直近のスナップショットに含まれる最大のコミット済みログインデックス。
 
 ```response
 first_log_idx   1
@@ -373,13 +374,13 @@ target_committed_log_idx    101
 last_snapshot_idx   50
 ```
 
-* `rqld`: 新しいリーダーになることを要求します。リクエストが送信された場合は `Sent leadership request to leader.` を返し、送信されなかった場合は `Failed to send leadership request to leader.` を返します。ノードがすでにリーダーである場合でも、結果はリクエストが送信された場合と同じになることに注意してください。
+* `rqld`: 自ノードを新しいリーダーにするよう要求します。要求が送信された場合は `Sent leadership request to leader.` を返し、要求が送信されなかった場合は `Failed to send leadership request to leader.` を返します。ノードがすでにリーダーである場合でも、結果は要求が送信された場合と同じになります。
 
 ```response
-リーダーにリーダーシップ要求を送信しました。
+リーダーにリーダー権限のリクエストを送信しました。
 ```
 
-* `ftfl`: すべての機能フラグと、それが Keeper インスタンスで有効化されているかどうかを一覧表示します。
+* `ftfl`: すべてのフィーチャーフラグと、それぞれが Keeper インスタンスで有効かどうかを一覧表示します。
 
 ```response
 filtered_list   1
@@ -387,41 +388,41 @@ multi_read  1
 check_not_exists    0
 ```
 
-* `ydld`: リーダー権限の譲渡を要求し、自身がフォロワーになるためのリクエスト。リクエストを受信したサーバーがリーダーである場合、まず書き込み操作を一時停止し、後継ノード（現在のリーダーが後継になることはない）が最新ログへの追いつきを完了するまで待機してからリーダーを辞任する。後継ノードは自動的に選出される。リクエストが送信された場合は `Sent yield leadership request to leader.` を返し、リクエストが送信されなかった場合は `Failed to send yield leadership request to leader.` を返す。ノードがすでにフォロワーである場合、結果はリクエストが送信された場合と同じになることに注意。
+* `ydld`: リーダー権限を放棄してフォロワーになるよう要求します。リクエストを受け取ったサーバーがリーダーの場合、まず書き込み操作を一時停止し、後継ノード（現在のリーダーが後継になることはありません）が最新ログのキャッチアップを完了するまで待機してから辞任します。後継ノードは自動的に選出されます。リクエストの送信に成功した場合は `Sent yield leadership request to leader.` を返し、送信に失敗した場合は `Failed to send yield leadership request to leader.` を返します。ノードがすでにフォロワーである場合も、リクエストが送信された場合と同じ結果になります。
 
 ```response
-リーダーに対してリーダーシップ譲渡要求を送信しました。
+リーダーへリーダーシップ譲渡リクエストを送信しました。
 ```
 
-* `pfev`: 収集されたすべてのイベントの値を返します。各イベントについて、イベント名、イベント値、および説明を返します。
+* `pfev`: 収集されたすべてのイベントの値を返します。各イベントごとに、イベント名、イベント値、およびイベントの説明を返します。
 
 
 ```response
-FileOpen        62      開かれたファイルの数。
+FileOpen        62      オープンされたファイルの数。
 Seek    4       'lseek'関数が呼び出された回数。
 ReadBufferFromFileDescriptorRead        126     ファイルディスクリプタからの読み取り(read/pread)回数。ソケットは含まれません。
 ReadBufferFromFileDescriptorReadFailed  0       ファイルディスクリプタからの読み取り(read/pread)が失敗した回数。
-ReadBufferFromFileDescriptorReadBytes   178846  ファイルディスクリプタから読み取られたバイト数。ファイルが圧縮されている場合、圧縮データサイズが表示されます。
+ReadBufferFromFileDescriptorReadBytes   178846  ファイルディスクリプタから読み取られたバイト数。ファイルが圧縮されている場合は、圧縮データサイズが表示されます。
 WriteBufferFromFileDescriptorWrite      7       ファイルディスクリプタへの書き込み(write/pwrite)回数。ソケットは含まれません。
 WriteBufferFromFileDescriptorWriteFailed        0       ファイルディスクリプタへの書き込み(write/pwrite)が失敗した回数。
-WriteBufferFromFileDescriptorWriteBytes 153     ファイルディスクリプタに書き込まれたバイト数。ファイルが圧縮されている場合、圧縮データサイズが表示されます。
+WriteBufferFromFileDescriptorWriteBytes 153     ファイルディスクリプタに書き込まれたバイト数。ファイルが圧縮されている場合は、圧縮データサイズが表示されます。
 FileSync        2       ファイルに対してF_FULLFSYNC/fsync/fdatasync関数が呼び出された回数。
 DirectorySync   0       ディレクトリに対してF_FULLFSYNC/fsync/fdatasync関数が呼び出された回数。
 FileSyncElapsedMicroseconds     12756   ファイルに対するF_FULLFSYNC/fsync/fdatasyncシステムコールの待機に費やされた合計時間。
 DirectorySyncElapsedMicroseconds        0       ディレクトリに対するF_FULLFSYNC/fsync/fdatasyncシステムコールの待機に費やされた合計時間。
-ReadCompressedBytes     0       圧縮ソース(ファイル、ネットワーク)から読み取られたバイト数(解凍前のバイト数)。
-CompressedReadBufferBlocks      0       圧縮ソース(ファイル、ネットワーク)から読み取られた圧縮ブロック(互いに独立して圧縮されたデータブロック)の数。
-CompressedReadBufferBytes       0       圧縮ソース(ファイル、ネットワーク)から読み取られた非圧縮バイト数(解凍後のバイト数)。
+ReadCompressedBytes     0       圧縮ソース(ファイル、ネットワーク)から読み取られたバイト数(展開前のバイト数)。
+CompressedReadBufferBlocks      0       圧縮ソース(ファイル、ネットワーク)から読み取られた圧縮ブロック数(互いに独立して圧縮されたデータブロック)。
+CompressedReadBufferBytes       0       圧縮ソース(ファイル、ネットワーク)から読み取られた非圧縮バイト数(展開後のバイト数)。
 AIOWrite        0       LinuxまたはFreeBSD AIOインターフェースによる書き込み回数
 AIOWriteBytes   0       LinuxまたはFreeBSD AIOインターフェースで書き込まれたバイト数
 ...
 ```
 
-### HTTP制御 {#http-control}
+### HTTP 制御
 
-ClickHouse Keeperは、レプリカがトラフィックを受信する準備ができているかを確認するためのHTTPインターフェースを提供します。[Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)などのクラウド環境で使用できます。
+ClickHouse Keeper は、レプリカがトラフィックを受信できる状態かどうかを確認するための HTTP インターフェイスを提供します。これは、[Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes) のようなクラウド環境で使用できます。
 
-`/ready`エンドポイントを有効にする設定例:
+`/ready` エンドポイントを有効化するための設定例:
 
 ```xml
 <clickhouse>
@@ -436,14 +437,14 @@ ClickHouse Keeperは、レプリカがトラフィックを受信する準備が
 </clickhouse>
 ```
 
-### 機能フラグ {#feature-flags}
+### フィーチャーフラグ
 
-KeeperはZooKeeperおよびそのクライアントと完全に互換性がありますが、ClickHouseクライアントで使用できる独自の機能とリクエストタイプも導入しています。
-これらの機能は後方互換性のない変更を導入する可能性があるため、ほとんどの機能はデフォルトで無効になっており、`keeper_server.feature_flags`設定を使用して有効化できます。
-すべての機能は明示的に無効化することができます。
-Keeperクラスタで新しい機能を有効にする場合は、まずクラスタ内のすべてのKeeperインスタンスをその機能をサポートするバージョンに更新してから、機能自体を有効にすることを推奨します。
+Keeper は ZooKeeper およびそのクライアントと完全互換ですが、ClickHouse クライアントから利用できる独自の機能やリクエスト種別も追加しています。
+これらの機能は後方互換性のない変更を引き起こす可能性があるため、その多くはデフォルトで無効化されており、`keeper_server.feature_flags` 設定を使用して有効化できます。
+すべての機能は個別に無効化することもできます。
+Keeper クラスターで新しい機能を有効にしたい場合は、まずクラスター内のすべての Keeper インスタンスをその機能をサポートするバージョンに更新してから、その機能自体を有効にすることを推奨します。
 
-`multi_read`を無効にし、`check_not_exists`を有効にする機能フラグ設定の例:
+`multi_read` を無効化し、`check_not_exists` を有効化するフィーチャーフラグ設定の例:
 
 ```xml
 <clickhouse>
@@ -456,84 +457,87 @@ Keeperクラスタで新しい機能を有効にする場合は、まずクラ�
 </clickhouse>
 ```
 
-以下の機能が利用可能です:
+次の機能を利用できます:
 
-| 機能                | 説明                                                                                                                                              | デフォルト |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `multi_read`           | マルチ読み取りリクエストのサポート                                                                                                                           | `1`     |
-| `filtered_list`        | ノードのタイプ(一時的または永続的)で結果をフィルタリングするリストリクエストのサポート                                                             | `1`     |
-| `check_not_exists`     | ノードが存在しないことを確認する`CheckNotExists`リクエストのサポート                                                                              | `1`     |
-| `create_if_not_exists` | ノードが存在しない場合に作成を試みる`CreateIfNotExists`リクエストのサポート。存在する場合は変更が適用されず、`ZOK`が返されます | `1`     |
-| `remove_recursive`     | ノードとそのサブツリーを削除する`RemoveRecursive`リクエストのサポート                                                                     | `1`     |
+| Feature                | Description                                                                      | Default |
+| ---------------------- | -------------------------------------------------------------------------------- | ------- |
+| `multi_read`           | 複数読み取りリクエストのサポート                                                                 | `1`     |
+| `filtered_list`        | ノードの種類（一時的か永続的か）で結果をフィルタリングする list リクエストのサポート                                    | `1`     |
+| `check_not_exists`     | ノードが存在しないことを検証する `CheckNotExists` リクエストのサポート                                     | `1`     |
+| `create_if_not_exists` | ノードが存在しない場合に作成を試みる `CreateIfNotExists` リクエストのサポート。すでに存在する場合は変更は行われず、`ZOK` が返されます | `1`     |
+| `remove_recursive`     | 対象ノードとそのサブツリーを削除する `RemoveRecursive` リクエストのサポート                                  | `1`     |
 
 :::note
-一部の機能フラグはバージョン25.7からデフォルトで有効になっています。  
-Keeperを25.7以降にアップグレードする推奨方法は、まずバージョン24.9以降にアップグレードすることです。
+一部の機能フラグはバージョン 25.7 からデフォルトで有効になっています。\
+Keeper を 25.7 以降にアップグレードする場合は、まずバージョン 24.9 以降にアップグレードしてから 25.7 以降に上げることを推奨します。
 :::
 
 
-### ZooKeeperからの移行 {#migration-from-zookeeper}
+### ZooKeeper からの移行
 
-ZooKeeperからClickHouse Keeperへのシームレスな移行はできません。ZooKeeperクラスタを停止し、データを変換してから、ClickHouse Keeperを起動する必要があります。`clickhouse-keeper-converter`ツールを使用すると、ZooKeeperのログとスナップショットをClickHouse Keeperのスナップショットに変換できます。このツールはZooKeeper > 3.4でのみ動作します。移行手順は以下の通りです:
+ZooKeeper から ClickHouse Keeper へのシームレスな移行はできません。ZooKeeper クラスターを停止し、データを変換してから ClickHouse Keeper を起動する必要があります。`clickhouse-keeper-converter` ツールを使用すると、ZooKeeper のログおよびスナップショットを ClickHouse Keeper のスナップショットに変換できます。このツールは ZooKeeper 3.4 より新しいバージョンでのみ動作します。移行の手順は次のとおりです。
 
-1. すべてのZooKeeperノードを停止します。
+1. すべての ZooKeeper ノードを停止します。
 
-2. 任意ですが推奨: ZooKeeperのリーダーノードを特定し、再度起動して停止します。これによりZooKeeperが一貫性のあるスナップショットを作成します。
+2. オプションですが推奨です。ZooKeeper のリーダーノードを特定し、それを起動してから再度停止します。これにより、ZooKeeper に整合性の取れたスナップショットを作成させることができます。
 
-3. リーダー上で`clickhouse-keeper-converter`を実行します。例:
+3. リーダー上で `clickhouse-keeper-converter` を実行します。例:
 
 ```bash
 clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
 ```
 
-4. `keeper`が設定されたClickHouseサーバーノードにスナップショットをコピーするか、ZooKeeperの代わりにClickHouse Keeperを起動します。スナップショットはすべてのノードに存在する必要があります。そうでない場合、空のノードの方が高速になり、そのうちの1つがリーダーになる可能性があります。
+4. `keeper` が設定されている ClickHouse サーバーノードにスナップショットをコピーするか、ZooKeeper の代わりに ClickHouse Keeper を起動します。スナップショットはすべてのノードに永続化されている必要があります。そうでないと、空のノードのほうが起動が速く、そのうちの 1 つがリーダーになってしまう可能性があります。
 
 :::note
-`keeper-converter`ツールは、Keeperスタンドアロンバイナリからは利用できません。
-ClickHouseがインストールされている場合は、バイナリを直接使用できます:
+`keeper-converter` ツールは Keeper のスタンドアロンバイナリでは利用できません。
+ClickHouse がインストールされている場合は、ClickHouse のバイナリを直接使用できます。
 
 ```bash
 clickhouse keeper-converter ...
 ```
 
-それ以外の場合は、[バイナリをダウンロード](/getting-started/quick-start/oss#download-the-binary)して、ClickHouseをインストールせずに上記の手順でツールを実行できます。
+Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
-### クォーラム喪失後の復旧 {#recovering-after-losing-quorum}
+### クォーラム喪失後の復旧
 
-ClickHouse KeeperはRaftを使用しているため、クラスタサイズに応じて一定数のノード障害を許容できます。\
-例えば、3ノードクラスタの場合、1ノードのみが障害を起こしても正常に動作し続けます。
+ClickHouse Keeper は Raft を使用しているため、クラスタサイズに応じて一定数のノード障害を許容できます。\
+例えば、3 ノードクラスタの場合、1 ノードだけがクラッシュした状態であれば、正しく動作し続けます。
 
-クラスタ構成は動的に設定できますが、いくつかの制限があります。再構成もRaftに依存しているため、クラスタからノードを追加/削除するにはクォーラムが必要です。再起動の見込みがない状態で同時にあまりに多くのノードを失うと、Raftは動作を停止し、従来の方法でクラスタを再構成することができなくなります。
+クラスタ構成は動的に変更できますが、いくつか制約があります。再構成も Raft に依存しているため、
+クラスタにノードを追加 / 削除するにはクォーラムが必要です。クラスタ内で多数のノードを同時に失い、
+再起動する見込みがまったくない場合、Raft は動作を停止し、通常の方法ではクラスタを再構成できなくなります。
 
-それでも、ClickHouse Keeperには、1ノードのみでクラスタを強制的に再構成できる復旧モードがあります。
-これは、ノードを再起動できない場合、または同じエンドポイントで新しいインスタンスを起動できない場合の最後の手段としてのみ実行してください。
+ただし、ClickHouse Keeper にはリカバリーモードがあり、1 ノードだけでクラスタを強制的に再構成できます。
+これは、ノードを再起動できない場合、あるいは同じエンドポイントで新しいインスタンスを起動できない場合の
+最後の手段としてのみ実施してください。
 
 続行する前に注意すべき重要な点:
 
-- 障害が発生したノードがクラスタに再接続できないことを確認してください。
-- 手順で指定されるまで、新しいノードを起動しないでください。
+* 障害が発生したノードが、再びクラスタに接続できないことを確認してください。
+* 手順で明示されるまで、新しいノードはいずれも起動しないでください。
 
-上記の点が満たされていることを確認したら、以下を実行する必要があります:
+上記を確認したら、次の作業を行います:
 
-1. 新しいリーダーとなる単一のKeeperノードを選択します。そのノードのデータがクラスタ全体で使用されることに注意してください。最新の状態を持つノードを使用することを推奨します。
-2. 他の操作を行う前に、選択したノードの`log_storage_path`と`snapshot_storage_path`フォルダのバックアップを作成します。
-3. 使用するすべてのノードでクラスタを再構成します。
-4. 選択したノードに4文字コマンド`rcvr`を送信してノードを復旧モードに移行させるか、選択したノードのKeeperインスタンスを停止して`--force-recovery`引数を付けて再起動します。
-5. 新しいノードで1つずつKeeperインスタンスを起動し、次のノードを起動する前に`mntr`が`zk_server_state`に対して`follower`を返すことを確認します。
-6. 復旧モード中、リーダーノードは新しいノードとのクォーラムを達成するまで`mntr`コマンドに対してエラーメッセージを返し、クライアントとフォロワーからのすべてのリクエストを拒否します。
-7. クォーラムが達成されると、リーダーノードは通常の動作モードに戻り、Raftを使用してすべてのリクエストを受け入れます。`mntr`で確認すると、`zk_server_state`に対して`leader`が返されるはずです。
+1. 新しいリーダーとする Keeper ノードを 1 つ選択します。そのノードのデータがクラスタ全体に使用されるため、状態が最も最新であるノードを選ぶことを推奨します。
+2. まず最初に、選択したノードの `log_storage_path` と `snapshot_storage_path` ディレクトリをバックアップします。
+3. 使用するすべてのノード上でクラスタ構成を再設定します。
+4. 選択したノードに 4 文字コマンド `rcvr` を送信して、そのノードをリカバリーモードに移行させるか、あるいはそのノード上の Keeper インスタンスを停止し、`--force-recovery` 引数を付けて再起動します。
+5. 新しいノード上の Keeper インスタンスを 1 台ずつ起動し、次のノードを起動する前に、`mntr` が `zk_server_state` に対して `follower` を返すことを確認します。
+6. リカバリーモード中、リーダーノードは新しいノードとクォーラムを達成するまで `mntr` コマンドに対してエラーメッセージを返し、クライアントおよびフォロワーからのすべてのリクエストを拒否します。
+7. クォーラム達成後、リーダーノードは通常の動作モードに戻り、すべてのリクエストを受け付けるようになります。`mntr` を使用して Raft を検証すると、`zk_server_state` に対して `leader` が返されるはずです。
 
 
-## Keeperでのディスクの使用 {#using-disks-with-keeper}
+## Keeper でのディスクの使用
 
-Keeperは、スナップショット、ログファイル、およびステートファイルの保存に[外部ディスク](/operations/storing-data.md)のサブセットをサポートしています。
+Keeper は、スナップショット、ログファイル、および状態ファイルを保存するために、[外部ディスク](/operations/storing-data.md) の一部をサポートしています。
 
-サポートされているディスクタイプは以下の通りです:
+サポートされているディスクの種類は次のとおりです。
 
-- s3_plain
-- s3
-- local
+* s3&#95;plain
+* s3
+* local
 
 以下は、設定ファイル内に含まれるディスク定義の例です。
 
@@ -572,22 +576,22 @@ Keeperは、スナップショット、ログファイル、およびステー�
 </clickhouse>
 ```
 
-ログ用のディスクを使用するには、`keeper_server.log_storage_disk`設定をディスク名に設定します。
-スナップショット用のディスクを使用するには、`keeper_server.snapshot_storage_disk`設定をディスク名に設定します。
-さらに、`keeper_server.latest_log_storage_disk`と`keeper_server.latest_snapshot_storage_disk`をそれぞれ使用することで、最新のログやスナップショットに異なるディスクを使用できます。
-この場合、新しいログやスナップショットが作成されると、Keeperは自動的にファイルを適切なディスクに移動します。
-ステートファイル用のディスクを使用するには、`keeper_server.state_storage_disk`設定をディスク名に設定します。
+ログ用にディスクを使用するには、`keeper_server.log_storage_disk` 設定にディスク名を指定します。
+スナップショット用にディスクを使用するには、`keeper_server.snapshot_storage_disk` 設定にディスク名を指定します。
+さらに、`keeper_server.latest_log_storage_disk` および `keeper_server.latest_snapshot_storage_disk` をそれぞれ使用することで、最新のログやスナップショットには別のディスクを使用できます。
+その場合、新しいログやスナップショットが作成されると、Keeper はファイルを正しいディスクに自動的に移動します。
+状態ファイル用にディスクを使用するには、`keeper_server.state_storage_disk` 設定にディスク名を指定します。
 
-ディスク間でのファイル移動は安全であり、転送の途中でKeeperが停止してもデータ損失のリスクはありません。
-ファイルが新しいディスクに完全に移動されるまで、古いディスクから削除されることはありません。
+ディスク間でのファイル移動は安全であり、転送の途中で Keeper が停止してもデータを失うリスクはありません。
+ファイルが新しいディスクに完全に移動されるまでは、古いディスクから削除されることはありません。
 
-`keeper_server.coordination_settings.force_sync`が`true`に設定されている(デフォルトは`true`)Keeperは、すべてのタイプのディスクに対して一部の保証を満たすことができません。
-現在、`local`タイプのディスクのみが永続的な同期をサポートしています。
-`force_sync`を使用する場合、`latest_log_storage_disk`が使用されていなければ、`log_storage_disk`は`local`ディスクである必要があります。
-`latest_log_storage_disk`を使用する場合は、常に`local`ディスクである必要があります。
-`force_sync`が無効になっている場合は、すべてのタイプのディスクをあらゆる構成で使用できます。
+`keeper_server.coordination_settings.force_sync` を `true`（デフォルト値は `true`）に設定した Keeper は、すべての種類のディスクに対して一律の保証を満たすことはできません。
+現時点では、`local` タイプのディスクのみが永続的な同期をサポートします。
+`force_sync` を使用する場合、`latest_log_storage_disk` を使用していないなら、`log_storage_disk` は `local` ディスクでなければなりません。
+`latest_log_storage_disk` を使用する場合、それは常に `local` ディスクである必要があります。
+`force_sync` が無効な場合は、あらゆるタイプのディスクを任意の構成で使用できます。
 
-Keeperインスタンスのストレージ構成例は以下のようになります:
+Keeper インスタンスのストレージ構成の一例は、次のようになります。
 
 ```xml
 <clickhouse>
@@ -601,21 +605,21 @@ Keeperインスタンスのストレージ構成例は以下のようになり�
 </clickhouse>
 ```
 
-このインスタンスは、最新のログを除くすべてのログを`log_s3_plain`ディスクに保存し、最新のログは`log_local`ディスクに保存されます。
-スナップショットにも同じロジックが適用され、最新のスナップショットを除くすべてのスナップショットは`snapshot_s3_plain`に保存され、最新のスナップショットは`snapshot_local`ディスクに保存されます。
+このインスタンスは、最新のログ以外のすべてのログをディスク `log_s3_plain` に保存し、最新のログのみをディスク `log_local` に保存します。
+同じロジックがスナップショットにも適用され、最新のスナップショット以外はすべて `snapshot_s3_plain` に保存され、最新のスナップショットのみがディスク `snapshot_local` に保存されます。
 
-### ディスク構成の変更 {#changing-disk-setup}
+### ディスク構成の変更
 
 :::important
-新しいディスク構成を適用する前に、すべてのKeeperログとスナップショットを手動でバックアップしてください。
+新しいディスク構成を適用する前に、すべての Keeper のログとスナップショットを手動でバックアップしてください。
 :::
 
-階層化されたディスク構成が定義されている場合(最新のファイルに別のディスクを使用)、Keeperは起動時に自動的にファイルを適切なディスクに移動しようとします。
-以前と同じ保証が適用されます。ファイルが新しいディスクに完全に移動されるまで、古いディスクから削除されないため、複数回の再起動を安全に実行できます。
+階層化ディスク構成（最新ファイル用に個別のディスクを使用する構成）が定義されている場合、Keeper は起動時にファイルを正しいディスクへ自動的に移動しようとします。
+以前と同じ保証が適用され、ファイルが新しいディスクへ完全に移動されるまでは古いディスクから削除されないため、複数回の再起動を安全に行うことができます。
 
-ファイルを完全に新しいディスクに移動する必要がある場合(または2ディスク構成から単一ディスク構成に移行する場合)、`keeper_server.old_snapshot_storage_disk`と`keeper_server.old_log_storage_disk`の複数の定義を使用することができます。
+ファイルをまったく新しいディスクへ移動する必要がある場合（または 2 ディスク構成から単一ディスク構成へ移行する場合）、`keeper_server.old_snapshot_storage_disk` と `keeper_server.old_log_storage_disk` を複数定義して使用することができます。
 
-以下の設定は、以前の2ディスク構成から完全に新しい単一ディスク構成に移行する方法を示しています:
+次の設定は、以前の 2 ディスク構成から、まったく新しい単一ディスク構成へ移行する方法を示しています。
 
 
 ```xml
@@ -632,38 +636,38 @@ Keeperインスタンスのストレージ構成例は以下のようになり�
 </clickhouse>
 ```
 
-起動時に、`log_local` および `log_s3_plain` 上のすべてのログファイルが `log_local2` ディスクに移動されます。
+起動時には、`log_local` および `log_s3_plain` 上のすべてのログファイルが `log_local2` ディスクに移動されます。
 また、`snapshot_local` および `snapshot_s3_plain` 上のすべてのスナップショットファイルが `snapshot_local2` ディスクに移動されます。
 
 
 ## ログキャッシュの設定 {#configuring-logs-cache}
 
-ディスクから読み取るデータ量を最小限に抑えるため、Keeperはログエントリをメモリにキャッシュします。
-リクエストが大きい場合、ログエントリが過度にメモリを消費するため、キャッシュされるログの量には上限が設定されています。
-この上限は以下の2つの設定で制御されます:
-
+ディスクから読み取るデータ量を最小限に抑えるために、Keeper はログエントリをメモリにキャッシュします。
+リクエストが大きい場合、ログエントリが多くのメモリを消費するため、キャッシュされるログの量には上限があります。
+この上限は次の 2 つの設定で制御されます:
 - `latest_logs_cache_size_threshold` - キャッシュに保存される最新ログの合計サイズ
-- `commit_logs_cache_size_threshold` - 次にコミットが必要な後続ログの合計サイズ
+- `commit_logs_cache_size_threshold` - 次にコミットする必要がある後続ログの合計サイズ
 
-デフォルト値が大きすぎる場合は、これら2つの設定値を減らすことでメモリ使用量を削減できます。
+デフォルト値が大きすぎる場合は、これら 2 つの設定値を小さくすることでメモリ使用量を削減できます。
 
 :::note
-`pfev`コマンドを使用して、各キャッシュおよびファイルから読み取られたログの量を確認できます。
-また、Prometheusエンドポイントのメトリクスを使用して、両方のキャッシュの現在のサイズを追跡することもできます。
+`pfev` コマンドを使用して、それぞれのキャッシュおよびファイルから読み取られたログの量を確認できます。
+Prometheus エンドポイントのメトリクスを使用して、両方のキャッシュの現在のサイズを追跡することもできます。
 :::
 
 
-## Prometheus {#prometheus}
 
-Keeperは[Prometheus](https://prometheus.io)によるスクレイピングのためにメトリクスデータを公開できます。
+## Prometheus
+
+Keeper は [Prometheus](https://prometheus.io) によるスクレイプ用のメトリクスデータを公開できます。
 
 設定:
 
-- `endpoint` – PrometheusサーバーがメトリクスをスクレイピングするためのHTTPエンドポイント。'/'から始まります。
-- `port` – `endpoint`のポート番号。
-- `metrics` – [system.metrics](/operations/system-tables/metrics)テーブルからメトリクスを公開するかどうかを設定するフラグ。
-- `events` – [system.events](/operations/system-tables/events)テーブルからメトリクスを公開するかどうかを設定するフラグ。
-- `asynchronous_metrics` – [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics)テーブルから現在のメトリクス値を公開するかどうかを設定するフラグ。
+* `endpoint` – Prometheus サーバーがメトリクスをスクレイプするための HTTP エンドポイント。先頭は &#39;/&#39; とします。
+* `port` – `endpoint` 用のポート。
+* `metrics` – [system.metrics](/operations/system-tables/metrics) テーブルからメトリクスを公開するかを制御するフラグ。
+* `events` – [system.events](/operations/system-tables/events) テーブルからメトリクスを公開するかを制御するフラグ。
+* `asynchronous_metrics` – [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) テーブルから現在のメトリクス値を公開するかを制御するフラグ。
 
 **例**
 
@@ -684,131 +688,129 @@ Keeperは[Prometheus](https://prometheus.io)によるスクレイピングのた
 </clickhouse>
 ```
 
-確認方法(`127.0.0.1`をClickHouseサーバーのIPアドレスまたはホスト名に置き換えてください):
+確認します（`127.0.0.1` を ClickHouse サーバーの IP アドレスまたはホスト名に置き換えてください）:
 
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
 
-ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も併せて参照してください。
+ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も参照してください。
 
 
-## ClickHouse Keeperユーザーガイド {#clickhouse-keeper-user-guide}
+## ClickHouse Keeper ユーザーガイド {#clickhouse-keeper-user-guide}
 
-本ガイドでは、ClickHouse Keeperを構成するためのシンプルで最小限の設定を提供し、分散操作をテストする方法の例を示します。この例では、Linux上の3つのノードを使用します。
+このガイドでは、ClickHouse Keeper を構成するためのシンプルで最小限の設定と、分散処理（分散操作）をテストする方法の例を示します。この例では、Linux 上の 3 ノードを使用します。
 
-### 1. Keeper設定でノードを構成する {#1-configure-nodes-with-keeper-settings}
+### 1. Keeper 設定でノードを構成する {#1-configure-nodes-with-keeper-settings}
 
-1. 3つのホスト（`chnode1`、`chnode2`、`chnode3`）に3つのClickHouseインスタンスをインストールします。（ClickHouseのインストールの詳細については、[クイックスタート](/getting-started/install/install.mdx)を参照してください。）
+1. 3 つのホスト（`chnode1`、`chnode2`、`chnode3`）に 3 つの ClickHouse インスタンスをインストールします。（ClickHouse のインストール方法の詳細は、[クイックスタート](/getting-started/install/install.mdx) を参照してください。）
 
-2. 各ノードで、ネットワークインターフェースを通じた外部通信を許可するために、以下のエントリを追加します。
-
-   ```xml
-   <listen_host>0.0.0.0</listen_host>
-   ```
-
-3. 以下のClickHouse Keeper設定を3つのサーバーすべてに追加し、各サーバーの`<server_id>`設定を更新します。`chnode1`の場合は`1`、`chnode2`の場合は`2`などとなります。
-
-   ```xml
-   <keeper_server>
-       <tcp_port>9181</tcp_port>
-       <server_id>1</server_id>
-       <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-       <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
-
-       <coordination_settings>
-           <operation_timeout_ms>10000</operation_timeout_ms>
-           <session_timeout_ms>30000</session_timeout_ms>
-           <raft_logs_level>warning</raft_logs_level>
-       </coordination_settings>
-
-       <raft_configuration>
-           <server>
-               <id>1</id>
-               <hostname>chnode1.domain.com</hostname>
-               <port>9234</port>
-           </server>
-           <server>
-               <id>2</id>
-               <hostname>chnode2.domain.com</hostname>
-               <port>9234</port>
-           </server>
-           <server>
-               <id>3</id>
-               <hostname>chnode3.domain.com</hostname>
-               <port>9234</port>
-           </server>
-       </raft_configuration>
-   </keeper_server>
-   ```
-
-   上記で使用される基本設定は以下の通りです：
-
-   | パラメータ             | 説明                                                             | 例                                         |
-   | --------------------- | ----------------------------------------------------------------------- | ----------------------------------------------- |
-   | tcp_port              | Keeperのクライアントが使用するポート                                    | 9181（ZooKeeperの2181に相当するデフォルト値） |
-   | server_id             | Raft設定で使用される各ClickHouse Keeperサーバーの識別子 | 1                                               |
-   | coordination_settings | タイムアウトなどのパラメータのセクション                                  | タイムアウト: 10000、ログレベル: trace               |
-   | server                | 参加するサーバーの定義                                      | 各サーバー定義のリスト                  |
-   | raft_configuration    | Keeperクラスタ内の各サーバーの設定                          | 各サーバーとその設定                    |
-   | id                    | Keeperサービス用のサーバーの数値ID                            | 1                                               |
-   | hostname              | Keeperクラスタ内の各サーバーのホスト名、IPまたはFQDN               | `chnode1.domain.com`                            |
-   | port                  | サーバー間Keeper接続をリッスンするポート                    | 9234                                            |
-
-4. Zookeeperコンポーネントを有効にします。これはClickHouse Keeperエンジンを使用します：
-
-   ```xml
-       <zookeeper>
-           <node>
-               <host>chnode1.domain.com</host>
-               <port>9181</port>
-           </node>
-           <node>
-               <host>chnode2.domain.com</host>
-               <port>9181</port>
-           </node>
-           <node>
-               <host>chnode3.domain.com</host>
-               <port>9181</port>
-           </node>
-       </zookeeper>
-   ```
-
-   上記で使用される基本設定は以下の通りです：
-
-   | パラメータ | 説明                                         | 例                        |
-   | --------- | --------------------------------------------------- | ------------------------------ |
-   | node      | ClickHouse Keeper接続用のノードのリスト     | 各サーバーの設定エントリ |
-   | host      | 各ClickHouse Keeperノードのホスト名、IPまたはFQDN | `chnode1.domain.com`           |
-   | port      | ClickHouse Keeperクライアントポート                       | 9181                           |
-
-5. ClickHouseを再起動し、各Keeperインスタンスが実行されていることを確認します。各サーバーで以下のコマンドを実行します。`ruok`コマンドは、Keeperが実行中で正常な場合に`imok`を返します：
-
-   ```bash
-   # echo ruok | nc localhost 9181; echo
-   imok
-   ```
-
-6. `system`データベースには、ClickHouse Keeperインスタンスの詳細を含む`zookeeper`という名前のテーブルがあります。このテーブルを表示してみましょう：
-   ```sql
-   SELECT *
-   FROM system.zookeeper
-   WHERE path IN ('/', '/clickhouse')
-   ```
-
-
-    テーブルは次のようになります:
-    ```response
-    ┌─name───────┬─value─┬─czxid─┬─mzxid─┬───────────────ctime─┬───────────────mtime─┬─version─┬─cversion─┬─aversion─┬─ephemeralOwner─┬─dataLength─┬─numChildren─┬─pzxid─┬─path────────┐
-    │ clickhouse │       │   124 │   124 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        2 │        0 │              0 │          0 │           2 │  5693 │ /           │
-    │ task_queue │       │   125 │   125 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        1 │        0 │              0 │          0 │           1 │   126 │ /clickhouse │
-    │ tables     │       │  5693 │  5693 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        3 │        0 │              0 │          0 │           3 │  6461 │ /clickhouse │
-    └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
+2. 各ノードで、ネットワークインターフェイス経由の外部通信を許可するために、次のエントリを追加します。
+    ```xml
+    <listen_host>0.0.0.0</listen_host>
     ```
 
-### 2. ClickHouseでクラスタを構成する {#2--configure-a-cluster-in-clickhouse}
+3. 次の ClickHouse Keeper 設定を 3 台すべてのサーバーに追加し、各サーバーに対して `<server_id>` 設定を更新します。`chnode1` は `1`、`chnode2` は `2`、というように設定します。
+    ```xml
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+        <server_id>1</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
 
-1. 2つのノードに2つのシャードと1つのレプリカのみを持つシンプルなクラスタを構成します。3番目のノードはClickHouse Keeperの要件においてクォーラムを達成するために使用されます。`chnode1`と`chnode2`の構成を更新します。以下のクラスタ構成では、各ノードに1つのシャードを定義し、合計2つのシャードでレプリケーションなしとなります。この例では、データの一部は一方のノードに、残りはもう一方のノードに配置されます:
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>warning</raft_logs_level>
+        </coordination_settings>
+
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>chnode1.domain.com</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>chnode2.domain.com</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>3</id>
+                <hostname>chnode3.domain.com</hostname>
+                <port>9234</port>
+            </server>
+        </raft_configuration>
+    </keeper_server>
+    ```
+
+    上で使用した基本的な設定は次のとおりです。
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |tcp_port   |Keeper のクライアントが使用するポート|9181（ZooKeeper の 2181 と同等のデフォルト）|
+    |server_id| Raft 構成で使用される各 ClickHouse Keeper サーバーの識別子| 1|
+    |coordination_settings| タイムアウトなどのパラメータ用のセクション| タイムアウト: 10000、ログレベル: trace|
+    |server    |参加するサーバーの定義|各サーバー定義の一覧|
+    |raft_configuration| Keeper クラスター内の各サーバーの設定| 各サーバーとその設定|
+    |id      |Keeper サービス用のサーバーの数値 ID|1|
+    |hostname   |Keeper クラスター内の各サーバーのホスト名、IP または FQDN|`chnode1.domain.com`|
+    |port|サーバー間 Keeper 接続用のリッスンポート|9234|
+
+4. Zookeeper コンポーネントを有効化します。これは ClickHouse Keeper エンジンを使用します。
+    ```xml
+        <zookeeper>
+            <node>
+                <host>chnode1.domain.com</host>
+                <port>9181</port>
+            </node>
+            <node>
+                <host>chnode2.domain.com</host>
+                <port>9181</port>
+            </node>
+            <node>
+                <host>chnode3.domain.com</host>
+                <port>9181</port>
+            </node>
+        </zookeeper>
+    ```
+
+    上で使用した基本的な設定は次のとおりです。
+
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |node   |ClickHouse Keeper への接続用ノードの一覧|各サーバーごとの設定エントリ|
+    |host|各 ClickHouse Keeper ノードのホスト名、IP または FQDN| `chnode1.domain.com`|
+    |port|ClickHouse Keeper のクライアント用ポート| 9181|
+
+5. ClickHouse を再起動し、各 Keeper インスタンスが稼働していることを確認します。各サーバー上で次のコマンドを実行します。`ruok` コマンドは、Keeper が稼働して健全な状態であれば `imok` を返します。
+    ```bash
+    # echo ruok | nc localhost 9181; echo
+    imok
+    ```
+
+6. `system` データベースには、ClickHouse Keeper インスタンスの詳細が含まれる `zookeeper` という名前のテーブルがあります。次のようにテーブルを参照します。
+    ```sql
+    SELECT *
+    FROM system.zookeeper
+    WHERE path IN ('/', '/clickhouse')
+    ```
+
+
+
+テーブルは次のとおりです。
+
+```response
+┌─name───────┬─value─┬─czxid─┬─mzxid─┬───────────────ctime─┬───────────────mtime─┬─version─┬─cversion─┬─aversion─┬─ephemeralOwner─┬─dataLength─┬─numChildren─┬─pzxid─┬─path────────┐
+│ clickhouse │       │   124 │   124 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        2 │        0 │              0 │          0 │           2 │  5693 │ /           │
+│ task_queue │       │   125 │   125 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        1 │        0 │              0 │          0 │           1 │   126 │ /clickhouse │
+│ tables     │       │  5693 │  5693 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        3 │        0 │              0 │          0 │           3 │  6461 │ /clickhouse │
+└────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
+```
+
+### 2.  ClickHouse でクラスタを構成する
+
+1. 2 つのノード上に、2 シャード・各 1 レプリカというシンプルなクラスタを構成します。3 台目のノードは、ClickHouse Keeper の要件であるクォーラムを満たすために使用します。`chnode1` と `chnode2` の設定を更新します。次のクラスタ定義では、各ノードに 1 つずつシャードを配置し、合計 2 シャードとし、レプリケーションは行いません。この例では、データの一部は一方のノードに、残りはもう一方のノードに配置されます。
 
    ```xml
        <remote_servers>
@@ -833,22 +835,22 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も併せて参�
        </remote_servers>
    ```
 
-   | パラメータ | 説明                                                            | 例                           |
-   | --------- | ---------------------------------------------------------------------- | --------------------------------- |
-   | shard     | クラスタ定義におけるレプリカのリスト                             | 各シャードのレプリカのリスト   |
-   | replica   | 各レプリカの設定のリスト                                      | 各レプリカの設定エントリ |
-   | host      | レプリカシャードをホストするサーバーのホスト名、IPまたはFQDN          | `chnode1.domain.com`              |
-   | port      | ネイティブTCPプロトコルを使用した通信に使用されるポート                 | 9000                              |
-   | user      | クラスタインスタンスへの認証に使用されるユーザー名    | default                           |
-   | password  | クラスタインスタンスへの接続を許可するために定義されたユーザーのパスワード | `ClickHouse123!`                  |
+   | Parameter | Description                           | Example              |
+   | --------- | ------------------------------------- | -------------------- |
+   | shard     | クラスタ定義内のシャード（レプリカの集合）                 | 各シャードごとのレプリカのリスト     |
+   | replica   | 各レプリカの設定                              | 各レプリカの設定エントリ         |
+   | host      | レプリカシャードを配置するサーバのホスト名、IP、または FQDN     | `chnode1.domain.com` |
+   | port      | ネイティブ TCP プロトコルで通信するために使用されるポート       | 9000                 |
+   | user      | クラスタインスタンスへの認証に使用されるユーザー名             | default              |
+   | password  | クラスタインスタンスへの接続を許可するために定義されたユーザーのパスワード | `ClickHouse123!`     |
 
-2. ClickHouseを再起動し、クラスタが作成されたことを確認します:
+2. ClickHouse を再起動し、クラスタが作成されたことを確認します。
 
    ```bash
    SHOW clusters;
    ```
 
-   クラスタが表示されます:
+   次のようにクラスタが表示されます。
 
    ```response
    ┌─cluster───────┐
@@ -856,134 +858,136 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も併せて参�
    └───────────────┘
    ```
 
-### 3. 分散テーブルを作成してテストする {#3-create-and-test-distributed-table}
+### 3. 分散テーブルを作成してテストする
 
-1.  `chnode1`のClickHouseクライアントを使用して、新しいクラスタに新しいデータベースを作成します。`ON CLUSTER`句を使用すると、両方のノードに自動的にデータベースが作成されます。
+1. `chnode1` 上の ClickHouse クライアントを使用して、新しいクラスタ上に新しいデータベースを作成します。`ON CLUSTER` 句により、データベースは自動的に両方のノード上に作成されます。
+   ```sql
+   CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
+   ```
+
+
+2. `db1` データベース上に新しいテーブルを作成します。ここでも、`ON CLUSTER` 句によって両方のノード上にテーブルが作成されます。
     ```sql
-    CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
+    CREATE TABLE db1.table1 on cluster 'cluster_2S_1R'
+    (
+        `id` UInt64,
+        `column1` String
+    )
+    ENGINE = MergeTree
+    ORDER BY column1
     ```
 
+3. `chnode1` ノードで、いくつかの行を追加します:
+    ```sql
+    INSERT INTO db1.table1
+        (id, column1)
+    VALUES
+        (1, 'abc'),
+        (2, 'def')
+    ```
 
-2. `db1`データベースに新しいテーブルを作成します。ここでも`ON CLUSTER`により、両方のノードにテーブルが作成されます。
+4. `chnode2` ノードでも、いくつかの行を追加します:
+    ```sql
+    INSERT INTO db1.table1
+        (id, column1)
+    VALUES
+        (3, 'ghi'),
+        (4, 'jkl')
+    ```
 
-   ```sql
-   CREATE TABLE db1.table1 on cluster 'cluster_2S_1R'
-   (
-       `id` UInt64,
-       `column1` String
-   )
-   ENGINE = MergeTree
-   ORDER BY column1
-   ```
+5. 各ノードで `SELECT` 文を実行しても、そのノード上のデータしか表示されないことが分かります。たとえば、`chnode1` では:
+    ```sql
+    SELECT *
+    FROM db1.table1
+    ```
 
-3. `chnode1`ノードで、いくつかの行を追加します。
+    ```response
+    Query id: 7ef1edbc-df25-462b-a9d4-3fe6f9cb0b6d
 
-   ```sql
-   INSERT INTO db1.table1
-       (id, column1)
-   VALUES
-       (1, 'abc'),
-       (2, 'def')
-   ```
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    │  2 │ def     │
+    └────┴─────────┘
 
-4. `chnode2`ノードでいくつかの行を追加します。
+    2 rows in set. Elapsed: 0.006 sec.
+    ```
 
-   ```sql
-   INSERT INTO db1.table1
-       (id, column1)
-   VALUES
-       (3, 'ghi'),
-       (4, 'jkl')
-   ```
+    `chnode2` では:
+6.
+    ```sql
+    SELECT *
+    FROM db1.table1
+    ```
 
-5. 各ノードで`SELECT`文を実行すると、そのノード上のデータのみが表示されることに注意してください。例えば、`chnode1`では次のようになります。
+    ```response
+    Query id: c43763cc-c69c-4bcc-afbe-50e764adfcbf
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    │  4 │ jkl     │
+    └────┴─────────┘
+    ```
 
-   ```response
-   Query id: 7ef1edbc-df25-462b-a9d4-3fe6f9cb0b6d
+6. 2 つのシャード上のデータを表現するために `Distributed` テーブルを作成できます。`Distributed` テーブルエンジンを使用するテーブル自体はデータを保持しませんが、複数サーバーにまたがる分散クエリ処理を可能にします。読み取りはすべてのシャードに対して行われ、書き込みはシャード間に分散できます。`chnode1` で次のクエリを実行します:
+    ```sql
+    CREATE TABLE db1.dist_table (
+        id UInt64,
+        column1 String
+    )
+    ENGINE = Distributed(cluster_2S_1R,db1,table1)
+    ```
 
-   ┌─id─┬─column1─┐
-   │  1 │ abc     │
-   │  2 │ def     │
-   └────┴─────────┘
+7. `dist_table` に対してクエリを実行すると、2 つのシャードから 4 行すべてのデータが返されることが分かります:
+    ```sql
+    SELECT *
+    FROM db1.dist_table
+    ```
 
-   2 rows in set. Elapsed: 0.006 sec.
-   ```
+    ```response
+    Query id: 495bffa0-f849-4a0c-aeea-d7115a54747a
 
-   `chnode2`では次のようになります。
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    │  2 │ def     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    │  4 │ jkl     │
+    └────┴─────────┘
 
-6. ```sql
-   SELECT *
-   FROM db1.table1
-   ```
-
-   ```response
-   Query id: c43763cc-c69c-4bcc-afbe-50e764adfcbf
-
-   ┌─id─┬─column1─┐
-   │  3 │ ghi     │
-   │  4 │ jkl     │
-   └────┴─────────┘
-   ```
-
-7. 2つのシャード上のデータを表現するために`Distributed`テーブルを作成できます。`Distributed`テーブルエンジンを使用したテーブルは、それ自体ではデータを保存しませんが、複数のサーバー上での分散クエリ処理を可能にします。読み取りはすべてのシャードにアクセスし、書き込みはシャード全体に分散できます。`chnode1`で次のクエリを実行します。
-
-   ```sql
-   CREATE TABLE db1.dist_table (
-       id UInt64,
-       column1 String
-   )
-   ENGINE = Distributed(cluster_2S_1R,db1,table1)
-   ```
-
-8. `dist_table`をクエリすると、2つのシャードからすべての4行のデータが返されることに注意してください。
-
-   ```sql
-   SELECT *
-   FROM db1.dist_table
-   ```
-
-   ```response
-   Query id: 495bffa0-f849-4a0c-aeea-d7115a54747a
-
-   ┌─id─┬─column1─┐
-   │  1 │ abc     │
-   │  2 │ def     │
-   └────┴─────────┘
-   ┌─id─┬─column1─┐
-   │  3 │ ghi     │
-   │  4 │ jkl     │
-   └────┴─────────┘
-
-   4 rows in set. Elapsed: 0.018 sec.
-   ```
+    4 rows in set. Elapsed: 0.018 sec.
+    ```
 
 ### まとめ {#summary}
 
-このガイドでは、ClickHouse Keeperを使用してクラスタをセットアップする方法を説明しました。ClickHouse Keeperを使用することで、クラスタを構成し、シャード間でレプリケーション可能な分散テーブルを定義できます。
+このガイドでは、ClickHouse Keeper を使用してクラスタをセットアップする方法を説明しました。ClickHouse Keeper を使用すると、クラスタを構成し、シャード間でレプリケート可能な分散テーブルを定義できます。
 
 
-## 一意のパスを使用したClickHouse Keeperの設定 {#configuring-clickhouse-keeper-with-unique-paths}
+
+## 一意のパスを使った ClickHouse Keeper の構成
 
 <SelfManaged />
 
-### 説明 {#description}
+### 説明
 
-本記事では、組み込みの`{uuid}`マクロ設定を使用して、ClickHouse KeeperまたはZooKeeperに一意のエントリを作成する方法について説明します。一意のパスは、テーブルを頻繁に作成および削除する際に役立ちます。パスが作成されるたびに新しい`uuid`がそのパスに使用されるため、Keeperのガベージコレクションがパスエントリを削除するまで数分待つ必要がなくなります。パスが再利用されることはありません。
+この記事では、組み込みの `{uuid}` マクロ設定を使用して、
+ClickHouse Keeper または ZooKeeper に一意のエントリを作成する方法を説明します。
+テーブルを頻繁に作成・削除する場合、一意のパスを使用すると便利です。各パスを作成するたびに
+そのパス内で新しい `uuid` が使用され、パスは再利用されないため、
+Keeper のガベージコレクションがパスエントリを削除するまで数分待つ必要がなくなります。
 
-### 環境例 {#example-environment}
+### サンプル環境
 
-3ノードクラスタで、すべてのノードにClickHouse Keeperを設定し、そのうち2ノードにClickHouseを設定します。これにより、ClickHouse Keeperは3ノード(タイブレーカーノードを含む)で構成され、2つのレプリカで構成される単一のClickHouseシャードが提供されます。
+3 ノードのクラスタを使用し、3 つすべてのノードに ClickHouse Keeper を構成し、
+そのうち 2 つのノードに ClickHouse を構成します。これにより、
+ClickHouse Keeper 用に 3 ノード (タイブレーカーノードを含む) が用意され、
+2 つのレプリカで構成された 1 つの ClickHouse シャードが構成されます。
 
-| ノード                    | 説明                         |
-| ----------------------- | ----------------------------------- |
+| node                    | description                   |
+| ----------------------- | ----------------------------- |
 | `chnode1.marsnet.local` | データノード - クラスタ `cluster_1S_2R` |
 | `chnode2.marsnet.local` | データノード - クラスタ `cluster_1S_2R` |
-| `chnode3.marsnet.local` | ClickHouse Keeperタイブレーカーノード  |
+| `chnode3.marsnet.local` | ClickHouse Keeper タイブレーカーノード  |
 
 クラスタの設定例:
 
@@ -1010,10 +1014,10 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も併せて参�
     </remote_servers>
 ```
 
-### `{uuid}`を使用するテーブルの設定手順 {#procedures-to-set-up-tables-to-use-uuid}
+### `{uuid}` を使用するためのテーブル設定手順
 
-1. 各サーバーでマクロを設定
-   サーバー1の例:
+1. 各サーバーでマクロを設定します
+   サーバー 1 の例:
 
 ```xml
     <macros>
@@ -1023,10 +1027,10 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も併せて参�
 ```
 
 :::note
-`shard`と`replica`のマクロを定義していますが、`{uuid}`はここで定義されていないことに注意してください。これは組み込みであり、定義する必要はありません。
+`shard` と `replica` についてはマクロを定義していますが、`{uuid}` はここでは定義されていない点に注意してください。これは組み込みのものなので、あらためて定義する必要はありません。
 :::
 
-2. データベースを作成
+2. データベースを作成する
 
 ```sql
 CREATE DATABASE db_uuid
@@ -1046,7 +1050,7 @@ Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-3. マクロと`{uuid}`を使用してクラスタ上にテーブルを作成
+3. マクロと`{uuid}`を使用してクラスター上にテーブルを作成する
 
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1068,18 +1072,17 @@ ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{repl
 ORDER BY id
 
 Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
-
 ```
 
 
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode1.marsnet.local │ 9440 │ 0 │ │ 1 │ 0 │
-│ chnode2.marsnet.local │ 9440 │ 0 │ │ 0 │ 0 │
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
 ````
 
-4.  分散テーブルの作成
+4.  分散テーブルを作成する
 
 ```sql
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1106,9 +1109,9 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-### テスト {#testing}
+### テスト
 
-1.  最初のノードへのデータ挿入（例：`chnode1`）
+1. 最初のノード（例: `chnode1`）にデータを挿入します
 
 ```sql
 INSERT INTO db_uuid.uuid_table1
@@ -1127,7 +1130,7 @@ Ok.
 1 row in set. Elapsed: 0.033 sec.
 ```
 
-2. 2番目のノードへのデータ挿入（例：`chnode2`）
+2. 2番目のノード（例: `chnode2`）にデータを挿入する
 
 ```sql
 INSERT INTO db_uuid.uuid_table1
@@ -1146,7 +1149,7 @@ Ok.
 1 row in set. Elapsed: 0.529 sec.
 ```
 
-3. 分散テーブルを使用したレコードの表示
+3. 分散テーブルでレコードを表示する
 
 ```sql
 SELECT * FROM db_uuid.dist_uuid_table1;
@@ -1165,14 +1168,14 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 │  2 │ def     │
 └────┴─────────┘
 
-2 rows in set. Elapsed: 0.007 sec.
+2行が設定されました。経過時間: 0.007秒。
 ```
 
-### 代替方法 {#alternatives}
+### 代替案
 
-デフォルトのレプリケーションパスは、マクロと`{uuid}`を使用して事前に定義できます
+デフォルトのレプリケーションパスは、マクロおよび `{uuid}` を使用して事前に定義できます。
 
-1. 各ノードでテーブルのデフォルト設定
+1. 各ノードでテーブル用のデフォルトを設定する
 
 ```xml
 <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
@@ -1180,10 +1183,10 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 ```
 
 :::tip
-ノードが特定のデータベース専用に使用される場合、各ノードでマクロ`{database}`を定義することもできます。
+各ノードが特定のデータベース向けに使用される場合は、ノードごとにマクロ `{database}` を定義することもできます。
 :::
 
-2. 明示的なパラメータなしでテーブルを作成：
+2. 明示的なパラメーターを指定せずにテーブルを作成します:
 
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1203,18 +1206,17 @@ CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
 )
 ENGINE = ReplicatedMergeTree
 ORDER BY id
-
 ```
 
 
-クエリID: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
+クエリ ID: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
 
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode2.marsnet.local │ 9440 │ 0 │ │ 1 │ 0 │
-│ chnode1.marsnet.local │ 9440 │ 0 │ │ 0 │ 0 │
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-2行のセット。経過時間: 1.175秒
+2 行が返されました。経過時間: 1.175 秒。
 
 ````
 
@@ -1234,19 +1236,19 @@ CREATE TABLE db_uuid.uuid_table1
 ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
 ORDER BY id
 
-1行のセット。経過時間: 0.003秒
+1 行のセット。経過時間: 0.003 秒。
 ```
 
-### トラブルシューティング {#troubleshooting}
+### トラブルシューティング
 
-テーブル情報とUUIDを取得するコマンド例:
+テーブル情報とUUIDを取得するためのコマンド例:
 
 ```sql
 SELECT * FROM system.tables
 WHERE database = 'db_uuid' AND name = 'uuid_table1';
 ```
 
-上記テーブルのUUIDを使用してZooKeeper内のテーブル情報を取得するコマンド例
+上記のテーブルに対応する UUID テーブルの情報を ZooKeeper から取得するためのコマンド例
 
 ```sql
 SELECT * FROM system.zookeeper
@@ -1254,12 +1256,13 @@ WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/
 ```
 
 :::note
-データベースは`Atomic`型である必要があります。以前のバージョンからアップグレードした場合、`default`データベースは`Ordinary`型である可能性があります。
+データベースは `Atomic` である必要があります。以前のバージョンからアップグレードした場合、
+`default` データベースはおそらく `Ordinary` タイプになっています。
 :::
 
-確認方法:
+確認するには:
 
-例:
+例えば、
 
 ```sql
 SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
@@ -1282,20 +1285,22 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 ```
 
 
-## ClickHouse Keeper 動的再構成 {#reconfiguration}
+## ClickHouse Keeper の動的再構成
 
 <SelfManaged />
 
-### 説明 {#description-1}
+### 説明
 
-ClickHouse Keeperは、`keeper_server.enable_reconfiguration`が有効になっている場合、動的クラスタ再構成のためのZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)コマンドを部分的にサポートします。
+ClickHouse Keeper は、`keeper_server.enable_reconfiguration` が有効になっている場合に、ZooKeeper の [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
+コマンドによるクラスタの動的な再構成を部分的にサポートします。
 
 :::note
-この設定が無効になっている場合は、レプリカの`raft_configuration`セクションを手動で変更することでクラスタを再構成できます。リーダーのみが変更を適用するため、すべてのレプリカでファイルを編集する必要があります。
-または、ZooKeeper互換クライアントを通じて`reconfig`クエリを送信することもできます。
+この設定が無効になっている場合は、レプリカの `raft_configuration`
+セクションを手動で変更することでクラスタを再構成できます。変更はリーダーのみが適用するため、必ずすべてのレプリカ上のファイルを編集してください。
+あるいは、任意の ZooKeeper 互換クライアントを介して `reconfig` クエリを送信することもできます。
 :::
 
-仮想ノード`/keeper/config`には、最後にコミットされたクラスタ構成が以下の形式で格納されています:
+仮想ノード `/keeper/config` には、次の形式で直近にコミットされたクラスタ構成が格納されています。
 
 ```text
 server.id = server_host:server_port[;server_type][;server_priority]
@@ -1303,12 +1308,12 @@ server.id2 = ...
 ...
 ```
 
-- 各サーバーエントリは改行で区切られます。
-- `server_type`は`participant`または`learner`のいずれかです([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md)はリーダー選出に参加しません)。
-- `server_priority`は、[リーダー選出でどのノードを優先すべきか](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md)を示す非負整数です。
-  優先度0は、サーバーが決してリーダーにならないことを意味します。
+* 各サーバーエントリは改行で区切られます。
+* `server_type` は `participant` か `learner` のいずれかです（[`learner`](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) はリーダー選出に参加しません）。
+* `server_priority` は、[リーダー選出時にどのノードを優先すべきか](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md) を指定する 0 以上の整数です。
+  プライオリティが 0 の場合、そのサーバーがリーダーになることはありません。
 
-例:
+例：
 
 ```sql
 :) get /keeper/config
@@ -1317,83 +1322,84 @@ server.2=zoo2:9234;participant;1
 server.3=zoo3:9234;participant;1
 ```
 
-`reconfig`コマンドを使用して、新しいサーバーの追加、既存サーバーの削除、既存サーバーの優先度変更を行うことができます。以下は例です(`clickhouse-keeper-client`を使用):
+`reconfig` コマンドを使用すると、新しいサーバーの追加、既存サーバーの削除、および既存サーバーの優先順位の変更が行えます。次に、`clickhouse-keeper-client` を使用した例を示します:
 
 
 ```bash
 # 新しいサーバーを2台追加
 reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
-# 他の2台のサーバーを削除
+# 他のサーバーを2台削除
 reconfig remove "3,4"
-# 既存のサーバーの優先度を8に変更
+# 既存サーバーの優先度を8に変更
 reconfig add "server.5=localhost:5123;participant;8"
 ```
 
-`kazoo` の例をいくつか示します：
+また、`kazoo` の例は次のとおりです。
 
 
 ```python
-# 2つの新しいサーバーを追加し、他の2つのサーバーを削除
+# 2つの新しいサーバーを追加し、2つの他のサーバーを削除
 reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
 ```
 
 
-# 既存のサーバーの優先度を 8 に変更する
+# 既存サーバーの優先度を 8 に変更
 
 reconfig(joining=&quot;server.5=localhost:5123;participant;8&quot;, leaving=None)
 
 ```
 
-`joining`内のサーバーは、上記で説明したサーバー形式で指定する必要があります。サーバーエントリはカンマで区切ります。
-新しいサーバーを追加する際、`server_priority`(デフォルト値は1)と`server_type`(デフォルト値は`participant`)は省略可能です。
+`joining`内のサーバーは、上記で説明したサーバー形式に従う必要があります。サーバーエントリはカンマで区切ります。
+新しいサーバーを追加する際、`server_priority`(デフォルト値は1)と`server_type`(デフォルト値は`participant`)は省略できます。
 
-既存のサーバーの優先度を変更する場合は、対象の優先度を指定して`joining`に追加します。
-サーバーのホスト、ポート、タイプは既存のサーバー設定と一致させる必要があります。
+既存のサーバーの優先度を変更する場合は、目標の優先度を指定して`joining`に追加します。
+サーバーのホスト、ポート、およびタイプは既存のサーバー構成と一致する必要があります。
 
 サーバーは`joining`と`leaving`に記述された順序で追加および削除されます。
 `joining`からのすべての更新は、`leaving`からの更新よりも先に処理されます。
 
-Keeperの再設定実装には以下の注意点があります:
+Keeperの再構成実装には以下の注意事項があります:
 
-- 増分再設定のみがサポートされています。空でない`new_members`を含むリクエストは拒否されます。
+- 増分再構成のみがサポートされています。空でない`new_members`を含むリクエストは拒否されます。
 
-  ClickHouse Keeperの実装は、メンバーシップを動的に変更するためにNuRaft APIに依存しています。NuRaftは一度に1つのサーバーを追加または削除する方式を採用しています。これは、設定への各変更(`joining`の各部分、`leaving`の各部分)が個別に決定される必要があることを意味します。したがって、エンドユーザーに誤解を与える可能性があるため、一括再設定は利用できません。
+  ClickHouse Keeperの実装は、メンバーシップを動的に変更するためにNuRaft APIに依存しています。NuRaftは一度に1つのサーバーを追加または削除する方式を採用しています。これは、構成への各変更(`joining`の各部分、`leaving`の各部分)が個別に決定される必要があることを意味します。したがって、エンドユーザーに誤解を与える可能性があるため、一括再構成は利用できません。
 
   サーバータイプ(participant/learner)の変更もNuRaftでサポートされていないため不可能です。唯一の方法はサーバーを削除して追加することですが、これも誤解を招く可能性があります。
 
 - 返される`znodestat`値は使用できません。
 - `from_version`フィールドは使用されません。`from_version`が設定されたすべてのリクエストは拒否されます。
-  これは、`/keeper/config`が仮想ノードであり、永続ストレージに保存されず、各リクエストに対して指定されたノード設定で動的に生成されるためです。
-  この決定は、NuRaftがすでにこの設定を保存しているため、データの重複を避けるために行われました。
-- ZooKeeperとは異なり、`sync`コマンドを送信してクラスターの再設定を待機する方法はありません。
-  新しい設定は_最終的に_適用されますが、適用時間の保証はありません。
+  これは、`/keeper/config`が仮想ノードであり、永続ストレージに保存されるのではなく、リクエストごとに指定されたノード構成で動的に生成されるためです。
+  この設計は、NuRaftがすでにこの構成を保存しているため、データの重複を避けるために採用されました。
+- ZooKeeperとは異なり、`sync`コマンドを送信してクラスターの再構成を待機する方法はありません。
+  新しい構成は_最終的に_適用されますが、時間の保証はありません。
 - `reconfig`コマンドはさまざまな理由で失敗する可能性があります。クラスターの状態を確認して、更新が適用されたかどうかを確認できます。
 ```
 
 
-## 単一ノードのKeeperをクラスタに変換する {#converting-a-single-node-keeper-into-a-cluster}
+## 単一ノードの keeper をクラスタに変換する {#converting-a-single-node-keeper-into-a-cluster}
 
-実験的なKeeperノードをクラスタに拡張する必要がある場合があります。以下は、3ノードクラスタへの変換手順です:
+実験用の単一ノード keeper をクラスタに拡張したい場合があります。3 ノードのクラスタの場合の手順を次に示します。
 
-- **重要**: 新しいノードは現在のクォーラム数未満のバッチで追加する必要があります。そうしないと、新しいノード間でリーダーが選出されてしまいます。この例では1つずつ追加します。
-- 既存のKeeperノードで`keeper_server.enable_reconfiguration`設定パラメータを有効にしておく必要があります。
-- Keeperクラスタの完全な新しい設定で2番目のノードを起動します。
-- 起動後、[`reconfig`](#reconfiguration)を使用してノード1に追加します。
-- 次に、3番目のノードを起動し、[`reconfig`](#reconfiguration)を使用して追加します。
-- 新しいKeeperノードを追加して`clickhouse-server`の設定を更新し、変更を適用するために再起動します。
-- ノード1のRaft設定を更新し、必要に応じて再起動します。
+- **重要**: 新しいノードは、現在のクォーラムより少ない台数のグループで追加する必要があります。そうしないと、新ノード同士でリーダーが選出されてしまいます。この例では 1 台ずつ追加します。
+- 既存の keeper ノードでは、設定パラメータ `keeper_server.enable_reconfiguration` を有効にしておく必要があります。
+- keeper クラスタの新しい完全な設定を用いて 2 台目のノードを起動します。
+- 起動後、[`reconfig`](#reconfiguration) を使ってノード 1 にこのノードを追加します。
+- 続いて 3 台目のノードを起動し、[`reconfig`](#reconfiguration) を使って追加します。
+- `clickhouse-server` の設定を更新し、新しい keeper ノードを追加してから、変更を反映するために再起動します。
+- ノード 1 の Raft の設定を更新し、必要に応じて再起動します。
 
-この手順を実際に試すには、[サンドボックスリポジトリ](https://github.com/ClickHouse/keeper-extend-cluster)をご利用ください。
+この手順に慣れるための [sandbox リポジトリ](https://github.com/ClickHouse/keeper-extend-cluster) を用意しています。
 
 
-## サポートされていない機能 {#unsupported-features}
 
-ClickHouse KeeperはZooKeeperとの完全な互換性を目指していますが、現在実装されていない機能がいくつかあります(開発は継続中です):
+## 未サポートの機能 {#unsupported-features}
 
-- [`create`](<https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)>)は`Stat`オブジェクトの返却に対応していません
-- [`create`](<https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)>)は[TTL](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/CreateMode.html#PERSISTENT_WITH_TTL)に対応していません
-- [`addWatch`](<https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#addWatch(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.AddWatchMode)>)は[`PERSISTENT`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/AddWatchMode.html#PERSISTENT)ウォッチでは動作しません
-- [`removeWatch`](<https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeWatches(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.Watcher.WatcherType,boolean)>)および[`removeAllWatches`](<https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeAllWatches(java.lang.String,org.apache.zookeeper.Watcher.WatcherType,boolean)>)には対応していません
-- `setWatches`には対応していません
-- [`CONTAINER`](https://zookeeper.apache.org/doc/r3.5.1-alpha/api/org/apache/zookeeper/CreateMode.html)タイプのznodeの作成には対応していません
-- [`SASL認証`](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL)には対応していません
+ClickHouse Keeper は ZooKeeper との完全な互換性を目指していますが、現時点では一部の機能が未実装となっています（開発は進行中です）:
+
+- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)) は `Stat` オブジェクトを返すことをサポートしていません
+- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)) は [TTL](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/CreateMode.html#PERSISTENT_WITH_TTL) をサポートしていません
+- [`addWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#addWatch(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.AddWatchMode)) は [`PERSISTENT`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/AddWatchMode.html#PERSISTENT) ウォッチでは動作しません
+- [`removeWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeWatches(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.Watcher.WatcherType,boolean)) および [`removeAllWatches`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeAllWatches(java.lang.String,org.apache.zookeeper.Watcher.WatcherType,boolean)) はサポートされていません
+- `setWatches` はサポートされていません
+- [`CONTAINER`](https://zookeeper.apache.org/doc/r3.5.1-alpha/api/org/apache/zookeeper/CreateMode.html) 型の znode の作成はサポートされていません
+- [`SASL authentication`](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL) はサポートされていません

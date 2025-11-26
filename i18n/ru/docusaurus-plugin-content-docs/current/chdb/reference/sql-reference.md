@@ -7,7 +7,7 @@ keywords: ['chdb', 'sql reference']
 doc_type: 'reference'
 ---
 
-chdb поддерживает тот же синтаксис SQL, операторы, движки и функции, что и ClickHouse:
+chdb поддерживает такой же синтаксис SQL, операторы, движки и функции, что и ClickHouse:
 
 | Раздел                      |
 |----------------------------|
@@ -15,9 +15,9 @@ chdb поддерживает тот же синтаксис SQL, операто
 | [Операторы](/sql-reference/statements)          |
 | [Движки таблиц](/engines/table-engines)       |
 | [Движки баз данных](/engines/database-engines)    |
-| [Обычные функции](/sql-reference/functions)   |
+| [Скалярные функции](/sql-reference/functions)   |
 | [Агрегатные функции](/sql-reference/aggregate-functions) |
 | [Табличные функции](/sql-reference/table-functions)     | 
 | [Оконные функции](/sql-reference/window-functions)    |
 
-Дополнительная информация и примеры приведены в [справочнике по SQL ClickHouse](/sql-reference).
+Дополнительную информацию и примеры см. в [справочнике по SQL для ClickHouse](/sql-reference).

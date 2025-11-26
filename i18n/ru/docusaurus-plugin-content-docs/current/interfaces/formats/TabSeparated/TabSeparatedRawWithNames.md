@@ -1,6 +1,6 @@
 ---
 alias: ['TSVRawWithNames', 'RawWithNames']
-description: 'Документация формата TabSeparatedRawWithNames'
+description: 'Документация по формату TabSeparatedRawWithNames'
 input_format: true
 keywords: ['TabSeparatedRawWithNames', 'TSVRawWithNames', 'RawWithNames']
 output_format: true
@@ -9,27 +9,28 @@ title: 'TabSeparatedRawWithNames'
 doc_type: 'reference'
 ---
 
-| Ввод | Вывод | Алиас                            |
-|------|-------|----------------------------------|
+| Вход | Выход | Псевдонимы                        |
+|------|-------|-----------------------------------|
 | ✔    | ✔     | `TSVRawWithNames`, `RawWithNames` |
 
 
 
 ## Описание {#description}
 
-Отличается от формата [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) тем,
+Отличается от формата [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) тем, 
 что строки записываются без экранирования.
 
 :::note
-При парсинге в этом формате символы табуляции и переводы строк не допускаются в полях.
+При разборе данных в этом формате символы табуляции или перевода строки внутри отдельных полей не допускаются.
 :::
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используя следующий TSV-файл с именем `football.tsv`:
+### Вставка данных
+
+Используем следующий TSV-файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -52,15 +53,15 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-Вставка данных:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `TabSeparatedRawWithNames`:
+Считайте данные в формате `TabSeparatedRawWithNames`:
 
 ```sql
 SELECT *
@@ -68,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRawWithNames
 ```
 
-Результат будет выведен в формате с разделителями-табуляциями с однострочным заголовком:
+Вывод будет в табличном формате с разделителем-символом табуляции и одной строкой заголовков:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -92,4 +93,4 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

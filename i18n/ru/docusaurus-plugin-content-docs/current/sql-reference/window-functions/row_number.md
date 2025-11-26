@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # row&#95;number
 
-Нумерует текущую строку в рамках ее раздела, начиная с 1.
+Нумерует текущую строку внутри её раздела (partition), начиная с 1.
 
 **Синтаксис**
 
@@ -21,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Более подробную информацию о синтаксисе оконных функций см. в разделе [Window Functions - Syntax](./index.md/#syntax).
+Для получения более подробной информации о синтаксисе оконных функций см.: [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-* Число — номер текущей строки в её разделе. [UInt64](../data-types/int-uint.md).
+* Число для текущей строки в пределах её раздела (partition). [UInt64](../data-types/int-uint.md).
 
 **Пример**
 
-Следующий пример основан на примере, представленном в видеоруководстве [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
+Следующий пример основан на примере, приведённом в видеоруководстве [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
 Запрос:
 

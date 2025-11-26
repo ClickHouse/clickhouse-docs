@@ -2,7 +2,7 @@
 title: 'Node.js 向け chDB'
 sidebar_label: 'Node.js'
 slug: /chdb/install/nodejs
-description: 'Node.js で chDB をインストールおよび利用する方法'
+description: 'Node.js での chDB のインストールと使用方法'
 keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
@@ -11,59 +11,56 @@ doc_type: 'guide'
 
 # Node.js 向け chDB
 
-chDB-node は chDB 用の Node.js バインディングを提供し、追加の外部依存関係なしに、Node.js アプリケーション内から直接 ClickHouse のクエリを実行できるようにします。
+chDB-node は chDB の Node.js バインディングを提供し、外部依存なしで Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
 
 
-## インストール {#installation}
+## インストール
 
 ```bash
 npm install chdb
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法
 
-chDB-nodeは2つのクエリモードをサポートしています:シンプルな操作のためのスタンドアロンクエリと、データベース状態を維持するためのセッションベースクエリです。
+chDB-node は 2 つのクエリモードをサポートしています。単純な操作向けのスタンドアロン クエリと、データベース状態を維持するためのセッションベースのクエリです。
 
-### スタンドアロンクエリ {#standalone-queries}
+### スタンドアロン クエリ
 
-永続的な状態を必要としない、シンプルな単発クエリの場合:
+永続的な状態を必要としない、単発のクエリの場合:
 
 ```javascript
-const { query } = require("chdb")
+const { query } = require("chdb");
 
 // 基本的なクエリ
-const result = query("SELECT version()", "CSV")
-console.log("ClickHouseバージョン:", result)
+const result = query("SELECT version()", "CSV");
+console.log("ClickHouseバージョン:", result);
 
-// 複数列のクエリ
-const multiResult = query(
-  "SELECT 'Hello' as greeting, 'chDB' as engine, 42 as answer",
-  "CSV"
-)
-console.log("複数列の結果:", multiResult)
+// 複数列を使用したクエリ
+const multiResult = query("SELECT 'Hello' as greeting, 'chDB' as engine, 42 as answer", "CSV");
+console.log("複数列の結果:", multiResult);
 
 // 数学演算
-const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "JSON")
-console.log("数学演算の結果:", mathResult)
+const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "JSON");
+console.log("数学演算の結果:", mathResult);
 
 // システム情報
-const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty")
-console.log("システム関数:", systemInfo)
+const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
+console.log("システム関数:", systemInfo);
 ```
 
-### セッションベースクエリ {#session-based-queries}
+### セッション単位のクエリ
 
 ```javascript
-const { Session } = require("chdb")
+const { Session } = require("chdb");
 
-// 永続ストレージを使用してセッションを作成
-const session = new Session("./chdb-node-data")
+// 永続ストレージを使用したセッションを作成
+const session = new Session("./chdb-node-data");
 
 try {
-  // データベースとテーブルを作成
-  session.query(`
+    // データベースとテーブルを作成
+    session.query(`
         CREATE DATABASE IF NOT EXISTS myapp;
         CREATE TABLE IF NOT EXISTS myapp.users (
             id UInt32,
@@ -71,79 +68,67 @@ try {
             email String,
             created_at DateTime DEFAULT now()
         ) ENGINE = MergeTree() ORDER BY id
-    `)
+    `);
 
-  // サンプルデータを挿入
-  session.query(`
+    // サンプルデータを挿入
+    session.query(`
         INSERT INTO myapp.users (id, name, email) VALUES 
         (1, 'Alice', 'alice@example.com'),
         (2, 'Bob', 'bob@example.com'),
         (3, 'Charlie', 'charlie@example.com')
-    `)
+    `);
 
-  // 異なる形式でデータをクエリ
-  const csvResult = session.query(
-    "SELECT * FROM myapp.users ORDER BY id",
-    "CSV"
-  )
-  console.log("CSV結果:", csvResult)
+    // 異なる形式でデータをクエリ
+    const csvResult = session.query("SELECT * FROM myapp.users ORDER BY id", "CSV");
+    console.log("CSV Result:", csvResult);
 
-  const jsonResult = session.query(
-    "SELECT * FROM myapp.users ORDER BY id",
-    "JSON"
-  )
-  console.log("JSON結果:", jsonResult)
+    const jsonResult = session.query("SELECT * FROM myapp.users ORDER BY id", "JSON");
+    console.log("JSON Result:", jsonResult);
 
-  // 集計クエリ
-  const stats = session.query(
-    `
+    // 集計クエリ
+    const stats = session.query(`
         SELECT 
             COUNT(*) as total_users,
             MAX(id) as max_id,
             MIN(created_at) as earliest_signup
         FROM myapp.users
-    `,
-    "Pretty"
-  )
-  console.log("ユーザー統計:", stats)
+    `, "Pretty");
+    console.log("User Statistics:", stats);
+
 } finally {
-  // 常にセッションをクリーンアップ
-  session.cleanup() // データベースファイルを削除します
+    // セッションを必ずクリーンアップ
+    session.cleanup(); // データベースファイルを削除
 }
 ```
 
-### 外部データの処理 {#processing-external-data}
+### 外部データの処理
 
 ```javascript
-const { Session } = require("chdb")
+const { Session } = require("chdb");
 
-const session = new Session("./data-processing")
+const session = new Session("./data-processing");
 
 try {
-  // URLからCSVデータを処理
-  const result = session.query(
-    `
+    // URLからCSVデータを処理
+    const result = session.query(`
         SELECT 
             COUNT(*) as total_records,
             COUNT(DISTINCT "UserID") as unique_users
         FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV') 
         LIMIT 1000
-    `,
-    "JSON"
-  )
+    `, "JSON");
+    
+    console.log("外部データ分析:", result);
 
-  console.log("外部データ分析:", result)
-
-  // 外部データからテーブルを作成
-  session.query(`
+    // 外部データからテーブルを作成
+    session.query(`
         CREATE TABLE web_analytics AS
         SELECT * FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV')
         LIMIT 10000
-    `)
+    `);
 
-  // インポートされたデータを分析
-  const analysis = session.query(
-    `
+    // インポートしたデータを分析
+    const analysis = session.query(`
         SELECT 
             toDate("EventTime") as date,
             COUNT(*) as events,
@@ -152,65 +137,64 @@ try {
         GROUP BY date
         ORDER BY date
         LIMIT 10
-    `,
-    "Pretty"
-  )
+    `, "Pretty");
+    
+    console.log("日次分析:", analysis);
 
-  console.log("日次分析:", analysis)
 } finally {
-  session.cleanup()
+    session.cleanup();
 }
 ```
 
 
-## エラー処理 {#error-handling}
+## エラー処理
 
-chDBを使用する際は、常に適切にエラーを処理してください：
+chDB を使用する際は、常にエラーを適切に処理してください。
 
 ```javascript
-const { query, Session } = require("chdb")
+const { query, Session } = require("chdb");
 
-// スタンドアロンクエリのエラー処理
+// スタンドアロンクエリのエラーハンドリング
 function safeQuery(sql, format = "CSV") {
-  try {
-    const result = query(sql, format)
-    return { success: true, data: result }
-  } catch (error) {
-    console.error("クエリエラー:", error.message)
-    return { success: false, error: error.message }
-  }
+    try {
+        const result = query(sql, format);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error("クエリエラー:", error.message);
+        return { success: false, error: error.message };
+    }
 }
 
 // 使用例
-const result = safeQuery("SELECT invalid_syntax")
+const result = safeQuery("SELECT invalid_syntax");
 if (result.success) {
-  console.log("クエリ結果:", result.data)
+    console.log("クエリ結果:", result.data);
 } else {
-  console.log("クエリ失敗:", result.error)
+    console.log("クエリ失敗:", result.error);
 }
 
-// セッションのエラー処理
+// セッションのエラーハンドリング
 function safeSessionQuery() {
-  const session = new Session("./error-test")
-
-  try {
-    // 無効な構文のためエラーがスローされます
-    const result = session.query("CREATE TABLE invalid syntax", "CSV")
-    console.log("予期しない成功:", result)
-  } catch (error) {
-    console.error("セッションクエリエラー:", error.message)
-  } finally {
-    // エラーが発生した場合でも、常にクリーンアップを実行
-    session.cleanup()
-  }
+    const session = new Session("./error-test");
+    
+    try {
+        // 無効な構文のためエラーがスローされます
+        const result = session.query("CREATE TABLE invalid syntax", "CSV");
+        console.log("予期しない成功:", result);
+    } catch (error) {
+        console.error("セッションクエリエラー:", error.message);
+    } finally {
+        // エラー発生時も必ずクリーンアップを実行
+        session.cleanup();
+    }
 }
 
-safeSessionQuery()
+safeSessionQuery();
 ```
 
 
-## GitHubリポジトリ {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
-- **GitHubリポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **問題とサポート**: 問題は[GitHubリポジトリ](https://github.com/chdb-io/chdb-node/issues)で報告してください
-- **NPMパッケージ**: [npmのchdb](https://www.npmjs.com/package/chdb)
+- **GitHub リポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+- **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb-node/issues) で Issue を報告してください
+- **NPM パッケージ**: [npm 上の chdb](https://www.npmjs.com/package/chdb)

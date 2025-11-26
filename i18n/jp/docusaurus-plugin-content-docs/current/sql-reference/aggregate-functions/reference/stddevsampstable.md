@@ -1,5 +1,5 @@
 ---
-description: '結果は varSamp の平方根と等しくなります。この関数は数値的に安定なアルゴリズムを使用しています。'
+description: '結果は varSamp の平方根と等しくなります。この関数では、数値的に安定したアルゴリズムを使用します。'
 sidebar_position: 191
 slug: /sql-reference/aggregate-functions/reference/stddevsampstable
 title: 'stddevSampStable'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # stddevSampStable
 
-結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根と同じになります。[`stddevSamp`](../reference/stddevsamp.md) と異なり、この関数は数値的に安定したアルゴリズムを使用します。処理は遅くなりますが、計算誤差をより小さく抑えられます。
+結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根と等しくなります。[`stddevSamp`](../reference/stddevsamp.md) と異なり、この関数は数値的に安定したアルゴリズムを使用します。動作は遅くなりますが、計算誤差を小さく抑えることができます。
 
 **構文**
 
@@ -20,7 +20,7 @@ stddevSampStable(x)
 
 * `x`: 標本分散の平方根を計算する対象となる値。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
 `x` の標本分散の平方根。[Float64](../../data-types/float.md)。
 
@@ -43,7 +43,7 @@ SELECT
 FROM test_data;
 ```
 
-結果：
+結果:
 
 ```response
 ┌─stddevSampStable(population)─┐

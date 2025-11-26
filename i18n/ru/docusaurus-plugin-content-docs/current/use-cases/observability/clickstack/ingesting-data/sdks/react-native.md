@@ -6,73 +6,73 @@ sidebar_position: 7
 description: 'React Native SDK для ClickStack — стек наблюдаемости ClickHouse'
 title: 'React Native'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
+keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
 ---
 
-React Native SDK для ClickStack позволяет добавить инструментацию в ваше
-приложение React Native для отправки событий в ClickStack. Это дает
-возможность просматривать сетевые запросы мобильного приложения и исключения
-вместе с событиями бэкенда в единой временной шкале.
+React Native SDK для ClickStack позволяет инструментировать ваше приложение
+React Native для отправки событий в ClickStack. Это позволяет видеть сетевые
+запросы мобильного приложения и исключения вместе с событиями бэкенда на единой
+временной шкале.
 
-В этом руководстве рассматривается интеграция:
+В этом руководстве вы настроите интеграцию:
 
-- **Запросов XHR/Fetch**
+- **XHR/Fetch-запросы**
 
 
 
-## Начало работы {#getting-started}
+## Начало работы
 
-### Установка через NPM {#install-via-npm}
+### Установка через npm
 
-Используйте следующую команду для установки [пакета ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
+С помощью следующей команды установите [пакет ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
 
 ```shell
 npm install @hyperdx/otel-react-native
 ```
 
-### Инициализация ClickStack {#initialize-clickstack}
+### Инициализируйте ClickStack
 
-Инициализируйте библиотеку как можно раньше в жизненном цикле приложения:
+Инициализируйте библиотеку как можно раньше в жизненном цикле вашего приложения:
 
 ```javascript
-import { HyperDXRum } from "@hyperdx/otel-react-native"
+import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
-  service: "my-rn-app",
-  apiKey: "<YOUR_INGESTION_API_KEY>",
-  tracePropagationTargets: [/api.myapp.domain/i] // Укажите для связывания трассировок от фронтенда с бэкенд-запросами
-})
+  service: 'my-rn-app',
+  apiKey: '<ВАШ_КЛЮЧ_API_ПРИЁМА>',
+  tracePropagationTargets: [/api.myapp.domain/i], // Установите для связывания трассировок между фронтендом и бэкендом
+});
 ```
 
-### Добавление информации о пользователе или метаданных (необязательно) {#attach-user-information-metadata}
+### Добавление информации о пользователе или метаданных (необязательно)
 
-Добавление информации о пользователе позволит вам выполнять поиск и фильтрацию сессий и событий
-в HyperDX. Этот метод можно вызвать в любой момент во время клиентской сессии. Текущая
-клиентская сессия и все события, отправленные после вызова, будут связаны
+Добавление информации о пользователе позволит вам искать и фильтровать сессии и события
+в HyperDX. Этот метод можно вызвать в любой момент в рамках клиентской сессии.
+Текущая клиентская сессия и все события, отправленные после вызова, будут связаны
 с информацией о пользователе.
 
-Параметры `userEmail`, `userName` и `teamName` заполнят интерфейс сессий
-соответствующими значениями, но их можно опустить. Любые другие дополнительные значения можно
-указать и использовать для поиска событий.
+`userEmail`, `userName` и `teamName` заполнят интерфейс сессий соответствующими
+значениями, но их можно опустить. Любые дополнительные значения могут быть
+указаны и использованы для поиска событий.
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
   userName: user.name,
-  teamName: user.team.name
+  teamName: user.team.name,
   // Другие пользовательские свойства...
-})
+});
 ```
 
-### Инструментирование более ранних версий {#instrument-lower-versions}
+### Инструментирование более старых версий
 
-Для инструментирования приложений, работающих на версиях React Native ниже 0.68,
-отредактируйте файл `metro.config.js`, чтобы заставить metro использовать пакеты,
-специфичные для браузера. Например:
+Чтобы инструментировать приложения, работающие на React Native версии ниже 0.68,
+отредактируйте файл `metro.config.js`, чтобы заставить Metro использовать
+пакеты, предназначенные для браузера. Например:
 
 ```javascript
-const defaultResolver = require("metro-resolver")
+const defaultResolver = require('metro-resolver');
 
 module.exports = {
   resolver: {
@@ -80,58 +80,58 @@ module.exports = {
       const resolved = defaultResolver.resolve(
         {
           ...context,
-          resolveRequest: null
+          resolveRequest: null,
         },
         moduleName,
-        platform
-      )
+        platform,
+      );
 
       if (
-        resolved.type === "sourceFile" &&
-        resolved.filePath.includes("@opentelemetry")
+        resolved.type === 'sourceFile' &&
+        resolved.filePath.includes('@opentelemetry')
       ) {
         resolved.filePath = resolved.filePath.replace(
-          "platform\\node",
-          "platform\\browser"
-        )
-        return resolved
+          'platform\\node',
+          'platform\\browser',
+        );
+        return resolved;
       }
 
-      return resolved
-    }
+      return resolved;
+    },
   },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: true
-      }
-    })
-  }
-}
+        inlineRequires: true,
+      },
+    }),
+  },
+};
 ```
 
 
-## Навигация по представлениям {#view-navigation}
+## Навигация между экранами
 
-Поддерживаются версии 5 и 6 библиотеки [react-navigation](https://github.com/react-navigation/react-navigation).
+Поддерживаются версии 5 и 6 [react-navigation](https://github.com/react-navigation/react-navigation).
 
-В следующем примере показано, как инструментировать навигацию:
+Следующий пример показывает, как настроить инструментирование навигации:
 
 ```javascript
-import { startNavigationTracking } from "@hyperdx/otel-react-native"
+import { startNavigationTracking } from '@hyperdx/otel-react-native';
 
 export default function App() {
-  const navigationRef = useNavigationContainerRef()
+  const navigationRef = useNavigationContainerRef();
   return (
     <NavigationContainer
       ref={navigationRef}
       onReady={() => {
-        startNavigationTracking(navigationRef)
+        startNavigationTracking(navigationRef);
       }}
     >
       <Stack.Navigator>...</Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 ```

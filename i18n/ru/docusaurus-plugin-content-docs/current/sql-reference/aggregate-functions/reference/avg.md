@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет арифметическое среднее.'
+description: 'Вычисляет среднее арифметическое.'
 sidebar_position: 112
 slug: /sql-reference/aggregate-functions/reference/avg
 title: 'avg'
@@ -18,12 +18,12 @@ avg(x)
 
 **Аргументы**
 
-* `x` — входные значения; должны иметь тип [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — входные значения, должны иметь тип [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемое значение**
 
 * Среднее арифметическое, всегда типа [Float64](../../../sql-reference/data-types/float.md).
-* `NaN`, если для параметра `x` не передано ни одного значения.
+* `NaN`, если входной параметр `x` пуст.
 
 **Пример**
 
@@ -51,7 +51,7 @@ SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 CREATE TABLE test (t UInt8) ENGINE = Memory;
 ```
 
-Вычислите среднее арифметическое:
+Найдите среднее арифметическое:
 
 Запрос:
 

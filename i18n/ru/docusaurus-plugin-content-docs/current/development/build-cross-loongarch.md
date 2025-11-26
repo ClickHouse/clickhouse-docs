@@ -1,21 +1,21 @@
 ---
 description: 'Руководство по сборке ClickHouse из исходного кода для архитектуры LoongArch64'
-sidebar_label: 'Сборка в Linux для LoongArch64'
+sidebar_label: 'Сборка на Linux для LoongArch64'
 sidebar_position: 35
 slug: /development/build-cross-loongarch
-title: 'Сборка в Linux для LoongArch64'
+title: 'Сборка на Linux для LoongArch64'
 doc_type: 'guide'
 ---
 
 
 
-# Сборка в Linux для архитектуры LoongArch64
+# Сборка под Linux для LoongArch64
 
-ClickHouse экспериментально поддерживает архитектуру LoongArch64.
+ClickHouse экспериментально поддерживает LoongArch64
 
 
 
-## Сборка ClickHouse {#build-clickhouse}
+## Сборка ClickHouse
 
 Для сборки требуется версия LLVM не ниже 19.1.0.
 
@@ -26,4 +26,4 @@ CC=clang-19 CXX=clang++-19 cmake . -Bbuild-loongarch64 -G Ninja -DCMAKE_TOOLCHAI
 ninja -C build-loongarch64
 ```
 
-Полученный исполняемый файл будет работать только в Linux с архитектурой процессора LoongArch64.
+Полученный бинарный файл будет работать только под Linux на архитектуре процессора LoongArch64.

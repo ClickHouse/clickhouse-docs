@@ -1,5 +1,5 @@
 ---
-description: '指定された配列の共通部分を返します（すべての指定された配列に共通して含まれる要素を返します）。'
+description: '指定された配列の共通部分（すべての配列に共通して含まれる要素）を返します。'
 sidebar_position: 141
 slug: /sql-reference/aggregate-functions/reference/grouparrayintersect
 title: 'groupArrayIntersect'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupArrayIntersect
 
-指定された配列の共通部分を返します（指定されたすべての配列に共通して含まれる要素を返します）。
+指定された配列同士の共通部分（指定されたすべての配列に共通して含まれるすべての要素）を返します。
 
 **構文**
 
@@ -22,11 +22,11 @@ groupArrayIntersect(x)
 
 **返される値**
 
-* すべての配列に共通して含まれる要素から成る配列。
+* すべての配列に共通して含まれる要素を集めた配列。
 
 型: [Array](../../data-types/array.md)。
 
-**例**
+**使用例**
 
 `numbers` テーブルを考えます。
 
@@ -44,7 +44,7 @@ groupArrayIntersect(x)
 SELECT groupArrayIntersect(a) AS intersection FROM numbers;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─intersection──────┐

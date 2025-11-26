@@ -2,8 +2,8 @@
 sidebar_label: 'クラウドサポート'
 title: 'サポート'
 slug: /cloud/support
-description: 'ClickHouse Cloud サポートについて学ぶ'
-keywords: ['ClickHouse Cloud', 'クラウドサポート', 'カスタマーサポート', '技術支援', 'マネージドサービスサポート']
+description: 'Cloud サポートについて学ぶ'
+keywords: ['ClickHouse Cloud', 'クラウドサポート', 'カスタマーサポート', '技術サポート', 'マネージドサービスサポート']
 hide_title: true
 doc_type: 'guide'
 ---

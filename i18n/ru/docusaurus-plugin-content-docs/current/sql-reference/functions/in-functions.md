@@ -1,5 +1,5 @@
 ---
-description: 'Справочная документация по функциям, реализующим оператор IN'
+description: 'Документация по функциям, реализующим оператор IN'
 sidebar_label: 'Оператор IN'
 slug: /sql-reference/functions/in-functions
 title: 'Функции, реализующие оператор IN'

@@ -1,6 +1,6 @@
 ---
-description: '使用 ClickHouse 进行硬件性能测试和基准测试的指南'
-sidebar_label: '硬件测试'
+description: '使用 ClickHouse 测试和基准测试硬件性能的指南'
+sidebar_label: '测试硬件'
 sidebar_position: 54
 slug: /operations/performance-test
 title: '如何使用 ClickHouse 测试硬件性能'
@@ -11,12 +11,12 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-你可以在任意服务器上运行基础的 ClickHouse 性能测试，而无需安装 ClickHouse 软件包。
+你可以在任何服务器上运行基本的 ClickHouse 性能测试，而无需安装 ClickHouse 软件包。
 
 
-## 自动化运行 {#automated-run}
+## 自动化运行
 
-您可以使用单个脚本运行基准测试。
+你只需使用一个脚本即可运行基准测试。
 
 1. 下载脚本。
 
@@ -31,6 +31,6 @@ chmod a+x ./hardware.sh
 ./hardware.sh
 ```
 
-3. 复制输出结果并发送至 feedback@clickhouse.com
+3. 复制输出内容并发送到 [feedback@clickhouse.com](mailto:feedback@clickhouse.com)
 
-所有结果已发布于：https://clickhouse.com/benchmark/hardware/
+所有结果均发布于此页面： [https://clickhouse.com/benchmark/hardware/](https://clickhouse.com/benchmark/hardware/)

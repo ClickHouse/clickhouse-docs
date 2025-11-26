@@ -1,12 +1,13 @@
 ---
-description: 'Вычисляет побитовое И bitmap-столбца и возвращает мощность множества типа UInt64; при добавлении суффикса -State возвращает объект bitmap.'
+description: 'Выполняет операцию AND над столбцом bitmap, возвращает мощность множества типа
+  UInt64; если добавить суффикс -State, то возвращается объект bitmap.'
 sidebar_position: 149
 slug: /sql-reference/aggregate-functions/reference/groupbitmapand
 title: 'groupBitmapAnd'
 doc_type: 'reference'
 ---
 
-Вычисляет побитовое И bitmap-столбца и возвращает мощность множества типа UInt64; при добавлении суффикса -State возвращает [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
+Выполняет операцию AND над столбцом bitmap, возвращает мощность множества типа UInt64; если добавить суффикс -State, то возвращается [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmapAnd(expr)

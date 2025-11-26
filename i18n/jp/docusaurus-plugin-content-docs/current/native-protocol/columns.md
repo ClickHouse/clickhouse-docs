@@ -1,17 +1,17 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
-title: 'カラム型'
-description: 'ネイティブプロトコルにおけるカラム型'
-keywords: ['ネイティブプロトコル カラム型', 'カラム型', 'データ型', 'プロトコルデータ型', 'バイナリエンコーディング']
+title: '列型'
+description: 'ネイティブプロトコルの列型'
+keywords: ['ネイティブプロトコル 列型', '列型', 'データ型', 'プロトコル データ型', 'バイナリ エンコーディング']
 doc_type: 'reference'
 ---
 
 
 
-# カラム型
+# 列の型
 
-全般的な情報については、[データ型](/sql-reference/data-types/)を参照してください。
+データ型の一般的な説明については、[データ型](/sql-reference/data-types/) を参照してください。
 
 
 
@@ -19,63 +19,70 @@ doc_type: 'reference'
 
 :::tip
 
-数値型のエンコーディングは、AMD64やARM64などのリトルエンディアンCPUのメモリレイアウトに対応しています。
+数値型のエンコーディングは、AMD64 や ARM64 のようなリトルエンディアン CPU のメモリレイアウトと一致します。
 
-これにより、非常に効率的なエンコードとデコードが可能になります。
+これにより、非常に効率的なエンコードおよびデコードの実装が可能になります。
 
 :::
 
-### 整数型 {#integers}
+### 整数 {#integers}
 
-8、16、32、64、128、または256ビットのIntおよびUIntをリトルエンディアン形式で表現します。
+8, 16, 32, 64, 128 または 256 ビットの Int および UInt 型の列で、リトルエンディアンです。
 
-### 浮動小数点型 {#floats}
+### 浮動小数 {#floats}
 
-IEEE 754バイナリ表現によるFloat32およびFloat64です。
+IEEE 754 のバイナリ表現による Float32 および Float64 型です。
+
 
 
 ## String {#string}
 
-String の配列、つまり (len, value) の形式です。
+単なる `String` の配列であり、各要素は (len, value) です。
+
 
 
 ## FixedString(N) {#fixedstringn}
 
-Nバイト長のシーケンスの配列。
+長さ N バイトのバイト列の配列。
+
 
 
 ## IP {#ip}
 
-IPv4は`UInt32`数値型のエイリアスであり、UInt32として表現されます。
+IPv4 は `UInt32` 数値型のエイリアスであり、`UInt32` として表現されます。
 
-IPv6は`FixedString(16)`のエイリアスであり、バイナリ形式で直接表現されます。
+IPv6 は `FixedString(16)` のエイリアスであり、バイナリ形式で直接表現されます。
+
 
 
 ## Tuple {#tuple}
 
-Tupleは、カラムの配列です。例えば、Tuple(String, UInt8)は、連続してエンコードされた2つのカラムを表します。
+Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) は、連続してエンコードされた 2 つのカラムにすぎません。
+
 
 
 ## Map {#map}
 
-`Map(K, V)` は3つのカラムで構成されます:`Offsets ColUInt64, Keys K, Values V`。
+`Map(K, V)` は 3 つの列で構成されます: `Offsets ColUInt64, Keys K, Values V`。
 
-`Keys` および `Values` カラムの行数は、`Offsets` の最後の値となります。
+`Keys` および `Values` 列の行数は、`Offsets` の末尾の値と同じになります。
+
 
 
 ## Array {#array}
 
-`Array(T)`は2つのカラムで構成されます：`Offsets ColUInt64, Data T`。
+`Array(T)` は、`Offsets ColUInt64` と `Data T` の 2 列から構成されます。
 
-`Data`の行数は`Offsets`の最後の値となります。
+`Data` 内の行数は、`Offsets` の最後の値になります。
 
 
-## Nullable {#nullable}
 
-`Nullable(T)` は、同じ行数の `Nulls ColUInt8, Values T` で構成されます。
+## Nullable
+
+`Nullable(T)` は、行数が同じ `Nulls`（型は `ColUInt8`）列と `Values`（型は `T`）列で構成されます。
 
 ```go
-// Nulls は Values 列に対する nullable の「マスク」です。
+// Nulls は Values カラムに対する nullable の「マスク」です。
 // 例えば、[null, "", "hello", null, "world"] をエンコードする場合:
 //      Values: ["", "", "hello", "", "world"] (len: 5)
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
@@ -84,33 +91,35 @@ Tupleは、カラムの配列です。例えば、Tuple(String, UInt8)は、連�
 
 ## UUID {#uuid}
 
-`FixedString(16)`のエイリアスです。UUID値はバイナリ形式で表現されます。
+`FixedString(16)` の別名であり、UUID 値をバイナリ形式で表現します。
+
 
 
 ## Enum {#enum}
 
-`Int8`または`Int16`のエイリアスですが、各整数は特定の`String`値にマッピングされます。
+`Int8` または `Int16` の別名ですが、それぞれの整数は特定の `String` 値にマッピングされます。
 
 
-## `LowCardinality` 型 {#low-cardinality}
 
-`LowCardinality(T)` は `Index T, Keys K` で構成され、
-`K` は `Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかとなります。
+## `LowCardinality` 型
+
+`LowCardinality(T)` は、`Index T` および `Keys K` から構成されます。
+ここで `K` は、`Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかの型です。
 
 ```go
-// Index（辞書）カラムには一意の値が含まれ、Keys カラムには
-// 実際の値を表す Index カラム内のインデックスの並びが含まれます。
+// Index（辞書）カラムには一意の値が格納され、Keysカラムには
+// 実際の値を表すIndexカラム内のインデックスのシーケンスが格納されます。
 //
 // 例えば、["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] は
-// 次のようにエンコードできます：
+// 以下のようにエンコードされます：
 //      Index: ["Eko", "Amadela"] (String)
 //      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
-// CardinalityKey は Index のサイズに応じて選択されます。つまり、選択された型の最大値で
-// Index 要素の任意のインデックスを表現できる必要があります。
+// CardinalityKeyはIndexのサイズに応じて選択されます。すなわち、選択された型の最大値は
+// Index要素の任意のインデックスを表現可能である必要があります。
 ```
 
 
 ## Bool {#bool}
 
-`UInt8`のエイリアスです。`0`が偽(false)、`1`が真(true)を表します。
+`UInt8` の別名で、`0` は `false`、`1` は `true` を表します。

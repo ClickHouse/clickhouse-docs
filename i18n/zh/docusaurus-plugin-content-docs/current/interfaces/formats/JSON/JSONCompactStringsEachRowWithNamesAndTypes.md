@@ -14,14 +14,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-与 `JSONCompactEachRow` 格式的区别在于,该格式还会输出两个标题行,分别包含列名和类型,类似于 [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)。
+与 `JSONCompactEachRow` 格式的区别在于，它还会输出两行表头，分别包含列名和类型，类似于 [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)。
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 使用示例
 
-使用名为 `football.json` 的 JSON 文件,其中包含以下数据:
+### 插入数据
+
+使用一个包含以下数据的 JSON 文件，文件名为 `football.json`：
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -45,15 +46,15 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `JSONCompactStringsEachRowWithNamesAndTypes` 格式读取数据:
+使用 `JSONCompactStringsEachRowWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -61,7 +62,7 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-输出为 JSON 格式:
+输出将为 JSON 格式：
 
 
 ```json
@@ -90,12 +91,12 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ## 格式设置 {#format-settings}
 
 :::note
-如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 1,
-输入数据中的列将按名称映射到表中的列,若将 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1,则会跳过名称未知的列。
-否则,将跳过第一行。
+如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 1，
+则会按名称将输入数据中的列映射到表中的列；如果将 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1，则会跳过名称未知的列。
+否则，将跳过第一行。
 :::
 
 :::note
-如果将 [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 1,
-输入数据中的类型将与表中相应列的类型进行比较。否则,将跳过第二行。
+如果将 [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 1，
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，将跳过第二行。
 :::

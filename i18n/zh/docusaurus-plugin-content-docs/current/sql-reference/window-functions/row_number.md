@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # row&#95;number
 
-从 1 开始为其所在分区中的当前行编号。
+对其所在分区内的当前行进行编号，从 1 开始。
 
 **语法**
 
@@ -21,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细内容，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更详细说明，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-* 当前分区中当前行的序号。[UInt64](../data-types/int-uint.md)。
+* 分区内当前行的编号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-下面的示例基于视频教程 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
+以下示例基于视频教程 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
 
 查询：
 

@@ -1,33 +1,35 @@
 ---
-description: 'Подробная информация о резервном копировании и восстановлении в/из конечной точки Azure Blob Storage'
+description: 'Подробное описание резервного копирования и восстановления в и из конечной точки Azure Blob Storage'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: 'Резервное копирование и восстановление в/из Azure Blob Storage'
+title: 'Резервное копирование и восстановление в и из Azure Blob Storage'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# BACKUP/RESTORE в Azure Blob Storage и из него {#backup-to-azure-blob-storage}
+# Резервное копирование и восстановление в/из Azure Blob Storage {#backup-to-azure-blob-storage}
+
 
 
 ## Синтаксис {#syntax}
 
-<Syntax />
+<Syntax/>
 
 
-## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
-Для записи резервных копий в контейнер AzureBlobStorage требуется следующая информация:
+## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage
 
-- Строка подключения / URL конечной точки AzureBlobStorage,
-- Контейнер,
-- Путь,
-- Имя учетной записи (если указан URL),
-- Ключ учетной записи (если указан URL)
+Чтобы записывать резервные копии в контейнер AzureBlobStorage, вам необходима следующая информация:
 
-Место назначения для резервной копии указывается следующим образом:
+* Строка подключения/URL конечной точки AzureBlobStorage,
+* Контейнер,
+* Путь,
+* Имя учётной записи (если указан URL),
+* Ключ учётной записи (если указан URL).
+
+Назначение места резервного копирования будет задаваться следующим образом:
 
 ```sql
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')

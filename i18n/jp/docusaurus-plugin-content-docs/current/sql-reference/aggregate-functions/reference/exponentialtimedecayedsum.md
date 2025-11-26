@@ -1,5 +1,5 @@
 ---
-description: '時系列の時刻 `t` における指数平滑移動平均値の合計を返します。'
+description: '時系列に対して、時刻インデックス `t` における指数平滑移動平均値の合計を返します。'
 sidebar_position: 136
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum
 title: 'exponentialTimeDecayedSum'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+## exponentialTimeDecayedSum
 
-時系列における時刻インデックス`t`での指数平滑移動平均値の合計を返します。
+時系列データのインデックス `t` における、指数平滑移動平均値の合計を返します。
 
 **構文**
 
@@ -20,16 +20,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **引数**
 
-- `v` — 値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)。
-- `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、または[DateTime64](../../data-types/datetime64.md)。
+* `v` — 値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 値の重みが1/eに減衰するために必要な時間差。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)。
+* `x` — 値の重みが 1/e まで減衰するのに必要な時間差。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **戻り値**
 
-- 指定された時点における指数平滑移動平均値の合計を返します。[Float64](../../data-types/float.md)。
+* 指定した時点における指数平滑移動平均の合計を返します。[Float64](../../data-types/float.md)。
 
 **例**
 
@@ -51,7 +51,7 @@ FROM
     );
 ```
 
-結果:
+結果：
 
 
 ```response

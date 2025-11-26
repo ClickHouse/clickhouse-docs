@@ -12,30 +12,30 @@ doc_type: 'guide'
 
 
 
-# 如何使用 Claude Agent SDK 和 ClickHouse MCP Server 构建 AI 智能代理
+# 如何使用 Claude Agent SDK 和 ClickHouse MCP Server 构建 AI Agent
 
-在本指南中，您将学习如何使用 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) 构建一个 AI 智能代理，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL 在线体验环境](https://sql.clickhouse.com/) 进行交互。
+在本指南中，您将学习如何使用 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)，构建一个可以与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互的 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) AI Agent。
 
-:::note 示例 Notebook
-该示例以 Notebook 形式提供，位于 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 中。
+:::note 示例笔记本
+该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 中找到对应的笔记本。
 :::
 
 
 
-## 前置条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
 - 您需要在系统上安装 Python。
 - 您需要在系统上安装 `pip`。
 - 您需要一个 Anthropic API 密钥。
 
-您可以通过 Python REPL 或脚本运行以下步骤。
+您可以在 Python REPL 中或通过脚本来执行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
 
-## 安装库 {#install-libraries}
+## 安装库
 
-通过运行以下命令安装 Claude Agent SDK 库:
+运行以下命令安装 Claude Agent SDK 库：
 
 ```python
 pip install -q --upgrade pip
@@ -44,20 +44,20 @@ pip install -q ipywidgets
 ```
 
 
-## 设置凭据 {#setup-credentials}
+## 设置凭据
 
 接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("请输入 Anthropic API 密钥：")
 ```
 
-```response title="响应"
-Enter Anthropic API Key: ········
+```response title="Response"
+请输入 Anthropic API 密钥：········
 ```
 
-接下来，定义连接到 ClickHouse SQL 演练场所需的凭据：
+接下来，定义用于连接 ClickHouse SQL Playground 所需的凭据：
 
 ```python
 env = {
@@ -72,8 +72,7 @@ env = {
 
 ## 初始化 MCP 服务器和 Claude Agent SDK 代理 {#initialize-mcp-and-agent}
 
-现在配置 ClickHouse MCP 服务器指向 ClickHouse SQL 演练场,
-并初始化代理并向其提问:
+现在将 ClickHouse MCP 服务器配置为指向 ClickHouse SQL playground，然后初始化我们的代理并向它提出一个问题：
 
 ```python
 from claude_agent_sdk import query, ClaudeAgentOptions, AssistantMessage, UserMessage, TextBlock, ToolUseBlock
@@ -102,7 +101,7 @@ options = ClaudeAgentOptions(
 )
 
 
-async for message in query(prompt="Tell me something interesting about UK property sales", options=options):
+async for message in query(prompt="告诉我一些关于英国房产交易的有趣信息", options=options):
     if isinstance(message, AssistantMessage):
         for block in message.content:
             if isinstance(block, TextBlock):
@@ -115,20 +114,20 @@ async for message in query(prompt="Tell me something interesting about UK proper
                 print(block.text)
 ```
 
-注意:`for` 块内的代码为简洁起见对输出进行了过滤。
+请注意，`for` 块中的代码会对输出进行过滤，以保持简洁。
 
 ```response title="响应"
-🤖 我将查询 ClickHouse 数据库以查找关于英国房产销售的有趣信息。
+🤖 我会查询 ClickHouse 数据库，找一些关于英国房产交易的有趣信息。
 
-首先让我看看有哪些可用的数据库:
+先来看一下当前有哪些可用的数据库：
 🛠️ mcp__mcp-clickhouse__list_databases {}
-🤖 太好了!有一个 "uk" 数据库。让我看看有哪些可用的表:
+🤖 太好了！有一个名为 "uk" 的数据库。接着看看有哪些可用的数据表：
 🛠️ mcp__mcp-clickhouse__list_tables {'database': 'uk'}
-🤖 完美!`uk_price_paid` 表包含超过 3000 万条房产销售记录。让我查找一些有趣的信息:
+🤖 完美！`uk_price_paid` 表中包含超过 3,000 万条房产交易记录。我来找点有趣的内容：
 🛠️ mcp__mcp-clickhouse__run_select_query {'query': "\nSELECT \n    street,\n    town,\n    max(price) as max_price,\n    min(price) as min_price,\n    max(price) - min(price) as price_difference,\n    count() as sales_count\nFROM uk.uk_price_paid\nWHERE street != ''\nGROUP BY street, town\nHAVING sales_count > 100\nORDER BY price_difference DESC\nLIMIT 1\n"}
-🤖 这里有一个引人入胜的发现:**伦敦的贝克街**(是的,就是著名的福尔摩斯街!)在所有销售记录超过 100 次的街道中拥有最大的价格区间 - 房产售价最低为 **£2,500**,最高达 **£5.943 亿英镑**,惊人的差价超过 5.94 亿英镑!
+🤖 这里有一个非常有趣的发现：**伦敦的 Baker Street**（没错，就是著名的夏洛克·福尔摩斯所在的那条街！）是在成交次数超过 100 次的街道中，房价区间最大的一条——房产成交价最低仅为 **£2,500**，最高高达 **£5.943 亿**，价差超过 £5.94 亿，极其惊人！
 
-这是合理的,因为贝克街是伦敦最负盛名的地址之一,穿过马里波恩等富裕地区,在此数据集中有 541 条销售记录。
+这也说得通，因为 Baker Street 是伦敦最顶级的地址之一，贯穿玛丽勒本等富裕区域，在这个数据集中已经记录了 541 笔成交。
 ```
 
 </VerticalStepper>

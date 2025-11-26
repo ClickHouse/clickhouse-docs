@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'MongoDB Atlas'
-description: 'ClickPipes のソースとして MongoDB Atlas をセットアップするためのステップバイステップガイド'
+description: 'MongoDB Atlas を ClickPipes のソースとしてセットアップするためのステップバイステップ形式のガイド'
 slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'MongoDB Atlas ソース設定ガイド'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'データ取り込み', 'リアルタイム同期']
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -16,77 +16,51 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# MongoDB Atlas ソース設定ガイド
+# MongoDB Atlas ソースセットアップガイド
 
 
 
-## oplog保持期間の設定 {#enable-oplog-retention}
+## oplog の保持期間を設定する {#enable-oplog-retention}
 
-レプリケーションには最低24時間のoplog保持期間が必要です。初期スナップショットが完了する前にoplogが切り詰められないよう、oplog保持期間を72時間以上に設定することを推奨します。UIでoplog保持期間を設定するには:
+レプリケーションには、最小 24 時間の oplog 保持期間が必要です。初回スナップショットが完了する前に oplog が削除されないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。UI から oplog の保持期間を設定するには、次の手順を実行します。
 
-1. MongoDB Atlasコンソールでクラスターの`Overview`タブに移動し、`Configuration`タブをクリックします。
+1. MongoDB Atlas コンソールで対象クラスターの `Overview` タブを開き、`Configuration` タブをクリックします。
+<Image img={mongo_atlas_configuration} alt="クラスター構成画面へ移動" size="lg" border/>
 
-   <Image
-     img={mongo_atlas_configuration}
-     alt='クラスター設定に移動'
-     size='lg'
-     border
-   />
+2. `Additional Settings` をクリックし、`More Configuration Options` までスクロールします。
+<Image img={mngo_atlas_additional_settings} alt="追加設定を展開" size="lg" border/>
 
-2. `Additional Settings`をクリックし、`More Configuration Options`までスクロールダウンします。
+3. `More Configuration Options` をクリックし、最小 oplog ウィンドウを `72 hours` 以上に設定します。
+<Image img={mongo_atlas_retention_hours} alt="oplog の保持期間を設定" size="lg" border/>
 
-   <Image
-     img={mngo_atlas_additional_settings}
-     alt='追加設定を展開'
-     size='lg'
-     border
-   />
+4. `Review Changes` をクリックして内容を確認し、その後 `Apply Changes` をクリックして変更を反映します。
 
-3. `More Configuration Options`をクリックし、最小oplogウィンドウを`72 hours`以上に設定します。
-
-   <Image
-     img={mongo_atlas_retention_hours}
-     alt='oplog保持時間を設定'
-     size='lg'
-     border
-   />
-
-4. `Review Changes`をクリックして変更内容を確認し、`Apply Changes`をクリックして変更を適用します。
 
 
 ## データベースユーザーの設定 {#configure-database-user}
 
-MongoDB Atlasコンソールにログイン後、左側のナビゲーションバーのSecurityタブ配下にある`Database Access`をクリックします。次に「Add New Database User」をクリックします。
+MongoDB Atlas コンソールにログインしたら、左側のナビゲーションバーで Security タブの `Database Access` をクリックし、「Add New Database User」をクリックします。
 
-ClickPipesではパスワード認証が必要です:
+ClickPipes ではパスワード認証が必要です：
 
-<Image img={mongo_atlas_add_user} alt='データベースユーザーの追加' size='lg' border />
+<Image img={mongo_atlas_add_user} alt="データベースユーザーを追加" size="lg" border/>
 
-ClickPipesには以下のロールを持つユーザーが必要です:
+ClickPipes 用のユーザーには、次のロールが必要です：
 
 - `readAnyDatabase`
 - `clusterMonitor`
 
-これらは`Specific Privileges`セクションで確認できます:
+これらは `Specific Privileges` セクションで選択できます：
 
-<Image
-  img={mongo_atlas_add_roles}
-  alt='ユーザーロールの設定'
-  size='lg'
-  border
-/>
+<Image img={mongo_atlas_add_roles} alt="ユーザーロールの設定" size="lg" border/>
 
-ClickPipesユーザーにアクセスを許可するクラスターやインスタンスをさらに指定することができます:
+さらに、ClickPipes ユーザーにアクセス権を付与するクラスターやインスタンスを指定することもできます：
 
-<Image
-  img={mongo_atlas_restrict_access}
-  alt='クラスター/インスタンスアクセスの制限'
-  size='lg'
-  border
-/>
+<Image img={mongo_atlas_restrict_access} alt="クラスター／インスタンスへのアクセス制限" size="lg" border/>
+
 
 
 ## 次のステップ {#whats-next}
 
-これで[ClickPipeを作成](../index.md)して、MongoDBインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-MongoDBインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。
+これで [ClickPipe の作成](../index.md)を行い、MongoDB インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
+ClickPipe の作成プロセスで必要になるため、MongoDB インスタンスのセットアップ時に使用した接続情報は必ず控えておいてください。

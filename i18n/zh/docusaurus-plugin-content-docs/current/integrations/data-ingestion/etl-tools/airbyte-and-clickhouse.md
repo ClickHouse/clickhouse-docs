@@ -3,9 +3,9 @@ sidebar_label: 'Airbyte'
 sidebar_position: 11
 keywords: ['clickhouse', 'Airbyte', '连接', '集成', 'etl', '数据集成']
 slug: /integrations/airbyte
-description: '使用 Airbyte 数据管道将数据流式写入 ClickHouse'
+description: '使用 Airbyte 数据管道以流式方式将数据导入 ClickHouse'
 title: '将 Airbyte 连接到 ClickHouse'
-doc_type: '指南'
+doc_type: 'guide'
 integration:
   - support_level: 'community'
   - category: 'data_ingestion'
@@ -30,7 +30,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 :::note
-请注意，ClickHouse 的 Airbyte 源连接器和目标连接器目前处于 Alpha 状态，不适用于迁移大型数据集（超过 1000 万行）
+请注意,ClickHouse 的 Airbyte 源连接器和目标连接器目前处于 Alpha 状态,不适用于迁移大型数据集(超过 1000 万行)
 :::
 
 <a href='https://www.airbyte.com/' target='_blank'>
@@ -43,16 +43,16 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 >
   ELT
 </a>
-数据管道，并内置超过 140 个开箱即用的连接器。本分步教程将介绍如何将 Airbyte 连接到 ClickHouse 作为目标端，并加载示例数据集。
+数据管道,并内置超过 140 个开箱即用的连接器。本分步教程将演示如何将 Airbyte 连接到 ClickHouse 作为目标端,并加载示例数据集。
 
 <VerticalStepper headerLevel="h2">
 
 
 ## 下载并运行 Airbyte {#1-download-and-run-airbyte}
 
-1.  Airbyte 基于 Docker 运行并使用 `docker-compose`。请确保下载并安装最新版本的 Docker。
+1. Airbyte 运行在 Docker 上并使用 `docker-compose`。请确保已下载并安装最新版本的 Docker。
 
-2.  通过克隆官方 Github 仓库并在终端中运行 `docker-compose up` 来部署 Airbyte:
+2. 通过克隆官方 GitHub 仓库，并在常用的终端中运行 `docker-compose up` 来部署 Airbyte：
 
         ```bash
         git clone https://github.com/airbytehq/airbyte.git --depth=1
@@ -60,42 +60,38 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
         ./run-ab-platform.sh
         ```
 
-3.  当您在终端中看到 Airbyte 标识后,即可连接到 <a href="http://localhost:8000" target="_blank">localhost:8000</a>
+4. 当你在终端中看到 Airbyte 横幅后，即可连接到 <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
-    <Image img={airbyte01} size='lg' border alt='Airbyte 标识' />
+    <Image img={airbyte01} size="lg" border alt="Airbyte 横幅" />
 
         :::note
-        或者,您也可以注册并使用 <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
+        或者，你也可以注册并使用 <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
         :::
 
 
-## 将 ClickHouse 添加为目标 {#2-add-clickhouse-as-a-destination}
 
-在本节中,我们将演示如何将 ClickHouse 实例添加为目标。
+## 将 ClickHouse 添加为目标
 
-1. 启动您的 ClickHouse 服务器(Airbyte 兼容 ClickHouse 版本 `21.8.10.19` 或更高版本)或登录您的 ClickHouse Cloud 账户:
+在本节中，我们将展示如何将一个 ClickHouse 实例添加为目标。
+
+1. 启动你的 ClickHouse 服务器（Airbyte 兼容 ClickHouse 版本 `21.8.10.19` 及以上），或登录你的 ClickHouse Cloud 账号：
 
    ```bash
    clickhouse-server start
    ```
 
-2. 在 Airbyte 中,选择"Destinations"页面并添加新目标:
+2. 在 Airbyte 中，进入 “Destinations” 页面并添加一个新的目标：
 
-   <Image img={airbyte02} size='lg' border alt='在 Airbyte 中添加目标' />
+   <Image img={airbyte02} size="lg" border alt="在 Airbyte 中添加一个目标" />
 
-3. 从"Destination type"下拉列表中选择 ClickHouse,然后填写"Set up the destination"表单,提供您的 ClickHouse 主机名和端口、数据库名称、用户名和密码,并选择是否使用 SSL 连接(相当于 `clickhouse-client` 中的 `--secure` 标志):
+3. 在 “Destination type” 下拉列表中选择 ClickHouse，然后在 “Set up the destination” 表单中填写你的 ClickHouse 主机名和端口、数据库名、用户名和密码，并选择是否使用 SSL 连接（等同于 `clickhouse-client` 中的 `--secure` 标志）：
 
-   <Image
-     img={airbyte03}
-     size='lg'
-     border
-     alt='在 Airbyte 中创建 ClickHouse 目标'
-   />
+   <Image img={airbyte03} size="lg" border alt="在 Airbyte 中创建 ClickHouse 目标" />
 
-4. 恭喜!您现在已成功将 ClickHouse 添加为 Airbyte 中的目标。
+4. 恭喜！你已经在 Airbyte 中成功将 ClickHouse 添加为一个目标。
 
 :::note
-为了将 ClickHouse 用作目标,您使用的用户需要具有创建数据库、表和插入行的权限。我们建议为 Airbyte 创建一个专用用户(例如 `my_airbyte_user`),并授予以下权限:
+为了将 ClickHouse 作为目标使用，你所使用的用户需要具备创建数据库、创建表以及插入数据行的权限。我们建议为 Airbyte 创建一个专用用户（例如 `my_airbyte_user`），并授予如下权限：
 
 ```sql
 CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
@@ -106,51 +102,47 @@ GRANT CREATE ON * TO my_airbyte_user;
 :::
 
 
-## 添加数据集作为数据源 {#3-add-a-dataset-as-a-source}
+## 添加数据集作为源 {#3-add-a-dataset-as-a-source}
 
-我们将使用的示例数据集是 <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">纽约市出租车数据</a>(位于 <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>)。在本教程中,我们将使用该数据集中 2022 年 1 月的子集。
+我们将使用的示例数据集是 <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data（纽约市出租车数据）</a>（托管在 <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a> 上）。在本教程中，我们将使用该数据集的一个子集，即 2022 年 1 月的数据。
 
-1.  在 Airbyte 中,选择"Sources"页面并添加一个文件类型的新数据源。
+1. 在 Airbyte 中，进入 “Sources” 页面，并添加一个类型为 file 的新 source。
 
-    <Image img={airbyte04} size='lg' border alt='在 Airbyte 中添加数据源' />
+    <Image img={airbyte04} size="lg" border alt="在 Airbyte 中添加 source" />
 
-2.  填写"Set up the source"表单,为数据源命名并提供 NYC Taxi 2022 年 1 月文件的 URL(见下文)。确保选择 `parquet` 作为文件格式,选择 `HTTPS Public Web` 作为存储提供商,选择 `nyc_taxi_2022` 作为数据集名称。
+2. 填写 “Set up the source” 表单，为 source 命名，并提供 NYC Taxi Jan 2022 文件的 URL（见下文）。请确保选择 `parquet` 作为文件格式，`HTTPS Public Web` 作为 Storage Provider，并将 Dataset Name 设置为 `nyc_taxi_2022`。
 
         ```text
         https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
         ```
 
-    <Image
-      img={airbyte05}
-      size='lg'
-      border
-      alt='在 Airbyte 中创建 ClickHouse 数据源'
-    />
+    <Image img={airbyte05} size="lg" border alt="在 Airbyte 中创建 ClickHouse source" />
 
-3.  恭喜!您现在已在 Airbyte 中成功添加了一个源文件。
+3. 恭喜！您现在已经在 Airbyte 中添加了一个 source 文件。
 
 
-## 创建连接并将数据集加载到 ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
-1. 在 Airbyte 中,选择"Connections"页面并添加新连接
+## 创建连接并将数据集加载到 ClickHouse 中 {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
-<Image img={airbyte06} size='lg' border alt='在 Airbyte 中添加连接' />
+1. 在 Airbyte 中，打开 “Connections” 页面并添加一个新连接。
 
-2. 选择"Use existing source"并选择 New York City Taxi Data,然后选择"Use existing destination"并选择您的 ClickHouse 实例。
+<Image img={airbyte06} size="lg" border alt="在 Airbyte 中添加连接" />
 
-3. 填写"Set up the connection"表单,选择复制频率(本教程中我们将使用 `manual`),并选择 `nyc_taxi_2022` 作为要同步的数据流。确保选择 `Normalized Tabular Data` 作为规范化选项。
+2. 选择 “Use existing source”，然后选择 New York City Taxi Data；再选择 “Use existing destination”，并选择你的 ClickHouse 实例。
 
-<Image img={airbyte07} size='lg' border alt='在 Airbyte 中创建连接' />
+3. 填写 “Set up the connection” 表单，选择 Replication Frequency（复制频率，本教程中我们使用 `manual`），并选择 `nyc_taxi_2022` 作为你希望同步的数据流（stream）。请确保在 Normalization（标准化）中选择 `Normalized Tabular Data`。
 
-4. 连接创建完成后,点击"Sync now"触发数据加载(因为我们选择了 `Manual` 作为复制频率)
+<Image img={airbyte07} size="lg" border alt="在 Airbyte 中创建连接" />
 
-<Image img={airbyte08} size='lg' border alt='在 Airbyte 中立即同步' />
+4. 连接创建完成后，点击 “Sync now” 以触发数据加载（因为我们将 Replication Frequency 设置为 `Manual`）。
 
-5. 数据将开始加载,您可以展开视图查看 Airbyte 日志和进度。操作完成后,您将在日志中看到 `Completed successfully` 消息:
+<Image img={airbyte08} size="lg" border alt="在 Airbyte 中执行 Sync now" />
 
-<Image img={airbyte09} size='lg' border alt='成功完成' />
+5. 数据将开始加载，你可以展开视图查看 Airbyte 日志和进度。操作完成后，你会在日志中看到 `Completed successfully` 消息：
 
-6.  使用您首选的 SQL 客户端连接到 ClickHouse 实例并检查生成的表:
+<Image img={airbyte09} size="lg" border alt="Completed successfully" />
+
+6. 使用你常用的 SQL Client 连接到 ClickHouse 实例，并检查生成的表：
 
         ```sql
         SELECT *
@@ -158,9 +150,10 @@ GRANT CREATE ON * TO my_airbyte_user;
         LIMIT 10
         ```
 
-        响应应如下所示:
+        返回结果应类似于：
         ```response
         Query id: 4f79c106-fe49-4145-8eba-15e1cb36d325
+
 
 
         ┌─extra─┬─mta&#95;tax─┬─VendorID─┬─RatecodeID─┬─tip&#95;amount─┬─airport&#95;fee─┬─fare&#95;amount─┬─DOLocationID─┬─PULocationID─┬─payment&#95;type─┬─tolls&#95;amount─┬─total&#95;amount─┬─trip&#95;distance─┬─passenger&#95;count─┬─store&#95;and&#95;fwd&#95;flag─┬─congestion&#95;surcharge─┬─tpep&#95;pickup&#95;datetime─┬─improvement&#95;surcharge─┬─tpep&#95;dropoff&#95;datetime─┬─&#95;airbyte&#95;ab&#95;id───────────────────────┬─────&#95;airbyte&#95;emitted&#95;at─┬─&#95;airbyte&#95;normalized&#95;at─┬─&#95;airbyte&#95;nyc&#95;taxi&#95;2022&#95;hashid────┐
@@ -184,7 +177,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         FROM nyc_taxi_2022
         ```
 
-        响应结果为：
+        响应结果为:
         ```response
         Query id: a9172d39-50f7-421e-8330-296de0baa67e
 
@@ -193,7 +186,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         └─────────┘
         ```
 
-7.  请注意，Airbyte 会自动推断数据类型并向目标表添加 4 个列。Airbyte 使用这些列来管理复制逻辑并记录操作。更多详细信息请参阅 <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">Airbyte 官方文档</a>。
+7.  请注意,Airbyte 会自动推断数据类型并向目标表添加 4 个列。Airbyte 使用这些列来管理复制逻辑并记录操作。更多详细信息请参阅 <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">Airbyte 官方文档</a>。
 
         ```sql
             `_airbyte_ab_id` String,
@@ -202,8 +195,8 @@ GRANT CREATE ON * TO my_airbyte_user;
             `_airbyte_nyc_taxi_072021_hashid` String
         ```
 
-        现在数据集已加载到您的 ClickHouse 实例中，您可以创建新表并使用更合适的 ClickHouse 数据类型（<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">更多详情</a>）。
+        现在数据集已加载到您的 ClickHouse 实例中,您可以创建新表并使用更合适的 ClickHouse 数据类型(<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">更多详细信息</a>)。
 
-8.  恭喜！您已成功使用 Airbyte 将 NYC 出租车数据加载到 ClickHouse 中！
+8.  恭喜!您已成功使用 Airbyte 将 NYC 出租车数据加载到 ClickHouse 中。
 
 </VerticalStepper>

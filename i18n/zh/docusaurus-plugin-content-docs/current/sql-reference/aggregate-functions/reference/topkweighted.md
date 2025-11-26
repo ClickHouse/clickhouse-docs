@@ -1,5 +1,5 @@
 ---
-description: '返回指定列中近似出现最频繁的值组成的数组。结果数组按照值的近似出现频率降序排序（而不是按值本身排序）。此外，还会考虑每个值的权重。'
+description: '返回指定列中近似出现最频繁值的数组。结果数组按值的近似出现频率降序排列（而不是按值本身排序）。此外，还会考虑值的权重。'
 sidebar_position: 203
 slug: /sql-reference/aggregate-functions/reference/topkweighted
 title: 'topKWeighted'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # topKWeighted
 
-返回一个数组，包含指定列中近似出现频率最高的值。结果数组按值的近似出现频率降序排序（而不是按值本身排序）。此外，还会考虑每个值的权重。
+返回一个数组，其中包含指定列中近似出现频率最高的值。结果数组按照值的近似出现频率降序排列（而不是按值本身排序）。同时会考虑各个值的权重。
 
 **语法**
 
@@ -21,8 +21,8 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 **参数**
 
 * `N` — 要返回的元素个数。可选。默认值：10。
-* `load_factor` — 指定为存储值预留多少单元格。如果 uniq(column) &gt; N * load&#95;factor，则 topK 函数的结果将是近似值。可选。默认值：3。
-* `counts` — 指定结果中是否应包含近似计数及其误差值。
+* `load_factor` — 定义为存储值预留的单元格数量。如果 uniq(column) &gt; N * load&#95;factor，则 topK 函数的结果是近似值。可选。默认值：3。
+* `counts` — 定义结果中是否应包含近似计数和误差值。
 
 **参数说明**
 
@@ -31,7 +31,7 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 
 **返回值**
 
-返回一个数组，包含具有最大近似权重总和的值。
+返回一个数组，包含其权重近似总和最大的值。
 
 **示例**
 

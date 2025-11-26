@@ -1,18 +1,18 @@
 ---
-description: 'Документация по работе с настройками таблицы'
-sidebar_label: 'SETTING'
+description: 'Документация по операциям с настройками таблиц'
+sidebar_label: 'НАСТРОЙКИ'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
-title: 'Работа с настройками таблицы'
+title: 'Операции с настройками таблиц'
 doc_type: 'reference'
 ---
 
 
 
-# Манипуляции с настройками таблицы
+# Операции с настройками таблицы
 
-Существует набор запросов, позволяющих изменять настройки таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменять несколько настроек одновременно.
-Если настройки с указанным именем не существует, то при выполнении запроса будет сгенерировано исключение.
+Существует набор запросов для изменения настроек таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменить сразу несколько настроек.
+Если настройки с указанным именем не существует, запрос генерирует исключение.
 
 **Синтаксис**
 
@@ -21,18 +21,18 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
 :::note\
-Эти запросы можно применять только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
+Эти запросы можно применять только к таблицам типа [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 :::
 
 
-## MODIFY SETTING {#modify-setting}
+## MODIFY SETTING
 
-Изменяет настройки таблицы.
+Изменяет параметры таблицы.
 
 **Синтаксис**
 
 ```sql
-MODIFY SETTING setting_name=value [, ...]
+MODIFY SETTING имя_настройки=значение [, ...]
 ```
 
 **Пример**
@@ -44,14 +44,14 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 ```
 
 
-## RESET SETTING {#reset-setting}
+## RESET SETTING
 
 Сбрасывает настройки таблицы к значениям по умолчанию. Если настройка уже имеет значение по умолчанию, никаких действий не выполняется.
 
 **Синтаксис**
 
 ```sql
-RESET SETTING setting_name [, ...]
+RESET SETTING имя_настройки [, ...]
 ```
 
 **Пример**
@@ -65,4 +65,4 @@ ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 
 **См. также**
 
-- [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)
+* [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)

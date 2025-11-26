@@ -1,27 +1,27 @@
 ---
 sidebar_label: 'ランダムなテストデータの生成'
-title: 'ClickHouse でのランダムなテストデータ生成'
+title: 'ClickHouse でランダムなテストデータを生成する'
 slug: /guides/generating-test-data
-description: 'ClickHouse でランダムなテストデータを生成する方法について学ぶ'
+description: 'ClickHouse におけるランダムなテストデータの生成について学びます'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['random data', 'test data']
+keywords: ['ランダムデータ', 'テストデータ']
 ---
 
 
 
 # ClickHouse でランダムなテストデータを生成する
 
-ランダムなデータの生成は、新しいユースケースをテストしたり、実装のベンチマークを行う際に有用です。
-ClickHouse には、[ランダムデータを生成するための幅広い関数](/sql-reference/functions/random-functions) が用意されており、多くの場合、外部のデータ生成ツールを使用する必要がありません。
+ランダムなデータの生成は、新しいユースケースを試したり実装のベンチマークを行ったりする際に役立ちます。
+ClickHouse には、外部のデータジェネレーターを用意する必要がない場合も多い、[ランダムデータ生成のための多様な関数](/sql-reference/functions/random-functions) が用意されています。
 
-このガイドでは、さまざまなランダム性の要件に応じて、ClickHouse でランダムなデータセットを生成する方法をいくつかの例で示します。
+このガイドでは、異なるランダム性要件に応じて、ClickHouse でランダムなデータセットを生成する方法の例をいくつか紹介します。
 
 
 
-## シンプルな一様分布データセット {#simple-uniform-dataset}
+## シンプルな一様データセット
 
-**ユースケース**: ランダムなタイムスタンプとイベントタイプを持つユーザーイベントのデータセットを迅速に生成します。
+**ユースケース**: ランダムなタイムスタンプとイベント種別を持つユーザーイベントのデータセットを手早く生成する。
 
 ```sql
 CREATE TABLE user_events (
@@ -41,16 +41,16 @@ SELECT
 FROM numbers(1000000);
 ```
 
-- `rand() % 10000`: 10,000ユーザーの一様分布
-- `arrayJoin(...)`: 3つのイベントタイプからランダムに1つを選択
-- タイムスタンプは過去24時間に分散
+* `rand() % 10000`: 一様分布で 1 万人のユーザー
+* `arrayJoin(...)`: 3 種類のイベントタイプのうち 1 つをランダムに選択
+* タイムスタンプは過去 24 時間にわたって分布
 
----
+***
 
 
-## 指数分布 {#exponential-distribution}
+## 指数分布
 
-**ユースケース**: 大半の値が低く、一部の値が高い購入金額をシミュレートします。
+**ユースケース**: 多くの値は小さいが、一部は大きくなるような購入金額をシミュレートする。
 
 ```sql
 CREATE TABLE purchases (
@@ -68,15 +68,15 @@ SELECT
 FROM numbers(500000);
 ```
 
-- 直近期間における均一なタイムスタンプ
-- `randExponential(1/10)` — 大半の合計値は0に近く、最小値15でオフセット ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4])
+* 直近の一定期間にわたる一様なタイムスタンプ
+* `randExponential(1/10)` — 合計値のほとんどが 0 付近となり、最小値を 15 としてオフセットされる（[ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]）
 
----
+***
 
 
-## 時間分散イベント（ポアソン分布） {#poisson-distribution}
+## 時間分布イベント（ポアソン）
 
-**ユースケース**: 特定の時間帯（例：ピーク時）に集中するイベント到着をシミュレートします。
+**ユースケース**: 特定の時間帯（例: ピーク時間帯）に集中して発生するイベントをシミュレートする。
 
 ```sql
 CREATE TABLE events (
@@ -93,14 +93,14 @@ SELECT
 FROM numbers(200000);
 ```
 
-- イベントは正午付近にピークを迎え、ポアソン分布による偏差を持ちます
+* イベントは正午頃にピークを迎え、ばらつきはポアソン分布に従う形になります
 
----
+***
 
 
-## 時間変動する正規分布 {#time-varying-normal-distribution}
+## 時間とともに変化する正規分布
 
-**ユースケース**: 時間とともに変動するシステムメトリクス（例：CPU使用率）をエミュレートします。
+**ユースケース**: 時間とともに変化するシステムメトリクス（例：CPU 使用率）を模擬します。
 
 ```sql
 CREATE TABLE cpu_metrics (
@@ -120,15 +120,15 @@ SELECT
 FROM numbers(10000);
 ```
 
-- `usage`は日周期のサイン波にランダム性を加えた値に従います
-- 値は[0,100]の範囲に制限されます
+* `usage` は日周期の正弦波 + ランダム性に従う
+* 値は [0,100] の範囲に収まる
 
----
+***
 
 
-## カテゴリカルデータとネストされたデータ {#categorical-and-nested-data}
+## カテゴリカルおよびネストされたデータ
 
-**ユースケース**: 複数の興味を持つユーザープロファイルを作成します。
+**ユースケース**: 複数の興味・関心を持つユーザープロファイルを作成する場合。
 
 ```sql
 CREATE TABLE user_profiles (
@@ -146,31 +146,31 @@ SELECT
 FROM numbers(20000);
 ```
 
-- 配列の長さは1から3の間でランダムに設定されます
-- 各興味に対してユーザーごとに3つのスコアが設定されます
+* 長さ 1～3 のランダムな配列
+* 各インタレストごとのユーザー別スコアが 3 つ
 
 :::tip
-さらに多くの例については、[ClickHouseでランダムデータを生成する](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)ブログ記事をご覧ください。
+さらに多くの例については、[Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) ブログを参照してください。
 :::
 
 
-## ランダムなテーブルの生成 {#generating-random-tables}
+## ランダムなテーブルの生成
 
-[`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure)関数は、[`generateRandom`](/sql-reference/table-functions/generate)テーブルエンジンと組み合わせることで、テスト、ベンチマーク、または任意のスキーマを持つモックデータの作成に特に有用です。
+[`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 関数は、テストやベンチマーク、任意のスキーマを持つモックデータの作成のために、[`generateRandom`](/sql-reference/table-functions/generate) テーブルエンジンと組み合わせて使用することで特に有用です。
 
-まず、`generateRandomStructure`関数を使用してランダムな構造がどのように見えるかを確認してみましょう:
+まずは `generateRandomStructure` 関数を使って、ランダムな構造がどのようなものかを確認してみましょう。
 
 ```sql
 SELECT generateRandomStructure(5);
 ```
 
-次のような結果が表示される可能性があります:
+次のような表示になることがあります：
 
 ```response
 c1 UInt32, c2 Array(String), c3 DateTime, c4 Nullable(Float64), c5 Map(String, Int16)
 ```
 
-シード値を使用することで、毎回同じ構造を取得することもできます:
+毎回同じ構造を得るために、シードを使用することもできます。
 
 ```sql
 SELECT generateRandomStructure(3, 42);
@@ -180,21 +180,21 @@ SELECT generateRandomStructure(3, 42);
 c1 String, c2 Array(Nullable(Int32)), c3 Tuple(UInt8, Date)
 ```
 
-それでは、実際のテーブルを作成してランダムなデータで埋めてみましょう:
+それでは、実際にテーブルを作成し、ランダムなデータを投入してみましょう。
 
 ```sql
 CREATE TABLE my_test_table
 ENGINE = MergeTree
 ORDER BY tuple()
-AS SELECT *
+AS SELECT * 
 FROM generateRandom(
     'col1 UInt32, col2 String, col3 Float64, col4 DateTime',
     1,  -- データ生成用のシード値
-    10  -- 異なるランダム値の数
+    10  -- 生成する異なるランダム値の数
 )
 LIMIT 100;  -- 100行
 
--- ステップ2: 新しいテーブルをクエリする
+-- ステップ2: 新しいテーブルにクエリを実行する
 SELECT * FROM my_test_table LIMIT 5;
 ```
 
@@ -209,7 +209,7 @@ SELECT * FROM my_test_table LIMIT 5;
 ```
 
 両方の関数を組み合わせて、完全にランダムなテーブルを作成してみましょう。
-まず、どのような構造が得られるかを確認します:
+まず、どのような構造になるか確認しましょう。
 
 ```sql
 SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
@@ -221,13 +221,13 @@ SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-次に、その構造でテーブルを作成し、`DESCRIBE`文を使用して作成したものを確認します:
+では、その構造でテーブルを作成し、`DESCRIBE` ステートメントで作成された内容を確認します。
 
 ```sql
 CREATE TABLE fully_random_table
 ENGINE = MergeTree
 ORDER BY tuple()
-AS SELECT *
+AS SELECT * 
 FROM generateRandom(generateRandomStructure(7, 123), 1, 10)
 LIMIT 1000;
 
@@ -247,7 +247,7 @@ DESCRIBE TABLE fully_random_table;
    └──────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-生成されたデータのサンプルとして、最初の行を確認します：
+生成されたデータのサンプルとして、先頭行を確認します：
 
 ```sql
 SELECT * FROM fully_random_table LIMIT 1 FORMAT vertical;

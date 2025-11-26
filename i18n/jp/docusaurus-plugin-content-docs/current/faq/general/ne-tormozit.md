@@ -3,41 +3,32 @@ slug: /faq/general/ne-tormozit
 title: '「не тормозит」とはどういう意味ですか？'
 toc_hidden: true
 toc_priority: 11
-description: 'このページでは「Не тормозит」とは何かを説明します'
+description: 'このページでは「Не тормозит」という表現の意味を説明します'
 keywords: ['Yandex']
 doc_type: 'reference'
 ---
 
 
 
-# 「Не тормозит」とは何を意味するのか？ {#what-does-ne-tormozit-mean}
+# 「Не тормозит」とはどういう意味ですか？ {#what-does-ne-tormozit-mean}
 
-ヴィンテージ（限定生産）のClickHouse Tシャツを見た人々から、この質問をよく受けます。これらのTシャツには、**「ClickHouse не тормозит」**という文字が前面に大きく太字で書かれています。
+人々がヴィンテージ（限定生産）の ClickHouse T シャツを見ると、よくこの質問をされます。T シャツの前面には太字の大きな文字で **「ClickHouse не тормозит」** と書かれています。
 
-ClickHouseがオープンソース化される前は、大手欧州IT企業である[Yandex](https://yandex.com/company/)によって社内ストレージシステムとして開発されていました。そのため、当初はキリル文字で「не тормозит」（「ne tormozit」と発音）というスローガンが付けられました。オープンソースリリース後、まず地域イベント向けにこれらのTシャツを製作しましたが、スローガンをそのまま使用することは自然な選択でした。
+ClickHouse がオープンソースになる前は、大手ヨーロッパ IT 企業の [Yandex](https://yandex.com/company/) によって社内向けストレージシステムとして開発されていました。そのため、当初のスローガンはキリル文字で「не тормозит」（発音は「ne tormozit」）になりました。オープンソースとして公開したあと、私たちはまずローカルイベント向けにこの T シャツを作り、スローガンもそのまま使うのが自然な選択でした。
 
-これらのTシャツの第2弾は国際イベントで配布される予定であり、スローガンの英語版を作成しようと試みました。
-しかし残念ながら、英語で同等のインパクトのある表現を思いつくことができませんでした。元のフレーズは簡潔でありながら表現が洗練されており、Tシャツのスペース制限もあったため、ほとんどの選択肢が長すぎるか不正確に見えてしまい、適切な翻訳を考案することができませんでした。
-国際イベント向けに製作されるTシャツでもスローガンをそのまま維持することに決めました。これは素晴らしい決断だったようで、世界中の人々がそれを見たときに好意的な驚きと好奇心を示してくれました。
+第 2 弾の T シャツは国際的なイベントで配布する予定で、スローガンの英語版を作ろうと試みました。
+しかし、英語で同じくらい印象的な表現をどうしても思いつきませんでした。元のフレーズは簡潔でありながら表現として洗練されており、T シャツのスペース制約もあって、候補となった翻訳はどれも長すぎるか正確さに欠けるかのいずれかで、十分に良い案にたどり着けませんでした。
+そこで、国際イベント向けに制作した T シャツでもスローガンをそのまま残すことにしました。これは結果として非常によい判断で、世界中の人々がそれを目にして好意的な驚きと関心を示してくれました。
 
-では、これは何を意味するのでしょうか？_「не тормозит」_を翻訳する方法をいくつか紹介します：
+では、「не тормозит」はどういう意味でしょうか？ 以下はいくつかの訳し方です。
 
-- 文字通りに翻訳すると、_「ClickHouseはブレーキペダルを踏まない」_のような意味になります。
-- より短いが精度の低い翻訳としては、_「ClickHouseは遅くない」_、_「ClickHouseは遅延しない」_、または単に_「ClickHouseは高速である」_などが考えられます。
+- 文字通りに訳すと、*「ClickHouse はブレーキペダルを踏まない」* のような意味になります。
+- もっと短いが厳密さに欠ける訳としては、*「ClickHouse は遅くない」*、*「ClickHouse は遅延しない」*、あるいは単に *「ClickHouse は速い」* などが考えられます。
 
-これらのTシャツを実際に見たことがない場合は、多くのClickHouse関連動画でオンラインで確認できます。例えば、こちらの動画です：
+もしこれらの T シャツを実物で見たことがなければ、多くの ClickHouse 関連の動画でオンラインでも確認できます。たとえば、次の動画です。
 
 <div class='vimeo-container'>
-  <iframe
-    width='560'
-    height='315'
-    src='http://www.youtube.com/embed/bSyQahMVZ7w'
-    title='YouTube video player'
-    frameborder='0'
-    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-    referrerpolicy='strict-origin-when-cross-origin'
-    allowfullscreen
-  ></iframe>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/bSyQahMVZ7w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-_追伸：これらのTシャツは販売されていません_。一部の[ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/)で無料配布されたもので、通常は優れた質問やその他の積極的な参加に対する贈り物として提供されました。現在、これらのTシャツは製造されておらず、高く評価されるコレクターズアイテムとなっています。
+_追伸：これらの T シャツは販売されていません_。一部の [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/) で、優れた質問やその他の積極的な参加に対するギフトとして無料配布されたものです。現在、この T シャツはすでに生産されておらず、非常に価値の高いコレクターズアイテムになっています。

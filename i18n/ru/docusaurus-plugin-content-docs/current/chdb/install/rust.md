@@ -11,12 +11,13 @@ doc_type: 'guide'
 
 # chDB для Rust {#chdb-for-rust}
 
-chDB-rust предоставляет экспериментальные FFI-привязки (Foreign Function Interface) для chDB, позволяя выполнять запросы ClickHouse непосредственно в ваших Rust-приложениях без внешних зависимостей.
+chDB-rust предоставляет экспериментальные привязки FFI (Foreign Function Interface) для chDB, позволяющие выполнять запросы к ClickHouse непосредственно в ваших Rust-приложениях без каких-либо внешних зависимостей.
 
 
-## Установка {#installation}
 
-### Установка libchdb {#install-libchdb}
+## Установка
+
+### Установка libchdb
 
 Установите библиотеку chDB:
 
@@ -25,11 +26,11 @@ curl -sL https://lib.chdb.io | bash
 ```
 
 
-## Использование {#usage}
+## Использование
 
-chDB Rust предоставляет режимы выполнения запросов как с сохранением состояния, так и без него.
+chDB для Rust предоставляет как статический, так и состояние-сохраняющий режимы выполнения запросов.
 
-### Использование без сохранения состояния {#stateless-usage}
+### Статический режим
 
 Для простых запросов без сохранения состояния:
 
@@ -42,22 +43,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouse version: {}", result.data_utf8()?);
-
-    // Запрос к CSV-файлу
+    println!("Версия ClickHouse: {}", result.data_utf8()?);
+    
+    // Запрос к CSV‑файлу
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSV data: {}", result.data_utf8()?);
-
+    println!("Данные из CSV: {}", result.data_utf8()?);
+    
     Ok(())
 }
 ```
 
-### Использование с сохранением состояния (сессии) {#stateful-usage-sessions}
+### Использование с сохранением состояния (сеансы)
 
-Для запросов, требующих сохранения состояния, таких как базы данных и таблицы:
+Для запросов, которым требуется постоянное состояние, например для работы с базами данных и таблицами:
 
 ```rust
 use chdb_rust::{
@@ -69,19 +70,19 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Создать временный каталог для хранения базы данных
+    // Создайте временный каталог для хранения данных базы
     let tmp = TempDir::new("chdb-rust")?;
-
-    // Создать сессию с конфигурацией
+    
+    // Создайте сеанс с заданной конфигурацией
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // Очистка при завершении
+        .with_auto_cleanup(true)  // Автоочистка при уничтожении объекта
         .build()?;
 
-    // Создать базу данных и таблицу
+    // Создайте базу данных и таблицу
     session.execute(
-        "CREATE DATABASE demo; USE demo",
+        "CREATE DATABASE demo; USE demo", 
         Some(&[Arg::MultiQuery])
     )?;
 
@@ -90,56 +91,56 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // Вставить данные
+    // Вставьте данные
     session.execute(
-        "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
+        "INSERT INTO logs (id, msg) VALUES (1, 'Привет'), (2, 'Мир')",
         None,
     )?;
 
-    // Запросить данные
+    // Выполните запрос
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("Query results:\n{}", result.data_utf8()?);
-
-    // Получить статистику запроса
-    println!("Rows read: {}", result.rows_read());
-    println!("Bytes read: {}", result.bytes_read());
-    println!("Query time: {:?}", result.elapsed());
+    println!("Результаты запроса:\n{}", result.data_utf8()?);
+    
+    // Выведите статистику запроса
+    println!("Прочитано строк: {}", result.rows_read());
+    println!("Прочитано байт: {}", result.bytes_read());
+    println!("Время выполнения запроса: {:?}", result.elapsed());
 
     Ok(())
 }
 ```
 
 
-## Сборка и тестирование {#building-testing}
+## Сборка и тестирование
 
-### Сборка проекта {#build-the-project}
+### Сборка проекта
 
 ```bash
 cargo build
 ```
 
-### Запуск тестов {#run-tests}
+### Запуск тестов
 
 ```bash
 cargo test
 ```
 
-### Зависимости для разработки {#development-dependencies}
+### Зависимости для разработки
 
-Проект включает следующие зависимости для разработки:
+В проекте используются следующие зависимости для разработки:
 
-- `bindgen` (v0.70.1) — генерация FFI-привязок из заголовочных файлов C
-- `tempdir` (v0.3.7) — работа с временными каталогами в тестах
-- `thiserror` (v1) — утилиты для обработки ошибок
+* `bindgen` (v0.70.1) - генерация FFI-биндингов из заголовков C
+* `tempdir` (v0.3.7) - работа с временными каталогами в тестах
+* `thiserror` (v1) - утилиты для обработки ошибок
 
 
-## Обработка ошибок {#error-handling}
+## Обработка ошибок
 
-chDB Rust обеспечивает полноценную обработку ошибок через перечисление `Error`:
+chDB Rust предоставляет всестороннюю обработку ошибок с помощью перечисления `Error`:
 
 ```rust
 use chdb_rust::{execute, error::Error};
@@ -149,13 +150,13 @@ match execute("SELECT 1", None) {
         println!("Успешно: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("Ошибка выполнения запроса: {}", msg);
+        eprintln!("Ошибка запроса: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("Результат не возвращён");
+        eprintln!("Результат не получен");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("Некорректная последовательность UTF-8: {}", e);
+        eprintln!("Недопустимая последовательность UTF-8: {}", e);
     },
     Err(e) => {
         eprintln!("Другая ошибка: {}", e);
@@ -164,6 +165,6 @@ match execute("SELECT 1", None) {
 ```
 
 
-## Репозиторий GitHub {#github-repository}
+## Репозиторий на GitHub {#github-repository}
 
-Репозиторий проекта на GitHub: [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust).
+Репозиторий проекта на GitHub доступен по адресу [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust).

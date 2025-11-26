@@ -1,9 +1,9 @@
 ---
-sidebar_label: '与 Kafka 搭配使用 Vector'
+sidebar_label: 'Vector 与 Kafka'
 sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
-description: '在 Kafka 和 ClickHouse 中使用 Vector'
-title: '在 Kafka 和 ClickHouse 中使用 Vector'
+description: '将 Vector 与 Kafka 和 ClickHouse 集成使用'
+title: '将 Vector 与 Kafka 和 ClickHouse 集成使用'
 doc_type: 'guide'
 keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 ---
@@ -11,40 +11,39 @@ keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 
-## 使用 Vector 与 Kafka 和 ClickHouse {#using-vector-with-kafka-and-clickhouse}
+## 在 Kafka 和 ClickHouse 中使用 Vector
 
-Vector 是一个与供应商无关的数据管道,能够从 Kafka 读取数据并将事件发送到 ClickHouse。
+Vector 是一个与厂商无关的数据管道，能够从 Kafka 读取数据并将事件发送到 ClickHouse。
 
-Vector 与 ClickHouse 的[入门指南](../etl-tools/vector-to-clickhouse.md)侧重于日志用例和从文件读取事件。本文使用存储在 Kafka 主题上的 [Github 示例数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
+针对 Vector 与 ClickHouse 的[入门](../etl-tools/vector-to-clickhouse.md)指南重点关注日志使用场景以及从文件中读取事件。我们使用包含在 Kafka topic 中事件的 [GitHub 示例数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
 
-Vector 使用[源(sources)](https://vector.dev/docs/about/concepts/#sources)通过推送或拉取模型检索数据。[接收器(sinks)](https://vector.dev/docs/about/concepts/#sinks)则为事件提供目标位置。因此,我们使用 Kafka 源和 ClickHouse 接收器。请注意,虽然 Kafka 支持作为接收器,但不支持 ClickHouse 源。因此,Vector 不适合需要将数据从 ClickHouse 传输到 Kafka 的用户。
+Vector 使用 [sources](https://vector.dev/docs/about/concepts/#sources) 通过推送或拉取模型来获取数据。[sinks](https://vector.dev/docs/about/concepts/#sinks) 则为事件提供目标位置。因此，我们在此使用 Kafka source 和 ClickHouse sink。请注意，尽管 Kafka 支持作为 sink 使用，但目前尚无 ClickHouse source。因此，对于希望将数据从 ClickHouse 传输到 Kafka 的用户来说，Vector 并不适用。
 
-Vector 还支持数据[转换](https://vector.dev/docs/reference/configuration/transforms/)。这超出了本指南的范围。如果用户需要对其数据集进行转换,请参阅 Vector 文档。
+Vector 还支持对数据进行[转换](https://vector.dev/docs/reference/configuration/transforms/)。这超出了本指南的范围。如果用户需要在其数据集上进行数据转换，请参考 Vector 文档。
 
-请注意,ClickHouse 接收器的当前实现使用 HTTP 接口。ClickHouse 接收器目前不支持使用 JSON schema。数据必须以纯 JSON 格式或字符串形式发布到 Kafka。
+请注意，当前 ClickHouse sink 的实现使用的是 HTTP 接口。ClickHouse sink 目前不支持使用 JSON schema。数据必须以纯 JSON 格式或字符串形式发布到 Kafka。
 
-### 许可证 {#license}
+### 许可证
 
-Vector 在 [MPL-2.0 许可证](https://github.com/vectordotdev/vector/blob/master/LICENSE)下分发
+Vector 根据 [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE) 进行分发。
 
-### 收集连接详细信息 {#gather-your-connection-details}
+### 收集连接信息
 
 <ConnectionDetails />
 
-### 步骤 {#steps}
+### 步骤
 
-1. 创建 Kafka `github` 主题并插入 [Github 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
+1. 创建 Kafka `github` topic 并写入 [GitHub 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
 
 ```bash
 cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
 ```
 
-该数据集包含 200,000 行,聚焦于 `ClickHouse/ClickHouse` 仓库。
+该数据集包含 200,000 行，聚焦于 `ClickHouse/ClickHouse` 仓库。
 
-2. 确保已创建目标表。下面我们使用默认数据库。
+2. 确保目标表已创建。下面我们将使用默认数据库。
 
 ```sql
-
 ```
 
 
@@ -80,7 +79,7 @@ member&#95;login LowCardinality(String)
 
 ````
 
-3. [下载并安装 Vector](https://vector.dev/docs/setup/quickstart/)。创建 `kafka.toml` 配置文件,并根据您的 Kafka 和 ClickHouse 实例修改相应的配置值。
+3. [下载并安装 Vector](https://vector.dev/docs/setup/quickstart/)。创建一个 `kafka.toml` 配置文件，并根据你的 Kafka 和 ClickHouse 实例调整其中的参数值。
 
 ```toml
 [sources.github]
@@ -110,16 +109,16 @@ buffer.max_events = 10000
 batch.timeout_secs = 1
 ````
 
-下面是关于该配置和 Vector 行为的几点重要说明：
+关于此配置和 Vector 行为，有几点重要说明：
 
 
-* 此示例已在 Confluent Cloud 上进行了测试。因此，`sasl.*` 和 `ssl.enabled` 安全选项在自托管场景中可能并不适用。
+* 此示例已在 Confluent Cloud 上进行测试。因此，`sasl.*` 和 `ssl.enabled` 安全选项在自行管理部署的场景中可能并不适用。
 * 配置参数 `bootstrap_servers` 不需要协议前缀，例如 `pkc-2396y.us-east-1.aws.confluent.cloud:9092`。
-* 源端参数 `decoding.codec = "json"` 可确保将消息作为单个 JSON 对象传递到 ClickHouse sink。如果将消息作为字符串处理并使用默认的 `bytes` 值，消息内容将被追加到字段 `message` 中。在大多数情况下，这需要在 ClickHouse 中进一步处理，如 [Vector 入门](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs) 指南中所述。
-* Vector [会为消息添加多个字段](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data)。在我们的示例中，我们通过配置参数 `skip_unknown_fields = true` 在 ClickHouse sink 中忽略这些字段。这会忽略不属于目标表 schema 的字段。你可以根据需要调整 schema，以确保将 `offset` 等这些元数据字段纳入其中。
+* source 端参数 `decoding.codec = "json"` 可确保消息作为单个 JSON 对象传递给 ClickHouse sink。如果将消息作为字符串处理并使用默认的 `bytes` 值，消息内容将被追加到字段 `message` 中。在大多数情况下，这需要在 ClickHouse 中进行进一步处理，如 [Vector 入门](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs) 指南中所述。
+* Vector 会[向消息添加若干字段](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data)。在我们的示例中，我们通过 ClickHouse sink 中的配置参数 `skip_unknown_fields = true` 忽略这些字段。该参数会忽略不属于目标表 schema 的字段。你可以根据需要调整 schema，以确保将 `offset` 等此类元字段添加进去。
 * 注意 sink 如何通过参数 `inputs` 引用事件的 source。
-* 注意 ClickHouse sink 的行为，如[此处](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches)所述。为获得最佳吞吐量，用户可能希望调优 `buffer.max_events`、`batch.timeout_secs` 和 `batch.max_bytes` 参数。根据 ClickHouse 的[建议](/sql-reference/statements/insert-into#performance-considerations)，任意单个批次中的事件数量 1000 应被视为最小值。对于吞吐量较为均匀且较高的用例，用户可以增加参数 `buffer.max_events`。吞吐量波动较大的场景可能需要调整参数 `batch.timeout_secs`。
-* 参数 `auto_offset_reset = "smallest"` 会强制 Kafka source 从该 topic 的起始位置开始消费，从而确保我们消费到在步骤 (1) 中发布的消息。用户可能需要不同的行为。更多详情请参见[此处](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset)。
+* 注意 ClickHouse sink 的行为，如[此处](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches)所述。为获得最佳吞吐量，用户可能需要调优 `buffer.max_events`、`batch.timeout_secs` 和 `batch.max_bytes` 参数。根据 ClickHouse 的[建议](/sql-reference/statements/insert-into#performance-considerations)，单个批次中的事件数量应至少为 1000。对于吞吐量持续较高的用例，可以增加参数 `buffer.max_events`。对于吞吐量波动较大的场景，可能需要调整参数 `batch.timeout_secs`。
+* 参数 `auto_offset_reset = "smallest"` 会强制 Kafka source 从 topic 的起始位置开始读取——从而确保我们能消费在步骤 (1) 中发布的消息。用户可能需要不同的行为，更多详情参见[此处](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset)。
 
 4. 启动 Vector
 
@@ -127,14 +126,14 @@ batch.timeout_secs = 1
 vector --config ./kafka.toml
 ```
 
-默认情况下，在开始向 ClickHouse 插入数据之前，需要先进行一次[健康检查](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck)。这可以确保连接已建立并且可以读取 schema。将 `VECTOR_LOG=debug` 置于前面以启用调试日志，从而获取更多日志信息，在排查问题时会有所帮助。
+默认情况下，在开始向 ClickHouse 插入数据之前，需要先进行一次[健康检查](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck)，以确保能够建立连接并读取 schema。将 `VECTOR_LOG=debug` 添加到命令前可以获取更详细的日志信息，在排查问题时会很有帮助。
 
-5. 确认数据已被插入。
+5. 确认数据已成功插入。
 
 ```sql
 SELECT count() AS count FROM github;
 ```
 
-| count  |
+| 数量     |
 | :----- |
 | 200000 |

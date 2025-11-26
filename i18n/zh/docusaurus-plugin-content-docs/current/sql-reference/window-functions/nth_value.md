@@ -1,5 +1,5 @@
 ---
-description: 'nth_value 窗口函数文档'
+description: 'nth_value 窗口函数的文档'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # nth&#95;value
 
-返回在其有序窗口帧中针对第 n 行（偏移量）计算得到的第一个非 NULL 值。
+返回在其有序窗口帧中第 n 行（偏移量）对应的第一个非 NULL 值。
 
 **语法**
 
@@ -21,20 +21,20 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更多详细说明，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **参数**
 
 * `x` — 列名。
-* `offset` — 与当前行进行比较的第 n 行。
+* `offset` — 用于与当前行比较的第 n 行。
 
 **返回值**
 
-* 在其有序窗口中，相对于第 n 行（offset）进行评估时得到的第一个非 NULL 值。
+* 在其有序窗口帧中，相对于第 n 行（offset）得到的首个非 NULL 值。
 
 **示例**
 
-在此示例中，使用 `nth-value` 函数从一个虚构的英超联赛球员薪资数据集中查找第三高的薪资。
+在此示例中，`nth-value` 函数用于从一个虚构的英超联赛足球运动员薪资数据集中找出第三高的薪资。
 
 查询：
 

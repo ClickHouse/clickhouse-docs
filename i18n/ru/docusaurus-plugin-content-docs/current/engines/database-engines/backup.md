@@ -1,9 +1,9 @@
 ---
 description: 'Позволяет мгновенно подключать таблицы и базы данных из резервных копий в режиме только чтения.'
-sidebar_label: 'Резервная копия'
+sidebar_label: 'Backup'
 sidebar_position: 60
 slug: /engines/database-engines/backup
-title: 'Резервная копия'
+title: 'Backup'
 doc_type: 'reference'
 ---
 
@@ -11,22 +11,22 @@ doc_type: 'reference'
 
 # Backup
 
-База данных Backup позволяет мгновенно подключать таблицы и базы данных из [резервных копий](../../operations/backup) в режиме только чтения.
+База данных Backup позволяет мгновенно подключить таблицу или базу данных из [резервных копий](../../operations/backup) в режиме только для чтения.
 
-База данных Backup работает как с инкрементными, так и с полными (неинкрементными) резервными копиями.
+База данных Backup работает как с инкрементными, так и с неинкрементными резервными копиями.
 
 
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных
 
 ```sql
 CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-В качестве места назначения резервной копии может использоваться любое допустимое [место назначения](../../operations/backup#configure-a-backup-destination) резервного копирования, например `Disk`, `S3`, `File`.
+Назначением резервной копии может быть любой допустимый [пункт назначения](../../operations/backup#configure-a-backup-destination), например `Disk`, `S3`, `File`.
 
-При использовании места назначения `Disk` запрос на создание базы данных из резервной копии выглядит следующим образом:
+Если в качестве пункта назначения резервной копии используется `Disk`, запрос на создание базы данных из резервной копии выглядит следующим образом:
 
 ```sql
 CREATE DATABASE backup_database
@@ -35,13 +35,13 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 
 **Параметры движка**
 
-- `database_name_inside_backup` — имя базы данных внутри резервной копии.
-- `backup_destination` — место назначения резервной копии.
+* `database_name_inside_backup` — Имя базы данных внутри резервной копии.
+* `backup_destination` — Место размещения резервной копии.
 
 
-## Пример использования {#usage-example}
+## Пример использования
 
-Рассмотрим пример с местом назначения резервной копии `Disk`. Сначала настроим диск для резервных копий в `storage.xml`:
+Рассмотрим пример с местом назначения резервных копий типа `Disk`. Сначала настроим диск для резервных копий в `storage.xml`:
 
 ```xml
 <storage_configuration>
@@ -58,7 +58,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 </backups>
 ```
 
-Пример использования. Создадим тестовую базу данных, таблицы, вставим данные и затем создадим резервную копию:
+Пример использования. Давайте создадим тестовую базу данных и таблицы, вставим немного данных, а затем создадим резервную копию:
 
 ```sql
 CREATE DATABASE test_database;
@@ -75,13 +75,13 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-Теперь у нас есть резервная копия `test_database_backup`, создадим базу данных с движком Backup:
+Теперь, когда у нас есть резервная копия `test_database_backup`, создадим резервную копию базы данных:
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-Теперь можно выполнять запросы к любой таблице из базы данных:
+Теперь мы можем выполнять запросы к любым таблицам в базе данных:
 
 ```sql
 SELECT id, value FROM test_database_backup.test_table_1;
@@ -103,7 +103,7 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-С этой базой данных Backup можно работать как с любой обычной базой данных. Например, запросить список таблиц в ней:
+Также можно работать с этой резервной копией базы данных как с обычной базой. Например, выполнять в ней запросы к таблицам:
 
 ```sql
 SELECT database, name FROM system.tables WHERE database = 'test_database_backup':

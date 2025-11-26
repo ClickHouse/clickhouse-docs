@@ -17,14 +17,15 @@ doc_type: 'reference'
 
 ## Описание {#description}
 
-Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
+Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) только тем, что поля данных выводятся в виде строк, а не в виде типизированных значений JSON.
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-Используем JSON-файл со следующими данными с именем `football.json`:
+### Вставка данных
+
+Используйте JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
@@ -46,15 +47,15 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-Вставка данных:
+Введите данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных в формате `JSONCompactStringsEachRow`:
+Прочитайте данные, используя формат `JSONCompactStringsEachRow`:
 
 ```sql
 SELECT *
@@ -86,4 +87,4 @@ FORMAT JSONCompactStringsEachRow
 ```
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

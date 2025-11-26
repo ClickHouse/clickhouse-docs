@@ -3,8 +3,8 @@ sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
 keywords: ['Zing Data']
-description: 'Zing Data — это простая платформа совместной бизнес-аналитики для ClickHouse, доступная на iOS, Android и в вебе.'
-title: 'Подключение Zing Data к ClickHouse'
+description: 'Zing Data — это простой социальный инструмент бизнес-аналитики для ClickHouse, доступный на iOS, Android и в вебе.'
+title: 'Подключите Zing Data к ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -27,118 +27,75 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для исследования и визуализации данных. Zing Data подключается к ClickHouse с использованием JS-драйвера ClickHouse.
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для исследования и визуализации данных. Zing Data подключается к ClickHouse с помощью JS-драйвера, предоставляемого ClickHouse.
 
 
 
 ## Как подключиться {#how-to-connect}
+1. Соберите сведения для подключения.
+<ConnectionDetails />
 
-1. Подготовьте параметры подключения.
+2. Скачайте или откройте Zing Data
 
-   <ConnectionDetails />
+    * Чтобы использовать ClickHouse с Zing Data на мобильном устройстве, скачайте приложение Zing Data в [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) или [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
 
-2. Загрузите или откройте Zing Data
-   - Для использования ClickHouse с Zing Data на мобильном устройстве загрузите приложение Zing Data из [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) или [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
-
-   - Для использования ClickHouse с Zing Data в веб-версии перейдите в [веб-консоль Zing](https://console.getzingdata.com/) и создайте учетную запись.
+    * Чтобы использовать ClickHouse с Zing Data в веб-интерфейсе, откройте [веб-консоль Zing](https://console.getzingdata.com/) и создайте учетную запись.
 
 3. Добавьте источник данных
-   - Для работы с данными ClickHouse в Zing Data необходимо определить **_источник данных_**. В меню мобильного приложения Zing Data выберите **Sources**, затем нажмите **Add a Datasource**.
 
-   - Для добавления источника данных в веб-версии нажмите **Data Sources** в верхнем меню, затем нажмите **New Datasource** и выберите **Clickhouse** из выпадающего списка
+    * Чтобы работать с данными ClickHouse в Zing Data, необходимо определить **_источник данных_**. В меню мобильного приложения Zing Data выберите **Sources**, затем нажмите **Add a Datasource**.
 
-   <Image
-     size='md'
-     img={zing_01}
-     alt='Интерфейс Zing Data с кнопкой New Datasource и опцией ClickHouse в выпадающем меню'
-     border
-   />
-   <br />
+    * Чтобы добавить источник данных в веб-интерфейсе, нажмите **Data Sources** в верхнем меню, затем нажмите **New Datasource** и выберите **ClickHouse** в раскрывающемся меню.
 
-4. Заполните параметры подключения и нажмите **Check Connection**.
+    <Image size="md" img={zing_01} alt="Интерфейс Zing Data с кнопкой New Datasource и вариантом ClickHouse в раскрывающемся меню" border />
+    <br/>
 
-   <Image
-     size='md'
-     img={zing_02}
-     alt='Форма настройки подключения ClickHouse в Zing Data с полями для сервера, порта, базы данных, имени пользователя и пароля'
-     border
-   />
-   <br />
+4. Заполните сведения для подключения и нажмите **Check Connection**.
 
-5. При успешном подключении Zing перенаправит вас к выбору таблиц. Выберите необходимые таблицы и нажмите **Save**. Если Zing не может подключиться к источнику данных, вы увидите сообщение с просьбой проверить учетные данные и повторить попытку. Если проблемы сохраняются даже после проверки учетных данных и повторной попытки, <a id="contact_link" href="mailto:hello@getzingdata.com">обратитесь в службу поддержки Zing.</a>
+    <Image size="md" img={zing_02} alt="Форма настройки подключения к ClickHouse в Zing Data с полями для сервера, порта, базы данных, имени пользователя и пароля" border />
+    <br/>
 
-   <Image
-     size='md'
-     img={zing_03}
-     alt='Интерфейс выбора таблиц Zing Data с доступными таблицами ClickHouse и флажками'
-     border
-   />
-   <br />
+5. Если подключение выполнено успешно, Zing перейдет к выбору таблиц. Выберите нужные таблицы и нажмите **Save**. Если Zing не может подключиться к вашему источнику данных, вы увидите сообщение с просьбой проверить учетные данные и повторить попытку. Если даже после проверки учетных данных и повторной попытки проблема сохраняется, <a id="contact_link" href="mailto:hello@getzingdata.com">свяжитесь со службой поддержки Zing.</a>
 
-6. После добавления источника данных ClickHouse он станет доступен всем участникам вашей организации Zing на вкладке **Data Sources** / **Sources**.
+    <Image size="md" img={zing_03} alt="Интерфейс выбора таблиц Zing Data, показывающий доступные таблицы ClickHouse с флажками" border />
+    <br/>
+
+6. После того как источник данных ClickHouse добавлен, он будет доступен всем пользователям в вашей организации Zing на вкладке **Data Sources** / **Sources**.
+
 
 
 ## Создание графиков и дашбордов в Zing Data {#creating-charts-and-dashboards-in-zing-data}
 
-1. После добавления источника данных ClickHouse нажмите **Zing App** в веб-интерфейсе или выберите источник данных в мобильном приложении, чтобы начать создание графиков.
+1. После добавления источника данных ClickHouse нажмите **Zing App** в веб-интерфейсе или выберите источник данных в мобильном приложении, чтобы начать создавать графики.
 
-2. Нажмите на таблицу в списке таблиц, чтобы создать график.
+2. Выберите таблицу в списке таблиц, чтобы создать график.
 
-   <Image
-     size='sm'
-     img={zing_04}
-     alt='Интерфейс Zing Data со списком доступных таблиц ClickHouse'
-     border
-   />
-   <br />
+    <Image size="sm" img={zing_04} alt="Интерфейс Zing Data, показывающий список таблиц с доступными таблицами ClickHouse" border />
+    <br/>
 
-3. Используйте визуальный конструктор запросов для выбора нужных полей, агрегаций и т. д., затем нажмите **Run Question**.
+3. Используйте визуальный конструктор запросов, чтобы выбрать нужные поля, агрегации и т. д., и нажмите **Run Question**.
 
-   <Image
-     size='md'
-     img={zing_05}
-     alt='Интерфейс визуального конструктора запросов Zing Data с возможностью выбора полей и агрегаций'
-     border
-   />
-   <br />
+    <Image size="md" img={zing_05} alt="Интерфейс визуального конструктора запросов Zing Data с выбором полей и параметрами агрегации" border />
+    <br/>
 
-4. Если вы знакомы с SQL, вы также можете написать собственный SQL-запрос для выполнения запросов и создания графика.
+4. Если вы знакомы с SQL, вы также можете написать произвольный SQL‑запрос, выполнить его и на его основе построить график.
 
-   <Image
-     size='md'
-     img={zing_06}
-     alt='Режим SQL-редактора в Zing Data с интерфейсом написания SQL-запросов'
-     border
-   />
-   <Image
-     size='md'
-     img={zing_07}
-     alt='Результаты SQL-запроса в Zing Data с данными в табличном формате'
-     border
-   />
+    <Image size="md" img={zing_06} alt="Режим SQL‑редактора в Zing Data, показывающий интерфейс для написания SQL‑запросов" border />
+    <Image size="md" img={zing_07} alt="Результаты SQL‑запроса в Zing Data с данными, отображёнными в табличном формате" border />
 
-5. Пример графика будет выглядеть следующим образом. Запрос можно сохранить с помощью меню с тремя точками. Вы можете комментировать график, отмечать членов команды, создавать оповещения в реальном времени, изменять тип графика и т. д.
+5. Пример графика может выглядеть следующим образом. Запрос (Question) можно сохранить через меню с тремя точками. Вы можете комментировать график, отмечать участников команды, создавать оповещения в реальном времени, менять тип графика и т. д.
 
-   <Image
-     size='md'
-     img={zing_08}
-     alt='Пример визуализации графика в Zing Data с данными из ClickHouse и меню опций'
-     border
-   />
-   <br />
+    <Image size="md" img={zing_08} alt="Пример визуализации графика в Zing Data, показывающий данные из ClickHouse с меню параметров" border />
+    <br/>
 
-6. Дашборды можно создать с помощью значка «+» в разделе **Dashboards** на главном экране. Существующие запросы можно перетащить на дашборд для отображения.
+6. Дашборды можно создавать с помощью значка «+» в разделе **Dashboards** на главном экране. Существующие запросы можно перетащить, чтобы отобразить их на дашборде.
 
-   <Image
-     size='md'
-     img={zing_09}
-     alt='Представление дашборда Zing Data с несколькими визуализациями в макете дашборда'
-     border
-   />
-   <br />
+    <Image size="md" img={zing_09} alt="Представление дашборда Zing Data, показывающее несколько визуализаций, размещённых в макете дашборда" border />
+    <br/>
 
 
-## Связанный контент {#related-content}
+
+## Связанные материалы {#related-content}
 
 - [Документация](https://docs.getzingdata.com/docs/)
 - [Быстрый старт](https://getzingdata.com/quickstart/)

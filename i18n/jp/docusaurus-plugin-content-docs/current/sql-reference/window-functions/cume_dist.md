@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # cume&#95;dist
 
-値のグループ内におけるある値の累積分布（すなわち、その行の値以下の値を持つ行の割合）を計算します。パーティション内での値の相対的な位置を判定するために使用できます。
+値のグループ内におけるある値の累積分布を計算します。つまり、現在の行の値以下の値を持つ行の割合を返します。パーティション内での値の相対的な位置を判断するために使用できます。
 
 **構文**
 
@@ -21,13 +21,13 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-デフォルトかつ必須のウィンドウ枠の定義は、`RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` です。
+デフォルトであり必須のウィンドウフレーム定義は `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` です。
 
 ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**戻り値**
+**返される値**
 
-* 現在行の相対順位。戻り値の型は Float64 で、値の範囲は [0, 1] です。 [Float64](../data-types/float.md)。
+* 現在の行の相対的な順位。戻り値の型は [Float64](../data-types/float.md) で、範囲は [0, 1] です。
 
 **例**
 
@@ -77,10 +77,10 @@ FROM salaries;
 
 **実装の詳細**
 
-`cume_dist()` 関数は、次の式で相対的位置を計算します。
+`cume_dist()` 関数は、次の式を使用して相対位置を計算します。
 
 ```text
 cume_dist = (現在の行の値以下の行数) / (パーティション内の総行数)
 ```
 
-同じ値を持つ行（ピア）には同じ累積分布値が割り当てられ、その値はそのピアグループ内での最大の順位に対応します。
+同じ値を持つ行（ピア）には同一の累積分布値が割り当てられ、その値はピアグループ内での最大の順位に対応します。

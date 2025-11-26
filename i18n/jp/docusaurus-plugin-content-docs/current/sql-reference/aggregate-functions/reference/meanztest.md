@@ -1,5 +1,5 @@
 ---
-description: '2つの母集団から得られた標本に対して、平均に対するZ検定を適用します。'
+description: '2つの母集団からの標本に対して平均のZ検定を適用します。'
 sidebar_label: 'meanZTest'
 sidebar_position: 166
 slug: /sql-reference/aggregate-functions/reference/meanztest
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # meanZTest
 
-2つの母集団からの標本に対して平均値のZ検定を適用します。
+2つの母集団からの標本に対して、平均に対するZ検定を適用します。
 
 **構文**
 
@@ -17,13 +17,13 @@ doc_type: 'reference'
 meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
 ```
 
-両サンプルの値は `sample_data` 列にあります。`sample_index` が 0 の場合、その行の値は第 1 母集団からのサンプルに対応します。0 以外の場合は第 2 母集団からのサンプルに対応します。
-帰無仮説は、母集団の平均が等しいというものです。分布は正規分布であると仮定します。母集団は等分散である必要はなく、分散は既知であるとします。
+両方のサンプルの値は `sample_data` 列にあります。`sample_index` が 0 の場合、その行の値は第 1 母集団からのサンプルに属します。0 でない場合は第 2 母集団からのサンプルに属します。
+帰無仮説は、母集団の平均が等しいというものです。正規分布を仮定します。母集団は不等分散であってもよく、分散は既知と仮定します。
 
 **引数**
 
 * `sample_data` — サンプルデータ。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
-* `sample_index` — サンプルインデックス。[Integer](../../../sql-reference/data-types/int-uint.md)。
+* `sample_index` — サンプルのインデックス。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
 
@@ -31,9 +31,9 @@ meanZTest(population_variance_x, population_variance_y, confidence_level)(sample
 * `population_variance_y` — 母集団 y の分散。[Float](../../../sql-reference/data-types/float.md)。
 * `confidence_level` — 信頼区間を計算するための信頼水準。[Float](../../../sql-reference/data-types/float.md)。
 
-**返される値**
+**戻り値**
 
-4 要素を持つ [Tuple](../../../sql-reference/data-types/tuple.md):
+4 要素からなる [Tuple](../../../sql-reference/data-types/tuple.md):
 
 * 計算された t 統計量。[Float64](../../../sql-reference/data-types/float.md)。
 * 計算された p 値。[Float64](../../../sql-reference/data-types/float.md)。

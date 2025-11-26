@@ -1,6 +1,6 @@
 ---
-description: 'Unicode 文字とその特性の一覧を保持するシステムテーブル。'
-keywords: ['システムテーブル', 'Unicode']
+description: 'Unicode 文字とその属性の一覧を含むシステムテーブル'
+keywords: ['system table', 'unicode']
 slug: /operations/system-tables/unicode
 title: 'system.unicode'
 doc_type: 'reference'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # system.unicode
 
-`system.unicode` テーブルは、Unicode 文字およびそのプロパティに関する情報（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)）を提供する仮想テーブルです。このテーブルは動的に生成されます。
+`system.unicode` テーブルは、Unicode 文字およびそのプロパティに関する情報を提供する仮想テーブルです（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html) を参照）。このテーブルは要求時に動的に生成されます。
 
 Columns
 
@@ -17,25 +17,25 @@ ICU ドキュメントにおける Unicode コードポイントのプロパテ�
 :::
 
 * `code_point` ([String](../../sql-reference/data-types/string.md)) — コードポイントの UTF-8 表現。
-* `code_point_value` ([Int32](../../sql-reference/data-types/int-uint.md)) — コードポイントの数値としての値。
+* `code_point_value` ([Int32](../../sql-reference/data-types/int-uint.md)) — コードポイントの数値表現。
 * `notation` ([String](../../sql-reference/data-types/string.md)) — コードポイントの Unicode 表記。
-* Binary Properties ([UInt8](../../sql-reference/data-types/int-uint.md)) — コードポイントのバイナリプロパティ。
+* Binary Properties ([UInt8](../../sql-reference/data-types/int-uint.md)) - コードポイントのバイナリプロパティ。
   * `alphabetic`, `ascii_hex_digit`, `case_ignorable`...
-* Enumerated Properties ([Int32](../../sql-reference/data-types/int-uint.md)) — コードポイントの列挙プロパティ。
+* Enumerated Properties ([Int32](../../sql-reference/data-types/int-uint.md)) - コードポイントの列挙プロパティ。
   * `bidi_class`, `bidi_paired_bracket_type`, `block`...
-* String Properties ([String](../../sql-reference/data-types/string.md)) — コードポイントの文字列プロパティ（ASCII 文字列、Unicode 文字列、またはコードポイント）
+* String Properties ([String](../../sql-reference/data-types/string.md)) - コードポイントの文字列プロパティ（ASCII 文字列または Unicode 文字列、あるいはコードポイント）
   * `case_folding`, `decomposition_mapping`, `name`...
 
 :::note
-マッピングはやや特殊であり、詳細は ICU ドキュメントを参照してください。例えば、simple&#95;uppercase&#95;mapping と uppercase&#95;mapping は完全に同一ではありません。また、言語固有のマッピングは実装されていません（例：トルコ語では i の大文字は &quot;İ&quot; (U+0130) です）。
+Mapping には多少特殊な点があるため、ICU のドキュメントを参照してください。たとえば、simple&#95;uppercase&#95;mapping と uppercase&#95;mapping は完全に同一ではありません。また、言語固有の mapping は実装されていません（例：トルコ語では i の大文字は &quot;İ&quot; (U+0130) です）。
 :::
 
-* `numeric_value` ([Float64](../../sql-reference/data-types/float.md)) — コードポイントの数値的な値。
-* `script_extensions` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — コードポイントのスクリプト拡張。
-* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — コードポイントの識別子タイプ。
-* `general_category_mask` ([Int32](../../sql-reference/data-types/int-uint.md)) — コードポイントの一般カテゴリマスク。
+* `numeric_value` ([Float64](../../sql-reference/data-types/float.md)) - コードポイントの数値表現。
+* `script_extensions` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - コードポイントの script extensions。
+* `identifier_type` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) - コードポイントの identifier type。
+* `general_category_mask` ([Int32](../../sql-reference/data-types/int-uint.md)) - コードポイントの general category mask。
 
-**例**
+**Example**
 
 ```sql
 SELECT * FROM system.unicode WHERE code_point = 'a' LIMIT 1;

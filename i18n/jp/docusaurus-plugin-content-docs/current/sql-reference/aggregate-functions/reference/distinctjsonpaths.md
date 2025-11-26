@@ -1,5 +1,5 @@
 ---
-description: 'JSON 列に格納されている重複のないパスの一覧を算出します。'
+description: 'JSON 列に格納された一意なパスの一覧を算出します。'
 sidebar_position: 216
 slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
 title: 'distinctJSONPaths'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctJSONPaths
 
-[JSON](../../data-types/newjson.md) カラムに格納されているパスのうち、一意なもののリストを返します。
+[JSON](../../data-types/newjson.md) カラムに保存されているパスのうち、一意なもののリストを返します。
 
 **構文**
 
@@ -20,25 +20,25 @@ distinctJSONPaths(json)
 
 * `json` — [JSON](../../data-types/newjson.md) 列。
 
-**戻り値**
+**返される値**
 
-* ソートされたパスのリスト [Array(String)](../../data-types/array.md)。
+* ソート済みのパスのリスト [Array(String)](../../data-types/array.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS test_json;
 CREATE TABLE test_json(json JSON) ENGINE = Memory;
-INSERT INTO test_json VALUES ('{"a" : 42, "b" : "Hello"}'), ('{"b" : [1, 2, 3], "c" : {"d" : {"e" : "2020-01-01"}}}'), ('{"a" : 43, "c" : {"d" : {"f" : [{"g" : 42}]}}}')
+INSERT INTO test_json VALUES ('{"a" : 42, "b" : "こんにちは"}'), ('{"b" : [1, 2, 3], "c" : {"d" : {"e" : "2020-01-01"}}}'), ('{"a" : 43, "c" : {"d" : {"f" : [{"g" : 42}]}}}')
 ```
 
 ```sql
 SELECT distinctJSONPaths(json) FROM test_json;
 ```
 
-結果：
+結果:
 
 ```reference
 ┌─distinctJSONPaths(json)───┐
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-[JSON](../../data-types/newjson.md) 列に格納されているパスとその型の一意な一覧を求めます。
+[JSON](../../data-types/newjson.md) 列に保存されている一意なパスとその型の一覧を取得します。
 
 **構文**
 
@@ -59,7 +59,7 @@ distinctJSONPathsAndTypes(json)
 
 **引数**
 
-* `json` — [JSON](../../data-types/newjson.md) 列。
+* `json` — [JSON](../../data-types/newjson.md) 型の列。
 
 **戻り値**
 
@@ -79,7 +79,7 @@ INSERT INTO test_json VALUES ('{"a" : 42, "b" : "Hello"}'), ('{"b" : [1, 2, 3], 
 SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 ```
 
-結果:
+結果：
 
 ```reference
 ┌─distinctJSONPathsAndTypes(json)───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -89,7 +89,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 
 **注記**
 
-JSON 宣言に型が指定されたパスが含まれている場合、入力データにこれらのパスに対応する値が存在しない場合でも、これらのパスは常に `distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に含まれます。
+JSON 宣言に型が指定されているパスが含まれている場合、入力データにそのパスの値が存在しない場合でも、これらのパスは常に `distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に含まれます。
 
 ```sql
 DROP TABLE IF EXISTS test_json;

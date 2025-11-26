@@ -1,4 +1,4 @@
-运行以下命令来创建本示例中将要进行备份和恢复的测试数据库和表：
+请运行以下命令来创建本示例中将进行备份和恢复的测试数据库和数据表：
 
 <details>
 <summary>初始化命令</summary>
@@ -23,7 +23,7 @@ CREATE TABLE test_db.test_table (
 ORDER BY id;
 ```
 
-预生成一千行随机数据：
+预填充一千行随机数据：
 
 ```sql
 INSERT INTO test_table (id, name, email, age, salary, created_at, is_active, department, score, country)
@@ -41,7 +41,7 @@ SELECT
 FROM numbers(1000);
 ```
 
-接下来，你需要在以下路径创建一个文件，用于指定备份目标位置：
+接下来，需要在下面的路径创建一个文件，用于指定备份目标位置：
 
 ```text
 /etc/clickhouse-server/config.d/backup_disk.xml
@@ -53,19 +53,19 @@ FROM numbers(1000);
         <disks>
             <backups>
                 <type>local</type>
-                <path>/backups/</path> -- 在 MacOS 上请使用：/Users/backups/
+                <path>/backups/</path> -- 在 MacOS 上使用：/Users/backups/
             </backups>
         </disks>
     </storage_configuration>
     <backups>
         <allowed_disk>backups</allowed_disk>
-        <allowed_path>/backups/</allowed_path> -- 在 MacOS 上请使用：/Users/backups/
+        <allowed_path>/backups/</allowed_path> -- 在 MacOS 上使用：/Users/backups/
     </backups>
 </clickhouse>
 ```
 
 :::note
-如果 clickhouse-server 当前正在运行，你需要重启它以使配置更改生效。
+如果 clickhouse-server 正在运行，需要重启它以使更改生效。
 :::
 
 </details>

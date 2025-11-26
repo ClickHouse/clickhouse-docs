@@ -2,8 +2,8 @@
 sidebar_label: 'Поддержка ClickHouse Cloud'
 title: 'Поддержка'
 slug: /cloud/support
-description: 'Узнайте о поддержке ClickHouse Cloud'
-keywords: ['ClickHouse Cloud', 'поддержка в облаке', 'поддержка клиентов', 'техническая помощь', 'поддержка управляемого сервиса']
+description: 'Узнайте о службе поддержки ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', 'поддержка в облаке', 'служба поддержки', 'техническая поддержка', 'поддержка управляемого сервиса']
 hide_title: true
 doc_type: 'guide'
 ---

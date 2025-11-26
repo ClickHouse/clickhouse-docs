@@ -10,7 +10,7 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# Доступные облачные регионы
+# Поддерживаемые регионы облака
 
 
 
@@ -25,17 +25,17 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-west-1 (Ирландия)
 - eu-west-2 (Лондон)
 - me-central-1 (ОАЭ)
-- us-east-1 (Сев. Виргиния)
+- us-east-1 (Северная Вирджиния)
 - us-east-2 (Огайо)
 - us-west-2 (Орегон)
 - il-central-1 (Израиль, Тель-Авив)
 
-**Частный регион:**
-
+**Закрытые регионы:**
 - ca-central-1 (Канада)
 - af-south-1 (Южная Африка)
 - eu-north-1 (Стокгольм)
 - sa-east-1 (Южная Америка)
+ 
 
 
 ## Регионы Google Cloud {#google-cloud-regions}
@@ -46,7 +46,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-central1 (Айова)
 - us-east1 (Южная Каролина)
 
-**Приватные регионы:**
+**Закрытые регионы:**
 
 - us-west1 (Орегон)
 - australia-southeast1 (Сидней)
@@ -55,42 +55,43 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - northamerica-northeast1 (Монреаль)
 
 
+
 ## Регионы Azure {#azure-regions}
 
 - West US 3 (Аризона)
-- East US 2 (Виргиния)
+- East US 2 (Вирджиния)
 - Germany West Central (Франкфурт)
 
-**Частный регион:**
+**Закрытый регион:**
 
 - JapanEast
 
-:::note
-Нужно развернуть в регионе, которого нет в списке? [Отправьте запрос](https://clickhouse.com/pricing?modal=open).
+:::note 
+Нужно развернуть в регионе, который сейчас не указан в списке? [Отправьте запрос](https://clickhouse.com/pricing?modal=open). 
 :::
+
 
 
 ## Частные регионы {#private-regions}
 
-<EnterprisePlanFeatureBadge feature='Private regions feature' />
+<EnterprisePlanFeatureBadge feature="Private regions feature"/>
 
-Мы предлагаем частные регионы для сервисов уровня Enterprise. Для запроса частного региона, пожалуйста, [свяжитесь с нами](https://clickhouse.com/company/contact).
+Мы предлагаем частные регионы для сервисов уровня Enterprise. [Свяжитесь с нами](https://clickhouse.com/company/contact) по запросам на частные регионы.
 
-Ключевые особенности частных регионов:
-
-- Сервисы не масштабируются автоматически; однако поддерживается ручное вертикальное и горизонтальное масштабирование.
-- Сервисы не могут быть переведены в режим простоя.
+Основные особенности частных регионов:
+- Сервисы не будут автоматически масштабироваться; однако поддерживается ручное вертикальное и горизонтальное масштабирование.
+- Сервисы нельзя переводить в режим простоя.
 - Страница статуса недоступна для частных регионов.
+  
+Для соответствия требованиям HIPAA могут действовать дополнительные требования (включая подписание BAA). Обратите внимание, что HIPAA в настоящее время доступна только для сервисов уровня Enterprise.
 
-Для соответствия требованиям HIPAA могут применяться дополнительные требования (включая подписание BAA). Обратите внимание, что поддержка HIPAA в настоящее время доступна только для сервисов уровня Enterprise.
 
 
 ## Регионы, соответствующие требованиям HIPAA {#hipaa-compliant-regions}
 
-<EnterprisePlanFeatureBadge feature='HIPAA' support='true' />
+<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-Для настройки сервисов в регионах, соответствующих требованиям HIPAA, клиенты должны подписать соглашение о партнерстве в сфере бизнеса (Business Associate Agreement, BAA) и запросить подключение через отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие требованиям HIPAA:
-
+Клиентам необходимо подписать Соглашение о деловом партнерстве (Business Associate Agreement, BAA) и запросить подключение через отдел продаж или службу поддержки, чтобы развернуть сервисы в регионах, соответствующих требованиям HIPAA. Следующие регионы поддерживают соответствие требованиям HIPAA:
 - AWS af-south-1 (Южная Африка) **Частный регион**
 - AWS ca-central-1 (Канада) **Частный регион**
 - AWS eu-central-1 (Франкфурт)
@@ -98,7 +99,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - AWS eu-west-1 (Ирландия)
 - AWS eu-west-2 (Лондон)
 - AWS sa-east-1 (Южная Америка) **Частный регион**
-- AWS us-east-1 (Северная Виргиния)
+- AWS us-east-1 (Северная Вирджиния)
 - AWS us-east-2 (Огайо)
 - AWS us-west-2 (Орегон)
 - GCP europe-west4 (Нидерланды)
@@ -106,19 +107,19 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - GCP us-east1 (Южная Каролина)
 
 
-## Регионы, соответствующие стандарту PCI {#pci-compliant-regions}
 
-<EnterprisePlanFeatureBadge feature='PCI' support='true' />
+## Регионы с поддержкой PCI {#pci-compliant-regions}
 
-Для настройки сервисов в регионах, соответствующих стандарту PCI, клиенты должны запросить подключение через отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие стандарту PCI:
+<EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 
-- AWS af-south-1 (Южная Африка) **Приватный регион**
-- AWS ca-central-1 (Канада) **Приватный регион**
-- AWS eu-central-1 (Франкфурт)
-- AWS eu-north-1 (Стокгольм) **Приватный регион**
-- AWS eu-west-1 (Ирландия)
-- AWS eu-west-2 (Лондон)
-- AWS sa-east-1 (Южная Америка) **Приватный регион**
-- AWS us-east-1 (Сев. Виргиния)
-- AWS us-east-2 (Огайо)
-- AWS us-west-2 (Орегон)
+Для настройки сервисов в регионах с поддержкой стандарта PCI клиентам необходимо обратиться в отдел продаж или службу поддержки. Поддержка PCI доступна в следующих регионах:
+- AWS af-south-1 (South Africa) **закрытый регион**
+- AWS ca-central-1 (Canada) **закрытый регион**
+- AWS eu-central-1 (Frankfurt)
+- AWS eu-north-1 (Stockholm) **закрытый регион**
+- AWS eu-west-1 (Ireland)
+- AWS eu-west-2 (London)
+- AWS sa-east-1 (South America) **закрытый регион**
+- AWS us-east-1 (N. Virginia)
+- AWS us-east-2 (Ohio)
+- AWS us-west-2 (Oregon)

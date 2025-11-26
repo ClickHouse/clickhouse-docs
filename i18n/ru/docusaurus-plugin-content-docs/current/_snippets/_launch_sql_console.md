@@ -3,7 +3,7 @@ import createservice8 from '@site/static/images/_snippets/createservice8.png';
 import Image from '@theme/IdealImage';
 
 :::tip SQL console
-Если вам требуется подключение с помощью SQL‑клиента, у вашего сервиса ClickHouse Cloud есть связанная веб‑консоль SQL. Разверните раздел **Connect to SQL console** ниже, чтобы узнать подробности.
+Если вам нужен SQL‑клиент, у вашего сервиса ClickHouse Cloud есть связанная веб‑консоль SQL; разверните раздел **Connect to SQL console** ниже, чтобы узнать подробности.
 :::
 
 <details>
@@ -11,9 +11,9 @@ import Image from '@theme/IdealImage';
 
   В списке сервисов ClickHouse Cloud нажмите на нужный сервис.
 
-  <Image img={cloud_connect_to_sql_console} alt="Подключение к SQL Console" size="lg" force border />
+  <Image img={cloud_connect_to_sql_console} alt="Connect to SQL Console" size="lg" force border />
 
-  Произойдет переход в SQL‑консоль.
+  Произойдет переход в SQL console.
 
   <Image img={createservice8} alt="SQL Console" size="lg" force border />
 </details>

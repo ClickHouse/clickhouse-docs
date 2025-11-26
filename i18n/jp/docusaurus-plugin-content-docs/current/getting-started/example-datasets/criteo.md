@@ -1,15 +1,15 @@
 ---
-description: 'Criteo の 1 テラバイトのクリックログ'
+description: 'Criteo のクリックログ 1 テラバイト分'
 sidebar_label: 'Criteo 1TB クリックログ'
 slug: /getting-started/example-datasets/criteo
 keywords: ['Criteo click logs', 'advertising data', 'click-through data', 'terabyte dataset', 'getting started']
-title: 'Criteo のテラバイト規模のクリックログ'
+title: 'Criteo のテラバイト級クリックログ'
 doc_type: 'guide'
 ---
 
 [http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/) からデータをダウンロードします。
 
-ログをインポートするためのテーブルを作成します：
+ログを取り込むためのテーブルを作成します。
 
 ```sql
 CREATE TABLE criteo_log (
@@ -57,13 +57,13 @@ CREATE TABLE criteo_log (
 ) ENGINE = Log;
 ```
 
-データを挿入します。
+データを挿入します：
 
 ```bash
 $ for i in {00..23}; do echo $i; zcat datasets/criteo/day_${i#0}.gz | sed -r 's/^/2000-01-'${i/00/24}'\t/' | clickhouse-client --host=example-perftest01j --query="INSERT INTO criteo_log FORMAT TabSeparated"; done
 ```
 
-変換後のデータを格納するテーブルを作成します：
+変換後データ用のテーブルを作成します：
 
 ```sql
 CREATE TABLE criteo
@@ -114,7 +114,7 @@ PARTITION BY toYYYYMM(date)
 ORDER BY (date, icat1)
 ```
 
-生ログのデータを変換し、2 番目のテーブルに格納します。
+生のログからデータを変換し、2番目のテーブルに格納します：
 
 
 ```sql

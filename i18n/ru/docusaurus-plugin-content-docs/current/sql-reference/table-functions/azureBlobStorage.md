@@ -1,6 +1,6 @@
 ---
-description: 'Предоставляет табличный интерфейс для чтения/записи файлов в Azure Blob
-  Storage. Аналогична функции s3.'
+description: 'Предоставляет табличный интерфейс для чтения и записи файлов в Azure Blob
+  Storage. Похожа на функцию s3.'
 keywords: ['azure blob storage']
 sidebar_label: 'azureBlobStorage'
 sidebar_position: 10
@@ -15,11 +15,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Табличная функция azureBlobStorage
 
-Предоставляет табличный интерфейс для чтения и записи файлов в [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs). Эта табличная функция похожа на функцию [s3](../../sql-reference/table-functions/s3.md).
+Предоставляет табличный интерфейс для чтения и записи файлов в [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs). Эта табличная функция аналогична [функции s3](../../sql-reference/table-functions/s3.md).
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
@@ -28,31 +28,33 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 
 ## Аргументы {#arguments}
 
-| Аргумент                                    | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `connection_string`\| `storage_account_url` | connection_string включает имя учетной записи и ключ ([Создание строки подключения](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)), либо можно указать URL учетной записи хранения, а имя учетной записи и ключ учетной записи передать как отдельные параметры (см. параметры account_name и account_key) |
+| Аргумент                                    | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `connection_string`\| `storage_account_url` | `connection_string` включает имя и ключ учетной записи ([Create connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)), либо вы можете указать здесь URL учетной записи хранилища, а имя учетной записи и ключ учетной записи — как отдельные параметры (см. параметры `account_name` и `account_key`) |
 | `container_name`                            | Имя контейнера                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `blobpath`                                  | Путь к файлу. Поддерживает следующие подстановочные символы в режиме только для чтения: `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки.                                                                                                                                                                                                                                                                                                                                   |
-| `account_name`                              | Если используется storage_account_url, то имя учетной записи можно указать здесь                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `account_key`                               | Если используется storage_account_url, то ключ учетной записи можно указать здесь                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `format`                                    | [Формат](/sql-reference/formats) файла.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `compression`                               | Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию сжатие определяется автоматически по расширению файла (аналогично установке значения `auto`).                                                                                                                                                                                                                                                                                                                        |
-| `structure`                                 | Структура таблицы. Формат `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                                                                                                                              |
-| `partition_strategy`                        | Необязательный параметр. Поддерживаемые значения: `WILDCARD` или `HIVE`. `WILDCARD` требует наличия `{_partition_id}` в пути, который заменяется ключом партиции. `HIVE` не допускает подстановочные символы, предполагает, что путь является корнем таблицы, и создает партиционированные каталоги в стиле Hive с идентификаторами Snowflake в качестве имен файлов и форматом файла в качестве расширения. По умолчанию используется `WILDCARD`                                                                                                           |
-| `partition_columns_in_data_file`            | Необязательный параметр. Используется только со стратегией партиционирования `HIVE`. Указывает ClickHouse, следует ли ожидать, что столбцы партиций будут записаны в файл данных. По умолчанию `false`.                                                                                                                                                                                                                                                                                                                    |
-| `extra_credentials`                         | Используйте `client_id` и `tenant_id` для аутентификации. Если указаны extra_credentials, они имеют приоритет над `account_name` и `account_key`.                                                                                                                                                                                                                                                                                                                                      |
+| `blobpath`                                  | Путь к файлу. Поддерживает следующие подстановочные шаблоны в режиме только для чтения: `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки.                                                                                                                                                                                                                                                                                                            |
+| `account_name`                              | Если используется `storage_account_url`, то здесь может быть указано имя учетной записи                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `account_key`                               | Если используется `storage_account_url`, то здесь может быть указан ключ учетной записи                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `format`                                    | [Формат](/sql-reference/formats) файла.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `compression`                               | Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия определяется автоматически по расширению файла (то же самое, что установка значения `auto`).                                                                                                                                                                                                                                                                                      | 
+| `structure`                                 | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `partition_strategy`                        | Необязательный параметр. Поддерживаемые значения: `WILDCARD` или `HIVE`. `WILDCARD` требует наличия `{_partition_id}` в пути, который заменяется на ключ партиции. `HIVE` не допускает подстановочные шаблоны, предполагает, что путь является корнем таблицы и генерирует каталоги партиций в стиле Hive с идентификаторами Snowflake в качестве имен файлов и форматом файла в качестве расширения. По умолчанию используется `WILDCARD`.                                                                                                           |
+| `partition_columns_in_data_file`            | Необязательный параметр. Используется только со стратегией партиционирования `HIVE`. Указывает ClickHouse, следует ли ожидать, что столбцы партиции будут записаны в файл данных. Значение по умолчанию — `false`.                                                                                                                                                                                                                                                                         |
+| `extra_credentials`                         | Используйте `client_id` и `tenant_id` для аутентификации. Если указаны `extra_credentials`, они имеют приоритет над `account_name` и `account_key`.
+
 
 
 ## Возвращаемое значение {#returned_value}
 
-Таблица с указанной структурой для чтения или записи данных в указанный файл.
+Таблица заданной структуры для чтения данных из указанного файла или записи их в него.
 
 
-## Примеры {#examples}
 
-Аналогично движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки с Azure Storage. Подробнее см. [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Далее предполагается, что Azurite доступен по имени хоста `azurite1`.
+## Примеры
 
-Запись данных в Azure Blob Storage выполняется следующим образом:
+Аналогично движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки с использованием Azure Storage. Дополнительные сведения см. [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Ниже предполагается, что Azurite доступен по имени хоста `azurite1`.
+
+Запишите данные в хранилище Azure Blob, используя следующее:
 
 ```sql
 INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccount1',
@@ -60,7 +62,7 @@ INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccou
     'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32') PARTITION BY column3 VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
 ```
 
-Затем данные можно прочитать следующим образом:
+Затем его можно прочитать с помощью
 
 ```sql
 SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
@@ -74,7 +76,7 @@ SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
 └───────────┴────────────┴───────────┘
 ```
 
-или с использованием строки подключения:
+или с использованием строки подключения
 
 ```sql
 SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;EndPointSuffix=core.windows.net',
@@ -96,20 +98,21 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
 
-## Партиционированная запись {#partitioned-write}
 
-### Стратегия партиционирования {#partition-strategy}
+## Запись с партиционированием
+
+### Стратегия партиционирования
 
 Поддерживается только для запросов INSERT.
 
-`WILDCARD` (по умолчанию): Заменяет подстановочный знак `{_partition_id}` в пути к файлу на фактический ключ партиции.
+`WILDCARD` (по умолчанию): заменяет подстановочный символ `{_partition_id}` в пути к файлу фактическим ключом партиции.
 
-`HIVE` реализует партиционирование в стиле Hive для чтения и записи. Генерирует файлы в следующем формате: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`.
+`HIVE` реализует партиционирование в стиле Hive для чтения и записи. Файлы создаются в следующем формате: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`.
 
 **Пример стратегии партиционирования `HIVE`**
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
+INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Россия', 1), (2021, 'Бразилия', 2);
 ```
 
 ```result
@@ -122,28 +125,28 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```
 
 
-## Настройка use_hive_partitioning {#hive-style-partitioning}
+## настройка use&#95;hive&#95;partitioning
 
-Эта настройка указывает ClickHouse на необходимость разбора файлов с партиционированием в стиле Hive при чтении. Она не влияет на запись. Для симметричного чтения и записи используйте аргумент `partition_strategy`.
+Это указание для ClickHouse при разборе файлов, партиционированных в стиле Hive, во время чтения. Оно не влияет на запись. Для симметричного чтения и записи используйте аргумент `partition_strategy`.
 
-Когда настройка `use_hive_partitioning` установлена в 1, ClickHouse обнаружит партиционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы партиций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в партиционированном пути, но начинающиеся с `_`.
+Когда настройка `use_hive_partitioning` установлена в значение 1, ClickHouse обнаружит партиционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы партиций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути партиций, но с префиксом `_`.
 
 **Пример**
 
-Использование виртуального столбца, созданного с партиционированием в стиле Hive
+Использование виртуального столбца, созданного с помощью партиционирования в стиле Hive
 
 ```sql
 SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
 
-## Использование подписей общего доступа (SAS) {#using-shared-access-signatures-sas-sas-tokens}
+## Использование Shared Access Signatures (SAS)
 
-Подпись общего доступа (SAS, Shared Access Signature) — это URI, предоставляющий ограниченный доступ к контейнеру или файлу Azure Storage. Используйте её для предоставления временного доступа к ресурсам учётной записи хранения без передачи ключа учётной записи. Подробнее [здесь](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature).
+Shared Access Signature (SAS) — это URI, который предоставляет ограниченный доступ к контейнеру или файлу в Azure Storage. Используйте его, чтобы предоставить ограниченный по времени доступ к ресурсам учетной записи хранения без передачи ключа учетной записи хранения. Подробнее [здесь](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature).
 
-Функция `azureBlobStorage` поддерживает подписи общего доступа (SAS).
+Функция `azureBlobStorage` поддерживает Shared Access Signatures (SAS).
 
-[Токен Blob SAS](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers) содержит всю информацию, необходимую для аутентификации запроса, включая целевой blob, разрешения и срок действия. Чтобы сформировать URL blob, добавьте токен SAS к конечной точке службы blob. Например, если конечная точка — `https://clickhousedocstest.blob.core.windows.net/`, запрос будет выглядеть так:
+[Маркер Blob SAS](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers) содержит всю необходимую для аутентификации запроса информацию, включая целевой blob-объект, права доступа и период действия. Чтобы сформировать URL-адрес для blob-объекта, добавьте SAS-маркер к конечной точке службы blob. Например, если конечная точка — `https://clickhousedocstest.blob.core.windows.net/`, запрос будет выглядеть так:
 
 ```sql
 SELECT count()
@@ -153,10 +156,10 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 │      10 │
 └─────────┘
 
-1 row in set. Elapsed: 0.425 sec.
+Получена 1 строка. Затрачено: 0.425 sec.
 ```
 
-Также можно использовать сгенерированный [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers):
+В качестве альтернативы пользователи могут использовать сгенерированный [URL-адрес SAS для BLOB-объекта](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers):
 
 ```sql
 SELECT count()
@@ -166,10 +169,9 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 │      10 │
 └─────────┘
 
-1 row in set. Elapsed: 0.153 sec.
+Получена 1 строка. Прошло: 0,153 сек.
 ```
 
 
-## Связанные разделы {#related}
-
-- [Движок таблиц AzureBlobStorage](engines/table-engines/integrations/azureBlobStorage.md)
+## См. также {#related}
+- [Движок таблицы AzureBlobStorage](engines/table-engines/integrations/azureBlobStorage.md)

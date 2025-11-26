@@ -1,8 +1,8 @@
 ---
-description: 'Страница, посвящённая профилированию выделения памяти в ClickHouse'
-sidebar_label: 'Профилирование выделения памяти в версиях до 25.9'
+description: 'Страница о профилировании выделения памяти в ClickHouse'
+sidebar_label: 'Профилирование выделения памяти для версий до 25.9'
 slug: /operations/allocation-profiling-old
-title: 'Профилирование выделения памяти в версиях до 25.9'
+title: 'Профилирование выделения памяти для версий до 25.9'
 doc_type: 'reference'
 ---
 
@@ -12,63 +12,60 @@ import TabItem from '@theme/TabItem';
 
 # Профилирование выделения памяти для версий до 25.9
 
-ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора памяти. Jemalloc предоставляет инструменты для семплирования и профилирования выделений памяти.  
-Для упрощения профилирования выделения памяти предусмотрены команды `SYSTEM`, а также четырёхбуквенные команды (4LW) в Keeper.
+ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для выборочного отслеживания и профилирования выделения памяти.  
+Для удобства профилирования выделения памяти предусмотрены команды `SYSTEM`, а также четырёхбуквенные (4LW) команды в Keeper.
 
 
 
-## Выборка выделений памяти и сброс профилей кучи {#sampling-allocations-and-flushing-heap-profiles}
+## Сэмплирование выделений памяти и сброс профилей кучи
 
-Если вы хотите выполнить выборку и профилирование выделений памяти в `jemalloc`, необходимо запустить ClickHouse/Keeper с включенным профилированием, используя переменную окружения `MALLOC_CONF`:
+Если вы хотите выполнять сэмплирование и профилирование выделений памяти в `jemalloc`, необходимо запустить ClickHouse/Keeper с включённым профилированием, задав переменную окружения `MALLOC_CONF`:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true
 ```
 
-`jemalloc` будет выполнять выборку выделений памяти и сохранять информацию внутренне.
+`jemalloc` будет выборочно отслеживать выделения памяти и сохранять информацию во внутренних структурах.
 
-Вы можете указать `jemalloc` сбросить текущий профиль, выполнив:
+Вы можете принудительно сбросить текущий профиль `jemalloc`, выполнив:
 
 <Tabs groupId="binary">
-<TabItem value="clickhouse" label="ClickHouse">
-    
-```sql
-SYSTEM JEMALLOC FLUSH PROFILE
-```
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```sql
+    SYSTEM JEMALLOC FLUSH PROFILE
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="keeper" label="Keeper">
-    
-```sh
-echo jmfp | nc localhost 9181
-```
-
-</TabItem>
+  <TabItem value="keeper" label="Keeper">
+    ```sh
+    echo jmfp | nc localhost 9181
+    ```
+  </TabItem>
 </Tabs>
 
-По умолчанию файл профиля кучи будет создан в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID процесса ClickHouse, а `_seqnum_` — глобальный порядковый номер текущего профиля кучи.  
-Для Keeper файл по умолчанию — `/tmp/jemalloc_keeper._pid_._seqnum_.heap`, и применяются те же правила.
+По умолчанию файл профиля кучи будет создан в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер текущего профиля кучи.\
+Для Keeper файл по умолчанию — `/tmp/jemalloc_keeper._pid_._seqnum_.heap` и подчиняется тем же правилам.
 
-Другое расположение можно задать, добавив к переменной окружения `MALLOC_CONF` параметр `prof_prefix`.  
-Например, если вы хотите создавать профили в папке `/data` с префиксом имени файла `my_current_profile`, можно запустить ClickHouse/Keeper со следующей переменной окружения:
+Другое место хранения может быть задано путём добавления к переменной окружения `MALLOC_CONF` опции `prof_prefix`.\
+Например, если вы хотите генерировать профили в каталоге `/data`, при этом префиксом имени файла будет `my_current_profile`, вы можете запускать ClickHouse/Keeper со следующей переменной окружения:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profile
 ```
 
-К созданному файлу будут добавлены префикс, PID и порядковый номер.
+К имени сгенерированного файла будет добавлен префикс PID и порядковый номер.
 
 
-## Анализ профилей кучи {#analyzing-heap-profiles}
+## Анализ профилей кучи
 
-После создания профилей кучи их необходимо проанализировать.  
+После генерации профилей кучи их необходимо проанализировать.\
 Для этого можно использовать инструмент `jemalloc` под названием [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in). Его можно установить несколькими способами:
 
-- С помощью системного менеджера пакетов
-- Клонировав [репозиторий jemalloc](https://github.com/jemalloc/jemalloc) и запустив `autogen.sh` из корневой директории. Скрипт `jeprof` будет находиться в директории `bin`
+* С помощью пакетного менеджера операционной системы
+* Клонировав [репозиторий jemalloc](https://github.com/jemalloc/jemalloc) и выполнив `autogen.sh` в корневом каталоге. В результате в каталоге `bin` появится скрипт `jeprof`
 
 :::note
-`jeprof` использует `addr2line` для генерации трассировок стека, что может работать очень медленно.  
+`jeprof` использует `addr2line` для генерации стек-трейсов, что может быть очень медленным.\
 В таком случае рекомендуется установить [альтернативную реализацию](https://github.com/gimli-rs/addr2line) этого инструмента.
 
 ```bash
@@ -80,8 +77,8 @@ cp ./target/release/addr2line path/to/current/addr2line
 
 :::
 
-С помощью `jeprof` можно создавать профили кучи в различных форматах.
-Рекомендуется выполнить `jeprof --help` для получения информации об использовании и доступных опциях инструмента.
+Существует множество форматов вывода, которые можно получить из профиля кучи с помощью `jeprof`.
+Рекомендуется запустить `jeprof --help`, чтобы получить информацию об использовании и различных опциях, которые предоставляет этот инструмент.
 
 В общем случае команда `jeprof` используется следующим образом:
 
@@ -89,29 +86,29 @@ cp ./target/release/addr2line path/to/current/addr2line
 jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 ```
 
-Если необходимо сравнить выделения памяти между двумя профилями, можно указать аргумент `base`:
+Если вы хотите сравнить, какие выделения памяти произошли между двумя профилями, задайте аргумент `base`:
 
 ```sh
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
-### Примеры {#examples}
+### Примеры
 
-- для создания текстового файла с каждой процедурой на отдельной строке:
+* если вы хотите создать текстовый файл, в котором каждая процедура записана в отдельной строке:
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --text > result.txt
 ```
 
-- для создания PDF-файла с графом вызовов:
+* если вы хотите создать PDF-файл с графом вызовов:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
+jeprof путь/к/исполняемому/файлу путь/к/профилю/heap --pdf > result.pdf
 ```
 
-### Создание flame graph {#generating-flame-graph}
+### Генерация flame-графа
 
-`jeprof` позволяет генерировать свёрнутые стеки для построения flame graph.
+`jeprof` позволяет создавать свернутые стеки для построения flame-графов.
 
 Необходимо использовать аргумент `--collapsed`:
 
@@ -119,62 +116,56 @@ jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 ```
 
-После этого можно использовать различные инструменты для визуализации свёрнутых стеков.
+Затем вы можете использовать множество инструментов для визуализации свернутых стеков.
 
-Наиболее популярным является [FlameGraph](https://github.com/brendangregg/FlameGraph), который содержит скрипт `flamegraph.pl`:
+Самый популярный — [FlameGraph](https://github.com/brendangregg/FlameGraph), который содержит скрипт под названием `flamegraph.pl`:
 
 ```sh
 cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
 ```
 
-Другим полезным инструментом является [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в интерактивном режиме.
+Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
 
 
-## Управление профилировщиком выделения памяти во время работы {#controlling-allocation-profiler-during-runtime}
+## Управление профилировщиком выделений во время работы
 
-Если ClickHouse/Keeper запущен с включенным профилировщиком, поддерживаются дополнительные команды для отключения/включения профилирования выделения памяти во время работы.
-Использование этих команд позволяет профилировать только определенные интервалы времени.
+Если ClickHouse/Keeper запущен с включённым профилировщиком, становятся доступны дополнительные команды для отключения и включения профилирования выделений во время работы.
+С их помощью проще профилировать только отдельные интервалы.
 
 Чтобы отключить профилировщик:
 
 <Tabs groupId="binary">
-<TabItem value="clickhouse" label="ClickHouse">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```sql
+    SYSTEM JEMALLOC DISABLE PROFILE
+    ```
+  </TabItem>
 
-```sql
-SYSTEM JEMALLOC DISABLE PROFILE
-```
-
-</TabItem>
-<TabItem value="keeper" label="Keeper">
-
-```sh
-echo jmdp | nc localhost 9181
-```
-
-</TabItem>
+  <TabItem value="keeper" label="Keeper">
+    ```sh
+    echo jmdp | nc localhost 9181
+    ```
+  </TabItem>
 </Tabs>
 
 Чтобы включить профилировщик:
 
 <Tabs groupId="binary">
-<TabItem value="clickhouse" label="ClickHouse">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```sql
+    SYSTEM JEMALLOC ENABLE PROFILE
+    ```
+  </TabItem>
 
-```sql
-SYSTEM JEMALLOC ENABLE PROFILE
-```
-
-</TabItem>
-<TabItem value="keeper" label="Keeper">
-
-```sh
-echo jmep | nc localhost 9181
-```
-
-</TabItem>
+  <TabItem value="keeper" label="Keeper">
+    ```sh
+    echo jmep | nc localhost 9181
+    ```
+  </TabItem>
 </Tabs>
 
-Также можно управлять начальным состоянием профилировщика, установив параметр `prof_active`, который по умолчанию включен.  
-Например, если вы не хотите отслеживать выделения памяти во время запуска, а только после него, можно включить профилировщик позже. Для этого запустите ClickHouse/Keeper со следующей переменной окружения:
+Также можно управлять начальным состоянием профилировщика, установив опцию `prof_active`, которая по умолчанию включена.\
+Например, если вы не хотите сэмплировать выделения памяти во время запуска, а только после, вы можете включить профилировщик позже. Для этого запустите ClickHouse/Keeper со следующей переменной окружения:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_active:false
@@ -185,22 +176,23 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 ## Дополнительные параметры профилировщика {#additional-options-for-profiler}
 
-`jemalloc` предоставляет множество различных параметров, связанных с профилировщиком. Управлять ими можно через переменную окружения `MALLOC_CONF`.
-Например, интервал между выборками выделения памяти можно задать с помощью параметра `lg_prof_sample`.  
-Если требуется выгружать профиль кучи каждые N байт, это можно включить с помощью параметра `lg_prof_interval`.
+В `jemalloc` доступно множество различных параметров, связанных с профилировщиком. Ими можно управлять через переменную окружения `MALLOC_CONF`.
+Например, интервал между выборками выделений памяти можно контролировать с помощью `lg_prof_sample`.  
+Если вы хотите сбрасывать профиль кучи каждые N байт, вы можете включить это с помощью `lg_prof_interval`.  
 
-Полный список параметров приведен на [справочной странице](https://jemalloc.net/jemalloc.3.html) `jemalloc`.
+Для получения полного списка параметров рекомендуется ознакомиться со [справочной страницей](https://jemalloc.net/jemalloc.3.html) `jemalloc`.
 
 
-## Другие ресурсы {#other-resources}
 
-ClickHouse/Keeper предоставляют метрики, связанные с `jemalloc`, множеством различных способов.
+## Другие ресурсы
+
+ClickHouse/Keeper предоставляют метрики, связанные с `jemalloc`, множеством разных способов.
 
 :::warning Предупреждение
-Важно учитывать, что эти метрики не синхронизированы между собой, и их значения могут расходиться.
+Важно понимать, что ни одна из этих метрик не синхронизирована с другими, и значения могут расходиться.
 :::
 
-### Системная таблица `asynchronous_metrics` {#system-table-asynchronous_metrics}
+### Системная таблица `asynchronous_metrics`
 
 ```sql
 SELECT *
@@ -211,21 +203,21 @@ FORMAT Vertical
 
 [Справочник](/operations/system-tables/asynchronous_metrics)
 
-### Системная таблица `jemalloc_bins` {#system-table-jemalloc_bins}
+### Системная таблица `jemalloc_bins`
 
-Содержит информацию о выделениях памяти, выполненных через аллокатор jemalloc в различных классах размеров (bins), агрегированную из всех арен.
+Содержит информацию о выделении памяти с помощью аллокатора `jemalloc` по различным классам размеров (bins), агрегированную по всем аренам.
 
 [Справочник](/operations/system-tables/jemalloc_bins)
 
-### Prometheus {#prometheus}
+### Prometheus
 
-Все метрики, связанные с `jemalloc`, из `asynchronous_metrics` также доступны через конечную точку Prometheus как в ClickHouse, так и в Keeper.
+Все метрики, связанные с `jemalloc` и доступные в `asynchronous_metrics`, также публикуются через endpoint Prometheus как в ClickHouse, так и в Keeper.
 
 [Справочник](/operations/server-configuration-parameters/settings#prometheus)
 
-### Команда 4LW `jmst` в Keeper {#jmst-4lw-command-in-keeper}
+### 4LW-команда `jmst` в Keeper
 
-Keeper поддерживает команду 4LW `jmst`, которая возвращает [базовую статистику аллокатора](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics):
+Keeper поддерживает 4LW-команду `jmst`, которая возвращает [базовую статистику аллокатора](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics):
 
 ```sh
 echo jmst | nc localhost 9181

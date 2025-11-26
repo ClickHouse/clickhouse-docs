@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettySpace フォーマットに関するドキュメント'
+description: 'PrettySpace 形式に関するドキュメント'
 input_format: false
 keywords: ['PrettySpace']
 output_format: true
@@ -16,14 +16,16 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md)形式とは異なり、グリッドの代わりに空白文字(スペース文字)を使用してテーブルを表示します。
+[`PrettyCompact`](./PrettyCompact.md) フォーマットとは異なり、テーブルの表示にグリッドではなく空白文字（スペース文字）が使用されます。
+
 
 
 ## 使用例 {#example-usage}
 
 
-## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+## 書式設定 {#format-settings}
+
+<PrettyFormatSettings/>

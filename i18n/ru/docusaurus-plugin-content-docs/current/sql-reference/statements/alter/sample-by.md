@@ -1,9 +1,9 @@
 ---
-description: 'Документация по работе с выражением SAMPLE BY'
+description: 'Документация по управлению выражением SAMPLE BY'
 sidebar_label: 'SAMPLE BY'
 sidebar_position: 41
 slug: /sql-reference/statements/alter/sample-by
-title: 'Работа с выражениями ключа выборки'
+title: 'Управление выражениями ключа выборки'
 doc_type: 'reference'
 ---
 
@@ -15,25 +15,25 @@ doc_type: 'reference'
 
 
 
-## MODIFY {#modify}
+## ИЗМЕНЕНИЕ
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
-Команда изменяет [ключ сэмплирования](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен содержать новый ключ сэмплирования.
+Команда изменяет [sampling key](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен содержать новый ключ выборки.
 
 
-## REMOVE {#remove}
+## УДАЛИТЬ
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
+ALTER TABLE [db].имя [ON CLUSTER кластер] REMOVE SAMPLE BY
 ```
 
-Команда удаляет [ключ сэмплирования](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
+Эта команда удаляет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
 
-Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы.
+Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они изменяют только метаданные или удаляют файлы.
 
-:::note  
-Работает только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
+:::note\
+Эти команды работают только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
 :::

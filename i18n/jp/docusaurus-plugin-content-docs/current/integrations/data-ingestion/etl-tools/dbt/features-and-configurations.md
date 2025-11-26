@@ -1,10 +1,10 @@
 ---
-sidebar_label: '機能と設定'
+sidebar_label: '機能と構成'
 slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
 description: 'ClickHouse で dbt を利用するための機能'
 keywords: ['clickhouse', 'dbt', 'features']
-title: '機能と設定'
+title: '機能と構成'
 doc_type: 'guide'
 ---
 
@@ -16,15 +16,15 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-このセクションでは、ClickHouse と組み合わせて利用する dbt で使用可能な機能の一部について説明します。
+このセクションでは、dbt と ClickHouse の組み合わせで利用できる機能の一部について説明します。
 
 <TOCInline toc={toc}  maxHeadingLevel={3} />
 
 
 
-## Profile.ymlの設定 {#profile-yml-configurations}
+## Profile.yml の設定
 
-dbtからClickHouseに接続するには、`profiles.yml`ファイルに[プロファイル](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles)を追加する必要があります。ClickHouseプロファイルは以下の構文に従います:
+dbt から ClickHouse に接続するには、`profiles.yml` ファイルに[プロファイル](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles)を追加する必要があります。ClickHouse のプロファイルは、次の構文に従います。
 
 ```yaml
 your_profile_name:
@@ -33,76 +33,82 @@ your_profile_name:
     dev:
       type: clickhouse
 
-      # オプション
+      # Optional
       schema: [default] # dbtモデル用のClickHouseデータベース
-      driver: [http] # httpまたはnative。設定されていない場合、ポート設定に基づいて自動決定されます
-      host: [localhost]
-      port: [8123] # 設定されていない場合、secureとdriverの設定に応じて8123、8443、9000、9440がデフォルトになります
-      user: [default] # すべてのデータベース操作用のユーザー
+      driver: [http] # httpまたはnative。未設定の場合、ポート設定に基づいて自動判定されます
+      host: [localhost] 
+      port: [8123]  # 未設定の場合、secureとdriverの設定に応じて8123、8443、9000、9440のいずれかがデフォルトになります
+      user: [default] # すべてのデータベース操作に使用するユーザー
       password: [<empty string>] # ユーザーのパスワード
       cluster: [<empty string>] # 設定されている場合、特定のDDL/テーブル操作がこのクラスタを使用して`ON CLUSTER`句で実行されます。分散マテリアライゼーションにはこの設定が必要です。詳細については、以下のClickHouseクラスタセクションを参照してください。
-      verify: [True] # TLS/SSLを使用する場合、TLS証明書を検証します
+      verify: [True] # TLS/SSL使用時にTLS証明書を検証します
       secure: [False] # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用します
       client_cert: [null] # .pem形式のTLSクライアント証明書へのパス
       client_cert_key: [null] # TLSクライアント証明書の秘密鍵へのパス
-      retries: [1] # 「再試行可能な」データベース例外(503 'Service Unavailable'エラーなど)を再試行する回数
-      compression: [<empty string>] # 真の場合はgzip圧縮を使用(http)、またはネイティブ接続の圧縮タイプ
-      connect_timeout: [10] # ClickHouseへの接続を確立するためのタイムアウト(秒)
-      send_receive_timeout: [300] # ClickHouseサーバーからデータを受信するためのタイムアウト(秒)
-      cluster_mode: [False] # レプリケートされたデータベースでの操作を改善するために設計された特定の設定を使用します(ClickHouse Cloudに推奨)
-      use_lw_deletes: [False] # デフォルトの増分戦略として`delete+insert`戦略を使用します。
+      retries: [1] # 「再試行可能な」データベース例外(503 'Service Unavailable'エラーなど)の再試行回数
+      compression: [<empty string>] # 真値の場合はgzip圧縮を使用(http)、またはネイティブ接続の圧縮タイプを指定
+      connect_timeout: [10] # ClickHouseへの接続確立のタイムアウト(秒)
+      send_receive_timeout: [300] # ClickHouseサーバーからのデータ受信のタイムアウト(秒)
+      cluster_mode: [False] # レプリケートされたデータベースでの動作を改善するための特定の設定を使用します(ClickHouse Cloudで推奨)
+      use_lw_deletes: [False] # デフォルトのインクリメンタル戦略として`delete+insert`戦略を使用します。
       check_exchange: [True] # ClickHouseがアトミックなEXCHANGE TABLESコマンドをサポートしていることを検証します。(ほとんどのClickHouseバージョンでは不要)
       local_suffix: [_local] # 分散マテリアライゼーション用のシャード上のローカルテーブルのテーブルサフィックス。
       local_db_prefix: [<empty string>] # 分散マテリアライゼーション用のシャード上のローカルテーブルのデータベースプレフィックス。空の場合、分散テーブルと同じデータベースを使用します。
       allow_automatic_deduplication: [False] # レプリケートされたテーブルに対してClickHouseの自動重複排除を有効にします
       tcp_keepalive: [False] # ネイティブクライアントのみ、TCP keepalive設定を指定します。カスタムkeepalive設定を[idle_time_sec, interval_sec, probes]として指定します。
       custom_settings: [{}] # 接続用のカスタムClickHouse設定の辞書/マッピング - デフォルトは空です。
-      database_engine: "" # 新しいClickHouseスキーマ(データベース)を作成する際に使用するデータベースエンジン。設定されていない場合(デフォルト)、新しいデータベースはデフォルトのClickHouseデータベースエンジン(通常はAtomic)を使用します。
-      threads: [1] # クエリ実行時に使用するスレッド数。1より大きい数値に設定する前に、[read-after-write整合性](#read-after-write-consistency)セクションを必ずお読みください。
-
+      database_engine: '' # 新しいClickHouseスキーマ(データベース)作成時に使用するデータベースエンジン。未設定の場合(デフォルト)、新しいデータベースはデフォルトのClickHouseデータベースエンジン(通常はAtomic)を使用します。
+      threads: [1] # クエリ実行時に使用するスレッド数。1より大きい数値に設定する前に、[read-after-write consistency](#read-after-write-consistency)セクションを必ず読んでください。
+      
       # ネイティブ(clickhouse-driver)接続設定
       sync_request_timeout: [5] # サーバーpingのタイムアウト
-      compress_block_size: [1048576] # 圧縮が有効な場合の圧縮ブロックサイズ
+      compress_block_size: [1048576] # 圧縮有効時の圧縮ブロックサイズ
 ```
 
-### スキーマ vs データベース {#schema-vs-database}
+### スキーマとデータベースの違い
 
-dbtモデルのリレーション識別子`database.schema.table`は、ClickHouseが`schema`をサポートしていないため、ClickHouseと互換性がありません。
-そのため、簡略化されたアプローチ`schema.table`を使用します。ここで`schema`はClickHouseデータベースです。`default`データベースの使用は推奨されません。
+dbt モデルのリレーション識別子 `database.schema.table` は ClickHouse では互換性がありません。これは、ClickHouse が
+`schema` をサポートしていないためです。
+そのため、`schema.table` という簡略化したアプローチを使用します。この場合の `schema` は ClickHouse のデータベースを意味します。
+`default` データベースの使用は推奨されません。
 
-### SET文の警告 {#set-statement-warning}
+### SET ステートメントに関する警告
 
-多くの環境では、SET文を使用してすべてのdbtクエリにわたってClickHouse設定を永続化することは信頼性が低く、予期しない障害を引き起こす可能性があります。これは特に、複数のノードにクエリを分散するロードバランサーを介したHTTP接続を使用する場合(ClickHouse Cloudなど)に当てはまりますが、状況によってはネイティブClickHouse接続でも発生する可能性があります。したがって、時折提案されているpre-hook「SET」文に依存するのではなく、ベストプラクティスとして、dbtプロファイルの「custom_settings」プロパティで必要なClickHouse設定を構成することを推奨します。
+多くの環境では、すべての dbt クエリに対して ClickHouse の設定を永続させる目的で SET ステートメントを使用する方法は信頼性が低く、
+予期しない失敗を引き起こす可能性があります。これは特に、ロードバランサーを介して複数ノードにクエリを分散する HTTP 接続
+（ClickHouse Cloud など）を使用している場合に当てはまりますが、状況によってはネイティブな ClickHouse 接続でも発生し得ます。
+したがって、事前フックの &quot;SET&quot; ステートメントに依存するのではなく、ベストプラクティスとして、dbt プロファイルの
+&quot;custom&#95;settings&quot; プロパティで必要な ClickHouse の設定を構成することを推奨します。
 
-### `quote_columns`の設定 {#setting-quote_columns}
+### `quote_columns` の設定
 
 
-警告を回避するには、`dbt_project.yml`で`quote_columns`の値を明示的に設定してください。詳細については、[quote_columnsのドキュメント](https://docs.getdbt.com/reference/resource-configs/quote_columns)を参照してください。
+警告が出ないようにするため、`dbt_project.yml` 内で `quote_columns` に値を明示的に設定してください。詳細については、[quote&#95;columns に関するドキュメント](https://docs.getdbt.com/reference/resource-configs/quote_columns) を参照してください。
 
 ```yaml
 seeds:
-  +quote_columns: false #CSV列ヘッダーにスペースが含まれる場合は`true`
+  +quote_columns: false  # CSV列ヘッダーにスペースが含まれている場合は `true` に設定
 ```
 
-### ClickHouseクラスタについて {#about-the-clickhouse-cluster}
+### ClickHouse クラスターについて
 
-ClickHouseクラスタを使用する場合、以下の2点を考慮する必要があります:
+ClickHouse クラスターを使用する場合、次の 2 点を考慮する必要があります。
 
-- `cluster`設定の指定
-- 読み取り後書き込み一貫性の確保(特に複数の`threads`を使用している場合)
+* `cluster` 設定を行うこと
+* 特に複数の `threads` を使用している場合に、書き込み直後の読み取り一貫性を確保すること
 
-#### クラスタ設定 {#cluster-setting}
+#### クラスター設定
 
-プロファイルの`cluster`設定により、dbt-clickhouseをClickHouseクラスタに対して実行できるようになります。プロファイルで`cluster`が設定されている場合、**Replicated**エンジンを使用するモデルを除き、**すべてのモデルはデフォルトで`ON CLUSTER`句を使用して作成されます**。これには以下が含まれます:
+プロファイル内の `cluster` 設定により、dbt-clickhouse は ClickHouse クラスターを対象に実行されます。プロファイルで `cluster` が設定されている場合、**すべてのモデルはデフォルトで `ON CLUSTER` 句付きで作成されます**（**Replicated** エンジンを使用するものを除く）。これには以下が含まれます。
 
-- データベースの作成
-- ビューのマテリアライゼーション
-- テーブルおよびインクリメンタルのマテリアライゼーション
-- 分散マテリアライゼーション
+* データベースの作成
+* ビューのマテリアライゼーション
+* テーブルおよびインクリメンタルのマテリアライゼーション
+* Distributed マテリアライゼーション
 
-Replicatedエンジンは内部的にレプリケーションを管理するように設計されているため、`ON CLUSTER`句は**含まれません**。
+Replicated エンジンでは、レプリケーションを内部で管理するよう設計されているため、`ON CLUSTER` 句は**含まれません**。
 
-特定のモデルでクラスタベースの作成を**無効化**するには、`disable_on_cluster`設定を追加します:
+特定のモデルでクラスターを用いた作成を**無効化**するには、そのモデルに `disable_on_cluster` 設定を追加します。
 
 ```sql
 {{ config(
@@ -114,43 +120,43 @@ Replicatedエンジンは内部的にレプリケーションを管理するよ�
 
 ```
 
-非レプリケートエンジンを使用するテーブルおよびインクリメンタルのマテリアライゼーションは`cluster`設定の影響を受けません(モデルは接続されたノードのみに作成されます)。
+non-replicated エンジンを使用する table および incremental マテリアライゼーションは、`cluster` 設定の影響を受けません（モデルは接続中のノードのみに作成されます）。
 
 **互換性**
 
-`cluster`設定なしでモデルが作成されている場合、dbt-clickhouseはその状況を検出し、このモデルに対してすべてのDDL/DMLを`on cluster`句なしで実行します。
+モデルが `cluster` 設定なしで作成されている場合、dbt-clickhouse はその状況を検知し、そのモデルに対するすべての DDL/DML を `on cluster` 句なしで実行します。
 
-#### 読み取り後書き込み一貫性 {#read-after-write-consistency}
+#### 書き込み直後の読み取り一貫性
 
-dbtは読み取り後挿入一貫性モデルに依存しています。すべての操作が同じレプリカに送信されることを保証できない場合、複数のレプリカを持つClickHouseクラスタとは互換性がありません。日常的なdbtの使用では問題に遭遇しない可能性がありますが、この保証を確保するためのクラスタに応じた戦略がいくつかあります:
+dbt は read-after-insert 一貫性モデルに依存しています。これは、すべての操作が同じレプリカに送られることを保証できない場合、複数レプリカを持つ ClickHouse クラスターとは互換性がありません。日常的な dbt の利用においては問題が発生しないこともありますが、この保証を満たすために、クラスターの種類に応じた戦略がいくつかあります。
 
-- ClickHouse Cloudクラスタを使用している場合は、プロファイルの`custom_settings`プロパティで`select_sequential_consistency: 1`を設定するだけで済みます。この設定の詳細については、[こちら](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)を参照してください。
-- セルフホストクラスタを使用している場合は、すべてのdbtリクエストが同じClickHouseレプリカに送信されるようにしてください。ロードバランサーを使用している場合は、常に同じレプリカに到達できるように`replica aware routing`/`sticky sessions`メカニズムの使用を検討してください。ClickHouse Cloud以外のクラスタで`select_sequential_consistency = 1`設定を追加することは[推奨されません](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)。
+* ClickHouse Cloud クラスターを使用している場合は、プロファイルの `custom_settings` プロパティに `select_sequential_consistency: 1` を設定するだけで構いません。この設定の詳細は[こちら](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)で確認できます。
+* 自前でホストしているクラスターを使用している場合は、すべての dbt リクエストが同じ ClickHouse レプリカに送信されるようにしてください。その上にロードバランサーがある場合は、常に同じレプリカに到達できるように、`replica aware routing` / `sticky sessions` メカニズムの利用を検討してください。ClickHouse Cloud 以外のクラスターで `select_sequential_consistency = 1` 設定を追加することは[推奨されません](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)。
 
 
-## 機能に関する一般情報 {#general-information-about-features}
+## 機能に関する一般情報
 
-### 一般的なテーブル設定 {#general-table-configurations}
+### テーブルの一般的な設定
 
-| オプション         | 説明                                                                                                                                                                                                   | デフォルト値 |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| engine         | テーブル作成時に使用するテーブルエンジン（テーブルの種類）                                                                                                                                                  | `MergeTree()`  |
-| order_by       | カラム名または任意の式のタプル。データをより高速に検索するための小さなスパースインデックスを作成できます。                                                                                 | `tuple()`      |
-| partition_by   | パーティションは、指定された基準によってテーブル内のレコードを論理的に組み合わせたものです。パーティションキーは、テーブルカラムからの任意の式を指定できます。                                                          |                |
-| sharding_key   | シャーディングキーは、分散エンジンテーブルへの挿入時に宛先サーバーを決定します。シャーディングキーはランダムまたはハッシュ関数の出力として指定できます                                                | `rand()`)      |
-| primary_key    | order_byと同様に、ClickHouseのプライマリキー式です。指定されていない場合、ClickHouseはorder by式をプライマリキーとして使用します                                                                          |                |
-| unique_key     | 行を一意に識別するカラム名のタプル。更新のためのインクリメンタルモデルで使用されます。                                                                                                                |                |
-| settings       | このモデルで'CREATE TABLE'などのDDLステートメントに使用される「TABLE」設定のマップ/辞書                                                                                                         |                |
-| query_settings | このモデルと組み合わせて`INSERT`または`DELETE`ステートメントで使用されるClickHouseユーザーレベル設定のマップ/辞書                                                                             |                |
-| ttl            | テーブルで使用されるTTL式。TTL式は、テーブルのTTLを指定するために使用できる文字列です。                                                                                 |                |
-| indexes        | 作成する[データスキッピングインデックス](/optimize/skipping-indexes)のリスト。詳細については以下を参照してください。                                                                                                    |                |
-| sql_security   | ビューの基礎となるクエリを実行する際に使用するClickHouseユーザーを指定できます。`SQL SECURITY`には[2つの有効な値](/sql-reference/statements/create/view#sql_security)があります：`definer`、`invoker`。 |                |
-| definer        | `sql_security`が`definer`に設定されている場合、`definer`句で既存のユーザーまたは`CURRENT_USER`を指定する必要があります。                                                                                      |                |
-| projections    | 作成する[プロジェクション](/data-modeling/projections)のリスト。詳細については[プロジェクションについて](#projections)を参照してください。                                                                                       |                |
+| Option             | Description                                                                                                                                                     | Default if any |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| engine             | テーブル作成時に使用するテーブルエンジン（テーブルの種類）                                                                                                                                   | `MergeTree()`  |
+| order&#95;by       | 列名または任意の式のタプル。小さなスパースインデックスを作成し、データ検索を高速化するために使用されます。                                                                                                           | `tuple()`      |
+| partition&#95;by   | パーティションは、指定した条件でテーブル内のレコードを論理的にまとめたものです。パーティションキーには、テーブル列を用いた任意の式を指定できます。                                                                                       |                |
+| sharding&#95;key   | Sharding key は、Distributed エンジンテーブルへの挿入時に、宛先サーバーを決定します。Sharding key はランダム、またはハッシュ関数の出力とすることができます。                                                               | `rand()`)      |
+| primary&#95;key    | order&#95;by と同様の ClickHouse の primary key 式です。指定しない場合、ClickHouse は order by 式を primary key として使用します。                                                           |                |
+| unique&#95;key     | 行を一意に識別する列名のタプル。インクリメンタルモデルでの更新に使用されます。                                                                                                                         |                |
+| settings           | このモデルで &#39;CREATE TABLE&#39; などの DDL 文に使用される、&quot;TABLE&quot; 設定のマップ／ディクショナリ                                                                                  |                |
+| query&#95;settings | このモデルと組み合わせて `INSERT` または `DELETE` 文で使用する、ClickHouse ユーザーレベル設定のマップ／ディクショナリ                                                                                      |                |
+| ttl                | テーブルで使用する TTL 式。TTL 式は、テーブルの TTL を指定するための文字列です。                                                                                                                 |                |
+| indexes            | 作成する[データスキッピングインデックスの一覧](/optimize/skipping-indexes)。詳細は以下を参照してください。                                                                                            |                |
+| sql&#95;security   | ビューの基礎となるクエリを実行する際に使用する ClickHouse ユーザーを指定できます。`SQL SECURITY` [には 2 つの有効な値](/sql-reference/statements/create/view#sql_security) があり、`definer` または `invoker` です。 |                |
+| definer            | `sql_security` に `definer` を設定した場合、`definer` 句で既存のユーザーまたは `CURRENT_USER` を指定する必要があります。                                                                          |                |
+| projections        | 作成する[プロジェクション](/data-modeling/projections)の一覧。[プロジェクションについて](#projections)を参照してください。                                                                            |                |
 
-#### データスキッピングインデックスについて {#data-skipping-indexes}
+#### データスキッピングインデックスについて
 
-データスキッピングインデックスは`table`マテリアライゼーションでのみ利用可能です。テーブルにデータスキッピングインデックスのリストを追加するには、`indexes`設定を使用します：
+データスキッピングインデックスは `table` マテリアライゼーションでのみ利用可能です。テーブルにデータスキッピングインデックスの一覧を追加するには、`indexes` 設定を使用します。
 
 ```sql
 {{ config(
@@ -162,9 +168,9 @@ dbtは読み取り後挿入一貫性モデルに依存しています。すべ�
 ) }}
 ```
 
-#### プロジェクションについて {#projections}
+#### プロジェクションについて
 
-`projections`設定を使用して、`table`および`distributed_table`マテリアライゼーションに[プロジェクション](/data-modeling/projections)を追加できます：
+`projections` 設定を使用して、`table` および `distributed_table` マテリアライゼーションに [プロジェクション](/data-modeling/projections) を追加できます。
 
 ```sql
 {{ config(
@@ -178,48 +184,55 @@ dbtは読み取り後挿入一貫性モデルに依存しています。すべ�
 ) }}
 ```
 
-**注意**：分散テーブルの場合、プロジェクションは分散プロキシテーブルではなく、`_local`テーブルに適用されます。
+**注記**: 分散テーブルでは、プロジェクションは分散プロキシテーブルではなく `_local` テーブルに適用されます。
 
-### サポートされているテーブルエンジン {#supported-table-engines}
+### サポートされているテーブルエンジン
 
-| タイプ                   | 詳細                                                                                   |
-| ---------------------- | ----------------------------------------------------------------------------------------- |
-| MergeTree（デフォルト）    | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| 種類                     | 詳細                                                                                                                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MergeTree (デフォルト)      | [https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/)                   |
+| HDFS                   | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs](https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs)                                       |
+| MaterializedPostgreSQL | [https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql](https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [https://clickhouse.com/docs/en/engines/table-engines/integrations/s3](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3)                                           |
+| EmbeddedRocksDB        | [https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb](https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb)               |
+| Hive                   | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hive](https://clickhouse.com/docs/en/engines/table-engines/integrations/hive)                                       |
 
-### 実験的にサポートされているテーブルエンジン {#experimental-supported-table-engines}
+### 実験的サポート対象のテーブルエンジン
 
 
-| タイプ              | 詳細                                                                   |
-| ----------------- | ------------------------------------------------------------------------- |
-| Distributed Table | https://clickhouse.com/docs/en/engines/table-engines/special/distributed. |
-| Dictionary        | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| Type              | Details                                                                                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Distributed Table | [https://clickhouse.com/docs/en/engines/table-engines/special/distributed](https://clickhouse.com/docs/en/engines/table-engines/special/distributed). |
+| Dictionary        | [https://clickhouse.com/docs/en/engines/table-engines/special/dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary)    |
 
-上記のエンジンのいずれかを使用してdbtからClickHouseへの接続で問題が発生した場合は、[こちら](https://github.com/ClickHouse/dbt-clickhouse/issues)で問題を報告してください。
+上記のいずれかのエンジンを使った dbt から ClickHouse への接続で問題が発生した場合は、
+[こちら](https://github.com/ClickHouse/dbt-clickhouse/issues) から issue を報告してください。
 
-### モデル設定に関する注意事項 {#a-note-on-model-settings}
+### モデル設定についての注意事項
 
-ClickHouseには複数のタイプ/レベルの「設定」があります。上記のモデル設定では、これらのうち2つのタイプが設定可能です。`settings`は`CREATE TABLE/VIEW`タイプのDDL文で使用される`SETTINGS`句を意味し、通常は特定のClickHouseテーブルエンジンに固有の設定です。新しい`query_settings`は、モデルのマテリアライゼーション(インクリメンタルマテリアライゼーションを含む)に使用される`INSERT`および`DELETE`クエリに`SETTINGS`句を追加するために使用されます。ClickHouseには数百の設定があり、どれが「テーブル」設定でどれが「ユーザー」設定なのかが常に明確とは限りません(ただし、後者は通常`system.settings`テーブルで利用可能です)。一般的にはデフォルト値の使用が推奨されており、これらのプロパティを使用する場合は慎重に調査とテストを行う必要があります。
+ClickHouse には複数の種類やレベルの「settings（設定）」があります。上記のモデル設定では、そのうち 2 種類を
+設定できます。`settings` は、`CREATE TABLE/VIEW` タイプの DDL 文で使用される `SETTINGS`
+句を意味し、一般的に特定の ClickHouse テーブルエンジンに固有の設定です。新しい
+`query_settings` は、モデルのマテリアライゼーションに使用される `INSERT` および `DELETE` クエリ（インクリメンタルマテリアライゼーションを含む）に `SETTINGS` 句を追加するために使用されます。
+ClickHouse の設定は数百個あり、「テーブル」設定と「ユーザー」設定のどちらに属するのか
+必ずしも明確でないものもあります（ただし後者は一般的に `system.settings` テーブルで確認できます）。
+一般的にはデフォルト値の使用が推奨され、これらのプロパティを利用する場合は、事前に十分な調査とテストを行ってください。
 
-### カラム設定 {#column-configuration}
+### カラム設定
 
-> **_注意:_** 以下のカラム設定オプションを使用するには、[モデルコントラクト](https://docs.getdbt.com/docs/collaborate/govern/model-contracts)を適用する必要があります。
+> ***NOTE:*** 以下のカラム設定オプションを利用するには、[model contracts](https://docs.getdbt.com/docs/collaborate/govern/model-contracts) が適用・強制されている必要があります。
 
-| オプション | 説明                                                                                                                                                                                                                                    | デフォルト値 |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| codec  | カラムのDDLで`CODEC()`に渡される引数で構成される文字列。例: `codec: "Delta, ZSTD"`は`CODEC(Delta, ZSTD)`としてコンパイルされます。                                                                                        |
-| ttl    | カラムのDDLでTTLルールを定義する[TTL(有効期限)式](https://clickhouse.com/docs/guides/developer/ttl)で構成される文字列。例: `ttl: ts + INTERVAL 1 DAY`は`TTL ts + INTERVAL 1 DAY`としてコンパイルされます。 |
+| Option | Description                                                                                                                                                                  | Default if any |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| codec  | カラムの DDL 内で `CODEC()` に渡される引数からなる文字列。例: `codec: "Delta, ZSTD"` は `CODEC(Delta, ZSTD)` として解釈されます。                                                                             |                |
+| ttl    | カラムの DDL 内で TTL ルールを定義する [TTL（time-to-live）式](https://clickhouse.com/docs/guides/developer/ttl) からなる文字列。例: `ttl: ts + INTERVAL 1 DAY` は `TTL ts + INTERVAL 1 DAY` として解釈されます。 |                |
 
-#### スキーマ設定の例 {#example-of-schema-configuration}
+#### スキーマ設定の例
 
 ```yaml
 models:
   - name: table_column_configs
-    description: "カラムレベル設定のテスト"
+    description: '列レベル設定のテスト'
     config:
       contract:
         enforced: true
@@ -232,9 +245,9 @@ models:
         ttl: ts + INTERVAL 1 DAY
 ```
 
-#### 複合型の追加 {#adding-complex-types}
+#### 複合型の追加
 
-dbtはモデルを作成するために使用されるSQLを分析することで、各カラムのデータ型を自動的に決定します。ただし、場合によってはこのプロセスがデータ型を正確に判定できず、コントラクトの`data_type`プロパティで指定された型と競合することがあります。これに対処するため、モデルのSQL内で`CAST()`関数を使用して、希望する型を明示的に定義することを推奨します。例:
+dbt は、モデルの定義に用いられた SQL を解析して、各カラムのデータ型を自動的に判定します。ただし、場合によってはこの処理では正確にデータ型を判定できず、コントラクトの `data_type` プロパティで指定された型と矛盾が生じることがあります。これに対処するため、モデルの SQL 内で `CAST()` 関数を使用して、意図した型を明示的に指定することを推奨します。例えば、次のようになります。
 
 ```sql
 {{
@@ -246,22 +259,23 @@ dbtはモデルを作成するために使用されるSQLを分析すること�
 }}
 
 select
-  -- event_typeはStringとして推論される可能性がありますが、LowCardinality(String)を使用したい場合:
+  -- event_type は String として推論されますが、LowCardinality(String) の使用を推奨します:
   CAST(event_type, 'LowCardinality(String)') as event_type,
-  -- countState()は`AggregateFunction(count)`として推論される可能性がありますが、使用される引数の型を変更したい場合:
-  CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count,
-  -- maxSimpleState()は`SimpleAggregateFunction(max, String)`として推論される可能性がありますが、使用される引数の型も変更したい場合:
+  -- countState() は `AggregateFunction(count)` として推論されますが、引数の型を変更することを推奨します:
+  CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
+  -- maxSimpleState() は `SimpleAggregateFunction(max, String)` として推論されますが、引数の型も変更することを推奨します:
   CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
 from {{ ref('user_events') }}
 group by event_type
 ```
 
 
-## 機能 {#features}
+## 機能
 
-### マテリアライゼーション: view {#materialization-view}
+### マテリアライゼーション: view
 
-dbtモデルは[ClickHouse view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/)として作成でき、以下の構文で設定できます:
+dbt モデルは [ClickHouse view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/)
+として作成し、次の構文で設定できます。
 
 プロジェクトファイル (`dbt_project.yml`):
 
@@ -271,15 +285,16 @@ models:
     +materialized: view
 ```
 
-または設定ブロック (`models/<model_name>.sql`):
+または、次の設定ブロック（`models/<model_name>.sql`）：
 
 ```python
 {{ config(materialized = "view") }}
 ```
 
-### マテリアライゼーション: table {#materialization-table}
+### マテリアライゼーション: テーブル
 
-dbtモデルは[ClickHouse table](https://clickhouse.com/docs/en/operations/system-tables/tables/)として作成でき、以下の構文で設定できます:
+dbt モデルは [ClickHouse のテーブル](https://clickhouse.com/docs/en/operations/system-tables/tables/) として作成し、
+次の構文で設定できます。
 
 プロジェクトファイル (`dbt_project.yml`):
 
@@ -287,12 +302,12 @@ dbtモデルは[ClickHouse table](https://clickhouse.com/docs/en/operations/syst
 models:
   <resource-path>:
     +materialized: table
-    +order_by: [<column-name>, ...]
+    +order_by: [ <column-name>, ... ]
     +engine: <engine-type>
-    +partition_by: [<column-name>, ...]
+    +partition_by: [ <column-name>, ... ]
 ```
 
-または設定ブロック (`models/<model_name>.sql`):
+または、次の設定ブロック（`models/&lt;model_name&gt;.sql`）：
 
 ```python
 {{ config(
@@ -305,124 +320,157 @@ models:
 ) }}
 ```
 
-### マテリアライゼーション: incremental {#materialization-incremental}
+### マテリアライゼーション: incremental
 
-テーブルモデルはdbtの実行ごとに再構築されます。大規模な結果セットや複雑な変換では、これは実行不可能で非常にコストがかかる可能性があります。この課題に対処し、ビルド時間を短縮するために、dbtモデルをインクリメンタルなClickHouseテーブルとして作成でき、以下の構文で設定できます:
+テーブルモデルは、dbt が実行されるたびに再構築されます。これは、結果セットが大きい場合や変換が複雑な場合には、実行不可能であったり非常に高コストになることがあります。この課題に対処し、ビルド時間を短縮するために、dbt モデルをインクリメンタルな ClickHouse テーブルとして作成し、次の構文を用いて設定できます。
 
-`dbt_project.yml`でのモデル定義:
+`dbt_project.yml` におけるモデル定義:
 
 ```yaml
 models:
   <resource-path>:
     +materialized: incremental
-    +order_by: [<column-name>, ...]
+    +order_by: [ <column-name>, ... ]
     +engine: <engine-type>
-    +partition_by: [<column-name>, ...]
-    +unique_key: [<column-name>, ...]
-    +inserts_only: [True|False]
+    +partition_by: [ <column-name>, ... ]
+    +unique_key: [ <column-name>, ... ]
+    +inserts_only: [ True|False ]
 ```
 
-または`models/<model_name>.sql`での設定ブロック:
+または `models/<model_name>.sql` の config ブロック:
 
 ```python
 {{ config(
     materialized = "incremental",
-    engine = "<engine-type>",
-    order_by = [ "<column-name>", ... ],
-    partition_by = [ "<column-name>", ... ],
-    unique_key = [ "<column-name>", ... ],
+    engine = "<エンジンタイプ>",
+    order_by = [ "<カラム名>", ... ],
+    partition_by = [ "<カラム名>", ... ],
+    unique_key = [ "<カラム名>", ... ],
     inserts_only = [ True|False ],
       ...
     ]
 ) }}
 ```
 
-#### 設定 {#configurations}
+#### 設定
 
-このマテリアライゼーションタイプに固有の設定を以下に示します:
+このマテリアライゼーションタイプに特有の設定は以下のとおりです。
 
-| オプション                   | 説明                                                                                                                                                                                                                                                                                                            | 必須?                                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `unique_key`             | 行を一意に識別するカラム名のタプル。一意性制約の詳細については、[こちら](https://docs.getdbt.com/docs/build/incremental-models#defining-a-unique-key-optional)を参照してください。                                                                                                                     | 必須。指定しない場合、変更された行がインクリメンタルテーブルに2回追加されます。 |
-| `inserts_only`           | 同じ動作をする`append`インクリメンタル`strategy`を優先するため非推奨となりました。インクリメンタルモデルでTrueに設定すると、中間テーブルを作成せずにインクリメンタル更新がターゲットテーブルに直接挿入されます。`inserts_only`が設定されている場合、`incremental_strategy`は無視されます。 | 任意 (デフォルト: `False`)                                                          |
-| `incremental_strategy`   | インクリメンタルマテリアライゼーションに使用する戦略。`delete+insert`、`append`、`insert_overwrite`、または`microbatch`がサポートされています。戦略の詳細については、[こちら](/integrations/dbt/features-and-configurations#incremental-model-strategies)を参照してください。                                                        | 任意 (デフォルト: 'default')                                                        |
-| `incremental_predicates` | インクリメンタルマテリアライゼーションに適用される追加条件(`delete+insert`戦略にのみ適用)                                                                                                                                                                                                       | 任意                                                                             |
+| Option                   | Description                                                                                                                                                                                           | Required?                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `unique_key`             | 行を一意に識別するカラム名のタプル。ユニーク制約の詳細については[こちら](https://docs.getdbt.com/docs/build/incremental-models#defining-a-unique-key-optional)を参照してください。                                                                 | 必須。指定しない場合、変更された行がインクリメンタルテーブルに二重に追加されます。 |
+| `inserts_only`           | 同じ動作を行うインクリメンタル `strategy` である `append` の利用が推奨されるようになり、非推奨となりました。インクリメンタルモデルに対して `True` を設定すると、中間テーブルを作成せずにインクリメンタル更新が直接ターゲットテーブルに挿入されます。`inserts_only` が設定されている場合、`incremental_strategy` は無視されます。    | 任意 (デフォルト: `False`)                       |
+| `incremental_strategy`   | インクリメンタルマテリアライゼーションに使用する戦略。`delete+insert`、`append`、`insert_overwrite`、`microbatch` がサポートされています。戦略の詳細については[こちら](/integrations/dbt/features-and-configurations#incremental-model-strategies)を参照してください。 | 任意 (デフォルト: &#39;default&#39;)             |
+| `incremental_predicates` | インクリメンタルマテリアライゼーションに適用される追加条件（`delete+insert` 戦略にのみ適用されます）                                                                                                                                            | 任意                                        |
 
-#### インクリメンタルモデル戦略 {#incremental-model-strategies}
+#### インクリメンタルモデルの戦略
 
-`dbt-clickhouse`は3つのインクリメンタルモデル戦略をサポートしています。
+`dbt-clickhouse` は 3 つのインクリメンタルモデル戦略をサポートしています。
 
-##### デフォルト(レガシー)戦略 {#default-legacy-strategy}
+##### デフォルト（レガシー）戦略
 
-歴史的に、ClickHouseは非同期の「ミューテーション」という形で、更新と削除に対する限定的なサポートしか提供していませんでした。
-期待されるdbtの動作をエミュレートするため、
-dbt-clickhouseはデフォルトで、影響を受けていない(削除されていない、変更されていない)「古い」レコードすべてと、新規または更新されたレコードを含む新しい一時テーブルを作成し、
-その後、この一時テーブルを既存のインクリメンタルモデルリレーションとスワップまたは交換します。これは、操作が完了する前に問題が発生した場合に元のリレーションを保持する唯一の戦略です。ただし、元のテーブルの完全なコピーを伴うため、実行に非常にコストがかかり、遅くなる可能性があります。
+これまで ClickHouse は、非同期の「mutations」という形式による、限定的な更新および削除のサポートしか持っていませんでした。
+期待される dbt の挙動をエミュレートするために、
+dbt-clickhouse はデフォルトで、影響を受けない（削除されていない、変更されていない）「古い」
+レコードすべてと、新規または更新されたレコードを含む新しい一時テーブルを作成し、
+その後、この一時テーブルを既存のインクリメンタルモデルのリレーションとスワップ（入れ替え）します。これは、
+処理が完了する前に問題が発生した場合でも元のリレーションを保持する唯一の戦略ですが、
+元のテーブルの完全なコピーを伴うため、非常にコストが高く、実行が遅くなる可能性があります。
 
-##### Delete+Insert戦略 {#delete-insert-strategy}
-
-
-ClickHouseはバージョン22.8で実験的機能として「軽量削除」を追加しました。軽量削除はALTER TABLE ... DELETE操作よりも大幅に高速です。これは、ClickHouseのデータパーツの書き換えが不要なためです。インクリメンタル戦略`delete+insert`は軽量削除を利用してインクリメンタルマテリアライゼーションを実装し、「レガシー」戦略よりも大幅に優れたパフォーマンスを発揮します。ただし、この戦略を使用する際には以下の重要な注意事項があります:
-
-- 軽量削除は、設定`allow_experimental_lightweight_delete=1`を使用してClickHouseサーバーで有効にする必要があります。または、プロファイルで`use_lw_deletes=true`を設定する必要があります（これによりdbtセッションでその設定が有効になります）
-- 軽量削除は現在本番環境で使用可能ですが、23.3より前のClickHouseバージョンではパフォーマンスやその他の問題が発生する可能性があります。
-- この戦略は、影響を受けるテーブル/リレーションに対して直接操作を行います（中間テーブルや一時テーブルを作成しません）。そのため、操作中に問題が発生した場合、インクリメンタルモデルのデータが無効な状態になる可能性があります
-- 軽量削除を使用する場合、dbt-clickhouseは設定`allow_nondeterministic_mutations`を有効にします。非決定的なincremental_predicatesを使用する非常にまれなケースでは、更新/削除されたアイテムに対して競合状態が発生する可能性があります（ClickHouseログに関連するログメッセージが記録されます）。一貫した結果を保証するために、インクリメンタル述語には、インクリメンタルマテリアライゼーション中に変更されないデータに対するサブクエリのみを含める必要があります。
-
-##### マイクロバッチ戦略（dbt-core >= 1.9が必要） {#microbatch-strategy}
-
-インクリメンタル戦略`microbatch`は、バージョン1.9以降のdbt-coreの機能であり、大規模な時系列データ変換を効率的に処理するように設計されています。dbt-clickhouseでは、既存の`delete_insert`インクリメンタル戦略をベースに構築され、`event_time`と`batch_size`モデル設定に基づいて、インクリメントを事前定義された時系列バッチに分割します。
-
-大規模な変換の処理に加えて、マイクロバッチは以下の機能を提供します:
-
-- [失敗したバッチの再処理](https://docs.getdbt.com/docs/build/incremental-microbatch#retry)。
-- [並列バッチ実行](https://docs.getdbt.com/docs/build/parallel-batch-execution)の自動検出。
-- [バックフィル](https://docs.getdbt.com/docs/build/incremental-microbatch#backfills)における複雑な条件ロジックの必要性を排除。
-
-マイクロバッチの詳細な使用方法については、[公式ドキュメント](https://docs.getdbt.com/docs/build/incremental-microbatch)を参照してください。
-
-###### 利用可能なマイクロバッチ設定 {#available-microbatch-configurations}
-
-| オプション             | 説明                                                                                                                                                                                                                                                                                                                                | デフォルト値 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| event_time         | 「行がいつ発生したか」を示す列。マイクロバッチモデルおよびフィルタリングする必要がある直接の親に必須です。                                                                                                                                                                                                 |                |
-| begin              | マイクロバッチモデルの「時間の始まり」。これは、初期ビルドまたはフルリフレッシュビルドの開始点です。例えば、begin = '2023-10-01'で2024-10-01に実行される日次粒度のマイクロバッチモデルは、366バッチ（閏年です！）と「今日」のバッチを処理します。                                                       |                |
-| batch_size         | バッチの粒度。サポートされる値は`hour`、`day`、`month`、`year`です                                                                                                                                                                                                                                                   |                |
-| lookback           | 遅延到着レコードをキャプチャするために、最新のブックマークより前のXバッチを処理します。                                                                                                                                                                                                                                           | 1              |
-| concurrent_batches | バッチを同時に実行するためのdbtの自動検出をオーバーライドします。[concurrent batchesの設定](https://docs.getdbt.com/docs/build/incremental-microbatch#configure-concurrent_batches)の詳細をご覧ください。trueに設定するとバッチが並列に実行されます。falseに設定するとバッチが順次（1つずつ）実行されます。 |                |
-
-##### 追加戦略 {#append-strategy}
-
-この戦略は、以前のバージョンのdbt-clickhouseの`inserts_only`設定を置き換えます。このアプローチは、既存のリレーションに新しい行を単純に追加します。その結果、重複行は削除されず、一時テーブルや中間テーブルも作成されません。データ内で重複が許可されている場合、またはインクリメンタルクエリのWHERE句/フィルタによって除外される場合、これが最も高速なアプローチです。
-
-##### insert_overwrite戦略（実験的） {#insert-overwrite-strategy}
-
-> [重要]  
-> 現在、insert_overwrite戦略は分散マテリアライゼーションでは完全に機能しません。
-
-以下の手順を実行します:
+##### Delete+Insert 戦略
 
 
-1. インクリメンタルモデルリレーションと同じ構造を持つステージング（一時）テーブルを作成します：
-   `CREATE TABLE <staging> AS <target>`
-2. `SELECT`によって生成された新しいレコードのみをステージングテーブルに挿入します。
+ClickHouse はバージョン 22.8 で実験的機能として「lightweight deletes」を追加しました。Lightweight deletes は
+ALTER TABLE ... DELETE
+操作よりも大幅に高速であり、ClickHouse のデータパーツを書き換える必要がありません。インクリメンタル戦略 `delete+insert`
+は、lightweight deletes を活用して、
+「legacy」戦略よりもかなり高いパフォーマンスを発揮するインクリメンタルマテリアライゼーションを実装します。ただし、この戦略を
+使用する際には重要な注意点があります。
+
+- Lightweight deletes は、ClickHouse サーバー側で
+  `allow_experimental_lightweight_delete=1` を設定して有効化するか、
+  プロファイルで `use_lw_deletes=true` を設定する必要があります（これにより dbt セッションで該当設定が有効になります）
+- Lightweight deletes は現在プロダクション利用が可能な状態ですが、ClickHouse バージョン 23.3 より前では、
+  パフォーマンスやその他の問題が発生する可能性があります。
+- この戦略は、（中間テーブルや一時テーブルを作成せずに）影響を受けるテーブル／リレーションを直接操作するため、
+  処理中に問題が発生した場合、
+  インクリメンタルモデル内のデータが不正な状態になる可能性があります
+- Lightweight deletes を使用する場合、dbt-clickhouse は設定 `allow_nondeterministic_mutations` を有効にします。ごく
+  まれなケースとして、非決定的な incremental_predicates を使用すると、
+  更新／削除されるアイテムに対して競合状態が発生する可能性があります（および ClickHouse ログ内に関連するログメッセージが出力されます）。
+  一貫した結果を確保するためには、
+  インクリメンタル述語は、インクリメンタルマテリアライゼーション中に変更されないデータに対するサブクエリのみを含むようにする必要があります。
+
+##### Microbatch 戦略（dbt-core >= 1.9 が必要） {#microbatch-strategy}
+
+インクリメンタル戦略 `microbatch` は、バージョン 1.9 から dbt-core の機能として提供されており、大規模な
+時系列データ変換を効率的に処理するために設計されています。dbt-clickhouse では、既存の `delete_insert`
+インクリメンタル戦略の上に構築されており、`event_time` および
+`batch_size` モデル設定に基づいて、増分部分を事前定義された時系列バッチに分割します。
+
+大規模な変換を扱うことに加えて、microbatch は次の機能を提供します。
+- [失敗したバッチの再処理](https://docs.getdbt.com/docs/build/incremental-microbatch#retry) が可能。
+- [並列バッチ実行](https://docs.getdbt.com/docs/build/parallel-batch-execution) を自動検出。
+- [バックフィル](https://docs.getdbt.com/docs/build/incremental-microbatch#backfills) における複雑な条件分岐ロジックの排除。
+
+microbatch の詳細な使用方法については、[公式ドキュメント](https://docs.getdbt.com/docs/build/incremental-microbatch) を参照してください。
+
+###### 利用可能な Microbatch 設定 {#available-microbatch-configurations}
+
+| Option             | Description                                                                                                                                                                                                                                                                                                                                | Default if any |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
+| event_time         | 「その行がいつ発生したか」を示す列。microbatch モデルおよびフィルタリング対象となるすべての直接の親モデルに対して必須です。                                                                                                                                                                                                              |                |
+| begin              | microbatch モデルにおける「時間の始まり」です。これは、初回または full-refresh ビルドの開始ポイントになります。たとえば、日次粒度の microbatch モデルを 2024-10-01 に実行し、begin = '2023-10-01' とした場合、366 個のバッチ（うるう年のため）と「本日」のバッチが処理されます。                                                   |                |
+| batch_size         | バッチの粒度です。サポートされる値は `hour`、`day`、`month`、`year` です。                                                                                                                                                                                                                                                                 |                |
+| lookback           | 最新のブックマークより前の X 個のバッチを処理し、遅延到着レコードを取り込みます。                                                                                                                                                                                                                                                            | 1              |
+| concurrent_batches | バッチを同時に（同時刻に）実行するかどうかについて、dbt の自動検出を上書きします。[並列バッチの設定](https://docs.getdbt.com/docs/build/incremental-microbatch#configure-concurrent_batches) の詳細を参照してください。true に設定するとバッチが並列（同時）に実行されます。false はバッチを順次（1 つずつ）実行します。                     |                |
+
+##### Append 戦略 {#append-strategy}
+
+この戦略は、以前のバージョンの dbt-clickhouse における `inserts_only` 設定を置き換えるものです。このアプローチでは、
+新しい行を既存のリレーションに単純に追加（append）します。
+その結果、重複行は排除されず、一時テーブルや中間テーブルも使用されません。データ内の重複が許容される場合、またはインクリメンタルクエリの
+WHERE 句／フィルタで除外される場合には、最も高速なアプローチです。
+
+##### insert_overwrite 戦略（実験的） {#insert-overwrite-strategy}
+
+> [IMPORTANT]  
+> 現在、insert_overwrite 戦略は分散マテリアライゼーションでは完全には動作しません。
+
+次のステップを実行します。
+
+
+
+1. インクリメンタルモデルのリレーションと同じ構造を持つステージング（一時）テーブルを作成します:
+   `CREATE TABLE <staging> AS <target>`。
+2. `SELECT` によって生成された新規レコードのみをステージングテーブルに挿入します。
 3. ステージングテーブルに存在する新しいパーティションのみをターゲットテーブルに置き換えます。
 
-このアプローチには以下の利点があります：
+このアプローチには次の利点があります:
 
-- テーブル全体をコピーしないため、デフォルト戦略よりも高速です。
-- INSERT操作が正常に完了するまで元のテーブルを変更しないため、他の戦略よりも安全です：中間的な障害が発生した場合でも、元のテーブルは変更されません。
-- 「パーティションの不変性」というデータエンジニアリングのベストプラクティスを実装しています。これにより、インクリメンタルおよび並列データ処理、ロールバックなどが簡素化されます。
+* テーブル全体をコピーしないため、デフォルトの戦略より高速です。
+* INSERT 操作が正常に完了するまで元のテーブルを変更しないため、他の戦略より安全です。
+  中間で失敗した場合でも、元のテーブルは変更されません。
+* 「パーティション不変性」というデータエンジニアリングのベストプラクティスを実装しています。これにより、インクリメンタル処理や並列処理、ロールバックなどが簡素化されます。
 
-この戦略では、モデル設定で`partition_by`を設定する必要があります。モデル設定の他の戦略固有のパラメータはすべて無視されます。
+この戦略を利用するには、モデル設定で `partition_by` を指定している必要があります。モデル設定におけるその他の戦略固有の
+パラメータはすべて無視されます。
 
-### マテリアライゼーション：materialized_view（実験的機能） {#materialized-view}
+### Materialization: materialized&#95;view (Experimental)
 
-`materialized_view`マテリアライゼーションは、既存の（ソース）テーブルからの`SELECT`である必要があります。アダプターは、モデル名を持つターゲットテーブルと、`<model_name>_mv`という名前のClickHouse MATERIALIZED VIEWを作成します。PostgreSQLとは異なり、ClickHouseのマテリアライズドビューは「静的」ではなく（対応するREFRESH操作もありません）、「挿入トリガー」として機能し、ソーステーブルに挿入された行に対してビュー定義で定義された`SELECT`「変換」を使用して、ターゲットテーブルに新しい行を挿入します。この機能の使用方法に関する入門的な例については、[テストファイル](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py)を参照してください。
+`materialized_view` マテリアライゼーションは、既存の（ソース）テーブルを対象とした `SELECT` 文である必要があります。アダプターはモデル名を用いた
+ターゲットテーブルと、`<model_name>_mv` という名前の ClickHouse MATERIALIZED VIEW を作成します。PostgreSQL と異なり、ClickHouse のマテリアライズドビューは
+「静的」ではなく（対応する REFRESH 操作もありません）。代わりに「insert trigger」として機能し、
+ソーステーブルに行が挿入された際に、ビュー定義で指定された `SELECT` の
+「変換」を使用して新しい行をターゲットテーブルに挿入します。機能の入門的な例については [test file](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py)
+を参照してください。
 
-ClickHouseは、複数のマテリアライズドビューが同じターゲットテーブルにレコードを書き込む機能を提供します。dbt-clickhouseでこれをサポートするには、モデルファイルで`UNION`を構築し、各マテリアライズドビューのSQLを`--my_mv_name:begin`と`--my_mv_name:end`の形式のコメントで囲みます。
+ClickHouse では、複数のマテリアライズドビューから同じターゲットテーブルにレコードを書き込むことができます。
+dbt-clickhouse でこれをサポートするために、モデルファイル内で `UNION` を構成し、それぞれのマテリアライズドビューの SQL を
+`--my_mv_name:begin` および `--my_mv_name:end` という形式のコメントで囲むことができます。
 
-例えば、以下の例では、モデルの同じ宛先テーブルにデータを書き込む2つのマテリアライズドビューを構築します。マテリアライズドビューの名前は`<model_name>_mv1`と`<model_name>_mv2`の形式になります：
+例えば、次の例では、モデルの同じ宛先テーブルにデータを書き込む 2 つのマテリアライズドビューが作成されます。
+マテリアライズドビューの名前は `<model_name>_mv1` および `<model_name>_mv2` という形式になります:
 
 ```sql
 --mv1:begin
@@ -434,20 +482,20 @@ select a,b,c from {{ source('raw', 'table_2') }}
 --mv2:end
 ```
 
-> 重要！
+> 重要!
 >
-> 複数のマテリアライズドビュー（MV）を持つモデルを更新する際、特にMV名の1つを変更する場合、
-> dbt-clickhouseは古いMVを自動的に削除しません。代わりに、
-> 以下の警告が表示されます：
+> 複数のマテリアライズドビュー (MV) を持つモデルを更新する際、特に MV の名前の一つを変更した場合でも、
+> dbt-clickhouse は古い MV を自動的には削除しません。その代わりに、
+> 次の警告が表示されます:
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
-#### データキャッチアップ {#data-catch-up}
+#### データのキャッチアップ
 
-現在、マテリアライズドビュー（MV）を作成する際、MV自体が作成される前に、ターゲットテーブルに履歴データが最初に投入されます。
+現在、マテリアライズドビュー (MV) を作成する場合、MV 自体が作成される前に、ターゲットテーブルはまず履歴データで埋められます。
 
-つまり、dbt-clickhouseは最初にターゲットテーブルを作成し、MVに定義されたクエリに基づいて履歴データを事前にロードします。この手順の後にのみMVが作成されます。
+言い換えると、dbt-clickhouse は最初にターゲットテーブルを作成し、MV 用に定義されたクエリに基づいて履歴データをプリロードします。このステップの後になって初めて MV が作成されます。
 
-MV作成時に履歴データを事前にロードしたくない場合は、catch-up設定をFalseに設定することでこの動作を無効にできます：
+MV の作成時に履歴データをプリロードしたくない場合は、`catch-up` 設定を `False` にすることで、この動作を無効にできます:
 
 ```python
 {{config(
@@ -458,21 +506,22 @@ MV作成時に履歴データを事前にロードしたくない場合は、cat
 )}}
 ```
 
-#### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
+#### リフレッシュ可能なマテリアライズドビュー
 
-[リフレッシュ可能なマテリアライズドビュー](https://clickhouse.com/docs/en/materialized-view/refreshable-materialized-view)を使用するには、
-MVモデルで必要に応じて以下の設定を調整してください（これらの設定はすべてrefreshable設定オブジェクト内に設定する必要があります）：
+[Refreshable Materialized View](https://clickhouse.com/docs/en/materialized-view/refreshable-materialized-view) を利用するには、
+MV モデル内で必要に応じて次の設定を調整してください（これらの設定はすべて、
+refreshable 設定オブジェクト内に記述します）。
 
 
-| オプション                | 説明                                                                                                                                                              | 必須 | デフォルト値 |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------- |
-| refresh_interval      | インターバル句（必須）                                                                                                                                           | Yes      |               |
-| randomize             | ランダム化句。`RANDOMIZE FOR`の後に表示されます                                                                                                              |          |               |
-| append                | `True`に設定すると、各リフレッシュ時に既存の行を削除せずにテーブルに行を挿入します。挿入は通常のINSERT SELECTと同様にアトミックではありません。                  |          | False         |
-| depends_on            | リフレッシュ可能なマテリアライズドビューの依存関係リスト。依存関係は`{schema}.{view_name}`の形式で指定してください                                               |          |               |
-| depends_on_validation | `depends_on`で指定された依存関係の存在を検証するかどうか。依存関係にスキーマが含まれていない場合、検証は`default`スキーマで実行されます |          | False         |
+| Option                        | Description                                                                               | Required | Default Value |
+| ----------------------------- | ----------------------------------------------------------------------------------------- | -------- | ------------- |
+| refresh&#95;interval          | 必須となる interval 句です                                                                        | Yes      |               |
+| randomize                     | `RANDOMIZE FOR` の後に現れる randomization 句です                                                  |          |               |
+| append                        | `True` に設定すると、各リフレッシュ時に既存行を削除せずにテーブルへ行を挿入します。通常の `INSERT SELECT` と同様に、この挿入はアトミックではありません。  |          | False         |
+| depends&#95;on                | リフレッシュ可能なマテリアライズドビューの依存関係リストです。依存関係は `{schema}.{view_name}` の形式で指定してください                  |          |               |
+| depends&#95;on&#95;validation | `depends_on` で指定された依存関係の存在を検証するかどうかを指定します。依存関係にスキーマが含まれていない場合、検証はスキーマ `default` に対して行われます |          | False         |
 
-リフレッシュ可能なマテリアライズドビューの設定例：
+リフレッシュ可能なマテリアライズドビューの設定例:
 
 ```python
 {{
@@ -489,31 +538,32 @@ MVモデルで必要に応じて以下の設定を調整してください（こ
 }}
 ```
 
-#### 制限事項 {#limitations}
+#### 制限事項
 
-- ClickHouseで依存関係を持つリフレッシュ可能なマテリアライズドビュー（MV）を作成する際、作成時に指定された依存関係が存在しない場合でも、ClickHouseはエラーをスローしません。代わりに、リフレッシュ可能なMVは非アクティブ状態のままとなり、更新処理やリフレッシュを開始する前に依存関係が満たされるのを待機します。
-  この動作は設計によるものですが、必要な依存関係が速やかに対処されない場合、データの可用性に遅延が生じる可能性があります。ユーザーは、リフレッシュ可能なマテリアライズドビューを作成する前に、すべての依存関係が正しく定義され存在することを確認してください。
-- 現時点では、MVとその依存関係の間に実際の「dbtリンケージ」は存在しないため、作成順序は保証されません。
-- リフレッシュ可能機能は、同じターゲットモデルを指す複数のMVではテストされていません。
+* 依存関係を持つリフレッシュ可能なマテリアライズドビュー (MV) を ClickHouse で作成する際、指定した依存関係が作成時点で存在しなくても、ClickHouse はエラーをスローしません。代わりに、そのリフレッシュ可能な MV は非アクティブ状態のままとなり、依存関係が満たされるまで更新処理やリフレッシュを開始しません。この挙動は設計によるものですが、必要な依存関係への対応が遅れた場合、データの利用可能性に遅延が生じる可能性があります。ユーザーは、リフレッシュ可能なマテリアライズドビューを作成する前に、すべての依存関係が正しく定義され、実在していることを確認するよう推奨されます。
+* 現時点では、MV とその依存関係の間に実際の「dbt linkage」は存在しないため、作成順序は保証されません。
+* リフレッシュ可能機能は、同一のターゲットモデルを指す複数の MV に対してはテストされていません。
 
-### マテリアライゼーション：dictionary（実験的） {#materialization-dictionary}
+### マテリアライゼーション: dictionary（実験的）
 
-ClickHouseディクショナリのマテリアライゼーションを実装する方法の例については、https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/dictionary/test_dictionary.py のテストを参照してください
+ClickHouse の dictionary 用マテリアライゼーションの実装例については、
+[https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/dictionary/test&#95;dictionary.py](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/dictionary/test_dictionary.py)
+のテストを参照してください。
 
-### マテリアライゼーション：distributed_table（実験的） {#materialization-distributed-table}
+### マテリアライゼーション: distributed&#95;table（実験的）
 
-分散テーブルは以下の手順で作成されます：
+分散テーブルは次の手順で作成されます:
 
-1. 正しい構造を取得するためにSQLクエリで一時ビューを作成
-2. ビューに基づいて空のローカルテーブルを作成
-3. ローカルテーブルに基づいて分散テーブルを作成
-4. データは分散テーブルに挿入され、重複なくシャード間で分散されます
+1. 適切な構造を取得するための SQL クエリで一時ビューを作成する
+2. ビューに基づいて空のローカルテーブルを作成する
+3. ローカルテーブルに基づいて分散テーブルを作成する
+4. データを分散テーブルに挿入し、その結果として、データが重複することなくシャード間に分散される
 
-注意事項：
+注意事項:
 
-- dbt-clickhouseクエリは、下流のインクリメンタルマテリアライゼーション操作が正しく実行されることを保証するために、`insert_distributed_sync = 1`の設定を自動的に含むようになりました。これにより、一部の分散テーブルへの挿入が予想よりも遅く実行される可能性があります。
+* 下流のインクリメンタルマテリアライゼーション処理が正しく実行されるようにするため、dbt-clickhouse のクエリには自動的に `insert_distributed_sync = 1` 設定が含まれるようになりました。これにより、一部の分散テーブルへの INSERT が想定より遅くなる可能性があります。
 
-#### 分散テーブルモデルの例 {#distributed-table-model-example}
+#### 分散テーブルモデルの例
 
 ```sql
 {{
@@ -529,7 +579,7 @@ select id, created_at, item
 from {{ source('db', 'table') }}
 ```
 
-#### 生成されるマイグレーション {#distributed-table-generated-migrations}
+#### 生成されたマイグレーション
 
 ```sql
 CREATE TABLE db.table_local on cluster cluster (
@@ -549,18 +599,18 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
-### マテリアライゼーション：distributed_incremental（実験的） {#materialization-distributed-incremental}
+### materialization: distributed&#95;incremental (experimental)
 
-分散テーブルと同じ考え方に基づくインクリメンタルモデルで、主な課題はすべてのインクリメンタル戦略を正しく処理することです。
+分散テーブルと同様の考え方に基づくインクリメンタルモデルであり、主な難しさはすべてのインクリメンタル戦略を正しく処理することにあります。
 
-1. _追加戦略_は、分散テーブルにデータを挿入するだけです。
-2. _削除+挿入戦略_は、すべてのシャード上のすべてのデータを処理するために分散一時テーブルを作成します。
-3. _デフォルト（レガシー）戦略_は、同じ理由で分散一時テーブルと中間テーブルを作成します。
+1. *Append Strategy* は、分散テーブルにデータを挿入するだけです。
+2. *Delete+Insert Strategy* は、各シャード上のすべてのデータを扱うために分散一時テーブルを作成します。
+3. *Default (Legacy) Strategy* は、同じ理由で分散一時テーブルおよび中間テーブルを作成します。
 
-分散テーブルはデータを保持しないため、シャードテーブルのみが置き換えられます。
-分散テーブルは、full_refreshモードが有効になっている場合、またはテーブル構造が変更された可能性がある場合にのみ再読み込みされます。
+分散テーブルはデータを保持しないため、置き換えられるのはシャードテーブルのみです。
+分散テーブルが再読み込みされるのは、`full_refresh` モードが有効になっている場合か、テーブル構造が変更された可能性がある場合のみです。
 
-#### 分散インクリメンタルモデルの例 {#distributed-incremental-model-example}
+#### 分散インクリメンタルモデルの例
 
 
 ```sql
@@ -577,7 +627,7 @@ select id, created_at, item
 from {{ source('db', 'table') }}
 ```
 
-#### 生成されるマイグレーション {#distributed-incremental-generated-migrations}
+#### 自動生成されたマイグレーション
 
 ```sql
 CREATE TABLE db.table_local on cluster cluster (
@@ -596,65 +646,79 @@ CREATE TABLE db.table on cluster cluster (
     ENGINE = Distributed ('cluster', 'db', 'table_local', cityHash64(id));
 ```
 
-### スナップショット {#snapshot}
+### スナップショット
 
-dbtスナップショットを使用すると、可変モデルの経時的な変更を記録できます。これにより、モデルに対するポイントインタイムクエリが可能になり、アナリストはモデルの過去の状態を「遡って」確認できます。この機能はClickHouseコネクタでサポートされており、以下の構文を使用して設定します:
+dbt のスナップショット機能を使用すると、可変なモデルに対する変更を時間の経過とともに記録できます。これにより、アナリストはモデルに対して、モデルの以前の状態を「過去にさかのぼって」確認できる時点指定クエリを実行できます。この機能は ClickHouse コネクタでサポートされており、次の構文で設定します。
 
-`snapshots/<model_name>.sql`内の設定ブロック:
+`snapshots/<model_name>.sql` 内の config ブロック:
 
 ```python
 {{
    config(
-     schema = "<schema-name>",
-     unique_key = "<column-name>",
-     strategy = "<strategy>",
-     updated_at = "<updated-at-column-name>",
+     schema = "<スキーマ名>",
+     unique_key = "<カラム名>",
+     strategy = "<戦略>",
+     updated_at = "<更新日時カラム名>",
    )
 }}
 ```
 
-設定の詳細については、[スナップショット設定](https://docs.getdbt.com/docs/build/snapshots#snapshot-configs)のリファレンスページを参照してください。
+設定の詳細については、[snapshot configs](https://docs.getdbt.com/docs/build/snapshots#snapshot-configs) のリファレンスページを参照してください。
 
-### 契約と制約 {#contracts-and-constraints}
+### コントラクトと制約
 
-厳密なカラム型の契約のみがサポートされています。例えば、UInt32カラム型の契約は、モデルがUInt64または他の整数型を返す場合に失敗します。
-ClickHouseは、テーブル/モデル全体に対する`CHECK`制約_のみ_をサポートしています。主キー、外部キー、一意性制約、およびカラムレベルのCHECK制約はサポートされていません。
-(主キー/ORDER BYキーに関するClickHouseドキュメントを参照してください。)
+厳密なカラム型コントラクトのみがサポートされます。たとえば、UInt32 カラム型のコントラクトがある場合、モデルが
+UInt64 もしくはその他の整数型を返すと失敗します。
+ClickHouse は、テーブル／モデル全体に対する `CHECK` 制約*のみ*をサポートします。プライマリキー、外部キー、一意制約、
+およびカラムレベルの CHECK 制約はサポートされません。
+（プライマリキー／ORDER BY キーについては ClickHouse のドキュメントを参照してください。）
 
-### 追加のClickHouseマクロ {#additional-clickhouse-macros}
+### 追加の ClickHouse マクロ
 
-#### モデルマテリアライゼーションユーティリティマクロ {#model-materialization-utility-macros}
+#### モデルのマテリアライゼーション用ユーティリティマクロ
 
-以下のマクロは、ClickHouse固有のテーブルとビューの作成を容易にするために提供されています:
+ClickHouse 固有のテーブルおよびビューを作成しやすくするために、次のマクロが含まれています。
 
-- `engine_clause` -- `engine`モデル設定プロパティを使用してClickHouseテーブルエンジンを割り当てます。dbt-clickhouseはデフォルトで`MergeTree`エンジンを使用します。
-- `partition_cols` -- `partition_by`モデル設定プロパティを使用してClickHouseパーティションキーを割り当てます。デフォルトではパーティションキーは割り当てられません。
-- `order_cols` -- `order_by`モデル設定を使用してClickHouseのORDER BY/ソートキーを割り当てます。指定されていない場合、ClickHouseは空のtuple()を使用し、テーブルはソートされません。
-- `primary_key_clause` -- `primary_key`モデル設定プロパティを使用してClickHouse主キーを割り当てます。デフォルトでは、主キーが設定され、ClickHouseはORDER BY句を主キーとして使用します。
-- `on_cluster_clause` -- `cluster`プロファイルプロパティを使用して、特定のdbt操作に`ON CLUSTER`句を追加します:分散マテリアライゼーション、ビュー作成、データベース作成。
-- `ttl_config` -- `ttl`モデル設定プロパティを使用してClickHouseテーブルのTTL式を割り当てます。デフォルトではTTLは割り当てられません。
+* `engine_clause` -- `engine` モデル設定プロパティを使用して、ClickHouse のテーブルエンジンを割り当てます。dbt-clickhouse は
+  デフォルトで `MergeTree` エンジンを使用します。
+* `partition_cols` -- `partition_by` モデル設定プロパティを使用して、ClickHouse のパーティションキーを割り当てます。
+  デフォルトではパーティションキーは割り当てられません。
+* `order_cols` -- `order_by` モデル設定プロパティを使用して、ClickHouse の ORDER BY／ソートキーを割り当てます。指定されていない
+  場合、ClickHouse は空の tuple() を使用し、テーブルはソートされません。
+* `primary_key_clause` -- `primary_key` モデル設定プロパティを使用して、ClickHouse のプライマリキーを割り当てます。
+  デフォルトではプライマリキーが設定され、ClickHouse は ORDER BY 句をプライマリキーとして使用します。
+* `on_cluster_clause` -- `cluster` プロファイルプロパティを使用して、特定の dbt の操作（分散マテリアライゼーション、
+  ビュー作成、データベース作成）に `ON CLUSTER` 句を追加します。
+* `ttl_config` -- `ttl` モデル設定プロパティを使用して、ClickHouse のテーブル TTL 式を割り当てます。デフォルトでは
+  TTL は割り当てられません。
 
-#### s3Sourceヘルパーマクロ {#s3source-helper-macro}
+#### s3Source ヘルパーマクロ
 
-`s3source`マクロは、ClickHouseのS3テーブル関数を使用してS3から直接ClickHouseデータを選択するプロセスを簡素化します。このマクロは、名前付き設定ディクショナリ(ディクショナリ名は`s3`で終わる必要があります)からS3テーブル関数のパラメータを設定することで機能します。マクロはまずプロファイルの`vars`でディクショナリを検索し、次にモデル設定で検索します。ディクショナリには、S3テーブル関数のパラメータを設定するために使用される以下のキーのいずれかを含めることができます:
+`s3source` マクロは、ClickHouse の S3 テーブル関数を使用して S3 から直接 ClickHouse データを選択する処理を簡素化します。
+このマクロは、
+名前付き設定ディクショナリ（ディクショナリ名は必ず `s3` で終わる必要があります）から S3 テーブル関数のパラメータを
+設定することで動作します。マクロはまずプロファイルの `vars` 内でディクショナリを探し、その後モデル設定内を探します。
+ディクショナリには、S3 テーブル関数のパラメータを設定するために使用される、次のキーを含めることができます。
 
 
-| 引数名         | 説明                                                                                                                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| bucket                | バケットのベースURL(例: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi`)。プロトコルが指定されていない場合は`https://`が使用されます。                                        |
-| path                  | テーブルクエリに使用するS3パス(例: `/trips_4.gz`)。S3ワイルドカードに対応しています。                                                                                                  |
-| fmt                   | 参照されるS3オブジェクトに期待されるClickHouse入力形式(`TSV`や`CSVWithNames`など)。                                                                                        |
-| structure             | バケット内のデータのカラム構造。名前とデータ型のペアのリストとして指定します(例: `['id UInt32', 'date DateTime', 'value String']`)。指定されていない場合、ClickHouseが構造を推測します。 |
-| aws_access_key_id     | S3アクセスキーID。                                                                                                                                                                       |
-| aws_secret_access_key | S3シークレットキー。                                                                                                                                                                          |
-| role_arn              | S3オブジェクトに安全にアクセスするために使用するClickhouseAccess IAMロールのARN。詳細については、この[ドキュメント](https://clickhouse.com/docs/en/cloud/security/secure-s3)を参照してください。    |
-| compression           | S3オブジェクトで使用される圧縮方式。指定されていない場合、ClickHouseはファイル名に基づいて圧縮方式を判定します。                                                   |
+| Argument Name         | Description                                                                                                                                                                                  |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| bucket                | バケットのベース URL。例: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi`。プロトコルが指定されていない場合は `https://` が前提となります。                                         |
+| path                  | テーブルクエリで使用する S3 パス。例: `/trips_4.gz`。S3 のワイルドカードがサポートされています。                                                                                                  |
+| fmt                   | 参照される S3 オブジェクトに対して期待される ClickHouse の入力フォーマット（`TSV` や `CSVWithNames` など）。                                                                                      |
+| structure             | バケット内データのカラム構造。`['id UInt32', 'date DateTime', 'value String']` のような name/datatype ペアのリストで指定します。指定しない場合、ClickHouse が構造を推論します。 |
+| aws_access_key_id     | S3 のアクセスキー ID。                                                                                                                                                                       |
+| aws_secret_access_key | S3 のシークレットキー。                                                                                                                                                                      |
+| role_arn              | S3 オブジェクトへ安全にアクセスするために使用する ClickHouseAccess IAM ロールの ARN。詳細は、この[ドキュメント](https://clickhouse.com/docs/en/cloud/security/secure-s3)を参照してください。     |
+| compression           | S3 オブジェクトで使用されている圧縮方式。指定しない場合、ClickHouse はファイル名に基づいて圧縮方式の判定を試みます。                                                                          |
 
-このマクロの使用例については、[S3テストファイル](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/clickhouse/test_clickhouse_s3.py)を参照してください。
+このマクロの使用方法の例については、
+[S3 test file](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/clickhouse/test_clickhouse_s3.py)
+を参照してください。
 
-#### クロスデータベースマクロのサポート {#cross-database-macro-support}
+#### Cross database macro support {#cross-database-macro-support}
 
-dbt-clickhouseは、`dbt Core`に含まれるクロスデータベースマクロのほとんどをサポートしていますが、以下の例外があります:
+dbt-clickhouse は、`dbt Core` に現在含まれているクロスデータベースマクロのほとんどをサポートしていますが、以下は例外です。
 
-- `split_part` SQL関数は、ClickHouseではsplitByChar関数を使用して実装されています。この関数は分割区切り文字に定数文字列を使用する必要があるため、このマクロで使用される`delimeter`パラメータは、カラム名ではなく文字列として解釈されます
-- 同様に、ClickHouseの`replace` SQL関数は、`old_chars`および`new_chars`パラメータに定数文字列を必要とするため、このマクロを呼び出す際、これらのパラメータはカラム名ではなく文字列として解釈されます。
+* `split_part` SQL 関数は、ClickHouse では `splitByChar` 関数を使って実装されています。この関数では「分割」デリミタに定数文字列を使用する必要があるため、このマクロで使用される `delimeter` パラメータはカラム名ではなく文字列として解釈されます。
+* 同様に、ClickHouse の `replace` SQL 関数は `old_chars` と `new_chars` パラメータに定数文字列を指定する必要があるため、このマクロを呼び出す際にはそれらのパラメータはカラム名ではなく文字列として解釈されます。

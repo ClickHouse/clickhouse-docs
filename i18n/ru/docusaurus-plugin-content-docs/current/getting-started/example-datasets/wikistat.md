@@ -1,17 +1,17 @@
 ---
-description: 'Ознакомьтесь с набором данных WikiStat, содержащим 0,5 триллиона записей.'
+description: 'Изучите набор данных WikiStat, содержащий 0,5 триллиона записей.'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
 doc_type: 'guide'
-keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews']
+keywords: ['пример набора данных', 'wikipedia', 'руководство', 'пример данных', 'просмотры страниц']
 ---
 
 Набор данных содержит 0,5 триллиона записей.
 
-Посмотрите видео с FOSDEM 2023: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+См. видео с FOSDEM 2023: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-А также презентацию: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+И презентацию: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
 Источник данных: [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
@@ -34,7 +34,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
   links.txt | xargs -P3 wget --continue
 ```
 
-(это займёт около трёх дней)
+(это займёт около 3 дней)
 
 Создание таблицы:
 
@@ -68,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-Или загрузка очищенных данных:
+Или загрузите очищенные данные:
 
 ```sql
 INSERT INTO wikistat WITH

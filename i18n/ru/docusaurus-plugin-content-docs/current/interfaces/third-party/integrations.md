@@ -4,17 +4,17 @@ description: 'Документация по интеграции ClickHouse с �
 sidebar_label: 'Интеграции'
 sidebar_position: 27
 slug: /interfaces/third-party/integrations
-title: 'Библиотеки интеграции от сторонних разработчиков'
+title: 'Интеграционные библиотеки сторонних разработчиков'
 doc_type: 'reference'
 ---
 
 
 
-# Интеграционные библиотеки от сторонних разработчиков
+# Библиотеки интеграций от сторонних разработчиков
 
 :::warning Отказ от ответственности
-ClickHouse, Inc. **не** поддерживает указанные ниже инструменты и библиотеки и не проводила обширного тестирования для подтверждения их качества.
-Официальные интеграции см. на [странице интеграций](/integrations).
+ClickHouse, Inc. **не** поддерживает перечисленные ниже инструменты и библиотеки и не проводила их всестороннего тестирования для оценки качества.
+Список официальных интеграций см. на [странице интеграций](/integrations).
 :::
 
 
@@ -83,7 +83,7 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
   - [graphouse](https://github.com/ClickHouse/graphouse)
   - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
   - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если применимы правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
+  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) — оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если применимы правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
 - [Grafana](https://grafana.com/)
   - [clickhouse-grafana](https://github.com/Altinity/clickhouse-grafana)
 - [Prometheus](https://prometheus.io/)
@@ -111,7 +111,7 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
     </details>
 
 <details>
-<summary>Геоданные</summary>
+<summary>Геолокация</summary>
 
 - [MaxMind](https://dev.maxmind.com/geoip/)
   - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
@@ -121,7 +121,7 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
 <summary>AutoML</summary>
 
 - [MindsDB](https://mindsdb.com/)
-  - [MindsDB](https://github.com/mindsdb/mindsdb) - интегрируется с ClickHouse, предоставляя данные из ClickHouse широкому спектру моделей AI/ML.
+  - [MindsDB](https://github.com/mindsdb/mindsdb) — интегрируется с ClickHouse, предоставляя данные из ClickHouse широкому спектру моделей AI/ML.
     </details>
 
 
@@ -133,12 +133,14 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
 - [SQLAlchemy](https://www.sqlalchemy.org)
   - [sqlalchemy-clickhouse](https://github.com/cloudflare/sqlalchemy-clickhouse) (использует [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
 - [PyArrow/Pandas](https://pandas.pydata.org)
-  - [Ibis](https://github.com/ibis-project/ibis)
-    </details>
+  - [Ibis](https://github.com/ibis-project/ibis)  
+</details>
 
 <details>
-  <summary>PHP</summary>- [Doctrine](https://www.doctrine-project.org/) -
-  [dbal-clickhouse](https://packagist.org/packages/friendsofdoctrine/dbal-clickhouse)
+<summary>PHP</summary>
+  
+- [Doctrine](https://www.doctrine-project.org/)
+  - [dbal-clickhouse](https://packagist.org/packages/friendsofdoctrine/dbal-clickhouse)
 </details>
 
 <details>
@@ -146,21 +148,21 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
 
 - [dplyr](https://db.rstudio.com/dplyr/)
   - [RClickHouse](https://github.com/IMSMWU/RClickHouse) (использует [clickhouse-cpp](https://github.com/artpaul/clickhouse-cpp))
-    </details>
+</details>
 
 <details>
 <summary>Java</summary>
 
 - [Hadoop](http://hadoop.apache.org)
   - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader) (использует [JDBC](../../sql-reference/table-functions/jdbc.md))
-    </details>
-
+</details>
+  
 <details>
 <summary>Scala</summary>
 
 - [Akka](https://akka.io)
   - [clickhouse-scala-client](https://github.com/crobox/clickhouse-scala-client)
-    </details>
+</details>
 
 <details>
 <summary>C#</summary>
@@ -171,14 +173,14 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
   - [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
   - [ClickHouse.Net.Migrations](https://github.com/ilyabreev/ClickHouse.Net.Migrations)
   - [Linq To DB](https://github.com/linq2db/linq2db)
-    </details>
+</details>
 
 <details>
 <summary>Elixir</summary>
 
 - [Ecto](https://github.com/elixir-ecto/ecto)
   - [clickhouse_ecto](https://github.com/appodeal/clickhouse_ecto)
-    </details>
+</details>
 
 <details>
 <summary>Ruby</summary>
@@ -188,4 +190,4 @@ ClickHouse, Inc. **не** поддерживает указанные ниже �
   - [ActiveRecord](https://github.com/PNixx/clickhouse-activerecord)
 - [GraphQL](https://github.com/graphql)
   - [activecube-graphql](https://github.com/bitquery/activecube-graphql)
-    </details>
+</details>

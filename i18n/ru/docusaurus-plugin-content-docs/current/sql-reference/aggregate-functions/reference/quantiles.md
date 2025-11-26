@@ -16,16 +16,17 @@ doc_type: 'reference'
 
 Синтаксис: `quantiles(level1, level2, ...)(x)`
 
-Для всех функций квантилей существуют соответствующие функции quantiles: `quantiles`, `quantilesDeterministic`, `quantilesTiming`, `quantilesTimingWeighted`, `quantilesExact`, `quantilesExactWeighted`, `quantileExactWeightedInterpolated`, `quantileInterpolatedWeighted`, `quantilesTDigest`, `quantilesBFloat16`, `quantilesDD`. Эти функции вычисляют все квантили для указанных уровней за один проход и возвращают массив полученных значений.
+Для всех функций квантилей существуют соответствующие функции `quantiles`: `quantiles`, `quantilesDeterministic`, `quantilesTiming`, `quantilesTimingWeighted`, `quantilesExact`, `quantilesExactWeighted`, `quantileExactWeightedInterpolated`, `quantileInterpolatedWeighted`, `quantilesTDigest`, `quantilesBFloat16`, `quantilesDD`. Эти функции вычисляют все квантили перечисленных уровней за один проход и возвращают массив полученных значений.
 
 
-## quantilesExactExclusive {#quantilesexactexclusive}
 
-Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
+## quantilesExactExclusive
 
-Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Таким образом, функция потребляет `O(n)` памяти, где `n` — количество переданных значений. Однако при небольшом количестве значений функция работает очень эффективно.
+Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 
-Эта функция эквивалентна функции Excel [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba) ([тип R6](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
+Чтобы получить точное значение, все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет память объёмом `O(n)`, где `n` — количество переданных значений. Однако для небольшого количества значений функция работает очень эффективно.
+
+Эта функция эквивалентна функции Excel [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba) (тип R6, см. [описание](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
 
 Работает эффективнее с наборами уровней, чем [quantileExactExclusive](../../../sql-reference/aggregate-functions/reference/quantileexact.md#quantileexactexclusive).
 
@@ -37,21 +38,21 @@ quantilesExactExclusive(level1, level2, ...)(expr)
 
 **Аргументы**
 
-- `expr` — выражение над значениями столбца, возвращающее числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+* `expr` — Выражение над значениями столбца, результатом которого могут быть числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Параметры**
 
-- `level` — уровни квантилей. Возможные значения: (0, 1) — границы не включаются. [Float](../../../sql-reference/data-types/float.md).
+* `level` — Уровни квантилей. Возможные значения: (0, 1) — границы не включаются. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
-- [Массив](../../../sql-reference/data-types/array.md) квантилей указанных уровней.
+* [Array](../../../sql-reference/data-types/array.md) квантилей для указанных уровней.
 
 Тип значений массива:
 
-- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
-- [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
-- [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
+* [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
+* [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
+* [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
 **Пример**
 
@@ -72,11 +73,11 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesExactInclusive {#quantilesexactinclusive}
+## quantilesExactInclusive
 
-Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
+Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) для числовой последовательности данных.
 
-Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Таким образом, функция потребляет `O(n)` памяти, где `n` — количество переданных значений. Однако при небольшом количестве значений функция работает очень эффективно.
+Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция использует `O(n)` памяти, где `n` — количество переданных значений. Однако при небольшом количестве значений функция работает очень эффективно.
 
 Эта функция эквивалентна функции Excel [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed) ([тип R7](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
 
@@ -90,21 +91,21 @@ quantilesExactInclusive(level1, level2, ...)(expr)
 
 **Аргументы**
 
-- `expr` — выражение над значениями столбца, возвращающее числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+* `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Параметры**
 
-- `level` — уровни квантилей. Возможные значения: [0, 1] — границы включены. [Float](../../../sql-reference/data-types/float.md).
+* `level` — Уровни квантилей. Возможные значения: [0, 1] — границы включены. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
-- [Массив](../../../sql-reference/data-types/array.md) квантилей указанных уровней.
+* [Array](../../../sql-reference/data-types/array.md) квантилей заданных уровней.
 
 Тип значений массива:
 
-- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
-- [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
-- [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
+* [Float64](../../../sql-reference/data-types/float.md) для числового типа данных во входном выражении.
+* [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
+* [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
 **Пример**
 
@@ -125,9 +126,9 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesGK {#quantilesgk}
+## quantilesGK
 
-`quantilesGK` работает аналогично `quantileGK`, но позволяет одновременно вычислять квантили на разных уровнях и возвращает массив.
+`quantilesGK` работает аналогично функции `quantileGK`, но позволяет вычислять квантили для нескольких уровней одновременно и возвращает массив.
 
 **Синтаксис**
 
@@ -137,13 +138,13 @@ quantilesGK(accuracy, level1, level2, ...)(expr)
 
 **Возвращаемое значение**
 
-- [Массив](../../../sql-reference/data-types/array.md) квантилей указанных уровней.
+* [Array](../../../sql-reference/data-types/array.md) квантилей заданных уровней.
 
 Тип значений массива:
 
-- [Float64](../../../sql-reference/data-types/float.md) для числовых типов данных.
-- [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
-- [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
+* [Float64](../../../sql-reference/data-types/float.md) для числового типа данных на входе.
+* [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
+* [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
 **Пример**
 

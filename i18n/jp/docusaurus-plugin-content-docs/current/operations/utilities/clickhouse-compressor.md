@@ -1,33 +1,33 @@
 ---
-description: "ClickHouse Compressorのドキュメント"
+description: 'ClickHouse Compressor のドキュメント'
 slug: /operations/utilities/clickhouse-compressor
-title: "clickhouse-compressor"
-doc_type: "reference"
+title: 'clickhouse-compressor'
+doc_type: 'reference'
 ---
 
-データの圧縮と解凍を行うシンプルなプログラムです。
+データの圧縮および解凍を行うシンプルなプログラムです。
 
-### 例 {#examples}
+### 例
 
-LZ4でデータを圧縮:
+LZ4 でデータを圧縮します：
 
 ```bash
 $ ./clickhouse-compressor < input_file > output_file
 ```
 
-LZ4形式のデータを解凍:
+LZ4 形式のデータを展開します:
 
 ```bash
 $ ./clickhouse-compressor --decompress < input_file > output_file
 ```
 
-ZSTDレベル5でデータを圧縮:
+ZSTD のレベル 5 でデータを圧縮します:
 
 ```bash
 $ ./clickhouse-compressor --codec 'ZSTD(5)' < input_file > output_file
 ```
 
-4バイトのDeltaとZSTDレベル10でデータを圧縮:
+4 バイトのデルタ圧縮と ZSTD レベル 10 を用いてデータを圧縮します。
 
 ```bash
 $ ./clickhouse-compressor --codec 'Delta(4)' --codec 'ZSTD(10)' < input_file > output_file

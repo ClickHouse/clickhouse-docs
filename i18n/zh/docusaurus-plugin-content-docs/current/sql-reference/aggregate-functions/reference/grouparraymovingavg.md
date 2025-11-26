@@ -8,25 +8,25 @@ doc_type: 'reference'
 
 # groupArrayMovingAvg
 
-计算输入值的滑动平均值。
+计算输入值的移动平均。
 
 ```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-该函数可以接收窗口大小作为参数。如果未指定，则窗口大小默认为列中的行数。
+该函数可以将窗口大小作为参数传入。如果未指定窗口大小，函数会将其设为等于该列中的行数。
 
 **参数**
 
-* `numbers_for_summing` — 计算结果为数值数据类型的[表达式](/sql-reference/syntax#expressions)。
+* `numbers_for_summing` — 结果为数值数据类型的[表达式](/sql-reference/syntax#expressions)。
 * `window_size` — 计算窗口的大小。
 
 **返回值**
 
-* 与输入数据具有相同大小和类型的数组。
+* 与输入数据大小和类型相同的数组。
 
-该函数使用[向零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)规则。它会截断对于结果数据类型而言无意义的小数位。
+该函数使用[向零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)，会截断对于结果数据类型而言无意义的小数位。
 
 **示例**
 

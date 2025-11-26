@@ -1,9 +1,9 @@
 ---
-description: '包含来自 LAION 5B 数据集的一亿个向量的数据集'
+description: '包含 1 亿个向量的 LAION 5B 数据集'
 sidebar_label: 'LAION 5B 数据集'
 slug: /getting-started/example-datasets/laion-5b-dataset
 title: 'LAION 5B 数据集'
-keywords: ['语义搜索', '向量相似度', '近似最近邻', '向量嵌入']
+keywords: ['语义搜索', '向量相似性', '近似最近邻', '嵌入表示']
 doc_type: 'guide'
 ---
 
@@ -11,20 +11,26 @@ import search_results_image from '@site/static/images/getting-started/example-da
 import Image from '@theme/IdealImage';
 
 
-## 简介 {#introduction}
+## 介绍 {#introduction}
 
-[LAION 5b 数据集](https://laion.ai/blog/laion-5b/)包含 58.5 亿个图像-文本嵌入向量及相关的图像元数据。这些嵌入向量使用 `Open AI CLIP` 模型 [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) 生成。每个嵌入向量的维度为 `768`。
+[LAION 5b 数据集](https://laion.ai/blog/laion-5b/) 包含 58.5 亿条图文嵌入向量以及
+相关的图像元数据。嵌入向量是使用 `OpenAI CLIP` 模型 [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) 生成的，
+每个嵌入向量的维度为 `768`。
 
-该数据集可用于大规模实际应用场景中向量搜索应用的模型设计、容量规划和性能评估。该数据集支持文本到图像搜索和图像到图像搜索两种应用场景。
+该数据集可用于在真实的大规模向量搜索应用中，对设计、容量规划和性能等方面进行建模，
+既适用于文本到图像搜索，也适用于图像到图像搜索。
+
 
 
 ## 数据集详情 {#dataset-details}
 
-完整的数据集以 `npy` 和 `Parquet` 文件混合形式提供,可在 [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/) 获取。
+完整数据集以 `npy` 和 `Parquet` 文件混合形式提供，托管在 [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)。
 
-ClickHouse 在 `S3` 存储桶中提供了包含 1 亿个向量的子集。该 `S3` 存储桶包含 10 个 `Parquet` 文件,每个 `Parquet` 文件包含 1000 万行数据。
+ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
+该 `S3` 存储桶包含 10 个 `Parquet` 文件，每个 `Parquet` 文件包含 1000 万行数据。
 
-我们建议用户首先执行容量规划,通过参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)来估算此数据集的存储和内存需求。
+我们建议用户首先进行容量评估，并参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)来估算该数据集的存储和内存需求。
+
 
 
 ## 步骤 {#steps}
@@ -33,7 +39,7 @@ ClickHouse 在 `S3` 存储桶中提供了包含 1 亿个向量的子集。该 `S
 
 ### 创建表 {#create-table}
 
-创建 `laion_5b_100m` 表来存储嵌入向量及其相关属性:
+创建 `laion_5b_100m` 表来存储嵌入向量及其关联属性：
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -57,11 +63,11 @@ CREATE TABLE laion_5b_100m
 ) ENGINE = MergeTree ORDER BY (id)
 ```
 
-`id` 是一个自增整数。其他属性可用于谓词条件,以实现向量相似度搜索与后过滤/预过滤的结合,详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)
+`id` 是一个自增整数。其他属性可用于谓词条件中,以实现向量相似性搜索与后过滤/预过滤的结合,详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)
 
 ### 加载数据 {#load-table}
 
-要从所有 `Parquet` 文件加载数据集,请运行以下 SQL 语句:
+要从所有 `Parquet` 文件加载数据集,请运行以下 SQL 语句：
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
@@ -69,7 +75,7 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 
 将 1 亿行数据加载到表中需要几分钟时间。
 
-或者,也可以运行单独的 SQL 语句来加载指定数量的文件/行。
+或者,可以运行单独的 SQL 语句来加载指定数量的文件/行。
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -77,9 +83,9 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 ⋮
 ```
 
-### 运行暴力向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
+### 运行暴力向量相似性搜索 {#run-a-brute-force-vector-similarity-search}
 
-KNN(k-最近邻)搜索或暴力搜索是指计算数据集中每个向量到搜索嵌入向量的距离,然后对距离进行排序以获得最近邻。我们可以使用数据集本身的某个向量作为搜索向量。例如:
+KNN（k - 最近邻）搜索或暴力搜索是指计算数据集中每个向量到搜索嵌入向量的距离,然后对距离进行排序以获得最近邻。我们可以使用数据集本身的某个向量作为搜索向量。例如：
 
 ```sql title="查询"
 SELECT id, url
@@ -87,7 +93,7 @@ FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
-id = 9999 的行中的向量是一张熟食店餐厅图像的嵌入向量。
+id = 9999 的行中的向量是一张熟食店图像的嵌入向量。
 ```
 
 
@@ -117,16 +123,16 @@ id = 9999 的行中的向量是一张熟食店餐厅图像的嵌入向量。
 ```
 
 #highlight-next-line
-20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
+20 行结果。耗时：3.968 秒。已处理 1.0038 亿行，320.81 GB（25.30 百万行/秒，80.84 GB/秒）。
 
 ````
 
-记录查询延迟，以便与使用向量索引的 ANN 查询延迟进行对比。
-对于 1 亿行数据，上述未使用向量索引的查询可能需要几秒钟到几分钟才能完成。
+记录查询延迟,以便与 ANN(使用向量索引)的查询延迟进行比较。
+对于 1 亿行数据,上述未使用向量索引的查询可能需要几秒钟到几分钟才能完成。
 
-### 构建向量相似度索引 {#build-vector-similarity-index}
+### 构建向量相似度索引                                 
 
-运行以下 SQL 语句在 `laion_5b_100m` 表的 `vector` 列上定义并构建向量相似度索引:
+运行以下 SQL 在 `laion_5b_100m` 表的 `vector` 列上定义并构建向量相似度索引:
 
 ```sql
 ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
@@ -134,18 +140,18 @@ ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('
 ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ````
 
-索引创建和搜索的参数及性能考量在[文档](../../engines/table-engines/mergetree-family/annindexes.md)中有详细说明。
-上述语句分别为 HNSW 超参数 `M` 和 `ef_construction` 使用了 64 和 512 的值。
-用户需要通过评估索引构建时间和搜索结果质量来仔细选择这些参数的最优值。
+有关索引创建和搜索的参数及性能注意事项，详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
+上述语句将 HNSW 超参数 `M` 和 `ef_construction` 分别设置为 64 和 512。
+用户需要通过评估索引构建时间以及在所选参数值下的搜索结果质量，慎重选择这些参数的最优取值。
 
-对于完整的 1 亿数据集,构建和保存索引可能需要几个小时,具体取决于可用的 CPU 核心数和存储带宽。
+针对完整的一亿（100,000,000）规模数据集，构建并保存索引可能需要数小时，具体取决于可用 CPU 核心数量和存储带宽。
 
-### 执行 ANN 搜索 {#perform-ann-search}
+### 执行 ANN 搜索
 
-向量相似度索引构建完成后,向量搜索查询将自动使用该索引:
+一旦向量相似度索引构建完成，向量搜索查询将自动使用该索引：
 
 ```sql title="Query"
-SELECT id, url
+SELECT id, url 
 FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
@@ -154,13 +160,13 @@ LIMIT 20
 
 首次将向量索引加载到内存中可能需要几秒钟到几分钟。
 
-### 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
+### 为搜索查询生成嵌入
 
 `LAION 5b` 数据集的嵌入向量是使用 `OpenAI CLIP` 模型 `ViT-L/14` 生成的。
 
-下面提供了一个示例 Python 脚本,演示如何使用 `CLIP` API 以编程方式生成嵌入向量。然后将搜索嵌入向量作为参数传递给 `SELECT` 查询中的 [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 函数。
+下面提供了一个示例 Python 脚本，用于演示如何通过 `CLIP` API 以编程方式生成嵌入向量。然后在 `SELECT` 查询中，将搜索查询的嵌入向量作为参数传递给 [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 函数。
 
-要安装 `clip` 包,请参考 [OpenAI GitHub 仓库](https://github.com/openai/clip)。
+要安装 `clip` 包，请参考 [OpenAI GitHub 仓库](https://github.com/openai/clip)。
 
 ```python
 import torch
@@ -171,7 +177,6 @@ import clickhouse_connect
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-L/14", device=device)
-
 ```
 
 
@@ -198,7 +203,7 @@ np_arr = text_features.detach().cpu().numpy()
 
 ```
 
-上述搜索结果如下所示:
+上述搜索结果如下所示：
 
 <Image img={search_results_image} alt="向量相似度搜索结果" size="md"/>
 

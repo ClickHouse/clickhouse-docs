@@ -1,5 +1,5 @@
 ---
-description: '该函数在区间 `[min_x, max_x]` 上，根据取值 `x` 及其出现频率 `y` 绘制频率直方图。'
+description: '该函数在区间 `[min_x, max_x]` 内，为取值 `x` 及其出现频率 `y` 绘制频率直方图。'
 sidebar_label: 'sparkbar'
 sidebar_position: 187
 slug: /sql-reference/aggregate-functions/reference/sparkbar
@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 # sparkbar
 
-该函数在区间 `[min_x, max_x]` 上，为取值 `x` 及其重复次数（频率）`y` 绘制频率直方图。
-落入同一桶中的所有 `x` 的重复次数会取平均值，因此数据应当事先聚合。
-负的重复次数会被忽略。
+该函数在区间 `[min_x, max_x]` 内，为取值 `x` 及其重复次数 `y` 绘制频率直方图。
+所有落入同一桶中的 `x` 的重复次数会被取平均值，因此数据应当预先聚合。
+负值的重复次数会被忽略。
 
-如果未指定区间，则最小的 `x` 用作区间起点，最大的 `x` 用作区间终点。
+如果未指定区间，则使用最小的 `x` 作为区间起点，最大的 `x` 作为区间终点。
 否则，区间之外的值会被忽略。
 
 **语法**
@@ -24,14 +24,14 @@ sparkbar(buckets[, min_x, max_x])(x, y)
 
 **参数**
 
-* `buckets` — 分段数量。类型：[Integer](../../../sql-reference/data-types/int-uint.md)。
+* `buckets` — 段（区间）的数量。类型：[Integer](../../../sql-reference/data-types/int-uint.md)。
 * `min_x` — 区间起点。可选参数。
 * `max_x` — 区间终点。可选参数。
 
-**参数说明**
+**参数（Arguments）**
 
-* `x` — 数值字段。
-* `y` — 对应频数字段。
+* `x` — 包含数值的字段。
+* `y` — 包含数值出现频率的字段。
 
 **返回值**
 

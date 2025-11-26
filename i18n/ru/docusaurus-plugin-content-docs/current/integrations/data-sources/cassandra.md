@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # Интеграция с Cassandra
 
-Интеграция с Cassandra возможна с помощью словаря. Дополнительные сведения см. [здесь](/sql-reference/dictionaries#cassandra).
+Интеграцию с Cassandra можно настроить с помощью словаря. Подробности [здесь](/sql-reference/dictionaries#cassandra).

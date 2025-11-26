@@ -1,9 +1,9 @@
 ---
-description: 'ALTER DATABASE ... MODIFY COMMENT ステートメントに関するドキュメント。これらのステートメントを使用すると、データベースコメントの追加、変更、削除を行えます。'
+description: 'ALTER DATABASE ... MODIFY COMMENT 文に関するドキュメントで、データベースコメントの追加、変更、削除を行うことができます。'
 slug: /sql-reference/statements/alter/database-comment
 sidebar_position: 51
 sidebar_label: 'ALTER DATABASE ... MODIFY COMMENT'
-title: 'ALTER DATABASE ... MODIFY COMMENT ステートメント'
+title: 'ALTER DATABASE ... MODIFY COMMENT 文'
 keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
@@ -12,58 +12,58 @@ doc_type: 'reference'
 
 # ALTER DATABASE ... MODIFY COMMENT
 
-データベースのコメントを、設定済みかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
+データベースのコメントを、あらかじめ設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 
-## 例 {#examples}
+## 例
 
-コメント付きで`DATABASE`を作成するには:
+コメント付きの `DATABASE` を作成するには：
 
 ```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時データベース';
 ```
 
-コメントを変更するには:
+コメントを編集するには:
 
 ```sql
-ALTER DATABASE database_with_comment
-MODIFY COMMENT 'new comment on a database';
+ALTER DATABASE database_with_comment 
+MODIFY COMMENT 'データベースに関する新しいコメント';
 ```
 
-変更されたコメントを表示するには:
+変更後のコメントを表示するには：
 
 ```sql
-SELECT comment
-FROM system.databases
+SELECT comment 
+FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
 ```text
 ┌─comment─────────────────┐
-│ new comment on database │
+│ データベースに関する新しいコメント │
 └─────────────────────────┘
 ```
 
-データベースのコメントを削除するには:
+データベースのコメントを削除するには：
 
 ```sql
-ALTER DATABASE database_with_comment
+ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
 
-コメントが削除されたことを確認するには:
+コメントが削除されたことを確認するには：
 
 ```sql title="Query"
-SELECT comment
-FROM system.databases
+SELECT comment 
+FROM system.databases 
 WHERE  name = 'database_with_comment';
 ```
 

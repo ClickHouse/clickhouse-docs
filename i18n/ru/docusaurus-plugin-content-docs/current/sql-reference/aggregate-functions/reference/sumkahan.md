@@ -1,12 +1,12 @@
 ---
-description: 'Вычисляет сумму чисел с использованием компенсированного алгоритма суммирования Кэхэна (Kahan)'
+description: 'Вычисляет сумму чисел по алгоритму компенсированного суммирования Кэхэна'
 sidebar_position: 197
 slug: /sql-reference/aggregate-functions/reference/sumkahan
 title: 'sumKahan'
 doc_type: 'reference'
 ---
 
-Вычисляет сумму чисел с использованием [компенсированного алгоритма суммирования Кэхэна](https://en.wikipedia.org/wiki/Kahan_summation_algorithm).
+Вычисляет сумму чисел по [алгоритму компенсированного суммирования Кэхэна](https://en.wikipedia.org/wiki/Kahan_summation_algorithm).
 Работает медленнее, чем функция [sum](./sum.md).
 Компенсация применяется только для типов [Float](../../../sql-reference/data-types/float.md).
 
@@ -22,7 +22,7 @@ sumKahan(x)
 
 **Возвращаемое значение**
 
-* сумма чисел; тип [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md) зависит от типов входных аргументов
+* сумма чисел; тип [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md) зависит от типа входных аргументов.
 
 **Пример**
 

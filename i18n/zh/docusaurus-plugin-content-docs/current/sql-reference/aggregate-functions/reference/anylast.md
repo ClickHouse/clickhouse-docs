@@ -1,5 +1,5 @@
 ---
-description: '选择某列最后出现的值。'
+description: '选取列中最后一次出现的值。'
 sidebar_position: 105
 slug: /sql-reference/aggregate-functions/reference/anylast
 title: 'anyLast'
@@ -8,11 +8,11 @@ doc_type: 'reference'
 
 # anyLast
 
-选择某列中最后遇到的值。
+选择列中最后遇到的值。
 
 :::warning
 由于查询可以以任意顺序执行，此函数的结果是不确定的。
-如果您需要任意但确定（可重复）的结果，请使用函数 [`min`](../reference/min.md) 或 [`max`](../reference/max.md)。
+如果您需要任意但确定的结果，请使用函数 [`min`](../reference/min.md) 或 [`max`](../reference/max.md)。
 :::
 
 默认情况下，该函数从不返回 NULL，即会忽略输入列中的 NULL 值。
@@ -39,7 +39,7 @@ anyLast(column) [RESPECT NULLS]
 
 **返回值**
 
-* 所遇到的最后一个值。
+* 最后遇到的值。
 
 **示例**
 

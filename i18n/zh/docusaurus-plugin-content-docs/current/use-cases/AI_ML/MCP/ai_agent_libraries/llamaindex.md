@@ -12,31 +12,30 @@ doc_type: 'guide'
 
 
 
-# 如何使用 ClickHouse MCP Server 构建 LlamaIndex AI 智能体
+# 如何使用 ClickHouse MCP Server 构建 LlamaIndex AI Agent
 
-在本指南中，你将学习如何构建一个 [LlamaIndex](https://docs.llamaindex.ai) AI 智能体，
-通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+在本指南中，你将学习如何构建一个 [LlamaIndex](https://docs.llamaindex.ai) AI Agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
-:::note 示例笔记本
-该示例可在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb) 中以笔记本形式查看。
+:::note 示例 Notebook
+该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb)中以 Notebook 形式查看。
 :::
 
 
 
-## 前提条件 {#prerequisites}
+## 前置条件 {#prerequisites}
 
-- 需要在系统上安装 Python。
-- 需要在系统上安装 `pip`。
-- 需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥。
+- 您需要在系统上安装 Python。
+- 您需要在系统上安装 `pip`。
+- 您需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥。
 
 您可以通过 Python REPL 或脚本运行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
 
-## 安装依赖库 {#install-libraries}
+## 安装依赖库
 
-运行以下命令安装所需的依赖库:
+运行以下命令来安装所需的依赖库：
 
 ```python
 pip install -q --upgrade pip
@@ -44,9 +43,9 @@ pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-i
 ```
 
 
-## 设置凭据 {#setup-credentials}
+## 设置凭据
 
-接下来,您需要提供 Anthropic API 密钥:
+接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os, getpass
@@ -54,19 +53,19 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Enter Anthropic API Key: ········
+输入 Anthropic API 密钥：········
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥,并希望使用其他 LLM 提供商,
-可以在 [LlamaIndex "LLMs" 文档](https://docs.llamaindex.ai/en/stable/examples/) 中查看设置凭据的相关说明
+如果你没有 Anthropic API 密钥，并且想要使用其他 LLM 提供商，
+可以在 [LlamaIndex「LLMs」文档](https://docs.llamaindex.ai/en/stable/examples/) 中找到配置凭据的说明。
 :::
 
 
-## 初始化 MCP 服务器 {#initialize-mcp-and-agent}
+## 初始化 MCP Server
 
-现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 演练场。
-您需要将这些 Python 函数转换为 Llama Index 工具:
+现在将 ClickHouse MCP Server 配置为指向 ClickHouse SQL playground。
+你需要将这些 Python 函数转换为 LlamaIndex 工具：
 
 ```python
 from llama_index.tools.mcp import BasicMCPClient, McpToolSpec
@@ -91,7 +90,6 @@ mcp_client = BasicMCPClient(
 mcp_tool_spec = McpToolSpec(
     client=mcp_client,
 )
-
 ```
 
 
@@ -100,7 +98,7 @@ tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
 ````
 ## 创建代理 {#create-agent}
 
-现在您可以创建一个能够访问这些工具的代理了。将单次运行中工具调用的最大次数设置为 10。您可以根据需要修改此参数:
+现在可以创建一个能够访问这些工具的代理。将单次运行中工具调用的最大次数设置为 10。如需要,可以修改此参数:
 
 ```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
@@ -113,9 +111,9 @@ agent = AgentRunner(agent_worker)
 ````
 
 
-## 初始化 LLM {#initialize-llm}
+## 初始化 LLM
 
-使用以下代码初始化 Claude Sonnet 4.0 模型:
+使用以下代码初始化 Claude Sonnet 4.0 模型：
 
 ```python
 from llama_index.llms.anthropic import Anthropic
@@ -133,7 +131,7 @@ response = agent.query("What's the most popular repository?")
 
 返回的响应内容较长,因此在下面的示例响应中已被截断:
 
-```response title="Response"
+```response title="响应"
 Added user message to memory: What's the most popular repository?
 === LLM Response ===
 I'll help you find the most popular repository. Let me first explore the available databases and tables to understand the data structure.

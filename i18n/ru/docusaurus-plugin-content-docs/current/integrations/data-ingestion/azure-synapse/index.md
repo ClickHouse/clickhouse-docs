@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Azure Synapse'
 slug: /integrations/azure-synapse
-description: 'Введение в Azure Synapse и ClickHouse'
+description: 'Введение в Azure Synapse с ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Интеграция Azure Synapse с ClickHouse'
 doc_type: 'guide'
@@ -18,45 +18,43 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) — это интегрированный аналитический сервис, который объединяет большие данные, data science и хранилища данных, обеспечивая быстрый анализ больших объёмов данных.
+[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) — это интегрированный аналитический сервис, который объединяет большие данные, data science и хранилища данных, обеспечивая быструю аналитику в крупном масштабе.
 В Synapse пулы Spark предоставляют масштабируемые по запросу кластеры [Apache Spark](https://spark.apache.org), которые позволяют пользователям выполнять сложные преобразования данных, задачи машинного обучения и интеграции с внешними системами.
 
-В этой статье показано, как интегрировать [коннектор ClickHouse для Spark](/integrations/apache-spark/spark-native-connector) при работе с Apache Spark в Azure Synapse.
+В этой статье вы узнаете, как интегрировать [коннектор ClickHouse Spark](/integrations/apache-spark/spark-native-connector) при работе с Apache Spark в Azure Synapse.
 
 <TOCInline toc={toc}></TOCInline>
 
 
 
 ## Добавление зависимостей коннектора {#add-connector-dependencies}
-
 Azure Synapse поддерживает три уровня [управления пакетами](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries):
-
 1. Пакеты по умолчанию
 2. Уровень пула Spark
-3. Уровень сеанса
+3. Уровень сессии
 
-<br />
+<br/>
 
-Следуйте [руководству по управлению библиотеками для пулов Apache Spark](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages) и добавьте следующие необходимые зависимости в ваше приложение Spark:
+Следуйте руководству [Manage libraries for Apache Spark pools](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages) и добавьте следующие необходимые зависимости в ваше приложение Spark:
+- `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` — [официальный репозиторий Maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
+- `clickhouse-jdbc-{java_client_version}-all.jar` — [официальный репозиторий Maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
-- `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [официальный репозиторий Maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
-- `clickhouse-jdbc-{java_client_version}-all.jar` - [официальный репозиторий Maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
-
-Ознакомьтесь с документацией [Матрица совместимости коннектора Spark](/integrations/apache-spark/spark-native-connector#compatibility-matrix), чтобы определить, какие версии подходят для ваших задач.
+Ознакомьтесь с документацией [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix), чтобы подобрать версии, соответствующие вашим требованиям.
 
 
-## Добавление ClickHouse в качестве каталога {#add-clickhouse-as-catalog}
 
-Существует несколько способов добавления конфигураций Spark в вашу сессию:
+## Добавить ClickHouse как каталог
 
-- Пользовательский файл конфигурации для загрузки с сессией
-- Добавление конфигураций через пользовательский интерфейс Azure Synapse
-- Добавление конфигураций в вашем блокноте Synapse
+Существует несколько способов добавить конфигурации Spark в ваш сеанс:
 
-Следуйте инструкциям в разделе [Manage Apache Spark configuration](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)
-и добавьте [необходимые конфигурации Spark для коннектора](/integrations/apache-spark/spark-native-connector#register-the-catalog-required).
+* Пользовательский файл конфигурации, загружаемый вместе с сеансом
+* Добавить конфигурации через интерфейс Azure Synapse
+* Добавить конфигурации в блокноте Synapse
 
-Например, вы можете настроить вашу Spark-сессию в блокноте с помощью следующих параметров:
+Следуйте руководству [Manage Apache Spark configuration](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)
+и добавьте [обязательные для коннектора конфигурации Spark](/integrations/apache-spark/spark-native-connector#register-the-catalog-required).
+
+Например, вы можете настроить сеанс Spark в блокноте со следующими параметрами:
 
 ```python
 %%configure -f
@@ -73,39 +71,30 @@ Azure Synapse поддерживает три уровня [управления
 }
 ```
 
-Убедитесь, что это находится в первой ячейке следующим образом:
+Убедитесь, что это находится в первой ячейке, как показано ниже:
 
-<Image
-  img={sparkConfigViaNotebook}
-  size='xl'
-  alt='Настройка конфигураций Spark через блокнот'
-  border
-/>
+<Image img={sparkConfigViaNotebook} size="xl" alt="Настройка параметров Spark через notebook" border />
 
-Посетите [страницу конфигураций ClickHouse Spark](/integrations/apache-spark/spark-native-connector#configurations) для получения дополнительных настроек.
+Перейдите на страницу [ClickHouse Spark configurations](/integrations/apache-spark/spark-native-connector#configurations) для получения дополнительных настроек.
 
 :::info
-При работе с ClickHouse Cloud убедитесь, что установлены [необходимые настройки Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).  
+При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).\
 :::
 
 
 ## Проверка настройки {#setup-verification}
 
-Чтобы убедиться, что зависимости и конфигурации были успешно установлены, откройте пользовательский интерфейс Spark вашей сессии и перейдите на вкладку `Environment`.
-Там найдите настройки, связанные с ClickHouse:
+Чтобы убедиться, что зависимости и конфигурации были успешно настроены, перейдите в Spark UI вашего сеанса и откройте вкладку `Environment`.
+Там найдите параметры, связанные с ClickHouse:
 
-<Image
-  img={sparkUICHSettings}
-  size='xl'
-  alt='Проверка настроек ClickHouse с помощью пользовательского интерфейса Spark'
-  border
-/>
+<Image img={sparkUICHSettings} size="xl" alt="Проверка настроек ClickHouse с помощью Spark UI" border/>
+
 
 
 ## Дополнительные ресурсы {#additional-resources}
 
-- [Документация по коннектору ClickHouse Spark](/integrations/apache-spark)
+- [Документация по коннектору ClickHouse для Spark](/integrations/apache-spark)
 - [Обзор пулов Spark в Azure Synapse](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)
-- [Оптимизация производительности рабочих нагрузок Apache Spark](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-performance)
+- [Оптимизация производительности нагрузок Apache Spark](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-performance)
 - [Управление библиотеками для пулов Apache Spark в Synapse](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)
 - [Управление конфигурацией Apache Spark в Synapse](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)

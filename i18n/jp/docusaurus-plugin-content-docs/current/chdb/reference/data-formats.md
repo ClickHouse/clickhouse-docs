@@ -7,19 +7,19 @@ keywords: ['chdb', 'data formats']
 doc_type: 'reference'
 ---
 
-データ形式に関しては、chDB は ClickHouse と 100% 機能互換です。
+データ形式に関しては、chDB は機能面で ClickHouse と 100% 互換性があります。
 
-入力フォーマットは、`File`、`URL`、`S3` などのファイルをバックエンドに持つテーブルに対して、`INSERT` で投入されるデータや `SELECT` によって読み出されるデータを解析するために使用されます。
-出力フォーマットは、`SELECT` の結果を整形したり、ファイルをバックエンドに持つテーブルへの `INSERT` を実行したりするために使用されます。
-ClickHouse がサポートしているデータ形式に加えて、chDB は次の形式もサポートします:
+入力フォーマットは、`File`、`URL`、`S3` のようなファイルをバックエンドとするテーブルに対して行う `INSERT` および `SELECT` に渡されたデータをパースするために使用されます。
+出力フォーマットは、`SELECT` の結果を整形し、ファイルをバックエンドとするテーブルへの `INSERT` を実行するために使用されます。
+ClickHouse がサポートするデータ形式に加えて、chDB は次の形式もサポートします:
 
-- 出力フォーマットとしての `ArrowTable`。型は Python の `pyarrow.Table` です
-- 入出力フォーマットとしての `DataFrame`。型は Python の `pandas.DataFrame` です。例については、[`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py) を参照してください
-- 出力フォーマットとしての `Debug`（`CSV` のエイリアス）ですが、ClickHouse からの詳細なデバッグ出力が有効になっています。
+- 出力フォーマットとしての `ArrowTable`。型は Python の `pyarrow.Table`
+- 入力・出力フォーマットとしての `DataFrame`。型は Python の `pandas.DataFrame`。例については [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py) を参照してください
+- 出力フォーマットとしての `Debug`（`CSV` のエイリアス）。ClickHouse からのデバッグ用詳細出力が有効化されます。
 
-ClickHouse がサポートするデータ形式は次のとおりです:
+ClickHouse でサポートされているデータ形式は次のとおりです:
 
-| 形式                                         | 入力 | 出力 |
+| フォーマット                                     | 入力 | 出力 |
 | ------------------------------------------ | -- | -- |
 | TabSeparated                               | ✔  | ✔  |
 | TabSeparatedRaw                            | ✔  | ✔  |
@@ -32,12 +32,12 @@ ClickHouse がサポートするデータ形式は次のとおりです:
 | CSV                                        | ✔  | ✔  |
 | CSVWithNames                               | ✔  | ✔  |
 | CSVWithNamesAndTypes                       | ✔  | ✔  |
-| CustomSeparated                            | ✔  | ✔  |
+| カスタム区切り                                    | ✔  | ✔  |
 | CustomSeparatedWithNames                   | ✔  | ✔  |
 | CustomSeparatedWithNamesAndTypes           | ✔  | ✔  |
 | SQLInsert                                  | ✗  | ✔  |
 | 値                                          | ✔  | ✔  |
-| 縦方向                                        | ✗  | ✔  |
+| 垂直                                         | ✗  | ✔  |
 | JSON                                       | ✔  | ✔  |
 | JSONAsString                               | ✔  | ✗  |
 | JSONAsObject                               | ✔  | ✗  |
@@ -63,7 +63,7 @@ ClickHouse がサポートするデータ形式は次のとおりです:
 | JSONObjectEachRow                          | ✔  | ✔  |
 | BSONEachRow                                | ✔  | ✔  |
 | TSKV                                       | ✔  | ✔  |
-| Pretty                                     | ✗  | ✔  |
+| 整形                                         | ✗  | ✔  |
 | PrettyNoEscapes                            | ✗  | ✔  |
 | PrettyMonoBlock                            | ✗  | ✔  |
 | PrettyNoEscapesMonoBlock                   | ✗  | ✔  |
@@ -95,7 +95,7 @@ ClickHouse がサポートするデータ形式は次のとおりです:
 | ネイティブ                                      | ✔  | ✔  |
 | Null                                       | ✗  | ✔  |
 | XML                                        | ✗  | ✔  |
-| Cap&#39;n Proto                            | ✔  | ✔  |
+| CapnProto                                  | ✔  | ✔  |
 | LineAsString                               | ✔  | ✔  |
 | 正規表現                                       | ✔  | ✗  |
 | RawBLOB                                    | ✔  | ✔  |
@@ -105,4 +105,4 @@ ClickHouse がサポートするデータ形式は次のとおりです:
 | Markdown                                   | ✗  | ✔  |
 | フォーム                                       | ✔  | ✗  |
 
-詳細および例については、[入力および出力データ向けの ClickHouse フォーマット](/interfaces/formats) を参照してください。
+さらに詳しい情報や例については、[入力および出力データ用の ClickHouse フォーマット](/interfaces/formats) を参照してください。

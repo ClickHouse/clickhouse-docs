@@ -1,6 +1,6 @@
 ---
-description: 'Документация по CREATE DATABASE'
-sidebar_label: 'БАЗА ДАННЫХ'
+description: 'Документация по оператору CREATE DATABASE'
+sidebar_label: 'DATABASE'
 sidebar_position: 35
 slug: /sql-reference/statements/create/database
 title: 'CREATE DATABASE'
@@ -18,33 +18,33 @@ CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(..
 ```
 
 
-## Секции {#clauses}
+## Условия
 
-### IF NOT EXISTS {#if-not-exists}
+### IF NOT EXISTS
 
-Если база данных `db_name` уже существует, то ClickHouse не создаёт новую базу данных и:
+Если база данных `db_name` уже существует, ClickHouse не создаёт новую базу данных и:
 
-- Не генерирует исключение, если секция указана.
-- Генерирует исключение, если секция не указана.
+* Не выбрасывает исключение, если указано это условие.
+* Выбрасывает исключение, если это условие не указано.
 
-### ON CLUSTER {#on-cluster}
+### ON CLUSTER
 
-ClickHouse создаёт базу данных `db_name` на всех серверах указанного кластера. Подробнее см. в статье [Распределённые DDL-запросы](../../../sql-reference/distributed-ddl.md).
+ClickHouse создаёт базу данных `db_name` на всех серверах указанного кластера. Подробнее см. в статье [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
-### ENGINE {#engine}
+### ENGINE
 
-По умолчанию ClickHouse использует собственный движок баз данных [Atomic](../../../engines/database-engines/atomic.md). Также доступны движки [Lazy](../../../engines/database-engines/lazy.md), [MySQL](../../../engines/database-engines/mysql.md), [PostgresSQL](../../../engines/database-engines/postgresql.md), [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md), [Replicated](../../../engines/database-engines/replicated.md), [SQLite](../../../engines/database-engines/sqlite.md).
+По умолчанию ClickHouse использует собственный движок базы данных [Atomic](../../../engines/database-engines/atomic.md). Также доступны [Lazy](../../../engines/database-engines/lazy.md), [MySQL](../../../engines/database-engines/mysql.md), [PostgresSQL](../../../engines/database-engines/postgresql.md), [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md), [Replicated](../../../engines/database-engines/replicated.md), [SQLite](../../../engines/database-engines/sqlite.md).
 
-### COMMENT {#comment}
+### COMMENT
 
-При создании базы данных можно добавить к ней комментарий.
+Вы можете добавить комментарий к базе данных при её создании.
 
-Комментарии поддерживаются для всех движков баз данных.
+Комментарии поддерживаются всеми движками баз данных.
 
 **Синтаксис**
 
 ```sql
-CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
+CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Комментарий'
 ```
 
 **Пример**
@@ -52,7 +52,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 Запрос:
 
 ```sql
-CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
+CREATE DATABASE db_comment ENGINE = Memory COMMENT 'Временная база данных';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
@@ -60,6 +60,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ The temporary database │
+│ db_comment │ Временная база данных  │
 └────────────┴────────────────────────┘
 ```

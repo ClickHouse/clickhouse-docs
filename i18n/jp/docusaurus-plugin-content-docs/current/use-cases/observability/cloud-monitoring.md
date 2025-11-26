@@ -15,78 +15,81 @@ import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integ
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
 
-# ClickHouse Cloudモニタリング {#cloud-monitoring}
+# ClickHouse Cloud のモニタリング {#cloud-monitoring}
 
-本ガイドでは、ClickHouse Cloudを評価中のエンタープライズチームに向けて、本番環境デプロイメントにおけるモニタリングおよび可観測性機能に関する包括的な情報を提供します。エンタープライズのお客様からは、すぐに利用可能なモニタリング機能、DatadogやAWS CloudWatchなどのツールを含む既存の可観測性スタックとの統合、およびClickHouseのモニタリングとセルフホスト型デプロイメントとの比較について、よくお問い合わせをいただきます。
+このガイドでは、ClickHouse Cloud の評価を行っているエンタープライズチーム向けに、本番デプロイメントにおけるモニタリングおよびオブザーバビリティ機能について包括的な情報を提供します。エンタープライズのお客様からは、標準で利用可能なモニタリング機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、そして ClickHouse のモニタリング機能がセルフホスト型デプロイメントとどのように比較されるかについて、頻繁にご質問をいただきます。
 
 
-## 高度な可観測性ダッシュボード {#advanced-observability}
 
-ClickHouse Cloudは、Monitoringセクションからアクセス可能な組み込みダッシュボードインターフェースを通じて包括的な監視機能を提供します。これらのダッシュボードは、追加のセットアップを必要とせずにシステムおよびパフォーマンスメトリクスをリアルタイムで可視化し、ClickHouse Cloud内でのリアルタイム本番環境監視の主要なツールとして機能します。
+## 高度なオブザーバビリティダッシュボード {#advanced-observability}
 
-- **Advanced Dashboard**: Monitoring → Advanced dashboardからアクセス可能なメインダッシュボードインターフェースは、クエリレート、リソース使用状況、システムヘルス、ストレージパフォーマンスへのリアルタイムな可視性を提供します。このダッシュボードは個別の認証を必要とせず、インスタンスのアイドル状態を妨げることもなく、本番システムにクエリ負荷を追加することもありません。各可視化はカスタマイズ可能なSQLクエリによって駆動され、すぐに使用できるチャートはClickHouse固有、システムヘルス、Cloud固有のメトリクスにグループ化されています。ユーザーはSQLコンソールで直接カスタムクエリを作成することで監視を拡張できます。
+ClickHouse Cloud は、Monitoring セクションからアクセス可能な組み込みダッシュボードインターフェースを通じて、包括的な監視機能を提供します。これらのダッシュボードは追加のセットアップなしにシステムおよびパフォーマンスメトリクスをリアルタイムに可視化し、ClickHouse Cloud における本番環境のリアルタイム監視における主要なツールとして機能します。
+
+- **Advanced Dashboard**: Monitoring → Advanced dashboard からアクセスできるメインのダッシュボードインターフェースであり、クエリレート、リソース使用状況、システムヘルス、ストレージパフォーマンスをリアルタイムに可視化できます。このダッシュボードでは追加の認証は不要で、インスタンスのアイドル状態を解除することはなく、本番システムへのクエリ負荷も増加させません。各ビジュアライゼーションはカスタマイズ可能な SQL クエリによって駆動されており、標準搭載のチャートは ClickHouse 固有、システムヘルス、ClickHouse Cloud 固有のメトリクスごとにグループ化されています。ユーザーは SQL コンソールでカスタムクエリを作成することで、監視機能を拡張できます。
 
 :::note
-これらのメトリクスへのアクセスは、基盤となるサービスにクエリを発行せず、アイドル状態のサービスをウェイクアップすることもありません。
+これらのメトリクスにアクセスしても、基盤となるサービスへのクエリは発行されず、アイドル状態のサービスが起動されることもありません。
 :::
 
-<Image img={AdvancedDashboard} size='lg' alt='高度なダッシュボード' />
+<Image img={AdvancedDashboard} size="lg" alt="高度なダッシュボード"/>
 
-これらの可視化を拡張したいユーザーは、ClickHouse Cloudのダッシュボード機能を使用して、システムテーブルに直接クエリを実行できます。
+これらの可視化を拡張したいユーザーは、ClickHouse Cloud のダッシュボード機能を使用してシステムテーブルを直接クエリできます。
 
-- **Native advanced dashboard**: Monitoringセクション内の「You can still access the native advanced dashboard」からアクセス可能な代替ダッシュボードインターフェースです。これは認証を伴う別タブで開き、システムおよびサービスヘルス監視のための代替UIを提供します。このダッシュボードは高度な分析を可能にし、ユーザーは基盤となるSQLクエリを変更できます。
+- **ネイティブ Advanced ダッシュボード**: Monitoring セクション内の「You can still access the native advanced dashboard」というリンクからアクセスできる代替ダッシュボードインターフェースです。これは別タブで認証付きで開かれ、システムおよびサービスヘルスを監視するための代替 UI を提供します。このダッシュボードでは、ユーザーが基盤となる SQL クエリを変更して高度な分析を行うことができます。
 
-<Image img={NativeAdvancedDashboard} size='lg' alt='高度なダッシュボード' />
+<Image img={NativeAdvancedDashboard} size="lg" alt="高度なダッシュボード"/>
 
-両方のダッシュボードは、外部依存関係なしにサービスヘルスとパフォーマンスへの即座の可視性を提供し、ClickStackのような外部デバッグ重視ツールとは区別されます。
+どちらのダッシュボードも外部コンポーネントに依存することなくサービスヘルスとパフォーマンスを即座に可視化でき、ClickStack のような外部のデバッグ特化ツールとは一線を画しています。
 
-ダッシュボード機能と利用可能なメトリクスの詳細については、[高度なダッシュボードのドキュメント](/cloud/manage/monitor/advanced-dashboard)を参照してください。
+ダッシュボードの詳細な機能および利用可能なメトリクスについては、[高度なダッシュボードのドキュメント](/cloud/manage/monitor/advanced-dashboard)を参照してください。
+
 
 
 ## クエリインサイトとリソース監視 {#query-insights}
 
-ClickHouse Cloudには、以下の追加監視機能が含まれています：
+ClickHouse Cloud には追加の監視機能が含まれています：
 
-- クエリインサイト：クエリのパフォーマンス分析とトラブルシューティングのための組み込みインターフェース
-- リソース使用率ダッシュボード：メモリ、CPU割り当て、データ転送パターンを追跡します。CPU使用率とメモリ使用率のグラフは、特定の期間における最大使用率メトリックを表示します。CPU使用率グラフは、システムレベルのCPU使用率メトリックを表示します（ClickHouseのCPU使用率メトリックではありません）。
+- Query Insights：クエリのパフォーマンス分析およびトラブルシューティングのための組み込みインターフェイス
+- Resource Utilization Dashboard：メモリ、CPU の割り当て、およびデータ転送パターンを追跡します。CPU 使用率グラフとメモリ使用率グラフには、特定の期間における最大利用率メトリクスが表示されます。CPU 使用率グラフは、システムレベルの CPU 利用率メトリクスを示しており（ClickHouse の CPU 利用率メトリクスではありません）。
 
-詳細な機能については、[クエリインサイト](/cloud/get-started/query-insights)および[リソース使用率](/operations/monitoring#resource-utilization)のドキュメントを参照してください。
+詳細な機能については、[Query Insights](/cloud/get-started/query-insights) および [Resource Utilization](/operations/monitoring#resource-utilization) のドキュメントを参照してください。
 
 
-## Prometheus互換メトリクスエンドポイント {#prometheus}
 
-ClickHouse CloudはPrometheusエンドポイントを提供します。これにより、ユーザーは現在のワークフローを維持し、既存のチームの専門知識を活用して、ClickHouseメトリクスをGrafana、Datadog、その他のPrometheus互換ツールを含むエンタープライズ監視プラットフォームに統合できます。
+## Prometheus 互換メトリクスエンドポイント {#prometheus}
 
-組織レベルのエンドポイントはすべてのサービスからメトリクスを集約し、サービスごとのエンドポイントは詳細な監視を提供します。主な機能は以下の通りです:
+ClickHouse Cloud は Prometheus エンドポイントを提供しています。これにより、既存のワークフローを維持しつつ、チームの既存の専門知識を活用し、ClickHouse のメトリクスを Grafana、Datadog をはじめとする各種 Prometheus 互換ツールを含むエンタープライズ監視プラットフォームへ統合できます。 
 
-- フィルタリングされたメトリクスオプション: オプションの`filtered_metrics=true`パラメータにより、1000以上の利用可能なメトリクスから125の「ミッションクリティカル」メトリクスにペイロードを削減し、コスト最適化と監視対象の絞り込みを容易にします
-- キャッシュされたメトリクス配信: 本番システムへのクエリ負荷を最小限に抑えるため、1分ごとに更新されるマテリアライズドビューを使用します
-
-:::note
-このアプローチはサービスのアイドリング動作を考慮しており、サービスがクエリを積極的に処理していない場合のコスト最適化を可能にします。このAPIエンドポイントはClickHouse Cloud APIクレデンシャルに依存します。エンドポイント設定の詳細については、クラウド[Prometheusドキュメント](/integrations/prometheus)を参照してください。
-:::
-
-<ObservabilityIntegrations />
-
-### ClickStackデプロイメントオプション {#clickstack-deployment}
-
-- **HyperDX in Clickhouse Cloud**(プライベートプレビュー): HyperDXは任意のClickhouse Cloudサービス上で起動できます。
-- [Helm](/use-cases/observability/clickstack/deployment/helm): Kubernetesベースのデバッグ環境に推奨されます。ClickHouse Cloudとの統合をサポートし、`values.yaml`を介した環境固有の設定、リソース制限、スケーリングが可能です。
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): 各コンポーネント(ClickHouse、HyperDX、OTelコレクター、MongoDB)を個別にデプロイします。ユーザーは、ClickHouse Cloudと統合する際に、特にClickHouseとOpen Telemetry Collectorなど、使用しないコンポーネントを削除するためにcomposeファイルを変更できます。
-- [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only): スタンドアロンのHyperDXコンテナ。
-
-完全なデプロイメントオプションとアーキテクチャの詳細については、[ClickStackドキュメント](/use-cases/observability/clickstack/overview)および[データ取り込みガイド](/use-cases/observability/clickstack/ingesting-data/overview)を参照してください。
+組織レベルのエンドポイントはすべてのサービスからメトリクスを集約し、サービスごとのエンドポイントはより細かな監視を提供します。主な特徴は次のとおりです。
+- フィルタリング済みメトリクスオプション: オプションの `filtered_metrics=true` パラメータにより、利用可能な 1000 以上のメトリクスから 125 個の「ミッションクリティカル」なメトリクスにペイロードを削減し、コスト最適化と監視対象の絞り込みを容易にします
+- キャッシュされたメトリクス配信: 本番システムへのクエリ負荷を最小限に抑えるため、毎分更新されるマテリアライズドビューを利用します
 
 :::note
-ユーザーは、OpenTelemetry Collectorを介してClickHouse Cloud Prometheusエンドポイントからメトリクスを収集し、可視化のために別のClickStackデプロイメントに転送することもできます。
+この方式はサービスのアイドル状態での挙動を尊重し、クエリを積極的に処理していないときのコスト最適化を可能にします。この API エンドポイントは ClickHouse Cloud の API 認証情報に依存します。エンドポイント構成の詳細については、ClickHouse Cloud の [Prometheus ドキュメント](/integrations/prometheus) を参照してください。
 :::
 
-<DirectIntegrations />
+<ObservabilityIntegrations/>
 
-<CommunityMonitoring />
+### ClickStack のデプロイオプション {#clickstack-deployment}
+
+- **HyperDX in ClickHouse Cloud**（プライベートプレビュー）: HyperDX は任意の ClickHouse Cloud サービス上で起動できます。
+- [Helm](/use-cases/observability/clickstack/deployment/helm): Kubernetes ベースのデバッグ環境に推奨されます。ClickHouse Cloud との統合をサポートし、`values.yaml` を介した環境固有の設定、リソース制限、およびスケーリングを可能にします。
+- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): 各コンポーネント（ClickHouse、HyperDX、OTel collector、MongoDB）を個別にデプロイします。ClickHouse Cloud と統合する際に、特に ClickHouse と OTel collector を削除するために、ユーザーは compose ファイルを編集できます。
+- [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only): 単体の HyperDX コンテナ。
+
+すべてのデプロイオプションおよびアーキテクチャの詳細については、[ClickStack ドキュメント](/use-cases/observability/clickstack/overview) と [データインジェストガイド](/use-cases/observability/clickstack/ingesting-data/overview) を参照してください。
+
+:::note
+ユーザーは、ClickHouse Cloud の Prometheus エンドポイントからメトリクスを OTel collector 経由で収集し、可視化のために別の ClickStack デプロイメントへ転送することもできます。
+:::
+
+<DirectIntegrations/>
+
+<CommunityMonitoring/>
 
 
-## システム影響に関する考慮事項 {#system-impact}
 
-上記のすべてのアプローチは、Prometheusエンドポイントの利用、ClickHouse Cloudによる管理、またはシステムテーブルへの直接クエリのいずれか、あるいはこれらを組み合わせて使用します。
-これらのオプションのうち最後のものは、本番環境のClickHouseサービスへのクエリに依存します。これにより、監視対象のシステムにクエリ負荷が追加され、ClickHouse Cloudインスタンスがアイドル状態になることを妨げるため、コスト最適化に影響を与えます。さらに、本番システムに障害が発生した場合、両者が密結合されているため、監視も影響を受ける可能性があります。このアプローチは、詳細な内部検査やデバッグには適していますが、リアルタイムの本番監視にはあまり適していません。次のセクションで説明する外部ツール統合アプローチと直接的なGrafana統合を比較評価する際には、詳細なシステム分析機能と運用オーバーヘッドの間のこれらのトレードオフを考慮してください。
+## システムへの影響に関する考慮事項 {#system-impact}
+
+上記のすべてのアプローチは、Prometheus エンドポイントへの依存、ClickHouse Cloud による管理、またはシステムテーブルへの直接クエリ、あるいはそれらの組み合わせを利用します。
+このうち後者の方法は、本番環境の ClickHouse サービスに対してクエリを投げることに依存しています。これにより、監視対象システムへのクエリ負荷が増加し、ClickHouse Cloud インスタンスがアイドル状態になりにくくなるため、コスト最適化に影響を与えます。さらに、本番システムに障害が発生した場合、両者が密接に結び付いているため、監視も影響を受ける可能性があります。このアプローチはシステムの深い解析やデバッグには有効ですが、リアルタイムな本番監視にはあまり適していません。以降のセクションで説明する外部ツール連携アプローチと Grafana からの直接連携を比較検討する際には、詳細なシステム分析機能と運用オーバーヘッドとのトレードオフを考慮してください。

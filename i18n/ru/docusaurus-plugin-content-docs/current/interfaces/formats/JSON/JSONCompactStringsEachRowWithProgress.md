@@ -9,37 +9,37 @@ title: 'JSONCompactStringsEachRowWithProgress'
 doc_type: 'reference'
 ---
 
-| Вход | Выход  | Псевдоним |
-|------|--------|-----------|
-| ✗    | ✔      |           |
+| Ввод | Вывод  | Псевдоним |
+|-------|--------|-----------|
+| ✗     | ✔      |           |
 
 
 
-## Description {#description}
+## Описание {#description}
 
-Аналогичен [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress), но все значения преобразуются в строки.
-Это полезно, когда необходимо единообразное строковое представление всех типов данных.
+Похож на [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress), но все значения преобразуются в строки.
+Это полезно, когда вам требуется единообразное строковое представление всех типов данных.
 
 Ключевые особенности:
-
 - Та же структура, что и у `JSONCompactEachRowWithProgress`
-- Все значения представлены в виде строк (числа, массивы и т. д. — все в виде строк в кавычках)
+- Все значения представлены как строки (числа, массивы и т. д. — это строковые значения в кавычках)
 - Включает обновления прогресса, итоговые значения и обработку исключений
-- Полезен для клиентов, которым требуются или предпочтительны данные в строковом формате
+- Полезен для клиентов, которые предпочитают или требуют представление данных в виде строк
 
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+## Пример использования
 
-```sql title="Запрос"
+### Вставка данных
+
+```sql title="Query"
 SELECT *
 FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2)
 LIMIT 5
 FORMAT JSONCompactStringsEachRowWithProgress
 ```
 
-```response title="Ответ"
+```response title="Response"
 {"meta":[{"name":"a","type":"Array(Int8)"},{"name":"d","type":"Decimal(9, 4)"},{"name":"c","type":"Tuple(DateTime64(3), UUID)"}]}
 {"row":["[-8]", "46848.5225", "('2064-06-11 14:00:36.578','b06f4fa1-22ff-f84f-a1b7-a5807d983ae6')"]}
 {"row":["[-76]", "-85331.598", "('2038-06-16 04:10:27.271','2bb0de60-3a2c-ffc0-d7a7-a5c88ed8177c')"]}

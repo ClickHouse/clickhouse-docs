@@ -1,6 +1,6 @@
 ---
 alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
-description: 'TabSeparatedRawWithNamesAndTypes 格式文档'
+description: 'TabSeparatedRawWithNamesAndTypes 格式说明文档'
 input_format: true
 keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
 output_format: true
@@ -18,18 +18,19 @@ doc_type: 'reference'
 ## 描述 {#description}
 
 与 [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 格式不同，
-该格式写入行时不进行转义。
+该格式在写入行数据时不会进行转义。
 
 :::note
-使用此格式解析时，每个字段中不允许包含制表符或换行符。
+使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 使用示例
 
-使用以下名为 `football.tsv` 的 TSV 文件:
+### 插入数据
+
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -53,15 +54,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `TabSeparatedRawWithNamesAndTypes` 格式读取数据:
+以 `TabSeparatedRawWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -69,7 +70,7 @@ FROM football
 FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
-输出将采用制表符分隔格式,包含两个标题行,分别表示列名和类型:
+输出将采用制表符分隔的格式，并包含两行表头，分别用于列名和列类型：
 
 
 ```tsv

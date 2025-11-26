@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'BladePipe'
 sidebar_position: 20
-keywords: ['clickhouse', 'BladePipe', 'подключение', 'интеграция', 'cdc', 'etl', 'интеграция данных']
+keywords: ['clickhouse', 'BladePipe', 'подключение', 'интеграция', 'CDC', 'ETL', 'интеграция данных']
 slug: /integrations/bladepipe
-description: 'Потоковая загрузка данных в ClickHouse с помощью потоков данных BladePipe'
+description: 'Стриминг данных в ClickHouse с помощью конвейеров данных BladePipe'
 title: 'Подключение BladePipe к ClickHouse'
 doc_type: 'guide'
 ---
@@ -25,16 +25,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> — это инструмент для сквозной интеграции данных в режиме реального времени с задержкой менее секунды, обеспечивающий бесшовный обмен данными между платформами. 
+<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> — это инструмент сквозной интеграции данных в режиме реального времени с задержкой менее секунды, обеспечивающий бесшовный поток данных между различными платформами. 
 
-ClickHouse — один из встроенных коннекторов BladePipe, позволяющий пользователям автоматически интегрировать данные из различных источников в ClickHouse. На этой странице пошагово показано, как загружать данные в ClickHouse в режиме реального времени.
+ClickHouse — один из готовых коннекторов BladePipe, что позволяет пользователям автоматически интегрировать данные из различных источников в ClickHouse. На этой странице показано, как пошагово настроить загрузку данных в ClickHouse в режиме реального времени.
 
 
 
 ## Поддерживаемые источники {#supported-sources}
-
 В настоящее время BladePipe поддерживает интеграцию данных в ClickHouse из следующих источников:
-
 - MySQL/MariaDB/AuroraMySQL
 - Oracle
 - PostgreSQL/AuroraPostgreSQL
@@ -44,11 +42,12 @@ ClickHouse — один из встроенных коннекторов BladePi
 - OceanBase
 - TiDB
 
-Планируется добавление поддержки дополнительных источников.
+В дальнейшем планируется поддержка дополнительных источников.
+
 
 
 <VerticalStepper headerLevel="h2">
-## Загрузка и запуск BladePipe {#1-run-bladepipe}
+## Загрузите и запустите BladePipe {#1-run-bladepipe}
 1. Войдите в <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>.
 
 2. Следуйте инструкциям в разделах <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a> или <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a>, чтобы загрузить и установить BladePipe Worker.
@@ -58,74 +57,71 @@ ClickHouse — один из встроенных коннекторов BladePi
 :::
 
 
-## Добавление ClickHouse в качестве целевой системы {#2-add-clickhouse-as-a-target}
+## Добавление ClickHouse в качестве целевого хранилища {#2-add-clickhouse-as-a-target}
 
-:::note
+  :::note
+  1. BladePipe поддерживает ClickHouse версии `20.12.3.3` и выше.
+  2. Чтобы использовать ClickHouse в качестве целевого хранилища, убедитесь, что у пользователя есть привилегии SELECT, INSERT и базовые DDL-привилегии. 
+  :::
 
-1. BladePipe поддерживает ClickHouse версии `20.12.3.3` и выше.
-2. Для использования ClickHouse в качестве целевой системы убедитесь, что у пользователя есть права SELECT, INSERT и базовые права DDL.
-   :::
+1. В BladePipe выберите "DataSource" > "Add DataSource".
 
-3. В BladePipe нажмите «DataSource» > «Add DataSource».
+2. Выберите `ClickHouse` и заполните настройки, указав хост и порт ClickHouse, имя пользователя и пароль, затем нажмите "Test Connection".
 
-4. Выберите `ClickHouse` и заполните настройки, указав хост и порт ClickHouse, имя пользователя и пароль, затем нажмите «Test Connection».
+    <Image img={bp_ck_1} size="lg" border alt="Добавление ClickHouse в качестве целевого хранилища" />
 
-   <Image img={bp_ck_1} size='lg' border alt='Добавление ClickHouse в качестве целевой системы' />
+3. Нажмите "Add DataSource" внизу, после чего будет добавлен экземпляр ClickHouse.
 
-5. Нажмите «Add DataSource» внизу, и экземпляр ClickHouse будет добавлен.
 
 
 ## Добавление MySQL в качестве источника {#3-add-mysql-as-a-source}
-
-В этом руководстве мы используем экземпляр MySQL в качестве источника и описываем процесс загрузки данных из MySQL в ClickHouse.
+В этом руководстве мы используем экземпляр MySQL в качестве источника и рассматриваем процесс загрузки данных MySQL в ClickHouse.
 
 :::note
-Для использования MySQL в качестве источника убедитесь, что у пользователя есть <a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">необходимые разрешения</a>.
+Чтобы использовать MySQL в качестве источника, убедитесь, что у пользователя есть <a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">необходимые права доступа</a>. 
 :::
 
-1. В BladePipe нажмите «DataSource» > «Add DataSource».
+1. В BladePipe нажмите "DataSource" > "Add DataSource".
 
-2. Выберите `MySQL` и заполните настройки, указав хост и порт MySQL, имя пользователя и пароль, после чего нажмите «Test Connection».
+2. Выберите `MySQL` и заполните настройки, указав хост и порт MySQL, имя пользователя и пароль, затем нажмите "Test Connection".
 
-   <Image img={bp_ck_2} size='lg' border alt='Добавление MySQL в качестве источника' />
+    <Image img={bp_ck_2} size="lg" border alt="Добавление MySQL в качестве источника" />
 
-3. Нажмите «Add DataSource» внизу — экземпляр MySQL будет добавлен.
+3. Нажмите "Add DataSource" внизу — экземпляр MySQL будет добавлен.
+
 
 
 ## Создание конвейера {#4-create-a-pipeline}
 
-1. В BladePipe нажмите «DataJob» > «Create DataJob».
+1. В BladePipe нажмите "DataJob" > "Create DataJob".
 
-2. Выберите добавленные экземпляры MySQL и ClickHouse и нажмите «Test Connection», чтобы убедиться, что BladePipe подключен к экземплярам. Затем выберите базы данных для переноса.
+2. Выберите добавленные инстансы MySQL и ClickHouse и нажмите "Test Connection", чтобы убедиться, что BladePipe может к ним подключиться. Затем выберите базы данных, которые нужно перенести.
+   <Image img={bp_ck_3} size="lg" border alt="Выбор источника и получателя" />
 
-   <Image img={bp_ck_3} size='lg' border alt='Выбор источника и цели' />
-
-3. Выберите «Incremental» в качестве типа DataJob вместе с опцией «Full Data».
-
-   <Image img={bp_ck_4} size='lg' border alt='Выбор типа синхронизации' />
+3. Для типа DataJob выберите "Incremental" вместе с опцией "Full Data".
+   <Image img={bp_ck_4} size="lg" border alt="Выбор типа синхронизации" />
 
 4. Выберите таблицы для репликации.
-
-   <Image img={bp_ck_5} size='lg' border alt='Выбор таблиц' />
+   <Image img={bp_ck_5} size="lg" border alt="Выбор таблиц" />
 
 5. Выберите столбцы для репликации.
+   <Image img={bp_ck_6} size="lg" border alt="Выбор столбцов" />
 
-   <Image img={bp_ck_6} size='lg' border alt='Выбор столбцов' />
+6. Подтвердите создание DataJob — после этого он запустится автоматически.
+    <Image img={bp_ck_8} size="lg" border alt="DataJob выполняется" />
 
-6. Подтвердите создание DataJob, после чего задание запустится автоматически.
-   <Image img={bp_ck_8} size='lg' border alt='Выполнение DataJob' />
 
 
 ## Проверка данных {#5-verify-the-data}
 
-1. Остановите запись данных в экземпляр MySQL и дождитесь слияния данных в ClickHouse.
+1. Остановите запись данных в экземпляр MySQL и дождитесь завершения слияния данных в ClickHouse.
    :::note
-   Из-за непредсказуемого времени автоматического слияния в ClickHouse вы можете вручную инициировать слияние, выполнив команду `OPTIMIZE TABLE xxx FINAL;`. Обратите внимание, что ручное слияние может завершиться неудачно.
+   Поскольку время автоматического слияния в ClickHouse непредсказуемо, вы можете запустить слияние вручную, выполнив команду `OPTIMIZE TABLE xxx FINAL;`. Обратите внимание, что ручное слияние может завершиться неудачно.
 
-В качестве альтернативы вы можете выполнить команду `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;`, чтобы создать представление и выполнять запросы к нему для обеспечения полного слияния данных.
+В качестве альтернативы можно выполнить команду `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;`, чтобы создать представление и выполнять запросы к нему для гарантии полного слияния данных.
 :::
 
-2. Создайте <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">задание проверки данных (Verification DataJob)</a>. После завершения задания проверки просмотрите результаты, чтобы убедиться, что данные в ClickHouse идентичны данным в MySQL.
+2. Создайте <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">задание проверки данных (Verification DataJob)</a>. После завершения задания проверьте результаты, чтобы убедиться, что данные в ClickHouse идентичны данным в MySQL.
    <Image img={bp_ck_9} size='lg' border alt='Проверка данных' />
 
 </VerticalStepper>

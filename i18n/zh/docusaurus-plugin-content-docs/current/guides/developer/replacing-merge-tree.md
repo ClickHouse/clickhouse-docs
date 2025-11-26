@@ -9,63 +9,62 @@ doc_type: 'guide'
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 
-虽然事务型数据库针对更新和删除类的事务性工作负载进行了优化，但 OLAP 数据库在这类操作上提供的保障较少。相应地，它们针对批量插入的不可变数据进行优化，从而显著加速分析型查询。尽管 ClickHouse 通过 mutation 提供了更新操作，并提供了一种轻量级的行删除方式，但其列式存储结构意味着这些操作应如上所述进行谨慎调度。这些操作是异步处理的，由单线程执行，并且在（更新的情况下）需要将数据重写到磁盘。因此，它们不适用于大量的小规模变更。
+虽然事务型数据库针对事务性更新和删除型工作负载进行了优化，但 OLAP 数据库对这类操作提供的保障较少。相应地，它们针对以批量方式插入的不可变数据进行了优化，从而显著加速分析型查询。虽然 ClickHouse 通过 mutation 提供更新操作，并提供了一种轻量级的行删除方式，但由于其列式结构，这些操作应按上述说明谨慎调度。这些操作以异步方式处理，由单线程执行，并且（在更新的情况下）需要在磁盘上重写数据。因此，不适合用于执行大量、细粒度的小变更。
 
-为了在避免上述使用模式的前提下处理更新和删除行的流式数据，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
+为了在处理包含更新和删除行的流式数据时避免上述使用模式，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
 
 
-## 插入行的自动更新插入 {#automatic-upserts-of-inserted-rows}
+## 已插入行的自动 Upsert
 
-[ReplacingMergeTree 表引擎](/engines/table-engines/mergetree-family/replacingmergetree)允许对行执行更新操作,无需使用低效的 `ALTER` 或 `DELETE` 语句。它允许用户插入同一行的多个副本,并将其中一个标记为最新版本。后台进程会异步删除同一行的旧版本,通过不可变插入有效地模拟更新操作。
-这依赖于表引擎识别重复行的能力。通过使用 `ORDER BY` 子句来确定唯一性,即如果两行在 `ORDER BY` 中指定的列具有相同的值,则它们被视为重复行。在定义表时指定的 `version` 列用于在识别出重复行时保留最新版本的行,即保留版本值最高的行。
-下面的示例说明了此过程。在这里,行由 A 列唯一标识(表的 `ORDER BY`)。我们假设这些行分两个批次插入,在磁盘上形成了两个数据部分。随后,在异步后台进程中,这些部分会合并在一起。
+[ReplacingMergeTree 表引擎](/engines/table-engines/mergetree-family/replacingmergetree) 允许对行执行更新操作，而无需使用低效的 `ALTER` 或 `DELETE` 语句。它通过允许用户插入同一行的多个副本，并将其中一条标记为最新版本来实现这一点。随后，一个后台进程会异步移除同一行的旧版本，通过仅追加的不可变插入，高效地模拟更新操作。
 
-ReplacingMergeTree 还允许指定一个删除标记列。该列可以包含 0 或 1,其中值 1 表示该行(及其重复项)已被删除,否则使用 0。**注意:已删除的行不会在合并时被移除。**
+这一机制依赖于表引擎识别重复行的能力。它使用 `ORDER BY` 子句来确定唯一性，即如果两行在 `ORDER BY` 中指定的列上的值相同，则它们被视为重复。在定义表时可以指定一个 `version` 列，当两行被识别为重复时，该列用于保留该行的最新版本，即保留 `version` 值最大的那一行。
 
-在此过程中,部分合并期间会发生以下情况:
+我们在下面的示例中演示这一过程。这里，行由 A 列唯一标识（该表的 `ORDER BY`）。我们假设这些行是以两个批次插入的，从而在磁盘上形成了两个数据 part。之后，在一个异步后台进程中，这些 part 会被合并在一起。
 
-- 列 A 值为 1 标识的行既有版本 2 的更新行,也有版本 3 的删除行(删除标记列的值为 1)。因此保留标记为已删除的最新行。
-- 列 A 值为 2 标识的行有两个更新行。保留后一行,其 price 列的值为 6。
-- 列 A 值为 3 标识的行有一个版本 1 的行和一个版本 2 的删除行。保留此删除行。
+ReplacingMergeTree 还允许指定一个 deleted 列。该列的值可以是 0 或 1，其中值为 1 表示该行（及其重复行）已被删除，否则为 0。**注意：已删除的行在合并时并不会被移除。**
 
-此合并过程的结果是,我们有四行代表最终状态:
+在这个过程中，part 合并时会发生以下情况：
 
-<br />
+* 列 A 值为 1 的行同时具有一个 version 为 2 的更新行和一个 version 为 3 的删除行（且 deleted 列的值为 1）。因此，被标记为删除的最新行会被保留。
+* 列 A 值为 2 的行有两条更新行。后一条行被保留，其 price 列的值为 6。
+* 列 A 值为 3 的行有一条 version 为 1 的行和一条 version 为 2 的删除行。该删除行被保留。
 
-<Image
-  img={postgres_replacingmergetree}
-  size='md'
-  alt='ReplacingMergeTree 过程'
-/>
+通过这一合并过程，最终得到四行数据，表示最终状态：
 
 <br />
 
-请注意,已删除的行永远不会被移除。可以使用 `OPTIMIZE table FINAL CLEANUP` 强制删除它们。这需要实验性设置 `allow_experimental_replacing_merge_with_cleanup=1`。只应在以下条件下执行此操作:
+<Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree 处理流程" />
 
-1. 您可以确保在执行操作后不会插入具有旧版本的行(针对那些将通过清理删除的行)。如果插入这些行,它们将被错误地保留,因为已删除的行将不再存在。
-2. 在执行清理之前确保所有副本都已同步。可以通过以下命令实现:
+<br />
+
+请注意，已删除的行永远不会被自动移除。可以通过执行 `OPTIMIZE table FINAL CLEANUP` 来强制删除它们。这需要将实验性设置 `allow_experimental_replacing_merge_with_cleanup=1` 打开。只有在满足以下条件时，才应执行该操作：
+
+1. 必须确保在执行该操作之后，不会再插入带有旧版本的行（针对那些即将通过 cleanup 被删除的行）。如果此类行在之后被插入，它们会被错误地保留，因为对应的已删除行已经不存在了。
+2. 在执行 cleanup 之前，确保所有副本已经完成同步。可以通过以下命令实现：
 
 <br />
 
 ```sql
-SYSTEM SYNC REPLICA table
+SYSTEM SYNC REPLICA 表名
 ```
 
-我们建议在保证条件 (1) 后暂停插入,直到此命令和后续清理完成。
+我们建议在确保条件 (1) 已满足后暂停插入，并保持暂停状态，直到此命令及后续清理操作全部完成。
 
-> 只建议在删除数量较少到中等(少于 10%)的表中使用 ReplacingMergeTree 处理删除,除非可以在满足上述条件的情况下安排清理时段。
+> 仅当可以按照上述条件安排清理时，才建议在删除比例较低到中等（少于 10%）的表上使用 ReplacingMergeTree 处理删除操作。
 
-> 提示:用户还可以对不再发生变更的选定分区执行 `OPTIMIZE FINAL CLEANUP`。
+> 提示：用户也可以对不再会发生变更的选定分区执行 `OPTIMIZE FINAL CLEANUP`。
 
 
-## 选择主键/去重键 {#choosing-a-primarydeduplication-key}
+## 选择主键/去重键
 
-如上所述,我们强调了在使用 ReplacingMergeTree 时必须满足的一个重要附加约束:`ORDER BY` 中列的值必须能够在变更过程中唯一标识一行数据。如果从 Postgres 等事务型数据库迁移数据,则应将原始 Postgres 主键包含在 ClickHouse 的 `ORDER BY` 子句中。
+在上文中，我们强调了在使用 ReplacingMergeTree 时必须满足的一个重要附加约束：`ORDER BY` 中各列的取值在发生变更时必须能够在全局范围内唯一标识一行。如果是从 Postgres 这类事务型数据库迁移，那么原始的 Postgres 主键应当被包含在 ClickHouse 的 `ORDER BY` 子句中。
 
-ClickHouse 用户应熟悉如何选择表的 `ORDER BY` 子句中的列以[优化查询性能](/data-modeling/schema-design#choosing-an-ordering-key)。通常,应根据[常用查询选择这些列,并按基数递增的顺序排列](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。重要的是,ReplacingMergeTree 增加了一个额外的约束——这些列必须是不可变的,即如果从 Postgres 复制数据,只有在底层 Postgres 数据中不会发生变化的列才能添加到此子句中。虽然其他列可以变化,但这些列必须保持一致以实现唯一的行标识。
-对于分析型工作负载,Postgres 主键通常用处不大,因为用户很少执行单行点查询。鉴于我们建议按基数递增的顺序排列列,以及 [ORDER BY 中较早列出的列匹配通常更快](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)这一事实,Postgres 主键应附加到 `ORDER BY` 的末尾(除非它具有分析价值)。如果 Postgres 中的主键由多个列组成,则应将它们附加到 `ORDER BY` 中,同时考虑基数和查询价值的可能性。用户也可以通过 `MATERIALIZED` 列使用值的拼接来生成唯一主键。
+熟悉 ClickHouse 的用户已经习惯于为其表的 `ORDER BY` 子句选择列，以[优化查询性能](/data-modeling/schema-design#choosing-an-ordering-key)。一般来说，这些列应当根据[常用查询选择，并按基数从低到高的顺序列出](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。需要特别注意的是，ReplacingMergeTree 引入了一个额外约束——这些列必须是不可变的。也就是说，如果是从 Postgres 进行复制，只有当某列在底层 Postgres 数据中不会发生变化时，才应将其加入该子句。虽然其他列可以变化，但用于唯一行标识的这些列必须保持一致。
 
-以 Stack Overflow 数据集中的 posts 表为例。
+对于分析型工作负载而言，Postgres 主键通常用途不大，因为用户很少会执行单行点查。鉴于我们推荐按基数递增的顺序对列进行排序，以及[ORDER BY 中靠前的列通常能更快完成匹配和过滤](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)这一事实，Postgres 主键应当追加在 `ORDER BY` 的末尾（除非它本身具有分析价值）。如果在 Postgres 中主键由多个列组成，则应按其基数及其对查询价值的可能性，将这些列依次追加到 `ORDER BY` 中。用户也可以选择通过 `MATERIALIZED` 列，将多个取值连接起来生成一个唯一主键。
+
+来看 Stack Overflow 数据集中的 posts 表。
 
 ```sql
 CREATE TABLE stackoverflow.posts_updateable
@@ -100,25 +99,25 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```
 
-我们使用 `(PostTypeId, toDate(CreationDate), CreationDate, Id)` 作为 `ORDER BY` 键。`Id` 列对每个帖子都是唯一的,确保可以对行进行去重。根据需要,在模式中添加了 `Version` 和 `Deleted` 列。
+我们使用 `(PostTypeId, toDate(CreationDate), CreationDate, Id)` 作为 `ORDER BY` 键。`Id` 列对每条帖子记录都是唯一的，从而支持对行进行去重。根据需要，在 schema 中添加了 `Version` 和 `Deleted` 列。
 
 
-## 查询 ReplacingMergeTree {#querying-replacingmergetree}
+## 查询 ReplacingMergeTree
 
-在合并时,ReplacingMergeTree 使用 `ORDER BY` 列的值作为唯一标识符来识别重复行,并且要么仅保留最高版本,要么在最新版本指示删除时移除所有重复项。然而,这仅提供最终一致性 - 它不保证行一定会被去重,您不应依赖此特性。因此,由于更新和删除的行会在查询中被考虑,查询可能会产生不正确的结果。
+在合并时，ReplacingMergeTree 会识别重复行，将 `ORDER BY` 列的值用作唯一标识，并且要么仅保留最高版本，要么在最新版本表示删除的情况下移除所有重复行。不过，这种机制只能在最终状态上趋于正确——并不能保证所有行一定都会被去重，因此不应依赖它。由于查询会同时考虑更新行和删除行，查询结果可能因此不正确。
 
-为了获得正确的结果,用户需要在后台合并的基础上,在查询时进行去重和删除移除。这可以通过使用 `FINAL` 操作符来实现。
+要获得正确结果，用户需要在后台合并的基础上，再在查询时执行去重并移除被标记为删除的记录。这可以通过使用 `FINAL` 运算符来实现。
 
-考虑上面的 posts 表。我们可以使用常规方法加载此数据集,但需要额外指定 deleted 和 version 列,并将值设为 0。为了演示目的,我们仅加载 10000 行。
+考虑上面的 posts 表。我们可以使用常规方法加载该数据集，但在此基础上额外指定一个 deleted 列和一个 version 列，并将它们的值设为 0。出于示例目的，我们只加载 10000 行数据。
 
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
 
-0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
+返回 0 行。用时:1.980 秒。已处理 8.19 千行,3.52 MB(4.14 千行/秒,1.78 MB/秒)
 ```
 
-让我们确认行数:
+现在来确认一下行数：
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
@@ -130,7 +129,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-现在我们更新帖子回答统计信息。我们不是更新这些值,而是插入 5000 行的新副本并将它们的版本号加一(这意味着表中将存在 15000 行)。我们可以用一个简单的 `INSERT INTO SELECT` 来模拟这个操作:
+现在我们来更新回答后的统计信息。我们不直接更新这些值，而是插入 5000 行新的副本，并将它们的版本号加一（这意味着表中将存在 150 行）。我们可以通过一个简单的 `INSERT INTO … SELECT` 语句来模拟这一点：
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -158,14 +157,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --select 100 random rows
+FROM posts_updateable --选择 100 个随机行
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
+返回 0 行。耗时:4.056 秒。已处理 142 万行,2.20 GB(每秒 34.96 万行,每秒 543.39 MB)。
 ```
 
-此外,我们通过重新插入行但将 deleted 列的值设为 1 来删除 1000 个随机帖子。同样,可以用一个简单的 `INSERT INTO SELECT` 来模拟这个操作。
+此外，我们通过重新插入这些行、但将 `deleted` 列的值设为 1，来“删除”1000 条随机帖子。同样，这一步也可以通过一个简单的 `INSERT INTO SELECT` 来模拟。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -193,14 +192,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --select 100 random rows
+FROM posts_updateable --随机选择 100 行
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
+返回 0 行。耗时:0.166 秒。已处理 13.553 万行,212.65 MB(81.63 万行/秒,1.28 GB/秒)
 ```
 
-上述操作的结果将是 16,000 行,即 10,000 + 5000 + 1000。这里的正确总数实际上应该比我们的原始总数少 1000 行,即 10,000 - 1000 = 9000。
+上述操作的结果将是 16,000 行，即 10,000 + 5,000 + 1,000。实际上，这里的正确总数应该是：我们理应只比原始总数少 1,000 行，即 10,000 - 1,000 = 9,000。
 
 ```sql
 SELECT count()
@@ -212,7 +211,7 @@ FROM posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-您的结果会根据已发生的合并而有所不同。我们可以看到这里的总数不同,因为我们有重复行。对表应用 `FINAL` 可以得到正确的结果。
+这里的结果会因已发生的合并而有所不同。我们可以看到，由于存在重复行，这里的总数不同。对该表使用 `FINAL` 可以得到正确的结果。
 
 
 ```sql
@@ -224,29 +223,30 @@ FINAL
 │    9000 │
 └─────────┘
 
-返回 1 行。耗时:0.006 秒。处理了 1.181 万行,212.54 KB(214 万行/秒,38.61 MB/秒)。
-峰值内存使用量:8.14 MiB。
+返回 1 行。耗时: 0.006 秒。处理了 11.81 千行，212.54 KB (214 万行/秒，38.61 MB/秒)。
+峰值内存使用: 8.14 MiB。
 ```
 
 
 ## FINAL 性能 {#final-performance}
 
-`FINAL` 操作符确实会对查询产生一定的性能开销。
-当查询未在主键列上进行过滤时,这种开销最为明显,
-会导致读取更多数据并增加去重开销。如果用户
-使用 `WHERE` 条件在键列上进行过滤,则加载和传递用于
-去重的数据量将会减少。
+在查询中使用 `FINAL` 运算符确实会带来一定的性能开销。
+当查询没有基于主键列进行过滤时，这一点会最为明显，
+因为会导致读取更多数据并增加去重的开销。如果用户
+在 `WHERE` 条件中基于主键列进行过滤，加载并传递给去重的数据量将会减少。
 
-如果 `WHERE` 条件未使用键列,ClickHouse 目前在使用 `FINAL` 时不会利用 `PREWHERE` 优化。该优化旨在减少非过滤列的读取行数。可以在[此处](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)找到模拟 `PREWHERE` 从而潜在提升性能的示例。
+如果 `WHERE` 条件未使用主键列，在使用 `FINAL` 时 ClickHouse 当前不会使用 `PREWHERE` 优化。
+该优化旨在减少为未参与过滤的列读取的行数。关于如何通过模拟 `PREWHERE` 从而潜在地提升性能的示例，请参见[此处](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)。
 
 
-## 利用 ReplacingMergeTree 的分区特性 {#exploiting-partitions-with-replacingmergetree}
 
-ClickHouse 中的数据合并在分区级别进行。使用 ReplacingMergeTree 时,我们建议用户按照最佳实践对表进行分区,前提是用户能够确保**分区键对于某一行不会发生变化**。这将确保同一行的更新会被发送到同一个 ClickHouse 分区。您可以重用与 Postgres 相同的分区键,前提是遵守此处概述的最佳实践。
+## 利用 ReplacingMergeTree 分区
 
-假设满足这种情况,用户可以使用设置 `do_not_merge_across_partitions_select_final=1` 来提高 `FINAL` 查询性能。此设置会使分区在使用 FINAL 时独立进行合并和处理。
+ClickHouse 中的数据合并是在分区级别进行的。使用 ReplacingMergeTree 时，我们建议用户按照最佳实践对表进行分区，前提是能够确保**该分区键对同一行不会发生变化**。这样可以确保与同一行相关的更新会被发送到同一个 ClickHouse 分区。只要遵守此处概述的最佳实践，你可以复用在 Postgres 中使用的同一个分区键。
 
-考虑以下 posts 表,其中我们不使用分区:
+在此前提下，用户可以将设置 `do_not_merge_across_partitions_select_final=1` 打开，以提升 `FINAL` 查询性能。启用该设置后，在使用 FINAL 时，各分区会被独立合并和处理。
+
+考虑下面这个 posts 表，其中我们没有使用分区：
 
 ```sql
 CREATE TABLE stackoverflow.posts_no_part
@@ -265,7 +265,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
-为了确保 `FINAL` 需要执行一些工作,我们更新 100 万行 - 通过插入重复行来递增它们的 `AnswerCount`。
+为了确保 `FINAL` 必须实际执行一些工作，我们更新 100 万行数据——通过插入重复行来增加它们的 `AnswerCount` 值。
 
 ```sql
 INSERT INTO posts_no_part SELECT Version + 1 AS Version, Deleted, Id, PostTypeId, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount + 1 AS AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate
@@ -273,7 +273,7 @@ FROM posts_no_part
 LIMIT 1000000
 ```
 
-使用 `FINAL` 计算每年的答案总数:
+使用 `FINAL` 计算每年的答案总和：
 
 ```sql
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
@@ -292,7 +292,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-对按年份分区的表重复这些相同的步骤,并使用 `do_not_merge_across_partitions_select_final=1` 重复上述查询。
+对于按年份分区的表重复上述步骤，并在设置 `do_not_merge_across_partitions_select_final=1` 后再次运行上述查询。
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
@@ -306,7 +306,7 @@ ENGINE = ReplacingMergeTree
 PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
-// 省略填充和更新操作
+// 已省略填充和更新操作
 
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
 FROM posts_with_part
@@ -323,46 +323,46 @@ ORDER BY year ASC
 │ 2024 │       127765  │
 └──────┴───────────────┘
 
-17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
+返回 17 行。用时:0.994 秒。处理了 6465 万行,983.64 MB(6502 万行/秒,989.23 MB/秒)。
 ```
 
-如图所示,在这种情况下,分区通过允许去重过程在分区级别并行进行,显著提高了查询性能。
+如上所示，在本例中，通过在分区级别并行执行去重过程，分区显著提升了查询性能。
 
 
 ## 合并行为注意事项 {#merge-behavior-considerations}
 
-ClickHouse 的合并选择机制不仅仅是简单地合并数据部分。下面我们将在 ReplacingMergeTree 的上下文中研究这种行为,包括用于启用更激进的旧数据合并的配置选项以及对较大数据部分的考虑因素。
+ClickHouse 的合并选择机制不仅仅是简单地合并数据部分。下面我们将结合 ReplacingMergeTree 的使用场景，对这种行为进行分析，包括如何通过配置选项对旧数据启用更激进的合并，以及在数据部分较大时需要考虑的因素。
 
 ### 合并选择逻辑 {#merge-selection-logic}
 
-虽然合并旨在最小化数据部分的数量,但它也会在此目标与写入放大的成本之间进行权衡。因此,根据内部计算,如果某些数据部分范围会导致过度的写入放大,则会被排除在合并之外。这种行为有助于防止不必要的资源使用并延长存储组件的使用寿命。
+合并的目标虽然是减少数据部分（parts）的数量，但同时也需要在这一目标与写放大成本之间取得平衡。因此，如果某些连续的数据部分在内部计算后被认为会导致过高的写放大，它们就会被排除在合并范围之外。这种行为有助于避免不必要的资源消耗并延长存储组件的使用寿命。
 
 ### 大数据部分的合并行为 {#merging-behavior-on-large-parts}
 
-ClickHouse 中的 ReplacingMergeTree 引擎通过合并数据部分来优化重复行的管理,根据指定的唯一键仅保留每行的最新版本。然而,当合并后的数据部分达到 max_bytes_to_merge_at_max_space_in_pool 阈值时,即使设置了 min_age_to_force_merge_seconds,它也不会再被选择进行进一步合并。因此,无法再依赖自动合并来删除随着持续数据插入而累积的重复数据。
+ClickHouse 中的 ReplacingMergeTree 引擎通过合并数据部分来管理重复行，根据指定的唯一键保留每行的最新版本。然而，当某个已合并的数据部分达到 `max_bytes_to_merge_at_max_space_in_pool` 阈值时，即使设置了 `min_age_to_force_merge_seconds`，它也不会再被选中参与后续合并。结果是，自动合并将不再可靠地清理随着持续写入而累积的重复数据。
 
-为了解决这个问题,用户可以调用 OPTIMIZE FINAL 来手动合并数据部分并删除重复数据。与自动合并不同,OPTIMIZE FINAL 会绕过 max_bytes_to_merge_at_max_space_in_pool 阈值,仅根据可用资源(特别是磁盘空间)合并数据部分,直到每个分区中只剩下一个数据部分。然而,这种方法在大表上可能会占用大量内存,并且随着新数据的添加可能需要重复执行。
+为了解决这一问题，用户可以通过执行 `OPTIMIZE FINAL` 手动触发合并数据部分并删除重复行。与自动合并不同，`OPTIMIZE FINAL` 会绕过 `max_bytes_to_merge_at_max_space_in_pool` 阈值，只根据可用资源（尤其是磁盘空间）来合并数据部分，直到每个分区仅剩单一数据部分。不过，这种方式在大表上可能会占用大量内存，并且在有新数据不断写入时可能需要多次重复执行。
 
-为了获得更可持续且能保持性能的解决方案,建议对表进行分区。这可以帮助防止数据部分达到最大合并大小,并减少持续手动优化的需求。
+为了在保持性能的同时获得更持久的解决方案，建议对表进行分区。分区可以帮助避免单个数据部分达到最大合并大小，从而减少频繁手动优化操作的需求。
 
-### 分区和跨分区合并 {#partitioning-and-merging-across-partitions}
+### 分区以及跨分区合并 {#partitioning-and-merging-across-partitions}
 
-如在"利用 ReplacingMergeTree 的分区"中所讨论的,我们建议将表分区作为最佳实践。分区可以隔离数据以实现更高效的合并,并避免跨分区合并,特别是在查询执行期间。从 23.12 版本开始,这种行为得到了增强:如果分区键是排序键的前缀,则在查询时不会执行跨分区合并,从而提高查询性能。
+如在 Exploiting Partitions with ReplacingMergeTree 一文中所讨论的，我们推荐将表进行分区作为最佳实践。分区可以隔离数据，使合并更加高效，并避免在查询执行期间进行跨分区合并。从 23.12 版本开始，这一行为得到了增强：如果分区键是排序键的前缀，查询时将不会进行跨分区合并，从而提升查询性能。
 
-### 调整合并以获得更好的查询性能 {#tuning-merges-for-better-query-performance}
+### 为更优查询性能调优合并行为 {#tuning-merges-for-better-query-performance}
 
-默认情况下,min_age_to_force_merge_seconds 和 min_age_to_force_merge_on_partition_only 分别设置为 0 和 false,禁用这些功能。在此配置下,ClickHouse 将应用标准合并行为,而不会根据分区年龄强制合并。
+默认情况下，`min_age_to_force_merge_seconds` 和 `min_age_to_force_merge_on_partition_only` 分别设置为 0 和 `false`，从而禁用这些特性。在这种配置下，ClickHouse 将应用标准合并行为，而不会基于分区“年龄”强制合并。
 
-如果指定了 min_age_to_force_merge_seconds 的值,ClickHouse 将忽略超过指定时间段的数据部分的正常合并启发式规则。虽然这通常仅在目标是最小化数据部分总数时才有效,但它可以通过减少查询时需要合并的数据部分数量来提高 ReplacingMergeTree 的查询性能。
+如果为 `min_age_to_force_merge_seconds` 指定了一个值，ClickHouse 会对超过该时间阈值的数据部分忽略常规合并启发式规则。虽然通常只有在目标是最小化数据部分总数时这一设置才更为有效，但在 ReplacingMergeTree 中，它可以通过减少查询时需要合并的数据部分数量来提升查询性能。
 
-可以通过设置 min_age_to_force_merge_on_partition_only=true 来进一步调整此行为,要求分区中的所有数据部分都超过 min_age_to_force_merge_seconds 才能进行激进合并。此配置允许较旧的分区随着时间的推移合并为单个数据部分,从而整合数据并保持查询性能。
+可以通过将 `min_age_to_force_merge_on_partition_only=true` 进一步调优这一行为，此时只有当分区内所有数据部分都早于 `min_age_to_force_merge_seconds` 时才会触发更激进的合并。该配置使得较旧的分区可以随着时间推移合并为单一数据部分，从而整合数据并维持良好的查询性能。
 
 ### 推荐设置 {#recommended-settings}
 
 :::warning
-调整合并行为是一项高级操作。我们建议在生产工作负载中启用这些设置之前咨询 ClickHouse 支持团队。
+调优合并行为属于高级操作。我们建议在将这些设置用于生产负载之前，先咨询 ClickHouse 支持团队。
 :::
 
-在大多数情况下,建议将 min_age_to_force_merge_seconds 设置为较低的值——明显小于分区周期。这可以最小化数据部分的数量,并防止在使用 FINAL 运算符进行查询时进行不必要的合并。
+在大多数情况下，推荐将 `min_age_to_force_merge_seconds` 设置为一个较小的值——显著小于分区周期。这样可以最小化数据部分的数量，并避免在使用 `FINAL` 运算符执行查询时发生不必要的合并。
 
-例如,考虑一个已经合并为单个数据部分的月度分区。如果一个小的零散插入在此分区内创建了一个新的数据部分,查询性能可能会受到影响,因为 ClickHouse 必须读取多个数据部分直到合并完成。设置 min_age_to_force_merge_seconds 可以确保这些数据部分被激进地合并,从而防止查询性能下降。
+例如，考虑一个已被合并为单一数据部分的月度分区。如果随后有一个很小、零散的插入在该分区中创建了新的数据部分，查询性能可能会下降，因为在合并完成之前 ClickHouse 必须读取多个数据部分。通过设置 `min_age_to_force_merge_seconds`，可以确保这些数据部分被更激进地合并，避免查询性能下降。

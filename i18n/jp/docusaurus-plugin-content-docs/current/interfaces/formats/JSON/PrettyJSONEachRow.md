@@ -1,6 +1,6 @@
 ---
 alias: ['PrettyJSONLines', 'PrettyNDJSON']
-description: 'PrettyJSONLines フォーマットに関するドキュメント'
+description: 'PrettyJSONLines 形式に関するドキュメント'
 input_format: false
 keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
 output_format: true
@@ -9,22 +9,23 @@ title: 'PrettyJSONEachRow'
 doc_type: 'guide'
 ---
 
-| Input | Output | 別名                              |
-|-------|--------|-----------------------------------|
-| ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
+| 入力 | 出力 | 別名                             |
+|------|------|-----------------------------------|
+| ✗    | ✔    | `PrettyJSONLines`, `PrettyNDJSON` |
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-[JSONEachRow](./JSONEachRow.md)との違いは、JSONが改行区切りと4スペースのインデントで整形されている点のみです。
+[JSONEachRow](./JSONEachRow.md) と異なる点は、JSON が改行区切りおよび 4 つのスペースによるインデントを付けて整形されていることだけです。
+
 
 
 ## 使用例 {#example-usage}
-
 ### データの挿入 {#inserting-data}
 
-以下のデータを含む `football.json` という名前のJSONファイルを使用します:
+次のデータを含む JSON ファイル `football.json` を用意します。
+
 
 
 ```json
@@ -166,15 +167,15 @@ doc_type: 'guide'
 }
 ```
 
-データを挿入します:
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み取り
 
-`PrettyJSONEachRow` 形式を使用してデータを読み取ります:
+`PrettyJSONEachRow` フォーマットを使用してデータを読み込みます：
 
 ```sql
 SELECT *
@@ -182,7 +183,7 @@ FROM football
 FORMAT PrettyJSONEachRow
 ```
 
-出力は JSON 形式になります:
+出力は JSON 形式です。
 
 
 ```json
@@ -328,4 +329,4 @@ FORMAT PrettyJSONEachRow
 
 
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

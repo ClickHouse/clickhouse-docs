@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет эксцесс для последовательности.'
+description: 'Вычисляет эксцесс последовательности.'
 sidebar_position: 157
 slug: /sql-reference/aggregate-functions/reference/kurtpop
 title: 'kurtPop'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # kurtPop
 
-Вычисляет [эксцесс](https://en.wikipedia.org/wiki/Kurtosis) последовательности значений.
+Вычисляет [эксцесс](https://en.wikipedia.org/wiki/Kurtosis) для последовательности.
 
 ```sql
 kurtPop(expr)
@@ -20,7 +20,7 @@ kurtPop(expr)
 
 **Возвращаемое значение**
 
-Эксцесс заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md).
+Коэффициент эксцесса (kurtosis) заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
 
 **Пример**
 

@@ -1,6 +1,6 @@
 ---
-description: 'すべての成功・失敗したログインおよびログアウトイベントに関する情報を保持するシステムテーブル。'
-keywords: ['システムテーブル', 'session_log']
+description: 'すべての成功・失敗したログインおよびログアウトイベントに関する情報を含む system テーブル。'
+keywords: ['system table', 'session_log']
 slug: /operations/system-tables/session_log
 title: 'system.session_log'
 doc_type: 'reference'
@@ -13,22 +13,22 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-すべてのログイン／ログアウトの成功および失敗イベントに関する情報を含みます。
+すべてのログインおよびログアウトイベント（成功・失敗）に関する情報を含みます。
 
-列:
+Columns:
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-* `type` ([Enum8](../../sql-reference/data-types/enum.md)) — ログイン/ログアウトの結果。取り得る値:
+* `type` ([Enum8](../../sql-reference/data-types/enum.md)) — ログイン／ログアウトの結果。取りうる値:
   * `LoginFailure` — ログインエラー。
   * `LoginSuccess` — ログイン成功。
   * `Logout` — システムからのログアウト。
 * `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — 認証 ID。ユーザーがログインするたびに自動生成される UUID。
 * `session_id` ([String](../../sql-reference/data-types/string.md)) — クライアントから [HTTP](../../interfaces/http.md) インターフェイス経由で渡されるセッション ID。
-* `event_date` ([Date](../../sql-reference/data-types/date.md)) — ログイン/ログアウトの日付。
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ログイン/ログアウトの時刻。
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのログイン/ログアウト開始時刻。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — ログイン／ログアウトの日付。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ログイン／ログアウトの時刻。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのログイン／ログアウト開始時刻。
 * `user` ([String](../../sql-reference/data-types/string.md)) — ユーザー名。
-* `auth_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 認証方式。取り得る値:
+* `auth_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 認証タイプ。取りうる値:
   * `NO_PASSWORD`
   * `PLAINTEXT_PASSWORD`
   * `SHA256_PASSWORD`
@@ -36,28 +36,28 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
   * `LDAP`
   * `KERBEROS`
   * `SSL_CERTIFICATE`
-* `profiles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — すべてのロールおよび/またはユーザーに対して設定されているプロファイルの一覧。
-* `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — プロファイルが適用されているロールの一覧。
-* `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — クライアントのログイン/ログアウト時に変更された設定。
-* `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — ログイン/ログアウトに使用された IP アドレス。
-* `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ログイン/ログアウトに使用されたクライアントポート。
-* `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — ログインが開始されたインターフェイス。取り得る値:
+* `profiles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — すべてのロールおよび／またはユーザーに設定されたプロファイルの一覧。
+* `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — プロファイルが適用されるロールの一覧。
+* `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — クライアントがログイン／ログアウトした際に変更された設定。
+* `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — ログイン／ログアウトに使用された IP アドレス。
+* `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ログイン／ログアウトに使用されたクライアントポート番号。
+* `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — ログインが開始されたインターフェイス。取りうる値:
   * `TCP`
   * `HTTP`
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントが実行されているクライアントマシンのホスト名。
-* `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client` または別の TCP クライアントの名前。
-* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または別の TCP クライアントのリビジョン。
-* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または別の TCP クライアントのメジャーバージョン。
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または別の TCP クライアントのマイナーバージョン。
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または別の TCP クライアントのパッチバージョン。
-* `failure_reason` ([String](../../sql-reference/data-types/string.md)) — ログイン/ログアウト失敗の理由を含む例外メッセージ。
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または他の TCP クライアントが実行されているクライアントマシンのホスト名。
+* `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client` または他の TCP クライアントの名前。
+* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのリビジョン。
+* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのメジャーバージョン。
+* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのマイナーバージョン。
+* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのパッチバージョン番号。
+* `failure_reason` ([String](../../sql-reference/data-types/string.md)) — ログイン／ログアウトの失敗理由を含む例外メッセージ。
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT * FROM system.session_log LIMIT 1 FORMAT Vertical;

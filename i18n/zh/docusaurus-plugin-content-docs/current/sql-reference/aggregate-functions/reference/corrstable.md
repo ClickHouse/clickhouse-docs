@@ -1,5 +1,5 @@
 ---
-description: '计算 Pearson 相关系数，但使用数值更稳定的算法。'
+description: '计算皮尔逊相关系数，但使用数值上更稳定的算法。'
 sidebar_position: 119
 slug: /sql-reference/aggregate-functions/reference/corrstable
 title: 'corrStable'
@@ -16,7 +16,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-与 [`corr`](../reference/corr.md) 函数类似,但使用数值稳定算法。因此,`corrStable` 比 `corr` 慢,但能产生更精确的结果。
+与 [`corr`](../reference/corr.md) 函数类似，但使用数值稳定算法。因此，`corrStable` 比 `corr` 慢，但能产生更精确的结果。
 
 **语法**
 

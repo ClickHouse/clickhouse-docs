@@ -12,24 +12,29 @@ doc_type: 'reference'
 # anyIf {#avgif}
 
 
+
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`any`](/sql-reference/aggregate-functions/reference/any)集約関数に適用することで、指定された条件に一致する指定列から最初に検出された要素を選択できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`any`](/sql-reference/aggregate-functions/reference/any)
+集約関数に適用して、指定した条件に一致する要素のうち、指定したカラム内で最初に出現したものを
+選択します。
 
 
-## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
-`anyIf`を使用して金額が200より上と下の最初の`transaction_id`を選択します。
+## 使用例
 
-まず、テーブルを作成してデータを挿入します:
+この例では、成功フラグを含む売上データを格納するテーブルを作成し、
+`anyIf` を使用して、金額 200 をしきい値としてそれより大きい場合と小さい場合の
+最初の `transaction_id` を選択します。
 
-```sql title="クエリ"
+まず、テーブルを作成してデータを挿入します。
+
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple();
 
@@ -44,12 +49,12 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) AS tid_lt_200,
-    anyIf(transaction_id, amount > 200) AS tid_gt_200
+    anyIf(transaction_id, amount &lt; 200) AS tid_lt_200,
+    anyIf(transaction_id, amount &gt; 200) AS tid_gt_200
 FROM sales;
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
@@ -57,6 +62,5 @@ FROM sales;
 
 
 ## 関連項目 {#see-also}
-
 - [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

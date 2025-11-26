@@ -3,7 +3,7 @@ import createservice8 from '@site/static/images/_snippets/createservice8.png';
 import Image from '@theme/IdealImage';
 
 :::tip SQL console
-SQL クライアント接続が必要な場合は、ClickHouse Cloud サービスには対応する Web ベースの SQL コンソールがあります。詳しくは、以下の **Connect to SQL console** をクリックして展開してください。
+SQL クライアント接続が必要な場合、利用中の ClickHouse Cloud サービスには Web ベースの SQL コンソールが用意されています。詳細は、以下の **Connect to SQL console** を展開してください。
 :::
 
 <details>
@@ -13,7 +13,7 @@ SQL クライアント接続が必要な場合は、ClickHouse Cloud サービ�
 
   <Image img={cloud_connect_to_sql_console} alt="SQL コンソールに接続" size="lg" force border />
 
-  SQL コンソール画面に遷移します。
+  SQL コンソールへ自動的に遷移します。
 
   <Image img={createservice8} alt="SQL コンソール" size="lg" force border />
 </details>

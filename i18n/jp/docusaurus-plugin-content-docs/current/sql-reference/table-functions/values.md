@@ -1,6 +1,6 @@
 ---
 description: '列を値で埋めるための一時ストレージを作成します。'
-keywords: ['values', 'table function']
+keywords: ['値', 'テーブル関数']
 sidebar_label: 'values'
 sidebar_position: 210
 slug: /sql-reference/table-functions/values
@@ -12,22 +12,23 @@ doc_type: 'reference'
 
 # Values テーブル関数 {#values-table-function}
 
-`Values` テーブル関数は、値を列に格納する一時的なストレージを作成します。クイックテストやサンプルデータの生成に便利です。
+`Values` テーブル関数を使用すると、一時的なストレージを作成し、その列を値で埋めることができます。簡単なテストやサンプルデータの生成に便利です。
 
 :::note
-Values は大文字小文字を区別しない関数です。すなわち、`VALUES` と `values` のどちらも有効です。
+Values は大文字小文字を区別しない関数です。つまり、`VALUES` と `values` のどちらも有効です。
 :::
 
 
-## 構文 {#syntax}
 
-`VALUES`テーブル関数の基本構文は以下の通りです:
+## 構文
+
+`VALUES` テーブル関数の基本構文は次のとおりです。
 
 ```sql
 VALUES([structure,] values...)
 ```
 
-一般的には以下のように使用されます:
+一般的には次のように使われます：
 
 ```sql
 VALUES(
@@ -41,12 +42,16 @@ VALUES(
 
 ## 引数 {#arguments}
 
-- `column1_name Type1, ...` (オプション)。カラム名と型を指定する[String](/sql-reference/data-types/string)。この引数を省略した場合、カラムは`c1`、`c2`などと命名されます。
-- `(value1_row1, value2_row1)`。任意の型の値を含む[Tuples](/sql-reference/data-types/tuple)。
+- `column1_name Type1, ...`（省略可）。列名と型を指定する[String](/sql-reference/data-types/string) 型。  
+  この引数を省略した場合、列名は `c1`、`c2` などになります。
+- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple)  
+   任意の型の値を含むタプル。
 
 :::note
-カンマ区切りのタプルは単一の値に置き換えることもできます。この場合、各値は新しい行として扱われます。詳細については[examples](#examples)セクションを参照してください。
+カンマ区切りのタプルは、単一の値で置き換えることもできます。この場合、
+各値は新しい行として扱われます。詳細は[例](#examples)セクションを参照してください。
 :::
+
 
 
 ## 戻り値 {#returned-value}
@@ -54,9 +59,10 @@ VALUES(
 - 指定された値を含む一時テーブルを返します。
 
 
-## 例 {#examples}
 
-```sql title="クエリ"
+## 使用例
+
+```sql title="Query"
 SELECT *
 FROM VALUES(
     'person String, place String',
@@ -73,7 +79,7 @@ FROM VALUES(
 )
 ```
 
-```response title="レスポンス"
+```response title="Response"
     ┌─person───┬─place─────┐
  1. │ Noah     │ Paris     │
  2. │ Emma     │ Tokyo     │
@@ -88,9 +94,9 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-`VALUES`はタプルではなく単一の値でも使用できます。例:
+`VALUES` はタプルだけでなく、単一の値にも使用できます。例:
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT *
 FROM VALUES(
     'person String',
@@ -107,7 +113,7 @@ FROM VALUES(
 )
 ```
 
-```response title="レスポンス"
+```response title="Response"
     ┌─person───┐
  1. │ Noah     │
  2. │ Emma     │
@@ -122,11 +128,11 @@ FROM VALUES(
     └──────────┘
 ```
 
-または、行の仕様([構文](#syntax)における`'column1_name Type1, column2_name Type2, ...'`)を指定せずに使用することもでき、その場合は列名が自動的に付けられます。
+または、[構文](#syntax)内で行仕様（`'column1_name Type1, column2_name Type2, ...'`）を指定しない場合は、列名が自動的に割り当てられます。
 
-例:
+例：
 
-```sql title="クエリ"
+```sql title="Query"
 -- 値としてのタプル
 SELECT *
 FROM VALUES(
@@ -143,7 +149,7 @@ FROM VALUES(
 )
 ```
 
-```response title="レスポンス"
+```response title="Response"
     ┌─c1───────┬─c2────────┐
  1. │ Noah     │ Paris     │
  2. │ Emma     │ Tokyo     │
@@ -159,7 +165,7 @@ FROM VALUES(
 ```
 
 ```sql
--- 単一の値
+-- 単一値
 SELECT *
 FROM VALUES(
     'Noah',
@@ -175,7 +181,7 @@ FROM VALUES(
 )
 ```
 
-```response title="レスポンス"
+```response title="Response"
     ┌─c1───────┐
  1. │ Noah     │
  2. │ Emma     │
@@ -193,4 +199,4 @@ FROM VALUES(
 
 ## 関連項目 {#see-also}
 
-- [Values形式](/interfaces/formats/Values)
+- [Values 形式](/interfaces/formats/Values)

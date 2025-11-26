@@ -1,11 +1,11 @@
 ---
 description: 'Движок `ExternalDistributed` позволяет выполнять запросы `SELECT`
-  к данным, хранящимся на удалённых серверах MySQL или PostgreSQL. Принимает
-  в качестве аргумента движки MySQL или PostgreSQL, что позволяет выполнять шардирование.'
+  к данным, которые хранятся на удалённых серверах MySQL или PostgreSQL. Использует
+  табличные движки MySQL или PostgreSQL в качестве аргумента, что позволяет реализовать шардинг.'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
 slug: /engines/table-engines/integrations/ExternalDistributed
-title: 'Движок таблицы ExternalDistributed'
+title: 'Табличный движок ExternalDistributed'
 doc_type: 'reference'
 ---
 
@@ -13,11 +13,11 @@ doc_type: 'reference'
 
 # Движок таблицы ExternalDistributed
 
-Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах с MySQL или PostgreSQL. Принимает в качестве аргумента движок [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md), что позволяет использовать шардинг.
+Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах с MySQL или PostgreSQL. Принимает в качестве аргумента движки [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md), поэтому возможен шардинг.
 
 
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -28,37 +28,37 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = ExternalDistributed('engine', 'host:port', 'database', 'table', 'user', 'password');
 ```
 
-Подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
+См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
 Структура таблицы может отличаться от структуры исходной таблицы:
 
-- Имена столбцов должны совпадать с именами в исходной таблице, но можно использовать только некоторые из этих столбцов и в любом порядке.
-- Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#cast) значения к типам данных ClickHouse.
+* Имена столбцов должны совпадать с именами в исходной таблице, но вы можете использовать только часть этих столбцов и в любом порядке.
+* Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#cast) значения к типам данных ClickHouse.
 
 **Параметры движка**
 
-- `engine` — движок таблицы `MySQL` или `PostgreSQL`.
-- `host:port` — адрес сервера MySQL или PostgreSQL.
-- `database` — имя удалённой базы данных.
-- `table` — имя удалённой таблицы.
-- `user` — имя пользователя.
-- `password` — пароль пользователя.
+* `engine` — Движок таблицы `MySQL` или `PostgreSQL`.
+* `host:port` — Адрес сервера MySQL или PostgreSQL.
+* `database` — Имя удалённой базы данных.
+* `table` — Имя удалённой таблицы.
+* `user` — Имя пользователя.
+* `password` — Пароль пользователя.
 
 
-## Детали реализации {#implementation-details}
+## Детали реализации
 
-Поддерживает несколько реплик, которые должны быть перечислены через `|`, и шарды, которые должны быть перечислены через `,`. Например:
+Поддерживаются несколько реплик; их необходимо перечислять через `|`, а шарды — через `,`. Например:
 
 ```sql
 CREATE TABLE test_shards (id UInt32, name String, age UInt32, money UInt32) ENGINE = ExternalDistributed('MySQL', `mysql{1|2}:3306,mysql{3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-При указании реплик для каждого шарда при чтении выбирается одна из доступных реплик. Если соединение не удается установить, выбирается следующая реплика, и так далее для всех реплик. Если попытка соединения не удается для всех реплик, попытка повторяется таким же образом несколько раз.
+При задании реплик при чтении для каждого шарда выбирается одна из доступных реплик. Если подключение не удалось, выбирается следующая реплика и так далее для всех реплик. Если попытка подключения ко всем репликам завершилась неудачей, попытка повторяется тем же образом несколько раз.
 
-Можно указать любое количество шардов и любое количество реплик для каждого шарда.
+Вы можете указывать любое количество шардов и любое количество реплик для каждого шарда.
 
 **См. также**
 
-- [Движок таблиц MySQL](../../../engines/table-engines/integrations/mysql.md)
-- [Движок таблиц PostgreSQL](../../../engines/table-engines/integrations/postgresql.md)
-- [Движок таблиц Distributed](../../../engines/table-engines/special/distributed.md)
+* [Движок таблицы MySQL](../../../engines/table-engines/integrations/mysql.md)
+* [Движок таблицы PostgreSQL](../../../engines/table-engines/integrations/postgresql.md)
+* [Распределённый движок таблицы](../../../engines/table-engines/special/distributed.md)

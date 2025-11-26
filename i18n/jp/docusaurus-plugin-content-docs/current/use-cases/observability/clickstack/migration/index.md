@@ -6,12 +6,12 @@ pagination_next: null
 sidebar_label: '移行ガイド'
 description: '他のオブザーバビリティソリューションから ClickStack への移行'
 doc_type: 'guide'
-keywords: ['migrate to ClickStack', 'ClickStack migration guide
-', 'ClickStack migration from Elastic', 'ELK']
+keywords: ['ClickStack への移行', 'ClickStack 移行ガイド
+', 'Elastic から ClickStack への移行', 'ELK']
 ---
 
-このセクションでは、さまざまなオブザーバビリティソリューションから ClickStack へ移行するための包括的なガイドを提供します。各ガイドには、運用を継続しながらデータ、エージェント、ワークフローを移行するための詳細な手順が含まれます。
+このセクションでは、さまざまなオブザーバビリティソリューションから ClickStack へ移行するための包括的なガイドを掲載しています。各ガイドでは、運用を継続しながらデータ、エージェント、ワークフローを移行するための詳細な手順を解説します。
 
 | Technology | Description |
 |------------|-------------|
-| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | データ移行、エージェントの切り替え、検索機能を網羅した、Elastic Stack から ClickStack への移行に関する完全なガイド |
+| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | Elastic Stack から ClickStack への移行について、データ移行、エージェントの移行、および検索機能を含む移行手順を網羅したガイドです |

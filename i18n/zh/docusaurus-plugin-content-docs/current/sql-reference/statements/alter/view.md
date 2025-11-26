@@ -1,6 +1,6 @@
 ---
 description: 'ALTER TABLE ... MODIFY QUERY 语句文档'
-sidebar_label: 'VIEW'
+sidebar_label: '视图'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
 title: 'ALTER TABLE ... MODIFY QUERY 语句'
@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 # ALTER TABLE ... MODIFY QUERY 语句
 
-你可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[物化视图](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据写入过程。
+您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改创建 [物化视图](/sql-reference/statements/create/view#materialized-view) 时指定的 `SELECT` 查询，而不会中断数据摄取过程。
 
-该命令用于修改通过 `TO [db.]name` 子句创建的物化视图。它不会改变底层存储表的结构，也不会改变物化视图的列定义。正因为如此，对于那些在创建时未使用 `TO [db.]name` 子句的物化视图来说，该命令的适用范围非常有限。
+此命令用于修改通过 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改该物化视图的列定义，因此，对于未使用 `TO [db.]name` 子句创建的物化视图，此命令的适用范围非常有限。
 
-**使用 TO 目标表的示例**
+**使用 TO 表的示例**
 
 ```sql
 CREATE TABLE events (ts DateTime, event_type String)
@@ -46,15 +46,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- 添加新的度量值 `cost`
--- 和新的维度 `browser`。
+-- 让我们添加新的指标 `cost`
+-- 以及新的维度 `browser`。
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- 物化视图和 TO(目标表)中的列不必完全匹配,
--- 因此下一个 alter 操作不会中断数据插入。
+-- 物化视图与 TO（目标表）中的列不必一一对应，
+-- 因此接下来的 ALTER 操作不会导致插入失败。
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -68,7 +68,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- 新列 `browser` 和 `cost` 为空,因为我们尚未修改物化视图。
+-- 新增的 `browser` 和 `cost` 列仍然为空，因为我们尚未修改物化视图。
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -124,7 +124,7 @@ ORDER BY ts, event&#95;type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! 在执行 `MODIFY ORDER BY` 时会隐式引入 PRIMARY KEY。
+-- !!! 在执行 `MODIFY ORDER BY` 时，隐式引入了 PRIMARY KEY。
 
 SHOW CREATE TABLE events&#95;by&#95;day FORMAT TSVRaw
 
@@ -141,9 +141,9 @@ PRIMARY KEY (event&#95;type, ts)
 ORDER BY (event&#95;type, ts, browser)
 SETTINGS index&#95;granularity = 8192
 
--- !!! 列定义保持不变，但这无关紧要，我们查询的不是
--- MATERIALIZED VIEW，而是其 TO（存储）表。
--- SELECT 子句已经更新。
+-- !!! 列定义未更改，但这无关紧要，我们查询的不是
+-- 物化视图（MATERIALIZED VIEW），而是 TO（存储）表。
+-- SELECT 子句已更新。
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -169,7 +169,7 @@ browser
 
 **不使用 TO 表的示例**
 
-这种应用场景非常受限,因为您只能修改 `SELECT` 部分,无法添加新列。
+该应用程序功能非常受限，因为只能修改 `SELECT` 子句，无法添加新的列。
 ```
 
 
@@ -207,4 +207,4 @@ SELECT * FROM mv;
 
 ## ALTER TABLE ... MODIFY REFRESH 语句 {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` 语句用于修改[可刷新物化视图](../create/view.md#refreshable-materialized-view)的刷新参数。详见[修改刷新参数](../create/view.md#changing-refresh-parameters)。
+`ALTER TABLE ... MODIFY REFRESH` 语句用于修改 [可刷新物化视图](../create/view.md#refreshable-materialized-view) 的刷新参数。参见[更改刷新参数](../create/view.md#changing-refresh-parameters)。

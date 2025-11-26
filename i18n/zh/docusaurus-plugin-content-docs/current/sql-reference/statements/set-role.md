@@ -1,5 +1,5 @@
 ---
-description: 'SET ROLE 语句文档'
+description: 'SET ROLE 文档'
 sidebar_label: 'SET ROLE'
 sidebar_position: 51
 slug: /sql-reference/statements/set-role
@@ -14,38 +14,38 @@ SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 ```
 
 
-## SET DEFAULT ROLE {#set-default-role}
+## SET DEFAULT ROLE
 
 为用户设置默认角色。
 
-默认角色会在用户登录时自动激活。只能将已授予的角色设置为默认角色。如果角色未授予给用户,ClickHouse 会抛出异常。
+默认角色会在用户登录时自动激活。你只能将已授予的角色设置为默认角色。若某个角色尚未授予该用户，ClickHouse 会抛出异常。
 
 ```sql
 SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
 ```
 
 
-## 示例 {#examples}
+## 示例
 
-为用户设置多个默认角色：
+为用户分配多个默认角色：
 
 ```sql
 SET DEFAULT ROLE role1, role2, ... TO user
 ```
 
-将所有已授予的角色设为用户的默认角色：
+将所有已授予的角色设置为某个用户的默认角色：
 
 ```sql
 SET DEFAULT ROLE ALL TO user
 ```
 
-清除用户的默认角色：
+从用户中移除默认角色：
 
 ```sql
 SET DEFAULT ROLE NONE TO user
 ```
 
-将所有已授予的角色设为默认角色，但排除特定角色 `role1` 和 `role2`：
+将所有已授予角色都设为默认角色，但排除特定角色 `role1` 和 `role2`：
 
 ```sql
 SET DEFAULT ROLE ALL EXCEPT role1, role2 TO user

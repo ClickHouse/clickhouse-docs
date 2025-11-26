@@ -1,87 +1,89 @@
 ---
-description: '`user.xml` 設定ファイルの `profiles` セクションで設定に対する制約を定義でき、これによりユーザーは `SET` クエリで一部の設定を変更できなくなります。'
-sidebar_label: '設定に対する制約'
+description: '`user.xml` 設定ファイルの `profiles` セクションで設定に対する制約を定義でき、これによりユーザーが `SET` クエリを使って一部の設定を変更することを禁止できます。'
+sidebar_label: '設定への制約'
 sidebar_position: 62
 slug: /operations/settings/constraints-on-settings
-title: '設定に対する制約'
+title: '設定への制約'
 doc_type: 'reference'
 ---
 
 
 
-# 設定の制約
+# 設定上の制約事項
 
 
 
 ## 概要 {#overview}
 
-ClickHouseにおける設定の「制約」とは、設定に対して割り当て可能な制限とルールを指します。これらの制約を適用することで、データベースの安定性、セキュリティ、および予測可能な動作を維持できます。
+ClickHouse における設定に対する「制約」とは、その設定に付与できる制限やルールを指します。これらの制約を適用することで、データベースの安定性、セキュリティ、および予測可能な動作を維持できます。
 
 
-## 制約の定義 {#defining-constraints}
 
-設定に対する制約は、`user.xml`設定ファイルの`profiles`セクションで定義できます。これにより、ユーザーが[`SET`](/sql-reference/statements/set)文を使用して特定の設定を変更することを禁止できます。
+## 制約の定義
 
-制約は以下のように定義します:
+設定に対する制約は、`user.xml` 設定ファイルの `profiles` セクションで定義できます。これにより、ユーザーが [`SET`](/sql-reference/statements/set) ステートメントを使用して一部の設定を変更できないようにします。
+
+制約は次のように定義します。
 
 ```xml
 <profiles>
   <user_name>
     <constraints>
-      <setting_name_1>
+      <設定名_1>
         <min>lower_boundary</min>
-      </setting_name_1>
-      <setting_name_2>
+      </設定名_1>
+      <設定名_2>
         <max>upper_boundary</max>
-      </setting_name_2>
-      <setting_name_3>
+      </設定名_2>
+      <設定名_3>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
-      </setting_name_3>
-      <setting_name_4>
+      </設定名_3>
+      <設定名_4>
         <readonly/>
-      </setting_name_4>
-      <setting_name_5>
+      </設定名_4>
+      <設定名_5>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <changeable_in_readonly/>
-      </setting_name_5>
-      <setting_name_6>
+      </設定名_5>
+      <設定名_6>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <disallowed>value1</disallowed>
         <disallowed>value2</disallowed>
         <disallowed>value3</disallowed>
         <changeable_in_readonly/>
-      </setting_name_6>
+      </設定名_6>
     </constraints>
   </user_name>
 </profiles>
 ```
 
-ユーザーが制約に違反しようとすると、例外がスローされ、設定は変更されません。
+ユーザーが制約に違反しようとすると例外がスローされ、設定は変更されずにそのまま維持されます。
 
 
-## 制約の種類 {#types-of-constraints}
+## 制約の種類
 
-ClickHouseでは、以下の種類の制約がサポートされています:
+ClickHouse でサポートされている制約には、いくつかの種類があります。
 
-- `min`
-- `max`
-- `disallowed`
-- `readonly` (エイリアス `const`)
-- `changeable_in_readonly`
+* `min`
+* `max`
+* `disallowed`
+* `readonly`（エイリアス `const`）
+* `changeable_in_readonly`
 
-`min`および`max`制約は、数値設定の上限と下限を指定するもので、互いに組み合わせて使用できます。
+`min` と `max` 制約は、数値設定に対する下限および上限を指定し、互いに組み合わせて使用できます。
 
-`disallowed`制約は、特定の設定に対して許可されない特定の値を指定するために使用できます。
+`disallowed` 制約は、特定の設定に対して許可してはならない値を指定するために使用できます。
 
-`readonly`または`const`制約は、ユーザーが対応する設定を一切変更できないことを指定します。
+`readonly` または `const` 制約は、ユーザーが対応する設定を一切変更できないことを示します。
 
-`changeable_in_readonly`制約タイプは、`readonly`設定が`1`に設定されている場合でも、ユーザーが`min`/`max`の範囲内で設定を変更できるようにします。それ以外の場合、`readonly=1`モードでは設定の変更は許可されません。
+`changeable_in_readonly` 制約タイプを使用すると、`readonly` 設定が `1` に設定されている場合でも、`min`/`max` の範囲内であればその設定を変更できます。それ以外の設定は、`readonly=1` モードでは変更できません。
 
 :::note
-`changeable_in_readonly`は、`settings_constraints_replace_previous`が有効になっている場合にのみサポートされます:
+`changeable_in_readonly` は、`settings_constraints_replace_previous`
+が有効化されている場合にのみサポートされます。
 
 ```xml
 <access_control_improvements>
@@ -94,28 +96,26 @@ ClickHouseでは、以下の種類の制約がサポートされています:
 
 ## 複数の制約プロファイル {#multiple-constraint-profiles}
 
-ユーザーに対して複数のプロファイルが有効な場合、制約はマージされます。
-マージプロセスは `settings_constraints_replace_previous` に依存します:
-
-- **true** (推奨): 同じ設定に対する制約はマージ時に置き換えられ、
-  最後の制約が使用され、それ以前のすべての制約は無視されます。
-  これには新しい制約で設定されていないフィールドも含まれます。
-- **false** (デフォルト): 同じ設定に対する制約は、
-  未設定の制約タイプはすべて前のプロファイルから取得され、
-  設定済みの制約タイプはすべて新しいプロファイルの値で置き換えられる形でマージされます。
+ユーザーに対して複数のプロファイルがアクティブな場合、それらの制約はマージされます。
+マージ方法は `settings_constraints_replace_previous` によって決まります:
+- **true** (推奨): 同じ設定に対する制約はマージ時に置き換えられ、最後に適用される制約のみが使用され、それ以前のものはすべて無視されます。
+  これには、新しい制約で設定されていないフィールドも含まれます。
+- **false** (デフォルト): 同じ設定に対する制約は、未設定の種類の制約は前のプロファイルから引き継ぎ、設定されている種類の制約は新しいプロファイルの値で置き換える形でマージされます。
 
 
-## 読み取り専用モード {#read-only}
 
-読み取り専用モードは`readonly`設定によって有効化されます。これは`readonly`制約タイプとは異なるものですので混同しないでください。
+## 読み取り専用モード
 
-- `readonly=0`: 読み取り専用の制限はありません。
-- `readonly=1`: 読み取りクエリのみが許可され、`changeable_in_readonly`が設定されていない限り設定を変更できません。
-- `readonly=2`: 読み取りクエリのみが許可されますが、`readonly`設定自体を除き設定を変更できます。
+読み取り専用モードは `readonly` 設定によって有効になります。これは
+`readonly` 制約タイプと混同しないでください。
 
-### 例 {#example-read-only}
+* `readonly=0`: 読み取り専用に関する制限はありません。
+* `readonly=1`: 読み取りクエリのみ許可され、`changeable_in_readonly` が設定されていない限り、設定を変更できません。
+* `readonly=2`: 読み取りクエリのみ許可されますが、`readonly` 設定自体を除き、その他の設定を変更できます。
 
-`users.xml`に以下の行が含まれているとします:
+### 例
+
+`users.xml` に次の行が含まれているとします。
 
 ```xml
 <profiles>
@@ -136,7 +136,7 @@ ClickHouseでは、以下の種類の制約がサポートされています:
 </profiles>
 ```
 
-以下のクエリはすべて例外をスローします:
+以下のクエリはすべて例外をスローします。
 
 ```sql
 SET max_memory_usage=20000000001;
@@ -145,28 +145,28 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
-Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
-Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
+Code: 452, e.displayText() = DB::Exception: max_memory_usage は 20000000000 を超える値に設定してはいけません。
+Code: 452, e.displayText() = DB::Exception: max_memory_usage は 5000000000 未満の値に設定してはいけません。
+Code: 452, e.displayText() = DB::Exception: force_index_by_date は変更してはいけません。
 ```
 
 :::note
-`default`プロファイルは特別に扱われます。`default`プロファイルに定義されたすべての制約はデフォルト制約となり、それらのユーザーに対して明示的に上書きされるまで、すべてのユーザーを制限します。
+`default` プロファイルは特別に扱われます。`default` プロファイルに定義されたすべての制約はデフォルトの制約となり、各ユーザーに対して明示的に上書きされるまで、すべてのユーザーに対して制約として適用されます。
 :::
 
 
-## MergeTree設定に対する制約 {#constraints-on-merge-tree-settings}
+## MergeTree 設定に対する制約
 
-[MergeTree設定](merge-tree-settings.md)に対して制約を設定することができます。
-これらの制約は、MergeTreeエンジンを使用するテーブルの作成時、
-またはストレージ設定の変更時に適用されます。
+[MergeTree 設定](merge-tree-settings.md) に対して制約を設定できます。
+これらの制約は、MergeTree エンジンを使用するテーブルを作成するとき、
+またはそのストレージ設定を変更するときに適用されます。
 
-MergeTree設定の名前は、`<constraints>`セクション内で参照する際に
-`merge_tree_`プレフィックスを付ける必要があります。
+`<constraints>` セクション内で参照する場合は、
+MergeTree 設定名の前に `merge_tree_` プレフィックスを付ける必要があります。
 
-### 例 {#example-mergetree}
+### 例
 
-明示的に`storage_policy`を指定した新しいテーブルの作成を禁止することができます
+明示的に `storage_policy` を指定して新しいテーブルを作成できないようにすることができます。
 
 ```xml
 <profiles>

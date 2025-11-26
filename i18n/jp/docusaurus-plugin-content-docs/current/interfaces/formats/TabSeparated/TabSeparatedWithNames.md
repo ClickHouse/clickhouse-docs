@@ -1,6 +1,6 @@
 ---
 alias: ['TSVWithNames']
-description: 'TabSeparatedWithNames 形式のドキュメント'
+description: 'TabSeparatedWithNames 形式に関するドキュメント'
 input_format: true
 keywords: ['TabSeparatedWithNames']
 output_format: true
@@ -9,7 +9,7 @@ title: 'TabSeparatedWithNames'
 doc_type: 'reference'
 ---
 
-| Input | Output | エイリアス                          |
+| 入力 | 出力 | 別名                          |
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
@@ -17,20 +17,23 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`TabSeparated`](./TabSeparated.md)フォーマットとの違いは、最初の行にカラム名が記述される点です。
+最初の行に列名が記載されている点が、[`TabSeparated`](./TabSeparated.md) 形式と異なります。
 
-パース時には、最初の行にカラム名が含まれることが想定されています。カラム名を使用して、その位置を判定し、正確性を検証できます。
+解析時には、最初の行に列名が含まれていることが前提となります。列名を使用して列の位置を特定したり、正しさを検証したりできます。
 
 :::note
-設定[`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header)が`1`に設定されている場合、入力データのカラムは名前によってテーブルのカラムにマッピングされます。設定[`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields)が`1`に設定されている場合、未知の名前を持つカラムはスキップされます。それ以外の場合は、最初の行がスキップされます。
+[`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` に設定されている場合、
+入力データ中の列は名前に基づいてテーブルの列にマッピングされ、さらに [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合は、不明な名前の列はスキップされます。
+それ以外の場合、最初の行はスキップされます。
 :::
 
 
-## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+## 使用例
 
-以下の`football.tsv`という名前のTSVファイルを使用します:
+### データの挿入
+
+次の TSV ファイル（ファイル名: `football.tsv`）を使用します：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -53,15 +56,15 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します:
+データを挿入します：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み取り
 
-`TabSeparatedWithNames`形式を使用してデータを読み取ります:
+`TabSeparatedWithNames` 形式を使用してデータを読み込みます：
 
 ```sql
 SELECT *
@@ -69,7 +72,7 @@ FROM football
 FORMAT TabSeparatedWithNames
 ```
 
-出力はタブ区切り形式で表示されます:
+出力はタブ区切り形式で表示されます：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -93,4 +96,4 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

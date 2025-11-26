@@ -1,5 +1,5 @@
 ---
-description: '计算 `maxIntersections` 值出现位置的聚合函数。'
+description: '计算 maxIntersections 函数各次出现位置的聚合函数。'
 sidebar_position: 164
 slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
 title: 'maxIntersectionsPosition'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 # maxIntersectionsPosition
 
-聚合函数，用于计算 [`maxIntersections` 函数](./maxintersections.md)各次出现的位置序列。
+聚合函数，用于计算[`maxIntersections` 函数](./maxintersections.md)结果中各次出现的位置。
 
-语法为：
+语法如下所示：
 
 ```sql
 maxIntersectionsPosition(start_column, end_column)
@@ -24,7 +24,7 @@ maxIntersectionsPosition(start_column, end_column)
 
 **返回值**
 
-返回相交区间数量达到最大时对应的起始位置。
+返回相交区间数量最大时的起始位置。
 
 **示例**
 
@@ -43,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-这些区间如下所示：
+这些时间间隔如下：
 
 ```response
 1 - 3
@@ -52,7 +52,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-请注意，这些区间中有三个都包含值 4，而且这一情况是从第二个区间开始的：
+请注意，其中有三个区间都共同包含数值 4，而且这一点是从第二个区间开始的：
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
@@ -64,4 +64,4 @@ SELECT maxIntersectionsPosition(start, end) FROM my_events;
 2
 ```
 
-换句话说，`(1,6)` 这一行是 3 个区间发生相交的起点，而 3 是区间相交的最大数量。
+换句话说，`(1,6)` 这一行是 3 个相交区间的起点，而 3 是同时相交的区间的最大数量。

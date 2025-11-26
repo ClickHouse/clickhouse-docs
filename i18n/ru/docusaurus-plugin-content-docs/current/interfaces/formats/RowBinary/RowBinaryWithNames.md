@@ -15,25 +15,25 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔    | ✔     |           |
 
 
-## Description {#description}
+## Описание {#description}
 
-Аналогичен формату [`RowBinary`](./RowBinary.md), но с добавленным заголовком:
+Аналогично формату [`RowBinary`](./RowBinary.md), но с добавленным заголовком:
 
-- Количество столбцов (N), закодированное в [`LEB128`](https://en.wikipedia.org/wiki/LEB128).
-- N строк типа `String`, задающих имена столбцов.
+- Количество столбцов (N), закодированное в формате [`LEB128`](https://en.wikipedia.org/wiki/LEB128).
+- N строк (`String`), задающих имена столбцов.
+
 
 
 ## Пример использования {#example-usage}
 
 
+
 ## Настройки формата {#format-settings}
 
-<RowBinaryFormatSettings />
+<RowBinaryFormatSettings/>
 
 :::note
-
-- Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) имеет значение `1`,
-  столбцы из входных данных будут сопоставлены со столбцами таблицы по именам, столбцы с неизвестными именами будут пропущены.
-- Если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) имеет значение `1`.
-  В противном случае первая строка будет пропущена.
-  :::
+- Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в значение `1`,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены. 
+- Если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`, в противном случае первая строка будет пропущена.
+:::

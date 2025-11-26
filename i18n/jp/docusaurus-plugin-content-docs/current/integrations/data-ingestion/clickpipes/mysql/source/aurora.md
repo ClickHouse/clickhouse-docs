@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Amazon Aurora MySQL'
-description: 'ClickPipes のソースとして Amazon Aurora MySQL を設定するための手順ガイド'
+description: 'Amazon Aurora MySQL を ClickPipes のソースとして設定するためのステップバイステップガイド'
 slug: /integrations/clickpipes/mysql/source/aurora
-title: 'Aurora MySQL ソース設定ガイド'
+title: 'Aurora MySQL ソースのセットアップガイド'
 doc_type: 'guide'
-keywords: ['aurora mysql', 'clickpipes', 'binlog retention', 'gtid mode', 'aws']
+keywords: ['aurora mysql', 'clickpipes', 'binlog 保持期間', 'gtid モード', 'aws']
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -20,156 +20,140 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Aurora MySQL ソース設定ガイド
+# Aurora MySQL ソースセットアップガイド
 
-このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon Aurora MySQL を構成し、ClickHouse Cloud にデータをレプリケートする方法を説明します。MySQL CDC に関するよくある質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
+このガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon Aurora MySQL を構成し、データを ClickHouse Cloud にレプリケートする手順をステップバイステップで説明します。MySQL の CDC（変更データキャプチャ）に関する一般的な質問については、[MySQL FAQs ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 
 
-## バイナリログ保持の有効化 {#enable-binlog-retention-aurora}
+## バイナリログの保持を有効にする
 
-バイナリログは、MySQLサーバーインスタンスに対して行われたデータ変更に関する情報を含むログファイルのセットであり、レプリケーションにはバイナリログファイルが必要です。Aurora MySQLでバイナリログ保持を構成するには、[バイナリログを有効化](#enable-binlog-logging)し、[バイナリログ保持期間を延長](#binlog-retention-interval)する必要があります。
+バイナリログは、MySQL サーバーインスタンスで行われたデータ変更に関する情報を含む一連のログファイルであり、レプリケーションにはバイナリログファイルが必要です。Aurora MySQL でバイナリログの保持を構成するには、[バイナリログを有効に](#enable-binlog-logging)し、[binlog の保持期間を延長](#binlog-retention-interval)する必要があります。
 
-### 1. 自動バックアップによるバイナリログの有効化 {#enable-binlog-logging}
+### 1. 自動バックアップ経由でバイナリログを有効にする
 
-自動バックアップ機能により、MySQLのバイナリログの有効/無効が決定されます。自動バックアップは、RDSコンソールで**変更** > **追加設定** > **バックアップ**に移動し、**自動バックアップを有効にする**チェックボックスを選択する(まだ選択されていない場合)ことで、インスタンスに対して構成できます。
+自動バックアップ機能は、MySQL のバイナリログを有効にするかどうかを決定します。RDS コンソールでインスタンスの自動バックアップを構成するには、**Modify** &gt; **Additional configuration** &gt; **Backup** に移動し、（まだ選択されていない場合は）**Enable automated backups** チェックボックスを選択します。
 
-<Image
-  img={rds_backups}
-  alt='Auroraでの自動バックアップの有効化'
-  size='lg'
-  border
-/>
+<Image img={rds_backups} alt="Aurora で自動バックアップを有効化する" size="lg" border />
 
-レプリケーションのユースケースに応じて、**バックアップ保持期間**を十分に長い値に設定することを推奨します。
+レプリケーションのユースケースに応じて、**Backup retention period** を十分に長い値に設定することを推奨します。
 
-### 2. バイナリログ保持期間の延長 {#binlog-retention-interval}
+### 2. binlog の保持期間を延長する
 
 :::warning
-ClickPipesがレプリケーションを再開しようとした際に、構成されたバイナリログ保持値により必要なバイナリログファイルが削除されている場合、ClickPipeはエラー状態になり、再同期が必要になります。
+ClickPipes がレプリケーションの再開を試みた際に、設定されている binlog の保持期間によって必要な binlog ファイルが削除されていると、ClickPipe はエラー状態となり、再同期が必要になります。
 :::
 
-デフォルトでは、Aurora MySQLはバイナリログを可能な限り早く削除します(すなわち、_遅延削除_)。障害シナリオにおけるレプリケーション用のバイナリログファイルの可用性を確保するため、バイナリログ保持期間を少なくとも**72時間**に延長することを推奨します。バイナリログ保持期間([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours))を設定するには、[`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration)プロシージャを使用します:
+デフォルトでは、Aurora MySQL は可能な限り早くバイナリログを削除します（*lazy purging*）。障害シナリオにおいてもレプリケーション用のバイナリログファイルを確保できるよう、binlog の保持期間は少なくとも **72 時間** に延長することを推奨します。バイナリログの保持期間（[`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)）を設定するには、[`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) ストアドプロシージャを使用します。
 
-[//]: # "NOTE Most CDC providers recommend the maximum retention period for Aurora RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a mininum of 3 days/72 hours."
+[//]: # "NOTE ほとんどの CDC プロバイダーは、Aurora RDS に対して最大の保持期間（7 日間 / 168 時間）を推奨しています。これはディスク使用量に影響を与えるため、本ドキュメントでは保守的に、最小 3 日間 / 72 時間を推奨します。"
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-この設定が行われていない場合、または短い期間に設定されている場合、バイナリログにギャップが生じ、ClickPipesのレプリケーション再開能力が損なわれる可能性があります。
+この設定が行われていない場合、または間隔が短すぎる場合、バイナリログに欠落が生じ、ClickPipes がレプリケーションを再開できなくなるおそれがあります。
 
 
-## binlog設定の構成 {#binlog-settings}
+## binlog 設定の構成 {#binlog-settings}
 
-パラメータグループは、RDSコンソールでMySQLインスタンスをクリックし、**Configuration**タブに移動すると確認できます。
-
-:::tip
-MySQLクラスターを使用している場合、以下のパラメータはDBインスタンスグループではなく、[DBクラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)パラメータグループで確認できます。
-:::
-
-<Image
-  img={aurora_config}
-  alt='Auroraでパラメータグループを確認する場所'
-  size='lg'
-  border
-/>
-
-<br />
-パラメータグループのリンクをクリックすると、専用ページに移動します。右上に**Edit**ボタンが表示されます。
-
-<Image img={edit_button} alt='パラメータグループの編集' size='lg' border />
-
-<br />
-以下のパラメータを次のように設定する必要があります:
-
-1. `binlog_format`を`ROW`に設定します。
-
-<Image img={binlog_format} alt='BinlogフォーマットをROWに設定' size='lg' border />
-
-2. `binlog_row_metadata`を`FULL`に設定します。
-
-<Image img={binlog_row_metadata} alt='Binlog行メタデータ' size='lg' border />
-
-3. `binlog_row_image`を`FULL`に設定します。
-
-<Image img={binlog_row_image} alt='Binlog行イメージ' size='lg' border />
-
-<br />
-次に、右上の**Save Changes**をクリックします。変更を有効にするには、インスタンスの再起動が必要な場合があります。再起動が必要かどうかは、Auroraインスタンスの**Configuration**タブでパラメータグループリンクの横に`Pending reboot`と表示されているかで確認できます。
-
-
-## GTIDモードの有効化（推奨） {#gtid-mode}
+パラメーターグループは、RDS コンソールで対象の MySQL インスタンスをクリックし、**Configuration** タブを開くと確認できます。
 
 :::tip
-MySQL ClickPipeはGTIDモードなしでのレプリケーションもサポートしていますが、パフォーマンスの向上とトラブルシューティングの容易化のため、GTIDモードの有効化を推奨します。
+MySQL クラスターを使用している場合、以下のパラメーターは DB インスタンスグループではなく、[DB クラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)のパラメーターグループにあります。
 :::
 
-[グローバルトランザクション識別子（GTID）](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html)は、MySQLでコミットされた各トランザクションに割り当てられる一意のIDです。GTIDはbinlogレプリケーションを簡素化し、トラブルシューティングをより容易にします。MySQL ClickPipeがGTIDベースのレプリケーションを使用できるよう、GTIDモードの有効化を**推奨**します。
+<Image img={aurora_config} alt="Aurora でパラメーターグループを確認できる場所" size="lg" border/>
 
-GTIDベースのレプリケーションは、Amazon Aurora MySQL v2（MySQL 5.7）およびv3（MySQL 8.0）、ならびにAurora Serverless v2でサポートされています。Aurora MySQLインスタンスでGTIDモードを有効化するには、以下の手順に従ってください：
+<br/>
+パラメーターグループのリンクをクリックすると、その専用ページに移動します。右上に **Edit** ボタンが表示されているはずです。
 
-1. RDSコンソールで、MySQLインスタンスをクリックします。
-2. **Configuration**タブをクリックします。
+<Image img={edit_button} alt="パラメーターグループの編集" size="lg" border/>
+
+<br/>
+次のパラメーターを、以下の値に設定します。
+
+1. `binlog_format` を `ROW` に設定します。
+
+<Image img={binlog_format} alt="Binlog format を ROW に設定" size="lg" border/>
+
+2. `binlog_row_metadata` を `FULL` に設定します。
+
+<Image img={binlog_row_metadata} alt="Binlog row metadata" size="lg" border/>
+
+3. `binlog_row_image` を `FULL` に設定します。
+
+<Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
+
+<br/>
+設定後、右上の **Save Changes** をクリックします。変更を反映するためにインスタンスの再起動が必要になる場合があります。Aurora インスタンスの **Configuration** タブで、パラメーターグループのリンクの横に `Pending reboot` と表示されているかどうかを確認すると判断できます。
+
+
+
+## GTID モードを有効化する（推奨） {#gtid-mode}
+
+:::tip
+MySQL ClickPipe は、GTID モードを使用しないレプリケーションもサポートしています。ただし、パフォーマンス向上とトラブルシューティングの容易化のため、GTID モードを有効にすることを推奨します。
+:::
+
+[Global Transaction Identifiers (GTIDs)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) は、MySQL でコミットされた各トランザクションに割り当てられる一意の ID です。これによりバイナリログ（binlog）レプリケーションが簡素化され、トラブルシューティングも容易になります。MySQL ClickPipe が GTID ベースのレプリケーションを利用できるようにするため、GTID モードを有効にすることを**推奨**します。
+
+GTID ベースのレプリケーションは、Amazon Aurora MySQL v2（MySQL 5.7）および v3（MySQL 8.0）、さらに Aurora Serverless v2 でもサポートされています。Aurora MySQL インスタンスで GTID モードを有効にするには、次の手順に従います。
+
+1. RDS コンソールで、対象の MySQL インスタンスをクリックします。
+2. **Configuration** タブをクリックします。
 3. パラメータグループのリンクをクリックします。
-4. 右上の**Edit**ボタンをクリックします。
-5. `enforce_gtid_consistency`を`ON`に設定します。
-6. `gtid-mode`を`ON`に設定します。
-7. 右上の**Save Changes**をクリックします。
-8. 変更を有効にするため、インスタンスを再起動します。
+4. 右上の **Edit** ボタンをクリックします。
+5. `enforce_gtid_consistency` を `ON` に設定します。
+6. `gtid-mode` を `ON` に設定します。
+7. 右上の **Save Changes** をクリックします。
+8. 変更を反映させるためにインスタンスを再起動します。
 
-<Image img={enable_gtid} alt='GTID有効化' size='lg' border />
-
-
-## データベースユーザーの設定 {#configure-database-user}
-
-管理者ユーザーとしてAurora MySQLインスタンスに接続し、以下のコマンドを実行します:
-
-1. ClickPipes専用のユーザーを作成します:
-
-   ```sql
-   CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
-   ```
-
-2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返します:
-
-   ```sql
-   GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
-   ```
-
-3. ユーザーにレプリケーション権限を付与します:
-
-   ```sql
-   GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
-   GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-   ```
+<Image img={enable_gtid} alt="GTID が有効化された状態" size="lg" border/>
 
 
-## ネットワークアクセスの設定 {#configure-network-access}
 
-### IPベースのアクセス制御 {#ip-based-access-control}
+## データベースユーザーを設定する {#configure-database-user}
 
-Aurora MySQLインスタンスへのトラフィックを制限するには、Auroraセキュリティグループの**インバウンドルール**に[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)を追加します。
+管理者権限を持つユーザーとして Aurora MySQL インスタンスに接続し、次のコマンドを実行します。
 
-<Image
-  img={security_group_in_rds_mysql}
-  alt='Aurora MySQLでセキュリティグループを見つける場所'
-  size='lg'
-  border
-/>
+1. ClickPipes 用の専用ユーザーを作成します：
 
-<Image
-  img={edit_inbound_rules}
-  alt='上記のセキュリティグループのインバウンドルールを編集'
-  size='lg'
-  border
-/>
+    ```sql
+    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
+    ```
 
-### AWS PrivateLinkによるプライベートアクセス {#private-access-via-aws-privatelink}
+2. スキーマ権限を付与します。次の例では、`mysql` データベースに対する権限を示しています。レプリケーション対象とする各データベースおよびホストに対して、これらのコマンドを繰り返し実行します。
 
-プライベートネットワーク経由でAurora MySQLインスタンスに接続するには、AWS PrivateLinkを使用します。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+    ```sql
+    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
+    ```
+
+3. ユーザーにレプリケーション権限を付与します。
+
+    ```sql
+    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+    ```
+
+
+
+## ネットワークアクセスの構成 {#configure-network-access}
+
+### IP ベースのアクセス制御 {#ip-based-access-control}
+
+Aurora MySQL インスタンスへのトラフィックを制限するには、[ドキュメントに記載されている静的 NAT IP アドレス](../../index.md#list-of-static-ips) を Aurora セキュリティグループの **インバウンドルール** に追加します。
+
+<Image img={security_group_in_rds_mysql} alt="Aurora MySQL でセキュリティグループを確認する場所" size="lg" border/>
+
+<Image img={edit_inbound_rules} alt="上記セキュリティグループのインバウンドルールを編集する画面" size="lg" border/>
+
+### AWS PrivateLink 経由のプライベートアクセス {#private-access-via-aws-privatelink}
+
+Aurora MySQL インスタンスにプライベートネットワーク経由で接続するには、AWS PrivateLink を使用します。接続を構成するには、[ClickPipes 向け AWS PrivateLink セットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) に従ってください。
+
 
 
 ## 次のステップ {#whats-next}
 
-Amazon Aurora MySQLインスタンスのbinlogレプリケーション設定とClickHouse Cloudへの安全な接続が完了しました。これで[最初のMySQL ClickPipeを作成](/integrations/clickpipes/mysql/#create-your-clickpipe)できます。MySQL CDCに関するよくある質問については、[MySQL FAQページ](/integrations/data-ingestion/clickpipes/mysql/faq.md)を参照してください。
+Amazon Aurora MySQL インスタンスを binlog レプリケーション向けに構成し、ClickHouse Cloud への安全な接続設定も完了したので、[最初の MySQL ClickPipe を作成](/integrations/clickpipes/mysql/#create-your-clickpipe)できます。MySQL CDC に関するよくある質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md)を参照してください。

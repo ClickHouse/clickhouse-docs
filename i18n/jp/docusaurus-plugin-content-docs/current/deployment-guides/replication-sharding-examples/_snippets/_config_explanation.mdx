@@ -1,16 +1,15 @@
-* `config.d` ディレクトリには ClickHouse サーバーの設定ファイル `config.xml` が含まれており、
-  各 ClickHouse ノードごとのカスタム設定がここで定義されています。
-  この設定は、すべての ClickHouse のインストールに付属するデフォルトの設定ファイル
-  `config.xml` とマージされます。
+* `config.d` ディレクトリには ClickHouse サーバー設定ファイル `config.xml` が含まれており、
+  各 ClickHouse ノードごとのカスタム設定がここで定義されます。
+  この設定は、すべての ClickHouse インストールに付属するデフォルトの ClickHouse 設定ファイル
+  `config.xml` とマージされて使用されます。
 * `users.d` ディレクトリにはユーザー設定ファイル `users.xml` が含まれており、
-  ユーザー用のカスタム設定がここで定義されています。
-  この設定は、すべての ClickHouse のインストールに付属するデフォルトの設定ファイル
-  `users.xml` とマージされます。
+  ユーザーごとのカスタム設定がここで定義されます。この設定は、すべての ClickHouse
+  インストールに付属するデフォルトの ClickHouse 設定ファイル `users.xml` とマージされて使用されます。
 
-:::tip Custom configuration directories
+:::tip カスタム設定ディレクトリ
 独自の設定を書く際は、`/etc/clickhouse-server/config.xml` および
-`etc/clickhouse-server/users.xml` のデフォルト設定を直接変更するのではなく、
-`config.d` および `users.d` ディレクトリを利用することがベストプラクティスです。
+`etc/clickhouse-server/users.xml` にあるデフォルト設定を直接編集するのではなく、
+`config.d` と `users.d` ディレクトリを利用することがベストプラクティスです。
 
 次の行
 
@@ -18,5 +17,5 @@
 <clickhouse replace="true">
 ```
 
-`config.d` および `users.d` ディレクトリで定義された設定セクションが、デフォルトの `config.xml` および `users.xml` ファイルに定義されている設定セクションよりも優先されて上書きされることを保証します。
+`config.d` と `users.d` ディレクトリで定義された設定セクションが、デフォルトの `config.xml` および `users.xml` ファイルで定義された設定セクションよりも優先されるようにします。
 :::

@@ -10,32 +10,32 @@ doc_type: 'reference'
 
 # system.settings
 
-包含关于当前用户会话设置的信息。
+包含当前用户会话参数设置信息。
 
 列：
 
 * `name` ([String](../../sql-reference/data-types/string.md)) — 设置名称。
 * `value` ([String](../../sql-reference/data-types/string.md)) — 设置值。
-* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 指示该设置是否在配置中被显式定义或被显式修改。
+* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 指示该设置是否在配置中被显式定义或被显式更改。
 * `description` ([String](../../sql-reference/data-types/string.md)) — 设置的简要说明。
 * `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 通过[约束](/operations/settings/constraints-on-settings)为该设置指定的最小值（如果有）。如果设置没有最小值，则为 [NULL](/operations/settings/formats#input_format_null_as_default)。
 * `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 通过[约束](/operations/settings/constraints-on-settings)为该设置指定的最大值（如果有）。如果设置没有最大值，则为 [NULL](/operations/settings/formats#input_format_null_as_default)。
-* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — 不允许的值列表。
-* `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 指示当前用户是否可以修改该设置：
-  * `0` — 当前用户可以修改该设置。
-  * `1` — 当前用户不能修改该设置。
+* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — 不允许的取值列表。
+* `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 指示当前用户是否可以更改该设置：
+  * `0` — 当前用户可以更改该设置。
+  * `1` — 当前用户不能更改该设置。
 * `default` ([String](../../sql-reference/data-types/string.md)) — 设置的默认值。
 * `alias_for` ([String](../../sql-reference/data-types/string.md)) — 如果该设置是其他设置的别名，则为原始设置的名称。
-* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 指示该设置是否为废弃状态。
-* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — 此功能的支持级别。ClickHouse 的功能按层级进行组织，层级取决于其当前开发状态以及用户在使用这些功能时可以预期的行为。可能的取值：
-  * `'Production'` — 功能稳定、可安全使用，并且与其他**生产**特性交互时不会有问题。
-  * `'Beta'` — 功能稳定且安全。与其他功能一起使用时的结果未知，正确性不作保证。欢迎测试与反馈。
-  * `'Experimental'` — 功能仍在开发中。仅面向开发者和 ClickHouse 爱好者。该功能可能工作也可能不工作，并且可能在任何时间被移除。
-  * `'Obsolete'` — 不再受支持。要么已经被移除，要么将在未来的版本中被移除。
+* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 指示该设置是否已废弃。
+* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — 此功能的支持级别。ClickHouse 的功能按层次组织，这些层次会根据当前的开发状态以及用户在使用它们时可以预期的行为而变化。取值：
+  * `'Production'` — 功能稳定、安全可用，并且与其他**生产级**功能交互时不存在问题。
+  * `'Beta'` — 功能稳定且安全。但与其他功能一起使用时的结果未知，不保证正确性。欢迎测试和反馈。
+  * `'Experimental'` — 功能仍在开发中。仅面向开发人员和 ClickHouse 爱好者。该功能可能有效也可能无效，并且可能在任何时候被移除。
+  * `'Obsolete'` — 不再受支持。要么已经被移除，要么将在未来版本中移除。
 
 **示例**
 
-以下示例展示了如何获取名称中包含 `min_i` 的设置的信息。
+下面的示例展示如何获取名称包含 `min_i` 的设置的信息。
 
 ```sql
 SELECT *
@@ -50,7 +50,7 @@ Row 1:
 name:        min_insert_block_size_rows
 value:       1048449
 changed:     0
-description: 设置通过 `INSERT` 查询插入表中的数据块的最小行数。较小的数据块会被合并为较大的数据块。
+description: 设置通过 `INSERT` 查询插入表中的数据块的最小行数。较小的数据块将被合并成较大的数据块。
 
 可能的值:
 
@@ -70,7 +70,7 @@ Row 2:
 name:        min_insert_block_size_bytes
 value:       268402944
 changed:     0
-description: 设置通过 `INSERT` 查询插入表中的数据块的最小字节数。较小的数据块会被合并为较大的数据块。
+description: 设置通过 `INSERT` 查询插入表中的数据块的最小字节数。较小的数据块将被合并成较大的数据块。
 
 可能的值:
 
@@ -92,7 +92,7 @@ Row 3:
 name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
 value:       0
 changed:     0
-description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小行数。更小的数据块会被合并为更大的块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存占用。
+description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小行数。更小的数据块会被合并成更大的数据块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存使用。
 
 Possible values:
 
@@ -116,7 +116,7 @@ Row 4:
 name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
 value:       0
 changed:     0
-description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小字节数。更小的数据块会被合并为更大的块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存占用。
+description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小字节数。更小的数据块会被合并成更大的数据块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存使用。
 
 Possible values:
 
@@ -137,10 +137,10 @@ Possible values:
 
 ````
 
-使用 `WHERE changed` 在以下情况下很有用,例如当您需要检查:
+使用 `WHERE changed` 在以下场景中很有用,例如需要检查:
 
-- 配置文件中的设置是否已正确加载并正在使用。
-- 当前会话中已更改的设置。
+- 配置文件中的设置是否已正确加载并生效。
+- 当前会话中已变更的设置。
 
 <!-- -->
 
@@ -152,5 +152,5 @@ SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 
 * [设置](/operations/system-tables/overview#system-tables-introduction)
 * [查询权限](/operations/settings/permissions-for-queries)
-* [设置约束](../../operations/settings/constraints-on-settings.md)
+* [设置限制](../../operations/settings/constraints-on-settings.md)
 * [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings) 语句

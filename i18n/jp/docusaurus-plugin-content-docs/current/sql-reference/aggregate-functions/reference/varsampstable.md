@@ -1,5 +1,5 @@
 ---
-description: 'データセットの標本分散を計算します。`varSamp` と異なり、この関数は数値的に安定なアルゴリズムを使用します。処理は遅くなりますが、計算誤差は小さくなります。'
+description: 'データセットの標本分散を計算します。`varSamp` とは異なり、この関数は数値的に安定したアルゴリズムを使用します。動作は遅くなりますが、計算誤差をより小さく抑えられます。'
 sidebar_position: 213
 slug: /sql-reference/aggregate-functions/reference/varsampstable
 title: 'varSampStable'
@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## varSampStable {#varsampstable}
 
-データセットの標本分散を計算します。[`varSamp`](../reference/varsamp.md)とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差を低減します。
+データセットの標本分散を計算します。[`varSamp`](../reference/varsamp.md)とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差が小さくなります。
 
 **構文**
 
@@ -22,7 +22,7 @@ varSampStable(x)
 
 **パラメータ**
 
-- `x`: 標本分散を計算する対象のデータ。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal\*](../../data-types/decimal.md)。
+- `x`: 標本分散を計算する対象のデータセット。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal\*](../../data-types/decimal.md)。
 
 **戻り値**
 
@@ -38,9 +38,9 @@ $$
 
 ここで:
 
-- `x`はデータセット内の各データポイント。
-- `mean(x)`はデータセットの算術平均。
-- `n`はデータセット内のデータポイントの数。
+- `x`はデータセット内の各データポイント
+- `mean(x)`はデータセットの算術平均
+- `n`はデータセット内のデータポイント数
 
 **例**
 

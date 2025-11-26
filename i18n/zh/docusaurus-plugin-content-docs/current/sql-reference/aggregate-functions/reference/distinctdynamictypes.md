@@ -1,5 +1,5 @@
 ---
-description: '计算 Dynamic 列中存储的所有不同数据类型的列表。'
+description: '计算 Dynamic 列中存储的不同数据类型列表。'
 sidebar_position: 215
 slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
 title: 'distinctDynamicTypes'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctDynamicTypes
 
-计算 [Dynamic](../../data-types/dynamic.md) 列中存储的不同数据类型列表。
+计算存储在 [Dynamic](../../data-types/dynamic.md) 列中的去重数据类型列表。
 
 **语法**
 
@@ -22,7 +22,7 @@ distinctDynamicTypes(dynamic)
 
 **返回值**
 
-* 数据类型名称组成的排序列表 [Array(String)](../../data-types/array.md)。
+* 排序后的数据类型名称列表 [Array(String)](../../data-types/array.md)。
 
 **示例**
 

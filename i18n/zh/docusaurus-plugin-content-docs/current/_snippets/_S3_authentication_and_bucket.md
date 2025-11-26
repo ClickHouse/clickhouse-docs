@@ -20,7 +20,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <details>
   <summary>创建 S3 存储桶和 IAM 用户</summary>
 
-本文介绍如何配置 AWS IAM 用户、创建 S3 存储桶以及配置 ClickHouse 使用该存储桶作为 S3 磁盘的基本步骤。您应当与安全团队协作确定所需的权限,并将本文内容作为起点参考。
+本文介绍如何配置 AWS IAM 用户、创建 S3 存储桶以及配置 ClickHouse 使用该存储桶作为 S3 磁盘的基本操作。您应与安全团队协作确定所需权限,并将本文内容作为起点。
 
 ### 创建 AWS IAM 用户 {#create-an-aws-iam-user}
 
@@ -71,7 +71,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 6. 选择 **创建用户**
 
    :::note
-   可以忽略提示用户没有权限的警告消息,将在下一节中为该用户授予存储桶权限
+   可以忽略提示用户无权限的警告消息,将在下一节中为该用户授予存储桶权限
    :::
 
 <Image
@@ -95,7 +95,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-8. 点击关闭,然后在用户列表中找到该用户。
+8. 点击关闭,然后在用户界面中找到该用户。
 
 <Image
   size='md'
@@ -122,16 +122,16 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <Image
   size='md'
   img={s3_9}
-  alt='开始 S3 存储桶创建过程'
+  alt='开始 S3 存储桶创建流程'
   border
   force
 />
 
-2. 输入存储桶名称,其他选项保持默认值
+2. 输入存储桶名称,其他选项保持默认
    :::note
    存储桶名称必须在整个 AWS 中唯一,而不仅仅是在组织内唯一,否则将产生错误。
    :::
-3. 保持 `阻止所有公共访问` 启用状态,无需公共访问权限。
+3. 保持 `阻止所有公共访问` 启用,无需公共访问。
 
 
 <Image
@@ -193,7 +193,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <Image
   size='md'
   img={s3_g}
-  alt='复制 S3 文件夹 URL 用于 ClickHouse 配置'
+  alt='复制用于 ClickHouse 配置的 S3 文件夹 URL'
   border
   force
 />
@@ -234,9 +234,9 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 |Version | 策略解释器版本,保持不变 | 2012-10-17 |
 |Sid | 用户定义的策略 ID | abc123 |
 |Effect | 用户请求是被允许还是被拒绝 | Allow |
-|Principal | 将被允许的账户或用户 | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | 存储桶上允许的操作| s3:*|
-|Resource | 存储桶中允许操作的资源 | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
+|Principal | 将被授予权限的账户或用户 | arn:aws:iam::921234567898:user/mars-s3-user |
+|Action | 存储桶上允许执行的操作| s3:*|
+|Resource | 存储桶中允许执行操作的资源 | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 ```
 
 :::note

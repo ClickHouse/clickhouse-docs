@@ -1,5 +1,5 @@
 ---
-description: '異なる引数値の概数を計算します。'
+description: '引数の異なる値のおおよその個数を計算します。'
 sidebar_position: 205
 slug: /sql-reference/aggregate-functions/reference/uniqcombined
 title: 'uniqCombined'
@@ -8,53 +8,53 @@ doc_type: 'reference'
 
 # uniqCombined
 
-引数として渡された異なる値のおおよその個数を計算します。
+異なる引数値のおおよその個数を計算します。
 
 ```sql
 uniqCombined(HLL_precision)(x[, ...])
 ```
 
-`uniqCombined` 関数は、異なる値の個数を計算する際に適した選択肢です。
+`uniqCombined` 関数は、異なる値の個数を計算するのに適した関数です。
 
-**引数**
+**Arguments**
 
-* `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) におけるセル数の 2 を底とする対数。省略可能であり、`uniqCombined(x[, ...])` のように関数を使用できます。`HLL_precision` のデフォルト値は 17 で、これは実質的に 96 KiB の領域（2^17 個のセル、各 6 ビット）に相当します。
-* `X`: 可変個数の引数。引数には `Tuple`、`Array`、`Date`、`DateTime`、`String`、あるいは数値型を指定できます。
+* `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) におけるセル数の 2 を底とする対数値。省略可能で、`uniqCombined(x[, ...])` のように関数を使用できます。`HLL_precision` のデフォルト値は 17 で、これはおおよそ 96 KiB の領域（2^17 個のセル、各 6 ビット）に相当します。
+* `X`: 可変長のパラメーター。パラメーターには `Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型を指定できます。
 
-**戻り値**
+**Returned value**
 
 * [UInt64](../../../sql-reference/data-types/int-uint.md) 型の数値。
 
-**実装の詳細**
+**Implementation details**
 
-`uniqCombined` 関数は次のように動作します:
+`uniqCombined` 関数は次のように動作します。
 
-* 集約内のすべての引数に対してハッシュ（`String` には 64 ビットハッシュ、それ以外には 32 ビットハッシュ）を計算し、その値を用いて処理を行います。
-* 3 つのアルゴリズム（配列、ハッシュテーブル、誤差補正テーブル付き HyperLogLog）の組み合わせを使用します。
-  * 異なる要素数が少ない場合は、配列を使用します。
-  * 集合のサイズが大きくなると、ハッシュテーブルを使用します。
-  * さらに要素数が多い場合は、HyperLogLog を使用し、これは一定量のメモリしか使用しません。
-* 決定的な結果を返します（クエリ処理順序に依存しません）。
+* 集計対象のすべてのパラメーターに対してハッシュ（`String` には 64 ビットハッシュ、それ以外には 32 ビットハッシュ）を計算し、そのハッシュ値を用いて計算を行います。
+* 3 つのアルゴリズム（配列、ハッシュテーブル、誤差補正テーブル付き HyperLogLog）を組み合わせて使用します。
+  * 相異なる要素数が少ない場合は配列を使用します。
+  * 集合のサイズがより大きくなるとハッシュテーブルを使用します。
+  * 要素数がさらに大きい場合は HyperLogLog を使用し、一定量のメモリのみを使用します。
+* 決定的な結果を返します（クエリの処理順序には依存しません）。
 
 :::note\
-`String` 以外の型には 32 ビットハッシュを使用するため、`UINT_MAX` を大きく超えるカーディナリティ（基数）に対しては、結果の誤差が非常に大きくなります（数百億個程度の異なる値を超えると誤差が急速に増加します）。したがって、このような場合は [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) を使用する必要があります。
+非 `String` 型には 32 ビットハッシュを使用するため、`UINT_MAX` を大きく超えるカーディナリティに対しては誤差が非常に大きくなります（数百億件程度の相異なる値を超えると急速に誤差が増加します）。したがって、このような場合は [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) を使用する必要があります。
 :::
 
-[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数と比較すると、`uniqCombined` 関数は次の特徴があります。
+[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数と比較すると、`uniqCombined` 関数は次の特性を持ちます。
 
-* メモリ消費量が数倍少ない。
-* 精度が数倍高い。
-* 通常はパフォーマンスがわずかに低くなります。一部のシナリオでは、`uniqCombined` は `uniq` より高いパフォーマンスを発揮することがあります。たとえば、多数の集約状態をネットワーク経由で送信する分散クエリなどです。
+* 使用メモリ量が数倍少ない。
+* 計算精度が数倍高い。
+* 通常は若干性能が低くなります。一部のシナリオでは、たとえば多くの集約状態をネットワーク越しに送信する分散クエリでは、`uniqCombined` の方が `uniq` より高速になることがあります。
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT uniqCombined(number) FROM numbers(1e6);
 ```
 
-結果：
+結果:
 
 ```response
 ┌─uniqCombined(number)─┐
@@ -62,7 +62,7 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 └──────────────────────┘
 ```
 
-より大きな入力に対する `uniqCombined` と `uniqCombined64` の違いの例については、[uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) の例のセクションを参照してください。
+はるかに大きな入力に対する `uniqCombined` と `uniqCombined64` の違いの例については、[uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) の例のセクションを参照してください。
 
 **関連項目**
 

@@ -10,14 +10,14 @@ doc_type: 'reference'
 
 # covarPop
 
-计算总体协方差：
+计算总体协方差:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
 :::note
-此函数使用数值不稳定的算法。如果计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。该函数运行速度较慢,但计算误差更小。
+此函数使用数值不稳定的算法。如果计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability),请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。该函数运行速度较慢,但提供更低的计算误差。
 :::
 
 **语法**
@@ -37,7 +37,7 @@ covarPop(x, y)
 
 **示例**
 
-查询：
+查询:
 
 ```sql
 DROP TABLE IF EXISTS series;
@@ -50,7 +50,7 @@ SELECT covarPop(x_value, y_value)
 FROM series;
 ```
 
-结果：
+结果:
 
 ```reference
 ┌─covarPop(x_value, y_value)─┐

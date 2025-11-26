@@ -15,103 +15,102 @@ doc_type: 'guide'
 
 ## 並行運用戦略 {#parallel-operation-strategy}
 
-オブザーバビリティのユースケースにおいてElasticからClickStackへ移行する際は、履歴データの移行を試みるのではなく、**並行運用**アプローチを推奨します。この戦略には以下のような利点があります：
+Observability のユースケースで Elastic から ClickStack へ移行する場合、履歴データの移行を試みるのではなく、**並行運用**アプローチを推奨します。この戦略には次のような利点があります。
 
-1. **リスクの最小化**：両システムを同時に稼働させることで、ClickStackの検証とユーザーへの新システムの習熟を進めながら、既存のデータとダッシュボードへのアクセスを維持できます。
-2. **自然なデータ有効期限**：ほとんどのオブザーバビリティデータは限られた保持期間（通常30日以下）を持つため、Elasticからデータが期限切れになるにつれて自然な移行が可能です。
-3. **移行の簡素化**：システム間で履歴データを移動するための複雑なデータ転送ツールやプロセスが不要です。
-   <br />
-   :::note データの移行 ["データの移行"](#migrating-data)セクションでは、ElasticsearchからClickHouseへ必須データを移行するアプローチを示しています。これは大規模なデータセットには使用すべきではありません。Elasticsearchの効率的なエクスポート能力に制限があり、JSON形式のみがサポートされているため、パフォーマンスが低いことがほとんどです。:::
+1. **リスク最小化**: 両システムを同時に稼働させることで、既存のデータやダッシュボードへのアクセスを維持しつつ、ClickStack を検証し、ユーザーが新しいシステムに慣れる時間を確保できます。
+2. **自然なデータの消滅**: 多くの Observability データは保持期間が限定されており（通常 30 日以内）、Elastic 上のデータが期限切れになるのに合わせて自然に移行が進みます。
+3. **移行の単純化**: 履歴データをシステム間で移動するための複雑なデータ転送ツールやプロセスが不要になります。
+<br/>
+:::note Migrating data
+["Migrating data"](#migrating-data) のセクションで、Elasticsearch から ClickHouse へ重要なデータを移行するアプローチを紹介します。これは大規模なデータセットには使用すべきではありません。Elasticsearch 側の効率的なエクスポート性能に制約があり、サポートされる形式も JSON のみであるため、十分なパフォーマンスが得られないことが多いためです。
+:::
 
 ### 実装手順 {#implementation-steps}
 
 1. **デュアルインジェストの設定**
-   <br />
-   データ収集パイプラインを設定し、ElasticとClickStackの両方に同時にデータを送信します。
+<br/>
+データ収集パイプラインを設定し、Elastic と ClickStack の両方へ同時にデータを送信できるようにします。
 
-これをどのように実現するかは、現在使用している収集エージェントに依存します。["エージェントの移行"](/use-cases/observability/clickstack/migration/elastic/migrating-agents)を参照してください。
+これをどのように実現するかは、現在使用している収集エージェントに依存します。["Migrating Agents"](/use-cases/observability/clickstack/migration/elastic/migrating-agents) を参照してください。
 
 2. **保持期間の調整**
+<br/>
+Elastic の TTL 設定を、目的の保持期間に合わせて設定します。同じ期間データを保持できるよう、ClickStack の [TTL](/use-cases/observability/clickstack/production#configure-ttl) も設定します。
 
-   <br />
-   ElasticのTTL設定を希望する保持期間に合わせて構成します。ClickStackの
-   [TTL](/use-cases/observability/clickstack/production#configure-ttl)を設定し、
-   同じ期間データを保持するようにします。
+3. **検証と比較**
+<br/>
+- 両システムに対してクエリを実行し、データの一貫性を確認する
+- クエリ性能と結果を比較する
+- ダッシュボードとアラートを ClickStack に移行する（現時点では手動での移行が必要です）
+- すべての重要なダッシュボードとアラートが ClickStack 上で期待どおり動作することを確認する
 
-3. **検証と比較**：
-   <br />
-
-- 両システムに対してクエリを実行し、データの整合性を確認します
-- クエリのパフォーマンスと結果を比較します
-- ダッシュボードとアラートをClickStackに移行します。これは現在手動プロセスです。
-- すべての重要なダッシュボードとアラートがClickStackで期待通りに動作することを確認します
-
-4. **段階的な移行**：
-   <br />
-
-- Elasticからデータが自然に期限切れになるにつれて、ユーザーはClickStackへの依存度を高めていきます
-- ClickStackへの信頼が確立されたら、クエリとダッシュボードのリダイレクトを開始できます
+4. **段階的な切り替え**
+<br/>
+- Elastic 上のデータが自然に期限切れになるにつれ、ユーザーは徐々に ClickStack に依存するようになります
+- ClickStack への信頼が確立されたら、クエリやダッシュボードの向き先を切り替え始めることができます
 
 ### 長期保持 {#long-term-retention}
 
-より長い保持期間を必要とする組織の場合：
+より長い保持期間を必要とする組織の場合:
 
-- Elasticからすべてのデータが期限切れになるまで、両システムを並行して稼働し続けます
-- ClickStackの[階層型ストレージ](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)機能は、長期データを効率的に管理するのに役立ちます。
-- [マテリアライズドビュー](/materialized-view/incremental-materialized-view)を使用して、生データの期限切れを許可しながら、集約またはフィルタリングされた履歴データを維持することを検討してください。
+- すべてのデータが Elastic から期限切れになるまで、両システムを並行運用し続けます
+- ClickStack の [階層型ストレージ](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 機能を利用することで、長期データを効率的に管理できます。
+- [マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用して、集約済みまたはフィルタ済みの履歴データを保持しつつ、生データは期限切れで削除されるようにすることも検討してください。
 
 ### 移行タイムライン {#migration-timeline}
 
-移行タイムラインは、データ保持要件に依存します：
+移行のタイムラインは、データ保持要件に依存します。
 
-- **30日間の保持**：移行は1ヶ月以内に完了できます。
-- **より長い保持期間**：Elasticからデータが期限切れになるまで並行運用を継続します。
-- **履歴データ**：絶対に必要な場合は、[データの移行](#migrating-data)を使用して特定の履歴データをインポートすることを検討してください。
+- **30 日保持**: 移行は 1 か月以内に完了できます。
+- **より長い保持期間**: Elastic 上のデータが期限切れになるまで並行運用を継続します。
+- **履歴データ**: どうしても必要な場合は、特定の履歴データをインポートするために [Migrating data](#migrating-data) の利用を検討してください。
+
 
 
 ## 設定の移行 {#migration-settings}
 
-ElasticからClickStackへ移行する際は、インデックス作成とストレージの設定をClickHouseのアーキテクチャに適合させる必要があります。Elasticsearchはパフォーマンスとフォールトトレランスのために水平スケーリングとシャーディングに依存しており、デフォルトで複数のシャードを持ちますが、ClickHouseは垂直スケーリングに最適化されており、通常はシャード数を少なくした方が最高のパフォーマンスを発揮します。
+Elastic から ClickStack へ移行する際は、インデックスおよびストレージ設定を ClickHouse のアーキテクチャに合わせて調整する必要があります。Elasticsearch は性能とフォールトトレランスのために水平スケーリングとシャーディングに依存しており、そのためデフォルトで複数シャードを持ちますが、ClickHouse は垂直スケーリング向けに最適化されており、一般的には少ないシャード数で最高の性能を発揮します。
 
 ### 推奨設定 {#recommended-settings}
 
-**単一シャード**から始めて垂直スケーリングを行うことを推奨します。この構成はほとんどのオブザーバビリティワークロードに適しており、管理とクエリパフォーマンスチューニングの両方を簡素化します。
+まずは**単一シャード**で開始し、垂直スケーリングすることを推奨します。この構成はほとんどのオブザーバビリティワークロードに適しており、運用管理とクエリ性能のチューニングの両方を簡素化します。
 
-- **[ClickHouse Cloud](https://clickhouse.com/cloud)**: デフォルトで単一シャード、マルチレプリカアーキテクチャを使用します。ストレージとコンピュートが独立してスケールするため、予測不可能な取り込みパターンと読み取り負荷の高いワークロードを持つオブザーバビリティユースケースに最適です。
-- **ClickHouse OSS**: セルフマネージド環境では、以下を推奨します:
-  - 単一シャードから始める
-  - 追加のCPUとRAMで垂直スケーリングを行う
-  - [階層型ストレージ](/observability/managing-data#storage-tiers)を使用してローカルディスクをS3互換オブジェクトストレージで拡張する
-  - 高可用性が必要な場合は[`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication)を使用する
-  - フォールトトレランスについては、オブザーバビリティワークロードでは通常[シャードの1レプリカ](/engines/table-engines/mergetree-family/replication)で十分です。
+- **[ClickHouse Cloud](https://clickhouse.com/cloud)**: デフォルトで単一シャード・マルチレプリカのアーキテクチャを採用しています。ストレージとコンピュートが独立してスケールするため、取り込みパターンが予測しづらく、読み取りが多いオブザーバビリティユースケースに最適です。
+- **ClickHouse OSS**: 自前運用の場合は、次を推奨します:
+  - 単一シャードから開始する
+  - 追加の CPU と RAM により垂直スケーリングする
+  - S3 互換オブジェクトストレージでローカルディスクを拡張するために [階層型ストレージ](/observability/managing-data#storage-tiers) を使用する
+  - 高可用性が必要な場合は [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) を使用する
+  - フォールトトレランスのためには、オブザーバビリティワークロードでは通常 [シャードあたり 1 レプリカ](/engines/table-engines/mergetree-family/replication) で十分です
 
-### シャーディングが必要な場合 {#when-to-shard}
+### いつシャーディングするか {#when-to-shard}
 
-以下の場合、シャーディングが必要になる可能性があります:
+次のような場合はシャーディングが必要になることがあります:
 
-- 取り込み速度が単一ノードの容量を超える場合(通常は500K行/秒以上)
-- テナント分離またはリージョン別のデータ分離が必要な場合
-- オブジェクトストレージを使用しても、総データセットが単一サーバーには大きすぎる場合
+- 取り込みレートが単一ノードの処理能力を超える場合 (通常は 500K rows/sec 超)
+- テナント分離やリージョン別データ分離が必要な場合
+- オブジェクトストレージを利用してもなお、データセット全体が単一サーバーに収まりきらない場合
 
-シャーディングが必要な場合は、シャードキーと分散テーブルの設定に関するガイダンスについて[水平スケーリング](/architecture/horizontal-scaling)を参照してください。
+シャーディングが必要な場合は、シャードキーおよび分散テーブルのセットアップに関するガイドとして [水平スケーリング](/architecture/horizontal-scaling) を参照してください。
 
-### 保持期間とTTL {#retention-and-ttl}
+### 保持期間と TTL {#retention-and-ttl}
 
-ClickHouseは、MergeTreeテーブルで[TTL句](/use-cases/observability/clickstack/production#configure-ttl)を使用してデータの有効期限を管理します。TTLポリシーでは以下が可能です:
+ClickHouse は、MergeTree テーブル上で [TTL 句](/use-cases/observability/clickstack/production#configure-ttl) を使用してデータの有効期限を管理します。TTL ポリシーにより、次のことが可能です:
 
-- 期限切れデータを自動的に削除する
-- 古いデータをコールドオブジェクトストレージに移動する
-- 最近の頻繁にクエリされるログのみを高速ディスクに保持する
+- 期限切れデータの自動削除
+- 古いデータをコールドなオブジェクトストレージへ移動
+- 最近の、頻繁にクエリされるログのみを高速ディスク上に保持
 
-移行中に一貫したデータライフサイクルを維持するため、ClickHouseのTTL設定を既存のElastic保持ポリシーに合わせることを推奨します。例については、[ClickStack本番環境のTTL設定](/use-cases/observability/clickstack/production#configure-ttl)を参照してください。
+移行中のデータライフサイクルを一貫させるために、既存の Elastic の保持ポリシーと ClickHouse の TTL 設定を揃えることを推奨します。設定例については、[ClickStack 本番環境での TTL 設定](/use-cases/observability/clickstack/production#configure-ttl) を参照してください。
+
 
 
 ## データの移行 {#migrating-data}
 
-ほとんどの可観測性データについては並行運用を推奨していますが、ElasticsearchからClickHouseへの直接的なデータ移行が必要となる特定のケースがあります：
+ほとんどのオブザーバビリティデータについては並行運用を推奨していますが、ElasticsearchからClickHouseへの直接的なデータ移行が必要となる特定のケースがあります：
 
 - データエンリッチメントに使用される小規模なルックアップテーブル（例：ユーザーマッピング、サービスカタログ）
-- 可観測性データと相関させる必要があるElasticsearchに保存されたビジネスデータ。ClickHouseのSQL機能とBusiness Intelligence統合により、Elasticsearchの限定的なクエリオプションと比較して、データの保守とクエリが容易になります。
+- オブザーバビリティデータと相関付ける必要があるElasticsearchに保存されたビジネスデータ。ClickHouseのSQL機能とビジネスインテリジェンス統合により、Elasticsearchの限定的なクエリオプションと比較して、データの保守とクエリが容易になります。
 - 移行時に保持する必要がある設定データ
 
 このアプローチは1,000万行未満のデータセットに対してのみ実行可能です。Elasticsearchのエクスポート機能はHTTP経由のJSONに限定されており、より大規模なデータセットに対してはスケールしないためです。
@@ -122,7 +121,7 @@ ClickHouseは、MergeTreeテーブルで[TTL句](/use-cases/observability/clicks
 
 ### スキーマの移行 {#migrate-scheme}
 
-Elasticsearchから移行するインデックス用のテーブルをClickHouseに作成します。ユーザーは[Elasticsearchの型をClickHouseの対応する型](/use-cases/observability/clickstack/migration/elastic/types)にマッピングできます。あるいは、ClickHouseのJSONデータ型を利用することもできます。これにより、データが挿入される際に適切な型のカラムが動的に作成されます。
+Elasticsearchから移行するインデックス用のテーブルをClickHouseに作成します。ユーザーは[ElasticsearchタイプをClickHouseの対応するタイプ](/use-cases/observability/clickstack/migration/elastic/types)にマッピングできます。あるいは、ClickHouseのJSONデータ型を使用することもできます。これにより、データが挿入される際に適切な型の列が動的に作成されます。
 
 `syslog`データを含むインデックスの以下のElasticsearchマッピングを考えてみましょう：
 
@@ -434,7 +433,7 @@ GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
 
 </details>
 
-ClickHouse における同等のテーブルスキーマは次のとおりです:
+同等の ClickHouse テーブルスキーマは次のとおりです:
 
 <details>
   <summary>ClickHouse schema</summary>
@@ -516,31 +515,31 @@ ClickHouse における同等のテーブルスキーマは次のとおりです
   ```
 </details>
 
-次の点に注意してください:
+以下に注意してください:
 
-* ネストされた構造はドット表記ではなく Tuple で表現しています
-* マッピングに基づき、適切な ClickHouse の型を使用しています:
+* ドット表記ではなく、入れ子構造を表現するために Tuple を使用しています。
+* 以下のマッピングに基づき、適切な ClickHouse 型を使用しています:
   * `keyword` → `String`
   * `date` → `DateTime`
   * `boolean` → `UInt8`
   * `long` → `Int64`
   * `ip` → `Array(Variant(IPv4, IPv6))`。このフィールドには [`IPv4`](/sql-reference/data-types/ipv4) と [`IPv6`](/sql-reference/data-types/ipv6) が混在しているため、ここでは [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) を使用しています。
   * `object` → 構造が予測できない syslog オブジェクトに対しては `JSON`
-* `host.ip` と `host.mac` 列は、Elasticsearch ではすべての型が配列であるのとは異なり、明示的に `Array` 型として定義されています。
-* 効率的な時間ベースのクエリのため、タイムスタンプとホスト名を用いた `ORDER BY` 句を追加しています
-* ログデータに最適な `MergeTree` をエンジンタイプとして使用しています
+* `host.ip` と `host.mac` カラムは明示的に `Array` 型になっています。これは、すべての型が配列となる Elasticsearch とは異なります。
+* 時系列クエリを効率的に実行するため、タイムスタンプとホスト名を用いた `ORDER BY` 句を追加しています。
+* ログデータに最適な `MergeTree` をエンジンタイプとして使用しています。
 
-**スキーマを静的に定義し、必要な箇所でのみ JSON 型を選択的に使用するこのアプローチは、[推奨されています](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)。**
+**スキーマを静的に定義し、必要な箇所のみ選択的に JSON 型を使用するこのアプローチは、[推奨される方法です](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)。**
 
-この厳格なスキーマには、いくつかの利点があります:
+このような厳格なスキーマには、次のような利点があります:
 
-* **データ検証** – 厳格なスキーマを適用することで、特定の構造以外でのカラム数の増加リスクを回避できます。
-* **カラム爆発のリスクを回避**: JSON 型は、サブカラムが専用カラムとして保存されるため潜在的には何千ものカラムまでスケール可能ですが、これにより過剰な数のカラムファイルが作成され、パフォーマンスに影響を与える可能性があります。これを軽減するために、JSON が内部的に使用する [Dynamic 型](/sql-reference/data-types/dynamic) では、[`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータを提供しており、個別のカラムファイルとして保存される一意なパス数を制限します。しきい値に達すると、追加のパスはコンパクトなエンコード形式を用いて共有カラムファイルに保存され、柔軟なデータ取り込みを維持しつつ、パフォーマンスとストレージ効率を確保します。ただし、この共有カラムファイルへのアクセスは同等の性能は得られません。また、JSON カラムは [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths) と組み合わせて使用することができ、「ヒント付き」カラムは専用カラムと同等のパフォーマンスを提供します。
-* **パスと型のイントロスペクションがより簡単**: JSON 型は、推論された型やパスを特定するための [イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions) をサポートしていますが、`DESCRIBE` などを用いて探索する場合、静的な構造のほうが単純なことがあります。
+* **データ検証** – 厳格なスキーマを適用することで、特定の構造を除き、カラム爆発のリスクを回避できます。
+* **カラム爆発のリスク回避**: JSON 型はサブカラムを専用カラムとして保存するため、潜在的には数千のカラムまでスケールできますが、その結果として過剰な数のカラムファイルが生成され、パフォーマンスへの悪影響を招く「カラムファイルの爆発」が起こり得ます。これを軽減するために、JSON が内部的に使用する [Dynamic 型](/sql-reference/data-types/dynamic) では [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータを提供しており、個別のカラムファイルとして保存されるユニークなパスの数を制限します。この閾値に達すると、追加のパスはコンパクトなエンコード形式を用いて共有カラムファイルに保存され、柔軟なデータのインジェストを維持しつつ、パフォーマンスとストレージ効率のバランスを取ります。ただし、この共有カラムファイルへのアクセスは、それほど高性能ではありません。なお、JSON カラムは [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths) と併用することができ、「ヒント付き」のカラムは専用カラムと同等のパフォーマンスを発揮します。
+* **パスと型のイントロスペクションが容易**: JSON 型は、推論された型とパスを特定するための [イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions) をサポートしていますが、`DESCRIBE` などを用いる場合、静的構造の方が探索が容易なことがあります。
 
 <br />
 
-別の方法として、ユーザーは 1 つの `JSON` カラムを持つテーブルを作成するだけでも構いません。
+別の方法として、ユーザーは単一の `JSON` カラムを持つテーブルを作成するだけでも構いません。
 
 ```sql
 SET enable_json_type = 1;
@@ -555,36 +554,36 @@ ORDER BY (`json.host.name`, `json.@timestamp`)
 
 
 :::note
-JSON定義において`host.name`と`timestamp`カラムに型ヒントを提供しています。これらのカラムを順序付け/プライマリキーで使用するためです。これにより、ClickHouseはこれらのカラムがnullにならないことを認識し、使用すべきサブカラムを特定できます(各型に対して複数のサブカラムが存在する可能性があるため、指定しない場合は曖昧になります)。
+`host.name` および `timestamp` カラムは、並び順/プライマリキーで使用するため、JSON 定義内で型ヒントを指定しています。これにより ClickHouse はこのカラムが null になり得ないことを把握でき、どのサブカラムを使用すべきかを認識できます（型ごとに複数のサブカラムが存在し得るため、指定しないと曖昧になります）。
 :::
 
-この後者のアプローチは、よりシンプルではありますが、プロトタイピングやデータエンジニアリングタスクに最適です。本番環境では、必要な場合にのみ動的なサブ構造に対して`JSON`を使用してください。
+この後者のアプローチは、よりシンプルであり、プロトタイピングやデータエンジニアリングの作業に最適です。本番環境では、必要な場合に限り、動的なサブ構造に対してのみ `JSON` を使用してください。
 
-スキーマにおけるJSON型の使用方法と効率的な適用方法の詳細については、ガイド["Designing your schema"](/integrations/data-formats/json/schema)を参照することを推奨します。
+スキーマでの JSON 型の使用方法や、その効率的な適用方法の詳細については、ガイド [「Designing your schema」](/integrations/data-formats/json/schema) を参照することをお勧めします。
 
-### `elasticdump`のインストール {#install-elasticdump}
+### `elasticdump` をインストールする
 
-Elasticsearchからデータをエクスポートするには、[`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump)を推奨します。このツールは`node`を必要とし、ElasticsearchとClickHouseの両方にネットワーク的に近接したマシンにインストールする必要があります。ほとんどのエクスポートには、最低4コアと16GBのRAMを搭載した専用サーバーを推奨します。
+Elasticsearch からデータをエクスポートするには [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) を推奨します。このツールには `node` が必要で、Elasticsearch と ClickHouse の両方にネットワーク的に近接したマシンにインストールする必要があります。ほとんどのエクスポート用途では、少なくとも 4 コアと 16GB の RAM を持つ専用サーバーを推奨します。
 
 ```shell
 npm install elasticdump -g
 ```
 
-`elasticdump`は、データ移行において以下の利点を提供します:
+`elasticdump` は、データ移行においていくつかの利点があります。
 
-- Elasticsearch REST APIと直接やり取りすることで、適切なデータエクスポートを保証します。
-- Point-in-Time (PIT) APIを使用してエクスポートプロセス中のデータ整合性を維持します。これにより、特定の時点におけるデータの一貫したスナップショットが作成されます。
-- データを直接JSON形式でエクスポートし、ClickHouseクライアントにストリーミングして挿入できます。
+* Elasticsearch REST API と直接やり取りするため、正しくデータをエクスポートできます。
+* Point-in-Time (PIT) API を使用してエクスポート処理中のデータ整合性を維持します。これにより、特定時点のデータの一貫したスナップショットが作成されます。
+* データを直接 JSON 形式でエクスポートでき、ClickHouse クライアントへストリーミングして挿入できます。
 
-可能な限り、ClickHouse、Elasticsearch、および`elasticdump`を同じアベイラビリティゾーンまたはデータセンター内で実行することを推奨します。これにより、ネットワーク送信を最小限に抑え、スループットを最大化できます。
+可能であれば、ネットワークの送信トラフィックを最小化しスループットを最大化するため、ClickHouse、Elasticsearch、`elasticdump` を同一のアベイラビリティゾーンまたはデータセンター内で実行することを推奨します。
 
-### ClickHouseクライアントのインストール {#install-clickhouse-client}
+### ClickHouse クライアントのインストール
 
-`elasticdump`が配置されているサーバーにClickHouseが[インストールされている](/install)ことを確認してください。**ClickHouseサーバーを起動しないでください** - これらの手順ではクライアントのみが必要です。
+`elasticdump` が配置されているサーバーに ClickHouse が[インストールされていること](/install)を確認してください。**ClickHouse サーバーは起動しないでください**。これらの手順で必要なのはクライアントのみです。
 
-### データのストリーミング {#stream-data}
+### データのストリーミング
 
-ElasticsearchとClickHouse間でデータをストリーミングするには、`elasticdump`コマンドを使用し、出力を直接ClickHouseクライアントにパイプします。以下は、適切に構造化されたテーブル`logs_system_syslog`にデータを挿入します。
+Elasticsearch と ClickHouse 間でデータをストリーミングするには、`elasticdump` コマンドを使用し、その出力を ClickHouse クライアントへ直接パイプします。以下の例では、データを適切に設計されたテーブル `logs_system_syslog` に挿入します。
 
 
 ```shell
@@ -607,26 +606,26 @@ clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PAS
 
 ````
 
-`elasticdump`の以下のフラグの使用に注意してください：
+`elasticdump`の以下のフラグの使用に注意してください:
 
-- `type=data` - レスポンスをElasticsearchのドキュメント内容のみに制限します。
-- `input-index` - Elasticsearchの入力インデックスを指定します。
+- `type=data` - レスポンスをElasticsearch内のドキュメントコンテンツのみに制限します。
+- `input-index` - Elasticsearchの入力インデックスです。
 - `output=$` - すべての結果を標準出力にリダイレクトします。
-- `sourceOnly` フラグはレスポンスからメタデータフィールドを省略します。
-- `searchAfter` フラグは結果の効率的なページネーションのために[`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after)を使用します。
-- `pit=true` は[point in time API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time)を使用してクエリ間で一貫した結果を保証します。
+- `sourceOnly` - レスポンスからメタデータフィールドを除外します。
+- `searchAfter` - 結果の効率的なページネーションのために[`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after)を使用します。
+- `pit=true` - [point in time API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time)を使用してクエリ間で一貫した結果を保証します。
 <br/>
-ClickHouseクライアントのパラメータ（認証情報を除く）：
+ClickHouseクライアントのパラメータ(認証情報を除く):
 
-- `max_insert_block_size=1000` - ClickHouseクライアントはこの行数に達するとデータを送信します。値を増やすとスループットが向上しますが、ブロック形成に時間がかかるため、データがClickHouseに表示されるまでの時間が長くなります。
-- `min_insert_block_size_bytes=0` - サーバー側のバイト単位のブロック圧縮を無効にします。
-- `min_insert_block_size_rows=1000` - サーバー側でクライアントからのブロックを圧縮します。この場合、`max_insert_block_size`に設定することで行が即座に表示されます。スループットを向上させるには値を増やしてください。
+- `max_insert_block_size=1000` - ClickHouseクライアントはこの行数に達するとデータを送信します。値を増やすとスループットが向上しますが、ブロックの形成に時間がかかるため、ClickHouseにデータが表示されるまでの時間が長くなります。
+- `min_insert_block_size_bytes=0` - サーバー側のバイト単位によるブロック圧縮を無効にします。
+- `min_insert_block_size_rows=1000` - サーバー側でクライアントからのブロックを圧縮します。この場合、`max_insert_block_size`と同じ値に設定することで行が即座に表示されます。スループットを向上させるには値を増やしてください。
 - `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - データを[JSONEachRow形式](/integrations/data-formats/json/other-formats)として挿入します。`logs_system_syslog`のような明確に定義されたスキーマに送信する場合に適しています。
 <br/>
 **ユーザーは毎秒数千行のオーダーのスループットを期待できます。**
 
-:::note 単一のJSON行への挿入
-単一のJSON列に挿入する場合（上記の`syslog_json`スキーマを参照）、同じ挿入コマンドを使用できます。ただし、`JSONEachRow`の代わりに`JSONAsObject`を形式として指定する必要があります。例：
+:::note 単一のJSON列への挿入
+単一のJSON列に挿入する場合(上記の`syslog_json`スキーマを参照)、同じ挿入コマンドを使用できます。ただし、`JSONEachRow`の代わりに`JSONAsObject`を形式として指定する必要があります。例:
 
 ```shell
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true |
@@ -637,13 +636,13 @@ clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PAS
 詳細については["Reading JSON as an object"](/integrations/data-formats/json/other-formats#reading-json-as-an-object)を参照してください。
 :::
 
-### データの変換（オプション） {#transform-data}
+### データの変換(オプション) {#transform-data}
 
-上記のコマンドは、ElasticsearchフィールドとClickHouse列の1対1のマッピングを前提としています。ClickHouseへの挿入前にElasticsearchデータをフィルタリングおよび変換する必要がある場合がよくあります。
+上記のコマンドはElasticsearchフィールドとClickHouse列の1対1のマッピングを前提としています。ユーザーはClickHouseへの挿入前にElasticsearchデータをフィルタリングおよび変換する必要がある場合が多くあります。
 
-これは[`input`](/sql-reference/table-functions/input)テーブル関数を使用して実現できます。この関数により、標準出力に対して任意の`SELECT`クエリを実行できます。
+これは[`input`](/sql-reference/table-functions/input)テーブル関数を使用して実現できます。この関数により標準出力に対して任意の`SELECT`クエリを実行できます。
 
-先ほどのデータから`timestamp`と`hostname`フィールドのみを保存したいとします。ClickHouseスキーマ：
+先ほどのデータから`timestamp`と`hostname`フィールドのみを保存したいとします。ClickHouseスキーマ:
 
 ```sql
 CREATE TABLE logs_system_syslog_v2
@@ -655,7 +654,7 @@ ENGINE = MergeTree
 ORDER BY (hostname, timestamp)
 ```
 
-`elasticdump`からこのテーブルに挿入するには、`input`テーブル関数を使用します。JSON型を使用して必要な列を動的に検出および選択します。この`SELECT`クエリにはフィルタを簡単に含めることができます。
+`elasticdump`からこのテーブルに挿入するには、`input`テーブル関数を使用します。JSON型を使用して必要な列を動的に検出および選択します。この`SELECT`クエリには簡単にフィルタを含めることができます。
 
 ```shell
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true |

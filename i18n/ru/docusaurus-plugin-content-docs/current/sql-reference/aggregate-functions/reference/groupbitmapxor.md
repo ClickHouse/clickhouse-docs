@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет XOR битмап-столбца и возвращает мощность множества типа UInt64. Если используется с суффиксом -State, то возвращает объект битмапа'
+description: 'Вычисляет XOR для битмап-колонки и возвращает мощность множества типа UInt64; при использовании с суффиксом -State возвращает объект битовой карты'
 sidebar_position: 151
 slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
 title: 'groupBitmapXor'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitmapXor
 
-`groupBitmapXor` вычисляет XOR столбца типа bitmap и возвращает его мощность (cardinality) в виде значения типа UInt64; при использовании с суффиксом -State возвращает [bitmap object](../../../sql-reference/functions/bitmap-functions.md).
+`groupBitmapXor` вычисляет XOR столбца-битмапа и возвращает его кардинальность в виде значения типа UInt64; если используется с суффиксом -State, то возвращает [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmapXor(expr)
@@ -16,7 +16,7 @@ groupBitmapXor(expr)
 
 **Аргументы**
 
-`expr` – выражение с результатом типа `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – выражение, результатом вычисления которого является тип `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 

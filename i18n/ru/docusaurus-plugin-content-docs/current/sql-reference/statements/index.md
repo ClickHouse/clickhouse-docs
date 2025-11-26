@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # Операторы SQL в ClickHouse
 
-Пользователи взаимодействуют с ClickHouse с помощью операторов SQL. ClickHouse поддерживает распространённые операторы SQL, такие как [SELECT](select/index.md) и [CREATE](create/index.md), а также предоставляет специализированные операторы, такие как [KILL](kill.md) и [OPTIMIZE](optimize.md).
+Пользователи взаимодействуют с ClickHouse с помощью операторов SQL. ClickHouse поддерживает распространённые операторы SQL, такие как [SELECT](select/index.md) и [CREATE](create/index.md), а также специализированные операторы, такие как [KILL](kill.md) и [OPTIMIZE](optimize.md).

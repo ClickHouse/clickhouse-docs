@@ -2,7 +2,7 @@
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
 description: 'Пример использования комбинатора quantilesTimingIf'
-keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
+keywords: ['quantilesTiming', 'if', 'комбинатор', 'примеры', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
@@ -12,19 +12,21 @@ doc_type: 'reference'
 # quantilesTimingIf {#quantilestimingif}
 
 
+
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-для вычисления квантилей временных значений для строк, удовлетворяющих условию,
-с помощью агрегатной функции-комбинатора `quantilesTimingIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+для вычисления квантилей значений времени для строк, для которых условие истинно,
+с использованием агрегатной функции-комбинатора `quantilesTimingIf`.
 
 
-## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит время ответа API для различных эндпоинтов,
+## Пример использования
+
+В этом примере мы создадим таблицу, которая хранит время ответа API для различных эндпоинтов
 и используем `quantilesTimingIf` для вычисления квантилей времени ответа для успешных запросов.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE api_responses(
     endpoint String,
     response_time_ms UInt32,
@@ -64,27 +66,26 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-Функция `quantilesTimingIf` вычисляет квантили только для успешных запросов (is_successful = 1).
-Возвращаемый массив содержит следующие квантили в порядке:
+Функция `quantilesTimingIf` вычисляет квантили только для успешных запросов (is&#95;successful = 1).
+Возвращаемый массив содержит следующие квантили в следующем порядке:
 
-- 0 (минимум)
-- 0.25 (первый квартиль)
-- 0.5 (медиана)
-- 0.75 (третий квартиль)
-- 0.95 (95-й перцентиль)
-- 0.99 (99-й перцентиль)
-- 1.0 (максимум)
+* 0 (минимум)
+* 0.25 (первый квартиль)
+* 0.5 (медиана)
+* 0.75 (третий квартиль)
+* 0.95 (95-й процентиль)
+* 0.99 (99-й процентиль)
+* 1.0 (максимум)
 
-```response title="Результат"
-   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
-1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └──────────┴─────────────────────────────────────────────────────────────────────┘
+```response title="Response"
+   ┌─конечная_точка─┬─квантили_времени_отклика────────────────────────────────────────┐
+1. │ заказы   │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ продукты │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ пользователи │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └─────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
 
 ## См. также {#see-also}
-
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

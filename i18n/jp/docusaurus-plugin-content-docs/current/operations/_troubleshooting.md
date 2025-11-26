@@ -1,5 +1,5 @@
 
-[//]: # (このファイルは FAQ > トラブルシューティング で参照されています)
+[//]: # (This file is included in FAQ > Troubleshooting)
 
 - [インストール](#troubleshooting-installation-errors)
 - [サーバーへの接続](#troubleshooting-accepts-no-connections)
@@ -8,36 +8,36 @@
 
 
 
-## インストール {#troubleshooting-installation-errors}
+## インストール
 
-### apt-getでClickHouseリポジトリからdebパッケージを取得できない {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### apt-get を使用して ClickHouse リポジトリから deb パッケージを取得できない
 
-- ファイアウォール設定を確認してください。
-- 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install.md)に記載されている方法でパッケージをダウンロードし、`sudo dpkg -i <packages>`コマンドを使用して手動でインストールしてください。また、`tzdata`パッケージも必要です。
+* ファイアウォールの設定を確認してください。
+* 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install.md)の記事で説明されているようにパッケージをダウンロードし、`sudo dpkg -i <packages>` コマンドを使用して手動でインストールしてください。`tzdata` パッケージも必要です。
 
-### apt-getでClickHouseリポジトリからdebパッケージを更新できない {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### apt-get を使用して ClickHouse リポジトリから deb パッケージを更新できない
 
-- この問題は、GPGキーが変更された際に発生する可能性があります。
+* GPG キーが変更された場合にこの問題が発生することがあります。
 
-[セットアップ](../getting-started/install.md#setup-the-debian-repository)ページの手順に従って、リポジトリ設定を更新してください。
+リポジトリ設定を更新するには、[セットアップ](../getting-started/install.md#setup-the-debian-repository) ページの手順に従ってください。
 
-### `apt-get update`で各種警告が表示される {#you-get-different-warnings-with-apt-get-update}
+### `apt-get update` でさまざまな警告が表示される
 
-- 警告メッセージの全文は以下のいずれかです:
+* 実際の警告メッセージは次のいずれかになります:
 
 ```bash
-N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
+N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' はアーキテクチャ 'i386' に対応していないため、設定ファイル 'main/binary-i386/Packages' の取得をスキップします
 ```
 
 ```bash
-E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
+E: https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz の取得に失敗しました  ファイルサイズが想定と異なります (30451 != 28154)。ミラー同期中ですか?
 ```
 
 ```text
-E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
-E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
-N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
-N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
+E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Origin' 値が 'Artifactory' から 'ClickHouse' に変更されました
+E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Label' 値が 'Artifactory' から 'ClickHouse' に変更されました
+N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Suite' 値が 'stable' から '' に変更されました
+N: このリポジトリの更新を適用するには、明示的に承認する必要があります。詳細は apt-secure(8) マニュアルページを参照してください。
 ```
 
 ```bash
@@ -45,7 +45,7 @@ Err:11 https://packages.clickhouse.com/deb stable InRelease
   400  Bad Request [IP: 172.66.40.249 443]
 ```
 
-上記の問題を解決するには、以下のスクリプトを使用してください:
+上記の問題を解決するには、以下のスクリプトを使用してください。
 
 ```bash
 sudo rm /var/lib/apt/lists/packages.clickhouse.com_* /var/lib/dpkg/arch /var/lib/apt/lists/partial/packages.clickhouse.com_*
@@ -53,28 +53,27 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 署名エラーによりyumでパッケージを取得できない {#you-cant-get-packages-with-yum-because-of-wrong-signature}
+### 誤った署名が原因で yum からパッケージを取得できない
 
-考えられる原因: キャッシュが破損している可能性があります。2022年9月のGPGキー更新後に破損した可能性があります。
+起こりうる原因: キャッシュが不正です。2022 年 9 月に GPG キーを更新した後に壊れた可能性があります。
 
-解決方法は、yumのキャッシュとlibディレクトリをクリーンアップすることです:
+解決策は、yum のキャッシュと lib ディレクトリをクリアすることです。
 
 ```bash
 sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec rm -rf {} +
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-その後、[インストールガイド](../getting-started/install.md#from-rpm-packages)に従ってください
+その後は、[インストールガイド](../getting-started/install.md#from-rpm-packages) に従ってください。
 
-### Dockerコンテナを実行できない {#you-cant-run-docker-container}
+### Docker コンテナを実行できない
 
-シンプルな`docker run clickhouse/clickhouse-server`を実行すると、以下のようなスタックトレースでクラッシュします:
+単純に `docker run clickhouse/clickhouse-server` を実行すると、以下のようなスタックトレースが出力されてクラッシュします。
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
-
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (このメッセージをコピーする際は、以下の行を必ず含めてください):
 ```
 
 
@@ -95,19 +94,19 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 
 ```
 
-原因は、バージョンが`20.10.10`未満の古いDockerデーモンです。修正するには、アップグレードするか、`docker run [--privileged | --security-opt seccomp=unconfined]`を実行してください。後者にはセキュリティ上のリスクがあります。
+原因は、`20.10.10`より古いバージョンのDockerデーモンです。修正するには、アップグレードするか、`docker run [--privileged | --security-opt seccomp=unconfined]`を実行してください。後者にはセキュリティ上の影響があります。
 
 ```
 
 
-## サーバーへの接続 {#troubleshooting-accepts-no-connections}
+## サーバーへの接続
 
-考えられる問題:
+想定される問題:
 
-- サーバーが起動していない。
-- 予期しない設定パラメータ、または誤った設定パラメータ。
+* サーバーが起動していない
+* 想定外または誤った設定パラメータ
 
-### サーバーが起動していない {#server-is-not-running}
+### サーバーが起動していない
 
 **サーバーが起動しているか確認する**
 
@@ -117,7 +116,7 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 $ sudo service clickhouse-server status
 ```
 
-サーバーが起動していない場合は、次のコマンドで起動します:
+サーバーが起動していない場合は、次のコマンドで起動してください。
 
 ```bash
 $ sudo service clickhouse-server start
@@ -125,26 +124,26 @@ $ sudo service clickhouse-server start
 
 **ログを確認する**
 
-`clickhouse-server`のメインログは、デフォルトで`/var/log/clickhouse-server/clickhouse-server.log`にあります。
+`clickhouse-server` のメインログは、デフォルトで `/var/log/clickhouse-server/clickhouse-server.log` に出力されます。
 
-サーバーが正常に起動した場合、次の文字列が表示されます:
+サーバーが正常に起動していれば、次のような行が表示されます。
 
-- `<Information> Application: starting up.` — サーバーが起動しました。
-- `<Information> Application: Ready for connections.` — サーバーが実行中で、接続を受け付ける準備ができています。
+* `<Information> Application: starting up.` — サーバーが起動しました。
+* `<Information> Application: Ready for connections.` — サーバーが稼働中で、接続を受け付ける準備ができています。
 
-`clickhouse-server`の起動が設定エラーで失敗した場合、エラーの説明とともに`<Error>`文字列が表示されます。例:
-
-```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
-```
-
-ファイルの末尾にエラーが表示されない場合は、次の文字列から始まるファイル全体を確認してください:
+`clickhouse-server` の起動が設定エラーで失敗した場合は、エラー内容の説明とともに `<Error>` という行が表示されます。例えば、次のようになります。
 
 ```text
-<Information> Application: starting up.
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 外部ディクショナリ 'event2id' の再読み込みに失敗しました: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-サーバー上で`clickhouse-server`の2つ目のインスタンスを起動しようとすると、次のログが表示されます:
+ファイルの末尾にエラーが表示されていない場合は、次の文字列以降を起点にファイル全体を確認してください。
+
+```text
+<Information> Application: 起動中。
+```
+
+サーバー上で 2 つ目の `clickhouse-server` インスタンスを起動しようとすると、次のようなログが表示されます。
 
 ```text
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -160,69 +159,70 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-**system.dログを確認する**
+**systemd のログを確認する**
 
-`clickhouse-server`ログに有用な情報が見つからない場合、またはログが存在しない場合は、次のコマンドで`system.d`ログを表示できます:
+`clickhouse-server` のログに有用な情報が見つからない場合や、ログ自体が存在しない場合は、次のコマンドを実行して `systemd` のログを確認できます。
 
 ```bash
 $ sudo journalctl -u clickhouse-server
 ```
 
-**clickhouse-serverを対話モードで起動する**
+**対話モードで clickhouse-server を起動する**
 
 ```bash
 $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-このコマンドは、自動起動スクリプトの標準パラメータを使用して、サーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server`はすべてのイベントメッセージをコンソールに出力します。
+このコマンドは、autostart スクリプトの標準パラメータを使用してサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
 
-### 設定パラメータ {#configuration-parameters}
+### 設定パラメータ
 
-確認事項:
+次の点を確認します。
 
-- Docker設定。
+* Docker 設定
 
-  IPv6ネットワークのDocker内でClickHouseを実行する場合は、`network=host`が設定されていることを確認してください。
+  IPv6 ネットワーク上の Docker で ClickHouse を実行している場合は、`network=host` が設定されていることを確認します。
 
-- エンドポイント設定。
+* エンドポイント設定
 
-  [listen_host](../operations/server-configuration-parameters/settings.md#listen_host)と[tcp_port](../operations/server-configuration-parameters/settings.md#tcp_port)の設定を確認してください。
+  [listen&#95;host](../operations/server-configuration-parameters/settings.md#listen_host) と [tcp&#95;port](../operations/server-configuration-parameters/settings.md#tcp_port) の設定を確認します。
 
-  ClickHouseサーバーは、デフォルトでlocalhostからの接続のみを受け付けます。
+  ClickHouse サーバーは、デフォルトでは localhost からの接続のみを受け付けます。
 
-- HTTPプロトコル設定。
+* HTTP プロトコル設定
 
-  HTTP APIのプロトコル設定を確認してください。
+  HTTP API のプロトコル設定を確認します。
 
-- セキュア接続設定。
+* セキュア接続の設定
 
-  確認事項:
-  - [tcp_port_secure](../operations/server-configuration-parameters/settings.md#tcp_port_secure)設定。
-  - [SSL証明書](../operations/server-configuration-parameters/settings.md#openssl)の設定。
+  次を確認します。
 
-    接続時には適切なパラメータを使用してください。例えば、`clickhouse_client`では`port_secure`パラメータを使用します。
+  * [tcp&#95;port&#95;secure](../operations/server-configuration-parameters/settings.md#tcp_port_secure) の設定
+  * [SSL certificates](../operations/server-configuration-parameters/settings.md#openssl) の設定
 
-- ユーザー設定。
+    接続時には適切なパラメータを使用します。たとえば、`clickhouse_client` では `port_secure` パラメータを使用します。
+
+* ユーザー設定
 
   誤ったユーザー名またはパスワードを使用している可能性があります。
 
 
-## クエリ処理 {#troubleshooting-does-not-process-queries}
+## クエリ処理
 
-ClickHouseがクエリを処理できない場合、クライアントにエラーの説明を送信します。`clickhouse-client`では、コンソールにエラーの説明が表示されます。HTTPインターフェースを使用している場合、ClickHouseはレスポンスボディにエラーの説明を送信します。例:
+ClickHouse がクエリを処理できない場合、エラー内容の説明をクライアントに送信します。`clickhouse-client` を使用している場合は、コンソール上でエラー内容を確認できます。HTTP インターフェイスを使用している場合は、ClickHouse はレスポンスボディ内にエラーの説明を送信します。例えば次のとおりです。
 
 ```bash
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
 Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
-`clickhouse-client`を`stack-trace`パラメータ付きで起動すると、ClickHouseはエラーの説明とともにサーバーのスタックトレースを返します。
+`clickhouse-client` を `stack-trace` パラメータを指定して起動すると、ClickHouse はエラーの説明とともにサーバーのスタックトレースを返します。
 
-接続が切断されたというメッセージが表示されることがあります。この場合、クエリを再実行できます。クエリを実行するたびに接続が切断される場合は、サーバーログでエラーを確認してください。
+接続が切断されたことを示すメッセージが表示される場合があります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーが出力されていないか確認してください。
 
 
 ## クエリ処理の効率 {#troubleshooting-too-slow}
 
-ClickHouseの動作が遅い場合は、クエリに対するサーバーリソースとネットワークの負荷をプロファイリングする必要があります。
+ClickHouse の動作が遅すぎると感じる場合は、クエリに対するサーバーリソースやネットワークへの負荷をプロファイリングする必要があります。
 
-clickhouse-benchmarkユーティリティを使用してクエリをプロファイリングできます。このユーティリティは、1秒あたりの処理クエリ数、1秒あたりの処理行数、およびクエリ処理時間のパーセンタイルを表示します。
+`clickhouse-benchmark` ユーティリティを使用してクエリをプロファイリングできます。1 秒あたりのクエリ処理数、1 秒あたりの行処理数、およびクエリ処理時間のパーセンタイルを表示します。

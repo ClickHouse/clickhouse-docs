@@ -1,5 +1,5 @@
 ---
-description: 'プロセッサーレベルのプロファイリング情報を保持するシステムテーブル（`EXPLAIN PIPELINE` で確認できます）'
+description: 'プロセッサーレベルのプロファイリング情報を含むシステムテーブル（`EXPLAIN PIPELINE` の結果で確認可能）'
 keywords: ['system table', 'processors_profile_log', 'EXPLAIN PIPELINE']
 slug: /operations/system-tables/processors_profile_log
 title: 'system.processors_profile_log'
@@ -13,7 +13,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-このテーブルには、プロセッサレベル（[`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md#explain-pipeline) で確認できる）のプロファイリング情報が含まれます。
+このテーブルには、プロセッサーレベルのプロファイリング情報が含まれます（[`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md#explain-pipeline) で確認できます）。
 
 列:
 
@@ -21,21 +21,22 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントが発生した日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントが発生した日時。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — イベントが発生した日時（マイクロ秒精度）。
-* `id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサの ID。
-* `parent_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 親プロセッサの ID。
-* `plan_step` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサを作成したクエリプランステップの ID。プロセッサがどのステップからも追加されていない場合、この値は 0 です。
-* `plan_group` ([UInt64](../../sql-reference/data-types/int-uint.md)) — クエリプランステップによって作成された場合のプロセッサのグループ。同一のクエリプランステップから追加されたプロセッサの論理的な区分。グループは EXPLAIN PIPELINE の結果を見やすくするためだけに使用されます。
-* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初期クエリの ID（分散クエリ実行時）。
+* `id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサーの ID。
+* `parent_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 親プロセッサーの ID の配列。
+* `plan_step` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサーを作成したクエリプランステップの ID。プロセッサーがどのステップからも追加されていない場合、この値は 0。
+* `plan_group` ([UInt64](../../sql-reference/data-types/int-uint.md)) — クエリプランステップによって作成された場合のプロセッサーのグループ。同一のクエリプランステップから追加されたプロセッサーを論理的にグループ化するためのものです。グループは `EXPLAIN PIPELINE` の結果を見やすくする目的にのみ使用されます。
+* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初期クエリの ID（分散クエリ実行用）。
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリの ID。
-* `name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — プロセッサ名。
-* `elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサが実行されていた時間（マイクロ秒）。
-* `input_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサが（他のプロセッサからの）データを待機していた時間（マイクロ秒）。
-* `output_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 出力ポートがフルだったためにこのプロセッサが待機していた時間（マイクロ秒）。
-* `input_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサが消費した行数。
-* `input_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサが消費したバイト数。
-* `output_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサが生成した行数。
-* `output_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサが生成したバイト数。
-  **例**
+* `name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — プロセッサー名。
+* `elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサーが実行されていた時間（マイクロ秒単位）。
+* `input_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このプロセッサーが（別のプロセッサーからの）データを待機していた時間（マイクロ秒単位）。
+* `output_wait_elapsed_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 出力ポートがフルだったためにこのプロセッサーが待機していた時間（マイクロ秒単位）。
+* `input_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサーが消費した行数。
+* `input_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサーが消費したバイト数。
+* `output_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサーが生成した行数。
+* `output_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — プロセッサーが生成したバイト数。
+
+**例**
 
 クエリ:
 
@@ -68,7 +69,7 @@ WHERE query_id = 'feb5ed16-1c24-4227-aa54-78c02b3b27d4'
 ORDER BY name ASC
 ```
 
-結果：
+結果:
 
 
 ```text
@@ -84,9 +85,9 @@ ORDER BY name ASC
 
 ここでは次のことがわかります:
 
-* `ExpressionTransform` は `sleep(1)` 関数を実行していたため、その `work` の実行時間は 1e6 us となり、その結果 `elapsed_us` &gt; 1e6 となります。
-* `SourceFromSingleChunk` は待機する必要があります。これは、`ExpressionTransform` が `sleep(1)` の実行中はデータを一切受け付けないためであり、その間 1e6 us のあいだ `PortFull` 状態となるため、`output_wait_elapsed_us` &gt; 1e6 となります。
-* `LimitsCheckingTransform`、`NullSource`、`LazyOutputFormat` は、結果を処理するために `ExpressionTransform` が `sleep(1)` を実行し終えるまで待機する必要があるため、`input_wait_elapsed_us` &gt; 1e6 となります。
+* `ExpressionTransform` は `sleep(1)` 関数を実行していたため、その `work` に 1e6 us がかかり、その結果 `elapsed_us` &gt; 1e6 となります。
+* `SourceFromSingleChunk` は待機する必要があります。これは、`ExpressionTransform` が `sleep(1)` の実行中はデータを一切受け付けないためで、その 1e6 us のあいだ `PortFull` 状態となり、結果として `output_wait_elapsed_us` &gt; 1e6 となります。
+* `LimitsCheckingTransform`/`NullSource`/`LazyOutputFormat` は、結果を処理するために `ExpressionTransform` が `sleep(1)` の実行を完了するまで待機する必要があるため、`input_wait_elapsed_us` &gt; 1e6 となります。
 
 **関連項目**
 

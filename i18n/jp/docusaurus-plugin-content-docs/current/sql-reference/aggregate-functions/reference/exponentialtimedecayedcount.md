@@ -1,5 +1,5 @@
 ---
-description: '時系列に対して、時刻インデックス `t` における累積指数減衰を返します。'
+description: '時系列に対し、時間インデックス `t` における累積の指数減衰値を返します。'
 sidebar_position: 134
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount
 title: 'exponentialTimeDecayedCount'
@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
+## exponentialTimeDecayedCount
 
-時系列における時刻インデックス `t` での累積指数減衰を返します。
+時系列において、時刻 `t` における指数減衰の累積値を返します。
 
 **構文**
 
@@ -20,15 +20,15 @@ exponentialTimeDecayedCount(x)(t)
 
 **引数**
 
-- `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
+* `t` — 時刻。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 半減期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半減期を表す値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された時点における累積指数減衰を返します。[Float64](../../data-types/float.md)。
+* 指定した時点における累積指数減衰を返します。[Float64](../../data-types/float.md)。
 
 **例**
 

@@ -1,5 +1,5 @@
 ---
-description: '结果等于 varSamp 的平方根。与 stddevSamp 不同的是，此函数使用数值稳定的算法。'
+description: '结果等于 varSamp 的平方根。与 stddevSamp 不同，本函数使用数值更稳定的算法。'
 sidebar_position: 191
 slug: /sql-reference/aggregate-functions/reference/stddevsampstable
 title: 'stddevSampStable'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # stddevSampStable
 
-结果等于 [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) 的平方根。与 [`stddevSamp`](../reference/stddevsamp.md) 不同，此函数使用数值更稳定的算法。其运行速度较慢，但计算误差更小。
+结果等于 [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) 的平方根。与 [`stddevSamp`](../reference/stddevsamp.md) 不同，此函数使用在数值上更稳定的算法。其运行速度较慢，但数值误差更小。
 
 **语法**
 
@@ -22,7 +22,7 @@ stddevSampStable(x)
 
 **返回值**
 
-`x` 的样本方差的平方根。[Float64](../../data-types/float.md)。
+返回 `x` 的样本方差的平方根。[Float64](../../data-types/float.md)。
 
 **示例**
 

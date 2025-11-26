@@ -1,90 +1,87 @@
 ---
-sidebar_label: "PCIオンボーディング"
+sidebar_label: 'PCI オンボーディング'
 slug: /cloud/security/compliance/pci-onboarding
-title: "PCIオンボーディング"
-description: "PCI準拠サービスへのオンボーディング方法について説明します"
-doc_type: "guide"
-keywords:
-  ["pci", "compliance", "payment security", "data protection", "security"]
+title: 'PCI オンボーディング'
+description: 'PCI 準拠サービスの利用開始方法について詳しく説明します'
+doc_type: 'guide'
+keywords: ['pci', 'compliance', 'payment security', 'data protection', 'security']
 ---
 
-import BetaBadge from "@theme/badges/BetaBadge"
-import EnterprisePlanFeatureBadge from "@theme/badges/EnterprisePlanFeatureBadge"
+import BetaBadge from '@theme/badges/BetaBadge';
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-import Image from "@theme/IdealImage"
-import pci1 from "@site/static/images/cloud/security/compliance/pci_1.png"
-import pci2 from "@site/static/images/cloud/security/compliance/pci_2.png"
-import pci3 from "@site/static/images/cloud/security/compliance/pci_3.png"
+import Image from '@theme/IdealImage';
+import pci1 from '@site/static/images/cloud/security/compliance/pci_1.png';
+import pci2 from '@site/static/images/cloud/security/compliance/pci_2.png';
+import pci3 from '@site/static/images/cloud/security/compliance/pci_3.png';
 
-<EnterprisePlanFeatureBadge feature='PCI compliance' />
+<EnterprisePlanFeatureBadge feature="PCI 準拠" />
 
-ClickHouseは、Payment Card Industry Data Security Standard（PCI-DSS）に準拠したサービスを提供しており、Level 1サービスプロバイダー要件に基づいて監査されています。お客様は、この機能を有効にし、準拠リージョンにサービスをデプロイすることで、これらのサービス内でプライマリアカウント番号（PAN）を処理することができます。
+ClickHouse は、Payment Card Industry Data Security Standard（PCI-DSS）に準拠したサービスを提供しており、レベル 1 サービスプロバイダー要件に基づく監査を受けています。お客様は、この機能を有効にし、準拠リージョンにサービスをデプロイすることで、これらのサービス内でプライマリアカウント番号（PAN）を処理できます。
 
-ClickHouseのコンプライアンスプログラムおよびサードパーティ監査レポートの入手可能性に関する詳細については、[コンプライアンス概要](/cloud/security/compliance-overview)をご確認ください。PCI共同責任文書のコピーについては、[Trust Center](https://trust.clickhouse.com)をご覧ください。また、お客様は[セキュリティ機能](/cloud/security)ページを確認し、ワークロードに適したセキュリティコントロールを選択および実装してください。
+ClickHouse のコンプライアンスプログラムおよび第三者監査レポートの提供状況の詳細については、[コンプライアンス概要](/cloud/security/compliance-overview)をご確認ください。PCI 共有責任ドキュメントのコピーについては、[Trust Center](https://trust.clickhouse.com) を参照してください。あわせて、お客様はワークロードに対して適切なセキュリティコントロールを選択・実装するために、[セキュリティ機能](/cloud/security)ページも確認してください。
 
-このページでは、ClickHouse CloudでPCI準拠サービスのデプロイを有効にする手順について説明します。
+このページでは、ClickHouse Cloud で PCI 準拠サービスをデプロイ可能にする手順について説明します。
 
 <VerticalStepper headerLevel="h3">
+  ### Enterprise サービスにサインアップする
 
-### Enterpriseサービスへの登録 {#sign-up-for-enterprise}
+  1. コンソール左下にある自分の組織名を選択します。
+  2. **Billing** をクリックします。
+  3. 左上にある **Plan** を確認します。
+  4. **Plan** が **Enterprise** の場合は次のセクションに進みます。そうでない場合は **Change plan** をクリックします。
+  5. **Switch to Enterprise** を選択します。
 
-1. コンソールの左下隅にある組織名を選択します。
-2. **請求**をクリックします。
-3. 左上隅の**プラン**を確認します。
-4. **プラン**が**Enterprise**の場合は、次のセクションに進みます。そうでない場合は、**プランを変更**をクリックします。
-5. **Enterpriseに切り替え**を選択します。
+  ### 組織に対して PCI を有効化する
 
-### 組織のPCIを有効化 {#enable-hipaa}
+  1. コンソール左下にある自分の組織名を選択します。
+  2. **Organization details** をクリックします。
+  3. **Enable PCI** をオンに切り替えます。
 
-1. コンソールの左下隅にある組織名を選択します。
-2. **組織の詳細**をクリックします。
-3. **PCIを有効化**をオンに切り替えます。
+  <br />
 
-<br />
+  <Image img={pci1} size="md" alt="PCI を有効化" background="black" />
 
-<Image img={pci1} size='md' alt='Enable PCI' background='black' />
+  <br />
 
-<br />
+  4. 有効化されると、組織内で PCI 準拠サービスをデプロイできるようになります。
 
-4. 有効化すると、組織内でPCIサービスをデプロイできるようになります。
+  <br />
 
-<br />
+  <Image img={pci2} size="md" alt="PCI が有効化された状態" background="black" />
 
-<Image img={pci2} size='md' alt='PCI enabled' background='black' />
+  <br />
 
-<br />
+  ### PCI 準拠リージョンへのサービスのデプロイ
 
-### PCI準拠リージョンへのサービスのデプロイ {#deploy-pci-regions}
+  1. コンソールのホーム画面左上で **New service** を選択します。
+  2. **Region type** を **HIPAA compliant** に変更します。
 
-1. コンソールのホーム画面の左上隅にある**新規サービス**を選択します
-2. **リージョンタイプ**を**HIPAA準拠**に変更します
+  <br />
 
-<br />
+  <Image img={pci3} size="md" alt="PCI リージョンへのデプロイ" background="black" />
 
-<Image img={pci3} size='md' alt='Deploy to PCI region' background='black' />
+  <br />
 
-<br />
+  3. サービス名を入力し、残りの情報を入力します。
 
-3. サービスの名前を入力し、残りの情報を入力します
-
-PCI準拠のクラウドプロバイダーとサービスの完全なリストについては、[サポートされているクラウドリージョン](/cloud/reference/supported-regions)ページをご確認ください。
-
+  PCI 準拠クラウドプロバイダーおよびサービスの一覧については、[対応クラウドリージョン](/cloud/reference/supported-regions)ページを参照してください。
 </VerticalStepper>
 
 
-## 既存サービスの移行 {#migrate-to-hipaa}
+## 既存のサービスを移行する {#migrate-to-hipaa}
 
-必要に応じて、コンプライアンス環境へのサービスのデプロイを強く推奨します。標準リージョンからPCI準拠リージョンへサービスを移行するプロセスには、バックアップからの復元が含まれ、ダウンタイムが発生する可能性があります。
+必要に応じて、準拠環境へサービスをデプロイすることを強く推奨します。標準リージョンから PCI 準拠リージョンへサービスを移行するプロセスには、バックアップからのリストアが含まれ、一定のダウンタイムを要する場合があります。
 
-標準リージョンからPCI準拠リージョンへの移行が必要な場合は、以下の手順に従ってセルフサービス移行を実行してください。
+標準リージョンから PCI 準拠リージョンへの移行が必要な場合は、以下の手順に従ってセルフサービスで移行を行ってください。
 
-1. 移行するサービスを選択します。
-2. 左側の**Backups**をクリックします。
-3. 復元するバックアップの左側にある3点リーダーを選択します。
-4. **Region type**を選択して、バックアップをPCI準拠リージョンに復元します。
-5. 復元が完了したら、いくつかのクエリを実行して、スキーマとレコード数が想定通りであることを確認します。
-6. 古いサービスを削除します。
+1. 移行対象のサービスを選択します。
+2. 左側の **Backups** をクリックします。
+3. リストア対象のバックアップの左側にある三点リーダーアイコンを選択します。
+4. バックアップのリストア先として PCI 準拠リージョンを指定するため、**Region type** を選択します。
+5. リストアが完了したら、いくつかクエリを実行し、スキーマおよびレコード件数が想定どおりであることを確認します。
+6. 旧サービスを削除します。
 
-:::info 制限事項
-サービスは同じクラウドプロバイダーおよび地理的リージョン内に留まる必要があります。このプロセスは、同じクラウドプロバイダーおよびリージョン内の準拠環境にサービスを移行します。
+:::info 制約事項
+サービスは同一のクラウドプロバイダーおよび地理的リージョン内にとどまる必要があります。このプロセスでは、同一のクラウドプロバイダーおよびリージョン内の準拠環境へサービスを移行します。
 :::

@@ -11,7 +11,7 @@ keywords: ['示例数据集', 'Hacker News', '示例数据', '文本分析', '�
 
 # Hacker News 数据集
 
-> 在本教程中，您将从 CSV 和 Parquet 两种格式向一个 ClickHouse
+> 本教程将演示如何从 CSV 和 Parquet 两种格式向一个 ClickHouse
 > 表中插入 2800 万行 Hacker News 数据，并运行一些简单的查询来探索这些数据。
 
 
@@ -22,7 +22,7 @@ keywords: ['示例数据集', 'Hacker News', '示例数据', '文本分析', '�
 
 ### 下载 CSV {#download}
 
-可以从我们的公共 [S3 存储桶](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz) 下载该数据集的 CSV 版本,或运行以下命令:
+可以从我们的公共 [S3 存储桶](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz) 下载数据集的 CSV 版本,或运行以下命令:
 
 ```bash
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
@@ -32,16 +32,16 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hackne
 
 ### 数据采样 {#sampling}
 
-[`clickhouse-local`](/operations/utilities/clickhouse-local/) 允许用户对本地文件进行快速处理,无需部署和配置 ClickHouse 服务器。
+[`clickhouse-local`](/operations/utilities/clickhouse-local/) 允许用户对本地文件执行快速处理,无需部署和配置 ClickHouse 服务器。
 
-在将数据存储到 ClickHouse 之前,我们先使用 clickhouse-local 对文件进行采样。
+在将数据存储到 ClickHouse 之前,先使用 clickhouse-local 对文件进行采样。
 在控制台中运行:
 
 ```bash
 clickhouse-local
 ```
 
-接下来,运行以下命令来探索数据:
+接下来,运行以下命令探索数据:
 
 ```sql title="查询"
 SELECT *
@@ -90,10 +90,10 @@ descendants: 10
 ```
 
 此命令具有许多强大的功能。
-[`file`](/sql-reference/functions/files/#file) 操作符允许您从本地磁盘读取文件,只需指定格式 `CSVWithNames`。
+[`file`](/sql-reference/functions/files/#file) 操作符允许您从本地磁盘读取文件,仅需指定格式 `CSVWithNames`。
 最重要的是,模式会根据文件内容自动推断。
 还要注意 `clickhouse-local` 能够读取压缩文件,从扩展名推断出 gzip 格式。
-使用 `Vertical` 格式可以更方便地查看每列的数据。
+使用 `Vertical` 格式可以更清晰地查看每列的数据。
 
 ### 使用模式推断加载数据 {#loading-the-data}
 
@@ -110,14 +110,14 @@ CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
 ```
 
 这将使用从数据推断出的模式创建一个空表。
-[`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 命令可以让我们了解这些分配的类型。
+[`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 命令允许我们查看这些分配的类型。
 
 ```sql title="查询"
 DESCRIBE TABLE hackernews
 ```
 
 
-```text title="响应"
+```text title="Response"
 ┌─name────────┬─type─────────────────────┬
 │ id          │ Nullable(Float64)        │
 │ deleted     │ Nullable(Float64)        │
@@ -137,21 +137,21 @@ DESCRIBE TABLE hackernews
 └─────────────┴──────────────────────────┴
 ```
 
-要将数据插入此表,请使用 `INSERT INTO, SELECT` 命令。
-结合 `url` 函数,数据将直接从 URL 流式传输:
+要向此表中插入数据，请使用 `INSERT INTO ... SELECT` 命令。
+配合 `url` 函数使用时，数据将会以流式方式直接从该 URL 读取：
 
 ```sql
 INSERT INTO hackernews SELECT *
 FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames')
 ```
 
-您已成功使用单条命令向 ClickHouse 插入了 2800 万行数据!
+你已经使用一条命令成功向 ClickHouse 插入了 2800 万行数据！
 
-### 探索数据 {#explore}
+### 探索数据
 
-运行以下查询来采样 Hacker News 故事和特定列:
+运行以下查询来抽样查看 Hacker News 的帖子及特定列：
 
-```sql title="查询"
+```sql title="Query"
 SELECT
     id,
     title,
@@ -166,8 +166,8 @@ LIMIT 3
 FORMAT Vertical
 ```
 
-```response title="响应"
-Row 1:
+```response title="Response"
+第 1 行:
 ──────
 id:    2596866
 title:
@@ -177,20 +177,20 @@ time:  1306685152
 url:
 score: 0
 
-Row 2:
+第 2 行:
 ──────
 id:    2596870
-title: WordPress capture users last login date and time
+title: WordPress 记录用户最后登录日期和时间
 type:  story
 by:    wpsnipp
 time:  1306685252
 url:   http://wpsnipp.com/index.php/date/capture-users-last-login-date-and-time/
 score: 1
 
-Row 3:
+第 3 行:
 ──────
 id:    2596872
-title: Recent college graduates get some startup wisdom
+title: 应届大学毕业生获取创业经验
 type:  story
 by:    whenimgone
 time:  1306685352
@@ -198,19 +198,19 @@ url:   http://articles.chicagotribune.com/2011-05-27/business/sc-cons-0526-start
 score: 1
 ```
 
-虽然模式推断是初始数据探索的有效工具,但它是"尽力而为"的方式,不能长期替代为数据定义最优模式。
+虽然模式推断是进行初始数据探索的有力工具，但它只是“尽力而为”，无法在长期内替代为你的数据定义一个最优的 schema。
 
-### 定义模式 {#define-a-schema}
+### 定义 schema
 
-一个显而易见的优化是为每个字段定义类型。
-除了将 time 字段声明为 `DateTime` 类型外,在删除现有数据集后,我们为以下每个字段定义适当的类型。
-在 ClickHouse 中,数据的主键 id 通过 `ORDER BY` 子句定义。
+一个显而易见且立竿见影的优化是为每个字段定义类型。
+除了将时间字段声明为 `DateTime` 类型之外，在删除现有的数据集后，我们还为下面每个字段定义了合适的类型。
+在 ClickHouse 中，数据的主键 ID 是通过 `ORDER BY` 子句定义的。
 
-选择适当的类型并确定要包含在 `ORDER BY` 子句中的列,将有助于提高查询速度和压缩率。
+选择合适的类型，并决定哪些列要包含在 `ORDER BY` 子句中，将有助于提升查询性能和压缩效果。
 
-运行以下查询以删除旧模式并创建改进的模式:
+运行下面的查询来删除旧的 schema 并创建改进后的 schema：
 
-```sql title="查询"
+```sql title="Query"
 DROP TABLE IF EXISTS hackernews;
 
 CREATE TABLE hackernews
@@ -235,23 +235,23 @@ CREATE TABLE hackernews
 ORDER BY id
 ```
 
-使用优化的模式,您现在可以从本地文件系统插入数据。
-再次使用 `clickhouse-client`,通过带有显式 `INSERT INTO` 的 `INFILE` 子句插入文件。
+在完成 schema 优化后，你现在可以从本地文件系统插入数据。
+同样使用 `clickhouse-client`，通过显式的 `INSERT INTO` 语句配合 `INFILE` 子句来插入该文件。
 
-```sql title="查询"
+```sql title="Query"
 INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
 ```
 
-### 运行示例查询 {#run-sample-queries}
+### 运行示例查询
 
-下面提供了一些示例查询,为您编写自己的查询提供参考。
+下面提供了一些示例查询，帮助你为编写自己的查询提供灵感。
 
 
-#### "ClickHouse"在 Hacker News 中的话题普及度如何? {#how-pervasive}
+#### 在 Hacker News 上，“ClickHouse” 这一话题有多常见？
 
-score 字段提供了文章热度的衡量指标,而 `id` 字段和 `||` 连接运算符可用于生成原始帖子的链接。
+`score` 字段提供了一个用于衡量故事热度的指标，而通过 `id` 字段与 `||` 连接运算符可以生成指向原始帖子的链接。
 
-```sql title="查询"
+```sql title="Query"
 SELECT
     time,
     score,
@@ -265,13 +265,13 @@ ORDER BY score DESC
 LIMIT 5 FORMAT Vertical
 ```
 
-```response title="响应"
+```response title="Response"
 Row 1:
 ──────
 time:        1632154428
 score:       519
 descendants: 159
-title:       ClickHouse, Inc.
+title:       ClickHouse 公司
 url:         https://github.com/ClickHouse/ClickHouse/blob/master/website/blog/en/2021/clickhouse-inc.md
 hn_url:      https://news.ycombinator.com/item?id=28595419
 
@@ -280,7 +280,7 @@ Row 2:
 time:        1614699632
 score:       383
 descendants: 134
-title:       ClickHouse as an alternative to Elasticsearch for log storage and analysis
+title:       使用 ClickHouse 替代 Elasticsearch 进行日志存储和分析
 url:         https://pixeljets.com/blog/clickhouse-vs-elasticsearch/
 hn_url:      https://news.ycombinator.com/item?id=26316401
 
@@ -289,7 +289,7 @@ Row 3:
 time:        1465985177
 score:       243
 descendants: 70
-title:       ClickHouse – high-performance open-source distributed column-oriented DBMS
+title:       ClickHouse——高性能开源分布式列式数据库管理系统
 url:         https://clickhouse.yandex/reference_en.html
 hn_url:      https://news.ycombinator.com/item?id=11908254
 
@@ -298,7 +298,7 @@ Row 4:
 time:        1578331410
 score:       216
 descendants: 86
-title:       ClickHouse cost-efficiency in action: analyzing 500B rows on an Intel NUC
+title:       ClickHouse 成本效益实战：在 Intel NUC 上分析 5000 亿行数据
 url:         https://www.altinity.com/blog/2020/1/1/clickhouse-cost-efficiency-in-action-analyzing-500-billion-rows-on-an-intel-nuc
 hn_url:      https://news.ycombinator.com/item?id=21970952
 
@@ -307,14 +307,14 @@ Row 5:
 time:        1622160768
 score:       198
 descendants: 55
-title:       ClickHouse: An open-source column-oriented database management system
+title:       ClickHouse：开源列式数据库管理系统
 url:         https://github.com/ClickHouse/ClickHouse
 hn_url:      https://news.ycombinator.com/item?id=27310247
 ```
 
-ClickHouse 的讨论热度是否随时间增长?这里展示了将 `time` 字段定义为 `DateTime` 类型的实用性,使用正确的数据类型可以让您使用 `toYYYYMM()` 函数:
+ClickHouse 产生的噪声是否在随时间增加？这里展示了将 `time` 字段定义为 `DateTime` 的用处，由于使用合适的数据类型，你可以使用 `toYYYYMM()` 函数：
 
-```sql title="查询"
+```sql title="Query"
 SELECT
    toYYYYMM(time) AS monthYear,
    bar(count(), 0, 120, 20)
@@ -325,7 +325,7 @@ ORDER BY monthYear ASC
 ```
 
 
-```response title="响应"
+```response title="Response"
 ┌─monthYear─┬─bar(count(), 0, 120, 20)─┐
 │    201606 │ ██▎                      │
 │    201607 │ ▏                        │
@@ -392,11 +392,11 @@ ORDER BY monthYear ASC
 └───────────┴──────────────────────────┘
 ```
 
-可以看出,"ClickHouse"的受欢迎程度随时间不断增长。
+看起来 ClickHouse 的受欢迎程度正在随着时间推移而提升。
 
-#### 谁是 ClickHouse 相关文章的主要评论者? {#top-commenters}
+#### 在与 ClickHouse 相关的文章中，哪些用户的评论最多？
 
-```sql title="查询"
+```sql title="Query"
 SELECT
    by,
    count() AS comments
@@ -407,7 +407,7 @@ ORDER BY comments DESC
 LIMIT 5
 ```
 
-```response title="响应"
+```response title="Response"
 ┌─by──────────┬─comments─┐
 │ hodgesrm    │       78 │
 │ zX41ZdbW    │       45 │
@@ -417,7 +417,7 @@ LIMIT 5
 └─────────────┴──────────┘
 ```
 
-#### 哪些评论获得了最多关注? {#comments-by-most-interest}
+#### 哪类评论最受关注？
 
 
 ```sql title="查询"
@@ -432,7 +432,7 @@ ORDER BY total_score DESC
 LIMIT 5
 ```
 
-```response title="结果"
+```response title="响应"
 ┌─by───────┬─total_score─┬─total_sub_comments─┐
 │ zX41ZdbW │        571  │              50    │
 │ jetter   │        386  │              30    │
@@ -448,12 +448,12 @@ LIMIT 5
 ## Parquet {#parquet}
 
 ClickHouse 的优势之一是能够处理任意数量的[格式](/interfaces/formats)。
-CSV 是一个相当理想的使用场景,但并不是数据交换最高效的格式。
+CSV 是一个相当理想的用例,但并非数据交换的最高效格式。
 
-接下来,您将从 Parquet 文件加载数据,这是一种高效的列式格式。
+接下来,您将从 Parquet 文件加载数据,这是一种高效的列式存储格式。
 
-Parquet 具有精简的类型系统,ClickHouse 需要遵守这些类型,且类型信息已编码在格式本身中。
-对 Parquet 文件进行类型推断总是会产生与 CSV 文件略有不同的模式。
+Parquet 具有精简的类型系统,ClickHouse 需要遵循这些类型,且类型信息已编码在格式本身中。
+对 Parquet 文件进行类型推断必然会导致与 CSV 文件略有不同的模式。
 
 <VerticalStepper headerLevel="h3">
 
@@ -477,7 +477,7 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
 
 :::note Parquet 的 Null 键
 作为 Parquet 格式的要求,我们必须接受键可能为 `NULL`,
-即使数据中实际上并不存在 NULL 值。
+即使数据中实际上不存在 NULL 值。
 :::
 
 运行以下命令查看推断的模式:
@@ -501,7 +501,7 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
 └─────────────┴────────────────────────┴
 ```
 
-与之前处理 CSV 文件一样,您可以手动指定模式以更好地控制所选类型,并直接从 s3 插入数据:
+与之前处理 CSV 文件一样,您可以手动指定模式以更好地控制所选类型,并直接从 S3 插入数据:
 
 ```sql
 CREATE TABLE hackernews
@@ -565,7 +565,7 @@ WHERE hasToken(lower(comment), 'ClickHouse');
 ```
 
 接下来,您将在 "comment" 列上创建一个倒排[索引](/engines/table-engines/mergetree-family/invertedindexes)以加速此查询。
-请注意,评论将以小写形式建立索引,以便不区分大小写地查找术语。
+请注意,将对小写评论进行索引,以便不区分大小写地查找术语。
 
 运行以下命令创建索引:
 
@@ -579,7 +579,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
 
 索引创建完成后,再次运行查询:
 
-```sql title="Query"
+```sql title="查询"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse');
@@ -587,9 +587,9 @@ WHERE hasToken(lower(comment), 'clickhouse');
 
 注意使用索引后查询仅需 0.248 秒,相比之前未使用索引时的 0.843 秒有显著提升:
 
-```response title="Response"
+```response title="响应"
 #highlight-next-line
-返回 1 行。耗时:0.248 秒。处理了 454 万行,1.79 GB(每秒 1834 万行,每秒 7.24 GB)
+1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
 ┌─count()─┐
 │    1145 │
 └─────────┘
@@ -597,14 +597,14 @@ WHERE hasToken(lower(comment), 'clickhouse');
 
 可以使用 [`EXPLAIN`](/sql-reference/statements/explain) 子句来了解为什么添加此索引将查询性能提升了约 3.4 倍。
 
-```response text="Query"
+```response text="查询"
 EXPLAIN indexes = 1
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse')
 ```
 
-```response title="Response"
+```response title="响应"
 ┌─explain─────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))     │
 │   Aggregating                                   │
@@ -624,23 +624,23 @@ WHERE hasToken(lower(comment), 'clickhouse')
 └─────────────────────────────────────────────────┘
 ```
 
-注意索引通过跳过大量颗粒来加速查询的效果。
+注意索引通过跳过大量颗粒来加速查询。
 
-现在还可以高效地搜索单个词条或多个词条:
+现在还可以高效地搜索单个术语或多个术语:
 
-```sql title="Query"
+```sql title="查询"
 SELECT count(*)
 FROM hackernews
 WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
 ```
 
-```response title="Response"
+```response title="响应"
 ┌─count()─┐
 │    2177 │
 └─────────┘
 ```
 
-```sql title="Query"
+```sql title="查询"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');

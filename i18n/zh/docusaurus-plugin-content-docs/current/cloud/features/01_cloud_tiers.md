@@ -3,19 +3,19 @@ sidebar_label: 'ClickHouse Cloud 层级'
 slug: /cloud/manage/cloud-tiers
 title: 'ClickHouse Cloud 层级'
 description: 'ClickHouse Cloud 中可用的云服务层级'
-keywords: ['cloud tiers', 'service plans', 'cloud pricing tiers', 'cloud service levels']
+keywords: ['云服务层级', '服务方案', '云定价层级', '云服务级别']
 doc_type: 'reference'
 ---
 
 
 
-# ClickHouse Cloud 层级
+# ClickHouse Cloud 服务层级
 
-ClickHouse Cloud 中提供了多个层级。
-层级可以分配到任意组织级别，因此一个组织内的所有服务都属于同一层级。
-本页将介绍哪些层级最适合您的具体使用场景。
+ClickHouse Cloud 提供多个不同的服务层级。
+服务层级可以分配给组织内的任意层级，因此，一个组织内的所有服务都属于同一服务层级。
+本页将讨论针对您的特定使用场景，哪些服务层级最为合适。
 
-**Cloud 层级概要：**
+**云服务层级概览：**
 
 
 
@@ -24,8 +24,8 @@ ClickHouse Cloud 中提供了多个层级。
     <tr>
       <th />
 
-      <th>[基础版](#basic)</th>
-      <th>[Scale（推荐）](#scale)</th>
+      <th>[基础](#basic)</th>
+      <th>[扩展（推荐）](#scale)</th>
       <th>[企业版](#enterprise)</th>
     </tr>
   </thead>
@@ -39,21 +39,21 @@ ClickHouse Cloud 中提供了多个层级。
 
     <tr>
       <td>服务数量</td>
-      <td>✓ 无限制</td>
-      <td>✓ 无限制</td>
-      <td>✓ 无限制</td>
+      <td>✓ 不限</td>
+      <td>✓ 不限</td>
+      <td>✓ 不限</td>
     </tr>
 
     <tr>
       <td>存储</td>
       <td>✓ 每个服务最大 1 TB</td>
-      <td>✓ 无限制</td>
-      <td>✓ 无限制</td>
+      <td>✓ 不限</td>
+      <td>✓ 不限</td>
     </tr>
 
     <tr>
       <td>内存</td>
-      <td>✓ 8–12 GiB 总内存</td>
+      <td>✓ 总内存 8–12 GiB</td>
       <td>✓ 可配置</td>
       <td>✓ 可配置</td>
     </tr>
@@ -61,8 +61,8 @@ ClickHouse Cloud 中提供了多个层级。
     <tr>
       <td>可用性</td>
       <td>✓ 1 个可用区</td>
-      <td>✓ 2 个及以上可用区</td>
-      <td>✓ 2 个及以上可用区</td>
+      <td>✓ 至少 2 个可用区</td>
+      <td>✓ 至少 2 个可用区</td>
     </tr>
 
     <tr>
@@ -77,8 +77,8 @@ ClickHouse Cloud 中提供了多个层级。
 
       <td />
 
-      <td>✓ 自动伸缩</td>
-      <td>✓ 标准配置文件自动伸缩，自定义配置文件手动伸缩</td>
+      <td>✓ 自动扩展</td>
+      <td>✓ 标准配置自动扩展，自定义配置手动扩展</td>
     </tr>
 
     <tr>
@@ -86,8 +86,8 @@ ClickHouse Cloud 中提供了多个层级。
 
       <td />
 
-      <td>✓ 手动伸缩</td>
-      <td>✓ 手动伸缩</td>
+      <td>✓ 手动扩展</td>
+      <td>✓ 手动扩展</td>
     </tr>
 
     <tr>
@@ -107,7 +107,7 @@ ClickHouse Cloud 中提供了多个层级。
     </tr>
 
     <tr>
-      <td>计算与计算分离</td>
+      <td>计算与计算解耦</td>
 
       <td />
 
@@ -116,7 +116,7 @@ ClickHouse Cloud 中提供了多个层级。
     </tr>
 
     <tr>
-      <td>将备份导出到您自己的云账号</td>
+      <td>将备份导出到您自己的云账户</td>
 
       <td />
 
@@ -126,7 +126,7 @@ ClickHouse Cloud 中提供了多个层级。
     </tr>
 
     <tr>
-      <td>预定升级</td>
+      <td>计划升级</td>
 
       <td />
 
@@ -201,7 +201,7 @@ ClickHouse Cloud 中提供了多个层级。
     </tr>
 
     <tr>
-      <td>透明数据加密（用于 TDE 的 CMEK）</td>
+      <td>透明数据加密（TDE，支持 CMEK）</td>
 
       <td />
 
@@ -228,49 +228,52 @@ ClickHouse Cloud 中提供了多个层级。
 
 ## 基础版 {#basic}
 
-- 支持单副本部署的经济实惠选项。
-- 适用于数据量较小且对可靠性无严格要求的部门级使用场景。
+- 成本效益高的选项，支持单副本部署。
+- 适用于部门级、数据量较小且无需严格可靠性保证的用例。
 
 :::note
-基础版服务的规模固定,不支持自动或手动扩展。
-如需扩展服务,您可以升级到规模版或企业版。
+基础版中的服务规模是固定的，不支持自动或手动扩缩容。
+可以将服务升级到 Scale 或 Enterprise 层级以实现扩缩容。
 :::
+
 
 
 ## Scale {#scale}
 
-专为需要增强 SLA(2 个及以上副本部署)、可扩展性和高级安全性的工作负载而设计。
+专为需要更高 SLA 保证（2 个及以上副本部署）、可伸缩性和高级安全性的工作负载而设计。
 
-- 提供以下功能支持:
+- 支持以下特性：
   - [私有网络支持](/cloud/security/connectivity/private-networking)。
-  - [计算-计算分离](../reference/warehouses#what-is-compute-compute-separation)。
-  - [灵活扩展](/manage/scaling)选项(纵向扩展/缩减,横向扩展/缩减)。
-  - [可配置备份](/cloud/manage/backups/configurable-backups)
+  - [计算-计算分离（Compute-compute separation）](../reference/warehouses#what-is-compute-compute-separation)。
+  - [灵活伸缩](/manage/scaling) 选项（纵向扩容/缩容、横向扩容/缩容）。
+  - [可配置备份](/cloud/manage/backups/configurable-backups)。
+
 
 
 ## 企业版 {#enterprise}
 
-面向具有严格安全性和合规性要求的大规模关键任务部署。
+面向大规模、关键业务部署，满足严苛的安全与合规要求。
 
-- 包含扩展版的所有功能，**另外还有**
-- 灵活扩展:标准配置(`1:4 vCPU:内存比`)以及 `HighMemory(1:8 比率)` 和 `HighCPU(1:2 比率)` 自定义配置。
-- 提供最高级别的性能和可靠性保障。
-- 支持企业级安全:
-  - 单点登录(SSO)
-  - 增强加密:适用于 AWS 和 GCP 服务。服务默认使用我们的密钥进行加密,可以轮换为客户密钥以启用客户管理的加密密钥(CMEK)。
-- 允许计划升级:您可以选择一周中的某天/时间窗口进行升级,包括数据库和云版本。
-- 提供 [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 和 PCI 合规性。
-- 将备份导出到用户账户。
+- 包含 Scale 中的所有内容，**另外还提供：**
+- 灵活伸缩：标准规格（`1:4 vCPU:memory ratio`），以及 `HighMemory (1:8 ratio)` 和 `HighCPU (1:2 ratio)` 自定义规格。
+- 提供最高级别的性能与可靠性保障。
+- 支持企业级安全：
+  - 单点登录（SSO）
+  - 增强加密：适用于 AWS 和 GCP 服务。服务默认使用我们的密钥进行加密，并可切换为用户自己的密钥，从而启用客户管理的加密密钥（CMEK）。
+- 支持计划内升级：您可以为数据库和云版本升级选择一周中的特定日期和时间窗口。  
+- 符合 [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 和 PCI 合规要求。
+- 支持将备份导出到用户自己的账户。
 
-:::note
-所有三个层级的单副本服务大小均为固定值(`8 GiB`、`12 GiB`)
+:::note 
+在所有三个层级中，单副本服务均被设计为固定规格（`8 GiB`、`12 GiB`）
 :::
 
 
-## 升级到不同的服务层级 {#upgrading-to-a-different-tier}
 
-您可以随时从 Basic 升级到 Scale,或从 Scale 升级到 Enterprise。降级服务层级需要先禁用高级功能。
+## 升级到不同的层级 {#upgrading-to-a-different-tier}
+
+您可以随时从 Basic 升级到 Scale，或从 Scale 升级到 Enterprise。降级层级则需要先停用高级功能。
 
 ---
 
-如果您对服务类型有任何疑问,请参阅[定价页面](https://clickhouse.com/pricing)或联系 support@clickhouse.com。
+如果您对服务类型有任何疑问，请参阅[定价页面](https://clickhouse.com/pricing)或联系 support@clickhouse.com。

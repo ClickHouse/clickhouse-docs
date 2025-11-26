@@ -1,5 +1,5 @@
 ---
-description: 'WATCH 语句文档'
+description: 'WATCH 语句说明'
 sidebar_label: 'WATCH'
 sidebar_position: 53
 slug: /sql-reference/statements/watch
@@ -14,6 +14,6 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 <DeprecatedBadge/>
 
-该功能已弃用，未来将被移除。
+此功能已弃用，将在将来移除。
 
-为方便起见，旧版文档位于 [此处](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)。
+为方便查阅，旧版文档见[此处](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)。

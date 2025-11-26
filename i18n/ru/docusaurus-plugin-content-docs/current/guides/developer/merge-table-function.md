@@ -1,38 +1,38 @@
 ---
 slug: /guides/developer/merge-table-function
-sidebar_label: 'Табличная функция Merge'
-title: 'Табличная функция Merge'
+sidebar_label: 'Функция таблицы Merge'
+title: 'Функция таблицы Merge'
 description: 'Выполнение запросов к нескольким таблицам одновременно.'
 doc_type: 'reference'
 keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-[Табличная функция Merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет одновременно выполнять запросы к нескольким таблицам.
-Для этого она создает временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и определяет её структуру как объединение столбцов исходных таблиц с приведением типов к общим.
+[Функция таблицы Merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет выполнять запросы к нескольким таблицам параллельно.
+Для этого она создаёт временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и определяет её структуру как объединение столбцов исходных таблиц с приведением типов к общим.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
-## Настройка таблиц {#setup-tables}
+## Настройка таблиц
 
-Мы научимся использовать эту функцию с помощью [набора данных по теннису Джеффа Сакмана](https://github.com/JeffSackmann/tennis_atp).
-Мы будем обрабатывать CSV-файлы, содержащие матчи начиная с 1960-х годов, но создадим немного различающиеся схемы для каждого десятилетия.
-Также мы добавим несколько дополнительных столбцов для десятилетия 1990-х годов.
+Мы разберёмся, как пользоваться этой функцией, используя в качестве примера [теннисный набор данных Джеффа Сакманна](https://github.com/JeffSackmann/tennis_atp).
+Мы будем обрабатывать CSV-файлы, содержащие матчи, начиная с 1960-х годов, но создадим слегка отличающуюся схему для каждого десятилетия.
+Мы также добавим пару дополнительных столбцов для 1990-х годов.
 
-Операторы импорта приведены ниже:
+Инструкции импорта приведены ниже:
 
 ```sql
 CREATE OR REPLACE TABLE atp_matches_1960s ORDER BY tourney_id AS
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1968..1969}.csv')
-SETTINGS schema_inference_make_columns_nullable=0,
+SETTINGS schema_inference_make_columns_nullable=0, 
          schema_inference_hints='winner_seed Nullable(String), loser_seed Nullable(UInt8)';
 
-CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS
+CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS 
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, splitByWhitespace(score) AS score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1970..1979}.csv')
-SETTINGS schema_inference_make_columns_nullable=0,
+SETTINGS schema_inference_make_columns_nullable=0, 
          schema_inference_hints='winner_seed Nullable(UInt8), loser_seed Nullable(UInt8)';
 
 CREATE OR REPLACE TABLE atp_matches_1980s ORDER BY tourney_id AS
@@ -51,9 +51,9 @@ SETTINGS schema_inference_make_columns_nullable=0,
 ```
 
 
-## Схема нескольких таблиц {#schema-multiple-tables}
+## Схема нескольких таблиц
 
-Мы можем выполнить следующий запрос, чтобы вывести столбцы каждой таблицы с их типами в виде сравнительной таблицы для удобства анализа различий.
+Мы можем выполнить следующий запрос, чтобы вывести список столбцов каждой таблицы вместе с их типами в сопоставимом виде, чтобы было проще увидеть различия.
 
 ```sql
 SELECT * EXCEPT(position) FROM (
@@ -84,16 +84,16 @@ SETTINGS output_format_pretty_max_value_width=25;
 └─────────────┴──────────────────┴─────────────────┴──────────────────┴───────────────────────────┘
 ```
 
-Рассмотрим различия:
+Давайте рассмотрим отличия:
 
-- В таблице 1970-х годов тип `winner_seed` изменяется с `Nullable(String)` на `Nullable(UInt8)`, а `score` — с `String` на `Array(String)`.
-- В таблице 1980-х годов `winner_seed` и `loser_seed` изменяются с `Nullable(UInt8)` на `Nullable(UInt16)`.
-- В таблице 1990-х годов `surface` изменяется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
+* В 1970s тип `winner_seed` меняется с `Nullable(String)` на `Nullable(UInt8)`, а `score` — с `String` на `Array(String)`.
+* В 1980s `winner_seed` и `loser_seed` меняются с `Nullable(UInt8)` на `Nullable(UInt16)`.
+* В 1990s `surface` меняется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
 
 
-## Запрос к нескольким таблицам с помощью merge {#querying-multiple-tables}
+## Запрос к нескольким таблицам с помощью merge
 
-Напишем запрос для поиска матчей, в которых Джон Макинрой выиграл у игроков, посеянных под номером 1:
+Напишем запрос, чтобы найти матчи, которые Джон Макинрой выиграл у соперника, посеянного под номером 1:
 
 ```sql
 SELECT loser_name, score
@@ -119,8 +119,8 @@ AND loser_seed = 1;
 └───────────────┴─────────────────────────────────┘
 ```
 
-Теперь предположим, что нужно отфильтровать эти матчи, чтобы найти те, в которых Макинрой был посеян под номером 3 или ниже.
-Это несколько сложнее, поскольку `winner_seed` использует разные типы данных в различных таблицах:
+Далее предположим, что мы хотим отфильтровать эти матчи, чтобы найти те, в которых МакЭнроу был посеян под номером 3 или ниже.
+Это немного сложнее, потому что `winner_seed` имеет разные типы данных в различных таблицах:
 
 ```sql
 SELECT loser_name, score, winner_seed
@@ -134,8 +134,8 @@ AND multiIf(
 );
 ```
 
-Мы используем функцию [`variantType`](/docs/sql-reference/functions/other-functions#variantType) для проверки типа `winner_seed` для каждой строки, а затем [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) для извлечения базового значения.
-Когда тип — `String`, мы приводим его к числу и затем выполняем сравнение.
+Мы используем функцию [`variantType`](/docs/sql-reference/functions/other-functions#variantType), чтобы определить тип `winner_seed` для каждой строки, а затем [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement), чтобы извлечь исходное значение.
+Когда тип — `String`, мы приводим его к числовому типу, а затем выполняем сравнение.
 Результат выполнения запроса показан ниже:
 
 ```text
@@ -148,10 +148,10 @@ AND multiIf(
 ```
 
 
-## Из какой таблицы поступают строки при использовании merge? {#which-table-merge}
+## Из какой таблицы берутся строки при использовании `merge`?
 
-Что если нужно узнать, из какой таблицы поступают строки?
-Для этого можно использовать виртуальный столбец `_table`, как показано в следующем запросе:
+Что, если мы хотим узнать, из какой таблицы получены строки?
+Для этого мы можем использовать виртуальный столбец `_table`, как показано в следующем запросе:
 
 ```sql
 SELECT _table, loser_name, score, winner_seed
@@ -174,7 +174,7 @@ AND multiIf(
 └───────────────────┴───────────────┴───────────────┴─────────────┘
 ```
 
-Этот виртуальный столбец также можно использовать в запросе для подсчета значений столбца `walkover`:
+Мы также можем использовать этот виртуальный столбец в составе запроса для подсчёта значений столбца `walkover`:
 
 ```sql
 SELECT _table, walkover, count()
@@ -193,8 +193,8 @@ ORDER BY _table;
 └───────────────────┴──────────┴─────────┘
 ```
 
-Видно, что столбец `walkover` имеет значение `NULL` для всех таблиц, кроме `atp_matches_1990s`.
-Необходимо обновить запрос, чтобы проверять, содержит ли столбец `score` строку `W/O`, когда столбец `walkover` равен `NULL`:
+Мы видим, что столбец `walkover` имеет значение `NULL` для всего, кроме `atp_matches_1990s`.
+Нам потребуется обновить наш запрос, чтобы проверять, содержит ли столбец `score` строку `W/O`, если столбец `walkover` имеет значение `NULL`:
 
 ```sql
 SELECT _table,
@@ -214,7 +214,7 @@ GROUP BY ALL
 ORDER BY _table;
 ```
 
-Если базовый тип `score` — `Array(String)`, необходимо перебрать массив и найти `W/O`, тогда как при типе `String` можно просто выполнить поиск `W/O` в строке.
+Если базовый тип `score` — `Array(String)`, то нам нужно пройти по массиву и искать `W/O`, тогда как если его тип — `String`, мы можем просто искать `W/O` в самой строке.
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

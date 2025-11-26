@@ -1,9 +1,9 @@
 ---
 description: '在 Redhat/CentOS Linux 上安装 ClickHouse'
-keywords: ['ClickHouse', 'install', 'Redhat', 'CentOS', 'rpm']
+keywords: ['ClickHouse', '安装', 'Redhat', 'CentOS', 'rpm']
 sidebar_label: 'Redhat/CentOS'
 slug: /install/redhat
-title: '在基于 RPM 的 Linux 发行版上安装 ClickHouse'
+title: '在基于 rpm 的 Linux 发行版上安装 ClickHouse'
 hide_title: true
 doc_type: 'guide'
 ---

@@ -1,12 +1,12 @@
 ---
-description: 'ビットマップ列の論理積 (AND) を計算し、型 UInt64 の基数 (cardinality) を返します。-State サフィックスを付けた場合は、ビットマップオブジェクトを返します。'
+description: 'ビットマップ列に対して AND 演算を行い、型 UInt64 の基数を返します。-State サフィックスを付与すると、ビットマップオブジェクトを返します。'
 sidebar_position: 149
 slug: /sql-reference/aggregate-functions/reference/groupbitmapand
 title: 'groupBitmapAnd'
 doc_type: 'reference'
 ---
 
-ビットマップ列の論理積 (AND) を計算し、型 UInt64 の基数 (cardinality) を返します。-State サフィックスを付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
+ビットマップ列に対して AND 演算を行い、型 UInt64 の基数を返します。-State サフィックスを付与すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 
 ```sql
 groupBitmapAnd(expr)
@@ -14,7 +14,7 @@ groupBitmapAnd(expr)
 
 **引数**
 
-`expr` – 評価結果が `AggregateFunction(groupBitmap, UInt*)` 型となる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)` 型の式。
 
 **戻り値**
 

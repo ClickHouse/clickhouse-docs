@@ -1,5 +1,5 @@
 ---
-description: '包含日志条目的系统表，记录了关于各种 blob 存储操作（如上传和删除）的信息。'
+description: '包含日志记录的系统表，记录各种 Blob 存储操作（如上传和删除）的相关信息。'
 keywords: ['系统表', 'blob_storage_log']
 slug: /operations/system-tables/blob_storage_log
 title: 'system.blob_storage_log'
@@ -10,14 +10,14 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-包含有关各种 blob 存储操作（例如上传和删除）的日志记录。
+包含记录各种 blob 存储操作（如上传和删除）的日志记录。
 
 列：
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 精确到微秒的事件时间。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 具有微秒级精度的事件时间。
 * `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 事件类型。可能的取值：
   * `'Upload'`
   * `'Delete'`
@@ -29,11 +29,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 * `thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 执行该操作的线程标识符。
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — 执行该操作的线程名称。
 * `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — 关联磁盘的名称。
-* `bucket` ([String](../../sql-reference/data-types/string.md)) — 存储桶名称。
-* `remote_path` ([String](../../sql-reference/data-types/string.md)) — 远程资源路径。
-* `local_path` ([String](../../sql-reference/data-types/string.md)) — 本地系统上元数据文件的路径，该文件引用远程资源。
-* `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — 上传操作中涉及的数据大小。
-* `error` ([String](../../sql-reference/data-types/string.md)) — 与事件关联的错误消息（如果有）。
+* `bucket` ([String](../../sql-reference/data-types/string.md)) — bucket 的名称。
+* `remote_path` ([String](../../sql-reference/data-types/string.md)) — 远程资源的路径。
+* `local_path` ([String](../../sql-reference/data-types/string.md)) — 本地系统上引用远程资源的元数据文件路径。
+* `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — 上传事件中涉及的数据大小。
+* `error` ([String](../../sql-reference/data-types/string.md)) — 与该事件关联的错误消息（如果有）。
 
 **示例**
 
@@ -44,7 +44,7 @@ SELECT * FROM system.blob_storage_log WHERE query_id = '7afe0450-504d-4e4b-9a80-
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-10-31
@@ -61,7 +61,7 @@ data_size:               259
 error:
 ```
 
-在此示例中，上传操作与 ID 为 `7afe0450-504d-4e4b-9a80-cd9826047972` 的 `INSERT` 查询相关联。本地元数据文件 `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` 对应于磁盘 `disk_s3` 上存储桶 `bucket1` 中的远程路径 `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe`，其大小为 259 字节。
+在此示例中，上传操作与 ID 为 `7afe0450-504d-4e4b-9a80-cd9826047972` 的 `INSERT` 查询相关联。本地元数据文件 `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` 对应于磁盘 `disk_s3` 上存储桶 `bucket1` 中的远程路径 `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe`，文件大小为 259 字节。
 
 **另请参阅**
 

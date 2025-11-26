@@ -14,11 +14,11 @@ doc_type: 'reference'
 uniqCombined(HLL_precision)(x[, ...])
 ```
 
-函数 `uniqCombined` 是用于计算不同取值数量的一个不错的选择。
+函数 `uniqCombined` 是计算不同值数量的一个不错选择。
 
 **参数**
 
-* `HLL_precision`： [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 中单元格数量的以 2 为底的对数。可选，你可以以 `uniqCombined(x[, ...])` 的形式使用该函数。`HLL_precision` 的默认值为 17，这在实际中对应约 96 KiB 的空间（2^17 个单元格，每个单元格 6 比特）。
+* `HLL_precision`： [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 中单元数量的以 2 为底的对数。可选，你可以以 `uniqCombined(x[, ...])` 的形式使用该函数。`HLL_precision` 的默认值为 17，在实际中占用约 96 KiB 空间（2^17 个单元，每个 6 位）。
 * `X`：可变数量的参数。参数可以是 `Tuple`、`Array`、`Date`、`DateTime`、`String` 或数值类型。
 
 **返回值**
@@ -29,22 +29,22 @@ uniqCombined(HLL_precision)(x[, ...])
 
 `uniqCombined` 函数：
 
-* 对聚合中的所有参数计算哈希值（`String` 使用 64 位哈希，否则使用 32 位哈希），然后在计算中使用该哈希值。
-* 使用三种算法的组合：数组、哈希表和带误差修正表的 HyperLogLog。
-  * 当不同元素数量较少时，使用数组。
+* 为聚合中的所有参数计算哈希（`String` 使用 64 位哈希，其他类型使用 32 位哈希），并在计算中使用该哈希值。
+* 使用三种算法的组合：数组、哈希表以及带误差修正表的 HyperLogLog。
+  * 对于不同元素数量较少的情况，使用数组。
   * 当集合规模更大时，使用哈希表。
-  * 当元素数量进一步增大时，使用 HyperLogLog，它将占用固定数量的内存。
-* 以确定性的方式返回结果（结果不依赖于查询的处理顺序）。
+  * 对于元素数量更多的情况，使用 HyperLogLog，其将占用固定大小的内存。
+* 以确定性的方式给出结果（不依赖查询处理顺序）。
 
 :::note\
-由于对非 `String` 类型使用 32 位哈希，当基数显著大于 `UINT_MAX` 时，结果会有非常大的误差（在达到数百亿个不同值后误差会迅速增大），因此在这种情况下你应使用 [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)。
+由于对非 `String` 类型使用 32 位哈希，当基数显著大于 `UINT_MAX` 时，结果误差会非常大（在数百亿个不同值之后误差会快速增大），因此在这种情况下你应使用 [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)。
 :::
 
 与 [uniq](/sql-reference/aggregate-functions/reference/uniq) 函数相比，`uniqCombined` 函数：
 
-* 内存消耗降低数倍。
-* 计算精度提高数倍。
-* 通常性能略低。在某些场景下，`uniqCombined` 的性能可能优于 `uniq`，例如在通过网络传输大量聚合状态的分布式查询中。
+* 内存消耗可降低数倍。
+* 计算精度可提高数倍。
+* 通常性能略低。在某些场景下，`uniqCombined` 的性能可以优于 `uniq`，例如在通过网络传输大量聚合状态的分布式查询中。
 
 **示例**
 
@@ -62,7 +62,7 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 └──────────────────────┘
 ```
 
-请参阅 [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) 的示例部分，以了解在输入规模大得多时 `uniqCombined` 与 `uniqCombined64` 之间的差异。
+请参阅 [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) 的示例部分，以了解在更大规模输入数据时 `uniqCombined` 与 `uniqCombined64` 之间差异的示例。
 
 **另请参阅**
 

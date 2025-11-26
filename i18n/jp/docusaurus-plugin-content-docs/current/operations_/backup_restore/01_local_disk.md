@@ -12,26 +12,28 @@ import ExampleSetup from '@site/docs/operations_/backup_restore/_snippets/_examp
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# ディスクへのBACKUP / RESTORE {#backup-to-a-local-disk}
+# ローカルディスクへのバックアップ／リストア {#backup-to-a-local-disk}
+
 
 
 ## 構文 {#syntax}
 
-<Syntax />
+<Syntax/>
 
 
-## ディスクのバックアップ先を設定する {#configure-backup-destinations-for-disk}
 
-### ローカルディスクのバックアップ先を設定する {#configure-a-backup-destination}
+## ディスク用のバックアップ先を構成する
 
-以下の例では、バックアップ先が `Disk('backups', '1.zip')` として指定されています。
-`Disk` バックアップエンジンを使用するには、まず以下のパスにバックアップ先を指定するファイルを追加する必要があります:
+### ローカルディスク用のバックアップ先を構成する
+
+以下の例では、バックアップ先は `Disk('backups', '1.zip')` として指定されています。\
+`Disk` バックアップエンジンを使用するには、まず以下のパスにバックアップ先を指定するファイルを追加する必要があります。
 
 ```text
 /etc/clickhouse-server/config.d/backup_disk.xml
 ```
 
-例えば、以下の設定では `backups` という名前のディスクを定義し、そのディスクを **backups** の **allowed_disk** リストに追加しています:
+例えば、以下の構成では `backups` という名前のディスクを定義し、次にそのディスクを **backups** の **allowed&#95;disk** リストに追加します。
 
 ```xml
 <clickhouse>
@@ -53,9 +55,9 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 </clickhouse>
 ```
 
-### S3ディスクのバックアップ先を設定する {#backuprestore-using-an-s3-disk}
+### S3 ディスク用のバックアップ先を設定する
 
-ClickHouseストレージ設定でS3ディスクを構成することにより、S3への `BACKUP`/`RESTORE` も可能です。ローカルディスクの場合と同様に、`/etc/clickhouse-server/config.d` にファイルを追加してディスクを構成します。
+ClickHouse のストレージ設定で S3 ディスクを構成することで、`BACKUP`/`RESTORE` の実行先として S3 を利用することも可能です。ローカルディスクの場合と同様に、`/etc/clickhouse-server/config.d` にファイルを追加して、このディスクを次のように設定します。
 
 ```xml
 <clickhouse>
@@ -85,7 +87,7 @@ ClickHouseストレージ設定でS3ディスクを構成することにより�
 </clickhouse>
 ```
 
-S3ディスクの `BACKUP`/`RESTORE` は、ローカルディスクと同じ方法で実行します:
+S3 ディスクに対する `BACKUP`／`RESTORE` は、ローカル ディスクの場合と同様に実行できます。
 
 ```sql
 BACKUP TABLE data TO Disk('s3_plain', 'cloud_backup');
@@ -94,64 +96,65 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 
 :::note
 
-- このディスクは `MergeTree` 自体には使用せず、`BACKUP`/`RESTORE` のみに使用してください
-- テーブルがS3ストレージによってバックアップされており、ディスクのタイプが異なる場合、
-  宛先バケットにパーツをコピーする際に `CopyObject` 呼び出しを使用せず、
-  代わりにダウンロードとアップロードを行うため、非常に非効率的です。この場合は、
-  このユースケースには `BACKUP ... TO S3(<endpoint>)` 構文の使用を推奨します。
+* このディスクは `MergeTree` 自体には使用せず、`BACKUP`/`RESTORE` 用にのみ使用してください。
+* もしテーブルが S3 ストレージをバックエンドとしており、ディスクの種類が異なる場合、
+  パーツを宛先バケットにコピーする際に `CopyObject` 呼び出しは使用されず、
+  代わりに一度ダウンロードしてからアップロードするため、非常に非効率です。このようなケースでは、
+  この用途には `BACKUP ... TO S3(<endpoint>)` 構文の使用を推奨します。
   :::
 
 
-## ローカルディスクへのバックアップ/リストアの使用例 {#usage-examples}
+## ローカルディスクへのバックアップ／リストアの使用例
 
-### テーブルのバックアップとリストア {#backup-and-restore-a-table}
+### テーブルのバックアップとリストア
 
 <ExampleSetup />
 
-テーブルをバックアップするには、次のコマンドを実行します:
+テーブルをバックアップするには、次のコマンドを実行します：
 
-```sql title="クエリ"
+```sql title="Query"
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.zip')
 ```
 
-```response title="レスポンス"
+```response title="Response"
    ┌─id───────────────────────────────────┬─status─────────┐
 1. │ 065a8baf-9db7-4393-9c3f-ba04d1e76bcd │ BACKUP_CREATED │
    └──────────────────────────────────────┴────────────────┘
 ```
 
-テーブルが空の場合、次のコマンドを使用してバックアップからテーブルをリストアできます:
+テーブルが空の場合は、次のコマンドでバックアップからテーブルを復元できます。
 
-```sql title="クエリ"
+```sql title="Query"
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 ```
 
-```response title="レスポンス"
+```response title="Response"
    ┌─id───────────────────────────────────┬─status───┐
 1. │ f29c753f-a7f2-4118-898e-0e4600cd2797 │ RESTORED │
    └──────────────────────────────────────┴──────────┘
 ```
 
 :::note
-上記の`RESTORE`は、テーブル`test.table`にデータが含まれている場合は失敗します。
-設定`allow_non_empty_tables=true`を使用すると、`RESTORE TABLE`が空でないテーブルにデータを挿入できるようになります。これにより、テーブル内の既存のデータとバックアップから抽出されたデータが混在することになります。
-したがって、この設定はテーブル内でデータの重複を引き起こす可能性があるため、慎重に使用する必要があります。
+上記の `RESTORE` は、テーブル `test.table` にデータが含まれている場合は失敗します。
+設定 `allow_non_empty_tables=true` を有効にすると、`RESTORE TABLE` がデータを
+空ではないテーブルに挿入できるようになります。これにより、テーブル内の既存データと、バックアップから復元されるデータが混在します。
+そのため、この設定はテーブル内のデータが重複する可能性があるため、注意して使用する必要があります。
 :::
 
-既にデータが含まれているテーブルをリストアするには、次のコマンドを実行します:
+既にデータが入っているテーブルを復元するには、次を実行します。
 
 ```sql
 RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
-テーブルは新しい名前でリストアまたはバックアップできます:
+テーブルは新しい名前を付けてリストアまたはバックアップできます。
 
 ```sql
 RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
-このバックアップのバックアップアーカイブは次の構造を持ちます:
+このバックアップのアーカイブは、次の構造になっています。
 
 ```text
 ├── .backup
@@ -160,22 +163,28 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
         └── test_table.sql
 ```
 
-<!-- TO DO: 
-Explanation here about the backup format. See Issue 24a
-https://github.com/ClickHouse/clickhouse-docs/issues/3968
--->
+{/* TO DO: 
+  ここにバックアップ形式の説明を追加すること。Issue 24a を参照。
+  https://github.com/ClickHouse/clickhouse-docs/issues/3968
+  */ }
 
-zip以外の形式も使用できます。詳細については、以下の[「tarアーカイブとしてのバックアップ」](#backups-as-tar-archives)を参照してください。
+zip 以外の形式も使用できます。詳細については、以下の [&quot;Backups as tar archives&quot;](#backups-as-tar-archives)
+を参照してください。
 
-### ディスクへの増分バックアップ {#incremental-backups}
+### ディスクへの増分バックアップ
 
-ClickHouseにおけるベースバックアップとは、後続の増分バックアップが作成される元となる初回の完全バックアップです。増分バックアップはベースバックアップ以降の変更のみを保存するため、増分バックアップからリストアするにはベースバックアップを利用可能な状態に保つ必要があります。ベースバックアップの保存先は設定`base_backup`で指定できます。
+ClickHouse におけるベースバックアップは、その後に作成される
+増分バックアップの基準となる最初のフルバックアップです。増分バックアップには、
+ベースバックアップ以降に行われた変更のみが保存されるため、任意の増分バックアップから
+リストアできるように、ベースバックアップを利用可能な状態で保持しておく必要があります。
+ベースバックアップの保存先は、設定 `base_backup` で指定できます。
 
 :::note
-増分バックアップはベースバックアップに依存します。増分バックアップからリストアできるようにするには、ベースバックアップを利用可能な状態に保つ必要があります。
+増分バックアップはベースバックアップに依存します。増分バックアップから
+リストアできるようにするには、ベースバックアップを利用可能な状態で保持しておく必要があります。
 :::
 
-テーブルの増分バックアップを作成するには、まずベースバックアップを作成します:
+テーブルの増分バックアップを作成するには、まずベースバックアップを作成してください。
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', 'd.zip')
@@ -186,17 +195,17 @@ BACKUP TABLE test_db.test_table TO Disk('backups', 'incremental-a.zip')
 SETTINGS base_backup = Disk('backups', 'd.zip')
 ```
 
-増分バックアップとベースバックアップのすべてのデータは、次のコマンドで新しいテーブル`test_db.test_table2`にリストアできます:
+増分バックアップとベースバックアップのすべてのデータは、次のコマンドで新しいテーブル `test_db.test_table2` に復元できます。
 
 ```sql
 RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### バックアップの保護 {#assign-a-password-to-the-backup}
+### バックアップの保護
 
-ディスクに書き込まれるバックアップには、ファイルにパスワードを適用できます。
-パスワードは`password`設定を使用して指定できます:
+ディスクに出力されるバックアップファイルには、パスワードを設定できます。
+パスワードは `password` 設定を使用して指定します。
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -204,7 +213,7 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-パスワードで保護されたバックアップをリストアするには、`password`設定を使用して再度パスワードを指定する必要があります:
+パスワードで保護されたバックアップを復元するには、`password` 設定でパスワードを再度指定する必要があります。
 
 ```sql
 RESTORE TABLE test_db.test_table
@@ -212,47 +221,47 @@ FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-### tarアーカイブとしてのバックアップ {#backups-as-tar-archives}
+### tar アーカイブとしてのバックアップ
 
-バックアップはzipアーカイブだけでなく、tarアーカイブとしても保存できます。
-機能はzipと同じですが、tarアーカイブではパスワード保護がサポートされていません。さらに、tarアーカイブは様々な圧縮方式をサポートしています。
+バックアップは zip アーカイブだけでなく、tar アーカイブとしても保存できます。
+tar アーカイブに対する機能は zip アーカイブの場合と同様ですが、tar アーカイブではパスワード保護はサポートされていません。さらに、tar アーカイブではさまざまな圧縮方式がサポートされています。
 
-テーブルのバックアップをtarとして作成するには:
+テーブルを tar アーカイブとしてバックアップするには、次のようにします。
 
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')
 ```
 
-tarアーカイブからリストアする場合：
+tar アーカイブから復元するには:
 
 ```sql
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.tar')
 ```
 
-圧縮方式を変更するには、バックアップ名に適切なファイル拡張子を付加します。例えば、gzipを使用してtarアーカイブを圧縮する場合は、次のように実行します：
+圧縮方式を変更するには、バックアップ名に正しいファイル拡張子を付ける必要があります。例えば、tar アーカイブを gzip で圧縮するには、次を実行します。
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 ```
 
-サポートされている圧縮ファイル拡張子は以下の通りです：
+サポートされている圧縮ファイルの拡張子は次のとおりです。
 
-- `tar.gz`
-- `.tgz`
-- `tar.bz2`
-- `tar.lzma`
-- `.tar.zst`
-- `.tzst`
-- `.tar.xz`
+* `tar.gz`
+* `.tgz`
+* `tar.bz2`
+* `tar.lzma`
+* `.tar.zst`
+* `.tzst`
+* `.tar.xz`
 
-### 圧縮設定 {#compression-settings}
+### 圧縮設定
 
-圧縮方式と圧縮レベルは、それぞれ`compression_method`と`compression_level`設定を使用して指定できます。
+圧縮方式と圧縮レベルは、それぞれ設定 `compression_method` と `compression_level` を使用して指定できます。
 
-<!-- TO DO:
-More information needed on these settings and why you would want to do this
--->
+{/* TO DO:
+  これらの設定の詳細と、それを行う理由についての情報を追記する
+  */ }
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -260,64 +269,63 @@ TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### 特定のパーティションのリストア {#restore-specific-partitions}
+### 特定のパーティションを復元する
 
-テーブルに関連付けられた特定のパーティションをリストアする必要がある場合、それらを指定できます。
+テーブルに関連付けられた特定のパーティションのみを復元する必要がある場合、それらを個別に指定できます。
 
-4つのパーツに分割されたシンプルなパーティションテーブルを作成し、データを挿入した後、1番目と4番目のパーティションのみをバックアップしてみましょう：
+4つのパーティションを持つ単純なパーティション分割テーブルを作成し、いくつかのデータを挿入してから、
+最初と4番目のパーティションのみのバックアップを取得してみます。
 
 <details>
+  <summary>セットアップ</summary>
 
-<summary>セットアップ</summary>
+  ```sql
+  CREATE IF NOT EXISTS test_db;
+         
+  -- パーティション分割テーブルを作成
+  CREATE TABLE test_db.partitioned (
+      id UInt32,
+      data String,
+      partition_key UInt8
+  ) ENGINE = MergeTree()
+  PARTITION BY partition_key
+  ORDER BY id;
 
-```sql
-CREATE IF NOT EXISTS test_db;
+  INSERT INTO test_db.partitioned VALUES
+  (1, 'data1', 1),
+  (2, 'data2', 2),
+  (3, 'data3', 3),
+  (4, 'data4', 4);
 
--- パーティションテーブルを作成
-CREATE TABLE test_db.partitioned (
-    id UInt32,
-    data String,
-    partition_key UInt8
-) ENGINE = MergeTree()
-PARTITION BY partition_key
-ORDER BY id;
+  SELECT count() FROM test_db.partitioned;
 
-INSERT INTO test_db.partitioned VALUES
-(1, 'data1', 1),
-(2, 'data2', 2),
-(3, 'data3', 3),
-(4, 'data4', 4);
+  SELECT partition_key, count() 
+  FROM test_db.partitioned
+  GROUP BY partition_key
+  ORDER BY partition_key;
+  ```
 
-SELECT count() FROM test_db.partitioned;
-
-SELECT partition_key, count()
-FROM test_db.partitioned
-GROUP BY partition_key
-ORDER BY partition_key;
-```
-
-```response
-   ┌─count()─┐
-1. │       4 │
-   └─────────┘
-   ┌─partition_key─┬─count()─┐
-1. │             1 │       1 │
-2. │             2 │       1 │
-3. │             3 │       1 │
-4. │             4 │       1 │
-   └───────────────┴─────────┘
-```
-
+  ```response
+     ┌─count()─┐
+  1. │       4 │
+     └─────────┘
+     ┌─partition_key─┬─count()─┐
+  1. │             1 │       1 │
+  2. │             2 │       1 │
+  3. │             3 │       1 │
+  4. │             4 │       1 │
+     └───────────────┴─────────┘
+  ```
 </details>
 
-パーティション1と4をバックアップするには、次のコマンドを実行します：
+次のコマンドを実行して、パーティション 1 と 4 のバックアップを作成します。
 
 ```sql
 BACKUP TABLE test_db.partitioned PARTITIONS '1', '4'
 TO Disk('backups', 'partitioned.zip')
 ```
 
-パーティション1と4をリストアするには、次のコマンドを実行します：
+パーティション 1 と 4 を復元するには、以下のコマンドを実行します。
 
 ```sql
 RESTORE TABLE test_db.partitioned PARTITIONS '1', '4'

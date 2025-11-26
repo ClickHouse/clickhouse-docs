@@ -1,5 +1,5 @@
 ---
-description: 'Применяет побитовое `AND` к последовательности чисел.'
+description: 'Применяет операцию побитового `AND` к последовательности чисел.'
 sidebar_position: 147
 slug: /sql-reference/aggregate-functions/reference/groupbitand
 title: 'groupBitAnd'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitAnd
 
-Применяет побитовое `AND` к ряду чисел.
+Применяет побитовое `AND` к последовательности чисел.
 
 ```sql
 groupBitAnd(expr)
@@ -16,7 +16,7 @@ groupBitAnd(expr)
 
 **Аргументы**
 
-`expr` – выражение, результатом вычисления которого является значение типа `UInt*` или `Int*`.
+`expr` – выражение, результат которого имеет тип `UInt*` или `Int*`.
 
 **Возвращаемое значение**
 
@@ -27,7 +27,7 @@ groupBitAnd(expr)
 Тестовые данные:
 
 ```text
-двоичная   десятичная
+двоичное   десятичное
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -40,7 +40,7 @@ groupBitAnd(expr)
 SELECT groupBitAnd(num) FROM t
 ```
 
-где `num` — столбец с тестовыми данными.
+Где `num` — столбец с тестовыми данными.
 
 Результат:
 

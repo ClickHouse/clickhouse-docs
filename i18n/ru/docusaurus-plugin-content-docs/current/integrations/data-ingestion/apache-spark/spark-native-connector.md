@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Spark Native Connector'
+sidebar_label: 'Нативный коннектор Spark'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
 description: 'Введение в Apache Spark с ClickHouse'
-keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
+keywords: ['clickhouse', 'Apache Spark', 'миграция', 'данные']
 title: 'Коннектор Spark'
 doc_type: 'guide'
 ---
@@ -15,14 +15,19 @@ import TOCInline from '@theme/TOCInline';
 
 # Коннектор Spark
 
-Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как продвинутое разбиение (partitioning) и проталкивание предикатов (predicate pushdown), чтобы повысить производительность запросов и эффективность обработки данных.
-Коннектор основан на [официальном JDBC-коннекторе ClickHouse](https://github.com/ClickHouse/clickhouse-java) и управляет собственным каталогом.
+Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как продвинутое секционирование и проталкивание предикатов (predicate pushdown), чтобы
+повысить производительность запросов и эффективность обработки данных.
+Коннектор основан на [официальном JDBC-коннекторе ClickHouse](https://github.com/ClickHouse/clickhouse-java) и
+управляет собственным каталогом.
 
-До Spark 3.0 в Spark отсутствовало встроенное понятие каталога, поэтому пользователи обычно полагались на внешние системы каталогов, такие как Hive Metastore или AWS Glue.
-При использовании этих внешних решений пользователям приходилось вручную регистрировать таблицы источников данных, прежде чем обращаться к ним из Spark.
-Однако с появлением концепции каталога в Spark 3.0 Spark теперь может автоматически обнаруживать таблицы путём регистрации плагинов каталогов.
+До Spark 3.0 в Spark отсутствовало встроенное понятие каталога, поэтому пользователи обычно полагались на внешние системы каталогов, такие как
+Hive Metastore или AWS Glue.
+С этими внешними решениями пользователям приходилось вручную регистрировать таблицы источника данных перед доступом к ним в Spark.
+Однако, поскольку в Spark 3.0 была введена концепция каталога, Spark теперь может автоматически обнаруживать таблицы посредством регистрации
+плагинов каталогов.
 
-Каталог по умолчанию в Spark — `spark_catalog`, а таблицы идентифицируются как `{catalog name}.{database}.{table}`. С новой функцией каталогов теперь можно добавлять и использовать несколько каталогов в одном приложении Spark.
+Каталог по умолчанию в Spark — `spark_catalog`, а таблицы идентифицируются как `{catalog name}.{database}.{table}`. С новой
+функциональностью каталогов теперь можно добавлять и использовать несколько каталогов в рамках одного приложения Spark.
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -35,119 +40,115 @@ import TOCInline from '@theme/TOCInline';
 - Apache Spark 3.3, 3.4 или 3.5
 
 
+
 ## Матрица совместимости {#compatibility-matrix}
 
-| Версия | Совместимые версии Spark | Версия ClickHouse JDBC |
-| ------- | ------------------------- | ----------------------- |
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
-| 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
-| 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
-| 0.4.0   | Spark 3.2, 3.3            | Не требуется           |
-| 0.3.0   | Spark 3.2, 3.3            | Не требуется           |
-| 0.2.1   | Spark 3.2                 | Не требуется           |
-| 0.1.2   | Spark 3.2                 | Не требуется           |
+| Версия | Совместимые версии Spark | Версия ClickHouse JDBC         |
+|--------|---------------------------|--------------------------------|
+| main   | Spark 3.3, 3.4, 3.5       | 0.6.3                          |
+| 0.8.1  | Spark 3.3, 3.4, 3.5       | 0.6.3                          |
+| 0.8.0  | Spark 3.3, 3.4, 3.5       | 0.6.3                          |
+| 0.7.3  | Spark 3.3, 3.4            | 0.4.6                          |
+| 0.6.0  | Spark 3.3                 | 0.3.2-patch11                  |
+| 0.5.0  | Spark 3.2, 3.3            | 0.3.2-patch11                  |
+| 0.4.0  | Spark 3.2, 3.3            | Не зависит от версии JDBC-драйвера |
+| 0.3.0  | Spark 3.2, 3.3            | Не зависит от версии JDBC-драйвера |
+| 0.2.1  | Spark 3.2                 | Не зависит от версии JDBC-драйвера |
+| 0.1.2  | Spark 3.2                 | Не зависит от версии JDBC-драйвера |
 
 
-## Установка и настройка {#installation--setup}
 
-Для интеграции ClickHouse со Spark доступно несколько вариантов установки, подходящих для различных конфигураций проектов.
-Вы можете добавить коннектор ClickHouse Spark в качестве зависимости непосредственно в файл сборки вашего проекта (например, в `pom.xml`
+## Установка и настройка
+
+Для интеграции ClickHouse со Spark доступно несколько вариантов установки для различных конфигураций проектов.
+Вы можете добавить коннектор ClickHouse Spark как зависимость непосредственно в файл сборки вашего проекта (например, в `pom.xml`
 для Maven или `build.sbt` для SBT).
-Также вы можете поместить необходимые JAR-файлы в папку `$SPARK_HOME/jars/` или передать их напрямую в качестве параметра Spark,
-используя флаг `--jars` в команде `spark-submit`.
+Также вы можете поместить необходимые JAR-файлы в каталог `$SPARK_HOME/jars/` или передать их напрямую как параметр Spark
+с помощью флага `--jars` в команде `spark-submit`.
 Оба подхода обеспечивают доступность коннектора ClickHouse в вашей среде Spark.
 
-### Импорт в качестве зависимости {#import-as-a-dependency}
+### Импорт как зависимости
 
 <Tabs>
-<TabItem value="Maven" label="Maven" default>
+  <TabItem value="Maven" label="Maven" default>
+    ```maven
+    <dependency>
+      <groupId>com.clickhouse.spark</groupId>
+      <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
+      <version>{{ stable_version }}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.clickhouse</groupId>
+      <artifactId>clickhouse-jdbc</artifactId>
+      <classifier>all</classifier>
+      <version>{{ clickhouse_jdbc_version }}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    ```
 
-```maven
-<dependency>
-  <groupId>com.clickhouse.spark</groupId>
-  <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
-  <version>{{ stable_version }}</version>
-</dependency>
-<dependency>
-  <groupId>com.clickhouse</groupId>
-  <artifactId>clickhouse-jdbc</artifactId>
-  <classifier>all</classifier>
-  <version>{{ clickhouse_jdbc_version }}</version>
-  <exclusions>
-    <exclusion>
-      <groupId>*</groupId>
-      <artifactId>*</artifactId>
-    </exclusion>
-  </exclusions>
-</dependency>
-```
+    Добавьте следующий репозиторий, если вы хотите использовать SNAPSHOT-версию.
 
-Добавьте следующий репозиторий, если хотите использовать SNAPSHOT-версию.
+    ```maven
+    <repositories>
+      <repository>
+        <id>sonatype-oss-snapshots</id>
+        <name>Sonatype OSS Snapshots Repository</name>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      </repository>
+    </repositories>
+    ```
+  </TabItem>
 
-```maven
-<repositories>
-  <repository>
-    <id>sonatype-oss-snapshots</id>
-    <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-  </repository>
-</repositories>
-```
+  <TabItem value="Gradle" label="Gradle">
+    ```gradle
+    dependencies {
+      implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
+      implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
+    }
+    ```
 
-</TabItem>
-<TabItem value="Gradle" label="Gradle">
+    Добавьте следующий репозиторий, если вы хотите использовать SNAPSHOT-версию:
 
-```gradle
-dependencies {
-  implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
-  implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
-}
-```
+    ```gradle
+    repositries {
+      maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+    }
+    ```
+  </TabItem>
 
-Добавьте следующий репозиторий, если хотите использовать SNAPSHOT-версию:
+  <TabItem value="SBT" label="SBT">
+    ```sbt
+    libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
+    libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
+    ```
+  </TabItem>
 
-```gradle
-repositries {
-  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
-}
-```
+  <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
+    При работе с параметрами оболочки Spark (Spark SQL CLI, Spark Shell CLI и команда Spark Submit) зависимости могут быть
+    зарегистрированы путём передачи необходимых JAR-файлов:
 
-</TabItem>
-<TabItem value="SBT" label="SBT">
+    ```text
+    $SPARK_HOME/bin/spark-sql \
+      --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
+    ```
 
-```sbt
-libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
-libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
-```
+    Если вы хотите избежать копирования JAR-файлов на клиентский узел Spark, вы можете использовать следующий вариант:
 
-</TabItem>
-<TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
+    ```text
+      --repositories https://{maven-central-mirror or private-nexus-repo} \
+      --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
+    ```
 
-При работе с командными оболочками Spark (Spark SQL CLI, Spark Shell CLI и команда Spark Submit) зависимости можно
-зарегистрировать, передав необходимые jar-файлы:
-
-```text
-$SPARK_HOME/bin/spark-sql \
-  --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
-```
-
-Если вы хотите избежать копирования JAR-файлов на узел клиента Spark, можно использовать следующий вариант:
-
-```text
-  --repositories https://{maven-central-mirror or private-nexus-repo} \
-  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
-```
-
-Примечание: Для сценариев использования только SQL рекомендуется применять [Apache Kyuubi](https://github.com/apache/kyuubi)
-в производственной среде.
-
-</TabItem>
+    Примечание: для сценариев, использующих только SQL, для production-среды рекомендуется [Apache Kyuubi](https://github.com/apache/kyuubi).
+  </TabItem>
 </Tabs>
 
-### Загрузка библиотеки {#download-the-library}
+### Загрузка библиотеки
 
 Шаблон имени бинарного JAR-файла:
 
@@ -155,17 +156,17 @@ $SPARK_HOME/bin/spark-sql \
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
 ```
 
-Все доступные выпущенные JAR-файлы можно найти
+Все доступные релизные JAR-файлы можно найти
 в [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/),
-а все ежедневные сборки SNAPSHOT JAR-файлов — в [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
+а все JAR-файлы ежедневных сборок SNAPSHOT — в [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
 
 
 :::important
-Важно включить [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
-с классификатором `all`,
-так как коннектор зависит от [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
-и [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client), — оба эти компонента уже включены
-в clickhouse-jdbc:all.
+Крайне важно включить [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
+с классификатором «all»,
+так как коннектор полагается на [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
+и [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client), оба из которых входят
+в состав clickhouse-jdbc:all.
 В качестве альтернативы вы можете добавить [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
 и [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) по отдельности, если
 предпочитаете не использовать полный пакет JDBC.
@@ -176,26 +177,26 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 
 
 
-## Регистрация каталога (обязательно) {#register-the-catalog-required}
+## Зарегистрируйте каталог (обязательно)
 
-Для доступа к таблицам ClickHouse необходимо настроить новый каталог Spark со следующими параметрами:
+Чтобы получить доступ к таблицам ClickHouse, необходимо настроить новый каталог Spark со следующими параметрами:
 
-| Свойство                                     | Значение                                 | Значение по умолчанию  | Обязательно |
+| Property                                     | Value                                    | Default Value  | Required |
 | -------------------------------------------- | ---------------------------------------- | -------------- | -------- |
-| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | Да      |
-| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | Нет       |
-| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | Нет       |
-| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | Нет       |
-| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | Нет       |
-| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (пустая строка) | Нет       |
-| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | Нет       |
-| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | Нет       |
+| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | Yes      |
+| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | No       |
+| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | No       |
+| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | No       |
+| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | No       |
+| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (empty string) | No       |
+| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | No       |
+| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | No       |
 
 Эти параметры можно задать одним из следующих способов:
 
-- Отредактировать или создать файл `spark-defaults.conf`.
-- Передать конфигурацию в команду `spark-submit` (или в команды CLI `spark-shell`/`spark-sql`).
-- Добавить конфигурацию при инициализации контекста.
+* Отредактируйте/создайте `spark-defaults.conf`.
+* Передайте конфигурацию в команду `spark-submit` (или в команды CLI `spark-shell`/`spark-sql`).
+* Добавьте конфигурацию при инициализации контекста.
 
 :::important
 При работе с кластером ClickHouse необходимо задать уникальное имя каталога для каждого экземпляра.
@@ -221,15 +222,14 @@ spark.sql.catalog.clickhouse2.database       default
 spark.sql.catalog.clickhouse2.option.ssl     true
 ```
 
-Таким образом, вы сможете обращаться к таблице `<ck_db>.<ck_table>` экземпляра clickhouse1 из Spark SQL через
-`clickhouse1.<ck_db>.<ck_table>`, а к таблице `<ck_db>.<ck_table>` экземпляра clickhouse2 — через `clickhouse2.<ck_db>.<ck_table>`.
+Таким образом, вы сможете обращаться к таблице `<ck_db>.<ck_table>` в clickhouse1 из Spark SQL под именем `clickhouse1.<ck_db>.<ck_table>`, а к таблице `<ck_db>.<ck_table>` в clickhouse2 — под именем `clickhouse2.<ck_db>.<ck_table>`.
 
 :::
 
 
-## Настройки ClickHouse Cloud {#clickhouse-cloud-settings}
+## Настройки ClickHouse Cloud
 
-При подключении к [ClickHouse Cloud](https://clickhouse.com) убедитесь, что SSL включен и установлен соответствующий режим SSL. Например:
+При подключении к [ClickHouse Cloud](https://clickhouse.com) убедитесь, что включён SSL и задан соответствующий режим SSL. Например:
 
 ```text
 spark.sql.catalog.clickhouse.option.ssl        true
@@ -244,7 +244,7 @@ spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 
 ```java
 public static void main(String[] args) {
-        // Создание сессии Spark
+        // Создание сеанса Spark
         SparkSession spark = SparkSession.builder()
                 .appName("example")
                 .master("local[*]")
@@ -331,18 +331,19 @@ df.show()
    CREATE TEMPORARY VIEW jdbcTable
            USING org.apache.spark.sql.jdbc
            OPTIONS (
-                   url "jdbc:ch://localhost:8123/default",
+                   url "jdbc:ch://localhost:8123/default", 
                    dbtable "schema.tablename",
                    user "username",
                    password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver"
+                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-
+           
    SELECT * FROM jdbcTable;
 ```
 
 </TabItem>
 </Tabs>
+
 
 
 ## Запись данных {#write-data}
@@ -353,7 +354,7 @@ df.show()
 ```java
  public static void main(String[] args) throws AnalysisException {
 
-        // Создание сессии Spark
+        // Создать сессию Spark
         SparkSession spark = SparkSession.builder()
                 .appName("example")
                 .master("local[*]")
@@ -367,7 +368,7 @@ df.show()
                 .config("spark.clickhouse.write.format", "json")
                 .getOrCreate();
 
-        // Определение схемы для DataFrame
+        // Определить схему для DataFrame
         StructType schema = new StructType(new StructField[]{
                 DataTypes.createStructField("id", DataTypes.IntegerType, false),
                 DataTypes.createStructField("name", DataTypes.StringType, false),
@@ -378,7 +379,7 @@ df.show()
                 RowFactory.create(2, "Bob")
         );
 
-        // Создание DataFrame
+        // Создать DataFrame
         Dataset<Row> df = spark.createDataFrame(data, schema);
 
         df.writeTo("clickhouse.default.example_table").append();
@@ -392,7 +393,7 @@ df.show()
 
 ```java
 object NativeSparkWrite extends App {
-  // Создание сессии Spark
+  // Создать сессию Spark
   val spark: SparkSession = SparkSession.builder
     .appName("example")
     .master("local[*]")
@@ -406,14 +407,14 @@ object NativeSparkWrite extends App {
     .config("spark.clickhouse.write.format", "json")
     .getOrCreate
 
-  // Определение схемы для DataFrame
+  // Определить схему для DataFrame
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
   val schema = List(
     StructField("id", DataTypes.IntegerType, nullable = false),
     StructField("name", StringType, nullable = true)
   )
-  // Создание DataFrame
+  // Создать DataFrame
   val df: DataFrame = spark.createDataFrame(
     spark.sparkContext.parallelize(rows),
     StructType(schema)
@@ -435,7 +436,7 @@ from pyspark.sql import Row
 ```
 
 
-# Можно использовать любые другие комбинации пакетов, соответствующие приведённой выше матрице совместимости.
+# При необходимости вы можете использовать любую другую комбинацию пакетов при условии, что она удовлетворяет матрице совместимости, приведённой выше.
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -475,7 +476,7 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-    -- resultTable — это промежуточный DataFrame в Spark, который необходимо вставить в clickhouse.default.example_table
+    -- resultTable — промежуточный DataFrame Spark, который необходимо вставить в clickhouse.default.example_table
    INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
 
@@ -485,27 +486,27 @@ df.writeTo("clickhouse.default.example_table").append()
 </Tabs>
 
 
-## DDL-операции {#ddl-operations}
+## Операции DDL
 
-Вы можете выполнять DDL-операции в вашем экземпляре ClickHouse с помощью Spark SQL, при этом все изменения немедленно сохраняются в
-ClickHouse.
-Spark SQL позволяет писать запросы точно так же, как в ClickHouse,
-поэтому вы можете напрямую выполнять команды, такие как CREATE TABLE, TRUNCATE и другие, без изменений, например:
+Вы можете выполнять операции DDL с экземпляром ClickHouse с помощью Spark SQL, при этом все изменения сразу
+сохраняются в ClickHouse.
+Spark SQL позволяет писать запросы так же, как в ClickHouse,
+поэтому вы можете напрямую выполнять команды, такие как CREATE TABLE, TRUNCATE и другие, без каких-либо изменений, например:
 
 :::note
 При использовании Spark SQL за один раз может быть выполнена только одна инструкция.
 :::
 
 ```sql
-USE clickhouse;
+USE clickhouse; 
 ```
 
 ```sql
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,
-  m           INT       NOT NULL COMMENT 'part key',
-  id          BIGINT    NOT NULL COMMENT 'sort key',
+  m           INT       NOT NULL COMMENT 'ключ раздела',
+  id          BIGINT    NOT NULL COMMENT 'ключ сортировки',
   value       STRING
 ) USING ClickHouse
 PARTITIONED BY (m)
@@ -516,40 +517,40 @@ TBLPROPERTIES (
 );
 ```
 
-Приведенные выше примеры демонстрируют запросы Spark SQL, которые можно выполнять в вашем приложении с использованием любого API — Java, Scala,
-PySpark или shell.
+Приведённые выше примеры показывают запросы Spark SQL, которые вы можете выполнять в приложении, используя любой из API-интерфейсов — Java, Scala, PySpark или shell.
 
 
 ## Конфигурации {#configurations}
 
-Ниже перечислены настраиваемые параметры конфигурации коннектора:
+Ниже перечислены параметры, которые можно настроить в коннекторе:
 
-<br />
+<br/>
 
 
-| Ключ                                               | По умолчанию                                                     | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Начиная с |
-| -------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| spark.clickhouse.ignoreUnsupportedTransform        | false                                                            | ClickHouse поддерживает использование сложных выражений в качестве ключей шардирования или значений партиционирования, например `cityHash64(col_1, col_2)`, которые в настоящее время не поддерживаются Spark. Если установлено значение `true`, неподдерживаемые выражения игнорируются, в противном случае выполнение немедленно завершается с выбросом исключения. Обратите внимание: когда включен параметр `spark.clickhouse.write.distributed.convertLocal`, игнорирование неподдерживаемых ключей шардирования может привести к повреждению данных. | 0.4.0     |
-| spark.clickhouse.read.compression.codec            | lz4                                                              | Кодек, используемый для декомпрессии данных при чтении. Поддерживаемые кодеки: none, lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | 0.5.0     |
-| spark.clickhouse.read.distributed.convertLocal     | true                                                             | При чтении таблицы Distributed читать локальную таблицу вместо неё. Если `true`, параметр `spark.clickhouse.read.distributed.useClusterNodes` игнорируется.                                                                                                                                                                                                                                                                                                                                                                                                | 0.1.0     |
-| spark.clickhouse.read.fixedStringAs                | двоичный                                                         | Читать тип ClickHouse FixedString как указанный тип данных Spark. Поддерживаемые типы: binary, string                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.8.0     |
-| spark.clickhouse.read.format                       | json                                                             | Формат сериализации при чтении. Поддерживаемые форматы: json, binary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | 0.6.0     |
-| spark.clickhouse.read.runtimeFilter.enabled        | false                                                            | Включить фильтр времени выполнения при чтении данных.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.8.0     |
-| spark.clickhouse.read.splitByPartitionId           | true                                                             | Если значение `true`, входной фильтр по партициям строится на основе виртуального столбца `_partition_id` вместо значения партиции. Известны проблемы при формировании SQL-предикатов по значению партиции. Эта возможность доступна в ClickHouse Server начиная с версии v21.6+.                                                                                                                                                                                                                                                                          | 0.4.0     |
-| spark.clickhouse.useNullableQuerySchema            | false                                                            | Если `true`, помечает все поля схемы запроса как допускающие значение `NULL` при выполнении `CREATE/REPLACE TABLE ... AS SELECT ...` при создании таблицы. Обратите внимание, что эта конфигурация требует исправления SPARK-43390 (доступно в Spark 3.5); без этого патча параметр всегда ведёт себя так, как будто установлен в `true`.                                                                                                                                                                                                                  | 0.8.0     |
-| spark.clickhouse.write.batchSize                   | 10000                                                            | Количество записей в одном пакете при записи в ClickHouse.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | 0.1.0     |
-| spark.clickhouse.write.compression.codec           | lz4                                                              | Кодек, используемый для сжатия данных при их записи. Поддерживаемые кодеки: none, lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 0.3.0     |
-| spark.clickhouse.write.distributed.convertLocal    | false                                                            | При записи в распределённую таблицу (Distributed) выполняется запись в локальную таблицу вместо самой распределённой таблицы. Если `true`, параметр `spark.clickhouse.write.distributed.useClusterNodes` игнорируется.                                                                                                                                                                                                                                                                                                                                     | 0.1.0     |
-| spark.clickhouse.write.distributed.useClusterNodes | true                                                             | Записывать данные на все узлы кластера при записи в таблицу Distributed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 0.1.0     |
-| spark.clickhouse.write.format                      | Arrow                                                            | Формат сериализации для записи. Поддерживаемые форматы: json, arrow                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 0.4.0     |
-| spark.clickhouse.write.localSortByKey              | true                                                             | Если `true`, выполнять локальную сортировку по ключам сортировки перед записью.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 0.3.0     |
-| spark.clickhouse.write.localSortByPartition        | значение параметра spark.clickhouse.write.repartitionByPartition | Если значение `true`, выполняется локальная сортировка по разделу перед записью. Если параметр не задан, он равен `spark.clickhouse.write.repartitionByPartition`.                                                                                                                                                                                                                                                                                                                                                                                         | 0.3.0     |
-| spark.clickhouse.write.maxRetry                    | 3                                                                | Максимальное количество повторных попыток для одной пакетной операции записи, завершившейся с кодами ошибок, допускающими повтор.                                                                                                                                                                                                                                                                                                                                                                                                                          | 0.1.0     |
-| spark.clickhouse.write.repartitionByPartition      | true                                                             | Следует ли выполнять переразбиение данных по ключам секционирования ClickHouse, чтобы соответствовать распределению партиций таблицы ClickHouse перед записью                                                                                                                                                                                                                                                                                                                                                                                              | 0.3.0     |
-| spark.clickhouse.write.repartitionNum              | 0                                                                | Перед записью данные должны быть переразбиты в соответствии с распределением таблицы ClickHouse; используйте этот параметр конфигурации, чтобы задать число разбиений. Значение меньше 1 означает, что переразбиение не требуется.                                                                                                                                                                                                                                                                                                                         | 0.1.0     |
-| spark.clickhouse.write.repartitionStrictly         | false                                                            | Если `true`, Spark будет строго распределять входящие записи по разделам, чтобы обеспечить требуемое распределение, прежде чем передать записи в таблицу источника данных при записи. В противном случае Spark может применять определённые оптимизации для ускорения запроса, но при этом нарушать требуемое распределение. Обратите внимание, что данная настройка зависит от исправления SPARK-37523 (доступно в Spark 3.4); без этого патча она всегда ведёт себя как `true`.                                                                          | 0.3.0     |
-| spark.clickhouse.write.retryInterval               | 10s                                                              | Интервал в секундах между повторными попытками записи.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 0.1.0     |
-| spark.clickhouse.write.retryableErrorCodes         | 241                                                              | Коды ошибок, при которых возможна повторная попытка, возвращаемые сервером ClickHouse при ошибке записи.                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 0.1.0     |
+
+| Ключ                                               | По умолчанию                                                     | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Начиная с |
+| -------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| spark.clickhouse.ignoreUnsupportedTransform        | false                                                            | ClickHouse поддерживает использование сложных выражений в качестве ключей шардирования или значений партиционирования, например `cityHash64(col_1, col_2)`, которые в настоящее время не поддерживаются Spark. Если `true`, неподдерживаемые выражения игнорируются, в противном случае выполнение немедленно завершается с исключением. Обратите внимание, что при включённой настройке `spark.clickhouse.write.distributed.convertLocal` игнорирование неподдерживаемых ключей шардирования может привести к повреждению данных. | 0.4.0     |
+| spark.clickhouse.read.compression.codec            | lz4                                                              | Кодек, используемый для распаковки данных при чтении. Поддерживаемые кодеки: none, lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                            | 0.5.0     |
+| spark.clickhouse.read.distributed.convertLocal     | true                                                             | При чтении таблицы Distributed использовать локальную таблицу вместо самой распределённой. Если `true`, игнорировать `spark.clickhouse.read.distributed.useClusterNodes`.                                                                                                                                                                                                                                                                                                                                                          | 0.1.0     |
+| spark.clickhouse.read.fixedStringAs                | двоичный                                                         | Считывать тип ClickHouse FixedString как заданный тип данных Spark. Поддерживаемые типы: binary, string                                                                                                                                                                                                                                                                                                                                                                                                                            | 0.8.0     |
+| spark.clickhouse.read.format                       | json                                                             | Формат сериализации для чтения. Поддерживаемые форматы: JSON, Binary                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 0.6.0     |
+| spark.clickhouse.read.runtimeFilter.enabled        | false                                                            | Включить динамический фильтр при чтении.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 0.8.0     |
+| spark.clickhouse.read.splitByPartitionId           | true                                                             | Если установлено значение `true`, формировать входной фильтр партиций по виртуальному столбцу `_partition_id`, а не по значению партиции. Известны проблемы при построении SQL-предикатов по значению партиции. Для использования этой возможности требуется ClickHouse Server v21.6+.                                                                                                                                                                                                                                             | 0.4.0     |
+| spark.clickhouse.useNullableQuerySchema            | false                                                            | Если `true`, помечать все поля схемы запроса как допускающие значение `NULL` при выполнении `CREATE/REPLACE TABLE ... AS SELECT ...` при создании таблицы. Обратите внимание, что эта настройка требует SPARK-43390 (доступно в Spark 3.5); без этого патча данная опция фактически всегда равна `true`.                                                                                                                                                                                                                           | 0.8.0     |
+| spark.clickhouse.write.batchSize                   | 10000                                                            | Количество записей в одном пакете при записи в ClickHouse.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 0.1.0     |
+| spark.clickhouse.write.compression.codec           | lz4                                                              | Кодек, используемый для сжатия данных при их записи. Поддерживаемые кодеки: none, lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                             | 0.3.0     |
+| spark.clickhouse.write.distributed.convertLocal    | false                                                            | При записи в таблицу Distributed данные записываются в локальную таблицу, а не в саму распределённую таблицу. Если установлено значение `true`, параметр `spark.clickhouse.write.distributed.useClusterNodes` игнорируется.                                                                                                                                                                                                                                                                                                        | 0.1.0     |
+| spark.clickhouse.write.distributed.useClusterNodes | true                                                             | При записи в распределённую таблицу записывать данные на все узлы кластера.                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 0.1.0     |
+| spark.clickhouse.write.format                      | стрелка                                                          | Формат сериализации при записи. Поддерживаемые форматы: JSON, Arrow                                                                                                                                                                                                                                                                                                                                                                                                                                                                | 0.4.0     |
+| spark.clickhouse.write.localSortByKey              | true                                                             | Если установлено значение `true`, выполнять локальную сортировку по ключам сортировки перед записью.                                                                                                                                                                                                                                                                                                                                                                                                                               | 0.3.0     |
+| spark.clickhouse.write.localSortByPartition        | значение параметра spark.clickhouse.write.repartitionByPartition | Если имеет значение `true`, выполняется локальная сортировка по разделу перед записью. Если не задано, используется значение `spark.clickhouse.write.repartitionByPartition`.                                                                                                                                                                                                                                                                                                                                                      | 0.3.0     |
+| spark.clickhouse.write.maxRetry                    | 3                                                                | Максимальное количество повторных попыток записи для одной пакетной операции, завершившейся сбоем с кодами ошибок, допускающими повторную попытку.                                                                                                                                                                                                                                                                                                                                                                                 | 0.1.0     |
+| spark.clickhouse.write.repartitionByPartition      | true                                                             | Определяет, нужно ли переразбивать данные по ключам партиционирования ClickHouse, чтобы они соответствовали распределению данных в таблице ClickHouse перед записью.                                                                                                                                                                                                                                                                                                                                                               | 0.3.0     |
+| spark.clickhouse.write.repartitionNum              | 0                                                                | Перед записью требуется перераспределить данные в соответствии с распределением таблицы ClickHouse. Используйте этот параметр конфигурации для указания количества переразбиений; значение меньше 1 означает, что перераспределение не требуется.                                                                                                                                                                                                                                                                                  | 0.1.0     |
+| spark.clickhouse.write.repartitionStrictly         | false                                                            | Если `true`, Spark будет строго распределять входящие записи по разделам, чтобы обеспечить требуемое распределение перед записью данных в таблицу источника. В противном случае Spark может применять определённые оптимизации для ускорения запроса, но при этом нарушить требуемое распределение. Обратите внимание, что для этой конфигурации необходим патч SPARK-37523 (доступен в Spark 3.4); без этого патча она всегда ведёт себя как `true`.                                                                              | 0.3.0     |
+| spark.clickhouse.write.retryInterval               | 10s                                                              | Интервал в секундах между повторными попытками записи.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 0.1.0     |
+| spark.clickhouse.write.retryableErrorCodes         | 241                                                              | Коды ошибок, допускающих повторную попытку, возвращаемые сервером ClickHouse при сбое записи.                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.1.0     |
 
 
 
@@ -557,76 +558,78 @@ PySpark или shell.
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
-В этом разделе описывается сопоставление типов данных между Spark и ClickHouse. Приведенные ниже таблицы служат кратким справочником
+В этом разделе описано сопоставление типов данных между Spark и ClickHouse. Таблицы ниже служат быстрой справкой
 по преобразованию типов данных при чтении из ClickHouse в Spark и при вставке данных из Spark в ClickHouse.
 
 ### Чтение данных из ClickHouse в Spark {#reading-data-from-clickhouse-into-spark}
 
-| Тип данных ClickHouse                                             | Тип данных Spark               | Поддерживается | Примитивный | Примечания                                         |
-| ----------------------------------------------------------------- | ------------------------------ | --------- | ------------ | -------------------------------------------------- |
-| `Nothing`                                                         | `NullType`                     | ✅        | Да          |                                                    |
-| `Bool`                                                            | `BooleanType`                  | ✅        | Да          |                                                    |
-| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅        | Да          |                                                    |
-| `Int8`                                                            | `ByteType`                     | ✅        | Да          |                                                    |
-| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅        | Да          |                                                    |
-| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅        | Да          |                                                    |
-| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅        | Да          |                                                    |
-| `Float32`                                                         | `FloatType`                    | ✅        | Да          |                                                    |
-| `Float64`                                                         | `DoubleType`                   | ✅        | Да          |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅        | Да          |                                                    |
-| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅        | Да          | Управляется конфигурацией `READ_FIXED_STRING_AS` |
-| `Decimal`                                                         | `DecimalType`                  | ✅        | Да          | Точность и масштаб до `Decimal128`             |
-| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅        | Да          |                                                    |
-| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅        | Да          |                                                    |
-| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅        | Да          |                                                    |
-| `Date`, `Date32`                                                  | `DateType`                     | ✅        | Да          |                                                    |
-| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅        | Да          |                                                    |
-| `Array`                                                           | `ArrayType`                    | ✅        | Нет           | Тип элементов массива также преобразуется               |
-| `Map`                                                             | `MapType`                      | ✅        | Нет           | Ключи ограничены типом `StringType`                   |
-| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅        | Да          |                                                    |
-| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅        | Да          |                                                    |
-| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅        | Нет           | Используется соответствующий тип интервала                     |
-| `Object`                                                          |                                | ❌        |              |                                                    |
-| `Nested`                                                          |                                | ❌        |              |                                                    |
-| `Tuple`                                                           |                                | ❌        |              |                                                    |
-| `Point`                                                           |                                | ❌        |              |                                                    |
-| `Polygon`                                                         |                                | ❌        |              |                                                    |
-| `MultiPolygon`                                                    |                                | ❌        |              |                                                    |
-| `Ring`                                                            |                                | ❌        |              |                                                    |
-| `IntervalQuarter`                                                 |                                | ❌        |              |                                                    |
-| `IntervalWeek`                                                    |                                | ❌        |              |                                                    |
-| `Decimal256`                                                      |                                | ❌        |              |                                                    |
-| `AggregateFunction`                                               |                                | ❌        |              |                                                    |
-| `SimpleAggregateFunction`                                         |                                | ❌        |              |                                                    |
+| Тип данных ClickHouse                                             | Тип данных Spark               | Поддерживается | Примитивный | Примечания                                          |
+|-------------------------------------------------------------------|--------------------------------|----------------|-------------|-----------------------------------------------------|
+| `Nothing`                                                         | `NullType`                     | ✅              | Да          |                                                     |
+| `Bool`                                                            | `BooleanType`                  | ✅              | Да          |                                                     |
+| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅              | Да          |                                                     |
+| `Int8`                                                            | `ByteType`                     | ✅              | Да          |                                                     |
+| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅              | Да          |                                                     |
+| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅              | Да          |                                                     |
+| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅              | Да          |                                                     |
+| `Float32`                                                         | `FloatType`                    | ✅              | Да          |                                                     |
+| `Float64`                                                         | `DoubleType`                   | ✅              | Да          |                                                     |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅              | Да          |                                                     |
+| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅              | Да          | Управляется конфигурацией `READ_FIXED_STRING_AS`   |
+| `Decimal`                                                         | `DecimalType`                  | ✅              | Да          | Точность и масштаб вплоть до `Decimal128`          |
+| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅              | Да          |                                                     |
+| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅              | Да          |                                                     |
+| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅              | Да          |                                                     |
+| `Date`, `Date32`                                                  | `DateType`                     | ✅              | Да          |                                                     |
+| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅              | Да          |                                                     |
+| `Array`                                                           | `ArrayType`                    | ✅              | Нет         | Тип элементов массива также преобразуется          |
+| `Map`                                                             | `MapType`                      | ✅              | Нет         | Ключи ограничены типом `StringType`                |
+| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅              | Да          |                                                     |
+| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅              | Да          |                                                     |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅              | Нет         | Используется соответствующий тип интервала         |
+| `Object`                                                          |                                | ❌              |             |                                                     |
+| `Nested`                                                          |                                | ❌              |             |                                                     |
+| `Tuple`                                                           |                                | ❌              |             |                                                     |
+| `Point`                                                           |                                | ❌              |             |                                                     |
+| `Polygon`                                                         |                                | ❌              |             |                                                     |
+| `MultiPolygon`                                                    |                                | ❌              |             |                                                     |
+| `Ring`                                                            |                                | ❌              |             |                                                     |
+| `IntervalQuarter`                                                 |                                | ❌              |             |                                                     |
+| `IntervalWeek`                                                    |                                | ❌              |             |                                                     |
+| `Decimal256`                                                      |                                | ❌              |             |                                                     |
+| `AggregateFunction`                                               |                                | ❌              |             |                                                     |
+| `SimpleAggregateFunction`                                         |                                | ❌              |             |                                                     |
 
 ### Вставка данных из Spark в ClickHouse {#inserting-data-from-spark-into-clickhouse}
 
 
-| Spark Data Type                     | ClickHouse Data Type | Поддерживается | Примитивный тип | Примечания                                   |
-|-------------------------------------|----------------------|----------------|------------------|----------------------------------------------|
-| `BooleanType`                       | `UInt8`              | ✅              | Да               |                                              |
-| `ByteType`                          | `Int8`               | ✅              | Да               |                                              |
-| `ShortType`                         | `Int16`              | ✅              | Да               |                                              |
-| `IntegerType`                       | `Int32`              | ✅              | Да               |                                              |
-| `LongType`                          | `Int64`              | ✅              | Да               |                                              |
-| `FloatType`                         | `Float32`            | ✅              | Да               |                                              |
-| `DoubleType`                        | `Float64`            | ✅              | Да               |                                              |
-| `StringType`                        | `String`             | ✅              | Да               |                                              |
-| `VarcharType`                       | `String`             | ✅              | Да               |                                              |
-| `CharType`                          | `String`             | ✅              | Да               |                                              |
-| `DecimalType`                       | `Decimal(p, s)`      | ✅              | Да               | Точность и масштаб — до `Decimal128`        |
-| `DateType`                          | `Date`               | ✅              | Да               |                                              |
-| `TimestampType`                     | `DateTime`           | ✅              | Да               |                                              |
-| `ArrayType` (list, tuple, or array) | `Array`              | ✅              | Нет              | Тип элементов массива также преобразуется    |
-| `MapType`                           | `Map`                | ✅              | Нет              | Ключи ограничены типом `StringType`         |
-| `Object`                            |                      | ❌              |                  |                                              |
-| `Nested`                            |                      | ❌              |                  |                                              |
+
+| Тип данных Spark                    | Тип данных ClickHouse | Поддерживается | Примитивный тип | Примечания                                 |
+|-------------------------------------|------------------------|----------------|-----------------|--------------------------------------------|
+| `BooleanType`                       | `UInt8`                | ✅              | Да              |                                            |
+| `ByteType`                          | `Int8`                 | ✅              | Да              |                                            |
+| `ShortType`                         | `Int16`                | ✅              | Да              |                                            |
+| `IntegerType`                       | `Int32`                | ✅              | Да              |                                            |
+| `LongType`                          | `Int64`                | ✅              | Да              |                                            |
+| `FloatType`                         | `Float32`              | ✅              | Да              |                                            |
+| `DoubleType`                        | `Float64`              | ✅              | Да              |                                            |
+| `StringType`                        | `String`               | ✅              | Да              |                                            |
+| `VarcharType`                       | `String`               | ✅              | Да              |                                            |
+| `CharType`                          | `String`               | ✅              | Да              |                                            |
+| `DecimalType`                       | `Decimal(p, s)`        | ✅              | Да              | Точность и масштаб вплоть до `Decimal128` |
+| `DateType`                          | `Date`                 | ✅              | Да              |                                            |
+| `TimestampType`                     | `DateTime`             | ✅              | Да              |                                            |
+| `ArrayType` (list, tuple, or array) | `Array`                | ✅              | Нет             | Тип элементов массива также преобразуется  |
+| `MapType`                           | `Map`                  | ✅              | Нет             | Ключи ограничены типом `StringType`       |
+| `Object`                            |                        | ❌              |                 |                                            |
+| `Nested`                            |                        | ❌              |                 |                                            |
 
 
 
-## Участие в разработке и поддержка {#contributing-and-support}
+## Участие и поддержка {#contributing-and-support}
 
-Если вы хотите внести вклад в проект или сообщить о проблемах, мы будем рады вашему участию!
-Посетите наш [репозиторий на GitHub](https://github.com/ClickHouse/spark-clickhouse-connector), чтобы создать issue, предложить улучшения или отправить pull request.
-Мы приветствуем любой вклад в развитие проекта! Пожалуйста, ознакомьтесь с руководством по участию в репозитории перед началом работы.
-Благодарим вас за помощь в улучшении коннектора ClickHouse Spark!
+Если вы хотите поучаствовать в развитии проекта или сообщить о проблеме, мы будем рады вашей помощи!
+Перейдите в наш [репозиторий на GitHub](https://github.com/ClickHouse/spark-clickhouse-connector), чтобы создать issue, предложить
+улучшения или отправить pull request.
+Мы приветствуем любые вклады в проект! Перед началом, пожалуйста, ознакомьтесь с руководством по участию (contributing) в репозитории.
+Спасибо, что помогаете улучшать наш коннектор ClickHouse Spark!

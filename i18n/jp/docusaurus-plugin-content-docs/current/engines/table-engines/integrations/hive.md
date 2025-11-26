@@ -14,17 +14,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。現在、次の入力フォーマットをサポートしています。
+Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。現在、以下の入力フォーマットをサポートしています。
 
 - Text: `binary` を除く単純なスカラー列型のみをサポート
 
-- ORC: `char` を除く単純なスカラー列型をサポート。複合型は `array` のみサポート
+- ORC: `char` を除く単純なスカラー列型をサポートし、複合型は `array` のみサポート
 
-- Parquet: すべての単純なスカラー列型をサポート。複合型は `array` のみサポート
+- Parquet: すべての単純なスカラー列型をサポートし、複合型は `array` のみサポート
 
 
 
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -36,30 +36,30 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 PARTITION BY expr
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細については、こちらを参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
 
-テーブル構造は元のHiveテーブル構造と異なっていても構いません:
+テーブル構造は、元の Hive テーブル構造と異なる場合があります。
 
-- カラム名は元のHiveテーブルと同じである必要がありますが、一部のカラムのみを任意の順序で使用できます。また、他のカラムから計算されたエイリアスカラムを使用することもできます。
-- カラム型は元のHiveテーブルと同じである必要があります。
-- パーティション式は元のHiveテーブルと一致している必要があり、パーティション式で使用されるカラムはテーブル構造に含まれている必要があります。
+* 列名は元の Hive テーブルと同じである必要がありますが、その一部の列だけを任意の順序で使用できます。また、他の列から計算されたエイリアス列を使用することもできます。
+* 列の型は元の Hive テーブルのものと同じである必要があります。
+* `PARTITION BY` 句の式は元の Hive テーブルと整合している必要があり、`PARTITION BY` 句で使用される列はテーブル構造内に含まれていなければなりません。
 
 **エンジンパラメータ**
 
-- `thrift://host:port` — Hive Metastoreのアドレス
+* `thrift://host:port` — Hive Metastore のアドレス
 
-- `database` — リモートデータベース名
+* `database` — リモートデータベース名。
 
-- `table` — リモートテーブル名
+* `table` — リモートテーブル名。
 
 
-## 使用例 {#usage-example}
+## 使用例
 
-### HDFSファイルシステムでローカルキャッシュを使用する方法 {#how-to-use-local-cache-for-hdfs-filesystem}
+### HDFS ファイルシステムでローカルキャッシュを使用する方法
 
-リモートファイルシステムに対してローカルキャッシュを有効にすることを強く推奨します。ベンチマークによると、キャッシュを使用することでほぼ2倍高速になります。
+リモートファイルシステムに対しては、ローカルキャッシュを有効にすることを強く推奨します。ベンチマークでは、キャッシュありの場合はほぼ 2 倍高速になることが示されています。
 
-キャッシュを使用する前に、`config.xml`に以下を追加してください。
+キャッシュを使用する前に、`config.xml` に設定を追加します。
 
 ```xml
 <local_cache_for_remote_fs>
@@ -70,14 +70,14 @@ PARTITION BY expr
 </local_cache_for_remote_fs>
 ```
 
-- enable: trueに設定すると、ClickHouseは起動後にリモートファイルシステム(HDFS)のローカルキャッシュを維持します。
-- root_dir: 必須。リモートファイルシステムのローカルキャッシュファイルを保存するルートディレクトリ。
-- limit_size: 必須。ローカルキャッシュファイルの最大サイズ(バイト単位)。
-- bytes_read_before_flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムにフラッシュする前のバイト数を制御します。デフォルト値は1MBです。
+* enable: true の場合、ClickHouse は起動後にリモートファイルシステム (HDFS) 用のローカルキャッシュを保持します。
+* root&#95;dir: 必須。リモートファイルシステム用のローカルキャッシュファイルを保存するルートディレクトリです。
+* limit&#95;size: 必須。ローカルキャッシュファイルの最大サイズ (バイト単位) です。
+* bytes&#95;read&#95;before&#95;flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムへフラッシュするまでの読み取りバイト数を制御します。デフォルト値は 1MB です。
 
-### ORC入力フォーマットでHiveテーブルをクエリする {#query-hive-table-with-orc-input-format}
+### ORC 入力フォーマットで Hive テーブルをクエリする
 
-#### Hiveでテーブルを作成する {#create-table-in-hive}
+#### Hive でテーブルを作成する
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -125,10 +125,10 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouseでテーブルを作成する {#create-table-in-clickhouse}
+#### ClickHouse でテーブルを作成
 
 
-上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル：
+次の ClickHouse テーブルは、上で作成した Hive テーブルからデータを取得します：
 
 ```sql
 CREATE TABLE test.test_orc
@@ -199,9 +199,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Parquet入力フォーマットを使用したHiveテーブルのクエリ {#query-hive-table-with-parquet-input-format}
+### Parquet 入力フォーマットの Hive テーブルをクエリする
 
-#### Hiveでのテーブル作成 {#create-table-in-hive-1}
+#### Hive でテーブルを作成する
 
 ```text
 hive >
@@ -239,22 +239,21 @@ LOCATION
   'hdfs://testcluster/data/hive/test.db/test_parquet'
 OK
 Time taken: 0.51 seconds
-
 ```
 
 
-hive > insert into test.test_parquet partition(day='2021-09-18') select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current_timestamp(), current_date(), 'hello world', 'hello world', 'hello world', true, 'hello world', array(1, 2, 3), array('hello world', 'hello world'), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array('a', 'b'), array('c', 'd')), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
+hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
 OK
-Time taken: 36.025 seconds
+処理時間: 36.025秒
 
-hive > select \* from test.test_parquet;
+hive &gt; select * from test.test&#95;parquet;
 OK
-1 2 3 4 5 6.11 7.22 8 2021-12-14 17:54:56.743 2021-12-14 hello world hello world hello world true hello world [1,2,3] ["hello world","hello world"] [1.1,1.2] [[1,2],[3,4]] [["a","b"],["c","d"]] [[1.11,2.22],[3.33,4.44]] 2021-09-18
-Time taken: 0.766 seconds, Fetched: 1 row(s)
+1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    [&quot;hello world&quot;,&quot;hello world&quot;]    [1.1,1.2]    [[1,2],[3,4]]    [[&quot;a&quot;,&quot;b&quot;],[&quot;c&quot;,&quot;d&quot;]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
+処理時間: 0.766秒, 取得件数: 1 行
 
 ````
 
-#### ClickHouseでテーブルを作成 {#create-table-in-clickhouse-1}
+#### ClickHouseでテーブルを作成する
 
 上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル:
 ```sql
@@ -323,12 +322,12 @@ f_array_array_string: [['a','b'],['c','d']]
 f_array_array_float:  [[1.11,2.22],[3.33,4.44]]
 day:                  2021-09-18
 
-1 rows in set. Elapsed: 0.357 sec.
+1行が結果セットに含まれています。経過時間: 0.357秒
 ```
 
-### テキスト入力形式を使用したHiveテーブルのクエリ {#query-hive-table-with-text-input-format}
+### Text 入力フォーマットを使用して Hive テーブルをクエリする
 
-#### Hiveでテーブルを作成 {#create-table-in-hive-2}
+#### Hive でテーブルを作成する
 
 
 ```text
@@ -378,9 +377,9 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouseでのテーブル作成 {#create-table-in-clickhouse-2}
+#### ClickHouse でテーブルを作成する
 
-上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル:
+上で作成した Hive テーブルからデータを取得する ClickHouse テーブル:
 
 ```sql
 CREATE TABLE test.test_text
@@ -415,11 +414,10 @@ FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'
 
 Query id: 55b79d35-56de-45b9-8be6-57282fbf1f44
-
 ```
 
 
-行 1:
+Row 1:
 ──────
 f&#95;tinyint:   1
 f&#95;smallint:  2

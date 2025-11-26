@@ -1,5 +1,5 @@
 ---
-description: 'Подсчитывает количество строк или значений, отличных от NULL.'
+description: 'Подсчитывает число строк или значений, отличных от NULL.'
 sidebar_position: 120
 slug: /sql-reference/aggregate-functions/reference/count
 title: 'count'
@@ -8,40 +8,40 @@ doc_type: 'reference'
 
 # count
 
-Подсчитывает количество строк или ненулевых (not-NULL) значений.
+Подсчитывает количество строк или значений, отличных от NULL.
 
 ClickHouse поддерживает следующие варианты синтаксиса для `count`:
 
 * `count(expr)` или `COUNT(DISTINCT expr)`.
-* `count()` или `COUNT(*)`. Синтаксис `count()` является специфичным для ClickHouse.
+* `count()` или `COUNT(*)`. Синтаксис `count()` специфичен для ClickHouse.
 
-**Arguments**
+**Аргументы**
 
 Функция может принимать:
 
 * Ноль параметров.
 * Одно [выражение](/sql-reference/syntax#expressions).
 
-**Returned value**
+**Возвращаемое значение**
 
 * Если функция вызывается без параметров, она подсчитывает количество строк.
-* Если передано [выражение](/sql-reference/syntax#expressions), функция подсчитывает, сколько раз это выражение вернуло не `NULL`. Если выражение возвращает значение типа [Nullable](../../../sql-reference/data-types/nullable.md), то результат функции `count` остаётся не `Nullable`. Функция возвращает 0, если выражение вернуло `NULL` для всех строк.
+* Если передано [выражение](/sql-reference/syntax#expressions), то функция считает, сколько раз это выражение вернуло не NULL. Если выражение возвращает значение типа [Nullable](../../../sql-reference/data-types/nullable.md), то результат `count` остаётся типом, не `Nullable`. Функция возвращает 0, если выражение вернуло `NULL` для всех строк.
 
 В обоих случаях тип возвращаемого значения — [UInt64](../../../sql-reference/data-types/int-uint.md).
 
-**Details**
+**Подробности**
 
-ClickHouse поддерживает синтаксис `COUNT(DISTINCT ...)`. Поведение этой конструкции зависит от настройки [count&#95;distinct&#95;implementation](../../../operations/settings/settings.md#count_distinct_implementation). Она определяет, какая из функций [uniq*](/sql-reference/aggregate-functions/reference/uniq) используется для выполнения операции. По умолчанию используется функция [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact).
+ClickHouse поддерживает синтаксис `COUNT(DISTINCT ...)`. Поведение этой конструкции зависит от настройки [count&#95;distinct&#95;implementation](../../../operations/settings/settings.md#count_distinct_implementation). Она определяет, какая из функций семейства [uniq*](/sql-reference/aggregate-functions/reference/uniq) используется для выполнения операции. По умолчанию используется функция [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact).
 
-Запрос `SELECT count() FROM table` по умолчанию оптимизируется с использованием метаданных из MergeTree. Если вам нужно использовать построчную (row-level) безопасность, отключите оптимизацию с помощью настройки [optimize&#95;trivial&#95;count&#95;query](/operations/settings/settings#optimize_trivial_count_query).
+Запрос `SELECT count() FROM table` по умолчанию оптимизируется с использованием метаданных из MergeTree. Если вам нужно использовать построчную безопасность (row-level security), отключите эту оптимизацию с помощью настройки [optimize&#95;trivial&#95;count&#95;query](/operations/settings/settings#optimize_trivial_count_query).
 
-Однако запрос `SELECT count(nullable_column) FROM table` может быть оптимизирован за счёт включения настройки [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подколонку [null](../../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки всех данных столбца. Запрос `SELECT count(n) FROM table` преобразуется в `SELECT sum(NOT n.null) FROM table`.
+Однако запрос `SELECT count(nullable_column) FROM table` может быть оптимизирован путём включения настройки [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подстолбец [null](../../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки всех данных столбца. Запрос `SELECT count(n) FROM table` преобразуется в `SELECT sum(NOT n.null) FROM table`.
 
-**Improving COUNT(DISTINCT expr) performance**
+**Повышение производительности COUNT(DISTINCT expr)**
 
-Если ваш запрос `COUNT(DISTINCT expr)` выполняется медленно, рассмотрите возможность добавления предложения [`GROUP BY`](/sql-reference/statements/select/group-by), так как это улучшает параллельное выполнение. Вы также можете использовать [projection](../../../sql-reference/statements/alter/projection.md) для создания индекса по целевому столбцу, используемому с `COUNT(DISTINCT target_col)`.
+Если ваш запрос `COUNT(DISTINCT expr)` выполняется медленно, рассмотрите возможность добавления предложения [`GROUP BY`](/sql-reference/statements/select/group-by), так как это улучшает распараллеливание. Вы также можете использовать [проекцию](../../../sql-reference/statements/alter/projection.md) для создания индекса по целевому столбцу, используемому с `COUNT(DISTINCT target_col)`.
 
-**Examples**
+**Примеры**
 
 Пример 1:
 
@@ -77,4 +77,4 @@ SELECT count(DISTINCT num) FROM t
 └────────────────┘
 ```
 
-Этот пример показывает, что операция `count(DISTINCT num)` выполняется с помощью функции `uniqExact` в соответствии со значением настройки `count_distinct_implementation`.
+Этот пример показывает, что `count(DISTINCT num)` вычисляется функцией `uniqExact` в соответствии со значением настройки `count_distinct_implementation`.

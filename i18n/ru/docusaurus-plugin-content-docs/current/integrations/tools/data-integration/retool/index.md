@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Retool'
 slug: /integrations/retool
-keywords: ['clickhouse', 'retool', 'подключение', 'интеграция', 'ui', 'админка', 'панель', 'дашборд', 'nocode', 'no-code']
-description: 'Быстро создавайте веб- и мобильные приложения с насыщенными пользовательскими интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — все это на основе ваших данных.'
+keywords: ['clickhouse', 'retool', 'подключение', 'интеграция', 'ui', 'админ', 'панель', 'дашборд', 'nocode', 'no-code']
+description: 'Быстро создавайте веб- и мобильные приложения с продвинутыми пользовательскими интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — всё на основе ваших данных.'
 title: 'Подключение Retool к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -26,37 +26,37 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## 1. Соберите данные для подключения {#1-gather-your-connection-details}
-
+## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. Создание ресурса ClickHouse {#2-create-a-clickhouse-resource}
 
-Войдите в учетную запись Retool и перейдите на вкладку _Resources_. Выберите "Create New" -> "Resource":
+## 2. Создайте ресурс ClickHouse {#2-create-a-clickhouse-resource}
 
-<Image img={retool_01} size='lg' border alt='Создание нового ресурса' />
-<br />
+Войдите в свой аккаунт Retool и перейдите на вкладку _Resources_. Выберите «Create New» → «Resource»:
 
-Выберите "JDBC" из списка доступных коннекторов:
+<Image img={retool_01} size="lg" border alt="Создание нового ресурса" />
+<br/>
 
-<Image img={retool_02} size='lg' border alt='Выбор коннектора JDBC' />
-<br />
+Выберите «JDBC» из списка доступных коннекторов:
 
-В мастере настройки убедитесь, что выбран драйвер `com.clickhouse.jdbc.ClickHouseDriver` в поле "Driver name":
+<Image img={retool_02} size="lg" border alt="Выбор коннектора JDBC" />
+<br/>
 
-<Image img={retool_03} size='lg' border alt='Выбор правильного драйвера' />
-<br />
+В мастере настройки убедитесь, что в поле «Driver name» выбран `com.clickhouse.jdbc.ClickHouseDriver`:
+
+<Image img={retool_03} size="lg" border alt="Выбор правильного драйвера" />
+<br/>
 
 Укажите учетные данные ClickHouse в следующем формате: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
-Если экземпляр требует SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения, чтобы она имела вид `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
+Если для вашего экземпляра требуется SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения, чтобы она выглядела так: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
-<Image img={retool_04} size='lg' border alt='Указание учетных данных' />
-<br />
+<Image img={retool_04} size="lg" border alt="Указание учетных данных" />
+<br/>
 
-После этого проверьте подключение:
+После этого протестируйте подключение:
 
-<Image img={retool_05} size='lg' border alt='Проверка подключения' />
-<br />
+<Image img={retool_05} size="lg" border alt="Тестирование подключения" />
+<br/>
 
-Теперь можно перейти к работе с приложением, используя ресурс ClickHouse.
+Теперь вы можете перейти к работе в приложении, используя ресурс ClickHouse.

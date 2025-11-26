@@ -9,36 +9,36 @@ doc_type: 'reference'
 
 # last&#95;value
 
-順序付けされたフレーム内で評価された値のうち、最後の値を返します。デフォルトでは NULL 引数はスキップされますが、この挙動は `RESPECT NULLS` 修飾子を使用して上書きできます。
+順序付けされたフレーム内で評価された最後の値を返します。デフォルトでは NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用すると、この動作を変更できます。
 
 **構文**
 
 ```sql
-last_value (カラム名) [[RESPECT NULLS] | [IGNORE NULLS]]
-  OVER ([[PARTITION BY グループ化カラム] [ORDER BY ソートカラム] 
-        [ROWS または RANGE グループ内の行を範囲指定する式]] | [ウィンドウ名])
-FROM テーブル名
-WINDOW ウィンドウ名 as ([[PARTITION BY グループ化カラム] [ORDER BY ソートカラム])
+last_value (column_name) [[RESPECT NULLS] | [IGNORE NULLS]]
+  OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+FROM table_name
+WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-エイリアス: `anyLast`.
+別名: `anyLast`.
 
 :::note
-`first_value(column_name)` の後にオプション修飾子 `RESPECT NULLS` を使用すると、`NULL` 引数がスキップされないようにできます。
-詳しくは [NULL processing](../aggregate-functions/index.md/#null-processing) を参照してください。
+`first_value(column_name)` の後にオプションの修飾子 `RESPECT NULLS` を付けると、`NULL` 引数がスキップされなくなります。
+詳細は [NULL processing](../aggregate-functions/index.md/#null-processing) を参照してください。
 
-エイリアス: `lastValueRespectNulls`
+別名: `lastValueRespectNulls`
 :::
 
-ウィンドウ関数の構文について詳しくは、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
+ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**返される値**
+**戻り値**
 
-* 順序付けされたフレーム内で評価される最後の値。
+* 並べ替えられたフレーム内で評価される最後の値。
 
 **例**
 
-この例では、`last_value` 関数を使用して、架空のプレミアリーグのサッカー選手の給与データセットから最も給与の低い選手を求めます。
+この例では、架空のプレミアリーグのサッカー選手の給与データセットから、最も給与の低い選手を見つけるために `last_value` 関数を使用します。
 
 クエリ:
 
@@ -69,7 +69,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果：
+結果:
 
 ```response
    ┌─選手────────────┬─給与───┬─最低給与選手───────┐

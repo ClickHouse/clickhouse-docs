@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY COMMENT によるテーブルコメントの追加・変更・削除について説明するドキュメント'
+description: 'ALTER TABLE ... MODIFY COMMENT に関するドキュメント。テーブルコメントの追加・変更・削除を行うための構文です'
 sidebar_label: 'ALTER TABLE ... MODIFY COMMENT'
 sidebar_position: 51
 slug: /sql-reference/statements/alter/comment
@@ -12,20 +12,20 @@ doc_type: 'reference'
 
 # ALTER TABLE ... MODIFY COMMENT
 
-テーブルコメントを追加、変更、または削除します。コメントが事前に設定されていたかどうかは問いません。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
+テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 
-## 例 {#examples}
+## 例
 
-コメント付きのテーブルを作成する場合:
+コメント付きテーブルを作成するには、次のようにします。
 
 ```sql
 CREATE TABLE table_with_comment
@@ -34,45 +34,45 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT 'The temporary table';
+COMMENT '一時テーブル';
 ```
 
-テーブルのコメントを変更する場合:
+テーブルのコメントを変更するには:
 
 ```sql
-ALTER TABLE table_with_comment
-MODIFY COMMENT 'new comment on a table';
+ALTER TABLE table_with_comment 
+MODIFY COMMENT 'テーブルの新しいコメント';
 ```
 
-変更されたコメントを表示する場合:
+変更されたコメントを表示するには:
 
-```sql title="クエリ"
-SELECT comment
-FROM system.tables
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment────────────────┐
-│ new comment on a table │
+│ テーブルに対する新しいコメント │
 └────────────────────────┘
 ```
 
-テーブルのコメントを削除する場合:
+テーブルコメントを削除するには:
 
 ```sql
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 
-コメントが削除されたことを確認する場合:
+コメントが削除されたことを確認するには、次の手順を実行します。
 
-```sql title="クエリ"
-SELECT comment
-FROM system.tables
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
@@ -81,10 +81,11 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ## 注意事項 {#caveats}
 
-Replicatedテーブルの場合、コメントはレプリカごとに異なる場合があります。
-コメントの変更は単一のレプリカにのみ適用されます。
+Replicated テーブルの場合、コメントはレプリカごとに異なる場合があります。
+コメントの変更は 1 つのレプリカにのみ適用されます。
 
-この機能はバージョン23.9以降で利用可能です。それ以前のClickHouseバージョンでは動作しません。
+この機能はバージョン 23.9 以降で利用可能です。以前の ClickHouse のバージョンでは使用できません。
+
 
 
 ## 関連コンテンツ {#related-content}

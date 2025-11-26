@@ -4,7 +4,7 @@ title: 'TTL の管理'
 sidebar_label: 'TTL の管理'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を使用した TTL 管理'
+description: 'ClickStack での TTL 管理'
 doc_type: 'guide'
 keywords: ['clickstack', 'ttl', 'データ保持', 'ライフサイクル', 'ストレージ管理']
 ---
@@ -13,13 +13,13 @@ import observability_14 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-## ClickStackにおけるTTL {#ttl-clickstack}
+## ClickStack における TTL
 
-Time-to-Live(TTL)は、膨大な量のデータが継続的に生成される環境において、効率的なデータ保持と管理を実現するClickStackの重要な機能です。TTLにより古いデータの自動的な期限切れと削除が可能になり、手動介入なしでストレージが最適に使用され、パフォーマンスが維持されます。この機能は、データベースを軽量に保ち、ストレージコストを削減し、最も関連性の高い最新のデータに焦点を当てることでクエリを高速かつ効率的に保つために不可欠です。さらに、データライフサイクルを体系的に管理することで、データ保持ポリシーへの準拠を支援し、オブザーバビリティソリューション全体の持続可能性とスケーラビリティを向上させます。
+Time-to-Live (TTL) は、特に膨大なデータが継続的に生成される環境において、効率的なデータ保持と管理のために ClickStack で極めて重要な機能です。TTL により、古くなったデータを自動的に期限切れとして削除できるため、ストレージを最適に活用しつつ、手動の介入なしにパフォーマンスを維持できます。この機能は、データベースをスリムに保ち、ストレージコストを削減し、最も関連性が高く最新のデータを対象とすることでクエリを高速かつ効率的に保つうえで不可欠です。さらに、データのライフサイクルを体系的に管理することでデータ保持ポリシーへの準拠を支援し、オブザーバビリティソリューション全体の持続可能性とスケーラビリティを向上させます。
 
-**デフォルトでは、ClickStackはデータを3日間保持します。これを変更するには、["TTLの変更"](#modifying-ttl)を参照してください。**
+**ClickStack はデフォルトでデータを 3 日間保持します。これを変更するには、[「TTL の変更」](#modifying-ttl) を参照してください。**
 
-TTLはClickHouseのテーブルレベルで制御されます。例えば、ログのスキーマは以下の通りです:
+TTL は ClickHouse ではテーブルレベルで制御されます。たとえば、ログ用のスキーマは次のとおりです。
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -57,52 +57,52 @@ TTL TimestampTime + toIntervalDay(3)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 ```
 
-ClickHouseのパーティショニングは、カラムまたはSQL式に従ってディスク上でデータを論理的に分離することを可能にします。データを論理的に分離することで、各パーティションは独立して操作できます。例えば、TTLポリシーに従って期限切れになった際に削除することができます。
+ClickHouse におけるパーティショニングは、ディスク上のデータを、あるカラムまたは SQL 式に従って論理的に分割する仕組みです。データを論理的に分割することで、各パーティションを独立して操作できるようになります。例えば、TTL ポリシーに従って有効期限を迎えたタイミングで削除するといった操作が可能です。
 
-上記の例に示されているように、パーティショニングは`PARTITION BY`句を使用してテーブルが最初に定義される際に指定されます。この句には任意のカラムに対するSQL式を含めることができ、その結果によって行がどのパーティションに送られるかが決定されます。これにより、データはディスク上の各パーティションと(共通のフォルダ名プレフィックスを介して)論理的に関連付けられ、個別にクエリを実行できるようになります。上記の例では、デフォルトの`otel_logs`スキーマは`toDate(Timestamp)`という式を使用して日単位でパーティション分割されます。行がClickHouseに挿入されると、この式が各行に対して評価され、結果として得られるパーティションが存在する場合はそこにルーティングされます(その日の最初の行である場合は、パーティションが作成されます)。パーティショニングとその他の用途の詳細については、["テーブルパーティション"](/partitions)を参照してください。
+上記の例に示すように、パーティショニングはテーブルを定義する際に `PARTITION BY` 句で指定します。この句には任意のカラムに対する SQL 式を含めることができ、その結果によって各行がどのパーティションに格納されるかが決まります。これにより、ディスク上の各パーティションは（共通のフォルダ名プレフィックスを通じて）論理的にデータと関連付けられ、個別にクエリできます。上記の例では、デフォルトの `otel_logs` スキーマは `toDate(Timestamp)` 式を使って日単位でパーティショニングしています。行が ClickHouse に挿入されると、この式が各行に対して評価され、対応するパーティションが存在する場合はそこにルーティングされます（その日最初の行であれば、新しいパーティションが作成されます）。パーティショニングの詳細およびその他の用途については、[&quot;Table Partitions&quot;](/partitions) を参照してください。
 
-<Image img={observability_14} alt='Partitions' size='lg' />
+<Image img={observability_14} alt="パーティション" size="lg" />
 
 
-テーブルスキーマには、`TTL TimestampTime + toIntervalDay(3)` と `ttl_only_drop_parts = 1` の設定も含まれます。前者の指定により、データは 3 日を経過すると削除されます。`ttl_only_drop_parts = 1` の設定は、（行を部分的に削除しようとするのではなく）すべてのデータが期限切れとなったデータパーツのみを削除対象とすることを強制します。パーティション分割によって別々の日付のデータが決して「マージ」されないようにすることで、データを効率的に削除できます。 
+テーブルスキーマには `TTL TimestampTime + toIntervalDay(3)` と `ttl_only_drop_parts = 1` の設定も含まれています。前者の指定により、データは 3 日より古くなった時点で削除されます。`ttl_only_drop_parts = 1` の設定は、（行を部分的に削除しようとするのではなく）すべてのデータが期限切れになったデータパーツだけを削除することを強制します。パーティション分割によって異なる日のデータが決して「マージ」されないようにすることで、データを効率的に削除できます。 
 
 :::important `ttl_only_drop_parts`
-設定 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) を常に使用することを推奨します。この設定が有効な場合、ClickHouse は、その中のすべての行が期限切れになったときに、そのパーツ全体を削除します。`ttl_only_drop_parts=0` の場合にリソース集約的な mutation によって実現される、TTL 対象行の部分的なクリーンアップではなく、パーツ全体を削除することで、`merge_with_ttl_timeout` の時間を短く保ち、システムパフォーマンスへの影響を抑えることができます。データが TTL 期限切れ処理を行う単位、例えば日単位でパーティション分割されている場合、各パーツは自然とその定義された間隔のデータだけを含むようになります。これにより、`ttl_only_drop_parts=1` を効率的に適用できるようになります。
+[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) の設定を常に使用することを推奨します。この設定が有効な場合、ClickHouse は、その中のすべての行が期限切れになったときにパーツ全体を削除します。部分的な TTL 対応クリーンアップ（`ttl_only_drop_parts=0` のときにリソース集約的な mutation によって実現）ではなくパーツ全体を削除することで、`merge_with_ttl_timeout` をより短くでき、システムパフォーマンスへの影響を低減できます。データが TTL 期限切れ処理を行う単位（例: 日）でパーティション分割されている場合、パーツには自然と定義された間隔のデータのみが含まれるようになります。これにより、`ttl_only_drop_parts=1` を効率的に適用できるようになります。
 :::
 
-デフォルトでは、TTL が期限切れになったデータは、ClickHouse が[データパーツをマージする](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)ときに削除されます。ClickHouse がデータの期限切れを検出すると、スケジュール外のマージを実行します。
+デフォルトでは、TTL が期限切れになったデータは、ClickHouse が[データパーツをマージする](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)際に削除されます。ClickHouse がデータの期限切れを検知すると、スケジュール外のマージを実行します。
 
 :::note TTL schedule
-TTL は即座には適用されず、上記のとおりスケジュールに従って適用されます。MergeTree テーブル設定 `merge_with_ttl_timeout` は、削除 TTL を伴うマージを繰り返すまでの最小遅延時間（秒）を設定します。デフォルト値は 14400 秒（4 時間）です。ただし、これはあくまで最小遅延であり、TTL マージがトリガーされるまでにさらに時間がかかる可能性があります。値が低すぎると、多数のスケジュール外マージが実行され、多くのリソースを消費するおそれがあります。TTL の期限切れ処理は、`ALTER TABLE my_table MATERIALIZE TTL` コマンドを使用して強制的に実行することができます。
+TTL は即時には適用されず、前述のとおりスケジュールに従って適用されます。MergeTree テーブル設定 `merge_with_ttl_timeout` は、削除 TTL 付きマージを再実行するまでの最小遅延時間（秒）を設定します。デフォルト値は 14400 秒（4 時間）です。ただし、これはあくまで最小遅延であり、TTL マージがトリガーされるまでにさらに時間がかかる場合があります。この値が小さすぎると、リソースを大量に消費しうるスケジュール外マージが多数実行されることになります。TTL の期限切れ適用は、`ALTER TABLE my_table MATERIALIZE TTL` コマンドを使用して強制的に実行できます。
 :::
 
 
 
-## TTLの変更 {#modifying-ttl}
+## TTL の変更
 
-TTLを変更するには、次のいずれかの方法を使用します:
+TTL を変更するには、次のいずれかの方法があります。
 
-1. **テーブルスキーマを変更する(推奨)**。[clickhouse-client](/interfaces/cli)や[Cloud SQLコンソール](/cloud/get-started/sql-console)などを使用してClickHouseインスタンスに接続する必要があります。例えば、次のDDLを使用して`otel_logs`テーブルのTTLを変更できます:
+1. **テーブルのスキーマを変更する（推奨）**。これには、[clickhouse-client](/interfaces/cli) や [Cloud SQL Console](/cloud/get-started/sql-console) などを使用して ClickHouse インスタンスに接続する必要があります。たとえば、次の DDL を使用して `otel_logs` テーブルの TTL を変更できます。
 
 ```sql
 ALTER TABLE default.otel_logs
 MODIFY TTL TimestampTime + toIntervalDay(7);
 ```
 
-2. **OTelコレクターを変更する**。ClickStack OpenTelemetryコレクターは、テーブルが存在しない場合にClickHouseにテーブルを作成します。これはClickHouseエクスポーターを介して実現され、デフォルトのTTL式を制御するための`ttl`パラメータが公開されています。例:
+2. **OTel collector を変更する**。ClickStack OpenTelemetry collector は、テーブルが存在しない場合は ClickHouse 内にテーブルを作成します。これは ClickHouse exporter によって行われ、exporter 自体がデフォルトの TTL 式を制御するために使用される `ttl` パラメータを公開しています。例:
 
 ```yaml
 exporters:
-  clickhouse:
-    endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
-    ttl: 72h
+ clickhouse:
+   endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
+   ttl: 72h
 ```
 
-### カラムレベルのTTL {#column-level-ttl}
+### 列レベルの TTL
 
-上記の例では、テーブルレベルでデータを期限切れにしています。カラムレベルでもデータを期限切れにすることができます。データが古くなるにつれて、調査における価値が保持に必要なリソースオーバーヘッドを正当化しないカラムを削除するために使用できます。例えば、挿入時に抽出されていない新しい動的メタデータ(新しいKubernetesラベルなど)が追加される場合に備えて、`Body`カラムを保持することを推奨しています。一定期間(1ヶ月など)経過後、この追加メタデータが有用でないことが明らかになる場合があり、その結果`Body`カラムを保持する価値が限定的になります。
+上記の例では、テーブルレベルでデータの有効期限を設定しています。ユーザーは列レベルでも有効期限を設定できます。データが古くなるにつれ、調査時の有用性に対して保持のためのリソースコストが見合わない列を削除するために利用できます。たとえば、挿入時にまだ抽出されていない新しい動的メタデータ（例：新しい Kubernetes ラベル）が追加される可能性に備えて、`Body` 列を保持しておくことを推奨します。一定期間、例えば 1 か月が経過すると、この追加メタデータが有用でないことが明らかになる場合があり、その場合は `Body` 列を保持し続ける価値は限定的です。
 
-以下に、30日後に`Body`カラムを削除する方法を示します。
+以下に、`Body` 列を 30 日経過後に削除する方法を示します。
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -116,5 +116,5 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note
-カラムレベルのTTLを指定するには、独自のスキーマを指定する必要があります。これはOTelコレクターでは指定できません。
+列レベルの TTL を設定するには、ユーザー自身でスキーマを定義する必要があります。これは OTel collector では指定できません。
 :::

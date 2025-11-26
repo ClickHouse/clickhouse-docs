@@ -1,5 +1,5 @@
 ---
-description: '引数の異なる値のおおよその数を計算します。`uniqCombined` と同じですが、String データ型だけでなく、すべてのデータ型に対して 64 ビットのハッシュ値を使用します。'
+description: '異なる引数値のおおよその個数を計算します。uniqCombined と同様ですが、String データ型だけでなく、すべてのデータ型に対して 64 ビットハッシュを使用します。'
 sidebar_position: 206
 slug: /sql-reference/aggregate-functions/reference/uniqcombined64
 title: 'uniqCombined64'
@@ -8,18 +8,18 @@ doc_type: 'reference'
 
 # uniqCombined64
 
-異なる引数値のおおよその個数を計算します。[uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined) と同様ですが、`String` データ型だけでなく、すべてのデータ型に対して 64 ビットハッシュを使用します。
+異なる引数値のおおよその個数を計算します。[uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined) と同様ですが、`String` データ型だけでなく、すべてのデータ型に対して 64 ビットのハッシュを使用します。
 
 ```sql
 uniqCombined64(HLL_precision)(x[, ...])
 ```
 
-**パラメータ**
+**パラメーター**
 
-* `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) におけるセル数の底 2 の対数。オプションとして、関数を `uniqCombined64(x[, ...])` の形で使用できます。`HLL_precision` のデフォルト値は 17 で、これは実質 96 KiB の領域（2^17 個のセル、各 6 ビット）に相当します。
-* `X`: 可変個のパラメータ。パラメータには `Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型を指定できます。
+* `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) におけるセル数の 2 を底とする対数。オプションとして、関数を `uniqCombined64(x[, ...])` のように使用できます。`HLL_precision` のデフォルト値は 17 で、これは実質的に 96 KiB のメモリを使用します（2^17 個のセル、各セル 6 ビット）。
+* `X`: 可変個のパラメーター。パラメーターには `Tuple`、`Array`、`Date`、`DateTime`、`String`、数値型を指定できます。
 
-**返される値**
+**戻り値**
 
 * [UInt64](../../../sql-reference/data-types/int-uint.md) 型の数値。
 
@@ -27,25 +27,25 @@ uniqCombined64(HLL_precision)(x[, ...])
 
 `uniqCombined64` 関数は次のように動作します。
 
-* 集約中のすべてのパラメータに対してハッシュ（すべてのデータ型に対して 64 ビットハッシュ）を計算し、そのハッシュ値を用いて計算を行います。
-* 3 つのアルゴリズム（配列、ハッシュテーブル、および誤差補正テーブル付き HyperLogLog）を組み合わせて使用します。
-  * 異なる要素数が少ない場合は配列を使用します。
-  * 集合のサイズが大きくなるとハッシュテーブルを使用します。
-  * さらに要素数が多い場合は HyperLogLog を使用し、固定量のメモリを使用します。
-* 結果は決定的です（クエリ処理の順序には依存しません）。
+* 集約内のすべてのパラメーターに対してハッシュ（すべてのデータ型に対する 64 ビットハッシュ）を計算し、その値を用いて計算を行います。
+* 3 つのアルゴリズム（配列、ハッシュテーブル、誤差補正テーブル付き HyperLogLog）を組み合わせて使用します。
+  * 相異なる要素数が少ない場合は、配列を使用します。
+  * 集合のサイズが大きくなると、ハッシュテーブルを使用します。
+  * さらに要素数が多い場合は、一定量のメモリを使用する HyperLogLog を使用します。
+* 結果は決定的であり（クエリの処理順序に依存しません）、常に同じ値を返します。
 
 :::note
-すべての型に対して 64 ビットハッシュを使用するため、非 `String` 型に対して 32 ビットハッシュを使用する [uniqCombined](../../../sql-reference/aggregate-functions/reference/uniqcombined.md) と異なり、`UINT_MAX` を大きく超えるカーディナリティに対しても結果に非常に大きな誤差が生じることはありません。
+すべての型に対して 64 ビットハッシュを使用するため、非 `String` 型に対して 32 ビットハッシュを使用する [uniqCombined](../../../sql-reference/aggregate-functions/reference/uniqcombined.md) とは異なり、`UINT_MAX` を大きく超えるカーディナリティに対しても非常に大きな誤差は生じません。
 :::
 
-[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数と比較すると、`uniqCombined64` 関数は次の特徴があります。
+[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数と比較して、`uniqCombined64` 関数は次の特徴があります。
 
-* 消費するメモリが数倍少ない。
+* 使用するメモリ量が数倍少ない。
 * 計算精度が数倍高い。
 
 **例**
 
-以下の例では、`uniqCombined64` を `1e10` 個の異なる数値に対して実行し、異なる引数値の数に非常に近い近似値を返しています。
+以下の例では、`uniqCombined64` を `1e10` 個の異なる数値に対して実行し、異なる引数値の個数に非常に近い近似値を返します。
 
 クエリ:
 
@@ -53,7 +53,7 @@ uniqCombined64(HLL_precision)(x[, ...])
 SELECT uniqCombined64(number) FROM numbers(1e10);
 ```
 
-結果：
+結果:
 
 ```response
 ┌─uniqCombined64(number)─┐
@@ -61,7 +61,7 @@ SELECT uniqCombined64(number) FROM numbers(1e10);
 └────────────────────────┘
 ```
 
-比較すると、この規模の入力に対しては、`uniqCombined` 関数はかなり精度の低い近似値しか返しません。
+比較すると、この程度のサイズの入力に対しては、`uniqCombined` 関数はあまり精度の高くない近似結果を返します。
 
 クエリ:
 

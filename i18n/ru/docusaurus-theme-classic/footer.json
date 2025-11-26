@@ -1,22 +1,22 @@
 {
   "link.item.label.Trademark": {
     "message": "Товарный знак",
-    "description": "Текст ссылки в подвале с label=Trademark, ведущей на https://clickhouse.com/legal/trademark-policy"
+    "description": "Метка ссылки в футере с label=Trademark, указывающей на https://clickhouse.com/legal/trademark-policy"
   },
   "link.item.label.Privacy": {
     "message": "Конфиденциальность",
-    "description": "Метка ссылки в нижнем колонтитуле с label=Privacy, указывающей на https://clickhouse.com/legal/privacy-policy"
+    "description": "Метка ссылки в нижнем колонтитуле с текстом «Privacy», ведущей на https://clickhouse.com/legal/privacy-policy"
   },
   "link.item.label.Security": {
     "message": "Безопасность",
-    "description": "Текст ссылки нижнего колонтитула с меткой label=Security, указывающей на https://trust.clickhouse.com/"
+    "description": "Ярлык ссылки в нижнем колонтитуле с надписью Security, ведущий на https://trust.clickhouse.com/"
   },
   "link.item.label.Terms of Service": {
-    "message": "Условия обслуживания",
-    "description": "Метка ссылки в нижнем колонтитуле с текстом «Terms of Service», ведущей на https://clickhouse.com/legal/agreements/terms-of-service"
+    "message": "Условия использования",
+    "description": "Подпись ссылки в подвале с текстом «Terms of Service», указывающей на https://clickhouse.com/legal/agreements/terms-of-service"
   },
   "copyright": {
     "message": "© 2016&ndash;2025 ClickHouse, Inc.",
-    "description": "Копирайт в подвале"
+    "description": "Копирайт в подвале страницы"
   }
 }

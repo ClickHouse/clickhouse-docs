@@ -1,5 +1,5 @@
 ---
-description: '根据 `key` 数组中指定的键，从 `value` 数组中计算各键对应的最小值。'
+description: '根据 `key` 数组中指定的键，从 `value` 数组中计算对应的最小值。'
 sidebar_position: 169
 slug: /sql-reference/aggregate-functions/reference/minmap
 title: 'minMap'
@@ -8,36 +8,36 @@ doc_type: 'reference'
 
 # minMap
 
-根据 `key` 数组中指定的键，计算 `value` 数组中的最小值。
+根据 `key` 数组中指定的键，从 `value` 数组中计算最小值。
 
 **语法**
 
 ```sql
-`minMap(key, value)`
+`minMap(键, 值)`
 ```
 
-或
+或者
 
 ```sql
-minMap(Tuple(key, value))
+minMap(元组(键, 值))
 ```
 
-别名：`minMappedArrays`
+Alias: `minMappedArrays`
 
 :::note
 
-* 传递由键数组和值数组组成的元组，与分别传递键数组和值数组是等价的。
-* 对于参与汇总的每一行，`key` 和 `value` 中的元素数量必须相同。
+* 传递一个由键数组和值数组组成的元组，与分别传递键数组和值数组是等价的。
+* 对于每一行聚合数据，`key` 与 `value` 中的元素数量必须相同。
   :::
 
 **参数**
 
-* `key` — 键数组。[Array](../../data-types/array.md)。
-* `value` — 值数组。[Array](../../data-types/array.md)。
+* `key` — 键的数组。[Array](../../data-types/array.md)。
+* `value` — 值的数组。[Array](../../data-types/array.md)。
 
 **返回值**
 
-* 返回包含两个数组的元组：按排序顺序排列的键，以及为相应键计算得到的值。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
+* 返回一个包含两个数组的元组：按排序顺序排列的键，以及为相应键计算得到的值。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
 
 **示例**
 

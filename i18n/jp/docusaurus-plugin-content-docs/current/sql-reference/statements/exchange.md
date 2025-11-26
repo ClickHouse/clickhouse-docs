@@ -12,10 +12,10 @@ doc_type: 'reference'
 # EXCHANGE ステートメント
 
 2 つのテーブルまたはディクショナリの名前をアトミックに入れ替えます。
-この操作は、一時的な名前を使った [`RENAME`](./rename.md) クエリでも実行できますが、その場合はアトミックではありません。
+この処理は一時的な名前を利用した [`RENAME`](./rename.md) クエリでも実現できますが、その場合はアトミックな操作にはなりません。
 
 :::note\
-`EXCHANGE` クエリがサポートされるのは、[`Atomic`](../../engines/database-engines/atomic.md) および [`Shared`](/cloud/reference/shared-catalog#shared-database-engine) データベースエンジンのみです。
+`EXCHANGE` クエリは、[`Atomic`](../../engines/database-engines/atomic.md) および [`Shared`](/cloud/reference/shared-catalog#shared-database-engine) データベースエンジンでのみサポートされています。
 :::
 
 **構文**
@@ -25,9 +25,9 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 ```
 
 
-## EXCHANGE TABLES {#exchange-tables}
+## テーブルの入れ替え
 
-2つのテーブルの名前を交換します。
+2つのテーブルの名前を入れ替えます。
 
 **構文**
 
@@ -36,9 +36,9 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 ```
 
 
-## EXCHANGE DICTIONARIES {#exchange-dictionaries}
+## EXCHANGE DICTIONARIES
 
-2つのディクショナリの名前を交換します。
+2 つの辞書の名前を入れ替えます。
 
 **構文**
 
@@ -48,4 +48,4 @@ EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 
 **関連項目**
 
-- [ディクショナリ](../../sql-reference/dictionaries/index.md)
+* [辞書](../../sql-reference/dictionaries/index.md)

@@ -1,620 +1,714 @@
 ---
-title: "フォーマット設定"
-sidebar_label: "フォーマット設定"
+title: 'フォーマット設定'
+sidebar_label: 'フォーマット設定'
 slug: /operations/settings/formats
 toc_max_heading_level: 2
-description: "入力および出力フォーマットを制御する設定。"
-doc_type: "reference"
+description: '入力および出力フォーマットを制御する設定。'
+doc_type: 'reference'
 ---
 
-import ExperimentalBadge from "@theme/badges/ExperimentalBadge"
-import BetaBadge from "@theme/badges/BetaBadge"
-import SettingsInfoBlock from "@theme/SettingsInfoBlock/SettingsInfoBlock"
-import VersionHistory from "@theme/VersionHistory/VersionHistory"
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
+import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
+import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
-<!-- 自動生成 -->
+{/* 自動生成 */ }
 
-これらの設定は[ソース](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/FormatFactorySettings.h)から自動生成されています。
-
-
-## allow_special_bool_values_inside_variant {#allow_special_bool_values_inside_variant}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-Variant型内のBool値を、"on"、"off"、"enable"、"disable"などの特殊なテキストブール値から解析することを許可します。
+これらの設定は、[ソースコード](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/FormatFactorySettings.h) から自動生成されています。
 
 
-## bool_false_representation {#bool_false_representation}
+## allow_special_bool_values_inside_variant {#allow_special_bool_values_inside_variant}   
 
-<SettingsInfoBlock type='String' default_value='false' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-TSV/CSV/Vertical/Pretty形式でfalseのブール値を表すテキスト。
-
-
-## bool_true_representation {#bool_true_representation}
-
-<SettingsInfoBlock type='String' default_value='true' />
-
-TSV/CSV/Vertical/Pretty形式でtrueのブール値を表すテキスト。
+Variant 型内の Bool 値について、"on"、"off"、"enable"、"disable" などの特殊なテキスト表現も Bool 値として解釈できるようにします。
 
 
-## column_names_for_schema_inference {#column_names_for_schema_inference}
 
-カラム名を持たないフォーマットに対するスキーマ推論で使用するカラム名のリスト。形式: 'column1,column2,column3,...'
+## bool_false_representation {#bool_false_representation}   
 
+<SettingsInfoBlock type="String" default_value="false" />
 
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite}
-
-<SettingsInfoBlock type='UInt64' default_value='1' />
-
-WHERE句に結合式が存在する場合、カンマ結合/クロス結合の代わりに内部結合を使用します。値: 0 - 書き換えなし、1 - カンマ結合/クロス結合で可能な場合に適用、2 - すべてのカンマ結合を強制的に書き換え、クロス結合は可能な場合
+TSV/CSV/Vertical/Pretty 形式で bool 型の false を表現するための文字列。
 
 
-## date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands {#date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## bool_true_representation {#bool_true_representation}   
 
-datetime64値の末尾のゼロを動的に削除し、出力スケールを[0, 3, 6]に調整します。
-これらはそれぞれ「秒」、「ミリ秒」、「マイクロ秒」に対応します
+<SettingsInfoBlock type="String" default_value="true" />
+
+TSV/CSV/Vertical/Pretty 形式での `true` ブール値の表現に使用する文字列。
 
 
-## date_time_input_format {#date_time_input_format}
 
-<SettingsInfoBlock type='DateTimeInputFormat' default_value='basic' />
+## column_names_for_schema_inference {#column_names_for_schema_inference}   
 
-日付と時刻のテキスト表現のパーサーを選択できます。
 
-この設定は[日付と時刻の関数](../../sql-reference/functions/date-time-functions.md)には適用されません。
+
+列名を含まないフォーマットに対して、スキーマ推論で使用する列名の一覧を指定します。形式: 'column1,column2,column3,...'
+
+
+
+## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite}   
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+WHERE 句に結合条件が含まれている場合、カンマ結合 / クロス結合を inner join に書き換えて使用します。値: 0 - 書き換えなし、1 - 可能であればカンマ結合 / クロス結合に適用、2 - すべてのカンマ結合を強制的に書き換え、cross - 可能であればクロス結合を書き換え
+
+
+
+## date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands {#date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+datetime64 の値の末尾のゼロを動的に切り詰めて、出力スケールを [0, 3, 6] に調整します。
+それぞれ 'seconds'、'milliseconds'、'microseconds' に対応します。
+
+
+
+## date_time_input_format {#date_time_input_format}   
+
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+
+日時のテキスト表現を解析するパーサーを選択できます。
+
+この設定は[日時関数](../../sql-reference/functions/date-time-functions.md)には適用されません。
 
 設定可能な値:
 
-- `'best_effort'` — 拡張パースを有効にします。
+- `'best_effort'` — 拡張された解析を有効にします。
 
-  ClickHouseは基本的な`YYYY-MM-DD HH:MM:SS`形式と、すべての[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)日付と時刻の形式を解析できます。例: `'2018-06-08T01:02:03.000Z'`
+    ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` と、すべての [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日時形式を解析できます。例えば、`'2018-06-08T01:02:03.000Z'` です。
 
-- `'best_effort_us'` — `best_effort`と同様です(相違点については[parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus)を参照してください)
+- `'best_effort_us'` — `best_effort` と同様です（[parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus) との違いを参照）。
 
 - `'basic'` — 基本パーサーを使用します。
 
-  ClickHouseは基本的な`YYYY-MM-DD HH:MM:SS`または`YYYY-MM-DD`形式のみを解析できます。例: `2019-08-20 10:18:56`または`2019-08-20`
+    ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` または `YYYY-MM-DD` のみを解析できます。例えば、`2019-08-20 10:18:56` や `2019-08-20` です。
 
-Cloudのデフォルト値: `'best_effort'`
+Cloud でのデフォルト値: `'best_effort'`。
 
 関連項目:
 
-- [DateTimeデータ型](../../sql-reference/data-types/datetime.md)
-- [日付と時刻を扱う関数](../../sql-reference/functions/date-time-functions.md)
+- [DateTime データ型。](../../sql-reference/data-types/datetime.md)
+- [日付と時刻を扱う関数。](../../sql-reference/functions/date-time-functions.md)
 
 
-## date_time_output_format {#date_time_output_format}
 
-<SettingsInfoBlock type='DateTimeOutputFormat' default_value='simple' />
+## date_time_output_format {#date_time_output_format}   
 
-日付と時刻のテキスト表現の出力形式を選択できます。
+<SettingsInfoBlock type="DateTimeOutputFormat" default_value="simple" />
+
+日付と時刻のテキスト表現による出力フォーマットを選択できます。
 
 指定可能な値:
 
-- `simple` - シンプルな出力形式。
+- `simple` - シンプルな出力フォーマット。
 
-  ClickHouseは日付と時刻を`YYYY-MM-DD hh:mm:ss`形式で出力します。例:`2019-08-20 10:18:56`。計算はデータ型のタイムゾーン(存在する場合)またはサーバーのタイムゾーンに従って実行されます。
+    ClickHouse が日付と時刻を `YYYY-MM-DD hh:mm:ss` 形式で出力します。例えば `2019-08-20 10:18:56`。計算はデータ型に設定されたタイムゾーン（存在する場合）またはサーバーのタイムゾーンに従って行われます。
 
-- `iso` - ISO出力形式。
+- `iso` - ISO 出力フォーマット。
 
-  ClickHouseは日付と時刻を[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)の`YYYY-MM-DDThh:mm:ssZ`形式で出力します。例:`2019-08-20T10:18:56Z`。出力はUTC形式です(`Z`はUTCを意味します)。
+    ClickHouse が日付と時刻を [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) の `YYYY-MM-DDThh:mm:ssZ` 形式で出力します。例えば `2019-08-20T10:18:56Z`。出力は UTC である点に注意してください（`Z` は UTC を意味します）。
 
-- `unix_timestamp` - Unixタイムスタンプ出力形式。
+- `unix_timestamp` - Unix タイムスタンプ出力フォーマット。
 
-  ClickHouseは日付と時刻を[Unixタイムスタンプ](https://en.wikipedia.org/wiki/Unix_time)形式で出力します。例:`1566285536`。
+    ClickHouse が日付と時刻を [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) 形式で出力します。例えば `1566285536`。
 
 関連項目:
 
-- [DateTimeデータ型](../../sql-reference/data-types/datetime.md)
-- [日付と時刻を扱う関数](../../sql-reference/functions/date-time-functions.md)
+- [DateTime データ型。](../../sql-reference/data-types/datetime.md)
+- [日付と時刻を扱う関数。](../../sql-reference/functions/date-time-functions.md)
 
 
-## date_time_overflow_behavior {#date_time_overflow_behavior}
 
-<SettingsInfoBlock type='DateTimeOverflowBehavior' default_value='ignore' />
+## date_time_overflow_behavior {#date_time_overflow_behavior}   
 
-[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md)、または整数をDate、Date32、DateTime、またはDateTime64に変換する際に、結果の型で値を表現できない場合の動作を定義します。
+<SettingsInfoBlock type="DateTimeOverflowBehavior" default_value="ignore" />
+
+[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md) または整数を Date、Date32、DateTime、DateTime64 に変換する際に、その値が結果の型で表現できない場合の動作を定義します。
+
+指定可能な値:
+
+- `ignore` — オーバーフローを黙って無視します。結果は未定義です。
+- `throw` — オーバーフローが発生した場合に例外をスローします。
+- `saturate` — 結果を飽和させます。値が対象の型で表現可能な最小値より小さい場合、結果は表現可能な最小値になります。値が対象の型で表現可能な最大値より大きい場合、結果は表現可能な最大値になります。
+
+デフォルト値: `ignore`.
+
+
+
+## dictionary_use_async_executor {#dictionary_use_async_executor}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+辞書ソースの読み取りパイプラインを複数スレッドで実行します。ローカルの ClickHouse ソースを持つ辞書でのみサポートされます。
+
+
+
+## errors_output_format {#errors_output_format}   
+
+<SettingsInfoBlock type="String" default_value="CSV" />
+
+Errors をテキスト出力として書き出す方式。
+
+
+
+## exact_rows_before_limit {#exact_rows_before_limit}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、ClickHouse は `rows_before_limit_at_least` 統計値に対して正確な値を返しますが、その代わりに `LIMIT` より前のデータを完全に読み込む必要があります。
+
+
+
+## format_avro_schema_registry_url {#format_avro_schema_registry_url}   
+
+
+
+AvroConfluent 形式向けの Confluent Schema Registry の URL。
+
+
+
+## format_binary_max_array_size {#format_binary_max_array_size}   
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+RowBinary 形式における Array の許可される最大サイズです。破損したデータにより大量のメモリが割り当てられることを防ぎます。0 は上限がないことを意味します。
+
+
+
+## format_binary_max_string_size {#format_binary_max_string_size}   
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+RowBinary 形式における String の許可される最大サイズです。破損したデータにより大量のメモリが割り当てられることを防ぎます。0 を指定すると上限はありません。
+
+
+
+## format_capn_proto_enum_comparising_mode {#format_capn_proto_enum_comparising_mode}   
+
+<SettingsInfoBlock type="CapnProtoEnumComparingMode" default_value="by_values" />
+
+ClickHouse の Enum 型と CapnProto の Enum 型の対応付け方法
+
+
+
+## format_capn_proto_use_autogenerated_schema {#format_capn_proto_use_autogenerated_schema}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+format_schema が設定されていない場合は、自動生成された CapnProto スキーマを使用する
+
+
+
+## format_csv_allow_double_quotes {#format_csv_allow_double_quotes}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+true に設定すると、二重引用符で囲まれた文字列を許可します。
+
+
+
+## format_csv_allow_single_quotes {#format_csv_allow_single_quotes}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+true に設定すると、文字列を単一引用符（シングルクォート）で囲んで指定できるようになります。
+
+
+
+## format_csv_delimiter {#format_csv_delimiter}   
+
+<SettingsInfoBlock type="Char" default_value="," />
+
+CSV データ内で区切り文字として使用される文字です。文字列で設定する場合、その文字列の長さは 1 である必要があります。
+
+
+
+## format_csv_null_representation {#format_csv_null_representation}   
+
+<SettingsInfoBlock type="String" default_value="\N" />
+
+CSV 形式における NULL の独自表現
+
+
+
+## format_custom_escaping_rule {#format_custom_escaping_rule}   
+
+<SettingsInfoBlock type="EscapingRule" default_value="Escaped" />
+
+フィールドのエスケープ規則（CustomSeparated 形式用）
+
+
+
+## format_custom_field_delimiter {#format_custom_field_delimiter}   
+
+<SettingsInfoBlock type="String" default_value="	" />
+
+フィールド間の区切り文字（CustomSeparated 形式用）
+
+
+
+## format_custom_result_after_delimiter {#format_custom_result_after_delimiter}   
+
+
+
+結果セットの後ろに付与するサフィックス（CustomSeparated 形式用）
+
+
+
+## format_custom_result_before_delimiter {#format_custom_result_before_delimiter}   
+
+
+
+結果セットの前に付加される接頭辞（CustomSeparated 形式用）
+
+
+
+## format_custom_row_after_delimiter {#format_custom_row_after_delimiter}   
+
+<SettingsInfoBlock type="String" default_value="
+" />
+
+最後の列のフィールドの後ろに付加される区切り文字（`CustomSeparated` 形式用）
+
+
+
+## format_custom_row_before_delimiter {#format_custom_row_before_delimiter}   
+
+
+
+先頭列のフィールドの前に置かれる区切り文字（CustomSeparated 形式用）
+
+
+
+## format_custom_row_between_delimiter {#format_custom_row_between_delimiter}   
+
+
+
+行間の区切り文字（CustomSeparated 形式用）
+
+
+
+## format_display_secrets_in_show_and_select {#format_display_secrets_in_show_and_select}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+テーブル、データベース、テーブル関数、およびディクショナリに対する `SHOW` および `SELECT` クエリでシークレットを表示するかどうかを制御します。
+
+シークレットを表示したいユーザーは、
+[`display_secrets_in_show_and_select` server setting](../server-configuration-parameters/settings#display_secrets_in_show_and_select)
+を有効にし、さらに
+[`displaySecretsInShowAndSelect`](/sql-reference/statements/grant#displaysecretsinshowandselect) 権限を持っている必要があります。
 
 設定可能な値:
 
-- `ignore` — オーバーフローを暗黙的に無視します。結果は未定義です。
-- `throw` — オーバーフロー発生時に例外をスローします。
-- `saturate` — 結果を飽和させます。値が対象型で表現可能な最小値よりも小さい場合、結果は表現可能な最小値になります。値が対象型で表現可能な最大値よりも大きい場合、結果は表現可能な最大値になります。
+-   0 — 無効。
+-   1 — 有効。
 
-デフォルト値: `ignore`
 
 
-## dictionary_use_async_executor {#dictionary_use_async_executor}
+## format_json_object_each_row_column_for_object_name {#format_json_object_each_row_column_for_object_name}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-辞書ソースを読み取るパイプラインを複数のスレッドで実行します。ローカルCLICKHOUSEソースを持つ辞書でのみサポートされています。
 
+[JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow) フォーマットでオブジェクト名を格納および書き込むために使用される列の名前です。
+列の型は String 型である必要があります。値が空の場合、オブジェクト名としてデフォルト名 `row_{i}` が使用されます。
 
-## errors_output_format {#errors_output_format}
 
-<SettingsInfoBlock type='String' default_value='CSV' />
 
-エラーをテキスト出力に書き込む方式。
+## format_protobuf_use_autogenerated_schema {#format_protobuf_use_autogenerated_schema}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## exact_rows_before_limit {#exact_rows_before_limit}
+format_schema が設定されていない場合に自動生成された Protobuf を使用します
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-有効にすると、ClickHouseは`rows_before_limit_at_least`統計の正確な値を提供しますが、その代償として`LIMIT`前のデータを完全に読み取る必要があります
 
+## format_regexp {#format_regexp}   
 
-## format_avro_schema_registry_url {#format_avro_schema_registry_url}
 
-AvroConfluent形式の場合：Confluent Schema RegistryのURL。
 
+正規表現（Regexp 形式）
 
-## format_binary_max_array_size {#format_binary_max_array_size}
 
-<SettingsInfoBlock type='UInt64' default_value='1073741824' />
 
-RowBinary形式における配列の最大許容サイズ。破損したデータによって大量のメモリが割り当てられることを防ぎます。0は制限なしを意味します
+## format_regexp_escaping_rule {#format_regexp_escaping_rule}   
 
+<SettingsInfoBlock type="EscapingRule" default_value="Raw" />
 
-## format_binary_max_string_size {#format_binary_max_string_size}
+フィールドのエスケープルール（Regexp フォーマット用）
 
-<SettingsInfoBlock type='UInt64' default_value='1073741824' />
 
-RowBinary形式におけるString型の最大許容サイズ。破損データによる大量のメモリ割り当てを防止します。0は無制限を意味します
 
+## format_regexp_skip_unmatched {#format_regexp_skip_unmatched}   
 
-## format_capn_proto_enum_comparising_mode {#format_capn_proto_enum_comparising_mode}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock
-  type='CapnProtoEnumComparingMode'
-  default_value='by_values'
-/>
+正規表現に一致しない行をスキップします（Regexp フォーマット用）
 
-ClickHouseのEnumとCapnProtoのEnumをマッピングする方法
 
 
-## format_capn_proto_use_autogenerated_schema {#format_capn_proto_use_autogenerated_schema}
+## format_schema {#format_schema}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-format_schema が設定されていない場合に自動生成された CapnProto スキーマを使用する
 
+このパラメータは、[Cap'n Proto](https://capnproto.org/) や [Protobuf](https://developers.google.com/protocol-buffers/) のような、スキーマ定義を必要とするフォーマットを使用する場合に利用します。パラメータ値はフォーマットによって異なります。
 
-## format_csv_allow_double_quotes {#format_csv_allow_double_quotes}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-trueに設定した場合、ダブルクォーテーションで囲まれた文字列を許可します。
+## format_schema_message_name {#format_schema_message_name}   
 
 
-## format_csv_allow_single_quotes {#format_csv_allow_single_quotes}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+`format_schema` で定義されたスキーマ内で、対象となるメッセージの名前を定義します。
+旧来の `format_schema` 形式（`file_name:message_name`）との互換性を維持するため、次のルールが適用されます：
+- `format_schema_message_name` が指定されていない場合、メッセージ名は旧来の `format_schema` の値の `message_name` 部分から自動的に決定されます。
+- 旧来の形式を使用しているときに `format_schema_message_name` が指定されている場合は、エラーが発生します。
 
-trueに設定した場合、シングルクォートで囲まれた文字列が許可されます。
 
 
-## format_csv_delimiter {#format_csv_delimiter}
+## format_schema_source {#format_schema_source}   
 
-<SettingsInfoBlock type='Char' default_value=',' />
-
-CSVデータの区切り文字として使用される文字です。文字列で設定する場合は、長さが1である必要があります。
-
-
-## format_csv_null_representation {#format_csv_null_representation}
-
-<SettingsInfoBlock type='String' default_value='\N' />
-
-CSV形式でのカスタムNULL表現
-
-
-## format_custom_escaping_rule {#format_custom_escaping_rule}
-
-<SettingsInfoBlock type='EscapingRule' default_value='Escaped' />
-
-フィールドエスケープルール（CustomSeparated形式用）
-
-
-## format_custom_field_delimiter {#format_custom_field_delimiter}
-
-<SettingsInfoBlock type='String' default_value='	' />
-
-フィールド間の区切り文字(CustomSeparated形式用)
-
-
-## format_custom_result_after_delimiter {#format_custom_result_after_delimiter}
-
-結果セット後のサフィックス（CustomSeparated形式用）
-
-
-## format_custom_result_before_delimiter {#format_custom_result_before_delimiter}
-
-結果セットの前に付けるプレフィックス（CustomSeparated形式用）
-
-
-## format_custom_row_after_delimiter {#format_custom_row_after_delimiter}
-
-<SettingsInfoBlock
-  type='String'
-  default_value='
-'
-/>
-
-最終列のフィールド後の区切り文字（CustomSeparated形式用）
-
-
-## format_custom_row_before_delimiter {#format_custom_row_before_delimiter}
-
-最初のカラムのフィールドの前の区切り文字（CustomSeparated形式用）
-
-
-## format_custom_row_between_delimiter {#format_custom_row_between_delimiter}
-
-行間の区切り文字（CustomSeparated形式）
-
-
-## format_display_secrets_in_show_and_select {#format_display_secrets_in_show_and_select}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-テーブル、データベース、テーブル関数、ディクショナリに対する`SHOW`および`SELECT`クエリにおいて、シークレットの表示を有効化または無効化します。
-
-シークレットを表示するには、ユーザーは[`display_secrets_in_show_and_select`サーバー設定](../server-configuration-parameters/settings#display_secrets_in_show_and_select)を有効にし、[`displaySecretsInShowAndSelect`](/sql-reference/statements/grant#displaysecretsinshowandselect)権限を持っている必要があります。
-
-設定可能な値:
-
-- 0 — 無効。
-- 1 — 有効。
-
-
-## format_json_object_each_row_column_for_object_name {#format_json_object_each_row_column_for_object_name}
-
-[JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)形式でオブジェクト名を保存・書き込みする際に使用するカラムの名前。
-カラムの型はStringである必要があります。値が空の場合、オブジェクト名にはデフォルトの名前`row_{i}`が使用されます。
-
-
-## format_protobuf_use_autogenerated_schema {#format_protobuf_use_autogenerated_schema}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-format_schema が設定されていない場合に自動生成された Protobuf を使用する
-
-
-## format_regexp {#format_regexp}
-
-正規表現（Regexp形式用）
-
-
-## format_regexp_escaping_rule {#format_regexp_escaping_rule}
-
-<SettingsInfoBlock type='EscapingRule' default_value='Raw' />
-
-フィールドのエスケープルール（Regexp形式用）
-
-
-## format_regexp_skip_unmatched {#format_regexp_skip_unmatched}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-正規表現に一致しない行をスキップします（Regexp形式用）
-
-
-## format_schema {#format_schema}
-
-このパラメータは、[Cap'n Proto](https://capnproto.org/)や[Protobuf](https://developers.google.com/protocol-buffers/)など、スキーマ定義が必要なフォーマットを使用する場合に有用です。値はフォーマットによって異なります。
-
-
-## format_schema_message_name {#format_schema_message_name}
-
-`format_schema`で定義されたスキーマ内の必要なメッセージの名前を定義します。
-レガシー形式の format_schema フォーマット(`file_name:message_name`)との互換性を維持するために:
-
-- `format_schema_message_name`が指定されていない場合、メッセージ名はレガシー形式の`format_schema`値の`message_name`部分から推測されます。
-- レガシー形式を使用している場合に`format_schema_message_name`が指定されていると、エラーが発生します。
-
-
-## format_schema_source {#format_schema_source}
-
-<SettingsInfoBlock type='String' default_value='file' />
+<SettingsInfoBlock type="String" default_value="file" />
 
 `format_schema` のソースを定義します。
-設定可能な値:
-
-- 'file' (デフォルト): `format_schema` は `format_schemas` ディレクトリに配置されたスキーマファイルの名前です。
-- 'string': `format_schema` はスキーマの内容そのものです。
+指定可能な値は次のとおりです:
+- 'file' (デフォルト): `format_schema` は `format_schemas` ディレクトリ内にあるスキーマファイルの名前です。
+- 'string': `format_schema` はスキーマのリテラルな内容です。
 - 'query': `format_schema` はスキーマを取得するためのクエリです。
-  `format_schema_source` が 'query' に設定されている場合、以下の条件が適用されます:
-- クエリは正確に1つの値を返す必要があります: 単一の文字列カラムを持つ単一の行。
+`format_schema_source` が 'query' に設定されている場合、次の条件が適用されます:
+- クエリは必ずちょうど 1 つの値を返す必要があります。つまり、1 行かつ 1 つの文字列カラムのみを返します。
 - クエリの結果はスキーマの内容として扱われます。
-- この結果は `format_schemas` ディレクトリにローカルキャッシュされます。
-- ローカルキャッシュをクリアするには、次のコマンドを使用します: `SYSTEM DROP FORMAT SCHEMA CACHE FOR Files`。
-- 一度キャッシュされると、キャッシュが明示的にクリアされるまで、同一のクエリはスキーマを再取得するために実行されません。
-- ローカルキャッシュファイルに加えて、Protobuf メッセージもメモリにキャッシュされます。ローカルキャッシュファイルをクリアした後でも、スキーマを完全に更新するには `SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf]` を使用してメモリ内キャッシュをクリアする必要があります。
-- キャッシュファイルと Protobuf メッセージスキーマの両方のキャッシュを一度にクリアするには、クエリ `SYSTEM DROP FORMAT SCHEMA CACHE` を実行します。
+- この結果はローカルで `format_schemas` ディレクトリにキャッシュされます。
+- ローカルキャッシュは `SYSTEM DROP FORMAT SCHEMA CACHE FOR Files` コマンドでクリアできます。
+- 一度キャッシュされると、キャッシュが明示的にクリアされるまで、同一クエリはスキーマ取得のために再実行されません。
+- ローカルキャッシュファイルに加えて、Protobuf メッセージもメモリ内にキャッシュされます。ローカルキャッシュファイルをクリアした後でも、スキーマを完全にリフレッシュするには `SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf]` を使用してメモリ内キャッシュもクリアする必要があります。
+- クエリ `SYSTEM DROP FORMAT SCHEMA CACHE` を実行すると、キャッシュファイルと Protobuf メッセージのスキーマの両方のキャッシュを一度にクリアできます。
 
 
-## format_template_resultset {#format_template_resultset}
 
-結果セットのフォーマット文字列を含むファイルへのパス（Templateフォーマット用）
-
-
-## format_template_resultset_format {#format_template_resultset_format}
-
-結果セットのフォーマット文字列（Templateフォーマット用）
+## format_template_resultset {#format_template_resultset}   
 
 
-## format_template_row {#format_template_row}
 
-行のフォーマット文字列を含むファイルへのパス（Template形式用）
-
-
-## format_template_row_format {#format_template_row_format}
-
-行のフォーマット文字列（Template形式用）
+結果セット用のフォーマット文字列を含むファイルのパス（Template フォーマット用）
 
 
-## format_template_rows_between_delimiter {#format_template_rows_between_delimiter}
 
-<SettingsInfoBlock
-  type='String'
-  default_value='
-'
-/>
-
-行間の区切り文字（Template形式用）
+## format_template_resultset_format {#format_template_resultset_format}   
 
 
-## format_tsv_null_representation {#format_tsv_null_representation}
 
-<SettingsInfoBlock type='String' default_value='\N' />
-
-TSV形式でのカスタムNULL表現
+結果セットのフォーマット文字列（Template 形式）
 
 
-## input_format_allow_errors_num {#input_format_allow_errors_num}
 
-<SettingsInfoBlock type='UInt64' default_value='0' />
-
-テキスト形式（CSV、TSVなど）からの読み取り時に許容される最大エラー数を設定します。
-
-デフォルト値は0です。
-
-常に`input_format_allow_errors_ratio`と組み合わせて使用してください。
-
-行の読み取り中にエラーが発生した場合でも、エラーカウンタが`input_format_allow_errors_num`未満であれば、ClickHouseはその行を無視して次の行に進みます。
-
-`input_format_allow_errors_num`と`input_format_allow_errors_ratio`の両方を超過した場合、ClickHouseは例外をスローします。
+## format_template_row {#format_template_row}   
 
 
-## input_format_allow_errors_ratio {#input_format_allow_errors_ratio}
 
-<SettingsInfoBlock type='Float' default_value='0' />
+行ごとのフォーマット文字列が記述されたファイルへのパス（Template 形式用）
 
-テキスト形式（CSV、TSVなど）からの読み取り時に許容されるエラーの最大割合を設定します。
-エラーの割合は、0から1の間の浮動小数点数として設定されます。
+
+
+## format_template_row_format {#format_template_row_format}   
+
+
+
+Template フォーマット用の行フォーマット文字列
+
+
+
+## format_template_rows_between_delimiter {#format_template_rows_between_delimiter}   
+
+<SettingsInfoBlock type="String" default_value="
+" />
+
+行間の区切り文字（Template フォーマット用）
+
+
+
+## format_tsv_null_representation {#format_tsv_null_representation}   
+
+<SettingsInfoBlock type="String" default_value="\N" />
+
+TSV 形式での NULL 表現のカスタマイズ
+
+
+
+## input_format_allow_errors_num {#input_format_allow_errors_num}   
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+テキスト形式（CSV、TSV など）から読み込む際に許容されるエラー数の上限を設定します。
 
 デフォルト値は0です。
 
-常に`input_format_allow_errors_num`と組み合わせて使用してください。
+必ず `input_format_allow_errors_ratio` と併用してください。
 
-行の読み取り中にエラーが発生した場合でも、エラーカウンターが`input_format_allow_errors_ratio`未満であれば、ClickHouseはその行を無視して次の行に進みます。
+行の読み取り中にエラーが発生しても、エラー数カウンタがまだ `input_format_allow_errors_num` 未満であれば、ClickHouse はその行を無視して次の行の処理に進みます。
 
-`input_format_allow_errors_num`と`input_format_allow_errors_ratio`の両方を超過した場合、ClickHouseは例外をスローします。
+`input_format_allow_errors_num` と `input_format_allow_errors_ratio` の両方で上限を超えた場合、ClickHouse は例外をスローします。
 
 
-## input_format_allow_seeks {#input_format_allow_seeks}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_allow_errors_ratio {#input_format_allow_errors_ratio}   
 
-ORC/Parquet/Arrow入力形式での読み取り中にシークを許可します。
+<SettingsInfoBlock type="Float" default_value="0" />
+
+テキストフォーマット（CSV、TSV など）から読み取る際に許可されるエラーの最大割合を設定します。
+エラーの割合は 0 から 1 までの浮動小数点数で指定します。
+
+デフォルト値は 0 です。
+
+必ず `input_format_allow_errors_num` と組み合わせて使用してください。
+
+行の読み取り中にエラーが発生しても、エラーの割合がまだ `input_format_allow_errors_ratio` 未満であれば、ClickHouse はその行を無視して次の行の読み取りを続行します。
+
+`input_format_allow_errors_num` と `input_format_allow_errors_ratio` の両方を超えた場合、ClickHouse は例外を送出します。
+
+
+
+## input_format_allow_seeks {#input_format_allow_seeks}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+ORC/Parquet/Arrow 入力フォーマットを読み込む際に、シーク（任意位置へのアクセス）を許可します。
 
 デフォルトで有効になっています。
 
 
-## input_format_arrow_allow_missing_columns {#input_format_arrow_allow_missing_columns}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_arrow_allow_missing_columns {#input_format_arrow_allow_missing_columns}   
 
-Arrow入力形式の読み取り時に列の欠落を許可します
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+Arrow 形式の入力を読み込む際に、欠損している列を許可する
 
-## input_format_arrow_case_insensitive_column_matching {#input_format_arrow_case_insensitive_column_matching}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-Arrow列とClickHouse列を照合する際に、大文字と小文字を区別しません。
+## input_format_arrow_case_insensitive_column_matching {#input_format_arrow_case_insensitive_column_matching}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference {#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference}
+Arrow のカラムと ClickHouse のカラムを照合する際に、大文字小文字の違いを無視します。
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-Arrow形式のスキーマ推論中に、サポートされていない型の列をスキップします
 
+## input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference {#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference}   
 
-## input_format_avro_allow_missing_fields {#input_format_avro_allow_missing_fields}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+Arrow フォーマットのスキーマ推論時に、サポートされていない型を持つカラムをスキップする
 
-Avro/AvroConfluent形式：スキーマにフィールドが見つからない場合、エラーの代わりにデフォルト値を使用します
 
 
-## input_format_avro_null_as_default {#input_format_avro_null_as_default}
+## input_format_avro_allow_missing_fields {#input_format_avro_allow_missing_fields}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-Avro/AvroConfluent形式の場合：nullでかつNullable型でないカラムに対してデフォルト値を挿入します
+Avro/AvroConfluent 形式用: スキーマ内に対応するフィールドが存在しない場合は、エラーではなくデフォルト値を使用します
 
 
-## input_format_binary_decode_types_in_binary_format {#input_format_binary_decode_types_in_binary_format}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_avro_null_as_default {#input_format_avro_null_as_default}   
 
-RowBinaryWithNamesAndTypes入力形式において、型名の代わりにバイナリ形式でデータ型を読み取ります
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+Avro/AvroConfluent フォーマットの場合: 非 Nullable 列の値が null の場合にデフォルト値を挿入します
 
-## input_format_binary_read_json_as_string {#input_format_binary_read_json_as_string}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-RowBinary入力形式で、[JSON](../../sql-reference/data-types/newjson.md)データ型の値を[String](../../sql-reference/data-types/string.md)型のJSON値として読み取ります。
+## input_format_binary_decode_types_in_binary_format {#input_format_binary_decode_types_in_binary_format}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_bson_skip_fields_with_unsupported_types_in_schema_inference {#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference}
+RowBinaryWithNamesAndTypes 入力フォーマットで、型名ではなくデータ型をバイナリ形式で読み取ります
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-BSON形式のスキーマ推論において、サポートされていない型のフィールドをスキップします。
 
+## input_format_binary_read_json_as_string {#input_format_binary_read_json_as_string}   
 
-## input_format_capn_proto_skip_fields_with_unsupported_types_in_schema_inference {#input_format_capn_proto_skip_fields_with_unsupported_types_in_schema_inference}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+RowBinary 入力フォーマットで、[JSON](../../sql-reference/data-types/newjson.md) データ型の値を [String](../../sql-reference/data-types/string.md) 型の JSON 文字列として読み取ります。
 
-CapnProto形式のスキーマ推論時に、サポートされていない型を持つカラムをスキップします
 
 
-## input_format_csv_allow_cr_end_of_line {#input_format_csv_allow_cr_end_of_line}
+## input_format_bson_skip_fields_with_unsupported_types_in_schema_inference {#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-trueに設定すると、後続文字のない行末の\\rが許可されます
+BSON 形式のスキーマ推論時に、サポートされていない型のフィールドをスキップします。
 
 
-## input_format_csv_allow_variable_number_of_columns {#input_format_csv_allow_variable_number_of_columns}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_capn_proto_skip_fields_with_unsupported_types_in_schema_inference {#input_format_capn_proto_skip_fields_with_unsupported_types_in_schema_inference}   
 
-CSV入力において余分な列を無視し(ファイルの列数が期待値より多い場合)、欠落しているフィールドはデフォルト値として扱います
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+CapnProto 形式のスキーマ推論時に、サポートされていない型の列をスキップする
 
-## input_format_csv_allow_whitespace_or_tab_as_delimiter {#input_format_csv_allow_whitespace_or_tab_as_delimiter}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-CSV文字列でフィールド区切り文字としてスペースとタブ(\\t)を使用できるようにします
+## input_format_csv_allow_cr_end_of_line {#input_format_csv_allow_cr_end_of_line}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_csv_arrays_as_nested_csv {#input_format_csv_arrays_as_nested_csv}
+true に設定すると、後続がない行末の \\r が許可されます 
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-CSVからArray型を読み取る際、その要素がネストされたCSVとしてシリアル化され、文字列内に格納されていることを前提とします。例: \"[\"\"Hello\"\", \"\"world\"\", \"\"42\"\"\"\" TV\"\"]\"。配列を囲む角括弧は省略可能です。
 
+## input_format_csv_allow_variable_number_of_columns {#input_format_csv_allow_variable_number_of_columns}   
 
-## input_format_csv_deserialize_separate_columns_into_tuple {#input_format_csv_deserialize_separate_columns_into_tuple}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+CSV 入力で余分な列（ファイルに想定より多くの列がある場合）は無視し、CSV 入力で不足しているフィールドにはデフォルト値を使用します
 
-trueに設定すると、CSV形式で記述された個別の列をTuple列にデシリアライズできます。
 
 
-## input_format_csv_detect_header {#input_format_csv_detect_header}
+## input_format_csv_allow_whitespace_or_tab_as_delimiter {#input_format_csv_allow_whitespace_or_tab_as_delimiter}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-CSV形式のヘッダーに含まれる名前と型を自動検出します
+CSV 文字列でフィールド区切り文字としてスペースおよびタブ (\\t) の使用を許可します
 
 
-## input_format_csv_empty_as_default {#input_format_csv_empty_as_default}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_csv_arrays_as_nested_csv {#input_format_csv_arrays_as_nested_csv}   
 
-CSV入力の空のフィールドをデフォルト値として扱います。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+CSV から Array を読み取る際に、その要素が入れ子の CSV 形式としてシリアル化され、その結果が文字列として格納されていることを想定します。例: \"[\"\"Hello\"\", \"\"world\"\", \"\"42\"\"\"\" TV\"\"]\"。配列を囲む角括弧は省略可能です。
 
-## input_format_csv_enum_as_number {#input_format_csv_enum_as_number}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-CSV形式で挿入されるenum値をenumインデックスとして扱う
+## input_format_csv_deserialize_separate_columns_into_tuple {#input_format_csv_deserialize_separate_columns_into_tuple}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## input_format_csv_skip_first_lines {#input_format_csv_skip_first_lines}
+true に設定すると、CSV 形式で書き出された個別の列を Tuple 列としてデシリアライズできます。
 
-<SettingsInfoBlock type='UInt64' default_value='0' />
 
-CSV形式のデータの先頭から指定した行数をスキップします
 
+## input_format_csv_detect_header {#input_format_csv_detect_header}   
 
-## input_format_csv_skip_trailing_empty_lines {#input_format_csv_skip_trailing_empty_lines}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+CSV 形式の名前と型情報を含むヘッダー行を自動検出します
 
-CSV形式の末尾の空行をスキップする
 
 
-## input_format_csv_trim_whitespaces {#input_format_csv_trim_whitespaces}
+## input_format_csv_empty_as_default {#input_format_csv_empty_as_default}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-CSV文字列の先頭と末尾のスペースおよびタブ(\\t)文字をトリミングします
+CSV 入力の空フィールドをデフォルト値として扱います。
 
 
-## input_format_csv_try_infer_numbers_from_strings {#input_format_csv_try_infer_numbers_from_strings}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_csv_enum_as_number {#input_format_csv_enum_as_number}   
 
-有効にすると、スキーマ推論時にClickHouseは文字列フィールドから数値の推論を試みます。
-CSVデータに引用符で囲まれたUInt64数値が含まれている場合に有用です。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+CSV 形式で挿入された enum 値を enum インデックスとして扱います
+
+
+
+## input_format_csv_skip_first_lines {#input_format_csv_skip_first_lines}   
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+CSV 形式データの先頭から指定した行数をスキップします
+
+
+
+## input_format_csv_skip_trailing_empty_lines {#input_format_csv_skip_trailing_empty_lines}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+CSV 形式で末尾の空行をスキップします
+
+
+
+## input_format_csv_trim_whitespaces {#input_format_csv_trim_whitespaces}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+CSV 文字列の先頭と末尾にあるスペースおよびタブ (\\t) 文字を除去します
+
+
+
+## input_format_csv_try_infer_numbers_from_strings {#input_format_csv_try_infer_numbers_from_strings}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、スキーマ推論の際に ClickHouse は文字列フィールドから数値を推論しようとします。
+CSV データに引用符で囲まれた UInt64 型の数値が含まれている場合に有用です。
 
 デフォルトでは無効です。
 
 
-## input_format_csv_try_infer_strings_from_quoted_tuples {#input_format_csv_try_infer_strings_from_quoted_tuples}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_csv_try_infer_strings_from_quoted_tuples {#input_format_csv_try_infer_strings_from_quoted_tuples}   
 
-入力データ内の引用符で囲まれたタプルをString型の値として解釈します。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-
-## input_format_csv_use_best_effort_in_schema_inference {#input_format_csv_use_best_effort_in_schema_inference}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-CSV形式のスキーマ推論時に調整とヒューリスティックを使用します
+入力データ内の引用符で囲まれたタプルを、String 型の値として解釈します。
 
 
-## input_format_csv_use_default_on_bad_values {#input_format_csv_use_default_on_bad_values}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_csv_use_best_effort_in_schema_inference {#input_format_csv_use_best_effort_in_schema_inference}   
 
-CSVフィールドのデシリアライゼーションが不正な値により失敗した場合に、カラムへのデフォルト値の設定を許可します
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-
-## input_format_custom_allow_variable_number_of_columns {#input_format_custom_allow_variable_number_of_columns}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-CustomSeparated形式の入力において余分な列を無視し（ファイルの列数が期待値より多い場合）、欠落しているフィールドをデフォルト値として扱います
+CSV 形式のスキーマを推論する際に、いくつかの調整およびヒューリスティック手法を用います
 
 
-## input_format_custom_detect_header {#input_format_custom_detect_header}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_csv_use_default_on_bad_values {#input_format_csv_use_default_on_bad_values}   
 
-CustomSeparated形式で名前と型を含むヘッダーを自動検出します
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_custom_skip_trailing_empty_lines {#input_format_custom_skip_trailing_empty_lines}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-CustomSeparated形式で末尾の空行をスキップする
+不正な値により CSV フィールドのデシリアライズが失敗した場合、その列にデフォルト値を設定できるようにします
 
 
-## input_format_defaults_for_omitted_fields {#input_format_defaults_for_omitted_fields}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_custom_allow_variable_number_of_columns {#input_format_custom_allow_variable_number_of_columns}   
 
-`INSERT`クエリの実行時に、省略された入力カラムの値を、それぞれのカラムのデフォルト値で置き換えます。このオプションは、[JSONEachRow](/interfaces/formats/JSONEachRow)（および他のJSON形式）、[CSV](/interfaces/formats/CSV)、[TabSeparated](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[Parquet](/interfaces/formats/Parquet)、[Arrow](/interfaces/formats/Arrow)、[Avro](/interfaces/formats/Avro)、[ORC](/interfaces/formats/ORC)、[Native](/interfaces/formats/Native)形式、および`WithNames`/`WithNamesAndTypes`接尾辞を持つ形式に適用されます。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+CustomSeparated 形式の入力で、ファイルに期待される列数より多い列が含まれている場合は余分な列を無視し、不足しているフィールドはデフォルト値として扱います
+
+
+
+## input_format_custom_detect_header {#input_format_custom_detect_header}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+CustomSeparated 形式で、名前および型を含むヘッダー行を自動検出します
+
+
+
+## input_format_custom_skip_trailing_empty_lines {#input_format_custom_skip_trailing_empty_lines}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+CustomSeparated 形式で末尾の空行をスキップする
+
+
+
+## input_format_defaults_for_omitted_fields {#input_format_defaults_for_omitted_fields}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+`INSERT` クエリを実行する際、省略された入力カラムの値を対応するカラムのデフォルト値で置き換えます。  
+このオプションは、[JSONEachRow](/interfaces/formats/JSONEachRow)（およびその他の JSON フォーマット）、[CSV](/interfaces/formats/CSV)、[TabSeparated](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[Parquet](/interfaces/formats/Parquet)、[Arrow](/interfaces/formats/Arrow)、[Avro](/interfaces/formats/Avro)、[ORC](/interfaces/formats/ORC)、[Native](/interfaces/formats/Native) フォーマットおよび `WithNames`/`WithNamesAndTypes` サフィックスを持つフォーマットに適用されます。
 
 :::note
-このオプションを有効にすると、拡張テーブルメタデータがサーバーからクライアントに送信されます。これによりサーバー上で追加の計算リソースが消費され、パフォーマンスが低下する可能性があります。
+このオプションを有効にすると、拡張テーブルメタデータがサーバーからクライアントへ送信されます。これによりサーバー側で追加の計算リソースを消費し、パフォーマンスが低下する可能性があります。
 :::
 
 設定可能な値:
@@ -623,132 +717,146 @@ CustomSeparated形式で末尾の空行をスキップする
 - 1 — 有効。
 
 
-## input_format_force_null_for_omitted_fields {#input_format_force_null_for_omitted_fields}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_force_null_for_omitted_fields {#input_format_force_null_for_omitted_fields}   
 
-省略されたフィールドを強制的にnull値で初期化します
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_hive_text_allow_variable_number_of_columns {#input_format_hive_text_allow_variable_number_of_columns}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-Hiveテキスト入力で余分なカラムを無視し(ファイルのカラム数が期待値より多い場合)、欠落しているフィールドをデフォルト値として扱います
+省略されたフィールドを強制的に `null` 値で初期化する
 
 
-## input_format_hive_text_collection_items_delimiter {#input_format_hive_text_collection_items_delimiter}
 
-<SettingsInfoBlock type='Char' default_value='' />
+## input_format_hive_text_allow_variable_number_of_columns {#input_format_hive_text_allow_variable_number_of_columns}   
 
-Hive Text File内のコレクション（配列またはマップ）の項目間の区切り文字
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-
-## input_format_hive_text_fields_delimiter {#input_format_hive_text_fields_delimiter}
-
-<SettingsInfoBlock type='Char' default_value='' />
-
-Hive Text File内のフィールド間の区切り文字
+Hive Text 入力で余分な列（ファイルに想定より多くの列がある場合）を無視し、Hive Text 入力で欠損しているフィールドにはデフォルト値を用います
 
 
-## input_format_hive_text_map_keys_delimiter {#input_format_hive_text_map_keys_delimiter}
 
-<SettingsInfoBlock type='Char' default_value='' />
+## input_format_hive_text_collection_items_delimiter {#input_format_hive_text_collection_items_delimiter}   
 
-Hive Text File内のマップのキーと値のペア間の区切り文字
+<SettingsInfoBlock type="Char" default_value="" />
+
+Hive Text File におけるコレクション（array または map）要素間の区切り文字
 
 
-## input_format_import_nested_json {#input_format_import_nested_json}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_hive_text_fields_delimiter {#input_format_hive_text_fields_delimiter}   
 
-ネストされたオブジェクトを含むJSONデータの挿入を有効または無効にします。
+<SettingsInfoBlock type="Char" default_value="" />
 
-サポートされる形式:
+Hive TextFile 形式でのフィールド区切り文字
+
+
+
+## input_format_hive_text_map_keys_delimiter {#input_format_hive_text_map_keys_delimiter}   
+
+<SettingsInfoBlock type="Char" default_value="" />
+
+Hive Text File において、マップのキー/値ペア間を区切るデリミタ。
+
+
+
+## input_format_import_nested_json {#input_format_import_nested_json}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+ネストされたオブジェクトを含む JSON データの挿入を有効または無効にします。
+
+サポートされているフォーマット:
 
 - [JSONEachRow](/interfaces/formats/JSONEachRow)
 
-設定可能な値:
+可能な値:
 
-- 0 — 無効
-- 1 — 有効
+- 0 — 無効。
+- 1 — 有効。
 
 関連項目:
 
-- `JSONEachRow`形式における[ネスト構造の使用](/integrations/data-formats/json/other-formats#accessing-nested-json-objects)
+- `JSONEachRow` フォーマットでの[ネストされた構造の利用](/integrations/data-formats/json/other-formats#accessing-nested-json-objects)。
 
 
-## input_format_ipv4_default_on_conversion_error {#input_format_ipv4_default_on_conversion_error}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_ipv4_default_on_conversion_error {#input_format_ipv4_default_on_conversion_error}   
 
-IPv4のデシリアライゼーション時に変換エラーが発生した場合、例外をスローせずにデフォルト値を使用します。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-デフォルトでは無効です。
-
-
-## input_format_ipv6_default_on_conversion_error {#input_format_ipv6_default_on_conversion_error}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-IPv6のデシリアライゼーション時に変換エラーが発生した場合、例外をスローせずにデフォルト値を使用します。
+IPv4 のデシリアライズ時に変換エラーが発生した場合、例外をスローする代わりにデフォルト値を使用します。
 
 デフォルトでは無効です。
 
 
-## input_format_json_compact_allow_variable_number_of_columns {#input_format_json_compact_allow_variable_number_of_columns}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_ipv6_default_on_conversion_error {#input_format_ipv6_default_on_conversion_error}   
 
-JSONCompact/JSONCompactEachRow入力形式において、行ごとに可変数の列を許可します。
-期待される列数より多い列を持つ行では余分な列を無視し、不足している列はデフォルト値として扱います。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+IPv6 のデシリアライズ時に変換エラーが発生した場合、例外をスローせずデフォルト値を使用します。
 
 デフォルトでは無効です。
 
 
-## input_format_json_defaults_for_missing_elements_in_named_tuple {#input_format_json_defaults_for_missing_elements_in_named_tuple}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_compact_allow_variable_number_of_columns {#input_format_json_compact_allow_variable_number_of_columns}   
 
-名前付きタプルの解析時に、JSONオブジェクト内の欠落している要素にデフォルト値を挿入します。
-この設定は、`input_format_json_named_tuples_as_objects`が有効になっている場合にのみ機能します。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-デフォルトで有効になっています。
+JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとに可変数のカラム数を許可します。
+想定より多いカラムを持つ行では余分なカラムを無視し、不足しているカラムにはデフォルト値を使用します。
 
-
-## input_format_json_empty_as_default {#input_format_json_empty_as_default}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-有効にすると、JSONの空の入力フィールドをデフォルト値で置き換えます。複雑なデフォルト式を使用する場合は、`input_format_defaults_for_omitted_fields`も有効にする必要があります。
-
-設定可能な値:
-
-- 0 — 無効
-- 1 — 有効
+デフォルトでは無効です。
 
 
-## input_format_json_ignore_unknown_keys_in_named_tuple {#input_format_json_ignore_unknown_keys_in_named_tuple}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_defaults_for_missing_elements_in_named_tuple {#input_format_json_defaults_for_missing_elements_in_named_tuple}   
 
-名前付きタプルのJSONオブジェクト内の未知のキーを無視します。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-デフォルトで有効になっています。
+名前付きタプルを解析する際、JSON オブジェクトに存在しない要素に対してデフォルト値を挿入します。
+この設定は、`input_format_json_named_tuples_as_objects` 設定が有効になっている場合にのみ機能します。
 
-
-## input_format_json_ignore_unnecessary_fields {#input_format_json_ignore_unnecessary_fields}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-不要なフィールドを無視し、解析しません。これを有効にすると、無効な形式や重複したフィールドを持つJSON文字列に対して例外がスローされなくなる場合があります
+デフォルトで有効です。
 
 
-## input_format_json_infer_array_of_dynamic_from_array_of_different_types {#input_format_json_infer_array_of_dynamic_from_array_of_different_types}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_empty_as_default {#input_format_json_empty_as_default}   
 
-有効にすると、スキーマ推論中にClickHouseは異なるデータ型の値を含むJSON配列に対してArray(Dynamic)型を使用します。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、JSON 内の空の入力フィールドをデフォルト値で置き換えます。複雑なデフォルト値の式を使用する場合は、`input_format_defaults_for_omitted_fields` も有効にする必要があります。
+
+取りうる値:
+
++ 0 — 無効。
++ 1 — 有効。
+
+
+
+## input_format_json_ignore_unknown_keys_in_named_tuple {#input_format_json_ignore_unknown_keys_in_named_tuple}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+名前付きタプルに対する JSON オブジェクト内の不明なキーを無視します。
+
+デフォルトで有効です。
+
+
+
+## input_format_json_ignore_unnecessary_fields {#input_format_json_ignore_unnecessary_fields}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+不要なフィールドを無視し、それらを解析しません。これを有効にすると、無効な形式や重複したフィールドを含む JSON 文字列に対しても、例外がスローされない場合があります。
+
+
+
+## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+有効にすると、スキーマ推論の際に ClickHouse は、異なるデータ型の値を含む JSON 配列に対して Array(Dynamic) 型を使用します。
 
 例:
 
@@ -777,12 +885,13 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 デフォルトで有効です。
 
 
-## input_format_json_infer_incomplete_types_as_strings {#input_format_json_infer_incomplete_types_as_strings}
+## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-スキーマ推論時に、データサンプル内で`Null`/`{}`/`[]`のみを含むJSONキーに対してString型の使用を許可します。
-JSON形式では任意の値をStringとして読み取ることができるため、型が不明なキーに対してString型を使用することで、スキーマ推論中に`Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps`のようなエラーを回避できます。
+スキーマ推論中に、データサンプル内で `Null` / `{}` / `[]` のみを含む JSON キーを String 型として扱えるようにします。
+JSON 形式では任意の値を String 型として読み取ることができるため、スキーマ推論時に `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` のようなエラーが発生するのを、
+型が不明なキーに String 型を使用することで回避できます。
 
 例:
 
@@ -792,7 +901,7 @@ DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 ```
 
-結果:
+結果：
 
 ```
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -804,39 +913,42 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 └────────────────────────────────┘
 ```
 
-デフォルトで有効です。
+デフォルトで有効になっています。
 
 
-## input_format_json_map_as_array_of_tuples {#input_format_json_map_as_array_of_tuples}
+## input_format_json_map_as_array_of_tuples {#input_format_json_map_as_array_of_tuples}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-マップカラムをタプルのJSON配列としてデシリアライズします。
+マップ型の列を、タプルの JSON 配列としてデシリアライズします。
 
 デフォルトでは無効です。
 
 
-## input_format_json_max_depth {#input_format_json_max_depth}
 
-<SettingsInfoBlock type='UInt64' default_value='1000' />
+## input_format_json_max_depth {#input_format_json_max_depth}   
 
-JSONフィールドの最大深度。これは厳密な制限ではなく、厳密に適用される必要はありません。
+<SettingsInfoBlock type="UInt64" default_value="1000" />
 
-
-## input_format_json_named_tuples_as_objects {#input_format_json_named_tuples_as_objects}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-名前付きタプル列をJSONオブジェクトとして解析します。
-
-デフォルトで有効になっています。
+JSON 内のフィールド階層の最大深さ。これは厳密な制限ではなく、必ずしも厳密に適用されるわけではありません。
 
 
-## input_format_json_read_arrays_as_strings {#input_format_json_read_arrays_as_strings}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_named_tuples_as_objects {#input_format_json_named_tuples_as_objects}   
 
-JSON入力形式において、JSON配列を文字列として解析できるようにします。
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+名前付きタプル列を JSON オブジェクトとしてパースします。
+
+デフォルトで有効です。
+
+
+
+## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+JSON 入力形式で、JSON 配列を文字列として解釈できるようにします。
 
 例:
 
@@ -845,7 +957,7 @@ SET input_format_json_read_arrays_as_strings = 1;
 SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow, 'arr String', '{"arr" : [1, "Hello", [1,2,3]]}');
 ```
 
-結果:
+結果：
 
 ```
 ┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
@@ -853,43 +965,46 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
 ```
 
-デフォルトで有効になっています。
+デフォルトで有効です。
 
 
-## input_format_json_read_bools_as_numbers {#input_format_json_read_bools_as_numbers}
+## input_format_json_read_bools_as_numbers {#input_format_json_read_bools_as_numbers}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-JSON入力フォーマットでブール値を数値として解析することを許可します。
-
-デフォルトで有効になっています。
-
-
-## input_format_json_read_bools_as_strings {#input_format_json_read_bools_as_strings}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-JSON入力フォーマットでブール値を文字列として解析できるようにします。
+JSON 形式の入力で、ブール値を数値として解釈できるようにします。
 
 デフォルトで有効です。
 
 
-## input_format_json_read_numbers_as_strings {#input_format_json_read_numbers_as_strings}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_read_bools_as_strings {#input_format_json_read_bools_as_strings}   
 
-JSON入力形式において、数値を文字列として解析することを許可します。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-デフォルトで有効になっています。
+JSON 形式の入力で、ブール値を文字列としてパースすることを許可します。
+
+デフォルトで有効です。
 
 
-## input_format_json_read_objects_as_strings {#input_format_json_read_objects_as_strings}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_read_numbers_as_strings {#input_format_json_read_numbers_as_strings}   
 
-JSON入力フォーマットでJSONオブジェクトを文字列として解析できるようにします。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-例:
+JSON 入力フォーマットで、数値を文字列として解析することを許可します。
+
+デフォルトで有効です。
+
+
+
+## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+JSON 入力フォーマットで、JSON オブジェクトを文字列として解析できるようにします。
+
+例：
 
 ```sql
 SET input_format_json_read_objects_as_strings = 1;
@@ -906,24 +1021,25 @@ SELECT * FROM test;
 └────┴──────────────────────────┴────────────┘
 ```
 
-デフォルトで有効になっています。
+デフォルトで有効です。
 
 
-## input_format_json_throw_on_bad_escape_sequence {#input_format_json_throw_on_bad_escape_sequence}
+## input_format_json_throw_on_bad_escape_sequence {#input_format_json_throw_on_bad_escape_sequence}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-JSON入力フォーマットにおいて、JSON文字列に不正なエスケープシーケンスが含まれている場合に例外をスローします。無効にした場合、不正なエスケープシーケンスはデータ内にそのまま保持されます。
+JSON 入力フォーマットにおいて、JSON 文字列に不正なエスケープシーケンスが含まれている場合に例外をスローします。無効にした場合、不正なエスケープシーケンスはデータ内にそのまま保持されます。
 
 デフォルトで有効です。
 
 
-## input_format_json_try_infer_named_tuples_from_objects {#input_format_json_try_infer_named_tuples_from_objects}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects
 
-有効にすると、スキーマ推論時にClickHouseはJSONオブジェクトから名前付きタプルの推論を試みます。
-結果として得られる名前付きタプルには、サンプルデータ内の対応するすべてのJSONオブジェクトの全要素が含まれます。
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+有効にすると、スキーマ推論時に ClickHouse は JSON オブジェクトから名前付き Tuple を推論しようとします。
+生成される名前付き Tuple には、サンプルデータ中の対応するすべての JSON オブジェクトに含まれる全要素が含まれます。
 
 例:
 
@@ -932,7 +1048,7 @@ SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
 ```
 
-結果:
+結果：
 
 ```
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -940,344 +1056,392 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-デフォルトで有効です。
+デフォルトで有効になっています。
 
 
-## input_format_json_try_infer_numbers_from_strings {#input_format_json_try_infer_numbers_from_strings}
+## input_format_json_try_infer_numbers_from_strings {#input_format_json_try_infer_numbers_from_strings}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-有効にすると、スキーマ推論時にClickHouseは文字列フィールドから数値の推論を試みます。
-JSONデータに引用符で囲まれたUInt64数値が含まれている場合に便利です。
+有効にすると、スキーマ推論の際に ClickHouse は文字列フィールドから数値型を推測しようとします。
+JSON データに引用符で囲まれた UInt64 の数値が含まれている場合に有用です。
 
 デフォルトでは無効です。
 
 
-## input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects {#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects {#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects}   
 
-名前付きタプルの型推論時にJSONオブジェクト内のパスが曖昧な場合、例外をスローする代わりにString型を使用します
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+名前付きタプルの推論中に JSON オブジェクト内のパスが曖昧な場合は、例外の代わりに String 型を使用する
 
 
-## input_format_json_validate_types_from_metadata {#input_format_json_validate_types_from_metadata}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_json_validate_types_from_metadata {#input_format_json_validate_types_from_metadata}   
 
-JSON/JSONCompact/JSONColumnsWithMetadata入力フォーマットにおいて、この設定が1に設定されている場合、
-入力データのメタデータの型が、テーブルの対応するカラムの型と比較されます。
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+JSON/JSONCompact/JSONColumnsWithMetadata の入力形式では、この設定が 1 に設定されている場合、
+入力データ内のメタデータに記載されている型と、テーブル内の対応する列の型が照合されます。
 
 デフォルトで有効です。
 
 
-## input_format_max_block_size_bytes {#input_format_max_block_size_bytes}
 
-<SettingsInfoBlock type='UInt64' default_value='0' />
+## input_format_max_block_size_bytes {#input_format_max_block_size_bytes}   
 
-入力フォーマットでのデータ解析時に形成されるブロックのサイズをバイト単位で制限します。ClickHouse側でブロックが形成される行ベースの入力フォーマットで使用されます。
-0を指定するとバイト単位の制限なしを意味します。
+<SettingsInfoBlock type="UInt64" default_value="0" />
 
+入力フォーマットでデータを解析する際に、バイト単位で形成されるブロックのサイズを制限します。ClickHouse 側でブロックが形成される行ベースの入力フォーマットで使用されます。
+0 を指定すると、バイト数に上限がないことを意味します。
 
-## input_format_max_bytes_to_read_for_schema_inference {#input_format_max_bytes_to_read_for_schema_inference}
 
-<SettingsInfoBlock type='UInt64' default_value='33554432' />
 
-自動スキーマ推論のために読み取るデータの最大量(バイト単位)。
+## input_format_max_bytes_to_read_for_schema_inference {#input_format_max_bytes_to_read_for_schema_inference}   
 
+<SettingsInfoBlock type="UInt64" default_value="33554432" />
 
-## input_format_max_rows_to_read_for_schema_inference {#input_format_max_rows_to_read_for_schema_inference}
+自動スキーマ推論時に読み取るデータ量の最大値（バイト単位）。
 
-<SettingsInfoBlock type='UInt64' default_value='25000' />
 
-自動スキーマ推論で読み取るデータの最大行数。
 
+## input_format_max_rows_to_read_for_schema_inference {#input_format_max_rows_to_read_for_schema_inference}   
 
-## input_format_msgpack_number_of_columns {#input_format_msgpack_number_of_columns}
+<SettingsInfoBlock type="UInt64" default_value="25000" />
 
-<SettingsInfoBlock type='UInt64' default_value='0' />
+自動スキーマ推論時に読み取るデータ行数の上限です。
 
-挿入するMsgPackデータのカラム数。データからの自動スキーマ推論に使用されます。
 
 
-## input_format_mysql_dump_map_column_names {#input_format_mysql_dump_map_column_names}
+## input_format_msgpack_number_of_columns {#input_format_msgpack_number_of_columns}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="UInt64" default_value="0" />
 
-MySQLダンプ内のテーブルのカラムとClickHouseテーブルのカラムを名前で対応付けます
+挿入される MsgPack データに含まれる列数。データからスキーマを自動推論する際に使用されます。
 
 
-## input_format_mysql_dump_table_name {#input_format_mysql_dump_table_name}
 
-データを読み取るMySQLダンプ内のテーブルの名前
+## input_format_mysql_dump_map_column_names {#input_format_mysql_dump_map_column_names}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## input_format_native_allow_types_conversion {#input_format_native_allow_types_conversion}
+MySQL ダンプ内のテーブルの列と ClickHouse テーブルの列を列名で対応付けます
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Native入力形式でのデータ型変換を許可します
 
+## input_format_mysql_dump_table_name {#input_format_mysql_dump_table_name}   
 
-## input_format_native_decode_types_in_binary_format {#input_format_native_decode_types_in_binary_format}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-Native入力形式において、型名の代わりにバイナリ形式でデータ型を読み取ります
+データを読み取る元となる MySQL ダンプ内のテーブル名
 
 
-## input_format_null_as_default {#input_format_null_as_default}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_native_allow_types_conversion {#input_format_native_allow_types_conversion}   
 
-データ型が[nullable](/sql-reference/data-types/nullable)でない場合に、[NULL](/sql-reference/syntax#literals)フィールドを[デフォルト値](/sql-reference/statements/create/table#default_values)で初期化するかどうかを有効または無効にします。
-カラムの型がnullableでなく、この設定が無効の場合、`NULL`を挿入すると例外が発生します。カラムの型がnullableの場合、この設定に関係なく`NULL`値はそのまま挿入されます。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-この設定はほとんどの入力フォーマットに適用されます。
+Native 入力フォーマットでデータ型の変換を許可する
 
-複雑なデフォルト式の場合、`input_format_defaults_for_omitted_fields`も有効にする必要があります。
 
-設定可能な値:
 
-- 0 — nullableでないカラムに`NULL`を挿入すると例外が発生します。
-- 1 — `NULL`フィールドはデフォルトのカラム値で初期化されます。
+## input_format_native_decode_types_in_binary_format {#input_format_native_decode_types_in_binary_format}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_orc_allow_missing_columns {#input_format_orc_allow_missing_columns}
+Native 入力フォーマットで、型名ではなくデータ型をバイナリ形式で読み込みます
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-ORC入力フォーマットの読み取り時に欠落した列を許可します
 
+## input_format_null_as_default {#input_format_null_as_default}   
 
-## input_format_orc_case_insensitive_column_matching {#input_format_orc_case_insensitive_column_matching}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+この設定は、[NULL](/sql-reference/syntax#literals) フィールドのデータ型が [nullable](/sql-reference/data-types/nullable) でない場合に、それらのフィールドを[デフォルト値](/sql-reference/statements/create/table#default_values)で初期化するかどうかを制御します。
+カラム型が non-nullable でこの設定が無効な場合、`NULL` を挿入すると例外が発生します。カラム型が nullable の場合、この設定に関係なく、`NULL` の値はそのまま挿入されます。
 
-ORC列とClickHouse列を照合する際に、大文字と小文字を区別しません。
+この設定は、ほとんどの入力フォーマットに適用されます。
 
+複雑なデフォルト式を使用する場合は、`input_format_defaults_for_omitted_fields` も有効にする必要があります。
 
-## input_format_orc_dictionary_as_low_cardinality {#input_format_orc_dictionary_as_low_cardinality}
+指定可能な値:
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+- 0 — non-nullable カラムに `NULL` を挿入すると例外が発生します。
+- 1 — `NULL` フィールドはカラムのデフォルト値で初期化されます。
 
-ORCファイルの読み取り時に、ORC辞書エンコード列をLowCardinality列として扱います。
 
 
-## input_format_orc_filter_push_down {#input_format_orc_filter_push_down}
+## input_format_orc_allow_missing_columns {#input_format_orc_allow_missing_columns}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-ORCファイルの読み取り時に、WHERE/PREWHERE式、最小値/最大値統計、またはORCメタデータ内のブルームフィルタに基づいて、ストライプ全体または行グループ全体をスキップします。
+ORC 入力フォーマットの読み取り時に、存在しない列を許容する
 
 
-## input_format_orc_reader_time_zone_name {#input_format_orc_reader_time_zone_name}
 
-<SettingsInfoBlock type='String' default_value='GMT' />
+## input_format_orc_case_insensitive_column_matching {#input_format_orc_case_insensitive_column_matching}   
 
-ORC行リーダーのタイムゾーン名です。デフォルトのORC行リーダーのタイムゾーンはGMTです。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+ORC 列と CH 列を照合する際に大文字小文字の違いを無視します。
 
-## input_format_orc_row_batch_size {#input_format_orc_row_batch_size}
 
-<SettingsInfoBlock type='Int64' default_value='100000' />
 
-ORCストライプ読み取り時のバッチサイズ。
+## input_format_orc_dictionary_as_low_cardinality {#input_format_orc_dictionary_as_low_cardinality}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## input_format_orc_skip_columns_with_unsupported_types_in_schema_inference {#input_format_orc_skip_columns_with_unsupported_types_in_schema_inference}
+ORC ファイルの読み込み時に、辞書エンコードされた ORC カラムを LowCardinality カラムとして扱います。
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-ORC形式のスキーマ推論時に、サポートされていない型の列をスキップする
 
+## input_format_orc_filter_push_down {#input_format_orc_filter_push_down}   
 
-## input_format_orc_use_fast_decoder {#input_format_orc_use_fast_decoder}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+ORC ファイルを読み取る際に、`WHERE` / `PREWHERE` 句の条件式、最小値/最大値の統計情報、または ORC メタデータ内のブルームフィルターに基づいて、ストライプ全体または行グループをスキップします。
 
-より高速なORCデコーダの実装を使用します。
 
 
-## input_format_parquet_allow_geoparquet_parser {#input_format_parquet_allow_geoparquet_parser}
+## input_format_orc_reader_time_zone_name {#input_format_orc_reader_time_zone_name}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="String" default_value="GMT" />
 
-geo列パーサーを使用して、Array(UInt8)をPoint/LineString/Polygon/MultiLineString/MultiPolygon型に変換します
+ORC 行リーダー用のタイムゾーン名です。デフォルトの ORC 行リーダーのタイムゾーンは GMT です。
 
 
-## input_format_parquet_allow_missing_columns {#input_format_parquet_allow_missing_columns}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_orc_row_batch_size {#input_format_orc_row_batch_size}   
 
-Parquet入力フォーマットの読み取り時に列の欠落を許可します
+<SettingsInfoBlock type="Int64" default_value="100000" />
 
+ORC ストライプを読み取る際のバッチサイズ。
 
-## input_format_parquet_bloom_filter_push_down {#input_format_parquet_bloom_filter_push_down}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Parquetファイルの読み取り時に、WHERE式とParquetメタデータ内のブルームフィルタに基づいて行グループ全体をスキップします。
+## input_format_orc_skip_columns_with_unsupported_types_in_schema_inference {#input_format_orc_skip_columns_with_unsupported_types_in_schema_inference}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_parquet_case_insensitive_column_matching {#input_format_parquet_case_insensitive_column_matching}
+ORC 形式のスキーマ推論時にサポートされていない型の列をスキップする
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-Parquetカラムとclickhouseカラムをマッチングする際に大文字小文字を区別しません。
 
+## input_format_orc_use_fast_decoder {#input_format_orc_use_fast_decoder}   
 
-## input_format_parquet_enable_json_parsing {#input_format_parquet_enable_json_parsing}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+高速な ORC デコーダー実装を使用します。
 
-Parquetファイルの読み取り時に、JSON列をClickHouse JSON列として解析します。
 
 
-## input_format_parquet_enable_row_group_prefetch {#input_format_parquet_enable_row_group_prefetch}
+## input_format_parquet_allow_geoparquet_parser {#input_format_parquet_allow_geoparquet_parser}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Parquet解析時に行グループのプリフェッチを有効にします。現在、シングルスレッド解析のみプリフェッチが可能です。
+`geo` 列用パーサーを使用して、`Array(UInt8)` を `Point` / `Linestring` / `Polygon` / `MultiLineString` / `MultiPolygon` 型に変換します
 
 
-## input_format_parquet_filter_push_down {#input_format_parquet_filter_push_down}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_parquet_allow_missing_columns {#input_format_parquet_allow_missing_columns}   
 
-Parquetファイルの読み取り時に、WHERE/PREWHERE式とParquetメタデータ内のmin/max統計情報に基づいて、行グループ全体をスキップします。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+Parquet 形式の入力を読み込む際に、欠落している列を許容する
 
-## input_format_parquet_local_file_min_bytes_for_seek {#input_format_parquet_local_file_min_bytes_for_seek}
 
-<SettingsInfoBlock type='UInt64' default_value='8192' />
 
-Parquet入力フォーマットにおいて、データを読み飛ばす代わりにシーク操作を実行するために必要なローカルファイル読み取りの最小バイト数
+## input_format_parquet_bloom_filter_push_down {#input_format_parquet_bloom_filter_push_down}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## input_format_parquet_local_time_as_utc {#input_format_parquet_local_time_as_utc}
+Parquet ファイルを読み込む際に、WHERE 句の条件式と Parquet メタデータ内のブルームフィルターに基づいて、行グループ全体をスキップします。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-isAdjustedToUTC=falseのParquetタイムスタンプに対して、スキーマ推論で使用されるデータ型を決定します。trueの場合:DateTime64(..., 'UTC')、falseの場合:DateTime64(...)となります。ClickHouseにはローカルウォールクロック時刻を表すデータ型が存在しないため、どちらの動作も完全には正確ではありません。直感に反しますが、'true'の方がより誤りの少ない選択肢と言えます。これは、'UTC'タイムスタンプを文字列としてフォーマットすることで、正しいローカル時刻の表現が生成されるためです。
 
+## input_format_parquet_case_insensitive_column_matching {#input_format_parquet_case_insensitive_column_matching}   
 
-## input_format_parquet_max_block_size {#input_format_parquet_max_block_size}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='NonZeroUInt64' default_value='65409' />
+Parquet の列を ClickHouse の列にマッチさせる際、列名の大文字・小文字の違いを無視します。
 
-Parquetリーダーの最大ブロックサイズ。
 
 
-## input_format_parquet_memory_high_watermark {#input_format_parquet_memory_high_watermark}
+## input_format_parquet_enable_json_parsing {#input_format_parquet_enable_json_parsing}   
 
-<SettingsInfoBlock type='UInt64' default_value='4294967296' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Parquetリーダーv3の概算メモリ制限。並列で読み取り可能な行グループまたは列の数を制限します。1つのクエリで複数のファイルを読み取る場合、制限はそれらのファイル全体の合計メモリ使用量に適用されます。
+Parquet ファイルを読み込む際に、JSON 列を ClickHouse の JSON 列として解析します。
 
 
-## input_format_parquet_memory_low_watermark {#input_format_parquet_memory_low_watermark}
 
-<SettingsInfoBlock type='UInt64' default_value='2097152' />
+## input_format_parquet_enable_row_group_prefetch {#input_format_parquet_enable_row_group_prefetch}   
 
-メモリ使用量がこの閾値を下回る場合、プリフェッチをより積極的にスケジュールします。ネットワーク経由で読み取る小さなブルームフィルタが多数ある場合などに有用です。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+Parquet を解析する際に Row Group のプリフェッチを有効にします。現在は、単一スレッドでの解析でのみプリフェッチを行えます。
 
-## input_format_parquet_page_filter_push_down {#input_format_parquet_page_filter_push_down}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-列インデックスの最小値/最大値を使用してページをスキップします。
+## input_format_parquet_filter_push_down {#input_format_parquet_filter_push_down}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## input_format_parquet_prefer_block_bytes {#input_format_parquet_prefer_block_bytes}
+Parquet ファイルを読み込む際に、Parquet メタデータ内の min/max 統計情報と WHERE/PREWHERE 式に基づいて、行グループ全体をスキップします。
 
-<SettingsInfoBlock type='UInt64' default_value='16744704' />
 
-Parquetリーダーが出力する平均ブロックバイト数
 
+## input_format_parquet_local_file_min_bytes_for_seek {#input_format_parquet_local_file_min_bytes_for_seek}   
 
-## input_format_parquet_preserve_order {#input_format_parquet_preserve_order}
+<SettingsInfoBlock type="UInt64" default_value="8192" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+Parquet 入力フォーマットで、読み飛ばしによる読み取りではなくシークを行うために、ローカルファイル読み取り時に必要な最小バイト数
 
-Parquetファイルから読み取る際の行の並び替えを回避します。行の順序は一般的に保証されておらず、クエリパイプラインの他の部分で順序が崩れる可能性があるため、推奨されません。代わりに`ORDER BY _row_number`を使用してください。
 
 
-## input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference {#input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference}
+## input_format_parquet_local_time_as_utc {#input_format_parquet_local_time_as_utc}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Parquet形式のスキーマ推論時に、サポートされていない型の列をスキップする
+`isAdjustedToUTC=false` の Parquet タイムスタンプに対して、スキーマ推論で使用されるデータ型を決定します。true の場合は DateTime64(..., 'UTC')、false の場合は DateTime64(...) になります。ClickHouse にはローカルのウォールクロック時刻を表すデータ型が存在しないため、どちらの挙動も完全に正しいわけではありません。直感に反しますが、「true」の方がまだ誤りが少ないと考えられます。というのも、'UTC' タイムスタンプを String としてフォーマットすると、正しいローカル時刻の表現が得られるためです。
 
 
-## input_format_parquet_use_native_reader {#input_format_parquet_use_native_reader}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_parquet_max_block_size {#input_format_parquet_max_block_size}   
 
-ネイティブParquetリーダーv1を使用します。比較的高速ですが、未完成です。非推奨となっています。
+<SettingsInfoBlock type="NonZeroUInt64" default_value="65409" />
 
+Parquet リーダーにおける最大ブロックサイズ。
 
-## input_format_parquet_use_native_reader_v3 {#input_format_parquet_use_native_reader_v3}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Parquetリーダーv3を使用します。
+## input_format_parquet_memory_high_watermark {#input_format_parquet_memory_high_watermark}   
 
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
 
-## input_format_parquet_use_offset_index {#input_format_parquet_use_offset_index}
+Parquet リーダー v3 用のおおよそのメモリ上限です。並列に読み取れる行グループまたは列の数を制限します。1 つのクエリで複数ファイルを読み取る場合、この上限はそれらのファイル全体でのメモリ使用量の合計に適用されます。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-ページフィルタリングが使用されていない場合の、Parquetファイルからのページ読み取り方法に対する軽微な調整。
 
+## input_format_parquet_memory_low_watermark {#input_format_parquet_memory_low_watermark}   
 
-## input_format_parquet_verify_checksums {#input_format_parquet_verify_checksums}
+<SettingsInfoBlock type="UInt64" default_value="2097152" />
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+メモリ使用量がこのしきい値未満の場合、プリフェッチをより積極的に行うようスケジューリングします。たとえば、小さな Bloom フィルタが多数あり、それらをネットワーク越しに読み込む必要がある場合などに有用です。
 
-Parquetファイルの読み取り時にページチェックサムを検証します。
 
 
-## input_format_protobuf_flatten_google_wrappers {#input_format_protobuf_flatten_google_wrappers}
+## input_format_parquet_page_filter_push_down {#input_format_parquet_page_filter_push_down}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-通常の非ネストカラムに対してGoogleラッパーを有効にします。例：String型カラム'str'に対してgoogle.protobuf.StringValue 'str'を使用します。Nullable型カラムの場合、空のラッパーはデフォルト値として認識され、ラッパーが欠落している場合はnullとして扱われます
+カラムインデックスに含まれる最小値／最大値を利用してページをスキップします。
 
 
-## input_format_protobuf_oneof_presence {#input_format_protobuf_oneof_presence}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_parquet_prefer_block_bytes {#input_format_parquet_prefer_block_bytes}   
 
-特別なカラムにenum値を設定することにより、protobuf oneofのどのフィールドが検出されたかを示します
+<SettingsInfoBlock type="UInt64" default_value="16744704" />
 
+Parquet リーダーが出力するブロックの平均サイズ（バイト単位）
 
-## input_format_protobuf_skip_fields_with_unsupported_types_in_schema_inference {#input_format_protobuf_skip_fields_with_unsupported_types_in_schema_inference}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-Protobuf形式のスキーマ推論中に、サポートされていない型のフィールドをスキップします
+## input_format_parquet_preserve_order {#input_format_parquet_preserve_order}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## input_format_record_errors_file_path {#input_format_record_errors_file_path}
+Parquet ファイルから読み込む際に行の並び替えを行わないようにします。行の順序は一般的に保証されず、クエリパイプラインの他の部分で変更される可能性があるため、この設定の使用は推奨されません。代わりに `ORDER BY _row_number` を使用してください。
 
-テキスト形式（CSV、TSV）の読み取り時にエラーを記録するファイルのパス。
 
 
-## input_format_skip_unknown_fields {#input_format_skip_unknown_fields}
+## input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference {#input_format_parquet_skip_columns_with_unsupported_types_in_schema_inference}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-余分なデータの挿入をスキップする機能を有効または無効にします。
+Parquet 形式のスキーマ推論時に、サポートされていない型の列をスキップする
 
-データ書き込み時、入力データにターゲットテーブルに存在しないカラムが含まれている場合、ClickHouseは例外をスローします。スキップが有効な場合、ClickHouseは余分なデータを挿入せず、例外もスローしません。
 
-サポートされている形式:
 
-- [JSONEachRow](/interfaces/formats/JSONEachRow) (およびその他のJSON形式)
-- [BSONEachRow](/interfaces/formats/BSONEachRow) (およびその他のJSON形式)
+## input_format_parquet_use_native_reader {#input_format_parquet_use_native_reader}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+ネイティブ Parquet リーダー v1 を使用します。比較的高速ですが、まだ未完成です。非推奨です。
+
+
+
+## input_format_parquet_use_native_reader_v3 {#input_format_parquet_use_native_reader_v3}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Parquet リーダー v3 を使用します。
+
+
+
+## input_format_parquet_use_offset_index {#input_format_parquet_use_offset_index}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+ページフィルタリングを使用しない場合の、Parquet ファイルからのページの読み取り方法に対する軽微な調整を行う設定です。
+
+
+
+## input_format_parquet_verify_checksums {#input_format_parquet_verify_checksums}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Parquet ファイルを読み込む際にページのチェックサムを検証します。
+
+
+
+## input_format_protobuf_flatten_google_wrappers {#input_format_protobuf_flatten_google_wrappers}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+通常の非ネスト列に対して Google ラッパーを有効にします。例えば、String 列 `str` に対して google.protobuf.StringValue `str` を使用します。Nullable 列では、空のラッパーはデフォルト値として解釈され、ラッパーが存在しない場合は null として扱われます。
+
+
+
+## input_format_protobuf_oneof_presence {#input_format_protobuf_oneof_presence}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+専用の列に enum 値を設定することで、protobuf の oneof フィールドのうちどれが検出されたかを示します。
+
+
+
+## input_format_protobuf_skip_fields_with_unsupported_types_in_schema_inference {#input_format_protobuf_skip_fields_with_unsupported_types_in_schema_inference}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Protobuf 形式のスキーマ推論時に、サポートされていない型を持つフィールドをスキップします
+
+
+
+## input_format_record_errors_file_path {#input_format_record_errors_file_path}   
+
+
+
+テキスト形式（CSV、TSV）の読み取り時に発生したエラーを記録するファイルのパス。
+
+
+
+## input_format_skip_unknown_fields {#input_format_skip_unknown_fields}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+余分なデータの挿入をスキップするかどうかを切り替えます。
+
+データを書き込むとき、入力データに対象テーブルに存在しない列が含まれている場合、ClickHouse は例外をスローします。スキップが有効な場合、ClickHouse は余分なデータを挿入せず、例外もスローしません。
+
+対応フォーマット:
+
+- [JSONEachRow](/interfaces/formats/JSONEachRow)（およびその他の JSON フォーマット）
+- [BSONEachRow](/interfaces/formats/BSONEachRow)（およびその他の JSON フォーマット）
 - [TSKV](/interfaces/formats/TSKV)
-- WithNames/WithNamesAndTypesサフィックスを持つすべての形式
+- WithNames/WithNamesAndTypes というサフィックスを持つすべてのフォーマット
 - [MySQLDump](/interfaces/formats/MySQLDump)
 - [Native](/interfaces/formats/Native)
 
@@ -1287,52 +1451,58 @@ Protobuf形式のスキーマ推論中に、サポートされていない型の
 - 1 — 有効。
 
 
-## input_format_try_infer_dates {#input_format_try_infer_dates}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_try_infer_dates {#input_format_try_infer_dates}   
 
-有効にすると、ClickHouseはテキスト形式のスキーマ推論において、文字列フィールドから`Date`型の推論を試みます。入力データの列内のすべてのフィールドが日付として正常に解析された場合、結果の型は`Date`となります。1つでもフィールドが日付として解析されなかった場合、結果の型は`String`となります。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-デフォルトで有効です。
-
-
-## input_format_try_infer_datetimes {#input_format_try_infer_datetimes}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-有効にすると、ClickHouseはテキスト形式のスキーマ推論において、文字列フィールドから`DateTime64`型の推論を試みます。入力データの列内のすべてのフィールドが日時として正常に解析された場合、結果の型は`DateTime64`になります。1つでもフィールドが日時として解析されなかった場合、結果の型は`String`になります。
-
-デフォルトで有効になっています。
-
-
-## input_format_try_infer_datetimes_only_datetime64 {#input_format_try_infer_datetimes_only_datetime64}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-input_format_try_infer_datetimes が有効な場合、DateTime 型ではなく DateTime64 型のみを推論します
-
-
-## input_format_try_infer_exponent_floats {#input_format_try_infer_exponent_floats}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-テキスト形式でのスキーマ推論時に指数表記の浮動小数点数の推論を試みます（JSON形式を除く。JSON形式では指数表記の数値は常に推論されます）
-
-
-## input_format_try_infer_integers {#input_format_try_infer_integers}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-有効にすると、ClickHouseはテキスト形式のスキーマ推論において、浮動小数点数型ではなく整数型を推論しようとします。入力データの列内のすべての数値が整数である場合、結果の型は`Int64`になります。少なくとも1つの数値が浮動小数点数である場合、結果の型は`Float64`になります。
+有効化されている場合、ClickHouse はテキスト形式のスキーマ推論時に、文字列フィールドから `Date` 型を推測しようとします。入力データの 1 つの列に含まれるすべてのフィールドが日付として正常にパースされた場合、その結果の型は `Date` になります。少なくとも 1 つでも日付としてパースされなかったフィールドがある場合、その結果の型は `String` になります。
 
 デフォルトで有効です。
 
 
-## input_format_try_infer_variants {#input_format_try_infer_variants}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_try_infer_datetimes {#input_format_try_infer_datetimes}   
 
-有効にすると、テキスト形式のスキーマ推論において、カラムまたは配列要素に複数の型候補が存在する場合、ClickHouseは[`Variant`](../../sql-reference/data-types/variant.md)型の推論を試みます。
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+有効にすると、ClickHouse はテキスト形式に対するスキーマ推論時に、文字列フィールドから型 `DateTime64` を推定しようとします。入力データのある列のすべてのフィールドが日時として正常にパースされた場合、その結果の型は `DateTime64` になり、少なくとも 1 つでも日時としてパースされなかったフィールドがある場合、その結果の型は `String` になります。
+
+デフォルトで有効です。
+
+
+
+## input_format_try_infer_datetimes_only_datetime64 {#input_format_try_infer_datetimes_only_datetime64}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+input_format_try_infer_datetimes が有効な場合、DateTime 型は推論せず、DateTime64 型のみを推論します
+
+
+
+## input_format_try_infer_exponent_floats {#input_format_try_infer_exponent_floats}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+テキスト形式でスキーマ推論を行う際に、指数表記の数値を浮動小数点数として推論することを試みます（JSON では指数表記の数値は常に浮動小数点数として推論されます）
+
+
+
+## input_format_try_infer_integers {#input_format_try_infer_integers}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+有効にすると、ClickHouse はテキスト形式のスキーマ推論時に、浮動小数点数ではなく整数として解釈しようとします。入力データの列内のすべての数値が整数であれば、結果の型は `Int64` になり、少なくとも 1 つでも浮動小数点数の値が含まれていれば、結果の型は `Float64` になります。
+
+デフォルトで有効です。
+
+
+
+## input_format_try_infer_variants {#input_format_try_infer_variants}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、テキスト形式のスキーマ推論において、列や配列要素に対して複数の候補となる型が存在する場合に、ClickHouse は型 [`Variant`](../../sql-reference/data-types/variant.md) を推論しようとします。
 
 設定可能な値:
 
@@ -1340,92 +1510,104 @@ input_format_try_infer_datetimes が有効な場合、DateTime 型ではなく D
 - 1 — 有効。
 
 
-## input_format_tsv_allow_variable_number_of_columns {#input_format_tsv_allow_variable_number_of_columns}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_tsv_allow_variable_number_of_columns {#input_format_tsv_allow_variable_number_of_columns}   
 
-TSV入力において余分な列を無視し(ファイルの列数が期待値より多い場合)、欠落しているフィールドをデフォルト値として扱います
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_tsv_crlf_end_of_line {#input_format_tsv_crlf_end_of_line}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-trueに設定すると、file関数は\\nの代わりに\\r\\nでTSV形式を読み取ります。
+TSV 入力で余分な列（ファイルに想定より多くの列がある場合）を無視し、不足しているフィールドにはデフォルト値を使用します
 
 
-## input_format_tsv_detect_header {#input_format_tsv_detect_header}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_tsv_crlf_end_of_line {#input_format_tsv_crlf_end_of_line}   
 
-TSV形式で名前と型を含むヘッダーを自動検出します
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_tsv_empty_as_default {#input_format_tsv_empty_as_default}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-TSV入力の空のフィールドをデフォルト値として扱います。
+true に設定すると、`file` 関数は改行に `\n` ではなく `\r\n` を用いる TSV 形式を読み取ります。
 
 
-## input_format_tsv_enum_as_number {#input_format_tsv_enum_as_number}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_tsv_detect_header {#input_format_tsv_detect_header}   
 
-TSV形式で挿入されるenum値をenumインデックスとして扱います。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-
-## input_format_tsv_skip_first_lines {#input_format_tsv_skip_first_lines}
-
-<SettingsInfoBlock type='UInt64' default_value='0' />
-
-TSV形式のデータの先頭から指定した行数をスキップします
+TSV 形式の列名および型を含むヘッダー行を自動検出します
 
 
-## input_format_tsv_skip_trailing_empty_lines {#input_format_tsv_skip_trailing_empty_lines}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## input_format_tsv_empty_as_default {#input_format_tsv_empty_as_default}   
 
-TSV形式の末尾の空行をスキップする
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_tsv_use_best_effort_in_schema_inference {#input_format_tsv_use_best_effort_in_schema_inference}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-TSV形式のスキーマ推論時に調整とヒューリスティックを使用する
+TSV 入力の空フィールドをデフォルト値として扱います。
 
 
-## input_format_values_accurate_types_of_literals {#input_format_values_accurate_types_of_literals}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_tsv_enum_as_number {#input_format_tsv_enum_as_number}   
 
-Values形式の場合：テンプレートを使用して式を解析・解釈する際に、リテラルの実際の型をチェックして、オーバーフローや精度の問題を回避します。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## input_format_values_deduce_templates_of_expressions {#input_format_values_deduce_templates_of_expressions}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-Values形式の場合：ストリーミングパーサーでフィールドを解析できない場合、SQLパーサーを実行してSQL式のテンプレートを推定し、そのテンプレートを使用してすべての行の解析を試み、その後すべての行に対して式を解釈します。
+TSV 形式で挿入された Enum の値を、Enum のインデックスとして解釈します。
 
 
-## input_format_values_interpret_expressions {#input_format_values_interpret_expressions}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_tsv_skip_first_lines {#input_format_tsv_skip_first_lines}   
 
-Values形式の場合：ストリーミングパーサーでフィールドを解析できなかった場合は、SQLパーサーを実行し、SQL式として解釈を試みます。
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+TSV 形式のデータの先頭から指定した行数をスキップします。
 
 
-## input_format_with_names_use_header {#input_format_with_names_use_header}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_tsv_skip_trailing_empty_lines {#input_format_tsv_skip_trailing_empty_lines}   
 
-データ挿入時の列順序チェックを有効または無効にします。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-入力データの列順序がターゲットテーブルと同じであることが確実な場合は、挿入パフォーマンスを向上させるため、このチェックを無効にすることを推奨します。
+TSV 形式で末尾の空行を読み飛ばす
 
-サポートされている形式:
+
+
+## input_format_tsv_use_best_effort_in_schema_inference {#input_format_tsv_use_best_effort_in_schema_inference}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+TSV 形式のスキーマ推論に、いくつかの調整やヒューリスティック手法を用います
+
+
+
+## input_format_values_accurate_types_of_literals {#input_format_values_accurate_types_of_literals}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Values フォーマットの場合: template を使用して式を解析および評価する際に、オーバーフローや精度の問題を避けるため、リテラルの実際の型を確認します。
+
+
+
+## input_format_values_deduce_templates_of_expressions {#input_format_values_deduce_templates_of_expressions}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Values 形式で、フィールドがストリーミングパーサーで解析できなかった場合は、SQL パーサーを実行して SQL 式のテンプレートを推論し、そのテンプレートを使ってすべての行の解析を試みたうえで、すべての行に対して式を評価します。
+
+
+
+## input_format_values_interpret_expressions {#input_format_values_interpret_expressions}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Values 形式の場合、フィールドがストリーミングパーサーで解析できなかった場合に、SQL パーサーを実行し、そのフィールドを SQL 式として解釈しようとします。
+
+
+
+## input_format_with_names_use_header {#input_format_with_names_use_header}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+データ挿入時に列の順序をチェックするかどうかを制御します。
+
+入力データの列順が対象テーブルと同一であることが確実な場合は、挿入パフォーマンスを向上させるために、このチェックを無効にすることを推奨します。
+
+サポートされるフォーマット:
 
 - [CSVWithNames](/interfaces/formats/CSVWithNames)
 - [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)
@@ -1442,17 +1624,18 @@ Values形式の場合：ストリーミングパーサーでフィールドを�
 
 設定可能な値:
 
-- 0 — 無効
-- 1 — 有効
+- 0 — 無効。
+- 1 — 有効。
 
 
-## input_format_with_types_use_header {#input_format_with_types_use_header}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## input_format_with_types_use_header {#input_format_with_types_use_header}   
 
-入力データのデータ型とターゲットテーブルのデータ型が一致するかどうかをフォーマットパーサーが検証するかを制御します。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-サポートされているフォーマット:
+フォーマットパーサが、入力データのデータ型が対象テーブルのデータ型と一致しているかどうかをチェックするかを制御します。
+
+対応フォーマット:
 
 - [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)
 - [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)
@@ -1461,183 +1644,208 @@ Values形式の場合：ストリーミングパーサーでフィールドを�
 - [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)
 - [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)
 
-設定可能な値:
+取りうる値:
 
 - 0 — 無効。
 - 1 — 有効。
 
 
-## insert_distributed_one_random_shard {#insert_distributed_one_random_shard}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## insert_distributed_one_random_shard {#insert_distributed_one_random_shard}   
 
-分散キーが存在しない場合に、[Distributed](/engines/table-engines/special/distributed)テーブルへのランダムシャード挿入を有効または無効にします。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-デフォルトでは、複数のシャードを持つ`Distributed`テーブルにデータを挿入する際、分散キーが存在しない場合、ClickHouseサーバーはすべての挿入リクエストを拒否します。`insert_distributed_one_random_shard = 1`に設定すると、挿入が許可され、データはすべてのシャードにランダムに転送されます。
+分散キーが存在しない場合に、[Distributed](/engines/table-engines/special/distributed) テーブルへのランダムなシャードへの挿入を有効または無効にします。
 
-設定可能な値:
+既定では、複数のシャードを持つ `Distributed` テーブルにデータを挿入する際、分散キーが存在しない場合は ClickHouse サーバーは挿入要求を拒否します。`insert_distributed_one_random_shard = 1` の場合、挿入が許可され、データはすべてのシャードの中からランダムに選ばれたシャードへルーティングされます。
 
-- 0 — 複数のシャードが存在し、分散キーが指定されていない場合、挿入は拒否されます。
-- 1 — 分散キーが指定されていない場合、利用可能なすべてのシャードにランダムに挿入が実行されます。
+設定値:
 
-
-## interval_output_format {#interval_output_format}
-
-<SettingsInfoBlock type='IntervalOutputFormat' default_value='numeric' />
-
-interval型のテキスト表現の出力形式を選択できます。
-
-設定可能な値:
-
-- `kusto` - KQL形式の出力フォーマット。
-
-  ClickHouseは[KQL形式](https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings#the-constant-c-format-specifier)でintervalを出力します。例えば、`toIntervalDay(2)`は`2.00:00:00`としてフォーマットされます。可変長のinterval型(例:`IntervalMonth`や`IntervalYear`)については、interval当たりの平均秒数が考慮される点に注意してください。
-
-- `numeric` - 数値形式の出力フォーマット。
-
-  ClickHouseはintervalを内部の数値表現として出力します。例えば、`toIntervalDay(2)`は`2`としてフォーマットされます。
-
-関連項目:
-
-- [Interval](../../sql-reference/data-types/special-data-types/interval.md)
+- 0 — 複数のシャードが存在し、かつ分散キーが指定されていない場合は挿入を拒否します。
+- 1 — 分散キーが指定されていない場合、利用可能なすべてのシャードの中からランダムに選ばれたシャードへ挿入します。
 
 
-## into_outfile_create_parent_directories {#into_outfile_create_parent_directories}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## interval_output_format {#interval_output_format}   
 
-INTO OUTFILE使用時に、親ディレクトリが存在しない場合は自動的に作成します。
+<SettingsInfoBlock type="IntervalOutputFormat" default_value="numeric" />
 
+Interval 型の文字列表現に対する出力フォーマットを選択します。
 
-## json_type_escape_dots_in_keys {#json_type_escape_dots_in_keys}
+可能な値:
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+-   `kusto` - KQL 形式の出力フォーマット。
 
-有効にすると、JSON キー内のドットが解析時にエスケープされます。
+    ClickHouse は interval を [KQL 形式](https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings#the-constant-c-format-specifier) で出力します。例えば、`toIntervalDay(2)` は `2.00:00:00` という形式になります。長さが可変の interval 型（例えば `IntervalMonth` や `IntervalYear`）については、1 つの interval あたりの平均秒数が考慮されます。
 
+-   `numeric` - 数値形式の出力フォーマット。
 
-## output_format_arrow_compression_method {#output_format_arrow_compression_method}
+    ClickHouse は interval を、その内部の数値表現として出力します。例えば、`toIntervalDay(2)` は `2` という形式になります。
 
-<SettingsInfoBlock type='ArrowCompression' default_value='lz4_frame' />
+参照:
 
-Arrow出力形式の圧縮方式。サポートされているコーデック：lz4_frame、zstd、none（非圧縮）
-
-
-## output_format_arrow_fixed_string_as_fixed_byte_array {#output_format_arrow_fixed_string_as_fixed_byte_array}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-FixedString列に対して、Binary型の代わりにArrow FIXED_SIZE_BINARY型を使用します。
+-   [Interval](../../sql-reference/data-types/special-data-types/interval.md)
 
 
-## output_format_arrow_low_cardinality_as_dictionary {#output_format_arrow_low_cardinality_as_dictionary}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## into_outfile_create_parent_directories {#into_outfile_create_parent_directories}   
 
-LowCardinality型をDictionary Arrow型として出力する機能を有効にします
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## output_format_arrow_string_as_string {#output_format_arrow_string_as_string}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-String列にBinary型の代わりにArrow String型を使用します
+INTO OUTFILE を使用する際に、親ディレクトリが存在しない場合は自動的に作成します。
 
 
-## output_format_arrow_use_64_bit_indexes_for_dictionary {#output_format_arrow_use_64_bit_indexes_for_dictionary}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## json_type_escape_dots_in_keys {#json_type_escape_dots_in_keys}   
 
-Arrow形式のディクショナリインデックスに常に64ビット整数を使用する
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## output_format_arrow_use_signed_indexes_for_dictionary {#output_format_arrow_use_signed_indexes_for_dictionary}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-Arrow形式のディクショナリインデックスに符号付き整数を使用する
+この設定を有効にすると、解析時に JSON キー内のドット文字がエスケープされます。
 
 
-## output_format_avro_codec {#output_format_avro_codec}
 
-出力に使用する圧縮コーデック。指定可能な値：'null'、'deflate'、'snappy'、'zstd'。
+## output_format_arrow_compression_method {#output_format_arrow_compression_method}   
 
+<SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />
 
-## output_format_avro_rows_in_file {#output_format_avro_rows_in_file}
-
-<SettingsInfoBlock type='UInt64' default_value='1' />
-
-ファイル内の最大行数（ストレージで許可されている場合）
+Arrow 出力フォーマットの圧縮方式。サポートされているコーデック：lz4_frame、zstd、none（非圧縮）
 
 
-## output_format_avro_string_column_pattern {#output_format_avro_string_column_pattern}
 
-Avro形式用: AVRO文字列として選択するString型カラムの正規表現パターン。
+## output_format_arrow_fixed_string_as_fixed_byte_array {#output_format_arrow_fixed_string_as_fixed_byte_array}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+FixedString 型の列に対して、Binary 型の代わりに Arrow の FIXED_SIZE_BINARY 型を使用します。
 
 
-## output_format_avro_sync_interval {#output_format_avro_sync_interval}
 
-<SettingsInfoBlock type='UInt64' default_value='16384' />
+## output_format_arrow_low_cardinality_as_dictionary {#output_format_arrow_low_cardinality_as_dictionary}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、LowCardinality 型を Dictionary Arrow 型として出力します
+
+
+
+## output_format_arrow_string_as_string {#output_format_arrow_string_as_string}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+String 型の列に対して Binary ではなく Arrow の String 型を使用する。
+
+
+
+## output_format_arrow_use_64_bit_indexes_for_dictionary {#output_format_arrow_use_64_bit_indexes_for_dictionary}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Arrow 形式では、辞書インデックスに常に 64 ビット整数を使用します
+
+
+
+## output_format_arrow_use_signed_indexes_for_dictionary {#output_format_arrow_use_signed_indexes_for_dictionary}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Arrow 形式で辞書インデックスに符号付き整数を使用します
+
+
+
+## output_format_avro_codec {#output_format_avro_codec}   
+
+
+
+出力に使用される圧縮コーデックです。指定可能な値は `'null'`, `'deflate'`, `'snappy'`, `'zstd'` です。
+
+
+
+## output_format_avro_rows_in_file {#output_format_avro_rows_in_file}   
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+ストレージが許容する場合の1ファイルあたりの最大行数
+
+
+
+## output_format_avro_string_column_pattern {#output_format_avro_string_column_pattern}   
+
+
+
+Avro 形式で、AVRO の string として扱う `String` 列を選択するための正規表現。
+
+
+
+## output_format_avro_sync_interval {#output_format_avro_sync_interval}   
+
+<SettingsInfoBlock type="UInt64" default_value="16384" />
 
 同期間隔（バイト単位）。
 
 
-## output_format_binary_encode_types_in_binary_format {#output_format_binary_encode_types_in_binary_format}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_binary_encode_types_in_binary_format {#output_format_binary_encode_types_in_binary_format}   
 
-RowBinaryWithNamesAndTypes出力形式で、型名の代わりにデータ型をバイナリ形式で書き込みます
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## output_format_binary_write_json_as_string {#output_format_binary_write_json_as_string}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-RowBinary出力形式で、[JSON](../../sql-reference/data-types/newjson.md)データ型の値を[String](../../sql-reference/data-types/string.md)型のJSON値として書き込みます。
+RowBinaryWithNamesAndTypes 出力形式で、型名ではなくデータ型をバイナリ形式で出力します
 
 
-## output_format_bson_string_as_string {#output_format_bson_string_as_string}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_binary_write_json_as_string {#output_format_binary_write_json_as_string}   
 
-String列に対してBinary型の代わりにBSON String型を使用します。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## output_format_csv_crlf_end_of_line {#output_format_csv_crlf_end_of_line}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-trueに設定した場合、CSV形式の改行文字が\\nではなく\\r\\nになります。
+RowBinary 出力形式では、[JSON](../../sql-reference/data-types/newjson.md) データ型の値を JSON 文字列（[String](../../sql-reference/data-types/string.md) 型）として書き出します。
 
 
-## output_format_csv_serialize_tuple_into_separate_columns {#output_format_csv_serialize_tuple_into_separate_columns}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_bson_string_as_string {#output_format_bson_string_as_string}   
 
-trueに設定すると、CSV形式のタプルは個別の列としてシリアル化されます（つまり、タプル内のネスト構造は失われます）
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+String カラムには Binary 型ではなく BSON の String 型を使用します。
 
 
-## output_format_decimal_trailing_zeros {#output_format_decimal_trailing_zeros}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_csv_crlf_end_of_line {#output_format_csv_crlf_end_of_line}   
 
-Decimal値を出力する際に末尾のゼロを出力します。例：1.23ではなく1.230000と出力されます。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+true に設定すると、CSV 形式の改行コードが \\n ではなく \\r\\n になります。
+
+
+
+## output_format_csv_serialize_tuple_into_separate_columns {#output_format_csv_serialize_tuple_into_separate_columns}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+true に設定すると、CSV 形式のタプルは別々の列としてシリアライズされます（つまり、タプル内での入れ子構造は失われます）。
+
+
+
+## output_format_decimal_trailing_zeros {#output_format_decimal_trailing_zeros}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Decimal 値を出力する際に、小数点以下の末尾のゼロも出力します。例: 1.23 ではなく 1.230000。
 
 デフォルトでは無効です。
 
 
-## output_format_json_array_of_rows {#output_format_json_array_of_rows}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output&#95;format&#95;json&#95;array&#95;of&#95;rows
 
-[JSONEachRow](/interfaces/formats/JSONEachRow)形式で全ての行をJSON配列として出力する機能を有効化します。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+[JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットで、すべての行を JSON 配列として出力できるようにする設定です。
 
 設定可能な値:
 
-- 1 — ClickHouseは全ての行を配列として出力します。各行は`JSONEachRow`形式です。
-- 0 — ClickHouseは各行を`JSONEachRow`形式で個別に出力します。
+* 1 — ClickHouse は、すべての行を配列として出力し、それぞれの行は `JSONEachRow` フォーマットになります。
+* 0 — ClickHouse は、各行を個別に `JSONEachRow` フォーマットで出力します。
 
-**設定を有効化した場合のクエリ例**
+**この設定を有効にしたクエリの例**
 
 クエリ:
 
@@ -1656,7 +1864,7 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ]
 ```
 
-**設定を無効化した場合のクエリ例**
+**設定を無効にした場合のクエリ例**
 
 クエリ:
 
@@ -1665,7 +1873,7 @@ SET output_format_json_array_of_rows = 0;
 SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ```
 
-結果:
+結果：
 
 ```text
 {"number":"0"}
@@ -1674,40 +1882,43 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ```
 
 
-## output_format_json_escape_forward_slashes {#output_format_json_escape_forward_slashes}
+## output_format_json_escape_forward_slashes {#output_format_json_escape_forward_slashes}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-JSON出力形式における文字列出力でのフォワードスラッシュのエスケープを制御します。これはJavaScriptとの互換性のために用意されています。常にエスケープされるバックスラッシュと混同しないように注意してください。
-
-デフォルトで有効になっています。
-
-
-## output_format_json_map_as_array_of_tuples {#output_format_json_map_as_array_of_tuples}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-Map型カラムをタプルのJSON配列としてシリアライズします。
-
-デフォルトでは無効です。
-
-
-## output_format_json_named_tuples_as_objects {#output_format_json_named_tuples_as_objects}
-
-<SettingsInfoBlock type='Bool' default_value='1' />
-
-名前付きタプル列をJSONオブジェクトとしてシリアライズします。
+JSON 出力形式での文字列出力におけるスラッシュ `/` のエスケープ有無を制御します。これは JavaScript との互換性を目的としています。常にエスケープされるバックスラッシュ `\` と混同しないでください。
 
 デフォルトで有効です。
 
 
-## output_format_json_pretty_print {#output_format_json_pretty_print}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_json_map_as_array_of_tuples {#output_format_json_map_as_array_of_tuples}   
 
-この設定は、JSON出力形式を使用する際に、`data`配列内でTuple、Map、Arrayなどのネストされた構造をどのように表示するかを決定します。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-例えば、次のような出力:
+`Map` 型カラムを、タプルの配列からなる JSON 配列としてシリアライズします。
+
+デフォルトでは無効です。
+
+
+
+## output_format_json_named_tuples_as_objects {#output_format_json_named_tuples_as_objects}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+名前付きタプルの列を JSON オブジェクトとしてシリアライズします。
+
+デフォルトで有効です。
+
+
+
+## output&#95;format&#95;json&#95;pretty&#95;print
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+この設定は、JSON 出力形式を使用する際に、`data` 配列内で Tuple、Map、Array などのネストされた構造をどのように表示するかを制御します。
+
+たとえば、次のような出力ではなく:
 
 ```json
 "data":
@@ -1720,7 +1931,7 @@ Map型カラムをタプルのJSON配列としてシリアライズします。
 ],
 ```
 
-の代わりに、次のようにフォーマットされます:
+出力は次のように整形されます：
 
 ```json
 "data":
@@ -1745,54 +1956,57 @@ Map型カラムをタプルのJSON配列としてシリアライズします。
 ],
 ```
 
-デフォルトで有効です。
+デフォルトで有効になっています。
 
 
-## output_format_json_quote_64bit_floats {#output_format_json_quote_64bit_floats}
+## output_format_json_quote_64bit_floats {#output_format_json_quote_64bit_floats}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-JSON\* 形式で出力する際に、64ビット[浮動小数点数](../../sql-reference/data-types/float.md)を引用符で囲むかどうかを制御します。
+JSON* 形式での出力時に、64 ビット [floats](../../sql-reference/data-types/float.md) をクオートするかどうかを制御します。
 
 デフォルトでは無効です。
 
 
-## output_format_json_quote_64bit_integers {#output_format_json_quote_64bit_integers}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_json_quote_64bit_integers {#output_format_json_quote_64bit_integers}   
 
-[JSON](/interfaces/formats/JSON)形式で出力する際の64ビット以上の[整数型](../../sql-reference/data-types/int-uint.md)（`UInt64`や`Int128`など）に対する引用符の使用を制御します。
-デフォルトでは、これらの整数は引用符で囲まれます。この動作は、ほとんどのJavaScript実装と互換性があります。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+[整数](../../sql-reference/data-types/int-uint.md)（`UInt64` や `Int128` など）のうち、64 ビット以上のものを [JSON](/interfaces/formats/JSON) 形式で出力する際に、引用符で囲むかどうかを制御します。
+このような整数は、デフォルトでは引用符で囲んで出力されます。この動作は、ほとんどの JavaScript 実装と互換性があります。
+
+指定可能な値:
+
+- 0 — 整数を引用符なしで出力します。
+- 1 — 整数を引用符で囲んで出力します。
+
+
+
+## output_format_json_quote_decimals {#output_format_json_quote_decimals}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+JSON 出力フォーマットにおける decimal 型値のクオート有無を制御します。
+
+デフォルトでは無効です。
+
+
+
+## output&#95;format&#95;json&#95;quote&#95;denormals
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+[JSON](/interfaces/formats/JSON) 出力形式で `+nan`、`-nan`、`+inf`、`-inf` の出力を有効化します。
 
 設定可能な値:
 
-- 0 — 整数は引用符なしで出力されます。
-- 1 — 整数は引用符で囲まれます。
-
-
-## output_format_json_quote_decimals {#output_format_json_quote_decimals}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-JSON出力形式において、小数値を引用符で囲むかどうかを制御します。
-
-デフォルトでは無効になっています。
-
-
-## output_format_json_quote_denormals {#output_format_json_quote_denormals}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-[JSON](/interfaces/formats/JSON)出力形式において、`+nan`、`-nan`、`+inf`、`-inf`の出力を有効にします。
-
-設定可能な値:
-
-- 0 — 無効
-- 1 — 有効
+* 0 — 無効。
+* 1 — 有効。
 
 **例**
 
-以下の`account_orders`テーブルを例とします:
+次のテーブル `account_orders` があるとします。
 
 ```text
 ┌─id─┬─name───┬─duration─┬─period─┬─area─┐
@@ -1802,7 +2016,7 @@ JSON出力形式において、小数値を引用符で囲むかどうかを制�
 └────┴────────┴──────────┴────────┴──────┘
 ```
 
-`output_format_json_quote_denormals = 0`の場合、クエリは出力に`null`値を返します:
+`output_format_json_quote_denormals = 0` の場合、クエリの出力には `null` 値が含まれます。
 
 ```sql
 SELECT area/period FROM account_orders FORMAT JSON;
@@ -1810,347 +2024,385 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 ```json
 {
-  "meta": [
-    {
-      "name": "divide(area, period)",
-      "type": "Float64"
-    }
-  ],
+        "meta":
+        [
+                {
+                        "name": "divide(area, period)",
+                        "type": "Float64"
+                }
+        ],
 
-  "data": [
-    {
-      "divide(area, period)": null
-    },
-    {
-      "divide(area, period)": null
-    },
-    {
-      "divide(area, period)": null
-    }
-  ],
+        "data":
+        [
+                {
+                        "divide(area, period)": null
+                },
+                {
+                        "divide(area, period)": null
+                },
+                {
+                        "divide(area, period)": null
+                }
+        ],
 
-  "rows": 3,
+        "rows": 3,
 
-  "statistics": {
-    "elapsed": 0.003648093,
-    "rows_read": 3,
-    "bytes_read": 24
-  }
+        "statistics":
+        {
+                "elapsed": 0.003648093,
+                "rows_read": 3,
+                "bytes_read": 24
+        }
 }
 ```
 
-`output_format_json_quote_denormals = 1`の場合、クエリは以下を返します:
+`output_format_json_quote_denormals = 1` の場合、クエリは次のような結果を返します。
 
 ```json
 {
-  "meta": [
-    {
-      "name": "divide(area, period)",
-      "type": "Float64"
-    }
-  ],
+        "meta":
+        [
+                {
+                        "name": "divide(area, period)",
+                        "type": "Float64"
+                }
+        ],
 
-  "data": [
-    {
-      "divide(area, period)": "inf"
-    },
-    {
-      "divide(area, period)": "-nan"
-    },
-    {
-      "divide(area, period)": "-inf"
-    }
-  ],
+        "data":
+        [
+                {
+                        "divide(area, period)": "inf"
+                },
+                {
+                        "divide(area, period)": "-nan"
+                },
+                {
+                        "divide(area, period)": "-inf"
+                }
+        ],
 
-  "rows": 3,
+        "rows": 3,
 
-  "statistics": {
-    "elapsed": 0.000070241,
-    "rows_read": 3,
-    "bytes_read": 24
-  }
+        "statistics":
+        {
+                "elapsed": 0.000070241,
+                "rows_read": 3,
+                "bytes_read": 24
+        }
 }
 ```
 
 
-## output_format_json_skip_null_value_in_named_tuples {#output_format_json_skip_null_value_in_named_tuples}
+## output_format_json_skip_null_value_in_named_tuples {#output_format_json_skip_null_value_in_named_tuples}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-名前付きタプルカラムをJSONオブジェクトとしてシリアライズする際に、null値を持つキーと値のペアをスキップします。この設定は、output_format_json_named_tuples_as_objectsがtrueの場合にのみ有効です。
+名前付きタプル列を JSON オブジェクトとしてシリアライズする際、値が null のキーと値のペアをスキップします。これは、output_format_json_named_tuples_as_objects が true の場合にのみ有効です。
 
 
-## output_format_json_validate_utf8 {#output_format_json_validate_utf8}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_json_validate_utf8 {#output_format_json_validate_utf8}   
 
-JSON出力形式におけるUTF-8シーケンスの検証を制御します。JSON/JSONCompact/JSONColumnsWithMetadata形式には影響しません。これらの形式は常にUTF-8を検証します。
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+JSON 出力フォーマットでの UTF-8 シーケンスの検証を制御します。`JSON` / `JSONCompact` / `JSONColumnsWithMetadata` フォーマットには影響しません。これらのフォーマットでは常に UTF-8 の検証が行われます。
 
 デフォルトでは無効です。
 
 
-## output_format_markdown_escape_special_characters {#output_format_markdown_escape_special_characters}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters
 
-有効にすると、Markdown内の特殊文字をエスケープします。
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-[Common Mark](https://spec.commonmark.org/0.30/#example-12)では、`\`によってエスケープ可能な以下の特殊文字が定義されています:
+有効にすると、Markdown 内の特殊文字をエスケープします。
+
+[CommonMark](https://spec.commonmark.org/0.30/#example-12) では、次の特殊文字をエスケープできると定義しています：
 
 ```
 ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 ```
 
-設定可能な値:
+指定可能な値:
 
-- 0 — 無効。
-- 1 — 有効。
+* 0 — 無効
+* 1 — 有効
 
 
-## output_format_msgpack_uuid_representation {#output_format_msgpack_uuid_representation}
+## output_format_msgpack_uuid_representation {#output_format_msgpack_uuid_representation}   
 
-<SettingsInfoBlock type='MsgPackUUIDRepresentation' default_value='ext' />
+<SettingsInfoBlock type="MsgPackUUIDRepresentation" default_value="ext" />
 
-MsgPack形式でUUIDを出力する方法を指定します。
+UUID を MsgPack 形式で出力する方法を指定します。
 
 
-## output_format_native_encode_types_in_binary_format {#output_format_native_encode_types_in_binary_format}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_native_encode_types_in_binary_format {#output_format_native_encode_types_in_binary_format}   
 
-Native出力形式において、型名の代わりにバイナリ形式でデータ型を書き込みます
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+Native 出力形式で、型名ではなくデータ型をバイナリ形式で出力します
 
-## output_format_native_use_flattened_dynamic_and_json_serialization {#output_format_native_use_flattened_dynamic_and_json_serialization}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-[JSON](../../sql-reference/data-types/newjson.md)および[Dynamic](../../sql-reference/data-types/dynamic.md)カラムのデータを平坦化された形式で書き込みます(すべての型/パスを個別のサブカラムとして)。
+## output_format_native_use_flattened_dynamic_and_json_serialization {#output_format_native_use_flattened_dynamic_and_json_serialization}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## output_format_native_write_json_as_string {#output_format_native_write_json_as_string}
+[JSON](../../sql-reference/data-types/newjson.md) 列および [Dynamic](../../sql-reference/data-types/dynamic.md) 列のデータを、すべての型やパスを個別のサブカラムとして扱うフラットな形式で出力します。
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-[JSON](../../sql-reference/data-types/newjson.md)カラムのデータを、デフォルトのネイティブJSONシリアライゼーションの代わりに、JSON文字列を含む[String](../../sql-reference/data-types/string.md)カラムとして書き込みます。
 
+## output_format_native_write_json_as_string {#output_format_native_write_json_as_string}   
 
-## output_format_orc_compression_block_size {#output_format_orc_compression_block_size}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='UInt64' default_value='262144' />
+[JSON](../../sql-reference/data-types/newjson.md) 列のデータを、デフォルトのネイティブな JSON シリアル化ではなく、JSON 文字列を格納する [String](../../sql-reference/data-types/string.md) 列として書き込みます。
 
-ORC出力形式の圧縮ブロックのサイズ(バイト単位)。
 
 
-## output_format_orc_compression_method {#output_format_orc_compression_method}
+## output_format_orc_compression_block_size {#output_format_orc_compression_block_size}   
 
-<SettingsInfoBlock type='ORCCompression' default_value='zstd' />
+<SettingsInfoBlock type="UInt64" default_value="262144" />
 
-ORC出力形式の圧縮方式。サポートされるコーデック: lz4, snappy, zlib, zstd, none (非圧縮)
+ORC 形式の出力における圧縮ブロックのサイズ（バイト単位）。
 
 
-## output_format_orc_dictionary_key_size_threshold {#output_format_orc_dictionary_key_size_threshold}
 
-<SettingsInfoBlock type='Double' default_value='0' />
+## output_format_orc_compression_method {#output_format_orc_compression_method}   
 
-ORC出力形式の文字列カラムにおいて、非NULL行の総数に対する一意な値の数の割合がこのしきい値を超える場合、辞書エンコーディングを無効にします。それ以外の場合は辞書エンコーディングが有効になります
+<SettingsInfoBlock type="ORCCompression" default_value="zstd" />
 
+ORC 形式の出力に使用する圧縮方式。サポートされているコーデック: lz4、snappy、zlib、zstd、none（非圧縮）
 
-## output_format_orc_row_index_stride {#output_format_orc_row_index_stride}
 
-<SettingsInfoBlock type='UInt64' default_value='10000' />
 
-ORC出力形式における行インデックスのストライド値
+## output_format_orc_dictionary_key_size_threshold {#output_format_orc_dictionary_key_size_threshold}   
 
+<SettingsInfoBlock type="Double" default_value="0" />
 
-## output_format_orc_string_as_string {#output_format_orc_string_as_string}
+ORC 出力フォーマットにおける文字列列について、NULL 以外の行数の合計に対する異なる値の個数の割合がこの値を超える場合は辞書エンコーディングを無効にします。超えない場合は辞書エンコーディングを有効にします。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-String型のカラムに対してBinary型の代わりにORC String型を使用します
 
+## output_format_orc_row_index_stride {#output_format_orc_row_index_stride}   
 
-## output_format_orc_writer_time_zone_name {#output_format_orc_writer_time_zone_name}
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-<SettingsInfoBlock type='String' default_value='GMT' />
+ORC 出力形式における行インデックスストライドの目標値
 
-ORCライターのタイムゾーン名です。デフォルトのORCライターのタイムゾーンはGMTです。
 
 
-## output_format_parquet_batch_size {#output_format_parquet_batch_size}
+## output_format_orc_string_as_string {#output_format_orc_string_as_string}   
 
-<SettingsInfoBlock type='NonZeroUInt64' default_value='1024' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-指定した行数ごとにページサイズを確認します。列の平均値サイズが数KB以上の場合は、この値を減らすことを検討してください。
+String 列には Binary 型ではなく ORC の String 型を使用します
 
 
-## output_format_parquet_bloom_filter_bits_per_value {#output_format_parquet_bloom_filter_bits_per_value}
 
-<SettingsInfoBlock type='Double' default_value='10.5' />
+## output_format_orc_writer_time_zone_name {#output_format_orc_writer_time_zone_name}   
 
-Parquetブルームフィルタの各一意な値に使用するビット数の概算値。推定偽陽性率:
+<SettingsInfoBlock type="String" default_value="GMT" />
 
-- 6ビット - 10%
-- 10.5ビット - 1%
-- 16.9ビット - 0.1%
-- 26.4ビット - 0.01%
-- 41ビット - 0.001%
+ORC writer のタイムゾーン名です。ORC writer のデフォルトのタイムゾーンは GMT です。
 
 
-## output_format_parquet_bloom_filter_flush_threshold_bytes {#output_format_parquet_bloom_filter_flush_threshold_bytes}
 
-<SettingsInfoBlock type='UInt64' default_value='134217728' />
+## output_format_parquet_batch_size {#output_format_parquet_batch_size}   
 
-Parquetファイル内でブルームフィルタを配置する位置を指定します。ブルームフィルタは、おおよそこのサイズのグループ単位で書き込まれます。具体的には以下の通りです：
+<SettingsInfoBlock type="NonZeroUInt64" default_value="1024" />
 
-- 0の場合、各行グループのブルームフィルタは、その行グループの直後に書き込まれます。
-- すべてのブルームフィルタの合計サイズより大きい場合、すべての行グループのブルームフィルタがメモリに蓄積され、ファイルの終端付近にまとめて書き込まれます。
-- それ以外の場合、ブルームフィルタはメモリに蓄積され、その合計サイズがこの値を超えるたびに書き出されます。
+この行数ごとにページサイズを確認します。各値の平均サイズが数 KB を超える列がある場合は、この値を小さくすることを検討してください。
 
 
-## output_format_parquet_compliant_nested_types {#output_format_parquet_compliant_nested_types}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_parquet_bloom_filter_bits_per_value {#output_format_parquet_bloom_filter_bits_per_value}   
 
-Parquetファイルスキーマにおいて、リスト要素の名前として'item'の代わりに'element'を使用します。これはArrowライブラリの実装における歴史的な経緯によるものです。一般的には互換性が向上しますが、Arrowの古いバージョンの一部では例外となる場合があります。
+<SettingsInfoBlock type="Double" default_value="10.5" />
 
+Parquet のブルームフィルター内の各ユニーク値に対して使用するビット数のおおよその値。偽陽性率の推定値:
+  *  6   ビット - 10%
+  * 10.5 ビット -  1%
+  * 16.9 ビット -  0.1%
+  * 26.4 ビット -  0.01%
+  * 41   ビット -  0.001%
 
-## output_format_parquet_compression_method {#output_format_parquet_compression_method}
 
-<SettingsInfoBlock type='ParquetCompression' default_value='zstd' />
 
-Parquet出力形式の圧縮方式。サポートされるコーデック: snappy, lz4, brotli, zstd, gzip, none (非圧縮)
+## output_format_parquet_bloom_filter_flush_threshold_bytes {#output_format_parquet_bloom_filter_flush_threshold_bytes}   
 
+<SettingsInfoBlock type="UInt64" default_value="134217728" />
 
-## output_format_parquet_data_page_size {#output_format_parquet_data_page_size}
+parquet ファイル内のどの位置に Bloom filter を配置するかを指定します。Bloom filter は概ねこの値のサイズごとのグループ単位で書き込まれます。具体的には:
+  * 0 の場合、各 row group の Bloom filter はその row group の直後に書き込まれます。
+  * すべての Bloom filter の合計サイズより大きい場合、すべての row group の Bloom filter はメモリに蓄積され、ファイル末尾付近でまとめて書き込まれます。
+  * それ以外の場合、Bloom filter はメモリに蓄積され、その合計サイズがこの値を超えるたびに書き出されます。
 
-<SettingsInfoBlock type='UInt64' default_value='1048576' />
 
-圧縮前の目標ページサイズ（バイト単位）。
 
+## output_format_parquet_compliant_nested_types {#output_format_parquet_compliant_nested_types}   
 
-## output_format_parquet_date_as_uint16 {#output_format_parquet_date_as_uint16}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+Parquet ファイルスキーマでは、リスト要素に 'item' ではなく 'element' という名前を使用します。これは Arrow ライブラリ実装に由来する歴史的な経緯によるものです。一般的には互換性が向上しますが、一部の古いバージョンの Arrow では互換性の問題が生じる可能性があります。
 
-Date値を32ビットのParquet DATE型（Date32として読み戻される）に変換せず、プレーンな16ビット数値（UInt16として読み戻される）として書き込みます。
 
 
-## output_format_parquet_datetime_as_uint32 {#output_format_parquet_datetime_as_uint32}
+## output_format_parquet_compression_method {#output_format_parquet_compression_method}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
 
-DateTime値をミリ秒に変換せず、生のUnixタイムスタンプとして書き込みます(UInt32として読み戻されます。ミリ秒に変換した場合はDateTime64(3)として読み戻されます)。
+Parquet 出力フォーマットの圧縮方式。サポートされているコーデックは次のとおりです: snappy、lz4、brotli、zstd、gzip、none（無圧縮）
 
 
-## output_format_parquet_enum_as_byte_array {#output_format_parquet_enum_as_byte_array}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_parquet_data_page_size {#output_format_parquet_data_page_size}   
 
-Parquet物理型: BYTE_ARRAY、論理型: ENUMを使用してenum型を書き込みます
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
+圧縮前のページサイズの目標値（バイト単位）。
 
-## output_format_parquet_fixed_string_as_fixed_byte_array {#output_format_parquet_fixed_string_as_fixed_byte_array}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-FixedString列に対して、Binary型の代わりにParquetのFIXED_LEN_BYTE_ARRAY型を使用します。
+## output_format_parquet_date_as_uint16 {#output_format_parquet_date_as_uint16}   
 
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-## output_format_parquet_geometadata {#output_format_parquet_geometadata}
+`Date` の値を、32 ビットの parquet `DATE` 型（読み出し時は `Date32`）に変換する代わりに、16 ビットのプレーンな数値として書き出します（読み出し時は `UInt16` として読み取られます）。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Parquetメタデータに地理情報列に関する情報を書き込み、列をWKB形式でエンコードすることを許可します。
 
+## output_format_parquet_datetime_as_uint32 {#output_format_parquet_datetime_as_uint32}   
 
-## output_format_parquet_max_dictionary_size {#output_format_parquet_max_dictionary_size}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='UInt64' default_value='1048576' />
+DateTime の値を、ミリ秒に変換して（読み取り時は DateTime64(3) として）書き出すのではなく、生の Unix タイムスタンプ（読み取り時は UInt32）として書き出します。
 
-辞書サイズがこのバイト数より大きくなった場合、辞書を使用しないエンコーディングに切り替えます。辞書エンコーディングを無効にする場合は0に設定してください。
 
 
-## output_format_parquet_parallel_encoding {#output_format_parquet_parallel_encoding}
+## output_format_parquet_enum_as_byte_array {#output_format_parquet_enum_as_byte_array}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-複数のスレッドでParquetエンコーディングを実行します。output_format_parquet_use_custom_encoderの設定が必要です。
+Enum を Parquet の物理型 BYTE_ARRAY および論理型 ENUM として書き込みます
 
 
-## output_format_parquet_row_group_size {#output_format_parquet_row_group_size}
 
-<SettingsInfoBlock type='UInt64' default_value='1000000' />
+## output_format_parquet_fixed_string_as_fixed_byte_array {#output_format_parquet_fixed_string_as_fixed_byte_array}   
 
-行グループの目標サイズ(行数単位)。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+FixedString 列には Binary 型ではなく、Parquet の FIXED_LEN_BYTE_ARRAY 型を使用します。
 
-## output_format_parquet_row_group_size_bytes {#output_format_parquet_row_group_size_bytes}
 
-<SettingsInfoBlock type='UInt64' default_value='536870912' />
 
-圧縮前の目標行グループサイズ（バイト単位）。
+## output_format_parquet_geometadata {#output_format_parquet_geometadata}   
 
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-## output_format_parquet_string_as_string {#output_format_parquet_string_as_string}
+Parquet のメタデータに geo 列に関する情報を書き込み、列を WKB 形式でエンコードできるようにします。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-String列に対してBinary型の代わりにParquet String型を使用します。
 
+## output_format_parquet_max_dictionary_size {#output_format_parquet_max_dictionary_size}   
 
-## output_format_parquet_use_custom_encoder {#output_format_parquet_use_custom_encoder}
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+辞書サイズがこのバイト数を超えた場合、辞書なしエンコーディングに切り替えます。辞書エンコーディングを無効にするには 0 を設定します。
 
-より高速なParquetエンコーダー実装を使用します。
 
 
-## output_format_parquet_version {#output_format_parquet_version}
+## output_format_parquet_parallel_encoding {#output_format_parquet_parallel_encoding}   
 
-<SettingsInfoBlock type='ParquetVersion' default_value='2.latest' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-出力形式のParquetフォーマットバージョン。サポートされているバージョン: 1.0、2.4、2.6、および2.latest（デフォルト）
+Parquet のエンコードを複数スレッドで実行します。使用するには output_format_parquet_use_custom_encoder の有効化が必要です。
 
 
-## output_format_parquet_write_bloom_filter {#output_format_parquet_write_bloom_filter}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_parquet_row_group_size {#output_format_parquet_row_group_size}   
 
-Parquetファイルにブルームフィルタを書き込みます。output_format_parquet_use_custom_encoder = true の設定が必要です。
+<SettingsInfoBlock type="UInt64" default_value="1000000" />
 
+ターゲットとする行グループのサイズ（行数）。
 
-## output_format_parquet_write_checksums {#output_format_parquet_write_checksums}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Parquetページヘッダーにcrc32チェックサムを含めます。
+## output_format_parquet_row_group_size_bytes {#output_format_parquet_row_group_size_bytes}   
 
+<SettingsInfoBlock type="UInt64" default_value="536870912" />
 
-## output_format_parquet_write_page_index {#output_format_parquet_write_page_index}
+圧縮前の、目標とする行グループサイズ（バイト単位）。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-列インデックスとオフセットインデックス（各データページに関する統計情報で、読み取り時のフィルタプッシュダウンに使用できます）をParquetファイルに書き込みます。
 
+## output_format_parquet_string_as_string {#output_format_parquet_string_as_string}   
 
-## output_format_pretty_color {#output_format_pretty_color}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='UInt64Auto' default_value='auto' />
+String 列に Binary 型ではなく Parquet の String 型を使用します。
 
-Pretty形式でANSIエスケープシーケンスを使用します。0 - 無効、1 - 有効、'auto' - ターミナルの場合に有効。
 
 
-## output_format_pretty_display_footer_column_names {#output_format_pretty_display_footer_column_names}
+## output_format_parquet_use_custom_encoder {#output_format_parquet_use_custom_encoder}   
 
-<SettingsInfoBlock type='UInt64' default_value='1' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-テーブルの行数が多い場合、フッターに列名を表示します。
+より高速な Parquet エンコーダー実装を使用します。
 
-設定可能な値:
 
-- 0 — フッターに列名を表示しません。
-- 1 — 行数が [output_format_pretty_display_footer_column_names_min_rows](#output_format_pretty_display_footer_column_names_min_rows) で設定された閾値以上の場合、フッターに列名を表示します(デフォルトは50)。
+
+## output_format_parquet_version {#output_format_parquet_version}   
+
+<SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
+
+出力フォーマットに使用する Parquet フォーマットのバージョン。サポートされているバージョン: 1.0、2.4、2.6、および 2.latest（既定）
+
+
+
+## output_format_parquet_write_bloom_filter {#output_format_parquet_write_bloom_filter}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Parquet ファイルにブルームフィルタを書き込みます。output_format_parquet_use_custom_encoder = true を設定している必要があります。
+
+
+
+## output_format_parquet_write_checksums {#output_format_parquet_write_checksums}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+CRC32 チェックサムを Parquet のページヘッダーに書き込みます。
+
+
+
+## output_format_parquet_write_page_index {#output_format_parquet_write_page_index}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+カラムインデックスとオフセットインデックス（各データページに関する統計情報であり、読み取り時のフィルタープッシュダウンに利用される場合があります）を Parquet ファイルに書き込みます。
+
+
+
+## output_format_pretty_color {#output_format_pretty_color}   
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+Pretty 形式で ANSI エスケープシーケンスを使用します。0 - 無効、1 - 有効、'auto' - 出力先がターミナルの場合に有効。
+
+
+
+## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+テーブルの行数が多い場合に、フッターに列名を表示します。
+
+可能な値:
+
+* 0 — フッターに列名を表示しません。
+* 1 — 行数が [output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names&#95;min&#95;rows](#output_format_pretty_display_footer_column_names_min_rows)（デフォルトは 50）で設定されたしきい値以上の場合に、フッターに列名を表示します。
 
 **例**
 
@@ -2174,262 +2426,299 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 ```
 
 
-## output_format_pretty_display_footer_column_names_min_rows {#output_format_pretty_display_footer_column_names_min_rows}
+## output_format_pretty_display_footer_column_names_min_rows {#output_format_pretty_display_footer_column_names_min_rows}   
 
-<SettingsInfoBlock type='UInt64' default_value='50' />
+<SettingsInfoBlock type="UInt64" default_value="50" />
 
-設定 [output_format_pretty_display_footer_column_names](#output_format_pretty_display_footer_column_names) が有効な場合に、列名を含むフッターが表示される最小行数を設定します。
+設定 [output_format_pretty_display_footer_column_names](#output_format_pretty_display_footer_column_names) が有効な場合に、列名を含むフッターが表示される最小行数を指定します。
 
 
-## output_format_pretty_fallback_to_vertical {#output_format_pretty_fallback_to_vertical}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_pretty_fallback_to_vertical {#output_format_pretty_fallback_to_vertical}   
 
-有効にすると、テーブルの幅が広く行数が少ない場合、Pretty形式はVertical形式と同じように出力します。
-この動作の詳細な調整については、`output_format_pretty_fallback_to_vertical_max_rows_per_chunk`および`output_format_pretty_fallback_to_vertical_min_table_width`を参照してください。
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+有効にすると、テーブルが横に広く行数が少ない場合に、Pretty 形式は Vertical 形式と同様の形式で出力します。
+この動作を詳細に調整するには、`output_format_pretty_fallback_to_vertical_max_rows_per_chunk` と `output_format_pretty_fallback_to_vertical_min_table_width` を参照してください。
 
-## output_format_pretty_fallback_to_vertical_max_rows_per_chunk {#output_format_pretty_fallback_to_vertical_max_rows_per_chunk}
 
-<SettingsInfoBlock type='UInt64' default_value='10' />
 
-Vertical形式へのフォールバック(`output_format_pretty_fallback_to_vertical`を参照)は、チャンク内のレコード数が指定された値以下の場合にのみ有効になります。
+## output_format_pretty_fallback_to_vertical_max_rows_per_chunk {#output_format_pretty_fallback_to_vertical_max_rows_per_chunk}   
 
+<SettingsInfoBlock type="UInt64" default_value="10" />
 
-## output_format_pretty_fallback_to_vertical_min_columns {#output_format_pretty_fallback_to_vertical_min_columns}
+フォールバック先の Vertical 形式（`output_format_pretty_fallback_to_vertical` を参照）は、チャンク内のレコード数が指定された値以下の場合にのみ有効になります。
 
-<SettingsInfoBlock type='UInt64' default_value='5' />
 
-Vertical形式へのフォールバック(`output_format_pretty_fallback_to_vertical`を参照)は、列数が指定された値を超える場合にのみ有効化されます。
 
+## output_format_pretty_fallback_to_vertical_min_columns {#output_format_pretty_fallback_to_vertical_min_columns}   
 
-## output_format_pretty_fallback_to_vertical_min_table_width {#output_format_pretty_fallback_to_vertical_min_table_width}
+<SettingsInfoBlock type="UInt64" default_value="5" />
 
-<SettingsInfoBlock type='UInt64' default_value='250' />
+Vertical 形式へのフォールバック（`output_format_pretty_fallback_to_vertical` を参照）は、列数が指定した値を超える場合にのみ行われます。
 
-Vertical形式へのフォールバック（`output_format_pretty_fallback_to_vertical`を参照）は、テーブル内の列の長さの合計が指定された値以上である場合、または少なくとも1つの値に改行文字が含まれている場合にのみ有効になります。
 
 
-## output_format_pretty_glue_chunks {#output_format_pretty_glue_chunks}
+## output_format_pretty_fallback_to_vertical_min_table_width {#output_format_pretty_fallback_to_vertical_min_table_width}   
 
-<SettingsInfoBlock type='UInt64Auto' default_value='auto' />
+<SettingsInfoBlock type="UInt64" default_value="250" />
 
-Pretty形式でレンダリングされたデータが複数のチャンクで到着した場合、遅延後であっても、次のチャンクが前のチャンクと同じ列幅である場合、ANSIエスケープシーケンスを使用して前の行に戻り、前のチャンクのフッターを上書きして新しいチャンクのデータで継続します。これにより、結果の視覚的な見やすさが向上します。
+フォールバック先の Vertical 形式（`output_format_pretty_fallback_to_vertical` を参照）は、テーブル内の列幅の合計が指定された値以上である場合、または少なくとも 1 つの値に改行文字が含まれている場合にのみ有効化されます。
 
-0 - 無効、1 - 有効、'auto' - ターミナルの場合に有効
 
 
-## output_format_pretty_grid_charset {#output_format_pretty_grid_charset}
+## output_format_pretty_glue_chunks {#output_format_pretty_glue_chunks}   
 
-<SettingsInfoBlock type='String' default_value='UTF-8' />
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
 
-グリッド罫線を出力する際の文字セット。利用可能な文字セット：ASCII、UTF-8（デフォルト）。
+Pretty 形式でレンダリングされるデータが、遅延を伴って複数のチャンクに分かれて到着した場合でも、次のチャンクの列幅が前のチャンクと同じであれば、ANSI エスケープシーケンスを使用して前の行に戻り、前のチャンクのフッターを上書きして、新しいチャンクのデータを続きとして表示します。これにより、結果の見た目が向上します。
 
+0 - 無効、1 - 有効、'auto' - 端末上で実行されている場合に有効。
 
-## output_format_pretty_highlight_digit_groups {#output_format_pretty_highlight_digit_groups}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-有効にした場合、出力先が端末であるときに、千の位、百万の位などに対応する桁を下線で強調表示します。
+## output_format_pretty_grid_charset {#output_format_pretty_grid_charset}   
 
+<SettingsInfoBlock type="String" default_value="UTF-8" />
 
-## output_format_pretty_highlight_trailing_spaces {#output_format_pretty_highlight_trailing_spaces}
+グリッドの枠線を出力する際の文字セットです。利用可能な文字セット: ASCII, UTF-8（デフォルト）。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-有効にした場合、出力先が端末であれば、末尾のスペースを灰色でハイライトし、下線を引きます。
 
+## output_format_pretty_highlight_digit_groups {#output_format_pretty_highlight_digit_groups}   
 
-## output_format_pretty_max_column_name_width_cut_to {#output_format_pretty_max_column_name_width_cut_to}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='UInt64' default_value='24' />
+有効にすると、出力先がターミナルの場合、千や百万などの桁を表す数字を下線付きで強調表示します。
 
-カラム名が長すぎる場合、この長さに切り詰められます。
-カラム名は、`output_format_pretty_max_column_name_width_cut_to` と `output_format_pretty_max_column_name_width_min_chars_to_cut` の合計よりも長い場合に切り詰められます。
 
 
-## output_format_pretty_max_column_name_width_min_chars_to_cut {#output_format_pretty_max_column_name_width_min_chars_to_cut}
+## output_format_pretty_highlight_trailing_spaces {#output_format_pretty_highlight_trailing_spaces}   
 
-<SettingsInfoBlock type='UInt64' default_value='4' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-カラム名が長すぎる場合に切り詰める最小文字数。
-カラム名が `output_format_pretty_max_column_name_width_cut_to` と `output_format_pretty_max_column_name_width_min_chars_to_cut` の合計よりも長い場合に切り詰められます。
+有効にすると、出力先がターミナルの場合、行末の空白文字をグレーと下線で強調表示します。
 
 
-## output_format_pretty_max_column_pad_width {#output_format_pretty_max_column_pad_width}
 
-<SettingsInfoBlock type='UInt64' default_value='250' />
+## output_format_pretty_max_column_name_width_cut_to {#output_format_pretty_max_column_name_width_cut_to}   
 
-Pretty形式で列内のすべての値をパディングする際の最大幅。
+<SettingsInfoBlock type="UInt64" default_value="24" />
 
+列名が長すぎる場合、この値の長さに切り詰めます。
+列名は、`output_format_pretty_max_column_name_width_cut_to` と `output_format_pretty_max_column_name_width_min_chars_to_cut` を合計した長さを超える場合に切り詰められます。
 
-## output_format_pretty_max_rows {#output_format_pretty_max_rows}
 
-<SettingsInfoBlock type='UInt64' default_value='1000' />
 
-Pretty形式の最大行数。
+## output_format_pretty_max_column_name_width_min_chars_to_cut {#output_format_pretty_max_column_name_width_min_chars_to_cut}   
 
+<SettingsInfoBlock type="UInt64" default_value="4" />
 
-## output_format_pretty_max_value_width {#output_format_pretty_max_value_width}
+カラム名が長すぎる場合に切り詰める際の最小文字数。
+カラム名の長さが `output_format_pretty_max_column_name_width_cut_to` に `output_format_pretty_max_column_name_width_min_chars_to_cut` を加えた値より長い場合、切り詰められます。
 
-<SettingsInfoBlock type='UInt64' default_value='10000' />
 
-Pretty形式で表示する値の最大幅です。この値を超える場合は切り詰められます。
-値が0の場合は切り詰めを行いません。
 
+## output_format_pretty_max_column_pad_width {#output_format_pretty_max_column_pad_width}   
 
-## output_format_pretty_max_value_width_apply_for_single_value {#output_format_pretty_max_value_width_apply_for_single_value}
+<SettingsInfoBlock type="UInt64" default_value="250" />
 
-<SettingsInfoBlock type='UInt64' default_value='0' />
+Pretty 形式において、列内のすべての値に適用されるパディングの最大幅。
 
-ブロック内に単一の値でない場合にのみ値を切り詰めます（`output_format_pretty_max_value_width`設定を参照）。単一の値の場合は完全に出力します。これは`SHOW CREATE TABLE`クエリで有用です。
 
 
-## output_format_pretty_multiline_fields {#output_format_pretty_multiline_fields}
+## output_format_pretty_max_rows {#output_format_pretty_max_rows}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="UInt64" default_value="1000" />
 
-有効にすると、Pretty形式は複数行のフィールドをテーブルセル内にレンダリングし、テーブルの外枠が保持されます。
-無効にすると、フィールドはそのままレンダリングされ、テーブルが崩れる可能性があります（無効にする利点の1つは、複数行の値のコピー&ペーストが容易になることです）。
+Pretty フォーマットで表示する行数の上限。
 
 
-## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_pretty_max_value_width {#output_format_pretty_max_value_width}   
 
-Pretty出力形式で各行の前に行番号を追加します
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
+Pretty フォーマットで表示する値の最大幅。これを超えると値は切り詰められます。
+値 0 は「一切切り詰めない」ことを意味します。
 
-## output_format_pretty_single_large_number_tip_threshold {#output_format_pretty_single_large_number_tip_threshold}
 
-<SettingsInfoBlock type='UInt64' default_value='1000000' />
 
-ブロックがこの値を超える単一の数値で構成されている場合（0を除く）、テーブルの右側に読みやすい形式の数値ヒントを表示します
+## output_format_pretty_max_value_width_apply_for_single_value {#output_format_pretty_max_value_width_apply_for_single_value}   
 
+<SettingsInfoBlock type="UInt64" default_value="0" />
 
-## output_format_pretty_squash_consecutive_ms {#output_format_pretty_squash_consecutive_ms}
+ブロック内の値が単一の値でない場合にのみ、値を切り詰めます（`output_format_pretty_max_value_width` 設定を参照）。それ以外の場合は値を省略せずに出力します。これは `SHOW CREATE TABLE` クエリに役立ちます。
 
-<SettingsInfoBlock type='UInt64' default_value='50' />
 
-指定されたミリ秒数まで次のブロックを待機し、書き込み前に前のブロックに結合します。
-これにより、小さすぎるブロックが頻繁に出力されることを回避しながら、ストリーミング形式でデータを表示できます。
 
+## output_format_pretty_multiline_fields {#output_format_pretty_multiline_fields}   
 
-## output_format_pretty_squash_max_wait_ms {#output_format_pretty_squash_max_wait_ms}
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<SettingsInfoBlock type='UInt64' default_value='1000' />
+有効な場合、Pretty 形式ではテーブルセル内の複数行フィールドをセル内に収めて表示し、テーブルの枠線が保たれるようにします。
+無効な場合、それらはそのまま表示されるため、テーブルが変形する可能性があります（オフにしておく利点としては、複数行の値をコピー＆ペーストしやすくなることが挙げられます）。
 
-前回の出力から指定されたミリ秒数以上が経過した場合、保留中のブロックをprettyフォーマットで出力します。
 
 
-## output_format_protobuf_nullables_with_google_wrappers {#output_format_protobuf_nullables_with_google_wrappers}
+## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Googleラッパーを使用してNullableカラムをシリアライズする際、デフォルト値を空のラッパーとしてシリアライズします。この設定を無効にすると、デフォルト値とnull値はシリアライズされません
+Pretty 出力形式で各行の前に行番号を追加します
 
 
-## output_format_schema {#output_format_schema}
 
-[Cap'n Proto](/interfaces/formats/CapnProto)または[Protobuf](/interfaces/formats/Protobuf)形式で自動生成されたスキーマを保存するファイルのパスです。
+## output_format_pretty_single_large_number_tip_threshold {#output_format_pretty_single_large_number_tip_threshold}   
 
+<SettingsInfoBlock type="UInt64" default_value="1000000" />
 
-## output_format_sql_insert_include_column_names {#output_format_sql_insert_include_column_names}
+ブロックが単一の数値のみで構成され、その値がこの閾値（0 を除く）を超える場合、テーブルの右側に読みやすい形式に変換した数値の注釈を表示します。
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-INSERT クエリにカラム名を含める
 
+## output_format_pretty_squash_consecutive_ms {#output_format_pretty_squash_consecutive_ms}   
 
-## output_format_sql_insert_max_batch_size {#output_format_sql_insert_max_batch_size}
+<SettingsInfoBlock type="UInt64" default_value="50" />
 
-<SettingsInfoBlock type='UInt64' default_value='65409' />
+次のブロックを指定したミリ秒数間待機し、書き込み前に前のブロックにまとめます。
+これにより、小さすぎるブロックが頻繁に出力されることを防ぎつつ、ストリーミング形式でデータを表示できます。
 
-1つのINSERT文に含めることができる最大行数。
 
 
-## output_format_sql_insert_quote_names {#output_format_sql_insert_quote_names}
+## output_format_pretty_squash_max_wait_ms {#output_format_pretty_squash_max_wait_ms}   
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+<SettingsInfoBlock type="UInt64" default_value="1000" />
 
-カラム名を '`' 文字で囲む
+前回の出力から指定したミリ秒数を超えて経過している場合、pretty 系フォーマットで保留中のブロックを出力します。
 
 
-## output_format_sql_insert_table_name {#output_format_sql_insert_table_name}
 
-<SettingsInfoBlock type='String' default_value='table' />
+## output_format_protobuf_nullables_with_google_wrappers {#output_format_protobuf_nullables_with_google_wrappers}   
 
-出力INSERT文のテーブル名
+<SettingsInfoBlock type="Bool" default_value="0" />
 
+Google の wrapper 型を使用して Nullable 列をシリアライズする場合、デフォルト値を空の wrapper としてシリアライズします。オフにすると、デフォルト値と null 値はシリアライズされません。
 
-## output_format_sql_insert_use_replace {#output_format_sql_insert_use_replace}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-INSERT文の代わりにREPLACE文を使用する
+## output_format_schema {#output_format_schema}   
 
 
-## output_format_tsv_crlf_end_of_line {#output_format_tsv_crlf_end_of_line}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+自動生成されたスキーマが [Cap'n Proto](/interfaces/formats/CapnProto) または [Protobuf](/interfaces/formats/Protobuf) 形式で保存されるファイルのパス。
 
-trueに設定した場合、TSV形式の行末文字が\\nの代わりに\\r\\nになります。
 
 
-## output_format_values_escape_quote_with_quote {#output_format_values_escape_quote_with_quote}
+## output_format_sql_insert_include_column_names {#output_format_sql_insert_include_column_names}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-trueの場合、'を''でエスケープします。それ以外の場合は\\'でエスケープします
+INSERT クエリに列名を含める
 
 
-## output_format_write_statistics {#output_format_write_statistics}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## output_format_sql_insert_max_batch_size {#output_format_sql_insert_max_batch_size}   
 
-適切な出力形式で、読み取った行数、バイト数、経過時間に関する統計情報を書き込みます。
+<SettingsInfoBlock type="UInt64" default_value="65409" />
 
-デフォルトで有効
+1つの INSERT 文で挿入できる最大行数。
 
 
-## precise_float_parsing {#precise_float_parsing}
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+## output_format_sql_insert_quote_names {#output_format_sql_insert_quote_names}   
 
-より精密な(ただし低速な)浮動小数点数解析アルゴリズムを優先する
+<SettingsInfoBlock type="Bool" default_value="1" />
 
+カラム名を `（バッククォート）で囲みます
 
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
 
-Hyperscanライブラリを使用するregexp_tree辞書を許可します。
+## output_format_sql_insert_table_name {#output_format_sql_insert_table_name}   
 
+<SettingsInfoBlock type="String" default_value="table" />
 
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive}
+出力される INSERT クエリ内で使用されるテーブルの名前
 
-<SettingsInfoBlock type='Bool' default_value='0' />
 
-regexp_tree辞書で大文字と小文字を区別しないマッチングを使用します。個別の正規表現で(?i)および(?-i)を使用してオーバーライドできます。
 
+## output_format_sql_insert_use_replace {#output_format_sql_insert_use_replace}   
 
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall}
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+INSERT 文ではなく REPLACE 文を使用する
 
-regexp_tree辞書において、'.'を改行文字にマッチさせることを許可します。
 
 
-## rows_before_aggregation {#rows_before_aggregation}
+## output_format_tsv_crlf_end_of_line {#output_format_tsv_crlf_end_of_line}   
 
-<SettingsInfoBlock type='Bool' default_value='0' />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-有効にすると、ClickHouseはrows_before_aggregation統計の正確な値を提供します。これは集計前に読み取られた行数を表します
+`true` に設定すると、TSV 形式の行末は `\n` ではなく `\r\n` になります。
 
 
-## schema_inference_hints {#schema_inference_hints}
 
-スキーマを持たない形式におけるスキーマ推論のヒントとして使用するカラム名と型のリスト。
+## output_format_values_escape_quote_with_quote {#output_format_values_escape_quote_with_quote}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+true の場合は ' を '' でエスケープし、それ以外の場合は \' でクオートします。
+
+
+
+## output_format_write_statistics {#output_format_write_statistics}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+読み取られた行数、バイト数、経過時間に関する統計情報を、適切な出力フォーマットで書き出します。
+
+既定で有効です
+
+
+
+## precise_float_parsing {#precise_float_parsing}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+より高精度だが低速な浮動小数点数解析アルゴリズムを優先して使用する
+
+
+
+## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Hyperscan ライブラリを使用する `regexp_tree` 辞書を許可します。
+
+
+
+## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+regexp_tree 辞書に対して大文字・小文字を区別しないマッチングを行います。個々の式ごとに `(?i)` または `(?-i)` を指定して上書きできます。
+
+
+
+## regexp_dict_flag_dotall {#regexp_dict_flag_dotall}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+`.` が `regexp_tree` 辞書で改行文字にもマッチすることを許可します。
+
+
+
+## rows_before_aggregation {#rows_before_aggregation}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、ClickHouse は rows_before_aggregation という統計情報の正確な値を提供します。これは、集約処理を行う前に読み取られた行数を表します。
+
+
+
+## schema&#95;inference&#95;hints
+
+スキーマを持たないフォーマットに対して、スキーマ推論のヒントとして使用する列名と型の一覧です。
 
 例:
 
@@ -2439,7 +2728,7 @@ regexp_tree辞書において、'.'を改行文字にマッチさせることを
 desc format(JSONEachRow, '{"x" : 1, "y" : "String", "z" : "0.0.0.0" }') settings schema_inference_hints='x UInt8, z IPv4';
 ```
 
-結果:
+結果：
 
 ```sql
 x   UInt8
@@ -2448,64 +2737,68 @@ z   IPv4
 ```
 
 :::note
-`schema_inference_hints`が適切にフォーマットされていない場合、またはタイプミスや誤ったデータ型などがある場合、`schema_inference_hints`全体が無視されます。
+`schema_inference_hints` が正しくフォーマットされていない場合、または入力ミスや誤ったデータ型などが含まれている場合は、`schema_inference_hints` 全体が無視されます。
 :::
 
 
-## schema_inference_make_columns_nullable {#schema_inference_make_columns_nullable}
+## schema_inference_make_columns_nullable {#schema_inference_make_columns_nullable}   
 
-<SettingsInfoBlock type='UInt64Auto' default_value='3' />
+<SettingsInfoBlock type="UInt64Auto" default_value="3" />
 
-スキーマ推論において、推論された型を`Nullable`にするかどうかを制御します。
-設定可能な値:
-
-- 0 - 推論された型は決して`Nullable`になりません(この場合のnull値の扱いについては input_format_null_as_default を使用して制御します)
-- 1 - すべての推論された型が`Nullable`になります
-- 2 または `auto` - スキーマ推論中に解析されるサンプル内でカラムが`NULL`を含む場合、またはファイルメタデータにカラムのnull許容性に関する情報が含まれる場合のみ、推論された型が`Nullable`になります
-- 3 - フォーマットがメタデータを持つ場合(例: Parquet)は推論された型のnull許容性がファイルメタデータと一致し、それ以外の場合(例: CSV)は常にNullableになります
-
-
-## schema_inference_make_json_columns_nullable {#schema_inference_make_json_columns_nullable}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-スキーマ推論において、推論されたJSON型を`Nullable`にするかどうかを制御します。
-この設定をschema_inference_make_columns_nullableと共に有効にすると、推論されたJSON型は`Nullable`になります。
+スキーマ推論において、推論された型を `Nullable` にするかどうかを制御します。
+指定可能な値:
+ * 0 - 推論された型は決して `Nullable` になりません（この場合の null 値の扱いは input_format_null_as_default で制御します）。
+ * 1 - すべての推論された型が `Nullable` になります。
+ * 2 または `auto` - スキーマ推論中に解析されるサンプル内で、その列に `NULL` が含まれている場合、またはファイルメタデータに列の Nullable 情報が含まれている場合にのみ、推論された型は `Nullable` になります。
+ * 3 - フォーマットがファイルメタデータに null 許容性情報を持つ場合（例: Parquet）は、そのメタデータに従って推論された型が `Nullable` かどうかが決まり、それ以外の場合（例: CSV）は常に `Nullable` になります。
 
 
-## schema_inference_mode {#schema_inference_mode}
 
-<SettingsInfoBlock type='SchemaInferenceMode' default_value='default' />
+## schema_inference_make_json_columns_nullable {#schema_inference_make_json_columns_nullable}   
 
-スキーマ推論のモード。'default' - すべてのファイルが同じスキーマを持つと仮定し、任意のファイルからスキーマを推論可能、'union' - ファイルごとに異なるスキーマを持つ可能性があり、結果のスキーマはすべてのファイルのスキーマの和集合となる
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-
-## show_create_query_identifier_quoting_rule {#show_create_query_identifier_quoting_rule}
-
-<SettingsInfoBlock
-  type='IdentifierQuotingRule'
-  default_value='when_necessary'
-/>
-
-SHOW CREATE クエリにおける識別子の引用符ルールを設定します
+スキーマ推論時に、推論された JSON 型を `Nullable` として扱うかどうかを制御します。
+この設定を `schema_inference_make_columns_nullable` と併せて有効にした場合、推論される JSON 型は `Nullable` として扱われます。
 
 
-## show_create_query_identifier_quoting_style {#show_create_query_identifier_quoting_style}
 
-<SettingsInfoBlock type='IdentifierQuotingStyle' default_value='Backticks' />
+## schema_inference_mode {#schema_inference_mode}   
 
-SHOW CREATE クエリにおける識別子の引用符スタイルを設定します
+<SettingsInfoBlock type="SchemaInferenceMode" default_value="default" />
 
-
-## type_json_skip_duplicated_paths {#type_json_skip_duplicated_paths}
-
-<SettingsInfoBlock type='Bool' default_value='0' />
-
-有効にすると、JSONオブジェクトをJSON型に解析する際、重複したパスは無視され、例外をスローする代わりに最初のパスのみが挿入されます
+スキーマ推論のモード。`default` — すべてのファイルが同一のスキーマを持つと仮定し、任意のファイルからスキーマを推論できるモード。`union` — ファイルごとに異なるスキーマを持ち得るものとし、結果のスキーマをすべてのファイルのスキーマの和集合とするモード。
 
 
-## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}
 
-<SettingsInfoBlock type='Bool' default_value='1' />
+## show_create_query_identifier_quoting_rule {#show_create_query_identifier_quoting_rule}   
 
-Array/Map/Tupleなどのネストされた型内で実験的な型および疑わしい型の使用を検証します
+<SettingsInfoBlock type="IdentifierQuotingRule" default_value="when_necessary" />
+
+SHOW CREATE クエリで使用される識別子のクォート規則を設定します
+
+
+
+## show_create_query_identifier_quoting_style {#show_create_query_identifier_quoting_style}   
+
+<SettingsInfoBlock type="IdentifierQuotingStyle" default_value="Backticks" />
+
+SHOW CREATE クエリで識別子に使用する引用符のスタイルを設定します
+
+
+
+## type_json_skip_duplicated_paths {#type_json_skip_duplicated_paths}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、JSON オブジェクトを JSON 型に解析する際に、重複するパスは無視され、例外は送出されず最初のものだけが挿入されます。
+
+
+
+## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Array/Map/Tuple などのネストされた型内での experimental および suspicious 型の使用を検証する
+
+

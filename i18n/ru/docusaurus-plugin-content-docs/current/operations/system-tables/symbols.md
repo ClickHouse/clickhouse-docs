@@ -1,5 +1,5 @@
 ---
-description: 'Системная таблица, полезная для экспертов по C++ и инженеров ClickHouse, содержащая
+description: 'Системная таблица, полезная для специалистов по C++ и инженеров ClickHouse, содержащая
   информацию для интроспекции бинарного файла `clickhouse`.'
 keywords: ['system table', 'symbols']
 slug: /operations/system-tables/symbols
@@ -7,15 +7,15 @@ title: 'system.symbols'
 doc_type: 'reference'
 ---
 
-Содержит информацию для интроспекции бинарного файла `clickhouse`. Для доступа требуется привилегия INTROSPECTION.
-Эта таблица полезна только для экспертов по C++ и инженеров ClickHouse.
+Содержит информацию для интроспекции бинарного файла `clickhouse`. Для доступа требуется привилегия `introspection`.
+Эта таблица полезна только для специалистов по C++ и инженеров ClickHouse.
 
 Столбцы:
 
 * `symbol` ([String](../../sql-reference/data-types/string.md)) — Имя символа в бинарном файле. Оно задекорировано (mangled). Можно применить `demangle(symbol)`, чтобы получить читаемое имя.
 * `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Начальный адрес символа в бинарном файле.
 * `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Конечный адрес символа в бинарном файле.
-* `name` ([String](../../sql-reference/data-types/string.md)) — Синоним для `event`.
+* `name` ([String](../../sql-reference/data-types/string.md)) — Псевдоним для `event`.
 
 **Пример**
 

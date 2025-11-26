@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONStrings 形式に関するドキュメント'
+description: 'JSONStrings 形式のドキュメント'
 input_format: true
 keywords: ['JSONStrings']
 output_format: true
@@ -9,7 +9,7 @@ title: 'JSONStrings'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
@@ -17,14 +17,16 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[JSON](./JSON.md)形式との違いは、データフィールドが型付けされたJSON値ではなく文字列として出力される点のみです。
+[JSON](./JSON.md) 形式とは、データフィールドが型付きの JSON 値ではなく文字列として出力される点のみが異なります。
+
 
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のデータを含む`football.json`という名前のJSONファイルを使用します:
+以下のデータを含み、`football.json` という名前を付けた JSON ファイルを使用します:
+
 
 
 ```json
@@ -198,15 +200,15 @@ doc_type: 'reference'
 }
 ```
 
-データを挿入します:
+データを挿入する
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`JSONStrings` 形式を使用してデータを読み取ります:
+`JSONStrings` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -214,7 +216,7 @@ FROM football
 FORMAT JSONStrings
 ```
 
-出力は JSON 形式になります:
+出力は JSON 形式です：
 
 ```json
 {
@@ -245,7 +247,6 @@ FORMAT JSONStrings
                     "type": "Int8"
             }
     ],
-
 ```
 
 
@@ -405,4 +406,4 @@ FORMAT JSONStrings
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

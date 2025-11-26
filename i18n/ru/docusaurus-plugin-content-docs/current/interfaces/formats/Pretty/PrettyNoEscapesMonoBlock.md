@@ -18,13 +18,15 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyNoEscapes`](./PrettyNoEscapes.md) тем, что буферизируется до `10 000` строк,
-которые затем выводятся в виде единой таблицы, а не блоками.
+Отличается от формата [`PrettyNoEscapes`](./PrettyNoEscapes.md) тем, что до `10 000` строк сохраняются в буфере, 
+а затем выводятся как одна таблица, а не блоками.
+
 
 
 ## Пример использования {#example-usage}
 
 
-## Настройки формата {#format-settings}
 
-<PrettyFormatSettings />
+## Настройки форматирования {#format-settings}
+
+<PrettyFormatSettings/>

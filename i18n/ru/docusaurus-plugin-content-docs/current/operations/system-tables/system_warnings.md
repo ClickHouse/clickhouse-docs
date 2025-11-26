@@ -1,5 +1,5 @@
 ---
-description: 'Эта таблица содержит предупреждения сервера ClickHouse.'
+description: 'Эта таблица содержит предупреждения о сервере ClickHouse.'
 keywords: [ 'системная таблица', 'предупреждения' ]
 slug: /operations/system-tables/system_warnings
 title: 'system.warnings'
@@ -13,12 +13,12 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-Эта таблица содержит предупреждения о сервере ClickHouse.
-Предупреждения одного и того же типа объединяются в одно.
-Например, если число N подключённых баз данных превышает настраиваемый порог T, вместо N отдельных записей показывается одна запись, содержащая текущее значение N.
+Эта таблица показывает предупреждения, связанные с сервером ClickHouse.
+Предупреждения одного и того же типа объединяются в одно предупреждение.
+Например, если число N подключенных баз данных превышает настраиваемый порог T, вместо N отдельных записей отображается одна запись, содержащая текущее значение N.
 Если текущее значение становится ниже порога, запись удаляется из таблицы.
 
-Таблица может быть настроена с помощью следующих параметров:
+Таблицу можно настроить с помощью следующих настроек:
 
 * [max&#95;table&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
 * [max&#95;database&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
@@ -33,7 +33,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 Столбцы:
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — Текст предупреждения.
-* `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Строка формата, используемая для форматирования сообщения.
+* `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Форматная строка, используемая для форматирования сообщения.
 
 **Пример**
 
@@ -53,6 +53,6 @@ message_format_string: Количество активных частей бол
 
 Row 2:
 ──────
-message:               Количество подключённых баз данных больше 2.
-message_format_string: Количество подключённых баз данных больше {}.
+message:               Количество подключенных баз данных больше 2.
+message_format_string: Количество подключенных баз данных больше {}.
 ```

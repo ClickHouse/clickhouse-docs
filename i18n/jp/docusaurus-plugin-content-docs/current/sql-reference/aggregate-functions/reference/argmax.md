@@ -1,5 +1,5 @@
 ---
-description: '`val` が最大となるときの `arg` の値を計算します。'
+description: '最大の `val` に対応する `arg` の値を計算します。'
 sidebar_position: 109
 slug: /sql-reference/aggregate-functions/reference/argmax
 title: 'argMax'
@@ -8,8 +8,8 @@ doc_type: 'reference'
 
 # argMax
 
-最大の `val` の値に対応する `arg` の値を計算します。最大となる `val` が同一の行が複数存在する場合、どの行の対応する `arg` が返されるかは保証されません。
-`arg` と `max` はどちらも[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、いずれも処理中に[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、非 `Null` 値が存在する場合は非 `Null` 値を返します。
+最大の `val` 値に対応する `arg` の値を計算します。最大値の `val` を持つ行が複数ある場合、どの行の `arg` が返されるかは決定的ではありません。
+`arg` 側と `max` 側はどちらも[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はいずれも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` 以外の値が存在する場合には `Null` 以外の値を返します。
 
 **構文**
 
@@ -22,9 +22,9 @@ argMax(arg, val)
 * `arg` — 引数。
 * `val` — 値。
 
-**返される値**
+**戻り値**
 
-* 最大の `val` に対応する `arg` の値。
+* `val` の最大値に対応する `arg` の値。
 
 型: `arg` と同じ型。
 
@@ -40,13 +40,13 @@ argMax(arg, val)
 └──────────┴────────┘
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT argMax(user, salary) FROM salary;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─argMax(user, salary)─┐
@@ -78,7 +78,7 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b' は最初の非NULL値であるため。max(b) は別の行からのものです!
+│ b            │      3 │ -- argMax = 'b' は最初の非NULL値であるため。max(b) は別の行から取得されます!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
@@ -88,22 +88,22 @@ SELECT argMax(tuple(a), b) FROM test;
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- Tupleを使用して、対応するmax(b)の両方(すべて - tuple(*))の列を取得できます
+│ ᴺᵁᴸᴸ    │       3 │ -- Tuple を使用して、対応する max(b) の両方(すべて - tuple(*))の列を取得できます
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- フィルタにより、すべての集約行に少なくとも1つの `NULL` 値が含まれているため、すべての行がスキップされ、結果は `NULL` になります
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- フィルタにより集約されたすべての行に少なくとも1つの `NULL` 値が含まれるため、すべての行がスキップされ、結果は `NULL` になります
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- b=2の行が2つあります。`Max` 内の `Tuple` により、最初の `arg` 以外を取得できます
+│ c                      │ -- b=2 の行が2つあります。`Max` 内の `Tuple` を使用すると、最初の `arg` 以外を取得できます
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
 ┌─argMax(a, tuple(b))─┐
-│ b                   │ -- `Tuple` を `Max` で使用することで、`Max` 内でNULLをスキップしないようにできます
+│ b                   │ -- `Max` 内で `Tuple` を使用することで、`Max` で NULL をスキップしないようにできます
 └─────────────────────┘
 ```
 

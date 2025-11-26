@@ -2,8 +2,8 @@
 sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
-title: 'ClickHouse における Parquet の利用'
-description: 'ClickHouse で Parquet を扱う方法を説明するページ'
+title: 'ClickHouse での Parquet の利用'
+description: 'ClickHouse での Parquet の扱い方について説明するページ'
 doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
@@ -12,27 +12,27 @@ keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache p
 
 # ClickHouse での Parquet の利用
 
-Parquet は、データをカラム志向で保存するための効率的なファイル形式です。
-ClickHouse は Parquet ファイルの読み書きの両方をサポートしています。
+Parquet は、データをカラム指向で効率的に保存できるファイル形式です。
+ClickHouse は、Parquet ファイルの読み取りと書き込みの両方をサポートします。
 
 :::tip
-クエリ内でファイルパスを指定した場合、ClickHouse がどこから読み取るかは、使用している ClickHouse の種類によって異なります。
+クエリ内でファイルパスを参照する場合、ClickHouse がどこから読み込むかは、使用している ClickHouse の実行形態によって異なります。
 
-[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用している場合は、ClickHouse Local を起動した場所からの相対パスとして読み取ります。
-`clickhouse client` 経由で ClickHouse Server または ClickHouse Cloud を使用している場合は、サーバー上の `/var/lib/clickhouse/user_files/` ディレクトリからの相対パスとして読み取ります。
+[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用している場合は、ClickHouse Local を起動した場所からの相対パスとして読み込みます。
+`clickhouse client` 経由で ClickHouse Server または ClickHouse Cloud を使用している場合は、サーバー上の `/var/lib/clickhouse/user_files/` ディレクトリからの相対パスとして読み込みます。
 :::
 
 
 
-## Parquetからのインポート {#importing-from-parquet}
+## Parquet からのインポート
 
-データを読み込む前に、[file()](/sql-reference/functions/files.md/#file)関数を使用して[サンプルparquetファイル](assets/data.parquet)の構造を確認できます:
+データをロードする前に、[file()](/sql-reference/functions/files.md/#file) 関数を使用して、[Parquet 形式のサンプルファイル](assets/data.parquet) の構造を確認できます。
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-第2引数に[Parquet](/interfaces/formats/Parquet)を指定することで、ClickHouseがファイル形式を認識します。これにより、カラム名とその型が出力されます:
+第 2 引数として [Parquet](/interfaces/formats/Parquet) を指定しているため、ClickHouse はファイル形式を認識できます。これにより、列とそのデータ型が出力されます。
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -42,7 +42,7 @@ DESCRIBE TABLE file('data.parquet', Parquet);
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-また、SQLの機能を活用して、実際にデータをインポートする前にファイルの内容を確認することもできます:
+実際にデータをインポートする前に、SQL の全機能を活用してファイルを探索することもできます。
 
 ```sql
 SELECT *
@@ -59,14 +59,14 @@ LIMIT 3;
 ```
 
 :::tip
-`file()`および`INFILE`/`OUTFILE`では、形式の明示的な指定を省略できます。
-その場合、ClickHouseはファイル拡張子に基づいて形式を自動的に検出します。
+`file()` と `INFILE`/`OUTFILE` では、フォーマットの明示的な指定を省略できます。
+その場合、ClickHouse がファイル拡張子に基づいてフォーマットを自動的に判別します。
 :::
 
 
-## 既存のテーブルへのインポート {#importing-to-an-existing-table}
+## 既存テーブルへのインポート
 
-Parquetデータをインポートするテーブルを作成します:
+Parquet データをインポートするためのテーブルを作成します。
 
 ```sql
 CREATE TABLE sometable
@@ -79,7 +79,7 @@ ENGINE = MergeTree
 ORDER BY (date, path);
 ```
 
-`FROM INFILE`句を使用してデータをインポートできます:
+これで、`FROM INFILE` 句を使用してデータをインポートできます。
 
 ```sql
 INSERT INTO sometable
@@ -100,21 +100,21 @@ LIMIT 5;
 └───────────────────────────────┴────────────┴──────┘
 ```
 
-ClickHouseが`date`カラムのParquet文字列を自動的に`Date`型に変換していることに注目してください。これは、ClickHouseがターゲットテーブルの型に基づいて自動的に型キャストを行うためです。
+ClickHouse が `date` 列の Parquet の文字列データを自動的に `Date` 型へ変換していることに注目してください。これは、ClickHouse がターゲットテーブルの列の型に基づいて自動的に型変換を行うためです。
 
 
-## ローカルファイルをリモートサーバーに挿入する {#inserting-a-local-file-to-remote-server}
+## ローカルファイルをリモートサーバーに挿入する
 
-ローカルのParquetファイルをリモートのClickHouseサーバーに挿入したい場合は、以下のようにファイルの内容を`clickhouse-client`にパイプすることで実行できます:
+ローカルの Parquet ファイルをリモートの ClickHouse サーバーに挿入したい場合は、次のようにファイルの内容を `clickhouse-client` にパイプすることで行えます。
 
 ```sql
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
 
 
-## Parquetファイルから新しいテーブルを作成する {#creating-new-tables-from-parquet-files}
+## Parquet ファイルから新しいテーブルを作成する
 
-ClickHouseはParquetファイルのスキーマを読み取るため、テーブルを動的に作成できます:
+ClickHouse は Parquet ファイルのスキーマを読み取ることができるため、テーブルを動的に作成できます。
 
 ```sql
 CREATE TABLE imported_from_parquet
@@ -124,7 +124,7 @@ SELECT *
 FROM file('data.parquet', Parquet)
 ```
 
-これにより、指定されたParquetファイルからテーブルが自動的に作成され、データが投入されます:
+これにより、指定した Parquet ファイルからテーブルが自動的に作成され、データが投入されます。
 
 ```sql
 DESCRIBE TABLE imported_from_parquet;
@@ -138,16 +138,16 @@ DESCRIBE TABLE imported_from_parquet;
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-デフォルトでは、ClickHouseはカラム名、型、値に対して厳格です。ただし、インポート時に存在しないカラムやサポートされていない値をスキップすることもできます。これは[Parquet設定](/interfaces/formats/Parquet#format-settings)で管理できます。
+デフォルトでは、ClickHouse はカラム名やデータ型、値に対して厳格に動作します。ただし、状況によっては、インポート時に存在しないカラムやサポートされていない値をスキップすることができます。これは [Parquet 設定](/interfaces/formats/Parquet#format-settings) で制御できます。
 
 
-## Parquet形式へのエクスポート {#exporting-to-parquet-format}
+## Parquet 形式へのエクスポート
 
 :::tip
-ClickHouse Cloudで`INTO OUTFILE`を使用する場合、ファイルの書き込み先となるマシン上で`clickhouse client`のコマンドを実行する必要があります。
+ClickHouse Cloud で `INTO OUTFILE` を使用する場合、ファイルが書き込まれるマシン上で `clickhouse client` を使ってコマンドを実行する必要があります。
 :::
 
-任意のテーブルまたはクエリ結果をParquetファイルにエクスポートするには、`INTO OUTFILE`句を使用できます:
+任意のテーブルまたはクエリ結果を Parquet ファイルにエクスポートするには、`INTO OUTFILE` 句を使用します。
 
 ```sql
 SELECT *
@@ -156,12 +156,12 @@ INTO OUTFILE 'export.parquet'
 FORMAT Parquet
 ```
 
-これにより、作業ディレクトリに`export.parquet`ファイルが作成されます。
+これにより、作業ディレクトリに `export.parquet` ファイルが作成されます。
 
 
-## ClickHouseとParquetのデータ型 {#clickhouse-and-parquet-data-types}
+## ClickHouse と Parquet のデータ型
 
-ClickHouseとParquetのデータ型はほぼ同一ですが、[若干の違い](/interfaces/formats/Parquet#data-types-matching-parquet)があります。例えば、ClickHouseは`DateTime`型をParquetの`int64`としてエクスポートします。これをClickHouseに再度インポートすると、数値として表示されます([time.parquetファイル](assets/time.parquet)):
+ClickHouse と Parquet のデータ型はほとんど同一ですが、[いくつか違いがあります](/interfaces/formats/Parquet#data-types-matching-parquet)。たとえば、ClickHouse は `DateTime` 型を Parquet 側の `int64` としてエクスポートします。その後それを ClickHouse にインポートし直すと、（[time.parquet ファイル](assets/time.parquet) のように）数値として表示されます：
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -177,12 +177,12 @@ SELECT * FROM file('time.parquet', Parquet);
 └───┴────────────┘
 ```
 
-この場合、[型変換](/sql-reference/functions/type-conversion-functions.md)を使用できます:
+この場合には、[型変換](/sql-reference/functions/type-conversion-functions.md) を利用できます。
 
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- intから日時へ
+    toDateTime(time)                 <--- int を日時型に変換
 FROM file('time.parquet', Parquet);
 ```
 
@@ -197,15 +197,15 @@ FROM file('time.parquet', Parquet);
 ```
 
 
-## 関連資料 {#further-reading}
+## さらに読む {#further-reading}
 
-ClickHouseは、様々なシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、より多くのフォーマットとその操作方法を確認できます:
+ClickHouse は、さまざまなシナリオやプラットフォームをカバーするために、テキストおよびバイナリを含む多くのフォーマットをサポートしています。以下の記事で、より多くのフォーマットとその扱い方について参照してください。
 
-- [CSVおよびTSV形式](csv-tsv.md)
-- [Avro、ArrowおよびORC](arrow-avro-orc.md)
-- [JSON形式](/integrations/data-ingestion/data-formats/json/intro.md)
+- [CSV および TSV フォーマット](csv-tsv.md)
+- [Avro、Arrow、ORC](arrow-avro-orc.md)
+- [JSON フォーマット](/integrations/data-ingestion/data-formats/json/intro.md)
 - [正規表現とテンプレート](templates-regex.md)
-- [ネイティブ形式とバイナリ形式](binary.md)
-- [SQL形式](sql.md)
+- [ネイティブおよびバイナリフォーマット](binary.md)
+- [SQL フォーマット](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせず、ローカル/リモートファイルを操作できるポータブルでフル機能を備えたツールです。
+あわせて [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) も参照してください。ClickHouse サーバーを用意することなく、ローカル／リモートファイルを扱えるポータブルでフル機能のツールです。

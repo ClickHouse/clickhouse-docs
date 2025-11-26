@@ -1,52 +1,45 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm
-title: "Helm"
+title: 'Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: "Развертывание ClickStack с помощью Helm — стек наблюдаемости ClickHouse"
-doc_type: "guide"
-keywords:
-  [
-    "ClickStack Helm chart",
-    "Helm ClickHouse deployment",
-    "HyperDX Helm installation",
-    "Kubernetes observability stack",
-    "ClickStack Kubernetes deployment"
-  ]
+description: 'Развертывание ClickStack с помощью Helm — стек наблюдаемости ClickHouse'
+doc_type: 'guide'
+keywords: ['Helm-чарт ClickStack', 'Развертывание ClickHouse с помощью Helm', 'Установка HyperDX с помощью Helm', 'Стек наблюдаемости Kubernetes', 'Развертывание ClickStack в Kubernetes']
 ---
 
-import Image from "@theme/IdealImage"
-import hyperdx_24 from "@site/static/images/use-cases/observability/hyperdx-24.png"
-import hyperdx_login from "@site/static/images/use-cases/observability/hyperdx-login.png"
-import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
+import Image from '@theme/IdealImage';
+import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Миграция чарта
-Если вы используете чарт `hdx-oss-v2`, выполните миграцию на чарт `clickstack`. Чарт `hdx-oss-v2` находится в режиме поддержки и больше не будет получать новые функции. Вся новая разработка ведется в чарте `clickstack`, который предоставляет ту же функциональность с улучшенным именованием и более удобной организацией.
+Если вы сейчас используете чарт `hdx-oss-v2`, пожалуйста, перейдите на чарт `clickstack`. Чарт `hdx-oss-v2` переведён в режим поддержки и больше не будет получать новые функции. Вся новая разработка сосредоточена на чарте `clickstack`, который предоставляет ту же функциональность с более понятными наименованиями и улучшённой структурой.
 :::
 
-Helm-чарт для HyperDX можно найти [здесь](https://github.com/hyperdxio/helm-charts). Это **рекомендуемый** метод для развертывания в production-среде.
+Helm-чарт для HyperDX можно найти [здесь](https://github.com/hyperdxio/helm-charts); это **рекомендуемый** способ для продакшн-развертываний.
 
-По умолчанию Helm-чарт разворачивает все основные компоненты, включая:
+По умолчанию Helm-чарт разворачивает все ключевые компоненты, включая:
 
-- **ClickHouse**
-- **HyperDX**
-- **OpenTelemetry (OTel) collector**
-- **MongoDB** (для хранения состояния приложения)
+* **ClickHouse**
+* **HyperDX**
+* **OpenTelemetry (OTel) collector**
+* **MongoDB** (для хранения постоянного состояния приложения)
 
-При этом его можно легко настроить для интеграции с существующим развертыванием ClickHouse, например, размещенным в **ClickHouse Cloud**.
+Однако его можно легко настроить для интеграции с существующим развертыванием ClickHouse — например, размещённым в **ClickHouse Cloud**.
 
-Чарт поддерживает стандартные практики Kubernetes, включая:
+Чарт поддерживает рекомендуемые практики Kubernetes, включая:
 
-- Конфигурацию для конкретных сред через `values.yaml`
-- Ограничения ресурсов и масштабирование на уровне подов
-- Настройку TLS и ingress
-- Управление секретами и настройку аутентификации
+* Конфигурацию окружений через `values.yaml`
+* Лимиты ресурсов и масштабирование на уровне подов
+* Конфигурацию TLS и Входного шлюза (Ingress)
+* Управление секретами и настройку аутентификации
 
-### Подходит для {#suitable-for}
+### Подходит для
 
-- Proof of concept
-- Production-развертываний
+* Proof-of-concept проектов
+* Продакшна
 
 
 ## Шаги развертывания {#deployment-steps}
@@ -61,9 +54,9 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 - Кластер Kubernetes (рекомендуется v1.20+)
 - `kubectl`, настроенный для взаимодействия с вашим кластером
 
-### Добавление репозитория Helm для ClickStack {#add-the-clickstack-helm-repository}
+### Добавление Helm-репозитория ClickStack {#add-the-clickstack-helm-repository}
 
-Добавьте репозиторий Helm для ClickStack:
+Добавьте Helm-репозиторий ClickStack:
 
 ```shell
 helm repo add clickstack https://hyperdxio.github.io/helm-charts
@@ -72,7 +65,7 @@ helm repo update
 
 ### Установка ClickStack {#installing-clickstack}
 
-Чтобы установить чарт ClickStack со значениями по умолчанию:
+Для установки Helm-чарта ClickStack со значениями по умолчанию:
 
 ```shell
 helm install my-clickstack clickstack/clickstack
@@ -88,9 +81,9 @@ kubectl get pods -l "app.kubernetes.io/name=clickstack"
 
 Когда все поды будут готовы, продолжайте.
 
-### Перенаправление портов {#forward-ports}
+### Проброс портов {#forward-ports}
 
-Перенаправление портов позволяет получить доступ к HyperDX и настроить его. Пользователям, развертывающим в продакшене, следует вместо этого предоставить доступ к сервису через ingress или балансировщик нагрузки для обеспечения правильного сетевого доступа, терминации TLS и масштабируемости. Перенаправление портов лучше всего подходит для локальной разработки или разовых административных задач, а не для долгосрочных сред или сред с высокой доступностью.
+Проброс портов позволяет получить доступ к HyperDX и настроить его. При развертывании в продакшене следует вместо этого предоставить доступ к сервису через входной шлюз или балансировщик нагрузки для обеспечения надлежащего сетевого доступа, терминации TLS и масштабируемости. Проброс портов лучше всего подходит для локальной разработки или разовых административных задач, а не для долгосрочных сред или сред с высокой доступностью.
 
 ```shell
 kubectl port-forward \
@@ -98,8 +91,8 @@ kubectl port-forward \
   8080:3000
 ```
 
-:::tip Настройка Ingress для продакшена
-Для продакшен-развертываний настройте ingress с TLS вместо перенаправления портов. См. [руководство по настройке Ingress](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) для получения подробных инструкций по настройке.
+:::tip Настройка входного шлюза для продакшена
+Для продакшен-развертываний настройте входной шлюз с TLS вместо проброса портов. См. [руководство по настройке входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) для получения подробных инструкций по настройке.
 :::
 
 ### Переход к пользовательскому интерфейсу {#navigate-to-the-ui}
@@ -108,7 +101,7 @@ kubectl port-forward \
 
 Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям.
 
-<Image img={hyperdx_login} alt='HyperDX UI' size='lg' />
+<Image img={hyperdx_login} alt='Пользовательский интерфейс HyperDX' size='lg' />
 
 При нажатии `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
 
@@ -126,7 +119,7 @@ kubectl port-forward \
 helm install my-clickstack clickstack/clickstack --set key=value
 ```
 
-Альтернативно, отредактируйте файл `values.yaml`. Чтобы получить значения по умолчанию:
+Альтернативно, отредактируйте файл `values.yaml`. Для получения значений по умолчанию:
 
 ```shell
 helm show values clickstack/clickstack > values.yaml
@@ -160,13 +153,13 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 
 ### Использование секретов (необязательно) {#using-secrets}
 
-Для работы с конфиденциальными данными, такими как ключи API или учетные данные базы данных, используйте секреты Kubernetes. Helm-чарты HyperDX предоставляют файлы секретов по умолчанию, которые вы можете изменить и применить к вашему кластеру.
+Для обработки конфиденциальных данных, таких как API-ключи или учетные данные базы данных, используйте секреты Kubernetes. Helm-чарты HyperDX предоставляют файлы секретов по умолчанию, которые вы можете изменить и применить к вашему кластеру.
 
 #### Использование предварительно настроенных секретов {#using-pre-configured-secrets}
 
-Helm-чарт включает шаблон секрета по умолчанию, расположенный в [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). Этот файл предоставляет базовую структуру для управления секретами.
+Helm-чарт включает шаблон секрета по умолчанию, расположенный по адресу [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). Этот файл предоставляет базовую структуру для управления секретами.
 
-Если вам нужно вручную применить секрет, измените и примените предоставленный шаблон `secrets.yaml`:
+Если вам необходимо вручную применить секрет, измените и примените предоставленный шаблон `secrets.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -219,6 +212,7 @@ hyperdx:
 ## Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
 
+
 Если вы используете ClickHouse Cloud, отключите экземпляр ClickHouse, развернутый с помощью Helm-чарта, и укажите учетные данные ClickHouse Cloud:
 
 ```shell
@@ -240,7 +234,7 @@ helm install my-clickstack clickstack/clickstack \
 
 ````
 
-Также можно использовать файл `values.yaml`:
+В качестве альтернативы используйте файл `values.yaml`:
 ```yaml
 clickhouse:
   enabled: false
@@ -271,18 +265,18 @@ defaultConnections: |
 ````
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
-# or if installed...
+# или если уже установлен...
 # helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ````
 
-:::tip Расширенные настройки внешних подключений
-Для производственных развертываний с конфигурацией на основе секретов, внешними коллекторами OTEL или минимальными установками см. [руководство по вариантам развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options).
+:::tip Расширенные внешние конфигурации
+Для производственных развертываний с конфигурацией на основе секретов, внешними OTel collector или минимальными настройками см. [руководство по вариантам развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options).
 :::
 
 
-## Примечания для production {#production-notes}
+## Примечания для продакшн-среды
 
-По умолчанию этот chart также устанавливает ClickHouse и OTel collector. Однако для production рекомендуется управлять ClickHouse и OTel collector отдельно.
+По умолчанию этот chart также устанавливает ClickHouse и OTel collector. Однако для использования в продакшене рекомендуется управлять ClickHouse и OTel collector отдельно.
 
 Чтобы отключить ClickHouse и OTel collector, установите следующие значения:
 
@@ -293,41 +287,42 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.enabled=false
 ```
 
-:::tip Рекомендации для production
-Для production-развертываний, включая конфигурацию высокой доступности, управление ресурсами, настройку ingress/TLS и облачные конфигурации (GKE, EKS, AKS), см.:
+:::tip Рекомендации для эксплуатации в продакшене
+Для продакшен-развертываний, включающих настройку высокой доступности, управление ресурсами, конфигурацию Входного шлюза/TLS и облако‑специфичные параметры (GKE, EKS, AKS), см.:
 
-- [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — Ingress, TLS и управление секретами
-- [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — Облачные настройки и чек-лист для production
+* [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — Входной шлюз, TLS и управление секретами
+* [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — Облако‑специфичные настройки и контрольный список для продакшен-среды
   :::
 
 
 ## Конфигурация задач {#task-configuration}
 
-По умолчанию в настройках чарта присутствует одна задача, настроенная как cronjob, которая отвечает за проверку необходимости срабатывания оповещений. Ниже приведены параметры её конфигурации:
+По умолчанию в чарте настроена одна задача в виде CronJob, отвечающая за проверку необходимости срабатывания оповещений. Ниже приведены параметры её конфигурации:
 
-| Параметр                      | Описание                                                                                                                                                                            | Значение по умолчанию |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `tasks.enabled`               | Включение/отключение cron-задач в кластере. По умолчанию образ HyperDX выполняет cron-задачи в процессе. Установите значение true, если хотите использовать отдельную cron-задачу в кластере. | `false`               |
-| `tasks.checkAlerts.schedule`  | Расписание cron для задачи проверки оповещений                                                                                                                                      | `*/1 * * * *`         |
-| `tasks.checkAlerts.resources` | Запросы и лимиты ресурсов для задачи проверки оповещений                                                                                                                            | См. `values.yaml`     |
+| Параметр | Описание | Значение по умолчанию |
+|-----------|-------------|---------|
+| `tasks.enabled` | Включить/выключить cron‑задачи в кластере. По умолчанию образ HyperDX будет выполнять cron‑задачи в самом процессе. Измените на true, если вы предпочитаете использовать отдельную cron‑задачу в кластере. | `false` |
+| `tasks.checkAlerts.schedule` | Cron‑расписание для задачи check-alerts | `*/1 * * * *` |
+| `tasks.checkAlerts.resources` | Запросы и лимиты ресурсов для задачи check-alerts | См. `values.yaml` |
 
 
-## Обновление чарта {#upgrading-the-chart}
 
-Для обновления до более новой версии:
+## Обновление чарта
+
+Чтобы обновить чарт до более новой версии:
 
 ```shell
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-Для проверки доступных версий чарта:
+Чтобы проверить доступные версии чарта:
 
 ```shell
 helm search repo clickstack
 ```
 
 
-## Удаление ClickStack {#uninstalling-clickstack}
+## Удаление ClickStack
 
 Чтобы удалить развертывание:
 
@@ -335,41 +330,41 @@ helm search repo clickstack
 helm uninstall my-clickstack
 ```
 
-Эта команда удалит все ресурсы, связанные с релизом, но постоянные данные (если они есть) могут сохраниться.
+Это удалит все ресурсы, связанные с релизом, но при этом постоянные данные (если таковые есть) могут остаться.
 
 
-## Устранение неполадок {#troubleshooting}
+## Устранение неполадок
 
-### Проверка журналов {#checking-logs}
+### Просмотр журналов
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### Отладка неудачной установки {#debugging-a-failed-install}
+### Устранение неполадок при сбое установки
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
 
-### Проверка развертывания {#verifying-deployment}
+### Проверка развертывания
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=clickstack
 ```
 
-:::tip Дополнительные ресурсы по устранению неполадок
-Для решения проблем, связанных с ingress, TLS или развертыванием в облаке, см.:
+:::tip Дополнительные ресурсы по диагностике
+Для проблем, связанных с входным шлюзом, TLS или устранением неполадок при облачном развертывании, см.:
 
-- [Устранение неполадок Ingress](/docs/use-cases/observability/clickstack/deployment/helm-configuration#troubleshooting-ingress) — обслуживание ресурсов, перезапись путей, проблемы браузера
-- [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud#loadbalancer-dns-resolution-issue) — проблемы GKE OpAMP и специфичные для облака проблемы
+* [Устранение неполадок входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#troubleshooting-ingress) — обслуживание статических ресурсов, перезапись путей, проблемы с браузером
+* [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud#loadbalancer-dns-resolution-issue) — проблемы с GKE OpAMP и специфичные для облака ситуации
   :::
 
 <JSONSupport />
 
-Пользователи могут задать эти переменные окружения через параметры или файл `values.yaml`, например:
+Пользователи могут задать эти переменные окружения либо через параметры, либо в `values.yaml`, например:
 
-_values.yaml_
+*values.yaml*
 
 ```yaml
 hyperdx:
@@ -385,7 +380,7 @@ otel:
       value: "--feature-gates=clickhouse.json"
 ```
 
-или через `--set`:
+или с помощью `--set`:
 
 ```shell
 helm install my-clickstack clickstack/clickstack \
@@ -396,17 +391,15 @@ helm install my-clickstack clickstack/clickstack \
 ```
 
 
-## Связанная документация {#related-documentation}
+## Сопутствующая документация {#related-documentation}
 
 ### Руководства по развертыванию {#deployment-guides}
-
-- [Варианты развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) — внешний ClickHouse, сборщик OTEL и минимальные развертывания
-- [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — API-ключи, секреты и настройка ingress
-- [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — конфигурации GKE, EKS, AKS и рекомендации для production-окружения
+- [Варианты развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) — внешний ClickHouse, OTel collector и минимальные развертывания
+- [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — API-ключи, секреты и настройка входного шлюза
+- [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — конфигурации GKE, EKS, AKS и рекомендации по эксплуатации в продакшене
 
 ### Дополнительные ресурсы {#additional-resources}
-
 - [Руководство по началу работы с ClickStack](/docs/use-cases/observability/clickstack/getting-started) — введение в ClickStack
-- [Репозиторий Helm-чартов ClickStack](https://github.com/hyperdxio/helm-charts) — исходный код чартов и справочник по параметрам
+- [Репозиторий Helm-чартов ClickStack](https://github.com/hyperdxio/helm-charts) — исходный код чартов и справочник по значениям
 - [Документация Kubernetes](https://kubernetes.io/docs/) — справочник по Kubernetes
 - [Документация Helm](https://helm.sh/docs/) — справочник по Helm

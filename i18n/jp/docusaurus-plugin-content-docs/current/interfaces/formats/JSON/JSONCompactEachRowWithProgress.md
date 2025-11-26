@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactEachRowWithProgress 形式のドキュメント'
+description: 'JSONCompactEachRowWithProgress フォーマットに関するドキュメント'
 input_format: false
 keywords: ['JSONCompactEachRowWithProgress']
 output_format: true
@@ -15,30 +15,30 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 説明 {#description}
 
-このフォーマットは、JSONCompactEachRowのコンパクトな行単位出力とストリーミング進捗情報を組み合わせたものです。
-メタデータ、個別の行、進捗更新、合計、および例外を、それぞれ別個のJSONオブジェクトとして出力します。値はネイティブ型で表現されます。
+このフォーマットは、JSONCompactEachRow の行ごとのコンパクトな出力と、ストリーミング形式の進行状況情報を組み合わせたものです。
+メタデータ、各行、進行状況の更新、合計値、および例外を、それぞれ個別の JSON オブジェクトとして出力します。値は本来の型のまま表現されます。
 
-主な特徴:
+主な特長:
+- 最初にカラム名と型を含むメタデータを出力する
+- 各行は `"row"` キーを持ち、その中に値の配列を含む個別の JSON オブジェクトとして出力される
+- クエリ実行中の進行状況の更新を含む（`{"progress":...}` オブジェクトとして）
+- totals と extremes をサポートする
+- 値は本来の型を維持する（数値は数値、文字列は文字列のまま）
 
-- 最初にカラム名と型を含むメタデータを出力
-- 各行は、値の配列を含む"row"キーを持つ個別のJSONオブジェクト
-- クエリ実行中の進捗更新を含む(`{"progress":...}`オブジェクトとして)
-- 合計と極値をサポート
-- 値はネイティブ型を保持(数値は数値として、文字列は文字列として)
 
 
-## 使用例 {#example-usage}
+## 使用例
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT *
 FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2)
 LIMIT 5
 FORMAT JSONCompactEachRowWithProgress
 ```
 
-```response title="レスポンス"
+```response title="Response"
 {"meta":[{"name":"a","type":"Array(Int8)"},{"name":"d","type":"Decimal(9, 4)"},{"name":"c","type":"Tuple(DateTime64(3), UUID)"}]}
 {"row":[[-8], 46848.5225, ["2064-06-11 14:00:36.578","b06f4fa1-22ff-f84f-a1b7-a5807d983ae6"]]}
 {"row":[[-76], -85331.598, ["2038-06-16 04:10:27.271","2bb0de60-3a2c-ffc0-d7a7-a5c88ed8177c"]]}

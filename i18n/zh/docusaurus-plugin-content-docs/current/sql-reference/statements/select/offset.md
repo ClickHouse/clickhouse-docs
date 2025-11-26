@@ -6,30 +6,30 @@ title: 'OFFSET FETCH 子句'
 doc_type: 'reference'
 ---
 
-`OFFSET` 和 `FETCH` 用于分批检索数据。它们指定了希望通过单个查询获取的行块。
+`OFFSET` 和 `FETCH` 允许按分段方式检索数据。它们用于指定在单个查询中要获取的行块。
 
 ```sql
 OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
 ```
 
-`offset_row_count` 或 `fetch_row_count` 的值可以是一个数字或字面量常数。可以省略 `fetch_row_count`；默认情况下，它等于 1。
+`offset_row_count` 或 `fetch_row_count` 的值可以是一个数字或字面常量。可以省略 `fetch_row_count`；默认值为 1。
 
-`OFFSET` 指定在开始从查询结果集中返回行之前要跳过的行数。`OFFSET n` 会跳过结果中的前 `n` 行。
+`OFFSET` 指定在开始返回查询结果集中的行之前要跳过的行数。`OFFSET n` 会跳过结果中的前 `n` 行。
 
 支持负值 OFFSET：`OFFSET -n` 会跳过结果中的最后 `n` 行。
 
-也支持小数形式的 OFFSET：`OFFSET n` —— 如果 0 &lt; n &lt; 1，则会跳过结果中前 n * 100% 的行。
+也支持小数形式的 OFFSET：`OFFSET n` —— 如果 0 &lt; n &lt; 1，则会跳过结果前 n * 100% 的行。
 
 示例：
-• `OFFSET 0.1` —— 跳过结果中前 10% 的行。
+• `OFFSET 0.1` —— 跳过结果的前 10%。
 
 > **注意**
-> • 小数必须是大于 0 且小于 1 的 [Float64](../../data-types/float.md) 数值。
-> • 如果计算得到的是小数行数，则向上取整为下一个整数。
+> • 该小数必须是一个大于 0 且小于 1 的 [Float64](../../data-types/float.md) 类型数值。
+> • 如果计算得到的行数为小数，则会向上取整到下一个整数。
 
-`FETCH` 指定查询结果中最多可以返回的行数。
+`FETCH` 指定查询结果中最多可以包含的行数。
 
-`ONLY` 选项用于返回紧跟在 `OFFSET` 所跳过的那些行之后的行。在这种情况下，`FETCH` 是 [LIMIT](../../../sql-reference/statements/select/limit.md) 子句的替代方案。例如，下面的查询
+`ONLY` 选项用于返回紧跟在 `OFFSET` 所跳过的行之后的那些行。在这种情况下，`FETCH` 是 [LIMIT](../../../sql-reference/statements/select/limit.md) 子句的替代方案。例如，以下查询
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
@@ -41,20 +41,20 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 ```
 
-`WITH TIES` 选项用于返回在结果集中“最后一行”位置上与其并列的所有额外行，这里的并列关系是根据 `ORDER BY` 子句确定的。例如，如果 `fetch_row_count` 被设置为 5，但如果另外有两行的 `ORDER BY` 列值与第 5 行相同，那么结果集将包含 7 行。
+`WITH TIES` 选项用于根据 `ORDER BY` 子句，在结果集中返回与最后一行并列的所有额外行。例如，如果 `fetch_row_count` 设置为 5，但又有两行的 `ORDER BY` 列值与第五行相同，那么结果集中将包含 7 行。
 
 :::note\
-根据标准，如果同时存在，`OFFSET` 子句必须出现在 `FETCH` 子句之前。
+根据标准，如果同时存在，`OFFSET` 子句必须位于 `FETCH` 子句之前。
 :::
 
 :::note\
-实际的偏移量也可能取决于 [offset](../../../operations/settings/settings.md#offset) 设置。
+实际偏移量也可能取决于 [offset](../../../operations/settings/settings.md#offset) 设置。
 :::
 
 
-## 示例 {#examples}
+## 示例
 
-输入表:
+输入表：
 
 ```text
 ┌─a─┬─b─┐
@@ -68,13 +68,13 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-使用 `ONLY` 选项:
+`ONLY` 选项的用法：
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-结果:
+结果：
 
 ```text
 ┌─a─┬─b─┐
@@ -84,13 +84,13 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 └───┴───┘
 ```
 
-使用 `WITH TIES` 选项:
+`WITH TIES` 选项的使用方式：
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;
 ```
 
-结果:
+结果：
 
 ```text
 ┌─a─┬─b─┐

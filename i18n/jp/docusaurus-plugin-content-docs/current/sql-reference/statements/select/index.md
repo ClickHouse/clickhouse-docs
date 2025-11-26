@@ -1,5 +1,5 @@
 ---
-description: 'SELECT クエリのドキュメント'
+description: 'SELECT クエリに関するドキュメント'
 sidebar_label: 'SELECT'
 sidebar_position: 32
 slug: /sql-reference/statements/select/
@@ -7,15 +7,11 @@ title: 'SELECT クエリ'
 doc_type: 'reference'
 ---
 
-
-
 # SELECT クエリ
 
-`SELECT` クエリはデータの取得を行います。デフォルトでは、要求されたデータはクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md) と組み合わせることで、別のテーブルに渡すこともできます。
+`SELECT` クエリはデータの取得を行います。通常、要求されたデータはクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md) と組み合わせることで、結果を別のテーブルに書き込むこともできます。
 
-
-
-## 構文 {#syntax}
+## 構文
 
 ```sql
 [WITH expr_list(subquery)]
@@ -35,57 +31,57 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 [LIMIT [n, ]m] [WITH TIES]
 [SETTINGS ...]
 [UNION  ...]
-[INTO OUTFILE filename [COMPRESSION type [LEVEL level]] ]
+[INTO OUTFILE filename [TRUNCATE] [COMPRESSION type [LEVEL level]] ]
 [FORMAT format]
 ```
 
-すべての句は省略可能ですが、`SELECT`の直後に記述する式のリストは必須です。詳細は[以下](#select-clause)で説明します。
+`SELECT` の直後に必須となる式のリストを除き、すべての句は省略可能です。`SELECT` 直後に記述する式リストについては[後述](#select-clause)で詳しく説明します。
 
-各省略可能な句の詳細は、実行される順序と同じ順序で以下の個別のセクションで説明されています:
+各オプション句の詳細については、それぞれ別セクションで説明しており、実行される順序と同じ順で以下に列挙しています。
 
-- [WITH句](../../../sql-reference/statements/select/with.md)
-- [SELECT句](#select-clause)
-- [DISTINCT句](../../../sql-reference/statements/select/distinct.md)
-- [FROM句](../../../sql-reference/statements/select/from.md)
-- [SAMPLE句](../../../sql-reference/statements/select/sample.md)
-- [JOIN句](../../../sql-reference/statements/select/join.md)
-- [PREWHERE句](../../../sql-reference/statements/select/prewhere.md)
-- [WHERE句](../../../sql-reference/statements/select/where.md)
-- [WINDOW句](../../../sql-reference/window-functions/index.md)
-- [GROUP BY句](/sql-reference/statements/select/group-by)
-- [LIMIT BY句](../../../sql-reference/statements/select/limit-by.md)
-- [HAVING句](../../../sql-reference/statements/select/having.md)
-- [QUALIFY句](../../../sql-reference/statements/select/qualify.md)
-- [LIMIT句](../../../sql-reference/statements/select/limit.md)
-- [OFFSET句](../../../sql-reference/statements/select/offset.md)
-- [UNION句](../../../sql-reference/statements/select/union.md)
-- [INTERSECT句](../../../sql-reference/statements/select/intersect.md)
-- [EXCEPT句](../../../sql-reference/statements/select/except.md)
-- [INTO OUTFILE句](../../../sql-reference/statements/select/into-outfile.md)
-- [FORMAT句](../../../sql-reference/statements/select/format.md)
+* [WITH 句](../../../sql-reference/statements/select/with.md)
+* [SELECT 句](#select-clause)
+* [DISTINCT 句](../../../sql-reference/statements/select/distinct.md)
+* [FROM 句](../../../sql-reference/statements/select/from.md)
+* [SAMPLE 句](../../../sql-reference/statements/select/sample.md)
+* [JOIN 句](../../../sql-reference/statements/select/join.md)
+* [PREWHERE 句](../../../sql-reference/statements/select/prewhere.md)
+* [WHERE 句](../../../sql-reference/statements/select/where.md)
+* [WINDOW 句](../../../sql-reference/window-functions/index.md)
+* [GROUP BY 句](/sql-reference/statements/select/group-by)
+* [LIMIT BY 句](../../../sql-reference/statements/select/limit-by.md)
+* [HAVING 句](../../../sql-reference/statements/select/having.md)
+* [QUALIFY 句](../../../sql-reference/statements/select/qualify.md)
+* [LIMIT 句](../../../sql-reference/statements/select/limit.md)
+* [OFFSET 句](../../../sql-reference/statements/select/offset.md)
+* [UNION 句](../../../sql-reference/statements/select/union.md)
+* [INTERSECT 句](../../../sql-reference/statements/select/intersect.md)
+* [EXCEPT 句](../../../sql-reference/statements/select/except.md)
+* [INTO OUTFILE 句](../../../sql-reference/statements/select/into-outfile.md)
+* [FORMAT 句](../../../sql-reference/statements/select/format.md)
 
 
-## SELECT句 {#select-clause}
+## SELECT 句 \{#select-clause\}
 
-`SELECT`句で指定された[式](/sql-reference/syntax#expressions)は、上記で説明したすべての句の操作が完了した後に計算されます。これらの式は、結果の各行に対して個別に適用されるかのように動作します。`SELECT`句の式に集約関数が含まれている場合、ClickHouseは[GROUP BY](/sql-reference/statements/select/group-by)集約の際に、集約関数とその引数として使用される式を処理します。
+`SELECT` 句で指定された[式](/sql-reference/syntax#expressions)は、前述の句で説明したすべての処理が完了した後に計算されます。これらの式は、結果セットの各行に対して個別に適用されるかのように評価されます。`SELECT` 句内の式に集約関数が含まれている場合、ClickHouse は [GROUP BY](/sql-reference/statements/select/group-by) 句による集約の過程で、集約関数とその引数として使用される式を処理します。
 
-結果にすべての列を含める場合は、アスタリスク(`*`)記号を使用します。例:`SELECT * FROM ...`
+すべてのカラムを結果に含めたい場合は、アスタリスク（`*`）記号を使用します。例えば、`SELECT * FROM ...` のようにします。
 
-### 動的列選択 {#dynamic-column-selection}
+### 動的なカラム選択
 
-動的列選択(COLUMNS式とも呼ばれます)を使用すると、[re2](<https://en.wikipedia.org/wiki/RE2_(software)>)正規表現によって結果内の一部の列を照合できます。
+動的なカラム選択（`COLUMNS` 式とも呼ばれます）を使用すると、[re2](https://en.wikipedia.org/wiki/RE2_\(software\)) 正規表現にマッチするカラムを結果セットから動的に選択できます。
 
 ```sql
 COLUMNS('regexp')
 ```
 
-例えば、次のテーブルを考えてみます:
+例えば、次の表を考えてみましょう。
 
 ```sql
 CREATE TABLE default.col_names (aa Int8, ab Int8, bc Int8) ENGINE = TinyLog
 ```
 
-次のクエリは、名前に`a`記号を含むすべての列からデータを選択します。
+次のクエリは、名前に `a` という文字を含むすべての列からデータを選択します。
 
 ```sql
 SELECT COLUMNS('a') FROM col_names
@@ -97,11 +93,11 @@ SELECT COLUMNS('a') FROM col_names
 └────┴────┘
 ```
 
-選択された列はアルファベット順では返されません。
+選択された列はアルファベット順ではない順序で返されます。
 
-クエリ内で複数の`COLUMNS`式を使用し、それらに関数を適用できます。
+1つのクエリ内で複数の `COLUMNS` 式を使用し、それらに関数を適用できます。
 
-例:
+例：
 
 ```sql
 SELECT COLUMNS('a'), COLUMNS('c'), toTypeName(COLUMNS('c')) FROM col_names
@@ -113,56 +109,55 @@ SELECT COLUMNS('a'), COLUMNS('c'), toTypeName(COLUMNS('c')) FROM col_names
 └────┴────┴────┴────────────────┘
 ```
 
-`COLUMNS`式によって返される各列は、個別の引数として関数に渡されます。また、関数がサポートしている場合は、他の引数を関数に渡すこともできます。関数を使用する際は注意が必要です。関数が渡された引数の数をサポートしていない場合、ClickHouseは例外をスローします。
+`COLUMNS` 式によって返される各列は、関数に個別の引数として渡されます。関数がそれをサポートしている場合は、他の引数も関数に渡すことができます。関数を使用する際は注意してください。渡した引数の数を関数がサポートしていない場合、ClickHouse は例外をスローします。
 
-例:
+例えば:
 
 ```sql
 SELECT COLUMNS('a') + COLUMNS('c') FROM col_names
 ```
 
 ```text
-Received exception from server (version 19.14.1):
-Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of arguments for function plus does not match: passed 3, should be 2.
+サーバーから例外を受信しました (バージョン 19.14.1):
+Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: 関数 plus の引数の数が一致しません: 3個が渡されましたが、2個である必要があります。
 ```
 
-この例では、`COLUMNS('a')`は2つの列`aa`と`ab`を返します。`COLUMNS('c')`は`bc`列を返します。`+`演算子は3つの引数に適用できないため、ClickHouseは関連するメッセージとともに例外をスローします。
+この例では、`COLUMNS('a')` は 2 つのカラム `aa` と `ab` を返します。`COLUMNS('c')` は `bc` カラムを返します。`+` 演算子は 3 つの引数には適用できないため、ClickHouse は対応するメッセージとともに例外をスローします。
 
-`COLUMNS`式に一致した列は、異なるデータ型を持つことができます。`COLUMNS`がどの列にも一致せず、`SELECT`内の唯一の式である場合、ClickHouseは例外をスローします。
-
-### アスタリスク {#asterisk}
-
-式の代わりに、クエリの任意の部分にアスタリスクを配置できます。クエリが解析されると、アスタリスクはすべてのテーブル列のリストに展開されます(`MATERIALIZED`列と`ALIAS`列を除く)。アスタリスクの使用が正当化されるケースはわずかです:
-
-- テーブルダンプを作成する場合
-- システムテーブルなど、少数の列しか含まないテーブルの場合
-- テーブルにどの列があるかの情報を取得する場合。この場合は`LIMIT 1`を設定します。ただし、`DESC TABLE`クエリを使用する方が適切です
-- `PREWHERE`を使用して少数の列に対して強力なフィルタリングを行う場合
-- サブクエリ内(外部クエリに不要な列はサブクエリから除外されるため)
-
-その他のすべてのケースでは、アスタリスクの使用は推奨されません。列指向DBMSの利点ではなく欠点のみをもたらすためです。言い換えれば、アスタリスクの使用は推奨されません。
-
-### 極値 {#extreme-values}
-
-結果に加えて、結果列の最小値と最大値を取得することもできます。これを行うには、**extremes**設定を1に設定します。最小値と最大値は、数値型、日付、および日時に対して計算されます。その他の列については、デフォルト値が出力されます。
+`COLUMNS` 式に一致したカラムは、異なるデータ型を持つ場合があります。`COLUMNS` がどのカラムにも一致せず、かつ `SELECT` 内で唯一の式である場合、ClickHouse は例外をスローします。
 
 
-最小値と最大値を表す2行が追加で計算されます。これらの追加行は、`XML`、`JSON*`、`TabSeparated*`、`CSV*`、`Vertical`、`Template`、および`Pretty*`[フォーマット](../../../interfaces/formats.md)において、他の行とは別に出力されます。その他のフォーマットでは出力されません。
+### アスタリスク \{#asterisk\}
 
-`JSON*`および`XML`フォーマットでは、極値は独立した'extremes'フィールドに出力されます。`TabSeparated*`、`CSV*`、および`Vertical`フォーマットでは、この行はメイン結果の後に出力され、'totals'が存在する場合はその後に配置されます。この行の前には(他のデータの後に)空行が挿入されます。`Pretty*`フォーマットでは、この行はメイン結果の後に独立したテーブルとして出力され、'totals'が存在する場合はその後に配置されます。`Template`フォーマットでは、極値は指定されたテンプレートに従って出力されます。
+クエリ内の任意の箇所で、式の代わりにアスタリスクを使用できます。クエリが解析されると、アスタリスクはすべてのテーブル列のリスト（`MATERIALIZED` 列と `ALIAS` 列を除く）に展開されます。アスタリスクの使用が妥当と言えるケースは、次のような場合に限られます。
 
-極値は`LIMIT`の前、ただし`LIMIT BY`の後の行に対して計算されます。ただし、`LIMIT offset, size`を使用する場合、`offset`より前の行も`extremes`に含まれます。ストリームリクエストでは、結果に`LIMIT`を通過した少数の行が含まれる場合があります。
+- テーブルダンプを作成するとき。
+- システムテーブルなど、列数が少ないテーブルの場合。
+- テーブルにどの列が存在するかを確認したい場合。このときは `LIMIT 1` を指定します。ただし、`DESC TABLE` クエリを使用する方が望ましいです。
+- 少数の列に対して `PREWHERE` による厳しいフィルタリングが行われている場合。
+- サブクエリ内（外側のクエリで不要な列はサブクエリから除外されるため）。
 
-### 注意事項 {#notes}
+それ以外のすべての場合、アスタリスクを使用することは推奨しません。アスタリスクを使用すると、カラム型 DBMS の利点ではなく欠点のみを被ることになるためです。言い換えると、アスタリスクの使用は推奨されません。
 
-クエリのあらゆる部分でシノニム(`AS`エイリアス)を使用できます。
+### 極値 \{#extreme-values\}
 
-`GROUP BY`、`ORDER BY`、および`LIMIT BY`句は位置引数をサポートできます。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)設定をオンにします。例えば、`ORDER BY 1,2`とすると、テーブルの行が第1列、次に第2列でソートされます。
+結果に加えて、結果列に対する最小値および最大値も取得できます。これを行うには、**extremes** 設定を 1 にします。最小値と最大値は、数値型、日付、および日時型に対して計算されます。その他の列については、デフォルト値が出力されます。
 
+最小値と最大値を表す 2 行が追加で計算されます。これらの追加 2 行は、他の行とは分離されて、`XML`、`JSON*`、`TabSeparated*`、`CSV*`、`Vertical`、`Template` および `Pretty*` [形式](../../../interfaces/formats.md)で出力されます。その他の形式では出力されません。
 
-## 実装の詳細 {#implementation-details}
+`JSON*` および `XML` 形式では、極値は独立した `extremes` フィールド内に出力されます。`TabSeparated*`、`CSV*` および `Vertical` 形式では、この行はメイン結果の後に、`totals` が存在する場合はその後に出力されます。その前には（他のデータの後に）空行が 1 行入ります。`Pretty*` 形式では、この行はメイン結果の後に、`totals` が存在する場合はその後に、別テーブルとして出力されます。`Template` 形式では、極値は指定されたテンプレートに従って出力されます。
 
-クエリが `DISTINCT`、`GROUP BY`、`ORDER BY` 句、および `IN` と `JOIN` サブクエリを省略している場合、クエリは完全にストリーム処理され、O(1) の RAM 量を使用します。それ以外の場合、適切な制限が指定されていないと、クエリは大量の RAM を消費する可能性があります:
+極値は、`LIMIT` の前、ただし `LIMIT BY` の後の行に対して計算されます。ただし、`LIMIT offset, size` を使用する場合、`offset` より前の行も `extremes` に含まれます。ストリーミングリクエストでは、`LIMIT` を通過した少数の行が結果に含まれる場合もあります。
+
+### 注意事項 \{#notes\}
+
+クエリの任意の箇所でエイリアス（`AS` で指定する別名）を使用できます。
+
+`GROUP BY`、`ORDER BY`、`LIMIT BY` 句では、位置指定引数をサポートします。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 設定を有効化します。すると、例えば `ORDER BY 1,2` は、テーブル内の行を第1列、その後第2列でソートします。
+
+## 実装の詳細 \{#implementation-details\}
+
+クエリで `DISTINCT`、`GROUP BY`、`ORDER BY` 句および `IN` と `JOIN` のサブクエリを省略した場合、そのクエリは完全にストリーミング処理され、RAM の使用量は O(1) に抑えられます。そうでない場合、適切な制限を指定しないと、クエリが大量の RAM を消費する可能性があります。
 
 - `max_memory_usage`
 - `max_rows_to_group_by`
@@ -178,26 +173,25 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 - `max_bytes_before_external_group_by`
 - `max_bytes_ratio_before_external_group_by`
 
-詳細については、「設定」のセクションを参照してください。外部ソート(一時テーブルをディスクに保存)および外部集約を使用することができます。
+詳細については「Settings」セクションを参照してください。外部ソート（一時テーブルをディスクに保存）および外部集約を使用することが可能です。
 
+## SELECT 修飾子 \{#select-modifiers\}
 
-## SELECT修飾子 {#select-modifiers}
+`SELECT` クエリでは、次の修飾子を使用できます。
 
-`SELECT`クエリでは以下の修飾子を使用できます。
+| Modifier                            | Description                                                                                                                                                                                                                                                                                                                                                                              |
+|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`APPLY`](./apply_modifier.md)     | クエリの外側のテーブル式が返す各行に対して、ある関数を呼び出せるようにします。                                                                                                                                                                                                                                                                                                            |
+| [`EXCEPT`](./except_modifier.md)   | 結果から除外する 1 つ以上の列名を指定します。一致するすべての列名は出力から省略されます。                                                                                                                                                                                                                                                                                                 |
+| [`REPLACE`](./replace_modifier.md) | 1 つ以上の[式エイリアス](/sql-reference/syntax#expression-aliases) を指定します。各エイリアスは、`SELECT *` 文の列名のいずれかと一致している必要があります。出力列リストでは、エイリアスに一致する列が、その `REPLACE` で指定された式に置き換えられます。この修飾子は列の名前や順序は変更しませんが、値および値の型を変更することがあります。 |
 
-| 修飾子                           | 説明                                                                                                                                                                                                                                                                                                                                                                              |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`APPLY`](./apply_modifier.md)     | クエリの外部テーブル式によって返される各行に対して関数を呼び出すことができます。                                                                                                                                                                                                                                                                                                        |
-| [`EXCEPT`](./except_modifier.md)   | 結果から除外する1つ以上のカラム名を指定します。一致するすべてのカラム名が出力から省略されます。                                                                                                                                                                                                                                                                                            |
-| [`REPLACE`](./replace_modifier.md) | 1つ以上の[式エイリアス](/sql-reference/syntax#expression-aliases)を指定します。各エイリアスは`SELECT *`文のカラム名と一致する必要があります。出力カラムリストでは、エイリアスと一致するカラムがその`REPLACE`内の式に置き換えられます。この修飾子はカラムの名前や順序を変更しませんが、値と値の型を変更することができます。 |
+### 修飾子の組み合わせ
 
-### 修飾子の組み合わせ {#modifier-combinations}
-
-各修飾子を個別に使用することも、組み合わせて使用することもできます。
+各修飾子は個別にも、組み合わせて使うこともできます。
 
 **例:**
 
-同じ修飾子を複数回使用する場合:
+同じ修飾子を複数回使用する例。
 
 ```sql
 SELECT COLUMNS('[jk]') APPLY(toString) APPLY(length) APPLY(max) FROM columns_transformers;
@@ -209,7 +203,7 @@ SELECT COLUMNS('[jk]') APPLY(toString) APPLY(length) APPLY(max) FROM columns_tra
 └──────────────────────────┴──────────────────────────┘
 ```
 
-単一のクエリで複数の修飾子を使用する場合:
+単一のクエリで複数の修飾子を使用する。
 
 ```sql
 SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
@@ -222,13 +216,13 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 ```
 
 
-## SELECTクエリでのSETTINGS {#settings-in-select-query}
+## SELECT クエリでの SETTINGS
 
-`SELECT`クエリ内で必要な設定を直接指定できます。設定値はこのクエリにのみ適用され、クエリ実行後はデフォルト値または以前の値にリセットされます。
+`SELECT` クエリ内で、必要な設定を直接指定できます。設定値はこのクエリに対してのみ適用され、クエリの実行後はデフォルト値または以前の値にリセットされます。
 
 設定を行う他の方法については[こちら](/operations/settings/overview)を参照してください。
 
-ブール型の設定をtrueに設定する場合、値の割り当てを省略した簡略構文を使用できます。設定名のみを指定すると、自動的に`1`(true)に設定されます。
+ブール型の設定を true にする場合は、値の代入を省略することで短縮構文を使用できます。設定名だけが指定された場合、自動的に `1` (true) に設定されます。
 
 **例**
 

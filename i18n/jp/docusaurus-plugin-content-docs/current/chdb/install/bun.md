@@ -1,5 +1,5 @@
 ---
-title: 'Bun 向けの chDB'
+title: 'Bun 向け chDB'
 sidebar_label: 'Bun'
 slug: /chdb/install/bun
 description: 'Bun ランタイム環境で chDB をインストールして使用する方法'
@@ -11,36 +11,36 @@ doc_type: 'guide'
 
 # Bun 向け chDB
 
-chDB-bun は chDB 向けの実験的な FFI (Foreign Function Interface) バインディングを提供し、外部への依存を一切追加することなく、Bun アプリケーションで直接 ClickHouse クエリを実行できるようにします。
+chDB-bun は chDB に対する実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存なしに Bun アプリケーションから直接 ClickHouse クエリを実行できるようにします。
 
 
 
-## インストール {#installation}
+## インストール
 
-### ステップ1：システム依存関係のインストール {#install-system-dependencies}
+### ステップ 1: システム依存パッケージをインストールする
 
-まず、必要なシステム依存関係をインストールします：
+まず、必要なシステム依存パッケージをインストールします。
 
-#### libchdbのインストール {#install-libchdb}
+#### libchdb をインストールする
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### ビルドツールのインストール {#install-build-tools}
+#### ビルドツールのインストール
 
-システムに`gcc`または`clang`のいずれかをインストールする必要があります：
+システムに `gcc` または `clang` のいずれかをインストールしておく必要があります。
 
-### ステップ2：chDB-bunのインストール {#install-chdb-bun}
+### ステップ 2: chDB-bun をインストールする
 
 
 ```bash
-# GitHubリポジトリからインストール
+# GitHubリポジトリからインストールする
 bun add github:chdb-io/chdb-bun
 ```
 
 
-# またはローカルでクローンしてビルドする
+# またはローカル環境でクローンしてビルドする
 
 git clone [https://github.com/chdb-io/chdb-bun.git](https://github.com/chdb-io/chdb-bun.git)
 cd chdb-bun
@@ -51,92 +51,84 @@ bun run build
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法
 
-chDB-bunは2つのクエリモードをサポートしています:1回限りの操作のための一時クエリと、データベースの状態を維持するための永続セッションです。
+chDB-bun は、1 回限りの処理向けのエフェメラルクエリと、データベースの状態を保持する永続セッションという 2 つのクエリモードをサポートしています。
 
-### 一時クエリ {#ephemeral-queries}
+### エフェメラルクエリ
 
-永続的な状態を必要としないシンプルな1回限りのクエリの場合:
+永続的な状態を保持する必要がない、単純な一度限りのクエリには次を使用します:
 
 ```typescript
-import { query } from "chdb-bun"
+import { query } from 'chdb-bun';
 
 // 基本的なクエリ
-const result = query("SELECT version()", "CSV")
-console.log(result) // "23.10.1.1"
+const result = query("SELECT version()", "CSV");
+console.log(result); // "23.10.1.1"
 
-// 異なる出力形式でのクエリ
-const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON")
-console.log(jsonResult)
+// 異なる出力形式を使用したクエリ
+const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
+console.log(jsonResult);
 
 // 計算を含むクエリ
-const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty")
-console.log(mathResult)
+const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
+console.log(mathResult);
 
-// システム情報のクエリ
-const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV")
-console.log(systemInfo)
+// システム情報を取得するクエリ
+const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
+console.log(systemInfo);
 ```
 
-### 永続セッション {#persistent-sessions}
+### 永続セッション
 
-クエリ間で状態を維持する必要がある複雑な操作の場合:
+クエリ間で状態を保持する必要があるような複雑な操作を行う場合：
 
 ```typescript
-import { Session } from "chdb-bun"
+import { Session } from 'chdb-bun';
 
-// 永続ストレージを使用してセッションを作成
-const sess = new Session("./chdb-bun-tmp")
+// 永続ストレージを使用したセッションを作成
+const sess = new Session('./chdb-bun-tmp');
 
 try {
-  // データベースとテーブルを作成
-  sess.query(
-    `
+    // データベースとテーブルを作成
+    sess.query(`
         CREATE DATABASE IF NOT EXISTS mydb;
         CREATE TABLE IF NOT EXISTS mydb.users (
             id UInt32,
             name String,
             email String
         ) ENGINE = MergeTree() ORDER BY id
-    `,
-    "CSV"
-  )
+    `, "CSV");
 
-  // データを挿入
-  sess.query(
-    `
+    // データを挿入
+    sess.query(`
         INSERT INTO mydb.users VALUES 
         (1, 'Alice', 'alice@example.com'),
         (2, 'Bob', 'bob@example.com'),
         (3, 'Charlie', 'charlie@example.com')
-    `,
-    "CSV"
-  )
+    `, "CSV");
 
-  // データをクエリ
-  const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON")
-  console.log("ユーザー:", users)
+    // データをクエリ実行
+    const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON");
+    console.log("ユーザー:", users);
 
-  // カスタム関数を作成して使用
-  sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV")
-  const greeting = sess.query("SELECT hello() as message", "Pretty")
-  console.log(greeting)
+    // カスタム関数を作成して使用
+    sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
+    const greeting = sess.query("SELECT hello() as message", "Pretty");
+    console.log(greeting);
 
-  // 集計クエリ
-  const stats = sess.query(
-    `
+    // 集計クエリ
+    const stats = sess.query(`
         SELECT 
             COUNT(*) as total_users,
             MAX(id) as max_id,
             MIN(id) as min_id
         FROM mydb.users
-    `,
-    "JSON"
-  )
-  console.log("統計:", stats)
+    `, "JSON");
+    console.log("統計:", stats);
+
 } finally {
-  // リソースを解放するため、必ずセッションをクリーンアップ
-  sess.cleanup() // データベースファイルが削除されます
+    // リソースを解放するため、必ずセッションをクリーンアップする
+    sess.cleanup(); // データベースファイルを削除
 }
 ```

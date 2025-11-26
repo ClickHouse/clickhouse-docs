@@ -2,7 +2,7 @@
 sidebar_label: 'Confluent Cloud 上の Kafka Connector Sink'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: 'Confluent Cloud でフルマネージド ClickHouse Connector Sink を利用するためのガイド'
+description: 'Confluent Cloud 上でフルマネージドの ClickHouse Connector Sink を利用するためのガイド'
 title: 'Confluent Cloud と ClickHouse の統合'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -16,7 +16,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 
 
-# Confluent Cloud と ClickHouse の連携
+# Confluent Cloud と ClickHouse との連携
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -33,44 +33,37 @@ import Image from '@theme/IdealImage';
 
 
 ## 前提条件 {#prerequisites}
-
-以下の知識があることを前提としています：
-
-- [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
-- Confluent Cloud
+以下の内容について理解していることを前提とします:
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
+* Confluent Cloud
 
 
-## ClickHouseの公式KafkaコネクタとConfluent Cloudの連携 {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-#### トピックの作成 {#create-a-topic}
+## Confluent Cloud 向け ClickHouse 公式 Kafka コネクタ {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-Confluent Cloudでトピックを作成する手順は比較的簡単です。詳細な手順は[こちら](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)を参照してください。
+#### トピックを作成する {#create-a-topic}
+Confluent Cloud 上でトピックを作成するのは比較的簡単で、詳細な手順は[こちら](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)に記載されています。
 
 #### 重要な注意事項 {#important-notes}
 
-- Kafkaトピック名はClickHouseテーブル名と同一である必要があります。これを調整するには、トランスフォーマー(例: [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html))を使用してください。
-- パーティション数を増やすことが必ずしもパフォーマンス向上につながるわけではありません。詳細とパフォーマンスに関するヒントについては、今後公開予定のガイドを参照してください。
+* Kafka のトピック名は ClickHouse のテーブル名と同一である必要があります。これを調整するには、トランスフォーマー（たとえば [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)）を使用します。
+* パーティション数が多ければ常にパフォーマンスが向上するとは限りません。詳細およびパフォーマンス向上のためのヒントについては、今後公開予定のガイドを参照してください。
 
-#### 接続情報の収集 {#gather-your-connection-details}
-
+#### 接続情報を収集する {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### コネクタのインストール {#install-connector}
+#### コネクタをインストールする {#install-connector}
+[公式ドキュメント](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)に従って、Confluent Cloud 上に完全マネージド型の ClickHouse Sink Connector をインストールします。
 
-[公式ドキュメント](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)に従って、Confluent Cloud上でフルマネージドのClickHouse Sinkコネクタをインストールしてください。
+#### コネクタを設定する {#configure-the-connector}
+ClickHouse Sink Connector を設定する際に、次の情報を指定する必要があります:
+- ClickHouse サーバーのホスト名
+- ClickHouse サーバーのポート（デフォルトは 8443）
+- ClickHouse サーバーのユーザー名とパスワード
+- データを書き込む ClickHouse 上のデータベース名
+- ClickHouse へのデータ書き込みに使用する Kafka のトピック名
 
-#### コネクタの設定 {#configure-the-connector}
-
-ClickHouse Sinkコネクタの設定時には、以下の情報を指定する必要があります:
-
-- ClickHouseサーバーのホスト名
-- ClickHouseサーバーのポート番号(デフォルトは8443)
-- ClickHouseサーバーのユーザー名とパスワード
-- データが書き込まれるClickHouseのデータベース名
-- ClickHouseへのデータ書き込みに使用されるKafkaのトピック名
-
-Confluent CloudのUIでは、ポーリング間隔、バッチサイズ、その他のパラメータを調整してパフォーマンスを最適化するための高度な設定オプションがサポートされています。
+Confluent Cloud の UI では、ポーリング間隔、バッチサイズ、そのほかのパラメータを調整してパフォーマンスを最適化するための高度な設定オプションを利用できます。
 
 #### 既知の制限事項 {#known-limitations}
-
-- [公式ドキュメントのコネクタの制限事項一覧](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)を参照してください
+* [公式ドキュメントに記載されている Connectors の制限事項一覧](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)を参照してください。

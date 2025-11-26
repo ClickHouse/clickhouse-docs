@@ -1,6 +1,5 @@
 ---
-description: 'Документация по геометрическим типам данных в ClickHouse, используемым для представления
-  географических объектов и местоположений'
+description: 'Документация по геометрическим типам данных в ClickHouse, используемым для представления географических объектов и местоположений'
 sidebar_label: 'Гео'
 sidebar_position: 54
 slug: /sql-reference/data-types/geo
@@ -8,16 +7,16 @@ title: 'Геометрические'
 doc_type: 'reference'
 ---
 
-ClickHouse поддерживает типы данных, предназначенные для представления географических объектов — местоположений, территорий и т.п.
+ClickHouse поддерживает геометрические типы данных для представления географических объектов — местоположений, территорий и т. д.
 
-**См. также:**
+**См. также**
 - [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
 
 
 
-## Point {#point}
+## Point
 
-`Point` представлен своими координатами X и Y, которые хранятся как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
+`Point` задаётся своими координатами X и Y, которые хранятся как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
 
 **Пример**
 
@@ -38,9 +37,9 @@ SELECT p, toTypeName(p) FROM geo_point;
 ```
 
 
-## Ring {#ring}
+## Кольцо
 
-`Ring` — это простой многоугольник без отверстий, который хранится в виде массива точек: [Array](array.md)([Point](#point)).
+`Ring` — это простой многоугольник без отверстий, хранящийся в виде массива точек: [Array](array.md)([Point](#point)).
 
 **Пример**
 
@@ -61,7 +60,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 ```
 
 
-## LineString {#linestring}
+## LineString
 
 `LineString` — это линия, представленная в виде массива точек: [Array](array.md)([Point](#point)).
 
@@ -84,7 +83,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 ```
 
 
-## MultiLineString {#multilinestring}
+## MultiLineString
 
 `MultiLineString` — это несколько линий, хранящихся в виде массива `LineString`: [Array](array.md)([LineString](#linestring)).
 
@@ -107,13 +106,13 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
 
 
-## Polygon {#polygon}
+## Многоугольник
 
-`Polygon` — это многоугольник с отверстиями, который хранится в виде массива колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива — это внешний контур многоугольника, а все последующие элементы — отверстия.
+`Polygon` — многоугольник с отверстиями, представленный в виде массива колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива задаёт внешний контур многоугольника, а все последующие элементы — его отверстия.
 
 **Пример**
 
-Многоугольник с одним отверстием:
+Это многоугольник с одним отверстием:
 
 ```sql
 CREATE TABLE geo_polygon (pg Polygon) ENGINE = Memory();
@@ -130,13 +129,13 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
 
 
-## MultiPolygon {#multipolygon}
+## MultiPolygon
 
 `MultiPolygon` состоит из нескольких полигонов и хранится как массив полигонов: [Array](array.md)([Polygon](#polygon)).
 
 **Пример**
 
-Этот мультиполигон состоит из двух отдельных полигонов — первый без дыр, второй с одной дырой:
+Этот мультиполигон состоит из двух отдельных полигонов — первый без отверстий, второй — с одним отверстием:
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
@@ -153,9 +152,9 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
 
 
-## Geometry {#geometry}
+## Геометрия
 
-`Geometry` — это общий тип для всех вышеперечисленных типов. Он эквивалентен типу Variant этих типов.
+`Geometry` — это общий тип для всех перечисленных выше типов. Он эквивалентен типу Variant, объединяющему эти типы.
 
 **Пример**
 
@@ -173,7 +172,7 @@ SELECT * FROM geo;
    └───────┘
 ```
 
-<!-- -->
+{/* */ }
 
 ```sql
 CREATE TABLE IF NOT EXISTS geo_dst (geom Geometry) ENGINE = Memory();
@@ -202,6 +201,6 @@ SELECT * FROM geo_dst;
 ```
 
 
-## Связанный контент {#related-content}
+## Связанные материалы {#related-content}
 
-- [Исследование массивных реальных наборов данных: более 100 лет метеорологических записей в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [Исследование масштабных реальных наборов данных: более чем 100 лет метеорологических наблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

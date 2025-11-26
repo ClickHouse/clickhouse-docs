@@ -6,14 +6,14 @@ title: 'timeSeriesChangesToGrid'
 doc_type: 'reference'
 ---
 
-この集約関数は、タイムスタンプと値のペアとして与えられる時系列データを入力として受け取り、開始タイムスタンプ、終了タイムスタンプ、およびステップで定義される規則的な時間グリッド上で、このデータから[PromQL 風の変化量](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)を計算します。グリッド上の各ポイントについて、`changes` を計算するために使用されるサンプルは、指定された時間ウィンドウ内のものが対象となります。
+タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、そのデータから[PromQL 風の変化量](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)を計算する集約関数です。グリッド上の各ポイントに対して、`changes` を計算するためのサンプルは、指定された時間ウィンドウ内のものが対象になります。
 
 Parameters:
 
-* `start timestamp` - グリッドの開始を指定
-* `end timestamp` - グリッドの終了を指定
-* `grid step` - グリッドのステップを秒単位で指定
-* `staleness` - 対象とするサンプルの最大「staleness」（古さ）を秒単位で指定
+* `start timestamp` - グリッドの開始時刻を指定します
+* `end timestamp` - グリッドの終了時刻を指定します
+* `grid step` - グリッドのステップ（秒）を指定します
+* `staleness` - 対象とするサンプルの最大の「staleness」（秒）を指定します
 
 Arguments:
 
@@ -21,10 +21,10 @@ Arguments:
 * `value` - `timestamp` に対応する時系列の値
 
 Return value:
-指定されたグリッド上の `changes` の値を `Array(Nullable(Float64))` として返します。返される配列には、各時間グリッド上のポイントごとに 1 つの値が含まれます。特定のグリッドポイントに対応する時間ウィンドウ内に、変化量を計算するためのサンプルが存在しない場合、その値は NULL になります。
+指定されたグリッド上の `changes` の値を `Array(Nullable(Float64))` として返します。返される配列には、時間グリッドの各ポイントに対して 1 つの値が含まれます。特定のグリッドポイントについて、変化量を計算するためのサンプルがウィンドウ内に存在しない場合、その値は NULL になります。
 
 Example:
-次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上の `changes` の値を計算します。
+次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上の `changes` の値を計算します:
 
 ```sql
 WITH
@@ -33,8 +33,8 @@ WITH
     [1, 1, 3, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- 上記のタイムスタンプに対応する値の配列
     90 AS start_ts,       -- タイムスタンプグリッドの開始位置
     90 + 135 AS end_ts,   -- タイムスタンプグリッドの終了位置
-    15 AS step_seconds,   -- タイムスタンプグリッドのステップ幅
-    45 AS window_seconds  -- "staleness"ウィンドウ(古さの許容範囲)
+    15 AS step_seconds,   -- タイムスタンプグリッドの間隔(秒)
+    45 AS window_seconds  -- "staleness"ウィンドウ(秒)
 SELECT timeSeriesChangesToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
@@ -54,7 +54,7 @@ FROM
    └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-また、タイムスタンプと値の複数のサンプルを、同じ長さの配列として渡すことも可能です。配列引数を用いた同じクエリは次のとおりです。
+タイムスタンプと値の複数のサンプルを、同じ長さの配列として渡すこともできます。配列引数を使った同じクエリは次のとおりです。
 
 ```sql
 WITH
@@ -68,5 +68,5 @@ SELECT timeSeriesChangesToGrid(start_ts, end_ts, step_seconds, window_seconds)(t
 ```
 
 :::note
-この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
+この関数は実験的な機能です。有効化するには `allow_experimental_ts_to_grid_aggregate_function=true` を設定してください。
 :::

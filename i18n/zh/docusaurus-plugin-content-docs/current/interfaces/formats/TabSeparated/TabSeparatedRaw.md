@@ -1,6 +1,6 @@
 ---
 alias: ['TSVRaw', 'Raw']
-description: 'TabSeparatedRaw 格式的文档说明'
+description: 'TabSeparatedRaw 格式文档'
 input_format: true
 keywords: ['TabSeparatedRaw']
 output_format: true
@@ -9,28 +9,29 @@ title: 'TabSeparatedRaw'
 doc_type: 'reference'
 ---
 
-| 输入 | 输出 | 别名           |
-|-------|--------|-----------------|
-| ✔     | ✔      | `TSVRaw`, `Raw` |
+| 输入 | 输出 | 别名              |
+|------|------|-------------------|
+| ✔    | ✔    | `TSVRaw`, `Raw`   |
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-与 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式不同,该格式在写入行时不进行转义。
+本格式与 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式的不同之处在于，写入行时不会进行转义。
 
 :::note
-使用此格式解析时,每个字段中不允许包含制表符或换行符。
+使用此格式进行解析时，每个字段中不允许出现制表符或换行符。
 :::
 
-有关 `TabSeparatedRaw` 格式与 `RawBlob` 格式的比较,请参阅:[原始格式比较](../RawBLOB.md/#raw-formats-comparison)
+关于 `TabSeparatedRaw` 格式与 `RawBlob` 格式的比较，请参见：[原始格式比较](../RawBLOB.md/#raw-formats-comparison)
 
 
-## 使用示例 {#example-usage}
 
-### 插入数据 {#inserting-data}
+## 示例用法
 
-使用以下名为 `football.tsv` 的 tsv 文件:
+### 插入数据
+
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -52,15 +53,15 @@ doc_type: 'reference'
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-插入数据:
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `TabSeparatedRaw` 格式读取数据:
+使用 `TabSeparatedRaw` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -68,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRaw
 ```
 
-输出将以制表符分隔格式显示:
+输出将采用制表符分隔的格式：
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -91,4 +92,4 @@ FORMAT TabSeparatedRaw
 ```
 
 
-## 格式设置 {#format-settings}
+## 格式配置 {#format-settings}

@@ -16,4 +16,4 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 この機能は非推奨であり、今後のバージョンで削除される予定です。
 
-参考のため、旧ドキュメントは[こちら](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)から参照できます。
+参考のため、古いドキュメントは[こちら](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)にあります。

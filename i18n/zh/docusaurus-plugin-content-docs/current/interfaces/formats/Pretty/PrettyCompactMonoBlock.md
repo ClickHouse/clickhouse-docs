@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettyCompactMonoBlock 格式的文档'
+description: 'PrettyCompactMonoBlock 格式文档'
 input_format: false
 keywords: ['PrettyCompactMonoBlock']
 output_format: true
@@ -18,13 +18,15 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同,此格式会缓冲最多 `10,000` 行数据,
-然后作为单个表输出,而不是按[块](/development/architecture#block)输出。
+与 [`PrettyCompact`](./PrettyCompact.md) 格式不同之处在于，它会先最多缓冲 `10,000` 行数据，
+然后作为单个表输出，而不是按[块](/development/architecture#block)输出。
+
 
 
 ## 使用示例 {#example-usage}
 
 
-## 格式设置 {#format-settings}
 
-<PrettyFormatSettings />
+## 格式化设置 {#format-settings}
+
+<PrettyFormatSettings/>

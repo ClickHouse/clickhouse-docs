@@ -1,13 +1,13 @@
 ---
 sidebar_label: 'Amazon Kinesis 用 ClickPipes'
-description: 'Amazon Kinesis のデータソースを ClickHouse Cloud にシームレスに接続します。'
+description: 'Amazon Kinesis データソースを ClickHouse Cloud にシームレスに接続します。'
 slug: /integrations/clickpipes/kinesis
-title: 'Amazon Kinesis と ClickHouse Cloud の連携'
-doc_type: 'guide'
+title: 'Amazon Kinesis と ClickHouse Cloud の統合'
+doc_type: 'ガイド'
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
+keywords: ['clickpipes', 'kinesis', 'ストリーミング', 'aws', 'データインジェスト']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -26,134 +26,126 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Amazon KinesisとClickHouse Cloudの統合
-
+# Amazon Kinesis を ClickHouse Cloud と統合する
 ## 前提条件 {#prerequisite}
+事前に [ClickPipes intro](./index.md) に目を通し、[IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) または [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) を設定しておいてください。ClickHouse Cloud で利用するロールの設定方法については、[Kinesis Role-Based Access guide](./secure-kinesis.md) を参照してください。
 
-[ClickPipesの概要](./index.md)を確認し、[IAM認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)または[IAMロール](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)を設定済みであることが前提となります。ClickHouse Cloudで使用するロールの設定方法については、[Kinesisロールベースアクセスガイド](./secure-kinesis.md)を参照してください。
 
 
-## 最初のClickPipeの作成 {#creating-your-first-clickpipe}
+## 最初の ClickPipe を作成する {#creating-your-first-clickpipe}
 
-1. ClickHouse CloudサービスのSQLコンソールにアクセスします。
+1. 使用している ClickHouse Cloud サービスの SQL Console にアクセスします。
 
-<Image img={cp_service} alt='ClickPipes service' size='lg' border />
+<Image img={cp_service} alt="ClickPipes サービス" size="lg" border/>
 
-2. 左側のメニューから`Data Sources`ボタンを選択し、「Set up a ClickPipe」をクリックします。
+2. 左側メニューで `Data Sources` ボタンを選択し、「ClickPipe をセットアップ」をクリックします。
 
-<Image img={cp_step0} alt='Select imports' size='lg' border />
+<Image img={cp_step0} alt="インポートを選択" size="lg" border/>
 
 3. データソースを選択します。
 
-<Image img={cp_step1} alt='Select data source type' size='lg' border />
+<Image img={cp_step1} alt="データソースの種類を選択" size="lg" border/>
 
-4. ClickPipeの名前、説明(任意)、IAMロールまたは認証情報、その他の接続詳細を入力してフォームを完成させます。
+4. ClickPipe の名前、説明（任意）、IAM ロールまたは認証情報、その他の接続詳細を入力してフォームを完成させます。
 
-<Image
-  img={cp_step2_kinesis}
-  alt='Fill out connection details'
-  size='lg'
-  border
-/>
+<Image img={cp_step2_kinesis} alt="接続詳細を入力" size="lg" border/>
 
-5. Kinesis Streamと開始オフセットを選択します。UIには選択したソース(Kafkaトピックなど)からのサンプルドキュメントが表示されます。また、Kinesis StreamsのEnhanced Fan-outを有効にすることで、ClickPipeのパフォーマンスと安定性を向上させることができます(Enhanced Fan-outの詳細については[こちら](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout)を参照してください)。
+5. Kinesis Stream と開始オフセットを選択します。UI には、選択したソース（Kafka トピックなど）からのサンプルドキュメントが表示されます。ClickPipe のパフォーマンスと安定性を向上させるために、Kinesis ストリームで Enhanced Fan-out を有効にすることもできます（Enhanced Fan-out の詳細は[こちら](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout)を参照してください）。
 
-<Image
-  img={cp_step3_kinesis}
-  alt='Set data format and topic'
-  size='lg'
-  border
-/>
+<Image img={cp_step3_kinesis} alt="データ形式とトピックを設定" size="lg" border/>
 
-6. 次のステップでは、新しいClickHouseテーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。画面の指示に従って、テーブル名、スキーマ、設定を変更します。上部のサンプルテーブルで変更内容をリアルタイムでプレビューできます。
+6. 次のステップでは、新しい ClickHouse テーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。画面の指示に従って、テーブル名、スキーマ、および設定を変更します。上部のサンプルテーブルで、変更内容をリアルタイムにプレビューできます。
 
-<Image img={cp_step4a} alt='Set table, schema, and settings' size='lg' border />
+<Image img={cp_step4a} alt="テーブル、スキーマ、設定を構成" size="lg" border/>
 
-提供されているコントロールを使用して、詳細設定をカスタマイズすることもできます。
+  また、提供されているコントロールを使用して詳細設定をカスタマイズすることもできます。
 
-<Image img={cp_step4a3} alt='Set advanced controls' size='lg' border />
+<Image img={cp_step4a3} alt="詳細コントロールを設定" size="lg" border/>
 
-7. または、既存のClickHouseテーブルにデータを取り込むこともできます。その場合、UIでソースのフィールドを選択した宛先テーブルのClickHouseフィールドにマッピングできます。
+7. もしくは、既存の ClickHouse テーブルにデータを取り込むように設定することもできます。その場合、UI では、ソースのフィールドを、選択した宛先テーブル内の ClickHouse のフィールドにマッピングできます。
 
-<Image img={cp_step4b} alt='Use an existing table' size='lg' border />
+<Image img={cp_step4b} alt="既存のテーブルを使用" size="lg" border/>
 
-8. 最後に、内部ClickPipesユーザーの権限を設定できます。
+8. 最後に、内部 ClickPipes ユーザーの権限を構成できます。
 
-   **権限:** ClickPipesは宛先テーブルへのデータ書き込み専用のユーザーを作成します。この内部ユーザーに対して、カスタムロールまたは事前定義されたロールのいずれかを選択できます:
-   - `Full access`: クラスタへの完全なアクセス権限。宛先テーブルでマテリアライズドビューやDictionaryを使用する場合に有用です。
-   - `Only destination table`: 宛先テーブルへの`INSERT`権限のみ。
+  **権限:** ClickPipes は、宛先テーブルにデータを書き込むための専用ユーザーを作成します。この内部ユーザーに対して、カスタムロールまたはあらかじめ定義されたロールのいずれかを使用してロールを選択できます。
+    - `Full access`: クラスタへのフルアクセス権を持ちます。宛先テーブルでマテリアライズドビューや Dictionary を使用する場合に便利です。
+    - `Only destination table`: 宛先テーブルに対する `INSERT` 権限のみを持ちます。
 
-<Image img={cp_step5} alt='Permissions' border />
+<Image img={cp_step5} alt="権限" border/>
 
-9. 「Complete Setup」をクリックすると、システムがClickPipeを登録し、サマリーテーブルに表示されます。
+9. 「セットアップを完了」をクリックすると、システムは ClickPipe を登録し、サマリー テーブルに一覧表示されるようになります。
 
-<Image img={cp_success} alt='Success notice' size='sm' border />
+<Image img={cp_success} alt="成功メッセージ" size="sm" border/>
 
-<Image img={cp_remove} alt='Remove notice' size='lg' border />
+<Image img={cp_remove} alt="削除メッセージ" size="lg" border/>
 
-サマリーテーブルには、ソースまたはClickHouseの宛先テーブルからサンプルデータを表示するコントロールが用意されています。
+  サマリー テーブルでは、ClickHouse 内のソースまたは宛先テーブルからサンプルデータを表示するためのコントロールが提供されます。
 
-<Image img={cp_destination} alt='View destination' size='lg' border />
+<Image img={cp_destination} alt="宛先を表示" size="lg" border/>
 
-また、ClickPipeを削除したり、取り込みジョブのサマリーを表示するコントロールもあります。
+  また、ClickPipe を削除したり、取り込みジョブのサマリーを表示したりするためのコントロールも提供されます。
 
-<Image img={cp_overview} alt='View overview' size='lg' border />
+<Image img={cp_overview} alt="概要を表示" size="lg" border/>
 
-10. **おめでとうございます!** 最初のClickPipeのセットアップが正常に完了しました。ストリーミングClickPipeの場合、リモートデータソースからリアルタイムでデータを取り込みながら継続的に実行されます。それ以外の場合は、バッチを取り込んで完了します。
+10. **おめでとうございます！** これで最初の ClickPipe のセットアップが完了しました。ストリーミング ClickPipe の場合は、リモートデータソースからリアルタイムでデータを継続的に取り込み続けます。そうでない場合は、バッチを取り込んだあとに完了します。
+
 
 
 ## サポートされているデータ形式 {#supported-data-formats}
 
-サポートされている形式は以下の通りです：
-
+サポートされている形式は以下のとおりです:
 - [JSON](/interfaces/formats/JSON)
+
 
 
 ## サポートされているデータ型 {#supported-data-types}
 
-### 標準型のサポート {#standard-types-support}
+### 標準データ型のサポート {#standard-types-support}
+ClickPipes で現在サポートされている ClickHouse のデータ型は次のとおりです。
 
-現在、ClickPipesでは以下のClickHouseデータ型がサポートされています:
-
-- 基本数値型 - \[U\]Int8/16/32/64、Float32/64、BFloat16
-- 大整数型 - \[U\]Int128/256
-- Decimal型
+- 基本数値型 - \[U\]Int8/16/32/64、Float32/64、および BFloat16
+- 大きな整数型 - \[U\]Int128/256
+- Decimal 型
 - Boolean
 - String
 - FixedString
-- Date、Date32
-- DateTime、DateTime64(UTCタイムゾーンのみ)
+- Date, Date32
+- DateTime, DateTime64（UTC タイムゾーンのみ）
 - Enum8/Enum16
 - UUID
 - IPv4
 - IPv6
-- すべてのClickHouse LowCardinality型
-- 上記のいずれかの型(Nullableを含む)をキーと値に使用するMap
-- 上記のいずれかの型(Nullableを含む、深さ1レベルのみ)を要素に使用するTupleおよびArray
-- SimpleAggregateFunction型(AggregatingMergeTreeまたはSummingMergeTreeの宛先用)
+- すべての ClickHouse の LowCardinality 型
+- 上記のいずれかの型（Nullable を含む）をキーおよび値に使用する Map 型
+- 上記のいずれかの型（Nullable を含む、1 段階のネストのみ）を要素に使用する Tuple 型および Array 型
+- SimpleAggregateFunction 型（AggregatingMergeTree または SummingMergeTree を宛先とする場合）
 
-### Variant型のサポート {#variant-type-support}
+### Variant 型のサポート {#variant-type-support}
+ソースデータストリーム内の任意の JSON フィールドに対して、`Variant(String, Int64, DateTime)` のような Variant 型を手動で指定できます。
+ClickPipes が使用する正しい Variant のサブタイプを判定する仕組み上、Variant 定義内で使用できる整数型または日時型は 1 種類のみです。
+たとえば、`Variant(Int64, UInt32)` はサポートされません。
 
-ソースデータストリーム内の任意のJSONフィールドに対して、Variant型(`Variant(String, Int64, DateTime)`など)を手動で指定できます。ClickPipesが使用する正しいバリアントサブタイプを決定する方法の都合上、Variant定義では整数型または日時型のいずれか1つのみを使用できます。例えば、`Variant(Int64, UInt32)`はサポートされていません。
-
-### JSON型のサポート {#json-type-support}
-
-常にJSONオブジェクトであるJSONフィールドは、JSON型の宛先カラムに割り当てることができます。固定パスやスキップされたパスを含め、宛先カラムを希望するJSON型に手動で変更する必要があります。
+### JSON 型のサポート {#json-type-support}
+常に JSON オブジェクトである JSON フィールドは、JSON 型の宛先カラムに割り当てることができます。固定パスやスキップされたパスを含め、目的の JSON 型に
+宛先カラムを手動で変更する必要があります。 
 
 
-## Kinesisの仮想カラム {#kinesis-virtual-columns}
 
-Kinesisストリームでは以下の仮想カラムがサポートされています。新しい宛先テーブルを作成する際、`Add Column`ボタンを使用して仮想カラムを追加できます。
+## Kinesis 仮想カラム {#kinesis-virtual-columns}
 
-| 名前              | 説明                                                   | 推奨データ型 |
-| ----------------- | ------------------------------------------------------------- | --------------------- |
-| \_key             | Kinesisパーティションキー                                         | String                |
-| \_timestamp       | Kinesis到着タイムスタンプの近似値(ミリ秒精度) | DateTime64(3)         |
-| \_stream          | Kinesisストリーム名                                           | String                |
-| \_sequence_number | Kinesisシーケンス番号                                       | String                |
-| \_raw_message     | 完全なKinesisメッセージ                                          | String                |
+Kinesis ストリームでは、次の仮想カラムがサポートされています。新しい宛先テーブルを作成する際、`Add Column` ボタンを使用して仮想カラムを追加できます。
 
-\_raw_messageフィールドは、完全なKinesis JSONレコードのみが必要な場合に使用できます(例えば、ClickHouseの[`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions)関数を使用して下流のマテリアライズドビューにデータを投入する場合など)。このようなパイプでは、すべての「非仮想」カラムを削除することでClickPipesのパフォーマンスが向上する可能性があります。
+| Name             | Description                                                            | Recommended Data Type |
+|------------------|------------------------------------------------------------------------|-----------------------|
+| _key             | Kinesis パーティションキー                                             | String                |
+| _timestamp       | Kinesis おおよその到着タイムスタンプ（ミリ秒精度）                    | DateTime64(3)         |
+| _stream          | Kinesis ストリーム名                                                   | String                |
+| _sequence_number | Kinesis シーケンス番号                                                 | String                |
+| _raw_message     | Kinesis メッセージ全体                                                 | String                |
+
+_raw_message フィールドは、Kinesis JSON レコード全体のみが必要な場合（ClickHouse の [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用して下流のマテリアライズドビューを作成する場合など）に使用できます。そのようなパイプでは、「非仮想」カラムをすべて削除することで ClickPipes のパフォーマンスが向上する場合があります。
+
 
 
 ## 制限事項 {#limitations}
@@ -161,35 +153,35 @@ Kinesisストリームでは以下の仮想カラムがサポートされてい�
 - [DEFAULT](/sql-reference/statements/create/table#default) はサポートされていません。
 
 
+
 ## パフォーマンス {#performance}
 
 ### バッチ処理 {#batching}
+ClickPipes はデータを ClickHouse にバッチ単位で挿入します。これは、データベース内に過度に多くのパーツが作成されてクラスターのパフォーマンス問題につながることを防ぐためです。
 
-ClickPipesはデータをバッチ単位でClickHouseに挿入します。これは、データベース内に過剰なパートが作成されることを防ぎ、クラスタのパフォーマンス問題を回避するためです。
-
-バッチは、以下のいずれかの条件が満たされた時点で挿入されます:
-
-- バッチサイズが最大サイズに達した場合(レプリカメモリ1GBあたり100,000行または32MB)
-- バッチが最大時間開かれている場合(5秒)
+バッチは、次のいずれかの条件を満たしたときに挿入されます：
+- バッチサイズが最大サイズ（レプリカメモリ 1GB あたり 100,000 行または 32MB）に達した場合
+- バッチが開かれている時間が最大値（5 秒）に達した場合
 
 ### レイテンシ {#latency}
 
-レイテンシ(Kinesisメッセージがストリームに送信されてからClickHouseでメッセージが利用可能になるまでの時間として定義)は、複数の要因(Kinesisのレイテンシ、ネットワークレイテンシ、メッセージサイズ/形式など)に依存します。上記のセクションで説明した[バッチ処理](#batching)もレイテンシに影響を与えます。期待できるレイテンシを理解するために、特定のユースケースでテストを実施することを常に推奨します。
+レイテンシ（Kinesis メッセージがストリームに送信されてから、そのメッセージが ClickHouse で利用可能になるまでの時間として定義）は、複数の要因（Kinesis のレイテンシ、ネットワークレイテンシ、メッセージサイズ／フォーマットなど）に依存します。上記セクションで説明した [バッチ処理](#batching) もレイテンシに影響します。期待できるレイテンシを把握するために、必ずお客様のユースケースでテストすることを推奨します。
 
-特定の低レイテンシ要件がある場合は、[お問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
+低レイテンシの要件がある場合は、[お問い合わせ](https://clickhouse.com/company/contact?loc=clickpipes)ください。
 
 ### スケーリング {#scaling}
 
-ClickPipes for Kinesisは、水平方向と垂直方向の両方にスケーリングできるように設計されています。デフォルトでは、1つのコンシューマーを持つコンシューマーグループを作成します。これは、ClickPipe作成時、または**設定** -> **詳細設定** -> **スケーリング**からいつでも設定できます。
+ClickPipes for Kinesis は、水平方向および垂直方向の両方にスケールするように設計されています。デフォルトでは、1 つのコンシューマを持つコンシューマグループを作成します。これは ClickPipe 作成時、またはそれ以降いつでも **Settings** -> **Advanced Settings** -> **Scaling** から設定できます。
 
-ClickPipesは、アベイラビリティゾーン分散アーキテクチャにより高可用性を提供します。
-これには、少なくとも2つのコンシューマーへのスケーリングが必要です。
+ClickPipes は、アベイラビリティゾーンに分散したアーキテクチャにより高可用性を提供します。
+そのためには、少なくとも 2 つのコンシューマへのスケーリングが必要です。
 
-実行中のコンシューマー数に関わらず、設計上フォールトトレランスが利用可能です。
-コンシューマーまたはその基盤となるインフラストラクチャに障害が発生した場合、
-ClickPipeは自動的にコンシューマーを再起動し、メッセージの処理を継続します。
+実行中のコンシューマ数にかかわらず、フォールトトレランスは設計上備わっています。
+コンシューマまたはその基盤インフラストラクチャに障害が発生した場合でも、
+ClickPipe はコンシューマを自動的に再起動し、メッセージ処理を継続します。
+
 
 
 ## 認証 {#authentication}
 
-Amazon Kinesisストリームにアクセスするには、[IAM認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)または[IAMロール](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)を使用できます。IAMロールの設定方法の詳細については、ClickHouse Cloudで使用するロールの設定方法について[このガイドを参照](./secure-kinesis.md)してください。
+Amazon Kinesis ストリームにアクセスするには、[IAM 認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)または [IAM ロール](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)を使用できます。IAM ロールの設定方法の詳細については、ClickHouse Cloud で利用できるロールの設定方法を説明した[このガイド](./secure-kinesis.md)を参照してください。

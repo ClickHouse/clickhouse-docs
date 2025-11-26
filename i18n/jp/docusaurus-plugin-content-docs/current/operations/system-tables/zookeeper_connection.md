@@ -1,6 +1,6 @@
 ---
-description: 'ZooKeeper が設定されている場合にのみ存在する system テーブル。ZooKeeper への現在の接続（補助 ZooKeeper を含む）を表示します。'
-keywords: ['system table', 'zookeeper_connection']
+description: 'ZooKeeper が設定されている場合にのみ存在するシステムテーブル。現在の ZooKeeper への接続状況（補助的な ZooKeeper を含む）を表示します。'
+keywords: ['システムテーブル', 'zookeeper_connection']
 slug: /operations/system-tables/zookeeper_connection
 title: 'system.zookeeper_connection'
 doc_type: 'reference'
@@ -13,21 +13,21 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-ZooKeeper が設定されていない場合、このテーブルは存在しません。`system.zookeeper&#95;connection` テーブルは、ZooKeeper への現在の接続（補助 ZooKeeper を含む）を表示します。各行は 1 つの接続に関する情報を表します。
+ZooKeeper が構成されていない場合、このテーブルは存在しません。`system.zookeeper&#95;connection` テーブルは、ZooKeeper（補助 ZooKeeper を含む）への現在の接続を表示します。各行は 1 つの接続に関する情報を表します。
 
 列:
 
-* `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper クラスターの名前。
-* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse が接続している ZooKeeper ノードのホスト名/IP。
-* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続している ZooKeeper ノードのポート。
-* `index` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続している ZooKeeper ノードのインデックス。インデックスは ZooKeeper の設定に基づきます。未接続の場合、この列は NULL です。
+* `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper クラスター名。
+* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse が接続した ZooKeeper ノードのホスト名 / IP。
+* `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続した ZooKeeper ノードのポート。
+* `index` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続した ZooKeeper ノードのインデックス。インデックスは ZooKeeper の設定に基づきます。接続されていない場合、このカラムは NULL です。
 * `connected_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 接続が確立された時刻。
 * `session_uptime_elapsed_seconds` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 接続が確立されてから経過した秒数。
-* `is_expired` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 現在の接続が有効期限切れかどうか。
-* `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API のバージョン。
+* `is_expired` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 現在の接続が期限切れかどうか。
+* `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API バージョン。
 * `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 接続のセッション ID。
 * `xid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 現在のセッションの XID。
-* `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 有効になっている機能フラグ。ClickHouse Keeper にのみ適用されます。取り得る値は `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE` です。
+* `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 有効になっている機能フラグ。ClickHouse Keeper にのみ適用されます。取りうる値は `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE` です。
 * `availability_zone` ([String](../../sql-reference/data-types/string.md)) — アベイラビリティゾーン。
 
 例:

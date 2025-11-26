@@ -1,42 +1,43 @@
 ---
 slug: /use-cases/observability/clickstack/event_patterns
-title: 'ClickStack を用いたイベントパターン'
+title: 'ClickStack を使ったイベントパターン'
 sidebar_label: 'イベントパターン'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いたイベントパターン'
+description: 'ClickStack を使ったイベントパターン'
 doc_type: 'guide'
-keywords: ['clickstack', 'イベントパターン', 'ログ分析', 'パターンマッチング', 'オブザーバビリティ']
+keywords: ['clickstack', 'event patterns', 'log analysis', 'pattern matching', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
 import event_patterns from '@site/static/images/use-cases/observability/event_patterns.png';
 import event_patterns_highlight from '@site/static/images/use-cases/observability/event_patterns_highlight.png';
 
-ClickStack のイベントパターン機能を使うと、類似したメッセージを自動的にクラスタリングすることで、大量のログやトレースをすばやく把握できます。その結果、数百万件の個々のイベントを一つひとつ精査する代わりに、意味のある少数のグループだけを確認すればよくなります。
+ClickStack のイベントパターン機能を使用すると、類似したメッセージを自動的にクラスタリングすることで、大量のログやトレースの内容をすばやく把握できます。これにより、数百万件の個々のイベントを精査する代わりに、意味のある少数のグループだけを確認すればよくなります。
 
 <Image img={event_patterns} alt="イベントパターン" size="lg" />
 
-これにより、どのエラーや警告が新しいものか、どれが繰り返し発生しているか、どれがログ量の急増を引き起こしているかを、はるかに簡単に見つけ出せます。パターンは動的に生成されるため、正規表現を定義したりパースルールをメンテナンスしたりする必要はありません。フォーマットに関係なく、ClickStack がイベントの内容に自動的に適応します。
+これにより、どのエラーや警告が新規なのか、どれが繰り返し発生しているのか、どれがログボリュームの急増を引き起こしているのかを、はるかに簡単に把握できます。パターンは動的に生成されるため、正規表現を定義したりパースルールを保守したりする必要はありません。ClickStack がイベントの形式にかかわらず自動的に適応します。
 
-このような高レベルなビューは、インシデントレスポンスだけでなく、コスト削減のために削減対象となるノイズの多いログソースの特定、サービスが生成しているログの種類の把握、そしてシステムがすでに関心のあるシグナルを出しているかどうかの確認を、より迅速に行うのにも役立ちます。
+インシデント対応にとどまらず、このような高レベルなビューは、コスト削減のためにノイズの多いログソースを特定して削減したり、サービスが生成しているログの種類を把握したり、システムがすでに重要なシグナルを出しているかどうかをより迅速に判断するのにも役立ちます。
 
 
 ## イベントパターンへのアクセス {#accessing-event-patterns}
 
-イベントパターンは、ClickStackの**検索**パネルから直接利用できます。
+イベントパターンは、ClickStack の **Search** パネルから直接利用できます。  
 
-左上の**分析モード**セレクターから**イベントパターン**を選択すると、標準の結果テーブルから類似イベントのクラスター表示に切り替わります。
+左上にある **Analysis Mode** セレクターで **Event Patterns** を選択すると、標準の結果テーブルビューではなく、類似したイベントがクラスタリングされたビューに切り替わります。  
 
-<Image img={event_patterns_highlight} alt='イベントパターン' size='lg' />
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
 
-これにより、個々のログやトレースをスクロールして確認できるデフォルトの**結果テーブル**に代わる表示方法が提供されます。
+これは、すべての個々のログやトレースをスクロールして確認するデフォルトの **Results Table** に代わる表示方法です。
+
 
 
 ## 推奨事項 {#recommendations}
 
-イベントパターンは、データの**絞り込まれたサブセット**に適用した場合に最も効果的です。例えば、イベントパターンを有効にする前に単一のサービスに絞り込むことで、数千のサービス全体にパターンを適用する場合と比較して、より関連性が高く有用なメッセージを抽出できます。
+イベントパターンは、データの**絞り込まれたサブセット**に適用したときに最も効果的です。たとえば、まず特定の 1 つのサービスにまでフィルタリングしてからイベントパターンを有効にすると、最初から何千ものサービス全体にパターンを適用する場合と比べて、より関連性が高く興味深いメッセージが得られることがほとんどです。  
 
-また、エラーメッセージの要約にも特に有効で、IDやペイロードが異なる繰り返し発生するエラーを簡潔なクラスターにグループ化できます。
+また、エラーメッセージの要約にも特に有効で、ID やペイロードが異なる同種のエラーを、簡潔なクラスターにまとめることができます。  
 
-実際の使用例については、[リモートデモデータセット](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns)でイベントパターンがどのように使用されているかを参照してください。
+実際の利用例については、[Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns) でイベントパターンがどのように使われているかを参照してください。

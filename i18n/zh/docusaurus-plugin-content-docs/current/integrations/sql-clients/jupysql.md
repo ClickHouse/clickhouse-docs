@@ -1,8 +1,8 @@
 ---
 slug: /integrations/jupysql
 sidebar_label: 'Jupyter 笔记本'
-description: 'JupySQL 是一款适用于 Jupyter 的跨平台数据库工具。'
-title: '在 ClickHouse 中使用 JupySQL'
+description: 'JupySQL 是一款面向 Jupyter 的跨平台数据库工具。'
+title: '将 JupySQL 与 ClickHouse 配合使用'
 keywords: ['JupySQL', 'Jupyter 笔记本', 'Python', '数据分析', '交互式 SQL']
 doc_type: 'guide'
 integration:
@@ -20,19 +20,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge />
 
-在本指南中，我们将展示如何与 ClickHouse 集成。
+在本指南中，我们将展示如何将 JupySQL 与 ClickHouse 集成。
 
 我们将使用 JupySQL 针对 ClickHouse 运行查询。
-数据加载完成后，我们将通过 SQL 绘图功能对其进行可视化。
+数据加载完成后，我们将通过基于 SQL 的绘图对其进行可视化。
 
-JupySQL 与 ClickHouse 之间的集成是通过 `clickhouse_sqlalchemy` 库实现的。该库简化了两个系统之间的通信，使用户能够连接到 ClickHouse 并指定 SQL 方言。建立连接后，用户可以直接从 ClickHouse 原生界面，或直接在 Jupyter notebook 中运行 SQL 查询。
+JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库为这两个系统之间的通信提供了便捷支持，使用户能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，用户可以直接在 ClickHouse 原生 UI 中，或直接在 Jupyter Notebook 中运行 SQL 查询。
 
 ```python
-# 安装所需的软件包
+# 安装所需软件包
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-注意：你可能需要重新启动内核后才能使用更新的软件包。
+注意：可能需要重启内核才能使用更新后的软件包。
 
 ```python
 import pandas as pd
@@ -43,9 +43,9 @@ from sklearn_evaluation import plot
 %config SqlMagic.autocommit=False
 ```
 
-**你需要确保你的 ClickHouse 已经启动并且可以访问，才能继续后续步骤。你可以使用本地版本或云端版本。**
+**在后续步骤中，你需要确保你的 ClickHouse 已经启动并且可访问。你可以使用本地版本或云端版本。**
 
-**注意：**你需要根据要连接的实例类型（URL、用户名、密码）调整连接字符串。下面的示例中我们使用的是本地实例。要了解更多信息，请查看[本指南](/get-started/quick-start)。
+**注意：**你需要根据要连接的实例类型调整连接字符串（url、user、password）。在下面的示例中，我们使用的是本地实例。要了解更多相关内容，请参阅[本指南](/get-started/quick-start)。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -107,7 +107,7 @@ ORDER BY pickup_datetime;
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  已完成。
+  完成。
 
 <table>
   <tr />
@@ -253,7 +253,7 @@ GROUP BY passenger_count
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  完成。
+  已完成。
 
 <table>
   <tr>
@@ -325,7 +325,7 @@ limit 5;
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  完成。
+  已完成。
 
 <table>
   <tr>
@@ -381,7 +381,7 @@ WHERE trip_distance < 6.3
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  跳过执行...
+  跳过执行…
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
@@ -391,13 +391,13 @@ WHERE trip_distance < 6.3
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='计数'>
 ```
 
-<Image img={jupysql_plot_1} size="md" alt="直方图显示了 short-trips 数据集中行程距离在 10 个柱形区间中的分布" border />
+<Image img={jupysql_plot_1} size="md" alt="直方图显示 short-trips 数据集中行程距离的分布，共 10 个区间" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("行程距离分布(行程 < 6.3)")
+ax.set_title("行程距离（行程 < 6.3）")
 _ = ax.set_xlabel("行程距离")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="直方图显示行程距离在 50 个区间中的分布（带网格），标题为“行程距离（距离 < 6.3 的行程）”" border />
+<Image img={jupysql_plot_2} size="md" alt="显示行程距离分布的直方图，包含 50 个区间和网格，标题为“Trip distance from trips < 6.3”" border />

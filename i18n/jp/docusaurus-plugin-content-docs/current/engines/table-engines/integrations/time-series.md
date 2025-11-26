@@ -1,5 +1,5 @@
 ---
-description: 'タイムスタンプとタグ（またはラベル）に関連付けられた値の集合である時系列データを格納するテーブルエンジン。'
+description: 'タイムスタンプとタグ（またはラベル）に関連付けられた値の集合としての時系列データを格納するテーブルエンジン。'
 sidebar_label: 'TimeSeries'
 sidebar_position: 60
 slug: /engines/table-engines/special/time_series
@@ -17,7 +17,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-時系列データ、すなわちタイムスタンプとタグ（またはラベル）に関連付けられた値の集合を格納するテーブルエンジンです。
+時系列データ、すなわちタイムスタンプおよびタグ（またはラベル）に関連付けられた値の集合を格納するテーブルエンジンです。
 
 ```sql
 metric_name1[tag1=value1, tag2=value2, ...] = {timestamp1: value1, timestamp2: value2, ...}
@@ -25,14 +25,13 @@ metric_name2[...] = ...
 ```
 
 :::info
-これは実験的な機能であり、将来のリリースで後方互換性のない形で変更される可能性があります。
-TimeSeries テーブルエンジンを使用するには、
-[allow&#95;experimental&#95;time&#95;series&#95;table](/operations/settings/settings#allow_experimental_time_series_table) 設定を有効にしてください。
-コマンド `set allow_experimental_time_series_table = 1` を入力してください。
+これは実験的な機能であり、今後のリリースで後方互換性のない形で変更される可能性があります。
+TimeSeries テーブルエンジンを使用するには、[allow&#95;experimental&#95;time&#95;series&#95;table](/operations/settings/settings#allow_experimental_time_series_table) 設定を有効にします。
+`set allow_experimental_time_series_table = 1` コマンドを実行します。
 :::
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -43,86 +42,90 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法
 
-すべてをデフォルト設定で開始するのが最も簡単です（`TimeSeries`テーブルは列のリストを指定せずに作成できます）：
+すべてをデフォルト設定のままにして開始するのが簡単です（列の一覧を指定しなくても `TimeSeries` テーブルを作成できます）:
 
 ```sql
 CREATE TABLE my_table ENGINE=TimeSeries
 ```
 
-このテーブルは以下のプロトコルで使用できます（サーバー設定でポートを割り当てる必要があります）：
+このテーブルは、サーバー設定でポートを割り当てれば、次のプロトコルで利用できます：
 
-- [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-- [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
+* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
 
 
 ## ターゲットテーブル {#target-tables}
 
-`TimeSeries`テーブルは独自のデータを持たず、すべてターゲットテーブルに格納されます。
-これは[マテリアライズドビュー](../../../sql-reference/statements/create/view#materialized-view)の動作と似ていますが、マテリアライズドビューが1つのターゲットテーブルを持つのに対し、`TimeSeries`テーブルは[data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table)という3つのターゲットテーブルを持つ点が異なります。
+`TimeSeries` テーブル自体はデータを持たず、すべてのデータはターゲットテーブルに保存されます。
+これは [マテリアライズドビュー](../../../sql-reference/statements/create/view#materialized-view) の動作に似ていますが、
+マテリアライズドビューがターゲットテーブルを 1 つだけ持つのに対して、
+`TimeSeries` テーブルは [data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) という 3 つのターゲットテーブルを持つ点が異なります。
 
-ターゲットテーブルは`CREATE TABLE`クエリで明示的に指定することも、`TimeSeries`テーブルエンジンが内部ターゲットテーブルを自動生成することもできます。
+ターゲットテーブルは `CREATE TABLE` クエリ内で明示的に指定することも、
+`TimeSeries` テーブルエンジンに内部ターゲットテーブルを自動的に生成させることもできます。
 
-ターゲットテーブルは以下の通りです:
+ターゲットテーブルは次のとおりです。
 
-### データテーブル {#data-table}
+### Data テーブル {#data-table}
 
-_data_テーブルには、識別子に関連付けられた時系列データが格納されます。
+_data_ テーブルには、何らかの識別子に関連付けられた時系列データが格納されます。
 
-_data_テーブルには以下のカラムが必要です:
+_data_ テーブルは次のカラムを持たなければなりません:
 
-| 名前        | 必須? | デフォルト型    | 使用可能な型         | 説明                                         |
-| ----------- | ---------- | --------------- | ---------------------- | --------------------------------------------------- |
-| `id`        | [x]        | `UUID`          | 任意                    | メトリック名とタグの組み合わせを識別します |
-| `timestamp` | [x]        | `DateTime64(3)` | `DateTime64(X)`        | 時点                                        |
-| `value`     | [x]        | `Float64`       | `Float32`または`Float64` | `timestamp`に関連付けられた値             |
-
-### タグテーブル {#tags-table}
-
-_tags_テーブルには、メトリック名とタグの各組み合わせに対して計算された識別子が格納されます。
-
-_tags_テーブルには以下のカラムが必要です:
-
-| 名前                 | 必須? | デフォルト型                          | 使用可能な型                                                                                                          | 説明                                                                                                                                                                                 |
-| -------------------- | ---------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                 | [x]        | `UUID`                                | 任意([data](#data-table)テーブルの`id`の型と一致する必要があります)                                                      | `id`はメトリック名とタグの組み合わせを識別します。DEFAULT式はこの識別子の計算方法を指定します                                                            |
-| `metric_name`        | [x]        | `LowCardinality(String)`              | `String`または`LowCardinality(String)`                                                                                    | メトリックの名前                                                                                                                                                                        |
-| `<tag_value_column>` | [ ]        | `String`                              | `String`または`LowCardinality(String)`または`LowCardinality(Nullable(String))`                                              | 特定のタグの値。タグ名と対応するカラム名は[tags_to_columns](#settings)設定で指定されます                                                |
-| `tags`               | [x]        | `Map(LowCardinality(String), String)` | `Map(String, String)`または`Map(LowCardinality(String), String)`または`Map(LowCardinality(String), LowCardinality(String))` | メトリック名を含む`__name__`タグと、[tags_to_columns](#settings)設定で列挙されたタグを除くタグのマップ                               |
-| `all_tags`           | [ ]        | `Map(String, String)`                 | `Map(String, String)`または`Map(LowCardinality(String), String)`または`Map(LowCardinality(String), LowCardinality(String))` | エフェメラルカラム。各行はメトリック名を含む`__name__`タグのみを除くすべてのタグのマップです。このカラムの唯一の目的は`id`の計算時に使用されることです |
-| `min_time`           | [ ]        | `Nullable(DateTime64(3))`             | `DateTime64(X)`または`Nullable(DateTime64(X))`                                                                            | その`id`を持つ時系列の最小タイムスタンプ。このカラムは[store_min_time_and_max_time](#settings)が`true`の場合に作成されます                                                                |
-| `max_time`           | [ ]        | `Nullable(DateTime64(3))`             | `DateTime64(X)`または`Nullable(DateTime64(X))`                                                                            | その`id`を持つ時系列の最大タイムスタンプ。このカラムは[store_min_time_and_max_time](#settings)が`true`の場合に作成されます                                                                |
-
-### メトリックテーブル {#metrics-table}
-
-_metrics_テーブルには、収集されたメトリックに関する情報、それらのメトリックの型、および説明が格納されます。
-
-_metrics_テーブルには以下のカラムが必要です:
-
-
-| 名前 | 必須? | デフォルトの型 | 指定可能な型 | 説明 |
+| Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
-| `metric_family_name` | [x] | `String` | `String` または `LowCardinality(String)` | メトリックファミリー名 |
-| `type` | [x] | `String` | `String` または `LowCardinality(String)` | メトリックファミリーの種別。"counter"、"gauge"、"summary"、"stateset"、"histogram"、"gaugehistogram" のいずれか |
-| `unit` | [x] | `String` | `String` または `LowCardinality(String)` | メトリックで使用される単位 |
-| `help` | [x] | `String` | `String` または `LowCardinality(String)` | メトリックの説明 |
+| `id` | [x] | `UUID` | any | メトリック名とタグの組み合わせを識別します |
+| `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 時点 |
+| `value` | [x] | `Float64` | `Float32` or `Float64` | `timestamp` に関連付けられた値 |
 
-`TimeSeries` テーブルに挿入された行は、実際にはこれら 3 つの対象テーブルに格納されます。
-`TimeSeries` テーブルには、[data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 各テーブルに存在するこれらすべてのカラムが含まれます。
+### Tags テーブル {#tags-table}
+
+_tags_ テーブルには、メトリック名とタグの各組み合わせに対して計算された識別子が格納されます。
+
+_tags_ テーブルは次のカラムを持たなければなりません:
+
+| Name | Mandatory? | Default type | Possible types | Description |
+|---|---|---|---|---|
+| `id` | [x] | `UUID` | any (must match the type of `id` in the [data](#data-table) table) | `id` はメトリック名とタグの組み合わせを識別します。DEFAULT 式でそのような識別子の計算方法を指定します |
+| `metric_name` | [x] | `LowCardinality(String)` | `String` or `LowCardinality(String)` | メトリックの名前 |
+| `<tag_value_column>` | [ ] | `String` | `String` or `LowCardinality(String)` or `LowCardinality(Nullable(String))` | 特定のタグの値。タグ名と対応するカラム名は [tags_to_columns](#settings) 設定で指定します |
+| `tags` | [x] | `Map(LowCardinality(String), String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | メトリック名を保持するタグ `__name__` および [tags_to_columns](#settings) 設定で列挙された名前を持つタグを除いたタグのマップ |
+| `all_tags` | [ ] | `Map(String, String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | 一時的なカラムであり、各行はメトリック名を保持するタグ `__name__` のみを除外したすべてのタグのマップです。このカラムの唯一の目的は、`id` を計算する際に使用されることです |
+| `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最小タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
+| `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最大タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
+
+### Metrics テーブル {#metrics-table}
+
+_metrics_ テーブルには、収集されているメトリクスに関する情報、そのメトリクスの型および説明が格納されます。
+
+_metrics_ テーブルは次のカラムを持たなければなりません:
 
 
 
-## 作成 {#creation}
+| Name | Mandatory? | Default type | Possible types | Description |
+|---|---|---|---|---|
+| `metric_family_name` | [x] | `String` | `String` or `LowCardinality(String)` | メトリックファミリー名 |
+| `type` | [x] | `String` | `String` or `LowCardinality(String)` | メトリックファミリーのタイプ。"counter"、"gauge"、"summary"、"stateset"、"histogram"、"gaugehistogram" のいずれか |
+| `unit` | [x] | `String` | `String` or `LowCardinality(String)` | メトリックで使用される単位 |
+| `help` | [x] | `String` | `String` or `LowCardinality(String)` | メトリックの説明 |
 
-`TimeSeries`テーブルエンジンを使用してテーブルを作成する方法は複数あります。
-最もシンプルな文は
+`TimeSeries` テーブルに挿入された行はすべて、実際にはこれら 3 つのターゲットテーブルに保存されます。
+`TimeSeries` テーブルには、[data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 各テーブルのすべてのカラムが含まれます。
+
+
+
+## 作成
+
+`TimeSeries` テーブルエンジンでテーブルを作成する方法はいくつかあります。
+最も簡単なステートメントは
 
 ```sql
 CREATE TABLE my_table ENGINE=TimeSeries
 ```
 
-実際には次のテーブルを作成します（`SHOW CREATE TABLE my_table`を実行することで確認できます）：
+実際には、次のテーブルが作成されます（`SHOW CREATE TABLE my_table` を実行すると確認できます）:
 
 ```sql
 CREATE TABLE my_table
@@ -149,15 +152,15 @@ METRICS ENGINE = ReplacingMergeTree ORDER BY metric_family_name
 METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
-このように、カラムは自動的に生成され、この文には3つの内部UUIDが含まれています。
-これは作成された各内部ターゲットテーブルに1つずつ対応しています。
-（内部UUIDは、設定
-[show_table_uuid_in_table_create_query_if_not_nil](../../../operations/settings/settings#show_table_uuid_in_table_create_query_if_not_nil)
-が設定されるまで通常は表示されません。）
+したがって、列は自動的に生成され、このステートメントには、作成された各内部ターゲットテーブルに対応して 1 つずつ、合計 3 つの内部 UUID が含まれています。
+（内部 UUID は、設定
+[show&#95;table&#95;uuid&#95;in&#95;table&#95;create&#95;query&#95;if&#95;not&#95;nil](../../../operations/settings/settings#show_table_uuid_in_table_create_query_if_not_nil)
+を有効にしない限り、通常は表示されません。）
 
-内部ターゲットテーブルは`.inner_id.data.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`、
-`.inner_id.tags.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`、`.inner_id.metrics.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
-のような名前を持ち、各ターゲットテーブルはメインの`TimeSeries`テーブルのカラムのサブセットとなるカラムを持ちます：
+内部ターゲットテーブルは
+`.inner_id.data.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`,
+`.inner_id.tags.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`, `.inner_id.metrics.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+のような名前になり、各ターゲットテーブルはメインの `TimeSeries` テーブルの列のサブセットを持ちます。
 
 ```sql
 CREATE TABLE default.`.inner_id.data.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
@@ -198,9 +201,9 @@ ORDER BY metric_family_name
 ```
 
 
-## カラムの型の調整 {#adjusting-column-types}
+## 列型の調整
 
-メインテーブルの定義時に明示的に指定することで、内部ターゲットテーブルのほぼすべてのカラムの型を調整できます。例えば、
+メインテーブルを定義する際に型を明示的に指定することで、内部ターゲットテーブルのほとんどすべての列型を調整できます。例えば、
 
 ```sql
 CREATE TABLE my_table
@@ -209,7 +212,7 @@ CREATE TABLE my_table
 ) ENGINE=TimeSeries
 ```
 
-とすると、内部の[data](#data-table)テーブルはタイムスタンプをミリ秒ではなくマイクロ秒で格納するようになります：
+これにより、内部の [data](#data-table) テーブルは、タイムスタンプをミリ秒ではなくマイクロ秒単位で保存するようになります。
 
 ```sql
 CREATE TABLE default.`.inner_id.data.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
@@ -223,11 +226,11 @@ ORDER BY (id, timestamp)
 ```
 
 
-## `id` カラム {#id-column}
+## `id` 列
 
-`id` カラムには識別子が含まれており、各識別子はメトリック名とタグの組み合わせに基づいて計算されます。
-`id` カラムの DEFAULT 式は、これらの識別子を計算するために使用される式です。
-`id` カラムの型とその式は、いずれも明示的に指定することで調整できます:
+`id` 列には識別子が格納されており、各識別子はメトリクス名とタグの組み合わせに対して計算されます。
+`id` 列の DEFAULT 式は、これらの識別子を計算するために使用される式です。
+`id` 列の型とその式の両方は、明示的に指定することで変更できます。
 
 ```sql
 CREATE TABLE my_table
@@ -238,26 +241,26 @@ ENGINE=TimeSeries
 ```
 
 
-## `tags` と `all_tags` カラム {#tags-and-all-tags}
+## `tags` 列と `all_tags` 列
 
-タグのマップを含む2つのカラム `tags` と `all_tags` があります。この例では両者は同じ意味を持ちますが、`tags_to_columns` 設定を使用した場合は異なる内容になることがあります。 この設定により、特定のタグを `tags` カラム内のマップに格納する代わりに、別のカラムに格納するように指定できます:
+タグのマップを含む列が 2 つあります。`tags` と `all_tags` です。この例では同じものですが、`tags_to_columns` 設定を使用した場合には異なる場合があります。この設定を使用すると、特定のタグを `tags` 列内のマップとしてではなく、別の列に保存するよう指定できます。
 
 ```sql
 CREATE TABLE my_table
-ENGINE = TimeSeries
+ENGINE = TimeSeries 
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-このステートメントは以下のカラムを追加します:
+このステートメントにより、次の列が追加されます:
 
 ```sql
 `instance` String,
 `job` String
 ```
 
-これらは `my_table` とその内部の [tags](#tags-table) ターゲットテーブルの両方の定義に追加されます。 この場合、`tags` カラムには `instance` と `job` タグは含まれませんが、`all_tags` カラムにはこれらが含まれます。 `all_tags` カラムはエフェメラルであり、その唯一の目的は `id` カラムの DEFAULT 式で使用されることです。
+`my_table` と、その内部の [tags](#tags-table) ターゲットテーブルの両方の定義に対して指定します。この場合、`tags` 列には `instance` と `job` のタグは含まれませんが、`all_tags` 列には含まれます。`all_tags` 列は一時的な列であり、その唯一の用途は `id` 列の DEFAULT 式で使用されることです。
 
-カラムの型は明示的に指定することで調整できます:
+列の型は、明示的に指定することで調整できます。
 
 ```sql
 CREATE TABLE my_table (
@@ -269,15 +272,15 @@ SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
 
-## 内部ターゲットテーブルのテーブルエンジン {#inner-table-engines}
+## 内部ターゲットテーブルのテーブルエンジン
 
-デフォルトでは、内部ターゲットテーブルは以下のテーブルエンジンを使用します:
+デフォルトでは、内部ターゲットテーブルは次のテーブルエンジンを使用します。
 
-- [data](#data-table)テーブルは[MergeTree](../mergetree-family/mergetree)を使用します;
-- [tags](#tags-table)テーブルは[AggregatingMergeTree](../mergetree-family/aggregatingmergetree)を使用します。これは、同じデータがこのテーブルに複数回挿入されることが多く重複を削除する必要があること、また`min_time`と`max_time`カラムの集計を行う必要があるためです;
-- [metrics](#metrics-table)テーブルは[ReplacingMergeTree](../mergetree-family/replacingmergetree)を使用します。これは、同じデータがこのテーブルに複数回挿入されることが多く重複を削除する必要があるためです。
+* [data](#data-table) テーブルは [MergeTree](../mergetree-family/mergetree) を使用します。
+* [tags](#tags-table) テーブルは [AggregatingMergeTree](../mergetree-family/aggregatingmergetree) を使用します。これは、同じデータがこのテーブルに複数回挿入されることが多く、重複を削除する必要があることに加え、`min_time` と `max_time` 列に対して集約を実行する必要があるためです。
+* [metrics](#metrics-table) テーブルは [ReplacingMergeTree](../mergetree-family/replacingmergetree) を使用します。これは、同じデータがこのテーブルに複数回挿入されることが多く、重複を削除する必要があるためです。
 
-内部ターゲットテーブルには、以下のように明示的に指定することで他のテーブルエンジンも使用できます:
+明示的に指定されている場合には、内部ターゲットテーブルに他のテーブルエンジンを使用することもできます。
 
 ```sql
 CREATE TABLE my_table ENGINE=TimeSeries
@@ -287,9 +290,9 @@ METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
 
-## 外部ターゲットテーブル {#external-target-tables}
+## 外部ターゲットテーブル
 
-`TimeSeries`テーブルに手動で作成したテーブルを使用させることができます:
+`TimeSeries` テーブルが手動で作成したテーブルを使用するように設定できます。
 
 ```sql
 CREATE TABLE data_for_my_table
@@ -311,21 +314,21 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 
 ## 設定 {#settings}
 
-`TimeSeries`テーブルを定義する際に指定可能な設定の一覧です:
+`TimeSeries` テーブルを定義する際に指定できる設定の一覧は次のとおりです。
 
-| 名前                                 | 型 | デフォルト | 説明                                                                                                                                                                                                                                        |
-| ------------------------------------ | ---- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tags_to_columns`                    | Map  | {}      | [tags](#tags-table)テーブル内で、どのタグを個別のカラムに配置するかを指定するマップ。構文: `{'tag1': 'column1', 'tag2' : column2, ...}`                                                                                                 |
-| `use_all_tags_column_to_generate_id` | Bool | true    | 時系列の識別子を計算する式を生成する際に、このフラグにより計算で`all_tags`カラムを使用できるようになります                                                                                                       |
-| `store_min_time_and_max_time`        | Bool | true    | trueに設定すると、各時系列の`min_time`と`max_time`がテーブルに保存されます                                                                                                                                                            |
-| `aggregate_min_time_and_max_time`    | Bool | true    | 内部ターゲット`tags`テーブルを作成する際に、このフラグにより`min_time`カラムの型として単なる`Nullable(DateTime64(3))`ではなく`SimpleAggregateFunction(min, Nullable(DateTime64(3)))`が使用され、`max_time`カラムについても同様になります |
-| `filter_by_min_time_and_max_time`    | Bool | true    | trueに設定すると、時系列のフィルタリングに`min_time`と`max_time`カラムがテーブルで使用されます                                                                                                                                             |
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `tags_to_columns` | Map | {} | [tags](#tags-table) テーブル内で、どのタグを個別のカラムとして出力するかを指定する Map。構文: `{'tag1': 'column1', 'tag2' : column2, ...}` |
+| `use_all_tags_column_to_generate_id` | Bool | true | 時系列の ID を計算する式を生成する際に、このフラグを有効にすると、その計算で `all_tags` カラムを使用します |
+| `store_min_time_and_max_time` | Bool | true | true に設定すると、テーブルは各時系列について `min_time` と `max_time` を保存します |
+| `aggregate_min_time_and_max_time` | Bool | true | 内部ターゲットの `tags` テーブルを作成する際に、このフラグを有効にすると、`min_time` カラムの型として単なる `Nullable(DateTime64(3))` ではなく `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` を使用し、`max_time` カラムについても同様にします |
+| `filter_by_min_time_and_max_time` | Bool | true | true に設定すると、テーブルは時系列をフィルタリングする際に `min_time` および `max_time` カラムを使用します |
+
 
 
 # 関数 {#functions}
 
-以下は、`TimeSeries`テーブルを引数としてサポートする関数の一覧です:
-
+`TimeSeries` テーブルを引数として受け取る関数は次のとおりです:
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

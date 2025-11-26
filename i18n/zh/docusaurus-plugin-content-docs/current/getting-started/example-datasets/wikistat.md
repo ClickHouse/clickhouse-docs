@@ -4,14 +4,14 @@ sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
 doc_type: 'guide'
-keywords: ['示例数据集', '维基百科', '教程', '示例数据', '页面访问量']
+keywords: ['示例数据集', '维基百科', '教程', '样本数据', '页面浏览量']
 ---
 
-该数据集包含 0.5 万亿条记录。
+此数据集包含 0.5 万亿条记录。
 
-查看 FOSDEM 2023 的视频： [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+参见 FOSDEM 2023 的视频： [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-以及演示文稿： [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+以及演讲： [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
 数据来源： [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
@@ -34,9 +34,9 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
   links.txt | xargs -P3 wget --continue
 ```
 
-（大约需要 3 天时间）
+（这将花费大约 3 天）
 
-创建一个表：
+创建表：
 
 ```sql
 CREATE TABLE wikistat
@@ -68,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-或者加载已清洗的数据：
+或者加载清洗后的数据：
 
 ```sql
 INSERT INTO wikistat WITH

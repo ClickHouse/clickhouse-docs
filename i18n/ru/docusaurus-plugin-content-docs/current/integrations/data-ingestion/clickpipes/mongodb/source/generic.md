@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Произвольный экземпляр MongoDB'
-description: 'Настройка произвольного экземпляра MongoDB в качестве источника для ClickPipes'
+description: 'Настройка любого экземпляра MongoDB в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/generic
 title: 'Руководство по настройке произвольного источника MongoDB'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
 ---
 
 
@@ -13,54 +13,54 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 
 :::info
 
-Если вы используете MongoDB Atlas, обратитесь к отдельному руководству [здесь](./atlas).
+Если вы используете MongoDB Atlas, обратитесь к специальному руководству [здесь](./atlas).
 
 :::
 
 
 
-## Включение хранения oplog {#enable-oplog-retention}
+## Включение хранения oplog
 
-Для репликации требуется минимальный период хранения oplog в 24 часа. Рекомендуется установить период хранения oplog на 72 часа или более, чтобы гарантировать, что oplog не будет усечён до завершения первоначального снимка.
+Для репликации требуется минимальный срок хранения oplog в 24 часа. Рекомендуется устанавливать срок хранения oplog на 72 часа или больше, чтобы избежать его усечения до завершения начального снимка.
 
-Вы можете проверить текущий период хранения oplog, выполнив следующую команду в оболочке MongoDB (для выполнения этой команды необходима роль `clusterMonitor`):
+Вы можете проверить текущий срок хранения oplog, выполнив следующую команду в оболочке MongoDB (для выполнения этой команды у вас должна быть роль `clusterMonitor`):
 
 ```javascript
 db.getSiblingDB("admin").serverStatus().oplogTruncation.oplogMinRetentionHours
 ```
 
-Чтобы установить период хранения oplog на 72 часа, выполните следующую команду на каждом узле набора реплик от имени администратора:
+Чтобы установить время хранения oplog на 72 часа, выполните следующую команду на каждом узле набора реплик от имени пользователя с правами администратора:
 
 ```javascript
 db.adminCommand({
-  replSetResizeOplog: 1,
-  minRetentionHours: 72
+    "replSetResizeOplog" : 1,
+    "minRetentionHours": 72
 })
 ```
 
-Подробнее о команде `replSetResizeOplog` и хранении oplog см. в [документации MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
+Подробнее о команде `replSetResizeOplog` и хранении журнала операций (oplog) см. [документацию MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
 
 
-## Настройка пользователя базы данных {#configure-database-user}
+## Настройте пользователя базы данных
 
-Подключитесь к экземпляру MongoDB от имени администратора и выполните следующую команду для создания пользователя для MongoDB CDC ClickPipes:
+Подключитесь к экземпляру MongoDB как пользователь с правами администратора и выполните следующую команду, чтобы создать пользователя для MongoDB CDC в ClickPipes:
 
 ```javascript
 db.getSiblingDB("admin").createUser({
-  user: "clickpipes_user",
-  pwd: "some_secure_password",
-  roles: ["readAnyDatabase", "clusterMonitor"]
+    user: "clickpipes_user",
+    pwd: "ваш_надежный_пароль",
+    roles: ["readAnyDatabase", "clusterMonitor"],
 })
 ```
 
 :::note
 
-Обязательно замените `clickpipes_user` и `some_secure_password` на требуемые имя пользователя и пароль.
+Обязательно замените `clickpipes_user` и `some_secure_password` на выбранные вами имя пользователя и пароль.
 
 :::
 
 
 ## Что дальше? {#whats-next}
 
-Теперь вы можете [создать ClickPipe](../index.md) и начать загружать данные из вашего экземпляра MongoDB в ClickHouse Cloud.
-Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра MongoDB — они понадобятся вам при создании ClickPipe.
+Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра MongoDB в ClickHouse Cloud.
+Обязательно сохраните параметры подключения, которые вы использовали при настройке MongoDB, так как они понадобятся вам в процессе создания ClickPipe.

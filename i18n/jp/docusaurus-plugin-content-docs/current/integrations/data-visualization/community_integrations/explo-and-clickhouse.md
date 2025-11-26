@@ -3,8 +3,8 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo は、データに関するさまざまな疑問に答えるための、使いやすいオープンソースの UI ツールです。'
-title: 'Explo と ClickHouse を接続する'
+description: 'Explo は、データに関する疑問に簡単に答えるための、使いやすいオープンソースの UI ツールです。'
+title: 'Explo を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -36,111 +36,119 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-あらゆるプラットフォームに顧客向けアナリティクスを提供。美しい可視化のために設計され、シンプルさを追求してエンジニアリングされています。
+あらゆるプラットフォームで利用できる顧客向けアナリティクス。美しい可視化のために設計され、シンプルさを追求して実装されています。
 
 
 
 ## 目標 {#goal}
 
-このガイドでは、ClickHouseのデータをExploに接続し、結果を可視化します。チャートは以下のようになります：
+このガイドでは、ClickHouse のデータを Explo に接続して結果を可視化します。チャートは次のようになります。
+<Image img={explo_15} size="md" alt="Explo ダッシュボード" />
 
-<Image img={explo_15} size='md' alt='Explo Dashboard' />
+<p/>
 
-<p />
-
-:::tip データの追加
-作業用のデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択することをお勧めします。同じドキュメントカテゴリには他にも複数のデータセットがあります。
+:::tip データを追加する
+まだ扱うデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選んでもよいでしょう。同じドキュメントカテゴリに、他にもいくつかのデータセットが掲載されています。
 :::
 
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
 
+## 1. 接続情報を取得する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2. ExploをClickHouseに接続する {#2--connect-explo-to-clickhouse}
 
-1. Exploアカウントに登録します。
+## 2.  Explo を ClickHouse に接続する {#2--connect-explo-to-clickhouse}
 
-2. 左側のサイドバーにあるExploの**data**タブをクリックします。
+1. Explo アカウントにサインアップします。
 
-<Image img={explo_01} size='sm' alt='Data Tab' border />
+2. 左側のサイドバーにある Explo の **data** タブをクリックします。
 
-3. 右上の**Connect Data Source**をクリックします。
+<Image img={explo_01} size="sm" alt="Data タブ" border />
 
-<Image img={explo_02} size='sm' alt='Connect Data Source' border />
+3. 右上の **Connect Data Source** をクリックします。
 
-4. **Getting Started**ページの情報を入力します。
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
-<Image img={explo_03} size='md' alt='Getting Started' border />
+4. **Getting Started** ページの情報を入力します。
 
-5. **Clickhouse**を選択します。
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
-<Image img={explo_04} size='md' alt='Clickhouse' border />
+5. **ClickHouse** を選択します。
 
-6. **Clickhouse認証情報**を入力します。
+<Image img={explo_04} size="md" alt="ClickHouse" border />
 
-<Image img={explo_05} size='md' alt='Credentials' border />
+6. **ClickHouse Credentials** を入力します。
 
-7. **セキュリティ**を設定します。
+<Image img={explo_05} size="md" alt="Credentials" border />
 
-<Image img={explo_06} size='md' alt='Security' border />
+7. **Security** を設定します。
 
-8. ClickHouse内で、**Explo IPアドレスをホワイトリストに登録**します。
-   `54.211.43.19、52.55.98.121、3.214.169.94、および54.156.141.148`
+<Image img={explo_06} size="md" alt="Security" border />
 
-
-## 3. ダッシュボードの作成 {#3-create-a-dashboard}
-
-1. 左側のナビゲーションバーで**Dashboard**タブに移動します。
-
-<Image img={explo_07} size='sm' alt='ダッシュボード' border />
-
-2. 右上の**Create Dashboard**をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました。
-
-<Image img={explo_08} size='sm' alt='ダッシュボードの作成' border />
-
-3. 次のような画面が表示されます:
-
-<Image img={explo_09} size='md' alt='Exploダッシュボード' border />
+8. ClickHouse 内で **Explo の IP アドレスをホワイトリストに登録します**。
+`
+54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
+`
 
 
-## 4. SQLクエリを実行する {#4-run-a-sql-query}
 
-1. 右側のサイドバーでスキーマタイトルの下からテーブル名を確認します。次に、データセットエディタに以下のコマンドを入力します：
-   `SELECT * FROM YOUR_TABLE_NAME
-LIMIT 100`
+## 3. ダッシュボードを作成する {#3-create-a-dashboard}
 
-<Image img={explo_10} size='md' alt='Explo Dashboard' border />
+1. 左側のナビゲーションバーから **Dashboard** タブを開きます。
 
-2. 実行ボタンをクリックし、プレビュータブに移動してデータを確認します。
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
-<Image img={explo_11} size='md' alt='Explo Dashboard' border />
+2. 右上の **Create Dashboard** をクリックし、ダッシュボード名を指定します。これでダッシュボードが作成されました。
+
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
+
+3. 次のような画面が表示されているはずです。
+
+<Image img={explo_09} size="md" alt="Explo Dashboard" border />
+
+
+
+## 4. SQL クエリを実行する {#4-run-a-sql-query}
+
+1. 右側のサイドバーで、スキーマ名の下に表示されているテーブル名を確認します。その後、データセットエディタに次のコマンドを入力します:
+`
+SELECT * FROM YOUR_TABLE_NAME
+LIMIT 100
+`
+
+<Image img={explo_10} size="md" alt="Explo ダッシュボード" border />
+
+2. 「Run」をクリックし、「Preview」タブに移動してデータを確認します。
+
+<Image img={explo_11} size="md" alt="Explo ダッシュボード" border />
+
 
 
 ## 5. チャートを作成する {#5-build-a-chart}
 
-1. 左側から棒グラフアイコンを画面上にドラッグします。
+1. 左側の棒グラフアイコンを画面上にドラッグ＆ドロップします。
 
-<Image img={explo_16} size='sm' alt='Exploダッシュボード' border />
+<Image img={explo_16} size="sm" alt="Explo ダッシュボード" border />
 
-2. データセットを選択します。以下のような画面が表示されます:
+2. データセットを選択します。次のような画面が表示されるはずです。
 
-<Image img={explo_12} size='sm' alt='Exploダッシュボード' border />
+<Image img={explo_12} size="sm" alt="Explo ダッシュボード" border />
 
-3. X軸に**county**、Y軸セクションに**Price**を以下のように設定します:
+3. X 軸には **county** を、Y 軸セクションには **Price** を次のように設定します。
 
-<Image img={explo_13} size='sm' alt='Exploダッシュボード' border />
+<Image img={explo_13} size="sm" alt="Explo ダッシュボード" border />
 
-4. 次に、集計方法を**AVG**に変更します。
+4. 次に、集計方法を **AVG** に変更します。
 
-<Image img={explo_14} size='sm' alt='Exploダッシュボード' border />
+<Image img={explo_14} size="sm" alt="Explo ダッシュボード" border />
 
-5. これで郡別の住宅平均価格が表示されます!
+5. これで、郡ごとの住宅の平均価格を示すチャートができました。
 
-<Image img={explo_15} size='md' alt='Exploダッシュボード' />
+<Image img={explo_15} size="md" alt="Explo ダッシュボード" />
+
 
 
 ## 詳細情報 {#learn-more}
 
-Exploとダッシュボードの構築方法の詳細については、<a href="https://docs.explo.co/" target="_blank">Exploドキュメント</a>をご参照ください。
+Explo の詳細やダッシュボードの作成方法については、<a href="https://docs.explo.co/" target="_blank">Explo ドキュメントをご覧ください</a>。

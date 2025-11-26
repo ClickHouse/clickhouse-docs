@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 
 
-## Svg {#svg}
+## Svg
 
-根据地理数据返回 SVG 元素标签字符串。
+从 Geo 数据返回包含所选 SVG 元素标签的字符串。
 
 **语法**
 
@@ -22,19 +22,19 @@ Svg(geometry,[style])
 
 **参数**
 
-- `geometry` — 地理数据。[Geo](../../data-types/geo)。
-- `style` — 可选样式名称。[String](../../data-types/string)。
+* `geometry` — 地理数据。[Geo](../../data-types/geo)。
+* `style` — 可选的样式名称。[String](../../data-types/string)。
 
 **返回值**
 
-- 几何图形的 SVG 表示形式。[String](../../data-types/string)。
-  - SVG 圆形
-  - SVG 多边形
-  - SVG 路径
+* 几何对象的 SVG 形式。[String](../../data-types/string)。
+  * SVG 圆
+  * SVG 多边形
+  * SVG 路径
 
 **示例**
 
-**圆形**
+**圆**
 
 查询：
 
@@ -48,7 +48,7 @@ SELECT SVG((0., 0.))
 <circle cx="0" cy="0" r="5" style=""/>
 ```
 
-**多边形**
+**Polygon**
 
 查询：
 

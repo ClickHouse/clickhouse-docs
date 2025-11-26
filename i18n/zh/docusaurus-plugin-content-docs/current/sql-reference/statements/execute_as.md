@@ -11,34 +11,36 @@ doc_type: 'reference'
 
 # EXECUTE AS 语句
 
-允许以其他用户的身份执行查询。
+允许以其他用户身份执行查询。
 
 
 
-## 语法 {#syntax}
+## 语法
 
 ```sql
 EXECUTE AS target_user;
 EXECUTE AS target_user subquery;
 ```
 
-第一种形式(不带 `subquery`)将当前会话中的所有后续查询设置为以指定的 `target_user` 身份执行。
+第一种形式（不带 `subquery`）会将当前会话中后续的所有查询，都以指定的 `target_user` 身份执行。
 
-第二种形式(带 `subquery`)仅以指定的 `target_user` 身份执行指定的 `subquery`。
+第二种形式（带有 `subquery`）只会以指定的 `target_user` 身份执行给定的 `subquery`。
 
-这两种形式都需要将服务器设置 [allow_impersonate_user](/operations/server-configuration-parameters/settings#allow_impersonate_user) 设为 `1`,并授予 `IMPERSONATE` 权限。例如,以下命令
+为了使这两种形式生效，服务器配置项 [allow&#95;impersonate&#95;user](/operations/server-configuration-parameters/settings#allow_impersonate_user)
+必须设置为 `1`，并且需要授予 `IMPERSONATE` 权限。例如，下面的命令
 
 ```sql
 GRANT IMPERSONATE ON user1 TO user2;
 GRANT IMPERSONATE ON * TO user3;
 ```
 
-允许用户 `user2` 执行 `EXECUTE AS user1 ...` 命令,同时允许用户 `user3` 以任意用户身份执行命令。
+允许用户 `user2` 执行命令 `EXECUTE AS user1 ...`，并且还允许用户 `user3` 以任意用户身份执行命令。
 
-在模拟其他用户时,函数 [currentUser()](/sql-reference/functions/other-functions#currentUser) 返回被模拟用户的名称,而函数 [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) 返回实际通过身份验证的用户名称。
+在模拟另一个用户时，函数 [currentUser()](/sql-reference/functions/other-functions#currentUser) 返回被模拟用户的名称，
+而函数 [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) 返回实际通过认证的用户名。
 
 
-## 示例 {#examples}
+## 示例
 
 ```sql
 SELECT currentUser(), authenticatedUser(); -- 输出 "default    default"

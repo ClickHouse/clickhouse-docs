@@ -1,5 +1,5 @@
 ---
-description: 'Документация по оконной функции last_value'
+description: 'Документация об оконной функции last_value'
 sidebar_label: 'last_value'
 sidebar_position: 4
 slug: /sql-reference/window-functions/last_value
@@ -9,16 +9,16 @@ doc_type: 'reference'
 
 # last&#95;value
 
-Возвращает последнее значение, вычисленное в пределах упорядоченной рамки окна. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для изменения этого поведения.
+Возвращает последнее значение, вычисленное в его упорядоченном окне. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для изменения этого поведения.
 
 **Синтаксис**
 
 ```sql
-last_value (имя_столбца) [[RESPECT NULLS] | [IGNORE NULLS]]
-  OVER ([[PARTITION BY столбец_группировки] [ORDER BY столбец_сортировки] 
-        [ROWS или RANGE выражение_ограничения_строк_в_группе]] | [имя_окна])
-FROM имя_таблицы
-WINDOW имя_окна as ([[PARTITION BY столбец_группировки] [ORDER BY столбец_сортировки])
+last_value (column_name) [[RESPECT NULLS] | [IGNORE NULLS]]
+  OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+FROM table_name
+WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
 Псевдоним: `anyLast`.
@@ -30,15 +30,15 @@ WINDOW имя_окна as ([[PARTITION BY столбец_группировки]
 Псевдоним: `lastValueRespectNulls`
 :::
 
-Подробности о синтаксисе оконных функций см. в разделе: [Оконные функции — синтаксис](./index.md/#syntax).
+Подробнее о синтаксисе оконных функций см. в разделе: [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-* Последнее значение, вычисленное в пределах своего упорядоченного фрейма.
+* Последнее значение, вычисленное в пределах упорядоченного фрейма.
 
 **Пример**
 
-В этом примере функция `last_value` используется для поиска футболиста с самой низкой зарплатой в вымышленном наборе данных о зарплатах игроков Премьер-лиги.
+В этом примере функция `last_value` используется для поиска футболиста с наименьшей заработной платой в вымышленном наборе данных о зарплатах игроков Премьер-лиги.
 
 Запрос:
 

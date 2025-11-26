@@ -1,5 +1,5 @@
 ---
-description: '计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的数值'
+description: '计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值'
 sidebar_position: 124
 slug: /sql-reference/aggregate-functions/reference/covarsamp
 title: 'covarSamp'
@@ -11,7 +11,7 @@ doc_type: 'reference'
 计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。
 
 :::note
-此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarSampStable`](../reference/covarsamp.md) 函数。该函数运行较慢，但计算误差更小。
+此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarSampStable`](../reference/covarsamp.md) 函数。该函数运行速度较慢，但能提供更低的计算误差。
 :::
 
 **语法**
@@ -27,7 +27,7 @@ covarSamp(x, y)
 
 **返回值**
 
-* `x` 与 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `nan`。[Float64](../../data-types/float.md)。
+* `x` 和 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `nan`。[Float64](../../data-types/float.md)。
 
 **示例**
 

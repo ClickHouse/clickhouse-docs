@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettyCompactNoEscapes フォーマットに関するドキュメント'
+description: 'PrettyCompactNoEscapes 形式に関するドキュメント'
 input_format: false
 keywords: ['PrettyCompactNoEscapes']
 output_format: true
@@ -16,15 +16,17 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md)フォーマットとの違いは、[ANSIエスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code)を使用しない点です。
-これは、ブラウザでの表示や、`watch`コマンドラインユーティリティの使用時に必要となります。
+[`PrettyCompact`](./PrettyCompact.md) 形式とは、[ANSI エスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) を使用しない点が異なります。
+これは、ブラウザでこの形式を表示する場合や、`watch` コマンドラインユーティリティで使用する場合に必要です。
+
 
 
 ## 使用例 {#example-usage}
 
 
-## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+## 書式設定 {#format-settings}
+
+<PrettyFormatSettings/>

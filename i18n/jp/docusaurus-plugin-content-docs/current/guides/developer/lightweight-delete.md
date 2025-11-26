@@ -1,7 +1,7 @@
 ---
 slug: /guides/developer/lightweight-delete
 title: '軽量削除'
-keywords: ['lightweight delete']
+keywords: ['軽量削除']
 description: 'ClickHouse における軽量削除の概要'
 doc_type: 'reference'
 ---

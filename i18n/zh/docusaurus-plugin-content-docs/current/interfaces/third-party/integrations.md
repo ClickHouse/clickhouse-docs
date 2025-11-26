@@ -1,19 +1,19 @@
 ---
-description: '将 ClickHouse 与各种第三方系统和工具集成的文档'
+description: '关于将 ClickHouse 与各种第三方系统和工具集成的文档'
 sidebar_label: '集成'
 sidebar_position: 27
 slug: /interfaces/third-party/integrations
-title: '第三方开发者的集成库'
+title: '第三方开发者提供的集成库'
 doc_type: 'reference'
 ---
 
 
 
-# 由第三方开发者提供的集成库
+# 第三方开发者提供的集成库
 
 :::warning 免责声明
-ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面测试。
-如需查看官方集成，请参阅[集成页面](/integrations)。
+ClickHouse, Inc. **不**维护下列工具和库，也未对其质量进行过全面测试。
+如需官方集成，请参见[集成页面](/integrations)。
 :::
 
 
@@ -82,7 +82,7 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
   - [graphouse](https://github.com/ClickHouse/graphouse)
   - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
   - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - 当 [rollup 配置](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) 中的规则可以应用时,优化 [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 中的过期分区
+  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - 当 [rollup 配置](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) 中的规则适用时,优化 [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 中的过期分区
 - [Grafana](https://grafana.com/)
   - [clickhouse-grafana](https://github.com/Altinity/clickhouse-grafana)
 - [Prometheus](https://prometheus.io/)
@@ -104,7 +104,7 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
 - [rsyslog](https://www.rsyslog.com/)
   - [omclickhouse](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)
 - [fluentd](https://www.fluentd.org)
-  - [loghouse](https://github.com/flant/loghouse) (用于 [Kubernetes](https://kubernetes.io))
+  - [loghouse](https://github.com/flant/loghouse) (适用于 [Kubernetes](https://kubernetes.io))
 - [logagent](https://www.sematext.com/logagent)
   - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
     </details>
@@ -120,7 +120,7 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
 <summary>自动机器学习</summary>
 
 - [MindsDB](https://mindsdb.com/)
-  - [MindsDB](https://github.com/mindsdb/mindsdb) - 与 ClickHouse 集成,使 ClickHouse 中的数据可供多种 AI/ML 模型访问。
+  - [MindsDB](https://github.com/mindsdb/mindsdb) - 与 ClickHouse 集成,使 ClickHouse 数据可供多种 AI/ML 模型访问。
     </details>
 
 
@@ -130,36 +130,38 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
 <summary>Python</summary>
 
 - [SQLAlchemy](https://www.sqlalchemy.org)
-  - [sqlalchemy-clickhouse](https://github.com/cloudflare/sqlalchemy-clickhouse) (使用 [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
+  - [sqlalchemy-clickhouse](https://github.com/cloudflare/sqlalchemy-clickhouse)（使用 [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)）
 - [PyArrow/Pandas](https://pandas.pydata.org)
-  - [Ibis](https://github.com/ibis-project/ibis)
-    </details>
+  - [Ibis](https://github.com/ibis-project/ibis)  
+</details>
 
 <details>
-  <summary>PHP</summary>- [Doctrine](https://www.doctrine-project.org/) -
-  [dbal-clickhouse](https://packagist.org/packages/friendsofdoctrine/dbal-clickhouse)
+<summary>PHP</summary>
+  
+- [Doctrine](https://www.doctrine-project.org/)
+  - [dbal-clickhouse](https://packagist.org/packages/friendsofdoctrine/dbal-clickhouse)
 </details>
 
 <details>
 <summary>R</summary>
 
 - [dplyr](https://db.rstudio.com/dplyr/)
-  - [RClickHouse](https://github.com/IMSMWU/RClickHouse) (使用 [clickhouse-cpp](https://github.com/artpaul/clickhouse-cpp))
-    </details>
+  - [RClickHouse](https://github.com/IMSMWU/RClickHouse)（使用 [clickhouse-cpp](https://github.com/artpaul/clickhouse-cpp)）
+</details>
 
 <details>
 <summary>Java</summary>
 
 - [Hadoop](http://hadoop.apache.org)
-  - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader) (使用 [JDBC](../../sql-reference/table-functions/jdbc.md))
-    </details>
-
+  - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader)（使用 [JDBC](../../sql-reference/table-functions/jdbc.md)）
+</details>
+  
 <details>
 <summary>Scala</summary>
 
 - [Akka](https://akka.io)
   - [clickhouse-scala-client](https://github.com/crobox/clickhouse-scala-client)
-    </details>
+</details>
 
 <details>
 <summary>C#</summary>
@@ -170,14 +172,14 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
   - [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
   - [ClickHouse.Net.Migrations](https://github.com/ilyabreev/ClickHouse.Net.Migrations)
   - [Linq To DB](https://github.com/linq2db/linq2db)
-    </details>
+</details>
 
 <details>
 <summary>Elixir</summary>
 
 - [Ecto](https://github.com/elixir-ecto/ecto)
   - [clickhouse_ecto](https://github.com/appodeal/clickhouse_ecto)
-    </details>
+</details>
 
 <details>
 <summary>Ruby</summary>
@@ -187,4 +189,4 @@ ClickHouse, Inc.**不**维护下列工具和库，也未对其质量进行全面
   - [ActiveRecord](https://github.com/PNixx/clickhouse-activerecord)
 - [GraphQL](https://github.com/graphql)
   - [activecube-graphql](https://github.com/bitquery/activecube-graphql)
-    </details>
+</details>

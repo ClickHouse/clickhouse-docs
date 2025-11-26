@@ -6,28 +6,29 @@ pagination_next: null
 sidebar_position: 3
 description: '使用 Helm 对 ClickStack 进行高级部署配置'
 doc_type: 'guide'
-keywords: ['ClickStack 部署选项', '外部 ClickHouse', '外部 OTEL', '最小化部署', 'Helm 配置']
+keywords: ['ClickStack 部署选项', '外部 ClickHouse', '外部 OTel', '最小化部署', 'Helm 配置']
 ---
 
-本指南介绍使用 Helm 对 ClickStack 进行高级部署配置的选项。有关基础安装，请参阅 [Helm 部署主指南](/docs/use-cases/observability/clickstack/deployment/helm)。
+本指南介绍使用 Helm 部署 ClickStack 时的高级部署选项。有关基本安装，请参阅[主 Helm 部署指南](/docs/use-cases/observability/clickstack/deployment/helm)。
 
 
 
-## 概述 {#overview}
+## 概览 {#overview}
 
-ClickStack 的 Helm chart 支持多种部署配置：
+ClickStack 的 Helm 图表支持多种部署配置：
+- **完整栈**（默认）- 包含所有组件
+- **外部 ClickHouse** - 使用现有的 ClickHouse 集群
+- **外部 OTel Collector** - 使用现有的 OTel 基础设施
+- **最小部署** - 仅包含 HyperDX，其余依赖由外部提供
 
-- **完整堆栈**（默认）- 包含所有组件
-- **外部 ClickHouse** - 使用现有 ClickHouse 集群
-- **外部 OTEL Collector** - 使用现有 OTEL 基础设施
-- **最小化部署** - 仅 HyperDX，外部依赖项
 
 
 ## 外部 ClickHouse {#external-clickhouse}
 
-如果您已有 ClickHouse 集群(包括 ClickHouse Cloud),可以禁用内置的 ClickHouse 并连接到外部实例。
+如果已经有现有的 ClickHouse 集群（包括 ClickHouse Cloud），可以禁用内置的 ClickHouse，并连接到外部实例。
 
-### 选项 1:内联配置(开发/测试){#external-clickhouse-inline}
+### 选项 1：内联配置（开发/测试） {#external-clickhouse-inline}
+
 
 
 使用此方法进行快速测试或非生产环境：
@@ -45,7 +46,7 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "External ClickHouse",
+        "name": "外部 ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -54,27 +55,27 @@ hyperdx:
     ]
 ```
 
-使用此配置安装：
+使用此配置进行安装：
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-### 选项 2：外部密钥（生产环境推荐）{#external-clickhouse-secret}
+### 选项 2：外部密钥（推荐用于生产环境）{#external-clickhouse-secret}
 
 对于需要将凭据与 Helm 配置分离的生产部署：
 
 <VerticalStepper headerlevel='h4'>
 
 
-#### 创建配置文件 {#create-configuration}
+#### 创建配置文件
 
 ```bash
 # 创建 connections.json
 cat <<EOF > connections.json
 [
   {
-    "name": "Production ClickHouse",
+    "name": "生产 ClickHouse",
     "host": "https://your-production-clickhouse.com",
     "port": 8123,
     "username": "hyperdx_user",
@@ -82,7 +83,6 @@ cat <<EOF > connections.json
   }
 ]
 EOF
-
 ```
 
 
@@ -96,7 +96,7 @@ cat <<EOF > sources.json
 "tableName": "otel_logs"
 },
 "kind": "log",
-"name": "日志",
+"name": "Logs",
 "connection": "Production ClickHouse",
 "timestampValueExpression": "TimestampTime",
 "displayedTimestampValueExpression": "Timestamp",
@@ -115,7 +115,7 @@ cat <<EOF > sources.json
 "tableName": "otel_traces"
 },
 "kind": "trace",
-"name": "追踪",
+"name": "Traces",
 "connection": "Production ClickHouse",
 "timestampValueExpression": "Timestamp",
 "displayedTimestampValueExpression": "Timestamp",
@@ -139,7 +139,7 @@ kubectl create secret generic hyperdx-external-config \
 ````
 
 
-# 清理本地文件
+# 删除本地文件
 
 rm connections.json sources.json
 
@@ -147,7 +147,7 @@ rm connections.json sources.json
 ```
 
 
-#### 配置 Helm 以使用密钥 {#configure-helm-secret}
+#### 配置 Helm 以使用 Secret {#configure-helm-secret}
 
 ```yaml
 # values-external-clickhouse-secret.yaml
@@ -174,7 +174,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ### 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
 
-对于 ClickHouse Cloud：
+专门针对 ClickHouse Cloud：
 
 ```yaml
 # values-clickhouse-cloud.yaml
@@ -193,18 +193,19 @@ hyperdx:
   existingConfigSourcesKey: "sources.json"
 ```
 
-有关如何连接 ClickHouse Cloud 的完整示例，请参阅[《创建 ClickHouse Cloud 连接》](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
+有关连接 ClickHouse Cloud 的完整示例，请参阅[“创建 ClickHouse Cloud 连接”](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
 
-## 外部 OTEL 采集器 {#external-otel-collector}
+## 外部 OTel Collector {#external-otel-collector}
 
 
-如果你已经有现成的 OTEL collector 基础设施：
+
+如果你已经有 OTel collector 基础设施：
 
 ```yaml
 # values-external-otel.yaml
 otel:
-  enabled: false  # 禁用内置 OTEL 收集器
+  enabled: false  # 禁用内置 OTel collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -214,13 +215,14 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 ```
 
-关于如何通过 Ingress 暴露 OTEL Collector 端点的说明，请参阅 [Ingress 配置](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress)。
+如需了解如何通过入口暴露 OTel collector 端点，请参见 [Ingress Configuration](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress)。
 
 
 ## 最小部署 {#minimal-deployment}
 
 
-对于已有基础设施的组织，只需部署 HyperDX：
+
+对于已有基础设施的组织，仅部署 HyperDX：
 
 ```yaml
 # values-minimal.yaml
@@ -237,7 +239,7 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "外部 ClickHouse",
+        "name": "External ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -245,7 +247,7 @@ hyperdx:
       }
     ]
   
-  # 选项 2：外部密钥（生产环境）
+  # 选项 2：外部 Secret（用于生产环境）
   # useExistingConfigSecret: true
   # existingConfigSecret: "my-external-config"
   # existingConfigConnectionsKey: "connections.json"
@@ -259,6 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 
 ## 后续步骤 {#next-steps}
 
-- [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API 密钥、Secret 和 Ingress 设置
+- [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API keys、机密和入口配置
 - [云部署](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE、EKS 和 AKS 专用配置
-- [Helm 主指南](/docs/use-cases/observability/clickstack/deployment/helm) - 基础安装
+- [Helm 使用指南](/docs/use-cases/observability/clickstack/deployment/helm) - 基本安装

@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'MongoDB Atlas'
-description: 'Пошаговое руководство по настройке MongoDB Atlas в качестве источника для ClickPipes'
+description: 'Пошаговое руководство по настройке MongoDB Atlas как источника для ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'Руководство по настройке источника MongoDB Atlas'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'загрузка данных', 'синхронизация в реальном времени']
+keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -20,73 +20,47 @@ import Image from '@theme/IdealImage';
 
 
 
-## Настройка хранения oplog {#enable-oplog-retention}
+## Настроить хранение oplog {#enable-oplog-retention}
 
-Для репликации требуется минимальное время хранения oplog не менее 24 часов. Рекомендуется установить время хранения oplog на 72 часа или более, чтобы гарантировать, что oplog не будет усечён до завершения создания начального снимка. Чтобы настроить время хранения oplog через пользовательский интерфейс:
+Для репликации требуется минимальное время хранения oplog не менее 24 часов. Рекомендуется установить время хранения oplog на 72 часа или дольше, чтобы гарантировать, что он не будет усечён до завершения начального снимка. Чтобы настроить хранение oplog через интерфейс:
 
-1. Перейдите на вкладку `Overview` вашего кластера в консоли MongoDB Atlas и откройте вкладку `Configuration`.
+1. Перейдите на вкладку `Overview` вашего кластера в консоли MongoDB Atlas и нажмите на вкладку `Configuration`.
+<Image img={mongo_atlas_configuration} alt="Перейдите к конфигурации кластера" size="lg" border/>
 
-   <Image
-     img={mongo_atlas_configuration}
-     alt='Переход к конфигурации кластера'
-     size='lg'
-     border
-   />
+2. Нажмите `Additional Settings` и прокрутите вниз до `More Configuration Options`.
+<Image img={mngo_atlas_additional_settings} alt="Раскройте дополнительные настройки" size="lg" border/>
 
-2. Нажмите `Additional Settings` и прокрутите вниз до раздела `More Configuration Options`.
+3. Нажмите `More Configuration Options` и установите минимальное окно oplog равным `72 hours` или больше.
+<Image img={mongo_atlas_retention_hours} alt="Установите количество часов хранения oplog" size="lg" border/>
 
-   <Image
-     img={mngo_atlas_additional_settings}
-     alt='Раскрытие дополнительных настроек'
-     size='lg'
-     border
-   />
+4. Нажмите `Review Changes` для проверки, затем `Apply Changes` для применения изменений.
 
-3. Нажмите `More Configuration Options` и установите минимальное окно oplog на `72 hours` или более.
-
-   <Image
-     img={mongo_atlas_retention_hours}
-     alt='Установка времени хранения oplog'
-     size='lg'
-     border
-   />
-
-4. Нажмите `Review Changes` для проверки изменений, затем `Apply Changes` для их применения.
 
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
-После входа в консоль MongoDB Atlas нажмите `Database Access` в разделе Security на левой панели навигации. Нажмите «Add New Database User».
+После входа в консоль MongoDB Atlas нажмите `Database Access` на вкладке **Security** в левой панели навигации. Затем нажмите **Add New Database User**.
 
-ClickPipes требует аутентификации по паролю:
+Для ClickPipes требуется аутентификация по паролю:
 
-<Image img={mongo_atlas_add_user} alt='Добавление пользователя базы данных' size='lg' border />
+<Image img={mongo_atlas_add_user} alt="Добавление пользователя базы данных" size="lg" border/>
 
-ClickPipes требует пользователя со следующими ролями:
+Для ClickPipes нужен пользователь со следующими ролями:
 
 - `readAnyDatabase`
 - `clusterMonitor`
 
-Их можно найти в разделе `Specific Privileges`:
+Вы можете найти их в разделе `Specific Privileges`:
 
-<Image
-  img={mongo_atlas_add_roles}
-  alt='Настройка ролей пользователя'
-  size='lg'
-  border
-/>
+<Image img={mongo_atlas_add_roles} alt="Настройка ролей пользователя" size="lg" border/>
 
-Вы можете дополнительно указать кластер(ы)/экземпляр(ы), к которым необходимо предоставить доступ пользователю ClickPipes:
+Вы также можете дополнительно указать кластеры/экземпляры, к которым хотите предоставить доступ пользователю ClickPipes:
 
-<Image
-  img={mongo_atlas_restrict_access}
-  alt='Ограничение доступа к кластеру/экземпляру'
-  size='lg'
-  border
-/>
+<Image img={mongo_atlas_restrict_access} alt="Ограничение доступа к кластерам/экземплярам" size="lg" border/>
+
 
 
 ## Что дальше? {#whats-next}
 
-Теперь вы можете [создать ClickPipe](../index.md) и начать загружать данные из вашего экземпляра MongoDB в ClickHouse Cloud.
-Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра MongoDB — они понадобятся вам при создании ClickPipe.
+Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра MongoDB в ClickHouse Cloud.
+Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра MongoDB, — они понадобятся вам при создании ClickPipe.

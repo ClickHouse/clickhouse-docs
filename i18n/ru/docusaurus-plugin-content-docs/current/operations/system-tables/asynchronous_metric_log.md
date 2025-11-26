@@ -1,7 +1,7 @@
 ---
-description: 'Системная таблица, содержащая исторические значения `system.asynchronous_metrics`,
-  которые сохраняются один раз за интервал времени (по умолчанию — раз в секунду)'
-keywords: ['system table', 'asynchronous_metric_log']
+description: 'Системная таблица, содержащая исторические значения для `system.asynchronous_metrics`,
+  которые сохраняются один раз за временной интервал (по умолчанию — одну секунду)'
+keywords: ['системная таблица', 'asynchronous_metric_log']
 slug: /operations/system-tables/asynchronous_metric_log
 title: 'system.asynchronous_metric_log'
 doc_type: 'reference'
@@ -11,15 +11,15 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 
-Содержит исторические значения метрик из `system.asynchronous_metrics`, которые сохраняются раз в заданный интервал времени (по умолчанию — одна секунда). По умолчанию включена.
+Содержит исторические значения таблицы `system.asynchronous_metrics`, которые сохраняются один раз за интервал времени (по умолчанию — каждую секунду). Включена по умолчанию.
 
 Столбцы:
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-* `metric` ([String](../../sql-reference/data-types/string.md)) — Имя метрики.
-* `value` ([Float64](../../sql-reference/data-types/float.md)) — Значение метрики.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, на котором выполняется запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
+* `metric` ([String](../../sql-reference/data-types/string.md)) — имя метрики.
+* `value` ([Float64](../../sql-reference/data-types/float.md)) — значение метрики.
 
 **Пример**
 
@@ -55,6 +55,6 @@ value:      0
 
 **См. также**
 
-* [параметр asynchronous&#95;metric&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — Включение и отключение настройки.
-* [system.asynchronous&#95;metrics](../system-tables/asynchronous_metrics.md) — Содержит метрики, периодически вычисляемые в фоновом режиме.
-* [system.metric&#95;log](../system-tables/metric_log.md) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, которая периодически записывается на диск.
+* [параметр asynchronous&#95;metric&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — включение и отключение параметра.
+* [system.asynchronous&#95;metrics](../system-tables/asynchronous_metrics.md) — содержит метрики, периодически вычисляемые в фоновом режиме.
+* [system.metric&#95;log](../system-tables/metric_log.md) — содержит историю значений метрик из таблиц `system.metrics` и `system.events`, которая периодически сбрасывается на диск.

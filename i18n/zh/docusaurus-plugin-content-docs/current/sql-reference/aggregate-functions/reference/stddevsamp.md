@@ -13,7 +13,7 @@ doc_type: 'reference'
 别名：`STDDEV_SAMP`。
 
 :::note
-此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevSampStable`](../reference/stddevsampstable.md) 函数。它的性能较慢，但计算误差更小。
+此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevSampStable`](../reference/stddevsampstable.md) 函数。它的运行速度较慢，但计算误差更小。
 :::
 
 **语法**
@@ -24,7 +24,7 @@ stddevSamp(x)
 
 **参数**
 
-* `x`: 用于计算样本方差平方根的值。[ (U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+* `x`: 用于计算样本方差平方根的值。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 

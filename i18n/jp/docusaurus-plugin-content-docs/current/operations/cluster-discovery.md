@@ -1,25 +1,25 @@
 ---
-description: 'ClickHouse におけるクラスタ検出に関するドキュメント'
-sidebar_label: 'クラスタ検出'
+description: 'ClickHouse のクラスターディスカバリに関するドキュメント'
+sidebar_label: 'クラスターディスカバリ'
 slug: /operations/cluster-discovery
-title: 'クラスタ検出'
-doc_type: 'guide'
+title: 'クラスターディスカバリ'
+doc_type: 'ガイド'
 ---
 
 
 
-# クラスタディスカバリ
+# クラスターディスカバリ
 
 
 
-## 概要 {#overview}
+## 概要
 
-ClickHouseのクラスタディスカバリ機能は、設定ファイルに明示的な定義を行うことなく、ノードが自動的に検出および登録を行えるようにすることで、クラスタ設定を簡素化します。各ノードを手動で定義することが煩雑になる場合に特に有用です。
+ClickHouse の Cluster Discovery 機能は、ノードを設定ファイル内で明示的に定義しなくても、自動的に検出して登録できるようにすることで、クラスタの構成を簡素化します。これは、各ノードを手動で定義することが負担になる場合に特に有用です。
 
 :::note
 
-クラスタディスカバリは実験的機能であり、将来のバージョンで変更または削除される可能性があります。
-この機能を有効にするには、設定ファイルに`allow_experimental_cluster_discovery`設定を含めてください:
+Cluster Discovery は実験的な機能であり、将来のバージョンで変更または削除される可能性があります。
+この機能を有効にするには、設定ファイルに `allow_experimental_cluster_discovery` 設定項目を追加してください。
 
 ```xml
 <clickhouse>
@@ -32,11 +32,11 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 :::
 
 
-## リモートサーバーの設定 {#remote-servers-configuration}
+## リモートサーバーの設定
 
-### 従来の手動設定 {#traditional-manual-configuration}
+### 従来の手動設定
 
-従来、ClickHouseでは、クラスタ内の各シャードとレプリカを設定ファイルに手動で指定する必要がありました:
+従来は ClickHouse では、クラスタ内の各シャードおよびレプリカを設定ファイルで手動指定する必要がありました。
 
 ```xml
 <remote_servers>
@@ -66,9 +66,9 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 
 ```
 
-### クラスタディスカバリーの使用 {#using-cluster-discovery}
+### クラスター検出を使用する
 
-クラスタディスカバリーを使用すると、各ノードを明示的に定義する代わりに、ZooKeeper内のパスを指定するだけで済みます。このパス配下にZooKeeperに登録されたすべてのノードは、自動的に検出されクラスタに追加されます。
+Cluster Discovery を使用すると、各ノードを明示的に定義する代わりに、ZooKeeper 内のパスを 1 つ指定するだけで済みます。ZooKeeper のそのパス配下に登録されたすべてのノードは、自動的に検出されてクラスターに追加されます。
 
 ```xml
 <remote_servers>
@@ -84,19 +84,19 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
             <!-- ### パスワードの代わりに、サーバー間シークレットを使用することもできます: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## 現在のノードのシャード(以下を参照): -->
+            <!-- ## 現在のノードのシャード（以下を参照）: -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## オブザーバーモード(以下を参照): -->
+            <!-- ## オブザーバーモード（以下を参照）: -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
 </remote_servers>
 ```
 
-特定のノードにシャード番号を指定する場合は、`<discovery>`セクション内に`<shard>`タグを含めることができます:
+特定のノードに対してシャード番号を指定したい場合は、`<discovery>` セクション内に `<shard>` タグを記述できます。
 
-`node1`と`node2`の場合:
+`node1` および `node2` の場合:
 
 ```xml
 <discovery>
@@ -105,7 +105,7 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 </discovery>
 ```
 
-`node3`と`node4`の場合:
+`node3` および `node4` の場合:
 
 ```xml
 <discovery>
@@ -114,11 +114,11 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 </discovery>
 ```
 
-### オブザーバーモード {#observer-mode}
+### オブザーバーモード
 
-オブザーバーモードで設定されたノードは、レプリカとして自身を登録しません。
-これらのノードは、積極的に参加することなく、クラスタ内の他のアクティブなレプリカを観察し検出するのみです。
-オブザーバーモードを有効にするには、`<discovery>`セクション内に`<observer/>`タグを含めます:
+オブザーバーモードで構成されたノードは、自身をレプリカとして登録しません。
+これらのノードはクラスター内の他のアクティブなレプリカを監視・検出するだけで、能動的には参加しません。
+オブザーバーモードを有効にするには、`<discovery>` セクション内に `<observer/>` タグを追加します。
 
 ```xml
 <discovery>
@@ -127,9 +127,9 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 </discovery>
 ```
 
-### クラスタのディスカバリー {#discovery-of-clusters}
+### クラスターの検出
 
-クラスタ内のホストだけでなく、クラスタ自体を追加および削除する必要がある場合があります。複数のクラスタのルートパスを持つ`<multicluster_root_path>`ノードを使用できます:
+場合によっては、クラスター内のホストだけでなく、クラスター自体を追加・削除する必要が生じることがあります。複数のクラスターのルートパスを指定するために `<multicluster_root_path>` ノードを使用できます。
 
 ```xml
 <remote_servers>
@@ -142,9 +142,9 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 </remote_servers>
 ```
 
-この場合、他のホストがパス`/clickhouse/discovery/some_new_cluster`で自身を登録すると、`some_new_cluster`という名前のクラスタが追加されます。
+この場合、別のホストがパス `/clickhouse/discovery/some_new_cluster` で自分自身を登録すると、名前が `some_new_cluster` のクラスタが追加されます。
 
-両方の機能を同時に使用できます。ホストは`my_cluster`クラスタに自身を登録し、他のクラスタを検出することができます:
+両方の機能を同時に使用できます。ホストはクラスタ `my_cluster` に自分自身を登録しつつ、他の任意のクラスタを検出することもできます。
 
 ```xml
 <remote_servers>
@@ -164,18 +164,18 @@ ClickHouseのクラスタディスカバリ機能は、設定ファイルに明�
 
 制限事項:
 
-- 同じ`remote_servers`サブツリー内で`<path>`と`<multicluster_root_path>`の両方を使用することはできません。
-- `<multicluster_root_path>`は`<observer/>`と共にのみ使用できます。
-- Keeperからのパスの最後の部分がクラスタ名として使用されますが、登録時にはXMLタグから名前が取得されます。
+* 同じ `remote_servers` サブツリー内で `<path>` と `<multicluster_root_path>` を同時に使用することはできません。
+* `<multicluster_root_path>` と併用できるのは `<observer/>` のみです。
+* Keeper で指定されたパスの最後の部分がクラスタ名として使用されますが、登録時には XML タグに記載された名前が使用されます。
 
 
-## ユースケースと制限事項 {#use-cases-and-limitations}
+## ユースケースと制限事項
 
-指定されたZooKeeperパスに対してノードが追加または削除されると、設定変更やサーバーの再起動なしに、クラスターから自動的に検出または削除されます。
+指定された ZooKeeper パスにノードが追加または削除されると、構成変更やサーバーの再起動を行うことなく、それらのノードはクラスターに自動的に認識されて参加するか、クラスターから削除されます。
 
-ただし、変更はクラスター設定のみに影響し、データや既存のデータベース、テーブルには影響しません。
+ただし、変更の対象はクラスター構成のみであり、データや既存のデータベースおよびテーブルには影響しません。
 
-以下の3ノードクラスターの例を考えてみましょう:
+3 ノードのクラスターを用いた次の例を考えます。
 
 ```xml
 <remote_servers>
@@ -206,7 +206,7 @@ ORDER BY event_time PARTITION BY toYYYYMM(event_time);
 INSERT INTO event_table ...
 ```
 
-次に、設定ファイルの`remote_servers`セクションに同じエントリを持つ新しいノードを起動し、クラスターに追加します:
+次に、クラスターに新しいノードを追加します。設定ファイルの `remote_servers` セクションに同じエントリを含めて、新しいノードを起動します。
 
 ```response
 ┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name────┬─host_address─┬─port─┬─is_local─┬─user─┬─is_active─┐
@@ -217,11 +217,10 @@ INSERT INTO event_table ...
 └─────────┴───────────┴──────────────┴─────────────┴──────────────┴──────────────┴──────┴──────────┴──────┴───────────┘
 ```
 
-4番目のノードはクラスターに参加していますが、テーブル`event_table`は最初の3つのノードにのみ存在します:
+4 番目のノードはクラスターに参加していますが、テーブル `event_table` は依然として最初の 3 つのノードにしか存在していません。
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
-
 ```
 
 
@@ -233,5 +232,5 @@ SELECT hostname(), database, table FROM clusterAllReplicas(default, system.table
 
 ```
 
-すべてのノードでテーブルをレプリケートする必要がある場合は、クラスタディスカバリの代替として[Replicated](../engines/database-engines/replicated.md)データベースエンジンを使用できます。
+すべてのノードでテーブルをレプリケートする必要がある場合は、クラスタディスカバリの代替として[Replicated](../engines/database-engines/replicated.md)データベースエンジンを使用することができます。
 ```

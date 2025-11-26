@@ -1,19 +1,19 @@
 ---
 slug: /faq/operations/multi-region-replication
-title: 'ClickHouse はマルチリージョンレプリケーションをサポートしていますか？'
+title: 'ClickHouse はマルチリージョンレプリケーションをサポートしますか？'
 toc_hidden: true
 toc_priority: 30
-description: 'このページでは、ClickHouse がマルチリージョンレプリケーションをサポートしているかどうかを解説します'
+description: 'このページでは、ClickHouse がマルチリージョンレプリケーションをサポートしているかどうかを説明します'
 doc_type: 'reference'
-keywords: ['multi-region', 'replication', 'geo-distributed', 'distributed systems', 'data synchronization']
+keywords: ['マルチリージョン', 'レプリケーション', '地理的分散', '分散システム', 'データ同期']
 ---
 
 
 
-# ClickHouseはマルチリージョンレプリケーションをサポートしていますか？ {#does-clickhouse-support-multi-region-replication}
+# ClickHouse はマルチリージョンレプリケーションをサポートしていますか？ {#does-clickhouse-support-multi-region-replication}
 
-端的に言えば「はい」です。ただし、すべてのリージョン/データセンター間のレイテンシを2桁のミリ秒範囲に保つことを推奨します。そうしないと、分散コンセンサスプロトコルを経由するため、書き込みパフォーマンスが低下します。例えば、米国の東海岸と西海岸間のレプリケーションは問題なく動作する可能性が高いですが、米国と欧州間では適切に動作しない可能性があります。
+結論としては「はい」です。ただし、すべてのリージョン／データセンター間のレイテンシは 2 桁台に収まるようにすることを推奨します。そうでない場合、分散コンセンサスプロトコルを経由するため、書き込みパフォーマンスが低下します。たとえば、米国の東西海岸間でのレプリケーションは問題なく機能する可能性が高いですが、米国とヨーロッパ間では現実的ではありません。
 
-設定に関しては、単一リージョンレプリケーションと比較して違いはありません。レプリカ用に異なる場所に配置されたホストを使用するだけです。
+設定面では、単一リージョンでのレプリケーションと違いはありません。レプリカとして、異なる場所にあるホストを指定して使用するだけです。
 
-詳細については、[データレプリケーションに関する完全な記事](../../engines/table-engines/mergetree-family/replication.md)を参照してください。
+詳しくは、[データレプリケーションに関する詳細な記事](../../engines/table-engines/mergetree-family/replication.md)を参照してください。

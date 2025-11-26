@@ -7,9 +7,9 @@ title: 'MOVE 访问实体语句'
 doc_type: 'reference'
 ---
 
-# MOVE 访问实体语句
+# MOVE access entity 语句
 
-此语句用于将访问实体从一个访问存储移动到另一个访问存储。
+该语句用于将访问实体从一个访问存储移动到另一个访问存储。
 
 语法：
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO access_storage_type
 ```
 
-目前，ClickHouse 中有五种访问存储：
+目前，ClickHouse 中有五种访问存储类型：
 
 * `local_directory`
 * `memory`
@@ -28,9 +28,9 @@ MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO a
 示例：
 
 ```sql
-MOVE USER test TO local_directory
+将用户 test 移动到 local_directory
 ```
 
 ```sql
-MOVE ROLE test TO memory
+移动 角色 test 到 内存
 ```

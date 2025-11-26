@@ -1,12 +1,12 @@
 ---
-description: '値の集合における最小値を計算する集約関数。'
+description: '値のグループの最小値を計算する集約関数。'
 sidebar_position: 168
 slug: /sql-reference/aggregate-functions/reference/min
 title: 'min'
 doc_type: 'reference'
 ---
 
-値の集合における最小値を計算する集約関数。
+値のグループの最小値を計算する集約関数。
 
 例:
 
@@ -18,7 +18,7 @@ SELECT min(salary) FROM employees;
 SELECT department, min(salary) FROM employees GROUP BY department;
 ```
 
-2 つの値のうち小さい方を選ぶ非集約関数が必要な場合は、`least` を参照してください。
+非集約関数で 2 つの値の小さい方を選択する必要がある場合は、`least` を参照してください。
 
 ```sql
 SELECT least(a, b) FROM table;

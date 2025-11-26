@@ -2,7 +2,7 @@
 slug: /tutorial
 sidebar_label: '高度なチュートリアル'
 title: '高度なチュートリアル'
-description: 'New York City のタクシーのサンプルデータセットを使って、ClickHouse へのデータ取り込みとクエリの実行方法を学びます。'
+description: 'New York City のタクシーのサンプルデータセットを使用して、ClickHouse でデータを取り込み、クエリを実行する方法を学びます。'
 sidebar_position: 0.5
 keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
 show_related_blogs: true
@@ -15,149 +15,150 @@ doc_type: 'guide'
 
 
 
-## 概要 {#overview}
+## Overview {#overview}
 
-ニューヨーク市のタクシーサンプルデータセットを使用して、ClickHouseでデータを取り込み、クエリを実行する方法を学びます。
+ニューヨーク市のタクシーサンプルデータセットを使用して、ClickHouseでデータを取り込み、クエリする方法を学習します。
 
-### 前提条件 {#prerequisites}
+### Prerequisites {#prerequisites}
 
-このチュートリアルを完了するには、実行中のClickHouseサービスへのアクセスが必要です。手順については、[クイックスタート](/get-started/quick-start)ガイドを参照してください。
+このチュートリアルを完了するには、稼働中のClickHouseサービスへのアクセスが必要です。手順については、[クイックスタート](/get-started/quick-start)ガイドを参照してください。
 
 <VerticalStepper>
 
 
-## 新しいテーブルの作成 {#create-a-new-table}
+## 新しいテーブルを作成する {#create-a-new-table}
 
-New York Cityのタクシーデータセットには、数百万件のタクシー乗車に関する詳細情報が含まれており、チップ額、通行料、支払い方法などの列が含まれています。このデータを格納するテーブルを作成します。
+New York City のタクシーデータセットには、数百万件のタクシー乗車に関する詳細が含まれており、チップ額、通行料、支払い種別などのカラムがあります。このデータを保存するためのテーブルを作成します。
 
-1. SQLコンソールに接続します:
-   - ClickHouse Cloudの場合、ドロップダウンメニューからサービスを選択し、左側のナビゲーションメニューから**SQL Console**を選択します。
-   - セルフマネージド型ClickHouseの場合、`https://_hostname_:8443/play`でSQLコンソールに接続します。詳細についてはClickHouse管理者に確認してください。
+1. SQL コンソールに接続します:
+    - ClickHouse Cloud の場合は、ドロップダウンメニューからサービスを選択し、左側のナビゲーションメニューから **SQL Console** を選択します。
+    - セルフマネージドの ClickHouse の場合は、`https://_hostname_:8443/play` の SQL コンソールに接続します。詳細は ClickHouse 管理者に確認してください。
 
-2. `default`データベースに以下の`trips`テーブルを作成します:
-   ```sql
-   CREATE TABLE trips
-   (
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   )
-   ENGINE = MergeTree
-   PARTITION BY toYYYYMM(pickup_date)
-   ORDER BY pickup_datetime;
-   ```
+2. `default` データベース内に、次の `trips` テーブルを作成します:
+    ```sql
+    CREATE TABLE trips
+    (
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    )
+    ENGINE = MergeTree
+    PARTITION BY toYYYYMM(pickup_date)
+    ORDER BY pickup_datetime;
+    ```
 
 
-## データセットの追加 {#add-the-dataset}
 
-テーブルを作成したので、S3上のCSVファイルからニューヨーク市のタクシーデータを追加します。
+## データセットを追加する {#add-the-dataset}
 
-1. 以下のコマンドは、S3上の2つの異なるファイル(`trips_1.tsv.gz`と`trips_2.tsv.gz`)から`trips`テーブルに約2,000,000行を挿入します:
+テーブルを作成したので、S3 内の CSV ファイルからニューヨーク市タクシーデータを追加します。
 
-   ```sql
-   INSERT INTO trips
-   SELECT * FROM s3(
-       'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
-       'TabSeparatedWithNames', "
-       `trip_id` UInt32,
-       `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
-       `pickup_date` Date,
-       `pickup_datetime` DateTime,
-       `dropoff_date` Date,
-       `dropoff_datetime` DateTime,
-       `store_and_fwd_flag` UInt8,
-       `rate_code_id` UInt8,
-       `pickup_longitude` Float64,
-       `pickup_latitude` Float64,
-       `dropoff_longitude` Float64,
-       `dropoff_latitude` Float64,
-       `passenger_count` UInt8,
-       `trip_distance` Float64,
-       `fare_amount` Float32,
-       `extra` Float32,
-       `mta_tax` Float32,
-       `tip_amount` Float32,
-       `tolls_amount` Float32,
-       `ehail_fee` Float32,
-       `improvement_surcharge` Float32,
-       `total_amount` Float32,
-       `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
-       `trip_type` UInt8,
-       `pickup` FixedString(25),
-       `dropoff` FixedString(25),
-       `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
-       `pickup_nyct2010_gid` Int8,
-       `pickup_ctlabel` Float32,
-       `pickup_borocode` Int8,
-       `pickup_ct2010` String,
-       `pickup_boroct2010` String,
-       `pickup_cdeligibil` String,
-       `pickup_ntacode` FixedString(4),
-       `pickup_ntaname` String,
-       `pickup_puma` UInt16,
-       `dropoff_nyct2010_gid` UInt8,
-       `dropoff_ctlabel` Float32,
-       `dropoff_borocode` UInt8,
-       `dropoff_ct2010` String,
-       `dropoff_boroct2010` String,
-       `dropoff_cdeligibil` String,
-       `dropoff_ntacode` FixedString(4),
-       `dropoff_ntaname` String,
-       `dropoff_puma` UInt16
-   ") SETTINGS input_format_try_infer_datetimes = 0
-   ```
+1. 次のコマンドは、S3 内の 2 つのファイル `trips_1.tsv.gz` と `trips_2.tsv.gz` から、約 2,000,000 行を `trips` テーブルに挿入します:
 
-2. `INSERT`が完了するまで待ちます。150 MBのデータのダウンロードには少し時間がかかる場合があります。
+    ```sql
+    INSERT INTO trips
+    SELECT * FROM s3(
+        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
+        'TabSeparatedWithNames', "
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    ") SETTINGS input_format_try_infer_datetimes = 0
+    ```
 
-3. 挿入が完了したら、正常に動作したことを確認します:
+2. `INSERT` が完了するまで待ちます。150 MB のデータをダウンロードするため、少し時間がかかる場合があります。
 
-   ```sql
-   SELECT count() FROM trips
-   ```
+3. 挿入が完了したら、次のクエリで成功したことを確認します:
+    ```sql
+    SELECT count() FROM trips
+    ```
 
-   このクエリは1,999,657行を返すはずです。
+    このクエリは 1,999,657 行を返すはずです。
+
 
 
 ## データの分析 {#analyze-the-data}
@@ -197,7 +198,7 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
   <summary>期待される出力</summary>
   <p>
 
-  `passenger_count`は0から9の範囲です:
+  `passenger_count`の範囲は0から9です:
 
   ```response
   ┌─passenger_count─┬─average_total_amount─┐
@@ -217,7 +218,7 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
     </p>
   </details>
 
-- 地域ごとの1日あたりの乗車回数を計算する:
+- 地区ごとの1日あたりの乗車回数を計算する:
 
   ```sql
   SELECT
@@ -281,7 +282,7 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
     </p>
     </details>
 
-- 各地域における時間帯別の配車回数を表示:
+- 各地域における時間帯別の配車回数を表示する：
 
   ```sql
   SELECT
@@ -341,7 +342,7 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
 
 
 
-7. ラガーディア空港または JFK 空港行きの乗車記録を取得します:
+7. LaGuardia または JFK 空港への乗車データを取得します:
     ```sql
     SELECT
         pickup_datetime,
@@ -362,7 +363,7 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
     ```
 
     <details>
-    <summary>期待される出力</summary>
+    <summary>想定される出力</summary>
     <p>
 
     ```response
@@ -383,26 +384,26 @@ New York Cityのタクシーデータセットには、数百万件のタクシ�
 
 
 
-## ディクショナリの作成 {#create-a-dictionary}
+## 辞書を作成する
 
-ディクショナリは、メモリに格納されたキーと値のペアのマッピングです。詳細については、[ディクショナリ](/sql-reference/dictionaries/index.md)を参照してください。
+辞書は、メモリ内に保存されるキーと値のペアのマッピングです。詳細については [Dictionaries](/sql-reference/dictionaries/index.md) を参照してください。
 
-ClickHouseサービス内のテーブルに関連付けられたディクショナリを作成します。
-このテーブルとディクショナリは、ニューヨーク市の各地区ごとに1行を含むCSVファイルに基づいています。
+ClickHouse サービス内のテーブルに関連付けられた辞書を作成します。
+テーブルと辞書は、ニューヨーク市内の各地区ごとの行を含む CSV ファイルに基づいています。
 
-各地区は、ニューヨーク市の5つの行政区(Bronx、Brooklyn、Manhattan、Queens、Staten Island)の名称、およびNewark Airport(EWR)にマッピングされています。
+各地区は、ニューヨーク市の 5 つの行政区（Bronx、Brooklyn、Manhattan、Queens、Staten Island）および Newark Airport (EWR) に対応付けられています。
 
-以下は、使用するCSVファイルの抜粋を表形式で示したものです。ファイル内の`LocationID`列は、`trips`テーブルの`pickup_nyct2010_gid`列および`dropoff_nyct2010_gid`列にマッピングされます。
+以下は、使用している CSV ファイルの一部をテーブル形式で示したものです。ファイル内の `LocationID` 列は、`trips` テーブル内の `pickup_nyct2010_gid` 列および `dropoff_nyct2010_gid` 列に対応付けられています。
 
-| LocationID | Borough       | Zone                    | service_zone |
-| ---------- | ------------- | ----------------------- | ------------ |
-| 1          | EWR           | Newark Airport          | EWR          |
-| 2          | Queens        | Jamaica Bay             | Boro Zone    |
-| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-| 4          | Manhattan     | Alphabet City           | Yellow Zone  |
-| 5          | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------- | ------------- | ----------------------- | ---------------- |
+| 1          | EWR           | Newark Airport          | EWR              |
+| 2          | Queens        | Jamaica Bay             | Boro Zone        |
+| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+| 4          | Manhattan     | Alphabet City           | Yellow Zone      |
+| 5          | Staten Island | Arden Heights           | Boro Zone        |
 
-1. 以下のSQLコマンドを実行します。このコマンドは`taxi_zone_dictionary`という名前のディクショナリを作成し、S3上のCSVファイルからディクショナリにデータを投入します。ファイルのURLは`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`です。
+1. 次の SQL コマンドを実行します。`taxi_zone_dictionary` という名前の辞書を作成し、S3 上の CSV ファイルから辞書を読み込みます。ファイルの URL は `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv` です。
 
 ```sql
 CREATE DICTIONARY taxi_zone_dictionary
@@ -419,24 +420,23 @@ LAYOUT(HASHED_ARRAY())
 ```
 
 :::note
-`LIFETIME`を0に設定すると、S3バケットへの不要なトラフィックを回避するために自動更新が無効になります。他のケースでは、異なる設定を行う場合があります。詳細については、[LIFETIMEを使用したディクショナリデータの更新](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
+`LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの不要なトラフィックを避けられます。ほかのケースでは、別の値に設定してもかまいません。詳細については、[LIFETIME を使用したディクショナリデータの更新](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) を参照してください。
 :::
 
-3. 動作を確認します。以下のクエリは265行、つまり各地区に対して1行を返すはずです。
-
+3. 動作を検証します。次のクエリは 265 行、つまり各 neighborhood ごとに 1 行を返すはずです:
    ```sql
    SELECT * FROM taxi_zone_dictionary
    ```
 
-4. `dictGet`関数([またはそのバリエーション](./sql-reference/functions/ext-dict-functions.md))を使用して、ディクショナリから値を取得します。ディクショナリの名前、取得したい値、およびキー(この例では`taxi_zone_dictionary`の`LocationID`列)を渡します。
+4. `dictGet` 関数（[およびそのバリエーション](./sql-reference/functions/ext-dict-functions.md)）を使用して、ディクショナリから値を取得します。ディクショナリ名、取得したい値、キー（この例では `taxi_zone_dictionary` の `LocationID` 列）を引数として渡します。
 
-   例えば、以下のクエリは`LocationID`が132(JFK空港に対応)の`Borough`を返します。
+   例えば、次のクエリは `LocationID` が 132 の `Borough` を返します。これは JFK 空港に対応しています:
 
    ```sql
    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
    ```
 
-   JFKはQueensにあります。値の取得時間が実質的に0であることに注目してください。
+   JFK は Queens にあります。値の取得時間が実質的に 0 であることに注目してください:
 
    ```response
    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -446,19 +446,17 @@ LAYOUT(HASHED_ARRAY())
    1 rows in set. Elapsed: 0.004 sec.
    ```
 
-5. `dictHas`関数を使用して、キーがディクショナリに存在するかどうかを確認します。例えば、以下のクエリは`1`(ClickHouseでは「真」を意味します)を返します。
-
+5. `dictHas` 関数を使用して、ディクショナリ内にキーが存在するかを確認します。例えば、次のクエリは `1`（ClickHouse における「true」）を返します:
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 132)
    ```
 
-6. 以下のクエリは0を返します。これは4567がディクショナリ内の`LocationID`の値ではないためです。
-
+6. 次のクエリは 0 を返します。これは、4567 がディクショナリ内の `LocationID` の値として存在しないためです:
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 4567)
    ```
 
-7. `dictGet`関数を使用して、クエリ内で行政区の名前を取得します。例えば、以下のようになります。
+7. クエリ内で `dictGet` 関数を使って Borough 名（行政区名）を取得します。例えば:
    ```sql
    SELECT
        count(1) AS total,
@@ -470,7 +468,7 @@ LAYOUT(HASHED_ARRAY())
    ```
 
 
-このクエリは、目的地がLaGuardia空港またはJFK空港であるタクシー乗車を、区ごとの件数として集計します。結果は次のようになり、乗車地点の地区が不明となっているトリップがかなり多いことに注目してください。
+このクエリは、LaGuardia か JFK のいずれかの空港で終了するタクシー乗車の件数を区ごとに集計します。結果は次のようになり、乗車地点の地区が不明な乗車がかなり多いことに注目してください。
 
 ```response
 ┌─total─┬─borough_name──┐
@@ -489,9 +487,9 @@ LAYOUT(HASHED_ARRAY())
 
 ## 結合を実行する {#perform-a-join}
 
-`taxi_zone_dictionary`と`trips`テーブルを結合するクエリをいくつか記述します。
+`taxi_zone_dictionary`と`trips`テーブルを結合するクエリを記述します。
 
-1.  上記の空港クエリと同様に動作するシンプルな`JOIN`から始めます:
+1.  上記の空港クエリと同様に動作するシンプルな`JOIN`から始めます：
 
     ```sql
     SELECT
@@ -504,7 +502,7 @@ LAYOUT(HASHED_ARRAY())
     ORDER BY total DESC
     ```
 
-    レスポンスは`dictGet`クエリと同一です:
+    レスポンスは`dictGet`クエリと同一になります：
 
     ```response
     ┌─total─┬─Borough───────┐
@@ -520,10 +518,10 @@ LAYOUT(HASHED_ARRAY())
     ```
 
     :::note
-    上記の`JOIN`クエリの出力は、`dictGetOrDefault`を使用した前のクエリと同じであることに注意してください(`Unknown`値が含まれていない点を除く)。内部的には、ClickHouseは実際に`taxi_zone_dictionary`ディクショナリに対して`dictGet`関数を呼び出していますが、`JOIN`構文はSQL開発者にとってより馴染み深いものです。
+    上記の`JOIN`クエリの出力は、`dictGetOrDefault`を使用した前のクエリと同じであることに注意してください（`Unknown`値が含まれていない点を除く）。内部的には、ClickHouseは`taxi_zone_dictionary`ディクショナリに対して実際に`dictGet`関数を呼び出していますが、`JOIN`構文はSQL開発者にとってより馴染み深いものです。
     :::
 
-2.  このクエリは、チップ額が最も高い1000件の乗車の行を返し、各行とディクショナリの内部結合を実行します:
+2.  このクエリは、チップ額が最も高い1000件の乗車データの行を返し、各行とディクショナリの内部結合を実行します：
     ```sql
     SELECT *
     FROM trips
@@ -534,7 +532,7 @@ LAYOUT(HASHED_ARRAY())
     LIMIT 1000
     ```
         :::note
-        一般的に、ClickHouseでは`SELECT *`の頻繁な使用は避けます。実際に必要な列のみを取得するべきです。
+        一般的に、ClickHouseでは`SELECT *`の頻繁な使用は避けるべきです。実際に必要な列のみを取得してください。
         :::
 
 </VerticalStepper>
@@ -542,9 +540,9 @@ LAYOUT(HASHED_ARRAY())
 
 ## 次のステップ {#next-steps}
 
-以下のドキュメントでClickHouseについてさらに詳しく学ぶことができます：
+ClickHouse についてさらに学ぶには、以下のドキュメントを参照してください：
 
-- [ClickHouseにおけるプライマリインデックスの概要](./guides/best-practices/sparse-primary-indexes.md)：ClickHouseがクエリ実行時に関連データを効率的に特定するために、スパースプライマリインデックスをどのように使用しているかを学びます。
-- [外部データソースの統合](/integrations/index.mdx)：ファイル、Kafka、PostgreSQL、データパイプラインなど、データソース統合のオプションを確認します。
-- [ClickHouseでのデータ可視化](./integrations/data-visualization/index.md)：お好みのUI/BIツールをClickHouseに接続します。
-- [SQLリファレンス](./sql-reference/index.md)：データの変換、処理、分析に利用できるClickHouseのSQL関数を参照します。
+- [ClickHouse におけるプライマリインデックス入門](./guides/best-practices/sparse-primary-indexes.md): ClickHouse がスパースなプライマリインデックスを使用して、クエリ時に関連するデータを効率的に特定する仕組みを解説します。 
+- [外部データソースとの統合](/integrations/index.mdx): ファイル、Kafka、PostgreSQL、データパイプラインなどを含む、さまざまなデータソース統合オプションを確認します。
+- [ClickHouse でデータを可視化する](./integrations/data-visualization/index.md): お好みの UI/BI ツールを ClickHouse に接続する方法を説明します。
+- [SQL リファレンス](./sql-reference/index.md): データの変換、処理、分析に利用できる ClickHouse の SQL 関数を参照できます。

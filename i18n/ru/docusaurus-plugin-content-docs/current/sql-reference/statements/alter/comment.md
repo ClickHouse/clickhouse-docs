@@ -1,6 +1,6 @@
 ---
-description: 'Документация по ALTER TABLE ... MODIFY COMMENT, которая позволяет
-добавлять, изменять или удалять комментарии таблицы'
+description: 'Документация по оператору ALTER TABLE ... MODIFY COMMENT, позволяющему
+добавлять, изменять или удалять комментарии к таблице'
 sidebar_label: 'ALTER TABLE ... MODIFY COMMENT'
 sidebar_position: 51
 slug: /sql-reference/statements/alter/comment
@@ -13,20 +13,20 @@ doc_type: 'reference'
 
 # ALTER TABLE ... MODIFY COMMENT
 
-Добавляет, изменяет или удаляет комментарий к таблице, независимо от того, был ли он установлен ранее или нет. Изменение комментария отражается как в [`system.tables`](../../../operations/system-tables/tables.md), так и в выводе запроса `SHOW CREATE TABLE`.
+Добавляет, изменяет или удаляет комментарий к таблице, независимо от того, был ли он задан ранее или нет. Изменение комментария отображается как в [`system.tables`](../../../operations/system-tables/tables.md), так и в результате запроса `SHOW CREATE TABLE`.
 
 
 
-## Синтаксис {#syntax}
+## Синтаксис
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
 ```
 
 
-## Примеры {#examples}
+## Примеры
 
-Создание таблицы с комментарием:
+Чтобы создать таблицу с комментарием:
 
 ```sql
 CREATE TABLE table_with_comment
@@ -38,42 +38,42 @@ ENGINE = Memory()
 COMMENT 'Временная таблица';
 ```
 
-Изменение комментария таблицы:
+Чтобы изменить комментарий к таблице:
 
 ```sql
-ALTER TABLE table_with_comment
+ALTER TABLE table_with_comment 
 MODIFY COMMENT 'новый комментарий к таблице';
 ```
 
-Просмотр изменённого комментария:
+Чтобы просмотреть обновлённый комментарий:
 
-```sql title="Запрос"
-SELECT comment
-FROM system.tables
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="Результат"
-┌─comment─────────────────────┐
+```text title="Response"
+┌─comment────────────────┐
 │ новый комментарий к таблице │
-└─────────────────────────────┘
+└────────────────────────┘
 ```
 
-Удаление комментария таблицы:
+Чтобы удалить комментарий к таблице:
 
 ```sql
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 
-Проверка удаления комментария:
+Чтобы убедиться, что комментарий был удален:
 
-```sql title="Запрос"
-SELECT comment
-FROM system.tables
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="Результат"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
@@ -82,13 +82,15 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ## Ограничения {#caveats}
 
-Для реплицируемых таблиц комментарий может отличаться на разных репликах.
+Для таблиц Replicated комментарий может отличаться на разных репликах.
 Изменение комментария применяется только к одной реплике.
 
-Функция доступна начиная с версии 23.9. В предыдущих версиях ClickHouse она не работает.
+Эта возможность доступна, начиная с версии 23.9. В предыдущих версиях 
+ClickHouse она не работает.
 
 
-## Связанное содержимое {#related-content}
 
-- Предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
+## Связанные материалы {#related-content}
+
+- предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
 - [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

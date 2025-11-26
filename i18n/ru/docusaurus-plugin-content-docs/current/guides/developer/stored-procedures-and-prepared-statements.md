@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Хранимые процедуры и параметры запросов'
 sidebar_position: 19
-keywords: ['clickhouse', 'stored procedures', 'prepared statements', 'query parameters', 'UDF', 'parameterized views']
-description: 'Руководство по хранимым процедурам, подготовленным запросам и параметрам запросов в ClickHouse'
+keywords: ['clickhouse', 'хранимые процедуры', 'подготовленные операторы', 'параметры запросов', 'UDF', 'параметризованные представления']
+description: 'Руководство по хранимым процедурам, подготовленным операторам и параметрам запросов в ClickHouse'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: 'Хранимые процедуры и параметры запросов'
 doc_type: 'guide'
@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 # Хранимые процедуры и параметры запросов в ClickHouse
 
 Если вы привыкли работать с традиционными реляционными СУБД, вы можете искать в ClickHouse хранимые процедуры и подготовленные выражения.
-В этом руководстве объясняется, как в ClickHouse реализуются эти концепции, и предлагаются рекомендуемые альтернативы.
+Это руководство объясняет, как ClickHouse относится к этим концепциям, и предлагает рекомендуемые альтернативы.
 
 
 
@@ -29,7 +29,7 @@ ClickHouse оптимизирован для:
 
 - **Аналитических нагрузок** — сложные агрегации больших наборов данных
 - **Пакетной обработки** — эффективная обработка больших объёмов данных
-- **Декларативных запросов** — SQL-запросы, которые описывают, какие данные получить, а не как их обрабатывать
+- **Декларативных запросов** — SQL-запросы, описывающие, какие данные получить, а не как их обрабатывать
 
 Хранимые процедуры с процедурной логикой противоречат этим оптимизациям. Вместо этого ClickHouse предоставляет альтернативы, соответствующие его сильным сторонам.
 
@@ -107,11 +107,11 @@ SELECT format_phone('5551234567');
 
 **Ограничения:**
 
-- Отсутствие циклов или сложного управления потоком выполнения
+- Отсутствие циклов или сложной логики управления потоком
 - Невозможность изменения данных (`INSERT`/`UPDATE`/`DELETE`)
 - Рекурсивные функции не допускаются
 
-Полный синтаксис см. в разделе [`CREATE FUNCTION`](/sql-reference/statements/create/function).
+См. [`CREATE FUNCTION`](/sql-reference/statements/create/function) для полного синтаксиса.
 
 #### Исполняемые UDF {#executable-udfs}
 
@@ -143,7 +143,7 @@ FROM customer_reviews;
 
 Исполняемые UDF могут реализовывать произвольную логику на любом языке (Python, Node.js, Go и т. д.).
 
-Подробности см. в разделе [Исполняемые UDF](/sql-reference/functions/udf).
+См. [Исполняемые UDF](/sql-reference/functions/udf) для подробностей.
 
 ### Параметризованные представления {#parameterized-views}
 
@@ -151,7 +151,7 @@ FROM customer_reviews;
 Они идеально подходят для повторно используемых запросов с динамической фильтрацией:
 
 <details>
-<summary>Примеры данных</summary>
+<summary>Sample data for example</summary>
 
 ```sql
 -- Создание таблицы sales
@@ -170,24 +170,24 @@ ORDER BY (date, product_id);
 ```
 
 
--- Вставка примеров данных
+-- Вставим пример данных
 INSERT INTO sales VALUES
-('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
-('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
-('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
-('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
-('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
-('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
-('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
-('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
+(&#39;2024-01-05&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 2, 1799.98, 1799.98),
+(&#39;2024-01-06&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
+(&#39;2024-01-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 5, 124.95, 124.95),
+(&#39;2024-01-15&#39;, 12347, &#39;USB-C Cable&#39;, &#39;Accessories&#39;, 10, 125.00, 125.00),
+(&#39;2024-01-20&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 3, 2699.97, 2699.97),
+(&#39;2024-01-25&#39;, 12348, &#39;Monitor 4K&#39;, &#39;Electronics&#39;, 2, 598.00, 598.00),
+(&#39;2024-02-01&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
+(&#39;2024-02-05&#39;, 12349, &#39;Keyboard Mechanical&#39;, &#39;Accessories&#39;, 4, 319.96, 319.96),
+(&#39;2024-02-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 8, 199.92, 199.92),
+(&#39;2024-02-15&#39;, 12350, &#39;Webcam HD&#39;, &#39;Electronics&#39;, 3, 164.85, 164.85);
 
 ````
 
 </details>
 ```sql
--- Создание параметризованного представления
+-- Создать параметризованное представление
 CREATE VIEW sales_by_date AS
 SELECT
     date,
@@ -200,19 +200,19 @@ GROUP BY date, product_id;
 ````
 
 ```sql
--- Запрос к представлению с параметрами
+-- Запросить представление с параметрами
 SELECT *
 FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-#### Типичные сценарии использования {#common-use-cases}
+#### Распространённые сценарии использования
 
-- Динамическая фильтрация по диапазону дат
-- Срезы данных для конкретных пользователей
-- [Мультитенантный доступ к данным](/cloud/bestpractices/multi-tenancy)
-- Шаблоны отчетов
-- [Маскирование данных](/cloud/guides/data-masking)
+* Динамическая фильтрация по диапазону дат
+* Пользовательские срезы данных
+* [Доступ к данным в многоклиентской (multi-tenant) среде](/cloud/bestpractices/multi-tenancy)
+* Шаблоны отчётов
+* [Маскирование данных](/cloud/guides/data-masking)
 
 ```sql
 -- Более сложное параметризованное представление
@@ -249,11 +249,11 @@ SELECT * FROM top_products_by_category(
 );
 ```
 
-Дополнительную информацию см. в разделе [Параметризованные представления](/sql-reference/statements/create/view#parameterized-view).
+См. в разделе [Parameterized Views](/sql-reference/statements/create/view#parameterized-view) для получения дополнительной информации.
 
-### Материализованные представления {#materialized-views}
+### Материализованные представления
 
-Материализованные представления идеально подходят для предварительного вычисления ресурсоемких агрегаций, которые традиционно выполнялись бы в хранимых процедурах. Если вы переходите с традиционной базы данных, представьте материализованное представление как **триггер INSERT**, который автоматически преобразует и агрегирует данные при их вставке в исходную таблицу:
+Материализованные представления идеально подходят для предварительного вычисления ресурсоёмких агрегаций, которые традиционно выполнялись бы в хранимых процедурах. Если вы привыкли к традиционным базам данных, представляйте материализованное представление как **INSERT-триггер**, который автоматически трансформирует и агрегирует данные при их вставке в исходную таблицу:
 
 ```sql
 -- Исходная таблица
@@ -266,7 +266,7 @@ CREATE TABLE page_views (
 ENGINE = MergeTree()
 ORDER BY (user_id, timestamp);
 
--- Материализованное представление, поддерживающее агрегированную статистику
+-- Материализованное представление, которое хранит агрегированную статистику
 CREATE MATERIALIZED VIEW daily_user_stats
 ENGINE = SummingMergeTree()
 ORDER BY (date, user_id)
@@ -278,7 +278,6 @@ AS SELECT
     uniq(page) AS unique_pages
 FROM page_views
 GROUP BY date, user_id;
-
 ```
 
 
@@ -313,7 +312,7 @@ GROUP BY user_id;
 Для запланированной пакетной обработки (например, ночных хранимых процедур):
 
 ```sql
--- Автоматическое обновление каждый день в 2 часа ночи
+-- Автоматическое обновление каждый день в 2:00
 CREATE MATERIALIZED VIEW monthly_sales_report
 REFRESH EVERY 1 DAY OFFSET 2 HOUR
 AS SELECT
@@ -332,16 +331,16 @@ SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
 ````
 
-См. [Каскадные материализованные представления](/guides/developer/cascading-materialized-views) для изучения расширенных паттернов.
+См. раздел [Каскадные материализованные представления](/guides/developer/cascading-materialized-views) для изучения расширенных паттернов.
 
 ### Внешняя оркестрация {#external-orchestration}
 
 Для сложной бизнес-логики, ETL-процессов или многошаговых операций всегда можно реализовать логику вне ClickHouse,
-используя клиентские библиотеки для различных языков программирования.
+используя клиенты на различных языках программирования.
 
 #### Использование кода приложения {#using-application-code}
 
-Ниже приведено сравнение, показывающее, как хранимая процедура MySQL преобразуется в код приложения с ClickHouse:
+Ниже представлено сравнение, показывающее, как хранимая процедура MySQL преобразуется в код приложения с ClickHouse:
 
 <Tabs>
 <TabItem value="mysql" label="Хранимая процедура MySQL" default>
@@ -397,7 +396,7 @@ BEGIN
 ```
 
 
--- Вставка транзакции по бонусным баллам
+-- Добавление записи о транзакции бонусных баллов
 INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
 VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
 CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
@@ -428,9 +427,9 @@ SELECT @status, @points;
 <TabItem value="clickhouse" label="Код приложения ClickHouse">
 
 :::note Параметры запроса
-В приведенном ниже примере используются параметры запроса в ClickHouse.
-Перейдите к разделу [«Альтернативы подготовленным выражениям в ClickHouse»](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse),
-если вы еще не знакомы с параметрами запроса в ClickHouse.
+В примере ниже используются параметры запроса в ClickHouse.
+Перейдите к разделу ["Альтернативы подготовленным выражениям в ClickHouse"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse),
+если вы ещё не знакомы с параметрами запроса в ClickHouse.
 :::
 ```
 
@@ -585,17 +584,17 @@ print(f&quot;Статус: {status}, Баллы лояльности: {points}&q
 
 #### Ключевые различия {#key-differences}
 
-1. **Управление потоком выполнения** — хранимые процедуры MySQL используют конструкции `IF/ELSE` и циклы `WHILE`. В ClickHouse эту логику следует реализовывать в коде приложения (Python, Java и т. д.)
+1. **Управление потоком выполнения** — хранимые процедуры MySQL используют конструкции `IF/ELSE` и циклы `WHILE`. В ClickHouse реализуйте эту логику в коде приложения (Python, Java и т. д.)
 2. **Транзакции** — MySQL поддерживает `BEGIN/COMMIT/ROLLBACK` для ACID-транзакций. ClickHouse — это аналитическая СУБД, оптимизированная для операций добавления данных, а не для транзакционных обновлений
-3. **Обновления** — MySQL использует операторы `UPDATE`. В ClickHouse для работы с изменяемыми данными рекомендуется использовать `INSERT` с движками [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) или [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
-4. **Переменные и состояние** — хранимые процедуры MySQL могут объявлять переменные (`DECLARE v_discount`). В ClickHouse управление состоянием осуществляется в коде приложения
-5. **Обработка ошибок** — MySQL поддерживает `SIGNAL` и обработчики исключений. В коде приложения используйте встроенные механизмы обработки ошибок вашего языка программирования (try/catch)
+3. **Обновления** — MySQL использует операторы `UPDATE`. ClickHouse предпочитает `INSERT` с движками [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) или [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) для изменяемых данных
+4. **Переменные и состояние** — хранимые процедуры MySQL могут объявлять переменные (`DECLARE v_discount`). В ClickHouse управляйте состоянием в коде приложения
+5. **Обработка ошибок** — MySQL поддерживает `SIGNAL` и обработчики исключений. В коде приложения используйте встроенные механизмы обработки ошибок языка программирования (try/catch)
 
 :::tip
 **Когда использовать каждый подход:**
 - **OLTP-нагрузки** (заказы, платежи, учетные записи пользователей) → используйте MySQL/PostgreSQL с хранимыми процедурами
 - **Аналитические нагрузки** (отчетность, агрегации, временные ряды) → используйте ClickHouse с оркестрацией на уровне приложения
-- **Гибридная архитектура** → используйте оба варианта! Передавайте транзакционные данные из OLTP в ClickHouse для аналитики
+- **Гибридная архитектура** → используйте оба подхода! Передавайте транзакционные данные из OLTP в ClickHouse для аналитики
 :::
 
 #### Использование инструментов оркестрации рабочих процессов {#using-workflow-orchestration-tools}
@@ -606,7 +605,7 @@ print(f&quot;Статус: {status}, Баллы лояльности: {points}&q
 - **Пользовательские планировщики** — задания cron, Kubernetes CronJobs и т. д.
 
 **Преимущества внешней оркестрации:**
-- Полные возможности языков программирования
+- Полные возможности языка программирования
 - Улучшенная обработка ошибок и логика повторных попыток
 - Интеграция с внешними системами (API, другие базы данных)
 - Контроль версий и тестирование
@@ -615,51 +614,50 @@ print(f&quot;Статус: {status}, Баллы лояльности: {points}&q
 ```
 
 
-## Альтернативы подготовленным выражениям в ClickHouse {#alternatives-to-prepared-statements-in-clickhouse}
+## Альтернативы подготовленным запросам в ClickHouse
 
-Хотя в ClickHouse нет традиционных «подготовленных выражений» в смысле реляционных СУБД, он предоставляет **параметры запросов**, которые выполняют ту же функцию: безопасные параметризованные запросы, предотвращающие SQL-инъекции.
+Хотя в ClickHouse нет традиционных «подготовленных запросов» в смысле классических СУБД, он предоставляет **параметры запроса**, которые выполняют ту же роль: безопасные параметризованные запросы, предотвращающие SQL‑инъекции.
 
-### Синтаксис {#query-parameters-syntax}
+### Синтаксис
 
-Существует два способа определения параметров запросов:
+Есть два способа задать параметры запроса:
 
-#### Метод 1: использование `SET` {#method-1-using-set}
+#### Метод 1: с использованием `SET`
 
 <details>
-<summary>Пример таблицы и данных</summary>
+  <summary>Пример таблицы и данных</summary>
 
-```sql
--- Создание таблицы user_events (синтаксис ClickHouse)
-CREATE TABLE user_events (
-    event_id UInt32,
-    user_id UInt64,
-    event_name String,
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = MergeTree()
-ORDER BY (user_id, event_date);
+  ```sql
+  -- Создание таблицы user_events (синтаксис ClickHouse)
+  CREATE TABLE user_events (
+      event_id UInt32,
+      user_id UInt64,
+      event_name String,
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = MergeTree()
+  ORDER BY (user_id, event_date);
 
--- Вставка тестовых данных для нескольких пользователей и событий
-INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
-(1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
-(2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
-(3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
-(4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
-(5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
-(6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
-(7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
-(8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
-(9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
-(10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
-(11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
-(12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
-(13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
-(14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
-(15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
-(16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
-(17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
-```
-
+  -- Вставка примерных данных для нескольких пользователей и событий
+  INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
+  (1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
+  (2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
+  (3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
+  (4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
+  (5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
+  (6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
+  (7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
+  (8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
+  (9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
+  (10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
+  (11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
+  (12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
+  (13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
+  (14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
+  (15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
+  (16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
+  (17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
+  ```
 </details>
 
 ```sql
@@ -676,7 +674,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-#### Метод 2: использование параметров CLI {#method-2-using-cli-parameters}
+#### Метод 2: через параметры CLI
 
 ```bash
 clickhouse-client \
@@ -688,158 +686,150 @@ clickhouse-client \
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
 
-### Синтаксис параметров {#parameter-syntax}
+### Синтаксис параметров
 
-Параметры указываются в формате: `{parameter_name: DataType}`
+Параметры задаются в виде: `{parameter_name: DataType}`
 
 
-- `parameter_name` - Имя параметра (без префикса `param_`)
-- `DataType` - Тип данных ClickHouse, к которому приводится параметр
+* `parameter_name` - Имя параметра (без префикса `param_`)
+* `DataType` - Тип данных ClickHouse, к которому приводится параметр
 
-### Примеры типов данных {#data-type-examples}
+### Примеры типов данных
 
 <details>
-<summary>Таблицы и примеры данных</summary>
+  <summary>Таблицы и примеры данных для демонстрации</summary>
 
-```sql
--- 1. Создание таблицы для тестирования строк и чисел
-CREATE TABLE IF NOT EXISTS users (
-    name String,
-    age UInt8,
-    salary Float64
-) ENGINE = Memory;
+  ```sql
+  -- 1. Создать таблицу для тестов со строками и числами
+  CREATE TABLE IF NOT EXISTS users (
+      name String,
+      age UInt8,
+      salary Float64
+  ) ENGINE = Memory;
 
-INSERT INTO users VALUES
-    ('John Doe', 25, 75000.50),
-    ('Jane Smith', 30, 85000.75),
-    ('Peter Jones', 20, 50000.00);
+  INSERT INTO users VALUES
+      ('John Doe', 25, 75000.50),
+      ('Jane Smith', 30, 85000.75),
+      ('Peter Jones', 20, 50000.00);
 
--- 2. Создание таблицы для тестирования дат и временных меток
-CREATE TABLE IF NOT EXISTS events (
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = Memory;
+  -- 2. Создать таблицу для тестов с датами и метками времени
+  CREATE TABLE IF NOT EXISTS events (
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = Memory;
 
-INSERT INTO events VALUES
-    ('2024-01-15', '2024-01-15 14:30:00'),
-    ('2024-01-15', '2024-01-15 15:00:00'),
-    ('2024-01-16', '2024-01-16 10:00:00');
+  INSERT INTO events VALUES
+      ('2024-01-15', '2024-01-15 14:30:00'),
+      ('2024-01-15', '2024-01-15 15:00:00'),
+      ('2024-01-16', '2024-01-16 10:00:00');
 
--- 3. Создание таблицы для тестирования массивов
-CREATE TABLE IF NOT EXISTS products (
-    id UInt32,
-    name String
-) ENGINE = Memory;
+  -- 3. Создать таблицу для тестов с массивами
+  CREATE TABLE IF NOT EXISTS products (
+      id UInt32,
+      name String
+  ) ENGINE = Memory;
 
-INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
+  INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
--- 4. Создание таблицы для тестирования Map (структуроподобных типов)
-CREATE TABLE IF NOT EXISTS accounts (
-    user_id UInt32,
-    status String,
-    type String
-) ENGINE = Memory;
+  -- 4. Создать таблицу для тестов с Map (структуроподобными данными)
+  CREATE TABLE IF NOT EXISTS accounts (
+      user_id UInt32,
+      status String,
+      type String
+  ) ENGINE = Memory;
 
-INSERT INTO accounts VALUES
-    (101, 'active', 'premium'),
-    (102, 'inactive', 'basic'),
-    (103, 'active', 'basic');
+  INSERT INTO accounts VALUES
+      (101, 'active', 'premium'),
+      (102, 'inactive', 'basic'),
+      (103, 'active', 'basic');
 
--- 5. Создание таблицы для тестирования идентификаторов
-CREATE TABLE IF NOT EXISTS sales_2024 (
-    value UInt32
-) ENGINE = Memory;
+  -- 5. Создать таблицу для тестов с Identifier
+  CREATE TABLE IF NOT EXISTS sales_2024 (
+      value UInt32
+  ) ENGINE = Memory;
 
-INSERT INTO sales_2024 VALUES (100), (200), (300);
-```
-
+  INSERT INTO sales_2024 VALUES (100), (200), (300);
+  ```
 </details>
 
 <Tabs>
-<TabItem value="strings" label="Строки и числа" default>
+  <TabItem value="strings" label="Строки и числа" default>
+    ```sql
+    SET param_name = 'John Doe';
+    SET param_age = 25;
+    SET param_salary = 75000.50;
 
-```sql
-SET param_name = 'John Doe';
-SET param_age = 25;
-SET param_salary = 75000.50;
+    SELECT name, age, salary FROM users
+    WHERE name = {name: String}
+      AND age >= {age: UInt8}
+      AND salary <= {salary: Float64};
+    ```
+  </TabItem>
 
-SELECT name, age, salary FROM users
-WHERE name = {name: String}
-  AND age >= {age: UInt8}
-  AND salary <= {salary: Float64};
-```
+  <TabItem value="dates" label="Даты и время">
+    ```sql
+    SET param_date = '2024-01-15';
+    SET param_timestamp = '2024-01-15 14:30:00';
 
-</TabItem>
-<TabItem value="dates" label="Даты и время">
+    SELECT * FROM events
+    WHERE event_date = {date: Date}
+       OR event_timestamp > {timestamp: DateTime};
+    ```
+  </TabItem>
 
-```sql
-SET param_date = '2024-01-15';
-SET param_timestamp = '2024-01-15 14:30:00';
+  <TabItem value="arrays" label="Массивы">
+    ```sql
+    SET param_ids = [1, 2, 3, 4, 5];
 
-SELECT * FROM events
-WHERE event_date = {date: Date}
-   OR event_timestamp > {timestamp: DateTime};
-```
+    SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="arrays" label="Массивы">
+  <TabItem value="maps" label="Карты (Map)">
+    ```sql
+    SET param_filters = {'target_status': 'active'};
 
-```sql
-SET param_ids = [1, 2, 3, 4, 5];
+    SELECT user_id, status, type FROM accounts
+    WHERE status = arrayElement(
+        mapValues({filters: Map(String, String)}),
+        indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
+    );
+    ```
+  </TabItem>
 
-SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-```
+  <TabItem value="identifiers" label="Идентификаторы">
+    ```sql
+    SET param_table = 'sales_2024';
 
-</TabItem>
-<TabItem value="maps" label="Map">
-
-```sql
-SET param_filters = {'target_status': 'active'};
-
-SELECT user_id, status, type FROM accounts
-WHERE status = arrayElement(
-    mapValues({filters: Map(String, String)}),
-    indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
-);
-```
-
-</TabItem>
-<TabItem value="identifiers" label="Идентификаторы">
-
-```sql
-SET param_table = 'sales_2024';
-
-SELECT count() FROM {table: Identifier};
-```
-
-</TabItem>
+    SELECT count() FROM {table: Identifier};
+    ```
+  </TabItem>
 </Tabs>
 
 <br />
-Для использования параметров запросов в [языковых
-клиентах](/integrations/language-clients) обратитесь к документации
-соответствующего языкового клиента.
 
-### Ограничения параметров запросов {#limitations-of-query-parameters}
+Для использования параметров запроса в [языковых клиентах](/integrations/language-clients) обратитесь к документации
+по соответствующему языковому клиенту.
 
-Параметры запросов **не являются универсальными текстовыми подстановками**. Они имеют определенные ограничения:
+### Ограничения параметров запроса
 
-1. Они **предназначены в первую очередь для операторов SELECT** - наилучшая поддержка обеспечивается в запросах SELECT
-2. Они **работают как идентификаторы или литералы** - они не могут заменять произвольные фрагменты SQL
-3. Они имеют **ограниченную поддержку DDL** - они поддерживаются в `CREATE TABLE`, но не в `ALTER TABLE`
+Параметры запроса **не являются универсальным механизмом текстовой подстановки**. У них есть определённые ограничения:
+
+1. Они **в первую очередь предназначены для операторов SELECT** — наилучшая поддержка — в запросах SELECT
+2. Они **работают как идентификаторы или литералы** — их нельзя использовать для подстановки произвольных фрагментов SQL
+3. У них **ограниченная поддержка в DDL** — они поддерживаются в `CREATE TABLE`, но не в `ALTER TABLE`
 
 **Что РАБОТАЕТ:**
 
 ```sql
--- ✓ Значения в условии WHERE
+-- ✓ Значения в предложении WHERE
 SELECT * FROM users WHERE id = {user_id: UInt64};
 
--- ✓ Имена таблиц/баз данных
+-- ✓ Имена таблиц и баз данных
 SELECT * FROM {db: Identifier}.{table: Identifier};
 
--- ✓ Значения в условии IN
+-- ✓ Значения в предложении IN
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-
 ```
 
 
@@ -853,7 +843,7 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 -- ✗ Имена столбцов в SELECT (используйте Identifier с осторожностью)
 SELECT {column: Identifier} FROM users;  -- Ограниченная поддержка
 
--- ✗ Произвольные фрагменты SQL
+-- ✗ Произвольные SQL-фрагменты
 SELECT * FROM users {where_clause: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
 
 -- ✗ Операторы ALTER TABLE
@@ -863,13 +853,13 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕР
 {statements: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
 ````
 
-### Рекомендации по безопасности {#security-best-practices}
+### Рекомендации по обеспечению безопасности {#security-best-practices}
 
-**Всегда используйте параметры запросов для пользовательского ввода:**
+**Всегда используйте параметры запроса для пользовательского ввода:**
 
 
 ```python
-# ✓ БЕЗОПАСНО — используются параметры
+# ✓ БЕЗОПАСНО — использует параметры
 user_input = request.get('user_id')
 result = client.query(
     "SELECT * FROM orders WHERE user_id = {uid: UInt64}",
@@ -880,20 +870,20 @@ result = client.query(
 
 # ✗ ОПАСНО — риск SQL-инъекции!
 
-user_input = request.get('user_id')
-result = client.query(f"SELECT \* FROM orders WHERE user_id = {user_input}")
+user&#95;input = request.get(&#39;user&#95;id&#39;)
+result = client.query(f&quot;SELECT * FROM orders WHERE user&#95;id = {user_input}&quot;)
 
 ````
 
-**Проверяйте типы входных данных:**
+**Проверка типов входных данных:**
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
     # Проверка типов перед выполнением запроса
     if not isinstance(user_id, int) or user_id <= 0:
-        raise ValueError("Invalid user_id")
+        raise ValueError("Недопустимый user_id")
 
-    # Параметры обеспечивают типобезопасность
+    # Параметры обеспечивают безопасность типов
     return client.query(
         """
         SELECT * FROM orders
@@ -904,65 +894,65 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ````
 
-### Подготовленные выражения протокола MySQL {#mysql-protocol-prepared-statements}
+### Подготовленные выражения в протоколе MySQL
 
-[Интерфейс MySQL](/interfaces/mysql) в ClickHouse включает минимальную поддержку подготовленных выражений (`COM_STMT_PREPARE`, `COM_STMT_EXECUTE`, `COM_STMT_CLOSE`), в первую очередь для обеспечения подключения к таким инструментам, как Tableau Online, которые оборачивают запросы в подготовленные выражения.
+[Интерфейс MySQL](/interfaces/mysql) в ClickHouse включает минимальную поддержку подготовленных выражений (`COM_STMT_PREPARE`, `COM_STMT_EXECUTE`, `COM_STMT_CLOSE`), в первую очередь для обеспечения совместимости с такими инструментами, как Tableau Online, которые оборачивают запросы в подготовленные выражения.
 
-**Основные ограничения:**
+**Ключевые ограничения:**
 
-- **Привязка параметров не поддерживается** — нельзя использовать заполнители `?` с привязанными параметрами
-- Запросы сохраняются, но не разбираются во время выполнения `PREPARE`
-- Реализация минимальна и предназначена для совместимости с конкретными инструментами бизнес-аналитики
+* **Привязка параметров не поддерживается** — вы не можете использовать плейсхолдеры `?` с привязанными параметрами
+* Запросы сохраняются, но не анализируются при выполнении `PREPARE`
+* Реализация минимальна и предназначена для совместимости с отдельными BI-инструментами
 
 **Пример того, что НЕ работает:**
 
 ```sql
--- Это подготовленное выражение в стиле MySQL с параметрами НЕ работает в ClickHouse
+-- Этот подготовленный оператор в стиле MySQL с параметрами НЕ работает в ClickHouse
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
 EXECUTE stmt USING @user_id;  -- Привязка параметров не поддерживается
 ```
 
 :::tip
-**Вместо этого используйте встроенные параметры запросов ClickHouse.** Они обеспечивают полную поддержку привязки параметров, типобезопасность и защиту от SQL-инъекций во всех интерфейсах ClickHouse:
+**Вместо этого используйте встроенные параметры запросов ClickHouse.** Они обеспечивают полноценную поддержку привязки параметров, типобезопасность и защиту от SQL‑инъекций во всех интерфейсах ClickHouse:
 
 ```sql
--- Встроенные параметры запросов ClickHouse (рекомендуется)
+-- Нативные параметры запросов ClickHouse (рекомендуется)
 SET param_user_id = 12345;
 SELECT * FROM users WHERE id = {user_id: UInt64};
 ```
 
 :::
 
-Подробнее см. в [документации по интерфейсу MySQL](/interfaces/mysql) и в [статье блога о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
+Дополнительные сведения см. в [документации по интерфейсу MySQL](/interfaces/mysql) и [статье в блоге о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
 
 
-## Резюме {#summary}
+## Краткое описание {#summary}
 
 ### Альтернативы хранимым процедурам в ClickHouse {#summary-stored-procedures}
 
-| Традиционный шаблон хранимых процедур   | Альтернатива в ClickHouse                                                   |
-| --------------------------------------- | --------------------------------------------------------------------------- |
-| Простые вычисления и преобразования     | Пользовательские функции (UDF)                                              |
-| Многократно используемые параметризованные запросы | Параметризованные представления                                  |
-| Предварительно вычисленные агрегации    | Материализованные представления                                             |
-| Запланированная пакетная обработка      | Обновляемые материализованные представления                                 |
-| Сложные многоэтапные ETL                | Цепочки материализованных представлений или внешняя оркестрация (Python, Airflow, dbt) |
-| Бизнес-логика с управлением потоком выполнения | Код приложения                                                       |
+| Традиционный шаблон хранимой процедуры | Альтернатива в ClickHouse                                                  |
+|----------------------------------------|-----------------------------------------------------------------------------|
+| Простые вычисления и преобразования   | Пользовательские функции (UDF)                                             |
+| Многократно используемые параметризованные запросы | Параметризованные представления                                   |
+| Предварительно вычисленные агрегации  | Материализованные представления                                            |
+| Пакетная обработка по расписанию      | Обновляемые материализованные представления                                |
+| Сложный многошаговый ETL              | Цепочки материализованных представлений или внешняя оркестрация (Python, Airflow, dbt) |
+| Бизнес-логика с управляющими конструкциями | Код приложения                                                         |
 
 ### Использование параметров запросов {#summary-query-parameters}
 
-Параметры запросов могут использоваться для:
+Параметры запросов можно использовать для:
+- предотвращения SQL-инъекций
+- параметризованных запросов с контролем типов
+- динамической фильтрации в приложениях
+- многократно используемых шаблонов запросов
 
-- Предотвращения SQL-инъекций
-- Параметризованных запросов с типобезопасностью
-- Динамической фильтрации в приложениях
-- Многократно используемых шаблонов запросов
 
 
 ## Связанная документация {#related-documentation}
 
-- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - Пользовательские функции
+- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - Пользовательские функции (UDF)
 - [`CREATE VIEW`](/sql-reference/statements/create/view) - Представления, включая параметризованные и материализованные
-- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - Полный синтаксис параметров
-- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - Продвинутые паттерны материализованных представлений
-- [Executable UDFs](/sql-reference/functions/udf) - Выполнение внешних функций
+- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - Полный синтаксис параметров запросов
+- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - Продвинутые схемы использования материализованных представлений
+- [Executable UDFs](/sql-reference/functions/udf) - Выполнение внешних пользовательских функций

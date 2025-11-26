@@ -20,7 +20,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <details>
   <summary>S3バケットとIAMユーザーの作成</summary>
 
-本記事では、AWS IAMユーザーの設定、S3バケットの作成、およびClickHouseでそのバケットをS3ディスクとして使用するための設定の基本について説明します。使用する権限については、セキュリティチームと協力して決定し、本記事の内容を出発点として検討してください。
+本記事では、AWS IAMユーザーの設定、S3バケットの作成、およびClickHouseでバケットをS3ディスクとして使用するための設定の基本を説明します。使用する権限についてはセキュリティチームと協議し、本記事の内容を出発点として検討してください。
 
 ### AWS IAMユーザーの作成 {#create-an-aws-iam-user}
 
@@ -28,7 +28,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 1.  AWS IAM管理コンソールにログインします。
 
-2.  「ユーザー」で、**ユーザーを追加**を選択します
+2.  「ユーザー」で**ユーザーを追加**を選択します。
 
 <Image
   size='md'
@@ -38,7 +38,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-3. ユーザー名を入力し、認証情報タイプを**アクセスキー - プログラムによるアクセス**に設定して、**次へ: アクセス許可**を選択します
+3. ユーザー名を入力し、認証情報タイプを**アクセスキー - プログラムによるアクセス**に設定して、**次へ: アクセス許可**を選択します。
 
 <Image
   size='md'
@@ -48,7 +48,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-4. ユーザーをどのグループにも追加せず、**次へ: タグ**を選択します
+4. ユーザーをどのグループにも追加せず、**次へ: タグ**を選択します。
 
 <Image
   size='md'
@@ -58,7 +58,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-5. タグを追加する必要がない場合は、**次へ: 確認**を選択します
+5. タグを追加する必要がない場合は、**次へ: 確認**を選択します。
 
 <Image
   size='md'
@@ -68,10 +68,10 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-6. **ユーザーの作成**を選択します
+6. **ユーザーの作成**を選択します。
 
    :::note
-   ユーザーに権限がないという警告メッセージは無視できます。次のセクションで、バケットに対するユーザーの権限が付与されます
+   ユーザーに権限がないという警告メッセージは無視できます。次のセクションでバケットに対するユーザーの権限を付与します。
    :::
 
 <Image
@@ -84,13 +84,13 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 7. ユーザーが作成されました。**表示**をクリックして、アクセスキーとシークレットキーをコピーします。
    :::note
-   キーを別の場所に保存してください。シークレットアクセスキーが利用可能なのはこの時だけです。
+   キーを別の場所に保存してください。シークレットアクセスキーが利用可能なのはこの時のみです。
    :::
 
 <Image
   size='md'
   img={s3_6}
-  alt='IAMユーザーのアクセスキーの表示とコピー'
+  alt='IAMユーザーアクセスキーの表示とコピー'
   border
   force
 />
@@ -110,14 +110,14 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <Image
   size='md'
   img={s3_8}
-  alt='IAMユーザーのARNのコピー'
+  alt='IAMユーザーのARNをコピー'
   border
   force
 />
 
 ### S3バケットの作成 {#create-an-s3-bucket}
 
-1. S3バケットセクションで、**バケットを作成**を選択します
+1. S3バケットセクションで、**バケットを作成**を選択します。
 
 <Image
   size='md'
@@ -127,11 +127,11 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-2. バケット名を入力し、その他のオプションはデフォルトのままにします
+2. バケット名を入力し、その他のオプションはデフォルトのままにします。
    :::note
    バケット名は組織内だけでなく、AWS全体で一意である必要があります。そうでない場合、エラーが発生します。
    :::
-3. `すべてのパブリックアクセスをブロック`を有効のままにします。パブリックアクセスは必要ありません。
+3. `パブリックアクセスをすべてブロック`を有効のままにします。パブリックアクセスは不要です。
 
 
 <Image
@@ -231,7 +231,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 ```response
 |パラメータ | 説明 | 例の値 |
 |----------|-------------|----------------|
-|Version | ポリシーインタープリタのバージョン、変更しないでください | 2012-10-17 |
+|Version | ポリシーインタープリタのバージョン、そのままにする | 2012-10-17 |
 |Sid | ユーザー定義のポリシーID | abc123 |
 |Effect | ユーザーリクエストを許可するか拒否するか | Allow |
 |Principal | 許可されるアカウントまたはユーザー | arn:aws:iam::921234567898:user/mars-s3-user |
@@ -240,7 +240,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 ```
 
 :::note
-使用する権限を決定するには、セキュリティチームと協力してください。これらは出発点として検討してください。
+使用する権限を決定するには、セキュリティチームと協力してください。これらを出発点として検討してください。
 ポリシーと設定の詳細については、AWSドキュメントを参照してください：
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
 :::

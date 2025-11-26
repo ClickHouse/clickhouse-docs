@@ -4,25 +4,24 @@ import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring
 
 
 
-## 統合の例 {#examples}
+## 連携例 {#examples}
 
-外部統合により、組織は確立された監視ワークフローを維持し、使い慣れたツールに関する既存のチームの専門知識を活用し、現在のプロセスを中断したり大規模な再トレーニング投資を必要とすることなく、ClickHouseの監視をより広範なインフラストラクチャの可観測性に統合できます。
-チームは既存のアラートルールとエスカレーション手順をClickHouseメトリクスに適用でき、統合された可観測性プラットフォーム内でデータベースのパフォーマンスをアプリケーションおよびインフラストラクチャの健全性と関連付けることができます。このアプローチは現在の監視セットアップのROIを最大化し、統合されたダッシュボードと使い慣れたツールインターフェースを通じて、より迅速なトラブルシューティングを可能にします。
+外部連携を活用することで、組織は既存のモニタリングワークフローを維持しつつ、慣れ親しんだツールに関するチームの専門性を生かし、現在のプロセスを妨げたり大規模な再トレーニング投資を行ったりすることなく、ClickHouse のモニタリングをインフラ全体のオブザーバビリティに統合できます。
+チームは既存のアラートルールやエスカレーション手順を ClickHouse のメトリクスに適用しつつ、統合されたオブザーバビリティプラットフォーム上で、アプリケーションおよびインフラのヘルスとデータベースパフォーマンスを関連付けて把握できます。このアプローチにより、現行のモニタリング環境への投資効果を最大化し、統合されたダッシュボードと使い慣れたツールインターフェースを通じて、トラブルシューティングをより迅速に行えるようになります。
 
-### Grafana Cloud監視 {#grafana}
+### Grafana Cloud によるモニタリング {#grafana}
 
-Grafanaは、直接プラグイン統合とPrometheusベースのアプローチの両方を通じてClickHouse監視を提供します。Prometheusエンドポイント統合は、監視ワークロードと本番ワークロードの運用上の分離を維持しながら、既存のGrafana Cloudインフラストラクチャ内での可視化を可能にします。設定のガイダンスについては、[GrafanaのClickHouseドキュメント](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-clickhouse/)を参照してください。
+Grafana は、ネイティブプラグイン連携と Prometheus ベースのアプローチの両方を通じて ClickHouse のモニタリングを提供します。Prometheus エンドポイント連携により、モニタリングワークロードと本番ワークロードの運用上の分離を維持しながら、既存の Grafana Cloud インフラ内での可視化を可能にします。設定方法については [Grafana の ClickHouse ドキュメント](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-clickhouse/) を参照してください。
 
-### Datadog監視 {#datadog}
-
-Datadogは、サービスのアイドリング動作を考慮しながら適切なクラウドサービス監視を提供する専用API統合を開発中です。暫定的に、チームはClickHouse PrometheusエンドポイントによるOpenMetrics統合アプローチを使用して、運用上の分離とコスト効率の高い監視を実現できます。設定のガイダンスについては、[DatadogのPrometheusおよびOpenMetrics統合ドキュメント](https://docs.datadoghq.com/integrations/openmetrics/)を参照してください。
+### Datadog によるモニタリング {#datadog}
+Datadog は、サービスのアイドル状態の挙動を考慮しつつ、適切なクラウドサービスモニタリングを提供する専用の API 連携を開発中です。それまでの間、チームは ClickHouse の Prometheus エンドポイント経由で OpenMetrics 連携アプローチを利用することで、運用上の分離とコスト効率の高いモニタリングを実現できます。設定方法については [Datadog の Prometheus および OpenMetrics 連携ドキュメント](https://docs.datadoghq.com/integrations/openmetrics/) を参照してください。
 
 ### ClickStack {#clickstack}
 
-ClickStackは、深いシステム分析とデバッグのためのClickHouse推奨の可観測性ソリューションであり、ClickHouseをストレージエンジンとして使用してログ、メトリクス、トレースのための統合プラットフォームを提供します。このアプローチは、ClickStackのUIであるHyperDXに依存し、ClickHouseインスタンス内のシステムテーブルに直接接続します。
-HyperDXには、Selects、Inserts、Infrastructureのタブを備えたClickHouseに特化したダッシュボードが付属しています。チームはLuceneまたはSQL構文を使用してシステムテーブルとログを検索し、詳細なシステム分析のためにChart Explorerを介してカスタム可視化を作成することもできます。
-このアプローチは、リアルタイムの本番アラートではなく、複雑な問題のデバッグ、パフォーマンス分析、深いシステムの内部調査に最適です。
+ClickStack は、深いシステム解析とデバッグのために ClickHouse が推奨するオブザーバビリティソリューションであり、ClickHouse をストレージエンジンとして用いながら、ログ、メトリクス、トレースを統合的に扱うプラットフォームを提供します。このアプローチは、ClickStack の UI である HyperDX が ClickHouse インスタンス内の system テーブルに直接接続することに依存しています。
+HyperDX には、Select、Insert、および Infrastructure のタブを備えた ClickHouse に特化したダッシュボードが標準で用意されています。チームは Lucene または SQL 構文を使用して system テーブルやログを検索できるほか、Chart Explorer を通じてカスタム可視化を作成し、詳細なシステム解析を行うこともできます。
+このアプローチは、リアルタイムの本番アラートというよりも、複雑な問題のデバッグ、パフォーマンス解析、システムの深部に対する詳細な調査に最適です。
 
 :::note
-このアプローチは、HyperDXがシステムテーブルに直接クエリを実行するため、アイドル状態のサービスを起動することに注意してください。
+このアプローチでは、HyperDX が system テーブルに直接クエリを発行するため、アイドル状態のサービスが起動される点に注意してください。
 :::

@@ -15,31 +15,30 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-此格式将 JSONCompactEachRow 的紧凑逐行输出与流式进度信息相结合。
-它将数据输出为独立的 JSON 对象,用于表示元数据、各个数据行、进度更新、
-汇总和异常。值以其原生类型表示。
+此格式将 `JSONCompactEachRow` 的紧凑逐行输出与流式进度信息相结合。
+它将元数据、单独的行、进度更新、汇总以及异常分别输出为独立的 JSON 对象。各字段以其原生类型表示。
 
-主要特性:
-
+主要特性：
 - 首先输出包含列名和类型的元数据
-- 每一行都是一个独立的 JSON 对象,包含一个 "row" 键,其值为数组
-- 在查询执行期间包含进度更新(以 `{"progress":...}` 对象形式)
-- 支持汇总和极值
-- 值保持其原生类型(数字为数字,字符串为字符串)
+- 每一行都是一个单独的 JSON 对象，带有一个 `"row"` 键，其值为一个包含各列值的数组
+- 在查询执行期间包含进度更新（以 `{"progress":...}` 对象形式）
+- 支持 totals 和 extremes
+- 值保持其原生类型（数字为数字，字符串为字符串）
 
 
-## 使用示例 {#example-usage}
 
-```sql title="查询"
+## 使用示例
+
+```sql title="Query"
 SELECT *
 FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2)
 LIMIT 5
 FORMAT JSONCompactEachRowWithProgress
 ```
 
-```response title="响应"
+```response title="Response"
 {"meta":[{"name":"a","type":"Array(Int8)"},{"name":"d","type":"Decimal(9, 4)"},{"name":"c","type":"Tuple(DateTime64(3), UUID)"}]}
 {"row":[[-8], 46848.5225, ["2064-06-11 14:00:36.578","b06f4fa1-22ff-f84f-a1b7-a5807d983ae6"]]}
 {"row":[[-76], -85331.598, ["2038-06-16 04:10:27.271","2bb0de60-3a2c-ffc0-d7a7-a5c88ed8177c"]]}

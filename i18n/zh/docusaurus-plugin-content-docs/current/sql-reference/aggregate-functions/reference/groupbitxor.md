@@ -1,5 +1,5 @@
 ---
-description: '对一系列数值执行按位异或（`XOR`）运算。'
+description: '对一系列数字应用按位 `XOR` 运算。'
 sidebar_position: 153
 slug: /sql-reference/aggregate-functions/reference/groupbitxor
 title: 'groupBitXor'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitXor
 
-对一系列数字执行按位异或（`XOR`）运算。
+对一组数值执行按位 `XOR` 运算。
 
 ```sql
 groupBitXor(expr)
@@ -16,11 +16,11 @@ groupBitXor(expr)
 
 **参数**
 
-`expr` – 返回 `UInt*` 或 `Int*` 类型结果的表达式。
+`expr` – 结果类型为 `UInt*` 或 `Int*` 的表达式。
 
 **返回值**
 
-返回 `UInt*` 或 `Int*` 类型的值。
+`UInt*` 或 `Int*` 类型的值。
 
 **示例**
 
@@ -40,7 +40,7 @@ groupBitXor(expr)
 SELECT groupBitXor(num) FROM t
 ```
 
-其中 `num` 是存放测试数据的列。
+其中 `num` 是测试数据所在的列。
 
 结果：
 

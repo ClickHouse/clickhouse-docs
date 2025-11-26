@@ -2,8 +2,8 @@
 title: 'chDB'
 sidebar_label: '概要'
 slug: /chdb
-description: 'chDB は ClickHouse を基盤としたインプロセス SQL OLAP エンジンです'
-keywords: ['chdb', '組み込み', 'clickhouse-lite', 'インプロセス', 'イン プロセス']
+description: 'chDB は ClickHouse を基盤としたプロセス内で動作する SQL OLAP エンジンです'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
@@ -13,70 +13,66 @@ import dfBench from '@site/static/images/chdb/df_bench.png';
 
 # chDB
 
-chDB は、[ClickHouse](https://github.com/clickhouse/clickhouse) によって実現された、高速なインプロセス SQL OLAP エンジンです。
-ClickHouse サーバーに接続することなく、プログラミング言語の中から ClickHouse のパワーを利用したい場合に使用できます。
+chDB は、[ClickHouse](https://github.com/clickhouse/clickhouse) を基盤とした、高速なインプロセス SQL OLAP エンジンです。
+ClickHouse サーバーに接続することなく、任意のプログラミング言語から ClickHouse のパワーを利用したい場合に使用できます。
 
 
 
 ## 主な機能 {#key-features}
 
-- **インプロセスSQL OLAPエンジン** - ClickHouseを基盤とし、ClickHouseサーバーのインストールが不要
-- **複数のデータ形式に対応** - Parquet、CSV、JSON、Arrow、ORCおよび[70種類以上の形式](/interfaces/formats)の入出力をサポート
-- **データコピーの最小化** - [python memoryview](https://docs.python.org/3/c-api/memoryview.html)を使用してC++からPythonへ効率的にデータを転送
-- **豊富なPythonエコシステムとの統合** - Pandas、Arrow、DB API 2.0をネイティブサポートし、既存のデータサイエンスワークフローにシームレスに統合
-- **依存関係ゼロ** - 外部データベースのインストールが不要
+- **インプロセス SQL OLAP エンジン** - ClickHouse を基盤としており、ClickHouse サーバーのインストールは不要
+- **複数のデータ形式** - Parquet、CSV、JSON、Arrow、ORC などに加え、[70 以上の形式](/interfaces/formats) での入出力をサポート
+- **データコピーの最小化** - C++ から Python への転送で [Python の memoryview](https://docs.python.org/3/c-api/memoryview.html) を利用
+- **豊富な Python エコシステムとの統合** - Pandas、Arrow、DB API 2.0 をネイティブサポートし、既存のデータサイエンスワークフローにシームレスに組み込める
+- **依存関係ゼロ** - 外部データベースのインストールは不要
 
 
-## chDBはどの言語をサポートしていますか？ {#what-languages-are-supported-by-chdb}
 
-chDBは以下の言語バインディングを提供しています：
+## chDB はどの言語をサポートしていますか？ {#what-languages-are-supported-by-chdb}
 
-- [Python](install/python.md) - [APIリファレンス](api/python.md)
-- [Go](install/go.md)
-- [Rust](install/rust.md)
-- [NodeJS](install/nodejs.md)
-- [Bun](install/bun.md)
-- [CおよびC++](install/c.md)
+chDB では次の言語バインディングを利用できます。
+
+* [Python](install/python.md) - [API リファレンス](api/python.md)
+* [Go](install/go.md)
+* [Rust](install/rust.md)
+* [NodeJS](install/nodejs.md)
+* [Bun](install/bun.md)
+* [C および C++](install/c.md)
+
 
 
 ## どのように始めればよいですか？ {#how-do-i-get-started}
 
-- [Go](install/go.md)、[Rust](install/rust.md)、[NodeJS](install/nodejs.md)、[Bun](install/bun.md)、または[CおよびC++](install/c.md)を使用している場合は、対応する言語のページを参照してください。
-- Pythonを使用している場合は、[開発者向けスタートガイド](getting-started.md)または[chDBオンデマンドコース](https://learn.clickhouse.com/user_catalog_class/show/1901178)を参照してください。また、以下のような一般的なタスクの実行方法を示すガイドも用意されています：
-  - [JupySQL](guides/jupysql.md)
-  - [Pandasへのクエリ実行](guides/querying-pandas.md)
-  - [Apache Arrowへのクエリ実行](guides/querying-apache-arrow.md)
-  - [S3内のデータへのクエリ実行](guides/querying-s3-bucket.md)
-  - [Parquetファイルへのクエリ実行](guides/querying-parquet.md)
-  - [リモートClickHouseへのクエリ実行](guides/query-remote-clickhouse.md)
-  - [clickhouse-localデータベースの使用](guides/clickhouse-local.md)
+* [Go](install/go.md)、[Rust](install/rust.md)、[NodeJS](install/nodejs.md)、[Bun](install/bun.md)、または [C および C++](install/c.md) を使用している場合は、対応する言語ページを参照してください。
+* Python を使用している場合は、[Getting Started 開発者ガイド](getting-started.md) または [chDB オンデマンドコース](https://learn.clickhouse.com/user_catalog_class/show/1901178) を参照してください。以下のような一般的なタスクを実行する方法を説明するガイドも用意されています：
+  * [JupySQL](guides/jupysql.md)
+  * [Pandas をクエリする](guides/querying-pandas.md)
+  * [Apache Arrow をクエリする](guides/querying-apache-arrow.md)
+  * [S3 内のデータをクエリする](guides/querying-s3-bucket.md)
+  * [Parquet ファイルをクエリする](guides/querying-parquet.md)
+  * [リモート ClickHouse をクエリする](guides/query-remote-clickhouse.md)
+  * [clickhouse-local データベースの使用](guides/clickhouse-local.md)
+
 
 
 ## 紹介動画 {#an-introductory-video}
 
-ClickHouseの創始者であるAlexey Milovidovによる、chDBの簡潔なプロジェクト紹介をご覧いただけます：
+ClickHouse のオリジナル開発者である Alexey Milovidov が chDB プロジェクトについて簡潔に紹介する動画をご覧いただけます。
 
 <div class='vimeo-container'>
-  <iframe
-    width='560'
-    height='315'
-    src='https://www.youtube.com/embed/cuf_hYn7dqU?si=SzUm7RW4Ae5-YwFo'
-    title='YouTube動画プレーヤー'
-    frameborder='0'
-    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-    referrerpolicy='strict-origin-when-cross-origin'
-    allowfullscreen
-  ></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cuf_hYn7dqU?si=SzUm7RW4Ae5-YwFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
 
 
 ## パフォーマンスベンチマーク {#performance-benchmarks}
 
-chDBは、さまざまなシナリオで卓越したパフォーマンスを発揮します：
+chDB は、さまざまなユースケースにおいて卓越したパフォーマンスを発揮します。
+
 
 
 * **[組み込みエンジンのClickBench](https://benchmark.clickhouse.com/#eyJzeXN0ZW0iOnsiQXRoZW5hIChwYXJ0aXRpb25lZCkiOnRydWUsIkF0aGVuYSAoc2luZ2xlKSI6dHJ1ZSwiQXVyb3JhIGZvciBNeVNRTCI6dHJ1ZSwiQXVyb3JhIGZvciBQb3N0Z3JlU1FMIjp0cnVlLCJCeXRlSG91c2UiOnRydWUsImNoREIiOnRydWUsIkNpdHVzIjp0cnVlLCJjbGlja2hvdXNlLWxvY2FsIChwYXJ0aXRpb25lZCkiOnRydWUsImNsaWNraG91c2UtbG9jYWwgKHNpbmdsZSkiOnRydWUsIkNsaWNrSG91c2UiOnRydWUsIkNsaWNrSG91c2UgKHR1bmVkKSI6dHJ1ZSwiQ2xpY2tIb3VzZSAoenN0ZCkiOnRydWUsIkNsaWNrSG91c2UgQ2xvdWQiOnRydWUsIkNsaWNrSG91c2UgKHdlYikiOnRydWUsIkNyYXRlREIiOnRydWUsIkRhdGFiZW5kIjp0cnVlLCJEYXRhRnVzaW9uIChzaW5nbGUpIjp0cnVlLCJBcGFjaGUgRG9yaXMiOnRydWUsIkRydWlkIjp0cnVlLCJEdWNrREIgKFBhcnF1ZXQpIjp0cnVlLCJEdWNrREIiOnRydWUsIkVsYXN0aWNzZWFyY2giOnRydWUsIkVsYXN0aWNzZWFyY2ggKHR1bmVkKSI6ZmFsc2UsIkdyZWVucGx1bSI6dHJ1ZSwiSGVhdnlBSSI6dHJ1ZSwiSHlkcmEiOnRydWUsIkluZm9icmlnaHQiOnRydWUsIktpbmV0aWNhIjp0cnVlLCJNYXJpYURCIENvbHVtblN0b3JlIjp0cnVlLCJNYXJpYURCIjpmYWxzZSwiTW9uZXREQiI6dHJ1ZSwiTW9uZ29EQiI6dHJ1ZSwiTXlTUUwgKE15SVNBTSkiOnRydWUsIk15U1FMIjp0cnVlLCJQaW5vdCI6dHJ1ZSwiUG9zdGdyZVNRTCI6dHJ1ZSwiUG9zdGdyZVNRTCAodHVuZWQpIjpmYWxzZSwiUXVlc3REQiAocGFydGl0aW9uZWQpIjp0cnVlLCJRdWVzdERCIjp0cnVlLCJSZWRzaGlmdCI6dHJ1ZSwiU2VsZWN0REIiOnRydWUsIlNpbmdsZVN0b3JlIjp0cnVlLCJTbm93Zmxha2UiOnRydWUsIlNRTGl0ZSI6dHJ1ZSwiU3RhclJvY2tzIjp0cnVlLCJUaW1lc2NhbGVEQiAoY29tcHJlc3Npb24pIjp0cnVlLCJUaW1lc2NhbGVEQiI6dHJ1ZX0sInR5cGUiOnsic3RhdGVsZXNzIjpmYWxzZSwibWFuYWdlZCI6ZmFsc2UsIkphdmEiOmZhbHNlLCJjb2x1bW4tb3JpZW50ZWQiOmZhbHNlLCJDKysiOmZhbHNlLCJNeVNRTCBjb21wYXRpYmxlIjpmYWxzZSwicm93LW9yaWVudGVkIjpmYWxzZSwiQyI6ZmFsc2UsIlBvc3RncmVTUUwgY29tcGF0aWJsZSI6ZmFsc2UsIkNsaWNrSG91c2UgZGVyaXZhdGl2ZSI6ZmFsc2UsImVtYmVkZGVkIjp0cnVlLCJzZXJ2ZXJsZXNzIjpmYWxzZSwiUnVzdCI6ZmFsc2UsInNlYXJjaCI6ZmFsc2UsImRvY3VtZW50IjpmYWxzZSwidGltZS1zZXJpZXMiOmZhbHNlfSwibWFjaGluZSI6eyJzZXJ2ZXJsZXNzIjp0cnVlLCIxNmFjdSI6dHJ1ZSwiTCI6dHJ1ZSwiTSI6dHJ1ZSwiUyI6dHJ1ZSwiWFMiOnRydWUsImM2YS5tZXRhbCwgNTAwZ2IgZ3AyIjp0cnVlLCJjNmEuNHhsYXJnZSwgNTAwZ2IgZ3AyIjp0cnVlLCJjNS40eGxhcmdlLCA1MDBnYiBncDIiOnRydWUsIjE2IHRocmVhZHMiOnRydWUsIjIwIHRocmVhZHMiOnRydWUsIjI0IHRocmVhZHMiOnRydWUsIjI4IHRocmVhZHMiOnRydWUsIjMwIHRocmVhZHMiOnRydWUsIjQ4IHRocmVhZHMiOnRydWUsIjYwIHRocmVhZHMiOnRydWUsIm01ZC4yNHhsYXJnZSI6dHJ1ZSwiYzVuLjR4bGFyZ2UsIDIwMGdiIGdwMiI6dHJ1ZSwiYzZhLjR4bGFyZ2UsIDE1MDBnYiBncDIiOnRydWUsImRjMi44eGxhcmdlIjp0cnVlLCJyYTMuMTZ4bGFyZ2UiOnRydWUsInJhMy40eGxhcmdlIjp0cnVlLCJyYTMueGxwbHVzIjp0cnVlLCJTMjQiOnRydWUsIlMyIjp0cnVlLCIyWEwiOnRydWUsIjNYTCI6dHJ1ZSwiNFhMIjp0cnVlLCJYTCI6dHJ1ZX0sImNsdXN0ZXJfc2l6ZSI6eyIxIjp0cnVlLCIyIjp0cnVlLCI0Ijp0cnVlLCI4Ijp0cnVlLCIxNiI6dHJ1ZSwiMzIiOnRydWUsIjY0Ijp0cnVlLCIxMjgiOnRydWUsInNlcnZlcmxlc3MiOnRydWUsInVuZGVmaW5lZCI6dHJ1ZX0sIm1ldHJpYyI6ImhvdCIsInF1ZXJpZXMiOlt0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlXX0=)** - 総合的なパフォーマンス比較
-* **[DataFrame Processing Performance](https://colab.research.google.com/drive/1FogLujJ_-ds7RGurDrUnK-U0IW8a8Qd0)** - 他の DataFrame ライブラリとの比較検証
+* **[DataFrame 処理パフォーマンス](https://colab.research.google.com/drive/1FogLujJ_-ds7RGurDrUnK-U0IW8a8Qd0)** - 他の DataFrame ライブラリとの処理性能比較
 * **[DataFrame Benchmark](https://benchmark.clickhouse.com/#eyJzeXN0ZW0iOnsiQWxsb3lEQiI6dHJ1ZSwiQWxsb3lEQiAodHVuZWQpIjp0cnVlLCJBdGhlbmEgKHBhcnRpdGlvbmVkKSI6dHJ1ZSwiQXRoZW5hIChzaW5nbGUpIjp0cnVlLCJBdXJvcmEgZm9yIE15U1FMIjp0cnVlLCJBdXJvcmEgZm9yIFBvc3RncmVTUUwiOnRydWUsIkJ5Q29uaXR5Ijp0cnVlLCJCeXRlSG91c2UiOnRydWUsImNoREIgKERhdGFGcmFtZSkiOnRydWUsImNoREIgKFBhcnF1ZXQsIHBhcnRpdGlvbmVkKSI6dHJ1ZSwiY2hEQiI6dHJ1ZSwiQ2l0dXMiOnRydWUsIkNsaWNrSG91c2UgQ2xvdWQgKGF3cykiOnRydWUsIkNsaWNrSG91c2UgQ2xvdWQgKGF6dXJlKSI6dHJ1ZSwiQ2xpY2tIb3VzZSBDbG91ZCAoZ2NwKSI6dHJ1ZSwiQ2xpY2tIb3VzZSAoZGF0YSBsYWtlLCBwYXJ0aXRpb25lZCkiOnRydWUsIkNsaWNrSG91c2UgKGRhdGEgbGFrZSwgc2luZ2xlKSI6dHJ1ZSwiQ2xpY2tIb3VzZSAoUGFycXVldCwgcGFydGl0aW9uZWQpIjp0cnVlLCJDbGlja0hvdXNlIChQYXJxdWV0LCBzaW5nbGUpIjp0cnVlLCJDbGlja0hvdXNlICh3ZWIpIjp0cnVlLCJDbGlja0hvdXNlIjp0cnVlLCJDbGlja0hvdXNlICh0dW5lZCkiOnRydWUsIkNsaWNrSG91c2UgKHR1bmVkLCBtZW1vcnkpIjp0cnVlLCJDbG91ZGJlcnJ5Ijp0cnVlLCJDcmF0ZURCIjp0cnVlLCJDcnVuY2h5IEJyaWRnZSBmb3IgQW5hbHl0aWNzIChQYXJxdWV0KSI6dHJ1ZSwiRGF0YWJlbmQiOnRydWUsIkRhdGFGdXNpb24gKFBhcnF1ZXQsIHBhcnRpdGlvbmVkKSI6dHJ1ZSwiRGF0YUZ1c2lvbiAoUGFycXVldCwgc2luZ2xlKSI6dHJ1ZSwiQXBhY2hlIERvcmlzIjp0cnVlLCJEcnVpZCI6dHJ1ZSwiRHVja0RCIChEYXRhRnJhbWUpIjp0cnVlLCJEdWNrREIgKFBhcnF1ZXQsIHBhcnRpdGlvbmVkKSI6dHJ1ZSwiRHVja0RCIjp0cnVlLCJFbGFzdGljc2VhcmNoIjp0cnVlLCJFbGFzdGljc2VhcmNoICh0dW5lZCkiOmZhbHNlLCJHbGFyZURCIjp0cnVlLCJHcmVlbnBsdW0iOnRydWUsIkhlYXZ5QUkiOnRydWUsIkh5ZHJhIjp0cnVlLCJJbmZvYnJpZ2h0Ijp0cnVlLCJLaW5ldGljYSI6dHJ1ZSwiTWFyaWFEQiBDb2x1bW5TdG9yZSI6dHJ1ZSwiTWFyaWFEQiI6ZmFsc2UsIk1vbmV0REIiOnRydWUsIk1vbmdvREIiOnRydWUsIk1vdGhlcmR1Y2siOnRydWUsIk15U1FMIChNeUlTQU0pIjp0cnVlLCJNeVNRTCI6dHJ1ZSwiT3hsYSI6dHJ1ZSwiUGFuZGFzIChEYXRhRnJhbWUpIjp0cnVlLCJQYXJhZGVEQiAoUGFycXVldCwgcGFydGl0aW9uZWQpIjp0cnVlLCJQYXJhZGVEQiAoUGFycXVldCwgc2luZ2xlKSI6dHJ1ZSwiUGlub3QiOnRydWUsIlBvbGFycyAoRGF0YUZyYW1lKSI6dHJ1ZSwiUG9zdGdyZVNRTCAodHVuZWQpIjpmYWxzZSwiUG9zdGdyZVNRTCI6dHJ1ZSwiUXVlc3REQiAocGFydGl0aW9uZWQpIjp0cnVlLCJRdWVzdERCIjp0cnVlLCJSZWRzaGlmdCI6dHJ1ZSwiU2luZ2xlU3RvcmUiOnRydWUsIlNub3dmbGFrZSI6dHJ1ZSwiU1FMaXRlIjp0cnVlLCJTdGFyUm9ja3MiOnRydWUsIlRhYmxlc3BhY2UiOnRydWUsIlRlbWJvIE9MQVAgKGNvbHVtbmFyKSI6dHJ1ZSwiVGltZXNjYWxlREIgKGNvbXByZXNzaW9uKSI6dHJ1ZSwiVGltZXNjYWxlREIiOnRydWUsIlVtYnJhIjp0cnVlfSwidHlwZSI6eyJDIjpmYWxzZSwiY29sdW1uLW9yaWVudGVkIjpmYWxzZSwiUG9zdGdyZVNRTCBjb21wYXRpYmxlIjpmYWxzZSwibWFuYWdlZCI6ZmFsc2UsImdjcCI6ZmFsc2UsInN0YXRlbGVzcyI6ZmFsc2UsIkphdmEiOmZhbHNlLCJDKysiOmZhbHNlLCJNeVNRTCBjb21wYXRpYmxlIjpmYWxzZSwicm93LW9yaWVudGVkIjpmYWxzZSwiQ2xpY2tIb3VzZSBkZXJpdmF0aXZlIjpmYWxzZSwiZW1iZWRkZWQiOmZhbHNlLCJzZXJ2ZXJsZXNzIjpmYWxzZSwiZGF0YWZyYW1lIjp0cnVlLCJhd3MiOmZhbHNlLCJhenVyZSI6ZmFsc2UsImFuYWx5dGljYWwiOmZhbHNlLCJSdXN0IjpmYWxzZSwic2VhcmNoIjpmYWxzZSwiZG9jdW1lbnQiOmZhbHNlLCJzb21ld2hhdCBQb3N0Z3JlU1FMIGNvbXBhdGlibGUiOmZhbHNlLCJ0aW1lLXNlcmllcyI6ZmFsc2V9LCJtYWNoaW5lIjp7IjE2IHZDUFUgMTI4R0IiOnRydWUsIjggdkNQVSA2NEdCIjp0cnVlLCJzZXJ2ZXJsZXNzIjp0cnVlLCIxNmFjdSI6dHJ1ZSwiYzZhLjR4bGFyZ2UsIDUwMGdiIGdwMiI6dHJ1ZSwiTCI6dHJ1ZSwiTSI6dHJ1ZSwiUyI6dHJ1ZSwiWFMiOnRydWUsImM2YS5tZXRhbCwgNTAwZ2IgZ3AyIjp0cnVlLCIxOTJHQiI6dHJ1ZSwiMjRHQiI6dHJ1ZSwiMzYwR0IiOnRydWUsIjQ4R0IiOnRydWUsIjcyMEdCIjp0cnVlLCI5NkdCIjp0cnVlLCJkZXYiOnRydWUsIjcwOEdCIjp0cnVlLCJjNW4uNHhsYXJnZSwgNTAwZ2IgZ3AyIjp0cnVlLCJBbmFseXRpY3MtMjU2R0IgKDY0IHZDb3JlcywgMjU2IEdCKSI6dHJ1ZSwiYzUuNHhsYXJnZSwgNTAwZ2IgZ3AyIjp0cnVlLCJjNmEuNHhsYXJnZSwgMTUwMGdiIGdwMiI6dHJ1ZSwiY2xvdWQiOnRydWUsImRjMi44eGxhcmdlIjp0cnVlLCJyYTMuMTZ4bGFyZ2UiOnRydWUsInJhMy40eGxhcmdlIjp0cnVlLCJyYTMueGxwbHVzIjp0cnVlLCJTMiI6dHJ1ZSwiUzI0Ijp0cnVlLCIyWEwiOnRydWUsIjNYTCI6dHJ1ZSwiNFhMIjp0cnVlLCJYTCI6dHJ1ZSwiTDEgLSAxNkNQVSAzMkdCIjp0cnVlLCJjNmEuNHhsYXJnZSwgNTAwZ2IgZ3AzIjp0cnVlfSwiY2x1c3Rlcl9zaXplIjp7IjEiOnRydWUsIjIiOnRydWUsIjQiOnRydWUsIjgiOnRydWUsIjE2Ijp0cnVlLCIzMiI6dHJ1ZSwiNjQiOnRydWUsIjEyOCI6dHJ1ZSwic2VydmVybGVzcyI6dHJ1ZX0sIm1ldHJpYyI6ImhvdCIsInF1ZXJpZXMiOlt0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlLHRydWUsdHJ1ZSx0cnVlXX0=)**
 
 
@@ -85,15 +81,16 @@ chDBは、さまざまなシナリオで卓越したパフォーマンスを発�
 
 
 
-## chDBについて {#about-chdb}
+## chDB について {#about-chdb}
 
-- chDBプロジェクトの誕生に関する詳細は[ブログ](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)をご覧ください
-- chDBとそのユースケースについては[ブログ](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)をご覧ください
-- [chDBオンデマンドコース](https://learn.clickhouse.com/user_catalog_class/show/1901178)を受講してください
-- [codapiの例](https://antonz.org/trying-chdb/)を使用してブラウザでchDBを試すことができます
-- その他の例については(https://github.com/chdb-io/chdb/tree/main/examples)をご覧ください
+- chDB プロジェクト誕生の経緯については [ブログ記事](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle) を参照してください
+- chDB とそのユースケースについては [ブログ記事](https://clickhouse.com/blog/welcome-chdb-to-clickhouse) を参照してください
+- [chDB オンデマンドコース](https://learn.clickhouse.com/user_catalog_class/show/1901178) を受講してください
+- ブラウザ上で [codapi のサンプル](https://antonz.org/trying-chdb/) を使って chDB を試してください
+- さらに多くのサンプルについては https://github.com/chdb-io/chdb/tree/main/examples を参照してください
+
 
 
 ## ライセンス {#license}
 
-chDBはApache License, Version 2.0の下で利用可能です。詳細については[LICENSE](https://github.com/chdb-io/chdb/blob/main/LICENSE.txt)を参照してください。
+chDB は Apache License 2.0 のもとで提供されています。詳細については [LICENSE](https://github.com/chdb-io/chdb/blob/main/LICENSE.txt) を参照してください。

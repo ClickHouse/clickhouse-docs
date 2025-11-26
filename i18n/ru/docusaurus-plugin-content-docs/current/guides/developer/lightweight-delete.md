@@ -2,7 +2,7 @@
 slug: /guides/developer/lightweight-delete
 title: 'Легковесное удаление'
 keywords: ['легковесное удаление']
-description: 'Обзор механизма легковесных удалений в ClickHouse'
+description: 'Обзор механизма легковесного удаления в ClickHouse'
 doc_type: 'reference'
 ---
 

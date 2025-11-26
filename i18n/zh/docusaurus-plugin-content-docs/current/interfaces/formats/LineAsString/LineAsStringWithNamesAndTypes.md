@@ -17,10 +17,12 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似,但会打印两个标题行:一行为列名,另一行为类型。
+`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，
+但会打印两行表头：第一行是列名，第二行是类型。
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 ```sql
 CREATE TABLE example (
@@ -34,7 +36,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
-```response title="响应"
+```response title="Response"
 name    value
 String    Int32
 John    30

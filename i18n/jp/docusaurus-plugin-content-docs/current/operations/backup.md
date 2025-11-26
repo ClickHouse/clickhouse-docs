@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse データベースおよびテーブルのバックアップと復元ガイド'
+description: 'ClickHouse データベースおよびテーブルのバックアップおよび復元に関するガイド'
 sidebar_label: 'バックアップと復元'
 sidebar_position: 10
 slug: /operations/backup
@@ -9,16 +9,16 @@ doc_type: 'guide'
 
 
 
-# バックアップとリストア
+# バックアップと復元
 
 - [ローカルディスクへのバックアップ](#backup-to-a-local-disk)
-- [S3 エンドポイントを利用したバックアップ/リストアの設定](#configuring-backuprestore-to-use-an-s3-endpoint)
-- [S3 ディスクを利用したバックアップ/リストア](#backuprestore-using-an-s3-disk)
+- [S3 エンドポイントを使用したバックアップ／復元の設定](#configuring-backuprestore-to-use-an-s3-endpoint)
+- [S3 ディスクを使用したバックアップ／復元](#backuprestore-using-an-s3-disk)
 - [代替案](#alternatives)
 
 
 
-## コマンドの概要 {#command-summary}
+## コマンドの概要
 
 ```bash
  BACKUP|RESTORE
@@ -38,28 +38,29 @@ doc_type: 'guide'
 ```
 
 :::note ALL
-ClickHouseバージョン23.4より前では、`ALL`は`RESTORE`コマンドにのみ適用されます。
+バージョン 23.4 より前の ClickHouse では、`ALL` は `RESTORE` コマンドにのみ適用されていました。
 :::
 
 
 ## 背景 {#background}
 
-[レプリケーション](../engines/table-engines/mergetree-family/replication.md)はハードウェア障害からの保護を提供しますが、人為的なミスからは保護されません。データの誤削除、誤ったテーブルの削除、誤ったクラスタ上のテーブルの削除、不正なデータ処理やデータ破損を引き起こすソフトウェアのバグなどが該当します。多くの場合、このようなミスはすべてのレプリカに影響を及ぼします。ClickHouseには、いくつかの種類のミスを防ぐための組み込みの保護機能があります。例えば、デフォルトでは[50 GB以上のデータを含むMergeTree系エンジンのテーブルを単純に削除することはできません](/operations/settings/settings#max_table_size_to_drop)。しかし、これらの保護機能はすべての可能なケースをカバーしておらず、回避することも可能です。
+[レプリケーション](../engines/table-engines/mergetree-family/replication.md) はハードウェア障害からの保護を提供しますが、人為的なミスからは保護しません。たとえば、データの誤削除、誤ったテーブルや誤ったクラスタ上のテーブルの削除、不正なデータ処理やデータ破損を引き起こすソフトウェアバグなどです。多くの場合、このようなミスはすべてのレプリカに影響します。ClickHouse には、特定の種類のミスを防ぐための組み込みの安全機構があります。たとえばデフォルトでは、[50 GB を超えるデータを含む MergeTree 系エンジンのテーブルを、そのまま DROP することはできません](/operations/settings/settings#max_table_size_to_drop)。しかし、これらの安全機構はあらゆるケースを網羅しているわけではなく、回避されてしまう可能性もあります。
 
-人為的なミスの可能性を効果的に軽減するためには、データのバックアップと復元の戦略を**事前に**慎重に準備する必要があります。
+起こり得る人為的なミスの影響を効果的に軽減するためには、**事前に** データのバックアップおよび復元戦略を慎重に準備しておく必要があります。
 
-各企業には利用可能なリソースやビジネス要件が異なるため、あらゆる状況に適合するClickHouseのバックアップと復元の万能な解決策は存在しません。1ギガバイトのデータに有効な方法は、数十ペタバイトには適さない可能性があります。それぞれに長所と短所を持つさまざまなアプローチが存在し、以下で説明します。さまざまな欠点を補うために、1つだけでなく複数のアプローチを使用することが推奨されます。
+各社で利用可能なリソースやビジネス要件は異なるため、あらゆる状況に適合するような ClickHouse のバックアップおよび復元の汎用的な解決策は存在しません。1 GB のデータで有効な方法が、数十 PB のデータでも有効とは限りません。長所と短所を併せ持つさまざまなアプローチが存在し、それらについては後述します。個々の欠点を補うために、1 つのアプローチだけではなく、複数のアプローチを併用することが望ましいです。
 
 :::note
-バックアップを取得しても復元を試したことがない場合、実際に必要になったときに復元が正常に機能しない可能性が高い(または少なくともビジネスが許容できる時間よりも長くかかる)ことを念頭に置いてください。したがって、どのバックアップアプローチを選択する場合でも、復元プロセスも自動化し、予備のClickHouseクラスタで定期的に実践するようにしてください。
+バックアップを取得しただけで一度も復元を試していない場合、いざというときに復元が正しく動作しない（少なくとも、ビジネスが許容できるよりも長い時間がかかる）可能性が高いことを忘れないでください。どのようなバックアップ手法を選択するにせよ、復元プロセスも必ず自動化し、予備の ClickHouse クラスタで定期的に復元演習を行ってください。
 :::
 
 
-## ローカルディスクへのバックアップ {#backup-to-a-local-disk}
 
-### バックアップ先の設定 {#configure-a-backup-destination}
+## ローカルディスクへのバックアップ
 
-以下の例では、バックアップ先が`Disk('backups', '1.zip')`のように指定されています。バックアップ先を準備するには、`/etc/clickhouse-server/config.d/backup_disk.xml`にファイルを追加してバックアップ先を指定します。例えば、このファイルは`backups`という名前のディスクを定義し、そのディスクを**backups > allowed_disk**リストに追加します:
+### バックアップ先の設定
+
+以下の例では、バックアップ先は `Disk('backups', '1.zip')` のように指定されます。バックアップ先を準備するには、バックアップ先を指定したファイルを `/etc/clickhouse-server/config.d/backup_disk.xml` に追加します。例えば、このファイルでは `backups` という名前のディスクを定義し、そのディスクを **backups &gt; allowed&#95;disk** リストに追加します。
 
 ```xml
 <clickhouse>
@@ -81,45 +82,45 @@ ClickHouseバージョン23.4より前では、`ALL`は`RESTORE`コマンドに�
 </clickhouse>
 ```
 
-### パラメータ {#parameters}
+### パラメーター
 
-バックアップは完全バックアップまたは増分バックアップのいずれかで、テーブル(マテリアライズドビュー、プロジェクション、ディクショナリを含む)とデータベースを含めることができます。バックアップは同期(デフォルト)または非同期で実行できます。圧縮することも可能です。バックアップはパスワードで保護することができます。
+バックアップはフルバックアップまたは増分バックアップとし、テーブル（マテリアライズドビュー、プロジェクション、ディクショナリを含む）やデータベースを対象にできます。バックアップは同期（デフォルト）または非同期で実行できます。圧縮することも可能で、パスワード保護を設定できます。
 
-BACKUPおよびRESTORE文は、DATABASEとTABLEの名前のリスト、宛先(または復元元)、オプション、設定を受け取ります:
+`BACKUP` および `RESTORE` ステートメントは、`DATABASE` および `TABLE` 名のリスト、宛先（またはソース）、オプション、および設定を受け取ります。
 
-- バックアップの宛先、または復元の復元元。これは先に定義したディスクに基づきます。例: `Disk('backups', 'filename.zip')`
-- ASYNC: バックアップまたは復元を非同期で実行
-- PARTITIONS: 復元するパーティションのリスト
-- SETTINGS:
-  - `id`: バックアップまたは復元操作の識別子。未設定または空の場合、ランダムに生成されたUUIDが使用されます。
-    空でない文字列に明示的に設定する場合は、毎回異なる値にする必要があります。この`id`は、特定のバックアップまたは復元操作に関連する`system.backups`テーブルの行を検索するために使用されます。
-  - [`compression_method`](/sql-reference/statements/create/table#column_compression_codec)とcompression_level
-  - ディスク上のファイルの`password`
-  - `base_backup`: この復元元の以前のバックアップの宛先。例: `Disk('backups', '1.zip')`
-  - `use_same_s3_credentials_for_base_backup`: S3へのベースバックアップがクエリから認証情報を継承するかどうか。`S3`でのみ動作します。
-  - `use_same_password_for_base_backup`: ベースバックアップアーカイブがクエリからパスワードを継承するかどうか。
-  - `structure_only`: 有効にすると、テーブルのデータなしでCREATE文のみをバックアップまたは復元できます
-  - `storage_policy`: 復元されるテーブルのストレージポリシー。[データストレージに複数のブロックデバイスを使用する](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes)を参照してください。この設定は`RESTORE`コマンドにのみ適用されます。指定されたストレージポリシーは、`MergeTree`ファミリーのエンジンを持つテーブルにのみ適用されます。
-  - `s3_storage_class`: S3バックアップに使用されるストレージクラス。例: `STANDARD`
-  - `azure_attempt_to_create_container`: Azure Blob Storageを使用する場合、指定されたコンテナが存在しない場合に作成を試みるかどうか。デフォルト: true。
-  - [コア設定](/operations/settings/settings)もここで使用できます
+* バックアップの宛先、またはリストアのソースです。これは前に定義したディスクに基づきます。例: `Disk('backups', 'filename.zip')`
+* ASYNC: バックアップまたはリストアを非同期で実行
+* PARTITIONS: リストアするパーティションのリスト
+* SETTINGS:
+  * `id`: バックアップまたはリストア処理の識別子。設定されていないか空の場合は、ランダムに生成された UUID が使用されます。
+    明示的に空でない文字列に設定する場合は、毎回異なる値にする必要があります。この `id` は、特定のバックアップまたはリストア処理に関連する `system.backups` テーブル内の行を検索するために使用されます。
+  * [`compression_method`](/sql-reference/statements/create/table#column_compression_codec) と `compression_level`
+  * ディスク上のファイルに対する `password`
+  * `base_backup`: このソースの前回のバックアップの宛先。例: `Disk('backups', '1.zip')`
+  * `use_same_s3_credentials_for_base_backup`: S3 へのベースバックアップがクエリで使用されている認証情報を継承するかどうか。`S3` でのみ動作します。
+  * `use_same_password_for_base_backup`: ベースバックアップアーカイブがクエリからパスワードを継承するかどうか。
+  * `structure_only`: 有効にすると、テーブルデータなしで `CREATE` ステートメントのみをバックアップまたはリストアできます。
+  * `storage_policy`: リストアされるテーブルに対するストレージポリシー。[複数のブロックデバイスを使用したデータストレージ](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) を参照してください。この設定は `RESTORE` コマンドにのみ適用されます。指定されたストレージポリシーは、`MergeTree` ファミリーのエンジンを持つテーブルにのみ適用されます。
+  * `s3_storage_class`: S3 バックアップに使用されるストレージクラス。例: `STANDARD`
+  * `azure_attempt_to_create_container`: Azure Blob Storage を使用する場合、指定されたコンテナーが存在しないときに作成を試みるかどうか。デフォルト: true。
+  * [コア設定](/operations/settings/settings) もここで使用できます
 
-### 使用例 {#usage-examples}
+### 使用例
 
-テーブルをバックアップして復元する:
+テーブルをバックアップしてからリストアする例:
 
 ```sql
 BACKUP TABLE test.table TO Disk('backups', '1.zip')
 ```
 
-対応する復元:
+対応するリストア：
 
 ```sql
 RESTORE TABLE test.table FROM Disk('backups', '1.zip')
 ```
 
 :::note
-テーブル`test.table`にデータが含まれている場合、上記のRESTOREは失敗します。RESTOREをテストするにはテーブルを削除するか、設定`allow_non_empty_tables=true`を使用する必要があります:
+上記の RESTORE は、テーブル `test.table` にデータが含まれている場合は失敗します。RESTORE をテストする場合は、テーブルを削除するか、設定 `allow_non_empty_tables=true` を有効にする必要があります。
 
 ```sql
 RESTORE TABLE test.table FROM Disk('backups', '1.zip')
@@ -128,7 +129,7 @@ SETTINGS allow_non_empty_tables=true
 
 :::
 
-テーブルは新しい名前で復元またはバックアップできます:
+テーブルは、新しい名前を指定してリストアしたりバックアップを作成したりできます。
 
 ```sql
 RESTORE TABLE test.table AS test.table2 FROM Disk('backups', '1.zip')
@@ -138,31 +139,31 @@ RESTORE TABLE test.table AS test.table2 FROM Disk('backups', '1.zip')
 BACKUP TABLE test.table3 AS test.table4 TO Disk('backups', '2.zip')
 ```
 
-### 増分バックアップ {#incremental-backups}
+### 増分バックアップ
 
-増分バックアップは`base_backup`を指定することで取得できます。
+`base_backup` を指定すると、増分バックアップを作成できます。
 :::note
-増分バックアップはベースバックアップに依存します。増分バックアップから復元できるようにするには、ベースバックアップを利用可能な状態に保つ必要があります。
+増分バックアップはベースバックアップに依存します。増分バックアップからリストアできるようにするには、ベースバックアップを利用可能な状態で保持しておく必要があります。
 :::
 
 
-新しいデータを増分保存します。`base_backup`設定により、`Disk('backups', 'd.zip')`への以前のバックアップ以降のデータが`Disk('backups', 'incremental-a.zip')`に保存されます:
+新しいデータを増分的に保存します。設定 `base_backup` により、以前のバックアップ `Disk('backups', 'd.zip')` 以降に追加されたデータが `Disk('backups', 'incremental-a.zip')` に保存されます。
 
 ```sql
 BACKUP TABLE test.table TO Disk('backups', 'incremental-a.zip')
   SETTINGS base_backup = Disk('backups', 'd.zip')
 ```
 
-増分バックアップとbase_backupからすべてのデータを新しいテーブル`test.table2`に復元します:
+インクリメンタルバックアップと `base_backup` からすべてのデータを、新しいテーブル `test.table2` に復元します：
 
 ```sql
 RESTORE TABLE test.table AS test.table2
   FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### バックアップにパスワードを設定する {#assign-a-password-to-the-backup}
+### バックアップにパスワードを設定する
 
-ディスクに書き込まれるバックアップファイルにはパスワードを設定できます:
+ディスクに書き込まれるバックアップファイルには、パスワードを設定できます。
 
 ```sql
 BACKUP TABLE test.table
@@ -170,7 +171,7 @@ BACKUP TABLE test.table
   SETTINGS password='qwerty'
 ```
 
-復元:
+復元：
 
 ```sql
 RESTORE TABLE test.table
@@ -178,9 +179,9 @@ RESTORE TABLE test.table
   SETTINGS password='qwerty'
 ```
 
-### 圧縮設定 {#compression-settings}
+### 圧縮設定
 
-圧縮方式またはレベルを指定する場合:
+圧縮方式や圧縮レベルを指定したい場合は、次のように設定します。
 
 ```sql
 BACKUP TABLE test.table
@@ -188,42 +189,42 @@ BACKUP TABLE test.table
   SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### 特定のパーティションを復元する {#restore-specific-partitions}
+### 特定のパーティションを復元する
 
-テーブルに関連付けられた特定のパーティションを復元する必要がある場合、それらを指定できます。バックアップからパーティション1と4を復元するには:
+テーブルに関連付けられた特定のパーティションのみを復元する必要がある場合は、それらを指定できます。バックアップからパーティション 1 と 4 を復元するには：
 
 ```sql
 RESTORE TABLE test.table PARTITIONS '2', '3'
   FROM Disk('backups', 'filename.zip')
 ```
 
-### tarアーカイブとしてのバックアップ {#backups-as-tar-archives}
+### tar アーカイブとしてのバックアップ
 
-バックアップはtarアーカイブとして保存することもできます。機能はzipと同じですが、パスワードはサポートされていません。
+バックアップは tar アーカイブとして保存することもできます。パスワードがサポートされていない点を除き、機能は zip の場合と同じです。
 
-tarとしてバックアップを書き込む:
+バックアップを tar 形式で作成します:
 
 ```sql
 BACKUP TABLE test.table TO Disk('backups', '1.tar')
 ```
 
-対応する復元:
+対応するリストア：
 
 ```sql
 RESTORE TABLE test.table FROM Disk('backups', '1.tar')
 ```
 
-圧縮方式を変更するには、バックアップ名に適切なファイル拡張子を追加する必要があります。例えば、gzipを使用してtarアーカイブを圧縮するには:
+圧縮方式を変更するには、バックアップ名に適切なファイル拡張子を付ける必要があります。例えば、tar アーカイブを gzip で圧縮するには次のようにします。
 
 ```sql
 BACKUP TABLE test.table TO Disk('backups', '1.tar.gz')
 ```
 
-サポートされている圧縮ファイル拡張子は`tar.gz`、`.tgz`、`tar.bz2`、`tar.lzma`、`.tar.zst`、`.tzst`、`.tar.xz`です。
+サポートされている圧縮ファイルの拡張子は、`tar.gz`、`.tgz`、`tar.bz2`、`tar.lzma`、`.tar.zst`、`.tzst`、`.tar.xz` です。
 
-### バックアップのステータスを確認する {#check-the-status-of-backups}
+### バックアップのステータスを確認する
 
-バックアップコマンドは`id`と`status`を返し、その`id`を使用してバックアップのステータスを取得できます。これは長時間実行されるASYNCバックアップの進行状況を確認するのに非常に便利です。以下の例は、既存のバックアップファイルを上書きしようとしたときに発生した失敗を示しています:
+バックアップコマンドは `id` と `status` を返し、その `id` を使ってバックアップのステータスを取得できます。これは、時間のかかる ASYNC バックアップの進行状況を確認するのに非常に便利です。以下の例は、既存のバックアップファイルを上書きしようとしたときに発生した失敗を示しています。
 
 ```sql
 BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
@@ -234,7 +235,7 @@ BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
 │ 7678b0b3-f519-4e6e-811f-5a0781a4eb52 │ CREATING_BACKUP │
 └──────────────────────────────────────┴─────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+1行が返されました。経過時間: 0.001秒
 ```
 
 ```sql
@@ -246,7 +247,7 @@ FORMAT Vertical
 ```
 
 ```response
-Row 1:
+行 1:
 ──────
 id:                7678b0b3-f519-4e6e-811f-5a0781a4eb52
 name:              Disk('backups', '1.zip')
@@ -260,11 +261,11 @@ error:             Code: 598. DB::Exception: Backup Disk('backups', '1.zip') alr
 start_time:        2022-08-30 09:21:46
 end_time:          2022-08-30 09:21:46
 
-1 row in set. Elapsed: 0.002 sec.
+1行のセット。経過時間: 0.002秒
 ```
 
 
-`system.backups` テーブルに加えて、すべてのバックアップおよびリストアの操作は、システムログテーブルである [backup&#95;log](../operations/system-tables/backup_log.md) にも記録されます。
+`system.backups` テーブルに加えて、すべてのバックアップおよびリストア操作は、システムログテーブル [backup&#95;log](../operations/system-tables/backup_log.md) にも記録されます。
 
 ```sql
 SELECT *
@@ -316,25 +317,25 @@ bytes_read:              0
 ```
 
 
-## S3エンドポイントを使用するBACKUP/RESTOREの設定 {#configuring-backuprestore-to-use-an-s3-endpoint}
+## S3 エンドポイントを使用するように BACKUP/RESTORE を構成する
 
-S3バケットにバックアップを書き込むには、次の3つの情報が必要です:
+バックアップを S3 バケットに書き込むには、次の 3 つの情報が必要です。
 
-- S3エンドポイント
+* S3 エンドポイント\
   例: `https://mars-doc-test.s3.amazonaws.com/backup-S3/`
-- アクセスキーID
+* アクセスキー ID\
   例: `ABC123`
-- シークレットアクセスキー
+* シークレットアクセスキー\
   例: `Abc+123`
 
 :::note
-S3バケットの作成については、[ClickHouseディスクとしてS3オブジェクトストレージを使用する](/integrations/data-ingestion/s3/index.md#configuring-s3-for-clickhouse-use)を参照してください。ポリシーを保存した後、このドキュメントに戻ってください。S3バケットを使用するためにClickHouseを設定する必要はありません。
+S3 バケットの作成手順については、[Use S3 Object Storage as a ClickHouse disk](/integrations/data-ingestion/s3/index.md#configuring-s3-for-clickhouse-use) で説明しています。ポリシーを保存したらこのドキュメントに戻ってください。S3 バケットを使用するように ClickHouse を設定する必要はありません。
 :::
 
-バックアップの保存先は次のように指定します:
+バックアップの保存先は次のように指定します。
 
 ```sql
-S3('<S3 endpoint>/<directory>', '<Access key ID>', '<Secret access key>')
+S3('<S3エンドポイント>/<ディレクトリ>', '<アクセスキーID>', '<シークレットアクセスキー>')
 ```
 
 ```sql
@@ -354,9 +355,9 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 1000
 ```
 
-### ベース(初期)バックアップの作成 {#create-a-base-initial-backup}
+### ベース（初期）バックアップを作成する
 
-増分バックアップには、開始点となる_ベース_バックアップが必要です。この例は後でベースバックアップとして使用されます。S3保存先の最初のパラメータはS3エンドポイントで、その後にこのバックアップに使用するバケット内のディレクトリが続きます。この例では、ディレクトリ名は`my_backup`です。
+増分バックアップを実行するには、開始点となる *ベース* バックアップが必要です。この例では、後でベースバックアップとして使用します。S3 の宛先の最初のパラメーターは S3 エンドポイントであり、その後に、このバックアップで使用するバケット内のディレクトリを指定します。この例では、ディレクトリ名は `my_backup` です。
 
 ```sql
 BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_backup', 'ABC123', 'Abc+123')
@@ -368,9 +369,9 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_bac
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### データの追加 {#add-more-data}
+### データをさらに追加する
 
-増分バックアップには、ベースバックアップとバックアップ対象テーブルの現在の内容との差分が格納されます。増分バックアップを取得する前に、さらにデータを追加します:
+増分バックアップには、ベースバックアップとバックアップ対象テーブルの現在の内容との差分が格納されます。増分バックアップを作成する前に、テーブルにデータを追加します。
 
 ```sql
 INSERT INTO data SELECT *
@@ -378,9 +379,9 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 100
 ```
 
-### 増分バックアップの取得 {#take-an-incremental-backup}
+### 増分バックアップを作成する
 
-このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup`とベースバックアップの場所が追加されています。増分バックアップの保存先はベースと同じディレクトリではなく、同じエンドポイントでバケット内の異なるターゲットディレクトリであることに注意してください。ベースバックアップは`my_backup`にあり、増分は`my_incremental`に書き込まれます:
+このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup` とベースバックアップの場所を指定する点が異なります。増分バックアップの保存先はベースバックアップと同じディレクトリではなく、同じエンドポイント上のバケット内にある別のターゲットディレクトリであることに注意してください。ベースバックアップは `my_backup` にあり、増分バックアップは `my_incremental` に書き込まれます。
 
 ```sql
 BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_incremental', 'ABC123', 'Abc+123') SETTINGS base_backup = S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_backup', 'ABC123', 'Abc+123')
@@ -392,9 +393,9 @@ BACKUP TABLE data TO S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_inc
 └──────────────────────────────────────┴────────────────┘
 ```
 
-### 増分バックアップからの復元 {#restore-from-the-incremental-backup}
+### 増分バックアップからのリストア
 
-このコマンドは、増分バックアップを新しいテーブル`data3`に復元します。増分バックアップを復元する際、ベースバックアップも含まれることに注意してください。復元時には増分バックアップのみを指定します:
+このコマンドは、増分バックアップを新しいテーブル `data3` にリストアします。増分バックアップをリストアする場合、ベースバックアップも合わせて含まれることに注意してください。リストア時には、増分バックアップのみを指定してください。
 
 ```sql
 RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/backup-S3/my_incremental', 'ABC123', 'Abc+123')
@@ -406,10 +407,10 @@ RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/back
 └──────────────────────────────────────┴──────────┘
 ```
 
-### カウントの確認 {#verify-the-count}
+### 件数を確認する
 
 
-元のテーブル `data` には 2 回の挿入が行われており、1 回は 1,000 行、もう 1 回は 100 行で、合計 1,100 行です。復元されたテーブルにも 1,100 行があることを確認します。
+元のテーブル `data` には、1,000 行の挿入と 100 行の挿入の 2 回の INSERT が行われており、合計で 1,100 行になっています。復元されたテーブルに 1,100 行あることを確認します。
 
 ```sql
 SELECT count()
@@ -423,9 +424,9 @@ FROM data3
 ```
 
 
-### コンテンツの検証 {#verify-the-content}
+### 内容を検証する
 
-元のテーブル `data` の内容と復元されたテーブル `data3` の内容を比較します：
+ここでは、元のテーブル `data` の内容を、復元したテーブル `data3` と比較します。
 
 ```sql
 SELECT throwIf((
@@ -434,12 +435,12 @@ SELECT throwIf((
     ) != (
         SELECT groupArray(tuple(*))
         FROM data3
-    ), 'Data does not match after BACKUP/RESTORE')
+    ), 'BACKUP/RESTORE後にデータが一致しません')
 ```
 
-## S3ディスクを使用したBACKUP/RESTORE {#backuprestore-using-an-s3-disk}
+## S3 ディスクを使用した BACKUP/RESTORE
 
-ClickHouseストレージ設定でS3ディスクを構成することで、S3への`BACKUP`/`RESTORE`も可能です。`/etc/clickhouse-server/config.d`にファイルを追加して、次のようにディスクを構成します：
+ClickHouse のストレージ設定で S3 ディスクを設定することで、`BACKUP`/`RESTORE` を S3 を対象として実行することもできます。`/etc/clickhouse-server/config.d` にファイルを追加して、次のようにディスクを設定します。
 
 ```xml
 <clickhouse>
@@ -469,7 +470,7 @@ ClickHouseストレージ設定でS3ディスクを構成することで、S3へ
 </clickhouse>
 ```
 
-その後、通常通り`BACKUP`/`RESTORE`を実行します：
+あとは通常どおり `BACKUP`/`RESTORE` を行います。
 
 ```sql
 BACKUP TABLE data TO Disk('s3_plain', 'cloud_backup');
@@ -477,45 +478,47 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 ```
 
 :::note
-ただし、以下の点に留意してください：
+ただし、次の点に注意してください。
 
-- このディスクは`MergeTree`自体には使用せず、`BACKUP`/`RESTORE`のみに使用してください
-- テーブルがS3ストレージを使用している場合、その認証情報を使用して`CopyObject`呼び出しによるS3サーバー側コピーでパーツを宛先バケットにコピーしようとします。認証エラーが発生した場合、バッファを使用したコピー方式（パーツをダウンロードしてアップロードする）にフォールバックしますが、これは非常に非効率的です。この場合、宛先バケットの認証情報でソースバケットに対する`read`権限があることを確認することを推奨します。
+* このディスクは `MergeTree` 自体には使用せず、`BACKUP`/`RESTORE` のみに使用してください
+* テーブルが S3 ストレージをバックエンドとしている場合、パーツを宛先バケットにコピーする際には、宛先側のクレデンシャルを用いて、`CopyObject` 呼び出しによる S3 のサーバーサイドコピーを試行します。認証エラーが発生した場合は、パーツを一度ダウンロードしてからアップロードするバッファ経由のコピー方式にフォールバックしますが、これは非常に非効率です。この場合、宛先バケットのクレデンシャルに、ソースバケットに対する `read` 権限が付与されていることを確認してください。
   :::
 
 
 ## 名前付きコレクションの使用 {#using-named-collections}
 
-名前付きコレクションは`BACKUP/RESTORE`パラメータで使用できます。例については[こちら](./named-collections.md#named-collections-for-backups)を参照してください。
+名前付きコレクションは `BACKUP/RESTORE` のパラメータとして使用できます。例については [こちら](./named-collections.md#named-collections-for-backups) を参照してください。
 
 
-## 代替手段 {#alternatives}
 
-ClickHouseはディスク上にデータを保存しており、ディスクをバックアップする方法は多数存在します。以下は過去に使用されてきた代替手段であり、お使いの環境に適している可能性があります。
+## 代替案 {#alternatives}
+
+ClickHouse はデータをディスク上に保存しますが、ディスクをバックアップする方法は多数あります。以下はこれまでに利用されてきた代替手段の一部であり、お使いの環境にも適合する可能性があります。
 
 ### ソースデータを別の場所に複製する {#duplicating-source-data-somewhere-else}
 
-ClickHouseに取り込まれるデータは、[Apache Kafka](https://kafka.apache.org)のような永続的なキューを通じて配信されることがよくあります。この場合、ClickHouseへの書き込みと同時に同じデータストリームを読み取り、別の場所のコールドストレージに保存する追加のサブスクライバーセットを構成することが可能です。ほとんどの企業は、オブジェクトストアや[HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)のような分散ファイルシステムなど、デフォルトで推奨されるコールドストレージを既に保有しています。
+ClickHouse に取り込まれるデータは、多くの場合、[Apache Kafka](https://kafka.apache.org) のような永続的なキューを通じて配信されます。この場合、ClickHouse に書き込まれているのと同じデータストリームを読み取り、どこかのコールドストレージに保存するための追加のサブスクライバーセットを構成することができます。ほとんどの企業には、オブジェクトストアや [HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) のような分散ファイルシステムといった、推奨される標準的なコールドストレージが既に存在します。
 
 ### ファイルシステムスナップショット {#filesystem-snapshots}
 
-一部のローカルファイルシステムはスナップショット機能を提供していますが(例:[ZFS](https://en.wikipedia.org/wiki/ZFS))、ライブクエリの処理には最適な選択肢ではない可能性があります。考えられる解決策は、この種のファイルシステムで追加のレプリカを作成し、`SELECT`クエリに使用される[Distributed](../engines/table-engines/special/distributed.md)テーブルからそれらを除外することです。このようなレプリカ上のスナップショットは、データを変更するクエリの影響を受けません。さらに、これらのレプリカはサーバーあたりより多くのディスクが接続された特別なハードウェア構成を持つ可能性があり、コスト効率が高くなります。
+一部のローカルファイルシステムはスナップショット機能を提供します（たとえば [ZFS](https://en.wikipedia.org/wiki/ZFS)）。しかし、それらはライブクエリを処理する用途には最適とは限りません。考えられる解決策としては、この種のファイルシステムを用いた追加レプリカを作成し、`SELECT` クエリに使用される [Distributed](../engines/table-engines/special/distributed.md) テーブルからそれらを除外する方法があります。このようなレプリカ上のスナップショットは、データを変更するクエリの影響を受けません。さらに、これらのレプリカは 1 サーバーあたりより多くのディスクを接続した特別なハードウェア構成にでき、コスト効率を高められます。
 
-データ量が少ない場合は、リモートテーブルへのシンプルな`INSERT INTO ... SELECT ...`も有効です。
+データ量が小さい場合には、リモートテーブルへの単純な `INSERT INTO ... SELECT ...` でも有効な場合があります。
 
 ### パーツの操作 {#manipulations-with-parts}
 
-ClickHouseでは、`ALTER TABLE ... FREEZE PARTITION ...`クエリを使用してテーブルパーティションのローカルコピーを作成できます。これは`/var/lib/clickhouse/shadow/`フォルダへのハードリンクを使用して実装されているため、通常は古いデータに対して追加のディスク容量を消費しません。作成されたファイルのコピーはClickHouseサーバーによって管理されないため、そのまま残しておくことができます。これにより、追加の外部システムを必要としないシンプルなバックアップが得られますが、ハードウェア障害の影響を受けやすい状態は残ります。このため、別の場所にリモートコピーしてからローカルコピーを削除する方が望ましいです。分散ファイルシステムやオブジェクトストアは依然として良い選択肢ですが、十分な容量を持つ通常の接続ファイルサーバーでも機能する可能性があります(この場合、転送はネットワークファイルシステムまたは[rsync](https://en.wikipedia.org/wiki/Rsync)を介して行われます)。
-バックアップからのデータ復元は、`ALTER TABLE ... ATTACH PARTITION ...`を使用して行うことができます。
+ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用してテーブルパーティションのローカルコピーを作成できます。これは `/var/lib/clickhouse/shadow/` フォルダへのハードリンクを使って実装されているため、通常は古いデータに対して追加のディスク容量を消費しません。作成されたファイルのコピーは ClickHouse サーバーによっては扱われないため、そのまま残しておくこともできます。これにより、追加の外部システムを必要としない単純なバックアップが得られますが、それでもハードウェア障害の影響は受けます。このため、別の場所にリモートコピーを行い、その後ローカルコピーを削除する方が望ましいです。この用途には分散ファイルシステムやオブジェクトストアが引き続き有効な選択肢ですが、十分な容量を持つ通常の接続ファイルサーバーも利用可能です（この場合、転送はネットワークファイルシステム経由、または [rsync](https://en.wikipedia.org/wiki/Rsync) によって行われる可能性があります）。  
+バックアップからのデータ復元は `ALTER TABLE ... ATTACH PARTITION ...` を用いて実行できます。
 
-パーティション操作に関連するクエリの詳細については、[ALTERドキュメント](/sql-reference/statements/alter/partition)を参照してください。
+パーティション操作に関連するクエリの詳細については、[ALTER のドキュメント](/sql-reference/statements/alter/partition)を参照してください。
 
-このアプローチを自動化するサードパーティツールが利用可能です:[clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
+このアプローチを自動化するためのサードパーティーツールが利用可能です: [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
 
 
-## 同時バックアップ/リストアを無効化する設定 {#settings-to-disallow-concurrent-backuprestore}
 
-同時バックアップ/リストアを無効化するには、以下の設定をそれぞれ使用します。
+## バックアップとリストアの並行実行を禁止するための設定
+
+バックアップとリストアの並行実行を禁止するには、それぞれ次の設定を使用します。
 
 ```xml
 <clickhouse>
@@ -526,21 +529,21 @@ ClickHouseでは、`ALTER TABLE ... FREEZE PARTITION ...`クエリを使用し�
 </clickhouse>
 ```
 
-両方のデフォルト値は true であるため、デフォルトでは同時バックアップ/リストアが許可されています。
-クラスタでこれらの設定が false の場合、クラスタ上で同時に実行できるバックアップ/リストアは1つのみとなります。
+両方のデフォルト値は true なので、デフォルトではバックアップ／リストアの並行実行が許可されています。
+これらの設定がクラスターで false に設定されている場合、そのクラスター上で同時に実行できるバックアップ／リストアは 1 つだけになります。
 
 
-## AzureBlobStorageエンドポイントを使用したBACKUP/RESTOREの設定 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
+## AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する
 
-AzureBlobStorageコンテナにバックアップを書き込むには、以下の情報が必要です:
+バックアップを書き込む AzureBlobStorage コンテナには、以下の情報が必要です。
 
-- AzureBlobStorageエンドポイントの接続文字列またはURL
-- コンテナ
-- パス
-- アカウント名(URLを指定する場合)
-- アカウントキー(URLを指定する場合)
+* AzureBlobStorage エンドポイントの接続文字列 / URL
+* コンテナ
+* パス
+* アカウント名（URL が指定されている場合）
+* アカウント キー（URL が指定されている場合）
 
-バックアップの保存先は次のように指定します:
+バックアップの保存先は次のように指定します。
 
 ```sql
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
@@ -556,16 +559,16 @@ RESTORE TABLE data AS data_restored FROM AzureBlobStorage('DefaultEndpointsProto
 
 ## システムテーブルのバックアップ {#backup-up-system-tables}
 
-システムテーブルもバックアップおよびリストアのワークフローに含めることができますが、含めるかどうかは特定のユースケースによって異なります。
+システムテーブルもバックアップおよびリストアのワークフローに含めることができますが、含めるかどうかはユースケースによって異なります。
 
 ### ログテーブルのバックアップ {#backing-up-log-tables}
 
-履歴データを保存するシステムテーブル、例えば \_log 接尾辞を持つテーブル(例:`query_log`、`part_log`)は、他のテーブルと同様にバックアップおよびリストアできます。履歴データの分析に依存するユースケース、例えばquery_logを使用してクエリパフォーマンスを追跡したり問題をデバッグしたりする場合は、これらのテーブルをバックアップ戦略に含めることを推奨します。ただし、これらのテーブルの履歴データが不要な場合は、バックアップストレージ容量を節約するために除外できます。
+`query_log` や `part_log` のように、`_log` サフィックスを持ち履歴データを保存するシステムテーブルは、他のテーブルと同様にバックアップおよびリストアできます。ユースケースとして履歴データの分析に依存している場合、たとえば `query_log` を使ってクエリパフォーマンスを追跡したり、問題のデバッグに利用したりしている場合には、これらのテーブルをバックアップ戦略に含めることを推奨します。一方で、これらのテーブルの履歴データが不要な場合は、バックアップストレージ容量を節約するために除外できます。
 
 ### アクセス管理テーブルのバックアップ {#backing-up-access-management-tables}
 
-アクセス管理に関連するシステムテーブル、例えばusers、roles、row_policies、settings_profiles、quotasは、バックアップおよびリストア操作において特別な扱いを受けます。これらのテーブルがバックアップに含まれる場合、その内容は特別な`accessXX.txt`ファイルにエクスポートされ、アクセスエンティティを作成および設定するための同等のSQL文がカプセル化されます。リストア時には、リストアプロセスがこれらのファイルを解釈し、SQLコマンドを再適用してユーザー、ロール、その他の設定を再作成します。
+`users`、`roles`、`row_policies`、`settings_profiles`、`quotas` など、アクセス管理に関連するシステムテーブルは、バックアップおよびリストア処理の際に特別な扱いを受けます。これらのテーブルがバックアップに含まれている場合、その内容は特別な `accessXX.txt` ファイルにエクスポートされます。このファイルには、アクセスエンティティを作成および構成するための同等の SQL ステートメントが格納されます。リストア時には、リストア処理がこれらのファイルを解釈し、ユーザー、ロール、およびその他の設定を再作成するための SQL コマンドが再適用されます。
 
-この機能により、ClickHouseクラスタのアクセス制御設定をクラスタ全体のセットアップの一部としてバックアップおよびリストアできます。
+この機能により、ClickHouse クラスターのアクセス制御構成を、クラスター全体のセットアップの一部としてバックアップおよびリストアできます。
 
-注意:この機能は、SQLコマンドを通じて管理される設定(["SQLベースのアクセス制御とアカウント管理"](/operations/access-rights#enabling-access-control)と呼ばれる)に対してのみ機能します。ClickHouseサーバー設定ファイル(例:`users.xml`)で定義されたアクセス設定は、バックアップに含まれず、この方法ではリストアできません。
+Note: この機能は、SQL コマンドによって管理される構成（["SQL-driven Access Control and Account Management"](/operations/access-rights#enabling-access-control) と呼ばれます）に対してのみ動作します。ClickHouse サーバーの設定ファイル（例: `users.xml`）で定義されたアクセス構成はバックアップに含まれず、この方法でリストアすることはできません。

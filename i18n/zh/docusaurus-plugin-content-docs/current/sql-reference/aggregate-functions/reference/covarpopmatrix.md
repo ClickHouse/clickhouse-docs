@@ -1,5 +1,5 @@
 ---
-description: '返回 N 个变量的总体协方差矩阵。'
+description: '返回 N 个变量之间的总体协方差矩阵。'
 sidebar_position: 122
 slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
 title: 'covarPopMatrix'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # covarPopMatrix
 
-返回 N 个变量的总体协方差矩阵。
+返回基于 N 个变量计算得到的总体协方差矩阵。
 
 **语法**
 
@@ -18,7 +18,7 @@ covarPopMatrix(x[, ...])
 
 **参数**
 
-* `x` — 可变数量的参数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 一组可变数量的参数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 

@@ -6,13 +6,12 @@ sidebar_position: 4
 description: 'NestJS SDK для ClickStack — стек наблюдаемости ClickHouse'
 title: 'NestJS'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
+keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
 ---
 
-Интеграция ClickStack для NestJS позволяет создать логгер или использовать логгер по умолчанию
-для отправки логов в ClickStack (на базе [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
+Интеграция NestJS с ClickStack позволяет создать логгер или использовать логгер по умолчанию для отправки логов в ClickStack (на базе [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
 
-**Это руководство охватывает:**
+**В этом руководстве настраивается интеграция для:**
 
 <table>
   <tbody>
@@ -24,14 +23,14 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
   </tbody>
 </table>
 
-_Чтобы отправлять метрики или APM/трейсы, вам также нужно добавить в приложение соответствующую
-языковую интеграцию._
+_Чтобы также отправлять метрики или APM/трейсы, вам нужно добавить в приложение соответствующую языковую интеграцию._
 
 
 
-## Начало работы {#getting-started}
+## Начало работы
 
-Импортируйте `HyperDXNestLoggerModule` в корневой `AppModule` и используйте метод `forRoot()` для его настройки.
+Импортируйте `HyperDXNestLoggerModule` в корневой `AppModule` и используйте метод `forRoot()`
+для его конфигурации.
 
 ```javascript
 import { Module } from '@nestjs/common';
@@ -40,7 +39,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 @Module({
   imports: [
     HyperDXNestLoggerModule.forRoot({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      apiKey: ***ВАШ_API_КЛЮЧ_ИНГЕСТИИ***,
       maxLevel: 'info',
       service: 'my-app',
     }),
@@ -68,15 +67,15 @@ export class CatsController {
 }
 ```
 
-### Замена логгера Nest (в том числе для начальной загрузки) {#replacing-the-nest-logger}
+### Замена логгера Nest (также для bootstrap-процесса)
 
 :::note Важно
-При этом вы отказываетесь от внедрения зависимостей, что означает, что `forRoot` и `forRootAsync` не требуются и не должны использоваться. Удалите их из главного модуля.
+При таком подходе вы отказываетесь от механизма внедрения зависимостей (dependency injection), что означает, что `forRoot` и `forRootAsync` не нужны и не должны использоваться. Удалите их из вашего основного модуля.
 :::
 
-Использование внедрения зависимостей имеет один небольшой недостаток. Nest должен сначала выполнить начальную загрузку приложения (создание экземпляров модулей и провайдеров, внедрение зависимостей и т. д.), и в процессе этого экземпляр `HyperDXNestLogger` ещё недоступен, что означает, что Nest использует встроенный логгер.
+Использование dependency injection имеет один небольшой недостаток. Nest должен сначала выполнить bootstrap-процесс приложения (создать экземпляры модулей и провайдеров, внедрить зависимости и т. д.), и в ходе этого процесса экземпляр `HyperDXNestLogger` ещё недоступен, что означает, что Nest возвращается к использованию внутреннего логгера.
 
-Одним из решений является создание логгера вне жизненного цикла приложения с использованием функции `createLogger` и передача его в `NestFactory.create`. Затем Nest обернёт наш пользовательский логгер (тот же экземпляр, возвращаемый методом `createLogger`) в класс Logger, перенаправляя все вызовы к нему:
+Одно из решений — создать логгер за пределами жизненного цикла приложения с помощью функции `createLogger` и передать его в `NestFactory.create`. Затем Nest обернёт наш кастомный логгер (тот же самый экземпляр, возвращённый методом `createLogger`) в класс Logger, перенаправляя ему все вызовы:
 
 Создайте логгер в файле `main.ts`
 
@@ -86,7 +85,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: HyperDXNestLoggerModule.createLogger({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      apiKey: ***ВАШ_API_КЛЮЧ_ИНГЕСТИИ***,
       maxLevel: 'info',
       service: 'my-app',
     })
@@ -96,18 +95,18 @@ async function bootstrap() {
 bootstrap();
 ```
 
-Измените главный модуль, чтобы предоставить сервис Logger:
+Измените основной модуль, чтобы он предоставлял сервис Logger:
 
 ```javascript
-import { Logger, Module } from "@nestjs/common"
+import { Logger, Module } from '@nestjs/common';
 
 @Module({
-  providers: [Logger]
+  providers: [Logger],
 })
 export class AppModule {}
 ```
 
-Затем внедрите логгер, просто указав его тип с помощью Logger из `@nestjs/common`:
+Затем просто внедрите логгер, указав тип Logger из `@nestjs/common` в объявлении параметра:
 
 ```javascript
 import { Controller, Logger } from '@nestjs/common';

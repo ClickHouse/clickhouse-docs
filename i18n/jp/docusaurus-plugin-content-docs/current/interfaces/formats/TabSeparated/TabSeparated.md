@@ -15,15 +15,15 @@ doc_type: 'reference'
 
 
 
-## 説明 {#description}
+## 説明
 
-TabSeparated形式では、データは行単位で書き込まれます。各行にはタブで区切られた値が含まれます。各値の後にはタブが続きますが、行の最後の値の後には改行が続きます。すべての箇所で厳密にUnix改行が想定されています。最後の行も末尾に改行を含む必要があります。値はテキスト形式で書き込まれ、引用符で囲まれることはなく、特殊文字はエスケープされます。
+TabSeparated フォーマットでは、データは行単位で書き込まれます。各行には、タブで区切られた値が含まれます。各値の後にはタブが続きますが、行の最後の値の後にはタブではなく改行コードが続きます。改行コードはいずれも Unix スタイルであることを前提とします。最後の行の末尾にも改行コードが付いていなければなりません。値はテキスト形式で、引用符で囲まず、特殊文字はエスケープして書き込まれます。
 
-この形式は`TSV`という名前でも利用できます。
+このフォーマットは `TSV` という名前でも利用可能です。
 
-`TabSeparated`形式は、カスタムプログラムやスクリプトを使用したデータ処理に便利です。この形式は、HTTPインターフェースおよびコマンドラインクライアントのバッチモードでデフォルトで使用されます。また、この形式により異なるDBMS間でのデータ転送が可能になります。例えば、MySQLからダンプを取得してClickHouseにアップロードしたり、その逆を行うことができます。
+`TabSeparated` フォーマットは、独自のプログラムやスクリプトでデータを処理するのに便利です。HTTP インターフェイスおよびコマンドラインクライアントのバッチモードでは、デフォルトでこのフォーマットが使用されます。また、このフォーマットを使用すると、異なる DBMS 間でデータを転送できます。たとえば、MySQL からダンプを取得して ClickHouse にインポートしたり、その逆も可能です。
 
-`TabSeparated`形式は、合計値の出力(WITH TOTALSを使用する場合)および極値の出力('extremes'が1に設定されている場合)をサポートしています。これらの場合、合計値と極値はメインデータの後に出力されます。メイン結果、合計値、極値は空行で互いに区切られます。例:
+`TabSeparated` フォーマットは、合計値（WITH TOTALS を使用する場合）および極値（`extremes` が 1 に設定されている場合）の出力をサポートします。この場合、合計値と極値はメイン結果の後に出力されます。メイン結果、合計値、および極値は、互いに空行で区切られます。例:
 
 ```sql
 SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORDER BY EventDate FORMAT TabSeparated
@@ -43,46 +43,46 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 ```
 
 
-## データフォーマット {#tabseparated-data-formatting}
+## データの書式設定
 
-整数は10進数形式で記述されます。数値の先頭に追加の「+」文字を含めることができます(解析時には無視され、フォーマット時には記録されません)。非負の数値には負の符号を含めることはできません。読み取り時には、空文字列をゼロとして解析すること、または(符号付き型の場合)マイナス記号のみで構成される文字列をゼロとして解析することが許可されています。対応するデータ型に収まらない数値は、エラーメッセージなしで別の数値として解析される場合があります。
+整数は 10 進数形式で記述されます。数値は先頭に追加の「+」記号を含むことができます（パース時には無視され、書式化時には出力されません）。非負の数値には負号を含めることはできません。読み取り時には、空文字列をゼロとしてパースすること、または（符号付き型の場合）マイナス記号だけから成る文字列をゼロとしてパースすることが許可されています。対応するデータ型に収まらない数値は、エラーを出さずに別の数値としてパースされる場合があります。
 
-浮動小数点数は10進数形式で記述されます。小数点にはドットが使用されます。指数表記がサポートされており、'inf'、'+inf'、'-inf'、'nan'もサポートされています。浮動小数点数のエントリは小数点で始まるか終わることができます。
-フォーマット時には、浮動小数点数の精度が失われる可能性があります。
-解析時には、最も近い機械表現可能な数値を読み取ることは厳密には要求されません。
+浮動小数点数は 10 進数形式で記述されます。小数点にはドットが使用されます。指数表記がサポートされており、`inf`、`+inf`、`-inf`、`nan` も使用できます。浮動小数点数の表記は、小数点で始まったり終わったりすることがあります。
+書式化時には、浮動小数点数の精度が失われる可能性があります。
+パース時には、機械で表現可能な最近接の数値を厳密に読み取ることは要求されません。
 
-日付はYYYY-MM-DD形式で記述され、同じ形式で解析されますが、区切り文字として任意の文字を使用できます。
-日時は`YYYY-MM-DD hh:mm:ss`形式で記述され、同じ形式で解析されますが、区切り文字として任意の文字を使用できます。
-これらはすべて、クライアントまたはサーバーが起動した時点のシステムタイムゾーンで発生します(どちらがデータをフォーマットするかによります)。日時の場合、夏時間は指定されません。そのため、ダンプに夏時間中の時刻が含まれている場合、ダンプはデータと明確に一致せず、解析は2つの時刻のいずれかを選択します。
-読み取り操作中、不正な日付や日時は、エラーメッセージなしで自然なオーバーフローまたはnull日付・時刻として解析される可能性があります。
+日付は `YYYY-MM-DD` 形式で記述され、同じ形式でパースされますが、区切り文字には任意の文字を使用できます。
+時刻付きの日付は `YYYY-MM-DD hh:mm:ss` 形式で記述され、同じ形式でパースされますが、区切り文字には任意の文字を使用できます。
+これらはすべて、クライアントまたはサーバー（どちらがデータをフォーマットするかによって異なる）が起動した時点のシステムタイムゾーンで処理されます。時刻付きの日付については、夏時間は指定されません。そのため、ダンプに夏時間中の時刻が含まれている場合、そのダンプはデータと一意に対応せず、パース時には 2 つの時刻のうちいずれかが選択されます。
+読み取り操作では、不正な日付や時刻付きの日付も、自然なオーバーフローとして、またはヌルの日付および時刻として、エラーなしでパースされる場合があります。
 
-例外として、日時の解析は、正確に10桁の10進数で構成されている場合、Unixタイムスタンプ形式でもサポートされています。結果はタイムゾーンに依存しません。`YYYY-MM-DD hh:mm:ss`形式と`NNNNNNNNNN`形式は自動的に区別されます。
+例外として、時刻付き日付のパースは、ちょうど 10 桁の 10 進数字から成る場合に Unix タイムスタンプ形式でのパースもサポートされます。この結果はタイムゾーンに依存しません。`YYYY-MM-DD hh:mm:ss` 形式と `NNNNNNNNNN` 形式は自動的に区別されます。
 
-文字列は、バックスラッシュでエスケープされた特殊文字とともに出力されます。出力には次のエスケープシーケンスが使用されます:`\b`、`\f`、`\r`、`\n`、`\t`、`\0`、`\'`、`\\`。解析では、`\a`、`\v`、`\xHH`(16進エスケープシーケンス)、および任意の`\c`シーケンス(`c`は任意の文字)もサポートされます(これらのシーケンスは`c`に変換されます)。したがって、データの読み取りでは、改行を`\n`または`\`、または改行として記述できる形式がサポートされます。たとえば、単語間にスペースの代わりに改行がある文字列`Hello world`は、次のいずれかのバリエーションで解析できます:
+文字列は、バックスラッシュでエスケープされた特殊文字として出力されます。出力には次のエスケープシーケンスが使用されます: `\b`、`\f`、`\r`、`\n`、`\t`、`\0`、`\'`、`\\`。パースでは、これらに加えて `\a`、`\v`、`\xHH`（16 進エスケープシーケンス）、および任意の `\c` シーケンス（ここで `c` は任意の文字であり、これらのシーケンスは `c` に変換される）もサポートされます。したがって、データの読み取りでは、改行を `\n` として、`\` として、あるいは実際の改行として記述する形式をサポートします。たとえば、単語の間をスペースではなく改行で区切った文字列 `Hello world` は、次のいずれのバリエーションとしてもパースできます。
 
 ```text
-Hello\nworld
+こんにちは\n世界
 
-Hello\
-world
+こんにちは\
+世界
 ```
 
-2番目のバリエーションは、MySQLがタブ区切りダンプを書き込む際に使用するためサポートされています。
+2 番目のバリアントがサポートされているのは、MySQL がタブ区切りダンプを書き出す際にこれを使用するためです。
 
-TabSeparated形式でデータを渡す際にエスケープする必要がある最小限の文字セット:タブ、改行(LF)、バックスラッシュ。
+TabSeparated 形式でデータを渡すときにエスケープが必要となる文字の最小集合は、タブ、改行 (LF)、およびバックスラッシュです。
 
-エスケープされるのは少数の記号のみです。ターミナルが出力時に破損させる文字列値に簡単に遭遇する可能性があります。
+エスケープされる記号はごく一部だけです。そのため、端末での出力が乱れてしまうような文字列値に容易に遭遇する可能性があります。
 
-配列は、角括弧内のカンマ区切り値のリストとして記述されます。配列内の数値項目は通常どおりフォーマットされます。`Date`型と`DateTime`型は単一引用符で囲まれて記述されます。文字列は、上記と同じエスケープ規則で単一引用符で囲まれて記述されます。
+配列は角かっこ内のカンマ区切り値のリストとして書き出されます。配列内の数値要素は通常どおりにフォーマットされます。`Date` および `DateTime` 型はシングルクォートで囲んで書き出されます。文字列は、上記と同じエスケープ規則を用いてシングルクォートで囲んで書き出されます。
 
-[NULL](/sql-reference/syntax.md)は、設定[format_tsv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation)に従ってフォーマットされます(デフォルト値は`\N`)。
+[NULL](/sql-reference/syntax.md) は設定 [format&#95;tsv&#95;null&#95;representation](/operations/settings/settings-formats.md/#format_tsv_null_representation) に従ってフォーマットされます (デフォルト値は `\N` です)。
 
-入力データでは、ENUM値は名前またはIDとして表現できます。まず、入力値をENUM名と照合しようとします。失敗し、入力値が数値である場合、この数値をENUM IDと照合しようとします。
-入力データにENUM IDのみが含まれている場合、ENUM解析を最適化するために設定[input_format_tsv_enum_as_number](/operations/settings/settings-formats.md/#input_format_tsv_enum_as_number)を有効にすることをお勧めします。
+入力データでは、ENUM 値は名前または id として表現できます。まず入力値を ENUM 名にマッチさせようとします。失敗し、かつ入力値が数値である場合は、この数値を ENUM id にマッチさせようとします。
+入力データが ENUM id のみを含む場合は、ENUM のパースを最適化するために、設定 [input&#95;format&#95;tsv&#95;enum&#95;as&#95;number](/operations/settings/settings-formats.md/#input_format_tsv_enum_as_number) を有効にすることを推奨します。
 
-[Nested](/sql-reference/data-types/nested-data-structures/index.md)構造の各要素は配列として表現されます。
+[Nested](/sql-reference/data-types/nested-data-structures/index.md) 構造の各要素は配列として表現されます。
 
-例:
+例えば次のとおりです。
 
 ```sql
 CREATE TABLE nestedt
@@ -109,11 +109,11 @@ SELECT * FROM nestedt FORMAT TSV
 ```
 
 
-## 使用例 {#example-usage}
+## 使用例
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-以下の内容を持つ `football.tsv` という名前のTSVファイルを使用します:
+次の `football.tsv` という名前の TSV ファイルを使用します:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -135,15 +135,15 @@ SELECT * FROM nestedt FORMAT TSV
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します:
+データを挿入します：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparated;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み
 
-`TabSeparated` 形式を使用してデータを読み取ります:
+`TabSeparated` 形式でデータを読み込みます。
 
 ```sql
 SELECT *
@@ -151,7 +151,7 @@ FROM football
 FORMAT TabSeparated
 ```
 
-出力はタブ区切り形式で表示されます:
+出力はタブ区切り形式です:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -176,15 +176,15 @@ FORMAT TabSeparated
 
 ## フォーマット設定 {#format-settings}
 
-| 設定                                                                                                                                                  | 説明                                                                                                                                                                                                                            | デフォルト |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| [`format_tsv_null_representation`](/operations/settings/settings-formats.md/#format_tsv_null_representation)                                             | TSVフォーマットにおけるカスタムNULL表現。                                                                                                                                                                                              | `\N`    |
-| [`input_format_tsv_empty_as_default`](/operations/settings/settings-formats.md/#input_format_tsv_empty_as_default)                                       | TSV入力の空フィールドをデフォルト値として扱います。複雑なデフォルト式の場合、[input_format_defaults_for_omitted_fields](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields)も有効にする必要があります。 | `false` |
-| [`input_format_tsv_enum_as_number`](/operations/settings/settings-formats.md/#input_format_tsv_enum_as_number)                                           | TSVフォーマットで挿入されたenum値をenumインデックスとして扱います。                                                                                                                                                                             | `false` |
-| [`input_format_tsv_use_best_effort_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_tsv_use_best_effort_in_schema_inference) | TSVフォーマットでスキーマを推論する際に、調整とヒューリスティックを使用します。無効にすると、すべてのフィールドは文字列として推論されます。                                                                                                                     | `true`  |
-| [`output_format_tsv_crlf_end_of_line`](/operations/settings/settings-formats.md/#output_format_tsv_crlf_end_of_line)                                     | trueに設定すると、TSV出力フォーマットの行末が`\n`の代わりに`\r\n`になります。                                                                                                                                                    | `false` |
-| [`input_format_tsv_crlf_end_of_line`](/operations/settings/settings-formats.md/#input_format_tsv_crlf_end_of_line)                                       | trueに設定すると、TSV入力フォーマットの行末が`\n`の代わりに`\r\n`になります。                                                                                                                                                     | `false` |
-| [`input_format_tsv_skip_first_lines`](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines)                                       | データの先頭から指定された行数をスキップします。                                                                                                                                                                               | `0`     |
-| [`input_format_tsv_detect_header`](/operations/settings/settings-formats.md/#input_format_tsv_detect_header)                                             | TSVフォーマットで名前と型を含むヘッダーを自動的に検出します。                                                                                                                                                                        | `true`  |
-| [`input_format_tsv_skip_trailing_empty_lines`](/operations/settings/settings-formats.md/#input_format_tsv_skip_trailing_empty_lines)                     | データの末尾にある末尾の空行をスキップします。                                                                                                                                                                                          | `false` |
-| [`input_format_tsv_allow_variable_number_of_columns`](/operations/settings/settings-formats.md/#input_format_tsv_allow_variable_number_of_columns)       | TSVフォーマットで可変数の列を許可し、余分な列を無視し、欠落している列にはデフォルト値を使用します。                                                                                                                        | `false` |
+| Setting                                                                                                                                                          | Description                                                                                                                                                                                                                                    | Default |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| [`format_tsv_null_representation`](/operations/settings/settings-formats.md/#format_tsv_null_representation)                                             | TSV 形式における NULL のカスタム表現。                                                                                                                                                                                                        | `\N`    |
+| [`input_format_tsv_empty_as_default`](/operations/settings/settings-formats.md/#input_format_tsv_empty_as_default)                                       | TSV 入力で空フィールドをデフォルト値として扱います。複雑なデフォルト式を使用する場合は、[input_format_defaults_for_omitted_fields](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) も有効化する必要があります。 | `false` |
+| [`input_format_tsv_enum_as_number`](/operations/settings/settings-formats.md/#input_format_tsv_enum_as_number)                                           | TSV 形式で挿入される enum 値を enum のインデックスとして扱います。                                                                                                                                                                           | `false` |
+| [`input_format_tsv_use_best_effort_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_tsv_use_best_effort_in_schema_inference) | TSV 形式でスキーマを推論する際に、いくつかの調整とヒューリスティクスを使用します。無効化すると、すべてのフィールドは String として推論されます。                                                                                               | `true`  |
+| [`output_format_tsv_crlf_end_of_line`](/operations/settings/settings-formats.md/#output_format_tsv_crlf_end_of_line)                                     | `true` に設定すると、TSV 出力形式の行末は `\n` ではなく `\r\n` になります。                                                                                                                                                                   | `false` |
+| [`input_format_tsv_crlf_end_of_line`](/operations/settings/settings-formats.md/#input_format_tsv_crlf_end_of_line)                                       | `true` に設定すると、TSV 入力形式の行末は `\n` ではなく `\r\n` になります。                                                                                                                                                                   | `false` |
+| [`input_format_tsv_skip_first_lines`](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines)                                       | データの先頭から指定された行数をスキップします。                                                                                                                                                                                              | `0`     |
+| [`input_format_tsv_detect_header`](/operations/settings/settings-formats.md/#input_format_tsv_detect_header)                                             | TSV 形式で名前および型を含むヘッダーを自動検出します。                                                                                                                                                                                        | `true`  |
+| [`input_format_tsv_skip_trailing_empty_lines`](/operations/settings/settings-formats.md/#input_format_tsv_skip_trailing_empty_lines)                     | データ末尾の空行をスキップします。                                                                                                                                                                                                            | `false` |
+| [`input_format_tsv_allow_variable_number_of_columns`](/operations/settings/settings-formats.md/#input_format_tsv_allow_variable_number_of_columns)       | TSV 形式で列数の変動を許可し、余分な列を無視し、欠損している列にはデフォルト値を使用します。                                                                                                                                                 | `false` |

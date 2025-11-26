@@ -1,5 +1,5 @@
 ---
-description: '指定したクラスタ内の多数のノードから Apache Iceberg のファイルを並列処理できるようにする、iceberg テーブル関数の拡張。'
+description: '指定したクラスタ内の複数ノードから Apache Iceberg ファイルを並列処理できる、iceberg テーブル関数の拡張機能。'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
@@ -11,13 +11,13 @@ doc_type: 'reference'
 
 # icebergCluster テーブル関数
 
-これは、[iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数を拡張したものです。
+これは、[iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数の拡張です。
 
-指定したクラスタ内の複数のノード上で、Apache [Iceberg](https://iceberg.apache.org/) のファイルを並列に処理できるようにします。イニシエータでは、クラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り当てます。ワーカーノードでは、処理すべき次のタスクをイニシエータに要求し、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
+指定されたクラスター内の複数のノードから Apache [Iceberg](https://iceberg.apache.org/) のファイルを並列処理できるようにします。イニシエーターはクラスター内のすべてのノードに接続し、各ファイルを動的に割り当てます。ワーカー ノードは、処理すべき次のタスクをイニシエーターに問い合わせてから、それを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
 
 
-## 構文 {#syntax}
+## 構文
 
 ```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -31,14 +31,14 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
 
-## 引数 {#arguments}
+## 引数
 
-- `cluster_name` — リモートサーバーおよびローカルサーバーへのアドレスセットと接続パラメータを構築するために使用されるクラスタ名。
-- その他すべての引数の説明は、同等の[iceberg](/sql-reference/table-functions/iceberg.md)テーブル関数の引数説明と一致します。
+* `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスター名。
+* 他のすべての引数の説明は、同等の [iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数における引数の説明と同一です。
 
 **戻り値**
 
-指定されたIcebergテーブル内のクラスタからデータを読み取るための、指定された構造を持つテーブル。
+指定された Iceberg テーブルに対して、クラスターからデータを読み取るための、指定された構造を持つテーブル。
 
 **例**
 
@@ -51,11 +51,11 @@ SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/c
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
-- `_size` — ファイルのサイズ(バイト単位)。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
+- `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
-- `_etag` — ファイルのetag。型: `LowCardinality(String)`。etagが不明な場合、値は `NULL` です。
+- `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合、値は `NULL` です。
 
 **関連項目**
 
-- [Icebergエンジン](/engines/table-engines/integrations/iceberg.md)
-- [Icebergテーブル関数](sql-reference/table-functions/iceberg.md)
+- [Iceberg エンジン](/engines/table-engines/integrations/iceberg.md)
+- [Iceberg テーブル関数](sql-reference/table-functions/iceberg.md)

@@ -9,22 +9,23 @@ title: 'PrettyJSONEachRow'
 doc_type: 'guide'
 ---
 
-| Вход | Выход | Псевдоним                         |
+| Вход | Выход | Псевдонимы                        |
 |------|-------|-----------------------------------|
 | ✗    | ✔     | `PrettyJSONLines`, `PrettyNDJSON` |
 
 
 
-## Description {#description}
+## Описание {#description}
 
-Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется с отступами: каждая строка выводится с новой строки, а уровни вложенности обозначаются отступами в 4 пробела.
+Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется в читабельном виде с разделением по строкам и отступом в 4 пробела.
+
 
 
 ## Пример использования {#example-usage}
-
 ### Вставка данных {#inserting-data}
 
-Используя JSON-файл со следующими данными с именем `football.json`:
+Используем JSON-файл `football.json` со следующими данными:
+
 
 
 ```json
@@ -166,15 +167,15 @@ doc_type: 'guide'
 }
 ```
 
-Вставка данных:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `PrettyJSONEachRow`:
+Прочитайте данные, используя формат `PrettyJSONEachRow`:
 
 ```sql
 SELECT *
@@ -182,7 +183,7 @@ FROM football
 FORMAT PrettyJSONEachRow
 ```
 
-Результат будет выведен в формате JSON:
+Результат будет в формате JSON:
 
 
 ```json
@@ -328,4 +329,4 @@ FORMAT PrettyJSONEachRow
 
 
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

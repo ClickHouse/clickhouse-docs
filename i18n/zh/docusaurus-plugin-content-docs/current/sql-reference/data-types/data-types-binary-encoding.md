@@ -1,9 +1,9 @@
 ---
-description: '数据类型的二进制编码规范文档'
-sidebar_label: '数据类型的二进制编码规范'
+description: '数据类型二进制编码规范说明文档'
+sidebar_label: '数据类型二进制编码规范'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
-title: '数据类型的二进制编码规范'
+title: '数据类型二进制编码规范'
 doc_type: 'reference'
 ---
 
@@ -11,10 +11,10 @@ doc_type: 'reference'
 
 # 数据类型二进制编码规范
 
-本规范描述了可用于对 ClickHouse 数据类型进行二进制编码和解码的二进制格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下也可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
+本规范描述了一种用于对 ClickHouse 数据类型进行二进制编解码的格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下，可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
 
-下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识和一些可选的附加信息组成。
-在二进制编码中，`var_uint` 表示大小使用可变长度数量（Variable-Length Quantity）压缩方式进行编码。
+下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识以及一些可选的附加信息组成。
+在二进制编码中，`var_uint` 表示长度使用可变长度数量（Variable-Length Quantity）压缩方式进行编码。
 
 
 
@@ -54,17 +54,17 @@ doc_type: 'reference'
 | `Tuple(T1, ..., TN)`                                                                                      | `0x1F<var_uint_number_of_elements><nested_type_encoding_1>...<nested_type_encoding_N>`                                                                                                                                                                                                                                                                                     |
 | `Tuple(name1 T1, ..., nameN TN)`                                                                          | `0x20<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
 | `Set`                                                                                                     | `0x21`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Interval`                                                                                                | `0x22<interval_kind>`（参见[间隔类型二进制编码](#interval-kind-binary-encoding)）                                                                                                                                                                                                                                                                                                       |
+| `间隔`                                                                                                      | `0x22<interval_kind>`（参见 [interval&#95;kind 的二进制编码](#interval-kind-binary-encoding)）                                                                                                                                                                                                                                                                                       |
 | `Nullable(T)`                                                                                             | `0x23<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Function`                                                                                                | `0x24<var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N><return_type_encoding>`                                                                                                                                                                                                                                                          |
-| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（参见[聚合函数参数的二进制编码](#aggregate-function-parameter-binary-encoding)）                                                                                        |
+| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（参见 [聚合函数参数的二进制编码](#aggregate-function-parameter-binary-encoding)）                                                                                       |
 | `LowCardinality(T)`                                                                                       | `0x26<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Map(K, V)`                                                                                               | `0x27<key_type_encoding><value_type_encoding>`                                                                                                                                                                                                                                                                                                                             |
 | `IPv4`                                                                                                    | `0x28`                                                                                                                                                                                                                                                                                                                                                                     |
 | `IPv6`                                                                                                    | `0x29`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Variant(T1, ..., TN)`                                                                                    | `0x2A<var_uint_number_of_variants><variant_type_encoding_1>...<variant_type_encoding_N>`                                                                                                                                                                                                                                                                                   |
 | `Dynamic(max_types=N)`                                                                                    | `0x2B<uint8_max_types>`                                                                                                                                                                                                                                                                                                                                                    |
-| `自定义类型`（`Ring`、`Polygon` 等）                                                                               | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
+| `Custom type`（`Ring`、`Polygon` 等）                                                                         | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
 | `Bool`                                                                                                    | `0x2D`                                                                                                                                                                                                                                                                                                                                                                     |
 | `SimpleAggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                      | `0x2E<var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（参见[聚合函数参数二进制编码](#aggregate-function-parameter-binary-encoding)）                                                                                                           |
 | `Nested(name1 T1, ..., nameN TN)`                                                                         | `0x2F<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
@@ -74,14 +74,16 @@ doc_type: 'reference'
 | `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
 | `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
-对于 `JSON` 类型,字节 `uint8_serialization_version` 表示序列化版本。当前版本始终为 0,但如果将来为 `JSON` 类型引入新参数,版本可能会改变。
 
-### 时间间隔类型二进制编码 {#interval-kind-binary-encoding}
 
-下表描述了 `Interval` 数据类型的不同时间间隔类型的编码方式。
+对于 `JSON` 类型，字节 `uint8_serialization_version` 用于指示序列化版本。目前该版本始终为 0，但如果将来为 `JSON` 类型引入新的参数，则该值可能会发生变化。
 
-| 时间间隔类型 | 二进制编码 |
-| ------------- | --------------- |
+### Interval 种类的二进制编码 {#interval-kind-binary-encoding}
+
+下表描述了 `Interval` 数据类型中不同 Interval 种类的编码方式。
+
+| Interval kind | Binary encoding |
+|---------------|-----------------|
 | `Nanosecond`  | `0x00`          |
 | `Microsecond` | `0x01`          |
 | `Millisecond` | `0x02`          |
@@ -94,13 +96,13 @@ doc_type: 'reference'
 | `Quarter`     | `0x09`          |
 | `Year`        | `0x1A`          |
 
-### 聚合函数参数二进制编码 {#aggregate-function-parameter-binary-encoding}
+### 聚合函数参数的二进制编码 {#aggregate-function-parameter-binary-encoding}
 
-下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 参数的编码方式。
-参数的编码由 1 个字节和值本身组成,该字节用于指示参数的类型。
+下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何编码的。
+参数的编码由 1 个字节的参数类型标识符和参数值本身组成。
 
-| 参数类型           | 二进制编码                                                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Parameter type           | Binary encoding                                                                                                                |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `Null`                   | `0x00`                                                                                                                         |
 | `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
 | `Int64`                  | `0x02<var_int_value>`                                                                                                          |

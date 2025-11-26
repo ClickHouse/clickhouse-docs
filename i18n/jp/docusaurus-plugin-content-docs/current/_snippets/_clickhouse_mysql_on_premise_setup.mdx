@@ -1,6 +1,7 @@
-MySQL インターフェイスを有効にした状態で ClickHouse サーバーをセットアップする方法については、[公式ドキュメント](/interfaces/mysql) を参照してください。
+MySQL インターフェースが有効になっている ClickHouse サーバーのセットアップ方法については、
+[公式ドキュメント](/interfaces/mysql) を参照してください。
 
-サーバーの `config.xml` にエントリを追加することに加えて
+サーバーの `config.xml` に項目を追加することに加えて
 
 ```xml
 <clickhouse>
@@ -8,9 +9,9 @@ MySQL インターフェイスを有効にした状態で ClickHouse サーバ�
 </clickhouse>
 ```
 
-MySQL インターフェイスを使用するユーザーには、
+MySQL インターフェイスを使用するユーザーに対しては、
 [Double SHA1 password encryption](/operations/settings/settings-users#user-namepassword)
-を使用することが*必須*です。
+を使用することも*必須*となります。
 
 シェルから Double SHA1 で暗号化されたランダムなパスワードを生成するには、次のようにします。
 
@@ -18,14 +19,14 @@ MySQL インターフェイスを使用するユーザーには、
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-出力は次のようになります：
+出力結果は以下のようになります。
 
 ```
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-最初の行は生成されたパスワードで、2行目は ClickHouse を構成する際に使用できるハッシュ値です。
+1 行目は生成されたパスワードで、2 行目は ClickHouse を設定する際に使用できるハッシュです。
 
 以下は、生成されたハッシュを使用する `mysql_user` の設定例です。
 
@@ -44,11 +45,11 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-`password_double_sha1_hex` エントリを、独自に生成した Double SHA1 ハッシュ値に置き換えてください。
+`password_double_sha1_hex` エントリを、自身で生成した Double SHA1 ハッシュ値に置き換えてください。
 
-さらに、`SHOW [FULL] COLUMNS` クエリ結果で ClickHouse の型ではなく MySQL ネイティブの型を表示するために、
-`use_mysql_types_in_show_columns` を使用することが推奨されます。これにより、MySQL コネクタ経由で接続する際に
-BI ツールがデータベーススキーマを適切に把握できるようになります。
+さらに、`SHOW [FULL] COLUMNS` クエリ結果で ClickHouse の型ではなくネイティブな MySQL 型を表示するために、
+`use_mysql_types_in_show_columns` を使用することを推奨します。
+これにより、MySQL コネクタを使用する際に、BI ツールがデータベーススキーマを正しく解析できるようになります。
 
 例:
 
@@ -64,8 +65,8 @@ BI ツールがデータベーススキーマを適切に把握できるよう�
 
 または、デフォルトプロファイルではなく別のプロファイルに割り当てます。
 
-`mysql` バイナリが利用可能であれば、コマンドラインから接続をテストできます。
-上記のサンプルのユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用する場合、実行するコマンドは次のとおりです。
+`mysql` バイナリが利用可能な場合は、コマンドラインから接続をテストできます。
+上記のサンプルのユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用した場合、コマンドは次のようになります。
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -85,7 +86,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-最後に、ClickHouse Server が目的の IP アドレスで待ち受けるように設定します。たとえば、`config.xml` で次の設定のコメントアウトを解除すると、すべてのアドレスで待ち受けるようになります。
+最後に、ClickHouse Server が指定した IP アドレスで待ち受けるように設定します。たとえば `config.xml` では、すべてのアドレスで待ち受けるために、次の設定のコメントアウトを解除します。
 
 ```bash
 <listen_host>::</listen_host> 

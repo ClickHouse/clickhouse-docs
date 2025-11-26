@@ -1,5 +1,5 @@
 ---
-description: '一連の数値に対してビット単位の排他的論理和（`XOR`）を適用します。'
+description: '一連の数値に対してビット単位の `XOR` を適用します。'
 sidebar_position: 153
 slug: /sql-reference/aggregate-functions/reference/groupbitxor
 title: 'groupBitXor'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # groupBitXor
 
-数値の系列に対してビット単位の排他的論理和（`XOR`）演算を適用します。
+一連の数値に対してビット単位の `XOR` 演算を適用します。
 
 ```sql
 groupBitXor(expr)
@@ -16,11 +16,11 @@ groupBitXor(expr)
 
 **引数**
 
-`expr` – 結果が `UInt*` 型または `Int*` 型となる式。
+`expr` – 評価結果が `UInt*` または `Int*` 型となる式。
 
 **戻り値**
 
-`UInt*` 型または `Int*` 型の値。
+`UInt*` または `Int*` 型の値。
 
 **例**
 
@@ -40,7 +40,7 @@ groupBitXor(expr)
 SELECT groupBitXor(num) FROM t
 ```
 
-ここで、`num` はテストデータを格納している列です。
+ここで `num` はテストデータが入っている列です。
 
 結果：
 

@@ -8,6 +8,6 @@ show_related_blogs: true
 doc_type: 'landing-page'
 ---
 
-# 从 Elasticsearch 迁移到 ClickHouse
+# Elasticsearch 到 ClickHouse 的迁移
 
-如需了解可观测性场景的迁移，请参阅 [从 Elasticsearch 迁移到 ClickStack](/use-cases/observability/clickstack/migration/elastic) 文档。
+在可观测性相关的使用场景中，请参阅 [Elasticsearch 到 ClickStack 的迁移文档](/use-cases/observability/clickstack/migration/elastic)。

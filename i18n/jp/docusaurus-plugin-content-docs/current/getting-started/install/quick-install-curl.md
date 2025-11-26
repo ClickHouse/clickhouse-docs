@@ -1,9 +1,9 @@
 ---
-description: 'curl を使用して任意のプラットフォームに ClickHouse をインストールする'
+description: 'curl で任意のプラットフォームに ClickHouse をインストールする'
 keywords: ['ClickHouse', 'インストール', 'クイック', 'curl']
 sidebar_label: 'クイックインストール'
 slug: /install/quick-install-curl
-title: 'curl を使ったスクリプトで ClickHouse をインストールする'
+title: 'curl でスクリプトを実行して ClickHouse をインストールする'
 hide_title: true
 doc_type: 'guide'
 ---

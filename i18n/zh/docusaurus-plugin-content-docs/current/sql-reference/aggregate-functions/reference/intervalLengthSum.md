@@ -21,12 +21,12 @@ intervalLengthSum(start, end)
 * `end` — 区间的结束值。[Int32](/sql-reference/data-types/int-uint#integer-ranges)、[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt32](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges)、[Float32](/sql-reference/data-types/float)、[Float64](/sql-reference/data-types/float)、[DateTime](/sql-reference/data-types/datetime) 或 [Date](/sql-reference/data-types/date)。
 
 :::note
-两个参数必须是相同的数据类型，否则会抛出异常。
+两个参数的数据类型必须相同。否则会抛出异常。
 :::
 
 **返回值**
 
-* 所有区间（数轴上的线段）并集的总长度。根据参数类型不同，返回值类型可能为 [UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float)。
+* 所有区间（数轴上的线段）并集的总长度。根据参数的类型，返回值可能是 [UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float) 类型。
 
 **示例**
 
@@ -40,11 +40,11 @@ intervalLengthSum(start, end)
 └────┴───────┴─────┘
 ```
 
-在本示例中，使用了 `Float32` 类型的参数。该函数返回 `Float64` 类型的值。
+在这个示例中，使用的是 `Float32` 类型的参数。函数返回 `Float64` 类型的值。
 
-结果是区间 `[1.1, 3.2]`（`[1.1, 2.9]` 和 `[2.5, 3.2]` 的并集）以及 `[4, 5]` 的长度之和。
+结果为区间 `[1.1, 3.2]`（`[1.1, 2.9]` 和 `[2.5, 3.2]` 的并集）以及 `[4, 5]` 的长度之和。
 
-查询语句：
+查询：
 
 ```sql
 SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, end)) FROM fl_interval GROUP BY id ORDER BY id;
@@ -58,7 +58,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴───────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-2. 输入数据表：
+2. 输入表：
 
 ```text
 ┌─id─┬───────────────start─┬─────────────────end─┐
@@ -68,7 +68,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴─────────────────────┴─────────────────────┘
 ```
 
-在这个示例中，使用了 `DateTime` 类型的参数。该函数返回一个以秒为单位的值。
+在本示例中，使用了 `DateTime` 类型的参数。该函数返回一个以秒为单位的值。
 
 查询：
 
@@ -88,13 +88,13 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 
 
 ```text
-┌─id─┬──────start─┬────────end─┐
+┌─id─┬──────开始─┬────────结束─┐
 │ a  │ 2020-01-01 │ 2020-01-04 │
 │ a  │ 2020-01-12 │ 2020-01-18 │
 └────┴────────────┴────────────┘
 ```
 
-在本示例中，使用了 `Date` 类型的参数。该函数返回一个以天为单位的值。
+在本示例中，使用了 `Date` 类型的参数。该函数返回的值以天为单位。
 
 查询：
 

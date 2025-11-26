@@ -14,4 +14,4 @@ doc_type: 'reference'
 
 ## in, notIn, globalIn, globalNotIn {#in-notin-globalin-globalnotin}
 
-请参阅 [IN 运算符](/sql-reference/operators/in)章节。
+请参阅 [IN 运算符](/sql-reference/operators/in) 部分。

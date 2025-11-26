@@ -1,5 +1,5 @@
 ---
-description: '`contingency` 関数は連関係数（contingency coefficient）を計算します。これは、テーブル内の 2 つの列間の関連の強さを測定する値です。この計算は `cramersV` 関数と類似していますが、平方根の分母が異なります。'
+description: '`contingency` 関数は連関係数（contingency coefficient）を計算します。これはテーブル内の 2 つの列間の関連性を測定する値です。計算方法は `cramersV` 関数と似ていますが、平方根内の分母が異なります。'
 sidebar_position: 116
 slug: /sql-reference/aggregate-functions/reference/contingency
 title: 'contingency'
@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # contingency
 
-`contingency` 関数は [contingency coefficient](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) を計算します。これは、テーブル内の 2 つの列間の連関の強さを測定する値です。計算方法は [`cramersV` 関数](./cramersv.md) と類似していますが、平方根内部の分母が異なります。
+`contingency` 関数は、テーブル内の 2 つの列間の関連性を測定する値である [コンティンジェンシー係数 (contingency coefficient)](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) を計算します。計算方法は [`cramersV` 関数](./cramersv.md) と類似していますが、平方根の中の分母が異なります。
 
 **構文**
 
@@ -18,7 +18,7 @@ contingency(column1, column2)
 
 **引数**
 
-* `column1` と `column2` は比較対象となる列です。
+* `column1` と `column2` は比較対象となる列です
 
 **戻り値**
 
@@ -28,7 +28,7 @@ contingency(column1, column2)
 
 **例**
 
-以下で比較している 2 つの列は、互いの関連性が低い例です。比較のために、`cramersV` の結果も併記しています。
+以下で比較している 2 つの列は、お互いの関連性が低いことが分かります。比較のために、`cramersV` の結果も併記しています。
 
 ```sql
 SELECT
@@ -44,7 +44,7 @@ FROM
     );
 ```
 
-結果：
+結果:
 
 ```response
 ┌─────cramersV(a, b)─┬──contingency(a, b)─┐

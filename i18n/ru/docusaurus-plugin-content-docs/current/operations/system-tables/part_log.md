@@ -1,7 +1,6 @@
 ---
-description: 'Системная таблица, содержащая информацию о событиях, произошедших с
-  кусками данных в таблицах семейства MergeTree, например, о добавлении или слиянии данных.'
-keywords: ['system table', 'part_log']
+description: 'Системная таблица, содержащая информацию о событиях, произошедших с частями данных в таблицах семейства MergeTree, таких, как добавление или слияние данных.'
+keywords: ['системная таблица', 'part_log']
 slug: /operations/system-tables/part_log
 title: 'system.part_log'
 doc_type: 'reference'
@@ -14,14 +13,14 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Таблица `system.part_log` создаётся только в том случае, если указана настройка сервера [part_log](/operations/server-configuration-parameters/settings#part_log).
+Таблица `system.part_log` создаётся только в том случае, если задан параметр сервера [part_log](/operations/server-configuration-parameters/settings#part_log).
 
-Эта таблица содержит информацию о событиях, произошедших с [частями данных](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) в таблицах семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md), например о добавлении или слиянии данных.
+Эта таблица содержит информацию о событиях, произошедших с [частями данных](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) в таблицах семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md), таких как добавление или слияние данных.
 
 Таблица `system.part_log` содержит следующие столбцы:
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, на котором выполняется запрос.
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса `INSERT`, который создал данную часть данных.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, выполняющего запрос.
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса `INSERT`, создавшего эту часть данных.
 * `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — тип события, произошедшего с частью данных. Может принимать одно из следующих значений:
   * `NewPart` — Вставка новой части данных.
   * `MergePartsStart` — Начало слияния частей данных.
@@ -31,40 +30,40 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
   * `MutatePartStart` — Начало мутации части данных.
   * `MutatePart` — Завершение мутации части данных.
   * `MovePart` — Перемещение части данных с одного диска на другой.
-* `merge_reason` ([Enum8](../../sql-reference/data-types/enum.md)) — причина события типа `MERGE_PARTS`. Может иметь одно из следующих значений:`
+* `merge_reason` ([Enum8](../../sql-reference/data-types/enum.md)) — Причина возникновения события типа `MERGE_PARTS`. Может иметь одно из следующих значений:
   * `NotAMerge` — Текущее событие имеет тип, отличный от `MERGE_PARTS`.
   * `RegularMerge` — Обычное слияние.
-  * `TTLDeleteMerge` — Удаление устаревших данных.
-  * `TTLRecompressMerge` — Пересжатие части данных с использованием ...
-* `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — алгоритм слияния для события типа `MERGE_PARTS`. Может принимать одно из следующих значений:
-  * `Undecided`
-  * `Horizontal`
-  * `Vertical`
+  * `TTLDeleteMerge` — Удаление просроченных данных.
+  * `TTLRecompressMerge` — Повторное сжатие части данных с.
+* `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — алгоритм слияния события типа `MERGE_PARTS`. Может принимать одно из следующих значений:
+  * `Не выбрано`
+  * `Горизонтальная`
+  * `Вертикальная`
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время события с точностью до микросекунд.
-* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Длительность в миллисекундах.
-* `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится часть данных.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с точностью до микросекунд.
+* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — продолжительность.
+* `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой хранится часть данных.
 * `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы, в которой находится часть данных.
-* `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы, к которой относится часть данных.
+* `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы, которой принадлежит часть данных.
 * `part_name` ([String](../../sql-reference/data-types/string.md)) — Имя части данных.
-* `partition_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор раздела, в который была вставлена часть данных. Столбец принимает значение `all`, если используется партиционирование по `tuple()`.
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор раздела, в который была вставлена часть данных. Столбец принимает значение `all`, если разбиение выполняется по `tuple()`.
 * `partition` ([String](../../sql-reference/data-types/string.md)) - Имя раздела.
-* `part_type` ([String](../../sql-reference/data-types/string.md)) — тип части. Допустимые значения: Wide и Compact.
-* `disk_name` ([String](../../sql-reference/data-types/string.md)) — имя диска, на котором размещён кусок данных.
-* `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к каталогу, содержащему файлы частей данных.
-* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — количество строк в части данных.
-* `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер части данных в байтах.
+* `part_type` ([String](../../sql-reference/data-types/string.md)) - Тип части. Возможные значения: Wide и Compact.
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) - Имя диска, на котором находится часть данных.
+* `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к каталогу с файлами кусков данных.
+* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Число строк в части данных.
+* `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — размер части данных в байтах.
 * `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — массив имен частей, из которых была сформирована текущая часть (после слияния).
-* `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — размер несжатых данных (в байтах).
+* `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объём несжатых данных (в байтах).
 * `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк, прочитанных при слиянии.
 * `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — количество байт, прочитанных во время слияния.
-* `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — максимальная разница между объемом выделенной и освобожденной памяти в контексте этого потока.
-* `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — числовой код произошедшей ошибки.
-* `exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение об ошибке.
-* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — счетчики ProfileEvents, измеряющие различные метрики. Их описание можно найти в таблице [system.events](/operations/system-tables/events).
+* `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — максимальная разница между объёмом выделенной и освобождённой памяти в контексте этого потока.
+* `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Код возникшей ошибки.
+* `exception` ([String](../../sql-reference/data-types/string.md)) — Текст сообщения о возникшей ошибке.
+* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — счётчики ProfileEvents, измеряющие различные метрики. Их описание приведено в таблице [system.events](/operations/system-tables/events).
 
-Таблица `system.part_log` создается после первой операции вставки данных в таблицу `MergeTree`.
+Таблица `system.part_log` создаётся после первой вставки данных в таблицу `MergeTree`.
 
 **Пример**
 

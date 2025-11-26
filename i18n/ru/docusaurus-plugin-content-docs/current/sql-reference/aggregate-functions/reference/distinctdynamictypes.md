@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # distinctDynamicTypes
 
-Вычисляет список уникальных типов данных, хранящихся в столбце типа [Dynamic](../../data-types/dynamic.md).
+Вычисляет список уникальных типов данных, содержащихся в столбце [Dynamic](../../data-types/dynamic.md).
 
 **Синтаксис**
 
@@ -22,7 +22,7 @@ distinctDynamicTypes(dynamic)
 
 **Возвращаемое значение**
 
-* Отсортированный список названий типов данных [Array(String)](../../data-types/array.md).
+* Отсортированный список имён типов данных [Array(String)](../../data-types/array.md).
 
 **Пример**
 

@@ -2,63 +2,63 @@
 description: '辞書を操作する関数のドキュメント'
 sidebar_label: '辞書'
 slug: /sql-reference/functions/ext-dict-functions
-title: '辞書操作用関数'
+title: '辞書を操作する関数'
 doc_type: 'reference'
 ---
 
 
 
-# 辞書を操作するための関数
+# 辞書を扱うための関数
 
 :::note
-[DDL クエリ](../../sql-reference/statements/create/dictionary.md)で作成された辞書の場合、`dict_name` パラメーターは `<database>.<dict_name>` のように完全修飾名として指定する必要があります。そうしない場合は、現在のデータベースが使用されます。
+[DDL クエリ](../../sql-reference/statements/create/dictionary.md)で作成された辞書については、`dict_name` パラメータを `<database>.<dict_name>` の形式で完全修飾して指定する必要があります。そうしない場合は、現在のデータベースが使用されます。
 :::
 
-辞書の接続および設定については、[Dictionaries](../../sql-reference/dictionaries/index.md) を参照してください。
+辞書の接続と設定方法については、[辞書](../../sql-reference/dictionaries/index.md) を参照してください。
 
 
 
-## dictGet、dictGetOrDefault、dictGetOrNull {#dictget-dictgetordefault-dictgetornull}
+## dictGet, dictGetOrDefault, dictGetOrNull
 
-ディクショナリから値を取得します。
+辞書から値を取得します。
 
 ```sql
-dictGet('dict_name', attr_names, id_expr)
-dictGetOrDefault('dict_name', attr_names, id_expr, default_value_expr)
-dictGetOrNull('dict_name', attr_name, id_expr)
+dictGet('ディクショナリ名', 属性名, ID式)
+dictGetOrDefault('ディクショナリ名', 属性名, ID式, デフォルト値式)
+dictGetOrNull('ディクショナリ名', 属性名, ID式)
 ```
 
 **引数**
 
-- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_names` — ディクショナリのカラム名([文字列リテラル](/sql-reference/syntax#string))、またはカラム名のタプル([Tuple](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string)))。
-- `id_expr` — キー値。ディクショナリの設定に応じて、ディクショナリキー型の値または[Tuple](../data-types/tuple.md)型の値を返す[式](/sql-reference/syntax#expressions)。
-- `default_value_expr` — ディクショナリに`id_expr`キーを持つ行が存在しない場合に返される値。`attr_names`属性に設定されたデータ型で値(または複数の値)を返す[式](/sql-reference/syntax#expressions)または[Tuple](../data-types/tuple.md)([式](/sql-reference/syntax#expressions))。
+* `dict_name` — 辞書の名前。[String literal](/sql-reference/syntax#string)。
+* `attr_names` — 辞書の列名 ([String literal](/sql-reference/syntax#string))、または列名のタプル ([Tuple](/sql-reference/data-types/tuple)([String literal](/sql-reference/syntax#string))。
+* `id_expr` — キー値。[Expression](/sql-reference/syntax#expressions)。辞書の設定に応じて、辞書のキー型の値、または [Tuple](../data-types/tuple.md) 型の値を返します。
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[Expression](/sql-reference/syntax#expressions) または [Tuple](../data-types/tuple.md)([Expression](/sql-reference/syntax#expressions)) であり、`attr_names` 属性に設定されたデータ型の値（または複数の値）を返します。
 
 **戻り値**
 
-- ClickHouseが[属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields)で属性を正常に解析できた場合、関数は`id_expr`に対応するディクショナリ属性の値を返します。
+* ClickHouse が [属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields) に従って属性を正しく解析できた場合、関数は `id_expr` に対応する辞書属性の値を返します。
 
-- ディクショナリに`id_expr`に対応するキーが存在しない場合:
+* `id_expr` に対応するキーが辞書内に存在しない場合は、次のようになります。
 
-        - `dictGet`はディクショナリ設定で属性に指定された`<null_value>`要素の内容を返します。
-        - `dictGetOrDefault`は`default_value_expr`パラメータとして渡された値を返します。
-        - `dictGetOrNull`はディクショナリでキーが見つからなかった場合に`NULL`を返します。
+  * `dictGet` は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+  * `dictGetOrDefault` は、`default_value_expr` パラメータとして渡された値を返します。
+  * `dictGetOrNull` は、辞書内でキーが見つからなかった場合に `NULL` を返します。
 
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、例外を送出します。
 
-**単純キーディクショナリの例**
+**単一キー辞書の例**
 
-以下の内容を含むテキストファイル`ext-dict-test.csv`を作成します:
+次の内容を含むテキストファイル `ext-dict-test.csv` を作成します。
 
 ```text
 1,1
 2,2
 ```
 
-最初のカラムは`id`、2番目のカラムは`c1`です。
+最初の列は `id`、2 番目の列は `c1` です。
 
-ディクショナリを設定します:
+辞書を構成します：
 
 ```xml
 <clickhouse>
@@ -88,7 +88,7 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 </clickhouse>
 ```
 
-クエリを実行します:
+次のクエリを実行します:
 
 ```sql
 SELECT
@@ -106,9 +106,9 @@ LIMIT 3;
 └─────┴────────┘
 ```
 
-**複合キーディクショナリの例**
+**複合キー辞書の例**
 
-以下の内容を含むテキストファイル`ext-dict-mult.csv`を作成します:
+次の内容を含むテキストファイル `ext-dict-mult.csv` を作成します。
 
 ```text
 1,1,'1'
@@ -116,9 +116,9 @@ LIMIT 3;
 3,3,'3'
 ```
 
-最初のカラムは`id`、2番目は`c1`、3番目は`c2`です。
+最初の列は `id`、2番目の列は `c1`、3番目の列は `c2` です。
 
-ディクショナリを設定します:
+辞書を設定します：
 
 
 ```xml
@@ -174,7 +174,7 @@ LIMIT 3;
 
 **範囲キー辞書の例**
 
-入力テーブル：
+入力テーブル:
 
 ```sql
 CREATE TABLE range_key_dictionary_source_table
@@ -192,7 +192,7 @@ INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), to
 INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
 ```
 
-辞書を作成する：
+辞書を作成します:
 
 ```sql
 CREATE DICTIONARY range_key_dictionary
@@ -210,7 +210,7 @@ LAYOUT(RANGE_HASHED())
 RANGE(MIN start_date MAX end_date);
 ```
 
-次のクエリを実行します：
+次のクエリを実行してください：
 
 ```sql
 SELECT
@@ -222,7 +222,7 @@ SELECT
 FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 ```
 
-結果：
+結果:
 
 ```text
 (0,'2019-05-20')        0       \N      \N      (NULL,NULL)
@@ -237,9 +237,9 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 * [辞書](../../sql-reference/dictionaries/index.md)
 
 
-## dictHas {#dicthas}
+## dictHas
 
-辞書内にキーが存在するかどうかを確認します。
+辞書にキーが存在するかどうかを確認します。
 
 ```sql
 dictHas('dict_name', id_expr)
@@ -247,18 +247,18 @@ dictHas('dict_name', id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[文字列リテラル](/sql-reference/syntax#string)。
-- `id_expr` — キー値。辞書の設定に応じて、辞書キー型の値または[Tuple](../data-types/tuple.md)型の値を返す[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書名。[文字列リテラル](/sql-reference/syntax#string)。
+* `id_expr` — キー値。辞書の設定に応じて、辞書のキー型の値、または [Tuple](../data-types/tuple.md) 型の値を返す [式](/sql-reference/syntax#expressions)。
 
 **戻り値**
 
-- 0、キーが存在しない場合。[UInt8](../data-types/int-uint.md)。
-- 1、キーが存在する場合。[UInt8](../data-types/int-uint.md)。
+* キーが存在しない場合は 0。[UInt8](../data-types/int-uint.md)。
+* キーが存在する場合は 1。[UInt8](../data-types/int-uint.md)。
 
 
-## dictGetHierarchy {#dictgethierarchy}
+## dictGetHierarchy
 
-[階層型ディクショナリ](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)内のキーのすべての親要素を含む配列を作成します。
+[階層型辞書](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)内の指定したキーについて、そのすべての親キーを含む配列を作成します。
 
 **構文**
 
@@ -268,17 +268,17 @@ dictGetHierarchy('dict_name', key)
 
 **引数**
 
-- `dict_name` — ディクショナリ名。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キー値。[UInt64](../data-types/int-uint.md)型の値を返す[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書の名前。[String literal](/sql-reference/syntax#string)。
+* `key` — キーの値。[Expression](/sql-reference/syntax#expressions) で、[UInt64](../data-types/int-uint.md) 型の値を返します。
 
 **戻り値**
 
-- キーの親要素。[Array(UInt64)](../data-types/array.md)。
+* キーの親。[Array(UInt64)](../data-types/array.md)。
 
 
-## dictIsIn {#dictisin}
+## dictIsIn
 
-辞書内の階層チェーン全体を通じて、キーの祖先を確認します。
+辞書の階層チェーン全体を対象に、キーの祖先が存在するかどうかを判定します。
 
 ```sql
 dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
@@ -286,19 +286,19 @@ dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `child_id_expr` — 確認するキー。[UInt64](../data-types/int-uint.md)型の値を返す[式](/sql-reference/syntax#expressions)。
-- `ancestor_id_expr` — `child_id_expr`キーの祖先と想定されるもの。[UInt64](../data-types/int-uint.md)型の値を返す[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書名。[String literal](/sql-reference/syntax#string)。
+* `child_id_expr` — チェック対象となるキー。[Expression](/sql-reference/syntax#expressions)。[UInt64](../data-types/int-uint.md) 型の値を返す式。
+* `ancestor_id_expr` — `child_id_expr` キーの想定される祖先。[Expression](/sql-reference/syntax#expressions)。[UInt64](../data-types/int-uint.md) 型の値を返す式。
 
 **戻り値**
 
-- `child_id_expr`が`ancestor_id_expr`の子でない場合は0。[UInt8](../data-types/int-uint.md)。
-- `child_id_expr`が`ancestor_id_expr`の子である場合、または`child_id_expr`が`ancestor_id_expr`と同一である場合は1。[UInt8](../data-types/int-uint.md)。
+* `child_id_expr` が `ancestor_id_expr` の子でない場合は 0。[UInt8](../data-types/int-uint.md)。
+* `child_id_expr` が `ancestor_id_expr` の子である場合、または `child_id_expr` が `ancestor_id_expr` 自身である場合は 1。[UInt8](../data-types/int-uint.md)。
 
 
-## dictGetChildren {#dictgetchildren}
+## dictGetChildren
 
-第1レベルの子要素をインデックスの配列として返します。これは[dictGetHierarchy](#dictgethierarchy)の逆変換です。
+第1階層の子要素をインデックスの配列として返します。[dictGetHierarchy](#dictgethierarchy) に対する逆変換です。
 
 **構文**
 
@@ -308,16 +308,16 @@ dictGetChildren(dict_name, key)
 
 **引数**
 
-- `dict_name` — ディクショナリ名。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キー値。[UInt64](../data-types/int-uint.md)型の値を返す[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書名。[文字列リテラル](/sql-reference/syntax#string)。
+* `key` — キーの値。[式](/sql-reference/syntax#expressions) で、[UInt64](../data-types/int-uint.md) 型の値を返します。
 
-**戻り値**
+**返される値**
 
-- キーの第1レベルの子要素。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+* 指定したキーに対する第1レベルの子孫。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **例**
 
-次の階層型ディクショナリを考えます:
+次の階層型辞書を考えます。
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -328,7 +328,7 @@ dictGetChildren(dict_name, key)
 └────┴───────────┘
 ```
 
-第1レベルの子要素:
+第1階層の子要素：
 
 ```sql
 SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
@@ -344,9 +344,9 @@ SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers 
 ```
 
 
-## dictGetDescendant {#dictgetdescendant}
+## dictGetDescendant
 
-[dictGetChildren](#dictgetchildren)関数を`level`回再帰的に適用した場合と同様に、すべての子孫を返します。
+[dictGetChildren](#dictgetchildren) 関数を `level` 回再帰的に適用した場合と同じように、すべての子孫を返します。
 
 **構文**
 
@@ -356,17 +356,17 @@ dictGetDescendants(dict_name, key, level)
 
 **引数**
 
-- `dict_name` — ディクショナリ名。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キー値。[UInt64](../data-types/int-uint.md)型の値を返す[式](/sql-reference/syntax#expressions)。
-- `level` — 階層レベル。`level = 0`の場合、末端までのすべての子孫を返します。[UInt8](../data-types/int-uint.md)。
+* `dict_name` — 辞書名。[文字列リテラル](/sql-reference/syntax#string)。
+* `key` — キーの値。[式](/sql-reference/syntax#expressions)で、[UInt64](../data-types/int-uint.md) 型の値を返します。
+* `level` — 階層レベル。`level = 0` の場合、末端までのすべての子孫を返します。[UInt8](../data-types/int-uint.md)。
 
-**戻り値**
+**返される値**
 
-- キーの子孫。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+* 指定したキーの子孫。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **例**
 
-次の階層型ディクショナリを考えます:
+次のような階層型辞書を考えます。
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -377,7 +377,7 @@ dictGetDescendants(dict_name, key, level)
 └────┴───────────┘
 ```
 
-すべての子孫:
+すべての子孫要素:
 
 ```sql
 SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
@@ -392,7 +392,7 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbe
 └─────────────────────────────────────────────────────────┘
 ```
 
-第1レベルの子孫:
+第1階層の子要素:
 
 ```sql
 SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.numbers LIMIT 4;
@@ -408,11 +408,11 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.nu
 ```
 
 
-## dictGetAll {#dictgetall}
+## dictGetAll
 
-[正規表現ツリー辞書](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)内の各キーに一致したすべてのノードの属性値を取得します。
+[正規表現ツリーディクショナリ](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)内で各キーに一致したすべてのノードの属性値を取得します。
 
-`T`型の代わりに`Array(T)`型の値を返す点を除き、この関数は[`dictGet`](#dictget-dictgetordefault-dictgetornull)と同様に動作します。
+`T` の代わりに `Array(T)` 型の値を返す点を除き、この関数は [`dictGet`](#dictget-dictgetordefault-dictgetornull) と同様に動作します。
 
 **構文**
 
@@ -422,22 +422,22 @@ dictGetAll('dict_name', attr_names, id_expr[, limit])
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_names` — 辞書のカラム名。[文字列リテラル](/sql-reference/syntax#string)、またはカラム名のタプル[Tuple](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string))。
-- `id_expr` — キー値。辞書の設定に応じて、辞書キー型の値の配列または[Tuple](/sql-reference/data-types/tuple)型の値を返す[式](/sql-reference/syntax#expressions)。
-- `limit` — 返される各値配列の最大長。切り捨て時には、子ノードが親ノードよりも優先され、それ以外の場合は正規表現ツリー辞書に定義されたリスト順序が尊重されます。未指定の場合、配列の長さは無制限です。
+* `dict_name` — 辞書の名前。[String literal](/sql-reference/syntax#string)。
+* `attr_names` — 辞書のカラム名（[String literal](/sql-reference/syntax#string)）、またはカラム名のタプル（[Tuple](/sql-reference/data-types/tuple)([String literal](/sql-reference/syntax#string))）。
+* `id_expr` — キーの値を表す [Expression](/sql-reference/syntax#expressions) で、辞書の設定に応じて、辞書キー型の値の配列または [Tuple](/sql-reference/data-types/tuple) 型の値を返します。
+* `limit` - 返される各値配列の最大長。切り詰めが行われる場合は、親ノードより子ノードが優先され、それ以外の場合は regexp ツリー辞書で定義されたリスト順が維持されます。指定されていない場合、配列の長さに制限はありません。
 
 **戻り値**
 
-- ClickHouseが辞書で定義された属性のデータ型で属性を正常に解析できた場合、`attr_names`で指定された各属性について`id_expr`に対応する辞書属性値の配列を返します。
+* ClickHouse が、辞書で定義された属性のデータ型として属性を正しく解析できた場合、`attr_names` で指定された各属性について、`id_expr` に対応する辞書属性値の配列を返します。
 
-- 辞書内に`id_expr`に対応するキーが存在しない場合、空の配列が返されます。
+* `id_expr` に対応するキーが辞書内に存在しない場合、空の配列が返されます。
 
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合には例外をスローします。
 
 **例**
 
-以下の正規表現ツリー辞書を考えます:
+次の regexp ツリー辞書を例にします。
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -474,7 +474,7 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
 └───────────────────────────────────────────────┘
 ```
 
-最大 2 件の一致する値を取得：
+最大 2 個の一致する値を取得:
 
 ```sql
 SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
@@ -487,9 +487,9 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
 ```
 
 
-## dictGetKeys {#dictgetkeys}
+## dictGetKeys
 
-指定された値と等しい属性を持つディクショナリキーを返します。これは単一の属性に対する[`dictGet`](#dictget-dictgetordefault-dictgetornull)の逆操作です。
+指定した値と等しい属性値を持つ辞書キーを返します。これは単一の属性に対する [`dictGet`](#dictget-dictgetordefault-dictgetornull) の逆操作です。
 
 **構文**
 
@@ -499,23 +499,23 @@ dictGetKeys('dict_name', 'attr_name', value_expr);
 
 **引数**
 
-- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_name` — ディクショナリの属性カラムの名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `value_expr` — 属性と照合する値。属性のデータ型に変換可能な[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書の名前。[String literal](/sql-reference/syntax#string)。
+* `attr_name` — 辞書の属性列の名前。[String literal](/sql-reference/syntax#string)。
+* `value_expr` — 属性と比較する値。[Expression](/sql-reference/syntax#expressions) であり、その属性のデータ型に変換可能なもの。
 
 **戻り値**
 
-- 単一キーディクショナリの場合：`value_expr`と等しい属性を持つキーの配列。[Array(T)](../data-types/array.md)。ここで`T`はディクショナリキーのデータ型。
+* 単一キー辞書の場合: 属性が `value_expr` と等しいキーの配列。[Array(T)](../data-types/array.md) で、`T` は辞書キーのデータ型。
 
-- 複数キーディクショナリの場合：`value_expr`と等しい属性を持つキーのタプルの配列。[Array](../data-types/array.md)([Tuple(T1, T2, ...)](../data-types/tuple.md))。各`Tuple`にはディクショナリキーカラムが順番に含まれます。
+* 複合キー辞書の場合: 属性が `value_expr` と等しいキーのタプルの配列。[Array](../data-types/array.md)([Tuple(T1, T2, ...)](../data-types/tuple.md)) であり、各 `Tuple` には辞書キーの列が順序通りに含まれる。
 
-- ディクショナリに`value_expr`に対応する属性が存在しない場合、空の配列が返されます。
+* `value_expr` に対応する属性が辞書内に存在しない場合は、空の配列が返される。
 
-ClickHouseは、属性の値を解析できない場合、または値を属性のデータ型に変換できない場合に例外をスローします。
+属性の値をパースできない場合、または値を属性のデータ型に変換できない場合、ClickHouse は例外をスローします。
 
 **例**
 
-次のディクショナリを考えます：
+次の辞書を想定します:
 
 ```txt
  ┌─id─┬─level──┐
@@ -526,7 +526,7 @@ ClickHouseは、属性の値を解析できない場合、または値を属性�
  └────┴────────┘
 ```
 
-レベルが`high`のすべてのIDを取得するには：
+次に、level が `high` のすべての ID を取得します:
 
 ```sql
 SELECT dictGetKeys('levels', 'level', 'high') AS ids;
@@ -539,28 +539,28 @@ SELECT dictGetKeys('levels', 'level', 'high') AS ids;
 ```
 
 :::note
-`dictGetKeys`が使用するクエリごとの逆引きキャッシュのサイズを制限するには、設定`max_reverse_dictionary_lookup_cache_size_bytes`を使用します。キャッシュは、同じクエリ内でディクショナリを再スキャンすることを避けるために、各属性値に対してシリアル化されたキータプルを保存します。キャッシュはクエリ間で永続化されません。制限に達すると、エントリはLRUで削除されます。これは、入力のカーディナリティが低く、ワーキングセットがキャッシュに収まる場合に、大規模なディクショナリで最も効果的です。キャッシングを無効にするには`0`に設定します。
+`dictGetKeys` が使用するクエリごとの逆引きキャッシュのサイズ上限を設定するには、`max_reverse_dictionary_lookup_cache_size_bytes` を使用します。このキャッシュは、同一クエリ内で辞書を再スキャンしないように、各属性値に対応するシリアル化されたキーのタプルを保存します。キャッシュはクエリ間で永続化されません。上限に達すると、エントリは LRU で破棄されます。これは、辞書が大きく、入力のカーディナリティが低く、作業セットがキャッシュに収まる場合に最も効果的です。キャッシュを無効にするには `0` を設定します。
 
-さらに、`attr_name`カラムの一意の値がキャッシュ内に収まる場合、ほとんどのケースで関数の実行は入力行数に対して線形となり、少数のディクショナリスキャンが追加されます。
+さらに、`attr_name` 列のユニークな値がキャッシュ内に収まる場合、多くのケースで関数の実行は入力行数に対して線形となり、そこに少数回の辞書スキャンが加わる程度になります。
 :::
 
 
-## その他の関数 {#other-functions}
+## その他の関数
 
-ClickHouseは、辞書の設定に関係なく、辞書属性値を特定のデータ型に変換する専用関数をサポートしています。
+ClickHouse は、辞書の設定に関係なく、辞書属性の値を特定のデータ型に変換する専用関数をサポートしています。
 
 関数:
 
-- `dictGetInt8`, `dictGetInt16`, `dictGetInt32`, `dictGetInt64`
-- `dictGetUInt8`, `dictGetUInt16`, `dictGetUInt32`, `dictGetUInt64`
-- `dictGetFloat32`, `dictGetFloat64`
-- `dictGetDate`
-- `dictGetDateTime`
-- `dictGetUUID`
-- `dictGetString`
-- `dictGetIPv4`, `dictGetIPv6`
+* `dictGetInt8`, `dictGetInt16`, `dictGetInt32`, `dictGetInt64`
+* `dictGetUInt8`, `dictGetUInt16`, `dictGetUInt32`, `dictGetUInt64`
+* `dictGetFloat32`, `dictGetFloat64`
+* `dictGetDate`
+* `dictGetDateTime`
+* `dictGetUUID`
+* `dictGetString`
+* `dictGetIPv4`, `dictGetIPv6`
 
-これらの関数はすべて`OrDefault`バリエーションを持ちます。例えば、`dictGetDateOrDefault`です。
+これらすべての関数には、`OrDefault` が付いたバージョンがあります。例えば、`dictGetDateOrDefault` です。
 
 構文:
 
@@ -571,21 +571,21 @@ dictGet[Type]OrDefault('dict_name', 'attr_name', id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_name` — 辞書のカラム名。[文字列リテラル](/sql-reference/syntax#string)。
-- `id_expr` — キー値。辞書の設定に応じて[UInt64](../data-types/int-uint.md)または[Tuple](../data-types/tuple.md)型の値を返す[式](/sql-reference/syntax#expressions)。
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。`attr_name`属性に設定されたデータ型の値を返す[式](/sql-reference/syntax#expressions)。
+* `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
+* `attr_name` — 辞書の列名。[文字列リテラル](/sql-reference/syntax#string)。
+* `id_expr` — キー値。[式](/sql-reference/syntax#expressions) であり、辞書の設定に応じて [UInt64](../data-types/int-uint.md) または [Tuple](../data-types/tuple.md) 型の値を返します。
+* `default_value_expr` — `id_expr` キーを持つ行が辞書に存在しない場合に返される値。[式](/sql-reference/syntax#expressions) であり、`attr_name` 属性に設定されたデータ型の値を返します。
 
 **戻り値**
 
-- ClickHouseが[属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields)で属性を正常に解析できた場合、関数は`id_expr`に対応する辞書属性の値を返します。
+* ClickHouse が [属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields) として属性を正常に解析できる場合、関数は `id_expr` に対応する辞書属性の値を返します。
 
-- 辞書に要求された`id_expr`が存在しない場合:
+* 要求された `id_expr` が辞書に存在しない場合は、次のようになります。
 
-        - `dictGet[Type]`は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
-        - `dictGet[Type]OrDefault`は、`default_value_expr`パラメータとして渡された値を返します。
+  * `dictGet[Type]` は、辞書の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
+  * `dictGet[Type]OrDefault` は、`default_value_expr` パラメータとして渡された値を返します。
 
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外を送出します。
 
 
 ## 辞書の例 {#example-dictionary}
@@ -593,7 +593,7 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 このセクションの例では、以下の辞書を使用します。以下で説明する関数の例を実行するには、ClickHouseでこれらの辞書を作成してください。
 
 <details>
-<summary>dictGet\<T\>およびdictGet\<T\>OrDefault関数用の辞書の例</summary>
+<summary>dictGet\<T\>およびdictGet\<T\>OrDefault関数用の辞書例</summary>
 
 ```sql
 -- 必要なすべてのデータ型を持つテーブルを作成
@@ -688,7 +688,7 @@ LIFETIME(MIN 300 MAX 600);
 </details>
 
 <details>
-<summary>dictGetAll用の辞書の例</summary>
+<summary>dictGetAll用の辞書例</summary>
 
 正規表現ツリー辞書のデータを格納するテーブルを作成します:
 
@@ -760,7 +760,7 @@ INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), to
 INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
 ```
 
-辞書を作成します:
+ディクショナリを作成します：
 
 ```sql
 CREATE DICTIONARY range_key_dictionary
@@ -781,9 +781,9 @@ RANGE(MIN start_date MAX end_date);
 </details>
 
 <details>
-<summary>複合キー辞書の例</summary>
+<summary>複合キーディクショナリの例</summary>
 
-ソーステーブルを作成します:
+ソーステーブルを作成します：
 
 ```sql
 CREATE TABLE dict_mult_source
@@ -794,7 +794,7 @@ c2 String
 ) ENGINE = Memory;
 ```
 
-ソーステーブルにデータを挿入します:
+ソーステーブルにデータを挿入します：
 
 ```sql
 INSERT INTO dict_mult_source VALUES
@@ -803,7 +803,7 @@ INSERT INTO dict_mult_source VALUES
 (3, 3, '3');
 ```
 
-辞書を作成します:
+ディクショナリを作成します：
 
 ```sql
 CREATE DICTIONARY ext_dict_mult
@@ -821,9 +821,9 @@ LIFETIME(MIN 0 MAX 0);
 </details>
 
 <details>
-<summary>階層型辞書の例</summary>
+<summary>階層型ディクショナリの例</summary>
 
-ソーステーブルを作成します:
+ソーステーブルを作成します：
 
 ```sql
 CREATE TABLE hierarchy_source
@@ -834,7 +834,7 @@ CREATE TABLE hierarchy_source
 ) ENGINE = Memory;
 ```
 
-ソーステーブルにデータを挿入します:
+ソーステーブルにデータを挿入します：
 
 ```sql
 INSERT INTO hierarchy_source VALUES
@@ -846,16 +846,16 @@ INSERT INTO hierarchy_source VALUES
 (5, 2, 'Level 3 - Node 5'),
 (6, 3, 'Level 3 - Node 6');
 
--- 0 (ルート)
--- └── 1 (レベル1 - ノード1)
---     ├── 2 (レベル2 - ノード2)
---     │   ├── 4 (レベル3 - ノード4)
---     │   └── 5 (レベル3 - ノード5)
---     └── 3 (レベル2 - ノード3)
---         └── 6 (レベル3 - ノード6)
+-- 0 (Root)
+-- └── 1 (Level 1 - Node 1)
+--     ├── 2 (Level 2 - Node 2)
+--     │   ├── 4 (Level 3 - Node 4)
+--     │   └── 5 (Level 3 - Node 5)
+--     └── 3 (Level 2 - Node 3)
+--         └── 6 (Level 3 - Node 6)
 ```
 
-辞書を作成します:
+ディクショナリを作成します：
 
 ```sql
 CREATE DICTIONARY hierarchical_dictionary
@@ -879,13 +879,13 @@ See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogene
 -->
 
 
-<!--AUTOGENERATED_START-->
+{/*AUTOGENERATED_START*/ }
 
-## dictGet {#dictGet}
+## dictGet
 
-Introduced in: v18.16
+導入バージョン: v18.16
 
-辞書から値を取得します。
+ディクショナリから値を取得します。
 
 **構文**
 
@@ -895,18 +895,18 @@ dictGet('dict_name', attr_names, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_names` — 辞書のカラム名、またはカラム名のタプル。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。UInt64またはTuple(T)を返す式。[`UInt64`](/sql-reference/data-types/int-uint) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_names` — 辞書の列名、または列名のタプル。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。`UInt64`/`Tuple(T)` を返す式。[`UInt64`](/sql-reference/data-types/int-uint) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-キーが見つかった場合、id_exprに対応する辞書属性の値を返します。
-キーが見つからない場合、辞書設定で当該属性に指定された`<null_value>`要素の内容を返します。
+キーが見つかった場合、`id_expr` に対応する辞書属性の値を返します。
+キーが見つからない場合、辞書の設定でその属性用に指定されている `<null_value>` 要素の内容を返します。
 
 **例**
 
-**単一属性の取得**
+**単一の属性を取得する**
 
 ```sql title=Query
 SELECT dictGet('ext_dict_test', 'c1', toUInt64(1)) AS val
@@ -916,7 +916,7 @@ SELECT dictGet('ext_dict_test', 'c1', toUInt64(1)) AS val
 1
 ```
 
-**複数属性**
+**複数の属性**
 
 ```sql title=Query
 SELECT
@@ -941,11 +941,11 @@ LIMIT 3;
 ```
 
 
-## dictGetAll {#dictGetAll}
+## dictGetAll
 
 導入バージョン: v23.5
 
-辞書の設定に関係なく、辞書属性値を`All`データ型に変換します。
+辞書の設定内容に関係なく、辞書属性の値を `All` データ型に変換します。
 
 **構文**
 
@@ -955,17 +955,17 @@ dictGetAll(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+それ以外の場合は、辞書の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -976,10 +976,10 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 SELECT
     'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36' AS user_agent,
 
-    -- これは該当するすべてのパターンにマッチします
+    -- すべての該当パターンにマッチします
     dictGetAll('regexp_tree', 'os_replacement', 'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36') AS all_matches,
 
-    -- これは最初のマッチのみを返します
+    -- 最初にマッチしたもののみを返します
     dictGet('regexp_tree', 'os_replacement', 'Mozilla/5.0 (Linux; Android 12; SM-G998B) Mobile Safari/537.36') AS first_match;
 ```
 
@@ -990,11 +990,11 @@ SELECT
 ```
 
 
-## dictGetChildren {#dictGetChildren}
+## dictGetChildren
 
 導入バージョン: v21.4
 
-第1レベルの子要素をインデックスの配列として返します。これは[dictGetHierarchy](#dictgethierarchy)の逆変換です。
+第1階層の子要素をインデックスの配列として返します。これは [dictGetHierarchy](#dictgethierarchy) の逆変換です。
 
 **構文**
 
@@ -1004,33 +1004,33 @@ dictGetChildren(dict_name, key)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `key` — チェック対象のキー。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `key` — 対象とするキー。[`const String`](/sql-reference/data-types/string)
 
-**戻り値**
+**返り値**
 
-指定されたキーの第1レベルの子要素を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+指定したキーの第1階層の子孫を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
-**例**
+**使用例**
 
-**辞書の第1レベルの子要素を取得**
+**辞書の第1階層の子孫を取得する**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetChildren('hierarchical_dictionary', 2);
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetChild⋯ionary', 2)─┐
 │ [4,5]                    │
 └──────────────────────────┘
 ```
 
 
-## dictGetDate {#dictGetDate}
+## dictGetDate
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Date`データ型に変換します。
+辞書の設定に関係なく、辞書属性の値を `Date` データ型に変換します。
 
 **構文**
 
@@ -1040,39 +1040,39 @@ dictGetDate(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+それ以外の場合は、辞書設定内でその属性に対して指定されている `<null_value>` 要素の値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetDate(⋯_value', 1)─┐
 │               2020-01-01 │
 └──────────────────────────┘
 ```
 
 
-## dictGetDateOrDefault {#dictGetDateOrDefault}
+## dictGetDateOrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Date`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性の値を `Date` データ型として取得します。キーが見つからない場合は、指定されたデフォルト値を返します。
 
 **構文**
 
@@ -1082,18 +1082,18 @@ dictGetDateOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（もしくは値のタプル）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
+**戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+対応する値が存在しない場合は `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1101,10 +1101,10 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+-- キーが存在する場合
 SELECT dictGetDate('all_types_dict', 'Date_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- キーが存在しない場合は、指定したデフォルト値を返す
 SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01-01'));
 ```
 
@@ -1118,11 +1118,11 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 ```
 
 
-## dictGetDateTime {#dictGetDateTime}
+## dictGetDateTime
 
-導入バージョン: v1.1
+導入: v1.1
 
-辞書の設定に関係なく、辞書属性値を`DateTime`データ型に変換します。
+辞書の設定に関係なく、辞書の属性値を `DateTime` データ型に変換します。
 
 **構文**
 
@@ -1132,60 +1132,17 @@ dictGetDateTime(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値が存在しない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetDateT⋯_value', 1)─┐
-│      2024-01-15 10:30:00 │
-└──────────────────────────┘
-```
-
-
-## dictGetDateTimeOrDefault {#dictGetDateTimeOrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`DateTime`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetDateTimeOrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**戻り値**
-
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
-
-:::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解釈できない場合、または値が属性のデータ型と一致しない場合に例外を発生させます。
 :::
 
 **例**
@@ -1193,10 +1150,52 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
+```
+
+```response title=Response
+┌─dictGetDateT⋯_value', 1)─┐
+│      2024-01-15 10:30:00 │
+└──────────────────────────┘
+```
+
+
+## dictGetDateTimeOrDefault
+
+導入バージョン: v1.1
+
+辞書の設定内容に関係なく、辞書属性値を `DateTime` データ型に変換するか、キーが見つからない場合は指定したデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetDateTimeOrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書の属性値を返し、存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+
+:::note
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外を送出します。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- キーが存在しない場合は、指定したデフォルト値を返す
 SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateTime('1970-01-01 00:00:00'));
 ```
 
@@ -1210,11 +1209,11 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 ```
 
 
-## dictGetDescendants {#dictGetDescendants}
+## dictGetDescendants
 
 導入バージョン: v21.4
 
-[`dictGetChildren`](#dictGetChildren)関数を`level`回再帰的に適用した場合と同様に、すべての子孫を返します。
+[`dictGetChildren`](#dictGetChildren) 関数を `level` 回再帰的に適用した場合と同じ結果として、すべての子孫を返します。
 
 **構文**
 
@@ -1224,43 +1223,43 @@ dictGetDescendants(dict_name, key, level)
 
 **引数**
 
-- `dict_name` — ディクショナリ名。[`String`](/sql-reference/data-types/string)
-- `key` — 確認対象のキー。[`const String`](/sql-reference/data-types/string)
-- `level` — 階層レベル。`level = 0`の場合、すべての子孫を末端まで返します。[`UInt8`](/sql-reference/data-types/int-uint)
+* `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
+* `key` — 照会対象のキー。[`const String`](/sql-reference/data-types/string)
+* `level` — 照会対象キーの階層レベル。`level = 0` の場合、末端までのすべての子孫を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-キーの子孫を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+指定したキーに対する子孫を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
 **例**
 
-**ディクショナリの第2レベルの子孫を取得する**
+**辞書の第 1 階層の子要素を取得する**
 
-```sql title=クエリ
+```sql title=Query
 -- 以下の階層型ディクショナリを考えます:
--- 0 (Root)
--- └── 1 (Level 1 - Node 1)
---     ├── 2 (Level 2 - Node 2)
---     │   ├── 4 (Level 3 - Node 4)
---     │   └── 5 (Level 3 - Node 5)
---     └── 3 (Level 2 - Node 3)
---         └── 6 (Level 3 - Node 6)
+-- 0 (ルート)
+-- └── 1 (レベル 1 - ノード 1)
+--     ├── 2 (レベル 2 - ノード 2)
+--     │   ├── 4 (レベル 3 - ノード 4)
+--     │   └── 5 (レベル 3 - ノード 5)
+--     └── 3 (レベル 2 - ノード 3)
+--         └── 6 (レベル 3 - ノード 6)
 
 SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetDesce⋯ary', 0, 2)─┐
 │ [3,2]                    │
 └──────────────────────────┘
 ```
 
 
-## dictGetFloat32 {#dictGetFloat32}
+## dictGetFloat32
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Float32`データ型に変換します。
+辞書の設定に関係なく、辞書属性の値を `Float32` 型に変換します。
 
 **構文**
 
@@ -1270,60 +1269,17 @@ dictGetFloat32(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書キー型の値、またはタプル値（辞書の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
+**返り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
-
-:::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetFloat⋯_value', 1)─┐
-│               -123.123   │
-└──────────────────────────┘
-```
-
-
-## dictGetFloat32OrDefault {#dictGetFloat32OrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`Float32`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**戻り値**
-
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返します。
+それ以外の場合は、辞書設定でその属性に対して指定されている `<null_value>` 要素の内容を返します。
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1331,10 +1287,53 @@ dictGetFloat32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
+```
+
+```response title=Response
+┌─dictGetFloat⋯_value', 1)─┐
+│               -123.123   │
+└──────────────────────────┘
+```
+
+
+## dictGetFloat32OrDefault
+
+導入バージョン: v1.1
+
+辞書の設定に関係なく、辞書属性の値を `Float32` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetFloat32OrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書の属性値を返し、
+存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
+
+:::note
+ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(-1.0)を返す
+-- キーが存在しない場合は、指定したデフォルト値(-1.0)を返す
 SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 ```
 
@@ -1348,11 +1347,11 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 ```
 
 
-## dictGetFloat64 {#dictGetFloat64}
+## dictGetFloat64
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Float64`データ型に変換します。
+ディクショナリの設定内容に関係なく、ディクショナリ属性の値を `Float64` 型に変換します。
 
 **構文**
 
@@ -1362,60 +1361,17 @@ dictGetFloat64(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定によって異なる）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+それ以外の場合には、辞書の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetFloat⋯_value', 1)─┐
-│                 -123.123 │
-└──────────────────────────┘
-```
-
-
-## dictGetFloat64OrDefault {#dictGetFloat64OrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`Float64`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**返り値**
-
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
-
-:::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1423,10 +1379,53 @@ dictGetFloat64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
+```
+
+```response title=Response
+┌─dictGetFloat⋯_value', 1)─┐
+│                 -123.123 │
+└──────────────────────────┘
+```
+
+
+## dictGetFloat64OrDefault
+
+導入バージョン: v1.1
+
+辞書の設定に関係なく、辞書属性値を `Float64` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetFloat64OrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書の属性値を返し、
+存在しない場合は `default_value_expr` パラメータで渡された値を返します。
+
+:::note
+属性値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(nan)を返す
+-- キーが存在しない場合は、指定したデフォルト値(nan)を返す
 SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 ```
 
@@ -1440,11 +1439,11 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 ```
 
 
-## dictGetHierarchy {#dictGetHierarchy}
+## dictGetHierarchy
 
 導入バージョン: v1.1
 
-[階層型辞書](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)内のキーのすべての親を含む配列を作成します。
+[階層型辞書](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)における、指定したキーのすべての親を含む配列を作成します。
 
 **構文**
 
@@ -1454,33 +1453,33 @@ dictGetHierarchy(dict_name, key)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `key` — キー値。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
+* `key` — キーの値。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
-キーの親を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
+キーに対応する親を返します。[`Array(UInt64)`](/sql-reference/data-types/array)
 
 **例**
 
 **キーの階層を取得する**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetHiera⋯ionary', 5)─┐
 │ [5,2,1]                  │
 └──────────────────────────┘
 ```
 
 
-## dictGetIPv4 {#dictGetIPv4}
+## dictGetIPv4
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`IPv4`データ型に変換します。
+辞書の設定に関係なく、辞書の属性値を `IPv4` データ型に変換します。
 
 **構文**
 
@@ -1490,59 +1489,17 @@ dictGetIPv4(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
+**返り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
-
-:::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetIPv4('all_⋯ 'IPv4_value', 1)─┐
-│ 192.168.0.1                         │
-└─────────────────────────────────────┘
-```
-
-
-## dictGetIPv4OrDefault {#dictGetIPv4OrDefault}
-
-Introduced in: v23.1
-
-辞書の設定に関係なく、辞書属性値を`IPv4`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetIPv4OrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**返される値**
-
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値がない場合は、辞書設定でその属性に対して指定されている `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -1550,10 +1507,52 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
+```
+
+```response title=Response
+┌─dictGetIPv4('all_⋯ 'IPv4_value', 1)─┐
+│ 192.168.0.1                         │
+└─────────────────────────────────────┘
+```
+
+
+## dictGetIPv4OrDefault
+
+導入バージョン: v23.1
+
+辞書の設定に関係なく、辞書の属性値を `IPv4` データ型に変換するか、キーが見つからない場合には指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetIPv4OrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（または値の組）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書属性の値を返し、存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
+
+:::note
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外を発生させます。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- キーが存在しない場合は、指定したデフォルト値を返す
 SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0'));
 ```
 
@@ -1567,11 +1566,11 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 ```
 
 
-## dictGetIPv6 {#dictGetIPv6}
+## dictGetIPv6
 
 導入バージョン: v23.1
 
-辞書の設定に関わらず、辞書属性値を`IPv6`データ型に変換します。
+ディクショナリの設定に関係なく、ディクショナリ属性の値を `IPv6` 型に変換します。
 
 **構文**
 
@@ -1581,16 +1580,17 @@ dictGetIPv6(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値またはタプル値（辞書の設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値が存在しない場合は、辞書の設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1608,11 +1608,11 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 ```
 
 
-## dictGetIPv6OrDefault {#dictGetIPv6OrDefault}
+## dictGetIPv6OrDefault
 
 導入バージョン: v23.1
 
-辞書の設定に関係なく、辞書属性値を`IPv6`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性値を `IPv6` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
@@ -1622,18 +1622,18 @@ dictGetIPv6OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の構成に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
+**戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -1644,7 +1644,7 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 -- 存在するキーの場合
 SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- 存在しないキーの場合は、指定したデフォルト値を返す
 SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 ```
 
@@ -1658,11 +1658,11 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 ```
 
 
-## dictGetInt16 {#dictGetInt16}
+## dictGetInt16
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int16`データ型に変換します。
+辞書設定に関係なく、辞書属性値を `Int16` データ型に変換します。
 
 **構文**
 
@@ -1672,59 +1672,17 @@ dictGetInt16(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値がない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetInt16⋯_value', 1)─┐
-│                    -5000 │
-└──────────────────────────┘
-```
-
-
-## dictGetInt16OrDefault {#dictGetInt16OrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`Int16`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**返り値**
-
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
-
-:::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1732,10 +1690,53 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
+```
+
+```response title=Response
+┌─dictGetInt16⋯_value', 1)─┐
+│                    -5000 │
+└──────────────────────────┘
+```
+
+
+## dictGetInt16OrDefault
+
+導入バージョン: v1.1
+
+辞書設定に関係なく、辞書属性値を `Int16` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetInt16OrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書の属性の値を返します。
+対応する値がない場合は、`default_value_expr` パラメータとして渡された値を返します。
+
+:::note
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetInt16('all_types_dict', 'Int16_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(-1)を返す
+-- キーが存在しない場合は、指定したデフォルト値(-1)を返す
 SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 ```
 
@@ -1749,11 +1750,11 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 ```
 
 
-## dictGetInt32 {#dictGetInt32}
+## dictGetInt32
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int32`データ型に変換します。
+辞書の設定に関係なく、辞書属性の値を `Int32` 型に変換します。
 
 **構文**
 
@@ -1763,59 +1764,60 @@ dictGetInt32(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書設定によって異なる）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**戻り値**
+**返り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値がない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetInt32⋯_value', 1)─┐
 │                -1000000  │
 └──────────────────────────┘
 ```
 
 
-## dictGetInt32OrDefault {#dictGetInt32OrDefault}
+## dictGetInt32OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int32`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+ディクショナリの設定内容に関係なく、ディクショナリ属性値を `Int32` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
 ```sql
-dictGetInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
+dictGetInt32OrDefault(辞書名, 属性名, ID式, デフォルト値式)
 ```
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーの行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
+**戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書の属性値を返し、
+それ以外の場合は `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -1826,7 +1828,7 @@ dictGetInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 -- 存在するキーの場合
 SELECT dictGetInt32('all_types_dict', 'Int32_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(-1)を返す
+-- 存在しないキーの場合は、指定したデフォルト値(-1)を返す
 SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 ```
 
@@ -1840,11 +1842,11 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 ```
 
 
-## dictGetInt64 {#dictGetInt64}
+## dictGetInt64
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int64`データ型に変換します。
+辞書の設定に関係なく、辞書の属性値を `Int64` データ型に変換します。
 
 **構文**
 
@@ -1854,39 +1856,39 @@ dictGetInt64(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書の属性値を返します。
+該当する値がない場合は、辞書の設定でその属性に指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetInt64⋯_value', 1)───┐
 │       -9223372036854775807 │
 └────────────────────────────┘
 ```
 
 
-## dictGetInt64OrDefault {#dictGetInt64OrDefault}
+## dictGetInt64OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int64`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性の値を `Int64` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
@@ -1896,18 +1898,18 @@ dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーの行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-**返り値**
+**戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+それ以外の場合には `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -1915,10 +1917,10 @@ dictGetInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+-- キーが存在する場合
 SELECT dictGetInt64('all_types_dict', 'Int64_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(-1)を返す
+-- キーが存在しない場合は、指定したデフォルト値(-1)を返す
 SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 ```
 
@@ -1932,11 +1934,11 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 ```
 
 
-## dictGetInt8 {#dictGetInt8}
+## dictGetInt8
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int8`データ型に変換します。
+辞書の設定に関係なく、辞書属性の値を `Int8` 型に変換します。
 
 **構文**
 
@@ -1946,39 +1948,39 @@ dictGetInt8(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキーの型の値、またはタプル値（辞書設定に依存）を返す式。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値が存在しない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouseは、属性の値をパースできない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetInt8(⋯_value', 1)─┐
 │                     -100 │
 └──────────────────────────┘
 ```
 
 
-## dictGetInt8OrDefault {#dictGetInt8OrDefault}
+## dictGetInt8OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`Int8`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関わらず、辞書の属性値を `Int8` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
@@ -1988,18 +1990,18 @@ dictGetInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定によって異なる）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーの行が存在しない場合に返す値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+存在しない場合は `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -2007,10 +2009,10 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+-- キーが存在する場合
 SELECT dictGetInt8('all_types_dict', 'Int8_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(-1)を返す
+-- キーが存在しない場合は、指定したデフォルト値（-1）を返す
 SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 ```
 
@@ -2024,16 +2026,16 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 ```
 
 
-## dictGetKeys {#dictGetKeys}
+## dictGetKeys
 
 導入バージョン: v25.11
 
-指定された値と等しい属性を持つ辞書キーを返します。これは単一の属性に対する`dictGet`関数の逆操作です。
+指定した値と等しい属性を持つ辞書キー（複数可）を返します。これは単一属性に対する関数 `dictGet` の逆演算に相当します。
 
-`dictGetKeys`が使用するクエリごとの逆引きキャッシュのサイズを制限するには、`max_reverse_dictionary_lookup_cache_size_bytes`設定を使用します。
-キャッシュは、同一クエリ内で辞書を再スキャンすることを避けるため、各属性値に対してシリアル化されたキータプルを保存します。
-キャッシュはクエリ間で永続化されません。制限に達すると、エントリはLRUで削除されます。
-これは、入力のカーディナリティが低く、ワーキングセットがキャッシュに収まる場合に、大規模な辞書で最も効果的です。キャッシングを無効にするには`0`に設定します。
+設定 `max_reverse_dictionary_lookup_cache_size_bytes` を使用して、`dictGetKeys` が利用するクエリごとの逆引きキャッシュのサイズ上限を設定します。
+このキャッシュは、同一クエリ内で辞書を再スキャンしないように、各属性値に対するシリアライズ済みキーのタプルを保存します。
+キャッシュはクエリ間で永続化されません。上限に達した場合、エントリは LRU に基づいて削除されます。
+これは、入力のカーディナリティが低く、ワーキングセットがキャッシュに収まる大規模な辞書で最も効果的です。キャッシュを無効化するには `0` を設定します。
 
 **構文**
 
@@ -2043,22 +2045,22 @@ dictGetKeys('dict_name', 'attr_name', value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 照合する属性。[`String`](/sql-reference/data-types/string)
-- `value_expr` — 属性と照合する値。[`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 照合対象の属性名。[`String`](/sql-reference/data-types/string)
+* `value_expr` — 属性と比較する値。[`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **戻り値**
 
-単一キー辞書の場合: 属性が`value_expr`と等しいキーの配列。複数キー辞書の場合: 属性が`value_expr`と等しいキーのタプルの配列。辞書に`value_expr`に対応する属性が存在しない場合は、空の配列が返されます。属性の値を解析できない場合、または値を属性のデータ型に変換できない場合、ClickHouseは例外をスローします。
+単一キーの辞書の場合: 属性が `value_expr` と等しいキーの配列。複合キーの辞書の場合: 属性が `value_expr` と等しいキーのタプルの配列。辞書内に `value_expr` に対応する属性が存在しない場合は、空の配列が返されます。ClickHouse は、属性の値をパースできない場合、または値を属性のデータ型に変換できない場合に例外をスローします。
 
 **例**
 
 
-## dictGetOrDefault {#dictGetOrDefault}
+## dictGetOrDefault
 
 導入バージョン: v18.16
 
-辞書から値を取得します。キーが見つからない場合はデフォルト値を返します。
+辞書から値を取得し、キーが見つからない場合はデフォルト値を返します。
 
 **構文**
 
@@ -2068,34 +2070,34 @@ dictGetOrDefault('dict_name', attr_names, id_expr, default_value)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_names` — 辞書のカラム名、またはカラム名のタプル。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。UInt64またはTuple(T)を返す式。[`UInt64`](/sql-reference/data-types/int-uint) または [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value` — キーが見つからない場合に返すデフォルト値。型は属性のデータ型と一致する必要があります。
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_names` — 辞書の列名、または列名のタプル。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。UInt64/Tuple(T) を返す式。[`UInt64`](/sql-reference/data-types/int-uint) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value` — キーが見つからない場合に返すデフォルト値。型は属性のデータ型と一致している必要があります。
 
 **戻り値**
 
-キーが見つかった場合、`id_expr`に対応する辞書属性の値を返します。
-キーが見つからない場合、指定された`default_value`を返します。
+キーが見つかった場合、`id_expr` に対応する辞書属性の値を返します。
+キーが見つからない場合、指定された `default_value` を返します。
 
 **例**
 
-**デフォルト値を使用した値の取得**
+**デフォルト値付きで値を取得**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 ```
 
-```response title=レスポンス
+```response title=Response
 0
 ```
 
 
-## dictGetOrNull {#dictGetOrNull}
+## dictGetOrNull
 
 導入バージョン: v21.4
 
-辞書から値を取得します。キーが見つからない場合はNULLを返します。
+辞書から値を取得し、キーが見つからない場合は NULL を返します。
 
 **構文**
 
@@ -2105,27 +2107,25 @@ dictGetOrNull('dict_name', 'attr_name', id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。文字列リテラル。
-- `attr_name` — 取得する列名。文字列リテラル。
-- `id_expr` — キー値。辞書のキー型の値を返す式。
+* `dict_name` — 辞書名。文字列リテラル。 - `attr_name` — 取得するカラム名。文字列リテラル。 - `id_expr` — キーの値。辞書のキー型の値を返す式。
 
-**戻り値**
+**返り値**
 
-キーが見つかった場合、`id_expr`に対応する辞書属性の値を返します。
-キーが見つからない場合は`NULL`を返します。
+キーが見つかった場合、`id_expr` に対応する辞書属性の値を返します。
+キーが見つからない場合は `NULL` を返します。
 
 **例**
 
-**範囲キー辞書を使用した例**
+**範囲キー辞書を使用する例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT
     (number, toDate('2019-05-20')),
     dictGetOrNull('range_key_dictionary', 'value', number, toDate('2019-05-20')),
 FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 ```
 
-```response title=レスポンス
+```response title=Response
 (0,'2019-05-20')  \N
 (1,'2019-05-20')  First
 (2,'2019-05-20')  Second
@@ -2134,11 +2134,11 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 ```
 
 
-## dictGetString {#dictGetString}
+## dictGetString
 
-導入バージョン: v1.1
+導入されたバージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`String`データ型に変換します。
+辞書の設定内容に関わらず、辞書の属性値を `String` データ型に変換します。
 
 **構文**
 
@@ -2148,60 +2148,17 @@ dictGetString(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値がない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetString('all_types_dict', 'String_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetString(⋯_value', 1)─┐
-│ test string                │
-└────────────────────────────┘
-```
-
-
-## dictGetStringOrDefault {#dictGetStringOrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`String`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetStringOrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**戻り値**
-
-`id_expr`に対応する辞書属性の値を返します。
-それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
-
-:::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -2209,10 +2166,53 @@ dictGetStringOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetString('all_types_dict', 'String_value', 1)
+```
+
+```response title=Response
+┌─dictGetString(⋯_value', 1)─┐
+│ test string                │
+└────────────────────────────┘
+```
+
+
+## dictGetStringOrDefault
+
+導入バージョン: v1.1
+
+辞書の設定に関係なく辞書属性の値を `String` 型に変換するか、キーが見つからない場合には指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetStringOrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、または値のタプルを返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — `id_expr` キーを持つ行が辞書に存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書属性の値を返し、
+それ以外の場合は `default_value_expr` パラメータとして渡された値を返します。
+
+:::note
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetString('all_types_dict', 'String_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- キーが存在しない場合は、指定したデフォルト値を返す
 SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 ```
 
@@ -2226,11 +2226,11 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 ```
 
 
-## dictGetUInt16 {#dictGetUInt16}
+## dictGetUInt16
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt16`データ型に変換します。
+辞書の設定内容に関係なく、辞書属性の値を `UInt16` 型に変換します。
 
 **構文**
 
@@ -2240,39 +2240,39 @@ dictGetUInt16(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値がない場合は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+該当する値がない場合は、辞書設定内でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUInt1⋯_value', 1)─┐
 │                     5000 │
 └──────────────────────────┘
 ```
 
 
-## dictGetUInt16OrDefault {#dictGetUInt16OrDefault}
+## dictGetUInt16OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt16`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性の値を `UInt16` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
 
 **構文**
 
@@ -2282,33 +2282,33 @@ dictGetUInt16OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+存在しない場合は `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+属性の値を解釈できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
--- 存在するキーの場合
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(0)を返す
+-- キーが存在しない場合は、指定したデフォルト値(0)を返す
 SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUInt1⋯_value', 1)─┐
 │                     5000 │
 └──────────────────────────┘
@@ -2318,11 +2318,11 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 ```
 
 
-## dictGetUInt32 {#dictGetUInt32}
+## dictGetUInt32
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt32`データ型に変換します。
+辞書の設定内容に関わらず、辞書属性の値を `UInt32` データ型に変換します。
 
 **構文**
 
@@ -2332,38 +2332,39 @@ dictGetUInt32(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返し、
+対応する値がない場合は、辞書設定でその属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合や、その値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUInt3⋯_value', 1)─┐
 │                  1000000 │
 └──────────────────────────┘
 ```
 
 
-## dictGetUInt32OrDefault {#dictGetUInt32OrDefault}
+## dictGetUInt32OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt32`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定内容に関係なく、辞書属性の値を `UInt32` 型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
 
 **構文**
 
@@ -2373,18 +2374,17 @@ dictGetUInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、対応する値が存在しない場合は `default_value_expr` パラメータで渡された値を返します。
 
 :::note
-属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouseは例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
 :::
 
 **例**
@@ -2392,10 +2392,10 @@ dictGetUInt32OrDefault(dict_name, attr_name, id_expr, default_value_expr)
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+-- キーが存在する場合
 SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(0)を返す
+-- キーが存在しない場合は、指定したデフォルト値(0)を返す
 SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 ```
 
@@ -2409,11 +2409,11 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 ```
 
 
-## dictGetUInt64 {#dictGetUInt64}
+## dictGetUInt64
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt64`データ型に変換します。
+辞書の設定に関係なく、辞書属性の値を `UInt64` データ型に変換します。
 
 **構文**
 
@@ -2423,58 +2423,17 @@ dictGetUInt64(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値が存在しない場合は、その属性について辞書の設定で指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
-:::
-
-**例**
-
-**使用例**
-
-```sql title=クエリ
-SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
-```
-
-```response title=レスポンス
-┌─dictGetUInt6⋯_value', 1)─┐
-│      9223372036854775807 │
-└──────────────────────────┘
-```
-
-
-## dictGetUInt64OrDefault {#dictGetUInt64OrDefault}
-
-導入バージョン: v1.1
-
-辞書の設定に関係なく、辞書属性値を`UInt64`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
-
-**構文**
-
-```sql
-dictGetUInt64OrDefault(dict_name, attr_name, id_expr, default_value_expr)
-```
-
-**引数**
-
-- `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が含まれていない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-
-**戻り値**
-
-`id_expr`に対応する辞書属性の値を返します。それ以外の場合は、`default_value_expr`パラメータとして渡された値を返します。
-
-:::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
@@ -2482,10 +2441,53 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
+```
+
+```response title=Response
+┌─dictGetUInt6⋯_value', 1)─┐
+│      9223372036854775807 │
+└──────────────────────────┘
+```
+
+
+## dictGetUInt64OrDefault
+
+導入バージョン: v1.1
+
+ディクショナリの設定内容に関係なくディクショナリの属性値を `UInt64` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
+
+**構文**
+
+```sql
+dictGetUInt64OrDefault(辞書名, 属性名, ID式, デフォルト値式)
+```
+
+**引数**
+
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の構成に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+
+**戻り値**
+
+`id_expr` に対応する辞書属性の値を返し、
+存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
+
+:::note
+属性の値を解析できない場合、またはその値が属性のデータ型と一致しない場合、ClickHouse は例外を送出します。
+:::
+
+**例**
+
+**使用例**
+
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(0)を返す
+-- キーが存在しない場合、指定されたデフォルト値(0)を返す
 SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 ```
 
@@ -2499,11 +2501,11 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 ```
 
 
-## dictGetUInt8 {#dictGetUInt8}
+## dictGetUInt8
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt8`データ型に変換します。
+辞書の設定内容に関係なく、辞書属性値を `UInt8` データ型に変換します。
 
 **構文**
 
@@ -2513,73 +2515,75 @@ dictGetUInt8(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列の名前。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存します）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、辞書設定でその属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書属性の値を返します。
+対応する値がない場合は、辞書設定でその属性に対して指定されている `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値をパースできない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUInt8⋯_value', 1)─┐
 │                      100 │
 └──────────────────────────┘
 ```
 
 
-## dictGetUInt8OrDefault {#dictGetUInt8OrDefault}
+## dictGetUInt8OrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UInt8`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性値を `UInt8` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
 ```sql
-dictGetUInt8OrDefault(dict_name, attr_name, id_expr, default_value_expr)
+dictGetUInt8OrDefault(辞書名, 属性名, ID式, デフォルト値式)
 ```
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式（辞書の構成に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。該当する値がない場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+それ以外の場合は `default_value_expr` パラメータとして渡された値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合には例外を送出します。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
--- 存在するキーの場合
+```sql title=Query
+-- キーが存在する場合
 SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値(0)を返す
+-- キーが存在しない場合、指定したデフォルト値(0)を返す
 SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUInt8⋯_value', 1)─┐
 │                      100 │
 └──────────────────────────┘
@@ -2589,11 +2593,11 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 ```
 
 
-## dictGetUUID {#dictGetUUID}
+## dictGetUUID
 
 導入バージョン: v1.1
 
-ディクショナリの設定に関係なく、ディクショナリ属性値を`UUID`データ型に変換します。
+辞書の設定内容に関係なく、辞書属性の値を `UUID` データ型に変換します。
 
 **構文**
 
@@ -2603,38 +2607,39 @@ dictGetUUID(dict_name, attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — ディクショナリ名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — ディクショナリのカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。ディクショナリのキー型の値またはタプル値を返す式(ディクショナリの設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キー値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応するディクショナリ属性の値を返します。該当する値がない場合は、ディクショナリ設定で属性に指定された`<null_value>`要素の内容を返します。
+`id_expr` に対応する辞書の属性値を返します。
+対応する値が存在しない場合は、辞書の設定で属性に対して指定された `<null_value>` 要素の内容を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+属性の値を解析できない場合、または値が属性のデータ型と一致しない場合、ClickHouse は例外をスローします。
 :::
 
 **例**
 
 **使用例**
 
-```sql title=クエリ
+```sql title=Query
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 ```
 
-```response title=レスポンス
+```response title=Response
 ┌─dictGetUUID(⋯_value', 1)─────────────┐
 │ 123e4567-e89b-12d3-a456-426614174000 │
 └──────────────────────────────────────┘
 ```
 
 
-## dictGetUUIDOrDefault {#dictGetUUIDOrDefault}
+## dictGetUUIDOrDefault
 
 導入バージョン: v1.1
 
-辞書の設定に関係なく、辞書属性値を`UUID`データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
+辞書の設定に関係なく、辞書属性の値を `UUID` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
 **構文**
 
@@ -2644,18 +2649,18 @@ dictGetUUIDOrDefault(dict_name, attr_name, id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `attr_name` — 辞書のカラム名。[`String`](/sql-reference/data-types/string)または[`Tuple(String)`](/sql-reference/data-types/tuple)
-- `id_expr` — キー値。辞書のキー型の値またはタプル値を返す式(辞書の設定に依存)。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行が存在しない場合に返される値。[`Expression`](/sql-reference/data-types/special-data-types/expression)または[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
+* `attr_name` — 辞書の列名。[`String`](/sql-reference/data-types/string) または [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — キーの値。辞書のキー型の値、またはタプル値を返す式（辞書の設定に依存）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `default_value_expr` — 辞書に `id_expr` キーを持つ行が存在しない場合に返される値（複数可）。[`Expression`](/sql-reference/data-types/special-data-types/expression) または [`Tuple(T)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-`id_expr`に対応する辞書属性の値を返します。
-該当する値が存在しない場合は、`default_value_expr`パラメータとして渡された値を返します。
+`id_expr` に対応する辞書属性の値を返し、
+対応する値が存在しない場合は `default_value_expr` パラメータとして渡された値を返します。
 
 :::note
-ClickHouseは、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外をスローします。
+ClickHouse は、属性の値を解析できない場合、または値が属性のデータ型と一致しない場合に例外を送出します。
 :::
 
 **例**
@@ -2663,10 +2668,10 @@ ClickHouseは、属性の値を解析できない場合、または値が属性�
 **使用例**
 
 ```sql title=Query
--- 存在するキーの場合
+-- キーが存在する場合
 SELECT dictGetUUID('all_types_dict', 'UUID_value', 1);
 
--- 存在しないキーの場合、指定されたデフォルト値を返す
+-- キーが存在しない場合は、指定したデフォルト値を返す
 SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-0000-0000-000000000000'::UUID);
 ```
 
@@ -2680,11 +2685,11 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 ```
 
 
-## dictHas {#dictHas}
+## dictHas
 
-導入バージョン: v1.1
+導入: v1.1
 
-辞書内にキーが存在するかどうかを確認します。
+キーが辞書に存在するかどうかを判定します。
 
 **構文**
 
@@ -2694,19 +2699,19 @@ dictHas('dict_name', id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `id_expr` — キー値。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
+* `id_expr` — キーの値。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
 キーが存在する場合は `1`、存在しない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**例**
+**使用例**
 
-**辞書内のキーの存在確認**
+**辞書内にキーが存在するかを確認する**
 
 ```sql title=Query
--- 以下の階層型辞書を考えます:
+-- 以下の階層型ディクショナリを考えます:
 -- 0 (ルート)
 -- └── 1 (レベル1 - ノード1)
 --     ├── 2 (レベル2 - ノード2)
@@ -2729,11 +2734,11 @@ SELECT dictHas('hierarchical_dictionary', 7);
 ```
 
 
-## dictIsIn {#dictIsIn}
+## dictIsIn
 
 導入バージョン: v1.1
 
-辞書内の階層チェーン全体を通じて、キーの祖先をチェックします。
+辞書において、キーの先祖が階層チェーン全体のどこかに存在するかどうかを判定します。
 
 **構文**
 
@@ -2743,17 +2748,17 @@ dictIsIn(dict_name, child_id_expr, ancestor_id_expr)
 
 **引数**
 
-- `dict_name` — 辞書名。[`String`](/sql-reference/data-types/string)
-- `child_id_expr` — チェック対象のキー。[`String`](/sql-reference/data-types/string)
-- `ancestor_id_expr` — `child_id_expr`キーの祖先と想定されるキー。[`const String`](/sql-reference/data-types/string)
+* `dict_name` — 辞書の名前。[`String`](/sql-reference/data-types/string)
+* `child_id_expr` — 確認するキー。[`String`](/sql-reference/data-types/string)
+* `ancestor_id_expr` — `child_id_expr` キーの想定される祖先。[`const String`](/sql-reference/data-types/string)
 
-**戻り値**
+**返される値**
 
-`child_id_expr`が`ancestor_id_expr`の子でない場合は`0`を返し、`child_id_expr`が`ancestor_id_expr`の子である場合、または`child_id_expr`が`ancestor_id_expr`と同一である場合は`1`を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+`child_id_expr` が `ancestor_id_expr` の子でない場合は `0` を返し、`child_id_expr` が `ancestor_id_expr` の子である場合、または `child_id_expr` 自体が `ancestor_id_expr` である場合は `1` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-**階層関係のチェック**
+**階層関係の確認**
 
 ```sql title=Query
 -- 有効な階層
@@ -2772,4 +2777,4 @@ SELECT dictIsIn('hierarchical_dictionary', 3, 5)
 └──────────────────────────┘
 ```
 
-<!--AUTOGENERATED_END-->
+{/*AUTOGENERATED_END*/ }

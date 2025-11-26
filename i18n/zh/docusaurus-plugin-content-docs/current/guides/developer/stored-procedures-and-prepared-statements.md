@@ -2,7 +2,7 @@
 sidebar_label: '存储过程与查询参数'
 sidebar_position: 19
 keywords: ['clickhouse', '存储过程', '预处理语句', '查询参数', 'UDF', '参数化视图']
-description: 'ClickHouse 中存储过程、预处理语句和查询参数的指南'
+description: '关于 ClickHouse 中存储过程、预处理语句和查询参数的指南'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: '存储过程与查询参数'
 doc_type: 'guide'
@@ -12,16 +12,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickHouse 中的存储过程和查询参数
+# ClickHouse 中的存储过程与查询参数
 
-如果你来自传统关系型数据库的世界，可能会希望在 ClickHouse 中使用存储过程和预处理语句。
-本指南解释了 ClickHouse 对这些概念的处理方式，并提供了推荐的替代方案。
+如果你过去主要使用传统关系型数据库，可能会希望在 ClickHouse 中使用存储过程和预处理语句。
+本指南说明了 ClickHouse 对这些概念的处理方式，并提供推荐的替代方案。
 
 
 
 ## ClickHouse 中存储过程的替代方案 {#alternatives-to-stored-procedures}
 
-ClickHouse 不支持带有控制流逻辑(`IF`/`ELSE`、循环等)的传统存储过程。
+ClickHouse 不支持带有控制流逻辑(如 `IF`/`ELSE`、循环等)的传统存储过程。
 这是基于 ClickHouse 作为分析型数据库架构的有意设计决策。
 分析型数据库不鼓励使用循环,因为处理 O(n) 个简单查询通常比处理少量复杂查询更慢。
 
@@ -45,7 +45,7 @@ ClickHouse 针对以下场景进行了优化:
 <summary>示例数据</summary>
 
 ```sql
--- 创建 products 表
+-- 创建产品表
 CREATE TABLE products (
     product_id UInt32,
     product_name String,
@@ -111,11 +111,11 @@ SELECT format_phone('5551234567');
 - 无法修改数据(`INSERT`/`UPDATE`/`DELETE`)
 - 不允许递归函数
 
-完整语法请参见 [`CREATE FUNCTION`](/sql-reference/statements/create/function)。
+有关完整语法,请参阅 [`CREATE FUNCTION`](/sql-reference/statements/create/function)。
 
 #### 可执行 UDF {#executable-udfs}
 
-对于更复杂的逻辑,可以使用调用外部程序的可执行 UDF:
+对于更复杂的逻辑,可使用调用外部程序的可执行 UDF:
 
 ```xml
 <!-- /etc/clickhouse-server/sentiment_analysis_function.xml -->
@@ -143,7 +143,7 @@ FROM customer_reviews;
 
 可执行 UDF 可以使用任何语言(Python、Node.js、Go 等)实现任意逻辑。
 
-详细信息请参见[可执行 UDF](/sql-reference/functions/udf)。
+有关详细信息,请参阅[可执行 UDF](/sql-reference/functions/udf)。
 
 ### 参数化视图 {#parameterized-views}
 
@@ -154,7 +154,7 @@ FROM customer_reviews;
 <summary>示例数据</summary>
 
 ```sql
--- 创建 sales 表
+-- 创建销售表
 CREATE TABLE sales (
   date Date,
   product_id UInt32,
@@ -172,16 +172,16 @@ ORDER BY (date, product_id);
 
 -- 插入示例数据
 INSERT INTO sales VALUES
-('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
-('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
-('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
-('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
-('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
-('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
-('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
-('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
+(&#39;2024-01-05&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 2, 1799.98, 1799.98),
+(&#39;2024-01-06&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
+(&#39;2024-01-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 5, 124.95, 124.95),
+(&#39;2024-01-15&#39;, 12347, &#39;USB-C Cable&#39;, &#39;Accessories&#39;, 10, 125.00, 125.00),
+(&#39;2024-01-20&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 3, 2699.97, 2699.97),
+(&#39;2024-01-25&#39;, 12348, &#39;Monitor 4K&#39;, &#39;Electronics&#39;, 2, 598.00, 598.00),
+(&#39;2024-02-01&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
+(&#39;2024-02-05&#39;, 12349, &#39;Keyboard Mechanical&#39;, &#39;Accessories&#39;, 4, 319.96, 319.96),
+(&#39;2024-02-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 8, 199.92, 199.92),
+(&#39;2024-02-15&#39;, 12350, &#39;Webcam HD&#39;, &#39;Electronics&#39;, 3, 164.85, 164.85);
 
 ````
 
@@ -206,13 +206,13 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-#### 常见使用场景 {#common-use-cases}
+#### 常见用例
 
-- 动态日期范围过滤
-- 用户特定的数据切片
-- [多租户数据访问](/cloud/bestpractices/multi-tenancy)
-- 报表模板
-- [数据脱敏](/cloud/guides/data-masking)
+* 动态日期范围过滤
+* 用户级数据切分
+* [多租户数据访问](/cloud/bestpractices/multi-tenancy)
+* 报表模板
+* [数据脱敏](/cloud/guides/data-masking)
 
 ```sql
 -- 更复杂的参数化视图
@@ -241,7 +241,7 @@ FROM (
 )
 WHERE rank <= {top_n:UInt32};
 
--- 使用示例
+-- 使用方式
 SELECT * FROM top_products_by_category(
     category='Electronics',
     min_date='2024-01-01',
@@ -249,11 +249,11 @@ SELECT * FROM top_products_by_category(
 );
 ```
 
-有关更多信息,请参阅[参数化视图](/sql-reference/statements/create/view#parameterized-view)部分。
+有关更多信息，请参阅[参数化视图](/sql-reference/statements/create/view#parameterized-view)部分。
 
-### 物化视图 {#materialized-views}
+### 物化视图
 
-物化视图非常适合预计算传统上在存储过程中完成的高成本聚合操作。如果您来自传统数据库背景,可以将物化视图理解为一个 **INSERT 触发器**,它会在数据插入源表时自动转换和聚合数据:
+物化视图非常适合预先计算那些在传统上通常由存储过程完成的高开销聚合操作。如果你熟悉传统数据库，可以将物化视图理解为一种 **INSERT 触发器**，它会在数据插入到源表时自动对其进行转换和聚合：
 
 ```sql
 -- 源表
@@ -266,7 +266,7 @@ CREATE TABLE page_views (
 ENGINE = MergeTree()
 ORDER BY (user_id, timestamp);
 
--- 维护聚合统计信息的物化视图
+-- 用于维护聚合统计数据的物化视图
 CREATE MATERIALIZED VIEW daily_user_stats
 ENGINE = SummingMergeTree()
 ORDER BY (date, user_id)
@@ -278,7 +278,6 @@ AS SELECT
     uniq(page) AS unique_pages
 FROM page_views
 GROUP BY date, user_id;
-
 ```
 
 
@@ -310,7 +309,7 @@ GROUP BY user_id;
 
 #### 可刷新物化视图 {#refreshable-materialized-views}
 
-用于定时批处理（如夜间存储过程）：
+用于定时批处理(如夜间存储过程):
 
 ```sql
 -- 每天凌晨 2 点自动刷新
@@ -340,7 +339,7 @@ WHERE month = toStartOfMonth(today());
 
 #### 使用应用程序代码 {#using-application-code}
 
-以下是并排比较,展示了 MySQL 存储过程如何转换为使用 ClickHouse 的应用程序代码:
+以下是并排比较,展示 MySQL 存储过程如何转换为使用 ClickHouse 的应用程序代码:
 
 <Tabs>
 <TabItem value="mysql" label="MySQL 存储过程" default>
@@ -390,18 +389,18 @@ BEGIN
         last_order_date = NOW()
     WHERE customer_id = p_customer_id;
 
-    -- 计算忠诚度积分（每美元 1 积分）
+    -- 计算忠诚度积分(每美元 1 积分)
     SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
 ```
 
 
--- 插入会员积分记录
+-- 插入忠诚积分记录
 INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
 VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
 CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
 
--- 检查客户是否需要升级等级
+-- 检查客户是否需要升级会员等级
 IF v&#95;previous&#95;orders + 1 &gt;= 10 AND v&#95;customer&#95;tier = &#39;bronze&#39; THEN
 UPDATE customers SET tier = &#39;silver&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
 SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;SILVER&#39;;
@@ -428,7 +427,7 @@ SELECT @status, @points;
 
 :::note 查询参数
 以下示例使用了 ClickHouse 中的查询参数。
-如果您尚不熟悉 ClickHouse 中的查询参数,请跳转至["ClickHouse 中预处理语句的替代方案"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)。
+如果您还不熟悉 ClickHouse 中的查询参数,请跳转至["ClickHouse 中预处理语句的替代方案"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)。
 :::
 ```
 
@@ -444,10 +443,10 @@ client = clickhouse_connect.get_client(host='localhost')
 def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
     """
     处理订单,包含通常在存储过程中实现的业务逻辑。
-    返回值:(status_message, loyalty_points)
+    返回:(status_message, loyalty_points)
 
-    注意:ClickHouse 针对分析场景优化,不适用于 OLTP 事务。
-    对于事务性工作负载,应使用 OLTP 数据库(PostgreSQL、MySQL),
+    注意:ClickHouse 针对分析场景进行了优化,不适用于 OLTP 事务。
+    对于事务型工作负载,请使用 OLTP 数据库(PostgreSQL、MySQL),
     并将分析数据同步到 ClickHouse 用于报表分析。
     """
 
@@ -529,7 +528,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
     status = 'ORDER_COMPLETE'
 
     if new_order_count >= 10 and customer_tier == 'bronze':
-        # 升级至银卡
+        # 升级到银卡
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -545,7 +544,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
 
     elif new_order_count >= 50 and customer_tier == 'silver':
-        # 升级至金卡
+        # 升级到金卡
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -583,81 +582,80 @@ print(f&quot;状态: {status}, 会员积分: {points}&quot;)
 
 #### 主要差异 {#key-differences}
 
-1. **控制流** - MySQL 存储过程使用 `IF/ELSE`、`WHILE` 循环。在 ClickHouse 中,需在应用程序代码(Python、Java 等)中实现此类逻辑
-2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 来实现 ACID 事务。ClickHouse 是一个针对仅追加工作负载优化的分析型数据库,不支持事务性更新
-3. **更新** - MySQL 使用 `UPDATE` 语句。ClickHouse 更倾向于使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 来处理可变数据
-4. **变量和状态** - MySQL 存储过程可以声明变量(`DECLARE v_discount`)。在 ClickHouse 中,需在应用程序代码中管理状态
-5. **错误处理** - MySQL 支持 `SIGNAL` 和异常处理程序。在应用程序代码中,使用所用语言的原生错误处理机制(try/catch)
+1. **控制流** - MySQL 存储过程使用 `IF/ELSE`、`WHILE` 循环。在 ClickHouse 中，需在应用程序代码（Python、Java 等）中实现此类逻辑
+2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 实现 ACID 事务。ClickHouse 是针对仅追加工作负载优化的分析型数据库，不支持事务性更新
+3. **更新** - MySQL 使用 `UPDATE` 语句。ClickHouse 处理可变数据时更推荐使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
+4. **变量和状态** - MySQL 存储过程可以声明变量（`DECLARE v_discount`）。使用 ClickHouse 时，需在应用程序代码中管理状态
+5. **错误处理** - MySQL 支持 `SIGNAL` 和异常处理程序。在应用程序代码中，使用所用语言的原生错误处理机制（try/catch）
 
 :::tip
-**何时使用各种方法:**
-- **OLTP 工作负载**(订单、支付、用户账户)→ 使用 MySQL/PostgreSQL 配合存储过程
-- **分析工作负载**(报表、聚合、时间序列)→ 使用 ClickHouse 配合应用程序编排
-- **混合架构** → 两者兼用!将事务数据从 OLTP 流式传输到 ClickHouse 进行分析
+**各方法的适用场景：**
+- **OLTP 工作负载**（订单、支付、用户账户）→ 使用 MySQL/PostgreSQL 配合存储过程
+- **分析工作负载**（报表、聚合、时间序列）→ 使用 ClickHouse 配合应用程序编排
+- **混合架构** → 两者兼用！将事务数据从 OLTP 流式传输到 ClickHouse 进行分析
 :::
 
 #### 使用工作流编排工具 {#using-workflow-orchestration-tools}
 
 - **Apache Airflow** - 调度和监控 ClickHouse 查询的复杂 DAG
 - **dbt** - 使用基于 SQL 的工作流转换数据
-- **Prefect/Dagster** - 基于 Python 的现代编排工具
+- **Prefect/Dagster** - 基于 Python 的现代化编排工具
 - **自定义调度器** - Cron 作业、Kubernetes CronJobs 等
 
-**外部编排的优势:**
-- 完整的编程语言功能
-- 更好的错误处理和重试逻辑
-- 与外部系统(API、其他数据库)集成
+**外部编排的优势：**
+- 完整的编程语言能力
+- 更完善的错误处理和重试逻辑
+- 与外部系统（API、其他数据库）集成
 - 版本控制和测试
 - 监控和告警
-- 更灵活的调度
+- 更灵活的调度机制
 ```
 
 
-## ClickHouse 中预处理语句的替代方案 {#alternatives-to-prepared-statements-in-clickhouse}
+## ClickHouse 中预处理语句的替代方案
 
-虽然 ClickHouse 没有传统关系型数据库管理系统意义上的"预处理语句",但它提供了**查询参数**功能来实现相同的目的:安全的参数化查询,可防止 SQL 注入攻击。
+虽然 ClickHouse 没有传统 RDBMS 意义上的“prepared statements”（预处理语句），但它提供了**查询参数（query parameters）**，可以实现相同的目的：使用安全的参数化查询，以防止 SQL 注入攻击。
 
-### 语法 {#query-parameters-syntax}
+### 语法
 
-定义查询参数有两种方式:
+有两种方式来定义查询参数：
 
-#### 方法 1:使用 `SET` {#method-1-using-set}
+#### 方法一：使用 `SET`
 
 <details>
-<summary>示例表和数据</summary>
+  <summary>示例表和示例数据</summary>
 
-```sql
--- 创建 user_events 表(ClickHouse 语法)
-CREATE TABLE user_events (
-    event_id UInt32,
-    user_id UInt64,
-    event_name String,
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = MergeTree()
-ORDER BY (user_id, event_date);
+  ```sql
+  -- 创建 user_events 表（ClickHouse 语法）
+  CREATE TABLE user_events (
+      event_id UInt32,
+      user_id UInt64,
+      event_name String,
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = MergeTree()
+  ORDER BY (user_id, event_date);
 
--- 为多个用户和事件插入示例数据
-INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
-(1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
-(2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
-(3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
-(4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
-(5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
-(6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
-(7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
-(8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
-(9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
-(10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
-(11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
-(12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
-(13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
-(14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
-(15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
-(16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
-(17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
-```
-
+  -- 插入多用户、多事件的示例数据
+  INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
+  (1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
+  (2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
+  (3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
+  (4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
+  (5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
+  (6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
+  (7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
+  (8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
+  (9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
+  (10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
+  (11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
+  (12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
+  (13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
+  (14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
+  (15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
+  (16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
+  (17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
+  ```
 </details>
 
 ```sql
@@ -674,7 +672,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-#### 方法 2:使用 CLI 参数 {#method-2-using-cli-parameters}
+#### 方法二：使用 CLI 参数
 
 ```bash
 clickhouse-client \
@@ -686,145 +684,139 @@ clickhouse-client \
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
 
-### 参数语法 {#parameter-syntax}
+### 参数语法
 
-参数引用格式为:`{parameter_name: DataType}`
+参数通过以下语法引用：`{parameter_name: DataType}`
 
 
-- `parameter_name` - 参数名称(不含 `param_` 前缀)
-- `DataType` - 参数要转换成的 ClickHouse 数据类型
+* `parameter_name` - 参数名称（不包含 `param_` 前缀）
+* `DataType` - 将参数转换为的 ClickHouse 数据类型
 
-### 数据类型示例 {#data-type-examples}
+### 数据类型示例
 
 <details>
-<summary>示例所需的表和样本数据</summary>
+  <summary>示例所用的表和样例数据</summary>
 
-```sql
--- 1. 创建用于字符串和数字测试的表
-CREATE TABLE IF NOT EXISTS users (
-    name String,
-    age UInt8,
-    salary Float64
-) ENGINE = Memory;
+  ```sql
+  -- 1. 创建用于字符串和数字测试的表
+  CREATE TABLE IF NOT EXISTS users (
+      name String,
+      age UInt8,
+      salary Float64
+  ) ENGINE = Memory;
 
-INSERT INTO users VALUES
-    ('John Doe', 25, 75000.50),
-    ('Jane Smith', 30, 85000.75),
-    ('Peter Jones', 20, 50000.00);
+  INSERT INTO users VALUES
+      ('John Doe', 25, 75000.50),
+      ('Jane Smith', 30, 85000.75),
+      ('Peter Jones', 20, 50000.00);
 
--- 2. 创建用于日期和时间戳测试的表
-CREATE TABLE IF NOT EXISTS events (
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = Memory;
+  -- 2. 创建用于日期和时间戳测试的表
+  CREATE TABLE IF NOT EXISTS events (
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = Memory;
 
-INSERT INTO events VALUES
-    ('2024-01-15', '2024-01-15 14:30:00'),
-    ('2024-01-15', '2024-01-15 15:00:00'),
-    ('2024-01-16', '2024-01-16 10:00:00');
+  INSERT INTO events VALUES
+      ('2024-01-15', '2024-01-15 14:30:00'),
+      ('2024-01-15', '2024-01-15 15:00:00'),
+      ('2024-01-16', '2024-01-16 10:00:00');
 
--- 3. 创建用于数组测试的表
-CREATE TABLE IF NOT EXISTS products (
-    id UInt32,
-    name String
-) ENGINE = Memory;
+  -- 3. 创建用于数组测试的表
+  CREATE TABLE IF NOT EXISTS products (
+      id UInt32,
+      name String
+  ) ENGINE = Memory;
 
-INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
+  INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
--- 4. 创建用于 Map(类结构)测试的表
-CREATE TABLE IF NOT EXISTS accounts (
-    user_id UInt32,
-    status String,
-    type String
-) ENGINE = Memory;
+  -- 4. 创建用于 Map（类似 struct）测试的表
+  CREATE TABLE IF NOT EXISTS accounts (
+      user_id UInt32,
+      status String,
+      type String
+  ) ENGINE = Memory;
 
-INSERT INTO accounts VALUES
-    (101, 'active', 'premium'),
-    (102, 'inactive', 'basic'),
-    (103, 'active', 'basic');
+  INSERT INTO accounts VALUES
+      (101, 'active', 'premium'),
+      (102, 'inactive', 'basic'),
+      (103, 'active', 'basic');
 
--- 5. 创建用于标识符测试的表
-CREATE TABLE IF NOT EXISTS sales_2024 (
-    value UInt32
-) ENGINE = Memory;
+  -- 5. 创建用于 Identifier 测试的表
+  CREATE TABLE IF NOT EXISTS sales_2024 (
+      value UInt32
+  ) ENGINE = Memory;
 
-INSERT INTO sales_2024 VALUES (100), (200), (300);
-```
-
+  INSERT INTO sales_2024 VALUES (100), (200), (300);
+  ```
 </details>
 
 <Tabs>
-<TabItem value="strings" label="字符串与数字" default>
+  <TabItem value="strings" label="字符串与数字" default>
+    ```sql
+    SET param_name = 'John Doe';
+    SET param_age = 25;
+    SET param_salary = 75000.50;
 
-```sql
-SET param_name = 'John Doe';
-SET param_age = 25;
-SET param_salary = 75000.50;
+    SELECT name, age, salary FROM users
+    WHERE name = {name: String}
+      AND age >= {age: UInt8}
+      AND salary <= {salary: Float64};
+    ```
+  </TabItem>
 
-SELECT name, age, salary FROM users
-WHERE name = {name: String}
-  AND age >= {age: UInt8}
-  AND salary <= {salary: Float64};
-```
+  <TabItem value="dates" label="日期与时间">
+    ```sql
+    SET param_date = '2024-01-15';
+    SET param_timestamp = '2024-01-15 14:30:00';
 
-</TabItem>
-<TabItem value="dates" label="日期与时间">
+    SELECT * FROM events
+    WHERE event_date = {date: Date}
+       OR event_timestamp > {timestamp: DateTime};
+    ```
+  </TabItem>
 
-```sql
-SET param_date = '2024-01-15';
-SET param_timestamp = '2024-01-15 14:30:00';
+  <TabItem value="arrays" label="数组">
+    ```sql
+    SET param_ids = [1, 2, 3, 4, 5];
 
-SELECT * FROM events
-WHERE event_date = {date: Date}
-   OR event_timestamp > {timestamp: DateTime};
-```
+    SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="arrays" label="数组">
+  <TabItem value="maps" label="映射 (Map)">
+    ```sql
+    SET param_filters = {'target_status': 'active'};
 
-```sql
-SET param_ids = [1, 2, 3, 4, 5];
+    SELECT user_id, status, type FROM accounts
+    WHERE status = arrayElement(
+        mapValues({filters: Map(String, String)}),
+        indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
+    );
+    ```
+  </TabItem>
 
-SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-```
+  <TabItem value="identifiers" label="标识符 (Identifier)">
+    ```sql
+    SET param_table = 'sales_2024';
 
-</TabItem>
-<TabItem value="maps" label="映射">
-
-```sql
-SET param_filters = {'target_status': 'active'};
-
-SELECT user_id, status, type FROM accounts
-WHERE status = arrayElement(
-    mapValues({filters: Map(String, String)}),
-    indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
-);
-```
-
-</TabItem>
-<TabItem value="identifiers" label="标识符">
-
-```sql
-SET param_table = 'sales_2024';
-
-SELECT count() FROM {table: Identifier};
-```
-
-</TabItem>
+    SELECT count() FROM {table: Identifier};
+    ```
+  </TabItem>
 </Tabs>
 
 <br />
-关于在[语言客户端](/integrations/language-clients)中使用查询参数,请参阅您所使用的特定语言客户端的文档。
 
-### 查询参数的限制 {#limitations-of-query-parameters}
+关于在[语言客户端](/integrations/language-clients)中使用查询参数，请参阅你感兴趣的特定语言客户端的文档。
 
-查询参数**不是通用的文本替换**。它们有以下特定限制:
+### 查询参数的限制
 
-1. **主要用于 SELECT 语句** - 在 SELECT 查询中支持最完善
-2. **作为标识符或字面量使用** - 不能替换任意 SQL 片段
-3. **对 DDL 的支持有限** - 支持在 `CREATE TABLE` 中使用,但不支持在 `ALTER TABLE` 中使用
+查询参数**不是通用的文本替换机制**。它们有一些特定限制：
 
-**支持的用法:**
+1. 它们**主要用于 SELECT 语句**——在 SELECT 查询中的支持最好
+2. 它们**只能作为标识符或字面量使用**——不能替换任意 SQL 片段
+3. 它们对 DDL 语句的支持**是有限的**——在 `CREATE TABLE` 中受支持，但在 `ALTER TABLE` 中不受支持
+
+**可以正常使用的场景：**
 
 ```sql
 -- ✓ WHERE 子句中的值
@@ -835,7 +827,6 @@ SELECT * FROM {db: Identifier}.{table: Identifier};
 
 -- ✓ IN 子句中的值
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-
 ```
 
 
@@ -846,7 +837,7 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 
 **不支持的操作：**
 ```sql
--- ✗ SELECT 中的列名（请谨慎使用 Identifier）
+-- ✗ SELECT 中的列名（谨慎使用 Identifier）
 SELECT {column: Identifier} FROM users;  -- 支持有限
 
 -- ✗ 任意 SQL 片段
@@ -874,10 +865,10 @@ result = client.query(
 ```
 
 
-# ✗ 危险 - 存在 SQL 注入风险！
+# ✗ 危险：存在 SQL 注入风险！
 
-user_input = request.get('user_id')
-result = client.query(f"SELECT \* FROM orders WHERE user_id = {user_input}")
+user&#95;input = request.get(&#39;user&#95;id&#39;)
+result = client.query(f&quot;SELECT * FROM orders WHERE user&#95;id = {user_input}&quot;)
 
 ````
 
@@ -887,7 +878,7 @@ result = client.query(f"SELECT \* FROM orders WHERE user_id = {user_input}")
 def get_user_orders(user_id: int, start_date: str):
     # 查询前验证类型
     if not isinstance(user_id, int) or user_id <= 0:
-        raise ValueError("Invalid user_id")
+        raise ValueError("无效的 user_id")
 
     # 参数强制执行类型安全
     return client.query(
@@ -900,26 +891,26 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ````
 
-### MySQL 协议预处理语句 {#mysql-protocol-prepared-statements}
+### MySQL 协议中的预处理语句
 
-ClickHouse 的 [MySQL 接口](/interfaces/mysql)对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）提供最小化支持,主要用于实现与 Tableau Online 等将查询包装在预处理语句中的工具的连接。
+ClickHouse 的 [MySQL 接口](/interfaces/mysql) 对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）仅提供了有限支持，主要是为了兼容 Tableau Online 等会将查询封装为预处理语句的工具。
 
 **主要限制：**
 
-- **不支持参数绑定** - 无法使用 `?` 占位符与绑定参数
-- 查询会被存储,但在 `PREPARE` 阶段不会被解析
-- 实现是最小化的,专为特定 BI 工具兼容性而设计
+* **不支持参数绑定** - 不能使用带绑定参数的 `?` 占位符
+* 查询在 `PREPARE` 时会被保存，但不会被解析
+* 实现较为精简，仅针对特定 BI 工具的兼容性场景设计
 
-**不起作用的示例：**
+**下面是一个不受支持的示例：**
 
 ```sql
--- 这种带参数的 MySQL 风格预处理语句在 ClickHouse 中不起作用
+-- 这种带参数的 MySQL 风格预处理语句在 ClickHouse 中无法使用
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
 EXECUTE stmt USING @user_id;  -- 不支持参数绑定
 ```
 
 :::tip
-**请改用 ClickHouse 的原生查询参数。**它们在所有 ClickHouse 接口中提供完整的参数绑定支持、类型安全和 SQL 注入防护：
+**请改用 ClickHouse 的原生查询参数。** 它们在所有 ClickHouse 接口中都提供完整的参数绑定支持、类型安全保障以及 SQL 注入防护：
 
 ```sql
 -- ClickHouse 原生查询参数（推荐）
@@ -929,36 +920,36 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 :::
 
-有关更多详细信息,请参阅 [MySQL 接口文档](/interfaces/mysql)和[关于 MySQL 支持的博客文章](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)。
+有关更多详情，请参阅 [MySQL 接口文档](/interfaces/mysql) 和 [关于 MySQL 支持的博客文章](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)。
 
 
 ## 总结 {#summary}
 
-### ClickHouse 对存储过程的替代方案 {#summary-stored-procedures}
+### ClickHouse 中替代存储过程的方案 {#summary-stored-procedures}
 
-| 传统存储过程模式                        | ClickHouse 替代方案                                                         |
-| --------------------------------------- | --------------------------------------------------------------------------- |
-| 简单计算和转换                          | 用户定义函数 (UDF)                                                          |
-| 可重用的参数化查询                      | 参数化视图                                                                  |
-| 预计算聚合                              | 物化视图                                                                    |
-| 定时批处理                              | 可刷新物化视图                                                              |
-| 复杂的多步骤 ETL                        | 链式物化视图或外部编排工具 (Python、Airflow、dbt)                           |
-| 带控制流的业务逻辑                      | 应用程序代码                                                                |
+| 传统存储过程模式 | ClickHouse 替代方案                                                      |
+|------------------|---------------------------------------------------------------------------|
+| 简单计算和转换 | 用户自定义函数（UDF）                                               |
+| 可重用的参数化查询 | 参数化视图                                                         |
+| 预计算聚合 | 物化视图                                                          |
+| 定时批处理 | 可刷新物化视图                                              |
+| 复杂的多步 ETL | 串联物化视图或外部编排（如 Python、Airflow、dbt） |
+| 带有控制流的业务逻辑 | 应用程序代码                                                            |
 
 ### 查询参数的使用 {#summary-query-parameters}
 
-查询参数可用于:
-
+查询参数可用于：
 - 防止 SQL 注入
-- 具有类型安全的参数化查询
-- 应用程序中的动态过滤
+- 具备类型安全的参数化查询
+- 应用中的动态过滤
 - 可重用的查询模板
+
 
 
 ## 相关文档 {#related-documentation}
 
-- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - 用户自定义函数
-- [`CREATE VIEW`](/sql-reference/statements/create/view) - 视图,包括参数化视图和物化视图
-- [SQL 语法 - 查询参数](/sql-reference/syntax#defining-and-using-query-parameters) - 完整参数语法
-- [级联物化视图](/guides/developer/cascading-materialized-views) - 高级物化视图模式
-- [可执行 UDF](/sql-reference/functions/udf) - 外部函数执行
+- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - 用户定义函数
+- [`CREATE VIEW`](/sql-reference/statements/create/view) - 视图，包括参数化视图和物化视图
+- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - 完整的参数语法
+- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - 高级级联物化视图模式
+- [Executable UDFs](/sql-reference/functions/udf) - 外部函数执行

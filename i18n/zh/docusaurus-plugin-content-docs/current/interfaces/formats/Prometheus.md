@@ -15,37 +15,38 @@ doc_type: 'reference'
 
 
 
-## Description {#description}
+## 描述 {#description}
 
-以 [Prometheus 文本格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)导出指标。
+以 [Prometheus 文本暴露格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)导出指标数据。
 
-对于此格式,输出表必须按照以下规则正确构建:
+对于该格式，输出表必须满足以下结构规则：
 
-- 列 `name` ([String](/sql-reference/data-types/string.md)) 和 `value` (数字) 是必需的。
-- 行可以选择性地包含 `help` ([String](/sql-reference/data-types/string.md)) 和 `timestamp` (数字)。
-- 列 `type` ([String](/sql-reference/data-types/string.md)) 应为 `counter`、`gauge`、`histogram`、`summary`、`untyped` 之一或为空。
-- 每个指标值还可以包含一些 `labels` ([Map(String, String)](/sql-reference/data-types/map.md))。
-- 多个连续的行可以引用具有不同标签的同一指标。表应按指标名称排序(例如,使用 `ORDER BY name`)。
+- 必须包含列 `name`（[String](/sql-reference/data-types/string.md)）和 `value`（数值）。
+- 行中还可以包含可选列 `help`（[String](/sql-reference/data-types/string.md)）和 `timestamp`（数值）。
+- 列 `type`（[String](/sql-reference/data-types/string.md)）的取值应为 `counter`、`gauge`、`histogram`、`summary`、`untyped` 之一，或为空。
+- 每个指标值还可以带有若干 `labels`（[Map(String, String)](/sql-reference/data-types/map.md)）。
+- 若干连续的行可以对应同一个指标，但具有不同的 labels。表应按指标名称排序（例如使用 `ORDER BY name`）。
 
-对于 `histogram` 和 `summary` 标签有特殊要求 - 详情请参阅 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。
-特殊规则适用于带有标签 `{'count':''}` 和 `{'sum':''}` 的行,它们分别被转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
+对于 `histogram` 和 `summary` 的 labels 有特殊要求，详情参见 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。  
+对标签为 `{'count':''}` 和 `{'sum':''}` 的行会应用特殊规则，它们分别会被转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
 
 
-## 使用示例 {#example-usage}
+
+## 使用示例
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
-│ http_request_duration_seconds       │ histogram │ 请求持续时间的直方图。                        │ {'le':'0.05'}                  │    24054 │             0 │
+│ http_request_duration_seconds       │ histogram │ 请求持续时间直方图。                      │ {'le':'0.05'}                  │    24054 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.1'}                   │    33444 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.2'}                   │   100392 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.5'}                   │   129389 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'1'}                     │   133988 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'+Inf'}                  │   144320 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'sum':''}                     │    53423 │             0 │
-│ http_requests_total                 │ counter   │ HTTP 请求总数                              │ {'method':'post','code':'200'} │     1027 │ 1395066363000 │
+│ http_requests_total                 │ counter   │ HTTP 请求总数                             │ {'method':'post','code':'200'} │     1027 │ 1395066363000 │
 │ http_requests_total                 │ counter   │                                           │ {'method':'post','code':'400'} │        3 │ 1395066363000 │
 │ metric_without_timestamp_and_labels │           │                                           │ {}                             │    12.47 │             0 │
-│ rpc_duration_seconds                │ summary   │ RPC 持续时间(秒)的摘要。                     │ {'quantile':'0.01'}            │     3102 │             0 │
+│ rpc_duration_seconds                │ summary   │ RPC 持续时间(秒)摘要。                    │ {'quantile':'0.01'}            │     3102 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.05'}            │     3272 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.5'}             │     4773 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.9'}             │     9001 │             0 │
@@ -56,7 +57,7 @@ doc_type: 'reference'
 └─────────────────────────────────────┴───────────┴───────────────────────────────────────────┴────────────────────────────────┴──────────┴───────────────┘
 ```
 
-将被格式化为:
+格式如下：
 
 
 ```text
@@ -81,7 +82,7 @@ metric_without_timestamp_and_labels 12.47
 
 
 
-# HELP rpc&#95;duration&#95;seconds RPC 调用耗时（秒）的汇总。
+# HELP rpc&#95;duration&#95;seconds RPC 调用时长（秒）的概要。
 
 # TYPE rpc&#95;duration&#95;seconds summary
 
@@ -93,7 +94,7 @@ rpc&#95;duration&#95;seconds{quantile="0.99"} 76656
 rpc&#95;duration&#95;seconds&#95;sum 17560473
 rpc&#95;duration&#95;seconds&#95;count 2693
 
-something&#95;weird{problem="除零错误"} +Inf -3982045
+something&#95;weird{problem="division by zero"} +Inf -3982045
 
 ```
 ```

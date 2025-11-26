@@ -2,7 +2,7 @@
 slug: '/examples/aggregate-function-combinators/anyIf'
 title: 'anyIf'
 description: 'Пример использования комбинатора anyIf'
-keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+keywords: ['any', 'if', 'комбинатор', 'примеры', 'anyIf']
 sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
@@ -12,27 +12,29 @@ doc_type: 'reference'
 # anyIf {#avgif}
 
 
+
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
-для выбора первого найденного элемента из указанного столбца,
-соответствующего заданному условию.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
+для выбора первого встретившегося элемента из заданного столбца,
+который удовлетворяет указанному условию.
 
 
-## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу для хранения данных о продажах с флагами успешности
-и используем `anyIf` для выбора первых `transaction_id`, значения которых больше и
-меньше 200.
+## Пример использования
+
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+и используем `anyIf`, чтобы выбрать первые значения `transaction_id`, которые больше и
+меньше суммы 200.
 
 Сначала создадим таблицу и вставим в неё данные:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple();
 
@@ -52,7 +54,7 @@ SELECT
 FROM sales;
 ```
 
-```response title="Результат"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
@@ -60,6 +62,5 @@ FROM sales;
 
 
 ## См. также {#see-also}
-
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

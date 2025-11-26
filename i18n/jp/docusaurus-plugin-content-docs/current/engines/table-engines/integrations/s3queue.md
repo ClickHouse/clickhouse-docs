@@ -1,5 +1,5 @@
 ---
-description: 'このエンジンは Amazon S3 エコシステムとの統合を提供し、ストリーミングによるインポートを可能にします。Kafka エンジンや RabbitMQ エンジンと類似していますが、S3 固有の機能も備えています。'
+description: 'このエンジンは Amazon S3 エコシステムとの統合機能を提供し、ストリーミングインポートを可能にします。Kafka エンジンおよび RabbitMQ エンジンと同様ですが、S3 固有の機能を提供します。'
 sidebar_label: 'S3Queue'
 sidebar_position: 181
 slug: /engines/table-engines/integrations/s3queue
@@ -12,13 +12,11 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # S3Queue テーブルエンジン
 
-このエンジンは [Amazon S3](https://aws.amazon.com/s3/) エコシステムとの統合を提供し、ストリーミングによるインポートを可能にします。このエンジンは [Kafka](../../../engines/table-engines/integrations/kafka.md)、[RabbitMQ](../../../engines/table-engines/integrations/rabbitmq.md) エンジンに似ていますが、S3 固有の機能を備えています。
+このエンジンは [Amazon S3](https://aws.amazon.com/s3/) エコシステムとの統合を提供し、ストリーミングインポートを可能にします。このエンジンは [Kafka](../../../engines/table-engines/integrations/kafka.md)、[RabbitMQ](../../../engines/table-engines/integrations/rabbitmq.md) エンジンと類似していますが、S3 固有の機能を提供します。
 
-[S3Queue 実装の元となった PR](https://github.com/ClickHouse/ClickHouse/pull/49086/files#diff-e1106769c9c8fbe48dd84f18310ef1a250f2c248800fde97586b3104e9cd6af8R183) にある次の注意事項を理解しておくことが重要です。`MATERIALIZED VIEW` がこのエンジンに紐付けられると、S3Queue テーブルエンジンはバックグラウンドでデータの収集を開始します。
+[S3Queue 実装の元となった PR](https://github.com/ClickHouse/ClickHouse/pull/49086/files#diff-e1106769c9c8fbe48dd84f18310ef1a250f2c248800fde97586b3104e9cd6af8R183) に記載されている次の注意点を理解しておくことが重要です。`MATERIALIZED VIEW` がこのエンジンに接続されると、S3Queue テーブルエンジンはバックグラウンドでデータの収集を開始します。
 
-
-
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する
 
 ```sql
 CREATE TABLE s3_queue_engine_table (name String, value UInt32)
@@ -49,12 +47,12 @@ CREATE TABLE s3_queue_engine_table (name String, value UInt32)
 ```
 
 :::warning
-`24.7`より前では、`mode`、`after_processing`、`keeper_path`以外のすべての設定に`s3queue_`プレフィックスを使用する必要があります。
+`24.7` より前のバージョンでは、`mode`、`after_processing`、`keeper_path` を除くすべての設定項目で `s3queue_` プレフィックスを使用する必要があります。
 :::
 
 **エンジンパラメータ**
 
-`S3Queue`のパラメータは`S3`テーブルエンジンがサポートするものと同じです。パラメータセクションは[こちら](../../../engines/table-engines/integrations/s3.md#parameters)を参照してください。
+`S3Queue` のパラメータは、`S3` テーブルエンジンがサポートしているものと同一です。パラメータについては[こちら](../../../engines/table-engines/integrations/s3.md#parameters)を参照してください。
 
 **例**
 
@@ -65,7 +63,7 @@ SETTINGS
     mode = 'unordered';
 ```
 
-名前付きコレクションの使用:
+名前付きコレクションの使用：
 
 ```xml
 <clickhouse>
@@ -87,93 +85,190 @@ SETTINGS
 ```
 
 
-## 設定 {#settings}
+## 設定 \{#settings\}
 
-テーブルに設定された設定のリストを取得するには、`system.s3_queue_settings`テーブルを使用します。`24.10`から利用可能です。
+テーブルに対して構成された設定の一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
 
-### モード {#mode}
+### Mode \{#mode\}
+
+指定可能な値：
+
+- unordered — `unordered` モードでは、すでに処理されたすべてのファイルの集合が ZooKeeper 内の永続ノードとして管理されます。
+- ordered — `ordered` モードでは、ファイルは辞書順で処理されます。つまり、ファイル名 `BBB` のファイルがある時点で処理され、その後にファイル名 `AA` のファイルがバケットに追加された場合、そのファイルは無視されます。ZooKeeper には、正常に取り込まれたファイル名のうち最大のもの（辞書順での最大値）と、読み込みに失敗して再試行対象となるファイル名のみが保存されます。
+
+デフォルト値: バージョン 24.6 より前は `ordered`。24.6 以降ではデフォルト値は存在せず、この設定は手動で指定する必要があります。以前のバージョンで作成されたテーブルについては、互換性のためデフォルト値は引き続き `Ordered` のままです。
+
+### `after_processing`
+
+ファイルの処理が正常に完了した後の扱い方法。
 
 指定可能な値:
 
-- unordered — 順序なしモードでは、すでに処理されたすべてのファイルのセットがZooKeeper内の永続ノードで追跡されます。
-- ordered — 順序ありモードでは、ファイルは辞書順で処理されます。これは、'BBB'という名前のファイルがある時点で処理され、その後'AA'という名前のファイルがバケットに追加された場合、それは無視されることを意味します。正常に処理されたファイルの最大名(辞書順)と、読み込み失敗後に再試行されるファイルの名前のみがZooKeeperに保存されます。
-
-デフォルト値: 24.6より前のバージョンでは`ordered`。24.6以降はデフォルト値がなく、手動で指定する必要があります。以前のバージョンで作成されたテーブルについては、互換性のためデフォルト値は`Ordered`のままとなります。
-
-### `after_processing` {#after_processing}
-
-処理が正常に完了した後、ファイルを削除するか保持するかを指定します。
-指定可能な値:
-
-- keep。
-- delete。
+* keep。
+* delete。
+* move。
+* tag。
 
 デフォルト値: `keep`。
 
-### `keeper_path` {#keeper_path}
+move を使用するには追加の設定が必要です。同一バケット内で移動する場合は、新しいパスプレフィックスを `after_processing_move_prefix` として指定する必要があります。
 
-ZooKeeper内のパスは、テーブルエンジンの設定として指定するか、グローバル設定で提供されるパスとテーブルUUIDから形成されるデフォルトパスを使用できます。
+別の S3 バケットへ移動する場合は、移動先バケットの URI を `after_processing_move_uri` として、S3 クレデンシャルを `after_processing_move_access_key_id` および `after_processing_move_secret_access_key` として指定する必要があります。
+
+例:
+
+```sql
+CREATE TABLE s3queue_engine_table (name String, value UInt32)
+ENGINE=S3Queue('https://clickhouse-public-datasets.s3.amazonaws.com/my-test-bucket-768/*', 'CSV', 'gzip')
+SETTINGS
+    mode = 'unordered',
+    after_processing = 'move',
+    after_processing_retries = 20,
+    after_processing_move_prefix = 'dst_prefix',
+    after_processing_move_uri = 'https://clickhouse-public-datasets.s3.amazonaws.com/dst-bucket',
+    after_processing_move_access_key_id = 'test',
+    after_processing_move_secret_access_key = 'test';
+```
+
+Azure コンテナから別の Azure コンテナに移動するには、Blob Storage の接続文字列を `after_processing_move_connection_string` に、コンテナ名を `after_processing_move_container` に指定します。詳しくは [AzureQueue の設定](../../../engines/table-engines/integrations/azure-queue.md#settings) を参照してください。
+
+タグ付けを行うには、タグキーと値をそれぞれ `after_processing_tag_key` および `after_processing_tag_value` として指定します。
+
+
+### `after_processing_retries` \{#after_processing_retries\}
+
+要求された後処理アクションに対して、処理を中止するまでに行う再試行回数。
+
+設定可能な値:
+
+- 0 以上の整数。
+
+デフォルト値: `10`。
+
+### `after_processing_move_access_key_id` \{#after_processing_move_access_key_id\}
+
+移動先が別の S3 バケットである場合に、正常に処理されたファイルをそのバケットへ移動するための Access Key ID。
+
+設定可能な値:
+
+- 文字列。
+
+デフォルト値: 空文字列。
+
+### `after_processing_move_prefix` \{#after_processing_move_prefix\}
+
+正常に処理されたファイルを移動する先のパスプレフィックスです。同一バケット内での移動と、別のバケットへの移動の両方で有効です。
+
+指定可能な値:
+
+- String。
+
+デフォルト値: 空文字列。
+
+### `after_processing_move_secret_access_key` \{#after_processing_move_secret_access_key\}
+
+移動先が別の S3 バケットである場合に、正常に処理されたファイルをそのバケットへ移動するための Secret Access Key。
+
+設定可能な値:
+
+- 文字列。
+
+デフォルト値: 空文字列。
+
+### `after_processing_move_uri` \{#after_processing_move_uri\}
+
+宛先が別の S3 バケットである場合に、正常に処理されたファイルを移動する先となる S3 バケットの URI。
+
+取りうる値:
+
+- 文字列。
+
+デフォルト値: 空文字列。
+
+### `after_processing_tag_key` \{#after_processing_tag_key\}
+
+`after_processing='tag'` の場合に、正常に処理されたファイルへタグ付けを行うためのタグキー。
+
 指定可能な値:
 
 - 文字列。
 
-デフォルト値: `/`。
+デフォルト値: 空文字列。
 
-### `s3queue_loading_retries` {#loading_retries}
+### `after_processing_tag_value` \{#after_processing_tag_value\}
+
+`after_processing` が `tag` の場合に、正常に処理されたファイルに付与するタグ値。
+
+指定可能な値:
+
+- 文字列。
+
+デフォルト値: 空文字列。
+
+### `keeper_path` \{#keeper_path\}
+
+ZooKeeper 内のパスはテーブルエンジンの設定として指定するか、グローバル設定で指定されたパスとテーブル UUID から既定パスを生成できます。
+取りうる値:
+
+- 文字列。
+
+既定値: `/`。
+
+### `s3queue_loading_retries` \{#loading_retries\}
 
 指定された回数までファイルの読み込みを再試行します。デフォルトでは再試行は行われません。
-指定可能な値:
+取りうる値:
 
 - 正の整数。
 
 デフォルト値: `0`。
 
-### `s3queue_processing_threads_num` {#processing_threads_num}
+### `s3queue_processing_threads_num` \{#processing_threads_num\}
 
-処理を実行するスレッド数。`Unordered`モードにのみ適用されます。
+処理を実行するスレッド数。`Unordered` モードでのみ適用されます。
 
-デフォルト値: CPUの数または16。
+デフォルト値: CPU の数または 16。
 
-### `s3queue_parallel_inserts` {#parallel_inserts}
+### `s3queue_parallel_inserts` \{#parallel_inserts\}
 
-デフォルトでは、`processing_threads_num`は1つの`INSERT`を生成するため、複数のスレッドでファイルのダウンロードと解析のみを行います。
-しかし、これは並列性を制限するため、より高いスループットを得るには`parallel_inserts=true`を使用してください。これによりデータを並列に挿入できます(ただし、MergeTreeファミリーでは生成されるデータパーツの数が増加することに注意してください)。
+デフォルトでは、`processing_threads_num` は 1 つの `INSERT` しか生成されないため、複数スレッドで実行されるのはファイルのダウンロードとパース処理だけです。
+しかし、これは並列度を制限するため、スループットを向上させるには `parallel_inserts=true` を使用してください。これによりデータを並列に挿入できるようになります（ただし、その結果として MergeTree ファミリーのテーブルに対して生成されるデータパーツの数が増加する点に注意してください）。
 
 :::note
-`INSERT`は`max_process*_before_commit`設定に従って生成されます。
+`INSERT` は `max_process*_before_commit` 設定を考慮して生成されます。
 :::
 
 デフォルト値: `false`。
 
-### `s3queue_enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
+### `s3queue_enable_logging_to_s3queue_log` \{#enable_logging_to_s3queue_log\}
 
-`system.s3queue_log`へのログ記録を有効にします。
+`system.s3queue_log` へのログ記録を有効にします。
 
 デフォルト値: `0`。
 
-### `s3queue_polling_min_timeout_ms` {#polling_min_timeout_ms}
+### `s3queue_polling_min_timeout_ms` \{#polling_min_timeout_ms\}
 
-次のポーリング試行を行う前にClickHouseが待機する最小時間をミリ秒単位で指定します。
+ClickHouse が次のポーリングを実行する前に待機する最小時間をミリ秒単位で指定します。
 
-指定可能な値:
+設定可能な値:
 
 - 正の整数。
 
 デフォルト値: `1000`。
 
-### `s3queue_polling_max_timeout_ms` {#polling_max_timeout_ms}
+### `s3queue_polling_max_timeout_ms` \{#polling_max_timeout_ms\}
 
-次のポーリング試行を開始する前にClickHouseが待機する最大時間をミリ秒単位で定義します。
+ClickHouse が次のポーリング試行を開始するまでに待機する最大時間を、ミリ秒単位で定義します。
 
-指定可能な値:
+可能な値:
 
 - 正の整数。
 
-デフォルト値: `10000`。
+デフォルト値: `10000`.
 
-### `s3queue_polling_backoff_ms` {#polling_backoff_ms}
+### `s3queue_polling_backoff_ms` \{#polling_backoff_ms\}
 
-新しいファイルが見つからない場合に、前回のポーリング間隔に追加される待機時間を決定します。次のポーリングは、前回の間隔とこのバックオフ値の合計、または最大間隔のいずれか小さい方の後に実行されます。
+新しいファイルが見つからなかった場合に、前回のポーリング間隔に追加される待機時間を決定します。次回のポーリングは、前回の間隔にこのバックオフ値を加えた値と最大間隔のうち、短い方の時間が経過した後に行われます。
 
 指定可能な値:
 
@@ -181,69 +276,66 @@ ZooKeeper内のパスは、テーブルエンジンの設定として指定す�
 
 デフォルト値: `0`。
 
-### `s3queue_tracked_files_limit` {#tracked_files_limit}
+### `s3queue_tracked_files_limit` \{#tracked_files_limit\}
 
-'unordered'モードが使用されている場合にZooKeeperノードの数を制限できます。'ordered'モードでは何も行いません。
-制限に達すると、最も古い処理済みファイルがZooKeeperノードから削除され、再度処理されます。
+`unordered` モードが使用されている場合に、ZooKeeper ノードの数に上限を設けるための設定です。`ordered` モードでは何も行いません。
+上限に達した場合、最も古く処理されたファイルが ZooKeeper ノードから削除され、再度処理されます。
 
-指定可能な値:
+取り得る値:
 
 - 正の整数。
 
 デフォルト値: `1000`。
 
-### `s3queue_tracked_file_ttl_sec` {#tracked_file_ttl_sec}
+### `s3queue_tracked_file_ttl_sec` \{#tracked_file_ttl_sec\}
 
-'unordered'モードにおいて、処理済みファイルをZooKeeperノードに保存する最大秒数(デフォルトでは永続的に保存)。'ordered'モードでは何も行いません。
-指定された秒数が経過すると、ファイルは再インポートされます。
+`unordered` モードにおいて、処理済みファイルを ZooKeeper のノードに保持しておく最大秒数（デフォルトでは無期限に保存）を指定します。`ordered` モードでは何もしません。
+指定された秒数が経過すると、そのファイルは再インポートされます。
 
-指定可能な値:
+設定可能な値:
 
-- 正の整数。
+- 正の整数
 
 デフォルト値: `0`。
 
-### `s3queue_cleanup_interval_min_ms` {#cleanup_interval_min_ms}
+### `s3queue_cleanup_interval_min_ms` \{#cleanup_interval_min_ms\}
 
-'Ordered'モード用。追跡ファイルのTTLと最大追跡ファイルセットの維持を担当するバックグラウンドタスクの再スケジュール間隔の最小境界を定義します。
+'Ordered' モード用。追跡対象ファイルの TTL および追跡対象ファイル集合の最大数を維持するバックグラウンドタスクについて、その再スケジュールの間隔の下限値を定義します。
 
 デフォルト値: `10000`。
 
-### `s3queue_cleanup_interval_max_ms` {#cleanup_interval_max_ms}
+### `s3queue_cleanup_interval_max_ms` \{#cleanup_interval_max_ms\}
 
-
-'Ordered'モード用。追跡ファイルのTTLと追跡ファイル数の上限を管理するバックグラウンドタスクの再スケジュール間隔の最大値を定義します。
+「Ordered」モード用。追跡対象ファイルの TTL と、追跡対象ファイル集合の最大数を維持するバックグラウンドタスクの再スケジュール間隔に対する上限値を定義します。
 
 デフォルト値: `30000`。
 
-### `s3queue_buckets` {#buckets}
+### `s3queue_buckets` \{#buckets\}
 
-'Ordered'モード用。`24.6`以降で利用可能。S3Queueテーブルの複数のレプリカが存在し、それぞれがkeeperの同じメタデータディレクトリで動作している場合、`s3queue_buckets`の値は少なくともレプリカ数以上である必要があります。`s3queue_processing_threads`設定も併用する場合は、`s3queue_buckets`設定の値をさらに増やすことが推奨されます。これは`S3Queue`処理の実際の並列度を定義するためです。
+「Ordered」モードで使用します。`24.6` から利用可能です。S3Queue テーブルのレプリカが複数あり、それぞれが keeper 内の同一のメタデータディレクトリを使用している場合、`s3queue_buckets` の値はレプリカ数以上に設定する必要があります。`s3queue_processing_threads` 設定も併用している場合は、`S3Queue` の処理における実際の並列度を決定するため、`s3queue_buckets` 設定の値をさらに大きくすることが推奨されます。
 
-### `use_persistent_processing_nodes` {#use_persistent_processing_nodes}
+### `use_persistent_processing_nodes` \{#use_persistent_processing_nodes\}
 
-デフォルトでは、S3Queueテーブルは常にエフェメラル処理ノードを使用しています。これにより、S3Queueが処理を開始した後、処理済みファイルをzookeeperにコミットする前にzookeeperセッションが期限切れになった場合、データの重複が発生する可能性があります。この設定により、keeperセッションが期限切れになった場合でも重複の可能性を排除します。
+デフォルトでは、S3Queue テーブルは常に一時的な処理ノードを使用しており、ZooKeeper セッションが、S3Queue が処理済みファイルを ZooKeeper にコミットする前に期限切れになり、かつ処理は開始されていた場合、データが重複する可能性がありました。この設定は、keeper セッションの期限切れに起因する重複が発生しないよう、サーバーに強制します。
 
-### `persistent_processing_nodes_ttl_seconds` {#persistent_processing_nodes_ttl_seconds}
+### `persistent_processing_nodes_ttl_seconds` \{#persistent_processing_nodes_ttl_seconds\}
 
-サーバーが正常終了しなかった場合、`use_persistent_processing_nodes`が有効になっていると、削除されていない処理ノードが残る可能性があります。この設定は、これらの処理ノードを安全にクリーンアップできる期間を定義します。
+サーバーが正常終了しなかった場合、`use_persistent_processing_nodes` が有効になっていると、処理ノードが削除されずに残る可能性があります。この設定は、それらの処理ノードを安全にクリーンアップできる猶予時間を定義します。
 
-デフォルト値: `3600`(1時間)。
+デフォルト値: `3600`（1時間）。
 
+## S3 に関連する設定 \{#s3-settings\}
 
-## S3関連の設定 {#s3-settings}
+このエンジンでは、すべての S3 関連設定が利用できます。S3 設定の詳細は[こちら](../../../engines/table-engines/integrations/s3.md)を参照してください。
 
-このエンジンはすべてのS3関連設定をサポートしています。S3設定の詳細については、[こちら](../../../engines/table-engines/integrations/s3.md)を参照してください。
+## S3 ロールベースアクセス
 
+<ScalePlanFeatureBadge feature="S3 Role-Based Access" />
 
-## S3ロールベースアクセス {#s3-role-based-access}
+`s3Queue` テーブルエンジンはロールベースのアクセスをサポートしています。
+バケットにアクセスするためのロールを設定する手順については、[こちら](/cloud/data-sources/secure-s3) のドキュメントを参照してください。
 
-<ScalePlanFeatureBadge feature='S3 Role-Based Access' />
-
-s3Queueテーブルエンジンは、ロールベースアクセスをサポートしています。
-バケットへのアクセスに必要なロールの設定手順については、[こちら](/cloud/data-sources/secure-s3)のドキュメントを参照してください。
-
-ロールの設定が完了したら、以下のように`extra_credentials`パラメータを使用して`roleARN`を指定できます:
+ロールを設定したら、以下のように `extra_credentials` パラメータで `roleARN` を指定できます：
 
 ```sql
 CREATE TABLE s3_table
@@ -260,28 +352,24 @@ SETTINGS
 ```
 
 
-## S3Queue順序付きモード {#ordered-mode}
+## S3Queue の ordered モード \{#ordered-mode\}
 
-`S3Queue`処理モードでは、ZooKeeper内に保存するメタデータを削減できますが、時間的に後から追加されるファイルは、アルファベット順で大きい名前を持つ必要があるという制限があります。
+`S3Queue` の処理モードでは、ZooKeeper に保存するメタデータ量を減らせますが、時間的に後から追加されるファイルの名前は、英数字としてそれ以前のファイル名より大きくなる必要があるという制約があります。
 
-`S3Queue`の`ordered`モードは、`unordered`モードと同様に、`(s3queue_)processing_threads_num`設定(`s3queue_`プレフィックスは省略可能)をサポートしており、サーバー上でローカルに`S3`ファイルを処理するスレッド数を制御できます。
+`S3Queue` の `ordered` モードは、`unordered` と同様に `(s3queue_)processing_threads_num` 設定（`s3queue_` プレフィックスは任意）をサポートしており、サーバー上で `S3` ファイルのローカル処理を行うスレッド数を制御できます。
+さらに、`ordered` モードでは、論理スレッド（logical threads）を意味する `(s3queue_)buckets` という別の設定も導入されています。これは、`S3Queue` テーブルのレプリカを持つ複数のサーバーが存在するような分散シナリオにおいて、この設定が処理単位の数を定義することを意味します。例えば、各 `S3Queue` レプリカ上の各処理スレッドは、処理対象として特定の `bucket` をロックしようとし、各 `bucket` はファイル名のハッシュによって特定のファイルに割り当てられます。そのため、分散シナリオでは、`(s3queue_)buckets` 設定をレプリカ数以上、またはそれより大きく設定することが強く推奨されます。`bucket` の数がレプリカ数より多くても問題ありません。最適な構成は、`(s3queue_)buckets` 設定が `number_of_replicas` と `(s3queue_)processing_threads_num` の積と等しくなるようにすることです。
+`(s3queue_)processing_threads_num` 設定は、バージョン `24.6` より前での使用は推奨されません。
+`(s3queue_)buckets` 設定は、バージョン `24.6` から利用可能です。
 
-さらに、`ordered`モードでは`(s3queue_)buckets`という別の設定が導入されており、これは「論理スレッド」を意味します。分散環境において、複数のサーバーに`S3Queue`テーブルのレプリカが存在する場合、この設定が処理単位の数を定義します。例えば、各`S3Queue`レプリカ上の各処理スレッドは、処理のために特定の`bucket`をロックしようとし、各`bucket`はファイル名のハッシュによって特定のファイルに割り当てられます。したがって、分散環境では、`(s3queue_)buckets`設定をレプリカ数以上に設定することを強く推奨します。バケット数がレプリカ数より多くても問題ありません。最も最適なシナリオは、`(s3queue_)buckets`設定を`number_of_replicas`と`(s3queue_)processing_threads_num`の積に等しくすることです。
+## 説明
 
-`(s3queue_)processing_threads_num`設定は、バージョン`24.6`より前での使用は推奨されません。
+`SELECT` は、各ファイルを 1 回しかインポートできないため（デバッグ用途を除いて）ストリーミングインポートにはあまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイムの処理フローを作成する方が実用的です。そのためには次のようにします。
 
-`(s3queue_)buckets`設定は、バージョン`24.6`以降で利用可能です。
+1. 指定した S3 内のパスからデータを消費するテーブルを S3 エンジンで作成し、それをデータストリームと見なします。
+2. 目的の構造を持つテーブルを作成します。
+3. エンジンからのデータを変換し、事前に作成したテーブルに書き込むマテリアライズドビューを作成します。
 
-
-## Description {#description}
-
-`SELECT`はストリーミングインポートにはあまり有用ではありません(デバッグを除く)。各ファイルは一度しかインポートできないためです。[マテリアライズドビュー](../../../sql-reference/statements/create/view.md)を使用してリアルタイム処理を作成する方が実用的です。これを行うには:
-
-1.  エンジンを使用してS3の指定されたパスからデータを取得するテーブルを作成し、それをデータストリームとして扱います。
-2.  必要な構造を持つテーブルを作成します。
-3.  エンジンからデータを変換し、事前に作成したテーブルに格納するマテリアライズドビューを作成します。
-
-`MATERIALIZED VIEW`がエンジンに接続されると、バックグラウンドでデータの収集が開始されます。
+`MATERIALIZED VIEW` がエンジンに紐付けられると、バックグラウンドでデータの取り込みを開始します。
 
 例:
 
@@ -301,47 +389,44 @@ SETTINGS
 ```
 
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \{#virtual-columns\}
 
 - `_path` — ファイルへのパス。
 - `_file` — ファイル名。
-- `_size` — ファイルのサイズ。
+- `_size` — ファイルサイズ。
 - `_time` — ファイルの作成時刻。
 
-仮想カラムの詳細については、[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
+仮想カラムの詳細については[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
+## パス内のワイルドカード \{#wildcards-in-path\}
 
-## パス内のワイルドカード {#wildcards-in-path}
+`path` 引数では、bash 風のワイルドカードを使用して複数のファイルを指定できます。ファイルが処理対象となるには、実際に存在し、パスパターン全体に完全一致している必要があります。ファイルの一覧は `SELECT` 実行時に決定されます（`CREATE` 時点ではありません）。
 
-`path` 引数では、bashライクなワイルドカードを使用して複数のファイルを指定できます。処理されるファイルは存在し、パスパターン全体に一致している必要があります。ファイルのリストは `SELECT` 実行時に決定されます(`CREATE` 時ではありません)。
+- `*` — `/` を除く任意の文字列（空文字列を含む）に対して任意の長さでマッチします。
+- `**` — `/` を含む任意の文字列（空文字列を含む）に対して任意の長さでマッチします。
+- `?` — 任意の 1 文字にマッチします。
+- `{some_string,another_string,yet_another_one}` — 文字列 `'some_string', 'another_string', 'yet_another_one'` のいずれか 1 つにマッチします。
+- `{N..M}` — N から M までの範囲（両端を含む）の任意の数値にマッチします。N と M には先頭にゼロを含めることができ、例えば `000..078` のように指定できます。
 
-- `*` — `/` を除く任意の文字を任意の数(空文字列を含む)にマッチします。
-- `**` — `/` を含む任意の文字を任意の数(空文字列を含む)にマッチします。
-- `?` — 任意の1文字にマッチします。
-- `{some_string,another_string,yet_another_one}` — `'some_string'`、`'another_string'`、`'yet_another_one'` のいずれかの文字列にマッチします。
-- `{N..M}` — N から M までの範囲内の任意の数値にマッチします(両端を含む)。N と M は先頭にゼロを含むことができます(例: `000..078`)。
+`{}` を用いた構文は [remote](../../../sql-reference/table-functions/remote.md) テーブル関数と類似しています。
 
-`{}` を使用した構文は、[remote](../../../sql-reference/table-functions/remote.md) テーブル関数と同様です。
+## 制限事項 \{#limitations\}
 
+1. 行の重複は以下の要因により発生する可能性があります:
 
-## 制限事項 {#limitations}
+- ファイル処理の途中でパース中に例外が発生し、`s3queue_loading_retries` によってリトライが有効になっている場合。
 
-1. 重複行は以下の理由により発生する可能性があります:
-
-- ファイル処理の途中で解析中に例外が発生し、`s3queue_loading_retries`による再試行が有効になっている場合;
-
-- `S3Queue`が複数のサーバーでZooKeeperの同じパスを指すように設定されており、あるサーバーが処理済みファイルのコミットを完了する前にKeeperセッションが期限切れになった場合、別のサーバーがそのファイルの処理を引き継ぐ可能性があります。このファイルは最初のサーバーによって部分的または完全に処理されている可能性があります。ただし、`use_persistent_processing_nodes = 1`の場合、バージョン25.8以降ではこの問題は発生しません;
+- 複数のサーバーで同じ zookeeper のパスを指すように `S3Queue` が構成されており、1つのサーバーが処理済みファイルをコミットする前に keeper セッションが期限切れになった場合。これにより、別のサーバーがそのファイルの処理を引き継ぐ可能性があり、そのファイルは最初のサーバーによって部分的または完全に処理されている場合があります。ただし、バージョン 25.8 以降で `use_persistent_processing_nodes = 1` が設定されている場合、これは発生しません。
 
 - サーバーの異常終了。
 
-2. `S3Queue`が複数のサーバーでZooKeeperの同じパスを指すように設定されており、`Ordered`モードが使用されている場合、`s3queue_loading_retries`は機能しません。この問題は近日中に修正される予定です。
+2. 複数のサーバーで同じ zookeeper のパスを指すように `S3Queue` が構成されており、かつ `Ordered` モードが使用されている場合、`s3queue_loading_retries` は動作しません。これは近いうちに修正される予定です。
 
+## 内部状態の確認
 
-## イントロスペクション {#introspection}
+内部状態の確認には、ステートレスな `system.s3queue` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
 
-イントロスペクションには、`system.s3queue`ステートレステーブルと`system.s3queue_log`永続テーブルを使用します。
-
-1. `system.s3queue`。このテーブルは永続化されず、`S3Queue`のインメモリ状態を表示します。現在処理中のファイル、処理済みまたは失敗したファイルを示します。
+1. `system.s3queue`。このテーブルは永続化されず、`S3Queue` のメモリ上の状態を表示します。現在処理中のファイル、処理済みのファイル、失敗したファイルを確認できます。
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -358,11 +443,11 @@ SETTINGS
     `exception` String
 )
 ENGINE = SystemS3Queue
-COMMENT 'S3Queueメタデータのインメモリ状態とファイルごとの現在処理中の行数を含みます。' │
+COMMENT 'S3Queueメタデータのインメモリ状態と、ファイルごとに現在処理されている行を含みます。' │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-例:
+例：
 
 ```sql
 
@@ -381,14 +466,14 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`。永続テーブル。`system.s3queue`と同じ情報を持ちますが、`processed`および`failed`ファイルに関するものです。
+2. `system.s3queue_log`。永続テーブル。`system.s3queue` と同じ情報を持ちますが、対象は `processed` および `failed` のファイルです。
 
-このテーブルは以下の構造を持ちます:
+このテーブルは次の構造を持ちます。
 
 ```sql
 SHOW CREATE TABLE system.s3queue_log
 
-Query id: 0ad619c3-0f2a-4ee4-8b40-c73d86e04314
+クエリ ID: 0ad619c3-0f2a-4ee4-8b40-c73d86e04314
 
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE system.s3queue_log
@@ -411,7 +496,7 @@ SETTINGS index_granularity = 8192 │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-`system.s3queue_log`を使用するには、サーバー設定ファイルでその設定を定義します:
+`system.s3queue_log` を使用するには、サーバーの設定ファイルでその構成を定義してください。
 
 ```xml
     <s3queue_log>

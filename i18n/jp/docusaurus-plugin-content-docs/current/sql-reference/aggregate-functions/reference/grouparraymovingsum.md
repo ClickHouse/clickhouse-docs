@@ -8,19 +8,19 @@ doc_type: 'reference'
 
 # groupArrayMovingSum
 
-入力値の移動合計を計算します。
+入力値の移動和を計算します。
 
 ```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数は、ウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、列内の行数と同じサイズのウィンドウが使用されます。
+この関数はウィンドウサイズをパラメータとして受け取れます。指定しない場合は、列内の行数と同じウィンドウサイズが使用されます。
 
 **引数**
 
-* `numbers_for_summing` — 結果として数値型の値を返す[式](/sql-reference/syntax#expressions)。
-* `window_size` — 計算ウィンドウのサイズ。
+* `numbers_for_summing` — 数値データ型の値を返す[式](/sql-reference/syntax#expressions)。
+* `window_size` — 計算に用いるウィンドウのサイズ。
 
 **戻り値**
 
@@ -28,7 +28,7 @@ groupArrayMovingSum(window_size)(numbers_for_summing)
 
 **例**
 
-サンプルテーブル:
+サンプルテーブル：
 
 ```sql
 CREATE TABLE t
@@ -49,7 +49,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT

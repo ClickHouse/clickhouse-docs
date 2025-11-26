@@ -20,10 +20,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 描述 {#description}
 
-`ProtobufSingle` 格式与 [`Protobuf`](./Protobuf.md) 格式相同,但用于存储/解析不带长度分隔符的单个 Protobuf 消息。
+`ProtobufSingle` 格式与 [`Protobuf`](./Protobuf.md) 格式相同，但用于在没有长度分隔符的情况下存储和解析单个 Protobuf 消息。
 
 
-## 使用示例 {#example-usage}
+
+## 示例用法 {#example-usage}
+
 
 
 ## 格式设置 {#format-settings}

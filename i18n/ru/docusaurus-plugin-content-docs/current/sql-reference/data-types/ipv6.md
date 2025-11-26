@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-## IPv6 {#ipv6}
+## IPv6
 
-IPv6-адреса. Хранятся в 16 байтах в формате UInt128 big-endian.
+IPv6-адреса. Хранятся в 16 байтах в виде UInt128 в формате big-endian.
 
-### Базовое использование {#basic-usage}
+### Базовое использование
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;
@@ -28,13 +28,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-Также можно использовать домен `IPv6` в качестве ключа:
+Или вы можете использовать домен `IPv6` в качестве ключа:
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;
 ```
 
-Домен `IPv6` поддерживает ввод данных в виде IPv6-строк:
+Домен `IPv6` поддерживает произвольный ввод строк в формате IPv6:
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '2a02:aa08:e000:3100::2')('https://clickhouse.com', '2001:44c8:129:2632:33:0:252:2')('https://clickhouse.com/docs/en/', '2a02:e980:1e::1');
@@ -50,7 +50,7 @@ SELECT * FROM hits;
 └────────────────────────────────────┴───────────────────────────────┘
 ```
 
-Значения хранятся в компактном бинарном виде:
+Значения хранятся в компактном двоичном формате:
 
 ```sql
 SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
@@ -62,7 +62,7 @@ SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
 └──────────────────┴──────────────────────────────────┘
 ```
 
-IPv6-адреса можно напрямую сравнивать с IPv4-адресами:
+Адреса IPv6 можно напрямую сравнивать с адресами IPv4:
 
 ```sql
 SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
@@ -76,4 +76,4 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 
 **См. также**
 
-- [Функции для работы с IPv4- и IPv6-адресами](../functions/ip-address-functions.md)
+* [Функции для работы с IP-адресами IPv4 и IPv6](../functions/ip-address-functions.md)

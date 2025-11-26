@@ -6,15 +6,15 @@ keywords: ['Language Clients', 'C++', 'Go', 'JavaScript', 'Java', 'Python', 'Rus
 doc_type: 'landing-page'
 ---
 
-このセクションでは、ClickHouse が提供するさまざまな言語クライアント統合について学ぶことができます。
+このセクションでは、ClickHouse が提供する各種言語クライアント向けの統合について確認できます。
 
-| Page                                                                    | Description                                                                          |
-|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| [C++](/interfaces/cpp)                                          | C++ クライアントライブラリおよび userver 非同期フレームワーク                         |
-| [C#](/integrations/csharp)                                  | C# プロジェクトを ClickHouse に接続する方法を説明します。                          |
-| [Go](/integrations/go)                                          | Go プロジェクトを ClickHouse に接続する方法を説明します。                              |
+| ページ                                                                    | 説明                                                                              |
+|-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [C++](/interfaces/cpp)                                          | C++ Client Library と userver 非同期フレームワークについて説明します。          |
+| [C#](/integrations/csharp)                                  | C# プロジェクトを ClickHouse に接続する方法を説明します。                       |
+| [Go](/integrations/go)                                          | Go プロジェクトを ClickHouse に接続する方法を説明します。                       |
 | [JavaScript](/integrations/javascript)                          | 公式 JS クライアントを使って JS プロジェクトを ClickHouse に接続する方法を説明します。 |
-| [Java](/integrations/java)                                      | Java から ClickHouse に接続する複数の連携方法について説明します。                      |
-| [Python](/integrations/python)                                  | Python プロジェクトを ClickHouse に接続する方法を説明します。                          |
-| [Rust](/integrations/rust)                                      | Rust プロジェクトを ClickHouse に接続する方法を説明します。                            |
-| [Third-party clients](/interfaces/third-party/client-libraries) | サードパーティ開発者が提供するクライアントライブラリについて説明します。              |
+| [Java](/integrations/java)                                      | Java と ClickHouse 向けの複数の統合方法について説明します。                    |
+| [Python](/integrations/python)                                  | Python プロジェクトを ClickHouse に接続する方法を説明します。                   |
+| [Rust](/integrations/rust)                                      | Rust プロジェクトを ClickHouse に接続する方法を説明します。                     |
+| [Third-party clients](/interfaces/third-party/client-libraries) | サードパーティ開発者が提供するクライアントライブラリについて説明します。       |

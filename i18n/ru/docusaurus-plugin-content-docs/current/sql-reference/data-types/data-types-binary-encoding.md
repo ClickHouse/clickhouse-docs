@@ -1,9 +1,9 @@
 ---
-description: 'Документация по спецификации бинарного кодирования типов данных'
-sidebar_label: 'Спецификация бинарного кодирования типов данных.'
+description: 'Документация по спецификации двоичного кодирования типов данных'
+sidebar_label: 'Спецификация двоичного кодирования типов данных'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
-title: 'Спецификация бинарного кодирования типов данных'
+title: 'Спецификация двоичного кодирования типов данных'
 doc_type: 'reference'
 ---
 
@@ -11,16 +11,16 @@ doc_type: 'reference'
 
 # Спецификация двоичного кодирования типов данных
 
-В этой спецификации описывается двоичный формат, который может использоваться для двоичного кодирования и декодирования типов данных ClickHouse. Этот формат применяется в [двоичной сериализации](dynamic.md#binary-output-format) столбца `Dynamic` и может использоваться в форматах ввода/вывода [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) и [Native](/interfaces/formats/Native) при соответствующих настройках.
+В этой спецификации описывается двоичный формат, который может использоваться для кодирования и декодирования типов данных ClickHouse. Этот формат используется при [двоичной сериализации](dynamic.md#binary-output-format) столбца `Dynamic`, а также может применяться во входных и выходных форматах [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) и [Native](/interfaces/formats/Native) при соответствующих настройках.
 
-В таблице ниже описано, как каждый тип данных представляется в двоичном формате. Кодирование каждого типа данных состоит из одного байта, который указывает тип, и необязательной дополнительной информации.
-`var_uint` в двоичном кодировании означает, что размер кодируется с использованием сжатия Variable-Length Quantity.
+В таблице ниже описано, как каждый тип данных представляется в двоичном формате. Каждое кодирование типа данных состоит из одного байта, задающего тип, и некоторой дополнительной информации (опционально).
+`var_uint` в двоичном кодировании означает, что размер закодирован с использованием сжатия Variable-Length Quantity.
 
 
 
 | Тип данных ClickHouse                                                                                     | Двоичное кодирование                                                                                                                                                                                                                                                                                                                                                       |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Nothing`                                                                                                 | `0x00`                                                                                                                                                                                                                                                                                                                                                                     |
+| `Ничего`                                                                                                  | `0x00`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt8`                                                                                                   | `0x01`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt16`                                                                                                  | `0x02`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt32`                                                                                                  | `0x03`                                                                                                                                                                                                                                                                                                                                                                     |
@@ -35,7 +35,7 @@ doc_type: 'reference'
 | `Int256`                                                                                                  | `0x0C`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Float32`                                                                                                 | `0x0D`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Float64`                                                                                                 | `0x0E`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Date`                                                                                                    | `0x0F`                                                                                                                                                                                                                                                                                                                                                                     |
+| `Дата`                                                                                                    | `0x0F`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Date32`                                                                                                  | `0x10`                                                                                                                                                                                                                                                                                                                                                                     |
 | `DateTime`                                                                                                | `0x11`                                                                                                                                                                                                                                                                                                                                                                     |
 | `DateTime(time_zone)`                                                                                     | `0x12<var_uint_time_zone_name_size><time_zone_name_data>`                                                                                                                                                                                                                                                                                                                  |
@@ -53,8 +53,8 @@ doc_type: 'reference'
 | `Array(T)`                                                                                                | `0x1E<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Tuple(T1, ..., TN)`                                                                                      | `0x1F<var_uint_number_of_elements><nested_type_encoding_1>...<nested_type_encoding_N>`                                                                                                                                                                                                                                                                                     |
 | `Tuple(name1 T1, ..., nameN TN)`                                                                          | `0x20<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
-| `Set`                                                                                                     | `0x21`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Interval`                                                                                                | `0x22<interval_kind>` (см. [двоичное кодирование типа интервала](#interval-kind-binary-encoding))                                                                                                                                                                                                                                                                          |
+| `Установить`                                                                                              | `0x21`                                                                                                                                                                                                                                                                                                                                                                     |
+| `Интервал`                                                                                                | `0x22<interval_kind>` (см. [двоичное кодирование вида интервала](#interval-kind-binary-encoding))                                                                                                                                                                                                                                                                          |
 | `Nullable(T)`                                                                                             | `0x23<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Функция`                                                                                                 | `0x24<var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N><return_type_encoding>`                                                                                                                                                                                                                                                          |
 | `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>` (см. [двоичное кодирование параметров агрегатной функции](#aggregate-function-parameter-binary-encoding))                                               |
@@ -64,7 +64,7 @@ doc_type: 'reference'
 | `IPv6`                                                                                                    | `0x29`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Variant(T1, ..., TN)`                                                                                    | `0x2A<var_uint_number_of_variants><variant_type_encoding_1>...<variant_type_encoding_N>`                                                                                                                                                                                                                                                                                   |
 | `Dynamic(max_types=N)`                                                                                    | `0x2B<uint8_max_types>`                                                                                                                                                                                                                                                                                                                                                    |
-| `Пользовательский тип` (`Ring`, `Polygon` и т.д.)                                                         | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
+| `Пользовательский тип` (`Ring`, `Polygon` и т. д.)                                                        | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
 | `Bool`                                                                                                    | `0x2D`                                                                                                                                                                                                                                                                                                                                                                     |
 | `SimpleAggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                      | `0x2E<var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>` (см. [двоичное кодирование параметров агрегатной функции](#aggregate-function-parameter-binary-encoding))                                                                 |
 | `Nested(name1 T1, ..., nameN TN)`                                                                         | `0x2F<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
@@ -74,54 +74,56 @@ doc_type: 'reference'
 | `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
 | `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
-Для типа `JSON` байт `uint8_serialization_version` указывает на версию сериализации. В настоящее время версия всегда равна 0, но может измениться в будущем при добавлении новых аргументов для типа `JSON`.
 
-### Бинарное кодирование видов интервалов {#interval-kind-binary-encoding}
+
+Для типа `JSON` байт `uint8_serialization_version` указывает версию сериализации. Сейчас версия всегда равна 0, но может измениться в будущем, если для типа `JSON` будут добавлены новые аргументы.
+
+### Двоичное кодирование вида интервала {#interval-kind-binary-encoding}
 
 В таблице ниже описано, как кодируются различные виды интервалов типа данных `Interval`.
 
-| Вид интервала | Бинарное кодирование |
-| ------------- | --------------- |
-| `Nanosecond`  | `0x00`          |
-| `Microsecond` | `0x01`          |
-| `Millisecond` | `0x02`          |
-| `Second`      | `0x03`          |
-| `Minute`      | `0x04`          |
-| `Hour`        | `0x05`          |
-| `Day`         | `0x06`          |
-| `Week`        | `0x07`          |
-| `Month`       | `0x08`          |
-| `Quarter`     | `0x09`          |
-| `Year`        | `0x1A`          |
+| Вид интервала  | Двоичное кодирование |
+|----------------|----------------------|
+| `Nanosecond`   | `0x00`               |
+| `Microsecond`  | `0x01`               |
+| `Millisecond`  | `0x02`               |
+| `Second`       | `0x03`               |
+| `Minute`       | `0x04`               |
+| `Hour`         | `0x05`               |
+| `Day`          | `0x06`               |
+| `Week`         | `0x07`               |
+| `Month`        | `0x08`               |
+| `Quarter`      | `0x09`               |
+| `Year`         | `0x1A`               |
 
-### Бинарное кодирование параметров агрегатных функций {#aggregate-function-parameter-binary-encoding}
+### Двоичное кодирование параметров агрегатных функций {#aggregate-function-parameter-binary-encoding}
 
 В таблице ниже описано, как кодируются параметры `AggregateFunction` и `SimpleAggregateFunction`.
-Кодирование параметра состоит из 1 байта, указывающего на тип параметра, и самого значения.
+Кодирование параметра состоит из одного байта, указывающего тип параметра, и самого значения.
 
-| Тип параметра            | Бинарное кодирование                                                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| `Null`                   | `0x00`                                                                                                                         |
-| `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
-| `Int64`                  | `0x02<var_int_value>`                                                                                                          |
-| `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                            |
-| `Int128`                 | `0x04<int128_little_endian_value>`                                                                                             |
-| `UInt128`                | `0x05<uint128_little_endian_value>`                                                                                            |
-| `Int128`                 | `0x06<int128_little_endian_value>`                                                                                             |
-| `Float64`                | `0x07<float64_little_endian_value>`                                                                                            |
-| `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                              |
-| `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                              |
-| `Decimal128`             | `0x0A<var_uint_scale><int128_little_endian_value>`                                                                             |
-| `Decimal256`             | `0x0B<var_uint_scale><int256_little_endian_value>`                                                                             |
-| `String`                 | `0x0C<var_uint_size><data>`                                                                                                    |
-| `Array`                  | `0x0D<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                   |
-| `Tuple`                  | `0x0E<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                   |
-| `Map`                    | `0x0F<var_uint_size><key_encoding_1><value_encoding_1>...<key_encoding_N><value_encoding_N>`                                   |
-| `IPv4`                   | `0x10<uint32_little_endian_value>`                                                                                             |
-| `IPv6`                   | `0x11<uint128_little_endian_value>`                                                                                            |
-| `UUID`                   | `0x12<uuid_value>`                                                                                                             |
-| `Bool`                   | `0x13<bool_value>`                                                                                                             |
-| `Object`                 | `0x14<var_uint_size><var_uint_key_size_1><key_data_1><value_encoding_1>...<var_uint_key_size_N><key_data_N><value_encoding_N>` |
-| `AggregateFunctionState` | `0x15<var_uint_name_size><name_data><var_uint_data_size><data>`                                                                |
-| `Negative infinity`      | `0xFE`                                                                                                                         |
-| `Positive infinity`      | `0xFF`                                                                                                                         |
+| Тип параметра            | Двоичное кодирование                                                                                                           |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `Null`                   | `0x00`                                                                                                                          |
+| `UInt64`                 | `0x01<var_uint_value>`                                                                                                          |
+| `Int64`                  | `0x02<var_int_value>`                                                                                                           |
+| `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                             |
+| `Int128`                 | `0x04<int128_little_endian_value>`                                                                                              |
+| `UInt128`                | `0x05<uint128_little_endian_value>`                                                                                             |
+| `Int128`                 | `0x06<int128_little_endian_value>`                                                                                              |
+| `Float64`                | `0x07<float64_little_endian_value>`                                                                                             |
+| `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                               |
+| `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                               |
+| `Decimal128`             | `0x0A<var_uint_scale><int128_little_endian_value>`                                                                              |
+| `Decimal256`             | `0x0B<var_uint_scale><int256_little_endian_value>`                                                                              |
+| `String`                 | `0x0C<var_uint_size><data>`                                                                                                     |
+| `Array`                  | `0x0D<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                    |
+| `Tuple`                  | `0x0E<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                    |
+| `Map`                    | `0x0F<var_uint_size><key_encoding_1><value_encoding_1>...<key_encoding_N><value_encoding_N>`                                    |
+| `IPv4`                   | `0x10<uint32_little_endian_value>`                                                                                              |
+| `IPv6`                   | `0x11<uint128_little_endian_value>`                                                                                             |
+| `UUID`                   | `0x12<uuid_value>`                                                                                                              |
+| `Bool`                   | `0x13<bool_value>`                                                                                                              |
+| `Object`                 | `0x14<var_uint_size><var_uint_key_size_1><key_data_1><value_encoding_1>...<var_uint_key_size_N><key_data_N><value_encoding_N>`  |
+| `AggregateFunctionState` | `0x15<var_uint_name_size><name_data><var_uint_data_size><data>`                                                                 |
+| `Negative infinity`      | `0xFE`                                                                                                                          |
+| `Positive infinity`      | `0xFF`                                                                                                                          |

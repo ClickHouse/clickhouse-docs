@@ -13,7 +13,7 @@ doc_type: 'reference'
 别名：`STD`、`STDDEV_POP`。
 
 :::note
-此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevPopStable`](../reference/stddevpopstable.md) 函数。它的运行速度较慢，但计算误差更小。
+此函数采用数值上不稳定的算法。如果在计算中需要更高的[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevPopStable`](../reference/stddevpopstable.md) 函数。它的运行速度较慢，但计算误差更小。
 :::
 
 **语法**
@@ -24,7 +24,7 @@ stddevPop(x)
 
 **参数**
 
-* `x`：要求标准差的总体值。[ (U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+* `x`：要求标准差的值集合。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 

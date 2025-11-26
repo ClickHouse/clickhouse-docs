@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'PrettyCompactNoEscapesMonoBlock フォーマットのドキュメント'
+description: 'PrettyCompactNoEscapesMonoBlock フォーマットに関するドキュメント'
 input_format: false
 keywords: ['PrettyCompactNoEscapesMonoBlock']
 output_format: true
@@ -18,12 +18,14 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md)形式とは異なり、最大`10,000`行がバッファリングされた後、[ブロック](/development/architecture#block)単位ではなく単一のテーブルとして出力されます。
+[`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) フォーマットとは異なり、最大 `10,000` 行をバッファリングし、その後 1 つのテーブルとして出力し、[ブロック](/development/architecture#block)単位では出力しません。
+
 
 
 ## 使用例 {#example-usage}
 
 
+
 ## フォーマット設定 {#format-settings}
 
-<PrettyFormatSettings />
+<PrettyFormatSettings/>

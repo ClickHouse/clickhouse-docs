@@ -1,30 +1,30 @@
 ---
-description: '指定されたグリッド上の時系列データに対して、PromQL ライクな resets を計算する集約関数。'
+description: '指定されたグリッド上の時系列データに対して、PromQL 風の resets を計算する集約関数。'
 sidebar_position: 230
 slug: /sql-reference/aggregate-functions/reference/timeSeriesResetsToGrid
 title: 'timeSeriesResetsToGrid'
 doc_type: 'reference'
 ---
 
-この集約関数は、タイムスタンプと値のペアとして与えられた時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップ長で定義される等間隔の時間グリッド上で、このデータから [PromQL ライクな resets](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets) を計算します。グリッド上の各ポイントについて、`resets` を計算するためのサンプルは、指定された時間ウィンドウ内のものが考慮されます。
+この集約関数は、タイムスタンプと値のペアからなる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される一定間隔の時間グリッド上で、このデータから[PromQL 風の resets](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets) を計算します。グリッド上の各ポイントについて、`resets` を計算するために使用するサンプルは、指定された時間ウィンドウ内のものが対象となります。
 
-Parameters:
+パラメータ:
 
-* `start timestamp` - グリッドの開始を指定
-* `end timestamp` - グリッドの終了を指定
-* `grid step` - グリッドのステップを秒単位で指定
-* `staleness` - 対象とするサンプルの最大の「staleness」（古さ）を秒単位で指定
+* `start timestamp` - グリッドの開始時刻を指定
+* `end timestamp` - グリッドの終了時刻を指定
+* `grid step` - グリッドのステップ幅を秒単位で指定
+* `staleness` - 対象とするサンプルの許容される最大の「staleness」（古さ）を秒単位で指定
 
-Arguments:
+引数:
 
 * `timestamp` - サンプルのタイムスタンプ
 * `value` - `timestamp` に対応する時系列の値
 
-Return value:
-指定されたグリッド上の `resets` の値を `Array(Nullable(Float64))` として返します。返される配列には、各時間グリッドポイントごとに 1 つの値が含まれます。特定のグリッドポイントについて、その時間ウィンドウ内に resets の値を計算するためのサンプルが存在しない場合、その値は NULL になります。
+戻り値:
+指定されたグリッド上の `resets` の値を `Array(Nullable(Float64))` として返します。返される配列には、各時間グリッドポイントごとに 1 つの値が含まれます。特定のグリッドポイントについて、そのウィンドウ内に resets の値を計算するためのサンプルが存在しない場合、その要素は NULL になります。
 
-Example:
-次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上の `resets` の値を計算します:
+例:
+次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上の `resets` の値を計算します。
 
 ```sql
 WITH
@@ -38,7 +38,7 @@ WITH
 SELECT timeSeriesResetsToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- このサブクエリは、タイムスタンプと値の配列を`timestamp`、`value`の行に変換します
+    -- このサブクエリは、タイムスタンプと値の配列を`timestamp`、`value`の行形式に変換します
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -54,7 +54,7 @@ FROM
    └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-また、同じ長さの `Array` として、複数のタイムスタンプと値のサンプルを渡すこともできます。配列引数を使用した同じクエリは次のとおりです。
+また、複数のタイムスタンプと値のサンプルを、同じ長さの配列として渡すこともできます。配列引数を用いた同じクエリは次のとおりです。
 
 ```sql
 WITH

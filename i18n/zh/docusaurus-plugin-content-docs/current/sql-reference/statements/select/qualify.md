@@ -10,18 +10,19 @@ doc_type: 'reference'
 
 # QUALIFY 子句
 
-用于过滤窗口函数的结果。它类似于 [WHERE](../../../sql-reference/statements/select/where.md) 子句，但不同之处在于，`WHERE` 在窗口函数计算之前执行，而 `QUALIFY` 在窗口函数计算之后执行。
+用于过滤窗口函数的结果。它类似于 [WHERE](../../../sql-reference/statements/select/where.md) 子句，但不同之处在于，`WHERE` 在窗口函数计算之前执行，而 `QUALIFY` 则在窗口函数计算之后执行。
 
-在 `QUALIFY` 子句中可以通过别名引用 `SELECT` 子句中的窗口函数结果。或者，`QUALIFY` 子句也可以基于未在查询结果中返回的额外窗口函数的结果进行过滤。
+在 `QUALIFY` 子句中可以通过别名引用 `SELECT` 子句中的窗口函数结果。或者，`QUALIFY` 子句也可以基于其他未在查询结果中返回的窗口函数结果进行过滤。
 
 
 
 ## 限制 {#limitations}
 
-如果没有需要计算的窗口函数,则不能使用 `QUALIFY`。请改用 `WHERE`。
+当查询中不包含需要计算的窗口函数时，不能使用 `QUALIFY`。请改用 `WHERE`。
 
 
-## 示例 {#examples}
+
+## 示例
 
 示例：
 
