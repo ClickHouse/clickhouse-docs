@@ -600,7 +600,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | Array element type is also converted   |
 | `MapType`                           | `Map`                | ✅         | No           | Keys are limited to `StringType`       |
 | `StructType`                        | `Tuple`              | ✅         | No           | Converted to named Tuple with field names. |
-| `VariantType`                       | `JSON`               | ✅         | Yes          | Spark 4.0+ only. Semi-structured data support. Note: Arrow write format is not supported, use JSON format instead |
+| `VariantType`                       | `JSON`               | ⚠️         | Yes          | Spark 4.0+ only. Partial support: objects only (primitives not supported). Arrow write format not supported, use JSON format instead |
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 
