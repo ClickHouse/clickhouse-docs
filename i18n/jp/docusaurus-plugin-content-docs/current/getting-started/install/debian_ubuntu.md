@@ -10,4 +10,4 @@ doc_type: 'guide'
 
 import DebianProd from './_snippets/_deb_install.md'
 
-<DebianProd/>
+<DebianProd />

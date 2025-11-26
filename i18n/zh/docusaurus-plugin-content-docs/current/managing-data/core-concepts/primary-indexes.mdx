@@ -23,13 +23,13 @@ import Image from '@theme/IdealImage';
 
 <br/>
 
-ClickHouse 中的稀疏主键索引用于高效定位可能包含满足查询在表 ^^primary key^^ 列上条件的数据的[粒度（granule）](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——也就是一块块的行数据。下一节将解释该索引是如何根据这些列中的值构建出来的。
+ClickHouse 中的稀疏主键索引用于高效定位[粒度（granules）](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 ^^primary key^^ 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
 
 ### 稀疏主索引的创建 \{#sparse-primary-index-creation\}
 
-为了展示稀疏主索引是如何构建的，我们使用 [uk_price_paid_simple](https://clickhouse.com/docs/parts) 表配合一些动画进行说明。
+为了演示稀疏主索引是如何构建的，我们会结合一些动画来说明 [uk_price_paid_simple](/parts) 表。
 
-作为[回顾](https://clickhouse.com/docs/parts)，在我们的示例表 ① 中，^^primary key^^ 为 (town, street)，② 插入的数据 ③ 存储在磁盘上，按照 ^^primary key^^ 列的值排序并压缩，每一列存放在单独的文件中：
+作为[回顾](/parts)，在我们的示例表①中，^^primary key^^ 为 (town, street)，② 插入的数据会被③存储到磁盘上，根据 ^^primary key^^ 列的取值排序并压缩，每一列单独存储在各自的文件中：
 
 <Image img={visual01} size="lg"/>
 
@@ -37,9 +37,9 @@ ClickHouse 中的稀疏主键索引用于高效定位可能包含满足查询在
 
 <br/>
 
-在处理时，每一列的数据会被 ④ 在逻辑上划分为若干 ^^granule^^——每个 ^^granule^^ 覆盖 8,192 行——它是 ClickHouse 数据处理机制操作的最小单元。
+在处理时，每一列的数据会被④在逻辑上划分为多个 granule——每个 granule 覆盖 8,192 行——这是 ClickHouse 数据处理机制所使用的最小单元。
 
-这种 ^^granule^^ 结构也是主索引之所以是**稀疏**的原因：ClickHouse 并不会为每一行建立索引，而是仅从每个 ^^granule^^ 中的一行——具体来说，是第一行——保存 ⑤ 该行的 ^^primary key^^ 值。这样，每个 ^^granule^^ 就对应一个索引条目：
+这种 ^^granule^^ 结构也是主索引之所以是**稀疏的**：ClickHouse 并不会为每一行建立索引，而是只存储每个 ^^granule^^ 中一行的 ^^primary key^^ 值——具体来说，是第一行的值。这样每个 ^^granule^^ 就对应一个索引项：
 
 <Image img={visual02} size="lg"/>
 
@@ -47,7 +47,7 @@ ClickHouse 中的稀疏主键索引用于高效定位可能包含满足查询在
 
 <br/>
 
-得益于其稀疏性，主索引足够小，可以完全放入内存，从而在包含 ^^primary key^^ 列谓词的查询中实现快速过滤。在下一节中，我们将展示它如何加速此类查询。
+得益于这种稀疏性，主索引足够小，可以完整地放入内存中，从而为在 ^^primary key^^ 列上带有谓词条件的查询提供快速过滤。在下一节中，我们将展示它如何帮助加速此类查询。
 
 ### 主索引的使用 \{#primary-index-usage\}
 
