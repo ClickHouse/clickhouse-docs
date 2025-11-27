@@ -380,7 +380,7 @@
     "description": "Название категории Parquet в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Pretty": {
-    "message": "Красивый",
+    "message": "Pretty",
     "description": "Название категории «Pretty» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Protobuf": {
@@ -396,7 +396,7 @@
     "description": "Метка категории TabSeparated в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Template": {
-    "message": "Шаблон",
+    "message": "Template",
     "description": "Название категории Template в боковой панели sqlreference"
   },
   "sidebar.integrations.category.Language clients": {
