@@ -488,8 +488,8 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
     else:
         # Process locale-specific documentation
         locale_path = os.path.join(base_directory, locale_config['base_path'])
-        # Update base URL with locale prefix
-        base_url = f"https://clickhouse.com{locale_config['url_prefix']}/docs"
+        # Update base URL with locale suffix
+        base_url = f"https://clickhouse.com/docs{locale_config['url_prefix']}"
         for doc in process_markdown_directory(locale_path, base_directory, base_url):
             docs.append(doc)
     page_rank_scores = compute_page_rank(link_data)
