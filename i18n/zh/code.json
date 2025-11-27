@@ -762,7 +762,7 @@
     "description": "了解 ClickHouse 语法"
   },
   "sidebar.dropdownCategories.category.Reference.Functions": {
-    "message": "函数",
+    "message": "FUNCTION",
     "description": "函数"
   },
   "sidebar.dropdownCategories.category.Reference.Functions.description": {

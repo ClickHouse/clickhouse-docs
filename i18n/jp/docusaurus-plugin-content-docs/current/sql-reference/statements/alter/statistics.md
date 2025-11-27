@@ -1,6 +1,6 @@
 ---
 description: '列統計の操作方法に関するドキュメント'
-sidebar_label: '統計'
+sidebar_label: 'STATISTICS'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
 title: '列統計の操作'

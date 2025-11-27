@@ -518,7 +518,7 @@
     "message": "Советы и хитрости от сообщества"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако"
+    "message": "Cloud"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
     "message": "Самый быстрый способ развернуть ClickHouse"
@@ -998,7 +998,7 @@
     "description": "Полезные наборы данных и руководства"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако",
+    "message": "Cloud",
     "description": "Облако"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
@@ -1014,8 +1014,8 @@
     "description": "Быстрый старт с ClickHouse Cloud"
   },
   "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
-    "message": "Управление облаком",
-    "description": "Управление облаком"
+    "message": "Управление Cloud",
+    "description": "Управление Cloud"
   },
   "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
     "message": "Управление службой ClickHouse Cloud",
@@ -1054,8 +1054,8 @@
     "description": "Защитите сервисы ClickHouse Cloud"
   },
   "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
-    "message": "Переход в облако",
-    "description": "Переход в облако"
+    "message": "Переход в Cloud",
+    "description": "Переход в Cloud"
   },
   "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
     "message": "Перенесите базу данных в ClickHouse Cloud",

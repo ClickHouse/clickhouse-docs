@@ -1,6 +1,6 @@
 ---
 description: 'Документация по пользователю'
-sidebar_label: 'ПОЛЬЗОВАТЕЛЬ'
+sidebar_label: 'USER'
 sidebar_position: 39
 slug: /sql-reference/statements/create/user
 title: 'CREATE USER'

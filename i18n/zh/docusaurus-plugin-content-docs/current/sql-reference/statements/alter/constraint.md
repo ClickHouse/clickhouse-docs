@@ -1,6 +1,6 @@
 ---
 description: '约束操作文档'
-sidebar_label: 'CONSTRAINT 约束'
+sidebar_label: 'CONSTRAINT'
 sidebar_position: 43
 slug: /sql-reference/statements/alter/constraint
 title: '约束操作'

@@ -1,6 +1,6 @@
 ---
 description: '设置配置文件的文档'
-sidebar_label: '设置配置文件'
+sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 43
 slug: /sql-reference/statements/create/settings-profile
 title: 'CREATE SETTINGS PROFILE'

@@ -1,6 +1,6 @@
 ---
 description: '行策略相关文档'
-sidebar_label: '行策略'
+sidebar_label: 'ROW POLICY'
 sidebar_position: 41
 slug: /sql-reference/statements/create/row-policy
 title: 'CREATE ROW POLICY'
