@@ -19,17 +19,31 @@ function createUrl({ locale, fullyQualified }) {
     trailingSlash,
     baseUrl,
   });
-  // this is custom, other languages are not under the baseUrl - each language is deployed as its own site so the base url is actually the base_url - the defaultLocale
-  const baseUrlUnlocalized = baseUrl.replace(`/${defaultLocale}/`, '/');
+
+  // Extract the path suffix after the baseUrl
   const pathnameSuffix = canonicalPathname.replace(baseUrl, '');
 
-  function getLocalizedBaseUrl(locale) {
-    return locale === defaultLocale
-      ? `${baseUrlUnlocalized}`
-      : `${baseUrlUnlocalized}${locale}/`;
+  // Extract the base path from baseUrl (e.g., '/docs/' -> 'docs')
+  // Remove leading and trailing slashes to get the clean base path
+  const basePath = baseUrl.replace(/^\/|\/$/g, '');
+
+  // Construct the localized URL
+  // For non-default locales: /{basePath}/{locale}/{pathSuffix}
+  // For default locale: /{basePath}/{pathSuffix}
+  function getLocalizedUrl(locale) {
+    if (locale === defaultLocale) {
+      // Default locale: /docs/{pathSuffix}
+      return `/${basePath}/${pathnameSuffix}`;
+    } else {
+      // Other locales: /docs/{locale}/{pathSuffix}
+      return `/${basePath}/${locale}/${pathnameSuffix}`;
+    }
   }
 
-  return `${fullyQualified ? url : ''}${getLocalizedBaseUrl(locale)}${pathnameSuffix}`;
+  // Clean up any double slashes
+  const localizedPath = getLocalizedUrl(locale).replace(/\/+/g, '/');
+
+  return `${fullyQualified ? url : ''}${localizedPath}`;
 }
 
 export default function LocaleDropdownNavbarItem({

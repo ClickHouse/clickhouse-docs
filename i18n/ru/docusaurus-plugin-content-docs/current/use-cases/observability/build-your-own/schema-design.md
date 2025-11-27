@@ -1,7 +1,7 @@
 ---
 title: 'Проектирование схемы данных'
 description: 'Проектирование схемы данных для наблюдаемости'
-keywords: ['наблюдаемость', 'логи', 'трассировки', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['Обзервабилити', 'логи', 'трассировки', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
 slug: /use-cases/observability/schema-design
 show_related_blogs: true
 doc_type: 'guide'
