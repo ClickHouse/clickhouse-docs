@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг метрик Redis с помощью ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
@@ -347,7 +346,6 @@ docker exec <имя-контейнера> ls -lh /etc/otelcol-contrib/custom.con
 docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### Метрики не отображаются в HyperDX
 
 Убедитесь, что Redis доступен из коллектора:
@@ -378,7 +376,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 # Проверьте наличие ошибок подключения или сбоев аутентификации
 ```
 
-
 ### Ошибки аутентификации
 
 Если вы видите ошибки аутентификации в журналах:
@@ -403,7 +400,6 @@ receivers:
     password: ${env:REDIS_PASSWORD}
 ```
 
-
 ### Проблемы с сетевой связью
 
 Если ClickStack не может подключиться к Redis:
@@ -418,7 +414,6 @@ docker exec <clickstack-container> telnet redis 6379
 ```
 
 Убедитесь, что в вашем файле Docker Compose или командах `docker run` оба контейнера подключены к одной сети.
-
 
 ## Следующие шаги {#next-steps}
 

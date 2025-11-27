@@ -7,37 +7,22 @@ title: 'Linux 上での s390x (zLinux) 向けビルド'
 doc_type: 'guide'
 ---
 
-
-
-# Linux 上での s390x（zLinux）向けビルド
+# Linux 上での s390x (zLinux) 向けビルド
 
 ClickHouse は s390x を実験的にサポートしています。
 
-
-
 ## s390x 向けの ClickHouse のビルド
 
-s390x には、OpenSSL 関連のビルドオプションが 2 つあります。
+s390x では、他のプラットフォームと同様に、OpenSSL はスタティックライブラリとしてビルドされます。OpenSSL を動的ライブラリとしてビルドしたい場合は、CMake に `-DENABLE_OPENSSL_DYNAMIC=1` を指定する必要があります。
 
-* デフォルトでは、s390x 上では OpenSSL は共有ライブラリとしてビルドされます。これは、他のすべてのプラットフォームでは OpenSSL が静的ライブラリとしてビルドされるのとは異なります。
-* それでも OpenSSL を静的ライブラリとしてビルドしたい場合は、CMake に `-DENABLE_OPENSSL_DYNAMIC=0` を渡します。
+これらの手順では、ホストマシンが Linux x86&#95;64/ARM であり、[ビルド手順](../development/build.md) に基づいてネイティブビルドに必要なツールが一通りそろっていることを前提としています。また、ホストが Ubuntu 22.04 であることを想定していますが、以下の手順は Ubuntu 20.04 でも動作するはずです。
 
-これらの手順は、ホストマシンが x86&#95;64 であり、[ビルド手順](../development/build.md) に従ってネイティブビルドに必要なツール一式がすべてインストールされていることを前提とします。また、ホストが Ubuntu 22.04 であることを想定していますが、以下の手順は Ubuntu 20.04 でも動作するはずです。
-
-ネイティブビルドに使用するツールをインストールすることに加えて、以下の追加パッケージをインストールする必要があります。
+ネイティブビルドに使用するツールのインストールに加えて、以下の追加パッケージをインストールする必要があります。
 
 ```bash
-apt-get install binutils-s390x-linux-gnu libc6-dev-s390x-cross gcc-s390x-linux-gnu binfmt-support qemu-user-static
-```
-
-Rust コードをクロスコンパイルする場合は、s390x 向けの Rust クロスコンパイルターゲットをインストールしてください。
-
-```bash
+apt-get mold
 rustup target add s390x-unknown-linux-gnu
 ```
-
-s390x ビルドでは mold リンカーを使用します。[https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86&#95;64-linux.tar.gz](https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86_64-linux.tar.gz)
-からダウンロードし、`$PATH` に配置してください。
 
 s390x 向けにビルドするには:
 
@@ -49,10 +34,17 @@ ninja
 
 ## 実行
 
-ビルドが完了したら、たとえば次のようにバイナリを実行できます。
+エミュレーションを行うには、s390x 用の QEMU user static バイナリが必要です。Ubuntu では次のコマンドでインストールできます。
 
 ```bash
-qemu-s390x-static -L /usr/s390x-linux-gnu ./clickhouse
+apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
+```
+
+ビルドが完了したら、たとえば次のようにバイナリを実行できます：
+
+```bash
+qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
+2
 ```
 
 
@@ -61,16 +53,16 @@ qemu-s390x-static -L /usr/s390x-linux-gnu ./clickhouse
 LLDB をインストールします：
 
 ```bash
-apt-get install lldb-15
+apt-get install lldb-21
 ```
 
-s390x 実行ファイルをデバッグするには、QEMU をデバッグモードで実行して ClickHouse を起動します:
+s390x 向け実行ファイルをデバッグするには、デバッグモードで QEMU を使用して ClickHouse を実行します。
 
 ```bash
 qemu-s390x-static -g 31338 -L /usr/s390x-linux-gnu ./clickhouse
 ```
 
-別のシェルで LLDB を実行してアタッチし、`<Clickhouse Parent Directory>` と `<build directory>` を、お使いの環境に対応する値に置き換えてください。
+別のシェルで LLDB を実行してプロセスにアタッチし、`&lt;ClickHouse Parent Directory&gt;` と `&lt;build directory&gt;` をお使いの環境に対応する値に置き換えてください。
 
 ```bash
 lldb-15
@@ -102,14 +94,14 @@ Process 1 stopped
 ```
 
 
-## Visual Studio Code 連携
+## Visual Studio Code との連携 {#visual-studio-code-integration}
 
-* ビジュアルデバッグには [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 拡張機能が必要です。
-* [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md) を使用している場合、[Command Variable](https://github.com/rioj7/command-variable) 拡張機能を使うと動的な起動に役立ちます。
-* バックエンドとして使用する LLVM のインストール先を指すように設定してください（例: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"`）。
-* 起動前に ClickHouse 実行ファイルをデバッグモードで実行しておいてください（これを自動化する `preLaunchTask` を作成することも可能です）。
+- ビジュアルデバッグを行うには [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 拡張機能が必要です。
+- [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md) を使用する場合、動的な起動設定には [Command Variable](https://github.com/rioj7/command-variable) 拡張機能が役立ちます。
+- バックエンドが使用している LLVM のインストール先に設定されていることを確認してください。例: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`
+- 起動前に ClickHouse の実行ファイルをデバッグモードで実行しておいてください（これを自動化する `preLaunchTask` を作成することも可能です）。
 
-### 設定例
+### 構成例 {#example-configurations}
 
 #### cmake-variants.yaml
 
@@ -119,11 +111,11 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: デバッグ情報を出力する
+      long: デバッグ情報を出力
       buildType: Debug
     release:
       short: Release
-      long: 生成コードを最適化する
+      long: 生成コードを最適化
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
@@ -136,7 +128,7 @@ buildType:
 
 toolchain:
   default: default
-  description: ツールチェーンを選択する
+  description: ツールチェーンを選択
   choices:
     default:
       short: x86_64
@@ -147,6 +139,7 @@ toolchain:
       settings:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
+
 
 #### launch.json
 
@@ -166,29 +159,32 @@ toolchain:
 }
 ```
 
+
 #### settings.json
 
-これにより、異なるビルドが `build` フォルダー内の別々のサブフォルダーに配置されるようになります。
+これにより、ビルドごとに `build` フォルダー内の別々のサブフォルダーに配置されます。
 
 ```json
 {
     "cmake.buildDirectory": "${workspaceFolder}/build/${buildKitVendor}-${buildKitVersion}-${variant:toolchain}-${variant:buildType}",
-    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"
+    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"
 }
 ```
+
 
 #### run-debug.sh
 
 ```sh
 #! /bin/sh
-echo 'デバッガセッションを開始します'
+echo 'デバッガーセッションを開始します'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
+
 #### tasks.json
 
-`programs/server/config.xml` の設定を使用して、バイナリと同じディレクトリ内にある `tmp` フォルダーでコンパイル済み実行ファイルを `server` モードで実行するタスクを定義します。
+`server` モードでコンパイル済み実行ファイルを実行するタスクを定義します。バイナリと同じディレクトリ内の `tmp` フォルダを使用し、`programs/server/config.xml` にある設定を利用します。
 
 ```json
 {

@@ -1,5 +1,5 @@
 ---
-description: 'Alias テーブルエンジンは、別のテーブルへの透過的なプロキシを作成します。すべての操作は対象テーブルに委譲され、Alias 自体にはデータは保持されません。'
+description: 'Alias テーブルエンジンは、別のテーブルへの透過的なプロキシとして機能します。すべての操作は対象テーブルに転送され、エイリアス自体はデータを保持しません。'
 sidebar_label: 'Alias'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
@@ -7,22 +7,30 @@ title: 'Alias テーブルエンジン'
 doc_type: 'reference'
 ---
 
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 # Alias テーブルエンジン
 
-`Alias` エンジンは、別のテーブルへのプロキシを作成するテーブルエンジンです。すべての読み取りおよび書き込み操作は対象テーブルに転送され、エイリアス自体はデータを保持せず、対象テーブルへの参照のみを保持します。
+<ExperimentalBadge/>
 
+`Alias` エンジンは、別のテーブルへのプロキシを作成します。すべての読み取りおよび書き込み操作は対象テーブルに転送され、エイリアス自体はデータを保持せず、対象テーブルへの参照のみを保持します。
 
+:::info
+これは実験的な機能であり、将来のリリースで後方互換性を損なう形で変更される可能性があります。
+`Alias` テーブルエンジンを使用するには、
+[allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) 設定を有効にしてください。
+次のコマンドを実行します: `set allow_experimental_alias_table_engine = 1`。
+:::
 
-## テーブルを作成する
+## テーブルの作成
 
 ```sql
 CREATE TABLE [db_name.]alias_name
 ENGINE = Alias(target_table)
 ```
 
-または、データベース名を明示的に指定して:
+または、データベース名を明示的に指定する場合：
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -30,53 +38,50 @@ ENGINE = Alias(target_db, target_table)
 ```
 
 :::note
-`Alias` テーブルでは、カラムを明示的に定義することはできません。カラムは自動的に対象テーブルから継承されます。これにより、エイリアスは常に対象テーブルのスキーマと一致することが保証されます。
+`Alias` テーブルでは、明示的な列定義を行うことはできません。列はターゲットテーブルから自動的に継承されます。これにより、エイリアスは常にターゲットテーブルのスキーマと一致します。
 :::
 
 
 ## エンジンパラメータ {#engine-parameters}
 
-- **`target_db (optional)`** — 対象テーブルを含むデータベース名。
-- **`target_table`** — 対象テーブル名。
+- **`target_db (optional)`** — 対象テーブルを含むデータベースの名前（省略可能）。
+- **`target_table`** — 対象テーブルの名前。
 
-
-
-## サポートされる操作 {#supported-operations}
+## サポートされている操作 {#supported-operations}
 
 `Alias` テーブルエンジンは、主要な操作をすべてサポートします。 
-### 対象テーブルへの操作 {#operations-on-target}
 
-これらの操作は、エイリアスを介して対象テーブルに対して実行されます:
+### ターゲットテーブルに対する操作 {#operations-on-target}
 
-| Operation | Support | Description |
-|-----------|---------|-------------|
-| `SELECT` | ✅ | 対象テーブルからデータを読み取る |
-| `INSERT` | ✅ | 対象テーブルにデータを書き込む |
-| `INSERT SELECT` | ✅ | 対象テーブルへのバッチ挿入を行う |
-| `ALTER TABLE ADD COLUMN` | ✅ | 対象テーブルにカラムを追加する |
-| `ALTER TABLE MODIFY SETTING` | ✅ | 対象テーブルの設定を変更する |
-| `ALTER TABLE PARTITION` | ✅ | 対象テーブルに対するパーティション操作 (DETACH/ATTACH/DROP) を行う |
-| `ALTER TABLE UPDATE` | ✅ | 対象テーブル内の行を更新する (ミューテーション) |
-| `ALTER TABLE DELETE` | ✅ | 対象テーブルから行を削除する (ミューテーション) |
-| `OPTIMIZE TABLE` | ✅ | 対象テーブルを最適化する (パーツをマージする) |
-| `TRUNCATE TABLE` | ✅ | 対象テーブルを空にする |
-
-### `Alias` 自体への操作 {#operations-on-alias}
-
-これらの操作はエイリアスのみに影響し、対象テーブルには **影響しません**:
+これらの操作はターゲットテーブルに対してプロキシ経由で実行されます:
 
 | Operation | Support | Description |
 |-----------|---------|-------------|
-| `DROP TABLE` | ✅ | エイリアスのみを削除し、対象テーブルは変更されない |
-| `RENAME TABLE` | ✅ | エイリアスの名前のみを変更し、対象テーブルは変更されない |
+| `SELECT` | ✅ | ターゲットテーブルからデータを読み取る |
+| `INSERT` | ✅ | ターゲットテーブルにデータを書き込む |
+| `INSERT SELECT` | ✅ | ターゲットテーブルへのバッチ挿入を行う |
+| `ALTER TABLE ADD COLUMN` | ✅ | ターゲットテーブルに列を追加する |
+| `ALTER TABLE MODIFY SETTING` | ✅ | ターゲットテーブルの設定を変更する |
+| `ALTER TABLE PARTITION` | ✅ | ターゲットに対するパーティション操作 (DETACH/ATTACH/DROP) を行う |
+| `ALTER TABLE UPDATE` | ✅ | ターゲットテーブルの行を更新する (mutation) |
+| `ALTER TABLE DELETE` | ✅ | ターゲットテーブルから行を削除する (mutation) |
+| `OPTIMIZE TABLE` | ✅ | ターゲットテーブルを最適化する (パートをマージ) |
+| `TRUNCATE TABLE` | ✅ | ターゲットテーブルを空にする |
 
+### エイリアス自体への操作 {#operations-on-alias}
 
+これらの操作はエイリアスのみに作用し、ターゲットテーブルには**影響しません**。
 
-## 使用例
+| Operation | Support | Description |
+|-----------|---------|-------------|
+| `DROP TABLE` | ✅ | エイリアスのみを削除し、ターゲットテーブルには変更が加わらない |
+| `RENAME TABLE` | ✅ | エイリアスの名前だけを変更し、ターゲットテーブルには変更が加わらない |
+
+## 使用例 {#usage-examples}
 
 ### 基本的なエイリアスの作成
 
-同じデータベース内にシンプルなエイリアスを作成します。
+同一データベース内で簡単なエイリアスを作成します。
 
 ```sql
 -- ソーステーブルを作成
@@ -93,7 +98,7 @@ INSERT INTO source_data VALUES (1, 'one', 10.1), (2, 'two', 20.2);
 -- エイリアスを作成
 CREATE TABLE data_alias ENGINE = Alias('source_data');
 
--- エイリアス経由でクエリを実行
+-- エイリアス経由でクエリ
 SELECT * FROM data_alias;
 ```
 
@@ -104,9 +109,10 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
+
 ### データベース間エイリアス
 
-別のデータベース内のテーブルを指すエイリアスを作成します：
+別のデータベース内のテーブルを参照するエイリアスを作成します。
 
 ```sql
 -- データベースを作成
@@ -127,14 +133,15 @@ CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 -- またはdatabase.table形式を使用
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
--- 両方のエイリアスは同一に動作
+-- どちらのエイリアスも同じように動作します
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### エイリアス経由の書き込み操作
 
-すべての書き込み操作はターゲットテーブルに転送されます。
+### エイリアス経由での書き込み操作
+
+すべての書き込みはターゲットテーブルに転送されます。
 
 ```sql
 CREATE TABLE metrics (
@@ -146,7 +153,7 @@ ORDER BY ts;
 
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
--- エイリアスを介して挿入
+-- エイリアス経由で挿入
 INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
@@ -162,9 +169,10 @@ SELECT count() FROM metrics;  -- 7を返す
 SELECT count() FROM metrics_alias;  -- 7を返す
 ```
 
+
 ### スキーマの変更
 
-`ALTER` 操作は対象テーブルのスキーマを変更します。
+ALTER 操作は対象テーブルのスキーマを変更します。
 
 ```sql
 CREATE TABLE users (
@@ -190,9 +198,10 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
+
 ### データの変更
 
-`UPDATE` および `DELETE` 操作がサポートされています。
+UPDATE 文および DELETE 文がサポートされています。
 
 ```sql
 CREATE TABLE products (
@@ -216,7 +225,7 @@ ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 -- エイリアス経由で削除
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- 変更は対象テーブルに適用されます
+-- 変更は対象テーブルに適用される
 SELECT * FROM products ORDER BY id;
 ```
 
@@ -227,10 +236,10 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
+
 ### パーティション操作
 
-パーティション化されたテーブルでは、パーティション操作はフォワードされます。
-
+パーティション化されたテーブルでは、パーティション操作はそのまま伝播されます。
 
 ```sql
 CREATE TABLE logs (
@@ -259,9 +268,10 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 SELECT count() FROM logs_alias;  -- 3を返す
 ```
 
-### テーブルの最適化
 
-ターゲットテーブルに対するパーツのマージ処理を最適化します。
+### テーブル最適化
+
+ターゲットテーブル内のパーツをマージする処理を最適化します。
 
 ```sql
 CREATE TABLE events (
@@ -272,30 +282,31 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- 複数の挿入により複数のパートが作成されます
+-- 複数の INSERT により複数のパートが作成される
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- パート数を確認します
+-- パート数を確認
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
   AND active;
 
--- エイリアス経由で最適化します
+-- エイリアス経由で最適化
 OPTIMIZE TABLE events_alias FINAL;
 
--- ターゲットテーブルでパートがマージされます
+-- ターゲットテーブルでパートがマージされる
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
-  AND active;  -- 1を返します
+  AND active;  -- 1 を返す
 ```
+
 
 ### エイリアスの管理
 
-エイリアスは個別に名前を変更したり削除したりできます。
+エイリアスはそれぞれ独立して名前を変更したり削除したりできます。
 
 ```sql
 CREATE TABLE important_data (
@@ -308,15 +319,15 @@ INSERT INTO important_data VALUES (1, 'critical'), (2, 'important');
 
 CREATE TABLE old_alias ENGINE = Alias('important_data');
 
--- エイリアスの名前を変更（ターゲットテーブルは変更されません）
+-- エイリアスの名前を変更（対象テーブルは変更されません）
 RENAME TABLE old_alias TO new_alias;
 
 -- 同じテーブルに別のエイリアスを作成
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- エイリアスを1つ削除（ターゲットテーブルと他のエイリアスは変更されません）
+-- エイリアスを1つ削除（対象テーブルと他のエイリアスは変更されません）
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- 引き続き機能します
+SELECT * FROM another_alias;  -- 引き続き動作します
 SELECT count() FROM important_data;  -- データは保持されており、2を返します
 ```

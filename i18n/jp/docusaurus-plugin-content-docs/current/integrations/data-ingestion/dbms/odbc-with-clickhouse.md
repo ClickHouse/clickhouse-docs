@@ -9,6 +9,6 @@ hide_title: true
 keywords: ['odbc', 'データベース接続', '統合', '外部データ', 'ドライバー']
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
+import Content from '@site/docs/engines/table-engines/integrations/odbc.md';
 
 <Content />

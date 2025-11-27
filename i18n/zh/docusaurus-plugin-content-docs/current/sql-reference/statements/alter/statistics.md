@@ -1,6 +1,6 @@
 ---
 description: '列统计信息管理文档'
-sidebar_label: 'STATISTICS'
+sidebar_label: '统计信息'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
 title: '列统计信息管理'

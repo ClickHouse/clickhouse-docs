@@ -36,7 +36,7 @@
     "description": "Название категории «Use case guides» в боковой панели документации"
   },
   "sidebar.docs.category.Observability": {
-    "message": "Обзервабилити",
+    "message": "Наблюдаемость",
     "description": "Название категории «Observability» в боковой панели документации"
   },
   "sidebar.docs.category.Capabilities": {
@@ -204,8 +204,8 @@
     "description": "Подпись для категории FAQ в боковой панели облачного интерфейса"
   },
   "sidebar.cloud.category.Observability": {
-    "message": "Обзервабилити",
-    "description": "Метка категории «Обзервабилити» в боковой панели Cloud"
+    "message": "Наблюдаемость",
+    "description": "Метка категории «Наблюдаемость» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Security": {
     "message": "Безопасность",

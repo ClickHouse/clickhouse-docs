@@ -1,6 +1,6 @@
 ---
 description: '关于操作数据跳过索引的文档'
-sidebar_label: 'INDEX'
+sidebar_label: '索引'
 sidebar_position: 42
 slug: /sql-reference/statements/alter/skipping-index
 title: '操作数据跳过索引'

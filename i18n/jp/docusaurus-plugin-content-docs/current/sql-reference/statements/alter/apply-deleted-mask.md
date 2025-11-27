@@ -1,13 +1,13 @@
 ---
 description: '削除済み行のマスク適用に関するドキュメント'
-sidebar_label: 'APPLY DELETED MASK'
+sidebar_label: '削除マスクの適用'
 sidebar_position: 46
 slug: /sql-reference/statements/alter/apply-deleted-mask
-title: 'APPLY DELETED MASK'
+title: '削除済み行のマスクを適用する'
 doc_type: 'reference'
 ---
 
-# APPLY DELETED MASK
+# 削除された行のマスクを適用する
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]

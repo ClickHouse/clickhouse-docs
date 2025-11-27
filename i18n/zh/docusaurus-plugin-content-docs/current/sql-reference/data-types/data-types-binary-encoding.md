@@ -1,5 +1,5 @@
 ---
-description: '数据类型二进制编码规范说明文档'
+description: '数据类型二进制编码规范文档'
 sidebar_label: '数据类型二进制编码规范'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
@@ -7,16 +7,12 @@ title: '数据类型二进制编码规范'
 doc_type: 'reference'
 ---
 
-
-
 # 数据类型二进制编码规范
 
-本规范描述了一种用于对 ClickHouse 数据类型进行二进制编解码的格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下，可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
+本规范描述了一种用于对 ClickHouse 数据类型进行二进制编码和解码的二进制格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
 
-下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识以及一些可选的附加信息组成。
-在二进制编码中，`var_uint` 表示长度使用可变长度数量（Variable-Length Quantity）压缩方式进行编码。
-
-
+下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识和一些可选的附加信息组成。
+二进制编码中的 `var_uint` 表示大小使用可变长度整数（Variable-Length Quantity）压缩方式进行编码。
 
 | ClickHouse 数据类型                                                                                           | 二进制编码                                                                                                                                                                                                                                                                                                                                                                      |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,42 +70,40 @@ doc_type: 'reference'
 | `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
 | `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
+对于类型 `JSON`，字节 `uint8_serialization_version` 表示序列化版本。当前版本固定为 0，但如果将来为 `JSON` 类型引入新的参数，该值可能会发生变化。
 
+### Interval 间隔种类的二进制编码 {#interval-kind-binary-encoding}
 
-对于 `JSON` 类型，字节 `uint8_serialization_version` 用于指示序列化版本。目前该版本始终为 0，但如果将来为 `JSON` 类型引入新的参数，则该值可能会发生变化。
+下表说明了 `Interval` 数据类型中不同间隔种类的二进制编码方式。
 
-### Interval 种类的二进制编码 {#interval-kind-binary-encoding}
-
-下表描述了 `Interval` 数据类型中不同 Interval 种类的编码方式。
-
-| Interval kind | Binary encoding |
-|---------------|-----------------|
-| `Nanosecond`  | `0x00`          |
-| `Microsecond` | `0x01`          |
-| `Millisecond` | `0x02`          |
-| `Second`      | `0x03`          |
-| `Minute`      | `0x04`          |
-| `Hour`        | `0x05`          |
-| `Day`         | `0x06`          |
-| `Week`        | `0x07`          |
-| `Month`       | `0x08`          |
-| `Quarter`     | `0x09`          |
-| `Year`        | `0x1A`          |
+| 间隔种类 (Interval kind) | 二进制编码 (Binary encoding) |
+|--------------------------|------------------------------|
+| `Nanosecond`             | `0x00`                       |
+| `Microsecond`            | `0x01`                       |
+| `Millisecond`            | `0x02`                       |
+| `Second`                 | `0x03`                       |
+| `Minute`                 | `0x04`                       |
+| `Hour`                   | `0x05`                       |
+| `Day`                    | `0x06`                       |
+| `Week`                   | `0x07`                       |
+| `Month`                  | `0x08`                       |
+| `Quarter`                | `0x09`                       |
+| `Year`                   | `0x1A`                       |
 
 ### 聚合函数参数的二进制编码 {#aggregate-function-parameter-binary-encoding}
 
-下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何编码的。
-参数的编码由 1 个字节的参数类型标识符和参数值本身组成。
+下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何进行编码的。
+每个参数的编码由 1 个用于指示参数类型的字节和参数值本身组成。
 
-| Parameter type           | Binary encoding                                                                                                                |
+| 参数类型                 | 二进制编码                                                                                                                      |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `Null`                   | `0x00`                                                                                                                         |
 | `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
 | `Int64`                  | `0x02<var_int_value>`                                                                                                          |
 | `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                            |
 | `Int128`                 | `0x04<int128_little_endian_value>`                                                                                             |
-| `UInt128`                | `0x05<uint128_little_endian_value>`                                                                                            |
-| `Int128`                 | `0x06<int128_little_endian_value>`                                                                                             |
+| `UInt256`                | `0x05<uint256_little_endian_value>`                                                                                            |
+| `Int256`                 | `0x06<int256_little_endian_value>`                                                                                             |
 | `Float64`                | `0x07<float64_little_endian_value>`                                                                                            |
 | `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                              |
 | `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                              |

@@ -2,7 +2,7 @@
 title: 'Управление данными'
 description: 'Управление данными для задач наблюдаемости'
 slug: /observability/managing-data
-keywords: ['Обзервабилити', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['наблюдаемость', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
 doc_type: 'guide'
 ---
