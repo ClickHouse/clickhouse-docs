@@ -39,12 +39,14 @@ fi
 
 BASE_DIRECTORY_ARG="$BASE_DIRECTORY"
 DRY_RUN=false
+LOCALE="en"
 
 # allows us to override params if needed
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -d|--base_directory) BASE_DIRECTORY_ARG="$2"; shift ;;
         -x|--dry_run) DRY_RUN=true ;;
+        -l|--locale) LOCALE="$2"; shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
@@ -56,6 +58,7 @@ python "$PYTHON_SCRIPT" \
     --base_directory "$BASE_DIRECTORY_ARG" \
     $( [ "$DRY_RUN" = true ] && echo "--dry_run" ) \
     --algolia_app_id "$ALGOLIA_APP_ID" \
-    --algolia_api_key "$ALGOLIA_API_KEY"
+    --algolia_api_key "$ALGOLIA_API_KEY" \
+    --locale "$LOCALE"
 
 deactivate
