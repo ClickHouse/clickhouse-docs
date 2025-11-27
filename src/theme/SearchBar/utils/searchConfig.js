@@ -88,11 +88,17 @@ export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
 
   const baseTransform = (items) => items.map((item, index) => {
+    // Always process URLs to ensure they work with the current locale's site structure
+    // Remove any locale prefixes from the URL path
+    let processedUrl = item.url;
+
+    // Strip locale prefixes like /zh/, /ru/, /jp/ from the URL path
+    // Pattern: /docs/{locale}/ -> /docs/
+    processedUrl = processedUrl.replace(/\/docs\/(zh|ru|jp)\//, '/docs/');
+
     const transformed = {
       ...item,
-      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE)
-          ? processSearchResultUrl(item.url)
-          : item.url,
+      url: processedUrl,
       index,
       queryID: queryIDRef.current
     };

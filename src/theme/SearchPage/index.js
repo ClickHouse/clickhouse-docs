@@ -211,9 +211,12 @@ function SearchPageContent() {
                     const titles = Object.keys(hierarchy).map((key) =>
                         sanitizeValue(hierarchy[key].value),
                     );
+                    // Strip locale prefixes from URLs to ensure they work with the current locale's site structure
+                    // Pattern: /docs/{locale}/ -> /docs/
+                    const processedUrl = url.replace(/\/docs\/(zh|ru|jp)\//, '/docs/');
                     return {
                         title: titles.pop(),
-                        url: currentLocale == 'en' ? processSearchResultUrl(url) : url, //TODO: temporary - all search results to english for now
+                        url: processedUrl,
                         summary: snippet.content
                             ? `${sanitizeValue(snippet.content.value)}...`
                             : '',
