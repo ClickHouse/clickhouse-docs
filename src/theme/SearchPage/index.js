@@ -212,29 +212,16 @@ function SearchPageContent() {
                         sanitizeValue(hierarchy[key].value),
                     );
 
-                    // Transform URLs from other locales to work with the current locale's site structure
+                    // For non-English locales, strip the /docs/{locale}/ prefix from search results
+                    // since the baseUrl already includes it (e.g., baseUrl is /docs/ru/)
                     let processedUrl = url;
-
-                    // Extract the page path without locale prefix from search result URLs
-                    // Pattern: /docs/{locale}/path -> /path
-                    const pagePathMatch = processedUrl.match(/\/docs\/(?:zh|ru|jp)\/(.+)$/);
-
-                    if (pagePathMatch) {
-                        // Result is from a different locale, map it to the current locale
-                        const pagePath = pagePathMatch[1];
-
-                        if (currentLocale === 'en') {
-                            // Map to English site: /docs/path
-                            processedUrl = `/docs/${pagePath}`;
-                        } else {
-                            // Map to current locale site: /docs/{locale}/path
-                            processedUrl = `/docs/${currentLocale}/${pagePath}`;
-                        }
+                    if (currentLocale !== 'en') {
+                        processedUrl = url.replace(`/docs/${currentLocale}/`, '');
                     }
 
                     return {
                         title: titles.pop(),
-                        url: processedUrl,
+                        url: currentLocale == 'en' ? processSearchResultUrl(processedUrl) : processedUrl,
                         summary: snippet.content
                             ? `${sanitizeValue(snippet.content.value)}...`
                             : '',
