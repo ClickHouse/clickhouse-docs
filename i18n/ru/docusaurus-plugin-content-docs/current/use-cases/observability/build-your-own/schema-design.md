@@ -14,7 +14,7 @@ import observability_13 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-# Проектирование схемы для наблюдаемости
+# Проектирование схемы для обзервабилити
 
 Мы рекомендуем пользователям всегда создавать собственную схему для логов и трейсов по следующим причинам:
 
