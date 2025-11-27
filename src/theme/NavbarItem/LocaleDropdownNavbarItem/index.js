@@ -82,7 +82,7 @@ export default function LocaleDropdownNavbarItem({
   const localeItems = locales.map((locale) => {
     const baseTo = `pathname://${createUrl({
       locale,
-      fullyQualified: true,
+      fullyQualified: false,
     })}`;
 
     const to = `${baseTo}${search}${hash}`;
