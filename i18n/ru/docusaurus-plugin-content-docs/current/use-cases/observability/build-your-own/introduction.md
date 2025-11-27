@@ -2,7 +2,7 @@
 title: 'Введение'
 description: 'Использование ClickHouse как решения для наблюдаемости'
 slug: /use-cases/observability/introduction
-keywords: ['Обзервабилити', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['наблюдаемость', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -50,7 +50,7 @@ import Image from '@theme/IdealImage';
 
 Использование ClickHouse для данных наблюдаемости предполагает переход к наблюдаемости на основе SQL. Рекомендуем [эту статью в блоге](https://clickhouse.com/blog/the-state-of-sql-based-observability) для ознакомления с историей наблюдаемости на основе SQL, но, если коротко:
 
-Обзервабилити на основе SQL подходит вам, если:
+Наблюдаемость на основе SQL подходит вам, если:
 
 - Вы или ваша команда хорошо знакомы с SQL (или хотите его выучить).
 - Вы предпочитаете придерживаться открытых стандартов, таких как OpenTelemetry, чтобы избежать привязки к поставщику и обеспечить расширяемость.

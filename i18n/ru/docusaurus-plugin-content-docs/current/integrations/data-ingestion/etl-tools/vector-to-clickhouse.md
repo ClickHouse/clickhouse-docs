@@ -10,7 +10,7 @@ integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://vector.dev/'
-keywords: ['vector', 'сбор логов', 'Обзервабилити', 'ингестия данных', 'конвейер']
+keywords: ['vector', 'сбор логов', 'наблюдаемость', 'ингестия данных', 'конвейер']
 ---
 
 import Image from '@theme/IdealImage';

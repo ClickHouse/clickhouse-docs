@@ -1,5 +1,5 @@
 ---
-title: 'Обзервабилити BYOC на AWS'
+title: 'Наблюдаемость BYOC на AWS'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'AWS'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
@@ -13,7 +13,7 @@ import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 
-## Обзервабилити
+## Наблюдаемость
 
 ### Встроенные инструменты мониторинга
 

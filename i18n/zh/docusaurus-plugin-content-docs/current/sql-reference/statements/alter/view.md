@@ -1,6 +1,6 @@
 ---
 description: 'ALTER TABLE ... MODIFY QUERY 语句文档'
-sidebar_label: 'VIEW'
+sidebar_label: '视图'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
 title: 'ALTER TABLE ... MODIFY QUERY 语句'

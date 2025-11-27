@@ -17,9 +17,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.
 
-Движок базы данных `MySQL` транслирует запросы на сервер MySQL, поэтому вы можете выполнять такие операции, как `SHOW TABLES` или `SHOW CREATE TABLE`.
+Движок базы данных `MySQL` транслирует запросы к серверу MySQL, чтобы вы могли выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
 
-Вы не можете выполнять следующие запросы:
+Нельзя выполнять следующие запросы:
 
 - `RENAME`
 - `CREATE TABLE`
@@ -34,9 +34,9 @@ CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```
 
-**Параметры двигателя**
+**Параметры движка**
 
-* `host:port` — адрес MySQL-сервера.
+* `host:port` — адрес сервера MySQL.
 * `database` — имя удалённой базы данных.
 * `user` — пользователь MySQL.
 * `password` — пароль пользователя.
@@ -68,7 +68,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 ## Поддержка глобальных переменных
 
-Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — через `@@identifier`.
+Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — как к `@@identifier`.
 
 Поддерживаются следующие переменные:
 
@@ -76,7 +76,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `max_allowed_packet`
 
 :::note
-На данный момент эти переменные являются заглушками и ни к чему не привязаны.
+В настоящее время эти переменные являются заглушками и ни с какими реальными настройками не связаны.
 :::
 
 Пример:

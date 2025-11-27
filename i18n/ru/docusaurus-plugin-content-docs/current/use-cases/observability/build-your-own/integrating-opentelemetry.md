@@ -2,7 +2,7 @@
 title: 'Интеграция OpenTelemetry'
 description: 'Интеграция OpenTelemetry и ClickHouse для обеспечения наблюдаемости'
 slug: /observability/integrating-opentelemetry
-keywords: ['Обзервабилити', 'OpenTelemetry']
+keywords: ['Наблюдаемость', 'OpenTelemetry']
 show_related_blogs: true
 doc_type: 'guide'
 ---

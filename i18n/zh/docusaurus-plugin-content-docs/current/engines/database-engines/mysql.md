@@ -1,6 +1,5 @@
 ---
-description: '允许连接到远程 MySQL 服务器上的数据库，并执行
-  `INSERT` 和 `SELECT` 查询，用于在 ClickHouse 与 MySQL 之间交换数据。'
+description: '用于连接到远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 与 MySQL 之间交换数据。'
 sidebar_label: 'MySQL'
 sidebar_position: 50
 slug: /engines/database-engines/mysql
@@ -15,9 +14,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-用于连接远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询，在 ClickHouse 和 MySQL 之间交换数据。
+用于连接远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 和 MySQL 之间交换数据。
 
-`MySQL` 数据库引擎会将查询转换后发送到 MySQL 服务器，因此可以执行诸如 `SHOW TABLES` 或 `SHOW CREATE TABLE` 等操作。
+`MySQL` 数据库引擎会将查询转换并转发到 MySQL 服务器，因此可以执行诸如 `SHOW TABLES` 或 `SHOW CREATE TABLE` 之类的操作。
 
 无法执行以下查询：
 
@@ -60,7 +59,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-所有其他 MySQL 数据类型都转换为 [String](../../sql-reference/data-types/string.md)。
+所有其他 MySQL 数据类型将被转换为 [String](../../sql-reference/data-types/string.md)。
 
 支持 [Nullable](../../sql-reference/data-types/nullable.md)。
 
@@ -68,15 +67,15 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 ## 全局变量支持
 
-为提高兼容性，可以使用 MySQL 风格来引用全局变量，即 `@@identifier`。
+为了获得更好的兼容性，可以使用 MySQL 风格来访问全局变量，即 `@@identifier`。
 
-当前支持以下变量：
+当前支持的变量如下：
 
 * `version`
 * `max_allowed_packet`
 
 :::note
-目前这些变量只是占位符，并未实际对应到任何内容。
+目前这些变量只是占位符，并不对应任何实际设置。
 :::
 
 示例：
@@ -92,16 +91,16 @@ SELECT @@version;
 
 ```text
 mysql> USE test;
-数据库已更改
+数据库已切换
 
 mysql> CREATE TABLE `mysql_table` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `float` FLOAT NOT NULL,
     ->   PRIMARY KEY (`int_id`));
-查询成功，影响了 0 行 (0,09 秒)
+查询成功，0 行受影响 (0,09 秒)
 
 mysql> insert into mysql_table (`int_id`, `float`) VALUES (1,2);
-查询成功，影响了 1 行 (0,00 秒)
+查询成功，1 行受影响 (0,00 秒)
 
 mysql> select * from mysql_table;
 +------+-----+
@@ -109,10 +108,10 @@ mysql> select * from mysql_table;
 +------+-----+
 |      1 |     2 |
 +------+-----+
-结果集中有 1 行 (0,00 秒)
+1 行结果集 (0,00 秒)
 ```
 
-位于 ClickHouse 中、与 MySQL 服务器进行数据交换的数据库：
+位于 ClickHouse 中的数据库，与 MySQL 服务器进行数据交换：
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;

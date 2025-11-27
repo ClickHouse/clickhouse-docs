@@ -1,6 +1,6 @@
 ---
 description: '分区相关文档'
-sidebar_label: 'PARTITION'
+sidebar_label: '分区（PARTITION）'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/partition
 title: '操作分区和分片（Parts）'

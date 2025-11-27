@@ -1,6 +1,6 @@
 ---
 description: 'Документация по столбцу'
-sidebar_label: 'COLUMN'
+sidebar_label: 'СТОЛБЕЦ'
 sidebar_position: 37
 slug: /sql-reference/statements/alter/column
 title: 'Операции со столбцами'
