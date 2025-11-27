@@ -88,13 +88,27 @@ export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
 
   const baseTransform = (items) => items.map((item, index) => {
-    // Always process URLs to ensure they work with the current locale's site structure
-    // Remove any locale prefixes from the URL path
+    // Transform URLs from other locales to work with the current locale's site structure
     let processedUrl = item.url;
 
-    // Strip locale prefixes like /zh/, /ru/, /jp/ from the URL path
-    // Pattern: /docs/{locale}/ -> /docs/
-    processedUrl = processedUrl.replace(/\/docs\/(zh|ru|jp)\//, '/docs/');
+    // Extract the page path without locale prefix from search result URLs
+    // Pattern: /docs/{locale}/path -> /path
+    const pagePathMatch = processedUrl.match(/\/docs\/(?:zh|ru|jp)\/(.+)$/);
+
+    if (pagePathMatch) {
+      // Result is from a different locale, map it to the current locale
+      const pagePath = pagePathMatch[1];
+
+      if (currentLocale === 'en') {
+        // Map to English site: /docs/path
+        processedUrl = `/docs/${pagePath}`;
+      } else {
+        // Map to current locale site: /docs/{locale}/path
+        processedUrl = `/docs/${currentLocale}/${pagePath}`;
+      }
+    }
+    // If URL is already in English format (/docs/path), leave it as is for English
+    // or convert it to current locale format
 
     const transformed = {
       ...item,
