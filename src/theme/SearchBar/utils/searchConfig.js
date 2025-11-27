@@ -6,7 +6,7 @@ import { DEFAULT_SEARCH_PARAMS, URL_CONFIG } from '../searchConstants';
  */
 export const createDocTypeFilters = (docTypes) => {
   if (!docTypes) return [];
-  
+
   const types = Array.isArray(docTypes) ? docTypes : [docTypes];
   return types.map(type => `doc_type:${type}`);
 };
@@ -33,13 +33,13 @@ export function mergeFacetFilters(f1, f2) {
 export function createSearchParameters(props, contextualSearch, contextualSearchFacetFilters, docTypes = null) {
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const docTypeFilters = createDocTypeFilters(docTypes);
-  
+
   let facetFilters = configFacetFilters;
-  
+
   if (contextualSearch) {
     facetFilters = mergeFacetFilters(contextualSearchFacetFilters, facetFilters);
   }
-  
+
   if (docTypeFilters.length > 0) {
     facetFilters = mergeFacetFilters(facetFilters, docTypeFilters);
   }
@@ -87,24 +87,12 @@ export function createSearchNavigator(history, externalUrlRegex) {
 export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
 
-  // Transform URL from /lang/docs/... to /docs/lang/... for non-English locales
-  const transformUrl = (url, locale) => {
-    if (locale === 'en') {
-      return processSearchResultUrl(url);
-    }
-    // Match pattern like /ru/docs/... or /zh/docs/... or /jp/docs/...
-    const match = url.match(/^\/(ru|zh|jp)\/(docs\/.*)/);
-    if (match) {
-      const [, lang, docsPath] = match;
-      return `/${docsPath}${lang}/`;
-    }
-    return url;
-  };
-
   const baseTransform = (items) => items.map((item, index) => {
     const transformed = {
       ...item,
-      url: transformUrl(item.url, currentLocale),
+      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE)
+          ? processSearchResultUrl(item.url)
+          : item.url,
       index,
       queryID: queryIDRef.current
     };
