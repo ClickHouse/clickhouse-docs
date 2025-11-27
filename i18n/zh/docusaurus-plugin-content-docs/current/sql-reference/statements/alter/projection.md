@@ -1,6 +1,6 @@
 ---
 description: '投影操作文档'
-sidebar_label: '投影'
+sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
 title: '投影'

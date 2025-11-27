@@ -1,6 +1,6 @@
 ---
 description: '表设置变更说明文档'
-sidebar_label: '设置'
+sidebar_label: 'SETTING'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
 title: '表设置变更'

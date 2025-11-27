@@ -1,6 +1,6 @@
 ---
 description: 'Документация по квоте'
-sidebar_label: 'КВОТА'
+sidebar_label: 'QUOTA'
 sidebar_position: 42
 slug: /sql-reference/statements/create/quota
 title: 'CREATE QUOTA'

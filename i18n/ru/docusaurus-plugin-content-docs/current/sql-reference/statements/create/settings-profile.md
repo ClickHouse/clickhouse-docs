@@ -1,6 +1,6 @@
 ---
 description: 'Документация по профилю настроек'
-sidebar_label: 'ПРОФИЛЬ НАСТРОЕК'
+sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 43
 slug: /sql-reference/statements/create/settings-profile
 title: 'CREATE SETTINGS PROFILE'

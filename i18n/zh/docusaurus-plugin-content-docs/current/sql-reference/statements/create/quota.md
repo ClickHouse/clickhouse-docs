@@ -1,6 +1,6 @@
 ---
 description: '配额文档'
-sidebar_label: '配额'
+sidebar_label: 'QUOTA'
 sidebar_position: 42
 slug: /sql-reference/statements/create/quota
 title: 'CREATE QUOTA'

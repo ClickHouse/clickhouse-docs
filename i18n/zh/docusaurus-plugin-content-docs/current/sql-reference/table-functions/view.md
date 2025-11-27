@@ -1,6 +1,6 @@
 ---
 description: '将子查询转换为一张表。该函数实现视图功能。'
-sidebar_label: '视图'
+sidebar_label: 'VIEW'
 sidebar_position: 210
 slug: /sql-reference/table-functions/view
 title: '视图'
