@@ -90,17 +90,19 @@ export function transformSearchItems(items, options) {
   const baseTransform = (items) => items.map((item, index) => {
     let url = item.url;
 
-    // For non-English locales, strip the /docs/{locale}/ prefix from search results
-    // since the baseUrl already includes it (e.g., baseUrl is /docs/ru/)
+    // For non-English locales, the baseUrl is /docs/{locale}/
+    // Algolia returns URLs like /docs/{locale}/path
+    // We need to make them relative: path (without leading slash)
     if (currentLocale !== 'en') {
-      url = url.replace(`/docs/${currentLocale}/`, '/');
+      url = url.replace(`/docs/${currentLocale}/`, '');
+    } else {
+      // For English, baseUrl is /docs/, so URLs like /docs/path should become path
+      url = url.replace('/docs/', '');
     }
 
     const transformed = {
       ...item,
-      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE)
-          ? processSearchResultUrl(url)
-          : url,
+      url,
       index,
       queryID: queryIDRef.current
     };
