@@ -49,8 +49,8 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
     facetFilters,
     // Add doc_type to DocSearch's default attributesToRetrieve
     attributesToRetrieve: [
-      "hierarchy.lvl0","hierarchy.lvl1","hierarchy.lvl2","hierarchy.lvl3","hierarchy.lvl4","hierarchy.lvl5","hierarchy.lvl6",
-      "content","type","url","doc_type"
+      "hierarchy.lvl0", "hierarchy.lvl1", "hierarchy.lvl2", "hierarchy.lvl3", "hierarchy.lvl4", "hierarchy.lvl5", "hierarchy.lvl6",
+      "content", "type", "url", "doc_type"
     ],
     ...DEFAULT_SEARCH_PARAMS,
   };
@@ -90,14 +90,43 @@ export function transformSearchItems(items, options) {
   const baseTransform = (items) => items.map((item, index) => {
     let url = item.url;
 
-    // For non-English locales, the baseUrl is /docs/{locale}/
-    // Algolia returns URLs like /docs/{locale}/path
-    // We need to make them relative: path (without leading slash)
-    if (currentLocale !== 'en') {
-      url = url.replace(`/docs/${currentLocale}/`, '');
-    } else {
-      // For English, baseUrl is /docs/, so URLs like /docs/path should become path
-      url = url.replace('/docs/', '');
+    // Algolia stores full URLs like https://clickhouse.com/docs/jp/tutorial
+    // We need to extract just the path relative to the baseUrl
+    // For non-English locales, baseUrl is /docs/{locale}/, so we want /tutorial
+    // For English, baseUrl is /docs/, so we want /tutorial
+
+    try {
+      // Parse the URL to safely extract the pathname
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+
+      if (currentLocale !== 'en') {
+        // Remove /docs/{locale} prefix, keeping the leading slash
+        // e.g., /docs/jp/tutorial -> /tutorial
+        const prefix = `/docs/${currentLocale}`;
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      } else {
+        // Remove /docs prefix, keeping the leading slash
+        // e.g., /docs/tutorial -> /tutorial
+        const prefix = '/docs';
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      }
+    } catch (e) {
+      // If URL parsing fails, assume it's already a relative path
+      // and use the original transformation logic as fallback
+      if (currentLocale !== 'en') {
+        url = url.replace(`/docs/${currentLocale}/`, '/');
+      } else {
+        url = url.replace('/docs/', '/');
+      }
     }
 
     const transformed = {
