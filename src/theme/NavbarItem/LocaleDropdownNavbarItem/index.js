@@ -21,7 +21,17 @@ function createUrl({ locale, fullyQualified }) {
   });
 
   // Extract the path suffix after the baseUrl
-  const pathnameSuffix = canonicalPathname.replace(baseUrl, '');
+  // We need to handle both the current locale's baseUrl and extract the actual page path
+  // For example: /docs/jp/tutorial with baseUrl /docs/jp/ should extract 'tutorial'
+
+  // First, normalize both paths with trailing slashes for consistent comparison
+  const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+  const normalizedPathname = canonicalPathname.endsWith('/') ? canonicalPathname : canonicalPathname + '/';
+
+  // Extract the suffix by removing the baseUrl prefix
+  let pathnameSuffix = normalizedPathname.startsWith(normalizedBaseUrl)
+    ? normalizedPathname.substring(normalizedBaseUrl.length)
+    : '';
 
   // Extract the base path from baseUrl (e.g., '/docs/' -> 'docs')
   // Remove leading and trailing slashes to get the clean base path
@@ -41,7 +51,19 @@ function createUrl({ locale, fullyQualified }) {
   }
 
   // Clean up any double slashes
-  const localizedPath = getLocalizedUrl(locale).replace(/\/+/g, '/');
+  let localizedPath = getLocalizedUrl(locale).replace(/\/+/g, '/');
+
+  // Preserve trailing slash for root paths (when pathnameSuffix is empty)
+  // Remove trailing slash for non-root paths if original didn't have one
+  if (pathnameSuffix === '' || pathnameSuffix === '/') {
+    // Root path - ensure it has a trailing slash
+    if (!localizedPath.endsWith('/')) {
+      localizedPath += '/';
+    }
+  } else if (!pathname.endsWith('/') && localizedPath.endsWith('/')) {
+    // Non-root path - match the trailing slash behavior of the original
+    localizedPath = localizedPath.slice(0, -1);
+  }
 
   return `${fullyQualified ? url : ''}${localizedPath}`;
 }
