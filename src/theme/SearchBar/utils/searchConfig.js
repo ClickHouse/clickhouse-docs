@@ -86,21 +86,33 @@ export function createSearchNavigator(history, externalUrlRegex) {
  */
 export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
-  
+
+  // Transform URL from /lang/docs/... to /docs/lang/... for non-English locales
+  const transformUrl = (url, locale) => {
+    if (locale === 'en') {
+      return processSearchResultUrl(url);
+    }
+    // Match pattern like /ru/docs/... or /zh/docs/... or /jp/docs/...
+    const match = url.match(/^\/(ru|zh|jp)\/(docs\/.*)/);
+    if (match) {
+      const [, lang, docsPath] = match;
+      return `/${docsPath}${lang}/`;
+    }
+    return url;
+  };
+
   const baseTransform = (items) => items.map((item, index) => {
     const transformed = {
       ...item,
-      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE) 
-        ? processSearchResultUrl(item.url) 
-        : item.url,
+      url: transformUrl(item.url, currentLocale),
       index,
       queryID: queryIDRef.current
     };
-    
+
     return transformed;
   });
 
   const result = transformItems ? transformItems(items) : baseTransform(items);
-  
+
   return result;
 }

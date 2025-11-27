@@ -202,6 +202,20 @@ function SearchPageContent() {
           'search-result-match',
         );
 
+      // Transform URL from /lang/docs/... to /docs/lang/... for non-English locales
+      const transformUrl = (url, locale) => {
+        if (locale === 'en') {
+          return processSearchResultUrl(url);
+        }
+        // Match pattern like /ru/docs/... or /zh/docs/... or /jp/docs/...
+        const match = url.match(/^\/(ru|zh|jp)\/(docs\/.*)/);
+        if (match) {
+          const [, lang, docsPath] = match;
+          return `/${docsPath}${lang}/`;
+        }
+        return url;
+      };
+
       const items = hits.map(
         ({
           url,
@@ -213,7 +227,7 @@ function SearchPageContent() {
           );
           return {
             title: titles.pop(),
-            url: currentLocale == 'en' ? processSearchResultUrl(url) : url, //TODO: temporary - all search results to english for now
+            url: transformUrl(url, currentLocale),
             summary: snippet.content
               ? `${sanitizeValue(snippet.content.value)}...`
               : '',
