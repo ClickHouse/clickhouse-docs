@@ -66,8 +66,14 @@
     }
   },
   "options": {
-    "experimentalLocalizeStaticUrls": true,
-    "experimentalAddHeaderAnchorIds": "mintlify",
+    "experimentalLocalizeStaticImports": true,
+    "docsImportRewrites": [
+      {
+        "match": "@site/docs",
+        "replace": "@site/i18n/[locale]/docusaurus-plugin-content-docs/current"
+      }
+    ],
+    "experimentalAddHeaderAnchorIds": "default",
     "experimentalClearLocaleDirs": true
   }
 }
