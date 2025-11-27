@@ -8,6 +8,6 @@ keywords: ['mutations']
 doc_type: 'guide'
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_mutations.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_mutations.md';
 
 <Content />

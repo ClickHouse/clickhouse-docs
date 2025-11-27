@@ -70,6 +70,8 @@ http_request_duration_seconds_bucket{le="1"} 133988
 http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
+```
+
 
 # HELP http_requests_total HTTPリクエストの総数
 # TYPE http_requests_total counter
@@ -78,17 +80,23 @@ http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-# HELP rpc_duration_seconds RPC の処理時間（秒）のサマリー。
-# TYPE rpc_duration_seconds summary
-rpc_duration_seconds{quantile="0.01"} 3102
-rpc_duration_seconds{quantile="0.05"} 3272
-rpc_duration_seconds{quantile="0.5"} 4773
-rpc_duration_seconds{quantile="0.9"} 9001
-rpc_duration_seconds{quantile="0.99"} 76656
-rpc_duration_seconds_sum 17560473
-rpc_duration_seconds_count 2693
 
-something_weird{problem="ゼロによる除算"} +Inf -3982045
+
+# HELP rpc&#95;duration&#95;seconds RPC の処理時間（秒）のサマリー。
+
+# TYPE rpc&#95;duration&#95;seconds summary
+
+rpc&#95;duration&#95;seconds{quantile="0.01"} 3102
+rpc&#95;duration&#95;seconds{quantile="0.05"} 3272
+rpc&#95;duration&#95;seconds{quantile="0.5"} 4773
+rpc&#95;duration&#95;seconds{quantile="0.9"} 9001
+rpc&#95;duration&#95;seconds{quantile="0.99"} 76656
+rpc&#95;duration&#95;seconds&#95;sum 17560473
+rpc&#95;duration&#95;seconds&#95;count 2693
+
+something&#95;weird{problem="ゼロによる除算"} +Inf -3982045
+
+```
 ```
 
 

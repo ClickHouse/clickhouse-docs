@@ -69,7 +69,7 @@
   },
   "theme.SearchPage.algoliaLabel": {
     "message": "Поиск с помощью Algolia",
-    "description": "ARIA-метка для упоминаний Algolia"
+    "description": "ARIA-метка для упоминания «Algolia»"
   },
   "theme.SearchPage.noResultsText": {
     "message": "Ничего не найдено",
@@ -84,60 +84,60 @@
     "description": "ARIA-метка для последних записей в боковой панели блога"
   },
   "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
-    "message": "Свернуть или развернуть «{label}»",
-    "description": "Метка ARIA для переключения состояния сворачиваемой категории боковой панели"
+    "message": "Свернуть/развернуть категорию боковой панели «{label}»",
+    "description": "ARIA-метка для переключения категории в сворачиваемой боковой панели"
   },
   "theme.NavBar.navAriaLabel": {
-    "message": "Навигация",
+    "message": "Главная",
     "description": "ARIA-метка для основного меню навигации"
   },
   "theme.navbar.mobileLanguageDropdown.label": {
-    "message": "Другие языки",
+    "message": "Языки",
     "description": "Метка мобильного выпадающего списка выбора языка"
   },
   "theme.blog.post.readMore": {
     "message": "Подробнее",
-    "description": "Метка, отображаемая в выдержках записей блога и ведущая к полным версиям записей"
+    "description": "Метка, используемая в анонсах записей блога для ссылки на полные статьи блога"
   },
   "theme.blog.post.readMoreLabel": {
-    "message": "Узнайте больше о {title}",
-    "description": "ARIA-метка для ссылок из анонсов к полным записям блога"
+    "message": "Подробнее о {title}",
+    "description": "Метка ARIA для ссылки из отрывков к полным записям блога"
   },
   "theme.blog.post.readingTime.plurals": {
-    "message": "Примерное время чтения: {readingTime} мин",
-    "description": "Метка с учетом форм множественного числа для строки «{readingTime} мин чтения». Используйте столько форм множественного числа, сколько поддерживает ваш язык (разделяйте символом «|»); см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
+    "message": "1 минута на чтение|{readingTime} мин на чтение",
+    "description": "Множественная форма для «{readingTime} мин чтения». Используйте столько форм множественного числа (разделённых символом \"|\"), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.breadcrumbs.home": {
-    "message": "Главная",
-    "description": "ARIA-метка для главной страницы в цепочке навигации (хлебных крошках)"
+    "message": "Главная страница",
+    "description": "ARIA-метка для ссылки на главную страницу в цепочке навигации (breadcrumbs)"
   },
   "theme.docs.sidebar.navAriaLabel": {
     "message": "Боковое меню документации",
-    "description": "ARIA-метка для боковой навигации"
+    "description": "ARIA-метка для боковой панели навигации"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
-    "message": "Закрыть боковую панель",
-    "description": "Текст атрибута title для кнопки сворачивания боковой панели документации"
-  },
-  "theme.docs.sidebar.collapseButtonAriaLabel": {
-    "message": "Закрыть боковую панель",
+    "message": "Свернуть боковую панель",
     "description": "Атрибут title для кнопки сворачивания боковой панели документации"
   },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Свернуть боковую панель",
+    "description": "Атрибут title для кнопки свертывания боковой панели документации"
+  },
   "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
-    "message": "Закрыть меню",
-    "description": "ARIA-метка кнопки закрытия мобильной боковой панели"
+    "message": "Закрыть панель навигации",
+    "description": "ARIA-метка кнопки закрытия мобильного бокового меню"
   },
   "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
-    "message": "← Вернуться в главное меню",
-    "description": "Подпись для кнопки «Назад», которая возвращает в главное меню внутри вторичного меню боковой панели мобильной панели навигации (обычно используется для отображения боковой панели документации)"
+    "message": "← Назад в главное меню",
+    "description": "Подпись кнопки «Назад» для возврата в главное меню внутри бокового меню мобильной панели навигации (во вторичном меню, которое, в частности, используется для отображения боковой панели документации)"
   },
   "theme.ErrorPageContent.title": {
-    "message": "Произошла ошибка",
+    "message": "Произошёл сбой на этой странице.",
     "description": "Заголовок страницы-заглушки, отображаемой при сбое страницы"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
     "message": "Наверх",
-    "description": "Метка ARIA для кнопки «Вернуться к началу страницы»"
+    "description": "ARIA-метка для кнопки «Наверх»"
   },
   "theme.blog.title": {
     "message": "База знаний",
@@ -145,283 +145,282 @@
   },
   "theme.blog.archive.title": {
     "message": "Архив",
-    "description": "Заголовок страницы и основной заголовок страницы архива блога"
+    "description": "Заголовок страницы и hero-блока страницы архива блога"
   },
   "theme.blog.archive.description": {
     "message": "Архив",
-    "description": "Описание страницы и hero-блока для страницы архива блога"
+    "description": "Описание страницы и hero-блока на странице архива блога"
   },
   "theme.blog.paginator.navAriaLabel": {
-    "message": "Навигация по списку записей блога",
+    "message": "Навигация по странице списка записей блога",
     "description": "ARIA-метка для навигации по страницам блога"
   },
   "theme.blog.paginator.newerEntries": {
-    "message": "Новая статья",
-    "description": "Подпись ссылки для перехода на страницу более новых записей блога (предыдущая страница)"
+    "message": "Более новые записи",
+    "description": "Надпись, используемая для перехода на страницу более новых записей блога (предыдущая страница)"
   },
   "theme.blog.paginator.olderEntries": {
-    "message": "Предыдущие статьи",
-    "description": "Подпись для перехода к более ранним записям блога (следующая страница)"
+    "message": "Предыдущие записи",
+    "description": "Подпись ссылки для перехода к более старым записям блога (следующая страница)"
   },
   "theme.blog.post.paginator.navAriaLabel": {
-    "message": "Навигация по статье",
-    "description": "ARIA-метка для постраничной навигации по записям блога"
+    "message": "Навигация по странице записи в блоге",
+    "description": "Метка ARIA для постраничной навигации по записям блога"
   },
   "theme.blog.post.paginator.newerPost": {
-    "message": "Новая статья",
-    "description": "Надпись на кнопке, переходящей к следующей/предыдущей записи блога"
+    "message": "Следующая запись",
+    "description": "Текст кнопки в блоге для перехода к следующей/предыдущей записи"
   },
   "theme.blog.post.paginator.olderPost": {
-    "message": "Предыдущие статьи",
-    "description": "Подпись кнопки навигации по блогу для перехода к предыдущей/следующей записи"
+    "message": "Предыдущая статья",
+    "description": "Текст кнопки в блоге для перехода к предыдущей/следующей записи"
   },
   "theme.tags.tagsPageLink": {
     "message": "Просмотреть все теги",
-    "description": "Подпись ссылки на страницу списка тегов"
+    "description": "Текст ссылки, ведущей на страницу списка тегов"
   },
   "theme.colorToggle.ariaLabel": {
-    "message": "Переключить тёмный режим (текущий: {mode})",
+    "message": "Переключить тему оформления (тёмная/светлая, сейчас: {mode})",
     "description": "ARIA-метка для переключателя цветовой схемы панели навигации"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
-    "message": "Тёмная тема",
-    "description": "Название тёмной темы оформления"
+    "message": "тёмная тема",
+    "description": "Название тёмного цветового режима"
   },
   "theme.colorToggle.ariaLabel.mode.light": {
-    "message": "Светлая тема",
-    "description": "Название для светлой темы оформления"
+    "message": "светлая тема",
+    "description": "Название светлой цветовой темы"
   },
   "theme.docs.DocCard.categoryDescription.plurals": {
-    "message": "{count} элементов",
-    "description": "Описание по умолчанию, отображаемое на карточке категории в сгенерированном индексе и показывающее, сколько элементов в ней содержится"
+    "message": "1 элемент|{count} элементов",
+    "description": "Описание по умолчанию для карточки категории в сгенерированном индексе, отображающее количество элементов в этой категории"
   },
   "theme.docs.paginator.navAriaLabel": {
-    "message": "Постраничная навигация документации",
-    "description": "ARIA-метка для постраничной навигации в документации"
+    "message": "Страницы документации",
+    "description": "ARIA-метка для элемента постраничной навигации в документации"
   },
   "theme.docs.paginator.previous": {
     "message": "Предыдущая",
-    "description": "Подпись для перехода к предыдущему документу"
+    "description": "Текст кнопки для перехода к предыдущему документу"
   },
   "theme.docs.paginator.next": {
     "message": "Далее",
-    "description": "Подпись для перехода к следующему документу"
+    "description": "Надпись, используемая для перехода к следующему документу"
   },
   "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "{count} документов с тегами",
-    "description": "Метка во множественном числе для «{count} docs tagged». Используйте столько форм множественного числа (разделённых символом «|»), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    "message": "Один документ помечен тегом|{count} документов помечено тегом",
+    "description": "Множественные формы метки для «{count} docs tagged». Укажите столько форм множественного числа (разделённых символом «|»), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
     "message": "{nDocsTagged} документов с тегом «{tagName}»",
-    "description": "Заголовок страницы для тега документации"
+    "description": "Заголовок страницы для тега в документации"
   },
   "theme.docs.versions.unreleasedVersionLabel": {
-    "message": "Эта документация относится к предварительной версии {siteTitle} {versionLabel}.",
-    "description": "Метка, показывающая, что пользователь просматривает еще не опубликованную версию документации"
+    "message": "Это неопубликованная документация для версии {siteTitle} {versionLabel}.",
+    "description": "Метка, сообщающая пользователю, что он просматривает ещё не выпущенную версию документации"
   },
   "theme.docs.versions.unmaintainedVersionLabel": {
-    "message": "Эта документация относится к {siteTitle} версии {versionLabel} и больше не обновляется.",
-    "description": "Метка, отображаемая пользователям при просмотре неподдерживаемой версии документации"
+    "message": "Это документация для {siteTitle} {versionLabel}, которая больше не находится в стадии активной поддержки.",
+    "description": "Метка, информирующая пользователя о том, что он просматривает неподдерживаемую версию документации"
   },
   "theme.docs.versions.latestVersionSuggestionLabel": {
-    "message": "Обратитесь к последней версии документации по ссылке {latestVersionLink} ({versionLabel}).",
-    "description": "Метка, предлагающая пользователю проверить, доступна ли последняя версия"
+    "message": "Актуальную документацию см. в {latestVersionLink} ({versionLabel}).",
+    "description": "Метка, подсказывающая пользователю, что нужно проверить последнюю версию"
   },
   "theme.docs.versions.latestVersionLinkLabel": {
-    "message": "Актуальная версия",
-    "description": "Текст, используемый для ссылки «Предложить последнюю версию»"
+    "message": "последняя версия",
+    "description": "Метка, используемая как текст ссылки для предложения обновиться до последней версии"
   },
   "theme.docs.versionBadge.label": {
-    "message": "Версия: {versionLabel}",
-    "description": "Метка версии"
+    "message": "Версия: {versionLabel}"
   },
   "theme.common.editThisPage": {
     "message": "Редактировать страницу",
     "description": "Текст ссылки для редактирования текущей страницы"
   },
   "theme.common.headingLinkTitle": {
-    "message": "Постоянная ссылка на раздел {heading}",
-    "description": "Ссылка на этот заголовок"
+    "message": "Прямая ссылка на заголовок {heading}",
+    "description": "Текст ссылки на заголовок"
   },
   "theme.lastUpdated.atDate": {
-    "message": "от {date}",
-    "description": "Текст для отображения даты последнего обновления страницы"
+    "message": " в {date}",
+    "description": "Слова, используемые для указания даты последнего обновления страницы"
   },
   "theme.lastUpdated.byUser": {
-    "message": "{user}",
-    "description": "Метка, указывающая, кто последним обновил страницу"
+    "message": " автор: {user}",
+    "description": "Слова, используемые для указания того, кем страница была обновлена в последний раз"
   },
   "theme.lastUpdated.lastUpdatedAtBy": {
-    "message": "Последнее обновление: {atDate}{byUser}",
-    "description": "Текст, отображающий, когда и кем страница была обновлена в последний раз"
+    "message": "Последнее обновление {atDate}{byUser}",
+    "description": "Предложение, отображающее дату и автора последнего обновления страницы"
   },
   "theme.tags.tagsListLabel": {
     "message": "Теги:",
-    "description": "Метка, отображаемая рядом со списком тегов"
+    "description": "Метка рядом со списком тегов"
   },
   "theme.AnnouncementBar.closeButtonAriaLabel": {
     "message": "Закрыть",
-    "description": "ARIA-метка для кнопки закрытия панели уведомлений"
+    "description": "ARIA-метка для кнопки закрытия панели объявлений"
   },
   "theme.admonition.warning": {
-    "message": "Предупреждение",
-    "description": "Метка по умолчанию предупреждающего блока (:::warning)"
+    "message": "предупреждение",
+    "description": "Метка по умолчанию для предупреждающего блока (:::warning)"
   },
   "theme.CodeBlock.copied": {
-    "message": "Скопировано!",
-    "description": "Текст кнопки «Copy» в блоках кода"
+    "message": "Скопировано",
+    "description": "Текст кнопки «Скопировано» в блоках кода"
   },
   "theme.CodeBlock.copyButtonAriaLabel": {
-    "message": "Копировать код",
+    "message": "Скопировать код",
     "description": "ARIA-метка для кнопки «Копировать код»"
   },
   "theme.CodeBlock.copy": {
     "message": "Копировать",
-    "description": "Подпись для кнопки «Копировать» в блоках кода"
+    "description": "Текст кнопки «Копировать» в блоках кода"
   },
   "theme.CodeBlock.wordWrapToggle": {
     "message": "Переключить перенос по словам",
     "description": "Атрибут title кнопки переключения переноса строк в блоке кода"
   },
   "theme.DocSidebarItem.expandCategoryAriaLabel": {
-    "message": "Откройте оглавление «{label}»",
-    "description": "ARIA-метка для раскрытия категории боковой панели"
+    "message": "Развернуть раздел боковой панели «{label}»",
+    "description": "ARIA-метка для раскрытия категории в боковой панели"
   },
   "theme.DocSidebarItem.collapseCategoryAriaLabel": {
-    "message": "Закрыть оглавление «{label}»",
+    "message": "Свернуть раздел боковой панели «{label}»",
     "description": "ARIA-метка для сворачивания категории боковой панели"
   },
   "theme.NotFound.p1": {
-    "message": "Запрашиваемая страница не найдена",
-    "description": "Первый абзац на странице с ошибкой 404"
+    "message": "Ничего не найдено по вашему запросу.",
+    "description": "Первый абзац страницы ошибки 404"
   },
   "theme.NotFound.p2": {
-    "message": "Пожалуйста, сообщите владельцу сайта, который ссылается на эту страницу, что ссылка не работает.",
+    "message": "Пожалуйста, свяжитесь с владельцем сайта, по ссылке с которого вы перешли на исходный URL, и сообщите ему, что эта ссылка не работает.",
     "description": "Второй абзац страницы с ошибкой 404"
   },
   "theme.TOCCollapsible.toggleButtonLabel": {
-    "message": "Заголовки страницы",
-    "description": "Текст кнопки в сворачиваемом компоненте оглавления (TOC)"
+    "message": "На этой странице",
+    "description": "Надпись на кнопке компонента сворачиваемого оглавления (TOC)"
   },
   "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
-    "message": "Открыть навигационную панель",
-    "description": "ARIA-метка для кнопки меню‑гамбургера в мобильном навигационном меню"
+    "message": "Переключить панель навигации",
+    "description": "ARIA-метка для кнопки меню-гамбургера мобильной навигации"
   },
   "theme.docs.sidebar.expandButtonTitle": {
-    "message": "Откройте боковую панель",
-    "description": "ARIA-метка и атрибут title для кнопки раскрытия боковой панели документации"
+    "message": "Развернуть боковую панель",
+    "description": "Метка ARIA и атрибут title для кнопки раскрытия боковой панели документации"
   },
   "theme.docs.sidebar.expandButtonAriaLabel": {
-    "message": "Откройте боковую панель",
-    "description": "ARIA-метка и атрибут title, используемые для кнопки раскрытия в боковой панели документации"
+    "message": "Развернуть боковую панель",
+    "description": "ARIA-метка и атрибут title для кнопки раскрытия боковой панели документации"
   },
   "theme.SearchBar.label": {
     "message": "Поиск",
-    "description": "Метка ARIA и плейсхолдер для кнопки поиска"
+    "description": "ARIA-метка и атрибут placeholder для кнопки поиска"
   },
   "theme.SearchModal.searchBox.resetButtonTitle": {
-    "message": "Очистить",
-    "description": "Текст и ARIA-метка кнопки сброса поля поиска"
+    "message": "Очистить запрос",
+    "description": "Подпись и ARIA-ярлык для кнопки сброса поля поиска"
   },
   "theme.SearchModal.searchBox.cancelButtonText": {
     "message": "Отмена",
-    "description": "Текстовая метка и ARIA-метка кнопки отмены поиска"
+    "description": "Текст метки и aria-label кнопки отмены в поле поиска"
   },
   "theme.SearchModal.startScreen.recentSearchesTitle": {
-    "message": "Последние запросы",
-    "description": "Название недавних поисковых запросов"
+    "message": "Недавние",
+    "description": "Заголовок для раздела «Недавние запросы»"
   },
   "theme.SearchModal.startScreen.noRecentSearchesText": {
     "message": "Нет недавних запросов",
-    "description": "Текст, отображаемый при отсутствии недавних поисковых запросов"
+    "description": "Текст при отсутствии недавних поисков"
   },
   "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
     "message": "Сохранить поиск",
-    "description": "Подпись кнопки «Сохранить последний поиск»"
+    "description": "Подпись для кнопки сохранения недавнего поиска"
   },
   "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
-    "message": "Удалить этот поиск из истории",
-    "description": "Метка кнопки «Очистить недавние запросы»"
+    "message": "Удалить этот запрос из истории",
+    "description": "Метка для кнопки «Удалить недавний поиск»"
   },
   "theme.SearchModal.startScreen.favoriteSearchesTitle": {
-    "message": "Сохранённые запросы",
-    "description": "Название избранного поиска"
+    "message": "Избранное",
+    "description": "Название для избранных запросов"
   },
   "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
-    "message": "Удалить этот запрос из избранного",
-    "description": "Подпись кнопки «Удалить избранный поиск»"
+    "message": "Удалить этот поиск из избранного",
+    "description": "Метка для кнопки «Удалить избранный поиск»"
   },
   "theme.SearchModal.errorScreen.titleText": {
-    "message": "Не удалось загрузить результаты поиска",
-    "description": "Заголовок экрана ошибки в модальном окне поиска"
+    "message": "Не удалось получить результаты",
+    "description": "Заголовок экрана с ошибкой в модальном окне поиска"
   },
   "theme.SearchModal.errorScreen.helpText": {
-    "message": "Проверьте сетевое подключение.",
-    "description": "Справочный текст для экрана ошибки модального окна поиска"
+    "message": "Возможно, вам следует проверить сетевое подключение.",
+    "description": "Текст подсказки для экрана ошибки в модальном окне поиска"
   },
   "theme.SearchModal.footer.selectText": {
-    "message": "Выбрать",
-    "description": "Описание действия клавиши Enter"
+    "message": "выбрать",
+    "description": "Пояснение действия клавиши Enter"
   },
   "theme.SearchModal.footer.selectKeyAriaLabel": {
     "message": "клавиша Enter",
-    "description": "ARIA-метка кнопки клавиши Enter для подтверждения выбора"
+    "description": "ARIA-метка для кнопки Enter, подтверждающей выбор"
   },
   "theme.SearchModal.footer.navigateText": {
-    "message": "Перейти",
-    "description": "Текст описания действий клавиш «Стрелка вверх» и «Стрелка вниз»"
+    "message": "для перехода",
+    "description": "Описание действия для клавиш «стрелка вверх» и «стрелка вниз»"
   },
   "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
-    "message": "Клавиша стрелки вверх",
-    "description": "ARIA-метка кнопки со стрелкой вверх, используемой для навигации"
+    "message": "Стрелка вверх",
+    "description": "ARIA-метка для кнопки клавиши «Стрелка вверх», используемой для навигации"
   },
   "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
-    "message": "Клавиша стрелки вниз",
-    "description": "ARIA-метка кнопки со стрелкой вниз, которая управляет навигацией"
+    "message": "Стрелка вниз",
+    "description": "ARIA-метка кнопки со стрелкой вниз, выполняющей навигацию"
   },
   "theme.SearchModal.footer.closeText": {
-    "message": "Закрыть",
-    "description": "Описание действия клавиши Esc"
+    "message": "закрыть",
+    "description": "Описание действия клавиши Escape"
   },
   "theme.SearchModal.footer.closeKeyAriaLabel": {
     "message": "Клавиша Esc",
-    "description": "ARIA-метка кнопки Escape, используемой для закрытия модального окна"
+    "description": "ARIA-метка кнопки Escape, закрывающей модальное окно"
   },
   "theme.SearchModal.footer.searchByText": {
-    "message": "Поиск",
-    "description": "В тексте поясняется, что поиск работает на базе Algolia."
+    "message": "Поиск по",
+    "description": "В тексте говорится, что поиск выполняется с помощью Algolia."
   },
   "theme.SearchModal.noResultsScreen.noResultsText": {
-    "message": "Ничего не найдено",
-    "description": "Этот текст указывает, что по следующему запросу нет результатов"
+    "message": "Нет результатов по запросу",
+    "description": "В тексте поясняется, что по следующему поисковому запросу нет результатов."
   },
   "theme.SearchModal.noResultsScreen.suggestedQueryText": {
-    "message": "Попробуйте такие запросы:",
-    "description": "Текст предлагаемого запроса, отображаемый при отсутствии результатов для указанного поиска"
+    "message": "Попробуйте поискать",
+    "description": "Текст предлагаемого запроса, если по следующему поисковому запросу не найдено результатов"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
-    "message": "Есть более подходящие результаты поиска?",
-    "description": "Текст подсказки, отображаемой, когда пользователь считает, что какие‑то результаты отсутствуют"
+    "message": "Считаете, что по этому запросу должны быть результаты?",
+    "description": "Текст вопроса, отображаемого, когда пользователь считает, что каких‑то результатов не хватает"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
-    "message": "Отчёт",
-    "description": "Текст ссылки для сообщения об отсутствии результатов"
+    "message": "Сообщите нам.",
+    "description": "Текст ссылки для отправки сообщения об отсутствующих результатах"
   },
   "theme.SearchModal.placeholder": {
-    "message": "Поиск по документации",
-    "description": "Текст подсказки для поля ввода во всплывающем модальном окне DocSearch"
+    "message": "Поиск в документации",
+    "description": "Текст подсказки в поле ввода всплывающего модального окна DocSearch"
   },
   "theme.blog.post.plurals": {
-    "message": "{count} элементов",
-    "description": "Метка во множественном числе для «{count} posts». Укажите столько форм множественного числа (разделяя их с помощью «|»), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    "message": "Одна запись|{count} записей",
+    "description": "Множественная форма подписи для «{count} публикаций». Используйте столько форм множественного числа (разделённых символом \"|\"), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.blog.tagTitle": {
-    "message": "{nPosts} публикаций с тегом «{tagName}»",
+    "message": "{nPosts} записей с тегом \"{tagName}\"",
     "description": "Заголовок страницы тега блога"
   },
   "theme.blog.author.pageTitle": {
     "message": "{authorName} - {nPosts} постов",
-    "description": "Название страницы автора блога"
+    "description": "Заголовок страницы автора блога"
   },
   "theme.blog.authorsList.pageTitle": {
     "message": "Авторы",
@@ -429,451 +428,39 @@
   },
   "theme.blog.authorsList.viewAll": {
     "message": "Посмотреть всех авторов",
-    "description": "Подпись ссылки на страницу авторов блога"
+    "description": "Текст ссылки, ведущей на страницу авторов блога"
   },
   "theme.blog.author.noPosts": {
-    "message": "Автор ещё ничего не опубликовал.",
-    "description": "Текст для авторов, у которых нет записей в блоге"
+    "message": "Автор ещё не написал ни одной публикации.",
+    "description": "Текст для авторов без записей в блоге"
   },
   "theme.contentVisibility.unlistedBanner.title": {
-    "message": "Приватная страница",
-    "description": "Заголовок баннера для непубличного контента"
+    "message": "Неопубликованная страница",
+    "description": "Заголовок баннера для скрытого контента"
   },
   "theme.contentVisibility.unlistedBanner.message": {
-    "message": "Эта страница приватная. Она не отображается в результатах поиска, и открыть её могут только пользователи с прямой ссылкой.",
-    "description": "Текст сообщения баннера для скрытого контента"
+    "message": "Эта страница скрыта из списка. Поисковые системы не будут её индексировать, и перейти на неё смогут только пользователи с прямой ссылкой.",
+    "description": "Сообщение баннера для непубличного контента"
   },
   "theme.contentVisibility.draftBanner.title": {
     "message": "Черновая страница",
-    "description": "Заголовок баннера «Черновой контент»"
+    "description": "Заголовок баннера черновика"
   },
   "theme.contentVisibility.draftBanner.message": {
-    "message": "Эта страница является черновиком и не входит в основной контент, доступный в публичных средах.",
-    "description": "Сообщение баннера о черновом контенте"
+    "message": "Эта страница является черновиком. Она будет видна только в среде разработки и не попадёт в production-сборку.",
+    "description": "Текст баннера о черновой версии содержимого"
   },
   "theme.ErrorPageContent.tryAgain": {
-    "message": "Попробуйте ещё раз.",
-    "description": "Текст кнопки для повторной отрисовки, когда граница ошибок React перехватывает ошибку"
+    "message": "Повторить попытку",
+    "description": "Надпись на кнопке для повторного рендеринга, когда граница ошибок React перехватывает ошибку"
   },
   "theme.common.skipToMainContent": {
     "message": "Перейти к основному содержанию",
-    "description": "Метка «skip to content», используемая в целях доступности и позволяющая пользователям быстро перейти к основному содержимому с помощью навигации с клавиатуры (Tab/Enter)"
+    "description": "Метка «Пропустить к содержимому», используемая для обеспечения доступности, позволяет быстро перейти к основному содержимому с помощью навигации по клавиатуре (Tab/Enter)"
   },
   "theme.tags.tagsPageTitle": {
     "message": "Теги",
     "description": "Заголовок страницы со списком тегов"
-  },
-  "sidebar.dropdownCategories.category.Get started": {
-    "message": "Начало работы"
-  },
-  "sidebar.dropdownCategories.category.description.Get started": {
-    "message": "Узнайте, как использовать ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Introduction": {
-    "message": "Введение"
-  },
-  "sidebar.dropdownCategories.category.Get started.Introduction.description": {
-    "message": "Введение в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Concepts": {
-    "message": "Концепции"
-  },
-  "sidebar.dropdownCategories.category.Get started.Concepts.description": {
-    "message": "Основные концепции"
-  },
-  "sidebar.dropdownCategories.category.Get started.Starter guides": {
-    "message": "Руководства для начинающих"
-  },
-  "sidebar.dropdownCategories.category.Get started.Starter guides.description": {
-    "message": "Начните отсюда при изучении ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Best practices": {
-    "message": "Лучшие практики"
-  },
-  "sidebar.dropdownCategories.category.Get started.Best practices.description": {
-    "message": "Следуйте лучшим практикам с ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Migration guides": {
-    "message": "Руководства по миграции"
-  },
-  "sidebar.dropdownCategories.category.Get started.Migration guides.description": {
-    "message": "Перенесите вашу базу данных в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Use case guides": {
-    "message": "Руководства по сценариям использования"
-  },
-  "sidebar.dropdownCategories.category.Get started.Use case guides.description": {
-    "message": "Распространенные сценарии использования ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Get started.Example datasets": {
-    "message": "Примеры наборов данных"
-  },
-  "sidebar.dropdownCategories.category.Get started.Example datasets.description": {
-    "message": "Полезные наборы данных и руководства"
-  },
-  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom": {
-    "message": "Советы и мудрость сообщества"
-  },
-  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom.description": {
-    "message": "Советы и хитрости от сообщества"
-  },
-  "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако"
-  },
-  "sidebar.dropdownCategories.category.description.Cloud": {
-    "message": "Самый быстрый способ развернуть ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started": {
-    "message": "Начать"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
-    "message": "Быстрый старт с ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Features": {
-    "message": "Функции"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Features.description": {
-    "message": "Функции, предлагаемые ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Guides": {
-    "message": "Руководства"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Guides.description": {
-    "message": "Руководства по ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Reference": {
-    "message": "Справочник"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Reference.description": {
-    "message": "Справочная документация по ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Manage data": {
-    "message": "Управление данными"
-  },
-  "sidebar.dropdownCategories.category.description.Manage data": {
-    "message": "Как управлять данными в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Core data concepts": {
-    "message": "Основные концепции данных"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Core data concepts.description": {
-    "message": "Понимание внутренних концепций в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Updating data": {
-    "message": "Обновление данных"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Updating data.description": {
-    "message": "Обновление и замена данных в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Deleting data": {
-    "message": "Удаление данных"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Deleting data.description": {
-    "message": "Удаление данных в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Data modeling": {
-    "message": "Моделирование данных"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Data modeling.description": {
-    "message": "Оптимизируйте вашу схему и модель данных"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations": {
-    "message": "Производительность и оптимизация"
-  },
-  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations.description": {
-    "message": "Руководства по оптимизации ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin": {
-    "message": "Сервер"
-  },
-  "sidebar.dropdownCategories.category.description.Server admin": {
-    "message": "Управление и развертывание ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling": {
-    "message": "Развертывание и масштабирование"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling.description": {
-    "message": "Как развернуть ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Security and authentication": {
-    "message": "Безопасность и аутентификация"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Security and authentication.description": {
-    "message": "Защитите ваше развертывание ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Settings": {
-    "message": "Настройки"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Settings.description": {
-    "message": "Настройка ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Tools and utilities": {
-    "message": "Инструменты и утилиты"
-  },
-  "sidebar.dropdownCategories.category.Server admin.Tools and utilities.description": {
-    "message": "Инструменты для управления ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server admin.System tables": {
-    "message": "Системные таблицы"
-  },
-  "sidebar.dropdownCategories.category.Server admin.System tables.description": {
-    "message": "Таблицы метаданных для управления ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Reference": {
-    "message": "Справочник"
-  },
-  "sidebar.dropdownCategories.category.description.Reference": {
-    "message": "Справочная документация по функциям ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Reference.Introduction": {
-    "message": "Введение"
-  },
-  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
-    "message": "Изучите синтаксис ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Reference.Functions": {
-    "message": "Функции"
-  },
-  "sidebar.dropdownCategories.category.Reference.Functions.description": {
-    "message": "Сотни встроенных функций для анализа данных"
-  },
-  "sidebar.dropdownCategories.category.Reference.Engines": {
-    "message": "Движки"
-  },
-  "sidebar.dropdownCategories.category.Reference.Engines.description": {
-    "message": "Используйте правильные движки таблиц и баз данных"
-  },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "Интеграции"
-  },
-  "sidebar.dropdownCategories.category.description.Integrations": {
-    "message": "Интеграции, клиенты и драйверы для ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.All integrations": {
-    "message": "Все интеграции"
-  },
-  "sidebar.dropdownCategories.category.Integrations.All integrations.description": {
-    "message": "Интеграция ClickHouse с другими базами данных и приложениями"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Language clients": {
-    "message": "Языковые клиенты"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Language clients.description": {
-    "message": "Используйте ваш любимый язык для работы с ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
-    "message": "ClickPipes"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
-    "message": "Самый простой способ загрузки данных в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces": {
-    "message": "Нативные клиенты и интерфейсы"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces.description": {
-    "message": "Выберите клиент и интерфейс для подключения к ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data sources": {
-    "message": "Источники данных"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
-    "message": "Загрузите данные в ClickHouse из предпочитаемого источника"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data visualization": {
-    "message": "Визуализация данных"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data visualization.description": {
-    "message": "Подключите ClickHouse к вашему любимому инструменту визуализации"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data formats": {
-    "message": "Форматы данных"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data formats.description": {
-    "message": "Изучите форматы данных, поддерживаемые ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data ingestion": {
-    "message": "Загрузка данных"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data ingestion.description": {
-    "message": "Загрузите данные в ClickHouse с помощью инструментов ELT"
-  },
-  "sidebar.dropdownCategories.category.ClickStack": {
-    "message": "ClickStack"
-  },
-  "sidebar.dropdownCategories.category.description.ClickStack": {
-    "message": "ClickStack - стек наблюдаемости ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Getting started": {
-    "message": "Начало работы"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Getting started.description": {
-    "message": "Начните работу с ClickStack"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Sample datasets": {
-    "message": "Примеры наборов данных"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Sample datasets.description": {
-    "message": "Изучите ClickStack с примерами наборов данных"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
-    "message": "Архитектура"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
-    "message": "Ознакомьтесь с архитектурой ClickStack"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
-    "message": "Развертывание"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
-    "message": "Выберите режим развертывания ClickStack"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Ingesting data": {
-    "message": "Загрузка данных"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Ingesting data.description": {
-    "message": "Загрузите данные в ClickStack"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Configuration options": {
-    "message": "Параметры конфигурации"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Configuration options.description": {
-    "message": "Разверните ClickStack в production"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Production": {
-    "message": "Production"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
-    "message": "Разверните ClickStack в production"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Integration examples": {
-    "message": "Примеры интеграции"
-  },
-  "sidebar.dropdownCategories.category.ClickStack.Integration examples.description": {
-    "message": "Краткие руководства по интеграции"
-  },
-  "sidebar.dropdownCategories.category.chDB": {
-    "message": "chDB"
-  },
-  "sidebar.dropdownCategories.category.description.chDB": {
-    "message": "chDB - встроенная версия ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
-    "message": "Изучите chDB"
-  },
-  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
-    "message": "Узнайте, как использовать chDB"
-  },
-  "sidebar.dropdownCategories.category.chDB.Language integrations": {
-    "message": "Языковые интеграции"
-  },
-  "sidebar.dropdownCategories.category.chDB.Language integrations.description": {
-    "message": "Подключитесь к chDB с помощью языкового клиента"
-  },
-  "sidebar.dropdownCategories.category.chDB.Guides": {
-    "message": "Руководства"
-  },
-  "sidebar.dropdownCategories.category.chDB.Guides.description": {
-    "message": "Руководства по использованию chDB"
-  },
-  "sidebar.dropdownCategories.category.About": {
-    "message": "О проекте"
-  },
-  "sidebar.dropdownCategories.category.description.About": {
-    "message": "Узнайте больше о ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Adopters": {
-    "message": "Пользователи"
-  },
-  "sidebar.dropdownCategories.category.About.Adopters.description": {
-    "message": "Пользователи ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Changelogs": {
-    "message": "Журналы изменений"
-  },
-  "sidebar.dropdownCategories.category.About.Changelogs.description": {
-    "message": "Просмотрите последние изменения в ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Support": {
-    "message": "Поддержка"
-  },
-  "sidebar.dropdownCategories.category.About.Support.description": {
-    "message": "Получите поддержку от инженеров ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Development and contributing": {
-    "message": "Разработка и участие"
-  },
-  "sidebar.dropdownCategories.category.About.Development and contributing.description": {
-    "message": "Узнайте, как внести вклад в ClickHouse"
-  },
-  "homepage.hero.description": {
-    "message": "Изучите ClickHouse с помощью руководств, справочной документации и видео"
-  },
-  "homepage.hero.quickStart": {
-    "message": "Быстрый старт"
-  },
-  "homepage.hero.getStartedCloud": {
-    "message": "Начните работу с Cloud"
-  },
-  "homepage.hero.installLocally": {
-    "message": "Установить локально"
-  },
-  "homepage.hero.getStartedOSS": {
-    "message": "Начните работу с OSS"
-  },
-  "homepage.search.title": {
-    "message": "Поиск по документации"
-  },
-  "homepage.connect.title": {
-    "message": "Подключение к ClickHouse"
-  },
-  "homepage.connect.description": {
-    "message": "Подключите свое приложение к ClickHouse за несколько минут"
-  },
-  "homepage.connect.viewAll": {
-    "message": "Посмотреть все клиенты и драйверы"
-  },
-  "homepage.connect.clickhouseCli": {
-    "message": "ClickHouse CLI"
-  },
-  "homepage.connect.cloudSqlConsole": {
-    "message": "Cloud SQL консоль"
-  },
-  "homepage.migrate.title": {
-    "message": "Миграция в ClickHouse"
-  },
-  "homepage.migrate.description": {
-    "message": "Загрузите данные из других баз данных, хранилищ данных и объектных хранилищ"
-  },
-  "homepage.migrate.viewAll": {
-    "message": "Посмотреть все интеграции"
-  },
-  "homepage.deploy.title": {
-    "message": "Развертывание ClickHouse"
-  },
-  "homepage.deploy.description": {
-    "message": "Разверните ClickHouse в нашем облаке или на вашей инфраструктуре"
-  },
-  "homepage.deploy.cloud": {
-    "message": "Cloud"
-  },
-  "homepage.deploy.nodeDeployment": {
-    "message": "Развертывание узла"
-  },
-  "homepage.deploy.clusterDeployment": {
-    "message": "Развертывание кластера"
-  },
-  "homepage.resources.title": {
-    "message": "Дополнительные ресурсы"
-  },
-  "homepage.resources.contactSupport": {
-    "message": "Связаться с поддержкой"
-  },
-  "homepage.resources.changelog": {
-    "message": "История изменений"
-  },
-  "homepage.resources.sampleDatasets": {
-    "message": "Примеры наборов данных",
-    "description": "Заголовок страницы списка тегов"
   },
   "topNav.navItems.Products": {
     "message": "Продукты"
@@ -998,20 +585,16 @@
     "description": "Полезные наборы данных и руководства"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако",
-    "description": "Облако"
+    "message": "Облако"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
-    "message": "Самый быстрый способ развернуть ClickHouse",
-    "description": "Самый быстрый способ развернуть ClickHouse"
+    "message": "Самый быстрый способ развернуть ClickHouse"
   },
   "sidebar.dropdownCategories.category.Cloud.Get Started": {
-    "message": "Введение",
-    "description": "Начало работы"
+    "message": "Начало работы"
   },
   "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
-    "message": "Приступайте к работе с ClickHouse Cloud уже сейчас",
-    "description": "Быстрый старт с ClickHouse Cloud"
+    "message": "Быстрый старт с ClickHouse Cloud"
   },
   "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
     "message": "Управление облаком",
@@ -1158,36 +741,28 @@
     "description": "Таблицы метаданных для управления ClickHouse"
   },
   "sidebar.dropdownCategories.category.Reference": {
-    "message": "Справочник",
-    "description": "Справочник"
+    "message": "Справочник"
   },
   "sidebar.dropdownCategories.category.description.Reference": {
-    "message": "Справочная документация по функциям ClickHouse",
-    "description": "Справочная документация по функциям ClickHouse"
+    "message": "Справочная документация по функциям ClickHouse"
   },
   "sidebar.dropdownCategories.category.Reference.Introduction": {
-    "message": "Введение",
-    "description": "Введение"
+    "message": "Введение"
   },
   "sidebar.dropdownCategories.category.Reference.Introduction.description": {
-    "message": "Изучите синтаксис ClickHouse",
-    "description": "Изучите синтаксис ClickHouse"
+    "message": "Изучите синтаксис ClickHouse"
   },
   "sidebar.dropdownCategories.category.Reference.Functions": {
-    "message": "Функции",
-    "description": "Функции"
+    "message": "Функции"
   },
   "sidebar.dropdownCategories.category.Reference.Functions.description": {
-    "message": "Сотни встроенных функций для анализа данных",
-    "description": "Сотни встроенных функций для анализа данных"
+    "message": "Сотни встроенных функций для анализа данных"
   },
   "sidebar.dropdownCategories.category.Reference.Engines": {
-    "message": "Движок",
-    "description": "Движки"
+    "message": "Движки"
   },
   "sidebar.dropdownCategories.category.Reference.Engines.description": {
-    "message": "Используйте движки таблиц и баз данных, соответствующие вашим данным",
-    "description": "Выберите подходящие для ваших данных движки таблиц и баз данных"
+    "message": "Используйте оптимальные движки таблиц и баз данных для ваших данных"
   },
   "sidebar.dropdownCategories.category.Reference.Other Features": {
     "message": "Дополнительные возможности",
@@ -1198,12 +773,10 @@
     "description": "Ознакомьтесь с дополнительными возможностями ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations": {
-    "message": "Интеграции",
-    "description": "Интеграции"
+    "message": "Интеграции"
   },
   "sidebar.dropdownCategories.category.description.Integrations": {
-    "message": "Интеграции, клиенты и драйверы для ClickHouse",
-    "description": "Интеграции, клиентские библиотеки и драйверы для ClickHouse"
+    "message": "Интеграции, клиентские библиотеки и драйверы для использования с ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations.All Integrations": {
     "message": "Все интеграции",
@@ -1222,12 +795,10 @@
     "description": "Работайте с ClickHouse на своём любимом языке программирования"
   },
   "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
-    "message": "ClickPipes",
-    "description": "ClickPipes"
+    "message": "ClickPipes"
   },
   "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
-    "message": "Самый простой способ для приёма данных в ClickHouse",
-    "description": "Самый простой способ для приёма данных в ClickHouse"
+    "message": "Самый простой способ для приёма данных в ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
     "message": "Нативные клиенты и интерфейсы",
@@ -1270,20 +841,16 @@
     "description": "Осуществляйте приём данных в ClickHouse с помощью различных ELT-инструментов"
   },
   "sidebar.dropdownCategories.category.chDB": {
-    "message": "chDB",
-    "description": "chDB"
+    "message": "chDB"
   },
   "sidebar.dropdownCategories.category.description.chDB": {
-    "message": "chDB — это встраиваемая версия ClickHouse.",
-    "description": "chDB — это встраиваемая база данных ClickHouse"
+    "message": "chDB — это встраиваемая версия ClickHouse"
   },
   "sidebar.dropdownCategories.category.chDB.Learn chDB": {
-    "message": "Узнайте больше о chDB",
-    "description": "Изучайте chDB"
+    "message": "Изучайте chDB"
   },
   "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
-    "message": "Освойте работу с chDB",
-    "description": "Работа с chDB"
+    "message": "Узнайте, как пользоваться chDB"
   },
   "sidebar.dropdownCategories.category.chDB.Language Integrations": {
     "message": "Интеграции для языков программирования",
@@ -1294,44 +861,34 @@
     "description": "Подключение к chDB с использованием клиентской библиотеки языка программирования"
   },
   "sidebar.dropdownCategories.category.chDB.Guides": {
-    "message": "Руководства",
-    "description": "Руководства"
+    "message": "Руководства"
   },
   "sidebar.dropdownCategories.category.chDB.Guides.description": {
-    "message": "Руководство по работе с chDB",
-    "description": "Руководства по работе с chDB"
+    "message": "Руководства по использованию chDB"
   },
   "sidebar.dropdownCategories.category.About": {
-    "message": "Обзор",
-    "description": "О проекте"
+    "message": "О проекте"
   },
   "sidebar.dropdownCategories.category.description.About": {
-    "message": "Подробнее о ClickHouse",
-    "description": "Подробнее о ClickHouse"
+    "message": "Подробнее о ClickHouse"
   },
   "sidebar.dropdownCategories.category.About.Adopters": {
-    "message": "Примеры реализации",
-    "description": "Организации-пользователи"
+    "message": "Компании"
   },
   "sidebar.dropdownCategories.category.About.Adopters.description": {
-    "message": "Компании, использующие ClickHouse",
-    "description": "пользователи ClickHouse"
+    "message": "организации, использующие ClickHouse"
   },
   "sidebar.dropdownCategories.category.About.Changelogs": {
-    "message": "Журнал изменений",
-    "description": "История изменений"
+    "message": "История изменений"
   },
   "sidebar.dropdownCategories.category.About.Changelogs.description": {
-    "message": "Ознакомьтесь с последними изменениями в ClickHouse",
-    "description": "Просмотреть последние изменения в ClickHouse"
+    "message": "Просмотреть последние изменения в ClickHouse"
   },
   "sidebar.dropdownCategories.category.About.Support": {
-    "message": "Поддержка",
-    "description": "Поддержка"
+    "message": "Поддержка"
   },
   "sidebar.dropdownCategories.category.About.Support.description": {
-    "message": "Получите поддержку от инженеров ClickHouse",
-    "description": "Обратитесь за помощью к инженерам ClickHouse"
+    "message": "Получите поддержку от инженеров ClickHouse"
   },
   "sidebar.dropdownCategories.category.About.Development and Contributing": {
     "message": "Разработка и участие",
@@ -1349,5 +906,257 @@
   },
   "Report an issue": {
     "message": "Сообщить о проблеме"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "Начало работы"
+  },
+  "sidebar.dropdownCategories.category.description.Get started": {
+    "message": "Узнайте, как работать с ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction": {
+    "message": "Введение"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction.description": {
+    "message": "Введение в ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts": {
+    "message": "Концепции"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts.description": {
+    "message": "Основные понятия"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides": {
+    "message": "Вводные руководства"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides.description": {
+    "message": "Начните знакомство с ClickHouse отсюда"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices": {
+    "message": "Рекомендации по лучшим практикам"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices.description": {
+    "message": "Следуйте лучшим практикам использования ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides": {
+    "message": "Руководства по миграции"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides.description": {
+    "message": "Перенесите базу данных в ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides": {
+    "message": "Руководства по вариантам использования"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides.description": {
+    "message": "Руководства по распространённым сценариям использования ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets": {
+    "message": "Примеры данных"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets.description": {
+    "message": "Полезные наборы данных и руководства"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom": {
+    "message": "Советы и рекомендации сообщества"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom.description": {
+    "message": "Советы и рекомендации от сообщества"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features": {
+    "message": "Возможности"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features.description": {
+    "message": "Возможности ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides": {
+    "message": "Руководства"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides.description": {
+    "message": "Руководства по работе с ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference": {
+    "message": "Справочник"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference.description": {
+    "message": "Справочная документация по ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "Управление данными"
+  },
+  "sidebar.dropdownCategories.category.description.Manage data": {
+    "message": "Управление данными в ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts": {
+    "message": "Основные понятия о данных"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts.description": {
+    "message": "Внутренние принципы работы ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data": {
+    "message": "Обновление данных"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data.description": {
+    "message": "Обновление и перезапись данных в ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data": {
+    "message": "Удаление данных"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data.description": {
+    "message": "Удаление данных в ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling": {
+    "message": "Моделирование данных"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling.description": {
+    "message": "Оптимизируйте схему и модель данных"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations": {
+    "message": "Производительность и оптимизации"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations.description": {
+    "message": "Руководства по оптимизации ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "Администратор сервера"
+  },
+  "sidebar.dropdownCategories.category.description.Server admin": {
+    "message": "Управление и развертывание ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling": {
+    "message": "Развертывания и масштабирование"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling.description": {
+    "message": "Как развернуть ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication": {
+    "message": "Безопасность и аутентификация"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication.description": {
+    "message": "Обеспечьте безопасность развертывания ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings": {
+    "message": "Настройки"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings.description": {
+    "message": "Настройка ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities": {
+    "message": "Инструменты и служебные программы"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities.description": {
+    "message": "Инструменты, помогающие управлять ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables": {
+    "message": "Системные таблицы"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables.description": {
+    "message": "Таблицы метаданных для управления ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations": {
+    "message": "Все интеграции"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations.description": {
+    "message": "Интеграция ClickHouse с другими базами данных и приложениями"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients": {
+    "message": "Клиентские библиотеки"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients.description": {
+    "message": "Используйте любой удобный вам язык программирования для работы с ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces": {
+    "message": "Нативные клиенты и интерфейсы"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces.description": {
+    "message": "Выберите клиент и интерфейс для подключения к ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources": {
+    "message": "Источники данных"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
+    "message": "Загрузите данные в ClickHouse из выбранного источника"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization": {
+    "message": "Визуализация данных"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization.description": {
+    "message": "Подключите ClickHouse к вашему любимому инструменту визуализации"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats": {
+    "message": "Форматы данных"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats.description": {
+    "message": "Изучите поддерживаемые ClickHouse форматы данных"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion": {
+    "message": "Ингестия данных"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion.description": {
+    "message": "Приём данных в ClickHouse с помощью различных ELT-инструментов"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack"
+  },
+  "sidebar.dropdownCategories.category.description.ClickStack": {
+    "message": "ClickStack — стек обсервабилити на базе ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started": {
+    "message": "Начало работы"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started.description": {
+    "message": "Начало работы с ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets": {
+    "message": "Примеры наборов данных"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets.description": {
+    "message": "Осваивайте ClickStack на демонстрационных наборах данных"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
+    "message": "Архитектура"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
+    "message": "Ознакомьтесь с архитектурой ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
+    "message": "Развертывание"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
+    "message": "Выберите режим развертывания ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data": {
+    "message": "Приём данных"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data.description": {
+    "message": "Приём данных в ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options": {
+    "message": "Параметры конфигурации"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options.description": {
+    "message": "Развертывание ClickStack в продуктивной среде"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production": {
+    "message": "Продакшн"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
+    "message": "Развертывание ClickStack в продакшене"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples": {
+    "message": "Примеры интеграций"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples.description": {
+    "message": "Руководства по быстрому старту интеграции"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations": {
+    "message": "Интеграции для языков программирования"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations.description": {
+    "message": "Подключение к chDB с помощью клиентской библиотеки"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing": {
+    "message": "Разработка и вклад в проект"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing.description": {
+    "message": "Узнайте, как участвовать в развитии ClickHouse"
   }
 }

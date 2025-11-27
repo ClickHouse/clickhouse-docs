@@ -7,13 +7,9 @@ title: 'Запрос SELECT'
 doc_type: 'reference'
 ---
 
-
-
 # Запрос SELECT
 
 Запросы `SELECT` выполняют извлечение данных. По умолчанию запрошенные данные возвращаются клиенту, а в сочетании с [INSERT INTO](../../../sql-reference/statements/insert-into.md) могут быть перенаправлены в другую таблицу.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -63,7 +59,6 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [Секция EXCEPT](../../../sql-reference/statements/select/except.md)
 - [Секция INTO OUTFILE](../../../sql-reference/statements/select/into-outfile.md)
 - [Секция FORMAT](../../../sql-reference/statements/select/format.md)
-
 
 ## Секция SELECT {#select-clause}
 
@@ -180,7 +175,6 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 Дополнительную информацию см. в разделе «Настройки». Возможно использование внешней сортировки (сохранение временных таблиц на диск) и внешней агрегации.
 
-
 ## Модификаторы SELECT {#select-modifiers}
 
 В запросах `SELECT` можно использовать следующие модификаторы.
@@ -220,7 +214,6 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 │             222 │    347 │
 └─────────────────┴────────┘
 ```
-
 
 ## SETTINGS в запросе SELECT {#settings-in-select-query}
 
