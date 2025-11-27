@@ -216,7 +216,7 @@ function SearchPageContent() {
                     // since the baseUrl already includes it (e.g., baseUrl is /docs/ru/)
                     let processedUrl = url;
                     if (currentLocale !== 'en') {
-                        processedUrl = url.replace(`/docs/${currentLocale}/`, '');
+                        processedUrl = url.replace(`/docs/${currentLocale}/`, '/');
                     }
 
                     return {

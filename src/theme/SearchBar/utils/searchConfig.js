@@ -93,7 +93,7 @@ export function transformSearchItems(items, options) {
     // For non-English locales, strip the /docs/{locale}/ prefix from search results
     // since the baseUrl already includes it (e.g., baseUrl is /docs/ru/)
     if (currentLocale !== 'en') {
-      url = url.replace(`/docs/${currentLocale}/`, '');
+      url = url.replace(`/docs/${currentLocale}/`, '/');
     }
 
     const transformed = {
