@@ -21,18 +21,30 @@ function createUrl({ locale, fullyQualified }) {
   });
 
   // Extract the path suffix after the baseUrl
-  const pathnameSuffix = canonicalPathname.replace(baseUrl, '');
+  // We need to handle both the current locale's baseUrl and extract the actual page path
+  // For example: /docs/jp/tutorial with baseUrl /docs/jp/ should extract 'tutorial'
 
-  // Extract the base path from baseUrl (e.g., '/docs/' -> 'docs')
-  // Remove leading and trailing slashes to get the clean base path
-  const basePath = baseUrl.replace(/^\/|\/$/g, '');
+  // First, normalize both paths with trailing slashes for consistent comparison
+  const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+  const normalizedPathname = canonicalPathname.endsWith('/') ? canonicalPathname : canonicalPathname + '/';
+
+  // Extract the suffix by removing the baseUrl prefix
+  let pathnameSuffix = normalizedPathname.startsWith(normalizedBaseUrl)
+    ? normalizedPathname.substring(normalizedBaseUrl.length)
+    : '';
+
+  // IMPORTANT: Always use 'docs' as the base path, regardless of current locale
+  // This ensures language switcher generates correct absolute URLs:
+  // - From /docs/jp/ to English: /docs/ (not /docs/jp/en)
+  // - From /docs/jp/ to Russian: /docs/ru/ (not /docs/jp/ru)
+  const basePath = 'docs';
 
   // Construct the localized URL
-  // For non-default locales: /{basePath}/{locale}/{pathSuffix}
-  // For default locale: /{basePath}/{pathSuffix}
+  // For non-default locales: /docs/{locale}/{pathSuffix}
+  // For default locale: /docs/{pathSuffix}
   function getLocalizedUrl(locale) {
     if (locale === defaultLocale) {
-      // Default locale: /docs/{pathSuffix}
+      // Default locale (English): /docs/{pathSuffix}
       return `/${basePath}/${pathnameSuffix}`;
     } else {
       // Other locales: /docs/{locale}/{pathSuffix}
@@ -41,7 +53,19 @@ function createUrl({ locale, fullyQualified }) {
   }
 
   // Clean up any double slashes
-  const localizedPath = getLocalizedUrl(locale).replace(/\/+/g, '/');
+  let localizedPath = getLocalizedUrl(locale).replace(/\/+/g, '/');
+
+  // Preserve trailing slash for root paths (when pathnameSuffix is empty)
+  // Remove trailing slash for non-root paths if original didn't have one
+  if (pathnameSuffix === '' || pathnameSuffix === '/') {
+    // Root path - ensure it has a trailing slash
+    if (!localizedPath.endsWith('/')) {
+      localizedPath += '/';
+    }
+  } else if (!pathname.endsWith('/') && localizedPath.endsWith('/')) {
+    // Non-root path - match the trailing slash behavior of the original
+    localizedPath = localizedPath.slice(0, -1);
+  }
 
   return `${fullyQualified ? url : ''}${localizedPath}`;
 }
@@ -58,7 +82,7 @@ export default function LocaleDropdownNavbarItem({
   const localeItems = locales.map((locale) => {
     const baseTo = `pathname://${createUrl({
       locale,
-      fullyQualified: true,
+      fullyQualified: false,
     })}`;
 
     const to = `${baseTo}${search}${hash}`;
