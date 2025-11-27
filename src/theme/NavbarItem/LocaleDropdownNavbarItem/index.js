@@ -33,16 +33,18 @@ function createUrl({ locale, fullyQualified }) {
     ? normalizedPathname.substring(normalizedBaseUrl.length)
     : '';
 
-  // Extract the base path from baseUrl (e.g., '/docs/' -> 'docs')
-  // Remove leading and trailing slashes to get the clean base path
-  const basePath = baseUrl.replace(/^\/|\/$/g, '');
+  // IMPORTANT: Always use 'docs' as the base path, regardless of current locale
+  // This ensures language switcher generates correct absolute URLs:
+  // - From /docs/jp/ to English: /docs/ (not /docs/jp/en)
+  // - From /docs/jp/ to Russian: /docs/ru/ (not /docs/jp/ru)
+  const basePath = 'docs';
 
   // Construct the localized URL
-  // For non-default locales: /{basePath}/{locale}/{pathSuffix}
-  // For default locale: /{basePath}/{pathSuffix}
+  // For non-default locales: /docs/{locale}/{pathSuffix}
+  // For default locale: /docs/{pathSuffix}
   function getLocalizedUrl(locale) {
     if (locale === defaultLocale) {
-      // Default locale: /docs/{pathSuffix}
+      // Default locale (English): /docs/{pathSuffix}
       return `/${basePath}/${pathnameSuffix}`;
     } else {
       // Other locales: /docs/{locale}/{pathSuffix}
