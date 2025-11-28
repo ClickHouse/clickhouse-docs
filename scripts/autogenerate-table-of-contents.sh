@@ -46,9 +46,9 @@ fi
 # Define all TOC generation commands
 COMMANDS=(
     '--dir="knowledgebase" --single-toc --out="static" --ignore images'
-    '--verbose --single-toc --dir="docs/operations/system-tables" --md="docs/operations/system-tables/index.md"'
-    '--verbose --single-toc --dir="docs/operations/settings" --md="docs/operations/settings/index.md"'
-    '--verbose --single-toc --dir="docs/engines/database-engines" --md="docs/engines/database-engines/index.md"'
+    '--single-toc --dir="docs/operations/system-tables" --md="docs/operations/system-tables/index.md"'
+    '--single-toc --dir="docs/operations/settings" --md="docs/operations/settings/index.md"'
+    '--single-toc --dir="docs/engines/database-engines" --md="docs/engines/database-engines/index.md"'
     '--single-toc --dir="docs/engines/table-engines/mergetree-family" --md="docs/engines/table-engines/mergetree-family/index.md"'
     '--single-toc --dir="docs/engines/table-engines/integrations" --md="docs/engines/table-engines/integrations/index.md"'
     '--single-toc --dir="docs/engines/table-engines/special" --md="docs/engines/table-engines/special/index.md"'
