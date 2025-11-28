@@ -28,7 +28,7 @@ ClickHouse Cloud offers several major benefits over the open-source version:
 - **Total cost of ownership**: Best price / performance ratio and low administrative overhead.
 - **Broad ecosystem**: Bring your favorite data connectors, visualization tools, SQL and language clients with you.
 
-## COmparison of self-managed ClickHouse and ClickHouse Cloud {#oss-vs-clickhouse-cloud}
+## Comparison of self-managed ClickHouse and ClickHouse Cloud {#oss-vs-clickhouse-cloud}
 
 | Feature                        | Benefits                                                                                                                                                                                                                                                                                                   | OSS ClickHouse  | ClickHouse Cloud  |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|
