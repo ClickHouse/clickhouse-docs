@@ -10,7 +10,7 @@ set +e
 
 # Function to cleanup on exit
 cleanup() {
-    if [ -d "venv" ]; then
+    if [ "$USE_VENV" = true ]; then
         deactivate 2>/dev/null || true
         rm -rf venv
     fi
@@ -19,14 +19,29 @@ cleanup() {
 # Set trap to cleanup on exit (success or failure)
 trap cleanup EXIT
 
-# Check if virtual environment exists
+USE_VENV=false
+
+# Try to create a venv, if that fails fall back to installing packages
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    python3 -m venv venv
+    if python3 -m venv venv 2>/tmp/venv_err.log; then
+        USE_VENV=true
+    else
+        echo "Warning: could not create venv, falling back to user site-packages."
+        cat /tmp/venv_err.log
+        rm -rf venv
+    fi
+else
+    USE_VENV=true
 fi
 
-source venv/bin/activate
-pip install -r scripts/table-of-contents-generator/requirements.txt
+if [ "$USE_VENV" = true ]; then
+    . venv/bin/activate
+    pip install -r scripts/table-of-contents-generator/requirements.txt
+else
+    # No working venv, install deps
+    python3 -m pip install --user -r scripts/table-of-contents-generator/requirements.txt
+fi
 
 # Define all TOC generation commands
 COMMANDS=(
