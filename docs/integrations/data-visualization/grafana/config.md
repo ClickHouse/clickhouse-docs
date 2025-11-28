@@ -6,6 +6,9 @@ description: 'Configuration options for the ClickHouse data source plugin in Gra
 title: 'Configuring ClickHouse data source in Grafana'
 doc_type: 'guide'
 keywords: ['Grafana plugin configuration', 'data source settings', 'connection parameters', 'authentication setup', 'plugin options']
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
