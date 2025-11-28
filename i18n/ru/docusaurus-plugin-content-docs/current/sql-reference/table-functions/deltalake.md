@@ -1,18 +1,24 @@
 ---
-slug: '/sql-reference/table-functions/deltalake'
-sidebar_label: deltaLake
+description: 'Предоставляет табличный интерфейс только для чтения к таблицам Delta Lake в
+  Amazon S3.'
+sidebar_label: 'deltaLake'
 sidebar_position: 45
-description: 'Предоставляет интерфейс, похожий на таблицу для только чтения, к таблицам'
-title: deltaLake
-doc_type: reference
+slug: /sql-reference/table-functions/deltalake
+title: 'deltaLake'
+doc_type: 'reference'
 ---
-# deltaLake Табличная Функция
 
-Предоставляет интерфейс, похожий на таблицу, для чтения таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
 
-## Синтаксис {#syntax}
 
-`deltaLake` является алиасом `deltaLakeS3`, он поддерживается для совместимости.
+# Табличная функция deltaLake
+
+Предоставляет табличный интерфейс только для чтения к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
+
+
+
+## Синтаксис
+
+`deltaLake` — это псевдоним `deltaLakeS3` и поддерживается для обеспечения совместимости.
 
 ```sql
 deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -24,18 +30,23 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
+
 ## Аргументы {#arguments}
 
-Описание аргументов совпадает с описанием аргументов в табличных функциях `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
+Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
 `format` обозначает формат файлов данных в таблице Delta Lake.
+
+
 
 ## Возвращаемое значение {#returned_value}
 
-Таблица с указанной структурой для чтения данных в указанной таблице Delta Lake.
+Таблица с указанной структурой для чтения данных из указанной таблицы Delta Lake.
 
-## Примеры {#examples}
 
-Выбор строк из таблицы в S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
+
+## Примеры
+
+Выборка строк из таблицы в S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
 
 ```sql
 SELECT
@@ -53,15 +64,18 @@ LIMIT 2
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
 
-## Виртуальные Колонки {#virtual-columns}
+
+## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
-- `_etag` — Этикетка файла. Тип: `LowCardinality(String)`. Если этетка неизвестна, значение равно `NULL`.
+- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
-## Связанные {#related}
 
-- [DeltaLake движок](engines/table-engines/integrations/deltalake.md)
-- [Табличная функция кластера DeltaLake](sql-reference/table-functions/deltalakeCluster.md)
+
+## Связанные разделы {#related}
+
+- [Движок DeltaLake](engines/table-engines/integrations/deltalake.md)
+- [Кластерная табличная функция DeltaLake](sql-reference/table-functions/deltalakeCluster.md)

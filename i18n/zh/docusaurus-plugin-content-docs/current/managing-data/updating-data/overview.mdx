@@ -1,60 +1,61 @@
 ---
-'slug': '/updating-data/overview'
-'title': '概述'
-'description': '如何在 ClickHouse 中更新数据'
-'keywords':
-- 'update'
-- 'updating data'
-'doc_type': 'guide'
+slug: /updating-data/overview
+title: '概览'
+description: '如何在 ClickHouse 中更新数据'
+keywords: ['更新', '更新数据']
+doc_type: 'guide'
 ---
 
-## ClickHouse与OLTP数据库中更新数据的区别 {#differences-between-updating-data-in-clickhouse-and-oltp-databases}
+## 在 ClickHouse 和 OLTP 数据库中更新数据的差异 \{#differences-between-updating-data-in-clickhouse-and-oltp-databases\}
 
-在处理更新时，ClickHouse与OLTP数据库在其基础设计理念和目标使用案例上有显著区别。例如，PostgreSQL作为一种面向行的、符合ACID的关系型数据库，支持强大且事务性的更新和删除操作，通过多版本并发控制（MVCC）等机制确保数据的一致性和完整性。这允许在高并发环境中进行安全可靠的修改。
+在处理更新操作时，ClickHouse 与 OLTP 数据库由于其底层设计理念和目标使用场景的不同而存在显著差异。比如，PostgreSQL 作为一种行式、符合 ACID 的关系型数据库，支持健壮且具事务性的更新和删除操作，并通过多版本并发控制（Multi-Version Concurrency Control，MVCC）等机制来确保数据的一致性和完整性。这使得即便在高并发环境下，也能够安全可靠地进行数据修改。
 
-相反，ClickHouse是一个面向列的数据库，针对重读分析和高吞吐量追加操作进行了优化。尽管它确实原生支持原地更新和删除，但需要谨慎使用，以避免高I/O。或者，可以对表进行重构，将删除和更新转换为追加操作，在此过程中以异步方式处理，并/或在读取时处理，从而反映出对高吞吐量数据摄取和有效查询性能的重点，而不是实时数据操作。
+相反，ClickHouse 是一种列式数据库，针对读取为主的分析场景以及高吞吐的仅追加写入操作进行了优化。虽然它原生支持原位更新和删除操作，但必须谨慎使用以避免过高的 I/O。作为替代方案，可以通过重构表结构，将删除和更新转换为追加型操作，使其在异步和/或读时被处理，从而体现出其对高吞吐数据摄取和高效查询性能的侧重，而非实时数据变更。
 
-## 在ClickHouse中更新数据的方法 {#methods-to-update-data-in-clickhouse}
+## 在 ClickHouse 中更新数据的方法 \{#methods-to-update-data-in-clickhouse\}
 
-在ClickHouse中有几种更新数据的方法，每种方法都有其自身的优点和性能特征。您应该根据您的数据模型和打算更新的数据量选择适当的方法。
+在 ClickHouse 中有多种方法可以更新数据，每种方法都有各自的优势和性能特征。应根据数据模型以及计划更新的数据量选择合适的方法。
 
-对于这两种操作，如果提交的变更数量持续超过在某个时间区间内后台处理的变更数量，则必须应用的非物化变更队列将继续增长。这将导致最终的 `SELECT` 查询性能下降。
+对于这两类操作，如果在一段时间内提交的变更数量持续超过后台实际处理的变更数量，那么需要被应用的未物化变更队列会不断增长。这将最终导致 `SELECT` 查询性能下降。
 
-总之，更新操作应谨慎发出，并且应通过 `system.mutations` 表密切跟踪变更队列。不要像在OLTP数据库中那样频繁发布更新。如果您有频繁更新的需求，查看 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)。
-| 方法                                                                                     | 语法                                    | 使用时机                                                                                                                                                                                                                   |
-|------------------------------------------------------------------------------------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update mutation](/sql-reference/statements/alter/update)                             | `ALTER TABLE [table] UPDATE`            | 当数据必须立即更新到磁盘时使用（例如，为了合规性）。对`SELECT`性能有负面影响。                                                                                                                                         |
-| [Lightweight updates](/sql-reference/statements/update)                               | `UPDATE [table] SET ... WHERE`          | 用于更新少量数据（最多约10% 的表）。创建补丁部分以实现即时可见性，而无需重写整个列。虽然对`SELECT`查询增加了额外开销，但具有可预测的延迟。目前实验性。                                                                 |
-| [On-the-fly updates](/guides/developer/on-the-fly-mutations)                          | `ALTER TABLE [table] UPDATE`            | 启用`SET apply_mutations_on_fly = 1;`。在更新少量数据时使用。行会立即在随后的`SELECT`查询中返回更新后的数据，但最初仅在磁盘上被内部标记为已更新。                                                             |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)      | `ENGINE = ReplacingMergeTree`           | 当更新大量数据时使用。此表引擎针对合并时的数据去重进行了优化。                                                                                                                                                      |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)  | `ENGINE = CollapsingMergeTree(Sign)`    | 当频繁更新单行，或在需要维护随时间变化的对象最新状态的场景中使用。例如，跟踪用户活动或文章统计。                                                                                                                       |
+总之，应谨慎执行更新操作，并通过 `system.mutations` 表密切监控变更队列。不要像在 OLTP 数据库中那样频繁执行更新。如果确实有频繁更新的需求，请参阅 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)。
 
-## 更新变更 {#update-mutations}
+| 方法                                                                                 | 语法                                | 使用场景                                                                                                                                                                                                                                  |
+|---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Update 变更](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | 当数据必须立即落盘更新时使用（例如，为了满足合规要求）。会对 `SELECT` 性能产生负面影响。                                                                                                                        |
+| [轻量级更新](/sql-reference/statements/update)                            | `UPDATE [table] SET ... WHERE`       | 用于更新少量数据（最多约占整张表的 10%）。创建补丁部件以实现立即可见，而无需重写整个列。会为 `SELECT` 查询增加开销，但延迟可预测。目前为实验特性。      |
+| [即时更新](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | 通过 `SET apply_mutations_on_fly = 1;` 启用。用于更新少量数据。后续所有 `SELECT` 查询会立即返回已更新的数据，但这些行在磁盘上最初仅在内部被标记为已更新。 |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 在更新大量数据时使用。此表引擎针对合并过程中的数据去重进行了优化。                                                                                                                                |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 在需要频繁更新单行记录，或需要维护随时间变化对象的最新状态的场景中使用。例如，用于跟踪用户活动或文章统计数据。                                       |
 
-更新变更可以通过 `ALTER TABLE ... UPDATE` 命令发出，例如：
+## 更新变更
+
+可以通过 `ALTER TABLE ... UPDATE` 命令发起更新变更，例如：
 
 ```sql
 ALTER TABLE posts_temp
         (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
 ```
-这些操作极其占用I/O，重写所有与 `WHERE` 表达式匹配的部分。此过程没有原子性——只要部分准备好，就会立即用变更部分替换。这意味着在变更期间开始执行的 `SELECT` 查询将同时看到已经变更的部分和尚未变更的部分的数据。用户可以通过 [systems.mutations](/operations/system-tables/mutations) 表跟踪进度状态。这些是I/O密集型操作，应谨慎使用，因为它们可能会影响集群的 `SELECT` 性能。
 
-了解更多关于 [update mutations](/sql-reference/statements/alter/update)。
+这些操作是极其 I/O 密集型的，会重写所有符合 `WHERE` 表达式的数据部分。此过程不具备原子性——一旦变更后的数据部分准备就绪，就会立即替换原有部分；在变更执行期间启动的 `SELECT` 查询会同时看到已经变更的数据部分和尚未变更的数据部分。用户可以通过 [systems.mutations](/operations/system-tables/mutations) 表跟踪进度状态。这些操作的 I/O 开销很大，应尽量少用，因为它们会影响集群的 `SELECT` 性能。
 
-## 轻量级更新 {#lightweight-updates}
+在[更新变更](/sql-reference/statements/alter/update)中了解更多信息。
 
-轻量级更新是ClickHouse的一个特性，通过“补丁部分”更新行——这些特殊的数据部分仅包含更新的列和行，而不是像传统的变更那样重写整个列。轻量级更新的主要特性包括：
 
-- 使用标准的 `UPDATE` 语法，并立即创建补丁部分，而不必等待合并
-- 更新的值在通过补丁应用时在 `SELECT` 查询中立即可见，但在随后的合并中才会物理化
-- 为小规模更新（最多约10% 的表）设计，具有可预测的延迟
-- 对需要应用补丁的 `SELECT` 查询增加了额外开销，但避免重写整个列
+## 轻量级更新 \{#lightweight-updates\}
 
-详细信息请参见 ["轻量级更新语句"](/sql-reference/statements/update)。
+轻量级更新是 ClickHouse 的一项功能，它通过“补丁分片（patch parts）”来更新行——这些是只包含已更新列和行的特殊数据分片，而不是像传统变更那样重写整个列。轻量级 `UPDATE` 的主要特性：
 
-## 即时更新 {#on-the-fly-updates}
+- 使用标准的 `UPDATE` 语法，并立即创建补丁分片，而无需等待合并
+- 更新后的值会通过补丁应用即时在 `SELECT` 查询中可见，但只会在后续合并期间才被物理写入（物化）
+- 为小规模更新（最多约占表的 10%）而设计，具备可预期的延迟
+- 会给需要应用补丁的 `SELECT` 查询增加开销，但避免了重写整个列
 
-即时更新提供了一种机制，用于更新行，使其立即更新，随后的 `SELECT` 查询将自动返回更改后的值（这会产生额外开销，导致查询变慢）。这有效地解决了常规变更的原子性限制。以下是示例：
+更多详细信息请参考 ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
+
+## 即时更新
+
+即时更新提供了一种机制，可以对行进行更新，使其立即生效，后续的 `SELECT` 查询会自动返回更新后的值（这会带来额外开销并降低查询性能）。这在效果上解决了普通变更操作在原子性方面的限制。下面给出一个示例：
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -70,7 +71,7 @@ WHERE Id = 404346
 1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
 Peak memory usage: 113.65 MiB.
 
--increment count
+-递增计数
 ALTER TABLE posts
         (UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
 
@@ -85,16 +86,20 @@ WHERE Id = 404346
 1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
 ```
 
-请注意，对于即时更新，仍然使用变更来更新数据；只是在 `SELECT` 查询中不会立即物化，而是在后台作为异步过程应用。它仍将在后台应用，产生与变更相同的额外开销，因此是一个应谨慎使用的I/O密集型操作。此操作中可以使用的表达式也有限（有关详细信息，请参见 [这里](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)）。
+请注意，对于即时更新，仍然会使用 mutation 来更新数据；只是不会立即物化，而是在执行 `SELECT` 查询时才被应用。它仍会在后台以异步进程的方式执行，并会产生与 mutation 相同的高昂开销，因此是一种 I/O 密集型操作，应谨慎使用。此操作可使用的表达式也有限制（请参见[此处](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)了解详细信息）。
 
-了解更多关于 [即时更新](/guides/developer/on-the-fly-mutations)。
+进一步了解[即时更新](/guides/developer/on-the-fly-mutations)。
 
-## `CollapsingMergeTree` {#collapsing-merge-tree}
 
-基于这样的理念：更新成本高昂，但插入可以利用来执行更新，[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 表引擎可以和一个 `sign` 列一起使用，以告知ClickHouse通过合并（删除）一对带有 `1` 和 `-1` 的行来更新特定行。
-如果 `-1` 被插入到 `sign` 列中，整行将被删除。
-如果 `1` 被插入到 `sign` 列中，ClickHouse将保留该行。
-待更新的行是基于创建表时 `ORDER BY ()` 语句中使用的排序键进行识别的。
+## `CollapsingMergeTree`
+
+源于这样一个理念：更新操作代价高昂，而插入操作却可以被用来执行更新，
+[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 表引擎
+可以与一个 `sign` 列配合使用，通过折叠（删除）
+`sign` 为 `1` 和 `-1` 的成对行，让 ClickHouse 更新特定行。
+如果为 `sign` 列插入 `-1`，整行将被删除。
+如果为 `sign` 列插入 `1`，ClickHouse 将保留该行。
+需要更新的行根据建表时在 `ORDER BY ()` 语句中所使用的排序键来识别。
 
 ```sql
 CREATE TABLE UAct
@@ -102,14 +107,14 @@ CREATE TABLE UAct
     UserID UInt64,
     PageViews UInt8,
     Duration UInt8,
-    Sign Int8 -- A special column used with the CollapsingMergeTree table engine
+    Sign Int8 -- 用于 CollapsingMergeTree 表引擎的特殊列
 )
 ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 
 INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1 signals to update the state of this row
-INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- the row is replaced with the new state
+INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1 表示更新该行状态
+INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- 该行将被新状态替换
 
 SELECT
     UserID,
@@ -125,13 +130,15 @@ HAVING sum(Sign) > 0
 ```
 
 :::note
-上述更新方法要求用户在客户端维护状态。
-尽管从ClickHouse的角度来看这是最有效的方案，但在大规模操作时可能会复杂。
+上述用于更新的方案要求用户在客户端维护状态信息。
+虽然从 ClickHouse 的角度来看这是最高效的方式，但在大规模场景下使用可能会比较复杂。
 
 我们建议阅读
-关于 [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 的文档，以获得更全面的概述。
+[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)
+的文档，以获得更全面的概览。
 :::
 
-## 更多资源 {#more-resources}
 
-- [在ClickHouse中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+## 更多资源 \{#more-resources\}
+
+- [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

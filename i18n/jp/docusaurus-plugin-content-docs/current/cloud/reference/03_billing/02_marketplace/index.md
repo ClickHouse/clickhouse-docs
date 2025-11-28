@@ -1,22 +1,19 @@
 ---
-'slug': '/cloud/manage/marketplace/'
-'title': 'Marketplace'
-'description': 'Marketplace 目次ページ'
-'keywords':
-- 'Marketplace Billing'
-- 'AWS'
-- 'GCP'
-'doc_type': 'landing-page'
+slug: /cloud/manage/marketplace/
+title: 'マーケットプレイス'
+description: 'マーケットプレイス目次ページ'
+keywords: ['マーケットプレイス請求', 'AWS', 'GCP']
+doc_type: 'landing-page'
 ---
 
-このセクションでは、Marketplaceに関連する請求に関するトピックについて詳しく説明します。
+このセクションでは、マーケットプレイスにおける課金関連のトピックについて説明します。
 
-| ページ                                                                                                              | 説明                                                                                                                                                                                                                                        |
-|-------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Marketplace Billing](/cloud/marketplace/marketplace-billing)                                               | Marketplaceの請求に関するFAQです。                                                                                                                                                                                                          |
-| [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)                                     | PAYG（従量課金）公有オファーを介して、AWS MarketplaceでClickHouse Cloudの利用を開始します。                                                                                                                                               |
-| [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)         | コミット契約を介して、AWS MarketplaceでClickHouse Cloudの利用を開始します。コミット契約は、プライベートオファーとも呼ばれ、顧客は特定の期間内にClickHouse Cloudに一定額の支出を約束することができます。                                 |
-| [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)                                     | PAYG（従量課金）公有オファーを介して、GCP MarketplaceでClickHouse Cloudの利用を開始します。                                                                                                                                               |
-| [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)         | コミット契約を介して、GCP MarketplaceでClickHouse Cloudの利用を開始します。コミット契約は、プライベートオファーとも呼ばれ、顧客は特定の期間内にClickHouse Cloudに一定額の支出を約束することができます。                                 |
-| [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)                                 | PAYG（従量課金）公有オファーを介して、Azure MarketplaceでClickHouse Cloudの利用を開始します。                                                                                                                                               |
-| [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)     | コミット契約を介して、Azure MarketplaceでClickHouse Cloudの利用を開始します。コミット契約は、プライベートオファーとも呼ばれ、顧客は特定の期間内にClickHouse Cloudに一定額の支出を約束することができます。                                  |
+| Page                                                                                                                | Description                                                                                                                                                                                                                                    |
+|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Marketplace Billing](/cloud/marketplace/marketplace-billing)                                               | Marketplace の課金に関する FAQ です。                                                                                                                                                                                                           |
+| [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)                                     | AWS Marketplace 上で、PAYG（従量課金）パブリックオファーを通じて ClickHouse Cloud の利用を開始できます。                                                                                                                                        |
+| [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)         | AWS Marketplace 上で、コミット型契約を通じて ClickHouse Cloud の利用を開始できます。コミット型契約は Private Offer とも呼ばれ、一定期間にわたり ClickHouse Cloud に対して一定額の支出をコミットする契約形態です。                               |
+| [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)                                     | GCP Marketplace 上で、PAYG（従量課金）パブリックオファーを通じて ClickHouse Cloud の利用を開始できます。                                                                                                                                        |
+| [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)         | GCP Marketplace 上で、コミット型契約を通じて ClickHouse Cloud の利用を開始できます。コミット型契約は Private Offer とも呼ばれ、一定期間にわたり ClickHouse Cloud に対して一定額の支出をコミットする契約形態です。                               |
+| [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)                                 | Azure Marketplace 上で、PAYG（従量課金）パブリックオファーを通じて ClickHouse Cloud の利用を開始できます。                                                                                                                                      |
+| [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)     | Azure Marketplace 上で、コミット型契約を通じて ClickHouse Cloud の利用を開始できます。コミット型契約は Private Offer とも呼ばれ、一定期間にわたり ClickHouse Cloud に対して一定額の支出をコミットする契約形態です。                           |

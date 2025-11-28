@@ -1,19 +1,18 @@
 ---
-'description': '指定された精度で数値データシーケンスのクアンタイルを計算します。'
-'sidebar_position': 180
-'slug': '/sql-reference/aggregate-functions/reference/quantiletiming'
-'title': 'quantileTiming'
-'doc_type': 'reference'
+description: '指定された精度で数値データシーケンスの分位数を計算します。'
+sidebar_position: 180
+slug: /sql-reference/aggregate-functions/reference/quantiletiming
+title: 'quantileTiming'
+doc_type: 'reference'
 ---
-
 
 # quantileTiming
 
-決定された精度で、数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
+指定された精度で数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
-結果は決定的であり（クエリ処理順序に依存しません）、Webページの読み込み時間やバックエンドの応答時間など、分布を示すシーケンスでの作業に最適化されています。
+結果は決定的であり（クエリの処理順序に依存しません）、Webページの読み込み時間やバックエンドのレスポンス時間のような分布を表すシーケンスで動作するよう最適化されています。
 
-異なるレベルの複数の `quantile*` 関数をクエリで使用する際、内部状態は組み合わされません（つまり、クエリは効率が低下します）。この場合、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
+1 つのクエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来可能な場合よりも効率が低下します）。このような場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
 
 **構文**
 
@@ -21,38 +20,38 @@
 quantileTiming(level)(expr)
 ```
 
-エイリアス: `medianTiming`.
+Alias: `medianTiming`.
 
 **引数**
 
-- `level` — 分位数のレベル。オプションのパラメーターです。0から1の間の定数浮動小数点数。`level` の値は `[0.01, 0.99]` の範囲で使用することを推奨します。デフォルト値: 0.5。`level=0.5` では、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+* `level` — 分位数のレベル。省略可能なパラメーター。0 から 1 までの定数の浮動小数点数値。`level` の値には `[0.01, 0.99]` の範囲を使用することを推奨します。デフォルト値: 0.5。`level=0.5` のとき、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
 
-- `expr` — [表現](/sql-reference/syntax#expressions)で、カラムの値に対して[Float\*](../../../sql-reference/data-types/float.md)-型の数値を返します。
+* `expr` — カラム値に対する[式](/sql-reference/syntax#expressions)で、[Float*](../../../sql-reference/data-types/float.md) 型の数値を返します。
 
-  - 負の値が関数に渡された場合、その動作は未定義です。
-  - 値が30,000（30秒以上のページ読み込み時間）を超える場合、30,000であると見なされます。
+  * 負の値が関数に渡された場合、その動作は未定義です。
+  * 値が 30,000（ページ読み込み時間が 30 秒超）より大きい場合、30,000 とみなされます。
 
 **精度**
 
-計算は以下の場合に正確です:
+計算は次の場合に正確です:
 
-- 値の合計数が5670を超えない。
-- 値の合計数が5670を超えますが、ページの読み込み時間が1024ms未満です。
+* 値の総数が 5670 を超えない。
+* 値の総数が 5670 を超えるが、ページ読み込み時間が 1024 ms 未満である。
 
-それ以外の場合、計算結果は16msの最寄りの倍数に丸められます。
+それ以外の場合、計算結果は 16 ms の最も近い倍数に丸められます。
 
-:::note    
-ページ読み込み時間の分位数を計算するために、この関数は[quantile](/sql-reference/aggregate-functions/reference/quantile)よりも効果的で正確です。
+:::note\
+ページ読み込み時間の分位数を計算する場合、この関数は [quantile](/sql-reference/aggregate-functions/reference/quantile) よりも効率的かつ高精度です。
 :::
 
-**返される値**
+**戻り値**
 
-- 指定されたレベルの分位数。
+* 指定されたレベルの分位数。
 
-タイプ: `Float32`.
+型: `Float32`。
 
-:::note    
-関数に値が渡されなかった場合（`quantileTimingIf`を使用する場合）、[NaN](/sql-reference/data-types/float#nan-and-inf)が返されます。これは、これらのケースをゼロになるケースと区別するためのものです。[ORDER BY 句](/sql-reference/statements/select/order-by)での`NaN`値のソートに関する注意を参照してください。
+:::note\
+（`quantileTimingIf` を使用していて）関数に値が 1 つも渡されない場合、[NaN](/sql-reference/data-types/float#nan-and-inf) が返されます。これは、結果が 0 になるケースと区別することを目的としています。`NaN` 値のソートに関する注意事項については、[ORDER BY 句](/sql-reference/statements/select/order-by)を参照してください。
 :::
 
 **例**
@@ -79,7 +78,7 @@ quantileTiming(level)(expr)
 SELECT quantileTiming(response_time) FROM t
 ```
 
-結果:
+結果：
 
 ```text
 ┌─quantileTiming(response_time)─┐
@@ -89,5 +88,5 @@ SELECT quantileTiming(response_time) FROM t
 
 **関連項目**
 
-- [median](/sql-reference/aggregate-functions/reference/median)
-- [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

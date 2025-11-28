@@ -1,28 +1,30 @@
 ---
-'title': '查询性能 - 时间序列'
-'sidebar_label': '查询性能'
-'description': '改善时间序列查询性能'
-'slug': '/use-cases/time-series/query-performance'
-'keywords':
-- 'time-series'
-'show_related_blogs': true
-'doc_type': 'guide'
+title: '查询性能 - 时间序列'
+sidebar_label: '查询性能'
+description: '提升时间序列查询性能'
+slug: /use-cases/time-series/query-performance
+keywords: ['时间序列', '查询性能', '优化', '索引', '分区', '查询调优', '性能']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 
-# 时间序列查询性能
 
-在优化存储之后，下一步是改善查询性能。 
-本节探讨了两种关键技术：优化 `ORDER BY` 键和使用物化视图。 
-我们将看到这些方法如何将查询时间从秒减少到毫秒。
+# 时序查询性能
 
-## 优化 ORDER BY 键 {#time-series-optimize-order-by}
+在完成存储优化之后，下一步是提升查询性能。
+本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用物化视图。
+我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
 
-在尝试其他优化之前，应首先优化其排序键，以确保 ClickHouse 能够生成最快的结果。 
-选择合适的键在很大程度上取决于您要运行的查询。假设我们的大多数查询根据 `project` 和 `subproject` 列进行过滤。 
-在这种情况下，将它们添加到排序键中是个好主意——同时也要包含时间列，因为我们也在按时间查询：
 
-让我们创建另一个版本的表，其列类型与 `wikistat` 相同，但按 `(project, subproject, time)` 排序。
+
+## 优化 `ORDER BY` 键
+
+在尝试其他优化之前，您应当先优化排序键，以确保 ClickHouse 能够生成尽可能快的查询结果。
+选择合适的键在很大程度上取决于您将要运行的查询。假设我们的多数查询都按 `project` 和 `subproject` 列进行过滤。
+在这种情况下，把它们加入排序键是个好主意——同时也应包含 `time` 列，因为我们同样会按时间进行查询。
+
+让我们创建一个表的新版本，它与 `wikistat` 具有相同的列类型，但按照 `(project, subproject, time)` 进行排序。
 
 ```sql
 CREATE TABLE wikistat_project_subproject
@@ -37,83 +39,87 @@ ENGINE = MergeTree
 ORDER BY (project, subproject, time);
 ```
 
-接下来，让我们比较多个查询，以了解我们的排序键表达式对性能的重要性。请注意，我们尚未应用之前的数据类型和编解码优化，因此任何查询性能差异仅基于排序顺序。
+现在我们来对比多条查询语句，以了解排序键表达式对性能究竟有多重要。注意我们尚未应用之前的数据类型和编解码器优化，因此任何查询性能差异都仅由排序顺序导致。
 
 <table>
-    <thead>
-        <tr>
-            <th  style={{ width: '36%' }}>查询</th>
-            <th style={{ textAlign: 'right', width: '32%' }}>`(time)`</th>
-            <th style={{ textAlign: 'right', width: '32%' }}>`(project, subproject, time)`</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-```sql
-SELECT project, sum(hits) AS h
-FROM wikistat
-GROUP BY project
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.381 秒</td>
-            <td style={{ textAlign: 'right' }}>1.660 秒</td>
-        </tr>
+  <thead>
+    <tr>
+      <th style={{ width: '36%' }}>查询</th>
+      <th style={{ textAlign: 'right', width: '32%' }}>`(time)`</th>
+      <th style={{ textAlign: 'right', width: '32%' }}>`(project, subproject, time)`</th>
+    </tr>
+  </thead>
 
-        <tr>
-            <td>
-```sql
-SELECT subproject, sum(hits) AS h
-FROM wikistat
-WHERE project = 'it'
-GROUP BY subproject
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.148 秒</td>
-            <td style={{ textAlign: 'right' }}>0.058 秒</td>
-        </tr>
-      
-        <tr>
-            <td>
-```sql
-SELECT toStartOfMonth(time) AS m, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY m
-ORDER BY m DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.192 秒</td>
-            <td style={{ textAlign: 'right' }}>0.012 秒</td>
-        </tr>
+  <tbody>
+    <tr>
+      <td>
+        ```sql
+        SELECT project, sum(hits) AS h
+        FROM wikistat
+        GROUP BY project
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
 
-        <tr>
-            <td>
-```sql
-SELECT path, sum(hits) AS h
-FROM wikistat
-WHERE (project = 'it') AND (subproject = 'zero')
-GROUP BY path
-ORDER BY h DESC
-LIMIT 10;
-```
-            </td>
-            <td style={{ textAlign: 'right' }}>2.968 秒</td>
-            <td style={{ textAlign: 'right' }}>0.010 秒</td>
-        </tr>
-      
+      <td style={{ textAlign: 'right' }}>2.381 秒</td>
+      <td style={{ textAlign: 'right' }}>1.660 秒</td>
+    </tr>
 
-    </tbody>
+    <tr>
+      <td>
+        ```sql
+        SELECT subproject, sum(hits) AS h
+        FROM wikistat
+        WHERE project = 'it'
+        GROUP BY subproject
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.148 秒</td>
+      <td style={{ textAlign: 'right' }}>0.058 秒</td>
+    </tr>
+
+    <tr>
+      <td>
+        ```sql
+        SELECT toStartOfMonth(time) AS m, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY m
+        ORDER BY m DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.192 秒</td>
+      <td style={{ textAlign: 'right' }}>0.012 秒</td>
+    </tr>
+
+    <tr>
+      <td>
+        ```sql
+        SELECT path, sum(hits) AS h
+        FROM wikistat
+        WHERE (project = 'it') AND (subproject = 'zero')
+        GROUP BY path
+        ORDER BY h DESC
+        LIMIT 10;
+        ```
+      </td>
+
+      <td style={{ textAlign: 'right' }}>2.968 秒</td>
+      <td style={{ textAlign: 'right' }}>0.010 秒</td>
+    </tr>
+  </tbody>
 </table>
 
-## 物化视图 {#time-series-materialized-views}
 
-另一种选择是使用物化视图来聚合和存储热门查询的结果。这些结果可以替代原始表进行查询。假设以下查询在我们这个案例中经常被执行：
+## 物化视图
+
+另一种方式是使用物化视图来聚合并存储高频查询的结果。之后可以直接查询这些结果，而无需访问原始表。假设在我们的场景中经常会执行如下查询：
 
 ```sql
 SELECT path, SUM(hits) AS v
@@ -138,13 +144,13 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 2.285 sec. Processed 231.41 million rows, 9.22 GB (101.26 million rows/s., 4.03 GB/s.)
-Peak memory usage: 1.50 GiB.
+结果集包含 10 行。耗时：2.285 秒。处理了 2.3141 亿行，9.22 GB（每秒 1.0126 亿行，4.03 GB/秒）。
+峰值内存使用：1.50 GiB。
 ```
 
-### 创建物化视图 {#time-series-create-materialized-view}
+### 创建物化视图
 
-我们可以创建以下物化视图：
+我们可以创建如下的物化视图：
 
 ```sql
 CREATE TABLE wikistat_top
@@ -169,11 +175,11 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### 填充目标表 {#time-series-backfill-destination-table}
+### 回填目标表
 
-这个目标表仅会在向 `wikistat` 表插入新记录时被填充，因此我们需要进行一些 [后填充](/docs/data-modeling/backfilling)。
+此目标表只有在向 `wikistat` 表插入新记录时才会写入数据，因此我们需要对其进行一些[回填](/docs/data-modeling/backfilling)。
 
-最简单的方法是使用 [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 语句直接插入到物化视图的目标表中，同时 [使用](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) 视图的 SELECT 查询（转化）：
+执行此操作的最简单方式是使用 [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 语句，利用该视图的 `SELECT` 查询（转换）[直接插入](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)到物化视图的目标表中：
 
 ```sql
 INSERT INTO wikistat_top
@@ -185,14 +191,14 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-根据原始数据集的基数（我们有 10 亿行！），这可能是一个内存密集的方法。或者，您可以使用一种需要最少内存的变体：
+取决于原始数据集的基数（我们有 10 亿行数据！），这可能是一种内存占用很高的做法。你也可以选择一种占用内存极少的方案：
 
-* 创建一个使用 Null 表引擎的临时表
-* 将通常使用的物化视图的副本连接到该临时表
-* 使用 INSERT INTO SELECT 查询，将原始数据集中的所有数据复制到该临时表
-* 删除临时表和临时物化视图。
+* 使用 Null 表引擎创建一个临时表
+* 将一个与正常使用的物化视图相同的副本关联到该临时表
+* 使用 `INSERT INTO SELECT` 查询，将原始数据集中的所有数据复制到该临时表
+* 删除该临时表和临时物化视图。
 
-通过这种方法，原始数据集中的行按块复制到临时表（该表不存储这些行），对于每块行，计算并写入目标表的部分状态，而这些状态在后台逐步合并。
+采用这种方法时，来自原始数据集的行会按数据块方式复制到临时表中（该表并不会存储这些行），并且针对每个数据块，会计算一个部分状态并写入目标表，在目标表中这些状态会在后台被增量合并。
 
 ```sql
 CREATE TABLE wikistat_backfill
@@ -206,7 +212,7 @@ CREATE TABLE wikistat_backfill
 ENGINE = Null;
 ```
 
-接下来，我们将创建一个物化视图，从 `wikistat_backfill` 读取并写入 `wikistat_top`
+接下来，我们将创建一个物化视图，从 `wikistat_backfill` 读取数据并写入 `wikistat_top`
 
 ```sql
 CREATE MATERIALIZED VIEW wikistat_backfill_top_mv 
@@ -220,7 +226,7 @@ FROM wikistat_backfill
 GROUP BY path, month;
 ```
 
-然后，最后，我们将从初始的 `wikistat` 表填充 `wikistat_backfill`：
+最后，我们将使用初始的 `wikistat` 表来填充 `wikistat_backfill` 表：
 
 ```sql
 INSERT INTO wikistat_backfill
@@ -228,14 +234,15 @@ SELECT *
 FROM wikistat;
 ```
 
-一旦查询完成，我们可以删除后填充表和物化视图：
+当该查询完成后，我们就可以删除回填表和物化视图：
+
 
 ```sql
 DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-现在，我们可以查询物化视图，而不是原始表：
+现在可以查询物化视图，而无需再查询原始表：
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -260,8 +267,8 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-10 rows in set. Elapsed: 0.004 sec.
+共 10 行。用时:0.004 秒。
 ```
 
-我们的性能提升非常显著。 
-之前计算这个查询的答案需要超过 2 秒，现在只需 4 毫秒。
+这里的性能提升非常显著。
+此前执行这个查询得出结果需要 2 秒多一点，而现在只需 4 毫秒。

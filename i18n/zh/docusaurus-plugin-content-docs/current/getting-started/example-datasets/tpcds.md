@@ -1,17 +1,21 @@
 ---
-'description': 'TPC-DS 基准数据集和查询。'
-'sidebar_label': 'TPC-DS'
-'slug': '/getting-started/example-datasets/tpcds'
-'title': 'TPC-DS (2012)'
-'doc_type': 'reference'
+description: 'TPC-DS 基准数据集和查询。'
+sidebar_label: 'TPC-DS'
+slug: /getting-started/example-datasets/tpcds
+title: 'TPC-DS (2012)'
+doc_type: 'guide'
+keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
-类似于 [Star Schema Benchmark (SSB)](star-schema.md)，TPC-DS 基于 [TPC-H](tpch.md)，但采取了相反的路线，即通过存储在复杂的雪花模型中扩展所需的连接数量（24 张表而不是 8 张表）。数据分布存在偏斜（例如，正态分布和泊松分布）。它包括 99 个随机替换的报告和临时查询。
+与 [Star Schema Benchmark (SSB)](star-schema.md) 类似，TPC-DS 以 [TPC-H](tpch.md) 为基础，但走了相反的路线，即采用复杂的雪花模式存储数据（24 张表而不是 8 张），从而增加了所需的连接次数。
+数据分布是倾斜的（例如正态分布和泊松分布）。
+它包含 99 个带有随机替换的报表和即席查询。
 
 参考文献
-- [TPC-DS 的创建](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-首先，检查 TPC-DS 仓库并编译数据生成器：
+* [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar)，2006 年
+
+首先，检出 TPC-DS 仓库并编译数据生成器：
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -19,19 +23,21 @@ cd tpcds-kit/tools
 make
 ```
 
-然后，生成数据。参数 `-scale` 指定比例因子。
+然后生成数据。参数 `-scale` 用于指定数据规模因子。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-接着，生成查询（使用相同的比例因子）：
+然后生成查询（使用相同的规模因子）：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询
 ```
 
-现在在 ClickHouse 中创建表。您可以使用 tools/tpcds.sql 中的原始表定义，或者在适当的地方使用正确定义的主键索引和 LowCardinality 类型的列的“调优”表定义。
+现在在 ClickHouse 中创建表。
+你可以使用 tools/tpcds.sql 中的原始表定义，或者使用经过「调优」的表定义，在合适的地方正确定义主键索引并使用 LowCardinality 列类型。
+
 
 ```sql
 CREATE TABLE call_center(
@@ -556,7 +562,7 @@ CREATE TABLE web_site (
 );
 ```
 
-数据可以按如下方式导入：
+可以通过以下方式导入数据：
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
@@ -588,5 +594,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 然后运行生成的查询。
 
 ::::warning
-TPC-DS 大量使用相关子查询，而在撰写本文时（2024 年 9 月）ClickHouse 尚不支持这些查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。因此，上述许多基准查询将因错误而失败。
+TPC-DS 大量使用关联子查询，而在撰写本文时（2024 年 9 月），ClickHouse 尚不支持这类查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+因此，上述许多基准测试查询会报错失败。
 ::::

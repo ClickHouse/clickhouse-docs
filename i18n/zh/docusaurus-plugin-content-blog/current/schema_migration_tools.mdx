@@ -1,0 +1,28 @@
+---
+date: 2023-06-07
+title: "ClickHouse 的自动 Schema 迁移工具"
+description: "了解适用于 ClickHouse 的自动 Schema 迁移工具，以及如何在数据库 Schema 随时间演进时进行管理。"
+tags: ['工具和实用工具']
+keywords: ['自动 Schema 迁移']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## ClickHouse 的自动模式迁移工具 \{#automatic-schema-migration-tools-for-clickhouse\}
+
+我们经常被问到：针对 ClickHouse，有哪些好用的模式迁移工具？以及在 ClickHouse 中管理会随时间变化的数据库模式，有哪些最佳实践？
+
+目前 ClickHouse 尚无统一的标准模式迁移工具，但我们整理了以下我们所知的、支持 ClickHouse 的自动模式迁移工具列表（排名不分先后）：
+
+- [Goose](https://github.com/pressly/goose)
+- [Sqitch](https://sqitch.org/docs/manual/sqitchtutorial-clickhouse/)
+- [Atlas](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=knowledge)
+- [Bytebase](https://www.bytebase.com/)
+- [Flyway](https://documentation.red-gate.com/fd/supported-databases-and-versions-143754067.html)
+- [Liquibase](https://www.liquibase.com/)
+- 一个名为 `clickhouse-migrations` 的[简单社区工具](https://github.com/VVVi/clickhouse-migrations)
+- 另一个用 Go 编写的[社区工具](https://github.com/golang-migrate/migrate/tree/master/database/clickhouse)
+- [Houseplant](https://houseplant.readthedocs.io)

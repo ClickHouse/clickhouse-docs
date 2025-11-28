@@ -1,0 +1,54 @@
+---
+title: 为什么在 ClickHouse Cloud 中的字典里看不到我的数据？
+description: 存在这样一个问题：在创建字典后，其中的数据可能不会立即显示。
+date: 2024-04-12
+tags: ['管理 ClickHouse Cloud', '数据建模']
+keywords: ['字典']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## ClickHouse 中的字典
+
+在 ClickHouse Cloud 中创建的字典在初始创建阶段可能会暂时处于不一致状态。这意味着在创建后，你可能一开始在该字典中看不到任何数据。不过，经过多次重试后，创建查询可能会被路由到不同的副本上，届时数据就会显示出来。
+
+之所以会出现这种情况，有时是因为字典是在数据分片到达服务器之前就被创建了。示例如下：
+
+```
+2024-01-25 13:38:25.615837 - 已接收 CREATE DICTIONARY 命令
+2024-01-25 13:38:25.626468 - CREATE DICTIONARY 已完成
+2024-01-25 13:38:25.733008 - 数据分片 all_0_0_0 已下载
+```
+
+如你所见，这部分数据是在字典创建之后才到达的。如果你使用的是 `LIFETIME(MIN 0 MAX 0)`，问题会更加严重，因为这意味着该字典永远不会自动刷新。因此，在执行 `RELOAD DICTIONARIES` 命令之前，字典将一直为空。
+
+解决该问题的方法是在创建字典时，不直接指定源表，而是使用 `SELECT` 查询，并启用设置 `select_sequential_consistency=1`。
+
+不要指定源表，而应这样做：
+
+```sql
+SOURCE(CLICKHOUSE(
+    table 'test.temp_title_table_1706189903924'
+    user default password 'PASSWORD'))
+```
+
+执行带有 `select_sequential_consistency=1` 的 `SELECT` 查询：
+
+```sql
+SOURCE(CLICKHOUSE(QUERY
+    'SELECT songTitle, mappedTitle
+    FROM test.temp_title_table_1706189903924
+    SETTINGS select_sequential_consistency=1' USER default PASSWORD ''))
+```
+
+
+## 为什么会出现这个问题？ \{#why-does-this-issue-occur\}
+
+当你先插入数据，然后创建或重新加载字典时，DDL 语句可能会在数据（或新数据）到达之前先到达某个副本。这样就会导致各个副本之间的字典内容不一致。随后，根据接收查询的是哪个副本，你可能会得到不同的查询结果。
+
+请注意，当你插入数据并立刻从表中读取时，也会发生同样的情况。如果你从尚未完成数据复制的副本读取，就看不到新插入的数据。当你需要顺序一致性时，可以在牺牲性能为代价的情况下（这也是通常不推荐启用它的原因）开启 `select_sequential_consistency`。
+
+关于字典的情况则更棘手一些，因为字典不使用查询中的设置，而是使用服务器级别的设置。因此，在向字典加载数据时，即使你执行 `SET select_sequential_consistency=1`，数据在各个副本上的加载仍可能不一致。在字典源查询中指定 `select_sequential_consistency=1`，可以让字典即使在没有作为服务器全局设置启用该参数的情况下，依然遵循这一设置。

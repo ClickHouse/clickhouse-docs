@@ -1,14 +1,12 @@
+次の表は、Apache Avro 形式でサポートされているすべてのデータ型と、`INSERT` クエリおよび `SELECT` クエリにおける対応する ClickHouse の[データ型](/sql-reference/data-types/index.md)を示しています。
 
-
-以下の表は、Apache Avro形式がサポートするすべてのデータ型と、それに対応するClickHouseの[data types](/sql-reference/data-types/index.md)における`INSERT`および`SELECT`クエリの対応表です。
-
-| Avroデータ型 `INSERT`                     | ClickHouseデータ型                                                                                                          | Avroデータ型 `SELECT`         |
+| Avro データ型 `INSERT`                      | ClickHouse データ型                                                                                                          | Avro データ型 `SELECT`          |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
 | `boolean`, `int`, `long`, `float`, `double` | [Int(8\16\32)](/sql-reference/data-types/int-uint.md), [UInt(8\16\32)](/sql-reference/data-types/int-uint.md) | `int`                           |
 | `boolean`, `int`, `long`, `float`, `double` | [Int64](/sql-reference/data-types/int-uint.md), [UInt64](/sql-reference/data-types/int-uint.md)               | `long`                          |
 | `boolean`, `int`, `long`, `float`, `double` | [Float32](/sql-reference/data-types/float.md)                                                                         | `float`                         |
 | `boolean`, `int`, `long`, `float`, `double` | [Float64](/sql-reference/data-types/float.md)                                                                         | `double`                        |
-| `bytes`, `string`, `fixed`, `enum`          | [String](/sql-reference/data-types/string.md)                                                                         | `bytes`または`string` \*          |
+| `bytes`, `string`, `fixed`, `enum`          | [String](/sql-reference/data-types/string.md)                                                                         | `bytes` または `string` \*      |
 | `bytes`, `string`, `fixed`                  | [FixedString(N)](/sql-reference/data-types/fixedstring.md)                                                            | `fixed(N)`                      |
 | `enum`                                      | [Enum(8\16)](/sql-reference/data-types/enum.md)                                                                       | `enum`                          |
 | `array(T)`                                  | [Array(T)](/sql-reference/data-types/array.md)                                                                        | `array(T)`                      |
@@ -28,13 +26,15 @@
 | `fixed(32)`                                 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                               | `fixed(32)`                     |
 | `record`                                    | [Tuple](/sql-reference/data-types/tuple.md)                                                                           | `record`                        |
 
-\* `bytes`はデフォルトであり、[`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern)を設定することで管理されます。
+\* `bytes` がデフォルトであり、この挙動は設定 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) によって制御されます
 
-\**  [Variantタイプ](/sql-reference/data-types/variant)は、フィールド値として`null`を暗黙的に受け入れるため、例えばAvroの`union(T1, T2, null)`は`Variant(T1, T2)`に変換されます。その結果、ClickHouseからAvroを生成する際には、スキーマ推論中に実際にどの値が`null`であるか分からないため、常にAvroの`union`型集合に`null`タイプを含める必要があります。
+\**  [Variant type](/sql-reference/data-types/variant) はフィールド値として暗黙的に `null` を受け入れるため、たとえば Avro の `union(T1, T2, null)` は `Variant(T1, T2)` に変換されます。
+その結果、ClickHouse から Avro を生成する際には、スキーマ推論中に任意の値が実際に `null` かどうかを判断できないため、常に Avro の `union` 型の集合に `null` 型を含める必要があります。
 
-\**\* [Avro論理タイプ](https://avro.apache.org/docs/current/spec.html#Logical+Types)
+\**\* [Avro logical types](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
-サポートされていないAvro論理データ型:
+サポートされていない Avro の論理データ型:
+
 - `time-millis`
 - `time-micros`
 - `duration`

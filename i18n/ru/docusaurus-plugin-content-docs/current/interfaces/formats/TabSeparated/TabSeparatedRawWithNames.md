@@ -1,30 +1,36 @@
 ---
-slug: '/interfaces/formats/TabSeparatedRawWithNames'
-description: 'Документация для формата TabSeparatedRawWithNames'
-title: TabSeparatedRawWithNames
-keywords: ['TabSeparatedRawWithNames', 'TSVRawWithNames', 'RawWithNames']
-doc_type: reference
-alias: 
+alias: ['TSVRawWithNames', 'RawWithNames']
+description: 'Документация по формату TabSeparatedRawWithNames'
 input_format: true
+keywords: ['TabSeparatedRawWithNames', 'TSVRawWithNames', 'RawWithNames']
 output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNames
+title: 'TabSeparatedRawWithNames'
+doc_type: 'reference'
 ---
-| Input | Output | Alias                             |
-|-------|--------|-----------------------------------|
-| ✔     | ✔      | `TSVRawWithNames`, `RawWithNames` |
+
+| Вход | Выход | Псевдонимы                        |
+|------|-------|-----------------------------------|
+| ✔    | ✔     | `TSVRawWithNames`, `RawWithNames` |
+
+
 
 ## Описание {#description}
 
-Отличается от формата [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) тем, что строки записываются без экранирования.
+Отличается от формата [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) тем, 
+что строки записываются без экранирования.
 
 :::note
-При разборе с использованием этого формата табуляция или переносы строки не допускаются в каждом поле.
+При разборе данных в этом формате символы табуляции или перевода строки внутри отдельных полей не допускаются.
 :::
 
-## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
 
-Используя следующий tsv файл, названный `football.tsv`:
+## Пример использования
+
+### Вставка данных
+
+Используем следующий TSV-файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -47,15 +53,15 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных
 
-Чтение данных с использованием формата `TabSeparatedRawWithNames`:
+Считайте данные в формате `TabSeparatedRawWithNames`:
 
 ```sql
 SELECT *
@@ -63,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRawWithNames
 ```
 
-Выходные данные будут в формате, разделенном табуляцией, с одной строкой заголовка:
+Вывод будет в табличном формате с разделителем-символом табуляции и одной строкой заголовков:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -86,4 +92,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## Настройки формата {#format-settings}
+
+## Параметры формата {#format-settings}

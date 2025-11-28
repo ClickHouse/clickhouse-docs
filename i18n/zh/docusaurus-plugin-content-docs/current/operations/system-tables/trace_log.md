@@ -1,62 +1,74 @@
 ---
-'description': '系统表，包含由采样查询分析器收集的栈跟踪。'
-'keywords':
-- 'system table'
-- 'trace_log'
-'slug': '/operations/system-tables/trace_log'
-'title': 'system.trace_log'
-'doc_type': 'reference'
+description: '包含由查询采样分析器收集的堆栈跟踪的系统表。'
+keywords: ['系统表', 'trace_log']
+slug: /operations/system-tables/trace_log
+title: 'system.trace_log'
+doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
-# system.trace_log
+# system.trace&#95;log
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
-包含由 [sampling query profiler](../../operations/optimizing-performance/sampling-query-profiler.md) 收集的堆栈跟踪。
+包含由 [sampling query profiler](../../operations/optimizing-performance/sampling-query-profiler.md) 收集的堆栈跟踪信息。
 
-当 [trace_log](../../operations/server-configuration-parameters/settings.md#trace_log) 服务器配置部分被设置时，ClickHouse 会创建此表。另请参见设置: [query_profiler_real_time_period_ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns)、[query_profiler_cpu_time_period_ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns)、[memory_profiler_step](../../operations/settings/settings.md#memory_profiler_step)、[memory_profiler_sample_probability](../../operations/settings/settings.md#memory_profiler_sample_probability)、[trace_profile_events](../../operations/settings/settings.md#trace_profile_events)。
+当设置了服务器配置部分 [trace&#95;log](../../operations/server-configuration-parameters/settings.md#trace_log) 时，ClickHouse 会创建此表。另请参见以下设置：[query&#95;profiler&#95;real&#95;time&#95;period&#95;ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns)、[query&#95;profiler&#95;cpu&#95;time&#95;period&#95;ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns)、[memory&#95;profiler&#95;step](../../operations/settings/settings.md#memory_profiler_step)、[memory&#95;profiler&#95;sample&#95;probability](../../operations/settings/settings.md#memory_profiler_sample_probability)、[trace&#95;profile&#95;events](../../operations/settings/settings.md#trace_profile_events)。
 
-要分析日志，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` 反射函数。
+要分析日志，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` 内省函数。
 
 列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 采样时的日期。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 采样时的时间戳。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 带有微秒精度的采样时的时间戳。
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 以纳秒为单位的采样时的时间戳。
-- `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 服务器构建修订版。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
 
-    当通过 `clickhouse-client` 连接到服务器时，您会看到类似于 `Connected to ClickHouse server version 19.18.1.` 的字符串。该字段包含 `revision`，但不包含服务器的 `version`。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 采样时刻的日期。
 
-- `trace_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 跟踪类型：
-  - `Real` 代表通过墙钟时间收集堆栈跟踪。
-  - `CPU` 代表通过 CPU 时间收集堆栈跟踪。
-  - `Memory` 代表收集当内存分配超过后续水印时的分配和释放。
-  - `MemorySample` 代表收集随机分配和释放。
-  - `MemoryPeak` 代表收集峰值内存使用的更新。
-  - `ProfileEvent` 代表收集配置事件的增量。
-  - `JemallocSample` 代表收集 jemalloc 样本。
-  - `MemoryAllocatedWithoutCheck` 代表收集重大分配 (>16MiB) 的情况，该分配忽略任何内存限制（仅限 ClickHouse 开发人员）。
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于获取从 [query_log](/operations/system-tables/query_log) 系统表运行的查询的详细信息。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 采样时的堆栈跟踪。每个元素是 ClickHouse 服务器进程内的虚拟内存地址。
-- `size` ([Int64](../../sql-reference/data-types/int-uint.md)) - 对于跟踪类型 `Memory`、`MemorySample` 或 `MemoryPeak`，表示分配的内存量，对于其他跟踪类型为 0。
-- `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) - 对于跟踪类型 `ProfileEvent`，是更新的配置事件的名称，对于其他跟踪类型为空字符串。
-- `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) - 对于跟踪类型 `ProfileEvent`，是配置事件的增量数量，对于其他跟踪类型为 0。
-- `symbols` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))，如果启用了符号解析，包含与 `trace` 相对应的去混淆符号名称。
-- `lines` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))，如果启用了符号解析，包含与 `trace` 相对应的文件名及行号的字符串。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 采样时刻的时间戳。
 
-符号解析可以在服务器的配置文件中 `trace_log` 下的 `symbolize` 中启用或禁用。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 具有微秒精度的采样时刻时间戳。
+
+* `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 以纳秒为单位的采样时刻时间戳。
+
+* `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 服务器构建修订号。
+
+  当通过 `clickhouse-client` 连接到服务器时，你会看到类似 `Connected to ClickHouse server version 19.18.1.` 的字符串。该字段包含的是服务器的 `revision`，而不是 `version`。
+
+* `trace_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 跟踪类型：
+  * `Real` 表示按墙钟时间收集堆栈跟踪。
+  * `CPU` 表示按 CPU 时间收集堆栈跟踪。
+  * `Memory` 表示当内存分配超过后续水位线时，收集分配和释放信息。
+  * `MemorySample` 表示随机收集分配和释放信息。
+  * `MemoryPeak` 表示收集内存峰值使用情况的更新。
+  * `ProfileEvent` 表示收集 profile 事件增量。
+  * `JemallocSample` 表示收集 jemalloc 样本。
+  * `MemoryAllocatedWithoutCheck` 表示在忽略任何内存限制的情况下收集较大的内存分配（&gt;16MiB）（仅供 ClickHouse 开发人员使用）。
+
+* `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
+
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于从 [query&#95;log](/operations/system-tables/query_log) 系统表中获取正在运行查询的详细信息。
+
+* `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 采样时刻的堆栈跟踪。每个元素是 ClickHouse 服务器进程内的虚拟内存地址。
+
+* `size` ([Int64](../../sql-reference/data-types/int-uint.md)) — 对于 `Memory`、`MemorySample` 或 `MemoryPeak` 跟踪类型，该字段为分配的内存量；对于其他跟踪类型，该字段为 0。
+
+* `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — 对于 `ProfileEvent` 跟踪类型，该字段为已更新的 profile 事件名称；对于其他跟踪类型，该字段为空字符串。
+
+* `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 对于 `ProfileEvent` 跟踪类型，该字段为 profile 事件的增量值；对于其他跟踪类型，该字段为 0。
+
+* `symbols`, ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))，如果启用了符号化，则包含与 `trace` 对应的已反混淆符号名称。
+
+* `lines`, ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))，如果启用了符号化，则包含与 `trace` 对应的带行号的文件名字符串。
+
+可以在服务器配置文件中 `trace_log` 部分下的 `symbolize` 设置中启用或禁用符号化。
 
 **示例**
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G
 ```
+
 
 ```text
 Row 1:

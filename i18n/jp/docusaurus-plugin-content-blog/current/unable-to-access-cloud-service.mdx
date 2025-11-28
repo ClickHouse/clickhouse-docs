@@ -1,0 +1,35 @@
+---
+title: ClickHouse Cloud サービスにアクセスできない
+description: "IP Access List の設定を含む、ClickHouse Cloud サービスへのアクセスに関する問題のトラブルシューティング"
+date: 2024-07-02
+tags: ['エラーと例外', 'クラウド管理']
+keywords: ['クラウドサービスへのアクセス', 'IP Access List']
+doc_type: 'guide'
+---
+
+{frontMatter.description}
+
+{/* 途中省略 */}
+
+
+## ClickHouse Cloud サービスにアクセスできない
+
+次のようなエラーメッセージが表示される場合は、IP アクセスリストでアクセスが拒否されている可能性があります。
+
+```response
+curl: (35) error:02FFF036:システムライブラリ:func(4095):接続が相手によってリセットされました
+```
+
+または
+
+```response
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to HOSTNAME.clickhouse.cloud:8443
+```
+
+または
+
+```response
+コード: 210. DB::NetException: SSL接続が予期せず切断されました (e46453teek.us-east-2.aws.clickhouse-staging.com:9440)。(NETWORK_ERROR)
+```
+
+[IP Access List](/cloud/security/setting-ip-filters) を確認してください。許可リスト外の環境から接続しようとしている場合、接続はできません。

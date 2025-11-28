@@ -1,18 +1,17 @@
 ---
-'description': 'ALTER ROW POLICY のドキュメント'
-'sidebar_label': 'ROW POLICY'
-'sidebar_position': 47
-'slug': '/sql-reference/statements/alter/row-policy'
-'title': 'ALTER ROW POLICY'
-'doc_type': 'reference'
+description: 'ALTER ROW POLICY のドキュメント'
+sidebar_label: '行ポリシー'
+sidebar_position: 47
+slug: /sql-reference/statements/alter/row-policy
+title: 'ALTER ROW POLICY'
+doc_type: 'reference'
 ---
-
 
 # ALTER ROW POLICY
 
 行ポリシーを変更します。
 
-構文：
+構文:
 
 ```sql
 ALTER [ROW] POLICY [IF EXISTS] name1 [ON CLUSTER cluster_name1] ON [database1.]table1 [RENAME TO new_name1]

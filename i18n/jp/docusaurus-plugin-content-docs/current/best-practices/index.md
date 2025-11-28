@@ -1,28 +1,17 @@
 ---
-'slug': '/best-practices'
-'keywords':
-- 'Cloud'
-- 'Primary key'
-- 'Ordering key'
-- 'Materialized Views'
-- 'Best Practices'
-- 'Bulk Inserts'
-- 'Asynchronous Inserts'
-- 'Avoid Mutations'
-- 'Avoid nullable Columns'
-- 'Avoid Optimize Final'
-- 'Partitioning Key'
-'title': '概要'
-'hide_title': true
-'description': 'ClickHouseのベストプラクティスセクションのランディングページ'
-'doc_type': 'landing-page'
+slug: /best-practices
+keywords: ['クラウド', '主キー', 'ソートキー', 'マテリアライズドビュー', 'ベストプラクティス', '一括挿入', '非同期挿入', 'Mutation を避ける', 'NULL 可能なカラムを避ける', 'OPTIMIZE FINAL を避ける', 'パーティションキー']
+title: '概要'
+hide_title: true
+description: 'ClickHouse のベストプラクティスセクション用ランディングページ'
+doc_type: 'landing-page'
 ---
 
-import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
+import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
 
 
-# Best Practices in ClickHouse {#best-practices-in-clickhouse}
+# ClickHouse におけるベストプラクティス {#best-practices-in-clickhouse}
 
-このセクションでは、ClickHouseを最大限に活用するために従うべきベストプラクティスを提供します。
+このセクションでは、ClickHouse を最大限活用するためのベストプラクティスを説明します。
 
 <TableOfContents/>

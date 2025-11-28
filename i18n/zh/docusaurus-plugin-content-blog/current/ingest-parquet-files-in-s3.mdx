@@ -1,0 +1,154 @@
+---
+title: 如何从 S3 存储桶中摄取 Parquet 文件
+description: "了解如何在 ClickHouse 中使用 S3 表引擎从 S3 存储桶摄取和查询 Parquet 文件，包括设置、访问权限以及数据导入示例等基础用法。"
+date: 2023-03-22
+tags: ['数据摄取']
+keywords: ['Parquet', 'S3 存储桶']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 从 S3 存储桶中摄取 Parquet 文件
+
+下面是使用 S3 表引擎读取 Parquet 文件的一些基础用法。
+
+* 为一个 IAM 服务用户创建 access key 和 secret key。
+  普通登录用户通常不起作用，因为它们可能配置了 MFA 策略。
+
+* 在策略中设置权限，以允许该服务用户访问指定的存储桶和文件夹。
+
+下面是一个非常简单的示例，你可以在将其应用到实际数据之前，用来测试访问 Parquet 文件的机制是否正常工作。
+
+如果你需要一个创建用户和存储桶的示例，可以参考前两个小节（创建用户和创建存储桶）：
+[https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/](https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/)
+
+我使用了这个示例文件： [https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet](https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet)
+并将其上传到了我的测试存储桶中。
+
+你可以在存储桶上设置类似下面这样的策略：
+（根据需要进行调整，这个策略在权限方面相对比较开放，但便于测试，你可以在之后按需收紧权限）
+
+```
+{
+    "Version": "2012-10-17",
+    "Id": "Policy123456",
+    "Statement": [
+        {
+            "Sid": "abc123",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::1234567890:user/mars-s3-user"
+                ]
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::mars-doc-test",
+                "arn:aws:s3:::mars-doc-test/*"
+            ]
+        }
+    ]
+}
+```
+
+可以使用这种语法，通过 S3 表引擎来运行查询：
+[https://clickhouse.com/docs/sql-reference/table-functions/s3/](https://clickhouse.com/docs/sql-reference/table-functions/s3/)
+
+```
+clickhouse-cloud :)  select count(*) from s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet','ABC123', 'abc+123', 'Parquet', 'first_name String');
+
+SELECT count(*)
+FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123', 'abc+123', 'Parquet', 'first_name String')
+
+Query id: fd4f1193-d604-4ac0-9a46-bdd2d5e14727
+
+┌─count()─┐
+│    1000 │
+└─────────┘
+
+1 row in set. Elapsed: 1.274 sec. Processed 1.00 thousand rows, 14.64 KB (784.81 rows/s., 11.49 KB/s.)
+```
+
+Parquet 格式的数据类型参考请参阅：
+[https://clickhouse.com/docs/interfaces/formats/#data-format-parquet](https://clickhouse.com/docs/interfaces/formats/#data-format-parquet)
+
+要将数据导入到原生的 ClickHouse 表中：
+
+先创建表，例如如下所示（这里只从 Parquet 文件中选取了几列）：
+
+```
+clickhouse-cloud :) CREATE TABLE my_parquet_table (id UInt64, first_name String) ENGINE = MergeTree ORDER BY id;
+
+CREATE TABLE my_parquet_table
+(
+    `id` UInt64,
+    `first_name` String
+)
+ENGINE = MergeTree
+ORDER BY id
+
+查询 ID: 412e3994-bf8e-444e-ac43-a7c82642b7da
+
+Ok.
+
+0 rows in set. 耗时: 0.600 秒。
+```
+
+选择要从 S3 存储桶中插入到新表的数据：
+
+```
+clickhouse-cloud :) INSERT INTO my_parquet_table (id, first_name) SELECT id, first_name FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123','abc+123', 'Parquet', 'id UInt64, first_name String') FORMAT Parquet
+
+INSERT INTO my_parquet_table (id, first_name) SELECT
+    id,
+    first_name
+FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123', 'abc+123', 'Parquet', 'id UInt64, first_name String')
+
+Query id: c3cdc871-f338-462d-8797-6751b45a0b58
+
+Ok.
+
+结果集包含 0 行。用时：1.220 秒。已处理 1.00 千行，22.64 KB（819.61 行/秒，18.56 KB/秒）
+```
+
+验证导入结果：
+
+
+```
+clickhouse-cloud :) SELECT * FROM my_parquet_table LIMIT 10;
+
+SELECT *
+FROM my_parquet_table
+LIMIT 10
+
+Query id: 1ccf59dd-d804-46a9-aadd-ed5c57b9e1a0
+
+┌─id─┬─first_name─┐
+│  1 │ Amanda     │
+│  2 │ Albert     │
+│  3 │ Evelyn     │
+│  4 │ Denise     │
+│  5 │ Carlos     │
+│  6 │ Kathryn    │
+│  7 │ Samuel     │
+│  8 │ Harry      │
+│  9 │ Jose       │
+│ 10 │ Emily      │
+└────┴────────────┘
+```
+
+当你准备好导入真实数据时，可以使用通配符和范围之类的特殊语法，在 bucket 中指定文件夹、子文件夹和文件。
+我建议先只筛选少量目录和文件进行导入测试，比如先选定某一年、几个月，以及一个日期范围来试跑。
+
+除了这里展示的路径选项之外，新引入的语法 `**` 可以递归匹配所有子目录。
+[https://clickhouse.com/docs/sql-reference/table-functions/s3/](https://clickhouse.com/docs/sql-reference/table-functions/s3/)
+
+例如，假设路径和 bucket 结构类似如下：
+`https://your_s3_bucket.s3.amazonaws.com/<your_folder>/<year>/<month>/<day>/<filename>.parquet`
+`https://mars-doc-test.s3.amazonaws.com/system_logs/2022/11/01/my-app-logs-0001.parquet`
+
+下面这个示例会获取 2021–2022 年中，每个月 1 日的所有文件：
+`https://mars-doc-test.s3.amazonaws.com/system_logs/{2021-2022}/**/01/*.parquet`

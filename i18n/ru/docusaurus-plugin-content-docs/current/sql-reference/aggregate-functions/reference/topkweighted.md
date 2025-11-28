@@ -1,13 +1,16 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/topkweighted'
+description: 'Возвращает массив приблизительно наиболее часто встречающихся значений
+  в указанном столбце. Полученный массив отсортирован в порядке убывания приблизительной
+  частоты значений (не по самим значениям). Также учитывается вес значения.'
 sidebar_position: 203
-description: 'Возвращает массив примеров наиболее частых значений в указанной колонке.'
-title: topKWeighted
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/topkweighted
+title: 'topKWeighted'
+doc_type: 'reference'
 ---
+
 # topKWeighted
 
-Возвращает массив примерно самых частых значений в указанной колонке. Результирующий массив отсортирован в порядке убывания приблизительной частоты значений (а не по самим значениям). Дополнительно учитывается вес значения.
+Возвращает массив наиболее часто встречающихся (примерно) значений в указанном столбце. Полученный массив отсортирован по убыванию приблизительной частоты появления значений (а не по самим значениям). Также учитывается вес значения.
 
 **Синтаксис**
 
@@ -19,14 +22,14 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 
 **Параметры**
 
-- `N` — Количество элементов для возврата. Необязательный. Значение по умолчанию: 10.
-- `load_factor` — Определяет, сколько ячеек зарезервировано для значений. Если uniq(column) > N * load_factor, результат функции topK будет приблизительным. Необязательный. Значение по умолчанию: 3.
-- `counts` — Определяет, должен ли результат содержать приблизительное количество и значение ошибки.
+* `N` — Количество элементов, которые нужно вернуть. Необязательный параметр. Значение по умолчанию: 10.
+* `load_factor` — Определяет, сколько ячеек зарезервировано для значений. Если uniq(column) &gt; N * load&#95;factor, результат функции topK будет приближённым. Необязательный параметр. Значение по умолчанию: 3.
+* `counts` — Определяет, должен ли результат содержать приближённое значение счётчика и оценку ошибки.
 
 **Аргументы**
 
-- `column` — Значение.
-- `weight` — Вес. Каждое значение учитывается `weight` раз при расчете частоты. [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `column` — Значение.
+* `weight` — Вес. Каждое значение учитывается `weight` раз при вычислении частоты. [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -66,6 +69,6 @@ FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10
 
 **См. также**
 
-- [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
-- [approx_top_k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)
-- [approx_top_sum](../../../sql-reference/aggregate-functions/reference/approxtopsum.md)
+* [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
+* [approx&#95;top&#95;k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)
+* [approx&#95;top&#95;sum](../../../sql-reference/aggregate-functions/reference/approxtopsum.md)

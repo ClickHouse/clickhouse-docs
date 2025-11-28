@@ -1,26 +1,30 @@
 ---
-'alias': []
-'description': 'Oneフォーマットのドキュメンテーション'
-'input_format': true
-'keywords':
-- 'One'
-'output_format': false
-'slug': '/interfaces/formats/One'
-'title': 'One'
-'doc_type': 'reference'
+alias: []
+description: 'One フォーマットに関するドキュメント'
+input_format: true
+keywords: ['One']
+output_format: false
+slug: /interfaces/formats/One
+title: 'One'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
+
+
 ## 説明 {#description}
 
-`One`フォーマットは、ファイルからデータを読み取らず、カラムの型が[`UInt8`](../../sql-reference/data-types/int-uint.md)の1行のみを返す特別な入力フォーマットであり、名前は`dummy`、値は`0`です（`system.one`テーブルのように）。仮想カラム`_file/_path`とともに使用して、実際のデータを読み込むことなくすべてのファイルをリストすることができます。
+`One` フォーマットは、ファイルから一切データを読み込まず、[`UInt8`](../../sql-reference/data-types/int-uint.md) 型の `dummy` という名前のカラムを 1 列だけ持つ 1 行（値は `0`）だけを返す、特別な入力フォーマットです（`system.one` テーブルと同様）。
+仮想カラム `_file/_path` と組み合わせることで、実際のデータを読み込まずにすべてのファイルを一覧表示するために使用できます。
 
-## 使用例 {#example-usage}
 
-例:
+
+## 使用例
+
+例：
 
 ```sql title="Query"
 SELECT _file FROM file('path/to/files/data*', One);
@@ -40,5 +44,6 @@ SELECT _file FROM file('path/to/files/data*', One);
 │ data.parquet │
 └──────────────┘
 ```
+
 
 ## フォーマット設定 {#format-settings}

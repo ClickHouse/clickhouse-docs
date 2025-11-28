@@ -1,32 +1,51 @@
 ---
-'description': 'サーバーCPUオーバーロード時の制御動作。'
-'sidebar_label': 'サーバーオーバーロード'
-'slug': '/operations/settings/server-overload'
-'title': 'サーバーオーバーロード'
-'doc_type': 'reference'
+description: 'サーバー CPU 過負荷時の挙動制御'
+sidebar_label: 'サーバー過負荷'
+slug: /operations/settings/server-overload
+title: 'サーバー過負荷'
+doc_type: 'reference'
 ---
 
 
-# サーバーの過負荷
+
+# サーバー過負荷
+
+
 
 ## 概要 {#overview}
 
-サーバーはさまざまな理由で過負荷になることがあります。現在のCPUの過負荷を判断するために、
-ClickHouseサーバーは、CPU待機時間（`OSCPUWaitMicroseconds`メトリック）とビジータイム（`OSCPUVirtualTimeMicroseconds`メトリック）の比率を計算します。サーバーが特定の比率を超えて過負荷になると、負荷をこれ以上増やさないために、いくつかのクエリを破棄するか、接続リクエストをドロップすることが理にかなっています。
+サーバーはさまざまな要因により過負荷状態になることがあります。現在の CPU の過負荷状況を判断するために、
+ClickHouse サーバーは CPU の待ち時間（`OSCPUWaitMicroseconds` メトリクス）とビジー時間
+（`OSCPUVirtualTimeMicroseconds` メトリクス）の比率を計算します。サーバーの負荷が一定の比率を超えて過負荷と判断された場合、
+負荷をこれ以上増やさないように、一部のクエリを破棄したり、接続要求自体を拒否したりすることが妥当です。
 
-`os_cpu_busy_time_threshold`というサーバー設定があり、これはCPUが有効な作業を行っていると見なすための最小ビジータイムを制御します。`OSCPUVirtualTimeMicroseconds`メトリックの現在の値がこの値を下回っている場合、CPUの過負荷は0と見なされます。
+サーバー設定 `os_cpu_busy_time_threshold` により、CPU が有用な処理を行っていると見なすための最小ビジー時間が制御されます。
+現在の `OSCPUVirtualTimeMicroseconds` メトリクスの値がこの値を下回っている場合、
+CPU の過負荷率は 0 と見なされます。
+
+
 
 ## クエリの拒否 {#rejecting-queries}
 
-クエリを拒否する動作は、クエリレベルの設定 `min_os_cpu_wait_time_ratio_to_throw` と `max_os_cpu_wait_time_ratio_to_throw` によって制御されます。これらの設定が設定されていて、`min_os_cpu_wait_time_ratio_to_throw` が `max_os_cpu_wait_time_ratio_to_throw` より小さい場合、クエリは拒否され、過負荷の比率が `min_os_cpu_wait_time_ratio_to_throw` 以上であれば、`SERVER_OVERLOADED` エラーがいくつかの確率で投げられます。この確率は、最小と最大比率の間の線形補間として決定されます。たとえば、`min_os_cpu_wait_time_ratio_to_throw = 2`、`max_os_cpu_wait_time_ratio_to_throw = 6`、`cpu_overload = 4` の場合、クエリは `0.5` の確率で拒否されます。
+クエリを拒否する動作は、クエリレベルの設定である `min_os_cpu_wait_time_ratio_to_throw` と
+`max_os_cpu_wait_time_ratio_to_throw` によって制御されます。これらの設定が指定されていて、かつ `min_os_cpu_wait_time_ratio_to_throw` が
+`max_os_cpu_wait_time_ratio_to_throw` より小さい場合、CPU の過負荷比率が少なくとも `min_os_cpu_wait_time_ratio_to_throw` に
+達しているときに、ある確率でクエリが拒否され、`SERVER_OVERLOADED` エラーがスローされます。この確率は、
+最小比と最大比の間の線形補間として決定されます。例えば、`min_os_cpu_wait_time_ratio_to_throw = 2`、
+`max_os_cpu_wait_time_ratio_to_throw = 6`、`cpu_overload = 4` の場合、クエリは `0.5` の確率で拒否されます。
+
+
 
 ## 接続のドロップ {#dropping-connections}
 
-接続のドロップは、サーバーレベルの設定 `min_os_cpu_wait_time_ratio_to_drop_connection` と `max_os_cpu_wait_time_ratio_to_drop_connection` によって制御されます。これらの設定は、サーバーの再起動なしに変更できます。これらの設定の背後にあるアイデアは、クエリを拒否する場合と類似しています。この場合の唯一の違いは、サーバーが過負荷の場合、接続試行がサーバー側から拒否されることです。
+接続のドロップは、サーバーレベルの設定である `min_os_cpu_wait_time_ratio_to_drop_connection` と
+`max_os_cpu_wait_time_ratio_to_drop_connection` によって制御されます。これらの設定はサーバーを再起動せずに変更できます。これらの設定の意図は、クエリ拒否に関する設定と同様です。この場合に唯一異なる点は、サーバーが過負荷状態のときに、サーバー側で接続試行が拒否されることです。
 
-## リソース過負荷警告 {#resource-overload-warnings}
 
-ClickHouseはまた、サーバーが過負荷のときに `system.warnings` テーブルにCPUおよびメモリの過負荷警告をログに記録します。これらの閾値はサーバーの設定を通じてカスタマイズできます。
+
+## リソース過負荷警告
+
+サーバーが過負荷になった際、ClickHouse は CPU とメモリの過負荷警告を `system.warnings` テーブルにも記録します。これらのしきい値はサーバー設定でカスタマイズできます。
 
 **例**
 

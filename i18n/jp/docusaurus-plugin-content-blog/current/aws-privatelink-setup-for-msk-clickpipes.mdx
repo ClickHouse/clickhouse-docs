@@ -1,0 +1,59 @@
+---
+title: ClickPipes 用に MSK を公開するための AWS PrivateLink 設定
+description: プライベートな MSK を、MSK のマルチ VPC 接続経由で ClickPipes に公開するための設定手順。
+date: 2025-4-15
+tags: ['セキュリティと認証', 'クラウド管理']
+keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## 概要 \{#overview\}
+
+このガイドでは、[ClickPipes reverse private endpoint](/integrations/clickpipes/aws-privatelink#msk-multi-vpc) と併せて使用する **MSK マルチ VPC 環境** のセットアップ方法を説明します。
+
+## 要件 \{#requirements\}
+
+MSK クラスターの VPC は、ClickPipes が提供されているリージョンのいずれかに存在している必要があります。サポート対象リージョンの一覧については、[ClickPipes リージョン](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions) を参照してください。
+
+## マルチ VPC 接続を有効にする \{#enabling-multi-vpc-connectivity\}
+
+1. MSK クラスターに移動します。
+    - Amazon MSK コンソールの左側ナビゲーションペインから「Clusters」を選択します。
+    - マルチ VPC 接続を設定したい対象の MSK クラスターを選択します。
+2. MSK マルチ VPC 接続を有効にします
+    - **Connectivity** タブで **Multi-VPC connectivity** セクションを探します。
+    - **Edit** をクリックします。
+    - **Turn-on MSK multi-VPC connectivity** オプションを有効にします。
+    - 画面の指示に従って設定を完了します。
+3. ClickPipes アカウントプリンシパルをクラスターのポリシーに追加します
+    - **Configuration** タブに移動します。
+    - **Cluster policy** セクションで **Edit** をクリックします。
+    - **IAM policy** に `arn:aws:iam::072088201116:root` を含めます。例:
+        ```json
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": [
+                            "arn:aws:iam::072088201116:root"
+                        ]
+                    },
+                    "Action": [
+                        "kafka-cluster:Connect",
+                        "kafka-cluster:DescribeCluster",
+                        "kafka-cluster:ListClusters"
+                    ]
+                }
+            ]
+        }
+        ```
+
+## リバースプライベートエンドポイントの作成 \{#creating-reverse-private-endpoint\}
+
+[ClickPipes ドキュメント](/integrations/clickpipes/aws-privatelink#creating-clickpipe)に記載されているリバースプライベートエンドポイントの作成手順に従ってください。

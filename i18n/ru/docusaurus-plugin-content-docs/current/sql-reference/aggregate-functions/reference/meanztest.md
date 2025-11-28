@@ -1,42 +1,44 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/meanztest'
-sidebar_label: meanZTest
+description: 'Применяет z-тест для сравнения средних по выборкам из двух совокупностей.'
+sidebar_label: 'meanZTest'
 sidebar_position: 166
-description: 'Применяет тест Z для среднего к выборкам из двух популяций.'
-title: meanZTest
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/meanztest
+title: 'meanZTest'
+doc_type: 'reference'
 ---
+
 # meanZTest
 
-Применяет z-тест средних значений к выборкам из двух популяций.
+Применяет z-критерий для сравнения средних по выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
 ```sql
-meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
+meanZTest(дисперсия_популяции_x, дисперсия_популяции_y, уровень_доверия)(данные_выборки, индекс_выборки)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза состоит в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неравные дисперсии, и дисперсии известны.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке первой генеральной совокупности. В противном случае оно относится к выборке второй генеральной совокупности.
+Нулевая гипотеза состоит в том, что средние значения генеральных совокупностей равны. Предполагается нормальное распределение. Дисперсии генеральных совокупностей могут быть неравны и считаются известными.
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целочисленные](../../../sql-reference/data-types/int-uint.md), [Числа с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичные](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целочисленные](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — Данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — Индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `population_variance_x` — Дисперсия для популяции x. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
-- `population_variance_y` — Дисперсия для популяции y. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
+* `population_variance_x` — Дисперсия для генеральной совокупности x. [Float](../../../sql-reference/data-types/float.md).
+* `population_variance_y` — Дисперсия для генеральной совокупности y. [Float](../../../sql-reference/data-types/float.md).
+* `confidence_level` — Уровень доверия для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
-[Кортеж](../../../sql-reference/data-types/tuple.md) с четырьмя элементами:
+[Tuple](../../../sql-reference/data-types/tuple.md) из четырех элементов:
 
-- рассчитанный t-статистик. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-- низкий предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
-- высокий предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленная нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленная верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 

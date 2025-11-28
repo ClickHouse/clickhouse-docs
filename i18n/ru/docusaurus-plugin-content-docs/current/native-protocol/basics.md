@@ -1,60 +1,66 @@
 ---
-slug: '/native-protocol/basics'
+slug: /native-protocol/basics
 sidebar_position: 1
+title: 'Основы'
 description: 'Основы нативного протокола'
-title: Основы
-doc_type: guide
+keywords: ['нативный протокол', 'протокол TCP', 'основы протокола', 'двоичный протокол', 'клиент-серверное взаимодействие']
+doc_type: 'guide'
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 
 # Основы
 
 :::note
-Справка по клиентскому протоколу в процессе разработки.
+Справочник по клиентскому протоколу находится в разработке.
 
-Большинство примеров только на Go.
+Большинство примеров приведено только на Go.
 :::
 
-Этот документ описывает бинарный протокол для TCP-клиентов ClickHouse.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Этот документ описывает бинарный протокол для TCP‑клиентов ClickHouse.
+
 
 ## Varint {#varint}
 
-Для длин, кодов пакетов и других случаев используется *беззнаковая varint* кодировка.
+Для длин, кодов пакетов и в других случаях используется кодирование в формате *unsigned varint*.
 Используйте [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) и [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-*Знаковая* varint не используется.
+*Signed* varint не используется.
 :::
+
+
 
 ## Строка {#string}
 
-Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка в кодировке utf8.
+Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — строка в кодировке UTF-8.
 
 :::important
-Проверьте длину, чтобы предотвратить OOM:
+Проверяйте длину, чтобы избежать OOM:
 
 `0 ≤ len < MAX`
 :::
 
 <Tabs>
-<TabItem value="encode" label="Кодировать">
+<TabItem value="encode" label="Кодирование">
 
 ```go
 s := "Hello, world!"
 
-// Writing string length as uvarint.
+// Записываем длину строки как uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Writing string value.
+// Записываем значение строки.
 buf = append(buf, s...)
 ```
 
 </TabItem>
-<TabItem value="decode" label="Декодировать">
+<TabItem value="decode" label="Декодирование">
 
 ```go
 r := bytes.NewReader([]byte{
@@ -62,14 +68,14 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Read length.
+// Читаем длину.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Check n to prevent OOM or runtime exception in make().
-const maxSize = 1024 * 1024 * 10 // 10 MB
+// Проверяем n, чтобы предотвратить OOM или исключение времени выполнения в make().
+const maxSize = 1024 * 1024 * 10 // 10 МБ
 if n > maxSize || n < 0 {
     panic("invalid n")
 }
@@ -87,7 +93,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="Hex дамп">
+<TabItem value="hexdump" label="Шестнадцатеричный дамп">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -113,42 +119,43 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-## Целые числа {#integers}
+
+
+## Целые числа
 
 :::tip
-ClickHouse использует **Младший порядок** для целых чисел фиксированного размера.
+ClickHouse использует **Little Endian** для целых чисел фиксированной длины.
 :::
 
-### Int32 {#int32}
+### Int32
+
 ```go
 v := int32(1000)
 
-// Encode.
+// Кодирование.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Decode.
+// Декодирование.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="Hex дамп">
+  <TabItem value="hexdump" label="Hex-дамп">
+    ```hexdump
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
+  </TabItem>
 
-```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
-
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
-6AMAAAAAAAA
-```
-
-</TabItem>
+  <TabItem value="base64" label="Base64">
+    ```text
+    6AMAAAAAAAA
+    ```
+  </TabItem>
 </Tabs>
 
-## Логическое значение {#boolean}
 
-Логические значения представлены одним байтом, `1` — это `true`, а `0` — это `false`.
+## Boolean {#boolean}
+
+Булевы значения представлены одним байтом: значение `1` соответствует `true`, а `0` — `false`.

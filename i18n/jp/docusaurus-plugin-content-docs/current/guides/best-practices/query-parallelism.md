@@ -1,10 +1,11 @@
 ---
-'slug': '/optimize/query-parallelism'
-'sidebar_label': 'クエリの並行性'
-'sidebar_position': 20
-'description': 'ClickHouseは処理レーンとmax_threads設定を使用してクエリの実行を並行化します。'
-'title': 'ClickHouseはクエリを並行して実行する方法'
-'doc_type': 'guide'
+slug: /optimize/query-parallelism
+sidebar_label: 'クエリの並列処理'
+sidebar_position: 20
+description: 'ClickHouse は処理レーンおよび max_threads 設定を利用してクエリの実行を並列化します。'
+title: 'ClickHouse におけるクエリの並列実行の仕組み'
+doc_type: 'guide'
+keywords: ['並列処理', 'クエリ最適化', 'パフォーマンス', 'スレッド処理', 'ベストプラクティス']
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/query-parallelism_01.gif';
@@ -12,62 +13,67 @@ import visual02 from '@site/static/images/guides/best-practices/query-parallelis
 import visual03 from '@site/static/images/guides/best-practices/query-parallelism_03.gif';
 import visual04 from '@site/static/images/guides/best-practices/query-parallelism_04.gif';
 import visual05 from '@site/static/images/guides/best-practices/query-parallelism_05.png';
+
 import Image from '@theme/IdealImage';
 
 
+# ClickHouse がクエリを並列実行する仕組み
 
-# ClickHouseがクエリを並列で実行する方法
+ClickHouse は [高速に動作するよう設計されています](/concepts/why-clickhouse-is-so-fast)。利用可能なすべての CPU コアを使用し、データを複数の処理レーンに分散させることで、高い並列性でクエリを実行し、多くの場合ハードウェアを限界近くまで活用します。
+ 
+このガイドでは、ClickHouse におけるクエリ並列実行の仕組みと、大規模ワークロードのパフォーマンスを向上させるために、どのようにチューニングおよび監視できるかを説明します。
 
-ClickHouseは[スピードのために設計されています](/concepts/why-clickhouse-is-so-fast)。それは、すべての利用可能なCPUコアを使用し、処理レーンにデータを分配し、しばしばハードウェアを限界までプッシュする非常に並列な方法でクエリを実行します。
+ここでは、主要な概念を説明するために [uk_price_paid_simple](/parts) データセットに対する集計クエリを使用します。
 
-このガイドでは、ClickHouseにおけるクエリの並列処理がどのように機能するか、また、大規模なワークロードのパフォーマンスを改善するためにそれをチューニングまたは監視する方法を説明します。
 
-私たちは、[uk_price_paid_simple](/parts)データセットに対する集約クエリを使用して、主要な概念を説明します。
 
-## ステップバイステップ: ClickHouseが集約クエリを並列化する方法 {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
+## ステップごとに見る: ClickHouse が集計クエリをどのように並列化するか {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
 
-ClickHouseが①テーブルの主キーにフィルターをかけた集約クエリを実行すると、②主インデックスをメモリに読み込み、③どのグラニュールを処理する必要があるか、またどのグラニュールを安全にスキップできるかを特定します：
+ClickHouse がテーブルの主キーに対するフィルタ付きの集計クエリを実行する際には、まず主キーインデックスをメモリに読み込み、どのグラニュールを処理する必要があり、どのグラニュールを安全にスキップできるかを特定します。
 
-<Image img={visual01} size="md" alt="インデックス分析"/>
+<Image img={visual01} size="md" alt="インデックス解析"/>
 
-### 処理レーンに対する作業の分配 {#distributing-work-across-processing-lanes}
+### 処理レーン間での処理分散 {#distributing-work-across-processing-lanes}
 
-選択されたデータは、`n` 並列 [処理レーン](/academic_overview#4-2-multi-core-parallelization) に[動的に](#load-balancing-across-processing-lanes)分配され、データを[ブロック](/development/architecture#block)単位でストリーミングしながら最終結果に処理します：
+選択されたデータは、その後 `n` 本の並列な[処理レーン](/academic_overview#4-2-multi-core-parallelization)に[動的に](#load-balancing-across-processing-lanes)分散されます。各レーンはデータを[ブロック](/development/architecture#block)単位でストリーミングしながら処理し、最終結果を生成します。
 
-<Image img={visual02} size="md" alt="4つの並列処理レーン"/>
-
-<br/><br/>
-この`n` 並列処理レーンの数は、[max_threads](/operations/settings/settings#max_threads)設定によって制御され、デフォルトではClickHouseがサーバー上で使用可能なCPUコアの数と同じになります。上記の例では、`4` コアを仮定しています。
-
-`8` コアを持つマシンであれば、クエリ処理のスループットは大体2倍になります（ただし、メモリの使用量もそれに応じて増加します）。より多くのレーンが並列にデータを処理するためです：
-
-<Image img={visual03} size="md" alt="8つの並列処理レーン"/>
+<Image img={visual02} size="md" alt="4 本の並列処理レーン"/>
 
 <br/><br/>
-効率的なレーン分配は、CPUの利用率を最大化し、総クエリ時間を短縮するための鍵です。
+`n` 本の並列処理レーンの数は、[max_threads](/operations/settings/settings#max_threads) 設定によって制御されます。デフォルトでは、サーバー上で ClickHouse が利用可能な CPU コア数と同じ値になります。上の例では、`4` コアを想定しています。
 
-### シャーディングされたテーブルでのクエリ処理 {#processing-queries-on-sharded-tables}
+`8` コアを持つマシンであれば、より多くのレーンが並列にデータを処理できるため、クエリ処理スループットはおおよそ 2 倍になります（ただし、それに応じてメモリ使用量も増加します）。
 
-テーブルデータが複数のサーバーに[シャード](/shards)として分散されている場合、各サーバーはそのシャードを並列に処理します。各サーバー内では、上記と同様に地元のデータが並列処理レーンを使用して処理されます：
-
-<Image img={visual04} size="md" alt="分散レーン"/>
+<Image img={visual03} size="md" alt="8 本の並列処理レーン"/>
 
 <br/><br/>
-クエリを最初に受け取るサーバーは、シャードからすべてのサブ結果を収集し、最終的なグローバル結果に結合します。
+レーンへの分散を効率的に行うことは、CPU 利用率を最大化し、クエリ全体の処理時間を短縮するうえで重要です。
 
-シャード間でのクエリ負荷の分散は、特に高スループット環境において、並列処理の水平スケーリングを可能にします。
+### シャード化されたテーブルでのクエリ処理 {#processing-queries-on-sharded-tables}
 
-:::note ClickHouse Cloudはシャードの代わりに並列レプリカを使用します
-ClickHouse Cloudでは、シャードと同様に機能する[並列レプリカ](https://clickhouse.com/docs/deployment-guides/parallel-replicas)を通じてこの同じ並列性が実現されます。各ClickHouse Cloudレプリカは、ステートレスの計算ノードであり、データの一部を並列に処理し、独立したシャードのように最終結果に貢献します。
+テーブルデータが複数サーバーに [シャード](/shards) として分散されている場合、それぞれのサーバーは自分のシャードを並列に処理します。各サーバー内では、前述のとおりローカルデータが並列処理レーンを用いて処理されます。
+
+<Image img={visual04} size="md" alt="分散されたレーン"/>
+
+<br/><br/>
+クエリを最初に受信したサーバーは、各シャードからすべての部分結果を収集し、それらを結合して最終的なグローバル結果を生成します。
+
+クエリ負荷をシャード間に分散することで、とくに高スループットな環境において、並列性を水平方向にスケールさせることができます。
+
+:::note ClickHouse Cloud はシャードの代わりにパラレルレプリカを使用します
+ClickHouse Cloud では、同様の並列性を [parallel replicas](https://clickhouse.com/docs/deployment-guides/parallel-replicas) によって実現します。これは shared-nothing クラスタにおけるシャードと同様に動作します。各 ClickHouse Cloud レプリカ（ステートレスなコンピュートノード）がデータの一部を並列に処理して最終結果に貢献し、あたかも独立したシャードのように動作します。
 :::
 
-## クエリ並列性の監視 {#monitoring-query-parallelism}
 
-これらのツールを使用して、クエリが利用可能なCPUリソースを完全に活用していることを確認し、活用していない場合は診断します。
 
-私たちは、59のCPUコアを持つテストサーバーでこれを実行しています。これにより、ClickHouseはそのクエリ並列性を完全に示すことができます。
+## クエリの並列実行の監視
 
-例のクエリがどのように実行されるかを観察するために、ClickHouseサーバーに集約クエリ中のすべてのトレースレベルのログエントリを返すよう指示できます。このデモでは、クエリの述語を削除しました—そうしないと、3つのグラニュールしか処理されず、それ以上の並列処理レーンをClickHouseが充分に利用することができません：
+これらのツールを使用して、クエリが利用可能な CPU リソースを十分に活用しているかを確認し、そうでない場合の原因を診断します。
+
+ここでは 59 コアの CPU を搭載したテストサーバー上で実行しており、ClickHouse のクエリ並列実行機能を十分に発揮できる構成になっています。
+
+サンプルクエリがどのように実行されているかを観察するために、集約クエリの実行中にトレースレベルのログエントリをすべて返すよう ClickHouse サーバーに指示します。このデモでは、クエリの述語を削除しています。述語を残したままだと 3 グラニュールしか処理されず、ClickHouse が複数の並列処理レーンを十分に活用するにはデータ量が不十分だからです。
+
 ```sql runnable=false
 SELECT
    max(price)
@@ -77,17 +83,18 @@ SETTINGS send_logs_level='trace';
 ```
 
 ```txt
-① <Debug> ...: 3609 marks to read from 3 ranges
-② <Trace> ...: Spreading mark ranges among streams
-② <Debug> ...: Reading approx. 29564928 rows with 59 streams
+① <Debug> ...: 3つの範囲から3609個のマークを読み取り
+② <Trace> ...: マーク範囲をストリーム間に分散中
+② <Debug> ...: 59個のストリームで約29564928行を読み取り中
 ```
 
-以下のことが確認できます。
+We can see that
 
-* ① ClickHouseは、トレースログにマークとして示された3,609のグラニュールを3つのデータ範囲にわたって読み取る必要があります。
-* ② 59のCPUコアを使用することで、この作業は59の並列処理ストリームに分配されます—レーンごとに1つです。
+* ① ClickHouse は 3 つのデータ範囲にまたがって、トレースログ中では mark として表示される granule を 3,609 個読み取る必要があります。
+* ② CPU コアが 59 個あるため、この処理は 59 本の並列処理ストリーム（各レーンにつき 1 本）に分散されます。
 
-あるいは、[EXPLAIN](/sql-reference/statements/explain#explain-pipeline)句を使用して、集約クエリの[物理オペレータープラン](/academic_overview#4-2-multi-core-parallelization)（クエリパイプラインとも呼ばれます）を検査できます：
+別の方法として、[EXPLAIN](/sql-reference/statements/explain#explain-pipeline) 句を使用して、集約クエリに対する [physical operator plan](/academic_overview#4-2-multi-core-parallelization)（「query pipeline」とも呼ばれる）を確認することもできます。
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -111,21 +118,23 @@ FROM
     └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-注意: 上記のオペレータープランを下から上に読んでください。各行は、底からストレージからデータを読み取ることから始まり、上部の最終処理ステップで終了します。`× 59`とマークされたオペレーターは、59の並列処理レーンにわたって重ならないデータ領域で同時に実行されます。これは、`max_threads`の値を反映しており、クエリの各ステージがCPUコアにわたってどのように並列化されているかを示しています。
+Note: 上記のオペレーター・プランは下から上へ読んでください。各行は物理実行プランのステージを表しており、下部のストレージからデータを読み込むところから始まり、上部の最終処理ステップで終わります。`× 59` とマークされたオペレーターは、59 本の並列処理レーン全体で互いに重複しないデータ領域に対して同時に実行されます。これは `max_threads` の値を反映しており、クエリの各ステージがどのように CPU コア間で並列化されるかを示しています。
 
-ClickHouseの[埋め込みWeb UI](/interfaces/http)（`/play`エンドポイントで利用可能）は、上記の物理プランをグラフィカルなビジュアライゼーションとしてレンダリングできます。この例では、視覚化をコンパクトに保つために`max_threads`を`4`に設定し、4つの並列処理レーンのみを表示します：
+ClickHouse の [組み込み Web UI](/interfaces/http)（`/play` エンドポイントで利用可能）は、上記の物理プランをグラフィカルに可視化して表示できます。この例では、可視化をコンパクトに保つために `max_threads` を `4` に設定し、4 本の並列処理レーンのみを表示しています。
 
-<Image img={visual05} alt="クエリパイプライン"/>
+<Image img={visual05} alt="クエリパイプライン" />
 
-注意: ビジュアルを左から右に読んでください。各行は、データをブロック単位でストリーミングし、フィルタリング、集約、最終処理ステージなどの変換を適用する並列処理レーンを表しています。この例では、`max_threads = 4`設定に対応する4つの並列レーンを見ることができます。
+Note: 可視化は左から右へ読んでください。各行は、データをブロック単位でストリーミングし、フィルタリング、集約、最終処理ステージなどの変換を適用する並列処理レーンを表します。この例では、`max_threads = 4` の設定に対応する 4 本の並列レーンが確認できます。
 
-### 処理レーン間の負荷分散 {#load-balancing-across-processing-lanes}
+### 処理レーン間での負荷分散
 
-物理プランの上記の`Resize`オペレーターは、処理レーン間でデータブロックストリームを[再配分し再分配](/academic_overview#4-2-multi-core-parallelization)して、均等に使用されるように保ちます。この再バランスは、データ範囲がクエリ述語に一致する行の数が異なる場合に特に重要です。そうでなければ、一部のレーンは過負荷になり、他はアイドルになる可能性があります。作業を再分配することによって、より速いレーンが遅いレーンを助け、全体のクエリ実行時間を最適化します。
+上記の物理プラン内の `Resize` オペレーターは、処理レーン間でデータブロックストリームを[再パーティションおよび再分配](/academic_overview#4-2-multi-core-parallelization)することで、各レーンの利用率を均等に保っている点に注意してください。この再バランシングは、データ範囲ごとにクエリ述語にマッチする行数が異なる場合に特に重要です。そうしないと、一部のレーンだけが過負荷になり、他のレーンがアイドル状態になる可能性があります。作業を再分配することで、速いレーンが遅いレーンを実質的に助ける形となり、クエリ全体の実行時間を最適化できます。
 
-## なぜmax_threadsが常に尊重されないのか {#why-max-threads-isnt-always-respected}
 
-上記のように、`n` 並列処理レーンの数は、デフォルトではClickHouseがサーバー上で使用可能なCPUコアの数と同じである`max_threads`設定によって制御されます：
+## なぜ max&#95;threads が常にそのとおりには動作しないのか
+
+前述のとおり、並列処理レーンの数 `n` は `max_threads` 設定によって制御されます。デフォルトでは、この設定値はサーバー上で ClickHouse が利用可能な CPU コア数と同じになります。
+
 ```sql runnable=false
 SELECT getSetting('max_threads');
 ```
@@ -136,7 +145,8 @@ SELECT getSetting('max_threads');
    └───────────────────────────┘
 ```
 
-ただし、処理のために選択されたデータの量によって、`max_threads`の値が無視されることがあります：
+ただし、処理対象として選択されたデータ量によっては、`max_threads` の値が無視される場合があります。
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -152,9 +162,10 @@ WHERE town = 'LONDON';
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 ```
 
-上記のオペレータープランの抜粋に示されているように、`max_threads`が`59`に設定されているにもかかわらず、ClickHouseはデータをスキャンするためにわずか**30**の同時ストリームを使用しています。
+上のオペレータープランの抜粋に示されているように、`max_threads` が `59` に設定されていても、ClickHouse はデータをスキャンするために **30** 本の同時実行ストリームしか使用しません。
 
-では、クエリを実行してみましょう：
+では、クエリを実行してみましょう。
+
 ```sql runnable=false
 SELECT
    max(price)
@@ -165,14 +176,14 @@ WHERE town = 'LONDON';
 
 ```txt
    ┌─max(price)─┐
-1. │  594300000 │ -- 594.30 million
+1. │  594300000 │ -- 5億9430万
    └────────────┘
-
-1 row in set. Elapsed: 0.013 sec. Processed 2.31 million rows, 13.66 MB (173.12 million rows/s., 1.02 GB/s.)
-Peak memory usage: 27.24 MiB.   
+   
+1行が返されました。経過時間: 0.013秒。処理行数: 231万行、13.66 MB (173.12百万行/秒、1.02 GB/秒)
+ピークメモリ使用量: 27.24 MiB。   
 ```
 
-上記の出力で示されたように、クエリは231万行を処理し、13.66MBのデータを読み込みました。これは、インデックス分析フェーズ中に、ClickHouseが処理のために**282のグラニュール**を選択し、それぞれが8,192行を含み、合計で約231万行になったためです：
+上の出力に示されているように、このクエリは231万行を処理し、13.66MBのデータを読み取りました。これはインデックス解析フェーズにおいて、ClickHouseが処理対象として**282個のグラニュール**を選択し、それぞれに8,192行が含まれているためで、合計で約231万行になります。
 
 ```sql runnable=false
 EXPLAIN indexes = 1
@@ -200,26 +211,31 @@ WHERE town = 'LONDON';
     └───────────────────────────────────────────────────────┘  
 ```
 
-構成された`max_threads`値にかかわらず、ClickHouseは十分なデータがある場合にのみ追加の並列処理レーンを割り当てます。`max_threads`の「max」は上限を指し、使用されるスレッドの保証された数ではありません。
+設定された `max_threads` の値に関係なく、ClickHouse が追加の並列処理レーンを確保するのは、それを正当化できるだけの十分なデータがある場合に限られます。`max_threads` の「max」は上限値を指しており、実際に使用されるスレッド数がその数になることを保証するものではありません。
 
-「十分なデータ」とは、主に、各処理レーンが処理すべき最小行数（デフォルトは163,840行）と、最小バイト数（デフォルトは2,097,152バイト）を定義する2つの設定によって決まります：
+「十分なデータ」が何を意味するかは主に 2 つの設定によって決まり、それぞれの処理レーンが処理すべき最小行数（デフォルトで 163,840）と最小バイト数（デフォルトで 2,097,152）を定義します。
 
-共有ナシクラスタ向け：
-* [merge_tree_min_rows_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
-* [merge_tree_min_bytes_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
+共有ナッシングクラスターの場合:
 
-共有ストレージを持つクラスタ向け（例: ClickHouse Cloud）：
-* [merge_tree_min_rows_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
-* [merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
+* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
+* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
 
-さらに、読み取りタスクサイズの硬い下限もあり、次の設定によって制御されます：
-* [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
+共有ストレージを利用するクラスター（例: ClickHouse Cloud）の場合:
+
+* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
+* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
+
+さらに、読み取りタスクサイズには、次の設定で制御される厳格な下限値があります:
+
+* [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
+
 
 :::warning これらの設定を変更しないでください
-運用環境でこれらの設定を変更することは推奨されません。ここに表示されているのは、`max_threads`が常に実際の並列性レベルを決定しない理由を示すためだけです。
+本番環境でこれらの設定を変更することは推奨しません。ここでは、`max_threads` が必ずしも実際の並列度を決定しない理由を示すためだけに掲載しています。
 :::
 
-デモ目的で、これらの設定をオーバーライドして最大の同時実行性を強制する物理プランを検査してみましょう：
+デモンストレーションのために、これらの設定を一時的に上書きして並列度を最大まで引き上げた状態で、物理プランを確認してみましょう。
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -240,23 +256,26 @@ SETTINGS
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 ```
 
-これでClickHouseはデータをスキャンするために59の同時ストリームを使用し、設定された`max_threads`を完全に尊重しています。
+この結果、ClickHouse は 59 個の同時ストリームを使ってデータをスキャンし、設定された `max_threads` を厳密に守っています。
 
-これは、小さなデータセットに対するクエリの場合、ClickHouseが意図的に同時実行を制限することを示しています。設定のオーバーライドはテストのためだけに使用し、運用環境では使用しないでください。効率的な実行やリソースの競合を引き起こす可能性があるためです。
+これは、小さなデータセットに対するクエリでは、ClickHouse が意図的に並行度を制限することを示しています。設定の上書きはテスト目的のみにとどめ、本番環境では使用しないでください。実行の非効率化やリソース競合を招くおそれがあります。
 
-## 主なポイント {#key-takeaways}
 
-* ClickHouseは、`max_threads`に結びついた処理レーンを使用してクエリを並列化します。
-* 実際のレーンの数は、処理のために選択されたデータのサイズに依存します。
-* `EXPLAIN PIPELINE`とトレースログを使用してレーン使用状況を分析します。
+## 重要なポイント {#key-takeaways}
 
-## 詳細情報を見つける場所  {#where-to-find-more-information}
+* ClickHouse は、`max_threads` に対応する処理レーンを使ってクエリを並列実行します。
+* 実際のレーン数は、処理対象として選択されたデータ量に依存します。
+* レーンの利用状況を分析するには、`EXPLAIN PIPELINE` とトレースログを使用します。
 
-ClickHouseがクエリを並列で実行する方法や、高スケーラビリティでの高パフォーマンスの実現方法についてさらに深く理解したい場合は、以下のリソースを調べてみてください：
 
-* [クエリ処理レイヤー – VLDB 2024 論文 (Web版)](/academic_overview#4-query-processing-layer) - ClickHouseの内部実行モデルの詳細な分析、スケジューリング、パイプライン処理、およびオペレータ設計を含む。
 
-* [部分的集約状態の解説](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - 部分的集約状態が処理レーン全体で効率的な並列実行を可能にする方法についての技術的な深掘り。
+## さらなる情報の入手先  {#where-to-find-more-information}
 
-* ClickHouseのクエリ処理のすべてのステップを詳細に説明するビデオチュートリアル：
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/hP6G2Nlz_cA?si=Imd_i427J_kZOXHe" title="YouTube動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+ClickHouse がどのようにクエリを並列実行し、大規模環境で高いパフォーマンスを実現しているかをさらに深く理解したい場合は、次のリソースを参照してください。
+
+* [Query Processing Layer – VLDB 2024 Paper (Web Edition)](/academic_overview#4-query-processing-layer) - スケジューリング、パイプライン処理、オペレーター設計を含む、ClickHouse の内部実行モデルの詳細な解説。
+
+* [Partial aggregation states explained](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - 部分集約状態が処理レーン全体で効率的な並列実行をどのように可能にするかについての技術的な詳細解説。
+
+* ClickHouse のすべてのクエリ処理ステップを詳細に解説する動画チュートリアル:
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/hP6G2Nlz_cA?si=Imd_i427J_kZOXHe" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

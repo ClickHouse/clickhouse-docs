@@ -1,0 +1,77 @@
+---
+title: Устранение ошибки «Cannot append data in Parquet format» в ClickHouse
+description: Сталкиваетесь с ошибкой «Cannot append data in format Parquet to file» в ClickHouse? Давайте рассмотрим, как её исправить.
+date: 2023-03-25
+tags: ['Ошибки и исключения', 'Форматы данных']
+keywords: ['Parquet', 'Cannot Append Data']
+---
+
+{frontMatter.description}
+
+{/* усечение */}
+
+
+## Устранение ошибки «Cannot Append Data in Parquet Format» в ClickHouse
+
+Вы сталкиваетесь с ошибкой «Cannot append data in format Parquet to file» в ClickHouse?
+
+Обычно ошибка выглядит так:
+
+`DB::Exception: Cannot append data in format Parquet to file, because this format doesn't support appends. (CANNOT_APPEND_TO_FILE)`
+
+Предположим, вы создаёте таблицу, которая использует табличный движок `File` с форматом Parquet.
+
+```sql
+CREATE TABLE parquet_test
+(
+    `x` UInt32,
+    `y` String
+)
+ENGINE = File(Parquet)
+```
+
+В таблицу можно записать только один раз:
+
+```sql
+INSERT INTO parquet_test VALUES
+   (1, 'Hello'),
+   (2, 'Hi')
+```
+
+Это создаёт файл с именем `data.Parquet` в папке `data/default/parquet_test`. Если вы попытаетесь вставить ещё один пакет данных:
+
+```sql
+INSERT INTO parquet_test VALUES
+   (3, 'World'),
+   (4, 'Bye')
+```
+
+...вы увидите следующую ошибку:
+
+```response
+Код: 641. DB::Exception: Получено от localhost:9000. DB::Exception: Невозможно дописать данные в формате Parquet в файл, так как этот формат не поддерживает дозапись. Вы можете разрешить создание нового файла при каждой вставке, включив параметр engine_file_allow_create_multiple_files. (CANNOT_APPEND_TO_FILE)
+```
+
+В ClickHouse нельзя дозаписывать данные в файлы Parquet. Но вы можете настроить ClickHouse на создание нового файла для каждого `INSERT`, включив параметр [`engine_file_allow_create_multiple_files`](https://clickhouse.com/docs/operations/settings/settings#engine_file_allow_create_multiple_files). Если он включён, при каждой вставке будет создаваться новый файл с именем по следующему шаблону:
+
+`data.Parquet` -&gt; `data.1.Parquet` -&gt; `data.2.Parquet` и т. д.:
+
+Давайте попробуем. Поместим наши две команды в один файл с именем `parquet.sql`:
+
+```sql
+SET engine_file_allow_create_multiple_files = 1;
+
+INSERT INTO default.parquet_test VALUES  (3, 'World'), (4, 'Bye');
+```
+
+Выполните команду с помощью `clickhouse-client`:
+
+```bash
+./clickhouse client --queries-file parquet.sql
+```
+
+Теперь вы увидите два файла в `data/default/parquet_test` (и новый файл для каждой последующей вставки).
+
+:::note
+Настройка `engine_file_allow_create_multiple_files` применяется и к другим форматам данных, которые не поддерживают дозапись, таким как JSON и ORC.
+:::

@@ -1,17 +1,23 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/last_value'
+description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но может
+  принимать значение NULL.'
 sidebar_position: 160
-description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но'
-title: last_value
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/last_value
+title: 'last_value'
+doc_type: 'reference'
 ---
+
+
+
 # last_value
 
-Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать NULL. 
-В основном его следует использовать с [Window Functions](../../window-functions/index.md). 
-Без Window Functions результат будет случайным, если исходный поток не отсортирован.
+Выбирает последнее встреченное значение, аналогично `anyLast`, но допускает значение NULL.
+Чаще всего используется с [оконными функциями](../../window-functions/index.md).
+Без оконных функций результат будет случайным, если исходный поток не упорядочен.
 
-## examples {#examples}
+
+
+## Примеры
 
 ```sql
 CREATE TABLE test_data
@@ -24,8 +30,10 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### Example 1 {#example1}
-Значение NULL игнорируется по умолчанию.
+### Пример 1
+
+По умолчанию значение NULL игнорируется.
+
 ```sql
 SELECT last_value(b) FROM test_data
 ```
@@ -36,8 +44,10 @@ SELECT last_value(b) FROM test_data
 └────────────────────────────┘
 ```
 
-### Example 2 {#example2}
+### Пример 2
+
 Значение NULL игнорируется.
+
 ```sql
 SELECT last_value(b) ignore nulls FROM test_data
 ```
@@ -48,8 +58,10 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-### Example 3 {#example3}
-Значение NULL принимается.
+### Пример 3
+
+Допускается значение NULL.
+
 ```sql
 SELECT last_value(b) respect nulls FROM test_data
 ```
@@ -60,8 +72,10 @@ SELECT last_value(b) respect nulls FROM test_data
 └─────────────────────────────┘
 ```
 
-### Example 4 {#example4}
-Стабилизированный результат с использованием подзапроса с `ORDER BY`.
+### Пример 4
+
+Стабильный результат при использовании подзапроса с `ORDER BY`.
+
 ```sql
 SELECT
     last_value_respect_nulls(b),

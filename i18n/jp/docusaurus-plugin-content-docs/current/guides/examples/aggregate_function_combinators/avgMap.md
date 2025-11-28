@@ -1,27 +1,29 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMap'
-'title': 'avgMap'
-'description': 'avgMap コンビネータを使用した例'
-'keywords':
-- 'avg'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'avgMap'
-'sidebar_label': 'avgMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgMap'
+title: 'avgMap'
+description: 'avgMap コンビネータの使用例'
+keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
+sidebar_label: 'avgMap'
+doc_type: 'reference'
 ---
+
 
 
 # avgMap {#avgmap}
 
+
+
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 組み合わせ子は、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用して、各キーに従って Map 内の値の算術平均を計算するために、`avgMap` 集約組み合わせ子関数を使用できます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`avgMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の値の算術平均を計算するために、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用できます。
 
-## 使用例 {#example-usage}
 
-この例では、異なる時間帯のステータスコードとそのカウントを保存するテーブルを作成します。各行には、ステータスコードとそれに対応するカウントの Map が含まれます。`avgMap` を使用して、各時間帯内で各ステータスコードの平均カウントを計算します。
+
+## 使用例
+
+この例では、さまざまなタイムスロットにおけるステータスコードとそのカウントを格納するテーブルを作成します。
+各行には、ステータスコードとそれに対応するカウントを表す `Map` が含まれます。
+`avgMap` を使用して、各タイムスロット内で各ステータスコードのカウントの平均値を計算します。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -43,18 +45,19 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`avgMap` 関数は、各時間帯内の各ステータスコードの平均カウントを計算します。例えば：
-- 時間帯 '2000-01-01 00:00:00':
-  - ステータス 'a': 15
-  - ステータス 'b': 25
-  - ステータス 'c': (35 + 45) / 2 = 40
-  - ステータス 'd': 55
-  - ステータス 'e': 65
-- 時間帯 '2000-01-01 00:01:00':
-  - ステータス 'd': 75
-  - ステータス 'e': 85
-  - ステータス 'f': (95 + 105) / 2 = 100
-  - ステータス 'g': (115 + 125) / 2 = 120
+`avgMap` 関数は、各タイムスロット内の各ステータスコードの平均カウントを計算します。例えば次のとおりです。
+
+* タイムスロット &#39;2000-01-01 00:00:00&#39; の場合:
+  * ステータス &#39;a&#39;: 15
+  * ステータス &#39;b&#39;: 25
+  * ステータス &#39;c&#39;: (35 + 45) / 2 = 40
+  * ステータス &#39;d&#39;: 55
+  * ステータス &#39;e&#39;: 65
+* タイムスロット &#39;2000-01-01 00:01:00&#39; の場合:
+  * ステータス &#39;d&#39;: 75
+  * ステータス &#39;e&#39;: 85
+  * ステータス &#39;f&#39;: (95 + 105) / 2 = 100
+  * ステータス &#39;g&#39;: (115 + 125) / 2 = 120
 
 ```response title="Response"
    ┌────────────timeslot─┬─avgMap(status)───────────────────────┐
@@ -63,6 +66,7 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 他にも {#see-also}
+
+## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

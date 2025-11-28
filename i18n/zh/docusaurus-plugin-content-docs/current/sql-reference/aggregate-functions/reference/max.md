@@ -1,12 +1,12 @@
 ---
-'description': '聚合函数，用于计算一组值中的最大值。'
-'sidebar_position': 162
-'slug': '/sql-reference/aggregate-functions/reference/max'
-'title': '最大值'
-'doc_type': 'reference'
+description: '用于对一组值计算最大值的聚合函数。'
+sidebar_position: 162
+slug: /sql-reference/aggregate-functions/reference/max
+title: 'max'
+doc_type: 'reference'
 ---
 
-聚合函数，计算一组值中的最大值。
+用于对一组值计算最大值的聚合函数。
 
 示例：
 
@@ -18,7 +18,7 @@ SELECT max(salary) FROM employees;
 SELECT department, max(salary) FROM employees GROUP BY department;
 ```
 
-如果您需要非聚合函数来选择两个值中的最大值，请参见 `greatest`：
+如果你需要一个非聚合函数在两个值中取最大值，请参阅 `greatest`：
 
 ```sql
 SELECT greatest(a, b) FROM table;

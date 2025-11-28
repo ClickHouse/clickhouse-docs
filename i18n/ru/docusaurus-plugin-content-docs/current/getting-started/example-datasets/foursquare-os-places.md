@@ -1,34 +1,36 @@
 ---
-slug: '/getting-started/example-datasets/foursquare-places'
+description: 'Набор данных с свыше 100 миллионов записей, содержащий информацию о местах на карте, таких как магазины, 
+рестораны, парки, детские площадки и памятники.'
 sidebar_label: 'Места Foursquare'
-description: 'Набор данных с более чем 100 миллионами записей, содержащими информацию'
+slug: /getting-started/example-datasets/foursquare-places
 title: 'Места Foursquare'
 keywords: ['визуализация']
-doc_type: reference
+doc_type: 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import visualization_1 from '@site/static/images/getting-started/example-datasets/visualization_1.png';
 import visualization_2 from '@site/static/images/getting-started/example-datasets/visualization_2.png';
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
+
 ## Набор данных {#dataset}
 
-Этот набор данных от Foursquare доступен для [скачивания](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
-и использования бесплатно по лицензии Apache 2.0.
+Этот набор данных от Foursquare доступен для [загрузки](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
+и может использоваться бесплатно по лицензии Apache 2.0.
 
-Он содержит более 100 миллионов записей коммерческих точек интереса (POI), 
-таких как магазины, рестораны, парки, игровые площадки и памятники. Также включена 
-дополнительная метаинформация о этих местах, такая как категории и информация 
-из социальных сетей.
+Он содержит более 100 миллионов записей о коммерческих точках интереса (POI),
+таких как магазины, рестораны, парки, игровые площадки и памятники. Он также включает
+дополнительные метаданные об этих местах, такие как категории и данные из социальных сетей.
 
-## Исследование данных {#data-exploration}
+## Исследование данных
 
-Для изучения данных мы будем использовать [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local), небольшую командную утилиту, 
-которая предоставляет полный движок ClickHouse, хотя вы также можете использовать 
+Для исследования данных мы будем использовать [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — небольшую утилиту командной строки,
+которая предоставляет полноценный движок ClickHouse. Также вы можете использовать
 ClickHouse Cloud, `clickhouse-client` или даже `chDB`.
 
-Запустите следующий запрос, чтобы выбрать данные из s3 корзины, где хранятся данные:
+Выполните следующий запрос, чтобы выбрать данные из бакета S3, где они хранятся:
 
 ```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*') LIMIT 1
@@ -59,20 +61,19 @@ facebook_id:         ᴺᵁᴸᴸ
 instagram:           ᴺᵁᴸᴸ
 twitter:             ᴺᵁᴸᴸ
 fsq_category_ids:    ['4bf58dd8d48988d1f7931735']
-fsq_category_labels: ['Travel and Transportation > Transport Hub > Airport > Plane']
+fsq_category_labels: ['Путешествия и транспорт > Транспортный узел > Аэропорт > Самолет']
 placemaker_url:      https://foursquare.com/placemakers/review-place/4e1ef76cae60cd553dec233f
 geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
 ```
 
-Мы видим, что довольно много полей имеют значение `ᴺᵁᴸᴸ`, поэтому мы можем добавить 
-некоторые дополнительные условия к нашему запросу, чтобы вернуть более 
-используемые данные:
+Мы видим, что довольно много полей содержит `ᴺᵁᴸᴸ`, поэтому можем добавить к нашему запросу несколько дополнительных условий, чтобы получить более полезные данные:
 
 ```sql title="Query"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
    WHERE address IS NOT NULL AND postcode IS NOT NULL AND instagram IS NOT NULL LIMIT 1
 ```
+
 
 ```response
 Row 1:
@@ -99,14 +100,13 @@ facebook_id:         522698844570949 -- 522.70 trillion
 instagram:           landalmooizutendaal
 twitter:             landalzdl
 fsq_category_ids:    ['56aa371be4b08b9a8d5734e1']
-fsq_category_labels: ['Travel and Transportation > Lodging > Vacation Rental']
+fsq_category_labels: ['Путешествия и транспорт > Проживание > Аренда жилья на время отпуска']
 placemaker_url:      https://foursquare.com/placemakers/review-place/59b2c754b54618784f259654
 geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)
 ```
 
-Запустите следующий запрос, чтобы просмотреть автоматически выведенную схему данных 
-с помощью `DESCRIBE`:
+Выполните следующий запрос, чтобы просмотреть автоматически выведенную схему данных с использованием `DESCRIBE`:
 
 ```sql title="Query"
 DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -147,12 +147,13 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-## Загрузка данных в ClickHouse {#loading-the-data}
 
-Если вы хотите сохранить данные на диске, вы можете использовать `clickhouse-server` 
-или ClickHouse Cloud. 
+## Загрузка данных в ClickHouse
 
-Чтобы создать таблицу, выполните следующую команду: 
+Если вы хотите сохранять данные на диске, вы можете использовать `clickhouse-server`
+или ClickHouse Cloud.
+
+Чтобы создать таблицу, выполните следующую команду:
 
 ```sql title="Query"
 CREATE TABLE foursquare_mercator
@@ -197,84 +198,80 @@ CREATE TABLE foursquare_mercator
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-Обратите внимание на использование типа данных [`LowCardinality`](/sql-reference/data-types/lowcardinality) 
-для нескольких колонок, что изменяет внутреннее представление типов данных на 
-кодированное в словаре. Работа с данными, закодированными в словаре, 
-значительно повышает производительность запросов `SELECT` для многих приложений.
+Обратите внимание на использование типа данных [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+для нескольких столбцов, который изменяет внутреннее представление этих типов данных,
+перекодируя их в словарный формат. Работа со словарно-кодированными данными значительно
+повышает производительность запросов `SELECT` для многих приложений.
 
-Кроме того, создаются два `UInt32` `MATERIALIZED` столбца, `mercator_x` и `mercator_y`, 
-которые отображают координаты широты/долготы на 
-[Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection)
-для удобства сегментации карты на плитки:
+Кроме того, создаются два столбца `UInt32` `MATERIALIZED`, `mercator_x` и `mercator_y`,
+которые отображают координаты широты и долготы в проекцию [Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection)
+для упрощения разбиения карты на тайлы:
 
 ```sql
 mercator_x UInt32 MATERIALIZED 0xFFFFFFFF * ((longitude + 180) / 360),
 mercator_y UInt32 MATERIALIZED 0xFFFFFFFF * ((1 / 2) - ((log(tan(((latitude + 90) / 360) * pi())) / 2) / pi())),
 ```
 
-Давайте разберем, что происходит выше для каждого столбца.
+Давайте разберём, что происходит выше для каждого столбца.
 
-**mercator_x**
+**mercator&#95;x**
 
-Этот столбец преобразует значение долготы в координату X в проектировании Mercator:
+Этот столбец преобразует значение долготы в координату X в проекции Меркатора:
 
-- `долгота + 180` сдвигает диапазон долгот с [-180, 180] на [0, 360]
-- Деление на 360 нормализует это значение в диапазоне от 0 до 1
-- Умножение на `0xFFFFFFFF` (шестнадцатеричное значение для максимального 32-разрядного беззнакового целого числа) масштабирует это нормализованное значение на весь диапазон 32-разрядного целого числа
+* `longitude + 180` смещает диапазон долготы с [-180, 180] до [0, 360]
+* Деление на 360 нормализует значение в диапазон от 0 до 1
+* Умножение на `0xFFFFFFFF` (шестнадцатеричное представление максимального 32-битного беззнакового целого числа) масштабирует это нормализованное значение на полный диапазон 32-битного целого числа
 
-**mercator_y**
+**mercator&#95;y**
 
-Этот столбец преобразует значение широты в координату Y в проектировании Mercator:
+Этот столбец преобразует значение широты в координату Y в проекции Меркатора:
 
-- `широта + 90` сдвигает широту с [-90, 90] на [0, 180]
-- Деление на 360 и умножение на pi() преобразует в радианы для тригонометрических функций
-- Часть `log(tan(...))` является основой формулы проектирования Mercator
-- Умножение на `0xFFFFFFFF` масштабирует до полного диапазона 32-разрядного целого числа
+* `latitude + 90` смещает широту с диапазона [-90, 90] до [0, 180]
+* Деление на 360 и умножение на pi() преобразует в радианы для использования в тригонометрических функциях
+* Часть `log(tan(...))` является основой формулы проекции Меркатора
+* Умножение на `0xFFFFFFFF` масштабирует значение на полный 32-битный диапазон целых чисел
 
-Указание `MATERIALIZED` гарантирует, что ClickHouse вычисляет значения для этих 
-столбцов, когда мы `INSERT` данные, не требуя указания этих столбцов (которые не 
-являются частью оригинальной схемы данных) в `INSERT statement`.
+Указание `MATERIALIZED` гарантирует, что ClickHouse вычисляет значения для этих
+столбцов при выполнении операции `INSERT` данных, без необходимости указывать эти столбцы (которые не
+являются частью исходной схемы данных) в операторе `INSERT`.
 
-Таблица упорядочена по `mortonEncode(mercator_x, mercator_y)`, что создает 
-Z-образную заполняющую кривую `mercator_x`, `mercator_y` с целью существенно 
-улучшить производительность геопространственных запросов. Эта упорядоченность 
-Z-образной кривой обеспечивает физическую организацию данных по пространственной близости:
+Таблица упорядочена по `mortonEncode(mercator_x, mercator_y)`, которая формирует
+заполняющую пространство кривую Z-order по `mercator_x`, `mercator_y`, чтобы значительно
+улучшить производительность геопространственных запросов. Такое упорядочивание по кривой Z-order гарантирует, что данные
+физически организованы по пространственной близости:
 
 ```sql
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-Кроме того, создается два индекса `minmax` для более быстрого поиска:
+Также создаются два индекса `minmax` для ускорения поиска:
 
 ```sql
 INDEX idx_x mercator_x TYPE minmax,
 INDEX idx_y mercator_y TYPE minmax
 ```
 
-Как вы видите, ClickHouse имеет абсолютно все, что вам нужно для приложений 
-по картографированию в реальном времени!
+Как видите, в ClickHouse есть абсолютно всё необходимое для картографических приложений в реальном времени!
 
-Запустите следующий запрос для загрузки данных:
+Выполните следующий запрос, чтобы загрузить данные:
 
 ```sql
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
+
 ## Визуализация данных {#data-visualization}
 
-Чтобы увидеть, что возможно с этим набором данных, ознакомьтесь с [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219).
-adsb.exposed был изначально разработан соучредителем и техническим директором Алексеем 
-Миловидовым для визуализации данных полетов ADS-B (Автоматическая 
-зависимая трансляция), которые превышают в размере в 1000 раз. Во время 
-хакатона в компании Алексей добавил данные Foursquare в этот инструмент.
+Чтобы увидеть, что можно сделать с этим набором данных, зайдите на [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219).
+adsb.exposed изначально был создан сооснователем и CTO ClickHouse Алексеем Миловидовым для визуализации данных о полётах ADS‑B (Automatic Dependent Surveillance‑Broadcast), которые в тысячу раз больше по объёму. Во время внутреннего хакатона Алексей добавил в этот инструмент данные Foursquare.
 
-Некоторые наши любимые визуализации представлены ниже для вашего удовольствия.
+Ниже приведены некоторые из наших любимых визуализаций, которыми мы хотим с вами поделиться.
 
-<Image img={visualization_1} size="md" alt="Денситометрическая карта точек интереса в Европе"/>
+<Image img={visualization_1} size="md" alt="Карта плотности объектов интереса в Европе"/>
 
-<Image img={visualization_2} size="md" alt="Саке бары в Японии"/>
+<Image img={visualization_2} size="md" alt="Сакэ-бары в Японии"/>
 
 <Image img={visualization_3} size="md" alt="Банкоматы"/>
 
-<Image img={visualization_4} size="md" alt="Карта Европы с точками интереса, классифицированными по странам"/>
+<Image img={visualization_4} size="md" alt="Карта Европы с объектами интереса, классифицированными по странам"/>

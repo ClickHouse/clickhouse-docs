@@ -1,31 +1,32 @@
 ---
-'alias':
-- 'PrettyJSONLines'
-- 'PrettyNDJSON'
-'description': 'PrettyJSONLines 格式的 Documentation'
-'input_format': false
-'keywords':
-- 'PrettyJSONEachRow'
-- 'PrettyJSONLines'
-- 'PrettyNDJSON'
-'output_format': true
-'slug': '/interfaces/formats/PrettyJSONEachRow'
-'title': 'PrettyJSONEachRow'
-'doc_type': 'guide'
+alias: ['PrettyJSONLines', 'PrettyNDJSON']
+description: 'PrettyJSONLines 格式文档'
+input_format: false
+keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
+output_format: true
+slug: /interfaces/formats/PrettyJSONEachRow
+title: 'PrettyJSONEachRow'
+doc_type: 'guide'
 ---
 
-| 输入  | 输出  | 别名                             |
+| 输入 | 输出 | 别名                             |
 |-------|--------|-----------------------------------|
 | ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
 
+
+
 ## 描述 {#description}
 
-与 [JSONEachRow](./JSONEachRow.md) 的不同之处在于，JSON 被美化格式化，使用换行符作为分隔符，并采用 4 空格的缩进。
+与 [JSONEachRow](./JSONEachRow.md) 的唯一区别在于，JSON 采用带换行符和四个空格缩进的美化格式。
 
-## 示例用法 {#example-usage}
+
+
+## 使用示例 {#example-usage}
 ### 插入数据 {#inserting-data}
 
-使用名为 `football.json` 的 JSON 文件，其中包含以下数据：
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
+
+
 
 ```json
 {
@@ -163,7 +164,7 @@
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-} 
+}
 ```
 
 插入数据：
@@ -172,9 +173,9 @@
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `PrettyJSONEachRow` 格式读取数据：
+以 `PrettyJSONEachRow` 格式读取数据：
 
 ```sql
 SELECT *
@@ -182,7 +183,8 @@ FROM football
 FORMAT PrettyJSONEachRow
 ```
 
-输出将采用 JSON 格式：
+输出结果将为 JSON 格式：
+
 
 ```json
 {
@@ -320,7 +322,11 @@ FORMAT PrettyJSONEachRow
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}  
+}
 ```
+
+
+
+
 
 ## 格式设置 {#format-settings}

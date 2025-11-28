@@ -1,29 +1,38 @@
 ---
-'description': '一時的な Merge テーブルを作成します。構造は、基になるテーブルからカラムのユニオンを使用して導出され、共通のタイプが導出されます。'
-'sidebar_label': 'マージ'
-'sidebar_position': 130
-'slug': '/sql-reference/table-functions/merge'
-'title': 'マージ'
-'doc_type': 'reference'
+description: '一時的な Merge テーブルを作成します。テーブル構造は、基になるテーブルの列の和集合を取り、共通する型を導出することで決定されます。'
+sidebar_label: 'merge'
+sidebar_position: 130
+slug: /sql-reference/table-functions/merge
+title: 'merge'
+doc_type: 'reference'
 ---
 
 
-# merge Table Function
 
-一時的な [Merge](../../engines/table-engines/special/merge.md) テーブルを作成します。構造は、基になるテーブルのカラムのユニオンを使用し、共通の型を導出することによって得られます。
+# merge テーブル関数
 
-## Syntax {#syntax}
+一時的な [Merge](../../engines/table-engines/special/merge.md) テーブルを作成します。
+テーブルのスキーマは、元となるテーブルの列の和集合と、共通の型を導出することで定義されます。
+[Merge](../../engines/table-engines/special/merge.md) テーブルエンジンと同じ仮想列を使用できます。
+
+
+
+## 構文 {#syntax}
+
+
 
 ```sql
 merge(['db_name',] 'tables_regexp')
 ```
-## Arguments {#arguments}
 
-| Argument        | Description                                                                                                                                                                                                                                                                                     |
-|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `db_name`       | 可能な値（オプション、デフォルトは `currentDatabase()`）：<br/>    - データベース名、<br/>    - データベース名を返す定数式、例えば `currentDatabase()`、<br/>    - `REGEXP(expression)`、ここで `expression` はDB名にマッチする正規表現です。                    |
-| `tables_regexp` | 指定されたDBまたはDBのテーブル名にマッチする正規表現。                                                                                                                                                                                                                                 |
+## 引数
 
-## Related {#related}
+| 引数              | 説明                                                                                                                                                                                  |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `db_name`       | 指定可能な値（省略可能。既定値は `currentDatabase()`）:<br />    - データベース名、<br />    - データベース名の文字列を返す定数式（例: `currentDatabase()`）、<br />    - `REGEXP(expression)`。ここで `expression` は DB 名にマッチする正規表現。 |
+| `tables_regexp` | 指定された 1 つまたは複数の DB 内のテーブル名にマッチする正規表現。                                                                                                                                               |
+
+
+## 関連項目 {#related}
 
 - [Merge](../../engines/table-engines/special/merge.md) テーブルエンジン

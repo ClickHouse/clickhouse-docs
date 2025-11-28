@@ -1,22 +1,23 @@
 ---
-'description': 'COVID-19 开放数据是一个大型的开源 DATABASE，包含 COVID-19 流行病学数据和相关因素，如人口统计、经济和政府响应。'
-'sidebar_label': 'COVID-19 开放数据'
-'slug': '/getting-started/example-datasets/covid19'
-'title': 'COVID-19 开放数据'
-'doc_type': 'reference'
+description: 'COVID-19 Open-Data 是一个大型的开源 COVID-19 流行病学数据库，包含与人口统计、经济和政府响应等相关因素的数据'
+sidebar_label: 'COVID-19 open-data'
+slug: /getting-started/example-datasets/covid19
+title: 'COVID-19 Open-Data'
+keywords: ['COVID-19 数据', '流行病学数据', '健康数据集', '示例数据集', '入门']
+doc_type: 'guide'
 ---
 
-COVID-19 Open-Data 尝试汇集最大的 Covid-19 流行病数据库，此外还提供了一套强大的扩展协变量。它包括与人口统计、经济、流行病学、地理、健康、住院、流动性、政府应对、天气等相关的开放、公共来源的数据，均已获得许可。
+COVID-19 Open-Data 旨在构建最大规模的 COVID-19 流行病学数据库，并提供一套功能强大且覆盖面广泛的协变量。其内容包括与人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等相关的开放数据，这些数据来自公开渠道并具有相应许可证。
 
-详细信息请查看 GitHub [这里](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
+详细信息请参阅 GitHub 仓库[此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
 
-将这些数据插入 ClickHouse 非常简单...
+将这些数据写入 ClickHouse 非常简单……
 
 :::note
-以下命令在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **Production** 实例上执行。您也可以在本地安装上轻松运行它们。
+以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。您也可以轻松地在本地安装的实例中运行这些命令。
 :::
 
-1. 让我们看看数据是什么样的：
+1. 让我们先来看一下这些数据是什么样子的：
 
 ```sql
 DESCRIBE url(
@@ -25,7 +26,7 @@ DESCRIBE url(
 );
 ```
 
-CSV 文件有 10 列：
+此 CSV 文件共有 10 列：
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -41,10 +42,10 @@ CSV 文件有 10 列：
 │ cumulative_tested    │ Nullable(Int64)  │
 └──────────────────────┴──────────────────┘
 
-10 rows in set. Elapsed: 0.745 sec.
+返回了 10 行数据。耗时：0.745 秒。
 ```
 
-2. 现在让我们查看一些行：
+2. 现在让我们查看几行数据：
 
 ```sql
 SELECT *
@@ -52,7 +53,8 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-注意 `url` 函数可以轻松地从 CSV 文件中读取数据：
+请注意，`url` 函数可以方便地从 CSV 文件读取数据：
+
 
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
@@ -66,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们知道数据的样子了，来创建一个表：
+3. 现在我们已经了解了数据的结构，来创建一张表：
 
 ```sql
 CREATE TABLE covid19 (
@@ -85,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 以下命令将整个数据集插入到 `covid19` 表中：
+4. 使用以下命令将整个数据集插入到 `covid19` 表中：
 
 ```sql
 INSERT INTO covid19
@@ -107,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. 这速度相当快 - 让我们看看插入了多少行：
+5. 这一步执行得很快——来看一下插入了多少行：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -116,11 +118,11 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 12.53 million                   │
+│ 1253 万                         │
 └─────────────────────────────────┘
 ```
 
-6. 让我们看看记录的 Covid-19 确诊病例总数：
+6. 来看一下共记录了多少例新冠肺炎（COVID-19）病例：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -129,11 +131,12 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 1.39 billion                               │
+│ 13.9 亿                                     │
 └────────────────────────────────────────────┘
 ```
 
-7. 您会注意到数据中有很多 0 的日期 - 要么是周末，要么是每日数据未报告的日子。我们可以使用窗口函数来平滑新病例的每日平均数：
+
+7. 你会注意到数据中有很多日期对应的数值为 0——要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新确诊病例的每日平均值：
 
 ```sql
 SELECT
@@ -144,7 +147,7 @@ SELECT
 FROM covid19;
 ```
 
-8. 此查询确定每个位置的最新值。我们不能使用 `max(date)`，因为并不是所有国家每天都有报告，因此我们使用 `ROW_NUMBER` 抓取最后一行：
+8. 此查询用于获取每个地区的最新数值。我们不能使用 `max(date)`，因为并不是所有国家每天都有上报数据，所以我们使用 `ROW_NUMBER` 来获取最后一行记录：
 
 ```sql
 WITH latest_deaths_data AS
@@ -163,7 +166,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. 我们可以使用 `lagInFrame` 来确定每一天新病例的 `LAG`。在此查询中，我们按 `US_DC` 位置进行过滤：
+9. 我们可以使用 `lagInFrame` 来计算每天新增病例的滞后值（`LAG`）。在此查询中，我们按 `US_DC` 位置进行过滤：
 
 ```sql
 SELECT
@@ -175,7 +178,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-响应如下：
+响应如下所示：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -197,7 +200,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. 此查询计算每日新病例的变化百分比，并在结果集中包含一个简单的 `increase` 或 `decrease` 列：
+10. 此查询计算每日新增病例数的变化百分比，并在结果集中添加一个简单的 `increase` 或 `decrease` 标志列：
 
 ```sql
 WITH confirmed_lag AS (
@@ -220,9 +223,9 @@ SELECT
   new_confirmed,
   percent_change,
   CASE
-    WHEN percent_change > 0 THEN 'increase'
-    WHEN percent_change = 0 THEN 'no change'
-    ELSE 'decrease'
+    WHEN percent_change > 0 THEN '增加'
+    WHEN percent_change = 0 THEN '无变化'
+    ELSE '减少'
   END AS trend
 FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
@@ -230,37 +233,38 @@ WHERE location_key = 'US_DC';
 
 结果如下：
 
+
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
-│ 2020-03-08 │             0 │            nan │ decrease  │
-│ 2020-03-09 │             2 │            inf │ increase  │
-│ 2020-03-10 │             0 │           -100 │ decrease  │
-│ 2020-03-11 │             6 │            inf │ increase  │
-│ 2020-03-12 │             0 │           -100 │ decrease  │
-│ 2020-03-13 │             0 │            nan │ decrease  │
-│ 2020-03-14 │             6 │            inf │ increase  │
-│ 2020-03-15 │             1 │            -83 │ decrease  │
-│ 2020-03-16 │             5 │            400 │ increase  │
-│ 2020-03-17 │             9 │             80 │ increase  │
-│ 2020-03-18 │             8 │            -11 │ decrease  │
-│ 2020-03-19 │            32 │            300 │ increase  │
-│ 2020-03-20 │             6 │            -81 │ decrease  │
-│ 2020-03-21 │            21 │            250 │ increase  │
-│ 2020-03-22 │            18 │            -14 │ decrease  │
-│ 2020-03-23 │            21 │             17 │ increase  │
-│ 2020-03-24 │            46 │            119 │ increase  │
-│ 2020-03-25 │            48 │              4 │ increase  │
-│ 2020-03-26 │            36 │            -25 │ decrease  │
-│ 2020-03-27 │            37 │              3 │ increase  │
-│ 2020-03-28 │            38 │              3 │ increase  │
-│ 2020-03-29 │            59 │             55 │ increase  │
-│ 2020-03-30 │            94 │             59 │ increase  │
-│ 2020-03-31 │            91 │             -3 │ decrease  │
-│ 2020-04-01 │            67 │            -26 │ decrease  │
-│ 2020-04-02 │           104 │             55 │ increase  │
-│ 2020-04-03 │           145 │             39 │ increase  │
+│ 2020-03-08 │             0 │            nan │ 下降  │
+│ 2020-03-09 │             2 │            inf │ 上升  │
+│ 2020-03-10 │             0 │           -100 │ 下降  │
+│ 2020-03-11 │             6 │            inf │ 上升  │
+│ 2020-03-12 │             0 │           -100 │ 下降  │
+│ 2020-03-13 │             0 │            nan │ 下降  │
+│ 2020-03-14 │             6 │            inf │ 上升  │
+│ 2020-03-15 │             1 │            -83 │ 下降  │
+│ 2020-03-16 │             5 │            400 │ 上升  │
+│ 2020-03-17 │             9 │             80 │ 上升  │
+│ 2020-03-18 │             8 │            -11 │ 下降  │
+│ 2020-03-19 │            32 │            300 │ 上升  │
+│ 2020-03-20 │             6 │            -81 │ 下降  │
+│ 2020-03-21 │            21 │            250 │ 上升  │
+│ 2020-03-22 │            18 │            -14 │ 下降  │
+│ 2020-03-23 │            21 │             17 │ 上升  │
+│ 2020-03-24 │            46 │            119 │ 上升  │
+│ 2020-03-25 │            48 │              4 │ 上升  │
+│ 2020-03-26 │            36 │            -25 │ 下降  │
+│ 2020-03-27 │            37 │              3 │ 上升  │
+│ 2020-03-28 │            38 │              3 │ 上升  │
+│ 2020-03-29 │            59 │             55 │ 上升  │
+│ 2020-03-30 │            94 │             59 │ 上升  │
+│ 2020-03-31 │            91 │             -3 │ 下降  │
+│ 2020-04-01 │            67 │            -26 │ 下降  │
+│ 2020-04-02 │           104 │             55 │ 上升  │
+│ 2020-04-03 │           145 │             39 │ 上升  │
 ```
 
 :::note
-正如在 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中提到的，数据集自 2022 年 9 月 15 日起不再更新。
+正如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
 :::

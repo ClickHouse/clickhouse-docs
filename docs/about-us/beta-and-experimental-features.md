@@ -49,6 +49,18 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
+| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
+| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
+| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
+| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
+| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
+| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
+| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
+| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
+| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
+| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
 | [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
 | [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
@@ -95,18 +107,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [remote_fs_zero_copy_path_compatible_mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode) | `0` |
 | [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
 | [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
-| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
 | [allow_experimental_time_time64_type](/operations/settings/settings#allow_experimental_time_time64_type) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
@@ -115,7 +115,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_funnel_functions](/operations/settings/settings#allow_experimental_funnel_functions) | `0` |
 | [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions) | `0` |
 | [allow_experimental_hash_functions](/operations/settings/settings#allow_experimental_hash_functions) | `0` |
-| [allow_experimental_object_type](/operations/settings/settings#allow_experimental_object_type) | `0` |
 | [allow_experimental_time_series_table](/operations/settings/settings#allow_experimental_time_series_table) | `0` |
 | [allow_experimental_codecs](/operations/settings/settings#allow_experimental_codecs) | `0` |
 | [throw_on_unsupported_query_inside_transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction) | `1` |
@@ -128,10 +127,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `0` |
 | [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
+| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `0` |
 | [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) | `0` |
-| [allow_experimental_live_view](/operations/settings/settings#allow_experimental_live_view) | `0` |
-| [live_view_heartbeat_interval](/operations/settings/settings#live_view_heartbeat_interval) | `15` |
-| [max_live_view_insert_blocks_before_refresh](/operations/settings/settings#max_live_view_insert_blocks_before_refresh) | `64` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -159,6 +156,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |
 | [distributed_plan_force_shuffle_aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `0` |
+| [join_runtime_filter_exact_values_limit](/operations/settings/settings#join_runtime_filter_exact_values_limit) | `10000` |
 | [join_runtime_bloom_filter_bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes) | `524288` |
 | [join_runtime_bloom_filter_hash_functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions) | `3` |
 | [rewrite_in_to_join](/operations/settings/settings#rewrite_in_to_join) | `0` |
@@ -166,4 +164,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [promql_database](/operations/settings/settings#promql_database) | `` |
 | [promql_table](/operations/settings/settings#promql_table) | `` |
 | [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time) | `auto` |
+| [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) | `0` |
+| [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning) | `0` |
 <!--AUTOGENERATED_END-->

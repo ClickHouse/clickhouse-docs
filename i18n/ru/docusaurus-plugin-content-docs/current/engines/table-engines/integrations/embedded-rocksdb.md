@@ -1,21 +1,24 @@
 ---
-slug: '/engines/table-engines/integrations/embedded-rocksdb'
-sidebar_label: EmbeddedRocksDB
-sidebar_position: 50
 description: 'Этот движок позволяет интегрировать ClickHouse с RocksDB'
-title: 'Движок EmbeddedRocksDB'
-doc_type: reference
+sidebar_label: 'EmbeddedRocksDB'
+sidebar_position: 50
+slug: /engines/table-engines/integrations/embedded-rocksdb
+title: 'Табличный движок EmbeddedRocksDB'
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Встроенный движок RocksDB
+# Табличный движок EmbeddedRocksDB
 
 <CloudNotSupportedBadge />
 
 Этот движок позволяет интегрировать ClickHouse с [RocksDB](http://rocksdb.org/).
 
-## Создание таблицы {#creating-a-table}
+
+
+## Создание таблицы
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -29,18 +32,18 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Параметры движка:
 
-- `ttl` - время жизни значений. TTL принимается в секундах. Если TTL равен 0, используется обычный экземпляр RocksDB (без TTL).
-- `rocksdb_dir` - путь к директории существующего RocksDB или целевой путь для создаваемого RocksDB. Открывает таблицу с указанным `rocksdb_dir`.
-- `read_only` - при установке `read_only` в значение true, используется режим только для чтения. Для хранилища с TTL компактация не будет инициирована (ни ручная, ни автоматическая), таким образом, просроченные записи не удаляются.
-- `primary_key_name` – любое имя колонки в списке колонок.
-- `primary key` должен быть указан, он поддерживает только одну колонку в первичном ключе. Первичный ключ будет сериализован в двоичном формате как `rocksdb key`.
-- колонки, отличные от первичного ключа, будут сериализованы в двоичном формате как `rocksdb` value в соответствующем порядке.
-- запросы с фильтрацией ключей `equals` или `in` будут оптимизированы для многократного поиска ключей в `rocksdb`.
+* `ttl` — время жизни значений. TTL задаётся в секундах. Если TTL равен 0, используется обычный экземпляр RocksDB (без TTL).
+* `rocksdb_dir` — путь к каталогу существующей базы RocksDB или целевой путь для создаваемой базы RocksDB. Таблица открывается с указанным `rocksdb_dir`.
+* `read_only` — если `read_only` установлен в true, используется режим только для чтения. Для хранилища с TTL компакция (compaction) не будет запускаться (ни вручную, ни автоматически), поэтому просроченные записи не удаляются.
+* `primary_key_name` — имя любого столбца из списка столбцов.
+* `primary key` должен быть указан; в состав первичного ключа может входить только один столбец. Первичный ключ будет сериализован в бинарном виде как `rocksdb key`.
+* столбцы, отличные от первичного ключа, будут сериализованы в бинарном виде как `rocksdb value` в соответствующем порядке.
+* запросы с фильтрацией по ключу с использованием `equals` или `in` будут оптимизированы до поиска по нескольким ключам в `rocksdb`.
 
 Настройки движка:
 
-- `optimize_for_bulk_insert` – Таблица оптимизирована для пакетных вставок (конвейер вставки будет создавать SST файлы и импортировать в базу данных rocksdb вместо записи в memtables); значение по умолчанию: `1`.
-- `bulk_insert_block_size` - Минимальный размер SST файлов (в терминах строк), создаваемых пакетной вставкой; значение по умолчанию: `1048449`.
+* `optimize_for_bulk_insert` — таблица оптимизирована для пакетных вставок (конвейер вставки будет создавать SST-файлы и импортировать их в базу данных RocksDB вместо записи в memtable); значение по умолчанию: `1`.
+* `bulk_insert_block_size` — минимальный размер SST-файлов (в терминах числа строк), создаваемых пакетной вставкой; значение по умолчанию: `1048449`.
 
 Пример:
 
@@ -56,9 +59,10 @@ ENGINE = EmbeddedRocksDB
 PRIMARY KEY key
 ```
 
-## Метрики {#metrics}
 
-Существует также таблица `system.rocksdb`, которая предоставляет статистику rocksdb:
+## Метрики
+
+Кроме того, есть таблица `system.rocksdb`, содержащая статистику RocksDB:
 
 ```sql
 SELECT
@@ -72,9 +76,10 @@ FROM system.rocksdb
 └───────────────────────────┴───────┘
 ```
 
-## Конфигурация {#configuration}
 
-Вы также можете изменить любые [опции rocksdb](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) с помощью конфигурации:
+## Конфигурация
+
+Вы также можете изменить любые [параметры RocksDB](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) с помощью конфигурации:
 
 ```xml
 <rocksdb>
@@ -98,25 +103,24 @@ FROM system.rocksdb
 </rocksdb>
 ```
 
-По умолчанию тривиальная оптимизация приблизительного подсчета отключена, что может повлиять на производительность запросов `count()`. Чтобы включить эту
-оптимизацию, задайте `optimize_trivial_approximate_count_query = 1`. Также эта настройка влияет на `system.tables` для встроенного движка RocksDB,
-включите настройки, чтобы видеть приблизительные значения для `total_rows` и `total_bytes`.
+По умолчанию тривиальная оптимизация приблизительного подсчёта отключена, что может снизить производительность запросов `count()`. Чтобы включить эту оптимизацию, установите `optimize_trivial_approximate_count_query = 1`. Также этот параметр влияет на `system.tables` для движка EmbeddedRocksDB — включите его, чтобы увидеть приблизительные значения для `total_rows` и `total_bytes`.
 
-## Поддерживаемые операции {#supported-operations}
 
-### Вставки {#inserts}
+## Поддерживаемые операции
 
-При вставке новых строк в `EmbeddedRocksDB`, если ключ уже существует, значение будет обновлено, в противном случае будет создан новый ключ.
+### Вставки
+
+При вставке новых строк в `EmbeddedRocksDB`, если ключ уже существует, его значение обновляется, иначе создаётся новый ключ.
 
 Пример:
 
 ```sql
-INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
+INSERT INTO test VALUES ('некоторый ключ', 1, 'значение', 3.2);
 ```
 
-### Удаления {#deletes}
+### Удаление
 
-Строки могут быть удалены с помощью запроса `DELETE` или `TRUNCATE`.
+Строки можно удалять с помощью запросов `DELETE` или `TRUNCATE`.
 
 ```sql
 DELETE FROM test WHERE key LIKE 'some%' AND v1 > 1;
@@ -130,36 +134,37 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 TRUNCATE TABLE test;
 ```
 
-### Обновления {#updates}
+### Обновления
 
-Значения могут быть обновлены с помощью запроса `ALTER TABLE`. Первичный ключ не может быть обновлен.
+Значения можно обновлять с помощью запроса `ALTER TABLE`. Первичный ключ нельзя изменять.
 
 ```sql
 ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
 
-### Соединения {#joins}
+### Соединения
 
-Поддерживается специальное соединение `direct` с таблицами EmbeddedRocksDB.
-Это прямое соединение избегает формирования хеш-таблицы в памяти и получает
-данные непосредственно из EmbeddedRocksDB.
+Поддерживается специальный тип соединения `direct` с таблицами EmbeddedRocksDB.
+Такое прямое соединение позволяет избежать формирования хеш-таблицы в памяти и
+обращается к данным напрямую из EmbeddedRocksDB.
 
-При больших соединениях вы можете заметить значительно более низкое использование памяти при прямых соединениях,
-так как хеш-таблица не создается.
+При больших соединениях вы можете наблюдать значительно более низкое потребление памяти
+при использовании прямых соединений, поскольку хеш-таблица не создаётся.
 
 Чтобы включить прямые соединения:
+
 ```sql
 SET join_algorithm = 'direct, hash'
 ```
 
 :::tip
-Когда `join_algorithm` установлен в `direct, hash`, прямые соединения будут использоваться
-при возможности, а хеш в противном случае.
+Когда параметр `join_algorithm` установлен в значение `direct, hash`, по возможности будут использоваться прямые соединения, а в остальных случаях — хеш-соединения.
 :::
 
-#### Пример {#example}
+#### Пример
 
-##### Создание и заполнение таблицы EmbeddedRocksDB {#create-and-populate-an-embeddedrocksdb-table}
+##### Создание и заполнение таблицы EmbeddedRocksDB
+
 ```sql
 CREATE TABLE rdb
 (
@@ -180,7 +185,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### Создание и заполнение таблицы для соединения с таблицей `rdb` {#create-and-populate-a-table-to-join-with-table-rdb}
+##### Создайте и заполните таблицу для объединения с таблицей `rdb`
 
 ```sql
 CREATE TABLE t2
@@ -195,13 +200,14 @@ INSERT INTO t2 SELECT number AS k
 FROM numbers_mt(10)
 ```
 
-##### Установка алгоритма соединения на `direct`{#set-the-join-algorithm-to-direct}
+##### Установите алгоритм соединения в значение `direct`
 
 ```sql
 SET join_algorithm = 'direct'
 ```
 
-##### ВНУТРЕННЕЕ СОЕДИНЕНИЕ {#an-inner-join}
+##### Внутреннее соединение (INNER JOIN)
+
 ```sql
 SELECT *
 FROM
@@ -212,6 +218,7 @@ FROM
 INNER JOIN rdb ON rdb.key = t2.key
 ORDER BY key ASC
 ```
+
 ```response
 ┌─key─┬─rdb.key─┬─value──┬─value2─┐
 │   0 │       0 │ [0,1]  │ val20  │
@@ -224,6 +231,7 @@ ORDER BY key ASC
 └─────┴─────────┴────────┴────────┘
 ```
 
-### Дополнительная информация о соединениях {#more-information-on-joins}
-- [`join_algorithm` настройка](/operations/settings/settings.md#join_algorithm)
-- [JOIN оператор](/sql-reference/statements/select/join.md)
+### Подробнее о соединениях
+
+* [настройка `join_algorithm`](/operations/settings/settings.md#join_algorithm)
+* [оператор JOIN](/sql-reference/statements/select/join.md)

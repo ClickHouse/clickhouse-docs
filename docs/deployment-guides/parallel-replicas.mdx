@@ -20,7 +20,7 @@ import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.p
 
 <BetaBadge/>
 
-## Introduction {#introduction}
+## Introduction \{#introduction\}
 
 ClickHouse processes queries extremely quickly, but how are these queries 
 distributed and parallelized across multiple servers? 
@@ -29,7 +29,7 @@ distributed and parallelized across multiple servers?
 multiple shards via distributed tables, and then how a query can leverage 
 multiple replicas for its execution.
 
-## Sharded architecture {#sharded-architecture}
+## Sharded architecture \{#sharded-architecture\}
 
 In a shared-nothing architecture, clusters are commonly split into
 multiple shards, with each shard containing a subset of the overall data. A
@@ -70,7 +70,7 @@ When we add replicas into the mix, the process is fairly similar, with the only
 difference being that only a single replica from each shard will execute the query.
 This means that more queries can then be processed in parallel.
 
-## Non-sharded architecture {#non-sharded-architecture}
+## Non-sharded architecture \{#non-sharded-architecture\}
 
 ClickHouse Cloud has a very different architecture to the one presented above.
 (See ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)
@@ -92,7 +92,7 @@ But how can we now distribute query execution across multiple servers? In a
 sharded architecture, it was fairly obvious given that each shard could actually
 execute a query on a subset of the data. How does it work when there is no sharding?
 
-## Introducing parallel replicas {#introducing-parallel-replicas}
+## Introducing parallel replicas \{#introducing-parallel-replicas\}
 
 To parallelize query execution through multiple servers, we first need to be
 able to assign one of our servers as a coordinator. The coordinator is the one
@@ -157,7 +157,7 @@ from working perfectly:
 
 We explore how these factors are overcome in the following sections.
 
-### Announcements {#announcements}
+### Announcements \{#announcements\}
 
 To address (1) and (2) from the list above, we introduced the concept of an
 announcement. Let's visualize how it works using the figure below:
@@ -190,7 +190,7 @@ announcement. Let's visualize how it works using the figure below:
     </li>
 </ol>
 
-### Dynamic coordination {#dynamic-coordination}
+### Dynamic coordination \{#dynamic-coordination\}
 
 To address the issue of tail latency, we added dynamic coordination. This means
 that all the granules are not sent to a replica in one request, but each replica
@@ -244,7 +244,7 @@ The figure below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-### Managing cache locality {#managing-cache-locality}
+### Managing cache locality \{#managing-cache-locality\}
 
 The last remaining potential issue is how we handle cache locality. If the query
 is executed multiple times, how can we ensure the same task gets routed to the
@@ -291,13 +291,13 @@ network degradation, can introduce tail latency if the same replica is
 consistently used for executing certain tasks. If `max_parallel_replicas` is less
 than the number of replicas, then random replicas are picked for query execution.
 
-### Task stealing {#task-stealing}
+### Task stealing \{#task-stealing\}
 
 if some replica processes tasks slower than others, other replicas will try to
 'steal' tasks that in principle belong to that replica by hash to reduce the
 tail latency.
 
-### Limitations {#limitations}
+### Limitations \{#limitations\}
 
 This feature has known limitations, of which the major ones are documented in
 this section.
@@ -317,7 +317,7 @@ the label `comp-parallel-replicas`.
 | High Cardinality data and complex aggregation | High cardinality aggregation that needs to send much data can significantly slow down your queries.                                                                                                                                                                                                                                                                                                                                                                     |
 | Compatibility with the new analyzer           | The new analyzer might significantly slow down or speed up query execution in specific scenarios.                                                                                                                                                                                                                                                                                                                                                                       |
 
-## Settings related to parallel replicas {#settings-related-to-parallel-replicas}
+## Settings related to parallel replicas \{#settings-related-to-parallel-replicas\}
 
 | Setting                                            | Description                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -327,7 +327,7 @@ the label `comp-parallel-replicas`.
 | `parallel_replicas_min_number_of_rows_per_replica` | Help limiting the number of replicas used based on the number of rows that need to be processed the number of replicas used is defined by: <br/> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                               |
 | `allow_experimental_analyzer`                      | `0`: use the old analyzer<br/> `1`: use the new analyzer. <br/><br/>The behavior of parallel replicas might change based on the analyzer used.                                                                                                                                    |
 
-## Investigating issues with parallel replicas {#investigating-issues-with-parallel-replicas}
+## Investigating issues with parallel replicas \{#investigating-issues-with-parallel-replicas\}
 
 You can check what settings are being used for each query in the 
 [`system.query_log`](/docs/operations/system-tables/query_log) table. You can

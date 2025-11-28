@@ -1,32 +1,40 @@
 ---
-'description': '以 ClickHouse 表格的形式显示字典数据。与 Dictionary 引擎的工作方式相同。'
-'sidebar_label': '字典'
-'sidebar_position': 47
-'slug': '/sql-reference/table-functions/dictionary'
-'title': '字典'
-'doc_type': 'reference'
+description: '将字典数据显示为一个 ClickHouse 表。其工作原理与 Dictionary 引擎相同。'
+sidebar_label: 'dictionary'
+sidebar_position: 47
+slug: /sql-reference/table-functions/dictionary
+title: 'dictionary'
+doc_type: 'reference'
 ---
+
 
 
 # dictionary 表函数
 
-将 [字典](../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
+将 [dictionary](../../sql-reference/dictionaries/index.md) 数据以 ClickHouse 表的形式呈现。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
 
-## 语法 {#syntax}
+
+
+## 语法
 
 ```sql
 dictionary('dict')
 ```
 
+
 ## 参数 {#arguments}
 
-- `dict` — 字典名称。 [字符串](../../sql-reference/data-types/string.md)。
+- `dict` — 字典名。[String](../../sql-reference/data-types/string.md)。
+
+
 
 ## 返回值 {#returned_value}
 
 一个 ClickHouse 表。
 
-## 示例 {#examples}
+
+
+## 示例
 
 输入表 `dictionary_source_table`：
 
@@ -37,7 +45,7 @@ dictionary('dict')
 └────┴───────┘
 ```
 
-创建字典：
+创建一个字典：
 
 ```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
@@ -59,6 +67,7 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-## 相关 {#related}
 
-- [字典引擎](/engines/table-engines/special/dictionary)
+## 相关内容 {#related}
+
+- [Dictionary 引擎](/engines/table-engines/special/dictionary)

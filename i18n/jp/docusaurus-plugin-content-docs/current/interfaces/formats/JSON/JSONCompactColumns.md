@@ -1,32 +1,31 @@
 ---
-'alias': []
-'description': 'JSONCompactColumns形式に関する文書'
-'input_format': true
-'keywords':
-- 'JSONCompactColumns'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactColumns'
-'title': 'JSONCompactColumns'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactColumns フォーマットのドキュメント'
+input_format: true
+keywords: ['JSONCompactColumns']
+output_format: true
+slug: /interfaces/formats/JSONCompactColumns
+title: 'JSONCompactColumns'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-この形式では、すべてのデータが単一のJSON配列として表現されます。
+この形式では、すべてのデータは 1 つの JSON 配列として表現されます。
 
 :::note
-`JSONCompactColumns`出力形式は、すべてのデータをメモリにバッファリングして、一つのブロックとして出力するため、メモリ消費が高くなる可能性があります。
+`JSONCompactColumns` 出力形式は、すべてのデータを 1 つのブロックとして出力するためにメモリ上にバッファリングするため、多くのメモリを消費する可能性があります。
 :::
 
 ## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-次のデータを持つJSONファイルを使用します。ファイル名は`football.json`です：
+次のデータが含まれた JSON ファイル `football.json` を使用します。
 
 ```json
 [
@@ -39,15 +38,16 @@
 ]
 ```
 
-データを挿入します：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
-### データの読み取り {#reading-data}
 
-`JSONCompactColumns`形式を使用してデータを読み取ります：
+### データの読み込み
+
+`JSONCompactColumns` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -55,7 +55,7 @@ FROM football
 FORMAT JSONCompactColumns
 ```
 
-出力はJSON形式になります：
+出力はJSON形式です：
 
 ```json
 [
@@ -68,6 +68,7 @@ FORMAT JSONCompactColumns
 ]
 ```
 
-ブロックに存在しないカラムはデフォルト値で埋められます（ここで[`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields)設定を使用できます）。
+ブロック内に存在しないカラムにはデフォルト値が補われます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
 
-## 形式設定 {#format-settings}
+
+## フォーマットの設定 {#format-settings}

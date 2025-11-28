@@ -1,0 +1,43 @@
+---
+title: Как устранить ошибку TOO_MANY_PARTS при выполнении запроса INSERT...SELECT?
+description: "Устраните ошибку TOO_MANY_PARTS в ClickHouse при выполнении `INSERT...SELECT`, настроив экспертные параметры для увеличения размера блоков и пороговых значений партиций."
+date: 2023-07-21
+tags: ['Настройки', 'Ошибки и исключения']
+---
+
+{frontMatter.description}
+
+{/* очистка */}
+
+
+## Вопрос \{#question\}
+
+При выполнении оператора `INSERT...SELECT` я получаю ошибку TOO_MANY_PARTS (слишком много частей). 
+
+Как это можно решить? 
+
+## Ответ \{#answer\}
+
+Ниже приведены некоторые настройки, которые можно отрегулировать, чтобы избежать этой ошибки. Это тонкая настройка ClickHouse уровня эксперта, и эти значения следует устанавливать только после понимания характеристик сервиса ClickHouse Cloud или on-prem кластера, где они будут использоваться, поэтому не воспринимайте эти значения как «универсальное решение».
+
+[max_insert_block_size](https://clickhouse.com/docs/operations/settings/settings#settings-max_insert_block_size) = `100_000_000` (по умолчанию `1_048_576`)
+
+Увеличение с ~1M до 100M позволит формировать более крупные блоки.
+
+Примечание: этот параметр применяется только тогда, когда блоки формирует сервер, то есть при INSERT через HTTP-интерфейс, и не применяется при использовании clickhouse-client.
+
+[min_insert_block_size_rows](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-rows) = `100_000_000` (по умолчанию `1_048_576`)
+
+Увеличение с ~1M до 100M позволит формировать более крупные блоки.
+
+[min_insert_block_size_bytes](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-bytes) = `500_000_000` (по умолчанию `268_435_456`)
+
+Увеличение с 268,44 МБ до 500 МБ позволит формировать более крупные блоки.
+
+[parts_to_delay_insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-delay-insert) = `500` (по умолчанию `150`)
+
+Увеличение этого значения не позволит искусственно замедлять INSERT, когда достигается заданное число активных кусков (parts) в одном разделе (partition).
+
+[parts_to_throw_insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-throw-insert) = `1500` (по умолчанию `3000`)
+
+Увеличение этого значения в целом повлияет на производительность запросов к таблице, но это приемлемо для миграции данных.

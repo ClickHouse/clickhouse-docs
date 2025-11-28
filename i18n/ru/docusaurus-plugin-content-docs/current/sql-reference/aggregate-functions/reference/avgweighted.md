@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/avgweighted'
+description: 'Вычисляет взвешенное среднее арифметическое.'
 sidebar_position: 113
-description: 'Вычисляет взвешенное арифметическое среднее.'
-title: avgWeighted
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/avgweighted
+title: 'avgWeighted'
+doc_type: 'reference'
 ---
+
 # avgWeighted
 
-Вычисляет [взвешенное арифметическое среднее](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
+Вычисляет [взвешенное среднее арифметическое](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 
 **Синтаксис**
 
@@ -17,17 +18,17 @@ avgWeighted(x, weight)
 
 **Аргументы**
 
-- `x` — Значения.
-- `weight` — Веса значений.
+* `x` — значения.
+* `weight` — веса значений.
 
-`x` и `weight` должны быть
-[Целыми](../../../sql-reference/data-types/int-uint.md) или [числами с плавающей запятой](../../../sql-reference/data-types/float.md),
+`x` и `weight` должны быть либо
+[целыми числами](../../../sql-reference/data-types/int-uint.md), либо [числами с плавающей запятой](../../../sql-reference/data-types/float.md),
 но могут иметь разные типы.
 
 **Возвращаемое значение**
 
-- `NaN`, если все веса равны 0 или параметр весов пуст.
-- Взвешенное среднее в противном случае.
+* `NaN`, если все веса равны 0 или переданный параметр весов пуст.
+* Взвешенное среднее в остальных случаях.
 
 **Тип возвращаемого значения** всегда [Float64](../../../sql-reference/data-types/float.md).
 

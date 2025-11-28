@@ -1,69 +1,68 @@
 ---
-'sidebar_label': '分析提示'
-'sidebar_position': 4
-'slug': '/integrations/tableau/analysis-tips'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': '使用 ClickHouse 公式コネクタ时的 Tableau 分析提示。'
-'title': '分析提示'
-'doc_type': 'guide'
+sidebar_label: '分析のヒント'
+sidebar_position: 4
+slug: /integrations/tableau/analysis-tips
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Tableau で ClickHouse 公式コネクタを使用する際の分析のヒント。'
+title: '分析のヒント'
+doc_type: 'guide'
 ---
 
 
+
 # 分析のヒント
-## MEDIAN() および PERCENTILE() 関数 {#median-and-percentile-functions}
-- ライブモードでは、MEDIAN() および PERCENTILE() 関数（コネクタ v0.1.3 リリース以降）は、[ClickHouse quantile()() 関数](/sql-reference/aggregate-functions/reference/quantile/)を使用し、計算を大幅に高速化しますが、サンプリングを使用します。正確な計算結果が必要な場合は、`MEDIAN_EXACT()` および `PERCENTILE_EXACT()` 関数を使用してください（[quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/) に基づいています）。
-- エクストラクモードでは、MEDIAN_EXACT() および PERCENTILE_EXACT() を使用できません。なぜなら、MEDIAN() および PERCENTILE() は常に正確（しかし遅い）だからです。
-## ライブモードの計算フィールド用の追加関数 {#additional-functions-for-calculated-fields-in-live-mode}
-ClickHouse には、データ分析に使用できる関数が非常に多くあります — Tableau がサポートしているよりもはるかに多いです。ユーザーの利便性のために、計算フィールドを作成する際にライブモードで利用できる新しい関数を追加しました。残念ながら、これらの関数に対する説明を Tableau インターフェースに追加することはできないため、ここに説明を追加します。
-- **[`-If` 集約コンビネータ](/sql-reference/aggregate-functions/combinators/#-if)** *(v0.2.3 で追加)* - 集約計算内で行レベルフィルタを持つことを可能にします。`SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()` 関数が追加されました。
-- **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(v0.2.1 で追加)* — 退屈な棒グラフは忘れてください！代わりに `BAR()` 関数を使用してください（ClickHouse の [`bar()`](/sql-reference/functions/other-functions#bar) に相当）。例えば、この計算フィールドはストリングとして美しいバーを返します：
-```text
-BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
-```
-```text
-== BAR() ==
-██████████████████▊  327.06 million
-█████  88.02 million
-███████████████  259.37 million
-```
-- **`COUNTD_UNIQ([my_field])`** *(v0.2.0 で追加)* — 引数の異なる値の近似数を計算します。Equivalent of [uniq()](/sql-reference/aggregate-functions/reference/uniq/)。`COUNTD()` よりもはるかに高速です。
-- **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(v0.2.1 で追加)* — ClickHouse の [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval) に相当します。日付または日付と時刻を指定された間隔に切り捨てます。例えば：
-```text
-== my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
-   28.07.2004 06:54:50    |              21.07.2004 00:00:00
-   17.07.2004 14:01:56    |              11.07.2004 00:00:00
-   14.07.2004 07:43:00    |              11.07.2004 00:00:00
-```
-- **`FORMAT_READABLE_QUANTITY([my_integer])`** *(v0.2.1 で追加)* — サフィックス（千、百万、十億など）を持つ丸められた数をストリングとして返します。大きな数を人間が読みやすくするのに便利です。Equivalent of [`formatReadableQuantity()`](/sql-reference/functions/other-functions#formatreadablequantity)。
-- **`FORMAT_READABLE_TIMEDELTA([my_integer_timedelta_sec], [optional_max_unit])`** *(v0.2.1 で追加)* — 秒単位の時間デルタを受け入れます。時間デルタ（日、月、年、時間、分、秒）をストリングとして返します。`optional_max_unit` は表示する最大単位です。受け入れ可能な値：`seconds`, `minutes`, `hours`, `days`, `months`, `years`。Equivalent of [`formatReadableTimeDelta()`](/sql-reference/functions/other-functions/#formatreadabletimedelta)。
-- **`GET_SETTING([my_setting_name])`** *(v0.2.1 で追加)* — カスタム設定の現在の値を返します。Equivalent of [`getSetting()`](/sql-reference/functions/other-functions#getsetting)。
-- **`HEX([my_string])`** *(v0.2.1 で追加)* — 引数の16進表現を含むストリングを返します。Equivalent of [`hex()`](/sql-reference/functions/encoding-functions/#hex)。
-- **`KURTOSIS([my_number])`** — 数列のサンプルの尖度を計算します。Equivalent of [`kurtSamp()`](/sql-reference/aggregate-functions/reference/kurtsamp)。
-- **`KURTOSISP([my_number])`** — 数列の尖度を計算します。Equivalent of [`kurtPop()`](/sql-reference/aggregate-functions/reference/kurtpop)。
-- **`MEDIAN_EXACT([my_number])`** *(v0.1.3 で追加)* — 数値データ列の中央値を正確に計算します。Equivalent of [`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact)。
-- **`MOD([my_number_1], [my_number_2])`** — 除算後の余りを計算します。引数が浮動小数点数の場合、小数部分を切り捨てて整数に前変換されます。Equivalent of [`modulo()`](/sql-reference/functions/arithmetic-functions/#modulo)。
-- **`PERCENTILE_EXACT([my_number], [level_float])`** *(v0.1.3 で追加)* — 数値データ列のパーセンタイルを正確に計算します。推奨されるレベル範囲は [0.01, 0.99] です。Equivalent of [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact)。
-- **`PROPER([my_string])`** *(v0.2.5 で追加)* - テキストストリングを変換して、各単語の最初の文字を大文字にし、残りの文字を小文字にします。スペースや句読点のような非英数字文字もセパレーターとして機能します。例えば：
-```text
-PROPER("PRODUCT name") => "Product Name"
-```
-```text
-PROPER("darcy-mae") => "Darcy-Mae"
-```
-- **`RAND()`** *(v0.2.1 で追加)* — 整数（UInt32）数を返します。例えば `3446222955`。Equivalent of [`rand()`](/sql-reference/functions/random-functions/#rand)。
-- **`RANDOM()`** *(v0.2.1 で追加)* — 非公式な [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) Tableau 関数で、0 と 1 の間の浮動小数点数を返します。
-- **`RAND_CONSTANT([optional_field])`** *(v0.2.1 で追加)* — ランダム値を持つ定数カラムを生成します。固定LODのような `{RAND()}` ですが、より高速です。Equivalent of [`randConstant()`](/sql-reference/functions/random-functions/#randconstant)。
-- **`REAL([my_number])`** — フィールドを浮動小数点数（Float64）にキャストします。詳細は [`here`](/sql-reference/data-types/decimal/#operations-and-result-type)。
-- **`SHA256([my_string])`** *(v0.2.1 で追加)* — ストリングから SHA-256 ハッシュを計算し、結果のバイトセットをストリング（FixedString）として返します。たとえば、`HEX(SHA256([my_string]))` と一緒に使用するのに便利です。Equivalent of [`SHA256()`](/sql-reference/functions/hash-functions#SHA256)。
-- **`SKEWNESS([my_number])`** — 数列のサンプルの歪度を計算します。Equivalent of [`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp)。
-- **`SKEWNESSP([my_number])`** — 数列の歪度を計算します。Equivalent of [`skewPop()`](/sql-reference/aggregate-functions/reference/skewpop)。
-- **`TO_TYPE_NAME([field])`** *(v0.2.1 で追加)* — 渡された引数の ClickHouse 型名を含むストリングを返します。Equivalent of [`toTypeName()`](/sql-reference/functions/other-functions#totypename)。
-- **`TRUNC([my_float])`** — `FLOOR([my_float])` 関数と同じです。Equivalent of [`trunc()`](/sql-reference/functions/rounding-functions#truncate)。
-- **`UNHEX([my_string])`** *(v0.2.1 で追加)* — `HEX()` の逆の操作を実行します。Equivalent of [`unhex()`](/sql-reference/functions/encoding-functions#unhex)。
+
+## MEDIAN()関数とPERCENTILE()関数
+
+* Live モードでは、`MEDIAN()` および `PERCENTILE()` 関数（connector v0.1.3 リリース以降）は [ClickHouse quantile()() 関数](/sql-reference/aggregate-functions/reference/quantile/) を使用します。これにより計算が大幅に高速化されますが、サンプリングを行うため近似値となります。正確な計算結果が必要な場合は、`MEDIAN_EXACT()` および `PERCENTILE_EXACT()` 関数（[quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/) に基づく）を使用してください。
+* Extract モードでは MEDIAN&#95;EXACT() と PERCENTILE&#95;EXACT() を使用できません。MEDIAN() と PERCENTILE() は常に厳密な値を返す（その分低速です）ためです。
+
+## ライブモードの計算フィールドで使用可能な追加関数
+
+ClickHouseには、データ分析に使用できる関数が非常に多く、Tableauがサポートする数を大幅に上回ります。 ユーザーの利便性向上のため、計算フィールド作成時にLiveモードで使用可能な新しい関数を追加しました。 残念ながら、Tableauインターフェース内でこれらの関数に説明を追加することができないため、本ドキュメントにて説明を記載します。
+
+* **[`-If` Aggregation Combinator](/sql-reference/aggregate-functions/combinators/#-if)** *(v0.2.3 で追加)* - 集約計算の中で直接、行レベルフィルターを指定できるようにします。`SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()` 関数が追加されました。
+* **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(v0.2.1 で追加)* — 退屈な棒グラフは忘れてください！代わりに `BAR()` 関数を使用してください（ClickHouse における [`bar()`](/sql-reference/functions/other-functions#bar) と同等の機能です）。たとえば、次の計算フィールドは String 型で見やすいバーを返します:
+  ```text
+  BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
+  ```
+  ```text
+  == BAR() ==
+  ██████████████████▊  327.06 million
+  █████  88.02 million
+  ███████████████  259.37 million
+  ```
+* **`COUNTD_UNIQ([my_field])`** *(v0.2.0 で追加)* — 引数に含まれる異なる値のおおよその個数を計算します。[uniq()](/sql-reference/aggregate-functions/reference/uniq/) と同等です。`COUNTD()` よりもはるかに高速です。
+* **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(v0.2.1 で追加)* — ClickHouse の [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval) と同等です。Date または Date &amp; Time を指定した間隔に丸めて切り捨てます。例:
+  ```text
+   == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
+      28.07.2004 06:54:50    |              21.07.2004 00:00:00
+      17.07.2004 14:01:56    |              11.07.2004 00:00:00
+      14.07.2004 07:43:00    |              11.07.2004 00:00:00
+  ```
+* **`FORMAT_READABLE_QUANTITY([my_integer])`** *(v0.2.1 で追加)* — 丸めた数値に接尾辞（thousand、million、billion など）を付けた文字列を返します。大きな数値を人間が読みやすい形式にするのに役立ちます。[`formatReadableQuantity()`](/sql-reference/functions/other-functions#formatReadableQuantity) と同等です。
+* **`FORMAT_READABLE_TIMEDELTA([my_integer_timedelta_sec], [optional_max_unit])`** *(v0.2.1 で追加)* — 秒単位の時間差を引数に取り、(年・月・日・時・分・秒) を含む時間差を文字列として返します。`optional_max_unit` は表示する最大単位です。指定可能な値: `seconds`、`minutes`、`hours`、`days`、`months`、`years`。[`formatReadableTimeDelta()`](/sql-reference/functions/other-functions/#formatReadableTimeDelta) と同等です。
+* **`GET_SETTING([my_setting_name])`** *(v0.2.1 で追加)* — カスタム設定の現在の値を返します。[`getSetting()`](/sql-reference/functions/other-functions#getSetting) と同等です。
+* **`HEX([my_string])`** *(v0.2.1 で追加)* — 引数の 16 進数表現を含む文字列を返します。[`hex()`](/sql-reference/functions/encoding-functions/#hex) に相当します。
+* **`KURTOSIS([my_number])`** — 一連の値に対する標本尖度を計算します。[`kurtSamp()`](/sql-reference/aggregate-functions/reference/kurtsamp) と同等です。
+* **`KURTOSISP([my_number])`** — シーケンスの尖度を計算します。[`kurtPop()`](/sql-reference/aggregate-functions/reference/kurtpop) と同等です。
+* **`MEDIAN_EXACT([my_number])`** *(v0.1.3 で追加)* — 数値データ系列の中央値を厳密に計算します。[`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact) と同等です。
+* **`MOD([my_number_1], [my_number_2])`** — 割り算の余りを計算します。引数が浮動小数点数の場合、小数部分を切り捨てて整数に変換してから演算を行います。[`modulo()`](/sql-reference/functions/arithmetic-functions/#modulo) と同等です。
+* **`PERCENTILE_EXACT([my_number], [level_float])`** *(v0.1.3 で追加)* — 数値データ列のパーセンタイルを厳密に計算します。推奨されるレベルの範囲は [0.01, 0.99] です。[`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact) と同等の機能です。
+* **`PROPER([my_string])`** *(v0.2.5 で追加)* - テキスト文字列の各単語の先頭文字を大文字にし、それ以外の文字を小文字に変換します。スペースや句読点などの英数字以外の文字も区切り文字として扱われます。例えば次のとおりです。
+  ```text
+  PROPER("PRODUCT name") => "Product Name"
+  ```
+  ```text
+  PROPER("darcy-mae") => "Darcy-Mae"
+  ```
+* **`RAND()`** *(v0.2.1 で追加)* — 整数値 (UInt32) を返します。例: `3446222955`。[`rand()`](/sql-reference/functions/random-functions/#rand) と同等です。
+* **`RANDOM()`** *(v0.2.1 で追加)* — Tableau の非公式な [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) 関数で、0 以上 1 以下の浮動小数点数を返します。
+* **`RAND_CONSTANT([optional_field])`** *(v0.2.1 で追加)* — ランダムな値を持つ定数列を生成します。`{RAND()}` の Fixed LOD 版のようなものですが、より高速です。[`randConstant()`](/sql-reference/functions/random-functions/#randConstant) と同等の動作をします。
+* **`REAL([my_number])`** — フィールドを float（Float64）型にキャストします。詳細については[`こちら`](/sql-reference/data-types/decimal/#operations-and-result-type)を参照してください。
+* **`SHA256([my_string])`** *(v0.2.1 で追加)* — 文字列から SHA-256 のハッシュ値を計算し、その結果のバイト列を FixedString 型の文字列として返します。`HEX()` 関数と組み合わせて、たとえば `HEX(SHA256([my_string]))` のように便利に使用できます。[`SHA256()`](/sql-reference/functions/hash-functions#SHA256) と同等です。
+* **`SKEWNESS([my_number])`** — シーケンスの標本歪度を計算します。[`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp) と同等です。
+* **`SKEWNESSP([my_number])`** — シーケンスの歪度を計算します。[`skewPop()`](/sql-reference/aggregate-functions/reference/skewpop) と同等です。
+* **`TO_TYPE_NAME([field])`** *(v0.2.1 で追加)* — 渡された引数の ClickHouse の型名を含む文字列を返します。[`toTypeName()`](/sql-reference/functions/other-functions#toTypeName) と同等です。
+* **`TRUNC([my_float])`** — `FLOOR([my_float])` 関数と同じです。[`trunc()`](/sql-reference/functions/rounding-functions#trunc) と等価です。
+* **`UNHEX([my_string])`** *(v0.2.1で追加)* — `HEX()` の逆の変換を行います。[`unhex()`](/sql-reference/functions/encoding-functions#unhex) と同等です。

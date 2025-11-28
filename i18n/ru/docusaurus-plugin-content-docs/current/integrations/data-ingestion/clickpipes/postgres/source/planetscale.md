@@ -1,78 +1,92 @@
 ---
-'sidebar_label': 'Planetscale для Postgres'
-'description': 'Настройте PlanetScale для Postgres в качестве источника для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/planetscale'
-'title': 'PlanetScale для настройки источника Postgres'
-'doc_type': 'guide'
+sidebar_label: 'PlanetScale для Postgres'
+description: 'Настройка PlanetScale для Postgres в качестве источника для ClickPipes'
+slug: /integrations/clickpipes/postgres/source/planetscale
+title: 'Руководство по настройке PlanetScale для Postgres в качестве источника'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 ---
+
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
 
-# Настройка источника PlanetScale для Postgres
+# Руководство по настройке источника данных PlanetScale for Postgres
 
 :::info
-PlanetScale для Postgres в настоящее время находится в [раннем доступе](https://planetscale.com/postgres).
+В настоящее время PlanetScale for Postgres находится в [программе раннего доступа](https://planetscale.com/postgres).
 :::
+
+
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
-ClickPipes поддерживает версии Postgres 12 и выше.
+ClickPipes поддерживает Postgres, начиная с версии 12.
+
+
 
 ## Включение логической репликации {#enable-logical-replication}
 
-1. Для включения репликации на вашем экземпляре Postgres необходимо убедиться, что установлены следующие настройки:
+1. Чтобы включить репликацию в вашем инстансе Postgres, необходимо убедиться, что задан следующий параметр:
 
-```sql
-wal_level = logical
-```
-   Чтобы проверить это, вы можете выполнить следующую SQL-команду:
-```sql
-SHOW wal_level;
-```
+    ```sql
+    wal_level = logical
+    ```
+   Чтобы это проверить, выполните следующую SQL-команду:
+    ```sql
+    SHOW wal_level;
+    ```
 
-   По умолчанию вывод должен быть `logical`. Если это не так, пожалуйста, войдите в консоль PlanetScale и перейдите в `Конфигурация кластера->Параметры`, прокрутите вниз до `Write-ahead log`, чтобы изменить это.
+   По умолчанию в выводе должно быть `logical`. Если это не так, войдите в консоль PlanetScale, перейдите в `Cluster configuration->Parameters` и прокрутите до раздела `Write-ahead log`, чтобы изменить значение.
 
-<Image img={planetscale_wal_level_logical} alt="Регулировка wal_level в консоли PlanetScale" size="md" border/>
+<Image img={planetscale_wal_level_logical} alt="Настройка wal_level в консоли PlanetScale" size="md" border/>
 
 :::warning
-Изменение этого в консоли PlanetScale ПРИВЕДЕТ к перезапуску.
+Изменение этого параметра в консоли PlanetScale ПРИВЕДЕТ к перезапуску.
 :::
 
-2. Кроме того, рекомендуется увеличить настройку `max_slot_wal_keep_size` с ее значения по умолчанию 4 ГБ. Это также делается через консоль PlanetScale, перейдя в `Конфигурация кластера->Параметры`, а затем прокрутив вниз до `Write-ahead log`. Чтобы помочь определить новое значение, пожалуйста, посмотрите [здесь](../faq#recommended-max_slot_wal_keep_size-settings).
+2. Дополнительно рекомендуется увеличить значение `max_slot_wal_keep_size` по сравнению с его значением по умолчанию — 4 ГБ. Это также настраивается через консоль PlanetScale: перейдите в `Cluster configuration->Parameters`, затем прокрутите до раздела `Write-ahead log`. Чтобы подобрать новое значение, ознакомьтесь с рекомендациями [здесь](../faq#recommended-max_slot_wal_keep_size-settings).
 
-<Image img={planetscale_max_slot_wal_keep_size} alt="Регулировка max_slot_wal_keep_size в консоли PlanetScale" size="md" border/>
+<Image img={planetscale_max_slot_wal_keep_size} alt="Настройка max_slot_wal_keep_size в консоли PlanetScale" size="md" border/>
 
-## Создание пользователя с разрешениями и публикацией {#creating-a-user-with-permissions-and-publication}
 
-Давайте создадим нового пользователя для ClickPipes с необходимыми разрешениями, подходящими для CDC, и также создадим публикацию, которую мы будем использовать для репликации.
 
-Для этого вы можете подключиться к своему экземпляру PlanetScale Postgres, используя пользователя по умолчанию `postgres.<...>`, и выполнить следующие SQL-команды:
+## Создание пользователя с правами доступа и публикацией
+
+Создадим нового пользователя для ClickPipes с необходимыми правами доступа, подходящими для CDC,
+а также создадим публикацию, которую будем использовать для репликации.
+
+Для этого вы можете подключиться к вашему экземпляру PlanetScale Postgres, используя пользователя по умолчанию `postgres.&lt;...&gt;`, и выполнить следующие SQL-команды:
+
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- You may need to grant these permissions on more schemas depending on the tables you're moving
+-- Возможно, потребуется предоставить эти разрешения дополнительным схемам в зависимости от переносимых таблиц
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Give replication permission to the USER
+-- Предоставить пользователю права на репликацию
   ALTER USER clickpipes_user REPLICATION;
 
--- Create a publication. We will use this when creating the pipe
--- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
+-- Создать публикацию. Она будет использоваться при создании пайплайна
+-- При добавлении новых таблиц в ClickPipe их также необходимо вручную добавить в публикацию. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
 ```
+
 :::note
-Не забудьте заменить `clickpipes_user` и `clickpipes_password` на желаемое имя пользователя и пароль.
+Обязательно замените `clickpipes_user` и `clickpipes_password` на выбранные вами имя пользователя и пароль.
 :::
 
-## Ограничения {#caveats}
-1. Чтобы подключиться к PlanetScale Postgres, текущая ветка должна быть добавлена к имени пользователя, созданному выше. Например, если созданный пользователь называется `clickpipes_user`, фактическое имя пользователя, предоставленное во время создания ClickPipe, должно быть `clickpipes_user`.`branch`, где `branch` относится к "id" текущей ветки PlanetScale Postgres [ветвление](https://planetscale.com/docs/postgres/branching). Чтобы быстро определить это, вы можете обратиться к имени пользователя пользователя `postgres`, которого вы использовали для создания пользователя ранее, часть после точки будет идентификатором ветки.
-2. Не используйте порт `PSBouncer` (в настоящее время `6432`) для трубопроводов CDC, подключающихся к PlanetScale Postgres, должен использоваться обычный порт `5432`. Любой порт может использоваться только для начальных трубопроводов загрузки.
-3. Пожалуйста, убедитесь, что вы подключаетесь только к основному экземпляру, [подключение к репликам](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) в настоящее время не поддерживается.
 
-## Что делать дальше? {#whats-next}
+## Особенности и ограничения {#caveats}
+1. Для подключения к PlanetScale Postgres к имени пользователя, созданному выше, необходимо добавить текущую ветку. Например, если созданный пользователь назывался `clickpipes_user`, фактическое имя пользователя, указываемое при создании ClickPipe, должно быть `clickpipes_user`.`branch`, где `branch` — это `id` текущей [ветки](https://planetscale.com/docs/postgres/branching) PlanetScale Postgres. Чтобы быстро определить это значение, вы можете посмотреть на имя пользователя `postgres`, под которым вы создавали этого пользователя ранее, — часть после точки и будет идентификатором ветки.
+2. Не используйте порт `PSBouncer` (сейчас `6432`) для CDC-конвейеров, подключающихся к PlanetScale Postgres, необходимо использовать стандартный порт `5432`. Любой из портов может использоваться только для конвейеров, выполняющих только начальную загрузку (initial-load only).
+3. Убедитесь, что вы подключаетесь только к основной (primary) инстанции, так как [подключение к репликам](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) в настоящее время не поддерживается. 
 
-Теперь вы можете [создать свой ClickPipe](../index.md) и начать прием данных из вашего экземпляра Postgres в ClickHouse Cloud.
-Не забудьте записать данные для подключения, которые вы использовали при настройке вашего экземпляра Postgres, так как они понадобятся вам во время процесса создания ClickPipe.
+
+
+## Что дальше? {#whats-next}
+
+Теперь вы можете [создать свой ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
+Обязательно запишите параметры подключения, которые вы использовали при его настройке, так как они понадобятся вам при создании ClickPipe.

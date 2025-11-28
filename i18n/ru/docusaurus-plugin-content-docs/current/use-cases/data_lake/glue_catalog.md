@@ -1,34 +1,43 @@
 ---
-slug: '/use-cases/data-lake/glue-catalog'
-sidebar_label: 'AWS Glue Catalog'
-description: 'В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос'
-title: 'AWS Glue Catalog'
-doc_type: guide
+slug: /use-cases/data-lake/glue-catalog
+sidebar_label: 'Каталог AWS Glue'
+title: 'Каталог AWS Glue'
 pagination_prev: null
 pagination_next: null
+description: 'В этом руководстве мы пошагово покажем, как выполнять запросы к
+ вашим данным в бакетах S3 с помощью ClickHouse и AWS Glue Data Catalog.'
+keywords: ['Glue', 'Озеро данных']
 show_related_blogs: true
+doc_type: 'guide'
 ---
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+import BetaBadge from '@theme/badges/BetaBadge';
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т.д.). В этом руководстве мы проведем вас через шаги для выполнения запросов к вашим данным в S3 корзинах с использованием ClickHouse и Glue Data Catalog.
+<BetaBadge />
 
-:::note
-Glue поддерживает множество различных форматов таблиц, но эта интеграция поддерживает только таблицы Iceberg.
-:::
-
-## Конфигурирование Glue в AWS {#configuring}
-
-Чтобы подключиться к каталогу Glue, вам необходимо определить регион вашего каталога и предоставить ключ доступа и секретный ключ.
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue,
+Polaris и т.д.). В этом руководстве мы пошагово разберём, как выполнять
+запросы к вашим данным в S3-бакетах, используя ClickHouse и Glue Data Catalog.
 
 :::note
-В настоящее время каталог Glue поддерживает только ключи доступа и секретные ключи, но в будущем мы поддержим дополнительные подходы к аутентификации.
+Glue поддерживает множество различных форматов таблиц, но в рамках этой
+интеграции доступны только таблицы Iceberg.
 :::
 
-## Создание соединения между каталогом данных Glue и ClickHouse {#connecting}
 
-С вашим каталогом Unity настроенным и аутентификацией на месте, установите соединение между ClickHouse и Unity Catalog.
+## Настройка Glue в AWS {#configuring}
+
+Чтобы подключиться к каталогу Glue, необходимо определить регион вашего 
+каталога и указать ключ доступа (access key) и секретный ключ (secret key).
+
+:::note
+В настоящее время каталог Glue поддерживает только аутентификацию с помощью access key и secret key, но в будущем мы добавим поддержку дополнительных методов аутентификации.
+:::
+
+## Создание подключения между каталогом данных Glue и ClickHouse
+
+После настройки Unity Catalog и аутентификации создайте
+подключение между ClickHouse и Unity Catalog.
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -40,9 +49,10 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-## Запрос к каталогу данных Glue с использованием ClickHouse {#query-glue-catalog}
 
-Теперь, когда соединение установлено, вы можете начать выполнять запросы к Glue:
+## Выполнение запросов к каталогу данных Glue с помощью ClickHouse
+
+Теперь, когда подключение установлено, можно приступать к выполнению запросов к Glue:
 
 ```sql title="Query"
 USE glue;
@@ -58,7 +68,9 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-Выше вы можете увидеть, что некоторые таблицы не являются таблицами Iceberg, например `iceberg-benchmark.hitsparquet`. Вы не сможете выполнить запросы к ним, так как в настоящее время поддерживается только Iceberg.
+Как видно выше, некоторые таблицы не являются таблицами Iceberg, например
+`iceberg-benchmark.hitsparquet`. Выполнять запросы к ним нельзя, так как в данный момент
+поддерживается только формат Iceberg.
 
 Чтобы выполнить запрос к таблице:
 
@@ -67,7 +79,7 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-Обратные кавычки необходимы, так как ClickHouse не поддерживает более одного пространства имен.
+Обратные кавычки (backticks) обязательны, поскольку ClickHouse не поддерживает несколько пространств имён.
 :::
 
 Чтобы просмотреть DDL таблицы, выполните следующий запрос:
@@ -76,8 +88,9 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
+
 ```sql title="Response"
-  ┌─statement───────────────────────────────────────────────┐
+┌─statement───────────────────────────────────────────────┐
 1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │
   │ (                                                       │
   │     `watchid` Nullable(Int64),                          │
@@ -192,7 +205,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## Загрузка данных из вашего Data Lake в ClickHouse {#loading-data-into-clickhouse}
 
-Если вам необходимо загрузить данные из Databricks в ClickHouse, начните с создания локальной таблицы ClickHouse:
+Если вам нужно загрузить данные из Databricks в ClickHouse, сначала создайте локальную таблицу ClickHouse:
 
 ```sql title="Query"
 CREATE TABLE hits
@@ -306,7 +319,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-Затем загрузите данные из вашей таблицы Iceberg:
+Затем загрузите данные из таблицы Iceberg:
 
 ```sql title="Query"
 INSERT INTO default.hits 

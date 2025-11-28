@@ -1,24 +1,24 @@
 ---
-'title': '基本操作 - 时间序列'
-'sidebar_label': '基本操作'
-'description': '在 ClickHouse 中的基本时间序列操作。'
-'slug': '/use-cases/time-series/basic-operations'
-'keywords':
-- 'time-series'
-'show_related_blogs': true
-'doc_type': 'guide'
+title: '基本操作 - 时间序列'
+sidebar_label: '基本操作'
+description: 'ClickHouse 中时间序列的基本操作。'
+slug: /use-cases/time-series/basic-operations
+keywords: ['时间序列', '基本操作', '数据摄取', '查询', '过滤', '分组', '聚合']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 
-# 基本的时间序列操作
 
-ClickHouse 提供了多种方法来处理时间序列数据，使您能够对不同时间段的数据点进行聚合、分组和分析。 
-本节涵盖了在处理基于时间的数据时常用的基本操作。
+# 基本时间序列操作
 
-常见操作包括按时间间隔对数据进行分组、处理时间序列数据中的间隙，以及计算时间段之间的变化。 
-这些操作可以使用标准 SQL 语法结合 ClickHouse 内置的时间函数来执行。
+ClickHouse 提供了多种处理时间序列数据的方法，从而可以在不同时间区间内对数据点进行聚合、分组和分析。
+本节介绍在处理时间型数据时常用的基本操作。
 
-我们将探索 ClickHouse 的时间序列查询功能，使用 Wikistat（维基百科页面浏览数据）数据集：
+常见操作包括按时间间隔对数据进行分组、处理时间序列数据中的缺口，以及计算不同时间段之间的变化。
+这些操作可以通过标准 SQL 语法结合 ClickHouse 的内置时间函数来完成。
+
+我们将使用 Wikistat（Wikipedia 页面浏览量数据）数据集来探索 ClickHouse 的时间序列查询能力：
 
 ```sql
 CREATE TABLE wikistat
@@ -33,7 +33,7 @@ ENGINE = MergeTree
 ORDER BY (time);
 ```
 
-让我们用 10 亿条记录填充这个表：
+现在向该表中插入 10 亿条记录：
 
 ```sql
 INSERT INTO wikistat 
@@ -42,9 +42,10 @@ FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitione
 LIMIT 1e9;
 ```
 
-## 按时间桶聚合  {#time-series-aggregating-time-bucket}
 
-最常见的需求是基于时间段聚合数据，例如，获取每一天的总点击量：
+## 按时间分桶聚合
+
+最常见的需求是按时间周期对数据进行聚合，例如统计每天的总点击量：
 
 ```sql
 SELECT
@@ -57,7 +58,7 @@ LIMIT 5;
 ```
 
 ```text
-┌───────date─┬─────hits─┐
+┌───────日期─┬──访问次数─┐
 │ 2015-05-01 │ 25524369 │
 │ 2015-05-02 │ 25608105 │
 │ 2015-05-03 │ 28567101 │
@@ -66,7 +67,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-我们在这里使用了 [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) 函数，它将指定的时间转换为日期类型。或者，我们可以按小时分批并在特定日期上进行过滤：
+我们在这里使用了 [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) 函数，它会将指定的时间转换为 `date` 类型。或者，我们也可以按小时分桶，然后按特定日期进行过滤：
 
 ```sql
 SELECT
@@ -80,7 +81,7 @@ LIMIT 5;
 ```
 
 ```text
-┌────────────────hour─┬───hits─┐
+┌────────────────小时─┬───请求数─┐
 │ 2015-07-01 00:00:00 │ 656676 │
 │ 2015-07-01 01:00:00 │ 768837 │
 │ 2015-07-01 02:00:00 │ 862311 │
@@ -89,15 +90,16 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-这里使用的 [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) 函数将给定时间转换为小时的开始时间。 
-您还可以按年、季度、月或日分组。
+这里使用的 [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) 函数会将给定时间转换为所在小时的起始（整点）时间。
+还可以按年份、季度、月份或日期进行分组。
 
-## 自定义分组间隔 {#time-series-custom-grouping-intervals}
 
-我们甚至可以按任意间隔分组，例如，使用 [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#toStartOfInterval) 函数按 5 分钟分组。
+## 自定义分组时间间隔
 
-假设我们想按 4 小时的间隔进行分组。 
-我们可以使用 [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) 子句指定分组间隔：
+我们还可以按自定义时间间隔进行分组，例如使用 [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#toStartOfInterval) 函数按 5 分钟间隔分组。
+
+假设我们想按 4 小时间隔分组。
+我们可以使用 [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) 子句来指定分组间隔：
 
 ```sql
 SELECT
@@ -110,7 +112,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-或者我们可以使用 [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) 函数
+或者，我们也可以使用 [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) 函数
 
 ```sql
 SELECT
@@ -123,10 +125,10 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-无论哪种方式，我们都会得到以下结果：
+无论哪种方式，结果如下：
 
 ```text
-┌────────────interval─┬────hits─┐
+┌────────────时间段─┬────命中数─┐
 │ 2015-07-01 00:00:00 │ 3117085 │
 │ 2015-07-01 04:00:00 │ 2928396 │
 │ 2015-07-01 08:00:00 │ 2679775 │
@@ -136,9 +138,10 @@ LIMIT 6;
 └─────────────────────┴─────────┘
 ```
 
-## 填充空的分组 {#time-series-filling-empty-groups}
 
-在很多情况下，我们处理稀疏数据，某些间隔缺失。这导致空桶的产生。让我们来看以下例子，我们按 1 小时的间隔对数据进行分组。这将输出以下统计信息，其中一些小时缺失值：
+## 填充空分组
+
+在很多情况下，我们处理的是存在缺失区间的稀疏数据，这会产生空桶。下面来看一个示例：我们按 1 小时间隔对数据进行分组，输出的统计结果中会有部分小时缺少数值：
 
 ```sql
 SELECT
@@ -152,14 +155,14 @@ ORDER BY hour ASC;
 
 ```text
 ┌────────────────hour─┬─sum(hits)─┐
-│ 2015-07-01 00:00:00 │         3 │ <- missing values
-│ 2015-07-01 02:00:00 │         1 │ <- missing values
+│ 2015-07-01 00:00:00 │         3 │ <- 缺失的数据
+│ 2015-07-01 02:00:00 │         1 │ <- 缺失的数据
 │ 2015-07-01 04:00:00 │         1 │
 │ 2015-07-01 05:00:00 │         2 │
 │ 2015-07-01 06:00:00 │         1 │
 │ 2015-07-01 07:00:00 │         1 │
 │ 2015-07-01 08:00:00 │         3 │
-│ 2015-07-01 09:00:00 │         2 │ <- missing values
+│ 2015-07-01 09:00:00 │         2 │ <- 缺失的数据
 │ 2015-07-01 12:00:00 │         2 │
 │ 2015-07-01 13:00:00 │         4 │
 │ 2015-07-01 14:00:00 │         2 │
@@ -175,7 +178,7 @@ ORDER BY hour ASC;
 └─────────────────────┴───────────┘
 ```
 
-ClickHouse 提供了 [`WITH FILL`](/docs/guides/developer/time-series-filling-gaps#with-fill) 修饰符来解决这个问题。这将用零填充所有空缺的小时，从而使我们更好地了解随时间的分布：
+ClickHouse 提供了 [`WITH FILL`](/docs/guides/developer/time-series-filling-gaps#with-fill) 修饰符来解决这一问题。它会用零填充所有缺失的小时区间，从而帮助我们更好地理解随时间变化的分布：
 
 ```sql
 SELECT
@@ -187,20 +190,21 @@ GROUP BY ALL
 ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 ```
 
+
 ```text
 ┌────────────────hour─┬─sum(hits)─┐
 │ 2015-07-01 00:00:00 │         3 │
-│ 2015-07-01 01:00:00 │         0 │ <- new value
+│ 2015-07-01 01:00:00 │         0 │ <- 新值
 │ 2015-07-01 02:00:00 │         1 │
-│ 2015-07-01 03:00:00 │         0 │ <- new value
+│ 2015-07-01 03:00:00 │         0 │ <- 新值
 │ 2015-07-01 04:00:00 │         1 │
 │ 2015-07-01 05:00:00 │         2 │
 │ 2015-07-01 06:00:00 │         1 │
 │ 2015-07-01 07:00:00 │         1 │
 │ 2015-07-01 08:00:00 │         3 │
 │ 2015-07-01 09:00:00 │         2 │
-│ 2015-07-01 10:00:00 │         0 │ <- new value
-│ 2015-07-01 11:00:00 │         0 │ <- new value
+│ 2015-07-01 10:00:00 │         0 │ <- 新值
+│ 2015-07-01 11:00:00 │         0 │ <- 新值
 │ 2015-07-01 12:00:00 │         2 │
 │ 2015-07-01 13:00:00 │         4 │
 │ 2015-07-01 14:00:00 │         2 │
@@ -216,18 +220,19 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 └─────────────────────┴───────────┘
 ```
 
-## 滚动时间窗口 {#time-series-rolling-time-windows}
 
-有时候，我们不想处理间隔的开始（如一天或一小时的开始），而是窗口间隔。 
-假设我们想理解某个窗口的总点击量，而不是基于天，而是基于从下午 6 点开始的 24 小时周期。
+## 滚动时间窗口
 
-我们可以使用 [`date_diff()`](/docs/sql-reference/functions/date-time-functions#timeDiff) 函数计算参考时间与每条记录时间之间的差异。 
-在这种情况下，`day` 列将表示天数差异（例如，1 天前、2 天前等）：
+有时，我们不想按时间区间的起始点（比如某一天或某一小时的开始）来处理，而是希望按时间窗口来处理。
+假设我们想了解某个窗口内的 hits 总数，这个窗口不是按自然日划分，而是从下午 6 点开始，按 24 小时时长来划分。
+
+我们可以使用 [`date_diff()`](/docs/sql-reference/functions/date-time-functions#timeDiff) 函数来计算参考时间与每条记录时间之间的差值。
+在这个例子中，`day` 列将表示相差的天数（例如：1 天前、2 天前等）：
 
 ```sql
 SELECT    
     dateDiff('day', toDateTime('2015-05-01 18:00:00'), time) AS day,
-    sum(hits),
+    sum(hits)
 FROM wikistat
 GROUP BY ALL
 ORDER BY day ASC

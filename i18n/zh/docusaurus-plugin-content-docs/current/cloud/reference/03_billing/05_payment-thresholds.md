@@ -1,25 +1,20 @@
 ---
-'sidebar_label': 'Payment Thresholds'
-'slug': '/cloud/billing/payment-thresholds'
-'title': '支付阈值'
-'description': '支付阈值和自动开票用于 ClickHouse Cloud.'
-'keywords':
-- 'billing'
-- 'payment thresholds'
-- 'automatic invoicing'
-- 'invoice'
-'doc_type': 'guide'
+sidebar_label: '支付阈值'
+slug: /cloud/billing/payment-thresholds
+title: '支付阈值'
+description: 'ClickHouse Cloud 的支付阈值和自动开票。'
+keywords: ['计费', '支付阈值', '自动开票', '发票']
+doc_type: 'guide'
 ---
-
 
 # 付款阈值
 
-当您在 ClickHouse Cloud 的账单周期内应付金额达到 10,000 美元或等值金额时，您的付款方式将会自动扣款。扣款失败将导致在宽限期后暂停或终止您的服务。
+当你在某一 ClickHouse Cloud 计费周期内的应付金额达到 10,000 美元（USD）或等值金额时，系统将会自动从你的付款方式中扣款。扣款失败将在宽限期结束后导致你的服务被暂停或终止。 
 
 :::note
-此付款阈值不适用于与 ClickHouse 签订了承诺消费合同或其他谈判合同的客户。
+此付款阈值不适用于与 ClickHouse 签订了承诺消费合同或其他协商合同协议的客户。
 :::
 
-如果您的组织达到付款阈值的 90%，并且预计在周期中会超过付款阈值，关联该组织的账单电子邮件将收到通知邮件。当您超过付款阈值时，您也将收到通知邮件和发票。
+如果你的组织在计费周期内的消费金额达到付款阈值的 90%，并且预计将在该周期中途超过该阈值，与该组织关联的计费邮箱将会收到一封电子邮件通知。当你超过付款阈值时，你还会收到电子邮件通知以及一份发票。
 
-这些付款阈值可以根据客户的请求或 ClickHouse 财务团队的决定调整至低于 10,000 美元。如果您有任何问题，请联系 support@clickhouse.com 获取更多详情。
+根据客户的请求，或由 ClickHouse 财务团队决定，这些付款阈值可以调整为低于 10,000 美元。如有任何问题，请联系 support@clickhouse.com 获取更多详情。

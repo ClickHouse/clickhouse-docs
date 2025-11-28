@@ -1,20 +1,23 @@
 ---
-'description': 'RISC-V 64アーキテクチャ向けにソースからClickHouseをビルドするためのガイド'
-'sidebar_label': 'RISC-V 64向けのLinux上での構築'
-'sidebar_position': 30
-'slug': '/development/build-cross-riscv'
-'title': 'RISC-V 64向けのLinux上でのClickHouseの構築方法'
-'doc_type': 'guide'
+description: 'RISC-V 64 アーキテクチャ向けに ClickHouse をソースコードからビルドするためのガイド'
+sidebar_label: 'RISC-V 64 向け Linux でのビルド'
+sidebar_position: 30
+slug: /development/build-cross-riscv
+title: 'Linux 上で RISC-V 64 向けに ClickHouse をビルドする方法'
+doc_type: 'guide'
 ---
 
 
-# How to Build ClickHouse on Linux for RISC-V 64
 
-ClickHouseにはRISC-Vに対する実験的なサポートがあります。すべての機能が有効にできるわけではありません。
+# Linux 上で RISC-V 64 向けに ClickHouse をビルドする方法
 
-## Build ClickHouse {#build-clickhouse}
+ClickHouse は RISC-V を実験的にサポートしています。すべての機能を有効にできるわけではありません。
 
-非RISC-VマシンでRISC-V用にクロスコンパイルするには：
+
+
+## ClickHouse をビルドする
+
+RISC-V ではないマシン上で RISC-V 向けにクロスコンパイルするには:
 
 ```bash
 cd ClickHouse
@@ -23,4 +26,4 @@ CC=clang-19 CXX=clang++-19 cmake . -Bbuild-riscv64 -G Ninja -DCMAKE_TOOLCHAIN_FI
 ninja -C build-riscv64
 ```
 
-生成されたバイナリは、RISC-V 64 CPUアーキテクチャを持つLinux上でのみ実行されます。
+生成されたバイナリは、RISC-V 64ビット CPU アーキテクチャの Linux 上でのみ実行可能です。

@@ -1,18 +1,19 @@
 ---
-slug: '/sql-reference/window-functions/percent_rank'
-sidebar_label: percent_rank
+description: 'Документация об оконной функции percent_rank'
+sidebar_label: 'percent_rank'
 sidebar_position: 8
-description: 'Документация для функции оконного percent_rank'
-title: percent_rank
-doc_type: reference
+slug: /sql-reference/window-functions/percent_rank
+title: 'percent_rank'
+doc_type: 'reference'
 ---
-# percent_rank
 
-возвращает относительный ранг (т.е. процентиль) строк в пределах оконной партиции.
+# percent&#95;rank
+
+Возвращает относительный ранг (т. е. перцентиль) строк в пределах раздела окна.
 
 **Синтаксис**
 
-Псевдоним: `percentRank` (чувствительный к регистру)
+Псевдоним: `percentRank` (с учётом регистра)
 
 ```sql
 percent_rank ()
@@ -22,9 +23,9 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-Определение оконного фрейма по умолчанию и обязательное - `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.
+Заданное по умолчанию и обязательное определение рамки окна — `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.
 
-Для получения более подробной информации о синтаксисе оконных функций см. [Оконные функции - Синтаксис](./index.md/#syntax).
+Подробнее о синтаксисе оконных функций см.: [Window Functions - Syntax](./index.md/#syntax).
 
 **Пример**
 

@@ -1,33 +1,32 @@
 ---
-'slug': '/use-cases/observability/clickstack/migration/elastic/intro'
-'title': 'ElasticからClickStackへの移行'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_label': '概要'
-'sidebar_position': 0
-'description': 'ElasticからClickHouse Observability Stackへの移行の概要'
-'show_related_blogs': true
-'keywords':
-- 'Elasticsearch'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/migration/elastic/intro
+title: 'Elastic から ClickStack への移行'
+pagination_prev: null
+pagination_next: null
+sidebar_label: '概要'
+sidebar_position: 0
+description: 'Elastic から ClickHouse Observability Stack への移行の概要'
+show_related_blogs: true
+keywords: ['Elasticsearch']
+doc_type: 'guide'
 ---
 
 ## Elastic から ClickStack への移行 {#migrating-to-clickstack-from-elastic}
 
-このガイドは、Elastic Stack から移行するユーザーを対象としており、特に Elastic Agent を介して収集され、Elasticsearch に保存されたログ、トレース、およびメトリクスを監視するために Kibana を使用している方々のためのものです。ClickStack における同等の概念とデータ型を概説し、Kibana の Lucene ベースのクエリを HyperDX の構文に変換する方法を説明し、スムーズな移行のためのデータとエージェントの移行に関するガイダンスを提供します。
+このガイドは、Elastic Stack から移行するユーザー、特に Elastic Agent で収集し Elasticsearch に保存されたログ、トレース、メトリクスを Kibana で監視しているユーザーを対象としています。ClickStack における同等の概念やデータ型を説明し、Kibana の Lucene ベースのクエリを HyperDX の構文に変換する方法、およびスムーズに移行するためのデータとエージェントの移行に関するガイダンスを提供します。
 
-移行を開始する前に、ClickStack と Elastic Stack の間のトレードオフを理解することが重要です。
+移行を開始する前に、ClickStack と Elastic Stack の違いやトレードオフを理解することが重要です。
 
 次のような場合は、ClickStack への移行を検討すべきです:
 
-- 大量の可観測データを取り込んでいて、非効率的な圧縮とリソースの利用効率の悪さにより、Elastic がコスト高であると感じている場合。ClickStack は、ストレージおよび計算コストを大幅に削減でき、未加工データで少なくとも 10 倍の圧縮を提供します。
-- スケールでの検索性能が悪い、または取り込みのボトルネックに直面している場合。
-- SQL を使用して可観測信号とビジネスデータを相関させ、可観測性と分析のワークフローを統合したい場合。
-- OpenTelemetry にコミットしており、ベンダーロックインを避けたい場合。
-- ClickHouse Cloud におけるストレージと計算の分離を利用し、ほぼ無限のスケールを実現したい場合 - アイドル期間中は取り込み計算とオブジェクトストレージにのみ支払うことになります。
+- 大量のオブザーバビリティデータを取り込んでおり、圧縮効率の低さやリソース利用の非効率さが原因で Elastic のコストが高すぎると感じている。ClickStack は生データに対して少なくとも 10 倍の圧縮率を提供し、ストレージとコンピュートのコストを大幅に削減できます。
+- 大規模環境で検索パフォーマンスが低下している、またはインジェストのボトルネックが発生している。
+- SQL を用いてオブザーバビリティ・シグナルとビジネスデータを相関付けることで、オブザーバビリティとアナリティクスのワークフローを統合したい。
+- OpenTelemetry を中核に据え、ベンダーロックインを回避したい。
+- ClickHouse Cloud のストレージとコンピュートの分離を活用し、実質的に無制限のスケールを実現したい — アイドル期間中はインジェスト用コンピュートとオブジェクトストレージに対してのみ課金されるモデルを利用したい。
 
-しかし、次のような場合には ClickStack は適さないかもしれません:
+一方で、次のような場合は ClickStack が適さない可能性があります:
 
-- 可観測データを主にセキュリティユースケースに使用していて、SIEMに特化した製品が必要な場合。
-- ユニバーサルプロファイリングがワークフローの重要な部分である場合。
-- ビジネスインテリジェンス (BI) ダッシュボーディングプラットフォームが必要な場合。ClickStack は、意図的に SRE や開発者向けの意見をもとにした視覚的ワークフローを持ち、ビジネスインテリジェンス (BI) ツールとして設計されていません。同等の機能を求める場合は、[ClickHouse プラグインを使用した Grafana](/integrations/grafana) または [Superset](/integrations/superset) の使用をお勧めします。
+- オブザーバビリティデータを主にセキュリティ用途で利用しており、SIEM に特化した製品を必要としている。
+- ユニバーサルプロファイリングがワークフローにおいて重要な要素である。
+- ビジネスインテリジェンス (BI) ダッシュボードプラットフォームを必要としている。ClickStack は、意図的に SRE や開発者向けの指向性のあるビジュアルワークフローを備えており、ビジネスインテリジェンス (BI) ツールとして設計されていません。同等の機能が必要な場合は、[Grafana の ClickHouse プラグイン](/integrations/grafana) または [Superset](/integrations/superset) の利用を推奨します。

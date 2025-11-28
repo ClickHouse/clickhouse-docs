@@ -1,27 +1,29 @@
 ---
-'slug': '/examples/aggregate-function-combinators/maxMap'
-'title': 'maxMap'
-'description': '使用 maxMap 组合器的示例'
-'keywords':
-- 'max'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'maxMap'
-'sidebar_label': 'maxMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/maxMap'
+title: 'maxMap'
+description: 'maxMap 组合子使用示例'
+keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
+sidebar_label: 'maxMap'
+doc_type: 'reference'
 ---
+
 
 
 # maxMap {#maxmap}
 
+
+
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，通过 `maxMap` 聚合组合器函数根据每个键计算 Map 中的最大值。
+可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，以使用 `maxMap` 聚合组合器函数按键分别计算 Map 中的最大值。
 
-## 示例用法 {#example-usage}
 
-在这个示例中，我们将创建一个表，用于存储不同时间段的状态代码及其计数，其中每一行包含一个状态代码到其对应计数的 Map。我们将使用 `maxMap` 来查找每个时间段内每个状态代码的最大计数。
+
+## 示例用法
+
+在这个示例中，我们将创建一张表，用于存储不同时间段的状态码及其计数，
+其中每一行都包含一个 `Map`，用于将状态码映射到对应的计数。我们将使用
+`maxMap` 来计算每个时间段内各个状态码的最大计数值。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -38,31 +40,33 @@ INSERT INTO metrics VALUES
 
 SELECT
     timeslot,
-    maxMap(status),
+    maxMap(status)
 FROM metrics
 GROUP BY timeslot;
 ```
 
-`maxMap` 函数将找到每个时间段内每个状态代码的最大计数。例如：
-- 在时间段 '2000-01-01 00:00:00':
-  - 状态 'a': 15
-  - 状态 'b': 25
-  - 状态 'c': max(35, 45) = 45
-  - 状态 'd': 55
-  - 状态 'e': 65
-- 在时间段 '2000-01-01 00:01:00':
-  - 状态 'd': 75
-  - 状态 'e': 85
-  - 状态 'f': max(95, 105) = 105
-  - 状态 'g': max(115, 125) = 125
+`maxMap` 函数会在每个时间段内找出各个状态码的最大计数。例如：
+
+* 在时间段 &#39;2000-01-01 00:00:00&#39;：
+  * 状态 &#39;a&#39;：15
+  * 状态 &#39;b&#39;：25
+  * 状态 &#39;c&#39;：max(35, 45) = 45
+  * 状态 &#39;d&#39;：55
+  * 状态 &#39;e&#39;：65
+* 在时间段 &#39;2000-01-01 00:01:00&#39;：
+  * 状态 &#39;d&#39;：75
+  * 状态 &#39;e&#39;：85
+  * 状态 &#39;f&#39;：max(95, 105) = 105
+  * 状态 &#39;g&#39;：max(115, 125) = 125
 
 ```response title="Response"
-   ┌────────────timeslot─┬─maxMap(status)───────────────────────┐
+   ┌────────────时间段─┬─最大映射(状态)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':105,'g':125}      │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另请参见 {#see-also}
+
+## 另请参阅 {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)

@@ -1,42 +1,44 @@
 ---
-'description': 'ORDER BY 句に関するドキュメント'
-'sidebar_label': 'ORDER BY'
-'slug': '/sql-reference/statements/select/order-by'
-'title': 'ORDER BY 句'
-'doc_type': 'reference'
+description: 'ORDER BY 句に関するドキュメント'
+sidebar_label: 'ORDER BY'
+slug: /sql-reference/statements/select/order-by
+title: 'ORDER BY 句'
+doc_type: 'reference'
 ---
 
 
 
 # ORDER BY 句
 
-`ORDER BY` 句には次のものが含まれます。
+`ORDER BY` 句には次のいずれかを指定できます。
 
-- 表現のリスト、例: `ORDER BY visits, search_phrase`、
-- `SELECT` 句でのカラムを参照する数値のリスト、例: `ORDER BY 2, 1`、または
-- `ALL` は、`SELECT` 句のすべてのカラムを意味します。例: `ORDER BY ALL`。
+- 式のリスト（例: `ORDER BY visits, search_phrase`）
+- `SELECT` 句内の列を参照する番号のリスト（例: `ORDER BY 2, 1`）
+- `ALL`（`SELECT` 句のすべての列を意味する、例: `ORDER BY ALL`）
 
-カラム番号によるソートを無効にするには、設定 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) を 0 に設定します。
+列番号によるソートを無効にするには、設定 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) を 0 に設定します。
 `ALL` によるソートを無効にするには、設定 [enable_order_by_all](/operations/settings/settings#enable_order_by_all) を 0 に設定します。
 
-`ORDER BY` 句は、ソートの方向を決定する `DESC`（降順）または `ASC`（昇順）修飾子を付けることができます。
-明示的なソート順が指定されていない限り、デフォルトで `ASC` が使用されます。
-ソートの方向は単一の表現に適用され、リスト全体には適用されません。例: `ORDER BY Visits DESC, SearchPhrase`。
+`ORDER BY` 句には、ソート方向を決定する `DESC`（降順）または `ASC`（昇順）の修飾子を付けることができます。
+明示的にソート順を指定しない場合、デフォルトで `ASC` が使用されます。
+ソート方向は、リスト全体ではなく単一の式に適用されます（例: `ORDER BY Visits DESC, SearchPhrase`）。
 また、ソートは大文字と小文字を区別して行われます。
 
-同じ値を持つソート表現の行は、任意かつ非決定的な順序で返されます。
-`SELECT` ステートメントに `ORDER BY` 句が省略されている場合、行の順序も任意で非決定的です。
+ソート対象の式の値が同一の行は、任意（非決定的）な順序で返されます。
+`SELECT` 文で `ORDER BY` 句を省略した場合も、行の並び順は任意（非決定的）です。
 
-## 特殊値のソート {#sorting-of-special-values}
 
-`NaN` および `NULL` のソート順には二つのアプローチがあります：
 
-- デフォルトまたは `NULLS LAST` 修飾子付き：まず値、次に `NaN`、次に `NULL`。
-- `NULLS FIRST` 修飾子付き：まず `NULL`、次に `NaN`、次に他の値。
+## 特殊値のソート順
 
-### 例 {#example}
+`NaN` および `NULL` のソート順には、2 つの方法があります。
 
-テーブルに対して
+* デフォルトの場合、または `NULLS LAST` 修飾子を使用する場合: まず通常の値、その後に `NaN`、最後に `NULL`。
+* `NULLS FIRST` 修飾子を使用する場合: まず `NULL`、次に `NaN`、最後に他の値。
+
+### 例
+
+次のテーブルに対して
 
 ```text
 ┌─x─┬────y─┐
@@ -70,21 +72,24 @@
 └───┴──────┘
 ```
 
-浮動小数点数がソートされると、NaN は他の値とは別に扱われます。ソートの順序に関わらず、NaN は最後に来ます。言い換えれば、昇順ソートの場合、NaN は他のすべての数値よりも大きいかのように配置され、降順ソートの場合は小さいかのように配置されます。
+浮動小数点数をソートする場合、NaN は他の値とは別扱いになります。ソート順に関係なく、NaN は常に末尾に並びます。言い換えると、昇順ソートでは NaN は他のすべての数値よりも大きいかのように扱われ、降順ソートでは残りの値よりも小さいかのように扱われます。
 
-## 照合サポート {#collation-support}
 
-[文字列](../../../sql-reference/data-types/string.md) 値でのソートに対して、照合（比較）を指定できます。例：`ORDER BY SearchPhrase COLLATE 'tr'` - トルコ語のアルファベットを使って、ケースを区別せずに昇順でキーワードでソートします。`COLLATE` は、ORDER BY の各表現で独立して指定可能です。指定された場合、`ASC` または `DESC` の後に `COLLATE` を指定します。`COLLATE` を使用する場合、ソートは常に大文字小文字を区別しません。
+## 照合順序サポート {#collation-support}
 
-照合は、[LowCardinality](../../../sql-reference/data-types/lowcardinality.md)、[Nullable](../../../sql-reference/data-types/nullable.md)、[Array](../../../sql-reference/data-types/array.md)、および [Tuple](../../../sql-reference/data-types/tuple.md) でサポートされています。
+[String](../../../sql-reference/data-types/string.md) 値でソートする場合、照合順序（比較方法）を指定できます。例: `ORDER BY SearchPhrase COLLATE 'tr'` — 文字列が UTF-8 でエンコードされていることを前提として、トルコ語アルファベットを用い、大文字小文字を区別せずにキーワードを昇順でソートします。`COLLATE` は、ORDER BY 句内の各式ごとに個別に指定してもしなくてもかまいません。`ASC` または `DESC` を指定する場合は、その後ろに `COLLATE` を指定します。`COLLATE` を使用する場合、ソートは常に大文字小文字を区別しません。
 
-私たちは、少数の行の最終的なソートのために `COLLATE` を使用することを推奨します。なぜなら、`COLLATE` によるソートは、バイトによる通常のソートよりも効率が低いためです。
+`COLLATE` は [LowCardinality](../../../sql-reference/data-types/lowcardinality.md)、[Nullable](../../../sql-reference/data-types/nullable.md)、[Array](../../../sql-reference/data-types/array.md)、[Tuple](../../../sql-reference/data-types/tuple.md) でもサポートされています。
 
-## 照合の例 {#collation-examples}
+`COLLATE` によるソートは通常のバイト列によるソートより効率が低いため、少数行の最終的なソートにのみ `COLLATE` を使用することを推奨します。
 
-[文字列](../../../sql-reference/data-types/string.md) 値のみの例：
 
-入力テーブル：
+
+## 照合順序の例
+
+[String](../../../sql-reference/data-types/string.md) 値のみの例:
+
+入力テーブル:
 
 ```text
 ┌─x─┬─s────┐
@@ -96,7 +101,7 @@
 └───┴──────┘
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
@@ -150,9 +155,9 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴──────┘
 ```
 
-[Array](../../../sql-reference/data-types/array.md) の例：
+[Array](../../../sql-reference/data-types/array.md) を使った例:
 
-入力テーブル：
+入力テーブル:
 
 ```text
 ┌─x─┬─s─────────────┐
@@ -166,13 +171,13 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
+結果:
 
 ```text
 ┌─x─┬─s─────────────┐
@@ -186,7 +191,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-[LowCardinality](../../../sql-reference/data-types/lowcardinality.md) 文字列の例：
+[LowCardinality](../../../sql-reference/data-types/lowcardinality.md) 型の文字列を使用した例:
 
 入力テーブル：
 
@@ -208,7 +213,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
+結果:
 
 ```response
 ┌─x─┬─s───┐
@@ -222,7 +227,8 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────┘
 ```
 
-[Tuple](../../../sql-reference/data-types/tuple.md) の例：
+[Tuple](../../../sql-reference/data-types/tuple.md) を使った例:
+
 
 ```response
 ┌─x─┬─s───────┐
@@ -242,7 +248,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
+結果:
 
 ```response
 ┌─x─┬─s───────┐
@@ -255,28 +261,31 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 │ 6 │ (2,'Z') │
 └───┴─────────┘
 ```
+
 
 ## 実装の詳細 {#implementation-details}
 
-`ORDER BY` に加えて、小さめの [LIMIT](../../../sql-reference/statements/select/limit.md) が指定されている場合、RAM の使用量が少なくなります。さもなければ、ソートのために費やされるメモリの量はデータ量に比例します。分散クエリ処理の場合、[GROUP BY](/sql-reference/statements/select/group-by) が省略されると、ソートはリモートサーバーで部分的に行われ、結果がリクエスターサーバーで統合されます。これは、分散ソートの場合、ソートするデータ量が単一サーバーのメモリ量を超える可能性があることを意味します。
+`ORDER BY` に加えて十分に小さい [LIMIT](../../../sql-reference/statements/select/limit.md) を指定すると、使用される RAM を抑えられます。そうでない場合、消費されるメモリ量はソート対象データ量に比例します。分散クエリ処理では、[GROUP BY](/sql-reference/statements/select/group-by) を省略すると、ソートはリモートサーバー側で部分的に実行され、その結果がリクエスト元サーバーでマージされます。これは、分散ソートの場合、ソート対象データ量が単一サーバーのメモリ量を上回る可能性があることを意味します。
 
-RAM が不足している場合、外部メモリでソートを実行することができます（ディスク上に一時ファイルを作成）。この目的のために設定 `max_bytes_before_external_sort` を使用します。これが 0 に設定されている場合（デフォルト）、外部ソートは無効になります。有効にされている場合、ソートするデータ量が指定されたバイト数に達すると、収集されたデータがソートされ、一時ファイルにダンプされます。すべてのデータが読み取られた後、すべてのソートされたファイルがマージされ、結果が出力されます。ファイルは設定の `/var/lib/clickhouse/tmp/` ディレクトリに書き込まれ、デフォルトでは自動的に設定されますが、`tmp_path` パラメータを使用してこの設定を変更することもできます。クエリがメモリ制限を超えた場合にのみディスクへのスピルを使用することもできます。つまり、`max_bytes_ratio_before_external_sort=0.6` は、クエリが `60%` のメモリ制限に達したときにのみディスクへのスピルを有効にします（ユーザー/サーバー）。
+RAM が不足している場合は、外部メモリ（ディスク）を使用してソートを実行することができます（ディスク上に一時ファイルを作成します）。この目的には設定項目 `max_bytes_before_external_sort` を使用します。これが 0（デフォルト値）の場合、外部ソートは無効化されています。有効になっている場合は、ソート対象データ量が指定したバイト数に達すると、それまでに収集したデータがソートされ、一時ファイルにダンプされます。すべてのデータを読み終えると、ソート済みファイルがすべてマージされ、その結果が出力されます。ファイルは設定上 `/var/lib/clickhouse/tmp/` ディレクトリに書き込まれます（デフォルトですが、この設定は `tmp_path` パラメータで変更できます）。また、クエリがメモリ制限を超えた場合にのみディスクへのスピルを使用することもできます。つまり、`max_bytes_ratio_before_external_sort=0.6` と設定すると、クエリがメモリ制限（ユーザー／サーバーごと）の 60% に達した時点でのみディスクへのスピルが有効になります。
 
-クエリを実行する際は、`max_bytes_before_external_sort` よりも多くのメモリを使用するかもしれません。このため、この設定は `max_memory_usage` よりもかなり小さい値にする必要があります。例として、サーバーに 128 GB の RAM があり、単一のクエリを実行する必要がある場合、`max_memory_usage` を 100 GB、`max_bytes_before_external_sort` を 80 GB に設定します。
+クエリの実行では、`max_bytes_before_external_sort` より多くのメモリが使用される場合があります。このため、この設定値は `max_memory_usage` より十分小さくする必要があります。例えば、サーバーに 128 GB の RAM があり、単一のクエリを実行する必要がある場合は、`max_memory_usage` を 100 GB に、`max_bytes_before_external_sort` を 80 GB に設定します。
 
-外部ソートは、RAM でのソートに比べてはるかに効果が低く働きます。
+外部ソートは、RAM 内でのソートと比較して効率が大きく低下します。
+
+
 
 ## データ読み取りの最適化 {#optimization-of-data-reading}
 
-`ORDER BY` 表現がテーブルのソートキーと一致する接頭辞を持つ場合、[optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order) 設定を使用してクエリを最適化できます。
+`ORDER BY` 式の先頭部分がテーブルのソートキーと一致している場合、[optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order) 設定を使用することでクエリを最適化できます。
 
-`optimize_read_in_order` 設定が有効になっていると、ClickHouse サーバーはテーブルインデックスを使用し、`ORDER BY` キーの順序でデータを読み取ります。これにより、指定された [LIMIT](../../../sql-reference/statements/select/limit.md) の場合にすべてのデータを読み取る必要がなくなります。したがって、大きなデータに対して小さいリミットのクエリがより迅速に処理されます。
+`optimize_read_in_order` 設定が有効な場合、ClickHouse サーバーはテーブルインデックスを使用し、`ORDER BY` キーの順序でデータを読み取ります。これにより、指定された [LIMIT](../../../sql-reference/statements/select/limit.md) がある場合に全件を読み取らずに済みます。そのため、大量データに対して小さな `LIMIT` を指定したクエリは、より高速に処理されます。
 
-最適化は `ASC` と `DESC` の両方で機能し、[GROUP BY](/sql-reference/statements/select/group-by) 句および [FINAL](/sql-reference/statements/select/from#final-modifier) 修飾子と同時には機能しません。
+最適化は `ASC` と `DESC` の両方で機能しますが、[GROUP BY](/sql-reference/statements/select/group-by) 句および [FINAL](/sql-reference/statements/select/from#final-modifier) 修飾子と同時には機能しません。
 
-`optimize_read_in_order` 設定が無効になっている場合、ClickHouse サーバーは `SELECT` クエリを処理する際にテーブルインデックスを使用しません。
+`optimize_read_in_order` 設定が無効な場合、ClickHouse サーバーは `SELECT` クエリを処理する際にテーブルインデックスを使用しません。
 
-`ORDER BY` 句があり、大きな `LIMIT` と巨大なレコードを読み取る必要がある [WHERE](../../../sql-reference/statements/select/where.md) 条件があるクエリを実行する際には、`optimize_read_in_order` を手動で無効にすることを検討してください。
+`ORDER BY` 句と大きな `LIMIT`、および対象データが見つかるまでに非常に多くのレコードを読み取る必要がある [WHERE](../../../sql-reference/statements/select/where.md) 条件を持つクエリを実行する場合は、`optimize_read_in_order` を手動で無効にすることを検討してください。
 
 最適化は次のテーブルエンジンでサポートされています：
 
@@ -284,31 +293,33 @@ RAM が不足している場合、外部メモリでソートを実行するこ�
 - [Merge](../../../engines/table-engines/special/merge.md)
 - [Buffer](../../../engines/table-engines/special/buffer.md)
 
-`MaterializedView` エンジンのテーブルでは、最適化は `SELECT ... FROM merge_tree_table ORDER BY pk` のようなビューで機能します。しかし、`SELECT ... FROM view ORDER BY pk` のように、ビューのクエリに `ORDER BY` 句がない場合はサポートされていません。
+`MaterializedView` エンジンのテーブルでは、`SELECT ... FROM merge_tree_table ORDER BY pk` のようなビューに対して最適化が機能します。ただし、ビュー定義のクエリに `ORDER BY` 句がない場合の `SELECT ... FROM view ORDER BY pk` のようなクエリではサポートされません。
 
-## ORDER BY Expr WITH FILL 修飾子 {#order-by-expr-with-fill-modifier}
 
-この修飾子は、[LIMIT ... WITH TIES 修飾子](/sql-reference/statements/select/limit#limit--with-ties-modifier) と組み合わせることもできます。
 
-`WITH FILL` 修飾子は、`ORDER BY expr` の後に、オプションの `FROM expr`、`TO expr`、および `STEP expr` パラメータを設定できます。
-`expr` カラムのすべての欠落値は順次補填され、他のカラムはデフォルトとして補填されます。
+## ORDER BY Expr WITH FILL 修飾子
 
-複数のカラムを補填するには、`ORDER BY` セクション内の各フィールド名の後にオプションのパラメータを伴う `WITH FILL` 修飾子を追加します。
+この修飾子は、[LIMIT ... WITH TIES 修飾子](/sql-reference/statements/select/limit#limit--with-ties-modifier)と組み合わせて使用することもできます。
+
+`WITH FILL` 修飾子は、`ORDER BY expr` の後に、オプションの `FROM expr`、`TO expr`、`STEP expr` パラメータと共に指定できます。
+`expr` 列の欠損しているすべての値が順番に補完され、その他の列はデフォルト値で補完されます。
+
+複数の列を補完するには、`ORDER BY` セクション内のそれぞれのカラム名の後に、オプションのパラメータ付きで `WITH FILL` 修飾子を追加します。
 
 ```sql
 ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_expr] [STALENESS const_numeric_expr], ... exprN [WITH FILL] [FROM expr] [TO expr] [STEP numeric_expr] [STALENESS numeric_expr]
 [INTERPOLATE [(col [AS expr], ... colN [AS exprN])]]
 ```
 
-`WITH FILL` は、数値（すべてのタイプの浮動小数点、10進数、整数）または日付/日付時刻の型のフィールドに適用できます。`String` フィールドに適用される場合、欠落値は空文字列で補填されます。
-`FROM const_expr` が定義されていない場合、補填の順序は `ORDER BY` からの最小 `expr` フィールド値を使用します。
-`TO const_expr` が定義されていない場合、補填の順序は `ORDER BY` からの最大 `expr` フィールド値を使用します。
-`STEP const_numeric_expr` が定義されると、`const_numeric_expr` は数値型に対してそのまま解釈され、日付型に対しては `days`、日付時刻型に対しては `seconds` として解釈されます。時間と日付の間隔を表す [INTERVAL](/sql-reference/data-types/special-data-types/interval/) データ型もサポートしています。
-`STEP const_numeric_expr` が省略されると、補填の順序には数値型に対しては `1.0`、日付型に対しては `1 day`、日付時刻型に対しては `1 second` が使用されます。
-`STALENESS const_numeric_expr` が定義されていると、前の行との違いが `const_numeric_expr` を超えるまでクエリは行を生成します。
-`INTERPOLATE` は `ORDER BY WITH FILL` に参加しないカラムに適用できます。そのようなカラムは、前のフィールド値に基づいて `expr` を適用して補填されます。`expr` が存在しない場合は前の値を繰り返します。省略されたリストにはすべての許可されているカラムが含まれます。
+`WITH FILL` は、Numeric 型（float、decimal、int などあらゆる数値型）または Date/DateTime 型のフィールドに適用できます。`String` フィールドに適用した場合、欠損値は空文字列で埋められます。
+`FROM const_expr` が定義されていない場合、補完に使用されるシーケンスは、`ORDER BY` 内の `expr` フィールドの最小値を使用します。
+`TO const_expr` が定義されていない場合、補完に使用されるシーケンスは、`ORDER BY` 内の `expr` フィールドの最大値を使用します。
+`STEP const_numeric_expr` が定義されている場合、数値型では `const_numeric_expr` はそのままの値として、Date 型では日数（`days`）として、DateTime 型では秒数（`seconds`）として解釈されます。また、時間および日付の間隔を表す [INTERVAL](/sql-reference/data-types/special-data-types/interval/) データ型もサポートします。
+`STEP const_numeric_expr` を省略した場合、補完に使用されるシーケンスは、数値型では `1.0`、Date 型では `1 day`、DateTime 型では `1 second` を使用します。
+`STALENESS const_numeric_expr` が定義されている場合、元データにおける直前の行との差分が `const_numeric_expr` を超えるまで、クエリは行を生成します。
+`INTERPOLATE` は `ORDER BY WITH FILL` に含まれていない列に適用できます。これらの列は、`expr` を適用して直前の行の値に基づいて埋められます。`expr` が存在しない場合は、直前の値がそのまま繰り返されます。列リストを省略すると、許可されているすべての列が含まれます。
 
-`WITH FILL` を使用しないクエリの例：
+`WITH FILL` を使用しないクエリの例:
 
 ```sql
 SELECT n, source FROM (
@@ -317,17 +328,17 @@ SELECT n, source FROM (
 ) ORDER BY n;
 ```
 
-結果：
+結果:
 
 ```text
 ┌─n─┬─source───┐
-│ 1 │ original │
-│ 4 │ original │
-│ 7 │ original │
+│ 1 │ 元データ │
+│ 4 │ 元データ │
+│ 7 │ 元データ │
 └───┴──────────┘
 ```
 
-`WITH FILL` 修飾子を適用した後の同じクエリ：
+`WITH FILL` 修飾子を適用したあとの同じクエリ：
 
 ```sql
 SELECT n, source FROM (
@@ -336,29 +347,29 @@ SELECT n, source FROM (
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-結果：
+結果:
 
 ```text
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
-│   1 │ original │
+│   1 │ オリジナル │
 │ 1.5 │          │
 │   2 │          │
 │ 2.5 │          │
 │   3 │          │
 │ 3.5 │          │
-│   4 │ original │
+│   4 │ オリジナル │
 │ 4.5 │          │
 │   5 │          │
 │ 5.5 │          │
-│   7 │ original │
+│   7 │ オリジナル │
 └─────┴──────────┘
 ```
 
-複数のフィールドがある場合 `ORDER BY field2 WITH FILL, field1 WITH FILL` の補填の順序は `ORDER BY` 句内のフィールドの順序に従います。
+フィールドが複数ある場合に `ORDER BY field2 WITH FILL, field1 WITH FILL` のように指定すると、WITH FILL による値の補完は `ORDER BY` 句内でのフィールドの指定順に従って行われます。
 
-例：
+例:
 
 ```sql
 SELECT
@@ -372,7 +383,8 @@ ORDER BY
     d1 WITH FILL STEP 5;
 ```
 
-結果：
+結果:
+
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
@@ -386,9 +398,9 @@ ORDER BY
 └────────────┴────────────┴──────────┘
 ```
 
-フィールド `d1` は補填されず、デフォルト値を使用します。これは、`d2` 値に対して繰り返された値がないため、`d1` の順序を正しく計算できないためです。
+フィールド `d1` は値が補完されず、デフォルト値も使用されません。これは、`d2` の値に重複がないために、`d1` のシーケンスを正しく計算できないためです。
 
-`ORDER BY` で変更されたフィールドを持つ以下のクエリ：
+次のクエリは、`ORDER BY` 句のフィールドを変更したものです。
 
 ```sql
 SELECT
@@ -406,23 +418,23 @@ ORDER BY
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ original │
+│ 1970-01-11 │ 1970-01-02 │ 元データ │
 │ 1970-01-16 │ 1970-01-01 │          │
 │ 1970-01-21 │ 1970-01-01 │          │
 │ 1970-01-26 │ 1970-01-01 │          │
 │ 1970-01-31 │ 1970-01-01 │          │
 │ 1970-02-05 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ original │
+│ 1970-02-10 │ 1970-01-05 │ 元データ │
 │ 1970-02-15 │ 1970-01-01 │          │
 │ 1970-02-20 │ 1970-01-01 │          │
 │ 1970-02-25 │ 1970-01-01 │          │
 │ 1970-03-02 │ 1970-01-01 │          │
 │ 1970-03-07 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ original │
+│ 1970-03-12 │ 1970-01-08 │ 元データ │
 └────────────┴────────────┴──────────┘
 ```
 
-以下のクエリは、カラム `d1` に対して1日間隔の `INTERVAL` データ型を使用して補填されます：
+次のクエリでは、列 `d1` に格納される各データに対して、1 日の `INTERVAL` 型を使用します。
 
 ```sql
 SELECT
@@ -436,10 +448,12 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-結果：
+
+結果:
+
 ```response
 ┌─────────d1─┬─────────d2─┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ original │
+│ 1970-01-11 │ 1970-01-02 │ 元データ │
 │ 1970-01-12 │ 1970-01-01 │          │
 │ 1970-01-13 │ 1970-01-01 │          │
 │ 1970-01-14 │ 1970-01-01 │          │
@@ -469,7 +483,7 @@ ORDER BY
 │ 1970-02-07 │ 1970-01-01 │          │
 │ 1970-02-08 │ 1970-01-01 │          │
 │ 1970-02-09 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ original │
+│ 1970-02-10 │ 1970-01-05 │ 元データ │
 │ 1970-02-11 │ 1970-01-01 │          │
 │ 1970-02-12 │ 1970-01-01 │          │
 │ 1970-02-13 │ 1970-01-01 │          │
@@ -499,11 +513,11 @@ ORDER BY
 │ 1970-03-09 │ 1970-01-01 │          │
 │ 1970-03-10 │ 1970-01-01 │          │
 │ 1970-03-11 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ original │
+│ 1970-03-12 │ 1970-01-08 │ 元データ │
 └────────────┴────────────┴──────────┘
 ```
 
-`STALENESS` を使用しないクエリの例：
+`STALENESS` を指定しないクエリの例:
 
 ```sql
 SELECT number AS key, 5 * number value, 'original' AS source
@@ -534,7 +548,7 @@ ORDER BY key WITH FILL;
     └─────┴───────┴──────────┘
 ```
 
-`STALENESS 3` を適用した後の同じクエリ：
+`STALENESS 3` を指定した場合の同じクエリ：
 
 ```sql
 SELECT number AS key, 5 * number value, 'original' AS source
@@ -546,31 +560,31 @@ ORDER BY key WITH FILL STALENESS 3;
 
 ```text
     ┌─key─┬─value─┬─source───┐
- 1. │   0 │     0 │ original │
+ 1. │   0 │     0 │ 元データ │
  2. │   1 │     0 │          │
  3. │   2 │     0 │          │
- 4. │   5 │    25 │ original │
+ 4. │   5 │    25 │ 元データ │
  5. │   6 │     0 │          │
  6. │   7 │     0 │          │
- 7. │  10 │    50 │ original │
+ 7. │  10 │    50 │ 元データ │
  8. │  11 │     0 │          │
  9. │  12 │     0 │          │
-10. │  15 │    75 │ original │
+10. │  15 │    75 │ 元データ │
 11. │  16 │     0 │          │
 12. │  17 │     0 │          │
     └─────┴───────┴──────────┘
 ```
 
-`INTERPOLATE` を使用しないクエリの例：
+`INTERPOLATE` を使用しないクエリ例:
 
 ```sql
 SELECT n, source, inter FROM (
-   SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
+   SELECT toFloat32(number % 10) AS n, '元データ' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-結果：
+結果:
 
 ```text
 ┌───n─┬─source───┬─inter─┐
@@ -590,7 +604,7 @@ SELECT n, source, inter FROM (
 └─────┴──────────┴───────┘
 ```
 
-`INTERPOLATE` を適用した後の同じクエリ：
+`INTERPOLATE` を適用後の同じクエリ：
 
 ```sql
 SELECT n, source, inter FROM (
@@ -600,6 +614,7 @@ SELECT n, source, inter FROM (
 ```
 
 結果：
+
 
 ```text
 ┌───n─┬─source───┬─inter─┐
@@ -619,10 +634,12 @@ SELECT n, source, inter FROM (
 └─────┴──────────┴───────┘
 ```
 
-## ソート接頭辞による補填 {#filling-grouped-by-sorting-prefix}
 
-特定のカラムで同じ値を持つ行を独立して補填することが有用な場合があります - 時系列の欠落値を補填する良い例です。
-次のような時系列テーブルを考えてみましょう：
+## ソートプレフィックス単位での補間
+
+特定のカラムで同じ値を持つ行ごとに、独立して補間を行うと便利な場合があります。代表的な例は、時系列データの欠損値を補間するケースです。
+次のような時系列テーブルがあるとします。
+
 ```sql
 CREATE TABLE timeseries
 (
@@ -641,8 +658,10 @@ SELECT * FROM timeseries;
 │       432 │ 2021-12-01 00:00:05.000 │     5 │
 └───────────┴─────────────────────────┴───────┘
 ```
-各センサーの欠落値を1秒の間隔で独立して補填したいとします。
-これを実現する方法は、`sensor_id` カラムを補填カラム `timestamp` のソート接頭辞として使用することです：
+
+そして、各センサーごとに独立して、1 秒間隔で欠損値を補完したいとします。
+これを実現するには、`timestamp` 列を補完する際に、`sensor_id` 列をソートキーの接頭辞として使用します。
+
 ```sql
 SELECT *
 FROM timeseries
@@ -664,9 +683,11 @@ INTERPOLATE ( value AS 9999 )
 │       432 │ 2021-12-01 00:00:05.000 │     5 │
 └───────────┴─────────────────────────┴───────┘
 ```
-ここでは、補填された行をより目立たせるために、`value` カラムを `9999` で補間しました。
-この動作は、`use_with_fill_by_sorting_prefix` を設定することで制御されます（デフォルトで有効になっています）。
+
+ここでは、`value` 列に `9999` を補間して、埋められた行がより目立つようにしています。
+この挙動は、`use_with_fill_by_sorting_prefix` の設定によって制御されます（デフォルトで有効です）。
+
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseでの時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- ブログ記事: [ClickHouse でタイムシリーズデータを扱う方法](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

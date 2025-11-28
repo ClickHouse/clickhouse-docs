@@ -1,51 +1,55 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nodejs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 5
-'description': 'Node.js SDK for ClickStack - The ClickHouse 可観察性スタック'
-'title': 'Node.js'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nodejs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 5
+description: 'ClickStack 用 Node.js SDK - ClickHouse オブザーバビリティ スタック'
+title: 'Node.js'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'ロギング', 'インテグレーション', 'アプリケーション監視']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStackは、テレメトリデータ（ログ、メトリクス、トレース、例外）を収集するためにOpenTelemetry標準を使用します。トレースは自動計測によって自動生成されるため、トレースから価値を得るために手動の計測は必要ありません。
+ClickStack は、テレメトリデータ（ログ、メトリクス、
+トレース、例外）を収集するために OpenTelemetry の標準を使用します。トレースは自動インストルメンテーションによって生成されるため、
+トレースから価値を得るために手動でインストルメンテーションを行う必要はありません。
 
-このガイドは以下を統合しています：
+このガイドでは次の内容を統合します:
 
-- **ログ**
-- **メトリクス**
-- **トレース**
-- **例外**
+* **ログ**
+* **メトリクス**
+* **トレース**
+* **例外**
+
 
 ## はじめに {#getting-started}
 
-### HyperDX OpenTelemetry計測パッケージのインストール {#install-hyperdx-opentelemetry-instrumentation-package}
+### HyperDX OpenTelemetry インストルメンテーションパッケージのインストール {#install-hyperdx-opentelemetry-instrumentation-package}
 
-以下のコマンドを使用して、[ClickStack OpenTelemetryパッケージ](https://www.npmjs.com/package/@hyperdx/node-opentelemetry)をインストールします。
+以下のコマンドを使用して、[ClickStack OpenTelemetry パッケージ](https://www.npmjs.com/package/@hyperdx/node-opentelemetry) をインストールします。
 
 <Tabs groupId="install">
 <TabItem value="npm" label="NPM" default>
 
-```shell
+```shell 
 npm install @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
-```shell
+```shell  
 yarn add @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 </Tabs>
 
-### SDKの初期化 {#initializin-the-sdk}
+### SDK の初期化 {#initializin-the-sdk}
 
-SDKを初期化するには、アプリケーションのエントリポイントの先頭で`init`関数を呼び出す必要があります。
+SDK を初期化するには、アプリケーションのエントリポイントの先頭で `init` 関数を呼び出す必要があります。
 
 <Tabs groupId="initialize">
 <TabItem value="require" label="require" default>
@@ -74,39 +78,40 @@ HyperDX.init({
 </TabItem>
 </Tabs>
 
-これにより、Node.jsアプリケーションからのトレース、メトリクス、およびログが自動的にキャプチャされます。
+これにより、Node.js アプリケーションからトレース、メトリクス、ログが自動的に収集されます。
 
-### ログ収集の設定 {#setup-log-collection}
+### ログ収集のセットアップ {#setup-log-collection}
 
-デフォルトでは、`console.*`ログが収集されます。`winston`や`pino`などのロガーを使用している場合は、ログをClickStackに送信するためにロガーにトランスポートを追加する必要があります。その他の種類のロガーを使用している場合は、[お問い合わせ](mailto:support@clickhouse.com)いただくか、適用可能であればプラットフォーム統合の1つ（例えば、[Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes)）を調査してください。
+デフォルトでは、`console.*` ログが収集されます。`winston` や `pino` などのロガーを使用している場合は、ログを ClickStack に送信するためのトランスポートをロガーに追加する必要があります。別の種類のロガーを使用している場合は、
+[お問い合わせ](mailto:support@clickhouse.com)いただくか、該当する場合は [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) などのプラットフォームインテグレーションを確認してください。
 
 <Tabs groupId="logging">
 <TabItem value="Winston" label="Winston" default>
 
-`winston`をロガーとして使用している場合は、ロガーに以下のトランスポートを追加する必要があります。
+ロガーとして `winston` を使用している場合は、次のトランスポートをロガーに追加する必要があります。
 
 ```typescript
-import winston from 'winston';
-import * as HyperDX from '@hyperdx/node-opentelemetry';
+    import winston from 'winston';
+    import * as HyperDX from '@hyperdx/node-opentelemetry';
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.Console(),
-    HyperDX.getWinstonTransport('info', { // Send logs info and above
-      detectResources: true,
-    }),
-  ],
-});
+    const logger = winston.createLogger({
+      level: 'info',
+      format: winston.format.json(),
+      transports: [
+        new winston.transports.Console(),
+        HyperDX.getWinstonTransport('info', { // info 以上のログを送信
+          detectResources: true,
+        }),
+      ],
+    });
 
-export default logger;
+    export default logger;
 ```
 
 </TabItem>
 <TabItem value="Pino" label="Pino">
 
-`pino`をロガーとして使用している場合は、ロガーに以下のトランスポートを追加し、トレースとログを関連付けるために`mixin`を指定する必要があります。
+ロガーとして `pino` を使用している場合は、次のトランスポートをロガーに追加し、ログをトレースと相関付けるために `mixin` を指定する必要があります。
 
 ```typescript
 import pino from 'pino';
@@ -116,7 +121,7 @@ const logger = pino(
     pino.transport({
     mixin: HyperDX.getPinoMixinFunction,
     targets: [
-        HyperDX.getPinoTransport('info', { // Send logs info and above
+        HyperDX.getPinoTransport('info', { // info 以上のログを送信
         detectResources: true,
         }),
     ],
@@ -129,23 +134,23 @@ export default logger;
 </TabItem>
 
 <TabItem value="console.log" label="console.log">
-デフォルトでは、`console.*`メソッドが標準でサポートされています。追加の設定は必要ありません。 
+デフォルトで `console.*` メソッドのログ収集がサポートされています。追加の設定は不要です。
 
-これを無効にするには、環境変数`HDX_NODE_CONSOLE_CAPTURE`を0に設定するか、`init`関数に`consoleCapture: false`を渡してください。
+これを無効にするには、環境変数 `HDX_NODE_CONSOLE_CAPTURE` を 0 に設定するか、`init` 関数に `consoleCapture: false` を渡してください。
 
 </TabItem>
 </Tabs>
 
-### エラー収集の設定 {#setup-error-collection}
+### エラー収集のセットアップ {#setup-error-collection}
 
-ClickStack SDKは、アプリケーション内で発生した未捕捉の例外やエラーを、スタックトレースとコードコンテキストを含めて自動的にキャプチャできます。
+ClickStack SDK を使用すると、アプリケーション内で捕捉されていない例外やエラーを、スタックトレースおよびコードコンテキストとともに自動的に収集できます。
 
-これを有効にするには、アプリケーションのエラーハンドリングミドルウェアの最後に以下のコードを追加するか、`recordException`関数を使用して手動で例外をキャプチャする必要があります。
+これを有効にするには、アプリケーションのエラー処理ミドルウェアの末尾に次のコードを追加するか、`recordException` 関数を使用して例外を手動で記録します。
 
 <Tabs groupId="setup">
 <TabItem value="Express" label="Express" default>
 
-```javascript
+```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
     apiKey: 'YOUR_INGESTION_API_KEY',
@@ -153,10 +158,10 @@ HyperDX.init({
 });
 const app = express();
 
-// Add your routes, etc.
+// ここにルートなどを追加します
 
-// Add this after all routes,
-// but before any and other error-handling middlewares are defined
+// すべてのルートを追加した後、
+// 他のエラー処理ミドルウェアが定義される前にこれを追加します
 HyperDX.setupExpressErrorHandler(app);
 
 app.listen(3000);
@@ -165,7 +170,7 @@ app.listen(3000);
 </TabItem>
 <TabItem value="Koa" label="Koa">
 
-```javascript
+```javascript 
 const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
@@ -179,7 +184,7 @@ const app = new Koa();
 
 HyperDX.setupKoaErrorHandler(app);
 
-// Add your routes, etc.
+// ここにルートなどを追加します
 
 app.listen(3030);
 ```
@@ -191,7 +196,7 @@ app.listen(3030);
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 function myErrorHandler(error, req, res, next) {
-    // This can be used anywhere in your application
+    // アプリケーション内のどこからでも使用できます
     HyperDX.recordException(error);
 }
 ```
@@ -199,39 +204,42 @@ function myErrorHandler(error, req, res, next) {
 </TabItem>
 </Tabs>
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング
 
-SDKに問題がある場合は、環境変数`OTEL_LOG_LEVEL`を`debug`に設定することで詳細ログを有効にできます。
+SDK で問題が発生している場合は、`OTEL_LOG_LEVEL` 環境変数を `debug` に設定することで詳細なログ出力を有効化できます。
 
 ```shell
 export OTEL_LOG_LEVEL=debug
 ```
 
-## 高度な計測構成 {#advanced-instrumentation-configuration}
 
-### コンソールログのキャプチャ {#capture-console-logs}
+## 高度な計装設定 {#advanced-instrumentation-configuration}
 
-デフォルトでは、ClickStack SDKはコンソールログをキャプチャします。これを無効にするには、環境変数`HDX_NODE_CONSOLE_CAPTURE`を0に設定します。
+### コンソールログのキャプチャ
+
+デフォルトでは、ClickStack SDK はコンソールログをキャプチャします。これを無効にするには、
+`HDX_NODE_CONSOLE_CAPTURE` 環境変数を 0 に設定してください。
 
 ```sh copy
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-### ユーザー情報またはメタデータの添付 {#attach-user-information-or-metadata}
 
-特定の属性や識別子（例：ユーザーIDまたはメール）に関連するすべてのイベントを簡単にタグ付けするには、`setTraceAttributes`関数を呼び出します。この関数を呼び出すと、宣言された属性で現在のトレースに関連するすべてのログ/spanがタグ付けされます。この関数は、リクエスト/トレース内でできるだけ早く呼び出すことをお勧めします（例：Expressミドルウェアスタックの早い段階で）。
+### ユーザー情報やメタデータを付与する
 
-これにより、すべてのログ/spanが適切な識別子で自動的にタグ付けされ、後で検索する際に便利になります。手動で識別子をタグ付けして伝播させる必要はありません。
+特定の属性や識別子（例: ユーザー ID やメールアドレス）に関連するすべてのイベントに簡単にタグ付けするには、`setTraceAttributes` 関数を呼び出します。この関数は、呼び出し以降の現在のトレースに関連するすべてのログやスパンに、指定した属性をタグとして付与します。この関数は、特定のリクエスト/トレース内で可能な限り早いタイミング（例: Express のミドルウェアスタックの先頭付近）で呼び出すことを推奨します。
 
-`userId`、`userEmail`、`userName`、および`teamName`は、セッションUIに対応する値を埋め込みますが、省略することもできます。その他の追加値も指定でき、イベントの検索に使用できます。
+これにより、識別子を自分で手動でタグ付けおよび伝播させる必要がなくなり、後から検索するために必要な識別子が、すべてのログやスパンに自動的にタグ付けされるようになります。
+
+`userId`、`userEmail`、`userName`、`teamName` は、対応する値を Sessions UI に表示するために利用されますが、必須ではありません。その他の任意の追加値も指定可能であり、イベント検索に利用できます。
 
 ```typescript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 app.use((req, res, next) => {
-  // Get user information from the request...
+  // リクエストからユーザー情報を取得...
 
-  // Attach user information to the current trace
+  // 現在のトレースにユーザー情報をアタッチ
   HyperDX.setTraceAttributes({
     userId,
     userEmail,
@@ -241,25 +249,34 @@ app.use((req, res, next) => {
 });
 ```
 
-トレース属性を有効にするには、環境変数`HDX_NODE_BETA_MODE`を1に設定するか、`init`関数に`betaMode: true`を渡してベータモードを有効にしてください。
+トレース属性を有効にするには、`HDX_NODE_BETA_MODE` 環境変数を 1 に設定するか、`init` 関数に `betaMode: true` を渡してベータモードを有効にしてください。
 
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
 
+
 ### Google Cloud Run {#google-cloud-run}
 
-Google Cloud Runでアプリケーションを実行している場合、Cloud Traceは自動的に受信リクエストにサンプリングヘッダーを挿入し、現在のインスタンスあたり0.1リクエスト/秒でトレースがサンプリングされます。
+アプリケーションを Google Cloud Run 上で実行している場合、Cloud Trace は
+受信リクエストに対して自動的にサンプリングヘッダーを付与し、
+各インスタンスごとに 1 秒あたり 0.1 リクエストのみが
+トレースとしてサンプリングされるように制限します。
 
-`@hyperdx/node-opentelemetry`パッケージは、デフォルトでサンプルレートを1.0に上書きします。
+`@hyperdx/node-opentelemetry` パッケージは、デフォルトでサンプルレートを
+1.0 に上書きします。
 
-この動作を変更するには、または他のOpenTelemetryインストールを構成するには、環境変数`OTEL_TRACES_SAMPLER=parentbased_always_on`および`OTEL_TRACES_SAMPLER_ARG=1`を手動で設定して同じ結果を得ることができます。
+この挙動を変更したい場合、あるいは他の OpenTelemetry のインストール環境を
+構成したい場合は、環境変数
+`OTEL_TRACES_SAMPLER=parentbased_always_on` と `OTEL_TRACES_SAMPLER_ARG=1`
+を手動で設定することで、同じ結果を得ることができます。
 
-詳細について、特定のリクエストのトレーシングを強制する方法については、[Google Cloud Runのドキュメント](https://cloud.google.com/run/docs/trace)を参照してください。
+詳細や特定のリクエストに対してトレースを強制する方法については、
+[Google Cloud Run ドキュメント](https://cloud.google.com/run/docs/trace) を参照してください。
 
-### 自動計測されたライブラリ {#auto-instrumented-libraries}
+### 自動インストルメント対象ライブラリ {#auto-instrumented-libraries}
 
-次のライブラリは、SDKによって自動的に計測された（トレースされた）ものです：
+次のライブラリは、SDK によって自動的にインストルメント（トレース）されます。
 
 - [`dns`](https://nodejs.org/dist/latest/docs/api/dns.html)
 - [`express`](https://www.npmjs.com/package/express)
@@ -279,21 +296,21 @@ Google Cloud Runでアプリケーションを実行している場合、Cloud T
 - [`redis`](https://www.npmjs.com/package/redis)
 - [`winston`](https://www.npmjs.com/package/winston)
 
-## 代替インストール {#alternative-installation}
+## 別のインストール方法 {#alternative-installation}
 
-### ClickStack OpenTelemetry CLIでアプリケーションを実行 {#run-the-application-with-cli}
+### ClickStack OpenTelemetry CLI を使用してアプリケーションを実行する {#run-the-application-with-cli}
 
-別の方法として、`opentelemetry-instrument` CLIを使用するか、Node.jsの`--require`フラグを使用して、コードの変更なしにアプリケーションを自動計測することができます。CLIインストールは、より広範な自動計測ライブラリやフレームワークを提供します。
+別の方法として、`opentelemetry-instrument` CLI を使用するか、Node.js の `--require` フラグを利用することで、コードを変更せずにアプリケーションを自動インストルメンテーションできます。CLI を使用すると、自動インストルメンテーションに対応した、より幅広いライブラリやフレームワークを利用できます。
 
 <Tabs groupId="cli">
-<TabItem value="npx" label="NPXを使用" default>
+<TabItem value="npx" label="NPX を使用する" default>
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
-<TabItem value="custom" label="カスタムエントリポイント（例：Nodemon、ts-nodeなど）">
+<TabItem value="custom" label="カスタムエントリーポイント（例: Nodemon, ts-node など）">
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
@@ -303,14 +320,14 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-no
 
 <TabItem value="code_import" label="コードインポート">
 
-```javascript
-// Import this at the very top of the first file loaded in your application
-// You'll still specify your API key via the `HYPERDX_API_KEY` environment variable
+```javascript 
+// アプリケーションで最初に読み込まれるファイルの先頭でこれをインポートします
+// API キーは `HYPERDX_API_KEY` 環境変数で指定します
 import { initSDK } from '@hyperdx/node-opentelemetry';
 
 initSDK({
-    consoleCapture: true, // optional, default: true
-    additionalInstrumentations: [], // optional, default: []
+    consoleCapture: true, // オプション、デフォルト: true
+    additionalInstrumentations: [], // オプション、デフォルト: []
 });
 ```
 
@@ -318,21 +335,22 @@ initSDK({
 
 </Tabs>
 
-_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリでサービスを識別するために使用されます。これは任意の名前を指定できます。_
+_`OTEL_SERVICE_NAME` 環境変数は HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
 
-### 例外キャプチャの有効化 {#enabling-exception-capturing}
+### 例外キャプチャの有効化
 
-未捕捉の例外キャプチャを有効にするには、環境変数`HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE`を1に設定する必要があります。
+未処理の例外キャプチャを有効にするには、環境変数 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` を 1 に設定してください。
 
 ```shell
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
-その後、Express、Koaから自動的に例外をキャプチャするか、手動で例外を捕まえるための指示に従ってください。[エラー収集の設定](#setup-error-collection)セクションを上記参照してください。
+その後、Express や Koa で発生した例外を自動的に収集したり、例外を手動で捕捉したりするには、上記の [Setup Error Collection](#setup-error-collection) セクションの手順に従ってください。
 
-### 自動計測されたライブラリ {#auto-instrumented-libraries-2}
 
-上記のインストール方法によって、次のライブラリが自動的に計測されます（トレースされます）：
+### 自動インストルメントされるライブラリ {#auto-instrumented-libraries-2}
+
+上記のインストール方法により、次のライブラリが自動的にインストルメント（トレース）されます：
 
 - [`amqplib`](https://www.npmjs.com/package/amqplib)
 - [`AWS Lambda Functions`](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)

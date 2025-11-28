@@ -6,7 +6,7 @@ import { DEFAULT_SEARCH_PARAMS, URL_CONFIG } from '../searchConstants';
  */
 export const createDocTypeFilters = (docTypes) => {
   if (!docTypes) return [];
-  
+
   const types = Array.isArray(docTypes) ? docTypes : [docTypes];
   return types.map(type => `doc_type:${type}`);
 };
@@ -33,13 +33,13 @@ export function mergeFacetFilters(f1, f2) {
 export function createSearchParameters(props, contextualSearch, contextualSearchFacetFilters, docTypes = null) {
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const docTypeFilters = createDocTypeFilters(docTypes);
-  
+
   let facetFilters = configFacetFilters;
-  
+
   if (contextualSearch) {
     facetFilters = mergeFacetFilters(contextualSearchFacetFilters, facetFilters);
   }
-  
+
   if (docTypeFilters.length > 0) {
     facetFilters = mergeFacetFilters(facetFilters, docTypeFilters);
   }
@@ -49,8 +49,8 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
     facetFilters,
     // Add doc_type to DocSearch's default attributesToRetrieve
     attributesToRetrieve: [
-      "hierarchy.lvl0","hierarchy.lvl1","hierarchy.lvl2","hierarchy.lvl3","hierarchy.lvl4","hierarchy.lvl5","hierarchy.lvl6",
-      "content","type","url","doc_type"
+      "hierarchy.lvl0", "hierarchy.lvl1", "hierarchy.lvl2", "hierarchy.lvl3", "hierarchy.lvl4", "hierarchy.lvl5", "hierarchy.lvl6",
+      "content", "type", "url", "doc_type"
     ],
     ...DEFAULT_SEARCH_PARAMS,
   };
@@ -86,21 +86,60 @@ export function createSearchNavigator(history, externalUrlRegex) {
  */
 export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
-  
+
   const baseTransform = (items) => items.map((item, index) => {
+    let url = item.url;
+
+    // Algolia stores full URLs like https://clickhouse.com/docs/jp/tutorial
+    // We need to extract just the path relative to the baseUrl
+    // For non-English locales, baseUrl is /docs/{locale}/, so we want /tutorial
+    // For English, baseUrl is /docs/, so we want /tutorial
+
+    try {
+      // Parse the URL to safely extract the pathname
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+
+      if (currentLocale !== 'en') {
+        // Remove /docs/{locale} prefix, keeping the leading slash
+        // e.g., /docs/jp/tutorial -> /tutorial
+        const prefix = `/docs/${currentLocale}`;
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      } else {
+        // Remove /docs prefix, keeping the leading slash
+        // e.g., /docs/tutorial -> /tutorial
+        const prefix = '/docs';
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      }
+    } catch (e) {
+      // If URL parsing fails, assume it's already a relative path
+      // and use the original transformation logic as fallback
+      if (currentLocale !== 'en') {
+        url = url.replace(`/docs/${currentLocale}/`, '/');
+      } else {
+        url = url.replace('/docs/', '/');
+      }
+    }
+
     const transformed = {
       ...item,
-      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE) 
-        ? processSearchResultUrl(item.url) 
-        : item.url,
+      url,
       index,
       queryID: queryIDRef.current
     };
-    
+
     return transformed;
   });
 
   const result = transformItems ? transformItems(items) : baseTransform(items);
-  
+
   return result;
 }

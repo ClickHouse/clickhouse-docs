@@ -1,15 +1,16 @@
 ---
-'description': 'Вычисляет квантиль гистограммы, используя линейную интерполяцию.'
-'sidebar_position': 364
-'slug': '/sql-reference/aggregate-functions/reference/quantilePrometheusHistogram'
-'title': 'quantilePrometheusHistogram'
-'doc_type': 'reference'
+description: 'Вычисляет квантиль гистограммы с использованием линейной интерполяции.'
+sidebar_position: 364
+slug: /sql-reference/aggregate-functions/reference/quantilePrometheusHistogram
+title: 'quantilePrometheusHistogram'
+doc_type: 'reference'
 ---
+
 # quantilePrometheusHistogram
 
-Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) гистограммы с использованием линейной интерполяции, учитывая кумулятивное значение и верхние границы каждого ведра гистограммы.
+Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) гистограммы с использованием линейной интерполяции с учётом накопленного значения и верхних границ каждого интервала (бакета) гистограммы.
 
-Чтобы получить интерполированное значение, все переданные значения объединяются в массив, который затем сортируется по соответствующим значениям верхней границы ведра. Интерполяция квантиля выполняется аналогично функции PromQL [histogram_quantile()](https://prometheus.io/docs/prometheus/latest/querying/functions/#histogram_quantile) на классической гистограмме, выполняя линейную интерполяцию с использованием нижней и верхней границы ведра, в котором находится позиция квантиля.
+Для получения интерполированного значения все переданные значения объединяются в массив, который затем сортируется по соответствующим верхним границам бакетов. После этого интерполяция квантили выполняется аналогично функции PromQL [histogram&#95;quantile()](https://prometheus.io/docs/prometheus/latest/querying/functions/#histogram_quantile) для классической гистограммы: выполняется линейная интерполяция, используя нижнюю и верхнюю границы бакета, в котором находится позиция квантили.
 
 **Синтаксис**
 
@@ -19,23 +20,23 @@ quantilePrometheusHistogram(level)(bucket_upper_bound, cumulative_bucket_value)
 
 **Аргументы**
 
-- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей точкой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: `0.5`. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+* `level` — уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: `0.5`. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
 
-- `bucket_upper_bound` — Верхние границы ведер гистограммы.
+* `bucket_upper_bound` — верхние границы бакетов гистограммы.
 
-  - У самого высокого ведра должна быть верхняя граница `+Inf`.
+  * Верхний (последний) бакет должен иметь верхнюю границу `+Inf`.
 
-- `cumulative_bucket_value` — Кумулятивные [UInt](../../../sql-reference/data-types/int-uint) или [Float64](../../../sql-reference/data-types/float.md) значения ведер гистограммы.
+* `cumulative_bucket_value` — накопительные значения типа [UInt](../../../sql-reference/data-types/int-uint) или [Float64](../../../sql-reference/data-types/float.md) для бакетов гистограммы.
 
-  - Значения должны возрастать монотонно по мере увеличения верхней границы ведра.
+  * Значения должны монотонно возрастать по мере увеличения верхней границы бакета.
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+* Квантиль заданного уровня.
 
 Тип:
 
-- `Float64`.
+* `Float64`.
 
 **Пример**
 
@@ -60,5 +61,5 @@ quantilePrometheusHistogram(level)(bucket_upper_bound, cumulative_bucket_value)
 
 **См. также**
 
-- [медиана](/sql-reference/aggregate-functions/reference/median)
-- [квантили](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

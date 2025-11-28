@@ -1,0 +1,47 @@
+---
+title: 一般的な RBAC クエリ
+description: "ユーザーに特定の権限を付与する際に役立つクエリ。"
+date: 2023-09-28
+tags: ['セキュリティと認証', 'Cloud 管理']
+keywords: ['RBAC', 'クエリ']
+---
+
+{frontMatter.description}
+
+{/* 切り捨て */}
+
+
+## はじめに \{#introduction\}
+
+以下は、ユーザーに特定の権限を付与するためによく使用されるクエリです。
+
+## 現在のユーザーと同じ権限を別のユーザーに付与するには？
+
+```sql
+GRANT CURRENT GRANTS ON *.* TO another_user;
+```
+
+
+## 現在のユーザーに付与されている権限に基づいて、別のユーザーに特定の権限を付与するにはどうすればよいですか？
+
+次の例では、`another_user` は現在のユーザーがアクセス可能なすべてのデータベースおよびテーブルに対して `SELECT` クエリを実行できるようになります。
+
+```sql
+GRANT CURRENT GRANTS(SELECT ON *.*) TO another_user;
+```
+
+
+## 現在のユーザーに付与されている権限に基づいて、特定のデータベースに対する特定の権限をユーザーに付与するにはどうすればよいですか？
+
+次の例では、`another_user` は `my_database` 内のすべてのテーブルに対して `INSERT` 文を実行できるようになります。
+
+```sql
+GRANT INSERT ON my_database.* TO another_user;
+```
+
+
+## デフォルトユーザーと同じ権限を特定ユーザーにすべて付与するにはどうすればよいですか？
+
+```sql
+GRANT default_role TO another_user;
+```

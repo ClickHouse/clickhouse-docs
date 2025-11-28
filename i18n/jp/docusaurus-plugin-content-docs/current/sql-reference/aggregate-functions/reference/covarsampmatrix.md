@@ -1,15 +1,14 @@
 ---
-'description': 'N個の変数に対するサンプル共分散行列を返します。'
-'sidebar_position': 125
-'slug': '/sql-reference/aggregate-functions/reference/covarsampmatrix'
-'title': 'covarSampMatrix'
-'doc_type': 'reference'
+description: 'N個の変数の標本共分散行列を返します。'
+sidebar_position: 125
+slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
+title: 'covarSampMatrix'
+doc_type: 'reference'
 ---
-
 
 # covarSampMatrix
 
-N変数に対するサンプル共分散行列を返します。
+N 個の変数からなる標本共分散行列を返します。
 
 **構文**
 
@@ -19,11 +18,11 @@ covarSampMatrix(x[, ...])
 
 **引数**
 
-- `x` — 可変数のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 可変個のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- サンプル共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+* 標本共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **例**
 
@@ -47,7 +46,7 @@ SELECT arrayMap(x -> round(x, 3), arrayJoin(covarSampMatrix(a, b, c, d))) AS cov
 FROM test;
 ```
 
-結果:
+結果：
 
 ```reference
    ┌─covarSampMatrix─────────────┐

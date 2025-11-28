@@ -1,14 +1,12 @@
 ---
-'alias': []
-'description': 'Hash 格式的文档'
-'input_format': false
-'keywords':
-- 'hash'
-- 'format'
-'output_format': true
-'slug': '/interfaces/formats/Hash'
-'title': 'Hash'
-'doc_type': 'reference'
+alias: []
+description: 'Hash 格式的文档'
+input_format: false
+keywords: ['hash', 'format']
+output_format: true
+slug: /interfaces/formats/Hash
+title: 'Hash'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -17,14 +15,14 @@
 
 ## 描述 {#description}
 
-`Hash` 输出格式为结果的所有列和行计算单个哈希值。
-这对于计算结果的“指纹”非常有用，例如在数据传输成为瓶颈的情况下。
+`Hash` 输出格式会为结果中的所有列和行计算一个单个哈希值。
+这在数据传输成为瓶颈的场景中，对于计算结果的“指纹”非常有用。
 
 ## 示例用法 {#example-usage}
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-考虑一个名为 `football` 的表，包含以下数据：
+假设有一张名为 `football` 的表，包含如下数据：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -48,7 +46,7 @@
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-使用 `Hash` 格式读取数据：
+以 `Hash` 格式读取数据：
 
 ```sql
 SELECT *
@@ -56,12 +54,13 @@ FROM football
 FORMAT Hash
 ```
 
-查询将处理数据，但不会输出任何内容。
+此查询将处理数据，但不会产生任何输出。
 
 ```response
 df2ec2f0669b000edff6adee264e7d68
 
-1 rows in set. Elapsed: 0.154 sec.
+返回 1 行。用时：0.154 秒。
 ```
+
 
 ## 格式设置 {#format-settings}

@@ -1,14 +1,9 @@
 ---
-'slug': '/shards'
-'title': '表分片和副本'
-'description': '在 ClickHouse 中，表分片和副本是什么'
-'keywords':
-- 'shard'
-- 'shards'
-- 'sharding'
-- 'replica'
-- 'replicas'
-'doc_type': 'guide'
+slug: /shards
+title: '表分片和副本'
+description: '什么是 ClickHouse 中的表分片和副本'
+keywords: ['分片', '分片机制', '分片（sharding）', '副本', '副本机制']
+doc_type: 'guide'
 ---
 
 import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
@@ -18,30 +13,32 @@ import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.
 import image_05 from '@site/static/images/managing-data/core-concepts/shards_replicas_01.png'
 import Image from '@theme/IdealImage';
 
-<br/>
+<br />
+
 :::note
-此主题不适用于 ClickHouse Cloud，在这里，[Parallel Replicas](/docs/deployment-guides/parallel-replicas) 类似于传统无共享 ClickHouse 集群中的多个分片，而对象存储则[替代](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) 副本，以确保高可用性和容错性。
+本主题不适用于 ClickHouse Cloud：在 ClickHouse Cloud 中，[Parallel Replicas](/docs/deployment-guides/parallel-replicas) 的作用类似于传统无共享架构 ClickHouse 集群中的多个分片，而对象存储则[替代](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability)副本，以确保高可用性和容错能力。
 :::
 
-## ClickHouse 中的表分片是什么？ {#what-are-table-shards-in-clickhouse}
 
-在传统的 [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse 集群中，当 ① 数据对于单个服务器来说过大或 ② 单个服务器处理数据过慢时，会使用分片。下图展示了案例 ①，`[uk_price_paid_simple](/parts)` 表的数据超出了单台机器的容量：
+## ClickHouse 中的表分片是什么？ \{#what-are-table-shards-in-clickhouse\}
 
-<Image img={image_01} size="lg" alt='SHARDS'/>
+在传统的 [无共享（shared-nothing）](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse 集群中，当满足以下两种情况之一时会采用分片：① 数据量对单个服务器来说过大，② 单个服务器处理数据过慢。下图展示的是情形 ①： [uk_price_paid_simple](/parts) 表的数据量超过了单机的容量：
 
-<br/>
-
-在这种情况下，数据可以以表分片的形式分布在多个 ClickHouse 服务器上：
-
-<Image img={image_02} size="lg" alt='SHARDS'/>
+<Image img={image_01} size="lg" alt="分片"/>
 
 <br/>
 
-每个 ^^shard^^ 保留数据的一个子集，并作为一个常规的 ClickHouse 表独立查询。然而，查询只会处理该子集，这可能取决于数据分布的有效用例。通常，一个 [distributed table](/docs/engines/table-engines/special/distributed)（通常按服务器）提供对整个数据集的统一视图。它本身不存储数据，而是将 **SELECT** 查询转发给所有分片，汇总结果并将 **INSERT** 路由，以便均匀分配数据。
+在这种情况下，可以将数据以表分片的形式拆分到多个 ClickHouse 服务器上：
 
-## 分布式表创建 {#distributed-table-creation}
+<Image img={image_02} size="lg" alt="分片"/>
 
-为了说明 **SELECT** 查询转发和 **INSERT** 路由，我们考虑在两个 ClickHouse 服务器上分拆的 [What are table parts](/parts) 示例表。首先，我们展示创建相应的 **^^Distributed table^^** 的 DDL 语句：
+<br/>
+
+每个 ^^分片（shard）^^ 持有数据的一个子集，并作为一个常规的 ClickHouse 表，可以被独立查询。不过，此类查询只会处理该子集；根据数据分布情况，这在某些场景下是可以接受的。通常，会使用一个[分布式表](/docs/engines/table-engines/special/distributed)（通常每台服务器一个）来提供整个数据集的统一视图。分布式表本身不存储数据，而是将 **SELECT** 查询转发到所有分片，汇总结果，并将 **INSERT** 请求路由到各分片以实现数据的均匀分布。
+
+## Distributed 表创建
+
+为了演示 **SELECT** 查询转发和 **INSERT** 路由，我们以上文 [What are table parts](/parts) 中的示例表为例，该表被拆分为位于两台 ClickHouse 服务器上的两个分片。首先，我们给出在此基础上创建相应 **^^Distributed 表^^** 的 DDL 语句：
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
@@ -54,66 +51,67 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 ```
 
-`ON CLUSTER` 子句使 DDL 语句成为 [distributed DDL statement](/docs/sql-reference/distributed-ddl)，指示 ClickHouse 在 `test_cluster` [集群定义](/architecture/replication/#configure-clickhouse-servers) 列出的所有服务器上创建表。分布式 DDL 需要 [Keeper](https://clickhouse.com/clickhouse/keeper) 组件在 [集群架构](/architecture/horizontal-scaling) 中。
+`ON CLUSTER` 子句会将该 DDL 语句变为[分布式 DDL 语句](/docs/sql-reference/distributed-ddl)，并指示 ClickHouse 在 `test_cluster` 的[集群定义](/architecture/replication/#configure-clickhouse-servers)中列出的所有服务器上创建该表。分布式 DDL 需要在[集群架构](/architecture/horizontal-scaling)中额外部署一个 [Keeper](https://clickhouse.com/clickhouse/keeper) 组件。
 
-对于 [distributed engine parameters](/docs/engines/table-engines/special/distributed#distributed-parameters)，我们指定 ^^cluster^^ 名称（`test_cluster`）、目标分片表的数据库名称（`uk`）、目标分片表的名称（`uk_price_paid_simple`）和 **sharding key** 用于 INSERT 路由。在这个示例中，我们使用 [rand](/sql-reference/functions/random-functions#rand) 函数随机分配行到分片。然而，任何表达式——甚至复杂表达式——都可以用作分片键，这取决于用例。下一节将说明 INSERT 路由的工作原理。
+对于[Distributed 引擎的参数](/docs/engines/table-engines/special/distributed#distributed-parameters)，我们需要指定 ^^集群^^ 名称（`test_cluster`）、分片目标表所在的数据库名（`uk`）、分片目标表的名称（`uk_price_paid_simple`），以及用于 INSERT 路由的 **分片键（sharding key）**。在本示例中，我们使用 [rand](/sql-reference/functions/random-functions#rand) 函数将行随机分配到各个分片。不过，依据具体使用场景，任何表达式——即使是复杂表达式——都可以用作分片键。下一节将演示 INSERT 路由的工作方式。
 
-## INSERT 路由 {#insert-routing}
 
-下图展示了在 ClickHouse 中插入 ^^distributed table^^ 如何处理：
+## INSERT 路由 \{#insert-routing\}
+
+下图展示了在 ClickHouse 中，对 ^^分布式表^^ 执行 INSERT 时的处理过程：
 
 <Image img={image_03} size="lg" alt='SHARDS'/>
 
 <br/>
 
-① 目标 ^^distributed table^^ 的 INSERT（单行）被发送到托管该表的 ClickHouse 服务器，可以直接发送或通过负载均衡器。
+① 将一条针对 ^^分布式表^^ 的 INSERT（本例中仅包含一行）发送到托管该表的 ClickHouse 服务器，可以直接发送，也可以通过负载均衡器转发。
 
-② 对于 INSERT 中的每一行（在我们的示例中只有一行），ClickHouse 评估分片键（这里是 rand()），并将结果对 ^^shard^^ 服务器的数量取模，并以此作为目标服务器 ID（ID 从 0 开始并增加 1）。然后，该行被转发并 ③ 插入到相应服务器的表 ^^shard^^ 中。
+② 对于 INSERT 中的每一行（本例中只有一行），ClickHouse 计算分片键（此处为 `rand()`），将结果对 ^^shard^^ 服务器的数量取模，并将其作为目标服务器 ID（ID 从 0 开始，依次递增）。然后将该行转发到对应服务器，并在该服务器上的表 ^^shard^^ 中③执行插入。
 
-下一节将解释 SELECT 转发的工作原理。
+下一节将说明 SELECT 转发的工作方式。
 
-## SELECT 转发 {#select-forwarding}
+## SELECT 转发 \{#select-forwarding\}
 
-下图展示了如何在 ClickHouse 中使用 ^^distributed table^^ 处理 SELECT 查询：
+下图展示了在 ClickHouse 中使用 ^^分布式表^^ 处理 SELECT 查询的过程：
 
-<Image img={image_04} size="lg" alt='SHARDS'/>
-
-<br/>
-
-① 针对 ^^distributed table^^ 的 SELECT 聚合查询被发送到相应的 ClickHouse 服务器，可以直接发送或通过负载均衡器。
-
-② ^^Distributed table^^ 将查询转发给所有托管目标表分片的服务器，每个 ClickHouse 服务器并行计算其本地聚合结果。
-
-然后，托管最初目标的 ^^distributed table^^ 的 ClickHouse 服务器 ③ 收集所有本地结果， ④ 将它们合并为最终的全局结果，并 ⑤ 返回给查询发送方。
-
-## ClickHouse 中的表副本是什么？ {#what-are-table-replicas-in-clickhouse}
-
-ClickHouse 中的复制确保 **数据完整性** 和 **故障转移**，通过在多台服务器上维护 **^^shard^^ 数据的副本**。由于硬件故障是不可避免的，复制通过确保每个 ^^shard^^ 有多个副本来防止数据丢失。写入可以直接或通过 [distributed table](#distributed-table-creation) 定向到任何 ^^replica^^，该表选择用于该操作的 ^^replica^^。更改会自动传播到其他副本。遇到故障或维护时，数据仍然可以在其他副本上访问，一旦故障主机恢复，它会自动同步以保持更新。
-
-请注意，复制在 [集群架构](/architecture/horizontal-scaling) 中需要一个 [Keeper](https://clickhouse.com/clickhouse/keeper) 组件。
-
-下图展示了一个包含六台服务器的 ClickHouse ^^cluster^^，之前介绍的两个表分片 `Shard-1` 和 `Shard-2` 每个都有三个副本。查询被发送到该 ^^cluster^^：
-
-<Image img={image_05} size="lg" alt='SHARDS'/>
+<Image img={image_04} size="lg" alt='SHARDS（分片）'/>
 
 <br/>
 
-查询处理的工作方式与没有副本的设置相似，只有每个 ^^shard^^ 的单个 ^^replica^^ 执行查询。
+① 指向 ^^分布式表^^ 的 SELECT 聚合查询被发送到相应的 ClickHouse 服务器，可以直接发送，也可以通过负载均衡器转发。
 
-> 副本不仅确保数据完整性和故障转移，还通过允许多个查询在不同副本上并行运行来提高查询处理吞吐量。
+② ^^分布式表^^ 将查询转发到所有承载目标表分片的服务器，在这些服务器上，每个 ClickHouse 服务器会**并行**计算其本地聚合结果。
 
-① 目标 ^^distributed table^^ 的查询被发送到相应的 ClickHouse 服务器，可以直接发送或通过负载均衡器。
+然后，由最初接收到该查询并承载目标 ^^分布式表^^ 的 ClickHouse 服务器 ③ 收集所有本地结果，④ 将其合并为最终的全局结果，并在 ⑤ 将其返回给查询发起方。
 
-② ^^Distributed table^^ 将查询转发给每个 ^^shard^^ 的一个 ^^replica^^，每个托管所选 ^^replica^^ 的 ClickHouse 服务器并行计算其本地查询结果。
+## ClickHouse 中的表副本是什么？ \{#what-are-table-replicas-in-clickhouse\}
 
-其余部分的工作与没有副本的设置 [相同](#select-forwarding)，并在上图中未显示。托管最初目标的 ^^distributed table^^ 的 ClickHouse 服务器收集所有本地结果，将它们合并为最终的全局结果，并将结果返回给查询发送方。
+ClickHouse 中的复制通过在多个服务器之间维护 **^^shard^^ 数据的副本** 来确保**数据完整性**和**故障切换**。由于硬件故障不可避免，复制通过确保每个 ^^shard^^ 都有多个副本来防止数据丢失。写入可以直接发送到任意 ^^replica^^，也可以通过[分布式表](#distributed-table-creation)发送，由该分布式表为此次操作选择具体的 ^^replica^^。变更会自动传播到其他副本。在发生故障或维护时，数据仍可在其他副本上访问，而一旦故障主机恢复，它会自动完成同步以保持最新状态。
 
-请注意，ClickHouse 允许为 ② 配置查询转发策略。默认情况下——与上图不同——如果可用，^^distributed table^^ [更倾向于](/docs/operations/settings/settings#prefer_localhost_replica) 本地 ^^replica^^，但可以使用其他负载均衡的 [策略](/docs/operations/settings/settings#load_balancing)。
+请注意，复制需要在[集群架构](/architecture/horizontal-scaling)中部署 [Keeper](https://clickhouse.com/clickhouse/keeper) 组件。
 
-## 哪里可以找到更多信息 {#where-to-find-more-information}
+下图展示了一个包含六台服务器的 ClickHouse ^^cluster^^，其中前面介绍的两个表分片 `Shard-1` 和 `Shard-2` 各有三个副本。一个查询被发送到该 ^^cluster^^：
 
-有关表分片和副本的更多细节，除了这个高层次的介绍，请查看我们的 [部署和扩展指南](/docs/architecture/horizontal-scaling)。
+<Image img={image_05} size="lg" alt='分片（SHARDS）'/>
 
-我们还强烈推荐这个教程视频，以深入了解 ClickHouse 的分片和副本：
+<br/>
+
+查询处理方式与无副本的部署类似，只是每个 ^^shard^^ 中仅有一个 ^^replica^^ 会执行该查询。
+
+> 副本不仅确保数据完整性和故障切换，还通过允许在不同副本上并行运行多个查询来提升查询处理吞吐量。
+
+① 目标为 ^^distributed table^^ 的查询被发送到相应的 ClickHouse 服务器，可以直接发送，或通过负载均衡器转发。
+
+② ^^Distributed table^^ 将查询转发到每个 ^^shard^^ 的一个 ^^replica^^，每个托管被选中 ^^replica^^ 的 ClickHouse 服务器并行计算其本地查询结果。
+
+其余处理与无副本部署时的[流程](#select-forwarding)相同，且未在上图中展示。托管最初被访问的 ^^distributed table^^ 的 ClickHouse 服务器会收集所有本地结果，将其合并为最终的全局结果，并将其返回给查询发起方。
+
+请注意，ClickHouse 允许为步骤 ② 配置查询转发策略。默认情况下——与上图不同——如果本地 ^^replica^^ 可用，则 ^^distributed table^^ 会[优先选择本地副本](/docs/operations/settings/settings#prefer_localhost_replica)，但也可以使用其他[负载均衡策略](/docs/operations/settings/settings#load_balancing)。
+
+## 在哪里可以找到更多信息 \{#where-to-find-more-information\}
+
+如需在本高层概述之外进一步了解表分片和副本，请参阅我们的[部署与扩展指南](/docs/architecture/horizontal-scaling)。
+
+我们也强烈推荐观看以下教程视频，以更深入地了解 ClickHouse 的分片和副本：
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

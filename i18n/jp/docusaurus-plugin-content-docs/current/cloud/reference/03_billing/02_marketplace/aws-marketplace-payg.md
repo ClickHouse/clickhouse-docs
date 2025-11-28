@@ -1,13 +1,9 @@
 ---
-'slug': '/cloud/billing/marketplace/aws-marketplace-payg'
-'title': 'AWS Marketplace PAYG'
-'description': 'AWS Marketplace (PAYG) を通じて ClickHouse Cloud にサブスクライブします。'
-'keywords':
-- 'aws'
-- 'marketplace'
-- 'billing'
-- 'PAYG'
-'doc_type': 'guide'
+slug: /cloud/billing/marketplace/aws-marketplace-payg
+title: 'AWS Marketplace の従量課金 (PAYG)'
+description: 'AWS Marketplace（PAYG 従量課金）経由で ClickHouse Cloud に登録します。'
+keywords: ['aws', 'marketplace', 'billing', 'PAYG']
+doc_type: 'guide'
 ---
 
 import aws_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-1.png';
@@ -19,123 +15,96 @@ import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-7.png';
 import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-8.png';
 import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
-import aws_marketplace_payg_10 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-10.png';
-import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
-import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-12.png';
 import Image from '@theme/IdealImage';
 
-Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
+PAYG（従量課金制）のパブリックオファーを利用して、[AWS Marketplace](https://aws.amazon.com/marketplace) から ClickHouse Cloud の利用を開始しましょう。
 
-## Prerequisites {#prerequisites}
 
-- 購入権限が付与されたAWSアカウントが必要です（請求管理者により設定されます）。
-- 購入するには、このアカウントでAWSマーケットプレイスにログインしている必要があります。
+## 前提条件 {#prerequisites}
 
-## Steps to sign up {#steps-to-sign-up}
+- 課金管理者によって購入権限が付与されている AWS アカウント。
+- 購入するには、そのアカウントで AWS Marketplace にログインしている必要があります。
+- サブスクリプションに ClickHouse の組織を接続するには、その組織の管理者である必要があります。
 
-1. [AWS Marketplace](https://aws.amazon.com/marketplace)にアクセスし、ClickHouse Cloudを検索します。
+:::note
+1 つの AWS アカウントは、「ClickHouse Cloud - Pay As You Go」サブスクリプション 1 件のみに登録でき、そのサブスクリプションは 1 つの ClickHouse 組織にのみリンクできます。
+:::
 
-<br />
 
-<Image img={aws_marketplace_payg_1} size="md" alt="AWS Marketplace home page" border/>
 
-<br />
+## サインアップ手順 {#steps-to-sign-up}
 
-2. [リスティング](https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)をクリックし、次に**購入オプションを表示**を選択します。
+<VerticalStepper headerLevel="h3">
 
-<br />
+### ClickHouse Cloud - Pay As You Go を検索する {#search-payg}
 
-<Image img={aws_marketplace_payg_2} size="md" alt="AWS Marketplace search for ClickHouse" border/>
+[AWS Marketplace](https://aws.amazon.com/marketplace) にアクセスし、「ClickHouse Cloud - Pay As You Go」を検索します。
 
-<br />
+<Image img={aws_marketplace_payg_1} alt="ClickHouse を検索している AWS Marketplace" border/>
 
-3. 次の画面で契約を設定します：
-- **契約の期間** - PAYG契約は月ごとの契約です。
-- **更新設定** - 契約を自動更新するかどうかを設定できます。
-契約を毎月自動更新に設定することを強くお勧めします。ただし、自動更新を有効にしない場合、組織は請求サイクルの終わりに自動的に猶予期間に入り、その後廃止されます。
+### 購入オプションを表示する {#purchase-options}
 
-- **契約オプション** - このテキストボックスに任意の数（もしくは1を入力）できます。この数は、公共オファーに対して支払う価格には影響しません。これらのユニットは通常、ClickHouse Cloudからのプライベートオファーを受け入れるときに使用されます。
+[リスティング](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu) をクリックし、続いて **View purchase options** をクリックします。
 
-- **購入注文** - これはオプションであり、無視してもかまいません。
+<Image img={aws_marketplace_payg_2} alt="AWS Marketplace の購入オプション表示画面" border/>
 
-<br />
+### 購読する {#subscribe}
 
-<Image img={aws_marketplace_payg_3} size="md" alt="AWS Marketplace configure contract" border/>
+次の画面で、**Subscribe** をクリックします。
 
-<br />
+:::note
+**Purchase order (PO) number** は任意入力のため、省略してかまいません。
+:::
 
-上記の情報を入力したら、**契約を作成**をクリックします。表示されている契約価格がゼロドルであることを確認でき、つまり支払いが不要で、使用量に基づいて料金が発生することになります。
+<Image img={aws_marketplace_payg_3} alt="AWS Marketplace の購読画面" border/>
 
-<br />
+### アカウントをセットアップする {#set-up-your-account}
 
-<Image img={aws_marketplace_payg_4} size="md" alt="AWS Marketplace confirm contract" border/>
+この時点ではセットアップは完了しておらず、まだ ClickHouse Cloud 組織の請求は AWS Marketplace 経由になっていないことに注意してください。Marketplace のサブスクリプション画面で **Set up your account** をクリックし、ClickHouse Cloud にリダイレクトしてセットアップを完了させる必要があります。
 
-<br />
+<Image img={aws_marketplace_payg_4} alt="アカウントのセットアップ" border/>
 
-4. **契約を作成**をクリックすると、確認と支払い（$0の支払い）が求められるモーダルが表示されます。
+ClickHouse Cloud にリダイレクトされたら、既存アカウントでログインするか、新しいアカウントを登録できます。ClickHouse Cloud 組織を AWS Marketplace の課金に紐付けるために、このステップは非常に重要です。
 
-5. **今すぐ支払う**をクリックすると、AWSマーケットプレイスの提供に対して現在購読しているという確認が表示されます。
+:::note[新規 ClickHouse Cloud ユーザー]
+ClickHouse Cloud を初めて利用する場合は、以下の手順に従ってください。
+:::
 
-<br />
+<details>
+<summary><strong>新規ユーザー向けの手順</strong></summary>
 
-<Image img={aws_marketplace_payg_5} size="md" alt="AWS Marketplace payment confirmation" border/>
+ClickHouse Cloud を初めて利用する場合は、ページ下部の **Register** をクリックします。新規ユーザーの作成とメールアドレスの確認を求められます。メールアドレスを確認したら、ClickHouse Cloud のログインページは閉じてかまいません。https://console.clickhouse.cloud にアクセスし、新しく作成したユーザー名でログインします。
 
-<br />
+<Image img={aws_marketplace_payg_5} size="md" alt="ClickHouse Cloud のサインアップ"/>
 
-6. この時点で設定はまだ完了していないことに注意してください。**アカウントを設定する**をクリックしてClickHouse Cloudにリダイレクトし、ClickHouse Cloudにサインアップする必要があります。
+:::note[新規ユーザー]
+ビジネスに関する基本的な情報も入力する必要があります。以下のスクリーンショットを参照してください。
+:::
 
-7. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントで登録します。このステップは非常に重要で、あなたのClickHouse Cloud組織をAWSマーケットプレイスの請求に結びつけるために必要です。
+<Image img={aws_marketplace_payg_6} size="md" alt="開始前の入力画面"/>
 
-<br />
+<Image img={aws_marketplace_payg_7} size="md" alt="開始前の入力画面（続き）"/>
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
+</details>
 
-<br />
+すでに ClickHouse Cloud を利用している場合は、既存の認証情報を使用してログインするだけでかまいません。
 
-新しいClickHouse Cloudユーザーである場合は、ページの下部で**登録**をクリックします。新しいユーザーの作成とメールの確認を求められます。メールを確認した後、ClickHouse Cloudのログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
+### Marketplace サブスクリプションを Organization に追加する {#add-marketplace-subscription}
 
-<br />
+正常にログインしたら、この Marketplace サブスクリプションで課金する新しい Organization を作成するか、このサブスクリプションに紐付けて課金する既存の Organization を選択します。 
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Marketplace サブスクリプションの追加" border/>
 
-<br />
+このステップを完了すると、組織はこの AWS サブスクリプションに接続され、すべての利用料金は AWS アカウント経由で請求されます。
 
-新しいユーザーの場合、ビジネスに関する基本的な情報を提供する必要があることに注意してください。以下のスクリーンショットを参照してください。
+ClickHouse UI の組織の請求ページから、請求が AWS Marketplace にリンクされていることを確認できます。
 
-<br />
+<Image img={aws_marketplace_payg_9} size="lg" alt="請求ページの確認" border/>
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
+</VerticalStepper>
 
-<br />
 
-<br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
+## サポート {#support}
 
-<br />
-
-既存のClickHouse Cloudユーザーの場合は、資格情報を使用してログインしてください。
-
-8. ログインに成功すると、新しいClickHouse Cloud組織が作成されます。この組織はあなたのAWS請求アカウントに接続され、すべての使用量はAWSアカウントを通じて請求されます。
-
-9. ログインしたら、実際に請求がAWSマーケットプレイスに結び付いていることを確認し、ClickHouse Cloudのリソースを設定し始めることができます。
-
-<br />
-
-<Image img={aws_marketplace_payg_10} size="md" alt="ClickHouse Cloud view AWS Marketplace billing" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
-
-<br />
-
-10. 登録確認のメールを受け取るはずです：
-
-<br />
-
-<Image img={aws_marketplace_payg_12} size="md" alt="AWS Marketplace confirmation email" border/>
-
-<br />
-
-問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program)にご連絡ください。
+問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program)までお気軽にお問い合わせください。

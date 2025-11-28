@@ -1,11 +1,10 @@
 ---
-'slug': '/cloud/reference/shared-merge-tree'
-'sidebar_label': 'SharedMergeTree'
-'title': 'SharedMergeTree'
-'keywords':
-- 'SharedMergeTree'
-'description': '描述 SharedMergeTree 表引擎'
-'doc_type': 'reference'
+slug: /cloud/reference/shared-merge-tree
+sidebar_label: 'SharedMergeTree'
+title: 'SharedMergeTree'
+keywords: ['SharedMergeTree']
+description: 'SharedMergeTree 表引擎说明'
+doc_type: 'reference'
 ---
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
@@ -15,43 +14,47 @@ import Image from '@theme/IdealImage';
 
 # SharedMergeTree 表引擎
 
-SharedMergeTree 表引擎系列是 ReplicatedMergeTree 引擎的云原生替代方案，旨在优化在共享存储（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上的工作。每种特定的 MergeTree 引擎类型都有一个 SharedMergeTree 的类比，例如，ReplacingSharedMergeTree 替代 ReplacingReplicatedMergeTree。
+SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 ReplacingSharedMergeTree 用来替代 ReplacingReplicatedMergeTree。
 
-SharedMergeTree 表引擎系列支持 ClickHouse Cloud。对于最终用户来说，没有任何改动需要，您可以直接使用 SharedMergeTree 引擎系列来替代基于 ReplicatedMergeTree 的引擎。它提供以下额外好处：
+SharedMergeTree 表引擎系列是 ClickHouse Cloud 的核心存储引擎。对最终用户而言，无需进行任何更改，就可以开始使用 SharedMergeTree 引擎系列来替代基于 ReplicatedMergeTree 的引擎。它提供了以下额外优势：
 
-- 更高的插入吞吐量
-- 改进的后台合并吞吐量
-- 改进的变更吞吐量
-- 更快的扩展和缩放操作
-- 对查询提供更轻量级的强一致性
+- 更高的写入吞吐量
+- 更高的后台合并吞吐量
+- 更高的变更（mutation）吞吐量
+- 更快的扩容和缩容操作
+- 更轻量的强一致性保障（针对 SELECT 查询）
 
-SharedMergeTree 带来的一个显著改进是，与 ReplicatedMergeTree 相比，它提供了更深入的计算和存储分离。您可以在下面看到 ReplicatedMergeTree 如何分离计算和存储：
+SharedMergeTree 带来的一个重要改进是：相比 ReplicatedMergeTree，它在计算与存储之间实现了更彻底的分离。下面展示了 ReplicatedMergeTree 如何实现计算与存储的分离：
 
-<Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
+<Image img={shared_merge_tree} alt="ReplicatedMergeTree 示意图" size="md"  />
 
-如您所见，尽管存储在 ReplicatedMergeTree 中的数据位于对象存储中，元数据仍然保留在每一个 clickhouse-server 上。这意味着对于每个复制操作，元数据也需要在所有副本上复制。
+如上所示，即使存储在 ReplicatedMergeTree 中的数据位于对象存储中，元数据仍然保存在每个 clickhouse-server 上。这意味着每次进行复制操作时，元数据也必须在所有副本之间进行复制。
 
-<Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
+<Image img={shared_merge_tree_2} alt="带元数据的 ReplicatedMergeTree 示意图" size="md"  />
 
-与 ReplicatedMergeTree 不同，SharedMergeTree 不要求副本之间进行通信。相反，所有通信都通过共享存储和 clickhouse-keeper 进行。SharedMergeTree 实现了异步无领导复制，并使用 clickhouse-keeper 进行协调和元数据存储。这意味着随着服务的扩展和缩减，元数据不需要被复制。这导致更快的复制、变更、合并和扩展操作。SharedMergeTree 允许每个表有数百个副本，从而实现无需分片的动态扩展。ClickHouse Cloud 中使用分布式查询执行方法来利用更多计算资源执行查询。
+与 ReplicatedMergeTree 不同，SharedMergeTree 不需要副本之间直接通信。相反，所有通信都通过共享存储和 clickhouse-keeper 完成。SharedMergeTree 实现了异步、无主（leaderless）的复制机制，并使用 clickhouse-keeper 进行协调和元数据存储。这意味着在服务扩容和缩容时，无需再在所有副本间复制元数据。由此带来了更快的复制、变更、合并以及扩容操作。SharedMergeTree 允许每个表拥有数百个副本，使得在不使用分片的情况下实现动态伸缩成为可能。在 ClickHouse Cloud 中，会采用分布式查询执行方式，以便为单个查询利用更多的计算资源。
+
+
 
 ## 内省 {#introspection}
 
-大多数用于 ReplicatedMergeTree 内省的系统表在 SharedMergeTree 中存在，除了 `system.replication_queue` 和 `system.replicated_fetches`，因为没有发生数据和元数据的复制。然而，SharedMergeTree 有这两个表的相应替代品。
+用于对 ReplicatedMergeTree 进行内省的大多数系统表在 SharedMergeTree 中同样存在，`system.replication_queue` 和 `system.replicated_fetches` 除外，因为 SharedMergeTree 中不会发生数据和元数据的复制。不过，SharedMergeTree 为这两个表提供了相应的替代表。
 
 **system.virtual_parts**
 
-该表作为 SharedMergeTree 的 `system.replication_queue` 替代品。它存储有关最新的当前分区集的信息，以及正在进行中的未来分区信息，如合并、变更和删除的分区。
+此表在 SharedMergeTree 中作为 `system.replication_queue` 的替代表。它存储最近一组当前部件的信息，以及正在进行中的未来部件，例如合并（merge）、变更（mutation）和被删除的分区。
 
 **system.shared_merge_tree_fetches**
 
-该表是 SharedMergeTree 的 `system.replicated_fetches` 替代品。它包含有关当前正在进行的主键和校验和获取操作的信息。
+此表是 SharedMergeTree 中 `system.replicated_fetches` 的替代表。它包含当前正在进行中的将主键和校验和拉取到内存的操作信息。
 
-## 启用 SharedMergeTree {#enabling-sharedmergetree}
 
-`SharedMergeTree` 默认启用。
 
-对于支持 SharedMergeTree 表引擎的服务，您不需要手动启用任何东西。您可以像以前一样创建表，它将自动使用与您在 CREATE TABLE 查询中指定的引擎相对应的基于 SharedMergeTree 的表引擎。
+## 启用 SharedMergeTree
+
+`SharedMergeTree` 默认已启用。
+
+对于支持 SharedMergeTree 表引擎的服务，您无需手动启用任何功能。您可以像之前一样创建表，系统会自动使用基于 SharedMergeTree 的表引擎，该引擎与在 CREATE TABLE 语句中指定的引擎相对应。
 
 ```sql
 CREATE TABLE my_table(
@@ -62,9 +65,9 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
-这将使用 SharedMergeTree 表引擎创建表 `my_table`。
+这将使用 SharedMergeTree 表引擎创建名为 `my_table` 的表。
 
-您不需要指定 `ENGINE=MergeTree`，因为在 ClickHouse Cloud 中 `default_table_engine=MergeTree`。以下查询与上述查询相同。
+在 ClickHouse Cloud 中，您无需指定 `ENGINE=MergeTree`，因为已将 `default_table_engine` 设置为 `MergeTree`。下面的查询与上面的查询是等价的。
 
 ```sql
 CREATE TABLE my_table(
@@ -74,7 +77,7 @@ CREATE TABLE my_table(
 ORDER BY key
 ```
 
-如果您使用 Replacing、Collapsing、Aggregating、Summing、VersionedCollapsing 或 Graphite MergeTree 表，它将自动转换为相应的基于 SharedMergeTree 的表引擎。
+如果你使用 ReplacingMergeTree、CollapsingMergeTree、AggregatingMergeTree、SummingMergeTree、VersionedCollapsingMergeTree 或 GraphiteMergeTree 表，它们会自动转换为相应的 SharedMergeTree 系列表引擎。
 
 ```sql
 CREATE TABLE myFirstReplacingMT
@@ -87,7 +90,8 @@ ENGINE = ReplacingMergeTree
 ORDER BY key;
 ```
 
-对于给定的表，您可以通过 `SHOW CREATE TABLE` 检查使用的表引擎与 `CREATE TABLE` 语句：
+对于某个表，可以通过执行 `SHOW CREATE TABLE` 命令来查看其 `CREATE TABLE` 语句中使用的表引擎：
+
 ```sql
 SHOW CREATE TABLE myFirstReplacingMT;
 ```
@@ -99,22 +103,25 @@ ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica
 ORDER BY key
 ```
 
+
 ## 设置 {#settings}
 
-一些设置行为显著变化：
+某些设置的行为发生了显著变化：
 
-- `insert_quorum` -- 所有对 SharedMergeTree 的插入都是法定插入（写入共享存储），因此在使用 SharedMergeTree 表引擎时不需要此设置。
-- `insert_quorum_parallel` -- 所有对 SharedMergeTree 的插入都是法定插入（写入共享存储），因此在使用 SharedMergeTree 表引擎时不需要此设置。
-- `select_sequential_consistency` -- 不需要法定插入，会对 `SELECT` 查询触发额外负载到 clickhouse-keeper。
+- `insert_quorum` -- 所有对 SharedMergeTree 的插入都是 quorum 插入（写入到共享存储），因此在使用 SharedMergeTree 表引擎时无需配置该设置。
+- `insert_quorum_parallel` -- 所有对 SharedMergeTree 的插入都是 quorum 插入（写入到共享存储），因此在使用 SharedMergeTree 表引擎时无需配置该设置。
+- `select_sequential_consistency` -- 不要求使用 quorum 插入，但会在执行 `SELECT` 查询时给 clickhouse-keeper 带来额外负载
+
+
 
 ## 一致性 {#consistency}
 
-SharedMergeTree 提供比 ReplicatedMergeTree 更好的轻量级一致性。当插入 SharedMergeTree 时，您不需要提供诸如 `insert_quorum` 或 `insert_quorum_parallel` 的设置。插入是法定插入，这意味着元数据将存储在 ClickHouse-Keeper 中，并且元数据复制到至少法定数量的 ClickHouse-keeper。您集群中的每个副本将异步从 ClickHouse-Keeper 获取新信息。
+SharedMergeTree 相比 ReplicatedMergeTree 提供更好的轻量级一致性。向 SharedMergeTree 执行插入时，无需设置诸如 `insert_quorum` 或 `insert_quorum_parallel` 之类的参数。插入本身就是 quorum 插入，这意味着元数据会存储在 ClickHouse-Keeper 中，并会被复制到至少达到 quorum 的 ClickHouse-Keeper 节点。集群中的每个副本都会从 ClickHouse-Keeper 异步拉取最新的元数据信息。
 
-大多数情况下，您不应使用 `select_sequential_consistency` 或 `SYSTEM SYNC REPLICA LIGHTWEIGHT`。异步复制应覆盖大多数场景，并且延迟非常低。在极少数需要防止过时读取的情况下，请按照优先级遵循以下建议：
+在大多数情况下，无需使用 `select_sequential_consistency` 或 `SYSTEM SYNC REPLICA LIGHTWEIGHT`。异步复制足以覆盖绝大多数场景，并且具有非常低的延迟。只有在极少数确实需要避免陈旧读的情况下，才需要按以下优先级进行处理：
 
-1. 如果您在同一会话或同一节点中执行读取和写入查询，则不需要使用 `select_sequential_consistency`，因为您的副本将已经拥有最新的元数据。
+1. 如果在同一会话或同一节点上执行读写查询，则无需使用 `select_sequential_consistency`，因为该副本已经拥有最新的元数据。
 
-2. 如果您对一个副本进行写入，而从另一个副本进行读取，则可以使用 `SYSTEM SYNC REPLICA LIGHTWEIGHT` 强制副本从 ClickHouse-Keeper 获取元数据。
+2. 如果向一个副本写入而从另一个副本读取，可以使用 `SYSTEM SYNC REPLICA LIGHTWEIGHT` 强制该副本从 ClickHouse-Keeper 获取元数据。
 
-3. 将 `select_sequential_consistency` 作为查询的一部分使用设置。
+3. 在查询中通过设置启用 `select_sequential_consistency`。

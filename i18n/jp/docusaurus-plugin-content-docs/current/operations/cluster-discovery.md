@@ -1,22 +1,25 @@
 ---
-'description': 'Documentation for クラスター発見 in ClickHouse'
-'sidebar_label': 'クラスター発見'
-'slug': '/operations/cluster-discovery'
-'title': 'クラスター発見'
-'doc_type': 'guide'
+description: 'ClickHouse のクラスターディスカバリに関するドキュメント'
+sidebar_label: 'クラスターディスカバリ'
+slug: /operations/cluster-discovery
+title: 'クラスターディスカバリ'
+doc_type: 'ガイド'
 ---
 
 
-# クラスター発見
 
-## 概要 {#overview}
+# クラスターディスカバリ
 
-ClickHouseのクラスター発見機能は、ノードが明示的に構成ファイルに定義されることなく、自動的に発見して登録できるようにすることで、クラスターの構成を簡素化します。これは、各ノードを手動で定義することが煩雑になる場合に特に便利です。
+
+
+## 概要
+
+ClickHouse の Cluster Discovery 機能は、ノードを設定ファイル内で明示的に定義しなくても、自動的に検出して登録できるようにすることで、クラスタの構成を簡素化します。これは、各ノードを手動で定義することが負担になる場合に特に有用です。
 
 :::note
 
-クラスター発見は実験的な機能であり、将来のバージョンで変更または削除される可能性があります。
-この機能を有効にするには、構成ファイルに`allow_experimental_cluster_discovery`設定を含めます。
+Cluster Discovery は実験的な機能であり、将来のバージョンで変更または削除される可能性があります。
+この機能を有効にするには、設定ファイルに `allow_experimental_cluster_discovery` 設定項目を追加してください。
 
 ```xml
 <clickhouse>
@@ -25,13 +28,15 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
     <!-- ... -->
 </clickhouse>
 ```
+
 :::
 
-## リモートサーバーの構成 {#remote-servers-configuration}
 
-### 従来の手動構成 {#traditional-manual-configuration}
+## リモートサーバーの設定
 
-従来、ClickHouseでは、クラスター内の各シャードとレプリカを構成に手動で指定する必要がありました。
+### 従来の手動設定
+
+従来は ClickHouse では、クラスタ内の各シャードおよびレプリカを設定ファイルで手動指定する必要がありました。
 
 ```xml
 <remote_servers>
@@ -61,9 +66,9 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 
 ```
 
-### クラスター発見を使用する {#using-cluster-discovery}
+### クラスター検出を使用する
 
-クラスター発見を使用すると、各ノードを明示的に定義する代わりに、ZooKeeper内のパスを指定するだけで済みます。このパスに登録されたすべてのノードは自動的に発見され、クラスターに追加されます。
+Cluster Discovery を使用すると、各ノードを明示的に定義する代わりに、ZooKeeper 内のパスを 1 つ指定するだけで済みます。ZooKeeper のそのパス配下に登録されたすべてのノードは、自動的に検出されてクラスターに追加されます。
 
 ```xml
 <remote_servers>
@@ -71,27 +76,27 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
         <discovery>
             <path>/clickhouse/discovery/cluster_name</path>
 
-            <!-- # Optional configuration parameters: -->
+            <!-- # オプションの設定パラメータ: -->
 
-            <!-- ## Authentication credentials to access all other nodes in cluster: -->
+            <!-- ## クラスタ内の他のすべてのノードにアクセスするための認証情報: -->
             <!-- <user>user1</user> -->
             <!-- <password>pass123</password> -->
-            <!-- ### Alternatively to password, interserver secret may be used: -->
+            <!-- ### パスワードの代わりに、サーバー間シークレットを使用することもできます: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## Shard for current node (see below): -->
+            <!-- ## 現在のノードのシャード（以下を参照）: -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## Observer mode (see below): -->
+            <!-- ## オブザーバーモード（以下を参照）: -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
 </remote_servers>
 ```
 
-特定のノードにシャード番号を指定したい場合は、`<discovery>`セクション内に`<shard>`タグを含めることができます。
+特定のノードに対してシャード番号を指定したい場合は、`<discovery>` セクション内に `<shard>` タグを記述できます。
 
-`node1`と`node2`の場合：
+`node1` および `node2` の場合:
 
 ```xml
 <discovery>
@@ -100,7 +105,7 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 </discovery>
 ```
 
-`node3`と`node4`の場合：
+`node3` および `node4` の場合:
 
 ```xml
 <discovery>
@@ -109,11 +114,11 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 </discovery>
 ```
 
-### オブザーバーモード {#observer-mode}
+### オブザーバーモード
 
-オブザーバーモードで構成されたノードは、レプリカとして自分自身を登録しません。
-アクティブな他のレプリカを観察し発見するだけで、積極的に参加することはありません。
-オブザーバーモードを有効にするには、`<discovery>`セクション内に`<observer/>`タグを含めてください：
+オブザーバーモードで構成されたノードは、自身をレプリカとして登録しません。
+これらのノードはクラスター内の他のアクティブなレプリカを監視・検出するだけで、能動的には参加しません。
+オブザーバーモードを有効にするには、`<discovery>` セクション内に `<observer/>` タグを追加します。
 
 ```xml
 <discovery>
@@ -122,9 +127,9 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 </discovery>
 ```
 
-### クラスターの発見 {#discovery-of-clusters}
+### クラスターの検出
 
-時には、クラスター内のホストだけでなく、クラスター自体を追加または削除する必要がある場合があります。複数のクラスターのルートパスを持つ`<multicluster_root_path>`ノードを使用できます。
+場合によっては、クラスター内のホストだけでなく、クラスター自体を追加・削除する必要が生じることがあります。複数のクラスターのルートパスを指定するために `<multicluster_root_path>` ノードを使用できます。
 
 ```xml
 <remote_servers>
@@ -137,9 +142,9 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 </remote_servers>
 ```
 
-この場合、別のホストが`/clickhouse/discovery/some_new_cluster`で自身を登録すると、`some_new_cluster`という名前のクラスターが追加されます。
+この場合、別のホストがパス `/clickhouse/discovery/some_new_cluster` で自分自身を登録すると、名前が `some_new_cluster` のクラスタが追加されます。
 
-両方の機能を同時に使用することができ、ホストはクラスター`my_cluster`に自身を登録し、他のクラスターを発見することができます：
+両方の機能を同時に使用できます。ホストはクラスタ `my_cluster` に自分自身を登録しつつ、他の任意のクラスタを検出することもできます。
 
 ```xml
 <remote_servers>
@@ -157,18 +162,20 @@ ClickHouseのクラスター発見機能は、ノードが明示的に構成フ�
 </remote_servers>
 ```
 
-制限事項：
-- 同じ`remote_servers`サブツリー内で`<path>`と`<multicluster_root_path>`を両方使用することはできません。
-- `<multicluster_root_path>`は`<observer/>`とのみ使用できます。
-- Keeperからのパスの最後の部分がクラスター名として使用され、登録時にはXMLタグから名前が取られます。
+制限事項:
 
-## 使用例と制限事項 {#use-cases-and-limitations}
+* 同じ `remote_servers` サブツリー内で `<path>` と `<multicluster_root_path>` を同時に使用することはできません。
+* `<multicluster_root_path>` と併用できるのは `<observer/>` のみです。
+* Keeper で指定されたパスの最後の部分がクラスタ名として使用されますが、登録時には XML タグに記載された名前が使用されます。
 
-指定されたZooKeeperパスからノードが追加または削除されると、構成の変更やサーバーの再起動なしに自動的にクラスターから発見または削除されます。
 
-ただし、変更はクラスターの構成にのみ影響を及ぼし、データや既存のデータベースおよびテーブルには影響しません。
+## ユースケースと制限事項
 
-以下に、ノード3つのクラスターの例を示します：
+指定された ZooKeeper パスにノードが追加または削除されると、構成変更やサーバーの再起動を行うことなく、それらのノードはクラスターに自動的に認識されて参加するか、クラスターから削除されます。
+
+ただし、変更の対象はクラスター構成のみであり、データや既存のデータベースおよびテーブルには影響しません。
+
+3 ノードのクラスターを用いた次の例を考えます。
 
 ```xml
 <remote_servers>
@@ -199,7 +206,7 @@ ORDER BY event_time PARTITION BY toYYYYMM(event_time);
 INSERT INTO event_table ...
 ```
 
-次に、新しいノードをクラスターに追加し、構成ファイルの`remote_servers`セクションに同じエントリを持つ新しいノードを起動します：
+次に、クラスターに新しいノードを追加します。設定ファイルの `remote_servers` セクションに同じエントリを含めて、新しいノードを起動します。
 
 ```response
 ┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name────┬─host_address─┬─port─┬─is_local─┬─user─┬─is_active─┐
@@ -210,16 +217,20 @@ INSERT INTO event_table ...
 └─────────┴───────────┴──────────────┴─────────────┴──────────────┴──────────────┴──────┴──────────┴──────┴───────────┘
 ```
 
-4番目のノードはクラスターに参加していますが、`event_table`テーブルはまだ最初の3つのノードにしか存在しません：
+4 番目のノードはクラスターに参加していますが、テーブル `event_table` は依然として最初の 3 つのノードにしか存在していません。
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
-
-┌─hostname()───┬─database─┬─table───────┐
-│ a6a68731c21b │ default  │ event_table │
-│ 92d3c04025e8 │ default  │ event_table │
-│ 8e62b9cb17a1 │ default  │ event_table │
-└──────────────┴──────────┴─────────────┘
 ```
 
-すべてのノードにテーブルをレプリケートする必要がある場合は、クラスター発見の代わりに[Replicated](../engines/database-engines/replicated.md)データベースエンジンを使用することができます。
+
+┌─hostname()───┬─database─┬─table───────┐
+│ a6a68731c21b │ default  │ event&#95;table │
+│ 92d3c04025e8 │ default  │ event&#95;table │
+│ 8e62b9cb17a1 │ default  │ event&#95;table │
+└──────────────┴──────────┴─────────────┘
+
+```
+
+すべてのノードでテーブルをレプリケートする必要がある場合は、クラスタディスカバリの代替として[Replicated](../engines/database-engines/replicated.md)データベースエンジンを使用することができます。
+```

@@ -1,55 +1,53 @@
 ---
-'slug': '/use-cases/data-lake/lakekeeper-catalog'
-'sidebar_label': 'Lakekeeper Catalog'
-'title': 'Lakekeeper Catalog'
-'pagination_prev': null
-'pagination_next': null
-'description': 'В этом руководстве мы проведем вас через шаги, чтобы сделать запрос
-  к вашим данным, используя ClickHouse и Lakekeeper Catalog.'
-'keywords':
-- 'Lakekeeper'
-- 'REST'
-- 'Tabular'
-- 'Data Lake'
-- 'Iceberg'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/lakekeeper-catalog
+sidebar_label: 'Каталог Lakekeeper'
+title: 'Каталог Lakekeeper'
+pagination_prev: null
+pagination_next: null
+description: 'В этом руководстве мы расскажем, как выполнять запросы
+ к вашим данным с помощью ClickHouse и каталога Lakekeeper.'
+keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 :::note
 Интеграция с каталогом Lakekeeper работает только с таблицами Iceberg.
-Эта интеграция поддерживает как AWS S3, так и другие поставщики облачного хранения.
+Эта интеграция поддерживает как AWS S3, так и других облачных провайдеров хранения.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и др.). В этом руководстве вы узнаете, как выполнять запросы к вашим данным, используя ClickHouse и каталог [Lakekeeper](https://docs.lakekeeper.io/).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). В этом руководстве показано, как выполнять запросы к данным с помощью ClickHouse и каталога [Lakekeeper](https://docs.lakekeeper.io/).
 
-Lakekeeper — это реализация REST-каталога с открытым исходным кодом для Apache Iceberg, которая предоставляет:
-- **Реализация на Rust** для высокой производительности и надежности
-- Соответствие **REST API** спецификации REST-каталога Iceberg
-- Интеграция с **облачным хранилищем** с совместимостью с S3
+Lakekeeper — это реализация REST-каталога с открытым исходным кодом для Apache Iceberg, которая обеспечивает:
+
+* **Нативную реализацию на Rust** для высокой производительности и надежности
+* **REST API**, соответствующий спецификации REST-каталога Iceberg
+* **Интеграцию с облачными хранилищами**, совместимыми с S3
 
 :::note
-Поскольку эта функция является экспериментальной, вам необходимо включить ее с помощью:
+Поскольку эта функция является экспериментальной, ее необходимо включить с помощью:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Настройка локальной разработки {#local-development-setup}
 
-Для локальной разработки и тестирования вы можете использовать контейнеризированную настройку Lakekeeper. Этот подход идеально подходит для обучения, прототипирования и сред разработки.
+## Локальная среда разработки {#local-development-setup}
+
+Для локальной разработки и тестирования вы можете использовать контейнеризованную среду Lakekeeper. Такой подход оптимален для обучения, прототипирования и использования в средах разработки.
 
 ### Предварительные требования {#local-prerequisites}
 
-1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и работает
-2. **Пример настройки**: Вы можете использовать настройку Lakekeeper с помощью docker-compose
+1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен
+2. **Пример окружения**: Вы можете использовать конфигурацию Lakekeeper для docker-compose
 
 ### Настройка локального каталога Lakekeeper {#setting-up-local-lakekeeper-catalog}
 
-Вы можете использовать официальную настройку [Lakekeeper с помощью docker-compose](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal), которая предоставляет полную среду с Lakekeeper, бэкендом метаданных PostgreSQL и MinIO для объектного хранения.
+Вы можете использовать официальный [пример окружения Lakekeeper на основе docker-compose](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal), который предоставляет полностью готовую среду с Lakekeeper, бэкендом метаданных на PostgreSQL и MinIO для объектного хранилища.
 
-**Шаг 1:** Создайте новую папку, в которой будет выполняться пример, затем создайте файл `docker-compose.yml` со следующим конфигом:
+**Шаг 1:** Создайте новую директорию, в которой вы будете запускать пример, затем создайте файл `docker-compose.yml` со следующей конфигурацией:
 
 ```yaml
 version: '3.8'
@@ -217,31 +215,32 @@ networks:
     driver: bridge
 ```
 
-**Шаг 2:** Выполните следующую команду, чтобы запустить службы:
+**Шаг 2:** Выполните следующую команду, чтобы запустить сервисы:
 
 ```bash
 docker compose up -d
 ```
 
-**Шаг 3:** Дождитесь, пока все службы будут готовы. Вы можете проверить логи:
+**Шаг 3:** Дождитесь готовности всех сервисов. Можно проверить логи:
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Настройка Lakekeeper требует, чтобы в таблицы Iceberg были загружены образцы данных. Убедитесь, что среда создала и наполнила таблицы, прежде чем пытаться выполнять к ним запросы через ClickHouse. Доступность таблиц зависит от конкретной настройки docker-compose и скриптов загрузки образцов данных.
+Настройка Lakekeeper требует предварительной загрузки примерных данных в таблицы Iceberg. Убедитесь, что в среде уже созданы и заполнены таблицы, прежде чем пытаться выполнять к ним запросы из ClickHouse. Доступность таблиц зависит от конкретной конфигурации docker-compose и скриптов загрузки примерных данных.
 :::
 
-### Подключение к локальному каталогу Lakekeeper {#connecting-to-local-lakekeeper-catalog}
 
-Подключитесь к вашему контейнеру ClickHouse:
+### Подключение к локальному каталогу Lakekeeper
+
+Подключитесь к контейнеру ClickHouse:
 
 ```bash
 docker exec -it lakekeeper-clickhouse clickhouse-client
 ```
 
-Затем создайте соединение с базой данных в каталоге Lakekeeper:
+Затем создайте подключение к базе данных в каталоге Lakekeeper:
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -251,9 +250,10 @@ ENGINE = DataLakeCatalog('http://lakekeeper:8181/catalog', 'minio', 'ClickHouse_
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-rest', warehouse = 'demo'
 ```
 
-## Выполнение запросов к таблицам каталога Lakekeeper с использованием ClickHouse {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
-Теперь, когда соединение установлено, вы можете начать выполнять запросы через каталог Lakekeeper. Например:
+## Выполнение запросов к таблицам каталога Lakekeeper с помощью ClickHouse
+
+Теперь, когда соединение установлено, вы можете начинать выполнять запросы по каталогу Lakekeeper. Например:
 
 ```sql
 USE demo;
@@ -261,7 +261,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-Если ваша настройка включает образцы данных (например, набор данных такси), вы должны увидеть таблицы, такие как:
+Если в вашей конфигурации есть примерочные данные (например, набор данных taxi), вы должны увидеть таблицы, похожие на следующие:
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -270,18 +270,21 @@ SHOW TABLES;
 ```
 
 :::note
-Если вы не видите никаких таблиц, это обычно означает:
-1. Среда еще не создала образцы таблиц
-2. Служба каталога Lakekeeper не полностью инициализирована
-3. Процесс загрузки образцов данных не завершен
+Если вы не видите таблиц, это обычно означает:
 
-Вы можете проверить логи Spark, чтобы увидеть прогресс создания таблиц:
+1. Среда ещё не создала образцовые таблицы
+2. Сервис каталога Lakekeeper ещё не полностью инициализирован
+3. Процесс загрузки образцовых данных ещё не завершён
+
+Вы можете проверить логи Spark, чтобы отследить прогресс создания таблиц:
+
 ```bash
 docker-compose logs spark
 ```
+
 :::
 
-Чтобы выполнить запрос к таблице (если доступна):
+Чтобы выполнить запрос к таблице (если она доступна):
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -293,8 +296,8 @@ SELECT count(*) FROM `default.taxis`;
 └─────────┘
 ```
 
-:::note Обязательные обратные кавычки
-Обратные кавычки обязательны, потому что ClickHouse не поддерживает более одного пространства имен.
+:::note Требуются обратные кавычки
+Обратные кавычки требуются, так как ClickHouse поддерживает только одно пространство имен.
 :::
 
 Чтобы просмотреть DDL таблицы:
@@ -331,9 +334,10 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Загрузка данных из вашего ДатаЛэйка в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
-Если вам нужно загрузить данные из каталога Lakekeeper в ClickHouse, начните с создания локальной таблицы ClickHouse:
+## Загрузка данных из вашего Data Lake в ClickHouse
+
+Если вам нужно загрузить данные из каталога Lakekeeper в ClickHouse, начните с создания локальной таблицы в ClickHouse:
 
 ```sql
 CREATE TABLE taxis
@@ -363,7 +367,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-Затем загрузите данные из вашей таблицы каталога Lakekeeper с помощью `INSERT INTO SELECT`:
+Затем загрузите данные из таблицы каталога Lakekeeper с помощью оператора `INSERT INTO ... SELECT`:
 
 ```sql
 INSERT INTO taxis 

@@ -1,22 +1,28 @@
 ---
-slug: '/interfaces/formats/LineAsStringWithNamesAndTypes'
-description: 'Документация для формата LineAsStringWithNamesAndTypes'
-title: LineAsStringWithNamesAndTypes
-keywords: ['LineAsStringWithNamesAndTypes']
-doc_type: reference
+alias: []
+description: 'Документация по формату LineAsStringWithNamesAndTypes'
 input_format: false
+keywords: ['LineAsStringWithNamesAndTypes']
 output_format: true
+slug: /interfaces/formats/LineAsStringWithNamesAndTypes
+title: 'LineAsStringWithNamesAndTypes'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
+
+
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` подобен формату [`LineAsString`](./LineAsString.md), 
-но выводит две строки заголовка: одну с именами колонок, другую с типами.
+Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
+но выводит две строки заголовков: одну с именами столбцов, другую — с их типами.
 
-## Пример использования {#example-usage}
+
+
+## Пример использования
 
 ```sql
 CREATE TABLE example (
@@ -38,4 +44,5 @@ Jane    25
 Peter    35
 ```
 
-## Настройки формата {#format-settings}
+
+## Параметры формата {#format-settings}

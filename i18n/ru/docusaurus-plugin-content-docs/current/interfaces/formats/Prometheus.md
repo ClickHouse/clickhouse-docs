@@ -1,29 +1,31 @@
 ---
-slug: '/interfaces/formats/Prometheus'
+alias: []
 description: 'Документация для формата Prometheus'
-title: Prometheus
-keywords: ['Prometheus']
-doc_type: reference
 input_format: false
+keywords: ['Prometheus']
 output_format: true
+slug: /interfaces/formats/Prometheus
+title: 'Prometheus'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+
+| Ввод  | Вывод | Псевдоним |
+|-------|-------|-----------|
+| ✗     | ✔     |           |
 
 ## Описание {#description}
 
-Экспортирует метрики в [формате экспозиции Prometheus на основе текста](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format).
+Выводит метрики в [текстовом формате экспозиции Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format).
 
-Для этого формата требуется правильная структура выходной таблицы, следуя следующим правилам:
+Для этого формата требуется, чтобы выходная таблица была структурирована правильно в соответствии со следующими правилами:
 
 - Столбцы `name` ([String](/sql-reference/data-types/string.md)) и `value` (число) являются обязательными.
-- Строки могут дополнительно содержать `help` ([String](/sql-reference/data-types/string.md)) и `timestamp` (число).
+- Строки могут опционально содержать `help` ([String](/sql-reference/data-types/string.md)) и `timestamp` (число).
 - Столбец `type` ([String](/sql-reference/data-types/string.md)) должен быть одним из `counter`, `gauge`, `histogram`, `summary`, `untyped` или пустым.
-- Каждое значение метрики может также иметь некоторые `labels` ([Map(String, String)](/sql-reference/data-types/map.md)).
-- Несколько последующих строк могут относиться к одной метрике с разными метками. Таблица должна быть отсортирована по имени метрики (например, с помощью `ORDER BY name`).
+- Каждое значение метрики также может иметь некоторые `labels` ([Map(String, String)](/sql-reference/data-types/map.md)).
+- Несколько последовательных строк могут относиться к одной метрике с различными метками. Таблица должна быть отсортирована по имени метрики (например, с помощью `ORDER BY name`).
 
-Существуют специальные требования для меток `histogram` и `summary` - смотрите [документацию Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries) для получения подробной информации. 
+Существуют особые требования к меткам `histogram` и `summary` - см. [документацию Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries) для получения подробностей.
 Специальные правила применяются к строкам с метками `{'count':''}` и `{'sum':''}`, которые преобразуются в `<metric_name>_count` и `<metric_name>_sum` соответственно.
 
 ## Пример использования {#example-usage}
@@ -51,12 +53,10 @@ output_format: true
 └─────────────────────────────────────┴───────────┴───────────────────────────────────────────┴────────────────────────────────┴──────────┴───────────────┘
 ```
 
-Будет отформатирован как:
+Будет отформатировано как:
 
 ```text
-
 # HELP http_request_duration_seconds A histogram of the request duration.
-
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
@@ -66,18 +66,14 @@ http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
 
-
 # HELP http_requests_total Total number of HTTP requests
-
 # TYPE http_requests_total counter
 http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-
 # HELP rpc_duration_seconds A summary of the RPC duration in seconds.
-
 # TYPE rpc_duration_seconds summary
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272

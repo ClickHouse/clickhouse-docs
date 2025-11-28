@@ -1,14 +1,16 @@
 ---
-'description': '返回时间上在索引 `t` 处计算的指数平滑移动平均值与 `t-1` 的最大值。'
-'sidebar_position': 135
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
-'title': 'exponentialTimeDecayedMax'
-'doc_type': 'reference'
+description: '返回时间索引 `t` 处与 `t-1` 处计算得到的指数平滑移动平均值中的最大值。'
+sidebar_position: 135
+slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax
+title: 'exponentialTimeDecayedMax'
+doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
-返回指数平滑移动平均在时间索引 `t` 处的最大值与在 `t-1` 处的最大值。
+
+## exponentialTimeDecayedMax
+
+返回在时间索引为 `t` 处与时间索引为 `t-1` 处计算得到的指数平滑移动平均值中的最大值。
 
 **语法**
 
@@ -18,16 +20,16 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **参数**
 
-- `value` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 时间单位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)， [日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
+* `value` — 数值。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `timeunit` — 时间单位。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
-**参数**
+**参数说明**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半衰期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回在 `t` 和 `t-1` 处指数平滑加权移动平均的最大值。 [Float64](../../data-types/float.md)。
+* 返回在时刻 `t` 和 `t-1` 的指数平滑加权移动平均值中的最大值。[Float64](../../data-types/float.md)。
 
 **示例**
 
@@ -51,8 +53,9 @@ FROM
 
 结果：
 
+
 ```response
-    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
+┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
  1. │     1 │    0 │                    1 │ ██████████ │
  2. │     0 │    1 │                0.905 │ █████████  │
  3. │     0 │    2 │                0.819 │ ████████▏  │

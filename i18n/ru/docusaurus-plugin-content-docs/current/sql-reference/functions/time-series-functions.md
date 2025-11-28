@@ -1,20 +1,25 @@
 ---
-slug: '/sql-reference/functions/time-series-functions'
-sidebar_label: 'Временные ряды'
 description: 'Документация по функциям для работы с временными рядами'
-title: 'Функции временных рядов'
-doc_type: reference
+sidebar_label: 'TimeSeries'
+slug: /sql-reference/functions/time-series-functions
+title: 'Функции для работы с временными рядами'
+doc_type: 'reference'
 ---
-# Функции временных рядов
 
-Ниже приведенные функции предназначены для использования с агрегатными функциями `timeSeries*()`, такими как
+
+
+# Функции для временных рядов
+
+Следующие функции предназначены для использования совместно с агрегатными функциями семейства `timeSeries*()`, такими как
 [timeSeriesInstantRateToGrid](../aggregate-functions/reference/timeSeriesInstantRateToGrid.md),
-[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md),
-и так далее.
+[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md)
+и другими.
 
-## timeSeriesRange {#timeSeriesRange}
 
-Генерирует диапазон временных меток.
+
+## timeSeriesRange
+
+Создаёт диапазон временных меток.
 
 **Синтаксис**
 
@@ -24,13 +29,13 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 **Аргументы**
 
-- `start_timestamp` - Начало диапазона.
-- `end_timestamp` - Конец диапазона.
-- `step` - Шаг диапазона в секундах.
+* `start_timestamp` - начало диапазона.
+* `end_timestamp` - конец диапазона.
+* `step` - шаг диапазона в секундах.
 
 **Возвращаемое значение**
 
-- Возвращает диапазон временных меток `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`.
+* Возвращает диапазон меток времени `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`.
 
 **Примеры**
 
@@ -49,25 +54,29 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 ```
 
 **Примечания**
-- Если функция `timeSeriesRange()` вызывается с `start_timestamp`, равным `end_timestamp`, то она возвращает массив из 1 элемента, содержащий эту временную метку: `[start_timestamp]`
-- Функция `timeSeriesRange()` аналогична функции [range](../functions/array-functions.md#range).
-Например, если тип временных меток - `DateTime64(3)` и `start_timestamp < end_timestamp`, то
-`timeSeriesRange(start_timestamp, end_timestamp, step)` возвращает тот же результат, что и следующее выражение:
+
+* Если функция `timeSeriesRange()` вызывается с `start_timestamp`, равным `end_timestamp`,
+  то она возвращает массив из одного элемента, содержащий этот момент времени: `[start_timestamp]`
+* Функция `timeSeriesRange()` аналогична функции [range](../functions/array-functions.md#range).
+  Например, если тип меток времени — `DateTime64(3)` и `start_timestamp < end_timestamp`, то
+  `timeSeriesRange(start_timestamp, end_timestamp, step)` возвращает тот же результат, что и следующее выражение:
+
 ```sql
 range(start_timestamp::Int64, end_timestamp::Int64 + 1, step::Int64)::Array(DateTime64(3))
 ```
 
-## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-Конвертирует массив значений `[value1, value2, value3, ..., valueN]` в массив кортежей
+## timeSeriesFromGrid
+
+Преобразует массив значений `[value1, value2, value3, ..., valueN]` в массив кортежей
 `[(start_timestamp, value1), (start_timestamp + step, value2), (start_timestamp + 2 * step, value3), ..., (end_timestamp, valueN)]`.
 
-Если некоторые значения `[value1, value2, value3, ...]` равны `NULL`, то функция не скопирует такие нулевые значения в результирующий массив,
-но все равно увеличит текущую временную метку, то есть, например, для `[value1, NULL, value2]` функция вернет
+Если некоторые значения из `[value1, value2, value3, ...]` равны `NULL`, функция не будет копировать такие `NULL`-значения в результирующий массив,
+но при этом всё равно будет увеличивать текущую временную метку. То есть, например, для `[value1, NULL, value2]` функция вернёт
 `[(start_timestamp, value1), (start_timestamp + 2 * step, value2)]`.
 
-Текущая временная метка увеличивается на шаг, пока она не станет больше `end_timestamp`, каждая временная метка будет комбинироваться со значением
-из заданного массива значений. Если количество значений не соответствует количеству временных меток, функция вызовет исключение.
+Текущая временная метка увеличивается на `step` до тех пор, пока не станет больше `end_timestamp`, при этом каждая временная метка будет сочетаться со значением
+из указанного массива значений. Если количество значений не совпадает с количеством временных меток, функция сгенерирует исключение.
 
 **Синтаксис**
 
@@ -77,14 +86,14 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values);
 
 **Аргументы**
 
-- `start_timestamp` - Начало сетки.
-- `end_timestamp` - Конец сетки.
-- `step` - Шаг сетки в секундах.
-- `values` - Массив значений `[value1, value2, ..., valueN]`.
+* `start_timestamp` — начало временной сетки.
+* `end_timestamp` — конец временной сетки.
+* `step` — шаг сетки в секундах.
+* `values` — массив значений `[value1, value2, ..., valueN]`.
 
 **Возвращаемое значение**
 
-- Возвращает значения из исходного массива значений, комбинированные с временными метками на регулярной временной сетке, описанной `start_timestamp` и `step`.
+* Возвращает значения из исходного массива, объединённые с метками времени на равномерной временной сетке, задаваемой параметрами `start_timestamp` и `step`.
 
 **Примеры**
 
@@ -104,15 +113,388 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 **Примечание**
 Функция `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)` возвращает тот же результат, что и следующее выражение:
+
 ```sql
 arrayFilter(x -> x.2 IS NOT NULL, arrayZip(timeSeriesRange(start_timestamp, end_timestamp, step), values))
 ```
 
-<!-- 
-Содержимое тегов ниже будет заменено во время сборки документа на 
-документацию, сгенерированную из system.functions. Пожалуйста, не изменяйте и не удаляйте теги.
-См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
--->
+{/* 
+  Содержимое указанных ниже тегов при сборке фреймворка документации
+  заменяется на документацию, сгенерированную из system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+  См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+
+{/*AUTOGENERATED_START*/ }
+
+## seriesDecomposeSTL
+
+Добавлена в версии v24.1
+
+Разлагает данные временного ряда с помощью STL [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf) на сезонную, трендовую и остаточную компоненты.
+
+**Синтаксис**
+
+```sql
+seriesDecomposeSTL(series, period)
+```
+
+**Аргументы**
+
+* `series` — массив числовых значений [`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
+* `period` — положительное целое число [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает массив из четырёх массивов, где первый массив содержит сезонные компоненты, второй массив — тренд, третий массив — остаточную компоненту, а четвёртый массив — базовую компоненту (seasonal + trend). [`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Разложение временного ряда с помощью STL**
+
+```sql title=Query
+SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0
+```
+
+```response title=Response
+┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ [[
+        -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,
+        16.71,      -13.530001, -3.18,      16.710001,  -13.530001, -3.1800003, 16.710001,  -13.530001,
+        -3.1800003, 16.710001,  -13.530001, -3.1799994, 16.71,      -13.529999, -3.1799994, 16.709997
+    ],
+    [
+        23.63,     23.63,     23.630003, 23.630001, 23.630001, 23.630001, 23.630001, 23.630001,
+        23.630001, 23.630001, 23.630001, 23.63,     23.630001, 23.630001, 23.63,     23.630001,
+        23.630001, 23.63,     23.630001, 23.630001, 23.630001, 23.630001, 23.630001, 23.630003
+    ],
+    [
+        0, 0.0000019073486, -0.0000019073486, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0000019073486, 0,
+        0
+    ],
+    [
+        10.1, 20.449999, 40.340004, 10.100001, 20.45, 40.34, 10.100001, 20.45, 40.34, 10.1, 20.45, 40.34,
+        10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.100002, 20.45, 40.34
+    ]]                                                                                                                   │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## seriesOutliersDetectTukey
+
+Добавлено в: v24.2
+
+Обнаруживает выбросы в последовательностях данных с использованием [границ Тьюки (Tukey Fences)](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences).
+
+**Синтаксис**
+
+```sql
+seriesOutliersDetectTukey(series[, min_percentile, max_percentile, K])
+```
+
+**Аргументы**
+
+* `series` — Массив числовых значений. [`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
+* `min_percentile` — Необязательный параметр. Минимальный перцентиль, используемый для вычисления межквартильного размаха [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range). Значение должно быть в диапазоне [0.02, 0.98]. Значение по умолчанию — 0.25. [`Float*`](/sql-reference/data-types/float)
+* `max_percentile` — Необязательный параметр. Максимальный перцентиль, используемый для вычисления межквартильного размаха (IQR). Значение должно быть в диапазоне [0.02, 0.98]. Значение по умолчанию — 0.75. [`Float*`](/sql-reference/data-types/float)
+* `K` — Необязательный параметр. Неотрицательное константное значение для обнаружения умеренных или сильных выбросов. Значение по умолчанию — 1.5. [`Float*`](/sql-reference/data-types/float)
+
+**Возвращаемое значение**
+
+Возвращает массив той же длины, что и входной массив, где каждое значение представляет собой оценку степени возможной аномалии соответствующего элемента в последовательности. Ненулевое значение оценки указывает на возможную аномалию. [`Array(Float32)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Базовое обнаружение выбросов**
+
+```sql title=Query
+SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0
+```
+
+```response title=Response
+┌───────────print_0─────────────────┐
+│[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
+└───────────────────────────────────┘
+```
+
+**Обнаружение выбросов с настраиваемыми параметрами**
+
+```sql title=Query
+SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
+```
+
+```response title=Response
+┌─print_0──────────────────────────────┐
+│ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
+└──────────────────────────────────────┘
+```
+
+
+## seriesPeriodDetectFFT
+
+Добавлено в версии: v23.12
+
+Определяет период заданных данных временного ряда с использованием быстрого преобразования Фурье (FFT) — [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+
+**Синтаксис**
+
+```sql
+seriesPeriodDetectFFT(series)
+```
+
+**Аргументы**
+
+* `series` — массив числовых значений. [`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
+
+**Возвращаемое значение**
+
+Возвращает вещественное число, равное периоду данных ряда. Возвращает NaN, если количество точек данных меньше четырёх. [`Float64`](/sql-reference/data-types/float)
+
+**Примеры**
+
+**Определение периода по простому шаблону**
+
+```sql title=Query
+SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0
+```
+
+```response title=Response
+┌───────────print_0──────┐
+│                      3 │
+└────────────────────────┘
+```
+
+**Определение периода по сложному шаблону**
+
+```sql title=Query
+SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0
+```
+
+```response title=Response
+┌─print_0─┐
+│       6 │
+└─────────┘
+```
+
+
+## timeSeriesFromGrid
+
+Добавлена в: v25.8
+
+Преобразует массив значений `[x1, x2, x3, ...]` в массив кортежей
+`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`.
+
+Текущая временная метка увеличивается на `step` до тех пор, пока не станет больше `end_timestamp`.
+Если количество значений не совпадает с количеством временных меток, функция генерирует исключение.
+
+Значения NULL в `[x1, x2, x3, ...]` пропускаются, но текущая временная метка всё равно увеличивается.
+Например, для `[value1, NULL, x2]` функция возвращает `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]`.
+
+**Синтаксис**
+
+```sql
+timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
+```
+
+**Аргументы**
+
+* `start_timestamp` — Начало сетки. [`DateTime64`](/sql-reference/data-types/datetime64) или [`DateTime`](/sql-reference/data-types/datetime) или [`UInt32`](/sql-reference/data-types/int-uint)
+* `end_timestamp` — Конец сетки. [`DateTime64`](/sql-reference/data-types/datetime64) или [`DateTime`](/sql-reference/data-types/datetime) или [`UInt32`](/sql-reference/data-types/int-uint)
+* `step` — Шаг сетки в секундах, [`Decimal64`](/sql-reference/data-types/decimal) или [`Decimal32`](/sql-reference/data-types/decimal) или [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `values` — Массив значений [`Array(Float*)`](/sql-reference/data-types/array) или [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
+
+**Возвращаемое значение**
+
+Возвращает значения из исходного массива, объединённые с метками времени на регулярной временной сетке, определяемой `start_timestamp` и `step`. [`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
+```
+
+```response title=Response
+┌─────────────────────────────────────────────result─────────────────────────────────────────────┐
+│ [('2025-06-01 00:00:00.000',10),('2025-06-01 00:00:30.000',20),('2025-06-01 00:01:30.000',30)] │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## timeSeriesIdToTags
+
+Добавлена в версии v25.8
+
+Находит теги, связанные с указанным идентификатором временного ряда.
+
+**Синтаксис**
+
+```sql
+timeSeriesIdToTags(id)
+```
+
+**Аргументы**
+
+* `id` — идентификатор временного ряда. [`UInt64`](/sql-reference/data-types/int-uint) или [`UInt128`](/sql-reference/data-types/int-uint) или [`UUID`](/sql-reference/data-types/uuid) или [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**Возвращаемое значение**
+
+Возвращает массив пар (`tag_name`, `tag_value`). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTags(id)
+```
+
+```response title=Response
+8374283493092    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
+```
+
+
+## timeSeriesIdToTagsGroup
+
+Добавлена в версии: v25.8
+
+Преобразует указанный идентификатор временного ряда в индекс соответствующей группы. Индексы групп — это числа 0, 1, 2, 3, сопоставленные каждому уникальному набору тегов в контексте текущего запроса.
+
+**Синтаксис**
+
+```sql
+timeSeriesIdToTagsGroup(id)
+```
+
+**Аргументы**
+
+* `id` — Идентификатор временного ряда. [`UInt64`](/sql-reference/data-types/int-uint) или [`UInt128`](/sql-reference/data-types/int-uint) или [`UUID`](/sql-reference/data-types/uuid) или [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**Возвращаемое значение**
+
+Возвращает индекс группы, соответствующий этому набору тегов. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id)
+```
+
+```response title=Response
+8374283493092    0
+```
+
+
+## timeSeriesRange
+
+Добавлена в версии: v25.8
+
+Генерирует диапазон временных меток [start&#95;timestamp, start&#95;timestamp + step, start&#95;timestamp + 2 * step, ..., end&#95;timestamp].
+
+Если `start_timestamp` равен `end_timestamp`, функция возвращает массив из одного элемента, содержащий `[start_timestamp]`.
+
+Функция `timeSeriesRange()` аналогична функции [range](../functions/array-functions.md#range).
+
+**Синтаксис**
+
+```sql
+timeSeriesRange(start_timestamp, end_timestamp, step)
+```
+
+**Аргументы**
+
+* `start_timestamp` — начало диапазона. [`DateTime64`](/sql-reference/data-types/datetime64) или [`DateTime`](/sql-reference/data-types/datetime) или [`UInt32`](/sql-reference/data-types/int-uint)
+* `end_timestamp` — конец диапазона. [`DateTime64`](/sql-reference/data-types/datetime64) или [`DateTime`](/sql-reference/data-types/datetime) или [`UInt32`](/sql-reference/data-types/int-uint)
+* `step` — шаг диапазона в секундах: [`UInt32/64`](/sql-reference/data-types/int-uint) или [`Decimal32/64`](/sql-reference/data-types/decimal)
+
+**Возвращаемое значение**
+
+Возвращает диапазон временных меток. [`Array(DateTime64)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30)
+```
+
+```response title=Response
+┌────────────────────────────────────result─────────────────────────────────────────┐
+│ ['2025-06-01 00:00:00.000', '2025-06-01 00:00:30.000', '2025-06-01 00:01:00.000'] │
+└───────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## timeSeriesStoreTags
+
+Добавлено в: v25.8
+
+Сохраняет соответствие между идентификатором временного ряда и его тегами в контексте запроса, чтобы функция timeSeriesIdToTags() могла затем извлечь эти теги.
+
+**Синтаксис**
+
+```sql
+timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, ...)
+```
+
+**Аргументы**
+
+* `id` — идентификатор временного ряда. [`UInt64`](/sql-reference/data-types/int-uint) или [`UInt128`](/sql-reference/data-types/int-uint) или [`UUID`](/sql-reference/data-types/uuid) или [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+* `tags_array` — массив пар вида (tag&#95;name, tag&#95;value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array) или [`NULL`](/sql-reference/syntax#null)
+* `separate_tag_name_i` — имя тега. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `separate_tag_value_i` — значение тега. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Nullable(String)`](/sql-reference/data-types/nullable)
+
+**Возвращаемое значение**
+
+Возвращает первый аргумент, то есть идентификатор временного ряда.
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count')
+```
+
+```response title=Response
+8374283493092
+```
+
+
+## timeSeriesTagsGroupToTags
+
+Появилась в версии: v25.8
+
+Находит теги, связанные с индексом группы. Индексы групп — это числа 0, 1, 2, 3, соответствующие каждому уникальному набору тегов в контексте текущего выполняемого запроса.
+
+**Синтаксис**
+
+```sql
+timeSeriesTagsGroupToTags(group)
+```
+
+**Аргументы**
+
+* `group` — индекс группы, связанный с временным рядом. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Массив пар (tag&#95;name, tag&#95;value). [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id) AS group, timeSeriesTagsGroupToTags(group)
+```
+
+```response title=Response
+8374283493092    0    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
+```
+
+{/*AUTOGENERATED_END*/ }

@@ -1,16 +1,19 @@
 ---
-'description': 'このエンジンは、Azure Blob Storage エコシステムとの統合を提供し、ストリーミングデータのインポートを可能にします。'
-'sidebar_label': 'AzureQueue'
-'sidebar_position': 181
-'slug': '/engines/table-engines/integrations/azure-queue'
-'title': 'AzureQueue テーブルエンジン'
-'doc_type': 'reference'
+description: 'このエンジンは Azure Blob Storage エコシステムとの統合を提供し、ストリーミングデータの取り込みを可能にします。'
+sidebar_label: 'AzureQueue'
+sidebar_position: 181
+slug: /engines/table-engines/integrations/azure-queue
+title: 'AzureQueue テーブルエンジン'
+doc_type: 'reference'
 ---
+
 
 
 # AzureQueue テーブルエンジン
 
-このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータインポートを可能にします。
+このエンジンは [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータの取り込みを可能にします。
+
+
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -26,9 +29,9 @@ CREATE TABLE test (name String, value UInt32)
 
 **エンジンパラメータ**
 
-`AzureQueue` のパラメータは、`AzureBlobStorage` テーブルエンジンがサポートするものと同じです。パラメータセクションは [こちら](../../../engines/table-engines/integrations/azureBlobStorage.md)をご覧ください。
+`AzureQueue`のパラメータは`AzureBlobStorage`テーブルエンジンと同じです。パラメータの詳細については[こちら](../../../engines/table-engines/integrations/azureBlobStorage.md)を参照してください。
 
-[AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ユーザーはローカル Azure Storage 開発のために Azurite エミュレーターを使用できます。詳細は [こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)をご覧ください。
+[AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage)テーブルエンジンと同様に、ローカルでのAzure Storage開発にはAzuriteエミュレータを使用できます。詳細については[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。
 
 **例**
 
@@ -42,22 +45,24 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
+
 ## 設定 {#settings}
 
-サポートされている設定の集合は `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスはありません。設定の [完全なリスト](../../../engines/table-engines/integrations/s3queue.md#settings)をご覧ください。
-テーブルに設定された設定のリストを取得するには、`system.azure_queue_settings` テーブルを使用してください。利用可能は `24.10` からです。
+サポートされている設定は`S3Queue`テーブルエンジンと同じですが、`s3queue_`プレフィックスは付きません。[設定の完全なリスト](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
+テーブルに設定されている設定のリストを取得するには、`system.azure_queue_settings`テーブルを使用します。`24.10`から利用可能です。
 
-## 説明 {#description}
 
-`SELECT` はストリーミングインポートにとって特に有用ではありません（デバッグを除いて）、各ファイルは一度だけインポートできるためです。リアルタイムスレッドを作成するためには、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md)を使用する方が実用的です。これを行うには：
+## Description {#description}
 
-1. エンジンを使用して、S3の指定されたパスからデータを消費するためのテーブルを作成し、それをデータストリームと見なします。
-2. 希望の構造を持つテーブルを作成します。
-3. エンジンからのデータを変換し、以前に作成したテーブルに入れるマテリアライズドビューを作成します。
+`SELECT`はストリーミングインポートにはあまり有用ではありません(デバッグを除く)。各ファイルは一度しかインポートできないためです。[マテリアライズドビュー](../../../sql-reference/statements/create/view.md)を使用してリアルタイム処理を作成する方が実用的です。これを行うには:
 
-`MATERIALIZED VIEW` がエンジンに結合すると、バックグラウンドでデータの収集を開始します。
+1.  エンジンを使用してS3の指定されたパスから読み取るテーブルを作成し、それをデータストリームとして扱います。
+2.  必要な構造を持つテーブルを作成します。
+3.  エンジンからデータを変換し、事前に作成したテーブルに格納するマテリアライズドビューを作成します。
 
-例：
+`MATERIALIZED VIEW`がエンジンに接続されると、バックグラウンドでデータの収集が開始されます。
+
+例:
 
 ```sql
 CREATE TABLE azure_queue_engine_table (key UInt64, data String)
@@ -74,21 +79,23 @@ CREATE MATERIALIZED VIEW consumer TO stats
 SELECT * FROM stats ORDER BY key;
 ```
 
+
 ## 仮想カラム {#virtual-columns}
 
-- `_path` — ファイルのパス。
-- `_file` — ファイルの名前。
+- `_path` — ファイルへのパス
+- `_file` — ファイル名
 
-仮想カラムの詳細については [こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)をご覧ください。
+仮想カラムの詳細については、[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
-## インストロスペクション {#introspection}
 
-テーブルの設定 `enable_logging_to_queue_log=1` を介して、テーブルのロギングを有効にします。
+## イントロスペクション {#introspection}
 
-インストロスペクション機能は、いくつかの異なる違いを除いて、[S3Queue テーブルエンジン](/engines/table-engines/integrations/s3queue#introspection)と同じです：
+テーブル設定 `enable_logging_to_queue_log=1` でテーブルのログ記録を有効にします。
 
-1. サーバーのバージョンが >= 25.1 の場合、キューのメモリ内状態には `system.azure_queue` を使用します。古いバージョンでは `system.s3queue` を使用してください（これには `azure` テーブルの情報も含まれます）。
-2. 次のように、主な ClickHouse 設定を介して `system.azure_queue_log` を有効にします。
+イントロスペクション機能は [S3Queueテーブルエンジン](/engines/table-engines/integrations/s3queue#introspection) と同じですが、いくつかの相違点があります:
+
+1. サーババージョン >= 25.1 では、キューのインメモリ状態に `system.azure_queue` を使用します。それ以前のバージョンでは `system.s3queue` を使用します(`azure` テーブルの情報も含まれます)。
+2. メインのClickHouse設定で `system.azure_queue_log` を有効にします。例:
 
 ```xml
 <azure_queue_log>
@@ -97,36 +104,36 @@ SELECT * FROM stats ORDER BY key;
 </azure_queue_log>
 ```
 
-この永続テーブルは、処理済みおよび失敗したファイルの情報を含む `system.s3queue` と同じ情報を持っています。
+この永続テーブルは `system.s3queue` と同じ情報を持ちますが、処理済みおよび失敗したファイルに関するものです。
 
-テーブルは以下の構造を持っています：
+テーブルは以下の構造を持ちます:
 
 ```sql
 
 CREATE TABLE system.azure_queue_log
 (
-    `hostname` LowCardinality(String) COMMENT 'Hostname',
-    `event_date` Date COMMENT 'Event date of writing this log row',
-    `event_time` DateTime COMMENT 'Event time of writing this log row',
-    `database` String COMMENT 'The name of a database where current S3Queue table lives.',
-    `table` String COMMENT 'The name of S3Queue table.',
-    `uuid` String COMMENT 'The UUID of S3Queue table',
-    `file_name` String COMMENT 'File name of the processing file',
-    `rows_processed` UInt64 COMMENT 'Number of processed rows',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Status of the processing file',
-    `processing_start_time` Nullable(DateTime) COMMENT 'Time of the start of processing the file',
-    `processing_end_time` Nullable(DateTime) COMMENT 'Time of the end of processing the file',
-    `exception` String COMMENT 'Exception message if happened'
+    `hostname` LowCardinality(String) COMMENT 'ホスト名',
+    `event_date` Date COMMENT 'このログ行を書き込んだイベント日付',
+    `event_time` DateTime COMMENT 'このログ行を書き込んだイベント時刻',
+    `database` String COMMENT '現在のS3Queueテーブルが存在するデータベースの名前',
+    `table` String COMMENT 'S3Queueテーブルの名前',
+    `uuid` String COMMENT 'S3QueueテーブルのUUID',
+    `file_name` String COMMENT '処理ファイルのファイル名',
+    `rows_processed` UInt64 COMMENT '処理された行数',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT '処理ファイルのステータス',
+    `processing_start_time` Nullable(DateTime) COMMENT 'ファイル処理の開始時刻',
+    `processing_end_time` Nullable(DateTime) COMMENT 'ファイル処理の終了時刻',
+    `exception` String COMMENT '発生した例外メッセージ'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
 SETTINGS index_granularity = 8192
-COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
+COMMENT 'S3Queueエンジンによって処理されたファイルの情報を含むログエントリを格納します。'
 
 ```
 
-例：
+例:
 
 ```sql
 SELECT *

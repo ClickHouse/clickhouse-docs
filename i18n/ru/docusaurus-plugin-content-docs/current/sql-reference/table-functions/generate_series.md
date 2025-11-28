@@ -1,39 +1,45 @@
 ---
-slug: '/sql-reference/table-functions/generate_series'
-sidebar_label: generate_series
+slug: /sql-reference/table-functions/generate_series
 sidebar_position: 146
-description: 'Возвращает таблицу с единственной колонкой `generate_series` (UInt64),'
+sidebar_label: 'generate_series'
 title: 'generate_series (generateSeries)'
-doc_type: reference
+description: 'Возвращает таблицу с единственным столбцом `generate_series` (UInt64), содержащим целые числа в диапазоне от start до stop включительно.'
+doc_type: 'reference'
 ---
-# generate_series Табличная Функция
+
+
+
+# Табличная функция generate_series
 
 Псевдоним: `generateSeries`
 
-## Синтаксис {#syntax}
 
-Возвращает таблицу с единственной колонкой 'generate_series' (`UInt64`), которая содержит целые числа от start до stop включительно:
+
+## Синтаксис
+
+Возвращает таблицу с единственным столбцом &#39;generate&#95;series&#39; (`UInt64`), содержащим целые числа от start до stop включительно:
 
 ```sql
 generate_series(START, STOP)
 ```
 
-Возвращает таблицу с единственной колонкой 'generate_series' (`UInt64`), которая содержит целые числа от start до stop включительно с интервалом между значениями, заданным `STEP`:
+Возвращает таблицу с единственным столбцом &#39;generate&#95;series&#39; (`UInt64`), содержащим целые числа от `start` до `stop` включительно с шагом `STEP`:
 
 ```sql
 generate_series(START, STOP, STEP)
 ```
 
-## Примеры {#examples}
 
-Следующие запросы возвращают таблицы с одинаковым содержимым, но с разными названиями колонок:
+## Примеры
+
+Следующие запросы возвращают таблицы с одинаковым содержимым, но разными именами столбцов:
 
 ```sql
 SELECT * FROM numbers(10, 5);
 SELECT * FROM generate_series(10, 14);
 ```
 
-А следующие запросы возвращают таблицы с одинаковым содержимым, но с разными названиями колонок (но второй вариант более эффективен):
+Следующие запросы возвращают таблицы с тем же содержимым, но с другими именами столбцов (при этом второй вариант выполняется эффективнее):
 
 ```sql
 SELECT * FROM numbers(10, 11) WHERE number % 3 == (10 % 3);

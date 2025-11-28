@@ -1,17 +1,20 @@
 ---
-slug: '/use-cases/data-lake'
-description: 'Целевая страница для руководства по использованию Data Lake'
-title: ДатаЛэйк
-doc_type: landing-page
+description: 'Целевая страница руководства по сценарию использования Data Lake'
 pagination_prev: null
 pagination_next: null
+slug: /use-cases/data-lake
+title: 'Data Lake'
+keywords: ['озеро данных', 'glue', 'unity', 'rest', 'OneLake']
+doc_type: 'landing-page'
 ---
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и др.).
+
+ClickHouse поддерживает интеграцию с различными каталогами (Unity, Glue, REST, Polaris и т. д.).
 
 | Страница | Описание |
 |-----|-----|
-| [Запрос данных в S3 с использованием ClickHouse и Glue Data Catalog](/use-cases/data-lake/glue-catalog) | Запросите ваши данные в S3 корзинах с использованием ClickHouse и Glue Data Catalog. |
-| [Запрос данных в S3 с использованием ClickHouse и Unity Data Catalog](/use-cases/data-lake/unity-catalog) | Запросите ваши данные с использованием Unity Catalog. |
-| [Запрос данных в S3 с использованием ClickHouse и REST Catalog](/use-cases/data-lake/rest-catalog) | Запросите ваши данные с использованием REST Catalog (Tabular.io). |
-| [Запрос данных в S3 с использованием ClickHouse и Lakekeeper Catalog](/use-cases/data-lake/lakekeeper-catalog) | Запросите ваши данные с использованием Lakekeeper Catalog. |
-| [Запрос данных в S3 с использованием ClickHouse и Nessie Catalog](/use-cases/data-lake/nessie-catalog) | Запросите ваши данные с использованием Nessie Catalog с контролем версий данных, похожим на Git. |
+| [Querying data in S3 using ClickHouse and the Glue Data Catalog](/use-cases/data-lake/glue-catalog) | Выполняйте запросы к данным, хранящимся в S3-бакетах, используя ClickHouse и Glue Data Catalog. |
+| [Querying data in S3 using ClickHouse and the Unity Data Catalog](/use-cases/data-lake/unity-catalog) | Выполняйте запросы к данным, используя Unity Catalog. |
+| [Querying data in S3 using ClickHouse and the REST Catalog](/use-cases/data-lake/rest-catalog) | Выполняйте запросы к данным, используя REST Catalog (Tabular.io). |
+| [Querying data in S3 using ClickHouse and the Lakekeeper Catalog](/use-cases/data-lake/lakekeeper-catalog) | Выполняйте запросы к данным, используя Lakekeeper Catalog. |
+| [Querying data in S3 using ClickHouse and the Nessie Catalog](/use-cases/data-lake/nessie-catalog) | Выполняйте запросы к данным, используя Nessie Catalog с контролем версий данных по аналогии с Git. |
+| [Querying data in Azure using ClickHouse and the OneLake Catalog](/use-cases/data-lake/onelake-catalog) | Выполняйте запросы к данным в Microsoft OneLake, используя ClickHouse и формат таблиц Iceberg. |

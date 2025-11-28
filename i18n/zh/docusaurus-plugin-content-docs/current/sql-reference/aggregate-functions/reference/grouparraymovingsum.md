@@ -1,31 +1,30 @@
 ---
-'description': '计算输入值的移动总和。'
-'sidebar_position': 144
-'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
-'title': 'groupArrayMovingSum'
-'doc_type': 'reference'
+description: '计算输入值的移动和。'
+sidebar_position: 144
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
+title: 'groupArrayMovingSum'
+doc_type: 'reference'
 ---
-
 
 # groupArrayMovingSum
 
-计算输入值的移动和。
+计算输入值的滑动和。
 
 ```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，则该函数使用等于列中行数的窗口大小。
+该函数可以接收窗口大小作为参数。如果未指定，函数会将窗口大小默认为该列的行数。
 
 **参数**
 
-- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数字数据类型的值。
-- `window_size` — 计算窗口的大小。
+* `numbers_for_summing` — 结果为数值数据类型值的[表达式](/sql-reference/syntax#expressions)。
+* `window_size` — 计算窗口的大小。
 
 **返回值**
 
-- 与输入数据大小和类型相同的数组。
+* 与输入数据具有相同大小和类型的数组。
 
 **示例**
 
@@ -50,7 +49,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-查询：
+查询语句：
 
 ```sql
 SELECT

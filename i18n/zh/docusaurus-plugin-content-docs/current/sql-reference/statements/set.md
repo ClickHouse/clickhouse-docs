@@ -1,33 +1,32 @@
 ---
-'description': 'SET 语句的文档'
-'sidebar_label': 'SET'
-'sidebar_position': 50
-'slug': '/sql-reference/statements/set'
-'title': 'SET 语句'
-'doc_type': 'reference'
+description: 'SET 语句文档'
+sidebar_label: 'SET'
+sidebar_position: 50
+slug: /sql-reference/statements/set
+title: 'SET 语句'
+doc_type: 'reference'
 ---
-
 
 # SET 语句
 
 ```sql
-SET param = value
+SET 参数 = 值
 ```
 
-将 `value` 分配给当前会话的 `param` [设置](/operations/settings/overview)。您不能通过这种方式更改 [服务器设置](../../operations/server-configuration-parameters/settings.md)。
+将当前会话中的 `param` [设置](/operations/settings/overview) 设置为 `value`。不能通过这种方式更改[服务器设置](../../operations/server-configuration-parameters/settings.md)。
 
-您还可以在单个查询中设置指定设置配置文件的所有值。
+你也可以在单个查询中，一次性应用指定设置配置文件中的所有值。
 
 ```sql
-SET profile = 'profile-name-from-the-settings-file'
+SET profile = '设置文件中的配置文件名称'
 ```
 
-对于设置为 true 的布尔值设置，您可以通过省略值分配使用简写语法。当仅指定设置名称时，它会自动设置为 `1` (true)。
+对于值为 true 的布尔类型设置，你可以通过省略赋值来使用简写语法。仅指定设置名称时，它会自动被设置为 `1`（true）。
 
 ```sql
--- These are equivalent:
+-- 以下两种写法等效：
 SET force_index_by_date = 1
 SET force_index_by_date
 ```
 
-有关更多信息，请参见 [设置](../../operations/settings/settings.md)。
+如需了解更多信息，请参阅[设置](../../operations/settings/settings.md)。
