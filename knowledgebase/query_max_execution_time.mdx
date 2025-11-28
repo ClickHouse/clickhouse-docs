@@ -14,7 +14,7 @@ How do I enforce a time limit on my queries?
 
 ## Answer \{#answer\}
 
-You can use [`max_execution_time`](https://clickhouse.com/docs/operations/settings/settings#max_execution_time) setting (expressed in seconds):
+You can use [`max_execution_time`](/docs/operations/settings/settings#max_execution_time) setting (expressed in seconds):
 
 ```sql
 clickhouse-cloud :) SELECT 1 SETTINGS max_execution_time=0.0001
