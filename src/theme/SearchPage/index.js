@@ -215,11 +215,12 @@ function SearchPageContent() {
                     // For non-English locales, the baseUrl is /docs/{locale}/
                     // Algolia returns URLs like /docs/{locale}/path
                     // We need to make them relative: path (without leading slash)
-                    // Parse the URL to safely extract the pathname
+                    // Parse the URL to safely extract the pathname and hash
                     let processedUrl = url;
                     try {
                         const urlObj = new URL(url);
                         const pathname = urlObj.pathname;
+                        const hash = urlObj.hash;
 
                         if (currentLocale !== 'en') {
                             const prefix = `/docs/${currentLocale}`;
@@ -236,6 +237,9 @@ function SearchPageContent() {
                                 processedUrl = pathname;
                             }
                         }
+
+                        // Append the hash back to the URL
+                        processedUrl += hash;
                     } catch (e) {
                         // Fallback to original logic if parsing fails
                         if (currentLocale !== 'en') {
