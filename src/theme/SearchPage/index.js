@@ -204,10 +204,10 @@ function SearchPageContent() {
 
             const items = hits.map(
                 ({
-                     url,
-                     _highlightResult: { hierarchy },
-                     _snippetResult: snippet = {},
-                 }) => {
+                    url,
+                    _highlightResult: { hierarchy },
+                    _snippetResult: snippet = {},
+                }) => {
                     const titles = Object.keys(hierarchy).map((key) =>
                         sanitizeValue(hierarchy[key].value),
                     );
@@ -215,12 +215,34 @@ function SearchPageContent() {
                     // For non-English locales, the baseUrl is /docs/{locale}/
                     // Algolia returns URLs like /docs/{locale}/path
                     // We need to make them relative: path (without leading slash)
+                    // Parse the URL to safely extract the pathname
                     let processedUrl = url;
-                    if (currentLocale !== 'en') {
-                        processedUrl = url.replace(`/docs/${currentLocale}/`, '');
-                    } else {
-                        // For English, baseUrl is /docs/, so URLs like /docs/path should become path
-                        processedUrl = url.replace('/docs/', '');
+                    try {
+                        const urlObj = new URL(url);
+                        const pathname = urlObj.pathname;
+
+                        if (currentLocale !== 'en') {
+                            const prefix = `/docs/${currentLocale}`;
+                            if (pathname.startsWith(prefix)) {
+                                processedUrl = pathname.substring(prefix.length) || '/';
+                            } else {
+                                processedUrl = pathname;
+                            }
+                        } else {
+                            const prefix = '/docs';
+                            if (pathname.startsWith(prefix)) {
+                                processedUrl = pathname.substring(prefix.length) || '/';
+                            } else {
+                                processedUrl = pathname;
+                            }
+                        }
+                    } catch (e) {
+                        // Fallback to original logic if parsing fails
+                        if (currentLocale !== 'en') {
+                            processedUrl = url.replace(`/docs/${currentLocale}/`, '');
+                        } else {
+                            processedUrl = url.replace('/docs/', '');
+                        }
                     }
 
                     return {
