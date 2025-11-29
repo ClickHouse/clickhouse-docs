@@ -1016,7 +1016,7 @@
     "message": "Руководства по оптимизации ClickHouse"
   },
   "sidebar.dropdownCategories.category.Server admin": {
-    "message": "Администратор сервера"
+    "message": "Сервер"
   },
   "sidebar.dropdownCategories.category.description.Server admin": {
     "message": "Управление и развертывание ClickHouse"
