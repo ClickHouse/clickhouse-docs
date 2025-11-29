@@ -396,7 +396,7 @@
     "description": "Метка категории TabSeparated в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Template": {
-    "message": "Шаблон",
+    "message": "Template",
     "description": "Название категории Template в боковой панели sqlreference"
   },
   "sidebar.integrations.category.Language clients": {
