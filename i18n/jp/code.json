@@ -585,7 +585,7 @@
     "description": "有用なデータセットとチュートリアル"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "クラウド"
+    "message": "Cloud"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
     "message": "ClickHouse を最速でデプロイする方法"
@@ -1158,5 +1158,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "ClickHouse への貢献方法を学ぶ"
+  },
+  "homepage.hero.description": {
+    "message": "ガイド、リファレンスドキュメント、動画で ClickHouse の使い方を学ぶ"
+  },
+  "homepage.hero.quickStart": {
+    "message": "クイックスタート"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Cloud の利用を開始する"
+  },
+  "homepage.hero.installLocally": {
+    "message": "ローカル環境へのインストール"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "OSS で始める"
+  },
+  "homepage.search.title": {
+    "message": "ドキュメントを検索"
+  },
+  "homepage.connect.title": {
+    "message": "ClickHouse への接続"
+  },
+  "homepage.connect.description": {
+    "message": "数分でアプリケーションを ClickHouse に接続"
+  },
+  "homepage.connect.viewAll": {
+    "message": "クライアントとドライバーをすべて表示"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI（コマンドラインインターフェイス）"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQLコンソール"
+  },
+  "homepage.migrate.title": {
+    "message": "ClickHouse への移行"
+  },
+  "homepage.migrate.description": {
+    "message": "他のデータベース、データウェアハウス、オブジェクトストレージからデータを読み込む"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "すべての連携を表示"
+  },
+  "homepage.deploy.title": {
+    "message": "ClickHouse のデプロイ"
+  },
+  "homepage.deploy.description": {
+    "message": "ClickHouse を Cloud または自前のインフラ環境にデプロイする"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "ノードデプロイメント"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "クラスター デプロイメント"
+  },
+  "homepage.resources.title": {
+    "message": "その他の資料"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "サポートに問い合わせる"
+  },
+  "homepage.resources.changelog": {
+    "message": "更新履歴"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "サンプルデータセット"
   }
 }
