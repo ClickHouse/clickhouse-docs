@@ -1,0 +1,42 @@
+---
+title: 如何解决在执行 INSERT...SELECT 时出现的 TOO MANY PARTS 错误？
+description: "通过调整专家级设置以使用更大的数据块并提高分区阈值，解决 ClickHouse 在执行 `INSERT...SELECT` 时出现的 TOO_MANY_PARTS 错误。"
+date: 2023-07-21
+tags: ['设置', '错误和异常']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+## Question \{#question\}
+
+在执行 `INSERT...SELECT` 语句时，我遇到分片过多（TOO&#95;MANY&#95;PARTS）错误。
+
+我该如何解决这个问题？
+
+## Answer \{#answer\}
+
+下面是一些可以通过调优来避免该错误的设置。这属于 ClickHouse 的专家级调优，只有在充分理解将要使用这些设置的 ClickHouse Cloud 服务或本地集群规格之后，才应修改这些值，因此不要将这些值视为「通用适用」的配置。
+
+[max&#95;insert&#95;block&#95;size](https://clickhouse.com/docs/operations/settings/settings#settings-max_insert_block_size) = `100_000_000`（默认值 `1_048_576`）
+
+从约 100 万提高到 1 亿，可让更大的数据块得以生成。
+
+注意：此设置仅在由服务器端形成数据块时生效，例如通过 HTTP 接口执行 INSERT，而不适用于 clickhouse-client。
+
+[min&#95;insert&#95;block&#95;size&#95;rows](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-rows) = `100_000_000`（默认值 `1_048_576`）
+
+从约 100 万提高到 1 亿，可让更大的数据块得以生成。
+
+[min&#95;insert&#95;block&#95;size&#95;bytes](https://clickhouse.com/docs/operations/settings/settings#min-insert-block-size-bytes) = `500_000_000`（默认值 `268_435_456`）
+
+从 268.44 MB 提高到 500 MB，可让更大的数据块得以生成。
+
+[parts&#95;to&#95;delay&#95;insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-delay-insert) = `500`（默认值 `150`）
+
+将该值增大，以避免在单个分区中活动 part 的数量达到阈值时对 INSERT 进行人为减速。
+
+[parts&#95;to&#95;throw&#95;insert](https://clickhouse.com/docs/operations/settings/merge-tree-settings#parts-to-throw-insert) = `1500`（默认值 `3000`）
+
+提高该值通常会影响对该表的查询性能，但对于数据迁移场景来说是可以接受的。

@@ -1,112 +1,143 @@
 ---
-'sidebar_label': 'Часто задаваемые вопросы'
-'description': 'Часто задаваемые вопросы о ClickPipes для Kafka'
-'slug': '/integrations/clickpipes/kafka/faq'
-'sidebar_position': 1
-'title': 'Kafka ClickPipes Часто задаваемые вопросы'
-'doc_type': 'guide'
+sidebar_label: 'Часто задаваемые вопросы'
+description: 'Часто задаваемые вопросы о ClickPipes для Kafka'
+slug: /integrations/clickpipes/kafka/faq
+sidebar_position: 1
+title: 'FAQ по Kafka ClickPipes'
+doc_type: 'guide'
+keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 ---
-## Kafka ClickPipes FAQ {#faq}
 
-### Общие вопросы {#general}
+
+
+## Часто задаваемые вопросы о Kafka ClickPipes {#faq}
+
+### Общие сведения {#general}
 
 <details>
 
 <summary>Как работает ClickPipes для Kafka?</summary>
 
-ClickPipes использует специализированную архитектуру, работающую на API потребителя Kafka для чтения данных из заданной темы, а затем вставляет данные в таблицу ClickHouse на конкретном сервисе ClickHouse Cloud.
+ClickPipes использует специализированную архитектуру, запускающую Kafka Consumer API для чтения данных из указанного топика и последующей вставки данных в таблицу ClickHouse в конкретном сервисе ClickHouse Cloud.
+
 </details>
 
 <details>
 
-<summary>В чем разница между ClickPipes и движком таблиц ClickHouse для Kafka?</summary>
+<summary>
+  В чём разница между ClickPipes и движком таблиц ClickHouse Kafka Table
+  Engine?
+</summary>
 
-Движок таблиц Kafka является основной возможностью ClickHouse, которая реализует "модель вытягивания", где сам сервер ClickHouse подключается к Kafka, извлекает события и затем записывает их локально.
+Движок Kafka Table является базовой возможностью ClickHouse, реализующей «pull-модель», при которой сам сервер ClickHouse подключается к Kafka, извлекает события и затем записывает их локально.
 
-ClickPipes - это отдельный облачный сервис, который работает независимо от сервиса ClickHouse. Он подключается к Kafka (или другим источникам данных) и отправляет события на связанный сервис ClickHouse Cloud. Эта раздельная архитектура обеспечивает превосходную операционную гибкость, четкое разделение задач, масштабируемый прием данных, управление отказами и многое другое.
+ClickPipes — это отдельный облачный сервис, работающий независимо от сервиса ClickHouse. Он подключается к Kafka (или другим источникам данных) и отправляет события в связанный сервис ClickHouse Cloud. Такая развязанная архитектура обеспечивает высокую операционную гибкость, чёткое разделение ответственности, масштабируемую ингестию, управляемую обработку отказов, расширяемость и многое другое.
+
 </details>
 
 <details>
 
 <summary>Каковы требования для использования ClickPipes для Kafka?</summary>
 
-Чтобы использовать ClickPipes для Kafka, вам потребуется работающий брокер Kafka и сервис ClickHouse Cloud с активированным ClickPipes. Также необходимо убедиться, что ClickHouse Cloud может получить доступ к вашему брокеру Kafka. Это можно сделать, разрешив удаленное подключение на стороне Kafka, добавив IP-адреса [выходящего трафика ClickHouse Cloud](/manage/security/cloud-endpoints-api) в белый список в вашей настройке Kafka. В качестве альтернативы, вы можете использовать [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) для подключения ClickPipes для Kafka к вашим брокерам Kafka.
+Для использования ClickPipes для Kafka вам потребуется работающий брокер Kafka и сервис ClickHouse Cloud с включённым ClickPipes. Также необходимо убедиться, что ClickHouse Cloud имеет доступ к вашему брокеру Kafka. Этого можно добиться, разрешив удалённые подключения на стороне Kafka и добавив в список разрешённых [исходящие IP-адреса ClickHouse Cloud](/manage/data-sources/cloud-endpoints-api) в вашей конфигурации Kafka. В качестве альтернативы вы можете использовать [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) для подключения ClickPipes для Kafka к вашим брокерам Kafka.
+
 </details>
 
 <details>
 
 <summary>Поддерживает ли ClickPipes для Kafka AWS PrivateLink?</summary>
 
-AWS PrivateLink поддерживается. См. [документацию](/integrations/clickpipes/aws-privatelink) для получения дополнительной информации о том, как его настроить.
+AWS PrivateLink поддерживается. См. [документацию](/integrations/clickpipes/aws-privatelink) для получения дополнительной информации по настройке.
+
 </details>
 
 <details>
 
-<summary>Могу ли я использовать ClickPipes для Kafka для записи данных в тему Kafka?</summary>
+<summary>
+  Могу ли я использовать ClickPipes для Kafka для записи данных в топик Kafka?
+</summary>
 
-Нет, ClickPipes для Kafka предназначен для чтения данных из тем Kafka, а не для записи данных в них. Чтобы записать данные в тему Kafka, вам понадобится использовать специализированный продюсер Kafka.
+Нет, ClickPipes для Kafka предназначен для чтения данных из топиков Kafka, а не для записи данных в них. Для записи данных в топик Kafka вам потребуется использовать отдельный продюсер Kafka.
+
 </details>
 
 <details>
 
 <summary>Поддерживает ли ClickPipes несколько брокеров?</summary>
 
-Да, если брокеры являются частью одного кворума, их можно настроить вместе, разделив запятой `,`.
+Да, если брокеры входят в один и тот же кворум, их можно настроить совместно, перечислив через `,`.
+
 </details>
 
 <details>
 
-<summary>Могут ли реплики ClickPipes быть масштабированы?</summary>
+<summary>Можно ли масштабировать реплики ClickPipes?</summary>
 
-Да, ClickPipes для потоковой передачи могут быть масштабированы как горизонтально, так и вертикально. Горизонтальное масштабирование добавляет больше реплик для увеличения пропускной способности, в то время как вертикальное масштабирование увеличивает ресурсы (CPU и RAM), выделенные каждой реплике для обработки более интенсивных нагрузок. Это можно настроить во время создания ClickPipe или в любое другое время в разделе **Настройки** -> **Расширенные настройки** -> **Масштабирование**.
+Да, ClickPipes для потоковой передачи можно масштабировать как горизонтально, так и вертикально.
+Горизонтальное масштабирование добавляет больше реплик для увеличения пропускной способности, а вертикальное масштабирование увеличивает ресурсы (CPU и RAM), выделенные каждой реплике, для обработки более интенсивных нагрузок.
+Это можно настроить при создании ClickPipe или в любой момент позже в разделе **Settings** -> **Advanced Settings** -> **Scaling**.
+
 </details>
 
 ### Azure Event Hubs {#azure-eventhubs}
 
 <details>
 
-<summary>Работает ли ClickPipe для Azure Event Hubs без Kafka поверхности?</summary>
+<summary>
+  Работает ли ClickPipe для Azure Event Hubs без Kafka-интерфейса?
+</summary>
 
-Нет. ClickPipes требует, чтобы пространство имен Event Hubs имело включенную Kafka поверхность. Это доступно только на уровнях выше **базового**. См. [документацию Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) для получения дополнительной информации.
+Нет. Для работы ClickPipes требуется, чтобы в пространстве имён Event Hubs был включён Kafka-интерфейс. Это доступно только в тарифах выше **basic**. См. [документацию Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) для получения дополнительной информации.
+
 </details>
 
 <details>
 
 <summary>Работает ли Azure Schema Registry с ClickPipes?</summary>
 
-Нет. ClickPipes поддерживает только регистраторы схем, которые совместимы с API Confluent Schema Registry, что не относится к Azure Schema Registry. Если вам нужна поддержка этого регистра схем, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
+Нет. ClickPipes поддерживает только реестры схем, которые являются API-совместимыми с Confluent Schema Registry, что не относится к Azure Schema Registry. Если вам нужна поддержка этого реестра схем, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
+
 </details>
 
 <details>
 
-<summary>Какие разрешения нужны моей политике, чтобы потреблять данные из Azure Event Hubs?</summary>
+<summary>
+  Какие разрешения необходимы в моей политике для чтения данных из Azure Event Hubs?
+</summary>
 
-Чтобы перечислить темы и потреблять события, совместная политика доступа, предоставленная ClickPipes, требует, как минимум, права 'Listen'.
+Для получения списка топиков и чтения событий предоставляемая ClickPipes политика совместного доступа должна как минимум содержать право «Listen».
+
 </details>
 
 <details>
 
-<summary>Почему мой Event Hubs не возвращает никаких данных?</summary>
+<summary>Почему мой Event Hubs не возвращает данные?</summary>
 
-Если ваш экземпляр ClickHouse находится в другом регионе или на другом континенте от вашего развертывания Event Hubs, вы можете столкнуться с тайм-аутами при подключении ваших ClickPipes и высоким временем задержки при потреблении данных из Event Hub. Мы рекомендуем развертывать ClickHouse Cloud и Azure Event Hubs в одном облачном регионе или в региона, расположенные близко друг к другу, чтобы избежать потерь в производительности.
+Если ваш экземпляр ClickHouse находится в другом регионе или на другом континенте по сравнению с развертыванием Event Hubs, при подключении ClickPipes вы можете сталкиваться с таймаутами, а при чтении данных из Event Hub — с повышенной задержкой. Мы рекомендуем разворачивать ClickHouse Cloud и Azure Event Hubs в одном и том же облачном регионе или в регионах, расположенных близко друг к другу, чтобы избежать издержек по производительности.
+
 </details>
 
 <details>
 
-<summary>Следует ли включать номер порта для Azure Event Hubs?</summary>
+<summary>Нужно ли указывать номер порта для Azure Event Hubs?</summary>
 
-Да. ClickPipes ожидает, что вы включите номер порта для Kafka поверхности, который должен быть `:9093`.
+
+Да. В ClickPipes ожидается, что вы укажете номер порта для конечной точки Kafka; он должен быть `:9093`.
+
 </details>
 
 <details>
 
-<summary>Актуальны ли IP-адреса ClickPipes для Azure Event Hubs?</summary>
+<summary>Остаются ли IP‑адреса ClickPipes актуальными для Azure Event Hubs?</summary>
 
-Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, пожалуйста, добавьте [документированные статические NAT IPs](../index.md#list-of-static-ips) в белый список.
+Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, добавьте [задокументированные статические NAT‑IP‑адреса](../
+/index.md#list-of-static-ips) в .
+
 </details>
 
 <details>
-<summary>Является ли строка подключения для Event Hub или для пространства имен Event Hub?</summary>
+<summary>Строка подключения предназначена для отдельного Event Hub или для пространства имен Event Hubs?</summary>
 
-Обе работают. Мы настоятельно рекомендуем использовать совместную политику доступа на **уровне пространства имен**, чтобы получить образцы из нескольких Event Hubs.
+Оба варианта работают. Мы настоятельно рекомендуем использовать политику совместного доступа на **уровне пространства имен**, чтобы получать данные из нескольких экземпляров Event Hubs.
+
 </details>

@@ -9,14 +9,14 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Why is ClickHouse so fast? {#why-clickhouse-is-so-fast}
+# Why is ClickHouse so fast? \{#why-clickhouse-is-so-fast\}
 
 Many other factors contribute to a database's performance besides [its data orientation](/intro#row-oriented-vs-column-oriented-storage).
 We will next explain in more detail what makes ClickHouse so fast, especially compared to other column-oriented databases.
 
 From an architectural perspective, databases consist (at least) of a storage layer and a query processing layer. While the storage layer is responsible for saving, loading, and maintaining the table data, the query processing layer executes user queries. Compared to other databases, ClickHouse provides innovations in both layers that enable extremely fast inserts and Select queries.
 
-## Storage layer: concurrent inserts are isolated from each other {#storage-layer-concurrent-inserts-are-isolated-from-each-other}
+## Storage layer: concurrent inserts are isolated from each other \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -26,11 +26,9 @@ To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) oper
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
- the holistic performance optimization section of the VLDB paper.
-
 🤿 Deep dive into this in the [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
+## Storage layer: concurrent inserts and selects are isolated \{#storage-layer-concurrent-inserts-and-selects-are-isolated\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -38,7 +36,7 @@ Inserts are fully isolated from SELECT queries, and merging inserted data parts 
 
 🤿 Deep dive into this in the [Storage Layer](/docs/academic_overview#3-storage-layer) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: merge-time computation {#storage-layer-merge-time-computation}
+## Storage layer: merge-time computation \{#storage-layer-merge-time-computation\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -58,7 +56,7 @@ On the other hand, the majority of the runtime of merges is consumed by loading 
 
 🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: data pruning {#storage-layer-data-pruning}
+## Storage layer: data pruning \{#storage-layer-data-pruning\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -74,7 +72,7 @@ All three techniques aim to skip as many rows during full-column reads as possib
 
 🤿 Deep dive into this in the [Data Pruning](/docs/academic_overview#3-2-data-pruning) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: data compression {#storage-layer-data-compression}
+## Storage layer: data compression \{#storage-layer-data-compression\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -88,7 +86,7 @@ Data compression not only reduces the storage size of the database tables, but i
 
 🤿 Deep dive into this in the [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) section of the web version of our VLDB 2024 paper.
 
-## State-of-the-art query processing layer {#state-of-the-art-query-processing-layer}
+## State-of-the-art query processing layer \{#state-of-the-art-query-processing-layer\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -102,7 +100,7 @@ If a single node becomes too small to hold the table data, further nodes can be 
 
 🤿 Deep dive into this in the [Query Processing Layer](/academic_overview#4-query-processing-layer) section of the web version of our VLDB 2024 paper.
 
-## Meticulous attention to detail {#meticulous-attention-to-detail}
+## Meticulous attention to detail \{#meticulous-attention-to-detail\}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -133,7 +131,7 @@ Algorithms that rely on data characteristics often perform better than their gen
 
 🤿 Deep dive into this in the [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) section of the web version of our VLDB 2024 paper.
 
-## VLDB 2024 paper {#vldb-2024-paper}
+## VLDB 2024 paper \{#vldb-2024-paper\}
 
 In August 2024, we had our first research paper accepted and published at VLDB.
 VLDB is an international conference on very large databases, and is widely regarded as one of the leading conferences in the field of data management.

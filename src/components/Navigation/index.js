@@ -47,7 +47,7 @@ export default function Navigation({
           <li>
             <NavigationItem {...topLevelEvents} label={translate({
               id: 'topNav.navItems.Use cases',
-              message: 'Use cases',
+              message: 'Solutions',
             })}>
               <NavigationSubNavUseCases />
             </NavigationItem>

@@ -1,12 +1,13 @@
 ---
-slug: '/install/windows'
-sidebar_label: Windows
-description: 'Установите ClickHouse с использованием WSL на Windows'
-title: 'Установите ClickHouse на Windows с WSL'
+description: 'Установка ClickHouse на Windows в среде WSL'
 keywords: ['ClickHouse', 'установка', 'Redhat', 'rpm']
-doc_type: guide
+sidebar_label: 'Windows'
+slug: /install/windows
+title: 'Установка ClickHouse на Windows в среде WSL'
 hide_title: true
+doc_type: 'guide'
 ---
+
 import Windows from './_snippets/_windows_install.md'
 
-<Windows/>
+<Windows />

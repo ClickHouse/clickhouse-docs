@@ -1,46 +1,45 @@
 ---
-'description': '关于 Parametric Aggregate Functions 的文档'
-'sidebar_label': 'Parametric'
-'sidebar_position': 38
-'slug': '/sql-reference/aggregate-functions/parametric-functions'
-'title': '参数聚合函数'
-'doc_type': 'reference'
+description: '参数化聚合函数文档'
+sidebar_label: '参数化'
+sidebar_position: 38
+slug: /sql-reference/aggregate-functions/parametric-functions
+title: '参数化聚合函数'
+doc_type: 'reference'
 ---
 
+# 参数化聚合函数 {#parametric-aggregate-functions}
 
-# 参数化聚合函数
-
-某些聚合函数不仅可以接受参数列（用于压缩），还可以接受一组参数 - 用于初始化的常量。语法是使用两个括号对而不是一个。第一个用于参数，第二个用于论据。
+某些聚合函数不仅可以接受参数列（用于压缩），还可以接受一组参数（用于初始化的常量）。其语法是使用两对括号而不是一对：第一对用于参数，第二对用于参数列。
 
 ## histogram {#histogram}
 
-计算自适应直方图。它不保证精确结果。
+计算自适应直方图。不保证结果精确。
 
 ```sql
 histogram(number_of_bins)(values)
 ```
 
-该函数使用[A Streaming Parallel Decision Tree Algorithm](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)。随着新数据进入函数，直方图桶的边界会调整。在一般情况下，桶的宽度并不相等。
+该函数使用 [A Streaming Parallel Decision Tree Algorithm](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)。当新数据进入函数时，会自动调整直方图箱的边界。通常情况下，各箱的宽度并不相等。
 
 **参数**
 
-`values` — [表达式](/sql-reference/syntax#expressions)，结果为输入值。
+`values` — 计算得到输入值的[表达式](/sql-reference/syntax#expressions)。
 
 **参数**
 
-`number_of_bins` — 直方图中桶的数量的上限。该函数会自动计算桶的数量。它试图达到指定的桶数，但如果失败，将使用更少的桶。
+`number_of_bins` — 直方图箱数量的上限。函数会自动计算箱的数量。它会尝试达到指定的箱数量，但如果无法达到，则会使用更少的箱。
 
 **返回值**
 
-- [数组](../../sql-reference/data-types/array.md)的[元组](../../sql-reference/data-types/tuple.md)，格式如下：
+* 由以下格式的[元组](../../sql-reference/data-types/tuple.md)构成的[数组](../../sql-reference/data-types/array.md)：
 
-```
-[(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
-```
+  ```
+  [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
+  ```
 
-        - `lower` — 桶的下限。
-        - `upper` — 桶的上限。
-        - `height` — 桶的计算高度。
+  * `lower` — 箱的下边界。
+  * `upper` — 箱的上边界。
+  * `height` — 箱的计算高度。
 
 **示例**
 
@@ -59,7 +58,7 @@ FROM (
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-您可以使用[bar](/sql-reference/functions/other-functions#bar)函数来可视化直方图，例如：
+例如，可以使用 [bar](/sql-reference/functions/other-functions#bar) 函数来可视化直方图：
 
 ```sql
 WITH histogram(5)(rand() % 100) AS hist
@@ -84,11 +83,11 @@ FROM
 └────────┴───────┘
 ```
 
-在这种情况下，您应记住，不知道直方图桶的边界。
+在这种情况下，你需要记住自己并不知道直方图各分箱的边界。
 
 ## sequenceMatch {#sequencematch}
 
-检查序列中是否包含与模式匹配的事件链。
+检查序列中是否存在符合指定模式的事件链。
 
 **语法**
 
@@ -97,37 +96,37 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 ```
 
 :::note
-同一秒钟发生的事件可能在序列中以未定义顺序排列，从而影响结果。
+在同一秒内发生的事件在序列中的顺序可能不确定，从而影响结果。
 :::
 
 **参数**
 
-- `timestamp` — 被认为包含时间数据的列。典型数据类型为`Date`和`DateTime`。您还可以使用任何支持的[UInt](../../sql-reference/data-types/int-uint.md)数据类型。
+* `timestamp` — 包含时间数据的列。典型数据类型为 `Date` 和 `DateTime`。也可以使用任意受支持的 [UInt](../../sql-reference/data-types/int-uint.md) 数据类型。
 
-- `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。您最多可以传递32个条件参数。函数仅考虑这些条件中描述的事件。如果序列包含未在条件中描述的数据，函数会跳过它们。
+* `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。最多可以传递 32 个条件参数。函数只会考虑由这些条件描述的事件。如果序列中包含未被某个条件描述的数据，函数会跳过它们。
 
 **参数**
 
-- `pattern` — 模式字符串。请参见[模式语法](#pattern-syntax)。
+* `pattern` — 模式字符串。参见 [模式语法](#pattern-syntax)。
 
 **返回值**
 
-- 1，如果模式匹配。
-- 0，如果模式不匹配。
+* 如果匹配到模式，返回 1。
+* 如果未匹配到模式，返回 0。
 
 类型：`UInt8`。
 
 #### 模式语法 {#pattern-syntax}
 
-- `(?N)` — 匹配位置为`N`的条件参数。条件编号在`[1, 32]`范围内。例如，`(?1)`匹配传递给`cond1`参数的论据。
+* `(?N)` — 匹配位置 `N` 处的条件参数。条件的编号范围为 `[1, 32]`。例如，`(?1)` 匹配传递给 `cond1` 参数的参数。
 
-- `.*` — 匹配任意数量的事件。您不需要条件参数来匹配模式的这个元素。
+* `.*` — 匹配任意数量的事件。匹配该模式元素时不需要条件参数。
 
-- `(?t operator value)` — 设置两个事件之间应分开的秒数。例如，模式`(?1)(?t>1800)(?2)`匹配发生在相隔超过1800秒的事件。这两个事件之间可以有任意数量的其他事件。您可以使用`>=`、`>`、`<`、`<=`、`==`运算符。
+* `(?t operator value)` — 设置两个事件之间应相隔的时间（秒）。例如，模式 `(?1)(?t>1800)(?2)` 匹配彼此相隔超过 1800 秒的事件。在这些事件之间可以存在任意数量的任意事件。可以使用 `>=`、`>`、`<`、`<=`、`==` 运算符。
 
 **示例**
 
-考虑`t`表中的数据：
+考虑表 `t` 中的如下数据：
 
 ```text
 ┌─time─┬─number─┐
@@ -137,7 +136,7 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-执行查询：
+运行以下查询：
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2) FROM t
@@ -149,7 +148,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2) FROM t
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-该函数找到事件链，其中编号2跟随编号1。它跳过了它们之间的编号3，因为该编号未被描述为事件。如果我们想在搜索示例给定的事件链时考虑这个编号，我们应该为其制作一个条件。
+该函数找到了一个事件链，其中数字 2 紧跟在数字 1 之后。它跳过了中间的数字 3，因为该数字并未被描述为一个事件。如果我们希望在搜索示例中给出的该事件链时也将这个数字考虑在内，就需要为它单独添加一个条件。
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM t
@@ -161,7 +160,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM 
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-在这种情况下，函数无法找到与模式匹配的事件链，因为编号3的事件发生在编号1和编号2之间。如果在同一情况下我们检查编号4的条件，序列会匹配模式。
+在这个例子中，函数无法找到与模式匹配的事件链，因为编号为 3 的事件发生在 1 和 2 之间。如果在相同情况下改为检查编号 4 的条件，则该序列就会与模式匹配。
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM t
@@ -173,16 +172,16 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [sequenceCount](#sequencecount)
+* [sequenceCount](#sequencecount)
 
 ## sequenceCount {#sequencecount}
 
-计算与模式匹配的事件链的数量。该函数搜索不重叠的事件链。它在匹配当前链后开始搜索下一个链。
+统计匹配该模式的事件链数量。该函数会搜索互不重叠的事件链。在当前事件链匹配完成后，才会开始搜索下一个事件链。
 
 :::note
-同一秒钟发生的事件可能在序列中以未定义顺序排列，从而影响结果。
+在同一秒内发生的事件在序列中的先后顺序可能不确定，从而影响结果。
 :::
 
 **语法**
@@ -193,23 +192,23 @@ sequenceCount(pattern)(timestamp, cond1, cond2, ...)
 
 **参数**
 
-- `timestamp` — 被认为包含时间数据的列。典型数据类型为`Date`和`DateTime`。您还可以使用任何支持的[UInt](../../sql-reference/data-types/int-uint.md)数据类型。
+* `timestamp` — 被视为包含时间数据的列。典型数据类型为 `Date` 和 `DateTime`。你也可以使用任意受支持的 [UInt](../../sql-reference/data-types/int-uint.md) 数据类型。
 
-- `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。您最多可以传递32个条件参数。函数仅考虑这些条件中描述的事件。如果序列包含未在条件中描述的数据，函数会跳过它们。
+* `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。最多可以传入 32 个条件参数。函数只会考虑这些条件中描述的事件。如果序列中包含未在任何条件中描述的数据，函数会跳过这些数据。
 
-**参数**
+**参数说明**
 
-- `pattern` — 模式字符串。请参见[模式语法](#pattern-syntax)。
+* `pattern` — 模式字符串。参见 [模式语法](#pattern-syntax)。
 
 **返回值**
 
-- 匹配的不重叠事件链的数量。
+* 匹配到的、互不重叠的事件链数量。
 
 类型：`UInt64`。
 
 **示例**
 
-考虑`t`表中的数据：
+假设表 `t` 中有如下数据：
 
 ```text
 ┌─time─┬─number─┐
@@ -222,7 +221,7 @@ sequenceCount(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-计算编号2在其间有任意数量其他数字后跟随编号1的次数：
+统计在数字 1 之后（中间可以有任意数量的其他数字）出现数字 2 的次数：
 
 ```sql
 SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
@@ -236,10 +235,10 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 
 ## sequenceMatchEvents {#sequencematchevents}
 
-返回与模式匹配的最长事件链的事件时间戳。
+返回与模式匹配的最长事件链中各事件的时间戳。
 
 :::note
-同一秒钟发生的事件可能在序列中以未定义顺序排列，从而影响结果。
+在同一秒内发生的事件，其在序列中的先后顺序可能未定义，从而影响结果。
 :::
 
 **语法**
@@ -250,23 +249,23 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 
 **参数**
 
-- `timestamp` — 被认为包含时间数据的列。典型数据类型为`Date`和`DateTime`。您还可以使用任何支持的[UInt](../../sql-reference/data-types/int-uint.md)数据类型。
+* `timestamp` — 被视为包含时间数据的列。典型数据类型为 `Date` 和 `DateTime`。也可以使用任意受支持的 [UInt](../../sql-reference/data-types/int-uint.md) 数据类型。
 
-- `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。您最多可以传递32个条件参数。函数仅考虑这些条件中描述的事件。如果序列包含未在条件中描述的数据，函数会跳过它们。
+* `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。最多可以传递 32 个条件参数。函数只会将这些条件中描述的事件纳入考虑。如果序列中包含未在条件中描述的数据，函数会跳过它们。
 
-**参数**
+**参数说明**
 
-- `pattern` — 模式字符串。请参见[模式语法](#pattern-syntax)。
+* `pattern` — 模式字符串。参见 [模式语法](#pattern-syntax)。
 
 **返回值**
 
-- 匹配条件参数 (?N) 的事件链的时间戳数组。数组中的位置与模式中条件参数的位置匹配。
+* 由事件链中与条件参数 (?N) 匹配的时间戳组成的数组。数组中元素的位置与该条件参数在模式中的位置一一对应。
 
-类型：数组。
+类型：Array。
 
 **示例**
 
-考虑`t`表中的数据：
+考虑表 `t` 中的数据：
 
 ```text
 ┌─time─┬─number─┐
@@ -279,7 +278,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-返回最长链的事件时间戳 
+返回最长链中事件的时间戳
 
 ```sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
@@ -291,21 +290,21 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [sequenceMatch](#sequencematch)
+* [sequenceMatch](#sequencematch)
 
 ## windowFunnel {#windowfunnel}
 
-在一个滑动时间窗口中搜索事件链，并计算从链中发生的最大事件数量。
+在滑动时间窗口中搜索事件链，并计算该事件链中发生事件的最大数量。
 
-该函数根据以下算法工作：
+该函数按照以下算法工作：
 
-- 函数搜索触发链中第一个条件的数据，并将事件计数器设置为1。这是滑动窗口开始的时刻。
+* 函数首先搜索触发事件链中第一个条件的数据，并将事件计数器设为 1。此时即为滑动窗口开始的时间点。
 
-- 如果链中的事件在窗口内顺序发生，则计数器递增。如果事件序列中断，计数器则不会递增。
+* 如果事件链中的事件在窗口内按顺序发生，则计数器递增。如果事件顺序被打乱，则计数器不会递增。
 
-- 如果数据在不同的完成点有多个事件链，函数将仅输出最长链的大小。
+* 如果数据中存在多个处于不同完成阶段的事件链，函数只会输出其中最长事件链的长度。
 
 **语法**
 
@@ -315,35 +314,35 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 **参数**
 
-- `timestamp` — 包含时间戳的列的名称。支持的数据类型：[Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime)和其他无符号整数类型（请注意，尽管时间戳支持`UInt64`类型，但其值不能超过Int64最大值，即2^63 - 1）。
-- `cond` — 描述事件链的条件或数据。[UInt8](../../sql-reference/data-types/int-uint.md)。
+* `timestamp` — 包含时间戳的列名。支持的数据类型：[Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) 以及其他无符号整数类型（注意：尽管时间戳支持 `UInt64` 类型，其数值不能超过 Int64 的最大值，即 2^63 - 1）。
+* `cond` — 描述事件链条件或数据的列。[UInt8](../../sql-reference/data-types/int-uint.md)。
 
-**参数**
+**参数说明**
 
-- `window` — 滑动窗口的长度，即第一个条件和最后一个条件之间的时间间隔。`window`的单位取决于`timestamp`本身并有所不同。通过表达式`timestamp of cond1 <= timestamp of cond2 <= ... <= timestamp of condN <= timestamp of cond1 + window`确定。
-- `mode` — 可选参数。可以设置一个或多个模式。
-  - `'strict_deduplication'` — 如果事件序列中的相同条件成立，则该重复事件将中断进一步处理。注意：如果多个条件对同一事件成立，则可能会意外工作。
-  - `'strict_order'` — 不允许其他事件的干预。例如，在`A->B->D->C`的情况下，它将在`D`处停止查找`A->B->C`，最大事件级别为2。
-  - `'strict_increase'` — 仅对时间戳严格递增的事件应用条件。
-  - `'strict_once'` — 即使事件多次满足条件也只是计数一次。
+* `window` — 滑动窗口的长度，即第一个条件与最后一个条件之间的时间间隔。`window` 的单位取决于 `timestamp` 本身，可能有所不同。通过以下表达式确定：`timestamp of cond1 <= timestamp of cond2 <= ... <= timestamp of condN <= timestamp of cond1 + window`。
+* `mode` — 可选参数。可以设置一个或多个模式。
+  * `'strict_deduplication'` — 如果在事件序列中同一条件连续成立，则该重复事件会中断后续处理。注意：如果同一事件同时满足多个条件，则可能出现非预期结果。
+  * `'strict_order'` — 不允许其他事件插入。例如在 `A->B->D->C` 的情况下，会在 `D` 处停止寻找 `A->B->C`，最大事件层级为 2。
+  * `'strict_increase'` — 仅对时间戳严格递增的事件应用条件。
+  * `'strict_once'` — 在事件链中每个事件只计数一次，即使它多次满足条件。
 
 **返回值**
 
-在滑动时间窗口中，从链中连续触发的条件的最大数量。
-选择中的所有链都会被分析。
+在滑动时间窗口内，事件链中连续满足条件的最大数量。
+会分析结果集中所有的事件链。
 
 类型：`Integer`。
 
 **示例**
 
-确定设定的时间段是否足够让用户在在线商店中选择手机并购买两次。
+判断在给定的一段时间内，是否足够让用户在网上商店中选购手机并完成两次购买。
 
-设置以下事件链：
+设置如下事件链：
 
 1. 用户登录商店账户（`eventID = 1003`）。
 2. 用户搜索手机（`eventID = 1007, product = 'phone'`）。
-3. 用户下订单（`eventID = 1009`）。
-4. 用户再次下订单（`eventID = 1010`）。
+3. 用户下单（`eventID = 1009`）。
+4. 用户再次下单（`eventID = 1010`）。
 
 输入表：
 
@@ -362,7 +361,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ```
 
-找出用户`user_id`在2019年1月至2月期间能够在链中前进的程度。
+找出在 2019 年 1–2 月期间，用户 `user_id` 在这条链路中最多走到了哪一步。
 
 查询：
 
@@ -393,10 +392,10 @@ ORDER BY level ASC;
 
 ## retention {#retention}
 
-该函数接受一组条件作为参数，参数数量从1到32，类型为`UInt8`，指示事件是否满足特定条件。
-任何条件都可以作为参数指定（如[WHERE](/sql-reference/statements/select/where)）。
+该函数接收一组 1 到 32 个 `UInt8` 类型的参数，这些参数指示事件是否满足某个条件。
+任意条件都可以作为参数指定（类似于 [WHERE](/sql-reference/statements/select/where) 子句中的条件）。
 
-所有条件，除了第一个，以对的方式适用：如果第一个和第二个条件都为真，第二个的结果为真；如果第一个和第三个条件都为真，则第三个的结果为真，依此类推。
+除第一个条件外，其余条件按成对方式应用：当第一个和第二个条件都为 true 时，第二个条件的结果为 true；当第一个和第三个条件都为 true 时，第三个条件的结果为 true；以此类推。
 
 **语法**
 
@@ -406,22 +405,22 @@ retention(cond1, cond2, ..., cond32);
 
 **参数**
 
-- `cond` — 返回`UInt8`结果（1或0）的表达式。
+* `cond` — 返回 `UInt8` 结果（1 或 0）的表达式。
 
 **返回值**
 
-1或0的数组。
+由 1 或 0 组成的数组。
 
-- 1 — 条件为事件满足。
-- 0 — 条件未满足事件。
+* 1 — 该事件满足条件。
+* 0 — 该事件不满足条件。
 
 类型：`UInt8`。
 
 **示例**
 
-我们考虑一个计算`retention`函数以确定网站流量的示例。
+以下示例演示如何计算 `retention` 函数来分析网站流量。
 
-**1.** 创建一个表来说明示例。
+**1.** 创建一个表用于演示。
 
 ```sql
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
@@ -480,7 +479,7 @@ SELECT * FROM retention_test
 └────────────┴─────┘
 ```
 
-**2.** 使用`retention`函数按唯一ID `uid` 对用户进行分组。
+**2.** 使用 `retention` 函数按照唯一 ID `uid` 对用户进行分组。
 
 查询：
 
@@ -516,9 +515,9 @@ ORDER BY uid ASC
 └─────┴─────────┘
 ```
 
-**3.** 计算每天的总网站访客数。
+**3.** 计算每日站点总访问量。
 
-查询：
+Query:
 
 ```sql
 SELECT
@@ -544,22 +543,22 @@ FROM
 └────┴────┴────┘
 ```
 
-其中：
+Where:
 
-- `r1`- 2020年1月1日访问网站的唯一访客数量（`cond1`条件）。
-- `r2`- 在2020年1月1日至2020年1月2日期间访问网站的唯一访客数量（`cond1`和`cond2`条件）。
-- `r3`- 在2020年1月1日和2020年1月3日期间访问网站的唯一访客数量（`cond1`和`cond3`条件）。
+* `r1`- 在 2020-01-01 当天访问该站点的独立访客数量（满足 `cond1` 条件）。
+* `r2`- 在 2020-01-01 至 2020-01-02 之间某一特定时间段内访问该站点的独立访客数量（同时满足 `cond1` 和 `cond2` 条件）。
+* `r3`- 在 2020-01-01 和 2020-01-03 某一特定时间段内访问该站点的独立访客数量（同时满足 `cond1` 和 `cond3` 条件）。
 
 ## uniqUpTo(N)(x) {#uniquptonx}
 
-计算至指定限制`N`的不同参数值的数量。如果不同参数值的数量大于`N`，则该函数返回`N` + 1，否则计算精确值。
+计算参数的不同取值数量，最多计算到指定的上限 `N`。如果不同取值的数量大于 `N`，则该函数返回 `N` + 1，否则返回精确值。
 
-建议对小的`N`（最大到10）使用。 `N`的最大值为100。
+推荐在 `N` 较小（最多为 10）时使用。`N` 的最大值为 100。
 
-对于聚合函数的状态，该函数使用的内存量为1 + `N`乘以单个值的字节大小。
-处理字符串时，该函数存储8字节的非加密哈希;对字符串的计算是近似的。
+对于聚合函数的状态，此函数使用的内存量等于 1 + `N` * 单个值的字节大小。
+在处理字符串时，此函数会存储一个 8 字节的非加密散列值；对于字符串的计算是近似值。
 
-例如，如果您有一个记录用户在您网站上每次搜索查询的表。表中的每一行代表一个单一的搜索查询，列包括用户ID、搜索查询和查询时间戳。您可以使用`uniqUpTo`生成仅显示产生至少5个唯一用户的关键字的报告。
+例如，如果你有一张表，用来记录网站上用户发起的每一次搜索查询。表中的每一行代表一次搜索查询，包含用户 ID、搜索查询内容和查询时间戳等列。你可以使用 `uniqUpTo` 生成一份报表，仅展示被至少 5 个不同用户搜索过的关键词。
 
 ```sql
 SELECT SearchPhrase
@@ -568,11 +567,11 @@ GROUP BY SearchPhrase
 HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
-`uniqUpTo(4)(UserID)`计算每个`SearchPhrase`的唯一`UserID`值的数量，但最多只计算4个唯一值。如果某个`SearchPhrase`的唯一`UserID`值超过4个，则该函数返回5（4 + 1）。然后，`HAVING`子句过滤掉唯一`UserID`值少于5的`SearchPhrase`值。这样您将得到至少5个唯一用户使用的搜索关键字列表。
+`uniqUpTo(4)(UserID)` 会为每个 `SearchPhrase` 计算不同 `UserID` 的数量，但最多只统计 4 个。如果某个 `SearchPhrase` 对应的不同 `UserID` 数量超过 4，该函数会返回 5（4 + 1）。随后，`HAVING` 子句会过滤掉那些不同 `UserID` 数量小于 5 的 `SearchPhrase`。这样就可以得到一份至少被 5 个不同用户使用过的搜索关键词列表。
 
 ## sumMapFiltered {#summapfiltered}
 
-该函数的行为与[sumMap](/sql-reference/aggregate-functions/reference/summap)相同，但它还接受一个要过滤的键的数组作为参数。当处理高基数的键时，这尤其有用。
+此函数的行为与 [sumMap](/sql-reference/aggregate-functions/reference/summap) 相同，只是它还额外接受一个用于过滤的键数组作为参数。在处理高基数键时尤其有用。
 
 **语法**
 
@@ -580,13 +579,13 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **参数**
 
-- `keys_to_keep`: [数组](../data-types/array.md)，用于过滤的键。
-- `keys`: [数组](../data-types/array.md) 的键。
-- `values`: [数组](../data-types/array.md) 的值。
+* `keys_to_keep`：用于过滤的键的 [Array](../data-types/array.md)。
+* `keys`：键的 [Array](../data-types/array.md)。
+* `values`：值的 [Array](../data-types/array.md)。
 
 **返回值**
 
-- 返回两个数组的元组：已排序的键，以及对应键的总和值。
+* 返回一个包含两个数组的元组（tuple）：按排序顺序的键，以及对应键的求和值。
 
 **示例**
 
@@ -622,7 +621,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 ## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
 
-该函数的行为与[sumMap](/sql-reference/aggregate-functions/reference/summap)相同，但它还接受一个要过滤的键的数组作为参数。当处理高基数的键时，这尤其有用。它与[sumMapFiltered](#summapfiltered)函数的不同之处在于它进行溢出求和 - 即返回求和与参数数据类型相同的数据类型。
+此函数的行为与 [sumMap](/sql-reference/aggregate-functions/reference/summap) 相同，但额外接受一个用于过滤的键数组作为参数。当键的基数很高时，这尤其有用。它与 [sumMapFiltered](#summapfiltered) 函数的不同之处在于，它执行的是允许溢出的求和运算——即求和结果的数据类型与参数的数据类型相同。
 
 **语法**
 
@@ -630,17 +629,17 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 **参数**
 
-- `keys_to_keep`: [数组](../data-types/array.md) 用于过滤的键。
-- `keys`: [数组](../data-types/array.md) 的键。
-- `values`: [数组](../data-types/array.md) 的值。
+* `keys_to_keep`: 用于过滤的键的 [Array](../data-types/array.md)。
+* `keys`: 键的 [Array](../data-types/array.md)。
+* `values`: 值的 [Array](../data-types/array.md)。
 
 **返回值**
 
-- 返回两个数组的元组：已排序的键，以及对应键的总和值。
+* 返回由两个数组组成的元组：按排序顺序排列的键，以及对应键的累加值。
 
 **示例**
 
-在此示例中，我们创建一个表`sum_map`，插入一些数据，然后使用`sumMapFilteredWithOverflow`和`sumMapFiltered`以及`toTypeName`函数进行结果比较。 在创建的表中，`requests`的类型为`UInt8`，而`sumMapFiltered`已将求和结果的类型提升至`UInt64`以避免溢出，而`sumMapFilteredWithOverflow`保持类型为`UInt8`，这不足以存储结果 - 即发生了溢出。
+在此示例中，我们创建一张表 `sum_map`，向其中插入一些数据，然后同时使用 `sumMapFilteredWithOverflow` 和 `sumMapFiltered` 以及 `toTypeName` 函数来比较结果。在创建的表中，`requests` 的类型为 `UInt8`，`sumMapFiltered` 将累加值的类型提升为 `UInt64` 以避免溢出，而 `sumMapFilteredWithOverflow` 则保持类型为 `UInt8`，该类型不足以存储结果——即发生了溢出。
 
 查询：
 
@@ -684,9 +683,9 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 
 ## sequenceNextNode {#sequencenextnode}
 
-返回匹配事件链的下一个事件的值。
+返回匹配到的事件链中下一个事件的值。
 
-_实验性函数，使用`SET allow_experimental_funnel_functions = 1`启用。_
+*实验性函数，需通过 `SET allow_experimental_funnel_functions = 1` 启用。*
 
 **语法**
 
@@ -696,35 +695,35 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 **参数**
 
-- `direction` — 用于导航到方向。
-  - forward — 向前移动。
-  - backward — 向后移动。
+* `direction` — 用于指定遍历方向。
+  * forward — 向前移动。
+  * backward — 向后移动。
 
-- `base` — 用于设置基点。
-  - head — 设置基点为第一个事件。
-  - tail — 设置基点为最后一个事件。
-  - first_match — 设置基点为第一次匹配的`event1`。
-  - last_match — 设置基点为最后一次匹配的`event1`。
+* `base` — 用于设置基准点。
+  * head — 将基准点设置为第一个事件。
+  * tail — 将基准点设置为最后一个事件。
+  * first&#95;match — 将基准点设置为首个匹配到的 `event1`。
+  * last&#95;match — 将基准点设置为最后一个匹配到的 `event1`。
 
-**参数**
+**参数说明**
 
-- `timestamp` — 包含时间戳的列的名称。支持的数据类型：[Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime)和其他无符号整数类型。
-- `event_column` — 包含要返回的下一个事件的值的列的名称。支持的数据类型：[String](../../sql-reference/data-types/string.md)和[Nullable(String)](../../sql-reference/data-types/nullable.md)。
-- `base_condition` — 基点必须满足的条件。
-- `event1`、`event2`，... — 描述事件链的条件。[UInt8](../../sql-reference/data-types/int-uint.md)。
+* `timestamp` — 包含时间戳的列名。支持的数据类型：[Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) 以及其他无符号整数类型。
+* `event_column` — 包含要返回的下一个事件值的列名。支持的数据类型：[String](../../sql-reference/data-types/string.md) 和 [Nullable(String)](../../sql-reference/data-types/nullable.md)。
+* `base_condition` — 基准点必须满足的条件。
+* `event1`, `event2`, ... — 描述事件链的条件，类型为 [UInt8](../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 
-- `event_column[next_index]` — 如果模式匹配并且存在下一个值。
-- `NULL` — 如果模式不匹配或下一个值不存在。
+* `event_column[next_index]` — 当模式匹配且存在下一个值时返回。
+* `NULL` — 当模式未匹配或不存在下一个值时返回。
 
 类型：[Nullable(String)](../../sql-reference/data-types/nullable.md)。
 
 **示例**
 
-它可以用在事件为A->B->C->D->E时，您想知道事件B->C之后的事件D。
+当事件为 A-&gt;B-&gt;C-&gt;D-&gt;E，且需要知道紧跟在 B-&gt;C 之后的事件（即 D）时，可以使用该函数。
 
-查询语句搜索事件A->B之后的事件：
+用于查询紧跟在 A-&gt;B 之后的事件的语句如下：
 
 ```sql
 CREATE TABLE test_flow (
@@ -748,7 +747,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A',
 └────┴───────────┘
 ```
 
-**`forward`和`head`的行为**
+**`forward` 与 `head` 的行为**
 
 ```sql
 ALTER TABLE test_flow DELETE WHERE 1 = 1 settings mutations_sync = 1;
@@ -762,22 +761,24 @@ INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
                   dt   id   page
- 1970-01-01 09:00:01    1   Home // Base point, Matched with Home
- 1970-01-01 09:00:02    1   Gift // Matched with Gift
- 1970-01-01 09:00:03    1   Exit // The result
+ 1970-01-01 09:00:01    1   Home // 基准点,匹配 Home
+ 1970-01-01 09:00:02    1   Gift // 匹配 Gift
+ 1970-01-01 09:00:03    1   Exit // 结果
 
- 1970-01-01 09:00:01    2   Home // Base point, Matched with Home
- 1970-01-01 09:00:02    2   Home // Unmatched with Gift
+ 1970-01-01 09:00:01    2   Home // 基准点,匹配 Home
+ 1970-01-01 09:00:02    2   Home // 不匹配 Gift
  1970-01-01 09:00:03    2   Gift
  1970-01-01 09:00:04    2   Basket
-
- 1970-01-01 09:00:01    3   Gift // Base point, Unmatched with Home
- 1970-01-01 09:00:02    3   Home
- 1970-01-01 09:00:03    3   Gift
- 1970-01-01 09:00:04    3   Basket
 ```
 
-**`backward`和`tail`的行为**
+1970-01-01 09:00:01    3   Gift // 基准点，未与 Home 匹配
+1970-01-01 09:00:02    3   Home
+1970-01-01 09:00:03    3   Gift
+1970-01-01 09:00:04    3   Basket
+
+````
+
+**`backward` 和 `tail` 的行为**
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
@@ -785,36 +786,36 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
 1970-01-01 09:00:02    1   Gift
-1970-01-01 09:00:03    1   Exit // Base point, Unmatched with Basket
+1970-01-01 09:00:03    1   Exit // 基准点,与 Basket 不匹配
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // The result
-1970-01-01 09:00:03    2   Gift // Matched with Gift
-1970-01-01 09:00:04    2   Basket // Base point, Matched with Basket
+1970-01-01 09:00:02    2   Home // 结果
+1970-01-01 09:00:03    2   Gift // 与 Gift 匹配
+1970-01-01 09:00:04    2   Basket // 基准点,与 Basket 匹配
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:02    3   Home // 结果
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
-1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
-```
+1970-01-01 09:00:04    3   Basket // 基准点,与 Basket 匹配
+````
 
-**`forward`和`first_match`的行为**
+**`forward` 和 `first_match` 的行为**
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // Base point
-1970-01-01 09:00:03    1   Exit // The result
+1970-01-01 09:00:02    1   Gift // 基点
+1970-01-01 09:00:03    1   Exit // 结果
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // Base point
-1970-01-01 09:00:04    2   Basket  The result
+1970-01-01 09:00:03    2   Gift // 基点
+1970-01-01 09:00:04    2   Basket  // 结果
 
-1970-01-01 09:00:01    3   Gift // Base point
-1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:01    3   Gift // 基点
+1970-01-01 09:00:02    3   Home // 结果
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 ```
@@ -824,61 +825,63 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // Base point
-1970-01-01 09:00:03    1   Exit // Unmatched with Home
+1970-01-01 09:00:02    1   Gift // 基准点
+1970-01-01 09:00:03    1   Exit // 与 Home 不匹配
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // Base point
-1970-01-01 09:00:04    2   Basket // Unmatched with Home
+1970-01-01 09:00:03    2   Gift // 基准点
+1970-01-01 09:00:04    2   Basket // 与 Home 不匹配
 
-1970-01-01 09:00:01    3   Gift // Base point
-1970-01-01 09:00:02    3   Home // Matched with Home
-1970-01-01 09:00:03    3   Gift // The result
+1970-01-01 09:00:01    3   Gift // 基准点
+1970-01-01 09:00:02    3   Home // 与 Home 匹配
+1970-01-01 09:00:03    3   Gift // 结果
 1970-01-01 09:00:04    3   Basket
 ```
 
-**`backward`和`last_match`的行为**
+**`backward` 和 `last_match` 的行为**
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home // The result
-1970-01-01 09:00:02    1   Gift // Base point
+dt   id   page
+1970-01-01 09:00:01    1   Home // 结果
+1970-01-01 09:00:02    1   Gift // 基准点
 1970-01-01 09:00:03    1   Exit
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // The result
-1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:02    2   Home // 结果
+1970-01-01 09:00:03    2   Gift // 基准点
 1970-01-01 09:00:04    2   Basket
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // The result
-1970-01-01 09:00:03    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // 结果
+1970-01-01 09:00:03    3   Gift // 基准点
 1970-01-01 09:00:04    3   Basket
-```
+
+````
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
-1970-01-01 09:00:01    1   Home // Matched with Home, the result is null
-1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:01    1   Home // 与 Home 匹配,结果为 null
+1970-01-01 09:00:02    1   Gift // 基点
 1970-01-01 09:00:03    1   Exit
 
-1970-01-01 09:00:01    2   Home // The result
-1970-01-01 09:00:02    2   Home // Matched with Home
-1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:01    2   Home // 结果
+1970-01-01 09:00:02    2   Home // 与 Home 匹配
+1970-01-01 09:00:03    2   Gift // 基点
 1970-01-01 09:00:04    2   Basket
 
-1970-01-01 09:00:01    3   Gift // The result
-1970-01-01 09:00:02    3   Home // Matched with Home
-1970-01-01 09:00:03    3   Gift // Base point
+1970-01-01 09:00:01    3   Gift // 结果
+1970-01-01 09:00:02    3   Home // 与 Home 匹配
+1970-01-01 09:00:03    3   Gift // 基点
 1970-01-01 09:00:04    3   Basket
-```
+````
 
-**`base_condition`的行为**
+**`base_condition` 的行为**
 
 ```sql
 CREATE TABLE test_flow_basecond
@@ -899,7 +902,7 @@ INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // The head can not be base point because the ref column of the head unmatched with 'ref1'.
+ 1970-01-01 09:00:01    1   A      ref4 // 头部记录不能作为基准点,因为其 ref 列的值与 'ref1' 不匹配。
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
@@ -912,25 +915,27 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = '
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
- 1970-01-01 09:00:04    1   B      ref1 // The tail can not be base point because the ref column of the tail unmatched with 'ref4'.
+ 1970-01-01 09:00:04    1   B      ref1 // 尾部不能作为基点,因为尾部的 ref 列与 'ref4' 不匹配。
 ```
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
-
-                  dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // This row can not be base point because the ref column unmatched with 'ref3'.
- 1970-01-01 09:00:02    1   A      ref3 // Base point
- 1970-01-01 09:00:03    1   B      ref2 // The result
- 1970-01-01 09:00:04    1   B      ref1
 ```
+
+dt   id   page   ref
+1970-01-01 09:00:01    1   A      ref4 // 这一行不能作为基准点，因为 ref 列的值与 &#39;ref3&#39; 不一致。
+1970-01-01 09:00:02    1   A      ref3 // 基准点
+1970-01-01 09:00:03    1   B      ref2 // 结果
+1970-01-01 09:00:04    1   B      ref1
+
+````
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
  1970-01-01 09:00:01    1   A      ref4
- 1970-01-01 09:00:02    1   A      ref3 // The result
- 1970-01-01 09:00:03    1   B      ref2 // Base point
- 1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
-```
+ 1970-01-01 09:00:02    1   A      ref3 // 结果
+ 1970-01-01 09:00:03    1   B      ref2 // 基准点
+ 1970-01-01 09:00:04    1   B      ref1 // 此行不能作为基准点,因为 ref 列与 'ref2' 不匹配。
+````

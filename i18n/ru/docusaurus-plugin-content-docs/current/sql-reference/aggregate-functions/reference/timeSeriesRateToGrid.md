@@ -1,42 +1,44 @@
 ---
-'description': 'Агрегатная функция, которая вычисляет аналогичную PromQL скорость
-  по данным временных рядов на указанной сетке.'
-'sidebar_position': 225
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesRateToGrid'
-'title': 'timeSeriesRateToGrid'
-'doc_type': 'reference'
+description: 'Агрегатная функция, которая вычисляет похожую на PromQL скорость изменения (rate) по данным временных рядов на заданной сетке.'
+sidebar_position: 225
+slug: /sql-reference/aggregate-functions/reference/timeSeriesRateToGrid
+title: 'timeSeriesRateToGrid'
+doc_type: 'reference'
 ---
-Агрегатная функция, которая принимает данные временных рядов в виде пар временных меток и значений и вычисляет [значение rate в стиле PromQL](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) на регулярной временной сетке, описываемой начальной временной меткой, конечной временной меткой и шагом. Для каждой точки на сетке образцы для вычисления `rate` рассматриваются в пределах заданного временного окна.
+
+Агрегатная функция, которая принимает данные временных рядов в виде пар меток времени и значений и вычисляет [похожий на PromQL rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) по этим данным на регулярной временной сетке, задаваемой начальной меткой времени, конечной меткой времени и шагом. Для каждой точки сетки сэмплы для вычисления `rate` рассматриваются в указанном временном окне.
 
 Параметры:
-- `start timestamp` - Указывает начало сетки.
-- `end timestamp` - Указывает конец сетки.
-- `grid step` - Указывает шаг сетки в секундах.
-- `staleness` - Указывает максимальную "устарелость" в секундах рассматриваемых образцов. Окно устарелости является полуоткрытым слева и закрытым справа интервалом.
+
+* `start timestamp` — задаёт начало сетки.
+* `end timestamp` — задаёт конец сетки.
+* `grid step` — задаёт шаг сетки в секундах.
+* `staleness` — задаёт максимальную «устарелость» в секундах для учитываемых сэмплов. Окно устарелости — левооткрытый, право-замкнутый интервал.
 
 Аргументы:
-- `timestamp` - временная метка образца
-- `value` - значение временного ряда, соответствующее `timestamp`
+
+* `timestamp` — метка времени сэмпла
+* `value` — значение временного ряда, соответствующее `timestamp`
 
 Возвращаемое значение:
-`rate` значения на заданной сетке в виде `Array(Nullable(Float64))`. Возвращаемый массив содержит одно значение для каждой точки временной сетки. Значение NULL, если недостаточно образцов в пределах окна для вычисления значения rate для конкретной точки сетки.
+Значения `rate` на указанной сетке в виде `Array(Nullable(Float64))`. Возвращаемый массив содержит одно значение для каждой точки временной сетки. Значение равно NULL, если в окне недостаточно сэмплов для вычисления значения скорости для конкретной точки сетки.
 
 Пример:
 Следующий запрос вычисляет значения `rate` на сетке [90, 105, 120, 135, 150, 165, 180, 195, 210]:
 
 ```sql
 WITH
-    -- NOTE: the gap between 140 and 190 is to show how values are filled for ts = 150, 165, 180 according to window paramater
+    -- ПРИМЕЧАНИЕ: промежуток между 140 и 190 демонстрирует заполнение значений для ts = 150, 165, 180 согласно параметру окна
     [110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
-    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- array of values corresponding to timestamps above
-    90 AS start_ts,       -- start of timestamp grid
-    90 + 120 AS end_ts,   -- end of timestamp grid
-    15 AS step_seconds,   -- step of timestamp grid
-    45 AS window_seconds  -- "staleness" window
+    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- массив значений, соответствующих временным меткам выше
+    90 AS start_ts,       -- начало временной сетки
+    90 + 120 AS end_ts,   -- конец временной сетки
+    15 AS step_seconds,   -- шаг временной сетки
+    45 AS window_seconds  -- окно "устаревания"
 SELECT timeSeriesRateToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
+    -- Данный подзапрос преобразует массивы временных меток и значений в строки `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -52,7 +54,7 @@ FROM
    └────────────────────────────────────────────────────────────────┘
 ```
 
-Также возможно передать несколько образцов временных меток и значений в виде массивов одинакового размера. Тот же запрос с массивами в качестве аргументов:
+Также можно передавать несколько наборов меток времени и значений в виде массивов одинакового размера. Тот же запрос с аргументами-массивами:
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesRateToGrid(start_ts, end_ts, step_seconds, window_seconds)(time
 ```
 
 :::note
-Эта функция является экспериментальной, активируйте её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
+Эта функция экспериментальная; включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
 :::

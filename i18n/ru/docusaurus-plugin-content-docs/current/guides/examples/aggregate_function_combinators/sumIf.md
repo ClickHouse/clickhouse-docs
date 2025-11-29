@@ -1,20 +1,30 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
-sidebar_label: sumIf
-description: 'Пример использования комбинации sumIf'
-title: sumIf
+title: 'sumIf'
+description: 'Пример использования комбинатора sumIf'
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
-doc_type: reference
+sidebar_label: 'sumIf'
+doc_type: 'reference'
 ---
+
+
+
 # sumIf {#sumif}
+
+
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы значений для строк, где условие истинно, используя агрегатную функцию комбинатора `sumIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
+для вычисления суммы значений по строкам, для которых условие истинно,
+используя агрегатную функцию-комбинатор `sumIf`.
+
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `sumIf` для расчета общей суммы продаж для успешных транзакций.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+а затем используем `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -36,7 +46,8 @@ SELECT
 FROM sales;
 ```
 
-Функция `sumIf` будет суммировать только те суммы, где `is_successful = 1`. В этом случае она суммирует: 100.50 + 200.75 + 300.00 + 175.25.
+Функция `sumIf` будет суммировать только те значения поля `amount`, для которых `is_successful = 1`.
+В этом случае она просуммирует: 100.50 + 200.75 + 300.00 + 175.25.
 
 ```response title="Response"
    ┌─total_successful_sales─┐
@@ -44,17 +55,18 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### Расчет торгового объема по направлению цены {#calculate-trading-vol-price-direction}
+### Расчет торгового объема по направлению движения цены {#calculate-trading-vol-price-direction}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по направлению цены за первую половину 2002 года.
+В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы рассчитать торговый объем по направлению движения цены за первую половину 2002 года.
 
 ```sql title="Query"
 SELECT 
     toStartOfMonth(date) AS month,
-    formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
-    formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
-    formatReadableQuantity(sumIf(volume, price = open)) AS volume_on_neutral_days,
-    formatReadableQuantity(sum(volume)) AS total_volume
+    formatReadableQuantity(sumIf(volume, price > open)) AS объем_в_дни_роста,
+    formatReadableQuantity(sumIf(volume, price < open)) AS объем_в_дни_падения,
+    formatReadableQuantity(sumIf(volume, price = open)) AS объем_в_нейтральные_дни,
+    formatReadableQuantity(sum(volume)) AS общий_объем
 FROM stock.stock
 WHERE date BETWEEN '2002-01-01' AND '2002-12-31'
 GROUP BY month
@@ -62,25 +74,28 @@ ORDER BY month;
 ```
 
 ```markdown
-    ┌──────month─┬─volume_on_up_days─┬─volume_on_down_days─┬─volume_on_neutral_days─┬─total_volume──┐
- 1. │ 2002-01-01 │ 26.07 billion     │ 30.74 billion       │ 781.80 million         │ 57.59 billion │
- 2. │ 2002-02-01 │ 20.84 billion     │ 29.60 billion       │ 642.36 million         │ 51.09 billion │
- 3. │ 2002-03-01 │ 28.81 billion     │ 23.57 billion       │ 762.60 million         │ 53.14 billion │
- 4. │ 2002-04-01 │ 24.72 billion     │ 30.99 billion       │ 763.92 million         │ 56.47 billion │
- 5. │ 2002-05-01 │ 25.09 billion     │ 30.57 billion       │ 858.57 million         │ 56.52 billion │
- 6. │ 2002-06-01 │ 29.10 billion     │ 30.88 billion       │ 875.71 million         │ 60.86 billion │
- 7. │ 2002-07-01 │ 32.27 billion     │ 41.73 billion       │ 747.32 million         │ 74.75 billion │
- 8. │ 2002-08-01 │ 28.57 billion     │ 27.49 billion       │ 1.17 billion           │ 57.24 billion │
- 9. │ 2002-09-01 │ 23.37 billion     │ 31.02 billion       │ 775.66 million         │ 55.17 billion │
-10. │ 2002-10-01 │ 38.57 billion     │ 34.05 billion       │ 956.48 million         │ 73.57 billion │
-11. │ 2002-11-01 │ 34.90 billion     │ 25.47 billion       │ 998.34 million         │ 61.37 billion │
-12. │ 2002-12-01 │ 22.99 billion     │ 28.65 billion       │ 1.14 billion           │ 52.79 billion │
+    ┌──────месяц─┬─объем_в_дни_роста─┬─объем_в_дни_падения─┬─объем_в_нейтральные_дни─┬─общий_объем──┐
+ 1. │ 2002-01-01 │ 26.07 миллиард     │ 30.74 миллиард       │ 781.80 миллион         │ 57.59 миллиард │
+ 2. │ 2002-02-01 │ 20.84 миллиард     │ 29.60 миллиард       │ 642.36 миллион         │ 51.09 миллиард │
+ 3. │ 2002-03-01 │ 28.81 миллиард     │ 23.57 миллиард       │ 762.60 миллион         │ 53.14 миллиард │
+ 4. │ 2002-04-01 │ 24.72 миллиард     │ 30.99 миллиард       │ 763.92 миллион         │ 56.47 миллиард │
+ 5. │ 2002-05-01 │ 25.09 миллиард     │ 30.57 миллиард       │ 858.57 миллион         │ 56.52 миллиард │
+ 6. │ 2002-06-01 │ 29.10 миллиард     │ 30.88 миллиард       │ 875.71 миллион         │ 60.86 миллиард │
+ 7. │ 2002-07-01 │ 32.27 миллиард     │ 41.73 миллиард       │ 747.32 миллион         │ 74.75 миллиард │
+ 8. │ 2002-08-01 │ 28.57 миллиард     │ 27.49 миллиард       │ 1.17 миллиард           │ 57.24 миллиард │
+ 9. │ 2002-09-01 │ 23.37 миллиард     │ 31.02 миллиард       │ 775.66 миллион         │ 55.17 миллиард │
+10. │ 2002-10-01 │ 38.57 миллиард     │ 34.05 миллиард       │ 956.48 миллион         │ 73.57 миллиард │
+11. │ 2002-11-01 │ 34.90 миллиард     │ 25.47 миллиард       │ 998.34 миллион         │ 61.37 миллиард │
+12. │ 2002-12-01 │ 22.99 миллиард     │ 28.65 миллиард       │ 1.14 миллиард           │ 52.79 миллиард │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Расчет торгового объема по символу акции {#calculate-trading-volume}
+### Рассчитать торговый объём по тикеру {#calculate-trading-volume}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по символу акции в 2006 году для трех крупнейших технологических компаний в то время.
+
+В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
+технологических компаний того времени.
 
 ```sql title="Query"
 SELECT 
@@ -98,21 +113,22 @@ ORDER BY month;
 
 ```markdown title="Response"
     ┌──────month─┬─apple_volume───┬─microsoft_volume─┬─google_volume──┬─total_volume─┬─major_tech_percentage─┐
- 1. │ 2006-01-01 │ 782.21 million │ 1.39 billion     │ 299.69 million │  84343937700 │                  2.93 │
- 2. │ 2006-02-01 │ 670.38 million │ 1.05 billion     │ 297.65 million │  73524748600 │                  2.74 │
- 3. │ 2006-03-01 │ 744.85 million │ 1.39 billion     │ 288.36 million │  87960830800 │                  2.75 │
- 4. │ 2006-04-01 │ 718.97 million │ 1.45 billion     │ 185.65 million │  78031719800 │                  3.02 │
- 5. │ 2006-05-01 │ 557.89 million │ 2.32 billion     │ 174.94 million │  97096584100 │                  3.14 │
- 6. │ 2006-06-01 │ 641.48 million │ 1.98 billion     │ 142.55 million │  96304086800 │                  2.87 │
- 7. │ 2006-07-01 │ 624.93 million │ 1.33 billion     │ 127.74 million │  79940921800 │                  2.61 │
- 8. │ 2006-08-01 │ 639.35 million │ 1.13 billion     │ 107.16 million │  84251753200 │                  2.23 │
- 9. │ 2006-09-01 │ 633.45 million │ 1.10 billion     │ 121.72 million │  82775234300 │                  2.24 │
-10. │ 2006-10-01 │ 514.82 million │ 1.29 billion     │ 158.90 million │  93406712600 │                   2.1 │
-11. │ 2006-11-01 │ 494.37 million │ 1.24 billion     │ 118.49 million │  90177365500 │                  2.06 │
-12. │ 2006-12-01 │ 603.95 million │ 1.14 billion     │ 91.77 million  │  80499584100 │                  2.28 │
+ 1. │ 2006-01-01 │ 782.21 млн │ 1.39 млрд     │ 299.69 млн │  84343937700 │                  2.93 │
+ 2. │ 2006-02-01 │ 670.38 млн │ 1.05 млрд     │ 297.65 млн │  73524748600 │                  2.74 │
+ 3. │ 2006-03-01 │ 744.85 млн │ 1.39 млрд     │ 288.36 млн │  87960830800 │                  2.75 │
+ 4. │ 2006-04-01 │ 718.97 млн │ 1.45 млрд     │ 185.65 млн │  78031719800 │                  3.02 │
+ 5. │ 2006-05-01 │ 557.89 млн │ 2.32 млрд     │ 174.94 млн │  97096584100 │                  3.14 │
+ 6. │ 2006-06-01 │ 641.48 млн │ 1.98 млрд     │ 142.55 млн │  96304086800 │                  2.87 │
+ 7. │ 2006-07-01 │ 624.93 млн │ 1.33 млрд     │ 127.74 млн │  79940921800 │                  2.61 │
+ 8. │ 2006-08-01 │ 639.35 млн │ 1.13 млрд     │ 107.16 млн │  84251753200 │                  2.23 │
+ 9. │ 2006-09-01 │ 633.45 млн │ 1.10 млрд     │ 121.72 млн │  82775234300 │                  2.24 │
+10. │ 2006-10-01 │ 514.82 млн │ 1.29 млрд     │ 158.90 млн │  93406712600 │                   2.1 │
+11. │ 2006-11-01 │ 494.37 млн │ 1.24 млрд     │ 118.49 млн │  90177365500 │                  2.06 │
+12. │ 2006-12-01 │ 603.95 млн │ 1.14 млрд     │ 91.77 млн  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## См. также {#see-also}
+
+## Смотрите также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

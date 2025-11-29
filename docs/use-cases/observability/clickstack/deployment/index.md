@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Deploying ClickStack - The ClickHouse Observability Stack'
 doc_type: 'reference'
+keywords: ['ClickStack', 'observability']
 ---
 
 ClickStack provides multiple deployment options to suit various use cases.

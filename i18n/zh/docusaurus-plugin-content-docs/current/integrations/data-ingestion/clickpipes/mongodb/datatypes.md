@@ -1,30 +1,31 @@
 ---
-'title': '支持的数据类型'
-'slug': '/integrations/clickpipes/mongodb/datatypes'
-'description': '页面描述 MongoDB ClickPipe 数据类型从 MongoDB 映射到 ClickHouse'
-'doc_type': 'reference'
+title: '支持的数据类型'
+slug: /integrations/clickpipes/mongodb/datatypes
+description: '介绍 MongoDB ClickPipe 中从 MongoDB 到 ClickHouse 的数据类型映射的页面'
+doc_type: 'reference'
+keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 ---
 
-MongoDB将数据记录存储为BSON文档。在ClickPipes中，您可以配置以将BSON文档以JSON或JSON字符串的形式导入到ClickHouse。下表显示了支持的BSON到JSON字段类型映射：
+MongoDB 将数据记录存储为 BSON 文档。在 ClickPipes 中，可以配置将 BSON 文档以 JSON 或 JSON String 的形式摄取到 ClickHouse。下表展示了支持的 BSON 到 JSON 字段类型映射：
 
-| MongoDB BSON类型         | ClickHouse JSON类型                     | 备注                     |
+| MongoDB BSON 类型        | ClickHouse JSON 类型                   | 说明                     |
 | ------------------------ | -------------------------------------- | ------------------------ |
 | ObjectId                 | String                                 |                          |
 | String                   | String                                 |                          |
-| 32位整数                 | Int64                                  |                          |
-| 64位整数                 | Int64                                  |                          |
+| 32-bit integer           | Int64                                  |                          |
+| 64-bit integer           | Int64                                  |                          |
 | Double                   | Float64                                |                          |
 | Boolean                  | Bool                                   |                          |
-| Date                     | String                                 | ISO 8601格式              |
-| 正则表达式              | \{Options: String, Pattern: String\}   | MongoDB正则表达式，固定字段：Options（正则标志）和Pattern（正则模式） |
-| 时间戳                  | \{T: Int64, I: Int64\}                 | MongoDB内部时间戳格式，固定字段：T（时间戳）和I（增量） |
+| Date                     | String                                 | ISO 8601 格式            |
+| Regular Expression       | \{Options: String, Pattern: String\}   | MongoDB 正则表达式，具有固定字段：Options（正则标志）和 Pattern（正则模式） |
+| Timestamp                | \{T: Int64, I: Int64\}                 | MongoDB 内部时间戳格式，具有固定字段：T（时间戳）和 I（自增值） |
 | Decimal128               | String                                 |                          |
-| 二进制数据              | \{Data: String, Subtype: Int64\}       | MongoDB二进制数据，固定字段：Data（base64编码）和Subtype（[二进制类型](https://www.mongodb.com/docs/manual/reference/bson-types/#binary-data)） |
+| Binary data              | \{Data: String, Subtype: Int64\}       | MongoDB 二进制数据，具有固定字段：Data（base64 编码）和 Subtype（[二进制类型](https://www.mongodb.com/docs/manual/reference/bson-types/#binary-data)） |
 | JavaScript               | String                                 |                          |
 | Null                     | Null                                   |                          |
-| 数组                    | Dynamic                                | 同质类型的数组变为Array(Nullable(T)); 混合原始类型的数组提升为最一般的公共类型; 复杂不兼容类型的数组变为元组 |
-| 对象                    | Dynamic                                | 每个嵌套字段递归映射   |
+| Array                    | Dynamic                                | 同构类型的数组会变为 Array(Nullable(T))；包含多种原始类型的数组会提升到最通用的公共类型；包含复杂且不兼容类型的数组会变为 Tuple 类型 |
+| Object                   | Dynamic                                | 每个嵌套字段会递归映射 |
 
 :::info
-要了解有关ClickHouse的JSON数据类型的更多信息，请参阅 [我们的文档](https://clickhouse.com/docs/sql-reference/data-types/newjson)。
+要了解更多关于 ClickHouse 的 JSON 数据类型的信息，请参阅[我们的文档](https://clickhouse.com/docs/sql-reference/data-types/newjson)。
 :::

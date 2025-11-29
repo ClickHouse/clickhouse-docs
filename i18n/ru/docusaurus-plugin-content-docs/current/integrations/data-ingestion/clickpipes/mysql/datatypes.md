@@ -1,31 +1,33 @@
 ---
-slug: '/integrations/clickpipes/mysql/datatypes'
-description: 'Страница, описывающая отображение типов данных MySQL ClickPipe из'
-title: 'ClickPipes для MySQL: Поддерживаемые типы данных'
-doc_type: reference
+title: 'Поддерживаемые типы данных'
+slug: /integrations/clickpipes/mysql/datatypes
+description: 'Страница, описывающая соответствие типов данных MySQL ClickPipe при загрузке из MySQL в ClickHouse'
+doc_type: 'reference'
+keywords: ['типы данных MySQL ClickPipe', 'типы данных MySQL в ClickHouse', 'сопоставление типов данных ClickPipe', 'преобразование типов MySQL ClickHouse', 'совместимость типов баз данных']
 ---
-Вот поддерживаемое отображение типов данных для MySQL ClickPipe:
 
-| MySQL Type                | ClickHouse type        | Примечания                                                                              |
+Ниже приведено поддерживаемое соответствие типов данных для MySQL ClickPipe:
+
+| Тип MySQL                 | Тип ClickHouse         | Примечания                                                                            |
 | --------------------------| -----------------------| -------------------------------------------------------------------------------------- |
 | Enum                      | LowCardinality(String) ||
 | Set                       | String                 ||
 | Decimal                   | Decimal                ||
-| TinyInt                   | Int8                   | Поддерживает беззнаковый.                                                              |
-| SmallInt                  | Int16                  | Поддерживает беззнаковый.                                                              |
-| MediumInt, Int            | Int32                  | Поддерживает беззнаковый.                                                              |
-| BigInt                    | Int64                  | Поддерживает беззнаковый.                                                              |
+| TinyInt                   | Int8                   | Поддерживается UNSIGNED.|
+| SmallInt                  | Int16                  | Поддерживается UNSIGNED.|
+| MediumInt, Int            | Int32                  | Поддерживается UNSIGNED.|
+| BigInt                    | Int64                  | Поддерживается UNSIGNED.|
 | Year                      | Int16                  ||
 | TinyText, Text, MediumText, LongText | String      ||
 | TinyBlob, Blob, MediumBlob, LongBlob | String      ||
 | Char, Varchar             | String                 ||
 | Binary, VarBinary         | String                 ||
 | TinyInt(1)                | Bool                   ||
-| JSON                      | String                 | Только для MySQL; MariaDB `json` является просто псевдонимом для `text` с ограничением. |
-| Geometry & Geometry Types | String                 | WKT (Well-Known Text). WKT может страдать от небольшой потери точности.                  |
-| Vector                    | Array(Float32)         | Только для MySQL; поддержка будет добавлена в ближайшее время в MariaDB.                |
-| Float                     | Float32                | Точность в ClickHouse может отличаться от MySQL во время начальной загрузки из-за текстового протокола.|
-| Double                    | Float64                | Точность в ClickHouse может отличаться от MySQL во время начальной загрузки из-за текстового протокола.|
-| Date                      | Date32                 | 00 день/месяц сопоставляется с 01.                                                    |
-| Time                      | DateTime64(6)          | Смещение времени от эпохи unix.                                                       |
-| Datetime, Timestamp       | DateTime64(6)          | 00 день/месяц сопоставляется с 01.                                                    |
+| JSON                      | String                 | Только MySQL; в MariaDB `json` — это всего лишь псевдоним для `text` с ограничением.  |
+| Geometry & Geometry Types | String                 | WKT (Well-Known Text). Использование WKT может приводить к небольшой потере точности. |
+| Vector                    | Array(Float32)         | Только MySQL; в MariaDB поддержка будет добавлена в ближайшее время.                  |
+| Float                     | Float32                | Точность в ClickHouse может отличаться от MySQL при начальной загрузке из-за текстового протокола.|
+| Double                    | Float64                | Точность в ClickHouse может отличаться от MySQL при начальной загрузке из-за текстового протокола.|
+| Date                      | Date32                 | День/месяц 00 сопоставляется с 01.|
+| Time                      | DateTime64(6)          | Смещение времени от Unix-эпохи.|
+| Datetime, Timestamp       | DateTime64(6)          | День/месяц 00 сопоставляется с 01.|

@@ -1,129 +1,141 @@
 ---
-'slug': '/native-protocol/client'
-'sidebar_position': 2
-'title': 'ネイティブクライアントパケット'
-'description': 'ネイティブプロトコルクライアント'
-'doc_type': 'reference'
+slug: /native-protocol/client
+sidebar_position: 2
+title: 'ネイティブクライアントのパケット'
+description: 'ネイティブプロトコルのクライアント'
+doc_type: 'reference'
+keywords: ['クライアントパケット', 'ネイティブプロトコルクライアント', 'プロトコルパケット', 'クライアント通信', 'TCP クライアント']
 ---
 
 
 
-# クライアントパケット
+# クライアントパケット {#client-packets}
 
-| 値   | 名前               | 説明                     |
-|------|-------------------|-------------------------|
-| 0    | [Hello](#hello)   | クライアントハンドシェイク開始 |
-| 1    | [Query](#query)   | クエリリクエスト         |
-| 2    | [Data](#data)     | データを含むブロック      |
-| 3    | [Cancel](#cancel) | クエリキャンセル          |
-| 4    | [Ping](#ping)     | ピングリクエスト          |
-| 5    | TableStatus       | テーブルステータスリクエスト |
+| value | name              | description              |
+|-------|-------------------|--------------------------|
+| 0     | [Hello](#hello)   | クライアントのハンドシェイク開始 |
+| 1     | [Query](#query)   | クエリ要求               |
+| 2     | [Data](#data)     | データブロック           |
+| 3     | [Cancel](#cancel) | クエリのキャンセル       |
+| 4     | [Ping](#ping)     | Ping リクエスト          |
+| 5     | TableStatus       | テーブルステータスの要求 |
 
-`Data`は圧縮可能です。
+`Data` は圧縮可能です。
+
+
 
 ## Hello {#hello}
 
-例えば、私たちは`Go Client` v1.10で、`54451`プロトコルバージョンをサポートしていて、
-`default`データベースに`default`ユーザーと`secret`パスワードで接続したいとします。
+例えば、`54451` のプロトコルバージョンをサポートする `Go Client` v1.10 を使用して、
+`default` データベースに `default` ユーザー、`secret` パスワードで接続したいとします。
 
-| フィールド         | 型      | 値              | 説明                            |
-|-------------------|---------|----------------|---------------------------------|
-| client_name       | 文字列  | `"Go Client"`  | クライアント実装名               |
-| version_major     | UVarInt | `1`            | クライアントメジャーバージョン   |
-| version_minor     | UVarInt | `10`           | クライアントマイナーバージョン   |
-| protocol_version   | UVarInt | `54451`        | TCPプロトコルバージョン         |
-| database          | 文字列  | `"default"`    | データベース名                   |
-| username          | 文字列  | `"default"`    | ユーザー名                       |
-| password          | 文字列  | `"secret"`     | パスワード                       |
+| field            | type    | value         | description                     |
+|------------------|---------|---------------|---------------------------------|
+| client_name      | String  | `"Go Client"` | クライアント実装名             |
+| version_major    | UVarInt | `1`           | クライアントのメジャーバージョン |
+| version_minor    | UVarInt | `10`          | クライアントのマイナーバージョン |
+| protocol_version | UVarInt | `54451`       | TCP プロトコルバージョン       |
+| database         | String  | `"default"`   | データベース名                 |
+| username         | String  | `"default"`   | ユーザー名                     |
+| password         | String  | `"secret"`    | パスワード                     |
 
-### プロトコルバージョン {#protocol-version}
+### Protocol version {#protocol-version}
 
-プロトコルバージョンはクライアントのTCPプロトコルバージョンです。
+プロトコルバージョンは、クライアントの TCP プロトコルのバージョンです。
 
-通常、これは最新の互換性のあるサーバーリビジョンと等しいですが、
-それと混同してはいけません。
+通常、互換性のある最新のサーバーリビジョンと同じですが、
+サーバーリビジョンそのものと混同してはいけません。
 
-### デフォルト {#defaults}
+### Defaults {#defaults}
 
-すべての値は**明示的に設定**される必要があり、サーバー側にデフォルトはありません。
-クライアント側では、デフォルトとして`"default"`データベース、`"default"`ユーザー名、`""`（空の文字列）を使用してください。
+すべての値は**明示的に設定**する必要があり、サーバー側にはデフォルト値はありません。
+クライアント側では、デフォルトとして `"default"` データベース、`"default"` ユーザー名、
+およびパスワードには `""`（空文字列）を使用してください。
+
+
 
 ## クエリ {#query}
 
-| フィールド        | 型                         | 値           | 説明                    |
-|------------------|----------------------------|---------------|-------------------------|
-| query_id         | 文字列                     | `1ff-a123`    | クエリID、UUIDv4である可能性   |
-| client_info      | [ClientInfo](#client-info) | 種類参照      | クライアントに関するデータ  |
-| settings         | [Settings](#settings)      | 種類参照      | 設定のリスト             |
-| secret           | 文字列                     | `secret`      | サーバー間のシークレット   |
-| [stage](#stage)  | UVarInt                    | `2`           | クエリステージまで実行     |
-| compression      | UVarInt                    | `0`           | 無効=0、有効=1         |
-| body             | 文字列                     | `SELECT 1`    | クエリテキスト            |
+| field           | type                       | value      | description                         |
+|-----------------|----------------------------|------------|-------------------------------------|
+| query_id        | String                     | `1ff-a123` | クエリ ID。UUIDv4 を利用可能        |
+| client_info     | [ClientInfo](#client-info) | 型を参照   | クライアントに関するデータ          |
+| settings        | [Settings](#settings)      | 型を参照   | 設定の一覧                           |
+| secret          | String                     | `secret`   | サーバー間シークレット              |
+| [stage](#stage) | UVarInt                    | `2`        | 指定したクエリステージまで実行      |
+| compression     | UVarInt                    | `0`        | 無効=0、有効=1                      |
+| body            | String                     | `SELECT 1` | クエリテキスト                      |
 
-### クライアント情報 {#client-info}
+### Client info {#client-info}
 
-| フィールド            | 型              | 説明                           |
-|----------------------|-----------------|-------------------------------|
-| query_kind           | バイト          | None=0, 初期=1, 二次=2        |
-| initial_user         | 文字列          | 初期ユーザー                   |
-| initial_query_id     | 文字列          | 初期クエリID                  |
-| initial_address      | 文字列          | 初期アドレス                   |
-| initial_time         | Int64           | 初期時間                      |
-| interface            | バイト          | TCP=1, HTTP=2                 |
-| os_user              | 文字列          | OSユーザー                     |
-| client_hostname      | 文字列          | クライアントホスト名           |
-| client_name          | 文字列          | クライアント名                 |
-| version_major        | UVarInt         | クライアントメジャーバージョン |
-| version_minor        | UVarInt         | クライアントマイナーバージョン |
-| protocol_version     | UVarInt         | クライアントプロトコルバージョン |
-| quota_key            | 文字列          | クォータキー                   |
-| distributed_depth    | UVarInt         | 分散深度                       |
-| version_patch        | UVarInt         | クライアントパッチバージョン   |
-| otel                 | Bool            | トレースフィールドが存在する     |
-| trace_id             | FixedString(16) | トレースID                     |
-| span_id              | FixedString(8)  | スパンID                       |
-| trace_state          | 文字列          | トレース状態                   |
-| trace_flags          | バイト          | トレースフラグ                 |
+| field             | type            | description                                   |
+|-------------------|-----------------|-----------------------------------------------|
+| query_kind        | byte            | None=0、Initial=1、Secondary=2                |
+| initial_user      | String          | 初期ユーザー                                  |
+| initial_query_id  | String          | 初期クエリ ID                                 |
+| initial_address   | String          | 初期アドレス                                  |
+| initial_time      | Int64           | 初期時刻                                      |
+| interface         | byte            | TCP=1、HTTP=2                                 |
+| os_user           | String          | OS ユーザー                                   |
+| client_hostname   | String          | クライアントホスト名                          |
+| client_name       | String          | クライアント名                                |
+| version_major     | UVarInt         | クライアントのメジャーバージョン              |
+| version_minor     | UVarInt         | クライアントのマイナーバージョン              |
+| protocol_version  | UVarInt         | クライアントのプロトコルバージョン            |
+| quota_key         | String          | クォータキー                                  |
+| distributed_depth | UVarInt         | 分散クエリの深さ                              |
+| version_patch     | UVarInt         | クライアントのパッチバージョン                |
+| otel              | Bool            | トレース用フィールドが存在するかどうか        |
+| trace_id          | FixedString(16) | トレース ID                                   |
+| span_id           | FixedString(8)  | スパン ID                                     |
+| trace_state       | String          | トレースの状態                                |
+| trace_flags       | Byte            | トレースのフラグ                              |
 
-### 設定 {#settings}
+### Settings {#settings}
 
-| フィールド  | 型      | 値                   | 説明                        |
-|-------------|---------|----------------------|-----------------------------|
-| key         | 文字列  | `send_logs_level`    | 設定のキー                  |
-| value       | 文字列  | `trace`              | 設定の値                    |
-| important   | Bool    | `true`               | 無視できるかどうか           |
+| field     | type   | value             | description                 |
+|-----------|--------|-------------------|-----------------------------|
+| key       | String | `send_logs_level` | 設定のキー                  |
+| value     | String | `trace`           | 設定の値                    |
+| important | Bool   | `true`            | 無視可能かどうかを示す      |
 
-リストとしてエンコードされ、空のキーと値はリストの終わりを示します。
+リストとしてエンコードされており、key と value が空の要素が現れるとリストの終端を示します。
 
-### ステージ {#stage}
+### Stage {#stage}
 
-| 値   | 名前                 | 説明                                       |
-|------|---------------------|--------------------------------------------|
-| 0    | FetchColumns        | カラムタイプのみ取得                      |
-| 1    | WithMergeableState  | マージ可能な状態まで                       |
-| 2    | Complete            | 完全な完了まで（デフォルトであるべき）     |
+| value | name               | description                                       |
+|-------|--------------------|---------------------------------------------------|
+| 0     | FetchColumns       | 列の型のみを取得する                              |
+| 1     | WithMergeableState | マージ可能な状態になるまで                        |
+| 2     | Complete           | 完全に完了するまで（デフォルトであるべき値）      |
+
+
 
 ## データ {#data}
 
-| フィールド   | 型                  | 説明                        |
-|--------------|---------------------|-----------------------------|
-| info         | BlockInfo           | エンコーディングされたブロック情報 |
-| columns      | UVarInt             | カラム数                    |
-| rows         | UVarInt             | 行数                        |
-| columns      | [[]Column](#column) | データを含むカラム          |
+| field   | type                | description              |
+|---------|---------------------|--------------------------|
+| info    | BlockInfo           | エンコードされたブロック情報 |
+| columns | UVarInt             | 列数                     |
+| rows    | UVarInt             | 行数                     |
+| columns | [[]列](#column)     | データを含む列           |
 
-### カラム {#column}
+### 列 {#column}
 
-| フィールド | 型      | 値               | 説明             |
-|------------|---------|-----------------|------------------|
-| name       | 文字列  | `foo`           | カラム名        |
-| type       | 文字列  | `DateTime64(9)` | カラムタイプ      |
-| data       | バイト   | ~               | カラムデータ      |
+| field | type   | value           | description |
+|-------|--------|-----------------|-------------|
+| name  | String | `foo`           | 列名        |
+| type  | String | `DateTime64(9)` | 列の型      |
+| data  | bytes  | ~               | 列データ    |
+
+
 
 ## キャンセル {#cancel}
 
-パケットボディはありません。サーバーはクエリをキャンセルする必要があります。
+パケット本体はありません。サーバーはクエリをキャンセルする必要があります。
 
-## ピング {#ping}
 
-パケットボディはありません。サーバーは[ポンと返答するべきです](./server.md#pong)。
+
+## Ping {#ping}
+
+パケットの本体はありません。サーバーは[pong](./server.md#pong)で応答する必要があります。

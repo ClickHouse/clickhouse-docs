@@ -1,28 +1,27 @@
 ---
-'alias': []
-'description': 'JSONCompactフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'JSONCompact'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompact'
-'title': 'JSONCompact'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompact 形式に関するドキュメント'
+input_format: true
+keywords: ['JSONCompact']
+output_format: true
+slug: /interfaces/formats/JSONCompact
+title: 'JSONCompact'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-データ行がオブジェクトではなく配列として出力されることを除いて、[JSON](./JSON.md) と異なります。
+[JSON](./JSON.md) との違いは、データ行がオブジェクトではなく配列として出力される点のみです。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-次のデータを持つ JSON ファイルを使用し、`football.json`という名前で保存します：
+次のデータが含まれた JSON ファイル `football.json` を用意します:
 
 ```json
 {
@@ -76,15 +75,16 @@
 }
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-### データの読み取り {#reading-data}
 
-`JSONCompact` 形式を使用してデータを読み取ります：
+### データの読み込み {#reading-data}
+
+`JSONCompact` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -92,7 +92,7 @@ FROM football
 FORMAT JSONCompact
 ```
 
-出力は JSON 形式になります：
+出力は JSON 形式です：
 
 ```json
 {
@@ -155,5 +155,6 @@ FORMAT JSONCompact
     }
 }
 ```
+
 
 ## フォーマット設定 {#format-settings}

@@ -1,0 +1,34 @@
+---
+title: 我无法访问 ClickHouse Cloud 服务
+description: "排查 ClickHouse Cloud 服务访问问题，包括 IP Access List（IP 访问列表）配置"
+date: 2024-07-02
+tags: ['Errors and Exceptions', 'Managing Cloud']
+keywords: ['accessing cloud service', 'IP Access List']
+doc_type: 'guide'
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+## 无法访问 ClickHouse Cloud 服务 \{#i-am-unable-to-access-a-clickhouse-cloud-service\}
+
+如果您看到类似如下的错误信息，可能是 IP 访问列表拒绝了访问：
+
+```response
+curl: (35) error:02FFF036:system library:func(4095):连接被对端重置
+```
+
+或
+
+```response
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL 连接 HOSTNAME.clickhouse.cloud:8443 时出错
+```
+
+或
+
+```response
+代码：210. DB::NetException：SSL 连接意外关闭 (e46453teek.us-east-2.aws.clickhouse-staging.com:9440)。(NETWORK_ERROR)
+```
+
+请检查 [IP 访问列表](/cloud/security/setting-ip-filters)，如果你尝试从不在允许列表中的 IP 发起连接，则连接将会失败。

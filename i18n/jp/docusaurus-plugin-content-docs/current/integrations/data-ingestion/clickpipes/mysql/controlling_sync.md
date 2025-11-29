@@ -1,9 +1,10 @@
 ---
-'title': 'MySQL ClickPipe の同期制御'
-'description': 'MySQL ClickPipe の同期を制御するためのドキュメント'
-'slug': '/integrations/clickpipes/mysql/sync_control'
-'sidebar_label': '同期制御'
-'doc_type': 'guide'
+title: 'MySQL ClickPipe の同期の制御'
+description: 'MySQL ClickPipe の同期を制御する方法について説明するドキュメント'
+slug: /integrations/clickpipes/mysql/sync_control
+sidebar_label: '同期の制御'
+keywords: ['MySQL ClickPipe', 'ClickPipe 同期制御', 'MySQL CDC レプリケーション', 'ClickHouse MySQL コネクタ', 'ClickHouse へのデータベース同期']
+doc_type: 'guide'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -12,49 +13,50 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-この文書は、ClickPipeが**CDC（実行中）モード**にあるときに、MySQL ClickPipeの同期を制御する方法を説明しています。
+本ドキュメントでは、ClickPipe が **CDC（Running）モード** の場合に、MySQL ClickPipe の同期を制御する方法について説明します。
+
 
 ## 概要 {#overview}
 
-データベースのClickPipesは、ソースデータベースからデータをプルし、ターゲットデータベースにプッシュする2つの並行プロセスからなるアーキテクチャを持っています。プルプロセスは、データをどのくらいの頻度でプルし、1回にどれだけのデータをプルするかを定義する同期設定によって制御されます。「1回に」とは、バッチを意味します。ClickPipeはバッチでデータをプルしてプッシュします。
+データベース向け ClickPipes のアーキテクチャは、ソースデータベースからのプル処理と、ターゲットデータベースへのプッシュ処理という 2 つの並行したプロセスで構成されています。プル処理は、どのくらいの頻度で、そして一度にどれだけのデータをプルするかを定義する同期設定によって制御されます。ここで「一度に」とは 1 バッチを意味します。ClickPipe はデータをバッチ単位でプルおよびプッシュするためです。
 
-MySQL ClickPipeの同期を制御する主な方法は2つあります。以下の設定のいずれかが有効になると、ClickPipeはプッシュを開始します。
+MySQL ClickPipe の同期を制御する主な方法は 2 つあります。以下のいずれかの設定条件を満たすと、ClickPipe はプッシュを開始します。
 
 ### 同期間隔 {#interval}
 
-パイプの同期間隔は、ClickPipeがソースデータベースからレコードをプルする時間（秒単位）を示します。ClickHouseにプッシュするまでの時間はこの間隔には含まれません。
+パイプの同期間隔は、ClickPipe がソースデータベースからレコードをプルする時間（秒単位）です。ClickHouse へプッシュするためにかかる時間は、この間隔には含まれません。
 
-デフォルトは**1分**です。
-同期間隔は任意の正の整数値に設定できますが、10秒以上を維持することが推奨されます。
+デフォルトは **1 分** です。
+同期間隔には任意の正の整数値を設定できますが、10 秒以上に保つことを推奨します。
 
 ### プルバッチサイズ {#batch-size}
 
-プルバッチサイズは、ClickPipeがソースデータベースから1回のバッチでプルするレコード数です。レコードとは、パイプの一部であるテーブルで行われた挿入、更新、および削除を意味します。
+プルバッチサイズは、ClickPipe が 1 回のバッチでソースデータベースからプルするレコード数です。ここでのレコードとは、そのパイプの対象となっているテーブルに対して行われた INSERT、UPDATE、DELETE を指します。
 
-デフォルトは**100,000**レコードです。
-安全な最大値は1000万です。
+デフォルトは **100,000** レコードです。
+安全な最大値は 1,000 万件です。
 
-### 例外：ソースでの長期間のトランザクション {#transactions}
+### 例外: ソース側の長時間実行トランザクション {#transactions}
 
-ソースデータベースでトランザクションが実行されると、ClickPipeはトランザクションのCOMMITを受信するまで待機します。これは、**同期間隔**と**プルバッチサイズ**の両方を上書きします。
+ソースデータベース上でトランザクションが実行されている場合、ClickPipe はそのトランザクションの COMMIT を受信するまで待機し、その後で次に進みます。この挙動は、同期間隔とプルバッチサイズの両方を**上書き**します。
 
 ### 同期設定の構成 {#configuring}
 
-ClickPipeを作成する際や既存のClickPipeを編集する際に、同期間隔とプルバッチサイズを設定できます。
-ClickPipeを作成する際には、作成ウィザードの2番目のステップで見ることができます。以下のように示されています：
+同期間隔とプルバッチサイズは、ClickPipe の作成時、または既存の ClickPipe の編集時に設定できます。
+ClickPipe を作成する際は、以下のように作成ウィザードの 2 番目のステップで設定を確認できます。
 
 <Image img={create_sync_settings} alt="同期設定の作成" size="md"/>
 
-既存のClickPipeを編集する場合は、パイプの**設定**タブに移動し、パイプを一時停止してから**構成**をクリックします：
+既存の ClickPipe を編集する場合は、そのパイプの **Settings** タブに移動し、パイプを一時停止してから、ここで **Configure** をクリックします。
 
-<Image img={edit_sync_button} alt="同期ボタンの編集" size="md"/>
+<Image img={edit_sync_button} alt="同期設定編集ボタン" size="md"/>
 
-ここで同期設定が表示され、同期間隔とプルバッチサイズを変更できます：
+これにより同期設定用のフライアウトが開き、同期間隔とプルバッチサイズを変更できます。
 
-<Image img={edit_sync_settings} alt="同期設定の編集" size="md"/>
+<Image img={edit_sync_settings} alt="同期設定を編集" size="md"/>
 
-### 同期制御の動作の監視 {#monitoring}
+### 同期制御の挙動の監視 {#monitoring}
 
-ClickPipeの**メトリクス**タブにある**CDC Syncs**テーブルで、各バッチにかかる時間を確認できます。ここでの時間にはプッシュ時間も含まれ、行が入らない場合はClickPipeが待機し、その待機時間も期間に含まれます。
+各バッチにどのくらい時間がかかったかは、ClickPipe の **Metrics** タブにある **CDC Syncs** テーブルで確認できます。ここでの所要時間にはプッシュ時間も含まれます。また、受信する行がない場合、ClickPipe は待機し、その待機時間も所要時間に含まれます。
 
-<Image img={cdc_syncs} alt="CDC Syncsテーブル" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs テーブル" size="md"/>

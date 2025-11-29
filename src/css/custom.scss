@@ -1458,7 +1458,7 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   display: flex;
 }
 
-@media (max-width: breakpoints.$laptop-breakpoint) {
+@media (max-width: #{breakpoints.$laptop-breakpoint}) {
   .installContainer {
     flex-wrap: wrap;
   }
@@ -1552,4 +1552,13 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 
 .code-viewer {
   margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
+/* Table category header styling */
+.table-category-header {
+  background-color: var(--click-color-background-muted);
+}
+
+[data-theme='dark'] .table-category-header {
+  background-color: #474747;
 }

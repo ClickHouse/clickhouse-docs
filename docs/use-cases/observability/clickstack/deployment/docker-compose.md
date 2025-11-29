@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 3
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Docker deployment', 'ClickStack deployment guide', 'OpenTelemetry Docker Compose']
 ---
 
 import Image from '@theme/IdealImage';
@@ -50,9 +51,6 @@ To deploy with Docker Compose clone the HyperDX repo, change into the directory 
 
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
-cd hyperdx
-# switch to the v2 branch
-git checkout v2
 docker compose up
 ```
 

@@ -2,80 +2,85 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
 
-Java 客户端库用于通过其协议与数据库服务器进行通信。当前的实现仅支持 [HTTP 接口](/interfaces/http)。该库提供自己的 API 以向服务器发送请求。该库还提供用于处理不同二进制数据格式的工具（RowBinary* 和 Native*）。
+用于通过其协议与数据库服务器通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。
+该库提供了自身的 API 用于向服务器发送请求，还提供了一些工具，用于处理不同的二进制数据格式（RowBinary* 和 Native*）。
 
-## 设置 {#setup}
+## 安装与配置 \{#setup\}
 
-- Maven Central（项目网页）: https://mvnrepository.com/artifact/com.clickhouse/client-v2
-- 每日构建（仓库链接）: https://central.sonatype.com/repository/maven-snapshots/
-- 旧每日构建工件库（仓库链接）: https://s01.oss.sonatype.org/content/repositories/snapshots/
-<br/>
+* Maven Central（项目页面）：https://mvnrepository.com/artifact/com.clickhouse/client-v2
+* Nightly 构建（仓库链接）：https://central.sonatype.com/repository/maven-snapshots/
+* 旧版 Nightly 构建 Artifactory（仓库链接）：https://s01.oss.sonatype.org/content/repositories/snapshots/
+
+<br />
+
 <Tabs groupId="client-setup">
-<TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>client-v2</artifactId>
+        <version>0.9.1</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>client-v2</artifactId>
-    <version>0.9.1</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation("com.clickhouse:client-v2:0.9.1")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.1")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.1'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation 'com.clickhouse:client-v2:0.9.1'
+    ```
+  </TabItem>
 </Tabs>
 
-## 初始化 {#initialization}
+## 初始化 \{#initialization\}
 
-Client 对象通过 `com.clickhouse.client.api.Client.Builder#build()` 初始化。每个客户端都有自己的上下文，且它们之间不共享对象。Builder 具有方便设置的配置方法。
+`com.clickhouse.client.api.Client.Builder#build()` 会初始化 Client 对象。每个 Client 实例都有自己的上下文，彼此之间不共享任何对象。
+Builder 提供了若干配置方法，便于进行便捷配置。
 
 示例：
+
 ```java showLineNumbers
-Client client = new Client.Builder()
-               .addEndpoint("https://clickhouse-cloud-instance:8443/")
-               .setUsername(user)
-               .setPassword(password)
-               .build();
+ Client client = new Client.Builder()
+                .addEndpoint("https://clickhouse-cloud-instance:8443/")
+                .setUsername(user)
+                .setPassword(password)
+                .build();
 ```
 
-`Client` 是 `AutoCloseable`，在不再需要时应关闭。
+`Client` 实现了 `AutoCloseable` 接口，在不再需要时应关闭。
 
-### 认证 {#authentication}
+### 身份验证 \{#authentication\}
 
-认证在初始化阶段为每个客户端进行配置。目前支持三种认证方法：通过密码、通过访问令牌、通过 SSL 客户端证书。
+在初始化阶段为每个客户端配置身份验证。当前支持三种身份验证方式：通过密码、访问令牌或 SSL 客户端证书。
 
-通过密码进行认证需要通过调用 `setUsername(String)` 和 `setPassword(String)` 设置用户名和密码：
+通过密码进行身份验证时，需要调用 `setUsername(String)` 和 `setPassword(String)` 来设置用户名和密码：
+
 ```java showLineNumbers
-Client client = new Client.Builder()
-       .addEndpoint("https://clickhouse-cloud-instance:8443/")
-       .setUsername(user)
-       .setPassword(password)
-       .build();
+ Client client = new Client.Builder()
+        .addEndpoint("https://clickhouse-cloud-instance:8443/")
+        .setUsername(user)
+        .setPassword(password)
+        .build();
 ```
 
-通过访问令牌进行认证需要通过调用 `setAccessToken(String)` 设置访问令牌：
+若要通过访问令牌进行身份验证，需要调用 `setAccessToken(String)` 来设置访问令牌：
+
 ```java showLineNumbers
-Client client = new Client.Builder()
-       .addEndpoint("https://clickhouse-cloud-instance:8443/")
-       .setAccessToken(userAccessToken)
-       .build();
+ Client client = new Client.Builder()
+        .addEndpoint("https://clickhouse-cloud-instance:8443/")
+        .setAccessToken(userAccessToken)
+        .build();
 ```
 
-通过 SSL 客户端证书进行认证需要通过调用 `setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)` 和 `setClientKey(String)` 分别设置用户名、启用 SSL 认证、设置客户端证书和客户端密钥：
+使用 SSL 客户端证书进行认证时，需要设置用户名、启用 SSL 认证，并分别通过调用 `setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)` 和 `setClientKey(String)` 来设置客户端证书和客户端密钥：
+
 ```java showLineNumbers
 Client client = new Client.Builder()
         .useSSLAuthentication(true)
@@ -85,90 +90,93 @@ Client client = new Client.Builder()
 ```
 
 :::note
-SSL 认证在生产环境中可能难以排除故障，因为许多 SSL 库中的错误提供的信息不足。例如，如果客户端证书和密钥不匹配，则服务器将立即终止连接（在 HTTP 的情况下，这将在未发送任何 HTTP 请求的连接初始化阶段，因此不会发送响应）。
+在生产环境中，SSL 身份验证可能比较难排查，因为很多来自 SSL 库的错误信息都不够详细。比如，如果客户端证书和私钥不匹配，服务器会立即终止连接（对于 HTTP，这会发生在连接初始化阶段，此时尚未发送任何 HTTP 请求，因此也不会返回任何响应）。
 
-请使用 [openssl](https://docs.openssl.org/master/man1/openssl/) 工具来验证证书和密钥：
-- 检查密钥完整性：`openssl rsa -in [key-file.key] -check -noout`
-- 确认客户端证书对用户具有匹配的 CN：
-    - 从用户证书获取 CN - `openssl x509 -noout -subject -in [user.cert]`
-    - 验证数据库中是否设置了相同的值 `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（查询将输出 `auth_params`，如 `{"common_names":["some_user"]}`）
+请使用 [openssl](https://docs.openssl.org/master/man1/openssl/) 等工具来验证证书和私钥：
+
+* 检查私钥完整性：`openssl rsa -in [key-file.key] -check -noout`
+* 检查客户端证书中是否包含与用户匹配的 CN：
+  * 从用户证书中获取 CN：`openssl x509 -noout -subject -in [user.cert]`
+  * 在数据库中验证是否设置了相同的值：`select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（查询会输出 `auth_params`，内容类似 ` {"common_names":["some_user"]}`）
 
 :::
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
-所有设置均通过实例方法（也称为配置方法）来定义，这使得每个值的范围和上下文清晰明确。主要配置参数在一个范围内定义（客户端或操作），并且不会相互覆盖。
+所有设置都通过实例方法（也称为配置方法）进行定义，从而使每个值的作用域和上下文更加清晰明了。
+主要配置参数分别在各自的作用域（客户端或操作）中定义，且不会互相覆盖。
 
-配置在客户端创建过程中定义。请参见 `com.clickhouse.client.api.Client.Builder`。
+配置在创建客户端时完成定义。参见 `com.clickhouse.client.api.Client.Builder`。
 
-## 客户端配置 {#client-configuration}
+## 客户端配置 \{#client-configuration\}
+
 <WideTableWrapper>
-| 配置方法  | 参数                   |  描述                                |
-|-----------------------|-----------------------------|:--------------------------------------------|
-| `addEndpoint(String endpoint)`          | - `endpoint` - 格式化为 URL 的服务器地址。      | 将一个服务器端点添加到可用服务器列表。目前仅支持一个端点。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none`  |
-| `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - 连接协议 `com.clickhouse.client.api.enums.Protocol#HTTP`。<br />- `host` - 服务器的 IP 地址或主机名。<br />- `secure` - 如果通信应使用协议的安全版本（HTTPS） | 将一个服务器端点添加到可用服务器列表。目前仅支持一个端点。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `setOption(String key, String value)`   | - `key` - 客户端配置选项的字符串键。<br /> - `value` - 选项的字符串值 | 设置客户端选项的原始值。读取配置时从属性文件中提取时很有用。 | 
-| `setUsername(String username)`          | - `username` - 在认证过程中使用的用户的用户名 | 为进一步配置选择的认证方法设置用户名 <br/> <br/> 默认: `default` <br/> 枚举: `ClientConfigProperties.USER` <br/> 键: `user` |
-| `setPassword(String password)`          | - `password` - 用于密码认证的秘密值 | 为密码认证设置秘密，并有效选择为认证方法 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PASSWORD` <br/> 键: `password` |
-| `setAccessToken(String accessToken)`    | - `accessToken` - 访问令牌的字符串表示 | 设置访问令牌以通过设置的相应认证方法进行身份验证 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.ACCESS_TOKEN` <br/> 键: `access_token` |
-| `useSSLAuthentication(boolean useSSLAuthentication)` | - `useSSLAuthentication` - 表示是否应使用 SSL 认证的标志 | 将 SSL 客户端证书作为认证方法。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_AUTH` <br/> 键: `ssl_authentication` |
-| `enableConnectionPool(boolean enable)`  | - `enable` - 表示是否应该启用该选项的标志 | 设置连接池是否启用 <br/> <br/> 默认: `true` <br/> 枚举: `ClientConfigProperties.CONNECTION_POOL_ENABLED` <br/> 键: `connection_pool_enabled` |
-| `setConnectTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位 | 设置任何外出连接的连接初始化超时时间。此项会影响获得套接字连接时的等待时间。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.CONNECTION_TIMEOUT` <br/> 键: `connection_timeout`|
-| `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位 | 设置连接请求超时时间。此项仅对从池中获取连接有效。 <br/> <br/> 默认: `10000` <br/> 枚举: `ClientConfigProperties.CONNECTION_REQUEST_TIMEOUT` <br/> 键: `connection_request_timeout` |
-| `setMaxConnections(int maxConnections)` | - `maxConnections` - 连接数 | 设置客户端可以向每个服务器端点开放的连接数。 <br/> <br/> 默认: `10` <br/> 枚举: `ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS` <br/> 键: `max_open_connections` |
-| `setConnectionTTL(long timeout, ChronoUnit unit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位 | 设置连接的生存时间，超出后连接将被视为不活动的 <br/> <br/> 默认: `-1` <br/> 枚举: `ClientConfigProperties.CONNECTION_TTL` <br/> 键: `connection_ttl`|
-| `setKeepAliveTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位 | 设置 HTTP 连接的保持存活超时时间。此选项可以通过将超时时间设置为零 - `0` 来禁用保持连接 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br/> 键: `http_keep_alive_timeout` |
-| `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)` | - `strategy` - 枚举 `com.clickhouse.client.api.ConnectionReuseStrategy` 常量 | 选择连接池应使用的策略：`LIFO` 如果连接应在返回池后立即重用，或 `FIFO` 按照可用顺序使用连接（返回的连接不会立即使用）。 <br/> <br/> 默认: `FIFO` <br/> 枚举: `ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br/> 键: `connection_reuse_strategy`|
-| `setSocketTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `unit` - `timeout` 的时间单位 | 设置影响读写操作的套接字超时时间 <br/> <br/> 默认: `0` <br/> 枚举: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br/> 键: `socket_timeout`|
-| `setSocketRcvbuf(long size)` | - `size` - 以字节为单位的大小 | 设置 TCP 套接字接收缓冲区。此缓冲区位于 JVM 内存外。 <br/> <br/> 默认: `8196` <br/> 枚举: `ClientConfigProperties.SOCKET_RCVBUF_OPT` <br/> 键: `socket_rcvbuf` |
-| `setSocketSndbuf(long size)` | - `size` - 以字节为单位的大小 | 设置 TCP 套接字发送缓冲区。此缓冲区位于 JVM 内存外。 <br/> <br/> 默认: `8196` <br/> 枚举: `ClientConfigProperties.SOCKET_SNDBUF_OPT` <br/> 键: `socket_sndbuf` |
-| `setSocketKeepAlive(boolean value)` | - `value` - 表示该选项应启用的标志。 | 为客户端创建的每个 TCP 套接字设置选项 `SO_KEEPALIVE`。 TCP 保持活动启用机制，可以检查连接的存活状态，并帮助检测意外终止的连接。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br/> 键: `socket_keepalive` |
-| `setSocketTcpNodelay(boolean value)` | - `value` - 表示该选项应启用的标志。 | 为客户端创建的每个 TCP 套接字设置选项 `SO_NODELAY`。此 TCP 选项将使套接字尽快推送数据。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br/> 键: `socket_tcp_nodelay`|
-| `setSocketLinger(int secondsToWait)` | - `secondsToWait` - 等待的秒数。 | 为客户端创建的每个 TCP 套接字设置保持时间。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SOCKET_LINGER_OPT` <br/> 键: `socket_linger`|
-| `compressServerResponse(boolean enabled)` | - `enabled` - 表示该选项应启用的标志 | 设置服务器是否应压缩其响应。 <br/> <br/> 默认: `true` <br/> 枚举: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br/> 键: `compress` |
-| `compressClientRequest(boolean enabled)` | - `enabled` - 表示该选项应启用的标志 | 设置客户端是否应压缩其请求。 <br/> <br/> 默认: `false` <br/> 枚举: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br/> 键: `decompress` |
-| `useHttpCompression(boolean enabled)` | - `enabled` - 表示该选项应启用的标志 | 设置 HTTP 压缩是否应在客户端/服务器通信中使用（如果启用相应选项） | 
-| `appCompressedData(boolean enabled)` | - `enabled` - 表示该选项应启用的标志 | 告诉客户端压缩将由应用程序处理。 <br/> <br/> 默认: `false` <br/> 枚举: `ClientConfigProperties.APP_COMPRESSED_DATA` <br/> 键: `app_compressed_data` |
-| `setLZ4UncompressedBufferSize(int size)` | - `size` - 以字节为单位的大小 | 设置将接收数据流非压缩部分的缓冲区大小。如果缓冲区估计不足，将创建一个新缓冲区，并在日志中出现相应警告。 <br/> <br/> 默认: `65536` <br/> 枚举: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br/> 键: `compression.lz4.uncompressed_buffer_size`|
-| `disableNativeCompression` | - `disable` - 表示是否应禁用该选项的标志 | 禁用本地压缩。如果设置为 true，则将禁用本地压缩。 <br/> <br/> 默认: `false` <br/> 枚举: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br/> 键: `disable_native_compression` |
-| `setDefaultDatabase(String database)` | - `database` - 数据库的名称 | 设置默认数据库。 <br/> <br/> 默认: `default` <br/> 枚举: `ClientConfigProperties.DATABASE` <br/> 键: `database` |
-| `addProxy(ProxyType type, String host, int port)` | - `type` - 代理类型。<br /> - `host` - 代理主机名或 IP 地址。<br /> - `port` - 代理端口 | 设置用于与服务器通信的代理。如果代理需要认证，则需要设置代理。<br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PROXY_TYPE` <br/> 键: `proxy_type` <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PROXY_HOST` <br/> 键: `proxy_host`  <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PROXY_PORT` <br/> 键: `proxy_port` |
-| `setProxyCredentials(String user, String pass)` | - `user` - 代理用户名。<br /> - `pass` - 密码 | 设置用户凭证以通过代理进行身份验证。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PROXY_USER` <br/> 键: `proxy_user` <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.PROXY_PASSWORD` <br/> 键: `proxy_password` |
-| `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | - `timeout` - 以某种时间单位表示的超时时间。<br /> - `timeUnit` - `timeout` 的时间单位 | 设置查询的最大执行超时时间 <br/> <br/> 默认: `0` <br/> 枚举: `ClientConfigProperties.MAX_EXECUTION_TIME` <br/> 键: `max_execution_time`|
-| `setHttpCookiesEnabled(boolean enabled)` | `enabled` - 表示该选项应启用的标志 | 设置是否应记住 HTTP Cookie 并发送回服务器。 |
-| `setSSLTrustStore(String path)` | `path` - 本地（客户端）系统上的文件路径 | 设置客户端是否应使用 SSL 信任存储进行服务器主机验证。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_TRUST_STORE` <br/> 键: `trust_store` |
-| `setSSLTrustStorePassword(String password)` | `password` - 秘密值 | 设置用于解锁 `setSSLTrustStore(String path)` 所指定的 SSL 信任存储的密码 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br/> 键: `key_store_password` |
-| `setSSLTrustStoreType(String type)` | `type` - 信任存储类型名称 | 设置由 `setSSLTrustStore(String path)` 指定的信任存储的类型。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_KEYSTORE_TYPE` <br/> 键: `key_store_type` |
-| `setRootCertificate(String path)` | `path` - 本地（客户端）系统上的文件路径 | 设置客户端是否应使用指定的根（CA）证书进行服务器主机验证。<br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.CA_CERTIFICATE` <br/> 键: `sslrootcert` |
-| `setClientCertificate(String path)` | `path` - 本地（客户端）系统上的文件路径 | 设置在初始化 SSL 连接时使用的客户端证书路径，并用于 SSL 身份验证。<br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_CERTIFICATE` <br/> 键: `sslcert`|
-| `setClientKey(String path)` | `path` - 本地（客户端）系统上的文件路径 | 设置用于加密与服务器通信的 SSL 客户端私钥。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_KEY` <br/> 键: `ssl_key`|
-| `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - 表示该选项应启用的标志 | 设置客户端是否应在解码 DateTime 和 Date 列值时使用服务器时区。如果启用，则服务器时区应通过 `setServerTimeZone(String timeZone)` 设置 <br/> <br/> 默认: `true` <br/> 枚举: `ClientConfigProperties.USE_SERVER_TIMEZONE` <br/> 键: `use_server_time_zone`|
-| `useTimeZone(String timeZone)` | `timeZone` - 有效的 Java 时区 ID 的字符串值（见 `java.time.ZoneId`） | 设置在解码 DateTime 和 Date 列值时是否应使用指定的时区。将覆盖服务器时区。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.USE_TIMEZONE` <br/> 键: `use_time_zone` |
-| `setServerTimeZone(String timeZone)` |  `timeZone` - 有效的 Java 时区 ID 的字符串值（见 `java.time.ZoneId`） | 设置服务器端时区。默认为使用 UTC 时区。 <br/> <br/> 默认: `UTC` <br/> 枚举: `ClientConfigProperties.SERVER_TIMEZONE` <br/> 键: `server_time_zone` |
-| `useAsyncRequests(boolean async)` | `async` - 表示该选项应启用的标志。 | 设置客户端是否应在单独的线程中执行请求。默认情况下禁用，因为应用程序更清楚如何组织多线程任务，在单独线程中运行任务不会提高性能。 <br/> <br/> 默认: `false` <br/> 枚举: `ClientConfigProperties.ASYNC_OPERATIONS` <br/> 键: `async` |
-| `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - 执行器服务的实例。 | 设置操作任务的执行器服务。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none`|
-| `setClientNetworkBufferSize(int size)` | - `size` - 以字节为单位的大小 | 设置在应用程序内存空间中使用的缓冲区大小，用于在套接字和应用程序之间来回复制数据。更大的缓冲区减少与 TCP 栈的系统调用，但会影响每个连接所消耗的内存。此缓冲区也会受到 GC 的影响，因为连接的生命周期较短。此外，请注意，分配大的连续内存块可能会出现问题。 <br/> <br/> 默认: `300000` <br/> 枚举: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> 键: `client_network_buffer_size`|
-| `retryOnFailures(ClientFaultCause ...causes)` | - `causes` - `com.clickhouse.client.api.ClientFaultCause` 的枚举常量 | 设置可恢复/可重试的故障类型。 <br/> <br/> 默认: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br/> 枚举: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br/> 键: `client_retry_on_failures` |
-| `setMaxRetries(int maxRetries)` | - `maxRetries` - 重试次数 | 设置重试次数，适用于由 `retryOnFailures(ClientFaultCause ...causes)` 定义的故障 <br/> <br/> 默认: `3` <br/> 枚举: `ClientConfigProperties.RETRY_ON_FAILURE` <br/> 键: `retry` |
-| `allowBinaryReaderToReuseBuffers(boolean reuse)` | - `reuse` - 表示该选项应启用的标志 | 大多数数据集包含编码为小字节序列的数值数据。默认情况下，读取器将分配所需的缓冲区，将数据读入该缓冲区，然后转换为目标数字类。这可能会导致 GC 压力，因为会分配和释放许多小对象。如果启用此选项，则读取器将使用预分配的缓冲区进行数字跨境转换。这是安全的，因为每个读取器都有自己的一组缓冲区，读取器由一个线程使用。 |
-| `httpHeader(String key, String value)` | - `key` - HTTP 头部键。<br /> - `value` - 头部的字符串值。 | 为单个 HTTP 头设置值。以前的值将被覆盖。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `httpHeader(String key, Collection values)` | - `key` - HTTP 头部键。<br /> - `values` - 字符串值的列表。 | 为单个 HTTP 头设置值。以前的值将被覆盖。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `httpHeaders(Map headers)` | - `header` - 带有 HTTP 头及其值的映射。 | 同时设置多个 HTTP 头值。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `serverSetting(String name, String value)` | - `name` - 查询级别设置的名称。<br /> - `value` - 设置的字符串值。 | 设置需随每个查询传递给服务器的设置。单个操作设置可能会覆盖它。下列为 [设置列表](/operations/settings/query-level) <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `serverSetting(String name,  Collection values)` | - `name` - 查询级别设置的名称。<br /> - `values` - 设置的字符串值。 | 设置需随每个查询传递给服务器的设置。单个操作设置可能会覆盖它。下列为 [设置列表](/operations/settings/query-level)。此方法适用于设置具有多个值的设置，例如 [角色](/interfaces/http#setting-role-with-query-parameters) <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - 列与方法匹配策略的实现 | 设置自定义策略，用于在注册 DTO 时匹配 DTO 类字段和数据库列。 <br/> <br/> 默认: `none` <br/> 枚举: `none` <br/> 键: `none` |
-| `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - 表示该选项应启用的标志 | 设置是否应使用基本 HTTP 认证进行用户密码认证。默认启用。使用这种类型的认证可解决包含特殊字符的密码无法通过 HTTP 头进行传输的问题。 <br/> <br/> 默认: `true` <br/> 枚举: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> 键: `http_use_basic_auth` |
-| `setClientName(String clientName)` | - `clientName` - 表示应用程序名称的字符串 | 设置有关调用应用程序的其他信息。此字符串将作为客户端名称传递给服务器。在 HTTP 协议的情况下，将作为 `User-Agent` 头传递。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.CLIENT_NAME` <br/> 键: `client_name`|
-| `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - 编码的承载令牌 |  指定是否使用承载认证及使用的令牌。令牌将原样发送，因此应在传递给此方法之前进行编码。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> 键: `bearer_token` |
-| `registerClientMetrics(Object registry, String name)` | - `registry` - Micrometer 注册实例<br /> - `name` - 监测组名称 | 在 Micrometer (https://micrometer.io/) 注册实例中注册传感器。 |
-| `setServerVersion(String version)` | - `version` - 服务器版本的字符串值 | 设置服务器版本以避免版本检测。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SERVER_VERSION` <br/> 键: `server_version` |
-| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - 类型提示映射 | 设置 ClickHouse 类型的类型提示映射。例如，可以将多维数组表示为 Java 容器，而不是自身的数组对象。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> 键: `type_hint_mapping` |
-| `sslSocketSNI(String sni)` | - `sni` - 服务器名称的字符串值 | 设置用于 SSL/TLS 连接中的 SNI（服务器名称指示）的服务器名称。 <br/> <br/> 默认: - <br/> 枚举: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> 键: `ssl_socket_sni` |
+  | 配置方式                                                                      | 参数                                                                                                                                             | 描述                                                                                                                                                                                                                                                                                                            |
+  | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `addEndpoint(String endpoint)`                                            | * `endpoint` - 采用 URL 格式的服务器地址。                                                                                                                | 将服务器端点添加到可用服务器列表。目前仅支持一个端点。 <br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                         |
+  | `addEndpoint(Protocol protocol, String host, int port, boolean secure)`   | - `protocol` - 连接协议 `com.clickhouse.client.api.enums.Protocol#HTTP`。<br />- `host` - 服务器的 IP 或主机名。<br />- `secure` - 指定通信是否应使用该协议的安全版本（HTTPS）。 | 将服务器端点添加到可用服务器列表。目前仅支持配置一个端点。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                        |
+  | `setOption(String key, String value)`                                     | * `key` - 客户端配置选项的字符串键。<br /> - `value` - 该配置选项的字符串值                                                                                           | 设置客户端选项的原始值。在从属性文件中读取配置时非常有用。                                                                                                                                                                                                                                                                                 |
+  | `setUsername(String username)`                                            | - `username` - 用户用于认证的用户名                                                                                                                      | 为后续配置所选的身份验证方法设置用户名 <br /> <br /> 默认值：`default` <br /> 枚举：`ClientConfigProperties.USER` <br /> 键：`user`                                                                                                                                                                                                       |
+  | `setPassword(String password)`                                            | * `password` - 用于密码验证的秘密值                                                                                                                      | 为密码验证设置密钥，并实质上将其选为验证方式 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PASSWORD` <br /> 键：`password`                                                                                                                                                                                                    |
+  | `setAccessToken(String accessToken)`                                      | - `accessToken` - 访问令牌的字符串形式                                                                                                                   | 设置用于身份验证的访问令牌，并设置相应的身份验证方法 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.ACCESS_TOKEN` <br /> 键：`access_token`                                                                                                                                                                                        |
+  | `useSSLAuthentication(boolean useSSLAuthentication)`                      | * `useSSLAuthentication` - 用于指示是否应启用 SSL 身份验证的标志                                                                                               | 将 SSL 客户端证书设为身份验证方式。 <br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL_AUTH` <br /> 键名：`ssl_authentication`                                                                                                                                                                                          |
+  | `enableConnectionPool(boolean enable)`                                    | - `enable` - 指示是否启用该选项的标志位                                                                                                                     | 设置是否启用连接池 <br /> <br /> 默认值：`true` <br /> 枚举值：`ClientConfigProperties.CONNECTION_POOL_ENABLED` <br /> 键：`connection_pool_enabled`                                                                                                                                                                             |
+  | `setConnectTimeout(long timeout, ChronoUnit unit)`                        | * `timeout` - 以某种时间单位表示的超时时长。<br /> - `unit` - `timeout` 的时间单位                                                                                 | 为任何出站连接设置发起连接的超时时间。这会影响等待套接字完成连接建立的时长。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CONNECTION_TIMEOUT` <br /> 键：`connection_timeout`                                                                                                                                                                 |
+  | `setConnectionRequestTimeout(long timeout, ChronoUnit unit)`              | - `timeout` - 以某种时间单位表示的超时时长。<br /> - `unit` - `timeout` 的时间单位                                                                                 | 设置连接请求超时时间。此配置仅在从连接池获取连接时生效。 <br /> <br /> 默认值：`10000` <br /> 枚举：`ClientConfigProperties.CONNECTION_REQUEST_TIMEOUT` <br /> 键：`connection_request_timeout`                                                                                                                                                    |
+  | `setMaxConnections(int maxConnections)`                                   | * `maxConnections` - 连接数                                                                                                                       | 设置客户端到每个服务器端点可打开的最大连接数。 <br /> <br /> 默认值：`10` <br /> 枚举：`ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS` <br /> 键：`max_open_connections`                                                                                                                                                                   |
+  | `setConnectionTTL(long timeout, ChronoUnit unit)`                         | - `timeout` - 超时时长，配合时间单位使用。<br /> - `unit` - `timeout` 的时间单位                                                                                  | 设置连接的 TTL，超过该值后连接将被视为不再活动 <br /> <br /> 默认值: `-1` <br /> 枚举: `ClientConfigProperties.CONNECTION_TTL` <br /> 键: `connection_ttl`                                                                                                                                                                               |
+  | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                      | * `timeout` - 以某个时间单位表示的超时时长。<br /> - `unit` - `timeout` 的时间单位                                                                                 | 设置 HTTP 连接的 Keep-Alive 超时时间。可通过将该超时时间设置为零 `0` 来禁用 Keep-Alive。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br /> 键：`http_keep_alive_timeout`                                                                                                                                |
+  | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`            | - `strategy` - 枚举常量 `com.clickhouse.client.api.ConnectionReuseStrategy`                                                                        | 选择连接池应使用的策略：如果希望连接在返回到池中后立即被复用，则使用 `LIFO`；如果希望按照连接变为可用的顺序来使用（返回的连接不会被立即再次使用），则使用 `FIFO`。 <br /> <br /> 默认值：`FIFO` <br /> 枚举：`ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br /> 键：`connection_reuse_strategy`                                                                                           |
+  | `setSocketTimeout(long timeout, ChronoUnit unit`)`                       | *`timeout`- 以某个时间单位表示的超时时间。<br /> -`unit`-`timeout`的时间单位。                                                                                | 设置用于读写操作的 socket 超时时间 <br /> <br /> 默认值:`0`<br /> 枚举值:`ClientConfigProperties.SOCKET&#95;OPERATION&#95;TIMEOUT`<br /> 键:`socket&#95;timeout`                                                                                                                                                                        |
+    |`setSocketRcvbuf(long size)`                                             | -`size` - 大小（字节）                                                                                                                              | 设置 TCP socket 接收缓冲区。该缓冲区不在 JVM 内存中分配。 <br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET&#95;RCVBUF&#95;OPT` <br /> 键：`socket&#95;rcvbuf`                                                                                                                                                                 |
+    |`setSocketSndbuf(long size)`                                             | *`size` - 大小（以字节为单位）                                                                                                                          | 设置 TCP socket 接收缓冲区。该缓冲区不占用 JVM 内存。<br /> <br /> 默认值：`8196` <br /> 枚举：`ClientConfigProperties.SOCKET&#95;SNDBUF&#95;OPT` <br /> 键：`socket&#95;sndbuf`                                                                                                                                                                    |
+    |`setSocketKeepAlive(boolean value)`                                      | -`value`- 标志位，表示是否启用该选项。                                                                                                                     | 为客户端创建的每个 TCP 套接字设置`SO&#95;KEEPALIVE` 选项。TCP Keepalive 启用一种机制，用于检查连接的存活状态，并有助于检测被突然终止的连接。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET&#95;KEEPALIVE&#95;OPT` <br /> 键：`socket&#95;keepalive`                                                                                                                |
+    |`setSocketTcpNodelay(boolean value)`                                     | *`value`- 指示是否启用该选项的标志。                                                                                                                      | 为客户端创建的每个 TCP 套接字设置`SO&#95;NODELAY`选项。该 TCP 选项会使套接字尽可能快地发送数据。<br /> <br /> 默认值: - <br /> 枚举:`ClientConfigProperties.SOCKET&#95;TCP&#95;NO&#95;DELAY&#95;OPT`<br /> 键:`socket&#95;tcp&#95;nodelay`                                                                                                                                   |
+    |`setSocketLinger(int secondsToWait)`                                     | -`secondsToWait` - 要等待的秒数。                                                                                                                    | 为客户端创建的每个 TCP 套接字设置 Linger（延迟关闭）时间。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SOCKET&#95;LINGER&#95;OPT` <br /> 键：`socket&#95;linger`                                                                                                                                                                        |
+    |`compressServerResponse(boolean enabled)`                                | *`enabled` - 用于指示是否应启用该选项的标志                                                                                                                  | 设置服务器是否压缩其响应内容。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.COMPRESS&#95;SERVER&#95;RESPONSE` <br /> 键：`compress`                                                                                                                                                                                     |
+    |`compressClientRequest(boolean enabled)`                                 | -`enabled` - 标志，用于指示是否启用该选项                                                                                                                   | 设置客户端是否应对其请求进行压缩。<br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.COMPRESS&#95;CLIENT&#95;REQUEST` <br /> 键：`decompress`                                                                                                                                                                                  |
+    |`useHttpCompression(boolean enabled)`                                    | *`enabled`- 表示是否启用该选项的标志                                                                                                                     | 设置在启用相应选项时客户端/服务器通信是否使用 HTTP 压缩                                                                                                                                                                                                                                                                               |
+    |`appCompressedData(boolean enabled)`                                     | -`enabled` - 指示是否启用该选项的标志位                                                                                                                    | 通知客户端，压缩将由应用程序负责处理。<br /> <br /> 默认值：`false` <br /> 枚举值：`ClientConfigProperties.APP&#95;COMPRESSED&#95;DATA` <br /> 键：`app&#95;compressed&#95;data`                                                                                                                                                                          |
+    |`setLZ4UncompressedBufferSize(int size)`                                 | *`size` - 大小（字节）                                                                                                                              | 设置用于接收数据流未压缩部分的缓冲区大小。若缓冲区大小设置过小，将会创建一个新的缓冲区，并在日志中记录相应的警告。<br /> <br /> 默认值：`65536` <br /> 枚举常量：`ClientConfigProperties.COMPRESSION&#95;LZ4&#95;UNCOMPRESSED&#95;BUF&#95;SIZE` <br /> 配置键：`compression.lz4.uncompressed&#95;buffer&#95;size`                                                                                          |
+    |`disableNativeCompression`                                               | -`disable` - 用于指示是否应禁用该选项的标志                                                                                                                  | 禁用原生压缩。如果设置为 true，则会禁用原生压缩。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.DISABLE&#95;NATIVE&#95;COMPRESSION` <br /> 键：`disable&#95;native&#95;compression`                                                                                                                                                    |
+    |`setDefaultDatabase(String database)`                                    | *`database` - 数据库的名称                                                                                                                          | 设置默认数据库。<br /> <br /> 默认值：`default` <br /> 枚举值：`ClientConfigProperties.DATABASE` <br /> 键：`database`                                                                                                                                                                                                         |
+    |`addProxy(ProxyType type, String host, int port)`                        | -`type`- 代理类型。<br /> -`host`- 代理主机名或 IP 地址。<br /> -`port` - 代理端口。                                                                         | 设置用于与服务器通信时使用的代理。如果代理要求身份验证，则必须配置代理。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;TYPE` <br /> 键：`proxy&#95;type` <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;HOST` <br /> 键：`proxy&#95;host`  <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.PROXY&#95;PORT` <br /> 键：`proxy&#95;port`|
+    |`setProxyCredentials(String user, String pass)`                          | *`user`- 代理用户名<br /> -`pass` - 密码                                                                                                           | 设置用于代理认证的用户凭据。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY&#95;USER` <br /> 键：`proxy&#95;user` <br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.PROXY&#95;PASSWORD` <br /> 键：`proxy&#95;password`                                                                                                          |
+    |`setExecutionTimeout(long timeout, ChronoUnit timeUnit)`                 | -`timeout`- 按某个时间单位表示的超时时长。<br /> -`timeUnit`-`timeout` 的时间单位                                                                             | 用于设置查询的最⼤执行超时时间 <br /> <br /> 默认值：`0` <br /> 枚举：`ClientConfigProperties.MAX&#95;EXECUTION&#95;TIME` <br /> 键：`max&#95;execution&#95;time`                                                                                                                                                                                    |
+    |`setHttpCookiesEnabled(boolean enabled)`                                 |`enabled`- 指示是否启用该选项的标志                                                                                                                       | 设置是否在后续请求中保存并回传 HTTP cookie。                                                                                                                                                                                                                                                                                  |
+    |`setSSLTrustStore(String path)`                                          |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置客户端是否应使用 SSL 信任库来验证服务器主机。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.SSL&#95;TRUST&#95;STORE` <br /> 键：`trust&#95;store`                                                                                                                                                                                     |
+    |`setSSLTrustStorePassword(String password)`                              |`password`- 秘密值                                                                                                                               | 设置用于解锁由`setSSLTrustStore(String path)`指定的 SSL 信任库的密码 <br /> <br /> 默认: - <br /> 枚举:`ClientConfigProperties.SSL&#95;KEY&#95;STORE&#95;PASSWORD`<br /> 键:`key&#95;store&#95;password`                                                                                                                                         |
+    |`setSSLTrustStoreType(String type)`                                      |`type`- 信任库类型名称                                                                                                                               | 设置由`setSSLTrustStore(String path)` 指定的信任库类型。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;KEYSTORE&#95;TYPE` <br /> 键：`key&#95;store&#95;type`                                                                                                                                                             |
+    |`setRootCertificate(String path)`                                        |`path` - 本地（客户端）系统上的文件路径                                                                                                                       | 设置客户端是否应使用指定的根（CA）证书对服务器主机进行验证。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CA&#95;CERTIFICATE` <br /> 键名：`sslrootcert`                                                                                                                                                                                 |
+    |`setClientCertificate(String path)`                                      |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置在发起 SSL 连接以及进行 SSL 认证时使用的客户端证书路径。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;CERTIFICATE` <br /> 键名：`sslcert`                                                                                                                                                                               |
+    |`setClientKey(String path)`                                              |`path` - 本地（客户端）系统中的文件路径                                                                                                                       | 设置用于与服务器进行 SSL 加密通信的客户端私钥。<br /> <br /> 默认值：-<br /> 枚举：`ClientConfigProperties.SSL&#95;KEY` <br /> 键：`ssl&#95;key`                                                                                                                                                                                                   |
+    |`useServerTimeZone(boolean useServerTimeZone)`                           |`useServerTimeZone`- 表示是否启用该选项的标志                                                                                                             | 指定在解码 DateTime 和 Date 列值时，客户端是否应使用服务器时区。启用后，应通过`setServerTimeZone(String timeZone)` 设置服务器时区。<br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.USE&#95;SERVER&#95;TIMEZONE` <br /> 键：`use&#95;server&#95;time&#95;zone`                                                                                                 |
+    |`useTimeZone(String timeZone)`                                           |`timeZone`- Java 中有效时区 ID 的字符串（参见`java.time.ZoneId`）                                                                                         | 设置在解码 DateTime 和 Date 列值时，是否应使用指定的时区。会覆盖服务器的时区设置。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.USE&#95;TIMEZONE` <br /> 键：`use&#95;time&#95;zone`                                                                                                                                                                |
+    |`setServerTimeZone(String timeZone)`                                     |`timeZone`- Java 中有效时区 ID 的字符串值（参见`java.time.ZoneId`）                                                                                        | 设置服务器端时区。默认使用 UTC 时区。<br /> <br /> 默认值：`UTC` <br /> 枚举：`ClientConfigProperties.SERVER&#95;TIMEZONE` <br /> 键：`server&#95;time&#95;zone`                                                                                                                                                                                  |
+    |`useAsyncRequests(boolean async)`                                        |`async` - 指示是否应启用该选项的标志。                                                                                                                       | 设置是否在单独线程中执行客户端请求。默认禁用，因为应用程序更清楚如何组织多线程任务，而且在单独线程中运行任务并不会提升性能。 <br /> <br /> 默认值：`false` <br /> 枚举：`ClientConfigProperties.ASYNC&#95;OPERATIONS` <br /> 键：`async`                                                                                                                                                |
+    |`setSharedOperationExecutor(ExecutorService executorService)`            |`executorService` - 执行器服务的实例。                                                                                                                  | 设置用于操作任务的 executor 服务。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                              |
+    |`setClientNetworkBufferSize(int size)`                                   | *`size`- 以字节为单位的大小                                                                                                                           | 设置应用程序内存空间中缓冲区的大小，用于在套接字与应用程序之间来回复制数据。更大的缓冲区可以减少对 TCP 栈的系统调用次数，但会增加每个连接占用的内存。由于连接的生命周期通常较短，该缓冲区也会被垃圾回收（GC）。还需注意，分配大块连续内存可能会带来问题。 <br /> <br /> 默认值:`300000`<br /> 枚举:`ClientConfigProperties.CLIENT&#95;NETWORK&#95;BUFFER&#95;SIZE`<br /> 键:`client&#95;network&#95;buffer&#95;size`                                           |
+    |`retryOnFailures(ClientFaultCause ...causes)`                            | -`causes`-`com.clickhouse.client.api.ClientFaultCause` 枚举中的常量                                                                               | 设置可恢复/可重试的错误类型。 <br /> <br /> 默认值：`NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br /> 枚举值：`ClientConfigProperties.CLIENT&#95;RETRY&#95;ON&#95;FAILURE` <br /> 键：`client&#95;retry&#95;on&#95;failures`                                                                                                                   |
+    |`setMaxRetries(int maxRetries)`                                          | *`maxRetries`- 重试次数                                                                                                                          | 为针对`retryOnFailures(ClientFaultCause ...causes)` 定义的失败类型设置最大重试次数 <br /> <br /> 默认值：`3` <br /> 枚举值：`ClientConfigProperties.RETRY&#95;ON&#95;FAILURE` <br /> 键名：`retry`                                                                                                                                               |
+    |`allowBinaryReaderToReuseBuffers(boolean reuse)`                         | -`reuse`- 指示是否应启用该选项的标志位                                                                                                                     | 大多數資料集都包含以小位元組序列編碼的數值資料。預設情況下，reader 會分配所需的緩衝區，將資料讀入其中，然後轉換為目標的 Number 類別。由於會分配並釋放大量小物件，這可能會造成顯著的 GC 壓力。啟用此選項後，reader 會使用預先分配的緩衝區來進行數值轉換。這是安全的，因為每個 reader 都有自己的一組緩衝區，且各個 reader 只會被單一執行緒使用。                                                                                                                  |
+    |`httpHeader(String key, String value)`                                   | *`key`- HTTP 头部键名。<br /> -`value` - 该头部的字符串值。                                                                                               | 为单个 HTTP 头部设置值。之前的值将被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                            |
+    |`httpHeader(String key, Collection values)`                              | -`key`- HTTP 头部键名。<br /> -`values` - 字符串值列表。                                                                                                | 为单个 HTTP 头部设置值。之前的值会被覆盖。<br /> <br /> 默认值：`none` <br /> 枚举：`none` <br /> 键：`none`                                                                                                                                                                                                                            |
+    |`httpHeaders(Map headers)`                                               | *`header`- 包含 HTTP 头及其对应值的映射表。                                                                                                               | 同时设置多个 HTTP 头部的值。<br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                                                                                                                                                                |
+    |`serverSetting(String name, String value)`                               | -`name`- 查询级别设置的名称。<br /> -`value` - 此设置的字符串值。                                                                                              | 设置随每个查询一起传递给服务器的设置。单个操作的设置可以覆盖它。[设置列表](/operations/settings/query-level) <br /> <br /> 默认值：`none` <br /> 枚举值：`none` <br /> 键：`none`                                                                                                                                                                          |
+    |`serverSetting(String name,  Collection values)`                         | *`name`- 查询级别设置的名称。<br /> -`values`- 该设置的字符串值。                                                                                             | 配置随每个查询一同传递给服务器的设置。单个操作的设置可以覆盖它。参见 [设置列表](/operations/settings/query-level)。此方法适用于为可接受多个值的设置赋值，例如 [roles](/interfaces/http#setting-role-with-query-parameters) <br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                  |
+    |`columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)`| -`strategy`- 用于列与字段匹配的策略实现                                                                                                                   | 设置在注册 DTO 时用于匹配 DTO 类字段和数据库列的自定义策略。 <br /> <br /> 默认值:`none`<br /> 枚举:`none`<br /> 键:`none`                                                                                                                                                                                                             |
+    |`useHTTPBasicAuth(boolean useBasicAuth)`                                 | *`useBasicAuth` - 用于指示是否应启用该选项的标志                                                                                                             | 设置是否使用基本 HTTP 身份验证进行用户密码认证。默认启用。使用此类型的身份验证可以解决密码中包含特殊字符而无法通过 HTTP 头部传输所导致的问题。 <br /> <br /> 默认值：`true` <br /> 枚举：`ClientConfigProperties.HTTP&#95;USE&#95;BASIC&#95;AUTH` <br /> 键：`http&#95;use&#95;basic&#95;auth`                                                                                                                 |
+    |`setClientName(String clientName)`                                       | -`clientName`- 表示应用程序名称的字符串                                                                                                                  | 设置关于调用方应用程序的附加信息。该字符串将作为客户端名称传递给服务器。对于 HTTP 协议，将作为`User-Agent` 头部字段传递。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.CLIENT&#95;NAME` <br /> 键：`client&#95;name`                                                                                                                                            |
+    |`useBearerTokenAuth(String bearerToken)`                                 | *`bearerToken` - 编码后的 Bearer 令牌                                                                                                               | 指定是否使用 Bearer 认证以及要使用的 token。token 将按原样发送，因此在传递给此方法之前应先进行编码处理。<br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.BEARERTOKEN&#95;AUTH` <br /> 键：`bearer&#95;token`                                                                                                                                                |
+    |`registerClientMetrics(Object registry, String name)`                    | -`registry`- Micrometer registry 实例<br /> -`name`- 指标组名称                                                                                   | 在 Micrometer（[https://micrometer.io/](https://micrometer.io/)）的注册表实例中注册传感器。                                                                                                                                                                                                                                   |
+    |`setServerVersion(String version)`                                       | *`version` - 服务器版本的字符串形式                                                                                                                      | 设置服务器版本以避免版本检测。<br /> <br /> 默认值：-<br /> 枚举值：`ClientConfigProperties.SERVER&#95;VERSION` <br /> 键名：`server&#95;version`                                                                                                                                                                                              |
+    |`typeHintMapping(Map typeHintMapping)`                                   | -`typeHintMapping` - 类型提示映射                                                                                                                   | 为 ClickHouse 类型设置类型提示映射。例如，可以让多维数组以 Java 容器类型呈现，而不是作为独立的 Array 对象。 <br /> <br /> 默认值：- <br /> 枚举：`ClientConfigProperties.TYPE&#95;HINT&#95;MAPPING` <br /> 键：`type&#95;hint&#95;mapping`                                                                                                                                     |
+    |`sslSocketSNI(String sni)`                                               | *`sni` - 服务器名称的字符串形式                                                                                                                          | 在 SSL/TLS 连接中设置用于 SNI（Server Name Indication，服务器名称指示）的服务器名称。<br /> <br /> 默认值：- <br /> 枚举值：`ClientConfigProperties.SSL&#95;SOCKET&#95;SNI` <br /> 键名：`ssl&#95;socket&#95;sni`                                                                                                                                                 |
 </WideTableWrapper>
 
-### 服务器设置
+### 服务器设置 \{#server-settings\}
 
-服务器端设置可以在客户端级别一次性设置（请参见 `Builder` 的 `serverSetting` 方法）或在操作级别（请参见操作设置类的 `serverSetting`）。
+服务器端设置既可以在创建客户端时于客户端级别统一设置一次（参见 `Builder` 的 `serverSetting` 方法），也可以在操作级别进行设置（参见操作设置类中的 `serverSetting` 方法）。
 
 ```java showLineNumbers
  try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
@@ -176,25 +184,27 @@ SSL 认证在生产环境中可能难以排除故障，因为许多 SSL 库中�
         .setPassword(ClickHouseServerForTest.getPassword())
         .compressClientRequest(true)
 
-        // Client level
+        // 客户端级别
         .serverSetting("max_threads", "10")
         .serverSetting("async_insert", "1")
         .serverSetting("roles", Arrays.asList("role1", "role2"))
 
         .build()) {
 
-	// Operation level
+	// 操作级别
 	QuerySettings querySettings = new QuerySettings();
 	querySettings.serverSetting("session_timezone", "Europe/Zurich");
 
 	...
 }
 ```
-当通过 `setOption` 方法设置选项（无论是 `Client.Builder` 还是操作设置类）时，服务器设置名称应以 `clickhouse_setting_` 为前缀。此时，`com.clickhouse.client.api.ClientConfigProperties#serverSetting()` 可能会派上用场。
 
-### 自定义 HTTP 头
+当通过 `setOption` 方法（无论是 `Client.Builder` 还是操作设置类）设置选项时，服务器端设置名称应添加前缀 `clickhouse_setting_`。在这种情况下，可以方便地使用 `com.clickhouse.client.api.ClientConfigProperties#serverSetting()`。
 
-自定义 HTTP 头可以为所有操作（客户端级别）或单个操作（操作级别）进行设定。
+### 自定义 HTTP 头部 \{#custom-http-header\}
+
+可以在客户端级别为所有操作统一设置自定义 HTTP 头部，也可以在操作级别为单个操作单独设置自定义 HTTP 头部。
+
 ```java showLineNumbers
 
 QuerySettings settings = new QuerySettings()
@@ -203,108 +213,111 @@ QuerySettings settings = new QuerySettings()
 
 ```
 
-当通过 `setOption` 方法设置选项（无论是 `Client.Builder` 还是操作设置类）时，自定义头名称应以 `http_header_` 为前缀。此时，`com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 可能会派上用场。
+当通过 `setOption` 方法（无论是 `Client.Builder` 还是操作设置类）设置选项时，自定义请求头名称应添加 `http_header_` 前缀。在这种情况下，可以方便地使用方法 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()`。
 
-## 常见定义 {#common-definitions}
-### ClickHouseFormat {#clickhouseformat}
+## 常用术语定义 \{#common-definitions\}
 
-支持格式的枚举 [supported formats](/interfaces/formats)。它包括 ClickHouse 支持的所有格式。
+### ClickHouseFormat \{#clickhouseformat\}
 
-* `raw` - 用户应转换原始数据
-* `full` - 客户端可以自行转码数据，并接受原始数据流
-* `-` - 此格式不支持 ClickHouse 的操作
+[支持的格式](/interfaces/formats) 的枚举类型。它包含 ClickHouse 支持的所有格式。
 
-此客户端版本支持：
+* `raw` - 用户应对原始数据进行转码
+* `full` - 客户端可以自行对数据进行转码，并接受原始数据流
+* `-` - ClickHouse 不支持对此格式执行该操作
 
-| 格式                                                                                                                        | 输入  | 输出  |
-|---------------------------------------------------------------------------------------------------------------------------|:------:|:-------:|
-| [TabSeparated](/interfaces/formats#tabseparated)                                                                      | raw    | raw     |
-| [TabSeparatedRaw](/interfaces/formats#tabseparatedraw)                                                                | raw    | raw     |
-| [TabSeparatedWithNames](/interfaces/formats#tabseparatedwithnames)                                                    | raw    | raw     |
-| [TabSeparatedWithNamesAndTypes](/interfaces/formats#tabseparatedwithnamesandtypes)                                    | raw    | raw     |
-| [TabSeparatedRawWithNames](/interfaces/formats#tabseparatedrawwithnames)                                              | raw    | raw     |
-| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats#tabseparatedrawwithnamesandtypes)                              | raw    | raw     |
-| [Template](/interfaces/formats#format-template)                                                                       | raw    | raw     |
-| [TemplateIgnoreSpaces](/interfaces/formats#templateignorespaces)                                                      | raw    |  -      |
-| [CSV](/interfaces/formats#csv)                                                                                        | raw    | raw     |
-| [CSVWithNames](/interfaces/formats#csvwithnames)                                                                      | raw    | raw     |
-| [CSVWithNamesAndTypes](/interfaces/formats#csvwithnamesandtypes)                                                      | raw    | raw     |
-| [CustomSeparated](/interfaces/formats#format-customseparated)                                                         | raw    | raw     |
-| [CustomSeparatedWithNames](/interfaces/formats#customseparatedwithnames)                                              | raw    | raw     |
-| [CustomSeparatedWithNamesAndTypes](/interfaces/formats#customseparatedwithnamesandtypes)                              | raw    | raw     |
-| [SQLInsert](/interfaces/formats#sqlinsert)                                                                            | -      | raw     |
-| [Values](/interfaces/formats#data-format-values)                                                                      | raw    | raw     |
-| [Vertical](/interfaces/formats#vertical)                                                                              | -      | raw     |
-| [JSON](/interfaces/formats#json)                                                                                      | raw    | raw     |
-| [JSONAsString](/interfaces/formats#jsonasstring)                                                                      | raw    | -       |
-| [JSONAsObject](/interfaces/formats#jsonasobject)                                                                      | raw    | -       |
-| [JSONStrings](/interfaces/formats#jsonstrings)                                                                        | raw    | raw     |
-| [JSONColumns](/interfaces/formats#jsoncolumns)                                                                        | raw    | raw     |
-| [JSONColumnsWithMetadata](/interfaces/formats#jsoncolumnsmonoblock)                                                   | raw    | raw     |
-| [JSONCompact](/interfaces/formats#jsoncompact)                                                                        | raw    | raw     |
-| [JSONCompactStrings](/interfaces/formats#jsoncompactstrings)                                                          | -      | raw     |
-| [JSONCompactColumns](/interfaces/formats#jsoncompactcolumns)                                                          | raw    | raw     |
-| [JSONEachRow](/interfaces/formats#jsoneachrow)                                                                        | raw    | raw     |
-| [PrettyJSONEachRow](/interfaces/formats#prettyjsoneachrow)                                                            | -      | raw     |
-| [JSONEachRowWithProgress](/interfaces/formats#jsoneachrowwithprogress)                                                | -      | raw     |
-| [JSONStringsEachRow](/interfaces/formats#jsonstringseachrow)                                                          | raw    | raw     |
-| [JSONStringsEachRowWithProgress](/interfaces/formats#jsonstringseachrowwithprogress)                                  | -      | raw     |
-| [JSONCompactEachRow](/interfaces/formats#jsoncompacteachrow)                                                          | raw    | raw     |
-| [JSONCompactEachRowWithNames](/interfaces/formats#jsoncompacteachrowwithnames)                                        | raw    | raw     |
-| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats#jsoncompacteachrowwithnamesandtypes)                        | raw    | raw     |
-| [JSONCompactStringsEachRow](/interfaces/formats#jsoncompactstringseachrow)                                            | raw    | raw     |
-| [JSONCompactStringsEachRowWithNames](/interfaces/formats#jsoncompactstringseachrowwithnames)                          | raw    | raw     |
-| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats#jsoncompactstringseachrowwithnamesandtypes)          | raw    | raw     |
-| [JSONObjectEachRow](/interfaces/formats#jsonobjecteachrow)                                                            | raw    | raw     |
-| [BSONEachRow](/interfaces/formats#bsoneachrow)                                                                        | raw    | raw     |
-| [TSKV](/interfaces/formats#tskv)                                                                                      | raw    | raw     |
-| [Pretty](/interfaces/formats#pretty)                                                                                  | -      | raw     |
-| [PrettyNoEscapes](/interfaces/formats#prettynoescapes)                                                                | -      | raw     |
-| [PrettyMonoBlock](/interfaces/formats#prettymonoblock)                                                                | -      | raw     |
-| [PrettyNoEscapesMonoBlock](/interfaces/formats#prettynoescapesmonoblock)                                            | -      | raw     |
-| [PrettyCompact](/interfaces/formats#prettycompact)                                                                    | -      | raw     |
-| [PrettyCompactNoEscapes](/interfaces/formats#prettycompactnoescapes)                                                  | -      | raw     |
-| [PrettyCompactMonoBlock](/interfaces/formats#prettycompactmonoblock)                                                  | -      | raw     |
-| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats#prettycompactnoescapesmonoblock)                                | -      | raw     |
-| [PrettySpace](/interfaces/formats#prettyspace)                                                                        | -      | raw     |
-| [PrettySpaceNoEscapes](/interfaces/formats#prettyspacenoescapes)                                                      | -      | raw     |
-| [PrettySpaceMonoBlock](/interfaces/formats#prettyspacemonoblock)                                                      | -      | raw     |
-| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats#prettyspacenoescapesmonoblock)                                    | -      | raw     |
-| [Prometheus](/interfaces/formats#prometheus)                                                                          | -      | raw     |
-| [Protobuf](/interfaces/formats#protobuf)                                                                              | raw    | raw     |
-| [ProtobufSingle](/interfaces/formats#protobufsingle)                                                                  | raw    | raw     |
-| [ProtobufList](/interfaces/formats#protobuflist)                                                                                                      | raw    | raw     |
-| [Avro](/interfaces/formats#data-format-avro)                                                                          | raw    | raw     |
-| [AvroConfluent](/interfaces/formats#data-format-avro-confluent)                                                       | raw    | -       |
-| [Parquet](/interfaces/formats#data-format-parquet)                                                                    | raw    | raw     |
-| [ParquetMetadata](/interfaces/formats#data-format-parquet-metadata)                                                   | raw    | -       |
-| [Arrow](/interfaces/formats#data-format-arrow)                                                                        | raw    | raw     |
-| [ArrowStream](/interfaces/formats#data-format-arrow-stream)                                                           | raw    | raw     |
-| [ORC](/interfaces/formats#data-format-orc)                                                                            | raw    | raw     |
-| [One](/interfaces/formats#data-format-one)                                                                            | raw    | -       |
-| [Npy](/interfaces/formats#data-format-npy)                                                                            | raw    | raw     |
-| [RowBinary](/interfaces/formats#rowbinary)                                                                            | full   | full    |
-| [RowBinaryWithNames](/interfaces/formats#rowbinarywithnamesandtypes)                                                  | full   | full    |
-| [RowBinaryWithNamesAndTypes](/interfaces/formats#rowbinarywithnamesandtypes)                                          | full   | full    |
-| [RowBinaryWithDefaults](/interfaces/formats#rowbinarywithdefaults)                                                    | full   | -       |
-| [Native](/interfaces/formats#native)                                                                                  | full   | raw     |
-| [Null](/interfaces/formats#null)                                                                                      | -      | raw     |
-| [XML](/interfaces/formats#xml)                                                                                        | -      | raw     |
-| [CapnProto](/interfaces/formats#capnproto)                                                                            | raw    | raw     |
-| [LineAsString](/interfaces/formats#lineasstring)                                                                      | raw    | raw     |
-| [Regexp](/interfaces/formats#data-format-regexp)                                                                      | raw    | -       |
-| [RawBLOB](/interfaces/formats#rawblob)                                                                                | raw    | raw     |
-| [MsgPack](/interfaces/formats#msgpack)                                                                                | raw    | raw     |
-| [MySQLDump](/interfaces/formats#mysqldump)                                                                            | raw    | -       |
-| [DWARF](/interfaces/formats#dwarf)                                                                                    | raw    | -       |
-| [Markdown](/interfaces/formats#markdown)                                                                              | -      | raw     |
-| [Form](/interfaces/formats#form)                                                                                      | raw    | -       |
-## Insert API {#insert-api}
-### insert(String tableName, InputStream data, ClickHouseFormat format) {#insertstring-tablename-inputstream-data-clickhouseformat-format}
+本客户端版本支持：
 
-接受以指定格式编码的 `InputStream` 字节数据。预计 `data` 使用 `format` 编码。
+| 格式                                                                                                           |  输入  |  输出  |
+| ------------------------------------------------------------------------------------------------------------ | :--: | :--: |
+| [TabSeparated](/interfaces/formats/TabSeparated)                                                             |  原始  | 原始数据 |
+| [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                       |  原始  |  原始  |
+| [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                           |  原始  |  原始  |
+| [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                           |  原始  |  原始  |
+| [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     | 原始数据 |  原始  |
+| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |  原始  |  原始  |
+| [Template](/interfaces/formats/Template)                                                                     |  原始  |  原始  |
+| [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  原始  |   *  |
+| [CSV](/interfaces/formats/CSV)                                                                               |  原始  |  原始  |
+| [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  原始  |  原始  |
+| [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |  原始  |  原始  |
+| [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |  原始  |  原始  |
+| [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |  原始  |  原始  |
+| [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                     |  原始  |  原始  |
+| [SQLInsert](/interfaces/formats/SQLInsert)                                                                   |   -  |  原始  |
+| [Values 格式](/interfaces/formats/Values)                                                                      |  原始  |  原始  |
+| [Vertical](/interfaces/formats/Vertical)                                                                     |   *  | 原始数据 |
+| [JSON](/interfaces/formats/JSON)                                                                             |  原始  |  原始  |
+| [JSONAsString](/interfaces/formats/JSONAsString)                                                             |  原始  |   -  |
+| [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |  原始  |   *  |
+| [JSONStrings](/interfaces/formats/JSONStrings)                                                               |  raw |  原始  |
+| [JSONColumns](/interfaces/formats/JSONColumns)                                                               |  raw |  原始  |
+| [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  原始  |  原始  |
+| [JSONCompact](/interfaces/formats/JSONCompact)                                                               |  原始  |  原始  |
+| [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |   -  |  原始  |
+| [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |  原始  |  原始  |
+| [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |  原始  |  原始  |
+| [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |   *  |  原始  |
+| [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |   -  |  原始  |
+| [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |  原始  | 原始数据 |
+| [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |   *  |  原始  |
+| [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |  原始  |  raw |
+| [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |  原始  |  原始  |
+| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               | 原始数据 |  原始  |
+| [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |  原始  | 原始数据 |
+| [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 | 原始数据 |  原始  |
+| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |  原始  |  原始  |
+| [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |  原始  |  原始  |
+| [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |  原始  |  raw |
+| [TSKV](/interfaces/formats/TSKV)                                                                             |  原始  |  原始  |
+| [Pretty 格式](/interfaces/formats/Pretty)                                                                      |   -  |  原始  |
+| [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   *  |  原始  |
+| [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -  |  原始  |
+| [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   *  |  原始  |
+| [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -  |  原始  |
+| [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   *  |  原始  |
+| [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -  |  raw |
+| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   *  |  原始  |
+| [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -  |  原始  |
+| [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   *  |  原始  |
+| [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -  |  原始  |
+| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   *  |  原始  |
+| [Prometheus](/interfaces/formats/Prometheus)                                                                 |   -  |  原始  |
+| [Protobuf](/interfaces/formats/Protobuf)                                                                     |  原始  | 原始数据 |
+| [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |  原始  |  原始  |
+| [ProtobufList](/interfaces/formats/ProtobufList)                                                             | 原始数据 |  原始  |
+| [Avro](/interfaces/formats/Avro)                                                                             |  原始  |  原始  |
+| [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |  原始  |   *  |
+| [Parquet](/interfaces/formats/Parquet)                                                                       |  原始  |  原始  |
+| [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |  raw |   -  |
+| [Arrow](/interfaces/formats/Arrow)                                                                           |  原始  |  原始  |
+| [ArrowStream](/interfaces/formats/ArrowStream)                                                               |  原始  |  原始  |
+| [ORC](/interfaces/formats/ORC)                                                                               | 原始数据 |  原始  |
+| [One](/interfaces/formats/One)                                                                               |  原始  |   *  |
+| [Npy](/interfaces/formats/Npy)                                                                               |  原始  |  原始  |
+| [RowBinary](/interfaces/formats/RowBinary)                                                                   |  完整  |  完整  |
+| [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         |  完整  |  完整  |
+| [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 |  完整  |  完整  |
+| [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           |  完整  |   -  |
+| [Native](/interfaces/formats/Native)                                                                         |  完整  |  原始  |
+| [Null](/interfaces/formats/Null)                                                                             |   *  |  原始  |
+| [XML](/interfaces/formats/XML)                                                                               |   -  |  raw |
+| [CapnProto](/interfaces/formats/CapnProto)                                                                   |  原始  |  原始  |
+| [LineAsString](/interfaces/formats/LineAsString)                                                             | 原始数据 |  原始  |
+| [Regexp](/interfaces/formats/Regexp)                                                                         |  原始  |   *  |
+| [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |  原始  |  原始  |
+| [MsgPack](/interfaces/formats/MsgPack)                                                                       |  原始  | 原始数据 |
+| [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |  原始  |   -  |
+| [DWARF](/interfaces/formats/DWARF)                                                                           |  原始  |   *  |
+| [Markdown](/interfaces/formats/Markdown)                                                                     |   -  | 原始数据 |
+| [表单](/interfaces/formats/Form)                                                                               |  raw |   *  |
 
-**签名**
+## Insert API \{#insert-api\}
+
+### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
+
+以指定格式编码的字节 `InputStream` 形式接收数据。`data` 预期应使用 `format` 进行编码。
+
+**函数签名**
 
 ```java
 CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
@@ -313,17 +326,17 @@ CompletableFuture<InsertResponse> insert(String tableName, InputStream data, Cli
 
 **参数**
 
-`tableName` - 目标表名称。
+`tableName` - 目标表名。
 
-`data` - 编码数据的输入流。
+`data` - 已编码数据的输入流。
 
-`format` - 数据编码的格式。
+`format` - 数据编码所使用的格式。
 
-`settings` - 请求设置。
+`settings` - 请求相关设置。
 
 **返回值**
 
-`InsertResponse` 类型的 Future - 操作结果和额外信息，例如服务器端指标。
+`InsertResponse` 类型的 Future —— 表示操作结果以及服务器端指标等附加信息。
 
 **示例**
 
@@ -332,19 +345,21 @@ try (InputStream dataStream = getDataStream()) {
     try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
             insertSettings).get(3, TimeUnit.SECONDS)) {
 
-        log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+        log.info("插入完成:已写入 {} 行", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
     } catch (Exception e) {
-        log.error("Failed to write JSONEachRow data", e);
+        log.error("写入 JSONEachRow 数据失败", e);
         throw new RuntimeException(e);
     }
 }
 
 ```
-### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
 
-向数据库发送写请求。对象列表被转换为高效格式，然后发送到服务器。列表项的类应使用 `register(Class, TableSchema)` 方法提前注册。
+### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
-**签名**
+向数据库发送写入请求。对象列表会被转换为一种高效的格式，然后发送到服务器。列表元素的类应事先通过 `register(Class, TableSchema)` 方法进行注册。
+
+**方法签名**
+
 ```java
 client.insert(String tableName, List<?> data, InsertSettings settings)
 client.insert(String tableName, List<?> data)
@@ -352,61 +367,190 @@ client.insert(String tableName, List<?> data)
 
 **参数**
 
-`tableName` - 目标表的名称。
+`tableName` - 目标表名称。
 
-`data` - collection DTO (数据传输对象) 对象。
+`data` - DTO（Data Transfer Object，数据传输对象）集合。
 
-`settings` - 请求设置。
+`settings` - 请求参数设置。
 
 **返回值**
 
-`InsertResponse` 类型的 Future - 操作结果和额外信息，例如服务器端指标。
+`InsertResponse` 类型的 Future —— 操作结果以及例如服务端指标在内的附加信息。
 
 **示例**
 
 ```java showLineNumbers
-// Important step (done once) - register class to pre-compile object serializer according to the table schema. 
+// 重要步骤(仅执行一次) - 注册类以根据表结构预编译对象序列化器。 
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 
 List<ArticleViewEvent> events = loadBatch();
 
 try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
-    // handle response, then it will be closed and connection that served request will be released. 
+    // 处理响应,之后响应将被关闭,服务该请求的连接将被释放。 
 }
 ```
-### InsertSettings {#insertsettings}
+
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings) \{#insertstring-tablename-datastreamwriter-writer-clickhouseformat-format-insertsettings-settings\}
+
+**Beta**
+
+此 API 方法允许传入一个 writer 对象，用于将数据直接编码到输出流中。数据将由客户端进行压缩。
+在 `InsertSettings` 中有一个名为 `appCompressedData` 的配置选项，可用于关闭客户端压缩，由应用程序自行发送压缩后的数据流。
+文档中的示例展示了此 API 设计时所针对的主要使用场景。
+
+`com.clickhouse.client.api.DataStreamWriter` 是一个函数式接口，包含一个方法 `onOutput`，当输出流准备好写入数据时由客户端调用。该接口还有
+另一个具有默认实现的方法 `onRetry`。当重试逻辑被触发时会调用此方法，主要用于在适用时重置数据源。
+
+**方法签名**
+
+```java
+CompletableFuture<InsertResponse> insert(String tableName,              // 目标表名称
+                                         DataStreamWriter writer,       // 数据写入器实例
+                                         ClickHouseFormat format,       // 写入器编码数据的格式
+                                         InsertSettings settings)       // 操作设置
+```
+
+**参数**
+
+`tableName` - 目标表名称。
+
+`writer` - 数据写入器实例。
+
+`format` - 写入器对数据进行编码所使用的数据格式。
+
+`settings` - 请求设置。
+
+**返回值**
+
+`InsertResponse` 类型的 Future——包含操作结果以及服务器端指标等附加信息。
+
+**示例**
+
+使用 `JSONEachRow` 格式，将一组编码为字符串值的 JSON 对象写入：
+
+```java showLineNumbers
+
+final int EXECUTE_CMD_TIMEOUT = 10; // 秒
+final String tableName = "events";
+final String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] rows = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // 写入原始字节数据 
+    for (String row : rows) {
+        out.write(row.getBytes());
+    }
+
+}, ClickHouseFormat.JSONEachRow, new InsertSettings()).get()) {
+
+    System.out.println("写入行数: " + response.getWrittenRows());
+}
+
+```
+
+写入已压缩数据：
+
+```java showLineNumbers
+String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
+String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] data = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+// 此步骤仅用于演示。实际应用中数据应已经过压缩。 
+byte[][] compressedData = new byte[data.length][];
+for (int i = 0 ; i < data.length; i++) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gz = new GZIPOutputStream(baos);
+    gz.write(data[i].getBytes(StandardCharsets.UTF_8));
+    gz.finish();
+    compressedData[i] = baos.toByteArray();
+}
+
+InsertSettings insertSettings = new InsertSettings()
+        .appCompressedData(true, "gzip"); // 定义压缩算法（通过 HTTP 头发送）
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // 写入数据 
+    for (byte[] row : compressedData) {
+        out.write(row);
+    }
+}, ClickHouseFormat.JSONEachRow, insertSettings).get()) {
+    System.out.println("已写入行数：" + response.getWrittenRows());
+}    
+
+```
+
+### InsertSettings \{#insertsettings\}
 
 插入操作的配置选项。
 
 **配置方法**
 
-| 方法                                       | 描述                                                                                                                         |
-|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `setQueryId(String queryId)`               | 设置将分配给操作的查询 ID。默认值：`null`。                                                                                  |
-| `setDeduplicationToken(String token)`      | 设置去重令牌。此令牌将发送到服务器，可用于识别查询。默认值：`null`。                                                          |
-| `setInputStreamCopyBufferSize(int size)`   | 复制缓冲区大小。该缓冲区在写操作期间用于将数据从用户提供的输入流复制到输出流。默认值：`8196`。                              |
-| `serverSetting(String name, String value)` | 为操作设置单个服务器设置。                                                                                                     |
-| `serverSetting(String name, Collection values)` | 为操作设置具有多个值的单个服务器设置。集合的项目应为 `String` 值。                                                       |
-| `setDBRoles(Collection dbRoles)`           | 在执行操作之前设置数据库角色。集合的项目应为 `String` 值。                                                                   |
-| `setOption(String option, Object value)`   | 以原始格式设置配置选项。这不是服务器设置。                                                                                   |
-### InsertResponse {#insertresponse}
+| 方法                                       | 说明                                                                                                                |
+|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`               | 设置将分配给此操作的查询 ID。默认值：`null`。                                                                       |
+| `setDeduplicationToken(String token)`      | 设置去重令牌。该令牌将发送到服务器，可用于标识查询。默认值：`null`。                                               |
+| `setInputStreamCopyBufferSize(int size)`   | 复制缓冲区大小。该缓冲区在写入操作期间用于将用户提供的输入流中的数据复制到输出流。默认值：`8196`。                |
+| `serverSetting(String name, String value)` | 为某个操作设置单个服务器设置。                                                                                      |
+| `serverSetting(String name, Collection values)` | 为某个操作设置具有多个值的服务器设置。集合中的元素应为 `String` 类型的值。                                    |
+| `setDBRoles(Collection dbRoles)`           | 设置在执行操作之前要生效的数据库角色。集合中的元素应为 `String` 类型的值。                                         |
+| `setOption(String option, Object value)`   | 以原始形式设置配置选项。这不是服务器设置。                                                                          |
 
-包含插入操作结果的响应对象。仅当客户端从服务器获得响应时才可用。
+### InsertResponse \{#insertresponse\}
+
+表示插入操作结果的响应对象。仅当客户端从服务器收到响应时可用。
 
 :::note
-该对象应尽快关闭，以释放连接，因为在读取了先前响应的所有数据之前，连接无法重用。
+应尽快关闭此对象以释放连接，因为在前一个响应的所有数据完全读取完毕之前，该连接无法被复用。
 :::
 
-| 方法                        | 描述                                                                                       |
-|-----------------------------|--------------------------------------------------------------------------------------------|
-| `OperationMetrics getMetrics()` | 返回操作指标的对象。                                                                   |
-| `String getQueryId()`       | 返回为操作分配的查询 ID（通过操作设置或服务器分配）。                                     |
-## Query API {#query-api}
-### query(String sqlQuery) {#querystring-sqlquery}
+| Method                      | Description                                                                                          |
+|-----------------------------|------------------------------------------------------------------------------------------------------|
+| `OperationMetrics getMetrics()` | 返回包含该操作指标的对象。                                                           |
+| `String getQueryId()`       | 返回由应用程序（通过操作设置）或服务器为该操作分配的查询 ID。 |
 
-按原样发送 `sqlQuery`。响应格式由查询设置确定。 `QueryResponse` 将持有一个对响应流的引用，应该由读取器消费以支持格式。
+## 查询 API \{#query-api\}
 
-**签名**
+### query(String sqlQuery) \{#querystring-sqlquery\}
+
+按原样发送 `sqlQuery`。响应格式由查询设置决定。`QueryResponse` 将持有对响应流的引用，该响应流应由支持相应格式的读取器来消费。
+
+**函数签名**
 
 ```java
 CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
@@ -415,112 +559,116 @@ CompletableFuture<QueryResponse> query(String sqlQuery)
 
 **参数**
 
-`sqlQuery` - 单个 SQL 语句。查询按原样发送到服务器。
+`sqlQuery` - 单条 SQL 语句。查询会按原样发送到服务器。
 
-`settings` - 请求设置。
+`settings` - 请求相关的设置。
 
 **返回值**
 
-`QueryResponse` 类型的 Future - 结果数据集和额外信息，例如服务器端指标。响应对象在消费数据集后应关闭。
+类型为 `QueryResponse` 的 Future —— 结果数据集以及诸如服务器端指标等附加信息。在消费完数据集后应关闭 Response 对象。
 
 **示例**
 
 ```java
 final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
 
-// Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+// 默认格式为 RowBinaryWithNamesAndTypesFormatReader,因此读取器包含所有列信息
 try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 
-    // Create a reader to access the data in a convenient way
+    // 创建读取器以便访问数据
     ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
 
     while (reader.hasNext()) {
-        reader.next(); // Read the next record from stream and parse it
+        reader.next(); // 从流中读取并解析下一条记录
 
-        // get values
+        // 获取值
         double id = reader.getDouble("id");
         String title = reader.getString("title");
         String url = reader.getString("url");
 
-        // collecting data 
+        // 收集数据 
     }
 } catch (Exception e) {
-    log.error("Failed to read data", e);
+    log.error("读取数据失败", e);
 }
 
-// put business logic outside of the reading block to release http connection asap.  
+// 将业务逻辑置于读取块之外以尽快释放 HTTP 连接。  
 ```
-### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
 
-按原样发送 `sqlQuery`。此外将发送查询参数，以便服务器可以编译 SQL 表达式。
+### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
 
-**签名**
+按原样发送 `sqlQuery`，并同时发送查询参数，使服务器能够编译该 SQL 表达式。
+
+**方法签名**
+
 ```java
 CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
 ```
 
 **参数**
 
-`sqlQuery` - 带有占位符 `{}` 的 SQL 表达式。
+`sqlQuery` - 带有 `{}` 占位符的 SQL 表达式。
 
-`queryParams` - 完成服务器上 SQL 表达式的变量映射。
+`queryParams` - 用于在服务器端补全该 SQL 表达式的变量映射。
 
 `settings` - 请求设置。
 
 **返回值**
 
-`QueryResponse` 类型的 Future - 结果数据集和额外信息，例如服务器端指标。响应对象在消费数据集后应关闭。
+`QueryResponse` 类型的 Future——包含结果数据集以及诸如服务器端指标等附加信息。使用完数据集后应关闭 Response 对象。
 
 **示例**
 
 ```java showLineNumbers
 
-// define parameters. They will be sent to the server along with the request.   
+// 定义参数。这些参数将随请求一起发送到服务器。   
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
 try (QueryResponse response =
         client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
 
-    // Create a reader to access the data in a convenient way
+    // 创建读取器以便捷访问数据
     ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
 
     while (reader.hasNext()) {
-        reader.next(); // Read the next record from stream and parse it
+        reader.next(); // 从流中读取并解析下一条记录
 
-        // reading data 
+        // 读取数据 
     }
 
 } catch (Exception e) {
-    log.error("Failed to read data", e);
+    log.error("读取数据失败", e);
 }
 
 ```
-### queryAll(String sqlQuery) {#queryallstring-sqlquery}
 
-以 `RowBinaryWithNamesAndTypes` 格式查询数据。将结果作为集合返回。读取性能与读取器相同，但需要更多内存来保存整个数据集。
+### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
+
+以 `RowBinaryWithNamesAndTypes` 格式查询数据。返回结果为一个集合。读取性能与使用 reader 相同，但需要更多内存来存储整个数据集。
 
 **签名**
+
 ```java
 List<GenericRecord> queryAll(String sqlQuery)
 ```
 
 **参数**
 
-`sqlQuery` - 从服务器查询数据的 SQL 表达式。
+`sqlQuery` - 用于从服务器查询数据的 SQL 表达式。
 
 **返回值**
 
-由 `GenericRecord` 对象列表表示的完整数据集，以行样式访问结果数据。
+完整数据集，以 `GenericRecord` 对象列表的形式表示，这些对象以逐行访问的方式提供对结果数据的访问。
 
 **示例**
 
 ```java showLineNumbers
 try {
-    log.info("Reading whole table and process record by record");
+    log.info("读取整表并逐条处理记录");
     final String sql = "select * from " + TABLE_NAME + " where title <> ''";
 
-    // Read whole result set and process it record by record
+    // 读取完整结果集并逐条处理
     client.queryAll(sql).forEach(row -> {
         double id = row.getDouble("id");
         String title = row.getString("title");
@@ -529,52 +677,57 @@ try {
         log.info("id: {}, title: {}, url: {}", id, title, url);
     });
 } catch (Exception e) {
-    log.error("Failed to read data", e);
+    log.error("数据读取失败", e);
 }
 ```
-### QuerySettings {#querysettings}
+
+### QuerySettings \{#querysettings\}
 
 查询操作的配置选项。
 
 **配置方法**
 
-| 方法                                       | 描述                                                                                                                         |
-|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `setQueryId(String queryId)`               | 设置将分配给操作的查询 ID。                                                                                                  |
-| `setFormat(ClickHouseFormat format)`       | 设置响应格式。有关完整列表，请参见 `RowBinaryWithNamesAndTypes`。                                                             |
-| `setMaxExecutionTime(Integer maxExecutionTime)` | 设置服务器上的操作执行时间。将不影响读取超时。                                                                              |
-| `waitEndOfQuery(Boolean waitEndOfQuery)`   | 请求服务器在发送响应之前等待查询结束。                                                                                        |
-| `setUseServerTimeZone(Boolean useServerTimeZone)` | 将使用服务器时区（见客户端配置）来解析操作结果中的日期/时间类型。默认 `false`。                                          |
-| `setUseTimeZone(String timeZone)`          | 请求服务器使用 `timeZone` 进行时间转换。有关内容，请参见 [session_timezone](/operations/settings/settings#session_timezone)。   |
-| `serverSetting(String name, String value)`  | 为操作设置单个服务器设置。                                                                                                     |
-| `serverSetting(String name, Collection values)` | 为操作设置具有多个值的单个服务器设置。集合的项目应为 `String` 值。                                                         |
-| `setDBRoles(Collection dbRoles)`           | 在执行操作之前设置数据库角色。集合的项目应为 `String` 值。                                                                   |
-| `setOption(String option, Object value)`   | 以原始格式设置配置选项。这不是服务器设置。                                                                                   |
-### QueryResponse {#queryresponse}
+| Method                                       | Description                                                                                                                |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`                 | 设置将分配给该操作的查询 ID。                                                                                             |
+| `setFormat(ClickHouseFormat format)`         | 设置响应格式。完整列表参见 `RowBinaryWithNamesAndTypes`。                                                                 |
+| `setMaxExecutionTime(Integer maxExecutionTime)` | 设置操作在服务器上的最长执行时间，不会影响读取超时时间。                                                                    |
+| `waitEndOfQuery(Boolean waitEndOfQuery)`     | 请求服务器在发送响应前等待查询结束。                                                                                       |
+| `setUseServerTimeZone(Boolean useServerTimeZone)` | 使用服务器时区（参见客户端配置）解析操作结果中的日期/时间类型。默认值为 `false`。                                           |
+| `setUseTimeZone(String timeZone)`            | 请求服务器在时间转换时使用 `timeZone`。参见 [session&#95;timezone](/operations/settings/settings#session_timezone)。          |
+| `serverSetting(String name, String value)`   | 为某个操作设置单个服务器设置。                                                                                            |
+| `serverSetting(String name, Collection values)` | 为某个操作设置带有多个值的服务器设置。集合中的条目应为 `String` 值。                                                       |
+| `setDBRoles(Collection dbRoles)`             | 设置在执行操作前要应用的 DB 角色。集合中的条目应为 `String` 值。                                                           |
+| `setOption(String option, Object value)`     | 以原始格式设置一个配置选项。这不是服务器设置。                                                                            |
 
-包含查询执行结果的响应对象。仅当客户端从服务器获得响应时才可用。
+### QueryResponse \{#queryresponse\}
+
+用于承载查询执行结果的响应对象。仅当客户端收到服务器响应时才可用。
 
 :::note
-该对象应尽快关闭，以释放连接，因为在读取了先前响应的所有数据之前，连接无法重用。
+应尽快关闭此对象以释放连接，因为在前一个响应的全部数据被完全读取之前，该连接无法复用。
 :::
 
-| 方法                            | 描述                                                                                       |
-|---------------------------------|--------------------------------------------------------------------------------------------|
-| `ClickHouseFormat getFormat()`  | 返回响应数据编码的格式。                                                                    |
-| `InputStream getInputStream()`  | 返回以指定格式的未压缩字节数据流。                                                        |
-| `OperationMetrics getMetrics()` | 返回操作指标的对象。                                                                       |
-| `String getQueryId()`           | 返回为操作分配的查询 ID（通过操作设置或服务器分配）。                                     |
-| `TimeZone getTimeZone()`        | 返回应在响应中处理 Date/DateTime 类型时使用的时区。                                        |
-### Examples {#examples}
+| Method                              | Description                                                                                          |
+|-------------------------------------|------------------------------------------------------------------------------------------------------|
+| `ClickHouseFormat getFormat()`      | 返回响应中数据所采用的格式。                                                                          |
+| `InputStream getInputStream()`      | 返回指定格式的未压缩数据字节流。                                                                      |
+| `OperationMetrics getMetrics()`     | 返回包含操作指标的对象。                                                                              |
+| `String getQueryId()`               | 返回为该操作分配的查询 ID（通过操作设置或由服务器分配）。                                            |
+| `TimeZone getTimeZone()`            | 返回在处理响应中的 Date/DateTime 类型时应使用的时区。                                                 |
 
-- 示例代码可在 [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) 中找到
-- 参考 Spring 服务 [实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
-## Common API {#common-api}
-### getTableSchema(String table) {#gettableschemastring-table}
+### 示例 \{#examples\}
 
-获取 `table` 的表架构。
+* 示例代码见 [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
+* 请参考 Spring Service 的 [实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
-**签名**
+## 通用 API \{#common-api\}
+
+### getTableSchema(String table) \{#gettableschemastring-table\}
+
+获取指定 `table` 的表结构。
+
+**方法签名**
 
 ```java
 TableSchema getTableSchema(String table)
@@ -583,16 +736,17 @@ TableSchema getTableSchema(String table, String database)
 
 **参数**
 
-`table` - 应获取其架构数据的表名。
+`table` - 需要获取其表结构数据的表名。
 
-`database` - 定义目标表的数据库。
+`database` - 目标表所在的数据库。
 
 **返回值**
 
-返回一个 `TableSchema` 对象，包含表列的列表。
-### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
+返回一个 `TableSchema` 对象，包含该表的列列表。
 
-从 SQL 语句中获取架构。
+### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
+
+从 SQL 语句中获取表结构。
 
 **签名**
 
@@ -602,18 +756,20 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 **参数**
 
-`sql` - 需要返回其架构的 "SELECT" SQL 语句。
+`sql` - 需要返回其模式（schema）的 `SELECT` SQL 语句。
 
 **返回值**
 
-返回一个 `TableSchema` 对象，其列与 `sql` 表达式匹配。
-### TableSchema {#tableschema}
-### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
+返回一个 `TableSchema` 对象，其中的列与该 `sql` 语句中的列相对应。
 
-编译序列化和反序列化层，以使 Java 类能够与 `schema` 一起读写数据。该方法将为配对的 getter/setter 和相应的列创建序列化器和反序列化器。
-列匹配通过从方法名称中提取其名称来查找。例如，`getFirstName` 将对应于列 `first_name` 或 `firstname`。
+### TableSchema \{#tableschema\}
 
-**签名**
+### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
+
+为指定的 Java `Class` 和 `schema` 编译序列化/反序列化层，以用于写入和读取数据。该方法会基于 getter/setter 与对应列的配对创建 serializer 和 deserializer。
+列的匹配是通过从方法名中提取列名来完成的。例如，`getFirstName` 会对应列 `first_name` 或 `firstname`。
+
+**方法签名**
 
 ```java
 void register(Class<?> clazz, TableSchema schema)
@@ -623,17 +779,18 @@ void register(Class<?> clazz, TableSchema schema)
 
 `clazz` - 表示用于读写数据的 POJO 的类。
 
-`schema` - 用于与 POJO 属性匹配的数据架构。
+`schema` - 用于与 POJO 属性进行匹配的数据模式。
 
 **示例**
 
-```java showLineNumbers
+```java showLineNumbers 
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
-## Usage Examples {#usage-examples}
 
-完整示例代码存储在 `example` [文件夹](https://github.com/ClickHouse/clickhouse-java/tree/main/examples) 中：
+## 使用示例 \{#usage-examples\}
 
-- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例集。
-- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 在 Spring Boot 应用程序中使用客户的示例。
-- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 在 Ktor (Kotlin) 应用程序中使用客户的示例。
+完整的示例代码存储在仓库的 `examples` [文件夹](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)中：
+
+* [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例集。
+* [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 演示如何在 Spring Boot 应用中使用客户端的示例。
+* [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 演示如何在 Ktor（Kotlin）应用中使用客户端的示例。

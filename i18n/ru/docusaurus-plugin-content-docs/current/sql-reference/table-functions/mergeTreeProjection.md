@@ -1,32 +1,43 @@
 ---
-slug: '/sql-reference/table-functions/mergeTreeProjection'
-sidebar_label: mergeTreeProjection
+description: 'Представляет содержимое определённой проекции в таблицах MergeTree.
+  Может использоваться для интроспекции.'
+sidebar_label: 'mergeTreeProjection'
 sidebar_position: 77
-description: 'Представляет содержание некоторой проекции в таблицах MergeTree. Она'
-title: mergeTreeProjection
-doc_type: reference
+slug: /sql-reference/table-functions/mergeTreeProjection
+title: 'mergeTreeProjection'
+doc_type: 'reference'
 ---
-# mergeTreeProjection Табличная Функция
 
-Представляет содержимое некоторой проекции в таблицах MergeTree. Она может быть использована для инспекции.
+
+
+# Табличная функция mergeTreeProjection {#mergetreeprojection-table-function}
+
+Представляет содержимое некоторой проекции в таблицах MergeTree. Может использоваться для интроспекции.
+
+
 
 ## Синтаксис {#syntax}
 
 ```sql
-mergeTreeProjection(database, table, projection)
+mergeTreeProjection(база_данных, таблица, проекция)
 ```
+
 
 ## Аргументы {#arguments}
 
-| Аргумент     | Описание                                    |
-|--------------|---------------------------------------------|
-| `database`   | Имя базы данных, из которой нужно читать проекцию. |
-| `table`      | Имя таблицы, из которой нужно читать проекцию.    |
-| `projection` | Проекция, из которой нужно читать.         |
+| Аргумент     | Описание                                         |
+|--------------|--------------------------------------------------|
+| `database`   | Имя базы данных, из которой считывается проекция. |
+| `table`      | Имя таблицы, из которой считывается проекция.     |
+| `projection` | Проекция, из которой выполняется чтение.          |
+
+
 
 ## Возвращаемое значение {#returned_value}
 
-Объект таблицы с колонками, предоставляемыми данной проекцией.
+Объект таблицы с набором столбцов, определённых указанной проекцией.
+
+
 
 ## Пример использования {#usage-example}
 

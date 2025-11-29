@@ -1,67 +1,81 @@
 ---
-'sidebar_label': 'MongoDB ClickPipeのライフサイクル'
-'description': 'さまざまなパイプのステータスとその意味'
-'slug': '/integrations/clickpipes/mongodb/lifecycle'
-'title': 'MongoDB ClickPipeのライフサイクル'
-'doc_type': 'guide'
+sidebar_label: 'MongoDB ClickPipe のライフサイクル'
+description: '各種パイプステータスとその意味'
+slug: /integrations/clickpipes/mongodb/lifecycle
+title: 'MongoDB ClickPipe のライフサイクル'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
 
-# MongoDB ClickPipeのライフサイクル {#lifecycle}
 
-これはMongoDB ClickPipeのさまざまなフェーズ、可能なステータス、およびそれらの意味についての文書です。
+# MongoDB ClickPipe のライフサイクル {#lifecycle}
+
+このドキュメントでは、MongoDB ClickPipe のさまざまなフェーズと、それぞれが取りうるステータスおよびその意味について説明します。
+
+
 
 ## プロビジョニング {#provisioning}
 
-Create ClickPipeボタンをクリックすると、ClickPipeは`Provisioning`状態で作成されます。プロビジョニングプロセスは、サービスのためにClickPipesを実行するための基盤となるインフラを立ち上げ、パイプ用の初期メタデータを登録するプロセスです。サービス内のClickPipesのコンピュートは共有されるため、あなたの2つ目のClickPipeは最初のものよりもはるかに早く作成されます。すでにインフラが整っているからです。
+Create ClickPipe ボタンをクリックすると、ClickPipe は `Provisioning` 状態で作成されます。プロビジョニング処理では、そのサービス向けに ClickPipes を実行するための基盤となるインフラストラクチャを立ち上げるとともに、パイプ用の初期メタデータをいくつか登録します。サービス内で利用される ClickPipes 用のコンピュートリソースは共有されるため、2 本目以降の ClickPipe は、インフラストラクチャがすでに用意されている分、1 本目よりもはるかに短時間で作成されます。
+
+
 
 ## セットアップ {#setup}
 
-パイプがプロビジョニングされると、`Setup`状態に入ります。この状態では、宛先のClickHouseテーブルを作成します。
+パイプのプロビジョニングが完了すると、`Setup` 状態に入ります。この状態で、宛先の ClickHouse テーブルを作成します。
 
-## スナップショット {#snapshot}
 
-セットアップが完了すると、`Snapshot`状態に入ります（CDC専用のパイプでない限り、`Running`に遷移します）。`Snapshot`、`Initial Snapshot`および`Initial Load`（より一般的）は入れ替えて使うことができます。この状態では、ソースのMongoDBコレクションのスナップショットを取得し、それをClickHouseにロードします。oplogの保持設定は初期ロード時間を考慮する必要があります。また、再同期がトリガーされるか、既存のパイプに新しいテーブルが追加されたときにもパイプは`Snapshot`状態に入ります。
+
+## Snapshot {#snapshot}
+
+セットアップが完了すると、CDC のみのパイプでない限り `Snapshot` 状態に移行します（CDC のみのパイプは `Running` に遷移します）。`Snapshot`、`Initial Snapshot`、`Initial Load`（より一般的な呼称）の 3 つの用語は、同義として相互に入れ替えて使われます。この状態では、ソースである MongoDB コレクションのスナップショットを取得し、それらを ClickHouse にロードします。oplog の保持期間設定は、この初回ロードに要する時間を見込んで設定する必要があります。パイプは、再同期が実行されたとき、または既存のパイプに新しいテーブルが追加されたときにも `Snapshot` 状態に入ります。
+
+
 
 ## 実行中 {#running}
 
-初期ロードが完了すると、パイプは`Running`状態に入ります（スナップショット専用のパイプでない限り、`Completed`に遷移します）。ここでは、パイプが`Change-Data Capture`を開始します。この状態では、ソースのMongoDBクラスターからClickHouseへの変更のストリーミングを開始します。CDCの制御に関する情報は、[CDCの制御に関するドキュメント](./sync_control)を参照してください。
+初期ロードが完了すると、パイプは `Running` 状態に入ります（スナップショット専用のパイプの場合は `Completed` に遷移します）。この段階からパイプは `Change-Data Capture` を開始します。この状態では、ソースの MongoDB クラスターから ClickHouse への変更のストリーミングを開始します。CDC（変更データキャプチャ）の制御方法については、[CDC の制御に関するドキュメント](./sync_control)を参照してください。
+
+
 
 ## 一時停止 {#paused}
 
-パイプが`Running`状態のときは、一時停止することができます。これによりCDCプロセスが停止し、パイプは`Paused`状態に入ります。この状態では、ソースのMongoDBから新しいデータは取得されませんが、ClickHouse内の既存のデータはそのまま維持されます。この状態からパイプを再開することができます。
+`Running` 状態になった ClickPipe は一時停止できます。これにより CDC（変更データキャプチャ）プロセスが停止し、ClickPipe は `Paused` 状態になります。この状態では、ソースの MongoDB から新しいデータは取得されませんが、ClickHouse の既存データは保持されたままです。この状態から ClickPipe を再開することができます。
 
-## 一時停止中 {#pausing}
 
-:::note
-この状態は近日公開予定です。私たちの[OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi)を使用している場合は、リリース時に統合が引き続き機能するように、今すぐサポートを追加することを検討してください。
-:::
-一時停止ボタンをクリックすると、パイプは`Pausing`状態に入ります。これは、CDCプロセスを停止している間の一時的な状態です。CDCプロセスが完全に停止すると、パイプは`Paused`状態に入ります。
 
-## 修正中 {#modifying}
+## 一時停止 {#pausing}
 
 :::note
-この状態は近日公開予定です。私たちの[OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi)を使用している場合は、リリース時に統合が引き続き機能するように、今すぐサポートを追加することを検討してください。
+この状態は近日中に利用可能になる予定です。現在 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) を使用している場合は、リリース時も連携が継続して動作するよう、今のうちにこの状態へのサポートを追加することを検討してください。
 :::
-現在、この状態はパイプがテーブルを削除している最中であることを示します。
+Pause ボタンをクリックすると、パイプは `Pausing` 状態になります。これは一時的な状態であり、CDC プロセスの停止処理を行っている最中です。CDC プロセスが完全に停止すると、パイプは `Paused` 状態になります。
 
-## 再同期 {#resync}
 
+
+## 変更中 {#modifying}
 :::note
-この状態は近日公開予定です。私たちの[OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi)を使用している場合は、リリース時に統合が引き続き機能するように、今すぐサポートを追加することを検討してください。
+この状態は近日中に追加される予定です。現在ご利用中の [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) では、リリース後も連携が継続して動作するよう、この状態のサポートを今のうちに追加することを検討してください。
 :::
-この状態はパイプが再同期のフェーズにあり、_resyncテーブルと元のテーブルの原子スワップを実行していることを示します。再同期に関する詳細情報は、[再同期ドキュメント](./resync)をご覧ください。
+現在は、この状態はパイプがテーブルを削除している途中であることを示します。
+
+
+
+## Resync {#resync}
+:::note
+この状態はまもなく追加される予定です。現在 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) を利用している場合は、リリース時に連携が継続して動作するよう、今のうちにこの状態への対応を追加することを検討してください。
+:::
+この状態は、パイプが resync のフェーズにあり、_resync テーブルと元のテーブルのアトミックスワップを実行していることを示します。resync の詳細については、[resync に関するドキュメント](./resync) を参照してください。
+
+
 
 ## 完了 {#completed}
 
-この状態はスナップショット専用のパイプに適用され、スナップショットが完了し、これ以上の作業がないことを示します。
+この状態はスナップショット専用パイプに適用され、スナップショットの取得が完了しており、これ以上実行する処理がないことを示します。
+
+
 
 ## 失敗 {#failed}
 
-パイプに回復不能なエラーが発生した場合、`Failed`状態に入ります。この状態から回復するには、サポートに連絡するか、パイプを[再同期](./resync)してください。
-
-## 劣化 {#degraded}
-
-:::note
-この状態は近日公開予定です。私たちの[OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi)を使用している場合は、リリース時に統合が引き続き機能するように、今すぐサポートを追加することを検討してください。
-:::
+パイプに回復不能なエラーが発生すると、`Failed` 状態になります。この状態から復旧するには、サポートに連絡するか、パイプを[再同期](./resync)してください。

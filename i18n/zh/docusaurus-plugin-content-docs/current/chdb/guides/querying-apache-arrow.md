@@ -1,50 +1,48 @@
 ---
-'title': '如何使用 chDB 查询 Apache Arrow'
-'sidebar_label': '查询 Apache Arrow'
-'slug': '/chdb/guides/apache-arrow'
-'description': '在本指南中，我们将学习如何使用 chDB 查询 Apache Arrow 表'
-'keywords':
-- 'chdb'
-- 'Apache Arrow'
-'doc_type': 'guide'
+title: '如何使用 chDB 查询 Apache Arrow'
+sidebar_label: '查询 Apache Arrow'
+slug: /chdb/guides/apache-arrow
+description: '本指南将介绍如何使用 chDB 查询 Apache Arrow 表'
+keywords: ['chdb', 'Apache Arrow']
+doc_type: 'guide'
 ---
 
-[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据社区中获得了广泛的关注。  
-在本指南中，我们将学习如何使用 `Python` 表函数查询 Apache Arrow。
+[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据领域中已获得广泛认可。
+在本指南中，我们将学习如何使用 `python` 表函数来查询 Apache Arrow。
 
 ## 设置 {#setup}
 
-首先，我们创建一个虚拟环境：
+我们先来创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。  
-确保您有 2.0.2 或更高版本：
+现在我们来安装 chDB。
+请确保已安装的版本为 2.0.2 或更高：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-接下来，我们将安装 PyArrow、pandas 和 ipython：
+现在我们来安装 PyArrow、pandas 和 IPython：
 
 ```bash
 pip install pyarrow pandas ipython
 ```
 
-我们将使用 `ipython` 在指南的其余部分中运行命令，您可以通过运行以下命令启动它：
+接下来我们将使用 `ipython` 来运行本指南其余部分中的命令。你可以通过运行以下命令来启动它：
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您喜欢的笔记本中使用这些代码。
+你也可以在 Python 脚本或常用的 Notebook 环境中使用这段代码。
 
 ## 从文件创建 Apache Arrow 表 {#creating-an-apache-arrow-table-from-a-file}
 
-首先，让我们下载 [Ookla 数据集](https://github.com/teamookla/ookla-open-data) 的一个 Parquet 文件，使用 [AWS CLI 工具](https://aws.amazon.com/cli/)：
+让我们首先使用 [AWS CLI 工具](https://aws.amazon.com/cli/) 下载 [Ookla 数据集](https://github.com/teamookla/ookla-open-data) 中的一个 Parquet 文件：
 
 ```bash
 aws s3 cp \
@@ -52,8 +50,8 @@ aws s3 cp \
   s3://ookla-open-data/parquet/performance/type=mobile/year=2023/quarter=2/2023-04-01_performance_mobile_tiles.parquet .
 ```
 
-:::note  
-如果您想下载更多文件，请使用 `aws s3 ls` 获取所有文件的列表，然后更新上述命令。  
+:::note
+如果需要下载更多文件，可以使用 `aws s3 ls` 列出所有文件，然后相应地更新上述命令。
 :::
 
 接下来，我们将从 `pyarrow` 包中导入 Parquet 模块：
@@ -62,7 +60,7 @@ aws s3 cp \
 import pyarrow.parquet as pq
 ```
 
-然后我们可以将 Parquet 文件读取到 Apache Arrow 表中：
+接下来，我们可以将 Parquet 文件读取到 Apache Arrow 表中：
 
 ```python
 arrow_table = pq.read_table("./2023-04-01_performance_mobile_tiles.parquet")
@@ -88,7 +86,7 @@ tests: int64
 devices: int64
 ```
 
-我们可以通过调用 `shape` 属性来获取行和列的计数：
+我们可以通过调用 `shape` 属性来获取行数和列数：
 
 ```python
 arrow_table.shape
@@ -100,14 +98,14 @@ arrow_table.shape
 
 ## 查询 Apache Arrow {#querying-apache-arrow}
 
-现在让我们从 chDB 查询 Arrow 表。  
+现在让我们从 chDB 查询该 Arrow 表。
 首先，导入 chDB：
 
 ```python
 import chdb
 ```
 
-然后我们可以描述表：
+接下来我们可以查看该表的结构：
 
 ```python
 chdb.query("""
@@ -142,8 +140,8 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-现在，让我们做一些更有趣的事情。  
-以下查询排除了 `quadkey` 和 `tile.*` 列，然后计算所有剩余列的平均值和最大值：
+现在，我们来做一件更有趣的事情。
+下面的查询会排除 `quadkey` 和 `tile.*` 列，然后对其余所有列计算平均值和最大值：
 
 ```python
 chdb.query("""

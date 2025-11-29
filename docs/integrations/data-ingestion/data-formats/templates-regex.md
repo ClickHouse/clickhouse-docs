@@ -5,6 +5,7 @@ slug: /integrations/data-formats/templates-regexp
 title: 'Importing and exporting custom text data using Templates and Regex in ClickHouse'
 description: 'Page describing how to import and export custom text using templates and regex in ClickHouse'
 doc_type: 'guide'
+keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
 # Importing and exporting custom text data using Templates and Regex in ClickHouse

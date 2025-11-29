@@ -1,19 +1,21 @@
 ---
-slug: '/operations/cluster-discovery'
-sidebar_label: 'Обнаружение кластера'
-description: 'Документация для cluster discovery в ClickHouse'
-title: 'Обнаружение кластера'
-doc_type: guide
+description: 'Руководство по обнаружению кластеров в ClickHouse'
+sidebar_label: 'Обнаружение кластеров'
+slug: /operations/cluster-discovery
+title: 'Обнаружение кластеров'
+doc_type: 'guide'
 ---
-# Обнаружение кластера
+
+# Обнаружение кластера {#cluster-discovery}
 
 ## Обзор {#overview}
 
-Функция обнаружения кластера в ClickHouse упрощает конфигурацию кластера, позволяя узлам автоматически обнаруживать и регистрировать себя без необходимости явного определения в файлах конфигурации. Это особенно полезно в случаях, когда ручное определение каждого узла становится громоздким.
+Функция Cluster Discovery в ClickHouse упрощает конфигурацию кластера, позволяя узлам автоматически обнаруживать и регистрировать себя без необходимости явного задания в конфигурационных файлах. Это особенно полезно в случаях, когда ручное описание каждого узла становится затруднительным.
 
 :::note
 
-Обнаружение кластера является экспериментальной функцией и может быть изменено или удалено в будущих версиях. Чтобы включить его, добавьте настройку `allow_experimental_cluster_discovery` в ваш файл конфигурации:
+Cluster Discovery — экспериментальная функция, и в будущих версиях она может быть изменена или удалена.
+Чтобы включить её, добавьте настройку `allow_experimental_cluster_discovery` в конфигурационный файл:
 
 ```xml
 <clickhouse>
@@ -22,13 +24,14 @@ doc_type: guide
     <!-- ... -->
 </clickhouse>
 ```
+
 :::
 
-## Конфигурация удаленных серверов {#remote-servers-configuration}
+## Конфигурация удалённых серверов {#remote-servers-configuration}
 
 ### Традиционная ручная конфигурация {#traditional-manual-configuration}
 
-Traditionally, in ClickHouse, each shard and replica in the cluster needed to be manually specified in the configuration:
+Традиционно в ClickHouse каждый шард и каждая реплика в кластере должны были указываться вручную в конфигурации:
 
 ```xml
 <remote_servers>
@@ -60,7 +63,7 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 
 ### Использование обнаружения кластера {#using-cluster-discovery}
 
-С помощью обнаружения кластера, вместо того чтобы явно определять каждый узел, вы просто указываете путь в ZooKeeper. Все узлы, которые регистрируются под этим путем в ZooKeeper, будут автоматически обнаружены и добавлены в кластер.
+При использовании Cluster Discovery вместо явного указания каждого узла вы просто задаёте путь в ZooKeeper. Все узлы, которые зарегистрируются по этому пути в ZooKeeper, будут автоматически обнаружены и добавлены в кластер.
 
 ```xml
 <remote_servers>
@@ -68,25 +71,25 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
         <discovery>
             <path>/clickhouse/discovery/cluster_name</path>
 
-            <!-- # Optional configuration parameters: -->
+            <!-- # Дополнительные параметры конфигурации: -->
 
-            <!-- ## Authentication credentials to access all other nodes in cluster: -->
+            <!-- ## Учетные данные аутентификации для доступа ко всем остальным узлам кластера: -->
             <!-- <user>user1</user> -->
             <!-- <password>pass123</password> -->
-            <!-- ### Alternatively to password, interserver secret may be used: -->
+            <!-- ### Вместо пароля можно использовать межсерверный секрет: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## Shard for current node (see below): -->
+            <!-- ## Шард для текущего узла (см. ниже): -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## Observer mode (see below): -->
+            <!-- ## Режим наблюдателя (см. ниже): -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
 </remote_servers>
 ```
 
-Если вы хотите указать номер шарда для конкретного узла, вы можете включить тег `<shard>` в секцию `<discovery>`:
+Если вы хотите задать номер шарда для конкретного узла, включите тег `<shard>` в раздел `<discovery>`:
 
 для `node1` и `node2`:
 
@@ -97,7 +100,7 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 </discovery>
 ```
 
-для `node3` и `node4`:
+для узлов `node3` и `node4`:
 
 ```xml
 <discovery>
@@ -108,7 +111,9 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 
 ### Режим наблюдателя {#observer-mode}
 
-Узлы, настроенные в режиме наблюдателя, не будут регистрировать себя как реплики. Они будут лишь наблюдать и обнаруживать другие активные реплики в кластере, не участвуя активно. Чтобы включить режим наблюдателя, добавьте тег `<observer/>` в секцию `<discovery>`:
+Узлы, настроенные в режиме наблюдателя, не будут регистрировать себя как реплики.
+Они лишь будут наблюдать за другими активными репликами в кластере и обнаруживать их, не участвуя в работе.
+Чтобы включить режим наблюдателя, добавьте тег `<observer/>` в секцию `<discovery>`:
 
 ```xml
 <discovery>
@@ -119,7 +124,7 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 
 ### Обнаружение кластеров {#discovery-of-clusters}
 
-Иногда вам может понадобиться добавлять и удалять не только хосты в кластерах, но и сами кластеры. Вы можете использовать узел `<multicluster_root_path>`, который служит корнем для нескольких кластеров:
+Иногда может понадобиться добавлять и удалять не только хосты в кластерах, но и сами кластеры. Для этого можно использовать узел `<multicluster_root_path>` с корневым путем, общим для нескольких кластеров:
 
 ```xml
 <remote_servers>
@@ -132,9 +137,9 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 </remote_servers>
 ```
 
-В этом случае, когда другой хост регистрирует себя под путем `/clickhouse/discovery/some_new_cluster`, будет добавлен кластер с именем `some_new_cluster`.
+В этом случае, когда какой-то другой хост зарегистрируется по пути `/clickhouse/discovery/some_new_cluster`, будет добавлен кластер с именем `some_new_cluster`.
 
-Вы можете одновременно использовать обе функции, хост может зарегистрировать себя в кластере `my_cluster` и обнаруживать любые другие кластеры:
+Вы можете использовать обе возможности одновременно: хост может зарегистрироваться в кластере `my_cluster` и при этом обнаруживать любые другие кластеры:
 
 ```xml
 <remote_servers>
@@ -153,15 +158,16 @@ Traditionally, in ClickHouse, each shard and replica in the cluster needed to be
 ```
 
 Ограничения:
-- Нельзя использовать и `<path>`, и `<multicluster_root_path>` в одном и том же поддереве `remote_servers`.
-- `<multicluster_root_path>` может быть только с `<observer/>`.
-- Последняя часть пути из Keeper используется как имя кластера, в то время как при регистрации имя берется из XML-тега.
+
+* Нельзя одновременно использовать `<path>` и `<multicluster_root_path>` в одном поддереве `remote_servers`.
+* `<multicluster_root_path>` может использоваться только совместно с `<observer/>`.
+* Последняя часть пути из Keeper используется в качестве имени кластера, в то время как при регистрации имя берётся из XML-тега.
 
 ## Сценарии использования и ограничения {#use-cases-and-limitations}
 
-Когда узлы добавляются или удаляются из указанного пути ZooKeeper, они автоматически обнаруживаются или удаляются из кластера без необходимости изменения конфигурации или перезапуска сервера.
+При добавлении или удалении узлов по указанному пути в ZooKeeper они автоматически обнаруживаются или удаляются из кластера без необходимости изменять конфигурацию или перезапускать серверы.
 
-Однако изменения затрагивают только конфигурацию кластера, а не данные или существующие базы данных и таблицы.
+Однако изменения затрагивают только конфигурацию кластера, а не данные и не существующие базы данных и таблицы.
 
 Рассмотрим следующий пример с кластером из 3 узлов:
 
@@ -194,7 +200,7 @@ ORDER BY event_time PARTITION BY toYYYYMM(event_time);
 INSERT INTO event_table ...
 ```
 
-Затем мы добавляем новый узел в кластер, запуская новый узел с той же записью в секции `remote_servers` в файле конфигурации:
+Затем мы добавляем в кластер новый узел, запуская его с тем же элементом в разделе `remote_servers` в конфигурационном файле:
 
 ```response
 ┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name────┬─host_address─┬─port─┬─is_local─┬─user─┬─is_active─┐
@@ -205,16 +211,19 @@ INSERT INTO event_table ...
 └─────────┴───────────┴──────────────┴─────────────┴──────────────┴──────────────┴──────┴──────────┴──────┴───────────┘
 ```
 
-Четвертый узел участвует в кластере, но таблица `event_table` все еще существует только на первых трех узлах:
+Четвёртый узел участвует в кластере, но таблица `event_table` по-прежнему присутствует только на первых трёх узлах:
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
-
-┌─hostname()───┬─database─┬─table───────┐
-│ a6a68731c21b │ default  │ event_table │
-│ 92d3c04025e8 │ default  │ event_table │
-│ 8e62b9cb17a1 │ default  │ event_table │
-└──────────────┴──────────┴─────────────┘
 ```
 
-Если вам нужно, чтобы таблицы реплицировались на всех узлах, вы можете использовать [Replicated](../engines/database-engines/replicated.md) движок базы данных в качестве альтернативы обнаружению кластера.
+┌─hostname()───┬─database─┬─table───────┐
+│ a6a68731c21b │ default  │ event&#95;table │
+│ 92d3c04025e8 │ default  │ event&#95;table │
+│ 8e62b9cb17a1 │ default  │ event&#95;table │
+└──────────────┴──────────┴─────────────┘
+
+```
+
+Если требуется реплицировать таблицы на всех узлах, можно использовать движок базы данных [Replicated](../engines/database-engines/replicated.md) вместо механизма обнаружения кластера.
+```

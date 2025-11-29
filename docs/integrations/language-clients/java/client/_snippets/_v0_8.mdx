@@ -5,7 +5,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http).
 The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).
 
-## Setup {#setup}
+## Setup \{#setup\}
 
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
 - Nightly builds (repository link): https://central.sonatype.com/repository/maven-snapshots/
@@ -40,7 +40,7 @@ implementation 'com.clickhouse:client-v2:0.9.1'
 </TabItem>
 </Tabs>
 
-## Initialization {#initialization}
+## Initialization \{#initialization\}
 
 The Client object is initialized by `com.clickhouse.client.api.Client.Builder#build()`. Each client has its own context and no objects are shared between them.
 The Builder has configuration methods for convenient setup.
@@ -56,7 +56,7 @@ Example:
 
 `Client` is `AutoCloseable` and should be closed when not needed anymore.
 
-### Authentication {#authentication}
+### Authentication \{#authentication\}
 
 Authentication is configured per client at the initialization phase. There are three authentication methods supported: by password, by access token, by SSL Client Certificate.
 
@@ -97,14 +97,14 @@ Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) t
 
 :::
 
-## Configuration {#configuration}
+## Configuration \{#configuration\}
 
 All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear.
 Major configuration parameters are defined in one scope (client or operation) and do not override each other.
 
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
-## Client Configuration {#client-configuration}
+## Client Configuration \{#client-configuration\}
 <WideTableWrapper>
 | Configuration Method  | Arguments                   |  Description                                |
 |-----------------------|-----------------------------|:--------------------------------------------|
@@ -208,9 +208,9 @@ QuerySettings settings = new QuerySettings()
 
 When options are set via `setOption` method (either the `Client.Builder` or operation settings class) then custom header name should be prefixed with `http_header_`. Method `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` may be handy in this case.
 
-## Common Definitions {#common-definitions}
+## Common Definitions \{#common-definitions\}
 
-### ClickHouseFormat {#clickhouseformat}
+### ClickHouseFormat \{#clickhouseformat\}
 
 Enum of [supported formats](/interfaces/formats). It includes all formats that ClickHouse supports.
 
@@ -304,9 +304,9 @@ This client version supports:
 | [Markdown](/interfaces/formats/Markdown)                                                                              | -      | raw     |
 | [Form](/interfaces/formats/Form)                                                                                      | raw    | -       |
 
-## Insert API {#insert-api}
+## Insert API \{#insert-api\}
 
-### insert(String tableName, InputStream data, ClickHouseFormat format) {#insertstring-tablename-inputstream-data-clickhouseformat-format}
+### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
 
 Accepts data as an `InputStream` of bytes in the specified format. It is expected that `data` is encoded in the `format`.
 
@@ -347,7 +347,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ```
 
-### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
+### insert(String tableName, List&lt;?> data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
 Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registered up-front using `register(Class, TableSchema)` method.
 
@@ -382,7 +382,129 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
-### InsertSettings {#insertsettings}
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings)
+**Beta** 
+
+This API method allows to pass a writer object that will encode data directly into an output stream. Data will be compressed by the client.
+There is a configuration option in `InsertSettings` called `appCompressedData` that allows to turn off client compression and let application to send compressed stream. 
+Examples shows major usecases this API was designed for. 
+
+`com.clickhouse.client.api.DataStreamWriter` is a functional interface with a method `onOutput` that is called by the client when output stream is ready for data to be written. This interface has
+another method `onRetry` with default implementation. This method is called when retry logic is triggered and mainly used to reset data source if applicable. 
+
+
+**Signatures**
+```java
+CompletableFuture<InsertResponse> insert(String tableName,              // name of destination table
+                                         DataStreamWriter writer,       // data writer instance 
+                                         ClickHouseFormat format,       // data format in which the writer encodes data 
+                                         InsertSettings settings)       // operation settings
+```
+
+**Parameters**
+
+`tableName` - name of the target table. 
+
+`writer` - data writer instance.
+
+`format` - data format in which the writer encodes data. 
+
+`settings` - request settings.
+
+**Return value**
+
+Future of `InsertResponse` type - the result of the operation and additional information like server side metrics.
+
+**Examples**
+
+Writing a collection of JSON objects encoded as string values using `JSONEachRow` format: 
+```java showLineNumbers
+
+final int EXECUTE_CMD_TIMEOUT = 10; // seconds
+final String tableName = "events";
+final String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] rows = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // writing raw bytes 
+    for (String row : rows) {
+        out.write(row.getBytes());
+    }
+
+}, ClickHouseFormat.JSONEachRow, new InsertSettings()).get()) {
+
+    System.out.println("Rows written: " + response.getWrittenRows());
+}
+
+```
+
+Writing already compressed data:
+```java showLineNumbers
+String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
+String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] data = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+// This step is only for showcase. Real application would have already compressed data. 
+byte[][] compressedData = new byte[data.length][];
+for (int i = 0 ; i < data.length; i++) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gz = new GZIPOutputStream(baos);
+    gz.write(data[i].getBytes(StandardCharsets.UTF_8));
+    gz.finish();
+    compressedData[i] = baos.toByteArray();
+}
+
+InsertSettings insertSettings = new InsertSettings()
+        .appCompressedData(true, "gzip"); // defining compression algorithm (sent via HTTP headers)
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // Writing data 
+    for (byte[] row : compressedData) {
+        out.write(row);
+    }
+}, ClickHouseFormat.JSONEachRow, insertSettings).get()) {
+    System.out.println("Rows written: " + response.getWrittenRows());
+}    
+
+```
+
+### InsertSettings \{#insertsettings\}
 
 Configuration options for insert operations.
 
@@ -398,7 +520,7 @@ Configuration options for insert operations.
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
 | `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
 
-### InsertResponse {#insertresponse}
+### InsertResponse \{#insertresponse\}
 
 Response object that holds result of insert operation. It is only available if the client got response from a server.
 
@@ -411,9 +533,9 @@ This object should be closed as soon as possible to release a connection because
 | `OperationMetrics getMetrics()` | Returns object with operation metrics.                                                           |
 | `String getQueryId()`       | Returns query ID assigned for the operation by the application (through operation settings or by server). |
 
-## Query API {#query-api}
+## Query API \{#query-api\}
 
-### query(String sqlQuery) {#querystring-sqlquery}
+### query(String sqlQuery) \{#querystring-sqlquery\}
 
 Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse` will hold a reference to the response stream that should be consumed by a reader for the supportig format.
 
@@ -462,7 +584,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 // put business logic outside of the reading block to release http connection asap.  
 ```
 
-### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
+### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
 
 Sends `sqlQuery` as is. Additionally will send query parameters so the server can compile the SQL expression.
 
@@ -509,7 +631,7 @@ try (QueryResponse response =
 
 ```
 
-### queryAll(String sqlQuery) {#queryallstring-sqlquery}
+### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
 
 Queries a data in `RowBinaryWithNamesAndTypes` format. Returns the result as a collection. Read performance is the same as with the reader but more memory is required to hold the whole dataset.
 
@@ -546,7 +668,7 @@ try {
 }
 ```
 
-### QuerySettings {#querysettings}
+### QuerySettings \{#querysettings\}
 
 Configuration options for query operations.
 
@@ -565,7 +687,7 @@ Configuration options for query operations.
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
 | `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
 
-### QueryResponse {#queryresponse}
+### QueryResponse \{#queryresponse\}
 
 Response object that holds result of query execution. It is only available if the client got a response from a server.
 
@@ -581,14 +703,14 @@ This object should be closed as soon as possible to release a connection because
 | `String getQueryId()`               | Returns query ID assigned for the operation by the application (through operation settings or by server). |
 | `TimeZone getTimeZone()`            | Returns timezone that should be used for handling Date/DateTime types in the response.               |
 
-### Examples {#examples}
+### Examples \{#examples\}
 
 - Example code is available in [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
 - Reference Spring Service [implementation](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
-## Common API {#common-api}
+## Common API \{#common-api\}
 
-### getTableSchema(String table) {#gettableschemastring-table}
+### getTableSchema(String table) \{#gettableschemastring-table\}
 
 Fetches table schema for the `table`.
 
@@ -609,7 +731,7 @@ TableSchema getTableSchema(String table, String database)
 
 Returns a `TableSchema` object with list of table columns.
 
-### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
+### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
 Fetches schema from a SQL statement.
 
@@ -627,9 +749,9 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 Returns a `TableSchema` object with columns matching the `sql` expression.
 
-### TableSchema {#tableschema}
+### TableSchema \{#tableschema\}
 
-### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
+### register(Class&lt;?> clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
 
 Compiles serialization and deserialization layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column.
 Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`.
@@ -652,7 +774,7 @@ void register(Class<?> clazz, TableSchema schema)
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
-## Usage Examples {#usage-examples}
+## Usage Examples \{#usage-examples\}
 
 Complete examples code is stored in the repo in a 'example` [folder](https://github.com/ClickHouse/clickhouse-java/tree/main/examples):
 

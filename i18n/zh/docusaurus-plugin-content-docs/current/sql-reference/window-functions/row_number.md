@@ -1,16 +1,15 @@
 ---
-'description': 'row_number 视窗函数的文档'
-'sidebar_label': 'row_number'
-'sidebar_position': 2
-'slug': '/sql-reference/window-functions/row_number'
-'title': 'row_number'
-'doc_type': 'reference'
+description: 'row_number 窗口函数文档'
+sidebar_label: 'row_number'
+sidebar_position: 2
+slug: /sql-reference/window-functions/row_number
+title: 'row_number'
+doc_type: 'reference'
 ---
 
+# row&#95;number {#row&#95;number}
 
-# row_number
-
-为当前行在其分区内编号，从1开始。
+对其所在分区内的当前行进行编号，从 1 开始。
 
 **语法**
 
@@ -22,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更详细说明，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-- 当前行在其分区内的编号。[UInt64](../data-types/int-uint.md)。
+* 分区内当前行的编号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频教程中提供的示例：[ClickHouse中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教程 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
 
 查询：
 
@@ -61,7 +60,7 @@ FROM salaries;
 结果：
 
 ```response
-   ┌─player──────────┬─salary─┬─row_number─┐
+   ┌─球员────────────┬─薪资───┬─行号───────┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          2 │
 3. │ Charles Juarez  │ 190000 │          3 │

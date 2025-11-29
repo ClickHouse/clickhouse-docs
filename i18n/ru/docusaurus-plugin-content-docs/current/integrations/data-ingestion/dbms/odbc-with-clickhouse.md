@@ -1,11 +1,14 @@
 ---
-slug: '/integrations/data-ingestion/dbms/odbc-with-clickhouse'
-sidebar_label: ODBC
+sidebar_label: 'ODBC'
 sidebar_position: 1
-description: 'Страница, описывающая интеграцию ODBC'
-title: ODBC
-doc_type: reference
+title: 'ODBC'
+slug: /integrations/data-ingestion/dbms/odbc-with-clickhouse
+description: 'Страница с описанием интеграции ODBC'
+doc_type: 'reference'
+hide_title: true
+keywords: ['odbc', 'подключение к базе данных', 'интеграция', 'внешние данные', 'драйвер']
 ---
+
 import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
 
 <Content />

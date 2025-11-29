@@ -20,6 +20,8 @@ const enhancedComponents = {
     // Map to the components expected from the remark plugin
     Stepper: VStepper,
     Step: VStepper.Step,
+    // Also map VerticalStepper directly for cases where remark plugin doesn't transform it
+    VerticalStepper: VStepper,
 };
 
 export default enhancedComponents;

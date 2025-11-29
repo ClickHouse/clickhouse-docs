@@ -1,16 +1,15 @@
 ---
-'description': '`system.numbers`に似たシステムテーブルですが、読み取りは並列化され、数字は任意の順序で返されることができます。'
-'keywords':
-- 'system table'
-- 'numbers_mt'
-'slug': '/operations/system-tables/numbers_mt'
-'title': 'system.numbers_mt'
-'doc_type': 'reference'
+description: '`system.numbers` と同様のシステムテーブルですが、読み取りが並列化され、
+  数値が任意の順序で返されます。'
+keywords: ['system table', 'numbers_mt']
+slug: /operations/system-tables/numbers_mt
+title: 'system.numbers_mt'
+doc_type: 'reference'
 ---
 
-[`system.numbers`](../../operations/system-tables/numbers.md) と同様ですが、読み取りは並列化されています。数値は任意の順序で返される可能性があります。
+[`system.numbers`](../../operations/system-tables/numbers.md) と同様ですが、読み取りが並列化されます。数値は任意の順序で返される可能性があります。
 
-テストに使用されます。
+テスト用に使用されます。
 
 **例**
 

@@ -1,33 +1,36 @@
 ---
-slug: '/interfaces/formats/JSONColumns'
-description: 'Документация для формата JSONColumns'
-title: JSONColumns
-keywords: ['JSONColumns']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONColumns'
 input_format: true
+keywords: ['JSONColumns']
 output_format: true
+slug: /interfaces/formats/JSONColumns
+title: 'JSONColumns'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+
+| Входной формат | Выходной формат | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
 :::tip
-Выходные данные форматов JSONColumns* предоставляют имя поля ClickHouse, а затем содержимое каждой строки в таблице для этого поля; визуально данные поворачиваются на 90 градусов влево.
+Вывод форматов JSONColumns* содержит имя поля ClickHouse, а затем содержимое каждой строки таблицы для этого поля;
+визуально данные повернуты на 90 градусов влево.
 :::
 
-В этом формате все данные представлены в виде одного JSON-объекта.
+В этом формате все данные представлены в виде одного объекта JSON.
 
 :::note
-Формат `JSONColumns` буферизует все данные в памяти, а затем выводит их как один блок, что может привести к высокому потреблению памяти.
+Формат `JSONColumns` буферизует все данные в памяти и затем выводит их одним блоком, поэтому это может приводить к высокому потреблению памяти.
 :::
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя файл JSON со следующими данными, названный `football.json`:
+Используйте JSON-файл со следующими данными под названием `football.json`:
 
 ```json
 {
@@ -40,15 +43,16 @@ output_format: true
 }
 ```
 
-Вставьте данные:
+Введите данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
+
 ### Чтение данных {#reading-data}
 
-Чтите данные, используя формат `JSONColumns`:
+Считывайте данные в формате `JSONColumns`:
 
 ```sql
 SELECT *
@@ -56,7 +60,7 @@ FROM football
 FORMAT JSONColumns
 ```
 
-Выходные данные будут в формате JSON:
+Вывод будет в формате JSON:
 
 ```json
 {
@@ -69,7 +73,8 @@ FORMAT JSONColumns
 }
 ```
 
+
 ## Настройки формата {#format-settings}
 
-Во время импорта столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`. 
-Столбцы, отсутствующие в блоке, будут заполнены значениями по умолчанию (вы можете использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) здесь).
+При импорте столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`.
+Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (для этого можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields)).

@@ -1,27 +1,30 @@
 ---
-'description': 'は、同じソートキー値 (`ORDER BY` テーブルセクション、`PRIMARY KEY` ではなく) の重複エントリを削除する点で
-  MergeTree と異なります。'
-'sidebar_label': 'ReplacingMergeTree'
-'sidebar_position': 40
-'slug': '/engines/table-engines/mergetree-family/replacingmergetree'
-'title': 'ReplacingMergeTree'
-'doc_type': 'reference'
+description: 'MergeTree と異なり、同じソートキーの値（`ORDER BY` テーブルセクションで定義されるものであり、
+  `PRIMARY KEY` ではありません）を持つ重複エントリを削除します。'
+sidebar_label: 'ReplacingMergeTree'
+sidebar_position: 40
+slug: /engines/table-engines/mergetree-family/replacingmergetree
+title: 'ReplacingMergeTree テーブルエンジン'
+doc_type: 'reference'
 ---
 
 
-# ReplacingMergeTree
 
-このエンジンは、[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)とは異なり、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値（`ORDER BY`テーブルセクション、`PRIMARY KEY`ではない）を持つ重複エントリを削除します。
+# ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
-データの重複排除は、マージ中にのみ行われます。マージは、未知の時点でバックグラウンドで発生するため、計画することはできません。データの一部は未処理のまま残る場合があります。`OPTIMIZE`クエリを使用して非スケジュールのマージを実行することは可能ですが、`OPTIMIZE`クエリは大量のデータを読み書きするため、それに依存するべきではありません。
+このエンジンは、[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) とは異なり、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値（テーブル定義の `ORDER BY` セクションで指定されるもので、`PRIMARY KEY` ではありません）を持つ重複エントリを削除します。
 
-したがって、`ReplacingMergeTree`は、スペースを節約するためにバックグラウンドで重複データをクリーンアップするのに適していますが、重複がないことを保証するものではありません。
+データの重複排除はマージ時にのみ行われます。マージはバックグラウンドで不定のタイミングで実行されるため、そのタイミングを前提として計画することはできません。一部のデータは未処理のまま残る可能性があります。`OPTIMIZE` クエリを使用してオンデマンドでマージを実行することもできますが、`OPTIMIZE` クエリは大量のデータを読み書きするため、それに依存しないでください。
+
+したがって、`ReplacingMergeTree` はバックグラウンドで重複データを削除してディスク使用量を削減する用途には適していますが、重複がまったく存在しないことを保証するものではありません。
 
 :::note
-ReplacingMergeTreeに関する詳細なガイド、ベストプラクティス、およびパフォーマンスを最適化する方法は、[こちら](/guides/replacing-merge-tree)で利用できます。
+ベストプラクティスやパフォーマンス最適化の方法を含む ReplacingMergeTree の詳細なガイドは[こちら](/guides/replacing-merge-tree)にあります。
 :::
 
-## テーブルの作成 {#creating-a-table}
+
+
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -37,27 +40,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-リクエストパラメータの説明については、[ステートメントの説明](../../../sql-reference/statements/create/table.md)を参照してください。
+リクエストパラメータの詳細については、[ステートメントの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
 :::note
-行の一意性は、`PRIMARY KEY`ではなく`ORDER BY`テーブルセクションによって決定されます。
+行の一意性は `PRIMARY KEY` ではなく、テーブルの `ORDER BY` 句によって決定されます。
 :::
 
-## ReplacingMergeTreeパラメータ {#replacingmergetree-parameters}
+
+## ReplacingMergeTree のパラメーター {#replacingmergetree-parameters}
 
 ### `ver` {#ver}
 
-`ver` — バージョン番号を持つカラム。タイプは`UInt*`、`Date`、`DateTime`、または`DateTime64`。オプションのパラメータです。
+`ver` — バージョン番号を保持するカラム。型は `UInt*`、`Date`、`DateTime` または `DateTime64`。省略可能なパラメーターです。
 
-マージ中に、`ReplacingMergeTree` は同じソートキーを持つすべての行から1つだけを残します。
+マージ時に、`ReplacingMergeTree` は同じソートキーを持つすべての行のうち 1 行だけを残します：
 
-- `ver`が設定されていない場合は、選択内の最後の行。選択は、マージに参加するパーツセット内の行の集合です。最も最近作成されたパート（最後の挿入）が、選択内では最後になります。したがって、重複排除後には、最新の挿入からの最終行が各ユニークソートキーについて残ります。
-- `ver`が指定されている場合は、最大バージョンのもの。`ver`が複数の行で同じ場合、それらについては「`ver`が指定されていない場合の規則」が適用され、つまり、最も最近挿入された行が残ります。
+* `ver` が設定されていない場合は、選択集合の中で最後の行。選択集合とは、マージに参加するパーツ集合内の行の集合のことです。もっとも最近作成されたパーツ（最後に挿入されたもの）が選択集合の中で最後になります。したがって、重複排除後は、もっとも新しい挿入からのそれぞれの一意なソートキーについて、いちばん最後の行が残ります。
+* `ver` が指定されている場合は、最大のバージョンを持つ行。複数の行で `ver` が同じ場合、それらには「`ver` が指定されていない場合」のルールが適用されます。つまり、もっとも最近に挿入された行が残ります。
 
-例:
+Example:
 
 ```sql
--- without ver - the last inserted 'wins'
+-- ver なし - 最後に挿入されたものが '勝つ'
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -77,7 +81,7 @@ SELECT * FROM myFirstReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 
 
--- with ver - the row with the biggest ver 'wins'
+-- ver あり - 最大の ver を持つ行が '勝つ'
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -99,27 +103,29 @@ SELECT * FROM mySecondReplacingMT FINAL;
 
 ### `is_deleted` {#is_deleted}
 
-`is_deleted` — マージ中にデータがこの行の状態を表しているか、削除されるべきかを判断するために使用されるカラムの名前。`1`は「削除された」行、`0`は「状態」行です。
+`is_deleted` — マージ処理の際に、この行のデータが「状態」を表すのか、あるいは削除対象なのかを判定するために使用されるカラム名です。`1` は「削除された」行、`0` は「状態」の行を表します。
 
-カラムのデータ型は`UInt8`です。
+カラムのデータ型 — `UInt8`。
 
 :::note
-`is_deleted`は、`ver`が使用されている時のみ有効にできます。
+`is_deleted` は `ver` が使用されている場合にのみ有効化できます。
 
-データに対する操作にかかわらず、バージョンは増加するべきです。挿入された2つの行が同じバージョン番号を持つ場合、最後に挿入された行が保持されます。
+どのようなデータ操作であっても、バージョン番号は増加させる必要があります。2 つの挿入行が同じバージョン番号を持つ場合、後から挿入された行が保持されます。
 
-デフォルトでは、ClickHouseはキーの最後の行を保持しますが、その行が削除行であってもです。これにより、将来的に低いバージョンを持つ行が安全に挿入でき、削除行が適用されたままになります。
+デフォルトでは、ClickHouse はキーに対して最後の行を保持し、その行が削除行であっても保持します。これは、将来より低いバージョンの行が挿入された場合でも、安全に挿入でき、その削除行が引き続き適用されるようにするためです。
 
-そのような削除行を恒久的に削除するには、テーブル設定`allow_experimental_replacing_merge_with_cleanup`を有効にし、以下のいずれかを設定します：
+このような削除行を恒久的に削除するには、テーブル設定 `allow_experimental_replacing_merge_with_cleanup` を有効にし、次のいずれかを実行します。
 
-1. テーブルの設定`enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`、`min_age_to_force_merge_on_partition_only`、および`min_age_to_force_merge_seconds`を設定します。もしパーティション内のすべてのパーツが`min_age_to_force_merge_seconds`より古い場合、ClickHouseはそれらすべてを1つのパートにマージし、削除行を削除します。
+1. テーブル設定 `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`、`min_age_to_force_merge_on_partition_only`、`min_age_to_force_merge_seconds` を設定します。パーティション内のすべてのパーツが `min_age_to_force_merge_seconds` より古い場合、ClickHouse はそれらを
+   1 つのパーツにマージし、すべての削除行を削除します。
 
-2. 手動で`OPTIMIZE TABLE table [PARTITION partition | PARTITION ID 'partition_id'] FINAL CLEANUP`を実行します。
-:::
+2. 手動で `OPTIMIZE TABLE table [PARTITION partition | PARTITION ID 'partition_id'] FINAL CLEANUP` を実行します。
+   :::
 
-例:
+Example:
+
 ```sql
--- with ver and is_deleted
+-- ver と is_deleted を使用
 CREATE OR REPLACE TABLE myThirdReplacingMT
 (
     `key` Int64,
@@ -133,33 +139,38 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
+```
+
 
 select * from myThirdReplacingMT final;
 
 0 rows in set. Elapsed: 0.003 sec.
 
--- delete rows with is_deleted
+-- is&#95;deleted が設定されている行を削除
 OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
 
-INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
+INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
 
 select * from myThirdReplacingMT final;
 
-┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
+┌─key─┬─someCol─┬───────────eventTime─┬─is&#95;deleted─┐
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
+
 ```
+```
+
 
 ## クエリ句 {#query-clauses}
 
-`ReplacingMergeTree`テーブルを作成する際には、`MergeTree`テーブルを作成する際と同様の[句](../../../engines/table-engines/mergetree-family/mergetree.md)が必要です。
+`ReplacingMergeTree` テーブルを作成する場合は、`MergeTree` テーブルを作成する場合と同様に、同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
 
 <details markdown="1">
 
-<summary>テーブル作成のための廃止された方法</summary>
+<summary>テーブル作成の非推奨な方法</summary>
 
 :::note
-新しいプロジェクトではこの方法を使用せず、可能であれば古いプロジェクトを上記の方法に切り替えてください。
+新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上記で説明した方法に切り替えてください。
 :::
 
 ```sql
@@ -171,17 +182,19 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
 ```
 
-`ver`を除くすべてのパラメータは、`MergeTree`と同じ意味を持ちます。
+`ver` を除くすべてのパラメータは、`MergeTree` の場合と同じ意味を持ちます。
 
-- `ver` - バージョンを持つカラム。オプションのパラメータ。詳細については上記のテキストを参照してください。
+- `ver` - バージョンを表すカラム。省略可能なパラメータです。詳細については上記の説明を参照してください。
 
 </details>
 
-## クエリ時の重複排除とFINAL {#query-time-de-duplication--final}
 
-マージ時に、`ReplacingMergeTree`は重複行を特定し、テーブル作成時に使用された`ORDER BY`カラムの値を一意の識別子として用い、最高のバージョンのみを保持します。しかし、これは最終的な整合性のみを提供します — 行が重複排除されることを保証するものではなく、それに頼るべきではありません。したがって、クエリは、更新及び削除行がクエリで考慮されるため、不正確な結果を生成する可能性があります。
 
-正しい結果を得るためには、ユーザーはバックグラウンドでのマージをクエリ時の重複排除および削除除去で補完する必要があります。これは、`FINAL`演算子を使用することで達成できます。例えば、以下の例を考えてみてください：
+## クエリ時の重複排除と `FINAL` {#query-time-de-duplication--final}
+
+マージ処理の際に、ReplacingMergeTree は `ORDER BY` 列（テーブル作成時に使用した列）の値を一意の識別子として用いて重複行を識別し、最も新しいバージョンのみを保持します。ただし、これはあくまで最終的な整合性しか提供せず、行が必ず重複排除されることを保証するものではないため、これに依存すべきではありません。その結果、更新行や削除行がクエリで考慮されることにより、クエリが誤った結果を返す可能性があります。
+
+正しい結果を得るためには、バックグラウンドでのマージ処理に加えて、クエリ時の重複排除および削除済み行の除去を行う必要があります。これは `FINAL` 演算子を使用することで実現できます。例えば、次の例を考えてみます。
 
 ```sql
 CREATE TABLE rmt_example
@@ -196,7 +209,8 @@ FROM numbers(1000000000)
 
 0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
 ```
-`FINAL`なしでのクエリでは不正確なカウントが得られます（正確な結果はマージによって変わる）。
+
+`FINAL` を指定せずにクエリすると、不正確なカウント結果になります（具体的な値はマージ状況によって変動します）。
 
 ```sql
 SELECT count()
@@ -209,7 +223,7 @@ FROM rmt_example
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-`FINAL`を追加することで正しい結果が得られます：
+`FINAL` を追加すると、正しい結果が得られます。
 
 ```sql
 SELECT count()
@@ -223,4 +237,4 @@ FINAL
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-`FINAL`の最適化方法など、`FINAL`に関する詳細は、私たちの[ReplacingMergeTreeに関する詳細なガイド](/guides/replacing-merge-tree)をご覧ください。
+`FINAL` の詳細や `FINAL` のパフォーマンス最適化方法については、[ReplacingMergeTree に関する詳細ガイド](/guides/replacing-merge-tree) を参照することを推奨します。`

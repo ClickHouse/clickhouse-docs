@@ -1,41 +1,45 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nextjs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 4
-'description': 'Next.js SDK for ClickStack - ClickHouse 見える化スタック'
-'title': 'Next.js'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nextjs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 4
+description: 'ClickStack 向け Next.js SDK - ClickHouse のオブザーバビリティスタック'
+title: 'Next.js'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'ロギング', '統合', 'アプリケーション監視']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStackは、Next 13.2以上の[Next.jsサーバーレス関数](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)からネイティブなOpenTelemetryトレースを取り込むことができます。
+ClickStack は、Next 13.2+ の
+[Next.js serverless functions](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+からネイティブな OpenTelemetry トレースを取り込むことができます。
 
-このガイドには以下が統合されています：
+このガイドで扱うのは次のデータです:
 
-- **コンソールログ**
-- **トレース**
+* **コンソールログ**
+* **トレース**
 
 :::note
-セッションリプレイやブラウザ側の監視を探している場合は、[ブラウザ統合](/use-cases/observability/clickstack/sdks/browser)をインストールしてください。
+セッションリプレイやブラウザー側のモニタリングを行いたい場合は、代わりに [Browser integration](/use-cases/observability/clickstack/sdks/browser) をインストールしてください。
 :::
+
 
 ## インストール {#installing}
 
-### 計測フックの有効化（v15以下に必要） {#enable-instrumentation-hook}
+### インストルメンテーションフックを有効化する（v15 以前では必須） {#enable-instrumentation-hook}
 
-まず、`next.config.js`内で`experimental.instrumentationHook = true;`を設定して、Next.jsの計測フックを有効にする必要があります。
+セットアップを始めるには、`next.config.js` 内で `experimental.instrumentationHook = true;` を設定し、Next.js のインストルメンテーションフックを有効化する必要があります。
 
-**例：**
+**例:**
 
 ```javascript
 const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // Ignore otel pkgs warnings 
+  // OTelパッケージの警告を無視する 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -51,47 +55,49 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### ClickHouse OpenTelemetry SDKのインストール {#install-sdk}
+
+### ClickHouse OpenTelemetry SDK のインストール {#install-sdk}
 
 <Tabs groupId="npm">
 <TabItem value="npm" label="NPM" default>
 
-```shell
+```shell 
 npm install @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
-```shell
+```shell  
 yarn add @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 </Tabs>
 
-### 計測ファイルの作成 {#create-instrumentation-files}
+### インストルメンテーションファイルの作成 {#create-instrumentation-files}
 
-Next.jsプロジェクトのルートに`instrumentation.ts`（または`.js`）というファイルを以下の内容で作成します：
+Next.js プロジェクトのルートに `instrumentation.ts`（または `.js`）という名前のファイルを作成し、次の内容を記述します。
 
 ```javascript
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: '<YOUR_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
-      service: '<MY_SERVICE_NAME>', // optionally configure via `OTEL_SERVICE_NAME` env var
-      additionalInstrumentations: [], // optional, default: []
+      apiKey: '<YOUR_INGESTION_API_KEY>', // `HYPERDX_API_KEY` 環境変数で設定することも可能
+      service: '<MY_SERVICE_NAME>', // `OTEL_SERVICE_NAME` 環境変数で設定することも可能
+      additionalInstrumentations: [], // 省略可能、デフォルト: []
     });
   }
 }
 ```
 
-これにより、Next.jsはサーバーレス関数の呼び出しに対してOpenTelemetryの計測をインポートできるようになります。
+これにより、Next.js はあらゆるサーバーレス関数の呼び出しに対して OpenTelemetry のインストルメンテーションをインポートできるようになります。
 
-### 環境変数の設定 {#configure-environment-variables}
 
-もしトレースを直接ClickStackに送信する場合は、スパンをOTelコレクタに指し示すために、次の環境変数を設定してNext.jsサーバーを起動する必要があります：
+### 環境変数を設定する {#configure-environment-variables}
+
+トレースを直接 ClickStack に送信する場合は、スパンの送信先を OTel collector に指定するため、Next.js サーバーを起動するときに以下の環境変数を指定する必要があります。
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
@@ -100,4 +106,4 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
 
-Vercelにデプロイしている場合は、上記のすべての環境変数がデプロイに対して設定されていることを確認してください。
+Vercel にデプロイする場合は、上記のすべての環境変数が対象のデプロイメントで設定されていることを確認してください。

@@ -1,9 +1,10 @@
 ---
-'slug': '/optimize/avoid-mutations'
-'sidebar_label': '避免突变'
-'title': '避免突变'
-'description': '突变是指操作表数据的 ALTER 查询'
-'doc_type': 'guide'
+slug: /optimize/avoid-mutations
+sidebar_label: '避免 Mutations'
+title: '避免 Mutations'
+description: 'Mutations 指的是使用 ALTER 查询对表数据进行修改的操作'
+doc_type: 'guide'
+keywords: ['避免 mutations', 'ALTER 查询', '表数据修改', '最佳实践', '性能优化']
 ---
 
 import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_mutations.md';

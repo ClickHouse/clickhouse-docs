@@ -1,29 +1,28 @@
 ---
-'description': 'CustomSeparatedIgnoreSpaces 形式に関する文書'
-'keywords':
-- 'CustomSeparatedIgnoreSpaces'
-'slug': '/interfaces/formats/CustomSeparatedIgnoreSpaces'
-'title': 'CustomSeparatedIgnoreSpaces'
-'doc_type': 'reference'
+description: 'CustomSeparatedIgnoreSpaces 形式のドキュメント'
+keywords: ['CustomSeparatedIgnoreSpaces']
+slug: /interfaces/formats/CustomSeparatedIgnoreSpaces
+title: 'CustomSeparatedIgnoreSpaces'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     |        |       |
 
-## 説明 {#description}
+## 概要 {#description}
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-`football.txt`という名前の以下のtxtファイルを使用します:
+次のような内容の、`football.txt` という名前の txt ファイルを使用します。
 
 ```text
 row('2022-04-30'; 2021; 'Sutton United'; 'Bradford City'; 1; 4), row( '2022-04-30'; 2021; 'Swindon Town'; 'Barrow'; 2; 1), row( '2022-04-30'; 2021; 'Tranmere Rovers'; 'Oldham Athletic'; 2; 0), row('2022-05-02'; 2021; 'Salford City'; 'Mansfield Town'; 2; 2), row('2022-05-02'; 2021; 'Port Vale'; 'Newport County'; 1; 2), row('2022-05-07'; 2021; 'Barrow'; 'Northampton Town'; 1; 3), row('2022-05-07'; 2021; 'Bradford City'; 'Carlisle United'; 2; 0), row('2022-05-07'; 2021; 'Bristol Rovers'; 'Scunthorpe United'; 7; 0), row('2022-05-07'; 2021; 'Exeter City'; 'Port Vale'; 0; 1), row('2022-05-07'; 2021; 'Harrogate Town A.F.C.'; 'Sutton United'; 0; 2), row('2022-05-07'; 2021; 'Hartlepool United'; 'Colchester United'; 0; 2), row('2022-05-07'; 2021; 'Leyton Orient'; 'Tranmere Rovers'; 0; 1), row('2022-05-07'; 2021; 'Mansfield Town'; 'Forest Green Rovers'; 2; 2), row('2022-05-07'; 2021; 'Newport County'; 'Rochdale'; 0; 2), row('2022-05-07'; 2021; 'Oldham Athletic'; 'Crawley Town'; 3; 3), row('2022-05-07'; 2021; 'Stevenage Borough'; 'Salford City'; 4; 2), row('2022-05-07'; 2021; 'Walsall'; 'Swindon Town'; 0; 3)
 ```
 
-カスタム区切り文字の設定を構成します:
+カスタム区切り文字の設定を行います。
 
 ```sql
 SET format_custom_row_before_delimiter = 'row(';
@@ -33,10 +32,11 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-データを挿入します:
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpaces;
 ```
+
 
 ## フォーマット設定 {#format-settings}

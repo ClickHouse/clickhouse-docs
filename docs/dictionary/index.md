@@ -32,7 +32,7 @@ The direct join algorithm requires that the right table is backed by a dictionar
 
 ### Example {#example}
 
-Using the Stack Overflow dataset, let's answer the question:
+Using the [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow), let's answer the question:
 *What is the most controversial post concerning SQL on Hacker News?*
 
 We will define controversial as when posts have a similar number of up and down votes. We compute this absolute difference, where a value closer to 0 means more controversy. We'll assume the post must have at least 10 up and down votes - posts which people don't vote on aren't very controversial.

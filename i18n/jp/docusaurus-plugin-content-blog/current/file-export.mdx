@@ -1,0 +1,86 @@
+---
+title: ClickHouse からファイルへデータをエクスポートする方法
+description: "`INTO OUTFILE`、File テーブルエンジン、コマンドラインリダイレクトなど、ClickHouse からデータをエクスポートするさまざまな方法について説明します。"
+date: 2023-03-22
+tags: ['データエクスポート']
+keywords: ['データのエクスポート', 'INTO OUTFILE', 'File テーブルエンジン']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+## INTO OUTFILE 句の使用 \{#using-into-outfile-clause\}
+
+クエリに [INTO OUTFILE](https://clickhouse.com/docs/sql-reference/statements/select/into-outfile) 句を追加します。
+
+例：
+
+```sql
+SELECT * FROM table INTO OUTFILE 'file'
+```
+
+デフォルトでは、ClickHouse はファイル名の拡張子を使用して、出力フォーマットと圧縮方式を決定します。たとえば、`nyc_taxi` 内のすべての行は、Parquet 形式を使用して `nyc_taxi.parquet` に書き出されます。
+
+```sql
+SELECT *
+FROM nyc_taxi
+INTO OUTFILE 'taxi_rides.parquet'
+```
+
+次のファイルは、圧縮されたタブ区切りテキストファイルです。
+
+```sql
+SELECT *
+FROM nyc_taxi
+INTO OUTFILE 'taxi_rides.tsv.gz'
+```
+
+ClickHouse がファイル拡張子からフォーマットを判別できない場合、出力データのフォーマットは既定で [TabSeparated](https://clickhouse.com/docs/interfaces/formats) になります。[出力フォーマット](https://clickhouse.com/docs/interfaces/formats) を明示的に指定するには、[FORMAT句](https://clickhouse.com/docs/sql-reference/statements/select/format) を使用します。
+
+例：
+
+```sql
+SELECT *
+FROM nyc_taxi
+INTO OUTFILE 'taxi_rides.txt'
+FORMAT CSV
+```
+
+## File テーブルエンジンを使用する \{#using-a-file-engine-table\}
+
+別の選択肢として、[File](https://clickhouse.com/docs/engines/table-engines/special/file) テーブルエンジンを使用する方法があります。この場合、ClickHouse はデータを保存するためにファイルを利用します。ファイルに対して直接クエリの実行やデータの挿入ができます。
+
+例えば、次のように利用します。
+
+```sql
+CREATE TABLE my_table (
+   x UInt32,
+   y String,
+   z DateTime
+)
+ENGINE = File(Parquet)
+```
+
+数行のデータを挿入します：
+
+```sql
+INSERT INTO my_table VALUES
+   (1, 'こんにちは', now()),
+   (2, '世界', now()),
+   (3, 'さようなら', now())
+```
+
+このファイルは ClickHouse サーバーの `data` ディレクトリに保存されます。具体的には、`/data/default/my_table` ディレクトリ内の `data.Parquet` という名前のファイルです。
+
+:::note
+`File` テーブルエンジンは、ファイルシステム上のファイルを作成したりクエリを実行したりするのに非常に便利ですが、`File` テーブルは `MergeTree` テーブルではないため、`MergeTree` が提供するすべての利点は得られないことに注意してください。ClickHouse からデータを使いやすい形式でエクスポートする際の利便性を目的として `File` を使用してください。
+:::
+
+## コマンドラインでのリダイレクトの使用 \{#using-command-line-redirection\}
+
+```bash
+$ clickhouse-client --query "SELECT * from table" --format FormatName > result.txt
+```
+
+[clickhouse-client](https://clickhouse.com/docs/interfaces/cli) を参照してください。

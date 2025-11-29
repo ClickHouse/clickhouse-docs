@@ -1,27 +1,27 @@
 [
-	{ 
-		"title": "SQL reference",
-		"description": "Learn the statements, functions, and data types that are available",
-		"url": "/docs/sql-reference"
-	},
-	{ 
-		"title": "Ingest data",
-		"description": "Explore the many ways to get data into ClickHouse",
-		"url": "/docs/integrations/data-ingestion/"
-	},
-	{ 
-		"title": "Visualize data",
-		"description": "Now that your data is in ClickHouse, it's time to analyze it",
-		"url": "/docs/integrations/data-visualization/"
-	},
-	{ 
-		"title": "Optimize data",
-		"description": "Ways to improve the performance of your ClickHouse service",
-		"url": "/docs/optimize/"
-	},
-	{ 
-		"title": "Migrate data",
-		"description": "Importing your data from an external source into ClickHouse",
-		"url": "/docs/integrations/migration/"
-	}
+  {
+    "title": "SQL 参考文档",
+    "description": "学习可用的语句、函数和数据类型",
+    "url": "/docs/sql-reference"
+  },
+  {
+    "title": "数据摄取",
+    "description": "探索将数据导入 ClickHouse 的多种途径",
+    "url": "/docs/integrations/data-ingestion/"
+  },
+  {
+    "title": "数据可视化",
+    "description": "现在数据已经进入 ClickHouse，是时候开始分析了",
+    "url": "/docs/integrations/data-visualization/"
+  },
+  {
+    "title": "优化数据",
+    "description": "提升 ClickHouse 服务性能的方法",
+    "url": "/docs/optimize/"
+  },
+  {
+    "title": "数据迁移",
+    "description": "将外部数据源的数据导入 ClickHouse",
+    "url": "/docs/integrations/migration/"
+  }
 ]

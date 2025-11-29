@@ -1,22 +1,27 @@
 ---
-'description': 'FORMAT 句に関するDocumentation'
-'sidebar_label': 'FORMAT'
-'slug': '/sql-reference/statements/select/format'
-'title': 'FORMAT 句'
-'doc_type': 'reference'
+description: 'FORMAT 句に関するドキュメント'
+sidebar_label: 'FORMAT'
+slug: /sql-reference/statements/select/format
+title: 'FORMAT 句'
+doc_type: 'reference'
 ---
 
 
-# FORMAT句
 
-ClickHouseは、クエリ結果などに使用できる幅広い[シリアル化フォーマット](../../../interfaces/formats.md)をサポートしています。`SELECT`出力のフォーマットを選択する方法はいくつかあり、そのうちの1つは、クエリの最後に`FORMAT format`を指定して結果データを特定のフォーマットで取得することです。
+# FORMAT 句 {#format-clause}
 
-特定のフォーマットは、便利さ、他のシステムとの統合、またはパフォーマンス向上のために使用されることがあります。
+ClickHouse は、クエリ結果などに対して使用できる幅広い[シリアル化フォーマット](../../../interfaces/formats.md)をサポートしています。`SELECT` の出力フォーマットを選択する方法はいくつかあり、そのひとつはクエリの末尾で `FORMAT format` を指定して、結果データを任意の形式で取得する方法です。
 
-## デフォルトフォーマット {#default-format}
+特定のフォーマットは、利便性、他システムとの連携、あるいはパフォーマンス向上を目的として使用される場合があります。
 
-`FORMAT`句が省略された場合、デフォルトフォーマットが使用され、これは設定とClickHouseサーバーへのアクセスに使用されるインターフェースの両方に依存します。[HTTPインターフェース](../../../interfaces/http.md)およびバッチモードの[コマンドラインクライアント](../../../interfaces/cli.md)において、デフォルトフォーマットは`TabSeparated`です。インタラクティブモードのコマンドラインクライアントにおいては、デフォルトフォーマットは`PrettyCompact`です（これは、コンパクトで人間可読なテーブルを生成します）。
+
+
+## デフォルトのフォーマット {#default-format}
+
+`FORMAT` 句を省略した場合はデフォルトのフォーマットが使用されます。これは、設定と、ClickHouse サーバーへのアクセスに使用するインターフェイスの両方に依存します。[HTTP インターフェイス](../../../interfaces/http.md)およびバッチモードでの[コマンドラインクライアント](../../../interfaces/cli.md)では、デフォルトのフォーマットは `TabSeparated` です。対話モードのコマンドラインクライアントでは、デフォルトのフォーマットは `PrettyCompact` です（人間が読みやすいコンパクトなテーブルを出力します）。
+
+
 
 ## 実装の詳細 {#implementation-details}
 
-コマンドラインクライアントを使用するとき、データは常に内部の効率的なフォーマット（`Native`）でネットワークを介して渡されます。クライアントはクエリの`FORMAT`句を独自に解釈し、データを自身でフォーマットします（これにより、ネットワークやサーバーの追加負荷を軽減します）。
+コマンドラインクライアントを使用する場合、データは常に内部の効率的なフォーマット（`Native`）でネットワーク経由で送受信されます。クライアントはクエリの `FORMAT` 句を自前で解釈し、自身でデータをフォーマットします（これにより、ネットワークとサーバーへの余分な負荷が軽減されます）。

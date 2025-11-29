@@ -1,11 +1,12 @@
 ---
-slug: '/install'
-sidebar_label: Установка
-description: 'Установить ClickHouse'
-title: 'Установка ClickHouse'
+description: 'Установка ClickHouse'
 keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
-doc_type: guide
+sidebar_label: 'Установка'
+slug: /install
+title: 'Установка ClickHouse'
+doc_type: 'guide'
 ---
+
 import InstallSelector from '@site/src/components/Install/Install'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
@@ -17,31 +18,12 @@ import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
+# Инструкции по установке \{#installation-instructions\}
 
-# Инструкции по установке
+<CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
 
-<CardPrimary
-    alignContent="center"
-    description="Начните строить мгновенно, не беспокоясь о размере и масштабировании вашего кластера. Мы позаботимся о размерности, масштабировании, безопасности, надежности и обновлениях."
-    icon="cloud"
-    infoText="Начать бесплатно"
-    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
-    isSelected
-    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
-    size="md"
-    title="ClickHouse Cloud"
-    topBadgeText="Рекомендуется"
-/>
-<br/>
+<br />
 
-В качестве альтернативы выберите платформу, дистрибутив и метод установки ниже, чтобы просмотреть инструкции по установке для Opensource ClickHouse:
+Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
 
-<InstallSelector
-    windows={<Windows/>}
-    quickinstall={<QuickInstall/>}
-    debian_prod={<DebianProd/>}
-    rpm_prod={<RPMProd/>}
-    tar_prod={<TarProd/>}
-    macos_prod={<MacOSProd/>}
-    docker={<Docker/>}
-/>
+<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} docker={<Docker/>} />

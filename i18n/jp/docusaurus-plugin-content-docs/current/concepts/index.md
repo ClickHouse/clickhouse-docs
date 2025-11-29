@@ -1,22 +1,19 @@
 ---
-'title': '概念'
-'slug': '/concepts'
-'description': '概念的着陆页'
-'pagination_next': null
-'pagination_prev': null
-'keywords':
-- 'concepts'
-- 'OLAP'
-- 'fast'
-'doc_type': 'landing-page'
+title: 'コンセプト'
+slug: /concepts
+description: 'コンセプトのランディングページ'
+pagination_next: null
+pagination_prev: null
+keywords: ['concepts', 'OLAP', 'fast']
+doc_type: 'landing-page'
 ---
 
-このセクションでは、ClickHouseがどのようにして非常に高速で効率的なのかに関する概念に飛び込んでいきます。
+このセクションでは、ClickHouse が高速かつ効率的に動作する仕組みとなる概念について掘り下げて解説します。 
 
-| ページ                                                             | 説明                                                                                        |
-|------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| [ClickHouseはなぜこれほど速いのか？](./why-clickhouse-is-so-fast.mdx)     | ClickHouseがどのようにしてこれほど速いのかを学びます。                                      |
-| [OLAPとは？](./olap.md)                                        | オンライン分析処理が何であるかを学びます。                                                |
-| [ClickHouseのユニークな点は何か？](../about-us/distinctive-features.md) | ClickHouseが何故ユニークなのかを学びます。                                                |
-| [用語集](./glossary.md)                                        | このページには、ドキュメント全体でよく出てくる用語の用語集が含まれています。                 |
-| [FAQ](../faq/index.md)                                           | ClickHouseに関してよくある質問をまとめたものです。                                      |
+| ページ                                                            | 説明                                                                                  |
+|------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| [Why is ClickHouse so Fast?](./why-clickhouse-is-so-fast.mdx)     | ClickHouse がなぜこれほど高速なのかを学びます。                                                  
+| [What is OLAP?](./olap.md)                                       | Online Analytical Processing とは何かを学びます。                                           
+| [Why is ClickHouse unique?](../about-us/distinctive-features.md) | ClickHouse をユニークな存在にしている要素について学びます。                                                  
+| [Glossary](./glossary.md)                                        | このページでは、ドキュメント全体を通して頻繁に登場する用語をまとめた用語集を提供します。 
+| [FAQ](../faq/index.md)                                           | ClickHouse について寄せられる、よくある質問をまとめたページです。         

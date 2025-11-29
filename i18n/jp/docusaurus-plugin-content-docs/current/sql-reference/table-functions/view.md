@@ -1,41 +1,49 @@
 ---
-'description': 'サブクエリをテーブルに変換します。関数はビューを実装します。'
-'sidebar_label': 'ビュー'
-'sidebar_position': 210
-'slug': '/sql-reference/table-functions/view'
-'title': 'ビュー'
-'doc_type': 'reference'
+description: 'サブクエリをテーブルとして扱います。ビューを実装する関数です。'
+sidebar_label: 'view'
+sidebar_position: 210
+slug: /sql-reference/table-functions/view
+title: 'view'
+doc_type: 'reference'
 ---
 
 
-# view Table Function
 
-サブクエリをテーブルに変換します。この関数はビューを実装しています（[CREATE VIEW](/sql-reference/statements/create/view)を参照）。結果のテーブルはデータを保存せず、指定された `SELECT` クエリのみを保存します。テーブルから読み取るとき、ClickHouse はクエリを実行し、結果からすべての不要なカラムを削除します。
+# view テーブル関数 {#view-table-function}
 
-## Syntax {#syntax}
+副問い合わせをテーブルに変換します。この関数はビューを実装します（[CREATE VIEW](/sql-reference/statements/create/view) を参照）。生成されるテーブルはデータを保存せず、指定された `SELECT` クエリのみを保持します。テーブルから読み出すとき、ClickHouse はこのクエリを実行し、結果から不要なカラムをすべて削除します。
+
+
+
+## 構文 {#syntax}
 
 ```sql
 view(subquery)
 ```
 
-## Arguments {#arguments}
+
+## 引数 {#arguments}
 
 - `subquery` — `SELECT` クエリ。
 
-## Returned value {#returned_value}
 
-- テーブル。
 
-## Examples {#examples}
+## 戻り値 {#returned_value}
+
+- テーブル
+
+
+
+## 例 {#examples}
 
 入力テーブル：
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ January  │   31 │
-│  2 │ February │   29 │
-│  3 │ March    │   31 │
-│  4 │ April    │   30 │
+│  1 │ 1月  │   31 │
+│  2 │ 2月 │   29 │
+│  3 │ 3月    │   31 │
+│  4 │ 4月    │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -45,18 +53,18 @@ view(subquery)
 SELECT * FROM view(SELECT name FROM months);
 ```
 
-結果：
+結果:
 
 ```text
 ┌─name─────┐
-│ January  │
-│ February │
-│ March    │
-│ April    │
+│ 1月  │
+│ 2月 │
+│ 3月    │
+│ 4月    │
 └──────────┘
 ```
 
-`view` 関数を [remote](/sql-reference/table-functions/remote) および [cluster](/sql-reference/table-functions/cluster) テーブル関数のパラメータとして使用できます：
+`view` 関数は、[remote](/sql-reference/table-functions/remote) および [cluster](/sql-reference/table-functions/cluster) テーブル関数の引数として使用できます。
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -66,6 +74,7 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## Related {#related}
 
-- [View Table Engine](/engines/table-engines/special/view/)
+## 関連項目 {#related}
+
+- [View テーブルエンジン](/engines/table-engines/special/view/)

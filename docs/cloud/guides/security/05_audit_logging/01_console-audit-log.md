@@ -4,6 +4,7 @@ slug: /cloud/security/audit-logging/console-audit-log
 title: 'Console audit log'
 description: 'This page describes how users can review the cloud audit log'
 doc_type: 'guide'
+keywords: ['audit log']
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,7 +20,7 @@ User console activities are recorded in the audit log, which is available to use
 
 <VerticalStepper>
 
-## Select Organization {#select-org}
+## Select organization {#select-org}
 
 In ClickHouse Cloud, navigate to your organization details. 
 
@@ -27,7 +28,7 @@ In ClickHouse Cloud, navigate to your organization details.
 
 <br/>
 
-## Select Audit {#select-audit}
+## Select audit {#select-audit}
 
 Select the **Audit** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.
 

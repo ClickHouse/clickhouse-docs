@@ -1,23 +1,20 @@
 ---
-'description': '数据湖用例指南的登陆页面'
-'pagination_prev': null
-'pagination_next': null
-'slug': '/use-cases/data-lake'
-'title': '数据湖'
-'keywords':
-- 'data lake'
-- 'glue'
-- 'unity'
-- 'rest'
-'doc_type': 'landing-page'
+description: '数据湖用例指南的入口页'
+pagination_prev: null
+pagination_next: null
+slug: /use-cases/data-lake
+title: '数据湖'
+keywords: ['data lake', 'glue', 'unity', 'rest', 'OneLake']
+doc_type: 'landing-page'
 ---
 
-ClickHouse 支持与多个目录的集成（Unity、Glue、REST、Polaris 等）。
+ClickHouse 支持与多个目录服务集成（Unity、Glue、REST、Polaris 等）。
 
-| 页面 | 描述 |
+| Page | Description |
 |-----|-----|
-| [使用 ClickHouse 和 Glue 数据目录在 S3 中查询数据](/use-cases/data-lake/glue-catalog) | 使用 ClickHouse 和 Glue 数据目录查询您在 S3 存储桶中的数据。 |
-| [使用 ClickHouse 和 Unity 数据目录在 S3 中查询数据](/use-cases/data-lake/unity-catalog) | 使用 Unity 目录查询您的数据。 |
-| [使用 ClickHouse 和 REST 目录在 S3 中查询数据](/use-cases/data-lake/rest-catalog) | 使用 REST 目录（Tabular.io）查询您的数据。 |
-| [使用 ClickHouse 和 Lakekeeper 目录在 S3 中查询数据](/use-cases/data-lake/lakekeeper-catalog) | 使用 Lakekeeper 目录查询您的数据。 |
-| [使用 ClickHouse 和 Nessie 目录在 S3 中查询数据](/use-cases/data-lake/nessie-catalog) | 使用 Nessie 目录和类似 Git 的数据版本控制查询您的数据。 |
+| [Querying data in S3 using ClickHouse and the Glue Data Catalog](/use-cases/data-lake/glue-catalog) | 使用 ClickHouse 和 Glue Data Catalog 查询 S3 存储桶中的数据。 |
+| [Querying data in S3 using ClickHouse and the Unity Data Catalog](/use-cases/data-lake/unity-catalog) | 使用 Unity Catalog 查询数据。 |
+| [Querying data in S3 using ClickHouse and the REST Catalog](/use-cases/data-lake/rest-catalog) | 使用 REST Catalog（Tabular.io）查询数据。 |
+| [Querying data in S3 using ClickHouse and the Lakekeeper Catalog](/use-cases/data-lake/lakekeeper-catalog) | 使用 Lakekeeper Catalog 查询数据。 |
+| [Querying data in S3 using ClickHouse and the Nessie Catalog](/use-cases/data-lake/nessie-catalog) | 使用 Nessie Catalog 及类 Git 的数据版本控制查询数据。 |
+| [Querying data in Azure using ClickHouse and the OneLake Catalog](/use-cases/data-lake/onelake-catalog) | 在 Microsoft OneLake 中结合 ClickHouse 和 Iceberg 表格式查询数据。 |

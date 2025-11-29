@@ -1,22 +1,19 @@
 ---
-'description': '描述APPLY修饰符的文档，该修饰符允许您为查询的外部表表达式返回的每一行调用某个函数。'
-'sidebar_label': 'REPLACE'
-'slug': '/sql-reference/statements/select/replace-modifier'
-'title': '替换修饰符'
-'keywords':
-- 'REPLACE'
-- 'modifier'
-'doc_type': 'reference'
+description: '本文档介绍 REPLACE 修饰符，它允许你对查询的外层表表达式返回的每一行调用某个函数。'
+sidebar_label: 'REPLACE'
+slug: /sql-reference/statements/select/replace-modifier
+title: 'REPLACE 修饰符'
+keywords: ['REPLACE', 'modifier']
+doc_type: 'reference'
 ---
 
+# Replace 修饰符 {#replace}
 
-# Replace modifier {#replace}
+> 允许您指定一个或多个[表达式别名](/sql-reference/syntax#expression-aliases)。
 
-> 允许您指定一个或多个 [expression aliases](/sql-reference/syntax#expression-aliases)。 
+每个别名都必须与 `SELECT *` 语句中的某个列名匹配。在输出列列表中，与该别名匹配的列会被该 `REPLACE` 中的表达式替换。
 
-每个别名必须与 `SELECT *` 语句中的列名匹配。在输出列列表中，与别名匹配的列将被该 `REPLACE` 中的表达式替换。
-
-该修饰符不会改变列的名称或顺序。然而，它可以改变值和值的类型。
+该修饰符不会更改列名或列的顺序，但可以改变列的值及其类型。
 
 **语法：**
 

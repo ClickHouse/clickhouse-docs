@@ -5,6 +5,7 @@ title: 'Truncate Table'
 hide_title: false
 description: 'Truncate allows the data in a table or database to be removed, while preserving their existence.'
 doc_type: 'reference'
+keywords: ['truncate', 'delete data', 'remove data', 'clear table', 'table maintenance']
 ---
 
 Truncate allows the data in a table or database to be removed, while preserving their existence. This is a lightweight operation which cannot be reversed.

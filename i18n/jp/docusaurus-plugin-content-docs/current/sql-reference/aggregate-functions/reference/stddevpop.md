@@ -1,20 +1,19 @@
 ---
-'description': '結果は varPop の平方根に等しいです。'
-'sidebar_position': 188
-'slug': '/sql-reference/aggregate-functions/reference/stddevpop'
-'title': 'stddevPop'
-'doc_type': 'reference'
+description: '結果は varPop の平方根になります。'
+sidebar_position: 188
+slug: /sql-reference/aggregate-functions/reference/stddevpop
+title: 'stddevPop'
+doc_type: 'reference'
 ---
 
+# stddevPop {#stddevpop}
 
-# stddevPop
+結果は [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md) の平方根と等しくなります。
 
-結果は [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md) の平方根と等しいです。
-
-エイリアス: `STD`, `STDDEV_POP`.
+別名: `STD`, `STDDEV_POP`.
 
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算において [数値的安定性](https://en.wikipedia.org/wiki/Numerical_stability) が必要な場合は、[`stddevPopStable`](../reference/stddevpopstable.md) 関数を使用してください。動作は遅くなりますが、計算誤差が少なくなります。
+この関数は数値的に安定でないアルゴリズムを使用します。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`stddevPopStable`](../reference/stddevpopstable.md) 関数を使用してください。動作は遅くなりますが、計算誤差が小さくなります。
 :::
 
 **構文**
@@ -25,11 +24,11 @@ stddevPop(x)
 
 **パラメータ**
 
-- `x`: 標準偏差を求める値の集まり。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+* `x`: 標準偏差を求める対象となる値の集合。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
-**戻り値**
+**返り値**
 
-- `x` の標準偏差の平方根。[Float64](../../data-types/float.md)。
+* `x` の標準偏差の平方根。[Float64](../../data-types/float.md)。
 
 **例**
 

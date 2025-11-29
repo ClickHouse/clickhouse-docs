@@ -1,10 +1,12 @@
 ---
-'sidebar_label': 'Передача данных из MongoDB в ClickHouse'
-'description': 'Описание того, как бесшовно подключить ваш MongoDB к ClickHouse Cloud.'
-'slug': '/integrations/clickpipes/mongodb'
-'title': 'Передача данных из MongoDB в ClickHouse (с использованием CDC)'
-'doc_type': 'guide'
+sidebar_label: 'Приём данных из MongoDB в ClickHouse'
+description: 'Описывает, как бесшовно подключить MongoDB к ClickHouse Cloud.'
+slug: /integrations/clickpipes/mongodb
+title: 'Приём данных из MongoDB в ClickHouse (с использованием CDC)'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -13,92 +15,119 @@ import mongodb_connection_details from '@site/static/images/integrations/data-in
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/select-destination-db.png'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
+import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
 
-# Импорт данных из MongoDB в ClickHouse (с использованием CDC)
+# Приём данных из MongoDB в ClickHouse (с использованием CDC) {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 
 :::info
-Импорт данных из MongoDB в ClickHouse Cloud через ClickPipes находится на стадии публичного бета-тестирования.
+Приём данных из MongoDB в ClickHouse Cloud через ClickPipes находится в стадии публичного бета-тестирования.
 :::
 
 :::note
-В консоли ClickHouse Cloud и документации термины "таблица" и "коллекция" используются взаимозаменяемо для MongoDB.
+В консоли и документации ClickHouse Cloud термины «table» и «collection» для MongoDB используются взаимозаменяемо.
 :::
 
-Вы можете использовать ClickPipes для импорта данных из вашей базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может быть развернута локально или в облаке, используя такие сервисы, как MongoDB Atlas.
+Вы можете использовать ClickPipes, чтобы организовать приём данных из вашей базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием сервисов, таких как MongoDB Atlas.
 
-## Предварительные условия {#prerequisites}
 
-Для начала вам необходимо убедиться, что ваша база данных MongoDB правильно настроена для репликации. Шаги конфигурации зависят от того, как вы развертываете MongoDB, поэтому, пожалуйста, следуйте соответствующему руководству ниже:
+
+## Предварительные требования {#prerequisites}
+
+Прежде чем начать, необходимо убедиться, что ваша база данных MongoDB корректно настроена для репликации данных. Шаги настройки зависят от того, как вы разворачиваете MongoDB, поэтому выполните инструкции из соответствующего руководства ниже:
 
 1. [MongoDB Atlas](./mongodb/source/atlas)
 
-2. [Общий MongoDB](./mongodb/source/generic)
+2. [Обычная установка MongoDB](./mongodb/source/generic)
 
-После настройки вашей исходной базы данных MongoDB вы можете продолжить создание вашего ClickPipe.
+3. [Amazon DocumentDB](./mongodb/source/documentdb)
 
-## Создайте ваш ClickPipe {#create-your-clickpipe}
+После того как исходная база данных MongoDB настроена, можно продолжить создание ClickPipe.
 
-Убедитесь, что вы вошли в свою учетную запись ClickHouse Cloud. Если у вас еще нет аккаунта, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
 
-1. В консоли ClickHouse Cloud перейдите к вашему сервису ClickHouse Cloud.
+
+## Создайте свой ClickPipe {#create-your-clickpipe}
+
+Убедитесь, что вы вошли в свою учетную запись ClickHouse Cloud. Если у вас еще нет учетной записи, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
+
+1. В консоли ClickHouse Cloud перейдите к своему сервису ClickHouse Cloud.
 
 <Image img={cp_service} alt="Сервис ClickPipes" size="lg" border/>
 
-2. Выберите кнопку `Источники данных` в левом меню и нажмите "Настроить ClickPipe".
+2. В левом меню выберите кнопку `Data Sources` и нажмите "Set up a ClickPipe".
 
-<Image img={cp_step0} alt="Выберите импорт" size="lg" border/>
+<Image img={cp_step0} alt="Выбор импортов" size="lg" border/>
 
 3. Выберите плитку `MongoDB CDC`.
 
-<Image img={mongodb_tile} alt="Выберите MongoDB" size="lg" border/>
+<Image img={mongodb_tile} alt="Выбор MongoDB" size="lg" border/>
 
-### Добавьте подключение к вашей исходной базе данных MongoDB {#add-your-source-mongodb-database-connection}
+### Добавьте подключение к исходной базе данных MongoDB {#add-your-source-mongodb-database-connection}
 
-4. Заполните данные подключения для вашей исходной базы данных MongoDB, которую вы настроили на этапе предварительных условий.
+4. Заполните данные подключения к исходной базе данных MongoDB, которую вы настроили на шаге с предварительными требованиями.
 
    :::info
-   Прежде чем добавлять детали подключения, убедитесь, что вы включили IP-адреса ClickPipes в правилах вашего файервола. На следующей странице вы можете найти [список IP-адресов ClickPipes](../index.md#list-of-static-ips).
-   Для получения дополнительной информации обратитесь к руководствам настройки исходной MongoDB, связанным в [начале этой страницы](#prerequisites).
+   Прежде чем добавлять данные подключения, убедитесь, что вы внесли IP-адреса ClickPipes в список разрешённых в правилах своего брандмауэра. На следующей странице вы можете найти [список IP-адресов ClickPipes](../index.md#list-of-static-ips).
+   Для получения дополнительной информации обратитесь к руководствам по настройке исходной MongoDB, указанным [в начале этой страницы](#prerequisites).
    :::
 
-   <Image img={mongodb_connection_details} alt="Заполните данные подключения" size="lg" border/>
+   <Image img={mongodb_connection_details} alt="Заполнение данных подключения" size="lg" border/>
 
-Как только данные подключения заполнены, нажмите `Далее`.
+#### (Необязательно) Настройка SSH-туннелирования {#optional-set-up-ssh-tunneling}
 
-#### Настройте расширенные параметры {#advanced-settings}
+Вы можете указать параметры SSH-туннелирования, если ваша исходная база данных MongoDB недоступна из публичной сети.
+
+1. Включите переключатель "Use SSH Tunnelling".
+2. Заполните данные SSH-подключения.
+
+   <Image img={ssh_tunnel} alt="SSH-туннелирование" size="lg" border/>
+
+3. Чтобы использовать аутентификацию по ключу, нажмите "Revoke and generate key pair", чтобы сгенерировать новую пару ключей, и скопируйте сгенерированный открытый ключ на SSH-сервер в файл `~/.ssh/authorized_keys`.
+4. Нажмите "Verify Connection", чтобы проверить подключение.
+
+:::note
+Убедитесь, что вы внесли [IP-адреса ClickPipes](../clickpipes#list-of-static-ips) в список разрешённых в правилах брандмауэра для SSH bastion-хоста, чтобы ClickPipes мог установить SSH-туннель.
+:::
+
+После заполнения данных подключения нажмите `Next`.
+
+#### Настройка расширенных параметров {#advanced-settings}
 
 При необходимости вы можете настроить расширенные параметры. Краткое описание каждого параметра приведено ниже:
 
-- **Интервал синхронизации**: Это интервал, с которым ClickPipes будет опрашивать исходную базу данных на предмет изменений. Это влияет на сервис ClickHouse, поэтому для пользователей, озабоченных затратами, мы рекомендуем устанавливать это значение выше (более `3600`).
-- **Размер пакета извлечения**: Количество строк, которые будут извлечены за один раз. Это настройка, основанная на лучших усилиях, и может не соблюдаться во всех случаях.
-- **Количество таблиц, извлекаемых параллельно**: Это количество таблиц, которые будут извлекаться параллельно во время начального снимка. Это полезно, когда у вас большое количество таблиц, и вы хотите контролировать количество извлекаемых таблиц параллельно.
+- **Sync interval**: интервал, с которым ClickPipes будет опрашивать исходную базу данных на наличие изменений. Это влияет на целевой сервис ClickHouse; для пользователей, чувствительных к стоимости, мы рекомендуем устанавливать более высокое значение (более `3600`).
+- **Pull batch size**: количество строк, выбираемых за один пакет. Это параметр с режимом best-effort и он может не соблюдаться во всех случаях.
+- **Snapshot number of tables in parallel**: количество таблиц, которые будут выгружаться параллельно во время первоначального snapshot-а. Это полезно, если у вас много таблиц и вы хотите контролировать количество таблиц, обрабатываемых параллельно.
 
-### Настройте таблицы {#configure-the-tables}
+### Настройка таблиц {#configure-the-tables}
 
-5. Здесь вы можете выбрать целевую базу данных для вашего ClickPipe. Вы можете выбрать существующую базу данных или создать новую.
+5. Здесь вы можете выбрать целевую базу данных для своего ClickPipe. Вы можете выбрать существующую базу данных или создать новую.
 
-   <Image img={select_destination_db} alt="Выберите целевую базу данных" size="lg" border/>
+   <Image img={select_destination_db} alt="Выбор целевой базы данных" size="lg" border/>
 
-6. Вы можете выбрать таблицы, которые хотите реплицировать из исходной базы данных MongoDB. При выборе таблиц вы также можете переименовать их в целевой базе данных ClickHouse.
+6. Вы можете выбрать таблицы, которые хотите реплицировать из исходной базы данных MongoDB. При выборе таблиц вы также можете переименовать таблицы в целевой базе данных ClickHouse.
 
-### Проверьте права доступа и начните ClickPipe {#review-permissions-and-start-the-clickpipe}
+### Проверьте права доступа и запустите ClickPipe {#review-permissions-and-start-the-clickpipe}
 
-7. Выберите роль "Полный доступ" из выпадающего списка прав доступа и нажмите "Завершить настройку".
+7. Выберите роль "Full access" в раскрывающемся списке прав доступа и нажмите "Complete Setup".
 
-   <Image img={ch_permissions} alt="Проверьте права доступа" size="lg" border/>
+   <Image img={ch_permissions} alt="Проверка прав доступа" size="lg" border/>
+
+
 
 ## Что дальше? {#whats-next}
 
-После того как вы настроили ваш ClickPipe для репликации данных из MongoDB в ClickHouse Cloud, вы можете сосредоточиться на том, как запрашивать и моделировать ваши данные для оптимальной производительности.
+После того как вы настроили ClickPipe для репликации данных из MongoDB в ClickHouse Cloud, можно сосредоточиться на том, как строить запросы и моделировать данные для оптимальной производительности.
 
-## Замечания {#caveats}
 
-Вот несколько замечаний, которые стоит учитывать при использовании этого коннектора:
 
-- Мы требуем версию MongoDB 5.1.0 или выше.
-- Мы используем нативное API Change Streams MongoDB для CDC, которое основано на oplog MongoDB для захвата изменений в реальном времени. 
-- Документы из MongoDB по умолчанию реплицируются в ClickHouse в виде типа JSON. Это позволяет гибко управлять схемой и использовать богатый набор операторов JSON в ClickHouse для запросов и аналитики. Вы можете узнать больше о запросах к JSON данным [здесь](https://clickhouse.com/docs/sql-reference/data-types/newjson).
-- Конфигурация PrivateLink с самообслуживанием в настоящее время недоступна. Если вы находитесь на AWS и нуждаетесь в PrivateLink, пожалуйста, свяжитесь с db-integrations-support@clickhouse.com или создайте тикет в поддержку — мы поможем вам с его включением.
+## Ограничения {#caveats}
+
+Ниже приведены несколько ограничений, которые следует учитывать при использовании этого коннектора:
+
+- Требуется версия MongoDB 5.1.0+.
+- Для CDC мы используем родной API MongoDB Change Streams, который полагается на MongoDB oplog для фиксации изменений в реальном времени. 
+- Документы из MongoDB по умолчанию реплицируются в ClickHouse как тип данных JSON. Это обеспечивает гибкое управление схемой и позволяет использовать богатый набор JSON-операторов в ClickHouse для запросов и аналитики. Подробнее о выполнении запросов к JSON-данным можно узнать [здесь](https://clickhouse.com/docs/sql-reference/data-types/newjson).
+- Самостоятельная конфигурация PrivateLink в настоящее время недоступна. Если вы используете AWS и вам необходим PrivateLink, свяжитесь с нами по адресу db-integrations-support@clickhouse.com или создайте заявку в службу поддержки — мы поможем вам его включить.

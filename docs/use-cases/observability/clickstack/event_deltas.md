@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Event Deltas with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'event deltas', 'change tracking', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

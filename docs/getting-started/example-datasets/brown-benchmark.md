@@ -3,6 +3,7 @@ description: 'A new analytical benchmark for machine-generated log data'
 sidebar_label: 'Brown university benchmark'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Brown University Benchmark'
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
 doc_type: 'guide'
 ---
 

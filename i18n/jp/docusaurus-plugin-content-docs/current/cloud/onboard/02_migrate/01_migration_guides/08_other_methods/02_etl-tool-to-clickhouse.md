@@ -1,33 +1,23 @@
 ---
-'sidebar_label': '3rd-party ETLツールの使用'
-'keywords':
-- 'clickhouse'
-- 'migrate'
-- 'migration'
-- 'migrating'
-- 'data'
-- 'etl'
-- 'elt'
-- 'clickhouse-local'
-- 'clickhouse-client'
-'slug': '/cloud/migration/etl-tool-to-clickhouse'
-'title': '3rd-party ETLツールの使用'
-'description': 'ClickHouseと一緒に3rd-party ETLツールを使用する方法を説明するページ'
-'doc_type': 'guide'
+sidebar_label: 'サードパーティ製 ETL ツールの利用'
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+slug: /cloud/migration/etl-tool-to-clickhouse
+title: 'サードパーティ製 ETL ツールの利用'
+description: 'ClickHouse でサードパーティ製 ETL ツールを利用する方法を説明するページ'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import third_party_01 from '@site/static/images/integrations/migration/third-party-01.png';
 
+# サードパーティ製 ETL ツールの利用 {#using-a-3rd-party-etl-tool}
 
-# Using a 3rd-party ETL Tool
+<Image img={third_party_01} size="sm" alt="自己管理型 ClickHouse の移行" background="white" />
 
-<Image img={third_party_01} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+外部データソースから ClickHouse にデータを移動する優れた方法の 1 つは、数多く存在する一般的な ETL/ELT ツールのいずれかを利用することです。以下のツールについてはドキュメントを用意しています。
 
-外部データソースからClickHouseへのデータ移行に最適なオプションは、多くの人気のETLおよびELTの1つを使用することです。以下のドキュメントがあります：
+* [Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)
+* [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)
+* [Vector](/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md)
 
-- [Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)
-- [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)
-- [Vector](/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md)
-
-しかし、ClickHouseと統合できる他の多くのETL/ELTツールもあるため、お気に入りのツールのドキュメントを確認して詳細を確認してください。
+なお、ClickHouse と連携できる ETL/ELT ツールは他にも多数あります。ご利用中（あるいはお好み）のツールについては、そのツールのドキュメントを参照して詳細を確認してください。

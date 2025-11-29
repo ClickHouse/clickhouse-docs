@@ -1,15 +1,14 @@
 ---
-'description': '合計を計算します。数字のみに対応しています。'
-'sidebar_position': 195
-'slug': '/sql-reference/aggregate-functions/reference/sum'
-'title': 'sum'
-'doc_type': 'reference'
+description: '合計を計算します。数値に対してのみ使用できます。'
+sidebar_position: 195
+slug: /sql-reference/aggregate-functions/reference/sum
+title: 'sum'
+doc_type: 'reference'
 ---
 
+# sum {#sum}
 
-# sum
-
-合計を計算します。数値のみに対応しています。
+合計を計算します。数値に対してのみ使用できます。
 
 **構文**
 
@@ -18,15 +17,16 @@ sum(num)
 ```
 
 **パラメータ**
-- `num`: 数値のカラム。[(U)Int*](../../data-types/int-uint.md)、 [Float*](../../data-types/float.md)、 [Decimal*](../../data-types/decimal.md)。
+
+* `num`: 数値の列。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **戻り値**
 
-- 値の合計。[(U)Int*](../../data-types/int-uint.md)、 [Float*](../../data-types/float.md)、 [Decimal*](../../data-types/decimal.md)。
+* 値の合計。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **例**
 
-最初に `employees` というテーブルを作成し、架空の従業員データを挿入します。
+まずテーブル `employees` を作成し、架空の従業員データを挿入します。
 
 クエリ:
 
@@ -48,7 +48,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-`sum` 関数を使用して従業員の給与の合計額を問い合わせます。
+`sum` 関数を使用して、従業員の給与総額を取得します。
 
 クエリ:
 

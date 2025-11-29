@@ -1,16 +1,16 @@
 ---
-'description': 'lagウィンドウ関数のDocumentation'
-'sidebar_label': 'lag'
-'sidebar_position': 9
-'slug': '/sql-reference/window-functions/lag'
-'title': 'lag'
-'doc_type': 'reference'
+description: 'lag ウィンドウ関数のドキュメント'
+sidebar_label: 'lag'
+sidebar_position: 9
+slug: /sql-reference/window-functions/lag
+title: 'lag'
+doc_type: 'reference'
 ---
 
+# lag {#lag}
 
-# lag
-
-指定された物理オフセットで現在の行の前にある行で評価された値を返します。この関数は[`lagInFrame`](./lagInFrame.md)に似ていますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` フレームを使用します。
+順序付けされたフレーム内で、現在の行から指定された物理オフセットだけ前に位置する行で評価された値を返します。
+この関数は [`lagInFrame`](./lagInFrame.md) と似ていますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` フレームを使用します。
 
 **構文**
 
@@ -21,31 +21,31 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については [Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
 **パラメータ**
 
-- `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可 - デフォルトは `1`)。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。(省略可 - 省略した場合のカラムタイプのデフォルト値)。
+* `x` — 列名。
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - デフォルトは `1`)。
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時は列型のデフォルト値)。
 
 **返される値**
 
-- 注文されたフレーム内で現在の行の前にある指定された物理オフセットで評価された行の値。
+* 順序付けされたフレーム内で、現在の行から指定された物理オフセットだけ前（過去側）にある行で評価された値。
 
 **例**
 
-この例では、特定の株の歴史的データを見て、`lag` 関数を使用して株価の終値の前日比とパーセンテージ変化を計算します。
+この例では、特定の銘柄の過去データを参照し、`lag` 関数を使用して株価終値の日々の差分およびパーセンテージ変化を計算します。
 
 ```sql title="Query"
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- opening price
-    `high`   Float32, -- daily high
-    `low`    Float32, -- daily low
-    `close`  Float32, -- closing price
-    `volume` UInt32   -- trade volume
+    `open`   Float32, -- 始値
+    `high`   Float32, -- 高値
+    `low`    Float32, -- 安値
+    `close`  Float32, -- 終値
+    `volume` UInt32   -- 出来高
 )
 Engine = Memory;
 
@@ -69,7 +69,7 @@ ORDER BY date DESC
 ```
 
 ```response title="Response"
-   ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
+   ┌───────日付─┬──終値─┬─前日終値─┬─変動─┬─変動率─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │
 3. │ 2024-06-05 │ 122.44 │             116.44 │     6 │           5.15 │

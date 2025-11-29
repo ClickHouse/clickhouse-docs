@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactEachRow 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONCompactEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactEachRow'
-'title': 'JSONCompactEachRow'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactEachRow 格式文档'
+input_format: true
+keywords: ['JSONCompactEachRow']
+output_format: true
+slug: /interfaces/formats/JSONCompactEachRow
+title: 'JSONCompactEachRow'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,13 +15,13 @@
 
 ## 描述 {#description}
 
-仅与 [`JSONEachRow`](./JSONEachRow.md) 不同的是，数据行作为数组输出，而不是作为对象。
+与 [`JSONEachRow`](./JSONEachRow.md) 的唯一区别在于，数据行以数组而非对象的形式输出。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用名为 `football.json` 的 JSON 文件，其中包含以下数据：
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]
@@ -50,9 +49,10 @@
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRow;
 ```
 
+
 ### 读取数据 {#reading-data}
 
-使用 `JSONCompactEachRow` 格式读取数据：
+使用 `JSONCompactEachRow` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -81,5 +81,6 @@ FORMAT JSONCompactEachRow
 ["2022-05-07", 2021, "Stevenage Borough", "Salford City", 4, 2]
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
+
 
 ## 格式设置 {#format-settings}

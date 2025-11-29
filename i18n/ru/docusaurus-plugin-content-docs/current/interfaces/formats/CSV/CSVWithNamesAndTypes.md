@@ -1,29 +1,31 @@
 ---
-slug: '/interfaces/formats/CSVWithNamesAndTypes'
-description: 'Документация для формата CSVWithNamesAndTypes'
-title: CSVWithNamesAndTypes
-keywords: ['CSVWithNamesAndTypes']
-doc_type: reference
+alias: []
+description: 'Документация по формату CSVWithNamesAndTypes'
 input_format: true
+keywords: ['CSVWithNamesAndTypes']
 output_format: true
+slug: /interfaces/formats/CSVWithNamesAndTypes
+title: 'CSVWithNamesAndTypes'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Также печатает две строки заголовка с названиями и типами колонок, аналогично [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes).
+Также выводит две заголовочные строки с именами и типами столбцов, аналогично формату [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes).
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
 :::tip
-Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse будет автоматически определять заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
+Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически распознаёт заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
 :::
 
-Используя следующий CSV-файл, названный `football_types.csv`:
+Используем следующий CSV-файл с именем `football_types.csv`:
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -69,9 +71,10 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
+
 ### Чтение данных {#reading-data}
 
-Чтите данные, используя формат `CSVWithNamesAndTypes`:
+Прочитайте данные в формате `CSVWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -79,7 +82,7 @@ FROM football
 FORMAT CSVWithNamesAndTypes
 ```
 
-Выход будет в формате CSV с двумя строками заголовка для названий и типов колонок:
+Результатом будет CSV с двумя строками заголовков: одна для названий столбцов, другая — для их типов:
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -103,12 +106,16 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
 
+
 ## Настройки формата {#format-settings}
 
 :::note
-Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в `1`, колонки из входных данных будут сопоставляться с колонками из таблицы по их названиям, колонки с неизвестными названиями будут пропущены, если настройка [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`. В противном случае первая строка будет пропущена.
+Если параметр [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в значение `1`,
+столбцы из входных данных будут сопоставляться со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если параметр [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение `1`.
+В противном случае первая строка будет пропущена.
 :::
 
 :::note
-Если настройка [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в `1`, типы из входных данных будут сравниваться с типами соответствующих колонок из таблицы. В противном случае вторая строка будет пропущена.
+Если параметр [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлен в значение `1`,
+типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::

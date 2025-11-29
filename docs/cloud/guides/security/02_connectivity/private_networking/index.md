@@ -4,6 +4,7 @@ title: 'Private networking'
 hide_title: true
 description: 'Table of contents page for the ClickHouse Cloud private networking section'
 doc_type: 'landing-page'
+keywords: ['private networking', 'network security', 'vpc', 'connectivity', 'cloud features']
 ---
 
 # Private networking

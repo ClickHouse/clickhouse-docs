@@ -1,34 +1,36 @@
 ---
-'description': 'Агрегатная функция, которая вычисляет подобные PromQL сбросы над данными
-  временных рядов на заданной сетке.'
-'sidebar_position': 230
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesResetsToGrid'
-'title': 'timeSeriesResetsToGrid'
-'doc_type': 'reference'
+description: 'Агрегатная функция, которая вычисляет PromQL-подобные resets для данных временных рядов на заданной сетке.'
+sidebar_position: 230
+slug: /sql-reference/aggregate-functions/reference/timeSeriesResetsToGrid
+title: 'timeSeriesResetsToGrid'
+doc_type: 'reference'
 ---
-Агрегатная функция, которая принимает данные временных рядов в виде пар временных меток и значений и вычисляет [сбросы, похожие на PromQL](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets) из этих данных на регулярной временной сетке, описываемой начальной временной меткой, конечной временной меткой и шагом. Для каждой точки на сетке образцы для вычисления `resets` рассматриваются в пределах указанного временного окна.
+
+Агрегатная функция, которая принимает данные временных рядов в виде пар меток времени и значений и вычисляет [PromQL-подобные resets](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets) для этих данных на регулярной временной сетке, описанной начальной меткой времени, конечной меткой времени и шагом. Для каждой точки сетки образцы для вычисления `resets` рассматриваются в пределах заданного временного окна.
 
 Параметры:
-- `start timestamp` - задает начало сетки
-- `end timestamp` - задает конец сетки
-- `grid step` - задает шаг сетки в секундах
-- `staleness` - задает максимальную "устаревшесть" в секундах рассматриваемых образцов
+
+* `start timestamp` — задаёт начало сетки
+* `end timestamp` — задаёт конец сетки
+* `grid step` — задаёт шаг сетки в секундах
+* `staleness` — задаёт максимальный период «устаревания» в секундах для учитываемых образцов
 
 Аргументы:
-- `timestamp` - временная метка образца
-- `value` - значение временного ряда, соответствующее `timestamp`
+
+* `timestamp` — метка времени образца
+* `value` — значение временного ряда, соответствующее `timestamp`
 
 Возвращаемое значение:
-Значения `resets` на указанной сетке в виде `Array(Nullable(Float64))`. Возвращаемый массив содержит одно значение для каждой точки временной сетки. Значение равно NULL, если нет образцов в окне для вычисления значения сброса для конкретной точки сетки.
+значения `resets` на заданной сетке в виде `Array(Nullable(Float64))`. Возвращаемый массив содержит одно значение для каждой точки временной сетки. Значение равно NULL, если в окне нет образцов для вычисления значения `resets` для конкретной точки сетки.
 
 Пример:
 Следующий запрос вычисляет значения `resets` на сетке [90, 105, 120, 135, 150, 165, 180, 195, 210, 225]:
 
 ```sql
 WITH
-    -- NOTE: the gap between 130 and 190 is to show how values are filled for ts = 180 according to window paramater
+    -- ПРИМЕЧАНИЕ: интервал между 130 и 190 показывает, как заполняются значения для ts = 180 в соответствии с параметром окна
     [110, 120, 130, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
-    [1, 3, 2, 6, 6, 4, 2, 0]::Array(Float32) AS values, -- array of values corresponding to timestamps above
+    [1, 3, 2, 6, 6, 4, 2, 0]::Array(Float32) AS values, -- массив значений, соответствующих указанным выше временным меткам
     90 AS start_ts,       -- start of timestamp grid
     90 + 135 AS end_ts,   -- end of timestamp grid
     15 AS step_seconds,   -- step of timestamp grid
@@ -36,7 +38,7 @@ WITH
 SELECT timeSeriesResetsToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
+    -- Этот подзапрос преобразует массивы временных меток и значений в строки с полями `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -52,7 +54,7 @@ FROM
    └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Также можно передать несколько образцов временных меток и значений в виде массивов одинакового размера. Тот же запрос с массивами аргументов:
+Также можно передать несколько пар меток времени и значений в виде массивов одинакового размера. Тот же запрос с аргументами-массивами:
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesResetsToGrid(start_ts, end_ts, step_seconds, window_seconds)(ti
 ```
 
 :::note
-Эта функция является экспериментальной, включите ее, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
+Эта функция экспериментальная. Включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
 :::

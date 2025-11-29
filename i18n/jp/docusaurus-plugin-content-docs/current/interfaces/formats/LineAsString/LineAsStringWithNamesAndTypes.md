@@ -1,24 +1,28 @@
 ---
-'alias': []
-'description': 'LineAsStringWithNamesAndTypes フォーマットの Documentation'
-'input_format': false
-'keywords':
-- 'LineAsStringWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/LineAsStringWithNamesAndTypes'
-'title': 'LineAsStringWithNamesAndTypes'
-'doc_type': 'reference'
+alias: []
+description: 'LineAsStringWithNamesAndTypes 形式に関するドキュメント'
+input_format: false
+keywords: ['LineAsStringWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/LineAsStringWithNamesAndTypes
+title: 'LineAsStringWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
-|------|------|----------|
-| ✗    | ✔    |          |
+| 入力 | 出力 | 別名 |
+|-------|--------|-------|
+| ✗     | ✔      |       |
+
+
 
 ## 説明 {#description}
 
-`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、2つのヘッダ行を印刷します。一つはカラム名、もう一つはタイプです。
+`LineAsStringWithNames` フォーマットは [`LineAsString`](./LineAsString.md) フォーマットに似ていますが、
+2 行のヘッダー行を出力します。1 行目は列名、2 行目は型です。
 
-## 例の使用法 {#example-usage}
+
+
+## 使用例 {#example-usage}
 
 ```sql
 CREATE TABLE example (
@@ -39,5 +43,6 @@ John    30
 Jane    25
 Peter    35
 ```
+
 
 ## フォーマット設定 {#format-settings}

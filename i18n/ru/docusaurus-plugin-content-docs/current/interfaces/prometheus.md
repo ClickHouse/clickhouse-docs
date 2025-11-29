@@ -1,22 +1,23 @@
 ---
-slug: '/interfaces/prometheus'
+description: 'Документация по поддержке протокола Prometheus в ClickHouse'
 sidebar_label: 'Протоколы Prometheus'
 sidebar_position: 19
-description: 'Документация по поддержке протокола Prometheus в ClickHouse'
+slug: /interfaces/prometheus
 title: 'Протоколы Prometheus'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Протоколы Prometheus
 
-## Экспорт метрик {#expose}
+# Протоколы Prometheus {#prometheus-protocols}
+
+## Предоставление метрик {#expose}
 
 :::note
-Если вы используете ClickHouse Cloud, вы можете экспортировать метрики в Prometheus, используя [Prometheus Integration](/integrations/prometheus).
+Если вы используете ClickHouse Cloud, вы можете передавать метрики в Prometheus с помощью [Prometheus Integration](/integrations/prometheus).
 :::
 
-ClickHouse может экспортировать свои собственные метрики для извлечения из Prometheus:
+ClickHouse может предоставлять собственные метрики для сбора Prometheus:
 
-```xml
+````xml
 <prometheus>
     <port>9363</port>
     <endpoint>/metrics</endpoint>
@@ -28,8 +29,8 @@ ClickHouse может экспортировать свои собственны
     <dimensional_metrics>true</dimensional_metrics>
 </prometheus>
 
-Section `<prometheus.handlers>` can be used to make more extended handlers.
-This section is similar to [<http_handlers>](/interfaces/http) but works for prometheus protocols:
+Секция `<prometheus.handlers>` может использоваться для создания расширенных обработчиков.
+Эта секция аналогична [<http_handlers>](/interfaces/http), но работает с протоколами prometheus:
 
 ```xml
 <prometheus>
@@ -49,31 +50,33 @@ This section is similar to [<http_handlers>](/interfaces/http) but works for pro
         </my_rule_1>
     </handlers>
 </prometheus>
-```
+````
 
 Настройки:
 
-| Имя                          | Значение по умолчанию | Описание                                                                                                                                                                                   |
-|------------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `port`                       | none                  | Порт для обслуживания протокола экспорта метрик.                                                                                                                                         |
-| `endpoint`                   | `/metrics`            | HTTP конечная точка для извлечения метрик сервером prometheus. Начинается с `/`. Не должен использоваться вместе с разделом `<handlers>`.                                               |
-| `url` / `headers` / `method` | none                  | Фильтры, используемые для поиска соответствующего обработчика для запроса. Аналогично полям с такими же именами в разделе [`<http_handlers>`](/interfaces/http).                         |
-| `metrics`                    | true                  | Экспортировать метрики из таблицы [system.metrics](/operations/system-tables/metrics).                                                                                                   |
-| `asynchronous_metrics`       | true                  | Экспортировать текущие значения метрик из таблицы [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics).                                                          |
-| `events`                     | true                  | Экспортировать метрики из таблицы [system.events](/operations/system-tables/events).                                                                                                     |
-| `errors`                     | true                  | Экспортировать количество ошибок по кодам ошибок, произошедших с момента последнего перезапуска сервера. Эта информация также может быть получена из [system.errors](/operations/system-tables/errors). |
-| `histograms`                 | true                  | Экспортировать метрики гистограммы из [system.histogram_metrics](/operations/system-tables/histogram_metrics)                                                                                                          |
-| `dimensional_metrics`        | true                  | Экспортировать размерные метрики из [system.dimensional_metrics](/operations/system-tables/dimensional_metrics)                                                                         |
+| Name                         | Default    | Description                                                                                                                                                                                                |
+| ---------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `port`                       | none       | Порт для публикации метрик.                                                                                                                                                                                |
+| `endpoint`                   | `/metrics` | HTTP-эндпоинт для сбора метрик сервером Prometheus. Должен начинаться с `/`. Не должен использоваться совместно с разделом `<handlers>`.                                                                   |
+| `url` / `headers` / `method` | none       | Фильтры, используемые для поиска обработчика, соответствующего запросу. Аналогичны полям с теми же именами в разделе [`<http_handlers>`](/interfaces/http).                                                |
+| `metrics`                    | true       | Экспортировать метрики из таблицы [system.metrics](/operations/system-tables/metrics).                                                                                                                     |
+| `asynchronous_metrics`       | true       | Экспортировать текущие значения метрик из таблицы [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics).                                                                       |
+| `events`                     | true       | Экспортировать метрики из таблицы [system.events](/operations/system-tables/events).                                                                                                                       |
+| `errors`                     | true       | Экспортировать количество ошибок по кодам ошибок, произошедших с момента последнего перезапуска сервера. Эту информацию также можно получить из таблицы [system.errors](/operations/system-tables/errors). |
+| `histograms`                 | true       | Экспортировать гистограммные метрики из [system.histogram&#95;metrics](/operations/system-tables/histogram_metrics).                                                                                       |
+| `dimensional_metrics`        | true       | Экспортировать размерные метрики из [system.dimensional&#95;metrics](/operations/system-tables/dimensional_metrics).                                                                                       |
 
 Проверьте (замените `127.0.0.1` на IP-адрес или имя хоста вашего сервера ClickHouse):
+
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
 
-## Протокол удаленной записи {#remote-write}
+## Протокол remote-write {#remote-write}
 
 ClickHouse поддерживает протокол [remote-write](https://prometheus.io/docs/specs/remote_write_spec/).
-Данные принимаются по этому протоколу и записываются в таблицу [TimeSeries](/engines/table-engines/special/time_series) (которая должна быть создана заранее).
+Данные принимаются с использованием этого протокола и записываются в таблицу [TimeSeries](/engines/table-engines/special/time_series)
+(которую необходимо создать заранее).
 
 ```xml
 <prometheus>
@@ -91,19 +94,19 @@ ClickHouse поддерживает протокол [remote-write](https://prom
 </prometheus>
 ```
 
-Настройки:
+Settings:
 
-| Имя                          | Значение по умолчанию | Описание                                                                                                                                                                                      |
-|------------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `port`                       | none                  | Порт для обслуживания протокола `remote-write`.                                                                                                                                             |
-| `url` / `headers` / `method` | none                  | Фильтры, используемые для поиска соответствующего обработчика для запроса. Аналогично полям с такими же именами в разделе [`<http_handlers>`](/interfaces/http).                         |
-| `table`                      | none                  | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series) для записи данных, полученных по протоколу `remote-write`. Это имя может опционально содержать имя базы данных также. |
-| `database`                   | none                  | Имя базы данных, в которой находится таблица, указанная в настройке `table`, если это не указано в настройке `table`.                                                                      |
+| Name                         | Default | Description                                                                                                                                                                                                  |
+| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `port`                       | none    | Порт для обработки протокола `remote-write`.                                                                                                                                                                 |
+| `url` / `headers` / `method` | none    | Фильтры, используемые для поиска подходящего обработчика запроса. Аналогичны полям с теми же именами в разделе [`<http_handlers>`](/interfaces/http).                                                        |
+| `table`                      | none    | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series), в которую записываются данные, полученные по протоколу `remote-write`. Это имя при необходимости также может включать имя базы данных. |
+| `database`                   | none    | Имя базы данных, в которой находится таблица, указанная в настройке `table`, если оно не указано в самой настройке `table`.                                                                                  |
 
-## Протокол удаленного чтения {#remote-read}
+## Протокол remote-read {#remote-read}
 
 ClickHouse поддерживает протокол [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/).
-Данные читаются из таблицы [TimeSeries](/engines/table-engines/special/time_series) и отправляются по этому протоколу.
+Данные читаются из таблицы [TimeSeries](/engines/table-engines/special/time_series) и передаются по этому протоколу.
 
 ```xml
 <prometheus>
@@ -121,18 +124,18 @@ ClickHouse поддерживает протокол [remote-read](https://prome
 </prometheus>
 ```
 
-Настройки:
+Параметры:
 
-| Имя                          | Значение по умолчанию | Описание                                                                                                                                                                                     |
-|------------------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `port`                       | none                  | Порт для обслуживания протокола `remote-read`.                                                                                                                                             |
-| `url` / `headers` / `method` | none                  | Фильтры, используемые для поиска соответствующего обработчика для запроса. Аналогично полям с такими же именами в разделе [`<http_handlers>`](/interfaces/http).                       |
-| `table`                      | none                  | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series) для чтения данных, которые будут отправлены по протоколу `remote-read`. Это имя может опционально содержать имя базы данных также. |
-| `database`                   | none                  | Имя базы данных, в которой находится таблица, указанная в настройке `table`, если это не указано в настройке `table`.                                                                       |
+| Name                         | Default | Description                                                                                                                                                                                         |
+| ---------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `port`                       | none    | Порт для обработки протокола `remote-read`.                                                                                                                                                         |
+| `url` / `headers` / `method` | none    | Фильтры, используемые для поиска обработчика, соответствующего запросу. Аналогичны полям с теми же именами в разделе [`<http_handlers>`](/interfaces/http).                                         |
+| `table`                      | none    | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series), из которой читаются данные для отправки по протоколу `remote-read`. При необходимости это имя может включать имя базы данных. |
+| `database`                   | none    | Имя базы данных, в которой находится таблица, указанная в параметре `table`, если оно не указано в значении параметра `table`.                                                                      |
 
-## Конфигурация для нескольких протоколов {#multiple-protocols}
+## Конфигурация нескольких протоколов {#multiple-protocols}
 
-Несколько протоколов могут быть указаны вместе в одном месте:
+Несколько протоколов можно задать вместе в одном конфигурационном блоке:
 
 ```xml
 <prometheus>

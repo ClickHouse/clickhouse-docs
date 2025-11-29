@@ -1,32 +1,52 @@
 ---
 sidebar_position: 1
-slug: '/tips-and-tricks/too-many-parts'
-sidebar_label: 'Проблема «too many parts»'
-doc_type: guide
-keywords: ['clickhouse too many parts', 'too many parts error', 'clickhouse insert batching', 'part explosion problem', 'clickhouse merge performance', 'batch insert optimization', 'clickhouse async inserts', 'small insert problems', 'clickhouse parts management', 'insert performance optimization', 'clickhouse batching strategy', 'database insert patterns']
-title: 'Уроки - Проблема Too Many Parts'
-description: 'Решения и предотвращение проблемы Too Many Parts'
+slug: /tips-and-tricks/too-many-parts
+sidebar_label: 'Слишком много частей'
+doc_type: 'guide'
+keywords: [
+  'clickhouse слишком много частей',
+  'ошибка "Too many parts"',
+  'clickhouse пакетирование вставок',
+  'проблема взрывного роста числа частей',
+  'производительность слияний clickhouse',
+  'оптимизация пакетных вставок',
+  'clickhouse асинхронные вставки',
+  'проблемы с маленькими вставками',
+  'управление частями clickhouse',
+  'оптимизация производительности вставки',
+  'стратегия пакетирования вставок clickhouse',
+  'шаблоны вставки в базу данных'
+]
+title: 'Уроки — проблема «Too many parts»'
+description: 'Решения и предотвращение проблемы «Too many parts»'
 ---
-# Проблема «too many parts» {#the-too-many-parts-problem}
-*Этот гайд является частью собрания выводов, полученных в ходе встреч сообщества. Для получения более практических решений и инсайтов вы можете [просмотреть конкретные проблемы](./community-wisdom.md).*
-*Нужны дополнительные советы по оптимизации производительности? Ознакомьтесь с гайдом по [Оптимизации производительности](./performance-optimization.md) сообщества.*
+
+
+
+# Проблема слишком большого количества частей {#the-too-many-parts-problem}
+*Это руководство является частью сборника выводов, полученных на встречах сообщества. Для получения большего количества практических решений и инсайтов вы можете [подобрать материалы по конкретным проблемам](./community-wisdom.md).*
+*Нужны дополнительные советы по оптимизации производительности? Ознакомьтесь с руководством с инсайтами от сообщества по теме [Performance Optimization](./performance-optimization.md).*
+
+
 
 ## Понимание проблемы {#understanding-the-problem}
 
-ClickHouse выдает ошибку "Too many parts", чтобы предотвратить серьезное ухудшение производительности. Маленькие части вызывают несколько проблем: низкая производительность запросов из-за чтения и слияния большего количества файлов во время запросов, увеличение использования памяти, так как каждая часть требует метаданных в памяти, снижение эффективности сжатия, поскольку меньшие блоки данных сжимаются менее эффективно, более высокие накладные расходы на I/O из-за большего количества дескрипторов файлов и операций поиска, а также замедление фоновых слияний, что увеличивает нагрузку на планировщик слияний.
+ClickHouse выдает ошибку «Too many parts», чтобы предотвратить серьезную деградацию производительности. Мелкие части данных вызывают несколько проблем: низкую производительность запросов из‑за чтения и слияния большего числа файлов во время выполнения запросов, повышенное потребление памяти, поскольку каждая часть требует метаданных в памяти, снижение эффективности сжатия, так как меньшие блоки данных сжимаются менее эффективно, более высокие накладные расходы на операции ввода‑вывода (I/O) из‑за большего количества файловых дескрипторов и операций позиционирования в файлах, а также более медленные фоновые слияния, поскольку планировщик слияний получает больше работы.
 
 **Связанные документы**
 - [Движок MergeTree](/engines/table-engines/mergetree-family/mergetree)
 - [Части](/parts)
-- [Системная таблица частей](/operations/system-tables/parts)
+- [Системная таблица parts](/operations/system-tables/parts)
 
-## Раннее распознавание проблемы {#recognize-parts-problem}
 
-Этот запрос отслеживает фрагментацию таблиц, анализируя количество и размер частей во всех активных таблицах. Он выявляет таблицы с избыточными или слишком маленькими частями, которые могут требовать оптимизации слияния. Используйте это регулярно, чтобы выявлять проблемы с фрагментацией до того, как они повлияют на производительность запросов.
+
+## Раннее выявление проблемы {#recognize-parts-problem}
+
+Этот запрос отслеживает фрагментацию таблиц, анализируя количество и размеры частей во всех активных таблицах. Он выявляет таблицы с чрезмерным количеством или слишком мелкими частями, которым может потребоваться оптимизация слияния. Используйте его регулярно, чтобы обнаруживать проблемы фрагментации до того, как они начнут влиять на производительность запросов.
 
 ```sql runnable editable
--- Challenge: Replace with your actual database and table names for production use
--- Experiment: Adjust the part count thresholds (1000, 500, 100) based on your system
+-- Задача: замените на реальные имена баз данных и таблиц для боевой среды
+-- Эксперимент: скорректируйте пороговые значения количества частей (1000, 500, 100) под вашу систему
 SELECT 
     database,
     table,
@@ -37,16 +57,16 @@ SELECT
     max(rows) as max_rows_per_part,
     round(sum(bytes_on_disk) / 1024 / 1024, 2) as total_size_mb,
     CASE 
-        WHEN count() > 1000 THEN 'CRITICAL - Too many parts (>1000)'
-        WHEN count() > 500 THEN 'WARNING - Many parts (>500)'
-        WHEN count() > 100 THEN 'CAUTION - Getting many parts (>100)'
-        ELSE 'OK - Reasonable part count'
+        WHEN count() > 1000 THEN 'CRITICAL — Слишком много частей (>1000)'
+        WHEN count() > 500 THEN 'WARNING — Много частей (>500)'
+        WHEN count() > 100 THEN 'CAUTION — Частей становится много (>100)'
+        ELSE 'OK — Разумное количество частей'
     END as parts_assessment,
     CASE 
-        WHEN avg(rows) < 1000 THEN 'POOR - Very small parts'
-        WHEN avg(rows) < 10000 THEN 'FAIR - Small parts'
-        WHEN avg(rows) < 100000 THEN 'GOOD - Medium parts'
-        ELSE 'EXCELLENT - Large parts'
+        WHEN avg(rows) < 1000 THEN 'POOR — Очень маленькие части'
+        WHEN avg(rows) < 10000 THEN 'FAIR — Небольшие части'
+        WHEN avg(rows) < 100000 THEN 'GOOD — Средние части'
+        ELSE 'EXCELLENT — Крупные части'
     END as part_size_assessment
 FROM system.parts
 WHERE active = 1
@@ -56,7 +76,8 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## Видеоресурсы {#video-sources}
 
-- [Быстрые, параллельные и последовательные асинхронные ВСТАВКИ в ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - Член команды ClickHouse объясняет асинхронные вставки и проблему слишком большого количества частей
-- [ClickHouse в производстве в масштабе](https://www.youtube.com/watch?v=liTgGiTuhJE) - Реальные стратегии пакетной обработки от платформ мониторинга
+## Видеоматериалы {#video-sources}
+
+- [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) — сотрудник команды ClickHouse объясняет асинхронные INSERT и проблему слишком большого числа частей
+- [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) — практические стратегии пакетной обработки от платформ наблюдаемости

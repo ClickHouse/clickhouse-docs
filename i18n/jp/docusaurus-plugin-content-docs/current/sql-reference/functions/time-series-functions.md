@@ -1,21 +1,21 @@
 ---
-'description': '時系列操作のための関数に関するDocumentation'
-'sidebar_label': 'TimeSeries'
-'slug': '/sql-reference/functions/time-series-functions'
-'title': '時系列操作のための関数'
-'doc_type': 'reference'
+description: '時系列データを扱う関数のドキュメント'
+sidebar_label: 'TimeSeries'
+slug: /sql-reference/functions/time-series-functions
+title: '時系列データを扱う関数'
+doc_type: 'リファレンス'
 ---
 
+# 時系列関数 {#time-series-functions}
 
-# 時系列関数
-
-以下の関数は、`timeSeries*()` 集計関数と一緒に使用するために設計されています。例えば
-[timeSeriesInstantRateToGrid](../aggregate-functions/reference/timeSeriesInstantRateToGrid.md)、
-[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md) などです。
+以下の関数は、`timeSeries*()` 集約関数（例えば
+[timeSeriesInstantRateToGrid](../aggregate-functions/reference/timeSeriesInstantRateToGrid.md) や
+[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md)
+など）と組み合わせて使用するよう設計されています。
 
 ## timeSeriesRange {#timeSeriesRange}
 
-タイムスタンプの範囲を生成します。
+タイムスタンプの連続値を生成します。
 
 **構文**
 
@@ -25,45 +25,53 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 **引数**
 
-- `start_timestamp` - 範囲の開始。
-- `end_timestamp` - 範囲の終了。
-- `step` - 範囲のステップ（秒単位）。
+* `start_timestamp` - 範囲の開始時刻。
+* `end_timestamp` - 範囲の終了時刻。
+* `step` - 範囲の刻み幅（秒単位）。
 
-**返される値**
+**返り値**
 
-- タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を返します。
+* タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を返します。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30) AS rng;
 ```
 
-結果:
+結果：
 
 ```text
-┌────────────────────────────────────result─────────────────────────────────────────┐
+┌────────────────────────────────────結果─────────────────────────────────────────┐
 │ ['2025-06-01 00:00:00.000', '2025-06-01 00:00:30.000', '2025-06-01 00:01:00.000'] │
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注意事項**
-- `start_timestamp` が `end_timestamp` に等しい場合、関数 `timeSeriesRange()` はそのタイムスタンプを含む1要素の配列を返します: `[start_timestamp]`
-- 関数 `timeSeriesRange()` は、関数 [range](../functions/array-functions.md#range) に似ています。
-例えば、タイムスタンプの型が `DateTime64(3)` で `start_timestamp < end_timestamp` の場合、`timeSeriesRange(start_timestamp, end_timestamp, step)` は次の式と同じ結果を返します:
+**注記**
+
+* 関数 `timeSeriesRange()` が `start_timestamp` と `end_timestamp` が等しい値で呼び出された場合、
+  そのタイムスタンプのみを含む 1 要素の配列 `[start_timestamp]` を返します。
+* 関数 `timeSeriesRange()` は、関数 [range](../functions/array-functions.md#range) と似ています。
+  たとえば、タイムスタンプの型が `DateTime64(3)` で `start_timestamp < end_timestamp` の場合、
+  `timeSeriesRange(start_timestamp, end_timestamp, step)` は次の式と同じ結果を返します。
+
 ```sql
 range(start_timestamp::Int64, end_timestamp::Int64 + 1, step::Int64)::Array(DateTime64(3))
 ```
 
 ## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-値の配列 `[value1, value2, value3, ..., valueN]` をタプルの配列 `[(start_timestamp, value1), (start_timestamp + step, value2), (start_timestamp + 2 * step, value3), ..., (end_timestamp, valueN)]` に変換します。
+値の配列 `[value1, value2, value3, ..., valueN]` を、タプルの配列
+`[(start_timestamp, value1), (start_timestamp + step, value2), (start_timestamp + 2 * step, value3), ..., (end_timestamp, valueN)]` に変換します。
 
-もし値のいくつか `[value1, value2, value3, ...]` が `NULL` の場合、関数はそのNULL値を結果の配列にコピーしませんが、現在のタイムスタンプは増加し続けます。例えば `[value1, NULL, value2]` の場合、関数は `[(start_timestamp, value1), (start_timestamp + 2 * step, value2)]` を返します。
+もし `[value1, value2, value3, ...]` の一部の値が `NULL` の場合、関数はそれらの NULL 値を結果配列にはコピーしませんが、
+現在のタイムスタンプは進めます。たとえば `[value1, NULL, value2]` に対しては、
+`[(start_timestamp, value1), (start_timestamp + 2 * step, value2)]` を返します。
 
-現在のタイムスタンプは、`end_timestamp` より大きくなるまで `step` だけ増加し、各タイムスタンプは指定された値の配列からの値と組み合わされます。もし値の数がタイムスタンプの数と一致しない場合、関数は例外をスローします。
+現在のタイムスタンプは、end&#95;timestamp を超えるまで step ずつ増加し、それぞれのタイムスタンプは指定された値配列の要素と組み合わされます。
+値の個数がタイムスタンプの個数と一致しない場合、関数は例外をスローします。
 
 **構文**
 
@@ -73,14 +81,14 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values);
 
 **引数**
 
-- `start_timestamp` - グリッドの開始。
-- `end_timestamp` - グリッドの終了。
-- `step` - グリッドのステップ（秒単位）。
-- `values` - 値の配列 `[value1, value2, ..., valueN]`。
+* `start_timestamp` - グリッドの開始時刻。
+* `end_timestamp` - グリッドの終了時刻。
+* `step` - グリッドの間隔（秒単位）。
+* `values` - 値の配列 `[value1, value2, ..., valueN]`。
 
-**返される値**
+**返り値**
 
-- `start_timestamp` と `step` によって定義された定期的な時間グリッド上のタイムスタンプと結合されたソースの値の配列を返します。
+* `start_timestamp` と `step` で定義される等間隔の時間グリッド上の各タイムスタンプに、ソース配列の値を対応付けた結果を返します。
 
 **例**
 
@@ -98,17 +106,381 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注意**
-関数 `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)` は次の式と同じ結果を返します:
+**注記**
+関数 `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)` は、以下の式と同じ結果を返します。
+
 ```sql
 arrayFilter(x -> x.2 IS NOT NULL, arrayZip(timeSeriesRange(start_timestamp, end_timestamp, step), values))
 ```
 
-<!-- 
-The inner content of the tags below are replaced at doc framework build time with 
-docs generated from system.functions. Please do not modify or remove the tags.
-See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
--->
+{/* 
+  以下のタグ内の内容は、ドキュメントフレームワークのビルド時に
+  system.functions から自動生成されたドキュメントで置き換えられます。タグを変更または削除しないでください。
+  詳細は https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md を参照してください。
+  */ }
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+{/*AUTOGENERATED_START*/ }
+
+## seriesDecomposeSTL {#seriesDecomposeSTL}
+
+導入バージョン: v24.1
+
+系列データを、STL [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf) により、季節成分、トレンド成分、および残差成分に分解します。
+
+**構文**
+
+```sql
+seriesDecomposeSTL(series, period)
+```
+
+**引数**
+
+* `series` — 数値の配列 [`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+* `period` — 正の整数 [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+
+**返り値**
+
+4 つの配列からなる配列を返します。1 番目の配列には季節性成分、2 番目の配列にはトレンド、3 番目の配列には残差成分、4 番目の配列にはベースライン（季節性 + トレンド）成分が含まれます。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+
+**例**
+
+**STL を使用して系列データを分解する**
+
+```sql title=Query
+SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0
+```
+
+```response title=Response
+┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ [[
+        -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,
+        16.71,      -13.530001, -3.18,      16.710001,  -13.530001, -3.1800003, 16.710001,  -13.530001,
+        -3.1800003, 16.710001,  -13.530001, -3.1799994, 16.71,      -13.529999, -3.1799994, 16.709997
+    ],
+    [
+        23.63,     23.63,     23.630003, 23.630001, 23.630001, 23.630001, 23.630001, 23.630001,
+        23.630001, 23.630001, 23.630001, 23.63,     23.630001, 23.630001, 23.63,     23.630001,
+        23.630001, 23.63,     23.630001, 23.630001, 23.630001, 23.630001, 23.630001, 23.630003
+    ],
+    [
+        0, 0.0000019073486, -0.0000019073486, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0000019073486, 0,
+        0
+    ],
+    [
+        10.1, 20.449999, 40.340004, 10.100001, 20.45, 40.34, 10.100001, 20.45, 40.34, 10.1, 20.45, 40.34,
+        10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.100002, 20.45, 40.34
+    ]]                                                                                                                   │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## seriesOutliersDetectTukey {#seriesOutliersDetectTukey}
+
+導入バージョン: v24.2
+
+[Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) を使用して系列データ中の外れ値を検出します。
+
+**構文**
+
+```sql
+seriesOutliersDetectTukey(series[, min_percentile, max_percentile, K])
+```
+
+**引数**
+
+* `series` — 数値の配列。[`Array((UInt8/16/32/64))`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+* `min_percentile` — 省略可。四分位範囲 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) を計算する際に使用する最小パーセンタイル値。値は [0.02,0.98] の範囲でなければなりません。デフォルト値は 0.25 です。[`Float*`](/sql-reference/data-types/float)
+* `max_percentile` — 省略可。四分位範囲 (IQR) を計算する際に使用する最大パーセンタイル値。値は [0.02,0.98] の範囲でなければなりません。デフォルト値は 0.75 です。[`Float*`](/sql-reference/data-types/float)
+* `K` — 省略可。弱い外れ値またはより強い外れ値を検出するための非負の定数値。デフォルト値は 1.5 です。[`Float*`](/sql-reference/data-types/float)
+
+**戻り値**
+
+入力配列と同じ長さの配列を返し、各値は系列内の対応する要素に対する異常度スコアを表します。0 でないスコアは、異常の可能性を示します。[`Array(Float32)`](/sql-reference/data-types/array)
+
+**例**
+
+**基本的な外れ値検出**
+
+```sql title=Query
+SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0
+```
+
+```response title=Response
+┌───────────print_0─────────────────┐
+│[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
+└───────────────────────────────────┘
+```
+
+**カスタムパラメータを用いた外れ値検出**
+
+```sql title=Query
+SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
+```
+
+```response title=Response
+┌─print_0──────────────────────────────┐
+│ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
+└──────────────────────────────────────┘
+```
+
+## seriesPeriodDetectFFT {#seriesPeriodDetectFFT}
+
+導入バージョン: v23.12
+
+FFT（[高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）を使用して、与えられた時系列データの周期を検出します。
+
+**構文**
+
+```sql
+seriesPeriodDetectFFT(series)
+```
+
+**引数**
+
+* `series` — 数値の配列。[`Array((U)Int8/16/32/64)`](/sql-reference/data-types/array) または [`Array(Float*)`](/sql-reference/data-types/array)
+
+**返り値**
+
+系列データの周期に等しい実数値を返します。データポイントの数が 4 未満の場合は NaN を返します。戻り値の型は [`Float64`](/sql-reference/data-types/float) です。
+
+**例**
+
+**単純なパターンによる周期の検出**
+
+```sql title=Query
+SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0
+```
+
+```response title=Response
+┌───────────print_0──────┐
+│                      3 │
+└────────────────────────┘
+```
+
+**複雑なパターンを用いた周期検出**
+
+```sql title=Query
+SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0
+```
+
+```response title=Response
+┌─print_0─┐
+│       6 │
+└─────────┘
+```
+
+## timeSeriesFromGrid {#timeSeriesFromGrid}
+
+導入: v25.8
+
+値の配列 `[x1, x2, x3, ...]` を、タプルの配列
+`[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]` に変換します。
+
+現在のタイムスタンプは `step` ずつ増加し、`end_timestamp` を超えるまで続きます。
+値の個数がタイムスタンプの個数と一致しない場合、この関数は例外をスローします。
+
+`[x1, x2, x3, ...]` 内の NULL 値はスキップされますが、その場合でも現在のタイムスタンプは増加し続けます。
+たとえば、`[value1, NULL, x2]` に対して、この関数は `[(start_timestamp, x1), (start_timestamp + 2 * step, x2)]` を返します。
+
+**構文**
+
+```sql
+timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
+```
+
+**引数**
+
+* `start_timestamp` — グリッドの開始時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
+* `end_timestamp` — グリッドの終了時刻。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
+* `step` — グリッドの刻み幅（秒）。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `values` — 値の配列。[`Array(Float*)`](/sql-reference/data-types/array) または [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
+
+**戻り値**
+
+`start_timestamp` と `step` で定義される等間隔の時間グリッド上で、元の値配列をタイムスタンプと組み合わせた値を返します。[`Array(Tuple(DateTime64, Float64))`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
+```
+
+```response title=Response
+┌─────────────────────────────────────────────result─────────────────────────────────────────────┐
+│ [('2025-06-01 00:00:00.000',10),('2025-06-01 00:00:30.000',20),('2025-06-01 00:01:30.000',30)] │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## timeSeriesIdToTags {#timeSeriesIdToTags}
+
+導入バージョン: v25.8
+
+指定した時系列識別子に関連付けられているタグを取得します。
+
+**構文**
+
+```sql
+timeSeriesIdToTags(id)
+```
+
+**引数**
+
+* `id` — 時系列を識別する ID。[`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UUID`](/sql-reference/data-types/uuid) または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**戻り値**
+
+(tag&#95;name, tag&#95;value) のペアからなる配列を返します。[`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+
+**例**
+
+**例**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTags(id)
+```
+
+```response title=Response
+8374283493092    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
+```
+
+## timeSeriesIdToTagsGroup {#timeSeriesIdToTagsGroup}
+
+導入バージョン: v25.8
+
+指定した時系列の識別子を、そのグループインデックスに変換します。グループインデックスは、現在実行中のクエリのコンテキストにおいて、それぞれの一意なタグの組み合わせに関連付けられた 0, 1, 2, 3 といった数値です。
+
+**構文**
+
+```sql
+timeSeriesIdToTagsGroup(id)
+```
+
+**引数**
+
+* `id` — 時系列の識別子。[`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UUID`](/sql-reference/data-types/uuid) または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+
+**戻り値**
+
+このタグセットに対応するグループインデックスを返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**例**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id)
+```
+
+```response title=Response
+8374283493092    0
+```
+
+## timeSeriesRange {#timeSeriesRange}
+
+導入バージョン: v25.8
+
+タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を生成します。
+
+`start_timestamp` が `end_timestamp` と等しい場合、この関数は `[start_timestamp]` を含む要素数 1 の配列を返します。
+
+関数 `timeSeriesRange()` は、関数 [range](../functions/array-functions.md#range) と類似しています。
+
+**構文**
+
+```sql
+timeSeriesRange(start_timestamp, end_timestamp, step)
+```
+
+**引数**
+
+* `start_timestamp` — 範囲の開始。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
+* `end_timestamp` — 範囲の終了。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
+* `step` — 範囲のステップ（秒単位）。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
+
+**戻り値**
+
+タイムスタンプの範囲（配列）を返します。[`Array(DateTime64)`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30)
+```
+
+```response title=Response
+┌────────────────────────────────────result─────────────────────────────────────────┐
+│ ['2025-06-01 00:00:00.000', '2025-06-01 00:00:30.000', '2025-06-01 00:01:00.000'] │
+└───────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## timeSeriesStoreTags {#timeSeriesStoreTags}
+
+導入バージョン: v25.8
+
+クエリコンテキスト内に、時系列の識別子とそのタグとの対応関係を保存し、後から関数 `timeSeriesIdToTags()` がこれらのタグを取得できるようにします。
+
+**構文**
+
+```sql
+timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, ...)
+```
+
+**引数**
+
+* `id` — 時系列の識別子。[`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UUID`](/sql-reference/data-types/uuid) または [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+* `tags_array` — (tag&#95;name, tag&#95;value) からなるペアの配列。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) または [`NULL`](/sql-reference/syntax#null)
+* `separate_tag_name_i` — タグ名。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `separate_tag_value_i` — タグ値。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable)
+
+**戻り値**
+
+最初の引数（時系列の識別子）を返します。
+
+**例**
+
+**例**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count')
+```
+
+```response title=Response
+8374283493092
+```
+
+## timeSeriesTagsGroupToTags {#timeSeriesTagsGroupToTags}
+
+導入バージョン: v25.8
+
+グループインデックスに対応するタグを取得します。グループインデックスは、現在実行中のクエリのコンテキスト内で、タグの一意な組み合わせごとに割り当てられる 0, 1, 2, 3 などの数値です。
+
+**構文**
+
+```sql
+timeSeriesTagsGroupToTags(group)
+```
+
+**引数**
+
+* `group` — 時系列に関連付けられたグループインデックス。 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+(tag&#95;name, tag&#95;value) のペアの配列。 [`Array(Tuple(String, String))`](/sql-reference/data-types/array)
+
+**使用例**
+
+**例**
+
+```sql title=Query
+SELECT timeSeriesStoreTags(8374283493092, [('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS id, timeSeriesIdToTagsGroup(id) AS group, timeSeriesTagsGroupToTags(group)
+```
+
+```response title=Response
+8374283493092    0    [('__name__', ''http_requests_count''), ('env', 'dev'), ('region', 'eu')]
+```
+
+{/*AUTOGENERATED_END*/ }

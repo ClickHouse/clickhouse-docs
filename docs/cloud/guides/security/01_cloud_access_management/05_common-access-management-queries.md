@@ -3,6 +3,7 @@ sidebar_label: 'Common access management queries'
 title: 'Common access management queries'
 slug: /cloud/security/common-access-management-queries
 description: 'This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.'
+keywords: ['ClickHouse Cloud', 'access management']
 doc_type: 'guide'
 ---
 

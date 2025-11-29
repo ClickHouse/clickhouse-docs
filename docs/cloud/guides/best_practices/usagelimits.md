@@ -4,6 +4,7 @@ sidebar_label: 'Service limits'
 title: 'Usage limits'
 description: 'Describes the recommended usage limits in ClickHouse Cloud'
 doc_type: 'reference'
+keywords: ['usage limits', 'quotas', 'best practices', 'resource management', 'cloud features']
 ---
 
 While ClickHouse is known for its speed and reliability, optimal performance is 

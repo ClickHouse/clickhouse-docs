@@ -1,83 +1,84 @@
 ---
-'description': 'システムテーブルは、MergeTreeファミリーのテーブルに対するプロジェクションパーツに関する情報を含んでいます。'
-'keywords':
-- 'system table'
-- 'projection_parts'
-'slug': '/operations/system-tables/projection_parts'
-'title': 'system.projection_parts'
-'doc_type': 'reference'
+description: 'MergeTree ファミリーに属するテーブルの Projection のパーツに関する情報を含むシステムテーブル。'
+keywords: ['システムテーブル', 'projection_parts']
+slug: /operations/system-tables/projection_parts
+title: 'system.projection_parts'
+doc_type: 'reference'
 ---
 
 
 
-# system.projection_parts
+# system.projection_parts {#systemprojection_parts}
 
-このテーブルは、MergeTreeファミリーのテーブルに対するプロジェクションパーツの情報を含んでいます。
+このテーブルには、MergeTree ファミリーのテーブルに対する Projection パーツに関する情報が含まれます。
 
-## Columns {#columns}
 
-| Column                                  | Description                                                                                                                                                                                                 | Type            |
-|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `partition`                             | パーティション名。                                                                                                                                                                                         | String          |
-| `name`                                  | データパートの名前。                                                                                                                                                                                      | String          |
-| `part_type`                             | データパートの格納形式。可能な値: Wide（カラムごとにファイル）と Compact（すべてのカラムを一つのファイルに格納）。                                                                                        | String          |
-| `parent_name`                           | ソース（親）データパートの名前。                                                                                                                                                                          | String          |
-| `parent_uuid`                           | ソース（親）データパートのUUID。                                                                                                                                                                          | UUID            |
-| `parent_part_type`                      | ソース（親）データパートの格納形式。                                                                                                                                                                       | String          |
-| `active`                                | データパートがアクティブかどうかを示すフラグ。データパートがアクティブであれば、テーブルで使用されます。そうでなければ、削除される予定です。非アクティブなデータパートは、マージおよび変異操作後に現れます。 | UInt8           |
-| `marks`                                 | マークの数。データパートの行数を概算するには、マークにインデックスの粒度（通常8192）を掛けます（このヒントは、適応粒度には適用されません）。                       | UInt64          |
-| `rows`                                  | 行の数。                                                                                                                                                                                                     | UInt64          |
-| `bytes_on_disk`                         | データパートファイルの合計サイズ（バイト単位）。                                                                                                                                                           | UInt64          |
-| `data_compressed_bytes`                 | データパート内の圧縮されたデータの合計サイズ。すべての補助ファイル（例えば、マークのファイル）は含まれていません。                                                                                     | UInt64          |
-| `data_uncompressed_bytes`               | データパート内の未圧縮データの合計サイズ。すべての補助ファイル（例えば、マークのファイル）は含まれていません。                                                                                     | UInt64          |
-| `marks_bytes`                           | マークを含むファイルのサイズ。                                                                                                                                                                            | UInt64          |
-| `parent_marks`                          | ソース（親）パート内のマークの数。                                                                                                                                                                        | UInt64          |
-| `parent_rows`                           | ソース（親）パート内の行の数。                                                                                                                                                                             | UInt64          |
-| `parent_bytes_on_disk`                  | ソース（親）データパートファイルの合計サイズ（バイト単位）。                                                                                                                                               | UInt64          |
-| `parent_data_compressed_bytes`          | ソース（親）データパート内の圧縮されたデータの合計サイズ。                                                                                                                                               | UInt64          |
-| `parent_data_uncompressed_bytes`        | ソース（親）データパート内の未圧縮データの合計サイズ。                                                                                                                                                   | UInt64          |
-| `parent_marks_bytes`                    | ソース（親）データパート内のマークを含むファイルのサイズ。                                                                                                                                               | UInt64          |
-| `modification_time`                     | データパートを含むディレクトリが修正された時間。通常、これはデータパート作成の時間に対応します。                                                                                                        | DateTime        |
-| `remove_time`                           | データパートが非アクティブになった時間。                                                                                                                                                                  | DateTime        |
-| `refcount`                              | データパートが使用されている場所の数。値が2より大きい場合、データパートがクエリやマージに使用されています。                                                                                           | UInt32          |
-| `min_date`                              | データパート内の日付キーの最小値。                                                                                                                                                                         | Date            |
-| `max_date`                              | データパート内の日付キーの最大値。                                                                                                                                                                         | Date            |
-| `min_time`                              | データパート内の日付と時間キーの最小値。                                                                                                                                                                   | DateTime        |
-| `max_time`                              | データパート内の日付と時間キーの最大値。                                                                                                                                                                   | DateTime        |
-| `partition_id`                          | パーティションのID。                                                                                                                                                                                        | String          |
-| `min_block_number`                      | マージ後の現在のパートを構成するデータパートの最小数。                                                                                                                                                   | Int64           |
-| `max_block_number`                      | マージ後の現在のパートを構成するデータパートの最大数。                                                                                                                                                   | Int64           |
-| `level`                                 | マージツリーの深さ。ゼロは、現在のパートが他のパートをマージするのではなく、挿入によって作成されたことを意味します。                                                                                             | UInt32          |
-| `data_version`                          | データパートに適用されるべき変異を決定するために使用される番号（data_versionよりも高いバージョンの変異）。                                                                                                   | UInt64          |
-| `primary_key_bytes_in_memory`           | 主キー値によって使用されるメモリ量（バイト単位）。                                                                                                                                                       | UInt64          |
-| `primary_key_bytes_in_memory_allocated` | 主キー値のために予約されたメモリ量（バイト単位）。                                                                                                                                                      | UInt64          |
-| `is_frozen`                             | パーティションデータバックアップが存在することを示すフラグ。1はバックアップが存在することを示し、0はバックアップが存在しないことを示します。                                                                      | UInt8           |
-| `database`                              | データベースの名前。                                                                                                                                                                                       | String          |
-| `table`                                 | テーブルの名前。                                                                                                                                                                                          | String          |
-| `engine`                                | パラメータのないテーブルエンジンの名前。                                                                                                                                                                  | String          |
-| `disk_name`                             | データパートを格納するディスクの名前。                                                                                                                                                                     | String          |
-| `path`                                  | データパートファイルが格納されているフォルダへの絶対パス。                                                                                                                                                 | String          |
-| `hash_of_all_files`                     | 圧縮ファイルのsipHash128。                                                                                                                                                                                 | String          |
-| `hash_of_uncompressed_files`            | 未圧縮ファイルのsipHash128（マークを含むファイル、インデックスファイルなど）。                                                                                                                                 | String          |
-| `uncompressed_hash_of_compressed_files` | 圧縮ファイル内のデータを未圧縮であるかのようにsipHash128したもの。                                                                                                                                          | String          |
-| `delete_ttl_info_min`                   | TTL DELETEルールのための日付と時間キーの最小値。                                                                                                                                                           | DateTime        |
-| `delete_ttl_info_max`                   | TTL DELETEルールのための日付と時間キーの最大値。                                                                                                                                                           | DateTime        |
-| `move_ttl_info.expression`              | 式の配列。各式はTTL MOVEルールを定義します。                                                                                                                                                               | Array(String)   |
-| `move_ttl_info.min`                     | 日付と時間の値の配列。各要素はTTL MOVEルールのための最小キー値を説明します。                                                                                                                                | Array(DateTime) |
-| `move_ttl_info.max`                     | 日付と時間の値の配列。各要素はTTL MOVEルールのための最大キー値を説明します。                                                                                                                                | Array(DateTime) |
-| `default_compression_codec`             | このデータパートを圧縮するために使用されるコーデックの名前（カラムに明示的なコーデックがない場合）。                                                                                                      | String          |
-| `recompression_ttl_info.expression`     | TTL式。                                                                                                                                                                                                     | Array(String)   |
-| `recompression_ttl_info.min`            | このパート内で計算されたTTL式の最小値。この値を使って、失効したTTLを持つ行が少なくとも1つあるかどうかを理解します。                                                                                          | Array(DateTime) |
-| `recompression_ttl_info.max`            | このパート内で計算されたTTL式の最大値。この値を使って、失効したTTLを持つ全ての行があるかどうかを理解します。                                                                                            | Array(DateTime) |
-| `group_by_ttl_info.expression`          | TTL式。                                                                                                                                                                                                     | Array(String)   |
-| `group_by_ttl_info.min`                 | このパート内で計算されたTTL式の最小値。この値を使って、失効したTTLを持つ行が少なくとも1つあるかどうかを理解します。                                                                                          | Array(DateTime) |
-| `group_by_ttl_info.max`                 | このパート内で計算されたTTL式の最大値。この値を使って、失効したTTLを持つ全ての行があるかどうかを理解します。                                                                                            | Array(DateTime) |
-| `rows_where_ttl_info.expression`        | TTL式。                                                                                                                                                                                                     | Array(String)   |
-| `rows_where_ttl_info.min`               | このパート内で計算されたTTL式の最小値。この値を使って、失効したTTLを持つ行が少なくとも1つあるかどうかを理解します。                                                                                          | Array(DateTime) |
-| `rows_where_ttl_info.max`               | このパート内で計算されたTTL式の最大値。この値を使って、失効したTTLを持つ全ての行があるかどうかを理解します。                                                                                            | Array(DateTime) |
-| `is_broken`                             | プロジェクションパートが壊れているかどうか。                                                                                                                                                               | UInt8           |
-| `exception_code`                        | プロジェクションパートの壊れている状態を説明する例外メッセージ。                                                                                                                                         | Int32           |
-| `exception`                             | プロジェクションパートの壊れている状態を説明する例外コード。                                                                                                                                               | String          |
-| `bytes`                                 | bytes_on_diskのエイリアス。                                                                                                                                                                               | UInt64          |
-| `marks_size`                            | marks_bytesのエイリアス。                                                                                                                                                                                 | UInt64          |
-| `part_name`                             | nameのエイリアス。                                                                                                                                                                                        | String          |                                                                                                                                       | ALIAS           | name |
+
+## 列 {#columns}
+
+
+
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — パーティションの名前。
+* `name` ([String](../../sql-reference/data-types/)) — データパーツの名称。
+* `part_type` ([String](../../sql-reference/data-types/)) — データパーツの保存形式。取り得る値: Wide（カラムごとに 1 ファイル）および Compact（すべてのカラムを 1 つのファイルにまとめる）。
+* `parent_name` ([String](../../sql-reference/data-types/)) — 元の（親）データパートの名前。
+* `parent_uuid` ([UUID](../../sql-reference/data-types/)) — 元の（親）データパートの UUID。
+* `parent_part_type` ([String](../../sql-reference/data-types/)) — ソース（親）データパーツの格納形式。
+* `active` ([UInt8](../../sql-reference/data-types/)) — データパーツがアクティブかどうかを示すフラグ。データパーツがアクティブな場合、そのパーツはテーブルで使用されます。そうでない場合、そのパーツは削除対象となります。非アクティブなデータパーツは、マージやミューテーション操作の後に生成されます。
+* `marks` ([UInt64](../../sql-reference/data-types/)) — マークの数。データパート内のおおよその行数を見積もるには、`marks` にインデックスの粒度（通常は 8192）を掛けます（この目安はアダプティブ粒度では利用できません）。
+* `rows` ([UInt64](../../sql-reference/data-types/)) — 行数。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — すべてのデータパーツファイルのサイズの合計（バイト単位）。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — データパーツ内の圧縮データの合計サイズ。マークファイルなどの補助ファイルは含まれません。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — データパート内の非圧縮データの合計サイズ。補助ファイル（たとえばマークファイルなど）は含まれません。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — マークファイルのサイズ。
+* `parent_marks` ([UInt64](../../sql-reference/data-types/)) — 元（親）パーツ内に含まれるマークの数。
+* `parent_rows` ([UInt64](../../sql-reference/data-types/)) — 元の（親）パーツ内の行数。
+* `parent_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — すべてのソース（親）データパートファイルの合計サイズ（バイト単位）。
+* `parent_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 元の（親）データパートに含まれる圧縮データの合計サイズ。
+* `parent_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — ソース（親）データパート内の非圧縮データの合計サイズ。
+* `parent_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — ソース（親）データパーツに含まれるマークファイルのサイズ。
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — データパーツを格納しているディレクトリが更新された時刻。通常はデータパーツが作成された時刻に対応します。
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — データパーツが非アクティブになった時刻。
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — データパーツが使用されている場所の数。値が 2 より大きい場合、そのデータパーツがクエリまたはマージで使用されていることを示します。
+* `min_date` ([Date](../../sql-reference/data-types/)) — データパーツにおける日付キーの最小値。
+* `max_date` ([Date](../../sql-reference/data-types/)) — データパーツ内の日付キーの最大値。
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — データパート内の日時キーの最小値。
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — データパート内の日付と時刻キーの最大値。
+* `partition_id` ([String](../../sql-reference/data-types/)) — パーティション ID。
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後に現在のパーツを構成するデータパーツのうち、最小のブロック番号。
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後の現在のパーツを構成するデータパーツの最大ブロック番号。
+* `level` ([UInt32](../../sql-reference/data-types/)) — マージツリーの深さを表します。0 の場合、現在のパートは他のパートとのマージではなく、挿入（INSERT）によって作成されたことを意味します。
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — データパーツにどのミューテーションを適用するかを判定するために使用される番号（この値より大きいバージョン番号を持つミューテーションが適用される）。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — プライマリキー値が使用しているメモリ量（バイト単位）。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — プライマリキー値用に確保されているメモリ量（バイト単位）。
+* `is_frozen` ([UInt8](../../sql-reference/data-types/)) — パーティションデータのバックアップが存在するかどうかを示すフラグ。1: バックアップが存在する。0: バックアップは存在しない。
+* `database` ([String](../../sql-reference/data-types/)) — データベースの名前。
+* `table` ([String](../../sql-reference/data-types/)) — テーブルの名前。
+* `engine` ([String](../../sql-reference/data-types/)) — パラメータなしのテーブルエンジン名。
+* `disk_name` ([String](../../sql-reference/data-types/)) — データパートを格納しているディスクの名前。
+* `path` ([String](../../sql-reference/data-types/)) — データパートのファイルが格納されているフォルダーへの絶対パス。
+* `hash_of_all_files` ([String](../../sql-reference/data-types/)) — 圧縮済みファイルの sipHash128 ハッシュ値。
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/)) — 非圧縮ファイル（マークファイル、インデックスファイルなど）の sipHash128 ハッシュ値。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/)) — 圧縮ファイル内のデータを非圧縮データとして扱って計算した sipHash128 ハッシュ値。
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/)) — TTL の DELETE ルールにおける日時キーの最小値。
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/)) — TTL DELETE ルールにおける日時キーの最大値。
+* `move_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — 式の配列。各式が TTL MOVE ルールを定義します。
+* `move_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — 日時値の配列。各要素は TTL MOVE ルールの最小キー値を表します。
+* `move_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — 日時値の配列。各要素は、TTL MOVE ルールごとのキー値の最大値を表します。
+* `default_compression_codec` ([String](../../sql-reference/data-types/)) — このデータパーツを圧縮するために使用されるコーデックの名前（列に明示的なコーデックが指定されていない場合）。
+* `recompression_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — TTL 式。
+* `recompression_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — このパーツ内で計算された TTL 式の結果の最小値。少なくとも 1 行でも TTL が期限切れになっているかどうかを判別するために使用されます。
+* `recompression_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — このパート内で計算された TTL 式の値のうち最大のもの。すべての行の TTL が期限切れかどうかを判断するために使用されます。
+* `group_by_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — TTL の式。
+* `group_by_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — このパート内で計算された TTL 式の最小値。少なくとも 1 行は TTL が期限切れになっているかどうかを把握するために使用されます。
+* `group_by_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — このパーツ内の TTL 式の計算結果の最大値。TTL が期限切れになっている行がこのパーツ内にすべて含まれているかどうかを判断するために使用します。
+* `rows_where_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — TTL の式。
+* `rows_where_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — このパーツ内で評価された TTL 式の最小値。少なくとも 1 行以上、TTL が期限切れとなっている行が存在するかどうかを判断するために使用されます。
+* `rows_where_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — このパーツ内で評価された TTL 式の値の最大値です。TTL が期限切れになっている行がすべて含まれているかどうかを確認するために使用します。
+* `is_broken` ([UInt8](../../sql-reference/data-types/)) — プロジェクションパーツが破損しているかどうかを示します
+* `exception_code` ([Int32](../../sql-reference/data-types/)) — プロジェクションパーツの破損状態を説明する例外メッセージ
+* `exception` ([String](../../sql-reference/data-types/)) — プロジェクションパートの異常状態の原因を示す例外コード
+
+{/*AUTOGENERATED_END*/ }

@@ -1,20 +1,19 @@
 ---
-'description': '`Dictionary` エンジンは、Dictionary データを ClickHouse テーブルとして表示します。'
-'sidebar_label': 'Dictionary'
-'sidebar_position': 20
-'slug': '/engines/table-engines/special/dictionary'
-'title': 'Dictionary テーブルエンジン'
-'doc_type': 'reference'
+description: '`Dictionary` エンジンは、辞書データを ClickHouse のテーブルとして扱えるようにします。'
+sidebar_label: 'Dictionary'
+sidebar_position: 20
+slug: /engines/table-engines/special/dictionary
+title: 'Dictionary テーブルエンジン'
+doc_type: 'リファレンス'
 ---
 
+# Dictionary テーブルエンジン {#dictionary-table-engine}
 
-# Dictionary table engine
+`Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして扱います。
 
-`Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。
+## 例 {#example}
 
-## Example {#example}
-
-例として、次の構成を持つ `products` の辞書を考えます。
+例として、次のように構成された `products` 辞書を考えます。
 
 ```xml
 <dictionaries>
@@ -47,7 +46,7 @@
 </dictionaries>
 ```
 
-辞書データをクエリします：
+辞書データにクエリを実行する:
 
 ```sql
 SELECT
@@ -69,11 +68,11 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-この形式で辞書データを取得するには、[dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用できます。
+この形式で辞書データを取得するには、[dictGet*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用できます。
 
-このビューは、生データを取得したり、`JOIN` 操作を実行したりする必要がある場合には役に立ちません。そのため、辞書データをテーブル形式で表示する `Dictionary` エンジンを使用できます。
+生データを取得する必要がある場合や、`JOIN` 操作を実行する場合には、このビューは有用ではありません。これらの場合には、`Dictionary` エンジンを使用することで、辞書データをテーブルとして表示できます。
 
-構文：
+構文:
 
 ```sql
 CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
@@ -85,9 +84,9 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+では
 
-テーブルの内容を確認してください。
+テーブルの内容を確認しましょう。
 
 ```sql
 SELECT * FROM products LIMIT 1;
@@ -99,6 +98,6 @@ SELECT * FROM products LIMIT 1;
 └───────────────┴─────────────────┘
 ```
 
-**See Also**
+**関連項目**
 
-- [Dictionary function](/sql-reference/table-functions/dictionary)
+* [Dictionary 関数](/sql-reference/table-functions/dictionary)

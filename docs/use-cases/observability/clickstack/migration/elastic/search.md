@@ -7,6 +7,7 @@ sidebar_label: 'Search'
 sidebar_position: 3
 description: 'Searching in ClickStack and Elastic'
 doc_type: 'guide'
+keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
 
 import Image from '@theme/IdealImage';

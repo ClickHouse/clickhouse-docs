@@ -4,6 +4,7 @@ sidebar_label: 'Manage SQL console role assignments'
 title: 'Manage SQL console role assignments'
 description: 'Guide showing how to manage SQL console role assignments'
 doc_type: 'guide'
+keywords: ['sql console', 'role assignments', 'access management', 'permissions', 'security']
 ---
 
 import Image from '@theme/IdealImage';

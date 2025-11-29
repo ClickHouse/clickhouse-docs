@@ -1,19 +1,15 @@
 ---
-'slug': '/integrations/tools'
-'keywords':
-- 'Retool'
-- 'Easypanel'
-- 'Splunk'
-'title': 'ツール'
-'description': 'ツールセクションのランディングページ'
-'doc_type': 'landing-page'
+slug: /integrations/tools
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'ツール'
+description: 'ツールセクション用ランディングページ'
+doc_type: 'landing-page'
 ---
 
+# ツール {#tools}
 
-# ツール
-
-| ページ      | 説明                                                                                                                         |
-|-----------|----------------------------------------------------------------------------------------------------------------------------|
-| [SQL クライアント](/integrations/sql-clients) | ClickHouseをさまざまな一般的なデータベース管理、分析、視覚化ツールと統合する方法                                                                   |
-| [データ統合](/integrations/tools/data-integrations)    | ClickHouseのためのデータ統合 |
-| [その他](/integrations/audit-splunk)     | ClickHouseのための雑多なツール                                                                               |
+| ページ      | 説明                                                                                                                     |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------|
+| [SQL Client](/integrations/sql-clients) | ClickHouse をさまざまな一般的なデータベース管理、分析、可視化ツールと統合する方法                                                                   |
+| [Data Integrations](/integrations/tools/data-integrations)    | ClickHouse 向けのデータ連携 |
+| [Misc](/integrations/audit-splunk)     | ClickHouse 用のその他のツール                                                                               |

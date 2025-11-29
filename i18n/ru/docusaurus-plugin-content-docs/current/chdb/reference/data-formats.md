@@ -1,107 +1,108 @@
 ---
-slug: '/chdb/reference/data-formats'
-sidebar_label: 'Форматы данных'
-description: 'Форматы данных для chDB'
 title: 'Форматы данных'
+sidebar_label: 'Форматы данных'
+slug: /chdb/reference/data-formats
+description: 'Форматы данных для chDB'
 keywords: ['chdb', 'форматы данных']
-doc_type: reference
+doc_type: 'reference'
 ---
-Когда дело доходит до форматов данных, chDB на 100% совместим по функциям с ClickHouse.
 
-Форматы ввода используются для разбора данных, предоставляемых для `INSERT` и `SELECT` из таблицы с файловой поддержкой, такой как `File`, `URL` или `S3`.
-Форматы вывода используются для организации результатов `SELECT` и для выполнения `INSERT` в таблицу с файловой поддержкой.
-Кроме форматов данных, поддерживаемых ClickHouse, chDB также поддерживает:
+Когда речь идет о форматах данных, chDB на 100% совместим по функциональности с ClickHouse.
 
-- `ArrowTable` как формат вывода, тип - Python `pyarrow.Table`
-- `DataFrame` как форматы ввода и вывода, тип - Python `pandas.DataFrame`. Для примеров смотрите [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- `Debug` как вывод (в качестве псевдонима для `CSV`), но с включенным детализированным выводом от ClickHouse.
+Форматы ввода используются для разбора данных, передаваемых в `INSERT`, а также для `SELECT` из таблицы, использующей файловое хранилище, такой как `File`, `URL` или `S3`.
+Форматы вывода используются для представления результатов `SELECT` и для выполнения `INSERT` в таблицы, использующие файловое хранилище.
+Помимо форматов данных, которые поддерживает ClickHouse, chDB также поддерживает:
 
-Поддерживаемые форматы данных от ClickHouse:
+- `ArrowTable` как формат вывода, тип — Python `pyarrow.Table`
+- `DataFrame` как формат ввода и вывода, тип — Python `pandas.DataFrame`. Примеры см. в [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- `Debug` как формат вывода (как алиас формата `CSV`), но с включенным подробным отладочным выводом из ClickHouse.
 
-| Формат                          | Ввод | Вывод |
-|---------------------------------|-------|--------|
-| TabSeparated                    | ✔     | ✔      |
-| TabSeparatedRaw                 | ✔     | ✔      |
-| TabSeparatedWithNames           | ✔     | ✔      |
-| TabSeparatedWithNamesAndTypes   | ✔     | ✔      |
-| TabSeparatedRawWithNames        | ✔     | ✔      |
-| TabSeparatedRawWithNamesAndTypes| ✔     | ✔      |
-| Template                        | ✔     | ✔      |
-| TemplateIgnoreSpaces            | ✔     | ✗      |
-| CSV                             | ✔     | ✔      |
-| CSVWithNames                    | ✔     | ✔      |
-| CSVWithNamesAndTypes            | ✔     | ✔      |
-| CustomSeparated                 | ✔     | ✔      |
-| CustomSeparatedWithNames        | ✔     | ✔      |
-| CustomSeparatedWithNamesAndTypes| ✔     | ✔      |
-| SQLInsert                       | ✗     | ✔      |
-| Values                          | ✔     | ✔      |
-| Vertical                        | ✗     | ✔      |
-| JSON                            | ✔     | ✔      |
-| JSONAsString                    | ✔     | ✗      |
-| JSONAsObject                    | ✔     | ✗      |
-| JSONStrings                     | ✔     | ✔      |
-| JSONColumns                     | ✔     | ✔      |
-| JSONColumnsWithMetadata         | ✔     | ✔      |
-| JSONCompact                     | ✔     | ✔      |
-| JSONCompactStrings              | ✗     | ✔      |
-| JSONCompactColumns              | ✔     | ✔      |
-| JSONEachRow                     | ✔     | ✔      |
-| PrettyJSONEachRow               | ✗     | ✔      |
-| JSONEachRowWithProgress         | ✗     | ✔      |
-| JSONStringsEachRow              | ✔     | ✔      |
-| JSONStringsEachRowWithProgress  | ✗     | ✔      |
-| JSONCompactEachRow              | ✔     | ✔      |
-| JSONCompactEachRowWithNames     | ✔     | ✔      |
-| JSONCompactEachRowWithNamesAndTypes | ✔  | ✔      |
-| JSONCompactEachRowWithProgress  | ✗     | ✔      |
-| JSONCompactStringsEachRow       | ✔     | ✔      |
-| JSONCompactStringsEachRowWithNames | ✔  | ✔      |
-| JSONCompactStringsEachRowWithNamesAndTypes | ✔ | ✔ |
-| JSONCompactStringsEachRowWithProgress | ✗ | ✔      |
-| JSONObjectEachRow               | ✔     | ✔      |
-| BSONEachRow                     | ✔     | ✔      |
-| TSKV                            | ✔     | ✔      |
-| Pretty                          | ✗     | ✔      |
-| PrettyNoEscapes                 | ✗     | ✔      |
-| PrettyMonoBlock                 | ✗     | ✔      |
-| PrettyNoEscapesMonoBlock        | ✗     | ✔      |
-| PrettyCompact                   | ✗     | ✔      |
-| PrettyCompactNoEscapes          | ✗     | ✔      |
-| PrettyCompactMonoBlock          | ✗     | ✔      |
-| PrettyCompactNoEscapesMonoBlock | ✗     | ✔      |
-| PrettySpace                     | ✗     | ✔      |
-| PrettySpaceNoEscapes            | ✗     | ✔      |
-| PrettySpaceMonoBlock            | ✗     | ✔      |
-| PrettySpaceNoEscapesMonoBlock   | ✗     | ✔      |
-| Prometheus                      | ✗     | ✔      |
-| Protobuf                        | ✔     | ✔      |
-| ProtobufSingle                  | ✔     | ✔      |
-| ProtobufList                    | ✔     | ✔      |
-| Avro                            | ✔     | ✔      |
-| AvroConfluent                   | ✔     | ✗      |
-| Parquet                         | ✔     | ✔      |
-| ParquetMetadata                 | ✔     | ✗      |
-| Arrow                           | ✔     | ✔      |
-| ArrowStream                     | ✔     | ✔      |
-| ORC                             | ✔     | ✔      |
-| One                             | ✔     | ✗      |
-| Npy                             | ✔     | ✔      |
-| RowBinary                       | ✔     | ✔      |
-| RowBinaryWithNames              | ✔     | ✔      |
-| RowBinaryWithNamesAndTypes      | ✔     | ✔      |
-| RowBinaryWithDefaults           | ✔     | ✗      |
-| Native                          | ✔     | ✔      |
-| Null                            | ✗     | ✔      |
-| XML                             | ✗     | ✔      |
-| CapnProto                       | ✔     | ✔      |
-| LineAsString                    | ✔     | ✔      |
-| Regexp                          | ✔     | ✗      |
-| RawBLOB                         | ✔     | ✔      |
-| MsgPack                         | ✔     | ✔      |
-| MySQLDump                       | ✔     | ✗      |
-| DWARF                           | ✔     | ✗      |
-| Markdown                        | ✗     | ✔      |
-| Form                            | ✔     | ✗      |
+Поддерживаемые ClickHouse форматы данных:
 
-Для получения дополнительной информации и примеров смотрите [ClickHouse форматы для ввода и вывода данных](/interfaces/formats).
+| Формат                                     | Ввод | Вывод |
+| ------------------------------------------ | ---- | ----- |
+| TabSeparated                               | ✔    | ✔     |
+| TabSeparatedRaw                            | ✔    | ✔     |
+| TabSeparatedWithNames                      | ✔    | ✔     |
+| TabSeparatedWithNamesAndTypes              | ✔    | ✔     |
+| TabSeparatedRawWithNames                   | ✔    | ✔     |
+| TabSeparatedRawWithNamesAndTypes           | ✔    | ✔     |
+| Шаблон                                     | ✔    | ✔     |
+| TemplateIgnoreSpaces                       | ✔    | ✗     |
+| CSV                                        | ✔    | ✔     |
+| CSVWithNames                               | ✔    | ✔     |
+| CSVWithNamesAndTypes                       | ✔    | ✔     |
+| CustomSeparated                            | ✔    | ✔     |
+| CustomSeparatedWithNames                   | ✔    | ✔     |
+| CustomSeparatedWithNamesAndTypes           | ✔    | ✔     |
+| SQLInsert                                  | ✗    | ✔     |
+| Параметры                                  | ✔    | ✔     |
+| Вертикальный                               | ✗    | ✔     |
+| JSON                                       | ✔    | ✔     |
+| JSONAsString                               | ✔    | ✗     |
+| JSONAsObject                               | ✔    | ✗     |
+| JSON-строки                                | ✔    | ✔     |
+| Столбцы JSON                               | ✔    | ✔     |
+| JSONColumnsWithMetadata                    | ✔    | ✔     |
+| JSONCompact                                | ✔    | ✔     |
+| JSONCompactStrings                         | ✗    | ✔     |
+| JSONCompactColumns                         | ✔    | ✔     |
+| JSONEachRow                                | ✔    | ✔     |
+| PrettyJSONEachRow                          | ✗    | ✔     |
+| JSONEachRowWithProgress                    | ✗    | ✔     |
+| JSONStringsEachRow                         | ✔    | ✔     |
+| JSONStringsEachRowWithProgress             | ✗    | ✔     |
+| JSONCompactEachRow                         | ✔    | ✔     |
+| JSONCompactEachRowWithNames                | ✔    | ✔     |
+| JSONCompactEachRowWithNamesAndTypes        | ✔    | ✔     |
+| JSONCompactEachRowWithProgress             | ✗    | ✔     |
+| JSONCompactStringsEachRow                  | ✔    | ✔     |
+| JSONCompactStringsEachRowWithNames         | ✔    | ✔     |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔    | ✔     |
+| JSONCompactStringsEachRowWithProgress      | ✗    | ✔     |
+| JSONObjectEachRow                          | ✔    | ✔     |
+| BSONEachRow                                | ✔    | ✔     |
+| TSKV                                       | ✔    | ✔     |
+| Красивый                                   | ✗    | ✔     |
+| PrettyNoEscapes                            | ✗    | ✔     |
+| PrettyMonoBlock                            | ✗    | ✔     |
+| PrettyNoEscapesMonoBlock                   | ✗    | ✔     |
+| PrettyCompact                              | ✗    | ✔     |
+| PrettyCompactNoEscapes                     | ✗    | ✔     |
+| PrettyCompactMonoBlock                     | ✗    | ✔     |
+| PrettyCompactNoEscapesMonoBlock            | ✗    | ✔     |
+| PrettySpace                                | ✗    | ✔     |
+| PrettySpaceNoEscapes                       | ✗    | ✔     |
+| PrettySpaceMonoBlock                       | ✗    | ✔     |
+| PrettySpaceNoEscapesMonoBlock              | ✗    | ✔     |
+| Prometheus                                 | ✗    | ✔     |
+| Protobuf                                   | ✔    | ✔     |
+| ProtobufSingle                             | ✔    | ✔     |
+| ProtobufList                               | ✔    | ✔     |
+| Avro                                       | ✔    | ✔     |
+| AvroConfluent                              | ✔    | ✗     |
+| Parquet                                    | ✔    | ✔     |
+| ParquetMetadata                            | ✔    | ✗     |
+| Arrow                                      | ✔    | ✔     |
+| ArrowStream                                | ✔    | ✔     |
+| ORC                                        | ✔    | ✔     |
+| Один                                       | ✔    | ✗     |
+| Npy                                        | ✔    | ✔     |
+| RowBinary                                  | ✔    | ✔     |
+| RowBinaryWithNames                         | ✔    | ✔     |
+| RowBinaryWithNamesAndTypes                 | ✔    | ✔     |
+| RowBinaryWithDefaults                      | ✔    | ✗     |
+| Нативный                                   | ✔    | ✔     |
+| Null                                       | ✗    | ✔     |
+| XML                                        | ✗    | ✔     |
+| CapnProto                                  | ✔    | ✔     |
+| LineAsString                               | ✔    | ✔     |
+| Регулярное выражение                       | ✔    | ✗     |
+| RawBLOB                                    | ✔    | ✔     |
+| MsgPack                                    | ✔    | ✔     |
+| MySQLDump                                  | ✔    | ✗     |
+| DWARF                                      | ✔    | ✗     |
+| Markdown                                   | ✗    | ✔     |
+| Форма                                      | ✔    | ✗     |
+
+Для получения дополнительной информации и примеров см. [форматы ClickHouse для входных и выходных данных](/interfaces/formats).

@@ -1,30 +1,36 @@
 ---
-slug: '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
-description: 'Документация для формата TabSeparatedRawWithNamesAndTypes'
-title: TabSeparatedRawWithNamesAndTypes
-keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
-doc_type: reference
-alias: 
+alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'Документация по формату TabSeparatedRawWithNamesAndTypes'
 input_format: true
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
 output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
+title: 'TabSeparatedRawWithNamesAndTypes'
+doc_type: 'reference'
 ---
-| Input | Output | Alias                                             |
-|-------|--------|---------------------------------------------------|
-| ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+
+| Вход | Выход | Псевдоним                                         |
+|------|-------|---------------------------------------------------|
+| ✔    | ✔     | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+
+
 
 ## Описание {#description}
 
-Отличается от формата [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) тем, что строки записываются без экранирования.
+Отличается от формата [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md)
+тем, что строки записываются без экранирования.
 
 :::note
-При парсинге с использованием этого формата табуляции или переводы строк не допускаются в каждом поле.
+При разборе этого формата табуляция и перевод строки внутри каждого поля не допускаются.
 :::
+
+
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя следующий файл tsv, названный `football.tsv`:
+Используем следующий TSV‑файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -56,7 +62,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesA
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `TabSeparatedRawWithNamesAndTypes`:
+Прочитайте данные, используя формат `TabSeparatedRawWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -64,7 +70,8 @@ FROM football
 FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
-Вывод будет в формате, разделенном табуляцией, с двумя строками заголовка для имен и типов колонок:
+Вывод будет в формате с разделителем табуляции и двумя строками заголовка: первая содержит имена столбцов, вторая — их типы:
+
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -88,4 +95,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## Настройки формата {#format-settings}
+
+## Параметры форматирования {#format-settings}

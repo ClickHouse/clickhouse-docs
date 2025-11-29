@@ -1,25 +1,31 @@
 ---
-slug: '/interfaces/formats/JSONStringsEachRow'
-description: 'Документация для формата JSONStringsEachRow'
-title: JSONStringsEachRow
-keywords: ['JSONStringsEachRow']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONStringsEachRow'
 input_format: false
+keywords: ['JSONStringsEachRow']
 output_format: true
+slug: /interfaces/formats/JSONStringsEachRow
+title: 'JSONStringsEachRow'
+doc_type: 'reference'
 ---
-| Ввод  | Вывод  | Псевдоним |
-|-------|--------|-----------|
-| ✗     | ✔      |           |
+
+| Вход | Выход | Псевдоним |
+|-------|--------|-------|
+| ✗     | ✔      |       |
+
+
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся в строках, а не в типизированных JSON значениях.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся как строки, а не как типизированные JSON-значения.
+
+
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON файл со следующими данными, названный `football.json`:
+Используем JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -49,7 +55,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONStringsEachRow`:
+Прочитайте данные в формате `JSONStringsEachRow`:
 
 ```sql
 SELECT *
@@ -58,6 +64,7 @@ FORMAT JSONStringsEachRow
 ```
 
 Вывод будет в формате JSON:
+
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -79,4 +86,5 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-## Настройки формата {#format-settings}
+
+## Параметры форматирования {#format-settings}

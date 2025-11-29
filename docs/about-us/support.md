@@ -5,6 +5,7 @@ title: 'ClickHouse Cloud support services'
 sidebar_position: 30
 description: 'Information on ClickHouse Cloud support services'
 doc_type: 'reference'
+keywords: ['support', 'help', 'customer service', 'technical support', 'service level agreement']
 ---
 
 # ClickHouse Cloud support services

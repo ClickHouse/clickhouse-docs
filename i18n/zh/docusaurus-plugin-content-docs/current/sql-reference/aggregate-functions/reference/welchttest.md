@@ -1,16 +1,15 @@
 ---
-'description': '对来自两个种群的样本应用 Welch 的 t 检验.'
-'sidebar_label': 'welchTTest'
-'sidebar_position': 214
-'slug': '/sql-reference/aggregate-functions/reference/welchttest'
-'title': 'welchTTest'
-'doc_type': 'reference'
+description: '对来自两个总体的样本执行 Welch t 检验。'
+sidebar_label: 'welchTTest'
+sidebar_position: 214
+slug: /sql-reference/aggregate-functions/reference/welchttest
+title: 'welchTTest'
+doc_type: 'reference'
 ---
 
+# welchTTest {#welchttest}
 
-# welchTTest
-
-应用 Welch 的 t 检验到两个总体的样本中。
+将 Welch t 检验应用于来自两个总体的样本。
 
 **语法**
 
@@ -18,26 +17,27 @@
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-两个样本的值位于 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于第一个总体的样本。否则，它属于第二个总体的样本。
-原假设是总体的均值相等。假设服从正态分布。总体的方差可以不相等。
+两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行中的值属于来自第一总体的样本，否则属于来自第二总体的样本。
+
+原假设是两个总体的均值相等。假定总体服从正态分布，总体方差可以不相等。
 
 **参数**
 
-- `sample_data` — 样本数据。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
-- `sample_index` — 样本索引。 [整数](../../../sql-reference/data-types/int-uint.md)。
+* `sample_data` — 样本数据。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `sample_index` — 样本索引。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
 **参数**
 
-- `confidence_level` — 用于计算置信区间的置信水平。 [浮点数](../../../sql-reference/data-types/float.md)。
+* `confidence_level` — 用于计算置信区间的置信水平（可选）。[Float](../../../sql-reference/data-types/float.md)。
 
 **返回值**
 
-[元组](../../../sql-reference/data-types/tuple.md)，包含两个或四个元素（如果指定了可选的 `confidence_level`）
+包含两个或四个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)（如果指定了可选的 `confidence_level`）。
 
-- 计算得出的 t 统计量。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的 p 值。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的置信区间下限。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的置信区间上限。 [Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 t 统计量。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 p 值。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的置信区间下界。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的置信区间上界。[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
@@ -68,7 +68,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [Welch's t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)
-- [studentTTest 函数](/sql-reference/aggregate-functions/reference/studentttest)
+* [Welch t 检验](https://en.wikipedia.org/wiki/Welch%27s_t-test)
+* [studentTTest 函数](/sql-reference/aggregate-functions/reference/studentttest)

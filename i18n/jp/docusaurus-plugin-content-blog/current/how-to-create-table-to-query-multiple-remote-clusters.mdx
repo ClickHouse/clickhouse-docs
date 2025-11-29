@@ -1,0 +1,171 @@
+---
+title: 複数のリモートクラスターに対してクエリを実行できるテーブルの作成方法
+description: "複数のリモートクラスターに対してクエリを実行できるテーブルの作成方法"
+date: 2024-07-03
+tags: ['デプロイメントとスケーリング']
+keywords: ['クエリ', 'リモートクラスター']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+***
+
+## 質問 \{#question\}
+
+他のクラスターやインスタンスを対象にクエリを実行できるテーブルは、どのように作成すればよいですか？
+
+## 回答 \{#answer\}
+
+以下は動作確認のための簡単な例です。
+
+この例ではClickHouse Cloudを使用していますが、セルフホスト型クラスターを使用する場合も同様に動作します。
+ターゲットは、対象ノードまたはロードバランサーのURL/ホスト名/DNSに変更する必要があります。
+
+クラスタAの場合：
+
+```
+./clickhouse client --host clusterA.us-west-2.aws.clickhouse.cloud --secure --password 'Password123!'
+```
+
+データベースを作成する:
+
+```
+create database db1;
+```
+
+テーブルを作成します:
+
+```
+CREATE TABLE db1.table1_remote1
+(
+    `id` UInt32,
+    `timestamp_column` DateTime,
+    `string_column` String
+)
+ENGINE = MergeTree()
+ORDER BY id;
+```
+
+サンプル行を挿入する:
+
+```
+insert into db1.table1_remote1
+values
+(1, '2023-09-29 00:01:00', 'a'),
+(2, '2023-09-29 00:02:00', 'b'),
+(3, '2023-09-29 00:03:00', 'c');
+```
+
+クラスターBで：
+
+```
+./clickhouse client --host clusterB.us-east-2.aws.clickhouse.cloud --secure --password 'Password123!'
+```
+
+データベースを作成する:
+
+```
+create database db1;
+```
+
+テーブルを作成します:
+
+```
+CREATE TABLE db1.table1_remote2
+(
+    `id` UInt32,
+    `timestamp_column` DateTime,
+    `string_column` String
+)
+ENGINE = MergeTree()
+ORDER BY id;
+```
+
+サンプル行を挿入:
+
+```
+insert into db1.table1_remote1
+values
+(4, '2023-09-29 00:04:00', 'x'),
+(5, '2023-09-29 00:05:00', 'y'),
+(6, '2023-09-29 00:06:00', 'z');
+```
+
+クラスタ C:\
+*このクラスタは他の2つのクラスタからデータを収集するために使用されますが、ソースとしても使用可能です。
+
+```
+./clickhouse client --host clusterC.us-west-2.aws.clickhouse.cloud --secure --password 'Password123!'
+```
+
+データベースを作成する:
+
+```
+create database db1;
+```
+
+remoteSecure()を使用して他のクラスタに接続するリモートテーブルを作成します。\
+リモートクラスタAのテーブル定義:
+
+```
+CREATE TABLE db1.table1_remote1_main
+(
+    `id` UInt32,
+    `timestamp_column` DateTime,
+    `string_column` String
+) AS remoteSecure('clusterA.us-west-2.aws.clickhouse.cloud:9440', 'db1.table1_remote1', 'default', 'Password123!');
+```
+
+リモートクラスタBのテーブル定義:
+
+```
+CREATE TABLE db1.table1_remote2_main
+(
+    `id` UInt32,
+    `timestamp_column` DateTime,
+    `string_column` String
+) AS remoteSecure('clusterB.us-east-2.aws.clickhouse.cloud:9440', 'db1.table1_remote2', 'default', 'Password123!')
+```
+
+結果を集約するためのマージテーブルを作成します:
+
+```
+create table db1.table1_merge_remote
+(
+  id UInt32,
+  timestamp_column DateTime,
+  string_column String
+)
+engine = Merge('db1', 'table.\_main');
+```
+
+結果を確認する:
+
+```
+clickhouse-cloud :) select * from db1.table1_merge_remote;
+
+SELECT *
+FROM db1.table1_merge_remote
+
+Query id: 46b6e741-bbd1-47ed-b40e-69ddb6e0c364
+
+┌─id─┬────timestamp_column─┬─string_column─┐
+│  1 │ 2023-09-29 00:01:00 │ a             │
+│  2 │ 2023-09-29 00:02:00 │ b             │
+│  3 │ 2023-09-29 00:03:00 │ c             │
+└────┴─────────────────────┴───────────────┘
+┌─id─┬────timestamp_column─┬─string_column─┐
+│  4 │ 2023-09-29 00:04:00 │ x             │
+│  5 │ 2023-09-29 00:05:00 │ y             │
+│  6 │ 2023-09-29 00:06:00 │ z             │
+└────┴─────────────────────┴───────────────┘
+
+6 rows in set. Elapsed: 0.275 sec.
+```
+
+詳細については:
+
+* [remote テーブル関数](/sql-reference/table-functions/remote)
+* [Merge テーブルエンジン](/engines/table-engines/special/merge)

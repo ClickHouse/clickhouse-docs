@@ -1,68 +1,68 @@
 ---
-slug: '/development/build-cross-s390x'
+description: 'Руководство по сборке ClickHouse из исходного кода для архитектуры s390x'
 sidebar_label: 'Сборка на Linux для s390x (zLinux)'
 sidebar_position: 30
-description: 'Руководство по сборке ClickHouse из исходного кода для архитектуры'
+slug: /development/build-cross-s390x
 title: 'Сборка на Linux для s390x (zLinux)'
-doc_type: guide
+doc_type: 'guide'
 ---
-# Сборка на Linux для s390x (zLinux)
 
-ClickHouse имеет экспериментальную поддержку для s390x.
+# Сборка в Linux для s390x (zLinux) {#build-on-linux-for-s390x-zlinux}
+
+ClickHouse в экспериментальном режиме поддерживает архитектуру s390x.
 
 ## Сборка ClickHouse для s390x {#building-clickhouse-for-s390x}
 
-s390x имеет две опции сборки, связанные с OpenSSL:
-- По умолчанию OpenSSL собирается на s390x как разделяемая библиотека. Это отличается от всех остальных платформ, где OpenSSL собирается как статическая библиотека.
-- Чтобы собрать OpenSSL как статическую библиотеку, независимо от этого, передайте `-DENABLE_OPENSSL_DYNAMIC=0` в CMake.
+На платформе s390x, как и на других платформах, OpenSSL собирается как статическая библиотека. Если вы хотите собрать с динамическим OpenSSL, необходимо передать `-DENABLE_OPENSSL_DYNAMIC=1` в CMake.
 
-Эти инструкции предполагают, что хост-машина имеет архитектуру x86_64 и все инструменты, необходимые для нативной сборки на основе [инструкций по сборке](../development/build.md). Также предполагается, что хост работает на Ubuntu 22.04, но следующие инструкции также должны работать на Ubuntu 20.04.
+В этих инструкциях предполагается, что хостовая система — Linux x86&#95;64/ARM и на ней установлены все инструменты, необходимые для нативной сборки в соответствии с [инструкцией по сборке](../development/build.md). Также предполагается, что хост — Ubuntu 22.04, но приведённые ниже инструкции также должны работать на Ubuntu 20.04.
 
-Кроме установки инструментов, используемых для нативной сборки, необходимо установить следующие дополнительные пакеты:
+Помимо установки инструментов, используемых для нативной сборки, необходимо установить следующие дополнительные пакеты:
 
 ```bash
-apt-get install binutils-s390x-linux-gnu libc6-dev-s390x-cross gcc-s390x-linux-gnu binfmt-support qemu-user-static
-```
-
-Если вы хотите кросс-компилировать код на rust, установите целевую платформу для кросс-компиляции rust для s390x:
-
-```bash
+apt-get mold
 rustup target add s390x-unknown-linux-gnu
 ```
 
-Сборка для s390x использует линкер mold, скачайте его с https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86_64-linux.tar.gz
-и поместите его в ваш `$PATH`.
-
-Чтобы собрать для s390x:
+Сборка для s390x:
 
 ```bash
 cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
+
 ## Запуск {#running}
 
-После сборки бинарный файл можно запустить, например:
+Для эмуляции вам понадобится статический бинарник qemu-user для s390x. В Ubuntu его можно установить с помощью:
 
 ```bash
-qemu-s390x-static -L /usr/s390x-linux-gnu ./clickhouse
+apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 ```
+
+После сборки бинарный файл можно запустить, например, так:
+
+```bash
+qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
+2
+```
+
 
 ## Отладка {#debugging}
 
 Установите LLDB:
 
 ```bash
-apt-get install lldb-15
+apt-get install lldb-21
 ```
 
-Чтобы отлаживать исполняемый файл для s390x, запустите ClickHouse с помощью QEMU в режиме отладки:
+Чтобы отладить исполняемый файл s390x, запустите ClickHouse с помощью QEMU в режиме отладки:
 
 ```bash
 qemu-s390x-static -g 31338 -L /usr/s390x-linux-gnu ./clickhouse
 ```
 
-В другой оболочке запустите LLDB и подключитесь, заменив `<Clickhouse Parent Directory>` и `<build directory>` на соответствующие значения в вашем окружении.
+В другом терминале запустите LLDB и присоединитесь к процессу, заменив `<Clickhouse Parent Directory>` и `<build directory>` на значения, соответствующие вашей среде.
 
 ```bash
 lldb-15
@@ -93,39 +93,42 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
+
 ## Интеграция с Visual Studio Code {#visual-studio-code-integration}
 
-- Расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb) необходимо для визуальной отладки.
-- Расширение [Command Variable](https://github.com/rioj7/command-variable) может помочь с динамическими запусками, если вы используете [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md).
-- Убедитесь, что вы указали путь к вашей установке LLVM, например `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"`
-- Убедитесь, что исполняемый файл ClickHouse запускается в режиме отладки перед запуском. (Также возможно создать `preLaunchTask`, который автоматизирует это)
+- Для визуальной отладки требуется расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb).
+- Расширение [Command Variable](https://github.com/rioj7/command-variable) может упростить динамический запуск при использовании [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md).
+- Убедитесь, что бекенд настроен на вашу установку LLVM, например: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`.
+- Перед запуском визуальной отладки предварительно запустите исполняемый файл clickhouse в режиме отладки. (Также можно создать задачу `preLaunchTask`, которая автоматизирует это.)
 
-### Пример конфигураций {#example-configurations}
+### Примеры конфигураций {#example-configurations}
+
 #### cmake-variants.yaml {#cmake-variantsyaml}
+
 ```yaml
 buildType:
   default: relwithdebinfo
   choices:
     debug:
       short: Debug
-      long: Emit debug information
+      long: Включить отладочную информацию
       buildType: Debug
     release:
       short: Release
-      long: Optimize generated code
+      long: Оптимизировать генерируемый код
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: Release with Debug Info
+      long: Релизная сборка с отладочной информацией
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: Minimum Size Release
+      long: Релизная сборка минимального размера
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: Select toolchain
+  description: Выберите набор инструментов
   choices:
     default:
       short: x86_64
@@ -137,7 +140,9 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
+
 #### launch.json {#launchjson}
+
 ```json
 {
     "version": "0.2.0",
@@ -145,40 +150,48 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) Launch s390x with qemu",
+            "name": "(lldb) Запуск s390x с qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "Run ClickHouse"
+            "preLaunchTask": "Запуск ClickHouse"
         }
     ]
 }
 ```
 
+
 #### settings.json {#settingsjson}
-Это также поместит разные сборки в разные подпапки папки `build`.
+
+Это также поместит разные сборки в разные подпапки в каталоге `build`.
+
 ```json
 {
     "cmake.buildDirectory": "${workspaceFolder}/build/${buildKitVendor}-${buildKitVersion}-${variant:toolchain}-${variant:buildType}",
-    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-15.so"
+    "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"
 }
 ```
 
+
 #### run-debug.sh {#run-debugsh}
+
 ```sh
 #! /bin/sh
-echo 'Starting debugger session'
+echo 'Запуск сеанса отладчика'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
+
 #### tasks.json {#tasksjson}
-Определяет задачу для запуска скомпилированного исполняемого файла в режиме `server` в папке `tmp`, рядом с бинарными файлами, с конфигурацией из `programs/server/config.xml`.
+
+Определяет задачу для запуска скомпилированного исполняемого файла в режиме `server` в подкаталоге `tmp` рядом с бинарными файлами, с использованием конфигурации из файла `programs/server/config.xml`.
+
 ```json
 {
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run ClickHouse",
+            "label": "Запустить ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -200,7 +213,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^Starting debugger session",
+                        "beginsPattern": "^Начало сеанса отладки",
                         "endsPattern": ".*"
                     }
                 }
