@@ -114,7 +114,7 @@ SQL 控制台允许在同一张表上同时进行过滤和排序。为此，请�
 
 SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需在工具栏中选择“Create Query”按钮，并使用所选的排序和过滤参数。单击“Create query”后，会打开一个新的查询选项卡，其中预填充了与当前表视图数据相对应的 SQL 命令。
 
-<Image img={create_a_query_from_sorts-and-filters} size="md" alt='从排序和过滤条件创建查询' />
+<Image img={create_a_query_from_sorts_and_filters} size="md" alt='从排序和过滤条件创建查询' />
 
 :::note
 使用“Create Query”功能时，并不要求必须先设置过滤或排序条件。

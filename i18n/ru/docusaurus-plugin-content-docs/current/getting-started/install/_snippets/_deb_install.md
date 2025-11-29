@@ -17,30 +17,20 @@ import TabItem from '@theme/TabItem';
 
 
 ```bash
-# Установите необходимые пакеты {#install-prerequisite-packages}
+# Установите необходимые пакеты
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
-```
 
-
-# Загрузите GPG‑ключ ClickHouse и сохраните его в ключевом хранилище {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
+# Загрузите GPG‑ключ ClickHouse и сохраните его в ключевом хранилище
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-
-
-# Определите архитектуру системы {#get-the-system-architecture}
+# Определите архитектуру системы
 ARCH=$(dpkg --print-architecture)
 
-
-
-# Добавьте репозиторий ClickHouse в список источников пакетов apt {#add-the-clickhouse-repository-to-apt-sources}
+# Добавьте репозиторий ClickHouse в список источников пакетов apt
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-
-
-# Обновить списки пакетов apt {#update-apt-package-lists}
-
+# Обновить списки пакетов apt
 sudo apt-get update
-
 ```
 
 - Вы можете заменить `stable` на `lts`, чтобы использовать различные [типы релизов](/knowledgebase/production) в зависимости от ваших потребностей.
@@ -48,49 +38,32 @@ sudo apt-get update
 <br/>
 <details>
 <summary>Устаревший метод установки deb-пакетов для дистрибутивов</summary>
-```
-
 
 ```bash
-# Установите необходимые пакеты {#install-prerequisite-packages}
+# Установите необходимые пакеты
 sudo apt-get install apt-transport-https ca-certificates dirmngr
-```
 
-
-# Добавьте GPG-ключ ClickHouse для аутентификации пакетов {#add-the-clickhouse-gpg-key-to-authenticate-packages}
+# Добавьте GPG-ключ ClickHouse для аутентификации пакетов
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-
-
-# Добавьте репозиторий ClickHouse в список источников APT {#add-the-clickhouse-repository-to-apt-sources}
+# Добавьте репозиторий ClickHouse в список источников APT
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
-    
 
-
-# Обновите списки пакетов apt {#update-apt-package-lists}
+# Обновите списки пакетов apt
 sudo apt-get update
 
-
-
-# Установите пакеты сервера и клиента ClickHouse {#install-clickhouse-server-and-client-packages}
+# Установите пакеты сервера и клиента ClickHouse
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-
-
-# Запустите службу сервера ClickHouse {#start-the-clickhouse-server-service}
+# Запустите службу сервера ClickHouse
 sudo service clickhouse-server start
 
-
-
-# Запустите клиент командной строки ClickHouse {#launch-the-clickhouse-command-line-client}
-
-clickhouse-client # или &quot;clickhouse-client --password&quot;, если вы указали пароль.
-
+# Запустите клиент командной строки ClickHouse
+clickhouse-client # или "clickhouse-client --password", если вы указали пароль.
 ```
 
 </details>
-```
 
 
 ## Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client}

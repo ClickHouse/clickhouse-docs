@@ -303,41 +303,37 @@ WHERE town = 'LONDON'
 """
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
+
+# 创建交互式箱线图
+fig_box = go.Figure()
+
+fig_box.add_trace(
+    go.Box(
+        y=df_distribution['price'],
+        name=f'London {year_slider.value}',
+        boxmean='sd',  # 显示均值和标准差
+        marker_color='lightblue',
+        boxpoints='outliers'  # 显示离群值点
+    )
+)
+
+fig_box.update_layout(
+    title=f'伦敦房产价格分布 ({year_slider.value})',
+    yaxis=dict(
+        title='价格 (£)',
+        tickformat=',.0f'
+    ),
+    showlegend=False,
+    height=600
+)
+
+fig_box
 ```
 
-
-# 创建交互式箱线图。 {#create-an-interactive-box-plot}
-
-fig&#95;box = go.Figure()
-
-fig&#95;box.add&#95;trace(
-go.Box(
-y=df&#95;distribution[&#39;price&#39;],
-name=f&#39;London {year_slider.value}&#39;,
-boxmean=&#39;sd&#39;,  # 显示平均值和标准差
-marker&#95;color=&#39;lightblue&#39;,
-boxpoints=&#39;outliers&#39;  # 显示离群点
-)
-)
-
-fig&#95;box.update&#95;layout(
-title=f&#39;{year_slider.value} 年伦敦房价分布&#39;,
-yaxis=dict(
-title=&#39;价格 (£)&#39;,
-tickformat=&#39;,.0f&#39;
-),
-showlegend=False,
-height=600
-)
-
-fig&#95;box
-
-```
 如果您选择单元格右上角的选项按钮,即可隐藏代码。
 移动滑块时,图表会自动更新,这得益于 Marimo 的响应式执行机制:
 
 <Image size="md" img={image_8} alt="Marimo 动态图表"/>
-```
 
 
 ## 总结 {#summary}

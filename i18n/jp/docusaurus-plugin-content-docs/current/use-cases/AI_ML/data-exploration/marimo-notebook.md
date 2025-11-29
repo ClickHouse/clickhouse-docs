@@ -302,35 +302,31 @@ WHERE town = 'LONDON'
 """
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
-```
 
+# インタラクティブな箱ひげ図を作成する
+fig_box = go.Figure()
 
-# インタラクティブな箱ひげ図を作成する {#create-an-interactive-box-plot}
-
-fig&#95;box = go.Figure()
-
-fig&#95;box.add&#95;trace(
-go.Box(
-y=df&#95;distribution[&#39;price&#39;],
-name=f&#39;London {year_slider.value}&#39;,
-boxmean=&#39;sd&#39;,  # 平均値と標準偏差を表示
-marker&#95;color=&#39;lightblue&#39;,
-boxpoints=&#39;outliers&#39;  # 外れ値のポイントを表示
-)
+fig_box.add_trace(
+    go.Box(
+        y=df_distribution['price'],
+        name=f'London {year_slider.value}',
+        boxmean='sd',  # 平均値と標準偏差を表示
+        marker_color='lightblue',
+        boxpoints='outliers'  # 外れ値のポイントを表示
+    )
 )
 
-fig&#95;box.update&#95;layout(
-title=f&#39;Distribution of Property Prices in London ({year_slider.value})&#39;,
-yaxis=dict(
-title=&#39;Price (£)&#39;,
-tickformat=&#39;,.0f&#39;
-),
-showlegend=False,
-height=600
+fig_box.update_layout(
+    title=f'Distribution of Property Prices in London ({year_slider.value})',
+    yaxis=dict(
+        title='Price (£)',
+        tickformat=',.0f'
+    ),
+    showlegend=False,
+    height=600
 )
 
-fig&#95;box
-
+fig_box
 ```
 セルの右上にあるオプションボタンをクリックすると、
 コードを非表示にできます。

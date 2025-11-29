@@ -303,42 +303,38 @@ WHERE town = 'LONDON'
 """
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
+
+# Создадим интерактивную диаграмму размаха
+fig_box = go.Figure()
+
+fig_box.add_trace(
+    go.Box(
+        y=df_distribution['price'],
+        name=f'London {year_slider.value}',
+        boxmean='sd',  # Показать среднее значение и стандартное отклонение
+        marker_color='lightblue',
+        boxpoints='outliers'  # Показать значения-выбросы
+    )
+)
+
+fig_box.update_layout(
+    title=f'Распределение цен на недвижимость в Лондоне ({year_slider.value})',
+    yaxis=dict(
+        title='Цена (£)',
+        tickformat=',.0f'
+    ),
+    showlegend=False,
+    height=600
+)
+
+fig_box
 ```
 
-
-# Создадим интерактивную диаграмму размаха. {#create-an-interactive-box-plot}
-
-fig&#95;box = go.Figure()
-
-fig&#95;box.add&#95;trace(
-go.Box(
-y=df&#95;distribution[&#39;price&#39;],
-name=f&#39;London {year_slider.value}&#39;,
-boxmean=&#39;sd&#39;,  # Показать среднее значение и стандартное отклонение
-marker&#95;color=&#39;lightblue&#39;,
-boxpoints=&#39;outliers&#39;  # Показать значения-выбросы
-)
-)
-
-fig&#95;box.update&#95;layout(
-title=f&#39;Распределение цен на недвижимость в Лондоне ({year_slider.value})&#39;,
-yaxis=dict(
-title=&#39;Цена (£)&#39;,
-tickformat=&#39;,.0f&#39;
-),
-showlegend=False,
-height=600
-)
-
-fig&#95;box
-
-```
 Если нажать кнопку параметров в правом верхнем углу ячейки, можно скрыть
 код.
 При перемещении ползунка график будет автоматически обновляться благодаря реактивному выполнению Marimo:
 
 <Image size="md" img={image_8} alt="Динамический график Marimo"/>
-```
 
 
 ## Итоги {#summary}
