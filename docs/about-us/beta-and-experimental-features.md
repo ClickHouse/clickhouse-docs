@@ -88,6 +88,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
 | [session_timezone](/operations/settings/settings#session_timezone) | `` |
 | [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 
 
@@ -108,7 +109,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
 | [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
-| [allow_experimental_time_time64_type](/operations/settings/settings#allow_experimental_time_time64_type) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
 | [allow_experimental_materialized_postgresql_table](/operations/settings/settings#allow_experimental_materialized_postgresql_table) | `0` |
@@ -125,7 +125,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_minimum_perkey_rows](/operations/settings/settings#join_to_sort_minimum_perkey_rows) | `40` |
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `0` |
 | [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `0` |
 | [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) | `0` |
