@@ -24,154 +24,153 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 :::
 
 <VerticalStepper>
+  ## カスタムOpenTelemetry設定を作成する {#create-otel-configuration}
 
-## カスタムOpenTelemetry設定を作成する {#create-otel-configuration}
+  以下の内容で `custom-local-config.yaml` ファイルを作成します:
 
-以下の内容で `custom-local-config.yaml` ファイルを作成します:
+  ```yaml
+  receivers:
+    filelog:
+      include:
+        - /host/var/log/**/*.log        # ホストからのLinuxログ
+        - /host/var/log/syslog
+        - /host/var/log/messages
+        - /host/private/var/log/*.log   # ホストからのmacOSログ
+      start_at: beginning
+      resource:
+        service.name: "system-logs"
 
-```yaml
-receivers:
-  filelog:
-    include:
-      - /host/var/log/**/*.log        # ホストからのLinuxログ
-      - /host/var/log/syslog
-      - /host/var/log/messages
-      - /host/private/var/log/*.log   # ホストからのmacOSログ
-    start_at: beginning
-    resource:
-      service.name: "system-logs"
+    hostmetrics:
+      collection_interval: 1s
+      scrapers:
+        cpu:
+          metrics:
+            system.cpu.time:
+              enabled: true
+            system.cpu.utilization:
+              enabled: true
+        memory:
+          metrics:
+            system.memory.usage:
+              enabled: true
+            system.memory.utilization:
+              enabled: true
+        filesystem:
+          metrics:
+            system.filesystem.usage:
+              enabled: true
+            system.filesystem.utilization:
+              enabled: true
+        paging:
+          metrics:
+            system.paging.usage:
+              enabled: true
+            system.paging.utilization:
+              enabled: true
+            system.paging.faults:
+              enabled: true
+        disk:
+        load:
+        network:
+        processes:
 
-  hostmetrics:
-    collection_interval: 1s
-    scrapers:
-      cpu:
-        metrics:
-          system.cpu.time:
-            enabled: true
-          system.cpu.utilization:
-            enabled: true
-      memory:
-        metrics:
-          system.memory.usage:
-            enabled: true
-          system.memory.utilization:
-            enabled: true
-      filesystem:
-        metrics:
-          system.filesystem.usage:
-            enabled: true
-          system.filesystem.utilization:
-            enabled: true
-      paging:
-        metrics:
-          system.paging.usage:
-            enabled: true
-          system.paging.utilization:
-            enabled: true
-          system.paging.faults:
-            enabled: true
-      disk:
-      load:
-      network:
-      processes:
+  service:
+    pipelines:
+      logs/local:
+        receivers: [filelog]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+      metrics/hostmetrics:
+        receivers: [hostmetrics]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
-service:
-  pipelines:
-    logs/local:
-      receivers: [filelog]
-      processors:
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-    metrics/hostmetrics:
-      receivers: [hostmetrics]
-      processors:
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-```
+  この設定は、macOSおよびLinuxシステムのシステムログとメトリクスを収集し、結果をClickStackに送信します。この設定では、新しいレシーバーとパイプラインを追加することでClickStackコレクターを拡張し、ベースのClickStackコレクターで既に設定されている`clickhouse`エクスポーターとプロセッサー（`memory_limiter`、`batch`）を参照します。
 
-この設定は、macOSおよびLinuxシステムのシステムログとメトリクスを収集し、結果をClickStackに送信します。この設定では、新しいレシーバーとパイプラインを追加することでClickStackコレクターを拡張し、ベースのClickStackコレクターで既に設定されている`clickhouse`エクスポーターとプロセッサー（`memory_limiter`、`batch`）を参照します。
+  :::note インジェストのタイムスタンプ
+  この設定はインジェスト時にタイムスタンプを調整し、各イベントに更新された時刻値を割り当てます。正確なイベント時刻を保持するため、ユーザーはOTelプロセッサーまたはオペレーターを使用してログファイル内の[タイムスタンプを前処理または解析](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)することを推奨します。
 
-:::note インジェストのタイムスタンプ
-この設定はインジェスト時にタイムスタンプを調整し、各イベントに更新された時刻値を割り当てます。正確なイベント時刻を保持するため、ユーザーはOTelプロセッサーまたはオペレーターを使用してログファイル内の[タイムスタンプを前処理または解析](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)することを推奨します。
+  この設定例では、レシーバーまたはファイルプロセッサーがファイルの先頭から開始するように構成されている場合、既存のすべてのログエントリには同一の調整済みタイムスタンプが割り当てられます。これは元のイベント時刻ではなく、処理時刻です。ファイルに追記される新しいイベントには、実際の生成時刻に近似したタイムスタンプが付与されます。
 
-この設定例では、レシーバーまたはファイルプロセッサーがファイルの先頭から開始するように構成されている場合、既存のすべてのログエントリには同一の調整済みタイムスタンプが割り当てられます。これは元のイベント時刻ではなく、処理時刻です。ファイルに追記される新しいイベントには、実際の生成時刻に近似したタイムスタンプが付与されます。
+  この動作を回避するには、レシーバー設定で開始位置を `end` に設定してください。これにより、新しいエントリのみが取り込まれ、実際の到着時刻に近いタイムスタンプが付与されます。
+  :::
 
-この動作を回避するには、レシーバー設定で開始位置を `end` に設定してください。これにより、新しいエントリのみが取り込まれ、実際の到着時刻に近いタイムスタンプが付与されます。
-:::
+  OpenTelemetry（OTel）の設定構造の詳細については、[公式ガイド](https://opentelemetry.io/docs/collector/configuration/)を参照することを推奨します。
 
-OpenTelemetry（OTel）の設定構造の詳細については、[公式ガイド](https://opentelemetry.io/docs/collector/configuration/)を参照することを推奨します。
+  ## カスタム設定でClickStackを起動する {#start-clickstack}
 
-## カスタム設定でClickStackを起動する {#start-clickstack}
+  カスタム設定でオールインワンコンテナを起動するには、以下のDockerコマンドを実行します：
 
-カスタム設定でオールインワンコンテナを起動するには、以下のDockerコマンドを実行します：
+  ```shell
+  docker run -d --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  ```
 
-```shell
-docker run -d --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  --user 0:0 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log:/host/var/log:ro \
-  -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-```
+  :::note rootユーザー
+  すべてのシステムログにアクセスするため、コレクターをrootユーザーとして実行しています。これは、Linuxベースのシステムにおいて保護されたパスからログを取得するために必要です。ただし、この方法は本番環境では推奨されません。本番環境では、OpenTelemetry Collectorを、対象ログソースへのアクセスに必要な最小限の権限のみを持つローカルエージェントとしてデプロイしてください。
 
-:::note rootユーザー
-すべてのシステムログにアクセスするため、コレクターをrootユーザーとして実行しています。これは、Linuxベースのシステムにおいて保護されたパスからログを取得するために必要です。ただし、この方法は本番環境では推奨されません。本番環境では、OpenTelemetry Collectorを、対象ログソースへのアクセスに必要な最小限の権限のみを持つローカルエージェントとしてデプロイしてください。
+  ホストの `/var/log` をコンテナ内の `/host/var/log` にマウントすることで、コンテナ自身のログファイルとの競合を回避しています。
+  :::
 
-ホストの `/var/log` をコンテナ内の `/host/var/log` にマウントすることで、コンテナ自身のログファイルとの競合を回避しています。
-:::
+  スタンドアロンコレクターでClickHouse Cloud上のHyperDXを使用する場合は、代わりに以下のコマンドを使用してください:
 
-スタンドアロンコレクターでClickHouse Cloud上のHyperDXを使用する場合は、代わりに以下のコマンドを使用してください:
+  ```shell
+  docker run -d \
+    -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  ```
 
-```shell
-docker run -d \
-  -p 4317:4317 -p 4318:4318 \
-  --user 0:0 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
-  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log:/host/var/log:ro \
-  -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
-```
+  コレクターは即座にローカルシステムのログとメトリクスの収集を開始します。
 
-コレクターは即座にローカルシステムのログとメトリクスの収集を開始します。
+  ## HyperDX UIへ移動する {#navigate-to-the-hyperdx-ui}
 
-## HyperDX UIへ移動する {#navigate-to-the-hyperdx-ui}
+  ローカルにデプロイする場合は、[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用する場合は、サービスを選択し、左メニューから`HyperDX`を選択します。
 
-ローカルにデプロイする場合は、[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用する場合は、サービスを選択し、左メニューから`HyperDX`を選択します。
+  ## システムログの確認 {#explore-system-logs}
 
-## システムログの確認 {#explore-system-logs}
+  検索UIにローカルシステムログが表示されます。フィルタを展開して`system.log`を選択します：
 
-検索UIにローカルシステムログが表示されます。フィルタを展開して`system.log`を選択します：
+  <Image img={hyperdx_20} alt="HyperDX のローカルログ" size="lg" />
 
-<Image img={hyperdx_20} alt="HyperDX のローカルログ" size="lg" />
+  ## システムメトリクスを確認する {#explore-system-metrics}
 
-## システムメトリクスを確認する {#explore-system-metrics}
+  チャートを使用してメトリクスを確認できます。
 
-チャートを使用してメトリクスを確認できます。
+  左側のメニューから Chart Explorer に移動します。ソースとして `Metrics` を選択し、集計タイプとして `Maximum` を選択します。
 
-左側のメニューから Chart Explorer に移動します。ソースとして `Metrics` を選択し、集計タイプとして `Maximum` を選択します。
+  `Select a Metric`メニューで、`system.memory.utilization (Gauge)`を選択する前に`memory`と入力します。
 
-`Select a Metric`メニューで、`system.memory.utilization (Gauge)`を選択する前に`memory`と入力します。
+  実行ボタンを押して、時系列でのメモリ使用率を可視化します。
 
-実行ボタンを押して、時系列でのメモリ使用率を可視化します。
+  <Image img={hyperdx_21} alt="メモリ使用量の推移" size="lg" />
 
-<Image img={hyperdx_21} alt="メモリ使用量の推移" size="lg" />
+  数値は浮動小数点の`%`として返されることに注意してください。より明確に表示するには、`Set number format`を選択します。
 
-数値は浮動小数点の`%`として返されることに注意してください。より明確に表示するには、`Set number format`を選択します。
+  <Image img={hyperdx_22} alt="数値の書式" size="lg" />
 
-<Image img={hyperdx_22} alt="数値の書式" size="lg" />
+  次のメニューで、`Output format`ドロップダウンから`Percentage`を選択し、`Apply`をクリックします。
 
-次のメニューで、`Output format`ドロップダウンから`Percentage`を選択し、`Apply`をクリックします。
-
-<Image img={hyperdx_23} alt="メモリの時間割合（%）" size="lg" />
+  <Image img={hyperdx_23} alt="メモリの時間割合（%）" size="lg" />
 </VerticalStepper>
