@@ -12,23 +12,23 @@ import failover_slot from '@site/static/images/integrations/data-ingestion/click
 import Image from '@theme/IdealImage';
 
 
-# ClickPipes for Postgres 常见问题解答（FAQ）
+# ClickPipes for Postgres 常见问题解答（FAQ） {#clickpipes-for-postgres-faq}
 
-### 空闲状态如何影响我的 Postgres CDC ClickPipe？
+### 空闲状态如何影响我的 Postgres CDC ClickPipe？ {#how-does-idling-affect-my-postgres-cdc-clickpipe}
 
 如果你的 ClickHouse Cloud 服务处于空闲状态，你的 Postgres CDC ClickPipe 仍会继续同步数据，你的服务会在下一次同步间隔时被唤醒以处理传入数据。同步完成并再次达到空闲超时时间后，你的服务会重新进入空闲状态。
 
 例如，如果你的同步间隔设置为 30 分钟，而服务空闲超时时间设置为 10 分钟，那么你的服务将每 30 分钟被唤醒一次，保持活跃 10 分钟，然后回到空闲状态。
 
-### 在 ClickPipes for Postgres 中如何处理 TOAST 列？
+### 在 ClickPipes for Postgres 中如何处理 TOAST 列？ {#how-are-toast-columns-handled-in-clickpipes-for-postgres}
 
 请参阅 [Handling TOAST Columns](./toast) 页面以获取更多信息。
 
-### 在 ClickPipes for Postgres 中如何处理生成列（generated columns）？
+### 在 ClickPipes for Postgres 中如何处理生成列（generated columns）？ {#how-are-generated-columns-handled-in-clickpipes-for-postgres}
 
 请参阅 [Postgres Generated Columns: Gotchas and Best Practices](./generated_columns) 页面以获取更多信息。
 
-### 表是否必须具有主键才能参与 Postgres CDC？
+### 表是否必须具有主键才能参与 Postgres CDC？ {#do-tables-need-to-have-primary-keys-to-be-part-of-postgres-cdc}
 
 要使用 ClickPipes for Postgres 对表进行复制，必须为该表定义主键或 [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) 之一。
 
@@ -46,11 +46,11 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 
 需要特别说明的是，如果既没有定义主键也没有定义 REPLICA IDENTITY，ClickPipes 将无法复制该表的变更，并且在复制过程中可能会遇到错误。因此，建议在创建 ClickPipe 之前，先检查表结构，确保其满足上述要求。
 
-### 你们是否支持作为 Postgres CDC 一部分的分区表？
+### 你们是否支持作为 Postgres CDC 一部分的分区表？ {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
 支持，只要分区表定义了 PRIMARY KEY 或 REPLICA IDENTITY，即可开箱即用。PRIMARY KEY 和 REPLICA IDENTITY 必须同时存在于父表及其各个分区上。你可以在[这里](https://blog.peerdb.io/real-time-change-data-capture-for-postgres-partitioned-tables)了解更多信息。
 
-### 我可以连接没有公网 IP 或位于私有网络中的 Postgres 数据库吗？
+### 我可以连接没有公网 IP 或位于私有网络中的 Postgres 数据库吗？ {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
 可以！用于 Postgres 的 ClickPipes 提供两种方式连接位于私有网络中的数据库：
 
@@ -186,7 +186,7 @@ Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/m
 
 这些调整应能显著提升初始加载的性能，尤其是针对较旧的 Postgres 版本。如果使用的是 Postgres 14 或更高版本，由于对 CTID 范围扫描的支持有所改进，这些设置的影响会相对较小。
 
-### 在设置复制时，我应该如何确定 publication 的范围？
+### 在设置复制时，我应该如何确定 publication 的范围？ {#how-should-i-scope-my-publications-when-setting-up-replication}
 
 可以让 ClickPipes 管理 publication（需要额外权限），也可以自行创建。如果使用 ClickPipes 管理的 publication，在编辑 pipe 时我们会自动处理表的新增和移除。如果选择自主管理，需要谨慎限定 publication 的范围，仅包含需要复制的表——包含不必要的表会拖慢 Postgres WAL 解码。
 
@@ -231,24 +231,24 @@ WHERE
 如果是从 Postgres 的只读副本/热备库进行复制，则需要在主库上创建自己的 publication，该 publication 会自动传播到备库。在这种情况下，由于无法在备库上创建 publication，ClickPipe 将无法管理该 publication。
 :::
 
-### 推荐的 `max_slot_wal_keep_size` 设置
+### 推荐的 `max_slot_wal_keep_size` 设置 {#recommended-max_slot_wal_keep_size-settings}
 
 * **最低要求：** 将 [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) 设置为至少保留 **两天的** WAL 数据。
 * **针对大型数据库（高事务量）：** 至少保留相当于每天峰值 WAL 生成量 **2–3 倍** 的数据。
 * **针对存储受限环境：** 谨慎调优以在**避免磁盘耗尽**的同时确保复制稳定性。
 
-#### 如何计算合适的值
+#### 如何计算合适的值 {#how-to-calculate-the-right-value}
 
 要确定合适的配置，先测量 WAL 的生成速率：
 
-##### 适用于 PostgreSQL 10+
+##### 适用于 PostgreSQL 10+ {#for-postgresql-10}
 
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-##### 适用于 PostgreSQL 9.6 及更早版本：
+##### 适用于 PostgreSQL 9.6 及更早版本： {#for-postgresql-96-and-below}
 
 ```sql
 SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -259,7 +259,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * 将该数值乘以 2 或 3，以提供足够的保留量。
 * 将 `max_slot_wal_keep_size` 设置为计算得到的值（以 MB 或 GB 为单位）。
 
-##### 示例
+##### 示例 {#example}
 
 如果你的数据库每天生成 100 GB 的 WAL，则将其设置为：
 
@@ -267,7 +267,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 max_slot_wal_keep_size = 200GB
 ```
 
-### 我在日志中看到 ReceiveMessage EOF 错误。这意味着什么？
+### 我在日志中看到 ReceiveMessage EOF 错误。这意味着什么？ {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
 
 `ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF（End of File，文件结束）错误表示在尝试从复制流中读取数据时，与 Postgres 服务器的连接被意外关闭。
 
@@ -279,7 +279,7 @@ max_slot_wal_keep_size = 200GB
 * **网络问题：** 临时的网络中断可能会导致连接掉线。
 * **Postgres 服务器重启：** 如果 Postgres 服务器被重启或崩溃，连接将会丢失。
 
-### 我的复制槽（replication slot）被作废了。我应该怎么办？
+### 我的复制槽（replication slot）被作废了。我应该怎么办？ {#my-replication-slot-is-invalidated-what-should-i-do}
 
 恢复 ClickPipe 的唯一方式是触发重新同步（resync），您可以在 Settings 页面中进行此操作。
 
@@ -287,7 +287,7 @@ max_slot_wal_keep_size = 200GB
 
 在少数情况下，即使未配置 `max_slot_wal_keep_size`，我们也观察到该问题发生。这可能是 PostgreSQL 中一个复杂且罕见的 Bug 所致，尽管具体原因仍不清楚。
 
-### 在 ClickPipe 摄取数据时，我在 ClickHouse 上看到内存不足（OOM）问题。你们能帮忙吗？
+### 在 ClickPipe 摄取数据时，我在 ClickHouse 上看到内存不足（OOM）问题。你们能帮忙吗？ {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 ClickHouse 出现 OOM 的一个常见原因是服务规格过小。这意味着您当前的服务配置没有足够的资源（例如内存或 CPU）来有效处理摄取负载。我们强烈建议对服务进行扩容，以满足 ClickPipe 数据摄取的需求。
 
@@ -297,7 +297,7 @@ ClickHouse 出现 OOM 的一个常见原因是服务规格过小。这意味着�
 
 * 对 JOIN 的另一种优化方式是，通过 `subqueries` 或 `CTEs` 显式地对表进行过滤，然后在这些子查询之间执行 `JOIN`。这为查询计划器提供了关于如何高效过滤行并执行 `JOIN` 的提示。
 
-### 在初始加载过程中，我看到了 `invalid snapshot identifier` 错误。我应该怎么办？
+### 在初始加载过程中，我看到了 `invalid snapshot identifier` 错误。我应该怎么办？ {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
 `invalid snapshot identifier` 错误发生在 ClickPipes 与 Postgres 数据库之间的连接中断时。该问题可能由网关超时、数据库重启或其他瞬时问题引起。
 
@@ -306,7 +306,7 @@ ClickHouse 出现 OOM 的一个常见原因是服务规格过小。这意味着�
 
 要解决该问题，您可以在 ClickPipes 的 UI 中触发一次重新同步（resync）。这会从头重新启动初始加载流程。
 
-### 如果我在 Postgres 中删除了 publication，会发生什么？
+### 如果我在 Postgres 中删除了 publication，会发生什么？ {#what-happens-if-i-drop-a-publication-in-postgres}
 
 在 Postgres 中删除 publication 会导致您的 ClickPipe 连接中断，因为 ClickPipe 从源端拉取变更时需要依赖该 publication。发生这种情况时，您通常会收到一条错误告警，说明该 publication 已不存在。
 
@@ -327,16 +327,16 @@ FOR TABLE <...>, <...>
 WITH (publish_via_partition_root = true);
 ```
 
-### 如果我看到 `Unexpected Datatype` 错误或 `Cannot parse type XX ...` 怎么办
+### 如果我看到 `Unexpected Datatype` 错误或 `Cannot parse type XX ...` 怎么办 {#what-if-i-am-seeing-unexpected-datatype-errors}
 
 当源 Postgres 数据库中存在在摄取过程中无法映射的数据类型时，通常会出现此错误。
 如需排查更具体的情况，请参考以下几种可能性。
 
-### 我在复制/创建复制槽（slot）时看到类似 `invalid memory alloc request size <XXX>` 的错误
+### 我在复制/创建复制槽（slot）时看到类似 `invalid memory alloc request size <XXX>` 的错误 {#postgres-invalid-memalloc-bug}
 
 在 Postgres 补丁版本 17.5/16.9/15.13/14.18/13.21 中引入了一个 bug，某些工作负载会导致内存使用呈指数级增长，从而产生大于 1GB 的内存分配请求，而 Postgres 会认为这类请求无效。该 bug [已经修复](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a)，并会包含在下一轮 Postgres 补丁版本（17.6...）中。请联系您的 Postgres 服务提供商，了解该补丁版本何时可用于升级。如果暂时无法升级，当出现该错误时，需要对 ClickPipe 进行重新同步（resync）。
 
-### 我需要在 ClickHouse 中保留完整的历史记录，即使源 Postgres 数据库中的数据被删除。是否可以在 ClickPipes 中完全忽略来自 Postgres 的 DELETE 和 TRUNCATE 操作？
+### 我需要在 ClickHouse 中保留完整的历史记录，即使源 Postgres 数据库中的数据被删除。是否可以在 ClickPipes 中完全忽略来自 Postgres 的 DELETE 和 TRUNCATE 操作？ {#ignore-delete-truncate}
 
 可以！在创建 Postgres ClickPipe 之前，先创建一个不包含 DELETE 操作的 publication。例如：
 
@@ -348,12 +348,12 @@ CREATE PUBLICATION <发布名> FOR TABLES IN SCHEMA <模式名> WITH (publish = 
 
 请注意，ClickPipes 会忽略 TRUNCATE 操作，这些操作不会被复制到 ClickHouse。
 
-### 为什么我无法复制名称中带点的表？
+### 为什么我无法复制名称中带点的表？ {#replicate-table-dot}
 
 PeerDB 目前存在一个限制：源表标识符中包含点（即 schema 名称或表名称中有点）时，不支持进行复制，因为在这种情况下，PeerDB 通过点进行拆分时，无法正确区分哪一部分是 schema、哪一部分是表名。
 目前正致力于通过分别输入 schema 和表名的方式来绕过这一限制。
 
-### 初始加载完成后，ClickHouse 上没有数据或数据缺失。可能是什么问题？
+### 初始加载完成后，ClickHouse 上没有数据或数据缺失。可能是什么问题？ {#initial-load-issue}
 
 如果初始加载在没有报错的情况下完成，但目标 ClickHouse 表中仍有数据缺失，可能是因为在源 Postgres 表上启用了 RLS（行级安全，Row Level Security）策略。
 还应检查以下内容：
@@ -361,7 +361,7 @@ PeerDB 目前存在一个限制：源表标识符中包含点（即 schema 名�
 * 用户是否具有读取源表的足够权限。
 * ClickHouse 端是否存在可能过滤掉数据行的行策略。
 
-### 我能否让 ClickPipe 创建启用故障切换的 replication slot？
+### 我能否让 ClickPipe 创建启用故障切换的 replication slot？ {#failover-slot}
 
 可以。对于复制模式为 CDC 或 Snapshot + CDC 的 Postgres ClickPipe，你可以在创建 ClickPipe 时，在 `Advanced Settings` 部分打开下方的开关，让 ClickPipes 创建启用故障切换的 replication slot（复制槽）。请注意，使用该功能时，你的 Postgres 版本必须为 17 或更高。
 

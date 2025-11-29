@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['ClickStack', '可观测性', '一体化', '部署']
 ---
 
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -61,14 +61,14 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 
 </VerticalStepper>
 
-## 持久化数据和设置
+## 持久化数据和设置 {#persisting-data-and-settings}
 
 要在容器重启后保留数据和设置，可以修改上面的 docker 命令，将路径 `/data/db`、`/var/lib/clickhouse` 和 `/var/log/clickhouse-server` 挂载到宿主机上。例如：
 
 ```shell
-# 确保目录存在
+# 确保目录存在 {#ensure-directories-exist}
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# 修改命令以挂载路径
+# 修改命令以挂载路径 {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -87,7 +87,7 @@ docker run \
 - **非持久化存储：** 所有数据都存储在 Docker 原生 overlay 文件系统中。此配置在大规模场景下无法提供足够的性能，并且如果容器被移除或重启，数据将会丢失，除非用户[挂载所需的文件路径](#persisting-data-and-settings)。
 - **缺乏组件隔离：** 所有组件都运行在单个 Docker 容器内。这会阻止独立扩缩容和监控，并且会将任何 `cgroup` 限制全局应用于所有进程。其结果是，各组件可能会争用 CPU 和内存资源。
 
-## 自定义端口
+## 自定义端口 {#customizing-ports-deploy}
 
 如果需要自定义 HyperDX Local 运行时使用的应用程序端口（8080）或 API 端口（8000），需要修改 `docker run` 命令来映射相应端口，并设置一些环境变量。
 
@@ -98,7 +98,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hype
 ```
 
 
-## 使用 ClickHouse Cloud
+## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
 此发行版可以配合 ClickHouse Cloud 使用。虽然本地 ClickHouse 实例仍然会被部署（但不会被使用），但可以通过设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD` 来将 OTel collector 配置为使用 ClickHouse Cloud 实例。
 
@@ -117,7 +117,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 连接到 HyperDX UI 后，转到 [`Team Settings`](http://localhost:8080/team)，为你的 ClickHouse Cloud 服务创建一个连接，然后再创建所需的数据源。有关示例流程，请参见[此处](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
 
-## 配置 OpenTelemetry collector
+## 配置 OpenTelemetry collector {#configuring-collector}
 
 如有需要，可以修改 OTel collector 的配置；参见[「修改配置」](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)。
 

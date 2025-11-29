@@ -95,9 +95,9 @@ dbt 提供 4 种物化方式：
 
 
 
-## 配置 dbt 和 ClickHouse 适配器
+## 配置 dbt 和 ClickHouse 适配器 {#setup-of-dbt-and-the-clickhouse-adapter}
 
-### 安装 dbt-core 和 dbt-clickhouse
+### 安装 dbt-core 和 dbt-clickhouse {#install-dbt-core-and-dbt-clickhouse}
 
 dbt 提供了多种安装命令行界面（CLI）的方法，详细说明见 [此处](https://docs.getdbt.com/dbt-cli/install/overview)。我们建议使用 `pip` 安装 dbt 和 dbt-clickhouse。
 
@@ -105,7 +105,7 @@ dbt 提供了多种安装命令行界面（CLI）的方法，详细说明见 [�
 pip install dbt-core dbt-clickhouse
 ```
 
-### 为 dbt 提供 ClickHouse 实例的连接详细信息。
+### 为 dbt 提供 ClickHouse 实例的连接详细信息。 {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
 
 在 `~/.dbt/profiles.yml` 文件中配置名为 `clickhouse-service` 的 profile，并提供 schema、host、port、user 和 password 属性。完整的连接配置选项列表请参见 [功能与配置](/integrations/dbt/features-and-configurations) 页面：
 
@@ -125,7 +125,7 @@ clickhouse-service:
       secure: True  # 使用 TLS(原生协议)或 HTTPS(HTTP 协议)
 ```
 
-### 创建 dbt 项目
+### 创建 dbt 项目 {#create-a-dbt-project}
 
 现在你可以在现有项目中使用此配置，或使用以下命令创建新项目：
 
@@ -139,17 +139,17 @@ dbt init <项目名称>
 profile: 'clickhouse-service'
 ```
 
-### 测试连接
+### 测试连接 {#test-connection}
 
 使用 CLI 工具执行 `dbt debug`，以确认 dbt 是否能够连接到 ClickHouse。确认输出中包含 `Connection test: [OK connection ok]`，这表示连接成功。
 
 前往[指南页面](/integrations/dbt/guides)以了解更多关于如何在 ClickHouse 中使用 dbt 的信息。
 
-### 测试和部署你的模型（CI/CD）
+### 测试和部署你的模型（CI/CD） {#testing-and-deploying-your-models-ci-cd}
 
 有多种方式可以测试和部署你的 dbt 项目。dbt 提供了一些关于[最佳实践工作流](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows)和[CI 作业](https://docs.getdbt.com/docs/deploy/ci-jobs)的建议。我们将讨论几种策略，但请记住，这些策略可能需要进行较大幅度的调整以适配你的具体用例。
 
-#### 使用简单数据测试和单元测试的 CI/CD
+#### 使用简单数据测试和单元测试的 CI/CD {#ci-with-simple-data-tests-and-unit-tests}
 
 启动 CI 流水线的一种简单方式，是在作业内部运行一个 ClickHouse 集群，然后在其上运行你的模型。在运行模型之前，你可以向该集群插入演示数据。你可以直接使用一个 [seed](https://docs.getdbt.com/reference/commands/seed) 来用生产数据的一个子集填充暂存环境（staging 环境）。
 
@@ -157,7 +157,7 @@ profile: 'clickhouse-service'
 
 你的 CD 步骤可以非常简单，只需针对生产 ClickHouse 集群运行 `dbt build` 即可。
 
-#### 更完整的 CI/CD 阶段：使用最新数据，仅测试受影响的模型
+#### 更完整的 CI/CD 阶段：使用最新数据，仅测试受影响的模型 {#more-complete-ci-stage}
 
 一种常见策略是使用 [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) 作业，只重新部署被修改的模型（以及其上下游依赖）。这种方法利用生产运行生成的制品（例如 [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)）来缩短项目运行时间，并确保各环境之间的模式不会发生漂移。
 

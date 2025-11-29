@@ -15,7 +15,6 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 {/* 截断 */}
 
-
 ## 同步数据读取 \{#synchronous-data-reading\}
 
 新的设置项 `allow_asynchronous_read_from_io_pool_for_merge_tree` 允许读取线程（流）的数量高于查询执行流水线其余部分中的线程数量。
@@ -28,26 +27,26 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 ### 异步数据读取 \{#asynchronous-data-reading\}
 
-新的设置 [allow_asynchronous_read_from_io_pool_for_merge_tree](https://github.com/ClickHouse/ClickHouse/pull/43260) 允许读取线程（streams）的数量高于查询执行流水线其余部分中的线程数量，从而**加速在低 CPU 配置的 ClickHouse Cloud 服务上的冷查询**，并**提升 I/O 受限查询的性能**。  
-启用该设置后，读取线程的数量由 [max_streams_for_merge_tree_reading](https://github.com/ClickHouse/ClickHouse/pull/43260) 设置控制：
+新的设置 [allow&#95;asynchronous&#95;read&#95;from&#95;io&#95;pool&#95;for&#95;merge&#95;tree](https://github.com/ClickHouse/ClickHouse/pull/43260) 允许读取线程（streams）的数量高于查询执行流水线其余部分中的线程数量，从而**加速在低 CPU 配置的 ClickHouse Cloud 服务上的冷查询**，并**提升 I/O 受限查询的性能**。\
+启用该设置后，读取线程的数量由 [max&#95;streams&#95;for&#95;merge&#95;tree&#95;reading](https://github.com/ClickHouse/ClickHouse/pull/43260) 设置控制：
 
 <Image img={async_read} size="md" alt="异步数据读取示意图" />
 
 数据会被异步地、从不同列并行读取。
 
-请注意，还可以使用 [max_streams_to_max_threads_ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) 设置来配置读取线程（streams）数量与查询执行流水线其余部分线程数量之间的比例。但是，在基准测试中，它的效果不如 `max_streams_for_merge_tree_reading` 设置明显。
+请注意，还可以使用 [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) 设置来配置读取线程（streams）数量与查询执行流水线其余部分线程数量之间的比例。但是，在基准测试中，它的效果不如 `max_streams_for_merge_tree_reading` 设置明显。
 
-### 那么 optimize_read_in_order 呢？ \{#what-about-optimize_read_in_order\}
+### 那么 optimize&#95;read&#95;in&#95;order 呢？ \{#what-about-optimize&#95;read&#95;in&#95;order\}
 
-借助 [optimize_read_in_order 优化](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading)，如果查询的排序顺序与磁盘上数据的物理顺序一致，ClickHouse 可以[跳过](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)在内存中对数据进行重新排序，**但前提是必须按顺序读取数据（而不是异步读取）**：
+借助 [optimize&#95;read&#95;in&#95;order 优化](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading)，如果查询的排序顺序与磁盘上数据的物理顺序一致，ClickHouse 可以[跳过](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)在内存中对数据进行重新排序，**但前提是必须按顺序读取数据（而不是异步读取）**：
 
 <Image img={optimize_read} size="md" alt="顺序读取优化示意图" />
 
-### optimize_read_in_order 优先于异步读取 \{#optimize_read_in_order-has-precedence-over-asynchronous-reading\}
+### optimize&#95;read&#95;in&#95;order 优先于异步读取 \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
 
 当 ClickHouse 判断可以应用 `optimize_read_in_order` 优化时，`allow_asynchronous_read_from_io_pool_for_merge_tree` 设置将被忽略或禁用。
 
-### 演示上述所有内容的示例
+### 演示上述所有内容的示例 \{#example-demonstrating-all-of-the-above\}
 
 * 创建并加载 [UK Property Price Paid 表](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
 
@@ -138,7 +137,6 @@ SETTINGS
 
 * 检查查询管线：使用 60 个异步读取线程，以及 20 个用于查询执行管线其余部分的线程，
   当可以应用 `optimize_read_in_order` 优化时
-
 
 ```
 EXPLAIN PIPELINE

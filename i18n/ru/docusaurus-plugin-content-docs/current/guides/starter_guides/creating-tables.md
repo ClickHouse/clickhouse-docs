@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# Создание таблиц в ClickHouse
+# Создание таблиц в ClickHouse {#creating-tables-in-clickhouse}
 
 Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Используйте команду `CREATE DATABASE`, чтобы создать новую базу данных в ClickHouse:
 

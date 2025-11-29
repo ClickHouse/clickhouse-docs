@@ -9,11 +9,11 @@ doc_type: 'guide'
 
 
 
-# 测试 ClickHouse
+# 测试 ClickHouse {#testing-clickhouse}
 
 
 
-## 功能测试
+## 功能测试 {#functional-tests}
 
 功能测试是最简单、最易使用的一类测试。
 ClickHouse 的大部分特性都可以通过功能测试来验证，并且对于每一个可以用这种方式测试的 ClickHouse 代码变更，功能测试都是必需的。
@@ -34,7 +34,7 @@ ClickHouse 的大部分特性都可以通过功能测试来验证，并且对于
 在测试 `DateTime` 和 `DateTime64` 数据类型时，一个常见错误是误以为服务器会使用某个特定时区（例如 “UTC”）。实际情况并非如此，在 CI 测试运行中，时区是被刻意随机化的。最简单的解决办法是为测试值显式指定时区，例如 `toDateTime64(val, 3, 'Europe/Amsterdam')`。
 :::
 
-### 在本地运行测试
+### 在本地运行测试 {#running-a-test-locally}
 
 在本地启动 ClickHouse 服务器，并监听默认端口（9000）。
 例如，要运行测试 `01428_hash_set_nan_key`，切换到代码仓库目录并执行以下命令：
@@ -49,7 +49,7 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 可以运行全部测试，或者通过为测试名称提供过滤字符串来运行部分测试：`./clickhouse-test substring`。
 也可以选择并行运行测试，或以随机顺序运行测试。
 
-### 添加新测试
+### 添加新测试 {#adding-a-new-test}
 
 要添加新测试，首先在 `queries/0_stateless` 目录中创建一个 `.sql` 或 `.sh` 文件。
 然后使用 `clickhouse-client < 12345_test.sql > 12345_test.reference` 或 `./12345_test.sh > ./12345_test.reference` 生成对应的 `.reference` 文件。
@@ -76,7 +76,7 @@ sudo ./install.sh
 * 确保其他测试不会测试相同内容（即先用 grep 检查）。
   :::
 
-### 限制测试运行
+### 限制测试运行 {#restricting-test-runs}
 
 一个测试可以具有零个或多个*标签*，用于指定该测试在 CI 中在哪些上下文中运行。
 
@@ -95,9 +95,9 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest, no-replicated-database
-# - no-fasttest: <请在此处说明使用该标签的原因>
-# - no-replicated-database: <请在此处说明原因>
+# Tags: no-fasttest, no-replicated-database {#tags-no-fasttest-no-replicated-database}
+# - no-fasttest: <请在此处说明使用该标签的原因> {#no-fasttest-provide_a_reason_for_the_tag_here}
+# - no-replicated-database: <请在此处说明原因> {#no-replicated-database-provide_a_reason_here}
 ```
 
 可用标签列表：
@@ -134,7 +134,7 @@ SELECT 1
 除上述设置外，你还可以使用 `system.build_options` 中的 `USE_*` 标志来定义是否使用特定的 ClickHouse 特性。
 例如，如果你的测试使用了 MySQL 表，则应添加标签 `use-mysql`。
 
-### 为随机设置指定限制
+### 为随机设置指定限制 {#specifying-limits-for-random-settings}
 
 测试可以为在测试运行期间被随机化的设置指定允许的最小值和最大值。
 
@@ -143,8 +143,8 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest
-# 随机设置限制：max_block_size=(1000, 10000); index_granularity=(100, None)
+# Tags: no-fasttest {#tags-no-fasttest}
+# 随机设置限制：max_block_size=(1000, 10000); index_granularity=(100, None) {#random-settings-limits-max_block_size1000-10000-index_granularity100-none}
 ```
 
 对于 `.sql` 测试，标签以 SQL 注释的形式写在相邻的一行，或写在第一行：
@@ -157,7 +157,7 @@ SELECT 1
 
 如果你只需要指定其中一个限制值，可以将另一个设置为 `None`。
 
-### 选择测试名称
+### 选择测试名称 {#choosing-the-test-name}
 
 测试名称以五位数字前缀开头，后面跟一个描述性名称，例如 `00422_hash_function_constexpr.sql`。
 要选择前缀，先在目录中找到已经存在的最大前缀，然后将其加一。
@@ -168,7 +168,7 @@ ls tests/queries/0_stateless/[0-9]*.reference | tail -n 1
 
 与此同时，可能会添加一些具有相同数字前缀的其他测试，但这没问题，不会导致任何问题，你之后也不需要对其进行修改。
 
-### 检查必须出现的错误
+### 检查必须出现的错误 {#checking-for-an-error-that-must-occur}
 
 有时你希望测试，当查询不正确时会出现服务器错误。我们在 SQL 测试中为此提供了特殊注解，形式如下：
 
@@ -184,12 +184,12 @@ SELECT x; -- { serverError 49 }
 只检查错误码。
 如果现有的错误码对你的需求不够精确，可以考虑新增一个错误码。
 
-### 测试分布式查询
+### 测试分布式查询 {#testing-a-distributed-query}
 
 如果你想在功能测试中使用分布式查询，可以使用 `remote` 表函数，并使用 `127.0.0.{1..2}` 这些地址让服务器查询自身；或者你也可以在服务器配置文件中使用预定义的测试集群，例如 `test_shard_localhost`。
 记得在测试名称中加入 `shard` 或 `distributed` 这样的关键词，以便在 CI 中在正确的配置下运行该测试，即服务器已配置为支持分布式查询。
 
-### 使用临时文件
+### 使用临时文件 {#working-with-temporary-files}
 
 有时在 shell 测试中，你可能需要临时创建一个文件用于操作。
 请注意，某些 CI 检查会并行运行测试，因此如果你在脚本中创建或删除的临时文件没有唯一名称，就可能导致某些 CI 检查（例如 “Flaky”）失败。
@@ -217,7 +217,7 @@ SELECT x; -- { serverError 49 }
 
 
 
-## 单元测试
+## 单元测试 {#unit-tests}
 
 当你希望测试的不是整个 ClickHouse，而是某个独立的库或类时，单元测试会非常有用。
 你可以通过 `ENABLE_TESTS` CMake 选项来启用或禁用测试的构建。
@@ -272,7 +272,7 @@ Quorum 测试是在 ClickHouse 开源之前由一个独立团队编写的。
 
 
 
-## 手动测试
+## 手动测试 {#manual-testing}
 
 在开发新功能时，对其进行手动测试也是合理的。
 你可以按照以下步骤进行：

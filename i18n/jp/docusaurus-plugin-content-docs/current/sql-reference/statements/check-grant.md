@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 クエリの基本構文は以下のとおりです。
 
@@ -22,7 +22,7 @@ CHECK GRANT 権限[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|tabl
 * `privilege` — 権限のタイプ。
 
 
-## 例
+## 例 {#examples}
 
 ユーザーにその権限が付与されている場合、レスポンスの `check_grant` は `1` になります。付与されていない場合、レスポンスの `check_grant` は `0` になります。
 

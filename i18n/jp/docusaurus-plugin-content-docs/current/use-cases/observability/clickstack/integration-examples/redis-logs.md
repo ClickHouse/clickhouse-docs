@@ -373,9 +373,9 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log
 **docker-compose を使用している場合は、共有ボリュームを確認してください：**
 
 ```bash
-# 両方のコンテナが同じボリュームを使用しているか確認する
+# 両方のコンテナが同じボリュームを使用しているか確認する {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# 両方のコンテナにボリュームがマウントされているか確認する
+# 両方のコンテナにボリュームがマウントされているか確認する {#expected-output-should-show-file-size-and-permissions}
 ```
 
 
@@ -384,7 +384,7 @@ docker volume inspect <volume-name>
 **Redis のログ形式が期待されるパターンと一致していることを確認する:**
 
 ```bash
-# Redisログは次のような形式になります:
+# Redisログは次のような形式になります: {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```

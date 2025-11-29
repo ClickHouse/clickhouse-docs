@@ -30,7 +30,7 @@ TTL 不仅可以用来将数据“移动”到 [/dev/null](https://en.wikipedia.
 
 
 
-## DELETE FROM
+## DELETE FROM {#delete-from}
 
 [DELETE FROM](/sql-reference/statements/delete.md) 允许在 ClickHouse 中运行标准的 DELETE 查询。满足过滤条件的行会被标记为已删除，并且在后续的结果集中不再返回。行的清理是以异步方式执行的。
 

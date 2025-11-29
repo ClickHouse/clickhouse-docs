@@ -7,20 +7,16 @@ title: 'Executable 和 ExecutablePool 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# Executable 和 ExecutablePool 表引擎
+# Executable 和 ExecutablePool 表引擎 {#executable-and-executablepool-table-engines}
 
 `Executable` 和 `ExecutablePool` 表引擎允许你定义一张表，其行由你编写的脚本生成（通过向 **stdout** 写入行）。可执行脚本存储在 `users_scripts` 目录中，并且可以从任意数据源读取数据。
 
-- `Executable` 表：每次查询都会运行脚本
-- `ExecutablePool` 表：维护一个持久进程池，并从池中获取进程来执行读取操作
+* `Executable` 表：每次查询都会运行脚本
+* `ExecutablePool` 表：维护一个持久进程池，并从池中获取进程来执行读取操作
 
 你还可以选择性地添加一个或多个输入查询，将其结果以流式方式写入 **stdin**，供脚本读取。
 
-
-
-## 创建 `Executable` 表
+## 创建 `Executable` 表 {#creating-an-executable-table}
 
 `Executable` 表引擎需要两个参数：脚本名称和输入数据的格式。你还可以可选地传入一个或多个输入查询：
 
@@ -102,8 +98,7 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
-
-## 将查询结果传递给脚本
+## 将查询结果传递给脚本 {#passing-query-results-to-a-script}
 
 Hacker News 网站的用户会留下评论。Python 提供了一个自然语言处理工具包（`nltk`），其中的 `SentimentIntensityAnalyzer` 可用于判断评论是正面、负面还是中性，并为其打分，分值范围在 -1（极度负面评论）到 1（极度正面评论）之间。我们来创建一个 `Executable` 表，使用 `nltk` 计算 Hacker News 评论的情感。
 
@@ -177,7 +172,6 @@ FROM sentiment
 
 响应如下：
 
-
 ```response
 ┌───────id─┬─情感值────┐
 │  7398199 │    0.4404 │
@@ -203,8 +197,7 @@ FROM sentiment
 └──────────┴───────────┘
 ```
 
-
-## 创建 `ExecutablePool` 表
+## 创建 `ExecutablePool` 表 {#creating-an-executablepool-table}
 
 `ExecutablePool` 的语法与 `Executable` 类似，但 `ExecutablePool` 表有几个特有的相关设置：
 

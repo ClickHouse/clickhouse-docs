@@ -9,22 +9,19 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Hive テーブルエンジン {#hive-table-engine}
 
-# Hive テーブルエンジン
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。現在、以下の入力フォーマットをサポートしています。
 
-- Text: `binary` を除く単純なスカラー列型のみをサポート
+* Text: `binary` を除く単純なスカラー列型のみをサポート
 
-- ORC: `char` を除く単純なスカラー列型をサポートし、複合型は `array` のみサポート
+* ORC: `char` を除く単純なスカラー列型をサポートし、複合型は `array` のみサポート
 
-- Parquet: すべての単純なスカラー列型をサポートし、複合型は `array` のみサポート
+* Parquet: すべての単純なスカラー列型をサポートし、複合型は `array` のみサポート
 
-
-
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -52,10 +49,9 @@ PARTITION BY expr
 
 * `table` — リモートテーブル名。
 
+## 使用例 {#usage-example}
 
-## 使用例
-
-### HDFS ファイルシステムでローカルキャッシュを使用する方法
+### HDFS ファイルシステムでローカルキャッシュを使用する方法 {#how-to-use-local-cache-for-hdfs-filesystem}
 
 リモートファイルシステムに対しては、ローカルキャッシュを有効にすることを強く推奨します。ベンチマークでは、キャッシュありの場合はほぼ 2 倍高速になることが示されています。
 
@@ -75,9 +71,9 @@ PARTITION BY expr
 * limit&#95;size: 必須。ローカルキャッシュファイルの最大サイズ (バイト単位) です。
 * bytes&#95;read&#95;before&#95;flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムへフラッシュするまでの読み取りバイト数を制御します。デフォルト値は 1MB です。
 
-### ORC 入力フォーマットで Hive テーブルをクエリする
+### ORC 入力フォーマットで Hive テーブルをクエリする {#query-hive-table-with-orc-input-format}
 
-#### Hive でテーブルを作成する
+#### Hive でテーブルを作成する {#create-table-in-hive}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -125,8 +121,7 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouse でテーブルを作成
-
+#### ClickHouse でテーブルを作成 {#create-table-in-clickhouse}
 
 次の ClickHouse テーブルは、上で作成した Hive テーブルからデータを取得します：
 
@@ -199,9 +194,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Parquet 入力フォーマットの Hive テーブルをクエリする
+### Parquet 入力フォーマットの Hive テーブルをクエリする {#query-hive-table-with-parquet-input-format}
 
-#### Hive でテーブルを作成する
+#### Hive でテーブルを作成する {#create-table-in-hive-1}
 
 ```text
 hive >
@@ -240,7 +235,6 @@ LOCATION
 OK
 Time taken: 0.51 seconds
 ```
-
 
 hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
 OK
@@ -329,7 +323,6 @@ day:                  2021-09-18
 
 #### Hive でテーブルを作成する
 
-
 ```text
 hive >
 CREATE TABLE `test`.`test_text`(
@@ -377,7 +370,7 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouse でテーブルを作成する
+#### ClickHouse でテーブルを作成する {#create-table-in-hive-2}
 
 上で作成した Hive テーブルからデータを取得する ClickHouse テーブル:
 
@@ -415,7 +408,6 @@ SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_heade
 
 Query id: 55b79d35-56de-45b9-8be6-57282fbf1f44
 ```
-
 
 Row 1:
 ──────

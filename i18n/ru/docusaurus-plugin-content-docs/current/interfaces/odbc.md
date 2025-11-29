@@ -7,6 +7,6 @@ title: 'Драйвер ODBC'
 doc_type: 'reference'
 ---
 
-# Драйвер ODBC
+# Драйвер ODBC {#odbc-driver}
 
 Используйте [официальный драйвер ODBC](https://github.com/ClickHouse/clickhouse-odbc) для доступа к ClickHouse как к источнику данных.

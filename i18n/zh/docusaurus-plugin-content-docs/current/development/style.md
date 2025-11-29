@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# C++ 编码风格指南
+# C++ 编码风格指南 {#c-style-guide}
 
 
 
@@ -22,7 +22,7 @@ doc_type: 'guide'
 
 
 
-## 格式
+## 格式 {#formatting}
 
 **1.** 大部分格式由 `clang-format` 自动完成。
 
@@ -214,7 +214,7 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 ```
 
 
-## 注释
+## 注释 {#comments}
 
 **1.** 一定要为所有非一目了然的代码部分添加注释。
 
@@ -312,7 +312,7 @@ void executeQuery(
 ```
 
 
-## 命名
+## 命名 {#names}
 
 **1.** 变量名和类成员名应使用小写字母并以下划线分隔。
 
@@ -431,7 +431,7 @@ enum class CompressionMethod
 **17.** 包含 C++ 源代码的文件必须使用 `.cpp` 扩展名。头文件必须使用 `.h` 扩展名。
 
 
-## 如何编写代码
+## 如何编写代码 {#how-to-write-code}
 
 **1.** 内存管理。
 
@@ -700,7 +700,7 @@ auto s = std::string{"Hello"};
 **26.** 对于虚函数，在基类中使用 `virtual` 关键字，而在派生类中不要再写 `virtual`，改为写 `override`。
 
 
-## 未使用的 C++ 特性
+## 未使用的 C++ 特性 {#unused-features-of-c}
 
 **1.** 不使用虚继承。
 
@@ -830,7 +830,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 
 
-## 其他补充建议
+## 其他补充建议 {#additional-recommendations}
 
 **1.** 对来自 `stddef.h` 的类型显式添加 `std::`
 

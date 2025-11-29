@@ -16,7 +16,6 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 {/* усечение */}
 
-
 ## Вопрос \{#question\}
 
 Как развернуть ClickHouse на основе Docker-образа для подключения к Microsoft SQL Server?
@@ -25,20 +24,20 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 ***Примечания к этому примеру***
 
-- Используется Docker-образ ClickHouse на Ubuntu
-- Используется драйвер FreeTDS
-- Используется MSSQL Server 2012R2
-- Имя хоста Windows в этом примере — `MARSDB2.marsnet2.local`, IP: `192.168.1.133` (замените на ваше имя хоста и/или IP)
-- Имя экземпляра MSSQL — `MARSDB2`
-- Имя учётной записи входа в MSSQL и пользователя базы данных — `sql_user`
+* Используется Docker-образ ClickHouse на Ubuntu
+* Используется драйвер FreeTDS
+* Используется MSSQL Server 2012R2
+* Имя хоста Windows в этом примере — `MARSDB2.marsnet2.local`, IP: `192.168.1.133` (замените на ваше имя хоста и/или IP)
+* Имя экземпляра MSSQL — `MARSDB2`
+* Имя учётной записи входа в MSSQL и пользователя базы данных — `sql_user`
 
 ### Пример настройки в MSSQL для тестирования ### \{#example-setup-in-mssql-for-testing-\}
 
-База данных и таблица, созданные в MSSQL:  
+База данных и таблица, созданные в MSSQL:
 
 <Image img={mssql_table} size="md" alt="Структура базы данных и таблицы в MSSQL" border />
 
-Учетная запись входа MSSQL `sql_user`:  
+Учетная запись входа MSSQL `sql_user`:
 
 <Image img={mssql_login} size="md" alt="Конфигурация учетной записи входа MSSQL" border />
 
@@ -46,11 +45,11 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 <Image img={mssql_roles} size="md" alt="Роли членства пользователя `sql_user` в базе данных MSSQL" border />
 
-Пользователь базы данных, сопоставленный с учетной записью входа:  
+Пользователь базы данных, сопоставленный с учетной записью входа:
 
 <Image img={mssql_user} size="md" alt="Пользователь базы данных MSSQL, сопоставленный с учетной записью входа" border />
 
-### Настройка ClickHouse с помощью ODBC
+### Настройка ClickHouse с помощью ODBC \{#configuring-clickhouse-with-odbc\}
 
 Создайте рабочий каталог:
 
@@ -93,8 +92,7 @@ Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
 UsageCount = 1
 ```
 
-
-### Настройте Dockerfile для скачивания образа и добавления TDS и необходимых библиотек ODBC
+### Настройте Dockerfile для скачивания образа и добавления TDS и необходимых библиотек ODBC \{#configure-a-dockerfile-to-download-the-image-and-add-the-tds-and-required-odbc-libraries\}
 
 Создайте Dockerfile:
 
@@ -178,8 +176,7 @@ CONTAINER ID   IMAGE                           COMMAND            CREATED       
 87a400b803ce   marsnet/clickhouse-odbc:23.10   "/entrypoint.sh"   57 minutes ago   Up About a minute   0.0.0.0:8123->8123/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9009->9009/tcp   clickhouse-odbc
 ```
 
-
-### Проверьте подключение по ODBC
+### Проверьте подключение по ODBC \{#test-odbc-connection\}
 
 Подключитесь с помощью клиента ClickHouse:
 

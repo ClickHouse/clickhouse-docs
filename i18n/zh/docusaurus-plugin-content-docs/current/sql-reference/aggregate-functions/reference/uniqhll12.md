@@ -6,7 +6,7 @@ title: 'uniqHLL12'
 doc_type: 'reference'
 ---
 
-# uniqHLL12
+# uniqHLL12 {#uniqhll12}
 
 使用 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 算法计算不同参数取值的近似个数。
 

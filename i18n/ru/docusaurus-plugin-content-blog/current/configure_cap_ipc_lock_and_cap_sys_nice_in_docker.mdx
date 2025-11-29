@@ -10,8 +10,7 @@ keywords: ['Docker', 'CAP_IPC_LOCK', 'CAP_SYS_NICE']
 
 {/* обрезка */}
 
-
-## Вопрос
+## Вопрос \{#question\}
 
 При запуске ClickHouse в Docker Docker сообщает, что в системе отсутствуют привилегии `CAP_IPC_LOCK` и `CAP_SYS_NICE`. Как это можно исправить?
 
@@ -31,8 +30,7 @@ docker run -d --name clickhouse-server \
 2023.04.19 08:04:10.065860 [ 1 ] {} <Information> Application: Похоже, процесс не имеет capability CAP_SYS_NICE, настройка 'os_thread_priority' не будет иметь эффекта. Это могло произойти из-за некорректной установки пакета ClickHouse. Вы можете устранить проблему вручную командой 'sudo setcap cap_sys_nice=+ep /usr/bin/clickhouse'. Обратите внимание, что это не будет работать на файловых системах, смонтированных с опцией 'nosuid'.
 ```
 
-
-## Ответ
+## Ответ \{#answer\}
 
 1. Добавьте два аргумента `--cap-add`, чтобы предоставить контейнеру привилегии `IPC_LOCK` и `SYS_NICE`:
 

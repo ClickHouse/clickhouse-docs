@@ -11,20 +11,20 @@ doc_type: 'reference'
 
 
 
-# ALTER TABLE ... MODIFY COMMENT
+# ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
 
 添加、修改或删除表注释（无论之前是否设置过）。表注释的更改会同时反映在 [`system.tables`](../../../operations/system-tables/tables.md) 和 `SHOW CREATE TABLE` 查询的结果中。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 
-## 示例
+## 示例 {#examples}
 
 要创建包含注释的表：
 

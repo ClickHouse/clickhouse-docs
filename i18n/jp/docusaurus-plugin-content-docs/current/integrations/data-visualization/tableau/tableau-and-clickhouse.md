@@ -13,7 +13,7 @@ integration:
 ---
 
 import TOCInline from '@theme/TOCInline';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
 import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
@@ -30,7 +30,7 @@ import tableau_workbook7 from '@site/static/images/integrations/data-visualizati
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Tableau を ClickHouse に接続する
+# Tableau を ClickHouse に接続する {#connecting-tableau-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 

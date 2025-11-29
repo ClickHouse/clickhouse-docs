@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['データレイク', 'レイクハウス']
 ---
 
-# ClickHouse はデータレイクをサポートしていますか？
+# ClickHouse はデータレイクをサポートしていますか？ {#does-clickhouse-support-data-lakes}
 
 ClickHouse は Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive を含むデータレイクをサポートしています。
 

@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# 在 ClickHouse 中创建用户和角色
+# 在 ClickHouse 中创建用户和角色 {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
 
@@ -211,7 +211,7 @@ ClickHouse 访问控制实体：
 
 
 
-## ALTER 权限
+## ALTER 权限 {#alter-permissions}
 
 本文旨在帮助您更好地理解如何定义权限，以及在特权用户执行 `ALTER` 语句时权限是如何生效的。
 

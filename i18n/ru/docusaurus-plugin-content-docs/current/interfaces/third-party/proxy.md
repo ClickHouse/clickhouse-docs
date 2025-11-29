@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Прокси-серверы сторонних разработчиков
+# Прокси-серверы сторонних разработчиков {#proxy-servers-from-third-party-developers}
 
 
 

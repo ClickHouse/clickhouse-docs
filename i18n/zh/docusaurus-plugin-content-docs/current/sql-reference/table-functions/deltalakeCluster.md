@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# deltaLakeCluster 表函数
+# deltaLakeCluster 表函数 {#deltalakecluster-table-function}
 
 这是对 [deltaLake](sql-reference/table-functions/deltalake.md) 表函数的扩展。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

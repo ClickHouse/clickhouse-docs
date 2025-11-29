@@ -6,7 +6,7 @@ title: 'system.tables'
 doc_type: 'reference'
 ---
 
-# system.tables
+# system.tables {#systemtables}
 
 Содержит метаданные для каждой таблицы, известной серверу.
 

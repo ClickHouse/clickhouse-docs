@@ -9,10 +9,9 @@ doc_type: 'guide'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# Импорт данных из Azure в ClickHouse {#bringing-azure-data-into-clickhouse}
 
-# Импорт данных из Azure в ClickHouse
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Microsoft Azure предлагает широкий набор инструментов для хранения, преобразования и анализа
 данных. Однако во многих сценариях ClickHouse может обеспечить значительно более высокую

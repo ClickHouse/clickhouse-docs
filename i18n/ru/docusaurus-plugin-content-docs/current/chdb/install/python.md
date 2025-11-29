@@ -12,7 +12,7 @@ doc_type: 'guide'
 - Python 3.8+ 
 - Поддерживаемые платформы: macOS и Linux (x86_64 и ARM64)
 
-## Установка
+## Установка {#install}
 
 ```bash
 pip install chdb
@@ -21,65 +21,65 @@ pip install chdb
 
 ## Использование {#usage} 
 
-### Интерфейс командной строки
+### Интерфейс командной строки {#command-line-interface}
 
 Выполняйте SQL-запросы непосредственно из командной строки:
 
 ```bash
-# Базовый запрос
+# Базовый запрос {#basic-query}
 python3 -m chdb "SELECT 1, 'abc'" Pretty
 
-# Запрос с форматированием
+# Запрос с форматированием {#query-with-formatting}
 python3 -m chdb "SELECT version()" JSON
 ```
 
 
-### Основы работы с Python
+### Основы работы с Python {#basic-python-usage}
 
 ```python
 import chdb
 
-# Простой запрос
+# Простой запрос {#simple-query}
 result = chdb.query("SELECT 1 as id, 'Hello World' as message", "CSV")
 print(result)
 
-# Получить статистику запроса
+# Получить статистику запроса {#get-query-statistics}
 print(f"Прочитано строк: {result.rows_read()}")
 print(f"Прочитано байт: {result.bytes_read()}")
 print(f"Время выполнения: {result.elapsed()} секунд")
 ```
 
 
-### API на основе подключений (рекомендуется)
+### API на основе подключений (рекомендуется) {#connection-based-api}
 
 Для более эффективного управления ресурсами и повышения производительности:
 
 ```python
 import chdb
 
-# Создание соединения (по умолчанию в памяти)
+# Создание соединения (по умолчанию в памяти) {#create-connection-in-memory-by-default}
 conn = chdb.connect(":memory:")
-# Или использовать файловое хранилище: conn = chdb.connect("mydata.db")
+# Или использовать файловое хранилище: conn = chdb.connect("mydata.db") {#or-use-file-based-conn-chdbconnectmydatadb}
 
-# Создание курсора для выполнения запросов
+# Создание курсора для выполнения запросов {#create-cursor-for-query-execution}
 cur = conn.cursor()
 
-# Выполнение запросов
+# Выполнение запросов {#execute-queries}
 cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3")
 
-# Получение результатов различными способами
+# Получение результатов различными способами {#fetch-results-in-different-ways}
 print(cur.fetchone())    # Одна строка: (0, '0')
 print(cur.fetchmany(2))  # Несколько строк: ((1, '1'), (2, '2'))
 
-# Получение метаданных
+# Получение метаданных {#get-metadata}
 print(cur.column_names())  # ['number', 'str']
 print(cur.column_types())  # ['UInt64', 'String']
 
-# Использование курсора как итератора
+# Использование курсора как итератора {#use-cursor-as-iterator}
 for row in cur:
     print(row)
 
-# Всегда закрывайте ресурсы
+# Всегда закрывайте ресурсы {#always-close-resources}
 cur.close()
 conn.close()
 ```
@@ -87,16 +87,16 @@ conn.close()
 
 ## Методы ввода данных {#data-input}
 
-### Файловые источники данных
+### Файловые источники данных {#file-based-data-sources}
 
 chDB поддерживает более чем 70 форматов данных для непосредственного выполнения запросов к файлам:
 
 ```python
 import chdb
-# Подготовьте данные
+# Подготовьте данные {#prepare-your-data}
 # ...
 
-# Запрос файлов Parquet
+# Запрос файлов Parquet {#query-parquet-files}
 result = chdb.query("""
     SELECT customer_id, sum(amount) as total
     FROM file('sales.parquet', Parquet) 
@@ -105,13 +105,13 @@ result = chdb.query("""
     LIMIT 10
 """, 'JSONEachRow')
 
-# Запрос CSV с заголовками
+# Запрос CSV с заголовками {#query-csv-with-headers}
 result = chdb.query("""
     SELECT * FROM file('data.csv', CSVWithNames) 
     WHERE column1 > 100
 """, 'DataFrame')
 
-# Множественные форматы файлов
+# Множественные форматы файлов {#multiple-file-formats}
 result = chdb.query("""
     SELECT * FROM file('logs*.jsonl', JSONEachRow)
     WHERE timestamp > '2024-01-01'
@@ -119,22 +119,22 @@ result = chdb.query("""
 ```
 
 
-### Примеры форматов вывода
+### Примеры форматов вывода {#output-format-examples}
 
 ```python
-# DataFrame для анализа
+# DataFrame для анализа {#dataframe-for-analysis}
 df = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'DataFrame')
 print(type(df))  # <class 'pandas.core.frame.DataFrame'>
 
-# Arrow Table для совместимости  
+# Arrow Table для совместимости   {#arrow-table-for-interoperability}
 arrow_table = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'ArrowTable')
 print(type(arrow_table))  # <class 'pyarrow.lib.Table'>
 
-# JSON для API
+# JSON для API {#json-for-apis}
 json_result = chdb.query('SELECT version()', 'JSON')
 print(json_result)
 
-# Формат Pretty для отладки
+# Формат Pretty для отладки {#pretty-format-for-debugging}
 pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
 print(pretty_result)
 ```
@@ -142,13 +142,13 @@ print(pretty_result)
 
 ### Операции с DataFrame {#dataframe-operations}
 
-#### Устаревший API DataFrame
+#### Устаревший API DataFrame {#legacy-dataframe-api}
 
 ```python
 import chdb.dataframe as cdf
 import pandas as pd
 
-# Объединение нескольких DataFrame
+# Объединение нескольких DataFrame {#join-multiple-dataframes}
 df1 = pd.DataFrame({'a': [1, 2, 3], 'b': ["one", "two", "three"]})
 df2 = pd.DataFrame({'c': [1, 2, 3], 'd': ["①", "②", "③"]})
 
@@ -159,20 +159,20 @@ result_df = cdf.query(
 )
 print(result_df)
 
-# Запрос к результирующему DataFrame
+# Запрос к результирующему DataFrame {#query-the-result-dataframe}
 summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
 
 
-#### Табличный движок Python (рекомендуется)
+#### Табличный движок Python (рекомендуется) {#python-table-engine-recommended}
 
 ```python
 import chdb
 import pandas as pd
 import pyarrow as pa
 
-# Прямой запрос к Pandas DataFrame
+# Прямой запрос к Pandas DataFrame {#query-pandas-dataframe-directly}
 df = pd.DataFrame({
     "customer_id": [1, 2, 3, 1, 2],
     "product": ["A", "B", "A", "C", "A"],
@@ -186,7 +186,7 @@ df = pd.DataFrame({
     ]
 })
 
-# Прямой запрос к DataFrame с поддержкой JSON
+# Прямой запрос к DataFrame с поддержкой JSON {#direct-dataframe-querying-with-json-support}
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -198,7 +198,7 @@ result = chdb.query("""
     ORDER BY total_spent DESC
 """).show()
 
-# Запрос к Arrow Table
+# Запрос к Arrow Table {#query-arrow-table}
 arrow_table = pa.table({
     "id": [1, 2, 3, 4],
     "name": ["Alice", "Bob", "Charlie", "David"],
@@ -213,20 +213,20 @@ chdb.query("""
 ```
 
 
-### Сеансы с сохранением состояния
+### Сеансы с сохранением состояния {#stateful-sessions}
 
 Сессии поддерживают состояние запросов между несколькими операциями, что позволяет реализовывать сложные рабочие процессы:
 
 ```python
 from chdb import session
 
-# Временная сессия (автоматическая очистка)
+# Временная сессия (автоматическая очистка) {#temporary-session-auto-cleanup}
 sess = session.Session()
 
-# Или постоянная сессия с указанием пути
-# sess = session.Session("/путь/к/данным")
+# Или постоянная сессия с указанием пути {#or-persistent-session-with-specific-path}
+# sess = session.Session("/путь/к/данным") {#sess-sessionsessionpathtodata}
 
-# Создать базу данных и таблицы
+# Создать базу данных и таблицы {#create-database-and-tables}
 sess.query("CREATE DATABASE IF NOT EXISTS analytics ENGINE = Atomic")
 sess.query("USE analytics")
 
@@ -240,7 +240,7 @@ sess.query("""
     ORDER BY (sale_date, id)
 """)
 
-# Вставить данные
+# Вставить данные {#insert-data}
 sess.query("""
     INSERT INTO sales VALUES 
         (1, 'Laptop', 999.99, '2024-01-15'),
@@ -248,7 +248,7 @@ sess.query("""
         (3, 'Keyboard', 79.99, '2024-01-17')
 """)
 
-# Создать материализованные представления
+# Создать материализованные представления {#create-materialized-views}
 sess.query("""
     CREATE MATERIALIZED VIEW daily_sales AS
     SELECT 
@@ -259,24 +259,24 @@ sess.query("""
     GROUP BY sale_date
 """)
 
-# Запросить представление
+# Запросить представление {#query-the-view}
 result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
 print(result)
 
-# Сессия автоматически управляет ресурсами
+# Сессия автоматически управляет ресурсами {#session-automatically-manages-resources}
 sess.close()  # Необязательно — автоматически закрывается при удалении объекта
 ```
 
 
-### Расширенные возможности сессий
+### Расширенные возможности сессий {#advanced-session-features}
 
 ```python
-# Сессия с пользовательскими настройками
+# Сессия с пользовательскими настройками {#session-with-custom-settings}
 sess = session.Session(
     path="/tmp/analytics_db",
 )
 
-# Оптимизация производительности запросов
+# Оптимизация производительности запросов {#query-performance-optimization}
 result = sess.query("""
     SELECT product, sum(amount) as total
     FROM sales 
@@ -289,40 +289,40 @@ result = sess.query("""
 См. также: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
 
-### Интерфейс Python DB-API 2.0
+### Интерфейс Python DB-API 2.0 {#python-db-api-20}
 
 Стандартный интерфейс доступа к базе данных для совместимости с существующими приложениями на Python:
 
 ```python
 import chdb.dbapi as dbapi
 
-# Проверка информации о драйвере
+# Проверка информации о драйвере {#check-driver-information}
 print(f"Версия драйвера chDB: {dbapi.get_client_info()}")
 
-# Создание соединения
+# Создание соединения {#create-connection}
 conn = dbapi.connect()
 cursor = conn.cursor()
 
-# Выполнение запросов с параметрами
+# Выполнение запросов с параметрами {#execute-queries-with-parameters}
 cursor.execute("""
     SELECT number, number * ? as doubled 
     FROM system.numbers 
     LIMIT ?
 """, (2, 5))
 
-# Получение метаданных
+# Получение метаданных {#get-metadata}
 print("Описание столбцов:", cursor.description)
 print("Количество строк:", cursor.rowcount)
 
-# Получение результатов
+# Получение результатов {#fetch-results}
 print("Первая строка:", cursor.fetchone())
 print("Следующие 2 строки:", cursor.fetchmany(2))
 
-# Получение оставшихся строк
+# Получение оставшихся строк {#fetch-remaining-rows}
 for row in cursor.fetchall():
     print("Строка:", row)
 
-# Пакетные операции
+# Пакетные операции {#batch-operations}
 data = [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
 cursor.execute("""
     CREATE TABLE temp_users (
@@ -342,23 +342,23 @@ cursor.executemany(
 
 Расширяйте SQL с помощью пользовательских функций, написанных на Python:
 
-#### Основы использования пользовательских функций (UDF)
+#### Основы использования пользовательских функций (UDF) {#basic-udf-usage}
 
 ```python
 from chdb.udf import chdb_udf
 from chdb import query
 
-# Простая математическая функция
+# Простая математическая функция {#simple-mathematical-function}
 @chdb_udf()
 def add_numbers(a, b):
     return int(a) + int(b)
 
-# Функция обработки строк
+# Функция обработки строк {#string-processing-function}
 @chdb_udf()
 def reverse_string(text):
     return text[::-1]
 
-# Функция обработки JSON  
+# Функция обработки JSON   {#json-processing-function}
 @chdb_udf()
 def extract_json_field(json_str, field):
     import json
@@ -368,7 +368,7 @@ def extract_json_field(json_str, field):
     except:
         return ''
 
-# Использование пользовательских функций в запросах
+# Использование пользовательских функций в запросах {#use-udfs-in-queries}
 result = query("""
     SELECT 
         add_numbers('10', '20') as sum_result,
@@ -379,24 +379,24 @@ print(result)
 ```
 
 
-#### Продвинутые UDF с пользовательскими типами возвращаемых значений
+#### Продвинутые UDF с пользовательскими типами возвращаемых значений {#advanced-udf-custom-return-types}
 
 ```python
-# UDF с указанным типом возвращаемого значения
+# UDF с указанным типом возвращаемого значения {#udf-with-specific-return-type}
 @chdb_udf(return_type="Float64")
 def calculate_bmi(height_str, weight_str):
     height = float(height_str) / 100  # Преобразование см в метры
     weight = float(weight_str)
     return weight / (height * height)
 
-# UDF для проверки данных
+# UDF для проверки данных {#udf-for-data-validation}
 @chdb_udf(return_type="UInt8") 
 def is_valid_email(email):
     import re
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return 1 if re.match(pattern, email) else 0
 
-# Использование в сложных запросах
+# Использование в сложных запросах {#use-in-complex-queries}
 result = query("""
     SELECT 
         name,
@@ -414,7 +414,7 @@ print(result)
 ```
 
 
-#### Рекомендации по использованию UDF
+#### Рекомендации по использованию UDF {#udf-best-practices}
 
 1. **Stateless Functions**: функции UDF должны быть чистыми, без побочных эффектов
 2. **Import Inside Functions**: все необходимые модули должны импортироваться внутри UDF
@@ -423,7 +423,7 @@ print(result)
 5. **Performance**: UDF вызываются для каждой строки, поэтому оптимизируйте их с учетом производительности
 
 ```python
-# Хорошо структурированная UDF с обработкой ошибок
+# Хорошо структурированная UDF с обработкой ошибок {#well-structured-udf-with-error-handling}
 @chdb_udf(return_type="String")
 def safe_json_extract(json_str, path):
     import json
@@ -440,7 +440,7 @@ def safe_json_extract(json_str, path):
     except Exception as e:
         return f'error: {str(e)}'
 
-# Использование со сложным вложенным JSON
+# Использование со сложным вложенным JSON {#use-with-complex-nested-json}
 query("""
     SELECT safe_json_extract(
         '{"user": {"profile": {"name": "Alice", "age": 25}}}',
@@ -450,7 +450,7 @@ query("""
 ```
 
 
-### Потоковая обработка запросов
+### Потоковая обработка запросов {#streaming-queries}
 
 Обрабатывайте большие наборы данных при фиксированном объёме потребляемой памяти:
 
@@ -459,14 +459,14 @@ from chdb import session
 
 sess = session.Session()
 
-# Настройка большого набора данных
+# Настройка большого набора данных {#setup-large-dataset}
 sess.query("""
     CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
     FROM numbers(1000000)
 """)
 
-# Пример 1: Базовая потоковая передача с менеджером контекста
+# Пример 1: Базовая потоковая передача с менеджером контекста {#example-1-basic-streaming-with-context-manager}
 total_rows = 0
 with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
     for chunk in stream:
@@ -480,7 +480,7 @@ with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
 
 print(f"Всего обработано строк: {total_rows}")
 
-# Пример 2: Ручная итерация с явной очисткой
+# Пример 2: Ручная итерация с явной очисткой {#example-2-manual-iteration-with-explicit-cleanup}
 stream = sess.send_query("SELECT * FROM large_data WHERE id % 100 = 0", "JSONEachRow")
 processed_count = 0
 
@@ -499,17 +499,17 @@ while True:
     
 stream.close()  # Важно: явная очистка
 
-# Пример 3: Интеграция Arrow для внешних библиотек
+# Пример 3: Интеграция Arrow для внешних библиотек {#example-3-arrow-integration-for-external-libraries}
 import pyarrow as pa
 from deltalake import write_deltalake
 
-# Потоковая передача результатов в формате Arrow
+# Потоковая передача результатов в формате Arrow {#stream-results-in-arrow-format}
 stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
-# Создание RecordBatchReader с пользовательским размером пакета
+# Создание RecordBatchReader с пользовательским размером пакета {#create-recordbatchreader-with-custom-batch-size}
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
-# Экспорт в Delta Lake
+# Экспорт в Delta Lake {#export-to-delta-lake}
 write_deltalake(
     table_or_uri="./my_delta_table",
     data=batch_reader,
@@ -523,13 +523,13 @@ sess.close()
 
 ### Табличный движок Python {#python-table-engine}
 
-#### Выполнение запросов к DataFrame в Pandas
+#### Выполнение запросов к DataFrame в Pandas {#query-pandas-dataframes}
 
 ```python
 import chdb
 import pandas as pd
 
-# Сложный DataFrame с вложенными данными
+# Сложный DataFrame с вложенными данными {#complex-dataframe-with-nested-data}
 df = pd.DataFrame({
     "customer_id": [1, 2, 3, 4, 5, 6],
     "customer_name": ["Alice", "Bob", "Charlie", "Alice", "Bob", "David"],
@@ -543,7 +543,7 @@ df = pd.DataFrame({
     ]
 })
 
-# Расширенные запросы с JSON-операциями
+# Расширенные запросы с JSON-операциями {#advanced-querying-with-json-operations}
 result = chdb.query("""
     SELECT 
         customer_name,
@@ -563,7 +563,7 @@ result = chdb.query("""
     ORDER BY total_spent DESC
 """).show()
 
-# Оконные функции на DataFrames
+# Оконные функции на DataFrames {#window-functions-on-dataframes}
 window_result = chdb.query("""
     SELECT 
         customer_name,
@@ -579,7 +579,7 @@ print(window_result)
 ```
 
 
-#### Пользовательские источники данных с PyReader
+#### Пользовательские источники данных с PyReader {#custom-data-sources-pyreader}
 
 Реализуйте пользовательские ридеры данных для специализированных источников данных:
 
@@ -638,7 +638,7 @@ class DatabaseReader(chdb.PyReader):
         self.cursor = end_pos
         return result
 
-### Определение типов и обработка JSON                                
+### Определение типов и обработка JSON                                 {#json-type-inference-handling}
 
 chDB автоматически обрабатывает сложные вложенные структуры данных:
 
@@ -646,7 +646,7 @@ chDB автоматически обрабатывает сложные влож
 import pandas as pd
 import chdb
 
-# DataFrame со смешанными JSON-объектами
+# DataFrame со смешанными JSON-объектами {#dataframe-with-mixed-json-objects}
 df_with_json = pd.DataFrame({
     "user_id": [1, 2, 3, 4],
     "profile": [
@@ -657,7 +657,7 @@ df_with_json = pd.DataFrame({
     ]
 })
 
-# Управление определением типов JSON с помощью настроек
+# Управление определением типов JSON с помощью настроек {#control-json-inference-with-settings}
 result = chdb.query("""
     SELECT 
         user_id,
@@ -670,7 +670,7 @@ result = chdb.query("""
 """, "Pretty")
 print(result)
 
-# Расширенные операции с JSON
+# Расширенные операции с JSON {#advanced-json-operations}
 complex_json = chdb.query("""
     SELECT 
         user_id,
@@ -699,17 +699,17 @@ chDB стабильно превосходит другие встроенные
 
 [Подробнее о результатах бенчмарков](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
-### Рекомендации по оптимизации производительности
+### Рекомендации по оптимизации производительности {#performance-tips}
 
 ```python
 import chdb
 
-# 1. Используйте соответствующие форматы вывода
+# 1. Используйте соответствующие форматы вывода {#1-use-appropriate-output-formats}
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # Для анализа
 arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # Для взаимодействия
 native_result = chdb.query("SELECT * FROM large_table", "Native")   # Для передачи между chDB
 
-# 2. Оптимизируйте запросы с помощью настроек
+# 2. Оптимизируйте запросы с помощью настроек {#2-optimize-queries-with-settings}
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -720,12 +720,12 @@ fast_result = chdb.query("""
         use_uncompressed_cache = 1
 """, "DataFrame")
 
-# 3. Используйте потоковую обработку для больших наборов данных
+# 3. Используйте потоковую обработку для больших наборов данных {#3-leverage-streaming-for-large-datasets}
 from chdb import session
 
 sess = session.Session()
 
-# Настройка большого набора данных
+# Настройка большого набора данных {#setup-large-dataset}
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -735,7 +735,7 @@ sess.query("""
     FROM numbers(10000000)
 """)
 
-# Потоковая обработка с постоянным использованием памяти
+# Потоковая обработка с постоянным использованием памяти {#stream-processing-with-constant-memory-usage}
 total_amount = 0
 processed_rows = 0
 
@@ -757,11 +757,11 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
 
 print(f"Итоговый результат: обработано {processed_rows} клиентов, общая сумма: {total_amount}")
 
-# Потоковая передача во внешние системы (например, Delta Lake)
+# Потоковая передача во внешние системы (например, Delta Lake) {#stream-to-external-systems-eg-delta-lake}
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
-# Обработка пакетами
+# Обработка пакетами {#process-in-batches}
 for batch in batch_reader:
     print(f"Обработка пакета с {batch.num_rows} строками...")
     # Преобразование или экспорт каждого пакета

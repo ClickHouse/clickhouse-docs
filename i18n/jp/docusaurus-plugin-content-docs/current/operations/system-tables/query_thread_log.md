@@ -6,25 +6,24 @@ title: 'system.query_thread_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.query&#95;thread&#95;log {#systemquery&#95;thread&#95;log}
 
-# system.query_thread_log
-
-<SystemTableCloud/>
+<SystemTableCloud />
 
 クエリを実行するスレッドに関する情報を含みます。たとえば、スレッド名、スレッドの開始時刻、クエリ処理時間などです。
 
 ログの記録を開始するには:
 
-1.  [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) セクションでパラメータを設定します。
-2.  [log_query_threads](/operations/settings/settings#log_query_threads) を 1 に設定します。
+1. [query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log) セクションでパラメータを設定します。
+2. [log&#95;query&#95;threads](/operations/settings/settings#log_query_threads) を 1 に設定します。
 
-データのフラッシュ間隔は、[query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) のサーバー設定セクション内にある `flush_interval_milliseconds` パラメータで設定します。フラッシュを強制的に実行するには、[SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) クエリを使用します。
+データのフラッシュ間隔は、[query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log) のサーバー設定セクション内にある `flush_interval_milliseconds` パラメータで設定します。フラッシュを強制的に実行するには、[SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) クエリを使用します。
 
 ClickHouse はテーブルからデータを自動的には削除しません。詳細は [Introduction](/operations/system-tables/overview#system-tables-introduction) を参照してください。
 
-`query_thread_log` テーブルに登録されるクエリ数を減らすには、[log_queries_probability](/operations/settings/settings#log_queries_probability) 設定を使用できます。
+`query_thread_log` テーブルに登録されるクエリ数を減らすには、[log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability) 設定を使用できます。
 
 Columns:
 

@@ -6,7 +6,7 @@ title: 'covarSampMatrix'
 doc_type: 'reference'
 ---
 
-# covarSampMatrix
+# covarSampMatrix {#covarsampmatrix}
 
 Возвращает выборочную ковариационную матрицу для N переменных.
 

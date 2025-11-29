@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ALTER
+# ALTER {#alter}
 
 ほとんどの `ALTER TABLE` クエリは、テーブルの設定またはデータを変更します。
 

@@ -8,10 +8,10 @@ keywords: ['LDAP 配置', 'LDAP 身份验证', '角色映射', '用户管理', '
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
-# 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射
+# 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射 {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 

@@ -7,7 +7,7 @@ title: 'USE ステートメント'
 doc_type: 'reference'
 ---
 
-# USE ステートメント
+# USE ステートメント {#use-statement}
 
 ```sql
 USE [DATABASE] db

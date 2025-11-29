@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# ClickHouse Cloud
+# ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud — это облачный сервис, созданный создателями популярной OLAP‑базы данных с открытым исходным кодом ClickHouse. 
 Вы можете опробовать ClickHouse Cloud, [оформив бесплатный пробный период](https://console.clickhouse.cloud/signUp).

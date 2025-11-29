@@ -10,12 +10,11 @@ keywords: ['JSON のインポート']
 
 {/* 省略 */}
 
-
-##  JSON を ClickHouse にインポートする \{#importing-json-into-clickhouse\}
+## JSON を ClickHouse にインポートする \{#importing-json-into-clickhouse\}
 
 ClickHouse は、[入出力用のさまざまなデータフォーマット](https://clickhouse.com/docs/interfaces/formats/)をサポートしています。その中には複数の JSON バリエーションがありますが、データのインジェスト時に最も一般的に使用されるのは [JSONEachRow](https://clickhouse.com/docs/interfaces/formats/#jsoneachrow) です。これは 1 行につき 1 つの JSON オブジェクトであることを前提としており、各オブジェクトは改行で区切られます。
 
-## 例
+## 例 \{#examples\}
 
 [HTTP interface](https://clickhouse.com/docs/interfaces/http/) を使用する場合:
 
@@ -31,11 +30,10 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 データを手動で挿入するのではなく、[クライアントライブラリ](https://clickhouse.com/docs/interfaces/)のいずれかを使用することを検討してください。
 
-
 ## 有用な設定 \{#useful-settings\}
 
-- `input_format_skip_unknown_fields` は、テーブルスキーマに存在しないフィールドが追加で含まれている場合でも、それらを破棄して JSON を挿入できるようにします。
-- `input_format_import_nested_json` は、[Nested](https://clickhouse.com/docs/sql-reference/data-types/nested-data-structures/nested/) 型のカラムにネストされた JSON オブジェクトを挿入できるようにします。
+* `input_format_skip_unknown_fields` は、テーブルスキーマに存在しないフィールドが追加で含まれている場合でも、それらを破棄して JSON を挿入できるようにします。
+* `input_format_import_nested_json` は、[Nested](https://clickhouse.com/docs/sql-reference/data-types/nested-data-structures/nested/) 型のカラムにネストされた JSON オブジェクトを挿入できるようにします。
 
 :::note
 設定は、HTTP インターフェースでは `GET` パラメーターとして、`CLI` インターフェースでは `--` を前置した追加のコマンドライン引数として指定します。

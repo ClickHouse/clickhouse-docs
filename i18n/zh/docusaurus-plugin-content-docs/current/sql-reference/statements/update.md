@@ -29,7 +29,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 值会使用 `CAST` 运算符转换为列的数据类型。不支持更新用于计算主键或分区键的列。
 
 
-## 示例
+## 示例 {#examples}
 
 ```sql
 UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
@@ -88,7 +88,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 
 
-## 更新权限
+## 更新权限 {#update-permissions}
 
 `UPDATE` 需要 `ALTER UPDATE` 权限。要为指定用户在特定表上启用执行 `UPDATE` 语句的权限，请运行：
 

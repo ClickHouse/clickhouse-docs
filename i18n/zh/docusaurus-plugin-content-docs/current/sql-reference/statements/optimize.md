@@ -34,8 +34,7 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 如果将 `alter_sync` 设置为 `2`，并且某些副本处于非活动状态的时间超过 `replication_wait_for_inactive_replica_timeout` 设置指定的时间，则会抛出 `UNFINISHED` 异常。
 :::
 
-
-## BY 表达式
+## BY 表达式 {#by-expression}
 
 如果希望基于自定义的一组列而不是所有列进行去重，可以显式指定列列表，或使用 [`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause) 或 [`EXCEPT`](/sql-reference/statements/select/except-modifier) 表达式的任意组合。显式写出或隐式展开得到的列列表必须包含行排序表达式（主键和排序键）以及分区表达式（分区键）中指定的所有列。
 
@@ -104,7 +103,7 @@ SELECT * FROM example;
 
 下面所有示例都在当前包含 5 行的数据状态下执行。
 
-#### `DEDUPLICATE`
+#### `DEDUPLICATE` {#deduplicate}
 
 当未指定用于去重的列时，将使用所有列进行去重。只有当一行中所有列的值都与前一行对应列的值相等时，该行才会被删除：
 
@@ -117,7 +116,6 @@ SELECT * FROM example;
 ```
 
 结果：
-
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -132,7 +130,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY *`
+#### `DEDUPLICATE BY *` {#deduplicate-by-}
 
 当未显式指定列时，表会按所有不是 `ALIAS` 或 `MATERIALIZED` 的列进行去重。结合上表来看，这些列是 `primary_key`、`secondary_key`、`value` 和 `partition_key` 列：
 
@@ -159,7 +157,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY * EXCEPT`
+#### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
 
 根据所有既不是 `ALIAS` 也不是 `MATERIALIZED`，且不为 `value` 的列（即 `primary_key`、`secondary_key` 和 `partition_key` 列）进行去重。
 
@@ -185,7 +183,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY <list of columns>`
+#### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
 
 显式按 `primary_key`、`secondary_key` 和 `partition_key` 列去重：
 
@@ -199,7 +197,6 @@ SELECT * FROM example;
 
 结果：
 
-
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
@@ -212,7 +209,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY COLUMNS(<regex>)`
+#### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
 
 根据所有匹配该正则表达式的列进行去重：`primary_key`、`secondary_key` 和 `partition_key` 列：
 

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Табличный движок RabbitMQ
+# Табличный движок RabbitMQ {#rabbitmq-table-engine}
 
 Этот движок позволяет интегрировать ClickHouse с [RabbitMQ](https://www.rabbitmq.com).
 
@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -131,7 +131,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 
-## Описание
+## Описание {#description}
 
 `SELECT` не особенно полезен для чтения сообщений (кроме отладки), потому что каждое сообщение можно прочитать только один раз. Гораздо практичнее создавать потоки в реальном времени с помощью [материализованных представлений](../../../sql-reference/statements/create/view.md). Для этого:
 

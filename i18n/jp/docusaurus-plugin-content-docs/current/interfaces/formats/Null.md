@@ -27,9 +27,9 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 次のデータを含むテーブル `football` を例にします。
 

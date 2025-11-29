@@ -16,7 +16,7 @@ import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/m
 import Image from '@theme/IdealImage';
 
 
-# Cloud SQL for MySQL 源配置指南
+# Cloud SQL for MySQL 源配置指南 {#cloud-sql-for-mysql-source-setup-guide}
 
 本文档是一个分步指南，介绍如何配置 Cloud SQL for MySQL 实例，以通过 MySQL ClickPipe 复制其数据。
 

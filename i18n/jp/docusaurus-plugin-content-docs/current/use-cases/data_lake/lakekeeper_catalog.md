@@ -231,7 +231,7 @@ Lakekeeper のセットアップでは、まずサンプルデータを Iceberg 
 :::
 
 
-### ローカルの Lakekeeper カタログへの接続
+### ローカルの Lakekeeper カタログへの接続 {#connecting-to-local-lakekeeper-catalog}
 
 ClickHouse コンテナに接続します。
 
@@ -250,7 +250,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 ```
 
 
-## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする
+## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
 接続が確立したので、Lakekeeper カタログ経由でクエリを実行できます。例えば次のとおりです。
 
@@ -334,7 +334,7 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## データレイクから ClickHouse へのデータ取り込み
+## データレイクから ClickHouse へのデータ取り込み {#loading-data-from-your-data-lake-into-clickhouse}
 
 Lakekeeper カタログのデータを ClickHouse に取り込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 

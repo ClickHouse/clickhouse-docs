@@ -36,7 +36,7 @@ import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/s
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse 主索引实用入门指南
+# ClickHouse 主索引实用入门指南 {#a-practical-introduction-to-primary-indexes-in-clickhouse}
 
 ## 介绍 {#introduction}
 
@@ -73,7 +73,7 @@ import Image from '@theme/IdealImage';
 
 本文中给出的所有运行时数据均基于在一台配备 Apple M1 Pro 芯片和 16GB 内存的 MacBook Pro 上本地运行 ClickHouse 22.2.1 所得。
 
-### 全表扫描
+### 全表扫描 {#a-full-table-scan}
 
 为了了解在没有主键的数据集上查询是如何执行的，我们通过执行以下 SQL DDL 语句来创建一张使用 MergeTree 表引擎的表：
 
@@ -150,7 +150,7 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 返回了 10 行。耗时：0.022 秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 处理了 887 万行，
 70.45 MB (398.53 million rows/s., 3.17 GB/s.)
 ```
@@ -172,7 +172,7 @@ ClickHouse 客户端的结果输出表明，ClickHouse 执行了一次全表扫�
 
 下面将详细说明 ClickHouse 如何构建和使用其稀疏主索引。在本文后续部分，我们还将讨论在构建索引（主键列）时，关于选择、移除和排序相关表列的一些最佳实践。
 
-### 带主键的表
+### 带主键的表 {#a-table-with-a-primary-key}
 
 创建一个具有复合主键的表，主键列为 UserID 和 URL：
 
@@ -494,7 +494,7 @@ SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID
 
   我们将在后面更详细地讨论这对查询执行性能的影响。
 
-### 主索引用于选择索引颗粒
+### 主索引用于选择索引颗粒 {#the-primary-index-is-used-for-selecting-granules}
 
 现在我们可以在主索引的支持下执行查询。
 
@@ -526,7 +526,7 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.005 sec.
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 已处理 8.19 千行,
 740.18 KB (153 万行/秒,138.59 MB/秒)
 ```
@@ -537,13 +537,13 @@ LIMIT 10;
 
 ```response
 ...Executor): 键条件：(列 0 在 [749927693, 749927693] 范围内)
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): 对数据分片 all_1_9_2 的索引范围执行二分查找（1083 个标记）
 ...Executor): 找到左边界标记：176
 ...Executor): 找到右边界标记：177
 ...Executor): 经过 19 步找到连续范围
 ...Executor): 通过分区键选择了 1/1 个分片，通过主键选择了 1 个分片，
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               通过主键选择了 1/1083 个标记，需从 1 个范围读取 1 个标记
 ...Reading ...从 1441792 开始读取约 8192 行数据
 ```
@@ -592,7 +592,7 @@ LIMIT 10;
 │                       UserID                                                          │
 │                     Condition: (UserID in [749927693, 749927693])                     │
 │                     Parts: 1/1                                                        │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │                     Granules: 1/1083                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -711,7 +711,7 @@ ClickHouse 现在使用索引中选中的标记号（176），在 UserID.mrk 标
 
 <a name="filtering-on-key-columns-after-the-first"></a>
 
-### 次级键列可能（不）高效
+### 次级键列可能（不）高效 {#secondary-key-columns-can-not-be-inefficient}
 
 当查询在一个复合键中、且作为首个键列的列上进行过滤时，[ClickHouse 会在该键列的索引标记上运行二分查找算法](#the-primary-index-is-used-for-selecting-granules)。
 
@@ -757,7 +757,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 行结果。耗时:0.086 秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 已处理 881 万行,
 799.69 MB(1.0211 亿行/秒,9.27 GB/秒)
 ```
@@ -769,11 +769,11 @@ LIMIT 10;
 ```response
 ...Executor): Key condition: (column 1 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1537 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               1076/1083 marks by primary key, 1076 marks to read from 5 ranges
 ...Executor): Reading approx. 8814592 rows with 10 streams
 ```
@@ -842,7 +842,7 @@ LIMIT 10;
 
 在我们的示例数据集中，两个键列（UserID、URL）都具有类似的高基数。如前所述，当位于 URL 列之前的键列具有较高或相近的基数时，通用排除搜索算法的效果并不理想。
 
-### 关于 data skipping index 的说明
+### 关于 data skipping index 的说明 {#note-about-data-skipping-index}
 
 由于 UserID 和 URL 都具有类似的高基数，我们在 URL 上的[查询过滤](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)，即使在来自我们[复合主键表 (UserID, URL)](#a-table-with-a-primary-key)的 URL 列上创建一个[辅助 data skipping index](./skipping-indexes.md)，收益也不会太大。
 
@@ -906,7 +906,7 @@ ClickHouse 现在创建了一个额外的索引,该索引针对每组 4 个连�
 
 <a name="multiple-primary-indexes-via-secondary-tables"></a>
 
-### 选项 1：辅助表
+### 选项 1：辅助表 {#option-1-secondary-tables}
 
 <a name="secondary-table" />
 
@@ -986,7 +986,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 行数据。耗时: 0.017 秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 处理了 319.49 千行数据,
 11.38 MB (18.41 百万行/秒, 655.75 MB/秒)
 ```
@@ -1002,13 +1002,13 @@ ClickHouse 服务器日志文件中的相应 trace 日志也印证了这一点�
 ```response
 ...Executor): 键条件：(列 0 在 ['http://public_search',
                                            'http://public_search'] 中)
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): 对数据分片 all_1_9_2 的索引范围执行二分查找（1083 个标记）
 ...Executor): 找到（左）边界标记：644
 ...Executor): 找到（右）边界标记：683
 ...Executor): 经过 19 步找到连续范围
 ...Executor): 通过分区键选择了 1/1 个分片，通过主键选择了 1 个分片，
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               通过主键选择了 39/1083 个标记，需从 1 个范围读取 39 个标记
 ...Executor): 使用 2 个流读取约 319488 行数据
 ```
@@ -1143,7 +1143,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 返回 10 行。耗时:0.026 秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 已处理 33.587 万行,
 13.54 MB(1291 万行/秒,520.38 MB/秒)。
 ```
@@ -1156,7 +1156,7 @@ ClickHouse 服务器日志文件中的对应跟踪日志确认，ClickHouse 正�
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Running binary search on index range ...
 ...
 ...Executor): Selected 4/4 parts by partition key, 4 parts by primary key,
@@ -1233,7 +1233,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 返回了 10 行。耗时：0.029 秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 处理了 319.49 千行，1.38 MB（11.05 百万行/秒，393.58 MB/秒）
 ```
 
@@ -1245,14 +1245,14 @@ ClickHouse 服务器日志文件中的相应 trace 日志证实 ClickHouse 正�
 ```response
 ...Executor): 键条件：(列 0 在 ['http://public_search',
                                            'http://public_search'] 中)
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): 对数据分片 prj_url_userid 的索引范围执行二分查找（1083 个标记）
 ...Executor): ...
 # highlight-next-line
 ...Executor): 选择完整的普通投影 prj_url_userid
 ...Executor): 投影所需列：URL、UserID
 ...Executor): 按分区键选中 1/1 个分片，按主键选中 1 个分片，
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               按主键选中 39/1083 个标记，将从 1 个范围读取 39 个标记
 ...Executor): 使用 2 个数据流读取约 319488 行
 ```
@@ -1444,7 +1444,7 @@ WHERE UserID = 112304
 其原因在于，当通过某个次级键列来选择 [granules](#the-primary-index-is-used-for-selecting-granules)，且其前一个键列具有更低的基数时，[generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444) 的效果最佳。我们已经在本指南的[前一节](#generic-exclusion-search-algorithm)中对这一点进行了详细说明。
 
 
-### 数据文件的最佳压缩率
+### 数据文件的最佳压缩率 {#efficient-filtering-on-secondary-key-columns}
 
 此查询比较了我们在上面创建的两个表中 `UserID` 列的压缩率：
 

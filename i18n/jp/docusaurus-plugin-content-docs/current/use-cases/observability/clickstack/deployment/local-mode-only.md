@@ -12,7 +12,7 @@ keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成'
 import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 [all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose) と同様に、この包括的な Docker イメージには、すべての ClickStack コンポーネントが含まれています：
 
@@ -30,7 +30,7 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 * デバッグ
 * HyperDX を用いた開発
 
-## デプロイ手順
+## デプロイ手順 {#deployment-steps}
 
 <br />
 

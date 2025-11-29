@@ -32,11 +32,11 @@ Kafka 向け ClickPipes は、（最も一般的なアプローチの 1 つで�
 
 
 
-## 認証
+## 認証 {#authentication}
 
 Apache Kafka プロトコルのデータソースに対して、ClickPipes は TLS 暗号化付きの [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 認証に加え、`SASL/SCRAM-SHA-256` および `SASL/SCRAM-SHA-512` をサポートしています。ストリーミングソース（Redpanda、MSK など）ごとに互換性に応じて、これらの認証メカニズムのすべて、またはいくつかのみが利用可能です。認証に関する要件が異なる場合は、[フィードバックをお寄せください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### IAM
+### IAM {#iam}
 
 :::info
 MSK ClickPipe 用の IAM 認証はベータ機能です。
@@ -87,7 +87,7 @@ IAM 認証を使用して MSK ブローカーに接続する場合、IAM ロー�
 }
 ```
 
-#### 信頼関係の設定
+#### 信頼関係の設定 {#configuring-a-trusted-relationship}
 
 IAM ロール ARN を使用して MSK に対して認証を行う場合、そのロールを引き受けられるようにするために、ClickHouse Cloud インスタンスとの間に信頼関係を追加する必要があります。
 
@@ -111,7 +111,7 @@ IAM ロール ARN を使用して MSK に対して認証を行う場合、その
 }
 ```
 
-### カスタム証明書
+### カスタム証明書 {#custom-certificates}
 
 ClickPipes for Kafka は、パブリックではないサーバー証明書を使用する Kafka ブローカー向けに、カスタム証明書のアップロードをサポートします。
 相互 TLS (mTLS) ベースの認証のために、クライアント証明書およびキーのアップロードもサポートされています。

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 其他备份方法
+# 其他备份方法 {#alternative-backup-methods}
 
 ClickHouse 将数据存储在磁盘上，而对磁盘进行备份的方法有很多。  
 下面是过去使用过的一些替代方案，可能适合你的使用场景。

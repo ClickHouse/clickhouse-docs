@@ -6,7 +6,7 @@ title: 'groupBitmap'
 doc_type: 'reference'
 ---
 
-# groupBitmap
+# groupBitmap {#groupbitmap}
 
 符号なし整数列に対してビットマップまたは集計計算を実行し、`UInt64` 型のカーディナリティ値を返します。サフィックスとして `-State` を付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 

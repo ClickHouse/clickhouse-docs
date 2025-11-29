@@ -15,22 +15,22 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
 メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良いサンプルとして利用できます。
 
-## データセットをダウンロードする
+## データセットをダウンロードする {#download-dataset}
 
 次のコマンドを実行します。
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-# オプション: チェックサムの検証
+# オプション: チェックサムの検証 {#option-validate-the-checksum}
 md5sum 2021_08_01_07_01_17_data.tgz
-# チェックサムは次と一致する必要があります: db6126724de939a5481e3160a2d67d15
+# チェックサムは次と一致する必要があります: db6126724de939a5481e3160a2d67d15 {#checksum-should-be-equal-to-db6126724de939a5481e3160a2d67d15}
 ```
 
 必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。
 ダウンロードサイズは約 35 MB です。
 
 
-## データセットの展開
+## データセットの展開 {#unpack-dataset}
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
@@ -46,7 +46,7 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 * `MenuItem` — メニュー項目。特定のメニューページ上での料理とその価格を表し、`Dish` と `MenuPage` へのリンクを持ちます。
 
 
-## テーブルを作成する
+## テーブルを作成する {#create-tables}
 
 価格を格納するために[Decimal](../../sql-reference/data-types/decimal.md)データ型を使用します。
 
@@ -114,7 +114,7 @@ CREATE TABLE menu_item
 ```
 
 
-## データをインポートする
+## データをインポートする {#import-data}
 
 ClickHouse にデータをアップロードするには、次のコマンドを実行します:
 
@@ -134,7 +134,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定により、[DateTime](../../sql-reference/data-types/datetime.md) フィールドをさまざまなフォーマットでパースできます。例えば、秒なしの ISO-8601 形式である「2000-01-01 01:02」も認識されます。この設定を有効にしない場合、固定形式の DateTime フォーマットのみが許可されます。
 
 
-## データを非正規化する
+## データを非正規化する {#denormalize-data}
 
 データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに分かれて格納されています。これは、例えばメニュー項目から料理名をクエリしたい場合などに、[JOIN](/sql-reference/statements/select/join) を実行する必要があるということです。
 典型的な分析タスクでは、毎回 `JOIN` を実行しないよう、あらかじめ JOIN 済みのデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
@@ -187,7 +187,7 @@ FROM menu_item
 ```
 
 
-## データを検証する
+## データを検証する {#validate-data}
 
 クエリ：
 
@@ -206,7 +206,7 @@ SELECT count() FROM menu_item_denorm;
 
 ## いくつかのクエリを実行してみる {#run-queries}
 
-### 料理の過去平均価格
+### 料理の過去平均価格 {#query-averaged-historical-prices}
 
 クエリ：
 
@@ -249,7 +249,7 @@ ORDER BY d ASC;
 あくまで目安としてお考えください。
 
 
-### ハンバーガーの価格
+### ハンバーガーの価格 {#query-burger-prices}
 
 クエリ：
 
@@ -287,7 +287,7 @@ ORDER BY d ASC;
 ```
 
 
-### ウォッカ
+### ウォッカ {#query-vodka}
 
 クエリ：
 
@@ -322,7 +322,7 @@ ORDER BY d ASC;
 ウォッカを取得するには `ILIKE '%vodka%'` と書く必要があり、これはなかなかインパクトのある書き方です。
 
 
-### キャビア
+### キャビア {#query-caviar}
 
 キャビアの価格を表示しましょう。また、キャビア料理の名前をひとつ表示しましょう。
 

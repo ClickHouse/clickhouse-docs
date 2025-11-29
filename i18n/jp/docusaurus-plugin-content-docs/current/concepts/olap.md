@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# OLAP とは何ですか？
+# OLAP とは何ですか？ {#what-is-olap}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing（オンライン分析処理）の略です。これは広い意味を持つ用語で、技術的観点とビジネス的観点の 2 つの視点から捉えることができます。最も抽象的なレベルでは、これらの単語を逆から読むとイメージしやすくなります：
 

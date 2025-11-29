@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# QUALIFY 句
+# QUALIFY 句 {#qualify-clause}
 
 ウィンドウ関数の結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価より前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 例
+## 例 {#examples}
 
 例：
 

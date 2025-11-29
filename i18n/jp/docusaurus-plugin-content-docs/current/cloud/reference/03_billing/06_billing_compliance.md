@@ -11,7 +11,7 @@ import billing_compliance from '@site/static/images/cloud/manage/billing_complia
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud の課金コンプライアンス
+# ClickHouse Cloud の課金コンプライアンス {#clickhouse-cloud-billing-compliance}
 
 
 

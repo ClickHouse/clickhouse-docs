@@ -7,17 +7,13 @@ title: 'テーブル TTL の操作方法'
 doc_type: 'reference'
 ---
 
-
-
-# テーブル TTL の操作
+# テーブル TTL の操作 {#manipulations-with-table-ttl}
 
 :::note
 古いデータを管理するための TTL の使い方についての詳細をお探しの場合は、ユーザーガイドの [Manage Data with TTL](/guides/developer/ttl.md) を参照してください。以下では、既存の TTL ルールを変更または削除する方法を示します。
 :::
 
-
-
-## TTL の変更
+## TTL の変更 {#modify-ttl}
 
 次の形式のクエリを使用して、[テーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) を変更できます。
 
@@ -25,8 +21,7 @@ doc_type: 'reference'
 ALTER TABLE [db.]table_name [ON CLUSTER cluster] MODIFY TTL ttl_expression;
 ```
 
-
-## TTL の削除
+## TTL の削除 {#remove-ttl}
 
 TTL プロパティは、次のクエリを使用してテーブルから削除できます。
 

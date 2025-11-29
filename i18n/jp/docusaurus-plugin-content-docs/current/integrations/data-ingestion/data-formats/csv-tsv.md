@@ -9,13 +9,13 @@ doc_type: 'guide'
 
 
 
-# ClickHouse での CSV および TSV データの扱い方
+# ClickHouse での CSV および TSV データの扱い方 {#working-with-csv-and-tsv-data-in-clickhouse}
 
 ClickHouse は、CSV 形式でのデータのインポートおよびエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対処できるよう、フォーマットと設定が用意されています。
 
 
 
-## CSV ファイルからのデータインポート
+## CSV ファイルからのデータインポート {#importing-data-from-a-csv-file}
 
 データをインポートする前に、適切な構造を持つテーブルを作成します。
 
@@ -51,7 +51,7 @@ FORMAT CSV
 その場合、ClickHouse はファイル拡張子に基づいて自動的にフォーマットを検出します。
 :::
 
-### ヘッダー付き CSV ファイル
+### ヘッダー付き CSV ファイル {#csv-files-with-headers}
 
 次のような [ヘッダー付きの CSV ファイル](assets/data_small_headers.csv) があるとします。
 
@@ -77,7 +77,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 [バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降では、`CSV` フォーマットを使用する場合、ClickHouse は CSV ファイル内のヘッダー行を自動的に検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
 :::
 
-### カスタム区切り文字を使用する CSV ファイル
+### カスタム区切り文字を使用する CSV ファイル {#csv-files-with-custom-delimiters}
 
 CSV ファイルがカンマ以外の区切り文字を使用している場合は、[format&#95;csv&#95;delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter) オプションを使用して、適切な記号を設定できます。
 
@@ -87,7 +87,7 @@ SET format_csv_delimiter = ';'
 
 この設定により、CSV ファイルからインポートする際には、カンマの代わりに区切り文字として `;` 記号が使用されるようになります。
 
-### CSV ファイル内の行のスキップ
+### CSV ファイル内の行のスキップ {#skipping-lines-in-a-csv-file}
 
 CSV ファイルからデータをインポートする際に、先頭から特定の行数をスキップしたい場合があります。これは [input&#95;format&#95;csv&#95;skip&#95;first&#95;lines](/operations/settings/settings-formats.md/#input_format_csv_skip_first_lines) オプションを使用して行えます。
 
@@ -113,7 +113,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 `file()` 関数を使用する場合、ClickHouse Cloud では、ファイルが配置されているマシン上で `clickhouse client` のコマンドを実行する必要があります。別の方法としては、[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用してローカルでファイルを操作・検証することもできます。
 :::
 
-### CSV ファイル内の NULL 値の扱い
+### CSV ファイル内の NULL 値の扱い {#treating-null-values-in-csv-files}
 
 NULL 値は、そのファイルを生成したアプリケーションによって、異なる方法でエンコードされている場合があります。デフォルトでは、ClickHouse は CSV 内の NULL 値として `\N` を使用します。ただし、[format&#95;csv&#95;null&#95;representation](/operations/settings/settings-formats.md/#format_tsv_null_representation) オプションを使うことで、これを変更できます。
 
@@ -162,7 +162,7 @@ SELECT * FROM file('nulls.csv')
 ```
 
 
-## TSV (タブ区切り) ファイル
+## TSV (タブ区切り) ファイル {#tsv-tab-separated-files}
 
 タブ区切りデータ形式は、データ交換形式として広く使用されています。[TSV ファイル](assets/data_small.tsv)から ClickHouse にデータを読み込むには、[TabSeparated](/interfaces/formats/TabSeparated) 形式を使用します。
 
@@ -172,12 +172,12 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 
 ヘッダー行付き TSV ファイルを扱うための [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames) フォーマットもあります。CSV と同様に、[input&#95;format&#95;tsv&#95;skip&#95;first&#95;lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) オプションを使用して先頭の X 行をスキップできます。
 
-### 生の TSV
+### 生の TSV {#raw-tsv}
 
 TSV ファイルがタブや改行をエスケープせずに保存されている場合があります。そのようなファイルを処理するには [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) を使用します。
 
 
-## CSV へのエクスポート
+## CSV へのエクスポート {#exporting-to-csv}
 
 前の例で使用したいずれのフォーマットも、データのエクスポートに使用できます。テーブル（またはクエリ）から CSV 形式でデータをエクスポートするには、同じように `FORMAT` 句を使用します。
 
@@ -214,7 +214,7 @@ FORMAT CSVWithNames
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-### エクスポートしたデータを CSV ファイルに保存する
+### エクスポートしたデータを CSV ファイルに保存する {#saving-exported-data-to-a-csv-file}
 
 エクスポートしたデータをファイルに保存するには、[INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) 句を使用します。
 
@@ -231,7 +231,7 @@ FORMAT CSVWithNames
 
 ClickHouse が 3,600 万行を CSV ファイルに保存するのに **約 1** 秒しかかかっていない点に注目してください。
 
-### 区切り文字をカスタマイズした CSV のエクスポート
+### 区切り文字をカスタマイズした CSV のエクスポート {#exporting-csv-with-custom-delimiters}
 
 カンマ以外の区切り文字を使用したい場合は、[format&#95;csv&#95;delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter) 設定オプションを利用できます。
 
@@ -256,7 +256,7 @@ FORMAT CSV
 "2016_Greater_Western_Sydney_Giants_season"|"2017-05-01"|86
 ```
 
-### Windows 向けの CSV エクスポート
+### Windows 向けの CSV エクスポート {#exporting-csv-for-windows}
 
 Windows 環境で CSV ファイルを問題なく利用したい場合は、[output&#95;format&#95;csv&#95;crlf&#95;end&#95;of&#95;line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line) オプションを有効にすることを検討してください。これにより、改行コードとして `\n` の代わりに `\r\n` が使用されます。
 
@@ -265,7 +265,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 ```
 
 
-## CSV ファイルのスキーマ推論
+## CSV ファイルのスキーマ推論 {#schema-inference-for-csv-files}
 
 多くの場合、スキーマが不明な CSV ファイルを扱うことになるため、各列にどの型を使用するかを確認する必要があります。ClickHouse はデフォルトで、与えられた CSV ファイルを解析し、その結果に基づいてデータ型を推測しようとします。これを「スキーマ推論」と呼びます。検出されたデータ型は、[file()](/sql-reference/table-functions/file.md) 関数と組み合わせて `DESCRIBE` ステートメントを使用することで確認できます。
 
@@ -289,7 +289,7 @@ SET input_format_csv_use_best_effort_in_schema_inference = 0
 
 この場合、すべての列の型は `String` として扱われます。
 
-### 明示的な列の型を指定した CSV のエクスポートとインポート
+### 明示的な列の型を指定した CSV のエクスポートとインポート {#exporting-and-importing-csv-with-explicit-column-types}
 
 ClickHouse では、[CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)（および他の *WithNames 系フォーマット）を使用してデータをエクスポートする際に、列の型を明示的に設定することもできます。
 
@@ -327,7 +327,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 これにより、ClickHouse は推測ではなく、（2行目の）ヘッダー行に基づいて列型を判定するようになりました。
 
 
-## カスタム区切り文字、セパレーター、およびエスケープ規則
+## カスタム区切り文字、セパレーター、およびエスケープ規則 {#custom-delimiters-separators-and-escaping-rules}
 
 より複雑なケースでは、テキストデータが高度にカスタマイズされた形式で整形されていても、なお構造を持っている場合があります。ClickHouse にはそのようなケース向けの特別な [CustomSeparated](/interfaces/formats/CustomSeparated) フォーマットがあり、カスタムのエスケープ規則、区切り文字、行区切り、開始／終了記号を設定できます。
 
@@ -366,7 +366,7 @@ LIMIT 3
 ヘッダーを正しくエクスポートおよびインポートするために、[CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) を使用することもできます。さらに複雑なケースを扱うには、[regex and template](templates-regex.md) フォーマットを参照してください。
 
 
-## 大きな CSV ファイルの扱い
+## 大きな CSV ファイルの扱い {#working-with-large-csv-files}
 
 CSV ファイルは大きくなることがありますが、ClickHouse はサイズに関係なく効率的に処理できます。大きなファイルは通常、圧縮された状態で提供されますが、ClickHouse では処理前に解凍する必要はありません。`INSERT` 時に `COMPRESSION` 句を使用できます:
 

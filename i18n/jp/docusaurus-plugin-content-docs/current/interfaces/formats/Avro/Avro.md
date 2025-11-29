@@ -37,7 +37,7 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 
 ## 例 {#examples}
 
-### Avro データの読み取り
+### Avro データの読み取り {#reading-avro-data}
 
 Avro ファイルから ClickHouse テーブルにデータを読み込むには、次のとおりです。
 
@@ -55,7 +55,7 @@ ClickHouse テーブルのカラムのデータ型は、挿入される Avro デ
 データをインポートする際、スキーマ内でフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合は、エラーを発生させる代わりにデフォルト値が使用されます。
 
 
-### Avro データの書き込み
+### Avro データの書き込み {#writing-avro-data}
 
 ClickHouse テーブルのデータを Avro ファイルに書き出すには、次のようにします。
 
@@ -71,7 +71,7 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 Avro ファイルの出力圧縮と同期間隔は、それぞれ [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) 設定を使用して構成できます。
 
 
-### Avro スキーマの推論
+### Avro スキーマの推論 {#inferring-the-avro-schema}
 
 ClickHouse の [`DESCRIBE`](/sql-reference/statements/describe-table) 関数を使用すると、次の例のように Avro ファイルの推論されたスキーマをすばやく確認できます。
 この例には、ClickHouse の S3 パブリックバケット内にある、公開アクセス可能な Avro ファイルの URL が含まれています。

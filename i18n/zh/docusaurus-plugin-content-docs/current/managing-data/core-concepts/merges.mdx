@@ -16,10 +16,9 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-
 ## ClickHouse 中的 part 合并（part merges）是什么？ \{#what-are-part-merges-in-clickhouse\}
 
-<br/>
+<br />
 
 ClickHouse [之所以快速](/concepts/why-clickhouse-is-so-fast)，不仅体现在查询上，也体现在写入上，这要归功于其[存储层](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)，其工作方式类似于 [LSM trees](https://en.wikipedia.org/wiki/Log-structured_merge-tree)：
 
@@ -33,13 +32,13 @@ ClickHouse [之所以快速](/concepts/why-clickhouse-is-so-fast)，不仅体现
 
 下图展示了这一后台合并过程的示意：
 
-<Image img={merges_01} size="lg" alt="PART MERGES"/>
+<Image img={merges_01} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 每当发生一次额外合并，对应 part 的 `merge level`（合并层级）就会加一。`0` 表示该 part 是新的，尚未被合并。已被合并进更大 ^^parts^^ 的 ^^parts^^ 会被标记为[非活动](/operations/system-tables/parts)，并在一段[可配置的](/operations/settings/merge-tree-settings#old_parts_lifetime)时间后（默认 8 分钟）最终被删除。随着时间推移，这会形成一个由合并 ^^parts^^ 构成的**树**。因此才称为 [MergeTree](/engines/table-engines/mergetree-family) 表。
 
-## 监控合并
+## 监控合并 \{#monitoring-merges\}
 
 在 [什么是表 parts](/parts) 示例中，我们[展示了](/parts#monitoring-table-parts)，ClickHouse 会在 [parts](/operations/system-tables/parts) 系统表中跟踪所有表的 ^^parts^^（部件）。我们使用了以下查询来获取示例表中每个活动部件的合并级别以及存储的行数：
 
@@ -86,14 +85,13 @@ ORDER BY name ASC;
 
 ③ [写放大（Write amplification）](https://en.wikipedia.org/wiki/Write_amplification)。
 
-
 ## 并发合并 \{#concurrent-merges\}
 
 单个 ClickHouse 服务器会使用多个后台[合并线程](/operations/server-configuration-parameters/settings#background_pool_size)来执行对 ^^parts^^ 的并发合并：
 
-<Image img={merges_02} size="lg" alt='PART 合并'/>
+<Image img={merges_02} size="lg" alt="PART 合并" />
 
-<br/>
+<br />
 
 每个合并线程会执行如下循环：
 
@@ -115,9 +113,9 @@ ClickHouse 不一定会像在[前一个示例](/merges#concurrent-merges)中示�
 
 下图展示了在 ClickHouse 中，由单个后台[合并线程](/merges#concurrent-merges)在默认情况下（未启用[纵向合并](/merges#memory-optimized-merges)）对 ^^parts^^ 执行合并的过程：
 
-<Image img={merges_03} size="lg" alt='PART 合并'/>
+<Image img={merges_03} size="lg" alt="PART 合并" />
 
-<br/>
+<br />
 
 part 的合并大致分为以下几个步骤：
 
@@ -139,9 +137,9 @@ part 的合并大致分为以下几个步骤：
 
 下图展示了标准 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中 ^^数据分片（parts）^^ 是如何合并的：
 
-<Image img={merges_04} size="lg" alt='PART MERGES'/>
+<Image img={merges_04} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 上图中的 DDL 语句创建了一个带有 ^^排序键^^ `(town, street)` 的 `MergeTree` 表，[这意味着](/parts#what-are-table-parts-in-clickhouse) 磁盘上的数据会按这些列进行排序，并相应生成稀疏主索引。
 
@@ -151,9 +149,9 @@ part 的合并大致分为以下几个步骤：
 
 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 表中的数据部分（part）合并与[标准合并](/merges#standard-merges)类似，但只保留每一行的最新版本，较旧的版本会被丢弃：
 
-<Image img={merges_05} size="lg" alt='数据部分合并'/>
+<Image img={merges_05} size="lg" alt="数据部分合并" />
 
-<br/>
+<br />
 
 上图中的 DDL 语句创建了一个 `ReplacingMergeTree` 表，使用 ^^sorting key^^ `(town, street, id)`，这意味着磁盘上的数据会按照这些列排序，并相应生成稀疏主键索引。
 
@@ -161,15 +159,15 @@ part 的合并大致分为以下几个步骤：
 
 不过，`ReplacingMergeTree` 会移除具有相同 ^^sorting key^^ 的重复行，并仅根据其所在数据部分的创建时间戳保留最新的一行。
 
-<br/>
+<br />
 
 ### 求和合并 \{#summing-merges\}
 
 在 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 表的 ^^parts^^ 合并过程中，数值数据会自动汇总：
 
-<Image img={merges_06} size="lg" alt='分片合并'/>
+<Image img={merges_06} size="lg" alt="分片合并" />
 
-<br/>
+<br />
 
 上图中的 DDL 语句定义了一个 `SummingMergeTree` 表，使用 `town` 作为 ^^sorting key^^。这意味着磁盘上的数据会按该列排序，并据此创建稀疏主键索引。
 
@@ -179,9 +177,9 @@ part 的合并大致分为以下几个步骤：
 
 上文中的 `SummingMergeTree` 表示例是 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表的一种专用变体，允许在数据分片（part）合并期间，通过应用任意[90+ 个](/sql-reference/aggregate-functions/reference)聚合函数，实现[自动增量数据转换](https://www.youtube.com/watch?v=QDAJTKZT8y4)：
 
-<Image img={merges_07} size="lg" alt="PART MERGES"/>
+<Image img={merges_07} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 上图中的 DDL 语句创建了一个以 `town` 作为 ^^sorting key^^（排序键）的 `AggregatingMergeTree` 表，确保磁盘上的数据按照该列排序，并生成相应的稀疏主键索引。
 

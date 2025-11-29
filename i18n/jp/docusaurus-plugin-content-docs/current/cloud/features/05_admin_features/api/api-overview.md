@@ -10,7 +10,7 @@ keywords: ['ClickHouse Cloud', 'API 概要', 'クラウド API', 'REST API', '�
 
 
 
-# ClickHouse Cloud API
+# ClickHouse Cloud API {#clickhouse-cloud-api}
 
 
 

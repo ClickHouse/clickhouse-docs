@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# 基本
+# 基本 {#basics}
 
 :::note
 クライアントプロトコルのリファレンスは現在作成中です。
@@ -121,13 +121,13 @@ data := []byte{
 
 
 
-## 整数
+## 整数 {#integers}
 
 :::tip
 ClickHouse は固定サイズの整数に **リトルエンディアン (Little Endian)** を使用します。
 :::
 
-### Int32
+### Int32 {#int32}
 
 ```go
 v := int32(1000)

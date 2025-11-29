@@ -6,7 +6,7 @@ title: 'stddevPop'
 doc_type: 'reference'
 ---
 
-# stddevPop
+# stddevPop {#stddevpop}
 
 Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md).
 

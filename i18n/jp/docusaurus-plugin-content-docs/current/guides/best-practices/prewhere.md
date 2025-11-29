@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 import Image from '@theme/IdealImage';
 
 
-# PREWHERE 最適化はどのように動作しますか？
+# PREWHERE 最適化はどのように動作しますか？ {#how-does-the-prewhere-optimization-work}
 
 [PREWHERE 句](/sql-reference/statements/select/prewhere) は、ClickHouse におけるクエリ実行の最適化機構です。不要なデータの読み取りを回避し、フィルタ条件に含まれない列をディスクから読み込む前に関係のないデータを除外することで、I/O を削減しクエリ速度を向上させます。
 
@@ -109,7 +109,7 @@ ClickHouse はバージョン [23.2](https://clickhouse.com/blog/clickhouse-rele
 
 
 
-## PREWHERE の効果を測定する方法
+## PREWHERE の効果を測定する方法 {#how-to-measure-prewhere-impact}
 
 PREWHERE がクエリに効果を発揮しているか検証するには、`optimize_move_to_prewhere setting` を有効にした場合と無効にした場合でクエリのパフォーマンスを比較します。
 

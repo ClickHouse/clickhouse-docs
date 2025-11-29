@@ -9,17 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Операторы SYSTEM
-
-
+# Операторы SYSTEM {#system-statements}
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES {#reload-embedded-dictionaries}
 
 Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md).
 По умолчанию внутренние словари отключены.
 Всегда возвращает `Ok.` независимо от результата обновления внутреннего словаря.
-
 
 ## SYSTEM RELOAD DICTIONARIES {#reload-dictionaries}
 
@@ -32,7 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ```sql
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD DICTIONARY {#reload-dictionary}
 
@@ -49,7 +44,6 @@ SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 SELECT name, status FROM system.dictionaries;
 ```
 
-
 ## SYSTEM RELOAD MODELS {#reload-models}
 
 :::note
@@ -64,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL {#reload-model}
 
 Перезагружает модель CatBoost, расположенную по пути `model_path`.
@@ -74,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS {#reload-functions}
 
@@ -87,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
 Пересчитывает все [асинхронные метрики](../../operations/system-tables/asynchronous_metrics.md). Поскольку асинхронные метрики периодически обновляются на основе параметра [asynchronous_metrics_update_period_s](../../operations/server-configuration-parameters/settings.md), их ручное обновление с помощью данной команды обычно не требуется.
@@ -96,13 +87,11 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM DROP DNS CACHE {#drop-dns-cache}
 
 Очищает внутренний DNS-кеш ClickHouse. В некоторых случаях (для старых версий ClickHouse) необходимо использовать эту команду при изменении инфраструктуры (например, при изменении IP-адреса другого сервера ClickHouse или сервера, используемого словарями).
 
 Для более удобного (автоматического) управления кешем см. параметры `disable_internal_dns_cache`, `dns_cache_max_entries`, `dns_cache_update_period`.
-
 
 ## SYSTEM DROP MARK CACHE {#drop-mark-cache}
 
@@ -113,11 +102,9 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 Очищает кэш метаданных Iceberg.
 
-
 ## SYSTEM DROP TEXT INDEX DICTIONARY CACHE {#drop-text-index-dictionary-cache}
 
 Очищает кэш словаря текстового индекса.
-
 
 ## SYSTEM DROP TEXT INDEX HEADER CACHE {#drop-text-index-header-cache}
 
@@ -128,11 +115,9 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 Очищает кэш постингов текстового индекса.
 
-
 ## SYSTEM DROP TEXT INDEX CACHES {#drop-text-index-caches}
 
 Очищает кэш заголовков текстового индекса, кэш словаря и кэш постингов.
-
 
 ## SYSTEM DROP REPLICA {#drop-replica}
 
@@ -152,7 +137,6 @@ SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 Третий выполняет то же самое для всех реплицируемых таблиц на локальном сервере.
 Четвёртый вариант полезен для удаления метаданных неактивной реплики, когда все остальные реплики таблицы были удалены. Требуется явно указать путь к таблице. Это должен быть тот же путь, который был передан в качестве первого аргумента движка `ReplicatedMergeTree` при создании таблицы.
 
-
 ## SYSTEM DROP DATABASE REPLICA {#drop-database-replica}
 
 Неработающие реплики баз данных `Replicated` можно удалить с помощью следующего синтаксиса:
@@ -165,19 +149,16 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 
 Аналогично `SYSTEM DROP REPLICA`, но удаляет путь реплики базы данных `Replicated` из ZooKeeper в случае, когда отсутствует база данных для выполнения `DROP DATABASE`. Обратите внимание, что данная команда не удаляет реплики `ReplicatedMergeTree` (поэтому может также потребоваться выполнение `SYSTEM DROP REPLICA`). Имена шарда и реплики — это имена, которые были указаны в аргументах движка `Replicated` при создании базы данных. Эти имена также можно получить из столбцов `database_shard_name` и `database_replica_name` в таблице `system.clusters`. Если предложение `FROM SHARD` отсутствует, то `replica_name` должно быть полным именем реплики в формате `shard_name|replica_name`.
 
-
 ## SYSTEM DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
 Очищает кэш несжатых данных.
 Кэш несжатых данных включается и отключается с помощью настройки [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) на уровне запроса, пользователя или профиля.
 Размер кэша настраивается с помощью серверной настройки [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size).
 
-
 ## SYSTEM DROP COMPILED EXPRESSION CACHE {#drop-compiled-expression-cache}
 
 Очищает кэш скомпилированных выражений.
 Кэш скомпилированных выражений включается и отключается с помощью настройки [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) на уровне запроса, пользователя или профиля.
-
 
 ## SYSTEM DROP QUERY CONDITION CACHE {#drop-query-condition-cache}
 
@@ -194,7 +175,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 Очищает [кеш запросов](../../operations/query-cache.md).
 Если указан тег, удаляются только записи кеша запросов с указанным тегом.
 
-
 ## SYSTEM DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 Очищает кэш схем, загруженных из [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path).
@@ -208,7 +188,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS {#flush-logs}
 
@@ -225,7 +204,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG {#reload-config}
 
 Перезагружает конфигурацию ClickHouse. Используется, когда конфигурация хранится в ZooKeeper. Обратите внимание, что `SYSTEM RELOAD CONFIG` не перезагружает конфигурацию пользователей (`USER`), хранящуюся в ZooKeeper, а только конфигурацию пользователей из файла `users.xml`. Для перезагрузки всей конфигурации пользователей используйте `SYSTEM RELOAD USERS`.
@@ -233,7 +211,6 @@ SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```sql
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD USERS {#reload-users}
 
@@ -243,18 +220,15 @@ SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM SHUTDOWN {#shutdown}
 
 <CloudNotSupportedBadge />
 
 Корректно завершает работу ClickHouse (аналогично командам `service clickhouse-server stop` / `kill {$pid_clickhouse-server}`)
 
-
 ## SYSTEM KILL {#kill}
 
 Завершает процесс ClickHouse (аналогично `kill -9 {$ pid_clickhouse-server}`)
-
 
 ## Управление распределёнными таблицами {#managing-distributed-tables}
 
@@ -318,7 +292,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## Управление таблицами MergeTree {#managing-mergetree-tables}
 
@@ -399,7 +372,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## Управление таблицами ReplicatedMergeTree {#managing-replicatedmergetree-tables}
 
@@ -594,7 +566,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 Предоставляет возможность повторно инициализировать состояние сессий Zookeeper для всех таблиц `ReplicatedMergeTree`, сравнивает текущее состояние с Zookeeper как источником истины и добавляет задачи в очередь Zookeeper при необходимости
 
-
 ### SYSTEM DROP FILESYSTEM CACHE {#drop-filesystem-cache}
 
 Позволяет очистить кеш файловой системы.
@@ -638,7 +609,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## Управление обновляемыми материализованными представлениями {#refreshable-materialized-views}
 

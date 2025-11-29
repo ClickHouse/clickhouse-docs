@@ -18,7 +18,7 @@ import backup_restore from '@site/static/images/cloud/manage/backup-restore.png'
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
 
-# 查看和恢复备份
+# 查看和恢复备份 {#review-and-restore-backups}
 
 本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为你的服务配置备份的选项，以及如何从备份中恢复数据。
 
@@ -66,7 +66,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 
 
-## 使用已恢复的服务
+## 使用已恢复的服务 {#working-with-your-restored-service}
 
 在完成一次备份恢复后，您将会拥有两个类似的服务：需要恢复的**原始服务**，以及从原始服务备份中恢复得到的新的**已恢复服务**。
 
@@ -75,7 +75,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 * 使用新的已恢复服务并删除原始服务。
 * 将新的已恢复服务中的数据迁移回原始服务，然后删除新的已恢复服务。
 
-### 使用**新的已恢复服务**
+### 使用**新的已恢复服务** {#use-the-new-restored-service}
 
 要使用新服务，请执行以下步骤：
 
@@ -83,7 +83,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 2. 验证新服务是否包含您需要的数据。
 3. 删除原始服务。
 
-### 将**新恢复服务**中的数据迁移回**原始服务**
+### 将**新恢复服务**中的数据迁移回**原始服务** {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
 假设由于某些原因您无法使用新恢复的服务，例如，仍然有用户或应用程序连接到现有服务。您可以选择将新恢复的数据迁移回原始服务。可以通过以下步骤完成迁移：
 
@@ -148,7 +148,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 在成功将数据插入到原有服务后，请务必在该服务中验证数据。数据验证完成后，还应删除新服务。
 
 
-## 恢复已删除的表
+## 恢复已删除的表 {#undeleting-or-undropping-tables}
 
 通过 [Shared Catalog](https://clickhouse.com/docs/cloud/reference/shared-catalog)，ClickHouse Cloud 支持使用 `UNDROP` 命令。
 

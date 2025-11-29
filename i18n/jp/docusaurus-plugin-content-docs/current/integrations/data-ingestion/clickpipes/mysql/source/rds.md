@@ -20,17 +20,17 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# RDS MySQL ソース設定ガイド
+# RDS MySQL ソース設定ガイド {#rds-mysql-source-setup-guide}
 
 このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して、Amazon RDS MySQL から ClickHouse Cloud へデータを複製するように設定する方法を説明します。MySQL における CDC（変更データキャプチャ）に関する一般的な質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 
 
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention-rds}
 
 バイナリログは、MySQL サーバーインスタンスで行われたデータ変更に関する情報を含むログファイル群であり、レプリケーションにはバイナリログファイルが必須です。RDS MySQL でバイナリログの保持を構成するには、[バイナリログを有効に](#enable-binlog-logging)し、[binlog の保持期間を延長](#binlog-retention-interval)する必要があります。
 
-### 1. 自動バックアップを利用してバイナリログを有効にする
+### 1. 自動バックアップを利用してバイナリログを有効にする {#enable-binlog-logging}
 
 自動バックアップ機能は、MySQL においてバイナリログを有効にするかどうかを決定します。自動バックアップは、RDS コンソールで対象インスタンスに移動し、**Modify** &gt; **Additional configuration** &gt; **Backup** の順に選択し、**Enable automated backups** チェックボックスをオンにすることで（まだオンでない場合）構成できます。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 レプリケーションのユースケースに応じて、**Backup retention period** は十分に長い値に設定することを推奨します。
 
-### 2. binlog の保持期間を延長する
+### 2. binlog の保持期間を延長する {#binlog-retention-interval}
 
 :::warning
 ClickPipes がレプリケーションの再開を試みた際に、設定されている binlog の保持期間により必要な binlog ファイルがすでに削除されている場合、ClickPipe はエラー状態となり、再同期が必要になります。

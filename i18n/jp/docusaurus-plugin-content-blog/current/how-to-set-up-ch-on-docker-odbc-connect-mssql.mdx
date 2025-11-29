@@ -16,7 +16,6 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 {/* 切り捨て */}
 
-
 ## 質問 \{#question\}
 
 Docker イメージを使用して ClickHouse をセットアップし、Microsoft SQL Server に接続できるようにするにはどうすればよいですか？
@@ -25,32 +24,32 @@ Docker イメージを使用して ClickHouse をセットアップし、Microso
 
 ***この例に関する注意事項***
 
-- ClickHouse の Docker 用 Ubuntu イメージを使用
-- FreeTDS ドライバーを使用
-- MSSQL Server 2012R2 を使用
-- この例では Windows ホスト名は `MARSDB2.marsnet2.local`、IP アドレスは `192.168.1.133`（自身のホスト名や IP に置き換えてください）
-- MSSQL インスタンス名は `MARSDB2`
-- MSSQL のログインおよびデータベース ユーザーは `sql_user`
+* ClickHouse の Docker 用 Ubuntu イメージを使用
+* FreeTDS ドライバーを使用
+* MSSQL Server 2012R2 を使用
+* この例では Windows ホスト名は `MARSDB2.marsnet2.local`、IP アドレスは `192.168.1.133`（自身のホスト名や IP に置き換えてください）
+* MSSQL インスタンス名は `MARSDB2`
+* MSSQL のログインおよびデータベース ユーザーは `sql_user`
 
 ### テスト用の MSSQL におけるサンプル構成 ### \{#example-setup-in-mssql-for-testing-\}
 
-MSSQL で作成したデータベースとテーブル:  
+MSSQL で作成したデータベースとテーブル:
 
 <Image img={mssql_table} size="md" alt="MSSQL データベースおよびテーブル構造" border />
 
-MSSQL のログイン ユーザー `sql_user`:  
+MSSQL のログイン ユーザー `sql_user`:
 
 <Image img={mssql_login} size="md" alt="MSSQL ログイン ユーザー構成" border />
 
-`sql_user` のデータベース メンバーシップ ロール:  
+`sql_user` のデータベース メンバーシップ ロール:
 
 <Image img={mssql_roles} size="md" alt="MSSQL データベース メンバーシップ ロール" border />
 
-ログインを関連付けたデータベース ユーザー:  
+ログインを関連付けたデータベース ユーザー:
 
 <Image img={mssql_user} size="md" alt="ログインを関連付けた MSSQL データベース ユーザー" border />
 
-### ODBC で ClickHouse を構成する
+### ODBC で ClickHouse を構成する \{#configuring-clickhouse-with-odbc\}
 
 作業ディレクトリを作成します。
 
@@ -93,8 +92,7 @@ Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
 UsageCount = 1
 ```
 
-
-### イメージをダウンロードし、TDS および必要な ODBC ライブラリを追加する Dockerfile を設定する
+### イメージをダウンロードし、TDS および必要な ODBC ライブラリを追加する Dockerfile を設定する \{#configure-a-dockerfile-to-download-the-image-and-add-the-tds-and-required-odbc-libraries\}
 
 Dockerfile を作成します。
 
@@ -178,8 +176,7 @@ CONTAINER ID   IMAGE                           COMMAND            CREATED       
 87a400b803ce   marsnet/clickhouse-odbc:23.10   "/entrypoint.sh"   57 minutes ago   Up About a minute   0.0.0.0:8123->8123/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9009->9009/tcp   clickhouse-odbc
 ```
 
-
-### ODBC 接続をテストする
+### ODBC 接続をテストする \{#test-odbc-connection\}
 
 ClickHouse クライアントを使用してログインします:
 

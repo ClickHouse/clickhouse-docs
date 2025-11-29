@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
@@ -22,7 +22,7 @@ import quicksight_07 from '@site/static/images/integrations/data-visualization/q
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# QuickSight
+# QuickSight {#quicksight}
 
 <ClickHouseSupportedBadge/>
 
@@ -30,7 +30,7 @@ QuickSight 可以通过官方 MySQL 数据源，并使用 Direct Query 模式，
 
 
 
-## 本地部署 ClickHouse 服务器的设置
+## 本地部署 ClickHouse 服务器的设置 {#on-premise-clickhouse-server-setup}
 
 请参阅[官方文档](/interfaces/mysql)，了解如何设置启用了 MySQL 接口的 ClickHouse 服务器。
 

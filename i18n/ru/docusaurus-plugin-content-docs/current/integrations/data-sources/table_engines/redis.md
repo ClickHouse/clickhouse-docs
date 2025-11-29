@@ -8,6 +8,6 @@ hide_title: true
 keywords: ['redis', 'cache', 'integration', 'data source', 'key-value store']
 ---
 
-import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';
+import RedisFunction from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
 
 <RedisFunction />

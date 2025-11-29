@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Оператор INSERT INTO
+# Оператор INSERT INTO {#insert-into-statement}
 
 Вставляет данные в таблицу.
 
@@ -112,7 +112,7 @@ INSERT INTO table SETTINGS ... FORMAT format_name набор_данных
 
 
 
-## Вставка результатов запроса SELECT
+## Вставка результатов запроса SELECT {#inserting-the-results-of-select}
 
 **Синтаксис**
 
@@ -139,7 +139,7 @@ WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
 
-## Вставка данных из файла
+## Вставка данных из файла {#inserting-data-from-a-file}
 
 **Синтаксис**
 
@@ -155,7 +155,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **Примеры**
 
-### Один файл с FROM INFILE
+### Один файл с FROM INFILE {#single-file-with-from-infile}
 
 Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/cli.md):
 
@@ -175,7 +175,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
-### Несколько файлов с FROM INFILE, использующим glob-шаблоны
+### Несколько файлов с FROM INFILE, использующим glob-шаблоны {#multiple-files-with-from-infile-using-globs}
 
 Этот пример очень похож на предыдущий, но вставка выполняется из нескольких файлов с использованием `FROM INFILE 'input_*.csv'`.
 
@@ -198,7 +198,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 :::
 
 
-## Вставка с использованием табличной функции
+## Вставка с использованием табличной функции {#inserting-using-a-table-function}
 
 Данные можно вставлять в таблицы, на которые ссылаются [табличные функции](../../sql-reference/table-functions/index.md).
 
@@ -228,7 +228,7 @@ SELECT * FROM simple_table;
 ```
 
 
-## Вставка в ClickHouse Cloud
+## Вставка в ClickHouse Cloud {#inserting-into-clickhouse-cloud}
 
 По умолчанию сервисы ClickHouse Cloud предоставляют несколько реплик для обеспечения высокой доступности. При подключении к сервису устанавливается соединение с одной из этих реплик.
 

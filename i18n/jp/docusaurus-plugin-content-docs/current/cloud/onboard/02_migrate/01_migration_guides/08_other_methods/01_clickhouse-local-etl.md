@@ -11,14 +11,14 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_detail.md';
+import AddARemoteSystem from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
 
-# clickhouse-local を使用した ClickHouse への移行
+# clickhouse-local を使用した ClickHouse への移行 {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='sm' alt='セルフマネージド ClickHouse の移行' background='white' />
 
@@ -91,21 +91,21 @@ Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使�
 
 
 
-## 例 1: Integration テーブルエンジンを使用して MySQL から ClickHouse Cloud へ移行する
+## 例 1: Integration テーブルエンジンを使用して MySQL から ClickHouse Cloud へ移行する {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
 ソースの MySQL データベースからデータを読み取るために、[mysql テーブル関数](/sql-reference/table-functions/mysql/) によって動的に作成される [integration テーブルエンジン](/engines/table-engines/integrations/mysql/) を使用し、ClickHouse Cloud サービス上の宛先テーブルにデータを書き込むために [remoteSecure テーブル関数](/sql-reference/table-functions/remote/) を使用します。
 
 <Image img={ch_local_03} size="sm" alt="自己管理型 ClickHouse からの移行" background="white" />
 
-### 宛先側の ClickHouse Cloud サービスで:
+### 宛先側の ClickHouse Cloud サービスで: {#on-the-destination-clickhouse-cloud-service}
 
-#### 宛先データベースを作成する:
+#### 宛先データベースを作成する: {#create-the-destination-database}
 
 ```sql
 CREATE DATABASE db
 ```
 
-#### MySQL テーブルと同じスキーマを持つ出力先テーブルを作成します:
+#### MySQL テーブルと同じスキーマを持つ出力先テーブルを作成します: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
 CREATE TABLE db.table ...
@@ -115,9 +115,9 @@ CREATE TABLE db.table ...
 ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テーブルのスキーマは整合している必要があります（カラム名と順序が同一であり、かつカラムのデータ型が互換性を持っている必要があります）。
 :::
 
-### clickhouse-local を実行するホストマシン上で:
+### clickhouse-local を実行するホストマシン上で: {#on-the-clickhouse-local-host-machine}
 
-#### マイグレーション用クエリで clickhouse-local を実行します:
+#### マイグレーション用クエリで clickhouse-local を実行します: {#run-clickhouse-local-with-the-migration-query}
 
 ```sql
 ./clickhouse-local --query "
@@ -131,16 +131,16 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 :::
 
 
-## 例 2: JDBC ブリッジを使用して MySQL から ClickHouse Cloud へ移行する
+## 例 2: JDBC ブリッジを使用して MySQL から ClickHouse Cloud へ移行する {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 [jdbc テーブル関数](/sql-reference/table-functions/jdbc.md) によってオンザフライで作成される [JDBC integration テーブルエンジン](/engines/table-engines/integrations/jdbc.md) を、[ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) および MySQL JDBC ドライバーと組み合わせて使用してソースの MySQL データベースからデータを読み取り、[remoteSecure テーブル関数](/sql-reference/table-functions/remote.md)
 を使用して ClickHouse Cloud サービス上の宛先テーブルにデータを書き込みます。
 
 <Image img={ch_local_04} size="sm" alt="自己管理型 ClickHouse からの移行" background="white" />
 
-### 宛先の ClickHouse Cloud サービス側での作業:
+### 宛先の ClickHouse Cloud サービス側での作業: {#on-the-destination-clickhouse-cloud-service-1}
 
-#### 宛先データベースを作成する:
+#### 宛先データベースを作成する: {#create-the-destination-database-1}
 
 ```sql
 CREATE DATABASE db

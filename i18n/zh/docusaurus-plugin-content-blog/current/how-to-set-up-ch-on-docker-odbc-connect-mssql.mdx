@@ -16,7 +16,6 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何通过 Docker 镜像部署 ClickHouse，并将其连接到 Microsoft SQL Server？
@@ -25,20 +24,20 @@ import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-4
 
 ***此示例说明***
 
-- 使用基于 Ubuntu 的 ClickHouse Docker 镜像
-- 使用 FreeTDS 驱动程序
-- 使用 MSSQL Server 2012R2
-- 本示例中的 Windows 主机名为 `MARSDB2.marsnet2.local`，IP 为 `192.168.1.133`（请替换为你自己的主机名和/或 IP）
-- MSSQL 实例名称为 `MARSDB2`
-- MSSQL 登录名和数据库用户均为 `sql_user`
+* 使用基于 Ubuntu 的 ClickHouse Docker 镜像
+* 使用 FreeTDS 驱动程序
+* 使用 MSSQL Server 2012R2
+* 本示例中的 Windows 主机名为 `MARSDB2.marsnet2.local`，IP 为 `192.168.1.133`（请替换为你自己的主机名和/或 IP）
+* MSSQL 实例名称为 `MARSDB2`
+* MSSQL 登录名和数据库用户均为 `sql_user`
 
 ### 在 MSSQL 中用于测试的示例配置 ### \{#example-setup-in-mssql-for-testing-\}
 
-在 MSSQL 中创建的数据库和表：  
+在 MSSQL 中创建的数据库和表：
 
 <Image img={mssql_table} size="md" alt="MSSQL 数据库和数据表结构" border />
 
-MSSQL 登录用户 `sql_user`：  
+MSSQL 登录用户 `sql_user`：
 
 <Image img={mssql_login} size="md" alt="MSSQL 登录用户配置" border />
 
@@ -46,11 +45,11 @@ MSSQL 登录用户 `sql_user`：
 
 <Image img={mssql_roles} size="md" alt="MSSQL 数据库角色成员关系" border />
 
-关联登录名的数据库用户：  
+关联登录名的数据库用户：
 
 <Image img={mssql_user} size="md" alt="关联登录名的 MSSQL 数据库用户" border />
 
-### 通过 ODBC 配置 ClickHouse
+### 通过 ODBC 配置 ClickHouse \{#configuring-clickhouse-with-odbc\}
 
 创建一个工作目录：
 
@@ -93,8 +92,7 @@ Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
 UsageCount = 1
 ```
 
-
-### 配置 Dockerfile，用于下载镜像并添加 TDS 和所需的 ODBC 库
+### 配置 Dockerfile，用于下载镜像并添加 TDS 和所需的 ODBC 库 \{#configure-a-dockerfile-to-download-the-image-and-add-the-tds-and-required-odbc-libraries\}
 
 创建 Dockerfile：
 
@@ -178,8 +176,7 @@ CONTAINER ID   IMAGE                           COMMAND            CREATED       
 87a400b803ce   marsnet/clickhouse-odbc:23.10   "/entrypoint.sh"   57 minutes ago   Up About a minute   0.0.0.0:8123->8123/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9009->9009/tcp   clickhouse-odbc
 ```
 
-
-### 测试 ODBC 连接
+### 测试 ODBC 连接 \{#test-odbc-connection\}
 
 使用 ClickHouse 客户端登录：
 

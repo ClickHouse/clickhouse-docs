@@ -5,9 +5,7 @@ title: 'IN 运算符'
 doc_type: 'reference'
 ---
 
-
-
-# IN 运算符
+# IN 运算符 {#in-operators}
 
 由于 `IN`、`NOT IN`、`GLOBAL IN` 和 `GLOBAL NOT IN` 运算符的功能相当丰富，这里单独进行说明。
 
@@ -94,8 +92,7 @@ ORDER BY EventDate ASC
 
 `IN` 子句中的子查询始终只在单个服务器上执行一次。不存在相关子查询。
 
-
-## NULL 处理
+## NULL 处理 {#null-processing}
 
 在请求处理期间，`IN` 运算符会将任何与 [NULL](/operations/settings/formats#input_format_null_as_default) 的运算结果一律视为 `0`，无论 `NULL` 位于运算符的左侧还是右侧。在 [transform&#95;null&#95;in = 0](../../operations/settings/settings.md#transform_null_in) 的情况下，`NULL` 值不会包含在任何数据集中，彼此不相等，也无法进行比较。
 
@@ -130,8 +127,7 @@ FROM t_null
 └───────────────────────┘
 ```
 
-
-## 分布式子查询
+## 分布式子查询 {#distributed-subqueries}
 
 对于带有子查询的 `IN` 运算符（类似于 `JOIN` 运算符），有两种用法：普通的 `IN` / `JOIN` 和 `GLOBAL IN` / `GLOBAL JOIN`。它们在分布式查询处理中的执行方式不同。
 
@@ -223,7 +219,6 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 临时表 `_data1` 会随查询一起发送到每个远程服务器（临时表的名称取决于具体实现）。
 
-
 这比使用普通的 `IN` 更高效。但请注意以下几点：
 
 1. 在创建临时表时，数据不会被去重。为减少通过网络传输的数据量，请在子查询中使用 DISTINCT。（对于普通的 `IN`，不需要这样做。）
@@ -234,7 +229,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 在 `GLOBAL IN` 子句中指定一个本地表也是有意义的，前提是该本地表仅在请求方服务器上可用，而希望在远程服务器上使用其中的数据。
 
-### Distributed Subqueries and max&#95;rows&#95;in&#95;set
+### Distributed Subqueries and max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
 
 可以使用 [`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) 和 [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) 来控制在分布式查询期间传输的数据量。
 
@@ -246,7 +241,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <某个
 
 如果 `some_predicate` 的选择性不够高，它将返回大量数据并导致性能问题。在这种情况下，应尽量减少通过网络传输的数据量。此外，请注意，[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) 默认为 `throw`，这意味着当达到这些阈值时会抛出异常。
 
-### 分布式子查询和 max&#95;parallel&#95;replicas
+### 分布式子查询和 max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
 
 当 [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) 大于 1 时，分布式查询会被进一步重写。
 

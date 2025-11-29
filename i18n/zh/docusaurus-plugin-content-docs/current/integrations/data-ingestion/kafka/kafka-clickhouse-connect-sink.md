@@ -8,31 +8,31 @@ doc_type: 'guide'
 keywords: ['ClickHouse Kafka Connect Sink', 'Kafka 连接器 ClickHouse', '官方 ClickHouse 连接器', 'ClickHouse Kafka 集成']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# ClickHouse Kafka Connect Sink
+# ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
 如果你需要任何帮助，请[在代码仓库中提交 issue](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)，或在 [ClickHouse 公共 Slack](https://clickhouse.com/slack) 中提问。
 :::
 **ClickHouse Kafka Connect Sink** 是一个 Kafka 连接器，用于将数据从 Kafka 主题投递到 ClickHouse 表中。
 
-### 许可证
+### 许可证 {#license}
 
 Kafka Connector Sink 根据 [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) 分发。
 
-### 环境要求
+### 环境要求 {#requirements-for-the-environment}
 
 环境中需要安装 [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) 框架 v2.7 或更高版本。
 
-### 版本兼容性矩阵
+### 版本兼容性矩阵 {#version-compatibility-matrix}
 
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 | -------------------------------- | ------------------ | ------------- | ------------------ |
 | 1.0.0                            | &gt; 23.3          | &gt; 2.7      | &gt; 6.1           |
 
-### 主要特性
+### 主要特性 {#main-features}
 
 * 内置开箱即用的精确一次（exactly-once）语义。该能力由 ClickHouse 新的核心特性 [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976)（由连接器用作状态存储）提供支持，并允许采用极简的架构。
 * 支持第三方状态存储：当前默认使用内存（In-memory），也可以使用 KeeperMap（即将支持 Redis）。
@@ -41,13 +41,13 @@ Kafka Connector Sink 根据 [Apache 2.0 License](https://www.apache.org/licenses
 * 支持具有显式 schema 和无 schema 的数据写入。
 * 支持 ClickHouse 的所有数据类型。
 
-### 安装说明
+### 安装说明 {#installation-instructions}
 
-#### 收集连接信息
+#### 收集连接信息 {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### 通用安装说明
+#### 通用安装说明 {#general-installation-instructions}
 
 连接器以单个 JAR 文件的形式分发，其中包含运行插件所需的全部类文件。
 
@@ -80,7 +80,7 @@ schemas.enable=false
 * 重启 Confluent Platform。
 * 如果您使用 Confluent Platform，请登录 Confluent Control Center UI，确认 ClickHouse Sink 已出现在可用连接器列表中。
 
-### 配置选项
+### 配置选项 {#configuration-options}
 
 要将 ClickHouse Sink 连接到 ClickHouse 服务器，您需要提供：
 
@@ -130,11 +130,11 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 
 每个主题在 ClickHouse 中都需要一个专用的目标表。目标表名必须与源主题名一致。
 
-### 预处理
+### 预处理 {#pre-processing}
 
 如果需要在消息发送到 ClickHouse Kafka Connect Sink 之前对出站消息进行转换，请使用 [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html)。
 
-### 支持的数据类型
+### 支持的数据类型 {#supported-data-types}
 
 **已声明 schema 时：**
 
@@ -168,11 +168,11 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 
 记录会被转换为 JSON，并以 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式作为一个值发送到 ClickHouse。
 
-### 配置示例
+### 配置示例 {#configuration-recipes}
 
 以下是一些常见的配置示例，帮助你快速上手。
 
-#### 基本配置
+#### 基本配置 {#basic-configuration}
 
 这是最基础的配置示例，用于帮助你入门——它假设你在分布式模式下运行 Kafka Connect，并在启用 SSL 的情况下，在 `localhost:8443` 上运行一个 ClickHouse 服务器，数据为无 schema 的 JSON。
 
@@ -201,7 +201,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-#### 使用多个主题（topic）的基础配置
+#### 使用多个主题（topic）的基础配置 {#basic-configuration-with-multiple-topics}
 
 该连接器可以从多个主题（topic）中消费数据
 
@@ -218,7 +218,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-#### 带 DLQ 的基本配置
+#### 带 DLQ 的基本配置 {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -233,9 +233,9 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-#### 与不同数据格式配合使用
+#### 与不同数据格式配合使用 {#using-with-different-data-formats}
 
-##### Avro 模式支持
+##### Avro 模式支持 {#avro-schema-support}
 
 ```json
 {
@@ -250,7 +250,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-##### Protobuf Schema 支持
+##### Protobuf Schema 支持 {#protobuf-schema-support}
 
 ```json
 {
@@ -267,7 +267,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 
 请注意：如果遇到类缺失的问题，请注意并非所有环境都包含 protobuf 转换器，您可能需要使用一个已将依赖打包在内的备用 jar 发行版本。
 
-##### JSON schema 支持
+##### JSON schema 支持 {#json-schema-support}
 
 ```json
 {
@@ -280,7 +280,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-##### 字符串支持
+##### 字符串支持 {#string-support}
 
 该连接器在多种 ClickHouse 数据格式中均支持 String Converter：[JSON](/interfaces/formats/JSONEachRow)、[CSV](/interfaces/formats/CSV) 和 [TSV](/interfaces/formats/TabSeparated)。
 
@@ -297,7 +297,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 }
 ```
 
-### 日志
+### 日志 {#logging}
 
 Kafka Connect Platform 会自动提供日志功能。
 可以通过 Kafka Connect 的[配置文件](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file)来配置日志的输出目标和格式。
@@ -310,11 +310,11 @@ confluent local services connect log
 
 如需了解更多详细信息，请参阅官方[教程](https://docs.confluent.io/platform/current/connect/logging.html)。
 
-### 监控
+### 监控 {#monitoring}
 
 ClickHouse Kafka Connect 通过 [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html) 上报运行时指标。Kafka Connector 中默认启用 JMX。
 
-#### ClickHouse 特定指标
+#### ClickHouse 特定指标 {#clickhouse-specific-metrics}
 
 连接器通过以下 MBean 名称暴露自定义指标：
 
@@ -328,7 +328,7 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 | `recordProcessingTime` | long | 将记录分组并转换为统一结构所花费的总时间（纳秒）。        |
 | `taskProcessingTime`   | long | 处理并将数据插入 ClickHouse 所花费的总时间（纳秒）。 |
 
-#### Kafka Producer/Consumer Metrics
+#### Kafka Producer/Consumer Metrics {#kafka-producer-consumer-metrics}
 
 该连接器提供了标准的 Kafka 生产者和消费者指标，用于分析数据流、吞吐量和性能。
 
@@ -470,22 +470,22 @@ Connector 从框架的缓冲区轮询消息：
 
 
 ```properties
-# 增加每次轮询的记录数量
+# 增加每次轮询的记录数量 {#increase-the-number-of-records-per-poll}
 consumer.max.poll.records=5000
 ```
 
 
-# 增大分区拉取大小上限（5 MB）
+# 增大分区拉取大小上限（5 MB） {#increase-the-partition-fetch-size-5-mb}
 consumer.max.partition.fetch.bytes=5242880
 
 
 
-# 可选：将最小拉取大小增加到 1 MB，以便等待更多数据
+# 可选：将最小拉取大小增加到 1 MB，以便等待更多数据 {#optional-increase-minimum-fetch-size-to-wait-for-more-data-1-mb}
 consumer.fetch.min.bytes=1048576
 
 
 
-# 可选：如果对延迟非常敏感，可缩短等待时间
+# 可选：如果对延迟非常敏感，可缩短等待时间 {#optional-reduce-wait-time-if-latency-is-critical}
 
 consumer.fetch.max.wait.ms=300
 
@@ -500,11 +500,11 @@ consumer.fetch.max.wait.ms=300
 
 更多详情:[Confluent 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka 文档](https://kafka.apache.org/documentation/#consumerconfigs)
 
-#### 异步插入                        
+#### 异步插入                         {#asynchronous-inserts}
 
 当连接器发送相对较小的批次,或者您希望通过将批处理责任转移到 ClickHouse 来进一步优化摄取时,异步插入是一项强大的功能。
 
-##### 何时使用异步插入                             
+##### 何时使用异步插入                              {#when-to-use-async-inserts}
 
 在以下情况下考虑启用异步插入:
 
@@ -521,7 +521,7 @@ consumer.fetch.max.wait.ms=300
 - 使用 `wait_for_async_insert=0` 的精确一次语义与您的需求冲突
 - 用例可以从客户端批处理改进中获益
 
-##### 异步插入的工作原理                          
+##### 异步插入的工作原理                           {#how-async-inserts-work}
 
 启用异步插入后,ClickHouse 将:
 
@@ -535,7 +535,7 @@ consumer.fetch.max.wait.ms=300
 
 这显著减少了创建的数据分片数量并提高了整体吞吐量。
 
-##### 启用异步插入                          
+##### 启用异步插入                           {#enabling-async-inserts}
 
 将异步插入设置添加到 `clickhouseSettings` 配置参数:
 
@@ -556,7 +556,7 @@ consumer.fetch.max.wait.ms=300
 * **`wait_for_async_insert=1`**（推荐）：连接器会在确认之前等待数据刷新到 ClickHouse 存储，以提供投递保证。
 * **`wait_for_async_insert=0`**：连接器在写入缓冲后立即确认。性能更好，但在刷新前如果服务器崩溃，数据可能会丢失。
 
-##### 调优异步插入行为
+##### 调优异步插入行为 {#tuning-async-inserts}
 
 可以对异步插入的刷新行为进行精细调优：
 
@@ -577,7 +577,7 @@ consumer.fetch.max.wait.ms=300
 * **注意事项**：数据无法被立即查询，端到端延迟略有增加
 * **风险**：如果 `wait_for_async_insert=0`，服务器崩溃时可能发生数据丢失；缓冲区过大时可能导致内存压力
 
-##### 具有 exactly-once 语义的异步插入
+##### 具有 exactly-once 语义的异步插入 {#async-inserts-with-exactly-once}
 
 在使用 `exactlyOnce=true` 进行异步插入时：
 
@@ -595,11 +595,11 @@ consumer.fetch.max.wait.ms=300
 
 有关异步插入的更多信息，请参阅 [ClickHouse 异步插入（async inserts）文档](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)。
 
-#### 连接器并行度
+#### 连接器并行度 {#connector-parallelism}
 
 提高并行度以提升吞吐量：
 
-##### 每个连接器的任务数
+##### 每个连接器的任务数 {#tasks-per-connector}
 
 ```json
 "tasks.max": "4"
@@ -613,7 +613,7 @@ consumer.fetch.max.wait.ms=300
 
 **建议**：将 `tasks.max` 初始设置为 topic 分区数，然后根据 CPU 和吞吐量指标再进行调整。
 
-##### 在批处理时忽略分区
+##### 在批处理时忽略分区 {#ignoring-partitions}
 
 默认情况下，connector 会按分区对消息进行批处理。为提高吞吐量，你可以跨分区进行批处理：
 
@@ -623,7 +623,7 @@ consumer.fetch.max.wait.ms=300
 
 **警告**：仅在 `exactlyOnce=false` 时使用。该设置可以通过创建更大的批次来提升吞吐量，但会丢失分区级的顺序保证。
 
-#### 多个高吞吐量主题
+#### 多个高吞吐量主题 {#multiple-high-throughput-topics}
 
 如果你的连接器被配置为订阅多个主题，你使用 `topic2TableMap` 将主题映射到表，并且在插入阶段出现瓶颈导致消费者出现滞后，可以考虑改为为每个主题创建一个单独的连接器。
 
@@ -631,7 +631,7 @@ consumer.fetch.max.wait.ms=300
 
 **建议**：对于多个高吞吐量主题，为每个主题部署一个独立的连接器实例，以最大化并行写入吞吐量。
 
-#### ClickHouse 表引擎注意事项
+#### ClickHouse 表引擎注意事项 {#table-engine-considerations}
 
 根据你的使用场景选择合适的 ClickHouse 表引擎：
 
@@ -658,7 +658,7 @@ SETTINGS
 "clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
 ```
 
-#### 连接池和超时设置
+#### 连接池和超时设置 {#connection-pooling}
 
 连接器会维护到 ClickHouse 的 HTTP 连接池。对于高延迟网络环境，请调整超时时间：
 
@@ -671,7 +671,7 @@ SETTINGS
 
 如果在处理大批量数据时出现超时错误，请适当增大这些数值。
 
-#### 性能监控与故障排查
+#### 性能监控与故障排查 {#monitoring-performance}
 
 监控以下关键指标：
 
@@ -695,7 +695,7 @@ SETTINGS
 | OutOfMemory 错误      | 批次大小过大    | 减小 `max.poll.records`、`max.partition.fetch.bytes` |
 | 任务负载不均              | 分区分布不均    | 重新均衡分区或调整 `tasks.max`                             |
 
-#### 最佳实践总结
+#### 最佳实践总结 {#performance-best-practices}
 
 1. **先使用默认配置**，然后根据实际性能进行度量和调优
 2. **优先使用较大批次**：在可能的情况下，每次写入以 10,000–100,000 行为目标
@@ -706,7 +706,7 @@ SETTINGS
 7. **持续监控**：跟踪消费者延迟、分片数量以及合并活动
 8. **充分测试**：在生产部署前，始终在真实负载下测试配置变更
 
-#### 示例：高吞吐量配置
+#### 示例：高吞吐量配置 {#example-high-throughput}
 
 下面是一个为高吞吐量优化的完整示例：
 
@@ -749,9 +749,9 @@ SETTINGS
 * 运行 8 个并行任务（与分区数量匹配）
 * 针对吞吐量进行了优化，而非严格顺序
 
-### 故障排查
+### 故障排查 {#troubleshooting}
 
-#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot;
+#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; {#state-mismatch-for-topic-sometopic-partition-0}
 
 当 KeeperMap 中存储的 offset 与 Kafka 中存储的 offset 不一致时，就会出现这种情况，通常发生在某个 topic 被删除
 或 offset 被手动调整之后。
@@ -759,7 +759,7 @@ SETTINGS
 
 **注意：此类调整可能会对 exactly-once 语义产生影响。**
 
-#### &quot;What errors will the connector retry?&quot;
+#### &quot;What errors will the connector retry?&quot; {#what-errors-will-the-connector-retry}
 
 目前的重点是识别可以视为短暂且可重试的错误，包括：
 
@@ -784,7 +784,7 @@ SETTINGS
 * `IOException` - 在出现网络问题时抛出。
 
 
-#### “所有数据都是空值/0”
+#### “所有数据都是空值/0” {#all-my-data-is-blankzeroes}
 
 很可能是你数据中的字段与表中的字段不匹配——这在使用 CDC（以及 Debezium 格式）时尤其常见。
 一个常见的解决方案是在连接器配置中添加 `flatten` 转换：
@@ -797,7 +797,7 @@ transforms.flatten.delimiter=_
 
 这会将你的数据从嵌套 JSON 转换为扁平化 JSON（使用 `_` 作为分隔符）。表中的字段将采用 &quot;field1&#95;field2&#95;field3&quot; 的格式（例如 &quot;before&#95;id&quot;、&quot;after&#95;id&quot; 等）。
 
-#### &quot;我想在 ClickHouse 中使用我的 Kafka 键&quot;
+#### &quot;我想在 ClickHouse 中使用我的 Kafka 键&quot; {#i-want-to-use-my-kafka-keys-in-clickhouse}
 
 Kafka 键默认不会存储在 value 字段中，但你可以使用 `KeyToValue` 转换将键移动到 value 字段中（存放在名为 `_key` 的新字段下）：
 

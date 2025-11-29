@@ -25,7 +25,7 @@ Analytics（也称为 OLAP，即联机分析处理，Online Analytical Processin
 
 
 
-## 行式存储 vs 列式存储
+## 行式存储 vs 列式存储 {#row-oriented-vs-column-oriented-storage}
 
 只有采用合适的数据组织方式，才能达到这样的性能水平。
 

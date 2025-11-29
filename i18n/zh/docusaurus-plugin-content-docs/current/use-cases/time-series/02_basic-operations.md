@@ -8,9 +8,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 基本时间序列操作
+# 基本时间序列操作 {#basic-time-series-operations}
 
 ClickHouse 提供了多种处理时间序列数据的方法，从而可以在不同时间区间内对数据点进行聚合、分组和分析。
 本节介绍在处理时间型数据时常用的基本操作。
@@ -42,8 +40,7 @@ FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitione
 LIMIT 1e9;
 ```
 
-
-## 按时间分桶聚合
+## 按时间分桶聚合 {#time-series-aggregating-time-bucket}
 
 最常见的需求是按时间周期对数据进行聚合，例如统计每天的总点击量：
 
@@ -93,8 +90,7 @@ LIMIT 5;
 这里使用的 [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) 函数会将给定时间转换为所在小时的起始（整点）时间。
 还可以按年份、季度、月份或日期进行分组。
 
-
-## 自定义分组时间间隔
+## 自定义分组时间间隔 {#time-series-custom-grouping-intervals}
 
 我们还可以按自定义时间间隔进行分组，例如使用 [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#toStartOfInterval) 函数按 5 分钟间隔分组。
 
@@ -138,8 +134,7 @@ LIMIT 6;
 └─────────────────────┴─────────┘
 ```
 
-
-## 填充空分组
+## 填充空分组 {#time-series-filling-empty-groups}
 
 在很多情况下，我们处理的是存在缺失区间的稀疏数据，这会产生空桶。下面来看一个示例：我们按 1 小时间隔对数据进行分组，输出的统计结果中会有部分小时缺少数值：
 
@@ -190,7 +185,6 @@ GROUP BY ALL
 ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 ```
 
-
 ```text
 ┌────────────────hour─┬─sum(hits)─┐
 │ 2015-07-01 00:00:00 │         3 │
@@ -220,8 +214,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 └─────────────────────┴───────────┘
 ```
 
-
-## 滚动时间窗口
+## 滚动时间窗口 {#time-series-rolling-time-windows}
 
 有时，我们不想按时间区间的起始点（比如某一天或某一小时的开始）来处理，而是希望按时间窗口来处理。
 假设我们想了解某个窗口内的 hits 总数，这个窗口不是按自然日划分，而是从下午 6 点开始，按 24 小时时长来划分。

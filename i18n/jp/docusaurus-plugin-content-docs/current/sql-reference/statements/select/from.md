@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# FROM 句
+# FROM 句 {#from-clause}
 
 `FROM` 句は、データを読み取る元となるソースを指定します。
 
@@ -30,7 +30,7 @@ SELECT *
 ```
 
 
-## FINAL 修飾子
+## FINAL 修飾子 {#final-modifier}
 
 `FINAL` が指定されている場合、ClickHouse は結果を返す前にデータを完全にマージします。これにより、指定されたテーブルエンジンでマージ時に行われるすべてのデータ変換も実行されます。
 
@@ -44,7 +44,7 @@ SELECT *
 
 `FINAL` を含む `SELECT` クエリは並列に実行されます。[max&#95;final&#95;threads](/operations/settings/settings#max_final_threads) 設定によって、使用されるスレッド数が制限されます。
 
-### 欠点
+### 欠点 {#drawbacks}
 
 `FINAL` を使用するクエリは、`FINAL` を使用しない同様のクエリよりもわずかに遅くなります。その理由は次のとおりです:
 
@@ -57,7 +57,7 @@ SELECT *
 
 `FINAL` は、セッションまたはユーザープロファイルでの [FINAL](../../../operations/settings/settings.md#final) 設定を用いて、クエリで参照されるすべてのテーブルに対して自動的に適用できます。
 
-### 使用例
+### 使用例 {#example-usage}
 
 `FINAL` キーワードの使用
 

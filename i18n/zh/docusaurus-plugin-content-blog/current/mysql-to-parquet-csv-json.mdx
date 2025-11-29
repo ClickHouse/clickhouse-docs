@@ -10,8 +10,7 @@ keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 
 {/* 截断 */}
 
-
-## 使用 ClickHouse 将 MySQL 数据导出为 Parquet、CSV 或 JSON
+## 使用 ClickHouse 将 MySQL 数据导出为 Parquet、CSV 或 JSON \{#exporting-mysql-data-to-parquet-csv-or-json-using-clickhouse\}
 
 `clickhouse-local` 工具可以快速、方便地从 MySQL 读取数据，并将数据输出为多种不同的格式，包括 Parquet、CSV 和 JSON。我们将会：
 
@@ -24,8 +23,7 @@ keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 curl https://clickhouse.com/ | sh
 ```
 
-
-## 将 MySQL 数据导出为 Parquet
+## 将 MySQL 数据导出为 Parquet \{#export-mysql-to-parquet\}
 
 `mysql` 表函数会基于发送到 MySQL 实例的查询结果创建一张表。例如：
 
@@ -59,8 +57,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 由于输出文件名使用了 `.parquet` 扩展名，ClickHouse 会认为我们要使用 Parquet 格式，因此这里省略了 `FORMAT Parquet` 子句。
 :::
 
-
-## 将 MySQL 导出为 CSV
+## 将 MySQL 导出为 CSV \{#export-mysql-to-csv\}
 
 这与导出为 Parquet 的方式相同，只是这次我们在文件名中使用 `.csv` 扩展名。ClickHouse 会识别出我们需要逗号分隔的输出，并以该格式将数据写入文件：
 
@@ -76,8 +73,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 INTO OUTFILE 'my_output_file.csv'"
 ```
 
-
-## 将 MySQL 导出为 JSON
+## 将 MySQL 导出为 JSON \{#export-mysql-to-json\}
 
 要从 MySQL 导出为 JSON 格式，只需将文件扩展名改为 `jsonl` 或 `ndjson` 即可：
 

@@ -8,11 +8,11 @@ doc_type: 'reference'
 
 
 
-# 类型转换函数
+# 类型转换函数 {#type-conversion-functions}
 
 
 
-## 数据转换的常见问题
+## 数据转换的常见问题 {#common-issues-with-data-conversion}
 
 ClickHouse 通常遵循[与 C++ 程序相同的隐式转换行为](https://en.cppreference.com/w/cpp/language/implicit_conversion)。
 
@@ -67,7 +67,7 @@ SETTINGS cast_keep_nullable = 1
 
 
 
-## 关于 `toDate`/`toDateTime` 函数的说明
+## 关于 `toDate`/`toDateTime` 函数的说明 {#to-date-and-date-time-functions}
 
 `toDate`/`toDateTime` 函数的日期和日期时间格式定义如下：
 
@@ -117,7 +117,7 @@ LIMIT 10
 另请参阅 [`toUnixTimestamp`](#toUnixTimestamp) 函数。
 
 
-## toBool
+## toBool {#tobool}
 
 将输入值转换为 [`Bool`](../data-types/boolean.md) 类型的值。出现错误时抛出异常。
 
@@ -168,7 +168,7 @@ toBool('FALSE'):         false
 ```
 
 
-## toInt8
+## toInt8 {#toint8}
 
 将输入值转换为 [`Int8`](../data-types/int-uint.md) 类型的值。发生错误时会抛出异常。
 
@@ -235,7 +235,7 @@ toInt8('-8'): -8
 * [`toInt8OrDefault`](#toint8ordefault)。
 
 
-## toInt8OrZero
+## toInt8OrZero {#toint8orzero}
 
 与 [`toInt8`](#toint8) 类似，此函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -298,7 +298,7 @@ toInt8OrZero('abc'): 0
 * [`toInt8OrDefault`](#toint8ordefault).
 
 
-## toInt8OrNull
+## toInt8OrNull {#toInt8OrNull}
 
 类似于 [`toInt8`](#toint8)，此函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在出错时会返回 `NULL`。
 
@@ -361,7 +361,7 @@ toInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt8OrDefault`](#toint8ordefault)。
 
 
-## toInt8OrDefault
+## toInt8OrDefault {#toint8ordefault}
 
 与 [`toInt8`](#toint8) 类似，此函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -429,7 +429,7 @@ toInt8OrDefault('abc', CAST('-1', 'Int8')): -1
 * [`toInt8OrNull`](#toInt8OrNull)。
 
 
-## toInt16
+## toInt16 {#toint16}
 
 将输入值转换为 [`Int16`](../data-types/int-uint.md) 类型的值。在出错时抛出异常。
 
@@ -496,7 +496,7 @@ toInt16('-16'):  -16
 * [`toInt16OrDefault`](#toint16ordefault)。
 
 
-## toInt16OrZero
+## toInt16OrZero {#toint16orzero}
 
 与 [`toInt16`](#toint16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -559,7 +559,7 @@ toInt16OrZero('abc'): 0
 * [`toInt16OrDefault`](#toint16ordefault)。
 
 
-## toInt16OrNull
+## toInt16OrNull {#toint16ornull}
 
 与 [`toInt16`](#toint16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在出错时会返回 `NULL`。
 
@@ -622,7 +622,7 @@ toInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt16OrDefault`](#toint16ordefault).
 
 
-## toInt16OrDefault
+## toInt16OrDefault {#toint16ordefault}
 
 与 [`toInt16`](#toint16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -690,7 +690,7 @@ toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
 * [`toInt16OrNull`](#toint16ornull).
 
 
-## toInt32
+## toInt32 {#toint32}
 
 将输入值转换为 [`Int32`](../data-types/int-uint.md) 类型的值。如果发生错误，则会抛出异常。
 
@@ -757,7 +757,7 @@ toInt32('-32'):  -32
 * [`toInt32OrDefault`](#toint32ordefault)。
 
 
-## toInt32OrZero
+## toInt32OrZero {#toint32orzero}
 
 与 [`toInt32`](#toint32) 类似，此函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但如果发生错误则返回 `0`。
 
@@ -820,7 +820,7 @@ toInt32OrZero('abc'): 0
 * [`toInt32OrDefault`](#toint32ordefault)。
 
 
-## toInt32OrNull
+## toInt32OrNull {#toint32ornull}
 
 与 [`toInt32`](#toint32) 类似，该函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -883,7 +883,7 @@ toInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt32OrDefault`](#toint32ordefault).
 
 
-## toInt32OrDefault
+## toInt32OrDefault {#toint32ordefault}
 
 与 [`toInt32`](#toint32) 类似，此函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 参数，则在发生错误时返回 `0`。
@@ -951,7 +951,7 @@ toInt32OrDefault('abc', CAST('-1', 'Int32')): -1
 * [`toInt32OrNull`](#toint32ornull).
 
 
-## toInt64
+## toInt64 {#toint64}
 
 将输入值转换为 [`Int64`](../data-types/int-uint.md) 类型的值。出错时会抛出异常。
 
@@ -1018,7 +1018,7 @@ toInt64('-64'):  -64
 * [`toInt64OrDefault`](#toint64ordefault)。
 
 
-## toInt64OrZero
+## toInt64OrZero {#toint64orzero}
 
 与 [`toInt64`](#toint64) 类似，此函数将输入值转换为 [Int64](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -1081,7 +1081,7 @@ toInt64OrZero('abc'): 0
 * [`toInt64OrDefault`](#toint64ordefault)。
 
 
-## toInt64OrNull
+## toInt64OrNull {#toint64ornull}
 
 与 [`toInt64`](#toint64) 类似，此函数将输入值转换为 [Int64](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -1144,7 +1144,7 @@ toInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt64OrDefault`](#toint64ordefault)。
 
 
-## toInt64OrDefault
+## toInt64OrDefault {#toint64ordefault}
 
 与 [`toInt64`](#toint64) 类似，此函数将输入值转换为 [Int64](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -1212,7 +1212,7 @@ toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
 * [`toInt64OrNull`](#toint64ornull)。
 
 
-## toInt128
+## toInt128 {#toint128}
 
 将输入值转换为 [`Int128`](../data-types/int-uint.md) 类型的值。发生错误时抛出异常。
 
@@ -1278,7 +1278,7 @@ toInt128('-128'): -128
 * [`toInt128OrDefault`](#toint128ordefault)。
 
 
-## toInt128OrZero
+## toInt128OrZero {#toint128orzero}
 
 与 [`toInt128`](#toint128) 类似，此函数将输入值转换为 [Int128](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -1341,7 +1341,7 @@ toInt128OrZero('abc'):  0
 * [`toInt128OrDefault`](#toint128ordefault)。
 
 
-## toInt128OrNull
+## toInt128OrNull {#toint128ornull}
 
 与 [`toInt128`](#toint128) 类似，此函数将输入值转换为 [Int128](../data-types/int-uint.md) 类型的值，如果发生错误则返回 `NULL`。
 
@@ -1404,7 +1404,7 @@ toInt128OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt128OrDefault`](#toint128ordefault)。
 
 
-## toInt128OrDefault
+## toInt128OrDefault {#toint128ordefault}
 
 与 [`toInt128`](#toint128) 类似，此函数将输入值转换为 [Int128](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -1473,7 +1473,7 @@ toInt128OrDefault('abc', CAST('-1', 'Int128')):  -1
 * [`toInt128OrNull`](#toint128ornull)。
 
 
-## toInt256
+## toInt256 {#toint256}
 
 将输入值转换为 [`Int256`](../data-types/int-uint.md) 类型的值。在出错时会抛出异常。
 
@@ -1539,7 +1539,7 @@ toInt256('-256'):   -256
 * [`toInt256OrDefault`](#toint256ordefault)。
 
 
-## toInt256OrZero
+## toInt256OrZero {#toint256orzero}
 
 与 [`toInt256`](#toint256) 类似，此函数将输入值转换为 [Int256](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -1602,7 +1602,7 @@ toInt256OrZero('abc'):  0
 * [`toInt256OrDefault`](#toint256ordefault).
 
 
-## toInt256OrNull
+## toInt256OrNull {#toint256ornull}
 
 与 [`toInt256`](#toint256) 类似，此函数将输入值转换为 [Int256](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -1665,7 +1665,7 @@ toInt256OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt256OrDefault`](#toint256ordefault).
 
 
-## toInt256OrDefault
+## toInt256OrDefault {#toint256ordefault}
 
 与 [`toInt256`](#toint256) 类似，此函数将输入值转换为 [Int256](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -1733,7 +1733,7 @@ toInt256OrDefault('abc', CAST('-1', 'Int256')):  -1
 * [`toInt256OrNull`](#toint256ornull)。
 
 
-## toUInt8
+## toUInt8 {#touint8}
 
 将输入值转换为 [`UInt8`](../data-types/int-uint.md) 类型的值。出错时抛出异常。
 
@@ -1800,7 +1800,7 @@ toUInt8('8'): 8
 * [`toUInt8OrDefault`](#touint8ordefault)。
 
 
-## toUInt8OrZero
+## toUInt8OrZero {#touint8orzero}
 
 与 [`toUInt8`](#touint8) 类似，此函数将输入值转换为 [UInt8](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -1863,7 +1863,7 @@ toUInt8OrZero('abc'): 0
 * [`toUInt8OrDefault`](#touint8ordefault)。
 
 
-## toUInt8OrNull
+## toUInt8OrNull {#touint8ornull}
 
 与 [`toUInt8`](#touint8) 类似，此函数将输入值转换为 [UInt8](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -1926,7 +1926,7 @@ toUInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt8OrDefault`](#touint8ordefault)。
 
 
-## toUInt8OrDefault
+## toUInt8OrDefault {#touint8ordefault}
 
 与 [`toUInt8`](#touint8) 类似，此函数将输入值转换为 [UInt8](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 参数，则在出错时返回 `0`。
@@ -1994,7 +1994,7 @@ toUInt8OrDefault('abc', CAST('0', 'UInt8')): 0
 * [`toUInt8OrNull`](#touint8ornull)。
 
 
-## toUInt16
+## toUInt16 {#touint16}
 
 将输入值转换为 [`UInt16`](../data-types/int-uint.md) 类型的值。如果出错则抛出异常。
 
@@ -2061,7 +2061,7 @@ toUInt16('16'):  16
 * [`toUInt16OrDefault`](#touint16ordefault)。
 
 
-## toUInt16OrZero
+## toUInt16OrZero {#touint16orzero}
 
 与 [`toUInt16`](#touint16) 类似，此函数将输入值转换为 [UInt16](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -2124,7 +2124,7 @@ toUInt16OrZero('abc'): 0
 * [`toUInt16OrDefault`](#touint16ordefault).
 
 
-## toUInt16OrNull
+## toUInt16OrNull {#touint16ornull}
 
 与 [`toUInt16`](#touint16) 类似，此函数将输入值转换为 [UInt16](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -2187,7 +2187,7 @@ toUInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt16OrDefault`](#touint16ordefault)。
 
 
-## toUInt16OrDefault
+## toUInt16OrDefault {#touint16ordefault}
 
 与 [`toUInt16`](#touint16) 类似，此函数将输入值转换为类型为 [UInt16](../data-types/int-uint.md) 的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -2255,7 +2255,7 @@ toUInt16OrDefault('abc', CAST('0', 'UInt16')): 0
 * [`toUInt16OrNull`](#touint16ornull)。
 
 
-## toUInt32
+## toUInt32 {#touint32}
 
 将输入值转换为 [`UInt32`](../data-types/int-uint.md) 类型的值。如果发生错误，则抛出异常。
 
@@ -2322,7 +2322,7 @@ toUInt32('32'):  32
 * [`toUInt32OrDefault`](#touint32ordefault)。
 
 
-## toUInt32OrZero
+## toUInt32OrZero {#touint32orzero}
 
 与 [`toUInt32`](#touint32) 类似，此函数将输入值转换为 [UInt32](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -2386,7 +2386,7 @@ toUInt32OrZero('abc'): 0
 * [`toUInt32OrDefault`](#touint32ordefault)。
 
 
-## toUInt32OrNull
+## toUInt32OrNull {#touint32ornull}
 
 类似于 [`toUInt32`](#touint32)，此函数将输入值转换为 [UInt32](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -2449,7 +2449,7 @@ toUInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt32OrDefault`](#touint32ordefault)。
 
 
-## toUInt32OrDefault
+## toUInt32OrDefault {#touint32ordefault}
 
 与 [`toUInt32`](#touint32) 类似，此函数将输入值转换为 [UInt32](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传递 `default` 参数，则在发生错误时返回 `0`。
@@ -2517,7 +2517,7 @@ toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
 * [`toUInt32OrNull`](#touint32ornull)。
 
 
-## toUInt64
+## toUInt64 {#touint64}
 
 将输入值转换为 [`UInt64`](../data-types/int-uint.md) 类型的值。出错时抛出异常。
 
@@ -2584,7 +2584,7 @@ toUInt64('64'):  64
 * [`toUInt64OrDefault`](#touint64ordefault)。
 
 
-## toUInt64OrZero
+## toUInt64OrZero {#touint64orzero}
 
 与 [`toUInt64`](#touint64) 类似，该函数将输入值转换为 [UInt64](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -2647,7 +2647,7 @@ toUInt64OrZero('abc'): 0
 * [`toUInt64OrDefault`](#touint64ordefault)。
 
 
-## toUInt64OrNull
+## toUInt64OrNull {#touint64ornull}
 
 与 [`toUInt64`](#touint64) 类似，此函数将输入值转换为 [UInt64](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -2710,7 +2710,7 @@ toUInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt64OrDefault`](#touint64ordefault)。
 
 
-## toUInt64OrDefault
+## toUInt64OrDefault {#touint64ordefault}
 
 与 [`toUInt64`](#touint64) 类似，此函数将输入值转换为 [UInt64](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -2778,7 +2778,7 @@ toUInt64OrDefault('abc', CAST('0', 'UInt64')): 0
 * [`toUInt64OrNull`](#touint64ornull)。
 
 
-## toUInt128
+## toUInt128 {#touint128}
 
 将输入值转换为 [`UInt128`](../data-types/int-uint.md) 类型的值。如果发生错误，会抛出异常。
 
@@ -2844,7 +2844,7 @@ toUInt128('128'): 128
 * [`toUInt128OrDefault`](#touint128ordefault)。
 
 
-## toUInt128OrZero
+## toUInt128OrZero {#touint128orzero}
 
 与 [`toUInt128`](#touint128) 类似，此函数将输入值转换为 [UInt128](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -2907,7 +2907,7 @@ toUInt128OrZero('abc'): 0
 * [`toUInt128OrDefault`](#touint128ordefault)。
 
 
-## toUInt128OrNull
+## toUInt128OrNull {#touint128ornull}
 
 与 [`toUInt128`](#touint128) 类似，此函数将输入值转换为 [UInt128](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -2970,7 +2970,7 @@ toUInt128OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt128OrDefault`](#touint128ordefault)。
 
 
-## toUInt128OrDefault
+## toUInt128OrDefault {#touint128ordefault}
 
 与 [`toUInt128`](#toint128) 类似，此函数将输入值转换为 [UInt128](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未提供 `default` 值，则出错时返回 `0`。
@@ -3039,7 +3039,7 @@ toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
 * [`toUInt128OrNull`](#touint128ornull)。
 
 
-## toUInt256
+## toUInt256 {#touint256}
 
 将输入值转换为 [`UInt256`](../data-types/int-uint.md) 类型的值。如果发生错误，则会抛出异常。
 
@@ -3105,7 +3105,7 @@ toUInt256('256'):   256
 * [`toUInt256OrDefault`](#touint256ordefault)。
 
 
-## toUInt256OrZero
+## toUInt256OrZero {#touint256orzero}
 
 与 [`toUInt256`](#touint256) 类似，此函数将输入值转换为 [UInt256](../data-types/int-uint.md) 类型的值；如果发生错误，则返回 `0`。
 
@@ -3168,7 +3168,7 @@ toUInt256OrZero('abc'): 0
 * [`toUInt256OrDefault`](#touint256ordefault)。
 
 
-## toUInt256OrNull
+## toUInt256OrNull {#touint256ornull}
 
 与 [`toUInt256`](#touint256) 类似，此函数将输入值转换为 [UInt256](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -3231,7 +3231,7 @@ toUInt256OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt256OrDefault`](#touint256ordefault)。
 
 
-## toUInt256OrDefault
+## toUInt256OrDefault {#touint256ordefault}
 
 类似于 [`toUInt256`](#touint256)，此函数将输入值转换为 [UInt256](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -3299,7 +3299,7 @@ toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
 * [`toUInt256OrNull`](#touint256ornull)。
 
 
-## toFloat32
+## toFloat32 {#tofloat32}
 
 将输入转换为 [`Float32`](../data-types/float.md) 类型的值。发生错误时会抛出异常。
 
@@ -3357,7 +3357,7 @@ toFloat32('NaN'):  nan
 * [`toFloat32OrDefault`](#tofloat32ordefault)。
 
 
-## toFloat32OrZero
+## toFloat32OrZero {#tofloat32orzero}
 
 与 [`toFloat32`](#tofloat32) 类似，此函数将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -3410,7 +3410,7 @@ toFloat32OrZero('abc'):  0
 * [`toFloat32OrDefault`](#tofloat32ordefault).
 
 
-## toFloat32OrNull
+## toFloat32OrNull {#tofloat32ornull}
 
 与 [`toFloat32`](#tofloat32) 类似，此函数将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -3463,7 +3463,7 @@ toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat32OrDefault`](#tofloat32ordefault).
 
 
-## toFloat32OrDefault
+## toFloat32OrDefault {#tofloat32ordefault}
 
 与 [`toFloat32`](#tofloat32) 类似，此函数将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -3521,7 +3521,7 @@ toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
 * [`toFloat32OrNull`](#tofloat32ornull).
 
 
-## toFloat64
+## toFloat64 {#tofloat64}
 
 将输入值转换为 [`Float64`](../data-types/float.md) 类型的值。出错时会抛出异常。
 
@@ -3579,7 +3579,7 @@ toFloat64('NaN'):  nan
 * [`toFloat64OrDefault`](#tofloat64ordefault)。
 
 
-## toFloat64OrZero
+## toFloat64OrZero {#tofloat64orzero}
 
 与 [`toFloat64`](#tofloat64) 类似，此函数将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -3632,7 +3632,7 @@ toFloat64OrZero('abc'):  0
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
 
-## toFloat64OrNull
+## toFloat64OrNull {#tofloat64ornull}
 
 与 [`toFloat64`](#tofloat64) 类似，此函数将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -3685,7 +3685,7 @@ toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
 
-## toFloat64OrDefault
+## toFloat64OrDefault {#tofloat64ordefault}
 
 与 [`toFloat64`](#tofloat64) 类似，此函数将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在出错时会返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -3743,7 +3743,7 @@ toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
 * [`toFloat64OrNull`](#tofloat64ornull).
 
 
-## toBFloat16
+## toBFloat16 {#tobfloat16}
 
 将输入值转换为 [`BFloat16`](/sql-reference/data-types/float#bfloat16) 类型的值。
 出错时会抛出异常。
@@ -3791,7 +3791,7 @@ SELECT toBFloat16('42.7');
 * [`toBFloat16OrNull`](#tobfloat16ornull)。
 
 
-## toBFloat16OrZero
+## toBFloat16OrZero {#tobfloat16orzero}
 
 将 `String` 类型的输入值转换为 [`BFloat16`](/sql-reference/data-types/float#bfloat16) 类型的值。
 如果字符串不能被解析为浮点数值，则函数返回零。
@@ -3845,7 +3845,7 @@ SELECT toBFloat16OrZero('12.3456789');
 * [`toBFloat16OrNull`](#tobfloat16ornull)。
 
 
-## toBFloat16OrNull
+## toBFloat16OrNull {#tobfloat16ornull}
 
 将 String 类型的输入值转换为 [`BFloat16`](/sql-reference/data-types/float#bfloat16) 类型的值，
 但如果该字符串不表示浮点数值，则函数返回 `NULL`。
@@ -3899,7 +3899,7 @@ SELECT toBFloat16OrNull('12.3456789');
 * [`toBFloat16OrZero`](#tobfloat16orzero)。
 
 
-## toDate
+## toDate {#todate}
 
 将参数转换为 [Date](../data-types/date.md) 数据类型。
 
@@ -4018,7 +4018,7 @@ SELECT
 ```
 
 
-## toDateOrZero
+## toDateOrZero {#todateorzero}
 
 与 [toDate](#todate) 相同，但在收到无效参数时返回 [Date](../data-types/date.md) 的下界值。仅支持 [String](../data-types/string.md) 类型的参数。
 
@@ -4039,7 +4039,7 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 ```
 
 
-## toDateOrNull
+## toDateOrNull {#todateornull}
 
 与 [toDate](#todate) 相同，但在收到无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
 
@@ -4060,7 +4060,7 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 ```
 
 
-## toDateOrDefault
+## toDateOrDefault {#todateordefault}
 
 与 [toDate](#todate) 类似，但在转换失败时会返回一个默认值。该默认值为第二个参数（如果提供），否则为 [Date](../data-types/date.md) 的下边界。
 
@@ -4087,7 +4087,7 @@ SELECT toDateOrDefault('2022-12-30'), toDateOrDefault('', '2023-01-01'::Date);
 ```
 
 
-## toDateTime
+## toDateTime {#todatetime}
 
 将输入值转换为 [DateTime](../data-types/datetime.md)。
 
@@ -4129,7 +4129,7 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 ```
 
 
-## toDateTimeOrZero
+## toDateTimeOrZero {#todatetimeorzero}
 
 与 [toDateTime](#todatetime) 相同，但在收到无效参数时返回 [DateTime](../data-types/datetime.md) 的下界值。仅支持 [String](../data-types/string.md) 参数。
 
@@ -4150,7 +4150,7 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 ```
 
 
-## toDateTimeOrNull
+## toDateTimeOrNull {#todatetimeornull}
 
 与 [toDateTime](#todatetime) 相同，但在传入无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
 
@@ -4171,7 +4171,7 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 ```
 
 
-## toDateTimeOrDefault
+## toDateTimeOrDefault {#todatetimeordefault}
 
 类似于 [toDateTime](#todatetime)，但在转换失败时会返回一个默认值：如果指定了第三个参数，则使用该参数，否则使用 [DateTime](../data-types/datetime.md) 的最小值。
 
@@ -4198,7 +4198,7 @@ SELECT toDateTimeOrDefault('2022-12-30 13:44:17'), toDateTimeOrDefault('', 'UTC'
 ```
 
 
-## toDate32
+## toDate32 {#todate32}
 
 将参数转换为 [Date32](../data-types/date32.md) 数据类型。若值超出范围，`toDate32` 会返回 [Date32](../data-types/date32.md) 所支持的边界值。若参数类型为 [Date](../data-types/date.md)，则会同时考虑 Date 类型的取值边界。
 
@@ -4255,7 +4255,7 @@ SELECT toDate32(toDate('1899-01-01')) AS value, toTypeName(value);
 ```
 
 
-## toDate32OrZero
+## toDate32OrZero {#todate32orzero}
 
 与 [toDate32](#todate32) 相同，但如果接收到无效参数，则返回 [Date32](../data-types/date32.md) 的最小值。
 
@@ -4276,7 +4276,7 @@ SELECT toDate32OrZero('1899-01-01'), toDate32OrZero('');
 ```
 
 
-## toDate32OrNull
+## toDate32OrNull {#todate32ornull}
 
 与 [toDate32](#todate32) 相同，但在收到无效参数时返回 `NULL`。
 
@@ -4297,7 +4297,7 @@ SELECT toDate32OrNull('1955-01-01'), toDate32OrNull('');
 ```
 
 
-## toDate32OrDefault
+## toDate32OrDefault {#todate32ordefault}
 
 将参数转换为 [Date32](../data-types/date32.md) 数据类型。如果值超出范围，`toDate32OrDefault` 会返回 [Date32](../data-types/date32.md) 支持的下边界值。如果参数为 [Date](../data-types/date.md) 类型，则会考虑其取值范围的边界。若接收到无效参数，则返回默认值。
 
@@ -4320,7 +4320,7 @@ SELECT
 ```
 
 
-## toDateTime64
+## toDateTime64 {#todatetime64}
 
 将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值。
 
@@ -4391,7 +4391,7 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 ```
 
 
-## toDateTime64OrZero
+## toDateTime64OrZero {#todatetime64orzero}
 
 与 [toDateTime64](#todatetime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但若参数无效，则返回 [DateTime64](../data-types/datetime64.md) 的最小值。
 
@@ -4434,7 +4434,7 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 * [toDateTime64OrDefault](#todatetime64ordefault)。
 
 
-## toDateTime64OrNull
+## toDateTime64OrNull {#todatetime64ornull}
 
 与 [toDateTime64](#todatetime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但如果接收到无效参数则返回 `NULL`。
 
@@ -4479,7 +4479,7 @@ SELECT
 * [toDateTime64OrDefault](#todatetime64ordefault)。
 
 
-## toDateTime64OrDefault
+## toDateTime64OrDefault {#todatetime64ordefault}
 
 与 [toDateTime64](#todatetime64) 类似，该函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，
 但在接收到无效参数时，会返回 [DateTime64](../data-types/datetime64.md) 的默认值，
@@ -4527,7 +4527,7 @@ SELECT
 * [toDateTime64OrNull](#todatetime64ornull)。
 
 
-## toDecimal32
+## toDecimal32 {#todecimal32}
 
 将输入值转换为 [`Decimal(9, S)`](../data-types/decimal.md) 类型且小数位数为 `S` 的值。发生错误时抛出异常。
 
@@ -4600,7 +4600,7 @@ type_c: Decimal(9, 3)
 * [`toDecimal32OrDefault`](#todecimal32ordefault)。
 
 
-## toDecimal32OrZero
+## toDecimal32OrZero {#todecimal32orzero}
 
 与 [`toDecimal32`](#todecimal32) 类似，此函数将输入值转换为类型为 [Decimal(9, S)](../data-types/decimal.md) 的值，但在发生错误时返回 `0`。
 
@@ -4666,7 +4666,7 @@ toTypeName(b): Decimal(9, 5)
 * [`toDecimal32OrDefault`](#todecimal32ordefault)。
 
 
-## toDecimal32OrNull
+## toDecimal32OrNull {#todecimal32ornull}
 
 与 [`toDecimal32`](#todecimal32) 类似，此函数将输入值转换为类型为 [Nullable(Decimal(9, S))](../data-types/decimal.md) 的值，但在出错时返回 `0`。
 
@@ -4732,7 +4732,7 @@ toTypeName(b): Nullable(Decimal(9, 5))
 * [`toDecimal32OrDefault`](#todecimal32ordefault)。
 
 
-## toDecimal32OrDefault
+## toDecimal32OrDefault {#todecimal32ordefault}
 
 与 [`toDecimal32`](#todecimal32) 类似，此函数将输入值转换为类型为 [Decimal(9, S)](../data-types/decimal.md) 的值，但在发生错误时返回默认值。
 
@@ -4805,7 +4805,7 @@ toTypeName(b): Decimal(9, 0)
 * [`toDecimal32OrNull`](#todecimal32ornull).
 
 
-## toDecimal64
+## toDecimal64 {#todecimal64}
 
 将输入值转换为类型为 [`Decimal(18, S)`](../data-types/decimal.md)、小数位数为 `S` 的值。若发生错误则抛出异常。
 
@@ -4878,7 +4878,7 @@ type_c: Decimal(18, 3)
 * [`toDecimal64OrDefault`](#todecimal64ordefault)。
 
 
-## toDecimal64OrZero
+## toDecimal64OrZero {#todecimal64orzero}
 
 类似于 [`toDecimal64`](#todecimal64)，此函数将输入值转换为 [Decimal(18, S)](../data-types/decimal.md) 类型的值，但在出错时返回 `0`。
 
@@ -4944,7 +4944,7 @@ toTypeName(b): Decimal(18, 18)
 * [`toDecimal64OrDefault`](#todecimal64ordefault)。
 
 
-## toDecimal64OrNull
+## toDecimal64OrNull {#todecimal64ornull}
 
 与 [`toDecimal64`](#todecimal64) 类似，此函数将输入值转换为 [Nullable(Decimal(18, S))](../data-types/decimal.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -5010,7 +5010,7 @@ toTypeName(b): Nullable(Decimal(18, 18))
 * [`toDecimal64OrDefault`](#todecimal64ordefault)。
 
 
-## toDecimal64OrDefault
+## toDecimal64OrDefault {#todecimal64ordefault}
 
 类似于 [`toDecimal64`](#todecimal64)，此函数将输入值转换为 [Decimal(18, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回默认值。
 
@@ -5083,7 +5083,7 @@ toTypeName(b): Decimal(18, 0)
 * [`toDecimal64OrNull`](#todecimal64ornull)。
 
 
-## toDecimal128
+## toDecimal128 {#todecimal128}
 
 将输入值转换为类型为 [`Decimal(38, S)`](../data-types/decimal.md)、标度（scale）为 `S` 的值。出错时抛出异常。
 
@@ -5156,7 +5156,7 @@ type_c: Decimal(38, 3)
 * [`toDecimal128OrDefault`](#todecimal128ordefault)。
 
 
-## toDecimal128OrZero
+## toDecimal128OrZero {#todecimal128orzero}
 
 与 [`toDecimal128`](#todecimal128) 类似，此函数将输入值转换为 [Decimal(38, S)](../data-types/decimal.md) 类型的值，但在出错时返回 `0`。
 
@@ -5222,7 +5222,7 @@ toTypeName(b): Decimal(38, 38)
 * [`toDecimal128OrDefault`](#todecimal128ordefault)。
 
 
-## toDecimal128OrNull
+## toDecimal128OrNull {#todecimal128ornull}
 
 与 [`toDecimal128`](#todecimal128) 类似，此函数将输入值转换为 [Nullable(Decimal(38, S))](../data-types/decimal.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -5288,7 +5288,7 @@ toTypeName(b): Nullable(Decimal(38, 38))
 * [`toDecimal128OrDefault`](#todecimal128ordefault)。
 
 
-## toDecimal128OrDefault
+## toDecimal128OrDefault {#todecimal128ordefault}
 
 与 [`toDecimal128`](#todecimal128) 类似，此函数将输入值转换为 [Decimal(38, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回默认值。
 
@@ -5361,7 +5361,7 @@ toTypeName(b): Decimal(38, 0)
 * [`toDecimal128OrNull`](#todecimal128ornull)。
 
 
-## toDecimal256
+## toDecimal256 {#todecimal256}
 
 将输入值转换为类型为 [`Decimal(76, S)`](../data-types/decimal.md)、小数位数为 `S` 的值。发生错误时抛出异常。
 
@@ -5434,7 +5434,7 @@ type_c: Decimal(76, 3)
 * [`toDecimal256OrDefault`](#todecimal256ordefault)。
 
 
-## toDecimal256OrZero
+## toDecimal256OrZero {#todecimal256orzero}
 
 与 [`toDecimal256`](#todecimal256) 类似，此函数将输入值转换为 [Decimal(76, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -5500,7 +5500,7 @@ toTypeName(b): Decimal(76, 76)
 * [`toDecimal256OrDefault`](#todecimal256ordefault)。
 
 
-## toDecimal256OrNull
+## toDecimal256OrNull {#todecimal256ornull}
 
 类似于 [`toDecimal256`](#todecimal256)，此函数将输入值转换为类型为 [Nullable(Decimal(76, S))](../data-types/decimal.md) 的值，但在出错时返回 `0`。
 
@@ -5566,7 +5566,7 @@ toTypeName(b): Nullable(Decimal(76, 76))
 * [`toDecimal256OrDefault`](#todecimal256ordefault)。
 
 
-## toDecimal256OrDefault
+## toDecimal256OrDefault {#todecimal256ordefault}
 
 与 [`toDecimal256`](#todecimal256) 类似，此函数将输入值转换为 [Decimal(76, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回默认值。
 
@@ -5639,7 +5639,7 @@ toTypeName(b): Decimal(76, 0)
 * [`toDecimal256OrNull`](#todecimal256ornull)。
 
 
-## toString
+## toString {#tostring}
 
 将值转换为其字符串表示。
 对于 DateTime 参数，该函数可以接受第二个 String 参数，其中包含时区名称。
@@ -5684,7 +5684,7 @@ LIMIT 10;
 ```
 
 
-## toFixedString
+## toFixedString {#tofixedstring}
 
 将一个 [String](../data-types/string.md) 类型的参数转换为 [FixedString(N)](../data-types/fixedstring.md) 类型（长度固定为 N 的字符串）。\
 如果字符串的字节数少于 N，则在右侧用空字节（null 字节）填充；如果字符串的字节数多于 N，则会抛出异常。
@@ -5721,7 +5721,7 @@ SELECT toFixedString('foo', 8) AS s;
 ```
 
 
-## toStringCutToZero
+## toStringCutToZero {#tostringcuttozero}
 
 接受一个 String 或 FixedString 参数。返回将内容在遇到的第一个零字节处截断后的 String。
 
@@ -5762,7 +5762,7 @@ SELECT toFixedString('foo\0bar', 8) AS s, toStringCutToZero(s) AS s_cut;
 ```
 
 
-## toDecimalString
+## toDecimalString {#todecimalstring}
 
 将数值转换为 String 类型，输出中的小数位数由用户指定。
 
@@ -5801,7 +5801,7 @@ SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 ```
 
 
-## reinterpretAsUInt8
+## reinterpretAsUInt8 {#reinterpretasuint8}
 
 通过将输入值视为 `UInt8` 类型的值来执行字节重解释操作。与 [`CAST`](#cast) 不同，此函数不会尝试保留原始数值——如果目标类型无法表示该输入值，则输出将毫无意义。
 
@@ -5840,7 +5840,7 @@ SELECT
 ```
 
 
-## reinterpretAsUInt16
+## reinterpretAsUInt16 {#reinterpretasuint16}
 
 通过将输入值视为 `UInt16` 类型的值来执行字节重解释操作。不同于 [`CAST`](#cast)，该函数不会尝试保留原始数值——如果目标类型无法表示输入值，则输出将毫无意义。
 
@@ -5879,7 +5879,7 @@ SELECT
 ```
 
 
-## reinterpretAsUInt32
+## reinterpretAsUInt32 {#reinterpretasuint32}
 
 通过将输入值视为 UInt32 类型的值来进行字节级重解释。与 [`CAST`](#cast) 不同，此函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将毫无意义。
 
@@ -5918,7 +5918,7 @@ SELECT
 ```
 
 
-## reinterpretAsUInt64
+## reinterpretAsUInt64 {#reinterpretasuint64}
 
 通过将输入值按字节重新解释为 `UInt64` 类型的值来执行转换。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始数值含义——如果目标类型无法表示输入类型，则输出结果将没有任何实际意义。
 
@@ -5957,7 +5957,7 @@ SELECT
 ```
 
 
-## reinterpretAsUInt128
+## reinterpretAsUInt128 {#reinterpretasuint128}
 
 按字节重新解释输入值，将其视为 `UInt128` 类型的值。与 [`CAST`](#cast) 不同，此函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出结果将毫无意义。
 
@@ -5996,7 +5996,7 @@ SELECT
 ```
 
 
-## reinterpretAsUInt256
+## reinterpretAsUInt256 {#reinterpretasuint256}
 
 通过将输入值视为 `UInt256` 类型来执行字节重解释操作。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入类型，输出将毫无意义。
 
@@ -6035,7 +6035,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt8
+## reinterpretAsInt8 {#reinterpretasint8}
 
 通过将输入值视为 Int8 类型的值来执行字节重解释。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示该输入值，则输出将毫无意义。
 
@@ -6074,7 +6074,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt16
+## reinterpretAsInt16 {#reinterpretasint16}
 
 通过将输入值视为 `Int16` 类型的值来执行字节重解释。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将没有意义。
 
@@ -6113,7 +6113,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt32
+## reinterpretAsInt32 {#reinterpretasint32}
 
 通过将输入值的字节按 `Int32` 类型重新解释来执行转换。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入类型，则输出将是无意义的值。
 
@@ -6152,7 +6152,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt64
+## reinterpretAsInt64 {#reinterpretasint64}
 
 按字节重新解释输入值，将其视为 `Int64` 类型的值。不同于 [`CAST`](#cast)，该函数不会尝试保留原始值——如果目标类型无法表示该输入值，则输出将毫无意义。
 
@@ -6191,7 +6191,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt128
+## reinterpretAsInt128 {#reinterpretasint128}
 
 通过将输入值视为 `Int128` 类型的值来执行字节重解释。不同于 [`CAST`](#cast)，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将毫无意义。
 
@@ -6230,7 +6230,7 @@ SELECT
 ```
 
 
-## reinterpretAsInt256
+## reinterpretAsInt256 {#reinterpretasint256}
 
 通过将输入值视为 `Int256` 类型的值来对字节进行重解释。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将没有意义。
 
@@ -6269,7 +6269,7 @@ SELECT
 ```
 
 
-## reinterpretAsFloat32
+## reinterpretAsFloat32 {#reinterpretasfloat32}
 
 通过将输入值视为 `Float32` 类型的值来按字节重解释。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将毫无意义。
 
@@ -6304,7 +6304,7 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x);
 ```
 
 
-## reinterpretAsFloat64
+## reinterpretAsFloat64 {#reinterpretasfloat64}
 
 通过将输入值按字节重新解释为 `Float64` 类型来进行转换。与 [`CAST`](#cast) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出将毫无意义。
 
@@ -6339,7 +6339,7 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x);
 ```
 
 
-## reinterpretAsDate
+## reinterpretAsDate {#reinterpretasdate}
 
 接受一个字符串、固定字符串或数值，并按主机字节序（小端序）将其字节解释为一个数字。函数将该数字视为自 Unix 纪元起始以来的天数，并返回对应的日期。
 
@@ -6380,7 +6380,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 ```
 
 
-## reinterpretAsDateTime
+## reinterpretAsDateTime {#reinterpretasdatetime}
 
 这些函数接受一个字符串，并将其开头的字节按照主机字节序（小端序）解释为一个数字。返回一个日期时间值，将该数字视为自 Unix 纪元起经过的秒数。
 
@@ -6421,7 +6421,7 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 ```
 
 
-## reinterpretAsString
+## reinterpretAsString {#reinterpretasstring}
 
 此函数接收一个数字、日期或带时间的日期，并返回一个字符串，该字符串包含以主机字节序（小端序）表示对应值的字节序列。末尾的 null 字节会被去除。例如，一个 UInt32 类型且值为 255 的数据，其对应的字符串长度为 1 个字节。
 
@@ -6458,7 +6458,7 @@ SELECT
 ```
 
 
-## reinterpretAsFixedString
+## reinterpretAsFixedString {#reinterpretasfixedstring}
 
 此函数接受一个数字、日期或带时间的日期，并返回一个 `FixedString`，其内容为按主机字节序（小端序）表示相应值的字节序列。末尾的空字节会被丢弃。例如，当类型为 `UInt32` 的值为 255 时，返回的 `FixedString` 长度为 1 字节。
 
@@ -6495,7 +6495,7 @@ SELECT
 ```
 
 
-## reinterpretAsUUID
+## reinterpretAsUUID {#reinterpretasuuid}
 
 :::note
 除了此处列出的 UUID 函数外，还有一份专门的 [UUID 函数文档](../functions/uuid-functions.md)。
@@ -6556,7 +6556,7 @@ SELECT uuid = uuid2;
 ```
 
 
-## reinterpret
+## reinterpret {#reinterpret}
 
 对 `x` 的值使用相同的源内存字节序列，并将其按目标类型重新解释。
 
@@ -6608,7 +6608,7 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 ```
 
 
-## CAST
+## CAST {#cast}
 
 将输入值转换为指定的数据类型。与 [reinterpret](#reinterpret) 函数不同，`CAST` 会尝试改用新的数据类型来表示相同的值。如果无法完成转换，则会抛出异常。
 支持多种语法形式。
@@ -6714,7 +6714,7 @@ SELECT toTypeName(CAST(x, 'Nullable(UInt16)')) FROM t_null;
 * [cast&#95;keep&#95;nullable](../../operations/settings/settings.md/#cast_keep_nullable) 设置
 
 
-## accurateCast(x, T)
+## accurateCast(x, T) {#accuratecastx-t}
 
 将 `x` 转换为数据类型 `T`。
 
@@ -6749,7 +6749,7 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 ```
 
 
-## accurateCastOrNull(x, T)
+## accurateCastOrNull(x, T) {#accuratecastornullx-t}
 
 将输入值 `x` 转换为指定的数据类型 `T`。始终返回 [Nullable](../data-types/nullable.md) 类型，如果转换结果无法用目标类型表示，则返回 [NULL](/sql-reference/syntax#null)。
 
@@ -6802,7 +6802,7 @@ SELECT
 ```
 
 
-## accurateCastOrDefault(x, T[, default&#95;value])
+## accurateCastOrDefault(x, T[, default&#95;value]) {#accuratecastordefaultx-t-default_value}
 
 将输入值 `x` 转换为指定的数据类型 `T`。如果转换后的值无法用目标类型表示，则返回该类型的默认值；如果指定了 `default_value`，则返回 `default_value`。
 
@@ -6859,7 +6859,7 @@ SELECT
 ```
 
 
-## toInterval
+## toInterval {#toInterval}
 
 根据数值和时间间隔单位（例如 &#39;second&#39; 或 &#39;day&#39;）构造一个 [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型的值。
 
@@ -6907,7 +6907,7 @@ SELECT toDateTime('2025-01-01 00:00:00') + toInterval(1, 'hour')
 ```
 
 
-## toIntervalYear
+## toIntervalYear {#tointervalyear}
 
 返回一个长度为 `n` 年、数据类型为 [IntervalYear](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -6945,7 +6945,7 @@ SELECT date + interval_to_year AS result
 ```
 
 
-## toIntervalQuarter
+## toIntervalQuarter {#tointervalquarter}
 
 返回一个由 `n` 个季度组成、数据类型为 [IntervalQuarter](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -6983,7 +6983,7 @@ SELECT date + interval_to_quarter AS result
 ```
 
 
-## toIntervalMonth
+## toIntervalMonth {#tointervalmonth}
 
 返回一个长度为 `n` 个月、数据类型为 [IntervalMonth](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -7021,7 +7021,7 @@ SELECT date + interval_to_month AS result
 ```
 
 
-## toIntervalWeek
+## toIntervalWeek {#tointervalweek}
 
 返回一个长度为 `n` 周、数据类型为 [IntervalWeek](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -7059,7 +7059,7 @@ SELECT date + interval_to_week AS result
 ```
 
 
-## toIntervalDay
+## toIntervalDay {#tointervalday}
 
 返回一个由 `n` 天组成、数据类型为 [IntervalDay](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -7097,7 +7097,7 @@ SELECT date + interval_to_days AS result
 ```
 
 
-## toIntervalHour
+## toIntervalHour {#tointervalhour}
 
 返回一个表示 `n` 小时的 [IntervalHour](../data-types/special-data-types/interval.md) 类型时间间隔。
 
@@ -7135,7 +7135,7 @@ SELECT date + interval_to_hours AS result
 ```
 
 
-## toIntervalMinute
+## toIntervalMinute {#tointervalminute}
 
 返回一个表示 `n` 分钟的 [IntervalMinute](../data-types/special-data-types/interval.md) 类型时间间隔。
 
@@ -7173,7 +7173,7 @@ SELECT date + interval_to_minutes AS result
 ```
 
 
-## toIntervalSecond
+## toIntervalSecond {#tointervalsecond}
 
 返回一个 `n` 秒的时间间隔，数据类型为 [IntervalSecond](../data-types/special-data-types/interval.md)。
 
@@ -7211,7 +7211,7 @@ SELECT date + interval_to_seconds AS result
 ```
 
 
-## toIntervalMillisecond
+## toIntervalMillisecond {#tointervalmillisecond}
 
 返回一个时长为 `n` 毫秒、数据类型为 [IntervalMillisecond](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -7249,7 +7249,7 @@ SELECT date + interval_to_milliseconds AS result
 ```
 
 
-## toIntervalMicrosecond
+## toIntervalMicrosecond {#tointervalmicrosecond}
 
 返回一个表示 `n` 微秒的区间，数据类型为 [IntervalMicrosecond](../data-types/special-data-types/interval.md)。
 
@@ -7287,7 +7287,7 @@ SELECT date + interval_to_microseconds AS result
 ```
 
 
-## toIntervalNanosecond
+## toIntervalNanosecond {#tointervalnanosecond}
 
 返回一个长度为 `n` 纳秒、数据类型为 [IntervalNanosecond](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -7325,7 +7325,7 @@ SELECT date + interval_to_nanoseconds AS result
 ```
 
 
-## parseDateTime
+## parseDateTime {#parsedatetime}
 
 根据 [MySQL 格式字符串](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)，将 [String](../data-types/string.md) 转换为 [DateTime](../data-types/datetime.md)。
 
@@ -7380,7 +7380,7 @@ SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 
 
-## parseDateTimeInJodaSyntax
+## parseDateTimeInJodaSyntax {#parsedatetimeinjodasyntax}
 
 与 [parseDateTime](#parsedatetime) 类似，只是该函数使用的是 [Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) 的格式字符串，而不是 MySQL 语法。
 
@@ -7433,7 +7433,7 @@ SELECT parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', '
 
 
 
-## parseDateTime64
+## parseDateTime64 {#parsedatetime64}
 
 根据 [MySQL 格式字符串](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)，将 [String](../data-types/string.md) 转换为 [DateTime64](../data-types/datetime64.md)。
 
@@ -7467,7 +7467,7 @@ parseDateTime64(str[, format[, timezone]])
 
 
 
-## parseDateTime64InJodaSyntax
+## parseDateTime64InJodaSyntax {#parsedatetime64injodasyntax}
 
 根据 [Joda 格式字符串](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)，将 [String](../data-types/string.md) 转换为 [DateTime64](../data-types/datetime64.md)。
 
@@ -7501,9 +7501,9 @@ parseDateTime64InJodaSyntax(str[, format[, timezone]])
 
 
 
-## parseDateTimeBestEffort
+## parseDateTimeBestEffort {#parsedatetimebesteffort}
 
-## parseDateTime32BestEffort
+## parseDateTime32BestEffort {#parsedatetime32besteffort}
 
 将以 [String](../data-types/string.md) 类型表示的日期和时间转换为 [DateTime](/sql-reference/data-types/datetime) 数据类型。
 
@@ -7676,7 +7676,7 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 
 
 
-## parseDateTime64BestEffort
+## parseDateTime64BestEffort {#parsedatetime64besteffort}
 
 与 [parseDateTimeBestEffort](#parsedatetimebesteffort) 函数相同，但额外支持解析毫秒和微秒，并返回 [DateTime](/sql-reference/data-types/datetime) 数据类型。
 
@@ -7753,7 +7753,7 @@ FORMAT PrettyCompactMonoBlock;
 
 
 
-## toLowCardinality
+## toLowCardinality {#tolowcardinality}
 
 将输入参数转换为同一数据类型的 [LowCardinality](../data-types/lowcardinality.md) 版本。
 
@@ -7790,7 +7790,7 @@ SELECT toLowCardinality('1');
 ```
 
 
-## toUnixTimestamp
+## toUnixTimestamp {#toUnixTimestamp}
 
 将 `String`、`Date` 或 `DateTime` 转换为 Unix 时间戳（自 `1970-01-01 00:00:00 UTC` 起的秒数），返回 `UInt32` 类型的值。
 
@@ -7838,7 +7838,7 @@ from_date32:     1509840000
 ```
 
 
-## toUnixTimestamp64Second
+## toUnixTimestamp64Second {#tounixtimestamp64second}
 
 将 `DateTime64` 转换为具有固定秒级精度的 `Int64` 值。输入值会根据其自身精度被按比例缩放。
 
@@ -7878,7 +7878,7 @@ SELECT toUnixTimestamp64Second(dt64);
 ```
 
 
-## toUnixTimestamp64Milli
+## toUnixTimestamp64Milli {#tounixtimestamp64milli}
 
 将 `DateTime64` 转换为具有固定毫秒精度的 `Int64` 整数值。输入值会根据其小数精度被相应放大或缩小。
 
@@ -7918,7 +7918,7 @@ SELECT toUnixTimestamp64Milli(dt64);
 ```
 
 
-## toUnixTimestamp64Micro
+## toUnixTimestamp64Micro {#tounixtimestamp64micro}
 
 将 `DateTime64` 转换为具有固定微秒精度的 `Int64` 值。输入值会根据其精度按比例放大或缩小。
 
@@ -7958,7 +7958,7 @@ SELECT toUnixTimestamp64Micro(dt64);
 ```
 
 
-## toUnixTimestamp64Nano
+## toUnixTimestamp64Nano {#tounixtimestamp64nano}
 
 将 `DateTime64` 转换为具有固定纳秒级精度的 `Int64` 值。输入值会根据其精度按比例放大或缩小。
 
@@ -7998,7 +7998,7 @@ SELECT toUnixTimestamp64Nano(dt64);
 ```
 
 
-## fromUnixTimestamp64Second
+## fromUnixTimestamp64Second {#fromunixtimestamp64second}
 
 将 `Int64` 转换为具有固定秒级精度、可选时区的 `DateTime64` 值。输入值会根据其当前精度被相应地放大或缩小。
 
@@ -8041,7 +8041,7 @@ SELECT
 ```
 
 
-## fromUnixTimestamp64Milli
+## fromUnixTimestamp64Milli {#fromunixtimestamp64milli}
 
 将 `Int64` 转换为具有固定毫秒精度、可选时区的 `DateTime64` 值。输入值会根据其精度被相应地放大或缩小。
 
@@ -8084,7 +8084,7 @@ SELECT
 ```
 
 
-## fromUnixTimestamp64Micro
+## fromUnixTimestamp64Micro {#fromunixtimestamp64micro}
 
 将 `Int64` 转换为具有固定微秒精度的 `DateTime64` 值，并可选指定时区。输入值会根据其精度被相应地按比例放大或缩小。
 
@@ -8127,7 +8127,7 @@ SELECT
 ```
 
 
-## fromUnixTimestamp64Nano
+## fromUnixTimestamp64Nano {#fromunixtimestamp64nano}
 
 将 `Int64` 转换为具有固定纳秒精度并可选时区的 `DateTime64` 值。输入值会根据其精度按比例放大或缩小。
 
@@ -8170,7 +8170,7 @@ SELECT
 ```
 
 
-## formatRow
+## formatRow {#formatrow}
 
 按指定格式将任意表达式转换为字符串。
 
@@ -8242,7 +8242,7 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 注意：此函数仅支持行式格式。
 
 
-## formatRowNoNewline
+## formatRowNoNewline {#formatrownonewline}
 
 通过指定的格式将任意表达式转换为字符串。与 `formatRow` 的区别在于，该函数会在存在最后一个 `\n` 时将其去除。
 

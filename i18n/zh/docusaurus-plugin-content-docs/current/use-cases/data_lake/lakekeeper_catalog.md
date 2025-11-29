@@ -231,7 +231,7 @@ Lakekeeper 的部署要求必须先将样例数据加载到 Iceberg 表中。请
 :::
 
 
-### 连接到本地 Lakekeeper 目录
+### 连接到本地 Lakekeeper 目录 {#connecting-to-local-lakekeeper-catalog}
 
 连接到 ClickHouse 容器：
 
@@ -250,7 +250,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 ```
 
 
-## 使用 ClickHouse 查询 Lakekeeper 目录表
+## 使用 ClickHouse 查询 Lakekeeper 目录表 {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
 现在连接已经建立，你可以开始通过 Lakekeeper 目录来查询数据。例如：
 
@@ -334,7 +334,7 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## 将数据湖中的数据加载到 ClickHouse
+## 将数据湖中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 如需将 Lakekeeper 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
 

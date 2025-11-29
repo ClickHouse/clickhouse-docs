@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# azureBlobStorageCluster 表函数
+# azureBlobStorageCluster 表函数 {#azureblobstoragecluster-table-function}
 
 允许在指定集群中的多个节点上并行处理来自 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 的文件。在发起节点上，它会与集群中的所有节点建立连接，展开 S3 文件路径中的星号通配符，并动态分发各个文件。在工作节点上，它向发起节点请求下一个要处理的任务并对其进行处理。该过程会重复进行，直到所有任务处理完毕。
 此表函数类似于 [s3Cluster 函数](../../sql-reference/table-functions/s3Cluster.md)。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
@@ -45,7 +45,7 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 
 
 
-## 示例
+## 示例 {#examples}
 
 与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器在本地进行 Azure 存储开发。更多详情请参见[此处](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。下面我们假设 Azurite 可通过主机名 `azurite1` 访问。
 

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Microsoft Agent Framework 和 ClickHouse MCP Server 构建 AI Agent
+# 如何使用 Microsoft Agent Framework 和 ClickHouse MCP Server 构建 AI Agent {#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server}
 
 在本指南中，你将学习如何使用 [Microsoft Agent Framework](https://github.com/microsoft/agent-framework) 构建一个 AI agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 进行交互。
 

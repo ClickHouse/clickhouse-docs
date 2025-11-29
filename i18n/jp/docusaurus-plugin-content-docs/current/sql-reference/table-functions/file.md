@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# file テーブル関数
+# file テーブル関数 {#file-table-function}
 
 `s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブルと同じように扱えるインターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/url.md) のテーブル関数 `s3()` を使用します。
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 file([path_to_archive ::] path [,format] [,structure] [,compression])
@@ -44,9 +44,9 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 
 
 
-## ファイルへの書き込み例
+## ファイルへの書き込み例 {#examples-for-writing-to-a-file}
 
-### TSV ファイルへの書き込み
+### TSV ファイルへの書き込み {#write-to-a-tsv-file}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -58,13 +58,13 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv
+# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
 1    2    3
 3    2    1
 1    3    2
 ```
 
-### 複数の TSV ファイルへのパーティション分割書き込み
+### 複数の TSV ファイルへのパーティション分割書き込み {#partitioned-write-to-multiple-tsv-files}
 
 `file()` 型のテーブル関数にデータを挿入する際に `PARTITION BY` 式を指定すると、パーティションごとに別々のファイルが作成されます。データを複数のファイルに分割することで、読み取り処理のパフォーマンスを向上できます。
 
@@ -79,17 +79,17 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv
+# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
 3    2    1
 ```
 
 
-# cat /var/lib/clickhouse/user_files/test_2.tsv
+# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
 1    3    2
 
 
 
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv
+# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
 
@@ -97,9 +97,9 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 ```
 
 
-## ファイルから読み込む例
+## ファイルから読み込む例 {#examples-for-reading-from-a-file}
 
-### CSV ファイルからの SELECT
+### CSV ファイルからの SELECT {#select-from-a-csv-file}
 
 まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
@@ -128,7 +128,7 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### ファイルからテーブルにデータを挿入する
+### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 INSERT INTO FUNCTION
@@ -169,7 +169,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 
 
 
-## 例
+## 例 {#examples}
 
 **例**
 
@@ -238,7 +238,7 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 
 
 
-## use&#95;hive&#95;partitioning 設定
+## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
 `use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス（`/name=value/`）内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列は、パーティションを表すパス内の名前と同じ名前を持ちますが、先頭に `_` が付きます。
 

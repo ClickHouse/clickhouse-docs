@@ -1,6 +1,6 @@
 ---
 description: 'Документация по столбцу'
-sidebar_label: 'COLUMN'
+sidebar_label: 'СТОЛБЕЦ'
 sidebar_position: 37
 slug: /sql-reference/statements/alter/column
 title: 'Операции со столбцами'
@@ -33,7 +33,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
   Эти действия подробно описаны ниже.
 
 
-## ADD COLUMN
+## ADD COLUMN {#add-column}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
@@ -70,7 +70,7 @@ Added3  UInt32
 ```
 
 
-## Удаление столбца
+## Удаление столбца {#drop-column}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -91,7 +91,7 @@ ALTER TABLE visits DROP COLUMN browser
 ```
 
 
-## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ
+## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ {#rename-column}
 
 ```sql
 RENAME COLUMN [IF EXISTS] имя_столбца TO новое_имя
@@ -108,7 +108,7 @@ ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
 
-## ОЧИСТИТЬ СТОЛБЕЦ
+## ОЧИСТИТЬ СТОЛБЕЦ {#clear-column}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] имя IN PARTITION имя_раздела
@@ -125,7 +125,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
 
-## Столбец COMMENT
+## Столбец COMMENT {#comment-column}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] имя 'Текстовый комментарий'
@@ -144,7 +144,7 @@ ALTER TABLE visits COMMENT COLUMN browser 'В этом столбце указа
 ```
 
 
-## ИЗМЕНЕНИЕ СТОЛБЦА
+## ИЗМЕНЕНИЕ СТОЛБЦА {#modify-column}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -224,7 +224,7 @@ DESCRIBE users;
 :::
 
 
-## MODIFY COLUMN REMOVE
+## MODIFY COLUMN REMOVE {#modify-column-remove}
 
 Удаляет одно из следующих свойств столбца: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`.
 
@@ -247,7 +247,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 * [REMOVE TTL](ttl.md).
 
 
-## MODIFY COLUMN MODIFY SETTING
+## MODIFY COLUMN MODIFY SETTING {#modify-column-modify-setting}
 
 Изменяет параметр столбца.
 
@@ -266,7 +266,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 ```
 
 
-## MODIFY COLUMN RESET SETTING
+## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
 Сбрасывает настройку столбца и удаляет объявление этой настройки в определении столбца в запросе CREATE таблицы.
 
@@ -285,7 +285,7 @@ ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETT
 ```
 
 
-## MATERIALIZE COLUMN
+## MATERIALIZE COLUMN {#materialize-column}
 
 Материализует столбец с выражением значения `DEFAULT` или `MATERIALIZED`. При добавлении материализованного столбца с помощью `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` существующие строки без материализованных значений не заполняются автоматически. Инструкцию `MATERIALIZE COLUMN` можно использовать для перезаписи данных существующего столбца после того, как выражение `DEFAULT` или `MATERIALIZED` было добавлено или обновлено (что обновляет только метаданные, но не изменяет существующие данные). Обратите внимание, что материализация столбца в ключе сортировки является недопустимой операцией, поскольку это может нарушить порядок сортировки.
 Реализуется как [мутация](/sql-reference/statements/alter/index.md#mutations).

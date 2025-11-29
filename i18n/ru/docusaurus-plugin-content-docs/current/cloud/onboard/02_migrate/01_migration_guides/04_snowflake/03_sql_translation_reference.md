@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# Руководство по преобразованию SQL-запросов Snowflake
+# Руководство по преобразованию SQL-запросов Snowflake {#snowflake-sql-translation-guide}
 
 
 

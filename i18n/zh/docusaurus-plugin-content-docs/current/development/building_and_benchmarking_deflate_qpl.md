@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# 使用 DEFLATE_QPL 构建 ClickHouse
+# 使用 DEFLATE_QPL 构建 ClickHouse {#build-clickhouse-with-deflate_qpl}
 
 - 请确保你的主机符合 QPL 所需的[先决条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)
 - 在使用 CMake 构建时，`deflate_qpl` 默认是启用的。如果你不小心修改了该设置，请再次确认构建标志：`ENABLE_QPL=1`
@@ -18,7 +18,7 @@ doc_type: 'guide'
 
 
 
-# 使用 DEFLATE_QPL 运行基准测试
+# 使用 DEFLATE_QPL 运行基准测试 {#run-benchmark-with-deflate_qpl}
 
 
 
@@ -35,7 +35,7 @@ doc_type: 'guide'
 
 
 
-## 自动运行星型模式基准测试：
+## 自动运行星型模式基准测试： {#run-benchmark-automatically-for-star-schema}
 
 ```bash
 $ cd ./benchmark_sample/client_scripts
@@ -53,7 +53,7 @@ $ sh run_ssb.sh
 
 
 
-## 环境
+## 环境 {#environment}
 
 * CPU：Sapphire Rapids
 * 操作系统要求请参阅 [System Requirements for QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements)
@@ -81,7 +81,7 @@ $ accel-config list | grep -P 'iax|state'
 如果没有任何输出，说明 IAA 尚未就绪。请重新检查 IAA 的配置。
 
 
-## 生成原始数据
+## 生成原始数据 {#generate-raw-data}
 
 ```bash
 $ cd ./benchmark_sample
@@ -94,7 +94,7 @@ $ mkdir rawdata_dir && cd rawdata_dir
 预计会在 `./benchmark_sample/rawdata_dir/ssb-dbgen` 目录下生成类似 `*.tbl` 的文件：
 
 
-## 数据库配置
+## 数据库配置 {#database-setup}
 
 将数据库配置为使用 LZ4 编解码器
 
@@ -164,7 +164,7 @@ SELECT count() FROM lineorder_flat
 这表示 IAA 设备尚未准备就绪，你需要重新检查 IAA 的配置。
 
 
-## 使用单实例进行基准测试
+## 使用单实例进行基准测试 {#benchmark-with-single-instance}
 
 * 在开始基准测试之前，请禁用 C6，并将 CPU 频率调节策略设置为 `performance`
 
@@ -218,7 +218,7 @@ zstd.log
 我们主要关注 QPS，请搜索关键字 `QPS_Final` 并收集统计数据。
 
 
-## 使用多实例进行基准测试
+## 使用多实例进行基准测试 {#benchmark-with-multi-instances}
 
 * 为了减小过多线程导致的内存瓶颈影响，建议使用多实例来运行基准测试。
 * 多实例是指在多台（2 或 4 台）服务器上分别连接各自的客户端。
@@ -350,7 +350,7 @@ zstd_2insts.log
 我们建议使用 2 个实例的基准测试数据作为最终报告的评审依据。
 
 
-## 提示
+## 提示 {#tips}
 
 每次启动新的 ClickHouse 服务器之前，请确保没有 ClickHouse 后台进程在运行。请检查并终止旧进程：
 

@@ -44,7 +44,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 
 
-## 示例
+## 示例 {#examples}
 
 将已分配的角色设为默认角色：
 

@@ -8,20 +8,15 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-
-
-# 运算符
+# 运算符 {#operators}
 
 在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
-
-
 
 ## 访问操作符 {#access-operators}
 
 `a[N]` – 访问数组元素。对应 `arrayElement(a, N)` 函数。
 
 `a.N` – 访问元组元素。对应 `tupleElement(a, N)` 函数。
-
 
 ## 数值取反运算符 {#numeric-negation-operator}
 
@@ -42,7 +37,6 @@ doc_type: 'reference'
 
 `a % b` – `modulo(a, b)` 函数。
 
-
 ## 加法和减法运算符 {#addition-and-subtraction-operators}
 
 `a + b` – `plus(a, b)` 函数。
@@ -52,6 +46,7 @@ doc_type: 'reference'
 `a - b` – `minus(a, b)` 函数。
 
 元组减法请参见:[tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus)。
+
 
 
 ## 比较运算符 {#comparison-operators}
@@ -101,7 +96,6 @@ doc_type: 'reference'
 `a BETWEEN b AND c` – 等同于 `a >= b AND a <= c`。
 
 `a NOT BETWEEN b AND c` – 等同于 `a < b OR a > c`。
-
 
 ## 用于处理数据集的运算符 {#operators-for-working-with-data-sets}
 
@@ -176,7 +170,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 │ 9 │
 └───┘
 ```
-
 
 ## 日期和时间运算符 {#operators-for-working-with-dates-and-times}
 
@@ -319,16 +312,13 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
 * [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
 
-
 ## 逻辑 AND 运算符 {#logical-and-operator}
 
 语法 `SELECT a AND b` — 使用 [and](/sql-reference/functions/logical-functions#and) 函数计算 `a` 和 `b` 的逻辑与运算。
 
-
 ## 逻辑 OR 运算符 {#logical-or-operator}
 
 语法 `SELECT a OR b` — 使用 [or](/sql-reference/functions/logical-functions#or) 函数计算 `a` 和 `b` 的逻辑或运算。
-
 
 ## 逻辑非运算符 {#logical-negation-operator}
 
@@ -342,7 +332,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 注意:
 
 条件运算符会先计算 b 和 c 的值,然后检查条件 a 是否满足,最后返回相应的值。如果 `b` 或 `c` 是 [arrayJoin()](/sql-reference/functions/array-join) 函数,则无论条件 "a" 如何,每一行都会被复制。
-
 
 ## 条件表达式 {#conditional-expression}
 
@@ -360,11 +349,9 @@ END
 
 `transform` 函数不支持 `NULL` 值。
 
-
 ## 连接运算符 {#concatenation-operator}
 
 `s1 || s2` – `concat(s1, s2)` 函数。
-
 
 ## Lambda 创建运算符 {#lambda-creation-operator}
 
@@ -372,16 +359,13 @@ END
 
 以下运算符由于是括号,因此没有优先级:
 
-
 ## 数组创建运算符 {#array-creation-operator}
 
 `[x1, ...]` – `array(x1, ...)` 函数。
 
-
 ## 元组创建运算符 {#tuple-creation-operator}
 
 `(x1, x2, ...)` – `tuple(x2, x2, ...)` 函数。
-
 
 ## 结合性 {#associativity}
 

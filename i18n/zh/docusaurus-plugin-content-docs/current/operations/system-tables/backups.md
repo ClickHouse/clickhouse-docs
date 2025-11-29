@@ -6,7 +6,7 @@ title: 'system.backups'
 doc_type: 'reference'
 ---
 
-# system.backups
+# system.backups {#systembackups}
 
 包含所有 `BACKUP` 或 `RESTORE` 操作及其当前状态和其他属性的列表。注意，该表不是持久化的，只显示上次服务器重启之后执行的操作。
 

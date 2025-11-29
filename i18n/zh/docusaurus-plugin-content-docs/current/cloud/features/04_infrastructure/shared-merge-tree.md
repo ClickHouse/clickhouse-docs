@@ -12,7 +12,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# SharedMergeTree 表引擎
+# SharedMergeTree 表引擎 {#sharedmergetree-table-engine}
 
 SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 ReplacingSharedMergeTree 用来替代 ReplacingReplicatedMergeTree。
 
@@ -50,7 +50,7 @@ SharedMergeTree 带来的一个重要改进是：相比 ReplicatedMergeTree，�
 
 
 
-## 启用 SharedMergeTree
+## 启用 SharedMergeTree {#enabling-sharedmergetree}
 
 `SharedMergeTree` 默认已启用。
 

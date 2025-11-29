@@ -11,7 +11,7 @@ import denormalizationSchema from '@site/static/images/data-modeling/denormaliza
 import Image from '@theme/IdealImage';
 
 
-# データの非正規化
+# データの非正規化 {#denormalizing-data}
 
 データの非正規化は、フラット化されたテーブルを使用して `JOIN` を回避し、クエリのレイテンシーを最小限に抑えるために ClickHouse で用いられる手法です。
 
@@ -63,7 +63,7 @@ ClickHouse では、非正規化はクエリ性能を最適化するためにユ
 
 
 
-## 非正規化の実用的なケース
+## 非正規化の実用的なケース {#practical-cases-for-denormalization}
 
 非正規化が妥当となるいくつかの実用的な例と、別のアプローチのほうが望ましいケースを考えてみます。
 
@@ -73,7 +73,7 @@ ClickHouse では、非正規化はクエリ性能を最適化するためにユ
 
 *以下の各例について、両方のテーブルを結合で使用する必要があるクエリが存在すると仮定してください。*
 
-### Posts と Votes
+### Posts と Votes {#posts-and-votes}
 
 投稿に対する Votes は別テーブルで表現されています。このために最適化されたスキーマを以下に示し、あわせてデータをロードするための INSERT コマンドも示します。
 
@@ -138,7 +138,7 @@ LIMIT 5
 
 ここでの主なポイントは、各投稿ごとの投票結果の集計があれば、ほとんどの分析には十分であり、すべての投票情報を非正規化する必要はないということです。たとえば、現在の `Score` 列はそのような統計量、すなわち賛成票の合計から反対票の合計を引いた値を表しています。理想的には、クエリ時に単純なルックアップでこれらの統計を取得できるのが望ましいでしょう（[dictionaries](/dictionary) を参照）。
 
-### Users と Badges
+### Users と Badges {#users-and-badges}
 
 次に `Users` と `Badges` を考えてみましょう：
 
@@ -211,7 +211,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 > たとえば、バッジからユーザーへ統計情報（バッジ数など）を非正規化して持たせたくなるかもしれません。このデータセットでは、挿入時に辞書を使用する例として、そのようなケースを検討します。
 
-### Posts と PostLinks
+### Posts と PostLinks {#posts-and-postlinks}
 
 `PostLinks` は、ユーザーが関連または重複しているとみなす `Posts` を関連付けます。次のクエリは、スキーマとロードコマンドを示しています。
 
@@ -273,7 +273,7 @@ FROM
 
 以下では、これを非正規化の例として使用します。
 
-### 簡単な統計の例
+### 簡単な統計の例 {#simple-statistic-example}
 
 ほとんどの場合、非正規化では、親行に単一の列または統計情報を追加するだけで済みます。たとえば、投稿を重複投稿数で拡張したいだけであれば、列を 1 つ追加するだけで済みます。
 
@@ -302,7 +302,7 @@ LEFT JOIN
 ) AS postlinks ON posts.Id = postlinks.PostId
 ```
 
-### 一対多リレーションのための複合型の活用
+### 一対多リレーションのための複合型の活用 {#exploiting-complex-types-for-one-to-many-relationships}
 
 非正規化を行うためには、複合型を活用する必要があることがよくあります。少数のカラムを持つ一対一リレーションを非正規化する場合は、上記のように元の型のまま行として追加すれば十分です。しかし、オブジェクトが大きい場合にはこれは望ましくないことが多く、一対多リレーションではそもそも不可能です。
 

@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 基本示例
+### 基本示例 {#basic-example}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
@@ -32,7 +32,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 ```
 
 
-### JSON 对象数组
+### JSON 对象数组 {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
@@ -46,7 +46,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 ```
 
 
-### 具有默认值的列
+### 具有默认值的列 {#columns-with-default-values}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;

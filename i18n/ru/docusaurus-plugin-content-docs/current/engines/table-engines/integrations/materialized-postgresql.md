@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблицы MaterializedPostgreSQL
+# Движок таблицы MaterializedPostgreSQL {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
 
@@ -35,7 +35,7 @@ SET allow_experimental_materialized_postgresql_table=1
 Если требуется более одной таблицы, настоятельно рекомендуется использовать движок базы данных [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) вместо движка таблицы и настройку `materialized_postgresql_tables_list`, которая задаёт список реплицируемых таблиц (также можно будет указать `schema` базы данных). Такой подход значительно лучше с точки зрения нагрузки на CPU, количества подключений и числа слотов репликации в удалённой базе данных PostgreSQL.
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE postgresql_db.postgresql_replica (key UInt64, value UInt64)
@@ -64,7 +64,7 @@ PRIMARY KEY key;
 
 
 
-## Виртуальные столбцы
+## Виртуальные столбцы {#virtual-columns}
 
 * `_version` — счётчик транзакций. Тип: [UInt64](../../../sql-reference/data-types/int-uint.md).
 

@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# 如何使用 ClickHouse MCP Server 构建 PydanticAI 代理
+# 如何使用 ClickHouse MCP Server 构建 PydanticAI 代理 {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
 在本指南中，您将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 代理，
 使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL 在线体验环境](https://sql.clickhouse.com/) 进行交互。
@@ -34,7 +34,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## 安装库
+## 安装库 {#install-libraries}
 
 通过运行以下命令来安装所需的库：
 
@@ -45,7 +45,7 @@ pip install -q "pydantic-ai-slim[anthropic]" # 如果使用其他 LLM 提供商�
 ```
 
 
-## 设置凭据
+## 设置凭据 {#setup-credentials}
 
 接下来，您需要提供 Anthropic API 密钥：
 
@@ -76,7 +76,7 @@ env = {
 ```
 
 
-## 初始化 MCP Server 和 PydanticAI 代理
+## 初始化 MCP Server 和 PydanticAI 代理 {#initialize-mcp}
 
 现在将 ClickHouse MCP Server 配置为连接到 ClickHouse SQL Playground：
 

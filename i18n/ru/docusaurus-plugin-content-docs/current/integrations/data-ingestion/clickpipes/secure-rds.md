@@ -18,10 +18,9 @@ import Image from '@theme/IdealImage';
 Для MySQL и MariaDB это ограничение не применяется, и вы можете запускать как ClickPipes в режиме `Initial Load Only`, так и ClickPipes в режиме `CDC`.
 :::
 
+## Настройка {#setup}
 
-## Настройка
-
-### Получение ARN роли IAM сервиса ClickHouse
+### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Войдите в свою учётную запись ClickHouse Cloud.
 
@@ -37,9 +36,9 @@ import Image from '@theme/IdealImage';
 
 Назовём это значение `{ClickHouse_IAM_ARN}`. Это роль IAM, которая будет использоваться для доступа к вашему экземпляру RDS/Aurora.
 
-### Настройка экземпляра RDS/Aurora
+### Настройка экземпляра RDS/Aurora {#configuring-the-rds-aurora-instance}
 
-#### Включение IAM DB Authentication
+#### Включение IAM DB Authentication {#enabling-iam-db-authentication}
 
 1. Войдите в свою учётную запись AWS и перейдите к экземпляру RDS, который вы хотите настроить.
 2. Нажмите кнопку **Modify**.
@@ -48,15 +47,15 @@ import Image from '@theme/IdealImage';
 5. Нажмите кнопку **Continue**.
 6. Проверьте изменения и включите опцию **Apply immediately**.
 
-#### Получение идентификатора ресурса RDS/Aurora
+#### Получение идентификатора ресурса RDS/Aurora {#obtaining-the-rds-resource-id}
 
 1. Войдите в свою учётную запись AWS и перейдите к экземпляру RDS или кластеру Aurora, который вы хотите настроить.
 2. Перейдите на вкладку **Configuration**.
 3. Обратите внимание на значение **Resource ID**. Для RDS оно должно выглядеть как `db-xxxxxxxxxxxxxx`, а для кластера Aurora — как `cluster-xxxxxxxxxxxxxx`. Назовём это значение `{RDS_RESOURCE_ID}`. Это идентификатор ресурса, который будет использоваться в политике IAM для предоставления доступа к экземпляру RDS.
 
-#### Настройка пользователя базы данных
+#### Настройка пользователя базы данных {#setting-up-the-database-user}
 
-##### PostgreSQL
+##### PostgreSQL {#setting-up-the-database-user-postgres}
 
 1. Подключитесь к вашему экземпляру RDS/Aurora и создайте нового пользователя базы данных с помощью следующей команды:
    ```sql
@@ -65,7 +64,7 @@ import Image from '@theme/IdealImage';
    ```
 2. Выполните остальные шаги из [руководства по настройке источника PostgreSQL](postgres/source/rds), чтобы настроить ваш экземпляр RDS для ClickPipes.
 
-##### MySQL / MariaDB
+##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
 1. Подключитесь к вашему экземпляру RDS/Aurora и создайте нового пользователя базы данных с помощью следующей команды:
    ```sql
@@ -73,9 +72,9 @@ import Image from '@theme/IdealImage';
    ```
 2. Выполните остальные шаги из [руководства по настройке источника MySQL](mysql/source/rds), чтобы настроить ваш экземпляр RDS/Aurora для ClickPipes.
 
-### Настройка роли IAM
+### Настройка роли IAM {#setting-up-iam-role}
 
-#### Ручное создание роли IAM.
+#### Ручное создание роли IAM. {#manually-create-iam-role}
 
 1 - Войдите в свою учётную запись AWS в веб-браузере под пользователем IAM, который имеет права на создание и управление ролями IAM.
 

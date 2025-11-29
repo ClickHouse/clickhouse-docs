@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode
+# system.unicode {#systemunicode}
 
 `system.unicode` テーブルは、Unicode 文字およびそのプロパティに関する情報を提供する仮想テーブルです（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html) を参照）。このテーブルは要求時に動的に生成されます。
 
@@ -40,7 +40,6 @@ Mapping には多少特殊な点があるため、ICU のドキュメントを�
 ```sql
 SELECT * FROM system.unicode WHERE code_point = 'a' LIMIT 1;
 ```
-
 
 ```text
 Row 1:
@@ -167,7 +166,6 @@ script_extensions:               ['Latin']
 identifier_type:                 ['Recommended']
 
 ```
-
 
 ```sql
 SELECT code_point, code_point_value, notation FROM system.unicode WHERE code_point = '😂';

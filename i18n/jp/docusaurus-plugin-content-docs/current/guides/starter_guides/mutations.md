@@ -9,9 +9,7 @@ show_related_blogs: false
 doc_type: 'guide'
 ---
 
-
-
-# ミューテーションを使用した ClickHouse データの更新と削除
+# ミューテーションを使用した ClickHouse データの更新と削除 {#updating-and-deleting-clickhouse-data-with-mutations}
 
 ClickHouse は大規模な分析ワークロード向けに最適化されていますが、状況によっては既存データを変更したり
 削除したりすることも可能です。これらの操作は「ミューテーション (mutation)」と呼ばれ、`ALTER TABLE` コマンドを使って実行されます。
@@ -22,9 +20,7 @@ ClickHouse は大規模な分析ワークロード向けに最適化されてい
 や [lightweight deletes](/guides/developer/lightweight-delete) を使用してください。
 :::
 
-
-
-## データの更新
+## データの更新 {#updating-data}
 
 テーブル内の行を更新するには、`ALTER TABLE...UPDATE` コマンドを使用します。
 
@@ -64,8 +60,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 主キーまたはソートキーの一部になっている列を更新することはできません。
 :::
 
-
-## データの削除
+## データの削除 {#deleting-data}
 
 `ALTER TABLE` コマンドを使用して行を削除します。
 
@@ -93,8 +88,7 @@ ALTER TABLE [<データベース>.]<テーブル> DELETE WHERE <フィルタ式>
 
 詳細については、[`DELETE` ステートメント](/sql-reference/statements/delete.md) のドキュメントページを参照してください。
 
-
-## 軽量削除
+## 軽量削除 {#lightweight-deletes}
 
 行を削除するもう 1 つの方法は、**軽量削除** と呼ばれる `DELETE FROM` 文を使用することです。削除された行には即座に削除フラグが付き、その後のすべてのクエリから自動的にフィルタリングされるため、パーツのマージ処理を待ったり `FINAL` キーワードを使用したりする必要はありません。データのクリーンアップはバックグラウンドで非同期的に行われます。
 

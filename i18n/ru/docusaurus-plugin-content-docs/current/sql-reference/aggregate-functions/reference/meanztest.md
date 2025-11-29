@@ -7,7 +7,7 @@ title: 'meanZTest'
 doc_type: 'reference'
 ---
 
-# meanZTest
+# meanZTest {#meanztest}
 
 Применяет z-критерий для сравнения средних по выборкам из двух генеральных совокупностей.
 

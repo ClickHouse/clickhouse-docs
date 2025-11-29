@@ -10,8 +10,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Движок базы данных MySQL
+# Движок базы данных MySQL {#mysql-database-engine}
 
 <CloudNotSupportedBadge />
 
@@ -25,9 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - `CREATE TABLE`
 - `ALTER`
 
-
-
-## Создание базы данных
+## Создание базы данных {#creating-a-database}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -40,7 +37,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `database` — имя удалённой базы данных.
 * `user` — пользователь MySQL.
 * `password` — пароль пользователя.
-
 
 ## Поддержка типов данных {#data_types-support}
 
@@ -64,9 +60,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 Поддерживается тип [Nullable](../../sql-reference/data-types/nullable.md).
 
-
-
-## Поддержка глобальных переменных
+## Поддержка глобальных переменных {#global-variables-support}
 
 Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — через `@@identifier`.
 
@@ -85,8 +79,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 SELECT @@version;
 ```
 
-
-## Примеры использования
+## Примеры использования {#examples-of-use}
 
 Таблица в MySQL:
 

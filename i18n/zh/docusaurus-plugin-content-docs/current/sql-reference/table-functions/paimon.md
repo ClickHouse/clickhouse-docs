@@ -18,7 +18,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -44,7 +44,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 
 
 
-## 定义命名集合
+## 定义命名集合 {#defining-a-named-collection}
 
 下面是一个示例，展示如何配置一个命名集合用于存储 URL 和凭证：
 

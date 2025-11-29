@@ -11,7 +11,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import draxlr_01 from '@site/static/images/integrations/data-visualization/draxlr_01.png';
 import draxlr_02 from '@site/static/images/integrations/data-visualization/draxlr_02.png';
 import draxlr_03 from '@site/static/images/integrations/data-visualization/draxlr_03.png';
@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключение Draxlr к ClickHouse
+# Подключение Draxlr к ClickHouse {#connecting-draxlr-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 

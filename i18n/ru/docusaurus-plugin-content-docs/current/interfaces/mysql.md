@@ -15,7 +15,7 @@ import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
 
-# Интерфейс MySQL
+# Интерфейс MySQL {#mysql-interface}
 
 ClickHouse поддерживает сетевой протокол MySQL (MySQL wire protocol). Это позволяет отдельным клиентам, у которых нет нативных коннекторов для ClickHouse, использовать вместо них протокол MySQL. Работа была проверена со следующими BI-инструментами:
 
@@ -65,7 +65,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 
 
 
-## Создание нескольких пользователей MySQL в ClickHouse Cloud
+## Создание нескольких пользователей MySQL в ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
 По умолчанию существует встроенный пользователь `mysql4<subdomain>`, который использует тот же пароль, что и пользователь `default`. Часть `<subdomain>` — это первый сегмент имени хоста вашего ClickHouse Cloud. Такой формат необходим для работы с инструментами, которые реализуют безопасное подключение, но не передают [SNI-информацию в своем TLS-рукопожатии](https://www.cloudflare.com/learning/ssl/what-is-sni), из-за чего невозможно выполнить внутреннюю маршрутизацию без дополнительной подсказки в имени пользователя (консольный клиент MySQL является одним из таких инструментов).
 
@@ -107,7 +107,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 
 4. Используйте созданного пользователя для подключения к вашему сервису ClickHouse Cloud через интерфейс MySQL.
 
-### Устранение неполадок при работе с несколькими пользователями MySQL в ClickHouse Cloud
+### Устранение неполадок при работе с несколькими пользователями MySQL в ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
 
 Если вы создали нового пользователя MySQL и видите следующую ошибку при подключении через консольный клиент MySQL (CLI):
 
@@ -118,7 +118,7 @@ ERROR 2013 (HY000): Потеряно соединение с сервером My
 В этом случае убедитесь, что имя пользователя имеет формат `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).
 
 
-## Включение интерфейса MySQL в самостоятельно управляемом ClickHouse
+## Включение интерфейса MySQL в самостоятельно управляемом ClickHouse {#enabling-the-mysql-interface-on-self-managed-clickhouse}
 
 Добавьте параметр [mysql&#95;port](../operations/server-configuration-parameters/settings.md#mysql_port) в файл конфигурации сервера. Например, вы можете указать порт в новом XML-файле в папке `config.d/` [folder](../operations/configuration-files):
 
@@ -135,7 +135,7 @@ ERROR 2013 (HY000): Потеряно соединение с сервером My
 ```
 
 
-## Подключение MySQL к ClickHouse
+## Подключение MySQL к ClickHouse {#connect-mysql-to-clickhouse}
 
 Следующая команда демонстрирует, как подключить клиент MySQL `mysql` к ClickHouse:
 

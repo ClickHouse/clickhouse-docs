@@ -56,7 +56,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 将你当前的 Nginx 镜像替换为启用 OpenTelemetry 的版本：
 
 ```yaml
-# 在你的 docker-compose.yml 或 Dockerfile 中
+# 在你的 docker-compose.yml 或 Dockerfile 中 {#in-your-docker-composeyml-or-dockerfile}
 image: nginx:1.27-otel
 ```
 
@@ -157,10 +157,10 @@ nginx -t
 
 如果测试通过，重新加载 Nginx：
 ```bash
-# 对于 Docker
+# 对于 Docker {#for-docker}
 docker-compose restart nginx
 
-# 对于 systemd
+# 对于 systemd {#for-systemd}
 sudo systemctl reload nginx
 ```
 
@@ -199,7 +199,7 @@ docker run --name clickstack-demo \
 下载示例 traces 文件，并将时间戳更新为当前时间：
 
 ```bash
-# 下载 traces
+# 下载 traces {#download-the-traces}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
@@ -284,7 +284,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范
 
 ## 故障排查 {#troubleshooting}
 
-### 在 HyperDX 中看不到任何追踪数据
+### 在 HyperDX 中看不到任何追踪数据 {#no-traces}
 
 **确认已加载 nginx 模块：**
 
@@ -313,10 +313,10 @@ echo $CLICKSTACK_API_KEY
 **检查 nginx 错误日志：**
 
 ```bash
-# Docker 环境
+# Docker 环境 {#for-docker}
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# systemd 环境
+# systemd 环境 {#for-systemd}
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -325,7 +325,7 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 **验证 nginx 是否正在接收请求：**
 
 ```bash
-# 检查访问日志以确认流量
+# 检查访问日志以确认流量 {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
 

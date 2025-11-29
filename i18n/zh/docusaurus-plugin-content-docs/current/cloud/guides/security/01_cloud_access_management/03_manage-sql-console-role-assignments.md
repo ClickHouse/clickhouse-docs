@@ -17,7 +17,7 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
 
-# 配置 SQL 控制台角色分配
+# 配置 SQL 控制台角色分配 {#configuring-sql-console-role-assignments}
 
 > 本指南介绍如何配置 SQL 控制台角色分配，这些分配决定整个控制台的访问权限，以及用户在 Cloud 控制台中可使用的功能。
 

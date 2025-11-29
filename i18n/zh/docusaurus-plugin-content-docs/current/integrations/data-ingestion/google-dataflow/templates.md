@@ -11,7 +11,7 @@ keywords: ['Google Dataflow', 'GCP', '数据管道', '模板', '批处理']
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Google Dataflow 模板
+# Google Dataflow 模板 {#google-dataflow-templates}
 
 <ClickHouseSupportedBadge/>
 

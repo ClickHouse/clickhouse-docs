@@ -26,7 +26,7 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Интеграция Amazon Kinesis с ClickHouse Cloud
+# Интеграция Amazon Kinesis с ClickHouse Cloud {#integrating-amazon-kinesis-with-clickhouse-cloud}
 ## Предварительные требования {#prerequisite}
 Вы ознакомились с [введением в ClickPipes](./index.md) и настроили [учётные данные IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) или [роль IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Следуйте [руководству по доступу к Kinesis на основе ролей](./secure-kinesis.md), чтобы настроить роль для работы с ClickHouse Cloud.
 

@@ -6,7 +6,7 @@ title: 'groupBitOr'
 doc_type: 'reference'
 ---
 
-# groupBitOr
+# groupBitOr {#groupbitor}
 
 数値の系列にビット単位の `OR` 演算を適用します。
 

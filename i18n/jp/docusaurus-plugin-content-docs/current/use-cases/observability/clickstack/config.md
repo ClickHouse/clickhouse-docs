@@ -17,7 +17,7 @@ ClickStack の各コンポーネントには、以下の設定オプションが
 
 ## 設定の変更 {#modifying-settings}
 
-### Docker
+### Docker {#docker}
 
 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) を使用している場合は、希望する設定値を環境変数として渡すだけです。例:
 
@@ -26,7 +26,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 
 ```
 
 
-### Docker Compose
+### Docker Compose {#docker-compose}
 
 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) のデプロイメントガイドを使用している場合は、[`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) ファイルで設定を変更できます。
 
@@ -46,7 +46,7 @@ services:
 
 ### Helm {#helm}
 
-#### 値のカスタマイズ（任意）
+#### 値のカスタマイズ（任意） {#customizing-values}
 
 たとえば、`--set` フラグを使用して次のように設定をカスタマイズできます。
 

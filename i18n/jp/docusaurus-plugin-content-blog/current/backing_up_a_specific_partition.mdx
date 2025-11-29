@@ -10,12 +10,11 @@ keywords: ['バックアップ', 'パーティション']
 
 {/* 切り捨て */}
 
-
 ## 質問 \{#question\}
 
 ClickHouseで特定のパーティションだけをバックアップするにはどうすればよいですか？
 
-## 回答
+## 回答 \{#answer\}
 
 以下の例では、[docker compose examples](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/README.md) ページに掲載されている S3（Minio）ディスクの[設定](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/ch-and-minio-S3/README.md)を使用しています。
 
@@ -137,7 +136,6 @@ Ok.
 ```
 
 バックアップから、ID が `1` のパーティションだけを復元します:
-
 
 ```
 ch_minio_s3 :) RESTORE TABLE my_table PARTITION 1 FROM Disk('s3','backups/');

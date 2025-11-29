@@ -5,9 +5,7 @@ title: 'IN 演算子'
 doc_type: 'reference'
 ---
 
-
-
-# IN 演算子
+# IN 演算子 {#in-operators}
 
 `IN`、`NOT IN`、`GLOBAL IN`、`GLOBAL NOT IN` 演算子は、その機能が非常に豊富であるため、個別に説明します。
 
@@ -93,8 +91,7 @@ ORDER BY EventDate ASC
 3月17日以降の各日について、3月17日にサイトを訪問したユーザーによるページビューの割合を算出します。
 `IN` 句内のサブクエリは、常に単一のサーバー上で一度だけ実行されます。相関（依存）サブクエリは存在しません。
 
-
-## NULL の処理
+## NULL の処理 {#null-processing}
 
 リクエストの処理中、`IN` 演算子は、[NULL](/operations/settings/formats#input_format_null_as_default) を用いた演算の結果が、`NULL` が演算子の右側か左側かに関係なく、常に `0` に等しいものとして扱います。[transform&#95;null&#95;in = 0](../../operations/settings/settings.md#transform_null_in) の場合、`NULL` 値はどのデータセットにも含まれず、互いに一致せず、比較することもできません。
 
@@ -129,8 +126,7 @@ FROM t_null
 └───────────────────────┘
 ```
 
-
-## 分散サブクエリ
+## 分散サブクエリ {#distributed-subqueries}
 
 サブクエリを伴う `IN` 演算子（`JOIN` 演算子と同様）には 2 種類の形式があります。通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` です。これらは分散クエリ処理における実行方法が異なります。
 
@@ -222,7 +218,6 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 一時テーブル `_data1`（この一時テーブル名は実装定義です）は、クエリとともにすべてのリモートサーバーへ送信されます。
 
-
 これは通常の `IN` を使用するよりも効率的です。ただし、次の点に注意してください。
 
 1. 一時テーブルを作成する場合、データは一意化されません。ネットワーク経由で送信されるデータ量を減らすには、副問い合わせで DISTINCT を指定してください（通常の `IN` では、その必要はありません）。
@@ -233,7 +228,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 ローカルテーブルがリクエスト元サーバーにしか存在せず、そのデータをリモートサーバーで使用したい場合は、`GLOBAL IN` 句でそのローカルテーブルを指定するのも有用です。
 
-### 分散サブクエリと max&#95;rows&#95;in&#95;set
+### 分散サブクエリと max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
 
 分散クエリ中に転送されるデータ量を制御するために、[`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) および [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) を使用できます。
 
@@ -245,7 +240,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <任意
 
 `some_predicate` の選択性が不十分な場合、大量のデータが返され、パフォーマンス問題の原因となります。このような場合には、ネットワーク上のデータ転送量を制限することが賢明です。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) はデフォルトで `throw` に設定されており、これらのしきい値に達したときに例外が送出されることに注意してください。
 
-### 分散サブクエリと max&#95;parallel&#95;replicas
+### 分散サブクエリと max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
 
 [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) が 1 より大きい場合、分散クエリはさらに書き換えられます。
 

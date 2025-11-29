@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# redis 表函数
+# redis 表函数 {#redis-table-function}
 
 此表函数用于将 ClickHouse 与 [Redis](https://redis.io/) 集成。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
@@ -47,7 +47,7 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 从 Redis 读取：
 

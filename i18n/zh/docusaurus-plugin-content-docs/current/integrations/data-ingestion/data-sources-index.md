@@ -6,7 +6,7 @@ title: '数据源'
 doc_type: 'landing-page'
 ---
 
-# 数据源
+# 数据源 {#data-sources}
 
 ClickHouse 允许你轻松地从多种数据源将数据摄取到数据库中。
 有关更多信息，请参阅下列页面：

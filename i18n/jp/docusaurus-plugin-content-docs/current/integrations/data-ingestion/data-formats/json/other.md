@@ -6,9 +6,7 @@ keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
-
-
-# JSON をモデリングするその他のアプローチ
+# JSON をモデリングするその他のアプローチ {#other-approaches-to-modeling-json}
 
 **以下は、ClickHouse における JSON モデリングの別手法です。網羅性のために記載していますが、これらは JSON 型が登場する以前に有用だったものであり、現在では多くのユースケースにおいて推奨されず、ほとんどの場合適用されません。**
 
@@ -16,9 +14,7 @@ doc_type: 'reference'
 同じスキーマ内でも、オブジェクトごとに異なる手法を適用できます。たとえば、一部のオブジェクトには `String` 型が最適であり、別のものには `Map` 型が最適な場合があります。`String` 型を使用した場合、それ以降にスキーマに関する追加の決定を行う必要はない点に注意してください。逆に、以下で示すように、JSON を表す `String` を含め、サブオブジェクトを `Map` のキーに対応する値としてネストすることも可能です。
 :::
 
-
-
-## String 型の使用
+## String 型の使用 {#using-string}
 
 オブジェクトが非常に動的で、予測可能な構造がなく、任意のネストされたオブジェクトを含む場合は、`String` 型を使用することが推奨されます。値は、以下で示すように、クエリ実行時に JSON 関数を使用して抽出できます。
 
@@ -95,7 +91,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
-
 例えば、発行年ごとの論文数を集計したいとします。次のクエリを、単一の文字列カラムのみを使う場合と、スキーマの[構造化されたバージョン](/integrations/data-formats/json/inference#creating-tables)を使う場合で比較してみましょう。
 
 ```sql
@@ -156,7 +151,7 @@ Peak memory usage: 205.98 MiB.
 
 このアプローチは柔軟性が高い一方で、明確なパフォーマンスおよび構文上のコストを伴うため、スキーマ内で非常に動的なオブジェクトに対してのみ使用すべきです。
 
-### Simple JSON functions
+### Simple JSON functions {#simple-json-functions}
 
 上記の例では JSON* 系の関数を使用しています。これらは [simdjson](https://github.com/simdjson/simdjson) に基づく完全な JSON パーサーを利用しており、厳密なパースを行い、異なる階層にネストされた同名フィールドを区別します。これらの関数は、構文的には正しいものの体裁が整っていない JSON（例: キー間に二重スペースがあるなど）も扱うことができます。
 
@@ -173,7 +168,6 @@ Peak memory usage: 205.98 MiB.
   ```
 
 一方、次の例は正しくパースされます。
-
 
 ````json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
@@ -209,8 +203,7 @@ LIMIT 10
 
 上記のクエリでは、公開日時は先頭の値のみで十分であるという事実を利用し、`simpleJSONExtractString` を使って `created` キーを抽出しています。この場合、パフォーマンス向上という利点を考えると、`simpleJSON*` 関数の制約は許容できます。
 
-
-## Map 型の使用
+## Map 型の使用 {#using-map}
 
 オブジェクトが任意のキーを格納するために使われ、その多くが単一の型である場合は、`Map` 型の使用を検討してください。理想的には、一意なキーの数は数百を超えないことが望まれます。サブオブジェクトを持つオブジェクトについても、サブオブジェクトの型が一様であれば `Map` 型を検討できます。一般的には、ラベルやタグ、たとえばログデータ中の Kubernetes ポッドラベルなどに対して `Map` 型の使用を推奨します。
 
@@ -224,7 +217,7 @@ LIMIT 10
 オブジェクトを `Map` としてモデリングする場合、JSON のキー名を格納するのに `String` キーが使われます。そのため `Map` は常に `Map(String, T)` となり、`T` はデータに応じて決まります。
 :::
 
-#### プリミティブ値
+#### プリミティブ値 {#primitive-values}
 
 `Map` の最も単純な適用例は、オブジェクトが同じプリミティブ型を値として含む場合です。多くの場合、値 `T` として `String` 型を使用します。
 
@@ -281,12 +274,11 @@ SELECT company.labels['type'] AS type FROM people
 
 この型をクエリするための `Map` 関数の完全なセットが利用可能であり、[こちら](/sql-reference/functions/tuple-map-functions.md)で説明されています。データの型が一貫していない場合には、[必要な型変換](/sql-reference/functions/type-conversion-functions)を行うための関数が用意されています。
 
-#### オブジェクト値
+#### オブジェクト値 {#object-values}
 
 `Map` 型は、サブオブジェクトを持つオブジェクトにも適用できます。ただし、サブオブジェクト側の型に一貫性がある必要があります。
 
 `persons` オブジェクトの `tags` キーについて、各 `tag` のサブオブジェクトが `name` と `time` 列を持つ、一定の構造である必要があるとします。そのような JSON ドキュメントの単純化した例は、次のようになります。
-
 
 ```json
 {
@@ -360,8 +352,7 @@ FORMAT JSONEachRow
 }
 ```
 
-
-## Nested 型の使用
+## Nested 型の使用 {#using-nested}
 
 [Nested 型](/sql-reference/data-types/nested-data-structures/nested) は、ほとんど変更されない静的オブジェクトをモデリングするために使用でき、`Tuple` や `Array(Tuple)` の代替手段となります。挙動が分かりにくい場合が多いため、JSON に対してこの型を使用するのは一般的に避けることを推奨します。`Nested` の主な利点は、サブカラムを並び替えキー（ORDER BY キー）として使用できることです。
 
@@ -396,11 +387,11 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten&#95;nested
+### flatten&#95;nested {#flatten&#95;nested}
 
 `flatten_nested` 設定は Nested の動作を制御します。
 
-#### flatten&#95;nested=1
+#### flatten&#95;nested=1 {#flatten&#95;nested1}
 
 値が `1`（デフォルト）の場合、任意のレベルのネストはサポートされません。この値では、ネストされたデータ構造は、同じ長さを持つ複数の [Array](/sql-reference/data-types/array) カラムと考えると分かりやすいです。`method`、`path`、`version` フィールドは、すべて実質的には別々の `Array(Type)` カラムですが、重要な制約が 1 つあります。**`method`、`path`、`version` フィールドの長さはすべて同じでなければなりません。** `SHOW CREATE TABLE` を使用すると、これは次のように示されます。
 
@@ -471,10 +462,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 1 rows in set. Elapsed: 0.002 sec.
 ```
 
-
 サブカラムに `Array` を使用することで、[Array functions](/sql-reference/functions/array-functions) の機能全体を、[`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句も含めて活用できる可能性があります。これは、カラムが複数の値を持つ場合に有用です。
 
-#### flatten&#95;nested=0
+#### flatten&#95;nested=0 {#flatten&#95;nested0}
 
 これは任意のレベルのネストを許可し、ネストされたカラムは単一の `Tuple` 配列として保持されることを意味します。実質的に、それらは `Array(Tuple)` と同じになります。
 
@@ -546,7 +536,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 1 行のセット。経過時間: 0.002 秒。
 ```
 
-### 例
+### 例 {#example}
 
 上記データのより大きなサンプルが、S3 のパブリックバケット `s3://datasets-documentation/http/` に用意されています。
 
@@ -584,7 +574,6 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 
 このデータをクエリするには、リクエストフィールドに配列としてアクセスする必要があります。以下では、一定期間におけるエラーと HTTP メソッドを集計します。
 
-
 ```sql
 SELECT status, request.method[1] AS method, count() AS c
 FROM http
@@ -604,7 +593,7 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### ペアワイズ配列の使用
+### ペアワイズ配列の使用 {#using-pairwise-arrays}
 
 ペアワイズ配列は、JSON を文字列として表現する際の柔軟性と、より構造化されたアプローチによる高い性能とのバランスを提供します。スキーマは柔軟であり、新しいフィールドを任意にルートレベルへ追加することが可能です。しかしその一方で、クエリ構文が大幅に複雑になり、ネストされた構造とは互換性がありません。
 
@@ -667,7 +656,6 @@ GROUP BY method, status ORDER BY c DESC LIMIT 5;
 │    400 │ GET    │    81 │
 └────────┴────────┴───────┘
 ```
-
 
 5 行が返されました。経過時間: 0.383 秒。8.22 百万行、1.97 GB を処理しました (21.45 百万行/秒、5.15 GB/秒)。
 ピークメモリ使用量: 51.35 MiB。

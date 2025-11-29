@@ -82,7 +82,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む、`football.bson` という名前の BSON ファイルを使用します。
 
@@ -115,7 +115,7 @@ INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `BSONEachRow` 形式を使用してデータを読み込みます。
 

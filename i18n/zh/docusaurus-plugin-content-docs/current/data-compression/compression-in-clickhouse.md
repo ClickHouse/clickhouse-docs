@@ -212,7 +212,7 @@ GROUP BY name
 ```
 
 
-## 选择合适的列压缩编解码器（codec）
+## 选择合适的列压缩编解码器（codec） {#choosing-the-right-column-compression-codec}
 
 通过列压缩编解码器，我们可以更改用于对每一列进行编码和压缩的算法（及其设置）。
 
@@ -297,6 +297,6 @@ ORDER BY
 6 rows in set. Elapsed: 0.008 sec
 ```
 
-### ClickHouse Cloud 中的压缩
+### ClickHouse Cloud 中的压缩 {#compression-in-clickhouse-cloud}
 
 在 ClickHouse Cloud 中，我们默认使用 `ZSTD` 压缩算法（默认压缩级别为 1）。该算法的压缩速度会随压缩级别而变化（级别越高压缩越慢），但在解压缩阶段始终保持较快速度（波动约 20%），并且还可以并行化处理。我们的历史测试也表明，该算法通常已经足够高效，甚至可以优于与其他编解码器配合使用的 `LZ4`。它在大多数数据类型和信息分布上都表现良好，因此是一个合理的通用默认选择，这也使得即便不做进一步优化，我们的初始压缩效果就已经非常出色。

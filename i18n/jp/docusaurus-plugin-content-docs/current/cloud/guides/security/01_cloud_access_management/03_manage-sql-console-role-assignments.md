@@ -17,7 +17,7 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
 
-# SQL コンソールのロール割り当てを構成する
+# SQL コンソールのロール割り当てを構成する {#configuring-sql-console-role-assignments}
 
 > このガイドでは、Cloud コンソール全体でのアクセス権限と、Cloud コンソール内でユーザーが利用できる機能を決定する SQL コンソールのロール割り当ての構成方法について説明します。
 

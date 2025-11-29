@@ -16,8 +16,7 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 
 {/* 省略 */}
 
-
-## 例
+## 例 \{#example\}
 
 この例では、異なる AD セキュリティグループに属する AD ユーザーに、ClickHouse でロールによるアクセス権を付与する方法を示します。また、1 人のユーザーを複数の AD ユーザーグループに追加し、複数のロールによって付与されるアクセス権を持たせる方法も示します。
 
@@ -99,7 +98,6 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 [https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-server-definition](https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-server-definition)
 
 3. ClickHouse の `config.xml` に、各 ClickHouse ノードごとに `<ldap>` エントリを含む `<user_directories>` 設定を追加します。
-
 
 ```
 <user_directories>
@@ -201,7 +199,6 @@ GRANT SELECT ON db2.table1 on cluster 'cluster_1S_3R' TO ad_db2_users;
 9. 制限付き db1 ユーザーのアクセスをテストします。
    例えば、次のように実行します。
 
-
 ```
 root@chnode1:/etc/clickhouse-server# clickhouse-client --user clickhouse_db1_user --password MyPassword123  --secure --port 9440 --host chnode1.marsnet.local
 ClickHouseクライアントバージョン24.1.3.31(公式ビルド)。
@@ -274,7 +271,6 @@ Query id: f9954ec4-d8d9-4b5a-9f68-a7aa79a1bb4a
 
 11. Admin ユーザーとしてアクセスをテストします。
     例:
-
 
 ```
 root@chnode1:/etc/clickhouse-server# clickhouse-client --user clickhouse_ad_admin --password MyPassword123  --secure --port 9440 --host chnode1.marsnet.local

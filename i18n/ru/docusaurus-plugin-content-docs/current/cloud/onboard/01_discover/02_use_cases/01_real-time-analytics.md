@@ -16,7 +16,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
-## Что такое аналитика в реальном времени?
+## Что такое аналитика в реальном времени? {#what-is-real-time-analytics}
 
 Аналитика в реальном времени — это обработка данных, результаты которой становятся доступными конечным пользователям и клиентам сразу после появления данных. Она
 отличается от традиционной или пакетной аналитики, где данные собираются

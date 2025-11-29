@@ -12,13 +12,13 @@ import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/
 import Image from '@theme/IdealImage';
 
 
-# Crunchy Bridge Postgres 源设置指南
+# Crunchy Bridge Postgres 源设置指南 {#crunchy-bridge-postgres-source-setup-guide}
 
 ClickPipes 支持 Postgres 12 及更高版本。
 
 
 
-## 启用逻辑复制
+## 启用逻辑复制 {#enable-logical-replication}
 
 Crunchy Bridge 默认已[启用](https://docs.crunchybridge.com/how-to/logical-replication)逻辑复制。请确保以下设置配置正确；如有不符，请进行相应调整。
 

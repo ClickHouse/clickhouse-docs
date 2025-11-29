@@ -14,7 +14,7 @@ import firewall from '@site/static/images/integrations/data-ingestion/clickpipes
 import Image from '@theme/IdealImage';
 
 
-# 适用于 Azure Database for PostgreSQL 灵活服务器的源端设置指南
+# 适用于 Azure Database for PostgreSQL 灵活服务器的源端设置指南 {#azure-flexible-server-for-postgres-source-setup-guide}
 
 ClickPipes 支持 Postgres 12 及更高版本。
 

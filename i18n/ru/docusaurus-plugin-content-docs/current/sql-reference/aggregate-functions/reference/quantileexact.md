@@ -7,13 +7,9 @@ title: 'Функции quantileExact'
 doc_type: 'reference'
 ---
 
+# Функции quantileExact {#quantileexact-functions}
 
-
-# Функции quantileExact
-
-
-
-## quantileExact
+## quantileExact {#quantileexact}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) для числовой последовательности данных.
 
@@ -77,8 +73,7 @@ SELECT quantileExact(number) FROM numbers(10)
 └───────────────────────┘
 ```
 
-
-## quantileExactLow
+## quantileExactLow {#quantileexactlow}
 
 Аналогично `quantileExact`, вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
@@ -131,14 +126,13 @@ SELECT quantileExactLow(number) FROM numbers(10)
 
 Результат:
 
-
 ```text
 ┌─quantileExactLow(number)─┐
 │                        4 │
 └──────────────────────────┘
 ```
 
-## quantileExactHigh
+## quantileExactHigh {#quantileexacthigh}
 
 Аналогично `quantileExact`, эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 
@@ -189,8 +183,7 @@ SELECT quantileExactHigh(number) FROM numbers(10)
 └───────────────────────────┘
 ```
 
-
-## quantileExactExclusive
+## quantileExactExclusive {#quantileexactexclusive}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 
@@ -242,8 +235,7 @@ SELECT quantileExactExclusive(0.6)(x) FROM (SELECT number AS x FROM num);
 └────────────────────────────────┘
 ```
 
-
-## quantileExactInclusive
+## quantileExactInclusive {#quantileexactinclusive}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

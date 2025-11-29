@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse integration', 'Kafka ClickHouse connector', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
 ---
 
-# Confluent Cloud と ClickHouse の統合
+# Confluent Cloud と ClickHouse の統合 {#integrating-confluent-cloud-with-clickhouse}
 
 Confluent プラットフォームは、ClickHouse と統合するために次のオプションを提供します。
 

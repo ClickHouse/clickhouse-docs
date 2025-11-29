@@ -7,15 +7,11 @@ title: 'Операторы TRUNCATE'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор TRUNCATE
+# Оператор TRUNCATE {#truncate-statements}
 
 Оператор `TRUNCATE` в ClickHouse используется для быстрого удаления всех данных из таблицы или базы данных при этом их структура сохраняется.
 
-
-
-## TRUNCATE TABLE
+## TRUNCATE TABLE {#truncate-table}
 
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
@@ -46,8 +42,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 * [`Buffer`](../../engines/table-engines/special/buffer.md)
 * [`Null`](../../engines/table-engines/special/null.md)
 
-
-## Очистка всех таблиц
+## Очистка всех таблиц {#truncate-all-tables}
 
 ```sql
 TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] [ON CLUSTER cluster]
@@ -65,8 +60,7 @@ TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] 
 
 Удаляет все данные из всех таблиц базы данных.
 
-
-## TRUNCATE DATABASE
+## TRUNCATE DATABASE {#truncate-database}
 
 ```sql
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]

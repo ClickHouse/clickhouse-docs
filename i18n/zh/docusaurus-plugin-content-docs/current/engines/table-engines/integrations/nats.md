@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -133,7 +133,7 @@ SSL 连接：
 ```
 
 
-## 描述
+## 描述 {#description}
 
 `SELECT` 对于读取消息（除调试用途外）并不是特别有用，因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)来创建实时处理流水线。为此，您需要：
 
@@ -198,7 +198,7 @@ NATS 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/form
 
 
 
-## 使用 JetStream
+## 使用 JetStream {#using-jetstream}
 
 在将 NATS 引擎与 NATS JetStream 配合使用之前，必须先创建一个 NATS 流（stream）和一个持久拉取型消费者（durable pull consumer）。为此，可以使用 [NATS CLI](https://github.com/nats-io/natscli) 包中的 `nats` 工具，例如：
 

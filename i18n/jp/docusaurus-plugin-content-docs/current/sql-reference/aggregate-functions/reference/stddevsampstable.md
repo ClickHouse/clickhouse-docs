@@ -6,7 +6,7 @@ title: 'stddevSampStable'
 doc_type: 'reference'
 ---
 
-# stddevSampStable
+# stddevSampStable {#stddevsampstable}
 
 結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根と等しくなります。[`stddevSamp`](../reference/stddevsamp.md) と異なり、この関数は数値的に安定したアルゴリズムを使用します。動作は遅くなりますが、計算誤差を小さく抑えることができます。
 

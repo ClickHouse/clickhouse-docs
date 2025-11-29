@@ -19,12 +19,11 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 用户需要注意，如果备份被导出到同一云服务提供商的其他区域，将会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
 :::
 
-
-## 前提条件
+## 前提条件 {#requirements}
 
 要将备份导出到或从你自己的 CSP 存储 bucket 中恢复，需要准备以下信息。
 
-### AWS
+### AWS {#aws}
 
 1. AWS S3 端点，格式如下：
 
@@ -49,13 +48,13 @@ Where:
 若要使用基于 role 的身份验证，请按照 Secure S3 的[配置步骤](https://clickhouse.com/docs/cloud/security/secure-s3)。此外，你还需要在[此处](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)所述的 IAM 策略中添加 `s3:PutObject` 和 `s3:DeleteObject` 权限。
 :::
 
-### Azure
+### Azure {#azure}
 
 1. Azure storage connection string。
 2. 存储帐户中的 Azure container 名称。
 3. container 中的 Azure Blob。
 
-### Google Cloud Storage (GCS)
+### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
 1. GCS endpoint，格式如下：
 
@@ -64,15 +63,13 @@ Where:
    ```
 2. 用于访问的 HMAC key 和 HMAC secret。
 
+<hr />
 
-<hr/>
-# 备份与恢复
+# 备份与恢复 {#backup-restore}
 
+## 备份 / 恢复到 AWS S3 存储桶 {#backup--restore-to-aws-s3-bucket}
 
-
-## 备份 / 恢复到 AWS S3 存储桶
-
-### 进行数据库备份
+### 进行数据库备份 {#take-a-db-backup}
 
 **完整备份**
 
@@ -96,7 +93,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-### 从备份中恢复
+### 从备份中恢复 {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -106,10 +103,9 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<密钥 ID>', 
 
 详情请参见：[将 BACKUP/RESTORE 配置为使用 S3 端点](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint)。
 
+## 备份 / 恢复到 Azure Blob 存储 {#backup--restore-to-azure-blob-storage}
 
-## 备份 / 恢复到 Azure Blob 存储
-
-### 执行数据库备份
+### 执行数据库备份 {#take-a-db-backup-1}
 
 **完整备份**
 
@@ -128,7 +124,7 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-### 从备份中恢复
+### 从备份中恢复 {#restore-from-a-backup-1}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -138,10 +134,9 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 请参阅：[配置 BACKUP/RESTORE 以使用 S3 端点](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) 了解更多详情。
 
+## 备份 / 恢复到 Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-## 备份 / 恢复到 Google Cloud Storage (GCS)
-
-### 执行数据库备份
+### 执行数据库备份 {#take-a-db-backup-2}
 
 **完整备份**
 
@@ -160,7 +155,7 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### 从备份恢复
+### 从备份恢复 {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups 

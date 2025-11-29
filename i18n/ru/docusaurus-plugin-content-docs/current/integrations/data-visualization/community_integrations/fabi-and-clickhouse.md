@@ -13,10 +13,10 @@ import fabi_03 from '@site/static/images/integrations/data-visualization/fabi_03
 import fabi_04 from '@site/static/images/integrations/data-visualization/fabi_04.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Подключение ClickHouse к Fabi.ai
+# Подключение ClickHouse к Fabi.ai {#connecting-clickhouse-to-fabiai}
 
 <CommunityMaintainedBadge/>
 

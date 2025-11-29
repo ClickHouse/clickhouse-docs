@@ -19,7 +19,7 @@ import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
 
 
-# 在 AnythingLLM 中使用 ClickHouse MCP 服务器
+# 在 AnythingLLM 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-anythingllm}
 
 > 本指南介绍如何使用 Docker 设置 [AnythingLLM](https://anythingllm.com/) 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
@@ -39,7 +39,7 @@ import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png'
 
 
 
-## 拉取 AnythingLLM Docker 镜像
+## 拉取 AnythingLLM Docker 镜像 {#pull-anythingllm-docker-image}
 
 运行以下命令，将 AnythingLLM Docker 镜像拉取到本地机器：
 
@@ -48,7 +48,7 @@ docker pull anythingllm/anythingllm
 ```
 
 
-## 设置存储位置
+## 设置存储位置 {#setup-storage-location}
 
 创建一个用于存储数据的目录，并初始化环境文件：
 
@@ -59,7 +59,7 @@ touch "$STORAGE_LOCATION/.env"
 ```
 
 
-## 配置 MCP Server 的配置文件
+## 配置 MCP Server 的配置文件 {#configure-mcp-server-config-file}
 
 创建 `plugins` 目录：
 
@@ -96,7 +96,7 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 [主机地址、用户名和密码](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)。
 
 
-## 启动 AnythingLLM Docker 容器
+## 启动 AnythingLLM Docker 容器 {#start-anythingllm-docker-container}
 
 运行以下命令来启动 AnythingLLM Docker 容器：
 

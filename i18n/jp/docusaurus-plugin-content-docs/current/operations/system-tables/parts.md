@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts
+# system.parts {#systemparts}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を格納します。
 
@@ -33,7 +33,6 @@ doc_type: 'reference'
   * `maximum_block_number` - パーツ内の最大ブロック番号を識別します
   * `level` - パーツに対するマージが 1 回行われるたびに 1 ずつ増加します。レベル 0 は、まだマージされていない新しいパーツであることを示します。ClickHouse のすべてのパーツは常に不変（イミュータブル）であることを理解しておくことが重要です
   * `data_version` - オプションの値で、パーツに対してミューテーションが実行されると増加します（繰り返しになりますが、パーツは不変であるため、ミューテーションされたデータは常に新しいパーツにのみ書き込まれます）
-
 
 * `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - データパーツのUUID。
 

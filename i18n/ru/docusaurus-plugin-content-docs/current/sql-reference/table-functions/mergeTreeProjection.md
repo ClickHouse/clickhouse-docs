@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция mergeTreeProjection
+# Табличная функция mergeTreeProjection {#mergetreeprojection-table-function}
 
 Представляет содержимое некоторой проекции в таблицах MergeTree. Может использоваться для интроспекции.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 mergeTreeProjection(база_данных, таблица, проекция)
@@ -39,7 +39,7 @@ mergeTreeProjection(база_данных, таблица, проекция)
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 ```sql
 CREATE TABLE test

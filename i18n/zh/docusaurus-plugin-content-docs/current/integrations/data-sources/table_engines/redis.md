@@ -8,6 +8,6 @@ hide_title: true
 keywords: ['redis', '缓存', '集成', '数据源', '键值存储']
 ---
 
-import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';
+import RedisFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
 
 <RedisFunction />

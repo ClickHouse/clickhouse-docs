@@ -10,13 +10,13 @@ keywords: ['データ形式', 'テンプレート', '正規表現', 'カスタ�
 
 
 
-# ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする
+# ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な Template フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
 
 
 
-## テンプレートに基づくインポート
+## テンプレートに基づくインポート {#importing-based-on-a-template}
 
 次の[ログファイル](assets/error.log)からデータをインポートしたいとします。
 
@@ -88,7 +88,7 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### 空白のスキップ
+### 空白のスキップ {#skipping-whitespaces}
 
 テンプレート内の区切り文字同士の間にある空白を無視できるようにするには、[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces) の利用を検討してください。
 
@@ -98,7 +98,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
 
-## テンプレートを使用したデータのエクスポート
+## テンプレートを使用したデータのエクスポート {#exporting-data-using-templates}
 
 テンプレートを使用して任意のテキスト形式でデータをエクスポートすることもできます。この場合は、次の 2 つのファイルを作成する必要があります。
 
@@ -142,7 +142,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000行を0.001380604秒で読み取り ---
 ```
 
-### HTML ファイルへのエクスポート
+### HTML ファイルへのエクスポート {#exporting-to-html-files}
 
 テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。次の [resultset](assets/html.results) および [row](assets/html.row) のフォーマットに基づいて HTML ファイルを生成してみましょう。
 
@@ -157,7 +157,7 @@ SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
 
-### XML へのエクスポート
+### XML へのエクスポート {#exporting-to-xml}
 
 Template フォーマットは、XML を含むあらゆるテキスト形式ファイルを生成するために使用できます。適切なテンプレートを用意してエクスポートを実行してください。
 
@@ -203,7 +203,7 @@ FORMAT XML
 ```
 
 
-## 正規表現に基づくデータのインポート
+## 正規表現に基づくデータのインポート {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats/Regexp) フォーマットは、入力データをより複雑な方法で解析する必要がある、高度なユースケースに対応します。ここでは [error.log](assets/error.log) のサンプルファイルを解析し、今回はファイル名とプロトコルも抽出して、それぞれ別のカラムに保存します。まず、そのための新しいテーブルを準備します。
 

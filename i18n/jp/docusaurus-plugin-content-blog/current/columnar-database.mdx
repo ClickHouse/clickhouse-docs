@@ -14,7 +14,6 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 {/* 省略 */}
 
-
 ## はじめに \{#introduction\}
 
 カラム型データベースでは、各カラムのデータが互いに独立して保存されます。これにより、任意のクエリで使用されるカラムのデータだけをディスクから読み取ることができます。その代償として、行全体に影響する処理のコストは相対的に高くなります。カラム型データベースは、カラム指向データベース管理システムと同義です。ClickHouse は、その代表的な例です。
@@ -23,9 +22,9 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 カラムナ型データベースの主な利点は次のとおりです。
 
-- 多数のカラムのうち、少数のカラムを使用するクエリ。
-- 大量のデータに対する集約クエリ。
-- カラム単位でのデータ圧縮。
+* 多数のカラムのうち、少数のカラムを使用するクエリ。
+* 大量のデータに対する集約クエリ。
+* カラム単位でのデータ圧縮。
 
 ## 行指向データベース vs 列指向データベース \{#row-oriented-vs-column-oriented-databases\}
 

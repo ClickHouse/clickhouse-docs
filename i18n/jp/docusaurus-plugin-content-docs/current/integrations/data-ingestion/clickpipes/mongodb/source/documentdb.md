@@ -14,7 +14,7 @@ import docdb_parameter_group_status from '@site/static/images/integrations/data-
 import Image from '@theme/IdealImage';
 
 
-# Amazon DocumentDB ソースセットアップガイド
+# Amazon DocumentDB ソースセットアップガイド {#amazon-documentdb-source-setup-guide}
 
 
 
@@ -24,11 +24,11 @@ ClickPipes は DocumentDB バージョン 5.0 に対応しています。
 
 
 
-## 変更ストリームログの保持期間を設定する
+## 変更ストリームログの保持期間を設定する {#configure-change-stream-log-retention}
 
 デフォルトでは、Amazon DocumentDB の変更ストリームログの保持期間は 3 時間ですが、初期ロードには DocumentDB に既に存在するデータ量に応じて、それよりもはるかに長い時間がかかる可能性があります。初回スナップショットが完了する前にログが切り捨てられないよう、変更ストリームログの保持期間を 72 時間以上に設定することを推奨します。
 
-### AWS コンソールから変更ストリームログの保持期間を更新する
+### AWS コンソールから変更ストリームログの保持期間を更新する {#update-change-stream-log-retention-via-aws-console}
 
 1. 左ペインで `Parameter groups` をクリックし、DocumentDB クラスターで使用されているパラメーターグループを探します（デフォルトのパラメーターグループを使用している場合は、変更するために先に新しいパラメーターグループを作成する必要があります）。
 
@@ -44,7 +44,7 @@ ClickPipes は DocumentDB バージョン 5.0 に対応しています。
 
 <Image img={docdb_parameter_group_status} alt="パラメーターグループのステータス" size="lg" border />
 
-### AWS CLI から変更ストリームログの保持期間を更新する
+### AWS CLI から変更ストリームログの保持期間を更新する {#update-change-stream-log-retention-via-aws-cli}
 
 また、AWS CLI からこの設定を行うこともできます。
 
@@ -61,7 +61,7 @@ aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <P
 ```
 
 
-## データベースユーザーを設定する
+## データベースユーザーを設定する {#configure-database-user}
 
 管理者ユーザーとして DocumentDB クラスターに接続し、MongoDB CDC ClickPipes 向けのデータベースユーザーを作成するために次のコマンドを実行します。
 

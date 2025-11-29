@@ -7,15 +7,11 @@ title: 'ExternalDistributed 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# ExternalDistributed 表引擎
+# ExternalDistributed 表引擎 {#externaldistributed-table-engine}
 
 `ExternalDistributed` 引擎允许对存储在远程服务器上 MySQL 或 PostgreSQL 实例中的数据执行 `SELECT` 查询。它接受 [MySQL](../../../engines/table-engines/integrations/mysql.md) 或 [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) 引擎作为参数，从而支持分片。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -42,8 +38,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — 用户名。
 * `password` — 用户密码。
 
-
-## 实现细节
+## 实现细节 {#implementation-details}
 
 支持多个副本，多个副本之间必须使用 `|` 分隔，多个分片之间必须使用 `,` 分隔。例如：
 

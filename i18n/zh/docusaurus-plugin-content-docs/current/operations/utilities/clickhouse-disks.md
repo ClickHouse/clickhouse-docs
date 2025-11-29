@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Clickhouse-disks
+# Clickhouse-disks {#clickhouse-disks}
 
 一个为 ClickHouse 磁盘提供类文件系统操作的实用工具。它同时支持交互式和非交互式模式。
 

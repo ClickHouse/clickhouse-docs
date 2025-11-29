@@ -25,7 +25,7 @@ SaaS 型のデータ分析プラットフォームでは、組織、顧客、事
 
 テナント間でデータ量に大きな差がある場合、小規模なテナントは不要にクエリ性能への悪影響を受ける可能性があります。なお、この問題は、テナントフィールドを主キーに含めることで大きく軽減されます。
 
-### 例
+### 例 {#shared-table-example}
 
 これは、共有テーブルを用いたマルチテナンシーモデルの実装例です。
 
@@ -119,7 +119,7 @@ FROM events
 
 なお、このアプローチは数千単位のテナントにはスケールしません。[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
 
-### 例
+### 例 {#separate-tables-example}
 
 これは、テーブル分離型マルチテナンシーモデルの実装例です。
 
@@ -212,7 +212,7 @@ FROM default.events_tenant_1
 
 このアプローチは、数千単位のテナントにはスケールしないことに注意してください。[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
 
-### 例
+### 例 {#separate-databases-example}
 
 これは、個別のデータベースを用いるマルチテナンシーモデルの実装例です。
 
@@ -322,7 +322,7 @@ FROM tenant_1.events
 
 このアプローチは管理が難しく、各サービスがそれぞれの実行に必要な独自のインフラストラクチャを持つ必要があるため、オーバーヘッドが発生します。サービスは [ClickHouse Cloud API](/cloud/manage/api/api-overview) を介して管理でき、[公式 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) を用いたオーケストレーションも可能です。
 
-### 例
+### 例 {#separate-service-example}
 
 これは、別サービス型マルチテナンシーモデルの実装例です。なお、この例では 1 つの ClickHouse サービス上でテーブルとユーザーを作成していますが、同様の作業をすべてのサービスで行う必要があります。
 

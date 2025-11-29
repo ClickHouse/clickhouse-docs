@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -56,7 +56,7 @@ Engine 引数:
 * `handle_error_mode` — FileLog エンジンでエラーをどのように処理するか。指定可能な値: `default`（メッセージのパースに失敗した場合に例外をスロー）、`stream`（例外メッセージと元のメッセージを仮想カラム `_error` と `_raw_message` に保存）。
 
 
-## 説明
+## 説明 {#description}
 
 取り込まれたレコードは自動的に追跡されるため、ログファイル内の各レコードは一度だけカウントされます。
 

@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedAvg
+## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
 
 Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в момент времени `t`.
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 Ответ:
-
 
 ```sql
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

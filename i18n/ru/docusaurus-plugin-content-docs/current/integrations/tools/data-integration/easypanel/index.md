@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Развертывание ClickHouse на Easypanel
+# Развертывание ClickHouse на Easypanel {#deploying-clickhouse-on-easypanel}
 
 <CommunityMaintainedBadge/>
 

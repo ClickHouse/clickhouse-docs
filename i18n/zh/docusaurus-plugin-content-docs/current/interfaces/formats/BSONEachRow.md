@@ -82,7 +82,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用名为 `football.bson`、包含以下数据的 BSON 文件：
 
@@ -115,7 +115,7 @@ INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `BSONEachRow` 格式读取数据：
 

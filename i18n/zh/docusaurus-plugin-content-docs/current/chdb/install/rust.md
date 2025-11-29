@@ -15,9 +15,9 @@ chDB-rust 为 chDB 提供了实验性的 FFI（外部函数接口）绑定，使
 
 
 
-## 安装
+## 安装 {#installation}
 
-### 安装 libchdb
+### 安装 libchdb {#install-libchdb}
 
 安装 libchdb 库：
 
@@ -26,11 +26,11 @@ curl -sL https://lib.chdb.io | bash
 ```
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 chDB Rust 提供无状态和有状态两种查询执行模式。
 
-### 无状态使用
+### 无状态使用 {#stateless-usage}
 
 适用于不需要保存状态的简单查询：
 
@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### 有状态使用（会话）
+### 有状态使用（会话） {#stateful-usage-sessions}
 
 对于需要持久状态（例如数据库和数据表）的查询：
 
@@ -115,21 +115,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 
-## 构建与测试
+## 构建与测试 {#building-testing}
 
-### 构建项目
+### 构建项目 {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### 运行测试
+### 运行测试 {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### 开发依赖
+### 开发依赖 {#development-dependencies}
 
 该项目包含以下开发依赖项：
 
@@ -138,7 +138,7 @@ cargo test
 * `thiserror` (v1) - 错误处理工具库
 
 
-## 错误处理
+## 错误处理 {#error-handling}
 
 chDB Rust 通过 `Error` 枚举提供了完善的错误处理机制：
 

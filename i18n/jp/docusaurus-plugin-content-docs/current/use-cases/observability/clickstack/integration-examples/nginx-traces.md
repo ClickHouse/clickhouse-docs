@@ -56,7 +56,7 @@ Nginx にトレース機能を追加する最も簡単な方法は、OpenTelemet
 現在使用している Nginx イメージを、OpenTelemetry 対応バージョンに置き換えます:
 
 ```yaml
-# docker-compose.yml または Dockerfile 内
+# docker-compose.yml または Dockerfile 内 {#in-your-docker-composeyml-or-dockerfile}
 image: nginx:1.27-otel
 ```
 
@@ -157,10 +157,10 @@ nginx -t
 
 テストに成功したら、Nginx をリロードします:
 ```bash
-# Docker の場合
+# Docker の場合 {#for-docker}
 docker-compose restart nginx
 
-# systemd の場合
+# systemd の場合 {#for-systemd}
 sudo systemctl reload nginx
 ```
 
@@ -199,7 +199,7 @@ docker run --name clickstack-demo \
 サンプルトレースファイルをダウンロードし、タイムスタンプを現在時刻に更新します:
 
 ```bash
-# Download the traces
+# Download the traces {#download-the-traces}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
@@ -284,7 +284,7 @@ ClickStack でトレースの監視を始めやすくするために、トレー
 
 ## トラブルシューティング {#troubleshooting}
 
-### HyperDX にトレースが表示されない
+### HyperDX にトレースが表示されない {#no-traces}
 
 **nginx モジュールがロードされていることを確認してください:**
 
@@ -313,10 +313,10 @@ echo $CLICKSTACK_API_KEY
 **nginx のエラーログを確認する:**
 
 ```bash
-# Docker の場合
+# Docker の場合 {#for-docker}
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# systemd の場合
+# systemd の場合 {#for-systemd}
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -325,7 +325,7 @@ OpenTelemetry 関連のエラーが発生していないか確認します。
 **nginx がリクエストを受信していることを確認する：**
 
 ```bash
-# アクセスログを確認してトラフィックを検証する
+# アクセスログを確認してトラフィックを検証する {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
 

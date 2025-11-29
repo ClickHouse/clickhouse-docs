@@ -35,7 +35,7 @@ Microsoft OneLake поддерживает несколько форматов �
 
 См. [документацию Microsoft OneLake](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) за сведениями о том, как найти эти значения.
 
-## Создание подключения между OneLake и ClickHouse
+## Создание подключения между OneLake и ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 Имея приведённую выше необходимую информацию, вы можете создать подключение между Microsoft OneLake и ClickHouse, но прежде нужно включить каталоги:
 
@@ -44,7 +44,7 @@ SET allow_database_iceberg=1
 ```
 
 
-### Подключение к OneLake
+### Подключение к OneLake {#connect-onelake}
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -60,7 +60,7 @@ onelake_client_secret = '<client_secret>'
 ```
 
 
-## Выполнение запросов к OneLake с помощью ClickHouse
+## Выполнение запросов к OneLake с помощью ClickHouse {#querying-onelake-using-clickhouse}
 
 Теперь, когда подключение настроено, вы можете выполнять запросы к OneLake:
 
@@ -156,7 +156,7 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
 ```
 
 
-## Загрузка данных из вашего озера данных (Data Lake) в ClickHouse
+## Загрузка данных из вашего озера данных (Data Lake) в ClickHouse {#loading-data-from-onelake-into-clickhouse}
 
 Если вам нужно загрузить данные из OneLake в ClickHouse:
 

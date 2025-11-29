@@ -11,11 +11,11 @@ keywords: ['Amazon レビュー', 'カスタマーレビュー データセッ�
 
 :::note
 以下のクエリは、**Production** 環境の ClickHouse Cloud インスタンス上で実行されています。詳細については
-["Playground specifications"](/getting-started/playground#specifications)
+[&quot;Playground specifications&quot;](/getting-started/playground#specifications)
 を参照してください。
 :::
 
-## データセットの読み込み
+## データセットの読み込み {#loading-the-dataset}
 
 1. データを ClickHouse に挿入しなくても、元の場所に対して直接クエリを実行できます。どのようなデータか確認するために、いくつか行を取得してみましょう。
 
@@ -123,7 +123,6 @@ FROM s3Cluster('default',
 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet')
 ```
 
-
 :::tip
 ClickHouse Cloud では、クラスター名は `default` です。`default` を環境のクラスター名に置き換えてください。クラスターがない場合は、`s3Cluster` の代わりに `s3` テーブル関数を使用してください。
 :::
@@ -153,8 +152,7 @@ ORDER BY size DESC
 
 元のデータは約 70G ありましたが、ClickHouse で圧縮されると約 30G に収まります。
 
-
-## クエリ例
+## クエリ例 {#example-queries}
 
 7. クエリをいくつか実行してみましょう。こちらは、このデータセットで最も役に立ったレビューの上位 10 件です。
 

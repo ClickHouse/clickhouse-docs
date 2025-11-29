@@ -75,7 +75,7 @@ CDC（变更数据捕获）是指在两个数据库之间保持表数据同步�
 
 
 
-## 模式设计
+## 模式设计 {#designing-schemas}
 
 Stack Overflow 数据集包含许多相关的表。我们建议优先迁移主表。这不一定是最大的那张表，而是您预计会收到最多分析查询的那张表。这样可以帮助您熟悉 ClickHouse 的核心概念。随着后续添加更多表，为了充分利用 ClickHouse 的特性并获得最佳性能，可能需要对该表进行重新建模。我们在[数据建模文档](/data-modeling/schema-design#next-data-modeling-techniques)中对这一建模过程进行了探讨。
 
@@ -108,7 +108,7 @@ CREATE TABLE stackoverflow.posts (
 );
 ```
 
-### 优化数据类型
+### 优化数据类型 {#optimizing-types}
 
 按照[此处所述的流程](/data-modeling/schema-design)进行后，将得到如下模式：
 
@@ -174,11 +174,11 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 
 
-## 数据建模技术
+## 数据建模技术 {#data-modeling-techniques}
 
 我们建议从 BigQuery 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。该指南使用相同的 Stack Overflow 数据集，并结合 ClickHouse 的特性来探索多种建模方法。
 
-### 分区
+### 分区 {#partitions}
 
 BigQuery 用户应该已经熟悉表分区的概念：通过将表拆分为更小、更易管理的部分（称为分区），来提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围分区、定义列表分区，或者基于键的哈希分区来实现。这使得管理员可以根据特定条件（例如日期范围或地理位置）来组织数据。
 
@@ -205,7 +205,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-#### 应用场景
+#### 应用场景 {#applications}
 
 ClickHouse 中的分区与 BigQuery 有类似的应用场景，但存在一些细微差异。更具体地说：
 
@@ -259,7 +259,7 @@ Ok.
 
 
 
-## 物化视图与投影
+## 物化视图与投影 {#materialized-views-vs-projections}
 
 ClickHouse 的投影（projection）概念允许用户为同一张表指定多个 `ORDER BY` 子句。
 
@@ -397,7 +397,7 @@ WHERE UserId = 8592047
 ```
 
 
-## 在 ClickHouse 中重写 BigQuery 查询
+## 在 ClickHouse 中重写 BigQuery 查询 {#rewriting-bigquery-queries-in-clickhouse}
 
 下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
 
@@ -465,7 +465,7 @@ LIMIT 5
 ```
 
 
-## 聚合函数
+## 聚合函数 {#aggregate-functions}
 
 在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每一年浏览次数最多的问题。
 
@@ -520,7 +520,7 @@ MaxViewCount:            66975
 ```
 
 
-## 条件和数组
+## 条件和数组 {#conditionals-and-arrays}
 
 条件和数组函数可以显著简化查询。下面的查询会计算在 2022 年到 2023 年间，出现次数超过 10000 次的标签中，百分比增幅最大的那些标签。请注意，得益于条件函数、数组函数以及在 `HAVING` 和 `SELECT` 子句中重复使用别名的能力，下面的 ClickHouse 查询非常简洁。
 

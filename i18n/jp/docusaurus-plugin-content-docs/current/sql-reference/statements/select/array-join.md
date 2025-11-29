@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# ARRAY JOIN 句
+# ARRAY JOIN 句 {#array-join-clause}
 
 配列カラムを含むテーブルに対して、元の配列カラムの各要素ごとに 1 行を持つ新しいテーブルを生成し、その他のカラムの値は複製するという操作は一般的です。これは `ARRAY JOIN` 句が行う処理の基本的なケースです。
 
@@ -30,9 +30,9 @@ FROM <left_subquery>
 * `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値（通常は 0、空文字列、または NULL）に設定されます。
 
 
-## 基本的な ARRAY JOIN の例
+## 基本的な ARRAY JOIN の例 {#basic-array-join-examples}
 
-### ARRAY JOIN と LEFT ARRAY JOIN
+### ARRAY JOIN と LEFT ARRAY JOIN {#array-join-left-array-join-examples}
 
 以下の例では、`ARRAY JOIN` 句と `LEFT ARRAY JOIN` 句の使用方法を示します。[Array](../../../sql-reference/data-types/array.md) 型のカラムを持つテーブルを作成し、値を挿入します。
 
@@ -92,7 +92,7 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOIN と arrayEnumerate 関数
+### ARRAY JOIN と arrayEnumerate 関数 {#array-join-arrayEnumerate}
 
 この関数は通常、`ARRAY JOIN` と組み合わせて使用されます。`ARRAY JOIN` を適用したあと、各配列ごとに一度だけ値をカウントできるようにします。例:
 
@@ -130,7 +130,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └─────────┴───────┘
 ```
 
-### ARRAY JOIN と arrayEnumerateUniq
+### ARRAY JOIN と arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
 
 この関数は、`ARRAY JOIN` を使用して配列要素を集約する場合に役立ちます。
 
@@ -168,7 +168,7 @@ LIMIT 10
 ```
 
 
-## エイリアスの使用
+## エイリアスの使用 {#using-aliases}
 
 `ARRAY JOIN` 句では、配列にエイリアスを指定できます。この場合、配列要素にはそのエイリアスを用いてアクセスできますが、配列自体には元の名前でアクセスします。例：
 
@@ -268,7 +268,7 @@ SETTINGS enable_unaligned_array_join = 1;
 ```
 
 
-## ネストされたデータ構造での ARRAY JOIN
+## ネストされたデータ構造での ARRAY JOIN {#array-join-with-nested-data-structure}
 
 `ARRAY JOIN` は [ネストされたデータ構造](../../../sql-reference/data-types/nested-data-structures/index.md) に対しても使用できます。
 

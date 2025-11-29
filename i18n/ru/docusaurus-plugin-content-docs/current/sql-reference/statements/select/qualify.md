@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Оператор QUALIFY
+# Оператор QUALIFY {#qualify-clause}
 
 Позволяет фильтровать результаты оконных функций. Аналогичен предложению [WHERE](../../../sql-reference/statements/select/where.md), но отличие в том, что `WHERE` применяется до вычисления оконных функций, тогда как `QUALIFY` — после.
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Пример:
 

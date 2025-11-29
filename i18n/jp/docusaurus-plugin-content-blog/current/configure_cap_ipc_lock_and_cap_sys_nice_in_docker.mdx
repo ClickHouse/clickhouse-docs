@@ -10,8 +10,7 @@ keywords: ['Docker', 'CAP_IPC_LOCK', 'CAP_SYS_NICE']
 
 {/* 切り捨て */}
 
-
-## 質問
+## 質問 \{#question\}
 
 Docker で ClickHouse を実行していると、システムに `CAP_IPC_LOCK` と `CAP_SYS_NICE` のケーパビリティがないと Docker から警告されます。どのように対処すればよいですか？
 
@@ -31,8 +30,7 @@ docker run -d --name clickhouse-server \
 2023.04.19 08:04:10.065860 [ 1 ] {} <Information> Application: プロセスにCAP_SYS_NICE機能がないため、'os_thread_priority'設定は効果がありません。ClickHouseパッケージが正しくインストールされていないことが原因の可能性があります。'sudo setcap cap_sys_nice=+ep /usr/bin/clickhouse'を手動で実行することで問題を解決できます。なお、'nosuid'でマウントされたファイルシステムでは動作しません。
 ```
 
-
-## 回答
+## 回答 \{#answer\}
 
 1. コンテナに `IPC_LOCK` および `SYS_NICE` のケーパビリティを付与するために、2つの `--cap-add` 引数を追加します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Replicated
+# Replicated {#replicated}
 
 该引擎基于 [Atomic](../../engines/database-engines/atomic.md) 引擎。它通过将 DDL 日志写入 ZooKeeper，并在给定数据库的所有副本上执行该日志，从而实现元数据复制。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 创建数据库
+## 创建数据库 {#creating-a-database}
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -54,7 +54,7 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 创建一个由三台主机组成的集群：
 
@@ -153,7 +153,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 ```
 
 
-## 设置
+## 设置 {#settings}
 
 支持以下设置：
 

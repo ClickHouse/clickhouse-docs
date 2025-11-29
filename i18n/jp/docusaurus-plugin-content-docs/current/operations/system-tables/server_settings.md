@@ -6,10 +6,9 @@ title: 'system.server_settings'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.server&#95;settings
+# system.server&#95;settings {#systemserver&#95;settings}
 
 <SystemTableCloud />
 
@@ -40,7 +39,6 @@ SELECT *
 FROM system.server_settings
 WHERE name LIKE '%thread_pool%'
 ```
-
 
 ```text
 ┌─name──────────────────────────────────────────┬─value─┬─default─┬─changed─┬─description─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─type───┬─changeable_without_restart─┬─is_obsolete─┐

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Amazon Redshift SQL 转换指南
+# Amazon Redshift SQL 转换指南 {#amazon-redshift-sql-translation-guide}
 
 
 
@@ -52,9 +52,9 @@ doc_type: 'reference'
 
 
 
-## DDL 语法
+## DDL 语法 {#compression}
 
-### 排序键
+### 排序键 {#sorting-keys}
 
 ClickHouse 和 Redshift 都有“排序键”的概念，用于定义数据在存储时的排序方式。Redshift 使用 `SORTKEY` 子句来定义排序键：
 

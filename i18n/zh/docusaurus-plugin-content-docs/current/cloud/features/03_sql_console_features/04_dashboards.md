@@ -21,7 +21,7 @@ import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.pn
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
 
-# 仪表板
+# 仪表板 {#dashboards}
 
 SQL Console 的仪表板功能允许您收集并共享来自已保存查询的可视化结果。您可以先保存并可视化查询，将查询的可视化结果添加到仪表板中，并使用查询参数让仪表板具备交互功能。
 

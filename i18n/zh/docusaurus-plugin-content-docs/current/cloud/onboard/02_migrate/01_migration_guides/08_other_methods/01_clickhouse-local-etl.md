@@ -11,14 +11,14 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_detail.md';
+import AddARemoteSystem from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
 
-# 使用 clickhouse-local 迁移到 ClickHouse
+# 使用 clickhouse-local 迁移到 ClickHouse {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='sm' alt='迁移自管 ClickHouse' background='white' />
 
@@ -94,21 +94,21 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 
 
 
-## 示例 1：使用集成引擎从 MySQL 迁移到 ClickHouse Cloud
+## 示例 1：使用集成引擎从 MySQL 迁移到 ClickHouse Cloud {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
 我们将使用 [integration 表引擎](/engines/table-engines/integrations/mysql/)（由 [mysql 表函数](/sql-reference/table-functions/mysql/) 动态创建）从源 MySQL 数据库读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote/) 将数据写入您在 ClickHouse Cloud 服务上的目标表中。
 
 <Image img={ch_local_03} size="sm" alt="迁移自托管 ClickHouse" background="white" />
 
-### 在目标 ClickHouse Cloud 服务上：
+### 在目标 ClickHouse Cloud 服务上： {#on-the-destination-clickhouse-cloud-service}
 
-#### 创建目标数据库：
+#### 创建目标数据库： {#create-the-destination-database}
 
 ```sql
 CREATE DATABASE db
 ```
 
-#### 创建一个目标表，使其表结构与 MySQL 表相同：
+#### 创建一个目标表，使其表结构与 MySQL 表相同： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
 CREATE TABLE db.table ...
@@ -118,9 +118,9 @@ CREATE TABLE db.table ...
 ClickHouse Cloud 目标表的表结构必须与源 MySQL 表的表结构保持一致（列名和列顺序必须相同，且列的数据类型必须兼容）。
 :::
 
-### 在运行 clickhouse-local 的主机上：
+### 在运行 clickhouse-local 的主机上： {#on-the-clickhouse-local-host-machine}
 
-#### 使用迁移查询语句运行 clickhouse-local：
+#### 使用迁移查询语句运行 clickhouse-local： {#run-clickhouse-local-with-the-migration-query}
 
 ```sql
 ./clickhouse-local --query "
@@ -135,16 +135,16 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 :::
 
 
-## 示例 2：使用 JDBC bridge 将 MySQL 迁移到 ClickHouse Cloud
+## 示例 2：使用 JDBC bridge 将 MySQL 迁移到 ClickHouse Cloud {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 我们将使用 [JDBC 集成表引擎](/engines/table-engines/integrations/jdbc.md)（由 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 动态创建），配合 [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 和 MySQL JDBC 驱动，从源 MySQL 数据库读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote.md)
 将数据写入 ClickHouse Cloud 服务中的目标表。
 
 <Image img={ch_local_04} size="sm" alt="迁移自托管 ClickHouse" background="white" />
 
-### 在目标 ClickHouse Cloud 服务上：
+### 在目标 ClickHouse Cloud 服务上： {#on-the-destination-clickhouse-cloud-service-1}
 
-#### 创建目标数据库：
+#### 创建目标数据库： {#create-the-destination-database-1}
 
 ```sql
 CREATE DATABASE db

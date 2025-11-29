@@ -7,10 +7,10 @@ title: 'system.query_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.query_log
+# system.query_log {#systemquery_log}
 
 <SystemTableCloud/>
 
@@ -140,7 +140,7 @@ ClickHouse не удаляет данные из этой таблицы авт�
 
 
 
-## Примеры
+## Примеры {#examples}
 
 **Простой пример**
 

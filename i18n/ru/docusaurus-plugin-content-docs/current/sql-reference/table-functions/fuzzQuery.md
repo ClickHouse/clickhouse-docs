@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция fuzzQuery
+# Табличная функция fuzzQuery {#fuzzquery-table-function}
 
 Модифицирует указанную строку запроса, внося в неё случайные изменения.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 fuzzQuery(query[, max_query_length[, random_seed]])
@@ -38,7 +38,7 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 ```sql
 SELECT * FROM fuzzQuery('SELECT materialize(\'a\' AS key) GROUP BY key') LIMIT 2;

@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Семейство движков таблиц Log
+# Семейство движков таблиц Log {#log-table-engine-family}
 
 <CloudNotSupportedBadge/>
 

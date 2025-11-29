@@ -23,9 +23,8 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 このサンプルデータセットは、記載されているとおり手順にわずかな調整を加えるだけで、ClickHouse Cloud 上の HyperDX でも使用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデル向けの入門ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルで実行される OpenTelemetry collector が必要です。
 :::
 
-
 <VerticalStepper>
-  ## カスタムOpenTelemetry設定を作成する
+  ## カスタムOpenTelemetry設定を作成する {#create-otel-configuration}
 
   以下の内容で `custom-local-config.yaml` ファイルを作成します:
 
@@ -105,7 +104,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   OpenTelemetry（OTel）の設定構造の詳細については、[公式ガイド](https://opentelemetry.io/docs/collector/configuration/)を参照することを推奨します。
 
-  ## カスタム設定でClickStackを起動する
+  ## カスタム設定でClickStackを起動する {#start-clickstack}
 
   カスタム設定でオールインワンコンテナを起動するには、以下のDockerコマンドを実行します：
 
@@ -145,17 +144,17 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   コレクターは即座にローカルシステムのログとメトリクスの収集を開始します。
 
-  ## HyperDX UIへ移動する
+  ## HyperDX UIへ移動する {#navigate-to-the-hyperdx-ui}
 
   ローカルにデプロイする場合は、[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用する場合は、サービスを選択し、左メニューから`HyperDX`を選択します。
 
-  ## システムログの確認
+  ## システムログの確認 {#explore-system-logs}
 
   検索UIにローカルシステムログが表示されます。フィルタを展開して`system.log`を選択します：
 
   <Image img={hyperdx_20} alt="HyperDX のローカルログ" size="lg" />
 
-  ## システムメトリクスを確認する
+  ## システムメトリクスを確認する {#explore-system-metrics}
 
   チャートを使用してメトリクスを確認できます。
 

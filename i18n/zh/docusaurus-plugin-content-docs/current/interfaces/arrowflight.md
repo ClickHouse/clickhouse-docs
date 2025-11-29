@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Apache Arrow Flight 接口
+# Apache Arrow Flight 接口 {#apache-arrow-flight-interface}
 
 ClickHouse 支持集成 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) 协议——一个为在 gRPC 之上使用 Arrow IPC 格式进行高效列式数据传输而设计的高性能 RPC 框架。
 
@@ -38,7 +38,7 @@ Arrow Flight 接口目前为实验性功能，仍在积极开发中。已知限�
 
 
 
-## 运行 Arrow Flight 服务器
+## 运行 Arrow Flight 服务器 {#running-server}
 
 要在自托管的 ClickHouse 实例中启用 Arrow Flight 服务器，请在服务器的配置文件中加入如下配置：
 
@@ -55,7 +55,7 @@ Arrow Flight 接口目前为实验性功能，仍在积极开发中。已知限�
 ```
 
 
-## 通过 Arrow Flight SQL 连接 ClickHouse
+## 通过 Arrow Flight SQL 连接 ClickHouse {#connecting-to-clickhouse}
 
 可以使用任何支持 Arrow Flight SQL 的客户端。例如，使用 `pyarrow`：
 

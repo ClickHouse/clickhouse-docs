@@ -13,8 +13,7 @@ import security_group from "@site/static/images/knowledgebase/lets-encrypt-ssl/p
 
 {/* 截断 */}
 
-
-## 操作步骤
+## 操作步骤 \{#steps-to-follow\}
 
 以下步骤可用于为单个 ClickHouse Server 启用 SSL，这里使用 [Let&#39;s Encrypt](https://letsencrypt.org/)，这是一个免费、自动化且开放的证书颁发机构（CA），旨在让任何人都能轻松使用 HTTPS 保护其网站。通过自动化证书签发和续期流程，Let&#39;s Encrypt 可确保网站在无需人工干预的情况下保持安全。
 
@@ -74,7 +73,6 @@ sudo apt install certbot
 4. 获取 SSL 证书
 
 <br />
-
 
 ```bash
 sudo certbot certonly
@@ -163,7 +161,6 @@ echo "127.0.0.1 product-test-server.clickhouse-dev.com" | sudo tee -a /etc/hosts
 
 :::warning
 如果要允许来自通配符地址的连接，请确保至少采取以下措施之一：
-
 
 * 服务器受防火墙保护，且无法从不受信任的网络访问；
 * 将所有用户限制在特定的网络地址子集内（参见 users.xml）；

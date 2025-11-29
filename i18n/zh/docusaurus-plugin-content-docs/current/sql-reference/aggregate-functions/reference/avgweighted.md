@@ -6,7 +6,7 @@ title: 'avgWeighted'
 doc_type: 'reference'
 ---
 
-# avgWeighted
+# avgWeighted {#avgweighted}
 
 计算[加权算术平均值](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)。
 

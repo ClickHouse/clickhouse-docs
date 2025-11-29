@@ -11,7 +11,7 @@ import CompressionBlock from '@site/static/images/data-compression/ch_compressio
 import Image from '@theme/IdealImage';
 
 
-# Режимы сжатия
+# Режимы сжатия {#compression-modes}
 
 Протокол ClickHouse поддерживает сжатие **блоков данных** с контрольными суммами.
 Используйте `LZ4`, если не уверены, какой режим выбрать.

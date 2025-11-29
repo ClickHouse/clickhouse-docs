@@ -6,7 +6,7 @@ title: 'distinctJSONPaths'
 doc_type: 'reference'
 ---
 
-# distinctJSONPaths
+# distinctJSONPaths {#distinctjsonpaths}
 
 计算存储在 [JSON](../../data-types/newjson.md) 列中的唯一路径列表。
 
@@ -46,8 +46,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
-
-# distinctJSONPathsAndTypes
+# distinctJSONPathsAndTypes {#distinctjsonpathsandtypes}
 
 计算存储在 [JSON](../../data-types/newjson.md) 列中的所有不同路径及其对应类型的列表。
 

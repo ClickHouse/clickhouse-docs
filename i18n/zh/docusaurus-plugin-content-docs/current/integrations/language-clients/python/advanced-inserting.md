@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## 使用 ClickHouse Connect 插入数据：进阶用法 {#inserting-data-with-clickhouse-connect--advanced-usage}
 
-### InsertContexts
+### InsertContexts {#insertcontexts}
 
 ClickHouse Connect 在执行所有插入操作时都会在一个 `InsertContext` 中完成。`InsertContext` 包含了作为参数传递给客户端 `insert` 方法的所有值。此外，在最初构造 `InsertContext` 时，ClickHouse Connect 会获取插入列的数据类型，以便高效地执行使用 Native 格式的插入操作。通过在多次插入中重用同一个 `InsertContext`，可以避免这一步“预查询”，从而更快速、更高效地执行插入。
 
@@ -80,7 +80,7 @@ ClickHouse Connect 为常见数据格式提供了专用插入方法：
 NumPy 数组是一个有效的「序列的序列」（Sequence of Sequences），可以作为主 `insert` 方法的 `data` 参数使用，因此不需要专用方法。
 :::
 
-#### 在 Pandas DataFrame 中插入数据
+#### 在 Pandas DataFrame 中插入数据 {#pandas-dataframe-insert}
 
 ```python
 import clickhouse_connect
@@ -98,7 +98,7 @@ client.insert_df("users", df)
 ```
 
 
-#### PyArrow 表插入
+#### PyArrow 表插入 {#pyarrow-table-insert}
 
 ```python
 import clickhouse_connect
@@ -116,7 +116,7 @@ client.insert_arrow("users", arrow_table)
 ```
 
 
-#### 基于 Arrow 的 DataFrame 插入（pandas 2.x）
+#### 基于 Arrow 的 DataFrame 插入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
 
 ```python
 import clickhouse_connect
@@ -124,7 +124,7 @@ import pandas as pd
 
 client = clickhouse_connect.get_client()
 
-# 转换为 Arrow 支持的数据类型以提升性能
+# 转换为 Arrow 支持的数据类型以提升性能 {#convert-to-arrow-backed-dtypes-for-better-performance}
 df = pd.DataFrame({
     "id": [1, 2, 3],
     "name": ["Alice", "Bob", "Joe"],
@@ -139,7 +139,7 @@ client.insert_df_arrow("users", df)
 
 当将 Python 的 `datetime.datetime` 对象插入到 ClickHouse 的 `DateTime` 或 `DateTime64` 列中时，ClickHouse Connect 会自动处理时区信息。由于 ClickHouse 在内部将所有 DateTime 值存储为不带时区信息的 Unix 时间戳（自 Unix 纪元起的秒数或其小数部分），因此在插入时，时区转换会在客户端自动完成。
 
-#### 带有时区信息的 datetime 对象
+#### 带有时区信息的 datetime 对象 {#timezone-aware-datetime-objects}
 
 如果插入一个带有时区信息的 Python `datetime.datetime` 对象，ClickHouse Connect 会自动调用 `.timestamp()` 将其转换为 Unix 时间戳，并正确处理时区偏移。也就是说，可以插入任意时区的 datetime 对象，它们都会以对应的 UTC 等效时间戳被正确存储。
 
@@ -151,7 +151,7 @@ import pytz
 client = clickhouse_connect.get_client()
 client.command("CREATE TABLE events (event_time DateTime) ENGINE Memory")
 
-# 插入时区感知的 datetime 对象
+# 插入时区感知的 datetime 对象 {#insert-timezone-aware-datetime-objects}
 denver_tz = pytz.timezone('America/Denver')
 tokyo_tz = pytz.timezone('Asia/Tokyo')
 
@@ -164,10 +164,10 @@ data = [
 client.insert('events', data, column_names=['event_time'])
 results = client.query("SELECT * from events")
 print(*results.result_rows, sep="\n")
-# 输出：
-# (datetime.datetime(2023, 6, 15, 10, 30),)
-# (datetime.datetime(2023, 6, 15, 16, 30),)
-# (datetime.datetime(2023, 6, 15, 1, 30),)
+# 输出： {#output}
+# (datetime.datetime(2023, 6, 15, 10, 30),) {#datetimedatetime2023-6-15-10-30}
+# (datetime.datetime(2023, 6, 15, 16, 30),) {#datetimedatetime2023-6-15-16-30}
+# (datetime.datetime(2023, 6, 15, 1, 30),) {#datetimedatetime2023-6-15-1-30}
 ```
 
 在这个示例中，这三个 datetime 对象由于处于不同时区，分别表示不同的时间点。每个对象都会被正确转换为对应的 Unix 时间戳并存储到 ClickHouse 中。
@@ -177,7 +177,7 @@ print(*results.result_rows, sep="\n")
 :::
 
 
-#### 不含时区信息的 datetime 对象
+#### 不含时区信息的 datetime 对象 {#timezone-naive-datetime-objects}
 
 如果你插入一个不含时区信息的 Python `datetime.datetime` 对象（即没有 `tzinfo`），`.timestamp()` 方法会将其按系统本地时区进行解释。为避免歧义，建议：
 
@@ -192,18 +192,18 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# 推荐做法：始终使用带时区信息的 datetime 对象
+# 推荐做法：始终使用带时区信息的 datetime 对象 {#recommended-always-use-timezone-aware-datetimes}
 utc_time = datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)
 client.insert('events', [[utc_time]], column_names=['event_time'])
 
-# 替代方法：手动转换为 epoch 时间戳
+# 替代方法：手动转换为 epoch 时间戳 {#alternative-convert-to-epoch-timestamp-manually}
 naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
 
 
-#### 带有时区元数据的 DateTime 列
+#### 带有时区元数据的 DateTime 列 {#datetime-columns-with-timezone-metadata}
 
 ClickHouse 列可以定义时区元数据（例如 `DateTime('America/Denver')` 或 `DateTime64(3, 'Asia/Tokyo')`）。这些元数据本身不会影响数据的存储方式（仍然以 UTC 时间戳存储），但会控制从 ClickHouse 查询数据时所使用的时区。
 
@@ -216,24 +216,24 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# 创建带有洛杉矶时区元数据的表
+# 创建带有洛杉矶时区元数据的表 {#create-table-with-los-angeles-timezone-metadata}
 client.command("CREATE TABLE events (event_time DateTime('America/Los_Angeles')) ENGINE Memory")
 
-# 插入纽约时间(东部夏令时上午 10:30,即 UTC 14:30)
+# 插入纽约时间(东部夏令时上午 10:30,即 UTC 14:30) {#insert-a-new-york-time-1030-am-edt-which-is-1430-utc}
 ny_tz = pytz.timezone("America/New_York")
 data = ny_tz.localize(datetime(2023, 6, 15, 10, 30, 0))
 client.insert("events", [[data]], column_names=["event_time"])
 
-# 查询时,时间会自动转换为洛杉矶时区
-# 纽约上午 10:30(UTC-4)= UTC 14:30 = 洛杉矶上午 7:30(UTC-7)
+# 查询时,时间会自动转换为洛杉矶时区 {#when-queried-back-the-time-is-automatically-converted-to-los-angeles-timezone}
+# 纽约上午 10:30(UTC-4)= UTC 14:30 = 洛杉矶上午 7:30(UTC-7) {#1030-am-new-york-utc-4-1430-utc-730-am-los-angeles-utc-7}
 results = client.query("select * from events")
 print(*results.result_rows, sep="\n")
-# 输出:
-# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
+# 输出: {#output}
+# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
 
 
-## 文件插入
+## 文件插入 {#file-inserts}
 
 `clickhouse_connect.driver.tools` 包中包含 `insert_file` 方法，可将数据直接从文件系统插入到现有的 ClickHouse 表中。数据解析由 ClickHouse 服务器负责。`insert_file` 接受以下参数：
 

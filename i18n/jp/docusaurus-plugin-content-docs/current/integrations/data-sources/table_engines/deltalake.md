@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['Delta Lake', 'テーブル関数', 'データレイク形式']
 ---
 
-import DeltaLakeFunction from '@site/docs/sql-reference/table-functions/deltalake.md';
+import DeltaLakeFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/deltalake.md';
 
 <DeltaLakeFunction />

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# DateTime
+# DateTime {#datetime}
 
 カレンダー形式の日付と一日の時刻で表現できる、時間上の瞬間を保存します。
 
@@ -50,7 +50,7 @@ ClickHouse にデータを挿入する際には、[date_time_input_format](../..
 
 
 
-## 例
+## 例 {#examples}
 
 **1.** `DateTime` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する：
 
@@ -153,7 +153,7 @@ UTC からのオフセットが 15 分の倍数ではない場合、時と分の
 
 
 
-## 夏時間（DST）の扱い
+## 夏時間（DST）の扱い {#handling-daylight-saving-time-dst}
 
 タイムゾーン付きの ClickHouse の `DateTime` 型は、夏時間（Daylight Saving Time, DST）の切り替え時に、特に次のような場合に予期しない動作を示すことがあります。
 

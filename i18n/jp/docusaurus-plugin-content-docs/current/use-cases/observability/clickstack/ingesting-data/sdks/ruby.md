@@ -25,7 +25,7 @@ _ClickStack にログを送信するには、[OpenTelemetry collector](/use-case
 
 ## はじめに {#getting-started}
 
-### OpenTelemetry パッケージをインストールする
+### OpenTelemetry パッケージをインストールする {#install-otel-packages}
 
 次のコマンドで OpenTelemetry パッケージをインストールします。
 
@@ -34,7 +34,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 ```
 
 
-### OpenTelemetry とロガーフォーマッタを設定する
+### OpenTelemetry とロガーフォーマッタを設定する {#configure-otel-logger-formatter}
 
 次に、OpenTelemetry のトレーシング用インストルメンテーションを初期化し、
 Rails の logger 用のログメッセージフォーマッタを設定して、ログが自動的に
@@ -45,7 +45,7 @@ Rails の logger 用のログメッセージフォーマッタを設定して、
 次の内容を追加します。
 
 ```ruby
-# config/initializers/hyperdx.rb
+# config/initializers/hyperdx.rb {#configinitializershyperdxrb}
 
 require 'opentelemetry-exporter-otlp'
 require 'opentelemetry/instrumentation/all'
@@ -76,7 +76,7 @@ end
 ```
 
 
-### 環境変数を設定する
+### 環境変数を設定する {#configure-environment-variables}
 
 以降、ClickStack にテレメトリデータを送信するために、シェルで次の環境変数を設定します。
 

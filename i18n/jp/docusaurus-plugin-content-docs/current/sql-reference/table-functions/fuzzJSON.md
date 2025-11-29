@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# fuzzJSON テーブル関数
+# fuzzJSON テーブル関数 {#fuzzjson-table-function}
 
 JSON 文字列にランダムな変化を加えて撹乱します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
@@ -49,7 +49,7 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 CREATE NAMED COLLECTION json_fuzzer AS json_str='{}';

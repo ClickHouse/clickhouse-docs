@@ -6,7 +6,7 @@ title: 'distinctJSONPaths'
 doc_type: 'reference'
 ---
 
-# distinctJSONPaths
+# distinctJSONPaths {#distinctjsonpaths}
 
 Вычисляет список уникальных путей, хранящихся в столбце [JSON](../../data-types/newjson.md).
 
@@ -46,8 +46,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
-
-# distinctJSONPathsAndTypes
+# distinctJSONPathsAndTypes {#distinctjsonpathsandtypes}
 
 Вычисляет список различных путей и их типов, хранящихся в столбце [JSON](../../data-types/newjson.md).
 

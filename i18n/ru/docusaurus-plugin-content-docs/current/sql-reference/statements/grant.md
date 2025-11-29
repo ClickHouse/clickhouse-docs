@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Оператор GRANT
+# Оператор GRANT {#grant-statement}
 
 - Предоставляет [привилегии](#privileges) учетным записям пользователей ClickHouse или ролям.
 - Назначает роли учетным записям пользователей или другим ролям.
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Синтаксис предоставления прав
+## Синтаксис предоставления прав {#granting-privilege-syntax}
 
 ```sql
 GRANT [ON CLUSTER имя_кластера] привилегия[(имя_колонки [,...])] [,...] ON {бд.таблица[*]|бд[*].*|*.*|таблица[*]|*} TO {пользователь | роль | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -33,7 +33,7 @@ GRANT [ON CLUSTER имя_кластера] привилегия[(имя_коло
 Предложение `WITH REPLACE OPTION` заменяет старые привилегии новыми для `user` или `role`; если оно не указано, новые привилегии просто добавляются к существующим.
 
 
-## Синтаксис назначения ролей
+## Синтаксис назначения ролей {#assigning-role-syntax}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_USER} [,...] [WITH ADMIN OPTION] [WITH REPLACE OPTION]
@@ -46,7 +46,7 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 Оператор `WITH REPLACE OPTION` заменяет существующие роли новой ролью для `user` или `role`; если он не указан, новые роли просто добавляются.
 
 
-## Синтаксис команды GRANT CURRENT GRANTS
+## Синтаксис команды GRANT CURRENT GRANTS {#grant-current-grants-syntax}
 
 ```sql
 GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*}) | ON {db.table|db.*|*.*|table|*}} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -60,7 +60,7 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 Если ни одна привилегия не указана, то заданный пользователь или роль получит все доступные привилегии для `CURRENT_USER`.
 
 
-## Использование
+## Использование {#usage}
 
 Чтобы использовать `GRANT`, ваша учётная запись должна иметь право `GRANT OPTION`. Вы можете предоставлять привилегии только в пределах собственных прав вашей учётной записи.
 
@@ -90,7 +90,7 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 Вы можете выдать несколько привилегий нескольким учётным записям в одном запросе. Запрос `GRANT SELECT, INSERT ON *.* TO john, robin` позволяет учётным записям `john` и `robin` выполнять запросы `INSERT` и `SELECT` для всех таблиц во всех базах данных на сервере.
 
 
-## Привилегии с подстановками
+## Привилегии с подстановками {#wildcard-grants}
 
 При указании привилегий вы можете использовать звёздочку (`*`) вместо имени таблицы или базы данных. Например, запрос `GRANT SELECT ON db.* TO john` позволяет пользователю `john` выполнять запрос `SELECT` для всех таблиц в базе данных `db`.
 Также можно опустить имя базы данных. В этом случае привилегии выдаются для текущей базы данных.
@@ -385,7 +385,7 @@ GRANT SELECT(foo) ON db.table* TO john -- неправильно
 
 Некоторые запросы по своей реализации требуют набора привилегий. Например, для выполнения запроса [RENAME](../../sql-reference/statements/optimize.md) требуются следующие привилегии: `SELECT`, `CREATE TABLE`, `INSERT` и `DROP TABLE`.
 
-### SELECT
+### SELECT {#select}
 
 Разрешает выполнение запросов [SELECT](../../sql-reference/statements/select/index.md).
 
@@ -403,7 +403,7 @@ GRANT SELECT(x,y) ON db.table TO john
 
 Эта привилегия позволяет пользователю `john` выполнять любые запросы `SELECT`, которые затрагивают данные из столбцов `x` и/или `y` в `db.table`, например, `SELECT x FROM db.table`. `john` не может выполнять `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также недоступен. При обработке такого запроса ClickHouse не возвращает никакие данные, даже `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`, в этом случае ClickHouse возвращает все данные.
 
-### INSERT
+### INSERT {#insert}
 
 Позволяет выполнять запросы [INSERT](../../sql-reference/statements/insert-into.md).
 
@@ -421,7 +421,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 Предоставленная привилегия позволяет пользователю `john` вставлять данные в столбцы `x` и/или `y` в `db.table`.
 
-### ALTER
+### ALTER {#alter}
 
 Позволяет выполнять запросы [ALTER](../../sql-reference/statements/alter/index.md) в соответствии со следующей иерархией привилегий:
 
@@ -514,7 +514,7 @@ GRANT CLUSTER ON *.* TO <имя_пользователя>
 </access_control_improvements>
 ```
 
-### DROP
+### DROP {#drop}
 
 Позволяет выполнять запросы [DROP](../../sql-reference/statements/drop.md) и [DETACH](../../sql-reference/statements/detach.md) в соответствии со следующей иерархией привилегий:
 
@@ -524,19 +524,19 @@ GRANT CLUSTER ON *.* TO <имя_пользователя>
   * `DROP VIEW`. Уровень: `VIEW`
   * `DROP DICTIONARY`. Уровень: `DICTIONARY`
 
-### TRUNCATE
+### TRUNCATE {#truncate}
 
 Позволяет выполнять запросы [TRUNCATE](../../sql-reference/statements/truncate.md).
 
 Уровень привилегии: `TABLE`.
 
-### OPTIMIZE
+### OPTIMIZE {#optimize}
 
 Позволяет выполнять запросы [OPTIMIZE TABLE](../../sql-reference/statements/optimize.md).
 
 Уровень привилегии: `TABLE`.
 
-### SHOW
+### SHOW {#show}
 
 Позволяет выполнять запросы `SHOW`, `DESCRIBE`, `USE` и `EXISTS` в соответствии со следующей иерархией привилегий:
 
@@ -550,7 +550,7 @@ GRANT CLUSTER ON *.* TO <имя_пользователя>
 
 Пользователь обладает привилегией `SHOW`, если у него есть какая-либо другая привилегия, относящаяся к указанной таблице, словарю или базе данных.
 
-### KILL QUERY
+### KILL QUERY {#kill-query}
 
 Позволяет выполнять запросы [KILL](../../sql-reference/statements/kill.md#kill-query) в соответствии со следующей иерархией привилегий:
 
@@ -560,7 +560,7 @@ GRANT CLUSTER ON *.* TO <имя_пользователя>
 
 Привилегия `KILL QUERY` позволяет одному пользователю завершать запросы других пользователей.
 
-### ACCESS MANAGEMENT
+### ACCESS MANAGEMENT {#access-management}
 
 Позволяет пользователю выполнять запросы для управления пользователями, ролями и политиками строк.
 
@@ -674,7 +674,7 @@ GRANT CLUSTER ON *.* TO <имя_пользователя>
 * Чтобы создать таблицу с [табличным движком MySQL](../../engines/table-engines/integrations/mysql.md), необходимы привилегии `CREATE TABLE (ON db.table_name)` и `MYSQL`.
 * Чтобы использовать [табличную функцию mysql](../../sql-reference/table-functions/mysql.md), необходимы привилегии `CREATE TEMPORARY TABLE` и `MYSQL`.
 
-### Права доступа с фильтрацией по источникам
+### Права доступа с фильтрацией по источникам {#source-filter-grants}
 
 :::note
 Эта функциональность доступна начиная с версии 25.8 и только при включённой настройке сервера
@@ -744,7 +744,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 * **Частичный отзыв прав не допускается:** Нельзя отозвать только подмножество выданного шаблона фильтра. Необходимо отозвать весь `GRANT` и при необходимости выдать его снова с новыми шаблонами.
 * **`GRANT` с подстановочными символами не допускается:** Нельзя использовать `GRANT READ ON *('regexp')` или аналогичные шаблоны, состоящие только из подстановочных символов. Должен быть указан конкретный источник.
 
-### dictGet
+### dictGet {#dictget}
 
 * `dictGet`. Псевдонимы: `dictHas`, `dictGetHierarchy`, `dictIsIn`
 
@@ -757,14 +757,14 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 * `GRANT dictGet ON mydb.mydictionary TO john`
 * `GRANT dictGet ON mydictionary TO john`
 
-### displaySecretsInShowAndSelect
+### displaySecretsInShowAndSelect {#displaysecretsinshowandselect}
 
 Позволяет пользователю просматривать секреты в запросах `SHOW` и `SELECT`, если одновременно включены
 [`display_secrets_in_show_and_select` настройка сервера](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select)
 и
 [`format_display_secrets_in_show_and_select` настройка формата](../../operations/settings/formats#format_display_secrets_in_show_and_select).
 
-### NAMED COLLECTION ADMIN
+### NAMED COLLECTION ADMIN {#named-collection-admin}
 
 Позволяет выполнять определённую операцию над указанной именованной коллекцией. До версии 23.7 привилегия называлась NAMED COLLECTION CONTROL, а после 23.7 была добавлена NAMED COLLECTION ADMIN, при этом NAMED COLLECTION CONTROL сохранена как псевдоним.
 

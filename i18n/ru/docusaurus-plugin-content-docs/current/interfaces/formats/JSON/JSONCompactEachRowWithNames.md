@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON-файл со следующими данными с именем `football.json`:
 
@@ -51,7 +51,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNa
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считывайте данные в формате `JSONCompactEachRowWithNames`:
 

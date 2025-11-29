@@ -7,10 +7,10 @@ title: 'C++ クライアントライブラリ'
 doc_type: 'reference'
 ---
 
-# C++ クライアントライブラリ
+# C++ クライアントライブラリ {#c-client-library}
 
 詳細は [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp) リポジトリの README を参照してください。
 
-# Userver 非同期フレームワーク
+# Userver 非同期フレームワーク {#userver-asynchronous-framework}
 
 [userver (beta)](https://github.com/userver-framework/userver) は ClickHouse を組み込みでサポートしています。

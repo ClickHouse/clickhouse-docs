@@ -17,25 +17,25 @@ import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
 
-## オンボーディングプロセス
+## オンボーディングプロセス {#onboarding-process}
 
 お客様は、[こちら](https://clickhouse.com/cloud/bring-your-own-cloud) からお問い合わせいただくことで、オンボーディングプロセスを開始できます。専用の AWS アカウントと、利用予定のリージョンをあらかじめご用意いただく必要があります。現時点では、ClickHouse Cloud がサポートしているリージョンでのみ BYOC サービスを起動できます。
 
-### AWS アカウントの準備
+### AWS アカウントの準備 {#prepare-an-aws-account}
 
 ClickHouse BYOC デプロイメントをホストするために、より高い分離を確保する目的で、専用の AWS アカウントを用意することを推奨します。ただし、共有アカウントや既存の VPC を使用することも可能です。詳細は、後述の *Setup BYOC Infrastructure* を参照してください。
 
 このアカウントと組織の初期管理者のメールアドレスを用意したら、ClickHouse サポートまでお問い合わせください。
 
-### BYOC セットアップの初期化
+### BYOC セットアップの初期化 {#initialize-byoc-setup}
 
 初期の BYOC セットアップは、CloudFormation テンプレートまたは Terraform モジュールのいずれかを使用して実行できます。どちらの方法でも同じ IAM ロールが作成され、ClickHouse Cloud からの BYOC コントローラーがインフラストラクチャを管理できるようになります。なお、ClickHouse の実行に必要な S3、VPC、およびコンピューティングリソースは、この初期セットアップには含まれません。
 
-#### CloudFormation テンプレート
+#### CloudFormation テンプレート {#cloudformation-template}
 
 [BYOC CloudFormation テンプレート](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Terraform モジュール
+#### Terraform モジュール {#terraform-module}
 
 [BYOC Terraform モジュール](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -48,7 +48,7 @@ module "clickhouse_onboarding" {
 
 {/* TODO: セルフサービス型オンボーディングが実装されたら、残りのオンボーディング手順のスクリーンショットを追加する。 */ }
 
-### BYOC インフラストラクチャのセットアップ
+### BYOC インフラストラクチャのセットアップ {#setup-byoc-infrastructure}
 
 CloudFormation スタックを作成すると、クラウドコンソールから S3、VPC、EKS クラスターを含むインフラストラクチャのセットアップを求められます。この段階で決定しなければならない設定がいくつかあり、後から変更することはできません。具体的には次のとおりです。
 
@@ -56,7 +56,7 @@ CloudFormation スタックを作成すると、クラウドコンソールか�
 * **BYOC 用の VPC CIDR 範囲**: 既定では、BYOC VPC の CIDR 範囲として `10.0.0.0/16` を使用します。別アカウントとの VPC ピアリングを行う予定がある場合は、CIDR 範囲が重複しないようにしてください。必要なワークロードを収容できるよう、BYOC 用に最小でも `/22` のサイズを持つ適切な CIDR 範囲を割り当ててください。
 * **BYOC VPC のアベイラビリティーゾーン**: VPC ピアリングを利用する予定がある場合、送信元アカウントと BYOC アカウント間でアベイラビリティーゾーンを揃えると、AZ 間トラフィックのコスト削減に役立ちます。AWS では、アベイラビリティーゾーンのサフィックス (`a, b, c`) は、アカウントごとに異なる物理ゾーン ID を表すことがあります。詳細については [AWS ガイド](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)を参照してください。
 
-#### お客様管理の VPC
+#### お客様管理の VPC {#customer-managed-vpc}
 
 既定では、ClickHouse Cloud は BYOC デプロイメントにおいて分離性を高めるため、専用の VPC をプロビジョニングします。ただし、アカウント内に既存の VPC がある場合は、それを利用することも可能です。その場合は特定の設定が必要となり、ClickHouse Support を通じて調整する必要があります。
 

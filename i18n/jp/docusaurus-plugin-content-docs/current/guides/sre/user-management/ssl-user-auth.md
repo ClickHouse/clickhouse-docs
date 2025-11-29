@@ -10,9 +10,9 @@ keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management
 
 
 
-# SSL ユーザー証明書を使用した認証の設定
+# SSL ユーザー証明書を使用した認証の設定 {#configuring-ssl-user-certificate-for-authentication}
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

@@ -9,10 +9,9 @@ doc_type: 'guide'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# Azure データを ClickHouse に取り込む {#bringing-azure-data-into-clickhouse}
 
-# Azure データを ClickHouse に取り込む
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Microsoft Azure には、データを保存・変換・分析するための幅広いツールが用意されています。しかし、多くのシナリオにおいて、ClickHouse は巨大なデータセットに対する低レイテンシーなクエリや処理で、はるかに優れたパフォーマンスを提供できます。さらに、ClickHouse の列指向ストレージと圧縮機能により、汎用的な Azure のデータベース サービスと比較して、大量の分析データをクエリするコストを大幅に削減できます。
 

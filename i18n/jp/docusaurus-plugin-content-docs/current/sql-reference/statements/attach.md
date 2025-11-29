@@ -19,8 +19,7 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 
 テーブルが以前に ([DETACH](../../sql-reference/statements/detach.md) クエリによって) デタッチされており、その構造が既知である場合は、構造を定義せずに省略形の記法を使用できます。
 
-
-## 既存のテーブルをアタッチ
+## 既存のテーブルをアタッチ {#attach-existing-table}
 
 **構文**
 
@@ -32,10 +31,9 @@ ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 
 テーブルが恒久的に DETACH されている場合、サーバー起動時に自動的に再度 ATTACH されないため、明示的に `ATTACH` クエリを使用する必要があります。
 
+## 新しいテーブルを作成してデータをアタッチする {#create-new-table-and-attach-data}
 
-## 新しいテーブルを作成してデータをアタッチする
-
-### テーブルデータのパスを指定する場合
+### テーブルデータのパスを指定する場合 {#with-specified-path-to-table-data}
 
 このクエリは、指定された構造で新しいテーブルを作成し、`user_files` 内の指定されたディレクトリからテーブルデータをアタッチします。
 
@@ -64,7 +62,7 @@ SELECT * FROM test;
 └──────┴────┘
 ```
 
-### 指定したテーブル UUID の使用
+### 指定したテーブル UUID の使用 {#with-specified-table-uuid}
 
 このクエリは、指定された構造の新しいテーブルを作成し、指定された UUID を持つテーブルからデータをアタッチします。
 これは [Atomic](../../engines/database-engines/atomic.md) データベースエンジンでサポートされています。
@@ -75,8 +73,7 @@ SELECT * FROM test;
 ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ```
 
-
-## MergeTree テーブルを ReplicatedMergeTree としてアタッチする
+## MergeTree テーブルを ReplicatedMergeTree としてアタッチする {#attach-mergetree-table-as-replicatedmergetree}
 
 レプリケーションされていない MergeTree テーブルを ReplicatedMergeTree としてアタッチできます。ReplicatedMergeTree テーブルは、`default_replica_path` と `default_replica_name` 設定の値を用いて作成されます。また、レプリケートされたテーブルを通常の MergeTree としてアタッチすることも可能です。
 
@@ -122,8 +119,7 @@ ATTACH TABLE test AS NOT REPLICATED;
 SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1';
 ```
 
-
-## 既存の辞書をアタッチする
+## 既存の辞書をアタッチする {#attach-existing-dictionary}
 
 以前にデタッチした辞書を再アタッチします。
 
@@ -133,8 +129,7 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 DICTIONARY をアタッチ [存在しない場合は作成] [db.]name [クラスタ cluster 上]
 ```
 
-
-## 既存のデータベースをアタッチ
+## 既存のデータベースをアタッチ {#attach-existing-database}
 
 以前にデタッチしたデータベースを再度アタッチします。
 

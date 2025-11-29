@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 基本示例
+### 基本示例 {#basic-example}
 
 假设有如下 JSON：
 
@@ -38,7 +38,7 @@ doc_type: 'reference'
 要将对象名用作列值，可以使用特殊设置 [`format_json_object_each_row_column_for_object_name`](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name)。
 该设置的值应设为某一列的名称，该列将在生成的对象中作为每一行的 JSON 键名。
 
-#### 输出
+#### 输出 {#output}
 
 假设我们有一张名为 `test` 的表，其中包含两列：
 
@@ -64,7 +64,7 @@ SELECT * FROM test SETTINGS format_json_object_each_row_column_for_object_name='
 }
 ```
 
-#### 输入
+#### 输入 {#input}
 
 假设我们将上一个示例的输出保存到名为 `data.json` 的文件中：
 
@@ -93,7 +93,7 @@ DESCRIBE file('data.json', JSONObjectEachRow) SETTING format_json_object_each_ro
 └─────────────┴─────────────────┘
 ```
 
-### 写入数据
+### 写入数据 {#json-inserting-data}
 
 ```sql title="Query"
 INSERT INTO UserActivity FORMAT JSONEachRow {"PageViews":5, "UserID":"4324182021466249494", "Duration":146,"Sign":-1} {"UserID":"4324182021466249494","PageViews":6,"Duration":185,"Sign":1}
@@ -106,7 +106,7 @@ ClickHouse 允许：
 
 ClickHouse 会忽略元素之间的空格以及对象后面的逗号。可以在同一行中传递所有对象，无需使用换行符将它们分隔开。
 
-#### 省略值的处理
+#### 省略值的处理 {#omitted-values-processing}
 
 ClickHouse 会使用相应[数据类型](/sql-reference/data-types/index.md)的默认值来替换被省略的值。
 
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS example_table
 在使用 `input_format_defaults_for_omitted_fields = 1` 插入数据时，相比使用 `input_format_defaults_for_omitted_fields = 0` 插入，ClickHouse 会消耗更多计算资源。
 :::
 
-### 查询数据
+### 查询数据 {#json-selecting-data}
 
 以 `UserActivity` 表为例：
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS example_table
 字符串中可以输出任意字节序列。如果确定表中的数据可以在不丢失任何信息的情况下被格式化为 JSON，请使用 [`JSONEachRow`](./JSONEachRow.md) 格式。
 :::
 
-### 嵌套结构的使用
+### 嵌套结构的使用 {#jsoneachrow-nested}
 
 如果有一张带有 [`Nested`](/sql-reference/data-types/nested-data-structures/index.md) 数据类型列的表，就可以插入具有相同结构的 JSON 数据。通过 [input&#95;format&#95;import&#95;nested&#95;json](/operations/settings/settings-formats.md/#input_format_import_nested_json) 设置启用此功能。
 

@@ -14,8 +14,7 @@ import { VideoContainer } from '/src/components/video_container'
 
 import LinksDeployment from './sql-reference-links.json'
 
-
-# ClickHouse SQL 参考
+# ClickHouse SQL 参考 {#clickhouse-sql-reference}
 
 ClickHouse 支持一种基于 SQL 的声明式查询语言，在许多情况下与 ANSI SQL 标准相同。
 

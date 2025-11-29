@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличные функции remote, remoteSecure
+# Табличные функции remote, remoteSecure {#remote-remotesecure-table-function}
 
 Табличная функция `remote` позволяет получать доступ к удалённым серверам «на лету», то есть без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Табличная функция `remoteSecure` аналогична `remote`, но использует защищённое соединение.
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 remote(addresses_expr, [db, table, user [, password], sharding_key])
@@ -50,7 +50,7 @@ remoteSecure(named_collection[, option=value [,..]])
 
 
 
-## Использование
+## Использование {#usage}
 
 Поскольку табличные функции `remote` и `remoteSecure` заново устанавливают соединение для каждого запроса, рекомендуется вместо них использовать таблицу `Distributed`. Кроме того, если заданы имена хостов, они разрешаются, и ошибки разрешения имён не учитываются при работе с различными репликами. При обработке большого числа запросов всегда создавайте таблицу `Distributed` заранее и не используйте табличную функцию `remote`.
 
@@ -62,7 +62,7 @@ remoteSecure(named_collection[, option=value [,..]])
 * Редкие распределённые запросы, выполняемые вручную.
 * Распределённые запросы, для которых набор серверов каждый раз задаётся заново.
 
-### Адреса
+### Адреса {#addresses}
 
 ```text
 example01-01-1
@@ -82,9 +82,9 @@ example01-01-1,example01-02-1
 ```
 
 
-## Примеры
+## Примеры {#examples}
 
-### Выборка данных с удалённого сервера:
+### Выборка данных с удалённого сервера: {#selecting-data-from-a-remote-server}
 
 ```sql
 SELECT * FROM remote('127.0.0.1', db.remote_engine_table) LIMIT 3;
@@ -99,7 +99,7 @@ CREATE NAMED COLLECTION creds AS
 SELECT * FROM remote(creds, table='remote_engine_table') LIMIT 3;
 ```
 
-### Вставка данных в таблицу на удалённом сервере:
+### Вставка данных в таблицу на удалённом сервере: {#inserting-data-into-a-table-on-a-remote-server}
 
 ```sql
 CREATE TABLE remote_table (name String, value UInt32) ENGINE=Memory;
@@ -107,11 +107,11 @@ INSERT INTO FUNCTION remote('127.0.0.1', currentDatabase(), 'remote_table') VALU
 SELECT * FROM remote_table;
 ```
 
-### Миграция таблиц из одной системы в другую:
+### Миграция таблиц из одной системы в другую: {#migration-of-tables-from-one-system-to-another}
 
 В этом примере используется одна таблица из демонстрационного набора данных. База данных — `imdb`, таблица — `actors`.
 
-#### В исходной системе ClickHouse (системе, которая в данный момент хранит данные)
+#### В исходной системе ClickHouse (системе, которая в данный момент хранит данные) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
 * Проверьте исходную базу данных и имя таблицы (`imdb.actors`)
 
@@ -142,7 +142,7 @@ CREATE TABLE imdb.actors (`id` UInt32,
                 ORDER BY (id, first_name, last_name, gender);
 ```
 
-#### На целевой системе ClickHouse
+#### На целевой системе ClickHouse {#on-the-destination-clickhouse-system}
 
 * Создайте целевую базу данных:
 
@@ -161,7 +161,7 @@ CREATE TABLE imdb.actors (`id` UInt32,
                   ORDER BY (id, first_name, last_name, gender);
   ```
 
-#### Затем на исходном развертывании
+#### Затем на исходном развертывании {#back-on-the-source-deployment}
 
 Вставьте данные в новую базу данных и таблицу, созданные на удалённой системе. Вам понадобятся хост, порт, имя пользователя, пароль, целевая база данных и целевая таблица.
 

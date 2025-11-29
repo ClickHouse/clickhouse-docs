@@ -11,7 +11,7 @@ import CompressionBlock from '@site/static/images/data-compression/ch_compressio
 import Image from '@theme/IdealImage';
 
 
-# 圧縮モード
+# 圧縮モード {#compression-modes}
 
 ClickHouse プロトコルは、チェックサム付きの **データブロック** の圧縮をサポートしています。
 どのモードを選ぶべきか迷う場合は、`LZ4` を使用してください。

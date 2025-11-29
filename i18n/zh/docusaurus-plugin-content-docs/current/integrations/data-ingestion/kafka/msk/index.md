@@ -11,10 +11,10 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# 将 Amazon MSK 与 ClickHouse 集成
+# 将 Amazon MSK 与 ClickHouse 集成 {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -39,13 +39,13 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 
 
-## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK）
+## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK） {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
-### 收集连接详细信息
+### 收集连接详细信息 {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 步骤
+### 步骤 {#steps}
 
 1. 请确保已熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)。
 2. [创建一个 MSK 实例](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)。
@@ -74,7 +74,7 @@ schemas.enable=false
 ```
 
 
-## 推荐的 IAM 权限（最小权限原则）
+## 推荐的 IAM 权限（最小权限原则） {#iam-least-privilege}
 
 仅使用部署所需的最小权限集。先从下面的基线配置开始，只有在实际使用相关服务时才添加对应的可选服务权限。
 
@@ -145,7 +145,7 @@ schemas.enable=false
 另请参阅：[Kafka 最佳实践 – IAM](../../clickpipes/kafka/04_best_practices.md#iam)。
 
 
-## 性能调优
+## 性能调优 {#performance-tuning}
 
 提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
 

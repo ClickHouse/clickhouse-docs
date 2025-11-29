@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# urlCluster テーブル関数
+# urlCluster テーブル関数 {#urlcluster-table-function}
 
 指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できます。イニシエーター側では、クラスタ内のすべてのノードへの接続を確立し、URL のファイルパス中のアスタリスクを展開して、各ファイルを動的に割り当てます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 urlCluster(cluster_name, URL, format, structure)
@@ -39,7 +39,7 @@ urlCluster(cluster_name, URL, format, structure)
 
 
 
-## 例
+## 例 {#examples}
 
 `String` 列と [UInt32](../../sql-reference/data-types/int-uint.md) 型の列を含むテーブルについて、[CSV](/interfaces/formats/CSV) 形式で応答する HTTP サーバー経由で先頭 3 行を取得します。
 

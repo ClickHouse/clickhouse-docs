@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-## ソースからコンパイルする
+## ソースからコンパイルする {#compile-from-source}
 
 ClickHouse を手動でコンパイルするには、[Linux](/development/build.md) または [macOS](/development/build-osx.md) 向けの手順に従ってください。
 

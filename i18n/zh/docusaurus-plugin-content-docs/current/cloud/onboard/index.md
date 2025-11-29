@@ -9,7 +9,7 @@ keywords: ['上手引导', '入门', '云端配置', '快速入门', '简介']
 
 
 
-# ClickHouse Cloud 入门
+# ClickHouse Cloud 入门 {#get-started-with-clickhouse-cloud}
 
 初次使用 ClickHouse Cloud,不知从何入手?本文档部分将指导您完成快速部署和运行所需的全部步骤。我们将入门指南划分为三个子部分,帮助您在探索 ClickHouse Cloud 的过程中循序渐进地完成各项配置。
 

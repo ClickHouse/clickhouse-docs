@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['部署', '架构', '复制', '分片', '集群配置']
 ---
 
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 本节中的部署示例基于 ClickHouse 支持与服务团队向 ClickHouse 用户提供的建议。这些都是可直接使用的示例，我们建议您先尝试运行，然后根据自身需求进行调整。您也许会在这里找到一个完全符合您需求的示例。
 

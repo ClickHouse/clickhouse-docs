@@ -14,7 +14,7 @@ import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/a
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Azure Synapse と ClickHouse の連携
+# Azure Synapse と ClickHouse の連携 {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -43,7 +43,7 @@ Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](htt
 
 
 
-## ClickHouse をカタログとして追加する
+## ClickHouse をカタログとして追加する {#add-clickhouse-as-catalog}
 
 セッションに Spark の設定を追加する方法はいくつかあります。
 

@@ -7,7 +7,7 @@ title: 'studentTTestOneSample'
 doc_type: 'reference'
 ---
 
-# studentTTestOneSample
+# studentTTestOneSample {#studentttestonesample}
 
 既知の母平均と比較して標本の平均値が異なるかどうかを判定するために、1標本の Student の t 検定を適用します。
 

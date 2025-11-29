@@ -8,12 +8,12 @@ keywords: ['SSL 配置', 'TLS 设置', 'OpenSSL 证书', '安全连接', 'SRE �
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
 
-# 配置 SSL-TLS
+# 配置 SSL-TLS {#configuring-ssl-tls}
 
 <SelfManaged />
 

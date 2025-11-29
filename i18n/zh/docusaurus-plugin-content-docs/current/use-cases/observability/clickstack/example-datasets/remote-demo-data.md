@@ -38,7 +38,7 @@ import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
 **本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
 

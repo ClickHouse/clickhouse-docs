@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 服务器过载
+# 服务器过载 {#server-overload}
 
 
 
@@ -42,7 +42,7 @@ ClickHouse 服务器会计算 CPU 等待时间（`OSCPUWaitMicroseconds` 指标�
 
 
 
-## 资源过载警告
+## 资源过载警告 {#resource-overload-warnings}
 
 当服务器过载时，ClickHouse 还会将 CPU 和内存过载警告记录到 `system.warnings` 表中。您可以
 通过服务器配置来自定义这些阈值。

@@ -18,7 +18,7 @@ import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# TABLUM.IO を ClickHouse に接続する
+# TABLUM.IO を ClickHouse に接続する {#connecting-tablumio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 

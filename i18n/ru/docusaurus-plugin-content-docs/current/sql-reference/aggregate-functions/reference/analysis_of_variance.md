@@ -6,7 +6,7 @@ title: 'analysisOfVariance'
 doc_type: 'reference'
 ---
 
-# analysisOfVariance
+# analysisOfVariance {#analysisofvariance}
 
 Выполняет статистический тест однофакторного дисперсионного анализа (ANOVA). Это тест для нескольких групп нормально распределённых наблюдений, который позволяет определить, одинаковы ли средние значения во всех группах или нет.
 

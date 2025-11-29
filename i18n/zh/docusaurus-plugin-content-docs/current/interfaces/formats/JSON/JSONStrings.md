@@ -201,7 +201,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONStrings` 格式来读取数据：
 

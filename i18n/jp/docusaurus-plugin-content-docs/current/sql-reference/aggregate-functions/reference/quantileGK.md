@@ -6,7 +6,7 @@ title: 'quantileGK'
 doc_type: 'reference'
 ---
 
-# quantileGK
+# quantileGK {#quantilegk}
 
 数値データ系列の[分位数](https://en.wikipedia.org/wiki/Quantile)を、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて計算します。Greenwald-Khanna アルゴリズムは、データストリームに対する分位数を高効率に計算するためのアルゴリズムです。2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。大量のデータストリームに対してリアルタイムに正確な分位数を計算する必要があるデータベースやビッグデータシステムで広く利用されています。このアルゴリズムは非常に効率的で、必要な空間計算量は O(log n)、1 要素あたりの時間計算量は O(log log n) です（ここで n は入力のサイズ）。また、精度も非常に高く、高い確率で分位数の近似値を提供します。
 

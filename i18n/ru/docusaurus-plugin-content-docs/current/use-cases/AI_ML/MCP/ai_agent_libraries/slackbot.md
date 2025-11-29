@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Как создать агента SlackBot с помощью ClickHouse MCP Server
+# Как создать агента SlackBot с помощью ClickHouse MCP Server {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot).
 Этот бот позволяет задавать вопросы о ваших данных в ClickHouse прямо из Slack, используя естественный язык. Он использует
@@ -76,7 +76,7 @@ doc_type: 'guide'
 
 
 
-## Добавьте переменные окружения (`.env`)
+## Добавьте переменные окружения (`.env`) {#add-env-vars}
 
 Создайте файл `.env` в корне проекта со следующими переменными окружения, чтобы ваше приложение могло подключаться к [SQL-песочнице ClickHouse](https://sql.clickhouse.com/).
 

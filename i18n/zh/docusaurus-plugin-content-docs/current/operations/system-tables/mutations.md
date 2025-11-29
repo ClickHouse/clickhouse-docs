@@ -6,13 +6,9 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-
-
-# system.mutations
+# system.mutations {#systemmutations}
 
 该表包含 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表的[变更](/sql-reference/statements/alter/index.md#mutations)及其执行进度的信息。每条变更命令在该表中对应一行记录。
-
-
 
 ## 列 {#columns}
 
@@ -44,7 +40,6 @@ doc_type: 'reference'
 - `latest_failed_part` ([String](/sql-reference/data-types/string.md)) — 无法变更的最新数据部分的名称。
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 最近一次数据部分变更失败的日期和时间。
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — 导致最近一次数据部分变更失败的异常消息。
-
 
 ## 监控 Mutation {#monitoring-mutations}
 

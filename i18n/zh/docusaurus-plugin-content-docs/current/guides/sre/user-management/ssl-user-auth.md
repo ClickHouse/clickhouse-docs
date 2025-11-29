@@ -10,9 +10,9 @@ keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 
 
 
-# 配置用于身份验证的 SSL 用户证书
+# 配置用于身份验证的 SSL 用户证书 {#configuring-ssl-user-certificate-for-authentication}
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

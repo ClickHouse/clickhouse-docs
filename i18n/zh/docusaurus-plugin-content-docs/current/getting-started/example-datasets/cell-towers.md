@@ -7,15 +7,15 @@ keywords: ['蜂窝基站数据', '地理数据', 'OpenCelliD', '地理空间数�
 doc_type: '指南'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
-import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
+import ActionsMenu from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
+import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+import SupersetDocker from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
 import cell_towers_1 from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 import add_a_database from '@site/static/images/getting-started/example-datasets/superset-add.png'
@@ -28,7 +28,6 @@ import superset_mcc_2024 from '@site/static/images/getting-started/example-datas
 import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
-
 
 ## 目标 {#goal}
 
@@ -124,7 +123,7 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
-## 运行一些示例查询
+## 运行一些示例查询 {#examples}
 
 1. 各类型蜂窝基站的数量：
 
@@ -170,7 +169,6 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 根据上述查询以及 [MCC 列表](https://en.wikipedia.org/wiki/Mobile_country_code)，基站数量最多的国家包括：美国、德国和俄罗斯。
 
 您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来对这些值进行解码。
-
 
 ## 使用场景：集成地理数据 {#use-case}
 
@@ -265,7 +263,6 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 返回 1 行。耗时:0.067 秒。处理了 4328 万行,692.42 MB(每秒 6.4583 亿行,10.33 GB/秒)。
 ```
-
 
 ## 查看模式 {#review-of-the-schema}
 

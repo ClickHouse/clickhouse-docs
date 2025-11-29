@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# timeSeriesSelector テーブル関数
+# timeSeriesSelector テーブル関数 {#timeseriesselector-table-function}
 
 `TimeSeries` テーブルから、セレクタによってフィルタされ、指定された区間内のタイムスタンプを持つ時系列データを読み取ります。
 この関数は [range selectors](https://prometheus.io/docs/prometheus/latest/querying/basics/#range-vector-selectors) に類似していますが、[instant selectors](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors) を実装するためにも使用されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 timeSeriesSelector('db_name', 'time_series_table', 'instant_query', min_time, max_time)
@@ -46,7 +46,7 @@ timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 
 
 
-## 例
+## 例 {#example}
 
 ```sql
 SELECT * FROM timeSeriesSelector(mytable, 'http_requests{job="prometheus"}', now() - INTERVAL 10 MINUTES, now())

@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Добавление данных
+### Добавление данных {#inserting-data}
 
 ```sql title="Query"
 SELECT *

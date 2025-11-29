@@ -6,9 +6,7 @@ title: 'Функции Map'
 doc_type: 'reference'
 ---
 
-
-
-## map
+## map {#map}
 
 Создаёт значение типа [Map(key, value)](../data-types/map.md) из пар «ключ–значение».
 
@@ -45,8 +43,7 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3);
 └──────────────────────────────────────────────────┘
 ```
 
-
-## mapFromArrays
+## mapFromArrays {#mapfromarrays}
 
 Создает значение типа `Map` из массива (или `Map`) ключей и массива (или `Map`) значений.
 
@@ -117,8 +114,7 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 └───────────────────────────────────────────────────────┘
 ```
 
-
-## extractKeyValuePairs
+## extractKeyValuePairs {#extractkeyvaluepairs}
 
 Преобразует строку с парами ключ-значение в [Map(String, String)](../data-types/map.md).
 Разбор строки устойчив к «шуму» (например, в журналах/логах).
@@ -237,7 +233,6 @@ SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 └─────┘
 ```
 
-
 ```sql
 SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 ```
@@ -282,8 +277,7 @@ map_serialized: {'John':'33','Paula':'31'}
 map_restored:   {'John':'33','Paula':'31'}
 ```
 
-
-## extractKeyValuePairsWithEscaping
+## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
 То же, что и `extractKeyValuePairs`, но с поддержкой экранирования.
 
@@ -315,8 +309,7 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 └───────────────────┘
 ```
 
-
-## mapAdd
+## mapAdd {#mapadd}
 
 Собирает все ключи и суммирует соответствующие им значения.
 
@@ -364,8 +357,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTy
 └───────────────┴────────────────────────────────────┘
 ```
 
-
-## mapSubtract
+## mapSubtract {#mapsubtract}
 
 Собирает все ключи и вычитает соответствующие им значения.
 
@@ -413,8 +405,7 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 └────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapPopulateSeries
+## mapPopulateSeries {#mappopulateseries}
 
 Заполняет отсутствующие пары ключ-значение в `map` с целочисленными ключами.
 Чтобы можно было расширять диапазон ключей за пределы наибольшего значения, можно задать максимальный ключ.
@@ -479,8 +470,7 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 └──────────────────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapKeys
+## mapKeys {#mapkeys}
 
 Возвращает ключи заданного `Map`.
 
@@ -523,8 +513,7 @@ SELECT mapKeys(a) FROM tab;
 └───────────────────────┘
 ```
 
-
-## mapContains
+## mapContains {#mapcontains}
 
 Возвращает, содержится ли заданный ключ в заданном отображении.
 
@@ -567,8 +556,7 @@ SELECT mapContains(a, 'name') FROM tab;
 └────────────────────────┘
 ```
 
-
-## mapContainsKeyLike
+## mapContainsKeyLike {#mapcontainskeylike}
 
 **Синтаксис**
 
@@ -606,8 +594,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 └─────────────────────────────┘
 ```
 
-
-## mapExtractKeyLike
+## mapExtractKeyLike {#mapextractkeylike}
 
 Для `map` со строковыми ключами и шаблоном `LIKE` функция возвращает `map`, содержащую элементы, ключи которых соответствуют этому шаблону.
 
@@ -647,8 +634,7 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 └────────────────────────────┘
 ```
 
-
-## mapValues
+## mapValues {#mapvalues}
 
 Возвращает значения заданной карты.
 
@@ -691,8 +677,7 @@ SELECT mapValues(a) FROM tab;
 └──────────────────┘
 ```
 
-
-## mapContainsValue
+## mapContainsValue {#mapcontainsvalue}
 
 Возвращает, содержится ли заданное значение в указанном отображении (map).
 
@@ -735,8 +720,7 @@ SELECT mapContainsValue(a, '11') FROM tab;
 └───────────────────────────┘
 ```
 
-
-## mapContainsValueLike
+## mapContainsValueLike {#mapcontainsvaluelike}
 
 **Синтаксис**
 
@@ -774,8 +758,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 └──────────────────────────┘
 ```
 
-
-## mapExtractValueLike
+## mapExtractValueLike {#mapextractvaluelike}
 
 Для карты со строковыми значениями и шаблоном LIKE эта функция возвращает карту с элементами, значения которых соответствуют шаблону.
 
@@ -815,8 +798,7 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 └──────────────────────────────┘
 ```
 
-
-## mapApply
+## mapApply {#mapapply}
 
 Применяет функцию к каждому элементу карты (Map).
 
@@ -858,8 +840,7 @@ FROM
 └───────────────────────┘
 ```
 
-
-## mapFilter
+## mapFilter {#mapfilter}
 
 Фильтрует отображение (map), применяя функцию к каждому его элементу.
 
@@ -901,8 +882,7 @@ FROM
 └─────────────────────┘
 ```
 
-
-## mapUpdate
+## mapUpdate {#mapupdate}
 
 **Синтаксис**
 
@@ -935,8 +915,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 └────────────────────────────────┘
 ```
 
-
-## mapConcat
+## mapConcat {#mapconcat}
 
 Объединяет несколько отображений (map) на основе равенства их ключей.
 Если элементы с одинаковым ключом присутствуют более чем в одном входном отображении, все элементы добавляются в результирующее отображение, но только первый из них доступен через оператор `[]`.
@@ -985,8 +964,7 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 └──────────────────────────────┴──────┘
 ```
 
-
-## mapExists([func,], map)
+## mapExists([func,], map) {#mapexistsfunc-map}
 
 Возвращает 1, если в `map` есть хотя бы одна пара ключ–значение, для которой `func(key, value)` возвращает значение, отличное от 0. В противном случае возвращает 0.
 
@@ -1011,8 +989,7 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapAll([func,] map)
+## mapAll([func,] map) {#mapallfunc-map}
 
 Возвращает 1, если `func(key, value)` возвращает значение, отличное от 0, для всех пар ключ–значение в `map`. В противном случае возвращает 0.
 
@@ -1037,8 +1014,7 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapSort([func,], map)
+## mapSort([func,], map) {#mapsortfunc-map}
 
 Сортирует элементы `map` по возрастанию.
 Если указана функция `func`, порядок сортировки определяется результатом применения этой функции к ключам и значениям `map`.
@@ -1067,8 +1043,7 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 Для получения дополнительных сведений см. [справочник](/sql-reference/functions/array-functions#arraySort) по функции `arraySort`.
 
-
-## mapPartialSort
+## mapPartialSort {#mappartialsort}
 
 Сортирует элементы `map` по возрастанию с дополнительным аргументом `limit`, позволяющим выполнить частичную сортировку.
 Если указана функция `func`, порядок сортировки определяется результатом применения `func` к ключам и значениям `map`.
@@ -1101,8 +1076,7 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └───────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## mapReverseSort([func,], map)
+## mapReverseSort([func,], map) {#mapreversesortfunc-map}
 
 Сортирует элементы map в порядке убывания.
 Если указана функция `func`, порядок сортировки определяется результатом функции `func`, применяемой к ключам и значениям map.
@@ -1131,8 +1105,7 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 Подробнее см. описание функции [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort).
 
-
-## mapPartialReverseSort
+## mapPartialReverseSort {#mappartialreversesort}
 
 Сортирует элементы map в порядке убывания, при этом дополнительный аргумент `limit` позволяет выполнить частичную сортировку.
 Если указана функция `func`, порядок сортировки определяется результатом применения функции `func` к ключам и значениям map.

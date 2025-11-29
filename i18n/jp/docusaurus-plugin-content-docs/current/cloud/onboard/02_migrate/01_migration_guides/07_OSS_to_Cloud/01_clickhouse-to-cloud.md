@@ -8,7 +8,7 @@ keywords: ['移行', 'ClickHouse Cloud', 'OSS', 'セルフマネージド環境�
 ---
 
 import Image from '@theme/IdealImage';
-import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_detail.md';
+import AddARemoteSystem from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import self_managed_01 from '@site/static/images/integrations/migration/self-managed-01.png';
 import self_managed_02 from '@site/static/images/integrations/migration/self-managed-02.png';
 import self_managed_03 from '@site/static/images/integrations/migration/self-managed-03.png';
@@ -16,16 +16,13 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
+# セルフマネージド ClickHouse と ClickHouse Cloud 間の移行 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
-# セルフマネージド ClickHouse と ClickHouse Cloud 間の移行
-
-<Image img={self_managed_01} size='md' alt='セルフマネージド ClickHouse の移行' background='white' />
+<Image img={self_managed_01} size="md" alt="セルフマネージド ClickHouse の移行" background="white" />
 
 このガイドでは、セルフマネージドな ClickHouse サーバーから ClickHouse Cloud への移行方法と、ClickHouse Cloud のサービス間での移行方法を説明します。[`remoteSecure`](/sql-reference/table-functions/remote) 関数は、`SELECT` および `INSERT` クエリでリモートの ClickHouse サーバーにアクセスするために使用します。これにより、`SELECT` を埋め込んだ `INSERT INTO` クエリを書くことで、テーブルを簡単に移行できます。
 
-
-
-## 自前運用の ClickHouse から ClickHouse Cloud への移行
+## 自前運用の ClickHouse から ClickHouse Cloud への移行 {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size="sm" alt="自前運用の ClickHouse からの移行" background="white" />
 
@@ -36,7 +33,7 @@ ClickHouse Cloud が垂直・水平スケーリングを自動的に処理する
 
 この例では、自前運用の ClickHouse サーバーが *ソース*、ClickHouse Cloud サービスが *宛先* になります。
 
-### 概要
+### 概要 {#overview}
 
 手順は次のとおりです。
 
@@ -46,11 +43,11 @@ ClickHouse Cloud が垂直・水平スケーリングを自動的に処理する
 4. （該当する場合）宛先側の IP アクセスリストからソースサーバーを削除する
 5. ソース側のサービスから読み取り専用ユーザーを削除する
 
-### あるシステムから別のシステムへのテーブルの移行
+### あるシステムから別のシステムへのテーブルの移行 {#migration-of-tables-from-one-system-to-another}
 
 この例では、1 つのテーブルを自前運用の ClickHouse サーバーから ClickHouse Cloud に移行します。
 
-### ソース側の ClickHouse システム（現在データを保持しているシステム）での作業
+### ソース側の ClickHouse システム（現在データを保持しているシステム）での作業 {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
 * ソーステーブル（この例では `db.table`）を読み取ることができる読み取り専用ユーザーを追加します
 
@@ -72,7 +69,7 @@ FROM system.tables
 WHERE database = 'db' AND table = 'table'
 ```
 
-### 宛先側の ClickHouse Cloud システム上で：
+### 宛先側の ClickHouse Cloud システム上で： {#on-the-destination-clickhouse-cloud-system}
 
 * 宛先データベースを作成します。
 
@@ -119,8 +116,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
 
-
-## ClickHouse Cloud サービス間での移行
+## ClickHouse Cloud サービス間での移行 {#migrating-between-clickhouse-cloud-services}
 
 <Image img={self_managed_05} size="lg" alt="自己管理型 ClickHouse の移行" background="white" />
 
@@ -143,7 +139,7 @@ ClickHouse Cloud サービス間でデータを移行する主なユースケー
 6. デスティネーション上で IP Access List を再設定する
 7. ソースサービスから読み取り専用ユーザーを削除する
 
-#### ソースサービスに読み取り専用ユーザーを追加する
+#### ソースサービスに読み取り専用ユーザーを追加する {#add-a-read-only-user-to-the-source-service}
 
 * ソーステーブル（この例では `db.table`）を読み取れる読み取り専用ユーザーを追加します
 
@@ -164,7 +160,7 @@ ClickHouse Cloud サービス間でデータを移行する主なユースケー
   where database = 'db' and table = 'table'
   ```
 
-#### デスティネーションサービス上でテーブル構造を複製する
+#### デスティネーションサービス上でテーブル構造を複製する {#duplicate-the-table-structure-on-the-destination-service}
 
 デスティネーションにまだデータベースが存在しない場合は、先に作成します:
 
@@ -181,7 +177,7 @@ ClickHouse Cloud サービス間でデータを移行する主なユースケー
   CREATE TABLE db.table ...
   ```
 
-#### ソースサービスへのリモートアクセスを許可する
+#### ソースサービスへのリモートアクセスを許可する {#allow-remote-access-to-the-source-service}
 
 ソースからデスティネーションへデータをプルするには、ソースサービスが接続を許可している必要があります。ソースサービス上で一時的に「IP Access List」機能を無効化します。
 
@@ -191,7 +187,7 @@ ClickHouse Cloud サービス間でデータを移行する主なユースケー
 
 許可リストを編集し、一時的に **Anywhere** からのアクセスを許可します。詳細については [IP Access List](/cloud/security/setting-ip-filters) ドキュメントを参照してください。
 
-#### ソースからデスティネーションへデータをコピーする
+#### ソースからデスティネーションへデータをコピーする {#copy-the-data-from-source-to-destination}
 
 * `remoteSecure` 関数を使用して、ソースの ClickHouse Cloud サービスからデータをプルします。
   デスティネーションに接続し、デスティネーション側の ClickHouse Cloud サービスで次のコマンドを実行します:
@@ -203,11 +199,11 @@ ClickHouse Cloud サービス間でデータを移行する主なユースケー
 
 * デスティネーションサービス上のデータを確認します
 
-#### ソース上で IP Access List を再設定する
+#### ソース上で IP Access List を再設定する {#re-establish-the-ip-access-list-on-the-source}
 
 以前にアクセスリストをエクスポートしている場合は、**Share** を使って再インポートできます。エクスポートしていない場合は、アクセスリストにエントリを再度追加してください。
 
-#### 読み取り専用ユーザー `exporter` を削除する
+#### 読み取り専用ユーザー `exporter` を削除する {#remove-the-read-only-exporter-user}
 
 ```sql
 DROP USER exporter

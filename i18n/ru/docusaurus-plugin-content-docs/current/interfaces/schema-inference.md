@@ -18,7 +18,7 @@ ClickHouse может автоматически определять струк
 
 
 
-## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md).
+## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). {#table-functions-file-s3-url-hdfs-azureblobstorage}
 
 Эти табличные функции имеют необязательный аргумент `structure`, задающий структуру входных данных. Если этот аргумент не указан или имеет значение `auto`, структура будет выведена из данных.
 
@@ -66,7 +66,7 @@ DESCRIBE file('hobbies.jsonl')
 ```
 
 
-## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md)
+## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
 
 Если в запросе `CREATE TABLE` не указан список столбцов, структура таблицы будет автоматически определена по данным.
 
@@ -109,7 +109,7 @@ DESCRIBE TABLE hobbies
 ```
 
 
-## clickhouse-local
+## clickhouse-local {#clickhouse-local}
 
 У `clickhouse-local` есть необязательный параметр `-S/--structure`, задающий структуру входных данных. Если этот параметр не указан или имеет значение `auto`, структура будет определена по данным.
 
@@ -140,7 +140,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 ```
 
 
-## Использование структуры из таблицы-вставки
+## Использование структуры из таблицы-вставки {#using-structure-from-insertion-table}
 
 Когда табличные функции `file/s3/url/hdfs` используются для вставки данных в таблицу,
 можно использовать структуру из таблицы-вставки вместо извлечения её из данных.
@@ -417,14 +417,14 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 ```
 
 
-## Текстовые форматы
+## Текстовые форматы {#text-formats}
 
 Для текстовых форматов ClickHouse читает данные построчно, извлекает значения столбцов в соответствии с форматом,
 а затем использует рекурсивные парсеры и эвристики, чтобы определить тип для каждого значения. Максимальное количество строк и байт, читаемых из данных при определении схемы,
 управляется настройками `input_format_max_rows_to_read_for_schema_inference` (по умолчанию 25000) и `input_format_max_bytes_to_read_for_schema_inference` (по умолчанию 32 МБ).
 По умолчанию все определённые типы являются [Nullable](../sql-reference/data-types/nullable.md), но вы можете изменить это, настроив `schema_inference_make_columns_nullable` (см. примеры в разделе [настройках](#settings-for-text-formats)).
 
-### Форматы JSON
+### Форматы JSON {#json-formats}
 
 В форматах JSON ClickHouse разбирает значения в соответствии со спецификацией JSON, а затем пытается подобрать для них наиболее подходящий тип данных.
 
@@ -602,9 +602,9 @@ DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_in
 ...
 ```
 
-#### Настройки JSON
+#### Настройки JSON {#json-settings}
 
-##### input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings
+##### input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings {#input_format_json_try_infer_numbers_from_strings}
 
 Включение этого параметра позволяет распознавать числа в строковых значениях.
 
@@ -626,7 +626,7 @@ DESC format(JSONEachRow, $$
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects
+##### input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
 
 Включение этого параметра позволяет выводить именованные `Tuple` из JSON-объектов. Получившийся именованный `Tuple` будет содержать все элементы из всех соответствующих JSON-объектов из выборки данных.
 Это может быть полезно, когда JSON-данные не разрежены, и выборка данных содержит все возможные ключи объектов.
@@ -662,7 +662,7 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects
+##### input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects {#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects}
 
 Включение этого параметра позволяет использовать тип String для неоднозначных путей при выводе именованных кортежей из JSON-объектов (когда `input_format_json_try_infer_named_tuples_from_objects` включён) вместо выбрасывания исключения.
 Это позволяет читать JSON-объекты как именованные кортежи, даже если присутствуют неоднозначные пути.
@@ -708,7 +708,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 └─────────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
 
 Включение этой настройки позволяет читать вложенные объекты JSON как строки.
 Эту настройку можно использовать для чтения вложенных объектов JSON без использования типа JSON Object.
@@ -732,7 +732,7 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings {#input_format_json_read_numbers_as_strings}
 
 Включение этого параметра позволяет считывать числовые значения в виде строк.
 
@@ -754,7 +754,7 @@ DESC format(JSONEachRow, $$
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers
+##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers {#input_format_json_read_bools_as_numbers}
 
 Включение этого параметра позволяет считывать логические значения типа Bool как числа.
 
@@ -776,7 +776,7 @@ DESC format(JSONEachRow, $$
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings {#input_format_json_read_bools_as_strings}
 
 Включение этого параметра позволяет считывать логические значения типа Bool как строки.
 
@@ -798,7 +798,7 @@ DESC format(JSONEachRow, $$
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
 
 Включение этого параметра позволяет считывать значения JSON-массивов как строки.
 
@@ -817,7 +817,7 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
 
 
 Включение этого параметра позволяет использовать тип данных String для JSON-ключей, которые в выборке данных при определении схемы содержат только `Null`/`{}`/`[]`.
@@ -843,7 +843,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 └────────────────────────────────┘
 ```
 
-### CSV
+### CSV {#csv}
 
 В формате CSV ClickHouse извлекает значения столбцов из строки в соответствии с разделителями. ClickHouse ожидает, что все типы, кроме чисел и строк, будут заключены в двойные кавычки. Если значение находится в двойных кавычках, ClickHouse пытается разобрать
 данные внутри кавычек с помощью рекурсивного парсера, а затем определить для них наиболее подходящий тип данных. Если значение не в двойных кавычках, ClickHouse пытается разобрать его как число,
@@ -1043,9 +1043,9 @@ $$)
 └──────────────┴───────────────┘
 ```
 
-#### Настройки CSV
+#### Настройки CSV {#csv-settings}
 
-##### input&#95;format&#95;csv&#95;try&#95;infer&#95;numbers&#95;from&#95;strings
+##### input&#95;format&#95;csv&#95;try&#95;infer&#95;numbers&#95;from&#95;strings {#input_format_csv_try_infer_numbers_from_strings}
 
 Включение этого параметра позволяет выводить числовые значения из строковых.
 
@@ -1066,7 +1066,7 @@ DESC format(CSV, '42,42.42');
 ```
 
 
-### TSV/TSKV
+### TSV/TSKV {#tsv-tskv}
 
 В форматах TSV/TSKV ClickHouse извлекает значение столбца из строки в соответствии с табуляцией как разделителем, а затем разбирает извлечённое значение с помощью
 рекурсивного парсера, чтобы определить наиболее подходящий тип. Если тип не удаётся определить, ClickHouse рассматривает это значение как String.
@@ -1277,7 +1277,7 @@ $$)
 └──────────────┴───────────────┘
 ```
 
-### Значения
+### Значения {#values}
 
 В формате Values ClickHouse извлекает значение столбца из строки, а затем разбирает его рекурсивным парсером, аналогично разбору литералов.
 
@@ -1403,7 +1403,7 @@ DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### CustomSeparated
+### CustomSeparated {#custom-separated}
 
 В формате CustomSeparated ClickHouse сначала извлекает все значения столбцов из строки в соответствии с заданными разделителями, а затем пытается определить тип данных для каждого значения в соответствии с правилами экранирования.
 
@@ -1465,7 +1465,7 @@ $$)
 └────────┴───────────────┴────────────┘
 ```
 
-### Template
+### Template {#template}
 
 В формате Template ClickHouse сначала извлекает все значения столбцов из строки в соответствии с указанным шаблоном, а затем пытается определить
 тип данных для каждого значения в соответствии с соответствующим правилом экранирования.
@@ -1508,7 +1508,7 @@ $$)
 └──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### Regexp
+### Regexp {#regexp}
 
 Аналогично формату Template, в формате Regexp ClickHouse сначала извлекает все значения столбцов из строки в соответствии с заданным регулярным выражением, а затем пытается определить
 тип данных для каждого значения согласно указанному правилу экранирования.
@@ -1533,9 +1533,9 @@ Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ````
 
-### Настройки для текстовых форматов
+### Настройки для текстовых форматов {#settings-for-text-formats}
 
-#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference
+#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference {#input-format-max-rows-to-read-for-schema-inference}
 
 Эти настройки управляют объёмом данных, считываемых при автоматическом определении схемы.
 Чем больше строк/байт считывается, тем больше времени уходит на определение схемы, но тем выше шанс
@@ -1546,7 +1546,7 @@ Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4
 * `25000` для `input_format_max_rows_to_read_for_schema_inference`.
 * `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
 
-#### column&#95;names&#95;for&#95;schema&#95;inference
+#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
 
 Список имён столбцов, используемых при определении схемы для форматов без явных имён столбцов. Указанные имена будут использованы вместо значений по умолчанию `c1,c2,c3,...`. Формат: `column1,column2,column3,...`.
 
@@ -1564,7 +1564,7 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### schema&#95;inference&#95;hints
+#### schema&#95;inference&#95;hints {#schema-inference-hints}
 
 Список имен столбцов и их типов, используемых при определении схемы вместо автоматически определенных типов. Формат: «column&#95;name1 column&#95;type1, column&#95;name2 column&#95;type2, ...».
 Этот параметр можно использовать для указания типов столбцов, которые не удалось определить автоматически, или для оптимизации схемы.
@@ -1585,7 +1585,7 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### schema&#95;inference&#95;make&#95;columns&#95;nullable $
+#### schema&#95;inference&#95;make&#95;columns&#95;nullable $ {#schema-inference-make-columns-nullable}
 
 
 Управляет приведением выводимых типов к `Nullable` при выводе схемы для форматов без информации о nullability. Возможные значения:
@@ -1655,7 +1655,7 @@ DESC format(JSONEachRow, $$
 ```
 
 
-#### input&#95;format&#95;try&#95;infer&#95;integers
+#### input&#95;format&#95;try&#95;infer&#95;integers {#input-format-try-infer-integers}
 
 :::note
 Этот параметр не применяется к типу данных `JSON`.
@@ -1723,7 +1723,7 @@ DESC format(JSONEachRow, $$
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes
+#### input&#95;format&#95;try&#95;infer&#95;datetimes {#input-format-try-infer-datetimes}
 
 Если параметр включён, ClickHouse будет пытаться определять тип `DateTime` или `DateTime64` по строковым полям при автоматическом выводе схемы для текстовых форматов.
 Если все значения столбца в образце данных были успешно распознаны как значения даты и времени, результирующим типом будет `DateTime` или `DateTime64(9)` (если хотя бы одно значение даты и времени содержало дробную часть),
@@ -1778,7 +1778,7 @@ DESC format(JSONEachRow, $$
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64
+#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64 {#input-format-try-infer-datetimes-only-datetime64}
 
 Если включено, ClickHouse будет всегда определять тип `DateTime64(9)`, когда параметр `input_format_try_infer_datetimes` включён, даже если значения даты и времени не содержат дробной части.
 
@@ -1805,7 +1805,7 @@ DESC format(JSONEachRow, $$
 Примечание: При разборе значений типов DateTime при выводе схемы учитывается настройка [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format)
 
 
-#### input&#95;format&#95;try&#95;infer&#95;dates
+#### input&#95;format&#95;try&#95;infer&#95;dates {#input-format-try-infer-dates}
 
 Если параметр включён, ClickHouse будет пытаться определить тип `Date` из строковых полей при автоматическом определении схемы для текстовых форматов.
 Если все значения в столбце в образце данных были успешно интерпретированы как даты, результирующим типом будет `Date`,
@@ -1856,7 +1856,7 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats
+#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats {#input-format-try-infer-exponent-floats}
 
 Если включено, ClickHouse будет пытаться распознавать числа с плавающей запятой в экспоненциальной форме в текстовых форматах (кроме JSON, где числа в экспоненциальной форме всегда распознаются).
 
@@ -1880,14 +1880,14 @@ $$)
 ```
 
 
-## Самоописывающиеся форматы
+## Самоописывающиеся форматы {#self-describing-formats}
 
 Самоописывающиеся форматы содержат информацию о структуре данных в самих данных:
 это может быть заголовок с описанием, бинарное дерево типов или таблица.
 Чтобы автоматически вывести схему по файлам в таких форматах, ClickHouse читает часть данных, содержащую
 информацию о типах, и преобразует её в схему таблицы ClickHouse.
 
-### Форматы с суффиксом -WithNamesAndTypes
+### Форматы с суффиксом -WithNamesAndTypes {#formats-with-names-and-types}
 
 ClickHouse поддерживает некоторые текстовые форматы с суффиксом -WithNamesAndTypes. Этот суффикс означает, что данные содержат две дополнительные строки с именами и типами столбцов перед основными данными.
 При автоматическом выводе схемы для таких форматов ClickHouse читает первые две строки и извлекает имена и типы столбцов.
@@ -1910,7 +1910,7 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### Форматы JSON с метаданными
+### Форматы JSON с метаданными {#json-with-metadata}
 
 Некоторые входные форматы JSON ([JSON](/interfaces/formats/JSON), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)) содержат метаданные с именами и типами столбцов.
 При определении схемы для таких форматов ClickHouse использует эти метаданные.
@@ -1965,7 +1965,7 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### Avro
+### Avro {#avro}
 
 В формате Avro ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2175,11 +2175,11 @@ $$)
 
 
 
-## Форматы с фиксированной схемой
+## Форматы с фиксированной схемой {#formats-with-constant-schema}
 
 Данные в таких форматах всегда имеют одну и ту же схему.
 
-### LineAsString
+### LineAsString {#line-as-string}
 
 В этом формате ClickHouse считывает всю строку данных в один столбец с типом данных `String`. Выводимый тип для этого формата всегда `String`, а имя столбца — `line`.
 
@@ -2195,7 +2195,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### JSONAsString
+### JSONAsString {#json-as-string}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `String`. Определяемый для этого формата тип всегда `String`, а имя столбца — `json`.
 
@@ -2211,7 +2211,7 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### JSONAsObject
+### JSONAsObject {#json-as-object}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `JSON`. Определяемый для этого формата тип данных всегда `JSON`, а имя столбца — `json`.
 
@@ -2228,12 +2228,12 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 ```
 
 
-## Режимы определения схемы
+## Режимы определения схемы {#schema-inference-modes}
 
 Определение схемы по набору файлов данных может работать в двух разных режимах: `default` и `union`.
 Режим задаётся настройкой `schema_inference_mode`.
 
-### Режим по умолчанию
+### Режим по умолчанию {#default-schema-inference-mode}
 
 В режиме по умолчанию ClickHouse предполагает, что все файлы имеют одинаковую схему, и пытается определить её, последовательно читая файлы до тех пор, пока это не удастся.
 
@@ -2284,7 +2284,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 Это происходит потому, что ClickHouse сначала попытался определить схему по файлу `data1.jsonl`, но не смог, так как для поля `field2` были только значения null,
 затем попытался определить схему по `data2.jsonl` и успешно это сделал, поэтому данные из файла `data3.jsonl` не были прочитаны.
 
-### Режим union
+### Режим union {#default-schema-inference-mode-1}
 
 В режиме union ClickHouse предполагает, что файлы могут иметь разные схемы, поэтому он определяет схемы всех файлов, а затем объединяет их в общую схему.
 
@@ -2339,7 +2339,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 * Если у вас много файлов, чтение схемы из всех них может занять много времени.
 
 
-## Автоматическое определение формата
+## Автоматическое определение формата {#automatic-format-detection}
 
 Если формат данных не указан и его нельзя определить по расширению файла, ClickHouse попытается определить формат файла по его содержимому.
 

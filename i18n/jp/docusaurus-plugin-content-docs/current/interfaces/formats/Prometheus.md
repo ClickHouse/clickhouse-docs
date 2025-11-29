@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 [Prometheus のテキストベースのエクスポジション形式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)でメトリクスを公開します。
@@ -30,9 +28,7 @@ doc_type: 'reference'
 `histogram` と `summary` のラベルには特別な要件があります。詳細は [Prometheus のドキュメント](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)を参照してください。
 ラベル `{'count':''}` および `{'sum':''}` を持つ行には特別なルールが適用され、それぞれ `<metric_name>_count` および `<metric_name>_sum` に変換されます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
@@ -59,10 +55,9 @@ doc_type: 'reference'
 
 次の形式になります:
 
-
 ```text
-# HELP http_request_duration_seconds リクエスト処理時間のヒストグラム。
-# TYPE http_request_duration_seconds histogram
+# HELP http_request_duration_seconds リクエスト処理時間のヒストグラム。 {#help-http_request_duration_seconds-a-histogram-of-the-request-duration}
+# TYPE http_request_duration_seconds histogram {#type-http_request_duration_seconds-histogram}
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
 http_request_duration_seconds_bucket{le="0.5"} 129389
@@ -71,15 +66,15 @@ http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
 
-# HELP http_requests_total HTTPリクエストの総数
-# TYPE http_requests_total counter
+# HELP http_requests_total HTTPリクエストの総数 {#help-http_requests_total-total-number-of-http-requests}
+# TYPE http_requests_total counter {#type-http_requests_total-counter}
 http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-# HELP rpc_duration_seconds RPC の処理時間（秒）のサマリー。
-# TYPE rpc_duration_seconds summary
+# HELP rpc_duration_seconds RPC の処理時間（秒）のサマリー。 {#help-rpc_duration_seconds-a-summary-of-the-rpc-duration-in-seconds}
+# TYPE rpc_duration_seconds summary {#type-rpc_duration_seconds-summary}
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
 rpc_duration_seconds{quantile="0.5"} 4773
@@ -90,6 +85,5 @@ rpc_duration_seconds_count 2693
 
 something_weird{problem="ゼロによる除算"} +Inf -3982045
 ```
-
 
 ## 書式設定 {#format-settings}

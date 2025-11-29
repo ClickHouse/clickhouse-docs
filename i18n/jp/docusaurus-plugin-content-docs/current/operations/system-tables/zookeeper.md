@@ -6,7 +6,7 @@ title: 'system.zookeeper'
 doc_type: 'reference'
 ---
 
-# system.zookeeper
+# system.zookeeper {#systemzookeeper}
 
 このテーブルは、ClickHouse Keeper または ZooKeeper が構成されている場合にのみ存在します。`system.zookeeper` テーブルでは、設定ファイルで定義された Keeper クラスターのデータを参照できます。
 クエリには、以下のように `WHERE` 句で `path =` 条件、または `path IN` 条件のいずれかを必ず指定する必要があります。これは、データを取得したい子ノードのパスに対応します。

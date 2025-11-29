@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 该数据集的模式说明可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
 
 
-## 预置数据
+## 预置数据 {#pre-prepared-data}
 
 我们提供了一份 Parquet 格式的数据副本，内容更新至 2024 年 4 月。虽然从行数规模来看（6,000 万条帖子），这个数据集对 ClickHouse 来说并不算大，但其中包含了大量文本以及体积较大的 String 类型列。
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 以下时间测试结果基于一个位于 `eu-west-2`、具有 96 GiB 内存和 24 个 vCPU 的 ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
 
 
-### 文章
+### 文章 {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 Posts 数据集也可以按年份获取，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### 投票
+### 投票 {#votes}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 投票数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### 评论
+### 评论 {#comments}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 评论数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### 用户
+### 用户 {#users}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### 徽章
+### 徽章 {#badges}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### 文章链接
+### 文章链接 {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory
+### PostHistory {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -217,7 +217,7 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 
 原始数据集以压缩的 7-Zip XML 格式提供，可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 获取，文件前缀为 `stackoverflow.com*`。
 
-### 下载
+### 下载 {#download}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 这些文件大小可达 35GB，具体下载时间取决于网络状况，大约需要 30 分钟——下载服务器的限速约为 20 MB/秒。
 
 
-### 转换为 JSON
+### 转换为 JSON {#convert-to-json}
 
 在撰写本文时，ClickHouse 暂不原生支持将 XML 作为输入格式。要将数据加载到 ClickHouse，我们首先将其转换为 NDJSON。
 
@@ -260,7 +260,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# 以下命令将输入的 XML 文件拆分为每个 10000 行的子文件
+# 以下命令将输入的 XML 文件拆分为每个 10000 行的子文件 {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -283,7 +283,7 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 
 下面是一些简单的查询示例，帮助你开始使用。
 
-### Stack Overflow 上最常用的标签
+### Stack Overflow 上最常用的标签 {#most-popular-tags-on-stack-overflow}
 
 ```sql
 
@@ -313,7 +313,7 @@ LIMIT 10
 ```
 
 
-### 回答数最多的用户（活跃账户）
+### 回答数最多的用户（活跃账户） {#user-with-the-most-answers-active-accounts}
 
 账户必须包含 `UserId`。
 
@@ -340,7 +340,7 @@ LIMIT 5
 ```
 
 
-### 阅读量最高的 ClickHouse 相关文章
+### 阅读量最高的 ClickHouse 相关文章 {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ LIMIT 10
 ```
 
 
-### 最具争议的帖子
+### 最具争议的帖子 {#most-controversial-posts}
 
 ```sql
 SELECT

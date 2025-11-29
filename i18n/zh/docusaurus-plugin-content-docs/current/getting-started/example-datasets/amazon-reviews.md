@@ -11,10 +11,10 @@ keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'exa
 
 :::note
 下面的查询是在 **Production** 环境的 ClickHouse Cloud 实例上执行的。更多信息请参阅
-["Playground 规格说明"](/getting-started/playground#specifications)。
+[&quot;Playground 规格说明&quot;](/getting-started/playground#specifications)。
 :::
 
-## 加载数据集
+## 加载数据集 {#loading-the-dataset}
 
 1. 在不将数据插入 ClickHouse 的情况下，我们可以直接在原处对其进行查询。先取出几行数据，看看它们的样子：
 
@@ -122,7 +122,6 @@ FROM s3Cluster('default',
 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet')
 ```
 
-
 :::tip
 在 ClickHouse Cloud 中，集群名称为 `default`。请将 `default` 更改为你的集群名称……或者如果你没有集群，可以使用 `s3` 表函数（而不是 `s3Cluster`）。
 :::
@@ -152,8 +151,7 @@ ORDER BY size DESC
 
 原始数据约为 70GB，在 ClickHouse 中压缩后仅占约 30GB。
 
-
-## 示例查询
+## 示例查询 {#example-queries}
 
 7. 现在来运行一些查询。下面是数据集中最有帮助的前 10 条评论：
 

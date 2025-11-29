@@ -9,24 +9,24 @@ doc_type: 'guide'
 
 
 
-# chDB для Node.js
+# chDB для Node.js {#chdb-for-nodejs}
 
 chDB-node предоставляет биндинги chDB для Node.js, позволяя выполнять запросы к ClickHouse непосредственно в ваших Node.js-приложениях без каких-либо внешних зависимостей.
 
 
 
-## Установка
+## Установка {#installation}
 
 ```bash
 npm install chdb
 ```
 
 
-## Использование
+## Использование {#usage}
 
 chDB-node поддерживает два режима выполнения запросов: автономные запросы для простых операций и сеансовые запросы для сохранения состояния базы данных.
 
-### Автономные запросы
+### Автономные запросы {#standalone-queries}
 
 Для простых разовых запросов, которым не нужно сохранять состояние:
 
@@ -50,7 +50,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("Системные функции:", systemInfo);
 ```
 
-### Запросы по сессиям
+### Запросы по сессиям {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");
@@ -101,7 +101,7 @@ try {
 }
 ```
 
-### Обработка внешних данных
+### Обработка внешних данных {#processing-external-data}
 
 ```javascript
 const { Session } = require("chdb");
@@ -147,7 +147,7 @@ try {
 ```
 
 
-## Обработка ошибок
+## Обработка ошибок {#error-handling}
 
 Всегда правильно обрабатывайте ошибки при работе с chDB:
 

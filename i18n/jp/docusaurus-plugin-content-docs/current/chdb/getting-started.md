@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# chDB を使い始める
+# chDB を使い始める {#getting-started-with-chdb}
 
 このガイドでは、Python 版の chDB を使って、すぐに使い始めるための手順を説明します。
 まず S3 上の JSON ファイルに対してクエリを実行し、その JSON ファイルを元に chDB 内にテーブルを作成し、データに対していくつかクエリを実行します。
@@ -17,7 +17,7 @@ doc_type: 'guide'
 
 
 
-## セットアップ
+## セットアップ {#setup}
 
 まずは仮想環境を作成します。
 
@@ -52,7 +52,7 @@ pip install pandas pyarrow
 ```
 
 
-## S3 内の JSON ファイルをクエリする
+## S3 内の JSON ファイルをクエリする {#querying-a-json-file-in-s3}
 
 ここでは、S3 バケットに保存されている JSON ファイルをどのようにクエリするかを見ていきます。
 [YouTube dislikes dataset](/getting-started/example-datasets/youtube-dislikes) には、2021 年までの YouTube 動画に対する 40 億行以上の低評価データが含まれています。
@@ -150,7 +150,7 @@ chdb.query(
 :::
 
 
-## 出力フォーマットの設定
+## 出力フォーマットの設定 {#configuring-the-output-format}
 
 デフォルトの出力フォーマットは `CSV` ですが、`output_format` パラメータで変更できます。
 chDB は ClickHouse のデータフォーマットに加えて、`DataFrame` を含む[独自のフォーマット](/chdb/reference/data-formats.md)もサポートしており、`DataFrame` フォーマットでは Pandas DataFrame が返されます。
@@ -203,7 +203,7 @@ count(): [[315746,20686]]
 ```
 
 
-## JSON ファイルからテーブルを作成する
+## JSON ファイルからテーブルを作成する {#creating-a-table-from-json-file}
 
 次に、chDB でテーブルを作成する方法を見ていきます。
 これを行うには別の API を利用する必要があるので、まずはそれをインポートします。
@@ -310,7 +310,7 @@ sess.query(f"""
 ```
 
 
-## テーブルをクエリする
+## テーブルをクエリする {#querying-a-table}
 
 最後に、そのテーブルに対してクエリを実行してみましょう。
 
@@ -349,7 +349,7 @@ df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
 
-## Pandas データフレームをクエリする
+## Pandas データフレームをクエリする {#querying-a-pandas-dataframe}
 
 その後、chDB からその DataFrame に対してクエリを実行できます。
 

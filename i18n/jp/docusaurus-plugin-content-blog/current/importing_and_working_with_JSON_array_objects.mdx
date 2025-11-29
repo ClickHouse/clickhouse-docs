@@ -10,12 +10,11 @@ keywords: ['JSON 配列オブジェクト']
 
 {/* 省略 */}
 
-
 ## 質問 \{#question\}
 
 JSON 配列はどのようにインポートし、内部のオブジェクトをどのようにクエリできますか？
 
-## 解答
+## 解答 \{#answer\}
 
 この 1 行の JSON 配列を `sample.json` に書き出してください
 
@@ -45,7 +44,6 @@ Query id: 0bbfa09f-ac7f-4a1e-9227-2961b5ffc2d4
 ```
 
 JSON 行を格納するテーブルを作成します:
-
 
 ```sql
 clickhousebook.local :) CREATE TABLE IF NOT EXISTS sample_json_objects_array (
@@ -117,7 +115,6 @@ Query id: 302c0c84-1b63-4f60-ad95-d91c0267b0d4
 `Events` は、各要素が *eventType* フィールド（`String`）と *time* フィールド（`String`）を含む `Tuple` からなる *Array* です。後者の型は最適ではなく（本来は `DateTime` を使いたいところです）、改善の余地があります。
 
 それでは、データを確認してみましょう。
-
 
 ```sql
 clickhousebook.local :) SELECT
@@ -208,7 +205,6 @@ Query id: 27f07f02-66cd-420d-8623-eeed7d501014
 これらを日付として扱うには、まず `DateTime` 型に変換します。
 配列を変換するには、map 関数を使用します。
 
-
 ```sql
 clickhousebook.local :) 
                         SELECT
@@ -271,7 +267,6 @@ Query id: 1af54994-b756-472f-88d7-8b5cdca0e54e
 ここでは、`time` が指定したインターバル内にある行の `id` を取得します。
 
 `arrayCount` を使用して、`map` 関数から返される配列の要素のうち、条件 `x BETWEEN toDateTime('2021-06-18 11:46:00', 'Europe/Rome') AND toDateTime('2021-06-18 11:50:00', 'Europe/Rome')` を満たす要素の数が 0 より大きいかどうかを確認します。
-
 
 ```sql
 clickhousebook.local :) SELECT

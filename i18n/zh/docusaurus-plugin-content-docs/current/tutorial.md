@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 
 
-# 进阶教程
+# 进阶教程 {#advanced-tutorial}
 
 
 
@@ -384,7 +384,7 @@ doc_type: 'guide'
 
 
 
-## 创建字典
+## 创建字典 {#create-a-dictionary}
 
 字典是在内存中存储的键值对映射。详情请参见 [Dictionaries](/sql-reference/dictionaries/index.md)
 

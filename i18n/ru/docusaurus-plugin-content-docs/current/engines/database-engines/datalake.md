@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# DataLakeCatalog
+# DataLakeCatalog {#datalakecatalog}
 
 Движок базы данных `DataLakeCatalog` позволяет подключить ClickHouse к внешним
 каталогам данных и выполнять запросы к данным в открытых табличных форматах без необходимости дублирования данных.
@@ -28,7 +28,7 @@ doc_type: 'reference'
 
 
 
-## Создание базы данных
+## Создание базы данных {#creating-a-database}
 
 Чтобы использовать движок `DataLakeCatalog`, необходимо включить приведённые ниже настройки:
 
@@ -66,7 +66,7 @@ SETTINGS
 | `region`                | Регион AWS для сервиса (например, `us-east-1`)                                                         |
 
 
-## Примеры
+## Примеры {#examples}
 
 Ниже приведены примеры использования движка `DataLakeCatalog`:
 

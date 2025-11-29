@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用一个名为 `football.json`、包含以下数据的 JSON 文件：
 
@@ -50,7 +50,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `JSONLines` 格式读取数据：
 

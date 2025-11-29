@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-## WKT
+## WKT {#wkt}
 
 基于各种[地理数据类型](../../data-types/geo.md)返回一个 WKT（Well-Known Text）几何对象。支持的 WKT 对象有：
 
@@ -76,11 +76,11 @@ MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,
 ```
 
 
-## readWKTMultiPolygon
+## readWKTMultiPolygon {#readwktmultipolygon}
 
 将 WKT（Well-Known Text）格式的 MultiPolygon 转换为 MultiPolygon 类型。
 
-### 示例
+### 示例 {#example}
 
 ```sql
 SELECT
@@ -93,20 +93,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### 输入参数
+### 输入参数 {#input-parameters}
 
 以 `MULTIPOLYGON` 开头的字符串
 
-### 返回值
+### 返回值 {#returned-value}
 
 MultiPolygon
 
 
-## readWKTPolygon
+## readWKTPolygon {#readwktpolygon}
 
 将 WKT（Well-Known Text）MultiPolygon 转换为 Polygon 类型。
 
-### 示例
+### 示例 {#example-1}
 
 ```sql
 SELECT
@@ -119,34 +119,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Polygon | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### 输入参数
+### 输入参数 {#input-parameters-1}
 
 以 `POLYGON` 开头的字符串
 
-### 返回值
+### 返回值 {#returned-value-1}
 
 多边形
 
 
-## readWKTPoint
+## readWKTPoint {#readwktpoint}
 
 ClickHouse 中的 `readWKTPoint` 函数会解析点（Point）几何对象的 Well-Known Text (WKT) 表示，并返回一个使用 ClickHouse 内部格式表示的点。
 
-### 语法
+### 语法 {#syntax}
 
 ```sql
 readWKTPoint(wkt_string)
 ```
 
-### 参数
+### 参数 {#arguments}
 
 * `wkt_string`: 输入的 WKT 字符串，表示一个 Point 几何对象。
 
-### 返回值
+### 返回值 {#returned-value-2}
 
 该函数返回 Point 几何对象在 ClickHouse 中的内部表示形式。
 
-### 示例
+### 示例 {#example-2}
 
 ```sql
 SELECT readWKTPoint('POINT (1.2 3.4)');
@@ -157,25 +157,25 @@ SELECT readWKTPoint('POINT (1.2 3.4)');
 ```
 
 
-## readWKTLineString
+## readWKTLineString {#readwktlinestring}
 
 解析 LineString 几何对象的 Well-Known Text（WKT）表示，并将其返回为 ClickHouse 的内部格式。
 
-### 语法
+### 语法 {#syntax-1}
 
 ```sql
 readWKTLineString(wkt_string)
 ```
 
-### 参数
+### 参数 {#arguments-1}
 
 * `wkt_string`: 表示 LineString 几何对象的输入 WKT 字符串。
 
-### 返回值
+### 返回值 {#returned-value-3}
 
 该函数返回 ClickHouse 内部表示形式的 LineString 几何对象。
 
-### 示例
+### 示例 {#example-3}
 
 ```sql
 SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
@@ -186,25 +186,25 @@ SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
 ```
 
 
-## readWKTMultiLineString
+## readWKTMultiLineString {#readwktmultilinestring}
 
 解析 MultiLineString 几何对象的 Well-Known Text (WKT) 表示，并以 ClickHouse 的内部格式返回。
 
-### 语法
+### 语法 {#syntax-2}
 
 ```sql
 readWKTMultiLineString(wkt_string)
 ```
 
-### 参数
+### 参数 {#arguments-2}
 
 * `wkt_string`: 表示 MultiLineString 几何对象的输入 WKT 字符串。
 
-### 返回值
+### 返回值 {#returned-value-4}
 
 该函数返回 MultiLineString 几何对象的 ClickHouse 内部表示形式。
 
-### 示例
+### 示例 {#example-4}
 
 ```sql
 SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6))');
@@ -215,25 +215,25 @@ SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6)
 ```
 
 
-## readWKTRing
+## readWKTRing {#readwktring}
 
 解析 Polygon 几何体的 Well-Known Text (WKT) 表示形式，并返回一个使用 ClickHouse 内部格式的环（闭合线串，linestring）。
 
-### 语法
+### 语法 {#syntax-3}
 
 ```sql
 readWKTRing(wkt_string)
 ```
 
-### 参数
+### 参数 {#arguments-3}
 
 * `wkt_string`: 表示 Polygon 多边形几何对象的输入 WKT 字符串。
 
-### 返回值
+### 返回值 {#returned-value-5}
 
 该函数返回 ClickHouse 对环（闭合线串）几何对象的内部表示形式。
 
-### 示例
+### 示例 {#example-5}
 
 ```sql
 SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
@@ -244,11 +244,11 @@ SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
 ```
 
 
-## polygonsWithinSpherical
+## polygonsWithinSpherical {#polygonswithinspherical}
 
 根据一个多边形是否完全位于另一个多边形内部返回布尔值 true 或 false。请参阅 [https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/within/within&#95;2.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/within/within_2.html)
 
-### 示例
+### 示例 {#example-6}
 
 ```sql
 SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -259,11 +259,11 @@ SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879
 ```
 
 
-## readWKBMultiPolygon
+## readWKBMultiPolygon {#readwkbmultipolygon}
 
 将 WKB（Well-Known Binary）MultiPolygon 转换为 MultiPolygon 类型。
 
-### 示例
+### 示例 {#example-7}
 
 ```sql
 SELECT
@@ -276,20 +276,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### 输入参数
+### 输入参数 {#input-parameters-2}
 
 以 `MULTIPOLYGON` 开头的字符串
 
-### 返回值
+### 返回值 {#returned-value-6}
 
 MultiPolygon
 
 
-## readWKBPolygon
+## readWKBPolygon {#readwkbpolygon}
 
 将 WKB（Well-Known Binary）格式的 MultiPolygon 转换为 Polygon 类型。
 
-### 示例
+### 示例 {#example-8}
 
 ```sql
 SELECT
@@ -302,34 +302,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Polygon | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### 输入参数
+### 输入参数 {#input-parameters-3}
 
 以 `POLYGON` 开头的字符串
 
-### 返回值
+### 返回值 {#returned-value-7}
 
 Polygon（多边形）
 
 
-## readWKBPoint
+## readWKBPoint {#readwkbpoint}
 
 ClickHouse 中的 `readWKBPoint` 函数会解析 Point 几何对象的 Well-Known Binary (WKB) 格式表示，并以 ClickHouse 内部格式返回一个点。
 
-### 语法
+### 语法 {#syntax-4}
 
 ```sql
 readWKBPoint(wkb_string)
 ```
 
-### 参数
+### 参数 {#arguments-4}
 
 * `wkb_string`: 输入的 WKB 字符串，表示一个 Point 几何对象。
 
-### 返回值
+### 返回值 {#returned-value-8}
 
 该函数返回 Point 几何对象在 ClickHouse 中的内部表示形式。
 
-### 示例
+### 示例 {#example-9}
 
 ```sql
 SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
@@ -340,25 +340,25 @@ SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
 ```
 
 
-## readWKBLineString
+## readWKBLineString {#readwkblinestring}
 
 解析 LineString 几何对象的 Well-Known Binary (WKB) 表示形式，并将其转换为 ClickHouse 的内部格式返回。
 
-### 语法
+### 语法 {#syntax-5}
 
 ```sql
 readWKBLineString(wkb_string)
 ```
 
-### 参数
+### 参数 {#arguments-5}
 
 * `wkb_string`: 表示 LineString 几何对象的输入 WKB 字符串。
 
-### 返回值
+### 返回值 {#returned-value-9}
 
 该函数返回 ClickHouse 中该 LineString 几何对象的内部表示形式。
 
-### 示例
+### 示例 {#example-10}
 
 ```sql
 SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840000000000000f03f000000000000f03f'));
@@ -369,25 +369,25 @@ SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f0
 ```
 
 
-## readWKBMultiLineString
+## readWKBMultiLineString {#readwkbmultilinestring}
 
 解析 MultiLineString 几何体的 Well-Known Binary (WKB) 表示，并将其返回为 ClickHouse 的内部格式。
 
-### 语法
+### 语法 {#syntax-6}
 
 ```sql
 readWKBMultiLineString(wkb_string)
 ```
 
-### 参数
+### 参数 {#arguments-6}
 
 * `wkb_string`: 表示 MultiLineString 几何对象的输入 WKB 字符串。
 
-### 返回值
+### 返回值 {#returned-value-10}
 
 该函数返回 ClickHouse 使用的 MultiLineString 几何对象的内部表示形式。
 
-### 示例
+### 示例 {#example-11}
 
 ```sql
 SELECT readWKBMultiLineString(unhex('010500000002000000010200000003000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840010200000003000000000000000000104000000000000010400000000000001440000000000000144000000000000018400000000000001840'));
@@ -397,18 +397,18 @@ SELECT readWKBMultiLineString(unhex('0105000000020000000102000000030000000000000
 [[(1,1),(2,2),(3,3)],[(4,4),(5,5),(6,6)]]
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-4}
 
-### 返回值
+### 返回值 {#returned-value-11}
 
 UInt8 类型，0 表示 false，1 表示 true
 
 
-## polygonsDistanceSpherical
+## polygonsDistanceSpherical {#polygonsdistancespherical}
 
 计算两个多边形上两点之间的最小距离，其中一个点属于第一个多边形，另一个点属于第二个多边形。这里的 Spherical 表示将坐标解释为位于一个纯理想球体上的坐标，这与真实的地球并不一致。使用这种坐标系可以加快执行速度，但结果当然不够精确。
 
-### 示例
+### 示例 {#example-12}
 
 ```sql
 SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -418,20 +418,20 @@ SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 0.24372872211133834
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-5}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-12}
 
 Float64
 
 
-## polygonsDistanceCartesian
+## polygonsDistanceCartesian {#polygonsdistancecartesian}
 
 计算两个多边形之间的距离
 
-### 示例
+### 示例 {#example-13}
 
 ```sql
 SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -441,20 +441,20 @@ SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 14.000714267493642
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-6}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-13}
 
 Float64
 
 
-## polygonsEqualsCartesian
+## polygonsEqualsCartesian {#polygonsequalscartesian}
 
 若两个多边形相等，则返回 true
 
-### 示例
+### 示例 {#example-14}
 
 ```sql
 SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -464,20 +464,20 @@ SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[
 1
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-7}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-14}
 
 UInt8 类型，0 表示 false，1 表示 true
 
 
-## polygonsSymDifferenceSpherical
+## polygonsSymDifferenceSpherical {#polygonssymdifferencespherical}
 
 计算两个多边形在空间集合论中的对称差（XOR）
 
-### 示例
+### 示例 {#example-15}
 
 ```sql
 SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (-50., -50.), (-50., 50.), (50., 50.)], [(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)], [(-10., -10.), (-10., -40.), (-40., -40.), (-40., -10.), (-10., -10.)]], [[(-20., -20.), (-20., 20.), (20., 20.), (20., -20.), (-20., -20.)]])));
@@ -487,20 +487,20 @@ SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (
 MULTIPOLYGON(((-20 -10.3067,-10 -10,-10 -20.8791,-20 -20,-20 -10.3067)),((10 20.8791,20 20,20 10.3067,10 10,10 20.8791)),((50 50,50 -50,-50 -50,-50 50,50 50),(20 10.3067,40 10,40 40,10 40,10 20.8791,-20 20,-20 -10.3067,-40 -10,-40 -40,-10 -40,-10 -20.8791,20 -20,20 10.3067)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-8}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-15}
 
 MultiPolygon
 
 
-## polygonsSymDifferenceCartesian
+## polygonsSymDifferenceCartesian {#polygonssymdifferencecartesian}
 
 与 `polygonsSymDifferenceSpherical` 相同，但其中的坐标使用笛卡尔坐标系，这种方式更接近对真实地球的建模。
 
-### 示例
+### 示例 {#example-16}
 
 ```sql
 SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6), (2.6, 2), (2.9, 1), (3, 0), (0, 0)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -510,20 +510,20 @@ SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6),
 MULTIPOLYGON(((1 2.9,1 1,2.9 1,3 0,0 0,0 3,1 2.9)),((1 2.9,1 4,4 4,4 1,2.9 1,2.6 2,2 2.6,1 2.9)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-9}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-16}
 
 MultiPolygon
 
 
-## polygonsIntersectionSpherical
+## polygonsIntersectionSpherical {#polygonsintersectionspherical}
 
 计算球面坐标系下多边形之间的交集（AND）。
 
-### 示例
+### 示例 {#example-17}
 
 ```sql
 SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 6)), b), a), polygonsIntersectionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]])))
@@ -533,20 +533,20 @@ SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 
 MULTIPOLYGON(((4.3666 50.8434,4.36024 50.8436,4.34956 50.8536,4.35268 50.8567,4.36794 50.8525,4.3666 50.8434)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-10}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-17}
 
 MultiPolygon
 
 
-## polygonsWithinCartesian
+## polygonsWithinCartesian {#polygonswithincartesian}
 
 如果第二个多边形位于第一个多边形之内，则返回 true。
 
-### 示例
+### 示例 {#example-18}
 
 ```sql
 SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -556,20 +556,20 @@ SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[
 1
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-11}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-18}
 
 UInt8，0 表示 false，1 表示 true
 
 
-## polygonsIntersectCartesian
+## polygonsIntersectCartesian {#polygonsintersectcartesian}
 
 如果两个多边形相交（共享任意公共区域或边界），则返回 true。
 
-### 示例
+### 示例 {#example-intersects-cartesian}
 
 ```sql
 SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -579,20 +579,20 @@ SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], 
 1
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-intersects-cartesian}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-intersects-cartesian}
 
 UInt8，0 表示 false，1 表示 true
 
 
-## polygonsIntersectSpherical
+## polygonsIntersectSpherical {#polygonsintersectspherical}
 
 如果两个多边形相交（共享任意公共区域或边界），则返回 true。参考：[https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html)
 
-### 示例
+### 示例 {#example-intersects-spherical}
 
 ```sql
 SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -602,22 +602,22 @@ SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 1
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-intersects-spherical}
 
 两个多边形
 
-### 返回值
+### 返回值 {#returned-value-intersects-spherical}
 
 UInt8，0 表示 false，1 表示 true
 
 
-## polygonConvexHullCartesian
+## polygonConvexHullCartesian {#polygonconvexhullcartesian}
 
 计算多边形的凸包。[参考](https://www.boost.org/doc/libs/1_61_0/libs/geometry/doc/html/geometry/reference/algorithms/convex_hull.html)
 
 坐标采用笛卡尔坐标系。
 
-### 示例
+### 示例 {#example-19}
 
 ```sql
 SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.), (2., 3.)]]]))
@@ -627,20 +627,20 @@ SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.),
 POLYGON((0 0,0 5,5 5,5 0,0 0))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-12}
 
 MultiPolygon
 
-### 返回值
+### 返回值 {#returned-value-19}
 
 Polygon
 
 
-## polygonAreaSpherical
+## polygonAreaSpherical {#polygonareaspherical}
 
 计算多边形的球面面积。
 
-### 示例
+### 示例 {#example-20}
 
 ```sql
 SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]), 14)
@@ -650,20 +650,20 @@ SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455
 9.387704e-8
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-13}
 
 Polygon
 
-### 返回值
+### 返回值 {#returned-value-20}
 
 Float
 
 
-## polygonsUnionSpherical
+## polygonsUnionSpherical {#polygonsunionspherical}
 
 计算并集（OR）。
 
-### 示例
+### 示例 {#example-21}
 
 ```sql
 SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]))
@@ -673,11 +673,11 @@ SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 MULTIPOLYGON(((4.36661 50.8434,4.36623 50.8408,4.34496 50.8333,4.33807 50.8487,4.34669 50.8583,4.35268 50.8567,4.36136 50.8652,4.36131 50.8651,4.39045 50.8565,4.38303 50.8429,4.36661 50.8434)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-14}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-21}
 
 MultiPolygon
 
@@ -720,11 +720,11 @@ SELECT round(polygonPerimeterSpherical([(30.010654, -15.646227), (30.050238, -15
 
 
 
-## polygonsIntersectionCartesian
+## polygonsIntersectionCartesian {#polygonsintersectioncartesian}
 
 计算多边形之间的交集。
 
-### 示例
+### 示例 {#example-23}
 
 ```sql
 SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1.), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -734,20 +734,20 @@ SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 
 MULTIPOLYGON(((1 2.9,2 2.6,2.6 2,2.9 1,1 1,1 2.9)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-16}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-23}
 
 MultiPolygon
 
 
-## polygonAreaCartesian
+## polygonAreaCartesian {#polygonareacartesian}
 
 计算多边形的面积
 
-### 示例
+### 示例 {#example-24}
 
 ```sql
 SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -757,20 +757,20 @@ SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 25
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-17}
 
 Polygon
 
-### 返回值
+### 返回值 {#returned-value-24}
 
 Float64
 
 
-## polygonPerimeterCartesian
+## polygonPerimeterCartesian {#polygonperimetercartesian}
 
 计算多边形的周长。
 
-### 示例
+### 示例 {#example-25}
 
 ```sql
 SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -780,20 +780,20 @@ SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 15
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-18}
 
 Polygon
 
-### 返回值
+### 返回值 {#returned-value-25}
 
 Float64
 
 
-## polygonsUnionCartesian
+## polygonsUnionCartesian {#polygonsunioncartesian}
 
 计算多边形的并集。
 
-### 示例
+### 示例 {#example-26}
 
 ```sql
 SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -803,11 +803,11 @@ SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (
 MULTIPOLYGON(((1 2.9,1 4,4 4,4 1,2.9 1,3 0,0 0,0 3,1 2.9)))
 ```
 
-### 输入参数
+### 输入参数 {#input-parameters-19}
 
 Polygons
 
-### 返回值
+### 返回值 {#returned-value-26}
 
 MultiPolygon
 

@@ -7,11 +7,11 @@ title: 'Embeddable を ClickHouse に接続する'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Embeddable を ClickHouse に接続する
+# Embeddable を ClickHouse に接続する {#connecting-embeddable-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -28,7 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## 2. ClickHouse 接続タイプを作成する
+## 2. ClickHouse 接続タイプを作成する {#2-create-a-clickhouse-connection-type}
 
 Embeddable API を使用してデータベース接続を追加します。この接続は ClickHouse サービスへの接続に利用されます。次の API コールを使用して接続を追加できます。
 

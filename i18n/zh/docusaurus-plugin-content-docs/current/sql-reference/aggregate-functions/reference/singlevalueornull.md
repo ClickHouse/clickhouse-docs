@@ -6,7 +6,7 @@ title: 'singleValueOrNull'
 doc_type: 'reference'
 ---
 
-# singleValueOrNull
+# singleValueOrNull {#singlevalueornull}
 
 聚合函数 `singleValueOrNull` 用于实现子查询运算符，例如 `x = ALL (SELECT ...)`。它会检查数据中是否恰好只有一个唯一且非 NULL 的值。
 如果只有一个唯一值，则返回该值。如果没有任何值，或者存在至少两个不同的值，则返回 NULL。

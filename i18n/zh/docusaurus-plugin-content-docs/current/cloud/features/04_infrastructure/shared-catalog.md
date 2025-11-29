@@ -71,7 +71,7 @@ Shared Catalog 中的所有元数据和 DDL 查询历史记录都集中存储在
 
 
 
-## 在 ClickHouse Cloud 中的使用
+## 在 ClickHouse Cloud 中的使用 {#usage-in-clickhouse-cloud}
 
 对于终端用户而言，使用 Shared Catalog 和 Shared 数据库引擎无需任何额外配置。数据库的创建方式与以往完全相同：
 

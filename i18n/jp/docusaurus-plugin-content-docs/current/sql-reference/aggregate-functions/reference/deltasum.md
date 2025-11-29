@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# deltaSum
+# deltaSum {#deltasum}
 
 連続する行間の算術的な差分を合計します。差分が負の値の場合は無視されます。
 

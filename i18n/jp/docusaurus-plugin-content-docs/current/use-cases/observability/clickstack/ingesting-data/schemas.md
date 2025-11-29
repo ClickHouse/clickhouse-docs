@@ -13,7 +13,7 @@ ClickStack の OpenTelemetry (OTel) collector は、[ClickHouse exporter](https:
 
 各データタイプごとに、`default` データベース内に次のテーブルが作成されます。ユーザーは、OTel collector を実行しているコンテナイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この対象データベースを変更できます。
 
-## ログ
+## ログ {#logs}
 
 ```sql
 CREATE TABLE otel_logs
@@ -50,7 +50,7 @@ ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
 
-## トレース
+## トレース {#traces}
 
 ```sql
 CREATE TABLE otel_traces
@@ -92,7 +92,7 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 
 ## メトリクス {#metrics}
 
-### ゲージ型メトリクス
+### ゲージ型メトリクス {#gauge}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -131,7 +131,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-### Sum 型メトリクス
+### Sum 型メトリクス {#sum}
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -172,7 +172,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-### ヒストグラム・メトリクス
+### ヒストグラム・メトリクス {#histogram}
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -217,7 +217,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-### 指数ヒストグラム
+### 指数ヒストグラム {#exponential-histograms}
 
 :::note
 HyperDX は、指数ヒストグラムのメトリクスの取得および表示をまだサポートしていません。メトリクスの送信元でそれらを設定することはできますが、将来的なサポートが予定されています。
@@ -271,7 +271,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-### 概要表
+### 概要表 {#summary-table}
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -308,7 +308,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-## セッション
+## セッション {#sessions}
 
 ```sql
 CREATE TABLE hyperdx_sessions

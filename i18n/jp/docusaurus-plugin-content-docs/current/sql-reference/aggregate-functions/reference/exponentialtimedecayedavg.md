@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedAvg
+## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
 
 時刻 `t` における時系列データの値に対する、指数平滑化された加重移動平均を返します。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 レスポンス:
-
 
 ```sql
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

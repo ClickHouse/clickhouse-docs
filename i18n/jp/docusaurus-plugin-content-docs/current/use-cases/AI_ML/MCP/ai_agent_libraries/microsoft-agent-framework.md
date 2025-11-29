@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Microsoft Agent Framework と ClickHouse MCP Server を使用して AI エージェントを構築する方法
+# Microsoft Agent Framework と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server}
 
 このガイドでは、[Microsoft Agent Framework](https://github.com/microsoft/agent-framework) を使って、[ClickHouse の SQL Playground](https://sql.clickhouse.com/) と対話できる AI エージェントを [ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を通じて構築する方法を説明します。
 

@@ -9,7 +9,7 @@ keywords: ['セキュリティ', 'クラウドセキュリティ', 'アクセス
 
 
 
-# ClickHouse Cloud のセキュリティ
+# ClickHouse Cloud のセキュリティ {#clickhouse-cloud-security}
 
 本ドキュメントでは、ClickHouse Cloud の組織およびサービスを保護するために利用可能なセキュリティオプションとベストプラクティスについて詳述します。
 ClickHouse は、安全な分析用データベースソリューションを提供することに注力しており、データおよびサービスの完全性を保護することを最優先事項としています。

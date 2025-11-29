@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Log 表引擎
+# Log 表引擎 {#log-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -22,7 +22,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 创建表
+## 创建表 {#table_engines-log-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -59,7 +59,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 使用示例
+## 使用示例 {#table_engines-log-example-of-use}
 
 创建表：
 

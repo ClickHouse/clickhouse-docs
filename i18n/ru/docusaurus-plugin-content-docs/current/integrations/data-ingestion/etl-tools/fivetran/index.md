@@ -14,7 +14,7 @@ keywords: ['fivetran', 'перемещение данных', 'etl', 'ClickHouse
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Fivetran и ClickHouse Cloud
+# Fivetran и ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
 <ClickHouseSupportedBadge/>
 

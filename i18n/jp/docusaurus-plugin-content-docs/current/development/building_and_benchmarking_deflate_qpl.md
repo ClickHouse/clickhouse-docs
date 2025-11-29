@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# DEFLATE_QPL を使用して ClickHouse をビルドする
+# DEFLATE_QPL を使用して ClickHouse をビルドする {#build-clickhouse-with-deflate_qpl}
 
 - ホストマシンが QPL の要求する[前提条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)を満たしていることを確認してください
 - `cmake` ビルド時には `deflate_qpl` はデフォルトで有効になっています。誤って設定を変更してしまった場合は、ビルドフラグ `ENABLE_QPL=1` になっていることを必ず再確認してください
@@ -18,7 +18,7 @@ doc_type: 'guide'
 
 
 
-# DEFLATE_QPL を使ってベンチマークを実行する
+# DEFLATE_QPL を使ってベンチマークを実行する {#run-benchmark-with-deflate_qpl}
 
 
 
@@ -35,7 +35,7 @@ doc_type: 'guide'
 
 
 
-## スター・スキーマ向けベンチマークを自動実行する:
+## スター・スキーマ向けベンチマークを自動実行する: {#run-benchmark-automatically-for-star-schema}
 
 ```bash
 $ cd ./benchmark_sample/client_scripts
@@ -53,7 +53,7 @@ $ sh run_ssb.sh
 
 
 
-## 環境
+## 環境 {#environment}
 
 * CPU: Sapphire Rapid
 * OS 要件については [System Requirements for QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements) を参照してください
@@ -81,7 +81,7 @@ $ accel-config list | grep -P 'iax|state'
 何も出力されない場合は、IAA の準備がまだ整っていないことを意味します。IAA のセットアップを再度確認してください。
 
 
-## 未加工データを生成する
+## 未加工データを生成する {#generate-raw-data}
 
 ```bash
 $ cd ./benchmark_sample
@@ -94,7 +94,7 @@ $ mkdir rawdata_dir && cd rawdata_dir
 `*.tbl` のようなファイルは、`./benchmark_sample/rawdata_dir/ssb-dbgen` 配下に出力されます:
 
 
-## データベースのセットアップ
+## データベースのセットアップ {#database-setup}
 
 LZ4 コーデックを使用したデータベースのセットアップ
 
@@ -164,7 +164,7 @@ SELECT count() FROM lineorder_flat
 これは IAA デバイスが使用可能な状態になっていないことを意味します。IAA のセットアップをもう一度確認する必要があります。
 
 
-## 単一インスタンスでのベンチマーク
+## 単一インスタンスでのベンチマーク {#benchmark-with-single-instance}
 
 * ベンチマークを開始する前に、C6 を無効化し、CPU周波数ガバナーを `performance` に設定してください
 
@@ -218,7 +218,7 @@ zstd.log
 QPS を中心に確認します。キーワード `QPS_Final` を検索し、統計情報を収集してください
 
 
-## マルチインスタンスでのベンチマーク
+## マルチインスタンスでのベンチマーク {#benchmark-with-multi-instances}
 
 * メモリボトルネックがスレッド数の増加に与える影響を抑えるため、マルチインスタンス構成でベンチマークを実行することを推奨します。
 * マルチインスタンスとは、複数（2 または 4）台のサーバーがそれぞれ個別のクライアントに接続されている構成を指します。
@@ -350,7 +350,7 @@ zstd_2insts.log
 レビュー用の最終レポートには、2 インスタンス構成のベンチマークデータを採用することを推奨します。
 
 
-## ヒント
+## ヒント {#tips}
 
 新しい ClickHouse サーバーを起動する前には毎回、バックグラウンドで動作している ClickHouse プロセスがないことを必ず確認し、残っている古いプロセスがあれば終了させてください。
 

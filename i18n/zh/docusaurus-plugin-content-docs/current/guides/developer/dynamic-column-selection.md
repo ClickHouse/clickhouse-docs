@@ -11,11 +11,9 @@ keywords: ['dynamic column selection', 'regular expressions', 'APPLY modifier', 
 
 我们将借助 [纽约出租车数据集](/docs/getting-started/example-datasets/nyc-taxi) 学习如何使用这一特性，你也可以在 [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) 中找到它。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen />
 
-
-
-## 选择匹配某种模式的列
+## 选择匹配某种模式的列 {#selecting-columns}
 
 先从一个常见场景开始：只选择纽约出租车数据集中包含 `_amount` 的列。与其手动输入每个列名，我们可以使用带正则表达式的 `COLUMNS` 表达式来完成：
 
@@ -64,8 +62,7 @@ LIMIT 3;
    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
 ```
 
-
-## 选择多个匹配模式
+## 选择多个匹配模式 {#selecting-multiple-patterns}
 
 我们可以在同一个查询中组合使用多个列匹配模式：
 
@@ -89,8 +86,7 @@ LIMIT 5;
    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
 ```
 
-
-## 对所有列应用函数
+## 对所有列应用函数 {#applying-functions}
 
 我们也可以使用 [`APPLY`](/sql-reference/statements/select) 修饰符，将函数应用到每一列上。
 例如，如果我们想要找出这些列中每一列的最大值，可以运行以下查询：
@@ -145,7 +141,6 @@ SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
 FROM nyc_taxi.trips;
 ```
 
-
 > [在 SQL Playground 中试运行此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
@@ -154,8 +149,7 @@ FROM nyc_taxi.trips;
    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-## 替换列
+## 替换列 {#replacing-columns}
 
 到目前为止进展顺利。不过，假设我们只想调整其中一个值，而保持其他值不变。例如，我们可能想将总金额加倍，并将 MTA 税额除以 1.1。我们可以使用 [`REPLACE`](/sql-reference/statements/select) 修饰符来实现，它会在保留其他列不变的情况下替换某一列。
 
@@ -179,8 +173,7 @@ SELECT
    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
-
-## 排除列
+## 排除列 {#excluding-columns}
 
 我们也可以通过使用 [`EXCEPT`](/sql-reference/statements/select) 修饰符来排除某个字段。例如，要移除 `tolls_amount` 列，可以编写如下查询：
 

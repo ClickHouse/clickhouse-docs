@@ -6,13 +6,11 @@ title: 'stochasticLogisticRegression'
 doc_type: 'reference'
 ---
 
-
-
-# stochasticLogisticRegression
+# stochasticLogisticRegression {#stochasticlogisticregression}
 
 Эта функция реализует стохастическую логистическую регрессию. Ее можно использовать для решения задачи бинарной классификации; она поддерживает те же настраиваемые параметры, что и stochasticLinearRegression, и работает аналогичным образом.
 
-### Параметры
+### Параметры {#parameters}
 
 Параметры полностью совпадают с параметрами в stochasticLinearRegression:
 `learning rate`, `l2 regularization coefficient`, `mini-batch size`, `method for updating weights`.

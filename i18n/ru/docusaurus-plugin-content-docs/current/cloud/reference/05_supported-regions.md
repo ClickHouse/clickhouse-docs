@@ -10,7 +10,7 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# Поддерживаемые регионы облака
+# Поддерживаемые регионы облака {#supported-cloud-regions}
 
 
 

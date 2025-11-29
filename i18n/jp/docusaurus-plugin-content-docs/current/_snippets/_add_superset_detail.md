@@ -14,7 +14,7 @@ Supersetは[Docker Composeを使用したローカルへのSupersetインスト�
 :::
 
 
-## ClickHouse Connect の公式ドライバー
+## ClickHouse Connect の公式ドライバー {#official-clickhouse-connect-driver}
 
 Superset のデプロイメントで ClickHouse Connect ドライバーを利用できるようにするには、ローカルの requirements ファイルに追加します。
 
@@ -23,7 +23,7 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
 
-## Mapbox
+## Mapbox {#mapbox}
 
 これは任意です。Mapbox の API キーがなくても Superset で位置情報データをプロットできますが、キーを追加するよう促すメッセージが表示され、地図の背景画像は表示されません（データポイントのみが表示されます）。Mapbox には、必要に応じて利用できる無料プランがあります。
 

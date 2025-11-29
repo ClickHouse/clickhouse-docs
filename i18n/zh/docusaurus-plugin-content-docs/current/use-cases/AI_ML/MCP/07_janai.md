@@ -27,7 +27,7 @@ import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
 
-# 在 Jan.ai 中使用 ClickHouse MCP 服务器
+# 在 Jan.ai 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-janai}
 
 > 本指南介绍如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP 服务器。
 

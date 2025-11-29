@@ -11,7 +11,7 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';
@@ -31,7 +31,7 @@ import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключение Apache NiFi к ClickHouse
+# Подключение Apache NiFi к ClickHouse {#connect-apache-nifi-to-clickhouse}
 
 <CommunityMaintainedBadge />
 

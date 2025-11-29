@@ -6,10 +6,10 @@ title: 'ClickHouse のバックアップとリストア'
 doc_type: 'reference'
 ---
 
-import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-import AzureSettings from '@site/docs/operations_/backup_restore/_snippets/_azure_settings.md';
-import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
+import GenericSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_generic_settings.md';
+import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
+import AzureSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
+import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
 > このセクションでは、ClickHouse におけるバックアップとリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください。
 
@@ -87,7 +87,7 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 
 
 
-## 同時実行バックアップと非同時実行バックアップ
+## 同時実行バックアップと非同時実行バックアップ {#concurrent-vs-non-concurrent}
 
 デフォルトでは、ClickHouse はバックアップおよびリストアの同時実行を許可します。つまり、
 複数のバックアップまたはリストア処理を同時に開始できます。ただし、この動作を
@@ -109,7 +109,7 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 両方のデフォルト値は true であり、デフォルトではバックアップおよびリストアの同時実行が許可されています。クラスタでこれらの設定が false に設定されている場合、そのクラスタでは同時に実行できるバックアップ／リストアは 1 つだけになります。
 
 
-## 圧縮バックアップと非圧縮バックアップ
+## 圧縮バックアップと非圧縮バックアップ {#compressed-vs-uncompressed}
 
 ClickHouse のバックアップは、`compression_method` と `compression_level` 設定による圧縮をサポートしています。
 
@@ -209,7 +209,7 @@ ClickHouse サーバーの設定ファイル（例: `users.xml`）で定義さ�
 
 
 
-## 管理とトラブルシューティング
+## 管理とトラブルシューティング {#check-the-status-of-backups}
 
 バックアップコマンドは `id` と `status` を返し、この `id` を使って
 バックアップの状態を取得できます。これは、時間のかかる

@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
@@ -50,7 +50,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `JSONLines` フォーマットを使用してデータを読み込みます。
 

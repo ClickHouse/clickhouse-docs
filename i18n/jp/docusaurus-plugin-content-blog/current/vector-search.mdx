@@ -10,27 +10,26 @@ keywords: ['ベクター検索']
 
 {/* 省略 */}
 
-
 ## ベクトル検索のための ClickHouse！ \{#clickhouse-for-vector-search\}
 
 はい、ClickHouse でもベクトル検索を実行できます。
 
 専用のベクトルデータベースと比べて、ベクトル検索に ClickHouse を用いる主な利点は次のとおりです。
 
-- 検索を実行する前に、ClickHouse のフィルタリング機能と全文検索機能を使用してデータセットを絞り込めること。
-- データセットに対して分析処理を実行できること。
-- 既存データに対して `JOIN` を実行できること。
-- さらに別のデータベースを管理してインフラストラクチャを複雑にする必要がないこと。
+* 検索を実行する前に、ClickHouse のフィルタリング機能と全文検索機能を使用してデータセットを絞り込めること。
+* データセットに対して分析処理を実行できること。
+* 既存データに対して `JOIN` を実行できること。
+* さらに別のデータベースを管理してインフラストラクチャを複雑にする必要がないこと。
 
 ここでは、ClickHouse を使ったベクトル検索の方法を簡単に紹介します。
 
 ## 1. 埋め込みを作成する \{#1-create-embeddings\}
 
-データ（ドキュメント、画像、または構造化データ）は、_埋め込み_ に変換する必要があります。埋め込みの作成には、[OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) またはオープンソースの Python ライブラリである [SentenceTransformers](https://www.sbert.net/) の利用を推奨します。
+データ（ドキュメント、画像、または構造化データ）は、*埋め込み* に変換する必要があります。埋め込みの作成には、[OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) またはオープンソースの Python ライブラリである [SentenceTransformers](https://www.sbert.net/) の利用を推奨します。
 
 埋め込みは、データを表現する浮動小数点数からなる大きな配列（ベクトル）と考えることができます。[埋め込みについて詳しくは、OpenAI のこのガイドを参照してください](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings)。
 
-## 2. 埋め込みを保存する
+## 2. 埋め込みを保存する \{#2-store-the-embeddings\}
 
 埋め込みを生成したら、それらを ClickHouse に保存する必要があります。各埋め込みは別々の行として保存し、フィルタリング、集計、分析のためのメタデータを含めることができます。以下は、キャプション付き画像を保存できるテーブルの例です。
 
@@ -44,8 +43,7 @@ CREATE TABLE images
 ENGINE = MergeTree;
 ```
 
-
-## 3. 関連する埋め込みを検索する
+## 3. 関連する埋め込みを検索する \{#3-search-for-related-embeddings\}
 
 データセット内で犬の画像を検索したいとします。`cosineDistance` のような距離関数を使用して犬の画像の埋め込みを取得し、類似する画像を検索できます。
 
@@ -65,9 +63,8 @@ LIMIT 10
 
 このクエリは、指定した犬の画像に最も関連していると思われる上位 10 件の画像について、その `_file` 名と `caption` を返します。
 
-
 ## 参考資料 \{#further-reading\}
 
 ClickHouse を用いたベクトル検索について、より詳細なチュートリアルは次を参照してください。
 
-- [厳密および近似ベクトル検索](https://clickhouse.com/docs/engines/table-engines/mergetree-family/annindexes)
+* [厳密および近似ベクトル検索](https://clickhouse.com/docs/engines/table-engines/mergetree-family/annindexes)

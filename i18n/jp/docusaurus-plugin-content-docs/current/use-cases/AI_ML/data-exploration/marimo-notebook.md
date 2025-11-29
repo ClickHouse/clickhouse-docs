@@ -40,6 +40,7 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 ここでは、スターターデータセットの 1 つとして ClickHouse Cloud 上で利用可能な UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
+
 ## セットアップ {#setup}
 
 ### データセットの読み込み {#loading-the-dataset}
@@ -176,7 +177,7 @@ df.head()
 この例では、年ごとの平均価格を返し、`town='LONDON'` でフィルタリングしています。
 結果は `df` という変数の DataFrame に保存されます。
 
-### データの可視化
+### データの可視化 {#visualizing-the-data}
 
 データが扱い慣れた形式で利用可能になったので、ロンドンの不動産価格が時間とともにどのように変化したかを見ていきます。
 
@@ -203,7 +204,7 @@ fig
 
 Marimo の大きな強みの 1 つは、そのリアクティブな実行モデルです。さまざまな町を動的に選択できるインタラクティブなウィジェットを作成しましょう。
 
-### インタラクティブな町の選択
+### インタラクティブな町の選択 {#interactive-town-selection}
 
 新しいセルで、さまざまな町を選択するためのドロップダウンを作成します。
 
@@ -260,7 +261,7 @@ fig_reactive
 
 <Image size="md" img={image_7} alt="Marimo の動的チャート" />
 
-### インタラクティブな箱ひげ図で価格分布を探索する
+### インタラクティブな箱ひげ図で価格分布を探索する {#exploring-price-distributions}
 
 ロンドンの物件価格について、年ごとの分布を調べて、データをさらに深掘りしてみましょう。
 箱ひげ図を使うと、中央値や四分位数、外れ値を確認でき、単なる平均価格よりもはるかに深い理解が得られます。
@@ -301,38 +302,42 @@ WHERE town = 'LONDON'
 """
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
-
-# インタラクティブな箱ひげ図を作成する
-fig_box = go.Figure()
-
-fig_box.add_trace(
-    go.Box(
-        y=df_distribution['price'],
-        name=f'London {year_slider.value}',
-        boxmean='sd',  # 平均値と標準偏差を表示
-        marker_color='lightblue',
-        boxpoints='outliers'  # 外れ値のポイントを表示
-    )
-)
-
-fig_box.update_layout(
-    title=f'Distribution of Property Prices in London ({year_slider.value})',
-    yaxis=dict(
-        title='Price (£)',
-        tickformat=',.0f'
-    ),
-    showlegend=False,
-    height=600
-)
-
-fig_box
 ```
 
+
+# インタラクティブな箱ひげ図を作成する {#create-an-interactive-box-plot}
+
+fig&#95;box = go.Figure()
+
+fig&#95;box.add&#95;trace(
+go.Box(
+y=df&#95;distribution[&#39;price&#39;],
+name=f&#39;London {year_slider.value}&#39;,
+boxmean=&#39;sd&#39;,  # 平均値と標準偏差を表示
+marker&#95;color=&#39;lightblue&#39;,
+boxpoints=&#39;outliers&#39;  # 外れ値のポイントを表示
+)
+)
+
+fig&#95;box.update&#95;layout(
+title=f&#39;Distribution of Property Prices in London ({year_slider.value})&#39;,
+yaxis=dict(
+title=&#39;Price (£)&#39;,
+tickformat=&#39;,.0f&#39;
+),
+showlegend=False,
+height=600
+)
+
+fig&#95;box
+
+```
 セルの右上にあるオプションボタンをクリックすると、
 コードを非表示にできます。
 スライダーを動かすと、Marimo のリアクティブ実行機能によりプロットが自動的に更新されます。
 
 <Image size="md" img={image_8} alt="Marimo の動的なチャート"/>
+```
 
 
 ## まとめ {#summary}

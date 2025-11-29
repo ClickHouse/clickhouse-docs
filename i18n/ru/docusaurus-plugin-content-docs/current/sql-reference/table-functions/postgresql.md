@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция PostgreSQL
+# Табличная функция PostgreSQL {#postgresql-table-function}
 
 Позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере PostgreSQL.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
@@ -48,7 +48,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 
 
-## Детали реализации
+## Детали реализации {#implementation-details}
 
 Запросы `SELECT` на стороне PostgreSQL выполняются в виде `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
 
@@ -79,7 +79,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 Поддерживаются приоритеты реплик для источника словаря PostgreSQL. Чем больше число в отображении, тем ниже приоритет. Наивысший приоритет — `0`.
 
 
-## Примеры
+## Примеры {#examples}
 
 Таблица в PostgreSQL:
 

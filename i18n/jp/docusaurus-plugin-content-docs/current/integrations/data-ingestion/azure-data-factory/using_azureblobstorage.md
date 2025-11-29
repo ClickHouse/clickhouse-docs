@@ -50,7 +50,7 @@ ClickHouse が Azure Blob Storage にアクセスできるようにするには�
 
 
 
-## Azure Blob Storage 上のデータをクエリする
+## Azure Blob Storage 上のデータをクエリする {#querying-the-data-from-azure-blob-storage}
 
 お使いの ClickHouse クエリコンソールを開きます。これは ClickHouse Cloud
 の Web インターフェイス、ClickHouse CLI クライアント、またはクエリを
@@ -84,7 +84,7 @@ SELECT * FROM azureBlobStorage(
 これにより、中間の ETL ステップを挟むことなく、外部データを効率的に ClickHouse に取り込めます。
 
 
-## Environmental Sensors データセットを使った簡単な例
+## Environmental Sensors データセットを使った簡単な例 {#simple-example-using-the-environmental-sensors-dataset}
 
 例として、Environmental Sensors データセットから 1 つのファイルをダウンロードします。
 

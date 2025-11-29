@@ -11,10 +11,10 @@ integration:
   - category: 'data_ingestion'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Amazon MSK と ClickHouse の統合
+# Amazon MSK と ClickHouse の統合 {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -39,13 +39,13 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 
 
-## ClickHouse 公式 Kafka コネクタと Amazon MSK の連携
+## ClickHouse 公式 Kafka コネクタと Amazon MSK の連携 {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
-### 接続情報を確認する
+### 接続情報を確認する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 手順
+### 手順 {#steps}
 
 1. [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md) に目を通しておく。
 2. [MSK インスタンスを作成する](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)。
@@ -74,7 +74,7 @@ schemas.enable=false
 ```
 
 
-## 推奨 IAM 権限（最小権限）
+## 推奨 IAM 権限（最小権限） {#iam-least-privilege}
 
 環境に必要な最小限の権限だけを付与してください。まずは以下のベースラインから始め、利用するサービスがある場合にのみオプションの権限を追加します。
 
@@ -145,7 +145,7 @@ schemas.enable=false
 あわせて参照してください: [Kafka のベストプラクティス – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
 
-## パフォーマンスチューニング
+## パフォーマンスチューニング {#performance-tuning}
 
 パフォーマンスを向上させる 1 つの方法は、**worker** の設定に次の項目を追加し、Kafka から取得するバッチサイズとレコード数を調整することです。
 

@@ -6,7 +6,7 @@ title: '启动脚本'
 doc_type: 'guide'
 ---
 
-# 启动脚本
+# 启动脚本 {#startup-scripts}
 
 ClickHouse 可以在启动时根据服务器配置执行任意 SQL 查询。这对于迁移或自动创建模式很有用。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# FORMAT 句
+# FORMAT 句 {#format-clause}
 
 ClickHouse は、クエリ結果などに対して使用できる幅広い[シリアル化フォーマット](../../../interfaces/formats.md)をサポートしています。`SELECT` の出力フォーマットを選択する方法はいくつかあり、そのひとつはクエリの末尾で `FORMAT format` を指定して、結果データを任意の形式で取得する方法です。
 

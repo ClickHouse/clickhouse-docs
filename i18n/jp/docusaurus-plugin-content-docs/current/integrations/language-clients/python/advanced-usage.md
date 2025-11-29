@@ -47,7 +47,7 @@ ClickHouse データとネイティブまたはサードパーティのデータ
 
 指定されたフォーマットおよび圧縮方式に `insert_block` が従っていることを保証する責任は呼び出し側にあります。ClickHouse Connect は、ファイルアップロードや PyArrow Tables に対してこれらの `raw_insert` を使用し、パース処理を ClickHouse サーバーに委譲します。
 
-## クエリ結果をファイルとして保存する
+## クエリ結果をファイルとして保存する {#saving-query-results-as-files}
 
 `raw_stream` メソッドを使用すると、ClickHouse からローカルファイルシステムへファイルを直接ストリーミングできます。たとえば、クエリ結果を CSV ファイルとして保存する場合は、次のコードスニペットを使用します。
 
@@ -86,7 +86,7 @@ ClickHouse Connect は、マルチスレッド、マルチプロセス、さら�
 
 さらに、2 つ以上のクエリや INSERT が同時に実行中のアプリケーションでは、念頭に置くべき点が 2 つあります。1 つ目はクエリ／INSERT に関連付けられた ClickHouse の「セッション」であり、2 つ目は ClickHouse Connect クライアントインスタンスによって使用される HTTP 接続プールです。
 
-## AsyncClient ラッパー
+## AsyncClient ラッパー {#asyncclient-wrapper}
 
 ClickHouse Connect は通常の `Client` に対する非同期ラッパーを提供しており、`asyncio` 環境でクライアントを使用できるようにします。
 
@@ -117,7 +117,7 @@ asyncio.run(main())
 関連項目: [run&#95;async の例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
 
-## ClickHouse セッション ID の管理
+## ClickHouse セッション ID の管理 {#managing-clickhouse-session-ids}
 
 各 ClickHouse クエリは、ClickHouse の「セッション」コンテキスト内で実行されます。セッションは現在、次の 2 つの目的で使用されています。
 
@@ -143,7 +143,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 この場合、ClickHouse Connect は `session_id` を送信せず、サーバーは個々のリクエストを同じセッションに属するものとして扱いません。一時テーブルおよびセッションレベルの設定は、リクエスト間で保持されません。
 
 
-## HTTP コネクションプールのカスタマイズ
+## HTTP コネクションプールのカスタマイズ {#customizing-the-http-connection-pool}
 
 ClickHouse Connect は、サーバーへの下位レベルの HTTP 接続を処理するために `urllib3` のコネクションプールを使用します。デフォルトでは、すべてのクライアントインスタンスが同じコネクションプールを共有しており、これはほとんどのユースケースに対して十分です。このデフォルトプールは、アプリケーションで使用される各 ClickHouse サーバーごとに最大 8 個の HTTP Keep-Alive 接続を維持します。
 

@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法
+# ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法 {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
 
 このガイドでは、[SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) エージェントの構築方法を解説します。
 このボットを使うと、自然言語で Slack から直接 ClickHouse のデータについて質問できます。内部的には
@@ -77,7 +77,7 @@ Slack のドキュメントにある
 
 
 
-## 環境変数を追加する (`.env`)
+## 環境変数を追加する (`.env`) {#add-env-vars}
 
 プロジェクトのルートに `.env` ファイルを作成し、以下の環境変数を定義します。
 これにより、アプリケーションから [ClickHouse の SQL playground](https://sql.clickhouse.com/) に接続できるようになります。

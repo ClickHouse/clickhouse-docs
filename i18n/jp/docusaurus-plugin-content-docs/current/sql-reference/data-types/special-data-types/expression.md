@@ -7,6 +7,6 @@ title: 'Expression'
 doc_type: 'reference'
 ---
 
-# 式
+# 式 {#expression}
 
 式は高階関数においてラムダを表すために用いられます。

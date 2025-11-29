@@ -6,7 +6,7 @@ title: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap
+# sumMap {#summap}
 
 根据 `key` 数组中指定的键，对一个或多个 `value` 数组进行求和。返回一个由数组组成的元组：第一个数组是排好序的键，后续数组是对应键的求和值，且不会发生溢出。
 
@@ -84,7 +84,6 @@ GROUP BY timeslot
 
 `sumMap` 也支持同时对多个值数组进行聚合。
 当存在共享相同键的相关指标时，这会非常有用。
-
 
 ```sql title="Query"
 CREATE TABLE multi_metrics(

@@ -34,9 +34,9 @@ doc_type: 'guide'
 
 
 
-## 设置和转义规则
+## 设置和转义规则 {#settings-and-escaping-rules}
 
-### format&#95;template&#95;row
+### format&#95;template&#95;row {#format_template_row}
 
 `format_template_row` 设置指定包含行格式字符串的文件路径，该文件中行格式字符串的语法如下：
 
@@ -87,11 +87,11 @@ doc_type: 'guide'
 搜索词组：'bathroom interior design'，数量：2166，广告价格：$3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter
+### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
 
 `format_template_rows_between_delimiter` 设置用于指定行与行之间的分隔符，该分隔符会在每一行（除了最后一行）之后输出（默认是 `\n`）。
 
-### format&#95;template&#95;resultset
+### format&#95;template&#95;resultset {#format_template_resultset}
 
 `format_template_resultset` 设置用于指定包含结果集格式字符串的文件路径。
 
@@ -134,11 +134,11 @@ doc_type: 'guide'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 让我们来看两个关于如何使用 `Template` 格式的示例，首先是用于查询数据，其次是用于插入数据。
 
-### 查询数据
+### 查询数据 {#selecting-data}
 
 ```sql
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
@@ -187,7 +187,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 </html>
 ```
 
-### 写入数据
+### 写入数据 {#inserting-data}
 
 ```text
 某个标题
@@ -213,7 +213,7 @@ FORMAT Template
 占位符中的 `PageViews`、`UserID`、`Duration` 和 `Sign` 是表中的列名。行中 `Useless field` 之后的值，以及后缀中 `\nTotal rows:` 之后的值将被忽略。
 输入数据中的所有分隔符必须与指定格式字符串中的分隔符完全一致。
 
-### 内联规格
+### 内联规格 {#in-line-specification}
 
 厌倦了手动编写和排版 Markdown 表格？在本示例中，我们将介绍如何使用 `Template` 格式和内联规格设置来完成一个简单任务——从 `system.formats` 表中 `SELECT` 出若干 ClickHouse 格式的名称，并将它们格式化为 Markdown 表格。通过使用 `Template` 格式以及 `format_template_row_format` 和 `format_template_resultset_format` 设置，即可轻松实现这一点。
 

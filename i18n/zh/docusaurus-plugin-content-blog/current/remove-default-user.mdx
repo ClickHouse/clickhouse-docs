@@ -10,8 +10,7 @@ words: ['移除默认用户', 'ClickHouse Server']
 
 {/* 截断 */}
 
-
-## 移除 `default` 用户
+## 移除 `default` 用户 \{#removing-the-default-user\}
 
 :::note
 本指南不适用于 ClickHouse Cloud。
@@ -29,8 +28,7 @@ users:
 
 该文件的位置取决于 ClickHouse 的安装方式。
 
-
-## 直接运行可执行文件
+## 直接运行可执行文件 \{#running-the-executable-directly\}
 
 如果我们直接运行 ClickHouse（`clickhouse server`），则需要将该文件放在 `config.d` 目录下。
 
@@ -56,8 +54,7 @@ ClickHouse 客户端版本 24.11.1.2557（官方构建）。
 代码：516。DB::Exception: 来自 localhost:9000。DB::Exception: default: 身份验证失败：密码不正确或不存在该用户名。
 ```
 
-
-## Docker 或本机安装
+## Docker 或本机安装 \{#docker-or-installed\}
 
 如果我们通过 Docker 运行 ClickHouse，或者已经在本机安装了 ClickHouse，那么需要将该文件放到 `/etc/clickhouse-server/users.d` 目录下。
 

@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Табличная функция url
+# Табличная функция url {#url-table-function}
 
 Функция `url` создаёт таблицу на основе `URL` с заданными `format` и `structure`.
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 url(URL [,format] [,structure] [,headers])
@@ -43,7 +43,7 @@ url(URL [,format] [,structure] [,headers])
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Получение первых трёх строк таблицы, содержащей столбцы типов `String` и [UInt32](../../sql-reference/data-types/int-uint.md), с HTTP-сервера, который отвечает в формате [CSV](/interfaces/formats/CSV).
 
@@ -77,7 +77,7 @@ SELECT * FROM test_table;
 
 
 
-## настройка use&#95;hive&#95;partitioning
+## настройка use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
 Когда настройка `use_hive_partitioning` установлена в 1, ClickHouse будет распознавать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути секционирования, но с префиксом `_`.
 

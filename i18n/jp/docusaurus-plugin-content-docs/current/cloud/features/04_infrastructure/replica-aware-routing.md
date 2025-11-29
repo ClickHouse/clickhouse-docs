@@ -9,7 +9,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 
-# レプリカ認識ルーティング
+# レプリカ認識ルーティング {#replica-aware-routing}
 
 <PrivatePreviewBadge/>
 

@@ -249,7 +249,7 @@ docker run -d --name clickstack-demo \
 
 メトリクスを直接 ClickHouse に読み込みます:
 ```bash
-# gauge メトリクスを読み込む（パーティション数、キューサイズ、レイテンシ、コンシューマラグ）
+# gauge メトリクスを読み込む（パーティション数、キューサイズ、レイテンシ、コンシューマラグ） {#send-test-messages}
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
@@ -350,7 +350,7 @@ echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset 
 ```
 
 
-#### 認証エラー
+#### 認証エラー {#created-dashboard}
 
 `Authorization failed` または `401 Unauthorized` が表示される場合:
 
@@ -379,7 +379,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-ser
 ```
 
 
-#### ネットワーク接続の問題
+#### ネットワーク接続の問題 {#no-metrics}
 
 JMX exporter のログに `Connection refused` が表示される場合は、次の点を確認してください。
 
@@ -393,7 +393,7 @@ docker network inspect <ネットワーク名>
 接続をテストする:
 
 ```bash
-# JMXエクスポーターからClickStackへ
+# JMXエクスポーターからClickStackへ {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 

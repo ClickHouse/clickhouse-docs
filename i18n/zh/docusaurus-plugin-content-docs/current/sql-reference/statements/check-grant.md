@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 查询的基本语法如下：
 
@@ -22,7 +22,7 @@ CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|t
 * `privilege` — 权限的类型。
 
 
-## 示例
+## 示例 {#examples}
 
 如果用户曾被授予该权限，`check_grant` 的返回值为 `1`。否则，`check_grant` 的返回值为 `0`。
 

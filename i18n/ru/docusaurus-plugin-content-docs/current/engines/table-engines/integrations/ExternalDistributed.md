@@ -9,15 +9,11 @@ title: 'Табличный движок ExternalDistributed'
 doc_type: 'reference'
 ---
 
-
-
-# Движок таблицы ExternalDistributed
+# Движок таблицы ExternalDistributed {#externaldistributed-table-engine}
 
 Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах с MySQL или PostgreSQL. Принимает в качестве аргумента движки [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md), поэтому возможен шардинг.
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -44,8 +40,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — Имя пользователя.
 * `password` — Пароль пользователя.
 
-
-## Детали реализации
+## Детали реализации {#implementation-details}
 
 Поддерживаются несколько реплик; их необходимо перечислять через `|`, а шарды — через `,`. Например:
 

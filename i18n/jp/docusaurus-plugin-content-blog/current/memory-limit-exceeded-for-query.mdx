@@ -13,7 +13,6 @@ keywords: ['OOM', 'メモリ制限超過']
 import Image from '@theme/IdealImage';
 import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-query.png';
 
-
 ## クエリでメモリ制限を超過しました \{#troubleshooting-out-of-memory-issues\}
 
 新しいユーザーにとって、ClickHouse はしばしば「魔法」のように感じられるかもしれません。どのクエリも非常に高速であり、
@@ -55,11 +54,11 @@ ClickHouse Cloud では、これを自動的かつシームレスに行い、ク
 `JOIN` を実行できます。この場合、右側と左側の両方がメモリに収まらない場合には
 ディスク上でソートされ、大きなテーブル同士の結合が可能になります。
 
-<Image img={joins} size="md" alt="JOIN アルゴリズム"/>
+<Image img={joins} size="md" alt="JOIN アルゴリズム" />
 
 バージョン 20.3 以降、ClickHouse は `join_algorithm` 設定で auto 値をサポートしています。
 これは ClickHouse にアダプティブな結合方式を適用するよう指示するものであり、
 メモリ制限に違反するまではハッシュ結合アルゴリズムを優先し、その時点で
-partial_merge アルゴリズムが試行されます。最後に、結合に関しては、
+partial&#95;merge アルゴリズムが試行されます。最後に、結合に関しては、
 分散結合の動作と、そのメモリ消費をいかに最小化するかを理解しておくことを推奨します。
 詳細は[こちら](/sql-reference/operators/in#distributed-subqueries)を参照してください。

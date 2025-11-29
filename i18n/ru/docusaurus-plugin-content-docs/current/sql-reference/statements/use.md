@@ -7,7 +7,7 @@ title: 'Оператор USE'
 doc_type: 'reference'
 ---
 
-# Оператор USE
+# Оператор USE {#use-statement}
 
 ```sql
 USE [DATABASE] имя_бд

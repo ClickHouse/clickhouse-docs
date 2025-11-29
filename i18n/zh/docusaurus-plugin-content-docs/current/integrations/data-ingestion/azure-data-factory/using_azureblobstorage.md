@@ -39,7 +39,7 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 
 
 
-## 从 Azure Blob Storage 查询数据
+## 从 Azure Blob Storage 查询数据 {#querying-the-data-from-azure-blob-storage}
 
 打开常用的 ClickHouse 查询控制台——可以是 ClickHouse Cloud
 Web 界面、ClickHouse CLI 客户端，或任何用于运行查询的工具。准备好连接字符串和 ClickHouse 查询控制台之后，就可以开始直接从 Azure Blob Storage 查询数据。
@@ -69,7 +69,7 @@ SELECT * FROM azureBlobStorage(
 这使得可以高效地将外部数据导入 ClickHouse，而无需经过中间的 ETL 步骤。
 
 
-## 使用 Environmental Sensors 数据集的简单示例
+## 使用 Environmental Sensors 数据集的简单示例 {#simple-example-using-the-environmental-sensors-dataset}
 
 作为示例，我们将从 Environmental Sensors 数据集中下载一个文件。
 

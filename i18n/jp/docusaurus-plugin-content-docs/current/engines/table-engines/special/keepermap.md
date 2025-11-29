@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# KeeperMap テーブルエンジン
+# KeeperMap テーブルエンジン {#keepermap-table-engine}
 
 このエンジンを使用すると、Keeper/ZooKeeper クラスターを、線形化可能な書き込みと逐次一貫な読み取りを備えた一貫性のあるキー・バリュー ストアとして利用できます。
 
@@ -26,7 +26,7 @@ KeeperMap ストレージエンジンを有効化するには、テーブルを�
 ここで path には任意の有効な ZooKeeper パスを指定できます。
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -80,9 +80,9 @@ PRIMARY KEY key
 もちろん、関連しない ClickHouse インスタンス間であっても、同じパスを指定して手動で `CREATE TABLE` を実行することで、同様のデータ共有効果を得ることができます。
 
 
-## サポートされている操作
+## サポートされている操作 {#supported-operations}
 
-### 挿入
+### 挿入 {#inserts}
 
 新しい行が `KeeperMap` に挿入されるとき、キーが存在しない場合は、そのキー用の新しいエントリが作成されます。
 キーが存在し、かつ `keeper_map_strict_mode` が `true` に設定されている場合は、例外がスローされます。そうでない場合、そのキーに対する値は上書きされます。
@@ -93,7 +93,7 @@ PRIMARY KEY key
 INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
 ```
 
-### 削除
+### 削除 {#deletes}
 
 行は `DELETE` クエリまたは `TRUNCATE` を使用して削除できます。
 キーが存在しており、設定 `keeper_map_strict_mode` が `true` の場合、データの取得および削除は、それらをアトミックに実行できる場合にのみ成功します。
@@ -110,7 +110,7 @@ ALTER TABLE keeper_map_table DELETE WHERE key LIKE 'some%' AND v1 > 1;
 TRUNCATE TABLE keeper_map_table;
 ```
 
-### 更新
+### 更新 {#updates}
 
 値は `ALTER TABLE` クエリを使用して更新できます。プライマリキーは更新できません。
 `keeper_map_strict_mode` を `true` に設定すると、データの取得および更新は、アトミックに実行された場合にのみ成功します。

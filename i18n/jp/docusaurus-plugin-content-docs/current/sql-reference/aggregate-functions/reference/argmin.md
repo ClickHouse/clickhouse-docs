@@ -6,7 +6,7 @@ title: 'argMin'
 doc_type: 'reference'
 ---
 
-# argMin
+# argMin {#argmin}
 
 最小の `val` 値に対応する `arg` の値を計算します。`val` が最小となる行が複数ある場合、どの行に対応する `arg` が返されるかは非決定的です。
 `arg` 部分および `min` 部分の両方は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はどちらも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` ではない値が存在する場合には `Null` ではない値を返します。
@@ -55,7 +55,6 @@ SELECT argMin(user, salary) FROM salary
 ```
 
 **詳細な例**
-
 
 ```sql
 CREATE TABLE test

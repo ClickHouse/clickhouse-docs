@@ -75,9 +75,9 @@ ClickHouse テーブルのカラムのデータ型は、挿入される Parquet 
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む `football.parquet` という名前の Parquet ファイルを使用します：
 
@@ -109,7 +109,7 @@ ClickHouse テーブルのカラムのデータ型は、挿入される Parquet 
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `Parquet` 形式でデータを読み込みます。
 

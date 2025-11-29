@@ -7,7 +7,7 @@ title: 'meanZTest'
 doc_type: 'reference'
 ---
 
-# meanZTest
+# meanZTest {#meanztest}
 
 2つの母集団からの標本に対して、平均に対するZ検定を適用します。
 

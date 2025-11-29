@@ -36,7 +36,7 @@ import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/s
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse におけるプライマリインデックスの実践入門
+# ClickHouse におけるプライマリインデックスの実践入門 {#a-practical-introduction-to-primary-indexes-in-clickhouse}
 
 ## はじめに {#introduction}
 
@@ -73,7 +73,7 @@ ClickHouse の [セカンダリ data skipping インデックス](/engines/table
 
 このドキュメントで示しているすべての実行時の数値は、Apple M1 Pro チップと 16GB の RAM を搭載した MacBook Pro 上で ClickHouse 22.2.1 をローカルで実行した際の結果に基づいています。
 
-### フルテーブルスキャン
+### フルテーブルスキャン {#a-full-table-scan}
 
 主キーなしのデータセットに対してクエリがどのように実行されるかを確認するために、次の SQL DDL ステートメントを実行して、MergeTree テーブルエンジンを使用するテーブルを作成します。
 
@@ -150,7 +150,7 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.022 sec.
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 処理行数: 887万行、
 70.45 MB (3億9853万行/秒、3.17 GB/秒)
 ```
@@ -172,7 +172,7 @@ B-Tree インデックスに伴う課題を踏まえ、ClickHouse のテーブ�
 
 以下では、ClickHouse がスパースプライマリインデックスをどのように構築・利用しているかを詳細に説明します。記事の後半では、インデックス（プライマリキー列）を構築するために使用するテーブル列の選択・削除・並び替えについて、いくつかのベストプラクティスを解説します。
 
-### 主キーを持つテーブル
+### 主キーを持つテーブル {#a-table-with-a-primary-key}
 
 `UserID` と `URL` をキー列とする複合主キーを持つテーブルを作成します。
 
@@ -494,7 +494,7 @@ SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID
 
   これがクエリ実行性能に与える影響については、このあと詳しく説明します。
 
-### プライマリインデックスはグラニュールを選択するために使用される
+### プライマリインデックスはグラニュールを選択するために使用される {#the-primary-index-is-used-for-selecting-granules}
 
 これで、プライマリインデックスを活用してクエリを実行できるようになりました。
 
@@ -526,7 +526,7 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10行のセット。経過時間: 0.005秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 8.19千行を処理、
 740.18 KB (1.53百万行/秒、138.59 MB/秒)
 ```
@@ -537,13 +537,13 @@ ClickHouse クライアントの出力を見ると、フルテーブルスキャ
 
 ```response
 ...Executor): キー条件: (列 0 が [749927693, 749927693] 内)
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): パート all_1_9_2 のインデックス範囲で二分探索を実行中 (1083 マーク)
 ...Executor): 左境界マークを検出: 176
 ...Executor): 右境界マークを検出: 177
 ...Executor): 19 ステップで連続範囲を検出
 ...Executor): パーティションキーで 1/1 パートを選択、プライマリキーで 1 パートを選択、
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               プライマリキーで 1/1083 マークを選択、1 範囲から 1 マークを読み取り
 ...Reading ...1441792 から開始して約 8192 行を読み取り中
 ```
@@ -592,7 +592,7 @@ LIMIT 10;
 │                       UserID                                                          │
 │                     Condition: (UserID in [749927693, 749927693])                     │
 │                     Parts: 1/1                                                        │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │                     Granules: 1/1083                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -711,7 +711,7 @@ ClickHouse は、今回の例のクエリ（UserID が 749.927.693 のインタ�
 
 <a name="filtering-on-key-columns-after-the-first"></a>
 
-### セカンダリキー列は（必ずしも）非効率とは限らない
+### セカンダリキー列は（必ずしも）非効率とは限らない {#secondary-key-columns-can-not-be-inefficient}
 
 クエリが複合キーの一部であり、かつ先頭のキー列である列を条件にフィルタリングしている場合、[ClickHouse はそのキー列のインデックスマークに対して二分探索アルゴリズムを実行します](#the-primary-index-is-used-for-selecting-granules)。
 
@@ -757,7 +757,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.086 sec.
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 処理: 881万行、
 799.69 MB (1億211万行/秒、9.27 GB/秒)
 ```
@@ -769,11 +769,11 @@ LIMIT 10;
 ```response
 ...Executor): Key condition: (column 1 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1537 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               1076/1083 marks by primary key, 1076 marks to read from 5 ranges
 ...Executor): Reading approx. 8814592 rows with 10 streams
 ```
@@ -842,7 +842,7 @@ UserID のカーディナリティが高い場合、同じ UserID 値が複数�
 
 このサンプルデータセットでは、両方のキー列（UserID, URL）は同程度に高いカーディナリティを持っており、前述のとおり、URL 列の直前のキー列のカーディナリティが高い、あるいは同程度に高い場合には、汎用排他検索アルゴリズムはあまり効果的ではありません。
 
-### データスキッピングインデックスに関する注意
+### データスキッピングインデックスに関する注意 {#note-about-data-skipping-index}
 
 UserID と URL はどちらも同様にカーディナリティが高いため、[URL でのクエリフィルタリング](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) についても、[複合主キー (UserID, URL) を持つテーブル](#a-table-with-a-primary-key) の URL 列に [セカンダリのデータスキッピングインデックス](./skipping-indexes.md) を作成しても、得られる効果はそれほど大きくありません。
 
@@ -906,7 +906,7 @@ UserIDとURLのカーディナリティがともに高いため、この二次�
 
 <a name="multiple-primary-indexes-via-secondary-tables"></a>
 
-### オプション 1: セカンダリテーブル
+### オプション 1: セカンダリテーブル {#option-1-secondary-tables}
 
 <a name="secondary-table" />
 
@@ -986,7 +986,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10行を取得しました。経過時間: 0.017秒
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 処理行数: 319.49千行、
 11.38 MB (18.41百万行/秒、655.75 MB/秒)
 ```
@@ -1002,13 +1002,13 @@ ClickHouse サーバーのログファイル内に出力される対応する tr
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): パート all_1_9_2 のインデックス範囲でバイナリサーチを実行中 (1083 marks)
 ...Executor): (LEFT) 境界マークを検出: 644
 ...Executor): (RIGHT) 境界マークを検出: 683
 ...Executor): 19 ステップで連続範囲を検出
 ...Executor): パーティションキーで 1/1 parts を選択、プライマリキーで 1 parts を選択、
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               プライマリキーで 39/1083 marks、1 ranges から 39 marks を読み取り
 ...Executor): 2 streams で約 319488 行を読み取り中
 ```
@@ -1143,7 +1143,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10行が設定されています。経過時間: 0.026秒。
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 335.87千行を処理しました、
 13.54 MB (12.91百万行/秒、520.38 MB/秒)
 ```
@@ -1156,7 +1156,7 @@ ClickHouse のサーバーログファイル内の対応するトレースログ
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Running binary search on index range ...
 ...
 ...Executor): Selected 4/4 parts by partition key, 4 parts by primary key,
@@ -1233,7 +1233,7 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.029 sec.
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 Processed 319.49 thousand rows, 1
 1.38 MB (11.05 million rows/s., 393.58 MB/s.)
 ```
@@ -1246,14 +1246,14 @@ ClickHouse のサーバーログファイル中の該当トレースログから
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Running binary search on index range for part prj_url_userid (1083 marks)
 ...Executor): ...
 # highlight-next-line
 ...Executor): Choose complete Normal projection prj_url_userid
 ...Executor): projection required columns: URL, UserID
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               39/1083 marks by primary key, 39 marks to read from 1 ranges
 ...Executor): Reading approx. 319488 rows with 2 streams
 ```
@@ -1444,7 +1444,7 @@ Processed 20.32 thousand rows,
 その理由は、[汎用除外検索アルゴリズム](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444) は、直前のキー列のカーディナリティがより低い場合に、その次のセカンダリキー列を用いて [granules](#the-primary-index-is-used-for-selecting-granules) を選択するときに最も効果的に動作するためです。この点については、本ガイドの[前のセクション](#generic-exclusion-search-algorithm)で詳しく説明しました。
 
 
-### データファイルの最適な圧縮率
+### データファイルの最適な圧縮率 {#efficient-filtering-on-secondary-key-columns}
 
 次のクエリでは、上記で作成した 2 つのテーブル間における `UserID` 列の圧縮率を比較します。
 

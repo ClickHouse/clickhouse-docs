@@ -8,12 +8,11 @@ keywords: ['конфигурация SSL', 'настройка TLS', 'серти
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
-# Настройка SSL-TLS
+# Настройка SSL-TLS {#configuring-ssl-tls}
 
 <SelfManaged />
 
@@ -24,8 +23,6 @@ import Image from '@theme/IdealImage';
 
 Ознакомьтесь с этим [базовым учебником по использованию сертификатов](https://ubuntu.com/server/docs/security-certificates) в качестве вводного обзора.
 :::
-
-
 
 ## 1. Создание развертывания ClickHouse {#1-create-a-clickhouse-deployment}
 
@@ -40,8 +37,6 @@ import Image from '@theme/IdealImage';
 :::note
 Дополнительные сведения об установке ClickHouse см. в разделе [Быстрый старт](/getting-started/install/install.mdx).
 :::
-
-
 
 ## 2. Создание SSL-сертификатов {#2-create-ssl-certificates}
 :::note
@@ -92,8 +87,6 @@ import Image from '@theme/IdealImage';
     chnode1.crt: OK
     ```
 
-
-
 ## 3. Создайте и настройте каталог для хранения сертификатов и ключей. {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
@@ -123,8 +116,6 @@ import Image from '@theme/IdealImage';
     -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
-
-
 
 ## 4. Настройка среды с базовыми кластерами с использованием ClickHouse Keeper {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
@@ -228,8 +219,6 @@ import Image from '@theme/IdealImage';
     </remote_servers>
     ```
 
-
-
 4. Определите значения макросов для создания тестовой таблицы ReplicatedMergeTree. На `chnode1`:
     ```xml
     <macros>
@@ -245,8 +234,6 @@ import Image from '@theme/IdealImage';
         <replica>replica_2</replica>
     </macros>
     ```
-
-
 
 ## 5. Настройка SSL/TLS‑интерфейсов на узлах ClickHouse {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 Приведённые ниже настройки задаются в `config.xml` сервера ClickHouse.
@@ -347,15 +334,11 @@ import Image from '@theme/IdealImage';
     </openSSL>
     ```
 
-
-
 6. Отключите стандартные порты эмуляции для MySQL и PostgreSQL:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
-
-
 
 ## 6. Тестирование {#6-testing}
 1. Запустите все узлы по одному:
@@ -397,8 +380,6 @@ import Image from '@theme/IdealImage';
 3. Проверьте работоспособность ClickHouse Keeper  
 Обычные команды [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) не будут работать с помощью `echo` без TLS. Ниже показано, как использовать эти команды с `openssl`.
    - Запустите интерактивный сеанс с `openssl`
-
-
 
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
@@ -509,7 +490,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    (2,'2022-04-02','def');
    ```
 
-
 8. Проверьте репликацию, просмотрев строки на узле `chnode2`:
     ```sql
     SELECT * FROM repl_table
@@ -521,8 +501,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
-
-
 
 ## Итоги {#summary}
 

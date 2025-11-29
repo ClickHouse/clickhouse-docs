@@ -7,40 +7,34 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-
-
-# chDB для Bun
+# chDB для Bun {#chdb-for-bun}
 
 chDB-bun предоставляет экспериментальные биндинги (FFI, Foreign Function Interface) для chDB, позволяющие выполнять запросы ClickHouse напрямую в ваших приложениях Bun без каких-либо внешних зависимостей.
 
+## Установка {#installation}
 
-
-## Установка
-
-### Шаг 1. Установите системные зависимости
+### Шаг 1. Установите системные зависимости {#install-system-dependencies}
 
 Сначала установите необходимые системные зависимости:
 
-#### Установка libchdb
+#### Установка libchdb {#install-libchdb}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### Установите инструменты для сборки
+#### Установите инструменты для сборки {#install-build-tools}
 
 Вам потребуется установить в систему либо `gcc`, либо `clang`:
 
-### Шаг 2: Установите chDB-bun
-
+### Шаг 2: Установите chDB-bun {#install-chdb-bun}
 
 ```bash
 # Установка из репозитория GitHub
 bun add github:chdb-io/chdb-bun
 ```
 
-
-# Или клонируйте репозиторий и соберите локально
+# Или клонируйте репозиторий и соберите локально {#install-from-the-github-repository}
 
 git clone [https://github.com/chdb-io/chdb-bun.git](https://github.com/chdb-io/chdb-bun.git)
 cd chdb-bun
@@ -49,7 +43,6 @@ bun run build
 
 ```
 ```
-
 
 ## Использование
 
@@ -79,7 +72,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-### Постоянные сессии
+### Постоянные сессии {#ephemeral-queries}
 
 Для сложных операций, которым необходимо сохранять состояние между запросами:
 

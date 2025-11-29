@@ -122,7 +122,7 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 
 
 
-## 基本示例
+## 基本示例 {#basic-example}
 
 你可以在 ClickHouse 中使用熟悉的 `INSERT INTO TABLE` 命令。现在让我们向在入门指南[“在 ClickHouse 中创建表”](./creating-tables)中创建的表插入一些数据。
 

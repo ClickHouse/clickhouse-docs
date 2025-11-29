@@ -10,7 +10,6 @@ keywords: ['キー・バリュー型ストレージ']
 
 {/* 省略 */}
 
-
 ## 手短な答えは「いいえ」です \{#the-short-answer-is-no\}
 
 手短な答えは **「いいえ」** です。キーバリュー型のワークロードは、ClickHouse を<span class="text-danger">**使うべきではない**</span>ケース一覧の中でも上位に位置します。あくまで [OLAP](https://clickhouse.com/docs/faq/general/olap) システムであり、キーバリュー型ストレージとして優れたシステムは他に多数存在します。
@@ -19,6 +18,6 @@ keywords: ['キー・バリュー型ストレージ']
 
 もし推奨に反して、ClickHouse に対してキーバリュー的なクエリを実行することにした場合、次のようなヒントがあります。
 
-- ClickHouse でポイントクエリが高コストになる主な理由は、[MergeTree table engine family](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree) における疎なプライマリインデックスにあります。このインデックスは各行を直接指すことができず、N 行ごとの位置しか指せないため、目的の行に到達するには、直近の N 行目から目的の行までスキャンし、その途中で不要なデータも読み込む必要があります。キーバリューのシナリオでは、`index_granularity` 設定によって N の値を小さくすることが有用な場合があります。
-- ClickHouse は各カラムを別々のファイル群として保持しているため、1 行分の完全なレコードを組み立てるには、それぞれのファイルを読み出す必要があります。ファイル数はカラム数に対して線形に増加するため、キーバリューのシナリオでは多くのカラムを使うことは避け、ペイロード全体を 1 つの `String` カラムに格納し、JSON や Protobuf など何らかのシリアライゼーション形式でエンコードすることを検討する価値があります。
-- 通常の `MergeTree` テーブルの代わりに [Join](https://clickhouse.com/docs/engines/table-engines/special/join) テーブルエンジンを利用し、データ取得に [joinGet](https://clickhouse.com/docs/sql-reference/functions/other-functions/#joinget) 関数を使う代替アプローチもあります。これによりクエリパフォーマンスが向上する可能性がありますが、使い勝手や信頼性の面でいくつか課題があるかもしれません。[使用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00800_versatile_storage_join.sql#L49-L51)はこちらを参照してください。
+* ClickHouse でポイントクエリが高コストになる主な理由は、[MergeTree table engine family](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree) における疎なプライマリインデックスにあります。このインデックスは各行を直接指すことができず、N 行ごとの位置しか指せないため、目的の行に到達するには、直近の N 行目から目的の行までスキャンし、その途中で不要なデータも読み込む必要があります。キーバリューのシナリオでは、`index_granularity` 設定によって N の値を小さくすることが有用な場合があります。
+* ClickHouse は各カラムを別々のファイル群として保持しているため、1 行分の完全なレコードを組み立てるには、それぞれのファイルを読み出す必要があります。ファイル数はカラム数に対して線形に増加するため、キーバリューのシナリオでは多くのカラムを使うことは避け、ペイロード全体を 1 つの `String` カラムに格納し、JSON や Protobuf など何らかのシリアライゼーション形式でエンコードすることを検討する価値があります。
+* 通常の `MergeTree` テーブルの代わりに [Join](https://clickhouse.com/docs/engines/table-engines/special/join) テーブルエンジンを利用し、データ取得に [joinGet](https://clickhouse.com/docs/sql-reference/functions/other-functions/#joinget) 関数を使う代替アプローチもあります。これによりクエリパフォーマンスが向上する可能性がありますが、使い勝手や信頼性の面でいくつか課題があるかもしれません。[使用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00800_versatile_storage_join.sql#L49-L51)はこちらを参照してください。

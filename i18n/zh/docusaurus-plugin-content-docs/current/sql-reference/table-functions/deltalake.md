@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# deltaLake 表函数
+# deltaLake 表函数 {#deltalake-table-function}
 
 为存放在 Amazon S3、Azure Blob Storage 或本地挂载文件系统中的 [Delta Lake](https://github.com/delta-io/delta) 表提供只读的类表访问接口。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 `deltaLake` 是 `deltaLakeS3` 的别名，为了兼容性而保留。
 
@@ -43,7 +43,7 @@ deltaLakeLocal(path, [,format])
 
 
 
-## 示例
+## 示例 {#examples}
 
 从 S3 中的表 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` 中选择行：
 

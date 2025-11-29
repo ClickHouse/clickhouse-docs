@@ -17,7 +17,7 @@ ClickHouse は、サポートされているほぼすべての[入力フォー�
 
 
 
-## テーブル関数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。
+## テーブル関数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 {#table-functions-file-s3-url-hdfs-azureblobstorage}
 
 これらのテーブル関数には、入力データの構造を表すオプションの引数 `structure` があります。この引数が指定されていないか、`auto` に設定されている場合は、構造がデータから自動的に推論されます。
 
@@ -65,7 +65,7 @@ DESCRIBE file('hobbies.jsonl')
 ```
 
 
-## テーブルエンジン [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md)
+## テーブルエンジン [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
 
 `CREATE TABLE` クエリでカラムのリストを指定しない場合、テーブルの構造はデータから自動的に推論されます。
 
@@ -108,7 +108,7 @@ DESCRIBE TABLE hobbies
 ```
 
 
-## clickhouse-local
+## clickhouse-local {#clickhouse-local}
 
 `clickhouse-local` には、入力データの構造を指定するためのオプションのパラメータ `-S/--structure` があります。このパラメータが指定されていないか、`auto` に設定されている場合、構造はデータから自動的に推論されます。
 
@@ -139,7 +139,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 ```
 
 
-## 挿入先テーブルの構造を使用する
+## 挿入先テーブルの構造を使用する {#using-structure-from-insertion-table}
 
 テーブル関数 `file/s3/url/hdfs` を使用してテーブルにデータを挿入する場合、
 データから構造を推論する代わりに、挿入先テーブルの構造を使用するオプションがあります。
@@ -415,12 +415,12 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 ```
 
 
-## テキスト形式
+## テキスト形式 {#text-formats}
 
 テキスト形式では、ClickHouse はデータを 1 行ずつ読み取り、フォーマットに従ってカラム値を抽出し、その後、再帰的なパーサーとヒューリスティクスを用いて各値の型を判定します。スキーマ推論時にデータから読み取られる最大行数および最大バイト数は、設定 `input_format_max_rows_to_read_for_schema_inference`（デフォルト 25000）および `input_format_max_bytes_to_read_for_schema_inference`（デフォルト 32MB）によって制御されます。
 デフォルトでは、推論された型はすべて [Nullable](../sql-reference/data-types/nullable.md) になりますが、`schema_inference_make_columns_nullable` を設定することでこれを変更できます（[settings](#settings-for-text-formats) セクションの例を参照）。
 
-### JSON 形式
+### JSON 形式 {#json-formats}
 
 JSON 形式では、ClickHouse は JSON 仕様に従って値をパースし、その後、それぞれに最も適切なデータ型を推論しようとします。
 
@@ -598,9 +598,9 @@ Code: 652. DB::Exception: localhost:9000から受信。DB::Exception:
 ...
 ```
 
-#### JSON 設定
+#### JSON 設定 {#json-settings}
 
-##### input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings
+##### input&#95;format&#95;json&#95;try&#95;infer&#95;numbers&#95;from&#95;strings {#input_format_json_try_infer_numbers_from_strings}
 
 この設定を有効にすると、文字列の値から数値を推論できるようになります。
 
@@ -622,7 +622,7 @@ DESC format(JSONEachRow, $$
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects
+##### input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
 
 この設定を有効にすると、JSON オブジェクトから名前付きタプルを推論できるようになります。生成される名前付きタプルには、サンプルデータ中の対応するすべての JSON オブジェクトに含まれる要素がすべて含まれます。
 JSON データがスパースでない場合には、サンプルデータにあらゆるオブジェクトキーが含まれるため、とくに有用です。
@@ -658,7 +658,7 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects
+##### input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects {#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects}
 
 この設定を有効にすると、`input_format_json_try_infer_named_tuples_from_objects` が有効な場合に、JSON オブジェクトから named Tuple を推論する際、あいまいなパスに対して例外をスローする代わりに String 型を使用できるようになります。
 これにより、パスにあいまいさがある JSON オブジェクトであっても、named Tuple として読み取ることができます。
@@ -704,7 +704,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 └─────────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
 
 この設定を有効にすると、ネストされた JSON オブジェクトを文字列として読み取ることができます。
 この設定を使用すると、JSON オブジェクト型を使用せずにネストされた JSON オブジェクトを読み取ることができます。
@@ -728,7 +728,7 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;numbers&#95;as&#95;strings {#input_format_json_read_numbers_as_strings}
 
 この設定を有効にすると、数値を文字列として読み取ります。
 
@@ -750,7 +750,7 @@ DESC format(JSONEachRow, $$
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers
+##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;numbers {#input_format_json_read_bools_as_numbers}
 
 この設定を有効にすると、Bool 型の値を数値として読み取れるようになります。
 
@@ -772,7 +772,7 @@ DESC format(JSONEachRow, $$
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;bools&#95;as&#95;strings {#input_format_json_read_bools_as_strings}
 
 この設定を有効にすると、Bool 型の値を文字列として読み取ることができます。
 
@@ -794,7 +794,7 @@ DESC format(JSONEachRow, $$
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
 
 この設定を有効にすると、JSON 配列の値を文字列として読み取ります。
 
@@ -813,7 +813,7 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
 ```
 
-##### input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings
+##### input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
 
 
 この設定を有効にすると、スキーマ推論時に、サンプルデータ内で `Null`・`{}`・`[]` のみを含む JSON キーに `String` 型を使用できるようになります。
@@ -839,7 +839,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 └────────────────────────────────┘
 ```
 
-### CSV
+### CSV {#csv}
 
 CSV 形式では、ClickHouse は区切り文字に従って行から列の値を抽出します。ClickHouse は、数値と文字列以外のすべての型が二重引用符で囲まれていることを前提とします。値が二重引用符で囲まれている場合、ClickHouse は再帰パーサーを使って引用符内のデータを解析し、その値に最も適したデータ型を判定しようとします。値が二重引用符で囲まれていない場合、ClickHouse はそれを数値として解析しようとし、その値が数値でない場合は文字列として扱います。
 
@@ -1036,9 +1036,9 @@ $$)
 └──────────────┴───────────────┘
 ```
 
-#### CSV 設定
+#### CSV 設定 {#csv-settings}
 
-##### input&#95;format&#95;csv&#95;try&#95;infer&#95;numbers&#95;from&#95;strings
+##### input&#95;format&#95;csv&#95;try&#95;infer&#95;numbers&#95;from&#95;strings {#input_format_csv_try_infer_numbers_from_strings}
 
 この設定を有効にすると、文字列の値から数値を推論できるようになります。
 
@@ -1059,7 +1059,7 @@ DESC format(CSV, '42,42.42');
 ```
 
 
-### TSV/TSKV
+### TSV/TSKV {#tsv-tskv}
 
 TSV/TSKV 形式では、ClickHouse はタブ区切りに従って行から列の値を抽出し、その後、再帰パーサーを使って抽出した値を解析し、最も適切な型を決定します。型を決定できない場合、ClickHouse はこの値を String として扱います。
 
@@ -1269,7 +1269,7 @@ $$)
 └──────────────┴───────────────┘
 ```
 
-### 値
+### 値 {#values}
 
 Values 形式では、ClickHouse は行から列の値を抽出し、その後リテラルを解析する場合と同様に、再帰パーサーを使って値を解析します。
 
@@ -1395,7 +1395,7 @@ DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### CustomSeparated
+### CustomSeparated {#custom-separated}
 
 CustomSeparated フォーマットでは、ClickHouse はまず指定された区切り文字に従って行からすべての列の値を抽出し、その後、エスケープ規則に基づいて各値のデータ型を推論します。
 
@@ -1457,7 +1457,7 @@ $$)
 └────────┴───────────────┴────────────┘
 ```
 
-### テンプレート
+### テンプレート {#template}
 
 Template 形式では、ClickHouse はまず指定されたテンプレートに従って行からすべてのカラム値を抽出し、その後、それぞれの値に対してエスケープ規則に基づいてデータ型を推論します。
 
@@ -1499,7 +1499,7 @@ $$)
 └──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### Regexp
+### Regexp {#regexp}
 
 Template 形式と同様に、Regexp 形式では ClickHouse はまず、指定された正規表現に従って行からすべての列の値を抽出し、その後、指定されたエスケープ規則に基づいて各値のデータ型を自動的に推定します。
 
@@ -1523,9 +1523,9 @@ Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ````
 
-### テキスト形式用の設定
+### テキスト形式用の設定 {#settings-for-text-formats}
 
-#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference
+#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference {#input-format-max-rows-to-read-for-schema-inference}
 
 これらの設定は、スキーマ推論を行う際に読み取るデータ量を制御します。
 より多くの行やバイト数を読み取るほどスキーマ推論に時間はかかりますが、型を正しく判定できる
@@ -1536,7 +1536,7 @@ Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4
 * `input_format_max_rows_to_read_for_schema_inference`: `25000`
 * `input_format_max_bytes_to_read_for_schema_inference`: `33554432`（32 MB）
 
-#### column&#95;names&#95;for&#95;schema&#95;inference
+#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
 
 明示的なカラム名を持たないフォーマットに対して、スキーマ推論で使用するカラム名のリストです。指定した名前は、デフォルトの `c1,c2,c3,...` の代わりに使用されます。形式: `column1,column2,column3,...`。
 
@@ -1554,7 +1554,7 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### schema&#95;inference&#95;hints
+#### schema&#95;inference&#95;hints {#schema-inference-hints}
 
 自動的に決定される型の代わりに、スキーマ推論で使用する列名と型のリストです。形式は &#39;column&#95;name1 column&#95;type1, column&#95;name2 column&#95;type2, ...&#39; のようになります。
 この設定は、自動的に型を決定できなかった列の型を指定する場合や、スキーマを最適化する目的で使用できます。
@@ -1575,7 +1575,7 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### schema&#95;inference&#95;make&#95;columns&#95;nullable $
+#### schema&#95;inference&#95;make&#95;columns&#95;nullable $ {#schema-inference-make-columns-nullable}
 
 
 NULL 許容性に関する情報を持たないフォーマットに対して、スキーマ推論時に推論された型を `Nullable` にするかどうかを制御します。設定可能な値:
@@ -1645,7 +1645,7 @@ DESC format(JSONEachRow, $$
 ```
 
 
-#### input&#95;format&#95;try&#95;infer&#95;integers
+#### input&#95;format&#95;try&#95;infer&#95;integers {#input-format-try-infer-integers}
 
 :::note
 この設定は `JSON` データ型には適用されません。
@@ -1713,7 +1713,7 @@ DESC format(JSONEachRow, $$
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes
+#### input&#95;format&#95;try&#95;infer&#95;datetimes {#input-format-try-infer-datetimes}
 
 有効にすると、ClickHouse はテキスト形式のスキーマ推論を行う際に、文字列フィールドから型 `DateTime` または `DateTime64` を推定しようとします。
 サンプルデータのある列に含まれるすべてのフィールドが日時として正常にパースできた場合、結果の型は `DateTime` または `DateTime64(9)`（いずれかの日時に小数部が含まれていた場合）になり、
@@ -1768,7 +1768,7 @@ DESC format(JSONEachRow, $$
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64
+#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64 {#input-format-try-infer-datetimes-only-datetime64}
 
 この設定を有効にすると、`input_format_try_infer_datetimes` が有効な場合、日時の値に小数部が含まれていなくても、ClickHouse は常に `DateTime64(9)` 型として推論します。
 
@@ -1795,7 +1795,7 @@ DESC format(JSONEachRow, $$
 注記: スキーマ推論時の日時のパースは、設定 [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format) に従います。
 
 
-#### input&#95;format&#95;try&#95;infer&#95;dates
+#### input&#95;format&#95;try&#95;infer&#95;dates {#input-format-try-infer-dates}
 
 有効にすると、ClickHouse はテキストフォーマットに対するスキーマ推論時に、文字列フィールドから型 `Date` を推定しようとします。
 サンプルデータ内のあるカラムのすべてのフィールドが日付として正常にパースされた場合、その結果型は `Date` になります。
@@ -1846,7 +1846,7 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats
+#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats {#input-format-try-infer-exponent-floats}
 
 有効にすると、ClickHouse はテキストフォーマットにおいて、指数表記された数値を浮動小数点数として解釈しようとします（指数表記の数値が常に浮動小数点数として解釈される JSON を除く）。
 
@@ -1870,14 +1870,14 @@ $$)
 ```
 
 
-## 自己記述フォーマット
+## 自己記述フォーマット {#self-describing-formats}
 
 自己記述フォーマットは、データ自体の中にデータ構造に関する情報を含むフォーマットです。
 ヘッダーに記述が含まれていたり、バイナリの型ツリーや、ある種のテーブルとして表現されている場合があります。
 このようなフォーマットのファイルからスキーマを自動的に推論するために、ClickHouse は型に関する情報を含むデータの一部を読み取り、
 それを ClickHouse テーブルのスキーマに変換します。
 
-### -WithNamesAndTypes サフィックス付きフォーマット
+### -WithNamesAndTypes サフィックス付きフォーマット {#formats-with-names-and-types}
 
 ClickHouse は、サフィックス -WithNamesAndTypes を持ついくつかのテキストフォーマットをサポートしています。このサフィックスは、実データの前にカラム名と型を含む追加の 2 行がデータに含まれていることを意味します。
 このようなフォーマットに対してスキーマ推論を行う際、ClickHouse は最初の 2 行を読み取り、カラム名と型を抽出します。
@@ -1900,7 +1900,7 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### メタデータを含む JSON フォーマット
+### メタデータを含む JSON フォーマット {#json-with-metadata}
 
 一部の JSON 入力フォーマット（[JSON](/interfaces/formats/JSON)、[JSONCompact](/interfaces/formats/JSONCompact)、[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）には、列名およびデータ型に関するメタデータが含まれます。
 そのようなフォーマットでスキーマ推論を行う際、ClickHouse はこのメタデータを参照します。
@@ -1955,7 +1955,7 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### Avro
+### Avro {#avro}
 
 Avro 形式では、ClickHouse はデータからスキーマを読み取り、以下の型の対応付けに基づいて ClickHouse のスキーマに変換します。
 
@@ -2165,11 +2165,11 @@ BSONEachRow では、各データ行は BSON ドキュメントとして表現�
 
 
 
-## 固定スキーマを持つフォーマット
+## 固定スキーマを持つフォーマット {#formats-with-constant-schema}
 
 このようなフォーマットのデータは、常に同じスキーマを持ちます。
 
-### LineAsString
+### LineAsString {#line-as-string}
 
 このフォーマットでは、ClickHouse はデータから1行全体を `String` 型の1つのカラムとして読み込みます。このフォーマットで推論されるデータ型は常に `String` であり、カラム名は `line` です。
 
@@ -2185,7 +2185,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### JSONAsString
+### JSONAsString {#json-as-string}
 
 このフォーマットでは、ClickHouse はデータ内の JSON オブジェクト全体を `String` 型の単一の列として読み取ります。このフォーマットで推論される型は常に `String` で、列名は `json` です。
 
@@ -2201,7 +2201,7 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### JSONAsObject
+### JSONAsObject {#json-as-object}
 
 この形式では、ClickHouse はデータ内の JSON オブジェクト全体を `JSON` データ型の単一の列として読み取ります。この形式で推論されるデータ型は常に `JSON` であり、列名は `json` です。
 
@@ -2218,12 +2218,12 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 ```
 
 
-## スキーマ推論モード
+## スキーマ推論モード {#schema-inference-modes}
 
 データファイルの集合からのスキーマ推論は、`default` と `union` の 2 つのモードで動作します。
 モードは設定項目 `schema_inference_mode` で制御されます。
 
-### `default` モード
+### `default` モード {#default-schema-inference-mode}
 
 `default` モードでは、ClickHouse はすべてのファイルが同一のスキーマを持つと仮定し、スキーマの推論に成功するまでファイルを 1 つずつ読み込みます。
 
@@ -2274,7 +2274,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 これは、ClickHouse がまずファイル `data1.jsonl` からスキーマの推論を行おうとしましたが、`field2` フィールドがすべて null だったために失敗し、
 その後 `data2.jsonl` からスキーマ推論を行って成功した結果、ファイル `data3.jsonl` のデータが読み込まれなかったためです。
 
-### Union モード
+### Union モード {#default-schema-inference-mode-1}
 
 Union モードでは、ClickHouse はファイルごとに異なるスキーマを持つ可能性があるとみなし、すべてのファイルのスキーマを推論してから、それらを共通スキーマに対して union します。
 
@@ -2329,7 +2329,7 @@ Union モードでは、ClickHouse はファイルごとに異なるスキーマ
 * ファイル数が多い場合、すべてのファイルからスキーマを読み取る処理に多くの時間がかかる可能性があります。
 
 
-## 自動フォーマット検出
+## 自動フォーマット検出 {#automatic-format-detection}
 
 データのフォーマットが指定されておらず、かつファイル拡張子からも判定できない場合、ClickHouse はファイルの内容に基づいてフォーマットの検出を試みます。
 

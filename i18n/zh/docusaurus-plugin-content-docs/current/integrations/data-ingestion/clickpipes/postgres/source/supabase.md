@@ -12,7 +12,7 @@ import supabase_connection_details from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# Supabase 源配置指南
+# Supabase 源配置指南 {#supabase-source-setup-guide}
 
 本文档介绍如何为在 ClickPipes 中使用而配置 Supabase Postgres。
 
@@ -24,7 +24,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 
 
-## 创建具有权限和复制槽的用户
+## 创建具有权限和复制槽的用户 {#creating-a-user-with-permissions-and-replication-slot}
 
 让我们为 ClickPipes 创建一个新用户，授予适用于 CDC 的必要权限，
 并创建一个用于复制的发布（publication）。
@@ -88,7 +88,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 
 
-## 关于 RLS 的说明
+## 关于 RLS 的说明 {#note-on-rls}
 
 ClickPipes 使用的 Postgres 用户不能受到 RLS 策略的限制，否则可能会导致数据缺失。您可以通过运行下列命令来为该用户禁用 RLS 策略：
 

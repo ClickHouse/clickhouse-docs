@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# generateRandom 表函数
+# generateRandom 表函数 {#generaterandom-table-function}
 
 根据给定的 schema 生成随机数据。
 可使用这些数据填充测试表。
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
@@ -42,7 +42,7 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;

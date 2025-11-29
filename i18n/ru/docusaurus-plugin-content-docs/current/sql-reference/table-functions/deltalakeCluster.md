@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция deltaLakeCluster
+# Табличная функция deltaLakeCluster {#deltalakecluster-table-function}
 
 Это расширение табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
