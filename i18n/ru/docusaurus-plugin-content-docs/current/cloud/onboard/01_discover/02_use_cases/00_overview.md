@@ -1,7 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/overview
 title: 'Создание решений на ClickHouse Cloud'
-description: 'Изучите варианты использования ClickHouse Cloud, включая аналитику в реальном времени, Обзервабилити, озеро и хранилище данных, а также приложения машинного обучения'
+description: 'Изучите варианты использования ClickHouse Cloud, включая аналитику в реальном времени, наблюдаемость, озеро и хранилище данных, а также приложения машинного обучения'
 keywords: ['use cases', 'Cloud']
 sidebar_label: 'Обзор'
 doc_type: 'landing-page'

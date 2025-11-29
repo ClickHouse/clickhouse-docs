@@ -18,12 +18,12 @@ import chartbrew_07 from '@site/static/images/integrations/data-visualization/ch
 import chartbrew_08 from '@site/static/images/integrations/data-visualization/chartbrew_08.png';
 import chartbrew_09 from '@site/static/images/integrations/data-visualization/chartbrew_09.png';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
 
-# Chartbrew を ClickHouse に接続する
+# Chartbrew を ClickHouse に接続する {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -74,7 +74,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. データセットを作成して SQL クエリを実行する
+## 3. データセットを作成して SQL クエリを実行する {#3-create-a-dataset-and-run-a-sql-query}
 
 1. **Create dataset** ボタンをクリックするか、**Datasets** タブを開いて新しいデータセットを作成します。
 2. 先ほど作成した ClickHouse 接続を選択します。

@@ -6,7 +6,7 @@ title: 'covarPopMatrix'
 doc_type: 'reference'
 ---
 
-# covarPopMatrix
+# covarPopMatrix {#covarpopmatrix}
 
 Возвращает матрицу ковариации генеральной совокупности для N переменных.
 

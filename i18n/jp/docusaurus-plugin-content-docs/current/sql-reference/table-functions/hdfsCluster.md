@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# hdfsCluster テーブル関数
+# hdfsCluster テーブル関数 {#hdfscluster-table-function}
 
 指定したクラスター内の複数ノードから、HDFS 上のファイルを並列に処理できます。イニシエーターでは、クラスター内のすべてのノードへの接続を確立し、HDFS のファイルパスに含まれるアスタリスクを展開して、各ファイルを動的に振り分けます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hdfsCluster(cluster_name, URI, format, structure)
@@ -39,7 +39,7 @@ hdfsCluster(cluster_name, URI, format, structure)
 
 
 
-## 例
+## 例 {#examples}
 
 1. `cluster_simple` という名前の ClickHouse クラスターと、HDFS 上に次の URI を持つ複数のファイルがあるとします:
 

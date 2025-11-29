@@ -28,7 +28,7 @@ clickhouse-server のプロセス全体がクラッシュしてしまう可能�
 
 
 
-## 例：
+## 例： {#example}
 
 ```bash
 $ clickhouse-odbc-bridge --http-port 9018 --daemon

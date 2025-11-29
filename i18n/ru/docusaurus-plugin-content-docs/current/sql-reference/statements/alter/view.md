@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Оператор ALTER TABLE ... MODIFY QUERY
+# Оператор ALTER TABLE ... MODIFY QUERY {#alter-table-modify-query-statement}
 
 Вы можете изменить запрос `SELECT`, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view), с помощью оператора `ALTER TABLE ... MODIFY QUERY` без прерывания процесса ингестии.
 

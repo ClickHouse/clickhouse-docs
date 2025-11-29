@@ -44,9 +44,9 @@ NumPy 文件格式是一种用于高效存储数值数据数组的二进制格�
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 使用 Python 将数组保存为 .npy 格式
+### 使用 Python 将数组保存为 .npy 格式 {#saving-an-array-in-npy-format-using-python}
 
 ```Python
 import numpy as np
@@ -54,7 +54,7 @@ arr = np.array([[[1],[2],[3]],[[4],[5],[6]]])
 np.save('example_array.npy', arr)
 ```
 
-### 在 ClickHouse 中读取 NumPy 文件
+### 在 ClickHouse 中读取 NumPy 文件 {#reading-a-numpy-file-in-clickhouse}
 
 ```sql title="Query"
 SELECT *
@@ -68,7 +68,7 @@ FROM file('example_array.npy', Npy)
 └───────────────┘
 ```
 
-### 选择数据
+### 选择数据 {#selecting-data}
 
 可以使用 `clickhouse-client` 运行以下命令，将 ClickHouse 表中的数据查询出来并保存为 Npy 格式的文件：
 

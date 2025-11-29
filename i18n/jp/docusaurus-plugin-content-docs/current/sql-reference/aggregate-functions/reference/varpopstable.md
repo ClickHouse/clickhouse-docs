@@ -6,9 +6,7 @@ title: 'varPopStable'
 doc_type: 'reference'
 ---
 
-
-
-## varPopStable
+## varPopStable {#varpopstable}
 
 母分散を返します。[`varPop`](../reference/varpop.md) と異なり、この関数は[数値的に安定な](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。処理は遅くなりますが、計算誤差を小さく抑えることができます。
 

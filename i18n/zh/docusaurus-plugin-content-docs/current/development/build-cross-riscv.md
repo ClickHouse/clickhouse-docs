@@ -7,15 +7,11 @@ title: '如何在 Linux 上为 RISC-V 64 构建 ClickHouse'
 doc_type: 'guide'
 ---
 
-
-
-# 如何在 RISC-V 64 架构的 Linux 上构建 ClickHouse
+# 如何在 RISC-V 64 架构的 Linux 上构建 ClickHouse {#how-to-build-clickhouse-on-linux-for-risc-v-64}
 
 ClickHouse 对 RISC-V 架构提供实验性支持。目前尚无法启用全部功能。
 
-
-
-## 构建 ClickHouse
+## 构建 ClickHouse {#build-clickhouse}
 
 在非 RISC-V 机器上为 RISC-V 目标进行交叉编译：
 

@@ -6,7 +6,7 @@ title: 'quantilePrometheusHistogram'
 doc_type: 'reference'
 ---
 
-# quantilePrometheusHistogram
+# quantilePrometheusHistogram {#quantileprometheushistogram}
 
 使用线性插值计算直方图的[分位数](https://en.wikipedia.org/wiki/Quantile)，同时考虑每个直方图桶的累积值和上界。
 

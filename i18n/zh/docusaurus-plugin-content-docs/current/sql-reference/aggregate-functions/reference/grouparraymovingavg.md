@@ -6,7 +6,7 @@ title: 'groupArrayMovingAvg'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingAvg
+# groupArrayMovingAvg {#grouparraymovingavg}
 
 计算输入值的移动平均。
 

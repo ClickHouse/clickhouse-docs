@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Табличный движок TimeSeries
+# Табличный движок TimeSeries {#timeseries-table-engine}
 
 <ExperimentalBadge />
 
@@ -32,7 +32,7 @@ metric_name2[...] = ...
 :::
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -43,7 +43,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 ```
 
 
-## Использование
+## Использование {#usage}
 
 Проще всего начать, оставив все настройки по умолчанию (можно создать таблицу `TimeSeries` без явного указания списка столбцов):
 
@@ -117,7 +117,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 
 
-## Создание
+## Создание {#creation}
 
 Существует несколько способов создать таблицу с движком `TimeSeries`.
 Самый простой запрос
@@ -202,7 +202,7 @@ ORDER BY metric_family_name
 ```
 
 
-## Настройка типов столбцов
+## Настройка типов столбцов {#adjusting-column-types}
 
 Вы можете изменить тип почти любого столбца во внутренних целевых таблицах, явно указав его
 при определении основной таблицы. Например,
@@ -228,7 +228,7 @@ ORDER BY (id, timestamp)
 ```
 
 
-## Столбец `id`
+## Столбец `id` {#id-column}
 
 Столбец `id` содержит идентификаторы; каждый идентификатор вычисляется для комбинации имени метрики и тегов.
 Выражение DEFAULT для столбца `id` — это выражение, которое будет использоваться для вычисления таких идентификаторов.
@@ -243,7 +243,7 @@ ENGINE=TimeSeries
 ```
 
 
-## Столбцы `tags` и `all_tags`
+## Столбцы `tags` и `all_tags` {#tags-and-all-tags}
 
 Есть два столбца, содержащих отображения тегов, — `tags` и `all_tags`. В этом примере они по сути эквивалентны, однако могут отличаться,
 если используется настройка `tags_to_columns`. Эта настройка позволяет указать, что конкретный тег должен храниться в отдельном столбце вместо хранения
@@ -278,7 +278,7 @@ SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
 
-## Движки внутренних целевых таблиц
+## Движки внутренних целевых таблиц {#inner-table-engines}
 
 По умолчанию внутренние целевые таблицы используют следующие движки таблиц:
 
@@ -298,7 +298,7 @@ METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
 
-## Внешние таблицы назначения
+## Внешние таблицы назначения {#external-target-tables}
 
 Можно настроить таблицу `TimeSeries` на использование созданной вручную таблицы:
 

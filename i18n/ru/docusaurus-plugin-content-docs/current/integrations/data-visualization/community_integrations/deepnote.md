@@ -17,10 +17,10 @@ import deepnote_02 from '@site/static/images/integrations/data-visualization/dee
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Подключение ClickHouse к Deepnote
+# Подключение ClickHouse к Deepnote {#connect-clickhouse-to-deepnote}
 
 <CommunityMaintainedBadge/>
 

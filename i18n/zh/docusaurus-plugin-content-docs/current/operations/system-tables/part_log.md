@@ -6,14 +6,13 @@ title: 'system.part_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.part&#95;log {#systempart&#95;log}
 
-# system.part_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-只有在指定了 [part_log](/operations/server-configuration-parameters/settings#part_log) 服务器设置时，才会创建 `system.part_log` 表。
+只有在指定了 [part&#95;log](/operations/server-configuration-parameters/settings#part_log) 服务器设置时，才会创建 `system.part_log` 表。
 
 此表包含关于 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 系列表中[数据分片](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)发生的事件的信息，例如数据的添加或合并。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция generateRandom
+# Табличная функция generateRandom {#generaterandom-table-function}
 
 Генерирует случайные данные с заданной схемой.
 Позволяет заполнять тестовые таблицы этими данными.
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
@@ -42,7 +42,7 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 ```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;

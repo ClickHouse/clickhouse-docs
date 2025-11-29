@@ -11,23 +11,23 @@ import Image from '@theme/IdealImage';
 <details>
   <summary>创建 GCS 存储桶和 HMAC 密钥</summary>
 
-  ### ch&#95;bucket&#95;us&#95;east1
+  ### ch&#95;bucket&#95;us&#95;east1 {#ch&#95;bucket&#95;us&#95;east1}
 
   <Image size="md" img={GCS_bucket_1} alt="在 US East 1 创建 GCS 存储桶" border />
 
-  ### ch&#95;bucket&#95;us&#95;east4
+  ### ch&#95;bucket&#95;us&#95;east4 {#ch&#95;bucket&#95;us&#95;east4}
 
   <Image size="md" img={GCS_bucket_2} alt="在 US East 4 创建 GCS 存储桶" border />
 
-  ### 生成访问密钥
+  ### 生成访问密钥 {#generate-an-access-key}
 
-  ### 创建服务账号 HMAC 密钥和密钥密文（secret）
+  ### 创建服务账号 HMAC 密钥和密钥密文（secret） {#create-a-service-account-hmac-key-and-secret}
 
   打开 **Cloud Storage &gt; Settings &gt; Interoperability**，然后选择一个已有的 **Access key**，或点击 **CREATE A KEY FOR A SERVICE ACCOUNT**。本指南演示的是为新的服务账号创建新密钥的流程。
 
   <Image size="md" img={GCS_create_service_account_key} alt="在 GCS 中生成服务账号 HMAC 密钥" border />
 
-  ### 添加新的服务账号
+  ### 添加新的服务账号 {#add-a-new-service-account}
 
   如果这是一个尚无任何服务账号的项目，点击 **CREATE NEW ACCOUNT**。
 

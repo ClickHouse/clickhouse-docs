@@ -6,7 +6,7 @@ title: 'skewPop'
 doc_type: 'reference'
 ---
 
-# skewPop
+# skewPop {#skewpop}
 
 シーケンスの[歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 

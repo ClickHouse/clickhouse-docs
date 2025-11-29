@@ -11,7 +11,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
@@ -19,7 +19,7 @@ import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Luzmo と ClickHouse の連携
+# Luzmo と ClickHouse の連携 {#integrating-luzmo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
 

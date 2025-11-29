@@ -6,7 +6,7 @@ title: 'quantileDeterministic'
 doc_type: 'reference'
 ---
 
-# quantileDeterministic
+# quantileDeterministic {#quantiledeterministic}
 
 数値データ系列の概算[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

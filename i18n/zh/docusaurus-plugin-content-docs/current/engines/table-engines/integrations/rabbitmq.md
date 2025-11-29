@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# RabbitMQ 表引擎
+# RabbitMQ 表引擎 {#rabbitmq-table-engine}
 
 该引擎用于将 ClickHouse 与 [RabbitMQ](https://www.rabbitmq.com) 集成。
 
@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -131,7 +131,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 
-## 描述
+## 描述 {#description}
 
 `SELECT` 对于读取消息并不是特别有用（除非用于调试），因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)创建实时处理流程。为此：
 

@@ -12,7 +12,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 
-# データの暗号化
+# データの暗号化 {#data-encryption}
 
 
 

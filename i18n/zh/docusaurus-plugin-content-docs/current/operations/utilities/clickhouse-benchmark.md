@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-benchmark
+# clickhouse-benchmark {#clickhouse-benchmark}
 
 连接到 ClickHouse 服务器并反复执行指定查询。
 
@@ -87,7 +87,7 @@ clickhouse-benchmark [keys] < queries_file;
 
 
 
-## 输出
+## 输出 {#clickhouse-benchmark-output}
 
 默认情况下，`clickhouse-benchmark` 会在每个 `--delay` 时间间隔输出一份报告。
 
@@ -139,7 +139,7 @@ localhost:9000, 查询数 10，QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, re
 
 
 
-## 示例
+## 示例 {#clickhouse-benchmark-example}
 
 ```bash
 $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhouse-benchmark --host=localhost --port=9001 --host=localhost --port=9000 -i 10

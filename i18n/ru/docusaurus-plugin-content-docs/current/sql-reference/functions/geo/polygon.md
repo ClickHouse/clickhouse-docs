@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-## WKT
+## WKT {#wkt}
 
 Возвращает геометрический объект WKT (Well Known Text) из различных [геометрических типов данных](../../data-types/geo.md). Поддерживаемые WKT-объекты:
 
@@ -76,11 +76,11 @@ MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,
 ```
 
 
-## readWKTMultiPolygon
+## readWKTMultiPolygon {#readwktmultipolygon}
 
 Преобразует WKT (Well Known Text) MultiPolygon в тип MultiPolygon.
 
-### Пример
+### Пример {#example}
 
 ```sql
 SELECT
@@ -93,20 +93,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### Входные параметры
+### Входные параметры {#input-parameters}
 
 Строка, начинающаяся с `MULTIPOLYGON`
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value}
 
 MultiPolygon
 
 
-## readWKTPolygon
+## readWKTPolygon {#readwktpolygon}
 
 Преобразует WKT (Well Known Text) MultiPolygon в тип Polygon.
 
-### Пример
+### Пример {#example-1}
 
 ```sql
 SELECT
@@ -119,34 +119,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Polygon | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### Входные параметры
+### Входные параметры {#input-parameters-1}
 
 Строка, начинающаяся с `POLYGON`.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-1}
 
 Тип `Polygon`.
 
 
-## readWKTPoint
+## readWKTPoint {#readwktpoint}
 
 Функция `readWKTPoint` в ClickHouse разбирает представление геометрического объекта типа Point в формате Well-Known Text (WKT) и возвращает точку во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax}
 
 ```sql
 readWKTPoint(wkt_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments}
 
 * `wkt_string`: входная строка WKT, представляющая геометрию точки (Point).
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-2}
 
 Функция возвращает внутреннее представление геометрии точки (Point) в ClickHouse.
 
-### Пример
+### Пример {#example-2}
 
 ```sql
 SELECT readWKTPoint('POINT (1.2 3.4)');
@@ -157,25 +157,25 @@ SELECT readWKTPoint('POINT (1.2 3.4)');
 ```
 
 
-## readWKTLineString
+## readWKTLineString {#readwktlinestring}
 
 Интерпретирует представление геометрии типа LineString в формате Well-Known Text (WKT) и возвращает его во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-1}
 
 ```sql
 readWKTLineString(wkt_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-1}
 
 * `wkt_string`: входная строка в формате WKT, представляющая геометрию LineString.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-3}
 
 Функция возвращает внутреннее представление геометрии типа LineString в ClickHouse.
 
-### Пример
+### Пример {#example-3}
 
 ```sql
 SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
@@ -186,25 +186,25 @@ SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
 ```
 
 
-## readWKTMultiLineString
+## readWKTMultiLineString {#readwktmultilinestring}
 
 Анализирует представление геометрии MultiLineString в формате Well-Known Text (WKT) и возвращает его во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-2}
 
 ```sql
 readWKTMultiLineString(wkt_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-2}
 
 * `wkt_string`: входная строка WKT, представляющая геометрию типа MultiLineString.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-4}
 
 Функция возвращает внутреннее представление геометрии типа MultiLineString в ClickHouse.
 
-### Пример
+### Пример {#example-4}
 
 ```sql
 SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6))');
@@ -215,25 +215,25 @@ SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6)
 ```
 
 
-## readWKTRing
+## readWKTRing {#readwktring}
 
 Разбирает представление геометрии многоугольника в формате Well-Known Text (WKT) и возвращает кольцо (замкнутую ломаную линию, LineString) во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-3}
 
 ```sql
 readWKTRing(wkt_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-3}
 
 * `wkt_string`: входная строка в формате WKT, представляющая геометрию полигона.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-5}
 
 Функция возвращает внутреннее представление ClickHouse для геометрии кольца (замкнутой ломаной линии, closed linestring).
 
-### Пример
+### Пример {#example-5}
 
 ```sql
 SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
@@ -244,11 +244,11 @@ SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
 ```
 
 
-## polygonsWithinSpherical
+## polygonsWithinSpherical {#polygonswithinspherical}
 
 Возвращает true или false в зависимости от того, расположен ли один многоугольник полностью внутри другого. См. документацию: [https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/within/within&#95;2.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/within/within_2.html)
 
-### Пример
+### Пример {#example-6}
 
 ```sql
 SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -259,11 +259,11 @@ SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879
 ```
 
 
-## readWKBMultiPolygon
+## readWKBMultiPolygon {#readwkbmultipolygon}
 
 Преобразует мультиполигон в формате WKB (Well-Known Binary) в значение типа MultiPolygon.
 
-### Пример
+### Пример {#example-7}
 
 ```sql
 SELECT
@@ -276,20 +276,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### Входные параметры
+### Входные параметры {#input-parameters-2}
 
 Строка, начинающаяся с `MULTIPOLYGON`
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-6}
 
 MultiPolygon
 
 
-## readWKBPolygon
+## readWKBPolygon {#readwkbpolygon}
 
 Преобразует объект типа MultiPolygon в формате WKB (Well Known Binary) в объект типа Polygon.
 
-### Пример
+### Пример {#example-8}
 
 ```sql
 SELECT
@@ -302,34 +302,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Полигон | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### Входные параметры
+### Входные параметры {#input-parameters-3}
 
 Строка, начинающаяся с `POLYGON`.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-7}
 
 Полигон
 
 
-## readWKBPoint
+## readWKBPoint {#readwkbpoint}
 
 Функция `readWKBPoint` в ClickHouse разбирает представление геометрии Point в формате Well-Known Binary (WKB) и возвращает точку во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-4}
 
 ```sql
 readWKBPoint(wkb_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-4}
 
 * `wkb_string`: входная строка WKB, представляющая геометрию типа Point.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-8}
 
 Функция возвращает геометрию Point во внутреннем формате ClickHouse.
 
-### Пример
+### Пример {#example-9}
 
 ```sql
 SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
@@ -340,25 +340,25 @@ SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
 ```
 
 
-## readWKBLineString
+## readWKBLineString {#readwkblinestring}
 
 Парсит бинарное представление геометрии LineString в формате Well-Known Binary (WKB) и возвращает его во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-5}
 
 ```sql
 readWKBLineString(wkb_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-5}
 
 * `wkb_string`: входная строка WKB, представляющая геометрию типа LineString.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-9}
 
 Функция возвращает внутреннее представление геометрии типа LineString в ClickHouse.
 
-### Пример
+### Пример {#example-10}
 
 ```sql
 SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840000000000000f03f000000000000f03f'));
@@ -369,25 +369,25 @@ SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f0
 ```
 
 
-## readWKBMultiLineString
+## readWKBMultiLineString {#readwkbmultilinestring}
 
 Выполняет разбор представления геометрии MultiLineString в формате Well-Known Binary (WKB) и возвращает его во внутреннем формате ClickHouse.
 
-### Синтаксис
+### Синтаксис {#syntax-6}
 
 ```sql
 readWKBMultiLineString(wkb_string)
 ```
 
-### Аргументы
+### Аргументы {#arguments-6}
 
 * `wkb_string`: Входная строка в формате WKB, представляющая геометрию MultiLineString.
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-10}
 
 Функция возвращает внутреннее представление ClickHouse для геометрии типа MultiLineString.
 
-### Пример
+### Пример {#example-11}
 
 ```sql
 SELECT readWKBMultiLineString(unhex('010500000002000000010200000003000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840010200000003000000000000000000104000000000000010400000000000001440000000000000144000000000000018400000000000001840'));
@@ -397,18 +397,18 @@ SELECT readWKBMultiLineString(unhex('0105000000020000000102000000030000000000000
 [[(1,1),(2,2),(3,3)],[(4,4),(5,5),(6,6)]]
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-4}
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-11}
 
 UInt8, 0 — ложь, 1 — истина
 
 
-## polygonsDistanceSpherical
+## polygonsDistanceSpherical {#polygonsdistancespherical}
 
 Вычисляет минимальное расстояние между двумя точками, где одна точка принадлежит первому полигону, а вторая — другому полигону. Spherical в названии функции означает, что координаты интерпретируются как координаты на идеальной сфере, что не соответствует форме Земли. Использование такой системы координат ускоряет выполнение, но, разумеется, снижает точность.
 
-### Пример
+### Пример {#example-12}
 
 ```sql
 SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -418,20 +418,20 @@ SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 0.24372872211133834
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-5}
 
 Два полигона
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-12}
 
 Float64
 
 
-## polygonsDistanceCartesian
+## polygonsDistanceCartesian {#polygonsdistancecartesian}
 
 Вычисляет расстояние между двумя многоугольниками
 
-### Пример
+### Пример {#example-13}
 
 ```sql
 SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -441,20 +441,20 @@ SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 14.000714267493642
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-6}
 
 Два многоугольника
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-13}
 
 Float64
 
 
-## polygonsEqualsCartesian
+## polygonsEqualsCartesian {#polygonsequalscartesian}
 
 Возвращает значение `true`, если два многоугольника равны
 
-### Пример
+### Пример {#example-14}
 
 ```sql
 SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -464,20 +464,20 @@ SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[
 1
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-7}
 
 Два многоугольника
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-14}
 
 UInt8, 0 — ложь, 1 — истина
 
 
-## polygonsSymDifferenceSpherical
+## polygonsSymDifferenceSpherical {#polygonssymdifferencespherical}
 
 Вычисляет теоретико-множественную симметрическую разность (XOR) двух полигонов в пространстве
 
-### Пример
+### Пример {#example-15}
 
 ```sql
 SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (-50., -50.), (-50., 50.), (50., 50.)], [(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)], [(-10., -10.), (-10., -40.), (-40., -40.), (-40., -10.), (-10., -10.)]], [[(-20., -20.), (-20., 20.), (20., 20.), (20., -20.), (-20., -20.)]])));
@@ -487,20 +487,20 @@ SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (
 MULTIPOLYGON(((-20 -10.3067,-10 -10,-10 -20.8791,-20 -20,-20 -10.3067)),((10 20.8791,20 20,20 10.3067,10 10,10 20.8791)),((50 50,50 -50,-50 -50,-50 50,50 50),(20 10.3067,40 10,40 40,10 40,10 20.8791,-20 20,-20 -10.3067,-40 -10,-40 -40,-10 -40,-10 -20.8791,20 -20,20 10.3067)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-8}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-15}
 
 MultiPolygon
 
 
-## polygonsSymDifferenceCartesian
+## polygonsSymDifferenceCartesian {#polygonssymdifferencecartesian}
 
 То же, что и `polygonsSymDifferenceSpherical`, но используются координаты в декартовой системе координат, которая ближе к модели реальной Земли.
 
-### Пример
+### Пример {#example-16}
 
 ```sql
 SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6), (2.6, 2), (2.9, 1), (3, 0), (0, 0)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -510,20 +510,20 @@ SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6),
 MULTIPOLYGON(((1 2.9,1 1,2.9 1,3 0,0 0,0 3,1 2.9)),((1 2.9,1 4,4 4,4 1,2.9 1,2.6 2,2 2.6,1 2.9)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-9}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-16}
 
 MultiPolygon
 
 
-## polygonsIntersectionSpherical
+## polygonsIntersectionSpherical {#polygonsintersectionspherical}
 
 Вычисляет пересечение (логическая операция AND) между полигонами, при этом координаты интерпретируются как сферические.
 
-### Пример
+### Пример {#example-17}
 
 ```sql
 SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 6)), b), a), polygonsIntersectionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]])))
@@ -533,20 +533,20 @@ SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 
 MULTIPOLYGON(((4.3666 50.8434,4.36024 50.8436,4.34956 50.8536,4.35268 50.8567,4.36794 50.8525,4.3666 50.8434)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-10}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-17}
 
 MultiPolygon
 
 
-## polygonsWithinCartesian
+## polygonsWithinCartesian {#polygonswithincartesian}
 
 Возвращает true, если второй многоугольник находится внутри первого многоугольника.
 
-### Пример
+### Пример {#example-18}
 
 ```sql
 SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -556,20 +556,20 @@ SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[
 1
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-11}
 
 Два многоугольника
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-18}
 
 UInt8, 0 — ложь, 1 — истина
 
 
-## polygonsIntersectCartesian
+## polygonsIntersectCartesian {#polygonsintersectcartesian}
 
 Возвращает true, если два многоугольника пересекаются (имеют общую область или границу).
 
-### Пример
+### Пример {#example-intersects-cartesian}
 
 ```sql
 SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -579,20 +579,20 @@ SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], 
 1
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-intersects-cartesian}
 
 Два полигона
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-intersects-cartesian}
 
 UInt8: 0 — ложь, 1 — истина
 
 
-## polygonsIntersectSpherical
+## polygonsIntersectSpherical {#polygonsintersectspherical}
 
 Возвращает true, если два многоугольника пересекаются (имеют общую площадь или общую границу). См. документацию: [https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html)
 
-### Пример
+### Пример {#example-intersects-spherical}
 
 ```sql
 SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -602,22 +602,22 @@ SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 1
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-intersects-spherical}
 
 Два многоугольника
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-intersects-spherical}
 
 UInt8: 0 — ложь, 1 — истина
 
 
-## polygonConvexHullCartesian
+## polygonConvexHullCartesian {#polygonconvexhullcartesian}
 
 Вычисляет выпуклую оболочку. [Справка](https://www.boost.org/doc/libs/1_61_0/libs/geometry/doc/html/geometry/reference/algorithms/convex_hull.html)
 
 Координаты заданы в декартовой системе координат.
 
-### Пример
+### Пример {#example-19}
 
 ```sql
 SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.), (2., 3.)]]]))
@@ -627,20 +627,20 @@ SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.),
 POLYGON((0 0,0 5,5 5,5 0,0 0))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-12}
 
 MultiPolygon
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-19}
 
 Polygon
 
 
-## polygonAreaSpherical
+## polygonAreaSpherical {#polygonareaspherical}
 
 Вычисляет площадь поверхности многоугольника.
 
-### Пример
+### Пример {#example-20}
 
 ```sql
 SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]), 14)
@@ -650,20 +650,20 @@ SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455
 9.387704e-8
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-13}
 
 Polygon
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-20}
 
 Float
 
 
-## polygonsUnionSpherical
+## polygonsUnionSpherical {#polygonsunionspherical}
 
 Вычисляет операцию объединения (OR).
 
-### Пример
+### Пример {#example-21}
 
 ```sql
 SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]))
@@ -673,11 +673,11 @@ SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 MULTIPOLYGON(((4.36661 50.8434,4.36623 50.8408,4.34496 50.8333,4.33807 50.8487,4.34669 50.8583,4.35268 50.8567,4.36136 50.8652,4.36131 50.8651,4.39045 50.8565,4.38303 50.8429,4.36661 50.8434)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-14}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-21}
 
 MultiPolygon
 
@@ -720,11 +720,11 @@ SELECT round(polygonPerimeterSpherical([(30.010654, -15.646227), (30.050238, -15
 
 
 
-## polygonsIntersectionCartesian
+## polygonsIntersectionCartesian {#polygonsintersectioncartesian}
 
 Вычисляет пересечение многоугольников.
 
-### Пример
+### Пример {#example-23}
 
 ```sql
 SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1.), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -734,20 +734,20 @@ SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 
 MULTIPOLYGON(((1 2.9,2 2.6,2.6 2,2.9 1,1 1,1 2.9)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-16}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-23}
 
 MultiPolygon
 
 
-## polygonAreaCartesian
+## polygonAreaCartesian {#polygonareacartesian}
 
 Вычисляет площадь многоугольника
 
-### Пример
+### Пример {#example-24}
 
 ```sql
 SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -757,20 +757,20 @@ SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 25
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-17}
 
 Polygon
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-24}
 
 Float64
 
 
-## polygonPerimeterCartesian
+## polygonPerimeterCartesian {#polygonperimetercartesian}
 
 Вычисляет периметр многоугольника.
 
-### Пример
+### Пример {#example-25}
 
 ```sql
 SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -780,20 +780,20 @@ SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 15
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-18}
 
 Polygon
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-25}
 
 Float64
 
 
-## polygonsUnionCartesian
+## polygonsUnionCartesian {#polygonsunioncartesian}
 
 Вычисляет объединение многоугольников.
 
-### Пример
+### Пример {#example-26}
 
 ```sql
 SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -803,11 +803,11 @@ SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (
 MULTIPOLYGON(((1 2.9,1 4,4 4,4 1,2.9 1,3 0,0 0,0 3,1 2.9)))
 ```
 
-### Входные параметры
+### Входные параметры {#input-parameters-19}
 
 Polygons
 
-### Возвращаемое значение
+### Возвращаемое значение {#returned-value-26}
 
 MultiPolygon
 

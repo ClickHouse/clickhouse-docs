@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Руководство по совместимости с ClickHouse Cloud
+# Руководство по совместимости с ClickHouse Cloud {#clickhouse-cloud-compatibility-guide}
 
 Это руководство даёт общее представление о функциональных возможностях и особенностях эксплуатации ClickHouse Cloud. Хотя ClickHouse Cloud основан на дистрибутиве ClickHouse с открытым исходным кодом, возможны некоторые различия в архитектуре и реализации. В качестве вводного материала может быть полезно прочитать эту запись в блоге о том, [как мы создали ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year).
 

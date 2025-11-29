@@ -8,10 +8,10 @@ doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', 'интеграция', 'конвейер данных']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# JDBC connector
+# JDBC connector {#jdbc-connector}
 
 :::note
 Этот коннектор следует использовать только в том случае, если ваши данные простые и состоят из примитивных типов данных, например `int`. Специфичные для ClickHouse типы, такие как `map`, не поддерживаются.
@@ -114,7 +114,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Запустите Kafka Connect
+#### 5. Запустите Kafka Connect {#5-start-kafka-connect}
 
 Запустите Kafka Connect в [автономном](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) или [распределённом](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) режиме.
 
@@ -122,7 +122,7 @@ CREATE TABLE github
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Добавьте данные в Kafka
+#### 6. Добавьте данные в Kafka {#6-add-data-to-kafka}
 
 Отправьте сообщения в Kafka, используя предоставленные [скрипт и конфигурацию](https://github.com/ClickHouse/kafka-samples/tree/main/producer). Вам нужно будет изменить файл конфигурации github.config, чтобы указать свои учетные данные Kafka. По умолчанию скрипт настроен для работы с Confluent Cloud.
 
@@ -148,7 +148,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### Рекомендуемые дополнительные материалы
+### Рекомендуемые дополнительные материалы {#recommended-further-reading}
 
 
 * [Параметры конфигурации приёмника Kafka (Kafka Sink Configuration Parameters)](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# DISTINCT 子句
+# DISTINCT 子句 {#distinct-clause}
 
 如果指定了 `SELECT DISTINCT`，查询结果中只会保留唯一的行。也就是说，在所有完全相同的行集合中，最终结果每组只会保留一行。
 
@@ -57,7 +57,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 ```
 
 
-## DISTINCT 和 ORDER BY
+## DISTINCT 和 ORDER BY {#distinct-and-order-by}
 
 ClickHouse 支持在单个查询中对不同的列分别使用 `DISTINCT` 和 `ORDER BY` 子句。`DISTINCT` 子句会先于 `ORDER BY` 子句执行。
 

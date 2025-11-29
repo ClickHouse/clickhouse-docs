@@ -1,4 +1,4 @@
-# Установка ClickHouse с помощью tgz-архивов
+# Установка ClickHouse с помощью tgz-архивов {#install-clickhouse-using-tgz-archives}
 
 > Рекомендуется использовать официальные предкомпилированные `tgz`-архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
 
@@ -20,7 +20,7 @@
 
 
 
-## Получите последнюю версию ClickHouse
+## Получите последнюю версию ClickHouse {#get-latest-version}
 
 Получите последнюю версию ClickHouse с GitHub и сохраните её в переменной `LATEST_VERSION`.
 
@@ -31,7 +31,7 @@ export LATEST_VERSION
 ```
 
 
-## Определите архитектуру системы
+## Определите архитектуру системы {#detect-system-architecture}
 
 Определите архитектуру системы и задайте переменную ARCH соответствующим образом:
 
@@ -44,7 +44,7 @@ esac
 ```
 
 
-## Загрузка tar-архивов для каждого компонента ClickHouse
+## Загрузка tar-архивов для каждого компонента ClickHouse {#download-tarballs}
 
 Скачайте tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается использовать пакеты, специфичные для архитектуры, затем при необходимости переходит к универсальным.
 
@@ -65,7 +65,7 @@ done
 
 
 ```bash
-# Извлечение и установка пакета clickhouse-common-static
+# Извлечение и установка пакета clickhouse-common-static {#extract-and-install-clickhouse-common-static-package}
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -75,7 +75,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# Извлеките и установите пакет отладочных символов
+# Извлеките и установите пакет отладочных символов {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -85,7 +85,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# Извлечение и установка серверного пакета с конфигурацией
+# Извлечение и установка серверного пакета с конфигурацией {#extract-and-install-server-package-with-configuration}
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
@@ -96,7 +96,7 @@ sudo /etc/init.d/clickhouse-server start  # Запуск сервера
 
 
 ```bash
-# Извлечь и установить клиентский пакет
+# Извлечь и установить клиентский пакет {#extract-and-install-client-package}
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

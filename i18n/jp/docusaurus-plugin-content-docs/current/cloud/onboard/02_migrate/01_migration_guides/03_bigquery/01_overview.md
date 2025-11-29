@@ -12,7 +12,7 @@ import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud と BigQuery の比較 
+# ClickHouse Cloud と BigQuery の比較  {#comparing-clickhouse-cloud-and-bigquery}
 
 
 
@@ -186,7 +186,7 @@ ClickHouse は、分析タスクにより適したものとなるよう、多く
 
 
 
-## 配列
+## 配列 {#arrays}
 
 BigQuery の配列関数が 8 個であるのに対して、ClickHouse には 80 個以上の[組み込み配列関数](/sql-reference/functions/array-functions)があり、幅広い問題をエレガントかつシンプルにモデリング・解決できます。
 

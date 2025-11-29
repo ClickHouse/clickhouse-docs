@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 
 
-## 设置
+## 设置 {#setup}
 
 首先创建一个虚拟环境：
 
@@ -52,7 +52,7 @@ ClickPy 记录所有 PyPI 包的下载情况，并通过 UI 让你探索各个�
 
 
 
-## 查询 ClickPy ClickHouse 服务
+## 查询 ClickPy ClickHouse 服务 {#querying-the-clickpy-clickhouse-service}
 
 现在导入 chDB：
 
@@ -134,7 +134,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 ```
 
 
-## 合并 Pandas DataFrame
+## 合并 Pandas DataFrame {#merging-pandas-dataframes}
 
 现在我们已经有两个 DataFrame，可以按日期（即 `x` 列）将它们合并，如下所示：
 
@@ -173,7 +173,7 @@ df.head(n=5)
 ```
 
 
-## 查询 Pandas DataFrame
+## 查询 Pandas DataFrame {#querying-pandas-dataframes}
 
 接下来，假设我们想要找出比例最高和最低的日期。
 我们可以回到 chDB 中计算这些值：

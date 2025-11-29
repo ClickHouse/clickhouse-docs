@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 import Image from '@theme/IdealImage';
 
 
-# Как работает оптимизация PREWHERE?
+# Как работает оптимизация PREWHERE? {#how-does-the-prewhere-optimization-work}
 
 [Предложение PREWHERE](/sql-reference/statements/select/prewhere) — это оптимизация выполнения запроса в ClickHouse. Она уменьшает объём операций ввода-вывода и ускоряет выполнение запроса, избегая ненужного чтения данных и отфильтровывая лишние данные до чтения со встроенного диска столбцов, не участвующих в фильтрации.
 
@@ -109,7 +109,7 @@ ClickHouse начинает обработку PREWHERE, ① читая выбр
 
 
 
-## Как измерить влияние PREWHERE
+## Как измерить влияние PREWHERE {#how-to-measure-prewhere-impact}
 
 Чтобы убедиться, что PREWHERE действительно ускоряет ваши запросы, вы можете сравнить их производительность с включённой и выключенной настройкой `optimize_move_to_prewhere`.
 

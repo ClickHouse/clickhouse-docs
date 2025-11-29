@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# PREWHERE 子句
+# PREWHERE 子句 {#prewhere-clause}
 
 PREWHERE 是一种用于更高效执行过滤的优化机制。即使未显式指定 `PREWHERE` 子句，该优化也会默认启用。其工作方式是自动将部分 [WHERE](../../../sql-reference/statements/select/where.md) 条件移动到 PREWHERE 阶段。`PREWHERE` 子句的作用只是用于在你认为自己比默认策略更了解如何进行优化时，手动控制这一优化行为。
 
@@ -38,7 +38,7 @@ PREWHERE 是一种用于更高效执行过滤的优化机制。即使未显式�
 
 
 
-## 示例
+## 示例 {#example}
 
 ```sql
 CREATE TABLE mydata

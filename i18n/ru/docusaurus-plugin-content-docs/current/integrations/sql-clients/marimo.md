@@ -19,7 +19,7 @@ import run_app_view from '@site/static/images/integrations/sql-clients/marimo/ru
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Использование marimo с ClickHouse
+# Использование marimo с ClickHouse {#using-marimo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## 1. Установите Marimo с поддержкой SQL
+## 1. Установите Marimo с поддержкой SQL {#install-marimo-sql}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
@@ -55,7 +55,7 @@ marimo edit clickhouse_demo.py
 
 
 
-## 3. Выполнение SQL-запросов
+## 3. Выполнение SQL-запросов {#run-sql}
 
 После настройки подключения вы можете создать новую SQL-ячейку и выбрать движок ClickHouse.
 

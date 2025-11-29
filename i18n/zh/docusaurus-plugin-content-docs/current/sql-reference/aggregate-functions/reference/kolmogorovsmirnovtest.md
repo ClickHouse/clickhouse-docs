@@ -7,7 +7,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest
+# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
 
 将 Kolmogorov-Smirnov 检验应用于来自两个总体的样本。
 
@@ -109,10 +109,9 @@ FROM
 └─────────────────────────────────────────────────────────┘
 ```
 
-
 注：
 P 值小于 0.05（对应 95% 的置信水平），因此应当拒绝原假设。
 
 **另请参阅**
 
-- [Kolmogorov-Smirnov 检验](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+* [Kolmogorov-Smirnov 检验](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)

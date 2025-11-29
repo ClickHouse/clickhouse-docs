@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のような内容の、`football.txt` という名前の txt ファイルを使用します。
 

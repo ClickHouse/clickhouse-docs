@@ -11,15 +11,13 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# SSH-интерфейс с псевдотерминалом (PTY) {#ssh-interface-with-pty}
 
-# SSH-интерфейс с псевдотерминалом (PTY)
+<ExperimentalBadge />
 
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-
-
-## Предисловие
+## Предисловие {#preface}
 
 Сервер ClickHouse позволяет устанавливать прямое подключение по протоколу SSH. Можно использовать любой клиент.
 
@@ -55,8 +53,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1
 ```
 
-
-## Конфигурация сервера
+## Конфигурация сервера {#server-configuration}
 
 Чтобы включить функцию SSH-сервера, необходимо раскомментировать или добавить следующий раздел в файл `config.xml`:
 
@@ -86,8 +83,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
-
-## Настройка встроенного клиента
+## Настройка встроенного клиента {#configuring-embedded-client}
 
 Вы можете передавать параметры встроенному клиенту аналогично тому, как это делается для обычного `clickhouse-client`, но с некоторыми ограничениями.
 Поскольку используется протокол SSH, единственный способ передать параметры целевому хосту — через переменные окружения.

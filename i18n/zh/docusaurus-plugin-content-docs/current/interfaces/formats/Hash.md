@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 假设有一张名为 `football` 的表，包含如下数据：
 

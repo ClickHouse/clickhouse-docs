@@ -20,7 +20,7 @@ Values は大文字小文字を区別しない関数です。つまり、`VALUES
 
 
 
-## 構文
+## 構文 {#syntax}
 
 `VALUES` テーブル関数の基本構文は次のとおりです。
 
@@ -60,7 +60,7 @@ VALUES(
 
 
 
-## 使用例
+## 使用例 {#examples}
 
 ```sql title="Query"
 SELECT *

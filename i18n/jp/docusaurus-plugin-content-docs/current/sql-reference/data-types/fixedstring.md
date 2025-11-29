@@ -7,7 +7,7 @@ title: 'FixedString(N)'
 doc_type: 'reference'
 ---
 
-# FixedString(N)
+# FixedString(N) {#fixedstringn}
 
 `N` バイトの固定長文字列（文字数でもコードポイント数でもありません）。
 

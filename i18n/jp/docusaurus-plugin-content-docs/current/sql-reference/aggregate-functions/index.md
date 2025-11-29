@@ -7,20 +7,16 @@ title: '集約関数'
 doc_type: 'reference'
 ---
 
-
-
-# 集約関数
+# 集約関数 {#aggregate-functions}
 
 集約関数は、データベースの専門家にとって[一般的な](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方法で動作します。
 
 ClickHouse は次の機能もサポートしています：
 
-- 列に加えて他のパラメータも受け取る [パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)
-- 集約関数の動作を変更する [コンビネータ](/sql-reference/aggregate-functions/combinators)
+* 列に加えて他のパラメータも受け取る [パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)
+* 集約関数の動作を変更する [コンビネータ](/sql-reference/aggregate-functions/combinators)
 
-
-
-## NULL の処理
+## NULL の処理 {#null-processing}
 
 集約処理の際、すべての `NULL` 引数はスキップされます。集約に複数の引数がある場合、それらのうち 1 つでも NULL が含まれる行は無視されます。
 
@@ -117,7 +113,6 @@ GROUP BY v
 ```
 
 以下は、`RESPECT NULLS` を使用した first&#95;value の例です。NULL の入力値が尊重され、読み取られた最初の値が NULL かどうかに関係なく返されることがわかります。
-
 
 ```sql
 SELECT

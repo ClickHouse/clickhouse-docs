@@ -32,7 +32,7 @@ doc_type: 'reference'
 
 ## Примеры использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте следующий текстовый файл `football.txt`:
 
@@ -57,7 +57,7 @@ INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparated;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Настройте параметры пользовательского разделителя:
 

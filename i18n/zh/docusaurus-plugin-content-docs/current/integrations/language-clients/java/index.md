@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Java 客户端概览
+# Java 客户端概览 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
@@ -122,7 +122,7 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
 - 我们建议持续升级客户端，以免错过安全修复和新的改进。
 - 如果在迁移到 v2 API 时遇到问题，请[创建一个 issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)，我们会及时回复！
 
-### 日志记录
+### 日志记录 {#logging}
 
 我们的 Java 客户端使用 [SLF4J](https://www.slf4j.org/) 进行日志记录。你可以使用任何与 SLF4J 兼容的日志框架，例如 `Logback` 或 `Log4j`。
 例如，如果你使用 Maven，可以在 `pom.xml` 文件中添加以下依赖：
@@ -153,7 +153,7 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
 ```
 
 
-#### 配置日志记录
+#### 配置日志记录 {#configuring-logging}
 
 具体配置方式取决于你所使用的日志框架。例如，如果你使用的是 `Logback`，可以在名为 `logback.xml` 的文件中进行配置：
 

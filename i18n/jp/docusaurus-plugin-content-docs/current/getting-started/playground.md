@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse playground
+# ClickHouse playground {#clickhouse-playground}
 
 [ClickHouse Playground](https://sql.clickhouse.com) は、ユーザーが独自のサーバーやクラスターをセットアップすることなく、すぐにクエリを実行して ClickHouse を試せる環境です。
 Playground には、いくつかのサンプルデータセットが用意されています。
@@ -40,7 +40,7 @@ Playground には、任意の HTTP クライアントからクエリを送信で
 
 
 
-## 例
+## 例 {#examples}
 
 `curl` を使って HTTPS エンドポイントにアクセスする例：
 

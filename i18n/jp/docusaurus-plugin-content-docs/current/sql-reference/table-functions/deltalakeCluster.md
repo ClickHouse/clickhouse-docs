@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# deltaLakeCluster テーブル関数
+# deltaLakeCluster テーブル関数 {#deltalakecluster-table-function}
 
 これは [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の拡張です。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

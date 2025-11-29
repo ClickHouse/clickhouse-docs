@@ -6,7 +6,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr
+# groupBitmapOr {#groupbitmapor}
 
 ビットマップ列の OR を計算し、`UInt64` 型の基数（要素数）を返します。末尾に `-State` のサフィックスを付けると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。これは `groupBitmapMerge` と同等です。
 

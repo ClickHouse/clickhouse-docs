@@ -44,7 +44,7 @@ import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-sub
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
 
-# SQL コンソール
+# SQL コンソール {#sql-console}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
 
@@ -258,7 +258,7 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 
 
-## クエリデータの可視化
+## クエリデータの可視化 {#visualizing-query-data}
 
 一部のデータは、チャート形式にするとより理解しやすくなります。SQL コンソールからクエリ結果データを直接利用して、数回のクリックで素早く可視化を作成できます。例として、NYC タクシー乗車データの週次統計を計算するクエリを使用します。
 
@@ -280,7 +280,7 @@ ORDER BY
 
 可視化がないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
-### チャートの作成
+### チャートの作成 {#creating-charts}
 
 可視化の作成を始めるには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
 
@@ -294,7 +294,7 @@ ORDER BY
 
 <Image img={bar_chart} size="md" alt="棒グラフ" />
 
-### チャートのカスタマイズ
+### チャートのカスタマイズ {#customizing-charts}
 
 SQL コンソールは 10 種類のチャートタイプをサポートしており、チャート設定ペインのチャートタイプセレクターから選択できます。たとえば、先ほどのチャートタイプを Bar から Area に簡単に変更できます。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 域（Domains）
+# 域（Domains） {#domains}
 
 域是一种具有特定用途的类型，它在现有基础类型之上增加了额外功能，同时保持底层数据类型在网络传输和磁盘存储时的格式不变。目前，ClickHouse 不支持用户自定义域。
 

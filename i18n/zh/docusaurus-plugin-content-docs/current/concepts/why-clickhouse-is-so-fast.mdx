@@ -18,7 +18,7 @@ doc_type: 'guide'
 
 ## 存储层：并发插入彼此之间是相互隔离的 \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 在 ClickHouse 中，每个表由多个 “table part” 组成。每当用户向表中插入数据（`INSERT` 语句）时，就会创建一个新的 [part](/parts)。查询始终会在查询开始时已存在的所有 table part 上执行。
 
@@ -30,7 +30,7 @@ doc_type: 'guide'
 
 ## 存储层：并发 INSERT 和 SELECT 相互隔离 \{#storage-layer-concurrent-inserts-and-selects-are-isolated\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在后台进行，不会影响并发查询的执行。
 
@@ -38,15 +38,15 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## 存储层：合并阶段计算 \{#storage-layer-merge-time-computation\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 与其他数据库不同，ClickHouse 通过在后台的 [merge](/merges) 合并过程中执行所有额外的数据转换，来保持数据写入轻量且高效。例如：
 
-- **替换合并（replacing merges）**：只保留输入分片中某行的最新版本，并丢弃该行的所有其他版本。可以将替换合并视为在合并阶段执行的清理操作。
+* **替换合并（replacing merges）**：只保留输入分片中某行的最新版本，并丢弃该行的所有其他版本。可以将替换合并视为在合并阶段执行的清理操作。
 
-- **聚合合并（aggregating merges）**：将输入分片中的中间聚合状态合并为一个新的聚合状态。虽然这看起来有些难以理解，但本质上只是实现了增量聚合。
+* **聚合合并（aggregating merges）**：将输入分片中的中间聚合状态合并为一个新的聚合状态。虽然这看起来有些难以理解，但本质上只是实现了增量聚合。
 
-- **TTL（time-to-live，存活时间）合并**：根据某些基于时间的规则对行进行压缩、移动或删除。
+* **TTL（time-to-live，存活时间）合并**：根据某些基于时间的规则对行进行压缩、移动或删除。
 
 这些转换的目的是将工作量（计算）从用户查询执行的时间点转移到合并阶段。这在两个方面很重要：
 
@@ -58,7 +58,7 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## 存储层：数据裁剪 \{#storage-layer-data-pruning\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 在实践中，许多查询是重复的，即在固定时间间隔内周期性地运行，且查询本身保持不变或只做轻微修改（例如使用不同的参数值）。反复运行相同或相似的查询，使我们可以添加索引或重新组织数据，从而让高频查询能够更快地访问数据。这种方法也被称为“数据裁剪（data pruning）”，ClickHouse 为此提供了三种技术：
 
@@ -74,7 +74,7 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## 存储层：数据压缩 \{#storage-layer-data-compression\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 此外，ClickHouse 的存储层还可以（可选地）使用不同的编解码器对原始表数据进行压缩。
 
@@ -88,7 +88,7 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## 最先进的查询处理层 \{#state-of-the-art-query-processing-layer\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 最后，ClickHouse 使用向量化查询处理层，在最大程度上并行化查询执行，以利用全部资源，实现最高速度和效率。
 
@@ -102,11 +102,11 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## 对细节的极致打磨 \{#meticulous-attention-to-detail\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-> **“ClickHouse 是一个很‘怪’的系统——你们有 20 个版本的哈希表。你们为各种场景准备了这些惊人的东西，而大多数系统只会有一个哈希表** **……** **ClickHouse 之所以有如此惊人的性能，是因为它拥有所有这些高度专用的组件”** [Andy Pavlo，CMU 数据库教授](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+> **“ClickHouse 是一个很‘怪’的系统——你们有 20 个版本的哈希表。你们为各种场景准备了这些惊人的东西，而大多数系统只会有一个哈希表** **……** **ClickHouse 之所以有如此惊人的性能，是因为它拥有所有这些高度专用的组件”** [Andy Pavlo，CMU 数据库教授](https://www.youtube.com/watch?v=Vy2t_wZx4Is\&t=3579s)
 
-让 ClickHouse 与众不同的[关键](https://www.youtube.com/watch?v=CAS2otEoerM)，在于对底层优化的极致打磨。构建一个“能用”的数据库是一回事，而要把它工程化到能够在多样的查询类型、数据结构、分布方式和索引配置下都保持高速，才是真正体现出这个“[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)”艺术性的地方。
+让 ClickHouse 与众不同的[关键](https://www.youtube.com/watch?v=CAS2otEoerM)，在于对底层优化的极致打磨。构建一个“能用”的数据库是一回事，而要把它工程化到能够在多样的查询类型、数据结构、分布方式和索引配置下都保持高速，才是真正体现出这个“[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU\&t=3579)”艺术性的地方。
 
 **哈希表（Hash Tables）。** 以哈希表为例。哈希表是连接（join）和聚合所依赖的核心数据结构。作为程序员，需要考虑如下设计决策：
 
@@ -142,4 +142,4 @@ VLDB 是一个专注于超大规模数据库的国际会议，被广泛认为是
 ClickHouse 的创始人兼 CTO Alexey Milovidov 在会上进行了论文报告（幻灯片在[这里](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)），之后进行了问答环节（很快就时间不够了！）。
 您可以在这里观看录制的演讲：
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

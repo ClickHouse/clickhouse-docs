@@ -6,7 +6,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted
+# quantileTimingWeighted {#quantiletimingweighted}
 
 指定した精度で、数値データのシーケンスに対して、各要素の重みを考慮した[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
@@ -85,8 +85,7 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 └───────────────────────────────────────────────┘
 ```
 
-
-# quantilesTimingWeighted
+# quantilesTimingWeighted {#quantilestimingweighted}
 
 `quantileTimingWeighted` と同様ですが、複数の分位レベルをパラメータとして受け取り、それらの分位数に対応する値を要素とする Array を返します。
 

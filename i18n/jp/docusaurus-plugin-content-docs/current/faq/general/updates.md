@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['更新', 'リアルタイム']
 ---
 
-# ClickHouse はリアルタイム更新をサポートしていますか？
+# ClickHouse はリアルタイム更新をサポートしていますか？ {#does-clickhouse-support-real-time-updates}
 
 ClickHouse は `UPDATE` 文をサポートしており、`INSERT` と同等の速度でリアルタイムに更新を実行できます。
 

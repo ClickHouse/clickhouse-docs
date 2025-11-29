@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# 基础知识
+# 基础知识 {#basics}
 
 :::note
 客户端协议参考文档正在编写中。
@@ -121,13 +121,13 @@ data := []byte{
 
 
 
-## 整数
+## 整数 {#integers}
 
 :::tip
 ClickHouse 对固定大小的整数采用 **小端序（Little Endian）** 存储。
 :::
 
-### Int32
+### Int32 {#int32}
 
 ```go
 v := int32(1000)

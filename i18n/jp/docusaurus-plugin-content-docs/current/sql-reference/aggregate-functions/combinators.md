@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 集約関数のコンビネーター
+# 集約関数のコンビネーター {#aggregate-function-combinators}
 
 集約関数の名前には、接尾辞を付けることができます。これにより、その集約関数の挙動が変化します。
 
@@ -37,7 +37,7 @@ doc_type: 'reference'
 
 
 
-## -Map
+## -Map {#-map}
 
 `-Map` サフィックスは、任意の集約関数に付加して使用できます。これにより、引数として `Map` 型を受け取り、指定した集約関数を用いてマップ内の各キーに対応する値を個別に集約する集約関数が作成されます。結果も `Map` 型となります。
 
@@ -71,7 +71,7 @@ GROUP BY timeslot;
 ```
 
 
-## -SimpleState
+## -SimpleState {#-simplestate}
 
 このコンビネータを適用すると、集約関数は同じ値を返しますが、型が異なるようになります。これは、テーブルに保存して [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルで使用できる [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md) 型です。
 
@@ -149,7 +149,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 
 
-## -OrDefault
+## -OrDefault {#-ordefault}
 
 集約関数の動作を変更します。
 
@@ -210,7 +210,7 @@ FROM
 ```
 
 
-## -OrNull
+## -OrNull {#-ornull}
 
 集約関数の動作を変更します。
 
@@ -274,7 +274,7 @@ FROM
 ```
 
 
-## -Resample
+## -Resample {#-resample}
 
 データをグループに分割し、その各グループ内で個別にデータを集計できるようにします。グループは、1 列の値を区間ごとに分割することで作成されます。
 

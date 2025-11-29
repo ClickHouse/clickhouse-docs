@@ -6,10 +6,9 @@ title: 'system.asynchronous_insert_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;insert&#95;log
+# system.asynchronous&#95;insert&#95;log {#systemasynchronous&#95;insert&#95;log}
 
 <SystemTableCloud />
 

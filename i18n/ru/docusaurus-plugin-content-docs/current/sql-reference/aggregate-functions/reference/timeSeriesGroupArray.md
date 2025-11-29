@@ -6,7 +6,7 @@ title: 'timeSeriesGroupArray'
 doc_type: 'reference'
 ---
 
-# timeSeriesGroupArray
+# timeSeriesGroupArray {#timeseriesgrouparray}
 
 Сортирует временные ряды по метке времени по возрастанию.
 

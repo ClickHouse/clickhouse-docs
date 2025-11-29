@@ -26,9 +26,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем следующий TSV‑файл с именем `football.tsv`:
 
@@ -60,7 +60,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные, используя формат `TabSeparatedRawWithNamesAndTypes`:
 

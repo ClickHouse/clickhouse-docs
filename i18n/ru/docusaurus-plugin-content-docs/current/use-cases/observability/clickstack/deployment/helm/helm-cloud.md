@@ -15,7 +15,7 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'облачно
 
 При развертывании в GKE может потребоваться переопределить некоторые значения из‑за особенностей сетевой инфраструктуры облака.
 
-### Проблема с разрешением DNS для LoadBalancer
+### Проблема с разрешением DNS для LoadBalancer {#loadbalancer-dns-resolution-issue}
 
 Сервис LoadBalancer в GKE может вызывать внутренние проблемы с разрешением DNS, при которых взаимодействие между подами осуществляется через внешние IP‑адреса вместо использования сетевого трафика внутри кластера. Это, в частности, влияет на подключение OTel collector к серверу OpAMP.
 
@@ -35,17 +35,17 @@ helm install my-clickstack clickstack/clickstack \
 ```
 
 
-### Дополнительные соображения по GKE
+### Дополнительные соображения по GKE {#other-gke-considerations}
 
 ```yaml
-# values-gke.yaml
+# values-gke.yaml {#values-gkeyaml}
 hyperdx:
   frontendUrl: "http://34.123.61.99"  # Укажите внешний IP вашего LoadBalancer
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 
-# При необходимости настройте для сетевой конфигурации подов GKE
+# При необходимости настройте для сетевой конфигурации подов GKE {#adjust-for-gke-pod-networking-if-needed}
 clickhouse:
   config:
     clusterCidrs:
@@ -54,23 +54,23 @@ clickhouse:
 ```
 
 
-## Amazon EKS
+## Amazon EKS {#amazon-eks}
 
 Для развертывания в EKS рассмотрите следующие распространённые конфигурации:
 
 ```yaml
-# values-eks.yaml
+# values-eks.yaml {#values-eksyaml}
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
 
-# EKS обычно использует следующие CIDR для подов
+# EKS обычно использует следующие CIDR для подов {#eks-typically-uses-these-pod-cidrs}
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-# Включить входной шлюз для production-среды
+# Включить входной шлюз для production-среды {#enable-ingress-for-production}
 hyperdx:
   ingress:
     enabled: true
@@ -80,16 +80,16 @@ hyperdx:
 ```
 
 
-## Azure AKS
+## Azure AKS {#azure-aks}
 
 Для развертывания в AKS:
 
 ```yaml
-# values-aks.yaml
+# values-aks.yaml {#values-aksyaml}
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
 
-# Сетевая конфигурация подов AKS
+# Сетевая конфигурация подов AKS {#aks-pod-networking}
 clickhouse:
   config:
     clusterCidrs:
@@ -114,7 +114,7 @@ clickhouse:
 
 ## Лучшие практики для продакшена {#production-best-practices}
 
-### Управление ресурсами
+### Управление ресурсами {#resource-management}
 
 ```yaml
 hyperdx:
@@ -128,7 +128,7 @@ hyperdx:
 ```
 
 
-### Высокая доступность
+### Высокая доступность {#high-availability}
 
 ```yaml
 hyperdx:
@@ -149,7 +149,7 @@ hyperdx:
 ```
 
 
-### Персистентное хранилище
+### Персистентное хранилище {#persistent-storage}
 
 Убедитесь, что для хранения данных настроены персистентные тома.
 

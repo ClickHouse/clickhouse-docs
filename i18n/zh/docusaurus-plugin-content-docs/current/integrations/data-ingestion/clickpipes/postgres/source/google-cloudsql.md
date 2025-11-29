@@ -18,7 +18,7 @@ import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 
-# Google Cloud SQL Postgres 源端设置指南
+# Google Cloud SQL Postgres 源端设置指南 {#google-cloud-sql-postgres-source-setup-guide}
 
 :::info
 

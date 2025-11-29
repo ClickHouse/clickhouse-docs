@@ -26,7 +26,7 @@ keywords: ['пример набора данных', 'погода', 'тайва
 - [Предварительно обработанная версия](#pre-processed-data) данных для ClickHouse, которые были очищены, переработаны и обогащены. Этот набор данных охватывает период с 1896 по 2023 год.
 - [Скачать исходные «сырые» данные](#original-raw-data) и преобразовать их в формат, требуемый ClickHouse. Пользователи, которые хотят добавить собственные столбцы, могут изучить или доработать свои подходы.
 
-### Предобработанные данные
+### Предобработанные данные {#pre-processed-data}
 
 Набор данных был преобразован из формата «одно измерение на строку» в формат «одна строка по идентификатору метеостанции и дате измерения», т.е.
 
@@ -47,16 +47,16 @@ C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-# Опционально: Проверьте контрольную сумму
+# Опционально: Проверьте контрольную сумму {#option-validate-the-checksum}
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# Контрольная сумма должна совпадать с: 11b484f5bd9ddafec5cfb131eb2dd008
+# Контрольная сумма должна совпадать с: 11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-# Опционально: Проверьте контрольную сумму
+# Опционально: Проверьте контрольную сумму {#option-validate-the-checksum}
 md5sum daily_weather_preprocessed_1896_2023.csv
-# Контрольная сумма должна совпадать с: 1132248c78195c43d93f843753881754
+# Контрольная сумма должна совпадать с: 1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
 
@@ -64,7 +64,7 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 
 Далее приведены сведения о шагах по загрузке исходных необработанных данных, которые затем можно преобразовать и конвертировать по своему усмотрению.
 
-#### Загрузка
+#### Загрузка {#download}
 
 Чтобы скачать исходные сырые данные:
 
@@ -73,9 +73,9 @@ mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-# Опционально: Проверка контрольной суммы
+# Опционально: Проверка контрольной суммы {#option-validate-the-checksum}
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# Контрольная сумма должна совпадать с: b66b9f137217454d655e3004d7d1b51a
+# Контрольная сумма должна совпадать с: b66b9f137217454d655e3004d7d1b51a {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -84,23 +84,23 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-# Опционально: Проверка контрольной суммы
+# Опционально: Проверка контрольной суммы {#option-validate-the-checksum}
 cat *.csv | md5sum
-# Контрольная сумма должна совпадать с: b26db404bf84d4063fac42e576464ce1
+# Контрольная сумма должна совпадать с: b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
 
-#### Получение данных метеостанций Тайваня
+#### Получение данных метеостанций Тайваня {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-# Опционально: Преобразование кодировки UTF-8-BOM в UTF-8
+# Опционально: Преобразование кодировки UTF-8-BOM в UTF-8 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
 
-## Создание схемы таблицы
+## Создание схемы таблицы {#create-table-schema}
 
 Создайте таблицу MergeTree в ClickHouse (через клиент ClickHouse).
 
@@ -144,7 +144,7 @@ ORDER BY (MeasuredDate);
 
 ## Вставка данных в ClickHouse {#inserting-into-clickhouse}
 
-### Вставка данных из локального файла
+### Вставка данных из локального файла {#inserting-from-local-file}
 
 Данные можно вставить из локального файла следующим образом (в клиенте ClickHouse):
 
@@ -165,7 +165,7 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 ```
 
 
-### Вставка из URL
+### Вставка из URL {#inserting-from-url}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
@@ -176,7 +176,7 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 Чтобы узнать, как ускорить этот процесс, ознакомьтесь с нашей публикацией в блоге о [настройке загрузки больших объёмов данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
 
 
-## Проверка числа строк и объёма данных
+## Проверка числа строк и объёма данных {#check-data-rows-and-sizes}
 
 1. Посмотрим, сколько строк было вставлено:
 
@@ -210,7 +210,7 @@ WHERE (`table` = 'tw_weather_data') AND active
 
 ## Примеры запросов {#sample-queries}
 
-### Q1: Получите максимальное значение температуры точки росы для каждой метеостанции за заданный год
+### Q1: Получите максимальное значение температуры точки росы для каждой метеостанции за заданный год {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -257,7 +257,7 @@ GROUP BY StationId
 ```
 
 
-### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции
+### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT

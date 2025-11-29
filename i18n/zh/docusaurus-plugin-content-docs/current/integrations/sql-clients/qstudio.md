@@ -7,22 +7,19 @@ doc_type: 'guide'
 keywords: ['qstudio', 'sql 客户端', '数据库工具', '查询工具', 'IDE']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# 将 QStudio 连接到 ClickHouse
+# 将 QStudio 连接到 ClickHouse {#connect-qstudio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 QStudio 是一款免费的 SQL 图形界面工具，可用于运行 SQL 脚本、便捷浏览数据表、绘制图表并导出结果。它适用于任何操作系统，且可以连接任意数据库。
 
 QStudio 通过 JDBC 连接到 ClickHouse。
-
-
 
 ## 1. 收集 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
 
@@ -35,13 +32,9 @@ QStudio 通过 HTTP(S) 上的 JDBC 连接到 ClickHouse；您需要准备：
 
 <ConnectionDetails />
 
-
-
 ## 2. 下载 QStudio {#2-download-qstudio}
 
 QStudio 可从 https://www.timestored.com/qstudio/download/ 下载。
-
-
 
 ## 3. 添加数据库 {#3-add-a-database}
 
@@ -60,8 +53,6 @@ QStudio 可从 https://www.timestored.com/qstudio/download/ 下载。
 
 如果 QStudio 检测到您尚未安装 ClickHouse JDBC 驱动程序，它会提示您下载安装：
 
-
-
 ## 4. 查询 ClickHouse {#4-query-clickhouse}
 
 - 打开查询编辑器并运行查询。可以通过以下方式运行查询：
@@ -71,8 +62,6 @@ QStudio 可从 https://www.timestored.com/qstudio/download/ 下载。
 - 示例查询：
 
 <Image img={qstudio_running_query} size="lg" border alt="QStudio 界面展示针对 ClickHouse 数据库执行示例 SQL 查询的画面" />
-
-
 
 ## 下一步 {#next-steps}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 列の型
+# 列の型 {#column-types}
 
 データ型の一般的な説明については、[データ型](/sql-reference/data-types/) を参照してください。
 
@@ -77,7 +77,7 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 
 
 
-## Nullable
+## Nullable {#nullable}
 
 `Nullable(T)` は、行数が同じ `Nulls`（型は `ColUInt8`）列と `Values`（型は `T`）列で構成されます。
 
@@ -101,7 +101,7 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 
 
 
-## `LowCardinality` 型
+## `LowCardinality` 型 {#low-cardinality}
 
 `LowCardinality(T)` は、`Index T` および `Keys K` から構成されます。
 ここで `K` は、`Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかの型です。

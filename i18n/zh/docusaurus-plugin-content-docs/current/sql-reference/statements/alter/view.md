@@ -1,6 +1,6 @@
 ---
 description: 'ALTER TABLE ... MODIFY QUERY 语句文档'
-sidebar_label: 'VIEW'
+sidebar_label: '视图'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
 title: 'ALTER TABLE ... MODIFY QUERY 语句'
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ALTER TABLE ... MODIFY QUERY 语句
+# ALTER TABLE ... MODIFY QUERY 语句 {#alter-table-modify-query-statement}
 
 您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改创建 [物化视图](/sql-reference/statements/create/view#materialized-view) 时指定的 `SELECT` 查询，而不会中断数据摄取过程。
 

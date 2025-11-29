@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ClickHouse Cloud 服务层级
+# ClickHouse Cloud 服务层级 {#clickhouse-cloud-tiers}
 
 ClickHouse Cloud 提供多个不同的服务层级。
 服务层级可以分配给组织内的任意层级，因此，一个组织内的所有服务都属于同一服务层级。

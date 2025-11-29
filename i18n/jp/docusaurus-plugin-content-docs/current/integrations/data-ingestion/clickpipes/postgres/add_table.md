@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
 
-# ClickPipe に特定のテーブルを追加する
+# ClickPipe に特定のテーブルを追加する {#adding-specific-tables-to-a-clickpipe}
 
 特定のテーブルをパイプに追加すると便利な場合があります。トランザクションワークロードや分析ワークロードがスケールするにつれて、これは一般的な要件となります。
 

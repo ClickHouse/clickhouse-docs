@@ -6,7 +6,7 @@ title: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap
+# minMap {#minmap}
 
 `key` 配列で指定されたキーに基づいて、`value` 配列の最小値を計算します。
 

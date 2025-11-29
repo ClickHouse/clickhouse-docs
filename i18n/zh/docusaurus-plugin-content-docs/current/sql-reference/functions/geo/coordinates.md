@@ -6,9 +6,7 @@ title: '用于处理地理坐标的函数'
 doc_type: 'reference'
 ---
 
-
-
-## greatCircleDistance
+## greatCircleDistance {#greatcircledistance}
 
 使用[大圆距离公式](https://en.wikipedia.org/wiki/Great-circle_distance)计算地球表面上两点之间的距离。
 
@@ -43,8 +41,7 @@ SELECT greatCircleDistance(55.755831, 37.617673, -55.755831, -37.617673) AS grea
 └─────────────────────┘
 ```
 
-
-## geoDistance
+## geoDistance {#geodistance}
 
 类似于 `greatCircleDistance`，但在 WGS-84 椭球体上而非理想球面上计算距离，对地球大地水准面的近似更为精确。
 其性能与 `greatCircleDistance` 相同（没有性能开销）。建议在计算地球上的距离时使用 `geoDistance`。
@@ -82,8 +79,7 @@ SELECT geoDistance(38.8976, -77.0366, 39.9496, -75.1503) AS geoDistance
 └─────────────┘
 ```
 
-
-## greatCircleAngle
+## greatCircleAngle {#greatcircleangle}
 
 使用[大圆公式](https://en.wikipedia.org/wiki/Great-circle_distance)计算地球表面上两点之间的球心角。
 
@@ -114,8 +110,7 @@ SELECT greatCircleAngle(0, 0, 45, 0) AS arc
 └─────┘
 ```
 
-
-## pointInEllipses
+## pointInEllipses {#pointinellipses}
 
 检查该点是否落在至少一个椭圆内。
 坐标采用笛卡尔坐标系的几何坐标。
@@ -148,8 +143,7 @@ SELECT pointInEllipses(10., 10., 10., 9.1, 1., 0.9999)
 └─────────────────────────────────────────────────┘
 ```
 
-
-## pointInPolygon
+## pointInPolygon {#pointinpolygon}
 
 判断该点是否位于平面上的多边形内。
 

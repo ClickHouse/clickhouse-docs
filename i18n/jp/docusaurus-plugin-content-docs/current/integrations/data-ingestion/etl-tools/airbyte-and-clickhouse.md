@@ -25,7 +25,7 @@ import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# AirbyteをClickHouseに接続する
+# AirbyteをClickHouseに接続する {#connect-airbyte-to-clickhouse}
 
 <PartnerBadge />
 
@@ -70,7 +70,7 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
 
 
 
-## ClickHouse を送信先として追加する
+## ClickHouse を送信先として追加する {#2-add-clickhouse-as-a-destination}
 
 このセクションでは、ClickHouse インスタンスを送信先として追加する方法を説明します。
 

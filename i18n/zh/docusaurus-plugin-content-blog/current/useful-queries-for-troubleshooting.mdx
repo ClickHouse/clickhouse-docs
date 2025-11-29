@@ -10,14 +10,13 @@ keywords: ['实用查询']
 
 {/* 截断 */}
 
-
 ## 用于故障排查的一些实用查询 \{#useful-queries-for-troubleshooting\}
 
 以下是一些在排查 ClickHouse 问题、了解系统当前状况时非常有用的查询，顺序不分先后。
 
 我们还有一篇精彩的博文，整理了[用于监控 ClickHouse 的关键查询](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)。
 
-## 查看哪些设置已被修改为非默认值
+## 查看哪些设置已被修改为非默认值 \{#view-which-settings-have-been-changed-from-the-default\}
 
 ```sql
 SELECT
@@ -27,8 +26,7 @@ FROM system.settings
 WHERE changed
 ```
 
-
-## 获取所有数据表的大小
+## 获取所有数据表的大小 \{#get-the-size-of-all-your-tables\}
 
 ```sql
 SELECT table,
@@ -50,8 +48,7 @@ GROUP BY table
 └─────────────────┴───────────┘
 ```
 
-
-## 表的行数和平均每日数据量
+## 表的行数和平均每日数据量 \{#row-count-and-average-day-size-of-your-table\}
 
 ```sql
 SELECT
@@ -77,8 +74,7 @@ FROM
 )
 ```
 
-
-## 各列压缩率以及主键索引在内存中的大小
+## 各列压缩率以及主键索引在内存中的大小 \{#compression-columns-percentage-as-well-as-the-size-of-primary-index-in-memory\}
 
 你可以查看每一列的数据压缩情况。此查询还会返回主键索引在内存中的大小——了解这一点很有用，因为主键索引必须能够全部放入内存。
 
@@ -119,8 +115,7 @@ RIGHT JOIN
 ORDER BY parts.bytes_size DESC
 ```
 
-
-## 最近 10 分钟内客户端发送的查询次数
+## 最近 10 分钟内客户端发送的查询次数 \{#number-of-queries-sent-by-client-in-the-last-10-minutes\}
 
 你可以根据需要在 `toIntervalMinute(10)` 函数中调整时间间隔（增大或减小）：
 
@@ -141,8 +136,7 @@ ORDER BY
     count() ASC
 ```
 
-
-## 每个分区中的 part 数量
+## 每个分区中的 part 数量 \{#number-of-parts-in-each-partition\}
 
 ```sql
 SELECT
@@ -157,8 +151,7 @@ GROUP BY
     partition_id
 ```
 
-
-## 查找长时间执行的查询
+## 查找长时间执行的查询 \{#finding-long-running-queries\}
 
 这有助于定位卡住的查询：
 
@@ -195,8 +188,7 @@ WHERE
     query_id = '0bb6e88b-9b9a-4ffc-b612-5746c859e360';
 ```
 
-
-## 查看最近的错误
+## 查看最近的错误 \{#view-the-most-recent-errors\}
 
 ```
 SELECT *
@@ -215,8 +207,7 @@ ORDER BY last_error_time DESC
 └───────────────────────┴──────┴───────┴─────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴────────┘
 ```
 
-
-## CPU 和内存占用最高的前 10 条查询
+## CPU 和内存占用最高的前 10 条查询 \{#top-10-queries-that-are-using-the-most-cpu-and-memory\}
 
 ```sql
 SELECT
@@ -232,8 +223,7 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
-
-## 我的投影占用多少磁盘空间？
+## 我的投影占用多少磁盘空间？ \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql
 SELECT
@@ -245,8 +235,7 @@ SELECT
 FROM system.projection_parts
 ```
 
-
-## 在各数据库中显示磁盘占用、system.parts 中的 parts 数量、行数和 marks 数量
+## 在各数据库中显示磁盘占用、system.parts 中的 parts 数量、行数和 marks 数量 \{#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases\}
 
 ```sql
 SELECT
@@ -266,8 +255,7 @@ GROUP BY
 ORDER BY database ASC
 ```
 
-
-## 列出最近写入的新数据片详情
+## 列出最近写入的新数据片详情 \{#list-details-of-recently-written-new-parts\}
 
 详细信息包括它们的创建时间、大小、行数等：
 

@@ -10,7 +10,6 @@ keywords: ['エラー', 'SSL 証明書', '210']
 
 {/* 途中省略 */}
 
-
 ## ClickHouse におけるコード 210 の SSL 証明書検証エラーの解決 \{#resolving-ssl-certificate-verify-error-in-clickhouse\}
 
 このエラーは通常、次のように報告されます。
@@ -21,10 +20,10 @@ keywords: ['エラー', 'SSL 証明書', '210']
 
 このエラーは、`clickhouse-client` を使用して ClickHouse サーバーへの接続を試みている際に発生します。エラーの原因は次のいずれかです。
 
-- クライアント設定ファイル `config.xml` に、マシンの CA デフォルトストアにあるルート証明書が含まれていない
-- 自己署名証明書または内部 CA 証明書が適切に設定されていない
+* クライアント設定ファイル `config.xml` に、マシンの CA デフォルトストアにあるルート証明書が含まれていない
+* 自己署名証明書または内部 CA 証明書が適切に設定されていない
 
-## 解決策
+## 解決策 \{#solution\}
 
 内部 CA または自己署名 CA を使用する場合は、クライアントディレクトリ（例: `/etc/clickhouse-client`）内の `config.xml` で CA ルート証明書を設定し、デフォルトの場所から読み込まれるデフォルトのルート CA 証明書を無効にします。
 
@@ -45,7 +44,6 @@ keywords: ['エラー', 'SSL 証明書', '210']
 </openSSL>
 ```
 
-
 ## 追加リソース \{#additional-resources\}
 
-[https://clickhouse.com/docs/interfaces/cli/#configuration_files](https://clickhouse.com/docs/interfaces/cli/#configuration_files) を参照してください
+[https://clickhouse.com/docs/interfaces/cli/#configuration&#95;files](https://clickhouse.com/docs/interfaces/cli/#configuration_files) を参照してください

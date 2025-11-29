@@ -19,7 +19,7 @@ import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
 
 
-# Использование сервера MCP ClickHouse с AnythingLLM
+# Использование сервера MCP ClickHouse с AnythingLLM {#using-clickhouse-mcp-server-with-anythingllm}
 
 > В этом руководстве описано, как настроить [AnythingLLM](https://anythingllm.com/) с сервером MCP ClickHouse с использованием Docker
 > и подключить его к демонстрационным наборам данных ClickHouse.
@@ -39,7 +39,7 @@ import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png'
 
 
 
-## Загрузка Docker-образа AnythingLLM
+## Загрузка Docker-образа AnythingLLM {#pull-anythingllm-docker-image}
 
 Выполните следующую команду, чтобы загрузить Docker-образ AnythingLLM на локальную машину:
 
@@ -48,7 +48,7 @@ docker pull anythingllm/anythingllm
 ```
 
 
-## Настройка расположения хранилища
+## Настройка расположения хранилища {#setup-storage-location}
 
 Создайте каталог для хранилища и инициализируйте файл окружения:
 
@@ -59,7 +59,7 @@ touch "$STORAGE_LOCATION/.env"
 ```
 
 
-## Настройка файла конфигурации сервера MCP
+## Настройка файла конфигурации сервера MCP {#configure-mcp-server-config-file}
 
 Создайте каталог `plugins`:
 
@@ -97,7 +97,7 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 собственного сервиса ClickHouse Cloud.
 
 
-## Запустите Docker-контейнер AnythingLLM
+## Запустите Docker-контейнер AnythingLLM {#start-anythingllm-docker-container}
 
 Запустите Docker-контейнер AnythingLLM следующей командой:
 

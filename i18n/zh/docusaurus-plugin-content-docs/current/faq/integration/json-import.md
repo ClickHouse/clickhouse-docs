@@ -16,7 +16,7 @@ ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其�
 
 
 
-## 示例
+## 示例 {#examples}
 
 使用 [HTTP 接口](../../interfaces/http.md)：
 

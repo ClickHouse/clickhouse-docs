@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['delta lake', 'табличная функция', 'формат data lake']
 ---
 
-import DeltaLakeFunction from '@site/docs/sql-reference/table-functions/deltalake.md';
+import DeltaLakeFunction from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/table-functions/deltalake.md';
 
 <DeltaLakeFunction />

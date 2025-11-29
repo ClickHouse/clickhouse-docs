@@ -7,22 +7,19 @@ doc_type: 'guide'
 keywords: ['qstudio', 'sql-клиент', 'инструмент для работы с базами данных', 'инструмент для выполнения запросов', 'ide']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение QStudio к ClickHouse
+# Подключение QStudio к ClickHouse {#connect-qstudio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 QStudio — это бесплатный SQL GUI, который позволяет запускать SQL-скрипты, удобно просматривать таблицы, строить графики и экспортировать результаты. Он работает на всех операционных системах с любой СУБД.
 
 QStudio подключается к ClickHouse через JDBC.
-
-
 
 ## 1. Соберите параметры подключения к ClickHouse {#1-gather-your-clickhouse-details}
 
@@ -35,13 +32,9 @@ QStudio использует JDBC поверх HTTP(S) для подключен
 
 <ConnectionDetails />
 
-
-
 ## 2. Скачайте QStudio {#2-download-qstudio}
 
 QStudio доступен для скачивания по адресу https://www.timestored.com/qstudio/download/
-
-
 
 ## 3. Добавьте базу данных {#3-add-a-database}
 
@@ -60,8 +53,6 @@ QStudio доступен для скачивания по адресу https://w
 
 Если QStudio обнаружит, что у вас не установлен JDBC‑драйвер ClickHouse, он предложит загрузить его для вас:
 
-
-
 ## 4. Запрос к ClickHouse {#4-query-clickhouse}
 
 - Откройте редактор запросов и выполните запрос. Вы можете запускать запросы с помощью:
@@ -71,8 +62,6 @@ QStudio доступен для скачивания по адресу https://w
 - Пример запроса:
 
 <Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, показывающий выполнение примерного SQL-запроса к базе данных ClickHouse" />
-
-
 
 ## Следующие шаги {#next-steps}
 

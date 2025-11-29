@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Merge 表引擎
+# Merge 表引擎 {#merge-table-engine}
 
 `Merge` 引擎（不要与 `MergeTree` 混淆）自身不存储数据，而是允许同时从任意数量的其他表中读取数据。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
@@ -51,7 +51,7 @@ CREATE TABLE ... 引擎=Merge(db_name, tables_regexp)
 
 
 
-## 示例
+## 示例 {#examples}
 
 **示例 1**
 

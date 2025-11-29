@@ -12,7 +12,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 <CloudOnlyBadge />
 
 
-# Shared 数据库引擎
+# Shared 数据库引擎 {#shared-database-engine}
 
 `Shared` 数据库引擎与 Shared Catalog 配合使用，用于管理其表使用无状态表引擎（例如 [`SharedMergeTree`](/cloud/reference/shared-merge-tree)）的数据库。
 这些表引擎不会将任何持久化状态写入磁盘，并且与动态计算环境兼容。
@@ -30,7 +30,7 @@ Cloud 中的 `Shared` 数据库引擎消除了对本地磁盘的依赖。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 对于最终用户而言，使用 Shared Catalog 和 Shared 数据库引擎无需任何额外配置。数据库的创建方式与以往完全相同：
 

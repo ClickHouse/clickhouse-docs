@@ -17,7 +17,7 @@ ClickStack 的每个组件都提供如下配置选项：
 
 ## 修改设置 {#modifying-settings}
 
-### Docker
+### Docker {#docker}
 
 如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需配置，例如：
 
@@ -26,7 +26,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 
 ```
 
 
-### Docker Compose
+### Docker Compose {#docker-compose}
 
 如果使用 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) 部署指南，可以通过修改 [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) 文件来调整配置。
 
@@ -46,7 +46,7 @@ services:
 
 ### Helm {#helm}
 
-#### 自定义配置（可选）
+#### 自定义配置（可选） {#customizing-values}
 
 可以通过使用 `--set` 标志来自定义配置，例如：
 

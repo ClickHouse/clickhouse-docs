@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# Aurora Postgres 源端配置指南
+# Aurora Postgres 源端配置指南 {#aurora-postgres-source-setup-guide}
 
 
 
@@ -27,7 +27,7 @@ ClickPipes 支持 Aurora PostgreSQL-Compatible Edition 12 及以上版本。
 
 
 
-## 启用逻辑复制
+## 启用逻辑复制 {#enable-logical-replication}
 
 如果您的 Aurora 实例已经配置了以下设置，则可以跳过本节：
 

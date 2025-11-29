@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# Визуализация данных в ClickHouse
+# Визуализация данных в ClickHouse {#visualizing-data-in-clickhouse}
 
 <div class='vimeo-container'>
 <iframe

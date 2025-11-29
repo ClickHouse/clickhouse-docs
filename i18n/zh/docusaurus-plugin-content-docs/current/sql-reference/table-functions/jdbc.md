@@ -7,23 +7,19 @@ title: 'jdbc'
 doc_type: 'reference'
 ---
 
-
-
-# jdbc 表函数
+# jdbc 表函数 {#jdbc-table-function}
 
 :::note
-clickhouse-jdbc-bridge 包含实验性代码且已不再受支持。它可能存在可靠性问题和安全漏洞。使用时请自行承担风险。  
+clickhouse-jdbc-bridge 包含实验性代码且已不再受支持。它可能存在可靠性问题和安全漏洞。使用时请自行承担风险。\
 ClickHouse 建议使用 ClickHouse 内置的表函数，它们为临时查询场景（Postgres、MySQL、MongoDB 等）提供了更好的替代方案。
 :::
 
 JDBC 表函数返回一个通过 JDBC 驱动连接的表。
 
-此表函数依赖单独运行的 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 程序。  
+此表函数依赖单独运行的 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 程序。\
 它支持 Nullable 类型（基于被查询的远程表的 DDL）。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 jdbc(datasource, external_database, external_table)
@@ -31,8 +27,7 @@ jdbc(datasource, external_table)
 jdbc(named_collection)
 ```
 
-
-## 示例
+## 示例 {#examples}
 
 可以指定 `schema`，而不是使用外部数据库名称：
 

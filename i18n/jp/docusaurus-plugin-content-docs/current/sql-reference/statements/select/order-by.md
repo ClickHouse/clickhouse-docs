@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# ORDER BY 句
+# ORDER BY 句 {#order-by-clause}
 
 `ORDER BY` 句には次のいずれかを指定できます。
 
@@ -29,14 +29,14 @@ doc_type: 'reference'
 
 
 
-## 特殊値のソート順
+## 特殊値のソート順 {#sorting-of-special-values}
 
 `NaN` および `NULL` のソート順には、2 つの方法があります。
 
 * デフォルトの場合、または `NULLS LAST` 修飾子を使用する場合: まず通常の値、その後に `NaN`、最後に `NULL`。
 * `NULLS FIRST` 修飾子を使用する場合: まず `NULL`、次に `NaN`、最後に他の値。
 
-### 例
+### 例 {#example}
 
 次のテーブルに対して
 
@@ -85,7 +85,7 @@ doc_type: 'reference'
 
 
 
-## 照合順序の例
+## 照合順序の例 {#collation-examples}
 
 [String](../../../sql-reference/data-types/string.md) 値のみの例:
 
@@ -297,7 +297,7 @@ RAM が不足している場合は、外部メモリ（ディスク）を使用�
 
 
 
-## ORDER BY Expr WITH FILL 修飾子
+## ORDER BY Expr WITH FILL 修飾子 {#order-by-expr-with-fill-modifier}
 
 この修飾子は、[LIMIT ... WITH TIES 修飾子](/sql-reference/statements/select/limit#limit--with-ties-modifier)と組み合わせて使用することもできます。
 
@@ -635,7 +635,7 @@ SELECT n, source, inter FROM (
 ```
 
 
-## ソートプレフィックス単位での補間
+## ソートプレフィックス単位での補間 {#filling-grouped-by-sorting-prefix}
 
 特定のカラムで同じ値を持つ行ごとに、独立して補間を行うと便利な場合があります。代表的な例は、時系列データの欠損値を補間するケースです。
 次のような時系列テーブルがあるとします。

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# fuzzQuery 表函数
+# fuzzQuery 表函数 {#fuzzquery-table-function}
 
 对给定的查询字符串进行随机扰动，生成不同的变体。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 fuzzQuery(query[, max_query_length[, random_seed]])
@@ -38,7 +38,7 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 SELECT * FROM fuzzQuery('SELECT materialize(\'a\' AS key) GROUP BY key') LIMIT 2;

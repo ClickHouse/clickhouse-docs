@@ -9,13 +9,13 @@ doc_type: 'guide'
 
 
 
-# Табличный движок Redis
+# Табличный движок Redis {#redis-table-engine}
 
 Этот движок позволяет интегрировать ClickHouse с [Redis](https://redis.io/). Поскольку Redis использует модель ключ–значение (kv), настоятельно рекомендуется выполнять только точечные запросы, например `where k=xx` или `where k in (xx, xx)`.
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ PRIMARY KEY(primary_key_name);
 :::
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Создайте таблицу в ClickHouse с движком `Redis`, явно указав аргументы:
 

@@ -12,9 +12,7 @@ doc_type: 'guide'
 在 chDB 的第 2 版中，我们提升了对 Pandas DataFrame 的查询性能，并引入了 `Python` 表函数。
 在本指南中，我们将学习如何使用 `Python` 表函数查询 Pandas DataFrame。
 
-
-
-## 环境准备
+## 环境准备 {#setup}
 
 我们先创建一个虚拟环境：
 
@@ -44,8 +42,7 @@ ipython
 
 你也可以在 Python 脚本或常用的 Notebook 环境中使用这段代码。
 
-
-## 通过 URL 创建 Pandas DataFrame
+## 通过 URL 创建 Pandas DataFrame {#creating-a-pandas-dataframe-from-a-url}
 
 我们将从 [StatsBomb GitHub 仓库](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file) 查询一些数据。
 先导入 requests 和 pandas：
@@ -158,8 +155,7 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-
-## 查询 Pandas DataFrame
+## 查询 Pandas DataFrame {#querying-pandas-dataframes}
 
 接下来，我们来看如何使用 chDB 查询这些 DataFrame。
 我们先导入该库：
@@ -283,8 +279,7 @@ LIMIT 10
 9  卡洛斯 埃塞霍莫 库埃斯塔 菲格罗阿       50
 ```
 
-
-## 连接 Pandas DataFrame
+## 连接 Pandas DataFrame {#joining-pandas-dataframes}
 
 我们也可以在查询中将多个 DataFrame 连接在一起。
 例如，为了获得比赛的总体概况，我们可以编写如下查询：
@@ -315,8 +310,7 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-
-## 使用 DataFrame 填充表
+## 使用 DataFrame 填充表 {#populating-a-table-from-a-dataframe}
 
 我们也可以从 DataFrame 创建并填充 ClickHouse 表。
 如果我们想在 chDB 中创建一张表，就需要使用 Stateful Session API。
@@ -376,8 +370,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-
-## 连接 Pandas DataFrame 和表
+## 连接 Pandas DataFrame 和表 {#joining-a-pandas-dataframe-and-table}
 
 最后，我们还可以更新连接查询，将 `matches_df` DataFrame 与 `statsbomb.events` 表进行连接：
 

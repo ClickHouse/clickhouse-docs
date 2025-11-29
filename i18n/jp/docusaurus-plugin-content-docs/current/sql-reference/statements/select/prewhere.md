@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# PREWHERE 句
+# PREWHERE 句 {#prewhere-clause}
 
 `PREWHERE` は、フィルタリングをより効率的に適用するための最適化です。`PREWHERE` 句が明示的に指定されていない場合でも、デフォルトで有効になっています。これは、[WHERE](../../../sql-reference/statements/select/where.md) 条件の一部を自動的に PREWHERE ステージへ移動することで機能します。`PREWHERE` 句の役割は、このデフォルトの最適化よりも適切に制御できると考える場合に、その挙動を明示的にコントロールすることだけです。
 
@@ -38,7 +38,7 @@ PREWHERE 最適化では、まず PREWHERE 式を評価するために必要な�
 
 
 
-## 例
+## 例 {#example}
 
 ```sql
 CREATE TABLE mydata

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# postgresql 表函数
+# postgresql 表函数 {#postgresql-table-function}
 
 允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
@@ -48,7 +48,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 
 
-## 实现细节
+## 实现细节 {#implementation-details}
 
 PostgreSQL 端的 `SELECT` 查询以 `COPY (SELECT ...) TO STDOUT` 的形式在只读 PostgreSQL 事务中运行，每个 `SELECT` 查询结束后提交事务。
 
@@ -79,7 +79,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 支持为 PostgreSQL 字典数据源设置副本优先级。`map` 中数值越大，优先级越低，最高优先级为 `0`。
 
 
-## 示例
+## 示例 {#examples}
 
 PostgreSQL 中的表：
 

@@ -6,7 +6,7 @@ title: 'quantileBFloat16'
 doc_type: 'reference'
 ---
 
-# quantileBFloat16Weighted
+# quantileBFloat16Weighted {#quantilebfloat16weighted}
 
 类似于 `quantileBFloat16`，但会考虑序列中每个成员的权重。
 

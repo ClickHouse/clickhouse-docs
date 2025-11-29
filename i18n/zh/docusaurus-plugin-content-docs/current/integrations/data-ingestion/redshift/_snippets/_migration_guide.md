@@ -149,7 +149,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 
 
 ```sql
-# 创建包含 3 列的表
+# 创建包含 3 列的表 {#table-creation-with-3-columns}
 CREATE TABLE users_imported
 (
    `username` String,

@@ -105,11 +105,11 @@ ClickHouse Cloud 目前尚不支持通过身份提供方进行 SCIM 或自动化
 
 
 
-## 基础设施即代码与自动化
+## 基础设施即代码与自动化 {#infrastructure-as-code}
 
 通过采用基础设施即代码实践和 API 自动化来管理 ClickHouse Cloud，可以为您的部署配置提供一致性、版本控制和可复现性。
 
-### Terraform Provider
+### Terraform Provider {#terraform-provider}
 
 在 ClickHouse Cloud 控制台中创建 API 密钥，并使用它们配置 ClickHouse 的 Terraform Provider：
 
@@ -135,7 +135,7 @@ Terraform 提供程序支持服务开通、IP 访问列表和用户管理。请�
 
 有关包含服务配置和网络访问控制的完整示例，请参阅 [Terraform 示例：如何使用 Cloud API](/knowledgebase/terraform_example)。
 
-### Cloud API 集成
+### Cloud API 集成 {#cloud-api-integration}
 
 已经拥有自动化框架的组织可以通过 Cloud API 将 ClickHouse Cloud 管理直接集成到现有框架中。该 API 提供对服务生命周期管理、用户管理、备份操作以及监控数据检索的编程访问能力。
 
@@ -149,11 +149,11 @@ Terraform 提供程序支持服务开通、IP 访问列表和用户管理。请�
 API 认证采用与 Terraform 相同的基于 Token 的方式。完整的 API 参考与集成示例请参阅 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 文档。
 
 
-## 监控与运维集成
+## 监控与运维集成 {#monitoring-integration}
 
 将 ClickHouse Cloud 接入现有监控基础设施，可以确保可观测性并实现对问题的主动发现。
 
-### 内置监控
+### 内置监控 {#built-in-monitoring}
 
 ClickHouse Cloud 提供高级仪表板，包含实时指标，例如每秒查询数、内存使用率、CPU 使用率以及存储速率。可在 Cloud 控制台的 Monitoring → Advanced dashboard 中访问。可以创建自定义仪表板，以适配特定的工作负载模式或团队资源消耗情况。
 
@@ -161,7 +161,7 @@ ClickHouse Cloud 提供高级仪表板，包含实时指标，例如每秒查询
 缺乏与企业级事件管理系统的主动告警集成，以及对成本的自动化监控。内置仪表板提供可观测性，但自动化告警仍需要借助外部集成。
 :::
 
-### 生产环境告警配置
+### 生产环境告警配置 {#production-alerting}
 
 **内置能力**：ClickHouse Cloud 通过电子邮件、UI 和 Slack 提供账单事件、扩缩容事件以及服务健康状况的通知。可在控制台的通知设置中配置发送渠道和通知级别。
 

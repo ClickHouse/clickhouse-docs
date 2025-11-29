@@ -6,7 +6,7 @@ title: 'argAndMax'
 doc_type: 'reference'
 ---
 
-# argAndMax
+# argAndMax {#argandmax}
 
 最大の`val`値に対応する`arg`と`val`の値を計算します。最大値となる`val`が等しい行が複数存在する場合、どの`arg`と`val`の組み合わせが返されるかは非決定的です。
 `arg`と`max`の両方の部分は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に[`Null`をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null`でない値が利用可能な場合は`Null`でない値を返します。
@@ -114,5 +114,5 @@ SELECT argAndMax(a, tuple(b)) FROM test;
 
 **関連項目**
 
-- [argMax](/sql-reference/aggregate-functions/reference/argmax.md)
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [argMax](/sql-reference/aggregate-functions/reference/argmax.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

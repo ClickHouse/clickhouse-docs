@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、さまざまなエンドポイントごとの API レスポンス時間を保存するテーブルを作成し、
 成功したリクエストに対するレスポンス時間の分位数を計算するために `quantilesTimingArrayIf` を使用します。

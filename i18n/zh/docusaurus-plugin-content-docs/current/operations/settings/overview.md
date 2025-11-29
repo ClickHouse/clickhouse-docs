@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 设置概览
+# 设置概览 {#settings-overview}
 
 
 
@@ -27,7 +27,7 @@ ClickHouse 的设置主要分为两大类：
 
 
 
-## 查看非默认设置
+## 查看非默认设置 {#see-non-default-settings}
 
 要查看哪些设置已被修改为非默认值，可以查询
 `system.settings` 表：

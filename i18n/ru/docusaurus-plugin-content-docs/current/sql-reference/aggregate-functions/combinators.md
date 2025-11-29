@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Комбинаторы агрегатных функций
+# Комбинаторы агрегатных функций {#aggregate-function-combinators}
 
 К имени агрегатной функции можно добавить суффикс. Это изменяет поведение агрегатной функции.
 
@@ -37,7 +37,7 @@ doc_type: 'reference'
 
 
 
-## -Map
+## -Map {#-map}
 
 Суффикс -Map можно добавить к любой агрегатной функции. Это создаст агрегатную функцию, которая принимает аргумент типа Map и агрегирует значения для каждого ключа этой Map отдельно, используя указанную агрегатную функцию. Результат также имеет тип Map.
 
@@ -71,7 +71,7 @@ GROUP BY timeslot;
 ```
 
 
-## -SimpleState
+## -SimpleState {#-simplestate}
 
 При применении этого комбинатора агрегатная функция возвращает то же значение, но с другим типом. Это тип данных [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md), который можно хранить в таблице для работы с таблицами [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
 
@@ -149,7 +149,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 
 
-## -OrDefault
+## -OrDefault {#-ordefault}
 
 Модифицирует поведение агрегатной функции.
 
@@ -210,7 +210,7 @@ FROM
 ```
 
 
-## -OrNull
+## -OrNull {#-ornull}
 
 Изменяет поведение агрегатной функции.
 
@@ -274,7 +274,7 @@ FROM
 ```
 
 
-## -Resample
+## -Resample {#-resample}
 
 Позволяет разбить данные на группы и затем по отдельности агрегировать данные в каждой группе. Группы формируются разбиением значений одного столбца на интервалы.
 

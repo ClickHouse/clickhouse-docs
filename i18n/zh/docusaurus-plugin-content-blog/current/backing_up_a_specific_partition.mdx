@@ -10,12 +10,11 @@ keywords: ['备份', '分区']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何在 ClickHouse 中备份特定分区？
 
-## 回答
+## 回答 \{#answer\}
 
 请参考以下示例。该示例使用了我们在 [Docker Compose 示例](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/README.md)页面中列出的 S3（Minio）磁盘[配置](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/ch-and-minio-S3/README.md)。
 
@@ -137,7 +136,6 @@ Ok.
 ```
 
 仅恢复备份中 id 为 `1` 的分区：
-
 
 ```
 ch_minio_s3 :) RESTORE TABLE my_table PARTITION 1 FROM Disk('s3','backups/');

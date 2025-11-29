@@ -18,7 +18,7 @@ Amazon S3、Azure、HDFS、またはローカルに保存された Apache [Paimo
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -44,7 +44,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 
 
 
-## 名前付きコレクションの定義
+## 名前付きコレクションの定義 {#defining-a-named-collection}
 
 次の例は、URL と認証情報を保存するための名前付きコレクションの設定方法を示しています。
 

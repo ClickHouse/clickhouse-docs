@@ -7,9 +7,7 @@ title: 'Dynamic'
 doc_type: 'guide'
 ---
 
-
-
-# Dynamic
+# Dynamic {#dynamic}
 
 この型は、あらかじめすべての型を把握していなくても、任意の型の値を格納できます。
 
@@ -21,8 +19,7 @@ doc_type: 'guide'
 
 ここで `N` はオプションのパラメータで、`0` から `254` の範囲の値を取り、個別に保存される 1 つのデータブロック（たとえば MergeTree テーブルの 1 つのデータパート）内で、型が `Dynamic` のカラムに個別のサブカラムとして保存できる異なるデータ型の数を指定します。この上限を超えると、新しい型を持つすべての値は、バイナリ形式で特別な共有データ構造の中にまとめて保存されます。`max_types` のデフォルト値は `32` です。
 
-
-## Dynamic の作成
+## Dynamic の作成 {#creating-dynamic}
 
 テーブルの列定義で `Dynamic` 型を使用します:
 
@@ -68,8 +65,7 @@ SELECT multiIf((number % 3) = 0, number, (number % 3) = 1, range(number + 1), NU
 └───────┴────────────────┘
 ```
 
-
-## Dynamic のネストされた型をサブカラムとして読み取る
+## Dynamic のネストされた型をサブカラムとして読み取る {#reading-dynamic-nested-types-as-subcolumns}
 
 `Dynamic` 型では、型名をサブカラム名として指定することで、`Dynamic` カラムから単一のネストされた型を読み取ることができます。
 そのため、`d Dynamic` というカラムがある場合、有効な任意の型 `T` のサブカラムを構文 `d.T` を使って読み取ることができます。
@@ -110,7 +106,6 @@ SELECT toTypeName(d.String), toTypeName(d.Int64), toTypeName(d.`Array(Int64)`), 
 SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'), dynamicElement(d, 'Array(Int64)'), dynamicElement(d, 'Date'), dynamicElement(d, 'Array(String)') FROM test;```
 ````
 
-
 ```text
 ┌─d─────────────┬─dynamicType(d)─┬─dynamicElement(d, 'String')─┬─dynamicElement(d, 'Int64')─┬─dynamicElement(d, 'Array(Int64)')─┬─dynamicElement(d, 'Date')─┬─dynamicElement(d, 'Array(String)')─┐
 │ ᴺᵁᴸᴸ          │ None           │ ᴺᵁᴸᴸ                        │                       ᴺᵁᴸᴸ │ []                                │                      ᴺᵁᴸᴸ │ []                                 │
@@ -139,12 +134,11 @@ SELECT dynamicType(d) FROM test;
 └────────────────┘
 ```
 
-
-## Dynamic 列と他の列との変換
+## Dynamic 列と他の列との変換 {#conversion-between-dynamic-column-and-other-columns}
 
 `Dynamic` 列に対して行える変換は 4 種類あります。
 
-### 通常の列を `Dynamic` 列に変換する
+### 通常の列を `Dynamic` 列に変換する {#converting-an-ordinary-column-to-a-dynamic-column}
 
 ```sql
 SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
@@ -156,7 +150,7 @@ SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
 └───────────────┴────────────────┘
 ```
 
-### パースによる String 列から Dynamic 列への変換
+### パースによる String 列から Dynamic 列への変換 {#converting-a-string-column-to-a-dynamic-column-through-parsing}
 
 `String` 列に含まれる値を `Dynamic` 型としてパースするには、設定 `cast_string_to_dynamic_use_inference` を有効にします。
 
@@ -171,7 +165,7 @@ SELECT CAST(materialize(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'))
 └─────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-### Dynamicカラムを通常カラムに変換する
+### Dynamicカラムを通常カラムに変換する {#converting-a-dynamic-column-to-an-ordinary-column}
 
 `Dynamic` カラムを通常カラムに変換できます。この場合、すべてのネストされた型は宛先の型に変換されます。
 
@@ -191,7 +185,7 @@ SELECT d::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Variant 型の列を Dynamic 型の列に変換する
+### Variant 型の列を Dynamic 型の列に変換する {#converting-a-variant-column-to-dynamic-column}
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -208,7 +202,7 @@ SELECT v::Dynamic AS d, dynamicType(d) FROM test;
 └─────────┴────────────────┘
 ```
 
-### Dynamic(max&#95;types=N) 列を別の Dynamic(max&#95;types=K) に変換する
+### Dynamic(max&#95;types=N) 列を別の Dynamic(max&#95;types=K) に変換する {#converting-a-dynamicmax&#95;typesn-column-to-another-dynamicmax&#95;typesk}
 
 `K >= N` の場合、変換してもデータは変わりません：
 
@@ -235,7 +229,6 @@ CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), (43), ('42.42'), (true), ([1, 2, 3]);
 SELECT d, dynamicType(d), d::Dynamic(max_types=2) as d2, dynamicType(d2), isDynamicElementInSharedData(d2) FROM test;
 ```
-
 
 ```text
 ┌─d───────┬─dynamicType(d)─┬─d2──────┬─dynamicType(d2)─┬─isDynamicElementInSharedData(d2)─┐
@@ -269,8 +262,7 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=0) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-
-## データからの Dynamic 型の読み取り
+## データからの Dynamic 型の読み取り {#reading-dynamic-type-from-the-data}
 
 すべてのテキスト形式（TSV、CSV、CustomSeparated、Values、JSONEachRow など）は `Dynamic` 型の読み取りをサポートします。データの解析中に、ClickHouse は各値の型を推論し、その型情報を `Dynamic` 列への挿入時に使用します。
 
@@ -304,8 +296,7 @@ $$)
 └───────────────┴────────────────┴───────────────┴──────┴───────┴────────────┴─────────┘
 ```
 
-
-## 関数での Dynamic 型の使用
+## 関数での Dynamic 型の使用 {#using-dynamic-type-in-functions}
 
 ほとんどの関数は、`Dynamic` 型の引数を受け付けます。この場合、関数は `Dynamic` 列の内部に格納されている各データ型ごとに個別に実行されます。
 関数の結果型が引数の型に依存する場合、`Dynamic` 引数で実行されたその関数の結果型は `Dynamic` になります。関数の結果型が引数の型に依存しない場合は、その結果型は `Nullable(T)` となり、ここで `T` はその関数の通常の結果型です。
@@ -392,7 +383,6 @@ TRUNCATE TABLE test;
 INSERT INTO test VALUES (NULL), ('str_1'), ('str_2');
 SELECT d, dynamicType(d) FROM test;
 ```
-
 
 ```text
 ┌─d─────┬─dynamicType(d)─┐
@@ -494,7 +484,6 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynami
 └────┴─────┴─────────────────┴──────────────────┘
 ```
 
-
 または、必要な型のみをサブカラムとして抽出します：
 
 ```sql
@@ -514,8 +503,7 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 └───────┴──────┴─────────────────┘
 ```
 
-
-## ORDER BY と GROUP BY における Dynamic 型の使用
+## ORDER BY と GROUP BY における Dynamic 型の使用 {#using-dynamic-type-in-order-by-and-group-by}
 
 `ORDER BY` および `GROUP BY` において `Dynamic` 型の値は、`Variant` 型の値と同様に比較されます。
 型 `Dynamic` の値 `d1`（基底型 `T1`）と `d2`（基底型 `T2`）に対する演算子 `<` の結果は、次のように定義されます。
@@ -598,15 +586,14 @@ SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in
 
 **注:** ここで説明した比較ルールは、`<` / `>` / `=` などの比較演算の実行時には適用されません。これは、`Dynamic` 型に対する関数の[特殊な動作](#using-dynamic-type-in-functions)によるものです。
 
-
-## Dynamic 内部に格納される異なるデータ型数の上限に達した場合
+## Dynamic 内部に格納される異なるデータ型数の上限に達した場合 {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
 
 `Dynamic` データ型は、異なるデータ型を個別のサブカラムとして格納できる数に上限があります。デフォルトではこの上限は 32 ですが、型宣言で `Dynamic(max_types=N)` という構文を使うことで変更できます。このときの N は 0 から 254 の間の値です（実装上の制約により、Dynamic 内に個別のサブカラムとして格納可能な異なるデータ型の数は 254 を超えることはできません）。
 上限に達すると、`Dynamic` カラムに挿入される新しいデータ型はすべて、異なるデータ型の値をバイナリ形式で格納する単一の共有データ構造に挿入されます。
 
 さまざまなケースでこの上限に達した場合に何が起こるかを見ていきます。
 
-### データのパース中に上限に達した場合
+### データのパース中に上限に達した場合 {#reaching-the-limit-during-data-parsing}
 
 データから `Dynamic` の値をパースしている際に、現在のデータブロックで上限に達した場合は、新しい値はすべて共有データ構造に挿入されます。
 
@@ -634,7 +621,7 @@ SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRo
 
 ご覧のとおり、3 つの異なるデータ型 `Int64`、`Array(Int64)`、`String` を挿入すると、すべての新しい型が特殊な共有データ構造に格納されました。
 
-### MergeTree テーブルエンジンでのデータパーツのマージ中
+### MergeTree テーブルエンジンでのデータパーツのマージ中 {#during-merges-of-data-parts-in-mergetree-table-engines}
 
 MergeTree テーブル内で複数のデータパーツをマージする際、結果のデータパーツにおける `Dynamic` 列は、内部で別個のサブカラムとして保持できる異なるデータ型の上限に達してしまい、元のパーツに含まれるすべての型をサブカラムとして保持できなくなる可能性があります。
 この場合、ClickHouse は、マージ後も別個のサブカラムとして残す型と、共有データ構造に格納する型を選択します。多くの場合、ClickHouse は最も出現頻度の高い型をサブカラムとして保持し、出現頻度の低い型を共有データ構造に保存しようとしますが、これは実装によって異なります。
@@ -656,7 +643,6 @@ INSERT INTO test SELECT number, 'str_' || toString(number) FROM numbers(1);
 ```sql
 SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test GROUP BY _part, dynamicType(d), isDynamicElementInSharedData(d) ORDER BY _part, count();
 ```
-
 
 ```text
 ┌─count()─┬─dynamicType(d)──────┬─isDynamicElementInSharedData(d)─┬─_part─────┐
@@ -688,8 +674,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 
 ここからわかるように、ClickHouse は最も頻繁に現れる型である `UInt64` と `Array(UInt64)` をサブカラムとして保持し、それ以外のすべての型は共有データに格納しました。
 
-
-## Dynamic 型での JSONExtract 関数
+## Dynamic 型での JSONExtract 関数 {#jsonextract-functions-with-dynamic}
 
 すべての `JSONExtract*` 関数は `Dynamic` 型をサポートします。
 
@@ -723,7 +708,7 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Dyn
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### バイナリ出力形式
+### バイナリ出力形式 {#binary-output-format}
 
 RowBinary 形式では、`Dynamic` 型の値は次のフォーマットでシリアライズされます。
 

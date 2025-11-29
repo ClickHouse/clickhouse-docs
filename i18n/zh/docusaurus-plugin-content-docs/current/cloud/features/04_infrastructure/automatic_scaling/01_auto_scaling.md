@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# 自动伸缩
+# 自动伸缩 {#automatic-scaling}
 
 伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
 
@@ -146,7 +146,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 
 
-## 处理工作负载峰值
+## 处理工作负载峰值 {#handling-bursty-workloads}
 
 如果您预期即将出现工作负载峰值，可以使用
 [ClickHouse Cloud API](/cloud/manage/api/api-overview)

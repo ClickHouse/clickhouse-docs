@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем JSON-файл со следующими данными с именем `football.json`:
 
@@ -53,7 +53,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `JSONStringsEachRow`:
 

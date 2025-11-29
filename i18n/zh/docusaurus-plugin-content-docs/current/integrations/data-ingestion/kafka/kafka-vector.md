@@ -8,10 +8,9 @@ doc_type: 'guide'
 keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-## 在 Kafka 和 ClickHouse 中使用 Vector
+## 在 Kafka 和 ClickHouse 中使用 Vector {#using-vector-with-kafka-and-clickhouse}
 
 Vector 是一个与厂商无关的数据管道，能够从 Kafka 读取数据并将事件发送到 ClickHouse。
 
@@ -23,15 +22,15 @@ Vector 还支持对数据进行[转换](https://vector.dev/docs/reference/config
 
 请注意，当前 ClickHouse sink 的实现使用的是 HTTP 接口。ClickHouse sink 目前不支持使用 JSON schema。数据必须以纯 JSON 格式或字符串形式发布到 Kafka。
 
-### 许可证
+### 许可证 {#license}
 
 Vector 根据 [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE) 进行分发。
 
-### 收集连接信息
+### 收集连接信息 {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 步骤
+### 步骤 {#steps}
 
 1. 创建 Kafka `github` topic 并写入 [GitHub 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
 
@@ -45,7 +44,6 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 
 ```sql
 ```
-
 
 CREATE TABLE github
 (
@@ -110,7 +108,6 @@ batch.timeout_secs = 1
 ````
 
 关于此配置和 Vector 行为，有几点重要说明：
-
 
 * 此示例已在 Confluent Cloud 上进行测试。因此，`sasl.*` 和 `ssl.enabled` 安全选项在自行管理部署的场景中可能并不适用。
 * 配置参数 `bootstrap_servers` 不需要协议前缀，例如 `pkc-2396y.us-east-1.aws.confluent.cloud:9092`。

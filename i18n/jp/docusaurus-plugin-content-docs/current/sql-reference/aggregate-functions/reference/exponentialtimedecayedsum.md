@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedSum
+## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
 時系列データのインデックス `t` における、指数平滑移動平均値の合計を返します。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 結果：
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar───────────────────────────────────────────────┐

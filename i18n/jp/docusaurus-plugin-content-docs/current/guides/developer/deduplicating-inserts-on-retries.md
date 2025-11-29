@@ -71,9 +71,9 @@ doc_type: 'guide'
 
 
 
-## 例
+## 例 {#examples}
 
-### マテリアライズドビューでの変換により同一になったブロック
+### マテリアライズドビューでの変換により同一になったブロック {#identical-blocks-after-materialized-view-transformations}
 
 マテリアライズドビュー内部での変換中に生成された同一のブロックは、異なる挿入データに基づいているため、重複排除されません。
 
@@ -183,7 +183,7 @@ ORDER by all;
 
 ここでは、挿入の再試行を行うと、すべてのデータが重複排除されていることが分かります。重複排除は `dst` および `mv_dst` テーブルの両方で行われます。
 
-### 挿入時の同一ブロック
+### 挿入時の同一ブロック {#identical-blocks-on-insertion}
 
 ```sql
 CREATE TABLE dst
@@ -225,7 +225,7 @@ ORDER BY all;
 
 上記の設定では、selectから2つのブロックが生成されます。その結果、テーブル`dst`への挿入には2つのブロックが存在するはずです。しかし、実際にはテーブル`dst`には1つのブロックのみが挿入されています。これは、2番目のブロックが重複排除されたために発生しました。このブロックは同じデータを持ち、挿入データのハッシュとして計算される重複排除キー`block_id`も同一です。この動作は想定されたものではありません。このようなケースは稀ですが、理論上は発生する可能性があります。このようなケースを正しく処理するには、`insert_deduplication_token`を指定する必要があります。以下の例でこの問題を修正します:
 
-### `insert_deduplication_token`を使用した挿入における同一ブロック                                                                 
+### `insert_deduplication_token`を使用した挿入における同一ブロック                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
 
 ```sql
 CREATE TABLE dst
@@ -314,7 +314,7 @@ ORDER BY all;
 
 その挿入は、挿入されたデータが異なっていても同様に重複排除されます。`insert_deduplication_token` の方が優先される点に注意してください。`insert_deduplication_token` が指定されている場合、ClickHouse はデータのハッシュ値を使用しません。
 
-### 異なる挿入操作によっても、マテリアライズドビューの基になるテーブルでの変換後のデータが同一になる場合
+### 異なる挿入操作によっても、マテリアライズドビューの基になるテーブルでの変換後のデータが同一になる場合 {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
 
 ```sql
 CREATE TABLE dst

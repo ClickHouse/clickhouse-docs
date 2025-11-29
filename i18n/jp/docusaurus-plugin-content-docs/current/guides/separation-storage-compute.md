@@ -9,13 +9,10 @@ keywords: ['ストレージ', 'コンピュート', 'アーキテクチャ', '�
 ---
 
 import Image from '@theme/IdealImage';
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-
-# ストレージとコンピュートの分離
-
-
+# ストレージとコンピュートの分離 {#separation-of-storage-and-compute}
 
 ## 概要 {#overview}
 
@@ -33,11 +30,9 @@ S3 をストレージとして利用する ClickHouse 構成は、「コール�
 AWS/GCS のライフサイクルポリシーは設定しないでください。これはサポートされておらず、テーブル破損の原因となる可能性があります。
 :::
 
+## 1. ClickHouse のディスクとして S3 を使用する {#1-use-s3-as-a-clickhouse-disk}
 
-
-## 1. ClickHouse のディスクとして S3 を使用する
-
-### ディスクの作成
+### ディスクの作成 {#creating-a-disk}
 
 ストレージ構成を定義するために、ClickHouse の `config.d` ディレクトリに新しいファイルを作成します。
 
@@ -98,8 +93,7 @@ chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 service clickhouse-server restart
 ```
 
-
-## 2. S3 をバックエンドにしたテーブルを作成する
+## 2. S3 をバックエンドにしたテーブルを作成する {#2-create-a-table-backed-by-s3}
 
 S3 ディスクが正しく構成されていることを確認するため、テーブルを作成してクエリを実行してみます。
 
@@ -167,7 +161,6 @@ AWS コンソールで、データが正常に S3 に書き込まれていれば
 
 <Image img={s3_bucket_example} size="md" alt="コンピュートとストレージの分離を利用した S3 バケットの例" border />
 
-
 ## 3. フォールトトレランスのためのレプリケーションの実装（オプション） {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
@@ -178,8 +171,6 @@ AWS/GCS のライフサイクルポリシーは設定しないでください。
 
 S3 ディスクを使ったレプリケーションは、`ReplicatedMergeTree` テーブルエンジンを使用することで実現できます。詳細は次のガイドを参照してください。
 - [S3 オブジェクトストレージを使用して単一シャードを 2 つの AWS リージョン間でレプリケーションする](/integrations/s3#s3-multi-region)。
-
-
 
 ## 参考資料 {#further-reading}
 

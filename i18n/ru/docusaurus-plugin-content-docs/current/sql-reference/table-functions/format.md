@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция format
+# Табличная функция format {#format-table-function}
 
 Разбирает данные из аргументов в соответствии с указанным входным форматом. Если аргумент структуры не указан, структура определяется по данным.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 format(format_name, [structure], data)
@@ -36,7 +36,7 @@ format(format_name, [structure], data)
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Без аргумента `structure`:
 

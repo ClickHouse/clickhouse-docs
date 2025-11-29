@@ -26,7 +26,7 @@ doc_type: 'reference'
 - totals と extremes をサポートします
 - 値はネイティブな型を保持します（数値は数値、文字列は文字列として扱われます）
 
-## 使用例
+## 使用例 {#example-usage}
 
 ```sql title="Query"
 SELECT *

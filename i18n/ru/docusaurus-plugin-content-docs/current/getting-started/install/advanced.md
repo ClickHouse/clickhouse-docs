@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-## Сборка из исходных кодов
+## Сборка из исходных кодов {#compile-from-source}
 
 Чтобы вручную собрать ClickHouse, следуйте инструкциям по сборке для [Linux](/development/build.md) или [macOS](/development/build-osx.md).
 

@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI 智能体
+# 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
 
 这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
 从 ClickHouse 查询数据，并基于这些数据生成图表。
@@ -42,7 +42,7 @@ doc_type: 'guide'
 
 
 
-## 手动安装依赖
+## 手动安装依赖 {#install-dependencies-manually}
 
 1. 安装依赖：
 

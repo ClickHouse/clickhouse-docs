@@ -8,10 +8,10 @@ keywords: ['ClickHouse use cases', '時系列データベース', 'キーバリ�
 doc_type: 'landing-page'
 ---
 
-# ClickHouse のユースケースに関する質問
+# ClickHouse のユースケースに関する質問 {#questions-about-clickhouse-use-cases}
 
-- [ClickHouse を時系列データベースとして利用できますか？](/knowledgebase/time-series)
-- [ClickHouse をキーバリューストレージとして利用できますか？](/knowledgebase/key-value)
+* [ClickHouse を時系列データベースとして利用できますか？](/knowledgebase/time-series)
+* [ClickHouse をキーバリューストレージとして利用できますか？](/knowledgebase/key-value)
 
 :::info お探しの情報が見つかりませんか？
 [Knowledge Base](/knowledgebase/) を確認し、本ドキュメント内にある多数の役立つ記事も参照してください。

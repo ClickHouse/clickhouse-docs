@@ -18,7 +18,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# Приём данных из MySQL в ClickHouse (с использованием CDC)
+# Приём данных из MySQL в ClickHouse (с использованием CDC) {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 

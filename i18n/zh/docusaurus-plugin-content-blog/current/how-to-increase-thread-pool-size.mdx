@@ -10,8 +10,7 @@ keywords: ['可用线程数']
 
 {/* 截断 */}
 
-
-## 增加 ClickHouse 中的线程数量
+## 增加 ClickHouse 中的线程数量 \{#increasing-the-number-of-threads-in-clickhouse\}
 
 ClickHouse 使用 **Global Thread pool** 中的线程来处理查询，并执行合并、变更等后台操作。如果没有空闲线程可用于处理查询，则会在线程池中创建一个新线程。
 

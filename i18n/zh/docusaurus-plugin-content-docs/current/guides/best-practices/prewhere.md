@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 import Image from '@theme/IdealImage';
 
 
-# PREWHERE 优化是如何工作的？
+# PREWHERE 优化是如何工作的？ {#how-does-the-prewhere-optimization-work}
 
 [PREWHERE 子句](/sql-reference/statements/select/prewhere) 是 ClickHouse 中的一种查询执行优化机制。它通过避免不必要的数据读取、在从磁盘读取非过滤列之前先过滤掉无关数据，从而减少 I/O 并提升查询速度。
 
@@ -109,7 +109,7 @@ ClickHouse 首先通过 ① 从 `town` 列读取选定的 granule，并检查哪
 
 
 
-## 如何衡量 PREWHERE 的影响
+## 如何衡量 PREWHERE 的影响 {#how-to-measure-prewhere-impact}
 
 要验证 PREWHERE 是否提升了查询性能，可以对比在启用和禁用 `optimize_move_to_prewhere` 设置时的查询表现。
 

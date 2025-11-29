@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)で確認できます。
 
 
-## あらかじめ用意されたデータ
+## あらかじめ用意されたデータ {#pre-prepared-data}
 
 このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（6,000 万件の投稿）の点では ClickHouse にとっては小規模ですが、このデータセットには大量のテキストと大きな String 型カラムが含まれています。
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 以下の計測結果は、`eu-west-2` に配置された 96 GiB・24 vCPU 構成の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
 
 
-### 投稿
+### 投稿 {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 投稿データは年別のファイルとしても利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### 投票
+### 投票 {#votes}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 投票データも年ごとに利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### コメント
+### コメント {#comments}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 コメントについても年ごとのデータが利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### ユーザー
+### ユーザー {#users}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### バッジ
+### バッジ {#badges}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### PostLinks
+### PostLinks {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory
+### PostHistory {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -217,7 +217,7 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 
 元のデータセットは、7zip 形式で圧縮された XML ファイルとして [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます。`stackoverflow.com*` というプレフィックスを持つファイルが対象です。
 
-### ダウンロード
+### ダウンロード {#download}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 これらのファイルは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域が制限されており、おおよそ 20MB/秒が上限となります。
 
 
-### JSON への変換
+### JSON への変換 {#convert-to-json}
 
 本ドキュメント執筆時点では、ClickHouse は入力フォーマットとして XML をネイティブにサポートしていません。ClickHouse にデータをロードするため、まず NDJSON に変換します。
 
@@ -260,7 +260,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# 以下は入力XMLファイルを10000行ごとのサブファイルに分割します
+# 以下は入力XMLファイルを10000行ごとのサブファイルに分割します {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -283,7 +283,7 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 
 ここから始めるための、いくつかの簡単なクエリです。
 
-### Stack Overflowで最も人気の高いタグ
+### Stack Overflowで最も人気の高いタグ {#most-popular-tags-on-stack-overflow}
 
 ```sql
 
@@ -313,7 +313,7 @@ Peak memory usage: 224.03 MiB.
 ```
 
 
-### 最も多く回答しているユーザー（アクティブなアカウント）
+### 最も多く回答しているユーザー（アクティブなアカウント） {#user-with-the-most-answers-active-accounts}
 
 アカウントには `UserId` が必要です。
 
@@ -340,7 +340,7 @@ LIMIT 5
 ```
 
 
-### 閲覧数が多い ClickHouse 関連記事
+### 閲覧数が多い ClickHouse 関連記事 {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ LIMIT 10
 ```
 
 
-### 最も物議を醸した投稿
+### 最も物議を醸した投稿 {#most-controversial-posts}
 
 ```sql
 SELECT

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# corr
+# corr {#corr}
 
 [ピアソンの相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します。
 

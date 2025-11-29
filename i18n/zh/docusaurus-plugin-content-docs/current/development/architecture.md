@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 架构概览
+# 架构概览 {#architecture-overview}
 
 ClickHouse 是一个真正的列式 DBMS。数据按列存储，并在执行过程中以数组（向量或列块）的形式处理。
 在可能的情况下，操作会尽量在数组上执行，而不是针对单个值。
@@ -242,7 +242,7 @@ IO 线程池是一个简单的 `ThreadPool`，可通过 `IOThreadPool::get()` �
 
 
 
-## 并发控制
+## 并发控制 {#concurrency-control}
 
 可以并行执行的查询通过 `max_threads` 设置来限制自身的并发度。该设置的默认值经过选择，使单个查询能够以最佳方式利用所有 CPU 核心。但如果存在多个并发查询且每个查询都使用默认的 `max_threads` 设置值，会怎样？此时这些查询将共享 CPU 资源。操作系统会通过不断切换线程来保证公平性，而这会引入一定的性能损耗。`ConcurrencyControl` 用来应对这种损耗，并避免分配过多线程。配置项 `concurrent_threads_soft_limit_num` 用于限制在开始施加某种形式的 CPU 压力之前，最多可以分配多少并发线程。
 

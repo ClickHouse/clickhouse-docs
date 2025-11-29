@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 配置约束
+# 配置约束 {#constraints-on-settings}
 
 
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 
 
-## 定义约束
+## 定义约束 {#defining-constraints}
 
 可以在 `user.xml` 配置文件的 `profiles` 部分中定义设置约束。它们会禁止用户通过
 [`SET`](/sql-reference/statements/set) 语句更改某些设置。
@@ -64,7 +64,7 @@ doc_type: 'reference'
 如果用户尝试违反这些约束，则会抛出异常，且该设置保持不变。
 
 
-## 约束类型
+## 约束类型 {#types-of-constraints}
 
 ClickHouse 中支持以下几种类型的约束：
 
@@ -105,7 +105,7 @@ ClickHouse 中支持以下几种类型的约束：
 
 
 
-## 只读模式
+## 只读模式 {#read-only}
 
 只读模式通过 `readonly` 设置启用，不要将其与 `readonly` 约束类型混淆：
 
@@ -115,7 +115,7 @@ ClickHouse 中支持以下几种类型的约束：
 * `readonly=2`：只允许执行只读查询，但可以更改设置，
   `readonly` 设置本身除外。
 
-### 示例
+### 示例 {#example-read-only}
 
 假设 `users.xml` 包含以下几行：
 
@@ -157,7 +157,7 @@ Code: 452, e.displayText() = DB::Exception: 设置 force_index_by_date 不得更
 :::
 
 
-## 对 MergeTree 设置的约束
+## 对 MergeTree 设置的约束 {#constraints-on-merge-tree-settings}
 
 可以为 [MergeTree 设置](merge-tree-settings.md) 定义约束。
 在创建使用 MergeTree 引擎的表，
@@ -166,7 +166,7 @@ Code: 452, e.displayText() = DB::Exception: 设置 force_index_by_date 不得更
 在 `<constraints>` 部分中引用 MergeTree 设置名称时，
 必须在其前面加上 `merge_tree_` 前缀。
 
-### 示例
+### 示例 {#example-mergetree}
 
 可以禁止创建显式指定 `storage_policy` 的新表。
 

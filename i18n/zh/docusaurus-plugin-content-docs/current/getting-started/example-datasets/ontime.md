@@ -127,7 +127,7 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-## 从原始数据导入
+## 从原始数据导入 {#import-from-raw-data}
 
 下载数据：
 
@@ -144,7 +144,7 @@ ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | se
 （如果你的服务器出现内存不足或其他问题，请删除 `-P $(nproc)` 这一部分）
 
 
-## 从已保存的副本导入
+## 从已保存的副本导入 {#import-from-a-saved-copy}
 
 你也可以通过以下查询，从已保存的副本中导入数据：
 
@@ -155,7 +155,7 @@ INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazo
 该快照创建于 2022-05-29。
 
 
-## 查询
+## 查询 {#queries}
 
 Q0.
 

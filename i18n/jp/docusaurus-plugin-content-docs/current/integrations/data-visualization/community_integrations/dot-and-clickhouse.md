@@ -13,7 +13,7 @@ import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.p
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Dot
+# Dot {#dot}
 
 <CommunityMaintainedBadge/>
 

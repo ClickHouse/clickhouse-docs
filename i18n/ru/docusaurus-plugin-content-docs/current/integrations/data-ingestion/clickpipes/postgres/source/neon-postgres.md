@@ -15,14 +15,14 @@ import neon_conn_details from '@site/static/images/integrations/data-ingestion/c
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника Neon Postgres
+# Руководство по настройке источника Neon Postgres {#neon-postgres-source-setup-guide}
 
 Это руководство по настройке Neon Postgres, который вы можете использовать для репликации данных в ClickPipes.
 Для выполнения этой настройки убедитесь, что вы вошли в свою [консоль Neon](https://console.neon.tech/app/projects).
 
 
 
-## Создание пользователя с правами доступа
+## Создание пользователя с правами доступа {#creating-a-user-with-permissions}
 
 Давайте создадим нового пользователя для ClickPipes с необходимыми правами доступа для CDC,
 а также создадим публикацию, которую будем использовать для репликации.
@@ -48,7 +48,7 @@ import Image from '@theme/IdealImage';
 Нажмите **Run**, чтобы создать пользователя и публикацию.
 
 
-## Включите логическую репликацию
+## Включите логическую репликацию {#enable-logical-replication}
 
 В Neon вы можете включить логическую репликацию через интерфейс. Это необходимо для работы CDC (фиксации изменений данных) в ClickPipes, чтобы реплицировать данные.
 Перейдите на вкладку **Settings**, затем в раздел **Logical Replication**.

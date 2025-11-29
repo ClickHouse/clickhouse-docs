@@ -11,7 +11,7 @@ keywords: ['google dataflow', 'gcp', 'データパイプライン', 'テンプ�
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Google Dataflow テンプレート
+# Google Dataflow テンプレート {#google-dataflow-templates}
 
 <ClickHouseSupportedBadge/>
 

@@ -7,10 +7,9 @@ title: 'system.asynchronous_metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;metrics
+# system.asynchronous&#95;metrics {#systemasynchronous_metrics}
 
 <SystemTableCloud />
 
@@ -46,7 +45,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 {/*- В отличие от system.events и system.metrics, асинхронные метрики не собраны в простой список в файле исходного кода — они
       смешаны с логикой в src/Interpreters/ServerAsynchronousMetrics.cpp.
       Для удобства читателя мы явно перечислили их здесь. -*/ }
-
 
 ## Описание метрик {#metric-descriptions}
 
@@ -103,8 +101,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 Количество операций чтения для блочного устройства, которые были объединены планировщиком ввода-вывода ОС. Это метрика на уровне всей системы, она включает все процессы на хосте, а не только clickhouse-server. Источник: `/sys/block`. См. https://www.kernel.org/doc/Documentation/block/stat.txt
 
 ### BlockReadOps_*name* {#blockreadops_name}
-
-
 
 Количество операций чтения, запрошенных у блочного устройства. Это системная метрика: она учитывает все процессы на хостовой машине, а не только clickhouse-server. Источник: `/sys/block`. См. https://www.kernel.org/doc/Documentation/block/stat.txt
 
@@ -187,8 +183,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 ### FilesystemLogsPathUsedINodes {#filesystemlogspathusedinodes}
 
 Количество использованных inode на томе, где смонтирован путь к логам ClickHouse.
-
-
 
 ### FilesystemMainPathAvailableBytes {#filesystemmainpathavailablebytes}
 
@@ -274,8 +268,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 Количество случаев возникновения ошибок при приёме через сетевой интерфейс. Это системная метрика, она включает все процессы на хостовой машине, а не только clickhouse-server.
 
-
-
 ### NetworkReceivePackets_*name* {#networkreceivepackets_name}
 
  Количество сетевых пакетов, полученных через сетевой интерфейс. Это метрика на уровне всей системы, она включает все процессы на хостовой машине, а не только clickhouse-server.
@@ -334,8 +326,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 ### OSGuestTimeCPU_*N* {#osguesttimecpu_n}
 
-
-
 Отношение времени, затраченного на выполнение виртуального CPU для гостевых операционных систем под управлением ядра Linux (см. `man procfs`). Это системная метрика: она включает все процессы на хостовой машине, а не только clickhouse-server. Эта метрика не имеет значения для ClickHouse, но приведена для полноты. Значение для одного ядра CPU находится в интервале [0..1]. Значение для всех ядер CPU вычисляется как их сумма [0..num cores].
 
 ### OSGuestTimeNormalized {#osguesttimenormalized}
@@ -373,8 +363,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 ### OSIrqTime {#osirqtime}
 
 Отношение времени, затраченного на обработку аппаратных прерываний на CPU. Это системная метрика: она включает все процессы на хостовой машине, а не только clickhouse-server. Высокое значение этой метрики может указывать на некорректную конфигурацию оборудования или очень высокую сетевую нагрузку. Значение для одного ядра CPU находится в интервале [0..1]. Значение для всех ядер CPU вычисляется как их сумма [0..num cores].
-
-
 
 ### OSIrqTimeCPU_*N* {#osirqtimecpu_n}
 
@@ -428,8 +416,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 Количество потоков, заблокированных в ожидании завершения операций ввода-вывода (`man procfs`). Это системная метрика: она включает все процессы на хост-системе, а не только clickhouse-server.
 
-
-
 ### OSProcessesCreated {#osprocessescreated}
 
 Количество созданных процессов. Это метрика на уровне всей системы, она включает все процессы на хостовой машине, а не только clickhouse-server.
@@ -479,8 +465,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 Общее количество потоков в состоянии «runnable», как его видит планировщик ядра ОС.
 
 ### OSThreadsTotal {#osthreadstotal}
-
-
 
 Общее количество потоков, с точки зрения планировщика ядра ОС.
 
@@ -563,8 +547,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 ### TotalPrimaryKeyBytesInMemoryAllocated {#totalprimarykeybytesinmemoryallocated}
 
 Объём памяти (в байтах), зарезервированной под значения первичного ключа (учитываются только активные части).
-
-
 
 ### TotalRowsOfMergeTreeTables {#totalrowsofmergetreetables}
 

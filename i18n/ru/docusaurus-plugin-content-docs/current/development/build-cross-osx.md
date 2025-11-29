@@ -7,9 +7,7 @@ title: 'Сборка на Linux для macOS'
 doc_type: 'guide'
 ---
 
-
-
-# Как собрать ClickHouse на Linux для macOS
+# Как собрать ClickHouse на Linux для macOS {#how-to-build-clickhouse-on-linux-for-macos}
 
 Этот документ описывает случай, когда у вас есть машина под управлением Linux, и вы хотите использовать её для сборки бинарного файла `clickhouse`, который будет запускаться на OS X.
 Основной сценарий использования — проверки в системе непрерывной интеграции, выполняющиеся на Linux-машинах.
@@ -21,9 +19,7 @@ doc_type: 'guide'
 Если вы нацеливаетесь на архитектуру ARM, просто замените все вхождения `x86_64` на `aarch64`.
 Например, замените `x86_64-apple-darwin` на `aarch64-apple-darwin` на всех этапах.
 
-
-
-## Установите набор инструментов для кросс-компиляции
+## Установите набор инструментов для кросс-компиляции {#install-cross-compilation-toolset}
 
 Запомните путь, по которому установлен `cctools`, и обозначьте его как `${CCTOOLS}`
 
@@ -53,8 +49,7 @@ cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
 
-
-## Сборка ClickHouse
+## Сборка ClickHouse {#build-clickhouse}
 
 ```bash
 cd ClickHouse

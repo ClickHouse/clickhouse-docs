@@ -10,7 +10,7 @@ doc_type: 'guide'
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# TimescaleDB 拡張付き Postgres ソースのセットアップガイド
+# TimescaleDB 拡張付き Postgres ソースのセットアップガイド {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
 
@@ -59,7 +59,7 @@ Timescale Cloud は論理レプリケーションをサポートしていませ�
 
 
 
-## 設定
+## 設定 {#configuration}
 
 Timescale のハイパーテーブル自体には、挿入されたデータは保存されません。代わりに、データは `_timescaledb_internal` スキーマ内にある対応する複数の「チャンク」テーブルに保存されます。ハイパーテーブルに対してクエリを実行する場合、これは問題になりません。しかし論理レプリケーション中は、ハイパーテーブルの変更ではなく、チャンクテーブルの変更を検出します。Postgres ClickPipe には、チャンクテーブルから親ハイパーテーブルへの変更を自動的に再マッピングするロジックがありますが、これには追加の手順が必要です。
 

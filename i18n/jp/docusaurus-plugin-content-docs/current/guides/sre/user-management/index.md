@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse でのユーザーとロールの作成
+# ClickHouse でのユーザーとロールの作成 {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse は、[RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) に基づくアクセス制御をサポートしています。
 
@@ -211,7 +211,7 @@ ClickHouse Cloud を使用している場合は、[Cloud access management](/clo
 
 
 
-## ALTER 権限
+## ALTER 権限 {#alter-permissions}
 
 この記事は、権限の定義方法と、特権ユーザーが `ALTER` ステートメントを使用する際に権限がどのように機能するかについて、よりよく理解できるようにすることを目的としています。
 

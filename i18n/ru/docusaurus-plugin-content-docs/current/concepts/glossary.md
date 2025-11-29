@@ -10,7 +10,7 @@ doc_type: 'reference'
 {/* no-glossary */ }
 
 
-# Глоссарий
+# Глоссарий {#glossary}
 
 
 

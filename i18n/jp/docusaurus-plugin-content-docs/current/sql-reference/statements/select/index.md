@@ -7,13 +7,9 @@ title: 'SELECT クエリ'
 doc_type: 'reference'
 ---
 
-
-
-# SELECT クエリ
+# SELECT クエリ {#select-query}
 
 `SELECT` クエリはデータの取得を行います。デフォルトでは、要求されたデータはクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md) と組み合わせることで、別のテーブルに渡すこともできます。
-
-
 
 ## 構文 {#syntax}
 
@@ -63,7 +59,6 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [EXCEPT句](../../../sql-reference/statements/select/except.md)
 - [INTO OUTFILE句](../../../sql-reference/statements/select/into-outfile.md)
 - [FORMAT句](../../../sql-reference/statements/select/format.md)
-
 
 ## SELECT句 {#select-clause}
 
@@ -159,7 +154,6 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `GROUP BY`、`ORDER BY`、および`LIMIT BY`句は位置引数をサポートできます。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)設定をオンにします。例えば、`ORDER BY 1,2`とすると、テーブルの行が第1列、次に第2列でソートされます。
 
-
 ## 実装の詳細 {#implementation-details}
 
 クエリが `DISTINCT`、`GROUP BY`、`ORDER BY` 句、および `IN` と `JOIN` サブクエリを省略している場合、クエリは完全にストリーム処理され、O(1) の RAM 量を使用します。それ以外の場合、適切な制限が指定されていないと、クエリは大量の RAM を消費する可能性があります:
@@ -179,7 +173,6 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 - `max_bytes_ratio_before_external_group_by`
 
 詳細については、「設定」のセクションを参照してください。外部ソート(一時テーブルをディスクに保存)および外部集約を使用することができます。
-
 
 ## SELECT修飾子 {#select-modifiers}
 
@@ -220,7 +213,6 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 │             222 │    347 │
 └─────────────────┴────────┘
 ```
-
 
 ## SELECTクエリでのSETTINGS {#settings-in-select-query}
 

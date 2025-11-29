@@ -11,7 +11,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# Kafka テーブルエンジン
+# Kafka テーブルエンジン {#kafka-table-engine}
 
 :::tip
 ClickHouse Cloud をご利用の場合は、代わりに [ClickPipes](/integrations/clickpipes) の利用を推奨します。ClickPipes は、プライベートネットワーク接続のネイティブサポート、インジェスト処理とクラスタリソースを独立してスケールさせる機能、そして Kafka のストリーミングデータを ClickHouse に取り込むための包括的なモニタリング機能を提供します。
@@ -21,7 +21,7 @@ ClickHouse Cloud をご利用の場合は、代わりに [ClickPipes](/integrati
 - フォールトトレラントなストレージの構成。
 - ストリームを利用可能になり次第処理。
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -135,7 +135,7 @@ Kafka テーブルエンジンは[デフォルト値](/sql-reference/statements/
 :::
 
 
-## 説明
+## 説明 {#description}
 
 配信されたメッセージは自動的に追跡されるため、グループ内の各メッセージは 1 回だけカウントされます。データを 2 回取得したい場合は、別のグループ名でテーブルのコピーを作成してください。
 
@@ -186,7 +186,7 @@ Kafka テーブルエンジンは[デフォルト値](/sql-reference/statements/
 `ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアライズドビューを無効化することを推奨します。
 
 
-## 設定
+## 設定 {#configuration}
 
 GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定ファイルを用いた詳細な設定をサポートしています。使用できる設定キーは 2 種類あり、グローバル（`<kafka>` の下）とトピックレベル（`<kafka><kafka_topic>` の下）です。まずグローバル設定が適用され、その後にトピックレベルの設定（存在する場合）が適用されます。
 
@@ -233,7 +233,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
 利用可能な設定オプションの一覧については、[librdkafka の configuration reference](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) を参照してください。ClickHouse の設定では、ドットの代わりにアンダースコア（`_`）を使用します。たとえば、`check.crcs=true` は `<check_crcs>true</check_crcs>` に対応します。
 
 
-### Kerberos サポート
+### Kerberos サポート {#kafka-kerberos-support}
 
 Kerberos 対応の Kafka を扱うには、`security_protocol` の子要素として `sasl_plaintext` を追加します。Kerberos のチケット授与チケット (TGT) が OS の機能によって取得・キャッシュされていれば十分です。
 ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理できます。`sasl_kerberos_service_name`、`sasl_kerberos_keytab`、`sasl_kerberos_principal` の子要素を指定します。
@@ -276,7 +276,7 @@ Kafka エンジンは、ClickHouse でサポートされているすべての[�
 - 行ベースのフォーマットでは、1 つの Kafka メッセージ内の行数は `kafka_max_rows_per_message` の設定で制御できます。
 - ブロックベースのフォーマットでは、ブロックをより小さな部分に分割することはできませんが、1 ブロック内の行数は共通設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。
 
-## ClickHouse Keeper にコミット済みオフセットを保存するエンジン
+## ClickHouse Keeper にコミット済みオフセットを保存するエンジン {#engine-to-store-committed-offsets-in-clickhouse-keeper}
 
 <ExperimentalBadge />
 

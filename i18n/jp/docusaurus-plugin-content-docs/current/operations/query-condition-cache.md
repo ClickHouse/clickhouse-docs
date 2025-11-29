@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# クエリ条件キャッシュ
+# クエリ条件キャッシュ {#query-condition-cache}
 
 :::note
 クエリ条件キャッシュは、[enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) が true に設定されている場合にのみ動作します。これはデフォルト値です。
@@ -45,7 +45,7 @@ ClickHouse には、そのようなクエリパターンを最適化するため
 
 
 
-## 設定項目と使用方法
+## 設定項目と使用方法 {#configuration-settings-and-usage}
 
 [use&#95;query&#95;condition&#95;cache](settings/settings#use_query_condition_cache) 設定は、特定のクエリ、または現在のセッション内のすべてのクエリでクエリ条件キャッシュを利用するかどうかを制御します。
 

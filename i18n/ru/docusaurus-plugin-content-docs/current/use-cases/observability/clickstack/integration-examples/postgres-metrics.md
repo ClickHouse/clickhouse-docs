@@ -143,10 +143,10 @@ docker run -d \
 Скачайте заранее сгенерированные файлы метрик (24 часа метрик PostgreSQL с реалистичными профилями):
 
 ```bash
-# Скачивание gauge-метрик (соединения, размер базы данных)
+# Скачивание gauge-метрик (соединения, размер базы данных) {#download-gauge-metrics-connections-database-size}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# Скачивание sum-метрик (коммиты, откаты, операции)
+# Скачивание sum-метрик (коммиты, откаты, операции) {#download-sum-metrics-commits-rollbacks-operations}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
@@ -173,11 +173,11 @@ docker run -d --name clickstack-postgres-demo \
 Загрузите метрики напрямую в ClickHouse:
 
 ```bash
-# Загрузка gauge-метрик
+# Загрузка gauge-метрик {#load-gauge-metrics}
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Загрузка sum-метрик
+# Загрузка sum-метрик {#load-sum-metrics}
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -227,7 +227,7 @@ HyperDX отображает временные метки в часовом п�
 
 ## Устранение неполадок {#troubleshooting}
 
-### Пользовательская конфигурация не загружается
+### Пользовательская конфигурация не загружается {#troubleshooting-not-loading}
 
 Убедитесь, что задана переменная окружения:
 
@@ -242,7 +242,7 @@ docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config
 ```
 
 
-### Метрики не отображаются в HyperDX
+### Метрики не отображаются в HyperDX {#no-metrics}
 
 Убедитесь, что есть доступ к PostgreSQL:
 
@@ -257,7 +257,7 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgr
 ```
 
 
-### Ошибки аутентификации
+### Ошибки аутентификации {#auth-errors}
 
 Убедитесь, что пароль указан верно:
 

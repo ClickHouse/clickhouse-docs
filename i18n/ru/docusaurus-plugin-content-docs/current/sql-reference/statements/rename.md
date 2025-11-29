@@ -7,9 +7,7 @@ title: 'Оператор RENAME'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор RENAME
+# Оператор RENAME {#rename-statement}
 
 Переименовывает базы данных, таблицы или словари. В одном запросе можно переименовать несколько сущностей.
 Обратите внимание, что запрос `RENAME` с несколькими сущностями является не атомарной операцией. Чтобы атомарно поменять местами имена сущностей, используйте оператор [EXCHANGE](./exchange.md).
@@ -20,8 +18,7 @@ doc_type: 'reference'
 RENAME [DATABASE|TABLE|DICTIONARY] имя TO новое_имя [,...] [ON CLUSTER кластер]
 ```
 
-
-## RENAME DATABASE
+## RENAME DATABASE {#rename-database}
 
 Переименовывает базу данных.
 
@@ -31,8 +28,7 @@ RENAME [DATABASE|TABLE|DICTIONARY] имя TO новое_имя [,...] [ON CLUSTE
 RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 ```
 
-
-## RENAME TABLE
+## RENAME TABLE {#rename-table}
 
 Переименовывает одну или несколько таблиц.
 
@@ -57,8 +53,7 @@ RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-
-## RENAME DICTIONARY
+## RENAME DICTIONARY {#rename-dictionary}
 
 Переименовывает один или несколько словарей. Этот запрос можно использовать для перемещения словарей между базами данных.
 

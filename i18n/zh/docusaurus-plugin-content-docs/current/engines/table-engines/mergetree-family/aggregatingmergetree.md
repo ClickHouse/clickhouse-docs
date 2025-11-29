@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# AggregatingMergeTree 表引擎
+# AggregatingMergeTree 表引擎 {#aggregatingmergetree-table-engine}
 
 该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)，并对数据部分的合并逻辑进行了调整。ClickHouse 会将所有具有相同主键（更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行在单个数据部分内合并为一行，该行存储了聚合函数状态的组合。
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -80,7 +80,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 聚合物化视图示例
+## 聚合物化视图示例 {#example-of-an-aggregated-materialized-view}
 
 以下示例假设已存在名为 `test` 的数据库。如尚不存在，请使用以下命令创建：
 

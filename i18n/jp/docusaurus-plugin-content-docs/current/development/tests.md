@@ -9,11 +9,11 @@ doc_type: 'guide'
 
 
 
-# ClickHouse のテスト
+# ClickHouse のテスト {#testing-clickhouse}
 
 
 
-## 機能テスト
+## 機能テスト {#functional-tests}
 
 機能テストは最もシンプルで扱いやすいテストです。
 ClickHouse の機能のほとんどは機能テストで検証でき、この方法でテスト可能な ClickHouse のコード変更については、機能テストの実行が必須です。
@@ -34,7 +34,7 @@ SQL だけでは検証できない機能、たとえば入力データを `click
 `DateTime` および `DateTime64` のデータ型をテストする際のよくある誤りは、サーバーが特定のタイムゾーン（例: &quot;UTC&quot;）を使用していると想定してしまうことです。実際にはそうではなく、CI テスト実行時のタイムゾーンは意図的にランダム化されています。最も簡単な回避策は、テスト値に対してタイムゾーンを明示的に指定することです。例: `toDateTime64(val, 3, 'Europe/Amsterdam')`。
 :::
 
-### ローカルでテストを実行する
+### ローカルでテストを実行する {#running-a-test-locally}
 
 ClickHouse サーバーをローカルで起動し、デフォルトポート（9000）で待ち受けるようにします。
 たとえばテスト `01428_hash_set_nan_key` を実行するには、リポジトリのフォルダーに移動して次のコマンドを実行します。
@@ -49,7 +49,7 @@ PATH=<clickhouse-clientへのパス>:$PATH tests/clickhouse-test 01428_hash_set_
 すべてのテストを実行することも、テスト名に対するフィルターを指定して一部のテストのみを実行することもできます: `./clickhouse-test substring`。
 テストを並列で実行したり、ランダムな順序で実行したりするオプションもあります。
 
-### 新しいテストの追加
+### 新しいテストの追加 {#adding-a-new-test}
 
 新しいテストを追加するには、まず `queries/0_stateless` ディレクトリに `.sql` または `.sh` ファイルを作成します。
 次に、`clickhouse-client < 12345_test.sql > 12345_test.reference` または `./12345_test.sh > ./12345_test.reference` を使用して、対応する `.reference` ファイルを生成します。
@@ -76,7 +76,7 @@ sudo ./install.sh
 * 他のテストが同じ内容をテストしていないことを確認すること（つまり、まず grep して確認する）
   :::
 
-### テスト実行の制限
+### テスト実行の制限 {#restricting-test-runs}
 
 テストには 0 個以上の *タグ* を付けることができ、CI 上でどのコンテキストで実行されるかを制御できます。
 
@@ -95,9 +95,9 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest, no-replicated-database
-# - no-fasttest: <ここにタグの理由を記載>
-# - no-replicated-database: <ここに理由を記載>
+# Tags: no-fasttest, no-replicated-database {#tags-no-fasttest-no-replicated-database}
+# - no-fasttest: <ここにタグの理由を記載> {#no-fasttest-provide_a_reason_for_the_tag_here}
+# - no-replicated-database: <ここに理由を記載> {#no-replicated-database-provide_a_reason_here}
 ```
 
 利用可能なタグの一覧は次のとおりです:
@@ -134,7 +134,7 @@ SELECT 1
 上記の設定に加えて、特定の ClickHouse 機能を使用するかどうかを指定するために、`system.build_options` の `USE_*` フラグを使用できます。
 たとえば、テストで MySQL テーブルを使用する場合は、タグ `use-mysql` を追加する必要があります。
 
-### ランダム設定の制限の指定
+### ランダム設定の制限の指定 {#specifying-limits-for-random-settings}
 
 テストでは、テスト実行中にランダム化される可能性がある設定について、許可される最小値と最大値を指定できます。
 
@@ -143,8 +143,8 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest
-# ランダム設定の制限: max_block_size=(1000, 10000); index_granularity=(100, None)
+# Tags: no-fasttest {#tags-no-fasttest}
+# ランダム設定の制限: max_block_size=(1000, 10000); index_granularity=(100, None) {#random-settings-limits-max_block_size1000-10000-index_granularity100-none}
 ```
 
 `.sql` テストでは、タグは対象行の直後の行か、先頭行に SQL コメントとして記述します。
@@ -157,7 +157,7 @@ SELECT 1
 
 片方の上限だけを指定する場合は、もう一方には `None` を指定できます。
 
-### テスト名の決め方
+### テスト名の決め方 {#choosing-the-test-name}
 
 テストの名前は、`00422_hash_function_constexpr.sql` のように、5桁のプレフィックスの後に内容を表す名前を付けます。
 プレフィックスを決めるには、ディレクトリ内で既に存在する最大のプレフィックスを確認し、その値に 1 を加えてください。
@@ -168,7 +168,7 @@ ls tests/queries/0_stateless/[0-9]*.reference | tail -n 1
 
 その間に、同じ数値プレフィックスを持つ別のテストが追加されることもありますが、それでも問題はなく、そのままで構いません。後から変更する必要はありません。
 
-### 必ず発生するエラーの確認
+### 必ず発生するエラーの確認 {#checking-for-an-error-that-must-occur}
 
 誤ったクエリに対してサーバーエラーが発生することを確認したい場合があります。そのために、SQL テストでは次の形式の特別なアノテーションをサポートしています。
 
@@ -184,12 +184,12 @@ SELECT x; -- { serverError 49 }
 エラーコードのみを確認してください。
 既存のエラーコードが要件に対して十分に厳密でない場合は、新しいエラーコードの追加を検討してください。
 
-### 分散クエリのテスト
+### 分散クエリのテスト {#testing-a-distributed-query}
 
 機能テストで分散クエリを使用したい場合、サーバー自身に対してクエリを実行するために、アドレス `127.0.0.{1..2}` を指定した `remote` テーブル関数を利用できます。または、サーバー設定ファイル内であらかじめ定義された `test_shard_localhost` のようなテスト用クラスタを使用することもできます。
 テスト名には必ず `shard` または `distributed` という単語を含めてください。そうすることで、サーバーが分散クエリをサポートするように設定されている正しい構成で、CI 上でテストが実行されるようになります。
 
-### 一時ファイルの扱い
+### 一時ファイルの扱い {#working-with-temporary-files}
 
 シェルテストの中で、その場でファイルを作成して利用する必要が生じる場合があります。
 一部の CI チェックではテストが並列に実行されることに注意してください。そのため、一意ではない名前でスクリプト内から一時ファイルを作成または削除していると、`Flaky` などの CI チェックが失敗する原因になります。
@@ -217,7 +217,7 @@ SELECT x; -- { serverError 49 }
 
 
 
-## ユニットテスト
+## ユニットテスト {#unit-tests}
 
 ユニットテストは、ClickHouse 全体ではなく、特定のライブラリやクラス単体をテストしたい場合に有用です。
 テストのビルドは、`ENABLE_TESTS` という CMake オプションで有効または無効にできます。
@@ -272,7 +272,7 @@ $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 
 
 
-## 手動テスト
+## 手動テスト {#manual-testing}
 
 新しい機能を開発した場合、その機能を手動でもテストするのは妥当です。
 次の手順で行うことができます。

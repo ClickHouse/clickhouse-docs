@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция prometheusQuery
+# Табличная функция prometheusQuery {#prometheusquery-table-function}
 
 Вычисляет запрос Prometheus, используя данные из таблицы TimeSeries в заданном интервале времени оценки.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 prometheusQueryRange('db_name', 'time_series_table', 'promql_query', start_time, end_time, step)
@@ -48,7 +48,7 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 
 
 
-## Пример
+## Пример {#example}
 
 ```sql
 SELECT * FROM prometheusQueryRange(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now() - INTERVAL 10 MINUTES, now(), INTERVAL 1 MINUTE)

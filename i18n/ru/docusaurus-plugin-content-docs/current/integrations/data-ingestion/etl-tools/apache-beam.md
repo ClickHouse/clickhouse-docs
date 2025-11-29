@@ -13,7 +13,7 @@ keywords: ['apache beam', 'потоковая обработка', 'пакетн
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Интеграция Apache Beam и ClickHouse
+# Интеграция Apache Beam и ClickHouse {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -29,9 +29,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
 
-## Настройка пакета ClickHouse для Apache Beam
+## Настройка пакета ClickHouse для Apache Beam {#setup-of-the-apache-beam-clickhouse-package}
 
-### Установка пакета
+### Установка пакета {#package-installation}
 
 Добавьте следующую зависимость в используемую систему управления пакетами:
 
@@ -50,7 +50,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Артефакты можно найти в [официальном репозитории Maven](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
-### Пример кода
+### Пример кода {#code-example}
 
 Следующий пример считывает CSV‑файл с именем `input.csv` как коллекцию `PCollection`, преобразует его в объект `Row` (используя определённую схему) и вставляет в локальный экземпляр ClickHouse с помощью `ClickHouseIO`:
 

@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -133,7 +133,7 @@ NATS サーバーの設定は、ClickHouse の設定ファイルに追加でき�
 ```
 
 
-## 説明
+## 説明 {#description}
 
 各メッセージは一度しか読み取れないため、（デバッグを除いて）メッセージの読み取りに `SELECT` を使ってもあまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイムの処理フローを作成する方が実用的です。そのためには、次の手順を実行します。
 
@@ -198,7 +198,7 @@ NATS エンジンは、ClickHouse がサポートするすべての[フォーマ
 
 
 
-## JetStream の使用
+## JetStream の使用 {#using-jetstream}
 
 NATS JetStream とともに NATS エンジンを使用する前に、NATS ストリームと永続プルコンシューマを作成する必要があります。これには、[NATS CLI](https://github.com/nats-io/natscli) パッケージに含まれる `nats` ユーティリティなどを使用できます。
 

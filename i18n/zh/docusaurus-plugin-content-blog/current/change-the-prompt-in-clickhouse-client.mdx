@@ -32,8 +32,7 @@ import prompt_8 from "@site/static/images/knowledgebase/change-the-prompt-in-cli
 
 有多种方式可以更新提示符，接下来我们会逐一介绍。
 
-
-## --prompt 标志
+## --prompt 标志 \{#--prompt-flag\}
 
 更改此标志的第一种方法是使用 `--prompt`：
 
@@ -45,8 +44,7 @@ clickhouse --prompt 👉
 
 <Image img={prompt_1} size="md" alt="带有手指表情符号的 ClickHouse 客户端提示符" />
 
-
-## 配置文件 - 顶层
+## 配置文件 - 顶层 \{#config-file---top-level\}
 
 或者，您可以在 `config.xml` 文件中提供一个提示前缀：
 
@@ -89,8 +87,7 @@ clickhouse -C christmas.yaml
 
 <Image img={prompt_4} size="md" alt="带黄色圆圈表情符号的 ClickHouse 客户端命令行提示符" />
 
-
-## 配置文件 - connections&#95;credentials
+## 配置文件 - connections&#95;credentials \{#config-file---connections&#95;credentials\}
 
 或者，你也可以为每个连接凭据单独指定一个提示。
 这仅在使用 clickhouse-client 时有意义。

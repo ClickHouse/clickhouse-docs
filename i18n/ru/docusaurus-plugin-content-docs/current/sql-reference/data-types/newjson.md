@@ -48,11 +48,11 @@ import Link from '@docusaurus/Link'
 | `SKIP REGEXP 'path_regexp'` | Необязательная подсказка с регулярным выражением, которое используется для пропуска путей при разборе JSON. Все пути, соответствующие этому регулярному выражению, никогда не будут сохранены в столбце JSON.                                                                                                                            |                       |
 
 
-## Создание JSON
+## Создание JSON {#creating-json}
 
 В этом разделе мы рассмотрим различные способы создания `JSON`.
 
-### Использование `JSON` в определении столбца таблицы
+### Использование `JSON` в определении столбца таблицы {#using-json-in-a-table-column-definition}
 
 ```sql title="Query (Example 1)"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -82,11 +82,11 @@ SELECT json FROM test;
 └───────────────────────────────────┘
 ```
 
-### Использование CAST с `::JSON`
+### Использование CAST с `::JSON` {#using-cast-with-json}
 
 Можно приводить различные типы данных с помощью специального синтаксиса `::JSON`.
 
-#### CAST из типа `String` в тип `JSON`
+#### CAST из типа `String` в тип `JSON` {#cast-from-string-to-json}
 
 ```sql title="Query"
 SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json;
@@ -98,7 +98,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 └────────────────────────────────────────────────────────┘
 ```
 
-#### Приведение типа из `Tuple` к `JSON`
+#### Приведение типа из `Tuple` к `JSON` {#cast-from-tuple-to-json}
 
 ```sql title="Query"
 SET enable_named_columns_in_function_tuple = 1;
@@ -111,7 +111,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 └────────────────────────────────────────────────────────┘
 ```
 
-#### Преобразование (CAST) из `Map` в `JSON`
+#### Преобразование (CAST) из `Map` в `JSON` {#cast-from-map-to-json}
 
 ```sql title="Query"
 SET use_variant_as_common_type=1;
@@ -155,7 +155,7 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 :::
 
 
-## Чтение JSON-путей как подстолбцов
+## Чтение JSON-путей как подстолбцов {#reading-json-paths-as-sub-columns}
 
 Тип `JSON` поддерживает чтение каждого пути как отдельного подстолбца.
 Если тип запрашиваемого пути не указан в объявлении типа `JSON`,
@@ -288,7 +288,7 @@ FROM test;
 :::
 
 
-## Чтение вложенных объектов JSON как подстолбцов
+## Чтение вложенных объектов JSON как подстолбцов {#reading-json-sub-objects-as-sub-columns}
 
 Тип `JSON` поддерживает чтение вложенных объектов как подстолбцов типа `JSON` с использованием специального синтаксиса `json.^some.path`:
 
@@ -323,7 +323,7 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 :::
 
 
-## Определение типов для путей
+## Определение типов для путей {#type-inference-for-paths}
 
 Во время разбора `JSON` ClickHouse пытается определить наиболее подходящий тип данных для каждого пути в JSON.
 Это работает аналогично [автоматическому определению схемы по входным данным](/interfaces/schema-inference.md)
@@ -383,7 +383,7 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 ```
 
 
-## Обработка массивов JSON-объектов
+## Обработка массивов JSON-объектов {#handling-arrays-of-json-objects}
 
 JSON-пути, содержащие массив объектов, интерпретируются как тип `Array(JSON)` и записываются в столбец `Dynamic` для этого пути.
 Чтобы прочитать массив объектов, вы можете извлечь его из столбца `Dynamic` в виде подстолбца:
@@ -496,7 +496,7 @@ SELECT json.a.b[].^k FROM test
 ```
 
 
-## Обработка JSON-ключей со значением NULL
+## Обработка JSON-ключей со значением NULL {#handling-json-keys-with-nulls}
 
 В нашей реализации JSON значение `null` и отсутствие значения считаются эквивалентными:
 
@@ -513,7 +513,7 @@ SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
 Это означает, что невозможно определить, содержали ли исходные данные JSON какой‑либо путь со значением NULL или не содержали его вовсе.
 
 
-## Обработка ключей JSON с точками
+## Обработка ключей JSON с точками {#handling-json-keys-with-dots}
 
 Внутренне столбец JSON хранит все пути и значения в виде плоской структуры. Это означает, что по умолчанию следующие два объекта считаются одинаковыми:
 
@@ -622,7 +622,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 ```
 
 
-## Чтение типа JSON из данных
+## Чтение типа JSON из данных {#reading-json-type-from-data}
 
 Все текстовые форматы
 ([`JSONEachRow`](/interfaces/formats/JSONEachRow),
@@ -676,7 +676,7 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ```
 
 
-## Достижение предела динамических путей внутри JSON
+## Достижение предела динамических путей внутри JSON {#reaching-the-limit-of-dynamic-paths-inside-json}
 
 Тип данных `JSON` может хранить только ограниченное количество путей как отдельных внутренних подстолбцов.
 По умолчанию этот предел равен `1024`, но вы можете изменить его в объявлении типа с помощью параметра `max_dynamic_paths`.
@@ -688,7 +688,7 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 
 Рассмотрим, что происходит при достижении предела в нескольких различных сценариях.
 
-### Достижение предела во время разбора данных
+### Достижение предела во время разбора данных {#reaching-the-limit-during-data-parsing}
 
 Во время разбора `JSON`-объектов из данных, когда предел достигнут для текущего блока данных,
 все новые пути будут храниться в общей структуре данных. Мы можем использовать следующие две функции интроспекции: `JSONDynamicPaths`, `JSONSharedDataPaths`:
@@ -716,7 +716,7 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 Как мы видим, после вставки путей `e` и `f.g` лимит был достигнут,
 и они были помещены в общую структуру данных.
 
-### Во время слияний кусков данных в табличных движках MergeTree
+### Во время слияний кусков данных в табличных движках MergeTree {#during-merges-of-data-parts-in-mergetree-table-engines}
 
 Во время слияния нескольких кусков данных в таблице `MergeTree` столбец `JSON` в результирующем куске данных может достичь лимита динамических путей
 и не сможет хранить все пути из исходных кусков в виде подстолбцов.
@@ -846,7 +846,7 @@ ORDER BY _part ASC
 
 
 
-## Функции интроспекции
+## Функции интроспекции {#introspection-functions}
 
 Существует несколько функций, которые помогают исследовать содержимое столбца JSON:
 
@@ -986,7 +986,7 @@ SETTINGS date_time_input_format = 'best_effort'
 ```
 
 
-## ALTER MODIFY COLUMN к типу JSON
+## ALTER MODIFY COLUMN к типу JSON {#alter-modify-column-to-json-type}
 
 Можно изменить существующую таблицу и сменить тип столбца на новый тип `JSON`. На данный момент поддерживается только `ALTER` для столбцов типа `String`.
 
@@ -1009,7 +1009,7 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
-## Сравнение значений типа JSON
+## Сравнение значений типа JSON {#comparison-between-values-of-the-json-type}
 
 Объекты JSON сравниваются аналогично значениям типа `Map`.
 

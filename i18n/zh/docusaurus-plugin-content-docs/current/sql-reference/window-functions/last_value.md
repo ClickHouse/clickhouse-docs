@@ -7,7 +7,7 @@ title: 'last_value'
 doc_type: 'reference'
 ---
 
-# last&#95;value
+# last&#95;value {#last&#95;value}
 
 返回在其有序窗口框架中计算得到的最后一个值。默认情况下会跳过 NULL 参数值，不过可以使用 `RESPECT NULLS` 修饰符来覆盖此默认行为。
 

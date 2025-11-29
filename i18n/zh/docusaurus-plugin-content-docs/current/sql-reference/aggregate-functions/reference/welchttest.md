@@ -7,7 +7,7 @@ title: 'welchTTest'
 doc_type: 'reference'
 ---
 
-# welchTTest
+# welchTTest {#welchttest}
 
 将 Welch t 检验应用于来自两个总体的样本。
 

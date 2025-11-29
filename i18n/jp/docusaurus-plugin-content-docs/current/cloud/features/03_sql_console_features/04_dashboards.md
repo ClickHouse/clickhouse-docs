@@ -21,7 +21,7 @@ import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.pn
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
 
-# ダッシュボード
+# ダッシュボード {#dashboards}
 
 SQL Console のダッシュボード機能を使用すると、保存したクエリから得られた可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化結果をダッシュボードに追加し、クエリパラメータを使ってダッシュボードをインタラクティブにしてみてください。
 

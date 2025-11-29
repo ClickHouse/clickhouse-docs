@@ -6,9 +6,7 @@ title: 'LIMIT 子句'
 doc_type: 'reference'
 ---
 
-
-
-# LIMIT 子句
+# LIMIT 子句 {#limit-clause}
 
 `LIMIT m` 允许从结果中选取前 `m` 行。
 
@@ -24,14 +22,14 @@ doc_type: 'reference'
 
 另外，也支持按结果的一定比例进行选取：
 
-`LIMIT m` —— 如果 0 < m < 1，则返回结果中前 m * 100% 的行。
+`LIMIT m` —— 如果 0 &lt; m &lt; 1，则返回结果中前 m * 100% 的行。
 
-`LIMIT m OFFSET n` —— 如果 0 < m < 1 且 0 < n < 1，则在跳过结果中前 n * 100% 的行之后，返回接下来 m * 100% 的结果。语法 `LIMIT n, m` 与其等价。
+`LIMIT m OFFSET n` —— 如果 0 &lt; m &lt; 1 且 0 &lt; n &lt; 1，则在跳过结果中前 n * 100% 的行之后，返回接下来 m * 100% 的结果。语法 `LIMIT n, m` 与其等价。
 
 示例：
-    • `LIMIT 0.1` —— 选取结果中前 10% 的行。
-    • `LIMIT 1 OFFSET 0.5` —— 选取中位数所在的那一行。
-    • `LIMIT 0.25 OFFSET 0.5` —— 选取结果中的第三四分位数部分。
+• `LIMIT 0.1` —— 选取结果中前 10% 的行。
+• `LIMIT 1 OFFSET 0.5` —— 选取中位数所在的那一行。
+• `LIMIT 0.25 OFFSET 0.5` —— 选取结果中的第三四分位数部分。
 
 > **注意**
 > • 比例必须是大于 0 且小于 1 的 [Float64](../../data-types/float.md) 数值。
@@ -43,13 +41,11 @@ doc_type: 'reference'
 
 如果没有显式对结果进行排序的 [ORDER BY](../../../sql-reference/statements/select/order-by.md) 子句，则结果中被选取的行可能是任意的、非确定性的。
 
-:::note    
+:::note\
 结果集中的行数也可能取决于 [limit](../../../operations/settings/settings.md#limit) 设置。
 :::
 
-
-
-## LIMIT ... WITH TIES 修饰符
+## LIMIT ... WITH TIES 修饰符 {#limit--with-ties-modifier}
 
 当你为 `LIMIT n[,m]` 设置 `WITH TIES` 修饰符并指定 `ORDER BY expr_list` 时，结果中会返回符合 `LIMIT n` 或 `LIMIT n,m` 条件的前 `n` 行或 `n,m` 行，以及所有在 `LIMIT n` 情况下与第 `n` 行、或在 `LIMIT n,m` 情况下与第 `m` 行具有相同 `ORDER BY` 字段值的行。
 

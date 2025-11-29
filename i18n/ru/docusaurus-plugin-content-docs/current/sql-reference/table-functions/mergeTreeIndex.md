@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция mergeTreeIndex
+# Табличная функция mergeTreeIndex {#mergetreeindex-table-function}
 
 Предоставляет доступ к содержимому файлов индексов и меток таблиц MergeTree. Может использоваться для интроспекции.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
@@ -46,7 +46,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 ```sql
 CREATE TABLE test_table

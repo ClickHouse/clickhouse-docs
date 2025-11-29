@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# prometheusQuery テーブル関数
+# prometheusQuery テーブル関数 {#prometheusquery-table-function}
 
 複数の評価時刻にわたって、TimeSeries テーブルのデータを使用して Prometheus クエリを評価します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 prometheusQueryRange('db_name', 'time_series_table', 'promql_query', start_time, end_time, step)
@@ -48,7 +48,7 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 
 
 
-## 使用例
+## 使用例 {#example}
 
 ```sql
 SELECT * FROM prometheusQueryRange(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now() - INTERVAL 10 MINUTES, now(), INTERVAL 1 MINUTE)

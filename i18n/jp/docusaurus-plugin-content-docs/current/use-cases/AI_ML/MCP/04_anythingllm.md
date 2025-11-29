@@ -19,7 +19,7 @@ import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
 
 
-# AnythingLLMでClickHouse MCPサーバーを使用する
+# AnythingLLMでClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server-with-anythingllm}
 
 > 本ガイドでは、Dockerを使用してClickHouse MCPサーバーと[AnythingLLM](https://anythingllm.com/)をセットアップし、
 > ClickHouseのサンプルデータセットに接続する方法について説明します。
@@ -39,7 +39,7 @@ LibreChat と MCP サーバーを実行するには Docker が必要です。Doc
 
 
 
-## AnythingLLM の Docker イメージをプルする
+## AnythingLLM の Docker イメージをプルする {#pull-anythingllm-docker-image}
 
 次のコマンドを実行して、AnythingLLM の Docker イメージをローカル環境にプルします。
 
@@ -48,7 +48,7 @@ docker pull anythingllm/anythingllm
 ```
 
 
-## ストレージの場所を設定する
+## ストレージの場所を設定する {#setup-storage-location}
 
 ストレージ用のディレクトリを作成し、環境ファイルを初期化します。
 
@@ -59,7 +59,7 @@ touch "$STORAGE_LOCATION/.env"
 ```
 
 
-## MCP サーバー設定ファイルの設定
+## MCP サーバー設定ファイルの設定 {#configure-mcp-server-config-file}
 
 `plugins` ディレクトリを作成します。
 
@@ -97,7 +97,7 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 を使用して行えます。
 
 
-## AnythingLLM の Docker コンテナを起動する
+## AnythingLLM の Docker コンテナを起動する {#start-anythingllm-docker-container}
 
 次のコマンドを実行して、AnythingLLM の Docker コンテナを起動します。
 

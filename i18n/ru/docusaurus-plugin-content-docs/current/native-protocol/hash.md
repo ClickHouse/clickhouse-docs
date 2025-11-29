@@ -9,7 +9,7 @@ keywords: ['CityHash', 'хэш нативного протокола', 'хэш-�
 
 
 
-# CityHash
+# CityHash {#cityhash}
 
 ClickHouse использует **одну из предыдущих** версий [CityHash от Google](https://github.com/google/cityhash).
 

@@ -26,7 +26,7 @@ keywords: ['示例数据集', 'weather', 'taiwan', '示例数据', '气候数据
 - 为 ClickHouse 准备的[预处理数据版本](#pre-processed-data)，已经过清洗、重构和富化。该数据集覆盖 1896 年至 2023 年。
 - [下载原始数据](#original-raw-data)并转换为 ClickHouse 所需的格式。希望添加自定义列的用户可以在此基础上探索或完善自己的方案。
 
-### 预处理数据
+### 预处理数据 {#pre-processed-data}
 
 该数据集也已经从“每行一条测量记录”的结构重组为“每个气象站 ID 与测量日期对应一行”的结构，即：
 
@@ -47,16 +47,16 @@ C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-# 可选:验证校验和
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# 校验和应为:11b484f5bd9ddafec5cfb131eb2dd008
+# 校验和应为:11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-# 可选:验证校验和
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum daily_weather_preprocessed_1896_2023.csv
-# 校验和应为:1132248c78195c43d93f843753881754
+# 校验和应为:1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
 
@@ -64,7 +64,7 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 
 以下内容介绍如何下载原始数据，以便按需进行转换和处理。
 
-#### 下载
+#### 下载 {#download}
 
 要下载原始数据：
 
@@ -73,9 +73,9 @@ mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-# 可选:验证校验和
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# 校验和应为:b66b9f137217454d655e3004d7d1b51a
+# 校验和应为:b66b9f137217454d655e3004d7d1b51a {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -84,23 +84,23 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-# 可选:验证校验和
+# 可选:验证校验和 {#option-validate-the-checksum}
 cat *.csv | md5sum
-# 校验和应为:b26db404bf84d4063fac42e576464ce1
+# 校验和应为:b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
 
-#### 获取台湾地区气象站列表
+#### 获取台湾地区气象站列表 {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-# 可选:将 UTF-8-BOM 转换为 UTF-8 编码
+# 可选:将 UTF-8-BOM 转换为 UTF-8 编码 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
 
-## 创建表结构
+## 创建表结构 {#create-table-schema}
 
 使用 ClickHouse 客户端在 ClickHouse 中创建 MergeTree 表。
 
@@ -144,7 +144,7 @@ ORDER BY (MeasuredDate);
 
 ## 向 ClickHouse 插入数据 {#inserting-into-clickhouse}
 
-### 从本地文件插入
+### 从本地文件插入 {#inserting-from-local-file}
 
 可以在 ClickHouse 客户端中通过以下方式从本地文件插入数据：
 
@@ -165,7 +165,7 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 ```
 
 
-### 从 URL 插入数据
+### 从 URL 插入数据 {#inserting-from-url}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
@@ -176,7 +176,7 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 如需了解如何加快这一过程，请参阅我们关于[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博文。
 
 
-## 检查数据行和大小
+## 检查数据行和大小 {#check-data-rows-and-sizes}
 
 1. 先查看已插入了多少行：
 
@@ -210,7 +210,7 @@ WHERE (`table` = 'tw_weather_data') AND active
 
 ## 查询示例 {#sample-queries}
 
-### Q1: 查询指定年份中每个气象站的最高露点温度
+### Q1: 查询指定年份中每个气象站的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -257,7 +257,7 @@ GROUP BY StationId
 ```
 
 
-### Q2: 在特定时间范围内按字段和气象站获取原始数据
+### Q2: 在特定时间范围内按字段和气象站获取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT

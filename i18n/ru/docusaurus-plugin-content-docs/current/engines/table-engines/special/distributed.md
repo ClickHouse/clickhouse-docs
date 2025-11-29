@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Движок распределённой таблицы
+# Движок распределённой таблицы {#distributed-table-engine}
 
 :::warning Распределённый движок в Cloud
 Чтобы создать движок распределённой таблицы в ClickHouse Cloud, можно использовать табличные функции [`remote` и `remoteSecure`](../../../sql-reference/table-functions/remote). 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#distributed-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### Из таблицы
+### Из таблицы {#distributed-from-a-table}
 
 Когда таблица `Distributed` указывает на таблицу на текущем сервере, вы можете заимствовать её схему:
 
@@ -41,7 +41,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### Параметры движка Distributed
+### Параметры движка Distributed {#distributed-parameters}
 
 | Параметр                       | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * настройка [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert)
 * [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) для примеров
 
-### Настройки движка Distributed
+### Настройки движка Distributed {#distributed-settings}
 
 
 | Параметр                                   | Описание                                                                                                                                                                                                                        | Значение по умолчанию |
@@ -102,7 +102,7 @@ SETTINGS
 Вместо имени базы данных вы можете использовать константное выражение, которое возвращает строку. Например: `currentDatabase()`.
 
 
-## Кластеры
+## Кластеры {#distributed-clusters}
 
 Кластеры настраиваются в [конфигурационном файле сервера](../../../operations/configuration-files.md):
 

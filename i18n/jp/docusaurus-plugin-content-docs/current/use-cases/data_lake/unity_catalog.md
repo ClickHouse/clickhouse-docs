@@ -46,7 +46,7 @@ ClickHouse が Unity カタログと連携できるようにするには、Unity
 
 Unity Catalog の設定と認証が完了したら、ClickHouse と Unity Catalog の間に接続を確立します。
 
-### Delta の読み込み
+### Delta の読み込み {#read-delta}
 
 ```sql
 CREATE DATABASE unity
@@ -55,7 +55,7 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 ```
 
 
-### Iceberg を読み込む
+### Iceberg を読み込む {#read-iceberg}
 
 ```sql
 CREATE DATABASE unity
@@ -65,7 +65,7 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 ```
 
 
-## ClickHouse を使用して Unity カタログのテーブルをクエリする
+## ClickHouse を使用して Unity カタログのテーブルをクエリする {#querying-unity-catalog-tables-using-clickhouse}
 
 接続が確立できたので、Unity カタログ経由でクエリを実行できるようになりました。例えば次のように実行します。
 
@@ -156,7 +156,7 @@ ENGINE = Iceberg('s3://<path>);
 ```
 
 
-## データレイクから ClickHouse へのデータの読み込み
+## データレイクから ClickHouse へのデータの読み込み {#loading-data-from-your-data-lake-into-clickhouse}
 
 Databricks から ClickHouse にデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 

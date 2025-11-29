@@ -7,13 +7,11 @@ title: 'IPv6'
 doc_type: 'reference'
 ---
 
-
-
-## IPv6
+## IPv6 {#ipv6}
 
 IPv6 アドレス。16 バイトの UInt128 型（ビッグエンディアン）として格納されます。
 
-### 基本的な使い方
+### 基本的な使い方 {#basic-usage}
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;

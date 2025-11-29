@@ -7,7 +7,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted
+# quantileTimingWeighted {#quantiletimingweighted}
 
 С заданной точностью вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с учетом веса каждого элемента последовательности.
 
@@ -86,8 +86,7 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 └───────────────────────────────────────────────┘
 ```
 
-
-# quantilesTimingWeighted
+# quantilesTimingWeighted {#quantilestimingweighted}
 
 То же, что и `quantileTimingWeighted`, но принимает несколько аргументов уровней квантилей и возвращает массив, содержащий значения этих квантилей.
 

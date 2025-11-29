@@ -6,7 +6,7 @@ title: '通过 S3 端点进行备份与恢复'
 doc_type: 'guide'
 ---
 
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
+import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
 
 # 使用 S3 端点进行备份 / 恢复 {#backup-to-a-local-disk}

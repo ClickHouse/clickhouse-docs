@@ -13,8 +13,7 @@ import powerbi_error from "@site/static/images/knowledgebase/powerbi_odbc_authen
 
 {/* усечение */}
 
-
-## Вопрос
+## Вопрос \{#question\}
 
 При попытке подключиться из Power BI к ClickHouse через коннектор вы получаете ошибку аутентификации.
 
@@ -32,7 +31,6 @@ Code: 516. DB::Exception: default: Ошибка аутентификации: н
 
 <Image img={powerbi_error} size="md" alt="Диалоговое окно ошибки аутентификации ODBC в Power BI" border />
 
-
 ## Ответ \{#answer\}
 
 Обновите ODBC-драйвер ClickHouse до версии [1.4.1](https://github.com/ClickHouse/clickhouse-odbc/releases/tag/1.4.1.20250523).
@@ -41,6 +39,6 @@ Code: 516. DB::Exception: default: Ошибка аутентификации: н
 
 Мы рекомендуем использовать отдельного пользователя для подключения и задавать пароль вручную. Если вы используете ClickHouse Cloud и вам нужен доступ уровня администратора, эквивалентный пользователю `default`, создайте нового пользователя и назначьте ему роль `default_role`.
 
-Дополнительная информация:  
+Дополнительная информация:\
 https://clickhouse.com/docs/operations/access-rights#user-account-management
 https://clickhouse.com/docs/cloud/security/cloud-access-management#database-roles

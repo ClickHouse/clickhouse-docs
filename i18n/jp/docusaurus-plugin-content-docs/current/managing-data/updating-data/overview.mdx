@@ -28,7 +28,7 @@ ClickHouse でデータを更新する方法はいくつかあり、それぞれ
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 大量のデータを更新する場合に使用します。このテーブルエンジンは、マージ時のデータ重複排除に最適化されています。                                                                                                                            |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 個々の行を頻繁に更新する場合、または時間とともに変化するオブジェクトの最新状態を保持する必要があるシナリオで使用します。たとえば、ユーザーアクティビティや記事の統計を追跡する場合などです。                                                     |
 
-## 更新ミューテーション
+## 更新ミューテーション \{#update-mutations\}
 
 更新ミューテーションは `ALTER TABLE ... UPDATE` コマンドを使って発行できます。例えば、次のように実行します。
 
@@ -41,21 +41,20 @@ ALTER TABLE posts_temp
 
 [update mutations](/sql-reference/statements/alter/update) の詳細については、こちらを参照してください。
 
-
 ## Lightweight updates \{#lightweight-updates\}
 
 Lightweight updates は、従来の mutation のように列全体を書き換えるのではなく、「patch parts」と呼ばれる特別なデータパーツ（更新された列と行のみを含む）を使って行を更新する ClickHouse の機能です。Lightweight UPDATE の主な特性は次のとおりです。
 
 主な特性:
 
-- 標準的な `UPDATE` 構文を使用し、マージを待たずに直ちに patch parts を作成する
-- 更新された値は、patch の適用によって `SELECT` クエリから即座に参照可能だが、物理的にマテリアライズされるのはその後のマージ時のみ
-- 予測可能なレイテンシで（テーブル全体のおおよそ 10% 程度までの）小規模な更新向けに設計されている
-- patch を適用する必要がある `SELECT` クエリにはオーバーヘッドが増えるが、列全体の書き換えは回避できる
+* 標準的な `UPDATE` 構文を使用し、マージを待たずに直ちに patch parts を作成する
+* 更新された値は、patch の適用によって `SELECT` クエリから即座に参照可能だが、物理的にマテリアライズされるのはその後のマージ時のみ
+* 予測可能なレイテンシで（テーブル全体のおおよそ 10% 程度までの）小規模な更新向けに設計されている
+* patch を適用する必要がある `SELECT` クエリにはオーバーヘッドが増えるが、列全体の書き換えは回避できる
 
-詳細は ["The Lightweight UPDATE Statement"](/sql-reference/statements/update) を参照してください。
+詳細は [&quot;The Lightweight UPDATE Statement&quot;](/sql-reference/statements/update) を参照してください。
 
-## オンザフライ更新
+## オンザフライ更新 \{#on-the-fly-updates\}
 
 オンザフライ更新は、行を即時に更新し、その後の `SELECT` クエリが自動的に更新後の値を返すようにする仕組みを提供します（その分のオーバーヘッドが発生し、クエリは遅くなります）。これにより、通常のミューテーションが持つ原子性に関する制約を実質的に解消できます。以下に例を示します。
 
@@ -92,8 +91,7 @@ WHERE Id = 404346
 
 [オンザフライ更新](/guides/developer/on-the-fly-mutations)についての詳細はこちらを参照してください。
 
-
-## `CollapsingMergeTree`
+## `CollapsingMergeTree` \{#collapsing-merge-tree\}
 
 更新はコストが高い一方で、挿入を活用して更新を実現できるという発想に基づき、
 [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) テーブルエンジンは
@@ -140,7 +138,6 @@ HAVING sum(Sign) > 0
 のドキュメントを参照することを推奨します。
 :::
 
-
 ## 参考資料 \{#more-resources\}
 
-- [ClickHouse における更新と削除の処理](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* [ClickHouse における更新と削除の処理](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

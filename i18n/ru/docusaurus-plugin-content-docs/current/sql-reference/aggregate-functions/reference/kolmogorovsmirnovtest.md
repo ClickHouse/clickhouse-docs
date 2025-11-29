@@ -7,7 +7,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest
+# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
 
 Применяет критерий Колмогорова–Смирнова к выборкам из двух генеральных совокупностей.
 
@@ -109,10 +109,9 @@ FROM
 └─────────────────────────────────────────────────────────┘
 ```
 
-
 Примечание:
 p-value (p-значение) меньше 0,05 (при уровне доверия 95 %), поэтому нулевая гипотеза отвергается.
 
 **См. также**
 
-- [Критерий Колмогорова–Смирнова](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+* [Критерий Колмогорова–Смирнова](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)

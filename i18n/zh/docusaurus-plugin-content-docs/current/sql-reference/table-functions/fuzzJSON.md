@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# fuzzJSON 表函数
+# fuzzJSON 表函数 {#fuzzjson-table-function}
 
 对 JSON 字符串进行随机扰动。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
@@ -49,7 +49,7 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 
 
 
-## 用法示例
+## 用法示例 {#usage-example}
 
 ```sql
 CREATE NAMED COLLECTION json_fuzzer AS json_str='{}';

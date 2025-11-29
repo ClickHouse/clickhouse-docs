@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция SQLite
+# Табличная функция SQLite {#sqlite-table-function}
 
 Позволяет выполнять запросы к данным, хранящимся в базе данных [SQLite](../../engines/database-engines/sqlite.md).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
@@ -35,7 +35,7 @@ sqlite('db_path', 'table_name')
 
 
 
-## Пример
+## Пример {#example}
 
 Запрос:
 

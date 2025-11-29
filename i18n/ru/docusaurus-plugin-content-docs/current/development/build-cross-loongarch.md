@@ -7,15 +7,11 @@ title: 'Сборка на Linux для LoongArch64'
 doc_type: 'guide'
 ---
 
-
-
-# Сборка под Linux для LoongArch64
+# Сборка под Linux для LoongArch64 {#build-on-linux-for-loongarch64}
 
 ClickHouse экспериментально поддерживает LoongArch64
 
-
-
-## Сборка ClickHouse
+## Сборка ClickHouse {#build-clickhouse}
 
 Для сборки требуется версия LLVM не ниже 19.1.0.
 

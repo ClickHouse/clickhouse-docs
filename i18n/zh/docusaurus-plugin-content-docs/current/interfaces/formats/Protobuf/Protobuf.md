@@ -13,7 +13,7 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述
+## 描述 {#description}
 
 `Protobuf` 格式是 [Protocol Buffers](https://protobuf.dev/) 格式。
 
@@ -97,7 +97,7 @@ ClickHouse 以 `length-delimited` 格式输入和输出 protobuf 消息。
 
 ## 示例用法 {#example-usage}
 
-### 读取和写入数据
+### 读取和写入数据 {#basic-examples}
 
 :::note 示例文件
 本示例中使用的文件可在 [examples 仓库](https://github.com/ClickHouse/formats/ProtoBuf) 中获取。
@@ -378,7 +378,7 @@ SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerat
 在这种情况下，会将自动生成的 Protobuf schema 保存在文件 `path/to/schema/schema.capnp` 中。
 
 
-### 删除 Protobuf 缓存
+### 删除 Protobuf 缓存 {#basic-examples-cloud}
 
 要重新加载从 [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path) 加载的 Protobuf 架构，请使用 [`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format) 语句。
 

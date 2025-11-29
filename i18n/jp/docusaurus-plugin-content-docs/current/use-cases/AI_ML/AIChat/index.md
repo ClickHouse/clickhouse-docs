@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# ClickHouse Cloud で AI チャットを使用する
+# ClickHouse Cloud で AI チャットを使用する {#using-ai-chat-in-clickhouse-cloud}
 
 > このガイドでは、ClickHouse Cloud コンソールで AI チャット機能を有効にして利用する方法を説明します。
 

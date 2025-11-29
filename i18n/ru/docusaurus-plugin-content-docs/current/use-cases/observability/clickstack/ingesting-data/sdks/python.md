@@ -25,7 +25,7 @@ ClickStack использует стандарт OpenTelemetry для сбора
 
 ## Начало работы {#getting-started}
 
-### Установите пакет инструментирования ClickStack OpenTelemetry
+### Установите пакет инструментирования ClickStack OpenTelemetry {#install-clickstack-otel-instrumentation-package}
 
 Выполните следующую команду, чтобы установить [пакет ClickStack OpenTelemetry](https://pypi.org/project/hyperdx-opentelemetry/).
 
@@ -40,7 +40,7 @@ opentelemetry-bootstrap -a install
 ```
 
 
-### Настройте переменные окружения
+### Настройте переменные окружения {#configure-environment-variables}
 
 Далее в оболочке необходимо задать следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 
@@ -53,7 +53,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса в приложении HyperDX. Вы можете задать ей любое удобное вам имя.*
 
 
-### Запуск приложения с Python-агентом OpenTelemetry
+### Запуск приложения с Python-агентом OpenTelemetry {#run-the-application-with-otel-python-agent}
 
 Теперь вы можете запустить приложение с Python-агентом OpenTelemetry (`opentelemetry-instrument`).
 
@@ -102,7 +102,7 @@ OpenTelemetry [в настоящее время не работает](https://g
 
 ## Расширенная конфигурация {#advanced-configuration}
 
-#### Захват сетевого трафика
+#### Захват сетевого трафика {#network-capture}
 
 Включив функции захвата сетевого трафика, разработчики получают возможность эффективно отлаживать заголовки и тела HTTP‑запросов. Это можно сделать, просто установив флаг `HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE` в 1.
 
@@ -113,7 +113,7 @@ export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 
 ## Устранение неполадок {#troubleshooting}
 
-### Логи не отображаются из-за уровня логирования
+### Логи не отображаются из-за уровня логирования {#logs-not-appearing-due-to-log-level}
 
 По умолчанию обработчик логирования OpenTelemetry использует уровень `logging.NOTSET`,
 который фактически соответствует уровню WARNING. Вы можете указать уровень
@@ -127,7 +127,7 @@ logger.setLevel(logging.DEBUG)
 ```
 
 
-### Экспорт в консоль
+### Экспорт в консоль {#exporting-to-the-console}
 
 OpenTelemetry Python SDK обычно отображает ошибки в консоли при их возникновении. Однако если вы не сталкиваетесь с какими-либо ошибками, но замечаете, что ваши данные не появляются в HyperDX, как ожидалось, вы можете включить режим отладки. Когда режим отладки активирован, вся телеметрия будет выводиться в консоль, что позволяет проверить, корректно ли ваше приложение проинструментировано и передаёт ожидаемые данные.
 

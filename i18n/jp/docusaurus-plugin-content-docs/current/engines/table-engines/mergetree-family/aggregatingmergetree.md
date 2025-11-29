@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# AggregatingMergeTree テーブルエンジン
+# AggregatingMergeTree テーブルエンジン {#aggregatingmergetree-table-engine}
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) から継承しており、データパーツのマージロジックを変更します。ClickHouse は、同じ主キー（より正確には、同じ[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を 1 行（単一のデータパーツ内）にまとめ、その行に集約関数の状態を組み合わせて格納します。
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -80,7 +80,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 集約マテリアライズドビューの例
+## 集約マテリアライズドビューの例 {#example-of-an-aggregated-materialized-view}
 
 次の例では、`test` という名前のデータベースが既に存在すると仮定します。まだない場合は、以下のコマンドで作成してください。
 

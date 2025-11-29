@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、[SQL playground](https://sql.clickhouse.com/) で利用可能な `hits` データセットを使用します。
 

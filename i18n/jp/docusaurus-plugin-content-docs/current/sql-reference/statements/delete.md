@@ -17,7 +17,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) コマンドが重い処理であるのと対比して、これは「軽量な `DELETE`」と呼ばれます。
 
 
-## 例
+## 例 {#examples}
 
 ```sql
 -- `Title` 列に `hello` という文字列を含むすべての行を `hits` テーブルから削除します
@@ -66,7 +66,7 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 
 
 
-## 削除権限
+## 削除権限 {#delete-permissions}
 
 `DELETE` には `ALTER DELETE` 権限が必要です。特定のユーザーに対して特定のテーブルで `DELETE` 文を有効化するには、次のコマンドを実行します。
 

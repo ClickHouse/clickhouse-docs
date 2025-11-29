@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# gcs 表函数
+# gcs 表函数 {#gcs-table-function}
 
 提供一个类表接口，用于在 [Google Cloud Storage（GCS）](https://cloud.google.com/storage/) 中执行 `SELECT` 和 `INSERT` 操作。需要具备 [`Storage Object User` IAM 角色](https://cloud.google.com/storage/docs/access-control/iam-roles)。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 gcs(url [, NOSIGN | hmac_key, hmac_secret] [,format] [,structure] [,compression_method])
@@ -33,7 +33,7 @@ GCS 表函数通过 GCS XML API 和 HMAC 密钥与 Google Cloud Storage 集成�
 :::
 
 
-## 参数
+## 参数 {#arguments}
 
 | 参数                           | 描述                                                                                                     |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -72,7 +72,7 @@ GCS 路径采用此格式，是因为 Google XML API 的 endpoint 与 JSON API �
 
 
 
-## 示例
+## 示例 {#examples}
 
 从 GCS 文件 `https://storage.googleapis.com/my-test-bucket-768/data.csv` 中选取表的前两行：
 
@@ -105,7 +105,7 @@ LIMIT 2;
 ```
 
 
-## 用法
+## 用法 {#usage}
 
 假设我们在 GCS 中有若干文件，其 URI 如下：
 
@@ -199,7 +199,7 @@ FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
 
-## 分区写入
+## 分区写入 {#partitioned-write}
 
 如果在向 `GCS` 表插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区值创建一个单独的文件。将数据拆分为多个独立文件有助于提升读操作的效率。
 

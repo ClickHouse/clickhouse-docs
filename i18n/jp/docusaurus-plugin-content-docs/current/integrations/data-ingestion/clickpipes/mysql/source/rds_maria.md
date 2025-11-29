@@ -18,7 +18,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS MariaDB ソースセットアップガイド
+# RDS MariaDB ソースセットアップガイド {#rds-mariadb-source-setup-guide}
 
 このガイドでは、RDS MariaDB インスタンスを MySQL ClickPipe を介してデータをレプリケートできるように設定する手順を、ステップバイステップで説明します。
 <br/>
@@ -28,11 +28,11 @@ import Image from '@theme/IdealImage';
 
 
 
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention-rds}
 
 バイナリログは、MySQL サーバーインスタンスに対して行われたデータ変更に関する情報を含む一連のログファイルです。バイナリログファイルはレプリケーションに必須です。以下の 2 つの手順を両方とも実施する必要があります。
 
-### 1. 自動バックアップ機能でバイナリログを有効化する
+### 1. 自動バックアップ機能でバイナリログを有効化する {#enable-binlog-logging-rds}
 
 自動バックアップ機能は、MySQL においてバイナリログを有効にするかどうかを制御します。これは AWS コンソールで設定できます。
 
@@ -40,7 +40,7 @@ import Image from '@theme/IdealImage';
 
 レプリケーションのユースケースに応じて、バックアップ保持期間を十分に長い値に設定することを推奨します。
 
-### 2. Binlog retention hours
+### 2. Binlog retention hours {#binlog-retention-hours-rds}
 
 Amazon RDS for MariaDB では、binlog の保持期間（変更が含まれている binlog ファイルを保持しておく時間）の設定方法が異なります。binlog ファイルが削除される前に一部の変更が読み取られない場合、レプリケーションを継続できなくなります。binlog retention hours のデフォルト値は NULL であり、この場合はバイナリログが保持されません。
 

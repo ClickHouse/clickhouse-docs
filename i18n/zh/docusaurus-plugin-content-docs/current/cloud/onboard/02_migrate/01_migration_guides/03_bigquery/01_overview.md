@@ -12,7 +12,7 @@ import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud 与 BigQuery 对比 
+# ClickHouse Cloud 与 BigQuery 对比  {#comparing-clickhouse-cloud-and-bigquery}
 
 
 
@@ -186,7 +186,7 @@ ClickHouse 提供了标准 SQL，并在此基础上进行了大量扩展和改�
 
 
 
-## 数组
+## 数组 {#arrays}
 
 与 BigQuery 仅有 8 个数组函数相比，ClickHouse 提供了 80 多个[内置数组函数](/sql-reference/functions/array-functions)，可以优雅而简洁地对各种问题进行建模和求解。
 

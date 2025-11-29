@@ -21,7 +21,7 @@ import demo_data_links from '@site/static/images/integrations/data-visualization
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 查询构建器
+# 查询构建器 {#query-builder}
 
 <ClickHouseSupportedBadge/>
 
@@ -222,14 +222,14 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
 
 
 
-## 宏
+## 宏 {#macros}
 
 宏是一种在查询中添加动态 SQL 的简单方式。
 在查询被发送到 ClickHouse 服务器之前，插件会展开宏并将其替换为完整的表达式。
 
 来自 SQL Editor 和 Query Builder 的查询都可以使用宏。
 
-### 使用宏
+### 使用宏 {#using-macros}
 
 宏可以出现在查询中的任意位置，必要时可以多次使用。
 
@@ -255,7 +255,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 
 该插件还支持使用花括号 `{}` 的语法。当需要在[参数](/sql-reference/syntax.md#defining-and-using-query-parameters)中编写查询时，请使用这种语法。
 
-### 宏列表
+### 宏列表 {#list-of-macros}
 
 下面列出了插件中可用的所有宏：
 

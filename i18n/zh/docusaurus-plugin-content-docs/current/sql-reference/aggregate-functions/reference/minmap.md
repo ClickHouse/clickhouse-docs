@@ -6,7 +6,7 @@ title: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap
+# minMap {#minmap}
 
 根据 `key` 数组中指定的键，从 `value` 数组中计算最小值。
 

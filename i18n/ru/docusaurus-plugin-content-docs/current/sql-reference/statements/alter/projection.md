@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## Пример фильтрации без использования первичного ключа
+## Пример фильтрации без использования первичного ключа {#example-filtering-without-using-primary-keys}
 
 Создание таблицы:
 
@@ -80,7 +80,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## Пример запроса предварительной агрегации
+## Пример запроса предварительной агрегации {#example-pre-aggregation-query}
 
 Создание таблицы с проекцией:
 
@@ -158,7 +158,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## Обычная проекция с полем `_part_offset`
+## Обычная проекция с полем `_part_offset` {#normal-projection-with-part-offset-field}
 
 Создание таблицы с обычной проекцией, использующей поле `_part_offset`:
 
@@ -186,7 +186,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### Использование `_part_offset` в качестве вторичного индекса
+### Использование `_part_offset` в качестве вторичного индекса {#normal-projection-secondary-index}
 
 Поле `_part_offset` сохраняет свое значение при слияниях и мутациях, что делает его полезным для вторичного индексирования. Это можно использовать в запросах:
 
@@ -203,7 +203,7 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# Управление проекциями
+# Управление проекциями {#manipulating-projections}
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 

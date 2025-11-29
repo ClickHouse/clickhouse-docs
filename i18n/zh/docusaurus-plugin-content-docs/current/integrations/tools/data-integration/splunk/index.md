@@ -23,7 +23,7 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 ClickHouse Cloud 审计日志存储到 Splunk 中
+# 将 ClickHouse Cloud 审计日志存储到 Splunk 中 {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>
 
@@ -35,7 +35,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# 安装
+# 安装 {#installation}
 
 
 
@@ -57,7 +57,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# 模块化输入配置
+# 模块化输入配置 {#modular-input-configuration}
 
 要配置模块化输入，首先需要从您的 ClickHouse Cloud 部署中获取以下信息：
 
@@ -110,7 +110,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# 用法
+# 用法 {#usage}
 
 模块化输入会将数据存储在 Splunk 中。要查看这些数据，可以在 Splunk 中使用通用搜索视图。
 

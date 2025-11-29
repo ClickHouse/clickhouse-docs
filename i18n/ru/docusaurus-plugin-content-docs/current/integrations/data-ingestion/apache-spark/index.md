@@ -16,10 +16,9 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# Интеграция Apache Spark с ClickHouse {#integrating-apache-spark-with-clickhouse}
 
-# Интеграция Apache Spark с ClickHouse
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 [Apache Spark](https://spark.apache.org/) — это вычислительный движок с поддержкой нескольких языков для выполнения задач data engineering, data science и машинного обучения на отдельных узлах или в кластерах.
 
@@ -29,8 +28,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 2. [Spark JDBC](./apache-spark/spark-jdbc) — интеграция Spark и ClickHouse
    с использованием [источника данных JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html).
 
-<br/>
+<br />
 
-<br/>
+<br />
 
 Оба решения успешно протестированы и полностью совместимы с различными API, включая Java, Scala, PySpark и Spark SQL.

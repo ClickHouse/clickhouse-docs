@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode
+# system.unicode {#systemunicode}
 
 Таблица `system.unicode` — это виртуальная таблица, которая предоставляет информацию о символах Unicode и их свойствах ([https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)). Эта таблица генерируется на лету.
 
@@ -40,7 +40,6 @@ doc_type: 'reference'
 ```sql
 SELECT * FROM system.unicode WHERE code_point = 'a' LIMIT 1;
 ```
-
 
 ```text
 Row 1:
@@ -167,7 +166,6 @@ script_extensions:               ['Latin']
 identifier_type:                 ['Recommended']
 
 ```
-
 
 ```sql
 SELECT code_point, code_point_value, notation FROM system.unicode WHERE code_point = '😂';

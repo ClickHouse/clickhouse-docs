@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# UUID
+# UUID {#uuid}
 
 Universally Unique Identifier (UUID、汎用一意識別子) は、レコードを識別するために使用される 16 バイトの値です。UUID の詳細については、[Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier) を参照してください。
 
@@ -92,7 +92,7 @@ ClickHouse は、ランダムな UUID バージョン 4 の値を生成するた
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 **例 1**
 

@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте следующий текстовый файл `football.txt`:
 

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# deltaLake テーブル関数
+# deltaLake テーブル関数 {#deltalake-table-function}
 
 Amazon S3、Azure Blob Storage、またはローカルにマウントされたファイルシステムにある [Delta Lake](https://github.com/delta-io/delta) テーブルに対して、読み取り専用のテーブル形式インターフェイスを提供します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 `deltaLake` は `deltaLakeS3` のエイリアスであり、互換性維持のために提供されています。
 
@@ -43,7 +43,7 @@ deltaLakeLocal(path, [,format])
 
 
 
-## 例
+## 例 {#examples}
 
 S3 上のテーブル `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` から行を選択する:
 

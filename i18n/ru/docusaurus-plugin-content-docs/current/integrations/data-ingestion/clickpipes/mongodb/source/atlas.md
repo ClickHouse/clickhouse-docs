@@ -16,7 +16,7 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных MongoDB Atlas
+# Руководство по настройке источника данных MongoDB Atlas {#mongodb-atlas-source-setup-guide}
 
 
 

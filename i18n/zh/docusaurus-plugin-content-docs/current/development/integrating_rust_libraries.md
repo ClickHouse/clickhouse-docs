@@ -6,7 +6,7 @@ title: '集成 Rust 库'
 doc_type: 'guide'
 ---
 
-# Rust 库
+# Rust 库 {#rust-libraries}
 
 Rust 库的集成将以集成 BLAKE3 哈希函数为例进行说明。
 
@@ -79,7 +79,6 @@ pub unsafe extern "C" fn blake3_apply_shim(
 ```
 
 此外，对于每个与 C 兼容的项，你都应使用属性 #[no&#95;mangle] 和 `extern "C"`。否则库可能会被错误地编译，并且 cbindgen 将无法进行头文件的自动生成。
-
 
 在完成以上所有步骤之后，可以在一个小型项目中测试该库，以发现所有与兼容性或头文件生成相关的问题。若在头文件生成过程中出现任何问题，可以尝试通过 `cbindgen.toml` 文件进行配置（可以在此处找到一个模板：[https://github.com/eqrion/cbindgen/blob/master/template.toml](https://github.com/eqrion/cbindgen/blob/master/template.toml)）。
 

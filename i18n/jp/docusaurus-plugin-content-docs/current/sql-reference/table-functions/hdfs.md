@@ -11,13 +11,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# hdfs テーブル関数
+# hdfs テーブル関数 {#hdfs-table-function}
 
 HDFS 上のファイルからテーブルを作成します。このテーブル関数は、[url](../../sql-reference/table-functions/url.md) および [file](../../sql-reference/table-functions/file.md) テーブル関数と同様です。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hdfs(URI, format, structure)
@@ -34,7 +34,7 @@ hdfs(URI, format, structure)
 
 
 
-## 返り値
+## 返り値 {#returned_value}
 
 指定されたファイル内のデータを読み書きするための、指定された構造を持つテーブル。
 
@@ -56,7 +56,7 @@ LIMIT 2
 ```
 
 
-## パスでのグロブ
+## パスでのグロブ {#globs_in_path}
 
 パスではグロブパターンを使用できます。ファイルは接頭辞や接尾辞だけでなく、パス全体のパターンに一致している必要があります。
 
@@ -120,7 +120,7 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 
 
 
-## use&#95;hive&#95;partitioning 設定
+## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
 `use_hive_partitioning` 設定値を 1 にすると、ClickHouse はパス（`/name=value/`）内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として利用できるようにします。これらの仮想列の名前は、パーティションパス内の名前と同じですが、先頭に `_` が付きます。
 

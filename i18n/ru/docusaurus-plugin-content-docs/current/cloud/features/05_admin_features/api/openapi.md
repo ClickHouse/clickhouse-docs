@@ -15,7 +15,7 @@ import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
 
-# Управление ключами API
+# Управление ключами API {#managing-api-keys}
 
 ClickHouse Cloud предоставляет API на основе OpenAPI, который позволяет программно управлять вашей учетной записью и различными параметрами ваших сервисов.
 

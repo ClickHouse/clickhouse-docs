@@ -19,7 +19,7 @@ import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/cl
 import Image from '@theme/IdealImage';
 
 
-# ClickPipes 向け AWS PrivateLink
+# ClickPipes 向け AWS PrivateLink {#aws-privatelink-for-clickpipes}
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) を使用すると、VPC、AWS サービス、オンプレミス環境、および ClickHouse Cloud 間で、安全な接続を確立できます。このとき、トラフィックをパブリックインターネットに公開する必要はありません。
 

@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MaterializedPostgreSQL テーブルエンジン
+# MaterializedPostgreSQL テーブルエンジン {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
 
@@ -36,7 +36,7 @@ SET allow_experimental_materialized_postgresql_table=1
 複数のテーブルが必要な場合は、テーブルエンジンではなく [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) データベースエンジンを使用し、レプリケートするテーブルを指定する `materialized_postgresql_tables_list` 設定（将来的にはデータベースの `schema` も追加可能になる予定）を利用することを強く推奨します。これにより、CPU 使用量を抑えつつ、接続数およびリモート PostgreSQL データベース内のレプリケーションスロット数を減らすことができ、はるかに効率的になります。
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE postgresql_db.postgresql_replica (key UInt64, value UInt64)
@@ -65,7 +65,7 @@ PRIMARY KEY key;
 
 
 
-## 仮想カラム
+## 仮想カラム {#virtual-columns}
 
 * `_version` — トランザクションカウンター。型: [UInt64](../../../sql-reference/data-types/int-uint.md)。
 

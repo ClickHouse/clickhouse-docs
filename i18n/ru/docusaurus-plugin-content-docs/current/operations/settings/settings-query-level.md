@@ -37,7 +37,7 @@ doc_type: 'reference'
     запроса SELECT. Значение настройки применяется только к этому запросу и
     после выполнения запроса сбрасывается к значению по умолчанию или предыдущему значению.
 
-## Возврат настройки к значению по умолчанию
+## Возврат настройки к значению по умолчанию {#converting-a-setting-to-its-default-value}
 
 Если вы изменили настройку и хотите вернуть её к значению по умолчанию, укажите значение `DEFAULT`. Синтаксис следующий:
 
@@ -78,7 +78,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-## Пользовательские настройки
+## Пользовательские настройки {#custom_settings}
 
 В дополнение к общим [настройкам](/operations/settings/settings.md) пользователи могут задавать собственные настройки.
 
@@ -105,7 +105,7 @@ SELECT getSetting('custom_a');
 
 Во всех этих примерах значение настройки `async_insert` устанавливается в `1` и демонстрируется, как просматривать настройки в работающей системе.
 
-### Применение настройки к пользователю напрямую с помощью SQL
+### Применение настройки к пользователю напрямую с помощью SQL {#using-sql-to-apply-a-setting-to-a-user-directly}
 
 Это создаёт пользователя `ingester` с настройкой `async_inset = 1`:
 
@@ -117,7 +117,7 @@ SETTINGS async_insert = 1
 ```
 
 
-#### Просмотрите профиль настроек и его назначение
+#### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment}
 
 ```sql
 ПОКАЗАТЬ ДОСТУП
@@ -126,14 +126,14 @@ SETTINGS async_insert = 1
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 
-### Использование SQL для создания профиля настроек и назначения его пользователю
+### Использование SQL для создания профиля настроек и назначения его пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
 Создаётся профиль `log_ingest` с настройкой `async_inset = 1`:
 
@@ -152,24 +152,24 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### Создание профиля настроек и пользователя с помощью XML
+### Создание профиля настроек и пользователя с помощью XML {#using-xml-to-create-a-settings-profile-and-user}
 
 ```xml title=/etc/clickhouse-server/users.d/users.xml
 <clickhouse>
-# highlight-start
+# highlight-start {#highlight-start}
     <profiles>
         <log_ingest>
             <async_insert>1</async_insert>
         </log_ingest>
     </profiles>
-# highlight-end
+# highlight-end {#highlight-end}
 
     <users>
         <ingester>
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
-# highlight-start
+# highlight-start {#highlight-start}
             <profile>log_ingest</profile>
-# highlight-end
+# highlight-end {#highlight-end}
         </ingester>
         <default replace="true">
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
@@ -181,7 +181,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-#### Просмотрите профиль настроек и его назначение
+#### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 ПОКАЗАТЬ ДОСТУП
@@ -190,10 +190,10 @@ SETTINGS PROFILE log_ingest
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ CREATE USER default IDENTIFIED WITH sha256_password                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS PROFILE log_ingest   │
 │ CREATE SETTINGS PROFILE default                                                    │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE SETTINGS PROFILE log_ingest SETTINGS async_insert = true                    │
 │ CREATE SETTINGS PROFILE readonly SETTINGS readonly = 1                             │
 │ ...                                                                                │
@@ -201,7 +201,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### Назначьте настройку сеансу
+### Назначьте настройку сеансу {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -215,7 +215,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-### Назначение настройки в запросе
+### Назначение настройки в запросе {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

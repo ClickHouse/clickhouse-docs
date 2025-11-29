@@ -12,7 +12,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# SharedMergeTree テーブルエンジン
+# SharedMergeTree テーブルエンジン {#sharedmergetree-table-engine}
 
 SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するように最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの代替です。あらゆる種類の MergeTree エンジンに対応する SharedMergeTree が用意されており、たとえば ReplacingSharedMergeTree は ReplacingReplicatedMergeTree の代わりとなります。
 
@@ -50,7 +50,7 @@ ReplicatedMergeTree の内部情報確認に利用されるほとんどの syste
 
 
 
-## SharedMergeTree の有効化
+## SharedMergeTree の有効化 {#enabling-sharedmergetree}
 
 `SharedMergeTree` はデフォルトで有効になっています。
 

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: '指南'
 ---
 
-# 如何使用 ClickHouse MCP Server 构建 LangChain/LangGraph AI 代理
+# 如何使用 ClickHouse MCP Server 构建 LangChain/LangGraph AI 代理 {#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server}
 
 在本指南中，您将学习如何构建一个 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 代理，使其能够借助 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 进行交互。
 

@@ -19,7 +19,7 @@ ClickHouse 默认提供数据库审计日志。本页重点介绍与安全相关
 
 
 
-## 与安全相关的日志
+## 与安全相关的日志 {#security-relevant-logs}
 
 ClickHouse 主要将与安全相关的数据库事件记录在 session 日志和 query 日志中。
 

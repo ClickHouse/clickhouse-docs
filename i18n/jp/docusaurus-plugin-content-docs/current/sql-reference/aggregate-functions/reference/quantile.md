@@ -6,7 +6,7 @@ title: 'quantile'
 doc_type: 'reference'
 ---
 
-# quantile
+# quantile {#quantile}
 
 数値データシーケンスの近似的な[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

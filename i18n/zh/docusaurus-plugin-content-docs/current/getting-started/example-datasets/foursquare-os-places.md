@@ -24,7 +24,7 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 关于这些地点的附加元数据，例如类别和社交媒体
 信息。
 
-## 数据探索
+## 数据探索 {#data-exploration}
 
 为了探索这些数据，我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)，这是一个小型命令行工具，
 虽然体积小巧，但提供了完整的 ClickHouse 引擎。当然，也可以使用
@@ -148,7 +148,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
 ```
 
 
-## 将数据加载到 ClickHouse 中
+## 将数据加载到 ClickHouse 中 {#loading-the-data}
 
 如果希望将数据持久化到磁盘上，可以使用 `clickhouse-server` 或 ClickHouse Cloud。
 

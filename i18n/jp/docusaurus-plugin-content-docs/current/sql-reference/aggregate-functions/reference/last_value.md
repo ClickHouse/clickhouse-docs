@@ -6,17 +6,13 @@ title: 'last_value'
 doc_type: 'reference'
 ---
 
-
-
-# last_value
+# last&#95;value {#last&#95;value}
 
 `anyLast` と同様に、最後に出現した値を選択しますが、NULL も許容します。
 主に [Window Functions](../../window-functions/index.md)（ウィンドウ関数）と組み合わせて使用します。
 Window Functions を使用しない場合、入力ストリームに順序付けがされていないと、結果はランダムになります。
 
-
-
-## 使用例
+## 使用例 {#examples}
 
 ```sql
 CREATE TABLE test_data
@@ -29,7 +25,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### 例 1
+### 例 1 {#example1}
 
 `NULL` 値はデフォルトで無視されます。
 
@@ -43,7 +39,7 @@ SELECT last_value(b) FROM test_data
 └────────────────────────────┘
 ```
 
-### 例 2
+### 例 2 {#example2}
 
 NULL 値は無視されます。
 
@@ -57,7 +53,7 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-### 例 3
+### 例 3 {#example3}
 
 NULL 値が許可されます。
 
@@ -71,7 +67,7 @@ SELECT last_value(b) respect nulls FROM test_data
 └─────────────────────────────┘
 ```
 
-### 例 4
+### 例 4 {#example4}
 
 `ORDER BY` を含むサブクエリで結果を安定化。
 

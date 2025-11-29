@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse がクエリを並列実行する仕組み
+# ClickHouse がクエリを並列実行する仕組み {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouse は [高速に動作するよう設計されています](/concepts/why-clickhouse-is-so-fast)。利用可能なすべての CPU コアを使用し、データを複数の処理レーンに分散させることで、高い並列性でクエリを実行し、多くの場合ハードウェアを限界近くまで活用します。
  
@@ -66,7 +66,7 @@ ClickHouse Cloud では、同様の並列性を [parallel replicas](https://clic
 
 
 
-## クエリの並列実行の監視
+## クエリの並列実行の監視 {#monitoring-query-parallelism}
 
 これらのツールを使用して、クエリが利用可能な CPU リソースを十分に活用しているかを確認し、そうでない場合の原因を診断します。
 
@@ -126,12 +126,12 @@ ClickHouse の [組み込み Web UI](/interfaces/http)（`/play` エンドポイ
 
 Note: 可視化は左から右へ読んでください。各行は、データをブロック単位でストリーミングし、フィルタリング、集約、最終処理ステージなどの変換を適用する並列処理レーンを表します。この例では、`max_threads = 4` の設定に対応する 4 本の並列レーンが確認できます。
 
-### 処理レーン間での負荷分散
+### 処理レーン間での負荷分散 {#load-balancing-across-processing-lanes}
 
 上記の物理プラン内の `Resize` オペレーターは、処理レーン間でデータブロックストリームを[再パーティションおよび再分配](/academic_overview#4-2-multi-core-parallelization)することで、各レーンの利用率を均等に保っている点に注意してください。この再バランシングは、データ範囲ごとにクエリ述語にマッチする行数が異なる場合に特に重要です。そうしないと、一部のレーンだけが過負荷になり、他のレーンがアイドル状態になる可能性があります。作業を再分配することで、速いレーンが遅いレーンを実質的に助ける形となり、クエリ全体の実行時間を最適化できます。
 
 
-## なぜ max&#95;threads が常にそのとおりには動作しないのか
+## なぜ max&#95;threads が常にそのとおりには動作しないのか {#why-max-threads-isnt-always-respected}
 
 前述のとおり、並列処理レーンの数 `n` は `max_threads` 設定によって制御されます。デフォルトでは、この設定値はサーバー上で ClickHouse が利用可能な CPU コア数と同じになります。
 

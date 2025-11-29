@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Amazon Redshift から ClickHouse への移行
+# Amazon Redshift から ClickHouse への移行 {#amazon-redshift-to-clickhouse-migration}
 
 > このドキュメントでは、Amazon Redshift から ClickHouse へのデータ移行の概要を説明します。
 

@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# 如何在 macOS 上为 macOS 构建 ClickHouse
+# 如何在 macOS 上为 macOS 构建 ClickHouse {#how-to-build-clickhouse-on-macos-for-macos}
 
 :::info 你不需要自己构建 ClickHouse！
 你可以按照 [Quick Start](https://clickhouse.com/#quick-start) 中的说明安装预编译的 ClickHouse。
@@ -22,7 +22,7 @@ ClickHouse 可以在 macOS 10.15（Catalina）或更高版本上编译，支持 
 
 
 
-## 安装前提条件
+## 安装前提条件 {#install-prerequisites}
 
 首先，请参阅通用的[前提条件文档](developer-instruction.md)。
 
@@ -53,7 +53,7 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# 生成的二进制文件将位于:build/programs/clickhouse
+# 生成的二进制文件将位于:build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
 ```
 
 :::note
@@ -61,7 +61,7 @@ cmake --build build
 :::
 
 
-## 注意事项
+## 注意事项 {#caveats}
 
 如果您打算运行 `clickhouse-server`，请确保增大系统的 `maxfiles` 参数值。
 

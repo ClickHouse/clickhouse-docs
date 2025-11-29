@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 基本示例
+### 基本示例 {#basic-example}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -47,7 +47,7 @@ SELECT * FROM json_as_string;
 ```
 
 
-### JSON 对象数组
+### JSON 对象数组 {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;

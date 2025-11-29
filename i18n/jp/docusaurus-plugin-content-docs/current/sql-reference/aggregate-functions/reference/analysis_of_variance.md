@@ -6,7 +6,7 @@ title: 'analysisOfVariance'
 doc_type: 'reference'
 ---
 
-# analysisOfVariance
+# analysisOfVariance {#analysisofvariance}
 
 一元分散分析（ANOVA 検定）を行うための統計的検定です。正規分布に従う複数のグループの観測値に対して、すべてのグループの平均が同一かどうかを判定します。
 

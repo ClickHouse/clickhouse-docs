@@ -6,7 +6,7 @@ title: 'groupBitXor'
 doc_type: 'reference'
 ---
 
-# groupBitXor
+# groupBitXor {#groupbitxor}
 
 一連の数値に対してビット単位の `XOR` 演算を適用します。
 

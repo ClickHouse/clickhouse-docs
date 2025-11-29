@@ -10,14 +10,13 @@ keywords: ['便利なクエリ']
 
 {/* 省略 */}
 
-
 ## トラブルシューティングに役立つクエリ \{#useful-queries-for-troubleshooting\}
 
 順不同で、ClickHouse のトラブルシューティングや、何が起きているかを把握するのに便利なクエリをいくつか紹介します。
 
 また、[ClickHouse の監視に必須のクエリ](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)を紹介した優れたブログ記事も公開しています。
 
-## デフォルトから変更された設定を確認する
+## デフォルトから変更された設定を確認する \{#view-which-settings-have-been-changed-from-the-default\}
 
 ```sql
 SELECT
@@ -27,8 +26,7 @@ FROM system.settings
 WHERE changed
 ```
 
-
-## すべてのテーブルのサイズを確認する
+## すべてのテーブルのサイズを確認する \{#get-the-size-of-all-your-tables\}
 
 ```sql
 SELECT table,
@@ -50,8 +48,7 @@ GROUP BY table
 └─────────────────┴───────────┘
 ```
 
-
-## テーブルの行数と 1 日あたりの平均データ量
+## テーブルの行数と 1 日あたりの平均データ量 \{#row-count-and-average-day-size-of-your-table\}
 
 ```sql
 SELECT
@@ -77,8 +74,7 @@ FROM
 )
 ```
 
-
-## 列ごとの圧縮率およびメモリ上のプライマリインデックスサイズ
+## 列ごとの圧縮率およびメモリ上のプライマリインデックスサイズ \{#compression-columns-percentage-as-well-as-the-size-of-primary-index-in-memory\}
 
 列ごとに、データがどの程度圧縮されているかを確認できます。このクエリは、メモリ上のプライマリインデックスのサイズも返します。プライマリインデックスはメモリに収まる必要があるため、この情報を把握しておくと有用です。
 
@@ -119,8 +115,7 @@ RIGHT JOIN
 ORDER BY parts.bytes_size DESC
 ```
 
-
-## 過去10分間にクライアントから送信されたクエリ数
+## 過去10分間にクライアントから送信されたクエリ数 \{#number-of-queries-sent-by-client-in-the-last-10-minutes\}
 
 `toIntervalMinute(10)` 関数の時間間隔の値は、必要に応じて長くしたり短くしたりできます。
 
@@ -141,8 +136,7 @@ ORDER BY
     count() ASC
 ```
 
-
-## 各パーティション内のパーツの数
+## 各パーティション内のパーツの数 \{#number-of-parts-in-each-partition\}
 
 ```sql
 SELECT
@@ -157,8 +151,7 @@ GROUP BY
     partition_id
 ```
 
-
-## 実行時間の長いクエリを見つける
+## 実行時間の長いクエリを見つける \{#finding-long-running-queries\}
 
 ハングしているクエリを特定するのに役立ちます。
 
@@ -195,8 +188,7 @@ WHERE
     query_id = '0bb6e88b-9b9a-4ffc-b612-5746c859e360';
 ```
 
-
-## 最新のエラーを確認する
+## 最新のエラーを確認する \{#view-the-most-recent-errors\}
 
 ```
 SELECT *
@@ -215,8 +207,7 @@ ORDER BY last_error_time DESC
 └───────────────────────┴──────┴───────┴─────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴────────┘
 ```
 
-
-## CPU とメモリ使用量が最も多いクエリ上位 10 件
+## CPU とメモリ使用量が最も多いクエリ上位 10 件 \{#top-10-queries-that-are-using-the-most-cpu-and-memory\}
 
 ```sql
 SELECT
@@ -232,8 +223,7 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
-
-## プロジェクションはどれくらいのディスク容量を使用しているか
+## プロジェクションはどれくらいのディスク容量を使用しているか \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql
 SELECT
@@ -245,8 +235,7 @@ SELECT
 FROM system.projection_parts
 ```
 
-
-## データベースをまたいで `system.parts` のディスク使用量、パーツ数、行数、マーク数を表示
+## データベースをまたいで `system.parts` のディスク使用量、パーツ数、行数、マーク数を表示 \{#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases\}
 
 ```sql
 SELECT
@@ -266,8 +255,7 @@ GROUP BY
 ORDER BY database ASC
 ```
 
-
-## 直近に書き込まれた新規パーツの詳細を一覧表示する
+## 直近に書き込まれた新規パーツの詳細を一覧表示する \{#list-details-of-recently-written-new-parts\}
 
 詳細には、作成時刻、サイズ、行数などが含まれます。
 

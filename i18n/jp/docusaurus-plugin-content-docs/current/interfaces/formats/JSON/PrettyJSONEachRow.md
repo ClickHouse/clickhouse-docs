@@ -173,7 +173,7 @@ doc_type: 'guide'
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `PrettyJSONEachRow` フォーマットを使用してデータを読み込みます：
 

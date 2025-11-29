@@ -8,7 +8,7 @@ keywords: ['machine learning', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
 
-# 機械学習と GenAI
+# 機械学習と GenAI {#machine-learning-and-genai}
 
 ClickHouse は、機械学習ワークロードを支えるリアルタイムデータベースとして理想的です。
 ClickHouse を使えば、分析データに対してこれまでになく簡単に GenAI を活用できます。

@@ -26,9 +26,9 @@ doc_type: 'reference'
 
 
 
-## 使用示例
+## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -60,7 +60,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `TabSeparatedWithNamesAndTypes` 格式读取数据：
 

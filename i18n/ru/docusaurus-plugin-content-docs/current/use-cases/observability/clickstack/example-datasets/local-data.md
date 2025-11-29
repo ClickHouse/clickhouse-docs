@@ -23,9 +23,8 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud пользователям потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
 :::
 
-
 <VerticalStepper>
-  ## Создание пользовательской конфигурации OpenTelemetry
+  ## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
 
   Создайте файл `custom-local-config.yaml` со следующим содержимым:
 
@@ -105,7 +104,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   Подробнее о структуре конфигурации OpenTelemetry (OTel) см. в [официальном руководстве](https://opentelemetry.io/docs/collector/configuration/).
 
-  ## Запуск ClickStack с пользовательской конфигурацией
+  ## Запуск ClickStack с пользовательской конфигурацией {#start-clickstack}
 
   Выполните следующую команду docker для запуска универсального контейнера с вашей конфигурацией:
 
@@ -145,17 +144,17 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   Коллектор сразу начнет собирать локальные системные журналы и метрики.
 
-  ## Переход к интерфейсу HyperDX
+  ## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
 
   Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
 
-  ## Изучение системных журналов
+  ## Изучение системных журналов {#explore-system-logs}
 
   В интерфейсе поиска должны отобразиться локальные системные журналы. Разверните фильтры и выберите `system.log`:
 
   <Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
 
-  ## Изучение системных метрик
+  ## Изучение системных метрик {#explore-system-metrics}
 
   Метрики можно изучать с помощью графиков.
 

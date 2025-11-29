@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['наблюдаемость', 'мониторинг', 'самостоятельное управление', 'метрики', 'состояние системы']
 ---
 
-import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';
-import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
-import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
+import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
+import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
+import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
 
 # Самостоятельно управляемый мониторинг {#cloud-monitoring}

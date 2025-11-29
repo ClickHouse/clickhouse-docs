@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг метрик Redis с помощью ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
@@ -240,10 +239,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 Скачайте предварительно сгенерированные файлы метрик (24 часа метрик Redis с реалистичными паттернами):
 ```bash
-# Скачать метрики типа gauge (память, коэффициент фрагментации)
+# Скачать метрики типа gauge (память, коэффициент фрагментации) {#expected-output-pong}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# Скачать метрики типа sum (команды, подключения, статистика по keyspace)
+# Скачать метрики типа sum (команды, подключения, статистика по keyspace) {#test-info-command-used-by-metrics-collector}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -347,13 +346,12 @@ docker exec <имя-контейнера> ls -lh /etc/otelcol-contrib/custom.con
 docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### Метрики не отображаются в HyperDX
 
 Убедитесь, что Redis доступен из коллектора:
 
 ```bash
-# Из контейнера ClickStack
+# Из контейнера ClickStack {#download-sum-metrics-commands-connections-keyspace-stats}
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # Ожидаемый результат: PONG
 ```
@@ -375,9 +373,8 @@ docker exec <контейнер> cat /etc/otel/supervisor-data/effective.yaml | 
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# Проверьте наличие ошибок подключения или сбоев аутентификации
+# Проверьте наличие ошибок подключения или сбоев аутентификации {#load-gauge-metrics-memory-fragmentation}
 ```
-
 
 ### Ошибки аутентификации
 
@@ -403,7 +400,6 @@ receivers:
     password: ${env:REDIS_PASSWORD}
 ```
 
-
 ### Проблемы с сетевой связью
 
 Если ClickStack не может подключиться к Redis:
@@ -418,7 +414,6 @@ docker exec <clickstack-container> telnet redis 6379
 ```
 
 Убедитесь, что в вашем файле Docker Compose или командах `docker run` оба контейнера подключены к одной сети.
-
 
 ## Следующие шаги {#next-steps}
 

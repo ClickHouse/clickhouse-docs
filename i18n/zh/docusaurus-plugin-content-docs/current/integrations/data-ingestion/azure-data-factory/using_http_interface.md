@@ -63,7 +63,7 @@ runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted
 
 
 
-## 将 ClickHouse 打造成 REST 服务
+## 将 ClickHouse 打造成 REST 服务 {#turning-clickhouse-to-a-rest-service}
 
 Azure Data Factory 支持以 JSON 格式通过 HTTP 将数据发送到外部系统。我们可以利用这一能力，通过 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http) 将数据直接写入 ClickHouse。您可以在 [ClickHouse HTTP 接口文档](https://clickhouse.com/docs/interfaces/http) 中了解更多信息。
 

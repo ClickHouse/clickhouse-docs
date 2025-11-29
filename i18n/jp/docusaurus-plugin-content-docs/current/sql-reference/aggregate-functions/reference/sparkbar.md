@@ -7,7 +7,7 @@ title: 'sparkbar'
 doc_type: 'reference'
 ---
 
-# sparkbar
+# sparkbar {#sparkbar}
 
 この関数は、値 `x` と、その値の出現回数（頻度）を表す `y` に対して、区間 `[min_x, max_x]` 上で度数ヒストグラムをプロットします。
 同じバケットに入るすべての `x` の出現回数（頻度）`y` は平均化されるため、データは事前に集約されている必要があります。

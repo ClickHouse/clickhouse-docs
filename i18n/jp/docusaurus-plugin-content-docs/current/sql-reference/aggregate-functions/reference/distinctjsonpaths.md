@@ -6,7 +6,7 @@ title: 'distinctJSONPaths'
 doc_type: 'reference'
 ---
 
-# distinctJSONPaths
+# distinctJSONPaths {#distinctjsonpaths}
 
 [JSON](../../data-types/newjson.md) カラムに保存されているパスのうち、一意なもののリストを返します。
 
@@ -46,8 +46,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
-
-# distinctJSONPathsAndTypes
+# distinctJSONPathsAndTypes {#distinctjsonpathsandtypes}
 
 [JSON](../../data-types/newjson.md) 列に保存されている一意なパスとその型の一覧を取得します。
 

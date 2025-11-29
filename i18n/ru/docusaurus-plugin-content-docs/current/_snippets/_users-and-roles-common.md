@@ -1,4 +1,4 @@
-## Проверьте права администратора
+## Проверьте права администратора {#test-admin-privileges}
 
 Выйдите из системы пользователем `default` и войдите снова под пользователем `clickhouse_admin`.
 
@@ -367,11 +367,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 
 
-## Устранение неполадок
+## Устранение неполадок {#troubleshooting}
 
 Иногда привилегии пересекаются или комбинируются, что приводит к неожиданным результатам. Следующие команды можно использовать для уточнения причины проблемы при работе под учетной записью администратора.
 
-### Просмотр назначенных пользователю прав и ролей
+### Просмотр назначенных пользователю прав и ролей {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -385,7 +385,7 @@ Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 └──────────────────────────────────────────────────────────┘
 ```
 
-### Просмотреть роли в ClickHouse
+### Просмотреть роли в ClickHouse {#list-roles-in-clickhouse}
 
 ```sql
 SHOW ROLES
@@ -400,7 +400,7 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### Просмотр политик
+### Просмотр политик {#display-the-policies}
 
 ```sql
 SHOW ROW POLICIES
@@ -415,7 +415,7 @@ SHOW ROW POLICIES
 └────────────────────────────────────────┘
 ```
 
-### Просмотр определения политики и её текущих привилегий
+### Просмотр определения политики и её текущих привилегий {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -430,7 +430,7 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 ```
 
 
-## Примеры команд для управления ролями, политиками и пользователями
+## Примеры команд для управления ролями, политиками и пользователями {#example-commands-to-manage-roles-policies-and-users}
 
 Следующие команды можно использовать, чтобы:
 
@@ -444,31 +444,31 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 Выполняйте эти команды от имени администратора или пользователя `default`
 :::
 
-### Удалить привилегию у роли
+### Удалить привилегию у роли {#remove-privilege-from-a-role}
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 ```
 
-### Удаление политики
+### Удаление политики {#delete-a-policy}
 
 ```sql
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### Отменить назначение роли пользователю
+### Отменить назначение роли пользователю {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### Удаление роли
+### Удаление роли {#delete-a-role}
 
 ```sql
 DROP ROLE A_rows_users;
 ```
 
-### Удаление пользователя
+### Удаление пользователя {#delete-a-user}
 
 ```sql
 DROP USER row_user;

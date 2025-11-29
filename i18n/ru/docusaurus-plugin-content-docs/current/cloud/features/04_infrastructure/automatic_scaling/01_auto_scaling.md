@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# Автоматическое масштабирование
+# Автоматическое масштабирование {#automatic-scaling}
 
 Масштабирование — это возможность изменять доступные ресурсы в соответствии с запросами клиентов. Сервисы уровней Scale и Enterprise (со стандартным профилем 1:4) могут масштабироваться горизонтально через программные вызовы API или путем изменения настроек в пользовательском интерфейсе для регулирования системных ресурсов. Эти сервисы также могут **автоматически масштабироваться** вертикально в соответствии с потребностями приложений.
 
@@ -146,7 +146,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
 
-## Обработка всплесков нагрузки
+## Обработка всплесков нагрузки {#handling-bursty-workloads}
 
 Если в ближайшее время ожидается всплеск нагрузки, вы можете использовать
 [ClickHouse Cloud API](/cloud/manage/api/api-overview), чтобы

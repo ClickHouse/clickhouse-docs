@@ -5,7 +5,7 @@ title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS
+# EXISTS {#exists}
 
 `EXISTS` 演算子は、サブクエリの結果にレコードが存在するかどうかを判定します。結果が空の場合、この演算子は `0` を返し、1 件以上存在する場合は `1` を返します。
 

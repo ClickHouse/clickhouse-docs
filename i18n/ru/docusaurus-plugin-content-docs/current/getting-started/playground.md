@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Песочница ClickHouse
+# Песочница ClickHouse {#clickhouse-playground}
 
 [ClickHouse Playground](https://sql.clickhouse.com) позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.
 В Playground доступно несколько примеров наборов данных.
@@ -40,7 +40,7 @@ doc_type: 'guide'
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Пример HTTPS-эндпоинта с использованием `curl`:
 

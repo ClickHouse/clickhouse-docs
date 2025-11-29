@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# url テーブル関数
+# url テーブル関数 {#url-table-function}
 
 `url` 関数は、指定された `format` および `structure` を使用して、`URL` からテーブルを作成します。
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 url(URL [,format] [,structure] [,headers])
@@ -43,7 +43,7 @@ url(URL [,format] [,structure] [,headers])
 
 
 
-## 例
+## 例 {#examples}
 
 `String` 列と [UInt32](../../sql-reference/data-types/int-uint.md) 型の列を含むテーブルの先頭 3 行を、[CSV](/interfaces/formats/CSV) 形式で応答する HTTP サーバーから取得します。
 
@@ -77,7 +77,7 @@ SELECT * FROM test_table;
 
 
 
-## use&#95;hive&#95;partitioning 設定
+## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
 `use_hive_partitioning` の値が 1 の場合、ClickHouse はパス内の Hive 形式のパーティショニング（`/name=value/`）を検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列はパーティションパス内の名前と同じですが、先頭に `_` が付きます。
 

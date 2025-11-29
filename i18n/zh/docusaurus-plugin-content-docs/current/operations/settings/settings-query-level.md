@@ -34,7 +34,7 @@ doc_type: 'reference'
     [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
     子句中定义设置。该设置值仅应用于该次查询，在查询执行完成后将被重置为默认值或先前的值。
 
-## 将设置恢复为默认值
+## 将设置恢复为默认值 {#converting-a-setting-to-its-default-value}
 
 如果您修改了某个设置并希望将其恢复为默认值，请将该值设为 `DEFAULT`。语法如下：
 
@@ -75,7 +75,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-## 自定义设置
+## 自定义设置 {#custom_settings}
 
 除了通用的[设置](/operations/settings/settings.md)之外，用户还可以定义自定义设置。
 
@@ -102,7 +102,7 @@ SELECT getSetting('custom_a');
 
 这些示例都将 `async_insert` 设置为 `1`，并展示如何在正在运行的系统中查看这些设置。
 
-### 使用 SQL 将设置直接应用到用户
+### 使用 SQL 将设置直接应用到用户 {#using-sql-to-apply-a-setting-to-a-user-directly}
 
 以下示例创建用户 `ingester`，并为其设置 `async_insert = 1`：
 
@@ -114,7 +114,7 @@ SETTINGS async_insert = 1
 ```
 
 
-#### 检查设置配置文件和分配
+#### 检查设置配置文件和分配 {#examine-the-settings-profile-and-assignment}
 
 ```sql
 SHOW ACCESS
@@ -123,14 +123,14 @@ SHOW ACCESS
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 
-### 使用 SQL 创建设置配置文件并分配给用户
+### 使用 SQL 创建设置配置文件并分配给用户 {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
 以下语句会创建名为 `log_ingest` 的设置配置文件，并设置 `async_inset = 1`：
 
@@ -149,24 +149,24 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### 使用 XML 创建设置配置文件及用户
+### 使用 XML 创建设置配置文件及用户 {#using-xml-to-create-a-settings-profile-and-user}
 
 ```xml title=/etc/clickhouse-server/users.d/users.xml
 <clickhouse>
-# highlight-start
+# highlight-start {#highlight-start}
     <profiles>
         <log_ingest>
             <async_insert>1</async_insert>
         </log_ingest>
     </profiles>
-# highlight-end
+# highlight-end {#highlight-end}
 
     <users>
         <ingester>
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
-# highlight-start
+# highlight-start {#highlight-start}
             <profile>log_ingest</profile>
-# highlight-end
+# highlight-end {#highlight-end}
         </ingester>
         <default replace="true">
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
@@ -178,7 +178,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-#### 查看设置配置文件及其分配
+#### 查看设置配置文件及其分配 {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 显示访问权限
@@ -187,10 +187,10 @@ SETTINGS PROFILE log_ingest
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ CREATE USER default IDENTIFIED WITH sha256_password                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS PROFILE log_ingest   │
 │ CREATE SETTINGS PROFILE default                                                    │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE SETTINGS PROFILE log_ingest SETTINGS async_insert = true                    │
 │ CREATE SETTINGS PROFILE readonly SETTINGS readonly = 1                             │
 │ ...                                                                                │
@@ -198,7 +198,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### 为会话指定设置
+### 为会话指定设置 {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -212,7 +212,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-### 在查询时指定设置
+### 在查询时指定设置 {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

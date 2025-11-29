@@ -6,9 +6,7 @@ title: '用于操作嵌入式字典的函数'
 doc_type: 'reference'
 ---
 
-
-
-# 使用内嵌字典的函数
+# 使用内嵌字典的函数 {#functions-for-working-with-embedded-dictionaries}
 
 :::note
 要使下面的函数正常工作，服务器配置中必须指定获取所有内嵌字典的路径和地址。这些字典会在首次调用任意一个相关函数时加载。如果参考列表无法加载，则会抛出异常。
@@ -16,11 +14,9 @@ doc_type: 'reference'
 因此，本节中展示的示例在 [ClickHouse Fiddle](https://fiddle.clickhouse.com/) 中，以及在快速发布版本和生产环境中的部署中，默认都会抛出异常，除非事先完成相应配置。
 :::
 
-关于如何创建参考列表的更多信息，请参见章节 ["Dictionaries"](../dictionaries#embedded-dictionaries)。
+关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries)。
 
-
-
-## 多个地理库（Geobase）
+## 多个地理库（Geobase） {#multiple-geobases}
 
 ClickHouse 支持同时使用多个不同的地理库（区域层级结构），以支持对某些地区应划归哪些国家的不同视角。
 
@@ -43,7 +39,7 @@ regionToCountry(RegionID, '') – 使用默认字典:/opt/geo/regions_hierarchy.
 regionToCountry(RegionID, 'ua') – 使用 'ua' 键的字典:/opt/geo/regions_hierarchy_ua.txt
 ```
 
-### regionToName
+### regionToName {#regiontoname}
 
 接受一个区域 ID 和 geobase，并返回一个字符串，该字符串为对应语言中该区域的名称。如果具有指定 ID 的区域不存在，则返回空字符串。
 
@@ -83,7 +79,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 └────────────────────────────────────────────┘
 ```
 
-### regionToCity
+### regionToCity {#regiontocity}
 
 从 geobase 接收一个区域 ID。如果该区域本身是城市或隶属于某个城市，则返回相应城市的区域 ID；否则返回 0。
 
@@ -113,7 +109,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 结果：
 
-
 ```response
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
@@ -132,7 +127,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
-### regionToArea
+### regionToArea {#regiontoarea}
 
 将区域转换为地区（在 geobase 中为类型 5）。在其他方面，该函数与 [&#39;regionToCity&#39;](#regiontocity) 完全相同。
 
@@ -184,7 +179,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────┘
 ```
 
-### regionToDistrict
+### regionToDistrict {#regiontodistrict}
 
 将区域转换为联邦区（在 geobase 中为类型 4）。在其他方面，该函数与 &#39;regionToCity&#39; 完全相同。
 
@@ -236,7 +231,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────────┘
 ```
 
-### regionToCountry
+### regionToCountry {#regiontocountry}
 
 将区域转换为国家（geobase 中的类型 3）。在其他方面，该函数与 `regionToCity` 相同。
 
@@ -247,7 +242,6 @@ regionToCountry(id [, geobase])
 ```
 
 **参数**
-
 
 * `id` — 来自地理库（geobase）的区域 ID。[UInt32](../data-types/int-uint)。
 * `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
@@ -285,7 +279,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-### regionToContinent
+### regionToContinent {#regiontocontinent}
 
 将区域转换为大洲（在 geobase 中类型为 1）。在其他方面，此函数与 `regionToCity` 完全相同。
 
@@ -333,7 +327,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### regionToTopContinent
+### regionToTopContinent {#regiontotopcontinent}
 
 查找指定区域在层级结构中的最上级洲。
 
@@ -363,7 +357,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 结果：
 
-
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
@@ -382,7 +375,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-### regionToPopulation
+### regionToPopulation {#regiontopopulation}
 
 获取某个区域的人口数。人口数据可以记录在 `geobase` 文件中。参见 [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries) 一节。若该区域未记录人口数，则返回 0。在 `geobase` 中，人口可能只记录在子区域，而未记录在父区域。
 
@@ -430,7 +423,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-### regionIn
+### regionIn {#regionin}
 
 检查 `lhs` 区域是否包含于 `rhs` 区域中。如果包含则返回 UInt8 类型的数值 1，否则返回 0。
 
@@ -465,7 +458,6 @@ SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.
 
 结果：
 
-
 ```text
 World 包含在 World 中
 World 不包含在 USA 中
@@ -479,7 +471,7 @@ USA 不包含在 Boulder County 中
 USA 不包含在 Boulder 中    
 ```
 
-### regionHierarchy
+### regionHierarchy {#regionhierarchy}
 
 接受一个 UInt32 类型的数值——来自 geobase 的区域 ID。返回一个由该区域及其所有上级区域 ID 组成的数组。
 

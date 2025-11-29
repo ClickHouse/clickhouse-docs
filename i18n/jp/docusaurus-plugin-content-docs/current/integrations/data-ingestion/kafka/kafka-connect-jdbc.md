@@ -8,10 +8,10 @@ doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# JDBC コネクタ
+# JDBC コネクタ {#jdbc-connector}
 
 :::note
 このコネクタは、データが単純で、`int` などのプリミティブ型で構成されている場合にのみ使用してください。ClickHouse 固有の型（例: map）はサポートされていません。
@@ -114,7 +114,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Kafka Connect を起動する
+#### 5. Kafka Connect を起動する {#5-start-kafka-connect}
 
 Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) モードまたは [分散](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) モードのいずれかで起動します。
 
@@ -122,7 +122,7 @@ Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/curren
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Kafka にデータを追加する
+#### 6. Kafka にデータを追加する {#6-add-data-to-kafka}
 
 提供されている[スクリプトと設定](https://github.com/ClickHouse/kafka-samples/tree/main/producer)を使用して、メッセージを Kafka に送信します。`github.config` を編集し、Kafka の認証情報を設定する必要があります。スクリプトは現在、Confluent Cloud での使用向けに構成されています。
 
@@ -148,7 +148,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### おすすめの参考資料
+### おすすめの参考資料 {#recommended-further-reading}
 
 
 * [Kafka Sink 構成パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)

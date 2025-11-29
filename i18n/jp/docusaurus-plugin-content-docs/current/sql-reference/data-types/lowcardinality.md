@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# LowCardinality(T)
+# LowCardinality(T) {#lowcardinalityt}
 
 他のデータ型の内部表現を辞書エンコードされた形式に変更します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 LowCardinality(data_type)
@@ -36,7 +36,7 @@ LowCardinality(data_type)
 
 
 
-## 例
+## 例 {#example}
 
 `LowCardinality` 列を持つテーブルを作成します。
 

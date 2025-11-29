@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# prometheusQuery 表函数
+# prometheusQuery 表函数 {#prometheusquery-table-function}
 
 在一段评估时间范围内，使用 TimeSeries 表中的数据执行 Prometheus 查询。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 prometheusQueryRange('db_name', 'time_series_table', 'promql_query', start_time, end_time, step)
@@ -48,7 +48,7 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 
 
 
-## 示例
+## 示例 {#example}
 
 ```sql
 SELECT * FROM prometheusQueryRange(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now() - INTERVAL 10 MINUTES, now(), INTERVAL 1 MINUTE)

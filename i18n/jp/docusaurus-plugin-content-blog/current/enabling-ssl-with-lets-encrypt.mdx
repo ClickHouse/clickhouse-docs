@@ -13,8 +13,7 @@ import security_group from "@site/static/images/knowledgebase/lets-encrypt-ssl/p
 
 {/* truncate */}
 
-
-## 手順
+## 手順 \{#steps-to-follow\}
 
 以下の手順では、単一の ClickHouse Server に対して [Let&#39;s Encrypt](https://letsencrypt.org/) を使用して SSL を有効にする方法を説明します。Let&#39;s Encrypt は無料かつ自動化されたオープンな認証局 (Certificate Authority, CA) であり、誰もが HTTPS を用いて自分の Web サイトを容易に保護できるように設計されています。証明書の発行および更新プロセスを自動化することで、Let&#39;s Encrypt は手動による操作を必要とせずに Web サイトの安全性を維持します。
 
@@ -74,7 +73,6 @@ sudo apt install certbot
 4. SSL証明書を取得する
 
 <br />
-
 
 ```bash
 sudo certbot certonly
@@ -163,7 +161,6 @@ echo "127.0.0.1 product-test-server.clickhouse-dev.com" | sudo tee -a /etc/hosts
 
 :::warning
 ワイルドカードアドレスからの接続を許可する場合は、以下のいずれかの対策を必ず講じてください。
-
 
 * サーバーはファイアウォールで保護されており、信頼できないネットワークからはアクセスできないこと。
 * すべてのユーザーはネットワークアドレスのサブセットに制限されていること（`users.xml` を参照）。

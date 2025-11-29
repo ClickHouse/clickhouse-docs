@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## プライマリキーを使わずにフィルタリングする例
+## プライマリキーを使わずにフィルタリングする例 {#example-filtering-without-using-primary-keys}
 
 テーブルの作成：
 
@@ -80,7 +80,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 事前集計クエリの例
+## 事前集計クエリの例 {#example-pre-aggregation-query}
 
 Projection を使用したテーブルの作成：
 
@@ -158,7 +158,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## `_part_offset` フィールドを用いた通常のプロジェクション
+## `_part_offset` フィールドを用いた通常のプロジェクション {#normal-projection-with-part-offset-field}
 
 `_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルの作成：
 
@@ -186,7 +186,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### `_part_offset` をセカンダリインデックスとして使用する
+### `_part_offset` をセカンダリインデックスとして使用する {#normal-projection-secondary-index}
 
 `_part_offset` フィールドはマージやミューテーション後も値が保持されるため、セカンダリインデックスとして有用です。クエリでこれを活用できます。
 
@@ -203,7 +203,7 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# プロジェクションの操作
+# プロジェクションの操作 {#manipulating-projections}
 
 [プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections)に対して、次の操作を実行できます。
 

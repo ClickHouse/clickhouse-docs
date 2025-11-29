@@ -6,7 +6,7 @@ title: 'simpleLinearRegression'
 doc_type: 'reference'
 ---
 
-# simpleLinearRegression
+# simpleLinearRegression {#simplelinearregression}
 
 执行简单（一维）线性回归。
 

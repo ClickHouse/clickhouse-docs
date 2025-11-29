@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# 自動スケーリング
+# 自動スケーリング {#automatic-scaling}
 
 スケーリングとは、クライアントからの需要に応じて利用可能なリソースを調整する機能を指します。Scale および Enterprise（標準 1:4 プロファイル）ティアのサービスは、API をプログラム経由で呼び出すか、UI 上の設定を変更してシステムリソースを調整することで、水平スケーリングが可能です。これらのサービスは、アプリケーションの需要に合わせて**垂直方向に自動スケーリング**することもできます。
 
@@ -146,7 +146,7 @@ UI からサービスを水平スケーリングするには、**Settings** ペ�
 
 
 
-## ワークロードのスパイクへの対応
+## ワークロードのスパイクへの対応 {#handling-bursty-workloads}
 
 近いうちにワークロードのスパイクが予想される場合は、
 [ClickHouse Cloud API](/cloud/manage/api/api-overview) を使用して、

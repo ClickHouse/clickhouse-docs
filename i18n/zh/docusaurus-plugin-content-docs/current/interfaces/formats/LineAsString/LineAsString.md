@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS line_as_string;

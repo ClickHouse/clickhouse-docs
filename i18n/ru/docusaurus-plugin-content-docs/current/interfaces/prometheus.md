@@ -7,13 +7,9 @@ title: 'Протоколы Prometheus'
 doc_type: 'reference'
 ---
 
+# Протоколы Prometheus {#prometheus-protocols}
 
-
-# Протоколы Prometheus
-
-
-
-## Предоставление метрик
+## Предоставление метрик {#expose}
 
 :::note
 Если вы используете ClickHouse Cloud, вы можете передавать метрики в Prometheus с помощью [Prometheus Integration](/integrations/prometheus).
@@ -76,8 +72,7 @@ ClickHouse может предоставлять собственные метр
 curl 127.0.0.1:9363/metrics
 ```
 
-
-## Протокол remote-write
+## Протокол remote-write {#remote-write}
 
 ClickHouse поддерживает протокол [remote-write](https://prometheus.io/docs/specs/remote_write_spec/).
 Данные принимаются с использованием этого протокола и записываются в таблицу [TimeSeries](/engines/table-engines/special/time_series)
@@ -108,8 +103,7 @@ Settings:
 | `table`                      | none    | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series), в которую записываются данные, полученные по протоколу `remote-write`. Это имя при необходимости также может включать имя базы данных. |
 | `database`                   | none    | Имя базы данных, в которой находится таблица, указанная в настройке `table`, если оно не указано в самой настройке `table`.                                                                                  |
 
-
-## Протокол remote-read
+## Протокол remote-read {#remote-read}
 
 ClickHouse поддерживает протокол [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/).
 Данные читаются из таблицы [TimeSeries](/engines/table-engines/special/time_series) и передаются по этому протоколу.
@@ -139,8 +133,7 @@ ClickHouse поддерживает протокол [remote-read](https://prome
 | `table`                      | none    | Имя таблицы [TimeSeries](/engines/table-engines/special/time_series), из которой читаются данные для отправки по протоколу `remote-read`. При необходимости это имя может включать имя базы данных. |
 | `database`                   | none    | Имя базы данных, в которой находится таблица, указанная в параметре `table`, если оно не указано в значении параметра `table`.                                                                      |
 
-
-## Конфигурация нескольких протоколов
+## Конфигурация нескольких протоколов {#multiple-protocols}
 
 Несколько протоколов можно задать вместе в одном конфигурационном блоке:
 

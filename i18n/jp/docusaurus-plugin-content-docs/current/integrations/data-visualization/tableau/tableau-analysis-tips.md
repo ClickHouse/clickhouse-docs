@@ -8,16 +8,14 @@ title: '分析のヒント'
 doc_type: 'guide'
 ---
 
+# 分析のヒント {#analysis-tips}
 
-
-# 分析のヒント
-
-## MEDIAN()関数とPERCENTILE()関数
+## MEDIAN()関数とPERCENTILE()関数 {#median-and-percentile-functions}
 
 * Live モードでは、`MEDIAN()` および `PERCENTILE()` 関数（connector v0.1.3 リリース以降）は [ClickHouse quantile()() 関数](/sql-reference/aggregate-functions/reference/quantile/) を使用します。これにより計算が大幅に高速化されますが、サンプリングを行うため近似値となります。正確な計算結果が必要な場合は、`MEDIAN_EXACT()` および `PERCENTILE_EXACT()` 関数（[quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/) に基づく）を使用してください。
 * Extract モードでは MEDIAN&#95;EXACT() と PERCENTILE&#95;EXACT() を使用できません。MEDIAN() と PERCENTILE() は常に厳密な値を返す（その分低速です）ためです。
 
-## ライブモードの計算フィールドで使用可能な追加関数
+## ライブモードの計算フィールドで使用可能な追加関数 {#additional-functions-for-calculated-fields-in-live-mode}
 
 ClickHouseには、データ分析に使用できる関数が非常に多く、Tableauがサポートする数を大幅に上回ります。 ユーザーの利便性向上のため、計算フィールド作成時にLiveモードで使用可能な新しい関数を追加しました。 残念ながら、Tableauインターフェース内でこれらの関数に説明を追加することができないため、本ドキュメントにて説明を記載します。
 

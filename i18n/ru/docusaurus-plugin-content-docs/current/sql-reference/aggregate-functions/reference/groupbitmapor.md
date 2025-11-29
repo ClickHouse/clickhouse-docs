@@ -6,7 +6,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr
+# groupBitmapOr {#groupbitmapor}
 
 Вычисляет побитовое OR для битмап-столбца, возвращает мощность множества типа UInt64; если добавить суффикс `-State`, то возвращается [объект bitmap](../../../sql-reference/functions/bitmap-functions.md). Эквивалентно `groupBitmapMerge`.
 

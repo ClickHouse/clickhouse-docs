@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
 
-# Приём данных из MongoDB в ClickHouse (с использованием CDC)
+# Приём данных из MongoDB в ClickHouse (с использованием CDC) {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 

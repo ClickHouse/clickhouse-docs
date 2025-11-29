@@ -29,8 +29,7 @@ doc_type: 'reference'
 
 {/* */ }
 
-
-## DETACH PARTITION|PART
+## DETACH PARTITION|PART {#detach-partitionpart}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] PARTITION を DETACH|PART partition_expr
@@ -51,8 +50,7 @@ ALTER TABLE mt DETACH PART 'all_2_2_0';
 
 このクエリはレプリケートされるクエリであり、すべてのレプリカ上でデータを `detached` ディレクトリに移動します。なお、このクエリはリーダーレプリカでのみ実行できます。特定のレプリカがリーダーかどうかを確認するには、[system.replicas](/operations/system-tables/replicas) テーブルに対して `SELECT` クエリを実行します。別の方法としては、すべてのレプリカで `DETACH` クエリを実行する方が簡単です。リーダーレプリカ（複数のリーダーが存在し得ます）以外のすべてのレプリカは例外をスローします。
 
-
-## DROP PARTITION|PART
+## DROP PARTITION|PART {#drop-partitionpart}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
@@ -71,8 +69,7 @@ ALTER TABLE mt DROP PARTITION '2020-11-21';
 ALTER TABLE mt DROP PART 'all_4_4_0';
 ```
 
-
-## DROP DETACHED PARTITION|PART
+## DROP DETACHED PARTITION|PART {#drop-detached-partitionpart}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|partition_expr
@@ -81,8 +78,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|par
 指定したパーティション内の指定したパーツ、またはすべてのパーツを `detached` から削除します。
 パーティション式の設定については、[パーティション式の設定方法](#how-to-set-partition-expression) セクションを参照してください。
 
-
-## FORGET PARTITION（パーティション情報の破棄）
+## FORGET PARTITION（パーティション情報の破棄） {#forget-partition}
 
 ```sql
 ALTER TABLE table_name PARTITION partition_expr を忘れる
@@ -98,8 +94,7 @@ ALTER TABLE table_name PARTITION partition_expr を忘れる
 ALTER TABLE mt FORGET PARTITION '20201121';
 ```
 
-
-## ATTACH PARTITION|PART
+## ATTACH PARTITION|PART {#attach-partitionpart}
 
 ```sql
 ALTER TABLE table_name ATTACH PARTITION|PART partition_expr
@@ -122,8 +117,7 @@ ALTER TABLE visits ATTACH PART 201901_2_2_0;
 
 1 つのレプリカ上の `detached` ディレクトリにデータを配置し、`ALTER ... ATTACH` クエリを使用して、すべてのレプリカ上のテーブルにそのデータを追加できます。
 
-
-## ATTACH PARTITION FROM
+## ATTACH PARTITION FROM {#attach-partition-from}
 
 ```sql
 ALTER TABLE table2 [ON CLUSTER cluster] PARTITION partition_expr を table1 から アタッチ
@@ -143,8 +137,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] PARTITION partition_expr を table1 か�
 * 両方のテーブルは同じストレージポリシーを持っていなければなりません。
 * 宛先テーブルには、ソーステーブルのすべてのインデックスとプロジェクションが含まれていなければなりません。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致している必要があります。そうでない場合、宛先テーブルはソーステーブルのインデックスおよびプロジェクションのスーパーセットであってもかまいません。
 
-
-## パーティションの置換
+## パーティションの置換 {#replace-partition}
 
 ```sql
 ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM table1
@@ -164,8 +157,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM ta
 * 両方のテーブルは同じストレージポリシーを持つ必要があります。
 * 宛先テーブルには、ソーステーブルのすべてのインデックスとプロジェクションが含まれている必要があります。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致していなければなりません。そうでない場合、宛先テーブルはソーステーブルのインデックスとプロジェクションのスーパーセットであってもかまいません。
 
-
-## パーティションを別のテーブルへ移動
+## パーティションを別のテーブルへ移動 {#move-partition-to-table}
 
 ```sql
 ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO TABLE table_dest
@@ -181,8 +173,7 @@ ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO T
 * 両方のテーブルは同じエンジンファミリー（レプリケートあり／なし）である必要があります。
 * 宛先テーブルには、ソーステーブルに存在するすべてのインデックスとプロジェクションが含まれている必要があります。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致していなければなりません。それ以外の場合、宛先テーブルはソーステーブルのインデックスおよびプロジェクションのスーパーセットであってもかまいません。
 
-
-## パーティション内の列のクリア
+## パーティション内の列のクリア {#clear-column-in-partition}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR COLUMN column_name IN PARTITION partition_expr
@@ -196,8 +187,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] CLEAR COLUMN column_name IN PARTITIO
 ALTER TABLE visits CLEAR COLUMN hour in PARTITION 201902
 ```
 
-
-## FREEZE PARTITION（パーティションのフリーズ）
+## FREEZE PARTITION（パーティションのフリーズ） {#freeze-partition}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [WITH NAME 'backup_name']
@@ -241,8 +231,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [W
 
 バックアップとデータの復元の詳細については、[Data Backup](/operations/backup.md) セクションを参照してください。
 
-
-## UNFREEZE PARTITION
+## UNFREEZE PARTITION {#unfreeze-partition}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WITH NAME 'backup_name'
@@ -250,8 +239,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WIT
 
 指定された名前の `frozen` パーティションをディスクから削除します。`PARTITION` 句を省略すると、すべてのパーティションのバックアップが一度に削除されます。
 
-
-## パーティション内のインデックスのクリア
+## パーティション内のインデックスのクリア {#clear-index-in-partition}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION partition_expr
@@ -259,8 +247,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION 
 
 このクエリは `CLEAR COLUMN` と同様に動作しますが、カラムのデータではなくインデックスをリセットします。
 
-
-## FETCH PARTITION|PART
+## FETCH PARTITION|PART {#fetch-partitionpart}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] FETCH PARTITION|PART partition_expr FROM 'path-in-zookeeper'
@@ -298,8 +285,7 @@ ALTER TABLE users ATTACH PART 201901_2_2_0;
 
 このクエリは `ALTER TABLE` と呼ばれていますが、テーブル構造を変更せず、テーブルで利用可能なデータも即座には変更しません。
 
-
-## MOVE PARTITION|PART
+## MOVE PARTITION|PART {#move-partitionpart}
 
 `MergeTree` エンジンのテーブルに対して、パーティションまたはデータパーツを別のボリュームまたはディスクに移動します。詳細は [Using Multiple Block Devices for Data Storage](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes) を参照してください。
 
@@ -320,8 +306,7 @@ ALTER TABLE hits MOVE PART '20190301_14343_16206_438' TO VOLUME 'slow'
 ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 ```
 
-
-## UPDATE IN PARTITION
+## UPDATE IN PARTITION {#update-in-partition}
 
 指定したフィルタリング式に一致するパーティション内のデータを変更します。[mutation](/sql-reference/statements/alter/index.md#mutations)として実装されています。
 
@@ -331,7 +316,7 @@ ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_expr] WHERE filter_expr
 ```
 
-### 例
+### 例 {#example}
 
 ```sql
 -- パーティション名を使用する場合
@@ -341,12 +326,11 @@ ALTER TABLE mt UPDATE x = x + 1 IN PARTITION 2 WHERE p = 2;
 ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ```
 
-### 関連項目
+### 関連項目 {#see-also}
 
 * [UPDATE](/sql-reference/statements/alter/partition#update-in-partition)
 
-
-## DELETE IN PARTITION
+## DELETE IN PARTITION {#delete-in-partition}
 
 指定したパーティション内で、指定したフィルタリング式に一致するデータを削除します。これは [mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
@@ -356,7 +340,7 @@ ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE [IN PARTITION partition_expr] WHERE filter_expr
 ```
 
-### 例
+### 例 {#example-1}
 
 ```sql
 -- パーティション名を使用する場合
@@ -366,24 +350,22 @@ ALTER TABLE mt DELETE IN PARTITION 2 WHERE p = 2;
 ALTER TABLE mt DELETE IN PARTITION ID '2' WHERE p = 2;
 ```
 
-
-## パーツの再書き込み
+## パーツの再書き込み {#rewrite-parts}
 
 これは、新しい設定をすべて反映して、パーツをゼロから書き直します。テーブルレベルの設定である `use_const_adaptive_granularity` などは、デフォルトでは新たに書き込まれたパーツにのみ適用されるため、この動作は妥当です。
 
-### 例
+### 例 {#example-rewrite-parts}
 
 ```sql
 ALTER TABLE mt REWRITE PARTS;
 ALTER TABLE mt REWRITE PARTS IN PARTITION 2;
 ```
 
-### 関連項目
+### 関連項目 {#see-also-1}
 
 * [DELETE](/sql-reference/statements/alter/delete)
 
-
-## パーティション式の設定方法
+## パーティション式の設定方法 {#how-to-set-partition-expression}
 
 `ALTER ... PARTITION` クエリでは、パーティション式を次のように指定できます。
 

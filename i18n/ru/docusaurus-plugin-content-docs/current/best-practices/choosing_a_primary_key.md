@@ -30,8 +30,7 @@ import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 Ordering keys должны быть определены при создании таблицы и не могут быть добавлены позже. Дополнительное упорядочение может быть добавлено в таблицу после (или до) вставки данных с помощью механизма под названием projections (проекции). Имейте в виду, что это приводит к дублированию данных. Подробности см. [здесь](/sql-reference/statements/alter/projection).
 :::
 
-
-## Пример
+## Пример {#example}
 
 Рассмотрим следующую таблицу `posts_unordered`. Она содержит по одной строке для каждого поста Stack Overflow.
 
@@ -130,7 +129,6 @@ SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ```
-
 
 ┌─count()─┐
 │  192611 │

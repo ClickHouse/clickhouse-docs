@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `handle_error_mode` — FileLog 引擎的错误处理方式。可选值：`default`（如果解析消息失败则抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）。
 
 
-## 描述
+## 描述 {#description}
 
 已送达的记录会被自动跟踪，因此日志文件中的每条记录只会被计数一次。
 

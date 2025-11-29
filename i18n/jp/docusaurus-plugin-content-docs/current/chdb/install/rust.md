@@ -15,9 +15,9 @@ chDB-rust は chDB 向けの実験的な FFI（Foreign Function Interface）バ�
 
 
 
-## インストール
+## インストール {#installation}
 
-### libchdb のインストール
+### libchdb のインストール {#install-libchdb}
 
 chDB ライブラリをインストールします。
 
@@ -26,11 +26,11 @@ curl -sL https://lib.chdb.io | bash
 ```
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 chDB Rust は、ステートレスおよびステートフルの 2 種類のクエリ実行モードを提供します。
 
-### ステートレスモードでの利用
+### ステートレスモードでの利用 {#stateless-usage}
 
 永続的な状態を保持する必要のないシンプルなクエリ向け:
 
@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### ステートフルな利用（セッション）
+### ステートフルな利用（セッション） {#stateful-usage-sessions}
 
 データベースやテーブルなど、永続的な状態を必要とするクエリの場合:
 
@@ -115,21 +115,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 
-## ビルドとテスト
+## ビルドとテスト {#building-testing}
 
-### プロジェクトをビルドする
+### プロジェクトをビルドする {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### テストの実行
+### テストの実行 {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### 開発用依存関係
+### 開発用依存関係 {#development-dependencies}
 
 このプロジェクトには、以下の開発用依存関係が含まれています。
 
@@ -138,7 +138,7 @@ cargo test
 * `thiserror` (v1) - エラー処理ユーティリティ
 
 
-## エラー処理
+## エラー処理 {#error-handling}
 
 chDB Rust は、`Error` 列挙型を通じて包括的なエラー処理機能を提供します。
 

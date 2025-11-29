@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用名为 `football.json` 的 JSON 文件，其内容如下：
 
@@ -48,7 +48,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONEachRow` 格式来读取数据：
 

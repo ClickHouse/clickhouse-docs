@@ -6,7 +6,7 @@ title: '原生客户端和接口'
 doc_type: 'landing-page'
 ---
 
-# 原生客户端和接口
+# 原生客户端和接口 {#native-clients-interfaces}
 
 ClickHouse 提供多种原生客户端和接口，可用于连接 ClickHouse。
 
@@ -15,5 +15,5 @@ ClickHouse 提供多种原生客户端和接口，可用于连接 ClickHouse。
 | Section                                                      | Summary                                                                             |
 |--------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | [Command-Line Client](/interfaces/cli)               | 原生命令行客户端，支持命令行选项和配置文件。 |
-| [Drivers & Interfaces](/interfaces/overview)         | 多种网络接口、库以及图形化界面。                    |
+| [Drivers &amp; Interfaces](/interfaces/overview)         | 多种网络接口、库以及图形化界面。                    |
 | [SQL Console](/integrations/sql-clients/sql-console) | 在 ClickHouse Cloud 中与数据交互的快捷简便方式。                 |
