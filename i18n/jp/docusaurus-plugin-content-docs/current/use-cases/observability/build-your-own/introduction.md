@@ -12,7 +12,7 @@ import observability_2 from '@site/static/images/use-cases/observability/observa
 import Image from '@theme/IdealImage';
 
 
-# オブザーバビリティのための ClickHouse 活用
+# オブザーバビリティのための ClickHouse 活用 {#using-clickhouse-for-observability}
 
 ## はじめに {#introduction}
 
@@ -67,7 +67,7 @@ SQL ベースの可観測性が適さない可能性があるのは、次のよ�
 - ユースケースがメトリクス中心であり、PromQL を必要としている。この場合でも、メトリクスには Prometheus を用いつつ、ログとトレースには ClickHouse を使用し、プレゼンテーションレイヤーで Grafana によって統合することは可能です。
 - さらにエコシステムが成熟し、SQL ベースの可観測性がより「すぐ使える」状態になるまで待ちたい
 
-## ログとトレース
+## ログとトレース {#logs-and-traces}
 
 Observability のユースケースには、ログ、トレース、メトリクスという 3 つの明確な柱があります。各柱はデータ型とアクセスパターンが異なります。
 

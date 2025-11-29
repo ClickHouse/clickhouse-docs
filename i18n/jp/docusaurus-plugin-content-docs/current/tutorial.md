@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 
 
-# 高度なチュートリアル
+# 高度なチュートリアル {#advanced-tutorial}
 
 
 
@@ -384,7 +384,7 @@ New York City のタクシーデータセットには、数百万件のタクシ
 
 
 
-## 辞書を作成する
+## 辞書を作成する {#create-a-dictionary}
 
 辞書は、メモリ内に保存されるキーと値のペアのマッピングです。詳細については [Dictionaries](/sql-reference/dictionaries/index.md) を参照してください。
 

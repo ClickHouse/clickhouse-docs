@@ -10,8 +10,7 @@ keywords: ['Parquet', 'S3 存储桶']
 
 {/* 截断 */}
 
-
-## 从 S3 存储桶中摄取 Parquet 文件
+## 从 S3 存储桶中摄取 Parquet 文件 \{#ingesting-parquet-files-from-an-s3-bucket\}
 
 下面是使用 S3 表引擎读取 Parquet 文件的一些基础用法。
 
@@ -115,7 +114,6 @@ Ok.
 ```
 
 验证导入结果：
-
 
 ```
 clickhouse-cloud :) SELECT * FROM my_parquet_table LIMIT 10;

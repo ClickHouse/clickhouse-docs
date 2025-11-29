@@ -12,7 +12,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 <CloudOnlyBadge />
 
 
-# Движок базы данных Shared
+# Движок базы данных Shared {#shared-database-engine}
 
 Движок базы данных `Shared` работает совместно с Shared Catalog для управления базами данных, таблицы которых используют stateless‑движки таблиц, такие как [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
 Эти движки таблиц не записывают постоянное состояние на диск и совместимы с динамическими вычислительными средами.
@@ -30,7 +30,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 Для конечных пользователей работа с Shared Catalog и движком базы данных Shared не требует дополнительной конфигурации. Создание базы данных выполняется как обычно:
 

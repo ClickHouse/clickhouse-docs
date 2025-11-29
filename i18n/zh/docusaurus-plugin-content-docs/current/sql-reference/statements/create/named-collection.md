@@ -10,8 +10,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-
-# CREATE NAMED COLLECTION
+# CREATE NAMED COLLECTION {#create-named-collection}
 
 创建新的命名集合。
 

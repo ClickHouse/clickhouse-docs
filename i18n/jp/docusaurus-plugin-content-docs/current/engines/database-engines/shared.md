@@ -12,7 +12,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 <CloudOnlyBadge />
 
 
-# Shared データベースエンジン
+# Shared データベースエンジン {#shared-database-engine}
 
 `Shared` データベースエンジンは、Shared Catalog と連携して、[`SharedMergeTree`](/cloud/reference/shared-merge-tree) などのステートレスなテーブルエンジンを使用するデータベースを管理します。
 これらのテーブルエンジンは永続的な状態をディスクに書き込まず、動的なコンピュート環境と互換性があります。
@@ -30,7 +30,7 @@ ClickHouse Cloud における `Shared` データベースエンジンは、ロ�
 
 
 
-## 構文
+## 構文 {#syntax}
 
 エンドユーザーが Shared Catalog と Shared データベースエンジンを利用する際に、特別な設定は必要ありません。データベースの作成手順は従来どおりです。
 

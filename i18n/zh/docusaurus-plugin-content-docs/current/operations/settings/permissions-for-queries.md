@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 查询权限
+# 查询权限 {#permissions-for-queries}
 
 ClickHouse 中的查询可以分为几种类型：
 

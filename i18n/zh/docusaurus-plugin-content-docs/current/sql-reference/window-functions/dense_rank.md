@@ -7,7 +7,7 @@ title: 'dense_rank'
 doc_type: 'reference'
 ---
 
-# dense&#95;rank
+# dense&#95;rank {#dense&#95;rank}
 
 在其分区内为当前行进行连续排名（无空缺）。换句话说，如果遇到的新行的值等于之前某一行的值，那么它将获得紧接其后的下一个名次，且名次序列中不会出现空缺。
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Что такое OLAP?
+# Что такое OLAP? {#what-is-olap}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) расшифровывается как Online Analytical Processing. Это обобщающий термин, на который можно смотреть с двух точек зрения: технической и с точки зрения бизнеса. На самом базовом уровне можно просто прочитать эти слова в обратном порядке:
 

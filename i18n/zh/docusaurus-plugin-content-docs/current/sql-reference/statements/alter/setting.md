@@ -1,15 +1,13 @@
 ---
 description: '表设置变更说明文档'
-sidebar_label: 'SETTING'
+sidebar_label: '设置'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
 title: '表设置变更'
 doc_type: 'reference'
 ---
 
-
-
-# 表设置操作
+# 表设置操作 {#table-settings-manipulations}
 
 有一组查询语句可用于更改表设置。可以修改设置或将其重置为默认值。单条查询语句可以同时更改多个设置。
 如果指定名称的设置不存在，则查询会抛出异常。
@@ -24,8 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] 修改|重置 设置 ...
 这些查询仅适用于 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 类型的表。
 :::
 
-
-## MODIFY SETTING
+## MODIFY SETTING {#modify-setting}
 
 更改表设置。
 
@@ -43,8 +40,7 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_in_total=50000;
 ```
 
-
-## RESET SETTING
+## RESET SETTING {#reset-setting}
 
 将表设置重置为默认值。\
 如果某个设置已经处于默认状态，则不会执行任何操作。

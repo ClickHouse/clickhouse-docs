@@ -41,9 +41,9 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 其中包含 1995 年到 2024 年间英国房屋成交价格相关的数据。
 
 
-## 设置
+## 设置 {#setup}
 
-### 加载数据集
+### 加载数据集 {#loading-the-dataset}
 
 要将此数据集添加到现有的 ClickHouse Cloud 服务中，请使用您的账户信息登录 [console.clickhouse.cloud](https://console.clickhouse.cloud/)。
 
@@ -64,7 +64,7 @@ ClickHouse 将自动在 `default` 数据库中创建名为 `pp_complete` 的表�
 为降低暴露凭证的可能性，建议您在本地机器上将 Cloud 用户名和密码配置为环境变量。
 在终端中运行以下命令，将您的用户名和密码添加为环境变量：
 
-### 配置凭证
+### 配置凭证 {#setting-up-credentials}
 
 ```bash
 export CLICKHOUSE_CLOUD_HOSTNAME=<主机名>
@@ -77,7 +77,7 @@ export CLICKHOUSE_CLOUD_PASSWORD=您的实际密码
 要使其永久生效，请将它们添加到你的 shell 配置文件中。
 :::
 
-### 安装 Marimo
+### 安装 Marimo {#installing-marimo}
 
 现在激活你的虚拟环境。
 在虚拟环境中，安装本指南将要使用的以下软件包：
@@ -99,7 +99,7 @@ marimo edit clickhouse_exploration.py
 Marimo 笔记本以纯 Python 文件的形式存储，便于进行版本控制并与他人共享。
 
 
-## 安装依赖
+## 安装依赖 {#installing-dependencies}
 
 在新的单元格中导入所需的库：
 
@@ -127,14 +127,14 @@ result
 <Image size="md" img={image_5} alt="Marimo hello world" />
 
 
-## 探索数据
+## 探索数据 {#exploring-the-data}
 
 在已经准备好英国房价支付数据集，并在 Marimo 笔记本中成功运行 chDB 之后，我们现在可以开始探索这些数据。
 假设我们想要了解在英国某个特定地区（例如首都伦敦）中，房价随时间是如何变化的。
 ClickHouse 的 [`remoteSecure`](/docs/sql-reference/table-functions/remote) 函数允许你轻松地从 ClickHouse Cloud 中获取数据。
 你可以让 chDB 在进程内将这些数据返回为 Pandas 数据帧——这是一种既方便又熟悉的数据处理方式。
 
-### 查询 ClickHouse Cloud 数据
+### 查询 ClickHouse Cloud 数据 {#querying-clickhouse-cloud-data}
 
 创建一个新的单元格，使用以下查询从你的 ClickHouse Cloud 服务中获取英国房价支付数据，并将其转换为 `pandas.DataFrame`：
 
@@ -178,7 +178,7 @@ df.head()
 在本例中，我们返回的是每年的平均价格，并按 `town='LONDON'` 进行过滤。
 然后将结果以 DataFrame 的形式存储在名为 `df` 的变量中。
 
-### 可视化数据
+### 可视化数据 {#visualizing-the-data}
 
 现在我们已经以熟悉的形式获取了数据，接下来来看一下伦敦房产价格是如何随时间变化的。
 
@@ -205,7 +205,7 @@ fig
 
 Marimo 的一大优势是其响应式执行模型。我们来创建一个交互式控件，以动态选择不同的城镇。
 
-### 交互式城镇选择
+### 交互式城镇选择 {#interactive-town-selection}
 
 在一个新单元格中，创建一个下拉菜单来选择不同的城镇：
 
@@ -262,7 +262,7 @@ fig_reactive
 
 <Image size="md" img={image_7} alt="Marimo 动态图表" />
 
-### 使用交互式箱线图探索价格分布
+### 使用交互式箱线图探索价格分布 {#exploring-price-distributions}
 
 让我们通过检查伦敦不同年份的房价分布，更深入地探索这些数据。
 箱线图可以展示中位数、四分位数和离群值，比仅看平均价格能带来更深入的理解。
@@ -304,21 +304,21 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# 创建交互式箱线图。
+# 创建交互式箱线图
 fig_box = go.Figure()
 
 fig_box.add_trace(
     go.Box(
         y=df_distribution['price'],
         name=f'London {year_slider.value}',
-        boxmean='sd',  # 显示平均值和标准差
+        boxmean='sd',  # 显示均值和标准差
         marker_color='lightblue',
-        boxpoints='outliers'  # 显示离群点
+        boxpoints='outliers'  # 显示离群值点
     )
 )
 
 fig_box.update_layout(
-    title=f'{year_slider.value} 年伦敦房价分布',
+    title=f'伦敦房产价格分布 ({year_slider.value})',
     yaxis=dict(
         title='价格 (£)',
         tickformat=',.0f'

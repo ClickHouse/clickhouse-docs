@@ -8,6 +8,6 @@ keywords: ['табличная функция Iceberg', 'Apache Iceberg', 'фо�
 hide_title: true
 ---
 
-import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
 
 <IcebergFunction />

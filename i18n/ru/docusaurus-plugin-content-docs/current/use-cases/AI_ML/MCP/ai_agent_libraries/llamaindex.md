@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server
+# Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
 может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -34,7 +34,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## Установите библиотеки
+## Установите библиотеки {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
@@ -44,7 +44,7 @@ pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-i
 ```
 
 
-## Настройка учётных данных
+## Настройка учётных данных {#setup-credentials}
 
 Далее вам нужно указать свой ключ API Anthropic:
 
@@ -63,7 +63,7 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ A
 :::
 
 
-## Инициализируйте MCP Server
+## Инициализируйте MCP Server {#initialize-mcp-and-agent}
 
 Теперь настройте ClickHouse MCP Server для работы с ClickHouse SQL Playground.
 Вам потребуется преобразовать их из функций Python в инструменты LlamaIndex:
@@ -113,7 +113,7 @@ agent = AgentRunner(agent_worker)
 ````
 
 
-## Инициализация LLM
+## Инициализация LLM {#initialize-llm}
 
 Инициализируйте модель Claude Sonnet 4.0 следующим кодом:
 

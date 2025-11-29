@@ -10,17 +10,16 @@ keywords: ['PIVOT', 'Комбинаторы агрегатных функций'
 
 {/* усечь */}
 
-
 ## Введение \{#introduction\}
 
 В ClickHouse нет оператора pivot, но похожего поведения можно добиться, используя [комбинаторы агрегатных функций](/sql-reference/aggregate-functions/combinators) и, в частности, комбинаторы с суффиксом [`-Map`](/sql-reference/aggregate-functions/combinators#-map).
 
-В этой статье мы разберём, как это сделать. 
+В этой статье мы разберём, как это сделать.
 Также есть видео с тем же материалом — его можно посмотреть ниже:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nlRMOmwYtF4?si=0TZSNg-uo7zjiO52" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## Основы комбинаторов агрегатных функций
+## Основы комбинаторов агрегатных функций \{#understanding-aggregate-function-combinators\}
 
 Начнём с простого примера. Мы будем использовать [clickhouse-local](/operations/utilities/clickhouse-local), который вы можете запустить, выполнив следующую команду:
 
@@ -99,8 +98,7 @@ FROM values;
 
 Надеемся, теперь вы представляете, как работают эти комбинаторы функций.
 
-
-## Практическое применение: набор данных о ценах на жильё в Великобритании
+## Практическое применение: набор данных о ценах на жильё в Великобритании \{#real-world-application-uk-housing-prices-dataset\}
 
 Теперь мы будем использовать их на более крупном наборе данных в [ClickHouse SQL playground](https://clickhouse.com/blog/announcing-the-new-sql-playground).
 
@@ -141,8 +139,7 @@ category:  0
 
 Как видно выше, таблица содержит различные поля, связанные с продажей недвижимости в Великобритании.
 
-
-### Группировка и агрегирование по десятилетиям
+### Группировка и агрегирование по десятилетиям \{#grouping-and-aggregating-by-decade\}
 
 Давайте вычислим медианные цены по графствам для каждого десятилетия в наборе данных:
 
@@ -172,8 +169,7 @@ LIMIT 10;
     └────────────────────┴────────────────────────────────────────────────────┘
 ```
 
-
-### Фильтрация результатов
+### Фильтрация результатов \{#filtering-results\}
 
 Мы можем отфильтровать результаты так, чтобы они включали только данные, начиная с 2010 года:
 
@@ -204,8 +200,7 @@ LIMIT 10;
     └────────────────────┴─────────────────────────────┘
 ```
 
-
-## Комбинирование нескольких агрегирующих функций
+## Комбинирование нескольких агрегирующих функций \{#combining-multiple-aggregations\}
 
 Если мы хотим найти максимальную цену для каждого десятилетия, мы можем сделать это с помощью функции `maxMap`, с которой уже познакомились ранее:
 
@@ -237,8 +232,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴─────────────────────────────────┘
 ```
 
-
-## Применение функций к значениям Map
+## Применение функций к значениям Map \{#applying-functions-to-map-values\}
 
 В качестве альтернативы мы можем вычислить среднюю цену с помощью `avgMap`.
 Эти значения содержат много знаков после запятой; мы можем сократить их количество, применив функцию [`mapApply`](/sql-reference/functions/tuple-map-functions#mapapply), чтобы вызвать функцию [`floor`](/sql-reference/functions/rounding-functions#floor) для каждого значения в Map:
@@ -271,8 +265,7 @@ LIMIT 10;
     └────────────────────┴───────────────────────────┴───────────────────────────┘
 ```
 
-
-## Гибкая группировка: графства, районы и почтовые индексы
+## Гибкая группировка: графства, районы и почтовые индексы \{#flexible-grouping-counties-districts-and-postcodes\}
 
 Попробуем сгруппировать по другим полям.
 На этот раз мы вычислим медианную цену по десятилетиям для каждого графства и района:

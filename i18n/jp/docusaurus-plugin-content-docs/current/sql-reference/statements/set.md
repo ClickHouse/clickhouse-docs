@@ -7,7 +7,7 @@ title: 'SET ステートメント'
 doc_type: 'reference'
 ---
 
-# SET ステートメント
+# SET ステートメント {#set-statement}
 
 ```sql
 SET param = value

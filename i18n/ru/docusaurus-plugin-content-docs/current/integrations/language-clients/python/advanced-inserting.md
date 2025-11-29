@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## Вставка данных с помощью ClickHouse Connect: расширенное использование {#inserting-data-with-clickhouse-connect--advanced-usage}
 
-### InsertContexts
+### InsertContexts {#insertcontexts}
 
 ClickHouse Connect выполняет все операции вставки в рамках `InsertContext`. `InsertContext` включает все значения, переданные в качестве аргументов методу клиента `insert`. Кроме того, когда `InsertContext` создаётся впервые, ClickHouse Connect получает типы данных для столбцов, в которые выполняется вставка, что необходимо для эффективных вставок в формате Native. При повторном использовании `InsertContext` для многократных вставок предварительный запрос не требуется, и вставки выполняются быстрее и эффективнее.
 
@@ -80,7 +80,7 @@ ClickHouse Connect предоставляет специализированны
 Массив NumPy является допустимым типом Sequence of Sequences и может использоваться как аргумент `data` для основного метода `insert`, поэтому специализированный метод не требуется.
 :::
 
-#### Вставка из DataFrame Pandas
+#### Вставка из DataFrame Pandas {#pandas-dataframe-insert}
 
 ```python
 import clickhouse_connect
@@ -98,7 +98,7 @@ client.insert_df("users", df)
 ```
 
 
-#### Вставка из таблицы PyArrow
+#### Вставка из таблицы PyArrow {#pyarrow-table-insert}
 
 ```python
 import clickhouse_connect
@@ -116,7 +116,7 @@ client.insert_arrow("users", arrow_table)
 ```
 
 
-#### Вставка DataFrame на основе Arrow (pandas 2.x)
+#### Вставка DataFrame на основе Arrow (pandas 2.x) {#arrow-backed-dataframe-insert-pandas-2}
 
 ```python
 import clickhouse_connect
@@ -124,7 +124,7 @@ import pandas as pd
 
 client = clickhouse_connect.get_client()
 
-# Преобразование в типы данных на основе Arrow для улучшения производительности
+# Преобразование в типы данных на основе Arrow для улучшения производительности {#convert-to-arrow-backed-dtypes-for-better-performance}
 df = pd.DataFrame({
     "id": [1, 2, 3],
     "name": ["Alice", "Bob", "Joe"],
@@ -139,7 +139,7 @@ client.insert_df_arrow("users", df)
 
 При вставке объектов Python `datetime.datetime` в столбцы ClickHouse `DateTime` или `DateTime64` ClickHouse Connect автоматически обрабатывает информацию о часовом поясе. Поскольку ClickHouse хранит все значения `DateTime` как не зависящие от часового пояса Unix-метки времени (секунды или доли секунды с начала эпохи Unix), преобразование часовых поясов автоматически выполняется на стороне клиента при вставке.
 
-#### Объекты datetime с информацией о часовом поясе
+#### Объекты datetime с информацией о часовом поясе {#timezone-aware-datetime-objects}
 
 Если вы вставляете Python-объект `datetime.datetime` с информацией о часовом поясе, ClickHouse Connect автоматически вызовет `.timestamp()` для преобразования его в метку времени Unix, которая корректно учитывает смещение часового пояса. Это означает, что вы можете вставлять объекты datetime из любого часового пояса, и они будут корректно сохранены как эквивалентные им UTC-метки времени.
 
@@ -151,7 +151,7 @@ import pytz
 client = clickhouse_connect.get_client()
 client.command("CREATE TABLE events (event_time DateTime) ENGINE Memory")
 
-# Вставка объектов datetime с информацией о часовом поясе
+# Вставка объектов datetime с информацией о часовом поясе {#insert-timezone-aware-datetime-objects}
 denver_tz = pytz.timezone('America/Denver')
 tokyo_tz = pytz.timezone('Asia/Tokyo')
 
@@ -164,10 +164,10 @@ data = [
 client.insert('events', data, column_names=['event_time'])
 results = client.query("SELECT * from events")
 print(*results.result_rows, sep="\n")
-# Результат:
-# (datetime.datetime(2023, 6, 15, 10, 30),)
-# (datetime.datetime(2023, 6, 15, 16, 30),)
-# (datetime.datetime(2023, 6, 15, 1, 30),)
+# Результат: {#output}
+# (datetime.datetime(2023, 6, 15, 10, 30),) {#datetimedatetime2023-6-15-10-30}
+# (datetime.datetime(2023, 6, 15, 16, 30),) {#datetimedatetime2023-6-15-16-30}
+# (datetime.datetime(2023, 6, 15, 1, 30),) {#datetimedatetime2023-6-15-1-30}
 ```
 
 В этом примере все три объекта datetime представляют разные моменты времени, поскольку используют разные часовые пояса. Каждый из них будет корректно преобразован в соответствующий Unix timestamp и сохранён в ClickHouse.
@@ -177,7 +177,7 @@ print(*results.result_rows, sep="\n")
 :::
 
 
-#### Объекты datetime без часового пояса
+#### Объекты datetime без часового пояса {#timezone-naive-datetime-objects}
 
 Если вы вставляете Python-объект `datetime.datetime` без часового пояса (без `tzinfo`), метод `.timestamp()` будет интерпретировать его как время в локальном часовом поясе системы. Чтобы избежать неоднозначности, рекомендуется:
 
@@ -192,18 +192,18 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# Рекомендуется: всегда используйте datetime с указанием часового пояса
+# Рекомендуется: всегда используйте datetime с указанием часового пояса {#recommended-always-use-timezone-aware-datetimes}
 utc_time = datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)
 client.insert('events', [[utc_time]], column_names=['event_time'])
 
-# Альтернатива: преобразуйте в Unix-время вручную
+# Альтернатива: преобразуйте в Unix-время вручную {#alternative-convert-to-epoch-timestamp-manually}
 naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
 
 
-#### Столбцы DateTime с метаданными часового пояса
+#### Столбцы DateTime с метаданными часового пояса {#datetime-columns-with-timezone-metadata}
 
 Столбцы ClickHouse могут быть объявлены с метаданными часового пояса (например, `DateTime('America/Denver')` или `DateTime64(3, 'Asia/Tokyo')`). Эти метаданные не влияют на то, как данные хранятся (по‑прежнему как метки времени в формате UTC), но определяют часовой пояс, используемый при запросе данных из ClickHouse.
 
@@ -216,24 +216,24 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# Создать таблицу с метаданными часового пояса Лос-Анджелеса
+# Создать таблицу с метаданными часового пояса Лос-Анджелеса {#create-table-with-los-angeles-timezone-metadata}
 client.command("CREATE TABLE events (event_time DateTime('America/Los_Angeles')) ENGINE Memory")
 
-# Вставить время Нью-Йорка (10:30 AM EDT, что соответствует 14:30 UTC)
+# Вставить время Нью-Йорка (10:30 AM EDT, что соответствует 14:30 UTC) {#insert-a-new-york-time-1030-am-edt-which-is-1430-utc}
 ny_tz = pytz.timezone("America/New_York")
 data = ny_tz.localize(datetime(2023, 6, 15, 10, 30, 0))
 client.insert("events", [[data]], column_names=["event_time"])
 
-# При запросе время автоматически преобразуется в часовой пояс Лос-Анджелеса
-# 10:30 AM Нью-Йорк (UTC-4) = 14:30 UTC = 7:30 AM Лос-Анджелес (UTC-7)
+# При запросе время автоматически преобразуется в часовой пояс Лос-Анджелеса {#when-queried-back-the-time-is-automatically-converted-to-los-angeles-timezone}
+# 10:30 AM Нью-Йорк (UTC-4) = 14:30 UTC = 7:30 AM Лос-Анджелес (UTC-7) {#1030-am-new-york-utc-4-1430-utc-730-am-los-angeles-utc-7}
 results = client.query("select * from events")
 print(*results.result_rows, sep="\n")
-# Результат:
-# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
+# Результат: {#output}
+# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
 
 
-## Вставка из файла
+## Вставка из файла {#file-inserts}
 
 Пакет `clickhouse_connect.driver.tools` включает метод `insert_file`, который позволяет вставлять данные напрямую из файловой системы в существующую таблицу ClickHouse. Разбор данных выполняется на стороне сервера ClickHouse. `insert_file` принимает следующие параметры:
 

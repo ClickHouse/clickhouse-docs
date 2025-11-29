@@ -17,7 +17,7 @@ ClickHouse でデータを削除する方法はいくつかあり、それぞれ
 
 以下は、ClickHouse でデータを削除するさまざまな方法の概要です。
 
-## 軽量削除
+## 軽量削除 \{#lightweight-deletes\}
 
 軽量削除では、行は即座に削除済みとしてマークされ、その後のすべての `SELECT` クエリから自動的にフィルタリングされます。これらの削除済み行の物理的な削除は、その後の通常のマージサイクル中に実行されるため、I/O 負荷が小さくなります。その結果、しばらくの間はデータがストレージから実際には削除されず、削除済みとしてマークされているだけの場合があります。データが確実に削除されていることを保証する必要がある場合は、上記のミューテーションコマンドの使用を検討してください。
 
@@ -34,8 +34,7 @@ DELETE FROM posts WHERE toYear(CreationDate) = 2018
 
 [軽量削除](/guides/developer/lightweight-delete)の詳細については、こちらを参照してください。
 
-
-## 削除ミューテーション
+## 削除ミューテーション \{#delete-mutations\}
 
 削除ミューテーションは、例えば `ALTER TABLE ... DELETE` コマンドで実行できます。
 
@@ -48,8 +47,7 @@ ALTER TABLE posts DELETE WHERE toYear(CreationDate) = 2018
 
 [delete mutations](/sql-reference/statements/alter/delete) の詳細を参照してください。
 
-
-## テーブルを空にする
+## テーブルを空にする \{#truncate-table\}
 
 テーブル内のすべてのデータを削除する必要がある場合は、以下の `TRUNCATE TABLE` コマンドを使用します。これは軽量な処理です。
 
@@ -59,8 +57,7 @@ TRUNCATE TABLE posts
 
 [TRUNCATE TABLE](/sql-reference/statements/truncate) の詳細については、こちらを参照してください。
 
-
-## パーティションの削除
+## パーティションの削除 \{#drop-partition\}
 
 データに独自のパーティションキーを指定している場合、パーティションを効率的に削除できます。高カーディナリティなパーティション分割は避けてください。
 
@@ -70,7 +67,6 @@ ALTER TABLE posts (DROP PARTITION '2008')
 
 [DROP PARTITION](/sql-reference/statements/alter/partition) の詳細については、こちらを参照してください。
 
-
 ## 参考情報 \{#more-resources\}
 
-- [ClickHouse での更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* [ClickHouse での更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

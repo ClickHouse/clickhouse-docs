@@ -28,7 +28,7 @@ ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 假设有如下 SQL 转储文件：
 

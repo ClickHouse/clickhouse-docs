@@ -26,9 +26,9 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次の内容の `football.tsv` という tsv ファイルを使用します。
 
@@ -60,7 +60,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `TabSeparatedWithNamesAndTypes` フォーマットを使用してデータを読み込みます。
 

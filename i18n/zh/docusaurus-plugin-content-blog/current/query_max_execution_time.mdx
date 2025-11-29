@@ -9,14 +9,13 @@ tags: ['Managing Cloud', 'Settings']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何为我的查询设置执行时间限制？
 
-## 回答
+## 答案 \{#answer\}
 
-可以使用 `max_execution_time` 设置项：
+可以使用 [`max_execution_time`](/docs/operations/settings/settings#max_execution_time) 设置项（以秒为单位）：
 
 ```sql
 clickhouse-cloud :) SELECT 1 SETTINGS max_execution_time=0.0001
@@ -27,8 +26,8 @@ SETTINGS max_execution_time = 0.0001
 Query id: 3db752a7-b94f-4456-b3b9-ccbf290d1394
 
 
-结果集包含 0 行。耗时:0.113 秒。
+0 rows in set. Elapsed: 0.113 sec.
 
-收到来自服务器的异常(版本 23.5.1):
-Code: 159. DB::Exception: 来自 service.aws.clickhouse.cloud:9440。DB::Exception: 超时:已用时 0.000557862 秒,上限为 0.0001 秒。(TIMEOUT_EXCEEDED)
+Received exception from server (version 23.5.1):
+Code: 159. DB::Exception: Received from service.aws.clickhouse.cloud:9440. DB::Exception: Timeout exceeded: elapsed 0.000557862 seconds, maximum: 0.0001. (TIMEOUT_EXCEEDED)
 ```

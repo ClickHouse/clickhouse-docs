@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['загрузка локальных файлов в ClickHouse', 'импорт локальных файлов в ClickHouse', 'загрузка файлов через clickhouse-client']
 ---
 
-# Вставка локальных файлов
+# Вставка локальных файлов {#insert-local-files}
 
 Вы можете использовать `clickhouse-client` для потоковой загрузки локальных файлов в сервис ClickHouse. Это позволяет предварительно обрабатывать данные с помощью множества мощных и удобных функций ClickHouse. Рассмотрим пример...
 
@@ -78,7 +78,6 @@ LIMIT 7
 ```
 
 Результат:
-
 
 ```response
 │  488 │ comment │ mynameishere │ 2007-02-22 14:48:18 │ «Жаль. Javascript-в-браузере и Ajax — это оба грязные хаки, которые заставляют программистов делать всевозможные постыдные вещи. И результатом становятся кривоватые HTML‑фокусы. Java, при всех своих недостатках, достаточно чиста, когда запускается в среде апплета. У неё есть все преимущества перед JITBAJAX, за исключением проблем с установкой и тяжёлого процесса загрузки. Yahoo games, похоже, едва ли не единственная успешная история с апплетами. Конечно, раньше сколько-нибудь сложные апплеты обычно были слишком большими для dial‑up‑аккаунтов, которые были у людей. Сейчас, по крайней мере, это уже не так.» │ [454927] │ ['It','s','too','bad','Javascript','in','the','browser','and','Ajax','are','both','nasty','hacks','that','force','programmers','to','do','all','sorts','of','shameful','things','And','the','result','is','wanky','html','tricks','Java','for','its','faults','is','fairly','clean','when','run','in','the','applet','environment','It','has','every','superiority','over','JITBAJAX','except','for','install','issues','and','a','chunky','load','process','Yahoo','games','seems','like','just','about','the','only','applet','success','story','Of','course','back','in','the','day','non','trivial','Applets','tended','to','be','too','large','for','the','dial','up','accounts','people','had','At','least','that','is','changed'] │

@@ -9,7 +9,7 @@ doc_type: '指南'
 
 
 
-# ClickHouse Playground
+# ClickHouse Playground {#clickhouse-playground}
 
 [ClickHouse Playground](https://sql.clickhouse.com) 允许用户无需自行搭建服务器或集群，即可通过即时运行查询来试用和探索 ClickHouse。
 Playground 中提供了若干示例数据集。
@@ -40,7 +40,7 @@ Playground 中提供了若干示例数据集。
 
 
 
-## 示例
+## 示例 {#examples}
 
 使用 `curl` 访问 HTTPS 端点的示例：
 

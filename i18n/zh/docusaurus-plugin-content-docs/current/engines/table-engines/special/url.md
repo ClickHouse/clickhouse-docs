@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# URL 表引擎
+# URL 表引擎 {#url-table-engine}
 
 对远程 HTTP/HTTPS 服务器进行数据查询和写入。该引擎类似于 [File](../../../engines/table-engines/special/file.md) 引擎。
 
@@ -52,7 +52,7 @@ doc_type: 'reference'
 
 
 
-## 示例
+## 示例 {#example}
 
 **1.** 在服务器上创建一个 `url_engine_table` 表：
 

@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedAvg
+## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
 
 返回时间序列在时间点 `t` 处的指数加权平滑移动平均值。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 响应：
-
 
 ```sql
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

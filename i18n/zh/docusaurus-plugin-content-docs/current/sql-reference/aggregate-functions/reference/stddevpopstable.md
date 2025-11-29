@@ -6,7 +6,7 @@ title: 'stddevPopStable'
 doc_type: 'reference'
 ---
 
-# stddevPopStable
+# stddevPopStable {#stddevpopstable}
 
 结果等于 [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md) 的平方根。与 [`stddevPop`](../reference/stddevpop.md) 不同，该函数使用数值更稳定的算法。它执行速度较慢，但计算误差更小。
 

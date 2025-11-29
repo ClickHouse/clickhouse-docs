@@ -6,13 +6,11 @@ title: 'stochasticLinearRegression'
 doc_type: 'reference'
 ---
 
-
-
-# stochasticLinearRegression
+# stochasticLinearRegression {#agg&#95;functions&#95;stochasticlinearregression&#95;parameters}
 
 此函数实现随机线性回归。它支持自定义学习率、L2 正则化系数、mini-batch 大小等参数，并提供多种权重更新方法（[Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam)（默认）、[simple SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)、[Momentum](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum) 和 [Nesterov](https://mipt.ru/upload/medialibrary/d7e/41-91.pdf)）。
 
-### Parameters
+### Parameters {#parameters}
 
 有 4 个可自定义参数。它们按顺序传递给函数，但不必传入全部四个参数；未显式传入的将使用默认值。不过，要获得较好的模型效果，通常需要对这些参数进行调优。
 
@@ -25,7 +23,7 @@ stochasticLinearRegression(0.00001, 0.1, 15, 'Adam')
 3. `mini-batch size` 用于设置在执行一次梯度下降步骤时，要对多少个元素计算梯度并求和。纯随机梯度下降只使用一个元素，但使用较小的 batch（约 10 个元素）可以使梯度更新更加稳定。默认值为 `15`。
 4. `method for updating weights`（用于更新权重的方法），包括：`Adam`（默认）、`SGD`、`Momentum` 和 `Nesterov`。`Momentum` 和 `Nesterov` 需要稍多的计算和内存，但在随机梯度方法的收敛速度和稳定性方面通常更有优势。
 
-### 用法
+### 用法 {#usage}
 
 `stochasticLinearRegression` 的使用包含两个步骤：拟合模型以及在新数据上进行预测。为了拟合模型并保存其状态以供后续使用，我们使用 `-State` 组合器，它会保存状态（例如模型权重）。
 为了进行预测，我们使用函数 [evalMLMethod](/sql-reference/functions/machine-learning-functions#evalmlmethod)，该函数以状态作为参数，并接收用于预测的特征。
@@ -65,7 +63,7 @@ evalMLMethod(model, param1, param2) FROM test_data
 
 `test_data` 是一个与 `train_data` 类似的表，但可能不包含目标值。
 
-### 注意事项
+### 注意事项 {#notes}
 
 1. 为了合并两个模型，用户可以创建如下查询：
    `sql  SELECT state1 + state2 FROM your_models`
@@ -77,6 +75,5 @@ evalMLMethod(model, param1, param2) FROM test_data
 
 **另请参阅**
 
-
-- [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
-- [线性回归与逻辑回归的区别](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)
+* [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
+* [线性回归与逻辑回归的区别](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)

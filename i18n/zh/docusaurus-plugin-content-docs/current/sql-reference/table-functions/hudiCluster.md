@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# hudiCluster 表函数
+# hudiCluster 表函数 {#hudicluster-table-function}
 
 这是对 [hudi](sql-reference/table-functions/hudi.md) 表函数的扩展。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

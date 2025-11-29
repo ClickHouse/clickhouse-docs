@@ -11,10 +11,10 @@ keywords: ['отзывы Amazon', 'датасет с отзывами покуп
 
 :::note
 Приведённые ниже запросы выполнялись на **Production**-инстансе ClickHouse Cloud. Для получения дополнительной информации см. раздел
-["Playground specifications"](/getting-started/playground#specifications).
+[&quot;Playground specifications&quot;](/getting-started/playground#specifications).
 :::
 
-## Загрузка набора данных
+## Загрузка набора данных {#loading-the-dataset}
 
 1. Не загружая данные в ClickHouse, мы можем обращаться к ним напрямую. Давайте выберем несколько строк, чтобы посмотреть, как они выглядят:
 
@@ -122,7 +122,6 @@ FROM s3Cluster('default',
 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet')
 ```
 
-
 :::tip
 В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера... или используйте табличную функцию `s3` (вместо `s3Cluster`), если кластера у вас нет.
 :::
@@ -152,8 +151,7 @@ ORDER BY size DESC
 
 Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
 
-
-## Примеры запросов
+## Примеры запросов {#example-queries}
 
 7. Давайте выполним несколько запросов. Ниже приведены 10 наиболее полезных отзывов в этом наборе данных:
 

@@ -34,9 +34,9 @@ doc_type: 'guide'
 
 
 
-## Настройки и правила экранирования
+## Настройки и правила экранирования {#settings-and-escaping-rules}
 
-### format&#95;template&#95;row
+### format&#95;template&#95;row {#format_template_row}
 
 Настройка `format_template_row` задаёт путь к файлу, который содержит шаблоны формата для строк со следующим синтаксисом:
 
@@ -88,11 +88,11 @@ doc_type: 'guide'
 Поисковая фраза: 'дизайн интерьера ванной комнаты', количество: 2166, цена объявления: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter
+### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
 
 Параметр `format_template_rows_between_delimiter` задаёт разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию).
 
-### format&#95;template&#95;resultset
+### format&#95;template&#95;resultset {#format_template_resultset}
 
 Параметр `format_template_resultset` указывает путь к файлу, содержащему форматную строку для результирующего набора данных.
 
@@ -135,11 +135,11 @@ doc_type: 'guide'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
 Рассмотрим два примера того, как можно использовать формат `Template`: сначала для выборки данных, а затем для вставки данных.
 
-### Выборка данных
+### Выборка данных {#selecting-data}
 
 ```sql
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
@@ -188,7 +188,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 </html>
 ```
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 ```text
 Заголовок
@@ -214,7 +214,7 @@ FORMAT Template
 `PageViews`, `UserID`, `Duration` и `Sign` внутри плейсхолдеров — это имена столбцов в таблице. Значения после `Useless field` в строках и после `\nTotal rows:` в суффиксе будут игнорироваться.
 Все разделители во входных данных должны в точности совпадать с разделителями в указанных строках формата.
 
-### Встроенная спецификация
+### Встроенная спецификация {#in-line-specification}
 
 Устали вручную форматировать таблицы Markdown? В этом примере мы рассмотрим, как можно использовать формат `Template` и настройки встроенной спецификации, чтобы решить простую задачу — выполнить `SELECT` по именам некоторых форматов ClickHouse из таблицы `system.formats` и отформатировать их как таблицу в формате Markdown. Это можно легко сделать, используя формат `Template` и настройки `format_template_row_format` и `format_template_resultset_format`.
 

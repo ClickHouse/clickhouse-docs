@@ -6,7 +6,7 @@ title: 'groupArrayLast'
 doc_type: 'reference'
 ---
 
-# groupArrayLast
+# groupArrayLast {#grouparraylast}
 
 Синтаксис: `groupArrayLast(max_size)(x)`
 

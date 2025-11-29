@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-# 内存超额分配（memory overcommit）
+# 内存超额分配（memory overcommit） {#memory-overcommit}
 
 内存超额分配是一种实验性机制，旨在为查询设置更灵活的内存限制。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## 用户超量使用跟踪器
+## 用户超量使用跟踪器 {#user-overcommit-tracker}
 
 用户超量使用跟踪器会在用户的查询列表中找到超量使用比例最大的查询。
 查询的超量使用比例是通过已分配字节数除以 `memory_overcommit_ratio_denominator_for_user` 设置的值来计算的。

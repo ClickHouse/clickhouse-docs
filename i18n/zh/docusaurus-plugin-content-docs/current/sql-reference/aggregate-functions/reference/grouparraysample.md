@@ -6,7 +6,7 @@ title: 'groupArraySample'
 doc_type: 'reference'
 ---
 
-# groupArraySample
+# groupArraySample {#grouparraysample}
 
 创建一个由参数值样本组成的数组。结果数组的大小限制为 `max_size` 个元素。参数值会被随机选取并添加到数组中。
 

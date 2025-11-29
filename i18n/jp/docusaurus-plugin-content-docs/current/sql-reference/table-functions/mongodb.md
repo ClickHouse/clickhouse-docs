@@ -9,20 +9,20 @@ doc_type: 'reference'
 
 
 
-# mongodb テーブル関数
+# mongodb テーブル関数 {#mongodb-table-function}
 
 リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
 
-## 引数
+## 引数 {#arguments}
 
 | 引数            | 説明                                              |
 | ------------- | ----------------------------------------------- |
@@ -64,7 +64,7 @@ mongodb(uri, collection, structure[, oid_columns])
 
 
 
-## 例
+## 例 {#examples}
 
 MongoDB データベース `test` に `my_collection` という名前のコレクションが定義されており、そこにいくつかのドキュメントを挿入するとします。
 

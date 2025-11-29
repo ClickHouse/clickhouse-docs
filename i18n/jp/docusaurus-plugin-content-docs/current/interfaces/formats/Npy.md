@@ -44,9 +44,9 @@ NumPy のファイル形式は、数値データの配列を効率的に保存�
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
-### Python を使って配列を .npy 形式で保存する
+### Python を使って配列を .npy 形式で保存する {#saving-an-array-in-npy-format-using-python}
 
 ```Python
 import numpy as np
@@ -54,7 +54,7 @@ arr = np.array([[[1],[2],[3]],[[4],[5],[6]]])
 np.save('example_array.npy', arr)
 ```
 
-### ClickHouse で NumPy ファイルを読み込む
+### ClickHouse で NumPy ファイルを読み込む {#reading-a-numpy-file-in-clickhouse}
 
 ```sql title="Query"
 SELECT *
@@ -68,7 +68,7 @@ FROM file('example_array.npy', Npy)
 └───────────────┘
 ```
 
-### データの選択
+### データの選択 {#selecting-data}
 
 `clickhouse-client` で次のコマンドを実行すると、ClickHouse のテーブルからデータを抽出し、Npy 形式のファイルとして保存できます。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# s3Cluster テーブル関数
+# s3Cluster テーブル関数 {#s3cluster-table-function}
 
 これは [s3](sql-reference/table-functions/s3.md) テーブル関数の拡張です。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
@@ -57,7 +57,7 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 
 
-## 例
+## 例 {#examples}
 
 次の例では、`cluster_simple` クラスター内のすべてのノードを使用して、`/root/data/clickhouse` および `/root/data/database/` ディレクトリ内のすべてのファイルからデータを選択します。
 

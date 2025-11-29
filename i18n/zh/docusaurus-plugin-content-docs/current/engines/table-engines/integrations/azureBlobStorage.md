@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# AzureBlobStorage 表引擎
+# AzureBlobStorage 表引擎 {#azureblobstorage-table-engine}
 
 该引擎用于与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统集成。
 
 
 
-## 创建表
+## 创建表 {#create-table}
 
 ```sql
 CREATE TABLE azure_blob_storage_table (name String, value UInt32)
@@ -24,7 +24,7 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-### 引擎参数
+### 引擎参数 {#engine-parameters}
 
 * `endpoint` — 带有容器和前缀的 Azure Blob Storage 端点 URL。如所用的认证方式需要，还可以选择在其中包含 account&#95;name。（`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`）或者也可以通过 `storage_account_url`、`account_name` 和 `container` 单独提供这些参数。要指定前缀时，应使用 `endpoint`。
 * `endpoint_contains_account_name` - 此标志用于指定 `endpoint` 是否包含 `account_name`，因为只有某些认证方式才需要它。（默认值：true）
@@ -70,7 +70,7 @@ SELECT * FROM test_table;
 
 
 
-## 身份验证
+## 身份验证 {#authentication}
 
 当前有 3 种身份验证方式：
 
@@ -78,7 +78,7 @@ SELECT * FROM test_table;
 * `SAS Token` - 可以通过提供 `endpoint`、`connection_string` 或 `storage_account_url` 进行身份验证。通过 URL 中是否包含 `?` 来识别。示例参见 [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens)。
 * `Workload Identity` - 可以通过提供 `endpoint` 或 `storage_account_url` 进行身份验证。如果在配置中设置了 `use_workload_identity` 参数，则会使用 [workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications) 进行身份验证。
 
-### 数据缓存
+### 数据缓存 {#data-cache}
 
 `Azure` 表引擎支持在本地磁盘上进行数据缓存。
 有关文件系统缓存配置选项及用法，请参见本[节](/operations/storing-data.md/#using-local-cache)。
@@ -107,13 +107,13 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 2. 复用 ClickHouse `storage_configuration` 部分中的缓存配置（以及相应的缓存存储），[见此处](/operations/storing-data.md/#using-local-cache)
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` —— 可选。在大多数情况下不需要分区键；即便需要，一般也不需要比按月更细的分区键。分区不会加速查询（与 ORDER BY 表达式相反）。切勿使用粒度过细的分区。不要按客户端标识符或名称对数据进行分区（相反，应将客户端标识符或名称作为 ORDER BY 表达式中的第一列）。
 
 对于按月分区，使用 `toYYYYMM(date_column)` 表达式，其中 `date_column` 是类型为 [Date](/sql-reference/data-types/date.md) 的日期列。这里的分区名称采用 `"YYYYMM"` 格式。
 
-#### 分区策略
+#### 分区策略 {#partition-strategy}
 
 `WILDCARD`（默认）：将文件路径中的 `{_partition_id}` 通配符替换为实际的分区键。不支持读取。
 

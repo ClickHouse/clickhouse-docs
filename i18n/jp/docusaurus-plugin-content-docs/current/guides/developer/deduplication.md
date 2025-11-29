@@ -12,7 +12,7 @@ import deduplication from '@site/static/images/guides/developer/de_duplication.p
 import Image from '@theme/IdealImage';
 
 
-# 重複排除の戦略
+# 重複排除の戦略 {#deduplication-strategies}
 
 **重複排除（Deduplication）** とは、***データセットから重複した行を削除する*** プロセスを指します。OLTP データベースでは、各行に一意のプライマリキーがあるため、これは容易に実現できますが、その代わり挿入処理は遅くなります。挿入される各行について、まず既存行の検索が必要となり、見つかった場合はそれを置き換える必要があるためです。
 
@@ -44,7 +44,7 @@ ClickHouse では、次のテーブルエンジンを用いて重複排除が実
 
 
 
-## Upsert に ReplacingMergeTree を使用する
+## Upsert に ReplacingMergeTree を使用する {#using-replacingmergetree-for-upserts}
 
 テーブルに Hacker News のコメントが格納されており、`views` 列にコメントの閲覧回数が入っているという、シンプルな例を考えます。記事が公開されたときに新しい行を挿入し、その後は値が増加していれば 1 日に 1 回、その時点での合計閲覧数を持つ新しい行をアップサートするものとします。
 
@@ -116,7 +116,7 @@ FINAL
 取得するための、より良い方法について説明します。
 :::
 
-### FINAL の使用を避ける
+### FINAL の使用を避ける {#avoiding-final}
 
 2 つの一意な行それぞれについて、再度 `views` カラムを更新してみましょう。
 
@@ -173,7 +173,7 @@ GROUP BY (id, author, comment)
 [Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)では、この例をさらに掘り下げ、`ReplacingMergeTree` で `version` 列を使用する方法などについて解説しています。
 
 
-## CollapsingMergeTree を使った頻繁に更新されるカラムの処理
+## CollapsingMergeTree を使った頻繁に更新されるカラムの処理 {#using-collapsingmergetree-for-updating-columns-frequently}
 
 カラムの更新は、既存の行を削除して新しい値を持つ行に置き換える処理です。すでに見てきたとおり、この種のミューテーションは ClickHouse ではマージ処理のタイミングで「最終的に」実行されます。更新すべき行が大量にある場合、`ALTER TABLE..UPDATE` を使うよりも、既存データと並べて新しいデータを挿入してしまう方が、実際には効率的なことがあります。たとえば、データが古いか新しいかを示すカラムを追加できます。そして、実はこの挙動を非常にうまく実装しているテーブルエンジンが存在し、古いデータを自動的に削除してくれます。どのように動作するかを見ていきましょう。
 
@@ -259,7 +259,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 :::
 
 
-## 複数スレッドからのリアルタイム更新
+## 複数スレッドからのリアルタイム更新 {#real-time-updates-from-multiple-threads}
 
 `CollapsingMergeTree` テーブルでは、行は sign 列を使って互いに打ち消し合い、行の状態は最後に挿入された行によって決まります。しかし、複数のスレッドから行を挿入していて、行が順不同で挿入される可能性がある場合には問題になります。このような状況では「最後」の行を使う方法は通用しません。
 

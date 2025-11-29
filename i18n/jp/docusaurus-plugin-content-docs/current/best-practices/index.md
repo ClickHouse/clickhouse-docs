@@ -7,8 +7,7 @@ description: 'ClickHouse のベストプラクティスセクション用ラン�
 doc_type: 'landing-page'
 ---
 
-import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-
+import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
 # ClickHouse におけるベストプラクティス {#best-practices-in-clickhouse}
 

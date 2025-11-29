@@ -12,7 +12,7 @@ import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate
 import Image from '@theme/IdealImage';
 
 
-# SnowflakeからClickHouseへの移行
+# SnowflakeからClickHouseへの移行 {#migrate-from-snowflake-to-clickhouse}
 
 > 本ガイドでは、SnowflakeからClickHouseへデータを移行する方法について説明します。
 
@@ -21,7 +21,7 @@ SnowflakeとClickHouse間でデータを移行するには、転送用の中間�
 <VerticalStepper headerLevel="h2">
 
 
-## Snowflake からデータをエクスポートする
+## Snowflake からデータをエクスポートする {#1-exporting-data-from-snowflake}
 
 <Image img={migrate_snowflake_clickhouse} size="md" alt="Snowflake から ClickHouse への移行" />
 
@@ -59,7 +59,7 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 約 5TB のデータセットで最大ファイルサイズが 150MB、かつ同じ AWS `us-east-1` リージョン内にある 2X-Large Snowflake ウェアハウスを使用する場合、S3 バケットへのデータのコピーには約 30 分かかります。
 
 
-## ClickHouse へのインポート
+## ClickHouse へのインポート {#2-importing-to-clickhouse}
 
 データが中間オブジェクトストレージにステージングされたら、以下のように [s3 テーブル関数](/sql-reference/table-functions/s3) などの ClickHouse の関数を使用して、テーブルにデータを挿入できます。
 

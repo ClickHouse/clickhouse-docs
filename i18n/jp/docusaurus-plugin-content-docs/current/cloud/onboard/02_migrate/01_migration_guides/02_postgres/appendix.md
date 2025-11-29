@@ -129,7 +129,7 @@ ClickHouse は、[限定された構成](/guides/developer/transactional) の下
 
 
 
-## 圧縮
+## 圧縮 {#compression}
 
 ClickHouse のカラム指向ストレージでは、Postgres と比較して圧縮効率が大幅に優れることがよくあります。以下は、両方のデータベースで Stack Overflow の全テーブルを格納した場合のストレージ要件を比較した例です。
 

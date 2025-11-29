@@ -10,14 +10,13 @@ keywords: ['クエリキャッシュ']
 
 {/* 切り捨て */}
 
-
 ## クエリでクエリキャッシュが使用されているかを確認するにはどうすればよいですか？ \{#how-can-i-check-that-query-cache-is-being-used-in-my-query\}
 
 [clickhouse client](https://clickhouse.com/docs/interfaces/cli) と ClickHouse Cloud サービスを使用した次の例を参照します。
 
 `query_cache_test` テーブルを作成します
 
-## clickhouse client の使い方
+## clickhouse client の使い方 \{#using-clickhouse-client\}
 
 ```sql
 clickhouse-cloud :) CREATE TABLE query_cache_test (name String, age UInt8) ENGINE =MergeTree ORDER BY name
@@ -68,7 +67,6 @@ Ok.
 ```
 
 クエリキャッシュの利用を要求するクエリを実行します（クエリの末尾に `SETTINGS use_query_cache=true` を追加します）:
-
 
 ```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
@@ -153,8 +151,7 @@ Ok.
 
 2回目の実行では、既に保存されていたエントリが見つかったため（`Entry found for query SELECT...`）、クエリはクエリキャッシュを利用しました。
 
-
-## SQL だけを使用する
+## SQL だけを使用する \{#using-just-sql\}
 
 `clickhouse client` のトレースログを確認せず、SQL コマンドを発行するだけでも、
 

@@ -27,9 +27,9 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次の TSV ファイル `football.tsv` を使用します:
 
@@ -59,7 +59,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `TabSeparatedRaw` 形式でデータを読み込みます。
 

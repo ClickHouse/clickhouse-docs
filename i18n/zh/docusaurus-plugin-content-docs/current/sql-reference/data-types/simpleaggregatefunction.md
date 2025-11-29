@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# SimpleAggregateFunction 类型
+# SimpleAggregateFunction 类型 {#simpleaggregatefunction-type}
 
 
 
@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 SimpleAggregateFunction(聚合函数名, 参数类型...)
@@ -79,7 +79,7 @@ SimpleAggregateFunction(聚合函数名, 参数类型...)
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
-## 相关内容
+## 相关内容 {#related-content}
 
 * 博文：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - 博文：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * [AggregateFunction](/sql-reference/data-types/aggregatefunction) 类型。

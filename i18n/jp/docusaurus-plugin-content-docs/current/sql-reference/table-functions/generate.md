@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# generateRandom テーブル関数
+# generateRandom テーブル関数 {#generaterandom-table-function}
 
 指定したスキーマでランダムなデータを生成します。
 そのデータを使用してテスト用テーブルを埋めることができます。
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
@@ -42,7 +42,7 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;

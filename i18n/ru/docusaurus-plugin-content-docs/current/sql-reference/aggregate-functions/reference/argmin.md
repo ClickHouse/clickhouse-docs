@@ -8,7 +8,7 @@ title: 'argMin'
 doc_type: 'reference'
 ---
 
-# argMin
+# argMin {#argmin}
 
 Вычисляет значение `arg` для минимального значения `val`. Если имеется несколько строк с одинаковым значением `val`, являющимся минимальным, то выбор возвращаемого связанного значения `arg` не детерминирован.
 
@@ -58,7 +58,6 @@ SELECT argMin(user, salary) FROM salary
 ```
 
 **Расширенный пример**
-
 
 ```sql
 CREATE TABLE test

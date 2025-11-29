@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# CrewAI と ClickHouse MCP Server を使用して AI エージェントを構築する方法
+# CrewAI と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server}
 
 このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [CrewAI](https://docs.crewai.com/) ベースの AI エージェントを、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って構築する方法を解説します。
 

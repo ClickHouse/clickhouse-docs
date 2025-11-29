@@ -9,7 +9,7 @@ doc_type: "reference"
 
 
 
-# Replicated
+# Replicated {#replicated}
 
 このエンジンは [Atomic](../../engines/database-engines/atomic.md) エンジンをベースとしています。ZooKeeper に書き込まれる DDL ログを介したメタデータのレプリケーションをサポートしており、特定のデータベースに対するすべてのレプリカで実行されます。
 
@@ -17,7 +17,7 @@ doc_type: "reference"
 
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -54,7 +54,7 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 3 つのホストを持つクラスターの作成:
 
@@ -153,7 +153,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 ```
 
 
-## 設定
+## 設定 {#settings}
 
 サポートされている設定は次のとおりです:
 

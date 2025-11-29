@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MySQL データベースエンジン
+# MySQL データベースエンジン {#mysql-database-engine}
 
 <CloudNotSupportedBadge />
 
@@ -26,7 +26,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -65,7 +65,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 
 
-## グローバル変数のサポート
+## グローバル変数のサポート {#global-variables-support}
 
 互換性を高めるために、グローバル変数を MySQL 互換の `@@identifier` 形式で参照できます。
 
@@ -85,7 +85,7 @@ SELECT @@version;
 ```
 
 
-## 使用例
+## 使用例 {#examples-of-use}
 
 MySQL のテーブル:
 

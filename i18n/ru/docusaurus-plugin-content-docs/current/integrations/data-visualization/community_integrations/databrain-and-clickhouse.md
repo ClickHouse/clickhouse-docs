@@ -8,7 +8,7 @@ title: 'Подключение Databrain к ClickHouse'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import databrain_01 from '@site/static/images/integrations/data-visualization/databrain_01.png';
 import databrain_02 from '@site/static/images/integrations/data-visualization/databrain_02.png';
 import databrain_03 from '@site/static/images/integrations/data-visualization/databrain_03.png';
@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключение Databrain к ClickHouse
+# Подключение Databrain к ClickHouse {#connecting-databrain-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -41,13 +41,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## Шаги по подключению Databrain к ClickHouse
+## Шаги по подключению Databrain к ClickHouse {#steps-to-connect-databrain-to-clickhouse}
 
-### 1. Соберите данные для подключения
+### 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Разрешите IP-адреса Databrain (если требуется)
+### 2. Разрешите IP-адреса Databrain (если требуется) {#2-allow-databrain-ip-addresses}
 
 Если в вашем экземпляре ClickHouse включена фильтрация по IP, вам нужно добавить IP-адреса Databrain в список разрешённых.
 
@@ -61,7 +61,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Обратитесь к [документации по добавлению IP-адресов Databrain в список разрешённых](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip) для получения актуального списка IP-адресов, которые нужно разрешить.
 :::
 
-### 3. Добавьте ClickHouse как источник данных в Databrain
+### 3. Добавьте ClickHouse как источник данных в Databrain {#3-add-clickhouse-as-a-data-source}
 
 1. Войдите в свою учётную запись Databrain и перейдите в рабочее пространство, в котором вы хотите добавить источник данных.
 
@@ -88,7 +88,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 7. После успешного подключения нажмите **Save** или **Connect**, чтобы добавить источник данных.
 
-### 4. Настройте пользовательские права
+### 4. Настройте пользовательские права {#4-configure-user-permissions}
 
 Убедитесь, что у пользователя ClickHouse, с которым вы выполняете подключение, есть необходимые права доступа:
 

@@ -17,7 +17,7 @@ import dynamodb_map_columns from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# DynamoDB から ClickHouse への CDC
+# DynamoDB から ClickHouse への CDC {#cdc-from-dynamodb-to-clickhouse}
 
 <ExperimentalBadge/>
 
@@ -50,9 +50,9 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. スナップショットを ClickHouse に読み込む
+## 3. スナップショットを ClickHouse に読み込む {#3-load-the-snapshot-into-clickhouse}
 
-### 必要なテーブルを作成する
+### 必要なテーブルを作成する {#create-necessary-tables}
 
 DynamoDB からのスナップショットデータはおおよそ次のようになります:
 
@@ -115,7 +115,7 @@ ORDER BY id;
 * テーブルはパーティションキーをソートキー（`ORDER BY` で指定）として使用する必要があります。
   * 同じソートキーを持つ行は、`version` カラムに基づいて重複排除されます。
 
-### スナップショット用 ClickPipe の作成
+### スナップショット用 ClickPipe の作成 {#create-the-snapshot-clickpipe}
 
 ここまでで、S3 から ClickHouse へスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage)に従いますが、次の設定を使用してください。
 
@@ -146,7 +146,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 
 
-## 5. クリーンアップ（オプション）
+## 5. クリーンアップ（オプション） {#5-cleanup-optional}
 
 スナップショット ClickPipe の処理が完了したら、スナップショットテーブルとマテリアライズドビューを削除できます。
 

@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MaterializedPostgreSQL
+# MaterializedPostgreSQL {#materializedpostgresql}
 
 <ExperimentalBadge />
 
@@ -35,7 +35,7 @@ SET allow_experimental_database_materialized_postgresql=1
 :::
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -50,7 +50,7 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `password` — ユーザーのパスワード。
 
 
-## 使用例
+## 使用例 {#example-of-use}
 
 ```sql
 CREATE DATABASE postgres_db
@@ -66,7 +66,7 @@ SELECT * FROM postgresql_db.postgres_table;
 ```
 
 
-## レプリケーションへの新しいテーブルの動的追加
+## レプリケーションへの新しいテーブルの動的追加 {#dynamically-adding-table-to-replication}
 
 `MaterializedPostgreSQL` データベースが作成された後は、対応する PostgreSQL データベース内の新しいテーブルは自動的には検出されません。こうしたテーブルは手動で追加できます。
 
@@ -79,7 +79,7 @@ ATTACH TABLE postgres_database.new_table;
 :::
 
 
-## レプリケーションからテーブルを動的に除外する
+## レプリケーションからテーブルを動的に除外する {#dynamically-removing-table-from-replication}
 
 特定のテーブルをレプリケーション対象から除外することができます。
 
@@ -88,7 +88,7 @@ DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
 
 
-## PostgreSQL スキーマ
+## PostgreSQL スキーマ {#schema}
 
 PostgreSQL の [スキーマ](https://www.postgresql.org/docs/9.1/ddl-schemas.html) は、3 通りの方法で設定できます（バージョン 21.12 以降）。
 
@@ -136,7 +136,7 @@ SELECT * FROM database1.`schema2.table2`;
 警告: このケースでは、テーブル名にピリオド（.）を含めることはできません。
 
 
-## 要件
+## 要件 {#requirements}
 
 1. PostgreSQL の設定ファイルにおいて、[wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 設定は `logical` にし、`max_replication_slots` パラメータは少なくとも `2` に設定する必要があります。
 
@@ -172,9 +172,9 @@ WHERE oid = 'postgres_table'::regclass;
 :::
 
 
-## 設定
+## 設定 {#settings}
 
-### `materialized_postgresql_tables_list`
+### `materialized_postgresql_tables_list` {#materialized-postgresql-tables-list}
 
 [MaterializedPostgreSQL](../../engines/database-engines/materialized-postgresql.md) データベースエンジンによって複製される、PostgreSQL データベースのテーブルのコンマ区切りリストを設定します。
 
@@ -186,15 +186,15 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 
 デフォルト値: 空リスト。空リストの場合、PostgreSQL データベース全体がレプリケートされます。
 
-### `materialized_postgresql_schema`
+### `materialized_postgresql_schema` {#materialized-postgresql-schema}
 
 デフォルト値: 空文字列（デフォルトスキーマが使用されます）。
 
-### `materialized_postgresql_schema_list`
+### `materialized_postgresql_schema_list` {#materialized-postgresql-schema-list}
 
 デフォルト値: 空リスト（デフォルトスキーマが使用されます）。
 
-### `materialized_postgresql_max_block_size`
+### `materialized_postgresql_max_block_size` {#materialized-postgresql-max-block-size}
 
 PostgreSQL データベースのテーブルにデータをフラッシュする前に、メモリ内に蓄積する行数を設定します。
 
@@ -204,11 +204,11 @@ PostgreSQL データベースのテーブルにデータをフラッシュする
 
 デフォルト値: `65536`。
 
-### `materialized_postgresql_replication_slot`
+### `materialized_postgresql_replication_slot` {#materialized-postgresql-replication-slot}
 
 ユーザーが作成したレプリケーションスロットです。`materialized_postgresql_snapshot` と一緒に使用する必要があります。
 
-### `materialized_postgresql_snapshot`
+### `materialized_postgresql_snapshot` {#materialized-postgresql-snapshot}
 
 スナップショットを識別する文字列であり、このスナップショットから [PostgreSQL テーブルの初回ダンプ](../../engines/database-engines/materialized-postgresql.md) が実行されます。`materialized_postgresql_replication_slot` と一緒に使用する必要があります。
 
@@ -226,7 +226,7 @@ SELECT * FROM database1.table1;
 ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <新しいサイズ>;
 ```
 
-### `materialized_postgresql_use_unique_replication_consumer_identifier`
+### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 
 レプリケーション用に一意のレプリケーションコンシューマ識別子を使用します。デフォルト: `0`。
 `1` に設定すると、同じ `PostgreSQL` テーブルを参照する複数の `MaterializedPostgreSQL` テーブルを設定できるようになります。

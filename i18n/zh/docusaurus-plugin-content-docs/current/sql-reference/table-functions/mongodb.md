@@ -9,20 +9,20 @@ doc_type: 'reference'
 
 
 
-# MongoDB 表函数
+# MongoDB 表函数 {#mongodb-table-function}
 
 可以对存储在远程 MongoDB 服务器中的数据执行 `SELECT` 查询。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
 
-## 参数
+## 参数 {#arguments}
 
 | 参数            | 描述                                              |
 | ------------- | ----------------------------------------------- |
@@ -64,7 +64,7 @@ mongodb(uri, collection, structure[, oid_columns])
 
 
 
-## 示例
+## 示例 {#examples}
 
 假设我们在名为 `test` 的 MongoDB 数据库中有一个名为 `my_collection` 的集合，并向其中插入了几条文档：
 

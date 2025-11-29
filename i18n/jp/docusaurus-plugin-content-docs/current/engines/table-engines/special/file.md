@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# File テーブルエンジン
+# File テーブルエンジン {#file-table-engine}
 
 File テーブルエンジンは、サポートされている[ファイルフォーマット](/interfaces/formats#formats-overview)（`TabSeparated`、`Native` など）のいずれかでデータをファイルに保存します。
 
@@ -25,7 +25,7 @@ File テーブルエンジンは、サポートされている[ファイルフ�
 
 
 
-## ClickHouse サーバーでの利用方法
+## ClickHouse サーバーでの利用方法 {#usage-in-clickhouse-server}
 
 ```sql
 File(Format)
@@ -44,7 +44,7 @@ ClickHouse では、`File` に対してファイルシステムのパスを指�
 :::
 
 
-## 例
+## 例 {#example}
 
 **1.** `file_engine_table` テーブルを作成します。
 
@@ -76,7 +76,7 @@ SELECT * FROM file_engine_table
 ```
 
 
-## ClickHouse-local での使用方法
+## ClickHouse-local での使用方法 {#usage-in-clickhouse-local}
 
 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) では、File エンジンは `Format` に加えてファイルパスも指定できます。デフォルトの入出力ストリームは、`0` や `stdin`、`1` や `stdout` のような数値または人間が読める名前で指定できます。追加のエンジンパラメータまたはファイル拡張子（`gz`、`br`、`xz`）に基づいて、圧縮ファイルの読み書きを行えます。
 

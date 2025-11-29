@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
 
 
-## 示例
+## 示例 {#examples}
 
 ```sql title="Query"
 SELECT * EXCEPT (i) from columns_transformers;

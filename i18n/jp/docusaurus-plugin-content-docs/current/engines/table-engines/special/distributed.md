@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Distributed テーブルエンジン
+# Distributed テーブルエンジン {#distributed-table-engine}
 
 :::warning ClickHouse Cloud における Distributed エンジン
 ClickHouse Cloud で Distributed テーブルエンジンを作成するには、[`remote` および `remoteSecure`](../../../sql-reference/table-functions/remote) テーブル関数を使用します。 
@@ -21,7 +21,7 @@ Distributed エンジンを持つテーブル自体はデータを一切保存�
 
 
 
-## テーブルの作成
+## テーブルの作成 {#distributed-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### テーブルから
+### テーブルから {#distributed-from-a-table}
 
 `Distributed` テーブルが現在のサーバー上のテーブルを参照している場合、そのテーブルのスキーマを利用できます。
 
@@ -41,7 +41,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### Distributed パラメータ
+### Distributed パラメータ {#distributed-parameters}
 
 | Parameter                 | Description                                                                                                                                                                                                                                                                                                                        |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert) 設定
 * 例については [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) を参照
 
-### Distributed 設定
+### Distributed 設定 {#distributed-settings}
 
 
 | Setting                                    | Description                                                                                                                                                    | Default value |
@@ -102,7 +102,7 @@ SETTINGS
 データベース名の代わりに、文字列を返す定数式を使用できます。例えば、`currentDatabase()` です。
 
 
-## クラスター
+## クラスター {#distributed-clusters}
 
 クラスターは[サーバー設定ファイル](../../../operations/configuration-files.md)で構成されます。
 

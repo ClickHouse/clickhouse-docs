@@ -32,7 +32,7 @@ API масштабирования может быть полезен для:
 1. [API-ключ ClickHouse](/cloud/manage/openapi) с правами Admin для целевого сервиса ClickHouse Cloud.
 2. Конвейер ClickPipe для БД (Postgres, MySQL или MongoDB), уже созданный в сервисе. Инфраструктура CDC создаётся вместе с первым ClickPipe, и с этого момента становятся доступны API-эндпоинты масштабирования.
 
-## Порядок масштабирования DB ClickPipes
+## Порядок масштабирования DB ClickPipes {#cdc-scaling-steps}
 
 Перед выполнением команд задайте следующие переменные окружения:
 
@@ -50,7 +50,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# пример результата:
+# пример результата: {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -84,7 +84,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# пример результата:
+# пример результата: {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 24000,

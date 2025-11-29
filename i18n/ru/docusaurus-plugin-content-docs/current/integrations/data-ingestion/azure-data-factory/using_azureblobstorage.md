@@ -50,7 +50,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 
 
 
-## Выполнение запросов к данным в Azure Blob Storage
+## Выполнение запросов к данным в Azure Blob Storage {#querying-the-data-from-azure-blob-storage}
 
 Откройте предпочитаемую консоль для выполнения запросов в ClickHouse — это может быть
 веб-интерфейс ClickHouse Cloud, клиент ClickHouse CLI или любой другой инструмент,
@@ -84,7 +84,7 @@ SELECT * FROM azureBlobStorage(
 Это позволяет эффективно загружать внешние данные в ClickHouse без необходимости выполнения промежуточных ETL-этапов.
 
 
-## Простой пример с использованием набора данных Environmental Sensors
+## Простой пример с использованием набора данных Environmental Sensors {#simple-example-using-the-environmental-sensors-dataset}
 
 В качестве примера мы загрузим один файл из набора данных Environmental Sensors.
 

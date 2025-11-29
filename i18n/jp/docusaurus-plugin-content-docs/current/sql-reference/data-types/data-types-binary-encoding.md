@@ -1,22 +1,18 @@
 ---
-description: 'データ型のバイナリ符号化仕様に関するドキュメント'
-sidebar_label: 'データ型のバイナリ符号化仕様'
+description: 'データ型のバイナリエンコーディング仕様に関するドキュメント'
+sidebar_label: 'データ型のバイナリエンコーディング仕様'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
-title: 'データ型のバイナリ符号化仕様'
+title: 'データ型のバイナリエンコーディング仕様'
 doc_type: 'reference'
 ---
 
+# データ型のバイナリエンコーディング仕様 {#data-types-binary-encoding-specification}
 
+この仕様では、ClickHouse のデータ型のバイナリエンコードおよびデコードに使用できるバイナリ形式について説明します。この形式は `Dynamic` カラムの[バイナリシリアル化](dynamic.md#binary-output-format)で使用され、対応する設定の下で入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
 
-# データ型のバイナリエンコーディング仕様
-
-本仕様では、ClickHouse のデータ型をバイナリ形式でエンコードおよびデコードするために使用できるバイナリフォーマットについて説明します。このフォーマットは `Dynamic` カラムの[バイナリシリアライズ](dynamic.md#binary-output-format)で使用され、対応する設定のもとで入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
-
-以下の表では、各データ型がバイナリ形式でどのように表現されるかを説明します。各データ型のエンコードは、型を示す 1 バイトと、必要に応じて追加されるオプションの情報から構成されます。
-バイナリエンコーディングにおける `var_uint` は、サイズが可変長数量 (Variable-Length Quantity) による圧縮方式でエンコードされることを意味します。
-
-
+次の表では、各データ型がバイナリ形式でどのように表現されるかを説明します。各データ型のエンコードは、型を示す 1 バイトと、必要に応じて追加される情報で構成されます。
+バイナリエンコーディングにおける `var_uint` は、サイズが Variable-Length Quantity 圧縮を用いてエンコードされていることを意味します。
 
 | ClickHouse のデータ型                                                                                          | バイナリ符号化                                                                                                                                                                                                                                                                                                                                                                    |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,42 +70,40 @@ doc_type: 'reference'
 | `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
 | `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
+`JSON` 型の場合、バイト `uint8_serialization_version` はシリアル化のバージョンを表します。現在のところバージョンは常に 0 ですが、今後 `JSON` 型に新しい引数が導入された場合には変更される可能性があります。
 
+### Interval 種別のバイナリ エンコーディング {#interval-kind-binary-encoding}
 
-型 `JSON` のバイト列 `uint8_serialization_version` は、シリアル化のバージョンを示します。現時点では常に 0 ですが、将来 `JSON` 型に新しい引数が追加された場合には変更される可能性があります。
+次の表は、`Interval` データ型のさまざまな種別がどのようにバイナリ形式でエンコードされるかを示します。
 
-### Interval 種別のバイナリエンコード {#interval-kind-binary-encoding}
+| Interval の種別 | バイナリ エンコーディング |
+|-----------------|----------------------------|
+| `Nanosecond`    | `0x00`                     |
+| `Microsecond`   | `0x01`                     |
+| `Millisecond`   | `0x02`                     |
+| `Second`        | `0x03`                     |
+| `Minute`        | `0x04`                     |
+| `Hour`          | `0x05`                     |
+| `Day`           | `0x06`                     |
+| `Week`          | `0x07`                     |
+| `Month`         | `0x08`                     |
+| `Quarter`       | `0x09`                     |
+| `Year`          | `0x1A`                     |
 
-次の表は、`Interval` データ型の各種 Interval 種別がどのようにエンコードされるかを示します。
+### 集約関数パラメータのバイナリエンコーディング {#aggregate-function-parameter-binary-encoding}
 
-| Interval kind | Binary encoding |
-|---------------|-----------------|
-| `Nanosecond`  | `0x00`          |
-| `Microsecond` | `0x01`          |
-| `Millisecond` | `0x02`          |
-| `Second`      | `0x03`          |
-| `Minute`      | `0x04`          |
-| `Hour`        | `0x05`          |
-| `Day`         | `0x06`          |
-| `Week`        | `0x07`          |
-| `Month`       | `0x08`          |
-| `Quarter`     | `0x09`          |
-| `Year`        | `0x1A`          |
+次の表は、`AggregateFunction` および `SimpleAggregateFunction` のパラメータがどのようにエンコードされるかを示します。
+パラメータのエンコードは、パラメータの型を示す 1 バイトと、その値そのものから構成されます。
 
-### 集約関数パラメータのバイナリエンコード {#aggregate-function-parameter-binary-encoding}
-
-次の表は、`AggregateFunction` および `SimpleAggregateFunction` のパラメータがどのようにエンコードされるかを示します。  
-パラメータのエンコードは、パラメータの型を示す 1 バイトと、その値本体から構成されます。
-
-| Parameter type           | Binary encoding                                                                                                                |
+| パラメータ型             | バイナリエンコード形式                                                                                                         |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `Null`                   | `0x00`                                                                                                                         |
 | `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
 | `Int64`                  | `0x02<var_int_value>`                                                                                                          |
 | `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                            |
 | `Int128`                 | `0x04<int128_little_endian_value>`                                                                                             |
-| `UInt128`                | `0x05<uint128_little_endian_value>`                                                                                            |
-| `Int128`                 | `0x06<int128_little_endian_value>`                                                                                             |
+| `UInt256`                | `0x05<uint256_little_endian_value>`                                                                                            |
+| `Int256`                 | `0x06<int256_little_endian_value>`                                                                                             |
 | `Float64`                | `0x07<float64_little_endian_value>`                                                                                            |
 | `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                              |
 | `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                              |

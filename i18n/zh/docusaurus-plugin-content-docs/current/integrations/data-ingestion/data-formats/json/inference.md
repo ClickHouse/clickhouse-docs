@@ -19,7 +19,7 @@ ClickHouse 可以自动确定 JSON 数据的结构。利用此功能，可以直
 
 
 
-## 类型检测
+## 类型检测 {#detecting-types}
 
 以下内容假设 JSON 结构一致，并且每个路径上只对应一种类型。
 
@@ -108,7 +108,7 @@ SETTINGS describe_compact_output = 1
 
 
 
-## 查询 JSON
+## 查询 JSON {#querying-json}
 
 以下内容假设 JSON 结构一致，并且每个路径仅包含单一类型。
 
@@ -155,7 +155,7 @@ LIMIT 1 BY year
 模式推断使我们无需显式定义模式即可查询 JSON 文件，从而加速即席数据分析。
 
 
-## 创建表
+## 创建表 {#creating-tables}
 
 我们可以依赖模式推断（schema inference）来自动生成表的结构。下面的 `CREATE AS EMPTY` 命令会根据推断出的模式生成该表的 DDL 并创建表，但不会加载任何数据：
 
@@ -196,7 +196,7 @@ ORDER BY update_date
 
 上面给出的是该数据的正确 schema。Schema 推断是基于对数据进行抽样，并逐行读取数据来完成的。列值会按照相应格式被提取，并通过递归解析器和启发式规则来确定每个值的类型。用于 schema 推断时从数据中读取的最大行数和字节数由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（默认 25000）和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（默认 32MB）控制。如果检测结果不正确，用户可以按照[此处](/operations/settings/formats#schema_inference_make_columns_nullable)所述提供提示信息。
 
-### 从片段创建表
+### 从片段创建表 {#creating-tables-from-snippets}
 
 上述示例使用 S3 上的文件来创建表的 schema。用户也可能希望从单行数据片段创建 schema。可以使用如下所示的 [format](/sql-reference/table-functions/format) 函数来实现这一点：
 
@@ -230,7 +230,7 @@ ORDER BY update_date
 ```
 
 
-## 加载 JSON 数据
+## 加载 JSON 数据 {#loading-json-data}
 
 以下内容假设 JSON 结构一致，并且每个路径都只有单一类型。
 
@@ -291,7 +291,7 @@ FORMAT PrettyJSONEachRow
 
 
 
-## 处理半结构化和动态数据
+## 处理半结构化和动态数据 {#working-with-semi-structured-data}
 
 我们前面的示例使用的是 JSON，结构是静态的，键名和类型都是事先明确的。而实际情况往往并非如此——键可能会被新增，或者其类型可能会发生变化。这在可观测性数据等使用场景中非常常见。
 

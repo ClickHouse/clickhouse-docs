@@ -13,7 +13,7 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明
+## 説明 {#description}
 
 `Protobuf` フォーマットは [Protocol Buffers](https://protobuf.dev/) フォーマットです。
 
@@ -98,7 +98,7 @@ ClickHouse は、`length-delimited` 形式で protobuf メッセージを入力�
 
 ## 使用例 {#example-usage}
 
-### データの読み取りと書き込み
+### データの読み取りと書き込み {#basic-examples}
 
 :::note Example files
 この例で使用するファイルは [examples repository](https://github.com/ClickHouse/formats/ProtoBuf) から入手できます。
@@ -380,7 +380,7 @@ SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerat
 この場合、自動生成された Protobuf スキーマは `path/to/schema/schema.capnp` というファイルに保存されます。
 
 
-### Protobuf キャッシュの削除
+### Protobuf キャッシュの削除 {#basic-examples-cloud}
 
 [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path) から読み込まれた Protobuf スキーマを再読み込むには、[`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format) ステートメントを使用します。
 

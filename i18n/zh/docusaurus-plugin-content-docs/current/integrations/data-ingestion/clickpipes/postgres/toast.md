@@ -22,7 +22,7 @@ TOAST（The Oversized-Attribute Storage Technique，超大属性存储技术）�
 
 
 
-## 确定表中的 TOAST 列
+## 确定表中的 TOAST 列 {#identifying-toast-columns-in-a-table}
 
 要判断某个表是否包含 TOAST 列，可以使用以下 SQL 查询：
 
@@ -39,7 +39,7 @@ WHERE c.relname = 'your_table_name'
 此查询将返回可能会被 TOAST 处理的列的名称和数据类型。不过需要注意的是，此查询仅根据列的数据类型和存储属性来识别具备使用 TOAST 存储条件的列。要判断这些列中是否实际包含已 TOAST 的数据，还需要考虑这些列中的值是否超过相应的大小阈值。数据是否真正会被 TOAST，取决于这些列中存储的具体内容。
 
 
-## 确保正确处理 TOAST 列
+## 确保正确处理 TOAST 列 {#ensuring-proper-handling-of-toast-columns}
 
 为确保在复制过程中正确处理 TOAST 列，你应当将表的 `REPLICA IDENTITY` 设置为 `FULL`。这会告诉 PostgreSQL 在执行 UPDATE 和 DELETE 操作时，在 WAL 中包含完整的旧行，从而确保所有列值（包括 TOAST 列）都可用于复制。
 

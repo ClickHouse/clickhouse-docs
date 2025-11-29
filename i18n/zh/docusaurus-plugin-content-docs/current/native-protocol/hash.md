@@ -9,7 +9,7 @@ keywords: ['CityHash', '原生协议散列', '哈希函数', 'Google CityHash', 
 
 
 
-# CityHash
+# CityHash {#cityhash}
 
 ClickHouse 使用的是 [Google 的 CityHash](https://github.com/google/cityhash) 的**一个较早版本**。
 

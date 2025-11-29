@@ -37,7 +37,7 @@ doc_type: 'reference'
     句で設定を定義します。設定値はそのクエリにのみ適用され、クエリの実行後に
     デフォルトまたは以前の値にリセットされます。
 
-## 設定をデフォルト値に戻す
+## 設定をデフォルト値に戻す {#converting-a-setting-to-its-default-value}
 
 設定を変更してデフォルト値に戻したい場合は、値を `DEFAULT` に設定します。構文は次のようになります。
 
@@ -78,7 +78,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-## カスタム設定
+## カスタム設定 {#custom_settings}
 
 共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義できます。
 
@@ -106,7 +106,7 @@ SELECT getSetting('custom_a');
 これらの例はすべて、`async_insert` 設定の値を `1` に設定し、
 稼働中のシステムで設定を確認する方法を示します。
 
-### SQL を使用して設定をユーザーに直接適用する
+### SQL を使用して設定をユーザーに直接適用する {#using-sql-to-apply-a-setting-to-a-user-directly}
 
 以下の SQL は、設定 `async_inset = 1` を持つユーザー `ingester` を作成します。
 
@@ -118,7 +118,7 @@ SETTINGS async_insert = 1
 ```
 
 
-#### 設定プロファイルおよび割り当てを確認する
+#### 設定プロファイルおよび割り当てを確認する {#examine-the-settings-profile-and-assignment}
 
 ```sql
 SHOW ACCESS
@@ -127,14 +127,14 @@ SHOW ACCESS
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 
-### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる
+### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
 次の SQL は、設定 `async_inset = 1` を持つプロファイル `log_ingest` を作成します。
 
@@ -153,24 +153,24 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### XML を使用して設定プロファイルおよびユーザーを作成する
+### XML を使用して設定プロファイルおよびユーザーを作成する {#using-xml-to-create-a-settings-profile-and-user}
 
 ```xml title=/etc/clickhouse-server/users.d/users.xml
 <clickhouse>
-# highlight-start
+# highlight-start {#highlight-start}
     <profiles>
         <log_ingest>
             <async_insert>1</async_insert>
         </log_ingest>
     </profiles>
-# highlight-end
+# highlight-end {#highlight-end}
 
     <users>
         <ingester>
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
-# highlight-start
+# highlight-start {#highlight-start}
             <profile>log_ingest</profile>
-# highlight-end
+# highlight-end {#highlight-end}
         </ingester>
         <default replace="true">
             <password_sha256_hex>7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3</password_sha256_hex>
@@ -182,7 +182,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-#### 設定プロファイルとその割り当てを確認する
+#### 設定プロファイルとその割り当てを確認する {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 アクセスを表示
@@ -191,10 +191,10 @@ SETTINGS PROFILE log_ingest
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ CREATE USER default IDENTIFIED WITH sha256_password                                │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS PROFILE log_ingest   │
 │ CREATE SETTINGS PROFILE default                                                    │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │ CREATE SETTINGS PROFILE log_ingest SETTINGS async_insert = true                    │
 │ CREATE SETTINGS PROFILE readonly SETTINGS readonly = 1                             │
 │ ...                                                                                │
@@ -202,7 +202,7 @@ SETTINGS PROFILE log_ingest
 ```
 
 
-### セッションに設定を適用する
+### セッションに設定を適用する {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -216,7 +216,7 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-### クエリ実行時に設定を指定する
+### クエリ実行時に設定を指定する {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

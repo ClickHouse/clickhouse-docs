@@ -10,7 +10,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# 厳密ベクトル検索と近似ベクトル検索
+# 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
 
 多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、または略してベクトル検索と呼ばれます。
 ベクトル検索を行うための一般的なアプローチは 2 つあります:
@@ -36,13 +36,13 @@ LIMIT <N>
 `&lt;N&gt;` は、返すべき近傍点の数を指定します。
 
 
-## 厳密なベクトル検索
+## 厳密なベクトル検索 {#exact-nearest-neighbor-search}
 
 厳密なベクトル検索は、上記の SELECT クエリをそのまま使用して実行できます。
 このようなクエリの実行時間は、一般的に保存されているベクトル数とその次元数、つまり配列要素数に比例します。
 また、ClickHouse はすべてのベクトルに対して総当たりスキャンを行うため、クエリで使用されるスレッド数（設定項目 [max&#95;threads](../../../operations/settings/settings.md#max_threads) を参照）にも実行時間が依存します。
 
-### 例
+### 例 {#exact-nearest-neighbor-search-example}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32)) ENGINE = MergeTree ORDER BY id;
@@ -67,9 +67,9 @@ LIMIT 3;
 ```
 
 
-## 近似ベクトル検索
+## 近似ベクトル検索 {#approximate-nearest-neighbor-search}
 
-### ベクトル類似度インデックス
+### ベクトル類似度インデックス {#vector-similarity-index}
 
 ClickHouse は、近似ベクトル検索を実行するための特別な「ベクトル類似度」インデックスを提供します。
 
@@ -78,7 +78,7 @@ ClickHouse は、近似ベクトル検索を実行するための特別な「ベ
 問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
-#### ベクトル類似度インデックスの作成
+#### ベクトル類似度インデックスの作成 {#creating-a-vector-similarity-index}
 
 新しいテーブルに対して、次のようにベクトル類似度インデックスを作成できます。
 
@@ -196,7 +196,7 @@ ORDER BY [...]
 
 上記の式には、事前割り当てバッファやキャッシュなど、ベクトル類似性インデックスがランタイムのデータ構造を割り当てるために必要となる追加メモリは含まれていません。
 
-#### ベクトル類似性インデックスの使用
+#### ベクトル類似性インデックスの使用 {#using-a-vector-similarity-index}
 
 :::note
 ベクトル類似性インデックスを使用するには、[compatibility](../../../operations/settings/settings.md) 設定を `''`（デフォルト値）、または `'25.1'` 以降に設定する必要があります。
@@ -407,7 +407,7 @@ Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 `vector_search_with_rescoring = 0` で再スコアリングなしのクエリを実行し、かつ並列レプリカを有効にしている場合、再スコアリングにフォールバックして実行されることがあります。
 :::
 
-#### パフォーマンスチューニング
+#### パフォーマンスチューニング {#performance-tuning}
 
 **圧縮のチューニング**
 
@@ -541,7 +541,7 @@ result = chclient.query(
 この例では、参照ベクターはそのままバイナリ形式で送信され、サーバー側で浮動小数点数配列として再解釈されます。
 これにより、サーバー側の CPU 時間を節約し、サーバーログおよび `system.query_log` の肥大化を防ぐことができます。
 
-#### 管理と監視
+#### 管理と監視 {#administration}
 
 ベクトル類似性インデックスのディスク上のサイズは、[system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) から取得できます。
 
@@ -559,7 +559,7 @@ WHERE type = 'vector_similarity';
 └──────────┴───────┴──────┴──────────────────────────┘
 ```
 
-#### 通常のスキッピングインデックスとの違い
+#### 通常のスキッピングインデックスとの違い {#differences-to-regular-skipping-indexes}
 
 通常の[スキッピングインデックス](/optimize/skipping-indexes)と同様に、ベクトル類似度インデックスはグラニュール単位で構築され、各インデックスブロックは `GRANULARITY = [N]` 個のグラニュールで構成されます（通常のスキッピングインデックスではデフォルトで `[N]` = 1）。
 たとえば、テーブルのプライマリインデックスのグラニュラリティが 8192（`index_granularity = 8192` の設定）で `GRANULARITY = 2` の場合、各インデックスブロックには 16384 行が含まれます。
@@ -585,7 +585,7 @@ WHERE type = 'vector_similarity';
 一般的には、ベクトル類似度インデックスに対しては大きな `GRANULARITY` を使用し、ベクトル類似度構造によるメモリ消費が過大になるなどの問題が発生した場合にのみ、より小さな `GRANULARITY` の値に切り替えることを推奨します。
 ベクトル類似度インデックスに対して `GRANULARITY` が指定されていない場合、デフォルト値は 1 億です。
 
-#### 例
+#### 例 {#approximate-nearest-neighbor-search-example}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
@@ -616,7 +616,7 @@ LIMIT 3;
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
 
-### Quantized Bit (QBit)
+### Quantized Bit (QBit) {#approximate-nearest-neighbor-search-qbit}
 
 <ExperimentalBadge />
 
@@ -650,7 +650,7 @@ column_name QBit(element_type, dimension)
 * `element_type` – 各ベクトル要素の型。サポートされている型は `BFloat16`、`Float32`、`Float64` です
 * `dimension` – 各ベクトル内の要素数
 
-#### `QBit` テーブルの作成とデータの追加
+#### `QBit` テーブルの作成とデータの追加 {#qbit-create}
 
 ```sql
 CREATE TABLE fruit_animal (
@@ -668,7 +668,7 @@ INSERT INTO fruit_animal VALUES
     ('horse', [-0.61435682, 0.48542571, 1.21091247, -0.62530446, -1.33082533]);
 ```
 
-#### `QBit` を使ったベクトル検索
+#### `QBit` を使ったベクトル検索 {#qbit-search}
 
 L2 距離を用いて、単語 &#39;lemon&#39; を表すベクトルに最も近い近傍を検索します。距離関数の第 3 引数ではビット単位の精度を指定します。値を大きくすると精度は向上しますが、計算コストも増加します。
 

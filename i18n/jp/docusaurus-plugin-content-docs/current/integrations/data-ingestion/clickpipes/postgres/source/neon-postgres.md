@@ -15,14 +15,14 @@ import neon_conn_details from '@site/static/images/integrations/data-ingestion/c
 import Image from '@theme/IdealImage';
 
 
-# Neon Postgres ソースセットアップガイド
+# Neon Postgres ソースセットアップガイド {#neon-postgres-source-setup-guide}
 
 本ガイドでは、ClickPipes でレプリケーション元として利用できる Neon Postgres のセットアップ方法について説明します。
 このセットアップのために、事前に [Neon コンソール](https://console.neon.tech/app/projects) にサインインしておいてください。
 
 
 
-## 権限を持つユーザーの作成
+## 権限を持つユーザーの作成 {#creating-a-user-with-permissions}
 
 CDC に適した必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
 レプリケーションに使用する publication も作成します。
@@ -48,7 +48,7 @@ CDC に適した必要な権限を付与した ClickPipes 用の新しいユー�
 **Run** をクリックして、パブリケーションとユーザーを作成します。
 
 
-## ロジカルレプリケーションを有効化する
+## ロジカルレプリケーションを有効化する {#enable-logical-replication}
 
 Neon では、UI からロジカルレプリケーションを有効化できます。これは、ClickPipes の CDC（変更データキャプチャ）でデータをレプリケートするために必要です。
 **Settings** タブに移動し、**Logical Replication** セクションを開きます。

@@ -22,7 +22,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# 使用 CDC 将数据从 Postgres 摄取到 ClickHouse
+# 使用 CDC 将数据从 Postgres 摄取到 ClickHouse {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
 
 你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
 

@@ -18,12 +18,12 @@ import chartbrew_07 from '@site/static/images/integrations/data-visualization/ch
 import chartbrew_08 from '@site/static/images/integrations/data-visualization/chartbrew_08.png';
 import chartbrew_09 from '@site/static/images/integrations/data-visualization/chartbrew_09.png';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
 
-# 将 Chartbrew 连接到 ClickHouse
+# 将 Chartbrew 连接到 ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -74,7 +74,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. 创建数据集并运行 SQL 查询
+## 3. 创建数据集并运行 SQL 查询 {#3-create-a-dataset-and-run-a-sql-query}
 
 1. 点击 **Create dataset** 按钮，或导航到 **Datasets** 选项卡来创建一个数据集。
 2. 选择你之前创建的 ClickHouse 连接。

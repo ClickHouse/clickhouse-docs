@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# paimonCluster 表函数
+# paimonCluster 表函数 {#paimoncluster-table-function}
 
 <ExperimentalBadge />
 
@@ -20,7 +20,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

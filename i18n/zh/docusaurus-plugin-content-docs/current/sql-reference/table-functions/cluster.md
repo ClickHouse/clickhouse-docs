@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clusterAllReplicas 表函数
+# clusterAllReplicas 表函数 {#clusterallreplicas-table-function}
 
 允许在无需创建 [Distributed](../../engines/table-engines/special/distributed.md) 表的情况下，访问集群在 `remote_servers` 配置段中定义的所有分片。查询时，每个分片仅会访问一个副本。
 
@@ -32,7 +32,7 @@ clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
 
-## 参数
+## 参数 {#arguments}
 
 | 参数                          | 类型                                                   |
 | --------------------------- | ---------------------------------------------------- |
@@ -47,7 +47,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 
 
 
-## 使用宏
+## 使用宏 {#using_macros}
 
 `cluster_name` 可以包含宏——用花括号括起的替换占位符。替换后的值取自服务器配置文件中的 [macros](../../operations/server-configuration-parameters/settings.md#macros) 部分。
 

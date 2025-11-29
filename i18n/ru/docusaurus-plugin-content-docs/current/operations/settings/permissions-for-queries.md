@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Права для запросов
+# Права для запросов {#permissions-for-queries}
 
 Запросы в ClickHouse можно разделить на несколько типов:
 

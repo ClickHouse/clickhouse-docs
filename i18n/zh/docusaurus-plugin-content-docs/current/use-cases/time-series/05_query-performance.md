@@ -8,17 +8,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 时序查询性能
+# 时序查询性能 {#time-series-query-performance}
 
 在完成存储优化之后，下一步是提升查询性能。
 本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用物化视图。
 我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
 
-
-
-## 优化 `ORDER BY` 键
+## 优化 `ORDER BY` 键 {#time-series-optimize-order-by}
 
 在尝试其他优化之前，您应当先优化排序键，以确保 ClickHouse 能够生成尽可能快的查询结果。
 选择合适的键在很大程度上取决于您将要运行的查询。假设我们的多数查询都按 `project` 和 `subproject` 列进行过滤。
@@ -116,8 +112,7 @@ ORDER BY (project, subproject, time);
   </tbody>
 </table>
 
-
-## 物化视图
+## 物化视图 {#time-series-materialized-views}
 
 另一种方式是使用物化视图来聚合并存储高频查询的结果。之后可以直接查询这些结果，而无需访问原始表。假设在我们的场景中经常会执行如下查询：
 
@@ -148,7 +143,7 @@ LIMIT 10
 峰值内存使用：1.50 GiB。
 ```
 
-### 创建物化视图
+### 创建物化视图 {#time-series-create-materialized-view}
 
 我们可以创建如下的物化视图：
 
@@ -175,7 +170,7 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### 回填目标表
+### 回填目标表 {#time-series-backfill-destination-table}
 
 此目标表只有在向 `wikistat` 表插入新记录时才会写入数据，因此我们需要对其进行一些[回填](/docs/data-modeling/backfilling)。
 
@@ -235,7 +230,6 @@ FROM wikistat;
 ```
 
 当该查询完成后，我们就可以删除回填表和物化视图：
-
 
 ```sql
 DROP VIEW wikistat_backfill_top_mv;

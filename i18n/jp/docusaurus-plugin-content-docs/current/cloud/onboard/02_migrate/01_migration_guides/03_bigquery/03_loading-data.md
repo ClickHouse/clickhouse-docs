@@ -30,7 +30,7 @@ BigQuery から ClickHouse へのデータエクスポートにかかる時間�
 <VerticalStepper headerLevel="h2">
 
 
-## テーブルデータを GCS にエクスポートする
+## テーブルデータを GCS にエクスポートする {#1-export-table-data-to-gcs}
 
 この手順では、[BigQuery SQL ワークスペース](https://cloud.google.com/bigquery/docs/bigquery-web-ui) を使用して SQL 文を実行します。ここでは、[`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) ステートメントを使用して、`mytable` という BigQuery テーブルを GCS のバケットにエクスポートします。
 
@@ -67,7 +67,7 @@ END WHILE;
 * 列指向フォーマットである Parquet は、標準で圧縮されており、BigQuery によるエクスポートおよび ClickHouse によるクエリが高速であるため、より優れたデータ交換形式です。
 
 
-## GCS から ClickHouse へのデータインポート
+## GCS から ClickHouse へのデータインポート {#2-importing-data-into-clickhouse-from-gcs}
 
 エクスポートが完了したら、このデータを ClickHouse のテーブルにインポートできます。以下のコマンドを実行するには、[ClickHouse SQL console](/integrations/sql-clients/sql-console) か [`clickhouse-client`](/interfaces/cli) を使用できます。
 

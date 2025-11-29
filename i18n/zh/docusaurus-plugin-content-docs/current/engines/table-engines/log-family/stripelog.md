@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# StripeLog 表引擎
+# StripeLog 表引擎 {#stripelog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 创建数据表
+## 创建数据表 {#table_engines-stripelog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -53,7 +53,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 使用示例
+## 使用示例 {#table_engines-stripelog-example-of-use}
 
 创建表：
 

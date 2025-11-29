@@ -13,12 +13,12 @@ keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サ�
 
 **参考文献**
 
-- [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+* [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## データ生成とインポート
+## データ生成とインポート {#data-generation-and-import}
 
 まず、TPC-H リポジトリを取得し、データ生成ツールをコンパイルします。
 
@@ -59,7 +59,6 @@ TPC-H 仕様のルールにできるだけ忠実に従います:
   ClickHouse における `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無によって影響を受けません。
 * セクション 1.3.1 に従い、抽象的なデータ型（例: `Identifier`, `Variable text, size N`）を実装するために、ClickHouse ネイティブのデータ型（例: `Int32`, `String`）を使用します。
   これにより読みやすさが向上するだけであり、`dbgen` によって生成される SQL-92 のデータ型（例: `INTEGER`, `VARCHAR(40)`）も ClickHouse で問題なく動作します。
-
 
 ```sql
 CREATE TABLE nation (
@@ -170,7 +169,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 :::note
 tpch-kit を使用して自分でテーブルを生成する代わりに、公開 S3 バケットからデータをインポートすることもできます。必ず、上記の `CREATE` 文を使って、先に空のテーブルを作成してください。
 
-
 ```sql
 -- スケーリングファクター 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -195,8 +193,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-
-## クエリ
+## クエリ {#queries}
 
 :::note
 SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) の設定を有効にする必要があります。
@@ -349,7 +346,6 @@ ORDER BY
 
 **Q5**
 
-
 ```sql
 SELECT
     n_name,
@@ -496,7 +492,6 @@ ORDER BY
 ```
 
 **Q9**
-
 
 ```sql
 SELECT
@@ -850,7 +845,6 @@ WHERE
 ```
 
 **Q20**
-
 
 ```sql
 SELECT

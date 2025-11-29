@@ -20,9 +20,7 @@ doc_type: 'guide'
 * `list_tables_in_database` - 列出指定数据库中的所有表
 * `get_schema_for_table` - 获取指定表的 `CREATE TABLE` 语句（表结构）
 
-
-
-## 前提条件
+## 前提条件 {#prerequisites}
 
 我们需要将 Anthropic 或 OpenAI 密钥添加为环境变量：
 
@@ -33,8 +31,7 @@ export OPENAI_API_KEY=your_api_key
 
 或者可以[提供一个配置文件](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)。
 
-
-## 连接到 ClickHouse SQL Playground
+## 连接到 ClickHouse SQL Playground {#connecting-to-the-clickhouse-sql-playground}
 
 我们将使用 [ClickHouse SQL Playground](https://sql.clickhouse.com/) 来演示该功能。
 
@@ -51,8 +48,7 @@ clickhouse client -mn \
 我们假定您已经安装了 ClickHouse；如果尚未安装，请参阅[安装指南](https://clickhouse.com/docs/install)。
 :::
 
-
-## 使用自然语言向 ClickHouse 提问
+## 使用自然语言向 ClickHouse 提问 {#asking-clickhouse-questions-in-natural-language}
 
 现在是开始提问的时候了！
 
@@ -62,7 +58,7 @@ clickhouse client -mn \
 你希望进行的分析类型（平均值、总量、排名等）\
 任何筛选条件
 
-### 查找高房价住房市场
+### 查找高房价住房市场 {#finding-expensive-housing-markets}
 
 我们先从一个关于房价的问题开始。SQL playground 中包含一个英国房价数据集，AI 会自动识别该数据集：
 
@@ -115,7 +111,6 @@ AI 会按以下步骤执行：
 我们可以看到，它确实找到了 `uk_price_paid` 表，并为我们生成了一条可执行的查询语句。
 如果我们运行该查询，将会看到如下输出：
 
-
 ```text
 ┌─城镇───────────┬─区─────────────────────┬─郡──────────────┬──平均价格──┬─总销售额────┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
@@ -133,7 +128,7 @@ AI 会按以下步骤执行：
 
 如果我们想要继续追问，就需要从头完整地重新提出问题。
 
-### 在大伦敦地区查找高价房产
+### 在大伦敦地区查找高价房产 {#finding-expensive-properties-in-greater-london}
 
 由于该功能不会保留会话历史，每个查询都必须是自包含的。当提出后续问题时，你需要提供完整的上下文，而不是依赖之前的查询。
 例如，在查看了之前的结果之后，我们可能想专门关注大伦敦地区的房产。与其只问 “What about Greater London?”，我们需要在问题中包含完整的上下文：
@@ -143,7 +138,6 @@ AI 会按以下步骤执行：
 ```
 
 请注意，即使刚刚分析过这些数据，AI 仍然会重复同样的探索过程：
-
 
 ```text
 • 开始基于模式发现的 AI SQL 生成…

@@ -7,7 +7,7 @@ title: 'studentTTestOneSample'
 doc_type: 'reference'
 ---
 
-# studentTTestOneSample
+# studentTTestOneSample {#studentttestonesample}
 
 Применяет одновыборочный t‑критерий Стьюдента для определения, отличается ли среднее выборки от известного среднего генеральной совокупности.
 

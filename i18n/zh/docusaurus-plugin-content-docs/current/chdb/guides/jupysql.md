@@ -17,8 +17,7 @@ import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png
   <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
-
-## 环境准备
+## 环境准备 {#setup}
 
 首先创建一个虚拟环境：
 
@@ -49,8 +48,7 @@ jupyter lab
 如果你使用的是 Jupyter Lab，在继续阅读本指南其余内容之前，需要先创建一个 notebook。
 :::
 
-
-## 下载数据集
+## 下载数据集 {#downloading-a-dataset}
 
 我们将使用 [Jeff Sackmann 的 tennis&#95;atp](https://github.com/JeffSackmann/tennis_atp) 其中一个数据集，其中包含关于球员及其排名随时间变化的元数据。
 首先下载排名文件：
@@ -69,8 +67,7 @@ for file in files:
   )
 ```
 
-
-## 配置 chDB 和 JupySQL
+## 配置 chDB 和 JupySQL {#configuring-chdb-and-jupysql}
 
 接下来，让我们导入 chDB 的 `dbapi` 模块：
 
@@ -97,7 +94,6 @@ conn = dbapi.connect(path="atp.chdb")
 ```python
 %config SqlMagic.displaylimit = None
 ```
-
 
 ## 在 CSV 文件中查询数据
 
@@ -166,8 +162,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-
-## 将 CSV 文件导入 chDB
+## 将 CSV 文件导入 chDB {#querying-data-in-csv-files}
 
 现在我们要把这些 CSV 文件中的数据存储到一张表中。
 默认的数据库不会将数据持久化到磁盘，因此我们需要先创建一个新的数据库：
@@ -252,7 +247,6 @@ SETTINGS schema_inference_make_columns_nullable=0
 %sql SELECT * FROM atp.players LIMIT 10
 ```
 
-
 ```text
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 | player_id | name_first | name_last | hand |    dob     | ioc | height | wikidata_id |
@@ -270,8 +264,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-
-## 查询 chDB
+## 查询 chDB {#importing-csv-files-into-chdb}
 
 数据摄取已经完成，现在进入有趣的部分 —— 查询这些数据！
 
@@ -311,8 +304,7 @@ LIMIT 10
 
 有趣的是，这个名单中的一些球员累积了大量得分，却从未凭这一得分总数登上第一名。
 
-
-## 保存查询
+## 保存查询 {#querying-chdb}
 
 我们可以在与 `%%sql` 魔法命令同一行中使用 `--save` 参数来保存查询。
 `--no-execute` 参数表示将跳过查询的执行。
@@ -357,8 +349,7 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-
-## 使用参数进行查询
+## 使用参数进行查询 {#saving-queries}
 
 我们也可以在查询中使用参数。
 参数其实就是普通变量：
@@ -402,8 +393,7 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
-
-## 绘制直方图
+## 绘制直方图 {#querying-with-parameters}
 
 JupySQL 也提供了有限的绘图功能。
 我们可以创建箱线图或直方图。

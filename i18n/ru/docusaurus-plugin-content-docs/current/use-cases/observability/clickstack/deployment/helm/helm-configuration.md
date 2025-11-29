@@ -19,7 +19,7 @@ keywords: ['Конфигурация ClickStack', 'Секреты Helm', 'Нас
 2. **Войдите в панель управления HyperDX** и перейдите в раздел Team settings, чтобы сгенерировать или получить API-ключ
 3. **Обновите развертывание**, добавив API-ключ одним из следующих способов:
 
-### Способ 1: обновление через `helm upgrade` с файлом values
+### Способ 1: обновление через `helm upgrade` с файлом values {#api-key-values-file}
 
 Добавьте API-ключ в файл `values.yaml`:
 
@@ -35,14 +35,14 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
 
-### Метод 2: Обновление через `helm upgrade` с флагом `--set`
+### Метод 2: Обновление через `helm upgrade` с флагом `--set` {#api-key-set-flag}
 
 ```shell
 helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="ваш-api-ключ-здесь"
 ```
 
 
-### Перезапустите поды, чтобы применить изменения
+### Перезапустите поды, чтобы применить изменения {#restart-pods}
 
 После обновления ключа API перезапустите поды, чтобы применить новую конфигурацию:
 
@@ -59,7 +59,7 @@ kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-cl
 
 Для работы с конфиденциальными данными, такими как API-ключи или учетные данные для доступа к базе данных, используйте секреты Kubernetes.
 
-### Использование предварительно настроенных секретов
+### Использование предварительно настроенных секретов {#using-pre-configured-secrets}
 
 Helm-чарт включает шаблон секрета по умолчанию, расположенный по адресу [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). Этот файл задаёт базовую структуру для управления секретами.
 
@@ -84,7 +84,7 @@ kubectl apply -f secrets.yaml
 ```
 
 
-### Создание пользовательского секрета
+### Создание пользовательского секрета {#creating-a-custom-secret}
 
 Создайте вручную пользовательский секрет Kubernetes:
 
@@ -94,7 +94,7 @@ kubectl create secret generic hyperdx-secret \
 ```
 
 
-### Ссылка на Secret в values.yaml
+### Ссылка на Secret в values.yaml {#referencing-a-secret}
 
 ```yaml
 hyperdx:
@@ -110,7 +110,7 @@ hyperdx:
 
 Чтобы открыть доступ к интерфейсу и API HyperDX по доменному имени, включите конфигурацию входного шлюза в файле `values.yaml`.
 
-### Общая конфигурация входного шлюза
+### Общая конфигурация входного шлюза {#general-ingress-configuration}
 
 ```yaml
 hyperdx:
@@ -125,7 +125,7 @@ hyperdx:
 :::
 
 
-### Включение TLS (HTTPS)
+### Включение TLS (HTTPS) {#enabling-tls}
 
 Чтобы защитить развертывание с помощью HTTPS:
 
@@ -150,7 +150,7 @@ hyperdx:
 ```
 
 
-### Пример конфигурации входного шлюза
+### Пример конфигурации входного шлюза {#example-ingress-configuration}
 
 Для наглядности ниже показан сгенерированный ресурс входного шлюза:
 
@@ -182,7 +182,7 @@ spec:
 ```
 
 
-### Частые проблемы с входным шлюзом
+### Частые проблемы с входным шлюзом {#common-ingress-pitfalls}
 
 **Конфигурация пути и переписывания (rewrite):**
 
@@ -208,7 +208,7 @@ kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jso
 ```
 
 
-## Входной шлюз для OTel collector
+## Входной шлюз для OTel collector {#otel-collector-ingress}
 
 Если вам необходимо опубликовать конечные точки OTel collector (для трассировок, метрик и логов) через входной шлюз, используйте конфигурацию `additionalIngresses`. Это полезно для отправки телеметрических данных из‑вне кластера или при использовании пользовательского домена для collector.
 
@@ -245,7 +245,7 @@ hyperdx:
 :::
 
 
-## Диагностика проблем с входным шлюзом
+## Диагностика проблем с входным шлюзом {#troubleshooting-ingress}
 
 **Проверьте ресурс входного шлюза:**
 
@@ -266,7 +266,7 @@ kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx
 
 ```shell
 curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
-# Должен вернуть Content-Type: application/javascript
+# Должен вернуть Content-Type: application/javascript {#should-return-content-type-applicationjavascript}
 ```
 
 **Инструменты разработчика браузера:**
@@ -283,7 +283,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 * После изменений очистите кэш браузера и кэш CDN/прокси, чтобы избежать использования устаревших версий ресурсов
 
 
-## Настройка значений
+## Настройка значений {#customizing-values}
 
 Параметры можно настроить с помощью флагов `--set`:
 

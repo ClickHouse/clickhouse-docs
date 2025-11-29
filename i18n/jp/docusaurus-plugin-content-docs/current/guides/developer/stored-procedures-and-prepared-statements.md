@@ -12,7 +12,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickHouse におけるストアドプロシージャとクエリパラメータ
+# ClickHouse におけるストアドプロシージャとクエリパラメータ {#stored-procedures-and-query-parameters-in-clickhouse}
 
 従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
 このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
@@ -35,7 +35,7 @@ ClickHouse は次の用途向けに最適化されています:
 
 ユーザー定義関数を使うと、制御フローを用いずに再利用可能なロジックをカプセル化できます。ClickHouse は 2 種類のユーザー定義関数をサポートしています。
 
-#### ラムダベースの UDF
+#### ラムダベースの UDF {#lambda-based-udfs}
 
 SQL 式とラムダ構文を使って関数を作成します。
 
@@ -111,7 +111,7 @@ SELECT format_phone('5551234567');
 完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
 
 
-#### 実行可能 UDF
+#### 実行可能 UDF {#executable-udfs}
 
 より複雑なロジックには、外部プログラムを呼び出す実行可能 UDF を使用します。
 
@@ -144,7 +144,7 @@ FROM customer_reviews;
 詳細については、[実行可能 UDF](/sql-reference/functions/udf) を参照してください。
 
 
-### パラメーター化ビュー
+### パラメーター化ビュー {#parameterized-views}
 
 パラメーター化ビューは、データセットを返す関数のように振る舞います。
 動的フィルタリングを行う再利用可能なクエリに最適です。
@@ -202,7 +202,7 @@ WHERE product_id = 12345;
 ```
 
 
-#### 一般的なユースケース
+#### 一般的なユースケース {#common-use-cases}
 
 * 動的な日付範囲によるフィルタリング
 * ユーザーごとのデータスライス
@@ -248,7 +248,7 @@ SELECT * FROM top_products_by_category(
 詳しくは、[Parameterized Views](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
 
 
-### マテリアライズドビュー
+### マテリアライズドビュー {#materialized-views}
 
 マテリアライズドビューは、従来はストアドプロシージャで行っていたようなコストの高い集計処理を、事前に計算・集約しておくのに最適です。従来型のデータベースに慣れている場合、マテリアライズドビューは、ソーステーブルにデータが挿入されるタイミングで自動的にデータを変換・集計する **INSERT トリガー** と考えることができます。
 
@@ -302,7 +302,7 @@ GROUP BY user_id;
 ```
 
 
-#### リフレッシュ可能なマテリアライズドビュー
+#### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
 
 スケジュールされたバッチ処理（夜間に実行されるストアドプロシージャなど）の場合：
 
@@ -799,7 +799,7 @@ SELECT count() FROM {table: Identifier};
 
 [言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、利用したい特定の言語クライアントのドキュメントを参照してください。
 
-### クエリパラメータの制約事項
+### クエリパラメータの制約事項 {#parameter-syntax}
 
 クエリパラメータは**汎用的なテキスト置換ではありません**。次のような特有の制約があります。
 
@@ -840,7 +840,7 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- サポート対�
 ```
 
 
-### セキュリティのベストプラクティス
+### セキュリティのベストプラクティス {#data-type-examples}
 
 **ユーザーからの入力には必ずクエリパラメータを使用すること：**
 

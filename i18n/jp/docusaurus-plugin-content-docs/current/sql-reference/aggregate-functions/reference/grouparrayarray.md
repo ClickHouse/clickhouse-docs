@@ -7,7 +7,7 @@ title: 'groupArrayArray'
 doc_type: 'reference'
 ---
 
-# groupArrayArray
+# groupArrayArray {#grouparrayarray}
 
 複数の配列を、それらの配列を要素とするより大きな配列に集約します。
 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせたものです。

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Оператор ORDER BY
+# Оператор ORDER BY {#order-by-clause}
 
 Оператор `ORDER BY` содержит:
 
@@ -29,14 +29,14 @@ doc_type: 'reference'
 
 
 
-## Сортировка специальных значений
+## Сортировка специальных значений {#sorting-of-special-values}
 
 Существует два варианта порядка сортировки значений `NaN` и `NULL`:
 
 * По умолчанию или с модификатором `NULLS LAST`: сначала значения, затем `NaN`, затем `NULL`.
 * С модификатором `NULLS FIRST`: сначала `NULL`, затем `NaN`, затем остальные значения.
 
-### Пример
+### Пример {#example}
 
 Для таблицы
 
@@ -85,7 +85,7 @@ Collation поддерживается для типов [LowCardinality](../../
 
 
 
-## Примеры сравнения строк
+## Примеры сравнения строк {#collation-examples}
 
 Пример только со значениями [String](../../../sql-reference/data-types/string.md):
 
@@ -297,7 +297,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 
 
-## Модификатор ORDER BY Expr WITH FILL
+## Модификатор ORDER BY Expr WITH FILL {#order-by-expr-with-fill-modifier}
 
 Этот модификатор также может быть использован совместно с [модификатором LIMIT ... WITH TIES](/sql-reference/statements/select/limit#limit--with-ties-modifier).
 
@@ -635,7 +635,7 @@ SELECT n, source, inter FROM (
 ```
 
 
-## Заполнение, сгруппированное по сортировочному префиксу
+## Заполнение, сгруппированное по сортировочному префиксу {#filling-grouped-by-sorting-prefix}
 
 Иногда полезно заполнять строки, которые имеют одинаковые значения в определённых столбцах, независимо друг от друга — хороший пример — заполнение пропущенных значений во временных рядах.
 Предположим, что есть следующая таблица временных рядов:

@@ -6,9 +6,7 @@ keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
-
-
-# 对 JSON 建模的其他方法
+# 对 JSON 建模的其他方法 {#other-approaches-to-modeling-json}
 
 **以下是在 ClickHouse 中对 JSON 建模的替代方法。这些方法为了文档完整性而被记录下来，主要适用于 JSON 类型尚未出现之前的阶段，因此在大多数用例中通常不推荐使用或不再适用。**
 
@@ -16,9 +14,7 @@ doc_type: 'reference'
 在同一个 schema 中，可以对不同对象采用不同的技术。例如，一些对象最适合使用 `String` 类型，另一些则适合使用 `Map` 类型。请注意，一旦使用了 `String` 类型，就不再需要做进一步的 schema 决策。相反，我们也可以在 `Map` 的某个 key 下嵌套子对象——包括用 `String` 表示的 JSON——如下所示：
 :::
 
-
-
-## 使用 String 类型
+## 使用 String 类型 {#using-string}
 
 如果对象高度动态、没有可预测的结构并且包含任意嵌套对象，建议使用 `String` 类型。可以在查询时使用 JSON 函数提取值，如下所示。
 
@@ -95,7 +91,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
-
 假设我们希望按年份统计论文发表数量。对比如下两条查询语句：一条仅使用字符串，另一条使用该模式的[结构化版本](/integrations/data-formats/json/inference#creating-tables)：
 
 ```sql
@@ -156,7 +151,7 @@ LIMIT 10
 
 这种方法的灵活性带来了显著的性能和语法开销，只应在模式中对象高度动态的情况下使用。
 
-### 简单 JSON 函数
+### 简单 JSON 函数 {#simple-json-functions}
 
 上面的示例使用了 JSON* 函数族。这些函数使用基于 [simdjson](https://github.com/simdjson/simdjson) 的完整 JSON 解析器，解析严格，并且会区分位于不同嵌套层级的同名字段。这些函数能够处理语法正确但格式不佳的 JSON，例如键之间存在双空格。
 
@@ -173,7 +168,6 @@ LIMIT 10
   ```
 
 而下面的示例将会被正确解析：
-
 
 ````json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
@@ -209,8 +203,7 @@ LIMIT 10
 
 上述查询使用 `simpleJSONExtractString` 来提取 `created` 键，利用了我们在发布日期上只需要第一个值这一点。在这种情况下，为了获得性能提升，可以接受 `simpleJSON*` 函数带来的局限性。
 
-
-## 使用 Map 类型
+## 使用 Map 类型 {#using-map}
 
 如果对象用于存储任意键，并且这些键大多为同一类型，可以考虑使用 `Map` 类型。理想情况下，唯一键的数量不应超过数百个。对于包含子对象的对象，在这些子对象的类型足够统一的前提下，也可以考虑使用 `Map` 类型。一般来说，我们推荐使用 `Map` 类型来存储标签和标记（labels / tags），例如日志数据中的 Kubernetes pod（容器组）标签。
 
@@ -224,7 +217,7 @@ LIMIT 10
 在将对象建模为 `Map` 时，使用 `String` 键来存储 JSON 键名。因此 map 始终是 `Map(String, T)`，其中 `T` 取决于数据。
 :::
 
-#### 原始类型值
+#### 原始类型值 {#primitive-values}
 
 `Map` 最简单的用法是对象将同一种原始类型作为值。在大多数情况下，这意味着对值 `T` 使用 `String` 类型。
 
@@ -281,12 +274,11 @@ SELECT company.labels['type'] AS type FROM people
 
 完整的 `Map` 函数集可用于对其进行查询，相关说明见[此处](/sql-reference/functions/tuple-map-functions.md)。如果你的数据类型不一致，可以使用相应函数执行[必要的类型强制转换](/sql-reference/functions/type-conversion-functions)。
 
-#### 对象值
+#### 对象值 {#object-values}
 
 对于具有子对象的对象，只要其子对象的类型保持一致，也可以考虑使用 `Map` 类型。
 
 假设我们的 `persons` 对象中的 `tags` 键需要一个结构一致的子对象，其中每个 `tag` 的子对象都包含 `name` 和 `time` 列。此类 JSON 文档的简化示例如下所示：
-
 
 ```json
 {
@@ -360,8 +352,7 @@ FORMAT JSONEachRow
 }
 ```
 
-
-## 使用 Nested 类型
+## 使用 Nested 类型 {#using-nested}
 
 [Nested 类型](/sql-reference/data-types/nested-data-structures/nested) 可用于表示很少发生变化的静态对象，可作为 `Tuple` 和 `Array(Tuple)` 的一种替代方案。我们通常建议避免在处理 JSON 时使用此类型，因为它的行为往往令人困惑。`Nested` 的主要优势在于其子列可以用于排序键。
 
@@ -396,11 +387,11 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten&#95;nested
+### flatten&#95;nested {#flatten&#95;nested}
 
 `flatten_nested` 设置用于控制 `Nested` 类型的行为。
 
-#### flatten&#95;nested=1
+#### flatten&#95;nested=1 {#flatten&#95;nested1}
 
 当值为 `1`（默认）时，不支持任意深度的嵌套。在该设置下，最简单的理解方式是：将嵌套数据结构视为多个长度相同的 [Array](/sql-reference/data-types/array) 列。字段 `method`、`path` 和 `version` 实际上分别是独立的 `Array(Type)` 列，但有一个关键约束：**`method`、`path` 和 `version` 字段的长度必须相同。** 如果使用 `SHOW CREATE TABLE`，就可以看到这一点：
 
@@ -471,10 +462,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
-
 请注意，对子列使用 `Array` 意味着可以充分利用完整的 [Array 函数](/sql-reference/functions/array-functions) 功能集，包括 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 子句——在列中包含多个值时非常有用。
 
-#### flatten&#95;nested=0
+#### flatten&#95;nested=0 {#flatten&#95;nested0}
 
 这允许任意级别的嵌套，并意味着嵌套列会保持为一个由 `Tuple` 组成的单个数组——实质上它们与 `Array(Tuple)` 相同。
 
@@ -546,7 +536,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 结果集包含 1 行。执行耗时：0.002 秒。
 ```
 
-### 示例
+### 示例 {#example}
 
 上述数据的更大规模示例可在 S3 的公共存储桶中获取，路径为：`s3://datasets-documentation/http/`。
 
@@ -584,7 +574,6 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 
 要查询这些数据，我们需要以数组形式访问请求字段。下面，我们将在固定时间段内汇总错误和 HTTP 方法。
 
-
 ```sql
 SELECT status, request.method[1] AS method, count() AS c
 FROM http
@@ -604,7 +593,7 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### 使用成对数组
+### 使用成对数组 {#using-pairwise-arrays}
 
 成对数组在将 JSON 表示为 `String` 的灵活性与更结构化方案的性能之间提供了一种折中。该模式比较灵活，因为可以在根级别添加任意新的字段。不过，这也需要明显更复杂的查询语法，并且与嵌套结构不兼容。
 
@@ -667,7 +656,6 @@ GROUP BY method, status ORDER BY c DESC LIMIT 5;
 │    400 │ GET    │    81 │
 └────────┴────────┴───────┘
 ```
-
 
 5 行结果。耗时：0.383 秒。已处理 8.22 百万行，1.97 GB（21.45 百万行/秒，5.15 GB/秒）。
 峰值内存占用：51.35 MiB。

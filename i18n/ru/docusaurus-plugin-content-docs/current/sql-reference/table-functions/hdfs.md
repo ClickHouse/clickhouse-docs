@@ -12,13 +12,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Табличная функция hdfs
+# Табличная функция hdfs {#hdfs-table-function}
 
 Создает таблицу из файлов в HDFS. Эта табличная функция аналогична табличным функциям [url](../../sql-reference/table-functions/url.md) и [file](../../sql-reference/table-functions/file.md).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 hdfs(URI, format, structure)
@@ -35,7 +35,7 @@ hdfs(URI, format, structure)
 
 
 
-## Возвращаемое значение
+## Возвращаемое значение {#returned_value}
 
 Таблица заданной структуры для чтения или записи данных в указанный файл.
 
@@ -57,7 +57,7 @@ LIMIT 2
 ```
 
 
-## Глоб-шаблоны в пути
+## Глоб-шаблоны в пути {#globs_in_path}
 
 В путях можно использовать глоб-шаблоны. Файлы должны соответствовать всему шаблону пути, а не только суффиксу или префиксу.
 
@@ -121,7 +121,7 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 
 
 
-## параметр use&#95;hive&#95;partitioning
+## параметр use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
 Когда параметр `use_hive_partitioning` установлен в значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути, но с префиксом `_`.
 

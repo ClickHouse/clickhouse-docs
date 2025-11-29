@@ -6,7 +6,7 @@ title: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap
+# sumMap {#summap}
 
 `key` 配列で指定されたキーに従って、1 つ以上の `value` 配列を合計します。ソート済みのキー配列と、それぞれのキーに対応する値をオーバーフローなしで合計した配列からなるタプルを返します。
 
@@ -84,7 +84,6 @@ GROUP BY timeslot
 
 `sumMap` は、複数の値配列を一度に集約することもできます。
 これは、同じキーを共有する関連するメトリクスがある場合に有用です。
-
 
 ```sql title="Query"
 CREATE TABLE multi_metrics(

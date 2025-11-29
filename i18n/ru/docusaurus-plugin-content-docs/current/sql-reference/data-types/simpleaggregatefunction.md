@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Тип SimpleAggregateFunction
+# Тип SimpleAggregateFunction {#simpleaggregatefunction-type}
 
 
 
@@ -39,7 +39,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -92,7 +92,7 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
-## Связанные материалы
+## Связанные материалы {#related-content}
 
 * Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * Тип данных [AggregateFunction](/sql-reference/data-types/aggregatefunction).

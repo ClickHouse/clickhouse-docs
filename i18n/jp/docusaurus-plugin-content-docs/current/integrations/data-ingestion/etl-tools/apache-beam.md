@@ -13,7 +13,7 @@ keywords: ['apache beam', 'ストリーム処理', 'バッチ処理', 'JDBC コ�
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Apache Beam と ClickHouse の統合
+# Apache Beam と ClickHouse の統合 {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -29,9 +29,9 @@ Apache Beam と ClickHouse を統合するために必要なインテグレー�
 
 
 
-## Apache Beam ClickHouse パッケージのセットアップ
+## Apache Beam ClickHouse パッケージのセットアップ {#setup-of-the-apache-beam-clickhouse-package}
 
-### パッケージのインストール
+### パッケージのインストール {#package-installation}
 
 ご利用のパッケージ管理フレームワークに、次の依存関係を追加します：
 
@@ -50,7 +50,7 @@ Apache Beam と ClickHouse を統合するために必要なインテグレー�
 
 アーティファクトは [公式 Maven リポジトリ](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)から入手できます。
 
-### コード例
+### コード例 {#code-example}
 
 次の例では、`input.csv` という名前の CSV ファイルを `PCollection` として読み込み、定義済みのスキーマを使用して `Row` オブジェクトに変換し、`ClickHouseIO` を使用してローカルの ClickHouse インスタンスに挿入します。
 

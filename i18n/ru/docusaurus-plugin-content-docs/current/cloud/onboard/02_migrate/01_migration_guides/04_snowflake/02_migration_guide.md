@@ -12,7 +12,7 @@ import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate
 import Image from '@theme/IdealImage';
 
 
-# Миграция из Snowflake в ClickHouse
+# Миграция из Snowflake в ClickHouse {#migrate-from-snowflake-to-clickhouse}
 
 > В этом руководстве описывается процесс миграции данных из Snowflake в ClickHouse.
 
@@ -24,7 +24,7 @@ import Image from '@theme/IdealImage';
 <VerticalStepper headerLevel="h2">
 
 
-## Экспорт данных из Snowflake
+## Экспорт данных из Snowflake {#1-exporting-data-from-snowflake}
 
 <Image img={migrate_snowflake_clickhouse} size="md" alt="Миграция с Snowflake на ClickHouse" />
 
@@ -62,7 +62,7 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 Для набора данных объемом около 5 ТБ с максимальным размером файла 150 МБ и при использовании виртуального склада Snowflake типа 2X-Large, расположенного в том же регионе AWS `us-east-1`, копирование данных в бакет S3 займет примерно 30 минут.
 
 
-## Импорт в ClickHouse
+## Импорт в ClickHouse {#2-importing-to-clickhouse}
 
 После того как данные размещены во временном объектном хранилище, функции ClickHouse, такие как [табличная функция s3](/sql-reference/table-functions/s3), можно использовать для вставки данных в таблицу, как показано ниже.
 

@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
 
-# chDB
+# chDB {#chdb}
 
 chDB — это быстрый встроенный SQL OLAP-движок на базе [ClickHouse](https://github.com/clickhouse/clickhouse).
 Вы можете использовать его, когда вам нужна мощь ClickHouse в вашем коде, без необходимости подключаться к серверу ClickHouse.

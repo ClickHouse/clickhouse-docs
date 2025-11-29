@@ -6,7 +6,7 @@ title: 'sumMapWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumMapWithOverflow
+# sumMapWithOverflow {#summapwithoverflow}
 
 根据 `key` 数组中指定的键，对 `value` 数组进行求和。返回一个由两个数组组成的元组：排好序的键数组，以及对应键的求和值数组。
 它与 [sumMap](../reference/summap.md) 函数的区别在于，它执行的是允许溢出的求和——即求和结果的数据类型与参数的数据类型相同。
@@ -83,7 +83,6 @@ GROUP BY timeslot
 ```
 
 结果：
-
 
 ```text
    ┌────────────timeslot─┬─toTypeName(sumMap(statusMap.status, statusMap.requests))─┬─toTypeName(sumMapWithOverflow(statusMap.status, statusMap.requests))─┐

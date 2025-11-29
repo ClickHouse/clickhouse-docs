@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# ArrowFlight テーブルエンジン
+# ArrowFlight テーブルエンジン {#arrowflight-table-engine}
 
 ArrowFlight テーブルエンジンを使用すると、ClickHouse は [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコル経由でリモートのデータセットに対してクエリを実行できます。
 この統合により、ClickHouse は外部の Flight 対応サーバーから、列指向の Arrow 形式で高いパフォーマンスでデータを取得できます。
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
   （その場合、Arrow Flight サーバー側で未認証アクセスが許可されている必要があります）。
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 この例では、リモートの Arrow Flight サーバーからデータを読み込むテーブルを作成する方法を示します。
 

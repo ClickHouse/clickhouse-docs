@@ -10,7 +10,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
 
-# Отчеты по безопасности и соответствию требованиям
+# Отчеты по безопасности и соответствию требованиям {#security-and-compliance-reports}
 ClickHouse оценивает потребности наших клиентов в области безопасности и соответствия требованиям и постоянно расширяет программу по мере появления запросов на дополнительные отчеты. Для получения дополнительной информации или загрузки отчетов посетите наш [Центр доверия](https://trust.clickhouse.com).
 
 

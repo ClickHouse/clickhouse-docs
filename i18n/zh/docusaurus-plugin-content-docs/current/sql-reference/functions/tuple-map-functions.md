@@ -6,9 +6,7 @@ title: 'Map 函数'
 doc_type: 'reference'
 ---
 
-
-
-## map
+## map {#map}
 
 根据键值对创建一个 [Map(key, value)](../data-types/map.md) 类型的值。
 
@@ -45,8 +43,7 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3);
 └──────────────────────────────────────────────────┘
 ```
 
-
-## mapFromArrays
+## mapFromArrays {#mapfromarrays}
 
 从键数组或 Map 和值数组或 Map 创建一个 Map。
 
@@ -117,8 +114,7 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 └───────────────────────────────────────────────────────┘
 ```
 
-
-## extractKeyValuePairs
+## extractKeyValuePairs {#extractkeyvaluepairs}
 
 将由键值对组成的字符串转换为 [Map(String, String)](../data-types/map.md)。
 解析过程能够容忍噪声（例如日志文件中的多余内容）。
@@ -237,7 +233,6 @@ SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 └─────┘
 ```
 
-
 ```sql
 SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 ```
@@ -282,8 +277,7 @@ map_serialized: {'John':'33','Paula':'31'}
 map_restored:   {'John':'33','Paula':'31'}
 ```
 
-
-## extractKeyValuePairsWithEscaping
+## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
 与 `extractKeyValuePairs` 相同，但支持转义。
 
@@ -314,8 +308,7 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 └───────────────────┘
 ```
 
-
-## mapAdd
+## mapAdd {#mapadd}
 
 收集所有键并对其对应的值求和。
 
@@ -363,8 +356,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTy
 └───────────────┴────────────────────────────────────┘
 ```
 
-
-## mapSubtract
+## mapSubtract {#mapsubtract}
 
 收集所有键，并对相应的值执行减法运算。
 
@@ -412,8 +404,7 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 └────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapPopulateSeries
+## mapPopulateSeries {#mappopulateseries}
 
 为具有整数键的 map 填充缺失的键值对。
 为了支持将键扩展到超过当前最大值的情况，可以指定一个最大键。
@@ -478,8 +469,7 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 └──────────────────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapKeys
+## mapKeys {#mapkeys}
 
 返回给定 `Map` 的所有键。
 
@@ -522,8 +512,7 @@ SELECT mapKeys(a) FROM tab;
 └───────────────────────┘
 ```
 
-
-## mapContains
+## mapContains {#mapcontains}
 
 判断给定的 `map` 是否包含指定的键。
 
@@ -566,8 +555,7 @@ SELECT mapContains(a, 'name') FROM tab;
 └────────────────────────┘
 ```
 
-
-## mapContainsKeyLike
+## mapContainsKeyLike {#mapcontainskeylike}
 
 **语法**
 
@@ -605,8 +593,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 └─────────────────────────────┘
 ```
 
-
-## mapExtractKeyLike
+## mapExtractKeyLike {#mapextractkeylike}
 
 给定一个具有字符串键的 `map` 和一个 `LIKE` 模式，此函数返回一个 `map`，其中仅包含键名匹配该模式的元素。
 
@@ -646,8 +633,7 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 └────────────────────────────┘
 ```
 
-
-## mapValues
+## mapValues {#mapvalues}
 
 返回给定 Map 的所有值。
 
@@ -690,8 +676,7 @@ SELECT mapValues(a) FROM tab;
 └──────────────────┘
 ```
 
-
-## mapContainsValue
+## mapContainsValue {#mapcontainsvalue}
 
 返回给定键是否存在于给定的 `map` 中。
 
@@ -734,8 +719,7 @@ SELECT mapContainsValue(a, '11') FROM tab;
 └───────────────────────────┘
 ```
 
-
-## mapContainsValueLike
+## mapContainsValueLike {#mapcontainsvaluelike}
 
 **语法**
 
@@ -773,8 +757,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 └──────────────────────────┘
 ```
 
-
-## mapExtractValueLike
+## mapExtractValueLike {#mapextractvaluelike}
 
 给定一个值为字符串的 `map` 和一个 `LIKE` 模式，此函数返回一个 `map`，其中仅包含值与该模式匹配的元素。
 
@@ -814,8 +797,7 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 └──────────────────────────────┘
 ```
 
-
-## mapApply
+## mapApply {#mapapply}
 
 将函数应用于映射中的每个元素。
 
@@ -857,8 +839,7 @@ FROM
 └───────────────────────┘
 ```
 
-
-## mapFilter
+## mapFilter {#mapfilter}
 
 通过对映射中的每个元素应用函数来对映射进行过滤。
 
@@ -900,8 +881,7 @@ FROM
 └─────────────────────┘
 ```
 
-
-## mapUpdate
+## mapUpdate {#mapupdate}
 
 **语法**
 
@@ -934,8 +914,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 └────────────────────────────────┘
 ```
 
-
-## mapConcat
+## mapConcat {#mapconcat}
 
 根据键是否相等连接多个 `Map`。
 如果多个输入 `Map` 中存在具有相同键的元素，则所有这些元素都会被添加到结果 `Map` 中，但通过运算符 `[]` 只能访问到第一个元素。
@@ -984,8 +963,7 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 └──────────────────────────────┴──────┘
 ```
 
-
-## mapExists([func,], map)
+## mapExists([func,], map) {#mapexistsfunc-map}
 
 如果在 `map` 中至少存在一对键值对，使得 `func(key, value)` 的返回值不为 0，则返回 1，否则返回 0。
 
@@ -1010,8 +988,7 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapAll([func,] map)
+## mapAll([func,] map) {#mapallfunc-map}
 
 如果对 `map` 中的所有键值对，`func(key, value)` 的返回值都不为 0，则返回 1，否则返回 0。
 
@@ -1036,8 +1013,7 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapSort([func,], map)
+## mapSort([func,], map) {#mapsortfunc-map}
 
 按升序对 map 中的元素进行排序。
 如果指定了 `func` 函数，则排序顺序由将 `func` 函数应用到 map 的键和值上所得的结果决定。
@@ -1066,8 +1042,7 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 有关更多详细信息，请参阅 `arraySort` 函数的[参考文档](/sql-reference/functions/array-functions#arraySort)。
 
-
-## mapPartialSort
+## mapPartialSort {#mappartialsort}
 
 对 map 中的元素进行升序排序，并提供额外的 `limit` 参数以支持部分排序。
 如果指定了函数 `func`，则排序顺序由将 `func` 应用于 map 的键和值所得到的结果来决定。
@@ -1100,8 +1075,7 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └───────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## mapReverseSort([func,], map)
+## mapReverseSort([func,], map) {#mapreversesortfunc-map}
 
 对 `map` 的元素进行降序排序。
 如果指定了 `func` 函数，则排序顺序由 `func` 应用于 `map` 的键和值后得到的结果决定。
@@ -1130,8 +1104,7 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 有关更多详细信息，请参阅函数 [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort)。
 
-
-## mapPartialReverseSort
+## mapPartialReverseSort {#mappartialreversesort}
 
 按降序对 `map` 的元素进行排序，并允许通过额外的 `limit` 参数进行部分排序。
 如果指定了 `func` 函数，则排序顺序由将 `func` 函数应用到 `map` 的键和值后得到的结果决定。

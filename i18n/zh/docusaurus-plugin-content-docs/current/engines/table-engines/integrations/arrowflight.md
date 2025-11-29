@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# ArrowFlight 表引擎
+# ArrowFlight 表引擎 {#arrowflight-table-engine}
 
 ArrowFlight 表引擎使 ClickHouse 能够通过 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) 协议查询远程数据集。
 此集成允许 ClickHouse 高效地从支持 Flight 的外部服务器获取列式 Arrow 格式的数据。
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
   （仅当 Arrow Flight 服务器允许无认证访问时才可用）。
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 本示例演示如何创建一个从远程 Arrow Flight 服务器读取数据的表：
 

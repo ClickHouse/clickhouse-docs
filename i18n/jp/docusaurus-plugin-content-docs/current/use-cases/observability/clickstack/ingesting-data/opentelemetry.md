@@ -39,7 +39,7 @@ ClickStack の OTel collector は、スタック内の他のコンポーネン�
 
 詳細については「[Deploying the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)」を参照してください。
 
-## OpenTelemetry データの送信
+## OpenTelemetry データの送信 {#sending-otel-data}
 
 ClickStack にデータを送信するには、OpenTelemetry Collector によって公開されている次のエンドポイントを、OpenTelemetry 計装の送信先として指定します。
 
@@ -65,7 +65,7 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキ�
 エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib ディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。次に、この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェントの設定例を示します。Authorization 用のキーを指定する必要がある点に注意してください。`<YOUR_API_INGESTION_KEY>` を指定します。
 
 ```yaml
-# clickhouse-agent-config.yaml
+# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
 receivers:
   filelog:
     include:

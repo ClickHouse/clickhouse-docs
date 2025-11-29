@@ -16,7 +16,7 @@ import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgra
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
 
-# Обновления
+# Обновления {#upgrades}
 
 С ClickHouse Cloud вам не нужно заботиться о патчах и обновлениях. Мы регулярно внедряем обновления, которые включают исправления, новые функции и улучшения производительности. Полный список новых возможностей в ClickHouse смотрите в нашем [Cloud changelog](/whats-new/cloud).
 

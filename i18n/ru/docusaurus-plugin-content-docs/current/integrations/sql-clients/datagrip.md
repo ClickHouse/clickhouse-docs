@@ -12,7 +12,7 @@ keywords: ['DataGrip', 'IDE для баз данных', 'JetBrains', 'SQL-кл�
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';
@@ -20,7 +20,7 @@ import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключение DataGrip к ClickHouse
+# Подключение DataGrip к ClickHouse {#connecting-datagrip-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 

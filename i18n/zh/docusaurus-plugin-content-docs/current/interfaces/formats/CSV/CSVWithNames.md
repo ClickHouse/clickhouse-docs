@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 :::tip
 自 [23.1 版本](https://github.com/ClickHouse/ClickHouse/releases)起，在使用 `CSV` 格式时，ClickHouse 会自动检测 CSV 文件中的表头，因此无需再使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
@@ -71,7 +71,7 @@ INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `CSVWithNames` 格式读取数据：
 

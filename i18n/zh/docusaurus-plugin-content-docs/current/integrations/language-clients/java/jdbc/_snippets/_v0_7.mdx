@@ -9,77 +9,70 @@ import TabItem from '@theme/TabItem';
 
 `clickhouse-jdbc` API 是同步的，一般来说，它会带来更多开销（例如 SQL 解析和类型映射/转换等）。如果性能至关重要，或者倾向于以更直接的方式访问 ClickHouse，请考虑使用 [clickhouse-client](/integrations/sql-clients/sql-console)。
 
-
 ## 环境要求 \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) 版本 8 或更高
+* [OpenJDK](https://openjdk.java.net) 版本 8 或更高
 
 ### 设置 \{#setup\}
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-jdbc</artifactId>
+        <version>0.7.2</version>
+        <!-- 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包 -->
+        <classifier>shaded-all</classifier>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-        <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.7.2</version>
-            <!-- 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包 -->
-            <classifier>shaded-all</classifier>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
+    implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
-        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
-        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
+    implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+    ```
+  </TabItem>
 </Tabs>
 
 从版本 `0.5.0` 开始，我们在客户端中使用与其一同打包的 Apache HTTP Client。由于该包没有共享版本，因此需要额外添加一个日志记录库作为依赖。
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.16</version>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation("org.slf4j:slf4j-api:2.0.16")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation 'org.slf4j:slf4j-api:2.0.16'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    ```
+  </TabItem>
 </Tabs>
 
 ## 配置 \{#configuration\}
@@ -88,9 +81,9 @@ import TabItem from '@theme/TabItem';
 
 **URL 语法**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`，例如：
 
-- `jdbc:ch://localhost` 等同于 `jdbc:clickhouse:http://localhost:8123`
-- `jdbc:ch:https://localhost` 等同于 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
-- `jdbc:ch:grpc://localhost` 等同于 `jdbc:clickhouse:grpc://localhost:9100`
+* `jdbc:ch://localhost` 等同于 `jdbc:clickhouse:http://localhost:8123`
+* `jdbc:ch:https://localhost` 等同于 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
+* `jdbc:ch:grpc://localhost` 等同于 `jdbc:clickhouse:grpc://localhost:9100`
 
 **连接属性**：
 
@@ -113,13 +106,13 @@ JDBC 驱动程序支持与客户端库相同的数据格式。
 
 :::note
 
-- AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
-- Decimal - 在 21.9+ 版本中使用 `SET output_format_decimal_trailing_zeros=1` 以保持一致性
-- Enum - 可以同时作为字符串和整数处理
-- UInt64 - 映射为 `long`（在 client-v1 中）
-:::
+* AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
+* Decimal - 在 21.9+ 版本中使用 `SET output_format_decimal_trailing_zeros=1` 以保持一致性
+* Enum - 可以同时作为字符串和整数处理
+* UInt64 - 映射为 `long`（在 client-v1 中）
+  :::
 
-## 创建连接
+## 创建连接 \{#creating-connection\}
 
 ```java
 String url = "jdbc:ch://my-server/system"; // 默认使用 HTTP 协议和 8123 端口
@@ -132,8 +125,7 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-
-## 简单语句
+## 简单语句 \{#simple-statement\}
 
 ```java showLineNumbers
 
@@ -146,8 +138,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-
-## 插入
+## 插入 \{#insert\}
 
 :::note
 
@@ -166,8 +157,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 }
 ```
 
-
-### 使用 input 表函数
+### 使用 input 表函数 \{#with-input-table-function\}
 
 一种具有极佳性能表现的选项：
 
@@ -186,8 +176,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 * 尽可能查阅 [input 函数文档](/sql-reference/table-functions/input/)
 
-
-### 使用占位符插入
+### 使用占位符插入 \{#insert-with-placeholders\}
 
 此选项仅建议在小批量插入时使用，因为它需要构造一条很长的 SQL 表达式（会在客户端进行解析，并消耗 CPU 和内存）：
 
@@ -202,8 +191,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 }
 ```
 
-
-## 处理 DateTime 和时区
+## 处理 DateTime 和时区 \{#handling-datetime-and-time-zones\}
 
 请使用 `java.time.LocalDateTime` 或 `java.time.OffsetDateTime` 替代 `java.sql.Timestamp`，并使用 `java.time.LocalDate` 替代 `java.sql.Date`。
 
@@ -218,8 +206,7 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 }
 ```
 
-
-## 处理 `AggregateFunction`
+## 处理 `AggregateFunction` \{#handling-aggregatefunction\}
 
 :::note
 目前仅支持 `groupBitmap`。
@@ -267,8 +254,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 <br />
 
-
-## 配置 HTTP 库
+## 配置 HTTP 库 \{#configuring-http-library\}
 
 ClickHouse JDBC 连接器支持三种 HTTP 库：[`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)、[`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html) 和 [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/)。
 
@@ -292,12 +278,11 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 <br />
 
-
 ## 使用 SSL 连接 ClickHouse \{#connect-to-clickhouse-with-ssl\}
 
 要通过 SSL 与 ClickHouse 建立安全的 JDBC 连接，需要在 JDBC 属性中配置相应的 SSL 参数。通常需要在 JDBC URL 或 Properties 对象中指定 `sslmode` 和 `sslrootcert` 等 SSL 属性。
 
-## SSL 属性
+## SSL 属性 \{#ssl-properties\}
 
 | Name                 | Default Value | Optional Values | Description                              |
 | -------------------- | ------------- | --------------- | ---------------------------------------- |
@@ -330,8 +315,7 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
   }
 ```
 
-
-## 解决大批量插入时的 JDBC 超时问题
+## 解决大批量插入时的 JDBC 超时问题 \{#resolving-jdbc-timeout-on-large-inserts\}
 
 在 ClickHouse 中执行执行时间较长的大批量插入操作时，你可能会遇到类似下面的 JDBC 超时错误：
 
@@ -341,18 +325,17 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 这些错误会中断数据插入过程，并影响系统稳定性。要解决此问题，你需要在客户端操作系统上调整一些超时设置。
 
-
 ### Mac OS \{#mac-os\}
 
 在 Mac OS 上，可以通过调整以下设置来解决此问题：
 
-- `net.inet.tcp.keepidle`: 60000
-- `net.inet.tcp.keepintvl`: 45000
-- `net.inet.tcp.keepinit`: 45000
-- `net.inet.tcp.keepcnt`: 8
-- `net.inet.tcp.always_keepalive`: 1
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
 
-### Linux
+### Linux \{#linux\}
 
 在 Linux 系统上，仅使用等效设置可能无法解决该问题。由于 Linux 处理套接字 keep-alive 设置的方式不同，还需要执行额外步骤。请按照以下步骤操作：
 

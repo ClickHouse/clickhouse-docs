@@ -6,7 +6,7 @@ title: 'covarPopMatrix'
 doc_type: 'reference'
 ---
 
-# covarPopMatrix
+# covarPopMatrix {#covarpopmatrix}
 
 返回基于 N 个变量计算得到的总体协方差矩阵。
 

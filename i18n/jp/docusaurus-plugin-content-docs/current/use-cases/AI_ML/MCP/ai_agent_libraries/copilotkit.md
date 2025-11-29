@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# CopilotKit と ClickHouse MCP Server を使用して AI エージェントを構築する方法
+# CopilotKit と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
 
 これは、ClickHouse に保存されているデータを利用してエージェント型アプリケーションを構築する方法の例です。[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使用して ClickHouse からデータをクエリし、そのデータに基づいてグラフを生成します。
 
@@ -41,7 +41,7 @@ doc_type: 'guide'
 
 
 
-## 依存関係を手動でインストールする
+## 依存関係を手動でインストールする {#install-dependencies-manually}
 
 1. 依存関係をインストールします:
 

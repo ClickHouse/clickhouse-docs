@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы File
+# Движок таблицы File {#file-table-engine}
 
 Движок таблицы File хранит данные в файле в одном из поддерживаемых [форматов файлов](/interfaces/formats#formats-overview) (`TabSeparated`, `Native` и т. д.).
 
@@ -26,7 +26,7 @@ doc_type: 'reference'
 
 
 
-## Использование на сервере ClickHouse
+## Использование на сервере ClickHouse {#usage-in-clickhouse-server}
 
 ```sql
 File(Format)
@@ -48,7 +48,7 @@ ClickHouse не позволяет указывать путь в файлово
 :::
 
 
-## Пример
+## Пример {#example}
 
 **1.** Настройте таблицу `file_engine_table`:
 
@@ -80,7 +80,7 @@ SELECT * FROM file_engine_table
 ```
 
 
-## Использование в clickhouse-local
+## Использование в clickhouse-local {#usage-in-clickhouse-local}
 
 В [clickhouse-local](../../../operations/utilities/clickhouse-local.md) движок File, помимо параметра `Format`, принимает путь к файлу. Потоки ввода/вывода по умолчанию можно указывать с помощью числовых или понятных имён, таких как `0` или `stdin`, `1` или `stdout`. Можно читать и записывать сжатые файлы, исходя из дополнительного параметра движка или расширения файла (`gz`, `br` или `xz`).
 

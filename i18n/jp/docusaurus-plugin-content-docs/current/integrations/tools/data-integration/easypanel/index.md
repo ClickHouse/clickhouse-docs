@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Easypanel への ClickHouse のデプロイ
+# Easypanel への ClickHouse のデプロイ {#deploying-clickhouse-on-easypanel}
 
 <CommunityMaintainedBadge/>
 

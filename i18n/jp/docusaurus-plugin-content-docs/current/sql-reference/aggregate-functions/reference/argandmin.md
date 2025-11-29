@@ -6,7 +6,7 @@ title: 'argAndMin'
 doc_type: 'reference'
 ---
 
-# argAndMin
+# argAndMin {#argandmin}
 
 最小の `val` 値に対応する `arg` と `val` の値を計算します。最小値となる同じ `val` を持つ行が複数ある場合、どの行に対応する `arg` と `val` が返されるかは決定されていません。
 `arg` および `min` の両方は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中にどちらも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` でない値が存在する場合には `Null` でない値を返します。
@@ -60,7 +60,6 @@ SELECT argAndMin(user, salary) FROM salary
 ```
 
 **詳細な例**
-
 
 ```sql
 CREATE TABLE test

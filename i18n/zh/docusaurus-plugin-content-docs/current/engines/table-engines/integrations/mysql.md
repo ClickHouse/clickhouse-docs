@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# MySQL 表引擎
+# MySQL 表引擎 {#mysql-table-engine}
 
 MySQL 引擎允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -67,7 +67,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 ```
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 在 MySQL 中创建表：
 

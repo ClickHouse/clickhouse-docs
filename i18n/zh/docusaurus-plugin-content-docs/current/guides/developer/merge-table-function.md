@@ -10,11 +10,9 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 [Merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge) 允许我们并行查询多张表。
 它通过创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表来实现这一点，该表的结构是通过对这些表的列取并集，并推断其公共数据类型而得到的。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
-
-## 设置数据表
+## 设置数据表 {#setup-tables}
 
 我们将借助 [Jeff Sackmann 的网球数据集](https://github.com/JeffSackmann/tennis_atp) 来学习如何使用这个函数。
 我们将处理包含自 20 世纪 60 年代起比赛记录的 CSV 文件，但会为每个十年创建略有不同的表结构。
@@ -50,8 +48,7 @@ SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
 
-
-## 多个表的结构
+## 多个表的结构 {#schema-multiple-tables}
 
 我们可以运行以下查询，将每个表中的列及其类型并排列出，便于对比差异。
 
@@ -90,8 +87,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 * 1980s 将 `winner_seed` 和 `loser_seed` 的类型从 `Nullable(UInt8)` 更改为 `Nullable(UInt16)`。
 * 1990s 将 `surface` 的类型从 `String` 更改为 `Enum('Hard', 'Grass', 'Clay', 'Carpet')`，并新增 `walkover` 和 `retirement` 两列。
 
-
-## 使用 merge 查询多张表
+## 使用 merge 查询多张表 {#querying-multiple-tables}
 
 让我们写一个查询，找出 John McEnroe 在对阵头号种子选手时获胜的比赛：
 
@@ -147,8 +143,7 @@ AND multiIf(
 └───────────────┴───────────────┴─────────────┘
 ```
 
-
-## 在使用 merge 时，行是来自哪个表？
+## 在使用 merge 时，行是来自哪个表？ {#which-table-merge}
 
 如果我们想知道每一行是从哪个表来的怎么办？
 我们可以使用 `_table` 虚拟列来实现，如下面的查询所示：

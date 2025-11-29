@@ -25,7 +25,7 @@ import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 Airbyte 连接到 ClickHouse
+# 将 Airbyte 连接到 ClickHouse {#connect-airbyte-to-clickhouse}
 
 <PartnerBadge />
 
@@ -70,7 +70,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## 将 ClickHouse 添加为目标
+## 将 ClickHouse 添加为目标 {#2-add-clickhouse-as-a-destination}
 
 在本节中，我们将展示如何将一个 ClickHouse 实例添加为目标。
 

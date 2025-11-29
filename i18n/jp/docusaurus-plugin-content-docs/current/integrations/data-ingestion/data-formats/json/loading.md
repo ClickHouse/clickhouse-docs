@@ -17,7 +17,7 @@ doc_type: 'guide'
 
 
 
-## 構造化された JSON の読み込み
+## 構造化された JSON の読み込み {#loading-structured-json}
 
 このセクションでは、JSON データが [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) 形式であり、ClickHouse では [`JSONEachRow`](/interfaces/formats/JSONEachRow) として知られ、かつ列名と型が固定された適切に構造化されたデータであると仮定します。`NDJSON` は、その簡潔さとストレージ効率の良さから JSON を読み込む際に推奨される形式ですが、他の形式も [入力と出力](/interfaces/formats/JSON) の両方でサポートされています。
 
@@ -124,7 +124,7 @@ FORMAT JSONEachRow
 これらの例では、`JSONEachRow` 形式の使用を想定しています。その他の一般的な JSON 形式もサポートされており、それらを取り込む例は[こちら](/integrations/data-formats/json/other-formats)にあります。
 
 
-## セミ構造化 JSON の読み込み
+## セミ構造化 JSON の読み込み {#loading-semi-structured-json}
 
 前の例では、キー名と型がよく分かっている静的な JSON を読み込みました。実際にはそうとは限らず、キーが追加されたり、その型が変化したりします。これは Observability データなどのユースケースでよく見られます。
 
@@ -200,7 +200,7 @@ LIMIT 2
 
 ここではデータ読み込み時のパフォーマンスの違いに注目してください。`JSON` 列は、挿入時に型推論が必要であり、さらに 1 つの列に複数の型が存在する場合は追加のストレージも必要になります。`JSON` 型は（[JSON スキーマの設計](/integrations/data-formats/json/schema)を参照）明示的に列を宣言した場合と同等のパフォーマンスになるように設定できますが、デフォルトではあえて柔軟に使えるように設計されています。しかし、この柔軟性にはある程度のコストが伴います。
 
-### JSON 型を使用するタイミング
+### JSON 型を使用するタイミング {#when-to-use-the-json-type}
 
 次のようなデータの場合は JSON 型を使用します:
 

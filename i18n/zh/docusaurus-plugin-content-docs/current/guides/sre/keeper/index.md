@@ -11,15 +11,15 @@ doc_type: 'guide'
 
 
 
-# ClickHouse Keeper（clickhouse-keeper）
+# ClickHouse Keeper（clickhouse-keeper） {#clickhouse-keeper-clickhouse-keeper}
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 ClickHouse Keeper 为数据[复制](/engines/table-engines/mergetree-family/replication.md)和[分布式 DDL](/sql-reference/distributed-ddl.md) 查询执行提供协调系统。ClickHouse Keeper 与 ZooKeeper 兼容。
 
-### 实现细节
+### 实现细节 {#implementation-details}
 
 ZooKeeper 是最早广为人知的开源协调系统之一。它用 Java 实现，具有相当简单而强大的数据模型。ZooKeeper 的协调算法 ZooKeeper Atomic Broadcast (ZAB) 不为读操作提供线性一致性保证，因为每个 ZooKeeper 节点本地提供读服务。与 ZooKeeper 不同，ClickHouse Keeper 使用 C++ 编写，并采用 [RAFT 算法](https://raft.github.io/)的[实现](https://github.com/eBay/NuRaft)。该算法允许对读写操作提供线性一致性，并且在不同语言中有多种开源实现。
 
@@ -31,11 +31,11 @@ ClickHouse Keeper 以与 [ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zoo
 不支持外部集成。
 :::
 
-### 配置
+### 配置 {#configuration}
 
 ClickHouse Keeper 可以作为 ZooKeeper 的独立替代品，或作为 ClickHouse 服务器的内部组件使用。在这两种情况下，配置文件几乎相同，都是 `.xml` 文件。
 
-#### Keeper 配置设置
+#### Keeper 配置设置 {#keeper-configuration-settings}
 
 ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下参数：
 
@@ -153,7 +153,7 @@ ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下�
 </keeper_server>
 ```
 
-### 如何运行
+### 如何运行 {#how-to-run}
 
 ClickHouse Keeper 已打包在 ClickHouse 服务器安装包中，只需在 `/etc/your_path_to_config/clickhouse-server/config.xml` 中添加 `<keeper_server>` 的配置，然后像平常一样启动 ClickHouse 服务器即可。如果你想以独立方式运行 ClickHouse Keeper，可以通过类似的方式启动它：
 
@@ -167,7 +167,7 @@ clickhouse-keeper --config /etc/your_path_to_config/config.xml
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### 四字母命令
+### 四字母命令 {#four-letter-word-commands}
 
 ClickHouse Keeper 也提供了与 ZooKeeper 基本相同的 4lw 命令。每个命令由四个字母组成，例如 `mntr`、`stat` 等。其中有一些更为实用的命令：`stat` 提供关于服务器及其已连接客户端的一些通用信息，而 `srvr` 和 `cons` 则分别提供关于服务器和连接的详细信息。
 
@@ -418,7 +418,7 @@ AIOWriteBytes   0       使用 Linux 或 FreeBSD AIO 接口写入的字节数
 ...
 ```
 
-### HTTP 控制接口
+### HTTP 控制接口 {#http-control}
 
 ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准备好接收请求。它可用于云环境中，例如 [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)。
 
@@ -437,7 +437,7 @@ ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准�
 </clickhouse>
 ```
 
-### 功能开关（Feature flags）
+### 功能开关（Feature flags） {#feature-flags}
 
 Keeper 与 ZooKeeper 及其客户端完全兼容，但它也为 ClickHouse 客户端引入了一些独特的功能和请求类型。
 由于这些功能可能会引入向后不兼容的变更，因此大多数功能默认处于禁用状态，可以通过 `keeper_server.feature_flags` 配置启用。
@@ -473,7 +473,7 @@ Keeper 与 ZooKeeper 及其客户端完全兼容，但它也为 ClickHouse 客�
 :::
 
 
-### 从 ZooKeeper 迁移
+### 从 ZooKeeper 迁移 {#migration-from-zookeeper}
 
 无法实现从 ZooKeeper 到 ClickHouse Keeper 的无缝迁移。需要先停止 ZooKeeper 集群、转换数据，然后再启动 ClickHouse Keeper。`clickhouse-keeper-converter` 工具可将 ZooKeeper 日志和快照转换为 ClickHouse Keeper 快照。它仅适用于 ZooKeeper 3.4 及以上版本。迁移步骤如下：
 
@@ -500,7 +500,7 @@ clickhouse keeper-converter ...
 Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
-### 在丢失法定人数后的恢复
+### 在丢失法定人数后的恢复 {#recovering-after-losing-quorum}
 
 由于 ClickHouse Keeper 使用 Raft，它可以在一定程度上容忍节点宕机，具体取决于集群规模。\
 例如，对于一个 3 节点集群，如果只有 1 个节点宕机，它仍然可以正常工作。
@@ -528,7 +528,7 @@ Raft 将停止工作，并且不允许你通过常规方式重新配置集群。
 7. 达成法定人数后，leader 节点会恢复到正常运行模式，使用 Raft 接受所有请求——可通过 `mntr` 进行验证，此时 `zk_server_state` 应返回 `leader`。
 
 
-## 在 Keeper 中使用磁盘
+## 在 Keeper 中使用磁盘 {#using-disks-with-keeper}
 
 Keeper 支持 [外部磁盘](/operations/storing-data.md) 类型中的一部分，用于存储快照、日志文件和状态文件。
 
@@ -607,7 +607,7 @@ Keeper 实例的一种可能存储配置如下所示：
 此实例会将除最新日志外的所有日志存储在 `log_s3_plain` 磁盘上，而最新日志将存储在 `log_local` 磁盘上。
 同样的逻辑也适用于快照：除最新快照外的所有快照将存储在 `snapshot_s3_plain` 磁盘上，而最新快照将存储在 `snapshot_local` 磁盘上。
 
-### 更改磁盘配置
+### 更改磁盘配置 {#changing-disk-setup}
 
 :::important
 在应用新的磁盘配置之前，请手动备份所有 Keeper 日志和快照。
@@ -656,7 +656,7 @@ Keeper 实例的一种可能存储配置如下所示：
 
 
 
-## Prometheus
+## Prometheus {#prometheus}
 
 Keeper 可以对 [Prometheus](https://prometheus.io) 暴露指标数据，以供抓取。
 
@@ -807,7 +807,7 @@ curl 127.0.0.1:9363/metrics
 └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
 ```
 
-### 2.  在 ClickHouse 中配置集群
+### 2.  在 ClickHouse 中配置集群 {#2--configure-a-cluster-in-clickhouse}
 
 1. 让我们在 2 个节点上配置一个包含 2 个分片且每个分片只有 1 个副本的简单集群。第三个节点将用于满足 ClickHouse Keeper 的仲裁（quorum）要求。在 `chnode1` 和 `chnode2` 上更新配置。下面的集群配置在每个节点上定义了 1 个分片，总计 2 个分片且无复制。在此示例中，一部分数据会位于一个节点上，另一部分数据会位于另一个节点上：
 
@@ -857,7 +857,7 @@ curl 127.0.0.1:9363/metrics
    └───────────────┘
    ```
 
-### 3. 创建并测试分布式表
+### 3. 创建并测试分布式表 {#3-create-and-test-distributed-table}
 
 1. 使用 `chnode1` 上的 ClickHouse 客户端在新集群上创建一个新的数据库。`ON CLUSTER` 子句会自动在两个节点上创建该数据库。
    ```sql
@@ -963,11 +963,11 @@ curl 127.0.0.1:9363/metrics
 
 
 
-## 使用唯一路径配置 ClickHouse Keeper
+## 使用唯一路径配置 ClickHouse Keeper {#configuring-clickhouse-keeper-with-unique-paths}
 
 <SelfManaged />
 
-### 描述
+### 描述 {#description}
 
 本文介绍如何使用内置的 `{uuid}` 宏配置项，
 在 ClickHouse Keeper 或 ZooKeeper 中创建唯一条目。唯一路径
@@ -976,7 +976,7 @@ curl 127.0.0.1:9363/metrics
 去清理路径条目；每次创建路径时，都会在该路径中使用新的 `uuid`，
 路径从不复用。
 
-### 示例环境
+### 示例环境 {#example-environment}
 
 一个由三个节点组成的集群，将被配置为在所有三个节点上运行 ClickHouse Keeper，
 并在其中两个节点上运行 ClickHouse。这样为 ClickHouse Keeper 提供了三个节点（包括一个仲裁节点），
@@ -1013,7 +1013,7 @@ curl 127.0.0.1:9363/metrics
     </remote_servers>
 ```
 
-### 将表设置为使用 `{uuid}` 的步骤
+### 将表设置为使用 `{uuid}` 的步骤 {#procedures-to-set-up-tables-to-use-uuid}
 
 1. 在每台服务器上配置宏（Macros）\
    以服务器 1 为例：
@@ -1108,7 +1108,7 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-### 测试
+### 测试 {#testing}
 
 1. 向第一个节点插入数据（例如 `chnode1`）
 
@@ -1170,7 +1170,7 @@ FROM db_uuid.dist_uuid_table1
 返回 2 行。用时:0.007 秒。
 ```
 
-### 替代方案
+### 替代方案 {#alternatives}
 
 可以通过宏预先定义默认复制路径，并同时使用 `{uuid}`。
 
@@ -1238,7 +1238,7 @@ ORDER BY id
 返回 1 行。用时：0.003 秒。
 ```
 
-### 故障排查
+### 故障排查 {#troubleshooting}
 
 示例命令，用于获取表信息和 UUID：
 
@@ -1283,11 +1283,11 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 ```
 
 
-## ClickHouse Keeper 动态重新配置
+## ClickHouse Keeper 动态重新配置 {#reconfiguration}
 
 <SelfManaged />
 
-### 描述
+### 描述 {#description-1}
 
 如果开启了 `keeper_server.enable_reconfiguration`，ClickHouse Keeper 对用于动态集群重新配置的 ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying) 命令提供部分支持。
 
@@ -1322,11 +1322,11 @@ server.3=zoo3:9234;participant;1
 
 
 ```bash
-# 添加两台新服务器
+# 添加两台新服务器 {#add-two-new-servers}
 reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
-# 移除另外两台服务器
+# 移除另外两台服务器 {#remove-two-other-servers}
 reconfig remove "3,4"
-# 将现有服务器的优先级更改为 8
+# 将现有服务器的优先级更改为 8 {#change-existing-server-priority-to-8}
 reconfig add "server.5=localhost:5123;participant;8"
 ```
 
@@ -1334,12 +1334,12 @@ reconfig add "server.5=localhost:5123;participant;8"
 
 
 ```python
-# 添加两台新服务器，移除两台现有服务器
+# 添加两台新服务器，移除两台现有服务器 {#add-two-new-servers-remove-two-other-servers}
 reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
 ```
 
 
-# 将现有服务器的优先级更改为 8
+# 将现有服务器的优先级更改为 8 {#change-existing-server-priority-to-8}
 
 reconfig(joining=&quot;server.5=localhost:5123;participant;8&quot;, leaving=None)
 

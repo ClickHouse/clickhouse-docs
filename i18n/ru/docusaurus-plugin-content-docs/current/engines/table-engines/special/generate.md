@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы GenerateRandom
+# Движок таблицы GenerateRandom {#generaterandom-table-engine}
 
 Движок таблицы GenerateRandom генерирует случайные данные в соответствии с заданной схемой таблицы.
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## Использование в ClickHouse Server
+## Использование в ClickHouse Server {#usage-in-clickhouse-server}
 
 ```sql
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
@@ -34,7 +34,7 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 Он поддерживает все [типы данных](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, за исключением `AggregateFunction`.
 
 
-## Пример
+## Пример {#example}
 
 **1.** Создайте таблицу `generate_engine_table`:
 

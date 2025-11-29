@@ -19,7 +19,7 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# 在 Claude Desktop 中使用 ClickHouse MCP 服务器
+# 在 Claude Desktop 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > 本指南介绍如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器,
 > 并将其连接到 ClickHouse 示例数据集。
@@ -51,7 +51,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 
 
-## 配置 ClickHouse MCP 服务器
+## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
 在你安装好 Claude Desktop 之后，就可以开始配置 [ClickHouse MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 了。
 我们可以通过 [Claude Desktop 配置文件](https://claude.ai/docs/configuration) 来完成配置。

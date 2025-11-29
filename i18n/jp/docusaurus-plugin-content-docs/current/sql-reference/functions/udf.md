@@ -54,9 +54,9 @@ ClickHouse は、任意の外部実行可能プログラムやスクリプトを
 
 
 
-## 例
+## 例 {#examples}
 
-### インラインスクリプトを用いた UDF
+### インラインスクリプトを用いた UDF {#udf-inline}
 
 XML または YAML 設定を使用して、`execute_direct` を `0` に設定した `test_function_sum` を手動で作成します。
 
@@ -120,7 +120,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
-### Python スクリプトからの UDF
+### Python スクリプトからの UDF {#udf-python}
 
 この例では、`STDIN` から値を読み取り、それを文字列として返す UDF を作成します。
 
@@ -189,7 +189,7 @@ SELECT test_function_python(toUInt64(2));
 └─────────────────────────┘
 ```
 
-### `STDIN` から 2 つの値を読み取り、その合計を JSON オブジェクトとして返す
+### `STDIN` から 2 つの値を読み取り、その合計を JSON オブジェクトとして返す {#udf-stdin}
 
 XML または YAML の設定を使用して、名前付き引数を取り、フォーマットに [JSONEachRow](/interfaces/formats/JSONEachRow) を指定した `test_function_sum_json` を作成します。
 
@@ -270,7 +270,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
-### `command` 設定でパラメータを使用する
+### `command` 設定でパラメータを使用する {#udf-parameters-in-command}
 
 実行可能なユーザー定義関数は、`command` 設定で指定された定数パラメータを受け取ることができます（これは `executable` 型のユーザー定義関数でのみ動作します）。\
 また、シェルによる引数展開に起因する脆弱性を防ぐために、`execute_direct` オプションが必要です。
@@ -339,7 +339,7 @@ SELECT test_function_parameter_python(1)(2);
 └──────────────────────────────────────┘
 ```
 
-### シェルスクリプトを使った UDF
+### シェルスクリプトを使った UDF {#udf-shell-script}
 
 この例では、各値を 2 倍にするシェルスクリプトを作成します。
 

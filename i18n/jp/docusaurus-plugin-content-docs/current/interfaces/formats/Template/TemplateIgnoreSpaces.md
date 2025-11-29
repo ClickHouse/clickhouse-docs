@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 以下のリクエストを使用すると、[JSON](/interfaces/formats/JSON) 形式の出力例からデータを挿入できます。
 

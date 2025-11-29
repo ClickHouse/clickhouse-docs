@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['ClickStack', 'observability', 'all-in-one', 'deployment']
 ---
 
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -61,14 +61,14 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 
 </VerticalStepper>
 
-## Сохранение данных и настроек
+## Сохранение данных и настроек {#persisting-data-and-settings}
 
 Чтобы сохранять данные и настройки при перезапусках контейнера, пользователи могут изменить приведённую выше команду docker, чтобы смонтировать каталоги `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. Например:
 
 ```shell
-# убедитесь, что каталоги существуют
+# убедитесь, что каталоги существуют {#ensure-directories-exist}
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# измените команду для монтирования путей
+# измените команду для монтирования путей {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -87,7 +87,7 @@ docker run \
 - **Неперсистентное хранилище:** Все данные сохраняются с использованием нативной overlay‑файловой системы Docker. Такая конфигурация не обеспечивает масштабируемую производительность, а данные будут потеряны при удалении или перезапуске контейнера, если только вы не [смонтируете необходимые пути в файловой системе](#persisting-data-and-settings).
 - **Отсутствие изоляции компонентов:** Все компоненты запускаются внутри одного Docker‑контейнера. Это не позволяет независимо масштабировать и мониторить их и приводит к тому, что любые ограничения `cgroup` применяются глобально ко всем процессам. В результате компоненты могут конкурировать за CPU и память.
 
-## Настройка портов
+## Настройка портов {#customizing-ports-deploy}
 
 Если вам нужно изменить порты приложения (8080) или API (8000), на которых работает HyperDX Local, вам потребуется изменить команду `docker run`, чтобы пробросить нужные порты и задать несколько переменных окружения.
 
@@ -98,7 +98,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hype
 ```
 
 
-## Использование ClickHouse Cloud
+## Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
 Этот дистрибутив можно использовать с ClickHouse Cloud. При этом локальный экземпляр ClickHouse всё равно будет развёрнут, но использоваться не будет, а OTel collector можно настроить на работу с экземпляром ClickHouse Cloud с помощью переменных окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD`.
 
@@ -117,7 +117,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 После подключения к интерфейсу HyperDX перейдите в [`Team Settings`](http://localhost:8080/team) и создайте подключение к вашему сервису ClickHouse Cloud, а затем настройте необходимые источники. Пример последовательности действий см. [здесь](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 
-## Настройка OTel collector
+## Настройка OTel collector {#configuring-collector}
 
 Конфигурацию OTel collector при необходимости можно изменить — см. раздел [&quot;Изменение конфигурации OTel collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 

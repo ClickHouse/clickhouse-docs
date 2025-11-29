@@ -10,7 +10,6 @@ keywords: ['古いレコードの削除']
 
 {/* 省略 */}
 
-
 ## 結論は「はい」です \{#the-short-answer-is-yes\}
 
 結論は「はい」です。ClickHouse には、古いデータを削除してディスク使用量を削減できる複数の仕組みがあります。それぞれ異なるシナリオを想定しています。
@@ -27,7 +26,7 @@ TTL はデータを [/dev/null](https://en.wikipedia.org/wiki/Null_device) に�
 
 [TTL の設定](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)についての詳細は、こちらを参照してください。
 
-## DELETE FROM
+## DELETE FROM \{#delete-from\}
 
 [DELETE FROM](https://clickhouse.com/docs/sql-reference/statements/delete) を使用すると、標準的な DELETE クエリを ClickHouse で実行できます。フィルター句で対象となった行には削除フラグが付き、以降の結果セットからは除外されます。削除済み行のクリーンアップ（物理削除）は非同期に行われます。
 
@@ -39,7 +38,6 @@ SET allow_experimental_lightweight_delete = true;
 ```
 
 :::
-
 
 ## ALTER DELETE \{#alter-delete\}
 

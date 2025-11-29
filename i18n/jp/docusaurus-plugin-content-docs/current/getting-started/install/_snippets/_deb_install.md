@@ -1,6 +1,8 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
+
 # Debian/UbuntuへのClickHouseのインストール {#install-from-deb-packages}
 
 > **Debian**または**Ubuntu**では、公式のプリコンパイル済み`deb`パッケージの使用を推奨します。
@@ -64,14 +66,14 @@ clickhouse-client # パスワードを設定している場合は "clickhouse-cl
 </details>
 
 
-## ClickHouse サーバーとクライアントのインストール
+## ClickHouse サーバーとクライアントのインストール {#install-clickhouse-server-and-client}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
 
-## ClickHouse を起動する
+## ClickHouse を起動する {#start-clickhouse-server}
 
 ClickHouse サーバーを起動するには、次のコマンドを実行します。
 
@@ -92,7 +94,7 @@ clickhouse-client --password
 ```
 
 
-## スタンドアロン構成の ClickHouse Keeper をインストールする
+## スタンドアロン構成の ClickHouse Keeper をインストールする {#install-standalone-clickhouse-keeper}
 
 :::tip
 本番環境では、ClickHouse Keeper を専用ノード上で実行することを強く推奨します。
@@ -131,7 +133,6 @@ sudo systemctl status clickhouse-keeper
 | `clickhouse-keeper`            | 専用の ClickHouse Keeper ノードに ClickHouse Keeper をインストールするために使用します。ClickHouse server と同じサーバー上で ClickHouse Keeper を実行している場合、このパッケージをインストールする必要はありません。ClickHouse Keeper 本体とデフォルトの ClickHouse Keeper 設定ファイルをインストールします。 |
 
 <br/>
-
 :::info
 特定のバージョンの ClickHouse をインストールする必要がある場合は、同じバージョンのパッケージをすべてインストールする必要があります:
 `sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7`

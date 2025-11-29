@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['sqlite', '嵌入式数据库', '集成', '数据源', '文件数据库']
 ---
 
-import SQLiteEngine from '@site/docs/engines/table-engines/integrations/sqlite.md';
+import SQLiteEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/sqlite.md';
 
 <SQLiteEngine />

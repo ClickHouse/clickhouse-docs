@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Streamlit を使って ClickHouse をバックエンドにした AI エージェントを構築する方法
+# Streamlit を使って ClickHouse をバックエンドにした AI エージェントを構築する方法 {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
 
 このガイドでは、[Streamlit](https://streamlit.io/) を使用して、[ClickHouse の SQL playground](https://sql.clickhouse.com/) に対して [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を通じて対話できる、Web ベースの AI エージェントを構築する方法を説明します。
 
@@ -34,7 +34,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## ライブラリのインストール
+## ライブラリのインストール {#install-libraries}
 
 次のコマンドを実行して、必要なライブラリをインストールします。
 
@@ -43,7 +43,7 @@ pip install streamlit agno ipywidgets
 ```
 
 
-## ユーティリティファイルを作成
+## ユーティリティファイルを作成 {#create-utilities}
 
 2つのユーティリティ関数を含む `utils.py` ファイルを作成します。1つ目は、
 Agno エージェントからのストリーミングレスポンスを処理するための
@@ -72,7 +72,7 @@ def apply_styles():
 ```
 
 
-## 認証情報のセットアップ
+## 認証情報のセットアップ {#setup-credentials}
 
 Anthropic の API キーを環境変数として設定してください。
 
@@ -86,7 +86,7 @@ Anthropic の API キーを持っておらず、別の LLM プロバイダーを
 :::
 
 
-## 必要なライブラリをインポートする
+## 必要なライブラリをインポートする {#import-libraries}
 
 まずメインの Streamlit アプリケーションファイル（例: `app.py`）を作成し、次のインポート文を追加します。
 
@@ -111,7 +111,7 @@ from queue import Queue
 ```
 
 
-## エージェントのストリーミング関数を定義する
+## エージェントのストリーミング関数を定義する {#define-agent-function}
 
 [ClickHouse の SQL Playground](https://sql.clickhouse.com/) に接続し、レスポンスをストリーミングするメインのエージェント関数を追加します。
 
@@ -162,7 +162,7 @@ async def stream_clickhouse_agent(message):
 ```
 
 
-## 同期用ラッパー関数を追加する
+## 同期用ラッパー関数を追加する {#add-wrapper-functions}
 
 Streamlit で非同期ストリーミング処理を扱うためのヘルパー関数を追加します。
 
@@ -185,7 +185,7 @@ async def _agent_stream_to_queue(message, queue):
 ```
 
 
-## Streamlit インターフェイスを作成
+## Streamlit インターフェイスを作成 {#create-interface}
 
 Streamlit の UI コンポーネントとチャット機能を追加します。
 

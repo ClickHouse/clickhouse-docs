@@ -10,20 +10,20 @@ doc_type: 'reference'
 
 
 
-# ALTER TABLE ... MODIFY COMMENT
+# ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
 
 テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 
-## 例
+## 例 {#examples}
 
 コメント付きテーブルを作成するには、次のようにします。
 

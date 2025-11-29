@@ -9,7 +9,7 @@ title: 'CSV'
 doc_type: 'reference'
 ---
 
-## 描述
+## 描述 {#description}
 
 逗号分隔值格式（[RFC](https://tools.ietf.org/html/rfc4180)）。
 在格式化时，每行都用双引号括起来。字符串内部的双引号会输出为连续的两个双引号。

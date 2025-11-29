@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# mergeTreeProjection 表函数
+# mergeTreeProjection 表函数 {#mergetreeprojection-table-function}
 
 表示 MergeTree 表中某个投影的内容。可用于内部检查和分析。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 mergeTreeProjection(database, table, projection)
@@ -39,7 +39,7 @@ mergeTreeProjection(database, table, projection)
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 CREATE TABLE test

@@ -6,7 +6,7 @@ title: 'cramersVBiasCorrected'
 doc_type: 'reference'
 ---
 
-# cramersVBiasCorrected
+# cramersVBiasCorrected {#cramersvbiascorrected}
 
 Cramer&#39;s V は、テーブル内の 2 つの列間の関連の強さを表す指標です。[`cramersV` 関数](./cramersv.md) の結果は 0（変数間に関連がないことに対応）から 1 の範囲の値を取り、一方の値が他方の値によって一意に決まる場合にのみ 1 に達します。この関数は強いバイアスがかかる可能性があるため、このバージョンの Cramer&#39;s V では [バイアス補正](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction) を使用します。
 

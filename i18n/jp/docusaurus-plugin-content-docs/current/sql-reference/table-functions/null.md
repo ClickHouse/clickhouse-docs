@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# null テーブル関数
+# null テーブル関数 {#null-table-function}
 
 指定した構造を持つ一時テーブルを、[Null](../../engines/table-engines/special/null.md) テーブルエンジンで作成します。`Null` エンジンの特性に従い、テーブルのデータは破棄され、クエリの実行が完了すると同時にテーブル自体も即座に削除されます。この関数は、テストやデモンストレーション用のクエリを作成しやすくするために使用されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 null('structure')
@@ -34,7 +34,7 @@ null('structure')
 
 
 
-## 例
+## 例 {#example}
 
 `null` 関数を使用したクエリ：
 

@@ -7,15 +7,11 @@ title: '在 Linux 上为 E2K 构建'
 doc_type: 'guide'
 ---
 
-
-
-# 在 Linux 上为 E2K 构建
+# 在 Linux 上为 E2K 构建 {#build-on-linux-for-e2k}
 
 ClickHouse 对 E2K（Elbrus-2000）的支持仍处于高度实验阶段，目前只能在原生模式下使用最小化配置进行编译，并依赖 e2k 定制构建的库，例如 boost、croaring、libunwind、zstd。
 
-
-
-## 构建 ClickHouse
+## 构建 ClickHouse {#build-clickhouse}
 
 构建所需的 LLVM 版本必须大于或等于 20.1.8。
 

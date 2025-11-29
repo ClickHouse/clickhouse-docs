@@ -5,12 +5,12 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 
 
-# 使用 Homebrew 安装 ClickHouse
+# 使用 Homebrew 安装 ClickHouse {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
 
 
-## 使用社区 Homebrew 配方进行安装
+## 使用社区 Homebrew 配方进行安装 {#install-using-community-homebrew-formula}
 
 要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，可以使用 ClickHouse 社区提供的 [Homebrew 配方](https://formulae.brew.sh/cask/clickhouse)。
 
@@ -19,7 +19,7 @@ brew install --cask clickhouse
 ```
 
 
-## 在 macOS 中修复开发者验证错误
+## 在 macOS 中修复开发者验证错误 {#fix-developer-verification-error-macos}
 
 如果你使用 `brew` 安装 ClickHouse，可能会遇到来自 macOS 的错误提示。
 默认情况下，macOS 不会运行由无法验证身份的开发者创建的应用程序或工具。
@@ -30,7 +30,7 @@ brew install --cask clickhouse
 
 要绕过此验证错误，你需要将该应用从 macOS 的隔离区中移除，可以通过以下任一方式完成：在系统设置窗口中找到相应设置、使用终端，或者重新安装 ClickHouse。
 
-### 系统设置流程
+### 系统设置流程 {#system-settings-process}
 
 将 `clickhouse` 可执行文件从隔离区移除的最简单方式是：
 
@@ -50,7 +50,7 @@ brew install --cask clickhouse
 
 现在你应该可以在终端中运行 `clickhouse` 命令了。
 
-### 终端流程
+### 终端流程 {#terminal-process}
 
 有时点击 `Allow Anyway` 按钮并不能解决该问题，在这种情况下，你也可以通过命令行来完成这一流程。
 或者你可能只是更喜欢使用命令行！

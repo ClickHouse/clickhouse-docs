@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# prometheusQuery 表函数
+# prometheusQuery 表函数 {#prometheusquery-table-function}
 
 使用 TimeSeries 表中的数据执行 Prometheus 查询。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 prometheusQuery('db_name', 'time_series_table', 'promql_query', evaluation_time)
@@ -46,7 +46,7 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 
 
 
-## 示例
+## 示例 {#example}
 
 ```sql
 SELECT * FROM prometheusQuery(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now())

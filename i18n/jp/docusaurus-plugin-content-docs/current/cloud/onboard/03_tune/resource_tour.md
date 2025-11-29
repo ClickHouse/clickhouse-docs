@@ -7,12 +7,12 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_table_of_contents.md';
-import TableOfContentsOptimizationAndPerformance from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
-import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_of_contents.md';
+import TableOfContentsBestPractices from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
+import TableOfContentsOptimizationAndPerformance from '@site/i18n/jp/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
+import TableOfContentsSecurity from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/_snippets/_security_table_of_contents.md';
 
 
-# リソースの概要
+# リソースの概要 {#resource-tour}
 
 この記事では、ClickHouse Cloud デプロイメントを最大限に活用するために、
 ドキュメント内で利用できる各種リソースの概要を紹介します。

@@ -7,12 +7,12 @@ title: 'OSS 利用の推奨事項'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 
-## CPU スケーリングガバナー
+## CPU スケーリングガバナー {#cpu-scaling-governor}
 
 常に `performance` スケーリングガバナーを使用してください。`on-demand` スケーリングガバナーは、常時高負荷のワークロードではパフォーマンスが大きく低下します。
 
@@ -26,7 +26,7 @@ $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_gov
 プロセッサは過熱する場合があります。CPU のクロック周波数が過熱によって制限されたかどうかを確認するには、`dmesg` を使用します。
 この制限はデータセンター側の設定として外部から課されている場合もあります。負荷をかけた状態で監視するには、`turbostat` を使用できます。
 
-## RAM
+## RAM {#ram}
 
 少量のデータ（圧縮後で最大約 200 GB）の場合は、データ量と同程度のメモリを搭載するのが理想的です。
 大量のデータを扱い、かつインタラクティブ（オンライン）クエリを処理する場合は、ページキャッシュにホットデータのサブセットが収まるよう、妥当な量の RAM（128 GB 以上）を使用することを推奨します。
@@ -71,7 +71,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 ディスクシェルフを接続した少数のサーバーよりも、ローカルハードディスクを搭載した多数のサーバー構成を優先してください。
 ただし、滅多にクエリされないアーカイブを保存する用途であれば、ディスクシェルフでも問題ありません。
 
-## RAID
+## RAID {#raid}
 
 HDD を使用する場合は、RAID-10、RAID-5、RAID-6、RAID-50 のいずれかの RAID 構成を組むことができます。
 Linux では、ソフトウェア RAID（`mdadm` を使用）が望ましいです。
@@ -126,7 +126,7 @@ Linux カーネル 3.2 以前には、IPv6 実装に多くの問題がありま�
 
 可能であれば、少なくとも 10 GB のネットワークを使用してください。1 Gb でも動作しますが、数十テラバイトのデータを持つレプリカへのパッチ適用や、大量の中間データを伴う分散クエリの処理では、性能が大きく低下します。
 
-## ヒュージページ
+## ヒュージページ {#huge-pages}
 
 古い Linux カーネルを使用している場合は、Transparent Huge Pages を無効化してください。メモリアロケータと干渉し、著しいパフォーマンス低下を招きます。
 より新しい Linux カーネルでは、Transparent Huge Pages を有効にしたままで問題ありません。
@@ -144,7 +144,7 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 その後、`sudo update-grub` コマンドを実行し、反映させるためにシステムを再起動してください。
 
 
-## ハイパーバイザーの構成
+## ハイパーバイザーの構成 {#hypervisor-configuration}
 
 OpenStack を使用している場合は、以下を設定します。
 
@@ -166,7 +166,7 @@ XML 設定で指定します。
 そうしていない場合、古い CPU モデル上でハイパーバイザーを実行していると `Illegal instruction` エラーによりクラッシュする可能性があります。
 
 
-## ClickHouse Keeper と ZooKeeper
+## ClickHouse Keeper と ZooKeeper {#zookeeper}
 
 ClickHouse Keeper は、ClickHouse クラスターにおいて ZooKeeper を置き換えることが推奨されます。[ClickHouse Keeper](../guides/sre/keeper/index.md) のドキュメントを参照してください。
 
@@ -194,58 +194,58 @@ ClickHouse Keeper は、テスト環境やインジェストレートが低い�
 zoo.cfg:
 
 ```bash
-# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
+# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html {#httphadoopapacheorgzookeeperdocscurrentzookeeperadminhtml}
 
-# 各ティックのミリ秒数
+# 各ティックのミリ秒数 {#the-number-of-milliseconds-of-each-tick}
 tickTime=2000
-# 初期同期フェーズで
-# 許容されるティック数
-# この値は十分に検証されていない
+# 初期同期フェーズで {#the-number-of-ticks-that-the-initial}
+# 許容されるティック数 {#synchronization-phase-can-take}
+# この値は十分に検証されていない {#this-value-is-not-quite-motivated}
 initLimit=300
-# リクエスト送信から確認応答受信までに
-# 経過可能なティック数
+# リクエスト送信から確認応答受信までに {#the-number-of-ticks-that-can-pass-between}
+# 経過可能なティック数 {#sending-a-request-and-getting-an-acknowledgement}
 syncLimit=10
 
 maxClientCnxns=2000
 
-# クライアントが要求でき、サーバーが受け入れる最大値。
-# クライアントが高いセッションタイムアウトで動作できるよう、サーバー側でmaxSessionTimeoutを高く設定しても問題ない。
-# ただし、デフォルトでは30秒のセッションタイムアウトを要求する（ClickHouse設定のsession_timeout_msで変更可能）。
+# クライアントが要求でき、サーバーが受け入れる最大値。 {#it-is-the-maximum-value-that-client-may-request-and-the-server-will-accept}
+# クライアントが高いセッションタイムアウトで動作できるよう、サーバー側でmaxSessionTimeoutを高く設定しても問題ない。 {#it-is-ok-to-have-high-maxsessiontimeout-on-server-to-allow-clients-to-work-with-high-session-timeout-if-they-want}
+# ただし、デフォルトでは30秒のセッションタイムアウトを要求する（ClickHouse設定のsession_timeout_msで変更可能）。 {#but-we-request-session-timeout-of-30-seconds-by-default-you-can-change-it-with-session_timeout_ms-in-clickhouse-config}
 maxSessionTimeout=60000000
-# スナップショットが保存されるディレクトリ。
+# スナップショットが保存されるディレクトリ。 {#the-directory-where-the-snapshot-is-stored}
 dataDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/data
-# パフォーマンス向上のため、dataLogDirは別の物理ディスクに配置すること
+# パフォーマンス向上のため、dataLogDirは別の物理ディスクに配置すること {#place-the-datalogdir-to-a-separate-physical-disc-for-better-performance}
 dataLogDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/logs
 
 autopurge.snapRetainCount=10
 autopurge.purgeInterval=1
 
 
-# シークを回避するため、ZooKeeperはトランザクションログファイル内の領域を
-# preAllocSizeキロバイト単位のブロックで割り当てる。デフォルトのブロックサイズは64M。
-# ブロックサイズを変更する理由の一つは、スナップショットをより頻繁に取得する場合に
-# ブロックサイズを削減することである（snapCountも参照）。
+# シークを回避するため、ZooKeeperはトランザクションログファイル内の領域を {#to-avoid-seeks-zookeeper-allocates-space-in-the-transaction-log-file-in}
+# preAllocSizeキロバイト単位のブロックで割り当てる。デフォルトのブロックサイズは64M。 {#blocks-of-preallocsize-kilobytes-the-default-block-size-is-64m-one-reason}
+# ブロックサイズを変更する理由の一つは、スナップショットをより頻繁に取得する場合に {#for-changing-the-size-of-the-blocks-is-to-reduce-the-block-size-if-snapshots}
+# ブロックサイズを削減することである（snapCountも参照）。 {#are-taken-more-often-also-see-snapcount}
 preAllocSize=131072
 
-# クライアントはZooKeeperが処理できる速度よりも速くリクエストを送信できる。
-# 特に多数のクライアントが存在する場合に顕著である。キューに入ったリクエストによって
-# ZooKeeperがメモリ不足に陥るのを防ぐため、ZooKeeperはクライアントをスロットルし、
-# システム内の未処理リクエスト数がglobalOutstandingLimitを超えないようにする。
-# デフォルトの制限値は1000。
-# globalOutstandingLimit=1000
+# クライアントはZooKeeperが処理できる速度よりも速くリクエストを送信できる。 {#clients-can-submit-requests-faster-than-zookeeper-can-process-them}
+# 特に多数のクライアントが存在する場合に顕著である。キューに入ったリクエストによって {#especially-if-there-are-a-lot-of-clients-to-prevent-zookeeper-from-running}
+# ZooKeeperがメモリ不足に陥るのを防ぐため、ZooKeeperはクライアントをスロットルし、 {#out-of-memory-due-to-queued-requests-zookeeper-will-throttle-clients-so-that}
+# システム内の未処理リクエスト数がglobalOutstandingLimitを超えないようにする。 {#there-is-no-more-than-globaloutstandinglimit-outstanding-requests-in-the}
+# デフォルトの制限値は1000。 {#system-the-default-limit-is-1000}
+# globalOutstandingLimit=1000 {#globaloutstandinglimit1000}
 
-# ZooKeeperはトランザクションをトランザクションログに記録する。snapCount件のトランザクションが
-# ログファイルに書き込まれた後、スナップショットが開始され、新しいトランザクションログファイルが
-# 開始される。デフォルトのsnapCountは100000。
+# ZooKeeperはトランザクションをトランザクションログに記録する。snapCount件のトランザクションが {#zookeeper-logs-transactions-to-a-transaction-log-after-snapcount-transactions}
+# ログファイルに書き込まれた後、スナップショットが開始され、新しいトランザクションログファイルが {#are-written-to-a-log-file-a-snapshot-is-started-and-a-new-transaction-log-file}
+# 開始される。デフォルトのsnapCountは100000。 {#is-started-the-default-snapcount-is-100000}
 snapCount=3000000
 
-# このオプションが定義されている場合、リクエストは
-# traceFile.year.month.dayという名前のトレースファイルに記録される。
+# このオプションが定義されている場合、リクエストは {#if-this-option-is-defined-requests-will-be-will-logged-to-a-trace-file-named}
+# traceFile.year.month.dayという名前のトレースファイルに記録される。 {#tracefileyearmonthday}
 #traceFile=
 
-# リーダーはクライアント接続を受け入れる。デフォルト値は"yes"。リーダーマシンは
-# 更新を調整する。読み取りスループットをわずかに犠牲にして更新スループットを向上させるため、
-# リーダーをクライアント接続を受け入れず調整に専念するよう設定できる。
+# リーダーはクライアント接続を受け入れる。デフォルト値は"yes"。リーダーマシンは {#leader-accepts-client-connections-default-value-is-yes-the-leader-machine}
+# 更新を調整する。読み取りスループットをわずかに犠牲にして更新スループットを向上させるため、 {#coordinates-updates-for-higher-update-throughput-at-thes-slight-expense-of}
+# リーダーをクライアント接続を受け入れず調整に専念するよう設定できる。 {#read-throughput-the-leader-can-be-configured-to-not-accept-clients-and-focus}
 leaderServes=yes
 
 standaloneEnabled=false
@@ -268,9 +268,9 @@ JVM パラメータ:
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
 ZOOCFGDIR=/etc/$NAME/conf
 
-# TODO this is really ugly
-# How to find out, which jars are needed?
-# seems, that log4j requires the log4j.properties file to be in the classpath
+# TODO this is really ugly {#on-coordination}
+# How to find out, which jars are needed? {#todo-this-is-really-ugly}
+# seems, that log4j requires the log4j.properties file to be in the classpath {#how-to-find-out-which-jars-are-needed}
 CLASSPATH="$ZOOCFGDIR:/usr/build/classes:/usr/build/lib/*.jar:/usr/share/zookeeper-3.6.2/lib/audience-annotations-0.5.0.jar:/usr/share/zookeeper-3.6.2/lib/commons-cli-1.2.jar:/usr/share/zookeeper-3.6.2/lib/commons-lang-2.6.jar:/usr/share/zookeeper-3.6.2/lib/jackson-annotations-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-core-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-databind-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/javax.servlet-api-3.1.0.jar:/usr/share/zookeeper-3.6.2/lib/jetty-http-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-io-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-security-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-server-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-servlet-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-util-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jline-2.14.6.jar:/usr/share/zookeeper-3.6.2/lib/json-simple-1.1.1.jar:/usr/share/zookeeper-3.6.2/lib/log4j-1.2.17.jar:/usr/share/zookeeper-3.6.2/lib/metrics-core-3.2.5.jar:/usr/share/zookeeper-3.6.2/lib/netty-buffer-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-codec-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-handler-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-resolver-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-epoll-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-unix-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_common-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_hotspot-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_servlet-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-api-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-log4j12-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/snappy-java-1.1.7.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-jute-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-prometheus-metrics-3.6.2.jar:/usr/share/zookeeper-3.6.2/etc"
 
 ZOOCFG="$ZOOCFGDIR/zoo.cfg"

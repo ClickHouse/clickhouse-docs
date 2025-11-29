@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 
 
-# Интеграция ClickHouse с Kafka с использованием именованных коллекций
+# Интеграция ClickHouse с Kafka с использованием именованных коллекций {#integrating-clickhouse-with-kafka-using-named-collections}
 
 
 
@@ -32,7 +32,7 @@ doc_type: 'guide'
 
 
 
-## Предварительные требования
+## Предварительные требования {#prerequisites}
 
 Убедитесь, что пользователь, создающий именованную коллекцию, обладает необходимыми правами доступа:
 
@@ -46,7 +46,7 @@ doc_type: 'guide'
 См. руководство [User Management Guide](./../../../guides/sre/user-management/index.md) для получения подробной информации о включении управления доступом.
 
 
-## Конфигурация
+## Конфигурация {#configuration}
 
 Добавьте следующий раздел в файл конфигурации ClickHouse `config.xml`:
 
@@ -99,7 +99,7 @@ doc_type: 'guide'
 </named_collections>
 ```
 
-### Примечания по конфигурации
+### Примечания по конфигурации {#configuration-notes}
 
 1. Настройте адреса Kafka и связанные параметры в соответствии с конфигурацией вашего кластера Kafka.
 2. Раздел перед `<kafka>` содержит параметры движка Kafka в ClickHouse. Полный список параметров смотрите в разделе [параметры движка Kafka](/engines/table-engines/integrations/kafka).
@@ -107,17 +107,17 @@ doc_type: 'guide'
 4. В этом примере используется протокол безопасности `SASL_SSL` и механизм `PLAIN`. При необходимости скорректируйте эти параметры в соответствии с конфигурацией вашего кластера Kafka.
 
 
-## Создание таблиц и баз данных
+## Создание таблиц и баз данных {#creating-tables-and-databases}
 
 Создайте необходимые базы данных и таблицы в вашем кластере ClickHouse. Если вы запускаете ClickHouse на отдельном узле, опустите часть SQL-команды, относящуюся к кластеру, и используйте любой другой движок вместо `ReplicatedMergeTree`.
 
-### Создание базы данных
+### Создание базы данных {#create-the-database}
 
 ```sql
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### Создайте таблицы Kafka
+### Создайте таблицы Kafka {#create-kafka-tables}
 
 Создайте первую таблицу Kafka для первого кластера Kafka:
 
@@ -143,7 +143,7 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### Создание реплицируемых таблиц
+### Создание реплицируемых таблиц {#create-replicated-tables}
 
 Создайте первую таблицу Kafka:
 
@@ -169,7 +169,7 @@ CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_C
 ORDER BY id;
 ```
 
-### Создание материализованных представлений
+### Создание материализованных представлений {#create-materialized-views}
 
 Создайте материализованное представление, которое будет вставлять данные из первой таблицы Kafka в первую реплицируемую таблицу:
 
@@ -194,7 +194,7 @@ FROM second_kafka_table;
 ```
 
 
-## Проверка настройки
+## Проверка настройки {#verifying-the-setup}
 
 Теперь в ваших кластерах Kafka должны появиться соответствующие группы потребителей:
 
@@ -211,7 +211,7 @@ SELECT * FROM first_replicated_table LIMIT 10;
 SELECT * FROM second_replicated_table LIMIT 10;
 ```
 
-### Примечание
+### Примечание {#note}
 
 В этом руководстве данные, поступающие в оба топика Kafka, одинаковы. В вашем случае они будут различаться. Вы можете добавить столько кластеров Kafka, сколько потребуется.
 

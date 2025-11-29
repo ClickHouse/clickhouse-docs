@@ -241,7 +241,7 @@ keywords: ['サンプルデータセット', 'youtube', 'サンプルデータ',
 
 ## 質問 {#questions}
 
-### コメントが無効化されていると、高評価や低評価が押される可能性は下がりますか？
+### コメントが無効化されていると、高評価や低評価が押される可能性は下がりますか？ {#create-the-table}
 
 コメントが無効化されている場合、視聴者は動画に対する気持ちを表そうとして、高評価や低評価を押す傾向が強くなるのでしょうか？
 
@@ -297,7 +297,7 @@ ORDER BY
 コメントを有効にすると、エンゲージメント率が高くなる傾向があります。
 
 
-### 時間の経過に伴う動画数の変化と主なイベント
+### 時間の経過に伴う動画数の変化と主なイベント {#insert-data}
 
 ```sql
 SELECT
@@ -336,7 +336,7 @@ ORDER BY month ASC;
 アップローダー数の急増が、[新型コロナウイルス流行期のあたりで明確に見て取れます](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)。
 
 
-### 字幕はいつ頃からどのように増えてきたのか
+### 字幕はいつ頃からどのように増えてきたのか {#count-row-numbers}
 
 音声認識技術の進歩により、動画に字幕を付けることはいままでになく簡単になりました。YouTube では 2009 年末に自動キャプション機能が追加されましたが、あれが転換点だったのでしょうか？
 
@@ -374,7 +374,7 @@ ORDER BY month ASC;
 これをきっかけに、難聴者やろう者の視聴者のために、クリエイターが自分の動画に字幕を追加することを促す、大きな成功を収めたキャンペーンが展開されました。
 
 
-### 時系列でのアップロード数上位ユーザー
+### 時系列でのアップロード数上位ユーザー {#explore-the-data}
 
 ```sql
 WITH uploaders AS
@@ -467,7 +467,7 @@ ORDER BY
 ```
 
 
-### ビューはどのように分散されますか？
+### ビューはどのように分散されますか？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
 
 ```sql
 SELECT

@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция deltaLake
+# Табличная функция deltaLake {#deltalake-table-function}
 
 Предоставляет табличный интерфейс только для чтения к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 `deltaLake` — это псевдоним `deltaLakeS3` и поддерживается для обеспечения совместимости.
 
@@ -44,7 +44,7 @@ deltaLakeLocal(path, [,format])
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Выборка строк из таблицы в S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
 

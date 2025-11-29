@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 在本示例中，我们将使用在我们的 [SQL playground](https://sql.clickhouse.com/) 中提供的 `hits` 数据集。
 

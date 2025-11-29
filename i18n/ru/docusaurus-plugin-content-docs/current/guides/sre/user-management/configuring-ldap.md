@@ -8,10 +8,10 @@ keywords: ['конфигурация LDAP', 'аутентификация LDAP',
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
-# Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей
+# Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 

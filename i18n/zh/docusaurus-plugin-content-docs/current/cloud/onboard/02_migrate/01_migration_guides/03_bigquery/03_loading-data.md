@@ -30,7 +30,7 @@ _本指南适用于 ClickHouse Cloud 以及自托管的 ClickHouse v23.5 及以�
 <VerticalStepper headerLevel="h2">
 
 
-## 将表数据导出到 GCS
+## 将表数据导出到 GCS {#1-export-table-data-to-gcs}
 
 在此步骤中，我们使用 [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) 来执行 SQL 命令。下面的示例中，我们使用 [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) 语句，将名为 `mytable` 的 BigQuery 表导出到一个 GCS 存储桶中。
 
@@ -67,7 +67,7 @@ END WHILE;
 * Parquet 作为列式格式，是更好的交换格式，因为它天然具备压缩特性，并且对 BigQuery 导出和 ClickHouse 查询都更快。
 
 
-## 将数据从 GCS 导入 ClickHouse
+## 将数据从 GCS 导入 ClickHouse {#2-importing-data-into-clickhouse-from-gcs}
 
 导出完成后，我们即可将这些数据导入到 ClickHouse 表中。可以使用 [ClickHouse SQL console](/integrations/sql-clients/sql-console) 或 [`clickhouse-client`](/interfaces/cli) 来执行以下命令。
 

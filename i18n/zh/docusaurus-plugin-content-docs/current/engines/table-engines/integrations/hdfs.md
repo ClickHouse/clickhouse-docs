@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# HDFS 表引擎
+# HDFS 表引擎 {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 用法
+## 用法 {#usage}
 
 ```sql
 ENGINE = HDFS(URI, format)
@@ -35,7 +35,7 @@ ENGINE = HDFS(URI, format)
   [Formats](/sql-reference/formats#formats-overview) 部分。
 * [PARTITION BY expr]
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` — 可选。在大多数情况下不需要分区键，即使需要，一般也不需要比“按月”更细的分区键。分区并不会加速查询（与 ORDER BY 表达式不同）。切勿使用过于细粒度的分区。不要按客户标识符或名称对数据进行分区（相反，应将客户标识符或名称设为 ORDER BY 表达式中的第一列）。
 
@@ -69,7 +69,7 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 ```
 
 
-## 实现细节
+## 实现细节 {#implementation-details}
 
 * 读写操作可以并行进行。
 * 不支持：
@@ -137,7 +137,7 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
 
-## 配置
+## 配置 {#configuration}
 
 与 GraphiteMergeTree 类似，HDFS 引擎支持通过 ClickHouse 配置文件进行扩展配置。可以使用两个配置项：全局级（`hdfs`）和用户级（`hdfs_*`）。系统会先应用全局配置，然后再应用用户级配置（如果存在）。
 
@@ -155,9 +155,9 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 </hdfs_root>
 ```
 
-### 配置选项
+### 配置选项 {#configuration-options}
 
-#### libhdfs3 支持的选项
+#### libhdfs3 支持的选项 {#supported-by-libhdfs3}
 
 
 | **参数**                                         | **默认值**       |
@@ -230,7 +230,7 @@ datanode 通信不会通过 SASL 进行安全保护（`HADOOP_SECURE_DN_USER` �
 
 如果指定了 `hadoop_kerberos_keytab`、`hadoop_kerberos_principal` 或 `hadoop_security_kerberos_ticket_cache_path`，则会使用 Kerberos 身份验证。在这种情况下，`hadoop_kerberos_keytab` 和 `hadoop_kerberos_principal` 是必需的。
 
-## HDFS Namenode HA 支持
+## HDFS Namenode HA 支持 {#namenode-ha}
 
 libhdfs3 支持 HDFS Namenode 高可用（HA）。
 

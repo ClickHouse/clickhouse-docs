@@ -6,7 +6,7 @@ title: 'quantileTiming'
 doc_type: 'reference'
 ---
 
-# quantileTiming
+# quantileTiming {#quantiletiming}
 
 С заданной точностью вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

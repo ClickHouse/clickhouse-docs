@@ -7,7 +7,7 @@ title: 'サードパーティ開発者による統合ライブラリ'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発者による連携ライブラリ
+# サードパーティ開発者による連携ライブラリ {#integration-libraries-from-third-party-developers}
 
 :::warning 免責事項
 ClickHouse, Inc. は、以下に掲載しているツールおよびライブラリを**保守しておらず**、その品質について十分なテストも行っていません。

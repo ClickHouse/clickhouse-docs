@@ -7,9 +7,7 @@ keywords: ['REPLACE', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
-# Replace 修饰符
+# Replace 修饰符 {#replace}
 
 > 允许您指定一个或多个[表达式别名](/sql-reference/syntax#expression-aliases)。
 

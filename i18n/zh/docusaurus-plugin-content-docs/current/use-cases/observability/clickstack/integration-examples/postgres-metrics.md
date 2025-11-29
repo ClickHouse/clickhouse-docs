@@ -143,10 +143,10 @@ docker run -d \
 下载预先生成的指标文件（包含 24 小时的 PostgreSQL 指标以及逼真的变化模式）：
 
 ```bash
-# 下载 gauge 类型指标（连接数、数据库大小）
+# 下载 gauge 类型指标（连接数、数据库大小） {#download-gauge-metrics-connections-database-size}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# 下载 sum 类型指标（提交、回滚、操作）
+# 下载 sum 类型指标（提交、回滚、操作） {#download-sum-metrics-commits-rollbacks-operations}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
@@ -173,11 +173,11 @@ docker run -d --name clickstack-postgres-demo \
 将指标直接加载到 ClickHouse 中：
 
 ```bash
-# 加载 gauge 类型指标
+# 加载 gauge 类型指标 {#load-gauge-metrics}
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# 加载 sum 类型指标
+# 加载 sum 类型指标 {#load-sum-metrics}
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -227,7 +227,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 ## 故障排查 {#troubleshooting}
 
-### 自定义配置未生效
+### 自定义配置未生效 {#troubleshooting-not-loading}
 
 请确认已设置环境变量：
 
@@ -242,7 +242,7 @@ docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 
-### HyperDX 中未显示任何指标
+### HyperDX 中未显示任何指标 {#no-metrics}
 
 检查 PostgreSQL 是否可访问：
 
@@ -257,7 +257,7 @@ docker exec <容器> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
 
-### 身份验证错误
+### 身份验证错误 {#auth-errors}
 
 确认密码是否配置正确：
 

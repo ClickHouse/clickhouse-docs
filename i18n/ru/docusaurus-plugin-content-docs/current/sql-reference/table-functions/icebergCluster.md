@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция icebergCluster
+# Табличная функция icebergCluster {#icebergcluster-table-function}
 
 Это расширение табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -32,7 +32,7 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
 
-## Аргументы
+## Аргументы {#arguments}
 
 * `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
 * Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).

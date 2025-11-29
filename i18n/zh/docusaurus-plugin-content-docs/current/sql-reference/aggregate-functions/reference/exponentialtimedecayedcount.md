@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedCount
+## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
 返回时间序列在时间点 `t` 处的累积指数衰减值。
 
@@ -51,7 +49,6 @@ FROM
 ```
 
 结果：
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐

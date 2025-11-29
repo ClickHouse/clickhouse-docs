@@ -7,15 +7,11 @@ title: '采样键表达式的操作'
 doc_type: 'reference'
 ---
 
-
-
-# 操作 SAMPLE BY 表达式
+# 操作 SAMPLE BY 表达式 {#manipulating-sample-by-expression}
 
 可以执行以下操作：
 
-
-
-## 修改
+## 修改 {#modify}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
@@ -23,8 +19,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 
 该命令将表的[采样键](../../../engines/table-engines/mergetree-family/mergetree.md)更改为 `new_expression`（一个表达式或表达式元组）。主键必须包含新的采样键。
 
-
-## REMOVE
+## REMOVE {#remove}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY

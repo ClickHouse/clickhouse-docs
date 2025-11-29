@@ -20,7 +20,7 @@ import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 指南
+# 指南 {#guides}
 
 <ClickHouseSupportedBadge/>
 
@@ -39,13 +39,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
 
-## 设置
+## 设置 {#setup}
 
 请按照[设置 dbt 和 ClickHouse 适配器](/integrations/dbt)部分中的说明来准备环境。
 
 **重要：以下内容已在 Python 3.9 环境下测试通过。**
 
-### 准备 ClickHouse
+### 准备 ClickHouse {#prepare-clickhouse}
 
 dbt 在对高度关系型的数据进行建模时表现出色。作为示例，我们提供了一个包含如下关系型模式的小型 IMDb 数据集。该数据集来源于[关系型数据集仓库](https://relational.fit.cvut.cz/dataset/IMDb)。与 dbt 常见的模式相比，这个示例非常简单，但可以作为一个便于上手的示例样本：
 
@@ -672,7 +672,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 +------+-------------------+----------+------------------+------+---------+-------------------+
 ```
 
-### 内部实现
+### 内部实现 {#internals}
 
 我们可以通过查询 ClickHouse 的查询日志，找出为完成上述增量更新而执行的语句。
 
@@ -694,7 +694,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 这种策略在非常大的模型上可能会遇到挑战。更多细节请参见 [Limitations](/integrations/dbt#limitations)。
 
-### 追加策略（仅插入模式）
+### 追加策略（仅插入模式） {#append-strategy-inserts-only-mode}
 
 为克服在大数据集上使用增量模型的限制，适配器使用 dbt 配置参数 `incremental_strategy`。该参数可以设置为 `append`。设置后，更新的行会被直接插入到目标表（即 `imdb_dbt.actor_summary`）中，而不会创建临时表。
 注意：仅追加模式要求你的数据是不可变的，或者可以接受重复数据。如果你需要一个支持已修改行的增量表模型，请不要使用此模式！
@@ -796,7 +796,7 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 在本次运行中，只有新增的行会直接添加到 `imdb_dbt.actor_summary` 表中，不会涉及创建新表。
 
-### 删除并插入模式（实验性）
+### 删除并插入模式（实验性） {#deleteinsert-mode-experimental}
 
 
 一直以来，ClickHouse 仅通过异步的 [变更（Mutations）](/sql-reference/statements/alter/index.md) 对更新和删除提供有限支持。这些操作对 IO 消耗极大，通常应尽量避免。
@@ -821,7 +821,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 
 <Image img={dbt_06} size="lg" alt="轻量级 delete 增量" />
 
-### insert&#95;overwrite 模式（实验性）
+### insert&#95;overwrite 模式（实验性） {#insert_overwrite-mode-experimental}
 
 执行以下步骤：
 
@@ -840,7 +840,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 <Image img={dbt_07} size="lg" alt="insert overwrite 增量" />
 
 
-## 创建快照
+## 创建快照 {#creating-a-snapshot}
 
 dbt 快照允许随着时间推移记录可变模型的变更。这使得可以在模型上执行时间点查询，从而让分析人员“回溯”查看模型先前的状态。其通过使用[类型 2 缓慢变化维度](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row)实现，其中 from 和 to 日期列用于记录某一行数据在什么时间段内有效。ClickHouse 适配器支持此功能，下面将进行演示。
 

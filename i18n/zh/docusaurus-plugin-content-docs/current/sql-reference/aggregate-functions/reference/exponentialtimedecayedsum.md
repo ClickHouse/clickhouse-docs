@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedSum
+## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
 返回时间序列在时间索引 `t` 处的指数平滑移动平均值的总和。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 结果：
-
 
 ```response
 ┌─值─┬─时间─┬─round(exp_smooth, 3)─┬─条形───────────────────────────────────────────────┐

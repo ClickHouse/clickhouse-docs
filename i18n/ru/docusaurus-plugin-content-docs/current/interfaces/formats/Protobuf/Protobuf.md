@@ -13,7 +13,7 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание
+## Описание {#description}
 
 Формат `Protobuf` — это формат [Protocol Buffers](https://protobuf.dev/).
 
@@ -97,7 +97,7 @@ ClickHouse считывает и выводит сообщения protobuf в �
 
 ## Пример использования {#example-usage}
 
-### Чтение и запись данных
+### Чтение и запись данных {#basic-examples}
 
 :::note Example files
 Файлы, используемые в этом примере, можно найти в [репозитории с примерами](https://github.com/ClickHouse/formats/ProtoBuf)
@@ -382,7 +382,7 @@ SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerat
 В этом случае автоматически сгенерированная схема Protobuf будет сохранена в файле `path/to/schema/schema.capnp`.
 
 
-### Сброс кэша Protobuf
+### Сброс кэша Protobuf {#basic-examples-cloud}
 
 Чтобы перезагрузить схему Protobuf, загруженную из [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path), используйте оператор [`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format).
 

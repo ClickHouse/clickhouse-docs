@@ -26,7 +26,7 @@ doc_type: 'reference'
 - 支持 totals（汇总）和 extremes（极值）
 - 保留值的原生类型（数字为数字，字符串为字符串）
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 SELECT *

@@ -13,7 +13,7 @@ integration:
 keywords: ['Grafana', '数据可视化', '仪表盘', '插件', '数据源']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
 import install from '@site/static/images/integrations/data-visualization/grafana/install.png';
 import add_new_ds from '@site/static/images/integrations/data-visualization/grafana/add_new_ds.png';
@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 用于 Grafana 的 ClickHouse 数据源插件
+# 用于 Grafana 的 ClickHouse 数据源插件 {#clickhouse-data-source-plugin-for-grafana}
 
 <ClickHouseSupportedBadge/>
 

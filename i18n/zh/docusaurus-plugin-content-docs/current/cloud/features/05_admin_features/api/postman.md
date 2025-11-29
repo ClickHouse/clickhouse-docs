@@ -29,19 +29,19 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 本指南将帮助你使用 [Postman](https://www.postman.com/product/what-is-postman/) 测试 ClickHouse Cloud API。
 Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面运行。
 
-### 创建账户
+### 创建账户 {#create-an-account}
 
 * 可在 [https://www.postman.com](https://www.postman.com) 注册免费账户。
 
 <Image img={postman1} size="md" alt="Postman 站点" border />
 
-### 创建工作区（workspace）
+### 创建工作区（workspace） {#create-a-workspace}
 
 * 为你的工作区命名，并设置可见性级别。
 
 <Image img={postman2} size="md" alt="创建 workspace" border />
 
-### 创建集合（collection）
+### 创建集合（collection） {#create-a-collection}
 
 * 在左上角菜单中 “Explore” 下方点击 “Import”：
 
@@ -59,7 +59,7 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 <Image img={postman6} size="md" alt="Collection > Import" border />
 
-### 与 ClickHouse Cloud API 规范交互
+### 与 ClickHouse Cloud API 规范交互 {#interface-with-the-clickhouse-cloud-api-spec}
 
 * “API spec for ClickHouse Cloud” 现在会出现在左侧导航的 “Collections” 中。
 
@@ -69,7 +69,7 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 <Image img={postman8} size="md" alt="导入完成" border />
 
-### 设置授权
+### 设置授权 {#set-authorization}
 
 * 展开下拉菜单并选择 “Basic Auth”：
 
@@ -79,11 +79,11 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 <Image img={postman10} size="md" alt="凭据" border />
 
-### 启用变量
+### 启用变量 {#enable-variables}
 
 * [Variables](https://learning.postman.com/docs/sending-requests/variables/) 允许在 Postman 中存储和复用值，从而更方便地进行 API 测试。
 
-#### 设置 organization ID 和 service ID
+#### 设置 organization ID 和 service ID {#set-the-organization-id-and-service-id}
 
 * 在 “Collection” 中，点击中间面板的 “Variables” 选项卡（Base URL 会在之前导入 API 时自动设置）：
 * 在 `baseURL` 下方点击空白字段 “Add new value”，并替换为你的 organization ID 和 service ID：

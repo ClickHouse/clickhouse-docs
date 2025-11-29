@@ -8,9 +8,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# 基本的な時系列操作
+# 基本的な時系列操作 {#basic-time-series-operations}
 
 ClickHouse は時系列データを扱うための複数の方法を提供しており、さまざまな期間にわたってデータポイントを集計・グループ化・分析できます。
 このセクションでは、時間を基準としたデータを扱う際によく使用される基本的な操作について説明します。
@@ -42,8 +40,7 @@ FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitione
 LIMIT 1e9;
 ```
 
-
-## 時間バケットごとの集計
+## 時間バケットごとの集計 {#time-series-aggregating-time-bucket}
 
 最も一般的な要件の一つは、期間に基づいてデータを集計することです。たとえば、各日ごとのヒット数の合計を取得する場合などです。
 
@@ -93,8 +90,7 @@ LIMIT 5;
 ここで使用されている[`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour)関数は、指定された時刻をその時間の開始時刻に変換します。
 年、四半期、月、日単位でグループ化することもできます。
 
-
-## カスタムグループ化間隔
+## カスタムグループ化間隔 {#time-series-custom-grouping-intervals}
 
 [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#toStartOfInterval) 関数を使うと、例えば 5 分間隔のように任意の間隔でグループ化することもできます。
 
@@ -138,8 +134,7 @@ LIMIT 6;
 └─────────────────────┴─────────┘
 ```
 
-
-## 空のグループを埋める
+## 空のグループを埋める {#time-series-filling-empty-groups}
 
 多くの場合、欠損している時間帯を含む疎なデータを扱うことがあります。その結果、バケットが空になることがあります。次の例では、データを 1 時間ごとの間隔でグループ化します。これにより、一部の時間帯の値が欠けている、次のような統計が出力されます。
 
@@ -190,7 +185,6 @@ GROUP BY ALL
 ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 ```
 
-
 ```text
 ┌────────────────hour─┬─sum(hits)─┐
 │ 2015-07-01 00:00:00 │         3 │
@@ -220,8 +214,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 └─────────────────────┴───────────┘
 ```
 
-
-## ローリング時間ウィンドウ
+## ローリング時間ウィンドウ {#time-series-rolling-time-windows}
 
 日や時間の始まりといった時刻の区切りではなく、任意の長さの時間ウィンドウを扱いたい場合があります。
 例えば、日単位ではなく、「午後 6 時を起点とした 24 時間」という期間ごとの合計ヒット数を把握したいとします。

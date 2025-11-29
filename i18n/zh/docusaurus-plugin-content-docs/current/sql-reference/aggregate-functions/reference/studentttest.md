@@ -7,7 +7,7 @@ title: 'studentTTest'
 doc_type: 'reference'
 ---
 
-# studentTTest
+# studentTTest {#studentttest}
 
 对来自两个总体的样本进行 Student t 检验。
 

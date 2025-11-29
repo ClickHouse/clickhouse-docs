@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Оператор ALTER TABLE ... UPDATE
+# Оператор ALTER TABLE ... UPDATE {#alter-table-update-statements}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] ОБНОВИТЬ column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr

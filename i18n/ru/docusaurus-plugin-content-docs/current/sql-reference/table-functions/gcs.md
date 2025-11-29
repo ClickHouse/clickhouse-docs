@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция gcs
+# Табличная функция gcs {#gcs-table-function}
 
 Предоставляет табличный интерфейс для выполнения `SELECT` и `INSERT` данных из [Google Cloud Storage](https://cloud.google.com/storage/). Требуется роль IAM [`Storage Object User`](https://cloud.google.com/storage/docs/access-control/iam-roles).
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 gcs(url [, NOSIGN | hmac_key, hmac_secret] [,format] [,structure] [,compression_method])
@@ -33,7 +33,7 @@ gcs(named_collection[, option=value [,..]])
 :::
 
 
-## Аргументы
+## Аргументы {#arguments}
 
 | Аргумент                     | Описание                                                                                                                                                                                     |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -72,7 +72,7 @@ and not ~~[https://storage.cloud.google.com](https://storage.cloud.google.com)~~
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Выбор первых двух строк таблицы из файла в GCS `https://storage.googleapis.com/my-test-bucket-768/data.csv`:
 
@@ -105,7 +105,7 @@ LIMIT 2;
 ```
 
 
-## Использование
+## Использование {#usage}
 
 Предположим, что у нас есть несколько файлов со следующими URI в GCS:
 
@@ -199,7 +199,7 @@ FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
 
-## Партиционированная запись
+## Партиционированная запись {#partitioned-write}
 
 Если при вставке данных в таблицу `GCS` указано выражение `PARTITION BY`, для каждого значения партиции создаётся отдельный файл. Разделение данных на отдельные файлы помогает повысить эффективность операций чтения.
 

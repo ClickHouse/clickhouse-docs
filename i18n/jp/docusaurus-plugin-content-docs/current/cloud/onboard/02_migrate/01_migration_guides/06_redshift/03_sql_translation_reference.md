@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Amazon Redshift SQL 変換ガイド
+# Amazon Redshift SQL 変換ガイド {#amazon-redshift-sql-translation-guide}
 
 
 
@@ -52,9 +52,9 @@ ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHou
 
 
 
-## DDL 構文
+## DDL 構文 {#compression}
 
-### ソートキー
+### ソートキー {#sorting-keys}
 
 ClickHouse と Redshift の両方には「ソートキー」という概念があり、
 データを保存する際にどのような順序で格納するかを定義します。Redshift では、

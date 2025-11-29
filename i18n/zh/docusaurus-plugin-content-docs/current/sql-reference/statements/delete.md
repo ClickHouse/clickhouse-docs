@@ -17,7 +17,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 之所以称为「轻量级 `DELETE`」，是为了与 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) 命令区分开来，后者是一个重量级的操作。
 
 
-## 示例
+## 示例 {#examples}
 
 ```sql
 -- 删除 `hits` 表中所有 `Title` 列包含文本 `hello` 的行
@@ -66,7 +66,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
 
 
-## 删除权限
+## 删除权限 {#delete-permissions}
 
 `DELETE` 语句需要具有 `ALTER DELETE` 权限。要为指定用户在特定表上启用 `DELETE` 语句，请运行以下命令：
 

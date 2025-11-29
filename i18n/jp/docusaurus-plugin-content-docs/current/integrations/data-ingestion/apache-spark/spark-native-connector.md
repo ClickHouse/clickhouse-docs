@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
-# Spark コネクタ
+# Spark コネクタ {#spark-connector}
 
 このコネクタは、高度なパーティション分割や述語プッシュダウンなど、ClickHouse 固有の最適化を活用して、
 クエリパフォーマンスとデータ処理を向上させます。
@@ -57,14 +57,14 @@ Spark のデフォルトのカタログは `spark_catalog` であり、テーブ
 
 
 
-## インストール &amp; セットアップ
+## インストール &amp; セットアップ {#installation--setup}
 
 Spark と ClickHouse を連携するためのインストール方法には、プロジェクト構成に応じていくつかの選択肢があります。
 `pom.xml`（Maven の場合）や `build.sbt`（SBT の場合）など、プロジェクトのビルドファイルに ClickHouse Spark connector を依存関係として直接追加できます。
 または、必要な JAR ファイルを `$SPARK_HOME/jars/` フォルダに配置するか、`spark-submit` コマンドで `--jars` フラグを使用して Spark のオプションとして直接指定することもできます。
 いずれの方法でも、Spark 環境で ClickHouse connector を利用可能にできます。
 
-### 依存関係としてインポート
+### 依存関係としてインポート {#import-as-a-dependency}
 
 <Tabs>
   <TabItem value="Maven" label="Maven" default>
@@ -144,7 +144,7 @@ Spark と ClickHouse を連携するためのインストール方法には、�
   </TabItem>
 </Tabs>
 
-### ライブラリのダウンロード
+### ライブラリのダウンロード {#download-the-library}
 
 バイナリ JAR の名前のパターンは次のとおりです。
 
@@ -174,7 +174,7 @@ classifier が "all" の [clickhouse-jdbc JAR](https://mvnrepository.com/artifac
 
 
 
-## カタログを登録する（必須）
+## カタログを登録する（必須） {#register-the-catalog-required}
 
 ClickHouse のテーブルにアクセスするには、次の設定を使用して新しい Spark カタログを設定する必要があります。
 
@@ -224,7 +224,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 :::
 
 
-## ClickHouse Cloud の設定
+## ClickHouse Cloud の設定 {#clickhouse-cloud-settings}
 
 [ClickHouse Cloud](https://clickhouse.com) に接続する際は、SSL を有効にし、適切な SSL モードを設定してください。例えば、次のとおりです。
 
@@ -433,7 +433,7 @@ from pyspark.sql import Row
 ```
 
 
-# 上記の互換性マトリクスを満たす任意のパッケージ組み合わせを使用してかまいません。
+# 上記の互換性マトリクスを満たす任意のパッケージ組み合わせを使用してかまいません。 {#feel-free-to-use-any-other-packages-combination-satesfying-the-compatibility-matrix-provided-above}
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -457,13 +457,13 @@ spark.conf.set("spark.clickhouse.write.format", "json")
 
 
 
-# DataFrame を作成
+# DataFrame を作成 {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 
 
-# DataFrameをClickHouseに書き込む
+# DataFrameをClickHouseに書き込む {#write-dataframe-to-clickhouse}
 
 df.writeTo("clickhouse.default.example_table").append()
 
@@ -483,7 +483,7 @@ df.writeTo("clickhouse.default.example_table").append()
 </Tabs>
 
 
-## DDL 操作
+## DDL 操作 {#ddl-operations}
 
 Spark SQL を使用して ClickHouse インスタンスに対して DDL 操作を実行でき、すべての変更は即座に
 ClickHouse に永続化されます。

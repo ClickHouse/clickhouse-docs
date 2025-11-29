@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# GenerateRandom 表引擎
+# GenerateRandom 表引擎 {#generaterandom-table-engine}
 
 `GenerateRandom` 表引擎根据给定的表结构生成随机数据。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 在 ClickHouse Server 中的使用
+## 在 ClickHouse Server 中的使用 {#usage-in-clickhouse-server}
 
 ```sql
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
@@ -33,7 +33,7 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 它支持所有可以存储在表中的 [DataTypes](../../../sql-reference/data-types/index.md)，`AggregateFunction` 类型除外。
 
 
-## 示例
+## 示例 {#example}
 
 **1.** 创建 `generate_engine_table` 表：
 

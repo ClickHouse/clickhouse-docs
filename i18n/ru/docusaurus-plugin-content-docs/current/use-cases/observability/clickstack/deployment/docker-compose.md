@@ -12,7 +12,7 @@ keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'Разве
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 Все компоненты ClickStack распространяются отдельно в виде отдельных Docker-образов:
 
@@ -84,14 +84,14 @@ docker compose up
 
 </VerticalStepper>
 
-## Изменение настроек Compose
+## Изменение настроек Compose {#modifying-settings}
 
 Пользователи могут изменять настройки стека, например используемую версию, через файл с переменными окружения:
 
 ```shell
 user@example-host hyperdx % cat .env
-# Используется в docker-compose.yml
-# Используется в docker-compose.yml
+# Используется в docker-compose.yml {#used-by-docker-composeyml}
+# Используется в docker-compose.yml {#used-by-docker-composeyml}
 HDX_IMAGE_REPO=docker.hyperdx.io
 IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
 IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
@@ -106,14 +106,14 @@ IMAGE_VERSION_SUB_TAG=.16
 IMAGE_VERSION=2-beta
 IMAGE_NIGHTLY_TAG=2-nightly
 
-# Настройка URL доменов
+# Настройка URL доменов {#set-up-domain-urls}
 HYPERDX_API_PORT=8000 #необязательно (не должен быть занят другими сервисами)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# Конфигурация OTel/ClickHouse
+# Конфигурация OTel/ClickHouse {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
@@ -122,7 +122,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 Конфигурацию коллектора OTel можно изменить при необходимости — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
-## Использование ClickHouse Cloud
+## Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
 Этот дистрибутив можно использовать с ClickHouse Cloud. Пользователям следует:
 

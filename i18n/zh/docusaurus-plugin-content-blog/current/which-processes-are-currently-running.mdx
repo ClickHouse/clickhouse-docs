@@ -9,8 +9,7 @@ tags: ['服务器管理']
 
 {/* 截断 */}
 
-
-## 检查服务器当前正在运行的代码
+## 检查服务器当前正在运行的代码 \{#check-what-code-is-currently-running-on-a-server\}
 
 ClickHouse 具有内置调试器和自省能力。
 
@@ -29,7 +28,6 @@ SETTINGS allow_introspection_functions = 1;
 ```
 
 查询结果会显示线程当前正在运行或等待的 ClickHouse 源代码中的位置。（需要将 `allow_introspection_functions` 设置为 `1` 才能启用[自省函数](https://clickhouse.com/docs/sql-reference/functions/introspection)。）返回结果类似如下：
-
 
 ```response
 1:

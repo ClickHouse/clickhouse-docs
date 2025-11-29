@@ -10,12 +10,11 @@ keywords: ['基本データ型の最適化']
 
 {/* 省略 */}
 
-
 ## 質問 \{#question\}
 
 クエリの速度とストレージ使用量を最適化するために、ClickHouse ではどのデータ型を使用すればよいですか？
 
-## Answer
+## Answer \{#answer\}
 
 他のシステムからの自動変換を使う場合やデータ型を選択しようとする場合、多くのユーザーはしばしば「とにかく大きいほうが良い」「楽なほうを選ぶ」「一番汎用的なものを選ぶ」といったアプローチを取ります。これは、数百万行から、多くても数十億行程度までの比較的小さなデータセットであれば、たいてい問題なく動作します。そのような規模で、ユーザーのクエリ応答時間の差がユースケース上わずかであれば、ほとんど気にならず、許容されるでしょう。
 
@@ -97,14 +96,13 @@ attributes Map(String, String)
 
 * **推奨**: Decimal(10,2)
 
-
-`attributes : map`  
+`attributes : map`\
 動的な属性を `Map` 型で保持しているテーブルがあることはよくあります。キーや値での検索は通常、遅くなりがちです。`Map` を高速化する方法はいくつかあります。ほとんどのレコードに存在するキーがある場合、それらは別の列に切り出して低カーディナリティとして定義し、まれにしか現れないものは別の列で高カーディナリティとして定義するのが最適です。こうすることで、クエリは複雑になる可能性がありますが、スキップインデックスをより効率的に作成できます。
 
-- **推奨構成:** lc_attributes: Map(String, String), hc_attributes: Map(String, String)。  
+* **推奨構成:** lc&#95;attributes: Map(String, String), hc&#95;attributes: Map(String, String)。
 
-クエリ内容に応じて、スキップインデックスの作成や属性の抽出に使用できるオプションとして、以下があります。  
-Array Join を使用して、マテリアライズドビュー経由で列に展開する方法:  
-https://clickhouse.com/docs/knowledgebase/using-array-join-to-extract-and-query-attributes  
-キーに対してスキップインデックスを使用する方法:  
+クエリ内容に応じて、スキップインデックスの作成や属性の抽出に使用できるオプションとして、以下があります。\
+Array Join を使用して、マテリアライズドビュー経由で列に展開する方法:\
+https://clickhouse.com/docs/knowledgebase/using-array-join-to-extract-and-query-attributes\
+キーに対してスキップインデックスを使用する方法:\
 https://clickhouse.com/docs/knowledgebase/improve-map-performance

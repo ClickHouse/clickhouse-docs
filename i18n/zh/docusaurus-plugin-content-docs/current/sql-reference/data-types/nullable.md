@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Nullable(T)
+# Nullable(T) {#nullablet}
 
 允许在 `T` 类型的正常值之外，额外存储表示“缺失值”的特殊标记（[NULL](../../sql-reference/syntax.md)）。例如，类型为 `Nullable(Int8)` 的列既可以存储 `Int8` 类型的值，而没有值的行则会存储 `NULL`。
 
@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 
 
-## 查找 NULL
+## 查找 NULL {#finding-null}
 
 可以通过使用 `null` 子列，在无需读取整个列的情况下查找列中的 `NULL` 值。当对应的值为 `NULL` 时返回 `1`，否则返回 `0`。
 
@@ -59,7 +59,7 @@ SELECT n.null FROM nullable;
 ```
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE TinyLog

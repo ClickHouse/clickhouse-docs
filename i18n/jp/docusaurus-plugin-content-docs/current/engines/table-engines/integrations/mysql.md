@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# MySQL テーブルエンジン
+# MySQL テーブルエンジン {#mysql-table-engine}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -67,7 +67,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 ```
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 MySQL でテーブルを作成します:
 

@@ -48,7 +48,7 @@ SHOW TABLES FROM information_schema;
 Эквивалентные, нечувствительные к регистру представления, например `INFORMATION_SCHEMA.columns`, доступны для обеспечения совместимости с другими системами управления базами данных. То же самое относится ко всем столбцам в этих представлениях — доступны варианты как в нижнем регистре (например, `table_name`), так и в верхнем (`TABLE_NAME`).
 
 
-## СТОЛБЦЫ
+## СТОЛБЦЫ {#columns}
 
 Содержит столбцы, считанные из системной таблицы [system.columns](../../operations/system-tables/columns.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны присутствовать согласно стандарту.
 
@@ -126,7 +126,7 @@ domain_name:              ᴺᵁᴸᴸ
 ```
 
 
-## SCHEMATA
+## SCHEMATA {#schemata}
 
 Содержит столбцы, получаемые из системной таблицы [system.databases](../../operations/system-tables/databases.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но предусмотрены стандартом.
 
@@ -173,7 +173,7 @@ sql_path:                      ᴺᵁᴸᴸ
 ```
 
 
-## TABLES
+## TABLES {#tables}
 
 Содержит столбцы, прочитанные из системной таблицы [system.tables](../../operations/system-tables/tables.md).
 
@@ -226,7 +226,7 @@ table_comment:
 ```
 
 
-## ПРЕДСТАВЛЕНИЯ
+## ПРЕДСТАВЛЕНИЯ {#views}
 
 Содержит столбцы, считываемые из системной таблицы [system.tables](../../operations/system-tables/tables.md), когда используется движок таблицы [View](../../engines/table-engines/special/view.md).
 
@@ -286,7 +286,7 @@ is_trigger_insertable_into: NO
 ```
 
 
-## KEY&#95;COLUMN&#95;USAGE
+## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
 
 Содержит столбцы из системной таблицы [system.tables](../../operations/system-tables/tables.md), для которых заданы ограничения.
 

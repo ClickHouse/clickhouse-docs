@@ -6,9 +6,7 @@ title: '組み込み辞書を扱う関数'
 doc_type: 'reference'
 ---
 
-
-
-# 埋め込みディクショナリを扱う関数
+# 埋め込みディクショナリを扱う関数 {#functions-for-working-with-embedded-dictionaries}
 
 :::note
 以下の関数が動作するためには、サーバー設定で、すべての埋め込みディクショナリを取得するためのパスとアドレスを指定しておく必要があります。ディクショナリは、これらの関数のいずれかが最初に呼び出された時点で読み込まれます。参照リストを読み込めない場合は、例外がスローされます。
@@ -18,9 +16,7 @@ doc_type: 'reference'
 
 参照リストの作成方法については、「[Dictionaries](../dictionaries#embedded-dictionaries)」セクションを参照してください。
 
-
-
-## 複数のジオベース
+## 複数のジオベース {#multiple-geobases}
 
 ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱うことをサポートしており、特定の地域がどの国に属するかについてのさまざまな見方に対応できます。
 
@@ -43,7 +39,7 @@ regionToCountry(RegionID, '') – デフォルト辞書を使用します: /opt/
 regionToCountry(RegionID, 'ua') – 'ua'キー用の辞書を使用します: /opt/geo/regions_hierarchy_ua.txt
 ```
 
-### regionToName
+### regionToName {#regiontoname}
 
 リージョン ID と geobase を受け取り、対応する言語のリージョン名を表す文字列を返します。指定された ID のリージョンが存在しない場合は、空文字列を返します。
 
@@ -83,7 +79,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 └────────────────────────────────────────────┘
 ```
 
-### regionToCity
+### regionToCity {#regiontocity}
 
 ジオベースからリージョン ID を受け取ります。このリージョンが都市、または都市の一部である場合は、対応する都市のリージョン ID を返します。それ以外の場合は 0 を返します。
 
@@ -113,7 +109,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 結果:
 
-
 ```response
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
@@ -132,7 +127,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
-### regionToArea
+### regionToArea {#regiontoarea}
 
 地域をエリア（geobase におけるタイプ 5）に変換します。それ以外の点では、この関数は [&#39;regionToCity&#39;](#regiontocity) と同様です。
 
@@ -184,7 +179,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────┘
 ```
 
-### regionToDistrict
+### regionToDistrict {#regiontodistrict}
 
 リージョンを、geobase におけるタイプ 4 の連邦管区に変換します。その他の点では、この関数の動作は &#39;regionToCity&#39; と同じです。
 
@@ -236,7 +231,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────────┘
 ```
 
-### regionToCountry
+### regionToCountry {#regiontocountry}
 
 地域を国（geobase のタイプ 3）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
@@ -247,7 +242,6 @@ regionToCountry(id [, geobase])
 ```
 
 **パラメーター**
-
 
 * `id` — ジオベース内のリージョン ID。[UInt32](../data-types/int-uint)。
 * `geobase` — 辞書のキー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
@@ -285,7 +279,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-### regionToContinent
+### regionToContinent {#regiontocontinent}
 
 地域を大陸（geobase におけるタイプ1）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
@@ -333,7 +327,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### regionToTopContinent
+### regionToTopContinent {#regiontotopcontinent}
 
 地域に対応する階層内の最上位の大陸を返します。
 
@@ -363,7 +357,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 結果：
 
-
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
@@ -382,7 +375,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-### regionToPopulation
+### regionToPopulation {#regiontopopulation}
 
 指定した地域の人口を取得します。人口は geobase 対応のファイルに記録できます。セクション [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries) を参照してください。地域に対して人口が記録されていない場合は 0 を返します。geobase では、子地域には人口が記録されていても、親地域には記録されていない場合があります。
 
@@ -430,7 +423,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-### regionIn
+### regionIn {#regionin}
 
 `lhs` のリージョンが `rhs` のリージョンに属しているかどうかをチェックします。属している場合は 1、属していない場合は 0 の UInt8 型の値を返します。
 
@@ -465,7 +458,6 @@ SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.
 
 結果：
 
-
 ```text
 World は World に含まれます
 World は USA に含まれません
@@ -479,7 +471,7 @@ USA は Boulder County に含まれません
 USA は Boulder に含まれません    
 ```
 
-### regionHierarchy
+### regionHierarchy {#regionhierarchy}
 
 `UInt32` 型の数値（geobase のリージョン ID）を受け取ります。指定したリージョンと、その親リージョンをチェーンに沿ってすべて含むリージョン ID の配列を返します。
 

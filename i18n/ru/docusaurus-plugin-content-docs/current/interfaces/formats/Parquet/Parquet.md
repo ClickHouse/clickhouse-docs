@@ -75,9 +75,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте файл Parquet со следующими данными, сохранённый под именем `football.parquet`:
 
@@ -109,7 +109,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `Parquet`:
 

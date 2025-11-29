@@ -47,7 +47,7 @@ ClickHouse 会为每个查询以及部分查询执行阶段（例如查询规划
 
 
 
-## 与监控系统的集成
+## 与监控系统的集成 {#integration-with-monitoring-systems}
 
 目前，还没有可将 ClickHouse 的跟踪数据导出到监控系统的现成工具。
 

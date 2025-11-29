@@ -7,13 +7,9 @@ title: 'SELECT 查询语句'
 doc_type: 'reference'
 ---
 
-
-
-# SELECT 查询
+# SELECT 查询 {#select-query}
 
 `SELECT` 查询用于执行数据检索。默认情况下，请求的数据会返回给客户端，而与 [INSERT INTO](../../../sql-reference/statements/insert-into.md) 结合使用时，可以将其转发到另一张表中。
-
-
 
 ## 语法 {#syntax}
 
@@ -63,7 +59,6 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [EXCEPT 子句](../../../sql-reference/statements/select/except.md)
 - [INTO OUTFILE 子句](../../../sql-reference/statements/select/into-outfile.md)
 - [FORMAT 子句](../../../sql-reference/statements/select/format.md)
-
 
 ## SELECT 子句 {#select-clause}
 
@@ -159,7 +154,6 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `GROUP BY`、`ORDER BY` 和 `LIMIT BY` 子句支持位置参数。要启用此功能,请开启 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设置。例如,`ORDER BY 1,2` 将按表中的第一列和第二列对行进行排序。
 
-
 ## 实现细节 {#implementation-details}
 
 如果查询中省略了 `DISTINCT`、`GROUP BY` 和 `ORDER BY` 子句,以及 `IN` 和 `JOIN` 子查询,则查询将完全采用流式处理,仅使用 O(1) 级别的 RAM。否则,如果未指定适当的限制条件,查询可能会消耗大量 RAM:
@@ -179,7 +173,6 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 - `max_bytes_ratio_before_external_group_by`
 
 更多信息请参阅"设置"章节。可以使用外部排序(将临时表保存到磁盘)和外部聚合。
-
 
 ## SELECT 修饰符 {#select-modifiers}
 
@@ -220,7 +213,6 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 │             222 │    347 │
 └─────────────────┴────────┘
 ```
-
 
 ## SELECT 查询中的 SETTINGS {#settings-in-select-query}
 

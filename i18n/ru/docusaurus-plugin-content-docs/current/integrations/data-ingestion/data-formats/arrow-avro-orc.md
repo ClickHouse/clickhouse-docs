@@ -10,13 +10,13 @@ doc_type: 'guide'
 
 
 
-# Работа с данными Avro, Arrow и ORC в ClickHouse
+# Работа с данными Avro, Arrow и ORC в ClickHouse {#working-with-avro-arrow-and-orc-data-in-clickhouse}
 
 Apache разработал несколько форматов данных, активно используемых в аналитических системах, включая популярные [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/) и [ORC](https://orc.apache.org/). ClickHouse поддерживает импорт и экспорт данных с использованием любого из этих форматов.
 
 
 
-## Импорт и экспорт в формате Avro
+## Импорт и экспорт в формате Avro {#importing-and-exporting-in-avro-format}
 
 ClickHouse поддерживает чтение и запись файлов данных [Apache Avro](https://avro.apache.org/), которые широко используются в системах Hadoop.
 
@@ -55,7 +55,7 @@ INTO OUTFILE 'export.avro'
 FORMAT Avro;
 ```
 
-### Типы данных Avro и ClickHouse
+### Типы данных Avro и ClickHouse {#avro-and-clickhouse-data-types}
 
 Учитывайте [соответствие типов данных](/interfaces/formats/Avro#data-type-mapping) при импорте и экспорте файлов Avro. Используйте явное приведение типов для преобразования данных при загрузке их из файлов Avro:
 
@@ -75,7 +75,7 @@ LIMIT 3;
 └───────┴──────────────┘
 ```
 
-### Сообщения Avro в Kafka
+### Сообщения Avro в Kafka {#avro-messages-in-kafka}
 
 Когда сообщения Kafka находятся в формате Avro, ClickHouse может читать такие потоки с помощью формата [AvroConfluent](/interfaces/formats/AvroConfluent) и движка [Kafka](/engines/table-engines/integrations/kafka.md):
 
@@ -93,7 +93,7 @@ kafka_format = 'AvroConfluent';
 ```
 
 
-## Работа с форматом Arrow
+## Работа с форматом Arrow {#working-with-arrow-format}
 
 Ещё один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта данных. Чтобы импортировать данные из [файла в формате Arrow](assets/data.arrow), мы используем формат [Arrow](/interfaces/formats/Arrow):
 
@@ -113,7 +113,7 @@ FORMAT Arrow
 
 Также ознакомьтесь с [соответствием типов данных](/interfaces/formats/Arrow#data-types-matching), чтобы определить, какие из них нужно преобразовать вручную.
 
-### Потоковая передача данных Arrow
+### Потоковая передача данных Arrow {#arrow-data-streaming}
 
 Формат [ArrowStream](/interfaces/formats/ArrowStream) можно использовать для работы с потоковой передачей Arrow (используется для обработки данных в памяти). ClickHouse может читать и записывать потоки Arrow.
 
@@ -148,7 +148,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 Мы использовали `arrow-stream` как один из возможных источников потоковых данных Arrow.
 
 
-## Импорт и экспорт данных ORC
+## Импорт и экспорт данных ORC {#importing-and-exporting-orc-data}
 
 Формат [Apache ORC](https://orc.apache.org/) — это колоночный формат хранения, обычно используемый с Hadoop. ClickHouse поддерживает импорт и экспорт [данных ORC](assets/data.orc) с использованием [формата ORC](/interfaces/formats/ORC):
 

@@ -173,7 +173,7 @@ doc_type: 'guide'
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `PrettyJSONEachRow` 格式读取数据：
 

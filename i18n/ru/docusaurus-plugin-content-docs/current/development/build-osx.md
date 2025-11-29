@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# Как собрать ClickHouse на macOS для macOS
+# Как собрать ClickHouse на macOS для macOS {#how-to-build-clickhouse-on-macos-for-macos}
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
 Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](https://clickhouse.com/#quick-start).
@@ -22,7 +22,7 @@ ClickHouse можно скомпилировать на macOS x86_64 (Intel) и 
 
 
 
-## Установка необходимых компонентов
+## Установка необходимых компонентов {#install-prerequisites}
 
 Сначала ознакомьтесь с общей [документацией по предварительным требованиям](developer-instruction.md).
 
@@ -53,7 +53,7 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# Итоговый исполняемый файл будет создан по пути: build/programs/clickhouse
+# Итоговый исполняемый файл будет создан по пути: build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
 ```
 
 :::note
@@ -62,7 +62,7 @@ cmake --build build
 :::
 
 
-## Особенности
+## Особенности {#caveats}
 
 Если вы планируете запускать `clickhouse-server`, убедитесь, что значение системной переменной `maxfiles` увеличено.
 

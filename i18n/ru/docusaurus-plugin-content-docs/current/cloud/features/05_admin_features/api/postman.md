@@ -29,19 +29,19 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 Это руководство поможет вам протестировать ClickHouse Cloud API с помощью [Postman](https://www.postman.com/product/what-is-postman/).
 Приложение Postman доступно в веб-браузере или его можно загрузить на рабочий компьютер.
 
-### Создайте учетную запись
+### Создайте учетную запись {#create-an-account}
 
 * Бесплатные учетные записи доступны по адресу [https://www.postman.com](https://www.postman.com).
 
 <Image img={postman1} size="md" alt="Сайт Postman" border />
 
-### Создайте рабочее пространство
+### Создайте рабочее пространство {#create-a-workspace}
 
 * Укажите имя рабочего пространства и установите уровень видимости.
 
 <Image img={postman2} size="md" alt="Создание рабочего пространства" border />
 
-### Создайте коллекцию
+### Создайте коллекцию {#create-a-collection}
 
 * Под пунктом «Explore» в верхнем левом меню нажмите «Import»:
 
@@ -59,7 +59,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman6} size="md" alt="Collection > Import" border />
 
-### Работа со спецификацией ClickHouse Cloud API
+### Работа со спецификацией ClickHouse Cloud API {#interface-with-the-clickhouse-cloud-api-spec}
 
 * «API spec for ClickHouse Cloud» теперь появится в разделе «Collections» (левая панель навигации).
 
@@ -69,7 +69,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman8} size="md" alt="Импорт завершен" border />
 
-### Настройте авторизацию
+### Настройте авторизацию {#set-authorization}
 
 * Разверните выпадающее меню и выберите «Basic Auth»:
 
@@ -79,11 +79,11 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman10} size="md" alt="учетные данные" border />
 
-### Включите переменные
+### Включите переменные {#enable-variables}
 
 * [Переменные](https://learning.postman.com/docs/sending-requests/variables/) позволяют хранить и повторно использовать значения в Postman, что упрощает тестирование API.
 
-#### Установите идентификатор организации и идентификатор сервиса
+#### Установите идентификатор организации и идентификатор сервиса {#set-the-organization-id-and-service-id}
 
 * В коллекции нажмите вкладку «Variables» в средней панели (Base URL был задан при предыдущем импорте API).
 * Под `baseURL` нажмите на поле «Add new value» и подставьте свои идентификатор организации и идентификатор сервиса:

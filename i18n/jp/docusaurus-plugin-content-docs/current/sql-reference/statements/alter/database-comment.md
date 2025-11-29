@@ -10,20 +10,20 @@ doc_type: 'reference'
 
 
 
-# ALTER DATABASE ... MODIFY COMMENT
+# ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
 データベースのコメントを、あらかじめ設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 
-## 例
+## 例 {#examples}
 
 コメント付きの `DATABASE` を作成するには：
 

@@ -65,7 +65,7 @@ runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted
 
 
 
-## Превращение ClickHouse в REST‑сервис
+## Превращение ClickHouse в REST‑сервис {#turning-clickhouse-to-a-rest-service}
 
 Azure Data Factory поддерживает отправку данных во внешние системы по HTTP в
 формате JSON. Мы можем использовать эту возможность, чтобы вставлять данные

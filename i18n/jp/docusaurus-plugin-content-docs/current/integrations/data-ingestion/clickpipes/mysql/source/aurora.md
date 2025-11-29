@@ -20,17 +20,17 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Aurora MySQL ソースセットアップガイド
+# Aurora MySQL ソースセットアップガイド {#aurora-mysql-source-setup-guide}
 
 このガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon Aurora MySQL を構成し、データを ClickHouse Cloud にレプリケートする手順をステップバイステップで説明します。MySQL の CDC（変更データキャプチャ）に関する一般的な質問については、[MySQL FAQs ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 
 
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention-aurora}
 
 バイナリログは、MySQL サーバーインスタンスで行われたデータ変更に関する情報を含む一連のログファイルであり、レプリケーションにはバイナリログファイルが必要です。Aurora MySQL でバイナリログの保持を構成するには、[バイナリログを有効に](#enable-binlog-logging)し、[binlog の保持期間を延長](#binlog-retention-interval)する必要があります。
 
-### 1. 自動バックアップ経由でバイナリログを有効にする
+### 1. 自動バックアップ経由でバイナリログを有効にする {#enable-binlog-logging}
 
 自動バックアップ機能は、MySQL のバイナリログを有効にするかどうかを決定します。RDS コンソールでインスタンスの自動バックアップを構成するには、**Modify** &gt; **Additional configuration** &gt; **Backup** に移動し、（まだ選択されていない場合は）**Enable automated backups** チェックボックスを選択します。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 レプリケーションのユースケースに応じて、**Backup retention period** を十分に長い値に設定することを推奨します。
 
-### 2. binlog の保持期間を延長する
+### 2. binlog の保持期間を延長する {#binlog-retention-interval}
 
 :::warning
 ClickPipes がレプリケーションの再開を試みた際に、設定されている binlog の保持期間によって必要な binlog ファイルが削除されていると、ClickPipe はエラー状態となり、再同期が必要になります。

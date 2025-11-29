@@ -18,8 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Vector と ClickHouse の統合
+# Vector と ClickHouse の統合 {#integrating-vector-with-clickhouse}
 
 <PartnerBadge />
 
@@ -31,13 +30,11 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
 
 **前提条件:**
 
-- ClickHouse がすでに稼働していること
-- Vector がインストールされていること
+* ClickHouse がすでに稼働していること
+* Vector がインストールされていること
 
 <VerticalStepper headerLevel="h2">
-
-
-## データベースとテーブルを作成する
+## データベースとテーブルを作成する {#1-create-a-database-and-table}
 
 ログイベントを保存するためのテーブルを定義します。
 
@@ -47,7 +44,7 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
 CREATE DATABASE IF NOT EXISTS nginxdb
 ```
 
-2. ログイベント全体を1つの文字列として挿入します。もちろん、この形式はログデータを分析するのに適したものではありませんが、その点は後ほ&#x3069;***マテリアライズドビュー***&#x3092;使って解決していきます。
+2. ログイベント全体を1つの文字列として挿入します。もちろん、この形式はログデータを分析するのに適したものではありませんが、その点は後ほど***マテリアライズドビュー***を使って解決していきます。
 
 ```sql
 CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
@@ -61,8 +58,7 @@ ORDER BY tuple()
 **ORDER BY** は、まだ主キーが不要なため、空のタプルである **tuple()** に設定されています。
 :::
 
-
-## Nginx を構成する
+## Nginx を構成する {#2--configure-nginx}
 
 このステップでは、Nginx のログ出力を構成する方法を説明します。
 
@@ -91,13 +87,12 @@ http {
 192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 ```
 
-
-## Vector を設定する
+## Vector を設定する {#3-configure-vector}
 
 Vector はログ、メトリクス、トレース（**sources** と呼ばれます）を収集・変換・ルーティングし、ClickHouse を含む多数の異なるベンダー（**sinks** と呼ばれます）へ送信します。
 Source と sink は **vector.toml** という名前の設定ファイルで定義します。
 
-1. 次の **vector.toml** ファイルでは、**my&#95;access.log** の末尾を tail する **file** 型の **source** と、上で定義した **access&#95;logs** テーブルを **sink** として定義しています。
+1. 次の **vector.toml** ファイルでは、**my_access.log** の末尾を tail する **file** 型の **source** と、上で定義した **access_logs** テーブルを **sink** として定義しています。
 
 ```bash
 [sources.nginx_logs]
@@ -124,14 +119,13 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="テーブル形式で ClickHouse のログを表示する" />
 
-
-## ログをパースする
+## ログをパースする {#4-parse-the-logs}
 
 ログを ClickHouse に保存できるのは有用ですが、各イベントを 1 つの文字列として保存するだけでは、十分なデータ分析は行えません。
 次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用してログイベントをどのようにパースするかを見ていきます。
 
 **マテリアライズドビュー** は、SQL における INSERT トリガーと同様に機能します。ソーステーブルにデータ行が挿入されると、マテリアライズドビューはそれらの行を変換し、その結果をターゲットテーブルに挿入します。
-マテリアライズドビューを設定して、**access&#95;logs** 内のログイベントのパース済み表現を生成できます。
+マテリアライズドビューを設定して、**access_logs** 内のログイベントのパース済み表現を生成できます。
 そのようなログイベントの 1 つの例を以下に示します。
 
 ```bash
@@ -180,7 +174,6 @@ SELECT trim(LEADING '"' FROM '"GET')
 SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))
 ```
 
-
 これでマテリアライズドビューを定義する準備が整いました。
 以下の定義には `POPULATE` 句が含まれており、これは **access_logs** に既に存在する行がすぐに処理され、その場で挿入されることを意味します。
 次の SQL ステートメントを実行してください:
@@ -227,18 +220,12 @@ FROM
 SELECT * FROM nginxdb.access_logs_view
 ```
 
-<Image
-  img={vector02}
-  size='lg'
-  border
-  alt='パース済みの ClickHouse ログをテーブル形式で表示'
-/>
+<Image img={vector02} size="lg" border alt="パース済みの ClickHouse ログをテーブル形式で表示" />
 
 :::note
 上記のレッスンではデータを 2 つのテーブルに保存しましたが、最初の `nginxdb.access_logs` テーブルを [`Null`](/engines/table-engines/special/null) テーブルエンジンを使用するように変更することもできます。
 パース済みデータは変わらず `nginxdb.access_logs_view` テーブルに格納されますが、生のデータはテーブルには保存されません。
 :::
-
 </VerticalStepper>
 
 > シンプルなインストールと短時間の設定だけで利用できる Vector を使うと、Nginx サーバーからのログを ClickHouse のテーブルに送信できます。マテリアライズドビューを使用すれば、それらのログを列にパースして、より簡単に分析できるようにできます。

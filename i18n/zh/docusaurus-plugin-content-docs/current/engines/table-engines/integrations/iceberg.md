@@ -23,7 +23,7 @@ Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初�
 
 
 
-## 创建表
+## 创建表 {#create-table}
 
 请注意，Iceberg 表必须已经存在于存储中，此命令不接受用于创建新表的 DDL 参数。
 
@@ -42,14 +42,14 @@ CREATE TABLE iceberg_table_local
 ```
 
 
-## 引擎参数
+## 引擎参数 {#engine-arguments}
 
 参数说明与引擎 `S3`、`AzureBlobStorage`、`HDFS` 和 `File` 中参数的说明相同。\
 `format` 表示 Iceberg 表中数据文件的格式。
 
 可以使用 [Named Collections](../../../operations/named-collections.md) 来指定引擎参数。
 
-### 示例
+### 示例 {#example}
 
 ```sql
 CREATE TABLE iceberg_table ENGINE=IcebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
@@ -105,7 +105,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 
 
 
-## 处理包含已删除行的表
+## 处理包含已删除行的表 {#deleted-rows}
 
 目前，仅支持带有 [position deletes](https://iceberg.apache.org/spec/#position-delete-files) 的 Iceberg 表。
 
@@ -114,7 +114,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 * [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)（等值删除）
 * [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入的删除向量）
 
-### 基本用法
+### 基本用法 {#basic-usage}
 
 ```sql
 SELECT * FROM example_table ORDER BY 1 
@@ -128,7 +128,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 注意：你不能在同一个查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
-### 重要注意事项
+### 重要注意事项 {#important-considerations}
 
 * **快照** 通常在以下情况下创建：
   * 向表写入新数据时
@@ -136,11 +136,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 * **模式变更通常不会创建快照** —— 这会在对经过模式演进的表使用 time travel（时间穿梭查询）时产生一些需要注意的重要行为。
 
-### 示例场景
+### 示例场景 {#example-scenarios}
 
 所有场景都使用 Spark 编写，因为 ClickHouse（CH）目前尚不支持向 Iceberg 表写入数据。
 
-#### 场景 1：仅发生模式变更但没有新的快照
+#### 场景 1：仅发生模式变更但没有新的快照 {#scenario-1}
 
 考虑以下一系列操作：
 
@@ -200,7 +200,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 * 在 ts1 和 ts2：只显示原来的两列
 * 在 ts3：显示全部三列，且第一行的 price 为 NULL
 
-#### 场景 2：历史表结构与当前表结构的差异
+#### 场景 2：历史表结构与当前表结构的差异 {#scenario-2}
 
 在当前时刻执行的时间旅行查询，可能会显示与当前表不同的表结构：
 
@@ -243,7 +243,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 这是因为 `ALTER TABLE` 不会创建新的快照；对于当前表，Spark 会从最新的元数据文件中读取 `schema_id` 的值，而不是从快照中读取。
 
 
-#### 场景 3：历史与当前表结构差异
+#### 场景 3：历史与当前表结构差异 {#scenario-3}
 
 第二点是在进行时间旅行时，你无法获取表在尚未写入任何数据之前的状态：
 
@@ -265,11 +265,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 在 ClickHouse 中，其行为与 Spark 保持一致。你可以在概念上将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
 
 
-## 元数据文件解析
+## 元数据文件解析 {#metadata-file-resolution}
 
 在 ClickHouse 中使用 `Iceberg` 表引擎时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。下面是该解析过程的具体流程：
 
-### 候选文件搜索
+### 候选文件搜索 {#candidate-search}
 
 1. **直接路径指定**：
 
@@ -286,7 +286,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 * 如果上述设置都未提供，则 `metadata` 目录中的所有 `.metadata.json` 文件都将作为候选。
 
-### 选择最新的文件
+### 选择最新的文件 {#most-recent-file}
 
 根据上述规则确定候选文件后，系统会判断其中哪个是最新的文件：
 

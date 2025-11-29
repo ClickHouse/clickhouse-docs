@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# VersionedCollapsingMergeTree テーブルエンジン
+# VersionedCollapsingMergeTree テーブルエンジン {#versionedcollapsingmergetree-table-engine}
 
 このエンジンは次のことができます：
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -39,7 +39,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 クエリパラメータの説明は、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
-### エンジンのパラメータ
+### エンジンのパラメータ {#engine-parameters}
 
 ```sql
 VersionedCollapsingMergeTree(サイン, バージョン)
@@ -50,7 +50,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 | `sign`    | 行の種類を示す列の名前。`1` は「state」行、`-1` は「cancel」行を表します。 | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                   |
 | `version` | オブジェクト状態のバージョンを表す列の名前。                          | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) |
 
-### クエリ句
+### クエリ句 {#query-clauses}
 
 `VersionedCollapsingMergeTree` テーブルを作成する際は、`MergeTree` テーブルを作成する場合と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
 
@@ -82,9 +82,9 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 </details>
 
 
-## 折りたたみ（Collapsing）
+## 折りたたみ（Collapsing） {#table_engines_versionedcollapsingmergetree}
 
-### データ
+### データ {#data}
 
 あるオブジェクトについて、継続的に変化するデータを保存する必要がある状況を考えます。オブジェクトごとに 1 行を持ち、変更があるたびにその行を更新するのは合理的に思えます。しかし、更新操作はストレージ上のデータを書き換える必要があるため、DBMS にとっては高コストかつ低速です。データを高速に書き込む必要がある場合、更新は適していませんが、その代わりにオブジェクトに対する変更を次のように逐次書き込むことができます。
 
@@ -130,7 +130,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 2. 列内で長く伸び続ける配列は、書き込み時の負荷によりエンジンの効率を低下させます。データが単純であればあるほど効率は高くなります。
 3. `SELECT` の結果は、オブジェクト変更履歴の一貫性に大きく依存します。挿入するデータを準備する際は注意してください。セッション深度のような本来非負であるメトリクスに対して負の値が得られるなど、不整合なデータでは予測不能な結果になる可能性があります。
 
-### Algorithm
+### Algorithm {#table_engines-versionedcollapsingmergetree-algorithm}
 
 ClickHouse がデータパートをマージする際、同じ主キーとバージョンを持ち、`Sign` が異なる行のペアを削除します。行の順序は関係ありません。
 
@@ -149,7 +149,7 @@ ClickHouse は、同じプライマリキーを持つすべての行が、同じ
 
 
 
-## 使用例
+## 使用例 {#example-of-use}
 
 サンプルデータ：
 

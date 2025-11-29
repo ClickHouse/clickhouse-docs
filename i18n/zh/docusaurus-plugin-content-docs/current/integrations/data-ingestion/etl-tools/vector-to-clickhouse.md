@@ -18,8 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# 将 Vector 与 ClickHouse 集成
+# 将 Vector 与 ClickHouse 集成 {#integrating-vector-with-clickhouse}
 
 <PartnerBadge />
 
@@ -31,13 +30,11 @@ ClickHouse 在存储和分析日志数据方面表现卓越,这得益于其出�
 
 **前置条件:**
 
-- 您已部署并运行 ClickHouse
-- 您已安装 Vector
+* 您已部署并运行 ClickHouse
+* 您已安装 Vector
 
 <VerticalStepper headerLevel="h2">
-
-
-## 创建数据库和表
+## 创建数据库和表 {#1-create-a-database-and-table}
 
 定义一个用于存储日志事件的表：
 
@@ -47,7 +44,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越,这得益于其出�
 CREATE DATABASE IF NOT EXISTS nginxdb
 ```
 
-2. 将整条日志事件作为一个字符串插入。显然，这并不是对日志数据进行分析的理想格式，不过我们会在下文中借&#x52A9;***物化视图***&#x6765;解决这一问题。
+2. 将整条日志事件作为一个字符串插入。显然，这并不是对日志数据进行分析的理想格式，不过我们会在下文中借助***物化视图***来解决这一问题。
 
 ```sql
 CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
@@ -61,8 +58,7 @@ ORDER BY tuple()
 **ORDER BY** 被设置为 **tuple()**（一个空元组），因为当前还不需要主键。
 :::
 
-
-## 配置 Nginx
+## 配置 Nginx {#2--configure-nginx}
 
 在本步骤中，将演示如何配置 Nginx 日志记录。
 
@@ -91,13 +87,12 @@ http {
 192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 ```
 
-
-## 配置 Vector
+## 配置 Vector {#3-configure-vector}
 
 Vector 会收集、转换并路由日志、指标和追踪数据（统称为 **sources**），将其发送到多个不同的后端目标（统称为 **sinks**），并且开箱即用地兼容 ClickHouse。
 Sources 和 sinks 都在名为 **vector.toml** 的配置文件中定义。
 
-1. 以下 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，用于持续跟踪读取 **my&#95;access.log** 文件末尾的内容，同时还定义了一个 **sink**，即上文定义的 **access&#95;logs** 表：
+1. 以下 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，用于持续跟踪读取 **my_access.log** 文件末尾的内容，同时还定义了一个 **sink**，即上文定义的 **access_logs** 表：
 
 ```bash
 [sources.nginx_logs]
@@ -124,14 +119,13 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="以表格形式查看 ClickHouse 日志" />
 
-
-## 解析日志
+## 解析日志 {#4-parse-the-logs}
 
 将日志存储在 ClickHouse 中固然很好，但如果将每个事件都存储为单个字符串，就很难进行有效的数据分析。
 接下来我们将介绍如何使用[物化视图](/materialized-view/incremental-materialized-view)来解析日志事件。
 
 **物化视图**的作用类似于 SQL 中的插入触发器。当数据行被插入到源表时，物化视图会对这些行进行转换，并将结果插入到目标表中。
-我们可以配置物化视图，将 **access&#95;logs** 中的日志事件解析为结构化表示。
+我们可以配置物化视图，将 **access_logs** 中的日志事件解析为结构化表示。
 下面是一个此类日志事件的示例：
 
 ```bash
@@ -180,7 +174,6 @@ SELECT trim(LEADING '"' FROM '"GET')
 SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))
 ```
 
-
 现在我们可以定义物化视图了。
 下面的定义包含 `POPULATE`,这意味着 **access_logs** 中的现有行将立即被处理并插入。
 运行以下 SQL 语句:
@@ -227,18 +220,12 @@ FROM
 SELECT * FROM nginxdb.access_logs_view
 ```
 
-<Image
-  img={vector02}
-  size='lg'
-  border
-  alt='以表格格式查看已解析的 ClickHouse 日志'
-/>
+<Image img={vector02} size="lg" border alt="以表格格式查看已解析的 ClickHouse 日志" />
 
 :::note
 上述示例将数据存储在两个表中,但您可以将初始的 `nginxdb.access_logs` 表更改为使用 [`Null`](/engines/table-engines/special/null) 表引擎。
 解析后的数据仍将存储在 `nginxdb.access_logs_view` 表中,但原始数据不会存储在表中。
 :::
-
 </VerticalStepper>
 
 > 通过使用 Vector(只需简单安装和快速配置),您可以将 Nginx 服务器的日志发送到 ClickHouse 表中。通过使用物化视图,您可以将这些日志解析为列,以便更轻松地进行分析。

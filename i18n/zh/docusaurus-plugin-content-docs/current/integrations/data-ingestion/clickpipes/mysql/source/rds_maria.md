@@ -18,7 +18,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS MariaDB 源配置指南
+# RDS MariaDB 源配置指南 {#rds-mariadb-source-setup-guide}
 
 本文将逐步介绍如何配置 RDS MariaDB 实例，使其能够通过 MySQL ClickPipe 复制数据。
 <br/>
@@ -28,11 +28,11 @@ import Image from '@theme/IdealImage';
 
 
 
-## 启用二进制日志保留
+## 启用二进制日志保留 {#enable-binlog-retention-rds}
 
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息。二进制日志文件是实现复制所必需的。必须完成以下两个步骤：
 
-### 1. 通过自动备份启用二进制日志
+### 1. 通过自动备份启用二进制日志 {#enable-binlog-logging-rds}
 
 是否为 MySQL 启用二进制日志由自动备份功能决定。可以在 AWS 控制台中进行设置：
 
@@ -40,7 +40,7 @@ import Image from '@theme/IdealImage';
 
 建议根据复制的具体使用场景，将备份保留期设置为相对较长且合理的值。
 
-### 2. Binlog 保留时间（小时）
+### 2. Binlog 保留时间（小时） {#binlog-retention-hours-rds}
 
 Amazon RDS for MariaDB 采用不同的方法来设置 binlog 的保留时长，即包含变更的 binlog 文件被保留的时间。如果在 binlog 文件被删除之前，某些变更尚未被读取，复制将无法继续。binlog 保留时间的默认值为 NULL，这意味着不会保留二进制日志。
 

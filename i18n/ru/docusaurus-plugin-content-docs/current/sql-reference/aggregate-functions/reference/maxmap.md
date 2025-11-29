@@ -6,7 +6,7 @@ title: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap
+# maxMap {#maxmap}
 
 Вычисляет максимальное значение из массива `value` по ключам, указанным в массиве `key`.
 

@@ -6,7 +6,7 @@ title: 'uniqCombined'
 doc_type: 'reference'
 ---
 
-# uniqCombined
+# uniqCombined {#uniqcombined}
 
 计算参数不同取值的近似数量。
 

@@ -10,8 +10,7 @@ keywords: ['添加列']
 
 {/* 截断 */}
 
-
-## 向表中添加列
+## 向表中添加列 \{#adding-a-column-to-a-table\}
 
 我们将使用 clickhouse-local：
 
@@ -49,8 +48,7 @@ FROM events;
 └────────────┴────────┘
 ```
 
-
-## 添加新列
+## 添加新列 \{#adding-a-new-column\}
 
 现在假设我们要添加一个名为 `favoriteNumber`、类型为 `Float64` 的新列。
 我们可以使用 [`ALTER TABLE...ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 子句来实现这一点：
@@ -87,8 +85,7 @@ INSERT INTO events (name) VALUES ('Tyler');
 └────────────┴────────┴────────────────┘
 ```
 
-
-## 修改列的默认值
+## 修改列的默认值 \{#modifying-a-columns-default-value\}
 
 如果我们使用 [`ALTER TABLE...MODIFY COLUMN`](/sql-reference/statements/alter/column#modify-column) 子句将 `favoriteNumber` 列修改为其他类型，就会出现一些有趣的情况：
 
@@ -147,8 +144,7 @@ INSERT INTO events (name) VALUES ('Tanya');
 
 `Tanya` 采用了新的默认值 `21`，而 `Alexey` 仍然保留旧的默认值 `99`。
 
-
-## 控制表中列的位置
+## 控制表中列的位置 \{#controlling-column-position-in-table\}
 
 当我们向表中添加新列时，默认情况下它会被添加到表的末尾。
 不过，我们可以使用 `FIRST` 和 `AFTER` 子句来控制列的位置。

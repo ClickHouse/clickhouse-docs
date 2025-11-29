@@ -25,9 +25,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 
 
-## 设置
+## 设置 {#setup}
 
-### 获取 ClickHouse 服务 IAM 角色 ARN
+### 获取 ClickHouse 服务 IAM 角色 ARN {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - 登录到你的 ClickHouse Cloud 账户。
 
@@ -41,9 +41,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 <Image img={s3_info} size="lg" alt="获取 ClickHouse 服务 IAM 角色 ARN" border />
 
-### 配置 IAM Assume Role
+### 配置 IAM Assume Role {#setting-up-iam-assume-role}
 
-#### 选项 1：使用 CloudFormation 堆栈部署
+#### 选项 1：使用 CloudFormation 堆栈部署 {#option-1-deploying-with-cloudformation-stack}
 
 1 - 在浏览器中使用具有创建和管理 IAM 角色权限的 IAM 用户登录到你的 AWS 账户。
 
@@ -75,7 +75,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 <Image img={s3_output} size="lg" alt="CloudFormation 堆栈输出中显示 IAM Role ARN" border />
 
-#### 选项 2：手动创建 IAM 角色
+#### 选项 2：手动创建 IAM 角色 {#option-2-manually-create-iam-role}
 
 1 - 在浏览器中使用具有创建和管理 IAM 角色权限的 IAM 用户登录到你的 AWS 账户。
 
@@ -133,7 +133,7 @@ IAM 策略（请将 `{BUCKET_NAME}` 替换为您的存储桶名称）：
 4 - 创建完成后，复制新的 **IAM Role Arn**。它将用于访问你的 S3 bucket。
 
 
-## 使用 ClickHouseAccess 角色访问你的 S3 存储桶
+## 使用 ClickHouseAccess 角色访问你的 S3 存储桶 {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud 提供了一项新功能，允许你在使用 S3 表函数时指定 `extra_credentials`。下面是一个示例，展示如何使用上文创建并复制的角色来运行查询。
 

@@ -7,25 +7,24 @@ title: 'system.query_thread_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.query&#95;thread&#95;log {#systemquery&#95;thread&#95;log}
 
-# system.query_thread_log
-
-<SystemTableCloud/>
+<SystemTableCloud />
 
 Содержит информацию о потоках, которые выполняют запросы, например имя потока, время его запуска, длительность обработки запроса.
 
 Чтобы включить логирование:
 
-1.  Настройте параметры в разделе [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log).
-2.  Установите [log_query_threads](/operations/settings/settings#log_query_threads) в значение 1.
+1. Настройте параметры в разделе [query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log).
+2. Установите [log&#95;query&#95;threads](/operations/settings/settings#log_query_threads) в значение 1.
 
-Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log). Для принудительного сброса используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
+Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log). Для принудительного сброса используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
 
 ClickHouse не удаляет данные из таблицы автоматически. См. раздел [Введение](/operations/system-tables/overview#system-tables-introduction) для получения дополнительной информации.
 
-Вы можете использовать настройку [log_queries_probability](/operations/settings/settings#log_queries_probability) для уменьшения количества запросов, регистрируемых в таблице `query_thread_log`.
+Вы можете использовать настройку [log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability) для уменьшения количества запросов, регистрируемых в таблице `query_thread_log`.
 
 Столбцы:
 

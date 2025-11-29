@@ -8,15 +8,15 @@ keywords: ['данные о сотовых вышках', 'геоданные', 
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
-import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
+import ActionsMenu from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
+import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+import SupersetDocker from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
 import cell_towers_1 from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 import add_a_database from '@site/static/images/getting-started/example-datasets/superset-add.png'
@@ -29,7 +29,6 @@ import superset_mcc_2024 from '@site/static/images/getting-started/example-datas
 import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
-
 
 ## Цель {#goal}
 
@@ -125,7 +124,7 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
-## Выполните несколько примеров запросов
+## Выполните несколько примеров запросов {#examples}
 
 1. Количество сотовых вышек по типу:
 
@@ -171,7 +170,6 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) странами с наибольшим количеством сотовых вышек являются США, Германия и Россия.
 
 Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/dictionaries/index.md) для расшифровки этих значений.
-
 
 ## Сценарий использования: использование геоданных {#use-case}
 
@@ -266,7 +264,6 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 Получено 1 строк. Затрачено: 0.067 сек. Обработано 43.28 млн строк, 692.42 МБ (645.83 млн строк/сек., 10.33 ГБ/сек.)
 ```
-
 
 ## Обзор схемы {#review-of-the-schema}
 

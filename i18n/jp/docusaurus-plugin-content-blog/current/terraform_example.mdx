@@ -10,12 +10,11 @@ keywords: ['Terraform']
 
 {/* 省略 */}
 
-
 ## Question \{#question\}
 
 API を使って ClickHouse Cloud 上のクラスタを管理するにはどうすればよいですか？
 
-## Answer
+## Answer \{#answer\}
 
 Terraform と [ClickHouse Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) を使ってインフラを構成します。
 
@@ -140,7 +139,6 @@ Terraform のモジュールまたはバックエンド設定を設定または�
 6). `terraform apply -var-file=secret.tfvars` コマンドを実行します。
 
 次のようになります：
-
 
 ```
 ➜  test terraform apply -var-file=secret.tfvars

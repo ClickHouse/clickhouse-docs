@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 
 
-## geohashEncode
+## geohashEncode {#geohashencode}
 
 将纬度和经度编码为 [geohash](#geohash) 字符串。
 
@@ -59,7 +59,7 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
 
-## geohashDecode
+## geohashDecode {#geohashdecode}
 
 将任意 [geohash](#geohash) 编码的字符串解码为经度和纬度。
 
@@ -90,7 +90,7 @@ SELECT geohashDecode('ezs42') AS res;
 ```
 
 
-## geohashesInBox
+## geohashesInBox {#geohashesinbox}
 
 返回一个由指定精度的 [geohash](#geohash) 编码字符串组成的数组，这些字符串对应的网格单元位于给定矩形框内或与其边界相交，本质上是将一个二维网格展平成一维数组。
 

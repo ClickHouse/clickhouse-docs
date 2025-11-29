@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# file 表函数
+# file 表函数 {#file-table-function}
 
 这是一种表引擎，提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 [s3](/sql-reference/table-functions/url.md) 表函数。处理本地文件时使用 `file()`，访问对象存储（例如 S3、GCS 或 MinIO）中的 bucket 时使用 `s3()`。
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 file([path_to_archive ::] 路径 [,格式] [,结构] [,压缩])
@@ -44,9 +44,9 @@ file([path_to_archive ::] 路径 [,格式] [,结构] [,压缩])
 
 
 
-## 写入文件示例
+## 写入文件示例 {#examples-for-writing-to-a-file}
 
-### 写入 TSV 文件
+### 写入 TSV 文件 {#write-to-a-tsv-file}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -58,13 +58,13 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv
+# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
 1    2    3
 3    2    1
 1    3    2
 ```
 
-### 分区写入多个 TSV 文件
+### 分区写入多个 TSV 文件 {#partitioned-write-to-multiple-tsv-files}
 
 如果在向类型为 `file()` 的表函数中插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区创建一个单独的文件。将数据拆分到多个独立文件有助于提升读取操作的性能。
 
@@ -79,17 +79,17 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv
+# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
 3    2    1
 ```
 
 
-# cat /var/lib/clickhouse/user_files/test_2.tsv
+# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
 1    3    2
 
 
 
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv
+# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
 
@@ -97,9 +97,9 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 ```
 
 
-## 从文件读取的示例
+## 从文件读取的示例 {#examples-for-reading-from-a-file}
 
-### 对 CSV 文件执行 SELECT 查询
+### 对 CSV 文件执行 SELECT 查询 {#select-from-a-csv-file}
 
 首先，在服务器配置中设置 `user_files_path`，并准备一个名为 `test.csv` 的文件：
 
@@ -128,7 +128,7 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### 从文件插入数据到表中
+### 从文件插入数据到表中 {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 INSERT INTO FUNCTION
@@ -169,7 +169,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 
 
 
-## 示例
+## 示例 {#examples}
 
 **示例**
 
@@ -238,7 +238,7 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 
 
 
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 当 `use_hive_partitioning` 被设置为 1 时，ClickHouse 会在路径中检测 Hive 风格的分区（`/name=value/`），并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以 `_` 开头。
 

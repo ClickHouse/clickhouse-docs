@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedMax
+## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
 返回在时间索引为 `t` 处与时间索引为 `t-1` 处计算得到的指数平滑移动平均值中的最大值。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 结果：
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

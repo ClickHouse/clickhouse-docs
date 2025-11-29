@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# PARALLEL WITH 句
+# PARALLEL WITH 句 {#parallel-with-clause}
 
 複数のステートメントを並列実行できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
@@ -26,7 +26,7 @@ statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 多くの場合、同じステートメントを単純に順番に実行するよりも、並列に実行した方が高速になる場合があります。例えば、`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` は、`statement1; statement2; statement3` より高速になる可能性が高いです。
 
 
-## 例
+## 例 {#examples}
 
 2 つのテーブルを並列に作成します：
 

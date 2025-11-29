@@ -10,8 +10,7 @@ keywords: ['空/ゼロ値比率', '計算']
 
 {/* 途中省略 */}
 
-
-## テーブル内の各カラムにおける空値／ゼロ値の比率を計算する方法
+## テーブル内の各カラムにおける空値／ゼロ値の比率を計算する方法 \{#how-to-calculate-the-ratio-of-emptyzero-values-in-every-column-in-a-table\}
 
 カラムがスパース（空である、または主にゼロを含む）な場合、ClickHouse はそのカラムをスパース形式でエンコードし、自動的に計算を最適化できます。クエリ処理時にデータを完全に伸長する必要がなくなります。実際、カラムがどの程度スパースかが分かっていれば、[`ratio_of_defaults_for_sparse_serialization` 設定](https://clickhouse.com/docs/operations/settings/merge-tree-settings#ratio_of_defaults_for_sparse_serialization)を使ってその比率を指定し、シリアライゼーションを最適化できます。
 

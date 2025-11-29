@@ -13,7 +13,6 @@ keywords: ['OOM', 'превышение лимита памяти']
 import Image from '@theme/IdealImage';
 import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-query.png';
 
-
 ## Превышен лимит памяти для запроса \{#troubleshooting-out-of-memory-issues\}
 
 Для нового пользователя ClickHouse часто может казаться магией — каждый запрос
@@ -65,7 +64,7 @@ import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-q
 например, при сложном подзапросе. В этом случае и правая, и левая часть сортируются
 на диске, если те не помещаются в памяти, что позволяет соединять большие таблицы.
 
-<Image img={joins} size="md" alt="Алгоритмы соединений"/>
+<Image img={joins} size="md" alt="Алгоритмы соединений" />
 
 Начиная с версии 20.3, ClickHouse поддерживает значение `auto` для настройки `join_algorithm`.
 Оно указывает ClickHouse применять адаптивный подход к соединениям, при котором

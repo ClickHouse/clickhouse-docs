@@ -7,14 +7,13 @@ title: 'ClickHouse でハードウェア性能をテストする方法'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
 ClickHouse パッケージをインストールしなくても、どのサーバー上でも ClickHouse の基本的な性能テストを実行できます。
 
-
-## 自動実行
+## 自動実行 {#automated-run}
 
 ベンチマークは 1 つのスクリプトだけで実行できます。
 

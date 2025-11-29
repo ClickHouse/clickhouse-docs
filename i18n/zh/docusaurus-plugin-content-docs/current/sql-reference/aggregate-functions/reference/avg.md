@@ -6,7 +6,7 @@ title: 'avg'
 doc_type: 'reference'
 ---
 
-# avg
+# avg {#avg}
 
 计算算术平均值。
 

@@ -28,7 +28,7 @@ ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mys
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 次の SQL ダンプファイルがあるとします。
 

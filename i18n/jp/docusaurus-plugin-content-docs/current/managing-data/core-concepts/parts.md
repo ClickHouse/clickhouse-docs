@@ -11,7 +11,7 @@ import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
 
-## ClickHouse におけるテーブルパーツとは？
+## ClickHouse におけるテーブルパーツとは？ {#what-are-table-parts-in-clickhouse}
 
 <br />
 
@@ -66,7 +66,7 @@ ClickHouse サーバーが、上の図に示した 4 行の INSERT（[INSERT INT
 
 
 
-## テーブルパーツの監視
+## テーブルパーツの監視 {#monitoring-table-parts}
 
 [仮想列](/engines/table-engines#table_engines-virtual_columns) `_part` を使用して、サンプルテーブルに現在存在するすべてのアクティブな ^^parts^^ の一覧を[クエリ](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)できます。
 

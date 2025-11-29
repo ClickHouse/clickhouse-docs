@@ -12,7 +12,7 @@ import supabase_connection_details from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# Supabase ソースセットアップガイド
+# Supabase ソースセットアップガイド {#supabase-source-setup-guide}
 
 本ガイドでは、ClickPipes で利用するための Supabase の Postgres データベースのセットアップ方法について説明します。
 
@@ -24,7 +24,7 @@ ClickPipes は、シームレスなレプリケーションのために、Supaba
 
 
 
-## 権限とレプリケーションスロットを持つユーザーの作成
+## 権限とレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
 
 CDC に適した必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
 レプリケーションに使用するパブリケーションも作成します。
@@ -88,7 +88,7 @@ CDC（変更データキャプチャ）ベースのレプリケーションで�
 
 
 
-## RLS に関する注意
+## RLS に関する注意 {#note-on-rls}
 
 ClickPipes の Postgres ユーザーは RLS ポリシーで制限してはいけません。制限するとデータの欠損が発生するおそれがあります。以下のコマンドを実行して、このユーザーに対する RLS ポリシーを無効化できます。
 

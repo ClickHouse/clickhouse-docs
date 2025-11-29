@@ -12,13 +12,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# azureBlobStorage テーブル関数
+# azureBlobStorage テーブル関数 {#azureblobstorage-table-function}
 
 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 内のファイルに対して SELECT および INSERT を行うための、テーブルのようなインターフェイスを提供します。このテーブル関数は、[s3 関数](../../sql-reference/table-functions/s3.md) と類似しています。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
@@ -49,7 +49,7 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 
 
 
-## 例
+## 例 {#examples}
 
 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ローカル環境での Azure Storage の開発には Azurite エミュレーターを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。以下では、Azurite がホスト名 `azurite1` で利用可能であると仮定します。
 
@@ -98,9 +98,9 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 
 
 
-## パーティション分割での書き込み
+## パーティション分割での書き込み {#partitioned-write}
 
-### パーティション戦略
+### パーティション戦略 {#partition-strategy}
 
 INSERT クエリでのみサポートされます。
 
@@ -124,7 +124,7 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```
 
 
-## use&#95;hive&#95;partitioning 設定
+## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
 これは、読み取り時に ClickHouse が Hive スタイルのパーティション分割ファイルを解析するためのヒントとなる設定です。書き込み時には影響しません。読み取りと書き込みの動作を対称にしたい場合は、`partition_strategy` 引数を使用してください。
 
@@ -139,7 +139,7 @@ SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...
 ```
 
 
-## 共有アクセス署名 (SAS) の使用
+## 共有アクセス署名 (SAS) の使用 {#using-shared-access-signatures-sas-sas-tokens}
 
 共有アクセス署名 (SAS) は、Azure Storage のコンテナまたはファイルへの制限されたアクセス権を付与する URI です。これを使用すると、ストレージ アカウント キーを共有せずに、ストレージ アカウント リソースへの有効期限付きアクセスを提供できます。詳細は[こちら](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature)を参照してください。
 

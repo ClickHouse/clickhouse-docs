@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ALTER TABLE ... MODIFY QUERY ステートメント
+# ALTER TABLE ... MODIFY QUERY ステートメント {#alter-table-modify-query-statement}
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 

@@ -12,13 +12,13 @@ import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/
 import Image from '@theme/IdealImage';
 
 
-# Crunchy Bridge Postgres ソース設定ガイド
+# Crunchy Bridge Postgres ソース設定ガイド {#crunchy-bridge-postgres-source-setup-guide}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
 
 
-## 論理レプリケーションを有効化する
+## 論理レプリケーションを有効化する {#enable-logical-replication}
 
 Crunchy Bridge では、論理レプリケーションが[既定](https://docs.crunchybridge.com/how-to/logical-replication)で有効になっています。以下の設定が正しく構成されていることを確認してください。そうでない場合は、必要に応じて調整してください。
 

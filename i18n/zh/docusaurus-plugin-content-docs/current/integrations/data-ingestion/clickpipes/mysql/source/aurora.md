@@ -20,17 +20,17 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Aurora MySQL 源端设置指南
+# Aurora MySQL 源端设置指南 {#aurora-mysql-source-setup-guide}
 
 本分步指南演示如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
 
 
-## 启用二进制日志保留
+## 启用二进制日志保留 {#enable-binlog-retention-aurora}
 
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息，复制功能依赖这些二进制日志文件。要在 Aurora MySQL 中配置二进制日志保留，必须先[启用二进制日志记录](#enable-binlog-logging)，并[延长 binlog 保留时间间隔](#binlog-retention-interval)。
 
-### 1. 通过自动备份启用二进制日志记录
+### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
 
 自动备份功能决定是否为 MySQL 启用二进制日志记录。可以在 RDS 控制台中，通过依次进入 **Modify** &gt; **Additional configuration** &gt; **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未勾选），来为实例配置自动备份。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 我们建议根据复制场景，将 **Backup retention period** 设置为一个相对较长的值。
 
-### 2. 延长 binlog 保留时间间隔
+### 2. 延长 binlog 保留时间间隔 {#binlog-retention-interval}
 
 :::warning
 如果 ClickPipes 尝试恢复复制时，所需的 binlog 文件已因配置的 binlog 保留时间被清除，则对应的 ClickPipe 将进入错误状态，并且需要重新进行全量同步。

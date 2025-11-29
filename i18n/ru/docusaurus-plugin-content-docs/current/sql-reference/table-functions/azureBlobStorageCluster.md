@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# Табличная функция azureBlobStorageCluster
+# Табличная функция azureBlobStorageCluster {#azureblobstoragecluster-table-function}
 
 Позволяет обрабатывать файлы из [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) параллельно на множестве узлов в указанном кластере. На узле-инициаторе создаётся подключение ко всем узлам кластера, раскрываются звёздочки в пути к файлу S3, и каждый файл динамически распределяется между узлами. Рабочий узел запрашивает у инициатора следующую задачу и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут завершены.
 Эта табличная функция аналогична [функции s3Cluster](../../sql-reference/table-functions/s3Cluster.md).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
@@ -45,7 +45,7 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Аналогично табличному движку [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) пользователи могут использовать эмулятор Azurite для локальной разработки с использованием Azure Storage. Дополнительные сведения см. [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Ниже мы предполагаем, что Azurite доступен по имени хоста `azurite1`.
 

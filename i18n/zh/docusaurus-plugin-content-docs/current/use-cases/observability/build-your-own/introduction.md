@@ -12,7 +12,7 @@ import observability_2 from '@site/static/images/use-cases/observability/observa
 import Image from '@theme/IdealImage';
 
 
-# 使用 ClickHouse 实现可观测性
+# 使用 ClickHouse 实现可观测性 {#using-clickhouse-for-observability}
 
 ## 引言 {#introduction}
 
@@ -67,7 +67,7 @@ import Image from '@theme/IdealImage';
 - 你的用例以指标为主且需要 PromQL。在这种情况下，你仍然可以在使用 Prometheus 处理指标的同时，使用 ClickHouse 存储日志和链路追踪数据，并在展示层通过 Grafana 进行统一。
 - 你更倾向于等待整个生态系统进一步成熟，以及基于 SQL 的可观测性更加开箱即用。
 
-## 日志与追踪
+## 日志与追踪 {#logs-and-traces}
 
 可观测性场景通常包含三个核心支柱：Logging、Tracing 和 Metrics，每一类都有不同的数据类型和访问模式。
 

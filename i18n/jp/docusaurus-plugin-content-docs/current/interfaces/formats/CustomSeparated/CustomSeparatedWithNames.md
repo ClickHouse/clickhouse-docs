@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 以下の内容の `football.txt` テキストファイルを使用します。
 
@@ -44,7 +44,7 @@ INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedWithNames;
 ```
 
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 カスタム区切り文字の設定を行います。
 

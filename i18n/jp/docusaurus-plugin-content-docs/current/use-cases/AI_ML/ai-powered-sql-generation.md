@@ -20,9 +20,7 @@ ClickHouse 25.7 以降では、[ClickHouse Client](https://clickhouse.com/docs/i
 * `list_tables_in_database` - 特定のデータベース内のすべてのテーブルを一覧表示
 * `get_schema_for_table` - 特定のテーブルの `CREATE TABLE` ステートメント（スキーマ）を取得
 
-
-
-## 前提条件
+## 前提条件 {#prerequisites}
 
 Anthropic または OpenAI の API キーを環境変数として追加する必要があります。
 
@@ -33,8 +31,7 @@ export OPENAI_API_KEY=your_api_key
 
 または、[設定ファイルを指定する](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)こともできます。
 
-
-## ClickHouse SQL playground への接続
+## ClickHouse SQL playground への接続 {#connecting-to-the-clickhouse-sql-playground}
 
 この機能を試すにあたっては、[ClickHouse SQL playground](https://sql.clickhouse.com/) を使用します。
 
@@ -51,8 +48,7 @@ clickhouse client -mn \
 ClickHouse がすでにインストールされていることを前提とします。まだインストールしていない場合は、[インストールガイド](https://clickhouse.com/docs/install) を参照してください。
 :::
 
-
-## 自然言語で ClickHouse に質問する
+## 自然言語で ClickHouse に質問する {#asking-clickhouse-questions-in-natural-language}
 
 それでは、いくつか質問をしてみましょう。
 
@@ -62,7 +58,7 @@ text-to-SQL 機能は、実質的にワンショットのクエリ生成ツー�
 行いたい分析の種類（平均値、合計、ランキングなど）\
 適用したいフィルタ条件
 
-### 住宅価格が高いエリアを見つける
+### 住宅価格が高いエリアを見つける {#finding-expensive-housing-markets}
 
 まず住宅価格に関する質問から始めましょう。SQL playground には UK の住宅価格データセットが含まれており、AI が自動的に認識します:
 
@@ -115,7 +111,6 @@ AI は次の手順で処理を行います。
 ここで、`uk_price_paid` テーブルが見つかり、実行用のクエリが生成されていることが分かります。
 そのクエリを実行すると、次のような出力が得られます。
 
-
 ```text
 ┌─町─────────────┬─地区───────────────────┬─郡──────────────┬──平均価格─┬─総売上高───┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
@@ -133,7 +128,7 @@ AI は次の手順で処理を行います。
 
 フォローアップの質問をしたい場合は、質問を最初から組み立て直す必要があります。
 
-### グレーター・ロンドンにおける高額な物件の特定
+### グレーター・ロンドンにおける高額な物件の特定 {#finding-expensive-properties-in-greater-london}
 
 この機能は会話履歴を保持しないため、各クエリは自己完結している必要があります。フォローアップの質問をする際には、以前のクエリに言及するのではなく、必要なコンテキストをすべて含めて指定する必要があります。
 たとえば、前の結果を確認したあとで、グレーター・ロンドンの物件に絞り込みたくなるかもしれません。「グレーター・ロンドンはどうですか？」とだけ尋ねるのではなく、次のように完全なコンテキストを含める必要があります。
@@ -143,7 +138,6 @@ AI は次の手順で処理を行います。
 ```
 
 AI はこのデータを見たばかりなのに、同じ探索プロセスをもう一度実行していることに注目してください。
-
 
 ```text
 • AI SQL生成をスキーマ検出と共に開始しています...

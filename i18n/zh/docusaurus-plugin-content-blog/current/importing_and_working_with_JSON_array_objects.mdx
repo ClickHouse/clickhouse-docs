@@ -10,12 +10,11 @@ keywords: ['JSON 数组对象']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何导入 JSON 数组，以及如何查询其中的对象？
 
-## 答案
+## 答案 \{#answer\}
 
 将这一行 JSON 数组保存到 `sample.json` 文件中
 
@@ -45,7 +44,6 @@ Query id: 0bbfa09f-ac7f-4a1e-9227-2961b5ffc2d4
 ```
 
 创建一个表用于接收 JSON 行：
-
 
 ```sql
 clickhousebook.local :) CREATE TABLE IF NOT EXISTS sample_json_objects_array (
@@ -117,7 +115,6 @@ Query id: 302c0c84-1b63-4f60-ad95-d91c0267b0d4
 `Events` 是一个由 `Tuple` 组成的 *Array*，每个 `Tuple` 包含一个 *eventType* `String` 字段和一个 *time* `String` 字段。后一种类型并不理想（我们更希望使用 `DateTime`）。
 
 来看一下数据：
-
 
 ```sql
 clickhousebook.local :) SELECT
@@ -208,7 +205,6 @@ Query id: 27f07f02-66cd-420d-8623-eeed7d501014
 因此，为了将这些值当作日期处理，我们首先需要将其转换为 `DateTime`。
 要转换数组，我们使用 map 函数：
 
-
 ```sql
 clickhousebook.local :) 
                         SELECT
@@ -271,7 +267,6 @@ Query id: 1af54994-b756-472f-88d7-8b5cdca0e54e
 现在让我们获取那些 `time` 位于给定时间区间内的行的 `id`。
 
 我们使用 `arrayCount` 来检查由 map 函数返回的数组中，满足条件 `x BETWEEN toDateTime('2021-06-18 11:46:00', 'Europe/Rome') AND toDateTime('2021-06-18 11:50:00', 'Europe/Rome')` 的元素个数是否大于 0。
-
 
 ```sql
 clickhousebook.local :) SELECT

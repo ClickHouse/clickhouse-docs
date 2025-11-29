@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Интерфейс Apache Arrow Flight
+# Интерфейс Apache Arrow Flight {#apache-arrow-flight-interface}
 
 ClickHouse поддерживает интеграцию с протоколом [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) — высокопроизводительным RPC‑фреймворком, предназначенным для эффективной передачи колоночных данных с использованием формата Arrow IPC поверх gRPC.
 
@@ -38,7 +38,7 @@ ClickHouse поддерживает интеграцию с протоколом
 
 
 
-## Запуск сервера Arrow Flight
+## Запуск сервера Arrow Flight {#running-server}
 
 Чтобы включить сервер Arrow Flight в самоуправляемом экземпляре ClickHouse, добавьте следующую конфигурацию в конфигурационный файл сервера:
 
@@ -55,7 +55,7 @@ ClickHouse поддерживает интеграцию с протоколом
 ```
 
 
-## Подключение к ClickHouse через Arrow Flight SQL
+## Подключение к ClickHouse через Arrow Flight SQL {#connecting-to-clickhouse}
 
 Вы можете использовать любой клиент, который поддерживает Arrow Flight SQL. Например, с помощью `pyarrow`:
 

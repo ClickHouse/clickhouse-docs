@@ -18,7 +18,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# 配置查询 API 端点
+# 配置查询 API 端点 {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 功能允许用户在 ClickHouse Cloud 控制台中，直接基于任意已保存的 SQL 查询创建 API 端点。这样就可以通过 HTTP 访问这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
 
@@ -126,7 +126,7 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 
 
 
-## 实现细节
+## 实现细节 {#implementation-details}
 
 此端点会在已保存的 Query API 端点上执行查询。
 它支持多个版本、灵活的响应格式、参数化查询，以及可选的流式响应（仅限版本 2）。
@@ -138,7 +138,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP 方法
+### HTTP 方法 {#http-methods}
 
 | Method   | Use Case    | Parameters                           |
 | -------- | ----------- | ------------------------------------ |
@@ -157,21 +157,21 @@ POST /query-endpoints/{queryEndpointId}/run
 * 出于安全/隐私考虑，优先使用请求体时
 * 流式文件上传或大数据量传输
 
-### 认证
+### 认证 {#authentication}
 
 **是否必需：** 是\
 **方式：** 使用 OpenAPI Key/Secret 的 Basic Auth\
 **权限：** 对查询 endpoint 具有相应权限
 
-### 请求配置
+### 请求配置 {#request-configuration}
 
-#### URL 参数
+#### URL 参数 {#url-params}
 
 | Parameter         | Required | Description            |
 | ----------------- | -------- | ---------------------- |
 | `queryEndpointId` | **Yes**  | 要运行的查询 endpoint 的唯一标识符 |
 
-#### 查询参数
+#### 查询参数 {#query-params}
 
 | Parameter             | Required | Description                                                                           | Example               |
 | --------------------- | -------- | ------------------------------------------------------------------------------------- | --------------------- |
@@ -179,7 +179,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `param_:name`         | No       | 当请求体是流时使用的查询变量。将 `:name` 替换为你的变量名                                                     | `?param_year=2024`    |
 | `:clickhouse_setting` | No       | 任意受支持的 [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8`      |
 
-#### Headers
+#### Headers {#headers}
 
 | Header                          | Required | Description                       | Values                  |
 | ------------------------------- | -------- | --------------------------------- | ----------------------- |
@@ -188,16 +188,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### 请求体
+### 请求体 {#request-body}
 
-#### 参数
+#### 参数 {#params}
 
 | Parameter        | Type   | Required | Description |
 | ---------------- | ------ | -------- | ----------- |
 | `queryVariables` | object | No       | 查询中要使用的变量   |
 | `format`         | string | No       | 响应格式        |
 
-#### 支持的格式
+#### 支持的格式 {#supported-formats}
 
 | Version                 | Supported Formats                                                                                                                                                        |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -206,14 +206,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### 响应
+### 响应 {#responses}
 
-#### 成功
+#### 成功 {#success}
 
 **Status：** `200 OK`\
 查询已成功执行。
 
-#### 错误代码
+#### 错误代码 {#error-codes}
 
 | Status Code        | Description       |
 | ------------------ | ----------------- |
@@ -221,7 +221,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `401 Unauthorized` | 缺少认证信息或权限不足       |
 | `404 Not Found`    | 未找到指定的查询 endpoint |
 
-#### 错误处理最佳实践
+#### 错误处理最佳实践 {#error-handling-best-practices}
 
 * 确保在请求中包含有效的认证凭据
 * 在发送前验证 `queryEndpointId` 和 `queryVariables`
@@ -229,7 +229,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### 升级 endpoint 版本
+### 升级 endpoint 版本 {#upgrading-endpoint-versions}
 
 要从版本 1 升级到版本 2：
 

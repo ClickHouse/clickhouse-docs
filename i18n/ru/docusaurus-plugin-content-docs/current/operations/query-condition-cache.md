@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Кэш условий запроса
+# Кэш условий запроса {#query-condition-cache}
 
 :::note
 Кэш условий запроса работает только, когда [enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) установлен в значение true, что является значением по умолчанию.
@@ -45,7 +45,7 @@ ClickHouse предоставляет различные техники опти
 
 
 
-## Параметры конфигурации и использование
+## Параметры конфигурации и использование {#configuration-settings-and-usage}
 
 Параметр [use&#95;query&#95;condition&#95;cache](settings/settings#use_query_condition_cache) определяет, должен ли конкретный запрос или все запросы текущего сеанса использовать кэш условий запроса.
 

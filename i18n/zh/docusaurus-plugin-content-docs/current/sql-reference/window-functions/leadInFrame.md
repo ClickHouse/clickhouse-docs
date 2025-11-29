@@ -7,7 +7,7 @@ title: 'leadInFrame'
 doc_type: 'reference'
 ---
 
-# leadInFrame
+# leadInFrame {#leadinframe}
 
 返回在有序窗口框架中，相对于当前行向后偏移指定行数的那一行上计算得到的值。
 

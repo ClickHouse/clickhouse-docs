@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# ClickHouse Cloud
+# ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始作者打造的云服务。
 您可以通过[开始免费试用](https://console.clickhouse.cloud/signUp)来体验 ClickHouse Cloud。

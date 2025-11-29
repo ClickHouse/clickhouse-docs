@@ -11,7 +11,7 @@ import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
 
-## Что такое части таблицы в ClickHouse?
+## Что такое части таблицы в ClickHouse? {#what-are-table-parts-in-clickhouse}
 
 <br />
 
@@ -66,7 +66,7 @@ ORDER BY (town, street);
 
 
 
-## Мониторинг частей таблицы
+## Мониторинг частей таблицы {#monitoring-table-parts}
 
 Вы можете [выполнить запрос](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results), чтобы получить список всех существующих в данный момент активных ^^частей^^ нашей таблицы-примера, используя [виртуальный столбец](/engines/table-engines#table_engines-virtual_columns) `_part`:
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Map(K, V)
+# Map(K, V) {#mapk-v}
 
 データ型 `Map(K, V)` はキーと値のペアを格納します。
 
@@ -68,7 +68,7 @@ SELECT m['key1'] FROM tab;
 ```
 
 
-## Tuple から Map への変換
+## Tuple から Map への変換 {#converting-tuple-to-map}
 
 `Tuple()` 型の値は、[CAST](/sql-reference/functions/type-conversion-functions#cast) 関数を使用して `Map()` 型にキャストできます。
 
@@ -89,7 +89,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 ```
 
 
-## Map のサブカラムの読み取り
+## Map のサブカラムの読み取り {#reading-subcolumns-of-map}
 
 Map 全体を読み出さずに済むように、場合によってはサブカラム `keys` と `values` を使用できます。
 

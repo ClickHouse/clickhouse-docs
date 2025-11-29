@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# azureBlobStorageCluster テーブル関数
+# azureBlobStorageCluster テーブル関数 {#azureblobstoragecluster-table-function}
 
 指定したクラスタ内の多数のノードで、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 上のファイルを並列処理することを可能にします。イニシエーターノードでは、クラスタ内のすべてのノードへの接続を確立し、S3 ファイルパス中のアスタリスクを展開して、各ファイルを動的に振り分けます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 このテーブル関数は [s3Cluster 関数](../../sql-reference/table-functions/s3Cluster.md) と類似しています。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
@@ -45,7 +45,7 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 
 
 
-## 例
+## 例 {#examples}
 
 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ローカルでの Azure Storage 開発には Azurite エミュレーターを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。以下では、Azurite がホスト名 `azurite1` で利用可能であると仮定します。
 

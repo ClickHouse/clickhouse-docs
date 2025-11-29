@@ -12,11 +12,11 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-js'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# ClickHouse JS
+# ClickHouse JS {#clickhouse-js}
 
 用于连接 ClickHouse 的官方 JS 客户端。
 该客户端使用 TypeScript 编写，并为客户端公开 API 提供类型定义。
@@ -52,7 +52,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 客户端的 Web 版本已在最新版本的 Chrome 和 Firefox 浏览器上通过官方测试，可以作为依赖集成到 React、Vue、Angular 等应用程序或 Cloudflare Workers 中使用。
 
-## 安装
+## 安装 {#installation}
 
 要安装最新稳定版的 Node.js 客户端，请运行：
 
@@ -87,7 +87,7 @@ npm i @clickhouse/client-web
 
 除非另有说明，否则大多数示例应同时适用于 Node.js 和 Web 版客户端。
 
-#### 创建客户端实例
+#### 创建客户端实例 {#creating-a-client-instance}
 
 你可以根据需要使用 `createClient` 工厂创建任意数量的客户端实例：
 
@@ -143,7 +143,7 @@ const client = createClient({
 | **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>       | 为客户端自定义 HTTP agent。                            | -             | [HTTP agent 文档](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
 | **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>              | 使用 Basic Auth 凭证设置 `Authorization` 头。          | `true`        | [在 HTTP agent 文档中查看此设置的用法](./js.md#custom-httphttps-agent-experimental-nodejs-only)      |
 
-### URL 配置
+### URL 配置 {#url-configuration}
 
 :::important
 在这种情况下，URL 配置将*始终*覆盖硬编码的值，并记录一条警告日志。
@@ -197,7 +197,7 @@ createClient({
 
 <ConnectionDetails />
 
-#### 连接概述
+#### 连接概述 {#connection-overview}
 
 客户端通过 HTTP(s) 协议建立连接。对 RowBinary 的支持正在推进中，参见[相关 issue](https://github.com/ClickHouse/clickhouse-js/issues/216)。
 
@@ -234,7 +234,7 @@ const client = createClient({
 如果要自定义 `query_id` 参数，需要确保它在每次调用时都是唯一的。随机 UUID 是一个不错的选择。
 :::
 
-### 所有客户端方法的基本参数
+### 所有客户端方法的基本参数 {#base-parameters-for-all-client-methods}
 
 有一些参数可适用于所有客户端方法（[query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method)）。
 
@@ -258,7 +258,7 @@ interface BaseQueryParams {
 ```
 
 
-### 查询方法
+### 查询方法 {#query-method}
 
 此方法用于大多数会返回响应的语句，例如 `SELECT`，或用于发送诸如 `CREATE TABLE` 的 DDL 语句，并且应当使用 `await` 等待其完成。返回的结果集通常由应用程序进行消费和处理。
 
@@ -286,7 +286,7 @@ interface ClickHouseClient {
 :::
 
 
-#### 结果集与行抽象
+#### 结果集与行抽象 {#result-set-and-row-abstractions}
 
 `ResultSet` 为你的应用程序提供了若干便于进行数据处理的辅助方法。
 
@@ -430,7 +430,7 @@ while (true) {
 ```
 
 
-### Insert 方法
+### Insert 方法 {#insert-method}
 
 这是插入数据的主要方法。
 
@@ -452,7 +452,7 @@ interface ClickHouseClient {
 如果 insert 语句已发送到服务器，则 `executed` 标志将为 `true`。
 
 
-#### Node.js 中的 insert 方法与流式处理
+#### Node.js 中的 insert 方法与流式处理 {#insert-method-and-streaming-in-nodejs}
 
 它既可以与 `Stream.Readable` 一起使用，也可以与普通的 `Array<T>` 一起使用，具体取决于传递给 `insert` 方法的[数据格式](./js.md#supported-data-formats)。另请参阅本节中关于[文件流式处理](./js.md#streaming-files-nodejs-only)的内容。
 
@@ -566,7 +566,7 @@ await client.insert({
 ```
 
 
-#### Web 版本的限制
+#### Web 版本的限制 {#web-version-limitations}
 
 目前，`@clickhouse/client-web` 中的插入操作仅支持 `Array<T>` 和 `JSON*` 格式。
 由于浏览器兼容性较差，Web 版本暂不支持插入流式数据（streams）。
@@ -594,7 +594,7 @@ interface InsertParams<T> extends BaseQueryParams {
 此内容将来可能会有所变动。另请参阅：[所有客户端方法的基础参数](./js.md#base-parameters-for-all-client-methods)。
 
 
-### 命令方法
+### 命令方法 {#command-method}
 
 可用于没有任何输出的语句、`FORMAT` 子句不适用的情况，或当你对响应结果完全不感兴趣时。此类语句的示例包括 `CREATE TABLE` 或 `ALTER TABLE`。
 
@@ -665,7 +665,7 @@ await client.command({
 :::
 
 
-### Exec 方法
+### Exec 方法 {#exec-method}
 
 如果有某个自定义查询不适用于 `query`/`insert`，并且你关心其返回结果，可以使用 `exec` 作为 `command` 的替代方案。
 
@@ -705,7 +705,7 @@ export interface QueryResult {
 ```
 
 
-### Ping
+### Ping {#ping}
 
 用于检查连接状态的 `ping` 方法会在服务器可达时返回 `true`。
 
@@ -763,7 +763,7 @@ const result = await client.ping({ select: true, /* query_id、abort_signal、ht
 `ping` 方法可以使用大多数标准的 `query` 方法参数——参见 `PingParamsWithSelectQuery` 类型定义。
 
 
-### 关闭（仅限 Node.js）
+### 关闭（仅限 Node.js） {#close-nodejs-only}
 
 关闭所有已打开的连接并释放资源。在 Web 版本中不执行任何操作。
 
@@ -883,7 +883,7 @@ ClickHouse 支持的数据类型完整列表可在
 - [使用 Dynamic/Variant/JSON 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
 - [使用 Time/Time64 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
 
-### Date/Date32 类型注意事项
+### Date/Date32 类型注意事项 {#datedate32-types-caveats}
 
 由于客户端在插入时不会执行额外的类型转换，`Date`/`Date32` 类型的列只能以字符串形式插入。
 
@@ -901,7 +901,7 @@ await client.insert({
 但是，如果你使用的是 `DateTime` 或 `DateTime64` 列，则可以同时使用字符串和 JS Date 对象。在将 `date_time_input_format` 设置为 `best_effort` 时，可以将 JS Date 对象原样传递给 `insert`。有关更多详情，请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)。
 
 
-### Decimal* 类型注意事项
+### Decimal* 类型注意事项 {#decimal-types-caveats}
 
 可以使用 `JSON*` 系列格式插入 Decimal 类型的数据。假设我们有如下定义的表：
 
@@ -952,7 +952,7 @@ await client.query({
 更多详细信息请参见[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts)。
 
 
-### 整数类型：Int64、Int128、Int256、UInt64、UInt128、UInt256
+### 整数类型：Int64、Int128、Int256、UInt64、UInt128、UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
 虽然服务器可以将其作为数字接收，但在 `JSON*` 系列输出格式中会以字符串形式返回，以避免整数溢出，因为这些类型的最大值大于 `Number.MAX_SAFE_INTEGER`。
 
@@ -980,7 +980,7 @@ expect(await resultSet.json()).toEqual([ { number: 0 } ])
 ```
 
 
-## ClickHouse 设置
+## ClickHouse 设置 {#clickhouse-settings}
 
 客户端可以通过 [settings](/operations/settings/settings/) 机制调整 ClickHouse 的行为。
 可以在客户端实例级别配置这些 settings，这样从该实例发出的每个请求都会应用这些设置：
@@ -1009,7 +1009,7 @@ client.query({
 
 ## 高级主题 {#advanced-topics}
 
-### 带参数的查询
+### 带参数的查询 {#queries-with-parameters}
 
 你可以创建带参数的查询，并从客户端应用向这些参数传递值。这样就可以避免在客户端对包含特定动态值的查询进行格式化。
 
@@ -1042,7 +1042,7 @@ await client.query({
 有关更多详情，请参阅 [https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax)。
 
 
-### 压缩
+### 压缩 {#compression}
 
 注意：目前 Web 版本尚不支持请求压缩。响应压缩可正常使用。Node.js 版本同时支持请求和响应压缩。
 
@@ -1063,7 +1063,7 @@ createClient({
 * `request: true` 表示对客户端请求体启用压缩。默认值：`request: false`
 
 
-### 日志（仅限 Node.js）
+### 日志（仅限 Node.js） {#logging-nodejs-only}
 
 :::important
 日志功能目前处于试验阶段，未来可能会有所调整。
@@ -1121,7 +1121,7 @@ const client = createClient({
 可以在[此处](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts)找到默认的 Logger 实现。
 
 
-### TLS 证书（仅限 Node.js）
+### TLS 证书（仅限 Node.js） {#tls-certificates-nodejs-only}
 
 Node.js 客户端可选支持基本（仅证书颁发机构）
 和双向（证书颁发机构与客户端证书）TLS。
@@ -1165,7 +1165,7 @@ const client = createClient({
 
 如果需要修改 `keep_alive.idle_socket_ttl`，请注意其值应始终与服务器/LB 的 Keep-Alive 配置保持一致，并且**始终低于**该值，以确保服务器不会先行关闭仍处于打开状态的连接。
 
-#### 调整 `idle_socket_ttl`
+#### 调整 `idle_socket_ttl` {#adjusting-idle_socket_ttl}
 
 客户端将 `keep_alive.idle_socket_ttl` 设置为 2500 毫秒，因为这通常被认为是最安全的默认值；在服务端，如果不修改 `config.xml`，`keep_alive_timeout` 在 [23.11 之前的 ClickHouse 版本中可能被设置得低至 3 秒](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1)。
 
@@ -1235,7 +1235,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
   })
   ```
 
-### 只读用户
+### 只读用户 {#read-only-users}
 
 当使用 [readonly=1 用户](/operations/settings/permissions-for-queries#readonly)通过客户端访问时，无法启用响应压缩，因为这需要启用 `enable_http_compression` 设置。以下配置将导致错误：
 
@@ -1250,7 +1250,7 @@ const client = createClient({
 请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts)，其中更详细地展示了 `readonly=1` 用户的各项限制。
 
 
-### 带路径名的代理
+### 带路径名的代理 {#proxy-with-a-pathname}
 
 如果你的 ClickHouse 实例部署在代理之后，并且其 URL 中包含路径名，例如 [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server)，请将 `clickhouse_server` 设置为 `pathname` 配置选项（可以带或不带前导斜杠）；否则，如果在 `url` 中直接包含该路径，它将被视为 `database` 选项。支持多级路径，例如 `/my_proxy/db`。
 
@@ -1262,7 +1262,7 @@ const client = createClient({
 ```
 
 
-### 带身份验证的反向代理
+### 带身份验证的反向代理 {#reverse-proxy-with-authentication}
 
 如果在 ClickHouse 部署前面有一个带身份验证的反向代理，可以使用 `http_headers` 设置来提供所需的请求头：
 
@@ -1289,7 +1289,7 @@ const client = createClient({
 - `keep_alive.enabled` 只会控制 `Connection` 头的默认值（`true` -> `Connection: keep-alive`，`false` -> `Connection: close`）。
 - 虽然空闲 keep-alive socket 的管理仍然有效（因为这并不依赖于 agent，而是依赖于具体的 socket 本身），但现在可以通过将 `keep_alive.idle_socket_ttl` 的值设置为 `0` 来将其完全禁用。
 
-#### 自定义 Agent 使用示例
+#### 自定义 Agent 使用示例 {#custom-agent-usage-examples}
 
 在不使用证书的情况下使用自定义 HTTP(S) Agent：
 

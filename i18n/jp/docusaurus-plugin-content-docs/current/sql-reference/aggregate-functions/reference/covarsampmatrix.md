@@ -6,7 +6,7 @@ title: 'covarSampMatrix'
 doc_type: 'reference'
 ---
 
-# covarSampMatrix
+# covarSampMatrix {#covarsampmatrix}
 
 N 個の変数からなる標本共分散行列を返します。
 

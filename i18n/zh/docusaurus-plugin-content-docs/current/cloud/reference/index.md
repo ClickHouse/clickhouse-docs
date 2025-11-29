@@ -7,7 +7,7 @@ description: 'Cloud 参考部分的概览页'
 doc_type: 'landing-page'
 ---
 
-# 云端参考
+# 云端参考 {#cloud-reference}
 
 本节作为 ClickHouse Cloud 更多技术细节的参考指南，包含以下页面：
 

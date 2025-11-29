@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、`AggregateFunction` 型と `avgState` 関数を組み合わせて、
 ウェブサイトのトラフィックデータを集計する方法を見ていきます。

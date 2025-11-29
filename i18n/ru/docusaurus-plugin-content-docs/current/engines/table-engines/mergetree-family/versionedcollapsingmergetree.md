@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы VersionedCollapsingMergeTree
+# Движок таблицы VersionedCollapsingMergeTree {#versionedcollapsingmergetree-table-engine}
 
 Этот движок:
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -40,7 +40,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Описание параметров запроса см. в разделе [описание запроса](../../../sql-reference/statements/create/table.md).
 
-### Параметры движка
+### Параметры движка {#engine-parameters}
 
 ```sql
 VersionedCollapsingMergeTree(sign, version)
@@ -51,7 +51,7 @@ VersionedCollapsingMergeTree(sign, version)
 | `sign`    | Имя столбца с типом записи: `1` — запись «state», `-1` — запись «cancel». | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                   |
 | `version` | Имя столбца с версией состояния объекта.                                  | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) |
 
-### Клаузы запроса
+### Клаузы запроса {#query-clauses}
 
 При создании таблицы `VersionedCollapsingMergeTree` требуются те же [клаузы](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
@@ -83,9 +83,9 @@ VersionedCollapsingMergeTree(sign, version)
 </details>
 
 
-## Коллапсирование
+## Коллапсирование {#table_engines_versionedcollapsingmergetree}
 
-### Данные
+### Данные {#data}
 
 Рассмотрим ситуацию, когда нужно сохранять постоянно изменяющиеся данные для некоторого объекта. Разумно иметь одну строку на объект и обновлять эту строку при каждом изменении. Однако операция UPDATE для СУБД дорогая и медленная, поскольку требует перезаписи данных в хранилище. Обновление неприемлемо, если нужно быстро записывать данные, но вы можете последовательно записывать изменения объекта следующим образом.
 
@@ -131,7 +131,7 @@ VersionedCollapsingMergeTree(sign, version)
 2. Длинные постоянно растущие массивы в столбцах снижают эффективность движка из‑за нагрузки на запись. Чем проще данные, тем выше эффективность.
 3. Результаты `SELECT` сильно зависят от согласованности истории изменений объекта. Будьте внимательны при подготовке данных для вставки. При несогласованных данных вы можете получить непредсказуемые результаты, например отрицательные значения для неотрицательных метрик, таких как глубина сессии.
 
-### Algorithm
+### Algorithm {#table_engines-versionedcollapsingmergetree-algorithm}
 
 Когда ClickHouse сливает части данных, он удаляет каждую пару строк с одинаковым первичным ключом и версией и разным `Sign`. Порядок строк не имеет значения.
 
@@ -150,7 +150,7 @@ ClickHouse не гарантирует, что все строки с одина
 
 
 
-## Пример использования
+## Пример использования {#example-of-use}
 
 Пример данных:
 

@@ -48,7 +48,7 @@ import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-que
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
 
-# SQL 控制台
+# SQL 控制台 {#sql-console}
 
 SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最简便方式。您可以使用 SQL 控制台：
 
@@ -341,7 +341,7 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 
 
 
-## 可视化查询数据
+## 可视化查询数据 {#visualizing-query-data}
 
 某些数据以图表形式展示会更易于理解。你可以在 SQL 控制台中直接基于查询结果数据快速创建可视化，只需几次点击。作为示例，我们将使用一个查询来计算纽约市出租车行程的每周统计信息：
 
@@ -363,7 +363,7 @@ ORDER BY
 
 在没有可视化的情况下，这些结果很难理解和分析。我们将它们转换成图表。
 
-### 创建图表
+### 创建图表 {#creating-charts}
 
 要开始构建可视化，请在查询结果面板的工具栏中选择 “Chart” 选项。此时会显示图表配置面板：
 
@@ -377,7 +377,7 @@ ORDER BY
 
 <Image img={bar_chart} size="lg" border alt="柱状图" />
 
-### 自定义图表
+### 自定义图表 {#customizing-charts}
 
 SQL 控制台支持十种图表类型，可以在图表配置面板中的图表类型选择器中进行选择。例如，我们可以轻松地将前面的图表类型从柱状图 (Bar) 更改为面积图 (Area)：
 

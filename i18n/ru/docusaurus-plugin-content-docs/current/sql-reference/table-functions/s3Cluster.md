@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция s3Cluster
+# Табличная функция s3Cluster {#s3cluster-table-function}
 
 Это расширение табличной функции [s3](sql-reference/table-functions/s3.md).
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
@@ -59,7 +59,7 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Выберите данные из всех файлов в каталогах `/root/data/clickhouse` и `/root/data/database/`, используя все узлы кластера `cluster_simple`:
 

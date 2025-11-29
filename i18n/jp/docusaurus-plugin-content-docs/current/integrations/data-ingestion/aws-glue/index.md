@@ -16,7 +16,7 @@ import dependent_jars_path_option from '@site/static/images/integrations/data-in
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Amazon Glue を ClickHouse および Spark と統合する
+# Amazon Glue を ClickHouse および Spark と統合する {#integrating-amazon-glue-with-clickhouse-and-spark}
 
 <ClickHouseSupportedBadge/>
 

@@ -48,7 +48,7 @@ ClickHouse 支持读写 [MessagePack](https://msgpack.org/) 数据文件。
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 写入“.msgpk”文件：
 

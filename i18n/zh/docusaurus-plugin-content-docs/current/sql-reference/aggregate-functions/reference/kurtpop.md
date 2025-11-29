@@ -6,7 +6,7 @@ title: 'kurtPop'
 doc_type: 'reference'
 ---
 
-# kurtPop
+# kurtPop {#kurtpop}
 
 计算一个序列的[峰度](https://en.wikipedia.org/wiki/Kurtosis)。
 

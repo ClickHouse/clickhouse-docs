@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# hudi テーブル関数
+# hudi テーブル関数 {#hudi-table-function}
 
 Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルに対して、読み取り専用のテーブルライクなインターフェースを提供します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

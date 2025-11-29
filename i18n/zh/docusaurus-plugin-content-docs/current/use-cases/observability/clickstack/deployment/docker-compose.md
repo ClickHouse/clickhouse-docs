@@ -12,7 +12,7 @@ keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Do
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 所有 ClickStack 组件都以独立的 Docker 镜像单独分发：
 
@@ -84,14 +84,14 @@ docker compose up
 
 </VerticalStepper>
 
-## 修改 compose 设置
+## 修改 compose 设置 {#modifying-settings}
 
 用户可以通过环境变量文件来修改该栈的设置，例如使用的版本。
 
 ```shell
 user@example-host hyperdx % cat .env
-# 供 docker-compose.yml 使用
-# 供 docker-compose.yml 使用
+# 供 docker-compose.yml 使用 {#used-by-docker-composeyml}
+# 供 docker-compose.yml 使用 {#used-by-docker-composeyml}
 HDX_IMAGE_REPO=docker.hyperdx.io
 IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
 IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
@@ -106,14 +106,14 @@ IMAGE_VERSION_SUB_TAG=.16
 IMAGE_VERSION=2-beta
 IMAGE_NIGHTLY_TAG=2-nightly
 
-# 配置域名 URL
+# 配置域名 URL {#set-up-domain-urls}
 HYPERDX_API_PORT=8000 # 可选（不应被其他服务占用）
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# OTel/ClickHouse 配置
+# OTel/ClickHouse 配置 {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
@@ -122,7 +122,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 如有需要，可以修改 OTel collector 的配置——请参阅[“修改配置”](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)。
 
-## 使用 ClickHouse Cloud
+## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
 此发行版可以与 ClickHouse Cloud 一起使用。用户应当：
 

@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 
 
-## セットアップ
+## セットアップ {#setup}
 
 まずは仮想環境を作成します。
 
@@ -52,7 +52,7 @@ ClickPy について詳しくは、[GitHub リポジトリ](https://github.com/C
 
 
 
-## ClickPy ClickHouse サービスにクエリを実行する
+## ClickPy ClickHouse サービスにクエリを実行する {#querying-the-clickpy-clickhouse-service}
 
 chDB をインポートします：
 
@@ -134,7 +134,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 ```
 
 
-## Pandas の DataFrame を結合する
+## Pandas の DataFrame を結合する {#merging-pandas-dataframes}
 
 これで 2 つの DataFrame が揃ったので、日付（`x` 列）をキーとして、次のように結合できます。
 
@@ -173,7 +173,7 @@ df.head(n=5)
 ```
 
 
-## Pandas DataFrame をクエリする
+## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
 
 次に、最も良い比率と最も悪い比率となっている日付を見つけたいとします。
 そのために chDB に戻り、それらの値を計算します。

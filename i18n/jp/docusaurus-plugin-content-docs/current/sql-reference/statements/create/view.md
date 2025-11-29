@@ -12,13 +12,13 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# CREATE VIEW
+# CREATE VIEW {#create-view}
 
 新しいビューを作成します。ビューには[通常ビュー](#normal-view)、[マテリアライズドビュー](#materialized-view)、[リフレッシュ可能なマテリアライズドビュー](#refreshable-materialized-view)、および[ウィンドウビュー](/sql-reference/statements/create/view#window-view)の種類があります。
 
 
 
-## 標準表示
+## 標準表示 {#normal-view}
 
 構文:
 
@@ -50,7 +50,7 @@ SELECT a, b, c FROM (SELECT ...)
 ```
 
 
-## パラメータ化ビュー
+## パラメータ化ビュー {#parameterized-view}
 
 パラメータ化ビューは通常のビューと似ていますが、ただちには解決されないパラメータを指定して作成できます。これらのビューはテーブル関数で使用でき、その際はビュー名を関数名として指定し、パラメータ値をその引数として渡します。
 
@@ -65,7 +65,7 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
 
 
-## マテリアライズドビュー
+## マテリアライズドビュー {#materialized-view}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
@@ -120,7 +120,7 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view) を使用します。`DROP TABLE` も VIEW に対して動作します。
 
 
-## SQL セキュリティ
+## SQL セキュリティ {#sql_security}
 
 `DEFINER` と `SQL SECURITY` を使用すると、ビューの背後で実行されるクエリを実行する際に、どの ClickHouse ユーザーを使用するかを指定できます。
 `SQL SECURITY` には `DEFINER`、`INVOKER`、`NONE` の 3 つの有効な値があります。`DEFINER` 句では、既存の任意のユーザー、または `CURRENT_USER` を指定できます。
@@ -152,7 +152,7 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 ALTER TABLE MODIFY SQL SECURITY { DEFINER | INVOKER | NONE } [DEFINER = { user | CURRENT_USER }]
 ```
 
-### 使用例
+### 使用例 {#examples}
 
 ```sql
 CREATE VIEW test_view
@@ -177,7 +177,7 @@ AS SELECT ...
 
 
 
-## リフレッシュ可能なマテリアライズドビュー
+## リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -213,7 +213,7 @@ number 秒|分|時間|日|週|月|年
 クエリ中の `REFRESH ... SETTINGS` 部分にある設定はリフレッシュに関する設定（例: `refresh_retries`）であり、通常の設定（例: `max_threads`）とは異なります。通常の設定はクエリ末尾の `SETTINGS` で指定できます。
 :::
 
-### リフレッシュスケジュール
+### リフレッシュスケジュール {#refresh-schedule}
 
 リフレッシュスケジュールの例:
 
@@ -241,7 +241,7 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 
 
 さらに、`CREATE` クエリで `EMPTY` が指定されていない限り、マテリアライズドビューが作成されると直ちにリフレッシュが開始されます。`EMPTY` が指定されている場合、最初のリフレッシュはスケジュールに従って行われます。
 
-### Replicated DB において
+### Replicated DB において {#in-replicated-db}
 
 リフレッシュ可能なマテリアライズドビューが [Replicated database](../../../engines/database-engines/replicated.md) 内にある場合、各レプリカは互いに調整し、各スケジュールされた時刻には 1 つのレプリカだけがリフレッシュを実行するようにします。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) テーブルエンジンが必須であり、これによりすべてのレプリカがリフレッシュによって生成されたデータを参照できます。
 
@@ -252,7 +252,7 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 
 
 協調処理は Keeper を通じて行われます。znode のパスは、[default&#95;replica&#95;path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) サーバー設定によって決定されます。
 
-### 依存関係
+### 依存関係 {#refresh-dependencies}
 
 `DEPENDS ON` は、異なるテーブルのリフレッシュを同期します。例として、2 つのリフレッシュ可能なマテリアライズドビューが連なったチェーン構造になっているとします。
 
@@ -298,7 +298,7 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 `DEPENDS ON` は、リフレッシュ可能なマテリアライズドビュー同士でのみ機能します。`DEPENDS ON` のリストに通常のテーブルを指定すると、そのビューは一度もリフレッシュされなくなります（依存関係は `ALTER` で削除できます。後述を参照してください）。
 :::
 
-### 設定
+### 設定 {#settings}
 
 利用可能なリフレッシュ設定:
 
@@ -306,7 +306,7 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 * `refresh_retry_initial_backoff_ms` - `refresh_retries` が 0 でない場合の、最初の再試行までの遅延。以降の再試行ごとに、この遅延は 2 倍になり、`refresh_retry_max_backoff_ms` まで増加します。デフォルト: 100 ms。
 * `refresh_retry_max_backoff_ms` - リフレッシュ試行間の遅延の指数的な増加に対する上限。デフォルト: 60000 ms（1 分）。
 
-### リフレッシュパラメータの変更
+### リフレッシュパラメータの変更 {#changing-refresh-parameters}
 
 リフレッシュパラメータを変更するには:
 
@@ -318,7 +318,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 これは、スケジュール、依存関係、設定、および APPEND モードかどうかを含む *すべて* のリフレッシュパラメータを一括で置き換えます。たとえば、テーブルに `DEPENDS ON` がある状態で、`DEPENDS ON` を指定せずに `MODIFY REFRESH` を実行すると、依存関係は削除されます。
 :::
 
-### その他の操作
+### その他の操作 {#other-operations}
 
 
 すべてのリフレッシュ可能なマテリアライズドビューのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
@@ -333,7 +333,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 
 
-## ウィンドウビュー
+## ウィンドウビュー {#window-view}
 
 <ExperimentalBadge />
 
@@ -356,11 +356,11 @@ Window view の作成方法は `MATERIALIZED VIEW` の作成と似ています�
 
 `TO [db].[table]` を指定せずに window view を作成する場合は、データを保存するテーブルエンジンとして `ENGINE` を必ず指定する必要があります。
 
-### Time Window Functions
+### Time Window Functions {#time-window-functions}
 
 [Time window functions](../../functions/time-window-functions.md) は、レコードに対するウィンドウの下限と上限を取得するために使用されます。Window view は time window function と併用する必要があります。
 
-### TIME ATTRIBUTES
+### TIME ATTRIBUTES {#time-attributes}
 
 Window view は **processing time** と **event time** の 2 種類の処理に対応しています。
 
@@ -397,7 +397,7 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用して、ウィンドウビューで指定されている `SELECT` クエリを変更できます。新しい `SELECT` クエリで得られるデータ構造は、`TO [db.]name` 句の有無にかかわらず、元の `SELECT` クエリと同一である必要があります。中間状態は再利用できないため、現在のウィンドウ内のデータは失われることに注意してください。
 
-### 新しいウィンドウの監視
+### 新しいウィンドウの監視 {#monitoring-new-windows}
 
 ウィンドウビューでは、変更を監視するために [WATCH](../../../sql-reference/statements/watch.md) クエリを使用するか、`TO` 構文を用いて結果をテーブルに出力できます。
 
@@ -410,13 +410,13 @@ WATCH [db.]window_view
 
 `LIMIT` を指定すると、クエリを終了するまでに受信する更新の回数を制限できます。`EVENTS` 句を使用すると、クエリ結果そのものではなく最新のクエリウォーターマークのみを取得する、`WATCH` クエリの簡略な形式を利用できます。
 
-### 設定
+### 設定 {#settings-1}
 
 * `window_view_clean_interval`: 古いデータを解放するための、ウィンドウビューのクリーン処理の間隔（秒）です。システムは、システム時刻または `WATERMARK` の設定に従ってまだ完全にはトリガーされていないウィンドウを保持し、それ以外のデータを削除します。
 * `window_view_heartbeat_interval`: `WATCH` クエリが稼働中であることを示すためのハートビート間隔（秒）です。
 * `wait_for_window_view_fire_signal_timeout`: イベント時間処理において、ウィンドウビューの発火シグナルを待機する際のタイムアウトです。
 
-### 例
+### 例 {#example}
 
 `data` というログテーブルで 10 秒ごとのクリックログの件数を集計する必要があるとし、そのテーブル構造は次のようになっているとします。
 
@@ -458,7 +458,7 @@ CREATE WINDOW VIEW wv TO dst AS SELECT count(id), tumbleStart(w_id) as window_st
 
 追加の例は、ClickHouse の stateful テストの中にあります（そこでの名前は `*window_view*` です）。
 
-### Window View の使用方法
+### Window View の使用方法 {#window-view-usage}
 
 Window View は次のようなシナリオで有用です。
 
@@ -473,7 +473,7 @@ Window View は次のようなシナリオで有用です。
 
 
 
-## 一時ビュー
+## 一時ビュー {#temporary-views}
 
 ClickHouse は、以下の特徴を持つ **一時ビュー (temporary view)** をサポートします（該当する場合は一時テーブルと同様の挙動になります）。
 
@@ -501,7 +501,7 @@ ClickHouse は、以下の特徴を持つ **一時ビュー (temporary view)** �
 * **SHOW CREATE**
   一時ビューの DDL を出力するには、`SHOW CREATE TEMPORARY VIEW view_name;` を使用します。
 
-### 構文
+### 構文 {#temporary-views-syntax}
 
 ```sql
 一時ビューを作成 [IF NOT EXISTS] view_name AS <select_query>
@@ -509,7 +509,7 @@ ClickHouse は、以下の特徴を持つ **一時ビュー (temporary view)** �
 
 `OR REPLACE` は一時テーブルとの整合性を保つため、一時ビューでは**サポートされていません**。一時ビューを「置き換える」必要がある場合は、削除してから再作成してください。
 
-### 例
+### 例 {#temporary-views-examples}
 
 一時ソーステーブルと、その上に一時ビューを作成します:
 
@@ -537,7 +537,7 @@ DDL を表示します:
 DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構文を使って削除されます
 ```
 
-### 禁止事項 / 制限事項
+### 禁止事項 / 制限事項 {#temporary-views-limitations}
 
 * `CREATE OR REPLACE TEMPORARY VIEW ...` → **使用不可**（`DROP` + `CREATE` を使用してください）。
 * `CREATE TEMPORARY MATERIALIZED VIEW ...` / `WINDOW VIEW` → **使用不可**。
@@ -545,11 +545,11 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構�
 * `CREATE TEMPORARY VIEW view ON CLUSTER 'name' AS ...` → **使用不可**（一時オブジェクトはセッションローカルなものです）。
 * `POPULATE`、`REFRESH`、`TO [db.table]`、内部エンジン、およびすべての MV 固有の句 → 一時ビューには **適用されません**。
 
-### 分散クエリに関する注意事項
+### 分散クエリに関する注意事項 {#temporary-views-distributed-notes}
 
 一時 **ビュー** は単なる定義であり、転送されるデータ自体は存在しません。一時ビューが一時 **テーブル**（例: `Memory`）を参照している場合、そのデータは分散クエリの実行時に、一時テーブルと同様の方法でリモートサーバーに送信されます。
 
-#### 例
+#### 例 {#temporary-views-distributed-example}
 
 ```sql
 -- セッション単位のインメモリテーブル

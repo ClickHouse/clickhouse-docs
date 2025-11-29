@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse の特長
+# ClickHouse の特長 {#distinctive-features-of-clickhouse}
 
 
 

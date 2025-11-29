@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# redis テーブル関数
+# redis テーブル関数 {#redis-table-function}
 
 このテーブル関数により、ClickHouse を [Redis](https://redis.io/) と統合できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
@@ -47,7 +47,7 @@ Redis のキーをキー列とし、その他のカラムをまとめて 1 つ�
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 Redis からの読み込み：
 

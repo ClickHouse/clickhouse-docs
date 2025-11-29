@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# fileCluster テーブル関数
+# fileCluster テーブル関数 {#filecluster-table-function}
 
 指定されたパスに一致するファイルを、クラスター内の複数ノードにまたがって同時に処理できるようにします。イニシエータはワーカーノードへの接続を確立し、ファイルパス内のグロブを展開し、ファイル読み取りタスクをワーカーノードに委譲します。各ワーカーノードは、処理すべき次のファイルを取得するためにイニシエータへ問い合わせを行い、すべてのタスクが完了する（すべてのファイルが読み込まれる）までこれを繰り返します。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
@@ -39,7 +39,7 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 
 
 
-## 返される値
+## 返される値 {#returned_value}
 
 指定されたフォーマットと構造を持ち、指定されたパスに一致するファイルからのデータを含むテーブルが返されます。
 

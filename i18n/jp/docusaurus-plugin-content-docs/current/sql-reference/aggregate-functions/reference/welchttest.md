@@ -7,7 +7,7 @@ title: 'welchTTest'
 doc_type: 'reference'
 ---
 
-# welchTTest
+# welchTTest {#welchttest}
 
 2つの母集団からの標本に Welch の t 検定を適用します。
 

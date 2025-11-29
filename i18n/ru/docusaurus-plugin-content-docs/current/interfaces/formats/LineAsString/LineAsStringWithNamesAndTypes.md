@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
 ```sql
 CREATE TABLE example (

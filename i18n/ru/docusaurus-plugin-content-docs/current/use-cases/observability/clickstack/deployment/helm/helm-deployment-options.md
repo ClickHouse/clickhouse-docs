@@ -24,12 +24,12 @@ Helm-чарт ClickStack поддерживает несколько вариа�
 
 Если у вас уже есть кластер ClickHouse (включая ClickHouse Cloud), вы можете отключить встроенный ClickHouse и подключиться к вашему внешнему экземпляру.
 
-### Вариант 1: Встроенная конфигурация (разработка/тестирование)
+### Вариант 1: Встроенная конфигурация (разработка/тестирование) {#external-clickhouse-inline}
 
 Используйте этот подход для быстрого тестирования или в непродуктивных средах:
 
 ```yaml
-# values-external-clickhouse.yaml
+# values-external-clickhouse.yaml {#values-external-clickhouseyaml}
 clickhouse:
   enabled: false  # Отключить встроенный ClickHouse
 
@@ -65,7 +65,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.y
 
 #### Создайте файлы конфигурации {#create-configuration}
 ```bash
-# Создайте connections.json
+# Создайте connections.json {#create-connectionsjson}
 cat <<EOF > connections.json
 [
   {
@@ -78,7 +78,7 @@ cat <<EOF > connections.json
 ]
 EOF
 
-# Создайте sources.json
+# Создайте sources.json {#create-sourcesjson}
 cat <<EOF > sources.json
 [
   {
@@ -126,13 +126,13 @@ kubectl create secret generic hyperdx-external-config \
   --from-file=connections.json=connections.json \
   --from-file=sources.json=sources.json
 
-# Удалите локальные файлы
+# Удалите локальные файлы {#clean-up-local-files}
 rm connections.json sources.json
 ```
 
 #### Настройте Helm для использования секрета {#configure-helm-secret}
 ```yaml
-# values-external-clickhouse-secret.yaml
+# values-external-clickhouse-secret.yaml {#values-external-clickhouse-secretyaml}
 clickhouse:
   enabled: false
 
@@ -151,12 +151,12 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ```
 </VerticalStepper>
 
-### Использование ClickHouse Cloud
+### Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
 Для ClickHouse Cloud:
 
 ```yaml
-# values-clickhouse-cloud.yaml
+# values-clickhouse-cloud.yaml {#values-clickhouse-cloudyaml}
 clickhouse:
   enabled: false
   persistence:
@@ -175,12 +175,12 @@ hyperdx:
 Подробный пример подключения к ClickHouse Cloud см. в разделе [«Создание подключения к ClickHouse Cloud»](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 
-## Внешний OTel collector
+## Внешний OTel collector {#external-otel-collector}
 
 Если у вас уже есть инфраструктура OTel collector:
 
 ```yaml
-# values-external-otel.yaml
+# values-external-otel.yaml {#values-external-otelyaml}
 otel:
   enabled: false  # Отключить встроенный OTel collector
 
@@ -195,12 +195,12 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 См. раздел [Настройка входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress) для инструкций по публикации конечных точек OTel collector через входной шлюз.
 
 
-## Минимальное развертывание
+## Минимальное развертывание {#minimal-deployment}
 
 Для организаций с уже существующей инфраструктурой достаточно развернуть только HyperDX:
 
 ```yaml
-# values-minimal.yaml
+# values-minimal.yaml {#values-minimalyaml}
 clickhouse:
   enabled: false
 

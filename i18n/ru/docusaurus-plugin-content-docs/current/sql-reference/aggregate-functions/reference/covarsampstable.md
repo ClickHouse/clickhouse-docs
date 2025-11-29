@@ -6,7 +6,7 @@ title: 'covarSampStable'
 doc_type: 'reference'
 ---
 
-# covarSampStable
+# covarSampStable {#covarsampstable}
 
 Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Аналогична функции [covarSamp](../reference/covarsamp.md), но работает медленнее, обеспечивая при этом меньшую вычислительную погрешность.
 

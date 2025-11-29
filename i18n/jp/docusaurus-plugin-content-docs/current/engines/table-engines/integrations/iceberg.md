@@ -23,7 +23,7 @@ Iceberg Table Engine も利用可能ですが、いくつかの制限があり�
 
 
 
-## テーブルを作成
+## テーブルを作成 {#create-table}
 
 Iceberg テーブルはあらかじめストレージ上に存在している必要がある点に注意してください。このコマンドには、新しいテーブルを作成するための DDL パラメータを指定できません。
 
@@ -42,14 +42,14 @@ CREATE TABLE iceberg_table_local
 ```
 
 
-## エンジン引数
+## エンジン引数 {#engine-arguments}
 
 引数の説明は、それぞれ `S3`、`AzureBlobStorage`、`HDFS` および `File` エンジンにおける引数の説明と同様です。
 `format` は Iceberg テーブル内のデータファイルの形式を表します。
 
 エンジンパラメータは [Named Collections](../../../operations/named-collections.md) を使用して指定できます。
 
-### 例
+### 例 {#example}
 
 ```sql
 CREATE TABLE iceberg_table ENGINE=IcebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
@@ -105,7 +105,7 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 
 
 
-## 削除行を含むテーブルの処理
+## 削除行を含むテーブルの処理 {#deleted-rows}
 
 現在サポートされているのは、[position deletes](https://iceberg.apache.org/spec/#position-delete-files) を使用する Iceberg テーブルのみです。
 
@@ -114,7 +114,7 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 * [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
 * [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（v3 で導入）
 
-### 基本的な使用方法
+### 基本的な使用方法 {#basic-usage}
 
 ```sql
 SELECT * FROM example_table ORDER BY 1 
@@ -128,7 +128,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 注意: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
 
-### 重要な考慮事項
+### 重要な考慮事項 {#important-considerations}
 
 * **スナップショット** は通常、次のタイミングで作成されます：
   * 新しいデータがテーブルに書き込まれたとき
@@ -136,11 +136,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 * **スキーマ変更によってスナップショットが作成されることは通常ない** — このため、スキーマ進化を行ったテーブルでタイムトラベルを使用する場合に特有の挙動が発生します。
 
-### シナリオ例
+### シナリオ例 {#example-scenarios}
 
 すべてのシナリオは Spark を用いて記述されています。これは、CH がまだ Iceberg テーブルへの書き込みをサポートしていないためです。
 
-#### シナリオ 1: 新しいスナップショットを伴わないスキーマ変更
+#### シナリオ 1: 新しいスナップショットを伴わないスキーマ変更 {#scenario-1}
 
 次の一連の操作を考えてみます:
 
@@ -200,7 +200,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 * ts1 と ts2 の時点: 元の 2 列のみが表示される
 * ts3 の時点: 3 列すべてが表示され、1 行目の price 列は NULL になる
 
-#### シナリオ 2: 履歴スキーマと現在のスキーマの差異
+#### シナリオ 2: 履歴スキーマと現在のスキーマの差異 {#scenario-2}
 
 現在時点を指定したタイムトラベルクエリでは、現在のテーブルとは異なるスキーマが表示される場合があります:
 
@@ -243,7 +243,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 これは、`ALTER TABLE` が新しいスナップショットを作成せず、現在のテーブルについては Spark がスナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
 
 
-#### シナリオ 3: 過去と現在のスキーマの差異
+#### シナリオ 3: 過去と現在のスキーマの差異 {#scenario-3}
 
 2つ目の制約は、タイムトラベルを行っても、テーブルに最初のデータが書き込まれる前の状態は取得できないという点です。
 
@@ -265,11 +265,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ClickHouse における挙動は Spark と同じです。概念的には Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
 
 
-## メタデータファイルの解決
+## メタデータファイルの解決 {#metadata-file-resolution}
 
 ClickHouse で `Iceberg` テーブルエンジンを使用する場合、システムは Iceberg テーブル構造を記述する適切な metadata.json ファイルを特定する必要があります。以下は、この解決プロセスの概要です。
 
-### 候補の検索
+### 候補の検索 {#candidate-search}
 
 1. **パスの直接指定**:
 
@@ -286,7 +286,7 @@ ClickHouse で `Iceberg` テーブルエンジンを使用する場合、シス�
 
 * 上記いずれの設定も指定されていない場合、`metadata` ディレクトリ内のすべての `.metadata.json` ファイルが候補になります
 
-### 最新のファイルの選択
+### 最新のファイルの選択 {#most-recent-file}
 
 上記のルールで候補ファイルを特定した後、システムはその中で最も新しいものを決定します:
 

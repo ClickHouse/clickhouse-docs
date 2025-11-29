@@ -7,10 +7,10 @@ title: 'system.delta_lake_metadata_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.delta_lake_metadata_log
+# system.delta_lake_metadata_log {#systemdelta_lake_metadata_log}
 
 Таблица `system.delta_lake_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Delta Lake, которые читает ClickHouse. Она предоставляет подробную информацию о каждом файле метаданных, что полезно для отладки, аудита и понимания эволюции структуры таблиц Delta Lake.
 
@@ -40,7 +40,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 
-## Управление уровнем детализации журналирования
+## Управление уровнем детализации журналирования {#controlling-log-verbosity}
 
 Вы можете управлять тем, какие события, связанные с метаданными, записываются в журнал с помощью настройки [`delta_lake_log_metadata`](../../operations/settings/settings.md#delta_lake_log_metadata).
 

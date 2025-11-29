@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 
 
-## 利用例
+## 利用例 {#example-usage}
 
-### 基本的な例
+### 基本的な例 {#basic-example}
 
 例を見てみましょう。従業員の `name`、`age`、`wage` を格納するテーブルを作成し、いくつかのデータを挿入してみます。
 

@@ -21,7 +21,7 @@ doc_type: 'reference'
 `JSONColumnsWithMetadata` 格式会将所有数据缓存在内存中，然后以单个数据块输出，因此可能会导致较高的内存占用。
 :::
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 示例：
 

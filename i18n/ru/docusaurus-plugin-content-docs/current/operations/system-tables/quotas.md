@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.quotas
+# system.quotas {#systemquotas}
 
 Содержит информацию о [квотах](../../operations/system-tables/quotas.md).
 

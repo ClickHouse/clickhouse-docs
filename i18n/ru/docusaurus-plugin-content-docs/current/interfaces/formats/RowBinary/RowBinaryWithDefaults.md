@@ -22,7 +22,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## Примеры использования
+## Примеры использования {#example-usage}
 
 Примеры:
 

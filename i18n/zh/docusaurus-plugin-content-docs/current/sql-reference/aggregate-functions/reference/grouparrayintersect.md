@@ -6,7 +6,7 @@ title: 'groupArrayIntersect'
 doc_type: 'reference'
 ---
 
-# groupArrayIntersect
+# groupArrayIntersect {#grouparrayintersect}
 
 返回给定数组的交集（即所有在每个数组中都出现的元素）。
 

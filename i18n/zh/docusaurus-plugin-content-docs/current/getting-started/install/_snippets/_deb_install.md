@@ -60,20 +60,20 @@ sudo apt-get install -y clickhouse-server clickhouse-client
 sudo service clickhouse-server start
 
 # 启动 ClickHouse 命令行客户端
-clickhouse-client # 如果已设置密码，请使用 &quot;clickhouse-client --password&quot;。
+clickhouse-client # 如果已设置密码,请使用 "clickhouse-client --password"。
 ```
 
 </details>
 
 
-## 安装 ClickHouse 服务端和客户端
+## 安装 ClickHouse 服务端和客户端 {#install-clickhouse-server-and-client}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
 
-## 启动 ClickHouse
+## 启动 ClickHouse {#start-clickhouse-server}
 
 要启动 ClickHouse 服务器，请运行：
 
@@ -94,7 +94,7 @@ clickhouse-client --password
 ```
 
 
-## 安装独立的 ClickHouse Keeper
+## 安装独立的 ClickHouse Keeper {#install-standalone-clickhouse-keeper}
 
 :::tip
 在生产环境中，我们强烈建议在专用节点上运行 ClickHouse Keeper。

@@ -9,19 +9,18 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
+# クラウドオブジェクトストレージから ClickHouse Cloud へのデータ移行 {#move-data-from-cloud-object-storage-to-clickhouse-cloud}
 
-# クラウドオブジェクトストレージから ClickHouse Cloud へのデータ移行
-
-<Image img={object_storage_01} size='md' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={object_storage_01} size="md" alt="Migrating Self-managed ClickHouse" background="white" />
 
 Cloud Object Storage をデータレイクとして利用していて、そのデータを ClickHouse Cloud にインポートしたい場合や、
 現在利用しているデータベースシステムがデータを直接 Cloud Object Storage にオフロードできる場合には、
 Cloud Object Storage に保存されたデータを ClickHouse Cloud のテーブルへ移行するために、以下のいずれかの
 テーブル関数を使用できます。
 
-- [s3](/sql-reference/table-functions/s3.md) または [s3Cluster](/sql-reference/table-functions/s3Cluster.md)
-- [gcs](/sql-reference/table-functions/gcs)
-- [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage)
+* [s3](/sql-reference/table-functions/s3.md) または [s3Cluster](/sql-reference/table-functions/s3Cluster.md)
+* [gcs](/sql-reference/table-functions/gcs)
+* [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage)
 
 現在利用しているデータベースシステムがデータを直接 Cloud Object Storage にオフロードできない場合は、
 [サードパーティ製 ETL/ELT ツール](/cloud/migration/etl-tool-to-clickhouse) や [clickhouse-local](/cloud/migration/clickhouse-local) を使って、

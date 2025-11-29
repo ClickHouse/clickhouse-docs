@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблиц Memory
+# Движок таблиц Memory {#memory-table-engine}
 
 :::note
 При использовании движка таблиц Memory в ClickHouse Cloud данные по проекту не реплицируются на все узлы (так задумано). Чтобы гарантировать, что все запросы направляются на один и тот же узел и движок Memory работает предсказуемо, вы можете:
@@ -50,7 +50,7 @@ doc_type: 'reference'
 
 
 
-## Использование
+## Использование {#usage}
 
 **Инициализация настроек**
 
@@ -67,7 +67,7 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 **Примечание:** Параметры ограничения `bytes` и `rows` могут быть заданы одновременно, однако будет использоваться меньшее из значений `max` и `min`.
 
 
-## Примеры
+## Примеры {#examples}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;

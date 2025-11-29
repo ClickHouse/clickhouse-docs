@@ -8,16 +8,14 @@ title: 'Советы по анализу'
 doc_type: 'guide'
 ---
 
+# Советы по анализу {#analysis-tips}
 
-
-# Советы по анализу
-
-## Функции MEDIAN() и PERCENTILE()
+## Функции MEDIAN() и PERCENTILE() {#median-and-percentile-functions}
 
 * В режиме Live функции MEDIAN() и PERCENTILE() (начиная с версии коннектора v0.1.3) используют [функцию ClickHouse quantile()()](/sql-reference/aggregate-functions/reference/quantile/), что существенно ускоряет вычисления, но основано на выборочном методе. Если вам нужны точные результаты вычислений, используйте функции `MEDIAN_EXACT()` и `PERCENTILE_EXACT()` (на основе [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)).
 * В режиме Extract нельзя использовать функции MEDIAN&#95;EXACT() и PERCENTILE&#95;EXACT(), потому что MEDIAN() и PERCENTILE() всегда дают точный (и медленный) результат.
 
-## Дополнительные функции для вычисляемых полей в режиме Live
+## Дополнительные функции для вычисляемых полей в режиме Live {#additional-functions-for-calculated-fields-in-live-mode}
 
 ClickHouse предоставляет обширный набор функций для анализа данных — значительно больше, чем поддерживает Tableau. Для удобства пользователей мы добавили новые функции, доступные в режиме Live при создании вычисляемых полей (Calculated Fields). К сожалению, в интерфейсе Tableau невозможно добавить описания этих функций, поэтому мы приводим их описание непосредственно здесь.
 

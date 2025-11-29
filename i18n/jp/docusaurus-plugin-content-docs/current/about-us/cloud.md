@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# ClickHouse Cloud
+# ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud は、人気の高いオープンソース OLAP データベースである ClickHouse の開発元によって提供されるクラウドサービスです。  
 [無料トライアルを開始](https://console.clickhouse.cloud/signUp)して ClickHouse Cloud を体験できます。

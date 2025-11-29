@@ -6,9 +6,7 @@ title: 'SAMPLE 子句'
 doc_type: 'reference'
 ---
 
-
-
-# SAMPLE 子句
+# SAMPLE 子句 {#sample-clause}
 
 `SAMPLE` 子句允许对 `SELECT` 查询进行近似处理。
 
@@ -16,19 +14,19 @@ doc_type: 'reference'
 
 近似查询处理在以下情况下可能有用：
 
-- 当你有严格的延迟要求（例如低于 100ms），但又无法证明为满足这些要求而增加额外硬件资源的成本是合理时。
-- 当你的原始数据本身就不精确，因此近似不会明显降低结果质量时。
-- 当业务需求本身只需要近似结果（出于成本效益考虑，或者将精确结果作为付费高级用户专属功能进行售卖）时。
+* 当你有严格的延迟要求（例如低于 100ms），但又无法证明为满足这些要求而增加额外硬件资源的成本是合理时。
+* 当你的原始数据本身就不精确，因此近似不会明显降低结果质量时。
+* 当业务需求本身只需要近似结果（出于成本效益考虑，或者将精确结果作为付费高级用户专属功能进行售卖）时。
 
-:::note    
+:::note\
 你只能对 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 家族中的表使用采样，并且前提是在建表时指定了采样表达式（参见 [MergeTree 引擎](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)）。
 :::
 
 数据采样具有以下特性：
 
-- 数据采样是一个确定性机制。相同的 `SELECT .. SAMPLE` 查询每次的结果都是相同的。
-- 采样在不同的表上表现一致。对于具有单一采样键的表，相同系数的样本总是选择相同的潜在数据子集。例如，对用户 ID 的采样会从不同的表中选出具有相同用户 ID 子集的行。这意味着你可以在 [IN](../../../sql-reference/operators/in.md) 子句的子查询中使用样本。同时，你也可以使用 [JOIN](../../../sql-reference/statements/select/join.md) 子句对样本进行连接。
-- 采样可以减少从磁盘读取的数据量。请注意，你必须正确指定采样键。更多信息参见 [创建 MergeTree 表](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
+* 数据采样是一个确定性机制。相同的 `SELECT .. SAMPLE` 查询每次的结果都是相同的。
+* 采样在不同的表上表现一致。对于具有单一采样键的表，相同系数的样本总是选择相同的潜在数据子集。例如，对用户 ID 的采样会从不同的表中选出具有相同用户 ID 子集的行。这意味着你可以在 [IN](../../../sql-reference/operators/in.md) 子句的子查询中使用样本。同时，你也可以使用 [JOIN](../../../sql-reference/statements/select/join.md) 子句对样本进行连接。
+* 采样可以减少从磁盘读取的数据量。请注意，你必须正确指定采样键。更多信息参见 [创建 MergeTree 表](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
 
 对于 `SAMPLE` 子句，支持以下语法：
 
@@ -38,9 +36,7 @@ doc_type: 'reference'
 | `SAMPLE n`    | 这里 `n` 是一个足够大的整数。查询会在至少包含 `n` 行的样本上执行（但不会明显超过这个数量）。例如，`SAMPLE 10000000` 会在至少 10,000,000 行数据上运行查询。 [详细信息](#sample-n) |
 | `SAMPLE k OFFSET m`  | 这里 `k` 和 `m` 是 0 到 1 之间的数值。查询会在占比为 `k` 的数据样本上执行，而用于样本的数据会按 `m` 的比例进行偏移。 [详细信息](#sample-k-offset-m)                                           |
 
-
-
-## SAMPLE K
+## SAMPLE K {#sample-k}
 
 这里的 `k` 是介于 0 和 1 之间的数值（支持分数形式和小数形式）。例如，`SAMPLE 1/2` 或 `SAMPLE 0.5`。
 
@@ -60,8 +56,7 @@ ORDER BY PageViews DESC LIMIT 1000
 
 在此示例中，查询在占数据量 10%（0.1）的样本上执行。聚合函数的值不会自动校正，因此要获得近似结果，需要将 `count()` 的值手动乘以 10。
 
-
-## SAMPLE N
+## SAMPLE N {#sample-n}
 
 这里的 `n` 是一个足够大的整数，例如 `SAMPLE 10000000`。
 
@@ -97,8 +92,7 @@ FROM visits
 SAMPLE 10000000
 ```
 
-
-## SAMPLE K OFFSET M
+## SAMPLE K OFFSET M {#sample-k-offset-m}
 
 这里的 `k` 和 `m` 是取值范围为 0 到 1 的数。示例如下所示。
 

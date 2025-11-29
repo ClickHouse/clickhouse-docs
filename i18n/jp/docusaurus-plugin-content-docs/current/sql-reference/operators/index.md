@@ -8,20 +8,15 @@ title: '演算子'
 doc_type: 'reference'
 ---
 
-
-
-# 演算子
+# 演算子 {#operators}
 
 ClickHouse は、演算子の優先順位および結合性に従って、クエリのパース段階で演算子を対応する関数に変換します。
-
-
 
 ## アクセス演算子 {#access-operators}
 
 `a[N]` – 配列の要素へアクセスします。`arrayElement(a, N)` 関数と同等です。
 
 `a.N` – タプルの要素へアクセスします。`tupleElement(a, N)` 関数と同等です。
-
 
 ## 数値否定演算子 {#numeric-negation-operator}
 
@@ -42,7 +37,6 @@ ClickHouse は、演算子の優先順位および結合性に従って、クエ
 
 `a % b` – `modulo(a, b)` 関数。
 
-
 ## 加算および減算演算子 {#addition-and-subtraction-operators}
 
 `a + b` – `plus(a, b)` 関数
@@ -52,7 +46,6 @@ ClickHouse は、演算子の優先順位および結合性に従って、クエ
 `a - b` – `minus(a, b)` 関数
 
 タプルの減算: [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus)
-
 
 ## 比較演算子 {#comparison-operators}
 
@@ -101,7 +94,6 @@ ClickHouse は、演算子の優先順位および結合性に従って、クエ
 `a BETWEEN b AND c` – `a >= b AND a <= c`と同じ
 
 `a NOT BETWEEN b AND c` – `a < b OR a > c`と同じ
-
 
 ## データセットを操作するための演算子 {#operators-for-working-with-data-sets}
 
@@ -176,7 +168,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 │ 9 │
 └───┘
 ```
-
 
 ## 日付と時刻を扱う演算子 {#operators-for-working-with-dates-and-times}
 
@@ -319,16 +310,13 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数
 
-
 ## 論理AND演算子 {#logical-and-operator}
 
 構文 `SELECT a AND b` — [and](/sql-reference/functions/logical-functions#and)関数を使用して`a`と`b`の論理積を計算します。
 
-
 ## 論理OR演算子 {#logical-or-operator}
 
 構文 `SELECT a OR b` — [or](/sql-reference/functions/logical-functions#or)関数を使用して`a`と`b`の論理和を計算します。
-
 
 ## 論理否定演算子 {#logical-negation-operator}
 
@@ -342,7 +330,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 注意:
 
 条件演算子は b と c の値を計算した後、条件 a が満たされているかを確認し、対応する値を返します。`b` または `c` が [arrayJoin()](/sql-reference/functions/array-join) 関数である場合、"a" 条件に関係なく各行が複製されます。
-
 
 ## 条件式 {#conditional-expression}
 
@@ -360,11 +347,9 @@ END
 
 `transform`関数は`NULL`に対応していません。
 
-
 ## 連結演算子 {#concatenation-operator}
 
 `s1 || s2` – `concat(s1, s2)` 関数。
-
 
 ## ラムダ生成演算子 {#lambda-creation-operator}
 
@@ -372,16 +357,13 @@ END
 
 以下の演算子は括弧であるため、優先順位がありません:
 
-
 ## 配列作成演算子 {#array-creation-operator}
 
 `[x1, ...]` – `array(x1, ...)` 関数。
 
-
 ## タプル生成演算子 {#tuple-creation-operator}
 
 `(x1, x2, ...)` – `tuple(x2, x2, ...)` 関数と同等です。
-
 
 ## 結合性 {#associativity}
 

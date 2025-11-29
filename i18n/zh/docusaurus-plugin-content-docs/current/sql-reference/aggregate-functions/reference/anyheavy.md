@@ -7,7 +7,7 @@ title: 'anyHeavy'
 doc_type: 'reference'
 ---
 
-# anyHeavy
+# anyHeavy {#anyheavy}
 
 使用 [heavy hitters](https://doi.org/10.1145/762471.762473) 算法选取一个高频出现的值。\
 如果存在某个值在查询的每个执行线程中出现的次数都超过该线程所处理记录数的一半，则返回该值。\

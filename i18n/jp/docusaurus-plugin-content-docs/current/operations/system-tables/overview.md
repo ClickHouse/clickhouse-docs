@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-## システムテーブルの概要
+## システムテーブルの概要 {#system-tables-introduction}
 
 システムテーブルは以下の情報を提供します:
 
@@ -89,7 +89,7 @@ procfs がシステムでサポートされていて有効化されている場�
 
 
 
-## ClickHouse Cloud における system テーブル
+## ClickHouse Cloud における system テーブル {#system-tables-in-clickhouse-cloud}
 
 ClickHouse Cloud では、system テーブルは自己管理型デプロイメントの場合と同様に、サービスの状態とパフォーマンスに関する重要な洞察を提供します。いくつかの system テーブルは、特に分散メタデータを管理する Keeper ノードからデータを取得するものについては、クラスタ全体で動作します。これらのテーブルはクラスタの集合的な状態を反映しており、個々のノードでクエリした場合にも結果が整合している必要があります。たとえば、[`parts`](/operations/system-tables/parts) は、どのノードからクエリしても一貫した結果が得られる必要があります。
 
@@ -149,7 +149,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 11行が返されました。経過時間: 0.004秒。
 ```
 
-### 複数バージョンにまたがるクエリ
+### 複数バージョンにまたがるクエリ {#querying-multiple-versions}
 
 [`merge`](/sql-reference/table-functions/merge) 関数を使用すると、これらのテーブルをまたいでクエリを実行できます。たとえば、次のクエリは、各 `query_log` テーブル内で対象ノードに対して発行された最新のクエリを特定します。
 
@@ -188,7 +188,7 @@ ORDER BY most_recent DESC
 
 重要な点として、これらのテーブルは依然として**各ノードにローカル**です。
 
-### ノード間でのクエリ実行                         
+### ノード間でのクエリ実行                          {#querying-across-nodes}
 
 クラスタ全体を包括的に表示するには、[`clusterAllReplicas`](/sql-reference/table-functions/cluster)関数を`merge`関数と組み合わせて使用できます。`clusterAllReplicas`関数は、「default」クラスタ内のすべてのレプリカにわたってシステムテーブルをクエリし、ノード固有のデータを統合された結果に集約します。`merge`関数と組み合わせることで、クラスタ内の特定のテーブルのすべてのシステムデータを対象とすることができます。 
 
@@ -230,7 +230,7 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
 ````
 
-### ノードおよびバージョンをまたいだクエリ実行
+### ノードおよびバージョンをまたいだクエリ実行 {#querying-across-nodes-and-versions}
 
 system テーブルのバージョニングにより、これだけではクラスタ全体のデータをすべて表しているわけではありません。上記に `merge` 関数を組み合わせることで、指定した日付範囲について正確な結果を得ることができます。
 

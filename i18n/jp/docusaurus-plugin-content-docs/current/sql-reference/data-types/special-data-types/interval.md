@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Interval
+# Interval {#interval}
 
 日時の間隔を表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
 
@@ -45,7 +45,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 ```
 
 
-## 使用上の注意
+## 使用上の注意 {#usage-remarks}
 
 `Interval` 型の値は、[Date](../../../sql-reference/data-types/date.md) 型および [DateTime](../../../sql-reference/data-types/datetime.md) 型の値との算術演算に使用できます。たとえば、現在時刻に 4 日を足すことができます。
 

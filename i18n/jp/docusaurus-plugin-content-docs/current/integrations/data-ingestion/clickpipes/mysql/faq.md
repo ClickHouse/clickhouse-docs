@@ -10,7 +10,7 @@ keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL のトラブルシューテ
 
 
 
-# MySQL 向け ClickPipes FAQ
+# MySQL 向け ClickPipes FAQ {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe は MariaDB をサポートしていますか？  {#does-the-clickpipe-support-mariadb}
 はい、MySQL ClickPipe は MariaDB 10.0 以上をサポートしています。設定は MySQL と非常によく似ており、デフォルトで GTID レプリケーションを使用します。

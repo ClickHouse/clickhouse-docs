@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# ClickHouse におけるネイティブ形式とバイナリ形式の利用
+# ClickHouse におけるネイティブ形式とバイナリ形式の利用 {#using-native-and-binary-formats-in-clickhouse}
 
 ClickHouse は複数のバイナリ形式をサポートしており、高いパフォーマンスと優れたスペース効率を実現します。バイナリ形式では、データがバイナリのまま保存されるため、文字エンコーディングの点でも安全です。
 
@@ -18,7 +18,7 @@ ClickHouse は複数のバイナリ形式をサポートしており、高いパ
 
 
 
-## ネイティブ ClickHouse 形式でのエクスポート
+## ネイティブ ClickHouse 形式でのエクスポート {#exporting-in-a-native-clickhouse-format}
 
 ClickHouse ノード間でデータをエクスポートおよびインポートする際に最も効率的なのは、[Native](/interfaces/formats/Native) 形式です。エクスポートは `INTO OUTFILE` 句を使用して行います。
 
@@ -29,7 +29,7 @@ INTO OUTFILE 'data.clickhouse' FORMAT Native
 
 これにより、ネイティブ形式の [data.clickhouse](assets/data.clickhouse) ファイルが作成されます。
 
-### ネイティブ形式からのインポート
+### ネイティブ形式からのインポート {#importing-from-a-native-format}
 
 データをインポートするには、小さなファイルやデータ探索の目的であれば、[file()](/sql-reference/table-functions/file.md) を使用できます。
 
@@ -57,7 +57,7 @@ FROM INFILE 'data.clickhouse'
 FORMAT Native
 ```
 
-### ネイティブ形式での圧縮
+### ネイティブ形式での圧縮 {#native-format-compression}
 
 `COMPRESSION` 句を使用して、データをネイティブ形式（およびほとんどの他の形式）でエクスポートする際に圧縮を有効にすることもできます。
 
@@ -78,7 +78,7 @@ FORMAT Native
 ```
 
 
-## RowBinary へのエクスポート
+## RowBinary へのエクスポート {#exporting-to-rowbinary}
 
 サポートされている別のバイナリ形式として [RowBinary](/interfaces/formats/RowBinary) があり、この形式を使うと、行単位でバイナリ表現されたデータのインポートおよびエクスポートが可能です。
 
@@ -89,7 +89,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 
 これはバイナリ行形式で [data.binary](assets/data.binary) ファイルを生成します。
 
-### RowBinary ファイルの確認
+### RowBinary ファイルの確認 {#exploring-rowbinary-files}
 
 この形式ではスキーマの自動推論はサポートされていないため、ロード前に内容を確認するには、スキーマを明示的に定義する必要があります。
 
@@ -111,7 +111,7 @@ LIMIT 5
 
 [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames) の使用を検討してください。これは列リストを含むヘッダー行も追加します。[RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) は、さらに列の型を含むヘッダー行を追加します。
 
-### RowBinary ファイルからのインポート
+### RowBinary ファイルからのインポート {#importing-from-rowbinary-files}
 
 RowBinary ファイルからデータを読み込むには、`FROM INFILE` 句を使用します。
 
@@ -122,7 +122,7 @@ FORMAT RowBinary
 ```
 
 
-## RawBLOB を使用した単一のバイナリ値のインポート
+## RawBLOB を使用した単一のバイナリ値のインポート {#importing-single-binary-value-using-rawblob}
 
 バイナリファイル全体を読み取り、その内容をテーブルのフィールドに保存したいとします。
 このような場合には [RawBLOB フォーマット](/interfaces/formats/RawBLOB) を使用できます。このフォーマットは、1 列だけを持つテーブルでのみ直接使用できます。
@@ -149,7 +149,7 @@ SELECT length(data) FROM images
 └──────────────┘
 ```
 
-### RawBLOB データのエクスポート
+### RawBLOB データのエクスポート {#exporting-rawblob-data}
 
 この形式は、`INTO OUTFILE` 句を使用したデータのエクスポートにも利用できます。
 
@@ -162,7 +162,7 @@ FORMAT RawBLOB
 なお、`LIMIT 1` を使用する必要があるのは、複数の値をエクスポートするとファイルが破損してしまうためです。
 
 
-## MessagePack
+## MessagePack {#messagepack}
 
 ClickHouse は、[MsgPack](/interfaces/formats/MsgPack) フォーマットを使用して [MessagePack](https://msgpack.org/) 形式でのインポートおよびエクスポートをサポートしています。MessagePack 形式でエクスポートするには、次のとおりです。
 
@@ -182,7 +182,7 @@ FORMAT MsgPack
 ```
 
 
-## Protocol Buffers
+## Protocol Buffers {#protocol-buffers}
 
 <CloudNotSupportedBadge />
 
@@ -210,7 +210,7 @@ SETTINGS format_schema = 'schema:MessageType'
 これはデータを [proto.bin](assets/proto.bin) ファイルに保存します。ClickHouse では Protobuf データおよびネストされたメッセージのインポートもサポートしています。単一の Protocol Buffer メッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle) の使用を検討してください（この場合、長さ区切りは省略されます）。
 
 
-## Cap&#39;n Proto
+## Cap&#39;n Proto {#capn-proto}
 
 <CloudNotSupportedBadge />
 

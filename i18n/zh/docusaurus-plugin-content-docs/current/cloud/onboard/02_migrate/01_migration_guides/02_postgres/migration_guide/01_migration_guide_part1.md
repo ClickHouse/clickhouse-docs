@@ -31,49 +31,49 @@ import Image from '@theme/IdealImage';
 
 
 ```bash
-# 用户
+# 用户 {#users}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
 ```
 
 
-# posts 表
+# posts 表 {#posts}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql &lt; posts.sql
 
 
 
-# posthistory
+# posthistory {#posthistory}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
 
 
-# 评论
+# 评论 {#comments}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
 
 
 
-# votes 表
+# votes 表 {#votes}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql &lt; votes.sql
 
 
 
-# badges 徽章
+# badges 徽章 {#badges}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql &lt; badges.sql
 
 
 
-# postlinks
+# postlinks {#postlinks}
 
 wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz)
 gzip -d postlinks.sql.gz
@@ -87,9 +87,9 @@ psql &lt; postlinks.sql
 ```
 
 
-## 迁移数据
+## 迁移数据 {#migrating-data}
 
-### 实时复制（CDC）
+### 实时复制（CDC） {#real-time-replication-or-cdc}
 
 请参阅此[指南](/integrations/clickpipes/postgres)，为 PostgreSQL 配置 ClickPipes。该指南涵盖了多种不同类型的 Postgres 源实例。
 
@@ -125,7 +125,7 @@ ORDER BY id;
 
 完成设置后，ClickPipes 会开始将 PostgreSQL 中的所有数据迁移到 ClickHouse。根据网络状况和部署规模，对于 Stack Overflow 数据集，这通常只需要几分钟。
 
-### 手动批量加载与定期更新
+### 手动批量加载与定期更新 {#initial-bulk-load-with-periodic-updates}
 
 采用手动方式时，可以通过以下方法完成数据集的初始批量加载：
 

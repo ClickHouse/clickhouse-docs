@@ -7,9 +7,7 @@ title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-
-
-# Tuple(T1, T2, ...)
+# Tuple(T1, T2, ...) {#tuplet1-t2}
 
 それぞれが個別の[型](/sql-reference/data-types)を持つ要素からなるタプルです。Tuple には少なくとも 1 つの要素が含まれている必要があります。
 
@@ -17,9 +15,7 @@ doc_type: 'reference'
 
 タプルはクエリ結果として返されることがあります。この場合、JSON 以外のテキスト形式では、値は丸かっこ内でカンマ区切りになります。JSON 形式では、タプルは配列（角かっこ内）として出力されます。
 
-
-
-## タプルの作成
+## タプルの作成 {#creating-tuples}
 
 関数を使用してタプルを作成できます。
 
@@ -67,8 +63,7 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
 
-
-## データ型の自動判定
+## データ型の自動判定 {#data-type-detection}
 
 タプルをその場で作成する場合、ClickHouse はタプルの引数の値を保持できる最小の型として、その引数の型を推論します。値が [NULL](/operations/settings/formats#input_format_null_as_default) の場合、推論される型は [Nullable](../../sql-reference/data-types/nullable.md) になります。
 
@@ -84,8 +79,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 └───────────┴─────────────────────────────────┘
 ```
 
-
-## タプル要素の参照
+## タプル要素の参照 {#referring-to-tuple-elements}
 
 タプル要素は名前またはインデックスで参照できます。
 
@@ -111,8 +105,7 @@ SELECT a.2 FROM named_tuples; -- インデックスによる参照
 └────────────────────┘
 ```
 
-
-## Tuple による比較演算
+## Tuple による比較演算 {#comparison-operations-with-tuple}
 
 2 つのタプルは、左から右へ順に要素を比較していきます。最初のタプルの要素が 2 番目のタプルの対応する要素より大きい（または小さい）場合、最初のタプルは 2 番目のタプルより大きい（または小さい）とみなされます。そうでない場合（両方の要素が等しい場合）は、次の要素を比較します。
 

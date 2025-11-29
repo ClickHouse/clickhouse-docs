@@ -9,15 +9,15 @@ doc_type: 'guide'
 
 
 
-# Go 向けの chDB
+# Go 向けの chDB {#chdb-for-go}
 
 chDB-go は chDB 向けの Go バインディングを提供し、外部への依存関係なしに Go アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
 
 
-## インストール
+## インストール {#installation}
 
-### ステップ 1: libchdb のインストール
+### ステップ 1: libchdb のインストール {#install-libchdb}
 
 まず、chDB ライブラリをインストールします。
 
@@ -25,7 +25,7 @@ chDB-go は chDB 向けの Go バインディングを提供し、外部への�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ 2：chdb-go をインストールする
+### ステップ 2：chdb-go をインストールする {#install-chdb-go}
 
 Go パッケージをインストールします：
 
@@ -49,25 +49,25 @@ chDB-go には、簡単なクエリをすばやく実行するための CLI が�
 
 
 ```bash
-# シンプルなクエリ
+# シンプルなクエリ {#simple-query}
 ./chdb-go "SELECT 123"
 ```
 
 
-# インタラクティブモード
+# インタラクティブモード {#interactive-mode}
 ./chdb-go
 
 
 
-# 永続ストレージを使用したインタラクティブモード
+# 永続ストレージを使用したインタラクティブモード {#interactive-mode-with-persistent-storage}
 
 ./chdb-go --path /tmp/chdb
 
 ````
 
-### Goライブラリ - クイックスタート               
+### Goライブラリ - クイックスタート                {#quick-start}
 
-#### ステートレスクエリ                     
+#### ステートレスクエリ                      {#stateless-queries}
 
 シンプルな1回限りのクエリの場合:
 
@@ -89,7 +89,7 @@ func main() {
 }
 ````
 
-#### セッションを利用したステートフルなクエリ
+#### セッションを利用したステートフルなクエリ {#stateful-queries}
 
 状態を永続化する必要がある複雑なクエリ向け:
 
@@ -142,7 +142,7 @@ func main() {
 }
 ```
 
-#### SQL ドライバーインターフェース
+#### SQL ドライバーインターフェース {#sql-driver}
 
 chDB-go は、Go の `database/sql` インターフェースを実装しています：
 
@@ -181,7 +181,7 @@ func main() {
 }
 ```
 
-#### 大規模データセット向けストリーミングクエリ
+#### 大規模データセット向けストリーミングクエリ {#query-streaming}
 
 メモリに収まりきらない大規模なデータセットを処理するには、ストリーミングクエリを使用します。
 

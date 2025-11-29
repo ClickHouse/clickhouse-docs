@@ -20,7 +20,7 @@ import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# ガイド
+# ガイド {#guides}
 
 <ClickHouseSupportedBadge/>
 
@@ -39,13 +39,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
 
-## セットアップ
+## セットアップ {#setup}
 
 環境を準備するには、[dbt と ClickHouse アダプターのセットアップ](/integrations/dbt) セクションの手順に従ってください。
 
 **重要: 以下は python 3.9 環境で検証されています。**
 
-### ClickHouse の準備
+### ClickHouse の準備 {#prepare-clickhouse}
 
 dbt はリレーショナル性の高いデータのモデリングに優れています。例として、次のようなリレーショナルスキーマを持つ小さな IMDB データセットを用意しています。このデータセットは [relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) に由来します。これは dbt で一般的に使われるスキーマと比べると単純ですが、扱いやすいサンプルになっています。
 
@@ -672,7 +672,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 +------+-------------------+----------+------------------+------+---------+-------------------+
 ```
 
-### 内部動作
+### 内部動作 {#internals}
 
 上記の増分更新を実現するために実行されたステートメントは、ClickHouse のクエリログを参照することで確認できます。
 
@@ -694,7 +694,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 この戦略は、非常に大きなモデルでは問題が発生する可能性があります。詳細については [Limitations](/integrations/dbt#limitations) を参照してください。
 
-### Append Strategy（挿入のみモード）
+### Append Strategy（挿入のみモード） {#append-strategy-inserts-only-mode}
 
 インクリメンタルモデルにおける大規模データセットの制約を回避するために、アダプターは dbt の設定パラメータ `incremental_strategy` を使用します。これは `append` に設定できます。これを設定すると、更新された行はターゲットテーブル（`imdb_dbt.actor_summary`）に直接挿入され、一時テーブルは作成されません。
 注意: Append only モードでは、データが不変であるか、重複を許容できる必要があります。更新された行をサポートするインクリメンタルテーブルモデルが必要な場合、このモードは使用しないでください。
@@ -796,7 +796,7 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 この実行では、新しい行だけが直接 `imdb_dbt.actor_summary` テーブルに追加され、テーブルの作成は行われません。
 
-### 削除および挿入モード（実験的）
+### 削除および挿入モード（実験的） {#deleteinsert-mode-experimental}
 
 
 歴史的には、ClickHouse は非同期の [Mutations](/sql-reference/statements/alter/index.md) としてのみ、更新および削除を限定的にサポートしていました。これらは非常に I/O 負荷が高く、一般的には避けるべきです。
@@ -821,7 +821,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="軽量な delete インクリメンタル" />
 
-### insert&#95;overwrite mode (experimental)
+### insert&#95;overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 
 Performs the following steps:
 
@@ -840,7 +840,7 @@ This approach has the following advantages:
 <Image img={dbt_07} size="lg" alt="insert overwrite インクリメンタル" />
 
 
-## スナップショットの作成
+## スナップショットの作成 {#creating-a-snapshot}
 
 dbt のスナップショット機能を使用すると、更新可能なモデルに対する変更を時間の経過とともに記録できます。これにより、アナリストはモデルに対して任意時点のクエリを実行し、モデルの過去の状態を「遡って」確認できるようになります。これは、行が有効であった期間を記録する from 日付列および to 日付列を持つ [タイプ 2 のゆっくり変化する次元 (Slowly Changing Dimensions)](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) を使用して実現されます。この機能は ClickHouse アダプターでサポートされており、以下に示します。
 

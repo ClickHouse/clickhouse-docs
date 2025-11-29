@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedCount
+## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
 時系列において、時刻 `t` における指数減衰の累積値を返します。
 
@@ -51,7 +49,6 @@ FROM
 ```
 
 結果:
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-benchmark
+# clickhouse-benchmark {#clickhouse-benchmark}
 
 Подключается к серверу ClickHouse и многократно отправляет заданные запросы.
 
@@ -87,7 +87,7 @@ clickhouse-benchmark [keys] < queries_file;
 
 
 
-## Вывод
+## Вывод {#clickhouse-benchmark-output}
 
 По умолчанию `clickhouse-benchmark` выводит отчет по каждому интервалу `--delay`.
 
@@ -139,7 +139,7 @@ localhost:9000, запросов 10, QPS: 6.772, RPS: 67904487.440, MiB/с: 518.
 
 
 
-## Пример
+## Пример {#clickhouse-benchmark-example}
 
 ```bash
 $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhouse-benchmark --host=localhost --port=9001 --host=localhost --port=9000 -i 10

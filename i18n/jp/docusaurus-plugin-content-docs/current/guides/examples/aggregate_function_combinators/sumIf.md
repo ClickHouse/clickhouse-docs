@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 この例では、成功フラグ付きの売上データを保存するテーブルを作成し、
 `sumIf` を使用して成功したトランザクションの総売上金額を計算します。
@@ -55,7 +55,7 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### 価格方向別に出来高を計算する
+### 価格方向別に出来高を計算する {#calculate-trading-vol-price-direction}
 
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用して、
 2002 年前半における価格方向別の出来高を計算します。
@@ -90,7 +90,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 株式銘柄別の取引量を計算する
+### 株式銘柄別の取引量を計算する {#calculate-trading-volume}
 
 
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用し、

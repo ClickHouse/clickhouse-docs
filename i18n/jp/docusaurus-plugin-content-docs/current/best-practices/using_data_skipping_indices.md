@@ -51,7 +51,7 @@ ClickHouse は **データスキップインデックス** と呼ばれる強力
 Data Skipping Indices についてのより詳細なガイドは[こちら](/sql-reference/statements/alter/skipping-index)を参照してください。
 
 
-## 例
+## 例 {#example}
 
 次のように最適化されたテーブルを考えます。このテーブルには、Stack Overflow のデータが投稿 1 件につき 1 行で格納されています。
 

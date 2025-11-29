@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# Использование AI Chat в ClickHouse Cloud
+# Использование AI Chat в ClickHouse Cloud {#using-ai-chat-in-clickhouse-cloud}
 
 > В этом руководстве описывается, как включить и использовать функцию AI Chat в консоли ClickHouse Cloud.
 

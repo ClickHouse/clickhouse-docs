@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-## 从源码编译
+## 从源码编译 {#compile-from-source}
 
 要手动编译 ClickHouse，请按照 [Linux](/development/build.md) 或 [macOS](/development/build-osx.md) 的说明进行操作。
 

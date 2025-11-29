@@ -13,12 +13,12 @@ keywords: ['пример набора данных', 'tpch', 'бенчмарк',
 
 **Ссылки**
 
-- [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+* [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## Генерация и импорт данных
+## Генерация и импорт данных {#data-generation-and-import}
 
 Сначала клонируйте репозиторий TPC-H и скомпилируйте генератор данных:
 
@@ -57,7 +57,6 @@ make
 * Параметры подстановки заменены значениями для проверки запросов в разделах 2.1.x.4 спецификации.
 * В соответствии с разделом 1.4.2.1 определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию. Производительность запросов `SELECT` в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
 * В соответствии с разделом 1.3.1 мы используем собственные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, указанных в спецификации (например, `Identifier`, `Variable text, size N`). Единственный эффект этого — лучшая читаемость; типы данных SQL-92, генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
-
 
 ```sql
 CREATE TABLE nation (
@@ -169,7 +168,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 Вместо использования tpch-kit и самостоятельной генерации таблиц вы можете импортировать данные из общедоступного бакета S3. Перед этим обязательно
 создайте пустые таблицы, используя приведённые выше операторы `CREATE`.
 
-
 ```sql
 -- Коэффициент масштабирования 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -194,8 +192,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-
-## Запросы
+## Запросы {#queries}
 
 :::note
 Для получения корректных результатов в соответствии со стандартом SQL необходимо включить настройку [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls).
@@ -348,7 +345,6 @@ ORDER BY
 
 **Q5**
 
-
 ```sql
 SELECT
     n_name,
@@ -495,7 +491,6 @@ ORDER BY
 ```
 
 **Q9**
-
 
 ```sql
 SELECT
@@ -849,7 +844,6 @@ WHERE
 ```
 
 **Q20**
-
 
 ```sql
 SELECT

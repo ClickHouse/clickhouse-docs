@@ -11,11 +11,9 @@ keywords: ['動的なカラム選択', '正規表現', 'APPLY 修飾子', '高�
 
 ここでは、この機能の使い方を [New York taxis データセット](/docs/getting-started/example-datasets/nyc-taxi) を例に学びます。このデータセットは [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) でも参照できます。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen />
 
-
-
-## パターンに一致する列の選択
+## パターンに一致する列の選択 {#selecting-columns}
 
 NYC タクシーデータセットから `_amount` を含む列だけを選択したい、というよくあるシナリオから始めましょう。各列名を手作業で入力する代わりに、正規表現を指定した `COLUMNS` 式を使用できます。
 
@@ -64,8 +62,7 @@ LIMIT 3;
    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
 ```
 
-
-## 複数のパターンを選択する
+## 複数のパターンを選択する {#selecting-multiple-patterns}
 
 1つのクエリで複数のカラムパターンを組み合わせることができます。
 
@@ -89,8 +86,7 @@ LIMIT 5;
    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
 ```
 
-
-## すべてのカラムに関数を適用する
+## すべてのカラムに関数を適用する {#applying-functions}
 
 [`APPLY`](/sql-reference/statements/select) 修飾子を使用して、すべてのカラムに対して関数を適用することもできます。
 たとえば、これら各カラムの最大値を求めたい場合は、次のクエリを実行できます。
@@ -145,7 +141,6 @@ SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
 FROM nyc_taxi.trips;
 ```
 
-
 > [SQL Playground でこのクエリを試す](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
@@ -154,8 +149,7 @@ FROM nyc_taxi.trips;
    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-## 列の置き換え
+## 列の置き換え {#replacing-columns}
 
 ここまでは順調です。しかし、他の値はそのままにしておきつつ、特定の値だけを調整したいとします。たとえば、合計金額を 2 倍にし、MTA 税を 1.1 で割りたい場合です。このような場合は、[`REPLACE`](/sql-reference/statements/select) 修飾子を使用します。これにより、他の列はそのままにしておきながら、特定の列だけを置き換えることができます。
 
@@ -179,8 +173,7 @@ SELECT
    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
-
-## 列の除外
+## 列の除外 {#excluding-columns}
 
 [`EXCEPT`](/sql-reference/statements/select) 修飾子を使用してフィールドを除外することもできます。例えば、`tolls_amount` 列を除外するには、次のクエリを実行します。
 

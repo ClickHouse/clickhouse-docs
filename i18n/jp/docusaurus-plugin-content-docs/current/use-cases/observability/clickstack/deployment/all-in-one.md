@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['ClickStack', 'オブザーバビリティ', 'オールインワン', 'デプロイメント']
 ---
 
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -61,14 +61,14 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 
 </VerticalStepper>
 
-## データと設定の永続化
+## データと設定の永続化 {#persisting-data-and-settings}
 
 コンテナの再起動後もデータと設定を保持するには、前述の docker コマンドを変更し、パス `/data/db`、`/var/lib/clickhouse`、`/var/log/clickhouse-server` をマウントするようにします。例えば、次のようになります。
 
 ```shell
-# ディレクトリの存在を確認
+# ディレクトリの存在を確認 {#ensure-directories-exist}
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# パスをマウントするためにコマンドを変更
+# パスをマウントするためにコマンドを変更 {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -87,7 +87,7 @@ docker run \
 - **永続化されないストレージ:** すべてのデータは Docker ネイティブのオーバーレイファイルシステムを使用して保存されます。この構成は大規模なワークロードで十分な性能を発揮できず、コンテナが削除または再起動された場合、ユーザーが[必要なファイルパスをマウント](#persisting-data-and-settings)しない限り、データは失われます。
 - **コンポーネント分離の欠如:** すべてのコンポーネントが 1 つの Docker コンテナ内で実行されます。このため、コンポーネント単位でのスケーリングや監視ができず、任意の `cgroup` 制限がすべてのプロセスに対してグローバルに適用されます。その結果、コンポーネント間で CPU やメモリを取り合う可能性があります。
 
-## ポートのカスタマイズ
+## ポートのカスタマイズ {#customizing-ports-deploy}
 
 HyperDX Local が使用するアプリケーション (8080) や API (8000) のポートをカスタマイズする必要がある場合は、適切なポートをポートフォワーディングし、いくつかの環境変数を設定するように `docker run` コマンドを変更する必要があります。
 
@@ -98,7 +98,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hype
 ```
 
 
-## ClickHouse Cloud の使用
+## ClickHouse Cloud の使用 {#using-clickhouse-cloud}
 
 このディストリビューションは ClickHouse Cloud と組み合わせて使用できます。ローカルの ClickHouse インスタンスも引き続きデプロイされますが（使用はされません）、環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` を設定することで、OTel collector が ClickHouse Cloud インスタンスを使用するように構成できます。
 
@@ -117,7 +117,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 HyperDX UI に接続したら、[`Team Settings`](http://localhost:8080/team) に移動し、ClickHouse Cloud サービスへの接続を作成し、その後で必要なソースの設定を行います。フローの一例については[こちら](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
 
 
-## OpenTelemetry collector の設定
+## OpenTelemetry collector の設定 {#configuring-collector}
 
 必要に応じて OTel collector の設定を変更できます。詳細は [&quot;設定の変更&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 

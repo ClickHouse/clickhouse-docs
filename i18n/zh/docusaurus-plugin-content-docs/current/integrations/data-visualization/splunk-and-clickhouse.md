@@ -22,7 +22,7 @@ import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 将 Splunk 连接到 ClickHouse
+# 将 Splunk 连接到 ClickHouse {#connecting-splunk-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -83,7 +83,7 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 
 
 
-## 为 ClickHouse 配置 JDBC
+## 为 ClickHouse 配置 JDBC {#configure-jdbc-for-clickhouse}
 
 将 [ClickHouse JDBC 驱动程序](https://github.com/ClickHouse/clickhouse-java) 下载到 DB Connect Drivers 文件夹，例如：
 
@@ -150,7 +150,7 @@ ui_default_catalog = $database$
 
 
 
-## 创建仪表板
+## 创建仪表板 {#create-a-dashboard}
 
 现在来创建一个仪表板，结合使用 SQL 和功能强大的 Splunk Processing Language（SPL）。
 
@@ -195,7 +195,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 <Image img={splunk_10} size="lg" border alt="最终的 Splunk 仪表板，包含纽约市出租车数据的多种可视化图表" />
 
 
-## 时间序列数据
+## 时间序列数据 {#time-series-data}
 
 Splunk 提供了数百个内置函数，供仪表板用于时间序列数据的可视化和展示。此示例将结合 SQL 与 SPL，创建一个可在 Splunk 中处理时间序列数据的查询。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-## WKT
+## WKT {#wkt}
 
 さまざまな [Geo データ型](../../data-types/geo.md) から、WKT（Well Known Text）形式のジオメトリオブジェクトを返します。サポートされている WKT オブジェクトは次のとおりです。
 
@@ -76,11 +76,11 @@ MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,
 ```
 
 
-## readWKTMultiPolygon
+## readWKTMultiPolygon {#readwktmultipolygon}
 
 WKT（Well Known Text）形式の MultiPolygon 表現を MultiPolygon 型に変換します。
 
-### 例
+### 例 {#example}
 
 ```sql
 SELECT
@@ -93,20 +93,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters}
 
 `MULTIPOLYGON` で始まる文字列。
 
-### 戻り値
+### 戻り値 {#returned-value}
 
 MultiPolygon
 
 
-## readWKTPolygon
+## readWKTPolygon {#readwktpolygon}
 
 WKT (Well Known Text) 形式の MultiPolygon を Polygon 型に変換します。
 
-### 例
+### 例 {#example-1}
 
 ```sql
 SELECT
@@ -119,34 +119,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Polygon | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-1}
 
 先頭が `POLYGON` の文字列
 
-### 戻り値
+### 戻り値 {#returned-value-1}
 
 Polygon
 
 
-## readWKTPoint
+## readWKTPoint {#readwktpoint}
 
 ClickHouse の `readWKTPoint` 関数は、Well-Known Text (WKT) で表現された Point ジオメトリを解析し、ClickHouse の内部形式による Point 値を返します。
 
-### 構文
+### 構文 {#syntax}
 
 ```sql
 readWKTPoint(wkt_string)
 ```
 
-### 引数
+### 引数 {#arguments}
 
 * `wkt_string`: Point ジオメトリを表す入力の WKT 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-2}
 
 この関数は、ClickHouse における Point ジオメトリの内部表現を返します。
 
-### 例
+### 例 {#example-2}
 
 ```sql
 SELECT readWKTPoint('POINT (1.2 3.4)');
@@ -157,25 +157,25 @@ SELECT readWKTPoint('POINT (1.2 3.4)');
 ```
 
 
-## readWKTLineString
+## readWKTLineString {#readwktlinestring}
 
 LineString ジオメトリの Well-Known Text (WKT) 表現をパースし、ClickHouse の内部形式で返します。
 
-### 構文
+### 構文 {#syntax-1}
 
 ```sql
 readWKTLineString(wkt_string)
 ```
 
-### 引数
+### 引数 {#arguments-1}
 
 * `wkt_string`: LineString ジオメトリを表す入力 WKT 文字列。
 
-### 返り値
+### 返り値 {#returned-value-3}
 
 この関数は、LineString ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-3}
 
 ```sql
 SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
@@ -186,25 +186,25 @@ SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
 ```
 
 
-## readWKTMultiLineString
+## readWKTMultiLineString {#readwktmultilinestring}
 
 MultiLineString ジオメトリの Well-Known Text (WKT) 表現をパースし、ClickHouse の内部形式で返します。
 
-### 構文
+### 構文 {#syntax-2}
 
 ```sql
 readWKTMultiLineString(wkt_string)
 ```
 
-### 引数
+### 引数 {#arguments-2}
 
 * `wkt_string`: MultiLineString ジオメトリを表す入力用 WKT 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-4}
 
 この関数は、MultiLineString ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-4}
 
 ```sql
 SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6))');
@@ -215,25 +215,25 @@ SELECT readWKTMultiLineString('MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5, 6 6)
 ```
 
 
-## readWKTRing
+## readWKTRing {#readwktring}
 
 Polygon ジオメトリの Well-Known Text (WKT) 表現をパースし、ClickHouse の内部形式のリング（閉じた LineString）を返します。
 
-### 構文
+### 構文 {#syntax-3}
 
 ```sql
 readWKTRing(wkt_string)
 ```
 
-### 引数
+### 引数 {#arguments-3}
 
 * `wkt_string`: Polygon ジオメトリを表す入力 WKT 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-5}
 
 この関数は、リング（閉じた LineString）ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-5}
 
 ```sql
 SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
@@ -244,11 +244,11 @@ SELECT readWKTRing('POLYGON ((1 1, 2 2, 3 3, 1 1))');
 ```
 
 
-## polygonsWithinSpherical
+## polygonsWithinSpherical {#polygonswithinspherical}
 
 ある多角形が別の多角形の内側に完全に含まれているかどうかを判定し、その結果として true または false を返します。詳細は [https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/within/within&#95;2.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/within/within_2.html) を参照してください。
 
-### Example
+### Example {#example-6}
 
 ```sql
 SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -259,11 +259,11 @@ SELECT polygonsWithinSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879
 ```
 
 
-## readWKBMultiPolygon
+## readWKBMultiPolygon {#readwkbmultipolygon}
 
 WKB（Well-Known Binary）形式の MultiPolygon を MultiPolygon 型に変換します。
 
-### 例
+### 例 {#example-7}
 
 ```sql
 SELECT
@@ -276,20 +276,20 @@ SELECT
 | :----------- | :--------------------------------------------------------------------------------------------------------------- |
 | MultiPolygon | [[[(2,0),(10,0),(10,10),(0,10),(2,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]],[[(-10,-10),(-10,-9),(-9,10),(-10,-10)]]] |
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-2}
 
 `MULTIPOLYGON` で始まる文字列
 
-### 戻り値
+### 戻り値 {#returned-value-6}
 
 MultiPolygon
 
 
-## readWKBPolygon
+## readWKBPolygon {#readwkbpolygon}
 
 Well-Known Binary (WKB) 形式の MultiPolygon を Polygon 型に変換します。
 
-### 例
+### 例 {#example-8}
 
 ```sql
 SELECT
@@ -302,34 +302,34 @@ FORMAT Markdown
 | :------ | :------------------------------------ |
 | Polygon | [[(2,0),(10,0),(10,10),(0,10),(2,0)]] |
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-3}
 
 `POLYGON` で始まる文字列
 
-### 戻り値
+### 戻り値 {#returned-value-7}
 
 ポリゴン
 
 
-## readWKBPoint
+## readWKBPoint {#readwkbpoint}
 
 ClickHouse の `readWKBPoint` 関数は、Point ジオメトリの Well-Known Binary (WKB) 表現を解析し、ClickHouse の内部フォーマットで表現された Point を返します。
 
-### 構文
+### 構文 {#syntax-4}
 
 ```sql
 readWKBPoint(wkb_string)
 ```
 
-### 引数
+### 引数 {#arguments-4}
 
 * `wkb_string`: Point ジオメトリを表す入力 WKB 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-8}
 
 この関数は、Point ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-9}
 
 ```sql
 SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
@@ -340,25 +340,25 @@ SELECT readWKBPoint(unhex('0101000000333333333333f33f3333333333330b40'));
 ```
 
 
-## readWKBLineString
+## readWKBLineString {#readwkblinestring}
 
 LineString ジオメトリの Well-Known Binary (WKB) 表現を解析し、ClickHouse 内部形式で返します。
 
-### 構文
+### 構文 {#syntax-5}
 
 ```sql
 readWKBLineString(wkb_string)
 ```
 
-### 引数
+### 引数 {#arguments-5}
 
 * `wkb_string`: LineString ジオメトリを表す入力 WKB 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-9}
 
 この関数は、LineString ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-10}
 
 ```sql
 SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840000000000000f03f000000000000f03f'));
@@ -369,25 +369,25 @@ SELECT readWKBLineString(unhex('010200000004000000000000000000f03f000000000000f0
 ```
 
 
-## readWKBMultiLineString
+## readWKBMultiLineString {#readwkbmultilinestring}
 
 MultiLineString ジオメトリの Well-Known Binary (WKB) 表現を解析し、ClickHouse の内部形式で返します。
 
-### 構文
+### 構文 {#syntax-6}
 
 ```sql
 readWKBMultiLineString(wkb_string)
 ```
 
-### 引数
+### 引数 {#arguments-6}
 
 * `wkb_string`: MultiLineString ジオメトリを表す入力 WKB 文字列。
 
-### 戻り値
+### 戻り値 {#returned-value-10}
 
 この関数は、MultiLineString ジオメトリの ClickHouse 内部表現を返します。
 
-### 例
+### 例 {#example-11}
 
 ```sql
 SELECT readWKBMultiLineString(unhex('010500000002000000010200000003000000000000000000f03f000000000000f03f0000000000000040000000000000004000000000000008400000000000000840010200000003000000000000000000104000000000000010400000000000001440000000000000144000000000000018400000000000001840'));
@@ -397,18 +397,18 @@ SELECT readWKBMultiLineString(unhex('0105000000020000000102000000030000000000000
 [[(1,1),(2,2),(3,3)],[(4,4),(5,5),(6,6)]]
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-4}
 
-### 戻り値
+### 戻り値 {#returned-value-11}
 
 UInt8、`false` の場合は 0、`true` の場合は 1
 
 
-## polygonsDistanceSpherical
+## polygonsDistanceSpherical {#polygonsdistancespherical}
 
 一方の点が最初のポリゴンに属し、もう一方の点が別のポリゴンに属する場合に、これら2点間の最短距離を計算します。ここでの「球面」とは、座標を理想的な完全球の表面上の座標として解釈することを意味しますが、これは地球には当てはまりません。この種の座標系を使用すると実行速度は向上しますが、当然ながら精度は落ちます。
 
-### Example
+### Example {#example-12}
 
 ```sql
 SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -418,20 +418,20 @@ SELECT polygonsDistanceSpherical([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 0.24372872211133834
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-5}
 
 2 つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-12}
 
 Float64
 
 
-## polygonsDistanceCartesian
+## polygonsDistanceCartesian {#polygonsdistancecartesian}
 
 2つのポリゴン間の距離を計算します。
 
-### 例
+### 例 {#example-13}
 
 ```sql
 SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [[[(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)]]])
@@ -441,20 +441,20 @@ SELECT polygonsDistanceCartesian([[[(0, 0), (0, 0.1), (0.1, 0.1), (0.1, 0)]]], [
 14.000714267493642
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-6}
 
 2つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-13}
 
 Float64
 
 
-## polygonsEqualsCartesian
+## polygonsEqualsCartesian {#polygonsequalscartesian}
 
 2つのポリゴンが等しい場合に true を返します。
 
-### 例
+### 例 {#example-14}
 
 ```sql
 SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -464,20 +464,20 @@ SELECT polygonsEqualsCartesian([[[(1., 1.), (1., 4.), (4., 4.), (4., 1.)]]], [[[
 1
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-7}
 
 2 つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-14}
 
 UInt8、false の場合は 0、true の場合は 1
 
 
-## polygonsSymDifferenceSpherical
+## polygonsSymDifferenceSpherical {#polygonssymdifferencespherical}
 
 2 つのポリゴン間の空間集合論における対称差（XOR）を計算します
 
-### 例
+### 例 {#example-15}
 
 ```sql
 SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (-50., -50.), (-50., 50.), (50., 50.)], [(10., 10.), (10., 40.), (40., 40.), (40., 10.), (10., 10.)], [(-10., -10.), (-10., -40.), (-40., -40.), (-40., -10.), (-10., -10.)]], [[(-20., -20.), (-20., 20.), (20., 20.), (20., -20.), (-20., -20.)]])));
@@ -487,20 +487,20 @@ SELECT wkt(arraySort(polygonsSymDifferenceSpherical([[(50., 50.), (50., -50.), (
 MULTIPOLYGON(((-20 -10.3067,-10 -10,-10 -20.8791,-20 -20,-20 -10.3067)),((10 20.8791,20 20,20 10.3067,10 10,10 20.8791)),((50 50,50 -50,-50 -50,-50 50,50 50),(20 10.3067,40 10,40 40,10 40,10 20.8791,-20 20,-20 -10.3067,-40 -10,-40 -40,-10 -40,-10 -20.8791,20 -20,20 10.3067)))
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-8}
 
 Polygons
 
-### 戻り値
+### 戻り値 {#returned-value-15}
 
 MultiPolygon
 
 
-## polygonsSymDifferenceCartesian
+## polygonsSymDifferenceCartesian {#polygonssymdifferencecartesian}
 
 `polygonsSymDifferenceSpherical` と同様ですが、座標はデカルト座標系で表されます。こちらのほうが実際の地球のモデルにより近くなります。
 
-### 例
+### 例 {#example-16}
 
 ```sql
 SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6), (2.6, 2), (2.9, 1), (3, 0), (0, 0)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -510,20 +510,20 @@ SELECT wkt(polygonsSymDifferenceCartesian([[[(0, 0), (0, 3), (1, 2.9), (2, 2.6),
 MULTIPOLYGON(((1 2.9,1 1,2.9 1,3 0,0 0,0 3,1 2.9)),((1 2.9,1 4,4 4,4 1,2.9 1,2.6 2,2 2.6,1 2.9)))
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-9}
 
 Polygons
 
-### 戻り値
+### 戻り値 {#returned-value-16}
 
 MultiPolygon
 
 
-## polygonsIntersectionSpherical
+## polygonsIntersectionSpherical {#polygonsintersectionspherical}
 
 多角形同士の共通部分（AND）を計算します。座標は球面座標系で表されます。
 
-### 例
+### 例 {#example-17}
 
 ```sql
 SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 6)), b), a), polygonsIntersectionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]])))
@@ -533,20 +533,20 @@ SELECT wkt(arrayMap(a -> arrayMap(b -> arrayMap(c -> (round(c.1, 6), round(c.2, 
 MULTIPOLYGON(((4.3666 50.8434,4.36024 50.8436,4.34956 50.8536,4.35268 50.8567,4.36794 50.8525,4.3666 50.8434)))
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-10}
 
 Polygons
 
-### 戻り値
+### 戻り値 {#returned-value-17}
 
 MultiPolygon
 
 
-## polygonsWithinCartesian
+## polygonsWithinCartesian {#polygonswithincartesian}
 
 2 つ目のポリゴンが 1 つ目のポリゴンの内部にある場合に true を返します。
 
-### 例
+### 例 {#example-18}
 
 ```sql
 SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -556,20 +556,20 @@ SELECT polygonsWithinCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[
 1
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-11}
 
 2つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-18}
 
 UInt8。false の場合は 0、true の場合は 1
 
 
-## polygonsIntersectCartesian
+## polygonsIntersectCartesian {#polygonsintersectcartesian}
 
 2 つの多角形が交差している（領域または境界のいずれかを少しでも共有している）場合に true を返します。
 
-### 例
+### 例 {#example-intersects-cartesian}
 
 ```sql
 SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]])
@@ -579,20 +579,20 @@ SELECT polygonsIntersectCartesian([[[(2., 2.), (2., 3.), (3., 3.), (3., 2.)]]], 
 1
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-intersects-cartesian}
 
 2つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-intersects-cartesian}
 
 UInt8型。偽の場合は 0、真の場合は 1
 
 
-## polygonsIntersectSpherical
+## polygonsIntersectSpherical {#polygonsintersectspherical}
 
 2 つのポリゴンが交差（共通の領域または境界を共有）する場合に true を返します。参照 [https://www.boost.org/doc/libs/1&#95;62&#95;0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html](https://www.boost.org/doc/libs/1_62_0/libs/geometry/doc/html/geometry/reference/algorithms/intersects.html)
 
-### 例
+### 例 {#example-intersects-spherical}
 
 ```sql
 SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]);
@@ -602,22 +602,22 @@ SELECT polygonsIntersectSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 1
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-intersects-spherical}
 
 2 つのポリゴン
 
-### 戻り値
+### 戻り値 {#returned-value-intersects-spherical}
 
 UInt8 型。偽なら 0、真なら 1。
 
 
-## polygonConvexHullCartesian
+## polygonConvexHullCartesian {#polygonconvexhullcartesian}
 
 凸包を計算します。[リファレンス](https://www.boost.org/doc/libs/1_61_0/libs/geometry/doc/html/geometry/reference/algorithms/convex_hull.html)
 
 座標はデカルト座標系で指定します。
 
-### 例
+### 例 {#example-19}
 
 ```sql
 SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.), (2., 3.)]]]))
@@ -627,20 +627,20 @@ SELECT wkt(polygonConvexHullCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.),
 POLYGON((0 0,0 5,5 5,5 0,0 0))
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-12}
 
 MultiPolygon
 
-### 戻り値
+### 戻り値 {#returned-value-19}
 
 Polygon
 
 
-## polygonAreaSpherical
+## polygonAreaSpherical {#polygonareaspherical}
 
 球面上の多角形の面積を計算します。
 
-### 例
+### 例 {#example-20}
 
 ```sql
 SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]), 14)
@@ -650,20 +650,20 @@ SELECT round(polygonAreaSpherical([[[(4.346693, 50.858306), (4.367945, 50.852455
 9.387704e-8
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-13}
 
 Polygon
 
-### 戻り値
+### 戻り値 {#returned-value-20}
 
 Float
 
 
-## polygonsUnionSpherical
+## polygonsUnionSpherical {#polygonsunionspherical}
 
 和集合（論理和 / OR）を計算します。
 
-### 例
+### 例 {#example-21}
 
 ```sql
 SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535879), (4.3602419, 50.8435626), (4.3830299, 50.8428851), (4.3904543, 50.8564867), (4.3613148, 50.8651279)]]], [[[(4.346693, 50.858306), (4.367945, 50.852455), (4.366227, 50.840809), (4.344961, 50.833264), (4.338074, 50.848677), (4.346693, 50.858306)]]]))
@@ -673,11 +673,11 @@ SELECT wkt(polygonsUnionSpherical([[[(4.3613577, 50.8651821), (4.349556, 50.8535
 MULTIPOLYGON(((4.36661 50.8434,4.36623 50.8408,4.34496 50.8333,4.33807 50.8487,4.34669 50.8583,4.35268 50.8567,4.36136 50.8652,4.36131 50.8651,4.39045 50.8565,4.38303 50.8429,4.36661 50.8434)))
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-14}
 
 Polygons
 
-### 戻り値
+### 戻り値 {#returned-value-21}
 
 MultiPolygon
 
@@ -720,11 +720,11 @@ SELECT round(polygonPerimeterSpherical([(30.010654, -15.646227), (30.050238, -15
 
 
 
-## polygonsIntersectionCartesian
+## polygonsIntersectionCartesian {#polygonsintersectioncartesian}
 
 多角形同士の交差領域を計算します。
 
-### 例
+### 例 {#example-23}
 
 ```sql
 SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1.), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -734,20 +734,20 @@ SELECT wkt(polygonsIntersectionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 
 MULTIPOLYGON(((1 2.9,2 2.6,2.6 2,2.9 1,1 1,1 2.9)))
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-16}
 
 Polygons
 
-### 戻り値
+### 戻り値 {#returned-value-23}
 
 MultiPolygon
 
 
-## polygonAreaCartesian
+## polygonAreaCartesian {#polygonareacartesian}
 
 多角形の面積を計算します。
 
-### 例
+### 例 {#example-24}
 
 ```sql
 SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -757,20 +757,20 @@ SELECT polygonAreaCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 25
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-17}
 
 Polygon
 
-### 戻り値
+### 戻り値 {#returned-value-24}
 
 Float64
 
 
-## polygonPerimeterCartesian
+## polygonPerimeterCartesian {#polygonperimetercartesian}
 
 多角形の周長を計算します。
 
-### 例
+### 例 {#example-25}
 
 ```sql
 SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
@@ -780,20 +780,20 @@ SELECT polygonPerimeterCartesian([[[(0., 0.), (0., 5.), (5., 5.), (5., 0.)]]])
 15
 ```
 
-### 入力パラメーター
+### 入力パラメーター {#input-parameters-18}
 
 Polygon
 
-### 戻り値
+### 戻り値 {#returned-value-25}
 
 Float64
 
 
-## polygonsUnionCartesian
+## polygonsUnionCartesian {#polygonsunioncartesian}
 
 多角形の和集合を計算します。
 
-### 例
+### 例 {#example-26}
 
 ```sql
 SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (2.6, 2.), (2.9, 1), (3., 0.), (0., 0.)]]], [[[(1., 1.), (1., 4.), (4., 4.), (4., 1.), (1., 1.)]]]))
@@ -803,11 +803,11 @@ SELECT wkt(polygonsUnionCartesian([[[(0., 0.), (0., 3.), (1., 2.9), (2., 2.6), (
 MULTIPOLYGON(((1 2.9,1 4,4 4,4 1,2.9 1,3 0,0 0,0 3,1 2.9)))
 ```
 
-### 入力パラメータ
+### 入力パラメータ {#input-parameters-19}
 
 Polygons
 
-### 返される値
+### 返される値 {#returned-value-26}
 
 MultiPolygon
 

@@ -249,7 +249,7 @@ docker run -d --name clickstack-demo \
 
 将指标直接加载到 ClickHouse：
 ```bash
-# 加载 gauge 指标（分区数量、队列大小、延迟、consumer lag）
+# 加载 gauge 指标（分区数量、队列大小、延迟、consumer lag） {#send-test-messages}
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
@@ -350,7 +350,7 @@ echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset 
 ```
 
 
-#### 身份验证错误
+#### 身份验证错误 {#created-dashboard}
 
 如果您看到 `Authorization failed` 或 `401 Unauthorized`：
 
@@ -379,7 +379,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-ser
 ```
 
 
-#### 网络连接问题
+#### 网络连接问题 {#no-metrics}
 
 如果 JMX 导出器的日志显示 `Connection refused`：
 
@@ -393,7 +393,7 @@ docker network inspect <网络名称>
 测试连接：
 
 ```bash
-# 从 JMX 导出器到 ClickStack
+# 从 JMX 导出器到 ClickStack {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 

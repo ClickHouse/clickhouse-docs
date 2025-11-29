@@ -34,9 +34,9 @@ doc_type: 'guide'
 
 
 
-## 設定とエスケープ規則
+## 設定とエスケープ規則 {#settings-and-escaping-rules}
 
-### format&#95;template&#95;row
+### format&#95;template&#95;row {#format_template_row}
 
 `format_template_row` 設定は、次の構文で行用のフォーマット文字列が記述されたファイルへのパスを指定します。
 
@@ -88,11 +88,11 @@ Where:
 検索フレーズ: 'bathroom interior design'、件数: 2166、広告単価: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter
+### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
 
 `format_template_rows_between_delimiter` 設定は、行と行の間に出力（または入力として期待）される区切り文字列を指定します。最後の行を除くすべての行の後に出力され、デフォルトは `\n` です。
 
-### format&#95;template&#95;resultset
+### format&#95;template&#95;resultset {#format_template_resultset}
 
 `format_template_resultset` 設定は、結果セット用のフォーマット文字列を含むファイルへのパスを指定します。
 
@@ -133,11 +133,11 @@ Where:
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 まずは `Template` 形式の利用例として、データの選択と挿入の 2 つのケースを見ていきます。
 
-### データの選択
+### データの選択 {#selecting-data}
 
 ```sql
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
@@ -186,7 +186,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 </html>
 ```
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 ```text
 ヘッダー
@@ -212,7 +212,7 @@ FORMAT Template
 プレースホルダー内の `PageViews`、`UserID`、`Duration` および `Sign` は、テーブル内の列名です。行中の `Useless field` 以降の値と、サフィックス中の `\nTotal rows:` 以降の値は無視されます。
 入力データ内のすべての区切り文字は、指定されたフォーマット文字列内の区切り文字と厳密に一致している必要があります。
 
-### インライン指定
+### インライン指定 {#in-line-specification}
 
 Markdown テーブルを手作業で整形するのにうんざりしていませんか？この例では、`Template` フォーマットとインライン指定の設定を使って、簡単なタスクをどのように実現できるかを見ていきます。ここでは、`system.formats` テーブルからいくつかの ClickHouse フォーマット名を `SELECT` し、それらを Markdown テーブルとして整形します。これは、`Template` フォーマットと `format_template_row_format` および `format_template_resultset_format` 設定を使うことで容易に実現できます。
 

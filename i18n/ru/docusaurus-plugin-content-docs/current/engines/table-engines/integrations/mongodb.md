@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличный движок MongoDB
+# Табличный движок MongoDB {#mongodb-table-engine}
 
 Табличный движок MongoDB — это движок только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -61,7 +61,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `oid_columns` | Список имён столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
 
 
-## Сопоставление типов
+## Сопоставление типов {#types-mappings}
 
 | MongoDB                 | ClickHouse                                                                           |
 | ----------------------- | ------------------------------------------------------------------------------------ |
@@ -78,7 +78,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 Если ключ не найден в документе MongoDB (например, имя столбца не совпадает), будет вставлено значение по умолчанию или `NULL` (если столбец допускает значения `NULL`).
 
-### OID
+### OID {#oid}
 
 Если вы хотите, чтобы `String` обрабатывался как `oid` в условии WHERE, просто укажите имя столбца в последнем аргументе движка таблицы.
 Это может понадобиться при выборке записи по столбцу `_id`, который по умолчанию имеет тип `oid` в MongoDB.
@@ -132,7 +132,7 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 ```
 
 
-## Поддерживаемые предложения
+## Поддерживаемые предложения {#supported-clauses}
 
 Поддерживаются только запросы с простыми выражениями (например, `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`).
 Такие выражения переводятся в язык запросов MongoDB и выполняются на стороне сервера.
@@ -158,7 +158,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 :::
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Предположим, что в MongoDB загружен набор данных [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix).
 

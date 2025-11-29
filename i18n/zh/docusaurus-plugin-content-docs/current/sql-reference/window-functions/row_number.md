@@ -7,7 +7,7 @@ title: 'row_number'
 doc_type: 'reference'
 ---
 
-# row&#95;number
+# row&#95;number {#row&#95;number}
 
 对其所在分区内的当前行进行编号，从 1 开始。
 

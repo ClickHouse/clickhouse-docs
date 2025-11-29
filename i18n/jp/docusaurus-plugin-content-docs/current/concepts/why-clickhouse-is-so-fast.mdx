@@ -18,7 +18,7 @@ doc_type: 'guide'
 
 ## ストレージ層：同時に行われる INSERT は互いに独立している \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 ClickHouse では、各テーブルは複数の「テーブルパーツ」から構成されます。ユーザーがテーブルにデータを挿入するたび（INSERT 文）に、新しい [part](/parts) が作成されます。クエリは、クエリの実行開始時点で存在するすべてのテーブルパーツに対して常に実行されます。
 
@@ -30,7 +30,7 @@ ClickHouse では、各テーブルは複数の「テーブルパーツ」から
 
 ## ストレージレイヤー：同時実行される INSERT と SELECT の分離 \{#storage-layer-concurrent-inserts-and-selects-are-isolated\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 INSERT は SELECT クエリから完全に分離されており、挿入されたデータパーツのマージ処理は、同時実行中のクエリに影響を与えることなくバックグラウンドで行われます。
 
@@ -38,15 +38,15 @@ INSERT は SELECT クエリから完全に分離されており、挿入され�
 
 ## ストレージ層: マージ時の計算 \{#storage-layer-merge-time-computation\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 他のデータベースとは異なり、ClickHouse はすべての付加的なデータ変換処理をバックグラウンドの [merge](/merges) プロセス中に実行することで、データ書き込みを軽量かつ効率的に保っています。これには次のようなものがあります：
 
-- **Replacing merge**: 入力パーツ内の行について、最新バージョンのみを保持し、それ以外のすべての行バージョンを破棄します。Replacing merge は、マージ時に行うクリーンアップ処理と考えることができます。
+* **Replacing merge**: 入力パーツ内の行について、最新バージョンのみを保持し、それ以外のすべての行バージョンを破棄します。Replacing merge は、マージ時に行うクリーンアップ処理と考えることができます。
 
-- **Aggregating merge**: 入力パーツ内の中間集約状態を結合して、新しい集約状態を作成します。一見すると理解が難しそうに見えますが、実際にはインクリメンタルな集約を実装しているだけです。
+* **Aggregating merge**: 入力パーツ内の中間集約状態を結合して、新しい集約状態を作成します。一見すると理解が難しそうに見えますが、実際にはインクリメンタルな集約を実装しているだけです。
 
-- **TTL (time-to-live) merge**: 特定の時間ベースのルールに基づいて、行を圧縮・移動・削除します。
+* **TTL (time-to-live) merge**: 特定の時間ベースのルールに基づいて、行を圧縮・移動・削除します。
 
 これらの変換のポイントは、ユーザークエリの実行時点からマージの実行時点へと処理（計算）を移すことです。これは次の 2 つの理由で重要です。
 
@@ -58,7 +58,7 @@ INSERT は SELECT クエリから完全に分離されており、挿入され�
 
 ## ストレージ層: データプルーニング \{#storage-layer-data-pruning\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 実際には、多くのクエリは繰り返し実行されます。つまり、定期的な間隔で、まったく同じか、わずかな変更（例: パラメータ値のみ変更）だけを加えて実行されます。同じ、あるいは類似したクエリを何度も実行することで、インデックスを追加したりデータを再編成し、頻出クエリがより高速にアクセスできるようにすることができます。このアプローチは「データプルーニング」とも呼ばれ、ClickHouse はそのために次の 3 つの手法を提供しています。
 
@@ -74,7 +74,7 @@ INSERT は SELECT クエリから完全に分離されており、挿入され�
 
 ## ストレージレイヤー: データ圧縮 \{#storage-layer-data-compression\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 これに加えて、ClickHouse のストレージレイヤーは、生のテーブルデータをさまざまなコーデックを用いて追加で（かつオプションで）圧縮します。
 
@@ -88,7 +88,7 @@ INSERT は SELECT クエリから完全に分離されており、挿入され�
 
 ## 最先端のクエリ処理レイヤー \{#state-of-the-art-query-processing-layer\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 最後に、ClickHouse はベクトル化クエリ処理レイヤーを採用しており、クエリ実行を可能な限り並列化することで、最大限の速度と効率を得るためにすべてのリソースを活用します。
 
@@ -102,11 +102,11 @@ INSERT は SELECT クエリから完全に分離されており、挿入され�
 
 ## 細部まで徹底したこだわり \{#meticulous-attention-to-detail\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-> **「ClickHouse は freak system だ ― 君たちはハッシュテーブルを 20 種類も持っている。ほとんどのシステムは 1 種類しか持たないのに、君たちはこんなに素晴らしいものをたくさん持っている」** **...** **「ClickHouse が驚異的なパフォーマンスを発揮できるのは、こうした特化コンポーネントを数多く備えているからだ」** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+> **「ClickHouse は freak system だ ― 君たちはハッシュテーブルを 20 種類も持っている。ほとんどのシステムは 1 種類しか持たないのに、君たちはこんなに素晴らしいものをたくさん持っている」** **...** **「ClickHouse が驚異的なパフォーマンスを発揮できるのは、こうした特化コンポーネントを数多く備えているからだ」** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is\&t=3579s)
 
-ClickHouse を[際立たせている](https://www.youtube.com/watch?v=CAS2otEoerM)のは、低レベルな最適化への徹底したこだわりです。単に動作するデータベースを作ることと、多様なクエリタイプ、データ構造、分布、インデックス構成にわたってスピードを出せるように設計・実装することとは別物です。この「[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)」的な職人芸が真価を発揮するのは、まさにこの後者の領域です。
+ClickHouse を[際立たせている](https://www.youtube.com/watch?v=CAS2otEoerM)のは、低レベルな最適化への徹底したこだわりです。単に動作するデータベースを作ることと、多様なクエリタイプ、データ構造、分布、インデックス構成にわたってスピードを出せるように設計・実装することとは別物です。この「[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU\&t=3579)」的な職人芸が真価を発揮するのは、まさにこの後者の領域です。
 
 **ハッシュテーブル。** 例としてハッシュテーブルを考えてみましょう。ハッシュテーブルは、結合や集約で用いられる中核的なデータ構造です。プログラマとしては、次のような設計判断を検討する必要があります。
 
@@ -144,4 +144,4 @@ ClickHouseのCTOであり開発者である Alexey Milovidov がこの論文を�
 その後に行われたQ&amp;Aセッションは、すぐに時間切れになってしまいました。
 発表の録画は以下から視聴できます。
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

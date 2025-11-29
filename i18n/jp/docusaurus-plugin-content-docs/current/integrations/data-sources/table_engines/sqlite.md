@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['sqlite', '組み込みデータベース', '統合', 'データソース', 'ファイルデータベース']
 ---
 
-import SQLiteEngine from '@site/docs/engines/table-engines/integrations/sqlite.md';
+import SQLiteEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/sqlite.md';
 
 <SQLiteEngine />

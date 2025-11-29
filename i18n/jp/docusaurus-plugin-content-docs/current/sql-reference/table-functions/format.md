@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# format テーブル関数
+# format テーブル関数 {#format-table-function}
 
 指定された入力フォーマットに従って、引数からデータをパースします。`structure` 引数が指定されていない場合は、データから自動的に抽出されます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 format(format_name, [structure], data)
@@ -36,7 +36,7 @@ format(format_name, [structure], data)
 
 
 
-## 例
+## 例 {#examples}
 
 `structure` 引数なしの場合:
 

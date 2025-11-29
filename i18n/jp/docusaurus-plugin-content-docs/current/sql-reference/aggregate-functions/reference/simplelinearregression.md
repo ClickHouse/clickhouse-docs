@@ -6,7 +6,7 @@ title: 'simpleLinearRegression'
 doc_type: 'reference'
 ---
 
-# simpleLinearRegression
+# simpleLinearRegression {#simplelinearregression}
 
 単回帰（1次元の線形回帰）を実行します。
 
