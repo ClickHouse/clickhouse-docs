@@ -34,6 +34,7 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
 * Vector がインストールされていること
 
 <VerticalStepper headerLevel="h2">
+
 ## データベースとテーブルを作成する {#1-create-a-database-and-table}
 
 ログイベントを保存するためのテーブルを定義します。

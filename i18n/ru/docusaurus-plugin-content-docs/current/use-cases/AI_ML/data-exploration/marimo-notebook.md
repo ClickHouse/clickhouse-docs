@@ -39,7 +39,6 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 Мы будем использовать набор данных UK Property Price, который доступен в ClickHouse Cloud как один из стартовых наборов данных.
 Он содержит данные о ценах, по которым дома продавались в Соединённом Королевстве с 1995 по 2024 год.
 
-
 ## Настройка {#setup}
 
 ### Загрузка набора данных {#loading-the-dataset}
@@ -97,7 +96,6 @@ marimo edit clickhouse_exploration.py
 
 Ноутбуки Marimo представляют собой обычные файлы Python, поэтому их легко размещать в системах контроля версий и делиться ими с другими.
 
-
 ## Установка зависимостей {#installing-dependencies}
 
 В новой ячейке импортируйте необходимые пакеты:
@@ -124,7 +122,6 @@ result
 Под ячейкой, которую вы только что запустили, должен появиться результат:
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
-
 
 ## Исследование данных {#exploring-the-data}
 
@@ -243,7 +240,6 @@ df_reactive
 Вы можете переместить диаграмму выше динамического датафрейма, чтобы она располагалась
 под ячейкой с выпадающим списком.
 
-
 ```python
 fig_reactive = px.line(
     df_reactive,
@@ -304,7 +300,7 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# Создадим интерактивную диаграмму размаха
+# Создадим интерактивную диаграмму размаха {#create-an-interactive-box-plot}
 fig_box = go.Figure()
 
 fig_box.add_trace(
@@ -335,7 +331,6 @@ fig_box
 При перемещении ползунка график будет автоматически обновляться благодаря реактивному выполнению Marimo:
 
 <Image size="md" img={image_8} alt="Динамический график Marimo"/>
-
 
 ## Итоги {#summary}
 

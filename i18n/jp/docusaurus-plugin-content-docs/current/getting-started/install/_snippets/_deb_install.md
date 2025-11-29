@@ -1,35 +1,30 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 # Debian/UbuntuへのClickHouseのインストール {#install-from-deb-packages}
 
 > **Debian**または**Ubuntu**では、公式のプリコンパイル済み`deb`パッケージの使用を推奨します。
 
 <VerticalStepper>
 
-
 ## Debian リポジトリの設定 {#setup-the-debian-repository}
 
 ClickHouse をインストールするには、次のコマンドを実行します。
 
-
-
 ```bash
-# 前提パッケージをインストール
+# 前提パッケージをインストール {#install-prerequisite-packages}
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# ClickHouse の GPG キーをダウンロードしてキーリングに保存する
+# ClickHouse の GPG キーをダウンロードしてキーリングに保存する {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# システムのアーキテクチャを取得する
+# システムのアーキテクチャを取得する {#get-the-system-architecture}
 ARCH=$(dpkg --print-architecture)
 
-# ClickHouse リポジトリを apt のソースリストに追加する
+# ClickHouse リポジトリを apt のソースリストに追加する {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# apt パッケージリストを更新する
+# apt パッケージリストを更新する {#update-apt-package-lists}
 sudo apt-get update
 ```
 
@@ -40,38 +35,36 @@ sudo apt-get update
 <summary>debパッケージをインストールする旧ディストリビューション方式</summary>
 
 ```bash
-# 前提パッケージのインストール
+# 前提パッケージのインストール {#install-prerequisite-packages}
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# パッケージの認証に使用する ClickHouse の GPG キーを追加する
+# パッケージの認証に使用する ClickHouse の GPG キーを追加する {#add-the-clickhouse-gpg-key-to-authenticate-packages}
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# APT のソースリストに ClickHouse リポジトリを追加する
+# APT のソースリストに ClickHouse リポジトリを追加する {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
 
-# apt パッケージリストを更新
+# apt パッケージリストを更新 {#update-apt-package-lists}
 sudo apt-get update
 
-# ClickHouse サーバーおよびクライアントのパッケージをインストールする
+# ClickHouse サーバーおよびクライアントのパッケージをインストールする {#install-clickhouse-server-and-client-packages}
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# ClickHouse サーバーのサービスを起動する
+# ClickHouse サーバーのサービスを起動する {#start-the-clickhouse-server-service}
 sudo service clickhouse-server start
 
-# ClickHouse コマンドラインクライアントを起動する
+# ClickHouse コマンドラインクライアントを起動する {#launch-the-clickhouse-command-line-client}
 clickhouse-client # パスワードを設定している場合は "clickhouse-client --password" を使用します。
 ```
 
 </details>
-
 
 ## ClickHouse サーバーとクライアントのインストール {#install-clickhouse-server-and-client}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
-
 
 ## ClickHouse を起動する {#start-clickhouse-server}
 
@@ -93,7 +86,6 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-
 ## スタンドアロン構成の ClickHouse Keeper をインストールする {#install-standalone-clickhouse-keeper}
 
 :::tip
@@ -108,7 +100,6 @@ ClickHouse Server に ClickHouse Keeper が同梱されているため、ClickHo
 sudo apt-get install -y clickhouse-keeper
 ```
 
-
 ## ClickHouse Keeper を有効化して起動する {#enable-and-start-clickhouse-keeper}
 
 ```bash
@@ -118,7 +109,6 @@ sudo systemctl status clickhouse-keeper
 ```
 
 </VerticalStepper>
-
 
 ## パッケージ {#packages}
 

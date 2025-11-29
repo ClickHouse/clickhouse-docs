@@ -43,7 +43,6 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
-
 # SQL コンソール {#sql-console}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
@@ -75,8 +74,6 @@ ClickHouse インスタンスに含まれるテーブルの概要は、左側の
 Cell Inspector（セルインスペクター）ツールを使用すると、単一のセルに含まれる大量のデータを表示できます。開くには、セルを右クリックし、「Inspect Cell」を選択します。セルインスペクターの内容は、インスペクターウィンドウ右上隅のコピーアイコンをクリックすることでコピーできます。
 
 <Image img={inspecting_cell_content} size="md" alt="セル内容の検査" />
-
-
 
 ## テーブルのフィルタリングとソート {#filtering-and-sorting-tables}
 
@@ -121,8 +118,6 @@ SQL コンソールは、設定したソート条件とフィルタ条件をワ�
 :::
 
 SQL コンソールでのクエリの実行方法については、(link) クエリドキュメントを参照してください。
-
-
 
 ## クエリの作成と実行 {#creating-and-running-a-query}
 
@@ -220,13 +215,9 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 ### クエリへのリンク（パーマリンク） {#linking-to-a-query-permalinks}
 
-
-
 保存されたクエリにはパーマリンクも付与されるため、共有クエリへのリンクを送受信して、直接開くことができます。
 
 クエリに含まれるパラメータの値は、自動的に保存されたクエリの URL にクエリパラメータとして追加されます。たとえば、クエリに `{start_date: Date}` と `{end_date: Date}` パラメータが含まれている場合、パーマリンクは次のようになります: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`。
-
-
 
 ## 高度なクエリ機能 {#advanced-querying-features}
 
@@ -255,8 +246,6 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 クエリ結果セットは、SQL コンソールから直接 CSV 形式に簡単にエクスポートできます。実行するには、結果ペインツールバー右側にある `•••` メニューを開き、「Download as CSV」を選択します。
 
 <Image img={download_as_csv} size="md" alt="CSV としてダウンロード" />
-
-
 
 ## クエリデータの可視化 {#visualizing-query-data}
 

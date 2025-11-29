@@ -12,7 +12,6 @@ keywords: ['apache beam', 'ストリーム処理', 'バッチ処理', 'JDBC コ�
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Apache Beam と ClickHouse の統合 {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -20,14 +19,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 **Apache Beam** は、バッチ処理およびストリーミング（連続）データ処理パイプラインの定義と実行を可能にする、オープンソースの統一プログラミングモデルです。Apache Beam の柔軟性は、ETL（Extract, Transform, Load）処理から複雑なイベント処理、リアルタイム分析まで、幅広いデータ処理シナリオをサポートできる点にあります。
 この統合では、基盤となるデータ書き込みレイヤーとして、ClickHouse の公式 [JDBC connector](https://github.com/ClickHouse/clickhouse-java) を活用します。
 
-
-
 ## インテグレーションパッケージ {#integration-package}
 
 Apache Beam と ClickHouse を統合するために必要なインテグレーションパッケージは、[Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) の一部として保守および開発されています。これは、多くの一般的なデータストレージシステムおよびデータベース向けのインテグレーション用バンドルです。
 `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` の実装は、[Apache Beam リポジトリ](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse) 内にあります。
-
-
 
 ## Apache Beam ClickHouse パッケージのセットアップ {#setup-of-the-apache-beam-clickhouse-package}
 
@@ -106,7 +101,6 @@ public class Main {
 
 ```
 
-
 ## サポートされているデータ型 {#supported-data-types}
 
 | ClickHouse                         | Apache Beam                | サポート有無 | 備考                                                                                                                                     |
@@ -148,16 +142,12 @@ public class Main {
 | `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | `true` の場合、挿入操作に対して重複排除を有効にします。  |
 | `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 対象の ClickHouse テーブルのスキーマ。                   |
 
-
-
 ## 制限事項 {#limitations}
 
 コネクタを使用する際は、次の制限事項に注意してください:
 * 現時点では Sink 操作のみがサポートされています。コネクタは Source 操作をサポートしていません。
 * ClickHouse は、`ReplicatedMergeTree` またはその上に構築された `Distributed` テーブルへの挿入時に重複排除を行います。レプリケーションがない場合、通常の MergeTree への挿入では、挿入が失敗してから再試行が成功した場合に重複が発生する可能性があります。ただし、各ブロックはアトミックに挿入され、ブロックサイズは `ClickHouseIO.Write.withMaxInsertBlockSize(long)` を使用して構成できます。重複排除は、挿入されるブロックのチェックサムを利用して実現されます。重複排除の詳細については、[Deduplication](/guides/developer/deduplication) および [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate) を参照してください。
 * コネクタは DDL ステートメントを一切実行しないため、対象テーブルはデータを挿入する前に存在している必要があります。
-
-
 
 ## 関連コンテンツ {#related-content}
 * `ClickHouseIO` クラスの[ドキュメント](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)。
