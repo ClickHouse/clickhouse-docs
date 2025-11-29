@@ -23,7 +23,7 @@ In this guide, you'll explore some of the available commonly used join types and
 
 ## Test Data and Resources {#test-data-and-resources}
 
-Instructions for creating and loading the tables can be found [here](/integrations/dbt/dbt-setup/).
+Instructions for creating and loading the tables can be found [here](/integrations/dbt/guides).
 The dataset is also available in the [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) for users who don't want to create and load
 the tables locally.
 
@@ -447,4 +447,4 @@ The `ON` clause of the `ASOF JOIN` is required and specifies an exact match cond
 ## Summary {#summary}
 
 This guide shows how ClickHouse supports all standard SQL JOIN types, plus specialized joins to power analytical queries.
-See the documentation for the [JOIN](https://clickhouse.com/docs/sql-reference/statements/select/join) statement for more details on JOINs.
+See the documentation for the [JOIN](/sql-reference/statements/select/join) statement for more details on JOINs.
