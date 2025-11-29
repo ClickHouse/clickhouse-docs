@@ -17,12 +17,9 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
 # 将 S3 集成到 ClickHouse 中 {#integrating-s3-with-clickhouse}
 
 你可以将 S3 中的数据写入 ClickHouse，也可以将 S3 用作导出目标，从而与“数据湖”（Data Lake）架构进行集成。此外，S3 还可以作为“冷”存储层，并有助于实现存储与计算的分离。在下文中，我们使用纽约市出租车数据集演示在 S3 与 ClickHouse 之间迁移数据的过程，说明关键配置参数，并给出性能优化建议。
-
-
 
 ## S3 表函数 {#s3-table-functions}
 
@@ -54,7 +51,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
 ```
-
 
 ┌─name──────────────────┬─type───────────────┐
 │ trip&#95;id               │ Nullable(Int64)    │
@@ -108,7 +104,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 
 为了与基于 S3 的数据集进行交互,我们准备一个标准的 `MergeTree` 表作为目标表。以下语句在默认数据库中创建一个名为 `trips` 的表。请注意,我们选择修改了上面推断出的部分数据类型,特别是不使用 [`Nullable()`](/sql-reference/data-types/nullable) 数据类型修饰符,因为它可能会导致不必要的额外存储开销和性能损耗:
 ```
-
 
 ```sql
 CREATE TABLE trips
@@ -188,7 +183,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 LIMIT 5;
 ```
 
-
 ```response
 ┌─_path──────────────────────────────────────┬─_file──────┬────trip_id─┐
 │ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999902 │
@@ -265,7 +259,6 @@ FROM trips
 LIMIT 10000;
 ```
 
-
 请注意，这里文件的格式是根据扩展名推断出来的。我们也不需要在 `s3` 函数中显式指定列——这些可以从 `SELECT` 中推断。
 
 ### 拆分大文件 {#splitting-large-files}
@@ -326,7 +319,6 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 
 在大多数情况下，该函数将作为 `INSERT INTO SELECT` 的一部分使用。在这种场景下，通常会向一个分布式表写入数据。下面通过一个简单示例进行说明，其中 trips&#95;all 是一个分布式表。尽管此表使用 events 集群，但读写操作使用的节点之间无需保证一致性：
 
-
 ```sql
 INSERT INTO default.trips_all
    SELECT *
@@ -338,7 +330,6 @@ INSERT INTO default.trips_all
 ```
 
 写入操作会在 initiator 节点上执行。这意味着，虽然每个节点都会进行读操作，但结果行会被路由回 initiator 节点进行分发。在高吞吐量场景下，这可能成为性能瓶颈。为了解决这一问题，请为 `s3cluster` 函数设置参数 [parallel&#95;distributed&#95;insert&#95;select](/operations/settings/settings/#parallel_distributed_insert_select)。
-
 
 ## S3 表引擎 {#s3-table-engines}
 
@@ -358,7 +349,6 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 ### 读取数据 {#reading-data}
 
 在以下示例中，我们使用位于 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket 中的前十个 TSV 文件创建一个名为 `trips_raw` 的表。每个文件各包含 100 万行数据：
-
 
 ```sql
 CREATE TABLE trips_raw
@@ -450,7 +440,6 @@ CREATE TABLE trips_dest
 ) ENGINE = S3('<bucket path>/trips.bin', 'Native');
 ```
 
-
 ```sql
 INSERT INTO trips_dest
    SELECT
@@ -494,7 +483,6 @@ SELECT * FROM trips_dest LIMIT 5;
   * 不支持 SAMPLE 操作
   * 不存在索引的概念，即无主键索引或跳过索引。
 
-
 ## 管理凭证 {#managing-credentials}
 
 在前面的示例中，我们在 `s3` 函数或 `S3` 表定义中传递了凭证。虽然这在偶尔使用时可能可以接受，但在生产环境中，用户需要不那么显式的认证机制。为此，ClickHouse 提供了多种选项：
@@ -537,8 +525,6 @@ SELECT * FROM trips_dest LIMIT 5;
   * 如果 [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) 未设置为 true，则通过 [Amazon EC2 实例元数据](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) 获取凭证。
   * 对于特定端点，也可以使用相同的前缀匹配规则来设置这些相同的配置。
 
-
-
 ## 性能优化 {#s3-optimizing-performance}
 
 有关如何使用 S3 函数优化读取和写入操作，请参阅[专门的性能指南](./performance.md)。
@@ -546,8 +532,6 @@ SELECT * FROM trips_dest LIMIT 5;
 ### S3 存储调优 {#s3-storage-tuning}
 
 在内部实现中，ClickHouse MergeTree 使用两种主要的存储格式：[`Wide` 和 `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)。当前实现采用 ClickHouse 的默认行为（通过设置 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 进行控制），但我们预计在未来版本中，对于 S3 的行为会有所差异，例如提高 `min_bytes_for_wide_part` 的默认值，以鼓励更多采用 `Compact` 格式，从而减少文件数量。仅使用 S3 存储的用户现在可能希望调整这些设置。
-
-
 
 ## 基于 S3 的 MergeTree {#s3-backed-mergetree}
 
@@ -625,7 +609,6 @@ ClickHouse 存储卷允许将物理磁盘从 MergeTree 表引擎中抽象出来�
 
 假设你已将磁盘配置为使用具有写入权限的 bucket，现在就可以像下面的示例那样创建一张表。为简洁起见，我们仅使用 NYC 出租车数据集中的部分列，并将数据直接流式写入这个以 S3 为后端的表：
 
-
 ```sql
 CREATE TABLE trips_s3
 (
@@ -700,12 +683,9 @@ ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 
 以下说明涵盖了 ClickHouse 与 S3 交互的实现细节。虽然通常仅供参考，但在进行[性能优化](#s3-optimizing-performance)时可能会对读者有所帮助：
 
-
 * 默认情况下，查询处理流水线任意阶段可使用的查询处理线程最大数量等于 CPU 核心数。某些阶段比其他阶段更易并行化，因此该值只是一个上限。由于数据是以流式方式从磁盘读取，多个查询阶段可能会同时执行，因此查询实际使用的线程数可能会超过该值。可通过设置 [max_threads](/operations/settings/settings#max_threads) 进行修改。
 * 默认情况下，对 S3 的读取是异步的。该行为由设置 `remote_filesystem_read_method` 决定，其默认值为 `threadpool`。在处理请求时，ClickHouse 会按条带（stripe）读取粒度（granule）。每个条带可能包含许多列。一个线程会逐个读取其粒度对应的列。与同步地逐列读取相比，系统会在等待数据之前，为所有列提前发起预取（prefetch）。与对每一列进行同步等待相比，这种方式能显著提升性能。在大多数情况下，用户无需更改该设置——参见 [Optimizing for Performance](#s3-optimizing-performance)。
 * 写入操作是并行执行的，最多使用 100 个并发文件写入线程。`max_insert_delayed_streams_for_parallel_write` 的默认值为 1000，用于控制并行写入的 S3 blob 数量。由于每个正在写入的文件都需要一个缓冲区（约 1MB），这在实际中限制了单次 INSERT 的内存消耗。在服务器内存较低的场景下，适当降低该值可能更为合适。
-
-
 
 ## 将 S3 对象存储用作 ClickHouse 磁盘 {#configuring-s3-for-clickhouse-use}
 
@@ -851,7 +831,6 @@ SELECT * FROM s3_table1;
 └────┴─────────┘
 ```
 
-
 2 行结果。耗时：0.284 秒。
 
 ```
@@ -860,7 +839,6 @@ SELECT * FROM s3_table1;
 
 <Image img={S3J} size="lg" border alt="AWS 控制台中的 S3 存储桶视图,显示存储在 S3 中的 ClickHouse 数据文件" />
 ```
-
 
 ## 使用 S3 对象存储在两个 AWS 区域之间复制单个分片 {#s3-multi-region}
 
@@ -943,7 +921,6 @@ ClickHouse 表会在两个服务器之间复制，因此也会在两个区域之
 ### 配置 ClickHouse Keeper {#configure-clickhouse-keeper}
 
 当以独立模式运行 ClickHouse Keeper（与 ClickHouse server 分离）时，配置为单个 XML 文件。在本教程中，该文件为 `/etc/clickhouse-keeper/keeper_config.xml`。三个 Keeper 服务器都使用相同的配置，只有一个设置不同：`<server_id>`。
-
 
 `server_id` 表示要分配给使用该配置文件的主机的 ID。 在下面的示例中，`server_id` 为 `3`，如果继续向下查看文件中的 `<raft_configuration>` 部分，你会看到服务器 3 的主机名是 `keepernode3`。ClickHouse Keeper 进程正是通过这种方式来确定在选举 leader 以及执行其他操作时需要连接的其他服务器。
 
@@ -1046,7 +1023,6 @@ ClickHouse 集群在配置文件的 `<remote_servers>` 部分中定义。在此�
 
 #### 禁用零拷贝复制 {#disable-zero-copy-replication}
 
-
 在 ClickHouse 22.7 及更早版本中，对于 S3 和 HDFS 磁盘，`allow_remote_fs_zero_copy_replication` 的默认值为 `true`。在本文描述的灾难恢复场景中，应将该设置改为 `false`，而在 22.8 及更高版本中，该设置的默认值已经为 `false`。
 
 该设置应为 `false` 的原因有两点：1）此功能尚未达到生产就绪；2）在灾难恢复场景下，数据和元数据都需要存储在多个地域。请将 `allow_remote_fs_zero_copy_replication` 设置为 `false`。
@@ -1107,7 +1083,6 @@ sudo systemctl status clickhouse-keeper
 #### 检查 ClickHouse Keeper 状态 {#check-clickhouse-keeper-status}
 
 使用 `netcat` 向 ClickHouse Keeper 发送命令。例如，`mntr` 命令会返回 ClickHouse Keeper 集群的状态。如果在每个 Keeper 节点上运行该命令，可以看到其中一个是 leader，另外两个是 follower：
-
 
 ```bash
 echo mntr | nc localhost 9181
@@ -1284,8 +1259,7 @@ SELECT trip_id,
 
 <Image img={Bucket2} size="lg" border alt="第二个 S3 Bucket 中的数据大小以及存储使用情况指标" />
 
-
-## S3Express
+## S3Express {#s3express}
 
 [S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) 是 Amazon S3 中一种新的高性能、单可用区存储类别（storage class）。
 
@@ -1360,7 +1334,7 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 </s3>
 ```
 
-### 备份
+### 备份 {#backups}
 
 可以将备份存储在我们之前创建的磁盘上：
 

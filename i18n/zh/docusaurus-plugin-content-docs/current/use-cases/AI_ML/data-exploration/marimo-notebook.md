@@ -40,7 +40,6 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 我们将使用 UK Property Price 数据集，它是 ClickHouse Cloud 提供的入门数据集之一。
 其中包含 1995 年到 2024 年间英国房屋成交价格相关的数据。
 
-
 ## 设置 {#setup}
 
 ### 加载数据集 {#loading-the-dataset}
@@ -98,7 +97,6 @@ marimo edit clickhouse_exploration.py
 
 Marimo 笔记本以纯 Python 文件的形式存储，便于进行版本控制并与他人共享。
 
-
 ## 安装依赖 {#installing-dependencies}
 
 在新的单元格中导入所需的库：
@@ -125,7 +123,6 @@ result
 你应该会在刚刚运行的单元格下方看到如下结果：
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
-
 
 ## 探索数据 {#exploring-the-data}
 
@@ -243,7 +240,6 @@ df_reactive
 现在创建一个图表，当你更改 town 时它会自动更新。
 你可以将图表移动到动态 dataframe 的上方，使其显示在包含下拉菜单的单元格下方。
 
-
 ```python
 fig_reactive = px.line(
     df_reactive,
@@ -304,7 +300,7 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# 创建交互式箱线图
+# 创建交互式箱线图 {#create-an-interactive-box-plot}
 fig_box = go.Figure()
 
 fig_box.add_trace(
@@ -334,7 +330,6 @@ fig_box
 移动滑块时,图表会自动更新,这得益于 Marimo 的响应式执行机制:
 
 <Image size="md" img={image_8} alt="Marimo 动态图表"/>
-
 
 ## 总结 {#summary}
 

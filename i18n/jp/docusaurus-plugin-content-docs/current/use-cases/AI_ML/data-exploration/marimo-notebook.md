@@ -40,7 +40,6 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 ここでは、スターターデータセットの 1 つとして ClickHouse Cloud 上で利用可能な UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
-
 ## セットアップ {#setup}
 
 ### データセットの読み込み {#loading-the-dataset}
@@ -97,7 +96,6 @@ marimo edit clickhouse_exploration.py
 
 Marimo ノートブックは純粋な Python ファイルとして保存されるため、バージョン管理や他者との共有が容易です。
 
-
 ## 依存関係のインストール {#installing-dependencies}
 
 新しいセルで必要なパッケージをインポートします。
@@ -124,7 +122,6 @@ result
 直前に実行したセルの下に、次のような結果が表示されるはずです。
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
-
 
 ## データの探索 {#exploring-the-data}
 
@@ -242,7 +239,6 @@ df_reactive
 次に、町を変更すると自動的に更新されるチャートを作成します。
 チャートを動的データフレームの上に移動し、ドロップダウンを含むセルの直下に表示されるようにします。
 
-
 ```python
 fig_reactive = px.line(
     df_reactive,
@@ -303,7 +299,7 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# インタラクティブな箱ひげ図を作成する
+# インタラクティブな箱ひげ図を作成する {#create-an-interactive-box-plot}
 fig_box = go.Figure()
 
 fig_box.add_trace(
@@ -334,7 +330,6 @@ fig_box
 
 <Image size="md" img={image_8} alt="Marimo の動的なチャート"/>
 ```
-
 
 ## まとめ {#summary}
 

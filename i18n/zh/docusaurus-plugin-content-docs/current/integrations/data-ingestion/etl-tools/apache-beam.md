@@ -12,7 +12,6 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 集成 Apache Beam 与 ClickHouse {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -20,14 +19,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 **Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流式（连续）数据处理管道。Apache Beam 的灵活性体现在它能够支持广泛的数据处理场景，从 ETL（抽取、转换、加载）操作到复杂事件处理和实时分析。
 本集成在数据写入层使用了 ClickHouse 官方的 [JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)。
 
-
-
 ## 集成包 {#integration-package}
 
 用于集成 Apache Beam 和 ClickHouse 的集成包由 [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) 维护和开发——这是一个汇集众多主流数据存储系统和数据库的集成组件集合。
 `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` 的实现位于 [Apache Beam 仓库](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse) 中。
-
-
 
 ## 设置 Apache Beam ClickHouse 包 {#setup-of-the-apache-beam-clickhouse-package}
 
@@ -106,7 +101,6 @@ public class Main {
 
 ```
 
-
 ## 支持的数据类型 {#supported-data-types}
 
 | ClickHouse                         | Apache Beam                | 是否支持 | 说明                                                                                                                                     |
@@ -133,8 +127,6 @@ public class Main {
 |                                    | `Schema.TypeName#DECIMAL`  | ❌        |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌        |                                                                                                                                          |
 
-
-
 ## ClickHouseIO.Write 参数 {#clickhouseiowrite-parameters}
 
 可以使用以下 setter 函数来调整 `ClickHouseIO.Write` 的配置：
@@ -150,16 +142,12 @@ public class Main {
 | `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | 若为 true，则对插入操作启用去重。                               |
 | `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 目标 ClickHouse 表的表结构（schema）。                          |
 
-
-
 ## 限制 {#limitations}
 
 使用该连接器时请注意以下限制：
 * 截至目前，仅支持 Sink 操作。该连接器不支持 Source 操作。
 * 在向 `ReplicatedMergeTree` 或基于 `ReplicatedMergeTree` 构建的 `Distributed` 表中插入数据时，ClickHouse 会执行去重操作。如果未启用复制，向普通 MergeTree 表插入数据时，当一次插入失败并随后重试成功时，可能会产生重复数据。不过，每个数据块的插入是原子性的，并且可以使用 `ClickHouseIO.Write.withMaxInsertBlockSize(long)` 配置块大小。去重是通过插入数据块的校验和来实现的。有关去重的更多信息，请访问 [去重](/guides/developer/deduplication) 和 [插入去重配置](/operations/settings/settings#insert_deduplicate)。
 * 该连接器不会执行任何 DDL 语句；因此，在执行插入之前，目标表必须已经存在。
-
-
 
 ## 相关文章 {#related-content}
 * `ClickHouseIO` 类的[文档](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)。

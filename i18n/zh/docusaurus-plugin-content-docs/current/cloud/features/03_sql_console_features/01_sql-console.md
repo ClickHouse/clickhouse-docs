@@ -43,7 +43,6 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
-
 # SQL 控制台 {#sql-console}
 
 SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最简便方式。您可以使用 SQL 控制台来：
@@ -75,8 +74,6 @@ SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最�
 可以使用“单元格检查器”工具来查看单个单元格中包含的大量数据。要打开它，在单元格上单击鼠标右键并选择“Inspect Cell”。通过单击检查器内容右上角的复制图标即可复制单元格检查器中的内容。
 
 <Image img={inspecting_cell_content} size="md" alt="inspecting cell content" />
-
-
 
 ## 过滤和排序表 {#filtering-and-sorting-tables}
 
@@ -121,8 +118,6 @@ SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需�
 :::
 
 可以通过阅读 (link) 查询文档，进一步了解如何在 SQL 控制台中执行查询。
-
-
 
 ## 创建和运行查询 {#creating-and-running-a-query}
 
@@ -220,13 +215,9 @@ SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持
 
 ### 链接到查询（永久链接） {#linking-to-a-query-permalinks}
 
-
-
 已保存的查询也会生成永久链接，这意味着你可以将共享查询的链接发送给他人或从他人处接收，并直接打开这些查询。
 
 查询中可能存在的任何参数的取值都会自动作为查询参数添加到已保存查询的 URL 中。例如，如果查询包含 `{start_date: Date}` 和 `{end_date: Date}` 这两个参数，则永久链接可能如下所示：`https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`。
-
-
 
 ## 高级查询功能 {#advanced-querying-features}
 
@@ -255,8 +246,6 @@ SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持
 可以直接从 SQL 控制台将查询结果集轻松导出为 CSV 格式。要执行此操作，请打开结果面板工具栏右侧的 `•••` 菜单并选择“Download as CSV”。
 
 <Image img={download_as_csv} size="md" alt="下载为 CSV" />
-
-
 
 ## 可视化查询数据 {#visualizing-query-data}
 

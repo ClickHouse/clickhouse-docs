@@ -585,7 +585,7 @@
     "description": "Полезные наборы данных и руководства"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако"
+    "message": "Cloud"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
     "message": "Самый быстрый способ развернуть ClickHouse"
@@ -693,8 +693,8 @@
     "description": "Руководства, которые помогут вам максимально эффективно использовать возможности ClickHouse"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "Администрирование сервера",
-    "description": "Администратор сервера"
+    "message": "Сервер",
+    "description": "Сервер"
   },
   "sidebar.dropdownCategories.category.description.Server Admin": {
     "message": "Управление и развертывание ClickHouse",
@@ -1158,5 +1158,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "Узнайте, как участвовать в развитии ClickHouse"
+  },
+  "homepage.hero.description": {
+    "message": "Изучайте ClickHouse по руководствам, справочной документации и видеоматериалам"
+  },
+  "homepage.hero.quickStart": {
+    "message": "Быстрый старт"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Начало работы с Cloud"
+  },
+  "homepage.hero.installLocally": {
+    "message": "Установить локально"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "Начало работы с ПО с открытым исходным кодом"
+  },
+  "homepage.search.title": {
+    "message": "Поиск в документации"
+  },
+  "homepage.connect.title": {
+    "message": "Подключение к ClickHouse"
+  },
+  "homepage.connect.description": {
+    "message": "Подключите приложение к ClickHouse за несколько минут"
+  },
+  "homepage.connect.viewAll": {
+    "message": "Все клиенты и драйверы"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "CLI ClickHouse"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Консоль Cloud SQL"
+  },
+  "homepage.migrate.title": {
+    "message": "Переход на ClickHouse"
+  },
+  "homepage.migrate.description": {
+    "message": "Загрузка данных из других баз данных, хранилищ данных и объектных хранилищ"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "Показать все интеграции"
+  },
+  "homepage.deploy.title": {
+    "message": "Развертывание ClickHouse"
+  },
+  "homepage.deploy.description": {
+    "message": "Разверните ClickHouse в облаке или в собственной инфраструктуре"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "Развертывание на узлах"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "Кластерное развертывание"
+  },
+  "homepage.resources.title": {
+    "message": "Дополнительные ресурсы"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "Связаться со службой поддержки"
+  },
+  "homepage.resources.changelog": {
+    "message": "Журнал изменений"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "Примеры наборов данных"
   }
 }

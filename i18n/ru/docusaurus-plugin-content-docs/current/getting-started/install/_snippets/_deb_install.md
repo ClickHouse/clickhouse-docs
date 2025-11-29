@@ -1,35 +1,30 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 # Установка ClickHouse на Debian/Ubuntu {#install-from-deb-packages}
 
 > Рекомендуется использовать официальные предкомпилированные пакеты `deb` для **Debian** или **Ubuntu**.
 
 <VerticalStepper>
 
-
 ## Настройка репозитория Debian {#setup-the-debian-repository}
 
 Чтобы установить ClickHouse, выполните следующие команды:
 
-
-
 ```bash
-# Установите необходимые пакеты
+# Установите необходимые пакеты {#install-prerequisite-packages}
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# Загрузите GPG‑ключ ClickHouse и сохраните его в ключевом хранилище
+# Загрузите GPG‑ключ ClickHouse и сохраните его в ключевом хранилище {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# Определите архитектуру системы
+# Определите архитектуру системы {#get-the-system-architecture}
 ARCH=$(dpkg --print-architecture)
 
-# Добавьте репозиторий ClickHouse в список источников пакетов apt
+# Добавьте репозиторий ClickHouse в список источников пакетов apt {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# Обновить списки пакетов apt
+# Обновить списки пакетов apt {#update-apt-package-lists}
 sudo apt-get update
 ```
 
@@ -40,38 +35,36 @@ sudo apt-get update
 <summary>Устаревший метод установки deb-пакетов для дистрибутивов</summary>
 
 ```bash
-# Установите необходимые пакеты
+# Установите необходимые пакеты {#install-prerequisite-packages}
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# Добавьте GPG-ключ ClickHouse для аутентификации пакетов
+# Добавьте GPG-ключ ClickHouse для аутентификации пакетов {#add-the-clickhouse-gpg-key-to-authenticate-packages}
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# Добавьте репозиторий ClickHouse в список источников APT
+# Добавьте репозиторий ClickHouse в список источников APT {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
 
-# Обновите списки пакетов apt
+# Обновите списки пакетов apt {#update-apt-package-lists}
 sudo apt-get update
 
-# Установите пакеты сервера и клиента ClickHouse
+# Установите пакеты сервера и клиента ClickHouse {#install-clickhouse-server-and-client-packages}
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# Запустите службу сервера ClickHouse
+# Запустите службу сервера ClickHouse {#start-the-clickhouse-server-service}
 sudo service clickhouse-server start
 
-# Запустите клиент командной строки ClickHouse
+# Запустите клиент командной строки ClickHouse {#launch-the-clickhouse-command-line-client}
 clickhouse-client # или "clickhouse-client --password", если вы указали пароль.
 ```
 
 </details>
-
 
 ## Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
-
 
 ## Запуск ClickHouse {#start-clickhouse-server}
 
@@ -93,7 +86,6 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-
 ## Установка автономного ClickHouse Keeper {#install-standalone-clickhouse-keeper}
 
 :::tip
@@ -108,7 +100,6 @@ clickhouse-client --password
 sudo apt-get install -y clickhouse-keeper
 ```
 
-
 ## Включение и запуск ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
 
 ```bash
@@ -118,7 +109,6 @@ sudo systemctl status clickhouse-keeper
 ```
 
 </VerticalStepper>
-
 
 ## Пакеты {#packages}
 
