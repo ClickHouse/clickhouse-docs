@@ -14,13 +14,12 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-
-# ClickHouse OSS 快速入门
+# ClickHouse OSS 快速入门 \{#clickhouse-oss-quick-start\}
 
 > 在本快速入门教程中，我们将通过 8 个简单步骤帮助你完成 OSS ClickHouse 的设置。你将下载适用于你操作系统的二进制文件，学习如何运行 ClickHouse server，并使用 ClickHouse client 创建一张表，然后向其中插入数据并运行查询来选取这些数据。
 
 <VerticalStepper>
-  ## 下载 ClickHouse
+  ## 下载 ClickHouse \{#download-the-binary\}
 
   ClickHouse 原生支持 Linux、FreeBSD 和 macOS,并可通过 [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) 在 Windows 上运行。 在本地下载 ClickHouse 最简单的方式是运行以下 `curl` 命令。 该命令将检测您的操作系统是否受支持,然后下载从 master 分支构建的相应 ClickHouse 二进制文件。
 
@@ -51,7 +50,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   Mac 用户注意：如果您遇到无法验证二进制文件开发者的错误，请参阅[&quot;修复 macOS 中的开发者验证错误&quot;](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos)。
   :::
 
-  ## 启动服务器
+  ## 启动服务器 \{#start-the-server\}
 
   运行以下命令启动 ClickHouse 服务器：
 
@@ -63,7 +62,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   [默认日志级别](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose)
   设置为 `trace` 而非 `warning`。
 
-  ## 启动客户端
+  ## 启动客户端 \{#start-the-client\}
 
   使用 `clickhouse-client` 连接到您的 ClickHouse 服务。打开新终端，切换到 `clickhouse` 二进制文件所在的目录，然后运行以下命令：
 
@@ -77,7 +76,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   my-host :)
   ```
 
-  ## 创建表
+  ## 创建表 \{#create-a-table\}
 
   使用 `CREATE TABLE` 定义新表。常规 SQL DDL 命令在 ClickHouse 中均可使用,但需注意一点——ClickHouse 中的表必须指定 `ENGINE` 子句。使用 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 引擎可充分发挥 ClickHouse 的性能优势:
 
@@ -93,7 +92,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   PRIMARY KEY (user_id, timestamp)
   ```
 
-  ## 插入数据
+  ## 插入数据 \{#insert-data\}
 
   您可以使用熟悉的 `INSERT INTO TABLE` 命令操作 ClickHouse,但需要理解的是,每次向 `MergeTree` 表插入数据都会在存储中创建我们所称的 **part**(数据部分)。这些 ^^part^^ 随后会由 ClickHouse 在后台进行合并。
 
@@ -109,7 +108,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       (101, 'Granule 是数据读取的最小单元',      now() + 5,   3.14159 )
   ```
 
-  ## 查询您的新表
+  ## 查询您的新表 \{#query-your-new-table\}
 
   您可以像在任何 SQL 数据库中一样编写 `SELECT` 查询:
 
@@ -132,7 +131,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   返回 4 行。耗时:0.008 秒。
   ```
 
-  ## 插入您自己的数据
+  ## 插入您自己的数据 \{#insert-your-own-data\}
 
   下一步是将您自己的数据导入 ClickHouse。我们提供了大量的[表函数](/sql-reference/table-functions/index.md)和[集成](/integrations)用于摄取数据。您可以参考下方选项卡中的示例,或访问我们的[集成](/integrations)页面查看与 ClickHouse 集成的完整技术列表。
 
@@ -344,7 +343,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
   </Tabs>
 
-  ## 探索
+  ## 探索 \{#explore\}
 
   * 查看我们的[核心概念](/managing-data/core-concepts)章节，了解一些 ClickHouse 底层工作原理的基础概念。
   * 请查看 [进阶教程](tutorial.md)，该教程将更深入地探讨 ClickHouse 的核心概念和功能。

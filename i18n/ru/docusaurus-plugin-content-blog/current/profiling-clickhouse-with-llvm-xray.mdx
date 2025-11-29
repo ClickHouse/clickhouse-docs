@@ -15,10 +15,9 @@ import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-c
 
 {/* TRUNCATE */}
 
-
 ## Типы профайлеров \{#types-of-profilers\}
 
-LLVM уже включает инструмент, который добавляет в код инструментацию и позволяет выполнять [профилирование с инструментированием](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Instrumentation). В отличие от [семплирующего или статистического профилирования](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Statistical_profilers),
+LLVM уже включает инструмент, который добавляет в код инструментацию и позволяет выполнять [профилирование с инструментированием](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Instrumentation). В отличие от [семплирующего или статистического профилирования](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Statistical_profilers),
 оно обладает высокой точностью и не теряет ни одного вызова, но требует инструментирования кода и более ресурсоёмко.
 
 Проще говоря, профайлер с инструментированием добавляет новый код для отслеживания вызовов всех функций.
@@ -28,7 +27,7 @@ LLVM уже включает инструмент, который добавля
 
 ## Как проводить профилирование с помощью XRay \{#how-to-profile-with-xray\}
 
-### Инструментируйте код
+### Инструментируйте код \{#instrument-the-code\}
 
 Рассмотрим следующий исходный код:
 
@@ -85,8 +84,7 @@ Idx Name          Size      VMA               LMA               File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
 ```
 
-
-### Запустите процесс с корректными значениями переменных окружения для сбора трассировки
+### Запустите процесс с корректными значениями переменных окружения для сбора трассировки \{#run-the-process-with-proper-env-var-values-to-collect-the-trace\}
 
 По умолчанию профилировщик ничего не собирает, если его явно не задействовать. Другими словами, если мы не проводим профилирование, накладные расходы пренебрежимо малы. Мы можем задать разные значения для `XRAY_OPTIONS`, чтобы настроить, когда профилировщик начинает сбор данных и как он это делает.
 
@@ -98,15 +96,13 @@ XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1" ./test
 ==74394==Cleaned up log for TID: 74394
 ```
 
-
-### Преобразование трассировок
+### Преобразование трассировок \{#convert-the-trace\}
 
 Трассировки XRAy можно преобразовывать в несколько форматов. Формат `trace_event` очень удобен, так как его легко парсить, и уже существует множество инструментов, которые его поддерживают, поэтому мы будем использовать именно его:
 
 ```bash
 llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xray-log.test.14imlN | gzip > test-trace.txt.gz
 ```
-
 
 ### Визуализация трассировки \{#visualize-the-trace\}
 
@@ -134,13 +130,12 @@ llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xra
    флаги компилятора](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
 2. Установите переменную окружения `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` при запуске
    ClickHouse для генерации трейса.
-3. Преобразуйте трейс в удобный формат, например trace event: `llvm-xray convert --symbolize
-   --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
+3. Преобразуйте трейс в удобный формат, например trace event: `llvm-xray convert --symbolize --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
    gzip > clickhouse-trace.txt.gz`.
 4. Визуализируйте трейс в [speedscope.app](https://www.speedscope.app/) или
    [Perfetto](https://ui.perfetto.dev).
 
-<Image img={clickhouse_time_order} alt="ClickHouse: порядок по времени" size="md"/>
+<Image img={clickhouse_time_order} alt="ClickHouse: порядок по времени" size="md" />
 
 Обратите внимание, что это визуализация только одного потока. Вы можете выбрать другие `tid` на
 верхней панели.

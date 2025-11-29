@@ -6,10 +6,9 @@ title: 'system.stack_trace'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.stack&#95;trace
+# system.stack&#95;trace {#systemstack&#95;trace}
 
 <SystemTableCloud />
 
@@ -42,7 +41,6 @@ ClickHouse のオブジェクトファイルからシンボルを取得する:
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
 ```
 
-
 ```text
 Row 1:
 ──────
@@ -72,7 +70,6 @@ ClickHouse ソースコード内のファイル名と行番号の取得:
 ```sql
 WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
 ```
-
 
 ```text
 Row 1:

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# Миграция с Amazon Redshift на ClickHouse
+# Миграция с Amazon Redshift на ClickHouse {#amazon-redshift-to-clickhouse-migration}
 
 > Этот документ является вводным руководством по миграции данных из Amazon
 Redshift в ClickHouse.

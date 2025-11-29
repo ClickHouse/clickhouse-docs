@@ -10,8 +10,7 @@ keywords: ['Docker', 'CAP_IPC_LOCK', 'CAP_SYS_NICE']
 
 {/* 截断 */}
 
-
-## 问题
+## 问题 \{#question\}
 
 在 Docker 中运行 ClickHouse 时，Docker 会提示系统缺少 `CAP_IPC_LOCK` 和 `CAP_SYS_NICE` 能力（capability）。该如何解决？
 
@@ -31,8 +30,7 @@ docker run -d --name clickhouse-server \
 2023.04.19 08:04:10.065860 [ 1 ] {} <Information> Application: 进程似乎缺少 CAP_SYS_NICE 权限,'os_thread_priority' 设置将不生效。这可能是由于 ClickHouse 软件包安装不正确所致。您可以通过执行 'sudo setcap cap_sys_nice=+ep /usr/bin/clickhouse' 手动解决该问题。注意:此方法在使用 'nosuid' 选项挂载的文件系统上无效。
 ```
 
-
-## 答案
+## 答案 \{#answer\}
 
 1. 添加两个 `--cap-add` 参数，为容器授予 `IPC_LOCK` 和 `SYS_NICE` 权限：
 

@@ -21,7 +21,7 @@ CDC を利用したリアルタイムレプリケーションで PostgreSQL か�
 
 
 
-## ClickHouse でクエリを最適化する
+## ClickHouse でクエリを最適化する {#optimize-queries-in-clickhouse}
 
 最小限のクエリ書き換えで移行することも可能ですが、クエリを大幅に単純化し、さらにクエリパフォーマンスを向上させるために、ClickHouse の機能を活用することを推奨します。
 

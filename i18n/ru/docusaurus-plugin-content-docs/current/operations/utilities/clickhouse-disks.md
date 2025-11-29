@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Clickhouse-disks
+# Clickhouse-disks {#clickhouse-disks}
 
 Утилита, предоставляющая операции, аналогичные операциям файловой системы, для дисков ClickHouse. Может работать как в интерактивном, так и в неинтерактивном режиме.
 

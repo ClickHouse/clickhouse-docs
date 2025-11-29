@@ -6,7 +6,7 @@ title: 'quantileTDigest'
 doc_type: 'reference'
 ---
 
-# quantileTDigest
+# quantileTDigest {#quantiletdigest}
 
 Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием алгоритма [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 

@@ -241,7 +241,7 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
 
 ## 常见问题 {#questions}
 
-### 如果视频关闭了评论功能，会不会降低观众点点赞或点踩的可能性？
+### 如果视频关闭了评论功能，会不会降低观众点点赞或点踩的可能性？ {#create-the-table}
 
 当评论被关闭时，观众是否更倾向于通过点赞或点踩来表达他们对视频的看法？
 
@@ -297,7 +297,7 @@ ORDER BY
 启用评论似乎与更高的参与度有关。
 
 
-### 视频数量随时间如何变化——有哪些值得关注的事件？
+### 视频数量随时间如何变化——有哪些值得关注的事件？ {#insert-data}
 
 ```sql
 SELECT
@@ -336,7 +336,7 @@ ORDER BY month ASC;
 可以明显看出，在新冠疫情前后，上传者数量出现了激增（[相关现象可见此处](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)）。
 
 
-### 字幕数量随时间的变化及其出现时间
+### 字幕数量随时间的变化及其出现时间 {#count-row-numbers}
 
 随着语音识别技术的进步，为视频创建字幕比以往任何时候都更容易。YouTube 在 2009 年底推出自动字幕功能——转折点就是那时吗？
 
@@ -374,7 +374,7 @@ ORDER BY month ASC;
 这引发了一场非常成功的活动，号召创作者为他们的视频添加字幕，以方便听力障碍和失聪的观众。
 
 
-### 各时间段上传量最高的用户
+### 各时间段上传量最高的用户 {#explore-the-data}
 
 ```sql
 WITH uploaders AS
@@ -467,7 +467,7 @@ ORDER BY
 ```
 
 
-### 视图是如何分布的？
+### 视图是如何分布的？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
 
 ```sql
 SELECT

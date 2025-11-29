@@ -10,12 +10,11 @@ keywords: ['在 ClickHouse 中优化基础数据类型的实用技巧']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 在 ClickHouse 中，为了同时优化查询速度和存储空间，我应该使用哪些数据类型？
 
-## 答案
+## 答案 \{#answer\}
 
 在很多情况下，当从其他系统进行自动转换或尝试选择数据类型时，用户往往会采用“多多益善”、“选更省事的”或“选最通用的”这种方式。对于规模在数百万、甚至数十亿行以内的小型数据集，这通常是可行的。在这类数据集中，用户查询之间的性能差异在其使用场景中可能并不明显，也是可以接受的。
 
@@ -97,14 +96,13 @@ attributes Map(String, String)
 
 * **建议**：Decimal(10,2)
 
-
-`attributes : map`  
+`attributes : map`\
 通常会有包含动态属性的 `Map` 类型列。按键或按值搜索通常会比较慢。可以通过几种方式提升 `Map` 的性能。如果有一些键在大多数记录中都会出现，最好将它们放到一个单独的列中并使用低基数类型，而那些较为稀疏的键则放到另一列中并使用高基数类型。这样一来，创建跳过索引会更高效，尽管这可能会增加查询的复杂度。
 
-- **建议：** lc_attributes: Map(String, String), hc_attributes: Map(String, String).  
+* **建议：** lc&#95;attributes: Map(String, String), hc&#95;attributes: Map(String, String).
 
-根据查询的情况，还可以使用以下方式来创建跳过索引和/或抽取属性：  
-使用 Array Join 和物化视图将属性抽取到列中：  
-https://clickhouse.com/docs/knowledgebase/using-array-join-to-extract-and-query-attributes  
-为键创建跳过索引：  
+根据查询的情况，还可以使用以下方式来创建跳过索引和/或抽取属性：\
+使用 Array Join 和物化视图将属性抽取到列中：\
+https://clickhouse.com/docs/knowledgebase/using-array-join-to-extract-and-query-attributes\
+为键创建跳过索引：\
 https://clickhouse.com/docs/knowledgebase/improve-map-performance

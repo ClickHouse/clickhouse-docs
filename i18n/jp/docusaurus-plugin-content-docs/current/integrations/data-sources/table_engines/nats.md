@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['nats', 'メッセージキュー', 'ストリーミング', '統合', 'データインジェスト']
 ---
 
-import NatsEngine from '@site/docs/engines/table-engines/integrations/nats.md';
+import NatsEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/nats.md';
 
 <NatsEngine />

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# File 表引擎
+# File 表引擎 {#file-table-engine}
 
 `File` 表引擎将数据保存在一个文件中，文件使用受支持的[文件格式](/interfaces/formats#formats-overview)之一（如 `TabSeparated`、`Native` 等）。
 
@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 
 
-## 在 ClickHouse 服务器中的使用
+## 在 ClickHouse 服务器中的使用 {#usage-in-clickhouse-server}
 
 ```sql
 File(Format)
@@ -44,7 +44,7 @@ ClickHouse 不允许为 `File` 指定文件系统路径。它将使用服务器�
 :::
 
 
-## 示例
+## 示例 {#example}
 
 **1.** 创建 `file_engine_table` 表：
 
@@ -76,7 +76,7 @@ SELECT * FROM file_engine_table
 ```
 
 
-## 在 ClickHouse-local 中的用法
+## 在 ClickHouse-local 中的用法 {#usage-in-clickhouse-local}
 
 在 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) 中，File 引擎除了 `Format` 外还可以接收文件路径。可以使用数字或人类可读的名称（例如 `0` 或 `stdin`、`1` 或 `stdout`）来指定默认输入/输出流。可以根据额外的引擎参数或文件扩展名（`gz`、`br` 或 `xz`）来读写压缩文件。
 

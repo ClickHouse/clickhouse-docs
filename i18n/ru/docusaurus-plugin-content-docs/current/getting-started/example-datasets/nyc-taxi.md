@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 :::
 
 
-## Создайте таблицу trips
+## Создайте таблицу trips {#create-the-table-trips}
 
 Сначала создайте таблицу для поездок на такси:
 
@@ -126,7 +126,7 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## Примеры запросов
+## Примеры запросов {#sample-queries}
 
 Следующие запросы выполняются для описанного выше примера. Пользователи могут запускать эти примерные запросы на полном наборе данных в [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), изменив приведённые ниже запросы для использования таблицы `nyc_taxi.trips`.
 
@@ -183,7 +183,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## Скачивание подготовленных партиций
+## Скачивание подготовленных партиций {#download-of-prepared-partitions}
 
 :::note
 Следующие шаги содержат информацию об исходном наборе данных и метод загрузки подготовленных партиций в самостоятельно управляемую среду сервера ClickHouse.
@@ -196,9 +196,9 @@ ORDER BY passenger_count ASC
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
-# Проверьте контрольную сумму
+# Проверьте контрольную сумму {#validate-the-checksum}
 $ md5sum trips_mergetree.tar
-# Контрольная сумма должна быть: f3b8d469b41d9a82da064ded7245d12c
+# Контрольная сумма должна быть: f3b8d469b41d9a82da064ded7245d12c {#checksum-should-be-equal-to-f3b8d469b41d9a82da064ded7245d12c}
 $ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # путь к каталогу данных ClickHouse
 $ # проверьте права доступа к распакованным данным и исправьте при необходимости
 $ sudo service clickhouse-server restart
@@ -210,7 +210,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 :::
 
 
-## Результаты на одном сервере
+## Результаты на одном сервере {#results-on-single-server}
 
 Q1:
 

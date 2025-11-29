@@ -39,7 +39,7 @@ ClickStack OTel collector 也可以以独立方式部署，而无需依赖整个
 
 更多详情请参阅[《部署 collector》](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
 
-## 发送 OpenTelemetry 数据
+## 发送 OpenTelemetry 数据 {#sending-otel-data}
 
 要将数据发送到 ClickStack，请将你的 OpenTelemetry 埋点配置为指向由 OpenTelemetry Collector 暴露的以下端点：
 
@@ -65,7 +65,7 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<您的摄取_API_密钥>'
 代理同样应在所有 OTLP 通信中包含此授权请求头。例如，如果以代理角色部署 [OTel collector 的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，则可以使用 OTLP 导出器。下面展示了一个代理配置示例，用于读取该[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)。请注意需要指定授权密钥——参见 `<YOUR_API_INGESTION_KEY>`。
 
 ```yaml
-# clickhouse-agent-config.yaml
+# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
 receivers:
   filelog:
     include:

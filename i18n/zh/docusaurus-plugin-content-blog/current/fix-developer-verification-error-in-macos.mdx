@@ -17,7 +17,6 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 ***
 
-
 ## 修复 MacOS 中的开发者验证错误 \{#fix-the-developer-verification-error-in-macos\}
 
 如果使用 `brew` 安装 ClickHouse，可能会遇到来自 MacOS 的错误。
@@ -34,20 +33,22 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 从隔离区中移除 `clickhouse` 可执行文件的最简单方法是：
 
 1. 打开 **System settings**（系统设置）。
-1. 前往 **Privacy & Security**（隐私与安全）：
 
-    <Image img={privacy_default} size="md" alt="MacOS 隐私与安全设置的默认视图" border />
+2. 前往 **Privacy &amp; Security**（隐私与安全）：
 
-1. 滚动到窗口底部，找到一条消息，内容为：_“clickhouse-macos-aarch64” was blocked from use because it is not from an identified developer_。
-1. 点击 **Allow Anyway**（仍要允许）。
+   <Image img={privacy_default} size="md" alt="MacOS 隐私与安全设置的默认视图" border />
 
-    <Image img={privacy_allow} size="md" alt="MacOS 隐私与安全设置中显示 Allow Anyway 按钮" border />
+3. 滚动到窗口底部，找到一条消息，内容为：*“clickhouse-macos-aarch64” was blocked from use because it is not from an identified developer*。
 
-1. 输入你的 macOS 用户密码。
+4. 点击 **Allow Anyway**（仍要允许）。
+
+   <Image img={privacy_allow} size="md" alt="MacOS 隐私与安全设置中显示 Allow Anyway 按钮" border />
+
+5. 输入你的 macOS 用户密码。
 
 现在你应该可以在终端中运行 `clickhouse` 命令了。
 
-## 终端操作流程
+## 终端操作流程 \{#terminal-process\}
 
 有时即使点击 `Allow Anyway` 按钮也无法解决此问题，在这种情况下，您也可以通过命令行来完成这一操作。
 或者，您可能只是更喜欢使用命令行！

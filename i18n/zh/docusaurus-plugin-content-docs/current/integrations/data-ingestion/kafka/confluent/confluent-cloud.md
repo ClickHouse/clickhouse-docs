@@ -12,11 +12,11 @@ integration:
   - website: 'https://clickhouse.com/cloud/clickpipes'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
 
-# 将 Confluent Cloud 与 ClickHouse 集成
+# 将 Confluent Cloud 与 ClickHouse 集成 {#integrating-confluent-cloud-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"

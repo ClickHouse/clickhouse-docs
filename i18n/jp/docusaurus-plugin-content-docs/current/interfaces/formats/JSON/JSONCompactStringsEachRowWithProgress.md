@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 ```sql title="Query"
 SELECT *

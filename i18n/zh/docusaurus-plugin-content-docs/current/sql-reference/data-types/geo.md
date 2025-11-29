@@ -14,7 +14,7 @@ ClickHouse 支持用于表示地理对象（例如位置、区域等）的数据
 
 
 
-## Point
+## Point {#point}
 
 `Point` 由其 X 和 Y 坐标表示，存储为 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
 
@@ -37,7 +37,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 ```
 
 
-## 环
+## 环 {#ring}
 
 `Ring` 是一种没有孔洞的简单多边形，表示为点的数组：[Array](array.md)([Point](#point))。
 
@@ -60,7 +60,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 ```
 
 
-## LineString
+## LineString {#linestring}
 
 `LineString` 是以点数组形式存储的一条线：[Array](array.md)([Point](#point))。
 
@@ -83,7 +83,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 ```
 
 
-## MultiLineString
+## MultiLineString {#multilinestring}
 
 `MultiLineString` 是由多条线构成的 `LineString` 数组：[Array](array.md)([LineString](#linestring))。
 
@@ -106,7 +106,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
 
 
-## Polygon
+## Polygon {#polygon}
 
 `Polygon` 是一种带孔多边形，存储为由环组成的数组：[Array](array.md)([Ring](#ring))。外层数组的第一个元素是多边形的外边界，其后的所有元素表示孔。
 
@@ -129,7 +129,7 @@ Result：
 ```
 
 
-## MultiPolygon
+## MultiPolygon {#multipolygon}
 
 `MultiPolygon` 由多个多边形组成，并以多边形数组的形式存储：[Array](array.md)([Polygon](#polygon))。
 
@@ -152,7 +152,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
 
 
-## Geometry
+## Geometry {#geometry}
 
 `Geometry` 是上述所有类型的通用类型。它等价于这些类型的 `Variant`。
 

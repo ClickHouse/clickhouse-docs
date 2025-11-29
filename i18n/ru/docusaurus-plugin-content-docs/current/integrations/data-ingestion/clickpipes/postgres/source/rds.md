@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных RDS Postgres
+# Руководство по настройке источника данных RDS Postgres {#rds-postgres-source-setup-guide}
 
 
 
@@ -27,7 +27,7 @@ ClickPipes поддерживает Postgres версии 12 и выше.
 
 
 
-## Включите логическую репликацию
+## Включите логическую репликацию {#enable-logical-replication}
 
 Вы можете пропустить этот раздел, если в экземпляре базы данных RDS уже настроены следующие параметры:
 

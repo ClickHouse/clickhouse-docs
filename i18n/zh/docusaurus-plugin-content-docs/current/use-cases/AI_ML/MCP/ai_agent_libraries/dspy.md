@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体
+# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
 在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 智能体，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互。
 

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# prometheusQuery テーブル関数
+# prometheusQuery テーブル関数 {#prometheusquery-table-function}
 
 TimeSeries テーブルのデータを使用して Prometheus のクエリを評価します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 prometheusQuery('db_name', 'time_series_table', 'promql_query', evaluation_time)
@@ -46,7 +46,7 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 
 
 
-## 例
+## 例 {#example}
 
 ```sql
 SELECT * FROM prometheusQuery(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now())

@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['可观测性', '监控', '自托管', '指标', '系统健康状况']
 ---
 
-import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';
-import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
-import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
+import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
+import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
+import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
 
 # 自主管理监控 {#cloud-monitoring}

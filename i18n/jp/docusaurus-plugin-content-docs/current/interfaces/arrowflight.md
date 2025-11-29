@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Apache Arrow Flight インターフェイス
+# Apache Arrow Flight インターフェイス {#apache-arrow-flight-interface}
 
 ClickHouse は、Arrow IPC フォーマットを gRPC 上で利用して効率的なカラム型データ転送を行う、高性能な RPC フレームワークである [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルとの連携をサポートしています。
 
@@ -38,7 +38,7 @@ Arrow Flight インターフェイスは現在、実験的な段階であり、�
 
 
 
-## Arrow Flight サーバーの実行
+## Arrow Flight サーバーの実行 {#running-server}
 
 自己管理の ClickHouse インスタンスで Arrow Flight サーバーを有効化するには、サーバー設定に次の構成を追加します。
 
@@ -55,7 +55,7 @@ ClickHouse サーバーを再起動します。起動に成功すると、次の
 ```
 
 
-## Arrow Flight SQL を使用して ClickHouse に接続する
+## Arrow Flight SQL を使用して ClickHouse に接続する {#connecting-to-clickhouse}
 
 Arrow Flight SQL をサポートする任意のクライアントを利用できます。たとえば、`pyarrow` を使う場合は次のとおりです。
 

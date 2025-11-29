@@ -23,7 +23,7 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# ClickHouse Cloud の監査ログを Splunk に保存する
+# ClickHouse Cloud の監査ログを Splunk に保存する {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>
 
@@ -35,7 +35,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# インストール
+# インストール {#installation}
 
 
 
@@ -57,7 +57,7 @@ Splunkbase からダウンロードしたアーカイブファイルを選択し
 
 
 
-# モジュラー入力の設定
+# モジュラー入力の設定 {#modular-input-configuration}
 
 モジュラー入力を設定するには、まず ClickHouse Cloud デプロイメントから次の情報を取得する必要があります。
 
@@ -110,7 +110,7 @@ ClickHouse Cloud Audit Logs のデータ入力を選択します。
 
 
 
-# 使用方法
+# 使用方法 {#usage}
 
 モジュラー入力はデータを Splunk に保存します。データを確認するには、Splunk の通常の検索ビューを使用できます。
 

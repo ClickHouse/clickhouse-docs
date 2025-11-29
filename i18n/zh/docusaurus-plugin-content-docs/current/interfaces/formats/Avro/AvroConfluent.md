@@ -40,7 +40,7 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 ## 示例 {#examples}
 
-### 使用 schema registry
+### 使用 schema registry {#using-a-schema-registry}
 
 要使用 [Kafka 表引擎](/engines/table-engines/integrations/kafka.md) 读取使用 Avro 编码的 Kafka 主题，请通过 `format_avro_schema_registry_url` 设置指定 schema registry 的 URL。
 
@@ -62,7 +62,7 @@ SELECT * FROM topic1_stream;
 ```
 
 
-#### 使用基本身份验证
+#### 使用基本身份验证 {#using-basic-authentication}
 
 如果 schema registry 需要基本身份验证（例如使用 Confluent Cloud 时），可以在 `format_avro_schema_registry_url` 设置中提供经过 URL 编码的凭证。
 
@@ -82,7 +82,7 @@ format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry
 ```
 
 
-## 故障排查
+## 故障排查 {#troubleshooting}
 
 要监控摄取进度并调试 Kafka 消费者的错误，可以查询 [`system.kafka_consumers` 系统表](../../../operations/system-tables/kafka_consumers.md)。如果您的部署有多个副本（例如 ClickHouse Cloud），则必须使用 [`clusterAllReplicas`](../../../sql-reference/table-functions/cluster.md) 表函数。
 

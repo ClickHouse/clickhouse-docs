@@ -10,7 +10,7 @@ keywords: ['ClickHouse Cloud', 'обзор API', 'облачный API', 'REST A
 
 
 
-# API ClickHouse Cloud
+# API ClickHouse Cloud {#clickhouse-cloud-api}
 
 
 

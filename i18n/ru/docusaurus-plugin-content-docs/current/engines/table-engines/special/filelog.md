@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -57,7 +57,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `handle_error_mode` — Как обрабатывать ошибки в движке FileLog. Возможные значения: default (будет сгенерировано исключение, если не удалось разобрать сообщение), stream (сообщение об исключении и исходное сообщение будут сохранены во виртуальных столбцах `_error` и `_raw_message`).
 
 
-## Описание
+## Описание {#description}
 
 Поступившие записи отслеживаются автоматически, поэтому каждая запись в файле журнала учитывается только один раз.
 

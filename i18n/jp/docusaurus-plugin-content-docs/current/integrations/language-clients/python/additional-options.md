@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 ClickHouse Connect は、高度なユースケースに対応するためのさまざまな追加オプションを提供しています。
 
-## グローバル設定
+## グローバル設定 {#global-settings}
 
 ClickHouse Connect の動作をグローバルに制御する設定はごく少数のみです。これらにはトップレベルの `common` パッケージからアクセスできます。
 

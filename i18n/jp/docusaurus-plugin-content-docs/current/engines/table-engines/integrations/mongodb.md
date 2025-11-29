@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# MongoDB テーブルエンジン
+# MongoDB テーブルエンジン {#mongodb-table-engine}
 
 MongoDB エンジンは、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。
 
@@ -18,7 +18,7 @@ MongoDB v3.6 以降のサーバーのみがサポートされています。
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -61,7 +61,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定します。既定では `_id` です。 |
 
 
-## 型マッピング
+## 型マッピング {#types-mappings}
 
 | MongoDB                 | ClickHouse                                          |
 | ----------------------- | --------------------------------------------------- |
@@ -78,7 +78,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 キーが MongoDB ドキュメント内に存在しない場合 (たとえばカラム名が一致しない場合)、デフォルト値または (カラムが Nullable の場合は) `NULL` が挿入されます。
 
-### OID
+### OID {#oid}
 
 WHERE 句で `String` を `oid` として扱いたい場合は、テーブルエンジンの最後の引数にそのカラム名を指定します。
 これは、MongoDB でデフォルトで `oid` 型を持つ `_id` カラムでレコードをクエリする際に必要になる場合があります。
@@ -132,7 +132,7 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 ```
 
 
-## サポートされている句
+## サポートされている句 {#supported-clauses}
 
 単純な式を含むクエリのみがサポートされます（例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
 このような式は MongoDB のクエリ言語に変換され、サーバー側で実行されます。
@@ -158,7 +158,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 :::
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 MongoDB に [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) データセットが読み込まれていることを前提とします
 

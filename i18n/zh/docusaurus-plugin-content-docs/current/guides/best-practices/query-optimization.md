@@ -11,7 +11,7 @@ import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices
 import Image from '@theme/IdealImage';
 
 
-# 查询优化简明指南
+# 查询优化简明指南 {#a-simple-guide-for-query-optimization}
 
 本节通过常见场景示例说明如何使用不同的性能优化技术，例如 [analyzer](/operations/analyzer)、[query profiling](/operations/optimizing-performance/sampling-query-profiler) 或 [avoid nullable Columns](/optimize/avoid-nullable-columns)，从而提升 ClickHouse 查询性能。
 
@@ -61,7 +61,7 @@ ClickHouse 提供了一套丰富的工具，帮助你了解查询是如何执行
 
 
 
-## 数据集
+## 数据集 {#dataset}
 
 我们将使用一个真实示例来说明我们是如何处理查询性能的。
 
@@ -112,9 +112,9 @@ ORDER BY tuple()
 ```
 
 
-## 找出慢查询
+## 找出慢查询 {#spot-the-slow-queries}
 
-### 查询日志
+### 查询日志 {#query-logs}
 
 默认情况下，ClickHouse 会在 [查询日志](/operations/system-tables/query_log) 中收集并记录每条已执行查询的信息。这些数据存储在表 `system.query_log` 中。 
 
@@ -431,7 +431,7 @@ _最后，要留意离群值；某条查询偶尔运行缓慢是很常见的情�
 
 
 
-## 基础优化
+## 基础优化 {#basic-optimization}
 
 既然我们已经搭好了用于测试的框架，就可以开始进行优化了。
 
@@ -439,7 +439,7 @@ _最后，要留意离群值；某条查询偶尔运行缓慢是很常见的情�
 
 根据你摄取数据的方式，你可能利用了 ClickHouse 的[功能](/interfaces/schema-inference)，基于摄取的数据推断表结构。虽然这在入门阶段非常实用，但如果你希望优化查询性能，就需要重新审视数据表结构，使其尽可能贴合你的具体用例。
 
-### Nullable
+### Nullable {#nullable}
 
 如[最佳实践文档](/best-practices/select-data-types#avoid-nullable-columns)中所述，应尽可能避免使用 Nullable 列。经常使用它们很有诱惑力，因为它们可以让数据摄取机制更加灵活，但每次都需要处理一个额外的列，会对性能产生负面影响。
 
@@ -485,7 +485,7 @@ dropoff_location_id_nulls: 0
 
 我们只有两列存在 null 值：`mta_tax` 和 `payment_type`。其余字段不应该使用 `Nullable` 列类型。
 
-### 低基数（Low cardinality）
+### 低基数（Low cardinality） {#low-cardinality}
 
 对于 String 类型列，一个简单易行的优化是充分利用 LowCardinality 数据类型。正如低基数[文档](/sql-reference/data-types/lowcardinality)中所述，ClickHouse 会对 LowCardinality 列应用字典编码，从而显著提升查询性能。
 
@@ -515,7 +515,7 @@ uniq(vendor_id):           3
 
 在基数较低的情况下，这四列 `ratecode_id`、`pickup_location_id`、`dropoff_location_id` 和 `vendor_id` 非常适合使用 LowCardinality 类型。
 
-### 优化数据类型
+### 优化数据类型 {#optimize-data-type}
 
 ClickHouse 支持大量数据类型。请务必在满足用例需求的前提下选择尽可能小的数据类型，以优化性能并减少磁盘上的数据存储空间。 
 
@@ -538,7 +538,7 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
 对于日期，你应选择既符合数据集特性、又最适合支持你计划执行查询的精度。
 
-### 应用这些优化
+### 应用这些优化 {#apply-the-optimizations}
 
 让我们创建一个新表来使用优化后的 schema，并重新摄取这些数据。
 
@@ -604,7 +604,7 @@ ORDER BY size DESC
 新表相比之前的表小了很多。可以看到，该表的磁盘空间占用减少了约 34%（从 7.38 GiB 降至 4.89 GiB）。
 
 
-## 主键的重要性
+## 主键的重要性 {#the-importance-of-primary-keys}
 
 ClickHouse 中的主键与大多数传统数据库系统中的工作方式不同。在那些系统中，主键用于保证唯一性和数据完整性。任何插入重复主键值的尝试都会被拒绝，并且通常会创建基于 B-tree 或哈希的索引用于快速查找。 
 
@@ -616,7 +616,7 @@ ClickHouse 中的主键与大多数传统数据库系统中的工作方式不同
 
 ClickHouse 支持的其他选项，例如 Projection（投影）或物化视图，可以让你在相同数据上使用不同的主键集合。本系列博客的第二部分将更详细地讨论这一点。 
 
-### 选择主键
+### 选择主键 {#choose-primary-keys}
 
 选择正确的主键集合是一个复杂的话题，可能需要权衡和试验，才能找到最佳组合。 
 

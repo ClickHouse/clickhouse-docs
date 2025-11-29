@@ -7,13 +7,9 @@ title: 'Prometheus プロトコル'
 doc_type: 'reference'
 ---
 
+# Prometheus プロトコル {#prometheus-protocols}
 
-
-# Prometheus プロトコル
-
-
-
-## メトリクスの公開
+## メトリクスの公開 {#expose}
 
 :::note
 ClickHouse Cloud を使用している場合、[Prometheus Integration](/integrations/prometheus) を利用して Prometheus にメトリクスを公開できます。
@@ -76,8 +72,7 @@ Settings:
 curl 127.0.0.1:9363/metrics
 ```
 
-
-## Remote-write プロトコル
+## Remote-write プロトコル {#remote-write}
 
 ClickHouse は [remote-write](https://prometheus.io/docs/specs/remote_write_spec/) プロトコルをサポートしています。
 このプロトコルを通じてデータを受信し、[TimeSeries](/engines/table-engines/special/time_series) テーブルに書き込みます
@@ -108,8 +103,7 @@ Settings:
 | `table`                      | none    | `remote-write` プロトコルで受信したデータを書き込む [TimeSeries](/engines/table-engines/special/time_series) テーブルの名前。この名前には、任意でデータベース名も含めることができます。 |
 | `database`                   | none    | `table` 設定で指定されたテーブル名にデータベース名が含まれていない場合に、そのテーブルが存在するデータベースの名前。                                                                   |
 
-
-## リモートリードプロトコル
+## リモートリードプロトコル {#remote-read}
 
 ClickHouse は [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) プロトコルをサポートしています。
 データは [TimeSeries](/engines/table-engines/special/time_series) テーブルから読み出され、このプロトコル経由で送信されます。
@@ -139,8 +133,7 @@ Settings:
 | `table`                      | none    | `remote-read` プロトコルで送信するデータを読み取るための [TimeSeries](/engines/table-engines/special/time_series) テーブル名。この名前にはオプションでデータベース名も含めることができます。 |
 | `database`                   | none    | `table` 設定で指定されたテーブルが存在するデータベース名。テーブル名にデータベース名が含まれていない場合に使用されます。                                                                   |
 
-
-## 複数プロトコルの設定
+## 複数プロトコルの設定 {#multiple-protocols}
 
 複数のプロトコルを 1 か所でまとめて指定できます。
 

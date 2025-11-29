@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse と PostgreSQL の比較
+# ClickHouse と PostgreSQL の比較 {#comparing-clickhouse-and-postgresql}
 
 
 

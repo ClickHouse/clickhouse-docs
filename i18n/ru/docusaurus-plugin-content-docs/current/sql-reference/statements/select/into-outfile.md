@@ -6,9 +6,7 @@ title: 'Предложение INTO OUTFILE'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор INTO OUTFILE
+# Оператор INTO OUTFILE {#into-outfile-clause}
 
 Оператор `INTO OUTFILE` перенаправляет результат запроса `SELECT` в файл на стороне **клиента**.
 
@@ -24,8 +22,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 `level` — числовой литерал. Поддерживаются положительные целые числа в следующих диапазонах: `1-12` для `lz4`, `1-22` для `zstd` и `1-9` для остальных типов сжатия.
 
-
-## Подробности реализации
+## Подробности реализации {#implementation-details}
 
 * Эта функциональность доступна в [клиенте командной строки](../../../interfaces/cli.md) и [clickhouse-local](../../../operations/utilities/clickhouse-local.md). Поэтому запрос, отправленный через [HTTP-интерфейс](../../../interfaces/http.md), завершится с ошибкой.
 * Запрос завершится с ошибкой, если файл с тем же именем уже существует.

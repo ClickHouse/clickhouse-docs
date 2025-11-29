@@ -10,8 +10,7 @@ keywords: ['Part Intersects', 'system.replicas']
 
 {/* 截断 */}
 
-
-## 发生原因
+## 发生原因 \{#why-it-occurs\}
 
 当出现此错误时，表会显示为只读，并且错误消息会列出相互交叉的部分。
 
@@ -29,12 +28,11 @@ WHERE is_readonly = 1
 代码：49. DB::Exception：数据分片 XXXXX 与先前的数据分片 YYYYY 存在交集。这是一个程序错误或人为干预 ZooKeeper 数据的结果。(LOGICAL_ERROR)（版本 21.12.4.1（官方构建版本））
 ```
 
-
 ## 错误原因 \{#cause-of-the-error\}
 
 此错误可能是由 `mergeSelectingTask` 与队列重新初始化之间的竞态条件引起的。
 
-## 解决方案
+## 解决方案 \{#solution\}
 
 在所有副本上执行以下查询：
 
@@ -58,16 +56,15 @@ SYSTEM SYNC REPLICA table_name; -- 等待副本同步数据分片。建议在恢
 建议升级到最新版本的 ClickHouse
 :::
 
-
 ## 其他资源 \{#additional-resources\}
 
 相关 PR 和 GitHub Issue：
 
-- [ClickHouse/ClickHouse#34096](https://github.com/ClickHouse/ClickHouse/pull/34096)
-- [ClickHouse/ClickHouse#30651](https://github.com/ClickHouse/ClickHouse/pull/30651)
-- [ClickHouse/ClickHouse#31060](https://github.com/ClickHouse/ClickHouse/pull/31060)
-- [ClickHouse/ClickHouse#35863](https://github.com/ClickHouse/ClickHouse/issues/35863)
+* [ClickHouse/ClickHouse#34096](https://github.com/ClickHouse/ClickHouse/pull/34096)
+* [ClickHouse/ClickHouse#30651](https://github.com/ClickHouse/ClickHouse/pull/30651)
+* [ClickHouse/ClickHouse#31060](https://github.com/ClickHouse/ClickHouse/pull/31060)
+* [ClickHouse/ClickHouse#35863](https://github.com/ClickHouse/ClickHouse/issues/35863)
 
-## 受影响的版本：\{#versions-affected\}
+## 受影响的版本： \{#versions-affected\}
 
 ClickHouse v22.12 及更早版本

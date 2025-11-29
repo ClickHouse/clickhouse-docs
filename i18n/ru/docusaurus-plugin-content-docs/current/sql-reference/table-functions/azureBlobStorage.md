@@ -13,13 +13,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Табличная функция azureBlobStorage
+# Табличная функция azureBlobStorage {#azureblobstorage-table-function}
 
 Предоставляет табличный интерфейс для чтения и записи файлов в [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs). Эта табличная функция аналогична [функции s3](../../sql-reference/table-functions/s3.md).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
@@ -50,7 +50,7 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Аналогично движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки с использованием Azure Storage. Дополнительные сведения см. [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Ниже предполагается, что Azurite доступен по имени хоста `azurite1`.
 
@@ -99,9 +99,9 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 
 
 
-## Запись с партиционированием
+## Запись с партиционированием {#partitioned-write}
 
-### Стратегия партиционирования
+### Стратегия партиционирования {#partition-strategy}
 
 Поддерживается только для запросов INSERT.
 
@@ -125,7 +125,7 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```
 
 
-## настройка use&#95;hive&#95;partitioning
+## настройка use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
 Это указание для ClickHouse при разборе файлов, партиционированных в стиле Hive, во время чтения. Оно не влияет на запись. Для симметричного чтения и записи используйте аргумент `partition_strategy`.
 
@@ -140,7 +140,7 @@ SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...
 ```
 
 
-## Использование Shared Access Signatures (SAS)
+## Использование Shared Access Signatures (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
 Shared Access Signature (SAS) — это URI, который предоставляет ограниченный доступ к контейнеру или файлу в Azure Storage. Используйте его, чтобы предоставить ограниченный по времени доступ к ресурсам учетной записи хранения без передачи ключа учетной записи хранения. Подробнее [здесь](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature).
 

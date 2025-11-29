@@ -6,7 +6,7 @@ title: 'UNION 子句'
 doc_type: 'reference'
 ---
 
-# UNION 子句
+# UNION 子句 {#union-clause}
 
 可以使用 `UNION` 并显式指定 `UNION ALL` 或 `UNION DISTINCT`。
 

@@ -15,12 +15,11 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 {/* усечь */}
 
-
 ## Синхронное чтение данных \{#synchronous-data-reading\}
 
-Новый параметр allow_asynchronous_read_from_io_pool_for_merge_tree позволяет использовать число потоков чтения (streams), превышающее число потоков в остальной части конвейера выполнения запроса.
+Новый параметр allow&#95;asynchronous&#95;read&#95;from&#95;io&#95;pool&#95;for&#95;merge&#95;tree позволяет использовать число потоков чтения (streams), превышающее число потоков в остальной части конвейера выполнения запроса.
 
-Обычно параметр [max_threads](https://clickhouse.com/docs/operations/settings/settings/#settings-max_threads) [управляет](https://clickhouse.com/company/events/query-performance-introspection) числом параллельных потоков чтения и параллельных потоков обработки запроса:
+Обычно параметр [max&#95;threads](https://clickhouse.com/docs/operations/settings/settings/#settings-max_threads) [управляет](https://clickhouse.com/company/events/query-performance-introspection) числом параллельных потоков чтения и параллельных потоков обработки запроса:
 
 <Image img={sync_read} size="md" alt="Схема синхронного чтения данных" />
 
@@ -28,26 +27,26 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 ### Асинхронное чтение данных \{#asynchronous-data-reading\}
 
-Новая настройка [allow_asynchronous_read_from_io_pool_for_merge_tree](https://github.com/ClickHouse/ClickHouse/pull/43260) позволяет использовать больше потоков чтения (streams), чем потоков в остальном конвейере выполнения запроса, чтобы **ускорить холодные запросы на низкопроизводительных по CPU сервисах ClickHouse Cloud** и **повысить производительность запросов, ограниченных подсистемой ввода-вывода (I/O)**.
-Когда эта настройка включена, количество потоков чтения контролируется настройкой [max_streams_for_merge_tree_reading](https://github.com/ClickHouse/ClickHouse/pull/43260):
+Новая настройка [allow&#95;asynchronous&#95;read&#95;from&#95;io&#95;pool&#95;for&#95;merge&#95;tree](https://github.com/ClickHouse/ClickHouse/pull/43260) позволяет использовать больше потоков чтения (streams), чем потоков в остальном конвейере выполнения запроса, чтобы **ускорить холодные запросы на низкопроизводительных по CPU сервисах ClickHouse Cloud** и **повысить производительность запросов, ограниченных подсистемой ввода-вывода (I/O)**.
+Когда эта настройка включена, количество потоков чтения контролируется настройкой [max&#95;streams&#95;for&#95;merge&#95;tree&#95;reading](https://github.com/ClickHouse/ClickHouse/pull/43260):
 
 <Image img={async_read} size="md" alt="Диаграмма асинхронного чтения данных" />
 
 Данные читаются асинхронно, параллельно из разных столбцов.
 
-Обратите внимание, что существует также настройка [max_streams_to_max_threads_ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) для настройки соотношения между количеством потоков чтения (streams) и количеством потоков в остальном конвейере выполнения запроса. Однако в бенчмарках она давала меньший эффект, чем настройка `max_streams_for_merge_tree_reading`.
+Обратите внимание, что существует также настройка [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) для настройки соотношения между количеством потоков чтения (streams) и количеством потоков в остальном конвейере выполнения запроса. Однако в бенчмарках она давала меньший эффект, чем настройка `max_streams_for_merge_tree_reading`.
 
-### А как насчёт optimize_read_in_order? \{#what-about-optimize_read_in_order\}
+### А как насчёт optimize&#95;read&#95;in&#95;order? \{#what-about-optimize&#95;read&#95;in&#95;order\}
 
-С [оптимизацией optimize_read_in_order](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading) ClickHouse может [избежать](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) пересортировки данных в памяти, если порядок сортировки в запросах отражает физический порядок данных на диске, **но для этого необходимо последовательное чтение данных (в отличие от асинхронного чтения)**:
+С [оптимизацией optimize&#95;read&#95;in&#95;order](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading) ClickHouse может [избежать](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) пересортировки данных в памяти, если порядок сортировки в запросах отражает физический порядок данных на диске, **но для этого необходимо последовательное чтение данных (в отличие от асинхронного чтения)**:
 
 <Image img={optimize_read} size="md" alt="Диаграмма оптимизации чтения по порядку" />
 
-### optimize_read_in_order имеет приоритет над асинхронным чтением \{#optimize_read_in_order-has-precedence-over-asynchronous-reading\}
+### optimize&#95;read&#95;in&#95;order имеет приоритет над асинхронным чтением \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
 
 Когда ClickHouse обнаруживает, что может быть применена оптимизация `optimize_read_in_order`, настройка `allow_asynchronous_read_from_io_pool_for_merge_tree` будет проигнорирована или отключена.
 
-### Пример, демонстрирующий все вышеперечисленное
+### Пример, демонстрирующий все вышеперечисленное \{#example-demonstrating-all-of-the-above\}
 
 * Создайте и загрузите [таблицу UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
 
@@ -138,7 +137,6 @@ SETTINGS
 
 * Проверьте конвейер выполнения запроса с 60 асинхронными потоками чтения и 20 потоками для остальной части конвейера выполнения запроса,
   когда может быть применена оптимизация `optimize_read_in_order`
-
 
 ```
 EXPLAIN PIPELINE

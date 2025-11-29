@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 分位数関数
+# 分位数関数 {#quantiles-functions}
 
 
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## quantilesExactExclusive
+## quantilesExactExclusive {#quantilesexactexclusive}
 
 数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 
@@ -73,7 +73,7 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesExactInclusive
+## quantilesExactInclusive {#quantilesexactinclusive}
 
 数値データ系列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 
@@ -126,7 +126,7 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesGK
+## quantilesGK {#quantilesgk}
 
 `quantilesGK` は `quantileGK` と同様に動作しますが、複数のレベルの分位数を同時に計算でき、配列を返します。
 

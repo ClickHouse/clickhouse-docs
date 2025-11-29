@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Hudi テーブルエンジン
+# Hudi テーブルエンジン {#hudi-table-engine}
 
 このエンジンは、Amazon S3 上の既存の Apache [Hudi](https://hudi.apache.org/) テーブルと読み取り専用で統合する機能を提供します。
 
 
 
-## テーブルを作成
+## テーブルを作成 {#create-table}
 
 Hudi テーブルはあらかじめ S3 上に存在している必要がある点に注意してください。このコマンドでは、新しいテーブルを作成するための DDL パラメータを指定することはできません。
 

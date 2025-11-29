@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# HDFS テーブルエンジン
+# HDFS テーブルエンジン {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 ```sql
 ENGINE = HDFS(URI, format)
@@ -34,7 +34,7 @@ ENGINE = HDFS(URI, format)
   [Formats](/sql-reference/formats#formats-overview) セクションに一覧されています。
 * [PARTITION BY expr]
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` — 任意です。ほとんどの場合、パーティションキーは不要であり、必要な場合でも、一般的には月単位より細かいパーティションキーは不要です。パーティショニングは（ORDER BY 式とは対照的に）クエリを高速化しません。細かすぎるパーティショニングは決して行うべきではありません。クライアント ID や名前でデータをパーティションしないでください（代わりに、ORDER BY 式の先頭のカラムとしてクライアント ID または名前を指定してください）。
 
@@ -68,7 +68,7 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 ```
 
 
-## 実装の詳細
+## 実装の詳細 {#implementation-details}
 
 * 読み取りと書き込みは並列に実行できます。
 * 次の機能はサポートされません:
@@ -136,7 +136,7 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
 
-## 設定
+## 設定 {#configuration}
 
 GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定ファイルを用いた拡張的な設定が可能です。使用できる設定キーは 2 種類あり、グローバル (`hdfs`) とユーザーレベル (`hdfs_*`) です。最初にグローバル設定が適用され、その後に（存在する場合は）ユーザーレベルの設定が適用されます。
 
@@ -154,9 +154,9 @@ GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定フ
 </hdfs_root>
 ```
 
-### 設定オプション
+### 設定オプション {#configuration-options}
 
-#### libhdfs3 がサポートする項目
+#### libhdfs3 がサポートする項目 {#supported-by-libhdfs3}
 
 
 | **parameter**                                         | **default value**       |
@@ -230,7 +230,7 @@ libhdfs3 の制限により、古典的な方式のみがサポートされて�
 
 `hadoop_kerberos_keytab`、`hadoop_kerberos_principal` または `hadoop_security_kerberos_ticket_cache_path` が指定されている場合、Kerberos 認証が使用されます。この場合、`hadoop_kerberos_keytab` と `hadoop_kerberos_principal` は必須となります。
 
-## HDFS NameNode HA サポート
+## HDFS NameNode HA サポート {#namenode-ha}
 
 libhdfs3 は HDFS NameNode の HA をサポートします。
 

@@ -25,7 +25,7 @@ ClickStack использует OTel collector для сбора логов, м�
 
 Чтобы собирать логи и метрики как с каждого узла, так и с кластера в целом, нам нужно развернуть два отдельных коллектора OpenTelemetry. Один будет развернут в виде ДемонСета для сбора логов и метрик с каждого узла, а другой — в виде Развертывания для сбора логов и метрик с самого кластера.
 
-### Создание секрета с ключом API
+### Создание секрета с ключом API {#create-api-key-secret}
 
 Создайте новый секрет Kubernetes с [ключом API для приёма данных](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) из HyperDX. Он будет использоваться указанными ниже компонентами для безопасной ингестии данных в ваш ClickStack OTel collector:
 
@@ -38,11 +38,11 @@ kubectl create secret generic hyperdx-secret \
 
 ```shell
 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=<OTEL_COLLECTOR_ENDPOINT>
-# например: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
+# например: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
 
-### Создание конфигурации ДемонСета
+### Создание конфигурации ДемонСета {#creating-the-daemonset-configuration}
 
 ДемонСет будет собирать логи и метрики с каждого узла в кластере, но не будет собирать события Kubernetes или метрики на уровне всего кластера.
 
@@ -263,7 +263,7 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 приложение с использованием переменных окружения:
 
 ```yaml
-# my_app_deployment.yaml
+# my_app_deployment.yaml {#deploymentyaml}
 
 apiVersion: apps/v1
 kind: Deployment

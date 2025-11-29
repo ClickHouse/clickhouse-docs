@@ -17,9 +17,9 @@ import TabItem from '@theme/TabItem';
 默认情况下，表只会在当前服务器上创建。分布式 DDL 查询是通过 `ON CLUSTER` 子句实现的，该子句[单独说明](../../../sql-reference/distributed-ddl.md)。
 
 
-## 语法形式
+## 语法形式 {#syntax-forms}
 
-### 使用显式 Schema
+### 使用显式 Schema {#with-explicit-schema}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -43,7 +43,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可以为列和表添加注释。
 
-### 使用与其他表类似的表结构
+### 使用与其他表类似的表结构 {#with-a-schema-similar-to-other-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
@@ -51,7 +51,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 
 创建一个与另一张表结构相同的表。可以为该表指定不同的引擎。如果未指定引擎，则将使用与 `db2.name2` 表相同的引擎。
 
-### 使用从另一张表克隆的表结构和数据
+### 使用从另一张表克隆的表结构和数据 {#with-a-schema-and-data-cloned-from-another-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
@@ -64,7 +64,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
 
-### 通过表函数
+### 通过表函数 {#from-a-table-function}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
@@ -72,7 +72,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 
 创建一个表，其效果与指定的[表函数](/sql-reference/table-functions) 相同。创建的表在行为上也将与所指定的对应表函数一致。
 
-### 通过 SELECT 查询
+### 通过 SELECT 查询 {#from-select-query}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)] ENGINE = engine AS SELECT ...
@@ -112,7 +112,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 
 
-## 默认值
+## 默认值 {#default_values}
 
 列定义可以以 `DEFAULT expr`、`MATERIALIZED expr` 或 `ALIAS expr` 的形式指定默认值表达式。示例：`URLDomain String DEFAULT domain(URL)`。
 
@@ -124,7 +124,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 默认值表达式 `expr` 可以引用任意表列和常量。ClickHouse 会检查对表结构的修改不会在表达式计算中引入循环。对于 INSERT，会检查表达式是可解析的——即所有用于计算这些表达式的列所依赖的列在 INSERT 中都已提供。
 
-### DEFAULT
+### DEFAULT {#default}
 
 `DEFAULT expr`
 
@@ -150,7 +150,7 @@ SELECT * FROM test;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-### MATERIALIZED
+### MATERIALIZED {#materialized}
 
 `MATERIALIZED expr`
 
@@ -188,7 +188,7 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-### EPHEMERAL
+### EPHEMERAL {#ephemeral}
 
 `EPHEMERAL [expr]`
 
@@ -265,7 +265,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ````
 
 
-## 主键
+## 主键 {#primary-key}
 
 在创建表时，可以定义[主键](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)。主键可以通过两种方式指定：
 
@@ -296,11 +296,11 @@ PRIMARY KEY(expr1[, expr2,...]);
 :::
 
 
-## 约束
+## 约束 {#constraints}
 
 除了列描述之外，还可以定义约束条件：
 
-### CONSTRAINT
+### CONSTRAINT {#constraint}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -316,7 +316,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 添加大量约束可能会对大批量 `INSERT` 查询的性能产生负面影响。
 
-### ASSUME
+### ASSUME {#assume}
 
 `ASSUME` 子句用于在表上定义一个被假定为恒为真的 `CONSTRAINT`。优化器随后可以利用该约束来提升 SQL 查询的性能。
 
@@ -347,7 +347,7 @@ ORDER BY (name_len, name);
 
 
 
-## 列压缩编解码器
+## 列压缩编解码器 {#column_compression_codec}
 
 默认情况下，ClickHouse 在自托管版本中使用 `lz4` 压缩，在 ClickHouse Cloud 中使用 `zstd` 压缩。
 
@@ -392,27 +392,27 @@ ALTER TABLE codec_example MODIFY COLUMN float_value CODEC(Default);
 
 ClickHouse 支持通用 codec 和专用 codec。
 
-### 通用 Codec
+### 通用 Codec {#general-purpose-codecs}
 
-#### NONE
+#### NONE {#none}
 
 `NONE` — 不进行压缩。
 
-#### LZ4
+#### LZ4 {#lz4}
 
 `LZ4` — 默认使用的无损 [数据压缩算法](https://github.com/lz4/lz4)。采用 LZ4 快速压缩。
 
-#### LZ4HC
+#### LZ4HC {#lz4hc}
 
 `LZ4HC[(level)]` — 具有可配置级别的 LZ4 HC（高压缩率）算法。默认级别：9。设置 `level <= 0` 时使用默认级别。可选级别范围：[1, 12]。推荐级别范围：[4, 9]。
 
-#### ZSTD
+#### ZSTD {#zstd}
 
 `ZSTD[(level)]` — 带可配置 `level` 的 [ZSTD 压缩算法](https://en.wikipedia.org/wiki/Zstandard)。可选级别范围：[1, 22]。默认级别：1。
 
 较高压缩级别适用于非对称场景，例如压缩一次、多次解压。级别越高，压缩率越好，但 CPU 使用率越高。
 
-#### ZSTD&#95;QAT
+#### ZSTD&#95;QAT {#zstd_qat}
 
 <CloudNotSupportedBadge />
 
@@ -422,7 +422,7 @@ ClickHouse 支持通用 codec 和专用 codec。
 * 对于压缩，ZSTD&#95;QAT 会尝试使用 Intel® QAT 硬件卸载设备（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）。如果未找到此类设备，则会回退到软件实现的 ZSTD 压缩。
 * 解压始终在软件中执行。
 
-#### DEFLATE&#95;QPL
+#### DEFLATE&#95;QPL {#deflate_qpl}
 
 <CloudNotSupportedBadge />
 
@@ -460,7 +460,7 @@ ClickHouse 支持通用 codec 和专用 codec。
 
 `FPC(level, float_size)` - 在序列中不断选择两个预测器中效果更好的一个来预测下一个浮点值，然后将实际值与预测值做 XOR，再对结果进行前导零压缩。类似于 Gorilla，当存储变化缓慢的一系列浮点值时，这种方式非常高效。对于 64 位值（double），FPC 比 Gorilla 更快；对于 32 位值，性能可能有所差异。`level` 可选值范围为 1-28，默认值为 12。`float_size` 可选值为 4、8，当类型是 Float 时默认值为 `sizeof(type)`，其他情况下为 4。关于该算法的详细描述，请参见 [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf)。
 
-#### T64
+#### T64 {#t64}
 
 `T64` — 一种压缩方法，用于裁剪整数数据类型（包括 `Enum`、`Date` 和 `DateTime`）中未使用的高位。在其算法的每一步中，编解码器会取一个包含 64 个值的块，将其放入一个 64x64 位矩阵中，对矩阵进行转置，裁剪值中未使用的比特，并将剩余部分作为一个序列返回。未使用的比特是指：在用于压缩的整个数据部分中，在最大值与最小值之间保持不变的那些比特。
 
@@ -475,17 +475,17 @@ CREATE TABLE codec_example
 ENGINE = MergeTree()
 ```
 
-### 加密编解码器
+### 加密编解码器 {#encryption-codecs}
 
 这些编解码器实际上并不会压缩数据，而是对磁盘上的数据进行加密。它们仅在通过 [encryption](/operations/server-configuration-parameters/settings#encryption) 设置指定了加密密钥时可用。请注意，加密通常只在编解码器管道的末端才有意义，因为经过加密的数据通常无法再以有意义的方式进行压缩。
 
 加密编解码器：
 
-#### AES&#95;128&#95;GCM&#95;SIV
+#### AES&#95;128&#95;GCM&#95;SIV {#aes_128_gcm_siv}
 
 `CODEC('AES-128-GCM-SIV')` — 使用 [RFC 8452](https://tools.ietf.org/html/rfc8452) 中定义的 GCM-SIV 模式，通过 AES-128 对数据进行加密。
 
-#### AES-256-GCM-SIV
+#### AES-256-GCM-SIV {#aes-256-gcm-siv}
 
 `CODEC('AES-256-GCM-SIV')` — 在 GCM-SIV 模式下使用 AES-256 对数据进行加密。
 
@@ -524,7 +524,7 @@ ENGINE = MergeTree ORDER BY x;
 ```
 
 
-## 临时表
+## 临时表 {#temporary-tables}
 
 :::note
 请注意，临时表不会被复制。因此，无法保证插入到临时表中的数据在其他副本中也可用。临时表的主要使用场景是在单个会话期间用于查询或关联小规模的外部数据集。
@@ -555,7 +555,7 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 可以使用 [ENGINE = Memory](../../../engines/table-engines/special/memory.md) 引擎的表来替代临时表。
 
 
-## REPLACE TABLE
+## REPLACE TABLE {#replace-table}
 
 `REPLACE` 语句允许以[原子方式](/concepts/glossary#atomicity)更新一张表。
 
@@ -592,7 +592,7 @@ SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
 
-### 语法
+### 语法 {#syntax}
 
 ```sql
 {CREATE [OR REPLACE] | REPLACE} TABLE [db.]table_name
@@ -602,7 +602,7 @@ WHERE CounterID <12345;
 `CREATE` 语句的所有语法形式同样适用于此语句。对不存在的表执行 `REPLACE` 会导致错误。
 :::
 
-### 示例：
+### 示例： {#examples}
 
 <Tabs>
   <TabItem value="clickhouse_replace_example" label="本地" default>
@@ -722,7 +722,7 @@ WHERE CounterID <12345;
 </Tabs>
 
 
-## COMMENT 子句
+## COMMENT 子句 {#comment-clause}
 
 在创建表时，可以为表添加注释。
 

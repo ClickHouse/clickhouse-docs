@@ -23,9 +23,8 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 此示例数据集也可与 ClickHouse Cloud 中的 HyperDX 搭配使用，只需对流程进行少量调整（见文中的说明）。如果在 ClickHouse Cloud 中使用 HyperDX，用户需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)的说明，在本地运行一个 OpenTelemetry collector 实例。
 :::
 
-
 <VerticalStepper>
-  ## 创建自定义 OpenTelemetry 配置
+  ## 创建自定义 OpenTelemetry 配置 {#create-otel-configuration}
 
   创建一个 `custom-local-config.yaml` 文件,内容如下:
 
@@ -105,7 +104,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   有关 OpenTelemetry (OTel) 配置结构的更多详细信息,请参阅[官方指南](https://opentelemetry.io/docs/collector/configuration/)。
 
-  ## 使用自定义配置启动 ClickStack
+  ## 使用自定义配置启动 ClickStack {#start-clickstack}
 
   运行以下 docker 命令以使用自定义配置启动一体化容器：
 
@@ -145,17 +144,17 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   收集器将立即开始收集本地系统日志和指标。
 
-  ## 导航到 HyperDX UI
+  ## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
 
   本地部署时,访问 [http://localhost:8080](http://localhost:8080) 即可进入 HyperDX UI。若使用 ClickHouse Cloud 中的 HyperDX,请在左侧菜单中依次选择您的服务和 `HyperDX`。
 
-  ## 查看系统日志
+  ## 查看系统日志 {#explore-system-logs}
 
   搜索界面应填充本地系统日志。展开过滤器以选择 `system.log`：
 
   <Image img={hyperdx_20} alt="HyperDX 本地日志" size="lg" />
 
-  ## 探索系统指标
+  ## 探索系统指标 {#explore-system-metrics}
 
   我们可以使用图表探索指标数据。
 

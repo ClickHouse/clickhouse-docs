@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';
 import powerbi_odbc_search from '@site/static/images/integrations/data-visualization/powerbi_odbc_search.png';
@@ -30,7 +30,7 @@ import powerbi_16 from '@site/static/images/integrations/data-visualization/powe
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Power BI
+# Power BI {#power-bi}
 
 <ClickHouseSupportedBadge/>
 

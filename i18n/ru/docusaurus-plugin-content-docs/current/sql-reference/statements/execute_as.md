@@ -7,15 +7,11 @@ title: 'Оператор EXECUTE AS'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор EXECUTE AS
+# Оператор EXECUTE AS {#execute-as-statement}
 
 Позволяет выполнять запросы от имени другого пользователя.
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 EXECUTE AS target_user;
@@ -39,8 +35,7 @@ GRANT IMPERSONATE ON * TO user3;
 При работе от имени другого пользователя функция [currentUser()](/sql-reference/functions/other-functions#currentUser) возвращает имя этого пользователя,
 а функция [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) возвращает имя пользователя, который был фактически аутентифицирован.
 
-
-## Примеры
+## Примеры {#examples}
 
 ```sql
 SELECT currentUser(), authenticatedUser(); -- возвращает "default    default"

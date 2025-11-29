@@ -25,9 +25,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 
 
-## Настройка
+## Настройка {#setup}
 
-### Получение ARN IAM-роли сервиса ClickHouse
+### Получение ARN IAM-роли сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Войдите в свою учетную запись ClickHouse Cloud.
 
@@ -41,9 +41,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 <Image img={s3_info} size="lg" alt="Получение ARN IAM-роли сервиса ClickHouse" border />
 
-### Настройка роли IAM для AssumeRole
+### Настройка роли IAM для AssumeRole {#setting-up-iam-assume-role}
 
-#### Вариант 1: Развертывание с помощью стека CloudFormation
+#### Вариант 1: Развертывание с помощью стека CloudFormation {#option-1-deploying-with-cloudformation-stack}
 
 1 - Войдите в свою учетную запись AWS в веб-браузере под IAM-пользователем, который имеет права на создание и управление IAM-ролями.
 
@@ -75,7 +75,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 <Image img={s3_output} size="lg" alt="Выходные данные стека CloudFormation, показывающие ARN IAM-роли" border />
 
-#### Вариант 2: Ручное создание IAM-роли
+#### Вариант 2: Ручное создание IAM-роли {#option-2-manually-create-iam-role}
 
 1 - Войдите в свою учетную запись AWS в веб-браузере под IAM-пользователем, который имеет права на создание и управление IAM-ролями.
 
@@ -133,7 +133,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 4 - После создания скопируйте новый **ARN роли IAM**. Он понадобится для доступа к вашему бакету S3.
 
 
-## Получение доступа к вашему бакету S3 с помощью роли ClickHouseAccess
+## Получение доступа к вашему бакету S3 с помощью роли ClickHouseAccess {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 В ClickHouse Cloud появилась новая возможность, которая позволяет указывать `extra_credentials` как часть табличной функции S3. Ниже приведён пример выполнения запроса с использованием только что созданной роли, скопированной выше.
 

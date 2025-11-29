@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# dlt を ClickHouse に接続する
+# dlt を ClickHouse に接続する {#connect-dlt-to-clickhouse}
 
 <PartnerBadge/>
 
@@ -18,9 +18,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## ClickHouse と併せて dlt をインストールする
+## ClickHouse と併せて dlt をインストールする {#install-dlt-with-clickhouse}
 
-### ClickHouse の依存関係付きで `dlt` ライブラリをインストールするには:
+### ClickHouse の依存関係付きで `dlt` ライブラリをインストールするには: {#to-install-the-dlt-library-with-clickhouse-dependencies}
 
 ```bash
 pip install "dlt[clickhouse]"
@@ -99,7 +99,7 @@ ClickHouseサーバーが`http_port`で指定されたポートでHTTP接続を�
 
 
 ```bash
-# tomlファイルの先頭、セクション開始前に記述してください。
+# tomlファイルの先頭、セクション開始前に記述してください。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -157,7 +157,7 @@ ClickHouse は、以下の<a href="https://dlthub.com/docs/general-usage/schema#
 
 
 
-## テーブルエンジン
+## テーブルエンジン {#table-engine}
 
 デフォルトでは、ClickHouse ではテーブルは `ReplicatedMergeTree` テーブルエンジンを使用して作成されます。ClickHouse アダプターで `table_engine_type` を使用することで、別のテーブルエンジンを指定できます。
 
@@ -177,7 +177,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `replicated_merge_tree` (デフォルト) - `ReplicatedMergeTree` エンジンを使用してテーブルを作成します
 
 
-## ステージングサポート
+## ステージングサポート {#staging-support}
 
 ClickHouse は、ファイルのステージング先として Amazon S3、Google Cloud Storage、Azure Blob Storage をサポートしています。
 
@@ -200,7 +200,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### ステージング領域として Google Cloud Storage を使用する
+### ステージング領域として Google Cloud Storage を使用する {#using-google-cloud-storage-as-a-staging-area}
 
 dlt では、データを ClickHouse にロードする際のステージング領域として Google Cloud Storage (GCS) を使用できます。これは、dlt が内部的に利用している ClickHouse の <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS テーブル関数</a> によって自動的に処理されます。
 
@@ -241,10 +241,10 @@ dlt はこれらの認証情報を ClickHouse に渡し、認証および GCS �
 * filesystem destination を S3 互換モードで GCS と<a href="https://github.com/dlt-hub/dlt/issues/1272">連携できるようにする</a>
 * Google Cloud Storage ステージングエリアの<a href="https://github.com/dlt-hub/dlt/issues/1181">サポート</a>
 
-### dbt サポート
+### dbt サポート {#dbt-support}
 
 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> との連携は、一般に dbt-clickhouse を通じてサポートされています。
 
-### `dlt` state の同期
+### `dlt` state の同期 {#syncing-of-dlt-state}
 
 この destination は、<a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a> state の同期を完全にサポートしています。

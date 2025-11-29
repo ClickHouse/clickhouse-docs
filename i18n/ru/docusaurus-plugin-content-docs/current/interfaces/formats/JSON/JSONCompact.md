@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON-файл со следующими данными в файле с именем `football.json`:
 
@@ -82,7 +82,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `JSONCompact`:
 

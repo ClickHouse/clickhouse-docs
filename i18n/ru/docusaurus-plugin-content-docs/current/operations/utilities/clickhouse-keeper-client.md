@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Утилита clickhouse-keeper-client
+# Утилита clickhouse-keeper-client {#clickhouse-keeper-client-utility}
 
 Клиентское приложение для взаимодействия с clickhouse-keeper по его родному протоколу.
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 
 
 
-## Пример
+## Пример {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30

@@ -129,7 +129,7 @@ ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算�
 
 
 
-## 压缩
+## 压缩 {#compression}
 
 由于 ClickHouse 采用列式存储，相比 Postgres，压缩效果通常会显著更好。如下图所示，我们对比了在这两个数据库中存储所有 Stack Overflow 表时的空间需求：
 

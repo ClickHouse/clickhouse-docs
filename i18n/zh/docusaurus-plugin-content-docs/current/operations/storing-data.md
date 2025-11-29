@@ -25,7 +25,7 @@ ClickHouse 还支持外部表引擎，它们与本页所描述的外部存储选
 
 
 
-## 配置外部存储
+## 配置外部存储 {#configuring-external-storage}
 
 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 和 [`Log`](/engines/table-engines/log-family/log.md)
 系列表引擎可以通过使用类型分别为 `s3`、`azure_blob_storage`、`hdfs`（不支持）的磁盘，将数据存储到 `S3`、`AzureBlobStorage`、`HDFS`（不支持）中。
@@ -171,7 +171,7 @@ SETTINGS disk = 's3';
 ```
 
 
-## 动态配置
+## 动态配置 {#dynamic-configuration}
 
 还可以在无需在配置文件中预先定义磁盘的情况下指定存储配置，而是通过
 `CREATE`/`ATTACH` 查询的设置来进行配置。
@@ -300,9 +300,9 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </storage_configuration>
 ```
 
-### 使用 S3 存储
+### 使用 S3 存储 {#s3-storage}
 
-#### 必需参数
+#### 必需参数 {#required-parameters-s3}
 
 | Parameter           | Description                                                                                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -310,7 +310,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `access_key_id`     | 用于身份验证的 S3 access key ID。                                                                                                                        |
 | `secret_access_key` | 用于身份验证的 S3 secret access key。                                                                                                                    |
 
-#### 可选参数
+#### 可选参数 {#optional-parameters-s3}
 
 
 | Parameter                                       | Description                                                                                                                                                                                                                                   | Default Value                            |
@@ -389,7 +389,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </s3_plain>
 ```
 
-### 使用 S3 Plain Rewritable 存储
+### 使用 S3 Plain Rewritable 存储 {#s3-plain-rewritable-storage}
 
 在 `24.4` 中引入了一种新的磁盘类型 `s3_plain_rewritable`。
 与 `s3_plain` 磁盘类型类似，它不需要额外的存储空间来保存
@@ -427,7 +427,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 从 `24.5` 版本起，可以使用 `plain_rewritable` 元数据类型来配置任意对象存储磁盘（`s3`、`azure`、`local`）。
 
-### 使用 Azure Blob Storage
+### 使用 Azure Blob Storage {#azure-blob-storage}
 
 `MergeTree` 系列的表引擎可以使用类型为 `azure_blob_storage` 的磁盘将数据存储到 [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)。
 
@@ -453,7 +453,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </storage_configuration>
 ```
 
-#### 连接参数
+#### 连接参数 {#azure-blob-storage-connection-parameters}
 
 | 参数                               | 描述                                                                                                              | 默认值                 |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
@@ -469,7 +469,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `account_name`      | 使用共享密钥进行身份验证（与 `account_key` 配合使用）。  |
 | `account_key`       | 使用共享密钥进行身份验证（与 `account_name` 配合使用）。 |
 
-#### 限制参数
+#### 限制参数 {#azure-blob-storage-limit-parameters}
 
 | 参数                                   | 描述                             |
 | ------------------------------------ | ------------------------------ |
@@ -480,7 +480,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `thread_pool_size`                   | 用于实例化 `IDiskRemote` 的最大线程数。    |
 | `s3_max_inflight_parts_for_one_file` | 针对单个对象的最大并发 PUT 请求数。           |
 
-#### 其他参数
+#### 其他参数 {#azure-blob-storage-other-parameters}
 
 | 参数                               | 描述                                                   | 默认值                                      |
 | -------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
@@ -497,7 +497,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 :::
 
 
-## 使用 HDFS 存储（不受支持）
+## 使用 HDFS 存储（不受支持） {#using-hdfs-storage-unsupported}
 
 在此示例配置中：
 
@@ -538,7 +538,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 请注意，HDFS 在某些极端情况下可能无法正常工作。
 
-### 使用数据加密
+### 使用数据加密 {#encrypted-virtual-file-system}
 
 可以对存储在 [S3](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)、[HDFS](#using-hdfs-storage-unsupported)（不受支持）等外部磁盘，或本地磁盘上的数据进行加密。要启用加密模式，必须在配置文件中定义一个类型为 `encrypted` 的磁盘，并选择一个用于保存数据的底层磁盘。`encrypted` 磁盘会实时加密所有写入的文件，从 `encrypted` 磁盘读取文件时则会自动解密。因此，可以像使用普通磁盘一样使用 `encrypted` 磁盘。
 
@@ -563,7 +563,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 当将同一个文件写入 `disk2` 时，实际上会以加密方式写入物理磁盘路径 `/path1/path2/store/all_1_1_0/data.bin`。
 
-### 必需参数
+### 必需参数 {#required-parameters-encrypted-disk}
 
 | Parameter | Type   | Description                                             |
 | --------- | ------ | ------------------------------------------------------- |
@@ -571,7 +571,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `disk`    | String | 用于底层存储的磁盘类型。                                            |
 | `key`     | Uint64 | 用于加密和解密的密钥。可以使用 `key_hex` 以十六进制形式指定。可以通过 `id` 属性指定多个密钥。 |
 
-### 可选参数
+### 可选参数 {#optional-parameters-encrypted-disk}
 
 | Parameter        | Type   | Default        | Description                                                                                        |
 | ---------------- | ------ | -------------- | -------------------------------------------------------------------------------------------------- |
@@ -603,7 +603,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </clickhouse>
 ```
 
-### 使用本地缓存
+### 使用本地缓存 {#using-local-cache}
 
 从 22.3 版本开始，可以在存储配置中为磁盘配置本地缓存。
 在 22.3 - 22.7 版本中，缓存仅支持 `s3` 磁盘类型。对于 &gt;= 22.8 版本，缓存支持任意磁盘类型：S3、Azure、本地、加密等。
@@ -689,7 +689,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 
 
-## 文件缓存查询/配置文件设置
+## 文件缓存查询/配置文件设置 {#file-cache-query-profile-settings}
 
 | Setting                                                                 | Type    | Default                 | Description                                                                             |
 | ----------------------------------------------------------------------- | ------- | ----------------------- | --------------------------------------------------------------------------------------- |
@@ -706,20 +706,20 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 在较早版本中，某些功能可能不受支持。
 :::
 
-#### 缓存系统表
+#### 缓存系统表 {#cache-system-tables-file-cache}
 
 | Table Name                    | Description        | Requirements                            |
 | ----------------------------- | ------------------ | --------------------------------------- |
 | `system.filesystem_cache`     | 显示文件系统缓存的当前状态。     | 无                                       |
 | `system.filesystem_cache_log` | 提供每个查询的详细缓存使用统计信息。 | 需要 `enable_filesystem_cache_log = true` |
 
-#### 缓存命令
+#### 缓存命令 {#cache-commands-file-cache}
 
-##### `SYSTEM DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER`
+##### `SYSTEM DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER` {#system-drop-filesystem-cache-on-cluster}
 
 仅当未提供 `<cache_name>` 时才支持此命令。
 
-##### `SHOW FILESYSTEM CACHES`
+##### `SHOW FILESYSTEM CACHES` {#show-filesystem-caches}
 
 显示服务器上已配置的文件系统缓存列表。\
 （对于版本小于或等于 `22.8`，该命令名称为 `SHOW CACHES`）
@@ -734,7 +734,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 └───────────┘
 ```
 
-##### `DESCRIBE FILESYSTEM CACHE '<cache_name>'`
+##### `DESCRIBE FILESYSTEM CACHE '<cache_name>'` {#describe-filesystem-cache}
 
 显示指定缓存的配置以及一些整体统计信息。
 缓存名称可以通过 `SHOW FILESYSTEM CACHES` 命令获取。（对于版本小于或等于 `22.8` 的 ClickHouse，该命令名为 `DESCRIBE CACHE`）
@@ -757,7 +757,7 @@ DESCRIBE FILESYSTEM CACHE 's3_cache'
 |                           |                        | `CachedReadBufferCacheWriteBytes`, `CachedReadBufferCacheWriteMicroseconds`               |
 |                           |                        | `CachedWriteBufferCacheWriteBytes`, `CachedWriteBufferCacheWriteMicroseconds`             |
 
-### 使用静态 Web 存储（只读）
+### 使用静态 Web 存储（只读） {#web-storage}
 
 这是一个只读磁盘，其数据只会被读取，从不会被修改。通过 `ATTACH TABLE` 查询（见下方示例）将新表加载到该磁盘上。实际上不会使用本地磁盘，每个 `SELECT` 查询都会触发一次 `http` 请求以获取所需数据。所有对表数据的修改操作都会抛出异常，即不允许以下类型的查询：[`CREATE TABLE`](/sql-reference/statements/create/table.md)、[`ALTER TABLE`](/sql-reference/statements/alter/index.md)、[`RENAME TABLE`](/sql-reference/statements/rename#rename-table)、[`DETACH TABLE`](/sql-reference/statements/detach.md) 和 [`TRUNCATE TABLE`](/sql-reference/statements/truncate.md)。
 Web 存储适用于只读场景。典型用例包括托管示例数据或执行数据迁移。有一个名为 `clickhouse-static-files-uploader` 的工具，用于为给定表准备数据目录（`SELECT data_paths FROM system.tables WHERE name = 'table_name'`）。对于每个所需的表，都会得到一个包含文件的目录。这些文件可以上传到例如提供静态文件的 Web 服务器上。完成上述准备后，就可以通过 `DiskWeb` 将该表加载到任意 ClickHouse 服务器中。
@@ -1015,14 +1015,14 @@ SAMPLE BY intHash32(UserID)
 SETTINGS storage_policy='web';
 ```
 
-#### 必填参数
+#### 必填参数 {#static-web-storage-required-parameters}
 
 | Parameter  | Description                                            |
 | ---------- | ------------------------------------------------------ |
 | `type`     | `web`。否则不会创建磁盘。                                        |
 | `endpoint` | 使用 `path` 格式的端点 URL。端点 URL 必须包含一个用于存储数据的根路径，即数据上传到的路径。 |
 
-#### 可选参数
+#### 可选参数 {#optional-parameters-web}
 
 
 | 参数                                | 描述                                                                           | 默认值          |

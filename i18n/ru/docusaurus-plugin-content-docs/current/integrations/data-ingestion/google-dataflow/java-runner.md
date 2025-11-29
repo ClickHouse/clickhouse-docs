@@ -11,7 +11,7 @@ keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Ja
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Java-раннер Dataflow
+# Java-раннер Dataflow {#dataflow-java-runner}
 
 <ClickHouseSupportedBadge/>
 

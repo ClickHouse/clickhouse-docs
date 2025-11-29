@@ -10,60 +10,59 @@ keywords: ['Метрики', 'system.dashboards', 'system.custom_metrics']
 
 {/* обрезать */}
 
+## Сопоставление метрик, используемых в `system.dashboards`, с метриками Prometheus в `system.custom_metrics` \{#mapping-of-metrics-used-in-systemdashboards-to-prometheus-metrics-in-systemcustom&#95;metrics\}
 
-## Сопоставление метрик, используемых в `system.dashboards`, с метриками Prometheus в `system.custom_metrics` \{#mapping-of-metrics-used-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
+В таблице ниже приведено сопоставление метрик, используемых в `system.dashboards`, с метриками Prometheus в `system.custom_metrics`.\
+Это полезно для клиентов, которые хотят отслеживать те же метрики, что и в `system.dashboards`.
 
-В таблице ниже приведено сопоставление метрик, используемых в `system.dashboards`, с метриками Prometheus в `system.custom_metrics`.  
-Это полезно для клиентов, которые хотят отслеживать те же метрики, что и в `system.dashboards`. 
+### Таблица соответствия метрик в system.dashboards и метрик Prometheus в system.custom&#95;metrics \{#mapping-table-for-metrics-in-systemdashboards-to-prometheus-metrics-in-systemcustom&#95;metrics\}
 
-### Таблица соответствия метрик в system.dashboards и метрик Prometheus в system.custom_metrics \{#mapping-table-for-metrics-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
-
-Dashboard | Заголовок | Имя метрики Prometheus (system.custom_metrics)
+Dashboard | Заголовок | Имя метрики Prometheus (system.custom&#95;metrics)
 -- | -- | --
-Overview | Запросы в секунду | ClickHouseProfileEvents_Query
-Overview | Использование CPU (в ядрах) | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
-Overview | Выполняющиеся запросы | ClickHouseMetrics_Query
-Overview | Выполняющиеся слияния | ClickHouseMetrics_Merge
-Overview | Выбранные байты в секунду | ClickHouseProfileEvents_SelectedBytes
-Overview | Ожидание I/O | ClickHouseProfileEvents_OSIOWaitMicroseconds
-Overview | Ожидание CPU | ClickHouseProfileEvents_OSCPUWaitMicroseconds
-Overview | Использование CPU ОС (пользовательское пространство) | ClickHouseAsyncMetrics_OSUserTimeNormalized
-Overview | Использование CPU ОС (ядро) | ClickHouseAsyncMetrics_OSSystemTimeNormalized
-Overview | Чтение с диска | ClickHouseProfileEvents_OSReadBytes
-Overview | Чтение из файловой системы | ClickHouseProfileEvents_OSReadChars
-Overview | Память (отслеживаемая) | ClickHouseMetrics_MemoryTracking
-Overview | Средняя нагрузка (15 минут) | ClickHouseAsyncMetrics_LoadAverage15
-Overview | Выбранные строки в секунду | ClickHouseProfileEvents_SelectedRows
-Overview | Вставленные строки в секунду | ClickHouseProfileEvents_InsertedRows
-Overview | Общее количество частей MergeTree | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
-Overview | Максимальное число частей на партицию | ClickHouseAsyncMetrics_MaxPartCountForPartition
-Cloud overview | Запросы в секунду | ClickHouseProfileEvents_Query
-Cloud overview | Использование CPU (в ядрах) | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
-Cloud overview | Выполняющиеся запросы | ClickHouseMetrics_Query
-Cloud overview | Выполняющиеся слияния | ClickHouseMetrics_Merge
-Cloud overview | Выбранные байты в секунду | ClickHouseProfileEvents_SelectedBytes
-Cloud overview | Ожидание I/O (локальная ФС) | ClickHouseProfileEvents_OSIOWaitMicroseconds
-Cloud overview | Ожидание чтения из S3 | ClickHouseProfileEvents_ReadBufferFromS3Microseconds
-Cloud overview | Ошибки чтения из S3/сек | ProfileEvent_ReadBufferFromS3RequestsErrors
-Cloud overview | Ожидание CPU | ClickHouseProfileEvents_OSCPUWaitMicroseconds
-Cloud overview | Использование CPU ОС (пользовательское пространство, нормализованное) | ClickHouseAsyncMetrics_OSUserTimeNormalized
-Cloud overview | Использование CPU ОС (ядро, нормализованное) | ClickHouseAsyncMetrics_OSSystemTimeNormalized
-Cloud overview | Чтение с диска (байт/сек) | ClickHouseProfileEvents_OSReadBytes
-Cloud overview | Чтение из файловой системы (байт/сек) | ClickHouseProfileEvents_OSReadChars
-Cloud overview | Память (отслеживаемая, байты) | ClickHouseMetrics_MemoryTracking
-Cloud overview | Средняя нагрузка (15 минут) | ClickHouseAsyncMetrics_LoadAverage15
-Cloud overview | Выбранные строки/сек | ClickHouseProfileEvents_SelectedRows
-Cloud overview | Вставленные строки/сек | ClickHouseProfileEvents_InsertedRows
-Cloud overview | Общее количество частей MergeTree | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
-Cloud overview | Максимальное число частей на партицию | ClickHouseAsyncMetrics_MaxPartCountForPartition
-Cloud overview | Чтение из S3 (байт/сек) | ClickHouseProfileEvents_ReadBufferFromS3Bytes
-Cloud overview | Размер кэша файловой системы | ClickHouseMetrics_FilesystemCacheSize
-Cloud overview | Запросы записи в Disk S3/сек | ClickHouseProfileEvents_DiskS3PutObject + ClickHouseProfileEvents_DiskS3UploadPart + ClickHouseProfileEvents_DiskS3CreateMultipartUpload + ClickHouseProfileEvents_DiskS3CompleteMultipartUpload
-Cloud overview | Запросы чтения из Disk S3/сек | ClickHouseProfileEvents_DiskS3GetObject + ClickHouseProfileEvents_DiskS3HeadObject + ClickHouseProfileEvents_DiskS3ListObjects
-Cloud overview | Коэффициент попаданий в кэш ФС | ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes / (ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes + ClickHouseProfileEvents_CachedReadBufferReadFromSourceBytes)
-Cloud overview | Коэффициент попаданий в кэш страниц | greatest(0, (sum(ClickHouseProfileEvents_OSReadChars) - sum(ClickHouseProfileEvents_OSReadBytes)) /  (sum(ClickHouseProfileEvents_OSReadChars) + sum(ClickHouseProfileEvents_ReadBufferFromS3Bytes)))
-Cloud overview | Получение из сети (байт/сек) | ClickHouseProfileEvents_NetworkReceiveBytes
-Cloud overview | Отправка в сеть (байт/сек) | ClickHouseProfileEvents_NetworkSendBytes
+Overview | Запросы в секунду | ClickHouseProfileEvents&#95;Query
+Overview | Использование CPU (в ядрах) | ClickHouseProfileEvents&#95;OSCPUVirtualTimeMicroseconds
+Overview | Выполняющиеся запросы | ClickHouseMetrics&#95;Query
+Overview | Выполняющиеся слияния | ClickHouseMetrics&#95;Merge
+Overview | Выбранные байты в секунду | ClickHouseProfileEvents&#95;SelectedBytes
+Overview | Ожидание I/O | ClickHouseProfileEvents&#95;OSIOWaitMicroseconds
+Overview | Ожидание CPU | ClickHouseProfileEvents&#95;OSCPUWaitMicroseconds
+Overview | Использование CPU ОС (пользовательское пространство) | ClickHouseAsyncMetrics&#95;OSUserTimeNormalized
+Overview | Использование CPU ОС (ядро) | ClickHouseAsyncMetrics&#95;OSSystemTimeNormalized
+Overview | Чтение с диска | ClickHouseProfileEvents&#95;OSReadBytes
+Overview | Чтение из файловой системы | ClickHouseProfileEvents&#95;OSReadChars
+Overview | Память (отслеживаемая) | ClickHouseMetrics&#95;MemoryTracking
+Overview | Средняя нагрузка (15 минут) | ClickHouseAsyncMetrics&#95;LoadAverage15
+Overview | Выбранные строки в секунду | ClickHouseProfileEvents&#95;SelectedRows
+Overview | Вставленные строки в секунду | ClickHouseProfileEvents&#95;InsertedRows
+Overview | Общее количество частей MergeTree | ClickHouseAsyncMetrics&#95;TotalPartsOfMergeTreeTables
+Overview | Максимальное число частей на партицию | ClickHouseAsyncMetrics&#95;MaxPartCountForPartition
+Cloud overview | Запросы в секунду | ClickHouseProfileEvents&#95;Query
+Cloud overview | Использование CPU (в ядрах) | ClickHouseProfileEvents&#95;OSCPUVirtualTimeMicroseconds
+Cloud overview | Выполняющиеся запросы | ClickHouseMetrics&#95;Query
+Cloud overview | Выполняющиеся слияния | ClickHouseMetrics&#95;Merge
+Cloud overview | Выбранные байты в секунду | ClickHouseProfileEvents&#95;SelectedBytes
+Cloud overview | Ожидание I/O (локальная ФС) | ClickHouseProfileEvents&#95;OSIOWaitMicroseconds
+Cloud overview | Ожидание чтения из S3 | ClickHouseProfileEvents&#95;ReadBufferFromS3Microseconds
+Cloud overview | Ошибки чтения из S3/сек | ProfileEvent&#95;ReadBufferFromS3RequestsErrors
+Cloud overview | Ожидание CPU | ClickHouseProfileEvents&#95;OSCPUWaitMicroseconds
+Cloud overview | Использование CPU ОС (пользовательское пространство, нормализованное) | ClickHouseAsyncMetrics&#95;OSUserTimeNormalized
+Cloud overview | Использование CPU ОС (ядро, нормализованное) | ClickHouseAsyncMetrics&#95;OSSystemTimeNormalized
+Cloud overview | Чтение с диска (байт/сек) | ClickHouseProfileEvents&#95;OSReadBytes
+Cloud overview | Чтение из файловой системы (байт/сек) | ClickHouseProfileEvents&#95;OSReadChars
+Cloud overview | Память (отслеживаемая, байты) | ClickHouseMetrics&#95;MemoryTracking
+Cloud overview | Средняя нагрузка (15 минут) | ClickHouseAsyncMetrics&#95;LoadAverage15
+Cloud overview | Выбранные строки/сек | ClickHouseProfileEvents&#95;SelectedRows
+Cloud overview | Вставленные строки/сек | ClickHouseProfileEvents&#95;InsertedRows
+Cloud overview | Общее количество частей MergeTree | ClickHouseAsyncMetrics&#95;TotalPartsOfMergeTreeTables
+Cloud overview | Максимальное число частей на партицию | ClickHouseAsyncMetrics&#95;MaxPartCountForPartition
+Cloud overview | Чтение из S3 (байт/сек) | ClickHouseProfileEvents&#95;ReadBufferFromS3Bytes
+Cloud overview | Размер кэша файловой системы | ClickHouseMetrics&#95;FilesystemCacheSize
+Cloud overview | Запросы записи в Disk S3/сек | ClickHouseProfileEvents&#95;DiskS3PutObject + ClickHouseProfileEvents&#95;DiskS3UploadPart + ClickHouseProfileEvents&#95;DiskS3CreateMultipartUpload + ClickHouseProfileEvents&#95;DiskS3CompleteMultipartUpload
+Cloud overview | Запросы чтения из Disk S3/сек | ClickHouseProfileEvents&#95;DiskS3GetObject + ClickHouseProfileEvents&#95;DiskS3HeadObject + ClickHouseProfileEvents&#95;DiskS3ListObjects
+Cloud overview | Коэффициент попаданий в кэш ФС | ClickHouseProfileEvents&#95;CachedReadBufferReadFromCacheBytes / (ClickHouseProfileEvents&#95;CachedReadBufferReadFromCacheBytes + ClickHouseProfileEvents&#95;CachedReadBufferReadFromSourceBytes)
+Cloud overview | Коэффициент попаданий в кэш страниц | greatest(0, (sum(ClickHouseProfileEvents&#95;OSReadChars) - sum(ClickHouseProfileEvents&#95;OSReadBytes)) /  (sum(ClickHouseProfileEvents&#95;OSReadChars) + sum(ClickHouseProfileEvents&#95;ReadBufferFromS3Bytes)))
+Cloud overview | Получение из сети (байт/сек) | ClickHouseProfileEvents&#95;NetworkReceiveBytes
+Cloud overview | Отправка в сеть (байт/сек) | ClickHouseProfileEvents&#95;NetworkSendBytes
 
-Связанные ссылки:  
+Связанные ссылки:\
 https://clickhouse.com/docs/integrations/prometheus

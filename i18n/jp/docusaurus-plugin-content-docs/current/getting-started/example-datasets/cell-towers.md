@@ -7,15 +7,15 @@ keywords: ['基地局データ', 'ジオデータ', 'OpenCelliD', '地理空間�
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
-import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
+import ActionsMenu from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
+import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+import SupersetDocker from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
 import cell_towers_1 from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 import add_a_database from '@site/static/images/getting-started/example-datasets/superset-add.png'
@@ -28,7 +28,6 @@ import superset_mcc_2024 from '@site/static/images/getting-started/example-datas
 import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
-
 
 ## 目標 {#goal}
 
@@ -124,7 +123,7 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
-## サンプルクエリをいくつか実行する
+## サンプルクエリをいくつか実行する {#examples}
 
 1. 種類別のセルタワー数:
 
@@ -170,7 +169,6 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 上記のクエリおよび [MCC リスト](https://en.wikipedia.org/wiki/Mobile_country_code) に基づくと、基地局数が最も多い国は米国、ドイツ、ロシアです。
 
 これらの値をデコードするために、ClickHouse で [Dictionary](../../sql-reference/dictionaries/index.md) を作成することを検討してもよいでしょう。
-
 
 ## ユースケース：地理データの活用 {#use-case}
 
@@ -265,7 +263,6 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 1 rows in set. Elapsed: 0.067 sec. Processed 43.28 million rows, 692.42 MB (645.83 million rows/s., 10.33 GB/s.)
 ```
-
 
 ## スキーマの確認 {#review-of-the-schema}
 

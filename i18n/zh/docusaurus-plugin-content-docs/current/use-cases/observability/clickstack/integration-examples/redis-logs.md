@@ -372,9 +372,9 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log
 **如果使用 docker-compose，请检查共享卷：**
 
 ```bash
-# 检查两个容器是否使用同一卷
+# 检查两个容器是否使用同一卷 {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# 验证两个容器均已挂载该卷
+# 验证两个容器均已挂载该卷 {#expected-output-should-show-file-size-and-permissions}
 ```
 
 
@@ -383,7 +383,7 @@ docker volume inspect <volume-name>
 **检查 Redis 日志格式是否符合预期模式：**
 
 ```bash
-# Redis 日志应类似如下：
+# Redis 日志应类似如下： {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```

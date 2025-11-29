@@ -15,13 +15,12 @@ hide_title: true
 
 <br />
 
-
 # 通过设置反向代理实现自定义 DNS 别名 \{#custom-dns-alias\}
 
 > 在这篇知识库文章中，我们将向您介绍如何通过使用 Nginx 等反向代理，
 > 为您的 ClickHouse Cloud 实例设置自定义 DNS 别名，以供 ClickHouse 原生客户端使用。
 
-## 创建自签名证书
+## 创建自签名证书 \{#create-certificate\}
 
 :::note
 如果您使用的是签名证书，则不需要此步骤。
@@ -51,8 +50,7 @@ hide_title: true
 </clickhouse>
 ```
 
-
-## 更新 Nginx 配置
+## 更新 Nginx 配置 \{#update-nginx-config\}
 
 在你的 `nginx.conf` 配置文件中添加如下内容：
 
@@ -92,8 +90,7 @@ stream {
 
 其中 `isrgrootx1.pem` 是 ClickHouse Cloud 的根证书，该证书可从[此处](https://letsencrypt.org/certs/isrgrootx1.pem)下载。
 
-
-## 更新 hosts 文件
+## 更新 hosts 文件 \{#update-hosts-file\}
 
 :::note
 如果您使用的是自己的域控制器，则无需执行以下步骤。
@@ -109,8 +106,7 @@ stream {
 
 其中 `10.X.Y.Z` 是你所使用的 Nginx 服务器的 IP 地址。
 
-
-## 使用别名连接到 Cloud
+## 使用别名连接到 Cloud \{#connect-to-cloud-using-alias\}
 
 现在可以使用自定义别名进行连接：
 

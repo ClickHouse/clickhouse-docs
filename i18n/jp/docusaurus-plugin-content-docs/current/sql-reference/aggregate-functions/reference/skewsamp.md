@@ -6,7 +6,7 @@ title: 'skewSamp'
 doc_type: 'reference'
 ---
 
-# skewSamp
+# skewSamp {#skewsamp}
 
 一連の値の[標本歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 

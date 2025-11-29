@@ -6,7 +6,7 @@ title: 'groupBitmapXor'
 doc_type: 'reference'
 ---
 
-# groupBitmapXor
+# groupBitmapXor {#groupbitmapxor}
 
 `groupBitmapXor` 计算 bitmap 列按位异或后的结果的基数，并以 UInt64 类型返回。如果使用后缀 -State，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。
 

@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Базовый пример
+### Базовый пример {#basic-example}
 
 Пусть у нас есть следующий JSON:
 
@@ -38,7 +38,7 @@ doc_type: 'reference'
 Чтобы использовать имя объекта в качестве значения в столбце, вы можете воспользоваться специальной настройкой [`format_json_object_each_row_column_for_object_name`](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name).
 В качестве значения этой настройки задаётся имя столбца, который используется как JSON-ключ для строки в результирующем объекте.
 
-#### Вывод
+#### Вывод {#output}
 
 Допустим, у нас есть таблица `test` с двумя столбцами:
 
@@ -64,7 +64,7 @@ SELECT * FROM test SETTINGS format_json_object_each_row_column_for_object_name='
 }
 ```
 
-#### Ввод
+#### Ввод {#input}
 
 Допустим, мы сохранили результат из предыдущего примера в файл с именем `data.json`:
 
@@ -93,7 +93,7 @@ DESCRIBE file('data.json', JSONObjectEachRow) SETTING format_json_object_each_ro
 └─────────────┴─────────────────┘
 ```
 
-### Вставка данных
+### Вставка данных {#json-inserting-data}
 
 ```sql title="Query"
 INSERT INTO UserActivity FORMAT JSONEachRow {"PageViews":5, "UserID":"4324182021466249494", "Duration":146,"Sign":-1} {"UserID":"4324182021466249494","PageViews":6,"Duration":185,"Sign":1}
@@ -106,7 +106,7 @@ ClickHouse позволяет:
 
 ClickHouse игнорирует пробелы между элементами и запятые после объектов. Вы можете передавать все объекты в одной строке. Не требуется разделять их переводами строки.
 
-#### Обработка пропущенных значений
+#### Обработка пропущенных значений {#omitted-values-processing}
 
 ClickHouse подставляет пропущенные значения значениями по умолчанию для соответствующих [типов данных](/sql-reference/data-types/index.md).
 
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS example_table
 При вставке данных при `input_format_defaults_for_omitted_fields = 1` ClickHouse потребляет больше вычислительных ресурсов по сравнению со вставкой при `input_format_defaults_for_omitted_fields = 0`.
 :::
 
-### Выборка данных
+### Выборка данных {#json-selecting-data}
 
 Рассмотрим в качестве примера таблицу `UserActivity`:
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS example_table
 Любой набор байт может выводиться в строковых значениях. Используйте формат [`JSONEachRow`](./JSONEachRow.md), если вы уверены, что данные в таблице могут быть отформатированы как JSON без потери какой-либо информации.
 :::
 
-### Использование вложенных структур
+### Использование вложенных структур {#jsoneachrow-nested}
 
 Если у вас есть таблица со столбцами типа данных [`Nested`](/sql-reference/data-types/nested-data-structures/index.md), вы можете вставлять JSON-данные с той же структурой. Включите эту возможность с помощью настройки [input&#95;format&#95;import&#95;nested&#95;json](/operations/settings/settings-formats.md/#input_format_import_nested_json).
 

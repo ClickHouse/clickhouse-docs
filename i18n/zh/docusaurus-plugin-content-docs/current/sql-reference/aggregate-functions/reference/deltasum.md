@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# deltaSum
+# deltaSum {#deltasum}
 
 对相邻行之间的算术差值求和。如果差值为负数，则会被忽略。
 

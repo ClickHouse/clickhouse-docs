@@ -7,22 +7,19 @@ doc_type: 'guide'
 keywords: ['qstudio', 'SQL クライアント', 'データベースツール', 'クエリツール', 'IDE']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# QStudio を ClickHouse に接続する
+# QStudio を ClickHouse に接続する {#connect-qstudio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 QStudio は無料で利用できる SQL 向け GUI ツールで、SQL スクリプトの実行、テーブルの簡単な閲覧、チャート表示、結果のエクスポートが可能です。あらゆるオペレーティングシステム上で動作し、あらゆるデータベースに対応します。
 
 QStudio は JDBC を使用して ClickHouse に接続します。
-
-
 
 ## 1. ClickHouse の詳細情報を収集する {#1-gather-your-clickhouse-details}
 
@@ -35,13 +32,9 @@ QStudio は HTTP(S) 経由の JDBC を使用して ClickHouse に接続します
 
 <ConnectionDetails />
 
-
-
 ## 2. QStudio をダウンロードする {#2-download-qstudio}
 
 QStudio は https://www.timestored.com/qstudio/download/ からダウンロードできます。
-
-
 
 ## 3. データベースを追加する {#3-add-a-database}
 
@@ -60,8 +53,6 @@ QStudio は https://www.timestored.com/qstudio/download/ からダウンロー�
 
 QStudio が ClickHouse JDBC ドライバー未インストールであることを検出した場合、ドライバーのダウンロードを提案します。
 
-
-
 ## 4. ClickHouse をクエリする {#4-query-clickhouse}
 
 - クエリエディタを開き、以下のショートカットキーでクエリを実行します。
@@ -71,8 +62,6 @@ QStudio が ClickHouse JDBC ドライバー未インストールであること�
 - クエリの例:
 
 <Image img={qstudio_running_query} size="lg" border alt="QStudio インターフェイスで ClickHouse データベースに対してサンプルの SQL クエリを実行している様子" />
-
-
 
 ## 次のステップ {#next-steps}
 

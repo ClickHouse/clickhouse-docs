@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# DateTime
+# DateTime {#datetime}
 
 用于存储某一时刻，该时刻可以表示为日历日期和一天中的时间。
 
@@ -50,7 +50,7 @@ ClickHouse 会根据 [date_time_output_format](../../operations/settings/setting
 
 
 
-## 示例
+## 示例 {#examples}
 
 **1.** 创建一个包含 `DateTime` 类型列的表，并向其中插入数据：
 
@@ -153,7 +153,7 @@ FROM dt
 
 
 
-## 处理夏令时（DST）
+## 处理夏令时（DST） {#handling-daylight-saving-time-dst}
 
 ClickHouse 的带时区 `DateTime` 类型在夏令时（DST）切换期间可能会表现出意外行为，特别是在以下情况：
 

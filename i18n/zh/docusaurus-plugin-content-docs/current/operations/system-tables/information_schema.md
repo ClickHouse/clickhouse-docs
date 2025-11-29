@@ -47,7 +47,7 @@ SHOW TABLES FROM information_schema;
 为与其他数据库兼容，提供了不区分大小写的等价视图，例如 `INFORMATION_SCHEMA.columns`。这些视图中的所有列也同样如此——同时提供小写（例如 `table_name`）和大写（例如 `TABLE_NAME`）两种形式。
 
 
-## 列
+## 列 {#columns}
 
 包含从 [system.columns](../../operations/system-tables/columns.md) 系统表中读取的列，以及那些在 ClickHouse 中不受支持或没有意义（始终为 `NULL`），但根据标准仍必须保留的列。
 
@@ -125,7 +125,7 @@ domain_name:              ᴺᵁᴸᴸ
 ```
 
 
-## SCHEMATA
+## SCHEMATA {#schemata}
 
 包含从 [system.databases](../../operations/system-tables/databases.md) 系统表中读取的列，以及在 ClickHouse 中不受支持或没有意义（始终为 `NULL`），但根据标准要求必须存在的列。
 
@@ -172,7 +172,7 @@ sql_path:                      ᴺᵁᴸᴸ
 ```
 
 
-## TABLES
+## TABLES {#tables}
 
 包含从 [system.tables](../../operations/system-tables/tables.md) 系统表中读取的列。
 
@@ -225,7 +225,7 @@ table_comment:
 ```
 
 
-## 视图
+## 视图 {#views}
 
 在使用 [View](../../engines/table-engines/special/view.md) 表引擎时，包含从 [system.tables](../../operations/system-tables/tables.md) 系统表读取的列。
 
@@ -285,7 +285,7 @@ is_trigger_insertable_into: NO
 ```
 
 
-## KEY&#95;COLUMN&#95;USAGE
+## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
 
 包含 [system.tables](../../operations/system-tables/tables.md) 系统表中受约束限制的列。
 

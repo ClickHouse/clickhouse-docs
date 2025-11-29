@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `JSONCompactStrings` フォーマットを使用してデータを読み込みます。
 

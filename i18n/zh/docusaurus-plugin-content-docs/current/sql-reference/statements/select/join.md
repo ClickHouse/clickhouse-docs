@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# JOIN 子句
+# JOIN 子句 {#join-clause}
 
 `JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
 
@@ -76,7 +76,7 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 
 
-## ON 部分中的条件
+## ON 部分中的条件 {#on-section-conditions}
 
 `ON` 部分可以包含多个条件，这些条件通过 `AND` 和 `OR` 运算符组合。指定连接键的条件必须：
 
@@ -189,7 +189,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 ```
 
 
-## 针对来自不同表的列使用非等值条件的 JOIN
+## 针对来自不同表的列使用非等值条件的 JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
 ClickHouse 目前除等值条件外，还支持在 `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` 中使用非等值条件。非等值条件仅在 `hash` 和 `grace_hash` join 算法中受支持。使用 `join_use_nulls` 时不支持非等值条件。
 
@@ -240,7 +240,7 @@ key4    f    2    3    4            0    0    \N
 ```
 
 
-## JOIN 键中的 NULL 值
+## JOIN 键中的 NULL 值 {#null-values-in-join-keys}
 
 `NULL` 不等于任何值，包括它本身。这意味着如果某个表中用作 `JOIN` 键的列值为 `NULL`，它不会与另一张表中同样为 `NULL` 的值相匹配。
 
@@ -295,7 +295,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 ```
 
 
-## ASOF JOIN 用法
+## ASOF JOIN 用法 {#asof-join-usage}
 
 当你需要联接那些没有精确匹配的记录时，`ASOF JOIN` 非常有用。
 
@@ -350,7 +350,7 @@ USING (等值列_1, ... 等值列_N, asof_列)
 :::
 
 
-## PASTE JOIN 用法
+## PASTE JOIN 用法 {#paste-join-usage}
 
 `PASTE JOIN` 的结果是一个表，包含左侧子查询的所有列，后面紧跟右侧子查询的所有列。
 行是根据它们在原始表中的位置一一对应匹配的（行的顺序必须是确定的）。
@@ -420,7 +420,7 @@ SETTINGS max_block_size = 2;
 
 
 
-## 隐式类型转换
+## 隐式类型转换 {#implicit-type-conversion}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN` 和 `FULL JOIN` 查询支持对“连接键”进行隐式类型转换。但是，如果左右表的连接键无法被转换为同一种类型，则查询无法执行（例如，没有任何一种数据类型能够同时容纳来自 `UInt64` 和 `Int64`，或 `String` 和 `Int32` 的所有值）。
 
@@ -512,7 +512,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 
 
-## 示例
+## 示例 {#examples}
 
 示例：
 

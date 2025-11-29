@@ -56,7 +56,7 @@ ClickHouse には、半構造化データおよび動的なデータ向けに設
 
 
 
-## 例
+## 例 {#examples}
 
 次の JSON サンプルは、[Python PyPI データセット](https://clickpy.clickhouse.com/) に含まれる 1 行を表しています。
 

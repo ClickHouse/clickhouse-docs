@@ -6,9 +6,7 @@ title: 'マップ関数'
 doc_type: 'reference'
 ---
 
-
-
-## map
+## map {#map}
 
 キーと値のペアから [Map(key, value)](../data-types/map.md) 型の値を生成します。
 
@@ -45,8 +43,7 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3);
 └──────────────────────────────────────────────────┘
 ```
 
-
-## mapFromArrays
+## mapFromArrays {#mapfromarrays}
 
 キーの配列またはマップと、値の配列またはマップから map を作成します。
 
@@ -117,8 +114,7 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 └───────────────────────────────────────────────────────┘
 ```
 
-
-## extractKeyValuePairs
+## extractKeyValuePairs {#extractkeyvaluepairs}
 
 キーと値のペアからなる文字列を [Map(String, String)](../data-types/map.md) に変換します。
 解析はノイズ（例: ログファイル）を含んでいても許容されます。
@@ -237,7 +233,6 @@ SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 └─────┘
 ```
 
-
 ```sql
 SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
 ```
@@ -282,8 +277,7 @@ map_serialized: {'John':'33','Paula':'31'}
 map_restored:   {'John':'33','Paula':'31'}
 ```
 
-
-## extractKeyValuePairsWithEscaping
+## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
 `extractKeyValuePairs` と同様ですが、エスケープシーケンスをサポートします。
 
@@ -315,8 +309,7 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 └───────────────────┘
 ```
 
-
-## mapAdd
+## mapAdd {#mapadd}
 
 すべてのキーを収集し、対応する値を合計します。
 
@@ -364,8 +357,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTy
 └───────────────┴────────────────────────────────────┘
 ```
 
-
-## mapSubtract
+## mapSubtract {#mapsubtract}
 
 すべてのキーを収集し、対応する値同士を減算します。
 
@@ -413,8 +405,7 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 └────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapPopulateSeries
+## mapPopulateSeries {#mappopulateseries}
 
 整数キーを持つマップに対して、欠けているキーと値の組を補完します。
 既存の最大キーより大きいキーまで拡張できるように、上限となる最大キーを指定できます。
@@ -479,8 +470,7 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 └──────────────────────────────┴───────────────────────────────────┘
 ```
 
-
-## mapKeys
+## mapKeys {#mapkeys}
 
 指定された map のキーを返します。
 
@@ -523,8 +513,7 @@ SELECT mapKeys(a) FROM tab;
 └───────────────────────┘
 ```
 
-
-## mapContains
+## mapContains {#mapcontains}
 
 指定された map に、指定されたキーが含まれているかどうかを返します。
 
@@ -567,8 +556,7 @@ SELECT mapContains(a, 'name') FROM tab;
 └────────────────────────┘
 ```
 
-
-## mapContainsKeyLike
+## mapContainsKeyLike {#mapcontainskeylike}
 
 **構文**
 
@@ -606,8 +594,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 └─────────────────────────────┘
 ```
 
-
-## mapExtractKeyLike
+## mapExtractKeyLike {#mapextractkeylike}
 
 文字列キーを持つ `map` と LIKE パターンが与えられると、この関数はキーがそのパターンにマッチする要素のみを含む `map` を返します。
 
@@ -647,8 +634,7 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 └────────────────────────────┘
 ```
 
-
-## mapValues
+## mapValues {#mapvalues}
 
 指定された map の値を返します。
 
@@ -691,8 +677,7 @@ SELECT mapValues(a) FROM tab;
 └──────────────────┘
 ```
 
-
-## mapContainsValue
+## mapContainsValue {#mapcontainsvalue}
 
 指定された map に指定されたキーが含まれているかどうかを返します。
 
@@ -735,8 +720,7 @@ SELECT mapContainsValue(a, '11') FROM tab;
 └───────────────────────────┘
 ```
 
-
-## mapContainsValueLike
+## mapContainsValueLike {#mapcontainsvaluelike}
 
 **構文**
 
@@ -774,8 +758,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 └──────────────────────────┘
 ```
 
-
-## mapExtractValueLike
+## mapExtractValueLike {#mapextractvaluelike}
 
 文字列値を持つマップと `LIKE` パターンを指定すると、この関数は値がパターンに一致する要素のみを含むマップを返します。
 
@@ -815,8 +798,7 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 └──────────────────────────────┘
 ```
 
-
-## mapApply
+## mapApply {#mapapply}
 
 マップの各要素に関数を適用します。
 
@@ -858,8 +840,7 @@ FROM
 └───────────────────────┘
 ```
 
-
-## mapFilter
+## mapFilter {#mapfilter}
 
 map の各要素に関数を適用してフィルタ処理を行います。
 
@@ -901,8 +882,7 @@ FROM
 └─────────────────────┘
 ```
 
-
-## mapUpdate
+## mapUpdate {#mapupdate}
 
 **構文**
 
@@ -935,8 +915,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 └────────────────────────────────┘
 ```
 
-
-## mapConcat
+## mapConcat {#mapconcat}
 
 キーが等しいことに基づいて複数の Map を連結します。
 同じキーを持つ要素が 2 つ以上の入力 Map に存在する場合、すべての要素が結果の Map に追加されますが、演算子 `[]` でアクセスできるのは最初の要素だけです。
@@ -985,8 +964,7 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 └──────────────────────────────┴──────┘
 ```
 
-
-## mapExists([func,], map)
+## mapExists([func,], map) {#mapexistsfunc-map}
 
 `map` 内に、`func(key, value)` が 0 以外の値を返すキーと値のペアが 1 つ以上存在する場合は 1 を、それ以外の場合は 0 を返します。
 
@@ -1011,8 +989,7 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapAll([func,] map)
+## mapAll([func,] map) {#mapallfunc-map}
 
 `map` 内のすべてのキー・値ペアについて、`func(key, value)` が 0 以外の値を返した場合は 1 を返します。そうでない場合は 0 を返します。
 
@@ -1037,8 +1014,7 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 └─────┘
 ```
 
-
-## mapSort([func,], map)
+## mapSort([func,], map) {#mapsortfunc-map}
 
 map の要素を昇順に並べ替えます。
 `func` 関数が指定されている場合は、map のキーと値に `func` 関数を適用した結果に基づいて並び順が決まります。
@@ -1067,8 +1043,7 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 詳細については、`arraySort` 関数の[リファレンス](/sql-reference/functions/array-functions#arraySort)を参照してください。
 
-
-## mapPartialSort
+## mapPartialSort {#mappartialsort}
 
 `limit` 引数を追加で指定することで、マップの要素を昇順に並べ替える際に、ソートする要素数を制限できます。
 `func` 関数が指定されている場合は、マップのキーと値に対して `func` 関数を適用した結果に基づいてソート順が決まります。
@@ -1101,8 +1076,7 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 └───────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## mapReverseSort([func,], map)
+## mapReverseSort([func,], map) {#mapreversesortfunc-map}
 
 map の要素を降順でソートします。
 `func` 関数が指定されている場合、map のキーと値に `func` 関数を適用した結果によって、ソート順が決定されます。
@@ -1131,8 +1105,7 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 詳細については、関数 [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort) を参照してください。
 
-
-## mapPartialReverseSort
+## mapPartialReverseSort {#mappartialreversesort}
 
 `limit` 引数を指定すると、マップの要素を降順で部分的にソートします。
 `func` 関数が指定されている場合、マップのキーおよび値に対して `func` を適用した結果に基づいてソート順が決定されます。

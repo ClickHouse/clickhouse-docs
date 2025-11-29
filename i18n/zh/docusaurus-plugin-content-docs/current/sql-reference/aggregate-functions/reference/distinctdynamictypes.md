@@ -6,7 +6,7 @@ title: 'distinctDynamicTypes'
 doc_type: 'reference'
 ---
 
-# distinctDynamicTypes
+# distinctDynamicTypes {#distinctdynamictypes}
 
 计算存储在 [Dynamic](../../data-types/dynamic.md) 列中的去重数据类型列表。
 

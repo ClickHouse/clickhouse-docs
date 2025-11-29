@@ -6,10 +6,10 @@ title: 'Резервное копирование и восстановлени�
 doc_type: 'reference'
 ---
 
-import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-import AzureSettings from '@site/docs/operations_/backup_restore/_snippets/_azure_settings.md';
-import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
+import GenericSettings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_generic_settings.md';
+import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
+import AzureSettings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
+import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
 > В этом разделе в общих чертах рассматриваются операции резервного копирования и восстановления в ClickHouse. Более подробное описание каждого метода резервного копирования см. на страницах соответствующих методов в боковой панели.
 
@@ -94,7 +94,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 
 
 
-## Параллельные и последовательные резервные копии
+## Параллельные и последовательные резервные копии {#concurrent-vs-non-concurrent}
 
 По умолчанию ClickHouse разрешает параллельное создание и восстановление резервных копий. Это означает, что вы
 можете инициировать несколько операций резервного копирования или восстановления одновременно. Однако
@@ -115,7 +115,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 Значение по умолчанию для обоих параметров — `true`, поэтому по умолчанию параллельные операции резервного копирования и восстановления разрешены. Если эти настройки на кластере имеют значение `false`, одновременно в кластере может выполняться только одна операция резервного копирования или восстановления.
 
 
-## Сжатые и несжатые бэкапы
+## Сжатые и несжатые бэкапы {#compressed-vs-uncompressed}
 
 Бэкапы ClickHouse поддерживают сжатие, настраиваемое через параметры `compression_method` и `compression_level`.
 
@@ -214,7 +214,7 @@ settings_profiles и quotas, обрабатываются особым обра�
 
 
 
-## Администрирование и устранение неполадок
+## Администрирование и устранение неполадок {#check-the-status-of-backups}
 
 Команда резервного копирования возвращает `id` и `status`, и этот `id` можно
 использовать, чтобы узнать статус резервной копии. Это очень полезно для

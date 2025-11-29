@@ -12,7 +12,7 @@ import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations
 import Image from '@theme/IdealImage';
 
 
-# PlanetScale for Postgres ソースセットアップガイド
+# PlanetScale for Postgres ソースセットアップガイド {#planetscale-for-postgres-source-setup-guide}
 
 :::info
 PlanetScale for Postgres は現在 [早期アクセス](https://planetscale.com/postgres) 段階です。
@@ -52,7 +52,7 @@ PlanetScale コンソールでこの設定を変更すると、再起動が発�
 
 
 
-## 権限とパブリケーションを持つユーザーの作成
+## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
 CDC に必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
 あわせてレプリケーションに使用するパブリケーションも作成します。

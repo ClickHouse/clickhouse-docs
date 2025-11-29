@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблицы Log
+# Движок таблицы Log {#log-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -22,7 +22,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Создание таблицы
+## Создание таблицы {#table_engines-log-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -59,7 +59,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## Пример использования
+## Пример использования {#table_engines-log-example-of-use}
 
 Создание таблицы:
 

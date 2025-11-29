@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# DISTINCT 句
+# DISTINCT 句 {#distinct-clause}
 
 `SELECT DISTINCT` が指定されている場合、クエリ結果には一意の行だけが残ります。つまり、結果内で完全に一致する行の集合ごとに、1 行だけが残ります。
 
@@ -57,7 +57,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 ```
 
 
-## DISTINCT と ORDER BY
+## DISTINCT と ORDER BY {#distinct-and-order-by}
 
 ClickHouse では、1 つのクエリ内で `DISTINCT` 句と `ORDER BY` 句に異なる列を指定できます。`DISTINCT` 句は `ORDER BY` 句より先に実行されます。
 

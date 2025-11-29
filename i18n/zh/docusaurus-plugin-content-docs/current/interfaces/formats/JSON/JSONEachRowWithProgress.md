@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的区别在于，ClickHouse 还会以 JSON 值的形式输出进度信息。
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

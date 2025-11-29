@@ -10,7 +10,7 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# サポート対象のクラウドリージョン
+# サポート対象のクラウドリージョン {#supported-cloud-regions}
 
 
 

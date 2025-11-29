@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем JSON-файл со следующими данными, сохранённый под именем `football.json`:
 
@@ -50,7 +50,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `JSONLines`:
 

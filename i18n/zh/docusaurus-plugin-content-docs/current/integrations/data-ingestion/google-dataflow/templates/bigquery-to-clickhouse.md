@@ -19,7 +19,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Dataflow BigQuery 到 ClickHouse 模板
+# Dataflow BigQuery 到 ClickHouse 模板 {#dataflow-bigquery-to-clickhouse-template}
 
 BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表中的数据摄取到 ClickHouse 表中。
 该模板可以读取整个表，或使用提供的 SQL 查询筛选特定记录。

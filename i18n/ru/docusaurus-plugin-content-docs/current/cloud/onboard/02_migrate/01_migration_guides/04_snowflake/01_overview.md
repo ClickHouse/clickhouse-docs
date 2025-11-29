@@ -13,7 +13,7 @@ import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_c
 import Image from '@theme/IdealImage';
 
 
-# Миграция с Snowflake на ClickHouse
+# Миграция с Snowflake на ClickHouse {#snowflake-to-clickhouse-migration}
 
 > Этот документ является введением в миграцию данных из Snowflake в ClickHouse.
 

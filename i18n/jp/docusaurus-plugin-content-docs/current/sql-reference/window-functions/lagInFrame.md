@@ -7,7 +7,7 @@ title: 'lagInFrame'
 doc_type: 'reference'
 ---
 
-# lagInFrame
+# lagInFrame {#laginframe}
 
 並び替えられたフレーム内で、現在の行から指定された物理オフセット分だけ前にある行で評価された値を返します。
 

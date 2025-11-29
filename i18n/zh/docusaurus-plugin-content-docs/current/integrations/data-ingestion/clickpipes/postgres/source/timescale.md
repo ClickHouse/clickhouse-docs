@@ -10,7 +10,7 @@ doc_type: 'guide'
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# 基于 TimescaleDB 的 Postgres 数据源配置指南
+# 基于 TimescaleDB 的 Postgres 数据源配置指南 {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
 
@@ -58,7 +58,7 @@ Timescale Cloud 不支持逻辑复制，而逻辑复制是以 CDC 模式使用 P
 
 
 
-## 配置
+## 配置 {#configuration}
 
 Timescale 超表本身并不存储插入到其中的任何数据。相反，数据存储在 `_timescaledb_internal` 模式中多个对应的 “chunk” 表里。对于在超表上运行查询而言，这不是问题。但在逻辑复制过程中，变更不是在超表上被检测到，而是在 chunk 表上被检测到。Postgres ClickPipe 内置了将 chunk 表中的变更自动重新映射回父超表的逻辑，但这需要额外的步骤。
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# JDBC 表引擎
+# JDBC 表引擎 {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -27,7 +27,7 @@ ClickHouse 推荐使用 ClickHouse 内置的表函数，作为临时（即席）
 
 
 
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -51,7 +51,7 @@ ENGINE = JDBC(数据源名称, 外部数据库, 外部表)
 * 这些参数也可以通过 [命名集合](operations/named-collections.md) 传递。
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 使用 MySQL 的控制台客户端直接连接到服务器来创建一张表：
 

@@ -13,7 +13,7 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 集成 Apache Beam 与 ClickHouse
+# 集成 Apache Beam 与 ClickHouse {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -29,9 +29,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
 
-## 设置 Apache Beam ClickHouse 包
+## 设置 Apache Beam ClickHouse 包 {#setup-of-the-apache-beam-clickhouse-package}
 
-### 安装包
+### 安装包 {#package-installation}
 
 将以下依赖添加到你的包管理工具中：
 
@@ -50,7 +50,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 相关构件可以在[官方 Maven 仓库](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)中找到。
 
-### 代码示例
+### 代码示例 {#code-example}
 
 以下示例将名为 `input.csv` 的 CSV 文件读取为 `PCollection`，将其转换为 Row 对象（基于已定义的 schema），并使用 `ClickHouseIO` 将其插入到本地 ClickHouse 实例中：
 

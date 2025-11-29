@@ -10,7 +10,7 @@ keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？
+### Resync 有什么作用？ {#what-mysql-resync-do}
 
 Resync 按以下顺序执行如下操作：
 
@@ -21,7 +21,7 @@ Resync 按以下顺序执行如下操作：
 
 原始 ClickPipe 的所有设置都会在 resync ClickPipe 中保留。原始 ClickPipe 的统计信息会在 UI 中被清除。
 
-### 何时需要对 ClickPipe 执行 resync
+### 何时需要对 ClickPipe 执行 resync {#use-cases-mysql-resync}
 
 以下是几个典型场景：
 
@@ -32,7 +32,7 @@ Resync 按以下顺序执行如下操作：
 你可以多次执行 resync，但在执行 resync 时请务必考虑对源数据库的负载影响。
 :::
 
-### Resync ClickPipe 指南
+### Resync ClickPipe 指南 {#guide-mysql-resync}
 
 1. 在 **Data Sources** 选项卡中，点击你希望进行 resync 的 MySQL ClickPipe。
 2. 进入 **Settings** 选项卡。

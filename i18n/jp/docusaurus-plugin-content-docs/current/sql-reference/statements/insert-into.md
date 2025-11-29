@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# INSERT INTO ステートメント
+# INSERT INTO ステートメント {#insert-into-statement}
 
 テーブルにデータを挿入します。
 
@@ -112,7 +112,7 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 
 
-## SELECT の結果の挿入
+## SELECT の結果の挿入 {#inserting-the-results-of-select}
 
 **構文**
 
@@ -139,7 +139,7 @@ WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
 
-## ファイルからのデータ挿入
+## ファイルからのデータ挿入 {#inserting-data-from-a-file}
 
 **構文**
 
@@ -155,7 +155,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **例**
 
-### FROM INFILE を用いた単一ファイル
+### FROM INFILE を用いた単一ファイル {#single-file-with-from-infile}
 
 次のクエリを [command-line client](../../interfaces/cli.md) を使って実行します。
 
@@ -175,7 +175,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
-### FROM INFILE でグロブを使用した複数ファイル
+### FROM INFILE でグロブを使用した複数ファイル {#multiple-files-with-from-infile-using-globs}
 
 この例は前の例と非常によく似ていますが、`FROM INFILE 'input_*.csv'` を使用して複数のファイルからデータを挿入します。
 
@@ -198,7 +198,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 :::
 
 
-## テーブル関数を使った挿入
+## テーブル関数を使った挿入 {#inserting-using-a-table-function}
 
 [テーブル関数](../../sql-reference/table-functions/index.md)で参照されるテーブルにデータを挿入できます。
 
@@ -228,7 +228,7 @@ SELECT * FROM simple_table;
 ```
 
 
-## ClickHouse Cloud への挿入
+## ClickHouse Cloud への挿入 {#inserting-into-clickhouse-cloud}
 
 デフォルトでは、ClickHouse Cloud のサービスは高可用性を実現するために複数のレプリカを持ちます。サービスに接続すると、これらのレプリカのいずれかに接続が確立されます。
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# ytsaurus テーブル関数
+# ytsaurus テーブル関数 {#ytsaurus-table-function}
 
 <ExperimentalBadge/>
 
@@ -18,7 +18,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 ytsaurus(http_proxy_url, cypress_path, oauth_token, format)

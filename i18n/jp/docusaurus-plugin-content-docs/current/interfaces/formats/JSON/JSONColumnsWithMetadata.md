@@ -21,7 +21,7 @@ doc_type: 'reference'
 `JSONColumnsWithMetadata` フォーマットは、すべてのデータをメモリ内にバッファリングしてから単一のブロックとして出力するため、メモリ消費量が大きくなる可能性があります。
 :::
 
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 

@@ -6,7 +6,7 @@ title: 'groupBitAnd'
 doc_type: 'reference'
 ---
 
-# groupBitAnd
+# groupBitAnd {#groupbitand}
 
 数値の集合に対してビット単位の `AND` 演算を行います。
 

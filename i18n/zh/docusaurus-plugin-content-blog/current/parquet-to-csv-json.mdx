@@ -10,8 +10,7 @@ keywords: ['转换', 'Parquet', 'CSV', 'JSON']
 
 {/* 截断 */}
 
-
-## 将文件从 Parquet 转换为 CSV 或 JSON
+## 将文件从 Parquet 转换为 CSV 或 JSON \{#converting-files-from-parquet-to-csv-or-json\}
 
 你可以使用 `clickhouse-local` 在 ClickHouse 支持的任意[输入和输出格式](https://clickhouse.com/docs/interfaces/formats)之间转换文件（目前支持 70 多种格式）。在本文中，我们将演示如何把存储在 S3 中的一个 Parquet 文件转换为 CSV 和 JSON 文件。
 
@@ -23,8 +22,7 @@ keywords: ['转换', 'Parquet', 'CSV', 'JSON']
 curl https://clickhouse.com/ | sh
 ```
 
-
-## 使用表函数访问数据
+## 使用表函数访问数据 \{#accessing-the-data-using-a-table-function\}
 
 我们通过对 `s3` 表函数创建的结果表执行 `DESCRIBE` 语句，来确认我们能够读取该文件：
 
@@ -78,8 +76,7 @@ ASCOT	551491.2975753123
 WEYBRIDGE	548974.828692494
 ```
 
-
-## 将 Parquet 文件转换为 CSV
+## 将 Parquet 文件转换为 CSV \{#convert-the-parquet-file-to-a-csv\}
 
 您可以将任意 SQL 查询的结果写入文件。我们来获取存储在 S3 中的 Parquet 文件的所有列，并将结果输出到一个新的 CSV 文件。由于输出文件名以 `.csv` 结尾，ClickHouse 会自动使用 `CSV` 输出格式：
 
@@ -105,8 +102,7 @@ $ tail house_prices.csv
 250000,15950,"YO8","9YD","detached",0,"freehold","3","","ONE ACRE GARTH","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
 ```
 
-
-## 将 Parquet 文件转换为 JSON
+## 将 Parquet 文件转换为 JSON \{#convert-the-parquet-file-to-a-json\}
 
 要将 Parquet 文件转换为 JSON，只需更改输出文件名的扩展名：
 
@@ -132,8 +128,7 @@ INTO OUTFILE 'house_prices.ndjson'"
 {"price":"250000","date":15950,"postcode1":"YO8","postcode2":"9YD","type":"detached","is_new":0,"duration":"freehold","addr1":"3","addr2":"","street":"ONE ACRE GARTH","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
 ```
 
-
-## 将 CSV 转换为 Parquet
+## 将 CSV 转换为 Parquet \{#convert-csv-to-parquet\}
 
 这个转换是双向的——我们可以轻松读取新的 CSV 文件，并将其输出为 Parquet 文件。本地文件 `house_prices.csv` 可以通过 ClickHouse 中的 `file` 表函数读取，而 ClickHouse 会根据以 `.parquet` 结尾的文件名将输出写成 Parquet 格式（或者我们也可以显式添加 `FORMAT Parquet` 子句）：
 

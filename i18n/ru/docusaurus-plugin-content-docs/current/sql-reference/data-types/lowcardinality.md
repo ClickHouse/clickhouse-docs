@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# LowCardinality(T)
+# LowCardinality(T) {#lowcardinalityt}
 
 Изменяет внутреннее представление других типов данных на словарно-кодированное.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 LowCardinality(data_type)
@@ -36,7 +36,7 @@ LowCardinality(data_type)
 
 
 
-## Пример
+## Пример {#example}
 
 Создайте таблицу со столбцом типа `LowCardinality`:
 

@@ -7,14 +7,13 @@ title: '如何使用 ClickHouse 测试硬件性能'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
 你可以在任何服务器上运行基本的 ClickHouse 性能测试，而无需安装 ClickHouse 软件包。
 
-
-## 自动化运行
+## 自动化运行 {#automated-run}
 
 你只需使用一个脚本即可运行基准测试。
 

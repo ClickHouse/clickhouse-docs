@@ -6,7 +6,7 @@ title: 'quantileTDigestWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTDigestWeighted
+# quantileTDigestWeighted {#quantiletdigestweighted}
 
 Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных с использованием алгоритма [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf). Функция учитывает вес каждого элемента последовательности. Максимальная погрешность — 1%. Потребление памяти — `log(n)`, где `n` — количество значений.
 

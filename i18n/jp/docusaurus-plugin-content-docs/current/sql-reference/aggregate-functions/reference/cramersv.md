@@ -6,7 +6,7 @@ title: 'cramersV'
 doc_type: 'reference'
 ---
 
-# cramersV
+# cramersV {#cramersv}
 
 [Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（Cramer&#39;s phi と呼ばれることもあります）は、テーブル内の 2 つの列間の連関を測る指標です。`cramersV` 関数の結果は 0（変数間に連関がないことに対応）から 1 の範囲を取り、各値が他方によって完全に決定される場合にのみ 1 になります。これは、2 つの変数間の連関を、それらが取りうる最大の変動に対する割合として捉えることができます。
 

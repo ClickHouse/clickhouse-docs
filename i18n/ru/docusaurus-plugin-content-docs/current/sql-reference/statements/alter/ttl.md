@@ -7,17 +7,13 @@ title: 'Работа с TTL таблицы'
 doc_type: 'reference'
 ---
 
-
-
-# Операции с TTL таблицы
+# Операции с TTL таблицы {#manipulations-with-table-ttl}
 
 :::note
 Если вам нужны подробные сведения об использовании TTL для управления старыми данными, ознакомьтесь с руководством [Управление данными с помощью TTL](/guides/developer/ttl.md). В приведённом ниже материале показано, как изменить или удалить существующее правило TTL.
 :::
 
-
-
-## ИЗМЕНЕНИЕ TTL
+## ИЗМЕНЕНИЕ TTL {#modify-ttl}
 
 Вы можете изменить [TTL для таблицы](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) с помощью запроса следующего вида:
 
@@ -25,8 +21,7 @@ doc_type: 'reference'
 ALTER TABLE [db.]имя_таблицы [ON CLUSTER кластер] MODIFY TTL ttl_выражение;
 ```
 
-
-## УДАЛЕНИЕ TTL
+## УДАЛЕНИЕ TTL {#remove-ttl}
 
 Свойство TTL можно удалить из таблицы с помощью следующего запроса:
 

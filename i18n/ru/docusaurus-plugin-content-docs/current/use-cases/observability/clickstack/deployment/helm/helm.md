@@ -12,7 +12,7 @@ keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Миграция чарта
 Если вы в данный момент используете чарт `hdx-oss-v2`, перейдите на чарт `clickstack`. Чарт `hdx-oss-v2` находится в режиме сопровождения и больше не будет получать новые функции. Весь новый функционал разрабатывается для чарта `clickstack`, который обеспечивает ту же функциональность с более понятными названиями и улучшённой структурой.

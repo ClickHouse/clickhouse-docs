@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts
+# system.parts {#systemparts}
 
 Содержит информацию о частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
@@ -33,7 +33,6 @@ doc_type: 'reference'
   * `maximum_block_number` — максимальный номер блока в части
   * `level` — увеличивается на единицу при каждом дополнительном объединении части. Уровень 0 означает, что это новая часть, которая ещё не была объединена. Важно помнить, что все части в ClickHouse всегда неизменяемы
   * `data_version` — необязательное значение, увеличивается, когда часть изменяется (при этом изменённые данные всегда записываются только в новую часть, так как части неизменяемы)
-
 
 * `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID части данных.
 

@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 
 
-# `loop` 表函数
+# `loop` 表函数 {#loop-table-function}
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -37,7 +37,7 @@ SELECT ... FROM loop(other_table_function(...));
 
 
 
-## 示例
+## 示例 {#examples}
 
 从 ClickHouse 中查询数据：
 

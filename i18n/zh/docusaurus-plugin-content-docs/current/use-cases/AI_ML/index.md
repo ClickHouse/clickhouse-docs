@@ -8,7 +8,7 @@ keywords: ['machine learning', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
 
-# 机器学习与生成式 AI
+# 机器学习与生成式 AI {#machine-learning-and-genai}
 
 ClickHouse 非常适合作为实时数据库来支撑机器学习工作负载。
 借助 ClickHouse，在分析数据之上释放生成式 AI 能力比以往更容易。

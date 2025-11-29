@@ -12,13 +12,13 @@ import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 接続に関するヒント
+# 接続に関するヒント {#connection-tips}
 
 <ClickHouseSupportedBadge/>
 
 
 
-## 初期 SQL タブ
+## 初期 SQL タブ {#initial-sql-tab}
 
 [詳細設定] タブで *Set Session ID* チェックボックスが有効になっている場合（デフォルト）、次を使用してセッションレベルの [設定](/operations/settings/settings/) を行うことができます。
 
@@ -43,7 +43,7 @@ SET my_setting=value;
 * **JDBC Driver URL Parameters**。このフィールドには、`jdbcCompliance` などの残りの[ドライバーパラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration)を指定できます。パラメータ値は URL エンコード形式で渡す必要がある点に注意してください。また、このフィールドと Advanced タブ内の前のフィールドの両方で `custom_http_params` や `typeMappings` を指定した場合は、Advanced タブ側の前の 2 つのフィールドで指定した値が優先されます。
 * **Set Session ID** チェックボックス。Initial SQL タブでセッションレベルの設定を行うために必要であり、`"tableau-jdbc-connector-*{timestamp}*-*{number}*"` という形式で、タイムスタンプと疑似乱数を含む `session_id` を生成します。
 
-## UInt64, Int128, (U)Int256 データ型のサポート制限
+## UInt64, Int128, (U)Int256 データ型のサポート制限 {#limited-support-for-uint64-int128-uint256-data-types}
 
 デフォルトでは、ドライバーは *UInt64, Int128, (U)Int256* 型のフィールドを文字列として表示するだけで、**変換は行いません**。そのため、次のような計算フィールドを作成しようとすると、エラーが発生します。
 

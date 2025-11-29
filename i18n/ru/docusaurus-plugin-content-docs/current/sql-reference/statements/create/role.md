@@ -30,7 +30,7 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 
 
-## Примеры
+## Примеры {#examples}
 
 ```sql
 CREATE ROLE accountant;

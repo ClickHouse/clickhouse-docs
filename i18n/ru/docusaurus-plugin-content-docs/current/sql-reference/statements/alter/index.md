@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ALTER
+# ALTER {#alter}
 
 Большинство запросов `ALTER TABLE` изменяют настройки таблицы или данные:
 

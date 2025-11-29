@@ -6,10 +6,9 @@ title: 'system.trace_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.trace&#95;log
+# system.trace&#95;log {#systemtrace&#95;log}
 
 <SystemTableCloud />
 
@@ -69,7 +68,6 @@ ClickHouse создаёт эту таблицу, когда задан разд�
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G
 ```
-
 
 ```text
 Row 1:

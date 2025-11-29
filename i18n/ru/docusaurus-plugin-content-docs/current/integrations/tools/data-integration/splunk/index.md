@@ -23,7 +23,7 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Сохранение журналов аудита ClickHouse Cloud в Splunk
+# Сохранение журналов аудита ClickHouse Cloud в Splunk {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>
 
@@ -35,7 +35,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# Установка
+# Установка {#installation}
 
 
 
@@ -57,7 +57,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# Модульная конфигурация входных данных
+# Модульная конфигурация входных данных {#modular-input-configuration}
 
 Чтобы настроить модульный ввод, вам сначала понадобится информация из вашего развертывания ClickHouse Cloud:
 
@@ -110,7 +110,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-# Использование
+# Использование {#usage}
 
 Модульный ввод данных сохраняет данные в Splunk. Для их просмотра используйте стандартный интерфейс поиска Splunk.
 

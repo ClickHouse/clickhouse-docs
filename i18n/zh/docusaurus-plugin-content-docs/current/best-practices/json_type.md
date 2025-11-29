@@ -56,7 +56,7 @@ ClickHouse 现在提供了一种原生的 JSON 列类型，用于处理半结构
 
 
 
-## 示例
+## 示例 {#examples}
 
 请看以下 JSON 示例，它表示来自 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 的一行数据：
 

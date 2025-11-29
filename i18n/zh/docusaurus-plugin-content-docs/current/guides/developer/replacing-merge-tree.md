@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 为了在处理包含更新和删除行的流式数据时避免上述使用模式，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
 
 
-## 已插入行的自动 Upsert
+## 已插入行的自动 Upsert {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree 表引擎](/engines/table-engines/mergetree-family/replacingmergetree) 允许对行执行更新操作，而无需使用低效的 `ALTER` 或 `DELETE` 语句。它通过允许用户插入同一行的多个副本，并将其中一条标记为最新版本来实现这一点。随后，一个后台进程会异步移除同一行的旧版本，通过仅追加的不可变插入，高效地模拟更新操作。
 
@@ -56,7 +56,7 @@ SYSTEM SYNC REPLICA 表名
 > 提示：用户也可以对不再会发生变更的选定分区执行 `OPTIMIZE FINAL CLEANUP`。
 
 
-## 选择主键/去重键
+## 选择主键/去重键 {#choosing-a-primarydeduplication-key}
 
 在上文中，我们强调了在使用 ReplacingMergeTree 时必须满足的一个重要附加约束：`ORDER BY` 中各列的取值在发生变更时必须能够在全局范围内唯一标识一行。如果是从 Postgres 这类事务型数据库迁移，那么原始的 Postgres 主键应当被包含在 ClickHouse 的 `ORDER BY` 子句中。
 
@@ -102,7 +102,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 我们使用 `(PostTypeId, toDate(CreationDate), CreationDate, Id)` 作为 `ORDER BY` 键。`Id` 列对每条帖子记录都是唯一的，从而支持对行进行去重。根据需要，在 schema 中添加了 `Version` 和 `Deleted` 列。
 
 
-## 查询 ReplacingMergeTree
+## 查询 ReplacingMergeTree {#querying-replacingmergetree}
 
 在合并时，ReplacingMergeTree 会识别重复行，将 `ORDER BY` 列的值用作唯一标识，并且要么仅保留最高版本，要么在最新版本表示删除的情况下移除所有重复行。不过，这种机制只能在最终状态上趋于正确——并不能保证所有行一定都会被去重，因此不应依赖它。由于查询会同时考虑更新行和删除行，查询结果可能因此不正确。
 
@@ -240,7 +240,7 @@ FINAL
 
 
 
-## 利用 ReplacingMergeTree 分区
+## 利用 ReplacingMergeTree 分区 {#exploiting-partitions-with-replacingmergetree}
 
 ClickHouse 中的数据合并是在分区级别进行的。使用 ReplacingMergeTree 时，我们建议用户按照最佳实践对表进行分区，前提是能够确保**该分区键对同一行不会发生变化**。这样可以确保与同一行相关的更新会被发送到同一个 ClickHouse 分区。只要遵守此处概述的最佳实践，你可以复用在 Postgres 中使用的同一个分区键。
 

@@ -11,13 +11,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# hdfs 表函数
+# hdfs 表函数 {#hdfs-table-function}
 
 基于 HDFS 中的文件创建一张表。此表函数类似于 [url](../../sql-reference/table-functions/url.md) 和 [file](../../sql-reference/table-functions/file.md) 表函数。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 hdfs(URI, 格式, 结构)
@@ -34,7 +34,7 @@ hdfs(URI, 格式, 结构)
 
 
 
-## 返回值
+## 返回值 {#returned_value}
 
 一个具有指定结构的表，用于在指定文件中读取或写入数据。
 
@@ -56,7 +56,7 @@ LIMIT 2
 ```
 
 
-## 路径中的通配符
+## 路径中的通配符 {#globs_in_path}
 
 路径可以使用通配符匹配。文件必须匹配整个路径模式，而不仅仅是后缀或前缀。
 
@@ -120,7 +120,7 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 
 
 
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径（`/name=value/`）中检测 Hive 风格的分区方式，并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以下划线 `_` 开头。
 

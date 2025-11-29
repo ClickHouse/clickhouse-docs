@@ -7,20 +7,16 @@ title: '`Executable` および `ExecutablePool` テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
-# Executable および ExecutablePool テーブルエンジン
+# Executable および ExecutablePool テーブルエンジン {#executable-and-executablepool-table-engines}
 
 `Executable` および `ExecutablePool` テーブルエンジンを使用すると、（行を **stdout** に書き出すことで）ユーザー定義のスクリプトによって行が生成されるテーブルを定義できます。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
 
-- `Executable` テーブル: クエリごとにスクリプトが実行されます
-- `ExecutablePool` テーブル: 永続プロセスのプールを維持し、読み取り時にそのプールからプロセスを取得します
+* `Executable` テーブル: クエリごとにスクリプトが実行されます
+* `ExecutablePool` テーブル: 永続プロセスのプールを維持し、読み取り時にそのプールからプロセスを取得します
 
 オプションとして、1 つ以上の入力用クエリを含めることができ、その結果を **stdin** にストリームしてスクリプトが読み取れるようにできます。
 
-
-
-## `Executable` テーブルの作成
+## `Executable` テーブルの作成 {#creating-an-executable-table}
 
 `Executable` テーブルエンジンには、スクリプト名と入力データの形式という 2 つのパラメータを指定する必要があります。必要に応じて、1 つ以上の入力クエリを渡すこともできます。
 
@@ -102,8 +98,7 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
-
-## クエリ結果をスクリプトに渡す
+## クエリ結果をスクリプトに渡す {#passing-query-results-to-a-script}
 
 Hacker News サイトのユーザーはコメントを投稿します。Python には自然言語処理ツールキット (`nltk`) があり、その中の `SentimentIntensityAnalyzer` を使うと、コメントがポジティブかネガティブかニュートラルかを判定し、-1（非常にネガティブなコメント）から 1（非常にポジティブなコメント）の値を割り当てることができます。`nltk` を使って Hacker News のコメントのセンチメント（感情）を計算する `Executable` テーブルを作成してみましょう。
 
@@ -177,7 +172,6 @@ FROM sentiment
 
 レスポンスは次のとおりです。
 
-
 ```response
 ┌───────id─┬─sentiment─┐
 │  7398199 │    0.4404 │
@@ -203,8 +197,7 @@ FROM sentiment
 └──────────┴───────────┘
 ```
 
-
-## `ExecutablePool` テーブルの作成
+## `ExecutablePool` テーブルの作成 {#creating-an-executablepool-table}
 
 `ExecutablePool` の構文は `Executable` と似ていますが、`ExecutablePool` テーブルに固有の重要な設定がいくつかあります。
 

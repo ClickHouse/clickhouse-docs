@@ -9,9 +9,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-
-
-# CoalescingMergeTree 表引擎
+# CoalescingMergeTree 表引擎 {#coalescingmergetree-table-engine}
 
 :::note Available from version 25.6
 此表引擎从 25.6 及更高版本开始在 OSS 和 Cloud 中可用。
@@ -23,9 +21,7 @@ doc_type: 'reference'
 
 `CoalescingMergeTree` 旨在与非键列中的 Nullable 类型配合使用。如果这些列不是 Nullable，其行为与 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 相同。
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -42,16 +38,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关请求参数的说明，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
 
-### CoalescingMergeTree 的参数
+### CoalescingMergeTree 的参数 {#parameters-of-coalescingmergetree}
 
-#### 列
+#### 列 {#columns}
 
 `columns` - 一个包含需要合并其值的列名的元组（tuple）。可选参数。
 这些列必须是数值类型，并且不能出现在分区键或排序键中。
 
 如果未指定 `columns`，ClickHouse 会合并所有不在排序键中的列的值。
 
-### 查询子句
+### 查询子句 {#query-clauses}
 
 在创建 `CoalescingMergeTree` 表时，所需的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)与创建 `MergeTree` 表时相同。
 
@@ -76,8 +72,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `columns` — 一个包含列名的元组（tuple），这些列的值将被求和。可选参数。相关说明见上文。
 </details>
 
-
-## 使用示例
+## 使用示例 {#usage-example}
 
 请看下表：
 

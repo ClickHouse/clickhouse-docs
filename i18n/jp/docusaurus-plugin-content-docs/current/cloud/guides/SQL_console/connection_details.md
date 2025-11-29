@@ -7,6 +7,6 @@ doc_type: 'guide'
 keywords: ['接続情報', '認証情報', '接続文字列', 'セットアップ', '構成']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 <ConnectionDetails />

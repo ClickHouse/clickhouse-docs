@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# TinyLog 表引擎
+# TinyLog 表引擎 {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -32,7 +32,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 创建表
+## 创建表 {#table_engines-tinylog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -58,7 +58,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 示例用法
+## 示例用法 {#table_engines-tinylog-example-of-use}
 
 创建表：
 

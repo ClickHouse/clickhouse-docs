@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clusterAllReplicas テーブル関数
+# clusterAllReplicas テーブル関数 {#clusterallreplicas-table-function}
 
 `remote_servers` セクションで設定されたクラスター内のすべてのシャードに、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずにアクセスできます。各シャードにつき 1 つのレプリカのみがクエリされます。
 
@@ -32,7 +32,7 @@ clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
 
-## 引数
+## 引数 {#arguments}
 
 | 引数                          | 説明                                                                                  |
 | --------------------------- | ----------------------------------------------------------------------------------- |
@@ -47,7 +47,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 
 
 
-## マクロの使用
+## マクロの使用 {#using_macros}
 
 `cluster_name` にはマクロ（波かっこで囲まれた置換式）を含めることができます。置換される値は、サーバー構成ファイルの [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから取得されます。
 

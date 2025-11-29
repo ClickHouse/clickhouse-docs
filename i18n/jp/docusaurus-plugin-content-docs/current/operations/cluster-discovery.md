@@ -6,13 +6,9 @@ title: 'クラスターディスカバリ'
 doc_type: 'ガイド'
 ---
 
+# クラスターディスカバリ {#cluster-discovery}
 
-
-# クラスターディスカバリ
-
-
-
-## 概要
+## 概要 {#overview}
 
 ClickHouse の Cluster Discovery 機能は、ノードを設定ファイル内で明示的に定義しなくても、自動的に検出して登録できるようにすることで、クラスタの構成を簡素化します。これは、各ノードを手動で定義することが負担になる場合に特に有用です。
 
@@ -31,10 +27,9 @@ Cluster Discovery は実験的な機能であり、将来のバージョンで�
 
 :::
 
+## リモートサーバーの設定 {#remote-servers-configuration}
 
-## リモートサーバーの設定
-
-### 従来の手動設定
+### 従来の手動設定 {#traditional-manual-configuration}
 
 従来は ClickHouse では、クラスタ内の各シャードおよびレプリカを設定ファイルで手動指定する必要がありました。
 
@@ -66,7 +61,7 @@ Cluster Discovery は実験的な機能であり、将来のバージョンで�
 
 ```
 
-### クラスター検出を使用する
+### クラスター検出を使用する {#using-cluster-discovery}
 
 Cluster Discovery を使用すると、各ノードを明示的に定義する代わりに、ZooKeeper 内のパスを 1 つ指定するだけで済みます。ZooKeeper のそのパス配下に登録されたすべてのノードは、自動的に検出されてクラスターに追加されます。
 
@@ -114,7 +109,7 @@ Cluster Discovery を使用すると、各ノードを明示的に定義する�
 </discovery>
 ```
 
-### オブザーバーモード
+### オブザーバーモード {#observer-mode}
 
 オブザーバーモードで構成されたノードは、自身をレプリカとして登録しません。
 これらのノードはクラスター内の他のアクティブなレプリカを監視・検出するだけで、能動的には参加しません。
@@ -127,7 +122,7 @@ Cluster Discovery を使用すると、各ノードを明示的に定義する�
 </discovery>
 ```
 
-### クラスターの検出
+### クラスターの検出 {#discovery-of-clusters}
 
 場合によっては、クラスター内のホストだけでなく、クラスター自体を追加・削除する必要が生じることがあります。複数のクラスターのルートパスを指定するために `<multicluster_root_path>` ノードを使用できます。
 
@@ -168,8 +163,7 @@ Cluster Discovery を使用すると、各ノードを明示的に定義する�
 * `<multicluster_root_path>` と併用できるのは `<observer/>` のみです。
 * Keeper で指定されたパスの最後の部分がクラスタ名として使用されますが、登録時には XML タグに記載された名前が使用されます。
 
-
-## ユースケースと制限事項
+## ユースケースと制限事項 {#use-cases-and-limitations}
 
 指定された ZooKeeper パスにノードが追加または削除されると、構成変更やサーバーの再起動を行うことなく、それらのノードはクラスターに自動的に認識されて参加するか、クラスターから削除されます。
 
@@ -222,7 +216,6 @@ INSERT INTO event_table ...
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
 ```
-
 
 ┌─hostname()───┬─database─┬─table───────┐
 │ a6a68731c21b │ default  │ event&#95;table │

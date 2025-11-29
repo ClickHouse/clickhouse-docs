@@ -6,7 +6,7 @@ title: 'system.zookeeper_log'
 doc_type: 'reference'
 ---
 
-# system.zookeeper_log
+# system.zookeeper&#95;log {#systemzookeeper&#95;log}
 
 このテーブルには、ZooKeeper サーバーへのリクエストのパラメータと、そのレスポンスに関する情報が含まれます。
 
@@ -14,26 +14,26 @@ doc_type: 'reference'
 
 リクエストパラメータを持つカラム:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper クライアントにおけるイベント種別。次のいずれかの値を取ります:
-  - `Request` — リクエストが送信された。
-  - `Response` — レスポンスを受信した。
-  - `Finalize` — 接続が失われ、レスポンスを受信しなかった。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントが発生した日付。
-- `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — イベントが発生した日時。
-- `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — リクエストに使用された ZooKeeper サーバーの IP アドレス。
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — リクエストに使用された ZooKeeper サーバーのポート。
-- `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 各接続に対して ZooKeeper サーバーが設定するセッション ID。
-- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — セッション内でのリクエスト ID。通常は連番のリクエスト番号です。リクエスト行と、それに対応する `response` / `finalize` 行で同じ値になります。
-- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches) が設定されているかどうかを示すフラグ。
-- `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — リクエストまたはレスポンスの種別。
-- `path` ([String](../../sql-reference/data-types/string.md)) — リクエストで指定された ZooKeeper ノードへのパス。パスの指定を必要としないリクエストの場合は空文字列。
-- `data` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper ノードに書き込まれるデータ（`SET` および `CREATE` リクエストではリクエストが書き込もうとした内容、`GET` リクエストのレスポンスでは読み取られた内容）、または空文字列。
-- `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper ノードが[エフェメラル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes)として作成されているかどうか。
-- `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper ノードが[シーケンシャル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming)として作成されているかどうか。
-- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 実行時にリクエストが期待する ZooKeeper ノードのバージョン。これは `CHECK`、`SET`、`REMOVE` リクエストでサポートされています（リクエストがバージョンをチェックしない場合は `-1` が設定され、バージョンチェックをサポートしない他のリクエストでは `NULL`）。
-- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの数（これは複数の連続した通常リクエストから構成され、それらをアトミックに実行する特別なリクエストです）。マルチリクエストに含まれるすべてのリクエストは同じ `xid` を持ちます。
-- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの番号（マルチリクエスト本体は `0`、その後 `1` から順番）。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper クライアントにおけるイベント種別。次のいずれかの値を取ります:
+  * `Request` — リクエストが送信された。
+  * `Response` — レスポンスを受信した。
+  * `Finalize` — 接続が失われ、レスポンスを受信しなかった。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントが発生した日付。
+* `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — イベントが発生した日時。
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — リクエストに使用された ZooKeeper サーバーの IP アドレス。
+* `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — リクエストに使用された ZooKeeper サーバーのポート。
+* `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 各接続に対して ZooKeeper サーバーが設定するセッション ID。
+* `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — セッション内でのリクエスト ID。通常は連番のリクエスト番号です。リクエスト行と、それに対応する `response` / `finalize` 行で同じ値になります。
+* `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches) が設定されているかどうかを示すフラグ。
+* `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — リクエストまたはレスポンスの種別。
+* `path` ([String](../../sql-reference/data-types/string.md)) — リクエストで指定された ZooKeeper ノードへのパス。パスの指定を必要としないリクエストの場合は空文字列。
+* `data` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper ノードに書き込まれるデータ（`SET` および `CREATE` リクエストではリクエストが書き込もうとした内容、`GET` リクエストのレスポンスでは読み取られた内容）、または空文字列。
+* `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper ノードが[エフェメラル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes)として作成されているかどうか。
+* `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper ノードが[シーケンシャル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming)として作成されているかどうか。
+* `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 実行時にリクエストが期待する ZooKeeper ノードのバージョン。これは `CHECK`、`SET`、`REMOVE` リクエストでサポートされています（リクエストがバージョンをチェックしない場合は `-1` が設定され、バージョンチェックをサポートしない他のリクエストでは `NULL`）。
+* `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの数（これは複数の連続した通常リクエストから構成され、それらをアトミックに実行する特別なリクエストです）。マルチリクエストに含まれるすべてのリクエストは同じ `xid` を持ちます。
+* `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの番号（マルチリクエスト本体は `0`、その後 `1` から順番）。
 
 レスポンスパラメータを持つカラム:
 
@@ -65,7 +65,6 @@ SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND
 ```
 
 結果:
-
 
 ```text
 Row 1:

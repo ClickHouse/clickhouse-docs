@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
-# Коннектор Spark
+# Коннектор Spark {#spark-connector}
 
 Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как продвинутое секционирование и проталкивание предикатов (predicate pushdown), чтобы
 повысить производительность запросов и эффективность обработки данных.
@@ -58,7 +58,7 @@ Hive Metastore или AWS Glue.
 
 
 
-## Установка и настройка
+## Установка и настройка {#installation--setup}
 
 Для интеграции ClickHouse со Spark доступно несколько вариантов установки для различных конфигураций проектов.
 Вы можете добавить коннектор ClickHouse Spark как зависимость непосредственно в файл сборки вашего проекта (например, в `pom.xml`
@@ -67,7 +67,7 @@ Hive Metastore или AWS Glue.
 с помощью флага `--jars` в команде `spark-submit`.
 Оба подхода обеспечивают доступность коннектора ClickHouse в вашей среде Spark.
 
-### Импорт как зависимости
+### Импорт как зависимости {#import-as-a-dependency}
 
 <Tabs>
   <TabItem value="Maven" label="Maven" default>
@@ -148,7 +148,7 @@ Hive Metastore или AWS Glue.
   </TabItem>
 </Tabs>
 
-### Загрузка библиотеки
+### Загрузка библиотеки {#download-the-library}
 
 Шаблон имени бинарного JAR-файла:
 
@@ -177,7 +177,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 
 
 
-## Зарегистрируйте каталог (обязательно)
+## Зарегистрируйте каталог (обязательно) {#register-the-catalog-required}
 
 Чтобы получить доступ к таблицам ClickHouse, необходимо настроить новый каталог Spark со следующими параметрами:
 
@@ -227,7 +227,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 :::
 
 
-## Настройки ClickHouse Cloud
+## Настройки ClickHouse Cloud {#clickhouse-cloud-settings}
 
 При подключении к [ClickHouse Cloud](https://clickhouse.com) убедитесь, что включён SSL и задан соответствующий режим SSL. Например:
 
@@ -436,7 +436,7 @@ from pyspark.sql import Row
 ```
 
 
-# При необходимости вы можете использовать любую другую комбинацию пакетов при условии, что она удовлетворяет матрице совместимости, приведённой выше.
+# При необходимости вы можете использовать любую другую комбинацию пакетов при условии, что она удовлетворяет матрице совместимости, приведённой выше. {#feel-free-to-use-any-other-packages-combination-satesfying-the-compatibility-matrix-provided-above}
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -460,13 +460,13 @@ spark.conf.set("spark.clickhouse.write.format", "json")
 
 
 
-# Создание DataFrame
+# Создание DataFrame {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 
 
-# Запись DataFrame в ClickHouse
+# Запись DataFrame в ClickHouse {#write-dataframe-to-clickhouse}
 
 df.writeTo("clickhouse.default.example_table").append()
 
@@ -486,7 +486,7 @@ df.writeTo("clickhouse.default.example_table").append()
 </Tabs>
 
 
-## Операции DDL
+## Операции DDL {#ddl-operations}
 
 Вы можете выполнять операции DDL с экземпляром ClickHouse с помощью Spark SQL, при этом все изменения сразу
 сохраняются в ClickHouse.

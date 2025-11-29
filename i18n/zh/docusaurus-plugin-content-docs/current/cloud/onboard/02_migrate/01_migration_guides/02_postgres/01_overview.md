@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse 与 PostgreSQL 对比
+# ClickHouse 与 PostgreSQL 对比 {#comparing-clickhouse-and-postgresql}
 
 
 

@@ -34,7 +34,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 これらのアクションについては、以下で詳しく説明します。
 
 
-## ADD COLUMN（列を追加）
+## ADD COLUMN（列を追加） {#add-column}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
@@ -71,7 +71,7 @@ Added3  UInt32
 ```
 
 
-## DROP COLUMN
+## DROP COLUMN {#drop-column}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -92,7 +92,7 @@ ALTER TABLE visits DROP COLUMN browser
 ```
 
 
-## 列名を変更する
+## 列名を変更する {#rename-column}
 
 ```sql
 RENAME COLUMN [IF EXISTS] name to new_name
@@ -109,7 +109,7 @@ ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
 
-## CLEAR COLUMN
+## CLEAR COLUMN {#clear-column}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
@@ -126,7 +126,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
 
-## COMMENT 列
+## COMMENT 列 {#comment-column}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] name 'テキストコメント'
@@ -145,7 +145,7 @@ ALTER TABLE visits COMMENT COLUMN browser 'この列はサイトへのアクセ�
 ```
 
 
-## MODIFY COLUMN
+## MODIFY COLUMN {#modify-column}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -225,7 +225,7 @@ DESCRIBE users;
 :::
 
 
-## MODIFY COLUMN REMOVE
+## MODIFY COLUMN REMOVE {#modify-column-remove}
 
 次の列プロパティのいずれかを削除します: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`。
 
@@ -248,7 +248,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 * [REMOVE TTL](ttl.md)
 
 
-## MODIFY COLUMN MODIFY SETTING — 列設定の変更
+## MODIFY COLUMN MODIFY SETTING — 列設定の変更 {#modify-column-modify-setting}
 
 列の設定を変更します。
 
@@ -267,7 +267,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 ```
 
 
-## MODIFY COLUMN RESET SETTING
+## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
 列の設定をリセットします。また、テーブルの CREATE クエリ内の列式から、その設定の宣言も削除します。
 
@@ -286,7 +286,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_bloc
 ```
 
 
-## MATERIALIZE COLUMN
+## MATERIALIZE COLUMN {#materialize-column}
 
 `DEFAULT` または `MATERIALIZED` の値式を持つカラムをマテリアライズします。`ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` を使用してマテリアライズされたカラムを追加する場合、マテリアライズされた値を持たない既存の行は自動的には埋められません。`MATERIALIZE COLUMN` 文は、`DEFAULT` または `MATERIALIZED` の式が追加または更新された後（この操作はメタデータのみを更新し、既存データは変更しない）、既存のカラムデータを書き換えるために使用できます。ソートキー内のカラムをマテリアライズすることは、ソート順を破壊しうるため無効な操作である点に注意してください。
 [mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。

@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 
 
-# 通过命名集合集成 ClickHouse 与 Kafka
+# 通过命名集合集成 ClickHouse 与 Kafka {#integrating-clickhouse-with-kafka-using-named-collections}
 
 
 
@@ -32,7 +32,7 @@ doc_type: 'guide'
 
 
 
-## 先决条件
+## 先决条件 {#prerequisites}
 
 确保负责创建该具名集合的用户具备必要的访问权限：
 
@@ -46,7 +46,7 @@ doc_type: 'guide'
 有关如何启用访问控制的更多详情，请参阅[用户管理指南](./../../../guides/sre/user-management/index.md)。
 
 
-## 配置
+## 配置 {#configuration}
 
 在 ClickHouse 的 `config.xml` 文件中添加以下配置段：
 
@@ -99,7 +99,7 @@ doc_type: 'guide'
 </named_collections>
 ```
 
-### 配置说明
+### 配置说明 {#configuration-notes}
 
 1. 调整 Kafka 地址和相关配置，使其与 Kafka 集群设置保持一致。
 2. `<kafka>` 之前的部分包含 ClickHouse Kafka 引擎参数。完整参数列表请参阅 [Kafka 引擎参数](/engines/table-engines/integrations/kafka)。
@@ -107,17 +107,17 @@ doc_type: 'guide'
 4. 本示例使用 `SASL_SSL` 安全协议和 `PLAIN` 机制。请根据实际的 Kafka 集群配置调整这些设置。
 
 
-## 创建表和数据库
+## 创建表和数据库 {#creating-tables-and-databases}
 
 在你的 ClickHouse 集群上创建所需的数据库和表。如果你以单节点方式运行 ClickHouse，请省略 SQL 命令中的集群（cluster）部分，并使用除 `ReplicatedMergeTree` 之外的其他任意引擎。
 
-### 创建数据库
+### 创建数据库 {#create-the-database}
 
 ```sql
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### 创建 Kafka 表
+### 创建 Kafka 表 {#create-kafka-tables}
 
 在第一个 Kafka 集群中创建第一张 Kafka 表：
 
@@ -143,7 +143,7 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### 创建复制表
+### 创建复制表 {#create-replicated-tables}
 
 先为第一个 Kafka 表创建一张表：
 
@@ -169,7 +169,7 @@ CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_C
 ORDER BY id;
 ```
 
-### 创建物化视图
+### 创建物化视图 {#create-materialized-views}
 
 创建一个物化视图，将数据从第一个 Kafka 表插入到第一个复制表中：
 
@@ -194,7 +194,7 @@ FROM second_kafka_table;
 ```
 
 
-## 验证设置
+## 验证设置 {#verifying-the-setup}
 
 现在你应该可以在 Kafka 集群上看到相应的 consumer group（消费者组）：
 
@@ -211,7 +211,7 @@ SELECT * FROM first_replicated_table LIMIT 10;
 SELECT * FROM second_replicated_table LIMIT 10;
 ```
 
-### 注意
+### 注意 {#note}
 
 在本指南中，摄取到两个 Kafka 主题中的数据是相同的。在您的实际环境中，它们会有所不同。您可以根据需要添加任意数量的 Kafka 集群。
 

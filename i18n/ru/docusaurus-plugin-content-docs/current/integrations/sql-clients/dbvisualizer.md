@@ -10,37 +10,28 @@ integration:
   - category: 'sql_client'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение DbVisualizer к ClickHouse
+# Подключение DbVisualizer к ClickHouse {#connecting-dbvisualizer-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## Запустите или скачайте DbVisualizer {#start-or-download-dbvisualizer}
 
 DbVisualizer можно скачать с сайта https://www.dbvis.com/download/
 
-
-
 ## 1. Соберите параметры подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. Встроенное управление JDBC-драйверами {#2-built-in-jdbc-driver-management}
 
 DbVisualizer включает в себя самые актуальные JDBC-драйверы для ClickHouse. В нем реализовано полнофункциональное встроенное управление JDBC-драйверами, обеспечивающее доступ как к последним релизам, так и к предыдущим версиям драйверов.
 
 <Image img={dbvisualizer_driver_manager} size="lg" border alt="Интерфейс управления драйверами DbVisualizer с конфигурацией JDBC-драйвера ClickHouse" />
-
-
 
 ## 3. Подключение к ClickHouse {#3-connect-to-clickhouse}
 
@@ -64,8 +55,6 @@ DbVisualizer включает в себя самые актуальные JDBC-�
 
 :::tip
 См. раздел [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) с рекомендациями по устранению проблем при подключении к базе данных.
-
-
 
 ## Подробнее {#learn-more}
 

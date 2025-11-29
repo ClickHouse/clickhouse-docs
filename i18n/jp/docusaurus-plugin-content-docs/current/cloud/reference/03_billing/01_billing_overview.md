@@ -181,9 +181,9 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 
 
 
-## よくある質問
+## よくある質問 {#faqs}
 
-### ClickHouse Credit (CHC) とは何ですか？
+### ClickHouse Credit (CHC) とは何ですか？ {#what-is-chc}
 
 ClickHouse Credit は、ClickHouse Cloud の利用に対するクレジットの単位であり、1 CHC は 1 米ドル (US$1) に相当します。これは、ClickHouse がその時点で公開している価格表に基づいて適用されます。
 
@@ -191,27 +191,27 @@ ClickHouse Credit は、ClickHouse Cloud の利用に対するクレジットの
 Stripe を通じて請求されている場合、Stripe の請求書上では 1 CHC は US$0.01 として表示されます。これは、当社の標準 SKU（1 CHC = US$1）について、Stripe 側の仕様上、端数数量を請求できないためであり、その制約の中で正確な請求を行うためのものです。
 :::
 
-### 旧プラン（レガシー）の料金はどこで確認できますか？
+### 旧プラン（レガシー）の料金はどこで確認できますか？ {#find-legacy-pricing}
 
 旧プラン（レガシー）の料金情報は[こちら](https://clickhouse.com/pricing?legacy=true)で確認できます。
 
-### コンピュート（計算リソース）はどのように計測されますか？
+### コンピュート（計算リソース）はどのように計測されますか？ {#how-is-compute-metered}
 
 ClickHouse Cloud は、コンピュートを 8G RAM 単位で 1 分ごとに計測します。
 コンピュートコストはティア、リージョン、クラウドサービスプロバイダーによって異なります。
 
-### ディスク上のストレージはどのように算出されますか？
+### ディスク上のストレージはどのように算出されますか？ {#how-is-storage-on-disk-calculated}
 
 ClickHouse Cloud はクラウドオブジェクトストレージを使用しており、ClickHouse のテーブルに保存されているデータの圧縮後サイズに基づいて使用量を計測します。
 ストレージコストはティア間で共通ですが、リージョンおよびクラウドサービスプロバイダーによって異なります。
 
-### バックアップはストレージの合計に含まれますか？
+### バックアップはストレージの合計に含まれますか？ {#do-backups-count-toward-total-storage}
 
 ストレージとバックアップはいずれもストレージコストの対象となり、個別に請求されます。
 すべてのサービスは、デフォルトで 1 日間保持される 1 つのバックアップが有効になっています。
 追加のバックアップが必要なユーザーは、Cloud コンソールの設定タブで追加の[バックアップ](/cloud/manage/backups/overview)を構成することで対応できます。
 
-### 圧縮率はどのように見積もればよいですか？
+### 圧縮率はどのように見積もればよいですか？ {#how-do-i-estimate-compression}
 
 圧縮率はデータセットごとに大きく異なります。
 どの程度変動するかは、そもそもデータがどれだけ圧縮しやすいか（高カーディナリティと低カーディナリティのフィールドの数など）や、
@@ -228,12 +228,12 @@ FROM system.tables
 WHERE name = <任意のテーブル名>
 ```
 
-### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？
+### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
 
 ClickHouse のクエリログは、ClickHouse Cloud でワークロードを実行するためのコストを見積もる際に利用できる[主要なメトリクス](/operations/system-tables/query_log)を記録します。
 セルフマネージド環境から ClickHouse Cloud への移行の詳細については[移行ドキュメント](/cloud/migration/clickhouse-to-cloud)を参照し、さらに質問がある場合は [ClickHouse Cloud support](https://console.clickhouse.cloud/support) までお問い合わせください。
 
-### ClickHouse Cloud にはどのような課金オプションがありますか？
+### ClickHouse Cloud にはどのような課金オプションがありますか？ {#what-billing-options-are-available-for-clickhouse-cloud}
 
 ClickHouse Cloud は次の課金オプションをサポートしています：
 
@@ -245,11 +245,11 @@ ClickHouse Cloud は次の課金オプションをサポートしています：
 PAYG 向けの ClickHouse Cloud クレジットは 0.01 ドル単位で請求されるため、利用状況に応じてクレジットの端数も含めて課金できます。これは、事前購入するコミット型の ClickHouse クレジット（1 ドル単位の整数額で購入）とは異なります。
 :::
 
-### クレジットカードを削除できますか？
+### クレジットカードを削除できますか？ {#can-i-delete-my-credit-card}
 
 Billing UI からクレジットカードを削除することはできませんが、いつでも更新することはできます。これにより、常に有効な支払い方法が組織に設定されていることを保証します。クレジットカードを削除する必要がある場合は、[ClickHouse Cloud support](https://console.clickhouse.cloud/support) までお問い合わせください。
 
-### 課金サイクルはどのくらいの期間ですか？
+### 課金サイクルはどのくらいの期間ですか？ {#how-long-is-the-billing-cycle}
 
 課金は月次サイクルに従い、開始日は ClickHouse Cloud の組織が作成された日となります。
 

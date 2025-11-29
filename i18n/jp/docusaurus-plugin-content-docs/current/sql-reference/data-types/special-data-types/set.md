@@ -7,6 +7,6 @@ title: 'Set'
 doc_type: 'reference'
 ---
 
-# Set
+# Set {#set}
 
 [IN](/sql-reference/operators/in) 式の右側で使用されます。

@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS Postgres 数据源配置指南
+# RDS Postgres 数据源配置指南 {#rds-postgres-source-setup-guide}
 
 
 
@@ -27,7 +27,7 @@ ClickPipes 支持 Postgres 12 及以上版本。
 
 
 
-## 启用逻辑复制
+## 启用逻辑复制 {#enable-logical-replication}
 
 如果您的 RDS 实例已配置以下设置，则可以跳过本节：
 

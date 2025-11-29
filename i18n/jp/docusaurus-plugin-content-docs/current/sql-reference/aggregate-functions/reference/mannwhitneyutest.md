@@ -7,7 +7,7 @@ title: 'mannWhitneyUTest'
 doc_type: 'reference'
 ---
 
-# mannWhitneyUTest
+# mannWhitneyUTest {#mannwhitneyutest}
 
 2つの母集団からのサンプルに対して、Mann-Whitney の順位検定を適用します。
 

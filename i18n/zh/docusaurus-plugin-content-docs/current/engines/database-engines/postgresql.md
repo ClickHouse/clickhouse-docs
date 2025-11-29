@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# PostgreSQL
+# PostgreSQL {#postgresql}
 
 允许连接到远程 [PostgreSQL](https://www.postgresql.org) 服务器上的数据库。支持读写操作（`SELECT` 和 `INSERT` 查询），用于在 ClickHouse 和 PostgreSQL 之间交换数据。
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 
 
 
-## 创建数据库
+## 创建数据库 {#creating-a-database}
 
 ```sql
 CREATE DATABASE test_database
@@ -56,7 +56,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 
 
-## 使用示例
+## 使用示例 {#examples-of-use}
 
 与 PostgreSQL 服务器进行数据交换的 ClickHouse 数据库：
 

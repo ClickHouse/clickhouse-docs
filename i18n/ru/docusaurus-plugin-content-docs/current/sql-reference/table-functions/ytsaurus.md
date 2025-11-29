@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# Табличная функция ytsaurus
+# Табличная функция ytsaurus {#ytsaurus-table-function}
 
 <ExperimentalBadge/>
 
@@ -18,7 +18,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 ytsaurus(http_proxy_url, cypress_path, oauth_token, format)

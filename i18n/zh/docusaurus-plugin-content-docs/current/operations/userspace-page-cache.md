@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 用户态页缓存
+# 用户态页缓存 {#userspace-page-cache}
 
 
 
@@ -32,9 +32,9 @@ ClickHouse 已经提供了 [Filesystem cache](/docs/operations/storing-data)，
 
 
 
-## 配置与使用
+## 配置与使用 {#configuration-settings-and-usage}
 
-### 用法
+### 用法 {#usage}
 
 要启用用户态页缓存，首先需要在服务器上完成相应配置：
 
@@ -55,7 +55,7 @@ page_cache_max_size: 100G
 SET use_page_cache_for_disks_without_file_cache=1;
 ```
 
-### 设置
+### 设置 {#settings}
 
 | Setting                                                 | Description                                                                                                                                                                          | Default     |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |

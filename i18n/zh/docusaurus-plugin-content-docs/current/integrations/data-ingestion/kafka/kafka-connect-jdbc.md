@@ -8,10 +8,10 @@ doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', '集成', '数据管道']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# JDBC connector
+# JDBC connector {#jdbc-connector}
 
 :::note
 仅当你的数据较为简单且只包含基础数据类型（例如 `int`）时才应使用此 connector。像 ClickHouse 特有的 `map` 等类型目前不受支持。
@@ -114,7 +114,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. 启动 Kafka Connect
+#### 5. 启动 Kafka Connect {#5-start-kafka-connect}
 
 以 [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) 或 [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) 模式启动 Kafka Connect。
 
@@ -122,7 +122,7 @@ CREATE TABLE github
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. 向 Kafka 添加数据
+#### 6. 向 Kafka 添加数据 {#6-add-data-to-kafka}
 
 使用提供的[脚本和配置](https://github.com/ClickHouse/kafka-samples/tree/main/producer)向 Kafka 插入消息。您需要修改 github.config 并填入您的 Kafka 凭证。该脚本目前已配置为在 Confluent Cloud 上使用。
 
@@ -148,7 +148,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### 推荐阅读
+### 推荐阅读 {#recommended-further-reading}
 
 
 * [Kafka Sink 配置参数](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)

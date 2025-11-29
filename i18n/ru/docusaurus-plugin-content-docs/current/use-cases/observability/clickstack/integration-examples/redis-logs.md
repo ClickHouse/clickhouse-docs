@@ -373,9 +373,9 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log
 **Если используете docker-compose, проверьте общие тома:**
 
 ```bash
-# Проверьте, что оба контейнера используют один и тот же том
+# Проверьте, что оба контейнера используют один и тот же том {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# Убедитесь, что том подключен к обоим контейнерам
+# Убедитесь, что том подключен к обоим контейнерам {#expected-output-should-show-file-size-and-permissions}
 ```
 
 
@@ -384,7 +384,7 @@ docker volume inspect <volume-name>
 **Убедитесь, что формат логов Redis соответствует ожидаемому формату:**
 
 ```bash
-# Логи Redis должны выглядеть так:
+# Логи Redis должны выглядеть так: {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```

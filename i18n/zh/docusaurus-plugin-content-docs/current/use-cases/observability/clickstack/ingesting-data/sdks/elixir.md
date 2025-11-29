@@ -23,7 +23,7 @@ _🚧 OpenTelemetry 指标和链路追踪支持即将推出！_
 
 ## 快速入门 {#getting-started}
 
-### 安装 ClickStack Logger 后端包
+### 安装 ClickStack Logger 后端包 {#install-hyperdx-logger-backend-package}
 
 可以通过在 `mix.exs` 中将 `hyperdx` 添加到依赖列表来安装该包：
 
@@ -36,12 +36,12 @@ end
 ```
 
 
-### 配置 Logger
+### 配置 Logger {#configure-logger}
 
 在你的 `config.exs` 文件中添加以下配置：
 
 ```elixir
-# config/releases.exs
+# config/releases.exs {#configreleasesexs}
 
 config :logger,
   level: :info,
@@ -49,7 +49,7 @@ config :logger,
 ```
 
 
-### 配置环境变量
+### 配置环境变量 {#configure-environment-variables}
 
 接下来，你需要在 shell 中配置以下环境变量，以将遥测数据发送到 ClickStack：
 

@@ -14,7 +14,7 @@ import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Spark JDBC
+# Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
 
@@ -122,7 +122,7 @@ jar_files = [
 ```
 
 
-# Инициализация сессии Spark с JAR-файлами
+# Инициализация сессии Spark с JAR-файлами {#initialize-spark-session-with-jars}
 
 spark = SparkSession.builder \
  .appName("example") \
@@ -292,7 +292,7 @@ jar_files = [
 ```
 
 
-# Инициализация Spark-сессии с JAR-файлами
+# Инициализация Spark-сессии с JAR-файлами {#initialize-spark-session-with-jars}
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -301,7 +301,7 @@ spark = SparkSession.builder \
 
 
 
-# Создание DataFrame
+# Создание DataFrame {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
@@ -312,7 +312,7 @@ driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
 
 
-# Запись DataFrame в ClickHouse
+# Запись DataFrame в ClickHouse {#write-dataframe-to-clickhouse}
 
 df.write \
  .format("jdbc") \

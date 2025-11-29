@@ -7,7 +7,7 @@ title: 'Date32'
 doc_type: 'reference'
 ---
 
-# Date32
+# Date32 {#date32}
 
 一种日期类型。支持与 [DateTime64](../../sql-reference/data-types/datetime64.md) 相同的日期范围。以本机字节序的有符号 32 位整数形式存储，其数值表示自 `1900-01-01` 起经过的天数。**重要！** 数值 0 表示 `1970-01-01`，负值表示 `1970-01-01` 之前的天数。
 

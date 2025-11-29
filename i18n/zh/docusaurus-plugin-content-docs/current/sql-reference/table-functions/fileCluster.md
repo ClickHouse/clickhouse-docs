@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# fileCluster 表函数
+# fileCluster 表函数 {#filecluster-table-function}
 
 允许在集群中的多个节点上并行处理与指定路径匹配的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符（globs），并将读文件任务分派给各个工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此循环，直到所有任务完成（所有文件都被读取）。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
@@ -39,7 +39,7 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 
 
 
-## 返回值
+## 返回值 {#returned_value}
 
 具有指定格式和结构，并包含来自匹配指定路径的文件的数据的表。
 

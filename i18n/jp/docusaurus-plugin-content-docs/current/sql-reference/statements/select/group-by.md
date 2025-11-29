@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# GROUP BY 句
+# GROUP BY 句 {#group-by-clause}
 
 `GROUP BY` 句は `SELECT` クエリを集約モードに切り替え、その動作は次のようになります。
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 
 
-## NULL の処理
+## NULL の処理 {#null-processing}
 
 グループ化では、ClickHouse は [NULL](/sql-reference/syntax#null) を値として解釈し、`NULL==NULL` とみなします。これは、ほとんどの他のコンテキストにおける `NULL` の処理とは異なります。
 
@@ -57,7 +57,7 @@ doc_type: 'reference'
 `GROUP BY` に複数のキーを渡すと、結果は選択された値のあらゆる組み合わせを返し、あたかも `NULL` が特定の値であるかのように扱われます。
 
 
-## ROLLUP 修飾子
+## ROLLUP 修飾子 {#rollup-modifier}
 
 `ROLLUP` 修飾子は、`GROUP BY` 句のリスト内での順序に基づいて、キー式ごとの小計を計算するために使用されます。小計の行は結果テーブルの末尾に追加されます。
 
@@ -131,7 +131,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 * SQL 標準との互換性を確保するための [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 設定。
 
 
-## CUBE 修飾子
+## CUBE 修飾子 {#cube-modifier}
 
 `CUBE` 修飾子は、`GROUP BY` 句内のキー式のあらゆる組み合わせに対する小計を計算するために使用されます。小計行は結果テーブルの末尾に追加されます。
 
@@ -268,7 +268,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 
 
-## GROUP BY ALL
+## GROUP BY ALL {#group-by-all}
 
 `GROUP BY ALL` は、集約関数ではないすべての SELECT 句の式を列挙することと同等です。
 
@@ -317,7 +317,7 @@ GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
 
-## 使用例
+## 使用例 {#examples}
 
 例：
 
@@ -345,7 +345,7 @@ GROUP BY domain
 出現した異なるキー値ごとに、`GROUP BY` は集約関数の結果セットを計算します。
 
 
-## GROUPING SETS 修飾子
+## GROUPING SETS 修飾子 {#grouping-sets-modifier}
 
 これは最も汎用的な修飾子です。
 この修飾子を使用すると、複数の集約キーの集合（グルーピングセット）を手動で指定できます。

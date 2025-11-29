@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedCount
+## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
 Возвращает накопленный эффект экспоненциального затухания для временного ряда в момент времени с индексом `t`.
 
@@ -51,7 +49,6 @@ FROM
 ```
 
 Результат:
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐

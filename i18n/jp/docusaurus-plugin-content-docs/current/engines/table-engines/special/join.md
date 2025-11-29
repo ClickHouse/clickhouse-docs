@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Join テーブルエンジン
+# Join テーブルエンジン {#join-table-engine}
 
 [JOIN](/sql-reference/statements/select/join) 演算で使用するための、オプションの事前構築済みデータ構造です。
 
@@ -19,7 +19,7 @@ ClickHouse Cloud で、サービスがバージョン 25.4 より前に作成さ
 
 
 
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -115,7 +115,7 @@ I/O オーバーヘッドを削減します。性能を重視し、永続化を�
 
 
 
-## 使用例
+## 使用例 {#example}
 
 左側テーブルの作成：
 

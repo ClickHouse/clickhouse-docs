@@ -12,7 +12,7 @@ import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations
 import Image from '@theme/IdealImage';
 
 
-# PlanetScale for Postgres 数据源设置指南
+# PlanetScale for Postgres 数据源设置指南 {#planetscale-for-postgres-source-setup-guide}
 
 :::info
 PlanetScale for Postgres 目前处于[早期试用](https://planetscale.com/postgres)阶段。
@@ -52,7 +52,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 
 
-## 创建具有权限和发布的用户
+## 创建具有权限和发布的用户 {#creating-a-user-with-permissions-and-publication}
 
 现在为 ClickPipes 创建一个新用户，授予适用于 CDC 的必要权限，
 并创建一个我们将用于复制的发布（publication）。

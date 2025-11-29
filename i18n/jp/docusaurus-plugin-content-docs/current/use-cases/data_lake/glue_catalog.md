@@ -29,7 +29,7 @@ Glue カタログに接続するには、カタログのリージョンを特定
 現在、Glue カタログはアクセスキーとシークレットキーのみをサポートしていますが、将来的には追加の認証方式もサポートする予定です。
 :::
 
-## Glue データカタログと ClickHouse 間の接続を確立する
+## Glue データカタログと ClickHouse 間の接続を確立する {#connecting}
 
 Unity Catalog の構成と認証の設定が完了したら、ClickHouse と Unity Catalog の間に接続を確立します。
 
@@ -44,7 +44,7 @@ SETTINGS
 ```
 
 
-## ClickHouse から Glue データカタログをクエリする
+## ClickHouse から Glue データカタログをクエリする {#query-glue-catalog}
 
 接続が確立できたので、Glue に対してクエリを実行できるようになりました。
 

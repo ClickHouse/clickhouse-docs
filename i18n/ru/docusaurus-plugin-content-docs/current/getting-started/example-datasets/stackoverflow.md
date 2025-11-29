@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 Описание схемы этих данных можно найти [здесь](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede).
 
 
-## Заранее подготовленные данные
+## Заранее подготовленные данные {#pre-prepared-data}
 
 Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Хотя этот набор данных и невелик для ClickHouse с точки зрения количества строк (60 миллионов постов), он содержит значительные объемы текста и большие столбцы строкового типа (String).
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 Приведённые ниже замеры времени относятся к кластеру ClickHouse Cloud с 96 GiB памяти и 24 vCPU, расположенному в регионе `eu-west-2`. Набор данных находится в регионе `eu-west-3`.
 
 
-### Публикации
+### Публикации {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 Публикации также доступны по годам, например, по адресу [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### Голоса
+### Голоса {#votes}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 Голоса также доступны по годам, например, по адресу [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### Комментарии
+### Комментарии {#comments}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 Комментарии также доступны по годам, например, по адресу: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### Пользователи
+### Пользователи {#users}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### Значки
+### Значки {#badges}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### PostLinks
+### PostLinks {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory
+### PostHistory {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -217,7 +217,7 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 
 Исходный набор данных доступен в сжатом XML-формате (7zip) по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) — файлы с префиксом `stackoverflow.com*`.
 
-### Загрузка
+### Загрузка {#download}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 Размер этих файлов может достигать 35 ГБ, и их загрузка может занять около 30 минут в зависимости от интернет-соединения — сервер загрузки ограничивает скорость примерно до 20 МБ/с.
 
 
-### Преобразование в JSON
+### Преобразование в JSON {#convert-to-json}
 
 На момент написания ClickHouse не имеет встроенной поддержки XML в качестве входного формата. Чтобы загрузить данные в ClickHouse, мы сначала преобразуем их в NDJSON.
 
@@ -260,7 +260,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# следующая команда разбивает входной xml-файл на подфайлы по 10000 строк
+# следующая команда разбивает входной xml-файл на подфайлы по 10000 строк {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -283,7 +283,7 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 
 Несколько простых запросов для начала работы.
 
-### Самые популярные теги на Stack Overflow
+### Самые популярные теги на Stack Overflow {#most-popular-tags-on-stack-overflow}
 
 ```sql
 
@@ -313,7 +313,7 @@ LIMIT 10
 ```
 
 
-### Пользователь с наибольшим количеством ответов (активные учётные записи)
+### Пользователь с наибольшим количеством ответов (активные учётные записи) {#user-with-the-most-answers-active-accounts}
 
 Для учётной записи требуется `UserId`.
 
@@ -340,7 +340,7 @@ LIMIT 5
 ```
 
 
-### Самые популярные статьи о ClickHouse
+### Самые популярные статьи о ClickHouse {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ LIMIT 10
 ```
 
 
-### Самые спорные публикации
+### Самые спорные публикации {#most-controversial-posts}
 
 ```sql
 SELECT

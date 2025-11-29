@@ -8,7 +8,7 @@ title: 'ЦЕЛЬ: СОЗДАТЬ СВОЙ ПЕРВЫЙ ДАШБОРД'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';
@@ -31,7 +31,7 @@ import rocketbi_18 from '@site/static/images/integrations/data-visualization/roc
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Цель: создать свой первый дашборд в Rocket.BI
+# Цель: создать свой первый дашборд в Rocket.BI {#goal-build-your-first-dashboard-with-rocketbi}
 
 <CommunityMaintainedBadge/>
 
@@ -45,7 +45,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## Установка
+## Установка {#install}
 
 Запустите RocketBI с помощью наших предварительно собранных образов Docker.
 

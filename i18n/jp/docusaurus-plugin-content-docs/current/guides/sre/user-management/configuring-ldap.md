@@ -8,10 +8,10 @@ keywords: ['LDAP 設定', 'LDAP 認証', 'ロールマッピング', 'ユーザ�
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
-# LDAP を使用した認証とロールマッピングのための ClickHouse の構成
+# LDAP を使用した認証とロールマッピングのための ClickHouse の構成 {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 

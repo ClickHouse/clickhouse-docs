@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
 
-# LibreChatでClickHouse MCPサーバーを使用する
+# LibreChatでClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server-with-librechat}
 
 > 本ガイドでは、Dockerを使用してLibreChatとClickHouse MCPサーバーをセットアップし、
 > ClickHouseのサンプルデータセットに接続する方法を説明します。
@@ -36,7 +36,7 @@ LibreChat と MCP サーバーを実行するには Docker が必要です。Doc
 
 
 
-## LibreChat リポジトリをクローンする
+## LibreChat リポジトリをクローンする {#clone-librechat-repo}
 
 ターミナル（コマンドプロンプトや PowerShell など）を開き、次のコマンドを使用して LibreChat リポジトリをクローンします。
 
@@ -46,7 +46,7 @@ cd LibreChat
 ```
 
 
-## .env ファイルの作成と編集
+## .env ファイルの作成と編集 {#create-and-edit-env-file}
 
 サンプル構成ファイルを `.env.example` から `.env` にコピーします。
 
@@ -59,12 +59,12 @@ cp .env.example .env
 
 ```text title=".venv"
 #============#
-# Anthropic  #
+# Anthropic  # {#anthropic}
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
-# ANTHROPIC_REVERSE_PROXY=
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
+# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
 ```
 
 使用したい LLM プロバイダーの API キーで `user_provided` を置き換えます。
@@ -74,7 +74,7 @@ API キーがない場合は、Ollama のようなローカル LLM を使用で�
 :::
 
 
-## librechat.yaml ファイルを作成する
+## librechat.yaml ファイルを作成する {#create-librechat-yaml-file}
 
 新しい `librechat.yaml` ファイルを作成するには、以下のコマンドを実行します。
 
@@ -85,7 +85,7 @@ cp librechat.example.yaml librechat.yaml
 これにより、LibreChat のメインの[設定ファイル](https://www.librechat.ai/docs/configuration/librechat_yaml)が作成されます。
 
 
-## Docker Compose に ClickHouse MCP サーバーを追加する
+## Docker Compose に ClickHouse MCP サーバーを追加する {#add-clickhouse-mcp-server-to-docker-compose}
 
 次に、LLM が
 [ClickHouse SQL playground](https://sql.clickhouse.com/)
@@ -138,7 +138,7 @@ services:
 </Link>
 
 
-## librechat.yaml で MCP サーバーを構成する
+## librechat.yaml で MCP サーバーを構成する {#configure-mcp-server-in-librechat-yaml}
 
 `librechat.yaml` を開き、ファイルの末尾に次の設定を追記します。
 
@@ -164,9 +164,9 @@ socialLogins: []
 ```
 
 
-## Ollama を使用してローカル LLM を追加する（オプション）
+## Ollama を使用してローカル LLM を追加する（オプション） {#add-local-llm-using-ollama}
 
-### Ollama をインストールする
+### Ollama をインストールする {#install-ollama}
 
 [Ollama の公式サイト](https://ollama.com/download)にアクセスし、使用しているシステム向けの Ollama をインストールします。
 
@@ -180,7 +180,7 @@ ollama run qwen3:32b
 
 利用可能なモデルの一覧は [Ollama library](https://ollama.com/library) を参照してください。
 
-### librechat.yaml で Ollama を設定する
+### librechat.yaml で Ollama を設定する {#configure-ollama-in-librechat-yaml}
 
 モデルのダウンロードが完了したら、`librechat.yaml` 内でモデルを設定します：
 
@@ -204,7 +204,7 @@ custom:
 ```
 
 
-## すべてのサービスを起動する
+## すべてのサービスを起動する {#start-all-services}
 
 LibreChat プロジェクトディレクトリのルートで、次のコマンドを実行してサービスを起動します。
 

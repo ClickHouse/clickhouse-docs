@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 聚合函数组合器
+# 聚合函数组合器 {#aggregate-function-combinators}
 
 聚合函数名可以追加一个后缀，从而改变该聚合函数的工作方式。
 
@@ -37,7 +37,7 @@ doc_type: 'reference'
 
 
 
-## -Map
+## -Map {#-map}
 
 可以为任意聚合函数添加 `-Map` 后缀。这样会创建一个以 `Map` 类型作为参数的聚合函数，并使用指定的聚合函数分别聚合该 `Map` 中每个键对应的值。结果同样为 `Map` 类型。
 
@@ -71,7 +71,7 @@ GROUP BY timeslot;
 ```
 
 
-## -SimpleState
+## -SimpleState {#-simplestate}
 
 应用此组合子后，聚合函数会返回相同的值，但类型不同。它是一个可以存储在表中的 [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md)，用于与 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表配合使用。
 
@@ -149,7 +149,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 
 
-## -OrDefault
+## -OrDefault {#-ordefault}
 
 修改聚合函数的行为。
 
@@ -210,7 +210,7 @@ FROM
 ```
 
 
-## -OrNull
+## -OrNull {#-ornull}
 
 修改聚合函数的行为。
 
@@ -274,7 +274,7 @@ FROM
 ```
 
 
-## -Resample
+## -Resample {#-resample}
 
 可将数据划分为多个组，并分别对每个组中的数据进行聚合。分组是通过将某一列的取值划分为不同的区间来完成的。
 

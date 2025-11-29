@@ -7,7 +7,7 @@ title: 'welchTTest'
 doc_type: 'reference'
 ---
 
-# welchTTest
+# welchTTest {#welchttest}
 
 Применяет t-критерий Уэлча к выборкам из двух генеральных совокупностей.
 

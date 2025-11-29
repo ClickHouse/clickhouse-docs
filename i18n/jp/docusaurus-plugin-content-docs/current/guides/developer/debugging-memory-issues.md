@@ -16,7 +16,7 @@ doc_type: 'guide'
 
 
 
-## 現在実行中のプロセスをピークメモリ使用量順に一覧表示する
+## 現在実行中のプロセスをピークメモリ使用量順に一覧表示する {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -31,7 +31,7 @@ LIMIT 100;
 ```
 
 
-## メモリ使用量メトリクスを一覧する
+## メモリ使用量メトリクスを一覧する {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -46,7 +46,7 @@ ORDER BY
 ```
 
 
-## 現在のメモリ使用量順にテーブルを一覧表示する
+## 現在のメモリ使用量順にテーブルを一覧表示する {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -58,28 +58,28 @@ WHERE engine IN ('Memory','Set','Join');
 ```
 
 
-## マージで使用されたメモリの合計を出力する
+## マージで使用されたメモリの合計を出力する {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
 
-## 現在実行中のプロセスによるメモリ使用量の合計を出力する
+## 現在実行中のプロセスによるメモリ使用量の合計を出力する {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
 
-## 辞書による総メモリ使用量を出力する
+## 辞書による総メモリ使用量を出力する {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
 
-## プライマリキーおよびインデックス粒度で使用されているメモリ総量を出力
+## プライマリキーおよびインデックス粒度で使用されているメモリ総量を出力 {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

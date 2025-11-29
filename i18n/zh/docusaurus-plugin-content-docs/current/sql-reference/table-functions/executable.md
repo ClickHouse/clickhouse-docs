@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 用于 UDF 的 `executable` 表函数
+# 用于 UDF 的 `executable` 表函数 {#executable-table-function-for-udfs}
 
 `executable` 表函数会基于用户自定义函数（UDF）的输出创建一张表，该函数定义在一个向 **stdout** 输出行的脚本中。可执行脚本存储在 `users_scripts` 目录中，并且可以从任意数据源读取数据。请确保你的 ClickHouse 服务器具备运行该可执行脚本所需的全部软件包。例如，如果这是一个 Python 脚本，则要确保服务器已经安装了所需的 Python 包。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 `executable` 表函数需要三个参数，并且可以接收一个可选的输入查询列表：
 
@@ -102,7 +102,7 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 
 
 
-## 将查询结果传递给脚本
+## 将查询结果传递给脚本 {#passing-query-results-to-a-script}
 
 请务必查看 `Executable` 表引擎中关于[如何将查询结果传递给脚本](../../engines/table-engines/special/executable.md#passing-query-results-to-a-script)的示例。下面展示如何使用 `executable` 表函数来执行该示例中相同的脚本：
 

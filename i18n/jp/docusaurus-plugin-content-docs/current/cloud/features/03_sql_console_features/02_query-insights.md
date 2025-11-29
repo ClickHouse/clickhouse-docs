@@ -15,7 +15,7 @@ import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_dr
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
 
-# Query Insights
+# Query Insights {#query-insights}
 
 **Query Insights** 機能は、さまざまな可視化やテーブルを通じて、ClickHouse の組み込みクエリログをより簡単に活用できるようにします。ClickHouse の `system.query_log` テーブルは、クエリ最適化、デバッグ、クラスタ全体の健全性とパフォーマンスの監視にとって重要な情報源です。
 

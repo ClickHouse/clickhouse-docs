@@ -8,12 +8,12 @@ keywords: ['Интеграция Confluent с ClickHouse', 'коннектор K
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
 
-# Интеграция платформы Confluent с ClickHouse
+# Интеграция платформы Confluent с ClickHouse {#integrating-confluent-platform-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -36,23 +36,23 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 
 
-## Официальный коннектор Kafka от ClickHouse для Confluent Platform
+## Официальный коннектор Kafka от ClickHouse для Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
-### Установка на Confluent Platform
+### Установка на Confluent Platform {#installing-on-confluent-platform}
 
 Это краткое руководство, которое поможет вам начать работу с ClickHouse Sink Connector на Confluent Platform.
 За дополнительной информацией обратитесь к [официальной документации Confluent](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 
-#### Создание топика
+#### Создание топика {#create-a-topic}
 
 Создание топика на Confluent Platform достаточно простое, подробные инструкции приведены [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-#### Важные замечания
+#### Важные замечания {#important-notes}
 
 * Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Настроить это поведение можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
 * Большее количество партиций не всегда означает более высокую производительность — см. наше следующее руководство для получения дополнительных сведений и рекомендаций по оптимизации производительности.
 
-#### Установка коннектора
+#### Установка коннектора {#install-connector}
 
 Вы можете скачать коннектор из нашего [репозитория](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) — там же вы можете оставлять комментарии и создавать issues!
 
@@ -68,11 +68,11 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 <Image img={AddCustomConnectorPlugin} size="md" alt="Интерфейс Confluent Platform с настройками для добавления пользовательского коннектора ClickHouse" border />
 
-#### Соберите данные подключения
+#### Соберите данные подключения {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### Настройте коннектор
+#### Настройте коннектор {#configure-the-connector}
 
 Перейдите в `Connectors` -&gt; `Add Connector` и используйте следующие настройки (обратите внимание, что значения приведены только в качестве примера):
 
@@ -94,7 +94,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 }
 ```
 
-#### Укажите конечные точки подключения
+#### Укажите конечные точки подключения {#specify-the-connection-endpoints}
 
 Вам нужно задать список разрешённых конечных точек, к которым коннектор может обращаться.
 При добавлении конечных точек исходящего (egress) сетевого трафика необходимо использовать полное доменное имя (FQDN).
@@ -108,7 +108,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 На этом настройка завершена.
 
-#### Известные ограничения
+#### Известные ограничения {#known-limitations}
 
 * Custom Connectors должны использовать конечные точки в публичном интернете. Статические IP‑адреса не поддерживаются.
 * Вы можете переопределить некоторые свойства Custom Connector. См. полный [список в официальной документации.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)

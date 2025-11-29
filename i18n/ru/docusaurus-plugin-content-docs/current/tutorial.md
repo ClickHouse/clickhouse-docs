@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 
 
-# Расширенное руководство
+# Расширенное руководство {#advanced-tutorial}
 
 
 
@@ -384,7 +384,7 @@ doc_type: 'guide'
 
 
 
-## Создание словаря
+## Создание словаря {#create-a-dictionary}
 
 Словарь — это отображение пар «ключ-значение», хранящихся в памяти. Подробности см. в разделе [Dictionaries](/sql-reference/dictionaries/index.md).
 

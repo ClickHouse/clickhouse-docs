@@ -6,9 +6,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-
-
-# first_value
+# first&#95;value {#first&#95;value}
 
 Это псевдоним для [`any`](../../../sql-reference/aggregate-functions/reference/any.md), но он был добавлен для совместимости с [оконными функциями](../../window-functions/index.md), где иногда требуется обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).
 
@@ -16,9 +14,7 @@ doc_type: 'reference'
 
 Как и в случае с `any`, без использования оконных функций результат будет случайным, если входной поток не упорядочен, а тип возвращаемого значения совпадает с типом входного (значение `NULL` возвращается только в том случае, если входной тип является `Nullable` или добавлен комбинатор `-OrNull`).
 
-
-
-## Примеры
+## Примеры {#examples}
 
 ```sql
 CREATE TABLE test_data
@@ -31,7 +27,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### Пример 1
+### Пример 1 {#example1}
 
 По умолчанию значение NULL игнорируется.
 
@@ -45,7 +41,7 @@ SELECT first_value(b) FROM test_data;
 └────────┘
 ```
 
-### Пример 2
+### Пример 2 {#example2}
 
 Значение NULL пропускается.
 
@@ -59,7 +55,7 @@ SELECT first_value(b) ignore nulls FROM test_data
 └──────────────────────┘
 ```
 
-### Пример 3
+### Пример 3 {#example3}
 
 Значение NULL допускается.
 
@@ -73,7 +69,7 @@ SELECT first_value(b) respect nulls FROM test_data
 └───────────────────────┘
 ```
 
-### Пример 4
+### Пример 4 {#example4}
 
 Стабильный результат, полученный с помощью подзапроса с `ORDER BY`.
 

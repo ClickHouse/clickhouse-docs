@@ -34,8 +34,7 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 `alter_sync` が `2` に設定されていて、一部のレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間よりも長く非アクティブな場合、`UNFINISHED` という例外がスローされます。
 :::
 
-
-## BY 式
+## BY 式 {#by-expression}
 
 すべての列ではなく任意の列の集合で重複排除を行いたい場合は、列の一覧を明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause)、[`EXCEPT`](/sql-reference/statements/select/except-modifier) 式を任意に組み合わせて使用できます。明示的に記述された、または暗黙的に展開された列の一覧には、行の順序付け式（プライマリキーとソートキーの両方）およびパーティション化式（パーティションキー）で指定されたすべての列が含まれていなければなりません。
 
@@ -104,7 +103,7 @@ SELECT * FROM example;
 
 以降のすべての例は、この 5 行の状態を前提として実行されます。
 
-#### `DEDUPLICATE`
+#### `DEDUPLICATE` {#deduplicate}
 
 重複排除に使用する列を指定しない場合は、すべての列が対象になります。前の行の対応する列の値とすべての列の値が等しい場合にのみ、その行は削除されます。
 
@@ -117,7 +116,6 @@ SELECT * FROM example;
 ```
 
 結果：
-
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -132,7 +130,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY *`
+#### `DEDUPLICATE BY *` {#deduplicate-by-}
 
 列が暗黙的に指定された場合、テーブルは `ALIAS` および `MATERIALIZED` 以外のすべての列で重複排除されます。上記のテーブルでは、対象となる列は `primary_key`、`secondary_key`、`value`、`partition_key` です。
 
@@ -159,7 +157,7 @@ SELECT * FROM example;
 └────────┴──────────┴─────┴──────────────────┘
 ```
 
-#### `DEDUPLICATE BY * EXCEPT`
+#### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
 
 `ALIAS` または `MATERIALIZED` ではなく、かつ `value` でもないすべての列、すなわち `primary_key`、`secondary_key`、`partition_key` 列を基準として重複排除を行います。
 
@@ -185,7 +183,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY <list of columns>`
+#### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
 
 `primary_key`、`secondary_key`、`partition_key` 列で明示的に重複排除を行います：
 
@@ -199,7 +197,6 @@ SELECT * FROM example;
 
 結果：
 
-
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
@@ -212,7 +209,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY COLUMNS(<regex>)`
+#### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
 
 正規表現にマッチするすべてのカラム、つまり `primary_key`、`secondary_key`、`partition_key` カラムで重複排除を行います。
 

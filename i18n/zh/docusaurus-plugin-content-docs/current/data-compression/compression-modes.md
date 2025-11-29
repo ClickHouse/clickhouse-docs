@@ -11,7 +11,7 @@ import CompressionBlock from '@site/static/images/data-compression/ch_compressio
 import Image from '@theme/IdealImage';
 
 
-# 压缩模式
+# 压缩模式 {#compression-modes}
 
 ClickHouse 协议支持对带有校验和的**数据块**进行压缩。
 如果不确定选择哪种模式，请使用 `LZ4`。

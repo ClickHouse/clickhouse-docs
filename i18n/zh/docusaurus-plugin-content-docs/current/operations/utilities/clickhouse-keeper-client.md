@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-keeper-client 工具
+# clickhouse-keeper-client 工具 {#clickhouse-keeper-client-utility}
 
 一个通过其原生协议与 clickhouse-keeper 交互的客户端工具。
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 
 
 
-## 示例
+## 示例 {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30

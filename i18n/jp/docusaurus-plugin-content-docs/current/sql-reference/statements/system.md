@@ -9,17 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# SYSTEM ステートメント
-
-
+# SYSTEM ステートメント {#system-statements}
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES {#reload-embedded-dictionaries}
 
 すべての[内部辞書](../../sql-reference/dictionaries/index.md)を再読み込みします。
 デフォルトでは、内部辞書は無効化されています。
 内部辞書の更新結果に関わらず、常に`Ok.`を返します。
-
 
 ## SYSTEM RELOAD DICTIONARIES {#reload-dictionaries}
 
@@ -32,7 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ```sql
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD DICTIONARY {#reload-dictionary}
 
@@ -49,7 +44,6 @@ SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 SELECT name, status FROM system.dictionaries;
 ```
 
-
 ## SYSTEM RELOAD MODELS {#reload-models}
 
 :::note
@@ -64,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL {#reload-model}
 
 `model_path`で指定されたCatBoostモデルを再読み込みします。
@@ -74,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS {#reload-functions}
 
@@ -87,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
 すべての[非同期メトリクス](../../operations/system-tables/asynchronous_metrics.md)を再計算します。非同期メトリクスは[asynchronous_metrics_update_period_s](../../operations/server-configuration-parameters/settings.md)設定に基づいて定期的に更新されるため、通常このステートメントを使用して手動で更新する必要はありません。
@@ -96,33 +87,27 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM DROP DNS CACHE {#drop-dns-cache}
 
 ClickHouseの内部DNSキャッシュをクリアします。インフラストラクチャを変更する際（別のClickHouseサーバーや辞書で使用されるサーバーのIPアドレスを変更する場合など）、このコマンドの使用が必要になることがあります（古いClickHouseバージョンの場合）。
 
 より便利な（自動的な）キャッシュ管理については、`disable_internal_dns_cache`、`dns_cache_max_entries`、`dns_cache_update_period`の各パラメータを参照してください。
 
-
 ## SYSTEM DROP MARK CACHE {#drop-mark-cache}
 
 マークキャッシュをクリアします。
-
 
 ## SYSTEM DROP ICEBERG METADATA CACHE {#drop-iceberg-metadata-cache}
 
 Icebergメタデータキャッシュをクリアします。
 
-
 ## SYSTEM DROP TEXT INDEX DICTIONARY CACHE {#drop-text-index-dictionary-cache}
 
 テキストインデックスディクショナリキャッシュをクリアします。
 
-
 ## SYSTEM DROP TEXT INDEX HEADER CACHE {#drop-text-index-header-cache}
 
 テキストインデックスヘッダーキャッシュをクリアします。
-
 
 ## SYSTEM DROP TEXT INDEX POSTINGS CACHE {#drop-text-index-postings-cache}
 
@@ -152,7 +137,6 @@ SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 3つ目は、ローカルサーバー上のすべてのレプリケートされたテーブルに対して同じ操作を実行します。
 4つ目は、テーブルの他のすべてのレプリカが削除された場合に、無効なレプリカのメタデータを削除するのに有用です。テーブルパスを明示的に指定する必要があります。これは、テーブル作成時に`ReplicatedMergeTree`エンジンの第1引数として渡されたパスと同じである必要があります。
 
-
 ## SYSTEM DROP DATABASE REPLICA {#drop-database-replica}
 
 `Replicated`データベースの無効なレプリカは、以下の構文を使用して削除できます:
@@ -165,19 +149,16 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 
 `SYSTEM DROP REPLICA`と同様ですが、`DROP DATABASE`を実行するデータベースが存在しない場合に、ZooKeeperから`Replicated`データベースのレプリカパスを削除します。なお、`ReplicatedMergeTree`レプリカは削除されないため、`SYSTEM DROP REPLICA`も併せて実行する必要がある場合があります。シャード名とレプリカ名は、データベース作成時に`Replicated`エンジンの引数として指定された名前です。また、これらの名前は`system.clusters`の`database_shard_name`列および`database_replica_name`列から取得できます。`FROM SHARD`句が省略されている場合、`replica_name`は`shard_name|replica_name`形式の完全なレプリカ名を指定する必要があります。
 
-
 ## SYSTEM DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
 非圧縮データキャッシュをクリアします。
 非圧縮データキャッシュの有効化/無効化は、クエリ/ユーザー/プロファイルレベルの設定[`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache)で行います。
 キャッシュサイズは、サーバーレベルの設定[`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size)で設定できます。
 
-
 ## SYSTEM DROP COMPILED EXPRESSION CACHE {#drop-compiled-expression-cache}
 
 コンパイル済み式キャッシュをクリアします。
 コンパイル済み式キャッシュは、クエリ/ユーザー/プロファイルレベルの設定 [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) によって有効化/無効化されます。
-
 
 ## SYSTEM DROP QUERY CONDITION CACHE {#drop-query-condition-cache}
 
@@ -194,7 +175,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 [クエリキャッシュ](../../operations/query-cache.md)をクリアします。
 タグを指定した場合、指定されたタグを持つクエリキャッシュエントリのみが削除されます。
 
-
 ## SYSTEM DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path)から読み込まれたスキーマのキャッシュをクリアします。
@@ -208,7 +188,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS {#flush-logs}
 
@@ -225,7 +204,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG {#reload-config}
 
 ClickHouseの設定を再読み込みします。設定がZooKeeperに保存されている場合に使用します。なお、`SYSTEM RELOAD CONFIG`はZooKeeperに保存されている`USER`設定は再読み込みせず、`users.xml`に保存されている`USER`設定のみを再読み込みします。すべての`USER`設定を再読み込みするには、`SYSTEM RELOAD USERS`を使用してください。
@@ -233,7 +211,6 @@ ClickHouseの設定を再読み込みします。設定がZooKeeperに保存さ�
 ```sql
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD USERS {#reload-users}
 
@@ -243,18 +220,15 @@ users.xml、ローカルディスクアクセスストレージ、レプリケ�
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM SHUTDOWN {#shutdown}
 
 <CloudNotSupportedBadge />
 
 ClickHouseを正常にシャットダウンします（`service clickhouse-server stop` / `kill {$pid_clickhouse-server}` と同様の動作）
 
-
 ## SYSTEM KILL {#kill}
 
 ClickHouseプロセスを強制終了します（`kill -9 {$ pid_clickhouse-server}`と同様）
-
 
 ## 分散テーブルの管理 {#managing-distributed-tables}
 
@@ -318,7 +292,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## MergeTreeテーブルの管理 {#managing-mergetree-tables}
 
@@ -399,7 +372,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## ReplicatedMergeTreeテーブルの管理 {#managing-replicatedmergetree-tables}
 
@@ -594,7 +566,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 すべての`ReplicatedMergeTree`テーブルのZooKeeperセッション状態を再初期化する機能を提供します。現在の状態を信頼できる情報源としてZooKeeperと比較し、必要に応じてZooKeeperキューにタスクを追加します
 
-
 ### SYSTEM DROP FILESYSTEM CACHE {#drop-filesystem-cache}
 
 ファイルシステムキャッシュを削除できます。
@@ -638,7 +609,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## リフレッシュ可能なマテリアライズドビューの管理 {#refreshable-materialized-views}
 

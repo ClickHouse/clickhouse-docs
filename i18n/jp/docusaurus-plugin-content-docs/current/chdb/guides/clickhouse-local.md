@@ -11,9 +11,7 @@ doc_type: 'guide'
 ClickHouse サーバーをインストールせずに、その機能を利用できます。
 このガイドでは、chDB から clickhouse-local データベースを使用する方法を説明します。
 
-
-
-## セットアップ
+## セットアップ {#setup}
 
 まず仮想環境を作成します。
 
@@ -41,8 +39,7 @@ pip install ipython
 ipython
 ```
 
-
-## clickhouse-local のインストール
+## clickhouse-local のインストール {#installing-clickhouse-local}
 
 clickhouse-local のダウンロードとインストールは、[ClickHouse のダウンロードとインストール](/install) と同じです。
 次のコマンドを実行してください。
@@ -57,8 +54,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse -m --path demo.chdb
 ```
 
-
-## clickhouse-local へのデータ取り込み
+## clickhouse-local へのデータ取り込み {#ingesting-data-into-clickhouse-local}
 
 デフォルトのデータベースはメモリ上にのみデータを保存するため、取り込んだデータをディスクに永続的に保存できるよう、名前付きデータベースを作成する必要があります。
 
@@ -93,8 +89,7 @@ FROM foo.randomNumbers
 ChdbError: Code: 76. DB::Exception: ファイル demo.chdb/status をロックできません。同じディレクトリ内で別のサーバーインスタンスが既に実行中です。(CANNOT_OPEN_FILE)
 ```
 
-
-## clickhouse-local データベースへの接続
+## clickhouse-local データベースへの接続 {#connecting-to-a-clickhouse-local-database}
 
 `ipython` シェルに戻り、chDB の `session` モジュールをインポートします。
 

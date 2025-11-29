@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 
 
-## geohashEncode
+## geohashEncode {#geohashencode}
 
 Кодирует широту и долготу в строку формата [geohash](#geohash).
 
@@ -59,7 +59,7 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
 
-## geohashDecode
+## geohashDecode {#geohashdecode}
 
 Декодирует любую строку, закодированную в формате [geohash](#geohash), в координаты широты и долготы.
 
@@ -90,7 +90,7 @@ SELECT geohashDecode('ezs42') AS res;
 ```
 
 
-## geohashesInBox
+## geohashesInBox {#geohashesinbox}
 
 Возвращает массив строк, закодированных в [geohash](#geohash) с заданной точностью, которые находятся внутри и пересекают границы указанного прямоугольника, по сути представляя собой двумерную сетку, свернутую в массив.
 

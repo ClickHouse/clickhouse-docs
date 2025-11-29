@@ -10,7 +10,7 @@ keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monit
 ---
 
 import Image from '@theme/IdealImage';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_kubernetes_data from '@site/static/images/use-cases/observability/hyperdx-kubernetes-data.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';

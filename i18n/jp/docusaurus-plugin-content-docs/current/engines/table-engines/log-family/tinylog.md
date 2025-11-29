@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# TinyLog テーブルエンジン
+# TinyLog テーブルエンジン {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -32,7 +32,7 @@ Log エンジンとは異なり、TinyLog は mark ファイルを使用しま�
 
 
 
-## テーブルの作成
+## テーブルの作成 {#table_engines-tinylog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -58,7 +58,7 @@ ClickHouse は各テーブルに対して次のファイルを作成します。
 
 
 
-## 使用例
+## 使用例 {#table_engines-tinylog-example-of-use}
 
 テーブルの作成：
 

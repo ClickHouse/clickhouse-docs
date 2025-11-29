@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# LowCardinality(T)
+# LowCardinality(T) {#lowcardinalityt}
 
 将其他数据类型的内部表示转换为字典编码。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 LowCardinality(data_type)
@@ -36,7 +36,7 @@ LowCardinality(data_type)
 
 
 
-## 示例
+## 示例 {#example}
 
 创建一个包含 `LowCardinality` 列的表：
 

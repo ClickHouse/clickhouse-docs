@@ -6,7 +6,7 @@ title: 'skewPop'
 doc_type: 'reference'
 ---
 
-# skewPop
+# skewPop {#skewpop}
 
 计算序列的[偏度](https://en.wikipedia.org/wiki/Skewness)。
 

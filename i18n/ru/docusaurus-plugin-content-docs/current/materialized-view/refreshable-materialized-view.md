@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## Как происходит обновление обновляемого материализованного представления?
+## Как происходит обновление обновляемого материализованного представления? {#how-do-you-refresh-a-refreshable-materialized-view}
 
 Обновляемые материализованные представления автоматически обновляются с интервалом, который задаётся при их создании.
 Например, следующее материализованное представление обновляется каждую минуту:
@@ -51,7 +51,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 Дополнительные сведения см. в документации [по управлению обновляемыми материализованными представлениями](/sql-reference/statements/system#refreshable-materialized-views).
 
 
-## Когда обновляемое материализованное представление обновлялось в последний раз?
+## Когда обновляемое материализованное представление обновлялось в последний раз? {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 Чтобы узнать время последнего обновления обновляемого материализованного представления, вы можете выполнить запрос к системной таблице [`system.view_refreshes`](/operations/system-tables/view_refreshes), как показано ниже:
 
@@ -69,7 +69,7 @@ FROM system.view_refreshes;
 ```
 
 
-## Как изменить частоту обновления?
+## Как изменить частоту обновления? {#how-can-i-change-the-refresh-rate}
 
 Чтобы изменить частоту обновления обновляемого материализованного представления, используйте синтаксис [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement).
 
@@ -87,7 +87,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
 
-## Использование `APPEND` для добавления новых строк
+## Использование `APPEND` для добавления новых строк {#using-append-to-add-new-rows}
 
 Функция `APPEND` позволяет добавлять новые строки в конец таблицы вместо замены всего представления.
 
@@ -190,11 +190,11 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## Примеры
+## Примеры {#examples}
 
 Теперь давайте рассмотрим, как использовать обновляемые материализованные представления на примере нескольких наборов данных.
 
-### Stack Overflow
+### Stack Overflow {#stack-overflow}
 
 В [руководстве по денормализации данных](/data-modeling/denormalization) показаны различные методы денормализации данных с использованием набора данных Stack Overflow. Мы заполняем данными следующие таблицы: `votes`, `users`, `badges`, `posts` и `postlinks`.
 
@@ -244,7 +244,7 @@ LEFT JOIN (
 Синтаксис здесь идентичен инкрементальному материализованному представлению, за исключением того, что мы добавляем оператор [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view):
 :::
 
-### IMDb
+### IMDb {#imdb}
 
 В [руководстве по интеграции dbt и ClickHouse](/integrations/dbt) мы заполнили набор данных IMDb следующими таблицами: `actors`, `directors`, `genres`, `movie_directors`, `movies` и `roles`.
 

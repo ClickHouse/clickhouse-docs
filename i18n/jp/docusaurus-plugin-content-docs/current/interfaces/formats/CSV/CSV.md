@@ -9,7 +9,7 @@ title: 'CSV'
 doc_type: 'reference'
 ---
 
-## 説明
+## 説明 {#description}
 
 コンマ区切り値（Comma Separated Values）形式（[RFC](https://tools.ietf.org/html/rfc4180)）。
 フォーマット時、行は二重引用符で囲まれます。文字列中の二重引用符は、連続した 2 つの二重引用符として出力されます。

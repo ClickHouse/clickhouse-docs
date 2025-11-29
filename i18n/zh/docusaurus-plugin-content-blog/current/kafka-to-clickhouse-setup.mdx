@@ -10,7 +10,6 @@ keywords: ['Kafka']
 
 {/* 截断 */}
 
-
 ## 概述 \{#overview\}
 
 本文将演示如何将数据从一个 Kafka topic 发送到一个 ClickHouse 表。我们将使用 Wiki 最近更改（recent changes）feed，它提供了一个[事件流](https://stream.wikimedia.org/v2/stream/recentchange)，用于表示对各个 Wikimedia 项目所做的更改。具体步骤包括：
@@ -19,7 +18,7 @@ keywords: ['Kafka']
 2. 将数据流摄取到一个 Kafka topic 中
 3. 创建一个订阅该 topic 的 ClickHouse 表
 
-# 1. 在 Ubuntu 上部署 Kafka
+# 1. 在 Ubuntu 上部署 Kafka \{#1-setup-kafka-on-ubuntu\}
 
 1. 创建一个 Ubuntu **EC2** 实例，并通过 SSH 登录：
 
@@ -71,8 +70,7 @@ bin/kafka-topics.sh --create --topic wikimedia --bootstrap-server localhost:9092
 bin/kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
-
-# 2. 将 Wikimedia 数据流摄取到 Kafka 中
+# 2. 将 Wikimedia 数据流摄取到 Kafka 中 \{#2-ingest-the-wikimedia-stream-into-kafka\}
 
 1. 我们先需要准备一些工具：
 
@@ -101,8 +99,7 @@ bin/kafka-console-consumer.sh --topic wikimedia --from-beginning --bootstrap-ser
 
 5. 按下 **Ctrl+C** 结束上一条命令。
 
-
-# 3. 将数据摄取到 ClickHouse
+# 3. 将数据摄取到 ClickHouse \{#3-ingest-the-data-into-clickhouse\}
 
 1. 传入数据如下所示：
 
@@ -192,7 +189,6 @@ SETTINGS stream_like_engine_allow_direct_select = 1;
 
 返回的各行应当已经根据 **wikiQueue** 表中定义的列被正确解析：
 
-
 ```response
 id:          2473996741
 type:        edit
@@ -256,7 +252,6 @@ FROM rawEvents
 LIMIT 5
 FORMAT Vertical
 ```
-
 
 ```response
 Row 1:

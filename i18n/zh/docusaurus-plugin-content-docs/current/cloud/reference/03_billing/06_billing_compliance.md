@@ -11,7 +11,7 @@ import billing_compliance from '@site/static/images/cloud/manage/billing_complia
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud 计费合规
+# ClickHouse Cloud 计费合规 {#clickhouse-cloud-billing-compliance}
 
 
 

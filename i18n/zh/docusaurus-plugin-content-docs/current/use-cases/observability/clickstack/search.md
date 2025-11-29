@@ -12,7 +12,7 @@ keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
-import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
+import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
 ClickStack 允许您对事件（日志和跟踪）执行全文搜索。您只需输入与事件匹配的关键词即可开始搜索。例如，如果您的日志中包含 “Error”，您只需在搜索栏中输入 “Error” 即可将其查找出来。
 

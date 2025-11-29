@@ -14,8 +14,7 @@ import { VideoContainer } from '/src/components/video_container'
 
 import LinksDeployment from './sql-reference-links.json'
 
-
-# ClickHouse SQL リファレンス
+# ClickHouse SQL リファレンス {#clickhouse-sql-reference}
 
 ClickHouse は、SQL に基づく宣言的なクエリ言語をサポートしており、多くの点で ANSI SQL 標準と同等です。
 

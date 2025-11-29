@@ -10,11 +10,9 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 [Функция таблицы Merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет выполнять запросы к нескольким таблицам параллельно.
 Для этого она создаёт временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и определяет её структуру как объединение столбцов исходных таблиц с приведением типов к общим.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
-
-## Настройка таблиц
+## Настройка таблиц {#setup-tables}
 
 Мы разберёмся, как пользоваться этой функцией, используя в качестве примера [теннисный набор данных Джеффа Сакманна](https://github.com/JeffSackmann/tennis_atp).
 Мы будем обрабатывать CSV-файлы, содержащие матчи, начиная с 1960-х годов, но создадим слегка отличающуюся схему для каждого десятилетия.
@@ -50,8 +48,7 @@ SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
 
-
-## Схема нескольких таблиц
+## Схема нескольких таблиц {#schema-multiple-tables}
 
 Мы можем выполнить следующий запрос, чтобы вывести список столбцов каждой таблицы вместе с их типами в сопоставимом виде, чтобы было проще увидеть различия.
 
@@ -90,8 +87,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 * В 1980s `winner_seed` и `loser_seed` меняются с `Nullable(UInt8)` на `Nullable(UInt16)`.
 * В 1990s `surface` меняется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
 
-
-## Запрос к нескольким таблицам с помощью merge
+## Запрос к нескольким таблицам с помощью merge {#querying-multiple-tables}
 
 Напишем запрос, чтобы найти матчи, которые Джон Макинрой выиграл у соперника, посеянного под номером 1:
 
@@ -147,8 +143,7 @@ AND multiIf(
 └───────────────┴───────────────┴─────────────┘
 ```
 
-
-## Из какой таблицы берутся строки при использовании `merge`?
+## Из какой таблицы берутся строки при использовании `merge`? {#which-table-merge}
 
 Что, если мы хотим узнать, из какой таблицы получены строки?
 Для этого мы можем использовать виртуальный столбец `_table`, как показано в следующем запросе:

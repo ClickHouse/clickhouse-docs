@@ -15,12 +15,11 @@ import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-c
 
 {/* 切り捨て */}
 
-
 ## プロファイラの種類 \{#types-of-profilers\}
 
 LLVM にはすでに、コードに計測用の処理を挿入することで [インストゥルメンテーション
-プロファイリング](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Instrumentation) を行うためのツールが含まれています。
-[サンプリングまたは統計的プロファイリング](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Statistical_profilers)
+プロファイリング](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Instrumentation) を行うためのツールが含まれています。
+[サンプリングまたは統計的プロファイリング](https://en.wikipedia.org/wiki/Profiling_\(computer_programming\)#Statistical_profilers)
 とは対照的に、コードへインストゥルメンテーションを行う必要があり、より多くのリソースを消費する代わりに、呼び出しを一切取りこぼさない非常に高い精度が得られます。
 
 簡単に言えば、インストゥルメンテーションプロファイラは、すべての関数呼び出しを追跡するための新しいコードを挿入します。
@@ -30,7 +29,7 @@ LLVM にはすでに、コードに計測用の処理を挿入することで [�
 
 ## XRay を使ったプロファイリング方法 \{#how-to-profile-with-xray\}
 
-### コードをインスツルメントする
+### コードをインスツルメントする \{#instrument-the-code\}
 
 次のソースコードを考えてみましょう：
 
@@ -87,8 +86,7 @@ Idx Name          Size      VMA               LMA               File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
 ```
 
-
-### 適切な環境変数の値でプロセスを実行してトレースを収集する
+### 適切な環境変数の値でプロセスを実行してトレースを収集する \{#run-the-process-with-proper-env-var-values-to-collect-the-trace\}
 
 デフォルトでは、明示的に要求しない限りプロファイラによる収集は行われません。言い換えると、プロファイリングを行っていない場合、オーバーヘッドは無視できる程度です。`XRAY_OPTIONS` にさまざまな値を設定することで、プロファイラがいつ収集を開始するか、またどのように収集するかを設定できます。
 
@@ -100,15 +98,13 @@ Finish
 ==74394==Cleaned up log for TID: 74394
 ```
 
-
-### トレースを変換する
+### トレースを変換する \{#convert-the-trace\}
 
 XRAy のトレースは複数の形式に変換できます。`trace_event` 形式は解析しやすく、すでにそれに対応したツールも多数存在するため、ここではこの形式を使用します。
 
 ```bash
 llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xray-log.test.14imlN | gzip > test-trace.txt.gz
 ```
-
 
 ### トレースを可視化する \{#visualize-the-trace\}
 
@@ -134,13 +130,12 @@ Perfetto は複数スレッドの可視化やデータへのクエリ実行を�
 
 1. ClickHouse をビルドするときに、`cmake` に `-DENABLE_XRAY=1` を渡します。これにより[適切なコンパイラフラグが設定されます](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake)。
 2. トレースを生成するため、ClickHouse を実行するときに環境変数 `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` を設定します。
-3. トレースを trace event 形式などの有用な形式に変換します。`llvm-xray convert --symbolize
-   --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
+3. トレースを trace event 形式などの有用な形式に変換します。`llvm-xray convert --symbolize --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
    gzip > clickhouse-trace.txt.gz`
 4. [speedscope.app](https://www.speedscope.app/) または
    [Perfetto](https://ui.perfetto.dev) でトレースを可視化します。
 
-<Image img={clickhouse_time_order} alt="ClickHouse time-order" size="md"/>
+<Image img={clickhouse_time_order} alt="ClickHouse time-order" size="md" />
 
 これは 1 つのスレッドのみを可視化したものです。上部のバーから他の `tid` を選択できます。
 

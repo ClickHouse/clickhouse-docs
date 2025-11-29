@@ -9,13 +9,13 @@ keywords: ['формат SQL', 'экспорт данных', 'импорт да
 
 
 
-# Вставка и выгрузка SQL-данных в ClickHouse
+# Вставка и выгрузка SQL-данных в ClickHouse {#inserting-and-dumping-sql-data-in-clickhouse}
 
 ClickHouse можно легко интегрировать в OLTP‑инфраструктуры баз данных разными способами. Один из вариантов — передавать данные между другими базами данных и ClickHouse с помощью SQL‑дампов.
 
 
 
-## Создание SQL-дампов
+## Создание SQL-дампов {#creating-sql-dumps}
 
 Данные можно выгрузить в формате SQL с помощью [SQLInsert](/interfaces/formats/SQLInsert). ClickHouse запишет данные в виде `INSERT INTO <table name> VALUES(...` и будет использовать настройку [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) в качестве имени таблицы:
 
@@ -46,7 +46,7 @@ mysql some_db < dump.sql
 SET output_format_sql_insert_max_batch_size = 1000;
 ```
 
-### Экспорт набора значений
+### Экспорт набора значений {#exporting-a-set-of-values}
 
 В ClickHouse есть формат [Values](/interfaces/formats/Values), который аналогичен SQL INSERT, но опускает оператор `INSERT INTO table VALUES` и содержит только набор значений:
 
@@ -59,7 +59,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```
 
 
-## Импорт данных из SQL-дампов
+## Импорт данных из SQL-дампов {#inserting-data-from-sql-dumps}
 
 Для чтения SQL-дампов используется формат [MySQLDump](/interfaces/formats/MySQLDump):
 

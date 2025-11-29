@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ClickHouse Cloud のティア
+# ClickHouse Cloud のティア {#clickhouse-cloud-tiers}
 
 ClickHouse Cloud には複数のティアが用意されています。 
 ティアは任意の組織レベルで割り当てられるため、その組織内のサービスは同じティアに属します。

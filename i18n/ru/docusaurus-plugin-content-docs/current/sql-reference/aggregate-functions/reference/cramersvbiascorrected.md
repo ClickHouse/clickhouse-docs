@@ -6,7 +6,7 @@ title: 'cramersVBiasCorrected'
 doc_type: 'reference'
 ---
 
-# cramersVBiasCorrected
+# cramersVBiasCorrected {#cramersvbiascorrected}
 
 V Крамера — это мера ассоциации между двумя столбцами в таблице. Результат функции [`cramersV`](./cramersv.md) лежит в диапазоне от 0 (соответствует отсутствию связи между переменными) до 1 и достигает 1 только тогда, когда каждое значение полностью определяется другим. Оценка может иметь значительное смещение, поэтому в этой версии V Крамера используется [коррекция смещения](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction).
 

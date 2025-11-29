@@ -6,10 +6,10 @@ title: 'ClickHouse 中的备份和恢复'
 doc_type: 'reference'
 ---
 
-import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-import AzureSettings from '@site/docs/operations_/backup_restore/_snippets/_azure_settings.md';
-import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
+import GenericSettings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_generic_settings.md';
+import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
+import AzureSettings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
+import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
 > 本节将对 ClickHouse 中的备份和恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
@@ -72,7 +72,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 
 
 
-## 并发与非并发备份
+## 并发与非并发备份 {#concurrent-vs-non-concurrent}
 
 默认情况下，ClickHouse 允许并发执行备份与恢复操作。这意味着可以同时发起多个备份或恢复操作。不过，
 也可以通过服务器级别的设置来禁用这种行为。如果将这些设置设为 false，则在任意时刻
@@ -92,7 +92,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 这两个设置的默认值都是 true，因此默认情况下允许并发执行备份/恢复操作。 当在集群上将这些设置设为 false 时，任意时刻该集群上只允许运行一个备份或恢复操作。
 
 
-## 压缩备份与未压缩备份
+## 压缩备份与未压缩备份 {#compressed-vs-uncompressed}
 
 ClickHouse 备份通过 `compression_method` 和 `compression_level` 设置来支持压缩。
 
@@ -183,7 +183,7 @@ BACKUP TABLE test.table
 
 
 
-## 管理与故障排查
+## 管理与故障排查 {#check-the-status-of-backups}
 
 备份命令会返回一个 `id` 和 `status`，可以使用该 `id` 来
 查询备份状态。这对于检查耗时较长的 `ASYNC` 备份进度非常有用。下面的示例展示了在尝试

@@ -8,20 +8,15 @@ title: 'Операторы'
 doc_type: 'reference'
 ---
 
-
-
-# Операторы
+# Операторы {#operators}
 
 ClickHouse преобразует операторы в соответствующие функции на этапе разбора запроса в соответствии с их приоритетом, порядком вычисления и ассоциативностью.
-
-
 
 ## Операторы доступа {#access-operators}
 
 `a[N]` – Доступ к элементу массива. Функция `arrayElement(a, N)`.
 
 `a.N` – Доступ к элементу кортежа. Функция `tupleElement(a, N)`.
-
 
 ## Оператор числового отрицания {#numeric-negation-operator}
 
@@ -52,6 +47,7 @@ ClickHouse преобразует операторы в соответствую
 `a - b` – функция `minus(a, b)`.
 
 Для вычитания кортежей: [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus).
+
 
 
 ## Операторы сравнения {#comparison-operators}
@@ -101,7 +97,6 @@ ClickHouse преобразует операторы в соответствую
 `a BETWEEN b AND c` – эквивалентно `a >= b AND a <= c`.
 
 `a NOT BETWEEN b AND c` – эквивалентно `a < b OR a > c`.
-
 
 ## Операторы для работы с наборами данных {#operators-for-working-with-data-sets}
 
@@ -176,7 +171,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 │ 9 │
 └───┘
 ```
-
 
 ## Операторы для работы с датами и временем {#operators-for-working-with-dates-and-times}
 
@@ -319,16 +313,13 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
 * [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) — функции преобразования типов
 
-
 ## Оператор логического И {#logical-and-operator}
 
 Синтаксис `SELECT a AND b` — вычисляет логическую конъюнкцию `a` и `b` с использованием функции [and](/sql-reference/functions/logical-functions#and).
 
-
 ## Оператор логического ИЛИ {#logical-or-operator}
 
 Синтаксис `SELECT a OR b` — вычисляет логическую дизъюнкцию `a` и `b` с помощью функции [or](/sql-reference/functions/logical-functions#or).
-
 
 ## Оператор логического отрицания {#logical-negation-operator}
 
@@ -342,7 +333,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 Примечание:
 
 Условный оператор вычисляет значения b и c, затем проверяет выполнение условия a и возвращает соответствующее значение. Если `b` или `c` является функцией [arrayJoin()](/sql-reference/functions/array-join), каждая строка будет реплицирована независимо от условия "a".
-
 
 ## Условное выражение {#conditional-expression}
 
@@ -360,11 +350,9 @@ END
 
 Функция `transform` не работает с `NULL`.
 
-
 ## Оператор конкатенации {#concatenation-operator}
 
 `s1 || s2` – функция `concat(s1, s2)`.
-
 
 ## Оператор создания лямбда-функции {#lambda-creation-operator}
 
@@ -372,16 +360,13 @@ END
 
 Следующие операторы не имеют приоритета, так как они являются скобками:
 
-
 ## Оператор создания массива {#array-creation-operator}
 
 `[x1, ...]` – функция `array(x1, ...)`.
 
-
 ## Оператор создания кортежа {#tuple-creation-operator}
 
 `(x1, x2, ...)` — функция `tuple(x2, x2, ...)`.
-
 
 ## Ассоциативность {#associativity}
 

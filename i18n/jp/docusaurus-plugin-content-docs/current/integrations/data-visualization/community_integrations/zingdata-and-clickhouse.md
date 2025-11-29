@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import zing_01 from '@site/static/images/integrations/data-visualization/zing_01.png';
 import zing_02 from '@site/static/images/integrations/data-visualization/zing_02.png';
@@ -23,7 +23,7 @@ import zing_09 from '@site/static/images/integrations/data-visualization/zing_09
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Zing Data を ClickHouse に接続する
+# Zing Data を ClickHouse に接続する {#connect-zing-data-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 

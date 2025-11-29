@@ -52,7 +52,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 例:
 
 ```shell
-# パスをマウントするようにコマンドを変更
+# パスをマウントするようにコマンドを変更 {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

@@ -10,8 +10,7 @@ keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 
 {/* 省略 */}
 
-
-## ClickHouse を使用して MySQL のデータを Parquet、CSV、または JSON にエクスポートする
+## ClickHouse を使用して MySQL のデータを Parquet、CSV、または JSON にエクスポートする \{#exporting-mysql-data-to-parquet-csv-or-json-using-clickhouse\}
 
 `clickhouse-local` ツールを使用すると、MySQL からデータを読み取り、Parquet、CSV、JSON など、さまざまな形式でデータをすばやく簡単に出力できます。ここでは次のことを行います。
 
@@ -24,8 +23,7 @@ keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 curl https://clickhouse.com/ | sh
 ```
 
-
-## MySQL を Parquet にエクスポートする
+## MySQL を Parquet にエクスポートする \{#export-mysql-to-parquet\}
 
 `mysql` テーブル関数は、MySQL インスタンスに送信されたクエリの結果に基づいてテーブルを作成します。たとえば、次のようになります。
 
@@ -59,8 +57,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 出力ファイル名の拡張子が `.parquet` であるため、ClickHouse は Parquet 形式を使用するとみなします。そのため、ここでは `FORMAT Parquet` 句を明示的に指定していない点に注意してください。
 :::
 
-
-## MySQL を CSV にエクスポートする
+## MySQL を CSV にエクスポートする \{#export-mysql-to-csv\}
 
 ファイル名に `.csv` 拡張子を使用すること以外は、Parquet の場合と同じです。ClickHouse はカンマ区切りの出力であることを認識し、その形式でデータをファイルに書き込みます。
 
@@ -76,8 +73,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 INTO OUTFILE 'my_output_file.csv'"
 ```
 
-
-## MySQL から JSON へエクスポートする
+## MySQL から JSON へエクスポートする \{#export-mysql-to-json\}
 
 MySQL から JSON へエクスポートするには、ファイル名の拡張子を `jsonl` または `ndjson` に変更するだけです。
 

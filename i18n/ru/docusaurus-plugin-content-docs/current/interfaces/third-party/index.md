@@ -7,14 +7,14 @@ title: 'Сторонние интерфейсы'
 doc_type: 'landing-page'
 ---
 
-# Сторонние интерфейсы
+# Сторонние интерфейсы {#third-party-interfaces}
 
 Это подборка ссылок на сторонние инструменты, которые предоставляют тот или иной интерфейс к ClickHouse. Это может быть графический интерфейс, интерфейс командной строки или API:
 
-- [Клиентские библиотеки](../../interfaces/third-party/client-libraries.md)
-- [Интеграции](../../interfaces/third-party/integrations.md)
-- [GUI](../../interfaces/third-party/gui.md)
-- [Прокси](../../interfaces/third-party/proxy.md)
+* [Клиентские библиотеки](../../interfaces/third-party/client-libraries.md)
+* [Интеграции](../../interfaces/third-party/integrations.md)
+* [GUI](../../interfaces/third-party/gui.md)
+* [Прокси](../../interfaces/third-party/proxy.md)
 
 :::note
 Универсальные инструменты, которые поддерживают распространённые API, такие как [ODBC](../../interfaces/odbc.md) или [JDBC](../../interfaces/jdbc.md), обычно также могут работать с ClickHouse, но здесь не перечислены, так как их слишком много.

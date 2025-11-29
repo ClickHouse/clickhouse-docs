@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# icebergCluster 表函数
+# icebergCluster 表函数 {#icebergcluster-table-function}
 
 这是对 [iceberg](/sql-reference/table-functions/iceberg.md) 表函数的扩展。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -31,7 +31,7 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
 
-## 参数
+## 参数 {#arguments}
 
 * `cluster_name` — 用于构建访问远程和本地服务器所需的一组地址和连接参数的集群名称。
 * 其他所有参数的说明与等价的 [iceberg](/sql-reference/table-functions/iceberg.md) 表函数中的参数说明一致。

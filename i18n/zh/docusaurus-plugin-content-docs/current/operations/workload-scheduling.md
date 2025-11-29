@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 
 
-## 磁盘配置
+## 磁盘配置 {#disk_config}
 
 要为特定磁盘启用 IO 工作负载调度，必须为 WRITE 和 READ 访问分别创建读写资源：
 
@@ -72,7 +72,7 @@ CREATE RESOURCE all_io (READ ANY DISK, WRITE ANY DISK);
 请注意，服务器端配置选项的优先级高于通过 SQL 方式定义资源。
 
 
-## 工作负载标记
+## 工作负载标记 {#workload_markup}
 
 可以通过设置 `workload` 为查询打标，以区分不同的工作负载。如果未设置 `workload`，则会使用值“default”。请注意，你也可以通过 settings profile 指定其他值。如果你希望某个用户发出的所有查询都带有固定的 `workload` 值，可以使用 setting constraint 将 `workload` 设为常量。
 
@@ -86,7 +86,7 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 ```
 
 
-## 资源调度层次结构
+## 资源调度层次结构 {#hierarchy}
 
 从调度子系统的角度来看，资源是由调度节点组成的层次结构。
 
@@ -165,7 +165,7 @@ graph TD
 ```
 
 
-## 工作负载分类器
+## 工作负载分类器 {#workload_classifiers}
 
 :::warning
 使用 ClickHouse 配置进行工作负载调度已弃用，应改为使用 SQL 语法。当使用 SQL 语法时，会自动创建分类器。
@@ -195,7 +195,7 @@ graph TD
 ```
 
 
-## 工作负载层级结构
+## 工作负载层级结构 {#workloads}
 
 ClickHouse 提供了便捷的 SQL 语法来定义调度层级结构。所有通过 `CREATE RESOURCE` 创建的资源共享相同的层级结构，但在某些方面可能有所不同。每个通过 `CREATE WORKLOAD` 创建的工作负载，都会为每个资源维护若干自动创建的调度节点。可以在一个父工作负载中创建子工作负载。下面是一个示例，用于定义与上面的 XML 配置完全相同的层级结构：
 
@@ -238,7 +238,7 @@ Workload 设置会被转换为一组对应的调度节点。有关更底层的�
 :::
 
 
-## CPU 调度
+## CPU 调度 {#cpu_scheduling}
 
 要为工作负载启用 CPU 调度，请创建 CPU 资源并设置并发线程数量上限：
 
@@ -296,7 +296,7 @@ CPU 调度目前尚不支持 merges 和 mutations。
 
 
 
-## 线程 vs CPU
+## 线程 vs CPU {#threads_vs_cpus}
 
 有两种方式可以控制某个负载的 CPU 消耗：
 
@@ -336,7 +336,7 @@ CREATE WORKLOAD 开发 IN 全部 SETTINGS max_cpu_share = 0.3
 :::
 
 
-## 查询插槽调度
+## 查询插槽调度 {#query_scheduling}
 
 要为工作负载启用查询插槽调度，请创建 QUERY 资源，并为并发查询数量或每秒查询数量设置限制：
 
@@ -362,11 +362,11 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 
 
 
-## 基于配置的工作负载和资源
+## 基于配置的工作负载和资源 {#config_based_workloads}
 
 除了基于 SQL 的定义之外，还可以在服务器配置文件中预定义工作负载和资源。这在云环境中非常有用，在这类环境中，部分限制由基础设施决定，而其他限制可以由用户调整。基于配置定义的实体优先于通过 SQL 定义的实体，且不能通过 SQL 命令进行修改或删除。
 
-### 配置格式
+### 配置格式 {#config_based_workloads_format}
 
 ```xml
 <clickhouse>
@@ -381,7 +381,7 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 
 该配置使用与 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 语句相同的 SQL 语法。所有查询都必须是合法的。
 
-### 使用建议
+### 使用建议 {#config_based_workloads_usage_recommendations}
 
 对于云环境，典型的设置可能包括：
 

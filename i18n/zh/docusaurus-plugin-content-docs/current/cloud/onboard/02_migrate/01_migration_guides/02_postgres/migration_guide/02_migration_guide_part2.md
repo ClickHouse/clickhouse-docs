@@ -21,7 +21,7 @@ doc_type: 'guide'
 
 
 
-## 在 ClickHouse 中优化查询
+## 在 ClickHouse 中优化查询 {#optimize-queries-in-clickhouse}
 
 虽然可以在对查询做最少改写的情况下完成迁移，但建议充分利用 ClickHouse 的特性，以显著简化查询并进一步提升查询性能。
 

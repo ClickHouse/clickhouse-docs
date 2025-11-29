@@ -56,7 +56,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Замените ваш текущий образ Nginx версией с поддержкой OpenTelemetry:
 
 ```yaml
-# В вашем docker-compose.yml или Dockerfile
+# В вашем docker-compose.yml или Dockerfile {#in-your-docker-composeyml-or-dockerfile}
 image: nginx:1.27-otel
 ```
 
@@ -157,10 +157,10 @@ nginx -t
 
 Если тест прошёл успешно, перезагрузите Nginx:
 ```bash
-# Для Docker
+# Для Docker {#for-docker}
 docker-compose restart nginx
 
-# Для systemd
+# Для systemd {#for-systemd}
 sudo systemctl reload nginx
 ```
 
@@ -199,7 +199,7 @@ docker run --name clickstack-demo \
 Загрузите файл с демонстрационными трассами и обновите временные метки до текущего времени:
 
 ```bash
-# Загрузить трассы
+# Загрузить трассы {#download-the-traces}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
@@ -284,7 +284,7 @@ HyperDX отображает временные метки в локальном
 
 ## Поиск и устранение неисправностей {#troubleshooting}
 
-### Трейсы не отображаются в HyperDX
+### Трейсы не отображаются в HyperDX {#no-traces}
 
 **Убедитесь, что модуль Nginx загружен:**
 
@@ -313,10 +313,10 @@ echo $CLICKSTACK_API_KEY
 **Проверьте логи ошибок nginx:**
 
 ```bash
-# Для Docker
+# Для Docker {#for-docker}
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# Для systemd
+# Для systemd {#for-systemd}
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -325,7 +325,7 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 **Проверьте, что nginx получает запросы:**
 
 ```bash
-# Проверьте журналы доступа для подтверждения трафика
+# Проверьте журналы доступа для подтверждения трафика {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
 

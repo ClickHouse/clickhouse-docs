@@ -10,7 +10,7 @@ integration:
   - category: 'data_integration'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';
@@ -20,7 +20,7 @@ import retool_05 from '@site/static/images/integrations/tools/data-integration/r
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 在 Retool 中连接 ClickHouse
+# 在 Retool 中连接 ClickHouse {#connecting-retool-to-clickhouse}
 
 <PartnerBadge/>
 

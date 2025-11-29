@@ -92,7 +92,7 @@ IP アクセスリストは、[PrivateLink](/cloud/security/connectivity/private
 
 
 
-## 検証
+## 検証 {#verification}
 
 フィルターを作成したら、その範囲内からサービスへ接続できることを確認し、許可された範囲外からの接続が拒否されることも確認してください。 簡単な `curl` コマンドを使用して検証できます：
 

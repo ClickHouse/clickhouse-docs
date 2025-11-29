@@ -10,7 +10,7 @@ doc_type: 'reference'
 {/* no-glossary */ }
 
 
-# 用語集
+# 用語集 {#glossary}
 
 
 

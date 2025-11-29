@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Функции машинного обучения
+# Функции машинного обучения {#machine-learning-functions}
 
 
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 
 
 
-## naiveBayesClassifier
+## naiveBayesClassifier {#naivebayesclassifier}
 
 Классифицирует входной текст с использованием модели наивного Байеса с n-граммами и сглаживанием Лапласа. Перед использованием модель должна быть настроена в ClickHouse.
 
@@ -70,7 +70,7 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 
 ***
 
-### Подробности реализации
+### Подробности реализации {#implementation-details}
 
 **Алгоритм**
 Использует алгоритм классификации Naive Bayes с [сглаживанием Лапласа](https://en.wikipedia.org/wiki/Additive_smoothing) для обработки ранее не встречавшихся n-грамм на основе их вероятностей, как описано [здесь](https://web.stanford.edu/~jurafsky/slp3/4.pdf).
@@ -85,7 +85,7 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 
 ***
 
-### Конфигурация модели
+### Конфигурация модели {#model-configuration}
 
 Пример исходного кода для создания модели Naive Bayes для определения языка можно найти [здесь](https://github.com/nihalzp/ClickHouse-NaiveBayesClassifier-Models).
 

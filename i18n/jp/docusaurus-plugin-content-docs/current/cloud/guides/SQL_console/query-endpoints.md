@@ -18,7 +18,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# クエリ API エンドポイントの設定
+# クエリ API エンドポイントの設定 {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールから任意の保存済み SQL クエリを元に、直接 API エンドポイントを作成できます。HTTP 経由で API エンドポイントにアクセスすることで、ネイティブドライバーを使って ClickHouse Cloud サービスに接続しなくても、保存済みクエリを実行できるようになります。
 
@@ -125,7 +125,7 @@ Query API エンドポイントを作成したら、`curl` やその他の HTTP 
 
 
 
-## 実装の詳細
+## 実装の詳細 {#implementation-details}
 
 このエンドポイントは、保存済みの Query API エンドポイント上でクエリを実行します。
 複数バージョンに対応し、柔軟なレスポンス形式、パラメータ化されたクエリ、およびオプションのストリーミングレスポンス（バージョン 2 のみ）をサポートします。
@@ -137,7 +137,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP メソッド
+### HTTP メソッド {#http-methods}
 
 | Method   | Use Case             | Parameters                                  |
 | -------- | -------------------- | ------------------------------------------- |
@@ -156,21 +156,21 @@ POST /query-endpoints/{queryEndpointId}/run
 * セキュリティ／プライバシー上、リクエストボディの利用が望ましい場合
 * ファイルのストリーミングアップロードや大容量データを送信する場合
 
-### 認証
+### 認証 {#authentication}
 
 **必須:** Yes\
 **方式:** OpenAPI Key/Secret を用いた Basic 認証\
 **権限:** クエリエンドポイントに対して適切な権限が必要
 
-### リクエスト構成
+### リクエスト構成 {#request-configuration}
 
-#### URL パラメータ
+#### URL パラメータ {#url-params}
 
 | Parameter         | Required | Description           |
 | ----------------- | -------- | --------------------- |
 | `queryEndpointId` | **Yes**  | 実行するクエリエンドポイントの一意な識別子 |
 
-#### クエリパラメータ
+#### クエリパラメータ {#query-params}
 
 | Parameter             | Required | Description                                                                                 | Example               |
 | --------------------- | -------- | ------------------------------------------------------------------------------------------- | --------------------- |
@@ -178,7 +178,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `param_:name`         | No       | リクエストボディがストリームの場合のクエリ変数。`:name` を変数名に置き換える                                                  | `?param_year=2024`    |
 | `:clickhouse_setting` | No       | 任意のサポートされている [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8`      |
 
-#### ヘッダー
+#### ヘッダー {#headers}
 
 | Header                          | Required | Description                         | Values                           |
 | ------------------------------- | -------- | ----------------------------------- | -------------------------------- |
@@ -187,16 +187,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### リクエストボディ
+### リクエストボディ {#request-body}
 
-#### パラメータ
+#### パラメータ {#params}
 
 | Parameter        | Type   | Required | Description |
 | ---------------- | ------ | -------- | ----------- |
 | `queryVariables` | object | No       | クエリ内で使用する変数 |
 | `format`         | string | No       | レスポンスフォーマット |
 
-#### サポートされるフォーマット
+#### サポートされるフォーマット {#supported-formats}
 
 | Version                 | Supported Formats                                                                                                                                                        |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -205,14 +205,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### レスポンス
+### レスポンス {#responses}
 
-#### 成功時
+#### 成功時 {#success}
 
 **Status:** `200 OK`\
 クエリは正常に実行されました。
 
-#### エラーコード
+#### エラーコード {#error-codes}
 
 | Status Code        | Description           |
 | ------------------ | --------------------- |
@@ -220,7 +220,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `401 Unauthorized` | 認証情報の欠如、または権限不足       |
 | `404 Not Found`    | 指定されたクエリエンドポイントが存在しない |
 
-#### エラー処理のベストプラクティス
+#### エラー処理のベストプラクティス {#error-handling-best-practices}
 
 * リクエストに有効な認証情報が含まれていることを確認する
 * 送信前に `queryEndpointId` と `queryVariables` を検証する
@@ -228,7 +228,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ***
 
-### エンドポイントバージョンのアップグレード
+### エンドポイントバージョンのアップグレード {#upgrading-endpoint-versions}
 
 Version 1 から Version 2 にアップグレードするには:
 

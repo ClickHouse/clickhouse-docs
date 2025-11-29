@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Chainlit と ClickHouse MCP Server を使って AI エージェントを構築する方法
+# Chainlit と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server}
 
 このガイドでは、強力なチャットインターフェース用フレームワークである Chainlit と
 ClickHouse Model Context Protocol (MCP) Server を組み合わせて、対話型のデータ
@@ -28,7 +28,7 @@ AI アプリケーション向けの会話型インターフェースを構築�
 
 
 
-## 基本的な Chainlit アプリ
+## 基本的な Chainlit アプリ {#basic-chainlit-app}
 
 次を実行すると、基本的なチャットアプリの例を確認できます。
 
@@ -39,7 +39,7 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 次に、`http://localhost:8000` にアクセスします
 
 
-## ClickHouse MCP Server を追加する
+## ClickHouse MCP Server を追加する {#adding-clickhouse-mcp-server}
 
 ClickHouse MCP Server を追加すると、さらに面白くなります。
 `uv` コマンドを使用できるようにするには、`.chainlit/config.toml` ファイルを更新する必要があります。

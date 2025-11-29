@@ -41,7 +41,7 @@ doc_type: 'reference'
 
 ClickHouse поддерживает [NULL](/sql-reference/syntax.md), который отображается как `null` в выводе JSON. Чтобы включить вывод значений `+nan`, `-nan`, `+inf`, `-inf`, установите параметр [output_format_json_quote_denormals](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) в значение `1`.
 
-## Пример использования
+## Пример использования {#example-usage}
 
 Пример:
 

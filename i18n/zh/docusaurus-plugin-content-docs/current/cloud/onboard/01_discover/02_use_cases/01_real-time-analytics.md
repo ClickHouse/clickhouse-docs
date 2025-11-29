@@ -16,7 +16,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
-## 什么是实时分析？
+## 什么是实时分析？ {#what-is-real-time-analytics}
 
 实时分析是指一种数据处理方式，可以在数据生成后几乎立刻向终端用户
 和客户提供洞察。它不同于传统分析或批处理分析，后者会先批量收集数据，

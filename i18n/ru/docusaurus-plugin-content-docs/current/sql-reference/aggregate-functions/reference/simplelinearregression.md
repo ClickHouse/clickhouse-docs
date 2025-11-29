@@ -6,7 +6,7 @@ title: 'simpleLinearRegression'
 doc_type: 'reference'
 ---
 
-# simpleLinearRegression
+# simpleLinearRegression {#simplelinearregression}
 
 Выполняет простую (одномерную) линейную регрессию.
 

@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 在这个示例中，我们将演示如何将 `AggregateFunction` 类型与 `avgState` 函数结合使用来聚合网站流量数据。
 

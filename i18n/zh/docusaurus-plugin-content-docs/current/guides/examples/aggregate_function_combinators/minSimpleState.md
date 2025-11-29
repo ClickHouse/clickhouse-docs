@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 来看一个使用表来跟踪每日温度读数的实际示例。对于每个地点，我们希望维护记录到的最低温度。使用带有 `min` 的 `SimpleAggregateFunction` 类型，在遇到更低的温度时会自动更新存储的值。
 

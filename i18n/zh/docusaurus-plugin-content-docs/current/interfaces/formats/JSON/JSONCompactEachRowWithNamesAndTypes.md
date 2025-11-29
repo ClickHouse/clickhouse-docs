@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用一个包含以下数据的 JSON 文件，文件名为 `football.json`：
 
@@ -52,7 +52,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNa
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONCompactEachRowWithNamesAndTypes` 格式来读取数据：
 

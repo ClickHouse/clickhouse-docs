@@ -6,7 +6,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr
+# groupBitmapOr {#groupbitmapor}
 
 计算位图列的按位或，并以 UInt64 类型返回其基数；如果添加后缀 -State，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。这等价于 `groupBitmapMerge`。
 

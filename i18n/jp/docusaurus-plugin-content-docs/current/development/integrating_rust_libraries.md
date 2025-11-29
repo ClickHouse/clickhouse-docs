@@ -6,7 +6,7 @@ title: 'Rust ライブラリの統合'
 doc_type: 'guide'
 ---
 
-# Rust ライブラリ
+# Rust ライブラリ {#rust-libraries}
 
 Rust ライブラリの統合については、BLAKE3 ハッシュ関数の統合を例に説明します。
 
@@ -79,7 +79,6 @@ pub unsafe extern "C" fn blake3_apply_shim(
 ```
 
 また、すべての C 互換の項目に対して属性 #[no&#95;mangle] と `extern "C"` を使用する必要があります。これらがないと、ライブラリが正しくコンパイルされず、cbindgen によるヘッダーの自動生成が実行されません。
-
 
 これらすべての手順が完了したら、小さなプロジェクトでライブラリをテストして、互換性やヘッダー生成に関する問題をすべて洗い出してください。ヘッダー生成中に問題が発生した場合は、`cbindgen.toml` ファイルで設定を行ってみてください（テンプレートはここで参照できます: [https://github.com/eqrion/cbindgen/blob/master/template.toml](https://github.com/eqrion/cbindgen/blob/master/template.toml)）。
 

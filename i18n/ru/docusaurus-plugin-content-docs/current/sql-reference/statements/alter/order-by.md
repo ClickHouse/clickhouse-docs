@@ -7,7 +7,7 @@ title: 'Управление ключевыми выражениями'
 doc_type: 'reference'
 ---
 
-# Работа с ключевыми выражениями
+# Работа с ключевыми выражениями {#manipulating-key-expressions}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression

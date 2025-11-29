@@ -9,17 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# SYSTEM 语句
-
-
+# SYSTEM 语句 {#system-statements}
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES {#reload-embedded-dictionaries}
 
 重新加载所有[内部字典](../../sql-reference/dictionaries/index.md)。
 默认情况下，内部字典处于禁用状态。
 无论内部字典更新结果如何，始终返回 `Ok.`。
-
 
 ## SYSTEM RELOAD DICTIONARIES {#reload-dictionaries}
 
@@ -32,7 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ```sql
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD DICTIONARY {#reload-dictionary}
 
@@ -49,7 +44,6 @@ SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 SELECT name, status FROM system.dictionaries;
 ```
 
-
 ## SYSTEM RELOAD MODELS {#reload-models}
 
 :::note
@@ -64,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL {#reload-model}
 
 重新加载位于 `model_path` 的 CatBoost 模型。
@@ -74,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS {#reload-functions}
 
@@ -87,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
 重新计算所有[异步指标](../../operations/system-tables/asynchronous_metrics.md)。由于异步指标会基于配置项 [asynchronous_metrics_update_period_s](../../operations/server-configuration-parameters/settings.md) 定期更新,通常无需使用此语句手动更新。
@@ -96,13 +87,11 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM DROP DNS CACHE {#drop-dns-cache}
 
 清除 ClickHouse 的内部 DNS 缓存。在更改基础设施时(例如更改另一个 ClickHouse 服务器的 IP 地址或字典所使用的服务器),有时需要使用此命令(适用于旧版本的 ClickHouse)。
 
 如需更便捷的(自动)缓存管理,请参阅 `disable_internal_dns_cache`、`dns_cache_max_entries`、`dns_cache_update_period` 参数。
-
 
 ## SYSTEM DROP MARK CACHE {#drop-mark-cache}
 
@@ -113,7 +102,6 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 清除 Iceberg 元数据缓存。
 
-
 ## SYSTEM DROP TEXT INDEX DICTIONARY CACHE {#drop-text-index-dictionary-cache}
 
 清空文本索引字典缓存。
@@ -123,11 +111,9 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 清除文本索引头部缓存。
 
-
 ## SYSTEM DROP TEXT INDEX POSTINGS CACHE {#drop-text-index-postings-cache}
 
 清除文本索引倒排缓存。
-
 
 ## SYSTEM DROP TEXT INDEX CACHES {#drop-text-index-caches}
 
@@ -152,7 +138,6 @@ SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 第三种语法对本地服务器上的所有复制表执行相同操作。
 第四种语法用于在表的所有其他副本都已删除时删除失效副本的元数据。它需要显式指定表路径。该路径必须与创建表时传递给 `ReplicatedMergeTree` 引擎第一个参数的路径相同。
 
-
 ## SYSTEM DROP DATABASE REPLICA {#drop-database-replica}
 
 可以使用以下语法删除 `Replicated` 数据库的失效副本:
@@ -165,19 +150,16 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 
 与 `SYSTEM DROP REPLICA` 类似,但用于在无法运行 `DROP DATABASE` 的情况下从 ZooKeeper 中删除 `Replicated` 数据库副本路径。请注意,该命令不会删除 `ReplicatedMergeTree` 副本(因此您可能还需要使用 `SYSTEM DROP REPLICA`)。分片名称和副本名称是创建数据库时在 `Replicated` 引擎参数中指定的名称。这些名称也可以从 `system.clusters` 表的 `database_shard_name` 和 `database_replica_name` 列中获取。如果省略 `FROM SHARD` 子句,则 `replica_name` 必须是 `shard_name|replica_name` 格式的完整副本名称。
 
-
 ## SYSTEM DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
 清除未压缩数据缓存。
 未压缩数据缓存通过查询/用户/配置文件级别的设置 [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) 启用或禁用。
 其大小可通过服务器级别的设置 [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size) 配置。
 
-
 ## SYSTEM DROP COMPILED EXPRESSION CACHE {#drop-compiled-expression-cache}
 
 清除已编译的表达式缓存。
 已编译的表达式缓存通过查询/用户/配置文件级别的设置 [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) 启用或禁用。
-
 
 ## SYSTEM DROP QUERY CONDITION CACHE {#drop-query-condition-cache}
 
@@ -194,7 +176,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 清空[查询缓存](../../operations/query-cache.md)。
 如果指定了标签,则仅删除带有指定标签的查询缓存条目。
 
-
 ## SYSTEM DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 清除从 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path) 加载的架构缓存。
@@ -208,7 +189,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS {#flush-logs}
 
@@ -225,7 +205,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG {#reload-config}
 
 重新加载 ClickHouse 配置。用于配置存储在 ZooKeeper 中的场景。注意：`SYSTEM RELOAD CONFIG` 不会重新加载存储在 ZooKeeper 中的 `USER` 配置，仅会重新加载存储在 `users.xml` 中的 `USER` 配置。若要重新加载所有 `USER` 配置，请使用 `SYSTEM RELOAD USERS`
@@ -233,7 +212,6 @@ SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```sql
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD USERS {#reload-users}
 
@@ -243,18 +221,15 @@ SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM SHUTDOWN {#shutdown}
 
 <CloudNotSupportedBadge />
 
 正常关闭 ClickHouse（类似 `service clickhouse-server stop` / `kill {$pid_clickhouse-server}`）
 
-
 ## SYSTEM KILL {#kill}
 
 中止 ClickHouse 进程(类似 `kill -9 {$ pid_clickhouse-server}`)
-
 
 ## 管理分布式表 {#managing-distributed-tables}
 
@@ -318,7 +293,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## 管理 MergeTree 表 {#managing-mergetree-tables}
 
@@ -399,7 +373,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## 管理 ReplicatedMergeTree 表 {#managing-replicatedmergetree-tables}
 
@@ -594,7 +567,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 提供为所有 `ReplicatedMergeTree` 表重新初始化 Zookeeper 会话状态的功能,将当前状态与作为权威来源的 Zookeeper 进行比较,并在需要时向 Zookeeper 队列添加任务
 
-
 ### SYSTEM DROP FILESYSTEM CACHE {#drop-filesystem-cache}
 
 删除文件系统缓存。
@@ -638,7 +610,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## 管理可刷新物化视图 {#refreshable-materialized-views}
 

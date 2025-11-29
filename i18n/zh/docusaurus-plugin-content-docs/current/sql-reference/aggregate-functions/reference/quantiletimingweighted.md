@@ -6,7 +6,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted
+# quantileTimingWeighted {#quantiletimingweighted}
 
 在给定精度下，根据序列中每个元素的权重，计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -85,8 +85,7 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 └───────────────────────────────────────────────┘
 ```
 
-
-# quantilesTimingWeighted
+# quantilesTimingWeighted {#quantilestimingweighted}
 
 与 `quantileTimingWeighted` 相同，但接受多个带有分位数水平的参数，并返回一个数组，其中包含这些分位数对应的多个值。
 

@@ -24,7 +24,7 @@ ORDER BY tuple();
 ```
 
 
-# Сгенерировать 1 000 000 случайных чисел с 2 знаками после запятой и сохранить их в форматах float и decimal
+# Сгенерировать 1 000 000 случайных чисел с 2 знаками после запятой и сохранить их в форматах float и decimal {#generate-1-000-000-random-numbers-with-2-decimal-places-and-store-them-as-a-float-and-as-a-decimal}
 
 INSERT INTO float&#95;vs&#95;decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 
@@ -58,7 +58,7 @@ SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
 При создании таблиц можно указывать числовые параметры для чисел с плавающей точкой (например, `FLOAT(12)`, `FLOAT(15, 22)`, `DOUBLE(12)`, `DOUBLE(4, 18)`), но ClickHouse их игнорирует.
 
 
-## Использование чисел с плавающей запятой
+## Использование чисел с плавающей запятой {#using-floating-point-numbers}
 
 * Вычисления с числами с плавающей запятой могут приводить к ошибке округления.
 
@@ -77,7 +77,7 @@ SELECT 1 - 0.9
 * При разборе (парсинге) чисел с плавающей запятой из текста результат может отличаться от ближайшего машинно представимого числа.
 
 
-## NaN и Inf
+## NaN и Inf {#nan-and-inf}
 
 В отличие от стандартного SQL, ClickHouse поддерживает следующие категории чисел с плавающей запятой:
 

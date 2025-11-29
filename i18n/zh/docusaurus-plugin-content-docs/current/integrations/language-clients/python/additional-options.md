@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 ClickHouse Connect 为高级使用场景提供了多种额外选项。
 
-## 全局设置
+## 全局设置 {#global-settings}
 
 有少量设置可以在全局范围内控制 ClickHouse Connect 的行为。这些设置可以通过顶层的 `common` 包访问：
 

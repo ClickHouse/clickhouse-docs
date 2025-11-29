@@ -75,7 +75,7 @@ Change Data Capture（CDC）は、2 つのデータベース間でテーブル�
 
 
 
-## スキーマの設計
+## スキーマの設計 {#designing-schemas}
 
 Stack Overflow のデータセットには、関連する多数のテーブルが含まれています。まずは主要なテーブルの移行に集中することを推奨します。これは必ずしも最大のテーブルとは限らず、むしろ分析クエリの発行が最も多いと想定されるテーブルです。そうすることで、主要な ClickHouse の概念に慣れることができます。このテーブルは、追加のテーブルが増えるにつれて、ClickHouse の機能を最大限に活用し最適なパフォーマンスを得るために、再モデリングが必要になる場合があります。このモデリングプロセスについては、[データモデリングのドキュメント](/data-modeling/schema-design#next-data-modeling-techniques)で解説しています。
 
@@ -108,7 +108,7 @@ CREATE TABLE stackoverflow.posts (
 );
 ```
 
-### 型の最適化
+### 型の最適化 {#optimizing-types}
 
 [こちら](/data-modeling/schema-design)で説明しているプロセスに従うと、次のようなスキーマになります。
 
@@ -174,11 +174,11 @@ ClickHouse で選択したプライマリキーは、インデックスだけで
 
 
 
-## データモデリング手法
+## データモデリング手法 {#data-modeling-techniques}
 
 BigQuery から移行するユーザーは、まず [ClickHouse におけるデータモデリングガイド](/data-modeling/schema-design) を参照することを推奨します。このガイドでは同じ Stack Overflow データセットを使用し、ClickHouse の機能を活用した複数のアプローチを解説しています。
 
-### パーティション
+### パーティション {#partitions}
 
 BigQuery ユーザーは、大規模なデータベースにおいて、テーブルを「パーティション」と呼ばれる小さく扱いやすい単位に分割することで、性能と管理性を向上させるテーブルパーティショニングの概念に馴染みがあるはずです。パーティショニングは、指定したカラム（例: 日付）に対する範囲、定義済みリスト、あるいはキーに対するハッシュによって実現できます。これにより、管理者は日付範囲や地理的位置といった特定の条件に基づいてデータを整理できます。
 
@@ -205,7 +205,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-#### 用途
+#### 用途 {#applications}
 
 ClickHouse におけるパーティショニングの用途は BigQuery と似ていますが、いくつか細かな違いがあります。具体的には次のとおりです。
 
@@ -259,7 +259,7 @@ ALTER TABLE posts
 
 
 
-## マテリアライズドビューとプロジェクション
+## マテリアライズドビューとプロジェクション {#materialized-views-vs-projections}
 
 ClickHouse のプロジェクションの概念により、ユーザーは 1 つのテーブルに対して複数の `ORDER BY` 句を指定できます。
 
@@ -396,7 +396,7 @@ WHERE UserId = 8592047
 ```
 
 
-## ClickHouse 向けの BigQuery クエリの書き換え
+## ClickHouse 向けの BigQuery クエリの書き換え {#rewriting-bigquery-queries-in-clickhouse}
 
 以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット（2024 年 4 月まで）を使用します。
 
@@ -464,7 +464,7 @@ LIMIT 5
 ```
 
 
-## 集約関数
+## 集約関数 {#aggregate-functions}
 
 可能な場合は、ClickHouse の集約関数を活用してください。以下では、各年でもっとも閲覧された質問を求めるために、[`argMax` 集約関数](/sql-reference/aggregate-functions/reference/argmax) を使用する例を示します。
 
@@ -519,7 +519,7 @@ MaxViewCount:            66975
 ```
 
 
-## 条件式と配列
+## 条件式と配列 {#conditionals-and-arrays}
 
 条件式と配列関数を使うと、クエリを大幅に簡潔にできます。次のクエリは、2022 年から 2023 年にかけての出現回数が 10000 回を超えるタグのうち、増加率が最も大きいものを算出します。以下の ClickHouse クエリが、条件式・配列関数・`HAVING` 句および `SELECT` 句でエイリアスを再利用できる機能のおかげで簡潔になっている点に注目してください。
 

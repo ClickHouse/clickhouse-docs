@@ -25,7 +25,7 @@ import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Подключение Airbyte к ClickHouse
+# Подключение Airbyte к ClickHouse {#connect-airbyte-to-clickhouse}
 
 <PartnerBadge />
 
@@ -72,7 +72,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## Добавьте ClickHouse в качестве приемника данных
+## Добавьте ClickHouse в качестве приемника данных {#2-add-clickhouse-as-a-destination}
 
 В этом разделе мы покажем, как добавить экземпляр ClickHouse в качестве приемника данных.
 

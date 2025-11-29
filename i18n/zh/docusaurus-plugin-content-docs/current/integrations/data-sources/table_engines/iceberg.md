@@ -8,6 +8,6 @@ keywords: ['Iceberg 表函数', 'Apache Iceberg', '数据湖格式']
 hide_title: true
 ---
 
-import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
 
 <IcebergFunction />

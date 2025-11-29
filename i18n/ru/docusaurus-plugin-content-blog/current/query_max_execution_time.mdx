@@ -9,14 +9,13 @@ tags: ['Управление облаком', 'Настройки']
 
 {/* усечение */}
 
-
 ## Вопрос \{#question\}
 
 Как ограничить время выполнения запросов?
 
-## Ответ
+## Ответ \{#answer\}
 
-Вы можете использовать параметр `max_execution_time`:
+Вы можете использовать параметр [`max_execution_time`](/docs/operations/settings/settings#max_execution_time) (в секундах):
 
 ```sql
 clickhouse-cloud :) SELECT 1 SETTINGS max_execution_time=0.0001
@@ -27,8 +26,8 @@ SETTINGS max_execution_time = 0.0001
 Query id: 3db752a7-b94f-4456-b3b9-ccbf290d1394
 
 
-Получено строк: 0. Затрачено времени: 0.113 сек.
+0 строк в наборе. Затрачено: 0.113 сек.
 
 Получено исключение от сервера (версия 23.5.1):
-Code: 159. DB::Exception: Received from service.aws.clickhouse.cloud:9440. DB::Exception: Превышено время ожидания: прошло 0.000557862 секунд, максимум: 0.0001. (TIMEOUT_EXCEEDED)
+Code: 159. DB::Exception: Received from service.aws.clickhouse.cloud:9440. DB::Exception: Превышено время ожидания: затрачено 0.000557862 секунд, максимум: 0.0001. (TIMEOUT_EXCEEDED)
 ```

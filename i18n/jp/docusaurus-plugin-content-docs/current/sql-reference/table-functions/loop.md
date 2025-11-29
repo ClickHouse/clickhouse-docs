@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 
 
-# loop テーブル関数
+# loop テーブル関数 {#loop-table-function}
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -37,7 +37,7 @@ SELECT ... FROM loop(other_table_function(...));
 
 
 
-## 例
+## 例 {#examples}
 
 ClickHouse からデータを取得する：
 

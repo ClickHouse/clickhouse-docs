@@ -29,7 +29,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 Значения приводятся к типу столбца с помощью оператора `CAST`. Обновление столбцов, используемых при вычислении первичного ключа или ключа партиционирования, не поддерживается.
 
 
-## Примеры
+## Примеры {#examples}
 
 ```sql
 UPDATE hits SET Title = 'Новый заголовок' WHERE EventDate = today();
@@ -87,7 +87,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 
 
-## Права на выполнение UPDATE
+## Права на выполнение UPDATE {#update-permissions}
 
 `UPDATE` требует привилегии `ALTER UPDATE`. Чтобы разрешить выполнение операторов `UPDATE` для конкретной таблицы определённому пользователю, выполните:
 

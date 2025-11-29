@@ -10,7 +10,7 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 
-# 使用文本索引进行全文搜索
+# 使用文本索引进行全文搜索 {#full-text-search-using-text-indexes}
 
 <PrivatePreviewBadge/>
 
@@ -22,7 +22,7 @@ ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.o
 
 
 
-## 创建文本索引
+## 创建文本索引 {#creating-a-text-index}
 
 要创建文本索引，首先启用相应的实验性设置：
 
@@ -186,12 +186,12 @@ ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
 
 
-## 使用文本索引
+## 使用文本索引 {#using-a-text-index}
 
 在 SELECT 查询中使用文本索引非常简单，常见的字符串搜索函数会自动使用该索引。
 如果不存在索引，下面这些字符串搜索函数将会回退到较慢的暴力扫描。
 
-### 支持的函数
+### 支持的函数 {#functions-support}
 
 当在 SELECT 查询的 `WHERE` 子句中使用文本函数时，即可使用文本索引：
 
@@ -201,7 +201,7 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
-#### `=` 和 `!=`
+#### `=` 和 `!=` {#functions-example-equals-notequals}
 
 `=`（[`equals`](/sql-reference/functions/comparison-functions.md/#equals)）和 `!=`（[`notEquals`](/sql-reference/functions/comparison-functions.md/#notEquals)）会匹配给定搜索词的整体。
 
@@ -213,7 +213,7 @@ SELECT * from tab WHERE str = 'Hello';
 
 文本索引支持 `=` 和 `!=` 运算，但只有在使用 `array` 分词器时，等值和不等值搜索才有意义（它会使索引存储整行的值）。
 
-#### `IN` 和 `NOT IN`
+#### `IN` 和 `NOT IN` {#functions-example-in-notin}
 
 `IN`（[in](/sql-reference/functions/in-functions)）和 `NOT IN`（[notIn](/sql-reference/functions/in-functions)）类似于函数 `equals` 和 `notEquals`，但它们分别要求匹配所有搜索词（`IN`）或完全与所有搜索词都不匹配（`NOT IN`）。
 
@@ -225,7 +225,7 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 
 适用与 `=` 和 `!=` 相同的限制，也就是说，只有在配合 `array` tokenizer 使用时，`IN` 和 `NOT IN` 才有意义。
 
-#### `LIKE`、`NOT LIKE` 和 `match`
+#### `LIKE`、`NOT LIKE` 和 `match` {#functions-example-like-notlike-match}
 
 :::note
 这些函数目前仅在索引 tokenizer 为 `splitByNonAlpha` 或 `ngrams` 时才会使用文本索引进行过滤。
@@ -250,7 +250,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- 或者 `% support %`
 
 `support` 左右的空格确保该术语可以被提取为一个 token。
 
-#### `startsWith` 和 `endsWith`
+#### `startsWith` 和 `endsWith` {#functions-example-startswith-endswith}
 
 与 `LIKE` 类似，[startsWith](/sql-reference/functions/string-functions.md/#startsWith) 和 [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 函数只有在能从搜索词中提取出完整的 token 时，才能使用文本索引。
 
@@ -275,7 +275,7 @@ startsWith(comment, 'clickhouse supports ')`
 SELECT count() FROM tab WHERE endsWith(comment, ' olap 引擎');
 ```
 
-#### `hasToken` 和 `hasTokenOrNull`
+#### `hasToken` 和 `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
 
 函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) 和 [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) 用于匹配单个指定的 token。
 
@@ -289,7 +289,7 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 
 函数 `hasToken` 和 `hasTokenOrNull` 是在与 `text` 索引配合使用时性能最优的函数。
 
-#### `hasAnyTokens` 和 `hasAllTokens`
+#### `hasAnyTokens` 和 `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
 
 
 函数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 和 [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 分别用于匹配给定 token 中的任意一个或全部。
@@ -309,7 +309,7 @@ SELECT count() FROM tab WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
-#### `has`
+#### `has` {#functions-example-has}
 
 数组函数 [has](/sql-reference/functions/array-functions#has) 用于判断字符串数组中是否包含某个单独的元素。
 
@@ -319,7 +319,7 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
-#### `mapContains`
+#### `mapContains` {#functions-example-mapcontains}
 
 函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` 的别名）用于在 map 的键中匹配单个 token。
 
@@ -331,7 +331,7 @@ SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
 
-#### `operator[]`
+#### `operator[]` {#functions-example-access-operator}
 
 可以将访问运算符 [operator[]](/sql-reference/operators#access-operators) 与文本索引配合使用，以过滤键和值。
 
@@ -343,9 +343,9 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 
 请参阅以下示例，了解如何配合文本索引使用 `Array(T)` 和 `Map(K, V)` 类型的列。
 
-### 带有文本索引的 `Array` 和 `Map` 列示例
+### 带有文本索引的 `Array` 和 `Map` 列示例 {#text-index-array-and-map-examples}
 
-#### 为 Array(String) 列建立索引
+#### 为 Array(String) 列建立索引 {#text-index-example-array}
 
 想象一个博客平台，作者会使用关键词为他们的博文打标签并进行分类。
 我们希望用户能够通过搜索或点击主题来发现相关内容。
@@ -377,7 +377,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- 务必为现有数据重建索引
 ```
 
-#### 为 Map 列建立索引
+#### 为 Map 列建立索引 {#text-index-example-map}
 
 在许多可观测性场景中，日志消息会被拆分为「组件」，并按合适的数据类型存储，例如时间戳使用 DateTime 类型、日志级别使用 Enum 类型等。
 指标字段最好以键值对的形式存储。
@@ -435,9 +435,9 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 快速
 ```
 
 
-## 性能调优
+## 性能调优 {#performance-tuning}
 
-### 直接读取
+### 直接读取 {#direct-read}
 
 某些类型的文本查询可以通过一种称为“直接读取”（direct read）的优化显著提速。
 更具体地说，当 SELECT 查询中 *没有* 从文本列进行投影时，可以应用此优化。
@@ -515,7 +515,7 @@ Positions:
 EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<index_name>_<function_name>_<id>`。
 如果存在该列，则会使用直接读取。
 
-### 缓存
+### 缓存 {#caching}
 
 可以使用不同的缓存将文本索引的部分内容缓存在内存中（参见[实现细节](#implementation)部分）：
 目前，对文本索引的反序列化字典块、头信息和倒排列表都提供了缓存，以减少 I/O。
@@ -524,7 +524,7 @@ EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<ind
 
 有关配置这些缓存，请参阅以下服务器设置。
 
-#### 字典块缓存设置
+#### 字典块缓存设置 {#caching-dictionary}
 
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
@@ -583,7 +583,7 @@ Bloom 过滤器可以在待查询的 token 不包含在某个字典块中时提�
 
 
 
-## 示例：Hacker News 数据集
+## 示例：Hacker News 数据集 {#hacker-news-dataset}
 
 来看一下在包含大量文本的大型数据集上，使用文本索引带来的性能提升。
 我们将使用来自热门网站 Hacker News 的 2870 万行评论数据。
@@ -650,7 +650,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 现在，让我们使用 `hasToken`、`hasAnyTokens` 和 `hasAllTokens` 函数来运行查询。
 下面的示例将展示标准索引扫描与直接读取优化之间显著的性能差异。
 
-### 1. 使用 `hasToken`
+### 1. 使用 `hasToken` {#using-hasToken}
 
 `hasToken` 会检查文本是否包含某个特定的单一 token。
 我们将搜索区分大小写的 token &#39;ClickHouse&#39;。
@@ -690,7 +690,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 直接读取的查询速度快了超过 45 倍（0.362s 对比 0.008s），并且仅通过从索引中读取就处理了显著更少的数据量（9.51 GB 对比 3.15 MB）。
 
-### 2. 使用 `hasAnyTokens`
+### 2. 使用 `hasAnyTokens` {#using-hasAnyTokens}
 
 `hasAnyTokens` 会检查文本是否包含至少一个给定的 token。
 我们将搜索包含 “love” 或 “ClickHouse” 的评论。
@@ -730,7 +730,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 对于这种常见的"OR"搜索,性能提升更为显著。
 通过避免全列扫描,查询速度提升了近89倍(从1.329秒降至0.015秒)。
 
-### 3. 使用 `hasAllTokens`                      
+### 3. 使用 `hasAllTokens`                       {#using-hasAllTokens}
 
 `hasAllTokens` 用于检查文本是否包含所有给定的词元。
 我们将搜索同时包含 'love' 和 'ClickHouse' 的评论。
@@ -770,7 +770,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 对于这个“AND”搜索，直接读取优化相比标准的跳过索引（skip index）扫描快超过 26 倍（0.184 秒 vs 0.007 秒）。
 
-### 4. 复合搜索：OR、AND、NOT，…
+### 4. 复合搜索：OR、AND、NOT，… {#compound-search}
 
 直接读取优化同样适用于复合布尔表达式。
 在这里，我们将执行一次不区分大小写的搜索：&#39;ClickHouse&#39; OR &#39;clickhouse&#39;。

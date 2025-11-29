@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 以下请求可用于根据其 [JSON](/interfaces/formats/JSON) 格式的输出示例插入数据：
 

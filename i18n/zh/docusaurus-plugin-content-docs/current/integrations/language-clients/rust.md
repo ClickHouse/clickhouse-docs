@@ -8,7 +8,7 @@ title: 'ClickHouse Rust 客户端'
 doc_type: 'reference'
 ---
 
-# ClickHouse Rust 客户端
+# ClickHouse Rust 客户端 {#clickhouse-rust-client}
 
 用于连接 ClickHouse 的官方 Rust 客户端，最初由 [Paul Loyd](https://github.com/loyd) 开发。该客户端的源代码可在 [GitHub 代码仓库](https://github.com/ClickHouse/clickhouse-rs) 中获取。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 * 提供用于查询或插入数据、执行 DDL，以及客户端批处理的 API。
 * 为单元测试提供便捷的 mock 实现。
 
-## 安装
+## 安装 {#installation}
 
 要使用该 crate，请在你的 `Cargo.toml` 中添加以下内容：
 
@@ -73,7 +73,7 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 [ch2rs](https://github.com/ClickHouse/ch2rs) crate 可用于从 ClickHouse 自动生成行类型。
 :::
 
-### 创建客户端实例
+### 创建客户端实例 {#creating-a-client-instance}
 
 :::tip
 请复用已创建的客户端，或克隆它们，以便复用底层的 Hyper 连接池。
@@ -91,7 +91,7 @@ let client = Client::default()
 ```
 
 
-### HTTPS 或 ClickHouse Cloud 连接
+### HTTPS 或 ClickHouse Cloud 连接 {#https-or-clickhouse-cloud-connection}
 
 HTTPS 可以配合 `rustls-tls` 或 `native-tls` Cargo 特性使用。
 
@@ -117,7 +117,7 @@ let client = Client::default()
 * 客户端仓库中的 [ClickHouse Cloud HTTPS 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。该示例同样适用于自托管（本地部署）环境中的 HTTPS 连接。
 
 
-### 选择行
+### 选择行 {#selecting-rows}
 
 ```rust
 use serde::Deserialize;
@@ -153,7 +153,7 @@ while let Some(row) = cursor.next().await? { .. }
 :::
 
 
-### 插入数据行
+### 插入数据行 {#inserting-rows}
 
 ```rust
 use serde::Serialize;
@@ -176,7 +176,7 @@ insert.end().await?;
 * 仅当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时，ClickHouse 才会以原子方式插入该批次。
 
 
-### 异步插入（服务端批量）
+### 异步插入（服务端批量） {#async-insert-server-side-batching}
 
 你可以使用 [ClickHouse 异步插入](/optimize/asynchronous-inserts) 来避免在客户端对传入数据进行批量处理。只需在 `insert` 方法中提供 `async_insert` 选项（或者直接在 `Client` 实例上统一配置，使其对所有 `insert` 调用生效）即可。
 
@@ -192,7 +192,7 @@ let client = Client::default()
 * 客户端仓库中的 [异步插入示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
 
 
-### Inserter 特性（客户端批量写入）
+### Inserter 特性（客户端批量写入） {#inserter-feature-client-side-batching}
 
 需要启用 `inserter` cargo 特性。
 
@@ -234,7 +234,7 @@ inserter.end().await?;
 :::
 
 
-### 执行 DDL
+### 执行 DDL {#executing-ddls}
 
 对于单节点部署，只需按如下方式执行 DDL 语句即可：
 
@@ -253,7 +253,7 @@ client
 ```
 
 
-### ClickHouse 设置
+### ClickHouse 设置 {#clickhouse-settings}
 
 可以使用 `with_option` 方法来应用多种 [ClickHouse 设置](/operations/settings/settings)。例如：
 
@@ -270,7 +270,7 @@ let numbers = client
 除了 `query` 之外，它也可以以类似方式用于 `insert` 和 `inserter` 方法；此外，还可以在 `Client` 实例上调用同一方法，为所有查询设置全局配置。
 
 
-### Query ID
+### Query ID {#query-id}
 
 使用 `.with_option`，可以设置 `query_id` 选项，以在 ClickHouse 查询日志中标识查询。
 
@@ -291,7 +291,7 @@ let numbers = client
 另请参阅：client 仓库中的 [query&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)。
 
 
-### Session ID
+### Session ID {#session-id}
 
 与 `query_id` 类似，你可以通过设置 `session_id` 在同一个会话中执行语句。`session_id` 可以在客户端级别进行全局设置，也可以在每次 `query`、`insert` 或 `inserter` 调用时单独设置。
 
@@ -308,7 +308,7 @@ let client = Client::default()
 另请参阅 client 仓库中的 [session&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs)。
 
 
-### 自定义 HTTP 头部
+### 自定义 HTTP 头部 {#custom-http-headers}
 
 如果你使用代理认证或需要传递自定义请求头，可以按如下方式进行：
 
@@ -321,7 +321,7 @@ let client = Client::default()
 另请参见客户端仓库中的 [自定义 HTTP 头示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs)。
 
 
-### 自定义 HTTP 客户端
+### 自定义 HTTP 客户端 {#custom-http-client}
 
 这对于微调底层 HTTP 连接池的设置很有用。
 
@@ -350,7 +350,7 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 另请参阅客户端仓库中的 [自定义 HTTP 客户端示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs)。
 
 
-## 数据类型
+## 数据类型 {#data-types}
 
 :::info
 另请参阅以下补充示例：
@@ -544,7 +544,7 @@ struct MyRow {
 
 ## 故障排查 {#troubleshooting}
 
-### CANNOT&#95;READ&#95;ALL&#95;DATA
+### CANNOT&#95;READ&#95;ALL&#95;DATA {#cannot_read_all_data}
 
 `CANNOT_READ_ALL_DATA` 错误最常见的原因，是应用程序端的行定义与 ClickHouse 中的不一致。
 

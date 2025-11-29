@@ -21,7 +21,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
 这一批处理过程对客户端是透明的，有助于 ClickHouse 高效合并来自多个源的插入流量。但在刷新发生之前，这些数据无法被查询。需要注意的是，对于每种插入数据结构（insert shape）与设置组合会有多个缓冲区，在集群中，缓冲区按节点维护——从而在多租户环境中实现细粒度控制。其余插入机制与[同步插入](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)中描述的相同。
 
-### 选择返回模式
+### 选择返回模式 {#choosing-a-return-mode}
 
 异步插入的行为可通过 [`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) 设置进行进一步细化。
 
@@ -37,7 +37,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
 我们强烈建议，如果使用异步插入，应设置 `async_insert=1,wait_for_async_insert=1`。使用 `wait_for_async_insert=0` 风险极高，因为你的 INSERT 客户端可能不知道是否发生了错误，并且在 ClickHouse 服务器需要减慢写入速度并施加一定背压以保证服务可靠性的情况下，如果客户端持续快速写入，还可能导致潜在的过载。
 
-### 去重与可靠性
+### 去重与可靠性 {#deduplication-and-reliability}
 
 默认情况下，ClickHouse 会对同步插入执行自动去重，这使得在失败场景下重试是安全的。然而，对于异步插入，这一功能是禁用的，除非显式启用（如果你有依赖的物化视图，则不应启用——[见相关 issue](https://github.com/ClickHouse/ClickHouse/issues/66003)）。
 

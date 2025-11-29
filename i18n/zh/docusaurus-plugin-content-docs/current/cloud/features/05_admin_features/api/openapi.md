@@ -15,7 +15,7 @@ import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
 
-# 管理 API 密钥
+# 管理 API 密钥 {#managing-api-keys}
 
 ClickHouse Cloud 提供了一个基于 OpenAPI 的 API，允许你以编程方式管理你的账号以及服务的各个方面。
 

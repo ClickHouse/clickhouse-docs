@@ -6,9 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-
-
-# system.settings
+# system.settings {#systemsettings}
 
 現在のユーザーのセッション設定に関する情報を含みます。
 
@@ -85,7 +83,6 @@ alias_for:
 is_obsolete: 0
 tier:        Production
 ```
-
 
 Row 3:
 ──────

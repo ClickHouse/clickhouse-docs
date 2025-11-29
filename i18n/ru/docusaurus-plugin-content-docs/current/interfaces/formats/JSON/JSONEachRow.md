@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON-файл со следующими данными с именем `football.json`:
 
@@ -48,7 +48,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `JSONEachRow`:
 

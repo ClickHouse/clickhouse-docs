@@ -7,7 +7,7 @@ title: '由第三方开发者提供的集成库'
 doc_type: 'reference'
 ---
 
-# 来自第三方开发者的集成库
+# 来自第三方开发者的集成库 {#integration-libraries-from-third-party-developers}
 
 :::warning 免责声明
 ClickHouse, Inc. **不**维护以下列出的这些工具和库，也未对其质量进行充分测试。

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# UDF 向け executable テーブル関数
+# UDF 向け executable テーブル関数 {#executable-table-function-for-udfs}
 
 `executable` テーブル関数は、行を **stdout** に出力するスクリプト内で定義したユーザー定義関数 (UDF) の出力に基づいてテーブルを作成します。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。ClickHouse サーバー上に、そのスクリプトを実行するために必要なパッケージがすべてインストールされていることを確認してください。たとえば、それが Python スクリプトの場合は、サーバーに必要な Python パッケージがインストールされていることを確認してください。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 `executable` テーブル関数は 3 つのパラメーターを必須とし、オプションで入力クエリのリストを引数として受け取ります。
 
@@ -102,7 +102,7 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 
 
 
-## クエリ結果をスクリプトに渡す
+## クエリ結果をスクリプトに渡す {#passing-query-results-to-a-script}
 
 `Executable` テーブルエンジンの[クエリ結果をスクリプトに渡す方法](../../engines/table-engines/special/executable.md#passing-query-results-to-a-script)の例を必ず参照してください。ここでは、その例と同じスクリプトを `executable` テーブル関数を使って実行する方法を示します。
 

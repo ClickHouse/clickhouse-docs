@@ -8,17 +8,17 @@ doc_type: 'reference'
 keywords: ['поддержка', 'помощь', 'обслуживание клиентов', 'техническая поддержка', 'соглашение об уровне обслуживания']
 ---
 
-# Службы поддержки ClickHouse Cloud
+# Службы поддержки ClickHouse Cloud {#clickhouse-cloud-support-services}
 
 ClickHouse предоставляет службы поддержки для наших пользователей и клиентов ClickHouse Cloud. Наша цель — команда поддержки, которая отражает продукт ClickHouse: непревзойдённая производительность, простота использования и исключительно быстрые, высококачественные результаты. Подробности см. на странице [ClickHouse Support Program](https://clickhouse.com/support/program/).
 
-[Войдите в консоль ClickHouse Cloud](https://console.clickhouse.cloud/support) и выберите в меню пункт **Help -> Support**, чтобы открыть новый запрос в поддержку и просмотреть статус отправленных запросов. 
+[Войдите в консоль ClickHouse Cloud](https://console.clickhouse.cloud/support) и выберите в меню пункт **Help -&gt; Support**, чтобы открыть новый запрос в поддержку и просмотреть статус отправленных запросов.
 
 Вы также можете подписаться на нашу [страницу статуса](https://status.clickhouse.com), чтобы оперативно получать уведомления о любых инцидентах, затрагивающих нашу платформу.
 
 :::note
 Обратите внимание, что только клиенты с подпиской имеют соглашение об уровне обслуживания (SLA) по инцидентам поддержки. Если вы сейчас не являетесь пользователем ClickHouse Cloud, хотя мы и постараемся ответить на ваш вопрос, мы рекомендуем вам вместо этого обратиться к одним из наших ресурсов сообщества:
 
-- [Канал сообщества ClickHouse в Slack](https://clickhouse.com/slack)
-- [Другие ресурсы сообщества](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
-:::
+* [Канал сообщества ClickHouse в Slack](https://clickhouse.com/slack)
+* [Другие ресурсы сообщества](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
+  :::

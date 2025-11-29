@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# GROUP BY 子句
+# GROUP BY 子句 {#group-by-clause}
 
 `GROUP BY` 子句会将 `SELECT` 查询切换到聚合模式，其工作方式如下：
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 
 
-## NULL 处理
+## NULL 处理 {#null-processing}
 
 在分组操作中，ClickHouse 将 [NULL](/sql-reference/syntax#null) 视为一个具体值，并且认为 `NULL==NULL`。这与在大多数其他上下文中的 `NULL` 处理方式不同。
 
@@ -57,7 +57,7 @@ doc_type: 'reference'
 如果你向 `GROUP BY` 传入多个键列，结果会给出所选数据的所有组合，就好像把 `NULL` 当作一个特定的取值一样。
 
 
-## ROLLUP 修饰符
+## ROLLUP 修饰符 {#rollup-modifier}
 
 `ROLLUP` 修饰符用于根据 `GROUP BY` 列表中键表达式的顺序计算各级小计。小计行会追加在结果表的末尾。
 
@@ -131,7 +131,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 * 用于实现 SQL 标准兼容性的 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
 
-## CUBE 修饰符
+## CUBE 修饰符 {#cube-modifier}
 
 `CUBE` 修饰符用于对 `GROUP BY` 列表中键表达式的每一种组合计算小计。这些小计行会追加在结果表的末尾。
 
@@ -268,7 +268,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 
 
-## GROUP BY ALL
+## GROUP BY ALL {#group-by-all}
 
 `GROUP BY ALL` 等同于在 GROUP BY 中列出所有在 SELECT 子句中出现且不是聚合函数的表达式。
 
@@ -317,7 +317,7 @@ GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
 
-## 示例
+## 示例 {#examples}
 
 示例：
 
@@ -345,7 +345,7 @@ GROUP BY domain
 对于遇到的每个不同的键值，`GROUP BY` 会计算一组聚合函数的结果。
 
 
-## GROUPING SETS 修饰符
+## GROUPING SETS 修饰符 {#grouping-sets-modifier}
 
 这是最通用的修饰符。
 该修饰符允许手动指定多个聚合键集合（grouping set）。

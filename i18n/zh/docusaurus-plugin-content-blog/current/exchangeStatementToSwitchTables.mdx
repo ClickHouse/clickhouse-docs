@@ -12,12 +12,11 @@ keywords: ['EXCHANGE']
 
 ***
 
-
 ## 问题 \{#question\}
 
 如何使用 [`EXCHANGE`](/sql-reference/statements/exchange) 命令来交换表名？
 
-## 答案
+## 答案 \{#answer\}
 
 当你需要将当前表与另一个（可能更新了主键或其他设置的）临时表进行切换时，`EXCHANGE` 命令非常有用。
 与 `RENAME` 命令相比，它可以原子性地完成这一操作。

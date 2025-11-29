@@ -6,9 +6,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedMax
+## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
 時刻インデックス `t` における指数平滑移動平均の値と、その一つ前の時刻インデックス `t-1` における値のうち、大きい方を返します。
 
@@ -52,7 +50,6 @@ FROM
 ```
 
 結果：
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

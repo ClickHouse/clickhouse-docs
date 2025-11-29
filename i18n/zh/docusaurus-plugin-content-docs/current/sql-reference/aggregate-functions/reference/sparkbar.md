@@ -7,7 +7,7 @@ title: 'sparkbar'
 doc_type: 'reference'
 ---
 
-# sparkbar
+# sparkbar {#sparkbar}
 
 该函数在区间 `[min_x, max_x]` 内，为取值 `x` 及其重复次数 `y` 绘制频率直方图。
 所有落入同一桶中的 `x` 的重复次数会被取平均值，因此数据应当预先聚合。

@@ -8,7 +8,7 @@ title: 'uniqCombined64'
 doc_type: 'reference'
 ---
 
-# uniqCombined64
+# uniqCombined64 {#uniqcombined64}
 
 Вычисляет приблизительное количество различных значений аргумента. Аналогична функции [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined), но использует 64-битный хеш для всех типов данных, а не только для строкового типа данных String.
 

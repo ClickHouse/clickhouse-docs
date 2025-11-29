@@ -7,7 +7,7 @@ title: 'timeSeriesData'
 doc_type: 'reference'
 ---
 
-# timeSeriesData テーブル関数
+# timeSeriesData テーブル関数 {#timeseriesdata-table-function}
 
 `timeSeriesData(db_name.time_series_table)` - テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) である `db_name.time_series_table` テーブルで使用されている [data](../../engines/table-engines/integrations/time-series.md#data-table) テーブルを返します。
 

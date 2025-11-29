@@ -26,7 +26,7 @@ import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_model
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
 
-# 在 Open WebUI 中使用 ClickHouse MCP 服务器
+# 在 Open WebUI 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-open-webui}
 
 > 本指南介绍如何配置 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
@@ -41,7 +41,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
 
 
-## 启动 Open WebUI
+## 启动 Open WebUI {#launch-open-webui}
 
 要启动 Open WebUI，可以运行以下命令：
 
@@ -52,7 +52,7 @@ uv run --with open-webui open-webui serve
 访问 [http://localhost:8080/](http://localhost:8080/) 查看 UI。
 
 
-## 配置 ClickHouse MCP Server
+## 配置 ClickHouse MCP Server {#configure-clickhouse-mcp-server}
 
 要配置 ClickHouse MCP Server，我们需要将 MCP Server 暴露为一组 OpenAPI 端点。
 首先，先设置环境变量，以便连接到 ClickHouse SQL Playground：

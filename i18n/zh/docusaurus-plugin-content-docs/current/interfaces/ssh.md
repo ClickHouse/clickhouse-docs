@@ -11,15 +11,13 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# 支持 PTY 的 SSH 接口 {#ssh-interface-with-pty}
 
-# 支持 PTY 的 SSH 接口
+<ExperimentalBadge />
 
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-
-
-## 前言
+## 前言 {#preface}
 
 ClickHouse 服务器允许客户端通过 SSH 协议直接连接到服务器本身。任何客户端都可以连接。
 
@@ -55,8 +53,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1
 ```
 
-
-## 服务器配置
+## 服务器配置 {#server-configuration}
 
 要启用 SSH 服务器功能，需要在 `config.xml` 文件中取消对以下部分的注释，或将其添加到文件中：
 
@@ -86,8 +83,7 @@ RSA 密钥指纹为 SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do。
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
-
-## 配置嵌入式客户端
+## 配置嵌入式客户端 {#configuring-embedded-client}
 
 您可以像使用普通的 `clickhouse-client` 一样向嵌入式客户端传递选项，但会有一些限制。
 由于使用的是 SSH 协议，向目标主机传递参数的唯一方式是通过环境变量。

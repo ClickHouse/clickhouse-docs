@@ -6,7 +6,7 @@ title: 'quantileExactWeightedInterpolated'
 doc_type: 'reference'
 ---
 
-# quantileExactWeightedInterpolated
+# quantileExactWeightedInterpolated {#quantileexactweightedinterpolated}
 
 使用线性插值计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑每个元素的权重。
 

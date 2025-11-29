@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts
+# system.parts {#systemparts}
 
 包含关于 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表数据分片（parts）的信息。
 
@@ -33,7 +33,6 @@ doc_type: 'reference'
   * `maximum_block_number` - 标识该 part 中的最大块号
   * `level` - 每对该 part 进行一次合并，该值加一。level 为 0 表示这是一个尚未被合并的新 part。需要牢记的是，ClickHouse 中的所有 part 始终都是不可变的
   * `data_version` - 可选值，在对 part 执行 mutate 操作时递增（同样，变更后的数据始终只会写入新的 part，因为 part 是不可变的）
-
 
 * `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - 数据部件的 UUID。
 

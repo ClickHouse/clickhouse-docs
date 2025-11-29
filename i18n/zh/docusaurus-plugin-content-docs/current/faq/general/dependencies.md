@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['依赖', '第三方']
 ---
 
-# 运行 ClickHouse 需要哪些第三方依赖？
+# 运行 ClickHouse 需要哪些第三方依赖？ {#what-are-the-3rd-party-dependencies-for-running-clickhouse}
 
 ClickHouse 没有任何运行时依赖。它以单个二进制可执行文件的形式发布，完全自包含。该应用程序提供集群的全部功能：处理查询、作为集群中的工作节点、作为提供 Raft 共识算法的协调系统，以及作为客户端或本地查询引擎。
 

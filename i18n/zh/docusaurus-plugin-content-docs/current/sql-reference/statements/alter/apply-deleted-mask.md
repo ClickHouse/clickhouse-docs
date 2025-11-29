@@ -1,13 +1,13 @@
 ---
 description: '“应用已删除行掩码”文档'
-sidebar_label: 'APPLY DELETED MASK'
+sidebar_label: '应用已删除行掩码'
 sidebar_position: 46
 slug: /sql-reference/statements/alter/apply-deleted-mask
 title: '应用已删除行掩码'
 doc_type: 'reference'
 ---
 
-# 应用删除行掩码
+# 应用删除行掩码 {#apply-mask-of-deleted-rows}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция fuzzJSON
+# Табличная функция fuzzJSON {#fuzzjson-table-function}
 
 Вносит случайные искажения в строку JSON.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
@@ -49,7 +49,7 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 ```sql
 CREATE NAMED COLLECTION json_fuzzer AS json_str='{}';

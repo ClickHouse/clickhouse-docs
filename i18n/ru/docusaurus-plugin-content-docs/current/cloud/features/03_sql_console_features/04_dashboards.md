@@ -21,7 +21,7 @@ import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.pn
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
 
-# Панели мониторинга
+# Панели мониторинга {#dashboards}
 
 Функция панелей мониторинга в SQL Console позволяет собирать и совместно использовать визуализации на основе сохранённых запросов. Начните с сохранения и визуализации запросов, добавления их визуализаций на панель и сделайте панель интерактивной с помощью параметров запросов.
 

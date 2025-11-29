@@ -6,7 +6,7 @@ title: 'groupBitOr'
 doc_type: 'reference'
 ---
 
-# groupBitOr
+# groupBitOr {#groupbitor}
 
 对一系列数字执行按位 `OR` 运算。
 

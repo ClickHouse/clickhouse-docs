@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция hudiCluster
+# Табличная функция hudiCluster {#hudicluster-table-function}
 
 Это расширение табличной функции [hudi](sql-reference/table-functions/hudi.md).
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

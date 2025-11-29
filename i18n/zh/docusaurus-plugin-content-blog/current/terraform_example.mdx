@@ -10,12 +10,11 @@ keywords: ['Terraform']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何通过 API 在 ClickHouse Cloud 上管理集群？
 
-## 解答
+## 解答 \{#answer\}
 
 我们将使用 Terraform 来配置基础设施，并使用 [ClickHouse Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)。
 
@@ -140,7 +139,6 @@ Terraform 已成功初始化!
 6). 运行 `terraform apply -var-file=secret.tfvars` 命令。
 
 类似下面这样：
-
 
 ```
 ➜  test terraform apply -var-file=secret.tfvars

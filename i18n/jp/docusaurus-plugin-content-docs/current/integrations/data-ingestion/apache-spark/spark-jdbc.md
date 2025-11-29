@@ -14,7 +14,7 @@ import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Spark JDBC
+# Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
 
@@ -121,7 +121,7 @@ jar_files = [
 ```
 
 
-# JARファイルを使用したSparkセッションの初期化
+# JARファイルを使用したSparkセッションの初期化 {#initialize-spark-session-with-jars}
 
 spark = SparkSession.builder \
  .appName("example") \
@@ -291,7 +291,7 @@ jar_files = [
 ```
 
 
-# JAR ファイルを指定して Spark セッションを初期化する
+# JAR ファイルを指定して Spark セッションを初期化する {#initialize-spark-session-with-jars}
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -300,7 +300,7 @@ spark = SparkSession.builder \
 
 
 
-# DataFrame を作成
+# DataFrame を作成 {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
@@ -311,7 +311,7 @@ driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
 
 
-# DataFrameをClickHouseに書き込む
+# DataFrameをClickHouseに書き込む {#write-dataframe-to-clickhouse}
 
 df.write \
  .format("jdbc") \

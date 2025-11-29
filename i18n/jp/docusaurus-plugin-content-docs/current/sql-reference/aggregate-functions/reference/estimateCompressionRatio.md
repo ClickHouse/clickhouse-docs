@@ -6,9 +6,7 @@ title: 'estimateCompressionRatio'
 doc_type: 'reference'
 ---
 
-
-
-## estimateCompressionRatio
+## estimateCompressionRatio {#estimatecompressionration}
 
 指定されたカラムを圧縮処理を行わずに、その圧縮率を推定します。
 

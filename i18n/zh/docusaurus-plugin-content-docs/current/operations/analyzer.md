@@ -7,20 +7,16 @@ title: '分析器'
 doc_type: 'reference'
 ---
 
-
-
-# 分析器
+# 分析器 {#analyzer}
 
 在 ClickHouse `24.3` 版本中，新的查询分析器默认启用。
 您可以在[此处](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)阅读其工作原理的更多细节。
 
-
-
-## 已知不兼容项
+## 已知不兼容项 {#known-incompatibilities}
 
 尽管修复了大量 bug 并引入了新的优化，但这也对 ClickHouse 的行为带来了一些不兼容的变更。请阅读以下变更说明，以确定如何为新的 analyzer 重写你的查询。
 
-### 无效查询不再被优化
+### 无效查询不再被优化 {#invalid-queries-are-no-longer-optimized}
 
 之前的查询规划架构会在查询验证步骤之前应用 AST 级别的优化。
 这些优化可能将初始查询改写为有效且可执行的形式。
@@ -29,7 +25,7 @@ doc_type: 'reference'
 这意味着此前仍然可以执行的无效查询，现在将不再被支持。
 在这种情况下，必须手动修正查询。
 
-#### 示例 1
+#### 示例 1 {#example-1}
 
 下面的查询在投影列表中使用了列 `number`，但在聚合之后只有 `toString(number)` 可用。
 在旧的 analyzer 中，`GROUP BY toString(number)` 会被优化为 `GROUP BY number,`，从而使查询变为有效。
@@ -40,7 +36,7 @@ FROM numbers(1)
 GROUP BY toString(number)
 ```
 
-#### 示例 2
+#### 示例 2 {#example-2}
 
 在这个查询中也会出现相同的问题。列 `number` 在与另一个键一起聚合之后被使用。
 之前的查询分析器通过将 `number > 5` 过滤条件从 `HAVING` 子句移动到 `WHERE` 子句来修复这个查询。
@@ -65,7 +61,7 @@ WHERE number > 5
 GROUP BY n
 ```
 
-### 使用无效查询的 `CREATE VIEW`
+### 使用无效查询的 `CREATE VIEW` {#create-view-with-invalid-query}
 
 新的分析器始终会执行类型检查。
 此前，可以使用无效的 `SELECT` 查询创建一个 `VIEW`。
@@ -73,7 +69,7 @@ GROUP BY n
 
 现在不再允许以这种方式创建 `VIEW`。
 
-#### 示例
+#### 示例 {#example-view}
 
 ```sql
 CREATE TABLE source (data String)
@@ -85,9 +81,9 @@ AS SELECT JSONExtract(data, 'test', 'DateTime64(3)')
 FROM source;
 ```
 
-### `JOIN` 子句的已知不兼容性
+### `JOIN` 子句的已知不兼容性 {#known-incompatibilities-of-the-join-clause}
 
-#### 使用投影中的列进行 `JOIN`
+#### 使用投影中的列进行 `JOIN` {#join-using-column-from-projection}
 
 默认情况下，来自 `SELECT` 列表的别名不能用作 `JOIN USING` 的键。
 
@@ -107,7 +103,7 @@ USING (b);
 当该设置为 `false` 时，连接条件默认为 `t1.b = t2.b`，查询将返回 `2, 'one'`。
 如果 `t1` 中不存在 `b`，查询将失败并报错。
 
-#### 使用 `JOIN USING` 与 `ALIAS`/`MATERIALIZED` 列时的行为变化
+#### 使用 `JOIN USING` 与 `ALIAS`/`MATERIALIZED` 列时的行为变化 {#changes-in-behavior-with-join-using-and-aliasmaterialized-columns}
 
 在新的 analyzer 中，在包含 `ALIAS` 或 `MATERIALIZED` 列的 `JOIN USING` 查询中使用 `*` 时，这些列默认会包含在结果集中。
 
@@ -124,14 +120,13 @@ SELECT * FROM t1
 FULL JOIN t2 USING (payload);
 ```
 
-
 在新的分析器中，此查询的结果将包含两个表中的 `id` 列以及 `payload` 列。
 相比之下，旧的分析器只有在启用了特定设置（`asterisk_include_alias_columns` 或 `asterisk_include_materialized_columns`）时才会包含这些 `ALIAS` 列，
 并且这些列的顺序可能会不同。
 
 为确保结果一致且符合预期，尤其是在将旧查询迁移到新的分析器时，建议在 `SELECT` 子句中显式指定列，而不是使用 `*`。
 
-#### 在 `USING` 子句中对列表达式类型修饰符的处理
+#### 在 `USING` 子句中对列表达式类型修饰符的处理 {#handling-of-type-modifiers-for-columns-in-using-clause}
 
 在新版本的分析器中，用于确定 `USING` 子句中指定列的公共超类型的规则已被统一，以产生更加可预测的结果，
 尤其是在处理 `LowCardinality` 和 `Nullable` 等类型修饰符时。
@@ -150,7 +145,7 @@ USING (id);
 
 在此查询中，`id` 的共同超类型被确定为 `String`，并丢弃来自 `t1` 的 `LowCardinality` 修饰符。
 
-### 投影列名的变化
+### 投影列名的变化 {#projection-column-names-changes}
 
 在计算投影的列名时，不会替换别名。
 
@@ -176,7 +171,7 @@ FORMAT PrettyCompact
    └───┴────────────┘
 ```
 
-### 不兼容的函数参数类型
+### 不兼容的函数参数类型 {#incompatible-function-arguments-types}
 
 在新的分析器中，类型推断发生在初始查询分析阶段。
 这一变更意味着类型检查会在短路求值之前进行；因此，`if` 函数的参数必须始终具有一个公共超类型。
@@ -187,17 +182,17 @@ FORMAT PrettyCompact
 SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 ```
 
-### 异构集群
+### 异构集群 {#heterogeneous-clusters}
 
 新的 analyzer 显著改变了集群中服务器之间的通信协议。因此，无法在 `enable_analyzer` 设置值不同的服务器上运行分布式查询。
 
-### 变更语句仍由旧版 analyzer 解析
+### 变更语句仍由旧版 analyzer 解析 {#mutations-are-interpreted-by-previous-analyzer}
 
 变更语句（mutations）仍然使用旧版 analyzer 进行解析。
 这意味着某些新的 ClickHouse SQL 功能目前无法用于变更语句中。例如，`QUALIFY` 子句。
 可以在[这里](https://github.com/ClickHouse/ClickHouse/issues/61563)查看当前状态。
 
-### 不支持的功能
+### 不支持的功能 {#unsupported-features}
 
 当前新 analyzer 尚不支持的功能列表如下：
 

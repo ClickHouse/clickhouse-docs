@@ -7,17 +7,13 @@ title: 'Клиентские библиотеки от сторонних раз
 doc_type: 'reference'
 ---
 
-
-
-# Клиентские библиотеки от сторонних разработчиков
+# Клиентские библиотеки от сторонних разработчиков {#client-libraries-from-third-party-developers}
 
 :::note
 ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила их всестороннего тестирования для оценки их качества.
 :::
 
-
-
-### Python
+### Python {#python}
 
 * [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 * [infi.clickhouse&#95;orm](https://github.com/Infinidat/infi.clickhouse_orm)
@@ -26,7 +22,7 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [aiochclient](https://github.com/maximdanilchenko/aiochclient)
 * [asynch](https://github.com/long2ice/asynch)
 
-### PHP
+### PHP {#php}
 
 * [smi2/phpclickhouse](https://packagist.org/packages/smi2/phpClickHouse)
 * [8bitov/clickhouse-php-client](https://packagist.org/packages/8bitov/clickhouse-php-client)
@@ -40,7 +36,7 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
 
-### Go
+### Go {#go}
 
 * [clickhouse](https://github.com/kshvakov/clickhouse/)
 * [go-clickhouse](https://github.com/roistat/go-clickhouse)
@@ -49,12 +45,12 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [golang-clickhouse](https://github.com/leprosus/golang-clickhouse)
 * [uptrace/go-clickhouse](https://clickhouse.uptrace.dev/)
 
-### Swift
+### Swift {#swift}
 
 * [ClickHouseNIO](https://github.com/patrick-zippenfenig/ClickHouseNIO)
 * [ClickHouseVapor ORM](https://github.com/patrick-zippenfenig/ClickHouseVapor)
 
-### Node.js
+### Node.js {#nodejs}
 
 * [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 * [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
@@ -65,59 +61,59 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [clickhouse-ts](https://github.com/bytadaniel/clickhouse-ts)
 * [clickcache](https://github.com/bytadaniel/clickcache)
 
-### Perl
+### Perl {#perl}
 
 * [perl-DBD-ClickHouse](https://github.com/elcamlost/perl-DBD-ClickHouse)
 * [HTTP-ClickHouse](https://metacpan.org/release/HTTP-ClickHouse)
 * [AnyEvent-ClickHouse](https://metacpan.org/release/AnyEvent-ClickHouse)
 
-### Ruby
+### Ruby {#ruby}
 
 * [ClickHouse (Ruby)](https://github.com/shlima/click_house)
 * [clickhouse-activerecord](https://github.com/PNixx/clickhouse-activerecord)
 
-### Rust
+### Rust {#rust}
 
 * [clickhouse.rs](https://github.com/loyd/clickhouse.rs)
 * [clickhouse-rs](https://github.com/suharev7/clickhouse-rs)
 * [Klickhouse](https://github.com/Protryon/klickhouse)
 
-### R
+### R {#r}
 
 * [RClickHouse](https://github.com/IMSMWU/RClickHouse)
 
-### Java
+### Java {#java}
 
 * [clickhouse-client-java](https://github.com/VirtusAI/clickhouse-client-java)
 * [clickhouse-client](https://github.com/Ecwid/clickhouse-client)
 
-### Scala
+### Scala {#scala}
 
 * [clickhouse-scala-client](https://github.com/crobox/clickhouse-scala-client)
 
-### Kotlin
+### Kotlin {#kotlin}
 
 * [AORM](https://github.com/TanVD/AORM)
 
-### C#
+### C# {#c}
 
 * [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
 * [ClickHouse.Ado](https://github.com/killwort/ClickHouse-Net)
 * [ClickHouse.Client](https://github.com/DarkWanderer/ClickHouse.Client)
 * [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
 
-### Elixir
+### Elixir {#elixir}
 
 * [clickhousex](https://github.com/appodeal/clickhousex/)
 * [pillar](https://github.com/sofakingworld/pillar)
 * [ecto&#95;ch](https://github.com/plausible/ecto_ch)
 * [req&#95;ch](https://github.com/livebook-dev/req_ch)
 
-### Ним
+### Ним {#nim}
 
 * [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
 
-### Haskell
+### Haskell {#haskell}
 
 * [hdbc-clickhouse](https://github.com/zaneli/hdbc-clickhouse)
 * [ClickHaskell](https://clickhaskell.dev/)

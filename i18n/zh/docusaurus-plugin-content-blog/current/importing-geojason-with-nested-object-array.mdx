@@ -10,12 +10,11 @@ keywords: ['GeoJSON']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何导入带有嵌套对象数组的 GeoJSON？
 
-## 解答
+## 解答 \{#answer\}
 
 在本教程中，我们将使用一份公开可用的开放数据，可在[此处](https://opendata.esri.es/datasets/ComunidadSIG::municipios-ign/explore?location=39.536006%2C-0.303882%2C6.57)获取。其副本可以在[这里](https://datasets-documentation.s3.eu-west-3.amazonaws.com/geoJSON/Municipios.geojson)找到。
 
@@ -91,7 +90,6 @@ order by id;
 字段 `features.geometry.coordinates` 被注释掉是为了让结果集更易阅读。
 :::
 
-
 ```sql
 SELECT
     type AS type,
@@ -127,7 +125,6 @@ LIMIT 5
 5. 写入数据。
 
 <br />
-
 
 ```sql
 INSERT INTO geojson
@@ -245,8 +242,7 @@ FROM geojson
 └──────────────────────┘
 ```
 
-
 ### 结论 \{#conclusion\}
 
-处理 JSON 可能是一项较为复杂的任务。本教程介绍了一个场景：嵌套对象数组会使这一任务变得更加困难。  
+处理 JSON 可能是一项较为复杂的任务。本教程介绍了一个场景：嵌套对象数组会使这一任务变得更加困难。\
 如有其他与 JSON 相关的需求，请参阅我们的[文档](https://clickhouse.com/docs/integrations/data-formats/json)。

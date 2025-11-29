@@ -14,7 +14,7 @@ import firewall from '@site/static/images/integrations/data-ingestion/clickpipes
 import Image from '@theme/IdealImage';
 
 
-# Azure Flexible Server for Postgres のソース設定ガイド
+# Azure Flexible Server for Postgres のソース設定ガイド {#azure-flexible-server-for-postgres-source-setup-guide}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 

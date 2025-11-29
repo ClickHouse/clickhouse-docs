@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['ローカルファイル インポート ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
 ---
 
-# ローカルファイルの挿入
+# ローカルファイルの挿入 {#insert-local-files}
 
 `clickhouse-client` を使用して、ローカルファイルを ClickHouse サービスにストリーミングできます。これにより、ClickHouse が備える数多くの強力かつ便利な関数を使ってデータを前処理できます。例を見てみましょう...
 
@@ -78,7 +78,6 @@ LIMIT 7
 ```
 
 結果は以下のとおりです。
-
 
 ```response
 │  488 │ comment │ mynameishere │ 2007-02-22 14:48:18 │ "It's too bad. Javascript-in-the-browser and Ajax are both nasty hacks that force programmers to do all sorts of shameful things. And the result is--wanky html tricks. Java, for its faults, is fairly clean when run in the applet environment. It has every superiority over JITBAJAX, except for install issues and a chunky load process. Yahoo games seems like just about the only applet success story. Of course, back in the day, non-trivial Applets tended to be too large for the dial-up accounts people had. At least that is changed." │ [454927] │ ['It','s','too','bad','Javascript','in','the','browser','and','Ajax','are','both','nasty','hacks','that','force','programmers','to','do','all','sorts','of','shameful','things','And','the','result','is','wanky','html','tricks','Java','for','its','faults','is','fairly','clean','when','run','in','the','applet','environment','It','has','every','superiority','over','JITBAJAX','except','for','install','issues','and','a','chunky','load','process','Yahoo','games','seems','like','just','about','the','only','applet','success','story','Of','course','back','in','the','day','non','trivial','Applets','tended','to','be','too','large','for','the','dial','up','accounts','people','had','At','least','that','is','changed'] │

@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 
 
-## geohashEncode
+## geohashEncode {#geohashencode}
 
 緯度と経度を [geohash](#geohash) 文字列にエンコードします。
 
@@ -59,7 +59,7 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
 
-## geohashDecode
+## geohashDecode {#geohashdecode}
 
 任意の [geohash](#geohash) でエンコードされた文字列を経度・緯度にデコードします。
 
@@ -90,7 +90,7 @@ SELECT geohashDecode('ezs42') AS res;
 ```
 
 
-## geohashesInBox
+## geohashesInBox {#geohashesinbox}
 
 指定されたボックスの内部に含まれる、またはその境界と交わる、指定された精度の [geohash](#geohash) でエンコードされた文字列の配列を返します。基本的には、2D グリッドを配列にフラット化したものです。
 

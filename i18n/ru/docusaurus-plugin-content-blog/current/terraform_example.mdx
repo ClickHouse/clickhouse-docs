@@ -10,12 +10,11 @@ keywords: ['Terraform']
 
 {/* усечь */}
 
-
 ## Вопрос \{#question\}
 
 Как использовать API для управления кластерами в ClickHouse Cloud?
 
-## Ответ
+## Ответ \{#answer\}
 
 Мы будем использовать Terraform для настройки инфраструктуры и [провайдер ClickHouse](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)
 
@@ -147,7 +146,6 @@ Terraform успешно инициализирован!
 6). Запустите команду `terraform apply -var-file=secret.tfvars`.
 
 Пример:
-
 
 ```
 ➜  test terraform apply -var-file=secret.tfvars

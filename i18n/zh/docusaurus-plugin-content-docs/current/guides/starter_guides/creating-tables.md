@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# 在 ClickHouse 中创建表
+# 在 ClickHouse 中创建表 {#creating-tables-in-clickhouse}
 
 与大多数数据库一样，ClickHouse 会将表按逻辑分组到**数据库**中。使用 `CREATE DATABASE` 命令在 ClickHouse 中创建一个新数据库：
 

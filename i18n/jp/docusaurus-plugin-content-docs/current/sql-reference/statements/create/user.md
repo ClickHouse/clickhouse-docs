@@ -27,7 +27,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 `ON CLUSTER` 句を使用すると、クラスター全体にユーザーを作成できます。詳しくは [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
 
-## 識別
+## 識別 {#identification}
 
 ユーザーを識別する方法には、以下のようなものがあります:
 
@@ -223,7 +223,7 @@ ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として�
 
 
 
-## 例
+## 例 {#examples-1}
 
 パスワード `qwerty` で保護されたユーザーアカウント `mira` を作成します：
 

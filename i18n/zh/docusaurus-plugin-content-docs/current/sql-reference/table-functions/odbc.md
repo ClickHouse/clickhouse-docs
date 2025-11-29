@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# odbc 表函数
+# odbc 表函数 {#odbc-table-function}
 
 返回一个通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接的表。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 odbc(数据源, external_database, external_table)
@@ -40,7 +40,7 @@ odbc(named_collection)
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 **通过 ODBC 从本地 MySQL 安装获取数据**
 

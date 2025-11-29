@@ -19,7 +19,7 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# Claude DesktopでClickHouse MCPサーバーを使用する
+# Claude DesktopでClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > 本ガイドでは、uvを使用してClaude DesktopにClickHouse MCPサーバーを設定し、
 > ClickHouseのサンプルデータセットに接続する方法について説明します。
@@ -51,7 +51,7 @@ uv を使用したくない場合は、別のパッケージマネージャー�
 
 
 
-## ClickHouse MCP サーバーの設定
+## ClickHouse MCP サーバーの設定 {#configure-clickhouse-mcp-server}
 
 Claude Desktop のインストールが完了したら、次は [ClickHouse MCP サーバー](https://github.com/ClickHouse/mcp-clickhouse) を設定します。
 これは [Claude Desktop の設定ファイル](https://claude.ai/docs/configuration) から行えます。

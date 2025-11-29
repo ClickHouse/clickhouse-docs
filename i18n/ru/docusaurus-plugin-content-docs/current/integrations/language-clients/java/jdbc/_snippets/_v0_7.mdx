@@ -9,77 +9,70 @@ import TabItem from '@theme/TabItem';
 
 API `clickhouse-jdbc` является синхронным и в целом имеет большие накладные расходы (например, разбор SQL, сопоставление/преобразование типов и т. д.). Рассмотрите возможность использования [clickhouse-client](/integrations/sql-clients/sql-console), когда критична производительность или если вы предпочитаете более прямой способ доступа к ClickHouse.
 
-
 ## Требования к среде \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) версии 8 или выше
+* [OpenJDK](https://openjdk.java.net) версии 8 или выше
 
 ### Настройка \{#setup\}
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-jdbc</artifactId>
+        <version>0.7.2</version>
+        <!-- используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar -->
+        <classifier>shaded-all</classifier>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-        <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.7.2</version>
-            <!-- используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar -->
-            <classifier>shaded-all</classifier>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
+    implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
-        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
-        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
+    implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+    ```
+  </TabItem>
 </Tabs>
 
 Начиная с версии `0.5.0`, мы используем Apache HTTP Client, который включен в клиент. Поскольку общей версии этого пакета нет, необходимо добавить логгер как зависимость.
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.16</version>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation("org.slf4j:slf4j-api:2.0.16")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation 'org.slf4j:slf4j-api:2.0.16'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    ```
+  </TabItem>
 </Tabs>
 
 ## Конфигурация \{#configuration\}
@@ -88,9 +81,9 @@ API `clickhouse-jdbc` является синхронным и в целом и�
 
 **Синтаксис URL**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, например:
 
-- `jdbc:ch://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8123`
-- `jdbc:ch:https://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
-- `jdbc:ch:grpc://localhost` эквивалентно `jdbc:clickhouse:grpc://localhost:9100`
+* `jdbc:ch://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8123`
+* `jdbc:ch:https://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
+* `jdbc:ch:grpc://localhost` эквивалентно `jdbc:clickhouse:grpc://localhost:9100`
 
 **Свойства подключения**:
 
@@ -113,13 +106,13 @@ JDBC-драйвер поддерживает те же форматы данны
 
 :::note
 
-- AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
-- Decimal — используйте `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
-- Enum — может трактоваться как строка или как целое число
-- UInt64 — отображается в тип `long` (в client-v1)
-:::
+* AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
+* Decimal — используйте `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
+* Enum — может трактоваться как строка или как целое число
+* UInt64 — отображается в тип `long` (в client-v1)
+  :::
 
-## Создание подключения
+## Создание подключения \{#creating-connection\}
 
 ```java
 String url = "jdbc:ch://my-server/system"; // по умолчанию используется протокол HTTP и порт 8123
@@ -132,8 +125,7 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-
-## Простой оператор
+## Простой оператор \{#simple-statement\}
 
 ```java showLineNumbers
 
@@ -146,8 +138,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-
-## Insert
+## Insert \{#insert\}
 
 :::note
 
@@ -166,8 +157,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 }
 ```
 
-
-### С использованием табличной функции input
+### С использованием табличной функции input \{#with-input-table-function\}
 
 Вариант с отличными показателями производительности:
 
@@ -186,8 +176,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 * [документацию по функции input](/sql-reference/table-functions/input/), когда это возможно
 
-
-### Вставка с плейсхолдерами
+### Вставка с плейсхолдерами \{#insert-with-placeholders\}
 
 Этот вариант рекомендуется использовать только для небольших вставок, поскольку он требует длинного выражения SQL (которое будет парситься на стороне клиента и потреблять ресурсы CPU и памяти):
 
@@ -202,8 +191,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 }
 ```
 
-
-## Работа с DateTime и часовыми поясами
+## Работа с DateTime и часовыми поясами \{#handling-datetime-and-time-zones\}
 
 Используйте `java.time.LocalDateTime` или `java.time.OffsetDateTime` вместо `java.sql.Timestamp`, а `java.time.LocalDate` — вместо `java.sql.Date`.
 
@@ -218,8 +206,7 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 }
 ```
 
-
-## Обработка `AggregateFunction`
+## Обработка `AggregateFunction` \{#handling-aggregatefunction\}
 
 :::note
 В настоящее время поддерживается только `groupBitmap`.
@@ -267,8 +254,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 <br />
 
-
-## Настройка библиотеки HTTP
+## Настройка библиотеки HTTP \{#configuring-http-library\}
 
 Коннектор ClickHouse JDBC поддерживает три библиотеки HTTP: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html) и [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
@@ -292,12 +278,11 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 <br />
 
-
 ## Подключение к ClickHouse с использованием SSL \{#connect-to-clickhouse-with-ssl\}
 
 Чтобы установить защищённое JDBC‑подключение к ClickHouse с использованием SSL, необходимо настроить свойства JDBC, включив в них параметры SSL. Обычно это включает указание SSL‑свойств, таких как `sslmode` и `sslrootcert`, в вашем JDBC URL или объекте Properties.
 
-## Свойства SSL/TLS
+## Свойства SSL/TLS \{#ssl-properties\}
 
 | Имя                  | Значение по умолчанию | Допустимые значения | Описание                                                                    |
 | -------------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
@@ -330,8 +315,7 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
   }
 ```
 
-
-## Устранение тайм-аута JDBC при крупных операциях вставки
+## Устранение тайм-аута JDBC при крупных операциях вставки \{#resolving-jdbc-timeout-on-large-inserts\}
 
 При выполнении крупных операций вставки в ClickHouse с длительным временем выполнения вы можете столкнуться с ошибками тайм-аута JDBC, например:
 
@@ -341,18 +325,17 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 Эти ошибки могут нарушить процесс вставки данных и повлиять на стабильность системы. Чтобы устранить эту проблему, необходимо настроить несколько параметров тайм-аутов в операционной системе клиента.
 
-
 ### Mac OS \{#mac-os\}
 
 В macOS можно изменить следующие параметры, чтобы устранить проблему:
 
-- `net.inet.tcp.keepidle`: 60000
-- `net.inet.tcp.keepintvl`: 45000
-- `net.inet.tcp.keepinit`: 45000
-- `net.inet.tcp.keepcnt`: 8
-- `net.inet.tcp.always_keepalive`: 1
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
 
-### Linux
+### Linux \{#linux\}
 
 В Linux-системах аналогичные настройки сами по себе могут не устранить проблему. Из‑за особенностей обработки параметров keep-alive для сокетов в Linux требуются дополнительные действия. Выполните следующие шаги:
 

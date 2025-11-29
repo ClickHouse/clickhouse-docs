@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# covarPopStable
+# covarPopStable {#covarpopstable}
 
 计算总体协方差的值：
 
