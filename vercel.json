@@ -3625,6 +3625,11 @@
       "source": "/docs/operations/backup",
       "destination": "/docs/operations/backup/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/data-types/object-data-type",
+      "destination": "/docs/sql-reference/data-types/newjson",
+      "permanent": true
     }
   ]
 }
