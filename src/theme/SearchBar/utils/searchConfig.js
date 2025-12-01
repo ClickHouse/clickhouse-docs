@@ -60,15 +60,47 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
  * Create navigator for handling search result clicks
  * @param {Object} history - React router history object
  * @param {RegExp} externalUrlRegex - Regex to match external URLs
+ * @param {string} currentLocale - Current locale
  * @returns {Object} - Navigator object
  */
-export function createSearchNavigator(history, externalUrlRegex) {
+export function createSearchNavigator(history, externalUrlRegex, currentLocale) {
   return {
     navigate({ itemUrl }) {
-      if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
-        window.location.href = itemUrl;
+      let url = itemUrl;
+
+      // Transform the URL if it's an absolute URL from Algolia
+      // This handles the case when Enter is pressed (which may receive untransformed URLs)
+      try {
+        const urlObj = new URL(itemUrl);
+        const pathname = urlObj.pathname;
+        const hash = urlObj.hash;
+
+        if (currentLocale !== 'en') {
+          const prefix = `/docs/${currentLocale}`;
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        } else {
+          const prefix = '/docs';
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        }
+
+        url += hash;
+      } catch (e) {
+        // If URL parsing fails, it's likely already a relative path
+        // Use it as-is
+      }
+
+      if (isRegexpStringMatch(externalUrlRegex, url)) {
+        window.location.href = url;
       } else {
-        history.push(itemUrl);
+        history.push(url);
       }
     },
   };
