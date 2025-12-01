@@ -234,12 +234,12 @@ EOF
 
 **Replace the following in the configuration:**
 - `YOUR_CLICKSTACK_HOST`: The hostname or IP address where ClickStack is running
-- For local testing, you can use an SSH tunnel (see Troubleshooting section)
+- For local testing, you can use an SSH tunnel (see the [Troubleshooting section](#troubleshooting))
 
 This configuration:
 - Reads system log files from standard locations (`/var/log/syslog` for Ubuntu, `/var/log/messages` for Amazon Linux/RHEL)
 - Parses syslog format to extract structured fields (timestamp, hostname, unit/service, PID, message)
-- **Automatically detects and adds EC2 metadata** using the resourcedetection processor
+- **Automatically detects and adds EC2 metadata** using the `resourcedetection` processor
 - Optionally includes EC2 tags (Name, Environment, Team) if present
 - Sends logs to ClickStack via OTLP HTTP
 
@@ -284,7 +284,7 @@ Configure the collector to run as a systemd service so it starts automatically o
 Once the collector is running, log into HyperDX and verify logs are flowing with EC2 metadata:
 
 1. Navigate to the search view
-2. Set source to Logs
+2. Set source to `Logs`
 3. Filter by `source:ec2-host-logs`
 4. Click on a log entry to expand it
 5. Verify you see EC2 metadata in the resource attributes:
@@ -410,7 +410,7 @@ docker run --name clickstack-demo \
 Once the collector is running:
 
 1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
-2. Navigate to the Search view and set the source to `Logs`
+2. Navigate to the search view and set the source to `Logs`
 3. Set the time range to **2025-11-10 00:00:00 - 2025-11-13 00:00:00**
 4. Filter by `source:ec2-demo`
 5. Expand a log entry to view EC2 metadata in the resource attributes
@@ -418,7 +418,7 @@ Once the collector is running:
 <Image img={search_view_demo} alt="EC2 logs search view"/>
 <Image img={log_view_demo} alt="EC2 log detail with metadata"/>
 
-:::note[Timezone Display]
+:::note[Timezone display]
 HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
