@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция dictionary
+# Табличная функция dictionary {#dictionary-table-function}
 
 Отображает данные словаря [dictionary](../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 dictionary('dict')
@@ -35,7 +35,7 @@ dictionary('dict')
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Исходная таблица `dictionary_source_table`:
 

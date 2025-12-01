@@ -6,28 +6,24 @@ title: 'Клауза LIMIT BY'
 doc_type: 'reference'
 ---
 
-
-
-# Оператор LIMIT BY
+# Оператор LIMIT BY {#limit-by-clause}
 
 Запрос с оператором `LIMIT n BY expressions` выбирает первые `n` строк для каждого отдельного значения `expressions`. Ключ для `LIMIT BY` может содержать произвольное количество [выражений](/sql-reference/syntax#expressions).
 
 ClickHouse поддерживает следующие варианты синтаксиса:
 
-- `LIMIT [offset_value, ]n BY expressions`
-- `LIMIT n OFFSET offset_value BY expressions`
+* `LIMIT [offset_value, ]n BY expressions`
+* `LIMIT n OFFSET offset_value BY expressions`
 
 При обработке запроса ClickHouse использует данные, упорядоченные по ключу сортировки. Ключ сортировки задаётся явно с помощью оператора [ORDER BY](/sql-reference/statements/select/order-by) или неявно как свойство движка таблицы (порядок строк гарантируется только при использовании [ORDER BY](/sql-reference/statements/select/order-by); в противном случае блоки строк не будут упорядочены из‑за многопоточности). Затем ClickHouse применяет `LIMIT n BY expressions` и возвращает первые `n` строк для каждой отдельной комбинации значений `expressions`. Если указан `OFFSET`, то для каждого блока данных, соответствующего отдельной комбинации значений `expressions`, ClickHouse пропускает `offset_value` строк с начала блока и возвращает максимум `n` строк. Если `offset_value` больше количества строк в блоке данных, ClickHouse возвращает ноль строк из этого блока.
 
-:::note    
+:::note\
 `LIMIT BY` не связан с [LIMIT](../../../sql-reference/statements/select/limit.md). Оба оператора могут использоваться в одном и том же запросе.
 :::
 
-Если вы хотите использовать номера столбцов вместо их имён в операторе `LIMIT BY`, включите настройку [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments).    
+Если вы хотите использовать номера столбцов вместо их имён в операторе `LIMIT BY`, включите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments).
 
-
-
-## Примеры
+## Примеры {#examples}
 
 Пример таблицы:
 
@@ -80,8 +76,7 @@ LIMIT 5 BY domain, device_type
 LIMIT 100
 ```
 
-
-## LIMIT BY ALL
+## LIMIT BY ALL {#limit-by-all}
 
 `LIMIT BY ALL` эквивалентен перечислению всех выражений, указанных в SELECT, которые не являются агрегатными функциями.
 
@@ -111,8 +106,7 @@ SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIM
 SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-
-## Примеры
+## Примеры {#examples-limit-by-all}
 
 Пример таблицы:
 

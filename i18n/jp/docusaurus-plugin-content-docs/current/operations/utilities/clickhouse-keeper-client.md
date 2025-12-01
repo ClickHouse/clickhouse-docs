@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-keeper-client ユーティリティ
+# clickhouse-keeper-client ユーティリティ {#clickhouse-keeper-client-utility}
 
 ネイティブプロトコルを使用して clickhouse-keeper と通信するためのクライアントアプリケーションです。
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 
 
 
-## 例
+## 例 {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30

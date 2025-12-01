@@ -12,13 +12,13 @@ import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных Crunchy Bridge Postgres
+# Руководство по настройке источника данных Crunchy Bridge Postgres {#crunchy-bridge-postgres-source-setup-guide}
 
 ClickPipes поддерживает Postgres версии 12 и более поздних.
 
 
 
-## Включение логической репликации
+## Включение логической репликации {#enable-logical-replication}
 
 Crunchy Bridge по умолчанию включает логическую репликацию ([подробнее](https://docs.crunchybridge.com/how-to/logical-replication)). Убедитесь, что приведённые ниже параметры настроены верно. При необходимости измените их.
 

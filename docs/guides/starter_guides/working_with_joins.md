@@ -23,7 +23,7 @@ In this guide, you'll explore some of the available commonly used join types and
 
 ## Test Data and Resources {#test-data-and-resources}
 
-Instructions for creating and loading the tables can be found [here](/integrations/dbt/dbt-setup/).
+Instructions for creating and loading the tables can be found [here](/integrations/dbt/guides).
 The dataset is also available in the [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) for users who don't want to create and load
 the tables locally.
 
@@ -99,7 +99,7 @@ The behavior of the `INNER JOIN` can be extended or changed, by using one of the
 
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
-The `LEFT OUTER JOIN` behaves like `INNER JOIN`; plus, for non-matching left table rows, ClickHouse returns [default values](/sql-reference/statements/create/table/#default-values) for the right table’s columns.
+The `LEFT OUTER JOIN` behaves like `INNER JOIN`; plus, for non-matching left table rows, ClickHouse returns [default values](/sql-reference/statements/create/table#default_values) for the right table’s columns.
 
 A `RIGHT OUTER JOIN` query is similar and also returns values from non-matching rows from the right table together with default values for the columns of the left table.
 
@@ -231,7 +231,7 @@ LIMIT 10;
 └─────────────────────────────────────────────┘
 ```
 
-The `INNER JOIN` clause in the syntactically optimized `CROSS JOIN` query version contains the `ALL` keyword, that got explicitly added in order to keep the cartesian product semantics of the `CROSS JOIN` even when being rewritten into an `INNER JOIN`, for which the cartesian product can be [disabled](/operations/settings/settings#settings-join_default_strictness).
+The `INNER JOIN` clause in the syntactically optimized `CROSS JOIN` query version contains the `ALL` keyword, that got explicitly added in order to keep the cartesian product semantics of the `CROSS JOIN` even when being rewritten into an `INNER JOIN`, for which the cartesian product can be [disabled](/operations/settings/settings#join_default_strictness).
 
 ```sql
 ALL
@@ -447,4 +447,4 @@ The `ON` clause of the `ASOF JOIN` is required and specifies an exact match cond
 ## Summary {#summary}
 
 This guide shows how ClickHouse supports all standard SQL JOIN types, plus specialized joins to power analytical queries.
-See the documentation for the [JOIN](https://clickhouse.com/docs/sql-reference/statements/select/join) statement for more details on JOINs.
+See the documentation for the [JOIN](/sql-reference/statements/select/join) statement for more details on JOINs.

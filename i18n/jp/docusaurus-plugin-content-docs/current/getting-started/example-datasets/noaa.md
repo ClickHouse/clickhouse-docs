@@ -28,7 +28,7 @@ The sections below give a brief overview of the steps that were involved in brin
 - ClickHouse 向けに[事前に用意されたデータ](#pre-prepared-data)。クレンジングや再構造化、拡張が行われており、1900 年から 2022 年までをカバーしています。
 - [元データをダウンロード](#original-data)して、ClickHouse に必要な形式へ変換します。独自のカラムを追加したいユーザーは、このアプローチを検討するとよいでしょう。
 
-### 事前処理済みデータ
+### 事前処理済みデータ {#pre-prepared-data}
 
 より具体的には、NOAA による品質保証チェックで一度も失敗しなかった行は削除されています。また、データは 1 行につき 1 測定値という構造から、station id と日付ごとに 1 行という構造に再編成されています。つまり、
 
@@ -55,7 +55,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriche
 
 以下では、ClickHouse にロードするための準備として、元データをダウンロードおよび変換する手順を説明します。
 
-#### ダウンロード
+#### ダウンロード {#download}
 
 元データをダウンロードするには、次の手順を行います。
 
@@ -64,7 +64,7 @@ for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i
 ```
 
 
-#### データのサンプリング
+#### データのサンプリング {#sampling-the-data}
 
 ```bash
 $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format PrettyCompact
@@ -108,7 +108,7 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 
 1 行あたり 1 件の測定値とする形式では、ClickHouse ではスパースなテーブル構造になってしまいます。時刻と観測所ごとに 1 行とし、測定値を列として持つ形式に変換する必要があります。まず、問題のない行、すなわち `qFlag` が空文字列に等しい行にデータセットを絞り込みます。
 
-#### データをクリーンアップする
+#### データをクリーンアップする {#clean-the-data}
 
 [ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) を使用して、関心のある測定値を表し、かつ品質要件を満たす行だけが残るようにフィルタリングできます。
 
@@ -122,7 +122,7 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 26億行以上あるため、すべてのファイルをパースするこのクエリは高速ではありません。8コアのマシンでは、完了までに約160秒かかります。
 
 
-### データのピボット
+### データのピボット {#pivot-data}
 
 1 行に 1 つの計測値を持つ構造も ClickHouse で利用できますが、将来のクエリを不必要に複雑にしてしまいます。理想的には、各 station id と日付ごとに 1 行とし、各計測タイプとその値がそれぞれ列になる形が望ましいです。つまり、次のようなイメージです。
 
@@ -161,7 +161,7 @@ done
 このクエリにより、サイズが 50GB の単一ファイル `noaa.csv` が生成されます。
 
 
-### データの拡充
+### データの拡充 {#enriching-the-data}
 
 現在のデータには、国コードのプレフィックスを含むステーション ID 以外に位置情報に関する情報がありません。本来であれば、各ステーションには緯度と経度が紐づいていることが望ましいです。これを実現するために、NOAA は各ステーションの詳細を別ファイルとして提供しており、それが [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) です。このファイルには[複数の列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)があり、そのうち今後の分析で有用なのは 5 つの列、すなわち id、latitude、longitude、elevation、name です。
 
@@ -194,7 +194,7 @@ FROM file('noaa.csv', CSV,
 このクエリは実行に数分かかり、サイズ 6.4 GB の `noaa_enriched.parquet` ファイルを生成します。
 
 
-## テーブルの作成
+## テーブルの作成 {#create-table}
 
 ClickHouse クライアントから、ClickHouse 上に MergeTree テーブルを作成します。
 
@@ -223,7 +223,7 @@ CREATE TABLE noaa
 
 ## ClickHouse へのデータ挿入 {#inserting-into-clickhouse}
 
-### ローカルファイルからの挿入
+### ローカルファイルからの挿入 {#inserting-from-local-file}
 
 データは、ClickHouse クライアントから次のようにローカルファイルから挿入できます：
 
@@ -236,7 +236,7 @@ INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 この読み込みを高速化する方法については[こちら](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)を参照してください。
 
 
-### S3 からの挿入
+### S3 からの挿入 {#inserting-from-s3}
 
 ```sql
 INSERT INTO noaa SELECT *
@@ -249,7 +249,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 
 ## サンプルクエリ {#sample-queries}
 
-### 観測史上最高気温
+### 観測史上最高気温 {#highest-temperature-ever}
 
 ```sql
 SELECT
@@ -278,7 +278,7 @@ LIMIT 5
 2023 年時点での [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) における[記録上の最高気温](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と比べても、安心できるほどよく一致しています。
 
 
-### 最高のスキーリゾート
+### 最高のスキーリゾート {#best-ski-resorts}
 
 アメリカ合衆国の[スキーリゾート一覧](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)とそれぞれの所在地を用い、過去5年間のいずれかの月における降雪量が最大だった上位1000件の気象観測所と結合します。この結合結果を[geoDistance](/sql-reference/functions/geo/coordinates/#geodistance)でソートし、距離が20km未満のものに絞り込んだうえで、リゾートごとに最上位の結果を選択し、それらを合計降雪量で並べ替えます。なお、良好なスキーコンディションの大まかな指標として、標高1800m以上のリゾートのみに制限しています。
 

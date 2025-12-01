@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Подключение dlt к ClickHouse
+# Подключение dlt к ClickHouse {#connect-dlt-to-clickhouse}
 
 <PartnerBadge/>
 
@@ -18,9 +18,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## Установка dlt с ClickHouse
+## Установка dlt с ClickHouse {#install-dlt-with-clickhouse}
 
-### Установите библиотеку `dlt` с зависимостями для ClickHouse:
+### Установите библиотеку `dlt` с зависимостями для ClickHouse: {#to-install-the-dlt-library-with-clickhouse-dependencies}
 
 ```bash
 pip install "dlt[clickhouse]"
@@ -99,7 +99,7 @@ dataset_table_separator = "___"          # Разделитель для имё�
 
 
 ```bash
-# разместите это в начале вашего toml-файла, перед началом любых секций.
+# разместите это в начале вашего toml-файла, перед началом любых секций. {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -156,7 +156,7 @@ ClickHouse поддерживает следующие <a href="https://dlthub.c
 
 
 
-## Табличный движок
+## Табличный движок {#table-engine}
 
 По умолчанию таблицы создаются с использованием табличного движка `ReplicatedMergeTree` в ClickHouse. Вы можете указать другой табличный движок с помощью параметра `table_engine_type` в адаптере ClickHouse:
 
@@ -176,7 +176,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `replicated_merge_tree` (по умолчанию) — создаёт таблицы с использованием движка `ReplicatedMergeTree`
 
 
-## Поддержка промежуточного хранилища
+## Поддержка промежуточного хранилища {#staging-support}
 
 ClickHouse поддерживает Amazon S3, Google Cloud Storage и Azure Blob Storage в качестве целевых промежуточных хранилищ файлов.
 
@@ -199,7 +199,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### Использование Google Cloud Storage как промежуточного хранилища
+### Использование Google Cloud Storage как промежуточного хранилища {#using-google-cloud-storage-as-a-staging-area}
 
 dlt поддерживает использование Google Cloud Storage (GCS) в качестве промежуточного хранилища при загрузке данных в ClickHouse. Это выполняется автоматически с помощью <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">табличной функции GCS</a> ClickHouse, которую dlt использует под капотом.
 
@@ -240,10 +240,10 @@ dlt передаст эти учетные данные в ClickHouse, кото�
 * Обеспечить работу файлового назначения <a href="https://github.com/dlt-hub/dlt/issues/1272">с GCS</a> в режиме совместимости с S3
 * <a href="https://github.com/dlt-hub/dlt/issues/1181">Поддержка области промежуточного размещения Google Cloud Storage</a>
 
-### Поддержка dbt
+### Поддержка dbt {#dbt-support}
 
 Интеграция с <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> в целом поддерживается через dbt-clickhouse.
 
-### Синхронизация состояния `dlt`
+### Синхронизация состояния `dlt` {#syncing-of-dlt-state}
 
 Это назначение полностью поддерживает синхронизацию состояния <a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a>.

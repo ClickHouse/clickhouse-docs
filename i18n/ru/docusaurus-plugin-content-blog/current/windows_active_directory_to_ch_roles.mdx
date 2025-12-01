@@ -16,8 +16,7 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 
 {/* обрезать */}
 
-
-## Пример
+## Пример \{#example\}
 
 Этот пример показывает, как пользователям AD, принадлежащим к разным группам безопасности AD, можно предоставить доступ к ролям в ClickHouse. Также он демонстрирует, как пользователя можно добавить в несколько групп пользователей AD, чтобы он получил доступ, предоставляемый несколькими ролями.
 
@@ -99,7 +98,6 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 [https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-server-definition](https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-server-definition)
 
 3. В `config.xml` ClickHouse добавьте конфигурацию `<user_directories>` с записями `<ldap>` на каждом узле ClickHouse.
-
 
 ```
 <user_directories>
@@ -201,7 +199,6 @@ GRANT SELECT ON db2.table1 on cluster 'cluster_1S_3R' TO ad_db2_users;
 9. Проверьте доступ для пользователя db1 с ограниченными правами.
    Например:
 
-
 ```
 root@chnode1:/etc/clickhouse-server# clickhouse-client --user clickhouse_db1_user --password MyPassword123  --secure --port 9440 --host chnode1.marsnet.local
 Клиент ClickHouse версии 24.1.3.31 (официальная сборка).
@@ -274,7 +271,6 @@ Query id: f9954ec4-d8d9-4b5a-9f68-a7aa79a1bb4a
 
 11. Проверьте доступ для пользователя Admin.
     Например:
-
 
 ```
 root@chnode1:/etc/clickhouse-server# clickhouse-client --user clickhouse_ad_admin --password MyPassword123  --secure --port 9440 --host chnode1.marsnet.local

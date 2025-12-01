@@ -22,7 +22,7 @@ import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Подключение Splunk к ClickHouse
+# Подключение Splunk к ClickHouse {#connecting-splunk-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -83,7 +83,7 @@ Splunk — популярная платформа для обеспечения
 
 
 
-## Настройка JDBC для ClickHouse
+## Настройка JDBC для ClickHouse {#configure-jdbc-for-clickhouse}
 
 Скачайте [драйвер ClickHouse JDBC](https://github.com/ClickHouse/clickhouse-java) в папку DB Connect Drivers, например:
 
@@ -150,7 +150,7 @@ ui_default_catalog = $database$
 
 
 
-## Создайте дашборд
+## Создайте дашборд {#create-a-dashboard}
 
 Давайте создадим дашборд, который использует сочетание SQL и мощного Splunk Processing Language (SPL).
 
@@ -195,7 +195,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 <Image img={splunk_10} size="lg" border alt="Final Splunk dashboard with multiple visualizations of NYC taxi data" />
 
 
-## Данные временных рядов
+## Данные временных рядов {#time-series-data}
 
 В Splunk есть сотни встроенных функций, которые дашборды могут использовать для визуализации и представления данных временных рядов. В этом примере будут объединены SQL и SPL для создания запроса, который может работать с данными временных рядов в Splunk.
 

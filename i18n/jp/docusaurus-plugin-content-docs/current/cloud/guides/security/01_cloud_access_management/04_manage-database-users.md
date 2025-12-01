@@ -12,7 +12,7 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 このガイドでは、SQL コンソール内とデータベース内で直接データベースユーザーを管理する 2 通りの方法を説明します。
 
-### SQL コンソールのパスワードレス認証
+### SQL コンソールのパスワードレス認証 {#sql-console-passwordless-authentication}
 
 SQL コンソールユーザーは各セッションごとに作成され、自動的に更新される X.509 証明書を使って認証されます。セッションが終了すると、そのユーザーは削除されます。監査目的のアクセスリストを作成する場合は、コンソールで対象サービスの Settings タブに移動し、データベース内に存在するデータベースユーザーに加えて、SQL コンソールからのアクセスも確認してください。カスタムロールが設定されている場合、ユーザーのアクセス権は、そのユーザー名で終わるロールに一覧表示されます。
 
@@ -54,9 +54,9 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 
 
-## データベース認証
+## データベース認証 {#database-authentication}
 
-### データベースユーザー ID とパスワード
+### データベースユーザー ID とパスワード {#database-user-id--password}
 
 パスワードを安全に保護するために、[ユーザーアカウントを作成](/sql-reference/statements/create/user.md)する際は SHA256&#95;hash メソッドを使用してください。ClickHouse データベースのパスワードは 12 文字以上である必要があり、英大文字・英小文字・数字および／または記号を含む複雑さ要件を満たさなければなりません。
 
@@ -68,7 +68,7 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
-### セキュアシェル (SSH) 認証を使用するデータベースユーザー
+### セキュアシェル (SSH) 認証を使用するデータベースユーザー {#database-ssh}
 
 ClickHouse Cloud のデータベースユーザーに対して SSH 認証を設定します。
 
@@ -80,7 +80,7 @@ ClickHouse Cloud のデータベースユーザーに対して SSH 認証を設�
 詳細な手順と例については、ナレッジベース内の「[SSH キーを使用して ClickHouse Cloud に接続する方法](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)」を参照してください。
 
 
-## データベース権限
+## データベース権限 {#database-permissions}
 
 SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用して、サービスおよびデータベース内で次の設定を行います。
 
@@ -97,7 +97,7 @@ SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用�
 
 <Image img={user_grant_permissions_options} alt="ユーザーに権限を付与するさまざまな方法を示す図" size="md" background="black" />
 
-### 初期設定
+### 初期設定 {#initial-settings}
 
 データベースには `default` という名前のアカウントがあり、サービス作成時に自動的に追加され、default&#95;role が付与されます。サービスを作成するユーザーには、サービス作成時に `default` アカウントに割り当てられる自動生成のランダムなパスワードが表示されます。このパスワードは初期セットアップ後は表示されませんが、後からコンソール内で Service Admin 権限を持つ任意のユーザーが変更できます。このアカウント、またはコンソール内で Service Admin 権限を持つアカウントは、いつでも追加のデータベースユーザーおよびロールを設定できます。
 
@@ -114,7 +114,7 @@ GRANT default_role to userID;
 
 ユーザーは、SHA256 ハッシュジェネレーターや Python の `hashlib` のような関数を使用して、適切な複雑さを備えた 12 文字以上のパスワードを SHA256 文字列に変換し、その文字列をパスワードとしてシステム管理者に渡すことができます。これにより、管理者が平文パスワードを閲覧・取り扱う必要がなくなります。
 
-### SQL コンソールユーザーを含むデータベースアクセス一覧
+### SQL コンソールユーザーを含むデータベースアクセス一覧 {#database-access-listings-with-sql-console-users}
 
 次の手順を使用して、組織内の SQL コンソールおよびデータベース全体の完全なアクセス一覧を生成できます。
 

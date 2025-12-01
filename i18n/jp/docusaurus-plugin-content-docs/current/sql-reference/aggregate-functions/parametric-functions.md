@@ -7,15 +7,11 @@ title: 'パラメトリック集約関数'
 doc_type: 'reference'
 ---
 
-
-
-# パラメトリック集約関数
+# パラメトリック集約関数 {#parametric-aggregate-functions}
 
 一部の集約関数は、（圧縮に使用される）引数列だけでなく、初期化に用いる定数パラメータの集合も受け取ることができます。構文としては、1 組ではなく 2 組の括弧を使用します。最初の括弧はパラメータ用で、2 番目の括弧は引数用です。
 
-
-
-## histogram
+## histogram {#histogram}
 
 適応型ヒストグラムを計算します。厳密な結果が得られることは保証されません。
 
@@ -89,8 +85,7 @@ FROM
 
 この場合、ヒストグラムのビン境界は分かっていないことを念頭に置いてください。
 
-
-## sequenceMatch
+## sequenceMatch {#sequencematch}
 
 シーケンスにパターンに一致するイベントチェーンが含まれているかどうかを判定します。
 
@@ -121,7 +116,7 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 
 型: `UInt8`。
 
-#### パターン構文
+#### パターン構文 {#pattern-syntax}
 
 * `(?N)` — 位置 `N` の条件引数に一致します。条件は `[1, 32]` の範囲で番号付けされます。たとえば、`(?1)` は `cond1` パラメータに渡された引数に一致します。
 
@@ -181,8 +176,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 
 * [sequenceCount](#sequencecount)
 
-
-## sequenceCount
+## sequenceCount {#sequencecount}
 
 パターンに一致したイベントチェーンの個数をカウントします。関数は、互いに重複しないイベントチェーンを検索します。現在のチェーンが一致した後に、次のチェーンの検索を開始します。
 
@@ -239,8 +233,7 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## sequenceMatchEvents
+## sequenceMatchEvents {#sequencematchevents}
 
 パターンに一致した最長のイベントチェーン内のイベントタイムスタンプを返します。
 
@@ -301,8 +294,7 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 
 * [sequenceMatch](#sequencematch)
 
-
-## windowFunnel
+## windowFunnel {#windowfunnel}
 
 スライディング時間ウィンドウ内でイベントチェーンを探索し、そのチェーンから発生したイベント数の最大値を計算します。
 
@@ -354,7 +346,6 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 入力テーブル:
 
-
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
 │ 2019-01-28 │       1 │ 2019-01-29 10:00:00 │    1003 │ phone   │
@@ -399,8 +390,7 @@ ORDER BY level ASC;
 └───────┴───┘
 ```
 
-
-## retention
+## retention {#retention}
 
 この関数は、イベントで特定の条件が満たされたかどうかを示す `UInt8` 型の引数を 1〜32 個受け取ります。
 どの条件も（[WHERE](/sql-reference/statements/select/where) と同様に）引数として指定できます。
@@ -505,7 +495,6 @@ ORDER BY uid ASC
 
 結果：
 
-
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -560,8 +549,7 @@ FROM
 * `r2` - 2020-01-01 から 2020-01-02 の間の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond2` 条件）。
 * `r3` - 2020-01-01 および 2020-01-03 の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond3` 条件）。
 
-
-## uniqUpTo(N)(x)
+## uniqUpTo(N)(x) {#uniquptonx}
 
 引数の異なる値の個数を、指定された上限 `N` まで数えます。異なる値の個数が `N` より大きい場合、この関数は `N` + 1 を返し、それ以外の場合は正確な値を返します。
 
@@ -581,8 +569,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 `uniqUpTo(4)(UserID)` は、各 `SearchPhrase` ごとの一意な `UserID` の数を計算しますが、数えるのは一意な値を最大 4 個までに制限します。ある `SearchPhrase` に対して一意な `UserID` が 4 個を超えて存在する場合、この関数は 5（4 + 1）を返します。その後、`HAVING` 句で、一意な `UserID` の数が 5 未満である `SearchPhrase` を除外します。これにより、少なくとも 5 人の異なるユーザーによって使用された検索キーワードの一覧を取得できます。
 
-
-## sumMapFiltered
+## sumMapFiltered {#summapfiltered}
 
 この関数は [sumMap](/sql-reference/aggregate-functions/reference/summap) と同様に動作しますが、追加でフィルタリングに使用するキーの配列をパラメータとして受け取ります。これはキーのカーディナリティが高いキー集合を扱う場合に特に有用です。
 
@@ -632,8 +619,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
    └─────────────────────────────────────────────────────────────────┘
 ```
 
-
-## sumMapFilteredWithOverflow
+## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
 
 この関数は [sumMap](/sql-reference/aggregate-functions/reference/summap) と同様に動作しますが、パラメータとしてフィルタリングに使用するキー配列も受け取る点が異なります。これは、キーのカーディナリティが高い場合に特に有用です。また、[sumMapFiltered](#summapfiltered) 関数とは、オーバーフローを許容して合計を行う点が異なります。つまり、合計結果のデータ型が引数のデータ型と同じになります。
 
@@ -695,8 +681,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
    └──────────────────────┴────────────────────────────────────┘
 ```
 
-
-## sequenceNextNode
+## sequenceNextNode {#sequencenextnode}
 
 イベントチェーンにマッチした次のイベントの値を返します。
 
@@ -786,7 +771,6 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
  1970-01-01 09:00:04    2   Basket
 ```
 
-
 1970-01-01 09:00:01    3   Gift // 基準値、Home とは一致しない
 1970-01-01 09:00:02    3   Home
 1970-01-01 09:00:03    3   Gift
@@ -860,7 +844,6 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 ```
-
 
 dt   id   page
 1970-01-01 09:00:01    1   Home // 結果
@@ -938,7 +921,6 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = '
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
 ```
-
 
 dt   id   page   ref
 1970-01-01 09:00:01    1   A      ref4 // ref 列が &#39;ref3&#39; と一致しないため、この行は基準行にはできません。

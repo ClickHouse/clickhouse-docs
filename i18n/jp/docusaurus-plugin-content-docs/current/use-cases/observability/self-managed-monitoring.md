@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['オブザーバビリティ', '監視', '自己管理型', 'メトリクス', 'システムの健全性']
 ---
 
-import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';
-import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
-import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
+import ObservabilityIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
+import DirectIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
+import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
 
 # セルフマネージド環境での監視 {#cloud-monitoring}

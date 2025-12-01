@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# JOIN 句
+# JOIN 句 {#join-clause}
 
 `JOIN` 句は、各テーブルに共通する値を用いて 1 つ以上のテーブルの列を結合し、新しいテーブルを生成します。これは SQL をサポートするデータベースで一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)における join に相当します。単一のテーブル内での結合という特殊なケースは、しばしば「自己結合 (self-join)」と呼ばれます。
 
@@ -76,7 +76,7 @@ ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった�
 
 
 
-## ON 句の条件
+## ON 句の条件 {#on-section-conditions}
 
 `ON` 句には、`AND` や `OR` 演算子を使って組み合わせた複数の条件を含めることができます。結合キーを指定する条件は、次を満たす必要があります。
 
@@ -189,7 +189,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 ```
 
 
-## 異なるテーブルの列に対する不等号条件を用いた JOIN
+## 異なるテーブルの列に対する不等号条件を用いた JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
 ClickHouse は現在、等価条件に加えて、不等号条件を指定した `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` をサポートしています。不等号条件は、`hash` および `grace_hash` の JOIN アルゴリズムでのみ利用できます。不等号条件は `join_use_nulls` ではサポートされません。
 
@@ -240,7 +240,7 @@ key4    f    2    3    4            0    0    \N
 ```
 
 
-## JOINキーにおけるNULL値
+## JOINキーにおけるNULL値 {#null-values-in-join-keys}
 
 `NULL` は、自分自身を含めてどの値とも等しくありません。これは、あるテーブルの `JOIN` キーに `NULL` 値がある場合、他のテーブルの `NULL` 値とは一致しないことを意味します。
 
@@ -295,7 +295,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 ```
 
 
-## ASOF JOIN の使用方法
+## ASOF JOIN の使用方法 {#asof-join-usage}
 
 `ASOF JOIN` は、完全一致するレコードが存在しないデータ同士を結合する必要がある場合に有用です。
 
@@ -350,7 +350,7 @@ USING (equi_column1, ... equi_columnN, asof_column)
 :::
 
 
-## PASTE JOIN の使用方法
+## PASTE JOIN の使用方法 {#paste-join-usage}
 
 `PASTE JOIN` の結果は、左側のサブクエリのすべてのカラムに続いて、右側のサブクエリのすべてのカラムを含むテーブルになります。
 行は、元のテーブルにおける位置に基づいて対応付けられます（行の順序が定義されている必要があります）。
@@ -420,7 +420,7 @@ SETTINGS max_block_size = 2;
 
 
 
-## 暗黙の型変換
+## 暗黙の型変換 {#implicit-type-conversion}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN`、`FULL JOIN` の各クエリでは、「結合キー」に対する暗黙の型変換がサポートされています。ただし、左側と右側のテーブルの結合キーを単一の型に変換できない場合は、クエリを実行できません（たとえば、`UInt64` と `Int64`、あるいは `String` と `Int32` の両方の値をすべて保持できるデータ型が存在しない場合など）。
 
@@ -512,7 +512,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 
 
-## 例
+## 例 {#examples}
 
 例：
 

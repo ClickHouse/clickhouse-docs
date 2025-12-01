@@ -9,7 +9,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# 事务（ACID）支持
+# 事务（ACID）支持 {#transactional-acid-support}
 
 
 
@@ -65,7 +65,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 事务、提交和回滚
+## 事务、提交和回滚 {#transactions-commit-and-rollback}
 
 <ExperimentalBadge />
 
@@ -73,7 +73,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 除了本文件前文描述的功能之外，ClickHouse 还对事务、提交和回滚提供实验性支持。
 
-### 要求
+### 要求 {#requirements}
 
 * 部署 ClickHouse Keeper 或 ZooKeeper 用于跟踪事务
 * 仅支持 Atomic 数据库（默认）
@@ -85,17 +85,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
   </clickhouse>
   ```
 
-### 注意事项
+### 注意事项 {#notes-1}
 
 * 这是一个实验性特性，未来可能会发生变化。
 * 如果在事务期间发生异常，则无法提交该事务。这包括所有异常，包括由于拼写错误导致的 `UNKNOWN_FUNCTION` 异常。
 * 不支持嵌套事务；请先完成当前事务，然后再启动一个新事务。
 
-### 配置
+### 配置 {#configuration}
 
 以下示例基于启用了 ClickHouse Keeper 的单节点 ClickHouse 服务器。
 
-#### 启用实验性事务支持
+#### 启用实验性事务支持 {#enable-experimental-transaction-support}
 
 ```xml title=/etc/clickhouse-server/config.d/transactions.xml
 <clickhouse>
@@ -103,7 +103,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### 启用 ClickHouse Keeper 的单个 ClickHouse 服务器节点的基本配置
+#### 启用 ClickHouse Keeper 的单个 ClickHouse 服务器节点的基本配置 {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
 
 :::note
 有关部署 ClickHouse 服务器以及配置合适数量的 ClickHouse Keeper 节点以形成法定节点数的详细信息，请参阅 [deployment](/deployment-guides/terminology.md) 文档。此处展示的配置仅供实验使用。
@@ -149,9 +149,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-### 示例
+### 示例 {#example}
 
-#### 验证实验性事务是否已启用
+#### 验证实验性事务是否已启用 {#verify-that-experimental-transactions-are-enabled}
 
 执行一次 `BEGIN TRANSACTION` 或 `START TRANSACTION`，随后执行 `ROLLBACK`，以验证实验性事务是否已启用，并确认 ClickHouse Keeper 已启用，因为它用于跟踪事务。
 
@@ -188,7 +188,7 @@ ROLLBACK
 确认。
 ```
 
-#### 创建用于测试的表
+#### 创建用于测试的表 {#create-a-table-for-testing}
 
 :::tip
 建表操作不具备事务性。请在事务之外执行此 DDL 语句。
@@ -208,7 +208,7 @@ ORDER BY n
 确认。
 ```
 
-#### 开始一个事务并插入一行数据
+#### 开始一个事务并插入一行数据 {#begin-a-transaction-and-insert-a-row}
 
 ```sql
 BEGIN TRANSACTION
@@ -241,7 +241,7 @@ FROM mergetree_table
 你可以在事务内部查询该表，会发现该行已经被插入，即使该事务尚未提交。
 :::
 
-#### 回滚事务，然后再次查询该表
+#### 回滚事务，然后再次查询该表 {#rollback-the-transaction-and-query-the-table-again}
 
 确认事务已被回滚：
 
@@ -264,7 +264,7 @@ Ok.
 结果集包含 0 行。耗时：0.002 秒。
 ```
 
-#### 完成事务并再次查询该表
+#### 完成事务并再次查询该表 {#complete-a-transaction-and-query-the-table-again}
 
 ```sql
 BEGIN TRANSACTION
@@ -301,7 +301,7 @@ FROM mergetree_table
 └────┘
 ```
 
-### 事务查看
+### 事务查看 {#transactions-introspection}
 
 你可以通过查询 `system.transactions` 表来检查事务，但请注意，处于事务中的会话无法查询该表。请另开一个 `clickhouse client` 会话来查询该表。
 

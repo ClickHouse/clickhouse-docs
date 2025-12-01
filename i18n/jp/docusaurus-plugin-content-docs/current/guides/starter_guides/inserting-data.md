@@ -122,7 +122,7 @@ ClickHouse は、インサート時（およびクエリ時）に多くの[入�
 
 
 
-## 基本例
+## 基本例 {#basic-example}
 
 ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用できます。入門ガイド「[Creating Tables in ClickHouse](./creating-tables)」で作成したテーブルにデータを挿入してみましょう。
 

@@ -36,7 +36,7 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
 
 如果你以独立部署的方式自行管理 OpenTelemetry collector（例如仅使用 HyperDX 发行版时），我们[仍然建议在条件允许的情况下使用官方 ClickStack 发行版的 collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) 来承担网关角色。但如果你选择自行提供 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
 
-### 独立模式
+### 独立模式 {#standalone}
 
 要以独立模式部署 ClickStack 发行版中的 OTel 连接器，运行以下 Docker 命令：
 
@@ -59,7 +59,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 ### 修改配置 {#modifying-otel-collector-configuration}
 
-#### 使用 Docker
+#### 使用 Docker {#using-docker}
 
 所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为连接某个 ClickHouse 实例：
 
@@ -77,7 +77,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 ```
 
 
-#### Docker Compose
+#### Docker Compose {#docker-compose-otel}
 
 在 Docker Compose 中，使用与上文相同的环境变量来修改收集器配置：
 
@@ -106,7 +106,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 ClickStack 发行版的 OTel collector 支持通过挂载自定义配置文件并设置环境变量来扩展基础配置。自定义配置会与由 HyperDX 通过 OpAMP 管理的基础配置合并。
 
-#### 扩展 collector 配置
+#### 扩展 collector 配置 {#extending-collector-config}
 
 要添加自定义 receivers、processors 或 pipelines：
 
@@ -216,7 +216,7 @@ ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Age
 - 为摄取创建一个权限受限的专用用户——参见下文。
 - 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
 
-### 创建摄取用户
+### 创建摄取用户 {#creating-an-ingestion-user}
 
 我们建议为 OTel collector 在向 ClickHouse 摄取数据时使用，单独创建一个专用数据库和用户。该用户应具有在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表并插入数据的权限。
 
@@ -252,7 +252,7 @@ OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
 
 我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过物化视图和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
 
-### 示例
+### 示例 {#example-processing}
 
 以下配置演示了如何采集这个[非结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)。该配置可用于以 agent 身份运行的 collector，将数据发送到 ClickStack 网关。
 
@@ -410,7 +410,7 @@ JSON 类型为 ClickStack 用户提供了以下优势：
 - **更快的查询、更低的内存占用** - 对 `LogAttributes` 等属性进行典型聚合时，读取的数据量减少 5–10 倍，查询速度显著提升，同时降低查询时间和峰值内存使用量。
 - **简单管理** - 无需为性能预先物化列。每个字段都会成为独立的子列，提供与原生 ClickHouse 列相同的速度。
 
-### 启用 JSON 支持
+### 启用 JSON 支持 {#enabling-json-support}
 
 要在收集器中启用 JSON 支持，请在包含该收集器的任意部署上设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这样可以确保在 ClickHouse 中使用 JSON 类型创建模式（schema）。
 
@@ -464,7 +464,7 @@ export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 
 </VerticalStepper>
 
-#### 迁移现有数据（可选）
+#### 迁移现有数据（可选） {#migrating-existing-data}
 
 要将旧数据导入到新的 JSON 表中：
 

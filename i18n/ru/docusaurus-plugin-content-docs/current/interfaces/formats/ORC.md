@@ -52,9 +52,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем ORC-файл с именем `football.orc` со следующими данными:
 
@@ -86,7 +86,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `ORC`:
 

@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 此选项适用于已经拥有运行中的 ClickHouse 实例，并且其中已写入可观测性或事件数据的用户。
 
@@ -71,7 +71,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 用户可以修改 [Docker Compose 配置](/use-cases/observability/clickstack/deployment/docker-compose)，以实现与本指南相同的效果，并从清单中移除 OTel collector 和 ClickHouse 实例。
 
-## ClickStack OpenTelemetry collector
+## ClickStack OpenTelemetry collector {#otel-collector}
 
 即使您在该栈之外自行管理 OpenTelemetry collector，我们仍然建议使用 ClickStack 提供的 collector 发行版。这样可以确保使用默认的 schema，并采用推荐的摄取最佳实践。
 

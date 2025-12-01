@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 
 
-# clickhouse-static-files-disk-uploader
+# clickhouse-static-files-disk-uploader {#clickhouse-static-files-disk-uploader}
 
 指定した ClickHouse テーブルのメタデータを含むデータディレクトリを出力します。このメタデータを使用して、`web` ディスクをバックエンドとする読み取り専用データセットに基づいた ClickHouse テーブルを別のサーバー上に作成できます。
 
@@ -16,7 +16,7 @@ doc_type: 'guide'
 
 
 
-## 使い方
+## 使い方 {#usage}
 
 ```bash
 $ clickhouse static-files-disk-uploader [args]
@@ -36,7 +36,7 @@ $ clickhouse static-files-disk-uploader [args]
 
 
 
-## 指定したテーブルのメタデータパスを取得する
+## 指定したテーブルのメタデータパスを取得する {#retrieve-metadata-path-for-the-specified-table}
 
 `clickhouse-static-files-disk-uploader` を使用する場合、対象とするテーブルのメタデータパスを取得する必要があります。
 
@@ -61,7 +61,7 @@ SELECT data_paths
 ```
 
 
-## 出力テーブルのメタデータディレクトリをローカルファイルシステム上に書き出す
+## 出力テーブルのメタデータディレクトリをローカルファイルシステム上に書き出す {#output-table-metadata-directory-to-the-local-filesystem}
 
 ターゲット出力ディレクトリ `output` と指定したメタデータパスを使用して、次のコマンドを実行します。
 
@@ -76,7 +76,7 @@ $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./st
 ```
 
 
-## テーブルメタデータディレクトリを外部の URL に出力する
+## テーブルメタデータディレクトリを外部の URL に出力する {#output-table-metadata-directory-to-an-external-url}
 
 この手順は、`--test-mode` フラグを追加する点を除き、データディレクトリをローカルファイルシステムに出力する場合と同様です。出力ディレクトリを指定する代わりに、`--url` フラグを使用してターゲット URL を指定する必要があります。
 

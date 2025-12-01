@@ -10,7 +10,7 @@ doc_type: '指南'
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 在 Easypanel 上部署 ClickHouse
+# 在 Easypanel 上部署 ClickHouse {#deploying-clickhouse-on-easypanel}
 
 <CommunityMaintainedBadge/>
 

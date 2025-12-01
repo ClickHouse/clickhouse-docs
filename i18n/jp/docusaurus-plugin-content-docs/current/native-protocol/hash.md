@@ -9,7 +9,7 @@ keywords: ['CityHash', 'ネイティブプロトコル用ハッシュ', 'ハッ�
 
 
 
-# CityHash
+# CityHash {#cityhash}
 
 ClickHouse は [Google 製 CityHash](https://github.com/google/cityhash) の **以前のバージョンの 1 つ**を使用しています。
 

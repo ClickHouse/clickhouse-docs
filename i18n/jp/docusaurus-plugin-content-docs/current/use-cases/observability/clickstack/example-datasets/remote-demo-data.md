@@ -38,7 +38,7 @@ import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
-import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
+import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
 **以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
 

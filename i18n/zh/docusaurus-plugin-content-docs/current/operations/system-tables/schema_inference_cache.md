@@ -6,10 +6,9 @@ title: 'system.schema_inference_cache'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.schema&#95;inference&#95;cache
+# system.schema&#95;inference&#95;cache {#systemschema&#95;inference&#95;cache}
 
 <SystemTableCloud />
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 第三方开发者的可视化界面
+# 第三方开发者的可视化界面 {#visual-interfaces-from-third-party-developers}
 
 
 

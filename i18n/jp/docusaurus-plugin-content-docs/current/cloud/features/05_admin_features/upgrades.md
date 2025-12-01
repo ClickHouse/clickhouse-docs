@@ -16,7 +16,7 @@ import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgra
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
 
-# アップグレード
+# アップグレード {#upgrades}
 
 ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを定期的に実施します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/cloud) を参照してください。
 

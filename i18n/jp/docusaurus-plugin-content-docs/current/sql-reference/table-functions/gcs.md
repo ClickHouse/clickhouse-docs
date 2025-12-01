@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# gcs テーブル関数
+# gcs テーブル関数 {#gcs-table-function}
 
 [Google Cloud Storage](https://cloud.google.com/storage/) からデータを `SELECT` および `INSERT` するためのテーブル形式のインターフェイスを提供します。[`Storage Object User` IAM ロール](https://cloud.google.com/storage/docs/access-control/iam-roles)の付与が必要です。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 gcs(url [, NOSIGN | hmac_key, hmac_secret] [,format] [,structure] [,compression_method])
@@ -33,7 +33,7 @@ GCS Table Function は、GCS XML API と HMAC キーを使用して Google Cloud
 :::
 
 
-## 引数
+## 引数 {#arguments}
 
 | Argument                     | Description                                                                                                                         |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -72,7 +72,7 @@ and not ~~[https://storage.cloud.google.com](https://storage.cloud.google.com)~~
 
 
 
-## 例
+## 例 {#examples}
 
 GCS ファイル `https://storage.googleapis.com/my-test-bucket-768/data.csv` にあるテーブルから先頭 2 行を選択します：
 
@@ -105,7 +105,7 @@ LIMIT 2;
 ```
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 GCS 上に、次の URI のファイルが複数存在するとします:
 
@@ -199,7 +199,7 @@ FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
 
-## パーティション分割書き込み
+## パーティション分割書き込み {#partitioned-write}
 
 `GCS` テーブルにデータを挿入する際に `PARTITION BY` 式を指定すると、各パーティション値ごとに別々のファイルが作成されます。データを個別のファイルに分割することで、読み取り処理の効率が向上します。
 

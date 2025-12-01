@@ -5,45 +5,41 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 DBサーバーとそのプロトコル経由で通信するための Java クライアントライブラリです。現在の実装では、[HTTP インターフェイス](/interfaces/http) のみをサポートしています。
 このライブラリは、サーバーにリクエストを送信するための独自 API を提供します。また、さまざまなバイナリデータ形式（RowBinary* および Native*）を扱うためのツールも提供します。
 
-
 ## セットアップ \{#setup\}
 
-- Maven Central（プロジェクトの Web ページ）: https://mvnrepository.com/artifact/com.clickhouse/client-v2
-- Nightlyビルド（リポジトリへのリンク）: https://central.sonatype.com/repository/maven-snapshots/
-- 旧 Nightlyビルドの Artifactory（リポジトリへのリンク）: https://s01.oss.sonatype.org/content/repositories/snapshots/
+* Maven Central（プロジェクトの Web ページ）: https://mvnrepository.com/artifact/com.clickhouse/client-v2
+* Nightlyビルド（リポジトリへのリンク）: https://central.sonatype.com/repository/maven-snapshots/
+* 旧 Nightlyビルドの Artifactory（リポジトリへのリンク）: https://s01.oss.sonatype.org/content/repositories/snapshots/
 
-<br/>
+<br />
 
 <Tabs groupId="client-setup">
-<TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>client-v2</artifactId>
+        <version>0.9.1</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml 
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>client-v2</artifactId>
-    <version>0.9.1</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation("com.clickhouse:client-v2:0.9.1")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle（Kotlin）">
-
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.1")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.1'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    implementation 'com.clickhouse:client-v2:0.9.1'
+    ```
+  </TabItem>
 </Tabs>
 
-## 初期化
+## 初期化 \{#initialization\}
 
 Client オブジェクトは `com.clickhouse.client.api.Client.Builder#build()` によって初期化されます。各クライアントはそれぞれ独自のコンテキストを持ち、オブジェクトがクライアント間で共有されることはありません。
 Builder には、簡単にセットアップできるようにするための設定メソッドが用意されています。
@@ -60,8 +56,7 @@ Builder には、簡単にセットアップできるようにするための設
 
 `Client` は `AutoCloseable` を実装しているため、不要になったら必ずクローズしてください。
 
-
-### 認証
+### 認証 \{#authentication\}
 
 認証は初期化フェーズでクライアントごとに構成します。サポートされている認証方法は 3 つあります: パスワード認証、アクセストークン認証、SSL クライアント証明書認証です。
 
@@ -106,7 +101,6 @@ SSL 認証は、本番環境ではトラブルシューティングが難しい�
 
 :::
 
-
 ## 設定 \{#configuration\}
 
 すべての設定は、各値のスコープやコンテキストが明確になるようにするインスタンスメソッド（いわゆる設定メソッド）によって定義されます。
@@ -133,54 +127,54 @@ SSL 認証は、本番環境ではトラブルシューティングが難しい�
   | `setConnectionTTL(long timeout, ChronoUnit unit)`                         | - `timeout` - ある時間単位で表したタイムアウト値。<br /> - `unit` - `timeout` の時間単位                                                                                             | 接続の TTL を設定します。この時間を過ぎると接続は非アクティブと見なされます <br /> <br /> デフォルト: `-1` <br /> Enum: `ClientConfigProperties.CONNECTION_TTL` <br /> Key: `connection_ttl`                                                                                                                                                                                                          |
   | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                      | * `timeout` - ある時間単位で指定されたタイムアウト値。<br /> - `unit` - `timeout` の時間単位                                                                                           | HTTP 接続における Keep-Alive のタイムアウトを設定します。タイムアウトを `0` に設定することで、Keep-Alive を無効化することができます。<br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br /> キー: `http_keep_alive_timeout`                                                                                                                                                   |
   | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`            | - `strategy` - enum `com.clickhouse.client.api.ConnectionReuseStrategy` の定数値                                                                                  | 接続プールが使用する再利用戦略を選択します。`LIFO` を選択すると、接続がプールに返却されるとすぐに再利用されます。`FIFO` を選択すると、利用可能になった順番で接続を使用します（返却された接続は直ちには再利用されません）。 <br /> <br /> デフォルト: `FIFO` <br /> Enum: `ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br /> Key: `connection_reuse_strategy`                                                                                                      |
-  | `setSocketTimeout(long timeout, ChronoUnit unit`)`                        | * `timeout` - タイムアウト値。ある時間単位で指定します。<br /> - `unit` - `timeout` の時間単位                                                                                          | ソケットの読み取りおよび書き込み処理に影響するタイムアウトを設定します <br /> <br /> デフォルト: `0` <br /> 列挙型: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br /> キー: `socket_timeout`                                                                                                                                                                                                        |
-  | `setSocketRcvbuf(long size)`                                              | - `size` - サイズ（バイト単位）                                                                                                                                         | TCP ソケットの受信バッファを設定します。このバッファは JVM が管理するメモリ領域の外側に確保されます。<br /> <br /> デフォルト: `8196` <br /> Enum: `ClientConfigProperties.SOCKET_RCVBUF_OPT` <br /> Key: `socket_rcvbuf`                                                                                                                                                                                        |
-  | `setSocketSndbuf(long size)`                                              | * `size` - バイト数                                                                                                                                               | TCP ソケットの受信バッファを設定します。このバッファは JVM メモリの外側に確保されます。<br /> <br /> デフォルト: `8196` <br /> Enum: `ClientConfigProperties.SOCKET_SNDBUF_OPT` <br /> Key: `socket_sndbuf`                                                                                                                                                                                               |
-  | `setSocketKeepAlive(boolean value)`                                       | - `value` - オプションを有効化するかどうかを示すフラグ。                                                                                                                            | クライアントによって作成されるすべての TCP ソケットに対して、オプション `SO_KEEPALIVE` を設定します。TCP Keep-Alive は接続の生存状態を確認するメカニズムを有効にし、予期せず切断された接続を検出するのに役立ちます。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br /> Key: `socket_keepalive`                                                                                                                 |
-  | `setSocketTcpNodelay(boolean value)`                                      | * `value` - オプションを有効にするかどうかを示すフラグ。                                                                                                                            | クライアントによって作成されるすべての TCP ソケットに対してオプション `SO_NODELAY` を設定します。この TCP オプションにより、ソケットは可能な限り早くデータを送信します。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br /> Key: `socket_tcp_nodelay`                                                                                                                                        |
-  | `setSocketLinger(int secondsToWait)`                                      | - `secondsToWait` - 待機する秒数。                                                                                                                                   | クライアントが作成するすべての TCP ソケットに対して linger 時間を設定します。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.SOCKET_LINGER_OPT` <br /> Key: `socket_linger`                                                                                                                                                                                                      |
-  | `compressServerResponse(boolean enabled)`                                 | * `enabled` - オプションを有効化するかどうかを示すフラグ                                                                                                                           | サーバーがレスポンスを圧縮するかどうかを設定します。<br /> <br /> デフォルト: `true` <br /> 列挙値: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br /> キー: `compress`                                                                                                                                                                                                                     |
-  | `compressClientRequest(boolean enabled)`                                  | - `enabled` - このオプションを有効化するかどうかを示すフラグ                                                                                                                         | クライアント側が送信リクエストを圧縮するかどうかを設定します。 <br /> <br /> デフォルト: `false` <br /> Enum: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br /> Key: `decompress`                                                                                                                                                                                                           |
-  | `useHttpCompression(boolean enabled)`                                     | * `enabled` - オプションを有効化するかどうかを示すフラグ                                                                                                                           | 対応するオプションが有効になっている場合に、クライアント／サーバー間の通信で HTTP 圧縮を使用するかどうかを設定します                                                                                                                                                                                                                                                                                                 |
-  | `appCompressedData(boolean enabled)`                                      | - `enabled` - オプションを有効化するかどうかを示すフラグ                                                                                                                           | クライアントに、圧縮はアプリケーション側で処理されることを通知します。 <br /> <br /> デフォルト: `false` <br /> Enum: `ClientConfigProperties.APP_COMPRESSED_DATA` <br /> Key: `app_compressed_data`                                                                                                                                                                                                  |
-  | `setLZ4UncompressedBufferSize(int size)`                                  | * `size` - サイズ（バイト単位）                                                                                                                                         | 非圧縮データストリームの一部を受信するバッファのサイズを設定します。バッファサイズが不足している場合は新しいバッファが作成され、その旨の警告がログに出力されます。 <br /> <br /> Default: `65536` <br /> Enum: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br /> Key: `compression.lz4.uncompressed_buffer_size`                                                                                                           |
-  | `disableNativeCompression`                                                | - `disable` - オプションを無効にするかどうかを示すフラグ                                                                                                                           | ネイティブ圧縮を無効にします。`true` に設定すると、ネイティブ圧縮が無効になります。 <br /> <br /> デフォルト: `false` <br /> Enum: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br /> Key: `disable_native_compression`                                                                                                                                                                          |
-  | `setDefaultDatabase(String database)`                                     | * `database` - データベースの名前                                                                                                                                      | 既定のデータベースを設定します。 <br /> <br /> 既定値: `default` <br /> 列挙値: `ClientConfigProperties.DATABASE` <br /> キー: `database`                                                                                                                                                                                                                                             |
-  | `addProxy(ProxyType type, String host, int port)`                         | - `type` - プロキシの種類。<br /> - `host` - プロキシのホスト名または IP アドレス。<br /> - `port` - プロキシのポート。                                                                         | サーバーとの通信に使用するプロキシを設定します。プロキシで認証が必要な場合は、このプロキシ設定が必要です。 <br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.PROXY_TYPE` <br /> キー: `proxy_type` <br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.PROXY_HOST` <br /> キー: `proxy_host`  <br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.PROXY_PORT` <br /> キー: `proxy_port`           |
-  | `setProxyCredentials(String user, String pass)`                           | * `user` - プロキシユーザー名。<br /> - `pass` - パスワード                                                                                                                  | プロキシでの認証に使用するユーザー資格情報を設定します。 <br /> <br /> Default: - <br /> Enum: `ClientConfigProperties.PROXY_USER` <br /> Key: `proxy_user` <br /> <br /> Default: - <br /> Enum: `ClientConfigProperties.PROXY_PASSWORD` <br /> Key: `proxy_password`                                                                                                                    |
-  | `setExecutionTimeout(long timeout, ChronoUnit timeUnit)`                  | - `timeout` - タイムアウト値。<br /> - `timeUnit` - `timeout` の時間単位                                                                                                   | クエリの最大実行時間を設定します <br /> <br /> デフォルト: `0` <br /> 列挙型: `ClientConfigProperties.MAX_EXECUTION_TIME` <br /> キー: `max_execution_time`                                                                                                                                                                                                                             |
-  | `setHttpCookiesEnabled(boolean enabled)`                                  | `enabled` - オプションを有効にするかどうかを示すフラグ                                                                                                                             | HTTP クッキーを保持し、サーバーに再送信するかどうかを設定します。                                                                                                                                                                                                                                                                                                                           |
-  | `setSSLTrustStore(String path)`                                           | `path` - ローカル（クライアント側）システム上のファイルパス                                                                                                                            | サーバーホストの検証にクライアントが SSL トラストストアを使用するかどうかを設定します。<br /> <br /> デフォルト: - <br /> 列挙値: `ClientConfigProperties.SSL_TRUST_STORE` <br /> キー: `trust_store`                                                                                                                                                                                                            |
-  | `setSSLTrustStorePassword(String password)`                               | `password` - シークレット値                                                                                                                                          | `setSSLTrustStore(String path)` で指定された SSL トラストストアのロック解除に使用するパスワードを設定します。<br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br /> Key: `key_store_password`                                                                                                                                                                 |
-  | `setSSLTrustStoreType(String type)`                                       | `type` - トラストストアの種類名                                                                                                                                          | `setSSLTrustStore(String path)` で指定されたトラストストアの型を設定します。<br /> <br /> デフォルト値: - <br /> 列挙型: `ClientConfigProperties.SSL_KEYSTORE_TYPE` <br /> キー: `key_store_type`                                                                                                                                                                                              |
-  | `setRootCertificate(String path)`                                         | `path` - ローカル（クライアント側）システム上のファイルのパス                                                                                                                           | クライアントがサーバーホストを検証するために指定したルート (CA) 証明書を使用するかどうかを設定します。<br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.CA_CERTIFICATE` <br /> キー: `sslrootcert`                                                                                                                                                                                                     |
-  | `setClientCertificate(String path)`                                       | `path` - ローカル（クライアント側）システム上のファイルパス                                                                                                                            | SSL 接続の確立時および SSL 認証で使用するクライアント証明書のパスを設定します。<br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.SSL_CERTIFICATE` <br /> キー: `sslcert`                                                                                                                                                                                                                  |
-  | `setClientKey(String path)`                                               | `path` - ローカル（クライアント側）システム上のファイルのパス                                                                                                                           | サーバーとの SSL 通信を暗号化するために使用するクライアントの秘密鍵を設定します。 <br /> <br /> デフォルト値: - <br /> Enum: `ClientConfigProperties.SSL_KEY` <br /> Key: `ssl_key`                                                                                                                                                                                                                       |
-  | `useServerTimeZone(boolean useServerTimeZone)`                            | `useServerTimeZone` - この設定を有効にするかどうかを示すフラグ                                                                                                                    | クライアントが DateTime および Date 列の値をデコードする際にサーバーのタイムゾーンを使用するかどうかを指定します。有効にした場合、サーバーのタイムゾーンは `setServerTimeZone(String timeZone)` で設定する必要があります。<br /> <br /> デフォルト: `true` <br /> Enum: `ClientConfigProperties.USE_SERVER_TIMEZONE` <br /> Key: `use_server_time_zone`                                                                                              |
-  | `useTimeZone(String timeZone)`                                            | `timeZone` - Java で有効なタイムゾーン ID を表す文字列値（`java.time.ZoneId` を参照）                                                                                               | 指定したタイムゾーンを、DateTime および Date 列の値をデコードする際に使用するかどうかを設定します。サーバー側のタイムゾーン設定を上書きします。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.USE_TIMEZONE` <br /> Key: `use_time_zone`                                                                                                                                                                         |
-  | `setServerTimeZone(String timeZone)`                                      | `timeZone` - Java の有効なタイムゾーン ID を表す文字列値（`java.time.ZoneId` を参照）                                                                                               | サーバー側のタイムゾーンを設定します。デフォルトでは UTC タイムゾーンが使用されます。<br /> <br /> デフォルト: `UTC` <br /> 列挙: `ClientConfigProperties.SERVER_TIMEZONE` <br /> キー: `server_time_zone`                                                                                                                                                                                                     |
-  | `useAsyncRequests(boolean async)`                                         | `async` - オプションを有効化するかどうかを示すフラグ。                                                                                                                              | クライアントがリクエストを別スレッドで実行するかどうかを設定します。アプリケーション側の方がマルチスレッド処理の設計を適切に行えること、またタスクを別スレッドで実行してもパフォーマンス向上には寄与しないことから、デフォルトでは無効になっています。 <br /> <br /> デフォルト: `false` <br /> Enum: `ClientConfigProperties.ASYNC_OPERATIONS` <br /> Key: `async`                                                                                                                           |
-  | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - ExecutorService のインスタンス。                                                                                                                  | 操作タスク用のexecutor serviceを設定します。<br /> <br /> デフォルト: `none` <br /> Enum: `none` <br /> Key: `none`                                                                                                                                                                                                                                                              |
-  | `setClientNetworkBufferSize(int size)`                                    | * `size` - バイト数                                                                                                                                               | ソケットとアプリケーション間でデータを往復コピーするために使用される、アプリケーションメモリ空間内のバッファのサイズを設定します。値を大きくすると TCP スタックへのシステムコールは減少しますが、接続ごとに消費されるメモリ量に影響します。接続が短時間で終了するため、このバッファも GC（ガーベジコレクション）の対象になります。また、連続した大きなメモリブロックの割り当てが問題になる可能性がある点にも注意してください。 <br /> <br /> Default: `300000` <br /> Enum: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br /> Key: `client_network_buffer_size` |
-  | `retryOnFailures(ClientFaultCause ...causes)`                             | - `causes` - `com.clickhouse.client.api.ClientFaultCause` の列挙型定数                                                                                              | 再試行対象とする障害タイプを設定します。 <br /> <br /> 既定値: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br /> 列挙定数: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br /> キー: `client_retry_on_failures`                                                                                                                                                          |
-  | `setMaxRetries(int maxRetries)`                                           | * `maxRetries` - 再試行回数                                                                                                                                        | `retryOnFailures(ClientFaultCause ...causes)` で定義された失敗に対する最大再試行回数を設定します <br /> <br /> デフォルト: `3` <br /> 列挙型: `ClientConfigProperties.RETRY_ON_FAILURE` <br /> キー: `retry`                                                                                                                                                                                     |
-  | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | - `reuse` - このオプションを有効にするかどうかを示すフラグ                                                                                                                           | ほとんどのデータセットには、小さなバイト列としてエンコードされた数値データが含まれます。デフォルトでは、リーダーは必要なバッファーを割り当て、その中にデータを読み込み、その後ターゲットの `Number` クラスへ変換します。これは、多数の小さなオブジェクトが割り当ておよび解放されるため、GC に大きな負荷をかける可能性があります。このオプションを有効にすると、リーダーは事前に割り当てられたバッファーを使用して数値のトランスコードを行います。各リーダーは独自のバッファーセットを持ち、かつ各リーダーは単一スレッドからのみ使用されるため、安全に利用できます。                                                                      |
-  | `httpHeader(String key, String value)`                                    | * `key` - HTTP ヘッダーのキー。<br /> - `value` - ヘッダー値の文字列。                                                                                                          | 単一の HTTP ヘッダーに値を設定します。既存の値は上書きされます。<br /> <br /> Default: `none` <br /> Enum: `none` <br /> Key: `none`                                                                                                                                                                                                                                                       |
-  | `httpHeader(String key, Collection values)`                               | - `key` - HTTP ヘッダーキー。<br /> - `values` - 文字列の値のリスト。                                                                                                          | 1 つの HTTP ヘッダーの値を設定します。既存の値は上書きされます。<br /> <br /> デフォルト: `none` <br /> 列挙型: `none` <br /> キー: `none`                                                                                                                                                                                                                                                          |
-  | `httpHeaders(Map headers)`                                                | * `header` - HTTP ヘッダーとその値のマップ。                                                                                                                               | 複数の HTTP ヘッダー値をまとめて設定します。 <br /> <br /> Default: `none` <br /> Enum: `none` <br /> Key: `none`                                                                                                                                                                                                                                                                |
-  | `serverSetting(String name, String value)`                                | - `name` - クエリレベルの設定名。<br /> - `value` - 設定値（文字列）。                                                                                                            | 各クエリとともにサーバーに渡す設定を指定します。個々の操作で設定された値によって上書きされる場合があります。設定の[一覧](/operations/settings/query-level) <br /> <br /> Default: `none` <br /> Enum: `none` <br /> Key: `none`                                                                                                                                                                                          |
-  | `serverSetting(String name,  Collection values)`                          | * `name` - クエリレベル設定の名前。<br /> - `values` - 設定の文字列値。                                                                                                           | 各クエリに対してサーバーへ渡す設定を指定します。個々の操作ごとの設定によって上書きされる場合があります。設定の一覧は [List of settings](/operations/settings/query-level) を参照してください。このメソッドは、たとえば [roles](/interfaces/http#setting-role-with-query-parameters) のように複数の値を持つ設定を指定する場合に便利です。 <br /> <br /> Default: `none` <br /> Enum: `none` <br /> Key: `none`                                                           |
-  | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - カラムとフィールドの対応付け戦略の実装                                                                                                                            | DTO を登録する際に、DTO クラスのフィールドと DB カラムのマッピングに使用するカスタム戦略を設定します。<br /> <br /> デフォルト: `none` <br /> 列挙: `none` <br /> キー: `none`                                                                                                                                                                                                                                      |
-  | `useHTTPBasicAuth(boolean useBasicAuth)`                                  | * `useBasicAuth` - オプションを有効化するかどうかを示すフラグ                                                                                                                      | ユーザー名とパスワードによる認証に Basic HTTP 認証を使用するかどうかを設定します。デフォルトでは有効です。この認証方式を使用すると、HTTP ヘッダー経由では正しく送信できない特殊文字を含むパスワードに関する問題を解消できます。 <br /> <br /> Default: `true` <br /> Enum: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br /> Key: `http_use_basic_auth`                                                                                                            |
-  | `setClientName(String clientName)`                                        | - `clientName` - アプリケーション名を表す文字列                                                                                                                              | 呼び出し元アプリケーションに関する追加情報を設定します。この文字列はクライアント名としてサーバーに渡されます。HTTP プロトコルを使用する場合は、`User-Agent` ヘッダーとして送信されます。 <br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.CLIENT_NAME` <br /> キー: `client_name`                                                                                                                                                        |
-  | `useBearerTokenAuth(String bearerToken)`                                  | * `bearerToken` - エンコード済みのベアラートークン                                                                                                                            | Bearer 認証を使用するかどうかと、使用するトークンを指定します。トークンはそのまま送信されるため、このメソッドに渡す前にエンコードしておく必要があります。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.BEARERTOKEN_AUTH` <br /> Key: `bearer_token`                                                                                                                                                                     |
-  | `registerClientMetrics(Object registry, String name)`                     | - `registry` - Micrometer のレジストリインスタンス<br /> - `name` - メトリクスグループの名前                                                                                          | Micrometer ([https://micrometer.io/](https://micrometer.io/)) のレジストリインスタンスにセンサーを登録します。                                                                                                                                                                                                                                                                        |
-  | `setServerVersion(String version)`                                        | * `version` - サーバーのバージョンを表す文字列値                                                                                                                               | バージョン検出を行わせないためにサーバーのバージョンを設定します。 <br /> <br /> デフォルト: - <br /> 列挙型: `ClientConfigProperties.SERVER_VERSION` <br /> キー: `server_version`                                                                                                                                                                                                                      |
-  | `typeHintMapping(Map typeHintMapping)`                                    | - `typeHintMapping` - 型ヒントのマッピング                                                                                                                              | ClickHouse の型に対する型ヒントのマッピングを設定します。たとえば、多次元配列を独自の Array オブジェクトではなく、Java のコンテナー型として表現できるようにします。 <br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.TYPE_HINT_MAPPING` <br /> Key: `type_hint_mapping`                                                                                                                                                  |
-  | `sslSocketSNI(String sni)`                                                | * `sni` - サーバー名を表す文字列値                                                                                                                                        | SSL/TLS 接続において SNI（Server Name Indication）として使用するサーバー名を設定します。<br /> <br /> デフォルト: - <br /> Enum: `ClientConfigProperties.SSL_SOCKET_SNI` <br /> キー: `ssl_socket_sni`                                                                                                                                                                                          |
+  | `setSocketTimeout(long timeout, ChronoUnit unit`)`                       | *`timeout`- タイムアウト値。ある時間単位で指定します。<br /> -`unit`-`timeout`の時間単位                                                                                          | ソケットの読み取りおよび書き込み処理に影響するタイムアウトを設定します <br /> <br /> デフォルト:`0`<br /> 列挙型:`ClientConfigProperties.SOCKET&#95;OPERATION&#95;TIMEOUT`<br /> キー:`socket&#95;timeout`                                                                                                                                                                                                       |
+    |`setSocketRcvbuf(long size)`                                             | -`size`- サイズ（バイト単位）                                                                                                                                         | TCP ソケットの受信バッファを設定します。このバッファは JVM が管理するメモリ領域の外側に確保されます。<br /> <br /> デフォルト:`8196`<br /> Enum:`ClientConfigProperties.SOCKET&#95;RCVBUF&#95;OPT`<br /> Key:`socket&#95;rcvbuf`                                                                                                                                                                                       |
+    |`setSocketSndbuf(long size)`                                             | *`size`- バイト数                                                                                                                                               | TCP ソケットの受信バッファを設定します。このバッファは JVM メモリの外側に確保されます。<br /> <br /> デフォルト:`8196`<br /> Enum:`ClientConfigProperties.SOCKET&#95;SNDBUF&#95;OPT`<br /> Key:`socket&#95;sndbuf`                                                                                                                                                                                              |
+    |`setSocketKeepAlive(boolean value)`                                      | -`value`- オプションを有効化するかどうかを示すフラグ。                                                                                                                            | クライアントによって作成されるすべての TCP ソケットに対して、オプション`SO&#95;KEEPALIVE`を設定します。TCP Keep-Alive は接続の生存状態を確認するメカニズムを有効にし、予期せず切断された接続を検出するのに役立ちます。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.SOCKET&#95;KEEPALIVE&#95;OPT`<br /> Key:`socket&#95;keepalive`                                                                                                                |
+    |`setSocketTcpNodelay(boolean value)`                                     | *`value`- オプションを有効にするかどうかを示すフラグ。                                                                                                                            | クライアントによって作成されるすべての TCP ソケットに対してオプション`SO&#95;NODELAY`を設定します。この TCP オプションにより、ソケットは可能な限り早くデータを送信します。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.SOCKET&#95;TCP&#95;NO&#95;DELAY&#95;OPT`<br /> Key:`socket&#95;tcp&#95;nodelay`                                                                                                                                       |
+    |`setSocketLinger(int secondsToWait)`                                     | -`secondsToWait`- 待機する秒数。                                                                                                                                   | クライアントが作成するすべての TCP ソケットに対して linger 時間を設定します。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.SOCKET&#95;LINGER&#95;OPT`<br /> Key:`socket&#95;linger`                                                                                                                                                                                                     |
+    |`compressServerResponse(boolean enabled)`                                | *`enabled`- オプションを有効化するかどうかを示すフラグ                                                                                                                           | サーバーがレスポンスを圧縮するかどうかを設定します。<br /> <br /> デフォルト:`true`<br /> 列挙値:`ClientConfigProperties.COMPRESS&#95;SERVER&#95;RESPONSE`<br /> キー:`compress`                                                                                                                                                                                                                    |
+    |`compressClientRequest(boolean enabled)`                                 | -`enabled`- このオプションを有効化するかどうかを示すフラグ                                                                                                                         | クライアント側が送信リクエストを圧縮するかどうかを設定します。 <br /> <br /> デフォルト:`false`<br /> Enum:`ClientConfigProperties.COMPRESS&#95;CLIENT&#95;REQUEST`<br /> Key:`decompress`                                                                                                                                                                                                          |
+    |`useHttpCompression(boolean enabled)`                                    | *`enabled`- オプションを有効化するかどうかを示すフラグ                                                                                                                           | 対応するオプションが有効になっている場合に、クライアント／サーバー間の通信で HTTP 圧縮を使用するかどうかを設定します                                                                                                                                                                                                                                                                                                 |
+    |`appCompressedData(boolean enabled)`                                     | -`enabled`- オプションを有効化するかどうかを示すフラグ                                                                                                                           | クライアントに、圧縮はアプリケーション側で処理されることを通知します。 <br /> <br /> デフォルト:`false`<br /> Enum:`ClientConfigProperties.APP&#95;COMPRESSED&#95;DATA`<br /> Key:`app&#95;compressed&#95;data`                                                                                                                                                                                                 |
+    |`setLZ4UncompressedBufferSize(int size)`                                 | *`size`- サイズ（バイト単位）                                                                                                                                         | 非圧縮データストリームの一部を受信するバッファのサイズを設定します。バッファサイズが不足している場合は新しいバッファが作成され、その旨の警告がログに出力されます。 <br /> <br /> Default:`65536`<br /> Enum:`ClientConfigProperties.COMPRESSION&#95;LZ4&#95;UNCOMPRESSED&#95;BUF&#95;SIZE`<br /> Key:`compression.lz4.uncompressed&#95;buffer&#95;size`                                                                                                          |
+    |`disableNativeCompression`                                               | -`disable` - オプションを無効にするかどうかを示すフラグ                                                                                                                           | ネイティブ圧縮を無効にします。`true`に設定すると、ネイティブ圧縮が無効になります。 <br /> <br /> デフォルト:`false`<br /> Enum:`ClientConfigProperties.DISABLE&#95;NATIVE&#95;COMPRESSION`<br /> Key:`disable&#95;native&#95;compression`                                                                                                                                                                         |
+    |`setDefaultDatabase(String database)`                                    | *`database`- データベースの名前                                                                                                                                      | 既定のデータベースを設定します。 <br /> <br /> 既定値:`default`<br /> 列挙値:`ClientConfigProperties.DATABASE`<br /> キー:`database`                                                                                                                                                                                                                                            |
+    |`addProxy(ProxyType type, String host, int port)`                        | -`type`- プロキシの種類。<br /> -`host`- プロキシのホスト名または IP アドレス。<br /> -`port`- プロキシのポート。                                                                         | サーバーとの通信に使用するプロキシを設定します。プロキシで認証が必要な場合は、このプロキシ設定が必要です。 <br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.PROXY&#95;TYPE`<br /> キー:`proxy&#95;type`<br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.PROXY&#95;HOST`<br /> キー:`proxy&#95;host` <br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.PROXY&#95;PORT`<br /> キー:`proxy&#95;port`          |
+    |`setProxyCredentials(String user, String pass)`                          | *`user`- プロキシユーザー名。<br /> -`pass`- パスワード                                                                                                                  | プロキシでの認証に使用するユーザー資格情報を設定します。 <br /> <br /> Default: - <br /> Enum:`ClientConfigProperties.PROXY&#95;USER`<br /> Key:`proxy&#95;user`<br /> <br /> Default: - <br /> Enum:`ClientConfigProperties.PROXY&#95;PASSWORD`<br /> Key:`proxy&#95;password`                                                                                                                   |
+    |`setExecutionTimeout(long timeout, ChronoUnit timeUnit)`                 | -`timeout`- タイムアウト値。<br /> -`timeUnit`-`timeout`の時間単位                                                                                                   | クエリの最大実行時間を設定します <br /> <br /> デフォルト:`0`<br /> 列挙型:`ClientConfigProperties.MAX&#95;EXECUTION&#95;TIME`<br /> キー:`max&#95;execution&#95;time`                                                                                                                                                                                                                            |
+    |`setHttpCookiesEnabled(boolean enabled)`                                 |`enabled`- オプションを有効にするかどうかを示すフラグ                                                                                                                             | HTTP クッキーを保持し、サーバーに再送信するかどうかを設定します。                                                                                                                                                                                                                                                                                                                           |
+    |`setSSLTrustStore(String path)`                                          |`path`- ローカル（クライアント側）システム上のファイルパス                                                                                                                            | サーバーホストの検証にクライアントが SSL トラストストアを使用するかどうかを設定します。<br /> <br /> デフォルト: - <br /> 列挙値:`ClientConfigProperties.SSL&#95;TRUST&#95;STORE`<br /> キー:`trust&#95;store`                                                                                                                                                                                                           |
+    |`setSSLTrustStorePassword(String password)`                              |`password`- シークレット値                                                                                                                                          |`setSSLTrustStore(String path)`で指定された SSL トラストストアのロック解除に使用するパスワードを設定します。<br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.SSL&#95;KEY&#95;STORE&#95;PASSWORD`<br /> Key:`key&#95;store&#95;password`                                                                                                                                                                |
+    |`setSSLTrustStoreType(String type)`                                      |`type`- トラストストアの種類名                                                                                                                                          |`setSSLTrustStore(String path)`で指定されたトラストストアの型を設定します。<br /> <br /> デフォルト値: - <br /> 列挙型:`ClientConfigProperties.SSL&#95;KEYSTORE&#95;TYPE`<br /> キー:`key&#95;store&#95;type`                                                                                                                                                                                             |
+    |`setRootCertificate(String path)`                                        |`path`- ローカル（クライアント側）システム上のファイルのパス                                                                                                                           | クライアントがサーバーホストを検証するために指定したルート (CA) 証明書を使用するかどうかを設定します。<br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.CA&#95;CERTIFICATE`<br /> キー:`sslrootcert`                                                                                                                                                                                                    |
+    |`setClientCertificate(String path)`                                      |`path`- ローカル（クライアント側）システム上のファイルパス                                                                                                                            | SSL 接続の確立時および SSL 認証で使用するクライアント証明書のパスを設定します。<br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.SSL&#95;CERTIFICATE`<br /> キー:`sslcert`                                                                                                                                                                                                                 |
+    |`setClientKey(String path)`                                              |`path`- ローカル（クライアント側）システム上のファイルのパス                                                                                                                           | サーバーとの SSL 通信を暗号化するために使用するクライアントの秘密鍵を設定します。 <br /> <br /> デフォルト値: - <br /> Enum:`ClientConfigProperties.SSL&#95;KEY`<br /> Key:`ssl&#95;key`                                                                                                                                                                                                                      |
+    |`useServerTimeZone(boolean useServerTimeZone)`                           |`useServerTimeZone`- この設定を有効にするかどうかを示すフラグ                                                                                                                    | クライアントが DateTime および Date 列の値をデコードする際にサーバーのタイムゾーンを使用するかどうかを指定します。有効にした場合、サーバーのタイムゾーンは`setServerTimeZone(String timeZone)`で設定する必要があります。<br /> <br /> デフォルト:`true`<br /> Enum:`ClientConfigProperties.USE&#95;SERVER&#95;TIMEZONE`<br /> Key:`use&#95;server&#95;time&#95;zone`                                                                                             |
+    |`useTimeZone(String timeZone)`                                           |`timeZone` - Java で有効なタイムゾーン ID を表す文字列値（`java.time.ZoneId`を参照）                                                                                               | 指定したタイムゾーンを、DateTime および Date 列の値をデコードする際に使用するかどうかを設定します。サーバー側のタイムゾーン設定を上書きします。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.USE&#95;TIMEZONE`<br /> Key:`use&#95;time&#95;zone`                                                                                                                                                                        |
+    |`setServerTimeZone(String timeZone)`                                     |`timeZone` - Java の有効なタイムゾーン ID を表す文字列値（`java.time.ZoneId`を参照）                                                                                               | サーバー側のタイムゾーンを設定します。デフォルトでは UTC タイムゾーンが使用されます。<br /> <br /> デフォルト:`UTC`<br /> 列挙:`ClientConfigProperties.SERVER&#95;TIMEZONE`<br /> キー:`server&#95;time&#95;zone`                                                                                                                                                                                                    |
+    |`useAsyncRequests(boolean async)`                                        |`async`- オプションを有効化するかどうかを示すフラグ。                                                                                                                              | クライアントがリクエストを別スレッドで実行するかどうかを設定します。アプリケーション側の方がマルチスレッド処理の設計を適切に行えること、またタスクを別スレッドで実行してもパフォーマンス向上には寄与しないことから、デフォルトでは無効になっています。 <br /> <br /> デフォルト:`false`<br /> Enum:`ClientConfigProperties.ASYNC&#95;OPERATIONS`<br /> Key:`async`                                                                                                                          |
+    |`setSharedOperationExecutor(ExecutorService executorService)`            |`executorService`- ExecutorService のインスタンス。                                                                                                                  | 操作タスク用のexecutor serviceを設定します。<br /> <br /> デフォルト:`none`<br /> Enum:`none`<br /> Key:`none`                                                                                                                                                                                                                                                             |
+    |`setClientNetworkBufferSize(int size)`                                   | *`size`- バイト数                                                                                                                                               | ソケットとアプリケーション間でデータを往復コピーするために使用される、アプリケーションメモリ空間内のバッファのサイズを設定します。値を大きくすると TCP スタックへのシステムコールは減少しますが、接続ごとに消費されるメモリ量に影響します。接続が短時間で終了するため、このバッファも GC（ガーベジコレクション）の対象になります。また、連続した大きなメモリブロックの割り当てが問題になる可能性がある点にも注意してください。 <br /> <br /> Default:`300000`<br /> Enum:`ClientConfigProperties.CLIENT&#95;NETWORK&#95;BUFFER&#95;SIZE`<br /> Key:`client&#95;network&#95;buffer&#95;size`|
+    |`retryOnFailures(ClientFaultCause ...causes)`                            | -`causes`-`com.clickhouse.client.api.ClientFaultCause`の列挙型定数                                                                                              | 再試行対象とする障害タイプを設定します。 <br /> <br /> 既定値:`NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout`<br /> 列挙定数:`ClientConfigProperties.CLIENT&#95;RETRY&#95;ON&#95;FAILURE`<br /> キー:`client&#95;retry&#95;on&#95;failures`                                                                                                                                                         |
+    |`setMaxRetries(int maxRetries)`                                          | *`maxRetries`- 再試行回数                                                                                                                                        |`retryOnFailures(ClientFaultCause ...causes)`で定義された失敗に対する最大再試行回数を設定します <br /> <br /> デフォルト:`3`<br /> 列挙型:`ClientConfigProperties.RETRY&#95;ON&#95;FAILURE`<br /> キー:`retry`                                                                                                                                                                                    |
+    |`allowBinaryReaderToReuseBuffers(boolean reuse)`                         | -`reuse`- このオプションを有効にするかどうかを示すフラグ                                                                                                                           | ほとんどのデータセットには、小さなバイト列としてエンコードされた数値データが含まれます。デフォルトでは、リーダーは必要なバッファーを割り当て、その中にデータを読み込み、その後ターゲットの`Number`クラスへ変換します。これは、多数の小さなオブジェクトが割り当ておよび解放されるため、GC に大きな負荷をかける可能性があります。このオプションを有効にすると、リーダーは事前に割り当てられたバッファーを使用して数値のトランスコードを行います。各リーダーは独自のバッファーセットを持ち、かつ各リーダーは単一スレッドからのみ使用されるため、安全に利用できます。                                                                      |
+    |`httpHeader(String key, String value)`                                   | *`key`- HTTP ヘッダーのキー。<br /> -`value`- ヘッダー値の文字列。                                                                                                          | 単一の HTTP ヘッダーに値を設定します。既存の値は上書きされます。<br /> <br /> Default:`none`<br /> Enum:`none`<br /> Key:`none`                                                                                                                                                                                                                                                      |
+    |`httpHeader(String key, Collection values)`                              | -`key`- HTTP ヘッダーキー。<br /> -`values`- 文字列の値のリスト。                                                                                                          | 1 つの HTTP ヘッダーの値を設定します。既存の値は上書きされます。<br /> <br /> デフォルト:`none`<br /> 列挙型:`none`<br /> キー:`none`                                                                                                                                                                                                                                                         |
+    |`httpHeaders(Map headers)`                                               | *`header`- HTTP ヘッダーとその値のマップ。                                                                                                                               | 複数の HTTP ヘッダー値をまとめて設定します。 <br /> <br /> Default:`none`<br /> Enum:`none`<br /> Key:`none`                                                                                                                                                                                                                                                               |
+    |`serverSetting(String name, String value)`                               | -`name`- クエリレベルの設定名。<br /> -`value`- 設定値（文字列）。                                                                                                            | 各クエリとともにサーバーに渡す設定を指定します。個々の操作で設定された値によって上書きされる場合があります。設定の[一覧](/operations/settings/query-level) <br /> <br /> Default:`none`<br /> Enum:`none`<br /> Key:`none`                                                                                                                                                                                         |
+    |`serverSetting(String name,  Collection values)`                         | *`name`- クエリレベル設定の名前。<br /> -`values`- 設定の文字列値。                                                                                                           | 各クエリに対してサーバーへ渡す設定を指定します。個々の操作ごとの設定によって上書きされる場合があります。設定の一覧は [List of settings](/operations/settings/query-level) を参照してください。このメソッドは、たとえば [roles](/interfaces/http#setting-role-with-query-parameters) のように複数の値を持つ設定を指定する場合に便利です。 <br /> <br /> Default:`none`<br /> Enum:`none`<br /> Key:`none`                                                          |
+    |`columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)`| -`strategy`- カラムとフィールドの対応付け戦略の実装                                                                                                                            | DTO を登録する際に、DTO クラスのフィールドと DB カラムのマッピングに使用するカスタム戦略を設定します。<br /> <br /> デフォルト:`none`<br /> 列挙:`none`<br /> キー:`none`                                                                                                                                                                                                                                     |
+    |`useHTTPBasicAuth(boolean useBasicAuth)`                                 | *`useBasicAuth`- オプションを有効化するかどうかを示すフラグ                                                                                                                      | ユーザー名とパスワードによる認証に Basic HTTP 認証を使用するかどうかを設定します。デフォルトでは有効です。この認証方式を使用すると、HTTP ヘッダー経由では正しく送信できない特殊文字を含むパスワードに関する問題を解消できます。 <br /> <br /> Default:`true`<br /> Enum:`ClientConfigProperties.HTTP&#95;USE&#95;BASIC&#95;AUTH`<br /> Key:`http&#95;use&#95;basic&#95;auth`                                                                                                           |
+    |`setClientName(String clientName)`                                       | -`clientName` - アプリケーション名を表す文字列                                                                                                                              | 呼び出し元アプリケーションに関する追加情報を設定します。この文字列はクライアント名としてサーバーに渡されます。HTTP プロトコルを使用する場合は、`User-Agent`ヘッダーとして送信されます。 <br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.CLIENT&#95;NAME`<br /> キー:`client&#95;name`                                                                                                                                                       |
+    |`useBearerTokenAuth(String bearerToken)`                                 | *`bearerToken`- エンコード済みのベアラートークン                                                                                                                            | Bearer 認証を使用するかどうかと、使用するトークンを指定します。トークンはそのまま送信されるため、このメソッドに渡す前にエンコードしておく必要があります。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.BEARERTOKEN&#95;AUTH`<br /> Key:`bearer&#95;token`                                                                                                                                                                    |
+    |`registerClientMetrics(Object registry, String name)`                    | -`registry`- Micrometer のレジストリインスタンス<br /> -`name`- メトリクスグループの名前                                                                                          | Micrometer ([https://micrometer.io/](https://micrometer.io/)) のレジストリインスタンスにセンサーを登録します。                                                                                                                                                                                                                                                                        |
+    |`setServerVersion(String version)`                                       | *`version`- サーバーのバージョンを表す文字列値                                                                                                                               | バージョン検出を行わせないためにサーバーのバージョンを設定します。 <br /> <br /> デフォルト: - <br /> 列挙型:`ClientConfigProperties.SERVER&#95;VERSION`<br /> キー:`server&#95;version`                                                                                                                                                                                                                     |
+    |`typeHintMapping(Map typeHintMapping)`                                   | -`typeHintMapping`- 型ヒントのマッピング                                                                                                                              | ClickHouse の型に対する型ヒントのマッピングを設定します。たとえば、多次元配列を独自の Array オブジェクトではなく、Java のコンテナー型として表現できるようにします。 <br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.TYPE&#95;HINT&#95;MAPPING`<br /> Key:`type&#95;hint&#95;mapping`                                                                                                                                                 |
+    |`sslSocketSNI(String sni)`                                               | *`sni`- サーバー名を表す文字列値                                                                                                                                        | SSL/TLS 接続において SNI（Server Name Indication）として使用するサーバー名を設定します。<br /> <br /> デフォルト: - <br /> Enum:`ClientConfigProperties.SSL&#95;SOCKET&#95;SNI`<br /> キー:`ssl&#95;socket&#95;sni`                                                                                                                                                                                          |
 </WideTableWrapper>
 
-### サーバー設定
+### サーバー設定 \{#server-settings\}
 
 サーバー側の設定は、作成時にクライアントレベルで一度だけ設定できます（`Builder` の `serverSetting` メソッドを参照）。また、各オペレーションのレベルでも設定できます（オペレーション設定クラスの `serverSetting` を参照）。
 
@@ -207,8 +201,7 @@ SSL 認証は、本番環境ではトラブルシューティングが難しい�
 
 `setOption` メソッド（`Client.Builder` またはオペレーション設定クラスのいずれか）を通じてオプションを設定する場合、サーバー設定の名前には `clickhouse_setting_` を接頭辞として付ける必要があります。この場合は `com.clickhouse.client.api.ClientConfigProperties#serverSetting()` を利用すると便利です。
 
-
-### カスタム HTTP ヘッダー
+### カスタム HTTP ヘッダー \{#custom-http-header\}
 
 カスタム HTTP ヘッダーは、すべての操作（クライアントレベル）または特定の 1 つの操作（オペレーションレベル）に対して設定できます。
 
@@ -221,7 +214,6 @@ QuerySettings settings = new QuerySettings()
 ```
 
 オプションを `setOption` メソッド（`Client.Builder` またはオペレーション設定クラス）で指定する場合は、カスタムヘッダー名の先頭に `http_header_` を付ける必要があります。この場合は、`com.clickhouse.client.api.ClientConfigProperties#httpHeader()` メソッドが役立ちます。
-
 
 ## 共通定義 \{#common-definitions\}
 
@@ -321,7 +313,7 @@ QuerySettings settings = new QuerySettings()
 
 ## Insert API（挿入 API） \{#insert-api\}
 
-### insert(String tableName, InputStream data, ClickHouseFormat format)
+### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
 
 指定されたフォーマットのバイトデータを `InputStream` として受け取ります。`data` は `format` でエンコードされていることが想定されています。
 
@@ -362,8 +354,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ```
 
-
-### insert(String tableName, List&lt;?&gt; data, InsertSettings settings)
+### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
 データベースに書き込みリクエストを送信します。オブジェクトのリストは効率的なフォーマットに変換されてからサーバーに送信されます。リスト要素のクラスは、事前に `register(Class, TableSchema)` メソッドを使用して登録しておく必要があります。
 
@@ -399,8 +390,7 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
-
-### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings)
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings) \{#insertstring-tablename-datastreamwriter-writer-clickhouseformat-format-insertsettings-settings\}
 
 **ベータ版**
 
@@ -477,7 +467,6 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 既に圧縮済みのデータの書き込み:
 
-
 ```java showLineNumbers
 String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
 String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
@@ -525,7 +514,6 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 ```
 
-
 ### InsertSettings \{#insertsettings\}
 
 挿入操作に関する構成オプション。
@@ -557,7 +545,7 @@ try (InsertResponse response = client.insert(tableName, out -> {
 
 ## クエリ API \{#query-api\}
 
-### query(String sqlQuery)
+### query(String sqlQuery) \{#querystring-sqlquery\}
 
 `sqlQuery` をそのまま送信します。レスポンス形式はクエリ設定によって決まります。`QueryResponse` は、その形式をサポートするリーダーによって消費されるべきレスポンスストリームへの参照を保持します。
 
@@ -606,8 +594,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 // HTTP接続を速やかに解放するため、ビジネスロジックは読み取りブロックの外に配置すること  
 ```
 
-
-### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings)
+### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
 
 `sqlQuery` をそのまま送信します。加えて、サーバーが SQL 式をコンパイルできるようにクエリパラメータも送信します。
 
@@ -655,8 +642,7 @@ try (QueryResponse response =
 
 ```
 
-
-### queryAll(String sqlQuery)
+### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
 
 `RowBinaryWithNamesAndTypes` 形式のデータに対してクエリを実行します。結果はコレクションとして返されます。読み取りパフォーマンスはリーダー利用時と同等ですが、データセット全体を保持するため、より多くのメモリを消費します。
 
@@ -694,7 +680,6 @@ try {
 }
 ```
 
-
 ### QuerySettings \{#querysettings\}
 
 クエリ操作向けの設定オプション。
@@ -708,7 +693,7 @@ try {
 | `setMaxExecutionTime(Integer maxExecutionTime)` | サーバー上での操作の最大実行時間を設定します。読み込みタイムアウトには影響しません。                                      |
 | `waitEndOfQuery(Boolean waitEndOfQuery)`     | 応答を送信する前にクエリの終了を待機するようサーバーに要求します。                                                        |
 | `setUseServerTimeZone(Boolean useServerTimeZone)` | 操作結果内の日付/時刻型を解析する際に、サーバーのタイムゾーン（クライアント設定を参照）が使用されます。デフォルトは `false` です。 |
-| `setUseTimeZone(String timeZone)`            | 時刻変換に `timeZone` を使用するようサーバーに要求します。 [session_timezone](/operations/settings/settings#session_timezone) を参照してください。 |
+| `setUseTimeZone(String timeZone)`            | 時刻変換に `timeZone` を使用するようサーバーに要求します。 [session&#95;timezone](/operations/settings/settings#session_timezone) を参照してください。 |
 | `serverSetting(String name, String value)`   | 操作に対する個別のサーバー設定を行います。                                                                                |
 | `serverSetting(String name, Collection values)` | 複数の値を持つ個別のサーバー設定を操作に対して行います。コレクションの要素は `String` 値である必要があります。          |
 | `setDBRoles(Collection dbRoles)`             | 操作を実行する前に設定する DB ロールを指定します。コレクションの要素は `String` 値である必要があります。                |
@@ -732,12 +717,12 @@ try {
 
 ### 例 \{#examples\}
 
-- サンプルコードは[リポジトリ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)で参照できます
-- Spring Service の[実装](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)を参照してください
+* サンプルコードは[リポジトリ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)で参照できます
+* Spring Service の[実装](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)を参照してください
 
 ## 共通 API \{#common-api\}
 
-### getTableSchema(String table)
+### getTableSchema(String table) \{#gettableschemastring-table\}
 
 テーブル `table` のスキーマを取得します。
 
@@ -758,8 +743,7 @@ TableSchema getTableSchema(String table, String database)
 
 テーブルのカラム一覧を含む `TableSchema` オブジェクトを返します。
 
-
-### getTableSchemaFromQuery(String sql)
+### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
 SQL ステートメントからスキーマを取得します。
 
@@ -777,10 +761,9 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 `sql` で指定したクエリに対応する列を持つ `TableSchema` オブジェクトを返します。
 
-
 ### TableSchema \{#tableschema\}
 
-### register(Class&lt;?&gt; clazz, TableSchema schema)
+### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
 
 Java クラスに対して、`schema` を用いたデータの読み書きに使用するシリアライズ／デシリアライズ処理をコンパイルします。このメソッドは、getter/setter と対応するカラムのペアごとにシリアライザとデシリアライザを作成します。
 カラムの対応付けは、メソッド名から抽出した名前に基づいて行われます。たとえば、`getFirstName` はカラム `first_name` または `firstname` に対応します。
@@ -803,11 +786,10 @@ void register(Class<?> clazz, TableSchema schema)
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
-
 ## 使用例 \{#usage-examples\}
 
 完全なサンプルコードはリポジトリ内の `example` [フォルダ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)にあります：
 
-- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主なサンプル集。
-- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションでクライアントを使用する方法を示すサンプル。
-- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor (Kotlin) アプリケーションでクライアントを使用する方法を示すサンプル。
+* [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主なサンプル集。
+* [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションでクライアントを使用する方法を示すサンプル。
+* [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor (Kotlin) アプリケーションでクライアントを使用する方法を示すサンプル。

@@ -40,7 +40,7 @@ import clickhouse_result from '@site/static/images/integrations/data-ingestion/e
 import Image from '@theme/IdealImage';
 
 
-# 将 EMQX 与 ClickHouse 集成
+# 将 EMQX 与 ClickHouse 集成 {#integrating-emqx-with-clickhouse}
 
 
 
@@ -63,7 +63,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 获取 ClickHouse Cloud 服务
+## 获取 ClickHouse Cloud 服务 {#get-your-clickhouse-cloudservice}
 
 在本次部署过程中，我们在 AWS 美国北弗吉尼亚（us-east-1）区域部署了一个 ClickHouse 实例，并在同一地区部署了一个 EMQX Cloud 实例。
 
@@ -153,7 +153,7 @@ EMQX Cloud 默认不允许匿名连接，所以你需要添加一个客户端凭
 
 
 
-## 将 EMQX Cloud 与 ClickHouse Cloud 集成
+## 将 EMQX Cloud 与 ClickHouse Cloud 集成 {#integration-emqx-cloud-with-clickhouse-cloud}
 
 [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) 用于配置处理和响应 EMQX 消息流与设备事件的规则。Data Integrations 不仅提供了清晰且灵活的可配置架构方案，还简化了开发流程、提升了用户体验，并降低了业务系统与 EMQX Cloud 之间的耦合度。同时，它还为 EMQX Cloud 专有能力的定制化提供了完善的基础设施。
 
@@ -163,7 +163,7 @@ EMQX Cloud 为常见数据系统提供了 30 多种原生集成方案，ClickHou
 
 <Image img={data_integration_clickhouse} size="lg" border alt="EMQX Cloud ClickHouse 数据集成连接器详情" />
 
-### 创建 ClickHouse 资源
+### 创建 ClickHouse 资源 {#create-clickhouse-resource}
 
 点击左侧菜单中的 “Data Integrations”，然后点击 “View All Resources”。您可以在 Data Persistence 部分找到 ClickHouse，或者直接搜索 ClickHouse。
 
@@ -177,7 +177,7 @@ EMQX Cloud 为常见数据系统提供了 30 多种原生集成方案，ClickHou
 
 <Image img={data_integration_resource} size="lg" border alt="EMQX Cloud ClickHouse 资源设置表单及连接详情" />
 
-### 创建新规则
+### 创建新规则 {#create-a-new-rule}
 
 在创建资源的过程中，您会看到一个弹窗，点击 “New” 会跳转到规则创建页面。
 
@@ -212,7 +212,7 @@ FROM
 
 现在点击 &quot;NEXT&quot; 按钮。此步骤是告诉 EMQX Cloud 如何将处理后的数据写入你的 ClickHouse 数据库。
 
-### 添加响应操作
+### 添加响应操作 {#add-a-response-action}
 
 如果你只有一个资源，则无需修改 &#39;Resource&#39; 和 &#39;Action Type&#39;。
 你只需要设置 SQL 模板。以下是本教程中使用的示例：
@@ -225,7 +225,7 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 这是一个用于向 ClickHouse 写入数据的模板，可以看到这里使用了变量。
 
-### 查看规则详情
+### 查看规则详情 {#view-rules-details}
 
 点击 “Confirm” 和 “View Details”。现在一切都已配置就绪。你可以在规则详情页面看到数据集成的运行情况。
 
@@ -234,13 +234,13 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 发送到 `temp_hum/emqx` 主题的所有 MQTT 消息都会被持久化到你的 ClickHouse Cloud 数据库中。
 
 
-## 将数据保存到 ClickHouse
+## 将数据保存到 ClickHouse {#saving-data-into-clickhouse}
 
 我们将模拟温度和湿度数据，通过 MQTT X 将这些数据上报到 EMQX Cloud，然后使用 EMQX Cloud 的数据集成功能将数据保存到 ClickHouse Cloud 中。
 
 <Image img={work_flow} size="lg" border alt="展示数据流向的 EMQX Cloud 到 ClickHouse 工作流图" />
 
-### 向 EMQX Cloud 发布 MQTT 消息
+### 向 EMQX Cloud 发布 MQTT 消息 {#publish-mqtt-messages-to-emqx-cloud}
 
 你可以使用任意 MQTT 客户端或 SDK 发布消息。在本教程中，我们将使用 [MQTT X](https://mqttx.app/)，这是由 EMQ 提供的一款用户友好的 MQTT 客户端应用程序。
 
@@ -274,13 +274,13 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 <Image img={mqttx_publish} size="lg" border alt="MQTTX 发布 MQTT 消息界面，展示消息编辑" />
 
-### 查看规则监控
+### 查看规则监控 {#view-rules-monitoring}
 
 检查规则监控，确认成功次数已增加 1。
 
 <Image img={rule_monitor} size="lg" border alt="EMQX Cloud 规则监控看板，展示消息处理指标" />
 
-### 检查持久化数据
+### 检查持久化数据 {#check-the-data-persisted}
 
 现在是时候查看 ClickHouse Cloud 上的数据了。理想情况下，你使用 MQTTX 发送的数据会进入 EMQX Cloud，并在原生数据集成的帮助下持久化到 ClickHouse Cloud 的数据库中。
 
@@ -293,6 +293,6 @@ SELECT * FROM emqx.temp_hum;
 
 <Image img={clickhouse_result} size="lg" border alt="ClickHouse 查询结果，显示已持久化的物联网 (IoT) 数据" />
 
-### 总结
+### 总结 {#summary}
 
 你无需编写任何代码，就已经让 MQTT 数据从 EMQX Cloud 流转到了 ClickHouse Cloud。借助 EMQX Cloud 和 ClickHouse Cloud，你无需自行管理基础设施，只需专注于编写物联网 (IoT) 应用，而数据会安全地存储在 ClickHouse Cloud 中。

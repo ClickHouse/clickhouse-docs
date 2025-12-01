@@ -232,7 +232,7 @@ docker-compose logs -f
 :::
 
 
-### Подключение к локальному каталогу Lakekeeper
+### Подключение к локальному каталогу Lakekeeper {#connecting-to-local-lakekeeper-catalog}
 
 Подключитесь к контейнеру ClickHouse:
 
@@ -251,7 +251,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 ```
 
 
-## Выполнение запросов к таблицам каталога Lakekeeper с помощью ClickHouse
+## Выполнение запросов к таблицам каталога Lakekeeper с помощью ClickHouse {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
 Теперь, когда соединение установлено, вы можете начинать выполнять запросы по каталогу Lakekeeper. Например:
 
@@ -335,7 +335,7 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Загрузка данных из вашего Data Lake в ClickHouse
+## Загрузка данных из вашего Data Lake в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 Если вам нужно загрузить данные из каталога Lakekeeper в ClickHouse, начните с создания локальной таблицы в ClickHouse:
 

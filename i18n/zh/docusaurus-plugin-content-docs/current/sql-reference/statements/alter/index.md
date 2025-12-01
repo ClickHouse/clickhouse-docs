@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# ALTER
+# ALTER {#alter}
 
 大多数 `ALTER TABLE` 查询用于修改表设置或数据：
 

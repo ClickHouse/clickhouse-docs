@@ -27,7 +27,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 `ON CLUSTER` 子句可用于在整个集群中创建用户，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
 
-## 身份验证
+## 身份验证 {#identification}
 
 可以通过多种方式对用户进行身份验证：
 
@@ -221,7 +221,7 @@ ClickHouse 会将 `user_name@'address'` 视为一个完整的用户名。因此�
 
 
 
-## 示例
+## 示例 {#examples-1}
 
 创建一个名为 `mira`、受密码 `qwerty` 保护的用户账号：
 

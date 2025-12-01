@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# String
+# String {#string}
 
 任意の長さの文字列型です。長さに制限はありません。値には、ヌルバイトを含む任意のバイト列を格納できます。
 String 型は、他の DBMS の VARCHAR、BLOB、CLOB などの型を置き換えるものです。

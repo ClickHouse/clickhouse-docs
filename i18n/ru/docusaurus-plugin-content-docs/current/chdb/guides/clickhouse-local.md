@@ -11,9 +11,7 @@ doc_type: 'guide'
 Он предоставляет пользователям мощь ClickHouse без необходимости устанавливать сервер.
 В этом руководстве мы рассмотрим, как использовать базу данных clickhouse-local в chDB.
 
-
-
-## Настройка
+## Настройка {#setup}
 
 Сначала создадим виртуальное окружение:
 
@@ -41,8 +39,7 @@ pip install ipython
 ipython
 ```
 
-
-## Установка clickhouse-local
+## Установка clickhouse-local {#installing-clickhouse-local}
 
 Загрузка и установка clickhouse-local выполняется так же, как [загрузка и установка ClickHouse](/install).
 Сделать это можно, выполнив следующую команду:
@@ -57,8 +54,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse -m --path demo.chdb
 ```
 
-
-## Приём данных в clickhouse-local
+## Приём данных в clickhouse-local {#ingesting-data-into-clickhouse-local}
 
 База данных по умолчанию хранит данные только в памяти, поэтому нам нужно создать именованную базу данных, чтобы гарантировать сохранение всех принимаемых данных на диск.
 
@@ -93,8 +89,7 @@ FROM foo.randomNumbers
 ChdbError: Код: 76. DB::Exception: Не удается заблокировать файл demo.chdb/status. Другой экземпляр сервера в этом каталоге уже запущен. (CANNOT_OPEN_FILE)
 ```
 
-
-## Подключение к базе данных clickhouse-local
+## Подключение к базе данных clickhouse-local {#connecting-to-a-clickhouse-local-database}
 
 Вернитесь в оболочку `ipython` и импортируйте модуль `session` из chDB:
 

@@ -7,18 +7,15 @@ title: 'プロファイルガイド最適化'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# プロファイルガイド最適化
+# プロファイルガイド最適化 {#profile-guided-optimization}
 
 Profile-Guided Optimization (PGO) は、実行時プロファイルに基づいてプログラムを最適化するコンパイラ最適化手法です。
 
 テストの結果、PGO は ClickHouse のパフォーマンス向上に有効であることが分かっています。ClickBench テストスイートでは、QPS が最大 15% 向上することが確認されています。より詳細な結果は[こちら](https://pastebin.com/xbue3HMU)で確認できます。パフォーマンス向上の度合いは、典型的なワークロードに依存し、より良い結果が得られる場合もあれば、そうでない場合もあります。
 
 ClickHouse における PGO の詳細については、該当する GitHub の[issue](https://github.com/ClickHouse/ClickHouse/issues/44567)を参照してください。
-
-
 
 ## PGO を使って ClickHouse をビルドする方法 {#how-to-build-clickhouse-with-pgo}
 

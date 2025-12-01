@@ -11,7 +11,7 @@ import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
 
-## ClickHouse 中的表部件是什么？
+## ClickHouse 中的表部件是什么？ {#what-are-table-parts-in-clickhouse}
 
 <br />
 
@@ -66,7 +66,7 @@ ORDER BY (town, street);
 
 
 
-## 监控表的分片
+## 监控表的分片 {#monitoring-table-parts}
 
 你可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_part`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)示例表当前所有处于活动状态的 ^^parts^^（分片）列表：
 

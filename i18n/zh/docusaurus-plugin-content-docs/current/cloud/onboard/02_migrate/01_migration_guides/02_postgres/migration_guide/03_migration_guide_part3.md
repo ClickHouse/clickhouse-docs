@@ -49,7 +49,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 分区
+## 分区 {#partitions}
 
 Postgres 用户对表分区这一概念应该很熟悉：通过将表拆分为更小、更易管理的片段（称为分区），以提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围、指定列表，或基于键的哈希来实现。这使管理员可以基于特定条件（如日期范围或地理位置）来组织数据。分区有助于通过分区裁剪和更高效的索引来提升查询性能，从而实现更快速的数据访问。同时，它也有助于维护任务，例如备份和数据清理，因为可以针对单个分区而不是整个表执行操作。此外，通过将负载分布到多个分区，分区还能显著提高 PostgreSQL 数据库的可扩展性。
 
@@ -76,7 +76,7 @@ PARTITION BY toYear(CreationDate)
 
 有关分区的完整介绍，请参阅 [&quot;Table partitions&quot;](/partitions)。
 
-### 分区的应用场景
+### 分区的应用场景 {#applications-of-partitions}
 
 ClickHouse 中的分区与 Postgres 的应用场景类似，但也存在一些细微差别。更具体地说：
 
@@ -132,7 +132,7 @@ ALTER TABLE posts
 
 
 
-## 物化视图与投影
+## 物化视图与投影 {#materialized-views-vs-projections}
 
 Postgres 允许在单个表上创建多个索引，从而可以针对多种访问模式进行优化。这种灵活性使管理员和开发人员能够根据特定查询和运维需求定制数据库性能。ClickHouse 的投影（projections）概念虽然与此并非完全等价，但允许用户为一张表指定多个 `ORDER BY` 子句。
 

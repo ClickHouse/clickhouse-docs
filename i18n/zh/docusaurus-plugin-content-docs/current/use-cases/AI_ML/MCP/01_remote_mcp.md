@@ -23,14 +23,14 @@ import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png'
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 
-# 启用 ClickHouse Cloud 远程 MCP 服务器
+# 启用 ClickHouse Cloud 远程 MCP 服务器 {#enabling-the-clickhouse-cloud-remote-mcp-server}
 
 > 本指南介绍如何启用和使用 ClickHouse Cloud 远程 MCP 服务器。本示例使用 Claude Code 作为 MCP 客户端,但您可以使用任何支持 MCP 的 LLM 客户端。
 
 <VerticalStepper headerLevel="h2">
 
 
-## 为 ClickHouse Cloud 服务启用远程 MCP 服务器
+## 为 ClickHouse Cloud 服务启用远程 MCP 服务器 {#enable-remote-mcp-server}
 
 1. 连接到 ClickHouse Cloud 服务，单击 `Connect` 按钮，为该服务启用远程 MCP 服务器
 
@@ -45,7 +45,7 @@ https://mcp.clickhouse.cloud/mcp
 ```
 
 
-## 在 Claude Code 中添加 ClickHouse MCP 服务器
+## 在 Claude Code 中添加 ClickHouse MCP 服务器 {#add-clickhouse-mcp-server-claude-code}
 
 1. 在您的工作目录中运行以下命令，将 ClickHouse Cloud MCP 服务器的配置添加到 Claude Code 中。在此示例中，我们在 Claude Code 配置中将 MCP 服务器命名为 `clickhouse_cloud`。
 

@@ -17,7 +17,7 @@ doc_type: 'guide'
 
 以下是 ClickHouse 中不同数据删除方式的汇总：
 
-## 轻量级删除
+## 轻量级删除 \{#lightweight-deletes\}
 
 轻量级删除会将行立即标记为已删除，从而可以在之后的所有 `SELECT` 查询中自动将其过滤掉。随后对这些已删除行的实际移除会在自然合并周期中发生，因此会带来更少的 I/O 开销。其结果是，在一段未明确定义的时间内，数据可能并未真正从存储中删除，而只是被标记为已删除。如果你需要确保数据已经被删除，请考虑使用上述 mutation 命令。
 
@@ -34,8 +34,7 @@ DELETE FROM posts WHERE toYear(CreationDate) = 2018
 
 详细了解[轻量级删除](/guides/developer/lightweight-delete)。
 
-
-## 删除变更
+## 删除变更 \{#delete-mutations\}
 
 删除变更可以通过 `ALTER TABLE ... DELETE` 命令发起，例如：
 
@@ -48,8 +47,7 @@ ALTER TABLE posts DELETE WHERE toYear(CreationDate) = 2018
 
 有关[删除类型变更](/sql-reference/statements/alter/delete)的更多信息，请参阅文档。
 
-
-## 截断表
+## 截断表 \{#truncate-table\}
 
 如果需要删除表中的所有数据，请使用下面的 `TRUNCATE TABLE` 命令。此操作较为轻量级。
 
@@ -59,8 +57,7 @@ TRUNCATE TABLE posts
 
 在 [TRUNCATE TABLE](/sql-reference/statements/truncate) 中了解更多信息。
 
-
-## 删除分区
+## 删除分区 \{#drop-partition\}
 
 如果为数据指定了自定义分区键，则可以高效删除分区。避免使用高基数的分区键。
 
@@ -70,7 +67,6 @@ ALTER TABLE posts (DROP PARTITION '2008')
 
 请参阅 [DROP PARTITION](/sql-reference/statements/alter/partition) 了解更多信息。
 
-
 ## 更多资源 \{#more-resources\}
 
-- [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

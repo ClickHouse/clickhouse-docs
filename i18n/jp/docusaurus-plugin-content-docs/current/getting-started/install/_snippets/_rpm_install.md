@@ -5,7 +5,7 @@
 <VerticalStepper>
 
 
-## RPM リポジトリの設定
+## RPM リポジトリの設定 {#setup-the-rpm-repository}
 
 次のコマンドを実行して公式リポジトリを追加します：
 
@@ -24,7 +24,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 以下の手順では、利用しているパッケージマネージャに応じて、`yum install` を `zypper install` に置き換えて構いません。
 
 
-## ClickHouse サーバーとクライアントをインストールする
+## ClickHouse サーバーとクライアントをインストールする {#install-clickhouse-server-and-client-1}
 
 ClickHouse をインストールするには、次のコマンドを実行します。
 
@@ -42,7 +42,7 @@ sudo yum install clickhouse-server-22.8.7.34
 ```
 
 
-## ClickHouse サーバーを起動する
+## ClickHouse サーバーを起動する {#start-clickhouse-server-1}
 
 ClickHouse サーバーを起動するには、以下を実行します。
 
@@ -65,7 +65,7 @@ clickhouse-client --password
 ```
 
 
-## スタンドアロン ClickHouse Keeper をインストールする
+## スタンドアロン ClickHouse Keeper をインストールする {#install-standalone-clickhouse-keeper-1}
 
 :::tip
 本番環境では、ClickHouse Keeper を専用ノード上で実行することを強く推奨します。

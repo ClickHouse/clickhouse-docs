@@ -13,7 +13,7 @@ import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
 
-# 深入了解 ClickHouse 数据跳过索引
+# 深入了解 ClickHouse 数据跳过索引 {#understanding-clickhouse-data-skipping-indexes}
 
 
 
@@ -29,7 +29,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 基本操作
+## 基本操作 {#basic-operation}
 
 用户只能在 MergeTree 系列的表上使用数据跳过索引（Data Skipping Indexes）。每个数据跳过索引有四个主要参数：
 
@@ -121,11 +121,11 @@ SET send_logs_level='trace';
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): 索引 `vix` 已丢弃 6102/6104 个颗粒。
 ```
 
-## 跳过索引类型
+## 跳过索引类型 {#skip-index-types}
 
 {/* vale off */ }
 
-### minmax
+### minmax {#minmax}
 
 {/* vale on */ }
 
@@ -135,7 +135,7 @@ SET send_logs_level='trace';
 
 {/* vale off */ }
 
-### set
+### set {#set}
 
 {/* vale on */ }
 
@@ -143,7 +143,7 @@ SET send_logs_level='trace';
 
 此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而无法应用索引。
 
-### Bloom filter 类型
+### Bloom filter 类型 {#bloom-filter-types}
 
 *Bloom filter*（布隆过滤器）是一种数据结构，它以极高的空间效率实现集合成员测试，但代价是存在一定概率的误报。对于跳过索引而言，误报并不是一个重要问题，因为唯一的劣势是会多读取一些不必要的数据块。然而，存在误报的可能性也意味着被索引的表达式通常应当为 true，否则可能会跳过有效数据。
 
@@ -184,7 +184,7 @@ SET send_logs_level='trace';
 
 
 
-## Skip 索引最佳实践
+## Skip 索引最佳实践 {#skip-best-practices}
 
 Skip 索引并不直观，尤其是对于那些习惯于关系型数据库（RDBMS）中的行式二级索引，或文档存储中的倒排索引的用户而言。要真正获益，在应用 ClickHouse 数据跳过索引时，必须跳过足够多的 granule 读取，以抵消计算索引本身的开销。关键在于，如果某个值在一个已建立索引的数据块（block）中哪怕只出现一次，就意味着整个 block 都必须被读入内存并进行评估，而索引的计算成本在这种情况下就成了多余的开销。
 

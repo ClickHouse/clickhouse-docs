@@ -7,9 +7,7 @@ title: 'Buffer 表引擎'
 doc_type: 'reference'
 ---
 
-
-
-# Buffer 表引擎
+# Buffer 表引擎 {#buffer-table-engine}
 
 在写入时先将要写入的数据缓存在 RAM 中，并定期刷新到另一张表。读取时会同时从缓冲区和另一张表中读取数据。
 
@@ -21,27 +19,27 @@ doc_type: 'reference'
 Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_bytes, max_bytes [,flush_time [,flush_rows [,flush_bytes]]])
 ```
 
-### 引擎参数
+### 引擎参数 {#engine-parameters}
 
-#### `database`
+#### `database` {#database}
 
 `database` – 数据库名称。可以使用 `currentDatabase()` 或其他返回字符串的常量表达式。
 
-#### `table`
+#### `table` {#table}
 
 `table` – 要将数据刷新到的目标表。
 
-#### `num_layers`
+#### `num_layers` {#num&#95;layers}
 
 `num_layers` – 并行层数。从物理上看，该表将表示为 `num_layers` 个彼此独立的缓冲区。
 
-#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, 和 `max_bytes`
+#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, 和 `max_bytes` {#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes}
 
 用于从缓冲区刷新数据的触发条件。
 
-### 可选引擎参数
+### 可选引擎参数 {#optional-engine-parameters}
 
-#### `flush_time`, `flush_rows`, 和 `flush_bytes`
+#### `flush_time`, `flush_rows`, 和 `flush_bytes` {#flush&#95;time-flush&#95;rows-and-flush&#95;bytes}
 
 在后台从缓冲区刷新数据的触发条件（省略或设为零表示没有 `flush*` 参数）。
 
@@ -49,15 +47,15 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 另外，如果至少一个 `flush*` 条件满足，就会在后台发起一次刷新操作。这与 `max*` 不同，因为 `flush*` 允许单独配置后台刷新，以避免对写入 Buffer 表的 `INSERT` 查询增加延迟。
 
-#### `min_time`, `max_time`, 和 `flush_time`
+#### `min_time`, `max_time`, 和 `flush_time` {#min&#95;time-max&#95;time-and-flush&#95;time}
 
 从第一次写入缓冲区开始计算的时间（秒）条件。
 
-#### `min_rows`, `max_rows`, 和 `flush_rows`
+#### `min_rows`, `max_rows`, 和 `flush_rows` {#min&#95;rows-max&#95;rows-and-flush&#95;rows}
 
 缓冲区中行数的条件。
 
-#### `min_bytes`, `max_bytes`, 和 `flush_bytes`
+#### `min_bytes`, `max_bytes`, 和 `flush_bytes` {#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes}
 
 缓冲区中字节数的条件。
 
@@ -83,7 +81,6 @@ CREATE TABLE merge.hits_buffer AS merge.hits ENGINE = Buffer(merge, hits, 1, 10,
 当服务器停止，或执行 `DROP TABLE` / `DETACH TABLE` 时，缓冲的数据也会被刷新到目标表。
 
 可以为数据库名和表名设置用单引号括起来的空字符串。这表示不存在目标表。在这种情况下，当达到数据刷新条件时，缓冲区会直接被清空。这对于在内存中保留一个数据时间窗口可能很有用。
-
 
 从 Buffer 表中读取时，数据会同时从缓冲区和目标表（如果存在）中进行处理。
 注意，Buffer 表不支持索引。换句话说，缓冲区中的数据会被全量扫描，这在缓冲区很大时可能会比较慢。（对于从属表中的数据，将使用该表所支持的索引。）

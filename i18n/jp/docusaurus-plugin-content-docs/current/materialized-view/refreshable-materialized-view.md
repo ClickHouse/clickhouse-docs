@@ -30,7 +30,7 @@ ClickHouse のインクリメンタルマテリアライズドビューは非常
 
 
 
-## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？
+## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
 リフレッシュ可能なマテリアライズドビューは、作成時に定義された間隔で自動的に更新されます。
 例えば、次のマテリアライズドビューは 1 分ごとにリフレッシュされます。
@@ -51,7 +51,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
 
 
-## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？
+## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 リフレッシュ可能なマテリアライズドビューが最後にいつリフレッシュされたかを確認するには、次のように [`system.view_refreshes`](/operations/system-tables/view_refreshes) システムテーブルをクエリします。
 
@@ -69,7 +69,7 @@ FROM system.view_refreshes;
 ```
 
 
-## リフレッシュ間隔はどのように変更できますか？
+## リフレッシュ間隔はどのように変更できますか？ {#how-can-i-change-the-refresh-rate}
 
 リフレッシュ可能なマテリアライズドビューのリフレッシュ間隔を変更するには、[`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 構文を使用します。
 
@@ -87,7 +87,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
 
-## `APPEND` を使用して新しい行を追加する
+## `APPEND` を使用して新しい行を追加する {#using-append-to-add-new-rows}
 
 `APPEND` 機能を使用すると、ビュー全体を置き換えるのではなく、テーブルの末尾に新しい行を追記できます。
 
@@ -190,11 +190,11 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## 例
+## 例 {#examples}
 
 ここでは、いくつかのサンプルデータセットを使って、リフレッシュ可能なマテリアライズドビューの使用方法を見ていきます。
 
-### Stack Overflow
+### Stack Overflow {#stack-overflow}
 
 [非正規化データガイド](/data-modeling/denormalization)では、Stack Overflow のデータセットを使ってデータを非正規化するさまざまな手法を紹介しています。`votes`、`users`、`badges`、`posts`、`postlinks` の各テーブルにデータを格納します。
 
@@ -244,7 +244,7 @@ LEFT JOIN (
 ここでの構文はインクリメンタルなマテリアライズドビューと同一ですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 句を含めている点が異なります。
 :::
 
-### IMDb
+### IMDb {#imdb}
 
 [dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを用いて IMDb データセットを用意しました。
 

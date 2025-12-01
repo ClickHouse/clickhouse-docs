@@ -30,7 +30,7 @@ ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图
 
 
 
-## 如何刷新可刷新物化视图？
+## 如何刷新可刷新物化视图？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
 可刷新物化视图会按照创建时定义的时间间隔自动刷新。
 例如，下面的物化视图每分钟刷新一次：
@@ -51,7 +51,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 有关更多信息，请参阅[管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
 
 
-## 可刷新物化视图最近一次刷新是什么时候？
+## 可刷新物化视图最近一次刷新是什么时候？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 要查找某个可刷新物化视图最近一次的刷新时间，可以按如下方式查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表：
 
@@ -69,7 +69,7 @@ FROM system.view_refreshes;
 ```
 
 
-## 如何修改刷新频率？
+## 如何修改刷新频率？ {#how-can-i-change-the-refresh-rate}
 
 要修改可刷新的物化视图的刷新频率，请使用 [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 语法。
 
@@ -87,7 +87,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
 
-## 使用 `APPEND` 添加新行
+## 使用 `APPEND` 添加新行 {#using-append-to-add-new-rows}
 
 `APPEND` 功能允许在表的末尾追加新行，而不是替换整个视图。
 
@@ -190,11 +190,11 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## 示例
+## 示例 {#examples}
 
 现在让我们通过一些示例数据集来看看如何使用可刷新物化视图。
 
-### Stack Overflow
+### Stack Overflow {#stack-overflow}
 
 [数据反规范化指南](/data-modeling/denormalization) 展示了使用 Stack Overflow 数据集进行数据反规范化的多种技术。我们向以下表中填充数据：`votes`、`users`、`badges`、`posts` 和 `postlinks`。
 
@@ -244,7 +244,7 @@ LEFT JOIN (
 此处的语法与增量物化视图完全相同，只是我们额外加入了一个 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
 :::
 
-### IMDb
+### IMDb {#imdb}
 
 在 [dbt 和 ClickHouse 集成指南](/integrations/dbt) 中，我们使用下列表填充了一个 IMDb 数据集：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
 

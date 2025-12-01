@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# view テーブル関数
+# view テーブル関数 {#view-table-function}
 
 副問い合わせをテーブルに変換します。この関数はビューを実装します（[CREATE VIEW](/sql-reference/statements/create/view) を参照）。生成されるテーブルはデータを保存せず、指定された `SELECT` クエリのみを保持します。テーブルから読み出すとき、ClickHouse はこのクエリを実行し、結果から不要なカラムをすべて削除します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 view(subquery)
@@ -34,7 +34,7 @@ view(subquery)
 
 
 
-## 例
+## 例 {#examples}
 
 入力テーブル：
 

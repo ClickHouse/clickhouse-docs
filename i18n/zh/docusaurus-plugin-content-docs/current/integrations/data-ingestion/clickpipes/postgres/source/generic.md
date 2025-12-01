@@ -9,7 +9,7 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 
 
 
-# 通用 Postgres 源设置指南
+# 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
 
 :::info
 
@@ -58,7 +58,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 
 
-## 创建具备权限的用户和发布
+## 创建具备权限的用户和发布 {#creating-a-user-with-permissions-and-publication}
 
 让我们为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
 并创建一个我们将用于复制的发布。
@@ -101,7 +101,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 
 
-## 增大 `max_slot_wal_keep_size`
+## 增大 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
 这是一个推荐的配置调整，用于确保大型事务或提交不会导致复制槽被丢弃。
 

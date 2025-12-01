@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 継続的インテグレーション (CI)
+# 継続的インテグレーション (CI) {#continuous-integration-ci}
 
 プルリクエストを作成すると、ClickHouse の [継続的インテグレーション (CI) システム](tests.md#test-automation) によって、あなたのコードに対していくつかの自動チェックが実行されます。
 これは、リポジトリのメンテナー (ClickHouse チームのメンバー) があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
@@ -75,26 +75,26 @@ ClickHouse server および keeper 用の Docker イメージをビルドし、�
 
 
 
-## スタイルチェック
+## スタイルチェック {#style-check}
 
 コードベースに対してさまざまなスタイルチェックを実行します。
 
 Style Check ジョブで実行される基本的なチェックは次のとおりです。
 
-##### cpp
+##### cpp {#cpp}
 
 [`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) スクリプト（ローカルでも実行可能）を使用して、単純な正規表現ベースのコードスタイルチェックを行います。\
 失敗した場合は、[コードスタイルガイド](style.md) に従ってスタイル上の問題を修正してください。
 
-##### codespell, aspell
+##### codespell, aspell {#codespell}
 
 文法ミスや綴りの誤りをチェックします。
 
-##### mypy
+##### mypy {#mypy}
 
 Python コードに対して静的型チェックを実行します。
 
-### スタイルチェックジョブをローカルで実行する
+### スタイルチェックジョブをローカルで実行する {#running-style-check-locally}
 
 *Style Check* ジョブ全体は、Docker コンテナ内でローカルに実行できます:
 
@@ -112,14 +112,14 @@ python -m ci.praktika run "Style check" --test cpp
 Python 3 と Docker 以外に必要な依存関係はありません。
 
 
-## Fast test
+## Fast test {#fast-test}
 
 通常、これは PR に対して最初に実行されるチェックです。
 ClickHouse をビルドし、一部を除くほとんどの [stateless functional tests](tests.md#functional-tests) を実行します。
 これが失敗すると、問題が修正されるまで後続のチェックは実行されません。
 どのテストが失敗したかを確認するにはレポートを参照し、その後[こちら](/development/tests#running-a-test-locally)で説明されているとおりにローカルでその失敗を再現します。
 
-#### Fast test をローカルで実行する:
+#### Fast test をローカルで実行する: {#running-fast-test-locally}
 
 ```sh
 python -m ci.praktika run "Fast test" [--test テスト名]
@@ -129,11 +129,11 @@ python -m ci.praktika run "Fast test" [--test テスト名]
 Python 3 と Docker 以外の依存関係は必要ありません。
 
 
-## ビルドチェック
+## ビルドチェック {#build-check}
 
 以降の手順で利用するために、さまざまな構成で ClickHouse をビルドします。
 
-### ローカルでのビルドの実行
+### ローカルでのビルドの実行 {#running-builds-locally}
 
 ビルドは、次のコマンドを使用して CI 環境に近い形でローカル実行できます。
 
@@ -143,7 +143,7 @@ python -m ci.praktika run "<ビルドジョブ名>"
 
 Python 3 と Docker 以外に必要な依存関係はありません。
 
-#### 利用可能なビルドジョブ
+#### 利用可能なビルドジョブ {#available-build-jobs}
 
 ビルドジョブ名は CI レポートに表示されるものと完全に同一です。
 
@@ -181,7 +181,7 @@ Python 3 と Docker 以外に必要な依存関係はありません。
 
 **注意:** クロスコンパイルを使用する「Other Architectures」カテゴリ以外のビルドでは、指定した `BUILD_JOB_NAME` どおりのビルドを生成するために、ローカルマシンのアーキテクチャがビルドタイプと一致している必要があります。
 
-#### 例
+#### 例 {#example-run-local}
 
 ローカルでデバッグビルドを実行するには:
 

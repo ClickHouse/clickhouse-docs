@@ -7,9 +7,7 @@ title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-
-
-# Variant(T1, T2, ...)
+# Variant(T1, T2, ...) {#variantt1-t2}
 
 此类型表示由其他数据类型构成的联合类型。类型 `Variant(T1, T2, ..., TN)` 表示该类型的每一行都包含一个值，该值要么是类型 `T1`，要么是 `T2`，……，要么是 `TN`，或者都不是（即为 `NULL` 值）。
 
@@ -21,9 +19,7 @@ doc_type: 'reference'
 因为处理这类类型的值可能会导致歧义。默认情况下，创建此类 `Variant` 类型会抛出异常，但可以通过设置 `allow_suspicious_variant_types` 来放宽此限制。
 :::
 
-
-
-## 创建 Variant 类型
+## 创建 Variant 类型 {#creating-variant}
 
 在表的列定义中使用 `Variant` 类型：
 
@@ -113,8 +109,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-
-## 以子列形式读取 Variant 中的嵌套类型
+## 以子列形式读取 Variant 中的嵌套类型 {#reading-variant-nested-types-as-subcolumns}
 
 Variant 类型支持使用类型名作为子列，从 Variant 列中读取单个嵌套类型。
 因此，如果有列 `variant Variant(T1, T2, T3)`，可以使用语法 `variant.T2` 读取类型为 `T2` 的子列。
@@ -187,19 +182,17 @@ SELECT variantType(v) FROM test;
 SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
-
 ```text
 ┌─toTypeName(variantType(v))──────────────────────────────────────────┐
 │ Enum8('None' = -1, 'Array(UInt64)' = 0, 'String' = 1, 'UInt64' = 2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
-## 在 Variant 列与其他列之间进行转换
+## 在 Variant 列与其他列之间进行转换 {#conversion-between-a-variant-column-and-other-columns}
 
 对于类型为 `Variant` 的列，可以执行 4 种转换。
 
-### 将 String 列转换为 Variant 列
+### 将 String 列转换为 Variant 列 {#converting-a-string-column-to-a-variant-column}
 
 从 `String` 到 `Variant` 的转换是通过从字符串值中解析出一个 `Variant` 类型的值来完成的：
 
@@ -246,7 +239,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### 将普通列转换为 Variant 列
+### 将普通列转换为 Variant 列 {#converting-an-ordinary-column-to-a-variant-column}
 
 可以将类型为 `T` 的普通列转换为包含该类型的 `Variant` 列：
 
@@ -272,7 +265,7 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### 将 Variant 列转换为普通列
+### 将 Variant 列转换为普通列 {#converting-a-variant-column-to-an-ordinary-column}
 
 可以将 `Variant` 列转换为普通列。在这种情况下，所有嵌套的 Variant 值都会被转换为目标类型：
 
@@ -290,8 +283,7 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### 将一个 Variant 转换为另一个 Variant
-
+### 将一个 Variant 转换为另一个 Variant {#converting-a-variant-to-another-variant}
 
 可以将一个 `Variant` 列转换为另一个 `Variant` 列，但只有当目标 `Variant` 列包含源 `Variant` 中的所有嵌套类型时才可以：
 
@@ -309,8 +301,7 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-
-## 从数据中读取 Variant 类型
+## 从数据中读取 Variant 类型 {#reading-variant-type-from-the-data}
 
 所有文本格式（TSV、CSV、CustomSeparated、Values、JSONEachRow 等）都支持读取 `Variant` 类型。在解析数据时，ClickHouse 会尝试将每个值写入最合适的 Variant 成员类型中。
 
@@ -343,8 +334,7 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-
-## 比较 Variant 类型的值
+## 比较 Variant 类型的值 {#comparing-values-of-variant-data}
 
 `Variant` 类型的值只能与具有相同 `Variant` 类型的值进行比较。
 
@@ -423,7 +413,6 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- 或者使用 variantEl
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
 ```
 
-
 ```text
 ┌─v2───┬─v2.Array(UInt32)─┬─variantType(v2)─┐
 │ 42   │ []               │ UInt64          │
@@ -466,8 +455,7 @@ SELECT v, variantType(v) FROM test ORDER by v;
 
 **注意** 默认情况下，不允许将 `Variant` 类型用作 `GROUP BY`/`ORDER BY` 键；如果你要使用它，请注意其特殊的比较规则，并启用 `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 设置。
 
-
-## 支持 Variant 类型的 JSONExtract 函数
+## 支持 Variant 类型的 JSONExtract 函数 {#jsonextract-functions-with-variant}
 
 所有 `JSONExtract*` 函数都支持 `Variant` 类型：
 

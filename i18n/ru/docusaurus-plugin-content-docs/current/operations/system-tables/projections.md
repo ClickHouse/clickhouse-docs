@@ -6,9 +6,7 @@ title: 'system.projections'
 doc_type: 'reference'
 ---
 
-
-
-# system.projections
+# system.projections {#systemprojections}
 
 Содержит информацию о существующих проекциях во всех таблицах.
 

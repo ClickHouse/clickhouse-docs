@@ -6,7 +6,7 @@ title: 'Оператор UNION'
 doc_type: 'reference'
 ---
 
-# Оператор UNION
+# Оператор UNION {#union-clause}
 
 Вы можете использовать `UNION` с явным указанием `UNION ALL` или `UNION DISTINCT`.
 

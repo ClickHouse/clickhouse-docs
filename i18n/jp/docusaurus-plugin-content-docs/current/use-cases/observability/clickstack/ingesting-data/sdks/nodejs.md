@@ -204,7 +204,7 @@ function myErrorHandler(error, req, res, next) {
 </TabItem>
 </Tabs>
 
-## トラブルシューティング
+## トラブルシューティング {#troubleshooting}
 
 SDK で問題が発生している場合は、`OTEL_LOG_LEVEL` 環境変数を `debug` に設定することで詳細なログ出力を有効化できます。
 
@@ -215,7 +215,7 @@ export OTEL_LOG_LEVEL=debug
 
 ## 高度な計装設定 {#advanced-instrumentation-configuration}
 
-### コンソールログのキャプチャ
+### コンソールログのキャプチャ {#capture-console-logs}
 
 デフォルトでは、ClickStack SDK はコンソールログをキャプチャします。これを無効にするには、
 `HDX_NODE_CONSOLE_CAPTURE` 環境変数を 0 に設定してください。
@@ -225,7 +225,7 @@ export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
 
-### ユーザー情報やメタデータを付与する
+### ユーザー情報やメタデータを付与する {#attach-user-information-or-metadata}
 
 特定の属性や識別子（例: ユーザー ID やメールアドレス）に関連するすべてのイベントに簡単にタグ付けするには、`setTraceAttributes` 関数を呼び出します。この関数は、呼び出し以降の現在のトレースに関連するすべてのログやスパンに、指定した属性をタグとして付与します。この関数は、特定のリクエスト/トレース内で可能な限り早いタイミング（例: Express のミドルウェアスタックの先頭付近）で呼び出すことを推奨します。
 
@@ -337,7 +337,7 @@ initSDK({
 
 _`OTEL_SERVICE_NAME` 環境変数は HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
 
-### 例外キャプチャの有効化
+### 例外キャプチャの有効化 {#enabling-exception-capturing}
 
 未処理の例外キャプチャを有効にするには、環境変数 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` を 1 に設定してください。
 

@@ -7,15 +7,11 @@ title: 'EXECUTE AS 语句'
 doc_type: 'reference'
 ---
 
-
-
-# EXECUTE AS 语句
+# EXECUTE AS 语句 {#execute-as-statement}
 
 允许以其他用户身份执行查询。
 
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 EXECUTE AS target_user;
@@ -39,8 +35,7 @@ GRANT IMPERSONATE ON * TO user3;
 在模拟另一个用户时，函数 [currentUser()](/sql-reference/functions/other-functions#currentUser) 返回被模拟用户的名称，
 而函数 [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) 返回实际通过认证的用户名。
 
-
-## 示例
+## 示例 {#examples}
 
 ```sql
 SELECT currentUser(), authenticatedUser(); -- 输出 "default    default"

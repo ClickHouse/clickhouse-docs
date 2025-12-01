@@ -22,7 +22,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# Приём данных из Postgres в ClickHouse (с использованием CDC)
+# Приём данных из Postgres в ClickHouse (с использованием CDC) {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
 
 Вы можете использовать ClickPipes для приёма данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть развернута в локальной инфраструктуре (on-premises) или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
 

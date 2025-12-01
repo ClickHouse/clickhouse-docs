@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Ограничения на количество TCP-соединений
+# Ограничения на количество TCP-соединений {#tcp-connection-limits}
 
 
 

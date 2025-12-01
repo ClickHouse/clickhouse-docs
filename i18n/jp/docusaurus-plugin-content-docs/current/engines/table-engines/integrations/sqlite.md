@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# SQLite テーブルエンジン {#sqlite-table-engine}
 
-# SQLite テーブルエンジン
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 このエンジンを使用すると、SQLite へのデータのインポートおよびエクスポートが可能になり、ClickHouse から SQLite テーブルへ直接クエリを実行することもできます。
 
-
-
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -33,8 +30,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 * `db_path` — データベースを含む SQLite ファイルへのパス。
 * `table` — SQLite データベース内のテーブル名。
 
-
-## 使用例
+## 使用例 {#usage-example}
 
 SQLite テーブルを作成するクエリを次に示します。
 

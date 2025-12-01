@@ -6,9 +6,7 @@ title: 'uniqTheta 関数'
 doc_type: 'reference'
 ---
 
-
-
-# uniqTheta 関数
+# uniqTheta 関数 {#uniqtheta-functions}
 
 uniqTheta 関数は 2 つの uniqThetaSketch オブジェクトに対して、∪ / ∩ / ×（和集合 / 共通部分 / 補集合）などの集合演算を行い、その結果を含む新しい uniqThetaSketch オブジェクトを返します。
 
@@ -17,9 +15,7 @@ uniqThetaSketch オブジェクトは、集約関数 uniqTheta の -State バリ
 UniqThetaSketch は、集合の要素数を近似的に表現するためのデータ構造です。
 RoaringBitmap の詳細については、[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html) を参照してください。
 
-
-
-## uniqThetaUnion
+## uniqThetaUnion {#uniqthetaunion}
 
 2 つの uniqThetaSketch オブジェクトの和集合（集合演算 ∪）を計算し、その結果として新しい uniqThetaSketch オブジェクトを返します。
 
@@ -45,8 +41,7 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-
-## uniqThetaIntersect
+## uniqThetaIntersect {#uniqthetaintersect}
 
 2 つの uniqThetaSketch オブジェクト間の積集合（∩）を計算し、その結果として新しい uniqThetaSketch を返します。
 
@@ -72,8 +67,7 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
-
-## uniqThetaNot
+## uniqThetaNot {#uniqthetanot}
 
 2 つの uniqThetaSketch オブジェクトに対して a&#95;not&#95;b（集合演算の差）を計算し、その結果として新しい uniqThetaSketch を生成します。
 

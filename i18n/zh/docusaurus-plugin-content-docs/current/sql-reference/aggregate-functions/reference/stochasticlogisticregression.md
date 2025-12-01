@@ -6,13 +6,11 @@ title: 'stochasticLogisticRegression'
 doc_type: 'reference'
 ---
 
-
-
-# stochasticLogisticRegression
+# stochasticLogisticRegression {#stochasticlogisticregression}
 
 该函数实现了随机逻辑回归，可用于二分类问题，支持与 stochasticLinearRegression 相同的自定义参数，工作方式也相同。
 
-### 参数
+### 参数 {#parameters}
 
 参数与 stochasticLinearRegression 中的完全相同：
 `learning rate`、`l2 regularization coefficient`、`mini-batch size`、`method for updating weights`。

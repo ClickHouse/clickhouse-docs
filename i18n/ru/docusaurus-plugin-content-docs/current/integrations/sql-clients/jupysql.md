@@ -15,8 +15,7 @@ import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Использование JupySQL с ClickHouse
+# Использование JupySQL с ClickHouse {#using-jupysql-with-clickhouse}
 
 <CommunityMaintainedBadge />
 
@@ -112,7 +111,6 @@ ORDER BY pickup_datetime;
 <table>
   <tr />
 </table>
-
 
 ```sql
 %%sql
@@ -241,7 +239,6 @@ SELECT * FROM s3(
     <td>1.68</td>
   </tr>
 </table>
-
 
 ```sql
 %%sql

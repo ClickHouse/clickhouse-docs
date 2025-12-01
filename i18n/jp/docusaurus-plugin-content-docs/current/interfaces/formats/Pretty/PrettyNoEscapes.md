@@ -23,7 +23,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 例：
 

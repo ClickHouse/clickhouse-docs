@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['ネットワーク', 'ポート', '設定', 'セキュリティ', 'ファイアウォール']
 ---
 
-# ネットワークポート
+# ネットワークポート {#network-ports}
 
 :::note
 **デフォルト** として記載されているポートは、ポート番号が `/etc/clickhouse-server/config.xml` で設定されていることを意味します。設定をカスタマイズするには、`/etc/clickhouse-server/config.d/` にファイルを追加してください。詳細は [構成ファイル](/operations/configuration-files) ドキュメントを参照してください。

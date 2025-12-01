@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблиц TinyLog
+# Движок таблиц TinyLog {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -32,7 +32,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Создание таблицы
+## Создание таблицы {#table_engines-tinylog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -58,7 +58,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## Пример использования
+## Пример использования {#table_engines-tinylog-example-of-use}
 
 Создание таблицы:
 

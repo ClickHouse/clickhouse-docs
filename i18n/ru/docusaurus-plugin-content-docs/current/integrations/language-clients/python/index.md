@@ -14,7 +14,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # Введение {#introduction}
@@ -80,7 +80,7 @@ ClickHouse Connect также можно установить из исходн�
 - Подключение к серверу ClickHouse на localhost.
 - Подключение к сервису ClickHouse Cloud.
 
-#### Используйте экземпляр клиента ClickHouse Connect для подключения к серверу ClickHouse на локальном хосте:
+#### Используйте экземпляр клиента ClickHouse Connect для подключения к серверу ClickHouse на локальном хосте: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
 ```python
 import clickhouse_connect
@@ -89,7 +89,7 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 ```
 
 
-#### Используйте экземпляр клиента ClickHouse Connect для подключения к сервису ClickHouse Cloud:
+#### Используйте экземпляр клиента ClickHouse Connect для подключения к сервису ClickHouse Cloud: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
 Используйте параметры подключения, полученные ранее. Для сервисов ClickHouse Cloud требуется TLS, поэтому используйте порт 8443.
@@ -102,7 +102,7 @@ client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=84
 ```
 
 
-### Взаимодействие с базой данных
+### Взаимодействие с базой данных {#interact-with-your-database}
 
 Чтобы выполнить SQL-команду ClickHouse, используйте метод клиента `command`:
 
@@ -124,5 +124,5 @@ client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# Результат: [(2000, -50.9035)]
+# Результат: [(2000, -50.9035)] {#output-2000-509035}
 ```

@@ -10,7 +10,7 @@ doc_type: 'guide'
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# Руководство по настройке источника данных Postgres с TimescaleDB
+# Руководство по настройке источника данных Postgres с TimescaleDB {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
 
@@ -61,7 +61,7 @@ Postgres ClickPipe.
 
 
 
-## Конфигурация
+## Конфигурация {#configuration}
 
 Hypertable в Timescale не хранят данные, вставляемые непосредственно в них. Вместо этого данные сохраняются в нескольких соответствующих таблицах‑фрагментах («chunk»), которые находятся в схеме `_timescaledb_internal`. Для выполнения запросов к hypertable это не является проблемой. Но при логической репликации, вместо того чтобы отслеживать изменения в hypertable, мы отслеживаем их в таблицах chunk. Postgres ClickPipe содержит логику автоматического сопоставления изменений из таблиц chunk с родительской hypertable, но для этого требуются дополнительные шаги.
 

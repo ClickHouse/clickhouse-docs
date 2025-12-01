@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 
 
-# Replicated
+# Replicated {#replicated}
 
 Движок основан на движке [Atomic](../../engines/database-engines/atomic.md). Он поддерживает репликацию метаданных по журналу DDL, который записывается в ZooKeeper и выполняется на всех репликах заданной базы данных.
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 
 
-## Создание базы данных
+## Создание базы данных {#creating-a-database}
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -56,7 +56,7 @@ DDL-запросы с базой данных `Replicated` работают ан
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Создание кластера с тремя хостами:
 
@@ -155,7 +155,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 ```
 
 
-## Параметры
+## Параметры {#settings}
 
 Поддерживаются следующие параметры:
 

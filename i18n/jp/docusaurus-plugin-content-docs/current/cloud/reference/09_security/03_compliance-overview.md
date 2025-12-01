@@ -10,7 +10,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
 
-# セキュリティおよびコンプライアンスレポート
+# セキュリティおよびコンプライアンスレポート {#security-and-compliance-reports}
 ClickHouse はお客様のセキュリティおよびコンプライアンスに関するニーズを評価し、追加のレポートに対するご要望に応じてプログラムの拡充を継続しています。詳細やレポートのダウンロードは、[Trust Center](https://trust.clickhouse.com) をご覧ください。
 
 

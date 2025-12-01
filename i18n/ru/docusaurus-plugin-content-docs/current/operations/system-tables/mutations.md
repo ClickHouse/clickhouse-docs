@@ -7,13 +7,9 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-
-
-# system.mutations
+# system.mutations {#systemmutations}
 
 Эта таблица содержит информацию о [мутациях](/sql-reference/statements/alter/index.md#mutations) таблиц семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) и прогрессе их выполнения. Каждая операция мутации представлена одной строкой.
-
-
 
 ## Столбцы {#columns}
 
@@ -45,7 +41,6 @@ doc_type: 'reference'
 - `latest_failed_part` ([String](/sql-reference/data-types/string.md)) — Имя последнего куска, который не удалось мутировать.
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Дата и время последнего сбоя мутации куска.
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — Сообщение об исключении, вызвавшем последний сбой мутации куска.
-
 
 ## Мониторинг мутаций {#monitoring-mutations}
 

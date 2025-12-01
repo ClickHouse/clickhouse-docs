@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Инструкция ALTER TABLE ... DELETE
+# Инструкция ALTER TABLE ... DELETE {#alter-table-delete-statement}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr

@@ -7,7 +7,7 @@ keywords: ['ClickHouse 高级指南', '开发者指南', '查询优化', '物化
 doc_type: 'guide'
 ---
 
-# 高级指南
+# 高级指南 {#advanced-guides}
 
 本节包含以下高级指南：
 
@@ -20,6 +20,6 @@ doc_type: 'guide'
 | [Deduplication strategies](../developer/deduplication)                                                          | 深入讲解数据去重技术的指南，这是一种从数据库中移除重复行的方法。解释了与 OLTP 系统中基于主键去重的区别、ClickHouse 的去重方法，以及如何在 ClickHouse 查询中处理重复数据场景。                                                                                                                              |
 | [Filling gaps in time-series data](../developer/time-series-filling-gaps)                                       | 介绍 ClickHouse 在处理时序数据方面能力的指南，包括用于填补数据缺口的技术，以构建更完整、连续的时序数据表示。                                                                                                                                                                                                                                    |
 | [Manage Data with TTL (Time-to-live)](../developer/ttl)                                                         | 介绍如何使用 `WITH FILL` 子句填补时序数据缺口的指南。内容包括如何用 0 值填补缺口、如何指定填补缺口的起始点、如何填补到特定结束点，以及如何为累积计算进行插值。                                                                                                                                                                                     |
-| [Stored procedures & query parameters](../developer/stored-procedures-and-prepared-statements)                  | 说明 ClickHouse 不支持传统存储过程的指南，并提供推荐替代方案，包括用户自定义函数（UDF）、参数化视图、物化视图以及外部编排。同时还涵盖查询参数，用于安全的参数化查询（类似预处理语句）。                                                                                                                 |
+| [Stored procedures &amp; query parameters](../developer/stored-procedures-and-prepared-statements)                  | 说明 ClickHouse 不支持传统存储过程的指南，并提供推荐替代方案，包括用户自定义函数（UDF）、参数化视图、物化视图以及外部编排。同时还涵盖查询参数，用于安全的参数化查询（类似预处理语句）。                                                                                                                 |
 | [Understanding query execution with the Analyzer](../developer/understanding-query-execution-with-the-analyzer) | 通过介绍 Analyzer 工具来剖析 ClickHouse 查询执行过程的指南。解释 Analyzer 如何将查询拆分为一系列步骤，帮助你可视化并排查整个执行过程，从而获得最佳性能。                                                                                                                                                                                            |
 | [Using JOINs in ClickHouse](../joining-tables)                                                                  | 简化在 ClickHouse 中进行表关联操作的指南。内容涵盖不同的 JOIN 类型（`INNER`、`LEFT`、`RIGHT` 等），探讨高效 JOIN 的最佳实践（例如将更小的表放在右侧），并提供关于 ClickHouse 内部 JOIN 算法的见解，帮助你在复杂数据关系场景下优化查询性能。                                                                |

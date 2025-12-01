@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Предложение PARALLEL WITH
+# Предложение PARALLEL WITH {#parallel-with-clause}
 
 Позволяет выполнять несколько операторов параллельно.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 инструкция1 PARALLEL WITH инструкция2 [PARALLEL WITH инструкция3 ...]
@@ -26,7 +26,7 @@ doc_type: 'reference'
 Параллельное выполнение операторов во многих случаях может быть быстрее, чем их последовательный запуск. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` скорее всего будет выполнено быстрее, чем `statement1; statement2; statement3`.
 
 
-## Примеры
+## Примеры {#examples}
 
 Создаёт две таблицы одновременно:
 

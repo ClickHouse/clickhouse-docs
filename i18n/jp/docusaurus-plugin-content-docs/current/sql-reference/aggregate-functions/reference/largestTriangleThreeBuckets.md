@@ -7,7 +7,7 @@ title: 'largestTriangleThreeBuckets'
 doc_type: 'reference'
 ---
 
-# largestTriangleThreeBuckets
+# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
 
 入力データに対して [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) アルゴリズムを適用します。
 このアルゴリズムは、可視化のために時系列データをダウンサンプリングする際に使用されます。x 座標でソートされた系列を前提として設計されています。

@@ -56,8 +56,8 @@ doc_type: 'reference'
 Будет отформатировано как:
 
 ```text
-# HELP http_request_duration_seconds A histogram of the request duration.
-# TYPE http_request_duration_seconds histogram
+# HELP http_request_duration_seconds A histogram of the request duration. {#help-http_request_duration_seconds-a-histogram-of-the-request-duration}
+# TYPE http_request_duration_seconds histogram {#type-http_request_duration_seconds-histogram}
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
 http_request_duration_seconds_bucket{le="0.5"} 129389
@@ -66,15 +66,15 @@ http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
 
-# HELP http_requests_total Total number of HTTP requests
-# TYPE http_requests_total counter
+# HELP http_requests_total Total number of HTTP requests {#help-http_requests_total-total-number-of-http-requests}
+# TYPE http_requests_total counter {#type-http_requests_total-counter}
 http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-# HELP rpc_duration_seconds A summary of the RPC duration in seconds.
-# TYPE rpc_duration_seconds summary
+# HELP rpc_duration_seconds A summary of the RPC duration in seconds. {#help-rpc_duration_seconds-a-summary-of-the-rpc-duration-in-seconds}
+# TYPE rpc_duration_seconds summary {#type-rpc_duration_seconds-summary}
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
 rpc_duration_seconds{quantile="0.5"} 4773
@@ -87,3 +87,4 @@ something_weird{problem="division by zero"} +Inf -3982045
 ```
 
 ## Настройки формата {#format-settings}
+

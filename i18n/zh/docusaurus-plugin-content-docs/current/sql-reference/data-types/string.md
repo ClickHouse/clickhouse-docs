@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# String
+# String {#string}
 
 任意长度的字符串。长度不受限制。其值可以包含任意字节序列，包括空字节（null byte）。
 `String` 类型替代了其他数据库管理系统中的 `VARCHAR`、`BLOB`、`CLOB` 等类型。

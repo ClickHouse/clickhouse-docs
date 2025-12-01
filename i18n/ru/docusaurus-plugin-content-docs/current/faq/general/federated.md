@@ -8,22 +8,22 @@ doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
 
-# Поддерживает ли ClickHouse федеративные запросы?
+# Поддерживает ли ClickHouse федеративные запросы? {#does-clickhouse-support-federated-queries}
 
 ClickHouse имеет наиболее широкую поддержку федеративных запросов и гибридного выполнения запросов среди аналитических баз данных.
 
 Он поддерживает выполнение запросов к внешним базам данных:
 
-- PostgreSQL
-- MySQL
-- MongoDB
-- Redis
-- любые источники данных через ODBC
-- любые источники данных через JDBC
-- любые источники данных Arrow Flight
-- потоковые источники данных, такие как Kafka и RabbitMQ
-- Data Lake‑хранилища, такие как Iceberg, Delta Lake, Apache Hudi, Apache Paimon
-- внешние файлы, расположенные в общих системах хранения, таких как AWS S3, GCS, Minio, Cloudflare R2, Azure Blob Storage, Alicloud OSS, Tencent COS, а также в локальном хранилище, с широким набором форматов данных
+* PostgreSQL
+* MySQL
+* MongoDB
+* Redis
+* любые источники данных через ODBC
+* любые источники данных через JDBC
+* любые источники данных Arrow Flight
+* потоковые источники данных, такие как Kafka и RabbitMQ
+* Data Lake‑хранилища, такие как Iceberg, Delta Lake, Apache Hudi, Apache Paimon
+* внешние файлы, расположенные в общих системах хранения, таких как AWS S3, GCS, Minio, Cloudflare R2, Azure Blob Storage, Alicloud OSS, Tencent COS, а также в локальном хранилище, с широким набором форматов данных
 
 ClickHouse может объединять несколько разнородных источников данных в одном запросе. Также он предоставляет возможность гибридного выполнения запросов, комбинируя локальные ресурсы и передавая часть запроса на удалённые машины.
 

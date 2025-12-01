@@ -6,14 +6,13 @@ title: 'system.part_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.part&#95;log {#systempart&#95;log}
 
-# system.part_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-Таблица `system.part_log` создаётся только в том случае, если задан параметр сервера [part_log](/operations/server-configuration-parameters/settings#part_log).
+Таблица `system.part_log` создаётся только в том случае, если задан параметр сервера [part&#95;log](/operations/server-configuration-parameters/settings#part_log).
 
 Эта таблица содержит информацию о событиях, произошедших с [частями данных](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) в таблицах семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md), таких как добавление или слияние данных.
 

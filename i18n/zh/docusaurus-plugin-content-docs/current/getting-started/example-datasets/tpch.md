@@ -13,12 +13,12 @@ keywords: ['示例数据集', 'tpch', '基准测试', '示例数据', '性能测
 
 **参考文献**
 
-- [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291)（Poess 等，2000）
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5)（Boncz 等，2013）
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138)（Dresseler 等，2020）
+* [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291)（Poess 等，2000）
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5)（Boncz 等，2013）
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138)（Dresseler 等，2020）
 
-## 数据生成与导入
+## 数据生成与导入 {#data-generation-and-import}
 
 首先，检出 TPC-H 仓库代码并编译数据生成器：
 
@@ -60,7 +60,6 @@ make
 * 根据第 1.3.1 节，我们使用 ClickHouse 的原生数据类型（例如 `Int32`、`String`）来实现规范中提到的抽象数据类型
   （例如 `Identifier`、`Variable text, size N`）。这仅带来更好的可读性，由 `dbgen` 生成的 SQL-92 数据类型
   （例如 `INTEGER`、`VARCHAR(40)`) 在 ClickHouse 中同样可以正常工作。
-
 
 ```sql
 CREATE TABLE nation (
@@ -169,7 +168,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 :::note
 你也可以选择从公共 S3 存储桶中导入数据，而不是使用 tpch-kit 自行生成这些表。请确保先使用上面的 `CREATE` 语句创建空表。
 
-
 ```sql
 -- 扩展因子 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -194,8 +192,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-
-## 查询
+## 查询 {#queries}
 
 :::note
 应启用 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 设置，以获得符合 SQL 标准的正确结果。
@@ -348,7 +345,6 @@ ORDER BY
 
 **问题 5**
 
-
 ```sql
 SELECT
     n_name,
@@ -495,7 +491,6 @@ ORDER BY
 ```
 
 **Q9**
-
 
 ```sql
 SELECT
@@ -849,7 +844,6 @@ WHERE
 ```
 
 **Q20**
-
 
 ```sql
 SELECT

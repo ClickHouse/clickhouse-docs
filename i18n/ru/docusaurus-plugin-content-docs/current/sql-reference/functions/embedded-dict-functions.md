@@ -6,9 +6,7 @@ title: 'Функции для работы со встроенными слов�
 doc_type: 'reference'
 ---
 
-
-
-# Функции для работы со встроенными словарями
+# Функции для работы со встроенными словарями {#functions-for-working-with-embedded-dictionaries}
 
 :::note
 Чтобы функции, перечисленные ниже, работали, в конфигурации сервера должны быть указаны пути и адреса для получения всех встроенных словарей. Словари загружаются при первом вызове любой из этих функций. Если справочные списки не удаётся загрузить, генерируется исключение.
@@ -16,11 +14,9 @@ doc_type: 'reference'
 Таким образом, примеры, приведённые в этом разделе, по умолчанию будут приводить к исключению в [ClickHouse Fiddle](https://fiddle.clickhouse.com/), а также в быстрых и продукционных развертываниях, если предварительно не выполнить настройку.
 :::
 
-Сведения о создании справочных списков см. в разделе ["Dictionaries"](../dictionaries#embedded-dictionaries).
+Сведения о создании справочных списков см. в разделе [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries).
 
-
-
-## Несколько геобаз
+## Несколько геобаз {#multiple-geobases}
 
 ClickHouse поддерживает одновременную работу с несколькими альтернативными геобазами (региональными иерархиями), чтобы учитывать различные представления о том, к каким странам относятся те или иные регионы.
 
@@ -43,7 +39,7 @@ regionToCountry(RegionID, '') – Использует словарь по ум�
 regionToCountry(RegionID, 'ua') – Использует словарь для ключа 'ua': /opt/geo/regions_hierarchy_ua.txt
 ```
 
-### regionToName
+### regionToName {#regiontoname}
 
 Принимает идентификатор региона и геобазу данных и возвращает строку с названием региона на соответствующем языке. Если региона с указанным идентификатором не существует, возвращается пустая строка.
 
@@ -83,7 +79,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 └────────────────────────────────────────────┘
 ```
 
-### regionToCity
+### regionToCity {#regiontocity}
 
 Принимает идентификатор региона из геобазы. Если этот регион является городом или частью города, функция возвращает идентификатор региона соответствующего города. В противном случае возвращает 0.
 
@@ -113,7 +109,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 Результат:
 
-
 ```response
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
@@ -132,7 +127,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
-### regionToArea
+### regionToArea {#regiontoarea}
 
 Преобразует регион в область (тип 5 в геобазе). Во всём остальном эта функция аналогична функции [&#39;regionToCity&#39;](#regiontocity).
 
@@ -184,7 +179,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────┘
 ```
 
-### regionToDistrict
+### regionToDistrict {#regiontodistrict}
 
 Преобразует регион в федеральный округ (тип 4 в геобазе). Во всём остальном эта функция аналогична `regionToCity`.
 
@@ -236,7 +231,7 @@ LIMIT 15
 └──────────────────────────────────────────────────────────┘
 ```
 
-### regionToCountry
+### regionToCountry {#regiontocountry}
 
 Преобразует регион в страну (тип 3 в геобазе). Во всём остальном эта функция аналогична `regionToCity`.
 
@@ -247,7 +242,6 @@ regionToCountry(id [, geobase])
 ```
 
 **Параметры**
-
 
 * `id` — ID региона из геобазы. [UInt32](../data-types/int-uint).
 * `geobase` — Ключ словаря. См. [Несколько геобаз](#multiple-geobases). [String](../data-types/string). Необязательный параметр.
@@ -285,7 +279,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-### regionToContinent
+### regionToContinent {#regiontocontinent}
 
 Преобразует регион в континент (тип 1 в geobase). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
 
@@ -333,7 +327,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### regionToTopContinent
+### regionToTopContinent {#regiontotopcontinent}
 
 Находит континент верхнего уровня в иерархии для региона.
 
@@ -363,7 +357,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 Результат:
 
-
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
@@ -382,7 +375,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-### regionToPopulation
+### regionToPopulation {#regiontopopulation}
 
 Возвращает численность населения для региона. Данные о населении могут храниться в файлах geobase. См. раздел [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries). Если численность населения для региона не указана, функция возвращает 0. В geobase численность населения может быть указана для дочерних регионов, но не для родительских.
 
@@ -430,7 +423,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-### regionIn
+### regionIn {#regionin}
 
 Проверяет, принадлежит ли регион `lhs` региону `rhs`. Возвращает число типа UInt8, равное 1, если принадлежит, и 0 — если не принадлежит.
 
@@ -465,7 +458,6 @@ SELECT regionToName(n1.number::UInt32, 'ru') || (regionIn(n1.number::UInt32, n2.
 
 Результат:
 
-
 ```text
 World содержится в World
 World не содержится в USA
@@ -479,7 +471,7 @@ USA не содержится в Boulder County
 USA не содержится в Boulder    
 ```
 
-### regionHierarchy
+### regionHierarchy {#regionhierarchy}
 
 Принимает число типа UInt32 — идентификатор региона из геобазы. Возвращает массив идентификаторов регионов, включающий переданный регион и всех его родительских регионов по цепочке.
 

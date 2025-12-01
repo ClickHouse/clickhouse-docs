@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 
-# Архитектура ClickHouse Cloud
+# Архитектура ClickHouse Cloud {#clickhouse-cloud-architecture}
 
 <Image img={Architecture} size='lg' alt='Архитектура ClickHouse Cloud'/>
 

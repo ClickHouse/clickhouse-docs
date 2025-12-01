@@ -6,9 +6,7 @@ title: "arrayJoin 函数"
 doc_type: "reference"
 ---
 
-
-
-# arrayJoin 函数
+# arrayJoin 函数 {#arrayjoin-function}
 
 这是一个比较特殊的函数。
 
@@ -85,7 +83,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-### 最佳实践
+### 最佳实践 {#important-note}
 
 对同一表达式多次使用 `arrayJoin` 时，由于公用子表达式消除优化，可能无法得到预期结果。
 在这种情况下，可以考虑为重复的数组表达式添加一些不会影响展开结果的额外操作。例如：`arrayJoin(arraySort(arr))`、`arrayJoin(arrayConcat(arr, []))`
@@ -125,7 +123,6 @@ GROUP BY
     2,
     3
 ```
-
 
 ```text
 ┌─impressions─┬─city─────┬─browser─┐

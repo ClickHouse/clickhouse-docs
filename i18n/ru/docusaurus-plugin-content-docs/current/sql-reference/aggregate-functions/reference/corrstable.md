@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# corrStable
+# corrStable {#corrstable}
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 

@@ -7,7 +7,7 @@ title: 'Оператор SET'
 doc_type: 'reference'
 ---
 
-# Инструкция SET
+# Инструкция SET {#set-statement}
 
 ```sql
 SET param = value

@@ -40,7 +40,7 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 ## Примеры {#examples}
 
-### Использование реестра схем
+### Использование реестра схем {#using-a-schema-registry}
 
 Чтобы прочитать Kafka-топик, закодированный в Avro, с помощью [движка таблиц Kafka](/engines/table-engines/integrations/kafka.md), используйте настройку `format_avro_schema_registry_url` для указания URL-адреса реестра схем.
 
@@ -62,7 +62,7 @@ SELECT * FROM topic1_stream;
 ```
 
 
-#### Использование базовой аутентификации
+#### Использование базовой аутентификации {#using-basic-authentication}
 
 Если для вашего реестра схем требуется базовая аутентификация (например, при использовании Confluent Cloud), вы можете указать URL-кодированные учетные данные в настройке `format_avro_schema_registry_url`.
 
@@ -82,7 +82,7 @@ format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry
 ```
 
 
-## Диагностика неполадок
+## Диагностика неполадок {#troubleshooting}
 
 Чтобы отслеживать ход ингестии и отлаживать ошибки потребителя Kafka, вы можете выполнить запрос к [системной таблице `system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md). Если в вашем развертывании несколько реплик (например, ClickHouse Cloud), необходимо использовать табличную функцию [`clusterAllReplicas`](../../../sql-reference/table-functions/cluster.md).
 

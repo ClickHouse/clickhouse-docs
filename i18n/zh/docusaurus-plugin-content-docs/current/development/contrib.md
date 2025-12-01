@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 第三方库
+# 第三方库 {#third-party-libraries}
 
 ClickHouse 出于不同目的会使用第三方库，例如连接到其他数据库、在从磁盘加载/保存到磁盘时对数据进行解码/编码，或实现某些专用 SQL 函数。
 为避免依赖目标系统中可用的库，每个第三方库都会作为 Git 子模块导入到 ClickHouse 的源代码树中，并与 ClickHouse 一起编译和链接。

@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Как создать агента ИИ на базе ClickHouse с помощью Streamlit
+# Как создать агента ИИ на базе ClickHouse с помощью Streamlit {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
 
 В этом руководстве вы узнаете, как создать веб-агента ИИ с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
 
@@ -34,7 +34,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## Установка библиотек
+## Установка библиотек {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
@@ -43,7 +43,7 @@ pip install streamlit agno ipywidgets
 ```
 
 
-## Создайте файл с утилитами
+## Создайте файл с утилитами {#create-utilities}
 
 Создайте файл `utils.py` с двумя вспомогательными функциями. Первая — это
 асинхронная функция-генератор для обработки потоковых ответов от
@@ -71,7 +71,7 @@ def apply_styles():
 ```
 
 
-## Настройка учётных данных
+## Настройка учётных данных {#setup-credentials}
 
 Установите ключ API Anthropic в переменную окружения:
 
@@ -85,7 +85,7 @@ export ANTHROPIC_API_KEY="ваш_ключ_api"
 :::
 
 
-## Импорт необходимых библиотек
+## Импорт необходимых библиотек {#import-libraries}
 
 Начните с создания основного файла приложения Streamlit (например, `app.py`) и добавьте импорты:
 
@@ -110,7 +110,7 @@ from queue import Queue
 ```
 
 
-## Определите функцию потоковой передачи агента
+## Определите функцию потоковой передачи агента {#define-agent-function}
 
 Добавьте основную функцию агента, которая подключается к [SQL-песочнице ClickHouse](https://sql.clickhouse.com/) и осуществляет потоковую передачу ответов:
 
@@ -161,7 +161,7 @@ async def stream_clickhouse_agent(message):
 ```
 
 
-## Добавьте синхронные функции-обёртки
+## Добавьте синхронные функции-обёртки {#add-wrapper-functions}
 
 Добавьте вспомогательные функции для обработки асинхронного стриминга в Streamlit:
 
@@ -184,7 +184,7 @@ async def _agent_stream_to_queue(message, queue):
 ```
 
 
-## Создайте интерфейс Streamlit
+## Создайте интерфейс Streamlit {#create-interface}
 
 Добавьте компоненты пользовательского интерфейса Streamlit и функции чата:
 

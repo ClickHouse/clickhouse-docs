@@ -12,7 +12,7 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-cs'
 ---
 
-# ClickHouse C# クライアント
+# ClickHouse C# クライアント {#clickhouse-c-client}
 
 ClickHouse に接続するための公式の C# クライアントです。
 クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-cs) で公開されています。
@@ -39,7 +39,7 @@ ClickHouse に接続するための公式の C# クライアントです。
 
 ---
 
-## インストール
+## インストール {#installation}
 
 NuGet からパッケージをインストールします：
 
@@ -56,7 +56,7 @@ Install-Package ClickHouse.Driver
 ***
 
 
-## クイックスタート
+## クイックスタート {#quick-start}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -133,7 +133,7 @@ DI 環境向けには、HTTP クライアントの設定を共通化できる専
 
 ---
 
-### テーブルの作成
+### テーブルの作成 {#creating-a-table}
 
 標準的な SQL 構文を使用してテーブルを作成します。
 
@@ -155,7 +155,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 パラメータ化されたクエリを使用してデータを挿入します。
 
@@ -179,7 +179,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### 一括挿入
+### 一括挿入 {#bulk-insert}
 
 `ClickHouseBulkCopy` を使用するには、次のものが必要です：
 
@@ -222,7 +222,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ***
 
 
-### SELECT クエリの実行
+### SELECT クエリの実行 {#performing-select-queries}
 
 SELECT クエリを実行して結果を処理します。
 
@@ -250,7 +250,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### 生データストリーミング
+### 生データストリーミング {#raw-streaming}
 
 ```csharp
 using var command = connection.CreateCommand();
@@ -264,7 +264,7 @@ var json = reader.ReadToEnd();
 ***
 
 
-### ネストされたカラムのサポート
+### ネストされたカラムのサポート {#nested-columns}
 
 ClickHouse のネスト型（`Nested(...)`）は、配列と同様のセマンティクスで読み書きできます。
 
@@ -290,7 +290,7 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 ***
 
 
-### AggregateFunction 列
+### AggregateFunction 列 {#aggregatefunction-columns}
 
 `AggregateFunction(...)` 型の列は、直接クエリしたりデータを挿入したりすることはできません。
 
@@ -309,7 +309,7 @@ SELECT uniqMerge(c) FROM t;
 ***
 
 
-### SQL パラメータ
+### SQL パラメータ {#sql-parameters}
 
 クエリにパラメータを渡すには、次の形式で ClickHouse のパラメータ書式を使用する必要があります。
 
@@ -433,7 +433,7 @@ ClickHouse の .NET クライアントは `Microsoft.Extensions.Logging` の抽�
 
 ### クイックスタート {#logging-quick-start}
 
-#### ClickHouseConnection の使用
+#### ClickHouseConnection の使用 {#logging-clickhouseconnection}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -456,7 +456,7 @@ await connection.OpenAsync();
 ```
 
 
-#### appsettings.json の使用
+#### appsettings.json の使用 {#logging-appsettings-config}
 
 標準的な .NET の構成機能を使用してログレベルを設定できます。
 
@@ -487,7 +487,7 @@ await connection.OpenAsync();
 ```
 
 
-#### インメモリ設定を使用する
+#### インメモリ設定を使用する {#logging-inmemory-config}
 
 コード内でカテゴリごとにログ出力の詳細度を設定することもできます。
 
@@ -535,7 +535,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | 低レベルの HTTP ストリーミングリクエスト、圧縮フラグ、レスポンスステータスコード、転送エラー。 |
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | メタデータの読み込み、バッチ処理、行数、アップロード完了。 |
 
-#### 例：接続に関する問題の診断
+#### 例：接続に関する問題の診断 {#logging-config-example}
 
 ```json
 {
@@ -559,7 +559,7 @@ await connection.OpenAsync();
 * セッション ID の追跡
 
 
-### デバッグモード: ネットワークトレースと診断
+### デバッグモード: ネットワークトレースと診断 {#logging-debugmode}
 
 ネットワークに関する問題の診断を支援するために、ドライバーライブラリには .NET のネットワーク内部処理を低レベルでトレースできるヘルパー機能が含まれています。これを有効にするには、ログレベルを Trace に設定した LoggerFactory を渡し、EnableDebugMode を true に設定する必要があります（または `ClickHouse.Driver.Diagnostic.TraceHelper` クラスを使用して手動で有効化します）。警告: これは非常に冗長なログを大量に生成し、パフォーマンスに影響します。本番環境でデバッグモードを有効にすることは推奨されません。
 
@@ -581,7 +581,7 @@ var settings = new ClickHouseClientSettings()
 ***
 
 
-### ORM &amp; Dapper サポート
+### ORM &amp; Dapper サポート {#orm-support}
 
 `ClickHouse.Driver` は Dapper（いくつかの制限付きで）をサポートします。
 

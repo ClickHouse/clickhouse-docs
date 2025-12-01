@@ -46,7 +46,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 
 
-## 例
+## 例 {#examples}
 
 割り当てられたロールをデフォルトに設定する：
 

@@ -17,7 +17,7 @@ import dynamodb_map_columns from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# 从 DynamoDB 到 ClickHouse 的 CDC
+# 从 DynamoDB 到 ClickHouse 的 CDC {#cdc-from-dynamodb-to-clickhouse}
 
 <ExperimentalBadge/>
 
@@ -50,9 +50,9 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. 将快照加载到 ClickHouse 中
+## 3. 将快照加载到 ClickHouse 中 {#3-load-the-snapshot-into-clickhouse}
 
-### 创建必要的表
+### 创建必要的表 {#create-necessary-tables}
 
 来自 DynamoDB 的快照数据大致如下所示：
 
@@ -115,7 +115,7 @@ ORDER BY id;
 * 表应使用分区键作为排序键（通过 `ORDER BY` 指定）
   * 具有相同排序键的行会基于 `version` 列进行去重。
 
-### 创建快照 ClickPipe
+### 创建快照 ClickPipe {#create-the-snapshot-clickpipe}
 
 现在可以创建一个 ClickPipe，将来自 S3 的快照数据加载到 ClickHouse 中。请按照 S3 ClickPipe 指南[此处](/integrations/clickpipes/object-storage)的说明进行操作，但使用以下设置：
 
@@ -146,7 +146,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 
 
-## 5. 清理（可选）
+## 5. 清理（可选） {#5-cleanup-optional}
 
 当快照 ClickPipe 运行完成后，可以删除快照表和物化视图。
 

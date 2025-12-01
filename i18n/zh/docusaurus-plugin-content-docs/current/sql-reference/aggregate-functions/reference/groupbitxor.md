@@ -6,7 +6,7 @@ title: 'groupBitXor'
 doc_type: 'reference'
 ---
 
-# groupBitXor
+# groupBitXor {#groupbitxor}
 
 对一组数值执行按位 `XOR` 运算。
 

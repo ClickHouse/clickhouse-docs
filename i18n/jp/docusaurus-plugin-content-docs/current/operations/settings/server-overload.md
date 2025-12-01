@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# サーバー過負荷
+# サーバー過負荷 {#server-overload}
 
 
 
@@ -43,7 +43,7 @@ CPU の過負荷率は 0 と見なされます。
 
 
 
-## リソース過負荷警告
+## リソース過負荷警告 {#resource-overload-warnings}
 
 サーバーが過負荷になった際、ClickHouse は CPU とメモリの過負荷警告を `system.warnings` テーブルにも記録します。これらのしきい値はサーバー設定でカスタマイズできます。
 

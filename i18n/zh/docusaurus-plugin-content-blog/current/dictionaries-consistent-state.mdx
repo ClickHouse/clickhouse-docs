@@ -10,8 +10,7 @@ keywords: ['字典']
 
 {/* 截断 */}
 
-
-## ClickHouse 中的字典
+## ClickHouse 中的字典 \{#dictionaries-in-clickhouse\}
 
 在 ClickHouse Cloud 中创建的字典在初始创建阶段可能会暂时处于不一致状态。这意味着在创建后，你可能一开始在该字典中看不到任何数据。不过，经过多次重试后，创建查询可能会被路由到不同的副本上，届时数据就会显示出来。
 
@@ -43,7 +42,6 @@ SOURCE(CLICKHOUSE(QUERY
     FROM test.temp_title_table_1706189903924
     SETTINGS select_sequential_consistency=1' USER default PASSWORD ''))
 ```
-
 
 ## 为什么会出现这个问题？ \{#why-does-this-issue-occur\}
 

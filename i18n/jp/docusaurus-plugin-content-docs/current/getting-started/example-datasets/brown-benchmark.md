@@ -94,8 +94,7 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-
-## ベンチマーク用クエリを実行する
+## ベンチマーク用クエリを実行する {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
@@ -237,7 +236,6 @@ HAVING MIN(mem_free) < 10000
 ORDER BY machine_name,
          dt;
 ```
-
 
 ```sql
 -- Q1.6: すべてのファイルサーバーにおける1時間あたりの総ネットワークトラフィック量は？

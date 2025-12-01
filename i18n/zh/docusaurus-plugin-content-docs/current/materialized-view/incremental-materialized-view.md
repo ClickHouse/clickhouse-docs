@@ -25,7 +25,7 @@ ClickHouse 中的物化视图会在其依赖的表有数据流入时实时更新
 
 
 
-## 示例
+## 示例 {#example}
 
 在本示例中，我们将使用 [&quot;Schema Design&quot;](/data-modeling/schema-design) 中介绍的 Stack Overflow 数据集。
 
@@ -178,7 +178,7 @@ LIMIT 10
 在大多数情况下，如果使用 `SummingMergeTree` 或 `AggregatingMergeTree` 表引擎，物化视图转换中 `GROUP BY` 子句使用的列应当与目标表中 `ORDER BY` 子句使用的列保持一致。这些引擎依赖 `ORDER BY` 列在后台合并操作期间合并具有相同值的行。`GROUP BY` 与 `ORDER BY` 列不一致会导致查询性能低下、合并效果不佳，甚至数据不一致。
 :::
 
-### 更复杂的示例
+### 更复杂的示例 {#a-more-complex-example}
 
 
 上面的示例使用物化视图按天计算并维护两个求和值。求和是维护部分聚合状态的最简单形式——当有新值到达时，我们只需将其累加到已有值上即可。不过，ClickHouse 的物化视图可以用于任意类型的聚合。
@@ -280,11 +280,11 @@ LIMIT 10
 请注意，这里我们使用 `GROUP BY` 而不是 `FINAL`。
 
 
-## 其他应用场景
+## 其他应用场景 {#other-applications}
 
 上文主要聚焦于使用物化视图对数据的部分聚合结果进行增量更新，从而将计算从查询时点前移到写入时点。除了这一常见用例之外，物化视图还有许多其他应用场景。
 
-### 过滤与转换
+### 过滤与转换 {#filtering-and-transformation}
 
 在某些情况下，我们可能只希望在写入时插入部分行和列。在这种情况下，我们可以向 `posts_null` 表执行插入操作，并通过一条 `SELECT` 查询在写入到 `posts` 表之前对行进行过滤。例如，假设我们希望转换 `posts` 表中的 `Tags` 列。该列包含以竖线分隔的标签名称列表。通过将其转换为数组，我们可以更轻松地按单个标签值进行聚合。
 
@@ -297,7 +297,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
         SELECT * EXCEPT Tags, arrayFilter(t -> (t != ''), splitByChar('|', Tags)) as Tags FROM posts_null
 ```
 
-### 查找表
+### 查找表 {#lookup-table}
 
 用户在选择 ClickHouse 排序键时，应当考虑其访问模式。应优先选择那些在过滤和聚合子句中经常被使用的列。对于那些访问模式更加多样、无法用同一组列来概括的场景，这种做法可能会比较受限。比如，考虑下面的 `comments` 表：
 
@@ -384,7 +384,7 @@ WHERE PostId IN (
 ```
 
 
-## 物化视图与 JOIN
+## 物化视图与 JOIN {#materialized-views-and-joins}
 
 :::note 可刷新物化视图
 下面内容仅适用于增量物化视图。可刷新物化视图会定期针对完整目标数据集执行其查询，并且完全支持 JOIN。如果可以接受结果新鲜度有所降低，请考虑在复杂 JOIN 场景中使用它们。
@@ -398,7 +398,7 @@ ClickHouse 中的增量物化视图完全支持 `JOIN` 操作，但有一个关�
 
 这对于使用参考表或维度表来丰富数据非常有效。然而，对右侧表（例如用户元数据）的任何更新都不会对物化视图进行追溯更新。若要看到更新后的数据，必须在源表中有新的插入到来。
 
-### 示例
+### 示例 {#materialized-views-and-joins-example}
 
 让我们通过一个使用 [Stack Overflow 数据集](/data-modeling/schema-design) 的具体示例来说明。我们将使用一个物化视图来计算**每个用户的每日徽章数**，同时包含来自 `users` 表的用户显示名称。
 
@@ -570,7 +570,7 @@ WHERE DisplayName = 'brand_new_user'
 
 不过请注意，这个结果是不正确的。
 
-### 在物化视图中使用 JOIN 的最佳实践
+### 在物化视图中使用 JOIN 的最佳实践 {#join-best-practices}
 
 * **将最左侧的表作为触发器。** 只有 `SELECT` 语句左侧的表会触发物化视图。右侧表的更改不会触发更新。
 
@@ -588,11 +588,11 @@ WHERE DisplayName = 'brand_new_user'
 
 * **考虑插入量与插入频率。** 在中等插入负载下，JOIN 表现良好。对于高吞吐量摄取场景，考虑使用中间表、预先 JOIN，或其他方案，例如 Dictionaries 和 [Refreshable Materialized Views](/materialized-view/refreshable-materialized-view)。
 
-### 在过滤和 JOIN 中使用源表
+### 在过滤和 JOIN 中使用源表 {#using-source-table-in-filters-and-joins-in-materialized-views}
 
 在 ClickHouse 中使用物化视图时，非常有必要理解源表在物化视图查询执行期间是如何处理的。具体来说，物化视图查询中的源表会被替换为正在被插入的数据块。如果没有正确理解这一行为，可能会导致一些出乎意料的结果。
 
-#### 示例场景
+#### 示例场景 {#example-scenario}
 
 考虑以下设置：
 
@@ -631,7 +631,7 @@ SELECT * FROM mvw2;
 ```
 
 
-#### 解释
+#### 解释 {#explanation}
 
 在上面的示例中，我们有两个物化视图 `mvw1` 和 `mvw2`，它们执行的操作类似，但在引用源表 `t0` 的方式上存在细微差别。
 
@@ -641,7 +641,7 @@ SELECT * FROM mvw2;
 
 关键差异在于 ClickHouse 在物化视图的查询中如何处理源表。当物化视图由插入操作触发时，源表（在本例中为 `t0`）会被插入的数据块替换。这种行为可以用于优化查询，但也需要仔细权衡，以避免出现意外结果。
 
-### 使用场景与注意事项
+### 使用场景与注意事项 {#use-cases-and-caveats}
 
 在实践中，可以利用这种行为来优化只需处理源表部分数据的物化视图。例如，可以使用子查询在将源表与其他表进行 JOIN 之前先对其进行过滤。这样可以减少物化视图需要处理的数据量，从而提升性能。
 
@@ -661,7 +661,7 @@ ON t0.id = t1.id;
 
 在这个示例中，由子查询 `IN (SELECT id FROM t0)` 构建的集合只包含新插入的行，有助于据此对 `t1` 进行过滤。
 
-#### Stack Overflow 示例
+#### Stack Overflow 示例 {#example-with-stack-overflow}
 
 参考我们之前的[物化视图示例](/materialized-view/incremental-materialized-view#example)，用于计算**每位用户每天获得的徽章数**，并包含来自 `users` 表的用户显示名称。
 
@@ -740,7 +740,7 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 在上述操作中，只针对用户 ID `2936484` 从 `users` 表中检索到一行记录。此查找同样利用表的排序键 `Id` 进行了优化。
 
 
-## 物化视图与 UNION ALL
+## 物化视图与 UNION ALL {#materialized-views-and-unions}
 
 `UNION ALL` 查询通常用于将来自多个源表的数据合并为单个结果集。
 
@@ -969,7 +969,7 @@ GROUP BY UserId
 ```
 
 
-## 并行处理与顺序处理
+## 并行处理与顺序处理 {#materialized-views-parallel-vs-sequential}
 
 如前面的示例所示，一个表可以作为多个物化视图的源表。这些视图的执行顺序取决于设置 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing)。
 
@@ -1121,7 +1121,7 @@ ORDER BY now ASC
 
 
 
-## 物化视图与公用表表达式（CTE）
+## 物化视图与公用表表达式（CTE） {#materialized-views-common-table-expressions-ctes}
 
 物化视图中支持使用**非递归**公用表表达式（CTE）。
 

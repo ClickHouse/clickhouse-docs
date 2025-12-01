@@ -8,7 +8,7 @@ title: 'groupArraySample'
 doc_type: 'reference'
 ---
 
-# groupArraySample
+# groupArraySample {#grouparraysample}
 
 Создаёт массив случайных значений аргумента. Размер результирующего массива ограничен `max_size` элементами. Значения аргумента выбираются и добавляются в массив случайным образом.
 

@@ -1,11 +1,11 @@
-# Установка ClickHouse через скрипт с использованием curl
+# Установка ClickHouse через скрипт с использованием curl {#install-clickhouse-via-script-using-curl}
 
 Если вам не нужно устанавливать ClickHouse для production-среды, самый быстрый способ настройки — запустить установочный скрипт с помощью curl. Скрипт автоматически определит подходящий бинарный файл для вашей ОС.
 
 <VerticalStepper>
 
 
-## Установка ClickHouse с помощью curl
+## Установка ClickHouse с помощью curl {#install-clickhouse-using-curl}
 
 Выполните следующую команду, чтобы скачать один бинарный файл для вашей операционной системы.
 
@@ -18,7 +18,7 @@ curl https://clickhouse.com/ | sh
 :::
 
 
-## Запустите clickhouse-local
+## Запустите clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` позволяет обрабатывать локальные и удалённые файлы, используя
 мощный SQL-синтаксис ClickHouse и без какой-либо предварительной настройки. Данные таблиц
@@ -32,7 +32,7 @@ curl https://clickhouse.com/ | sh
 ```
 
 
-## Запуск clickhouse-server
+## Запуск clickhouse-server {#start-clickhouse-server}
 
 Если вы хотите хранить данные, вам потребуется запустить `clickhouse-server`. Вы можете
 запустить сервер ClickHouse с помощью следующей команды:

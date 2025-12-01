@@ -7,7 +7,7 @@ title: 'mannWhitneyUTest'
 doc_type: 'reference'
 ---
 
-# mannWhitneyUTest
+# mannWhitneyUTest {#mannwhitneyutest}
 
 Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.
 

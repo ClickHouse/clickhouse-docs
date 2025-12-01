@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция hudi
+# Табличная функция hudi {#hudi-table-function}
 
 Предоставляет интерфейс только для чтения, аналогичный таблице, для работы с таблицами Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

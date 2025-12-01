@@ -10,14 +10,14 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# 25.9 以前のバージョン向けのアロケーションプロファイリング
+# 25.9 以前のバージョン向けのアロケーションプロファイリング {#allocation-profiling-for-versions-before-259}
 
 ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用します。jemalloc には、アロケーションのサンプリングとプロファイリングのためのツールが付属しています。  
 アロケーションプロファイリングをより便利に行えるように、Keeper では `SYSTEM` コマンドに加えて four letter word (4LW) コマンドも提供されています。
 
 
 
-## アロケーションのサンプリングとヒーププロファイルのフラッシュ
+## アロケーションのサンプリングとヒーププロファイルのフラッシュ {#sampling-allocations-and-flushing-heap-profiles}
 
 `jemalloc` でアロケーションのサンプリングとプロファイリングを行う場合は、環境変数 `MALLOC_CONF` を使用してプロファイリングを有効にし、ClickHouse/Keeper を起動する必要があります。
 
@@ -56,7 +56,7 @@ MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profil
 生成されるファイル名は、接頭辞、PID、シーケンス番号を連結したものになります。
 
 
-## ヒーププロファイルの解析
+## ヒーププロファイルの解析 {#analyzing-heap-profiles}
 
 ヒーププロファイルを生成したら、それを解析する必要があります。\
 そのために、`jemalloc` のツールである [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in) を使用できます。これは複数の方法でインストールできます:
@@ -92,7 +92,7 @@ jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
-### 例
+### 例 {#examples}
 
 * 各プロシージャを1行ごとに記述したテキストファイルを生成したい場合:
 
@@ -106,7 +106,7 @@ jeprof path/to/binary path/to/heap/profile --text > result.txt
 jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
 
-### フレームグラフの生成
+### フレームグラフの生成 {#generating-flame-graph}
 
 `jeprof` を使用すると、フレームグラフの作成に必要な折りたたみスタック（collapsed stack）を生成できます。
 
@@ -127,7 +127,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 もう 1 つ有用なツールとして [speedscope](https://www.speedscope.app/) があり、収集したスタック情報をよりインタラクティブに解析できます。
 
 
-## 実行時のアロケーションプロファイラの制御
+## 実行時のアロケーションプロファイラの制御 {#controlling-allocation-profiler-during-runtime}
 
 ClickHouse/Keeper をプロファイラを有効にした状態で起動した場合、実行時にアロケーションプロファイリングを無効化/有効化するための追加コマンドを使用できます。
 これらのコマンドを使用すると、特定の時間区間のみをプロファイルしやすくなります。
@@ -184,7 +184,7 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 
 
-## その他のリソース
+## その他のリソース {#other-resources}
 
 ClickHouse/Keeper は、`jemalloc` 関連のメトリクスをさまざまな方法で公開しています。
 
@@ -192,7 +192,7 @@ ClickHouse/Keeper は、`jemalloc` 関連のメトリクスをさまざまな方
 これらのメトリクスは互いに同期されておらず、値がずれていく可能性があることを認識しておくことが重要です。
 :::
 
-### システムテーブル `asynchronous_metrics`
+### システムテーブル `asynchronous_metrics` {#system-table-asynchronous_metrics}
 
 ```sql
 SELECT *
@@ -203,19 +203,19 @@ FORMAT Vertical
 
 [リファレンス](/operations/system-tables/asynchronous_metrics)
 
-### システムテーブル `jemalloc_bins`
+### システムテーブル `jemalloc_bins` {#system-table-jemalloc_bins}
 
 サイズクラス（bin）ごとに `jemalloc` アロケータ経由で行われたメモリ割り当てに関する情報を、すべてのアリーナから集約して格納します。
 
 [リファレンス](/operations/system-tables/jemalloc_bins)
 
-### Prometheus
+### Prometheus {#prometheus}
 
 `asynchronous_metrics` に含まれるすべての `jemalloc` 関連メトリクスは、ClickHouse と Keeper の両方で Prometheus エンドポイントを通じても公開されます。
 
 [リファレンス](/operations/server-configuration-parameters/settings#prometheus)
 
-### Keeper における `jmst` 4LW コマンド
+### Keeper における `jmst` 4LW コマンド {#jmst-4lw-command-in-keeper}
 
 Keeper は `jmst` 4LW コマンドをサポートしており、[基本的なアロケータ統計情報](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics) を返します。
 

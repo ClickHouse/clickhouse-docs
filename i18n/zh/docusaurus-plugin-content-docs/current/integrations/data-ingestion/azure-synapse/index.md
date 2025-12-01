@@ -14,7 +14,7 @@ import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/a
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 将 Azure Synapse 与 ClickHouse 集成
+# 将 Azure Synapse 与 ClickHouse 集成 {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -43,7 +43,7 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 
 
 
-## 将 ClickHouse 添加为目录
+## 将 ClickHouse 添加为目录 {#add-clickhouse-as-catalog}
 
 可以通过多种方式向会话中添加 Spark 配置：
 

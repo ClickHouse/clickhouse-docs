@@ -6,7 +6,7 @@ title: 'quantileDeterministic'
 doc_type: 'reference'
 ---
 
-# quantileDeterministic
+# quantileDeterministic {#quantiledeterministic}
 
 计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

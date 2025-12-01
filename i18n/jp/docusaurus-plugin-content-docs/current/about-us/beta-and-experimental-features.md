@@ -1,72 +1,56 @@
 ---
 sidebar_position: 1
-sidebar_label: 'ベータ機能および実験的機能'
+sidebar_label: 'ベータ機能と実験的機能'
 title: 'ベータ機能および実験的機能'
-description: 'ClickHouse にはベータ機能および実験的機能があります。このページではそれらの定義について説明します。'
+description: 'ClickHouse にはベータ機能および実験的機能があります。本ドキュメントページでは、それらの定義について説明します。'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
 ---
 
-ClickHouse はオープンソースであるため、ClickHouse の従業員だけでなくコミュニティからも多くのコントリビューションを受けています。これらのコントリビューションは必ずしも同じスピードで開発されるわけではなく、一部の機能については、一般提供 (GA) と見なされるまでに長い試作段階が必要になったり、コミュニティから十分なフィードバックと反復を得るために時間を要する場合があります。
+ClickHouse はオープンソースであるため、ClickHouse の従業員だけでなくコミュニティからも多くのコントリビューションを受けています。これらのコントリビューションはしばしば異なるスピードで開発されます。特定の機能は、一般提供 (GA) と見なされるまでに、長期間にわたる試作フェーズや、コミュニティからの十分なフィードバックと反復のための時間を必要とする場合があります。
 
-機能が一般提供として分類されるタイミングには不確実性があるため、機能を **ベータ (Beta)** と **実験的 (Experimental)** の 2 つのカテゴリーに区分しています。
+どの段階で機能が一般提供として分類されるかは明確ではないため、機能を **ベータ (Beta)** と **実験的 (Experimental)** の 2 つのカテゴリに区分しています。
 
-**ベータ (Beta)** 機能は、ClickHouse チームによって正式にサポートされます。**実験的 (Experimental)** 機能は、ClickHouse チームまたはコミュニティによって主導される初期段階のプロトタイプであり、正式にはサポートされていません。
+**ベータ (Beta)** 機能は、ClickHouse チームによって正式にサポートされます。**実験的 (Experimental)** 機能は、ClickHouse チームまたはコミュニティのいずれかによって開発される初期段階のプロトタイプであり、正式にはサポートされません。
 
-以下のセクションでは、**ベータ (Beta)** 機能および **実験的 (Experimental)** 機能の特性について明確に説明します。
-
-
+以下のセクションでは、**ベータ (Beta)** 機能および **実験的 (Experimental)** 機能の特性について説明します。
 
 ## ベータ機能 {#beta-features}
 
-- 一般提供（GA）を目指して積極的に開発中
-- 主な既知の問題はGitHubで追跡可能
-- 機能は将来変更される可能性があります
-- ClickHouse Cloudで有効化されている場合があります
-- ClickHouseチームがベータ機能をサポートしています
+- 一般提供 (GA) に向けて積極的に開発中
+- 主な既知の問題は GitHub で追跡可能
+- 将来的に機能が変更される可能性あり
+- ClickHouse Cloud で有効になっている場合があります
+- ClickHouse チームはベータ機能をサポートしています
 
-以下は、ClickHouse Cloudでベータ版と位置付けられており、ClickHouse Cloudサービスで利用可能な機能です。
+以下に、ClickHouse Cloud においてベータと見なされており、お使いの ClickHouse Cloud サービスで利用可能な機能を示します。
 
-注：最近導入された機能を使用するには、ClickHouseの[互換性](/operations/settings/settings#compatibility)設定で最新バージョンを使用していることを確認してください。
-
+注記: 最近追加された機能を利用するには、ClickHouse の [compatibility](/operations/settings/settings#compatibility) 設定を最新バージョンにしていることを必ず確認してください。
 
 ## 実験的機能 {#experimental-features}
 
-- GA（一般提供）に移行しない可能性があります
-- 削除される可能性があります
-- 破壊的変更を導入する可能性があります
-- 機能の動作が変更される可能性があります
-- 明示的に有効化する必要があります
-- ClickHouseチームは実験的機能を**サポートしていません**
-- 重要な機能やドキュメントが欠けている可能性があります
-- クラウド環境では有効化できません
+* GA（一般提供）にならない可能性がある
+* 削除される可能性がある
+* 後方互換性のない変更を導入する可能性がある
+* 機能が将来的に変更される可能性がある
+* 明示的に有効化する必要がある
+* ClickHouse チームは実験的機能を**サポートしない**
+* 重要な機能やドキュメントが欠けている可能性がある
+* ClickHouse Cloud では有効化できない
 
-注意：ClickHouse Cloudでは、上記にベータ版として記載されているもの以外の実験的機能の有効化は許可されていません。
+注意: 上記で Beta として挙げたもの以外の実験的機能を ClickHouse Cloud で有効化することはできません。
 
-<!-- The inner content of the tags below are replaced at build time with a table generated from source
-     Please do not modify or remove the tags
--->
+{/* 以下のタグ内のコンテンツは、ビルド時にソースから生成されたテーブルに置き換えられます。
+     タグを変更または削除しないでください。
+  */ }
 
+{/*AUTOGENERATED_START*/ }
 
-<!--AUTOGENERATED_START-->
 
 ## ベータ版設定 {#beta-settings}
 
-
 | 名前                                                                                                                                                                                                                    | デフォルト        |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks)                                           | `0`          |
-| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges)                                                               | `0`          |
-| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data)                                             | `0`          |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms)                 | `30000`      |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor)                                                                 | `1.1`        |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000`      |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size)                     | `20`         |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms)                                           | `10000`      |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count)                             | `100`        |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms)                                           | `1`          |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms)                                                 | `100`        |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms)                                           | `10000`      |
 | [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order)                                                                                                                                | `lat_lon`    |
 | [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update)                                                                                                                          | `1`          |
 | [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries)                                                                                        | `1`          |
@@ -94,88 +78,93 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)                                                                                    | `0`          |
 | [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                                                                                                | ``           |
 | [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                                                                                                  | `1000`       |
+| [allow&#95;statistics&#95;optimize](/operations/settings/settings#allow_statistics_optimize)                                                                                                                          | `1`          |
 | [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                                                                                                | `1`          |
-
-
-
-
-
+| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks)                                           | `0`          |
+| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges)                                                               | `0`          |
+| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data)                                             | `0`          |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms)                 | `30000`      |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor)                                                                 | `1.1`        |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000`      |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size)                     | `20`         |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms)                                           | `10000`      |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count)                             | `100`        |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms)                                           | `1`          |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms)                                                 | `100`        |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms)                                           | `10000`      |
 
 ## 実験的設定 {#experimental-settings}
 
+| 名前                                                                                                                                                                                                                | デフォルト                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                    | `0`                     |
+| [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;materialized&#95;postgresql&#95;table](/operations/settings/settings#allow_experimental_materialized_postgresql_table)                                                                | `0`                     |
+| [allow&#95;experimental&#95;funnel&#95;functions](/operations/settings/settings#allow_experimental_funnel_functions)                                                                                              | `0`                     |
+| [allow&#95;experimental&#95;nlp&#95;functions](/operations/settings/settings#allow_experimental_nlp_functions)                                                                                                    | `0`                     |
+| [allow&#95;experimental&#95;hash&#95;functions](/operations/settings/settings#allow_experimental_hash_functions)                                                                                                  | `0`                     |
+| [allow&#95;experimental&#95;time&#95;series&#95;table](/operations/settings/settings#allow_experimental_time_series_table)                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;codecs](/operations/settings/settings#allow_experimental_codecs)                                                                                                                      | `0`                     |
+| [throw&#95;on&#95;unsupported&#95;query&#95;inside&#95;transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction)                                                                  | `1`                     |
+| [wait&#95;changes&#95;become&#95;visible&#95;after&#95;commit&#95;mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode)                                                              | `wait_unknown`          |
+| [implicit&#95;transaction](/operations/settings/settings#implicit_transaction)                                                                                                                                    | `0`                     |
+| [grace&#95;hash&#95;join&#95;initial&#95;buckets](/operations/settings/settings#grace_hash_join_initial_buckets)                                                                                                  | `1`                     |
+| [grace&#95;hash&#95;join&#95;max&#95;buckets](/operations/settings/settings#grace_hash_join_max_buckets)                                                                                                          | `1024`                  |
+| [join&#95;to&#95;sort&#95;minimum&#95;perkey&#95;rows](/operations/settings/settings#join_to_sort_minimum_perkey_rows)                                                                                            | `40`                    |
+| [join&#95;to&#95;sort&#95;maximum&#95;table&#95;rows](/operations/settings/settings#join_to_sort_maximum_table_rows)                                                                                              | `10000`                 |
+| [allow&#95;experimental&#95;join&#95;right&#95;table&#95;sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting)                                                                      | `0`                     |
+| [allow&#95;experimental&#95;statistics](/operations/settings/settings#allow_experimental_statistics)                                                                                                              | `0`                     |
+| [use&#95;statistics&#95;cache](/operations/settings/settings#use_statistics_cache)                                                                                                                                | `0`                     |
+| [allow&#95;experimental&#95;full&#95;text&#95;index](/operations/settings/settings#allow_experimental_full_text_index)                                                                                            | `0`                     |
+| [allow&#95;experimental&#95;window&#95;view](/operations/settings/settings#allow_experimental_window_view)                                                                                                        | `0`                     |
+| [window&#95;view&#95;clean&#95;interval](/operations/settings/settings#window_view_clean_interval)                                                                                                                | `60`                    |
+| [window&#95;view&#95;heartbeat&#95;interval](/operations/settings/settings#window_view_heartbeat_interval)                                                                                                        | `15`                    |
+| [wait&#95;for&#95;window&#95;view&#95;fire&#95;signal&#95;timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout)                                                                        | `10`                    |
+| [stop&#95;refreshable&#95;materialized&#95;views&#95;on&#95;startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup)                                                                | `0`                     |
+| [allow&#95;experimental&#95;database&#95;materialized&#95;postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql)                                                          | `0`                     |
+| [allow&#95;experimental&#95;qbit&#95;type](/operations/settings/settings#allow_experimental_qbit_type)                                                                                                            | `0`                     |
+| [allow&#95;experimental&#95;query&#95;deduplication](/operations/settings/settings#allow_experimental_query_deduplication)                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;database&#95;hms&#95;catalog](/operations/settings/settings#allow_experimental_database_hms_catalog)                                                                                  | `0`                     |
+| [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                    | `0`                     |
+| [allow&#95;experimental&#95;prql&#95;dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                                                      | `0`                     |
+| [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                    | `0`                     |
+| [allow&#95;experimental&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_experimental_insert_into_iceberg)                                                                                    | `0`                     |
+| [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                          | `0`                     |
+| [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                      | `0`                     |
+| [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                              | ``                      |
+| [make&#95;distributed&#95;plan](/operations/settings/settings#make_distributed_plan)                                                                                                                              | `0`                     |
+| [distributed&#95;plan&#95;execute&#95;locally](/operations/settings/settings#distributed_plan_execute_locally)                                                                                                    | `0`                     |
+| [distributed&#95;plan&#95;default&#95;shuffle&#95;join&#95;bucket&#95;count](/operations/settings/settings#distributed_plan_default_shuffle_join_bucket_count)                                                    | `8`                     |
+| [distributed&#95;plan&#95;default&#95;reader&#95;bucket&#95;count](/operations/settings/settings#distributed_plan_default_reader_bucket_count)                                                                    | `8`                     |
+| [distributed&#95;plan&#95;force&#95;exchange&#95;kind](/operations/settings/settings#distributed_plan_force_exchange_kind)                                                                                        | ``                      |
+| [distributed&#95;plan&#95;max&#95;rows&#95;to&#95;broadcast](/operations/settings/settings#distributed_plan_max_rows_to_broadcast)                                                                                | `20000`                 |
+| [allow&#95;experimental&#95;ytsaurus&#95;table&#95;engine](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)                                                                                | `0`                     |
+| [allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_function)                                                                            | `0`                     |
+| [allow&#95;experimental&#95;ytsaurus&#95;dictionary&#95;source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)                                                                      | `0`                     |
+| [distributed&#95;plan&#95;force&#95;shuffle&#95;aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation)                                                                            | `0`                     |
+| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                                                                                              | `0`                     |
+| [join&#95;runtime&#95;filter&#95;exact&#95;values&#95;limit](/operations/settings/settings#join_runtime_filter_exact_values_limit)                                                                                | `10000`                 |
+| [join&#95;runtime&#95;bloom&#95;filter&#95;bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes)                                                                                                  | `524288`                |
+| [join&#95;runtime&#95;bloom&#95;filter&#95;hash&#95;functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions)                                                                            | `3`                     |
+| [rewrite&#95;in&#95;to&#95;join](/operations/settings/settings#rewrite_in_to_join)                                                                                                                                | `0`                     |
+| [allow&#95;experimental&#95;time&#95;series&#95;aggregate&#95;functions](/operations/settings/settings#allow_experimental_time_series_aggregate_functions)                                                        | `0`                     |
+| [promql&#95;database](/operations/settings/settings#promql_database)                                                                                                                                              | ``                      |
+| [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                    | ``                      |
+| [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                            | `auto`                  |
+| [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                      | `0`                     |
+| [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                            | `0`                     |
+| [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                   | `0`                     |
+| [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                             | `0`                     |
+| [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                       | `0`                     |
+| [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge) | `0`                     |
+| [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                           | `0`                     |
+| [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                             | `Simple`                |
+| [notify&#95;newest&#95;block&#95;number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                                                     | `0`                     |
+| [part&#95;moves&#95;between&#95;shards&#95;delay&#95;seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                                                   | `30`                    |
+| [part&#95;moves&#95;between&#95;shards&#95;enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                                                     | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;path&#95;compatible&#95;mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                                             | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                             | `/clickhouse/zero_copy` |
+| [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                             | `1`                     |
+| [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                               | `1`                     |
 
-| Name                                                                                                                                                                      | Default                 |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                               | `0`                     |
-| [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                 | `0`                     |
-| [allow_remote_fs_zero_copy_replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                   | `0`                     |
-| [enable_replacing_merge_with_cleanup_for_min_age_to_force_merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge) | `0`                     |
-| [force_read_through_cache_for_merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                       | `0`                     |
-| [merge_selector_algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                             | `Simple`                |
-| [notify_newest_block_number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                         | `0`                     |
-| [part_moves_between_shards_delay_seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                               | `30`                    |
-| [part_moves_between_shards_enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                             | `0`                     |
-| [remote_fs_zero_copy_path_compatible_mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                             | `0`                     |
-| [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                         | `/clickhouse/zero_copy` |
-| [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                     | `1`                     |
-| [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                               | `1`                     |
-| [allow_experimental_time_time64_type](/operations/settings/settings#allow_experimental_time_time64_type)                                                                  | `0`                     |
-| [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                    | `0`                     |
-| [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                | `0`                     |
-| [allow_experimental_materialized_postgresql_table](/operations/settings/settings#allow_experimental_materialized_postgresql_table)                                        | `0`                     |
-| [allow_experimental_funnel_functions](/operations/settings/settings#allow_experimental_funnel_functions)                                                                  | `0`                     |
-| [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions)                                                                        | `0`                     |
-| [allow_experimental_hash_functions](/operations/settings/settings#allow_experimental_hash_functions)                                                                      | `0`                     |
-| [allow_experimental_time_series_table](/operations/settings/settings#allow_experimental_time_series_table)                                                                | `0`                     |
-| [allow_experimental_codecs](/operations/settings/settings#allow_experimental_codecs)                                                                                      | `0`                     |
-| [throw_on_unsupported_query_inside_transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction)                                              | `1`                     |
-| [wait_changes_become_visible_after_commit_mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode)                                              | `wait_unknown`          |
-| [implicit_transaction](/operations/settings/settings#implicit_transaction)                                                                                                | `0`                     |
-| [grace_hash_join_initial_buckets](/operations/settings/settings#grace_hash_join_initial_buckets)                                                                          | `1`                     |
-| [grace_hash_join_max_buckets](/operations/settings/settings#grace_hash_join_max_buckets)                                                                                  | `1024`                  |
-| [join_to_sort_minimum_perkey_rows](/operations/settings/settings#join_to_sort_minimum_perkey_rows)                                                                        | `40`                    |
-| [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows)                                                                          | `10000`                 |
-| [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting)                                                  | `0`                     |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize)                                                                                      | `0`                     |
-| [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics)                                                                              | `0`                     |
-| [use_statistics_cache](/operations/settings/settings#use_statistics_cache)                                                                                                | `0`                     |
-| [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index)                                                                    | `0`                     |
-| [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view)                                                                            | `0`                     |
-| [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval)                                                                                    | `60`                    |
-| [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval)                                                                            | `15`                    |
-| [wait_for_window_view_fire_signal_timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout)                                                        | `10`                    |
-| [stop_refreshable_materialized_views_on_startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup)                                            | `0`                     |
-| [allow_experimental_database_materialized_postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql)                                  | `0`                     |
-| [allow_experimental_qbit_type](/operations/settings/settings#allow_experimental_qbit_type)                                                                                | `0`                     |
-| [allow_experimental_query_deduplication](/operations/settings/settings#allow_experimental_query_deduplication)                                                            | `0`                     |
-| [allow_experimental_database_hms_catalog](/operations/settings/settings#allow_experimental_database_hms_catalog)                                                          | `0`                     |
-| [allow_experimental_kusto_dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                        | `0`                     |
-| [allow_experimental_prql_dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                          | `0`                     |
-| [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                            | `0`                     |
-| [allow_experimental_insert_into_iceberg](/operations/settings/settings#allow_experimental_insert_into_iceberg)                                                            | `0`                     |
-| [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                              | `0`                     |
-| [write_full_path_in_iceberg_metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                  | `0`                     |
-| [iceberg_metadata_compression_method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                  | ``                      |
-| [make_distributed_plan](/operations/settings/settings#make_distributed_plan)                                                                                              | `0`                     |
-| [distributed_plan_execute_locally](/operations/settings/settings#distributed_plan_execute_locally)                                                                        | `0`                     |
-| [distributed_plan_default_shuffle_join_bucket_count](/operations/settings/settings#distributed_plan_default_shuffle_join_bucket_count)                                    | `8`                     |
-| [distributed_plan_default_reader_bucket_count](/operations/settings/settings#distributed_plan_default_reader_bucket_count)                                                | `8`                     |
-| [distributed_plan_force_exchange_kind](/operations/settings/settings#distributed_plan_force_exchange_kind)                                                                | ``                      |
-| [distributed_plan_max_rows_to_broadcast](/operations/settings/settings#distributed_plan_max_rows_to_broadcast)                                                            | `20000`                 |
-| [allow_experimental_ytsaurus_table_engine](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)                                                        | `0`                     |
-| [allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_function)                                                    | `0`                     |
-| [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)                                              | `0`                     |
-| [distributed_plan_force_shuffle_aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation)                                                    | `0`                     |
-| [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters)                                                                                  | `0`                     |
-| [join_runtime_filter_exact_values_limit](/operations/settings/settings#join_runtime_filter_exact_values_limit)                                                            | `10000`                 |
-| [join_runtime_bloom_filter_bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes)                                                                          | `524288`                |
-| [join_runtime_bloom_filter_hash_functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions)                                                        | `3`                     |
-| [rewrite_in_to_join](/operations/settings/settings#rewrite_in_to_join)                                                                                                    | `0`                     |
-| [allow_experimental_time_series_aggregate_functions](/operations/settings/settings#allow_experimental_time_series_aggregate_functions)                                    | `0`                     |
-| [promql_database](/operations/settings/settings#promql_database)                                                                                                          | ``                      |
-| [promql_table](/operations/settings/settings#promql_table)                                                                                                                | ``                      |
-| [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time)                                                                                            | `auto`                  |
-| [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                              | `0`                     |
-| [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                | `0`                     |
-
-<!--AUTOGENERATED_END-->
+{/*AUTOGENERATED_END*/ }

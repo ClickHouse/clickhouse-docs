@@ -6,7 +6,7 @@ title: 'quantileTDigest'
 doc_type: 'reference'
 ---
 
-# quantileTDigest
+# quantileTDigest {#quantiletdigest}
 
 使用 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 算法，对数值数据序列计算近似的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

@@ -13,7 +13,6 @@ keywords: ['OOM', '超出内存限制']
 import Image from '@theme/IdealImage';
 import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-query.png';
 
-
 ## 查询超出内存限制 \{#troubleshooting-out-of-memory-issues\}
 
 对于新用户来说，ClickHouse 往往看起来像是“魔法”——每个查询都超级快，
@@ -38,6 +37,6 @@ import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-q
 
 对于 `JOIN`，用户可以选择不同的 `JOIN` 算法，以帮助降低所需内存。默认情况下，`JOIN` 使用哈希连接（hash join），在特性完备性方面最全面，且通常提供最佳性能。该算法会将 `JOIN` 的右表加载到内存中的哈希表中，然后再用左表与之进行匹配。为了尽量减少内存占用，用户应将较小的表放在右侧。然而，在受内存限制的场景中，这种方式仍然存在局限性。在这些情况下，可以通过 [`join_algorithm`](/operations/settings/settings#join_algorithm) 设置启用 `partial_merge` 连接。该算法是[排序合并算法](https://en.wikipedia.org/wiki/Sort-merge_join) 的一种变体，首先将右表按块排序，并为这些块创建 min-max 索引。随后，它按连接键对左表的部分数据进行排序，并将其与右表进行连接。min-max 索引用于跳过不需要的右表块。这种方式在降低内存占用的同时，会牺牲一定的性能。进一步来说，`full_sorting_merge` 算法允许在右侧非常大且无法放入内存、也无法进行查找（例如复杂子查询）时执行 `JOIN`。在这种情况下，如果左右两侧都无法放入内存，它们都会在磁盘上进行排序，从而允许对大表进行连接。
 
-<Image img={joins} size="md" alt="Join 算法"/>
+<Image img={joins} size="md" alt="Join 算法" />
 
 从 20.3 版本开始，ClickHouse 支持在 `join_algorithm` 设置中使用 `auto` 取值。这会指示 ClickHouse 采用自适应连接策略：优先使用哈希连接算法，直到触及内存限制，此时会改用 `partial_merge` 算法。最后，关于连接，我们建议读者了解分布式连接的行为以及如何最小化其内存消耗。更多信息请参见[此处](/sql-reference/operators/in#distributed-subqueries)。

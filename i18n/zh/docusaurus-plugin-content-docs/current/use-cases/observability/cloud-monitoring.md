@@ -10,9 +10,9 @@ keywords: ['可观测性', '监控', '云', '指标', '系统健康']
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 import Image from '@theme/IdealImage';
-import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';
-import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
-import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
+import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
+import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
+import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
 
 # ClickHouse Cloud 监控 {#cloud-monitoring}

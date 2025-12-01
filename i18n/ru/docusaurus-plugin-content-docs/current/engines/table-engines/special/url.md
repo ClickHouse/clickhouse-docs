@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы URL
+# Движок таблицы URL {#url-table-engine}
 
 Выполняет чтение и запись данных на удалённый HTTP/HTTPS-сервер. Этот движок похож на движок [File](../../../engines/table-engines/special/file.md).
 
@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 
 
-## Пример
+## Пример {#example}
 
 **1.** Создайте таблицу `url_engine_table` на сервере:
 

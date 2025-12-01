@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Log テーブルエンジン
+# Log テーブルエンジン {#log-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -22,7 +22,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#table_engines-log-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -59,7 +59,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 使用例
+## 使用例 {#table_engines-log-example-of-use}
 
 テーブルの作成：
 

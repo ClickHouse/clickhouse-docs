@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 JSON-файл со следующими данными, сохранённый как `football.json`:
 
@@ -45,7 +45,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные, используя формат `JSONCompactColumns`:
 

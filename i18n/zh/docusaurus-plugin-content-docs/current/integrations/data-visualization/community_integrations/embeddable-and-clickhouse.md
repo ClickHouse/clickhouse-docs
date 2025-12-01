@@ -7,11 +7,11 @@ title: '将 Embeddable 连接到 ClickHouse'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 将 Embeddable 连接到 ClickHouse
+# 将 Embeddable 连接到 ClickHouse {#connecting-embeddable-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -28,7 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## 2. 创建 ClickHouse 连接类型
+## 2. 创建 ClickHouse 连接类型 {#2-create-a-clickhouse-connection-type}
 
 您可以使用 Embeddable API 添加数据库连接。该连接用于连接到您的 ClickHouse 服务。您可以使用以下 API 调用来添加连接：
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# ARRAY JOIN 子句
+# ARRAY JOIN 子句 {#array-join-clause}
 
 对于包含数组列的表，一个常见操作是生成一个新表：在该新表中，原始数组列中的每个数组元素各占一行，而其他列的值会被复制重复。这是 `ARRAY JOIN` 子句的基本用例。
 
@@ -30,9 +30,9 @@ FROM <left_subquery>
 * `LEFT ARRAY JOIN` - `JOIN` 结果中会包含含有空数组的行。空数组的值被设置为数组元素类型的默认值（通常是 0、空字符串或 NULL）。
 
 
-## 基本 ARRAY JOIN 示例
+## 基本 ARRAY JOIN 示例 {#basic-array-join-examples}
 
-### ARRAY JOIN 和 LEFT ARRAY JOIN
+### ARRAY JOIN 和 LEFT ARRAY JOIN {#array-join-left-array-join-examples}
 
 下面的示例展示了 `ARRAY JOIN` 和 `LEFT ARRAY JOIN` 子句的用法。我们先创建一个包含 [Array](../../../sql-reference/data-types/array.md) 类型列的表，并向其中插入值：
 
@@ -92,7 +92,7 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOIN 和 arrayEnumerate 函数
+### ARRAY JOIN 和 arrayEnumerate 函数 {#array-join-arrayEnumerate}
 
 此函数通常与 `ARRAY JOIN` 一起使用。它可以在应用 `ARRAY JOIN` 之后，对每个数组只计数一次。示例：
 
@@ -130,7 +130,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └─────────┴───────┘
 ```
 
-### ARRAY JOIN 和 arrayEnumerateUniq
+### ARRAY JOIN 和 arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
 
 在使用 `ARRAY JOIN` 并对数组元素进行聚合时，此函数非常有用。
 
@@ -168,7 +168,7 @@ LIMIT 10
 ```
 
 
-## 使用别名
+## 使用别名 {#using-aliases}
 
 可以在 `ARRAY JOIN` 子句中为数组指定一个别名。在这种情况下，可以通过该别名访问数组元素，但数组本身仍通过原始名称访问。示例：
 
@@ -268,7 +268,7 @@ SETTINGS enable_unaligned_array_join = 1;
 ```
 
 
-## ARRAY JOIN 与嵌套数据结构
+## ARRAY JOIN 与嵌套数据结构 {#array-join-with-nested-data-structure}
 
 `ARRAY JOIN` 也可以用于[嵌套数据结构](../../../sql-reference/data-types/nested-data-structures/index.md)：
 

@@ -10,7 +10,7 @@ keywords: ['MySQL ClickPipes 常见问题', 'ClickPipes MySQL 故障排查', 'My
 
 
 
-# ClickPipes for MySQL 常见问题
+# ClickPipes for MySQL 常见问题 {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe 是否支持 MariaDB？ {#does-the-clickpipe-support-mariadb}
 是的，MySQL ClickPipe 支持 MariaDB 10.0 及以上版本。其配置与 MySQL 非常相似，默认使用 GTID 复制。

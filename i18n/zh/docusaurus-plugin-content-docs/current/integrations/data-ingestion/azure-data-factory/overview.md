@@ -9,10 +9,9 @@ doc_type: 'guide'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# 将 Azure 数据引入 ClickHouse {#bringing-azure-data-into-clickhouse}
 
-# 将 Azure 数据引入 ClickHouse
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Microsoft Azure 提供了丰富的工具，用于存储、转换和分析数据。然而，在许多场景中，ClickHouse 在低延迟查询和处理海量数据集方面可以提供显著更好的性能。此外，与通用的 Azure 数据库相比，ClickHouse 的列式存储和压缩可以大幅降低大规模分析型数据查询的成本。
 

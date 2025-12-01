@@ -7,13 +7,11 @@ title: 'IPv4'
 doc_type: 'reference'
 ---
 
-
-
-## IPv4
+## IPv4 {#ipv4}
 
 IPv4-адреса. Хранятся в 4 байтах в виде UInt32.
 
-### Базовое использование
+### Базовое использование {#basic-usage}
 
 ```sql
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY url;

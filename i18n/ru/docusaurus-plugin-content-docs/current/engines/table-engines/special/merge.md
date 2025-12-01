@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы Merge
+# Движок таблицы Merge {#merge-table-engine}
 
 Движок `Merge` (не путать с `MergeTree`) сам не хранит данные, но позволяет одновременно читать из любого количества других таблиц.
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
@@ -51,7 +51,7 @@ CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 
 
 
-## Примеры
+## Примеры {#examples}
 
 **Пример 1**
 

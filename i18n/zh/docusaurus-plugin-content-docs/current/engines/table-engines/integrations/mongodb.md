@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# MongoDB 表引擎
+# MongoDB 表引擎 {#mongodb-table-engine}
 
 MongoDB 引擎是一种只读表引擎，用于从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
 
@@ -18,7 +18,7 @@ MongoDB 引擎是一种只读表引擎，用于从远程 [MongoDB](https://www.m
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -61,7 +61,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `oid_columns` | 以逗号分隔的列名列表，这些列在 WHERE 子句中将被视为 `oid` 类型。默认值为 `_id`。 |
 
 
-## 类型映射
+## 类型映射 {#types-mappings}
 
 | MongoDB                 | ClickHouse                               |
 | ----------------------- | ---------------------------------------- |
@@ -78,7 +78,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 如果在 MongoDB 文档中未找到键（例如列名不匹配），将插入默认值，或者在列可为 `NULL` 的情况下插入 `NULL`。
 
-### OID
+### OID {#oid}
 
 如果希望在 WHERE 子句中将某个 `String` 视为 `oid`，只需将该列名作为表引擎的最后一个参数传入。
 在按 `_id` 列查询记录时可能需要这样做，因为在 MongoDB 中 `_id` 列默认具有 `oid` 类型。
@@ -132,7 +132,7 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 ```
 
 
-## 支持的子句
+## 支持的子句 {#supported-clauses}
 
 仅支持包含简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
 此类表达式会被转换为 MongoDB 查询语言并在服务器端执行。
@@ -156,7 +156,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 这适用于 `Date`、`Date32`、`DateTime`、`Bool` 和 `UUID` 类型。
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 假设 MongoDB 中已经加载了 [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集
 

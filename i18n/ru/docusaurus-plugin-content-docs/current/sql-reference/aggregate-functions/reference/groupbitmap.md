@@ -6,7 +6,7 @@ title: 'groupBitmap'
 doc_type: 'reference'
 ---
 
-# groupBitmap
+# groupBitmap {#groupbitmap}
 
 Выполняет Bitmap- или агрегатные вычисления по беззнаковому целочисленному столбцу и возвращает мощность множества (кардинальность) в виде значения типа UInt64. Если добавить суффикс `-State`, функция вернёт [bitmap-объект](../../../sql-reference/functions/bitmap-functions.md).
 

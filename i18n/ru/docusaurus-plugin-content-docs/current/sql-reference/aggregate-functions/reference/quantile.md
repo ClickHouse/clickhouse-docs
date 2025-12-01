@@ -6,7 +6,7 @@ title: 'quantile'
 doc_type: 'reference'
 ---
 
-# quantile
+# quantile {#quantile}
 
 Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

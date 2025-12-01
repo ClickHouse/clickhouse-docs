@@ -3,10 +3,13 @@
 .docsNavDropdownContainer {
   border-radius: 10px;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: var(--ch-nav-v2-link-color);
   width: fit-content;
   padding: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
   /* Keep original padding for non-dropdown items */
 }
 

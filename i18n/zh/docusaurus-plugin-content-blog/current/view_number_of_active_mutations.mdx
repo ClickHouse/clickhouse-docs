@@ -10,12 +10,11 @@ keywords: ['活动 mutation', '排队中的 mutation']
 
 {/* 截断 */}
 
-
 ## 问题 \{#question\}
 
 如何查看处于活动或排队状态的 mutation 数量？
 
-## 解答
+## 解答 \{#answer\}
 
 如果在表上大量执行 `ALTER` 或 `UPDATE` 语句，则监控处于活动或排队状态的 mutation 数量就很重要。这些查询会重写数据分片，并且不是原子操作——它们会按照创建时对应分片的顺序排序，并依次应用到每个分片。关于 mutation 的更多细节可以在[文档](https://clickhouse.com/docs/sql-reference/statements/alter#mutations)中查阅。
 

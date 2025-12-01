@@ -9,13 +9,13 @@ keywords: ['SQL 形式', 'データエクスポート', 'データインポー�
 
 
 
-# ClickHouse での SQL データの挿入とダンプ
+# ClickHouse での SQL データの挿入とダンプ {#inserting-and-dumping-sql-data-in-clickhouse}
 
 ClickHouse は、さまざまな方法で OLTP データベース基盤に容易に統合できます。その 1 つの方法として、SQL ダンプを使用して他のデータベースと ClickHouse 間でデータを転送することが挙げられます。
 
 
 
-## SQL ダンプの作成
+## SQL ダンプの作成 {#creating-sql-dumps}
 
 [SQLInsert](/interfaces/formats/SQLInsert) を使用すると、データを SQL 形式でダンプできます。ClickHouse はデータを `INSERT INTO &lt;table name&gt; VALUES(...` 形式で出力し、テーブル名として [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 設定オプションを使用します。
 
@@ -46,7 +46,7 @@ mysql some_db < dump.sql
 SET output_format_sql_insert_max_batch_size = 1000;
 ```
 
-### 値の集合のエクスポート
+### 値の集合のエクスポート {#exporting-a-set-of-values}
 
 ClickHouse には [Values](/interfaces/formats/Values) フォーマットがあり、SQL の INSERT 文に似ていますが、`INSERT INTO table VALUES` の部分を省き、値の集合だけを返します。
 
@@ -59,7 +59,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```
 
 
-## SQLダンプからのデータ挿入
+## SQLダンプからのデータ挿入 {#inserting-data-from-sql-dumps}
 
 SQL ダンプを読み込むには、[MySQLDump](/interfaces/formats/MySQLDump) を使用します。
 

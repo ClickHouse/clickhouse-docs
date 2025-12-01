@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Merge テーブルエンジン
+# Merge テーブルエンジン {#merge-table-engine}
 
 `Merge` エンジン（`MergeTree` と混同しないでください）は、自身ではデータを保存せず、任意の数の他のテーブルから同時に読み取ることができます。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
@@ -51,7 +51,7 @@ CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 
 
 
-## 例
+## 例 {#examples}
 
 **例 1**
 

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# postgresql テーブル関数
+# postgresql テーブル関数 {#postgresql-table-function}
 
 リモートの PostgreSQL サーバー上に保存されたデータに対して、`SELECT` および `INSERT` クエリを実行できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
@@ -48,7 +48,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 
 
-## 実装の詳細
+## 実装の詳細 {#implementation-details}
 
 PostgreSQL 側での `SELECT` クエリは、読み取り専用の PostgreSQL トランザクション内で `COPY (SELECT ...) TO STDOUT` として実行され、各 `SELECT` クエリの後にコミットされます。
 
@@ -79,7 +79,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 PostgreSQL の辞書ソースで、レプリカの優先度指定をサポートします。マップ内の数値が大きいほど優先度は低くなります。最も高い優先度は `0` です。
 
 
-## 例
+## 例 {#examples}
 
 PostgreSQL のテーブルの例:
 

@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse 的独特特性
+# ClickHouse 的独特特性 {#distinctive-features-of-clickhouse}
 
 
 

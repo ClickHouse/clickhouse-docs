@@ -20,17 +20,17 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника Aurora MySQL
+# Руководство по настройке источника Aurora MySQL {#aurora-mysql-source-setup-guide}
 
 В этом пошаговом руководстве показано, как настроить Amazon Aurora MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на распространённые вопросы о MySQL CDC см. на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
 
 
-## Включение хранения двоичных журналов
+## Включение хранения двоичных журналов {#enable-binlog-retention-aurora}
 
 Двоичный журнал — это набор файлов журнала, содержащих информацию об изменениях данных, внесённых в экземпляр сервера MySQL; файлы двоичного журнала необходимы для репликации. Чтобы настроить хранение двоичных журналов в Aurora MySQL, необходимо [включить двоичное логирование](#enable-binlog-logging) и [увеличить интервал хранения binlog](#binlog-retention-interval).
 
-### 1. Включите двоичное логирование с помощью автоматического резервного копирования
+### 1. Включите двоичное логирование с помощью автоматического резервного копирования {#enable-binlog-logging}
 
 Функция автоматического резервного копирования определяет, включено или отключено двоичное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в RDS Console, перейдя в **Modify** &gt; **Additional configuration** &gt; **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 Рекомендуется задать для параметра **Backup retention period** достаточно большое значение в зависимости от сценария репликации.
 
-### 2. Увеличьте интервал хранения binlog
+### 2. Увеличьте интервал хранения binlog {#binlog-retention-interval}
 
 :::warning
 Если ClickPipes попытается возобновить репликацию, а необходимые файлы binlog уже были удалены из-за настроенного интервала хранения binlog, ClickPipe перейдёт в состояние ошибки и потребуется повторная синхронизация.

@@ -22,7 +22,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# Postgres から ClickHouse へのデータ取り込み（CDC を使用）
+# Postgres から ClickHouse へのデータ取り込み（CDC を使用） {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
 
 ClickPipes を使用して、ソースの Postgres データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの Postgres データベースは、オンプレミス環境だけでなく、Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase などを含む各種クラウドサービス上にホストすることもできます。
 

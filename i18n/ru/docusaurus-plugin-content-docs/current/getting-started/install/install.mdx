@@ -18,32 +18,12 @@ import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
+# Инструкции по установке \{#installation-instructions\}
 
-# Инструкции по установке
+<CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
 
-<CardPrimary
-    alignContent="center"
-    description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления."
-    icon="cloud"
-    infoText="Начните бесплатно"
-    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
-    isSelected
-    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
-    size="md"
-    title="ClickHouse Cloud"
-    topBadgeText="Рекомендуется"
-/>
-
-<br/>
+<br />
 
 Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
 
-<InstallSelector
-    windows={<Windows/>}
-    quickinstall={<QuickInstall/>}
-    debian_prod={<DebianProd/>}
-    rpm_prod={<RPMProd/>}
-    tar_prod={<TarProd/>}
-    macos_prod={<MacOSProd/>}
-    docker={<Docker/>}
-/>
+<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} docker={<Docker/>} />

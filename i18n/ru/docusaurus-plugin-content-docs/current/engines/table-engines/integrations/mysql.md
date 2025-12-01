@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы MySQL
+# Движок таблицы MySQL {#mysql-table-engine}
 
 Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -67,7 +67,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 ```
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Создайте таблицу в MySQL:
 

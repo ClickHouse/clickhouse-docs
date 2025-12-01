@@ -6,7 +6,7 @@ title: 'quantilePrometheusHistogram'
 doc_type: 'reference'
 ---
 
-# quantilePrometheusHistogram
+# quantilePrometheusHistogram {#quantileprometheushistogram}
 
 Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) гистограммы с использованием линейной интерполяции с учётом накопленного значения и верхних границ каждого интервала (бакета) гистограммы.
 

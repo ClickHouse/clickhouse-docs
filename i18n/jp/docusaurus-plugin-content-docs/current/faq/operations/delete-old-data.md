@@ -30,7 +30,7 @@ TTL は、データを [/dev/null](https://en.wikipedia.org/wiki/Null_device) �
 
 
 
-## DELETE FROM
+## DELETE FROM {#delete-from}
 
 [DELETE FROM](/sql-reference/statements/delete.md) を使用すると、ClickHouse で標準的な DELETE クエリを実行できます。フィルター句で対象となった行は削除済みとしてマークされ、今後の結果セットには含まれません。行のクリーンアップは非同期に行われます。
 

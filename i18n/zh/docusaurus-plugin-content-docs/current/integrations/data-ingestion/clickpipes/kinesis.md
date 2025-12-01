@@ -26,7 +26,7 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# 将 Amazon Kinesis 集成到 ClickHouse Cloud
+# 将 Amazon Kinesis 集成到 ClickHouse Cloud {#integrating-amazon-kinesis-with-clickhouse-cloud}
 ## 前置条件 {#prerequisite}
 你已经熟悉了 [ClickPipes 介绍](./index.md)，并已配置好 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。请按照 [Kinesis 基于角色的访问控制指南](./secure-kinesis.md) 中的说明，设置可与 ClickHouse Cloud 协同工作的角色。
 

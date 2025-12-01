@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблицы HDFS
+# Движок таблицы HDFS {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Использование
+## Использование {#usage}
 
 ```sql
 ENGINE = HDFS(URI, format)
@@ -35,7 +35,7 @@ ENGINE = HDFS(URI, format)
   [Formats](/sql-reference/formats#formats-overview).
 * [PARTITION BY expr]
 
-### PARTITION BY
+### PARTITION BY {#partition-by}
 
 `PARTITION BY` — необязательный параметр. В большинстве случаев ключ партиционирования не требуется, а если и требуется, обычно нет необходимости делать его более детализированным, чем по месяцам. Партиционирование не ускоряет выполнение запросов (в отличие от выражения ORDER BY). Не следует использовать излишне детализированное партиционирование. Не выполняйте партиционирование данных по идентификаторам или именам клиентов (вместо этого сделайте идентификатор или имя клиента первым столбцом в выражении ORDER BY).
 
@@ -69,7 +69,7 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 ```
 
 
-## Подробности реализации
+## Подробности реализации {#implementation-details}
 
 * Операции чтения и записи могут выполняться параллельно.
 * Не поддерживаются:
@@ -137,7 +137,7 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
 
-## Конфигурация
+## Конфигурация {#configuration}
 
 Как и GraphiteMergeTree, движок HDFS поддерживает расширенную настройку с помощью конфигурационного файла ClickHouse. Доступны два ключа конфигурации: глобальный (`hdfs`) и пользовательский (`hdfs_*`). Сначала применяется глобальная конфигурация, а затем — пользовательская (если она есть).
 
@@ -155,9 +155,9 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 </hdfs_root>
 ```
 
-### Параметры конфигурации
+### Параметры конфигурации {#configuration-options}
 
-#### Поддерживаемые libhdfs3
+#### Поддерживаемые libhdfs3 {#supported-by-libhdfs3}
 
 
 | **параметр**                                         | **значение по умолчанию**       |
@@ -231,7 +231,7 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 
 Если указаны `hadoop_kerberos_keytab`, `hadoop_kerberos_principal` или `hadoop_security_kerberos_ticket_cache_path`, будет использоваться аутентификация Kerberos. В этом случае `hadoop_kerberos_keytab` и `hadoop_kerberos_principal` являются обязательными.
 
-## Поддержка HDFS Namenode HA
+## Поддержка HDFS Namenode HA {#namenode-ha}
 
 libhdfs3 поддерживает HDFS Namenode HA.
 

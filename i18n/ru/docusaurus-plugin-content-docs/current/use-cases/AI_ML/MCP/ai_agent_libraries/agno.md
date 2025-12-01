@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Как создать агента ИИ с помощью Agno и ClickHouse MCP Server
+# Как создать агента ИИ с помощью Agno и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента ИИ на базе [Agno](https://github.com/agno-agi/agno), способного взаимодействовать с 
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -34,7 +34,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## Установка библиотек
+## Установка библиотек {#install-libraries}
 
 Установите библиотеку Agno с помощью следующих команд:
 
@@ -45,7 +45,7 @@ pip install -q ipywidgets
 ```
 
 
-## Настройка учетных данных
+## Настройка учетных данных {#setup-credentials}
 
 Далее необходимо указать свой API-ключ Anthropic:
 

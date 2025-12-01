@@ -6,7 +6,7 @@ title: 'S3 エンドポイントへのバックアップおよびそこからの
 doc_type: 'guide'
 ---
 
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
+import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
 
 # S3 エンドポイントを利用したバックアップ / リストア {#backup-to-a-local-disk}

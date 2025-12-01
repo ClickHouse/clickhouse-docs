@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# Движок таблицы YTsaurus
+# Движок таблицы YTsaurus {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
@@ -21,7 +21,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -48,7 +48,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 * `oauth_token` — OAuth-токен.
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Пример запроса для создания таблицы YTsaurus:
 

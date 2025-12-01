@@ -10,8 +10,7 @@ keywords: ['TTL']
 
 {/* 省略 */}
 
-
-## TTL ルールと制御
+## TTL ルールと制御 \{#ttl-rules-and-control\}
 
 TTL &#x306F;***いずれ***&#x9069;用されます。これはどういう意味でしょうか？`MergeTree` テーブル設定 [`merge_with_ttl_timeout`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) は、削除 TTL を伴うマージを再度実行するまでの最小待機時間（秒）を設定します。デフォルト値は 14400 秒（4 時間）です。ただしこれはあくまで最小待機時間であり、削除 TTL のためのマージがトリガーされるまでに、それ以上時間がかかることがあります。
 
@@ -43,8 +42,7 @@ WHERE name like '%ttl%'
 SHOW CREATE TABLE <TableName>
 ```
 
-
-## TTL ルールの適用を強制する
+## TTL ルールの適用を強制する \{#force-a-ttl-rule-to-be-applied\}
 
 これは最も洗練された方法ではありませんが、`MATERIALIZE TTL` を明示的に実行することで、テーブルに定義されたすべての TTL ルールを強制的にマテリアライズできます。
 
@@ -53,8 +51,7 @@ ALTER TABLE my_table
     MATERIALIZE TTL
 ```
 
-
-## TTL に影響するバックグラウンドスレッド
+## TTL に影響するバックグラウンドスレッド \{#background-threads-affecting-ttl\}
 
 バックグラウンドプール内のワーカースレッド数が不足しているために、TTL ルールが適用されていない可能性があります。たとえば、データを集中的に挿入している場合、バックグラウンドプール全体が通常のマージ処理に利用されてしまうことがあります。なお、バックグラウンドプールのサイズは増やすことができます。
 

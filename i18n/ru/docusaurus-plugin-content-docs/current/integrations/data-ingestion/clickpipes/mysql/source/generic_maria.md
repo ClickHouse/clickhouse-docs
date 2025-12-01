@@ -9,7 +9,7 @@ keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', '
 
 
 
-# Общая инструкция по настройке источника MariaDB
+# Общая инструкция по настройке источника MariaDB {#generic-mariadb-source-setup-guide}
 
 :::info
 
@@ -19,7 +19,7 @@ keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', '
 
 
 
-## Включение хранения бинарных логов
+## Включение хранения бинарных логов {#enable-binlog-retention}
 
 Бинарные логи содержат информацию об изменениях данных, внесённых в экземпляр сервера MariaDB, и необходимы для репликации.
 

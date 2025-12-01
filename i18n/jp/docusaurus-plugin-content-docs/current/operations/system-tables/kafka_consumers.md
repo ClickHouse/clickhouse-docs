@@ -6,7 +6,7 @@ title: 'system.kafka_consumers'
 doc_type: 'リファレンス'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud />
 

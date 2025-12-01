@@ -8,7 +8,7 @@ title: 'Databrain を ClickHouse に接続する'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import databrain_01 from '@site/static/images/integrations/data-visualization/databrain_01.png';
 import databrain_02 from '@site/static/images/integrations/data-visualization/databrain_02.png';
 import databrain_03 from '@site/static/images/integrations/data-visualization/databrain_03.png';
@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Databrain を ClickHouse に接続する
+# Databrain を ClickHouse に接続する {#connecting-databrain-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -41,13 +41,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## Databrain を ClickHouse に接続する手順
+## Databrain を ClickHouse に接続する手順 {#steps-to-connect-databrain-to-clickhouse}
 
-### 1. 接続情報を準備する
+### 1. 接続情報を準備する {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Databrain の IP アドレスを許可する（必要な場合）
+### 2. Databrain の IP アドレスを許可する（必要な場合） {#2-allow-databrain-ip-addresses}
 
 ClickHouse インスタンスで IP フィルタリングが有効になっている場合は、Databrain の IP アドレスを許可リストに追加する必要があります。
 
@@ -61,7 +61,7 @@ ClickHouse Cloud をご利用の場合:
 最新の許可対象 IP アドレス一覧については、[Databrain の IP アドレス許可設定ドキュメント](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip)を参照してください。
 :::
 
-### 3. Databrain で ClickHouse をデータソースとして追加する
+### 3. Databrain で ClickHouse をデータソースとして追加する {#3-add-clickhouse-as-a-data-source}
 
 1. Databrain アカウントにログインし、データソースを追加したいワークスペースに移動します。
 
@@ -88,7 +88,7 @@ ClickHouse Cloud をご利用の場合:
 
 7. 接続が成功したら、**Save** または **Connect** をクリックしてデータソースを追加します。
 
-### 4. ユーザー権限を構成する
+### 4. ユーザー権限を構成する {#4-configure-user-permissions}
 
 接続に使用する ClickHouse ユーザーに、必要な権限が付与されていることを確認します。
 

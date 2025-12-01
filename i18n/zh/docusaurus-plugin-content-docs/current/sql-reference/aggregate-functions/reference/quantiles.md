@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 分位数函数
+# 分位数函数 {#quantiles-functions}
 
 
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## quantilesExactExclusive
+## quantilesExactExclusive {#quantilesexactexclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -73,7 +73,7 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesExactInclusive
+## quantilesExactInclusive {#quantilesexactinclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -126,7 +126,7 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 ```
 
 
-## quantilesGK
+## quantilesGK {#quantilesgk}
 
 `quantilesGK` 的工作方式与 `quantileGK` 类似，但它允许我们同时计算多个不同分位点的数值，并返回一个数组。
 

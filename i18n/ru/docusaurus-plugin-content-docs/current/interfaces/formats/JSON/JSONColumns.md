@@ -28,7 +28,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используйте JSON-файл со следующими данными под названием `football.json`:
 
@@ -50,7 +50,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считывайте данные в формате `JSONColumns`:
 

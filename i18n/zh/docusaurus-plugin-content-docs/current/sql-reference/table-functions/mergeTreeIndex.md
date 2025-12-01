@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# mergeTreeIndex 表函数
+# mergeTreeIndex 表函数 {#mergetreeindex-table-function}
 
 用于表示 MergeTree 表的索引文件和标记文件的内容，可用于内部检查。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
@@ -46,7 +46,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ```sql
 CREATE TABLE test_table

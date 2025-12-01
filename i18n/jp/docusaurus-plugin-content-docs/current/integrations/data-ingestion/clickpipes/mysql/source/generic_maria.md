@@ -9,7 +9,7 @@ keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セ
 
 
 
-# 汎用 MariaDB ソース設定ガイド
+# 汎用 MariaDB ソース設定ガイド {#generic-mariadb-source-setup-guide}
 
 :::info
 
@@ -19,7 +19,7 @@ keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セ
 
 
 
-## バイナリログの保持を有効にする
+## バイナリログの保持を有効にする {#enable-binlog-retention}
 
 バイナリログには、MariaDB サーバーインスタンスで行われたデータ変更に関する情報が含まれており、レプリケーションに必要です。
 

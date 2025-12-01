@@ -7,13 +7,9 @@ title: 'Nested'
 doc_type: 'guide'
 ---
 
+# ネスト {#nested}
 
-
-# ネスト
-
-
-
-## Nested(name1 Type1, Name2 Type2, ...)
+## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
 
 ネストされたデータ構造は、セルの中にあるテーブルのようなものです。ネストされたデータ構造のパラメータ（列名や型）は、[CREATE TABLE](../../../sql-reference/statements/create/table.md) クエリの場合と同様に指定します。各テーブル行は、ネストされたデータ構造内の任意の数の行に対応できます。
 
@@ -87,7 +83,6 @@ ARRAY JOIN Goals AS Goal
 WHERE CounterID = 101500 AND length(Goals.ID) < 5
 LIMIT 10
 ```
-
 
 ```text
 ┌─Goal.ID─┬──────Goal.EventTime─┐

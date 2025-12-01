@@ -46,7 +46,7 @@ Databricks поддерживает несколько форматов данн
 
 После настройки Unity Catalog и аутентификации установите подключение между ClickHouse и Unity Catalog.
 
-### Чтение Delta
+### Чтение Delta {#read-delta}
 
 ```sql
 CREATE DATABASE unity
@@ -55,7 +55,7 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 ```
 
 
-### Чтение данных из Iceberg
+### Чтение данных из Iceberg {#read-iceberg}
 
 ```sql
 CREATE DATABASE unity
@@ -65,7 +65,7 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 ```
 
 
-## Выполнение запросов к таблицам каталога Unity из ClickHouse
+## Выполнение запросов к таблицам каталога Unity из ClickHouse {#querying-unity-catalog-tables-using-clickhouse}
 
 Теперь, когда соединение установлено, вы можете начинать выполнять запросы через каталог Unity. Например:
 
@@ -156,7 +156,7 @@ ENGINE = Iceberg('s3://<path>);
 ```
 
 
-## Загрузка данных из озера данных в ClickHouse
+## Загрузка данных из озера данных в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 Если вам нужно загрузить данные из Databricks в ClickHouse, начните с создания локальной таблицы ClickHouse:
 

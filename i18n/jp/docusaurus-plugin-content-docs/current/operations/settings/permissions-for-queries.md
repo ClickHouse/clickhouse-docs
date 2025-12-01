@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# クエリの権限
+# クエリの権限 {#permissions-for-queries}
 
 ClickHouse におけるクエリは、次のいくつかの種類に分類されます。
 

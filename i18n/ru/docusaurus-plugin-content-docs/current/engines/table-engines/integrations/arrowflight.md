@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 
 
-# Движок таблицы ArrowFlight
+# Движок таблицы ArrowFlight {#arrowflight-table-engine}
 
 Движок таблицы ArrowFlight позволяет ClickHouse выполнять запросы к удалённым наборам данных по протоколу [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html).
 Эта интеграция даёт возможность ClickHouse получать данные с внешних серверов с поддержкой Flight в колонном формате Arrow с высокой производительностью.
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
   (это будет работать только в том случае, если сервер Arrow Flight это допускает).
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 В этом примере показано, как создать таблицу для чтения данных с удалённого сервера Arrow Flight:
 

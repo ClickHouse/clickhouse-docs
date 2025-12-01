@@ -8,13 +8,13 @@ title: 'Подключение ClickHouse к Hashboard'
 doc_type: 'guide'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключение ClickHouse к Hashboard
+# Подключение ClickHouse к Hashboard {#connecting-clickhouse-to-hashboard}
 
 <CommunityMaintainedBadge/>
 

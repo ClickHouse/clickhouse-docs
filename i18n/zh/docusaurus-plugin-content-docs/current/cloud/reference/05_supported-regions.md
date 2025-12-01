@@ -10,7 +10,7 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 受支持的云区域
+# 受支持的云区域 {#supported-cloud-regions}
 
 
 

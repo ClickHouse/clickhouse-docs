@@ -51,7 +51,7 @@ ClickHouse 提供了一种强大的机制，称为 **数据跳过索引（data s
 关于数据跳过索引的更详细指南请参见[此处](/sql-reference/statements/alter/skipping-index)。
 
 
-## 示例
+## 示例 {#example}
 
 考虑下面这个经过优化的表。该表包含 Stack Overflow 数据，每行对应一篇帖子。
 

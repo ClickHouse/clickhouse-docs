@@ -7,7 +7,7 @@ title: 'Bool'
 doc_type: 'reference'
 ---
 
-# Bool
+# Bool {#bool}
 
 Тип `bool` внутренне хранится как UInt8. Возможные значения: `true` (1), `false` (0).
 

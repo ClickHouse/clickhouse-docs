@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# PostgreSQL
+# PostgreSQL {#postgresql}
 
 Позволяет подключаться к базам данных на удалённом сервере [PostgreSQL](https://www.postgresql.org). Поддерживает операции чтения и записи (запросы `SELECT` и `INSERT`) для обмена данными между ClickHouse и PostgreSQL.
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 
 
 
-## Создание базы данных
+## Создание базы данных {#creating-a-database}
 
 ```sql
 CREATE DATABASE test_database
@@ -56,7 +56,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 
 
-## Примеры использования
+## Примеры использования {#examples-of-use}
 
 База данных в ClickHouse, обменивающаяся данными с сервером PostgreSQL:
 

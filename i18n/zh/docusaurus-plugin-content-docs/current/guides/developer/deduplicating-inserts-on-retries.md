@@ -71,9 +71,9 @@ doc_type: 'guide'
 
 
 
-## 示例
+## 示例 {#examples}
 
-### 物化视图转换后生成的相同数据块
+### 物化视图转换后生成的相同数据块 {#identical-blocks-after-materialized-view-transformations}
 
 在物化视图内部转换过程中生成的相同数据块不会被去重，因为它们是基于不同的插入数据生成的。
 
@@ -183,7 +183,7 @@ ORDER by all;
 
 在这里可以看到，当我们重试插入操作时，所有数据都会被去重。去重机制同时适用于 `dst` 和 `mv_dst` 表。
 
-### 插入时的相同数据块
+### 插入时的相同数据块 {#identical-blocks-on-insertion}
 
 ```sql
 CREATE TABLE dst
@@ -225,7 +225,7 @@ ORDER BY all;
 
 使用上述设置，select 会产生两个数据块——因此应该有两个数据块插入到表 `dst` 中。然而，我们看到只有一个数据块被插入到表 `dst` 中。这是因为第二个数据块已被去重。它具有相同的数据和去重键 `block_id`，该键是根据插入数据的哈希值计算得出的。这种行为不符合预期。此类情况很少发生，但理论上是可能的。为了正确处理此类情况，用户必须提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
 
-### 使用 `insert_deduplication_token` 插入相同数据块                                                                 
+### 使用 `insert_deduplication_token` 插入相同数据块                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
 
 ```sql
 CREATE TABLE dst
@@ -314,7 +314,7 @@ ORDER BY all;
 
 即使该次插入的数据内容不同，也会被去重。请注意，`insert_deduplication_token` 具有更高优先级：当提供 `insert_deduplication_token` 时，ClickHouse 不会使用数据的哈希总和。
 
-### 不同的插入操作在物化视图的底层表中经过转换后生成相同的数据
+### 不同的插入操作在物化视图的底层表中经过转换后生成相同的数据 {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
 
 ```sql
 CREATE TABLE dst

@@ -6,25 +6,24 @@ title: 'system.query_thread_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.query&#95;thread&#95;log {#systemquery&#95;thread&#95;log}
 
-# system.query_thread_log
-
-<SystemTableCloud/>
+<SystemTableCloud />
 
 包含执行查询的线程信息，例如线程名称、线程开始时间、查询处理持续时间等。
 
 要开始记录日志：
 
-1.  在 [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) 部分配置相关参数。
-2.  将 [log_query_threads](/operations/settings/settings#log_query_threads) 设置为 1。
+1. 在 [query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log) 部分配置相关参数。
+2. 将 [log&#95;query&#95;threads](/operations/settings/settings#log_query_threads) 设置为 1。
 
-数据的刷新周期通过服务器设置中 [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) 部分的 `flush_interval_milliseconds` 参数进行配置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
+数据的刷新周期通过服务器设置中 [query&#95;thread&#95;log](/operations/server-configuration-parameters/settings#query_thread_log) 部分的 `flush_interval_milliseconds` 参数进行配置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
 
 ClickHouse 不会自动从该表中删除数据。更多详细信息请参阅[简介](/operations/system-tables/overview#system-tables-introduction)。
 
-你可以使用 [log_queries_probability](/operations/settings/settings#log_queries_probability) 设置来减少记录到 `query_thread_log` 表中的查询数量。
+你可以使用 [log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability) 设置来减少记录到 `query_thread_log` 表中的查询数量。
 
 列：
 

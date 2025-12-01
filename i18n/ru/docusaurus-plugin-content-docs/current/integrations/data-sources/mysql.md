@@ -15,8 +15,7 @@ keywords: ['mysql', 'интеграция с базой данных', 'внеш
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Интеграция MySQL с ClickHouse
+# Интеграция MySQL с ClickHouse {#integrating-mysql-with-clickhouse}
 
 На этой странице рассматривается использование табличного движка `MySQL` для чтения данных из таблицы MySQL.
 
@@ -24,13 +23,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 В ClickHouse Cloud вы также можете использовать [MySQL ClickPipe](/integrations/clickpipes/mysql) (в настоящее время в режиме публичного бета-тестирования), чтобы упростить перенос данных из ваших таблиц MySQL в ClickHouse.
 :::
 
-
-
-## Подключение ClickHouse к MySQL с использованием табличного движка MySQL
+## Подключение ClickHouse к MySQL с использованием табличного движка MySQL {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
 
 Табличный движок `MySQL` позволяет подключить ClickHouse к MySQL. Операторы **SELECT** и **INSERT** могут выполняться как из ClickHouse, так и непосредственно в таблице MySQL. В этой статье рассмотрены базовые способы использования табличного движка `MySQL`.
 
-### 1. Настройка MySQL
+### 1. Настройка MySQL {#1-configure-mysql}
 
 1. Создайте базу данных в MySQL:
 
@@ -75,7 +72,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 Обратитесь к ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
 :::
 
-### 2. Определите таблицу в ClickHouse
+### 2. Определите таблицу в ClickHouse {#2-define-a-table-in-clickhouse}
 
 1. Теперь давайте создадим таблицу ClickHouse, которая использует движок таблицы `MySQL`:
 
@@ -101,7 +98,7 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 См. страницу документации [MySQL table engine](/engines/table-engines/integrations/mysql.md) для полного списка параметров.
 :::
 
-### 3. Протестируйте интеграцию
+### 3. Протестируйте интеграцию {#3-test-the-integration}
 
 1. В MySQL вставьте пример строки:
 
@@ -166,7 +163,6 @@ mysql> select id,column1 from db1.table1;
 5 rows in set (0.01 sec)
 ```
 
-### Итоги
-
+### Итоги {#summary}
 
 Движок таблицы `MySQL` позволяет подключить ClickHouse к MySQL для двустороннего обмена данными. Подробности смотрите на странице документации по [движку таблицы `MySQL`](/sql-reference/table-functions/mysql.md).

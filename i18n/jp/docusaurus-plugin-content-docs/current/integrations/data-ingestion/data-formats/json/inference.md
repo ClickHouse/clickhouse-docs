@@ -19,7 +19,7 @@ ClickHouse は JSON データの構造を自動的に推論できます。これ
 
 
 
-## 型の検出
+## 型の検出 {#detecting-types}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提とします。
 
@@ -108,7 +108,7 @@ SETTINGS describe_compact_output = 1
 
 
 
-## JSON のクエリ
+## JSON のクエリ {#querying-json}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型になっていることを前提とします。
 
@@ -155,7 +155,7 @@ LIMIT 1 BY year
 スキーマ推論を使用すると、スキーマを明示的に定義せずに JSON ファイルをクエリできるため、アドホックなデータ分析タスクを高速化できます。
 
 
-## テーブルの作成
+## テーブルの作成 {#creating-tables}
 
 テーブルのスキーマを作成するために、スキーマ推論を利用できます。次の `CREATE AS EMPTY` コマンドは、テーブルの DDL を推論してテーブルを作成します。これはデータを一切読み込みません。
 
@@ -196,7 +196,7 @@ ORDER BY update_date
 
 上記は、このデータに対して正しいスキーマです。スキーマ推論は、データのサンプリングと、データを行ごとに読み取る処理に基づいて実行されます。カラム値はフォーマットに従って抽出され、各値の型を決定するために再帰的なパーサーとヒューリスティクスが使用されます。スキーマ推論時にデータから読み取られる最大行数および最大バイト数は、設定 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（デフォルトでは 25000）および [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（デフォルトでは 32MB）によって制御されます。判定結果が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているようにヒントを指定できます。
 
-### スニペットからテーブルを作成する
+### スニペットからテーブルを作成する {#creating-tables-from-snippets}
 
 上記の例では、S3 上のファイルを使用してテーブルスキーマを作成しました。1 行だけのスニペットからスキーマを作成したい場合があります。これは、以下に示すように [format](/sql-reference/table-functions/format) 関数を使用することで実現できます。
 
@@ -230,7 +230,7 @@ ORDER BY update_date
 ```
 
 
-## JSON データの読み込み
+## JSON データの読み込み {#loading-json-data}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提としています。
 
@@ -291,7 +291,7 @@ FORMAT PrettyJSONEachRow
 
 
 
-## 半構造化データと動的データの扱い
+## 半構造化データと動的データの扱い {#working-with-semi-structured-data}
 
 前の例では、キー名と型がよく知られた静的な JSON を使用しました。実際にはそうでないことが多く、キーが追加されたり、その型が変化したりします。これは Observability データなどのユースケースでよく見られます。
 

@@ -20,17 +20,17 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# RDS MySQL 源设置指南
+# RDS MySQL 源设置指南 {#rds-mysql-source-setup-guide}
 
 本分步指南介绍如何配置 Amazon RDS MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC 的常见问题解答，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
 
 
-## 启用二进制日志保留
+## 启用二进制日志保留 {#enable-binlog-retention-rds}
 
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息，而二进制日志文件是实现复制所必需的。要在 RDS MySQL 中配置二进制日志保留，您必须先[启用二进制日志记录](#enable-binlog-logging)，然后[增加 binlog 保留时间间隔](#binlog-retention-interval)。
 
-### 1. 通过自动备份启用二进制日志记录
+### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
 
 自动备份功能决定是否为 MySQL 启用二进制日志记录。您可以在 RDS 控制台中通过导航到 **Modify** &gt; **Additional configuration** &gt; **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未选中）来为实例配置自动备份。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 我们建议根据具体的复制场景，将 **Backup retention period** 设置为相对较长的值。
 
-### 2. 增加 binlog 保留时间间隔
+### 2. 增加 binlog 保留时间间隔 {#binlog-retention-interval}
 
 :::warning
 如果 ClickPipes 尝试恢复复制时，所需的 binlog 文件由于配置的 binlog 保留时间而已被清除，那么对应的 ClickPipe 将进入错误状态，并且需要重新同步。

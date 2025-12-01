@@ -9,7 +9,7 @@ doc_type: '参考'
 
 
 
-# INSERT INTO 语句
+# INSERT INTO 语句 {#insert-into-statement}
 
 将数据插入表中。
 
@@ -112,7 +112,7 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 
 
-## 插入 SELECT 查询结果
+## 插入 SELECT 查询结果 {#inserting-the-results-of-select}
 
 **语法**
 
@@ -139,7 +139,7 @@ WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
 
-## 从文件中插入数据
+## 从文件中插入数据 {#inserting-data-from-a-file}
 
 **语法**
 
@@ -155,7 +155,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **示例**
 
-### 使用 FROM INFILE 的单个文件
+### 使用 FROM INFILE 的单个文件 {#single-file-with-from-infile}
 
 使用[命令行客户端](../../interfaces/cli.md)执行以下查询：
 
@@ -175,7 +175,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
-### 使用通配符的多文件 FROM INFILE
+### 使用通配符的多文件 FROM INFILE {#multiple-files-with-from-infile-using-globs}
 
 此示例与上一个非常相似，但这里是通过使用 `FROM INFILE 'input_*.csv'`，从多个文件中执行插入操作。
 
@@ -198,7 +198,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 :::
 
 
-## 使用表函数插入数据
+## 使用表函数插入数据 {#inserting-using-a-table-function}
 
 可以向由[表函数](../../sql-reference/table-functions/index.md)引用的表中插入数据。
 
@@ -228,7 +228,7 @@ SELECT * FROM simple_table;
 ```
 
 
-## 在 ClickHouse Cloud 中插入数据
+## 在 ClickHouse Cloud 中插入数据 {#inserting-into-clickhouse-cloud}
 
 默认情况下，ClickHouse Cloud 上的服务会提供多个副本以实现高可用性。当连接到某个服务时，连接会建立到这些副本中的一个。
 

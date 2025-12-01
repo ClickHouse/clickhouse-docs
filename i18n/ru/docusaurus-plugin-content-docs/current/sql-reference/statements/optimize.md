@@ -34,8 +34,7 @@ OPTIMIZE TABLE [db.]имя [ON CLUSTER кластер] [PARTITION партици
 Если `alter_sync` установлена в значение `2`, и некоторые реплики неактивны дольше времени, заданного настройкой `replication_wait_for_inactive_replica_timeout`, будет выброшено исключение `UNFINISHED`.
 :::
 
-
-## Выражение BY
+## Выражение BY {#by-expression}
 
 Если вы хотите выполнять дедупликацию по пользовательскому набору столбцов, а не по всем, вы можете явно указать список столбцов или использовать любую комбинацию выражений [`*`](../../sql-reference/statements/select/index.md#asterisk), [`COLUMNS`](/sql-reference/statements/select#select-clause) или [`EXCEPT`](/sql-reference/statements/select/except-modifier). Явно заданный или неявно расширенный список столбцов должен включать все столбцы, указанные в выражении сортировки строк (как первичный, так и сортировочный ключи), и в выражении секционирования (ключ секционирования).
 
@@ -104,7 +103,7 @@ SELECT * FROM example;
 
 Все последующие примеры выполняются над этим состоянием с 5 строками.
 
-#### `DEDUPLICATE`
+#### `DEDUPLICATE` {#deduplicate}
 
 Если столбцы для дедупликации не указаны, учитываются все столбцы. Строка удаляется только в том случае, если все значения во всех столбцах равны соответствующим значениям в предыдущей строке:
 
@@ -117,7 +116,6 @@ SELECT * FROM example;
 ```
 
 Результат:
-
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -132,7 +130,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY *`
+#### `DEDUPLICATE BY *` {#deduplicate-by-}
 
 Когда столбцы указываются неявно, дедупликация таблицы выполняется по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`. Для таблицы, показанной выше, это столбцы `primary_key`, `secondary_key`, `value` и `partition_key`:
 
@@ -159,7 +157,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY * EXCEPT`
+#### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
 
 Удаляет дубликаты по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED` и, в частности, не являются столбцом `value`, — то есть по столбцам `primary_key`, `secondary_key` и `partition_key`.
 
@@ -185,7 +183,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY <list of columns>`
+#### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
 
 Явно выполняйте дедупликацию по столбцам `primary_key`, `secondary_key` и `partition_key`:
 
@@ -199,7 +197,6 @@ SELECT * FROM example;
 
 Результат:
 
-
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
@@ -212,7 +209,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY COLUMNS(<regex>)`
+#### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
 
 Дедупликация по всем столбцам, имена которых соответствуют регулярному выражению: столбцам `primary_key`, `secondary_key` и `partition_key`:
 

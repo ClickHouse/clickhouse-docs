@@ -18,7 +18,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -44,7 +44,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 
 
 
-## Определение именованной коллекции
+## Определение именованной коллекции {#defining-a-named-collection}
 
 Ниже приведён пример настройки именованной коллекции для хранения URL-адреса и учётных данных:
 

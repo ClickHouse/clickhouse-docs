@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 例えば、次のようにします。
 

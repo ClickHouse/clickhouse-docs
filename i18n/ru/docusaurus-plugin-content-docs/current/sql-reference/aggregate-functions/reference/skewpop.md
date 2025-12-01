@@ -6,7 +6,7 @@ title: 'skewPop'
 doc_type: 'reference'
 ---
 
-# skewPop
+# skewPop {#skewpop}
 
 Вычисляет [коэффициент асимметрии](https://en.wikipedia.org/wiki/Skewness) последовательности значений.
 

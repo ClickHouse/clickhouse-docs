@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция prometheusQuery
+# Табличная функция prometheusQuery {#prometheusquery-table-function}
 
 Выполняет запрос Prometheus по данным таблицы TimeSeries.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 prometheusQuery('db_name', 'time_series_table', 'promql_query', evaluation_time)
@@ -46,7 +46,7 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 
 
 
-## Пример
+## Пример {#example}
 
 ```sql
 SELECT * FROM prometheusQuery(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now())

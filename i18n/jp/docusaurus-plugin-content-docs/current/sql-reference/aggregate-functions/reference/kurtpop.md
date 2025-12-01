@@ -6,7 +6,7 @@ title: 'kurtPop'
 doc_type: 'reference'
 ---
 
-# kurtPop
+# kurtPop {#kurtpop}
 
 系列の[尖度 (kurtosis)](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 

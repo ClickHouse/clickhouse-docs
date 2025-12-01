@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Join 表引擎
+# Join 表引擎 {#join-table-engine}
 
 用于 [JOIN](/sql-reference/statements/select/join) 操作的可选预构建数据结构。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -115,7 +115,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 用法示例
+## 用法示例 {#example}
 
 创建左侧的表：
 

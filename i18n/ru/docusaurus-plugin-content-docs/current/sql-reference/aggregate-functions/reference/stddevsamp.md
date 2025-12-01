@@ -6,7 +6,7 @@ title: 'stddevSamp'
 doc_type: 'reference'
 ---
 
-# stddevSamp
+# stddevSamp {#stddevsamp}
 
 Результат равен квадратному корню из [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md).
 

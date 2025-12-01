@@ -6,7 +6,7 @@ title: 'quantileTiming'
 doc_type: 'reference'
 ---
 
-# quantileTiming
+# quantileTiming {#quantiletiming}
 
 指定された精度で数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

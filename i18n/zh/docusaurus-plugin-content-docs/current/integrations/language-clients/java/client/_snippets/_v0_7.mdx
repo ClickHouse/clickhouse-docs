@@ -7,72 +7,65 @@ import TabItem from '@theme/TabItem';
 此库即将被弃用。在新项目中，请使用最新的 [Java 客户端](/integrations/language-clients/java/client/client.mdx)。
 :::
 
-
 ## 设置 \{#setup\}
 
 <Tabs groupId="client-v1-setup">
-<TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-http-client</artifactId>
+        <version>0.7.2</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-http-client</artifactId>
-    <version>0.7.2</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+    implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation("com.clickhouse:clickhouse-http-client:0.7.2")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+    implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+    ```
+  </TabItem>
 </Tabs>
 
 从版本 `0.5.0` 开始，驱动使用了一个新的 HTTP 客户端库，需要将其添加为项目依赖。
 
 <Tabs groupId="client-v1-http-client">
-<TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+    <dependency>
+        <groupId>org.apache.httpcomponents.client5</groupId>
+        <artifactId>httpclient5</artifactId>
+        <version>5.3.1</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
-<dependency>
-    <groupId>org.apache.httpcomponents.client5</groupId>
-    <artifactId>httpclient5</artifactId>
-    <version>5.3.1</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+    ```
+  </TabItem>
 </Tabs>
 
-## 初始化
+## 初始化 \{#initialization\}
 
 连接 URL 的格式为：`protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`，例如：
 
@@ -93,8 +86,7 @@ ClickHouseNodes servers = ClickHouseNodes.of(
     + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
 ```
 
-
-## 查询 API
+## 查询 API \{#query-api\}
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -108,8 +100,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-
-## 流式查询 API
+## 流式查询 API \{#streaming-query-api\}
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -129,8 +120,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 
 请参阅 [完整代码示例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73)，位于该 [代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client) 中。
 
-
-## 写入 API
+## 写入 API \{#insert-api\}
 
 ```java showLineNumbers
 
@@ -153,10 +143,9 @@ RowBinary 格式的说明请参见其[页面](/interfaces/formats/RowBinaryWithN
 
 这是一个[代码示例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)。
 
-
 ## 功能特性 \{#features\}
 
-### 压缩
+### 压缩 \{#compression\}
 
 客户端默认使用 LZ4 压缩，这需要引入以下依赖：
 
@@ -203,8 +192,7 @@ ClickHouseClient client = ClickHouseClient.builder()
 
 请参阅[压缩文档](/data-compression/compression-modes)，以进一步了解不同的压缩选项。
 
-
-### 多个查询
+### 多个查询 \{#multiple-queries\}
 
 在同一会话中，于工作线程中依次执行多个查询：
 
@@ -220,8 +208,7 @@ CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.sen
 List<ClickHouseResponseSummary> results = future.get();
 ```
 
-
-### 命名参数
+### 命名参数 \{#named-parameters\}
 
 你可以通过参数名称来传递参数，而不必只依赖它们在参数列表中的位置。可以使用 `params` 函数来实现这一功能。
 
@@ -271,8 +258,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 其他类型，例如 `Integer`、`UUID`、`Array` 和 `Enum`，会在 `params` 中自动转换。
 :::
 
-
-## 节点发现
+## 节点发现 \{#node-discovery\}
 
 Java 客户端提供了自动发现 ClickHouse 节点的功能。自动发现默认处于禁用状态。若要手动启用，请将 `auto_discovery` 设置为 `true`：
 
@@ -296,7 +282,6 @@ jdbc:ch://my-server/system?auto_discovery=true
 | node&#95;discovery&#95;interval | `0`     | 节点发现的时间间隔（毫秒），为零或负值表示只进行一次发现。                    |
 | node&#95;discovery&#95;limit    | `100`   | 单次最多可发现的节点数量，为零或负值表示不限制。                         |
 
-
 ### Load Balancing \{#load-balancing\}
 
 Java 客户端会根据负载均衡策略选择一个 ClickHouse 节点来发送请求。一般来说，负载均衡策略负责以下事项：
@@ -309,12 +294,12 @@ Java 客户端会根据负载均衡策略选择一个 ClickHouse 节点来发送
 
 | Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| load_balancing_policy | `""`                                      | 负载均衡策略可以是以下之一：<li>`firstAlive` - 请求会被发送到托管节点列表中第一个健康节点</li><li>`random` - 请求会被发送到托管节点列表中的一个随机节点</li><li>`roundRobin` - 请求会依次轮流发送到托管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完全限定类名 - 自定义负载均衡策略</li>如果未指定，则请求会被发送到托管节点列表中的第一个节点 |
-| load_balancing_tags   | `""`                                      | 用于筛选节点的负载均衡标签。请求只会发送到具有指定标签的节点                                                                                                                                                                                                                                                                                                                                                                                                      |
-| health_check_interval | `0`                                       | 健康检查间隔（毫秒），零或负值表示仅检查一次。                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | 健康检查方式，可以是以下之一：<li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过执行 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 基于协议的检查方式，一般更快</li>                                                                                                                                                                                                                                                                                          |
-| node_check_interval   | `0`                                       | 节点检查间隔（毫秒），负数将视为零。如果自上次检查以来已经过了指定时间，则会检查该节点状态。<br/>`health_check_interval` 与 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，用于检查节点列表（全部或仅故障节点）的状态，而 `node_check_interval` 指定的是针对某个特定节点，自上次检查以来所经过的时间间隔                |
-| check_all_nodes       | `false`                                   | 是否对所有节点执行健康检查，而不仅仅是对故障节点执行检查。                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| load&#95;balancing&#95;policy | `""`                                      | 负载均衡策略可以是以下之一：<li>`firstAlive` - 请求会被发送到托管节点列表中第一个健康节点</li><li>`random` - 请求会被发送到托管节点列表中的一个随机节点</li><li>`roundRobin` - 请求会依次轮流发送到托管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完全限定类名 - 自定义负载均衡策略</li>如果未指定，则请求会被发送到托管节点列表中的第一个节点 |
+| load&#95;balancing&#95;tags   | `""`                                      | 用于筛选节点的负载均衡标签。请求只会发送到具有指定标签的节点                                                                                                                                                                                                                                                                                                                                                                                                      |
+| health&#95;check&#95;interval | `0`                                       | 健康检查间隔（毫秒），零或负值表示仅检查一次。                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | 健康检查方式，可以是以下之一：<li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过执行 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 基于协议的检查方式，一般更快</li>                                                                                                                                                                                                                                                                                          |
+| node&#95;check&#95;interval   | `0`                                       | 节点检查间隔（毫秒），负数将视为零。如果自上次检查以来已经过了指定时间，则会检查该节点状态。<br />`health_check_interval` 与 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，用于检查节点列表（全部或仅故障节点）的状态，而 `node_check_interval` 指定的是针对某个特定节点，自上次检查以来所经过的时间间隔                |
+| check&#95;all&#95;nodes       | `false`                                   | 是否对所有节点执行健康检查，而不仅仅是对故障节点执行检查。                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### 故障切换和重试 \{#failover-and-retry\}
 
@@ -324,21 +309,20 @@ Java 客户端提供了配置选项，用于为失败的查询设置故障切换
 |-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | failover                | `0`     | 单个请求允许发生故障切换的最大次数。零或负值表示不进行故障切换。故障切换会根据负载均衡策略，将失败的请求发送到其他节点，以从故障中恢复。 |
 | retry                   | `0`     | 单个请求允许发生重试的最大次数。零或负值表示不进行重试。仅当 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时，才会向同一节点重试该请求。                               |
-| repeat_on_session_lock  | `true`  | 当会话被锁定时，是否在超时之前（依据 `session_timeout` 或 `connect_timeout`）重复执行请求。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会重复执行该失败请求。               |
+| repeat&#95;on&#95;session&#95;lock  | `true`  | 当会话被锁定时，是否在超时之前（依据 `session_timeout` 或 `connect_timeout`）重复执行请求。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会重复执行该失败请求。               |
 
 ### 添加自定义 HTTP 头 \{#adding-custom-http-headers\}
 
 Java 客户端支持使用 HTTP/S 传输层，从而可以在请求中添加自定义 HTTP 头。
 我们应使用 `custom_http_headers` 属性，多个头需要用 `,` 分隔，头部键和值之间使用 `=` 分隔。
 
-## Java 客户端支持
+## Java 客户端支持 \{#java-client-support\}
 
 ```java
 options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
 ```
 
-
-## JDBC 驱动程序
+## JDBC 驱动程序 \{#jdbc-driver\}
 
 ```java
 properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");

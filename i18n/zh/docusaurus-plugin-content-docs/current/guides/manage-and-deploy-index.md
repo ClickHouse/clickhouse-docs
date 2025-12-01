@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['部署', '管理', '管理与维护', '运维', '指南']
 ---
 
-# 管理与部署
+# 管理与部署 {#manage-and-deploy}
 
 本节包含以下主题：
 
@@ -14,7 +14,7 @@ keywords: ['部署', '管理', '管理与维护', '运维', '指南']
 |-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | [Deployment and Scaling](/deployment-guides/index)                                                 | 基于 ClickHouse 支持与服务团队向 ClickHouse 用户提供的建议编写的可行部署示例。 |
 | [Separation of Storage and Compute](/guides/separation-storage-compute)                       | 介绍如何使用 ClickHouse 和 S3 实现存储与计算分离架构的指南。                |
-| [Sizing and hardware recommendations'](/guides/sizing-and-hardware-recommendations)            | 概述针对开源用户在硬件、计算、内存和磁盘配置方面的一般性建议的指南。      |
+| [Sizing and hardware recommendations&#39;](/guides/sizing-and-hardware-recommendations)            | 概述针对开源用户在硬件、计算、内存和磁盘配置方面的一般性建议的指南。      |
 | [Configuring ClickHouse Keeper](/guides/sre/keeper/clickhouse-keeper)                         | 有关如何配置 ClickHouse Keeper 的信息和示例。                                                                   |
 | [Network ports](/guides/sre/network-ports)                                                    | ClickHouse 使用的网络端口列表。                                                                                         |
 | [Re-balancing Shards](/guides/sre/scaling-clusters)                                           | 关于重新平衡分片的建议。                                                                                           |

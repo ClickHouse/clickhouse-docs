@@ -77,7 +77,7 @@ doc_type: 'reference'
 
 各クエリとともに送信可能なその他の ClickHouse 設定については、[ClickHouse のドキュメント](/operations/settings/settings.md) を参照してください。
 
-### クライアント作成の例
+### クライアント作成の例 {#client-creation-examples}
 
 * パラメータを指定しない場合、ClickHouse Connect クライアントは `localhost` のデフォルト HTTP ポートに、デフォルトユーザーでパスワードなしの状態で接続します。
 
@@ -86,7 +86,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 print(client.server_version)
-# 出力: '22.10.1.98'
+# 出力: '22.10.1.98' {#output-2210198}
 ```
 
 * HTTPS で保護された外部 ClickHouse サーバーへの接続
@@ -96,7 +96,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='play.clickhouse.com', secure=True, port=443, user='play', password='clickhouse')
 print(client.command('SELECT timezone()'))
-# 出力: 'Etc/UTC'
+# 出力: 'Etc/UTC' {#output-etcutc}
 ```
 
 * セッション ID やその他のカスタム接続パラメータ、ClickHouse の設定を指定して接続する。
@@ -115,7 +115,7 @@ client = clickhouse_connect.get_client(
     settings={'distributed_ddl_task_timeout':300},
 )
 print(client.database)
-# 出力: 'github'
+# 出力: 'github' {#output-github}
 ```
 
 
@@ -130,28 +130,28 @@ ClickHouse Connect クライアントの作成は、接続の確立、サーバ�
 - **適切にクリーンアップする**: シャットダウン時には必ずクライアントをクローズし、コネクションプールのリソースを解放する
 - **可能な限り共有する**: 1 つのクライアントで、そのコネクションプールを通じて多数の同時クエリを処理できる（スレッド処理に関する注意点は以下を参照）
 
-### 基本パターン
+### 基本パターン {#basic-patterns}
 
 **✅ 良い例: 単一のクライアントを再利用する**
 
 ```python
 import clickhouse_connect
 
-# 起動時に一度作成
+# 起動時に一度作成 {#create-once-at-startup}
 client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
 
-# すべてのクエリで再利用
+# すべてのクエリで再利用 {#reuse-for-all-queries}
 for i in range(1000):
     result = client.query('SELECT count() FROM users')
 
-# シャットダウン時にクローズ
+# シャットダウン時にクローズ {#close-on-shutdown}
 client.close()
 ```
 
 **❌ 悪い例: クライアントを毎回新規作成する**
 
 ```python
-# 悪い例: 1000個のクライアントを作成し、高コストな初期化オーバーヘッドが発生
+# 悪い例: 1000個のクライアントを作成し、高コストな初期化オーバーヘッドが発生 {#bad-creates-1000-clients-with-expensive-initialization-overhead}
 for i in range(1000):
     client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
     result = client.query('SELECT count() FROM users')
@@ -159,7 +159,7 @@ for i in range(1000):
 ```
 
 
-### マルチスレッドアプリケーション
+### マルチスレッドアプリケーション {#multi-threaded-applications}
 
 :::warning
 クライアントインスタンスは、セッション ID を使用している場合は**スレッドセーフではありません**。デフォルトでは、クライアントには自動生成されたセッション ID が付与されており、同じセッション内でクエリを同時に実行すると `ProgrammingError` が発生します。
@@ -171,7 +171,7 @@ for i in range(1000):
 import clickhouse_connect
 import threading
 
-# オプション1: セッションを無効化（共有クライアント使用時に推奨）
+# オプション1: セッションを無効化（共有クライアント使用時に推奨） {#option-1-disable-sessions-recommended-for-shared-clients}
 client = clickhouse_connect.get_client(
     host='my-host',
     username='default',
@@ -192,17 +192,17 @@ for t in threads:
     t.join()
 
 client.close()
-# 出力:
-# Thread 0: 0
-# Thread 7: 7
-# Thread 1: 1
-# Thread 9: 9
-# Thread 4: 4
-# Thread 2: 2
-# Thread 8: 8
-# Thread 5: 5
-# Thread 6: 6
-# Thread 3: 3
+# 出力: {#output}
+# Thread 0: 0 {#thread-0-0}
+# Thread 7: 7 {#thread-7-7}
+# Thread 1: 1 {#thread-1-1}
+# Thread 9: 9 {#thread-9-9}
+# Thread 4: 4 {#thread-4-4}
+# Thread 2: 2 {#thread-2-2}
+# Thread 8: 8 {#thread-8-8}
+# Thread 5: 5 {#thread-5-5}
+# Thread 6: 6 {#thread-6-6}
+# Thread 3: 3 {#thread-3-3}
 ```
 
 **セッションの代替手段:** セッションが必要な場合（例: 一時テーブル用）、スレッドごとに個別のクライアントを作成してください。
@@ -217,7 +217,7 @@ def worker(thread_id):
 ```
 
 
-### 適切なクリーンアップ
+### 適切なクリーンアップ {#proper-cleanup}
 
 シャットダウン時には必ずクライアントを閉じてください。`client.close()` は、クライアントが自身のプールマネージャーを所有している場合（たとえばカスタム TLS/プロキシオプションを指定して作成した場合）にのみ、クライアントを解放し、プールされた HTTP 接続を閉じます。デフォルトの共有プールを使用している場合は、`client.close_connections()` を使用してソケットを明示的に閉じてください。そうしない場合でも、接続はアイドル時間の経過およびプロセス終了時に自動的にクリーンアップされます。
 
@@ -255,7 +255,7 @@ with clickhouse_connect.get_client(host='my-host', username='default', password=
 
 ClickHouse Connect クライアントの `query*` および `command` メソッドは、Python の式を ClickHouse の値の式にバインドするために使用される、オプションの `parameters` キーワード引数を受け取ります。2 種類のバインド方式が利用できます。
 
-#### サーバーサイドバインディング
+#### サーバーサイドバインディング {#server-side-binding}
 
 ClickHouse は、ほとんどのクエリ値に対して [サーバーサイドバインディング](/interfaces/cli.md#cli-queries-with-parameters) をサポートしており、バインドされた値はクエリとは別に HTTP クエリパラメータとして送信されます。ClickHouse Connect は、`{<name>:<datatype>}` 形式のバインディング式を検出すると、適切なクエリパラメータを追加します。サーバーサイドバインディングでは、`parameters` 引数には Python の辞書型を指定します。
 
@@ -284,7 +284,7 @@ WHERE date >= '2022-10-01 15:20:05'
 :::
 
 
-#### クライアントサイドバインディング
+#### クライアントサイドバインディング {#client-side-binding}
 
 ClickHouse Connect はクライアントサイドでのパラメータバインディングにも対応しており、テンプレート化された SQL クエリを生成する際に、より柔軟にクエリを生成できます。クライアントサイドバインディングでは、`parameters` 引数は辞書またはシーケンスである必要があります。クライアントサイドバインディングでは、パラメータ置換に Python の [&quot;printf&quot; 形式](https://docs.python.org/3/library/stdtypes.html#old-string-formatting)の文字列フォーマットを使用します。
 
@@ -349,7 +349,7 @@ DateTime64 引数（サブ秒精度を持つ ClickHouse の型）をバインド
 :::
 
 
-### Settings 引数
+### Settings 引数 {#settings-argument-1}
 
 すべての主要な ClickHouse Connect Client の「insert」および「select」メソッドは、指定した SQL ステートメントに対して ClickHouse サーバーの [ユーザー設定](/operations/settings/settings.md) を渡すための、省略可能な `settings` キーワード引数を受け取ります。`settings` 引数は辞書型である必要があります。各要素は ClickHouse の設定名と、その設定に対応する値です。値は、サーバーにクエリパラメータとして送信される際に文字列へ変換される点に注意してください。
 
@@ -380,69 +380,69 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 
 ### コマンド例 {#command-examples}
 
-#### DDL ステートメント
+#### DDL ステートメント {#ddl-statements}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# テーブルを作成する
+# テーブルを作成する {#create-a-table}
 result = client.command("CREATE TABLE test_command (col_1 String, col_2 DateTime) ENGINE MergeTree ORDER BY tuple()")
 print(result)  # query_id を含む QuerySummary を返す
 
-# テーブル定義を表示する
+# テーブル定義を表示する {#show-table-definition}
 result = client.command("SHOW CREATE TABLE test_command")
 print(result)
-# 出力:
-# CREATE TABLE default.test_command
+# 出力: {#output}
+# CREATE TABLE default.test_command {#create-table-defaulttest_command}
 # (
-#     `col_1` String,
-#     `col_2` DateTime
+#     `col_1` String, {#col_1-string}
+#     `col_2` DateTime {#col_2-datetime}
 # )
-# ENGINE = MergeTree
-# ORDER BY tuple()
-# SETTINGS index_granularity = 8192
+# ENGINE = MergeTree {#engine-mergetree}
+# ORDER BY tuple() {#order-by-tuple}
+# SETTINGS index_granularity = 8192 {#settings-index_granularity-8192}
 
-# テーブルを削除する
+# テーブルを削除する {#drop-table}
 client.command("DROP TABLE test_command")
 ```
 
 
-#### 単一値を返すシンプルなクエリ
+#### 単一値を返すシンプルなクエリ {#simple-queries-returning-single-values}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 単一値の結果
+# 単一値の結果 {#single-value-result}
 count = client.command("SELECT count() FROM system.tables")
 print(count)
-# 出力: 151
+# 出力: 151 {#output-151}
 
-# サーバーバージョン
+# サーバーバージョン {#server-version}
 version = client.command("SELECT version()")
 print(version)
-# 出力: "25.8.2.29"
+# 出力: "25.8.2.29" {#output-258229}
 ```
 
 
-#### パラメーター付きコマンド
+#### パラメーター付きコマンド {#commands-with-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クライアント側パラメータを使用
+# クライアント側パラメータを使用 {#using-client-side-parameters}
 table_name = "system"
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = %(db)s",
     parameters={"db": table_name}
 )
 
-# サーバー側パラメータを使用
+# サーバー側パラメータを使用 {#using-server-side-parameters}
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = {db:String}",
     parameters={"db": "system"}
@@ -450,14 +450,14 @@ result = client.command(
 ```
 
 
-#### 設定付きのコマンド
+#### 設定付きのコマンド {#commands-with-settings}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 特定の設定でコマンドを実行する
+# 特定の設定でコマンドを実行する {#execute-command-with-specific-settings}
 result = client.command(
     "OPTIMIZE TABLE large_table FINAL",
     settings={"optimize_throw_if_noop": 1}
@@ -487,33 +487,33 @@ result = client.command(
 
 ### クエリ例 {#query-examples}
 
-#### 基本クエリ
+#### 基本クエリ {#basic-query}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# シンプルなSELECTクエリ
+# シンプルなSELECTクエリ {#simple-select-query}
 result = client.query("SELECT name, database FROM system.tables LIMIT 3")
 
-# 結果を行として取得
+# 結果を行として取得 {#access-results-as-rows}
 for row in result.result_rows:
     print(row)
-# 出力:
-# ('CHARACTER_SETS', 'INFORMATION_SCHEMA')
-# ('COLLATIONS', 'INFORMATION_SCHEMA')
-# ('COLUMNS', 'INFORMATION_SCHEMA')
+# 出力: {#output}
+# ('CHARACTER_SETS', 'INFORMATION_SCHEMA') {#character_sets-information_schema}
+# ('COLLATIONS', 'INFORMATION_SCHEMA') {#collations-information_schema}
+# ('COLUMNS', 'INFORMATION_SCHEMA') {#columns-information_schema}
 
-# カラム名と型を取得
+# カラム名と型を取得 {#access-column-names-and-types}
 print(result.column_names)
-# 出力: ("name", "database")
+# 出力: ("name", "database") {#output-name-database}
 print([col_type.name for col_type in result.column_types])
-# 出力: ['String', 'String']
+# 出力: ['String', 'String'] {#output-string-string}
 ```
 
 
-#### クエリ結果へのアクセス
+#### クエリ結果へのアクセス {#accessing-query-results}
 
 ```python
 import clickhouse_connect
@@ -522,59 +522,59 @@ client = clickhouse_connect.get_client()
 
 result = client.query("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
 
-# 行指向アクセス(デフォルト)
+# 行指向アクセス(デフォルト) {#row-oriented-access-default}
 print(result.result_rows)
-# 出力: [[0, "0"], [1, "1"], [2, "2"]]
+# 出力: [[0, "0"], [1, "1"], [2, "2"]] {#output-0-0-1-1-2-2}
 
-# 列指向アクセス
+# 列指向アクセス {#column-oriented-access}
 print(result.result_columns)
-# 出力: [[0, 1, 2], ["0", "1", "2"]]
+# 出力: [[0, 1, 2], ["0", "1", "2"]] {#output-0-1-2-0-1-2}
 
-# 名前付き結果(辞書のリスト)
+# 名前付き結果(辞書のリスト) {#named-results-list-of-dictionaries}
 for row_dict in result.named_results():
     print(row_dict)
-# 出力: 
-# {"number": 0, "str": "0"}
-# {"number": 1, "str": "1"}
-# {"number": 2, "str": "2"}
+# 出力:  {#output}
+# {"number": 0, "str": "0"} {#number-0-str-0}
+# {"number": 1, "str": "1"} {#number-1-str-1}
+# {"number": 2, "str": "2"} {#number-2-str-2}
 
-# 辞書形式で最初の行を取得
+# 辞書形式で最初の行を取得 {#first-row-as-dictionary}
 print(result.first_item)
-# 出力: {"number": 0, "str": "0"}
+# 出力: {"number": 0, "str": "0"} {#output-number-0-str-0}
 
-# タプル形式で最初の行を取得
+# タプル形式で最初の行を取得 {#first-row-as-tuple}
 print(result.first_row)
-# 出力: (0, "0")
+# 出力: (0, "0") {#output-0-0}
 ```
 
 
-#### クライアントサイドパラメータを使用したクエリ
+#### クライアントサイドパラメータを使用したクエリ {#query-with-client-side-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 辞書パラメータの使用（printf形式）
+# 辞書パラメータの使用（printf形式） {#using-dictionary-parameters-printf-style}
 query = "SELECT * FROM system.tables WHERE database = %(db)s AND name LIKE %(pattern)s"
 parameters = {"db": "system", "pattern": "%query%"}
 result = client.query(query, parameters=parameters)
 
-# タプルパラメータの使用
+# タプルパラメータの使用 {#using-tuple-parameters}
 query = "SELECT * FROM system.tables WHERE database = %s LIMIT %s"
 parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
 ```
 
 
-#### サーバー側パラメータを使ったクエリ
+#### サーバー側パラメータを使ったクエリ {#query-with-server-side-parameters}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# サーバーサイドバインディング(より安全で、SELECTクエリのパフォーマンスが向上)
+# サーバーサイドバインディング(より安全で、SELECTクエリのパフォーマンスが向上) {#server-side-binding-more-secure-better-performance-for-select-queries}
 query = "SELECT * FROM system.tables WHERE database = {db:String} AND name = {tbl:String}"
 parameters = {"db": "system", "tbl": "query_log"}
 
@@ -582,14 +582,14 @@ result = client.query(query, parameters=parameters)
 ```
 
 
-#### 設定付きクエリの実行
+#### 設定付きクエリの実行 {#query-with-settings}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリと一緒にClickHouse設定を渡す
+# クエリと一緒にClickHouse設定を渡す {#pass-clickhouse-settings-with-the-query}
 result = client.query(
     "SELECT sum(number) FROM numbers(1000000)",
     settings={
@@ -658,14 +658,14 @@ NumPy 配列は有効な「Sequence of Sequences」であり、メインの `ins
 
 以下の例では、スキーマ `(id UInt32, name String, age UInt8)` を持つ既存のテーブル `users` が存在すると仮定します。
 
-#### 基本的な行指向挿入
+#### 基本的な行指向挿入 {#basic-row-oriented-insert}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 行指向データ: 各内部リストが1行に対応
+# 行指向データ: 各内部リストが1行に対応 {#row-oriented-data-each-inner-list-is-a-row}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -676,14 +676,14 @@ client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
 
-#### カラム指向の挿入
+#### カラム指向の挿入 {#column-oriented-insert}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# カラム指向データ: 各内部リストが1つのカラムに対応
+# カラム指向データ: 各内部リストが1つのカラムに対応 {#column-oriented-data-each-inner-list-is-a-column}
 data = [
     [1, 2, 3],  # idカラム
     ["Alice", "Bob", "Joe"],  # nameカラム
@@ -694,14 +694,14 @@ client.insert("users", data, column_names=["id", "name", "age"], column_oriented
 ```
 
 
-#### 明示的な列型指定による INSERT
+#### 明示的な列型指定による INSERT {#insert-with-explicit-column-types}
 
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# サーバーへのDESCRIBEクエリを回避する場合に有用
+# サーバーへのDESCRIBEクエリを回避する場合に有用 {#useful-when-you-want-to-avoid-a-describe-query-to-the-server}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -717,7 +717,7 @@ client.insert(
 ```
 
 
-#### 特定のデータベースに挿入する
+#### 特定のデータベースに挿入する {#insert-into-specific-database}
 
 ```python
 import clickhouse_connect
@@ -729,7 +729,7 @@ data = [
     [2, "Bob", 30],
 ]
 
-# 特定のデータベースのテーブルにデータを挿入
+# 特定のデータベースのテーブルにデータを挿入 {#insert-into-a-table-in-a-specific-database}
 client.insert(
     "users",
     data,

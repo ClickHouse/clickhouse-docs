@@ -14,7 +14,7 @@ ClickHouse поддерживает геометрические типы дан
 
 
 
-## Point
+## Point {#point}
 
 `Point` задаётся своими координатами X и Y, которые хранятся как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
 
@@ -37,7 +37,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 ```
 
 
-## Кольцо
+## Кольцо {#ring}
 
 `Ring` — это простой многоугольник без отверстий, хранящийся в виде массива точек: [Array](array.md)([Point](#point)).
 
@@ -60,7 +60,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 ```
 
 
-## LineString
+## LineString {#linestring}
 
 `LineString` — это линия, представленная в виде массива точек: [Array](array.md)([Point](#point)).
 
@@ -83,7 +83,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 ```
 
 
-## MultiLineString
+## MultiLineString {#multilinestring}
 
 `MultiLineString` — это несколько линий, хранящихся в виде массива `LineString`: [Array](array.md)([LineString](#linestring)).
 
@@ -106,7 +106,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
 
 
-## Многоугольник
+## Многоугольник {#polygon}
 
 `Polygon` — многоугольник с отверстиями, представленный в виде массива колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива задаёт внешний контур многоугольника, а все последующие элементы — его отверстия.
 
@@ -129,7 +129,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
 
 
-## MultiPolygon
+## MultiPolygon {#multipolygon}
 
 `MultiPolygon` состоит из нескольких полигонов и хранится как массив полигонов: [Array](array.md)([Polygon](#polygon)).
 
@@ -152,7 +152,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
 
 
-## Геометрия
+## Геометрия {#geometry}
 
 `Geometry` — это общий тип для всех перечисленных выше типов. Он эквивалентен типу Variant, объединяющему эти типы.
 

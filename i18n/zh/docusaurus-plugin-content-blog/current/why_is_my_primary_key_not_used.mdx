@@ -10,12 +10,11 @@ keywords: ['主键']
 
 {/* 截断 */}
 
-
 ## 检查你的主键 \{#checking-your-primary-key\}
 
 用户可能会遇到查询比预期更慢的情况，并认为自己正在按主键进行排序或过滤。本文将介绍如何确认主键是否真正被使用，并重点说明其未被使用的一些常见原因。
 
-## 创建表
+## 创建表 \{#create-table\}
 
 请看下面这个简单的表：
 
@@ -31,8 +30,7 @@ ORDER BY (code, toUnixTimestamp(timestamp))
 
 请注意，我们的排序键中的第二个字段是 `toUnixTimestamp(timestamp)`。
 
-
-## 填充数据
+## 填充数据 \{#populate-data\}
 
 向该表中插入 1 亿行数据：
 
@@ -54,8 +52,7 @@ FROM logs
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-
-## 基本过滤
+## 基本过滤 \{#basic-filtering\}
 
 如果我们按代码进行过滤，可以在输出中看到扫描的行数为 `49.15 thousand`。注意，这只是总共 1 亿行中的一部分。
 
@@ -111,8 +108,7 @@ Granules 是 ClickHouse 中的数据处理单元，每个 Granule 通常包含 8
 在排序键（ordering key）中，对位置更靠后的键进行过滤，其效率不如对元组中更靠前的键进行过滤。原因详见 [此处](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
 :::
 
-
-## 多键过滤
+## 多键过滤 \{#multi-key-filtering\}
 
 假设我们根据 `code` 和 `timestamp` 进行过滤：
 
@@ -155,8 +151,7 @@ WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= 
 
 在这种情况下，两个排序键都参与了行过滤，因此只需读取 `87` 个数据块。
 
-
-## 在排序中使用键
+## 在排序中使用键 \{#using-keys-in-sorting\}
 
 ClickHouse 也可以利用排序键来实现高效排序。具体来说：
 
@@ -222,7 +217,6 @@ LIMIT 10
 ```
 
 此处的 `MergeTreeSelect(pool: ReadPool, algorithm: Thread)` 并不表示启用了该优化，而只是一次标准读取。其原因在于我们的表排序键使用的是 `toUnixTimestamp(Timestamp)`，而**不是** `timestamp`。修正这一不一致即可解决问题：
-
 
 ```sql
 EXPLAIN PIPELINE

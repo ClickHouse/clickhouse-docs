@@ -6,7 +6,7 @@ title: 'Резервное копирование и восстановлени�
 doc_type: 'guide'
 ---
 
-import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
+import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
 
 # Резервное копирование и восстановление в/из Azure Blob Storage {#backup-to-azure-blob-storage}
@@ -19,7 +19,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
 
-## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage
+## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
 Чтобы записывать резервные копии в контейнер AzureBlobStorage, вам необходима следующая информация:
 

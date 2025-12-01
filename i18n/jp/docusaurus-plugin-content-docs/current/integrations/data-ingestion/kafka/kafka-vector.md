@@ -8,10 +8,9 @@ doc_type: 'guide'
 keywords: ['kafka', 'vector', 'ログ収集', 'オブザーバビリティ', '連携']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-## Kafka と ClickHouse で Vector を使用する
+## Kafka と ClickHouse で Vector を使用する {#using-vector-with-kafka-and-clickhouse}
 
 Vector はベンダー非依存のデータパイプラインであり、Kafka からデータを読み取り、ClickHouse にイベントを送信できます。
 
@@ -23,15 +22,15 @@ Vector はデータの[変換](https://vector.dev/docs/reference/configuration/t
 
 現在の ClickHouse sink の実装では HTTP インターフェースを利用している点に注意してください。ClickHouse sink は現時点では JSON スキーマの利用をサポートしていません。データはプレーンな JSON 形式、もしくは文字列として Kafka に送信される必要があります。
 
-### ライセンス
+### ライセンス {#license}
 
 Vector は [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE) の下で配布されています。
 
-### 接続情報を収集する
+### 接続情報を収集する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 手順
+### 手順 {#steps}
 
 1. Kafka に `github` トピックを作成し、[GitHub データセット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)を投入します。
 
@@ -45,7 +44,6 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 
 ```sql
 ```
-
 
 CREATE TABLE github
 (
@@ -110,7 +108,6 @@ batch.timeout_secs = 1
 ````
 
 この設定および Vector の動作について、いくつか重要な注意点があります。
-
 
 * この例は Confluent Cloud に対してテストされています。そのため、`sasl.*` および `ssl.enabled` セキュリティオプションは、セルフマネージドなケースでは適切でない可能性があります。
 * 設定パラメータ `bootstrap_servers` にはプロトコルのプレフィックスは不要です（例: `pkc-2396y.us-east-1.aws.confluent.cloud:9092`）。

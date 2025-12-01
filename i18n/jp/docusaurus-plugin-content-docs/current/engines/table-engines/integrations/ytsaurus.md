@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# YTsaurus テーブルエンジン
+# YTsaurus テーブルエンジン {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
@@ -21,7 +21,7 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスター�
 
 
 
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスター�
 * `oauth_token` — OAuth トークン。
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 YTsaurus テーブルを作成するクエリの例です。
 

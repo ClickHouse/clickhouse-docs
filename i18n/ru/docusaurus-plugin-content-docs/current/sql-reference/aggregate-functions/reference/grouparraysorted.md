@@ -6,7 +6,7 @@ title: 'groupArraySorted'
 doc_type: 'reference'
 ---
 
-# groupArraySorted
+# groupArraySorted {#grouparraysorted}
 
 Возвращает массив из первых N элементов в порядке возрастания.
 

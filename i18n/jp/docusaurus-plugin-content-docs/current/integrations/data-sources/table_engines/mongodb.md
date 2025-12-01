@@ -8,6 +8,6 @@ doc_type: 'reference'
 keywords: ['mongodb', 'nosql', '統合', 'データソース', 'ドキュメントデータベース']
 ---
 
-import MongoDBEngine from '@site/docs/engines/table-engines/integrations/mongodb.md';
+import MongoDBEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/mongodb.md';
 
 <MongoDBEngine />

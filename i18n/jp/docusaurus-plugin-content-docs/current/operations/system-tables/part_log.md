@@ -6,14 +6,13 @@ title: 'system.part_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.part&#95;log {#systempart&#95;log}
 
-# system.part_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-[part_log](/operations/server-configuration-parameters/settings#part_log) サーバー設定が指定されている場合にのみ、`system.part_log` テーブルが作成されます。
+[part&#95;log](/operations/server-configuration-parameters/settings#part_log) サーバー設定が指定されている場合にのみ、`system.part_log` テーブルが作成されます。
 
 このテーブルには、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブル内の [データパーツ](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) に対して発生した、追加やマージなどのイベントに関する情報が含まれます。
 

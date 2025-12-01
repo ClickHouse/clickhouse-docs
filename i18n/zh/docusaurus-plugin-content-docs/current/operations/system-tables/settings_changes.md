@@ -6,9 +6,7 @@ title: 'system.settings_changes'
 doc_type: 'reference'
 ---
 
-
-
-# system.settings&#95;changes
+# system.settings&#95;changes {#systemsettings&#95;changes}
 
 包含以前 ClickHouse 版本中设置更改的信息。
 

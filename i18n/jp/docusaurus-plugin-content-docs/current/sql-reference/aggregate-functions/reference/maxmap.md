@@ -6,7 +6,7 @@ title: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap
+# maxMap {#maxmap}
 
 `key` 配列で指定されたキーに基づいて、`value` 配列から最大値を計算します。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.projection_parts_columns
+# system.projection_parts_columns {#systemprojection_parts_columns}
 
 このテーブルには、MergeTree ファミリーに属するテーブルのプロジェクションパーツに含まれる列に関する情報が格納されます。
 

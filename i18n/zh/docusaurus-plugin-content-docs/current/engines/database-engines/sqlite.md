@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# SQLite
+# SQLite {#sqlite}
 
 用于连接 [SQLite](https://www.sqlite.org/index.html) 数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 与 SQLite 之间交换数据。
 
 
 
-## 创建数据库
+## 创建数据库 {#creating-a-database}
 
 ```sql
     CREATE DATABASE sqlite_database
@@ -46,7 +46,7 @@ SQLite 不需要服务管理（例如启动脚本）或基于 `GRANT` 和密码�
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 ClickHouse 中连接到 SQLite 的数据库：
 

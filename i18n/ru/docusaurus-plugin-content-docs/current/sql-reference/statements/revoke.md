@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Оператор REVOKE
+# Оператор REVOKE {#revoke-statement}
 
 Отзывает привилегии у пользователей или ролей.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 **Отмена привилегий для пользователей**
 
@@ -40,7 +40,7 @@ OTMENITЬ [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | 
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Предоставьте учётной записи пользователя `john` привилегию SELECT для всех баз данных, кроме базы данных `accounts`:
 

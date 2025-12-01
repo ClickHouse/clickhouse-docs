@@ -31,7 +31,7 @@ column_name QBit(element_type, dimension)
 * `dimension` – 各ベクトル内の要素数。
 
 
-## QBit の作成
+## QBit の作成 {#creating-qbit}
 
 テーブルの列を定義する際に `QBit` 型を使用します：
 
@@ -49,7 +49,7 @@ SELECT vec FROM test ORDER BY id;
 ```
 
 
-## QBit サブカラム
+## QBit サブカラム {#qbit-subcolumns}
 
 `QBit` は、格納されたベクトルの個々のビットプレーンにアクセスできるサブカラムアクセスパターンを実装しています。各ビット位置には `.N` 構文を使用してアクセスでき、`N` はビット位置を表します。
 

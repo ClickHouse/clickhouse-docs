@@ -6,9 +6,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialMovingAverage
+## exponentialMovingAverage {#exponentialmovingaverage}
 
 计算在指定时间段内数值的指数移动平均值。
 
@@ -97,7 +95,6 @@ FROM
 ```
 
 结果：
-
 
 ```text
 ┌─值────┬─时间─┬─round(exp_smooth, 3)─┬─条形图─────────────────────────────────────┐

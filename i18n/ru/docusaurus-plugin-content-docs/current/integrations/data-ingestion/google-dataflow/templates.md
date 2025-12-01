@@ -11,7 +11,7 @@ keywords: ['google dataflow', 'gcp', 'конвейер данных', 'шабл�
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Шаблоны Google Dataflow
+# Шаблоны Google Dataflow {#google-dataflow-templates}
 
 <ClickHouseSupportedBadge/>
 

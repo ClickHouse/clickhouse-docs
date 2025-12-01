@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# s3Cluster 表函数
+# s3Cluster 表函数 {#s3cluster-table-function}
 
 这是对 [s3](sql-reference/table-functions/s3.md) 表函数的扩展。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
@@ -57,7 +57,7 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 
 
-## 示例
+## 示例 {#examples}
 
 使用 `cluster_simple` 集群中的所有节点，查询 `/root/data/clickhouse` 和 `/root/data/database/` 目录中所有文件的数据：
 

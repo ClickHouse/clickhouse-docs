@@ -6,7 +6,7 @@ title: 'groupUniqArray'
 doc_type: 'reference'
 ---
 
-# groupUniqArray
+# groupUniqArray {#groupuniqarray}
 
 構文: `groupUniqArray(x)` または `groupUniqArray(max_size)(x)`
 

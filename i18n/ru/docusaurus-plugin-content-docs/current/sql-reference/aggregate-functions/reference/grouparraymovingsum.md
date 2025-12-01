@@ -6,7 +6,7 @@ title: 'groupArrayMovingSum'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingSum
+# groupArrayMovingSum {#grouparraymovingsum}
 
 Вычисляет скользящую сумму входных значений.
 

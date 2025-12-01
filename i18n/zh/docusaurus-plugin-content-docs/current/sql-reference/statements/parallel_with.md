@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# PARALLEL WITH 子句
+# PARALLEL WITH 子句 {#parallel-with-clause}
 
 允许并行执行多个语句。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 语句1 PARALLEL WITH 语句2 [PARALLEL WITH 语句3 ...]
@@ -26,7 +26,7 @@ doc_type: 'reference'
 在许多情况下，并行执行语句可能比按顺序执行相同的一组语句更快。例如，`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` 往往比 `statement1; statement2; statement3` 更快。
 
 
-## 示例
+## 示例 {#examples}
 
 并行创建两个表：
 

@@ -170,6 +170,7 @@ POST /query-endpoints/{queryEndpointId}/run
 |-----------|----------|-------------|---------|
 | `format` | No | Response format (supports all ClickHouse formats) | `?format=JSONEachRow` |
 | `param_:name` | No | Query variables when request body is a stream. Replace `:name` with your variable name | `?param_year=2024` |
+| `request_timeout` | No | Query timeout in milliseconds (default: 30000) | `?request_timeout=60000` |
 | `:clickhouse_setting` | No | Any supported [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
 #### Headers {#headers}

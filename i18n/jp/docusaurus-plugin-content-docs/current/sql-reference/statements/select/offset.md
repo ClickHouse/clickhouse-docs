@@ -51,8 +51,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 実際のオフセット値は、[offset](../../../operations/settings/settings.md#offset) 設定にも依存する場合があります。
 :::
 
-
-## 例
+## 例 {#examples}
 
 入力テーブル:
 

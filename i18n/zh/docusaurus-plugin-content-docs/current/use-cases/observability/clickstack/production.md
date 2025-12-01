@@ -18,7 +18,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 在生产环境中部署 ClickStack 时，为确保安全性、稳定性以及正确配置，还需要额外考虑一些事项。
 
 
-## 网络和端口安全
+## 网络和端口安全 {#network-security}
 
 默认情况下，Docker Compose 会在宿主机上暴露端口，使其可以从容器外部访问——即使启用了 `ufw`（Uncomplicated Firewall，简易防火墙）之类的工具也是如此。这是由于 Docker 的网络栈设计所致，如果不进行专门配置，它可以绕过主机级防火墙规则。
 
@@ -33,13 +33,13 @@ ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
   - "8080:8080"  # 仅在 API 需要时
-# 避免暴露内部端口，如 ClickHouse 8123 或 MongoDB 27017。
+# 避免暴露内部端口，如 ClickHouse 8123 或 MongoDB 27017。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 有关隔离容器和强化访问安全性的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
 
 
-## 会话密钥配置
+## 会话密钥配置 {#session-secret}
 
 在生产环境中，必须为 `EXPRESS_SESSION_SECRET` 环境变量设置一个强随机值，以保护会话数据并防止被篡改。
 

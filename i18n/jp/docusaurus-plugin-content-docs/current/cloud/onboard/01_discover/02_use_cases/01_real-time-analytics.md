@@ -16,7 +16,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
-## リアルタイム分析とは？
+## リアルタイム分析とは？ {#what-is-real-time-analytics}
 
 リアルタイム分析とは、データが生成されると同時にエンドユーザーや
 顧客にインサイトを提供するデータ処理を指します。これは、データをバッチとして収集し、

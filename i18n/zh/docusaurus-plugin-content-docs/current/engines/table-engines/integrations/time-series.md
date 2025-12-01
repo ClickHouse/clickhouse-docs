@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# TimeSeries 表引擎
+# TimeSeries 表引擎 {#timeseries-table-engine}
 
 <ExperimentalBadge />
 
@@ -31,7 +31,7 @@ metric_name2[...] = ...
 :::
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -42,7 +42,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 ```
 
 
-## 用法
+## 用法 {#usage}
 
 使用全部默认设置开始会更简单（允许在不指定列列表的情况下创建 `TimeSeries` 表）：
 
@@ -116,7 +116,7 @@ _metrics_ 表必须包含以下列：
 
 
 
-## 创建
+## 创建 {#creation}
 
 使用 `TimeSeries` 表引擎创建表有多种方式。
 最简单的语句如下：
@@ -201,7 +201,7 @@ ORDER BY metric_family_name
 ```
 
 
-## 调整列类型
+## 调整列类型 {#adjusting-column-types}
 
 在定义主表时，通过显式指定列类型，可以调整内部目标表中几乎任意列的类型。例如，
 
@@ -226,7 +226,7 @@ ORDER BY (id, timestamp)
 ```
 
 
-## `id` 列
+## `id` 列 {#id-column}
 
 `id` 列包含标识符，每个标识符是根据指标名称与标签的组合计算得到的。
 `id` 列的 DEFAULT 表达式是用于计算这些标识符的表达式。
@@ -241,7 +241,7 @@ ENGINE=TimeSeries
 ```
 
 
-## `tags` 与 `all_tags` 列
+## `tags` 与 `all_tags` 列 {#tags-and-all-tags}
 
 有两列包含标签映射——`tags` 和 `all_tags`。在本例中它们含义相同，但在使用 `tags_to_columns` 设置项时，它们可能会不同。该设置项允许指定某个特定标签应存储在单独的列中，而不是作为映射存储在 `tags` 列中：
 
@@ -273,7 +273,7 @@ SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
 
-## 内部目标表的表引擎
+## 内部目标表的表引擎 {#inner-table-engines}
 
 默认情况下，内部目标表使用以下表引擎：
 
@@ -293,7 +293,7 @@ METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
 
-## 外部目标表
+## 外部目标表 {#external-target-tables}
 
 可以让 `TimeSeries` 表使用一个手动创建的表：
 

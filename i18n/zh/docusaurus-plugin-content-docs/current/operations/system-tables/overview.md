@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-## 系统表概览
+## 系统表概览 {#system-tables-introduction}
 
 系统表提供以下信息：
 
@@ -89,7 +89,7 @@ doc_type: 'reference'
 
 
 
-## ClickHouse Cloud 中的 system 表
+## ClickHouse Cloud 中的 system 表 {#system-tables-in-clickhouse-cloud}
 
 在 ClickHouse Cloud 中，system 表与在自托管部署中一样，为服务的状态和性能提供关键洞察。一些 system 表在整个集群范围内生效，尤其是那些从 Keeper 节点获取数据的表，这些节点负责管理分布式元数据。这些表反映了整个集群的状态，并且在各个节点上查询时其结果应当保持一致。例如，[`parts`](/operations/system-tables/parts) 在从任意节点查询时都应该是一致的：
 
@@ -149,7 +149,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 11 行结果，耗时 0.004 秒。
 ```
 
-### 跨多个版本查询
+### 跨多个版本查询 {#querying-multiple-versions}
 
 我们可以使用 [`merge`](/sql-reference/table-functions/merge) 函数对这些表进行跨表查询。例如，下面的查询会在每个 `query_log` 表中找出发送到目标节点的最新一次查询：
 
@@ -188,7 +188,7 @@ ORDER BY most_recent DESC
 
 重要的是,这些表仍然是**每个节点的本地表**。
 
-### 跨节点查询                         
+### 跨节点查询                          {#querying-across-nodes}
 
 要全面查看整个集群,用户可以结合使用 [`clusterAllReplicas`](/sql-reference/table-functions/cluster) 函数和 `merge` 函数。`clusterAllReplicas` 函数允许在"default"集群内的所有副本上查询系统表,将各节点的数据整合为统一的结果。与 `merge` 函数结合使用时,可以查询集群中特定表的所有系统数据。 
 
@@ -230,7 +230,7 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
 ````
 
-### 跨节点和版本查询
+### 跨节点和版本查询 {#querying-across-nodes-and-versions}
 
 由于系统表存在版本控制，这仍然无法反映集群中的完整数据。将上述方法与 `merge` 函数结合使用后，我们就能在指定日期范围内获得精确结果：
 

@@ -6,7 +6,7 @@ title: 'sumMapWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumMapWithOverflow
+# sumMapWithOverflow {#summapwithoverflow}
 
 `key` 配列で指定されたキーに従って、`value` 配列の値を集計します。結果として 2 つの配列からなるタプルを返します。1 つ目はソートされたキーの配列、2 つ目は対応するキーごとに合計された値の配列です。
 この関数は [sumMap](../reference/summap.md) 関数と異なり、オーバーフローを許容する形で加算を行います。すなわち、集計結果のデータ型は引数のデータ型と同じになります。
@@ -83,7 +83,6 @@ GROUP BY timeslot
 ```
 
 結果：
-
 
 ```text
    ┌────────────timeslot─┬─toTypeName(sumMap(statusMap.status, statusMap.requests))─┬─toTypeName(sumMapWithOverflow(statusMap.status, statusMap.requests))─┐

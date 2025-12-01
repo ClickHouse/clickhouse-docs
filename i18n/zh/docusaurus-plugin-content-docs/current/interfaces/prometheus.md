@@ -7,13 +7,9 @@ title: 'Prometheus 协议'
 doc_type: 'reference'
 ---
 
+# Prometheus 协议 {#prometheus-protocols}
 
-
-# Prometheus 协议
-
-
-
-## 暴露指标
+## 暴露指标 {#expose}
 
 :::note
 如果使用 ClickHouse Cloud，可以通过 [Prometheus Integration](/integrations/prometheus) 将指标暴露给 Prometheus。
@@ -76,8 +72,7 @@ ClickHouse 可以将自身的指标暴露出来，以供 Prometheus 抓取：
 curl 127.0.0.1:9363/metrics
 ```
 
-
-## Remote-write 协议
+## Remote-write 协议 {#remote-write}
 
 ClickHouse 支持 [remote-write](https://prometheus.io/docs/specs/remote_write_spec/) 协议。
 通过该协议接收的数据会被写入一个 [TimeSeries](/engines/table-engines/special/time_series) 表
@@ -108,8 +103,7 @@ Settings:
 | `table`                      | none    | 用于写入通过 `remote-write` 协议接收数据的 [TimeSeries](/engines/table-engines/special/time_series) 表名。该名称还可以选择性地包含数据库名称。 |
 | `database`                   | none    | 在 `table` 设置中未指定数据库名称时，此处指定 `table` 设置中所述表所在的数据库名称。                                                          |
 
-
-## 远程读取协议
+## 远程读取协议 {#remote-read}
 
 ClickHouse 支持 [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) 协议。
 数据从 [TimeSeries](/engines/table-engines/special/time_series) 表中读取，并通过该协议进行传输。
@@ -139,8 +133,7 @@ Settings:
 | `table`                      | none    | 通过 `remote-read` 协议发送数据时要读取数据的 [TimeSeries](/engines/table-engines/special/time_series) 表名。该名称还可以可选地包含数据库名称。 |
 | `database`                   | none    | 如果在 `table` 设置中未指定数据库名称，则此处为包含该表的数据库名称。                                                                      |
 
-
-## 多协议配置
+## 多协议配置 {#multiple-protocols}
 
 可以在同一个位置同时指定多个协议：
 

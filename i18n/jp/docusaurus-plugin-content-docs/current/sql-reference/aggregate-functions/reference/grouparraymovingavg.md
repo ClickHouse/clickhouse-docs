@@ -6,7 +6,7 @@ title: 'groupArrayMovingAvg'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingAvg
+# groupArrayMovingAvg {#grouparraymovingavg}
 
 入力値の移動平均を計算します。
 

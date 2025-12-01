@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用一个名为 `football.json` 的 JSON 文件，包含如下数据：
 
@@ -45,7 +45,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `JSONCompactColumns` 格式读取数据：
 

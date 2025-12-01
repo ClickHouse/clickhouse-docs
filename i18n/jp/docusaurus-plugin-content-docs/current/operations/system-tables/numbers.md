@@ -6,7 +6,7 @@ title: 'system.numbers'
 doc_type: 'reference'
 ---
 
-# system.numbers
+# system.numbers {#systemnumbers}
 
 このテーブルには、`number` という名前の単一の UInt64 列があり、0 から始まるほぼすべての自然数が含まれます。
 

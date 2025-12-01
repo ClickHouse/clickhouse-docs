@@ -10,9 +10,7 @@ doc_type: 'guide'
 [Apache Arrow](https://arrow.apache.org/) — это стандартизированный колоночный формат представления данных в памяти, который завоевал популярность в сообществе специалистов по данным.
 В этом руководстве мы рассмотрим, как выполнять запросы к Apache Arrow с помощью табличной функции `Python`.
 
-
-
-## Настройка
+## Настройка {#setup}
 
 Сначала создайте виртуальное окружение:
 
@@ -42,8 +40,7 @@ ipython
 
 Вы также можете использовать этот код в скрипте на Python или в вашем любимом ноутбуке (например, Jupyter).
 
-
-## Создание таблицы Apache Arrow из файла
+## Создание таблицы Apache Arrow из файла {#creating-an-apache-arrow-table-from-a-file}
 
 Сначала загрузим один из файлов Parquet из [набора данных Ookla](https://github.com/teamookla/ookla-open-data) с помощью [утилиты AWS CLI](https://aws.amazon.com/cli/):
 
@@ -99,8 +96,7 @@ arrow_table.shape
 (3864546, 11)
 ```
 
-
-## Выполнение запросов к Apache Arrow
+## Выполнение запросов к Apache Arrow {#querying-apache-arrow}
 
 Теперь давайте выполним запрос к таблице Apache Arrow из chDB.
 Сначала импортируем chDB:

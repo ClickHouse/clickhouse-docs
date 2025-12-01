@@ -10,12 +10,11 @@ keywords: ['logs level traces', 'clickhouse-client']
 
 {/* 省略 */}
 
-
 ## 问题 \{#question\}
 
 使用 ClickHouse Client 时，如何将针对多条语句产生的多行 `send_logs_level` 输出写入文件？
 
-## 答案
+## 答案 \{#answer\}
 
 * 创建一个包含这些语句的 SQL 文件，例如 `send_logs_level_example.sql`：
 
@@ -31,7 +30,6 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 * 示例结果：
-
 
 ```
 [c-azure-gk-72-server-tojnalg-0] 2024.08.13 21:31:28.437263 [ 1247 ] {4b347939-db0f-48f8-9550-1ccc7d591c44} <Debug> executeQuery: (from 71.56.215.107:47946) SET send_logs_level = 'trace'; (stage: Complete)
@@ -61,4 +59,4 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 参考链接：
-https://clickhouse.com/docs/operations/settings/settings#send_logs_level
+https://clickhouse.com/docs/operations/settings/settings#send&#95;logs&#95;level

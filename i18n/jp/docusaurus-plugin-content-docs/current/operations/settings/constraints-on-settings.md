@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 設定上の制約事項
+# 設定上の制約事項 {#constraints-on-settings}
 
 
 
@@ -19,7 +19,7 @@ ClickHouse における設定に対する「制約」とは、その設定に付
 
 
 
-## 制約の定義
+## 制約の定義 {#defining-constraints}
 
 設定に対する制約は、`user.xml` 設定ファイルの `profiles` セクションで定義できます。これにより、ユーザーが [`SET`](/sql-reference/statements/set) ステートメントを使用して一部の設定を変更できないようにします。
 
@@ -63,7 +63,7 @@ ClickHouse における設定に対する「制約」とは、その設定に付
 ユーザーが制約に違反しようとすると例外がスローされ、設定は変更されずにそのまま維持されます。
 
 
-## 制約の種類
+## 制約の種類 {#types-of-constraints}
 
 ClickHouse でサポートされている制約には、いくつかの種類があります。
 
@@ -104,7 +104,7 @@ ClickHouse でサポートされている制約には、いくつかの種類が
 
 
 
-## 読み取り専用モード
+## 読み取り専用モード {#read-only}
 
 読み取り専用モードは `readonly` 設定によって有効になります。これは
 `readonly` 制約タイプと混同しないでください。
@@ -113,7 +113,7 @@ ClickHouse でサポートされている制約には、いくつかの種類が
 * `readonly=1`: 読み取りクエリのみ許可され、`changeable_in_readonly` が設定されていない限り、設定を変更できません。
 * `readonly=2`: 読み取りクエリのみ許可されますが、`readonly` 設定自体を除き、その他の設定を変更できます。
 
-### 例
+### 例 {#example-read-only}
 
 `users.xml` に次の行が含まれているとします。
 
@@ -155,7 +155,7 @@ Code: 452, e.displayText() = DB::Exception: force_index_by_date は変更して�
 :::
 
 
-## MergeTree 設定に対する制約
+## MergeTree 設定に対する制約 {#constraints-on-merge-tree-settings}
 
 [MergeTree 設定](merge-tree-settings.md) に対して制約を設定できます。
 これらの制約は、MergeTree エンジンを使用するテーブルを作成するとき、
@@ -164,7 +164,7 @@ Code: 452, e.displayText() = DB::Exception: force_index_by_date は変更して�
 `<constraints>` セクション内で参照する場合は、
 MergeTree 設定名の前に `merge_tree_` プレフィックスを付ける必要があります。
 
-### 例
+### 例 {#example-mergetree}
 
 明示的に `storage_policy` を指定して新しいテーブルを作成できないようにすることができます。
 

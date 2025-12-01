@@ -36,7 +36,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Если вы управляете собственным коллектором OpenTelemetry в автономном развертывании — например, при использовании дистрибутива HyperDX-only, — мы [по‑прежнему рекомендуем использовать официальный дистрибутив коллектора ClickStack](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) в роли шлюза, где это возможно, но если вы решите использовать собственный вариант, убедитесь, что он включает [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
-### Автономный режим
+### Автономный режим {#standalone}
 
 Чтобы развернуть дистрибутив ClickStack коннектора OTel в автономном режиме, выполните следующую команду Docker:
 
@@ -59,7 +59,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 ### Изменение конфигурации {#modifying-otel-collector-configuration}
 
-#### Использование Docker
+#### Использование Docker {#using-docker}
 
 Все образы Docker с включённым OpenTelemetry Collector можно настроить на использование экземпляра ClickHouse через переменные окружения `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
 
@@ -77,7 +77,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 ```
 
 
-#### Docker Compose
+#### Docker Compose {#docker-compose-otel}
 
 В Docker Compose измените конфигурацию коллектора, используя те же переменные окружения, что и выше:
 
@@ -106,7 +106,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 Дистрибутив OTel collector в составе ClickStack поддерживает расширение базовой конфигурации за счёт монтирования пользовательского конфигурационного файла и задания переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
 
-#### Расширение конфигурации коллектора
+#### Расширение конфигурации коллектора {#extending-collector-config}
 
 Чтобы добавить пользовательские receivers, processors или pipelines:
 
@@ -216,7 +216,7 @@ docker run -d \
 - Создать отдельного пользователя для приёма данных с ограниченными правами — см. ниже.
 - Включить TLS для конечной точки OTLP, обеспечив шифрованное взаимодействие между SDKs/агентами и коллектором. Это можно настроить через [пользовательскую конфигурацию коллектора](#extending-collector-config).
 
-### Создание пользователя для ингестии
+### Создание пользователя для ингестии {#creating-an-ingestion-user}
 
 Мы рекомендуем создать отдельную базу данных и пользователя для коллектора OTel для ингестии данных в ClickHouse. У этого пользователя должны быть права на создание и вставку данных в [таблицы, созданные и используемые ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
 
@@ -252,7 +252,7 @@ OpenTelemetry поддерживает следующие возможности
 
 Мы рекомендуем пользователям избегать чрезмерной обработки событий с использованием operators или [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). Они могут приводить к значительным накладным расходам по памяти и CPU, особенно при JSON‑парсинге. Возможно выполнять всю обработку в ClickHouse на этапе вставки с помощью материализованных представлений и столбцов с некоторыми исключениями — в частности, для контекстно‑зависимого обогащения, например добавления k8s‑метаданных. Для более подробной информации см. [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
 
-### Пример
+### Пример {#example-processing}
 
 Следующая конфигурация демонстрирует сбор данных из этого [неструктурированного файла логов](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz). Эту конфигурацию может использовать коллектор в роли агента, отправляющий данные на шлюз ClickStack.
 
@@ -410,7 +410,7 @@ OTel collector в составе ClickStack действует как экзем
 - **Быстрые запросы, меньший объём памяти** - Типичные агрегаты по атрибутам вроде `LogAttributes` приводят к 5–10-кратному уменьшению объёма читаемых данных и существенному ускорению запросов, сокращая и время выполнения запросов, и пиковое потребление памяти.
 - **Простое управление** - Нет необходимости заранее материализовывать столбцы ради производительности. Каждое поле становится отдельным подстолбцом, обеспечивая ту же скорость, что и нативные столбцы ClickHouse.
 
-### Включение поддержки JSON
+### Включение поддержки JSON {#enabling-json-support}
 
 Чтобы включить эту поддержку для коллектора, задайте переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, содержащем коллектор. Это гарантирует, что схемы будут созданы в ClickHouse с использованием типа JSON.
 
@@ -464,7 +464,7 @@ export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 
 </VerticalStepper>
 
-#### Перенос существующих данных (необязательно)
+#### Перенос существующих данных (необязательно) {#migrating-existing-data}
 
 Чтобы перенести старые данные в новые таблицы формата JSON:
 

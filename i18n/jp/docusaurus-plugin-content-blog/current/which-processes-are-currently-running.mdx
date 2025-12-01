@@ -9,8 +9,7 @@ tags: ['サーバー管理']
 
 {/* 末尾を切り捨て */}
 
-
-## サーバー上で実行中のコードを確認する
+## サーバー上で実行中のコードを確認する \{#check-what-code-is-currently-running-on-a-server\}
 
 ClickHouse には組み込みのデバッガーとイントロスペクション機能があります。
 
@@ -29,7 +28,6 @@ SETTINGS allow_introspection_functions = 1;
 ```
 
 クエリの結果には、スレッドが実行中または待機中の ClickHouse ソースコード内の箇所が表示されます。（[introspection functions](https://clickhouse.com/docs/sql-reference/functions/introspection) を有効にするには、`allow_introspection_functions` を `1` に設定する必要があります。）応答は次のようになります。
-
 
 ```response
 Row 1:

@@ -6,7 +6,7 @@ title: 'argAndMin'
 doc_type: 'reference'
 ---
 
-# argAndMin
+# argAndMin {#argandmin}
 
 计算最小 `val` 值对应的 `arg` 和 `val`。如果有多行记录的最小 `val` 值相同，则返回哪一行对应的 `arg` 和 `val` 是不确定的。
 `arg` 和 `min` 两部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)起作用，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 结果。
@@ -60,7 +60,6 @@ SELECT argAndMin(user, salary) FROM salary
 ```
 
 **详细示例**
-
 
 ```sql
 CREATE TABLE test

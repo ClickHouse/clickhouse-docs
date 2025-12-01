@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# icebergCluster テーブル関数
+# icebergCluster テーブル関数 {#icebergcluster-table-function}
 
 これは、[iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数の拡張です。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -31,7 +31,7 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
 
-## 引数
+## 引数 {#arguments}
 
 * `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスター名。
 * 他のすべての引数の説明は、同等の [iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数における引数の説明と同一です。

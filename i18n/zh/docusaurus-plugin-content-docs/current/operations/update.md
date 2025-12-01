@@ -53,7 +53,7 @@ doc_type: 'guide'
 
 
 
-## 推荐方案
+## 推荐方案 {#recommended-plan}
 
 以下是实现 ClickHouse 零停机升级的推荐步骤：
 
@@ -83,7 +83,7 @@ MergeFromLogEntryTask: Code: 40. DB::Exception: 数据分片校验和不匹配:
 :::
 
 
-## ClickHouse 服务器二进制升级流程
+## ClickHouse 服务器二进制升级流程 {#clickhouse-server-binary-upgrade-process}
 
 如果 ClickHouse 是通过 `deb` 软件包安装的，请在服务器上执行以下命令：
 

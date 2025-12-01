@@ -9,7 +9,7 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-# `OPTIMIZE FINAL` の使用を避ける
+# `OPTIMIZE FINAL` の使用を避ける {#avoid-optimize-final}
 
 import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_optimize_final.md';
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Nullable(T)
+# Nullable(T) {#nullablet}
 
 `T` で許可されている通常の値に加えて、「値が存在しない」ことを示す特別なマーカー（[NULL](../../sql-reference/syntax.md)）を保存できます。例えば、`Nullable(Int8)` 型のカラムには `Int8` 型の値を保存でき、値を持たない行には `NULL` が保存されます。
 
@@ -31,7 +31,7 @@ ClickHouse サーバーの設定で別途指定しない限り、任意の `Null
 
 
 
-## NULL の検索
+## NULL の検索 {#finding-null}
 
 列全体を読み取ることなく、`null` サブカラムを使って列内の `NULL` 値を特定できます。対応する値が `NULL` の場合は `1` を、それ以外の場合は `0` を返します。
 
@@ -59,7 +59,7 @@ SELECT n.null FROM nullable;
 ```
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE TinyLog

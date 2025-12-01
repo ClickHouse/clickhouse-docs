@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import mitzu_01 from '@site/static/images/integrations/data-visualization/mitzu_01.png';
 import mitzu_02 from '@site/static/images/integrations/data-visualization/mitzu_02.png';
@@ -26,7 +26,7 @@ import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Mitzu を ClickHouse に接続する
+# Mitzu を ClickHouse に接続する {#connecting-mitzu-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 

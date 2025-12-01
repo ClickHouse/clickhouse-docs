@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
-# Spark 连接器
+# Spark 连接器 {#spark-connector}
 
 此连接器利用 ClickHouse 特有的优化功能，例如高级分区和谓词下推，以提升查询性能和数据处理效率。
 该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理其自己的 catalog。
@@ -53,14 +53,14 @@ Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{databas
 
 
 
-## 安装与设置
+## 安装与设置 {#installation--setup}
 
 要将 ClickHouse 集成到 Spark 中，有多种安装方式可适配不同的项目环境。
 您可以在项目的构建文件中（例如 Maven 的 `pom.xml` 或 SBT 的 `build.sbt`）直接添加 ClickHouse Spark 连接器作为依赖。
 或者，也可以将所需的 JAR 文件放到 `$SPARK_HOME/jars/` 目录中，或者在使用 `spark-submit` 命令时，通过 `--jars` 参数作为 Spark 选项直接传入。
 这两种方式都可以确保在您的 Spark 环境中提供 ClickHouse 连接器。
 
-### 作为依赖导入
+### 作为依赖导入 {#import-as-a-dependency}
 
 <Tabs>
   <TabItem value="Maven" label="Maven" default>
@@ -140,7 +140,7 @@ Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{databas
   </TabItem>
 </Tabs>
 
-### 下载依赖库
+### 下载依赖库 {#download-the-library}
 
 二进制 JAR 的命名规则为：
 
@@ -166,7 +166,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 
 
 
-## 注册 Catalog（必需）
+## 注册 Catalog（必需） {#register-the-catalog-required}
 
 要访问 ClickHouse 表，必须使用以下配置创建一个新的 Spark Catalog：
 
@@ -216,7 +216,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 :::
 
 
-## ClickHouse Cloud 设置
+## ClickHouse Cloud 设置 {#clickhouse-cloud-settings}
 
 在连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请确保启用 SSL，并设置合适的 SSL 模式。例如：
 
@@ -425,7 +425,7 @@ from pyspark.sql import Row
 ```
 
 
-# 你也可以自由使用任何其他符合上述兼容性矩阵要求的包组合。
+# 你也可以自由使用任何其他符合上述兼容性矩阵要求的包组合。 {#feel-free-to-use-any-other-packages-combination-satesfying-the-compatibility-matrix-provided-above}
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -449,13 +449,13 @@ spark.conf.set("spark.clickhouse.write.format", "json")
 
 
 
-# 创建 DataFrame
+# 创建 DataFrame {#create-dataframe}
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 
 
-# 将 DataFrame 写入 ClickHouse
+# 将 DataFrame 写入 ClickHouse {#write-dataframe-to-clickhouse}
 
 df.writeTo("clickhouse.default.example_table").append()
 
@@ -475,7 +475,7 @@ df.writeTo("clickhouse.default.example_table").append()
 </Tabs>
 
 
-## DDL 操作
+## DDL 操作 {#ddl-operations}
 
 你可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
 Spark SQL 允许你像在 ClickHouse 中一样编写查询，

@@ -10,14 +10,13 @@ keywords: ['GRANT', '権限エラー']
 
 {/* 省略 */}
 
-
 ## ClickHouse 23.9 リリース後の取り込み失敗の解決 \{#resolving-ingest-failures-after-clickhouse-239-release\}
 
 これらの権限エラーの根本原因は特定されており、新しいリリースで [`async_inserts`](/optimize/asynchronous-inserts) に対する GRANT のチェックがより厳格になったことによるものです。
 
 この問題を解決するには、サービスが正しく動作するように GRANT を更新する必要があります。エラーメッセージで不足している GRANT を確認し、必要な GRANT を手動で追加してください。`async_inserts` を使用しているテーブルに対して追加で必要となる GRANT は、`SELECT` または `dictGet` のいずれかです。
 
-## 影響を受けるテーブルとディクショナリに必要な GRANT 権限を付与する
+## 影響を受けるテーブルとディクショナリに必要な GRANT 権限を付与する \{#add-necessary-grants-to-affected-tables-and-dictionaries\}
 
 ```
 -- SELECT権限の付与

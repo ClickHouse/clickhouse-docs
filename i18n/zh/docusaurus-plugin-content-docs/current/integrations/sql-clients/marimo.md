@@ -19,7 +19,7 @@ import run_app_view from '@site/static/images/integrations/sql-clients/marimo/ru
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 将 marimo 与 ClickHouse 配合使用
+# 将 marimo 与 ClickHouse 配合使用 {#using-marimo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 
-## 1. 安装支持 SQL 的 marimo
+## 1. 安装支持 SQL 的 marimo {#install-marimo-sql}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
@@ -55,7 +55,7 @@ marimo edit clickhouse_demo.py
 
 
 
-## 3. 运行 SQL
+## 3. 运行 SQL {#run-sql}
 
 在设置好连接之后，你可以创建一个新的 SQL 单元格，并选择 ClickHouse 引擎。
 

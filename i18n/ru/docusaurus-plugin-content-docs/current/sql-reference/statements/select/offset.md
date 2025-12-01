@@ -51,8 +51,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 Фактическое смещение также может зависеть от настройки [offset](../../../operations/settings/settings.md#offset).
 :::
 
-
-## Примеры
+## Примеры {#examples}
 
 Исходная таблица:
 

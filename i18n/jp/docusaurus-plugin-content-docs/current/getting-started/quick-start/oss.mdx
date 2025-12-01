@@ -14,15 +14,14 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-
-# ClickHouse OSS クイックスタート
+# ClickHouse OSS クイックスタート \{#clickhouse-oss-quick-start\}
 
 > このクイックスタートチュートリアルでは、8 つの簡単なステップで OSS 版 ClickHouse をセットアップします。お使いの OS に適したバイナリをダウンロードし、
-ClickHouse サーバーの起動方法を学び、ClickHouse クライアントを使ってテーブルを作成し、
-そのテーブルにデータを挿入して、そのデータを取得するクエリを実行します。
+> ClickHouse サーバーの起動方法を学び、ClickHouse クライアントを使ってテーブルを作成し、
+> そのテーブルにデータを挿入して、そのデータを取得するクエリを実行します。
 
 <VerticalStepper>
-  ## ClickHouseのダウンロード
+  ## ClickHouseのダウンロード \{#download-the-binary\}
 
   ClickHouseはLinux、FreeBSD、macOS上でネイティブに動作し、Windowsでは[WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。 ClickHouseをローカルにダウンロードする最も簡単な方法は、以下の`curl`コマンドを実行することです。 このコマンドは使用中のオペレーティングシステムがサポートされているかを判定し、masterブランチからビルドされた適切なClickHouseバイナリをダウンロードします。
 
@@ -53,7 +52,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
   Macユーザーの方へ：バイナリの開発者を検証できないというエラーが表示される場合は、[&quot;MacOSにおける開発者検証エラーの修正方法&quot;](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
   :::
 
-  ## サーバーを起動する
+  ## サーバーを起動する \{#start-the-server\}
 
   以下のコマンドを実行してClickHouseサーバーを起動します：
 
@@ -65,7 +64,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
   [デフォルトのログレベル](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose)
   が`warning`ではなく`trace`に設定されています。
 
-  ## クライアントを起動する
+  ## クライアントを起動する \{#start-the-client\}
 
   `clickhouse-client`を使用してClickHouseサービスに接続します。新しいターミナルを開き、`clickhouse`バイナリが保存されているディレクトリに移動して、以下のコマンドを実行します:
 
@@ -79,7 +78,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
   my-host :)
   ```
 
-  ## テーブルを作成する
+  ## テーブルを作成する \{#create-a-table\}
 
   `CREATE TABLE`を使用して新しいテーブルを定義します。一般的なSQL DDLコマンドはClickHouseで動作しますが、1つ追加があります - ClickHouseのテーブルには`ENGINE`句が必要です。ClickHouseのパフォーマンス上の利点を活用するには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)を使用してください:
 
@@ -95,7 +94,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
   PRIMARY KEY (user_id, timestamp)
   ```
 
-  ## データの挿入
+  ## データの挿入 \{#insert-data\}
 
   ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらの^^パート^^は後でClickHouseによってバックグラウンドでマージされます。
 
@@ -111,7 +110,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
       (101, 'グラニュールは読み取られるデータの最小チャンク',      now() + 5,   3.14159 )
   ```
 
-  ## 新しいテーブルをクエリする
+  ## 新しいテーブルをクエリする \{#query-your-new-table\}
 
   他のSQLデータベースと同様に`SELECT`クエリを記述できます:
 
@@ -134,7 +133,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
   4行が返されました。経過時間: 0.008秒
   ```
 
-  ## 独自データの挿入
+  ## 独自データの挿入 \{#insert-your-own-data\}
 
   次のステップは、お客様のデータをClickHouseに取り込むことです。データ取り込み用の[テーブル関数](/sql-reference/table-functions/index.md)と[インテグレーション](/integrations)を多数ご用意しています。以下のタブにいくつかの例を掲載していますが、ClickHouseと統合可能な技術の詳細なリストについては[インテグレーション](/integrations)ページをご確認ください。
 
@@ -348,7 +347,7 @@ ClickHouse サーバーの起動方法を学び、ClickHouse クライアント�
     </TabItem>
   </Tabs>
 
-  ## 探索
+  ## 探索 \{#explore\}
 
   * ClickHouse の仕組みの基本を学ぶには、[Core Concepts](/managing-data/core-concepts) セクションを参照してください。
   * ClickHouse の主要なコンセプトや機能を、より踏み込んで解説している [Advanced Tutorial](tutorial.md) もご覧ください。

@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['scaling', 'clusters', 'horizontal scaling', 'capacity planning', 'performance']
 ---
 
-# Балансировка данных
+# Балансировка данных {#rebalancing-data}
 
 ClickHouse не поддерживает автоматическую перебалансировку шардов. Однако есть несколько способов перебалансировать шарды, в порядке предпочтения:
 

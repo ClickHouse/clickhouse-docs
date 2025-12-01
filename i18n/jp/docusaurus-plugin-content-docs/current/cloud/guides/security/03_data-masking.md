@@ -7,17 +7,13 @@ keywords: ['データマスキング']
 doc_type: 'guide'
 ---
 
-
-
-# ClickHouse におけるデータマスキング
+# ClickHouse におけるデータマスキング {#data-masking-in-clickhouse}
 
 データマスキングはデータ保護のための手法であり、元のデータの形式や構造は維持したまま、個人を特定できる情報 (PII) や機密情報を取り除いた別バージョンのデータに置き換えるものです。
 
 このガイドでは、ClickHouse でデータをマスクする方法を説明します。
 
-
-
-## 文字列置換関数を使用する
+## 文字列置換関数を使用する {#using-string-functions}
 
 基本的なデータマスキングのユースケースでは、`replace` 系の関数を使うと、データをマスクする簡便な方法になります。
 
@@ -79,8 +75,7 @@ SELECT replaceRegexpAll(
 └──────────────────┘
 ```
 
-
-## マスクされた `VIEW` の作成
+## マスクされた `VIEW` の作成 {#masked-views}
 
 [`VIEW`](/sql-reference/statements/create/view) は、前述の文字列関数と組み合わせて使用することで、ユーザーに表示する前に機微なデータを含むカラムに対して変換処理を適用できます。
 この方法では、元のデータは変更されず、ビューをクエリするユーザーにはマスク済みのデータのみが表示されます。
@@ -134,7 +129,6 @@ FROM orders;
 SELECT * FROM masked_orders
 ```
 
-
 ```response title="Response"
 ┌─user_id─┬─name─────────┬─email──────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address──────────┐
 │    1001 │ John ****    │ jo****@gmail.com   │ 555-***-4567 │       299.99 │ 2024-01-15 │ *** New York, NY 10001    │
@@ -178,8 +172,7 @@ GRANT masked_orders_viewer TO your_user;
 
 これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスクされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
 
-
-## `MATERIALIZED` カラムとカラムレベルのアクセス制限を使用する
+## `MATERIALIZED` カラムとカラムレベルのアクセス制限を使用する {#materialized-ephemeral-column-restrictions}
 
 別のビューを作成したくない場合は、マスクしたデータを元のデータと並べて保存できます。
 そのためには、[マテリアライズドカラム](/sql-reference/statements/create/table#materialized) を使用します。
@@ -228,7 +221,6 @@ FROM orders
 ORDER BY user_id ASC
 ```
 
-
 ```response title="Response"
    ┌─user_id─┬─name──────────┬─email─────────────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address───────────────────┬─name_masked──┬─email_masked───────┬─phone_masked─┬─shipping_address_masked────┐
 1. │    1001 │ John Smith    │ john.smith@gmail.com      │ 555-123-4567 │       299.99 │ 2024-01-15 │ 123 Main St, New York, NY 10001    │ John ****    │ jo****@gmail.com   │ 555-***-4567 │ **** New York, NY 10001    │
@@ -272,7 +264,6 @@ GRANT masked_orders_viewer TO your_user;
 `orders` テーブルにマスク済みデータのみを保存したい場合は、
 マスクされていない機密性の高いカラムに [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral) を指定できます。
 これにより、この種類のカラムはテーブルに保存されなくなります。
-
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -323,8 +314,7 @@ ORDER BY user_id ASC
    └─────────┴──────────────┴────────────┴──────────────┴────────────────────┴──────────────┴───────────────────────────┘
 ```
 
-
-## クエリマスキングルールでログデータをマスクする
+## クエリマスキングルールでログデータをマスクする {#use-query-masking-rules}
 
 ClickHouse OSS のユーザーで、特にログデータをマスクしたい場合は、[query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules)（ログマスキング）を利用してデータをマスクできます。
 

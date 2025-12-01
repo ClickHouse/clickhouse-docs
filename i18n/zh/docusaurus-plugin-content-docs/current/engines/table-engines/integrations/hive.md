@@ -9,22 +9,19 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Hive 表引擎 {#hive-table-engine}
 
-# Hive 表引擎
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Hive 引擎允许对 HDFS 中的 Hive 表执行 `SELECT` 查询。目前支持的输入格式如下：
 
-- Text：仅支持除 `binary` 外的简单标量列类型
+* Text：仅支持除 `binary` 外的简单标量列类型
 
-- ORC：支持除 `char` 外的简单标量列类型；复杂类型仅支持 `array` 等
+* ORC：支持除 `char` 外的简单标量列类型；复杂类型仅支持 `array` 等
 
-- Parquet：支持所有简单标量列类型；复杂类型仅支持 `array` 等
+* Parquet：支持所有简单标量列类型；复杂类型仅支持 `array` 等
 
-
-
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -52,10 +49,9 @@ PARTITION BY expr
 
 * `table` — 远程表名称。
 
+## 使用示例 {#usage-example}
 
-## 使用示例
-
-### 如何在 HDFS 文件系统中使用本地缓存
+### 如何在 HDFS 文件系统中使用本地缓存 {#how-to-use-local-cache-for-hdfs-filesystem}
 
 我们强烈建议为远程文件系统启用本地缓存。基准测试结果表明，启用缓存后速度几乎提升 2 倍。
 
@@ -75,9 +71,9 @@ PARTITION BY expr
 * limit&#95;size: 必需。本地缓存文件的最大大小（以字节为单位）。
 * bytes&#95;read&#95;before&#95;flush: 控制从远程文件系统下载文件时，在刷新到本地文件系统之前读取的字节数。默认值为 1MB。
 
-### 使用 ORC 输入格式查询 Hive 表
+### 使用 ORC 输入格式查询 Hive 表 {#query-hive-table-with-orc-input-format}
 
-#### 在 Hive 中创建表
+#### 在 Hive 中创建表 {#create-table-in-hive}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -125,8 +121,7 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### 在 ClickHouse 中创建表
-
+#### 在 ClickHouse 中创建表 {#create-table-in-clickhouse}
 
 ClickHouse 中的一个表，用于从上面创建的 Hive 表中读取数据：
 
@@ -199,9 +194,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### 使用 Parquet 输入格式查询 Hive 表
+### 使用 Parquet 输入格式查询 Hive 表 {#query-hive-table-with-parquet-input-format}
 
-#### 在 Hive 中创建表
+#### 在 Hive 中创建表 {#create-table-in-hive-1}
 
 ```text
 hive >
@@ -240,7 +235,6 @@ LOCATION
 OK
 Time taken: 0.51 seconds
 ```
-
 
 hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
 OK
@@ -329,7 +323,6 @@ day:                  2021-09-18
 
 #### 在 Hive 中创建表
 
-
 ```text
 hive >
 CREATE TABLE `test`.`test_text`(
@@ -377,7 +370,7 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### 在 ClickHouse 中创建表
+#### 在 ClickHouse 中创建表 {#create-table-in-hive-2}
 
 在 ClickHouse 中创建一个表，用于从上述创建的 Hive 表中读取数据：
 
@@ -415,7 +408,6 @@ SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_heade
 
 查询 ID: 55b79d35-56de-45b9-8be6-57282fbf1f44
 ```
-
 
 第 1 行:
 ──────

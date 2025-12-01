@@ -6,10 +6,9 @@ title: 'system.replicated_fetches'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.replicated&#95;fetches
+# system.replicated&#95;fetches {#systemreplicated&#95;fetches}
 
 <SystemTableCloud />
 

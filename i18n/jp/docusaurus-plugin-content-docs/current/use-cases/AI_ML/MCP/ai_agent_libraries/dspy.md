@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法
+# DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
 このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph) を使って、
 [ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。

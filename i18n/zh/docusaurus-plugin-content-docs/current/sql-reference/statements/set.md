@@ -7,7 +7,7 @@ title: 'SET 语句'
 doc_type: 'reference'
 ---
 
-# SET 语句
+# SET 语句 {#set-statement}
 
 ```sql
 SET 参数 = 值

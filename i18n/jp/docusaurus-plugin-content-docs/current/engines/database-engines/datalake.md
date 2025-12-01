@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# DataLakeCatalog
+# DataLakeCatalog {#datalakecatalog}
 
 `DataLakeCatalog` データベースエンジンを使用すると、ClickHouse を外部の
 データカタログに接続し、データを複製することなくオープンテーブルフォーマットのデータをクエリできます。
@@ -28,7 +28,7 @@ doc_type: 'reference'
 
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 `DataLakeCatalog` エンジンを使用するには、以下の必要な設定を有効にする必要があります。
 
@@ -66,7 +66,7 @@ catalog_type,
 | `region`                | サービスの AWS リージョン（例: `us-east-1`）                                                 |
 
 
-## 例
+## 例 {#examples}
 
 `DataLakeCatalog` エンジンの使用例については、以下のセクションを参照してください。
 

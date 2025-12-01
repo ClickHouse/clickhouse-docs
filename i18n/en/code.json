@@ -1658,5 +1658,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "Learn how to contribute to ClickHouse"
+  },
+  "homepage.hero.description": {
+    "message": "Learn how to use ClickHouse through guides, reference documentation, and videos"
+  },
+  "homepage.hero.quickStart": {
+    "message": "Quick Start"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Get Started with Cloud"
+  },
+  "homepage.hero.installLocally": {
+    "message": "Install Locally"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "Get Started with OSS"
+  },
+  "homepage.search.title": {
+    "message": "Search Documentation"
+  },
+  "homepage.connect.title": {
+    "message": "Connect to ClickHouse"
+  },
+  "homepage.connect.description": {
+    "message": "Connect your application to ClickHouse in minutes"
+  },
+  "homepage.connect.viewAll": {
+    "message": "View All Clients and Drivers"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL Console"
+  },
+  "homepage.migrate.title": {
+    "message": "Migrate to ClickHouse"
+  },
+  "homepage.migrate.description": {
+    "message": "Load data from other databases, data warehouses, and object storage"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "View All Integrations"
+  },
+  "homepage.deploy.title": {
+    "message": "Deploy ClickHouse"
+  },
+  "homepage.deploy.description": {
+    "message": "Deploy ClickHouse to the cloud or your own infrastructure"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "Node Deployment"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "Cluster Deployment"
+  },
+  "homepage.resources.title": {
+    "message": "Other Resources"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "Contact Support"
+  },
+  "homepage.resources.changelog": {
+    "message": "Changelog"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "Sample Datasets"
   }
 }

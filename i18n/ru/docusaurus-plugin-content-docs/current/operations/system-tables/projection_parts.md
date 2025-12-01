@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.projection_parts
+# system.projection_parts {#systemprojection_parts}
 
 Эта таблица содержит информацию о частях проекций для таблиц семейства MergeTree.
 

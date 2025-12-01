@@ -12,7 +12,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# Движок таблиц SharedMergeTree
+# Движок таблиц SharedMergeTree {#sharedmergetree-table-engine}
 
 Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть ReplacingSharedMergeTree заменяет ReplacingReplicatedMergeTree.
 
@@ -50,7 +50,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## Включение SharedMergeTree
+## Включение SharedMergeTree {#enabling-sharedmergetree}
 
 `SharedMergeTree` включён по умолчанию.
 

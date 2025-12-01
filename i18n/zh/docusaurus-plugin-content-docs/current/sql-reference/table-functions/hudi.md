@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Hudi 表函数
+# Hudi 表函数 {#hudi-table-function}
 
 提供只读的类表接口，用于访问存储在 Amazon S3 中的 Apache [Hudi](https://hudi.apache.org/) 表。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 hudi(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])

@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# EmbeddedRocksDB 表引擎
+# EmbeddedRocksDB 表引擎 {#embeddedrocksdb-table-engine}
 
 <CloudNotSupportedBadge />
 
 该引擎用于将 ClickHouse 与 [RocksDB](http://rocksdb.org/) 集成。
 
-
-
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -59,8 +56,7 @@ ENGINE = EmbeddedRocksDB
 PRIMARY KEY key
 ```
 
-
-## 指标
+## 指标 {#metrics}
 
 还有一个 `system.rocksdb` 表，用于公开 RocksDB 的统计信息：
 
@@ -76,8 +72,7 @@ FROM system.rocksdb
 └───────────────────────────┴───────┘
 ```
 
-
-## 配置
+## 配置 {#configuration}
 
 你也可以通过配置更改任何 [RocksDB 选项](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map)：
 
@@ -105,10 +100,9 @@ FROM system.rocksdb
 
 默认情况下，“trivial approximate count” 优化是关闭的，这可能会影响 `count()` 查询的性能。要启用此优化，请将 `optimize_trivial_approximate_count_query` 设置为 `1`。此外，该设置还会影响 EmbeddedRocksDB 引擎的 `system.tables`，启用后可以看到 `total_rows` 和 `total_bytes` 的近似值。
 
+## 支持的操作 {#supported-operations}
 
-## 支持的操作
-
-### 插入
+### 插入 {#inserts}
 
 当向 `EmbeddedRocksDB` 插入新行时，如果键已存在，则会更新对应的值；否则会创建一个新的键。
 
@@ -118,7 +112,7 @@ FROM system.rocksdb
 INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
 ```
 
-### 删除
+### 删除 {#deletes}
 
 可以使用 `DELETE` 查询或 `TRUNCATE` 语句删除行。
 
@@ -134,7 +128,7 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 TRUNCATE TABLE test;
 ```
 
-### 更新
+### 更新 {#updates}
 
 可以使用 `ALTER TABLE` 语句来更新值。主键不允许更新。
 
@@ -142,7 +136,7 @@ TRUNCATE TABLE test;
 ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
 
-### 联接
+### 联接 {#joins}
 
 在 EmbeddedRocksDB 表上支持一种特殊的 `direct` 联接。
 这种 `direct` 联接避免在内存中构建哈希表，而是直接从 EmbeddedRocksDB 访问数据。
@@ -159,9 +153,9 @@ SET join_algorithm = 'direct, hash'
 当 `join_algorithm` 设置为 `direct, hash` 时，将在可行时优先使用 direct 联接，否则使用 hash 联接。
 :::
 
-#### 示例
+#### 示例 {#example}
 
-##### 创建并填充 EmbeddedRocksDB 表
+##### 创建并填充 EmbeddedRocksDB 表 {#create-and-populate-an-embeddedrocksdb-table}
 
 ```sql
 CREATE TABLE rdb
@@ -183,7 +177,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### 创建并填充一个表，以便与 `rdb` 表进行 JOIN
+##### 创建并填充一个表，以便与 `rdb` 表进行 JOIN {#create-and-populate-a-table-to-join-with-table-rdb}
 
 ```sql
 CREATE TABLE t2
@@ -198,13 +192,13 @@ INSERT INTO t2 SELECT number AS k
 FROM numbers_mt(10)
 ```
 
-##### 将 join 算法设为 `direct`
+##### 将 join 算法设为 `direct` {#set-the-join-algorithm-to-direct}
 
 ```sql
 SET join_algorithm = 'direct'
 ```
 
-##### INNER JOIN（内连接）
+##### INNER JOIN（内连接） {#an-inner-join}
 
 ```sql
 SELECT *
@@ -229,7 +223,7 @@ ORDER BY key ASC
 └─────┴─────────┴────────┴────────┘
 ```
 
-### 关于 JOIN 的更多信息
+### 关于 JOIN 的更多信息 {#more-information-on-joins}
 
 * [`join_algorithm` 设置](/operations/settings/settings.md#join_algorithm)
 * [JOIN 子句](/sql-reference/statements/select/join.md)

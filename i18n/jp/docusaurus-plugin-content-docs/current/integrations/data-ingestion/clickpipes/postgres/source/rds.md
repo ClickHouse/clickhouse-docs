@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS Postgres ソース設定ガイド
+# RDS Postgres ソース設定ガイド {#rds-postgres-source-setup-guide}
 
 
 
@@ -27,7 +27,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 
 
 
-## 論理レプリケーションを有効にする
+## 論理レプリケーションを有効にする {#enable-logical-replication}
 
 お使いの RDS インスタンスですでに次の設定が行われている場合、このセクションはスキップできます。
 

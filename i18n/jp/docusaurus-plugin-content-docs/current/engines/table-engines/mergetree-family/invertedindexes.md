@@ -10,7 +10,7 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 
-# テキストインデックスを使用した全文検索
+# テキストインデックスを使用した全文検索 {#full-text-search-using-text-indexes}
 
 <PrivatePreviewBadge/>
 
@@ -22,7 +22,7 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 
 
 
-## テキストインデックスの作成
+## テキストインデックスの作成 {#creating-a-text-index}
 
 テキストインデックスを作成するには、まず対応する実験的な設定を有効にしてください。
 
@@ -186,12 +186,12 @@ ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
 
 
-## テキストインデックスの使用
+## テキストインデックスの使用 {#using-a-text-index}
 
 SELECT クエリでテキストインデックスを使用するのは簡単で、一般的な文字列検索関数では自動的にインデックスが利用されます。
 インデックスが存在しない場合、以下の文字列検索関数は低速な総当たりスキャンによる処理にフォールバックします。
 
-### サポートされている関数
+### サポートされている関数 {#functions-support}
 
 SELECT クエリの `WHERE` 句でテキスト関数が使用されている場合、テキストインデックスを利用できます。
 
@@ -201,7 +201,7 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
-#### `=` と `!=`
+#### `=` と `!=` {#functions-example-equals-notequals}
 
 `=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) と `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) は、指定された検索語全体と一致します。
 
@@ -213,7 +213,7 @@ SELECT * from tab WHERE str = 'こんにちは';
 
 テキストインデックスは `=` と `!=` をサポートしますが、等値・不等値検索が意味を持つのは `array` トークナイザを使用する場合のみです（このトークナイザではインデックスに行全体の値が保存されます）。
 
-#### `IN` と `NOT IN`
+#### `IN` と `NOT IN` {#functions-example-in-notin}
 
 `IN`（[`in`](/sql-reference/functions/in-functions)）と `NOT IN`（[`notIn`](/sql-reference/functions/in-functions)）は `equals` および `notEquals` 関数と似ていますが、検索語句のすべてに一致するもの（`IN`）、あるいはどれにも一致しないもの（`NOT IN`）を判定します。
 
@@ -225,7 +225,7 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 
 `=` および `!=` に対する制限と同じ制限が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザーと組み合わせて使用する場合にのみ意味があります。
 
-#### `LIKE`、`NOT LIKE` および `match`
+#### `LIKE`、`NOT LIKE` および `match` {#functions-example-like-notlike-match}
 
 :::note
 これらの関数がフィルタリングのためにテキストインデックスを使用するのは、インデックストークナイザーが `splitByNonAlpha` または `ngrams` のいずれかである場合に限られます。
@@ -250,7 +250,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- または `% support
 
 `support` の左右に空白を入れておくと、その語をトークンとして抽出できるようになります。
 
-#### `startsWith` と `endsWith`
+#### `startsWith` と `endsWith` {#functions-example-startswith-endswith}
 
 `LIKE` と同様に、関数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) は、検索語から完全なトークンを抽出できる場合にのみテキストインデックスを使用できます。
 
@@ -275,7 +275,7 @@ startsWith(comment, 'clickhouse supports ')`
 SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 ```
 
-#### `hasToken` と `hasTokenOrNull`
+#### `hasToken` と `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
 
 関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) および [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) は、指定された単一のトークンを対象にマッチングを行います。
 
@@ -289,7 +289,7 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 
 関数 `hasToken` と `hasTokenOrNull` は、`text` インデックスと組み合わせて使用する関数として最も高いパフォーマンスを発揮します。
 
-#### `hasAnyTokens` と `hasAllTokens`
+#### `hasAnyTokens` と `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
 
 
 関数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) と [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) は、指定されたトークンの一部またはすべてにマッチします。
@@ -309,7 +309,7 @@ SELECT count() FROM tab WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
-#### `has`
+#### `has` {#functions-example-has}
 
 配列関数 [has](/sql-reference/functions/array-functions#has) は、文字列配列内の単一のトークンとの一致を判定します。
 
@@ -319,7 +319,7 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
-#### `mapContains`
+#### `mapContains` {#functions-example-mapcontains}
 
 関数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンにマッチさせます。
 
@@ -331,7 +331,7 @@ SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
 
-#### `operator[]`
+#### `operator[]` {#functions-example-access-operator}
 
 アクセス演算子 [operator[]](/sql-reference/operators#access-operators)は、テキストインデックスと併用してキーおよび値をフィルタリングするために使用できます。
 
@@ -343,9 +343,9 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 
 `Array(T)` 型および `Map(K, V)` 型のカラムをテキストインデックスと併用する場合の例を以下に示します。
 
-### テキストインデックスを使用した `Array` および `Map` カラムの例
+### テキストインデックスを使用した `Array` および `Map` カラムの例 {#text-index-array-and-map-examples}
 
-#### Array(String) カラムへのインデックス作成
+#### Array(String) カラムへのインデックス作成 {#text-index-example-array}
 
 ブログプラットフォームを想像してください。著者はキーワードを使って自身のブログ記事にカテゴリー付けを行います。
 ユーザーには、トピックを検索したりクリックしたりすることで関連するコンテンツを見つけてほしいと考えています。
@@ -377,7 +377,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- 既存データに対してインデックスを再構築してください
 ```
 
-#### Map 列のインデックス作成
+#### Map 列のインデックス作成 {#text-index-example-map}
 
 多くのオブザーバビリティのユースケースでは、ログメッセージは「コンポーネント」に分割され、タイムスタンプには日時型、ログレベルには enum 型など、適切なデータ型で保存されます。
 メトリクスのフィールドはキーと値のペアとして保存するのが最適です。
@@ -435,9 +435,9 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 ```
 
 
-## パフォーマンスチューニング
+## パフォーマンスチューニング {#performance-tuning}
 
-### 直接読み取り
+### 直接読み取り {#direct-read}
 
 特定の種類のテキストクエリは、「direct read」と呼ばれる最適化によって大幅に高速化されます。
 より正確には、`SELECT` クエリがテキスト列を *選択しない* 場合に、この最適化を適用できます。
@@ -515,7 +515,7 @@ Positions:
 2番目の EXPLAIN PLAN の出力には、仮想カラム `__text_index_<index_name>_<function_name>_<id>` が含まれます。
 このカラムが存在する場合は、直接読み出しが使用されています。
 
-### キャッシュ
+### キャッシュ {#caching}
 
 テキストインデックスの一部をメモリ上でバッファリングするために、複数のキャッシュが利用可能です（[Implementation Details](#implementation) セクションを参照）。
 現在、I/O を削減するために、テキストインデックスのデシリアライズ済みディクショナリブロック、ヘッダー、およびポスティングリスト用のキャッシュが用意されています。
@@ -524,7 +524,7 @@ Positions:
 
 キャッシュを設定するには、以下のサーバー設定を参照してください。
 
-#### ディクショナリブロックキャッシュの設定
+#### ディクショナリブロックキャッシュの設定 {#caching-dictionary}
 
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
@@ -583,7 +583,7 @@ Index granules file (.idx) には、各辞書ブロックについて、その�
 
 
 
-## 例：Hackernews データセット
+## 例：Hackernews データセット {#hacker-news-dataset}
 
 大量のテキストを含む大規模なデータセットに対するテキストインデックスのパフォーマンス向上を確認していきます。
 ここでは、人気サイトである Hacker News 上のコメント 2,870 万件を使用します。
@@ -650,7 +650,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 では、`hasToken`、`hasAnyTokens`、`hasAllTokens` 関数を使ってクエリを実行してみます。
 次の例では、標準的なインデックススキャンとダイレクトリード最適化の間で、どれほど大きな性能差が生じるかを示します。
 
-### 1. `hasToken` を使用する
+### 1. `hasToken` を使用する {#using-hasToken}
 
 `hasToken` は、テキストに特定の単一トークンが含まれているかどうかをチェックします。
 ここでは大文字小文字を区別して、`ClickHouse` というトークンを検索します。
@@ -690,7 +690,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 直接読み取りクエリは 45 倍以上高速 (0.362s 対 0.008s) で、インデックスのみを読み取ることで処理するデータ量も大幅に削減されます (9.51 GB 対 3.15 MB)。
 
-### 2. `hasAnyTokens` を使用する
+### 2. `hasAnyTokens` を使用する {#using-hasAnyTokens}
 
 `hasAnyTokens` は、テキストに指定したトークンのうち少なくとも 1 つが含まれているかどうかをチェックします。
 ここでは、&#39;love&#39; または &#39;ClickHouse&#39; のいずれかを含むコメントを検索します。
@@ -730,7 +730,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 この一般的な「OR」検索では、高速化がさらに顕著です。
 フルカラムスキャンを回避することで、クエリは約89倍高速化されます（1.329秒 vs 0.015秒）。
 
-### 3. `hasAllTokens`の使用                      
+### 3. `hasAllTokens`の使用                       {#using-hasAllTokens}
 
 `hasAllTokens`は、テキストに指定されたすべてのトークンが含まれているかを確認します。
 'love'と'ClickHouse'の両方を含むコメントを検索します。
@@ -770,7 +770,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 この AND 検索では、ダイレクトリード最適化は標準のスキップインデックススキャンと比べて 26 倍以上高速です (0.184s 対 0.007s)。
 
-### 4. 複合検索: OR, AND, NOT, ...
+### 4. 複合検索: OR, AND, NOT, ... {#compound-search}
 
 ダイレクトリード最適化は、複合ブール式にも適用されます。
 ここでは、大文字小文字を区別しない検索で「ClickHouse」または「clickhouse」を検索します。

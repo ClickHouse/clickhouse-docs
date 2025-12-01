@@ -51,8 +51,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 实际偏移量也可能取决于 [offset](../../../operations/settings/settings.md#offset) 设置。
 :::
 
-
-## 示例
+## 示例 {#examples}
 
 输入表：
 

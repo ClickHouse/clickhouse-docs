@@ -5,10 +5,9 @@ title: 'Kerberos'
 doc_type: 'reference'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# Kerberos
+# Kerberos {#kerberos}
 
 <SelfManaged />
 
@@ -18,13 +17,11 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 この方式を利用するには、システム側で Kerberos が設定されており、かつ ClickHouse の設定で有効化されている必要があります。
 
-
-
-## ClickHouse で Kerberos を有効化する
+## ClickHouse で Kerberos を有効化する {#enabling-kerberos-in-clickhouse}
 
 Kerberos を有効化するには、`config.xml` に `kerberos` セクションを追加する必要があります。このセクションには追加のパラメータを含めることができます。
 
-#### パラメータ
+#### パラメータ {#parameters}
 
 * `principal` - セキュリティコンテキストを受け入れる際に取得・使用される正規のサービスプリンシパル名。
   * このパラメータは省略可能で、省略された場合はデフォルトのプリンシパルが使用されます。
@@ -74,8 +71,7 @@ Kerberos を有効化するには、`config.xml` に `kerberos` セクション�
 `principal` セクションと `realm` セクションは同時に指定できません。`principal` と `realm` の両方のセクションが存在する場合、ClickHouse は Kerberos 認証を無効にします。
 :::
 
-
-## 既存ユーザー向けの外部認証方式としての Kerberos
+## 既存ユーザー向けの外部認証方式としての Kerberos {#kerberos-as-an-external-authenticator-for-existing-users}
 
 Kerberos は、ローカルに定義されたユーザー（`users.xml` またはローカルのアクセス制御パスで定義されたユーザー）の認証方法として使用できます。現在のところ、**HTTP インターフェイス経由のリクエストのみ**が（GSS-SPNEGO メカニズムを通じて）*Kerberos 対応*とできます。
 
@@ -85,7 +81,7 @@ Kerberos プリンシパル名の形式は通常、次のパターンに従い�
 
 */instance* の部分は 0 回以上出現する可能性があります。**イニシエーターの正規（canonical）なプリンシパル名の *primary* 部分が Kerberos 対応ユーザー名と一致している必要があり、一致した場合にのみ認証が成功します。**
 
-### `users.xml` で Kerberos を有効化する
+### `users.xml` で Kerberos を有効化する {#enabling-kerberos-in-users-xml}
 
 ユーザーに対して Kerberos 認証を有効にするには、ユーザー定義内で `password` などのセクションの代わりに `kerberos` セクションを指定します。
 
@@ -119,7 +115,7 @@ Kerberos 認証は、他の認証メカニズムと同時に使用できない�
 ここで、ユーザー `my_user` が `kerberos` を使用するようになった場合、前述のとおり、メインの `config.xml` ファイルで Kerberos を有効化しておく必要がある点に注意してください。
 :::
 
-### SQL を使用した Kerberos の有効化
+### SQL を使用した Kerberos の有効化 {#enabling-kerberos-using-sql}
 
 ClickHouse で [SQL-driven Access Control and Account Management](/operations/access-rights#access-control-usage) が有効化されている場合、Kerberos で識別されるユーザーも SQL 文を使用して作成できます。
 

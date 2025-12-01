@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# format 表函数
+# format 表函数 {#format-table-function}
 
 根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取结构。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 format(format_name, [structure], data)
@@ -36,7 +36,7 @@ format(format_name, [structure], data)
 
 
 
-## 示例
+## 示例 {#examples}
 
 不带 `structure` 参数：
 

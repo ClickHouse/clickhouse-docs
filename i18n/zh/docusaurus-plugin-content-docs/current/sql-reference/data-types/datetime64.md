@@ -7,9 +7,7 @@ title: 'DateTime64'
 doc_type: 'reference'
 ---
 
-
-
-# DateTime64
+# DateTime64 {#datetime64}
 
 用于存储某一瞬时时刻，该时刻可以表示为日历日期和一天中的时间，并具有可配置的子秒级精度。
 
@@ -30,8 +28,7 @@ DateTime64(精度, [时区])
 
 注意：最大值的精度为 8。如果使用 9 位（纳秒级）的最大精度，则在 UTC 时区下支持的最大值为 `2262-04-11 23:47:16`。
 
-
-## 示例
+## 示例 {#examples}
 
 1. 创建一个包含 `DateTime64` 类型列的表，并向其中插入数据：
 
@@ -112,7 +109,6 @@ toDateTime64(timestamp, 3, 'Europe/London') AS lon_time,
 toDateTime64(timestamp, 3, 'Asia/Istanbul') AS istanbul_time
 FROM dt64;
 ```
-
 
 ```text
 ┌────────────────lon_time─┬───────────istanbul_time─┐

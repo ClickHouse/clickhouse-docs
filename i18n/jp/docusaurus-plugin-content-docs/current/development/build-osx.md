@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 
 
-# macOS 向けに macOS 上で ClickHouse をビルドする方法
+# macOS 向けに macOS 上で ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-macos-for-macos}
 
 :::info ClickHouse を自分でビルドする必要はありません！
 [Quick Start](https://clickhouse.com/#quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
@@ -22,7 +22,7 @@ ClickHouse は、macOS 10.15 (Catalina) 以降の macOS 上で、x86_64 (Intel) 
 
 
 
-## 前提条件をインストールする
+## 前提条件をインストールする {#install-prerequisites}
 
 まず、共通の[前提条件ドキュメント](developer-instruction.md)を参照してください。
 
@@ -53,7 +53,7 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# 生成されるバイナリは次の場所に作成されます: build/programs/clickhouse
+# 生成されるバイナリは次の場所に作成されます: build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
 ```
 
 :::note
@@ -62,7 +62,7 @@ cmake --build build
 :::
 
 
-## 注意点
+## 注意点 {#caveats}
 
 `clickhouse-server` を実行する場合は、システムの `maxfiles` 変数の値を増やしておいてください。
 

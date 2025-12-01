@@ -10,9 +10,7 @@ doc_type: 'guide'
 全球有大量数据存储在 Amazon S3 存储桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
 
-
-
-## 设置
+## 设置 {#setup}
 
 首先，创建一个虚拟环境：
 
@@ -42,8 +40,7 @@ ipython
 
 你也可以在 Python 脚本或常用的 Notebook 中使用这段代码。
 
-
-## 探索 Parquet 元数据
+## 探索 Parquet 元数据 {#exploring-parquet-metadata}
 
 我们将探索一个来自 [Amazon Reviews](/getting-started/example-datasets/amazon-reviews) 数据集的 Parquet 文件。
 但在此之前，先安装 `chDB`：
@@ -134,7 +131,6 @@ ARRAY JOIN tupleElement(rg, 'columns') AS c
 chdb.query(query, 'DataFrame')
 ```
 
-
 ```text
                  name  total_compressed_size  total_uncompressed_size                                                min                                                max
 0         评论日期                    493                      646                                              16455                                              16472
@@ -154,8 +150,7 @@ chdb.query(query, 'DataFrame')
 14        评论正文              145886383                232457911                                                                                              🚅 +🐧=💥 😀
 ```
 
-
-## 查询 Parquet 文件
+## 查询 Parquet 文件 {#querying-parquet-files}
 
 接下来，让我们来查询该文件的内容。
 我们可以通过调整上面的查询来移除 `ParquetMetadata`，然后例如计算所有评论中最常见的 `star_rating`：

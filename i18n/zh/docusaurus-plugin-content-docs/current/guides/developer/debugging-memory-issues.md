@@ -16,7 +16,7 @@ doc_type: 'guide'
 
 
 
-## 按峰值内存使用排序列出当前正在运行的进程
+## 按峰值内存使用排序列出当前正在运行的进程 {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -31,7 +31,7 @@ LIMIT 100;
 ```
 
 
-## 列出内存使用指标
+## 列出内存使用指标 {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -46,7 +46,7 @@ ORDER BY
 ```
 
 
-## 按当前内存使用情况列出表
+## 按当前内存使用情况列出表 {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -58,28 +58,28 @@ WHERE engine IN ('Memory','Set','Join');
 ```
 
 
-## 输出合并操作的总内存使用量
+## 输出合并操作的总内存使用量 {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
 
-## 输出当前正在运行的进程所使用的内存总量
+## 输出当前正在运行的进程所使用的内存总量 {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
 
-## 输出字典占用的内存总量
+## 输出字典占用的内存总量 {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
 
-## 输出主键和索引粒度所使用的内存总量
+## 输出主键和索引粒度所使用的内存总量 {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

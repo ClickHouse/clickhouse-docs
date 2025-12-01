@@ -18,13 +18,13 @@ import self_managed_06 from '@site/static/images/integrations/migration/self-man
 
 # Migrating between self-managed ClickHouse and ClickHouse Cloud
 
-<Image img={self_managed_01} size='md' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](/sql-reference/table-functions/remote) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
 ## Migrating from Self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
-<Image img={self_managed_02} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_02} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 :::note
 Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you just create a destination table (you can leave out the Engine parameter for this table, it will be automatically a ReplicatedMergeTree table),
@@ -85,7 +85,7 @@ CREATE TABLE db.table ...
 
 - Use the `remoteSecure` function to pull the data from the self-managed source
 
-<Image img={self_managed_03} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_03} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 ```sql
 INSERT INTO db.table SELECT * FROM
@@ -98,7 +98,7 @@ If the source system is not available from outside networks then you can push th
 
 - Use the `remoteSecure` function to push the data to the ClickHouse Cloud service
 
-<Image img={self_managed_04} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_04} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 :::tip Add the remote system to your ClickHouse Cloud service IP Access List
 In order for the `remoteSecure` function to connect to your ClickHouse Cloud service the IP Address of the remote system will need to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
@@ -114,7 +114,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 ## Migrating between ClickHouse Cloud services {#migrating-between-clickhouse-cloud-services}
 
-<Image img={self_managed_05} size='lg' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_05} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 Some example uses for migrating data between ClickHouse Cloud services:
 - Migrating data from a restored backup
@@ -122,7 +122,7 @@ Some example uses for migrating data between ClickHouse Cloud services:
 
 In this example there are two ClickHouse Cloud services, and they will be referred to as *source* and *destination*.  The data will be pulled from the source to the destination. Although you could push if you like, pulling is shown as it uses a read-only user.
 
-<Image img={self_managed_06} size='lg' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={self_managed_06} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
 There are a few steps in the migration:
 1. Identify one ClickHouse Cloud service to be the *source*, and the other as the *destination*

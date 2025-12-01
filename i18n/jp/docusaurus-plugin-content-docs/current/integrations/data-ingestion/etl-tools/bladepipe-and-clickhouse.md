@@ -21,7 +21,7 @@ import bp_ck_9 from '@site/static/images/integrations/data-ingestion/etl-tools/b
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# BladePipe を ClickHouse に接続する
+# BladePipe を ClickHouse に接続する {#connect-bladepipe-to-clickhouse}
 
 <PartnerBadge/>
 

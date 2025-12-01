@@ -6,7 +6,7 @@ title: 'kurtSamp'
 doc_type: 'reference'
 ---
 
-# kurtSamp
+# kurtSamp {#kurtsamp}
 
 计算序列的[样本峰度](https://en.wikipedia.org/wiki/Kurtosis)。
 

@@ -9,77 +9,70 @@ import TabItem from '@theme/TabItem';
 
 `clickhouse-jdbc` API は同期型であり、一般的により多くのオーバーヘッド（例：SQL の構文解析や型のマッピング／変換など）が発生します。パフォーマンスが重要な場合や、より直接的な方法で ClickHouse にアクセスしたい場合は、[clickhouse-client](/integrations/sql-clients/sql-console) の利用を検討してください。
 
-
 ## 環境要件 \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) バージョン 8 以上
+* [OpenJDK](https://openjdk.java.net) バージョン 8 以上
 
 ### セットアップ \{#setup\}
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-jdbc</artifactId>
+        <version>0.7.2</version>
+        <!-- すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください -->
+        <classifier>shaded-all</classifier>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-        <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.7.2</version>
-            <!-- すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください -->
-            <classifier>shaded-all</classifier>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください
+    implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle（Kotlin）">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください
-        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください
-        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+    // すべての依存関係を含む Uber JAR を使用します。より小さな JAR が必要な場合は classifier を http に変更してください
+    implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+    ```
+  </TabItem>
 </Tabs>
 
 バージョン `0.5.0` 以降では、クライアントライブラリにバンドルされている Apache HTTP Client を使用しています。共通で利用できるパッケージのバージョンが用意されていないため、ロギング用ライブラリを依存関係として追加する必要があります。
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.16</version>
+    </dependency>
+    ```
+  </TabItem>
 
-        ```xml
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
-        </dependency>
-        ```
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    ```
+  </TabItem>
 
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle（Kotlin）">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation("org.slf4j:slf4j-api:2.0.16")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation 'org.slf4j:slf4j-api:2.0.16'
-        ```
-
-    </TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    ```
+  </TabItem>
 </Tabs>
 
 ## 設定 \{#configuration\}
@@ -88,9 +81,9 @@ import TabItem from '@theme/TabItem';
 
 **URL 構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`。例えば次のとおりです:
 
-- `jdbc:ch://localhost` は `jdbc:clickhouse:http://localhost:8123` と同じです
-- `jdbc:ch:https://localhost` は `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT` と同じです
-- `jdbc:ch:grpc://localhost` は `jdbc:clickhouse:grpc://localhost:9100` と同じです
+* `jdbc:ch://localhost` は `jdbc:clickhouse:http://localhost:8123` と同じです
+* `jdbc:ch:https://localhost` は `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT` と同じです
+* `jdbc:ch:grpc://localhost` は `jdbc:clickhouse:grpc://localhost:9100` と同じです
 
 **接続プロパティ**:
 
@@ -113,13 +106,13 @@ JDBC ドライバーはクライアントライブラリと同じデータ形式
 
 :::note
 
-- AggregatedFunction - :warning: `SELECT * FROM table ...` をサポートしていません
-- Decimal - 一貫性を保つため、21.9 以降では `SET output_format_decimal_trailing_zeros=1` を設定してください
-- Enum - 文字列および整数の両方として扱うことができます
-- UInt64 - client-v1 では `long` にマッピングされます
-:::
+* AggregatedFunction - :warning: `SELECT * FROM table ...` をサポートしていません
+* Decimal - 一貫性を保つため、21.9 以降では `SET output_format_decimal_trailing_zeros=1` を設定してください
+* Enum - 文字列および整数の両方として扱うことができます
+* UInt64 - client-v1 では `long` にマッピングされます
+  :::
 
-## 接続の作成
+## 接続の作成 \{#creating-connection\}
 
 ```java
 String url = "jdbc:ch://my-server/system"; // デフォルトでHTTPプロトコルとポート8123を使用
@@ -132,8 +125,7 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-
-## 単純なステートメント
+## 単純なステートメント \{#simple-statement\}
 
 ```java showLineNumbers
 
@@ -146,8 +138,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-
-## Insert
+## Insert \{#insert\}
 
 :::note
 
@@ -166,8 +157,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 }
 ```
 
-
-### input table 関数を使用する場合
+### input table 関数を使用する場合 \{#with-input-table-function\}
 
 パフォーマンス面で非常に優れたオプションです。
 
@@ -186,8 +176,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 * 可能な限り [input 関数のドキュメント](/sql-reference/table-functions/input/) を利用する
 
-
-### プレースホルダーを使った挿入
+### プレースホルダーを使った挿入 \{#insert-with-placeholders\}
 
 このオプションは、小規模なインサートにのみ使用することを推奨します。クライアント側でパースされる長大な SQL 式が必要になり、その処理で CPU とメモリを消費するためです。
 
@@ -202,8 +191,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 }
 ```
 
-
-## DateTime とタイムゾーンの扱い
+## DateTime とタイムゾーンの扱い \{#handling-datetime-and-time-zones\}
 
 `java.sql.Timestamp` の代わりに `java.time.LocalDateTime` または `java.time.OffsetDateTime` を使用し、`java.sql.Date` の代わりには `java.time.LocalDate` を使用してください。
 
@@ -218,8 +206,7 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 }
 ```
 
-
-## `AggregateFunction` の扱い
+## `AggregateFunction` の扱い \{#handling-aggregatefunction\}
 
 :::note
 現時点では、`groupBitmap` のみがサポートされています。
@@ -267,8 +254,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 <br />
 
-
-## HTTP ライブラリの設定
+## HTTP ライブラリの設定 \{#configuring-http-library\}
 
 ClickHouse JDBC コネクタは、次の 3 種類の HTTP ライブラリをサポートしています。[`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)、[`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html)、および [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/) です。
 
@@ -292,12 +278,11 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 <br />
 
-
 ## SSL を使用して ClickHouse に接続する \{#connect-to-clickhouse-with-ssl\}
 
 SSL を使用して ClickHouse へのセキュアな JDBC 接続を確立するには、JDBC プロパティに SSL パラメータを含めるように設定する必要があります。通常は、JDBC URL または Properties オブジェクトにおいて `sslmode` や `sslrootcert` などの SSL プロパティを指定します。
 
-## SSL プロパティ
+## SSL プロパティ \{#ssl-properties\}
 
 | Name                 | Default Value | Optional Values | Description                                          |
 | -------------------- | ------------- | --------------- | ---------------------------------------------------- |
@@ -330,8 +315,7 @@ SSL を使用して ClickHouse へのセキュアな JDBC 接続を確立する�
   }
 ```
 
-
-## 大規模な INSERT 時の JDBC タイムアウトの解消
+## 大規模な INSERT 時の JDBC タイムアウトの解消 \{#resolving-jdbc-timeout-on-large-inserts\}
 
 ClickHouse で長時間実行される大規模な INSERT を行う際、次のような JDBC タイムアウトエラーが発生する場合があります：
 
@@ -341,18 +325,17 @@ ClickHouse で長時間実行される大規模な INSERT を行う際、次の�
 
 これらのエラーはデータ挿入プロセスを阻害し、システムの安定性に影響を及ぼす可能性があります。この問題に対処するには、クライアント OS 側のいくつかのタイムアウト設定を調整する必要があります。
 
-
 ### Mac OS \{#mac-os\}
 
 Mac OS では、以下の設定を調整することで問題を解消できます。
 
-- `net.inet.tcp.keepidle`: 60000
-- `net.inet.tcp.keepintvl`: 45000
-- `net.inet.tcp.keepinit`: 45000
-- `net.inet.tcp.keepcnt`: 8
-- `net.inet.tcp.always_keepalive`: 1
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
 
-### Linux
+### Linux \{#linux\}
 
 Linux では、同等の設定だけでは問題が解決しない場合があります。Linux におけるソケットのキープアライブ設定の扱いが異なるため、追加の手順が必要です。次の手順に従ってください。
 

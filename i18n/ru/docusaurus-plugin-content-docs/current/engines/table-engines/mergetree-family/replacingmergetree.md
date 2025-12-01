@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблиц ReplacingMergeTree
+# Движок таблиц ReplacingMergeTree {#replacingmergetree-table-engine}
 
 Этот движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (раздел `ORDER BY` в определении таблицы, а не `PRIMARY KEY`).
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -47,9 +47,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 :::
 
 
-## Параметры ReplacingMergeTree
+## Параметры ReplacingMergeTree {#replacingmergetree-parameters}
 
-### `ver`
+### `ver` {#ver}
 
 `ver` — столбец с номером версии. Тип `UInt*`, `Date`, `DateTime` или `DateTime64`. Необязательный параметр.
 
@@ -101,7 +101,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted`
+### `is_deleted` {#is_deleted}
 
 `is_deleted` — имя столбца, используемого во время слияния для определения, представляет ли строка состояние или подлежит удалению; `1` — строка-удаление, `0` — строка-состояние.
 
@@ -190,7 +190,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## Дедупликация при выполнении запроса &amp; FINAL
+## Дедупликация при выполнении запроса &amp; FINAL {#query-time-de-duplication--final}
 
 Во время слияния ReplacingMergeTree определяет дублирующиеся строки, используя значения столбцов `ORDER BY` (указанных при создании таблицы) в качестве уникального идентификатора и сохраняя только самую позднюю версию. Однако это обеспечивает лишь корректность «в конечном счёте» — нет гарантии, что строки будут дедуплицированы, и полагаться на это не следует. Поэтому запросы могут возвращать некорректные результаты, так как строки с обновлениями и удалениями учитываются в запросах.
 

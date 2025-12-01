@@ -71,7 +71,7 @@ Shared Catalog 内のすべてのメタデータおよび DDL クエリ履歴は
 
 
 
-## ClickHouse Cloud での利用方法
+## ClickHouse Cloud での利用方法 {#usage-in-clickhouse-cloud}
 
 エンドユーザー側では、Shared Catalog と Shared データベースエンジンを利用するために特別な設定は必要ありません。データベースの作成方法はこれまでと同じです。
 

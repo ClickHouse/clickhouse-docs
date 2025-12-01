@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Использование формата Native и бинарных форматов в ClickHouse
+# Использование формата Native и бинарных форматов в ClickHouse {#using-native-and-binary-formats-in-clickhouse}
 
 ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и эффективность использования дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
 
@@ -18,7 +18,7 @@ ClickHouse поддерживает несколько бинарных форм
 
 
 
-## Экспорт в нативном формате ClickHouse
+## Экспорт в нативном формате ClickHouse {#exporting-in-a-native-clickhouse-format}
 
 Наиболее эффективный формат данных для экспорта и импорта между узлами ClickHouse — формат [Native](/interfaces/formats/Native). Экспорт выполняется с помощью оператора `INTO OUTFILE`:
 
@@ -29,7 +29,7 @@ INTO OUTFILE 'data.clickhouse' FORMAT Native
 
 Это создаст файл [data.clickhouse](assets/data.clickhouse) в нативном формате.
 
-### Импорт из нативного формата
+### Импорт из нативного формата {#importing-from-a-native-format}
 
 Чтобы импортировать данные, можно использовать [file()](/sql-reference/table-functions/file.md) для небольших файлов или в исследовательских целях:
 
@@ -57,7 +57,7 @@ FROM INFILE 'data.clickhouse'
 FORMAT Native
 ```
 
-### Сжатие в формате Native
+### Сжатие в формате Native {#native-format-compression}
 
 Мы также можем включить сжатие при экспорте данных в формат Native, как и для большинства других форматов, с помощью клаузы `COMPRESSION`:
 
@@ -78,7 +78,7 @@ FORMAT Native
 ```
 
 
-## Экспорт в RowBinary
+## Экспорт в RowBinary {#exporting-to-rowbinary}
 
 Ещё один поддерживаемый двоичный формат — [RowBinary](/interfaces/formats/RowBinary), который позволяет импортировать и экспортировать данные в виде строк в двоичном формате:
 
@@ -89,7 +89,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 
 Это создаст файл [data.binary](assets/data.binary) в формате бинарных строк.
 
-### Исследование файлов RowBinary
+### Исследование файлов RowBinary {#exploring-rowbinary-files}
 
 Автоматическое определение схемы для этого формата не поддерживается, поэтому, чтобы исследовать данные перед загрузкой, необходимо явно задать схему:
 
@@ -111,7 +111,7 @@ LIMIT 5
 
 Рассмотрите использование [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames), который также добавляет строку заголовка со списком столбцов. [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) дополнительно добавит строку заголовка с типами столбцов.
 
-### Импорт из файлов RowBinary
+### Импорт из файлов RowBinary {#importing-from-rowbinary-files}
 
 Чтобы загрузить данные из файла RowBinary, можно использовать конструкцию `FROM INFILE`:
 
@@ -122,7 +122,7 @@ FORMAT RowBinary
 ```
 
 
-## Импорт одного двоичного значения с помощью RawBLOB
+## Импорт одного двоичного значения с помощью RawBLOB {#importing-single-binary-value-using-rawblob}
 
 Предположим, что мы хотим прочитать весь двоичный файл и сохранить его в поле таблицы.
 В таком случае можно использовать [формат RawBLOB](/interfaces/formats/RawBLOB). Этот формат может использоваться только с таблицей с одним столбцом:
@@ -149,7 +149,7 @@ SELECT length(data) FROM images
 └──────────────┘
 ```
 
-### Экспорт данных в формате RawBLOB
+### Экспорт данных в формате RawBLOB {#exporting-rawblob-data}
 
 Этот формат также можно использовать для экспорта данных с помощью конструкции `INTO OUTFILE`:
 
@@ -162,7 +162,7 @@ FORMAT RawBLOB
 Обратите внимание, что нам пришлось использовать `LIMIT 1`, так как экспорт более чем одного значения приведёт к повреждению файла.
 
 
-## MessagePack
+## MessagePack {#messagepack}
 
 ClickHouse поддерживает импорт и экспорт данных в формат [MessagePack](https://msgpack.org/) с использованием формата [MsgPack](/interfaces/formats/MsgPack). Чтобы экспортировать данные в формат MessagePack:
 
@@ -182,7 +182,7 @@ FORMAT MsgPack
 ```
 
 
-## Protocol Buffers
+## Protocol Buffers {#protocol-buffers}
 
 <CloudNotSupportedBadge />
 
@@ -210,7 +210,7 @@ SETTINGS format_schema = 'schema:MessageType'
 Это сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, включая вложенные сообщения. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats/ProtobufSingle) для работы с одним сообщением Protocol Buffer (в этом случае разделители длины будут опущены).
 
 
-## Cap&#39;n Proto
+## Cap&#39;n Proto {#capn-proto}
 
 <CloudNotSupportedBadge />
 

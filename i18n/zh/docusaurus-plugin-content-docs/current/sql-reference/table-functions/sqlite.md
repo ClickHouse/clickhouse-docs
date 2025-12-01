@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# sqlite 表函数
+# sqlite 表函数 {#sqlite-table-function}
 
 用于对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
@@ -35,7 +35,7 @@ sqlite('db_path', 'table_name')
 
 
 
-## 示例
+## 示例 {#example}
 
 查询：
 

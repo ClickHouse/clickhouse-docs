@@ -7,20 +7,16 @@ keywords: ['EXCEPT', '句']
 doc_type: 'reference'
 ---
 
+# EXCEPT 句 {#except-clause}
 
+> `EXCEPT` 句は、最初のクエリの結果から 2 つ目のクエリの結果を除外した行だけを返します。
 
-# EXCEPT 句
+* 両方のクエリは、同じ順序・データ型で同数の列を持っている必要があります。
+* `EXCEPT` の結果には重複行が含まれる場合があります。これを避けたい場合は `EXCEPT DISTINCT` を使用します。
+* `EXCEPT` が複数ある場合は、かっこで明示的にグループ化しない限り、左から右の順に評価されます。
+* `EXCEPT` 演算子の優先順位は `UNION` 句と同じで、`INTERSECT` 句よりも低くなります。
 
-> `EXCEPT` 句は、最初のクエリの結果から 2 つ目のクエリの結果を除外した行だけを返します。 
-
-- 両方のクエリは、同じ順序・データ型で同数の列を持っている必要があります。
-- `EXCEPT` の結果には重複行が含まれる場合があります。これを避けたい場合は `EXCEPT DISTINCT` を使用します。
-- `EXCEPT` が複数ある場合は、かっこで明示的にグループ化しない限り、左から右の順に評価されます。 
-- `EXCEPT` 演算子の優先順位は `UNION` 句と同じで、`INTERSECT` 句よりも低くなります。
-
-
-
-## 構文
+## 構文 {#syntax}
 
 ```sql
 SELECT column1 [, column2 ]
@@ -44,12 +40,11 @@ FROM table1
 [WHERE condition]
 ```
 
-
-## 例
+## 例 {#examples}
 
 このセクションの例では、`EXCEPT` 句の使用方法を示します。
 
-### `EXCEPT` 句を使用した数値のフィルタリング
+### `EXCEPT` 句を使用した数値のフィルタリング {#filtering-numbers-using-the-except-clause}
 
 次は、1 から 10 までの数のうち、3 から 8 までの数には *含まれない* ものを返す簡単な例です。
 
@@ -70,7 +65,7 @@ FROM numbers(3, 6)
 └────────┘
 ```
 
-### `EXCEPT()` を使用して特定のカラムを除外する
+### `EXCEPT()` を使用して特定のカラムを除外する {#excluding-specific-columns-using-except}
 
 `EXCEPT()` は、結果セットからカラムを素早く除外するために使用できます。例えば、以下の例のように、テーブルから特定のカラムのみを除外し、それ以外のすべてのカラムを選択したい場合に利用できます。
 
@@ -98,7 +93,6 @@ LIMIT 5
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
 ```
-
 
 ┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is&#95;obsolete─┬─tier───────┐
 
@@ -141,7 +135,6 @@ WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
 ````
-
 
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
@@ -196,7 +189,7 @@ WHERE price < 10;
 
 つまり、私たちが保有している4つの暗号通貨のうち、Bitcoinだけが一度も$10を下回ったことがない（この例で扱っている限定的なデータに基づく）という意味です。
 
-### `EXCEPT DISTINCT` の使用
+### `EXCEPT DISTINCT` の使用 {#using-except-and-intersect-with-cryptocurrency-data}
 
 前のクエリでは、結果に複数のBitcoinの保有行が含まれていたことに注目してください。`EXCEPT` に `DISTINCT` を追加すると、結果から重複する行を取り除くことができます。
 

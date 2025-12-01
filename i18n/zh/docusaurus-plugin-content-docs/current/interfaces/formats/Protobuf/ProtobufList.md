@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 例如：
 

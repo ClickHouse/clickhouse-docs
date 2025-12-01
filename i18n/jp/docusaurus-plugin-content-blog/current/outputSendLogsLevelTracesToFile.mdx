@@ -10,12 +10,11 @@ keywords: ['ログレベルのトレース', 'clickhouse-client']
 
 {/* 省略 */}
 
-
 ## Question \{#question\}
 
 複数のステートメントや複数行に対して、ClickHouse Client を使用して `send_logs_level` の出力結果をファイルに出力するにはどうすればよいですか？
 
-## 回答
+## 回答 \{#answer\}
 
 * たとえば `send_logs_level_example.sql` という名前で、ステートメントを記述した SQL ファイルを作成します。
 
@@ -31,7 +30,6 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 * 出力例:
-
 
 ```
 [c-azure-gk-72-server-tojnalg-0] 2024.08.13 21:31:28.437263 [ 1247 ] {4b347939-db0f-48f8-9550-1ccc7d591c44} <Debug> executeQuery: (from 71.56.215.107:47946) SET send_logs_level = 'trace'; (stage: Complete)
@@ -61,4 +59,4 @@ cat send_logs_level_example.sql | ./clickhouse client -n -m --host abc123.us-wes
 ```
 
 参考リンク:
-https://clickhouse.com/docs/operations/settings/settings#send_logs_level
+https://clickhouse.com/docs/operations/settings/settings#send&#95;logs&#95;level

@@ -7,13 +7,9 @@ title: 'quantileExact 函数'
 doc_type: 'reference'
 ---
 
+# quantileExact 精确分位数函数 {#quantileexact-functions}
 
-
-# quantileExact 精确分位数函数
-
-
-
-## quantileExact
+## quantileExact {#quantileexact}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -77,8 +73,7 @@ SELECT quantileExact(number) FROM numbers(10)
 └───────────────────────┘
 ```
 
-
-## quantileExactLow
+## quantileExactLow {#quantileexactlow}
 
 与 `quantileExact` 类似，此函数计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -131,14 +126,13 @@ SELECT quantileExactLow(number) FROM numbers(10)
 
 结果：
 
-
 ```text
 ┌─quantileExactLow(number)─┐
 │                        4 │
 └──────────────────────────┘
 ```
 
-## quantileExactHigh
+## quantileExactHigh {#quantileexacthigh}
 
 与 `quantileExact` 类似，该函数计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -189,8 +183,7 @@ SELECT quantileExactHigh(number) FROM numbers(10)
 └───────────────────────────┘
 ```
 
-
-## quantileExactExclusive
+## quantileExactExclusive {#quantileexactexclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -242,8 +235,7 @@ SELECT quantileExactExclusive(0.6)(x) FROM (SELECT number AS x FROM num);
 └────────────────────────────────┘
 ```
 
-
-## quantileExactInclusive
+## quantileExactInclusive {#quantileexactinclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

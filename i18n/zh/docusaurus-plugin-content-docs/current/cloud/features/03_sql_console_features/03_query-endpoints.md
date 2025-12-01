@@ -10,8 +10,7 @@ doc_type: 'guide'
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link'
 
-
-# 查询 API 端点
+# 查询 API 端点 {#query-api-endpoints}
 
 构建交互式数据驱动应用不仅需要高速数据库、结构良好的数据以及经过优化的查询，
 前端和微服务同样需要一种简单的方式来使用这些查询返回的数据，最好是通过结构清晰的 API。

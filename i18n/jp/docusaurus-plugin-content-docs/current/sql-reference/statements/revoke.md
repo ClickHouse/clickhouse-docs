@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# REVOKE ステートメント
+# REVOKE ステートメント {#revoke-statement}
 
 ユーザーまたはロールから権限を取り消します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 **ユーザーから権限を取り消す**
 
@@ -40,7 +40,7 @@ REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | rol
 
 
 
-## 例
+## 例 {#examples}
 
 `john` ユーザーアカウントに、`accounts` 以外のすべてのデータベースから `SELECT` できる権限を付与します。
 

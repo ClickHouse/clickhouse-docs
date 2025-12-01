@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 :::
 
 
-## trips テーブルを作成する
+## trips テーブルを作成する {#create-the-table-trips}
 
 まずはタクシー乗車データ用のテーブルを作成します。
 
@@ -125,7 +125,7 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## サンプルクエリ
+## サンプルクエリ {#sample-queries}
 
 以下のクエリは、前述のサンプルに対して実行されます。ユーザーは、以下のクエリを修正してテーブル `nyc_taxi.trips` を使用することで、完全なデータセットに対してサンプルクエリを [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上で実行できます。
 
@@ -182,7 +182,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 準備済みパーティションのダウンロード
+## 準備済みパーティションのダウンロード {#download-of-prepared-partitions}
 
 :::note
 以下の手順では、元のデータセットに関する情報と、準備済みパーティションをセルフマネージドな ClickHouse サーバー環境にロードする方法を説明します。
@@ -195,9 +195,9 @@ ORDER BY passenger_count ASC
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
-# チェックサムを検証する
+# チェックサムを検証する {#validate-the-checksum}
 $ md5sum trips_mergetree.tar
-# チェックサムは次の値と一致する必要があります: f3b8d469b41d9a82da064ded7245d12c
+# チェックサムは次の値と一致する必要があります: f3b8d469b41d9a82da064ded7245d12c {#checksum-should-be-equal-to-f3b8d469b41d9a82da064ded7245d12c}
 $ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # ClickHouse データディレクトリへのパス
 $ # 展開されたデータの権限を確認し、必要に応じて修正する
 $ sudo service clickhouse-server restart
@@ -209,7 +209,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 :::
 
 
-## 単一サーバー環境での結果
+## 単一サーバー環境での結果 {#results-on-single-server}
 
 Q1:
 

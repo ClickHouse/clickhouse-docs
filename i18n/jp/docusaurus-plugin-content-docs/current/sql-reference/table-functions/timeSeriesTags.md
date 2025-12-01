@@ -7,7 +7,7 @@ title: 'timeSeriesTags'
 doc_type: 'reference'
 ---
 
-# timeSeriesTags テーブル関数
+# timeSeriesTags テーブル関数 {#timeseriestags-table-function}
 
 `timeSeriesTags(db_name.time_series_table)` — テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) エンジンである `db_name.time_series_table` テーブルで使用される [tags](../../engines/table-engines/integrations/time-series.md#tags-table) テーブルを返します。
 

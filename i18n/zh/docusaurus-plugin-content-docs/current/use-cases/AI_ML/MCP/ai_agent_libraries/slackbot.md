@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# 如何使用 ClickHouse MCP Server 构建 SlackBot 代理
+# 如何使用 ClickHouse MCP Server 构建 SlackBot 代理 {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
 
 在本指南中，您将学习如何构建一个 [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) 代理。
 这个机器人允许您在 Slack 中使用自然语言直接查询您的 ClickHouse 数据。它基于
@@ -75,7 +75,7 @@ doc_type: 'guide'
 
 
 
-## 添加环境变量 (`.env`)
+## 添加环境变量 (`.env`) {#add-env-vars}
 
 在项目根目录创建一个 `.env` 文件，并加入以下环境变量，
 这些变量将使你的应用能够连接到 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/)。

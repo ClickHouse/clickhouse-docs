@@ -18,8 +18,7 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-
-# Jupyter Notebook と chDB を使ったデータ探索
+# Jupyter Notebook と chDB を使ったデータ探索 {#exploring-data-with-jupyter-notebooks-and-chdb}
 
 このガイドでは、[chDB](/chdb)（ClickHouse を基盤とした高速なインプロセス SQL OLAP エンジン）を利用して、Jupyter Notebook から ClickHouse Cloud 上のデータセットを探索する方法を学びます。
 
@@ -43,7 +42,7 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 このガイドでは、ClickHouse Cloud 上のスターターデータセットの 1 つとして提供されている UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
-## セットアップ
+## セットアップ {#setup}
 
 既存の ClickHouse Cloud サービスにこのデータセットを追加するには、アカウント情報で [console.clickhouse.cloud](https://console.clickhouse.cloud/) にログインします。
 
@@ -112,8 +111,7 @@ result = chdb.query("SELECT 'Hello, ClickHouse!' as message")
 print(result)
 ```
 
-
-## データの探索
+## データの探索 {#exploring-the-data}
 
 UK price paid データセットの準備と、Jupyter Notebook 上での chDB の起動が完了したので、ここからデータの探索を始めましょう。
 
@@ -131,7 +129,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# .env ファイルから環境変数を読み込む
+# .env ファイルから環境変数を読み込む {#load-environment-variables-from-env-file}
 load_dotenv()
 
 username = os.environ.get('CLICKHOUSE_USER')
@@ -202,7 +200,7 @@ plt.xlabel('Year')
 plt.ylabel('Price (£)')
 plt.title('Price of London property over time')
 
-# ラベルの重複を避けるため、2年ごとに表示
+# ラベルの重複を避けるため、2年ごとに表示 {#show-every-2nd-year-to-avoid-crowding}
 years_to_show = df['year'][::2]  # 2年ごと
 plt.xticks(years_to_show, rotation=45)
 
@@ -236,7 +234,6 @@ ORDER BY year;
 df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
-
 
 <details>
   <summary>1 回のステップで複数のソースから読み込む</summary>
@@ -275,10 +272,10 @@ df_2.head()
 新しいセルで次のコマンドを実行します:
 
 ```python
-# 2つのy軸を持つ図を作成
+# 2つのy軸を持つ図を作成 {#create-a-figure-with-two-y-axes}
 fig, ax1 = plt.subplots(figsize=(14, 8))
 
-# 左側のy軸に販売戸数をプロット
+# 左側のy軸に販売戸数をプロット {#plot-houses-sold-on-the-left-y-axis}
 color = 'tab:blue'
 ax1.set_xlabel('Year')
 ax1.set_ylabel('販売戸数', color=color)
@@ -286,28 +283,28 @@ ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='販�
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.grid(True, alpha=0.3)
 
-# 価格データ用の第2y軸を作成
+# 価格データ用の第2y軸を作成 {#create-a-second-y-axis-for-price-data}
 ax2 = ax1.twinx()
 color = 'tab:red'
 ax2.set_ylabel('平均価格(£)', color=color)
 
-# 2019年までの価格データをプロット
+# 2019年までの価格データをプロット {#plot-price-data-up-until-2019}
 ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='平均価格', linewidth=2)
 ax2.tick_params(axis='y', labelcolor=color)
 
-# 価格軸を通貨形式でフォーマット
+# 価格軸を通貨形式でフォーマット {#format-price-axis-with-currency-formatting}
 ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'£{x:,.0f}'))
 
-# タイトルを設定し、2年ごとに表示
+# タイトルを設定し、2年ごとに表示 {#set-title-and-show-every-2nd-year}
 plt.title('ロンドン住宅市場:販売量と価格の推移', fontsize=14, pad=20)
 
-# 両データセットで2019年までの年のみを使用
+# 両データセットで2019年までの年のみを使用 {#use-years-only-up-to-2019-for-both-datasets}
 all_years = sorted(list(set(df_2[df_2['year'] <= 2019]['year']).union(set(df[df['year'] <= 2019]['year']))))
 years_to_show = all_years[::2]  # 2年ごと
 ax1.set_xticks(years_to_show)
 ax1.set_xticklabels(years_to_show, rotation=45)
 
-# 凡例を追加
+# 凡例を追加 {#add-legends}
 ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 
@@ -322,7 +319,6 @@ plt.show()
 一方で価格は、1995年の約£150,000から2005年までに約£300,000へと、着実かつ一貫した成長を示しています。
 2012年以降は成長が大きく加速し、概ね£400,000から2019年までに£1,000,000を超える水準まで急激に上昇しています。
 販売件数とは異なり、価格は2008年の危機の影響をほとんど受けず、上昇基調を維持し続けています。驚くべき動きです。
-
 
 ## まとめ {#summary}
 

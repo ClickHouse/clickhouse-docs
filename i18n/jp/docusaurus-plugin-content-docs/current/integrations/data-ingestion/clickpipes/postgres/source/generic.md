@@ -9,7 +9,7 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 
 
 
-# 汎用的な Postgres ソースのセットアップガイド
+# 汎用的な Postgres ソースのセットアップガイド {#generic-postgres-source-setup-guide}
 
 :::info
 
@@ -58,7 +58,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 
 
 
-## 権限とパブリケーションを持つユーザーの作成
+## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
 CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成し、
 さらにレプリケーションに使用するパブリケーションも作成します。
@@ -101,7 +101,7 @@ CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成�
 
 
 
-## `max_slot_wal_keep_size` を増やす
+## `max_slot_wal_keep_size` を増やす {#increase-max_slot_wal_keep_size}
 
 これは、大きなトランザクションやコミットによってレプリケーションスロットが失われてしまうことを防ぐために推奨される構成変更です。
 

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# 查询条件缓存
+# 查询条件缓存 {#query-condition-cache}
 
 :::note
 查询条件缓存仅在 [enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) 设置为 true 时生效，这是默认值。
@@ -45,7 +45,7 @@ ClickHouse 提供了多种优化技术来针对这类查询模式进行优化。
 
 
 
-## 配置项与用法
+## 配置项与用法 {#configuration-settings-and-usage}
 
 设置项 [use&#95;query&#95;condition&#95;cache](settings/settings#use_query_condition_cache) 用于控制特定查询或当前会话中的所有查询是否使用查询条件缓存。
 

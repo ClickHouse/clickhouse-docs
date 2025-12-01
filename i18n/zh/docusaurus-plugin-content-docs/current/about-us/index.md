@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['关于', '概述', '介绍']
 ---
 
-# 关于 ClickHouse
+# 关于 ClickHouse {#about-clickhouse}
 
 在本节文档中可以找到关于 ClickHouse 的相关信息。请参阅下方目录表，查看本节文档所包含页面的列表。
 

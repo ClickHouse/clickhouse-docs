@@ -8,7 +8,7 @@ keywords: ['DROP PARTITION', '删除分区', '删除分区', '移除分区', '�
 doc_type: 'reference'
 ---
 
-## Background
+## Background \{#background\}
 
 在创建表时，通过 `PARTITION BY` 子句来指定分区。该子句可以包含针对任意列的 SQL 表达式，其结果将决定每一行被发送到哪个分区。
 
@@ -33,8 +33,7 @@ PARTITION BY toYear(CreationDate)
 
 在 ClickHouse 中，分区原则上应被视为一种数据管理功能，而不是查询优化技术。通过基于某个键对数据进行逻辑划分，可以对每个分区进行独立操作，例如删除。这样，用户就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区（即数据子集），或[让数据过期/从集群中高效删除数据](/sql-reference/statements/alter/partition)。
 
-
-## 删除分区
+## 删除分区 \{#drop-partitions\}
 
 `ALTER TABLE ... DROP PARTITION` 提供了一种低成本的方式来删除整个分区。
 

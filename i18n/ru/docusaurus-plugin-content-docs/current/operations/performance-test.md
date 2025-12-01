@@ -7,14 +7,13 @@ title: 'Как протестировать оборудование с помо
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
 Вы можете запустить базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
 
-
-## Автоматизированный запуск
+## Автоматизированный запуск {#automated-run}
 
 Вы можете запустить бенчмарк одним скриптом.
 

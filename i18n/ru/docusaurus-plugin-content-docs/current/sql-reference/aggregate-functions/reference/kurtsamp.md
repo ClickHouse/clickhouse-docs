@@ -6,7 +6,7 @@ title: 'kurtSamp'
 doc_type: 'reference'
 ---
 
-# kurtSamp
+# kurtSamp {#kurtsamp}
 
 Вычисляет [выборочный эксцесс](https://ru.wikipedia.org/wiki/Эксцесс_распределения) последовательности.
 

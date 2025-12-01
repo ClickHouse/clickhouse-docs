@@ -6,7 +6,7 @@ title: 'rankCorr'
 doc_type: 'reference'
 ---
 
-# rankCorr
+# rankCorr {#rankcorr}
 
 順位相関係数を計算します。
 

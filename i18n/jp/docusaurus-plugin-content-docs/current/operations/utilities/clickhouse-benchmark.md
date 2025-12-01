@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-benchmark
+# clickhouse-benchmark {#clickhouse-benchmark}
 
 ClickHouse サーバーに接続し、指定したクエリを繰り返し送信します。
 
@@ -87,7 +87,7 @@ clickhouse-benchmark [keys] < queries_file;
 
 
 
-## 出力
+## 出力 {#clickhouse-benchmark-output}
 
 デフォルトでは、`clickhouse-benchmark` は各 `--delay` 間隔ごとにレポートを出力します。
 
@@ -139,7 +139,7 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
 
 
 
-## 例
+## 例 {#clickhouse-benchmark-example}
 
 ```bash
 $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhouse-benchmark --host=localhost --port=9001 --host=localhost --port=9000 -i 10

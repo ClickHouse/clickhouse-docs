@@ -6,7 +6,7 @@ title: 'UNION 句'
 doc_type: 'reference'
 ---
 
-# UNION 句
+# UNION 句 {#union-clause}
 
 `UNION` は、`UNION ALL` または `UNION DISTINCT` を明示的に指定して使用できます。
 

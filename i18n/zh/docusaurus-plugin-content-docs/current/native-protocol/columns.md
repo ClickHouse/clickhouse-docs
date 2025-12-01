@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 列类型
+# 列类型 {#column-types}
 
 有关通用说明，请参阅 [数据类型](/sql-reference/data-types/)。
 
@@ -77,7 +77,7 @@ Tuple 只是一个由列组成的数组。比如，Tuple(String, UInt8) 就是�
 
 
 
-## Nullable
+## Nullable {#nullable}
 
 `Nullable(T)` 由 `Nulls ColUInt8` 和 `Values T` 构成，且二者的行数相同。
 
@@ -101,7 +101,7 @@ Tuple 只是一个由列组成的数组。比如，Tuple(String, UInt8) 就是�
 
 
 
-## `LowCardinality` 类型
+## `LowCardinality` 类型 {#low-cardinality}
 
 `LowCardinality(T)` 由 `Index T` 和 `Keys K` 组成，
 其中 `K` 是 (UInt8, UInt16, UInt32, UInt64) 之一，具体取决于 `Index` 的大小。

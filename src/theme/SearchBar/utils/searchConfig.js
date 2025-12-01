@@ -128,9 +128,10 @@ export function transformSearchItems(items, options) {
     // For English, baseUrl is /docs/, so we want /tutorial
 
     try {
-      // Parse the URL to safely extract the pathname
+      // Parse the URL to safely extract the pathname and hash
       const urlObj = new URL(url);
       const pathname = urlObj.pathname;
+      const hash = urlObj.hash;
 
       if (currentLocale !== 'en') {
         // Remove /docs/{locale} prefix, keeping the leading slash
@@ -151,6 +152,9 @@ export function transformSearchItems(items, options) {
           url = pathname;
         }
       }
+
+      // Append the hash back to the URL
+      url += hash;
     } catch (e) {
       // If URL parsing fails, assume it's already a relative path
       // and use the original transformation logic as fallback

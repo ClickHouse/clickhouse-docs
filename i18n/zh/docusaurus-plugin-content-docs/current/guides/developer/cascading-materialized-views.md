@@ -6,13 +6,11 @@ keywords: ['物化视图', '聚合']
 doc_type: 'guide'
 ---
 
-
-
-# 级联物化视图
+# 级联物化视图 {#cascading-materialized-views}
 
 本示例演示如何创建一个物化视图，然后在其基础上再级联创建第二个物化视图。在本页中，你将看到具体操作步骤、多种可能的使用方式以及相应的限制。针对不同用例，可以通过创建一个以另一个物化视图作为数据源的物化视图来实现。
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 <br />
 
@@ -27,15 +25,13 @@ doc_type: 'guide'
 
 你可以选择以下选项之一：
 
-- 编写在 `SELECT` 请求期间读取并聚合数据的查询
-- 在数据摄取时将数据预处理为新格式
-- 在数据摄取时将数据预处理为特定聚合形式。
+* 编写在 `SELECT` 请求期间读取并聚合数据的查询
+* 在数据摄取时将数据预处理为新格式
+* 在数据摄取时将数据预处理为特定聚合形式。
 
 使用物化视图来预处理数据可以减少 ClickHouse 需要处理的数据量和计算量，从而加快你的 `SELECT` 请求。
 
-
-
-## 物化视图的源表
+## 物化视图的源表 {#source-table-for-the-materialized-views}
 
 创建源表。因为我们的目标是对聚合后的数据进行报表分析，而不是保留每一条原始记录，我们可以对传入数据进行解析，将信息传递给物化视图，然后丢弃实际的原始数据。这样既能满足我们的目标，又能节省存储空间，因此我们将使用 `Null` 表引擎。
 
@@ -57,8 +53,7 @@ ENGINE = Null
 你可以在 Null 表上创建物化视图。这样写入该表的数据会影响视图，但原始数据本身仍然会被丢弃。
 :::
 
-
-## 每月聚合表和物化视图
+## 每月聚合表和物化视图 {#monthly-aggregated-table-and-materialized-view}
 
 对于第一个物化视图，我们需要先创建 `Target` 表。本例中，该表为 `analytics.monthly_aggregated_data`，用于按月份和域名存储浏览次数的总和。
 
@@ -89,8 +84,7 @@ GROUP BY
     month
 ```
 
-
-## 按年聚合的表和物化视图
+## 按年聚合的表和物化视图 {#yearly-aggregated-table-and-materialized-view}
 
 现在我们将创建第二个物化视图，它将关联到我们之前的目标表 `monthly_aggregated_data`。
 
@@ -135,8 +129,7 @@ GROUP BY
 如果你使用的是 CollapsingMergeTree、ReplacingMergeTree 或 SummingMergeTree，并且计划创建级联物化视图，那么你需要了解此处描述的这些限制。
 :::
 
-
-## 示例数据
+## 示例数据 {#sample-data}
 
 现在我们可以通过插入一些数据来测试我们的级联物化视图：
 
@@ -162,8 +155,7 @@ Ok.
 
 我们使用了一个小型数据集，以便能够跟踪结果并与预期进行对比。一旦您在小数据集上的流程验证无误，就可以扩展到处理更大规模的数据。
 
-
-## 结果
+## 结果 {#results}
 
 如果你尝试通过选择 `sumCountViews` 字段来查询目标表，在某些终端中会看到其二进制形式，因为该值不是以数字形式存储的，而是作为 AggregateFunction 类型存储的。
 要获得聚合的最终结果，你应使用 `-Merge` 后缀。
@@ -260,8 +252,7 @@ GROUP BY
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-
-## 将多个源表合并到单个目标表
+## 将多个源表合并到单个目标表 {#combining-multiple-source-tables-to-single-target-table}
 
 物化视图也可以用于将多个源表合并到同一个目标表中。这对于创建类似 `UNION ALL` 逻辑的物化视图非常有用。
 

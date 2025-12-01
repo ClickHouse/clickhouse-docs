@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['развертывание', 'архитектура', 'репликация', 'шардинг', 'настройка кластера']
 ---
 
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 Примеры развертывания в этом разделе основаны на рекомендациях, которые организация ClickHouse Support and Services предоставляет пользователям ClickHouse. Это рабочие примеры, и мы рекомендуем опробовать их, а затем адаптировать под свои нужды. Возможно, вы найдете здесь пример, который точно соответствует вашим требованиям.
 

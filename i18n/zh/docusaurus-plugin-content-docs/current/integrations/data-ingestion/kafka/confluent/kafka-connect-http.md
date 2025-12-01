@@ -8,15 +8,14 @@ doc_type: 'guide'
 keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP 连接器', 'ClickHouse HTTP 集成', 'Confluent Cloud HTTP Sink']
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';
 import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_auth.png';
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
-
-# Confluent HTTP sink connector
+# Confluent HTTP sink connector {#confluent-http-sink-connector}
 
 HTTP Sink Connector 与数据类型无关，因此不需要 Kafka schema，同时也支持 ClickHouse 特定的数据类型，例如 Map 和 Array。这个额外的灵活性会带来一定的配置复杂度提升。
 
@@ -26,13 +25,13 @@ HTTP Sink Connector 与数据类型无关，因此不需要 Kafka schema，同�
 HTTP Connector 是在 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) 许可下分发的。
 :::
 
-### 快速开始步骤
+### 快速开始步骤 {#quick-start-steps}
 
-#### 1. 收集你的连接信息
+#### 1. 收集你的连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### 2. 运行 Kafka Connect 和 HTTP sink connector
+#### 2. 运行 Kafka Connect 和 HTTP sink connector {#2-run-kafka-connect-and-the-http-sink-connector}
 
 你有两种选项：
 
@@ -45,7 +44,7 @@ HTTP Connector 是在 [Confluent Enterprise License](https://docs.confluent.io/k
 以下示例使用的是 Confluent Cloud。
 :::
 
-#### 3. 在 ClickHouse 中创建目标表
+#### 3. 在 ClickHouse 中创建目标表 {#3-create-destination-table-in-clickhouse}
 
 在进行连通性测试之前，我们先在 ClickHouse Cloud 中创建一个测试表，该表将接收来自 Kafka 的数据：
 
@@ -62,7 +61,7 @@ CREATE TABLE default.my_table
 ORDER BY tuple()
 ```
 
-#### 4. 配置 HTTP Sink
+#### 4. 配置 HTTP Sink {#4-configure-http-sink}
 
 创建一个 Kafka 主题以及一个 HTTP Sink Connector 实例：
 
@@ -99,7 +98,7 @@ ORDER BY tuple()
 
 <Image img={httpAdvanced} size="sm" alt="Confluent Cloud 界面展示 HTTP Sink connector 的高级配置选项" border />
 
-#### 5. 测试连通性
+#### 5. 测试连通性 {#5-testing-the-connectivity}
 
 在由你的 HTTP Sink 配置的主题中创建一条消息：
 
@@ -109,21 +108,20 @@ ORDER BY tuple()
 
 并验证该消息已写入你的 ClickHouse 实例。
 
-### 故障排查
+### 故障排查 {#troubleshooting}
 
-#### HTTP Sink 不对消息进行批处理
+#### HTTP Sink 不对消息进行批处理 {#http-sink-doesnt-batch-messages}
 
 摘自 [Sink 文档](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp)：
 
 > 对于包含不同 Kafka header 值的消息，HTTP Sink connector 不会对请求进行批处理。
 
-
 1. 验证你的 Kafka 记录是否具有相同的 key。
 2. 当你在 HTTP API URL 中添加参数时，每条记录可能会对应一个唯一的 URL。基于这一原因，在使用额外 URL 参数时会禁用批处理。
 
-#### 400 Bad Request
+#### 400 Bad Request {#400-bad-request}
 
-##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING
+##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING {#cannot&#95;parse&#95;quoted&#95;string}
 
 如果在向 `String` 列插入 JSON 对象时，HTTP Sink 失败并出现以下消息：
 
@@ -133,11 +131,11 @@ Code: 26. DB::ParsingException: 无法解析 JSON 字符串：缺少起始引号
 
 在 URL 中将 `input_format_json_read_objects_as_strings=1` 设置为编码后的字符串 `SETTINGS%20input_format_json_read_objects_as_strings%3D1`
 
-### 加载 GitHub 数据集（可选）
+### 加载 GitHub 数据集（可选） {#load-the-github-dataset-optional}
 
 请注意，本示例会保留 GitHub 数据集中的 Array 字段。我们假设您在示例环境中有一个空的 GitHub 主题，并使用 [kcat](https://github.com/edenhill/kcat) 向 Kafka 插入消息。
 
-##### 1. 准备配置
+##### 1. 准备配置 {#1-prepare-configuration}
 
 根据您的安装类型，遵循[这些说明](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install)来设置 Connect，并注意 standalone 集群与 distributed 集群之间的差异。如果使用 Confluent Cloud，则应采用 distributed 设置。
 
@@ -165,10 +163,9 @@ http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRo
 
 包含如何配置代理、重试以及高级 SSL 在内的完整设置列表可在[此处](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到。
 
-
 Github 示例数据的配置文件示例可以在[此处](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)找到，前提是 Connect 以 standalone 模式运行，并且 Kafka 部署在 Confluent Cloud 上。
 
-##### 2. 创建 ClickHouse 表
+##### 2. 创建 ClickHouse 表 {#2-create-the-clickhouse-table}
 
 请确保已经创建该表。下面展示了一个使用标准 MergeTree 引擎的精简 Github 数据集示例。
 
@@ -204,7 +201,7 @@ CREATE TABLE github
 
 ```
 
-##### 3. 向 Kafka 添加数据
+##### 3. 向 Kafka 添加数据 {#3-add-data-to-kafka}
 
 向 Kafka 写入消息。下面我们使用 [kcat](https://github.com/edenhill/kcat) 向 Kafka 写入 1 万条消息。
 

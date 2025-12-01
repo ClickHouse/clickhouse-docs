@@ -19,7 +19,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Dataflow BigQuery から ClickHouse へのテンプレート
+# Dataflow BigQuery から ClickHouse へのテンプレート {#dataflow-bigquery-to-clickhouse-template}
 
 BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テーブルから ClickHouse テーブルへデータをバッチで取り込むパイプラインです。
 このテンプレートは、テーブル全体を読み取ることも、指定された SQL クエリを使用して特定のレコードに絞り込むこともできます。
