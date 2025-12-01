@@ -68,37 +68,54 @@ export function createSearchNavigator(history, externalUrlRegex, currentLocale) 
     navigate({ itemUrl }) {
       let url = itemUrl;
 
-      // Only transform if it's an absolute URL (starts with http:// or https://)
-      // If it's already a relative path, it's been transformed by transformSearchItems
-      if (itemUrl.startsWith('http://') || itemUrl.startsWith('https://')) {
-        // Transform the absolute URL from Algolia to a relative path
-        try {
+      try {
+        let pathname, hash;
+
+        // Handle both absolute and relative URLs
+        if (itemUrl.startsWith('http://') || itemUrl.startsWith('https://')) {
+          // Absolute URL - parse it
           const urlObj = new URL(itemUrl);
-          const pathname = urlObj.pathname;
-          const hash = urlObj.hash;
-
-          if (currentLocale !== 'en') {
-            const prefix = `/docs/${currentLocale}`;
-            if (pathname.startsWith(prefix)) {
-              url = pathname.substring(prefix.length) || '/';
-            } else {
-              url = pathname;
-            }
+          pathname = urlObj.pathname;
+          hash = urlObj.hash;
+        } else {
+          // Relative URL - split pathname and hash manually
+          const hashIndex = itemUrl.indexOf('#');
+          if (hashIndex !== -1) {
+            pathname = itemUrl.substring(0, hashIndex);
+            hash = itemUrl.substring(hashIndex);
           } else {
-            const prefix = '/docs';
-            if (pathname.startsWith(prefix)) {
-              url = pathname.substring(prefix.length) || '/';
-            } else {
-              url = pathname;
-            }
+            pathname = itemUrl;
+            hash = '';
           }
-
-          url += hash;
-        } catch (e) {
-          // If parsing fails, use as-is
         }
+
+        // Transform the pathname if it starts with /docs
+        if (currentLocale !== 'en') {
+          const prefix = `/docs/${currentLocale}`;
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        } else {
+          const prefix = '/docs';
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        }
+
+        url += hash;
+      } catch (e) {
+        // If parsing fails, use as-is
       }
-      // else: URL is already relative (transformed), use as-is
+
+      // If the URL is relative and doesn't already start with /docs, prepend it
+      // This is needed because history.push expects the full path including baseUrl
+      if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/docs')) {
+        url = '/docs' + url;
+      }
 
       if (isRegexpStringMatch(externalUrlRegex, url)) {
         window.location.href = url;
