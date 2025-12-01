@@ -178,7 +178,11 @@ export function transformSearchItems(items, options) {
     return transformed;
   });
 
-  const result = transformItems ? transformItems(items) : baseTransform(items);
+  // Always apply base transformation first to fix URLs
+  const baseTransformed = baseTransform(items);
+
+  // Then optionally apply custom transformation on top
+  const result = transformItems ? transformItems(baseTransformed) : baseTransformed;
 
   return result;
 }
