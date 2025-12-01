@@ -33,25 +33,21 @@ of migrating a database or full service in open source ClickHouse to Cloud via a
 **Prerequisites**
 - You have Docker installed
 - You have an [S3 bucket and IAM user](/integrations/s3/creating-iam-user-and-s3-bucket)
-- You are able to create a new service ClickHouse Cloud service
+- You're able to create a new service ClickHouse Cloud service
 
 To make the steps in this guide easy to follow along with and reproducible, we'll use one of the docker compose recipes
-for a 2 shards 2 replicas ClickHouse cluster.
+for a ClickHouse cluster with two shards, and two replicas.
 
-:::note
-It is necessary to be using a ClickHouse cluster rather than a single instance as you will need to convert
-tables of `MergeTree` engine type to `ReplicatedMergeTree`.
-If you are wanting to back up tables from a single instance, consider following the steps
-in ["Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure"](/cloud/migration/clickhouse-to-cloud)
+:::note[Cluster required]
+This backup method requires a ClickHouse cluster because tables must be converted from the `MergeTree` engine to `ReplicatedMergeTree`.
+If you're running a single instance, follow the steps in ["Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure"](/cloud/migration/clickhouse-to-cloud) instead.
 :::
 
 ## OSS preparation {#oss-setup}
 
 1. Clone the [examples repository](https://github.com/ClickHouse/examples) to your local machine
-2. From your terminal cd into `examples/docker-compose-recipes/recipes/cluster_2S_2R`
-3. From the root of the `cluster_2S_2R` folder:
-
-Make sure Docker is running. You can now start the ClickHouse cluster:
+2. From your terminal, `cd` into `examples/docker-compose-recipes/recipes/cluster_2S_2R`
+3. Make sure Docker is running, then start the ClickHouse cluster:
 
 ```bash
 docker compose up
@@ -76,8 +72,10 @@ From a new terminal window at the root of the folder run the following command t
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-For the purposes of this guide, we'll create one of the tables from our sample datasets.
-Follow the first two steps of the [New York taxi data guide](/getting-started/example-datasets/nyc-taxi)
+### Create sample data {#create-sample-data}
+
+For this guide, we'll use the New York taxi dataset as sample data.
+Follow the first two steps of the [New York taxi data guide](/getting-started/example-datasets/nyc-taxi) to create the table and load data.
 
 Run the following commands to create a new database and insert data from an S3 bucket into a new table:
 
@@ -134,9 +132,8 @@ FROM s3(
 ```
 
 In the `CREATE TABLE` DDL statement we specified the table engine type as `MergeTree`, however
-ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
-When restoring a backup, ClickHouse automatically converts ReplicatedMergeTree to SharedMergeTree, but it is necessary
-for us to first convert any `MergeTree` tables to `ReplicatedMergeTree` foe this to work.
+ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree). When restoring a backup, ClickHouse automatically converts `ReplicatedMergeTree` to `SharedMergeTree`.
+However, you'll need to convert any `MergeTree` tables to `ReplicatedMergeTree` before backing them up.
 
 Run the following command to `DETACH` the table.
 
@@ -168,7 +165,7 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 └─────────────────────┘
 ```
 
-You are now ready to proceed with setting up your Cloud service in preparation for later
+You're now ready to proceed with setting up your Cloud service in preparation for later
 restoring a backup from your S3 bucket.
 
 ## Cloud preparation {#cloud-setup}
@@ -176,25 +173,35 @@ restoring a backup from your S3 bucket.
 You will be restoring your data into a new Cloud service.
 Follow the steps below to create a new Cloud service.
 
-1. Go to [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
+<VerticalStepper headerLevel="h4">
 
-2. Create a new service
+#### Open Cloud Console {#open-cloud-console}
+
+Go to [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
+
+#### Create a new service {#create-new-service}
 
 <Image img={create_service} size="md" alt="create a new service"/> 
 
-3. Choose your desired region and configuration, then click `Create service`
+#### Configure and create a service {#configure-and-create}
+
+Choose your desired region and configuration, then click `Create service`
 
 <Image img={service_details} size="md" alt="setup service preferences"/> 
 
-4. Open SQL console
+#### Create an access role {#create-an-access-role}
+
+Open SQL console
 
 <Image img={open_console} size="md" alt="setup service preferences"/>
 
-Next you will need to create an access role. These steps are detailed in the guide ["Accessing S3 data securely"](/cloud/data-sources/secure-s3).
-Follow the steps in that guide to obtain an access role ARN.
+### Set up S3 access {#set-up-s3-access}
 
-In ["How to create an S3 bucket and IAM role"](/integrations/s3/creating-iam-user-and-s3-bucket) you created
-a policy for your S3 bucket. You'll now need to add the ARN you obtained in in ["Accessing S3 data securely"](/cloud/data-sources/secure-s3) from the output of the created stack to your bucket policy.
+To restore your backup from S3, you'll need to configure secure access between ClickHouse Cloud and your S3 bucket.
+
+1. Follow the steps in ["Accessing S3 data securely"](/cloud/data-sources/secure-s3) to create an access role and obtain the role ARN.
+
+2. Update the S3 bucket policy you created in ["How to create an S3 bucket and IAM role"](/integrations/s3/creating-iam-user-and-s3-bucket) by adding the role ARN from the previous step.
 
 Your updated policy for the S3 bucket will look something like this:
 
@@ -224,11 +231,13 @@ Your updated policy for the S3 bucket will look something like this:
 }
 ```
 
-Specifying both the user ARN and the ClickHouse Cloud access user role ensures
-that you will be able to both backup to the S3 bucket and later restore from it
-using the Cloud access role.
+The policy includes both ARNs:
+- **IAM user** (`docs-s3-user`): Allows your self-managed ClickHouse cluster to back up to S3
+- **ClickHouse Cloud role** (`ClickHouseAccess-001`): Allows your Cloud service to restore from S3
 
-## Taking the backup (On OSS) {#taking-a-backup-on-oss}
+</VerticalStepper>
+
+## Taking the backup (on self-managed deployment) {#taking-a-backup-on-oss}
 
 To make a backup of a single database, run the following command from clickhouse-client
 connected to your OSS deployment:
@@ -261,7 +270,7 @@ If you check your previously empty S3 bucket you will now see some folders have 
 
 <Image img={backup_s3_bucket} size="md" alt="backup, data and metadata"/>
 
-If you are performing a full migration then you can run the following command to backup the entire server:
+If you're performing a full migration then you can run the following command to backup the entire server:
 
 ```sql
 BACKUP
@@ -291,7 +300,7 @@ The command above backups up:
 - Quotas
 - User-defined functions
 
-If you are using a different CSP, you can use the `TO S3()` (for both AWS and GCP) and `TO AzureBlobStorage()` syntax.
+If you're using a different CSP, you can use the `TO S3()` (for both AWS and GCP) and `TO AzureBlobStorage()` syntax.
 
 For very large databases, consider using `ASYNC` to run the backup in the background:
 
