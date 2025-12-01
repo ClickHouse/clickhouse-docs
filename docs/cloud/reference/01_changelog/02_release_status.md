@@ -7,6 +7,8 @@ slug: /cloud/release-status
 doc_type: 'reference'
 ---
 
+import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
+
 ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for users that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
 
 ## Release channel details {#release-channel-details}
@@ -33,36 +35,12 @@ Scheduled upgrades are available for all release channels for services in the En
 
 ## Release schedule {#release-schedule}
 
-import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
-
 <ReleaseSchedule releases={[
    {
     version: '25.10',
-    fast_date: '2025-10-15',
-    regular_date: '2025-10-29',
-    slow_date: '2025-11-12',
-    fast_progress: 'red',
-    fast_delay_note: 'Critical bug found in beta',
-    regular_progress: 'orange',
-    regular_delay_note: 'Dependent on Fast channel fix',
-    slow_progress: 'green'
-  },
-  {
-    version: '25.9',
-    fast_date: '2025-09-15',
-    regular_date: '2025-09-29',
-    slow_date: '2025-10-13',
-    fast_progress: 'green',
-    regular_progress: 'orange',
-    regular_delay_note: 'Slight delay due to additional testing',
-    slow_progress: 'green'
-  },
-  {
-    version: '25.8',
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
-    fast_date: '2025-08-15',
-    regular_date: '2025-08-29',
-    slow_date: '2025-09-12',
+    fast_date: '2025-12-09',
+    regular_date: '2026-01-05',
+    slow_date: 'TBD',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green'
