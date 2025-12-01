@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import homepage_styles from './homepage_styles.module.scss'
 import {useColorMode} from "@docusaurus/theme-common";
@@ -310,10 +310,44 @@ const NavatticDemoSection = () => {
 };
 
 const ExploreDocs = () => {
+    const [featuredItems, setFeaturedItems] = useState([])
     const { colorMode } = useColorMode();
     const versions = useVersions();
     const versionColor = colorMode === 'dark' ? '#FAFF6A' : '#1976d2';
-    
+
+    useEffect(() => {
+        (async () => {
+            const cacheKey = 'home-featured-items'
+            let data = []
+
+            // Get session cached data
+            if (window.sessionStorage.getItem(cacheKey)) {
+                try {
+                    data = JSON.parse(window.sessionStorage.getItem(cacheKey))
+                } catch {
+                    // Invalid cache
+                }
+            }
+
+            // Get fresh data
+            if (!Array.isArray(data) || !data.length) {
+                try {
+                    const response = await fetch('https://cms.clickhouse-dev.com:1337/api/docs-featured-contents?populate[]=image&sort=publishedAt:DESC&pagination[limit]=3')
+                    if (response.ok) {
+                        const body = await response.json()
+                        data = body?.data
+                    }
+                } catch {
+                    // Invalid response
+                }
+            }
+
+            // Store response
+            window.sessionStorage.setItem(cacheKey, JSON.stringify(data))
+            setFeaturedItems(data)
+        })()
+    }, []);
+
     return (
         <div className={homepage_styles.exploreDocs}>
             <Box sx={{ 
@@ -813,230 +847,122 @@ const ExploreDocs = () => {
                         </CardContent>
                     </Card>
 
-                    {/* Featured Section Title - spans all columns */}
-                    <Box sx={{
-                        gridColumn: { xs: '1', md: '1 / span 3' },
-                        marginBottom: 1,
-                        marginTop: 2
-                    }}>
-                        <Typography variant="h4" sx={{ fontWeight: 600, fontSize: '24px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                            Featured
-                        </Typography>
-                    </Box>
-
-                    {/* Featured Card 1 */}
-                    <Card
-                        component={Link}
-                        to="/integrations/clickpipes/mongodb"
-                        sx={{
-                            height: '350px',
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            boxShadow: 3,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            textDecoration: 'none',
-                            '&:hover': {
-                                boxShadow: 6,
-                                textDecoration: 'none',
-                                color: 'inherit',
-                            },
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}>
-                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="120"
-                                sx={{ width: '100%', objectFit: 'cover' }}
-                                image={useBaseUrl('/images/homepage/mongodb_feature.png')}
-                                alt="Feature 1"
-                            />
-                            <CardContent sx={{ 
-                                color: 'text.primary',
-                                flex: 1,
-                                display: 'flex',
-                                flexDirection: 'column'
+                    {/* Featured Section */}
+                    {featuredItems && featuredItems.length > 0 && (
+                        <>
+                            <Box sx={{
+                                gridColumn: { xs: '1', md: '1 / span 3' },
+                                marginBottom: 1,
+                                marginTop: 2
                             }}>
-                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                backgroundColor: '#e3f2fd',
-                                                color: '#1976d2',
-                                                padding: '1px 6px',
-                                                borderRadius: '8px',
-                                                fontSize: '9px',
-                                                fontWeight: 600,
-                                                letterSpacing: '0.3px',
-                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
-                                            }}
-                                        >
-                                            Tutorial
-                                        </Typography>
-                                    </Box>
-                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>MongoDB CDC to ClickHouse with Native JSON Support</h3>
-                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
-                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>We're excited to announce the private preview of the MongoDB Change Data Capture (CDC) connector in ClickPipes! Enabling customers to replicate their MongoDB collections to ClickHouse Cloud in just a few clicks. </p>
-                                    </Box>
-                                </Box>
-                                <ClickHouseArrowButton
-                                    to="/integrations/clickpipes/mongodb"
-                                    sx={{
-                                        marginTop: 'auto',
-                                        paddingTop: '8px',
-                                        display: 'block'
-                                    }}
-                                >
-                                    Read more
-                                </ClickHouseArrowButton>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
+                                <Typography variant="h4" sx={{ fontWeight: 600, fontSize: '24px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                                    Featured
+                                </Typography>
+                            </Box>
 
-                    {/* Featured Card 2 */}
-                    <Card
-                        component={Link}
-                        to="/use-cases/AI/MCP/remote_mcp"
-                        sx={{
-                            height: '350px',
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            boxShadow: 3,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            textDecoration: 'none',
-                            '&:hover': {
-                                boxShadow: 6,
-                                textDecoration: 'none',
-                                color: 'inherit',
-                            },
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}>
-                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="120"
-                                sx={{ width: '100%', objectFit: 'cover' }}
-                                image={useBaseUrl('/images/homepage/remote_mcp_featured.png')}
-                                alt="Feature 2"
-                            />
-                            <CardContent sx={{ 
-                                color: 'text.primary',
-                                flex: 1,
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
-                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                backgroundColor: '#FAFF6A',
-                                                color: '#f57c00',
-                                                padding: '1px 6px',
-                                                borderRadius: '8px',
-                                                fontSize: '9px',
-                                                fontWeight: 600,
-                                                letterSpacing: '0.3px',
-                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
-                                            }}
-                                        >
-                                            Guide
-                                        </Typography>
-                                    </Box>
-                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Enabling the ClickHouse Cloud Remote MCP Server</h3>
-                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
-                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example.</p>
-                                    </Box>
-                                </Box>
-                                <ClickHouseArrowButton
-                                    to="/use-cases/AI/MCP/remote_mcp"
-                                    sx={{
-                                        marginTop: 'auto',
-                                        paddingTop: '8px',
-                                        display: 'block'
-                                    }}
-                                >
-                                    Read more
-                                </ClickHouseArrowButton>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
+                            {featuredItems.map((featuredItem, featuredItemIndex) => {
+                                const {
+                                    title,
+                                    description,
+                                    image,
+                                    linkText,
+                                    linkUrl,
+                                    linkTarget,
+                                    badgeText,
+                                    badgeColor
+                                } = featuredItem.attributes
 
-                    {/* Featured Card 3 */}
-                    <Card
-                        component={Link}
-                        to="/best-practices/use-json-where-appropriate"
-                        sx={{
-                            height: '350px',
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            boxShadow: 3,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            textDecoration: 'none',
-                            '&:hover': {
-                                boxShadow: 6,
-                                textDecoration: 'none',
-                                color: 'inherit',
-                            },
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}>
-                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="120"
-                                sx={{ width: '100%', objectFit: 'cover' }}
-                                image={useBaseUrl('/images/homepage/json_featured.png')}
-                                alt="Feature 3"
-                            />
-                            <CardContent sx={{ 
-                                color: 'text.primary',
-                                flex: 1,
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}>
-                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                backgroundColor: '#e8f5e8',
-                                                color: '#2e7d32',
-                                                padding: '1px 6px',
-                                                borderRadius: '8px',
-                                                fontSize: '9px',
-                                                fontWeight: 600,
-                                                letterSpacing: '0.3px',
-                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
-                                            }}
-                                        >
-                                            Best Practice
-                                        </Typography>
-                                    </Box>
-                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Use JSON where appropriate</h3>
-                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
-                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Wondering when to use the native JSON type over other types? In this guide we'll explain when you should and shouldn't make use of JSON.</p>
-                                    </Box>
-                                </Box>
-                                <ClickHouseArrowButton
-                                    to="/best-practices/use-json-where-appropriate"
-                                    sx={{
-                                        marginTop: 'auto',
-                                        paddingTop: '8px',
-                                        display: 'block'
-                                    }}
-                                >
-                                    Read more
-                                </ClickHouseArrowButton>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    
+                                const badgeBackgroundHex = {
+                                    blue: '#e3f2fd',
+                                    yellow: '#FAFF6A',
+                                    green: '#e8f5e8',
+                                }[badgeColor]
+
+                                const badgeTextHex = {
+                                    blue: '#1976d2',
+                                    yellow: '#f57c00',
+                                    green: '#2e7d32'
+                                }[badgeColor]
+
+                                return (
+                                    <Card
+                                        key={featuredItemIndex}
+                                        component={Link}
+                                        to={linkUrl}
+                                        target={linkTarget}
+                                        sx={{
+                                            height: '350px',
+                                            backgroundColor: 'background.paper',
+                                            color: 'text.primary',
+                                            boxShadow: 3,
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            textDecoration: 'none',
+                                            '&:hover': {
+                                                boxShadow: 6,
+                                                textDecoration: 'none',
+                                                color: 'inherit',
+                                            },
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }}>
+                                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                                            <CardMedia
+                                                component="img"
+                                                height="120"
+                                                sx={{ width: '100%', objectFit: 'cover' }}
+                                                image={`https://clickhouse.com${image.data.attributes.url}`}
+                                                alt={image.data.attributes.alternativeText || title}
+                                            />
+                                            <CardContent sx={{
+                                                color: 'text.primary',
+                                                flex: 1,
+                                                display: 'flex',
+                                                flexDirection: 'column'
+                                            }}>
+                                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                                                        <Typography
+                                                            variant="caption"
+                                                            sx={{
+                                                                backgroundColor: badgeBackgroundHex,
+                                                                color: badgeTextHex,
+                                                                padding: '1px 6px',
+                                                                borderRadius: '8px',
+                                                                fontSize: '9px',
+                                                                fontWeight: 600,
+                                                                letterSpacing: '0.3px',
+                                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
+                                                            }}
+                                                        >
+                                                            {badgeText}
+                                                        </Typography>
+                                                    </Box>
+                                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>MongoDB CDC to ClickHouse with Native JSON Support</h3>
+                                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                                                            {description}
+                                                        </p>
+                                                    </Box>
+                                                </Box>
+                                                <ClickHouseArrowButton
+                                                    to={linkUrl}
+                                                    target={linkTarget}
+                                                    sx={{
+                                                        marginTop: 'auto',
+                                                        paddingTop: '8px',
+                                                        display: 'block'
+                                                    }}
+                                                >
+                                                    {linkText || 'Read more'}
+                                                </ClickHouseArrowButton>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                )
+                            })}
+                        </>
+                    )}
                 </Box>
                 
             </Box>
