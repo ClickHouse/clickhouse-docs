@@ -784,12 +784,17 @@ named collection の名前が abc であると仮定し、ユーザー john に�
 
 ### TABLE ENGINE {#table-engine}
 
-テーブル作成時に、指定したテーブルエンジンの利用を許可します。[テーブルエンジン](../../engines/table-engines/index.md)に適用されます。
+テーブルを作成する際に、指定したテーブルエンジンを使用してテーブルを作成できます。[テーブルエンジン](../../engines/table-engines/index.md)に対して適用されます。
 
 **例**
 
 - `GRANT TABLE ENGINE ON * TO john`
 - `GRANT TABLE ENGINE ON TinyLog TO john`
+
+:::note
+デフォルトでは下位互換性のため、特定のテーブルエンジンを指定してテーブルを作成しても、GRANT は無視されます。
+ただし、config.xml で [`table_engines_require_grant` を true に設定](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)することで、この動作を変更できます。
+:::
 
 ### ALL {#all}
 
