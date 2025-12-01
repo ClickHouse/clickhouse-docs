@@ -3620,6 +3620,11 @@
       "source": "/docs/use-cases/observability/clickstack/ingesting-data/kubernetes",
       "destination": "/docs/use-cases/observability/clickstack/integrations/kubernetes",
       "permanent": true
+    },
+    {
+      "source": "/docs/operations/backup",
+      "destination": "/docs/operations/backup/overview",
+      "permanent": true
     }
   ]
 }
