@@ -1,9 +1,10 @@
 ---
-'slug': '/optimize/avoid-mutations'
-'sidebar_label': '変異を避ける'
-'title': '変異を避ける'
-'description': '変異は、テーブルデータを操作するALTERクエリを指します'
-'doc_type': 'guide'
+slug: /optimize/avoid-mutations
+sidebar_label: 'ミューテーションを避ける'
+title: 'ミューテーションを避ける'
+description: 'ミューテーションとは、テーブルデータを変更する ALTER クエリを指します'
+doc_type: 'guide'
+keywords: ['ミューテーションを避ける', 'ALTER クエリ', 'テーブルデータ変更', 'ベストプラクティス', 'パフォーマンス最適化']
 ---
 
 import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_mutations.md';

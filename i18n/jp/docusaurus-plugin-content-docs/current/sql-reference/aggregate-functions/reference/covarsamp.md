@@ -1,18 +1,17 @@
 ---
-'description': '計算 `Σ((x - x̄)(y - ȳ)) / (n - 1)` の値'
-'sidebar_position': 124
-'slug': '/sql-reference/aggregate-functions/reference/covarsamp'
-'title': 'covarSamp'
-'doc_type': 'reference'
+description: '`Σ((x - x̅)(y - y̅)) / (n - 1)` を計算します'
+sidebar_position: 124
+slug: /sql-reference/aggregate-functions/reference/covarsamp
+title: 'covarSamp'
+doc_type: 'reference'
 ---
 
-
-# covarSamp
+# covarSamp {#covarsamp}
 
 `Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。
 
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算において [数値的安定性](https://en.wikipedia.org/wiki/Numerical_stability) が必要な場合は、[`covarSampStable`](../reference/covarsamp.md) 関数を使用してください。処理速度は遅くなりますが、計算誤差が低くなります。
+この関数は数値的に不安定なアルゴリズムを使用します。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarSampStable`](../reference/covarsamp.md) 関数を使用してください。`covarSampStable` は処理速度は遅くなりますが、計算誤差をより小さく抑えられます。
 :::
 
 **構文**
@@ -23,12 +22,12 @@ covarSamp(x, y)
 
 **引数**
 
-- `x` — 第一の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
-- `y` — 第二の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `x` — 1つ目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+* `y` — 2つ目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- `x` と `y` の間のサンプル共分散。`n <= 1` の場合は `nan` が返されます。[Float64](../../data-types/float.md)。
+* `x` と `y` の標本共分散。`n <= 1` の場合は `nan` を返します。[Float64](../../data-types/float.md)。
 
 **例**
 
@@ -51,7 +50,7 @@ FROM
 );
 ```
 
-結果:
+結果：
 
 ```reference
 ┌─covarSamp(x_value, y_value)─┐
@@ -59,7 +58,7 @@ FROM
 └─────────────────────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT covarSamp(x_value, y_value)
@@ -73,7 +72,7 @@ FROM
 
 ```
 
-結果:
+結果：
 
 ```reference
 ┌─covarSamp(x_value, y_value)─┐

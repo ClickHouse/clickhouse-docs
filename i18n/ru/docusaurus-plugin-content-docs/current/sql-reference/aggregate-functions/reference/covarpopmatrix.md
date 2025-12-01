@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/covarpopmatrix'
+description: 'Возвращает матрицу ковариации генеральной совокупности по N переменным.'
 sidebar_position: 122
-description: 'Возвращает матрицу ковариации популяции по N переменным.'
-title: covarPopMatrix
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
+title: 'covarPopMatrix'
+doc_type: 'reference'
 ---
-# covarPopMatrix
 
-Возвращает матрицу популяционной ковариации для N переменных.
+# covarPopMatrix {#covarpopmatrix}
+
+Возвращает матрицу ковариации генеральной совокупности для N переменных.
 
 **Синтаксис**
 
@@ -17,11 +18,11 @@ covarPopMatrix(x[, ...])
 
 **Аргументы**
 
-- `x` — переменное количество параметров. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `x` — произвольное число аргументов. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Матрица популяционной ковариации. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
+* Матрица ковариации генеральной совокупности. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
 
 **Пример**
 

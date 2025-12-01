@@ -1,15 +1,16 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/kurtsamp'
+description: 'Вычисляет выборочный эксцесс последовательности.'
 sidebar_position: 158
-description: 'Вычисляет выборочную эксцессу последовательности.'
-title: kurtSamp
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/kurtsamp
+title: 'kurtSamp'
+doc_type: 'reference'
 ---
-# kurtSamp
 
-Вычисляет [элемент выборочной куртозы](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
+# kurtSamp {#kurtsamp}
 
-Он представляет собой несмещенную оценку куртозы случайной величины, если переданные значения образуют ее выборку.
+Вычисляет [выборочный эксцесс](https://ru.wikipedia.org/wiki/Эксцесс_распределения) последовательности.
+
+Представляет собой несмещённую оценку эксцесса случайной величины, если переданные значения образуют её выборку. Подробнее: [https://en.wikipedia.org/wiki/Kurtosis](https://en.wikipedia.org/wiki/Kurtosis)
 
 ```sql
 kurtSamp(expr)
@@ -17,11 +18,11 @@ kurtSamp(expr)
 
 **Аргументы**
 
-`expr` — [Выражение](/sql-reference/syntax#expressions), возвращающее число.
+`expr` — [выражение](/sql-reference/syntax#expressions), возвращающее число.
 
 **Возвращаемое значение**
 
-Куртоза данного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), то функция возвращает `nan`.
+Эксцесс заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), то функция возвращает `nan`.
 
 **Пример**
 

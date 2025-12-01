@@ -1,28 +1,27 @@
 ---
-'description': '指导如何从Linux为macOS系统进行跨编译ClickHouse'
-'sidebar_label': 'Linux上构建macOS'
-'sidebar_position': 20
-'slug': '/development/build-cross-osx'
-'title': 'Linux上构建macOS'
-'doc_type': 'guide'
+description: 'Linux 上で macOS システム向けの ClickHouse をクロスコンパイルするためのガイド'
+sidebar_label: 'Linux で macOS 向けにビルド'
+sidebar_position: 20
+slug: /development/build-cross-osx
+title: 'Linux で macOS 向けにビルド'
+doc_type: 'guide'
 ---
 
+# Linux 上で macOS 向けの ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-linux-for-macos}
 
-# Linux上でmacOS向けにClickHouseをビルドする方法
+このドキュメントは、Linux マシンを使って OS X 上で実行する `clickhouse` バイナリをビルドしたい場合の手順です。
+主なユースケースは、Linux マシン上で実行される継続的インテグレーション（CI）チェックです。
+ClickHouse を直接 macOS 上でビルドしたい場合は、[ネイティブビルド手順](../development/build-osx.md)を参照してください。
 
-これは、Linuxマシンを持っていて、OS Xで実行される `clickhouse` バイナリをビルドするために使用するケースです。
-主なユースケースは、Linuxマシンで実行される継続的インテグレーションチェックです。
-macOS上で直接ClickHouseをビルドしたい場合は、[ネイティブビルドの手順](../development/build-osx.md)に進んでください。
+macOS 向けのクロスビルドは [ビルド手順](../development/build.md) に基づいているため、まずそちらに従ってください。
 
-macOS向けのクロスビルドは、[ビルド手順](../development/build.md)に基づいていますので、まずそれらに従ってください。
+以下のセクションでは、`x86_64` macOS 向けに ClickHouse をビルドする手順を説明します。
+ARM アーキテクチャをターゲットにする場合は、すべての `x86_64` を `aarch64` に置き換えてください。
+たとえば、手順全体を通して `x86_64-apple-darwin` を `aarch64-apple-darwin` に置き換えます。
 
-以下のセクションでは、`x86_64` macOS向けにClickHouseをビルドする手順を説明します。
-ARMアーキテクチャをターゲットにしている場合は、手順内のすべての`x86_64`の出現箇所を`aarch64`に置き換えてください。
-例えば、手順全体で`x86_64-apple-darwin`を`aarch64-apple-darwin`に置き換えます。
+## クロスコンパイル用ツールセットをインストールする {#install-cross-compilation-toolset}
 
-## クロスコンパイルツールセットのインストール {#install-cross-compilation-toolset}
-
-`cctools`をインストールしたパスを`${CCTOOLS}`として記憶しておきましょう。
+`cctools` をインストールしたパスを `${CCTOOLS}` として覚えておきましょう。
 
 ```bash
 mkdir ~/cctools
@@ -43,14 +42,14 @@ git checkout 2a3e1c2a6ff54a30f898b70cfb9ba1692a55fad7
 make install
 ```
 
-また、作業ツリーにmacOS X SDKをダウンロードする必要があります。
+また、作業ツリー内に macOS X SDK をダウンロードする必要があります。
 
 ```bash
 cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
 
-## ClickHouseをビルドする {#build-clickhouse}
+## ClickHouse をビルドする {#build-clickhouse}
 
 ```bash
 cd ClickHouse
@@ -60,4 +59,4 @@ CC=clang-19 CXX=clang++-19 cmake -DCMAKE_AR:FILEPATH=${CCTOOLS}/bin/x86_64-apple
 ninja
 ```
 
-生成されたバイナリはMach-O実行形式を持ち、Linux上では実行できません。
+生成されるバイナリは Mach-O 形式の実行ファイルとなり、Linux 上では実行できません。

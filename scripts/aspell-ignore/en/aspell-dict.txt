@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3812
+personal_ws-1.1 en 3824
 AArch
 ACLs
 AICPA
@@ -216,6 +216,7 @@ ClickPipes
 ClickPipes's
 ClickPy
 ClickStack
+ClickStack's
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -315,6 +316,7 @@ DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
+Databrain
 Databricks
 Datadog
 Datadog's
@@ -365,6 +367,7 @@ DistributedFilesToInsert
 DistributedProductMode
 DistributedSend
 DockerHub
+DocumentDB
 Doron
 DoubleDelta
 Doxygen
@@ -725,6 +728,7 @@ LinksDeployment
 Linq
 ListObject
 ListObjects
+Lightdash
 LlamaIndex
 LoadAverage
 LoadBalancing
@@ -999,6 +1003,7 @@ OutOfMemory
 OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
+Overconsumption
 PAAMAYIM
 PAYG
 PCRE
@@ -1125,6 +1130,7 @@ RHEL
 RIPEMD
 RMDIR
 ROLLUP
+RPOs
 RWLock
 RWLockActiveReaders
 RWLockActiveWriters
@@ -1256,6 +1262,7 @@ SerializationLowCardinality
 SerializationObject
 Serverless
 ServiceNow
+ServiceName
 ServiceNow's
 SetOperationMode
 SeverityText
@@ -1280,6 +1287,7 @@ Smirnov's
 Smirnov'test
 Sonatype
 Soundex
+SpanAttributes
 SpanKind
 Spearman's
 Splunk
@@ -1883,6 +1891,7 @@ clickhousedb
 clickhousex
 clickmate
 clickpipe
+clickstack
 clickstream
 clickvisual
 clockhour
@@ -2188,7 +2197,6 @@ extractURLParameters
 extractable
 facto
 failover
-failovers
 fallbacks
 farmFingerprint
 farmHash
@@ -2784,6 +2792,7 @@ nestjs
 netloc
 newjson
 nextset
+nginx
 ngram
 ngramDistance
 ngramDistanceCaseInsensitive
@@ -3162,6 +3171,7 @@ reshards
 resolvers
 resourceGUID
 restartable
+restorable
 resultset
 resync
 resynchronization
@@ -3811,3 +3821,31 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+CronJobs
+DAGs
+Dagster
+RDBMS
+OTELCOL
+elipses
+geolocation
+nginx's
+otel
+otelcol
+href
+useBaseUrl
+SpanName
+lucene
+multi-tenancy
+single-tenancy
+usedatabrain
+whitelist
+whitelisted
+whitelisting
+TrackedLink
+eventName
+deprovisioning
+runbooks
+severities
+webhooks
+OneLake
+OneLake's

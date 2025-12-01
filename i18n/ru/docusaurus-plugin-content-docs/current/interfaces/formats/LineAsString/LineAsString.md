@@ -1,21 +1,27 @@
 ---
-slug: '/interfaces/formats/LineAsString'
-description: 'Документация для формата LineAsString'
-title: LineAsString
-keywords: ['LineAsString']
-doc_type: reference
+alias: []
+description: 'Документация по формату LineAsString'
 input_format: true
+keywords: ['LineAsString']
 output_format: true
+slug: /interfaces/formats/LineAsString
+title: 'LineAsString'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
+
+
 
 ## Описание {#description}
 
 Формат `LineAsString` интерпретирует каждую строку входных данных как одно строковое значение. 
-Этот формат может быть разобран только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
-Оставшиеся колонки должны быть установлены в [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или быть опущены.
+Этот формат может быть использован только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
+Остальные столбцы должны иметь типы [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или быть опущены.
+
+
 
 ## Пример использования {#example-usage}
 
@@ -31,5 +37,6 @@ SELECT * FROM line_as_string;
 │ "I love apple", "I love banana", "I love orange"; │
 └───────────────────────────────────────────────────┘
 ```
+
 
 ## Настройки формата {#format-settings}

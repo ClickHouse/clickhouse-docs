@@ -1,9 +1,10 @@
 ---
-'slug': '/optimize/partitioning-key'
-'sidebar_label': 'Partitioning Key'
-'title': '选择低基数分区键'
-'description': '使用低基数分区键或避免为你的表使用任何分区键。'
-'doc_type': 'guide'
+slug: /optimize/partitioning-key
+sidebar_label: '分区键'
+title: '选择低基数的分区键'
+description: '为表使用低基数分区键，或避免使用任何分区键。'
+doc_type: 'guide'
+keywords: ['分区', '分区键', '数据组织', '最佳实践', '性能']
 ---
 
 import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/partitioning_keys.mdx';

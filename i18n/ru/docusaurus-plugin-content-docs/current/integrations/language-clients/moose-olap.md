@@ -1,153 +1,148 @@
 ---
-'description': 'Начните работу с Moose Stack - подходом, ориентированным на код, для
-  построения на базе ClickHouse с типобезопасными схемами и локальной разработкой'
-'sidebar_label': 'Moose OLAP (TypeScript / Python)'
-'sidebar_position': 25
-'slug': '/interfaces/third-party/moose-olap'
-'title': 'В разработке на ClickHouse с Moose OLAP'
-'keywords':
-- 'Moose'
-'doc_type': 'guide'
+description: 'Знакомство с Moose Stack — code-first-подходом к разработке решений поверх ClickHouse с типобезопасными схемами и локальной разработкой'
+sidebar_label: 'Moose OLAP (TypeScript / Python)'
+sidebar_position: 25
+slug: /interfaces/third-party/moose-olap
+title: 'Разработка на ClickHouse с использованием Moose OLAP'
+keywords: ['Moose']
+doc_type: 'guide'
 ---
+
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Разработка на ClickHouse с Moose OLAP
+# Разработка на ClickHouse с Moose OLAP {#developing-on-clickhouse-with-moose-olap}
 
 <CommunityMaintainedBadge/>
 
-[Moose OLAP](https://docs.fiveonefour.com/moose/olap) — это основной модуль [Moose Stack](https://docs.fiveonefour.com/moose), набора инструментов с открытым исходным кодом для разработки аналитических бэкэндов в реальном времени на Typescript и Python.
+[Moose OLAP](https://docs.fiveonefour.com/moose/olap) — это основной модуль [Moose Stack](https://docs.fiveonefour.com/moose), открытого набора инструментов для разработчиков, предназначенного для создания аналитических backend-систем реального времени на TypeScript и Python. 
 
-Moose OLAP предлагает удобные для разработчиков абстракции и функциональность, схожую с ORM, разработанную нативно для ClickHouse.
+Moose OLAP предоставляет удобные для разработчиков абстракции и ORM-подобную функциональность, изначально разработанную для ClickHouse.
 
-## Ключевые особенности Moose OLAP {#key-features}
+## Ключевые возможности Moose OLAP {#key-features}
 
-- **Схемы как код**: Определяйте ваши таблицы ClickHouse на TypeScript или Python с безопасностью типов и автозаполнением в IDE
-- **Запросы с безопасностью типов**: Пишите SQL-запросы с поддержкой проверки типов и автозаполнения
-- **Локальная разработка**: Разрабатывайте и тестируйте на локальных инстансах ClickHouse, не затрагивая продуктивную среду
-- **Управление миграциями**: Контролируйте версии ваших изменений схемы и управляйте миграциями через код
-- **Потоковая обработка в реальном времени**: Встроенная поддержка подключения ClickHouse к Kafka или Redpanda для потоковой загрузки
-- **REST APIs**: Легко генерируйте полностью документированные REST APIs на основе ваших таблиц и представлений ClickHouse
+- **Схемы в виде кода**: определяйте таблицы ClickHouse на TypeScript или Python с гарантиями типизации и автодополнением в IDE
+- **Типобезопасные запросы**: пишите SQL-запросы с проверкой типов и поддержкой автодополнения
+- **Локальная разработка**: разрабатывайте и тестируйте, используя локальные экземпляры ClickHouse, не затрагивая производственную среду
+- **Управление миграциями**: управляйте версиями изменений схемы и миграциями в коде
+- **Потоковая обработка в реальном времени**: встроенная поддержка использования ClickHouse совместно с Kafka или Redpanda для потокового приёма данных
+- **REST API**: легко генерируйте полностью документированные REST API поверх ваших таблиц и представлений ClickHouse
 
 ## Начало работы менее чем за 5 минут {#getting-started}
 
-Для последних и лучших руководств по установке и началу работы, смотрите [документацию Moose Stack](https://docs.fiveonefour.com/moose/getting-started/from-clickhouse).
+Самые актуальные и подробные руководства по установке и началу работы см. в [документации Moose Stack](https://docs.fiveonefour.com/moose/getting-started/from-clickhouse).
 
-Или следуйте этому руководству, чтобы быстро начать работу с Moose OLAP на существующем развертывании ClickHouse или ClickHouse Cloud менее чем за 5 минут.
+Или следуйте этому руководству, чтобы запустить Moose OLAP на уже развернутом ClickHouse или ClickHouse Cloud менее чем за 5 минут.
 
-### Требования {#prerequisites}
+### Предварительные требования {#prerequisites}
 
-- **Node.js 20+** ИЛИ **Python 3.12+** - Необходимы для разработки на TypeScript или Python
-- **Docker Desktop** - Для локальной среды разработки
-- **macOS/Linux** - Windows работает через WSL2
+- **Node.js 20+** ИЛИ **Python 3.12+** — требуется для разработки на TypeScript или Python
+- **Docker Desktop** — для локальной среды разработки
+- **macOS/Linux** — Windows работает через WSL2
 
 <VerticalStepper headerLevel="h3">
 
 ### Установка Moose {#step-1-install-moose}
 
-Установите CLI Moose глобально в вашей системе:
+Установите Moose CLI глобально в вашей системе:
 
 ```bash
 bash -i <(curl -fsSL https://fiveonefour.com/install.sh) moose
 ```
 
-### Настройте ваш проект {#step-2-set-up-project}
+### Настройка проекта {#step-2-set-up-project}
 
-#### Вариант A: Используйте ваше собственное развертывание ClickHouse {#option-a-use-own-clickhouse}
+#### Вариант A: использовать собственное существующее развертывание ClickHouse {#option-a-use-own-clickhouse}
 
-**Важно**: Ваш продуктивный ClickHouse останется нетронутым. Это просто инициализирует новый проект Moose OLAP с моделями данных, основанными на ваших таблицах ClickHouse.
+**Важно**: ваш продуктивный ClickHouse останется нетронутым. Это только инициализирует новый проект Moose OLAP с моделями данных, построенными на основе ваших таблиц ClickHouse.
 
 ```bash
-
-# TypeScript
+# TypeScript {#typescript}
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language typescript
 
-
-# Python
+# Python {#python}
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language python
 ```
 
-Ваша строка подключения ClickHouse должна быть в следующем формате:
+Ваша строка подключения к ClickHouse должна иметь следующий формат:
 
 ```bash
 https://username:password@host:port/?database=database_name
 ```
 
-#### Вариант B: используйте игровой стенд ClickHouse {#option-b-use-clickhouse-playground}
+#### Вариант B: использовать ClickHouse Playground {#option-b-use-clickhouse-playground}
 
-Не удалось запустить ClickHouse? Используйте Игровой стенд ClickHouse, чтобы попробовать Moose OLAP!
+У вас ещё не запущен ClickHouse? Используйте ClickHouse Playground, чтобы опробовать Moose OLAP!
 
 ```bash
-
-# TypeScript
+# TypeScript {#typescript}
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language typescript
 
-
-# Python
+# Python {#python}
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language python
 ```
 
-### Установка зависимостей {#step-3-install-dependencies}
+### Установите зависимости {#step-3-install-dependencies}
 
 ```bash
-
-# TypeScript
+# TypeScript {#typescript}
 cd my-project
 npm install
 
-
-# Python
+# Python {#python}
 cd my-project
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Вы должны увидеть: `Successfully generated X models from ClickHouse tables`
+Должно появиться сообщение: `Successfully generated X models from ClickHouse tables`
 
-### Изучите ваши сгенерированные модели {#step-4-explore-models}
+### Изучите сгенерированные модели {#step-4-explore-models}
 
-CLI Moose автоматически генерирует интерфейсы TypeScript или модели Pydantic Python из ваших существующих таблиц ClickHouse.
+Moose CLI автоматически генерирует интерфейсы TypeScript или модели Pydantic на Python из ваших существующих таблиц ClickHouse.
 
-Посмотрите ваши новые модели данных в файле `app/index.ts`.
+Ознакомьтесь с новыми моделями данных в файле `app/index.ts`.
 
-### Начните разработку {#step-5-start-development}
+### Начало разработки {#step-5-start-development}
 
-Запустите ваш сервер разработки, чтобы запустить локальный экземпляр ClickHouse со всеми вашими продуктивными таблицами, автоматически воссозданными из ваших кодовых определений:
+Запустите dev-сервер, чтобы поднять локальный экземпляр ClickHouse со всеми вашими продуктивными таблицами, автоматически воссозданными из определений в коде:
 
 ```bash
 moose dev
 ```
 
-**Важно**: Ваш продуктивный ClickHouse останется нетронутым. Это создает локальную среду разработки.
+**Важно**: ваш продуктивный ClickHouse останется нетронутым. Это создаёт локальную среду разработки.
 
-### Заполните вашу локальную базу данных {#step-6-seed-database}
+### Наполнение локальной базы данных {#step-6-seed-database}
 
-Заполните ваши данные в локальный экземпляр ClickHouse:
+Загрузите данные в локальный экземпляр ClickHouse:
 
-#### Из вашего собственного ClickHouse {#from-own-clickhouse}
+#### Из собственного ClickHouse {#from-own-clickhouse}
 
 ```bash
 moose seed --connection-string <YOUR_CLICKHOUSE_CONNECTION_STRING> --limit 100
 ```
 
-#### Из игрового стенда ClickHouse {#from-clickhouse-playground}
+#### Из ClickHouse Playground {#from-clickhouse-playground}
 
 ```bash
 moose seed --connection-string https://explorer:@play.clickhouse.com:443/?database=default --limit 100
 ```
 
-### Разработка с помощью Moose OLAP {#step-7-building-with-moose-olap}
+### Разработка с Moose OLAP {#step-7-building-with-moose-olap}
 
-Теперь, когда у вас есть ваши Таблицы, определенные в коде, вы получаете те же преимущества, что и модели данных ORM в веб-приложениях - безопасность типов и автозаполнение при создании APIs и Материализованных Представлений на основе ваших аналитических данных. На следующем этапе вы можете попробовать:
-* Построение REST API с [Moose API](https://docs.fiveonefour.com/moose/apis)
-* Загрузка или преобразование данных с помощью [Moose Workflows](https://docs.fiveonefour.com/moose/workflows) или [Moose Streaming](https://docs.fiveonefour.com/moose/workflows)
-* Изучите возможность перехода в продукцию с [Moose Build](https://docs.fiveonefour.com/moose/deploying/summary) и [Moose Migrate](https://docs.fiveonefour.com/moose/migrate)
+Теперь, когда ваши таблицы определены в коде, вы получаете те же преимущества, что и с моделями данных ORM в веб-приложениях, — строгую типизацию и автодополнение при построении API и материализованных представлений поверх ваших аналитических данных. В качестве следующего шага вы можете:
+
+* Построить REST API с помощью [Moose API](https://docs.fiveonefour.com/moose/apis)
+* Организовать приём или преобразование данных с помощью [Moose Workflows](https://docs.fiveonefour.com/moose/workflows) или [Moose Streaming](https://docs.fiveonefour.com/moose/workflows)
+* Рассмотреть переход в продакшн с [Moose Build](https://docs.fiveonefour.com/moose/deploying/summary) и [Moose Migrate](https://docs.fiveonefour.com/moose/migrate)
 
 </VerticalStepper>
 
-## Получить помощь и оставаться на связи {#get-help-stay-connected}
-- **Справочное приложение**: Ознакомьтесь с открытым справочным приложением, [Area Code](https://github.com/514-labs/area-code): стартовый репозиторий со всеми необходимыми строительными блоками для функционального, готового к предприятиям приложения, требующего специализированной инфраструктуры. Есть два примера приложений: Аналитика для пользователей и Операционный аналитический склад данных.
-- **Сообщество в Slack**: Свяжитесь с кураторами Moose Stack [в Slack](https://join.slack.com/t/moose-community/shared_invite/zt-2fjh5n3wz-cnOmM9Xe9DYAgQrNu8xKxg) для поддержки и обратной связи
-- **Смотрите учебные видео**: Видеоуроки, демонстрации и глубокие погружения в функции Moose Stack [на Youtube](https://www.youtube.com/channel/UCmIj6NoAAP7kOSNYk77u4Zw)
-- **Внесите свой вклад**: Ознакомьтесь с кодом, внесите вклад в Moose Stack и сообщите о проблемах [на GitHub](https://github.com/514-labs/moose)
+## Получите помощь и оставайтесь на связи {#get-help-stay-connected}
+
+- **Эталонное приложение**: Ознакомьтесь с open source эталонным приложением [Area Code](https://github.com/514-labs/area-code) — стартовым репозиторием со всеми необходимыми строительными блоками для функционально насыщенного, готового к использованию в корпоративной среде приложения, которое требует специализированной инфраструктуры. В него входят два примера приложений: User Facing Analytics и Operational Data Warehouse.
+- **Сообщество в Slack**: Свяжитесь с мейнтейнерами Moose Stack [в Slack](https://join.slack.com/t/moose-community/shared_invite/zt-2fjh5n3wz-cnOmM9Xe9DYAgQrNu8xKxg), чтобы получить поддержку и оставить отзыв.
+- **Смотрите обучающие материалы**: Видеоруководства, демо и подробные разборы возможностей Moose Stack [на YouTube](https://www.youtube.com/channel/UCmIj6NoAAP7kOSNYk77u4Zw).
+- **Внесите свой вклад**: Изучайте код, вносите вклад в Moose Stack и сообщайте о проблемах [на GitHub](https://github.com/514-labs/moose).

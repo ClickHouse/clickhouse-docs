@@ -1,26 +1,25 @@
 ---
-'description': 'Hive 引擎允许您在 HDFS Hive 表上执行 `SELECT` 查询。'
-'sidebar_label': 'Hive'
-'sidebar_position': 84
-'slug': '/engines/table-engines/integrations/hive'
-'title': 'Hive'
-'doc_type': 'guide'
+description: 'Hive 引擎允许你在 HDFS 中的 Hive 表上执行 `SELECT` 查询。'
+sidebar_label: 'Hive'
+sidebar_position: 84
+slug: /engines/table-engines/integrations/hive
+title: 'Hive 表引擎'
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Hive 表引擎 {#hive-table-engine}
 
-# Hive
+<CloudNotSupportedBadge />
 
-<CloudNotSupportedBadge/>
+Hive 引擎允许对 HDFS 中的 Hive 表执行 `SELECT` 查询。目前支持的输入格式如下：
 
-Hive 引擎允许您在 HDFS Hive 表上执行 `SELECT` 查询。目前，它支持以下输入格式：
+* Text：仅支持除 `binary` 外的简单标量列类型
 
-- 文本：仅支持简单标量列类型，除 `binary` 外
+* ORC：支持除 `char` 外的简单标量列类型；复杂类型仅支持 `array` 等
 
-- ORC：支持简单标量列类型，除 `char` 外；仅支持复杂类型，例如 `array`
-
-- Parquet：支持所有简单标量列类型；仅支持复杂类型，例如 `array`
+* Parquet：支持所有简单标量列类型；复杂类型仅支持 `array` 等
 
 ## 创建表 {#creating-a-table}
 
@@ -33,28 +32,31 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Hive('thrift://host:port', 'database', 'table');
 PARTITION BY expr
 ```
-请查看 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细描述。
+
+参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
 
 表结构可以与原始 Hive 表结构不同：
-- 列名应与原始 Hive 表中的列相同，但您可以只使用其中的一些列且顺序任意，也可以使用从其他列计算的别名列。
-- 列类型应与原始 Hive 表中的列类型相同。
-- 分区表达式应与原始 Hive 表一致，且分区表达式中的列应在表结构中。
 
-**引擎参数**
+* 列名应与原始 Hive 表中的列名相同，但可以只使用其中部分列，顺序任意；也可以使用由其他列计算得到的别名列。
+* 列类型必须与原始 Hive 表中的列类型相同。
+* 分区表达式应与原始 Hive 表保持一致，且分区表达式中使用的列必须在表结构中定义。
 
-- `thrift://host:port` — Hive Metastore 地址
+**Engine 参数**
 
-- `database` — 远程数据库名称。
+* `thrift://host:port` — Hive Metastore 地址
 
-- `table` — 远程表名称。
+* `database` — 远程数据库名称。
+
+* `table` — 远程表名称。
 
 ## 使用示例 {#usage-example}
 
-### 如何为 HDFS 文件系统使用本地缓存 {#how-to-use-local-cache-for-hdfs-filesystem}
+### 如何在 HDFS 文件系统中使用本地缓存 {#how-to-use-local-cache-for-hdfs-filesystem}
 
-我们强烈建议您为远程文件系统启用本地缓存。基准测试表明，启用缓存后几乎快 2 倍。
+我们强烈建议为远程文件系统启用本地缓存。基准测试结果表明，启用缓存后速度几乎提升 2 倍。
 
-在使用缓存之前，将其添加到 `config.xml`
+在使用缓存之前，请先在 `config.xml` 中添加相应配置
+
 ```xml
 <local_cache_for_remote_fs>
     <enable>true</enable>
@@ -64,10 +66,10 @@ PARTITION BY expr
 </local_cache_for_remote_fs>
 ```
 
-- enable: 如果为 true，ClickHouse 将在启动后维护远程文件系统 (HDFS) 的本地缓存。
-- root_dir: 必需。用于存储远程文件系统本地缓存文件的根目录。
-- limit_size: 必需。本地缓存文件的最大尺寸（以字节为单位）。
-- bytes_read_before_flush: 控制从远程文件系统下载文件时刷新到本地文件系统前的字节数。默认值为 1MB。
+* enable: 当为 true 时，ClickHouse 在启动后会为远程文件系统（HDFS）维护本地缓存。
+* root&#95;dir: 必需。用于存储远程文件系统本地缓存文件的根目录。
+* limit&#95;size: 必需。本地缓存文件的最大大小（以字节为单位）。
+* bytes&#95;read&#95;before&#95;flush: 控制从远程文件系统下载文件时，在刷新到本地文件系统之前读取的字节数。默认值为 1MB。
 
 ### 使用 ORC 输入格式查询 Hive 表 {#query-hive-table-with-orc-input-format}
 
@@ -121,7 +123,8 @@ Time taken: 0.295 seconds, Fetched: 1 row(s)
 
 #### 在 ClickHouse 中创建表 {#create-table-in-clickhouse}
 
-在 ClickHouse 中的表，从上述创建的 Hive 表中检索数据：
+ClickHouse 中的一个表，用于从上面创建的 Hive 表中读取数据：
+
 ```sql
 CREATE TABLE test.test_orc
 (
@@ -231,20 +234,22 @@ LOCATION
   'hdfs://testcluster/data/hive/test.db/test_parquet'
 OK
 Time taken: 0.51 seconds
-
-hive >  insert into test.test_parquet partition(day='2021-09-18') select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current_timestamp(), current_date(), 'hello world', 'hello world', 'hello world', true, 'hello world', array(1, 2, 3), array('hello world', 'hello world'), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array('a', 'b'), array('c', 'd')), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
-OK
-Time taken: 36.025 seconds
-
-hive > select * from test.test_parquet;
-OK
-1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
-Time taken: 0.766 seconds, Fetched: 1 row(s)
 ```
 
-#### 在 ClickHouse 中创建表 {#create-table-in-clickhouse-1}
+hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
+OK
+耗时：36.025 秒
 
-在 ClickHouse 中的表，从上述创建的 Hive 表中检索数据：
+hive &gt; select * from test.test&#95;parquet;
+OK
+1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    [&quot;hello world&quot;,&quot;hello world&quot;]    [1.1,1.2]    [[1,2],[3,4]]    [[&quot;a&quot;,&quot;b&quot;],[&quot;c&quot;,&quot;d&quot;]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
+耗时：0.766 秒，获取：1 行记录
+
+````
+
+#### 在 ClickHouse 中创建表
+
+在 ClickHouse 中创建表,从上面创建的 Hive 表中获取数据:
 ```sql
 CREATE TABLE test.test_parquet
 (
@@ -273,7 +278,7 @@ CREATE TABLE test.test_parquet
 )
 ENGINE = Hive('thrift://localhost:9083', 'test', 'test_parquet')
 PARTITION BY day
-```
+````
 
 ```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G
@@ -286,7 +291,7 @@ SETTINGS input_format_parquet_allow_missing_columns = 1
 
 Query id: 4e35cf02-c7b2-430d-9b81-16f438e5fca9
 
-Row 1:
+第 1 行:
 ──────
 f_tinyint:            1
 f_smallint:           2
@@ -311,12 +316,12 @@ f_array_array_string: [['a','b'],['c','d']]
 f_array_array_float:  [[1.11,2.22],[3.33,4.44]]
 day:                  2021-09-18
 
-1 rows in set. Elapsed: 0.357 sec.
+返回 1 行。耗时: 0.357 秒。
 ```
 
-### 使用文本输入格式查询 Hive 表 {#query-hive-table-with-text-input-format}
+### 使用 Text 输入格式查询 Hive 表
 
-#### 在 Hive 中创建表 {#create-table-in-hive-2}
+#### 在 Hive 中创建表
 
 ```text
 hive >
@@ -365,9 +370,10 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### 在 ClickHouse 中创建表 {#create-table-in-clickhouse-2}
+#### 在 ClickHouse 中创建表 {#create-table-in-hive-2}
 
-在 ClickHouse 中的表，从上述创建的 Hive 表中检索数据：
+在 ClickHouse 中创建一个表，用于从上述创建的 Hive 表中读取数据：
+
 ```sql
 CREATE TABLE test.test_text
 (
@@ -400,23 +406,26 @@ SELECT *
 FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'
 
-Query id: 55b79d35-56de-45b9-8be6-57282fbf1f44
+查询 ID: 55b79d35-56de-45b9-8be6-57282fbf1f44
+```
 
-Row 1:
+第 1 行:
 ──────
-f_tinyint:   1
-f_smallint:  2
-f_int:       3
-f_integer:   4
-f_bigint:    5
-f_float:     6.11
-f_double:    7.22
-f_decimal:   8
-f_timestamp: 2021-12-14 18:11:17
-f_date:      2021-12-14
-f_string:    hello world
-f_varchar:   hello world
-f_char:      hello world
-f_bool:      true
+f&#95;tinyint:   1
+f&#95;smallint:  2
+f&#95;int:       3
+f&#95;integer:   4
+f&#95;bigint:    5
+f&#95;float:     6.11
+f&#95;double:    7.22
+f&#95;decimal:   8
+f&#95;timestamp: 2021-12-14 18:11:17
+f&#95;date:      2021-12-14
+f&#95;string:    hello world
+f&#95;varchar:   hello world
+f&#95;char:      hello world
+f&#95;bool:      true
 day:         2021-09-18
+
+```
 ```

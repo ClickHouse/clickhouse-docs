@@ -1,24 +1,27 @@
 ---
-'alias': []
-'description': 'LineAsStringWithNames 格式的文档'
-'input_format': true
-'keywords':
-- 'LineAsStringWithNames'
-'output_format': true
-'slug': '/interfaces/formats/LineAsStringWithNames'
-'title': 'LineAsStringWithNames'
-'doc_type': 'reference'
+alias: []
+description: 'LineAsStringWithNames 格式文档'
+input_format: true
+keywords: ['LineAsStringWithNames']
+output_format: true
+slug: /interfaces/formats/LineAsStringWithNames
+title: 'LineAsStringWithNames'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
-|------|------|------|
-| ✗    | ✔    |      |
+|-------|--------|-------|
+| ✗     | ✔      |       |
+
+
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，但打印带有列名称的标题行。
+`LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似，但会额外输出包含列名的表头行。
 
-## 示例用法 {#example-usage}
+
+
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 CREATE TABLE example (
@@ -38,5 +41,6 @@ John    30
 Jane    25
 Peter    35
 ```
+
 
 ## 格式设置 {#format-settings}

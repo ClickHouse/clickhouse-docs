@@ -1,48 +1,51 @@
 ---
-'title': 'Postgres ClickPipe中的并行快照'
-'description': '文档解释Postgres ClickPipe中的并行快照'
-'slug': '/integrations/clickpipes/postgres/parallel_initial_load'
-'sidebar_label': '并行快照如何工作'
-'doc_type': 'guide'
+title: 'Postgres ClickPipe 中的并行快照'
+description: '本文档说明 Postgres ClickPipe 中的并行快照'
+slug: /integrations/clickpipes/postgres/parallel_initial_load
+sidebar_label: '并行快照的工作原理'
+doc_type: 'guide'
+keywords: ['ClickPipes', 'PostgreSQL', 'CDC', '数据摄取', '实时同步']
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
 import Image from '@theme/IdealImage';
 
-This document explains parallelized snapshot/initial load in the Postgres ClickPipe works and talks about the snapshot parameters that can be used to control it.
+本文介绍了 Postgres ClickPipe 中并行快照／初始加载的工作原理，并说明了可用于控制该过程的快照参数。
 
-## 概述 {#overview-pg-snapshot}
 
-初始加载是CDC ClickPipe的第一阶段，在此阶段，ClickPipe将源数据库中表的历史数据同步到ClickHouse，然后再开始CDC。很多时候，开发者会采用单线程的方式进行这项工作，比如使用pg_dump或pg_restore，或者使用单个线程从源数据库读取并写入ClickHouse。然而，Postgres ClickPipe可以并行化这个过程，这可以显著加快初始加载的速度。
+## 概览 {#overview-pg-snapshot}
 
-### Postgres中的CTID列 {#ctid-pg-snapshot}
-在Postgres中，表中的每一行都有一个唯一标识符称为CTID。这是一个系统列，默认情况下对用户不可见，但可以用来唯一标识表中的行。CTID是块号和块内偏移量的组合，这使得访问行的效率很高。
+初始加载是 CDC ClickPipe 的第一阶段，在这一阶段，ClickPipe 会先将源数据库中各个表的历史数据同步到 ClickHouse，然后再开始 CDC。很多情况下，开发者会以单线程方式来执行这一过程——例如使用 pg_dump 或 pg_restore，或者用单个线程从源数据库读取并写入到 ClickHouse。
+然而，Postgres ClickPipe 可以将这一过程并行化，从而显著加快初始加载。
+
+### Postgres 中的 CTID 列 {#ctid-pg-snapshot}
+在 Postgres 中，表中的每一行都有一个名为 CTID 的唯一标识符。它是一个系统列，默认对用户不可见，但可以用来在表中唯一标识行。CTID 由块号和块内偏移量组成，这种结构使得访问行非常高效。
 
 ### 逻辑分区 {#logical-partitioning-pg-snapshot}
-Postgres ClickPipe使用CTID列对源表进行逻辑分区。它通过首先对源表执行COUNT(*)，然后执行窗口函数分区查询以获取每个分区的CTID范围，从而获得分区。这使得ClickPipe可以并行读取源表，每个分区由单独的线程处理。
+Postgres ClickPipe 使用 CTID 列对源表进行逻辑分区。它首先对源表执行一次 COUNT(*)，然后通过一个带窗口函数的分区查询获取每个分区的 CTID 范围。这样 ClickPipe 就可以并行读取源表，每个分区由一个独立线程处理。
 
-让我们讨论以下设置：
+下面来介绍以下这些设置：
 
 <Image img={snapshot_params} alt="Snapshot parameters" size="md"/>
 
 #### 每个分区的快照行数 {#numrows-pg-snapshot}
 
-此设置控制每个分区包含多少行。ClickPipe将以此大小的块读取源表，这些块将根据设置的初始加载并行性并行处理。默认值是每个分区100,000行。
+此设置控制一个分区包含多少行。ClickPipe 会按该大小对源表进行分块读取，并根据配置的初始加载并行度对这些分块进行并行处理。默认值为每个分区 100,000 行。
 
-#### 初始加载并行性 {#parallelism-pg-snapshot}
+#### 初始加载并行度 {#parallelism-pg-snapshot}
 
-此设置控制并行处理多少个分区。默认值为4，这意味着ClickPipe将并行读取源表中的4个分区。可以增加此值以加快初始加载，但建议根据源实例的规格将其保持在合理的值，以避免对源数据库造成过大的压力。ClickPipe将根据源表的大小和每个分区的行数自动调整分区数。
+此设置控制有多少个分区会被并行处理。默认值为 4，这意味着 ClickPipe 会并行读取源表的 4 个分区。可以通过增大该值来加快初始加载，但建议根据源实例的规格将其控制在合理范围内，以避免压垮源数据库。ClickPipe 会根据源表大小以及每个分区的行数自动调整分区数量。
 
-#### 并行快照的表数 {#tables-parallel-pg-snapshot}
+#### 并行加载的表数量 {#tables-parallel-pg-snapshot}
 
-与并行快照没有直接关系，但此设置控制在初始加载期间并行处理多少个表。默认值为1。请注意，这在分区的并行性之上，因此如果您有4个分区和2个表，ClickPipe将并行读取8个分区。
+虽然与分区级别的并行快照没有直接关系，但该设置控制在初始加载过程中有多少张表会被并行处理。默认值为 1。需要注意的是，这是在分区并行度之上的叠加效果，因此如果你有 4 个分区和 2 张表，ClickPipe 将会并行读取 8 个分区。
 
-### 监控Postgres中的并行快照 {#monitoring-parallel-pg-snapshot}
+### 在 Postgres 中监控并行快照 {#monitoring-parallel-pg-snapshot}
 
-您可以分析**pg_stat_activity**以查看并行快照的运行情况。ClickPipe将创建多个连接到源数据库，每个连接读取源表的不同分区。如果您看到具有不同CTID范围的**FETCH**查询，这意味着ClickPipe正在读取源表。您也可以在这里看到COUNT(*)和分区查询。
+你可以分析 **pg_stat_activity** 来查看并行快照的实际执行情况。ClickPipe 会创建多个到源数据库的连接，每个连接读取源表的不同分区。如果你看到带有不同 CTID 范围的 **FETCH** 查询，就说明 ClickPipe 正在读取源表。你也可以在这里看到 COUNT(*) 和分区查询。
 
 ### 限制 {#limitations-parallel-pg-snapshot}
 
-- 快照参数在管道创建后不能被编辑。如果您想更改它们，您必须创建一个新的ClickPipe。
-- 当向现有ClickPipe添加表时，您不能更改快照参数。ClickPipe将对新表使用现有参数。
-- 分区键列不应包含`NULL`，因为分区逻辑会跳过它们。
+- 在创建 ClickPipe 之后，快照参数无法编辑。如果你想更改这些参数，必须创建一个新的 ClickPipe。
+- 当向已有的 ClickPipe 中添加表时，你不能更改快照参数。ClickPipe 会对新表沿用已有参数。
+- 分区键列不应包含 `NULL`，因为分区逻辑会跳过这些值。

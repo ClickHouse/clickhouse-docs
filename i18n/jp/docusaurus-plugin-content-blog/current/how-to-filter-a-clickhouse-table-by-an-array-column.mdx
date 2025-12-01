@@ -1,0 +1,108 @@
+---
+title: ClickHouse テーブルを配列カラムでフィルタリングする方法
+description: "配列カラムで ClickHouse テーブルをフィルタリングする方法を解説するナレッジベース記事。"
+date: 2024-12-17
+tags: ['データモデリング', '関数']
+keywords: ['フィルタリング', '配列カラム']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+## はじめに \{#introduction\}
+
+配列型カラムで ClickHouse のテーブルをフィルタリングすることはよくあるタスクであり、ClickHouse には配列カラムを扱うための多数の[関数](/sql-reference/functions/array-functions)が用意されています。
+
+この記事では、配列カラムによるテーブルのフィルタリングに焦点を当てますが、以下の動画ではその他の配列関連関数についても幅広く解説しています。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JKHAdCFtYDg?si=OqS3ry1LFrOlF8Iy" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+## 例 \{#example\}
+
+文字列および整数の配列をそれぞれ格納する 2 つのカラム `tags_string` と `tags_int` を持つテーブルを例に用います。
+
+* サンプルのデータベースとテーブルを作成します。
+
+```sql
+CREATE DATABASE db1;
+```
+
+* サンプルテーブルを作成します
+
+```sql
+CREATE TABLE db1.tags_table
+(
+    `id` UInt64,
+    `tags_string` Array(String),
+    `tags_int` Array(UInt64),
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+* テーブルにいくつかのサンプルデータを挿入します。
+
+```sql
+INSERT INTO db1.tags_table VALUES (1, ['tag1', 'tag2', 'tag3'], [1, 2, 3]), (2, ['tag2', 'tag3', 'tag4'], [2, 3, 4]), (3, ['tag1', 'tag3', 'tag5'], [1, 3, 5]);
+```
+
+`has(arr, elem)` 関数を使用してテーブルをフィルターし、配列 `arr` に要素 `elem` が含まれている行のみを返します。
+
+テーブルをフィルターし、配列 `tags_string` に要素 `tag1` が含まれている行のみを返します。
+
+```sql
+SELECT * FROM db1.tags_table WHERE has(tags_string, 'tag1');
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```
+
+`hasAll(arr, elems)` 関数を使用して、`elems` 配列内のすべての要素が `arr` 配列内に存在する行を返します。
+
+`tags_string` 配列内のすべての要素が `['tag1', 'tag2']` 配列内に存在する行のみを返すようにテーブルをフィルタリングします。
+
+```sql
+SELECT * FROM db1.tags_table WHERE hasAll(tags_string, ['tag1', 'tag2']);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+└────┴────────────────────────┴──────────┘
+```
+
+`hasAny(arr, elems)` 関数を使用して、`elems` 配列の要素のうち少なくとも 1 つが `arr` 配列内に存在する行を返します。
+
+`tags_string` 配列の要素のうち少なくとも 1 つが `['tag1', 'tag2']` 配列内に存在する行だけが返されるように、テーブルをフィルタリングします。
+
+```sql
+SELECT * FROM db1.tags_table WHERE hasAny(tags_string, ['tag1', 'tag2']);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+│  2 │ ['tag2','tag3','tag4'] │ [2,3,4]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```
+
+`arrayExists(lambda, arr)` 関数を使用すると、ラムダ関数でテーブルをフィルタリングできます。
+
+`tags_int` 配列の要素のうち、少なくとも 1 つが 3 より大きい行のみが返されるようにテーブルをフィルタリングします。
+
+```sql
+SELECT * FROM db1.tags_table WHERE arrayExists(x -> x > 3, tags_int);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  2 │ ['tag2','tag3','tag4'] │ [2,3,4]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```

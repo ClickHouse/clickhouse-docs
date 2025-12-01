@@ -1,32 +1,32 @@
 ---
-'description': '返回时间序列中索引 `t` 的累积指数衰减。'
-'sidebar_position': 134
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
-'title': 'exponentialTimeDecayedCount'
-'doc_type': 'reference'
+description: '返回时间序列在时间索引为 `t` 时的累积指数衰减值。'
+sidebar_position: 134
+slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount
+title: 'exponentialTimeDecayedCount'
+doc_type: 'reference'
 ---
 
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-返回时间序列在时间索引 `t` 处的累计指数衰减。
+返回时间序列在时间点 `t` 处的累积指数衰减值。
 
 **语法**
 
 ```sql
-exponentialTimeDecayedCount(x)(t)
+指数时间衰减计数(x)(t)
 ```
 
 **参数**
 
-- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)， [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)， [日期时间](../../data-types/datetime.md)， [日期时间64](../../data-types/datetime64.md)。
+* `t` — 时间。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)，[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
-**参数**
+**附加参数**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)， [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半衰期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回给定时间点的累计指数衰减。 [Float64](../../data-types/float.md)。
+* 返回给定时间点的累积指数衰减值。[Float64](../../data-types/float.md)。
 
 **示例**
 
@@ -51,7 +51,7 @@ FROM
 结果：
 
 ```response
-    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
+┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐
  1. │     1 │    0 │                    1 │ ██▌                        │
  2. │     0 │    1 │                1.905 │ ████▊                      │
  3. │     0 │    2 │                2.724 │ ██████▊                    │

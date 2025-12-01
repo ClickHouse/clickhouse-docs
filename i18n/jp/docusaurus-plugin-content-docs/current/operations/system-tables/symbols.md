@@ -1,21 +1,20 @@
 ---
-'description': 'C++専門家とClickHouseエンジニアに役立つシステムテーブルで、`clickhouse`バイナリのイントロスペクションに関する情報を含んでいます。'
-'keywords':
-- 'system table'
-- 'symbols'
-'slug': '/operations/system-tables/symbols'
-'title': 'system.symbols'
-'doc_type': 'reference'
+description: 'C++ のエキスパートおよび ClickHouse エンジニア向けの、`clickhouse` バイナリのイントロスペクション用情報を含む system テーブル。'
+keywords: ['system table', 'symbols']
+slug: /operations/system-tables/symbols
+title: 'system.symbols'
+doc_type: 'reference'
 ---
 
-`clickhouse` バイナリのインストロスペクションに関する情報を含んでいます。アクセスするにはインストロスペクション権限が必要です。このテーブルはC++の専門家およびClickHouseのエンジニアにのみ有用です。
+`clickhouse` バイナリのイントロスペクション用の情報を含みます。アクセスには introspection 権限が必要です。
+このテーブルは C++ のエキスパートおよび ClickHouse エンジニアにのみ有用です。
 
 カラム:
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされています。読みやすい名前を得るには `demangle(symbol)` を適用できます。
-- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの開始アドレス。
-- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの終了アドレス。
-- `name` ([String](../../sql-reference/data-types/string.md)) — `event` のエイリアスです。
+* `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされた形式です。可読な名前を取得するには `demangle(symbol)` を適用できます。
+* `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内でのシンボルの開始アドレス。
+* `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内でのシンボルの終了アドレス。
+* `name` ([String](../../sql-reference/data-types/string.md)) — `event` のエイリアス。
 
 **例**
 

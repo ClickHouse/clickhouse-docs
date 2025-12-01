@@ -15,6 +15,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service (S3) and access their data securely.
 Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
+<Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 <br/>
 <Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
 <br/>

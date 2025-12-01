@@ -1,20 +1,23 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/maxmap'
+description: 'Вычисляет максимальные значения элементов массива `value` в соответствии с ключами, заданными в массиве `key`.'
 sidebar_position: 165
-description: 'Вычисляет максимальное значение из массива `value` в соответствии'
-title: maxMap
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/maxmap
+title: 'maxMap'
+doc_type: 'reference'
 ---
-# maxMap
 
-Вычисляет максимум из массива `value` в соответствии с ключами, указанными в массиве `key`.
+# maxMap {#maxmap}
+
+Вычисляет максимальное значение из массива `value` по ключам, указанным в массиве `key`.
 
 **Синтаксис**
 
 ```sql
 maxMap(key, value)
 ```
+
 или
+
 ```sql
 maxMap(Tuple(key, value))
 ```
@@ -22,18 +25,19 @@ maxMap(Tuple(key, value))
 Псевдоним: `maxMappedArrays`
 
 :::note
-- Передача кортежа ключей и массивов значений идентична передаче двух массивов ключей и значений.
-- Число элементов в `key` и `value` должно быть одинаковым для каждой строки, которая подводится в итог.
-:::
+
+* Передача кортежа из массивов ключей и значений эквивалентна передаче двух массивов — ключей и значений.
+* Количество элементов в `key` и `value` должно совпадать для каждой строки, участвующей в агрегации.
+  :::
 
 **Параметры**
 
-- `key` — Массив ключей. [Array](../../data-types/array.md).
-- `value` — Массив значений. [Array](../../data-types/array.md).
+* `key` — массив ключей. [Array](../../data-types/array.md).
+* `value` — массив значений. [Array](../../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Возвращает кортеж из двух массивов: ключи в отсортированном порядке и значения, рассчитанные для соответствующих ключей. [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
+* Возвращает кортеж из двух массивов: ключи в отсортированном порядке и значения, вычисленные для соответствующих ключей. [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
 
 **Пример**
 

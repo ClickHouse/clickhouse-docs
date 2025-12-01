@@ -1,15 +1,14 @@
 ---
-'description': '结果等于 varSamp 的平方根。与此函数不同，它使用了一个数值稳定的算法。'
-'sidebar_position': 191
-'slug': '/sql-reference/aggregate-functions/reference/stddevsampstable'
-'title': 'stddevSampStable'
-'doc_type': 'reference'
+description: '结果等于 varSamp 的平方根。与 stddevSamp 不同，本函数使用数值更稳定的算法。'
+sidebar_position: 191
+slug: /sql-reference/aggregate-functions/reference/stddevsampstable
+title: 'stddevSampStable'
+doc_type: 'reference'
 ---
 
+# stddevSampStable {#stddevsampstable}
 
-# stddevSampStable
-
-结果等于 [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) 的平方根。与 [`stddevSamp`](../reference/stddevsamp.md) 不同，此函数使用数值稳定算法。它的速度较慢，但提供了更低的计算误差。
+结果等于 [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) 的平方根。与 [`stddevSamp`](../reference/stddevsamp.md) 不同，此函数使用在数值上更稳定的算法。其运行速度较慢，但数值误差更小。
 
 **语法**
 
@@ -19,11 +18,11 @@ stddevSampStable(x)
 
 **参数**
 
-- `x`：要计算样本方差平方根的值。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+* `x`: 用于计算样本方差平方根的值。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-`x` 的样本方差平方根。 [Float64](../../data-types/float.md)。
+返回 `x` 的样本方差的平方根。[Float64](../../data-types/float.md)。
 
 **示例**
 

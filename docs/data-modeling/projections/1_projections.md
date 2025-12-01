@@ -92,8 +92,8 @@ users should be aware of and thus should be deployed sparingly.
 - Materialized Views can be chained: the target table of one materialized view 
   can be the source table of another materialized view, and so on. This is not 
   possible with projections.
-- Projections don't support joins, but Materialized Views do.
-- Projections don't support filters (`WHERE` clause), but Materialized Views do.
+- Projection definitions don't support joins, but Materialized Views do. However, queries on tables with projections can use joins freely.
+- Projection definitions don't support filters (`WHERE` clause), but Materialized Views do. However, queries on tables with projections can filter freely.
 
 We recommend using projections when:
 

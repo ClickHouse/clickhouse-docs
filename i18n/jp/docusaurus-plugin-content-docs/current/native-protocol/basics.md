@@ -1,61 +1,66 @@
 ---
-'slug': '/native-protocol/basics'
-'sidebar_position': 1
-'title': '基本'
-'description': 'ネイティブプロトコルの基本'
-'doc_type': 'guide'
+slug: /native-protocol/basics
+sidebar_position: 1
+title: '基礎'
+description: 'ネイティブプロトコルの基礎'
+keywords: ['ネイティブプロトコル', 'TCPプロトコル', 'プロトコルの基礎', 'バイナリプロトコル', 'クライアント／サーバー通信']
+doc_type: 'guide'
 ---
+
+
+
+# 基本 {#basics}
+
+:::note
+クライアントプロトコルのリファレンスは現在作成中です。
+
+ほとんどのサンプルコードは Go のみで提供されています。
+:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
 
-# 基本
-
-:::note
-クライアントプロトコルのリファレンスは進行中です。
-
-ほとんどの例はGoのみで提供されています。
-:::
-
-この文書はClickHouse TCPクライアントのバイナリプロトコルについて説明します。
 
 ## Varint {#varint}
 
-長さ、パケットコードおよびその他のケースには、*unsigned varint* エンコーディングが使用されます。
-[ binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
+長さやパケットコードなどには、*unsigned varint* エンコード方式が使われます。
+[binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) と [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
 
 :::note
-*Signed* varintは使用されません。
+*signed* varint は使用されません。
 :::
+
+
 
 ## String {#string}
 
-可変長の文字列は *(length, value)* としてエンコードされ、*length* は [varint](#varint)、*value* はutf8文字列です。
+可変長文字列は *(length, value)* という形式でエンコードされます。ここで *length* は [varint](#varint)、*value* は UTF-8 文字列です。
 
 :::important
-OOMを防ぐために長さを検証してください：
+OOM によるメモリ枯渇を防ぐため、length を必ず検証すること:
 
 `0 ≤ len < MAX`
 :::
 
 <Tabs>
-<TabItem value="encode" label="エンコード">
+<TabItem value="encode" label="Encode">
 
 ```go
 s := "Hello, world!"
 
-// Writing string length as uvarint.
+// 文字列長を uvarint として書き込む。
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Writing string value.
+// 文字列本体を書き込む。
 buf = append(buf, s...)
 ```
 
 </TabItem>
-<TabItem value="decode" label="デコード">
+<TabItem value="decode" label="Decode">
 
 ```go
 r := bytes.NewReader([]byte{
@@ -63,13 +68,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Read length.
+// length を読み込む。
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Check n to prevent OOM or runtime exception in make().
+// OOM や make() 時のランタイム例外を防ぐため n をチェックする。
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -88,7 +93,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="16進数ダンプ">
+<TabItem value="hexdump" label="Hex dump">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -114,42 +119,43 @@ data := []byte{
 </TabItem>
 </Tabs>
 
+
+
 ## 整数 {#integers}
 
 :::tip
-ClickHouseは固定サイズの整数に**リトルエンディアン**を使用します。
+ClickHouse は固定サイズの整数に **リトルエンディアン (Little Endian)** を使用します。
 :::
 
 ### Int32 {#int32}
+
 ```go
 v := int32(1000)
 
-// Encode.
+// エンコード
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Decode.
+// デコード
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="16進数ダンプ">
+  <TabItem value="hexdump" label="Hexダンプ">
+    ```hexdump
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
+  </TabItem>
 
-```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
-
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
-6AMAAAAAAAA
-```
-
-</TabItem>
+  <TabItem value="base64" label="Base64">
+    ```text
+    6AMAAAAAAAA
+    ```
+  </TabItem>
 </Tabs>
 
-## ブール値 {#boolean}
 
-ブール値は1バイトで表され、`1` は `true`、`0` は `false`です。
+## Boolean {#boolean}
+
+Boolean 型は 1 バイトで表現され、`1` は `true`、`0` は `false` を表します。

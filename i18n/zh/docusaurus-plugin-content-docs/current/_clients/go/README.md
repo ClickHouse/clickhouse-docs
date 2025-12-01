@@ -1,1 +1,1 @@
-<Content/>
+用于存放 Golang 示例源码的目录

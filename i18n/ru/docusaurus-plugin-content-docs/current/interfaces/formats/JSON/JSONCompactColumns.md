@@ -1,29 +1,31 @@
 ---
-slug: '/interfaces/formats/JSONCompactColumns'
-description: 'Документация для формата JSONCompactColumns'
-title: JSONCompactColumns
-keywords: ['JSONCompactColumns']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONCompactColumns'
 input_format: true
+keywords: ['JSONCompactColumns']
 output_format: true
+slug: /interfaces/formats/JSONCompactColumns
+title: 'JSONCompactColumns'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Ввод | Вывод | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-В этом формате все данные представлены в одном JSON массиве.
+В этом формате все данные представлены в виде одного массива JSON.
 
 :::note
-Формат вывода `JSONCompactColumns` буферизует все данные в памяти, чтобы вывести их в одном блоке, что может привести к высокому потреблению памяти.
+Формат вывода `JSONCompactColumns` буферизует все данные в памяти и выводит их одним блоком, что может привести к высокому потреблению памяти.
 :::
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON файл с следующими данными, названный `football.json`:
+JSON-файл со следующими данными, сохранённый как `football.json`:
 
 ```json
 [
@@ -36,15 +38,16 @@ output_format: true
 ]
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
+
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `JSONCompactColumns`:
+Прочитайте данные, используя формат `JSONCompactColumns`:
 
 ```sql
 SELECT *
@@ -52,7 +55,7 @@ FROM football
 FORMAT JSONCompactColumns
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 [
@@ -65,6 +68,7 @@ FORMAT JSONCompactColumns
 ]
 ```
 
-Колонки, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (вы можете использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) здесь)
+Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (здесь можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields))
+
 
 ## Настройки формата {#format-settings}

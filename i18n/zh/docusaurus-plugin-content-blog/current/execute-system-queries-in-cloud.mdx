@@ -1,0 +1,33 @@
+---
+title: 在 ClickHouse Cloud 中对所有节点执行 SYSTEM 语句
+description: 了解如何使用 `ON CLUSTER` 和 `clusterAllReplicas`，在 ClickHouse Cloud 服务的所有节点上执行 SYSTEM 语句和查询。
+date: 2023-03-01
+tags: ['部署与扩缩容']
+keywords: ['clusterAllReplicas']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+## 答案 \{#answer\}
+
+为了在 ClickHouse Cloud 服务的所有节点上执行相同的查询，我们可以使用 [clusterAllReplicas](https://clickhouse.com/docs/sql-reference/table-functions/cluster/)。
+
+例如，如果想从所有节点上的（节点本地）system 系统表中获取条目，可以使用：
+
+```sql
+SELECT ... FROM clusterAllReplicas(default, system.TABLE) ...;
+```
+
+同样，可以通过使用 [ON CLUSTER](https://clickhouse.com/docs/sql-reference/distributed-ddl/) 子句，在单条语句中对所有节点执行同一条 [SYSTEM 语句](https://clickhouse.com/docs/sql-reference/statements/system/)：
+
+```sql
+SYSTEM ... ON CLUSTER default;
+```
+
+例如，要在所有节点上[清除文件系统缓存](https://clickhouse.com/docs/sql-reference/statements/system/#drop-filesystem-cache)，可以使用：
+
+```sql
+SYSTEM DROP FILESYSTEM CACHE ON CLUSTER default;
+```

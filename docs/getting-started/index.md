@@ -38,7 +38,7 @@ by https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-
 | [Geo Data using the Cell Tower Dataset](/getting-started/example-datasets/cell-towers) | Learn how to load OpenCelliD data into ClickHouse, connect Apache Superset to ClickHouse and build a dashboard based on data |
 | [GitHub Events Dataset](/getting-started/example-datasets/github-events) | Dataset containing all events on GitHub from 2011 to Dec 6 2020, with a size of 3.1 billion records. |
 | [Hacker News dataset](/getting-started/example-datasets/hacker-news) | Dataset containing 28 million rows of hacker news data. |
-| [Hacker News Vector Search dataset](/getting-started/example-datasets/hackernews-vector-search-dataset) | Dataset containing 28+ million Hacker News postings & their vector embeddings |
+| [Hacker News vector search dataset](/getting-started/example-datasets/hackernews-vector-search-dataset) | Dataset containing 28+ million Hacker News postings & their vector embeddings |
 | [LAION 5B dataset](/getting-started/example-datasets/laion-5b-dataset) | Dataset containing 100 million vectors from the LAION 5B dataset |
 | [Laion-400M dataset](/getting-started/example-datasets/laion-400m-dataset) | Dataset containing 400 million images with English image captions |
 | [New York Public Library "What's on the Menu?" Dataset](/getting-started/example-datasets/menus) | Dataset containing 1.3 million records of historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices. |

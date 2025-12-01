@@ -1,8 +1,6 @@
+[`Nullable` column](/sql-reference/data-types/nullable/)（例: `Nullable(String)`）は、追加の `UInt8` 型カラムを作成します。この追加カラムは、ユーザーが Nullable カラムを操作するたびに毎回処理する必要があります。その結果、追加のストレージ容量を消費し、ほぼ常にパフォーマンスに悪影響を与えます。
 
-
-[`Nullable` カラム](/sql-reference/data-types/nullable/) (例: `Nullable(String)`) は、`UInt8` 型の別のカラムを作成します。この追加のカラムは、ユーザーが Nullable カラムを操作するたびに処理される必要があります。これにより、追加のストレージスペースが使用され、ほぼ常にパフォーマンスに悪影響を与えます。
-
-`Nullable` カラムを避けるために、そのカラムにデフォルト値を設定することを検討してください。例えば、以下のようにするのではなく:
+`Nullable` カラムを避けるには、そのカラムにデフォルト値を設定することを検討してください。たとえば、次のようにする代わりに:
 
 ```sql
 CREATE TABLE default.sample
@@ -14,7 +12,8 @@ CREATE TABLE default.sample
 ENGINE = MergeTree
 ORDER BY x
 ```
-次のように使用します:
+
+使用
 
 ```sql
 CREATE TABLE default.sample2
@@ -27,4 +26,4 @@ ENGINE = MergeTree
 ORDER BY x
 ```
 
-使用ケースによっては、デフォルト値が不適切である場合があります。
+用途に応じて検討してください。デフォルト値では不適切な場合があります。

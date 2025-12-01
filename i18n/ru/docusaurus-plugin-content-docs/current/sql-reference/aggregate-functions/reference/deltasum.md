@@ -1,16 +1,19 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/deltasum'
+description: 'Суммирует арифметическую разность между последовательными строками.'
 sidebar_position: 129
-description: 'Суммирует арифметическую разницу между последовательноми строками.'
-title: deltaSum
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/deltasum
+title: 'deltaSum'
+doc_type: 'reference'
 ---
-# deltaSum
 
-Суммирует арифметическую разницу между последовательными строками. Если разница отрицательная, она игнорируется.
+
+
+# deltaSum {#deltasum}
+
+Суммирует арифметическую разность между последовательными строками. Если разность отрицательная, она не учитывается.
 
 :::note
-Исходные данные должны быть отсортированы для правильной работы этой функции. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вам, скорее всего, следует использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp).
+Исходные данные должны быть отсортированы, чтобы эта функция работала корректно. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вам, скорее всего, следует использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp) вместо неё.
 :::
 
 **Синтаксис**
@@ -21,11 +24,11 @@ deltaSum(value)
 
 **Аргументы**
 
-- `value` — Входные значения, должны быть типа [Integer](../../data-types/int-uint.md) или [Float](../../data-types/float.md).
+* `value` — Входное значение, должно быть типа [Integer](../../data-types/int-uint.md) или [Float](../../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Полученная арифметическая разница типа `Integer` или `Float`.
+* Полученная арифметическая разность типа `Integer` или `Float`.
 
 **Примеры**
 
@@ -70,6 +73,7 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 │                                2.25 │
 └─────────────────────────────────────┘
 ```
+
 
 ## См. также {#see-also}
 

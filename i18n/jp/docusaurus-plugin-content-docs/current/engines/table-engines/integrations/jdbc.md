@@ -1,31 +1,33 @@
 ---
-'description': 'ClickHouseがJDBCを介して外部DATABASEに接続することを可能にします。'
-'sidebar_label': 'JDBC'
-'sidebar_position': 100
-'slug': '/engines/table-engines/integrations/jdbc'
-'title': 'JDBC'
-'doc_type': 'reference'
+description: 'ClickHouseが JDBC を介して外部データベースへ接続できるようにします。'
+sidebar_label: 'JDBC'
+sidebar_position: 100
+slug: /engines/table-engines/integrations/jdbc
+title: 'JDBCテーブルエンジン'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# JDBC
+# JDBC テーブルエンジン {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridgeには実験的なコードが含まれており、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性が含まれている可能性があります。自己責任でご利用ください。
-ClickHouseは、Postgres、MySQL、MongoDBなどの即席クエリシナリオに対してより良い代替手段を提供するClickHouse内蔵のテーブル関数を使用することを推奨します。
+clickhouse-jdbc-bridge には実験的なコードが含まれており、現在はサポート対象外です。信頼性の問題やセキュリティ脆弱性を含んでいる可能性があります。自己責任で使用してください。 
+ClickHouse では、アドホックなクエリシナリオ（Postgres、MySQL、MongoDB など）に対して、より優れた代替手段として、ClickHouse に組み込まれているテーブル関数を使用することを推奨します。
 :::
 
-ClickHouseが外部データベースに接続することを可能にするのは[JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity)です。
+ClickHouse が [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) を介して外部データベースに接続できるようにするテーブルエンジンです。
 
-JDBC接続を実装するために、ClickHouseはデーモンとして実行されるべき別のプログラム[clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)を使用します。
+JDBC 接続を実現するために、ClickHouse はデーモンとして実行する必要がある別のプログラム [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) を使用します。
 
-このエンジンは[Nullable](../../../sql-reference/data-types/nullable.md)データ型をサポートしています。
+このエンジンは [Nullable](../../../sql-reference/data-types/nullable.md) データ型をサポートします。
 
-## テーブルの作成 {#creating-a-table}
+
+
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -35,22 +37,23 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
-**エンジンパラメータ**
+**エンジンのパラメータ**
 
-- `datasource` — 外部DBMSのURIまたは名前。
+* `datasource` — 外部 DBMS の URI または名前。
 
-    URIフォーマット: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
-    MySQLの例: `jdbc:mysql://localhost:3306/?user=root&password=root`。
+  URI 形式: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
+  MySQL の例: `jdbc:mysql://localhost:3306/?user=root&password=root`。
 
-- `external_database` — 外部DBMS内のデータベースの名前、または明示的に定義されたテーブルスキーマ（例を参照）。
+* `external_database` — 外部 DBMS 内のデータベース名、または代わりに明示的に定義されたテーブルスキーマ（例を参照）。
 
-- `external_table` — 外部データベース内のテーブルの名前、または `select * from table1 where column1=1` のような選択クエリ。
+* `external_table` — 外部データベース内のテーブル名、または `select * from table1 where column1=1` のような select クエリ。
 
-- これらのパラメータは[named collections](operations/named-collections.md)を使用して渡すこともできます。
+* これらのパラメータは、[名前付きコレクション](operations/named-collections.md)を使用して指定することもできます。
+
 
 ## 使用例 {#usage-example}
 
-MySQLサーバーでコンソールクライアントに直接接続してテーブルを作成します:
+コンソールクライアントから MySQL サーバーに直接接続してテーブルを作成します。
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -73,7 +76,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseサーバーでテーブルを作成し、そこからデータを選択します:
+ClickHouse サーバー上にテーブルを作成し、そのテーブルからデータを取得する：
 
 ```sql
 CREATE TABLE jdbc_table
@@ -103,6 +106,7 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## 参照 {#see-also}
 
-- [JDBCテーブル関数](../../../sql-reference/table-functions/jdbc.md)。
+## 関連項目 {#see-also}
+
+- [JDBCテーブル関数](../../../sql-reference/table-functions/jdbc.md)

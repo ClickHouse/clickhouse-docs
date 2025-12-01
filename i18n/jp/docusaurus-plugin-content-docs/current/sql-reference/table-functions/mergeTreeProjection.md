@@ -1,16 +1,20 @@
 ---
-'description': 'MergeTree テーブルのいくつかのプロジェクションの内容を表します。内部調査に使用できます。'
-'sidebar_label': 'mergeTreeProjection'
-'sidebar_position': 77
-'slug': '/sql-reference/table-functions/mergeTreeProjection'
-'title': 'mergeTreeProjection'
-'doc_type': 'reference'
+description: 'MergeTree テーブル内の特定のプロジェクションの内容を表します。
+  内部の状態を確認するために使用できます。'
+sidebar_label: 'mergeTreeProjection'
+sidebar_position: 77
+slug: /sql-reference/table-functions/mergeTreeProjection
+title: 'mergeTreeProjection'
+doc_type: 'reference'
 ---
 
 
-# mergeTreeProjection テーブル関数
 
-MergeTree テーブルのいくつかのプロジェクションの内容を表します。これは、内部調査に使用できます。
+# mergeTreeProjection テーブル関数 {#mergetreeprojection-table-function}
+
+MergeTree テーブル内の特定のプロジェクションの内容を表します。内部の状態を調査・確認するために使用できます。
+
+
 
 ## 構文 {#syntax}
 
@@ -18,17 +22,22 @@ MergeTree テーブルのいくつかのプロジェクションの内容を表�
 mergeTreeProjection(database, table, projection)
 ```
 
+
 ## 引数 {#arguments}
 
-| 引数        | 説明                                         |
-|-------------|----------------------------------------------|
-| `database`  | プロジェクションを読み取るデータベース名。  |
-| `table`     | プロジェクションを読み取るテーブル名。     |
-| `projection`| 読み取るプロジェクション。                  |
+| 引数         | 説明                                         |
+|--------------|----------------------------------------------|
+| `database`   | プロジェクションを読み取るデータベース名。   |
+| `table`      | プロジェクションを読み取るテーブル名。       |
+| `projection` | 読み取るプロジェクション。                   |
 
-## 戻り値 {#returned_value}
 
-指定されたプロジェクションによって提供されるカラムを持つテーブルオブジェクト。
+
+## 返される値 {#returned_value}
+
+指定されたプロジェクションで定義された列を持つテーブルオブジェクト。
+
+
 
 ## 使用例 {#usage-example}
 

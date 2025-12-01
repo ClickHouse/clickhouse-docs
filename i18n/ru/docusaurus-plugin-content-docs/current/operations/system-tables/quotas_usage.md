@@ -1,47 +1,56 @@
 ---
-slug: '/operations/system-tables/quotas_usage'
-description: 'Системная таблица, содержащая информацию о использовании квот всеми'
-title: system.quotas_usage
-keywords: ['системная таблица', 'использование_квот', 'квота']
-doc_type: reference
+description: 'Системная таблица, содержащая информацию об использовании квот всеми пользователями.'
+keywords: ['system table', 'quotas_usage', 'quota']
+slug: /operations/system-tables/quotas_usage
+title: 'system.quotas_usage'
+doc_type: 'reference'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.quotas_usage
+# system.quotas&#95;usage {#systemquotas_usage}
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
 Использование квот всеми пользователями.
 
 Столбцы:
-- `quota_name` ([String](../../sql-reference/data-types/string.md)) — Название квоты.
-- `quota_key` ([String](../../sql-reference/data-types/string.md)) — Значение ключа.
-- `is_current` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Использование квоты для текущего пользователя.
-- `start_time` ([Nullable](../../sql-reference/data-types/nullable.md)([DateTime](../../sql-reference/data-types/datetime.md)))) — Время начала для расчета потребления ресурсов.
-- `end_time` ([Nullable](../../sql-reference/data-types/nullable.md)([DateTime](../../sql-reference/data-types/datetime.md)))) — Время окончания для расчета потребления ресурсов.
-- `duration` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — Длительность временного интервала для расчета потребления ресурсов в секундах.
-- `queries` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов за этот интервал.
-- `max_queries` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество запросов.
-- `query_selects` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов select за этот интервал.
-- `max_query_selects` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество запросов select.
-- `query_inserts` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов insert за этот интервал.
-- `max_query_inserts` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество запросов insert.
-- `errors` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Количество запросов, которые вызвали исключение.
-- `max_errors` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество ошибок.
-- `result_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество строк, возвращенных в результате.
-- `max_result_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество строк-источников, прочитанных из таблиц.
-- `result_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Объем памяти в байтах, использovaný для хранения результата запросов.
-- `max_result_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальный объем памяти, использованный для хранения результата запросов, в байтах.
-- `read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)))) — Общее количество строк-источников, прочитанных из таблиц для выполнения запроса на всех удаленных серверах.
-- `max_read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество строк, прочитанных из всех таблиц и табличных функций, участвующих в запросах.
-- `read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество байт, прочитанных из всех таблиц и табличных функций, участвующих в запросах.
-- `max_read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество байт, прочитанных из всех таблиц и табличных функций.
-- `failed_sequential_authentications` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — Общее количество последовательных ошибок аутентификации. Если пользователь ввел правильный пароль до того, как превышен порог `failed_sequential_authentications`, тогда счетчик будет сброшен.
-- `max_failed_sequential_authentications` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — Максимальное количество последовательных ошибок аутентификации.
-- `execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/float.md))) — Общее время выполнения запроса в секундах (стенное время).
-- `max_execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/float.md))) — Максимальное время выполнения запроса.
 
-## See Also {#see-also}
+{/*AUTOGENERATED_START*/ }
 
-- [SHOW QUOTA](/sql-reference/statements/show#show-quota))
+* `quota_name` ([String](../../sql-reference/data-types/)) — Имя квоты.
+* `quota_key` ([String](../../sql-reference/data-types/)) — Значение ключа.
+* `is_current` ([UInt8](../../sql-reference/data-types/)) — Признак использования квоты текущим пользователем.
+* `start_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время начала расчёта потребления ресурсов.
+* `end_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время окончания расчёта потребления ресурсов.
+* `duration` ([Nullable(UInt32)](../../sql-reference/data-types/)) — Длительность временного интервала для расчёта потребления ресурсов в секундах.
+* `queries` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов.
+* `max_queries` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов всех типов, разрешённых к выполнению.
+* `query_selects` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов SELECT.
+* `max_query_selects` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов SELECT, разрешённых к выполнению.
+* `query_inserts` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов INSERT.
+* `max_query_inserts` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов INSERT, разрешённых к выполнению.
+* `errors` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество запросов, завершившихся ошибкой.
+* `max_errors` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество запросов, завершившихся ошибкой, разрешённое в заданный период времени.
+* `result_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество строк в результирующих наборах всех запросов в текущий период времени.
+* `max_result_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое общее количество строк в результирующих наборах всех запросов в заданный период времени.
+* `result_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт в результирующих наборах всех запросов в текущий период времени.
+* `max_result_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое общее количество байт в результирующих наборах всех запросов в заданный период времени.
+* `read_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество строк, прочитанных при выполнении всех запросов в текущий период времени.
+* `max_read_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество строк, разрешённое к чтению при выполнении всех запросов в заданный период времени.
+* `read_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт, прочитанных при выполнении всех запросов в текущий период времени.
+* `max_read_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество байт, разрешённое к чтению при выполнении всех запросов в заданный период времени.
+* `execution_time` ([Nullable(Float64)](../../sql-reference/data-types/)) — Текущее суммарное время (в наносекундах), затраченное на выполнение запросов в текущий период времени.
+* `max_execution_time` ([Nullable(Float64)](../../sql-reference/data-types/)) — Максимально допустимое время (в наносекундах), отведённое на выполнение всех запросов в заданный период времени.
+* `written_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт, записанных при выполнении всех запросов в текущий период времени.
+* `max_written_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество байт, разрешённое к записи при выполнении всех запросов в заданный период времени.
+* `failed_sequential_authentications` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество последовательных неудачных попыток аутентификации в текущий период времени.
+* `max_failed_sequential_authentications` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество последовательных неудачных попыток аутентификации, разрешённое в заданный период времени.
+
+{/*AUTOGENERATED_END*/ }
+
+
+## См. также {#see-also}
+
+- [SHOW QUOTA](/sql-reference/statements/show#show-quota)

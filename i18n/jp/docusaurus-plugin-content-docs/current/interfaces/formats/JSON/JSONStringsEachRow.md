@@ -1,28 +1,31 @@
 ---
-'alias': []
-'description': 'JSONStringsEachRowフォーマットに関するDocumentation'
-'input_format': false
-'keywords':
-- 'JSONStringsEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONStringsEachRow'
-'title': 'JSONStringsEachRow'
-'doc_type': 'reference'
+alias: []
+description: 'JSONStringsEachRow フォーマットに関するドキュメント'
+input_format: false
+keywords: ['JSONStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONStringsEachRow
+title: 'JSONStringsEachRow'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
+
+
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md) と異なる点は、データフィールドが型付きJSON値ではなく、文字列として出力されることです。
+[`JSONEachRow`](./JSONEachRow.md) との違いは、データフィールドが型付きのJSON値ではなく文字列として出力される点だけです。
+
+
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のデータを含むJSONファイルを使用します。ファイル名は `football.json` とします。
+以下のデータを含む JSON ファイルを `football.json` として用意します:
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -44,15 +47,15 @@
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-データを挿入します:
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`JSONStringsEachRow` 形式を使用してデータを読み取ります:
+`JSONStringsEachRow` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -60,7 +63,8 @@ FROM football
 FORMAT JSONStringsEachRow
 ```
 
-出力はJSON形式になります:
+出力は JSON 形式です:
+
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -81,5 +85,6 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
+
 
 ## フォーマット設定 {#format-settings}

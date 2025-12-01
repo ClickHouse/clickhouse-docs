@@ -1,34 +1,39 @@
 ---
-slug: '/interfaces/formats/TabSeparatedWithNames'
-description: 'Документация для формата TabSeparatedWithNames'
-title: TabSeparatedWithNames
-keywords: ['TabSeparatedWithNames']
-doc_type: reference
-alias: 
+alias: ['TSVWithNames']
+description: 'Документация по формату TabSeparatedWithNames'
 input_format: true
+keywords: ['TabSeparatedWithNames']
 output_format: true
+slug: /interfaces/formats/TabSeparatedWithNames
+title: 'TabSeparatedWithNames'
+doc_type: 'reference'
 ---
-| Input | Output | Alias                          |
+
+| Вход | Выход | Псевдонимы                     |
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
+
+
 ## Описание {#description}
 
-Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена колонок записаны в первой строке.
+Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записаны в первой строке.
 
-Во время парсинга первая строка ожидается со списком имен колонок. Вы можете использовать имена колонок, чтобы определить их позицию и проверить их корректность.
+При разборе ожидается, что первая строка содержит имена столбцов. Вы можете использовать имена столбцов, чтобы определить их положение и проверить их корректность.
 
 :::note
-Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в `1`,
-колонки из входных данных будут сопоставлены с колонками таблицы по их именам; колонки с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`.
+Если параметр [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в значение `1`,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение `1`.
 В противном случае первая строка будет пропущена.
 :::
+
+
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя следующий tsv файл, названный `football.tsv`:
+Используем следующий TSV-файл с именем `football.tsv`:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -59,7 +64,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 
 ### Чтение данных {#reading-data}
 
-Прочитайте данные, используя формат `TabSeparatedWithNames`:
+Считайте данные в формате `TabSeparatedWithNames`:
 
 ```sql
 SELECT *
@@ -67,7 +72,7 @@ FROM football
 FORMAT TabSeparatedWithNames
 ```
 
-Вывод будет в формате, разделенном табуляцией:
+Вывод будет в табличном формате с разделителем табуляцией:
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -89,5 +94,6 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
+
 
 ## Настройки формата {#format-settings}

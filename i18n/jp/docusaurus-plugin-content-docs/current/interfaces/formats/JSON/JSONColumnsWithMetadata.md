@@ -1,25 +1,24 @@
 ---
-'alias': []
-'description': 'JSONColumnsWithMetadata フォーマットに関するドキュメント'
-'input_format': true
-'keywords':
-- 'JSONColumnsWithMetadata'
-'output_format': true
-'slug': '/interfaces/formats/JSONColumnsWithMetadata'
-'title': 'JSONColumnsWithMetadata'
-'doc_type': 'reference'
+alias: []
+description: 'JSONColumnsWithMetadata 形式に関するドキュメント'
+input_format: true
+keywords: ['JSONColumnsWithMetadata']
+output_format: true
+slug: /interfaces/formats/JSONColumnsWithMetadata
+title: 'JSONColumnsWithMetadata'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[`JSONColumns`](./JSONColumns.md) 形式とは異なり、いくつかのメタデータと統計を含んでいます（[`JSON`](./JSON.md) 形式に似ています）。
+[`JSONColumns`](./JSONColumns.md) フォーマットとは異なり、一部のメタデータおよび統計情報も含まれます（[`JSON`](./JSON.md) フォーマットと同様）。
 
 :::note
-`JSONColumnsWithMetadata` 形式は、すべてのデータをメモリにバッファリングし、その後単一のブロックとして出力するため、高いメモリ消費を引き起こす可能性があります。
+`JSONColumnsWithMetadata` フォーマットは、すべてのデータをメモリ内にバッファリングしてから単一のブロックとして出力するため、メモリ消費量が大きくなる可能性があります。
 :::
 
 ## 使用例 {#example-usage}
@@ -65,6 +64,8 @@
 }
 ```
 
-`JSONColumnsWithMetadata` 入力形式の場合、設定 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) が `1` に設定されていると、入力データのメタデータからの型が、テーブルの対応するカラムの型と比較されます。
+`JSONColumnsWithMetadata` 入力形式では、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) の設定が `1` の場合、
+入力データ内のメタデータに含まれる型が、テーブル内の対応するカラムの型と比較されます。
 
-## 形式設定 {#format-settings}
+
+## フォーマット設定 {#format-settings}

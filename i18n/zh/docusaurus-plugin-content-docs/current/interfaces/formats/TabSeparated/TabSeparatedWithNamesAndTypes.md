@@ -1,30 +1,36 @@
 ---
-'description': 'TabSeparatedWithNamesAndTypes 格式的文档'
-'keywords':
-- 'TabSeparatedWithNamesAndTypes'
-'slug': '/interfaces/formats/TabSeparatedWithNamesAndTypes'
-'title': 'TabSeparatedWithNamesAndTypes'
-'doc_type': 'reference'
+description: 'TabSeparatedWithNamesAndTypes 格式文档'
+keywords: ['TabSeparatedWithNamesAndTypes']
+slug: /interfaces/formats/TabSeparatedWithNamesAndTypes
+title: 'TabSeparatedWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| 输入  | 输出  | 别名                                          |
+| 输入 | 输出 | 别名                                          |
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
+
+
 ## 描述 {#description}
 
-与 [`TabSeparated`](./TabSeparated.md) 格式不同的是，列名写在第一行，而列类型写在第二行。
+与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于：第一行写入列名，第二行写入列类型。
 
 :::note
-- 如果设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 为 `1`，则输入数据中的列将根据名称映射到表中的列；如果设置 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则未知名称的列将被跳过。否则，将跳过第一行。
-- 如果设置 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 为 `1`，则输入数据中的类型将与表中相应列的类型进行比较。否则，将跳过第二行。
+- 如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，  
+则会根据列名将输入数据中的列映射到表中的列；如果将 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列将被跳过。  
+否则，第一行将被跳过。
+- 如果将 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，  
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
 :::
 
-## 示例用法 {#example-usage}
+
+
+## 使用示例 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下的 tsv 文件，命名为 `football.tsv`：
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -56,7 +62,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndT
 
 ### 读取数据 {#reading-data}
 
-使用 `TabSeparatedWithNamesAndTypes` 格式读取数据：
+以 `TabSeparatedWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -64,7 +70,8 @@ FROM football
 FORMAT TabSeparatedWithNamesAndTypes
 ```
 
-输出将以制表符分隔格式显示，包含两行表头用于列名和类型：
+输出将采用制表符分隔的格式，并包含两行表头，分别表示列名和列类型：
+
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -87,5 +94,6 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
+
 
 ## 格式设置 {#format-settings}

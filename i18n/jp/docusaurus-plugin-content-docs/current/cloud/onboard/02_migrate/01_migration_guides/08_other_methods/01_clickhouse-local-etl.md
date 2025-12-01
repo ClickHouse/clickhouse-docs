@@ -1,19 +1,10 @@
 ---
-'sidebar_label': 'clickhouse-localの使用'
-'keywords':
-- 'clickhouse'
-- 'migrate'
-- 'migration'
-- 'migrating'
-- 'data'
-- 'etl'
-- 'elt'
-- 'clickhouse-local'
-- 'clickhouse-client'
-'slug': '/cloud/migration/clickhouse-local'
-'title': 'ClickHouseへの移行方法：clickhouse-localを使用して'
-'description': 'clickhouse-localを使用してClickHouseに移行する方法を示すガイド'
-'doc_type': 'guide'
+sidebar_label: 'clickhouse-local の使用'
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+slug: /cloud/migration/clickhouse-local
+title: 'clickhouse-local を使用して ClickHouse に移行する'
+description: 'clickhouse-local を使用して ClickHouse に移行する方法を解説するガイド'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -27,99 +18,102 @@ import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
 
-# ClickHouseへの移行 - clickhouse-localを使用する
+# clickhouse-local を使用した ClickHouse への移行 {#migrating-to-clickhouse-using-clickhouse-local}
 
-<Image img={ch_local_01} size='sm' alt='Self-managed ClickHouseの移行' background='white' />
+<Image img={ch_local_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
 
-ClickHouse、またはより具体的には、 [`clickhouse-local`](/operations/utilities/clickhouse-local.md) をETLツールとして使用し、現在のデータベースシステムからClickHouse Cloudへのデータ移行を行うことができます。現在のデータベースシステムに対しては、ClickHouseが提供する[統合エンジン](/engines/table-engines/#integration-engines)または[テーブル関数](/sql-reference/table-functions/)が必要です。または、ベンダーが提供するJDBCドライバーまたはODBCドライバーが利用可能である必要があります。
+ClickHouse、より具体的には [`clickhouse-local`](/operations/utilities/clickhouse-local.md) を ETL ツールとして使用して、現在のデータベースシステムから ClickHouse Cloud へデータを移行できます。ただし、現在のデータベースシステムに対して、ClickHouse が提供する [integration engine](/engines/table-engines/#integration-engines) または [table function](/sql-reference/table-functions/) が存在するか、あるいはベンダー提供の JDBC ドライバーまたは ODBC ドライバーが利用可能である必要があります。
 
-この移行方法は、データをソースデータベースから宛先データベースに移動させるための中間ピボットポイントやホップを使用しているため、「ピボット」メソッドと呼ばれることがあります。例えば、セキュリティ要件によりプライベートまたは内部ネットワーク内からの外向き接続のみが許可されている場合、この方法が必要です。そのため、clickhouse-localを使用してソースデータベースからデータを引き出し、clickhouse-localをピボットポイントとして、データを宛先のClickHouseデータベースにプッシュする必要があります。
+この移行方法を「ピボット」方式と呼ぶことがあります。これは、データをソースデータベースから宛先データベースへ移動する際に、中間のピボットポイント（中継点）を利用するためです。たとえば、セキュリティ要件により、プライベートまたは内部ネットワーク内からはアウトバウンド接続のみが許可されている場合、この方法が必要になることがあります。その場合、clickhouse-local を使ってソースデータベースからデータをプルし、続いて clickhouse-local をピボットポイントとして利用しながら、データを宛先の ClickHouse データベースへプッシュします。
 
-ClickHouseは、[MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb)、および[SQLite](/engines/table-engines/integrations/sqlite)のための統合エンジンとテーブル関数（その場で統合エンジンを作成します）を提供しています。他の一般的なデータベースシステムについては、システムのベンダーからJDBCドライバーまたはODBCドライバーが提供されています。
+ClickHouse は、[MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb)、[SQLite](/engines/table-engines/integrations/sqlite) 向けの integration engine と（オンザフライで integration engine を作成する）table function を提供しています。
+その他の主要なデータベースシステムについては、システムのベンダーから JDBC ドライバーまたは ODBC ドライバーが提供されています。
 
-## clickhouse-localとは何か？ {#what-is-clickhouse-local}
+## clickhouse-local とは何ですか？ {#what-is-clickhouse-local}
 
-<Image img={ch_local_02} size='lg' alt='Self-managed ClickHouseの移行' background='white' />
+<Image img={ch_local_02} size='lg' alt="セルフマネージド ClickHouse の移行"  />
 
-通常、ClickHouseはクラスタ形式で実行され、複数のClickHouseデータベースエンジンのインスタンスが異なるサーバー上で分散して実行されます。
+通常、ClickHouse はクラスタとして実行され、複数の ClickHouse データベースエンジンのインスタンスが、異なるサーバー上で分散して動作します。
 
-単一のサーバーでは、ClickHouseデータベースエンジンは`clickhouse-server`プログラムの一部として実行されます。データベースへのアクセス（パス、ユーザー、セキュリティなど）は、サーバーの設定ファイルで構成されます。
+単一サーバー上では、ClickHouse データベースエンジンは `clickhouse-server` プログラムの一部として実行されます。データベースへのアクセス (パス、ユーザー、セキュリティなど) は、サーバーの設定ファイルで定義します。
 
-`clickhouse-local`ツールを使用すると、ClickHouseデータベースエンジンをコマンドラインユーティリティの形式で孤立して使用し、膨大な入出力量のSQLデータ処理を迅速に実行できます。ClickHouseサーバーを構成して起動する必要はありません。
+`clickhouse-local` ツールを使用すると、ClickHouse サーバーを構成して起動することなく、多様な入力および出力に対してきわめて高速な SQL データ処理を行うために、ClickHouse データベースエンジンを独立したコマンドラインユーティリティとして利用できます。
 
-## clickhouse-localのインストール {#installing-clickhouse-local}
+## clickhouse-local のインストール {#installing-clickhouse-local}
 
-`clickhouse-local`には、現在のソースデータベースシステムとClickHouse Cloudのターゲットサービスの両方にネットワークアクセスがあるホストマシンが必要です。
+`clickhouse-local` 用に、現在のソースデータベースシステムと ClickHouse Cloud のターゲットサービスの両方にネットワーク経由でアクセス可能なホストマシンが必要です。
 
-そのホストマシンで、コンピュータのオペレーティングシステムに基づいて適切なビルドの`clickhouse-local`をダウンロードします。
+そのホストマシン上で、使用しているオペレーティングシステムに応じて、適切なビルドの `clickhouse-local` をダウンロードします。
 
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
-1. `clickhouse-local`をローカルにダウンロードする最も簡単な方法は、次のコマンドを実行することです：
-```bash
-curl https://clickhouse.com/ | sh
-```
+1. `clickhouse-local` をローカル環境にダウンロードする最も簡単な方法は、次のコマンドを実行することです。
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
 
-1. `clickhouse-local`を実行します（バージョンが表示されるだけです）：
-```bash
-./clickhouse-local
-```
+1. `clickhouse-local` を実行します（バージョンが表示されるだけです）。
+  ```bash
+  ./clickhouse-local
+  ```
 
 </TabItem>
 <TabItem value="mac" label="macOS">
 
-1. `clickhouse-local`をローカルにダウンロードする最も簡単な方法は、次のコマンドを実行することです：
-```bash
-curl https://clickhouse.com/ | sh
-```
+1. `clickhouse-local` をローカル環境にダウンロードする最も簡単な方法は、次のコマンドを実行することです。
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
 
-1. `clickhouse-local`を実行します（バージョンが表示されるだけです）：
-```bash
-./clickhouse local
-```
+1. `clickhouse-local` を実行します（バージョンが表示されるだけです）。
+  ```bash
+  ./clickhouse local
+  ```
 
 </TabItem>
 </Tabs>
 
 :::info 重要
-このガイド全体の例では、`clickhouse-local`を実行するためにLinuxコマンド（`./clickhouse-local`）が使用されています。
-Macで`clickhouse-local`を実行する場合は、`./clickhouse local`を使用してください。
+このガイド全体の例では、`clickhouse-local` を実行するために Linux のコマンド（`./clickhouse-local`）を使用しています。
+Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使用します。
 :::
 
-:::tip ClickHouse CloudサービスのIPアクセスリストにリモートシステムを追加する
-`remoteSecure`関数があなたのClickHouse Cloudサービスに接続するためには、リモートシステムのIPアドレスがIPアクセスリストで許可されている必要があります。 このヒントの下の**あなたのIPアクセスリストを管理する**を展開して、詳細を確認してください。
+:::tip リモートシステムを ClickHouse Cloud サービスの IP アクセスリストに追加する
+`remoteSecure` 関数が ClickHouse Cloud サービスに接続できるようにするには、リモートシステムの IP アドレスが IP アクセスリストで許可されている必要があります。詳細については、このヒントの下にある **Manage your IP Access List** を展開してください。
 :::
 
 <AddARemoteSystem />
 
-## 例1: MySQLからClickHouse Cloudへの移行 - 統合エンジンを使用 {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
+## 例 1: Integration エンジンを使用して MySQL から ClickHouse Cloud へ移行する {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
-ソースのMySQLデータベースからデータを読み取るために、[統合テーブルエンジン](/engines/table-engines/integrations/mysql/)（[mysqlテーブル関数](/sql-reference/table-functions/mysql/)によってその場で作成されます）を使用し、ClickHouse Cloudサービス上の宛先テーブルへのデータ書き込みには[remoteSecureテーブル関数](/sql-reference/table-functions/remote/)を使用します。
+ソースの MySQL データベースからデータを読み取るために、[integration table engine](/engines/table-engines/integrations/mysql/)（[mysql table function](/sql-reference/table-functions/mysql/) によってその場で作成されます）を使用し、[remoteSecure table function](/sql-reference/table-functions/remote/) を使用して、宛先である ClickHouse Cloud 上のテーブルにデータを書き込みます。
 
-<Image img={ch_local_03} size='sm' alt='Self-managed ClickHouseの移行' background='white' />
+<Image img={ch_local_03} size='lg' alt='セルフマネージド ClickHouse の移行'  />
 
-### ClickHouse Cloudサービス上の宛先: {#on-the-destination-clickhouse-cloud-service}
+### 移行先の ClickHouse Cloud サービスにおいて: {#on-the-destination-clickhouse-cloud-service}
 
-#### 宛先データベースを作成する: {#create-the-destination-database}
+#### 宛先データベースを作成する： {#create-the-destination-database}
 
 ```sql
-CREATE DATABASE db
+  CREATE DATABASE db
 ```
 
-#### MySQLテーブルに相当するスキーマを持つ宛先テーブルを作成する: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
+
+#### MySQL テーブルと同じスキーマを持つ宛先テーブルを作成します： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
-CREATE TABLE db.table ...
+  CREATE TABLE db.table ...
 ```
 
 :::note
-ClickHouse Cloudの宛先テーブルのスキーマとソースMySQLテーブルのスキーマは一致している必要があります（カラム名や順序は同じで、カラムデータ型は互換性がある必要があります）。
+ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テーブルのスキーマは揃っている必要があります（カラム名と順序が同じであり、かつカラムのデータ型が互換性を持っている必要があります）。
 :::
 
-### clickhouse-localホストマシン上で: {#on-the-clickhouse-local-host-machine}
 
-#### 移行クエリでclickhouse-localを実行する: {#run-clickhouse-local-with-the-migration-query}
+### clickhouse-local を実行しているホストマシン上で: {#on-the-clickhouse-local-host-machine}
+
+#### マイグレーション用のクエリを指定して clickhouse-local を実行する: {#run-clickhouse-local-with-the-migration-query}
 
 ```sql
   ./clickhouse-local --query "
@@ -129,18 +123,20 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 ```
 
 :::note
-`clickhouse-local`ホストマシンでデータはローカルに保存されません。代わりに、データはソースMySQLテーブルから読み取られ、その後すぐにClickHouse Cloudサービスの宛先テーブルに書き込まれます。
+`clickhouse-local` ホストマシン上にデータがローカル保存されることはありません。代わりに、データはソースの MySQL テーブルから読み込まれ、そのまま ClickHouse Cloud サービス上の宛先テーブルに書き込まれます。
 :::
 
-## 例2: MySQLからClickHouse Cloudへの移行 - JDBCブリッジを使用 {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
-[JDBC統合テーブルエンジン](/engines/table-engines/integrations/jdbc.md)（[jdbcテーブル関数](/sql-reference/table-functions/jdbc.md)によってその場で作成されます）と[ClickHouse JDBCブリッジ](https://github.com/ClickHouse/clickhouse-jdbc-bridge)、およびMySQL JDBCドライバーを使用して、ソースのMySQLデータベースからデータを読み取り、ClickHouse Cloudサービスの宛先テーブルへのデータ書き込みには[remoteSecureテーブル関数](/sql-reference/table-functions/remote.md)を使用します。
+## 例 2: JDBC ブリッジを使用して MySQL から ClickHouse Cloud へ移行する {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
-<Image img={ch_local_04} size='sm' alt='Self-managed ClickHouseの移行' background='white' />
+ソースの MySQL データベースからデータを読み取るために、[jdbc table function](/sql-reference/table-functions/jdbc.md) によってオンデマンドで作成される [JDBC integration table engine](/engines/table-engines/integrations/jdbc.md) を、[ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) と MySQL JDBC ドライバーと組み合わせて使用します。データを書き込む際には、[remoteSecure table function](/sql-reference/table-functions/remote.md) を使用して、宛先となる ClickHouse Cloud サービス上のテーブルにデータを書き込みます。
 
-### ClickHouse Cloudサービス上の宛先: {#on-the-destination-clickhouse-cloud-service-1}
+<Image img={ch_local_04} size='lg' alt="セルフマネージドな ClickHouse の移行"  />
 
-#### 宛先データベースを作成する: {#create-the-destination-database-1}
+### 宛先の ClickHouse Cloud サービスで: {#on-the-destination-clickhouse-cloud-service-1}
+
+#### ターゲットデータベースを作成します： {#create-the-destination-database-1}
+
 ```sql
-CREATE DATABASE db
+  CREATE DATABASE db
 ```

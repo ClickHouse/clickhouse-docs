@@ -1,45 +1,45 @@
 ---
-'description': '这个表包含关于 clickhouse 服务器的警告消息。'
-'keywords':
-- 'system table'
-- 'warnings'
-'slug': '/operations/system-tables/system_warnings'
-'title': 'system.warnings'
-'doc_type': 'reference'
+description: '此表包含有关 ClickHouse 服务器的警告消息。'
+keywords: [ '系统表', '警告' ]
+slug: /operations/system-tables/system_warnings
+title: 'system.warnings'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.warnings {#systemwarnings}
 
-# system.warnings
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-该表显示有关 ClickHouse 服务器的警告。相同类型的警告会合并为单个警告。例如，如果附加数据库的数量 N 超过可配置的阈值 T，则只显示包含当前值 N 的单个条目，而不是 N 个单独的条目。如果当前值低于阈值，则该条目将从表中删除。
+该表显示 ClickHouse 服务器的警告信息。
+相同类型的警告会合并为一条记录。
+例如，如果已挂载数据库的数量 N 超过可配置的阈值 T，则会显示一条包含当前值 N 的记录，而不是 N 条单独的记录。
+如果当前值降到阈值以下，则会从表中移除该记录。
 
 可以通过以下设置配置该表：
 
-- [max_table_num_to_warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
-- [max_database_num_to_warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
-- [max_dictionary_num_to_warn](../server-configuration-parameters/settings.md#max_dictionary_num_to_warn)
-- [max_view_num_to_warn](../server-configuration-parameters/settings.md#max_view_num_to_warn)
-- [max_part_num_to_warn](../server-configuration-parameters/settings.md#max_part_num_to_warn)
-- [max_pending_mutations_to_warn](../server-configuration-parameters/settings.md#max_pending_mutations_to_warn)
-- [max_pending_mutations_execution_time_to_warn](/operations/server-configuration-parameters/settings#max_pending_mutations_execution_time_to_warn)
-- [max_named_collection_num_to_warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
-- [resource_overload_warnings](/operations/settings/server-overload#resource-overload-warnings)
+* [max&#95;table&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
+* [max&#95;database&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
+* [max&#95;dictionary&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_dictionary_num_to_warn)
+* [max&#95;view&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_view_num_to_warn)
+* [max&#95;part&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_part_num_to_warn)
+* [max&#95;pending&#95;mutations&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_pending_mutations_to_warn)
+* [max&#95;pending&#95;mutations&#95;execution&#95;time&#95;to&#95;warn](/operations/server-configuration-parameters/settings#max_pending_mutations_execution_time_to_warn)
+* [max&#95;named&#95;collection&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
+* [resource&#95;overload&#95;warnings](/operations/settings/server-overload#resource-overload-warnings)
 
 列：
 
-- `message` ([String](../../sql-reference/data-types/string.md)) — 警告消息。
-- `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化消息的格式字符串。
+* `message` ([String](../../sql-reference/data-types/string.md)) — 警告信息。
+* `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化该警告信息的格式字符串。
 
 **示例**
 
 查询：
 
 ```sql
-SELECT * FROM system.warnings LIMIT 2 \G;
+ SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
 结果：
@@ -47,11 +47,11 @@ SELECT * FROM system.warnings LIMIT 2 \G;
 ```text
 Row 1:
 ──────
-message:               The number of active parts is more than 10.
-message_format_string: The number of active parts is more than {}.
+message:               活跃分区数超过 10 个。
+message_format_string: 活跃分区数超过 {}。
 
 Row 2:
 ──────
-message:               The number of attached databases is more than 2.
-message_format_string: The number of attached databases is more than {}.
+message:               已挂载数据库数超过 2 个。
+message_format_string: 已挂载数据库数超过 {}。
 ```

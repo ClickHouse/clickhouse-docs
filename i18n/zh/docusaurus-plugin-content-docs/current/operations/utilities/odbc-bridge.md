@@ -1,27 +1,31 @@
 ---
-'description': 'Odbc Bridge 的文档'
-'slug': '/operations/utilities/odbc-bridge'
-'title': 'clickhouse-odbc-bridge'
-'doc_type': 'reference'
+description: 'Odbc Bridge 文档'
+slug: /operations/utilities/odbc-bridge
+title: 'clickhouse-odbc-bridge'
+doc_type: 'reference'
 ---
 
-像代理 ODBC 驱动程序的简单 HTTP 服务器。主要的动机是可能的段错误或 ODBC 实现中的其他错误，这可能会导致整个 clickhouse-server 进程崩溃。
+一个简单的 HTTP 服务器，用作 ODBC 驱动程序的代理。设计它的主要动机是，ODBC 实现中可能出现的段错误（segfault）或其他错误，可能会导致整个 clickhouse-server 进程崩溃。
 
-该工具通过 HTTP 工作，而不是通过管道、共享内存或 TCP，因为：
+该工具通过 HTTP 工作，而不是通过管道、共享内存或 TCP 进行通信，原因是：
 - 实现更简单
 - 调试更简单
-- jdbc-bridge 可以以相同的方式实现
+- jdbc-bridge 可以以同样的方式实现
+
+
 
 ## 用法 {#usage}
 
-`clickhouse-server` 在 odbc 表函数和 StorageODBC 中使用此工具。
-然而，它也可以作为独立工具从命令行使用，POST 请求 URL 中的参数如下：
+`clickhouse-server` 在 ODBC 表函数和 StorageODBC 引擎中使用此工具。
+不过它也可以作为独立工具从命令行使用，在 POST 请求的 URL 中指定以下参数：
 - `connection_string` -- ODBC 连接字符串。
-- `sample_block` -- ClickHouse NamesAndTypesList 格式的列描述，名称用反引号括起来，
-  类型作为字符串。名称和类型用空格分隔，行用
-  换行符分隔。
-- `max_block_size` -- 可选参数，设置单个块的最大大小。
-查询在 POST 主体中发送。响应以 RowBinary 格式返回。
+- `sample_block` -- ClickHouse NamesAndTypesList 格式的列描述，名称使用反引号包裹，
+  类型为字符串。名称和类型以空格分隔，各行以换行分隔。
+- `max_block_size` -- 可选参数，用于设置单个数据块的最大大小。
+
+查询在 POST 请求的请求体中发送，响应以 RowBinary 格式返回。
+
+
 
 ## 示例： {#example}
 

@@ -1,11 +1,12 @@
 ---
-slug: '/interfaces/odbc'
-sidebar_label: 'ODBC Драйвер'
+description: 'Документация по драйверу ODBC ClickHouse'
+sidebar_label: 'Драйвер ODBC'
 sidebar_position: 35
-description: 'Документация для драйвера ODBC ClickHouse'
-title: 'ODBC Драйвер'
-doc_type: reference
+slug: /interfaces/odbc
+title: 'Драйвер ODBC'
+doc_type: 'reference'
 ---
-# ODBC драйвер
 
-Используйте [официальный ODBC драйвер](https://github.com/ClickHouse/clickhouse-odbc) для доступа к ClickHouse в качестве источника данных.
+# Драйвер ODBC {#odbc-driver}
+
+Используйте [официальный драйвер ODBC](https://github.com/ClickHouse/clickhouse-odbc) для доступа к ClickHouse как к источнику данных.

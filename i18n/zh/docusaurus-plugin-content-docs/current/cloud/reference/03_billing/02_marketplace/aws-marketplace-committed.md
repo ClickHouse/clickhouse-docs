@@ -1,105 +1,99 @@
 ---
-'slug': '/cloud/billing/marketplace/aws-marketplace-committed-contract'
-'title': 'AWS Marketplace 承诺合同'
-'description': '通过 AWS Marketplace (Committed Contract) 订阅 ClickHouse Cloud'
-'keywords':
-- 'aws'
-- 'amazon'
-- 'marketplace'
-- 'billing'
-- 'committed'
-- 'committed contract'
-'doc_type': 'guide'
+slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
+title: 'AWS Marketplace 承诺消费合约'
+description: '通过 AWS Marketplace（承诺消费合约）订阅 ClickHouse Cloud'
+keywords: ['aws', 'amazon', 'marketplace', '计费', '承诺消费', '承诺消费合约']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import aws_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-committed-1.png';
-import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-6.png';
-import aws_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-7.png';
-import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-8.png';
-import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
-import aws_marketplace_payg_10 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-10.png';
-import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
-import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-12.png';
+import mp_committed_spend_1 from '@site/static/images/cloud/reference/mp_committed_spend_1.png'
+import mp_committed_spend_2 from '@site/static/images/cloud/reference/mp_committed_spend_2.png'
+import mp_committed_spend_3 from '@site/static/images/cloud/reference/mp_committed_spend_3.png'
+import mp_committed_spend_4 from '@site/static/images/cloud/reference/mp_committed_spend_4.png'
+import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committed_spend_5.png'
+import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
+import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-开始通过承诺合同在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上使用 ClickHouse Cloud。承诺合同，也称为私有报价，允许客户承诺在一段时间内在 ClickHouse Cloud 上花费一定金额。
+通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺消费合约来开始使用 ClickHouse Cloud。
+承诺消费合约（也称为 Private Offer）允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
+
 
 ## 先决条件 {#prerequisites}
 
-- 根据具体合同条款从 ClickHouse 获得的私有报价。
-- 要将 ClickHouse 组织连接到您的承诺支出报价，您必须是该组织的管理员。
+- 基于特定合同条款的 ClickHouse Private Offer。
+- 若要将某个 ClickHouse 组织关联到你的承诺消费优惠，你必须是该组织的管理员。
 
-[在 AWS 中查看和接受您承诺合同所需的权限](https://docs.aws.amazon.com/marketplace/latest/buyerguide/private-offers-page.html#private-offers-page-permissions):
-- 如果您使用 AWS 托管策略，则需要具有以下权限： `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions` 或 `AWSMarketplaceFullAccess`。
-- 如果您不使用 AWS 托管策略，则需具备以下权限： IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`。
+:::note
+一个 AWS 账号只能订阅一个“ClickHouse Cloud - Committed Contract” Private Offer，并且该 Offer 只能关联到一个 ClickHouse 组织。
+:::
+
+在 AWS 中查看并接受承诺合同所需的权限：
+
+- 如果你使用 AWS 托管策略，则必须具备以下权限：
+  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  - 或 `AWSMarketplaceFullAccess`
+- 如果你未使用 AWS 托管策略，则必须具备以下权限：
+  - IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
+
+
 
 ## 注册步骤 {#steps-to-sign-up}
 
-1. 您应该已经收到了一封电子邮件，里面有一个链接用于查看和接受您的私有报价。
+<VerticalStepper headerLevel="h3">
 
-<br />
+### 接受您的私有优惠 {#private-offer-accept}
 
-<Image img={aws_marketplace_committed_1} size="md" alt="AWS Marketplace 私有报价邮件" border/>
+您应该已经收到一封电子邮件，其中包含用于查看并接受您的私有优惠的链接。
 
-<br />
+<Image img={mp_committed_spend_1} size="md" alt="AWS Marketplace 私有优惠电子邮件"/>
 
-2. 点击邮件中的 **Review Offer** 链接。这将带您到 AWS Marketplace 页面，并显示私有报价的详细信息。在接受私有报价时，选择合同选项下拉框中的单位数量为 1。
+### 查看优惠链接 {#review-offer-link}
 
-3. 完成在 AWS 门户上的订阅步骤并点击 **Set up your account**。
-此时将您重定向到 ClickHouse Cloud 非常重要，您可以注册一个新帐户或使用现有帐户登录。未完成此步骤，我们将无法将您的 AWS Marketplace 订阅与 ClickHouse Cloud 关联。
+点击邮件中的 **Review offer** 链接。
+这会将您带到 AWS Marketplace 页面，并显示该私有优惠的详细信息。
 
-4. 一旦您重定向到 ClickHouse Cloud，您可以使用现有帐户登录或注册新帐户。此步骤非常重要，以便我们可以将您的 ClickHouse Cloud 组织与 AWS Marketplace 计费绑定。
+### 设置您的账号 {#setup-your-account}
 
-<br />
+在 AWS 门户中完成订阅步骤，然后点击 **"Set up your account"**。
+此时必须跳转到 ClickHouse Cloud，并在该页面上注册新账号或使用现有账号登录。
+如果不完成这一步，我们将无法把您的 AWS Marketplace 合同关联到 ClickHouse Cloud。
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 登录页面" border/>
+<Image img={mp_committed_spend_2} size="md" alt="AWS Marketplace 私有优惠电子邮件"/>
 
-<br />
+### 登录 Cloud {#login-cloud}
 
-如果您是新的 ClickHouse Cloud 用户，请点击页面底部的 **Register**。您将被提示创建新用户并验证电子邮件。在验证您的电子邮件后，您可以离开 ClickHouse Cloud 登录页面，并使用新用户名登录到 [https://console.clickhouse.cloud](https://console.clickhouse.cloud)。
+跳转到 ClickHouse Cloud 后，您可以使用现有账号登录，或注册新账号。
+此步骤是为了将您的 ClickHouse Cloud 组织与 AWS Marketplace 计费进行绑定。
 
-<br />
+<Image img={mp_committed_spend_3} size="md" alt="AWS Marketplace 私有优惠电子邮件"/>
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册页面" border/>
+### 新用户注册 {#register}
 
-<br />
+如果您是新的 ClickHouse Cloud 用户，点击页面底部的 "Register"。
+系统会提示您创建新用户并验证邮箱。
+验证邮箱后，您可以离开 ClickHouse Cloud 登录页面，并在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新的用户名登录。
 
-请注意，如果您是新用户，您还需要提供一些有关您业务的基本信息。请参见以下截图。
+请注意，如果您是新用户，还需要提供一些关于您业务的基本信息。
+参见下面的截图。
 
-<br />
+<Image img={mp_committed_spend_4} size="md" alt="提供业务信息"/>
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={mp_committed_spend_5} size="md" alt="提供业务信息"/>
 
-<br />
+如果您是现有的 ClickHouse Cloud 用户，只需使用您的账号凭据登录即可。
 
-<br />
+### 创建或选择用于计费的组织 {#create-select-org-to-bill}
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单 2" border/>
+成功登录后，您可以决定是创建一个新组织，将其作为此 Marketplace 合同的计费主体，还是选择一个现有组织作为此合同的计费主体。
 
-<br />
+<Image img={mp_committed_spend_6} size="md" alt="创建或选择用于此订阅计费的组织"/>
 
-如果您是现有的 ClickHouse Cloud 用户，只需使用您的凭据登录即可。
+完成此步骤后，您的组织将关联到 AWS 的承诺消费合同，所有使用量都会通过您的 AWS 账号进行计费。
+您可以在 ClickHouse UI 中该组织的计费页面确认计费已与 AWS Marketplace 成功关联。
 
-5. 成功登录后，将创建一个新的 ClickHouse Cloud 组织。该组织将与您的 AWS 计费帐户连接，所有使用将通过您的 AWS 帐户计费。
+<Image img={mp_committed_spend_7} size="md" alt="确认设置已完成"/>
 
-6. 一旦您登录，您可以确认您的计费确实与 AWS Marketplace 相关联，并开始设置您的 ClickHouse Cloud 资源。
+如果您遇到任何问题，请随时联系我们的[支持团队](https://clickhouse.com/support/program)。
 
-<br />
-
-<Image img={aws_marketplace_payg_10} size="md" alt="ClickHouse Cloud 查看 AWS Marketplace 计费" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新服务页面" border/>
-
-<br />
-
-6. 您应该会收到一封确认注册的电子邮件：
-
-<br />
-
-<Image img={aws_marketplace_payg_12} size="md" alt="AWS Marketplace 确认电子邮件" border/>
-
-<br />
-
-如果您遇到任何问题，请随时联系 [我们的支持团队](https://clickhouse.com/support/program)。
+</VerticalStepper>

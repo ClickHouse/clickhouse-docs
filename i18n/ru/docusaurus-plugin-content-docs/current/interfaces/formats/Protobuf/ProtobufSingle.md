@@ -1,24 +1,31 @@
 ---
-slug: '/interfaces/formats/ProtobufSingle'
-description: 'Документация для формата ProtobufSingle'
-title: ProtobufSingle
-keywords: ['ProtobufSingle']
-doc_type: reference
+alias: []
+description: 'Документация о формате ProtobufSingle'
 input_format: true
+keywords: ['ProtobufSingle']
 output_format: true
+slug: /interfaces/formats/ProtobufSingle
+title: 'ProtobufSingle'
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
+| Ввод | Вывод | Псевдоним |
+| ---- | ----- | --------- |
+| ✔    | ✔     |           |
+
 
 ## Описание {#description}
 
-Формат `ProtobufSingle` такой же, как и формат [`Protobuf`](./Protobuf.md), но предназначен для хранения/парсинга одиночных сообщений Protobuf без разделителей длины.
+Формат `ProtobufSingle` аналогичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения и парсинга одиночных Protobuf‑сообщений без префикса длины.
+
+
 
 ## Пример использования {#example-usage}
 
-## Настройки формата {#format-settings}
+
+
+## Параметры форматирования {#format-settings}

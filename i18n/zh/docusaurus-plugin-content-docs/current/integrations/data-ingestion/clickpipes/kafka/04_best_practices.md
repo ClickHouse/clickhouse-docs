@@ -1,45 +1,54 @@
 ---
-'sidebar_label': '最佳实践'
-'description': '详细说明在使用 Kafka ClickPipes 时应遵循的最佳实践'
-'slug': '/integrations/clickpipes/kafka/best-practices'
-'sidebar_position': 1
-'title': '最佳实践'
-'doc_type': 'guide'
+sidebar_label: '最佳实践'
+description: '介绍在使用 Kafka ClickPipes 时应遵循的最佳实践'
+slug: /integrations/clickpipes/kafka/best-practices
+sidebar_position: 1
+title: '最佳实践'
+doc_type: 'guide'
+keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩展性']
 ---
+
 
 
 # 最佳实践 {#best-practices}
 
+
+
 ## 消息压缩 {#compression}
 
-我们强烈建议对您的 Kafka 主题使用压缩。压缩可以显著节省数据传输成本，并几乎不会影响性能。
-要了解有关 Kafka 中消息压缩的更多信息，我们建议您首先查看 [指南](https://www.confluent.io/blog/apache-kafka-message-compression/)。
+我们强烈建议为 Kafka 主题启用压缩。压缩几乎不会带来性能开销，却可以在数据传输成本上带来显著节省。
+要进一步了解 Kafka 中的消息压缩，我们建议从这篇[指南](https://www.confluent.io/blog/apache-kafka-message-compression/)开始阅读。
+
+
 
 ## 限制 {#limitations}
 
-- [`DEFAULT`](/sql-reference/statements/create/table#default) 不受支持。
+- 不支持使用 [`DEFAULT`](/sql-reference/statements/create/table#default)。
 
-## 交付语义 {#delivery-semantics}
 
-ClickPipes for Kafka 提供 `at-least-once` 交付语义（这是最常用的方法之一）。我们欢迎您通过 [联系表单](https://clickhouse.com/company/contact?loc=clickpipes) 提供有关交付语义的反馈。如果您需要 exactly-once 语义，我们建议您使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) 汇点。
 
-## 认证 {#authentication}
+## 投递语义 {#delivery-semantics}
+用于 Kafka 的 ClickPipes 提供 `at-least-once` 投递语义（这是最常用的方法之一）。欢迎您通过[联系表单](https://clickhouse.com/company/contact?loc=clickpipes)就投递语义向我们反馈意见。如果您需要 `exactly-once` 语义，建议使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink 连接器。
 
-对于 Apache Kafka 协议数据源，ClickPipes 支持 [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 认证，并提供 TLS 加密，以及 `SASL/SCRAM-SHA-256` 和 `SASL/SCRAM-SHA-512`。根据流媒体源（Redpanda、MSK 等），将启用所有或部分这些认证机制，具体取决于兼容性。如果您的认证需求有所不同，请 [给我们反馈](https://clickhouse.com/company/contact?loc=clickpipes)。
+
+
+## 身份验证 {#authentication}
+
+对于 Apache Kafka 协议数据源，ClickPipes 支持使用 TLS 加密的 [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 身份验证，以及 `SASL/SCRAM-SHA-256` 和 `SASL/SCRAM-SHA-512`。具体会根据流式数据源（Redpanda、MSK 等）的不同，在兼容性范围内启用全部或部分这些身份验证机制。如有不同的身份验证需求，请[向我们反馈](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 ### IAM {#iam}
 
 :::info
-MSK ClickPipe 的 IAM 认证是一个 beta 功能。
+用于 MSK ClickPipe 的 IAM 身份验证目前为测试版功能。
 :::
 
-ClickPipes 支持以下 AWS MSK 认证
+ClickPipes 支持以下 AWS MSK 身份验证方式：
 
-- [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) 认证
-- [IAM 凭证或基于角色的访问](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html) 认证
+* [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) 身份验证
+* [IAM 凭证或基于角色的访问](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html) 身份验证
 
-使用 IAM 认证连接到 MSK 代理时，IAM 角色必须具有必要权限。
-以下是 MSK 用于 Apache Kafka API 的必要 IAM 策略的示例：
+在使用 IAM 身份验证连接到 MSK broker 时，IAM 角色必须具备必要的权限。
+下面是用于 MSK 的 Apache Kafka API 所需 IAM 策略示例：
 
 ```json
 {
@@ -78,12 +87,12 @@ ClickPipes 支持以下 AWS MSK 认证
 }
 ```
 
-#### 配置受信任关系 {#configuring-a-trusted-relationship}
+#### 配置信任关系 {#configuring-a-trusted-relationship}
 
-如果您使用 IAM 角色 ARN 进行 MSK 身份验证，则需要在您的 ClickHouse Cloud 实例之间添加受信任关系，以便角色可以被使用。
+如果您使用 IAM 角色 ARN 对 MSK 进行身份验证，则需要为您的 ClickHouse Cloud 实例配置一条信任关系，以便该角色可以被该实例扮演（assume）。
 
 :::note
-基于角色的访问仅适用于部署到 AWS 的 ClickHouse Cloud 实例。
+基于角色的访问仅适用于部署在 AWS 上的 ClickHouse Cloud 实例。
 :::
 
 ```json
@@ -104,48 +113,49 @@ ClickPipes 支持以下 AWS MSK 认证
 
 ### 自定义证书 {#custom-certificates}
 
-ClickPipes for Kafka 支持为使用非公共服务器证书的 Kafka 代理上传自定义证书。
-也支持上传客户端证书和密钥，以进行基于 TLS 的双向认证（mTLS）。
+用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
+同样也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
+
 
 ## 性能 {#performance}
 
 ### 批处理 {#batching}
+ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免在数据库中创建过多的数据片段（parts），从而防止导致集群性能问题。
 
-ClickPipes 将数据批量插入到 ClickHouse 中。这是为了避免在数据库中创建过多的部分，从而导致集群中的性能问题。
-
-当满足以下任一条件时，批量将被插入：
-- 批量大小达到最大值（每 1GB 虚拟内存 100,000 行或 32MB）
-- 批处理已打开的最长时间（5 秒）
+在满足以下任一条件时会插入一个批次：
+- 批大小达到最大值（每 1GB pod（容器组）内存对应 100,000 行或 32MB）
+- 批已打开达到最大时长（5 秒）
 
 ### 延迟 {#latency}
 
-延迟（定义为生产 Kafka 消息与消息在 ClickHouse 中可用之间的时间）将取决于多个因素（即代理延迟、网络延迟、消息大小/格式）。上面描述的 [批处理](#batching) 也将影响延迟。我们始终建议在典型负载下测试您的特定用例，以确定预期延迟。
+延迟（定义为从 Kafka 消息被生产到该消息在 ClickHouse 中可用之间的时间）取决于多种因素（如 broker 延迟、网络延迟、消息大小/格式）。上文所述的[批处理](#batching)也会影响延迟。我们始终建议使用典型负载对您的特定用例进行测试，以确定预期延迟。
 
-ClickPipes 不提供关于延迟的任何保证。如果您有特定的低延迟要求，请 [联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
+ClickPipes 不对延迟提供任何保证。如果您有特定的低延迟需求，请[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 ### 扩展性 {#scaling}
 
-ClickPipes for Kafka 旨在横向和纵向扩展。默认情况下，我们创建一个包含一个消费者的消费者组。可以在 ClickPipe 创建期间或在 **设置** -> **高级设置** -> **扩展** 下的任何其他时间进行配置。
+面向 Kafka 的 ClickPipes 被设计为既可水平扩展也可垂直扩展。默认情况下，我们会创建一个包含单个消费者的 consumer group。此设置可以在创建 ClickPipe 时进行配置，或在之后任何时间通过 **Settings** -> **Advanced Settings** -> **Scaling** 进行调整。
 
-ClickPipes 提供高可用性，并采用可用区分布式体系结构。
-这需要至少扩展到两个消费者。
+ClickPipes 提供高可用的跨可用区分布式架构，
+这要求至少扩展到两个消费者。
 
-无论运行消费者的数量如何，容错都是设计的结果。
-如果消费者或其底层基础设施发生故障，ClickPipe 将自动重启该消费者并继续处理消息。
+无论运行的消费者数量多少，系统在设计上都具备容错能力。
+如果某个消费者或其底层基础设施发生故障，
+ClickPipe 会自动重启该消费者并继续处理消息。
 
-### 基准 {#benchmarks}
+### 基准测试 {#benchmarks}
 
-下面是一些 ClickPipes for Kafka 的非正式基准，可以用于获取基准性能的一般想法。需要了解的是，许多因素可以影响性能，包括消息大小、数据类型和数据格式。您的结果可能会有所不同，我们在此显示的内容不是实际性能的保证。
+以下是面向 Kafka 的 ClickPipes 的一些非正式基准测试，可用于大致了解基线性能。需要注意的是，许多因素都会影响性能，包括消息大小、数据类型和数据格式。您的实际结果可能有所不同，这里展示的内容并不构成对实际性能的保证。
 
-基准详细信息：
+基准测试细节：
 
-- 我们使用了生产的 ClickHouse Cloud 服务，确保资源足够，以确保通过插入处理不会对 ClickHouse 产生瓶颈。
-- ClickHouse Cloud 服务、Kafka 集群（Confluent Cloud）和 ClickPipe 均在同一区域（`us-east-2`）运行。
-- ClickPipe 配置为单个 L 大小的副本（4 GiB 的 RAM 和 1 vCPU）。
-- 示例数据包括嵌套数据，混合有 `UUID`、`String` 和 `Int` 数据类型。其他数据类型，如 `Float`、`Decimal` 和 `DateTime`，可能性能较差。
-- 使用压缩和未压缩数据的性能没有明显差异。
+- 我们使用了具备充足资源的生产级 ClickHouse Cloud 服务，以确保吞吐量不会被 ClickHouse 端的插入处理所限制。
+- ClickHouse Cloud 服务、Kafka 集群（Confluent Cloud）和 ClickPipe 都运行在同一地区（`us-east-2`）。
+- ClickPipe 配置为使用单个 L 规格副本（4 GiB 内存和 1 个 vCPU）。
+- 示例数据包含嵌套数据，混合使用了 `UUID`、`String` 和 `Int` 数据类型。其他数据类型（如 `Float`、`Decimal` 和 `DateTime`）的性能可能会较低。
+- 使用压缩和未压缩数据时，在性能上没有明显差异。
 
-| 副本大小  | 消息大小 | 数据格式 | 吞吐量 |
-|-----------|----------|-----------|--------|
-| Large (L) | 1.6kb    | JSON      | 63mb/s |
-| Large (L) | 1.6kb    | Avro      | 99mb/s |
+| 副本规格       | 消息大小 | 数据格式 | 吞吐量  |
+|---------------|----------|----------|---------|
+| Large (L)     | 1.6kb    |   JSON   | 63mb/s  |
+| Large (L)     | 1.6kb    |   Avro   | 99mb/s  |

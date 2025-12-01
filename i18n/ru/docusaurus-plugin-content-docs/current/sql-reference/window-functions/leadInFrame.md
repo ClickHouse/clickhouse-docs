@@ -1,18 +1,19 @@
 ---
-slug: '/sql-reference/window-functions/leadInFrame'
-sidebar_label: leadInFrame
+description: 'Документация по оконной функции leadInFrame'
+sidebar_label: 'leadInFrame'
 sidebar_position: 10
-description: 'Документация для функции окна leadInFrame'
-title: leadInFrame
-doc_type: reference
+slug: /sql-reference/window-functions/leadInFrame
+title: 'leadInFrame'
+doc_type: 'reference'
 ---
-# leadInFrame
 
-Возвращает значение, вычисленное для строки, которая смещена на определенное количество строк после текущей строки внутри упорядоченной области.
+# leadInFrame {#leadinframe}
+
+Возвращает значение, вычисленное для строки, которая находится через `offset` строк после текущей строки в упорядоченной рамке окна.
 
 :::warning
-Поведение функции `leadInFrame` отличается от стандартной SQL функции окна `lead`.
-Функция окна ClickHouse `leadInFrame` учитывает рамки окна.
+Поведение `leadInFrame` отличается от стандартной оконной функции SQL `lead`.
+Оконная функция ClickHouse `leadInFrame` учитывает рамку окна.
 Чтобы получить поведение, идентичное `lead`, используйте `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.
 :::
 
@@ -20,26 +21,27 @@ doc_type: reference
 
 ```sql
 leadInFrame(x[, offset[, default]])
-  OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
-FROM table_name
-WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
+  OVER ([[PARTITION BY столбец_группировки] [ORDER BY столбец_сортировки]
+        [ROWS или RANGE выражение_ограничения_строк_в_группе]] | [имя_окна])
+FROM имя_таблицы
+WINDOW имя_окна AS ([[PARTITION BY столбец_группировки] [ORDER BY столбец_сортировки])
 ```
 
-Для получения более подробной информации о синтаксисе функций окна смотрите: [Функции окна - Синтаксис](./index.md/#syntax).
+Для более подробной информации о синтаксисе оконных функций см. раздел [Window Functions - Syntax](./index.md/#syntax).
 
 **Параметры**
-- `x` — Имя колонки.
-- `offset` — Смещение для применения. [(U)Int*](../data-types/int-uint.md). (Необязательный - по умолчанию `1`).
-- `default` — Значение, которое возвращается, если вычисленная строка превышает границы рамки окна. (Необязательный - значение по умолчанию для типа колонки, если опущено).
+
+* `x` — имя столбца.
+* `offset` — смещение, которое нужно применить. [(U)Int*](../data-types/int-uint.md). (Необязательный параметр — по умолчанию `1`).
+* `default` — значение, возвращаемое, если рассчитанная строка выходит за границы оконного фрейма. (Необязательный параметр — при отсутствии используется значение по умолчанию для типа столбца).
 
 **Возвращаемое значение**
 
-- значение, вычисленное для строки, которая смещена на определенное количество строк после текущей строки внутри упорядоченной области.
+* значение, вычисленное для строки, которая расположена на `offset` строк после текущей строки внутри упорядоченного фрейма.
 
 **Пример**
 
-В этом примере рассматриваются [исторические данные](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data) о лауреатах Нобелевской премии и используется функция `leadInFrame` для возвращения списка последовательных лауреатов в категории физики.
+В этом примере используется [исторический набор данных](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data) по лауреатам Нобелевской премии и функция `leadInFrame` для вывода списка последовательных лауреатов в категории «Физика».
 
 Запрос:
 
@@ -67,14 +69,14 @@ LIMIT 9
 
 ```response
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-3. │ Ferenc Krausz    │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-4. │ Alain Aspect     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-5. │ Anton Zeilinger  │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-6. │ John Clauser     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-7. │ Giorgio Parisi   │ 2021 │ physics  │ for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales                │
-8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
-9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
+1. │ Anne L Huillier  │ 2023 │ физика  │ за экспериментальные методы, позволяющие получать аттосекундные световые импульсы для изучения динамики электронов в веществе                     │
+2. │ Pierre Agostini  │ 2023 │ физика  │ за экспериментальные методы, позволяющие получать аттосекундные световые импульсы для изучения динамики электронов в веществе                     │
+3. │ Ferenc Krausz    │ 2023 │ физика  │ за экспериментальные методы, позволяющие получать аттосекундные световые импульсы для изучения динамики электронов в веществе                     │
+4. │ Alain Aspect     │ 2022 │ физика  │ за эксперименты с запутанными фотонами, подтвердившие нарушение неравенств Белла и заложившие основы науки о квантовой информации │
+5. │ Anton Zeilinger  │ 2022 │ физика  │ за эксперименты с запутанными фотонами, подтвердившие нарушение неравенств Белла и заложившие основы науки о квантовой информации │
+6. │ John Clauser     │ 2022 │ физика  │ за эксперименты с запутанными фотонами, подтвердившие нарушение неравенств Белла и заложившие основы науки о квантовой информации │
+7. │ Giorgio Parisi   │ 2021 │ физика  │ за открытие взаимосвязи беспорядка и флуктуаций в физических системах от атомных до планетарных масштабов                │
+8. │ Klaus Hasselmann │ 2021 │ физика  │ за физическое моделирование климата Земли, количественную оценку его изменчивости и надежное прогнозирование глобального потепления                        │
+9. │ Syukuro Manabe   │ 2021 │ физика  │ за физическое моделирование климата Земли, количественную оценку его изменчивости и надежное прогнозирование глобального потепления                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

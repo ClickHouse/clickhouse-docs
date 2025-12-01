@@ -12,6 +12,16 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/docs",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app$"
+        }
+      ]
+    },
+    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
@@ -3522,13 +3532,18 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/security/cloud-access-management",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
       "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
       "permanent": true
     },
     {
       "source": "/docs/cloud/security/secure-s3",
-      "destination": "/cloud/data-sources/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
       "permanent": true
     },
     {
@@ -3562,8 +3577,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/secure-s3",
-      "destination": "/docs/cloud/data-sources/secure-s3",
       "source": "/docs/operations/system-tables/crash-log",
       "destination": "/docs/operations/system-tables/crash_log",
       "permanent": true
@@ -3601,6 +3614,21 @@
     {
       "source": "/docs/sql-reference/functions/time-series-analysis-functions",
       "destination": "/docs/sql-reference/functions/time-series-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/ingesting-data/kubernetes",
+      "destination": "/docs/use-cases/observability/clickstack/integrations/kubernetes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/backup",
+      "destination": "/docs/operations/backup/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/data-types/object-data-type",
+      "destination": "/docs/sql-reference/data-types/newjson",
       "permanent": true
     }
   ]

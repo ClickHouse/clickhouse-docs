@@ -1,0 +1,92 @@
+---
+title: ClickHouse を使って MySQL データを Parquet、CSV、JSON にエクスポートする方法
+description: "`clickhouse-local` ツールを使い、MySQL データを Parquet、CSV、JSON などの形式に高速かつ効率的にエクスポートする方法を解説します。"
+date: 2023-03-21
+tags: ['データ形式', 'データエクスポート']
+keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+## ClickHouse を使用して MySQL のデータを Parquet、CSV、または JSON にエクスポートする \{#exporting-mysql-data-to-parquet-csv-or-json-using-clickhouse\}
+
+`clickhouse-local` ツールを使用すると、MySQL からデータを読み取り、Parquet、CSV、JSON など、さまざまな形式でデータをすばやく簡単に出力できます。ここでは次のことを行います。
+
+* [`mysql` table function](https://clickhouse.com/docs/sql-reference/table-functions/mysql) を使用してデータを読み取る
+* `INTO OUTFILE _filename_ FORMAT` 句を使用し、目的の出力形式を指定する
+
+`clickhouse-local` ツールは ClickHouse バイナリの一部です。次の方法でダウンロードします。
+
+```bash
+curl https://clickhouse.com/ | sh
+```
+
+## MySQL を Parquet にエクスポートする \{#export-mysql-to-parquet\}
+
+`mysql` テーブル関数は、MySQL インスタンスに送信されたクエリの結果に基づいてテーブルを作成します。たとえば、次のようになります。
+
+```bash
+SELECT *
+FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+);
+```
+
+このクエリの出力は、`INTO OUTFILE` を使ってファイルに書き出せます。作成するファイルのフォーマットは `FORMAT` で指定します。MySQL テーブル全体の内容を取得し、その内容を Parquet ファイルに書き出してみましょう。
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.parquet'"
+```
+
+:::note
+出力ファイル名の拡張子が `.parquet` であるため、ClickHouse は Parquet 形式を使用するとみなします。そのため、ここでは `FORMAT Parquet` 句を明示的に指定していない点に注意してください。
+:::
+
+## MySQL を CSV にエクスポートする \{#export-mysql-to-csv\}
+
+ファイル名に `.csv` 拡張子を使用すること以外は、Parquet の場合と同じです。ClickHouse はカンマ区切りの出力であることを認識し、その形式でデータをファイルに書き込みます。
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.csv'"
+```
+
+## MySQL から JSON へエクスポートする \{#export-mysql-to-json\}
+
+MySQL から JSON へエクスポートするには、ファイル名の拡張子を `jsonl` または `ndjson` に変更するだけです。
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.ndjson'"
+```
+
+`clickhouse-local` ツールが、これほどシンプルでありながら非常に強力なのは実に印象的です。MySQL のようなデータベースから簡単にデータを読み取り、[さまざまな種類の出力フォーマット](https://clickhouse.com/docs/sql-reference/formats/)で出力できます。

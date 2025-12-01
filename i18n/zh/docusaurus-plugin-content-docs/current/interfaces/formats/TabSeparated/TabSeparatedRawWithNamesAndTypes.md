@@ -1,36 +1,36 @@
 ---
-'alias':
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
-'description': 'TabSeparatedRawWithNamesAndTypes 格式的 Documentation'
-'input_format': true
-'keywords':
-- 'TabSeparatedRawWithNamesAndTypes'
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
-'title': 'TabSeparatedRawWithNamesAndTypes'
-'doc_type': 'reference'
+alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'TabSeparatedRawWithNamesAndTypes 格式说明文档'
+input_format: true
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
+title: 'TabSeparatedRawWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias                                             |
+| 输入 | 输出 | 别名                                             |
 |-------|--------|---------------------------------------------------|
 | ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
+
+
 ## 描述 {#description}
 
-与 [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 格式不同，行是以未转义的方式写入的。
+与 [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 格式不同，
+该格式在写入行数据时不会进行转义。
 
 :::note
-使用此格式进行解析时，每个字段不允许包含制表符或换行符。
+使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
-## 示例用法 {#example-usage}
+
+
+## 使用示例 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下名为 `football.tsv` 的 tsv 文件：
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -62,7 +62,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesA
 
 ### 读取数据 {#reading-data}
 
-使用 `TabSeparatedRawWithNamesAndTypes` 格式读取数据：
+以 `TabSeparatedRawWithNamesAndTypes` 格式读取数据：
 
 ```sql
 SELECT *
@@ -70,7 +70,8 @@ FROM football
 FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
-输出将为以制表符分隔的格式，列名和类型包含两个表头行：
+输出将采用制表符分隔的格式，并包含两行表头，分别用于列名和列类型：
+
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -93,5 +94,6 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
+
 
 ## 格式设置 {#format-settings}

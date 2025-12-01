@@ -1,24 +1,25 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/max'
+description: 'Агрегатная функция, вычисляющая максимальное значение по группе значений.'
 sidebar_position: 162
-description: 'Агрегатная функция, которая вычисляет максимальное значение в группе'
-title: max
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/max
+title: 'max'
+doc_type: 'reference'
 ---
-Агрегатная функция, которая вычисляет максимум среди группы значений.
+
+Агрегатная функция, вычисляющая максимальное значение по группе значений.
 
 Пример:
 
-````sql
+```sql
 SELECT max(salary) FROM employees;
-````
+```
 
-````sql
+```sql
 SELECT department, max(salary) FROM employees GROUP BY department;
-````
+```
 
-Если вам нужна неагрегатная функция для выбора максимума из двух значений, смотрите `greatest`:
+Если вам нужна неагрегатная функция для выбора максимального значения из двух, см. `greatest`:
 
-````sql
+```sql
 SELECT greatest(a, b) FROM table;
-````
+```

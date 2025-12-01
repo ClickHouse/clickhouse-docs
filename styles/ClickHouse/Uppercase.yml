@@ -13,6 +13,7 @@ first: '\b([A-Z]{3,5})\b'
 second: '(?:\b[A-Z][a-z]+ )+\(([A-Z]{3,5})\)'
 # ... with the exception of these:
 exceptions:
+  - ACH
   - ACL
   - AJAX
   - ALL
@@ -163,6 +164,7 @@ exceptions:
   - OTP
   - OWASP
   - PAT
+  - PAYG
   - PCI-DSS
   - PDF
   - PEM
@@ -255,6 +257,7 @@ exceptions:
   - URI
   - URL
   - USB
+  - USD
   - UTC
   - UTF
   - UUID

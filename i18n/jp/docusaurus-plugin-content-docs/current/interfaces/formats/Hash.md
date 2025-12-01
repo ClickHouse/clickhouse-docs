@@ -1,14 +1,12 @@
 ---
-'alias': []
-'description': 'HashフォーマットのDocumentation'
-'input_format': false
-'keywords':
-- 'hash'
-- 'format'
-'output_format': true
-'slug': '/interfaces/formats/Hash'
-'title': 'Hash'
-'doc_type': 'reference'
+alias: []
+description: 'Hash フォーマットに関するドキュメント'
+input_format: false
+keywords: ['hash', 'format']
+output_format: true
+slug: /interfaces/formats/Hash
+title: 'Hash'
+doc_type: 'reference'
 ---
 
 | Input | Output | Alias |
@@ -17,14 +15,14 @@
 
 ## 説明 {#description}
 
-`Hash` 出力フォーマットは、結果のすべてのカラムと行の単一のハッシュ値を計算します。  
-これは、データ転送がボトルネックとなる状況で、結果の「フィンガープリント」を計算するのに役立ちます。
+`Hash` 出力形式は、結果のすべての列および行を対象に、1つのハッシュ値を計算します。
+これは、たとえばデータ転送がボトルネックとなっている状況で、結果の「フィンガープリント」を算出する場合に役立ちます。
 
-## 例の使用法 {#example-usage}
+## 使用例 {#example-usage}
 
 ### データの読み取り {#reading-data}
 
-次のデータを持つ `football` テーブルを考慮してください：
+次のデータを含む `football` テーブルを考えます。
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -48,7 +46,7 @@
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-`Hash` フォーマットを使用してデータを読み取ります：
+`Hash` フォーマットを使ってデータを読み込む：
 
 ```sql
 SELECT *
@@ -56,7 +54,7 @@ FROM football
 FORMAT Hash
 ```
 
-クエリはデータを処理しますが、何も出力しません。
+クエリはデータを処理しますが、出力は行われません。
 
 ```response
 df2ec2f0669b000edff6adee264e7d68
@@ -64,4 +62,5 @@ df2ec2f0669b000edff6adee264e7d68
 1 rows in set. Elapsed: 0.154 sec.
 ```
 
-## フォーマット設定 {#format-settings}
+
+## 書式設定 {#format-settings}

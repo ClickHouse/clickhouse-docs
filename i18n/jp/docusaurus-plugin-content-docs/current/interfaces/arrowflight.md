@@ -1,39 +1,46 @@
 ---
-'description': 'Apache Arrow Flight インターフェースに関するドキュメントで、ClickHouse に Flight SQL クライアントが接続できるようにします。'
-'sidebar_label': 'Arrow Flight インターフェース'
-'sidebar_position': 26
-'slug': '/interfaces/arrowflight'
-'title': 'Arrow Flight インターフェース'
-'doc_type': 'reference'
+description: 'ClickHouse の Apache Arrow Flight インターフェイスに関するドキュメントで、Flight SQL クライアントから ClickHouse への接続を可能にします'
+sidebar_label: 'Arrow Flight インターフェイス'
+sidebar_position: 26
+slug: /interfaces/arrowflight
+title: 'Arrow Flight インターフェイス'
+doc_type: 'reference'
 ---
 
 
-# Apache Arrow Flight Interface
 
-ClickHouseは、効率的な列指向データの転送のために設計された高性能RPCフレームワークである[Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html)プロトコルとの統合をサポートしています。このプロトコルは、Arrow IPC形式を使用してgRPCを介してデータを転送します。
+# Apache Arrow Flight インターフェイス {#apache-arrow-flight-interface}
 
-このインターフェースにより、Flight SQLクライアントはClickHouseをクエリでき、結果をArrow形式で取得でき、分析ワークロードに対して高いスループットと低いレイテンシを提供します。
+ClickHouse は、Arrow IPC フォーマットを gRPC 上で利用して効率的なカラム型データ転送を行う、高性能な RPC フレームワークである [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルとの連携をサポートしています。
 
-## Features {#features}
+このインターフェイスにより、Flight SQL クライアントは ClickHouse に対してクエリを実行し、結果を Arrow フォーマットで取得できます。これにより、分析ワークロード向けに高スループットかつ低レイテンシなクエリ処理が可能になります。
 
-* Arrow Flight SQLプロトコルを介してSQLクエリを実行
-* Apache Arrow形式でクエリ結果をストリーム配信
-* Arrow FlightをサポートするBIツールやカスタムデータアプリケーションとの統合
-* gRPCを介した軽量で高性能な通信
 
-## Limitations {#limitations}
 
-Arrow Flightインターフェースは現在実験的で、アクティブな開発中です。既知の制限には以下が含まれます：
+## 機能 {#features}
 
-* ClickHouse特有の複雑なSQL機能のサポートが限られている
-* すべてのArrow Flight SQLメタデータ操作がまだ実装されていない
-* リファレンス実装にビルトインの認証やTLS構成がない
+* Arrow Flight SQL プロトコル経由で SQL クエリを実行
+* クエリ結果を Apache Arrow 形式でストリーミング配信
+* Arrow Flight をサポートする BI ツールや独自のデータアプリケーションとの統合
+* gRPC を用いた軽量かつ高性能な通信
 
-互換性の問題が発生した場合や貢献したい場合は、[issueを作成](https://github.com/ClickHouse/ClickHouse/issues)してください。
 
-## Running the Arrow Flight Server {#running-server}
 
-セルフマネージドのClickHouseインスタンスでArrow Flightサーバーを有効にするには、サーバー設定に以下の構成を追加します：
+## 制限事項 {#limitations}
+
+Arrow Flight インターフェイスは現在、実験的な段階であり、活発に開発が進められています。既知の制限事項には次のようなものがあります。
+
+* ClickHouse 固有の複雑な SQL 機能に対するサポートが限定的です
+* すべての Arrow Flight SQL メタデータ操作がまだ実装されていません
+* リファレンス実装には、組み込みの認証機能や TLS 設定はありません
+
+互換性の問題が発生した場合やコントリビュートを希望される場合は、ClickHouse リポジトリで[issue を作成](https://github.com/ClickHouse/ClickHouse/issues)してください。
+
+
+
+## Arrow Flight サーバーの実行 {#running-server}
+
+自己管理の ClickHouse インスタンスで Arrow Flight サーバーを有効化するには、サーバー設定に次の構成を追加します。
 
 ```xml
 <clickhouse>
@@ -41,15 +48,16 @@ Arrow Flightインターフェースは現在実験的で、アクティブな�
 </clickhouse>
 ```
 
-ClickHouseサーバーを再起動します。正常に起動すると、以下のようなログメッセージが表示されます：
+ClickHouse サーバーを再起動します。起動に成功すると、次のようなログメッセージが表示されます。
 
 ```bash
-{} <Information> Application: Arrow Flight compatibility protocol: 0.0.0.0:9005
+{} <Information> Application: Arrow Flight互換プロトコル: 0.0.0.0:9005
 ```
 
-## Connecting to ClickHouse via Arrow Flight SQL {#connecting-to-clickhouse}
 
-Arrow Flight SQLをサポートする任意のクライアントを使用できます。例えば、`pyarrow`を使用する場合：
+## Arrow Flight SQL を使用して ClickHouse に接続する {#connecting-to-clickhouse}
+
+Arrow Flight SQL をサポートする任意のクライアントを利用できます。たとえば、`pyarrow` を使う場合は次のとおりです。
 
 ```python
 import pyarrow.flight
@@ -62,23 +70,26 @@ for batch in reader:
     print(batch.to_pandas())
 ```
 
-## Compatibility {#compatibility}
 
-Arrow Flightインターフェースは、以下のようなArrow Flight SQLをサポートするツールと互換性があります：
+## 互換性 {#compatibility}
 
-* Python（`pyarrow`）
-* Java（`arrow-flight`）
-* C++および他のgRPC互換言語
+Arrow Flight インターフェースは、次のような技術スタックで構築されたカスタムアプリケーションを含め、Arrow Flight SQL をサポートするツールと互換性があります。
 
-ツールにネイティブなClickHouseコネクタ（例：JDBC、ODBC）が利用可能な場合、パフォーマンスやフォーマットの互換性のためにArrow Flightが特に要求されない限り、それを使用することをお勧めします。
+* Python (`pyarrow`)
+* Java (`arrow-flight`)
+* C++ およびその他の gRPC 互換言語
 
-## Query Cancellation {#query-cancellation}
+利用しているツール向けにネイティブな ClickHouse コネクタ（例: JDBC、ODBC）が利用可能な場合、パフォーマンスやフォーマット互換性の理由で Arrow Flight が明示的に必要な場合を除き、そちらを優先して使用してください。
 
-長時間実行されるクエリは、クライアント側からgRPC接続を閉じることでキャンセルできます。より高度なキャンセル機能のサポートが計画されています。
+
+
+## クエリのキャンセル {#query-cancellation}
+
+長時間実行中のクエリは、クライアント側で gRPC 接続を閉じることでキャンセルできます。より高度なキャンセル機能のサポートの追加が計画されています。
 
 ---
 
-詳細については、以下を参照してください：
+詳しくは次を参照してください。
 
-* [Apache Arrow Flight SQL仕様](https://arrow.apache.org/docs/format/FlightSql.html)
+* [Apache Arrow Flight SQL specification](https://arrow.apache.org/docs/format/FlightSql.html)
 * [ClickHouse GitHub Issue #7554](https://github.com/ClickHouse/ClickHouse/issues/7554)

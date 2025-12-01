@@ -1,16 +1,16 @@
 ---
-'description': 'lead ウィンドウ関数に関する Documentation'
-'sidebar_label': 'lead'
-'sidebar_position': 10
-'slug': '/sql-reference/window-functions/lead'
-'title': 'lead'
-'doc_type': 'reference'
+description: 'lead ウィンドウ関数に関するドキュメント'
+sidebar_label: 'lead'
+sidebar_position: 10
+slug: /sql-reference/window-functions/lead
+title: 'lead'
+doc_type: 'reference'
 ---
 
+# lead {#lead}
 
-# lead
-
-現在の行のオフセット行で評価された値を ordered frame 内で返します。この関数は [`leadInFrame`](./leadInFrame.md) に似ていますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` フレームを使用します。
+並べ替えられたフレーム内で、現在の行から `offset` 行後の行で評価された値を返します。
+この関数は [`leadInFrame`](./leadInFrame.md) と類似していますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` というフレームを使用します。
 
 **構文**
 
@@ -21,21 +21,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**パラメータ**
+**パラメーター**
 
-- `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 （オプショナル - デフォルトは `1`）。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返される値。 （オプショナル - 省略した場合はカラム型のデフォルト値）。
+* `x` — 列名。
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（省略可。省略時は `1`）
+* `default` — 計算対象の行がウィンドウフレームの範囲外となった場合に返す値。（省略可。省略時は列の型のデフォルト値）
 
-**返される値**
+**戻り値**
 
-- ordered frame 内で現在の行のオフセット行で評価された値。
+* 順序付けされたフレーム内で、現在の行から `offset` 行後の行で評価された値。
 
 **例**
 
-この例では、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を参照し、`lead` 関数を使用して物理学カテゴリーの連続受賞者のリストを返します。
+この例では、ノーベル賞受賞者の[過去データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を使用し、物理学部門における連続した受賞者の一覧を返すために `lead` 関数を利用します。
 
 ```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates
@@ -59,14 +59,14 @@ LIMIT 9
 
 ```response title="Query"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-3. │ Ferenc Krausz    │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
-4. │ Alain Aspect     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-5. │ Anton Zeilinger  │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-6. │ John Clauser     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
-7. │ Giorgio Parisi   │ 2021 │ physics  │ for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales                │
-8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
-9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
+1. │ Anne L Huillier  │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
+2. │ Pierre Agostini  │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
+3. │ Ferenc Krausz    │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
+4. │ Alain Aspect     │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
+5. │ Anton Zeilinger  │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
+6. │ John Clauser     │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
+7. │ Giorgio Parisi   │ 2021 │ 物理学  │ 原子スケールから惑星スケールに至る物理系における無秩序とゆらぎの相互作用の発見に対して                │
+8. │ Klaus Hasselmann │ 2021 │ 物理学  │ 地球気候の物理モデリング、変動の定量化、および地球温暖化の信頼性の高い予測に対して                        │
+9. │ Syukuro Manabe   │ 2021 │ 物理学  │ 地球気候の物理モデリング、変動の定量化、および地球温暖化の信頼性の高い予測に対して                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

@@ -1,49 +1,56 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/materialized-views'
-'sidebar_label': '物化视图'
-'doc_type': 'guide'
-'keywords':
-- 'clickhouse materialized views'
-- 'materialized view optimization'
-- 'materialized view storage issues'
-- 'materialized view best practices'
-- 'database aggregation patterns'
-- 'materialized view anti-patterns'
-- 'storage explosion problems'
-- 'materialized view performance'
-- 'database view optimization'
-- 'aggregation strategy'
-- 'materialized view troubleshooting'
-- 'view storage overhead'
-'title': '课程 - 物化视图'
-'description': '现实世界中物化视图的例子，问题和解决方案'
+sidebar_position: 1
+slug: /tips-and-tricks/materialized-views
+sidebar_label: '物化视图'
+doc_type: 'guide'
+keywords: [
+  'ClickHouse 物化视图',
+  '物化视图优化',
+  '物化视图存储问题',
+  '物化视图最佳实践',
+  '数据库聚合模式',
+  '物化视图反模式',
+  '存储爆炸问题',
+  '物化视图性能',
+  '数据库视图优化',
+  '聚合策略',
+  '物化视图故障排查',
+  '视图存储开销'
+]
+title: '物化视图实践经验'
+description: '物化视图的真实案例、常见问题与解决方案'
 ---
 
 
-# 物化视图：它们如何成为一把双刃剑 {#materialized-views-the-double-edged-sword}
 
-*本指南是从社区聚会中获得的一系列发现的一部分。有关更多现实世界解决方案和见解，您可以 [按具体问题浏览](./community-wisdom.md)。*
-*数据库受到过多分片的困扰？请查看 [过多分片](./too-many-parts.md) 社区见解指南。*
-*了解更多关于 [物化视图](/materialized-views) 的信息。*
+# 物化视图：如何让它成为一把双刃剑 {#materialized-views-the-double-edged-sword}
 
-## 10倍存储反模式 {#storage-antipattern}
+*本指南是从社区线下交流活动中总结出的经验的一部分。想获取更多真实场景的解决方案和洞察，可以[按具体问题浏览](./community-wisdom.md)。*
+*过多的数据分片正在拖慢你的数据库吗？请查看 [Too Many Parts](./too-many-parts.md) 社区洞察指南。*
+*进一步了解[物化视图](/materialized-views)。*
 
-**真实的生产问题：** *“我们有一个物化视图。原始日志表约为20GB，但来自该日志表的视图膨胀到190GB，所以几乎是原始表大小的10倍。这是因为我们为每个属性创建了一行，而每个日志可以有10个属性。”*
 
-**规则：** 如果您的 `GROUP BY` 创建的行数超过它消除的行数，您正在构建一个昂贵的索引，而不是一个物化视图。
 
-## 生产物化视图健康验证 {#mv-health-validation}
+## 10 倍存储反模式 {#storage-antipattern}
 
-此查询可以帮助您在创建物化视图之前预测它是否会压缩或膨胀您的数据。针对您的实际表和列运行它，以避免“190GB爆炸”的情况。
+**真实生产问题：** *“我们有一个物化视图。原始日志表大约是 20GB，但基于这个日志表的视图膨胀到了 190GB，几乎是原始表大小的 10 倍。之所以会这样，是因为我们为每个属性创建了一行，而每条日志可以有 10 个属性。”*
 
-**它显示的内容：**
-- **低聚合比**（\<10%） = 良好的物化视图，显著压缩
-- **高聚合比**（\>70%） = 不良的物化视图，存储膨胀风险
-- **存储倍增器** = 您的物化视图将增大/缩小的倍数
+**规则：** 如果你的 `GROUP BY` 产生的行数多于它减少的行数，那你构建的是一个代价高昂的索引，而不是物化视图。
+
+
+
+## 生产环境物化视图健康状况验证 {#mv-health-validation}
+
+此查询可帮助你在创建物化视图之前预测，它是会压缩数据还是导致数据膨胀。请在实际的表和列上运行此查询，以避免出现类似 “190GB 爆炸” 的情况。
+
+**该查询显示：**
+
+* **低聚合比**（&lt;10%）= 优秀的 MV，具有显著压缩效果
+* **高聚合比**（&gt;70%）= 糟糕的 MV，存在存储膨胀风险
+* **存储倍数** = 你的 MV 相比原始表会放大/缩小多少倍
 
 ```sql
--- Replace with your actual table and columns
+-- 替换为实际的表名和列名
 SELECT 
     count() as total_rows,
     uniq(your_group_by_columns) as unique_combinations,
@@ -51,19 +58,22 @@ SELECT
 FROM your_table
 WHERE your_filter_conditions;
 
--- If aggregation_ratio > 70%, reconsider your MV design
--- If aggregation_ratio < 10%, you'll get good compression
+-- 如果 aggregation_ratio > 70%，请重新考虑物化视图设计
+-- 如果 aggregation_ratio < 10%，将获得良好的压缩效果
 ```
 
-## 何时物化视图会成为问题 {#mv-problems}
 
-**需要监控的警告信号：**
-- 插入延迟增加（之前10毫秒的查询现在需要100毫秒以上）
-- “太多分片”错误出现得更频繁
-- 插入操作期间CPU激增
-- 插入超时以前没有发生过
+## 当物化视图开始带来问题时 {#mv-problems}
 
-您可以通过使用 `system.query_log` 比较添加物化视图前后的插入性能，以跟踪查询持续时间趋势。
+**需要监控的预警信号：**
+- 写入延迟增加（原本耗时 10ms 的查询现在需要 100ms 以上）
+- "Too many parts" 错误出现得更频繁
+- 写入操作期间出现 CPU 峰值
+- 出现此前从未发生过的写入超时
+
+你可以使用 `system.query_log` 比较添加物化视图前后的写入性能，以跟踪查询耗时趋势。
+
+
 
 ## 视频来源 {#video-sources}
-- [ClickHouse 在 CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - “对物化视图过于热情”和“20GB→190GB爆炸”案例研究的来源
+- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - “过度迷恋物化视图”和“20GB→190GB 激增”案例研究的出处

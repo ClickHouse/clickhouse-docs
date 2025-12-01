@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/mannwhitneyutest'
-sidebar_label: mannWhitneyUTest
+description: 'Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.'
+sidebar_label: 'mannWhitneyUTest'
 sidebar_position: 161
-description: 'Применяет тест рангов Манна-Уитни к образцам из двух популяций.'
-title: mannWhitneyUTest
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/mannwhitneyutest
+title: 'mannWhitneyUTest'
+doc_type: 'reference'
 ---
-# mannWhitneyUTest
 
-Применяет ранговый тест Манна-Уитни к выборкам из двух популяций.
+# mannWhitneyUTest {#mannwhitneyutest}
+
+Применяет ранговый критерий Манна — Уитни к выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
@@ -16,27 +17,28 @@ doc_type: reference
 mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равно 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза состоит в том, что две популяции стохастически равны. Также могут тестироваться односторонние гипотезы. Этот тест не предполагает, что данные имеют нормальное распределение.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой совокупности. В противном случае оно принадлежит выборке из второй совокупности.
+Нулевая гипотеза состоит в том, что две совокупности стохастически равны. Также можно проверять односторонние гипотезы. Тест не предполагает, что данные имеют нормальное распределение.
 
 **Аргументы**
 
-- `sample_data` — выборочные данные. [Целое число](../../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../../sql-reference/data-types/float.md) или [десятичное число](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `alternative` — альтернативная гипотеза. (Опционально, по умолчанию: `'two-sided'`.) [Строка](../../../sql-reference/data-types/string.md).
-  - `'two-sided'`;
-  - `'greater'`;
-  - `'less'`.
-- `continuity_correction` — если не 0, то применяется коррекция непрерывности в нормальном приближении для p-значения. (Опционально, по умолчанию: 1.) [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `alternative` — альтернативная гипотеза (необязательный параметр, по умолчанию — `'two-sided'`). [String](../../../sql-reference/data-types/string.md).
+  * `'two-sided'`;
+  * `'greater'`;
+  * `'less'`.
+* `continuity_correction` — если не равен 0, применяется поправка на непрерывность в нормальном приближении p-значения (необязательный параметр, по умолчанию — 1). [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 
-[Кортеж](../../../sql-reference/data-types/tuple.md) с двумя элементами:
+[Tuple](../../../sql-reference/data-types/tuple.md) из двух элементов:
 
-- рассчитанный U-статистик. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленная U-статистика. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 
@@ -67,7 +69,7 @@ SELECT mannWhitneyUTest('greater')(sample_data, sample_index) FROM mww_ttest;
 └────────────────────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Тест U Манна-Уитни](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
-- [Стохастический порядок](https://en.wikipedia.org/wiki/Stochastic_ordering)
+* [Критерий Манна — Уитни](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
+* [Стохастический порядок](https://en.wikipedia.org/wiki/Stochastic_ordering)

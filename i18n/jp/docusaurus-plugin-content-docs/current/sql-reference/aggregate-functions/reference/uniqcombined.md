@@ -1,55 +1,54 @@
 ---
-'description': '異なる引数値の近似数を計算します。'
-'sidebar_position': 205
-'slug': '/sql-reference/aggregate-functions/reference/uniqcombined'
-'title': 'uniqCombined'
-'doc_type': 'reference'
+description: '引数の異なる値のおおよその個数を計算します。'
+sidebar_position: 205
+slug: /sql-reference/aggregate-functions/reference/uniqcombined
+title: 'uniqCombined'
+doc_type: 'reference'
 ---
 
+# uniqCombined {#uniqcombined}
 
-# uniqCombined
-
-異なる引数値の概算数を計算します。
+異なる引数値のおおよその個数を計算します。
 
 ```sql
 uniqCombined(HLL_precision)(x[, ...])
 ```
 
-`uniqCombined`関数は、異なる値の数を計算するための良い選択肢です。
+`uniqCombined` 関数は、異なる値の個数を計算するのに適した関数です。
 
-**引数**
+**Arguments**
 
-- `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog)のセルの数の2の冪対数。オプションで、関数を`uniqCombined(x[, ...])`として使用できます。`HLL_precision`のデフォルト値は17で、実質的に96 KiBのスペース（2^17セル、各6ビット）を占有します。
-- `X`: 可変数のパラメータ。パラメータは`Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型です。
+* `HLL_precision`: [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) におけるセル数の 2 を底とする対数値。省略可能で、`uniqCombined(x[, ...])` のように関数を使用できます。`HLL_precision` のデフォルト値は 17 で、これはおおよそ 96 KiB の領域（2^17 個のセル、各 6 ビット）に相当します。
+* `X`: 可変長のパラメーター。パラメーターには `Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型を指定できます。
 
-**返される値**
+**Returned value**
 
-- [UInt64](../../../sql-reference/data-types/int-uint.md)-型の数値。
+* [UInt64](../../../sql-reference/data-types/int-uint.md) 型の数値。
 
-**実装の詳細**
+**Implementation details**
 
-`uniqCombined`関数は:
+`uniqCombined` 関数は次のように動作します。
 
-- 集約内のすべてのパラメータのハッシュ（`String`の場合は64ビットハッシュ、その他は32ビット）を計算し、計算に使用します。
-- 配列、ハッシュテーブル、およびエラー訂正テーブルを持つHyperLogLogの3つのアルゴリズムの組み合わせを使用します。
-  - 少数の異なる要素の場合、配列が使用されます。
-  - セットサイズが大きくなると、ハッシュテーブルが使用されます。
-  - より多くの要素の場合、固定メモリ量を占有するHyperLogLogが使用されます。
-- 結果は決定論的に提供されます（クエリ処理順序には依存しません）。
+* 集計対象のすべてのパラメーターに対してハッシュ（`String` には 64 ビットハッシュ、それ以外には 32 ビットハッシュ）を計算し、そのハッシュ値を用いて計算を行います。
+* 3 つのアルゴリズム（配列、ハッシュテーブル、誤差補正テーブル付き HyperLogLog）を組み合わせて使用します。
+  * 相異なる要素数が少ない場合は配列を使用します。
+  * 集合のサイズがより大きくなるとハッシュテーブルを使用します。
+  * 要素数がさらに大きい場合は HyperLogLog を使用し、一定量のメモリのみを使用します。
+* 決定的な結果を返します（クエリの処理順序には依存しません）。
 
-:::note    
-非`String`型に対して32ビットハッシュを使用するため、結果は`UINT_MAX`を大幅に超えるカーディナリティに対して非常に高い誤差が出ます（異なる値の数が数十億を超えると誤差は急速に増加します）。したがって、この場合は[uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)を使用するべきです。
+:::note\
+非 `String` 型には 32 ビットハッシュを使用するため、`UINT_MAX` を大きく超えるカーディナリティに対しては誤差が非常に大きくなります（数百億件程度の相異なる値を超えると急速に誤差が増加します）。したがって、このような場合は [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) を使用する必要があります。
 :::
 
-[uniq](/sql-reference/aggregate-functions/reference/uniq)関数と比較して、`uniqCombined`関数は:
+[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数と比較すると、`uniqCombined` 関数は次の特性を持ちます。
 
-- 数倍少ないメモリを消費します。
-- 数倍高い精度で計算します。
-- 通常はわずかに性能が低くなります。特定のシナリオでは、`uniqCombined`はネットワーク経由で多数の集約状態を送信する分散クエリのような場合に`uniq`よりも優れたパフォーマンスを発揮することがあります。
+* 使用メモリ量が数倍少ない。
+* 計算精度が数倍高い。
+* 通常は若干性能が低くなります。一部のシナリオでは、たとえば多くの集約状態をネットワーク越しに送信する分散クエリでは、`uniqCombined` の方が `uniq` より高速になることがあります。
 
-**例**
+**Example**
 
-クエリ:
+Query:
 
 ```sql
 SELECT uniqCombined(number) FROM numbers(1e6);
@@ -59,16 +58,16 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 
 ```response
 ┌─uniqCombined(number)─┐
-│              1001148 │ -- 1.00 million
+│              1001148 │ -- 100万
 └──────────────────────┘
 ```
 
-`uniqCombined`と`uniqCombined64`の間の違いに関する例については、[uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)の例のセクションを参照してください。
+はるかに大きな入力に対する `uniqCombined` と `uniqCombined64` の違いの例については、[uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64) の例のセクションを参照してください。
 
-**関連事項**
+**関連項目**
 
-- [uniq](/sql-reference/aggregate-functions/reference/uniq)
-- [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)
-- [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
-- [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
-- [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)
+* [uniq](/sql-reference/aggregate-functions/reference/uniq)
+* [uniqCombined64](/sql-reference/aggregate-functions/reference/uniqcombined64)
+* [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
+* [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
+* [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)
