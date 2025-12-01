@@ -783,12 +783,18 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### TABLE ENGINE {#table-engine}
 
-允许在创建表时指定表引擎。适用于[表引擎](../../engines/table-engines/index.md)。
+在创建表时允许使用指定的表引擎。适用于[表引擎](../../engines/table-engines/index.md)。
 
 **示例**
 
 - `GRANT TABLE ENGINE ON * TO john`
 - `GRANT TABLE ENGINE ON TinyLog TO john`
+
+:::note
+默认情况下，出于向后兼容的考虑，使用特定表引擎创建表时会忽略权限授权，
+但你可以通过在 config.xml 中将 [`table_engines_require_grant` 设置为 true](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)
+来更改这一行为。
+:::
 
 ### ALL {#all}
 
