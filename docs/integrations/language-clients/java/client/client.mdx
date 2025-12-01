@@ -993,6 +993,52 @@ Table below shows what old options are supported in the new client and their new
 </TabItem>
 </Tabs>
 
+
+### General Differences
+
+- Client V2 uses less proprietary classes to increase portability. For example, V2 works with any implementation of `java.io.InputStream` for
+writing data to a server.
+- Client V2 `async` settings is `off` by default. It means no extra threads and more application control over client. This setting should be `off` for majority of use cases. Enabling `async` will create a separate thread for a request. It only make sense when using application controlled
+executor (see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor`)
+
+### Writing Data
+
+- use any implementation of `java.io.InputStream`. V1 `com.clickhouse.data.ClickHouseInputStream` is supported but NOT recommended.
+- once end of input stream is detected it handled accordingly. Previously output stream of a request should be closed.
+
+```java
+
+// V2 Insert TSV formatted data.
+InputStream inData = getInData();
+InsertSettings settings = new InsertSettings().setInputStreamCopyBufferSize(8198 * 2); // set copy buffer size
+try (InsertResponse response = client.insert(tableName, inData, ClickHouseFormat.TSV, settings).get(30, TimeUnit.SECONDS)) {
+
+  // Insert is complete at this point
+
+} catch (Exception e) {
+ // Handle exception
+}
+```
+
+- new low-level API is available `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`. `com.clickhouse.client.api.DataStreamWriter` is designed to implement custom data writing logic. For instance, reading data from a
+queue.
+
+
+### Reading Data
+
+- Data is read in `RowBinaryWithNamesAndTypes` format by default. Currently only this format is supported when data binding is required.
+- Data can be read as a collection of records using `List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` method. It will read data to a memory and release connection. No need for extra handling. `GenericRecord` gives access to data, implements some conversions.
+
+```java
+Collection<GenericRecord> records = client.queryAll("SELECT * FROM table");
+for (GenericRecord record : records) {
+    int rowId = record.getInteger("rowID");
+    String name = record.getString("name");
+    LocalDateTime ts = record.getLocalDateTime("ts");
+}
+
+```
+
 </Version>
 
 <Version>
