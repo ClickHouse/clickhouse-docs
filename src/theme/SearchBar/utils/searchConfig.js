@@ -68,34 +68,37 @@ export function createSearchNavigator(history, externalUrlRegex, currentLocale) 
     navigate({ itemUrl }) {
       let url = itemUrl;
 
-      // Transform the URL if it's an absolute URL from Algolia
-      // This handles the case when Enter is pressed (which may receive untransformed URLs)
-      try {
-        const urlObj = new URL(itemUrl);
-        const pathname = urlObj.pathname;
-        const hash = urlObj.hash;
+      // Only transform if it's an absolute URL (starts with http:// or https://)
+      // If it's already a relative path, it's been transformed by transformSearchItems
+      if (itemUrl.startsWith('http://') || itemUrl.startsWith('https://')) {
+        // Transform the absolute URL from Algolia to a relative path
+        try {
+          const urlObj = new URL(itemUrl);
+          const pathname = urlObj.pathname;
+          const hash = urlObj.hash;
 
-        if (currentLocale !== 'en') {
-          const prefix = `/docs/${currentLocale}`;
-          if (pathname.startsWith(prefix)) {
-            url = pathname.substring(prefix.length) || '/';
+          if (currentLocale !== 'en') {
+            const prefix = `/docs/${currentLocale}`;
+            if (pathname.startsWith(prefix)) {
+              url = pathname.substring(prefix.length) || '/';
+            } else {
+              url = pathname;
+            }
           } else {
-            url = pathname;
+            const prefix = '/docs';
+            if (pathname.startsWith(prefix)) {
+              url = pathname.substring(prefix.length) || '/';
+            } else {
+              url = pathname;
+            }
           }
-        } else {
-          const prefix = '/docs';
-          if (pathname.startsWith(prefix)) {
-            url = pathname.substring(prefix.length) || '/';
-          } else {
-            url = pathname;
-          }
+
+          url += hash;
+        } catch (e) {
+          // If parsing fails, use as-is
         }
-
-        url += hash;
-      } catch (e) {
-        // If URL parsing fails, it's likely already a relative path
-        // Use it as-is
       }
+      // else: URL is already relative (transformed), use as-is
 
       if (isRegexpStringMatch(externalUrlRegex, url)) {
         window.location.href = url;
