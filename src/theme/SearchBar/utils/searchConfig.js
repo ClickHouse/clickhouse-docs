@@ -111,10 +111,16 @@ export function createSearchNavigator(history, externalUrlRegex, currentLocale) 
         // If parsing fails, use as-is
       }
 
-      // If the URL is relative and doesn't already start with /docs, prepend it
+      // If the URL is relative, prepend the locale-specific baseUrl
       // This is needed because history.push expects the full path including baseUrl
-      if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/docs')) {
-        url = '/docs' + url;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        // Construct the baseUrl based on locale
+        const baseUrl = currentLocale !== 'en' ? `/docs/${currentLocale}` : '/docs';
+
+        // Only prepend if the URL doesn't already start with the baseUrl
+        if (!url.startsWith(baseUrl)) {
+          url = baseUrl + url;
+        }
       }
 
       if (isRegexpStringMatch(externalUrlRegex, url)) {
