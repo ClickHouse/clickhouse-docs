@@ -434,12 +434,11 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 
 ### range&#95;hashed {#range_hashed}
 
-字典以哈希表形式存储在内存中，并带有一个有序的区间数组及其对应的值。
+字典以哈希表的形式存储在内存中，包含一个有序的区间数组及其对应的值。
 
-字典键的类型为 [UInt64](../../sql-reference/data-types/int-uint.md)。
-这种存储方式与 hashed 相同，并且在键之外还允许使用日期/时间（任意数值类型）的区间。
+这种存储方式与 `hashed` 相同，除了键以外，还允许使用日期/时间（任意数值类型）区间。
 
-示例：表中以如下格式存储了每个广告主的折扣信息：
+示例：表中包含针对每个广告主的折扣，格式如下：
 
 ```text
 ┌─advertiser_id─┬─discount_start_date─┬─discount_end_date─┬─amount─┐
@@ -449,10 +448,10 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-要在日期范围上使用采样，请在[结构](#dictionary-key-and-fields)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type` 字段（如果未指定 `type`，则将使用默认类型 Date）。`type` 可以是任何数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
+要基于日期范围进行采样，请在[结构](#dictionary-key-and-fields)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type`（如果未指定 `type`，将使用默认类型 Date）。`type` 可以是任意数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
 
 :::note
-`range_min` 和 `range_max` 的值应能容纳在 `Int64` 类型范围内。
+`range_min` 和 `range_max` 的值应在 `Int64` 类型的取值范围内。
 :::
 
 示例：
@@ -495,7 +494,7 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-要使用这些字典，需要向 `dictGet` 函数传递一个用于指定范围的额外参数：
+要使用这些字典，需要向 `dictGet` 函数额外传入一个参数，用于指定区间：
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
@@ -507,14 +506,14 @@ dictGet('dict_name', 'attr_name', id, date)
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-此函数会返回在包含传入日期的日期范围内，指定 `id` 对应的值。
+此函数返回指定 `id` 在包含传入日期的日期范围内的值。
 
 算法细节：
 
-* 如果未找到 `id`，或者为该 `id` 未找到范围，则返回该属性类型的默认值。
-* 如果存在重叠范围且 `range_lookup_strategy=min`，则在匹配范围中返回 `range_min` 最小的范围；如果找到多个范围，则返回其中 `range_max` 最小的范围；如果仍然有多个范围（若多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
-* 如果存在重叠范围且 `range_lookup_strategy=max`，则在匹配范围中返回 `range_min` 最大的范围；如果找到多个范围，则返回其中 `range_max` 最大的范围；如果仍然有多个范围（若多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
-* 如果 `range_max` 为 `NULL`，则该范围向上为开区间。`NULL` 被视为可能的最大值。对于 `range_min`，可以使用 `1970-01-01` 或 `0` (-MAX&#95;INT) 作为表示向下开区间的值。
+* 如果未找到 `id` 或者为该 `id` 未找到范围，则返回该属性类型的默认值。
+* 如果存在重叠范围且 `range_lookup_strategy=min`，则返回一个匹配范围，其 `range_min` 最小；如果找到多个范围，则返回其中 `range_max` 最小的范围；如果仍然找到多个范围（多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
+* 如果存在重叠范围且 `range_lookup_strategy=max`，则返回一个匹配范围，其 `range_min` 最大；如果找到多个范围，则返回其中 `range_max` 最大的范围；如果仍然找到多个范围（多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
+* 如果 `range_max` 为 `NULL`，则该范围在上界为开区间。`NULL` 被视为可能的最大值。对于 `range_min`，可以使用 `1970-01-01` 或 `0` (-MAX&#95;INT) 作为无下界的开区间值。
 
 配置示例：
 
