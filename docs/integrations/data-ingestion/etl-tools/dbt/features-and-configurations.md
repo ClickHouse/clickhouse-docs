@@ -727,3 +727,71 @@ dbt-clickhouse supports most of the cross database macros now included in `dbt C
   interpreted as a string, not a column name
 * Similarly, the `replace` SQL function in ClickHouse requires constant strings for the `old_chars` and `new_chars`
   parameters, so those parameters will be interpreted as strings rather than column names when invoking this macro.
+
+## Catalog Support {#catalog-support}
+
+### dbt Catalog Integration Status {#dbt-catalog-integration-status}
+
+dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature is not yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
+
+### ClickHouse Catalog Support {#clickhouse-catalog-support}
+
+ClickHouse recently added native support for Apache Iceberg tables and data catalogs. Most of the features are still `experimental`, but you can already use them if you use a recent ClickHouse version.
+
+* You can use ClickHouse to **query Iceberg tables stored in object storage** (S3, Azure Blob Storage, Google Cloud Storage) using the [Iceberg table engine](https://clickhouse.com/docs/en/engines/table-engines/integrations/iceberg) and [iceberg table function](https://clickhouse.com/docs/en/sql-reference/table-functions/iceberg).
+
+* Additionally, ClickHouse provides the [DataLakeCatalog database engine](https://clickhouse.com/docs/engines/database-engines/datalakecatalog), which enables **connection to external data catalogs** including AWS Glue Catalog, Databricks Unity Catalog, Hive Metastore, and REST Catalogs. This allows you to query open table format data (Iceberg, Delta Lake) directly from external catalogs without data duplication.
+
+### Workarounds for Working with Iceberg and Catalogs {#workarounds-iceberg-catalogs}
+
+You can read data from Iceberg tables or catalogs from your dbt project if you have already defined them in your ClickHouse cluster with the tools defined above. You can leverage the `source` functionality in dbt to reference these tables in your dbt projects. For example, if you want to access your tables in a REST Catalog, you can:
+
+1. **Create a database pointing to an external catalog:**
+
+```sql
+-- Example with REST Catalog
+SET allow_experimental_database_iceberg = 1;
+
+CREATE DATABASE iceberg_catalog
+ENGINE = DataLakeCatalog('http://rest:8181/v1', 'admin', 'password')
+SETTINGS 
+    catalog_type = 'rest', 
+    storage_endpoint = 'http://minio:9000/lakehouse', 
+    warehouse = 'demo'
+```
+
+2. **Define the catalog database and its tables as sources in dbt:** remember that the tables should already be available in ClickHouse
+
+```yaml
+version: 2
+
+sources:
+  - name: external_catalog
+    database: iceberg_catalog
+    tables:
+      - name: orders
+      - name: customers
+```
+
+3. **Use the catalog tables in your dbt models:**
+
+```sql
+SELECT 
+    o.order_id,
+    c.customer_name,
+    o.order_date
+FROM {{ source('external_catalog', 'orders') }} o
+INNER JOIN {{ source('external_catalog', 'customers') }} c
+    ON o.customer_id = c.customer_id
+```
+
+### Notes on the Workarounds {#benefits-workarounds}
+
+The good things about these workarounds are:
+* You'll have immediate access to different external table types and external catalogs without waiting for native dbt catalog integration.
+* You'll have a seamless migration path when native catalog support becomes available.
+
+But there are currently some limitations:
+* **Manual setup:** Iceberg tables and catalog databases must be created manually in ClickHouse before they can be referenced in dbt.
+* **No catalog-level DDL:** dbt cannot manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you will not be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
+* **Write operations:** Currently, writing into Iceberg/Data Catalog tables is limited. Check the ClickHouse documentation to understand which options are available.
