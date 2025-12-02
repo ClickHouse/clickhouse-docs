@@ -18,18 +18,18 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 您的 MSK 集群 VPC 必须位于我们的某个 ClickPipes 区域内。支持的区域列表请参见 [ClickPipes 区域](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions)。
 
-## 启用多 VPC 互连 \{#enabling-multi-vpc-connectivity\}
+## 启用多 VPC 连接 \{#enabling-multi-vpc-connectivity\}
 
-1. 进入 MSK 集群页面。
-   * 在 Amazon MSK 控制台左侧导航栏中选择 “Clusters”。
-   * 选择你希望配置为多 VPC 互连的目标 MSK 集群。
-2. 启用 MSK 多 VPC 互连
-   * 在 **Connectivity** 选项卡中找到 **Multi-VPC connectivity** 部分。
+1. 导航到 MSK 集群。
+   * 在 Amazon MSK 控制台左侧导航栏中选择 &quot;Clusters&quot;。
+   * 选择你要配置多 VPC 连接的目标 MSK 集群。
+2. 启用 MSK 多 VPC 连接
+   * 在 **Connectivity** 选项卡中，找到 **Multi-VPC connectivity** 部分。
    * 点击 **Edit**。
    * 启用 **Turn-on MSK multi-VPC connectivity** 选项。
-   * 按照向导完成配置。
+   * 按照页面提示完成配置。
 3. 将 ClickPipes 账户主体添加到集群策略中
-   * 转到 **Configuration** 选项卡。
+   * 进入 **Configuration** 选项卡。
    * 在 **Cluster policy** 部分点击 **Edit**。
    * 在 **IAM policy** 中加入 `arn:aws:iam::072088201116:root`。示例：
      ```json
@@ -52,6 +52,11 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
          ]
      }
      ```
+
+:::tip
+集群的 IAM 策略使 ClickPipes 能够从 ClickPipes 端主动发起到你的 MSK 集群的连接。
+如果你希望为 MSK 集群配置 IAM 认证，请参考 [IAM 认证文档](/integrations/clickpipes/kafka/best-practices#iam)。
+:::
 
 ## 创建反向私有终端节点 \{#creating-reverse-private-endpoint\}
 
