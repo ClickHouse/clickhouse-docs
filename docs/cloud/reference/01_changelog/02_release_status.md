@@ -31,12 +31,15 @@ All single replica services are automatically enrolled in the Fast release chann
 
 </details>
 
-Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows users to configure a time window on given day of the week for upgrades.
+Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows users to configure a time window on a given day of the week for upgrades.
 
 ## Release schedule {#release-schedule}
 
+The release dates given below are an estimate and may be subject to change.
+
 <ReleaseSchedule releases={[
    {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
     fast_date: '2025-12-09',
     regular_date: '2026-01-05',
