@@ -191,7 +191,7 @@ You can add [projections](/data-modeling/projections) to `table` and `distribute
 | EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
 | Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
 
-**Note**: For materialized views, all *MergeTree engines are supported.
+**Note**: for materialized views, all *MergeTree engines are supported.
 
 ### Experimental supported table engines {#experimental-supported-table-engines}
 
