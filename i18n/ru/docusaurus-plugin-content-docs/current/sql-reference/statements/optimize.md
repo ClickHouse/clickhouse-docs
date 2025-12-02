@@ -1,13 +1,13 @@
 ---
-description: 'Документация по оператору OPTIMIZE'
+description: 'Документация по OPTIMIZE'
 sidebar_label: 'OPTIMIZE'
 sidebar_position: 47
 slug: /sql-reference/statements/optimize
-title: 'Оператор OPTIMIZE'
+title: 'Команда OPTIMIZE'
 doc_type: 'reference'
 ---
 
-Этот запрос инициирует внеплановое слияние частей данных таблиц. Обратите внимание, что в целом мы не рекомендуем использовать `OPTIMIZE TABLE ... FINAL` (см. эту [документацию](/optimize/avoidoptimizefinal)), поскольку он предназначен для административных задач, а не для повседневных операций.
+Этот запрос пытается инициировать внеплановое слияние частей данных таблиц. Обратите внимание, что в целом мы не рекомендуем использовать `OPTIMIZE TABLE ... FINAL` (см. [документацию](/optimize/avoidoptimizefinal)), поскольку эта команда предназначена для административных задач, а не для повседневных операций.
 
 :::note
 `OPTIMIZE` не может исправить ошибку `Too many parts`.
@@ -16,32 +16,32 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-OPTIMIZE TABLE [db.]имя [ON CLUSTER кластер] [PARTITION партиция | PARTITION ID 'идентификатор_партиции'] [FINAL | FORCE] [DEDUPLICATE [BY выражение]]
+OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION ID 'partition_id'] [FINAL | FORCE] [DEDUPLICATE [BY expression]]
 ```
 
-Запрос `OPTIMIZE` поддерживается семейством движков [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) (включая [материализованные представления](/sql-reference/statements/create/view#materialized-view)) и движками [Buffer](../../engines/table-engines/special/buffer.md). Другие движки таблиц этот запрос не поддерживают.
+Запрос `OPTIMIZE` поддерживается для семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) (включая [materialized views](/sql-reference/statements/create/view#materialized-view)) и движка [Buffer](../../engines/table-engines/special/buffer.md). Другие табличные движки `OPTIMIZE` не поддерживают.
 
-Когда `OPTIMIZE` используется с семейством движков таблиц [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md), ClickHouse создаёт задачу на слияние и ожидает её выполнения на всех репликах (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `2`) или на текущей реплике (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `1`).
+Когда `OPTIMIZE` используется с семейством табличных движков [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md), ClickHouse создает задачу на выполнение слияния и ожидает её завершения на всех репликах (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `2`) или на текущей реплике (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `1`).
 
-* Если `OPTIMIZE` по какой-либо причине не выполняет слияние, он не уведомляет клиента. Чтобы включить уведомления, используйте настройку [optimize&#95;throw&#95;if&#95;noop](/operations/settings/settings#optimize_throw_if_noop).
-* Если вы указываете `PARTITION`, оптимизируется только указанная партиция. [Как задать выражение партиционирования](alter/partition.md#how-to-set-partition-expression).
-* Если вы указываете `FINAL` или `FORCE`, оптимизация выполняется даже тогда, когда все данные уже находятся в одной части. Вы можете управлять этим поведением с помощью [optimize&#95;skip&#95;merged&#95;partitions](/operations/settings/settings#optimize_skip_merged_partitions). Также слияние принудительно выполняется даже при наличии конкурентных слияний.
-* Если вы указываете `DEDUPLICATE`, то полностью идентичные строки (если не указана клауза BY) будут дедуплицированы (сравниваются все столбцы); это имеет смысл только для движка MergeTree.
+* Если `OPTIMIZE` по какой-либо причине не выполняет слияние, клиент не получает об этом уведомления. Чтобы включить уведомления, используйте настройку [optimize&#95;throw&#95;if&#95;noop](/operations/settings/settings#optimize_throw_if_noop).
+* Если вы указываете `PARTITION`, оптимизируется только указанная партиция. [Как задать выражение партиции](alter/partition.md#how-to-set-partition-expression).
+* Если вы указываете `FINAL` или `FORCE`, оптимизация выполняется даже тогда, когда все данные уже находятся в одной части. Вы можете управлять этим поведением с помощью [optimize&#95;skip&#95;merged&#95;partitions](/operations/settings/settings#optimize_skip_merged_partitions). Кроме того, слияние принудительно выполняется даже при наличии параллельных слияний.
+* Если вы указываете `DEDUPLICATE`, то полностью идентичные строки (если не указано предложение BY) будут удалены как дубликаты (сравниваются все столбцы). Это имеет смысл только для движка MergeTree.
 
-Вы можете задать, как долго (в секундах) ожидать выполнения запросов `OPTIMIZE` на неактивных репликах с помощью настройки [replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout).
+Вы можете задать, как долго (в секундах) ждать выполнения запросов `OPTIMIZE` на неактивных репликах с помощью настройки [replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout).
 
-:::note\
-Если `alter_sync` установлена в значение `2`, и некоторые реплики неактивны дольше времени, заданного настройкой `replication_wait_for_inactive_replica_timeout`, будет выброшено исключение `UNFINISHED`.
+:::note
+Если `alter_sync` установлен в значение `2`, и некоторые реплики неактивны дольше времени, заданного настройкой `replication_wait_for_inactive_replica_timeout`, генерируется исключение `UNFINISHED`.
 :::
 
 ## Выражение BY {#by-expression}
 
-Если вы хотите выполнять дедупликацию по пользовательскому набору столбцов, а не по всем, вы можете явно указать список столбцов или использовать любую комбинацию выражений [`*`](../../sql-reference/statements/select/index.md#asterisk), [`COLUMNS`](/sql-reference/statements/select#select-clause) или [`EXCEPT`](/sql-reference/statements/select/except-modifier). Явно заданный или неявно расширенный список столбцов должен включать все столбцы, указанные в выражении сортировки строк (как первичный, так и сортировочный ключи), и в выражении секционирования (ключ секционирования).
+Если вы хотите выполнять дедупликацию по произвольному набору столбцов, а не по всем, вы можете явно указать список столбцов или использовать любую комбинацию выражений [`*`](../../sql-reference/statements/select/index.md#asterisk), [`COLUMNS`](/sql-reference/statements/select#select-clause) или [`EXCEPT`](/sql-reference/statements/select/except-modifier). Явно заданный или неявно развёрнутый список столбцов должен включать все столбцы, указанные в выражении упорядочивания строк (как первичного, так и сортировочного ключей), а также в выражении партиционирования (ключ партиционирования).
 
-:::note\
-Обратите внимание, что `*` ведёт себя так же, как в `SELECT`: столбцы [MATERIALIZED](/sql-reference/statements/create/view#materialized-view) и [ALIAS](../../sql-reference/statements/create/table.md#alias) не используются для развёртывания списка столбцов.
+:::note
+Обратите внимание, что `*` ведёт себя так же, как в `SELECT`: столбцы [MATERIALIZED](/sql-reference/statements/create/view#materialized-view) и [ALIAS](../../sql-reference/statements/create/table.md#alias) не используются при разворачивании списка.
 
-Также является ошибкой указать пустой список столбцов, или записать выражение, которое приводит к пустому списку столбцов, или выполнять дедупликацию по столбцу `ALIAS`.
+Также является ошибкой указывать пустой список столбцов, писать выражение, приводящее к пустому списку столбцов, или выполнять дедупликацию по столбцу `ALIAS`.
 :::
 
 **Синтаксис**
@@ -101,11 +101,11 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-Все последующие примеры выполняются над этим состоянием с 5 строками.
+Все последующие примеры выполняются для этого состояния с 5 строками.
 
 #### `DEDUPLICATE` {#deduplicate}
 
-Если столбцы для дедупликации не указаны, учитываются все столбцы. Строка удаляется только в том случае, если все значения во всех столбцах равны соответствующим значениям в предыдущей строке:
+Когда столбцы для дедупликации не указаны, учитываются все столбцы. Строка удаляется только в том случае, если все значения во всех столбцах равны соответствующим значениям в предыдущей строке:
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
@@ -132,7 +132,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY *` {#deduplicate-by-}
 
-Когда столбцы указываются неявно, дедупликация таблицы выполняется по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`. Для таблицы, показанной выше, это столбцы `primary_key`, `secondary_key`, `value` и `partition_key`:
+Когда столбцы задаются неявно, дедупликация таблицы выполняется по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`. Для таблицы выше это столбцы `primary_key`, `secondary_key`, `value` и `partition_key`:
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
@@ -159,7 +159,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
 
-Удаляет дубликаты по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED` и, в частности, не являются столбцом `value`, — то есть по столбцам `primary_key`, `secondary_key` и `partition_key`.
+Выполняет дедупликацию по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`, при этом явно исключается столбец `value`, то есть используется набор столбцов `primary_key`, `secondary_key` и `partition_key`.
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
@@ -185,7 +185,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
 
-Явно выполняйте дедупликацию по столбцам `primary_key`, `secondary_key` и `partition_key`:
+Выполните явную дедупликацию по столбцам `primary_key`, `secondary_key` и `partition_key`:
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
@@ -211,7 +211,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
 
-Дедупликация по всем столбцам, имена которых соответствуют регулярному выражению: столбцам `primary_key`, `secondary_key` и `partition_key`:
+Удаляет дубликаты по всем столбцам, соответствующим регулярному выражению: столбцам `primary_key`, `secondary_key` и `partition_key`:
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');

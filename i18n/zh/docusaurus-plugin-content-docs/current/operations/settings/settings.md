@@ -2865,9 +2865,9 @@ FORMAT PrettyCompactMonoBlock
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="8" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "新增的实验性设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "新实验性设置。"}]}]}/>
 
 分布式 shuffle-hash-join 的默认桶数。
 

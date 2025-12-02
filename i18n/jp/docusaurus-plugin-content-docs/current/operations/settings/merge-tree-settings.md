@@ -55,9 +55,9 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16384" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
-アダプティブな書き込みバッファの初期サイズ
+アダプティブ書き込みバッファの初期サイズ
 
 ## add_implicit_sign_column_constraint_for_collapsing_engine {#add_implicit_sign_column_constraint_for_collapsing_engine} 
 
@@ -374,9 +374,9 @@ ClickHouse Cloud でのみ利用可能です。コンパクトパーツにおい
 
 ## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
-ClickHouse Cloud でのみ利用可能です。compact パーツで 1 つのストライプに書き込むグラニュール数の上限。
+ClickHouse Cloud でのみ利用可能です。コンパクトパーツで単一ストライプに書き込めるグラニュールの最大数です。
 
 ## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
 
@@ -1023,15 +1023,15 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10 の場合、`INSERT` は `max( 10, 1
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-廃止済みの設定で、何の効果もありません。
+廃止された設定で、現在は効果がありません。
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-この設定は廃止されており、何の効果もありません。
+廃止された設定であり、現在は何の効果もありません。
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
