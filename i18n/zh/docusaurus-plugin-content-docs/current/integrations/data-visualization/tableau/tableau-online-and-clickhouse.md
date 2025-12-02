@@ -8,8 +8,8 @@ title: 'Tableau Online'
 doc_type: 'guide'
 ---
 
-import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLCloudSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import tableau_online_01 from '@site/static/images/integrations/data-visualization/tableau_online_01.png';
 import tableau_online_02 from '@site/static/images/integrations/data-visualization/tableau_online_02.png';
@@ -22,7 +22,7 @@ import tableau_desktop_04 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
 
-# Tableau Online
+# Tableau Online {#tableau-online}
 
 Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 环境。
 

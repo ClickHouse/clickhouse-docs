@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# clickhouse-local
+# clickhouse-local {#clickhouse-local}
 
 
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## 下载 clickhouse-local
+## 下载 clickhouse-local {#download-clickhouse-local}
 
 `clickhouse-local` 是通过与 ClickHouse 服务器和 `clickhouse-client` 相同的 `clickhouse` 二进制程序来执行的。下载最新版本最简单的方法是运行以下命令：
 
@@ -36,7 +36,7 @@ curl https://clickhouse.com/ | sh
 :::
 
 
-## 使用 SQL 查询文件中的数据
+## 使用 SQL 查询文件中的数据 {#query_data_in_file}
 
 `clickhouse-local` 的一个常见用途是对文件运行即席查询：这样你无需先将数据插入到表中。`clickhouse-local` 可以将文件中的数据以流式方式导入到一个临时表中，并执行你的 SQL。
 
@@ -109,7 +109,7 @@ FROM file('reviews.tsv')"
 ```
 
 
-## 在 AWS S3 中查询 Parquet 文件中的数据
+## 在 AWS S3 中查询 Parquet 文件中的数据 {#query-data-in-a-parquet-file-in-aws-s3}
 
 如果你在 S3 中有一个文件，可以使用 `clickhouse-local` 和 `s3` 表函数来就地查询该文件（无需先将数据插入到 ClickHouse 表中）。我们在一个公共 bucket 中有一个名为 `house_0.parquet` 的文件，其中包含英国已售房产的房价数据。来看一下它有多少行：
 
@@ -185,7 +185,7 @@ NORTHWOOD    THREE RIVERS    184    731609    ███████████�
 :::
 
 
-## 格式转换
+## 格式转换 {#format-conversions}
 
 你可以使用 `clickhouse-local` 在不同格式之间进行数据转换。示例：
 
@@ -206,7 +206,7 @@ $ clickhouse-local --copy < data.json > data.csv
 ```
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 默认情况下，`clickhouse-local` 可以访问同一主机上运行的 ClickHouse 服务器的数据，并且不会依赖于该服务器的配置。它也支持通过 `--config-file` 参数加载服务器配置。对于临时数据，默认会创建一个唯一的临时数据目录。
 
@@ -252,7 +252,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 此外，还为每个 ClickHouse 配置变量提供了对应的参数，这些参数通常比 `--config-file` 更常用。
 
 
-## 示例
+## 示例 {#examples}
 
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \

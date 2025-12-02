@@ -24,8 +24,7 @@ The Elastic Stack предоставляет два типа языковых SD
 Хотя стандартные OpenTelemetry SDK поддерживаются, мы настоятельно рекомендуем использовать для каждого языка [**распространяемые ClickStack SDK**](/use-cases/observability/clickstack/sdks). Эти дистрибутивы включают дополнительное инструментирование, улучшенные значения по умолчанию и специальные расширения, разработанные для бесшовной работы с конвейером ClickStack и интерфейсом HyperDX. Используя ClickStack SDK, вы сможете задействовать расширенные возможности, такие как стек-трейсы исключений, которые недоступны в «чистых» OpenTelemetry или EDOT SDK.
 :::
 
-
-## Миграция EDOT SDKs
+## Миграция EDOT SDKs {#migrating-edot-sdks}
 
 Аналогично ClickStack SDKS на базе OpenTelemetry, Elastic Distributions of the OpenTelemetry SDKs (EDOT SDKs) представляют собой модифицированные версии официальных OpenTelemetry SDKs. Например, [EDOT Python SDK](https://www.elastic.co/docs/reference/opentelemetry/edot-sdks/python/) — это дистрибутив [OpenTelemetry Python SDK](https://opentelemetry.io/docs/languages/python/), модифицированный вендором и предназначенный для бесшовной работы с Elastic Observability.
 

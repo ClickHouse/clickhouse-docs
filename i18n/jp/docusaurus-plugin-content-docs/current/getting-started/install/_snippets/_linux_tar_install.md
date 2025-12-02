@@ -1,4 +1,4 @@
-# tgzアーカイブを使用したClickHouseのインストール
+# tgzアーカイブを使用したClickHouseのインストール {#install-clickhouse-using-tgz-archives}
 
 > `deb`または`rpm`パッケージのインストールができないすべてのLinuxディストリビューションでは、公式のプリコンパイル済み`tgz`アーカイブの使用を推奨します。
 
@@ -19,7 +19,7 @@
 
 
 
-## 最新の ClickHouse バージョンを取得する
+## 最新の ClickHouse バージョンを取得する {#get-latest-version}
 
 GitHub から最新の ClickHouse バージョンを取得し、`LATEST_VERSION` 変数に設定します。
 
@@ -30,7 +30,7 @@ export LATEST_VERSION
 ```
 
 
-## システムアーキテクチャを特定する
+## システムアーキテクチャを特定する {#detect-system-architecture}
 
 システムアーキテクチャを特定し、それに応じて `ARCH` 変数を設定します。
 
@@ -43,7 +43,7 @@ esac
 ```
 
 
-## 各 ClickHouse コンポーネント用の tarball をダウンロードする
+## 各 ClickHouse コンポーネント用の tarball をダウンロードする {#download-tarballs}
 
 各 ClickHouse コンポーネント用の tarball をダウンロードします。ループではまずアーキテクチャ固有のパッケージを試し、なければ汎用パッケージにフォールバックします。
 
@@ -64,7 +64,7 @@ done
 
 
 ```bash
-# clickhouse-common-static パッケージの展開とインストール
+# clickhouse-common-static パッケージの展開とインストール {#extract-and-install-clickhouse-common-static-package}
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -74,7 +74,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# デバッグシンボルパッケージの展開とインストール
+# デバッグシンボルパッケージの展開とインストール {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -84,7 +84,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# サーバーパッケージを展開し、設定を行ってインストール
+# サーバーパッケージを展開し、設定を行ってインストール {#extract-and-install-server-package-with-configuration}
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
@@ -95,7 +95,7 @@ sudo /etc/init.d/clickhouse-server start  # サーバーを起動
 
 
 ```bash
-# クライアントパッケージを展開してインストール
+# クライアントパッケージを展開してインストール {#extract-and-install-client-package}
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

@@ -6,9 +6,7 @@ title: 'system.iceberg_history'
 doc_type: 'reference'
 ---
 
-
-
-# system.iceberg&#95;history
+# system.iceberg&#95;history {#systemiceberg&#95;history}
 
 この system テーブルには、ClickHouse 内に存在する Iceberg テーブルのスナップショット履歴が含まれます。ClickHouse に Iceberg テーブルが 1 つも存在しない場合、このテーブルは空になります。
 

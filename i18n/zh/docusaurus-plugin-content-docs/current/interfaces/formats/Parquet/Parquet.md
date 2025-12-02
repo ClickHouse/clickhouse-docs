@@ -75,9 +75,9 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用一个包含以下数据的 Parquet 文件，文件名为 `football.parquet`：
 
@@ -109,7 +109,7 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 以 `Parquet` 格式读取数据：
 

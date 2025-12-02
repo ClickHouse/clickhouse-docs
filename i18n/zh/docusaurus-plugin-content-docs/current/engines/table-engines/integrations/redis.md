@@ -9,13 +9,13 @@ doc_type: 'guide'
 
 
 
-# Redis 表引擎
+# Redis 表引擎 {#redis-table-engine}
 
 该引擎允许将 ClickHouse 与 [Redis](https://redis.io/) 集成。由于 Redis 采用键值（KV）模型，我们强烈建议仅执行点查询，例如使用 `where k = xx` 或 `where k in (xx, xx)`。
 
 
 
-## 创建数据表
+## 创建数据表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 :::
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 在 ClickHouse 中使用 `Redis` 引擎和基本参数创建一张表：
 

@@ -19,7 +19,7 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# Использование MCP-сервера ClickHouse с Claude Desktop
+# Использование MCP-сервера ClickHouse с Claude Desktop {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > В этом руководстве описывается, как настроить Claude Desktop с MCP-сервером ClickHouse с помощью uv
 > и подключить его к примерам наборов данных ClickHouse.
@@ -51,7 +51,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 
 
-## Настройка сервера ClickHouse MCP
+## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
 После установки Claude Desktop можно переходить к настройке [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 Сделать это можно через [файл конфигурации Claude Desktop](https://claude.ai/docs/configuration).

@@ -10,7 +10,7 @@ integration:
   - category: 'data_visualization'
 ---
 
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
@@ -22,7 +22,7 @@ import quicksight_07 from '@site/static/images/integrations/data-visualization/q
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# QuickSight
+# QuickSight {#quicksight}
 
 <ClickHouseSupportedBadge/>
 
@@ -30,7 +30,7 @@ QuickSight は、公式の MySQL データソースと Direct Query モードを
 
 
 
-## オンプレミス ClickHouse サーバーのセットアップ
+## オンプレミス ClickHouse サーバーのセットアップ {#on-premise-clickhouse-server-setup}
 
 MySQL インターフェイスを有効にした ClickHouse サーバーのセットアップ方法については、[公式ドキュメント](/interfaces/mysql) を参照してください。
 

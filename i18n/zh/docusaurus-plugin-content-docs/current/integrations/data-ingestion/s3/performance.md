@@ -26,11 +26,11 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 在通过调优线程数和块大小来提升插入性能之前，我们建议用户先了解 S3 插入的工作机制。如果你已经熟悉插入机制，或者只想快速获得一些调优建议，可以直接跳转到下面的[示例](/integrations/s3/performance#example-dataset)部分。
 
 
-## 插入机制（单节点）
+## 插入机制（单节点） {#insert-mechanics-single-node}
 
 在硬件配置之外，还有两个主要因素会影响 ClickHouse 单节点数据插入机制的性能和资源使用：**插入块大小** 和 **插入并行度**。
 
-### 插入块大小
+### 插入块大小 {#insert-block-size}
 
 <Image img={InsertMechanics} size="lg" border alt="ClickHouse 中插入块大小的机制" />
 
@@ -61,7 +61,7 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 请注意，`min_insert_block_size_bytes` 的值表示内存中未压缩的块大小（而不是压缩后的磁盘 part 大小）。另外需要注意的是，创建出来的块和 part 很少会精确包含配置的行数或字节数，因为 ClickHouse 是按行‑[块](/operations/settings/settings#max_block_size)粒度对数据进行流式[处理](https://clickhouse.com/company/events/query-performance-introspection)的。因此，这些设置指定的是最小阈值。
 
-#### 注意合并操作
+#### 注意合并操作 {#be-aware-of-merges}
 
 配置的插入块越小，对于一次大规模数据加载而言，创建的初始 part 就越多，并且会在数据摄取的同时执行越多的后台 part 合并。这可能导致资源争用（CPU 和内存），并在摄取完成后，为达到[健康的](/operations/settings/merge-tree-settings#parts_to_throw_insert)（3000）个 part 数量而需要额外时间。
 
@@ -157,7 +157,7 @@ ClickHouse 可以使用 `s3` 函数和 `S3` 引擎，以[受支持的格式](/in
 
 
 
-## 示例数据集
+## 示例数据集 {#example-dataset}
 
 为了进一步说明潜在的优化空间，我们将使用 [Stack Overflow 数据集中的 posts 表](/data-modeling/schema-design#stack-overflow-dataset)，同时优化该数据集的查询和插入性能。
 
@@ -203,7 +203,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 :::
 
 
-## 在读取中使用线程
+## 在读取中使用线程 {#using-threads-for-reads}
 
 在不受网络带宽或本地 I/O 限制的前提下，S3 上的读取性能会随核心数量线性扩展。增加线程数量也会带来额外的内存开销，用户需要了解这一点。可以通过修改以下设置来潜在地提升读取吞吐性能：
 
@@ -250,7 +250,7 @@ Peak memory usage: 639.99 MiB.
 ```
 
 
-## 为插入操作调优线程数与块大小
+## 为插入操作调优线程数与块大小 {#tuning-threads-and-block-size-for-inserts}
 
 为了获得最大的摄取性能，你必须基于以下三点进行选择：(1) 插入块大小；(2) 合适的插入并行度；(3) 可用 CPU 内核数和 RAM 容量。总结如下：
 
@@ -288,11 +288,11 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 如上所示，通过调整这些设置，插入性能提升了 `33%` 以上。我们将其留给读者自行尝试，看看能否进一步提升单节点性能。
 
 
-## 基于资源和节点的扩展
+## 基于资源和节点的扩展 {#scaling-with-resources-and-nodes}
 
 基于资源和节点的扩展同样适用于读取查询和插入查询。
 
-### 垂直扩展
+### 垂直扩展 {#vertical-scaling}
 
 之前所有的调优和查询都只使用了我们 ClickHouse Cloud 集群中的单个节点。用户通常也会有多个 ClickHouse 节点可用。我们建议用户优先进行垂直扩展，通过增加核心数线性提升 S3 吞吐量。如果我们在资源加倍（64GiB、16 vCPU）且配置合适的更大 ClickHouse Cloud 节点上重复之前的插入和读取查询，两者的执行速度大约都会提升一倍。
 
@@ -319,7 +319,7 @@ SETTINGS max_threads = 92
 单个节点同样可能因为网络带宽和 S3 GET 请求形成瓶颈，从而无法通过纵向扩容线性提升性能。
 :::
 
-### 水平扩展
+### 水平扩展 {#horizontal-scaling}
 
 最终，出于硬件可用性和成本效益的考虑，通常需要进行水平扩展。在 ClickHouse Cloud 中，生产集群至少包含 3 个节点。用户也因此可能希望在一次插入中利用所有节点。
 
@@ -383,9 +383,9 @@ Peak memory usage: 11.75 GiB.
 如预期，这会使插入性能降低到原来的三分之一。
 
 
-## 进一步调优
+## 进一步调优 {#further-tuning}
 
-### 禁用去重
+### 禁用去重 {#disable-de-duplication}
 
 插入操作有时会因为超时等错误而失败。当插入失败时，数据可能已经成功写入，也可能没有。为了让客户端能够安全地重试插入，在诸如 ClickHouse Cloud 等分布式部署中，ClickHouse 默认会尝试判断数据是否已经成功插入。如果插入的数据被标记为重复，ClickHouse 不会将其写入目标表。不过，用户仍会收到操作成功的状态反馈，就好像数据已正常插入一样。
 
@@ -402,7 +402,7 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 Peak memory usage: 26.57 GiB.
 ```
 
-### 插入时优化
+### 插入时优化 {#optimize-on-insert}
 
 在 ClickHouse 中，`optimize_on_insert` 设置用于控制是否在插入过程中合并数据分片。启用该设置时（默认 `optimize_on_insert = 1`），小分片在插入时会被合并为更大的分片，通过减少需要读取的分片数量来提升查询性能。不过，这种合并会给插入过程增加开销，可能会减慢高吞吐量插入。
 

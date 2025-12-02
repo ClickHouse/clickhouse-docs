@@ -16,7 +16,7 @@ import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/m
 import Image from '@theme/IdealImage';
 
 
-# Cloud SQL for MySQL ソースセットアップガイド
+# Cloud SQL for MySQL ソースセットアップガイド {#cloud-sql-for-mysql-source-setup-guide}
 
 このガイドでは、MySQL ClickPipe を介してデータをレプリケートできるように Cloud SQL for MySQL インスタンスを構成する手順を、順を追って説明します。
 

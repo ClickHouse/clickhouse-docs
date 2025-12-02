@@ -12,7 +12,7 @@ keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability'
 import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 与[一体化镜像](/use-cases/observability/clickstack/deployment/docker-compose)类似，这个完整的 Docker 镜像打包了所有 ClickStack 组件：
 
@@ -30,7 +30,7 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 * 调试
 * 基于 HyperDX 的开发
 
-## 部署步骤
+## 部署步骤 {#deployment-steps}
 
 <br />
 

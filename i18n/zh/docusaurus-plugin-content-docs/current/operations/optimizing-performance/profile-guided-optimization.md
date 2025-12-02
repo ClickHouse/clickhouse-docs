@@ -7,18 +7,15 @@ title: '性能分析引导优化'
 doc_type: 'guide'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# 基于性能分析的优化
+# 基于性能分析的优化 {#profile-guided-optimization}
 
 Profile-Guided Optimization（PGO，基于性能分析的优化）是一种编译器优化技术，它根据程序的运行时性能分析数据对程序进行优化。
 
 根据测试结果，PGO 有助于提升 ClickHouse 的性能。在 ClickBench 测试套件中，我们观测到 QPS 最高可提升约 15%。更详细的结果可在[这里](https://pastebin.com/xbue3HMU)查看。性能收益取决于典型工作负载，实际结果可能更好或更差。
 
 关于 ClickHouse 中 PGO 的更多信息，可在对应的 GitHub [issue](https://github.com/ClickHouse/ClickHouse/issues/44567) 中查阅。
-
-
 
 ## 如何使用 PGO 构建 ClickHouse？ {#how-to-build-clickhouse-with-pgo}
 

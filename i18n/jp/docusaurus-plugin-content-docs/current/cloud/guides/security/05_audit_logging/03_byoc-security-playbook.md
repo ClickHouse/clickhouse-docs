@@ -21,7 +21,7 @@ ClickHouse は Trust Center (https://trust.clickhouse.com) からダウンロー
 
 
 
-## アプリケーション層に対するサービス拒否攻撃
+## アプリケーション層に対するサービス拒否攻撃 {#application-layer-dos-attack}
 
 サービス拒否（DoS）攻撃を実行する方法にはさまざまなものがあります。攻撃が特定のペイロードによって ClickHouse インスタンスをクラッシュさせることを目的としている場合は、システムを稼働状態に復旧するか、システムを再起動したうえでアクセスを制限し、制御を取り戻してください。攻撃に関する詳細情報を取得するには、次のクエリを使用して [system.crash&#95;log](/operations/system-tables/crash_log) を確認します。
 
@@ -39,7 +39,7 @@ ClickHouse は、システム機能を有効にするためにあらかじめ作
 
 
 
-## EKS クラスターへの不正アクセス
+## EKS クラスターへの不正アクセス {#unauthorized-access-eks-cluster}
 
 ClickHouse BYOC は EKS 上で動作します。このセクションでは、AWS で CloudTrail と CloudWatch を使用しており、ログへアクセスできることを前提とします。
 

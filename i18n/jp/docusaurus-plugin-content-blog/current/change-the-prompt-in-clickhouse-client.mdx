@@ -32,8 +32,7 @@ import prompt_8 from "@site/static/images/knowledgebase/change-the-prompt-in-cli
 
 プロンプトを更新する方法はいくつかあり、それぞれについて順に説明します。
 
-
-## --prompt フラグ
+## --prompt フラグ \{#--prompt-flag\}
 
 フラグを変更する 1 つ目の方法は、`--prompt` を使用することです。
 
@@ -45,8 +44,7 @@ clickhouse --prompt 👉
 
 <Image img={prompt_1} size="md" alt="指さしの絵文字が追加された ClickHouse クライアントプロンプト" />
 
-
-## 設定ファイル - トップレベル
+## 設定ファイル - トップレベル \{#config-file---top-level\}
 
 別の方法として、`config.xml` ファイルでプロンプトのプレフィックスを指定することもできます。
 
@@ -89,8 +87,7 @@ clickhouse -C christmas.yaml
 
 <Image img={prompt_4} size="md" alt="黄色の丸い絵文字が表示された ClickHouse クライアントのプロンプト" />
 
-
-## 設定ファイル - connections&#95;credentials
+## 設定ファイル - connections&#95;credentials \{#config-file---connections&#95;credentials\}
 
 別の方法として、接続ごとの認証情報に対して個別にプロンプトを指定することもできます。
 これは、clickhouse-client を使用している場合にのみ有効です。

@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# SQLite
+# SQLite {#sqlite}
 
 [SQLite](https://www.sqlite.org/index.html) データベースに接続し、`INSERT` および `SELECT` クエリを実行して、ClickHouse と SQLite 間でデータを交換できるようにします。
 
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
     CREATE DATABASE sqlite_database
@@ -46,7 +46,7 @@ SQLite には、サービスとしての管理（起動スクリプトなど）�
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 SQLite に接続された ClickHouse のデータベース:
 

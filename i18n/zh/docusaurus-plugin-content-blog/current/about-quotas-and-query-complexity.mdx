@@ -10,7 +10,6 @@ description: '配额和查询复杂性是限制和约束用户在 ClickHouse 中
 
 {/* 截断 */}
 
-
 ## 关于配额和查询复杂度 \{#about-quotas-and-query-complexity\}
 
 [配额](https://clickhouse.com/docs/operations/quotas)和[查询复杂度](https://clickhouse.com/docs/operations/settings/query-complexity)是限制和控制用户在 ClickHouse 中可执行操作的强大机制。
@@ -19,7 +18,7 @@ description: '配额和查询复杂性是限制和约束用户在 ClickHouse 中
 
 本知识库文章展示了如何应用这两种不同方法的示例。
 
-## 示例数据
+## 示例数据 \{#the-sample-data\}
 
 在后续示例中，我们将使用如下这张简单的示例表：
 
@@ -71,8 +70,7 @@ clickhouse-cloud :) SELECT * FROM default.test_table_00006488 LIMIT 5
 -- 5 rows in set. Elapsed: 0.003 sec.
 ```
 
-
-## 使用配额
+## 使用配额 \{#using-quotas\}
 
 在本示例中，我们创建一个角色，并为其应用一个配额，使其在每个 10 秒时间窗口内最多只能获取 10 行结果：
 
@@ -137,7 +135,6 @@ clickhouse-cloud :) CREATE QUOTA quota_max_10_result_rows_per_10_seconds FOR INT
 ```
 
 现在以用户 `user_with_quota` 身份登录
-
 
 ```sql
 -- 以应用了配额的角色身份登录用户
@@ -238,8 +235,7 @@ clickhouse-cloud :) select now()
 
 请注意，用户需要再等待 5 秒钟，才能获得新的 10 行结果集“额度”。
 
-
-## 使用查询复杂度
+## 使用查询复杂度 \{#using-query-complexity\}
 
 在此示例中,我们创建一个角色,并对其应用查询复杂度 `SETTING`,该设置仅允许每个查询返回 1 行。
 

@@ -44,9 +44,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Сохранение массива в формате .npy на Python
+### Сохранение массива в формате .npy на Python {#saving-an-array-in-npy-format-using-python}
 
 ```Python
 import numpy as np
@@ -54,7 +54,7 @@ arr = np.array([[[1],[2],[3]],[[4],[5],[6]]])
 np.save('example_array.npy', arr)
 ```
 
-### Чтение файлов NumPy в ClickHouse
+### Чтение файлов NumPy в ClickHouse {#reading-a-numpy-file-in-clickhouse}
 
 ```sql title="Query"
 SELECT *
@@ -68,7 +68,7 @@ FROM file('example_array.npy', Npy)
 └───────────────┘
 ```
 
-### Выбор данных
+### Выбор данных {#selecting-data}
 
 Вы можете выбрать данные из таблицы ClickHouse и сохранить их в файл формата Npy с помощью следующей команды clickhouse-client:
 

@@ -7,9 +7,8 @@ title: '从 Amazon Redshift 迁移到 ClickHouse 指南'
 doc_type: 'guide'
 ---
 
-import MigrationGuide from '@site/docs/integrations/data-ingestion/redshift/_snippets/_migration_guide.md'
+import MigrationGuide from '@site/i18n/zh/docusaurus-plugin-content-docs/current/integrations/data-ingestion/redshift/_snippets/_migration_guide.md'
 
+# 从 Amazon Redshift 迁移到 ClickHouse 指南 {#amazon-redshift-to-clickhouse-migration-guide}
 
-# 从 Amazon Redshift 迁移到 ClickHouse 指南
-
-<MigrationGuide/>
+<MigrationGuide />

@@ -12,7 +12,7 @@ import observability_2 from '@site/static/images/use-cases/observability/observa
 import Image from '@theme/IdealImage';
 
 
-# Использование ClickHouse для обеспечения наблюдаемости
+# Использование ClickHouse для обеспечения наблюдаемости {#using-clickhouse-for-observability}
 
 ## Введение {#introduction}
 
@@ -67,7 +67,7 @@ import Image from '@theme/IdealImage';
 - Ваш сценарий сильно ориентирован на метрики и требует PromQL. В этом случае вы все равно можете использовать ClickHouse для логов и трейсов вместе с Prometheus для метрик, объединив их на уровне представления с помощью Grafana.
 - Вы предпочитаете подождать, пока экосистема станет более зрелой, а наблюдаемость на основе SQL — более «под ключ».
 
-## Логи и трейсы
+## Логи и трейсы {#logs-and-traces}
 
 У сценария наблюдаемости (Observability) есть три основных составляющих: логирование (Logging), трассировка (Tracing) и метрики (Metrics). У каждой из них свои типы данных и характерные способы доступа.
 

@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
 Например:
 

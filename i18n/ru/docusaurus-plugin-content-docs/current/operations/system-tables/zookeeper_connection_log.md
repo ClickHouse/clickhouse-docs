@@ -6,10 +6,9 @@ title: 'system.zookeeper_connection_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.zookeeper&#95;connection&#95;log
+# system.zookeeper&#95;connection&#95;log {#systemzookeeper&#95;connection&#95;log}
 
 <SystemTableCloud />
 
@@ -41,7 +40,6 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 ```sql
 SELECT * FROM system.zookeeper_connection_log;
 ```
-
 
 ```text
 ┌─hostname─┬─type─────────┬─event_date─┬──────────event_time─┬────event_time_microseconds─┬─name───────────────┬─host─┬─port─┬─index─┬─client_id─┬─keeper_api_version─┬─enabled_feature_flags───────────────────────────────────────────────────────────────────────┬─availability_zone─┬─reason──────────────┐

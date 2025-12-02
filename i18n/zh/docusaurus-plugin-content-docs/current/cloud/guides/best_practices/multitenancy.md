@@ -25,7 +25,7 @@ keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi
 
 当不同租户之间的数据量差异较大时，数据量较小的租户可能会受到不必要的查询性能影响。需要注意的是，将租户字段包含在主键中在很大程度上可以缓解这一问题。
 
-### 示例
+### 示例 {#shared-table-example}
 
 这是一个共享表的多租户模型实现示例。
 
@@ -119,7 +119,7 @@ FROM events
 
 请注意，这种方案不适用于扩展到成千上万的租户。参见 [使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例
+### 示例 {#separate-tables-example}
 
 这是独立表多租户模型实现的示例。
 
@@ -212,7 +212,7 @@ FROM default.events_tenant_1
 
 请注意，这种方式无法很好地扩展到成千上万的租户。参见[使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例
+### 示例 {#separate-databases-example}
 
 以下示例展示了基于独立数据库的多租户模型实现。
 
@@ -322,7 +322,7 @@ FROM tenant_1.events
 
 这种方法更难管理，并且每个服务都会带来额外开销，因为每个服务都需要自己的基础设施来运行。服务可以通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 进行管理，也可以通过 [官方 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 实现编排。
 
-### 示例
+### 示例 {#separate-service-example}
 
 这是一个独立服务型多租户模型实现的示例。请注意，该示例展示的是在一个 ClickHouse 服务上创建表和用户，所有服务上都需要进行同样的配置。
 

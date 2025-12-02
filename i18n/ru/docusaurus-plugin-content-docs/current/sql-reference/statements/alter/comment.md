@@ -11,20 +11,20 @@ doc_type: 'reference'
 
 
 
-# ALTER TABLE ... MODIFY COMMENT
+# ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
 
 Добавляет, изменяет или удаляет комментарий к таблице, независимо от того, был ли он задан ранее или нет. Изменение комментария отображается как в [`system.tables`](../../../operations/system-tables/tables.md), так и в результате запроса `SHOW CREATE TABLE`.
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
 ```
 
 
-## Примеры
+## Примеры {#examples}
 
 Чтобы создать таблицу с комментарием:
 

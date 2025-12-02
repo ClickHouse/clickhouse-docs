@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 
 
-## 示例：
+## 示例： {#example}
 
 ```bash
 $ clickhouse-odbc-bridge --http-port 9018 --daemon

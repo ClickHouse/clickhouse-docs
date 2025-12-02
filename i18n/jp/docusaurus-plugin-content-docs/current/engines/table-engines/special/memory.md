@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Memory テーブルエンジン
+# Memory テーブルエンジン {#memory-table-engine}
 
 :::note
 ClickHouse Cloud 上で Memory テーブルエンジンを使用する場合、データは（設計上）すべてのノード間でレプリケートされません。すべてのクエリが同じノードにルーティングされ、Memory テーブルエンジンが期待どおりに動作することを保証するには、次のいずれかを行ってください:
@@ -48,7 +48,7 @@ Memory エンジンのテーブルサイズを制限するために上限およ�
 
 
 
-## 使用方法
+## 使用方法 {#usage}
 
 **設定を初期化する**
 
@@ -65,7 +65,7 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 **注意:** `bytes` と `rows` の両方の上限パラメータは同時に設定できますが、`max` と `min` のうち小さい方の値が優先されます。
 
 
-## 例
+## 例 {#examples}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;

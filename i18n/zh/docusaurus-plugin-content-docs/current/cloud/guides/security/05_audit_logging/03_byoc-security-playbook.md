@@ -21,7 +21,7 @@ ClickHouse 在“自带云”（Bring Your Own Cloud，BYOC）模式下采用共
 
 
 
-## 应用层拒绝服务攻击
+## 应用层拒绝服务攻击 {#application-layer-dos-attack}
 
 发起拒绝服务（DoS）攻击的方法有多种。如果攻击的目标是通过特定 payload 使 ClickHouse 实例崩溃，请将系统恢复到运行状态，或重启系统并限制访问以重新获得控制权。使用以下查询查看 [system.crash&#95;log](/operations/system-tables/crash_log)，以获取有关此次攻击的更多信息。
 
@@ -39,7 +39,7 @@ ClickHouse 使用预先创建的角色来实现系统功能。本节假设客户
 
 
 
-## 未经授权访问 EKS 集群
+## 未经授权访问 EKS 集群 {#unauthorized-access-eks-cluster}
 
 ClickHouse BYOC 在 EKS 中运行。本节假设客户在 AWS 中使用 CloudTrail 和 CloudWatch，并且可以访问相应日志。
 

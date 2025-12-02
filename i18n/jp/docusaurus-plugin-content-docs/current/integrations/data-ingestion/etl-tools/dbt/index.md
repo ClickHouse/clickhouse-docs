@@ -95,9 +95,9 @@ ClickHouse 向けの[現在のアダプタ](https://github.com/silentsokolov/dbt
 
 
 
-## dbt と ClickHouse アダプターのセットアップ
+## dbt と ClickHouse アダプターのセットアップ {#setup-of-dbt-and-the-clickhouse-adapter}
 
-### dbt-core と dbt-clickhouse のインストール
+### dbt-core と dbt-clickhouse のインストール {#install-dbt-core-and-dbt-clickhouse}
 
 dbt のコマンドラインインターフェイス (CLI) のインストール方法にはいくつかの選択肢があり、詳細は[こちら](https://docs.getdbt.com/dbt-cli/install/overview)に記載されています。dbt と dbt-clickhouse の両方をインストールするには、`pip` の利用を推奨します。
 
@@ -105,7 +105,7 @@ dbt のコマンドラインインターフェイス (CLI) のインストール
 pip install dbt-core dbt-clickhouse
 ```
 
-### ClickHouse インスタンスへの接続情報を dbt に提供する
+### ClickHouse インスタンスへの接続情報を dbt に提供する {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
 
 `~/.dbt/profiles.yml` ファイル内で `clickhouse-service` プロファイルを構成し、`schema`、`host`、`port`、`user`、`password` プロパティを指定します。接続構成オプションの全一覧は、[機能と設定](/integrations/dbt/features-and-configurations) ページに記載されています。
 
@@ -125,7 +125,7 @@ clickhouse-service:
       secure: True  # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用
 ```
 
-### dbt プロジェクトを作成する
+### dbt プロジェクトを作成する {#create-a-dbt-project}
 
 これで、このプロファイルを既存のいずれかのプロジェクトで使用することも、次の手順で新しいプロジェクトを作成することもできます。
 
@@ -139,17 +139,17 @@ dbt init project_name
 profile: 'clickhouse-service'
 ```
 
-### 接続テスト
+### 接続テスト {#test-connection}
 
 CLI で `dbt debug` を実行し、dbt が ClickHouse に接続できるかどうかを確認します。レスポンスに `Connection test: [OK connection ok]` が含まれていることを確認し、接続が成功していることを確かめてください。
 
 ClickHouse と dbt の連携方法の詳細については、[ガイドページ](/integrations/dbt/guides) を参照してください。
 
-### モデルのテストとデプロイ (CI/CD)
+### モデルのテストとデプロイ (CI/CD) {#testing-and-deploying-your-models-ci-cd}
 
 dbt プロジェクトをテストおよびデプロイする方法は多数あります。dbt では、[ベストプラクティスとされるワークフロー](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) や [CI ジョブ](https://docs.getdbt.com/docs/deploy/ci-jobs) に関する提案を提供しています。ここではいくつかの戦略について説明しますが、これらの戦略はユースケースに合わせて大きく調整する必要がある場合がある点に注意してください。
 
-#### シンプルなデータテストおよびユニットテストによる CI/CD
+#### シンプルなデータテストおよびユニットテストによる CI/CD {#ci-with-simple-data-tests-and-unit-tests}
 
 CI パイプラインを手軽に立ち上げる方法の 1 つは、ジョブ内で ClickHouse クラスターを起動し、そのクラスターに対してモデルを実行することです。モデルを実行する前に、このクラスターにデモデータを挿入できます。[seed](https://docs.getdbt.com/reference/commands/seed) を使って、本番データのサブセットをステージング環境に投入することもできます。
 
@@ -157,7 +157,7 @@ CI パイプラインを手軽に立ち上げる方法の 1 つは、ジョブ�
 
 CD ステップは、本番の ClickHouse クラスターに対して `dbt build` を実行するだけのシンプルなものにできます。
 
-#### より包括的な CI/CD ステージ: 最新のデータを使用し、影響を受けたモデルのみをテスト
+#### より包括的な CI/CD ステージ: 最新のデータを使用し、影響を受けたモデルのみをテスト {#more-complete-ci-stage}
 
 一般的な戦略として、変更されたモデル (およびその上流・下流の依存関係) のみを再デプロイする [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) ジョブを利用する方法があります。このアプローチでは、本番実行の成果物 (例: [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)) を利用して、プロジェクトの実行時間を短縮し、環境間でスキーマのずれが生じないようにします。
 

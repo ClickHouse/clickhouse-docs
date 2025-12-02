@@ -16,7 +16,7 @@ import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgra
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
 
-# 升级
+# 升级 {#upgrades}
 
 使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/cloud)。
 

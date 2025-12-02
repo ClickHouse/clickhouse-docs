@@ -10,19 +10,17 @@ keywords: ['RBAC', 'クエリ']
 
 {/* 切り捨て */}
 
-
 ## はじめに \{#introduction\}
 
 以下は、ユーザーに特定の権限を付与するためによく使用されるクエリです。
 
-## 現在のユーザーと同じ権限を別のユーザーに付与するには？
+## 現在のユーザーと同じ権限を別のユーザーに付与するには？ \{#how-do-i-grant-the-same-permissions-as-the-current-user-to-another-user\}
 
 ```sql
 GRANT CURRENT GRANTS ON *.* TO another_user;
 ```
 
-
-## 現在のユーザーに付与されている権限に基づいて、別のユーザーに特定の権限を付与するにはどうすればよいですか？
+## 現在のユーザーに付与されている権限に基づいて、別のユーザーに特定の権限を付与するにはどうすればよいですか？ \{#how-do-i-grant-a-specific-permission-to-a-user-based-on-the-grants-of-the-current-user\}
 
 次の例では、`another_user` は現在のユーザーがアクセス可能なすべてのデータベースおよびテーブルに対して `SELECT` クエリを実行できるようになります。
 
@@ -30,8 +28,7 @@ GRANT CURRENT GRANTS ON *.* TO another_user;
 GRANT CURRENT GRANTS(SELECT ON *.*) TO another_user;
 ```
 
-
-## 現在のユーザーに付与されている権限に基づいて、特定のデータベースに対する特定の権限をユーザーに付与するにはどうすればよいですか？
+## 現在のユーザーに付与されている権限に基づいて、特定のデータベースに対する特定の権限をユーザーに付与するにはどうすればよいですか？ \{#how-do-i-grant-a-specific-permission-to-a-user-for-a-specific-database-based-on-the-grants-of-the-current-user\}
 
 次の例では、`another_user` は `my_database` 内のすべてのテーブルに対して `INSERT` 文を実行できるようになります。
 
@@ -39,8 +36,7 @@ GRANT CURRENT GRANTS(SELECT ON *.*) TO another_user;
 GRANT INSERT ON my_database.* TO another_user;
 ```
 
-
-## デフォルトユーザーと同じ権限を特定ユーザーにすべて付与するにはどうすればよいですか？
+## デフォルトユーザーと同じ権限を特定ユーザーにすべて付与するにはどうすればよいですか？ \{#how-do-i-give-access-to-all-grants-for-a-specific-user-based-on-the-default-user\}
 
 ```sql
 GRANT default_role TO another_user;

@@ -15,8 +15,7 @@ keywords: ['mysql', 'データベース連携', '外部テーブル', 'データ
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ClickHouse への MySQL の統合
+# ClickHouse への MySQL の統合 {#integrating-mysql-with-clickhouse}
 
 このページでは、MySQL テーブルからデータを読み取るために `MySQL` テーブルエンジンを使用する方法について説明します。
 
@@ -24,13 +23,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 ClickHouse Cloud では、[MySQL ClickPipe](/integrations/clickpipes/mysql)（現在パブリックベータ）を使用して、MySQL テーブルから ClickHouse にデータを簡単に移行することもできます。
 :::
 
-
-
-## MySQL テーブルエンジンを使用して ClickHouse を MySQL に接続する
+## MySQL テーブルエンジンを使用して ClickHouse を MySQL に接続する {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
 
 `MySQL` テーブルエンジンを使用すると、ClickHouse を MySQL に接続できます。**SELECT** および **INSERT** 文は、ClickHouse 側からでも MySQL テーブル側からでも実行できます。本記事では、`MySQL` テーブルエンジンの基本的な使用方法を説明します。
 
-### 1. MySQL を設定する
+### 1. MySQL を設定する {#1-configure-mysql}
 
 1. MySQL でデータベースを作成します：
 
@@ -75,7 +72,7 @@ ClickHouse Cloud でこの機能を使用している場合、ClickHouse Cloud �
 外向き（egress）トラフィックの詳細については、ClickHouse の [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) を確認してください。
 :::
 
-### 2. ClickHouse でテーブルを定義する
+### 2. ClickHouse でテーブルを定義する {#2-define-a-table-in-clickhouse}
 
 1. 次に、`MySQL` テーブルエンジンを使用する ClickHouse テーブルを作成しましょう。
 
@@ -101,7 +98,7 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 利用可能なパラメータの完全な一覧は、[MySQL table engine](/engines/table-engines/integrations/mysql.md) のドキュメントページを参照してください。
 :::
 
-### 3. 統合をテストする
+### 3. 統合をテストする {#3-test-the-integration}
 
 1. MySQL でサンプル行を挿入します。
 
@@ -166,7 +163,6 @@ mysql> select id,column1 from db1.table1;
 5 rows in set (0.01 sec)
 ```
 
-### 概要
-
+### 概要 {#summary}
 
 `MySQL` テーブルエンジンを使用すると、ClickHouse を MySQL と接続し、両者間でデータを双方向にやり取りできます。詳しくは、[MySQL テーブルエンジン](/sql-reference/table-functions/mysql.md) のドキュメントページを参照してください。

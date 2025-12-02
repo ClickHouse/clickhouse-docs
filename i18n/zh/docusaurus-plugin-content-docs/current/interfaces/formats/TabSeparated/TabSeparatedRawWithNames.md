@@ -26,9 +26,9 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -59,7 +59,7 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `TabSeparatedRawWithNames` 格式来读取数据：
 

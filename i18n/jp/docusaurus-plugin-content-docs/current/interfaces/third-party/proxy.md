@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# サードパーティ開発のプロキシサーバー
+# サードパーティ開発のプロキシサーバー {#proxy-servers-from-third-party-developers}
 
 
 

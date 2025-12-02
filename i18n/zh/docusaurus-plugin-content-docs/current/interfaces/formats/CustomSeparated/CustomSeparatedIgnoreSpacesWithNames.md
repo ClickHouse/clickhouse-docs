@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用以下名为 `football.txt` 的 txt 文件：
 

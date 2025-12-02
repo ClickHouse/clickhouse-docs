@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.projection_parts
+# system.projection_parts {#systemprojection_parts}
 
 此表包含 MergeTree 系列引擎表的投影部件信息。
 

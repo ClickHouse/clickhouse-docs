@@ -6,15 +6,11 @@ title: 'WITH 子句'
 doc_type: 'reference'
 ---
 
-
-
-# WITH 子句
+# WITH 子句 {#with-clause}
 
 ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)）、公用标量表达式以及递归查询。
 
-
-
-## 公用表表达式
+## 公用表表达式 {#common-table-expressions}
 
 公用表表达式是具名子查询。
 在 `SELECT` 查询中，只要允许使用表表达式的地方，都可以通过名称引用它们。
@@ -25,13 +21,13 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 
 请注意，CTE 并不保证在所有引用它们的位置都产生相同的结果，因为查询会在每次使用时被重新执行。
 
-### 语法
+### 语法 {#common-table-expressions-syntax}
 
 ```sql
 WITH <标识符> AS <子查询表达式>
 ```
 
-### 示例
+### 示例 {#common-table-expressions-example}
 
 子查询会被重新执行的情况示例：
 
@@ -53,8 +49,7 @@ WHERE num IN (SELECT num FROM cte_numbers)
 
 然而，由于我们两次引用了 `cte_numbers`，每次都会生成随机数，因此会看到不同的随机结果，比如 `280501, 392454, 261636, 196227` 等等……
 
-
-## 通用标量表达式
+## 通用标量表达式 {#common-scalar-expressions}
 
 ClickHouse 允许你在 `WITH` 子句中为任意标量表达式声明别名。
 通用标量表达式可以在查询中的任意位置被引用。
@@ -65,13 +60,13 @@ ClickHouse 会在尽可能接近的作用域中解析任何标识符，这意味
 建议将 CSE 定义为[lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)（仅在启用 [analyzer](/operations/analyzer) 时可用），并将所有使用到的标识符绑定到其中，从而使表达式标识符的解析行为更加可预测。
 :::
 
-### 语法
+### 语法 {#common-scalar-expressions-syntax}
 
 ```sql
 WITH <expression> AS <identifier>
 ```
 
-### 示例
+### 示例 {#common-scalar-expressions-examples}
 
 **示例 1：** 使用常量表达式作为“变量”
 
@@ -167,8 +162,7 @@ WITH test1 AS (SELECT i + 1, j + 1 FROM test1)
 SELECT * FROM test1;
 ```
 
-
-## 递归查询
+## 递归查询 {#recursive-queries}
 
 可选的 `RECURSIVE` 修饰符允许 WITH 查询引用其自身的输出。示例：
 
@@ -245,7 +239,7 @@ SELECT * FROM search_tree;
 └────┴───────────┴───────────┘
 ```
 
-### 搜索顺序
+### 搜索顺序 {#search-order}
 
 为了生成深度优先的顺序，我们为每一行结果计算一个数组，表示到目前为止已经访问过的行：
 
@@ -263,7 +257,6 @@ UNION ALL
 )
 SELECT * FROM search_tree ORDER BY path;
 ```
-
 
 ```text
 ┌─id─┬─parent_id─┬─data──────┬─path────┐
@@ -300,7 +293,7 @@ SELECT * FROM search_tree ORDER BY depth;
 └────┴──────┴───────────┴─────────┴───────┘
 ```
 
-### 循环检测
+### 循环检测 {#cycle-detection}
 
 首先，我们来创建一个图表（graph table）：
 
@@ -362,7 +355,6 @@ SELECT DISTINCT * FROM search_graph ORDER BY "from";
 
 处理循环的标准方法是构建一个记录已访问节点的数组：
 
-
 **示例：** 图遍历与环检测
 
 ```sql
@@ -384,7 +376,7 @@ SELECT * FROM search_graph WHERE is_cycle ORDER BY from;
 └──────┴────┴────────┴──────────┴───────────────────────────┘
 ```
 
-### 无限查询
+### 无限查询 {#infinite-queries}
 
 如果在外层查询中使用 `LIMIT`，也可以使用无限递归 CTE 查询：
 

@@ -7,15 +7,11 @@ description: 'Возвращает таблицу с единственным с
 doc_type: 'reference'
 ---
 
-
-
-# Табличная функция generate_series
+# Табличная функция generate&#95;series {#generate&#95;series-table-function}
 
 Псевдоним: `generateSeries`
 
-
-
-## Синтаксис
+## Синтаксис {#syntax}
 
 Возвращает таблицу с единственным столбцом &#39;generate&#95;series&#39; (`UInt64`), содержащим целые числа от start до stop включительно:
 
@@ -29,8 +25,7 @@ generate_series(START, STOP)
 generate_series(START, STOP, STEP)
 ```
 
-
-## Примеры
+## Примеры {#examples}
 
 Следующие запросы возвращают таблицы с одинаковым содержимым, но разными именами столбцов:
 

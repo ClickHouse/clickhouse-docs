@@ -32,7 +32,7 @@ DB ClickPipes のデフォルト構成は、ほとんどのワークロードを
 1. 対象の ClickHouse Cloud サービスに対して Admin 権限を持つ [ClickHouse API key](/cloud/manage/openapi)。
 2. サービス内で過去のいずれかの時点にプロビジョニングされた DB ClickPipe（Postgres、MySQL、または MongoDB）。CDC インフラストラクチャは最初の ClickPipe の作成時に合わせて構築され、それ以降はスケーリング用エンドポイントが利用可能になります。
 
-## DB ClickPipes のスケーリング手順
+## DB ClickPipes のスケーリング手順 {#cdc-scaling-steps}
 
 コマンドを実行する前に、以下の環境変数を設定します。
 
@@ -50,7 +50,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 結果例：
+# 結果例： {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -84,7 +84,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 結果例:
+# 結果例: {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 24000,

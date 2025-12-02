@@ -5,30 +5,26 @@ title: 'clickhouse-format'
 doc_type: 'reference'
 ---
 
-
-
-# clickhouse-format 实用工具
+# clickhouse-format 实用工具 {#clickhouse-format-utility}
 
 用于格式化输入的查询语句。
 
 参数：
 
-- `--help` 或 `-h` — 输出帮助信息。
-- `--query` — 格式化任意长度和复杂度的查询。
-- `--hilite` 或 `--highlight` — 使用 ANSI 终端转义序列添加语法高亮。
-- `--oneline` — 格式化为单行。
-- `--max_line_length` — 将长度小于指定值的查询格式化为单行。
-- `--comments` — 在输出中保留注释。
-- `--quiet` 或 `-q` — 仅检查语法，成功时不输出任何内容。
-- `--multiquery` 或 `-n` — 允许在同一文件中包含多个查询。
-- `--obfuscate` — 执行混淆而不是格式化。
-- `--seed &lt;string&gt;` — 指定任意字符串作为种子，用于决定混淆结果。
-- `--backslash` — 在格式化后的查询每一行末尾添加反斜杠。当你从网页或其他地方复制多行查询并希望在命令行中执行时，这会很有用。
-- `--semicolons_inline` — 在多查询模式下，将分号写在查询的最后一行，而不是单独起一行。
+* `--help` 或 `-h` — 输出帮助信息。
+* `--query` — 格式化任意长度和复杂度的查询。
+* `--hilite` 或 `--highlight` — 使用 ANSI 终端转义序列添加语法高亮。
+* `--oneline` — 格式化为单行。
+* `--max_line_length` — 将长度小于指定值的查询格式化为单行。
+* `--comments` — 在输出中保留注释。
+* `--quiet` 或 `-q` — 仅检查语法，成功时不输出任何内容。
+* `--multiquery` 或 `-n` — 允许在同一文件中包含多个查询。
+* `--obfuscate` — 执行混淆而不是格式化。
+* `--seed &lt;string&gt;` — 指定任意字符串作为种子，用于决定混淆结果。
+* `--backslash` — 在格式化后的查询每一行末尾添加反斜杠。当你从网页或其他地方复制多行查询并希望在命令行中执行时，这会很有用。
+* `--semicolons_inline` — 在多查询模式下，将分号写在查询的最后一行，而不是单独起一行。
 
-
-
-## 示例
+## 示例 {#examples}
 
 1. 格式化查询：
 

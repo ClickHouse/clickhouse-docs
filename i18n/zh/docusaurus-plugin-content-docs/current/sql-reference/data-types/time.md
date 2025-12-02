@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Time
+# Time {#time}
 
 数据类型 `Time` 表示一个由小时、分钟和秒组成的时间。
 它独立于任何日历日期，适用于不需要日、月、年部分的取值。
@@ -52,7 +52,7 @@ doc_type: 'reference'
 
 
 
-## 示例
+## 示例 {#examples}
 
 **1.** 创建一个包含 `Time` 类型列的表，并向其中插入数据：
 

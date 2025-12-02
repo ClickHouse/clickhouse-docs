@@ -45,7 +45,7 @@ Nessie 是一个面向数据湖的开源事务型 catalog，提供：
 1. **Docker 和 Docker Compose**：确保已安装 Docker 并已启动运行
 2. **示例环境**：可以使用官方提供的 Nessie docker-compose 配置
 
-### 设置本地 Nessie Catalog
+### 设置本地 Nessie Catalog {#setting-up-local-nessie-catalog}
 
 你可以使用官方提供的 [Nessie docker-compose 部署](https://projectnessie.org/guides/setting-up/)，它提供了一个完整的环境，包括 Nessie、内存版本存储（in-memory version store）以及用于对象存储的 MinIO。
 
@@ -150,7 +150,7 @@ Nessie 设置使用基于内存的版本存储，并要求先将示例数据加�
 :::
 
 
-### 连接到本地 Nessie Catalog
+### 连接到本地 Nessie Catalog {#connecting-to-local-nessie-catalog}
 
 连接到 ClickHouse 容器：
 
@@ -169,7 +169,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket'
 ```
 
 
-## 使用 ClickHouse 查询 Nessie 目录表
+## 使用 ClickHouse 查询 Nessie 目录表 {#querying-nessie-catalog-tables-using-clickhouse}
 
 现在连接已就绪，您可以开始通过 Nessie 目录执行查询。例如：
 
@@ -253,7 +253,7 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## 将数据湖中的数据加载到 ClickHouse
+## 将数据湖中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 如果需要将 Nessie 目录中的数据加载到 ClickHouse，请首先创建一个本地 ClickHouse 表：
 

@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Java クライアントの概要
+# Java クライアントの概要 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
@@ -122,7 +122,7 @@ JDBC ドライバーは、基盤となるクライアント実装と同じ機能
 - セキュリティ修正や新機能を見逃さないよう、クライアントは継続的にアップグレードすることを推奨します。
 - v2 API への移行で問題がある場合は、[Issue を作成](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)してください。対応いたします。
 
-### ロギング
+### ロギング {#logging}
 
 Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使用します。`Logback` や `Log4j` など、任意の SLF4J 互換ロギングフレームワークを使用できます。
 たとえば、Maven を使用している場合は、次の依存関係を `pom.xml` ファイルに追加できます。
@@ -153,7 +153,7 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 ```
 
 
-#### ロギングの設定
+#### ロギングの設定 {#configuring-logging}
 
 ロギングの設定方法は、使用しているロギングフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` という名前のファイルでロギングを設定できます。
 

@@ -26,7 +26,7 @@ import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_model
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
 
-# Open WebUIでClickHouse MCPサーバーを使用する
+# Open WebUIでClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server-with-open-webui}
 
 > 本ガイドでは、[Open WebUI](https://github.com/open-webui/open-webui)とClickHouse MCPサーバーをセットアップし、
 > ClickHouseのサンプルデータセットに接続する方法を説明します。
@@ -41,7 +41,7 @@ uv を使用したくない場合は、代わりのパッケージマネージ�
 
 
 
-## Open WebUI を起動する
+## Open WebUI を起動する {#launch-open-webui}
 
 Open WebUI を起動するには、次のコマンドを実行してください。
 
@@ -52,7 +52,7 @@ uv run --with open-webui open-webui serve
 ブラウザで [http://localhost:8080/](http://localhost:8080/) を開き、UI を表示します。
 
 
-## ClickHouse MCP Server を構成する
+## ClickHouse MCP Server を構成する {#configure-clickhouse-mcp-server}
 
 ClickHouse MCP Server をセットアップするには、MCP Server を OpenAPI エンドポイントに変換する必要があります。
 まず、ClickHouse SQL Playground に接続するための環境変数を設定します。

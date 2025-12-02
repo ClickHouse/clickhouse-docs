@@ -9,13 +9,13 @@ doc_type: 'guide'
 
 
 
-# Redis テーブルエンジン
+# Redis テーブルエンジン {#redis-table-engine}
 
 このエンジンにより、ClickHouse を [Redis](https://redis.io/) と連携させることができます。Redis はキー・バリュー（KV）モデルを採用しているため、`where k=xx` や `where k in (xx, xx)` のようなポイントアクセスのクエリに限定して利用することを強く推奨します。
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ PRIMARY KEY(primary_key_name);
 :::
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 単純な引数を用いて、`Redis` エンジンを使用する ClickHouse のテーブルを作成します：
 

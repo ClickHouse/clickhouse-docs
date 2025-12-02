@@ -12,7 +12,7 @@ keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Do
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 すべての ClickStack コンポーネントは、個別の Docker イメージとして提供されています。
 
@@ -84,14 +84,14 @@ docker compose up
 
 </VerticalStepper>
 
-## compose 設定の変更
+## compose 設定の変更 {#modifying-settings}
 
 ユーザーは、使用するバージョンなどのスタック設定を、環境変数ファイルで変更できます。
 
 ```shell
 user@example-host hyperdx % cat .env
-# docker-compose.yml で使用
-# docker-compose.yml で使用
+# docker-compose.yml で使用 {#used-by-docker-composeyml}
+# docker-compose.yml で使用 {#used-by-docker-composeyml}
 HDX_IMAGE_REPO=docker.hyperdx.io
 IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
 IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
@@ -106,14 +106,14 @@ IMAGE_VERSION_SUB_TAG=.16
 IMAGE_VERSION=2-beta
 IMAGE_NIGHTLY_TAG=2-nightly
 
-# ドメイン URL の設定
+# ドメイン URL の設定 {#set-up-domain-urls}
 HYPERDX_API_PORT=8000 # 任意（他のサービスで使用されていないポートを指定すること）
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# OTel/ClickHouse 設定
+# OTel/ClickHouse 設定 {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
@@ -122,7 +122,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 必要に応じて OTel collector の設定を変更できます。設定の変更方法の詳細は、["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
-## ClickHouse Cloud を使用する
+## ClickHouse Cloud を使用する {#using-clickhouse-cloud}
 
 このディストリビューションは ClickHouse Cloud と併用できます。ユーザーは次の手順を実行してください:
 

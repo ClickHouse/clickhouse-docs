@@ -6,13 +6,11 @@ title: 'stochasticLinearRegression'
 doc_type: 'reference'
 ---
 
-
-
-# stochasticLinearRegression
+# stochasticLinearRegression {#agg&#95;functions&#95;stochasticlinearregression&#95;parameters}
 
 この関数は確率的線形回帰を実装します。学習率、L2 正則化係数、ミニバッチサイズのカスタムパラメータをサポートし、重みを更新するためのいくつかの手法（デフォルトで使用される [Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam)、[simple SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)、[Momentum](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum)、[Nesterov](https://mipt.ru/upload/medialibrary/d7e/41-91.pdf)）を備えています。
 
-### Parameters
+### Parameters {#parameters}
 
 カスタマイズ可能なパラメータは 4 つあります。これらは関数に順番に渡されますが、4 つすべてを渡す必要はありません。指定されなかったものにはデフォルト値が使用されますが、良いモデルを得るには一部のパラメータ調整が必要になる場合があります。
 
@@ -25,7 +23,7 @@ stochasticLinearRegression(0.00001, 0.1, 15, 'Adam')
 3. `mini-batch size` は、1 回の勾配降下ステップを行うために勾配を計算して加算する要素数を指定します。純粋な確率的降下では 1 要素のみを使用しますが、小さなバッチ（約 10 要素）にすることで、勾配ステップがより安定します。デフォルトは `15` です。
 4. `method for updating weights` には次のものがあります: `Adam`（デフォルト）、`SGD`、`Momentum`、`Nesterov`。`Momentum` と `Nesterov` は、やや多くの計算とメモリを必要としますが、収束速度および確率的勾配法の安定性の観点から有用な場合があります。
 
-### Usage
+### Usage {#usage}
 
 `stochasticLinearRegression` は 2 段階で利用します。まずモデルをフィット（学習）し、その後新しいデータに対して予測を行います。モデルをフィットして、その状態を後で利用できるように保存するには、状態（例: モデルの重み）を保存する `-State` コンビネータを使用します。
 予測には、状態と予測対象の特徴量を引数として受け取る関数 [evalMLMethod](/sql-reference/functions/machine-learning-functions#evalmlmethod) を使用します。
@@ -65,7 +63,7 @@ evalMLMethod(model, param1, param2) FROM test_data
 
 `test_data` は `train_data` と同様のテーブルですが、目的変数を含まない場合があります。
 
-### Notes
+### Notes {#notes}
 
 1. 2 つのモデルを統合するには、次のようなクエリを作成できます:
    `sql  SELECT state1 + state2 FROM your_models`
@@ -77,6 +75,5 @@ evalMLMethod(model, param1, param2) FROM test_data
 
 **See Also**
 
-
-- [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
-- [線形回帰とロジスティック回帰の違い](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)
+* [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression)
+* [線形回帰とロジスティック回帰の違い](https://stackoverflow.com/questions/12146914/what-is-the-difference-between-linear-regression-and-logistic-regression)

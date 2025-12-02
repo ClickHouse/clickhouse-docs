@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.projection_parts_columns
+# system.projection_parts_columns {#systemprojection_parts_columns}
 
 Эта таблица содержит информацию о столбцах частей проекций таблиц семейства MergeTree.
 

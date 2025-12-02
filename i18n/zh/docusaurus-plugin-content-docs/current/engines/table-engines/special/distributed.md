@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 分布式表引擎
+# 分布式表引擎 {#distributed-table-engine}
 
 :::warning 在 Cloud 中使用 Distributed 引擎
 要在 ClickHouse Cloud 中创建分布式表引擎，可以使用 [`remote` 和 `remoteSecure`](../../../sql-reference/table-functions/remote) 表函数。
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#distributed-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### 基于现有表
+### 基于现有表 {#distributed-from-a-table}
 
 当 `Distributed` 表指向当前服务器上的某个表时，你可以沿用该表的表结构：
 
@@ -41,7 +41,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### 分布式参数
+### 分布式参数 {#distributed-parameters}
 
 | Parameter                 | Description                                                                                                                                                                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert) 设置
 * [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) 使用示例
 
-### 分布式设置
+### 分布式设置 {#distributed-settings}
 
 
 | Setting                                    | Description                                                                                                                                                 | Default value |
@@ -102,7 +102,7 @@ SETTINGS
 在数据库名的位置上，你可以使用返回字符串的常量表达式。例如：`currentDatabase()`。
 
 
-## 集群
+## 集群 {#distributed-clusters}
 
 集群是在[服务器配置文件](../../../operations/configuration-files.md)中配置的：
 

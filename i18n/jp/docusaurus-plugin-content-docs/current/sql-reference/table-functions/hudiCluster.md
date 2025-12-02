@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# hudiCluster テーブル関数
+# hudiCluster テーブル関数 {#hudicluster-table-function}
 
 これは [hudi](sql-reference/table-functions/hudi.md) テーブル関数の拡張機能です。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 hudiCluster(cluster_name, URL[, aws_access_key_id, aws_secret_access_key][, format][, structure][, compression])

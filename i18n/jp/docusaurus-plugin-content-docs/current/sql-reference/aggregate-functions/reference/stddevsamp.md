@@ -6,7 +6,7 @@ title: 'stddevSamp'
 doc_type: 'reference'
 ---
 
-# stddevSamp
+# stddevSamp {#stddevsamp}
 
 結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根と等しくなります。
 

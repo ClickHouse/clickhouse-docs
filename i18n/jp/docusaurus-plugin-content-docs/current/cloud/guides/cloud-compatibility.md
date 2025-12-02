@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# ClickHouse Cloud 互換性ガイド
+# ClickHouse Cloud 互換性ガイド {#clickhouse-cloud-compatibility-guide}
 
 このガイドでは、ClickHouse Cloud における機能面および運用面での挙動について概要を説明します。ClickHouse Cloud はオープンソース版 ClickHouse ディストリビューションをベースとしていますが、アーキテクチャや実装にはいくつか異なる点があります。背景情報として、[どのようにして ClickHouse Cloud を構築したか](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) を説明しているこのブログ記事も、興味深く参考になるはずです。
 

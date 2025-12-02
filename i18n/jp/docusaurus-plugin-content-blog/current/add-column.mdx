@@ -10,8 +10,7 @@ keywords: ['列の追加']
 
 {/* 省略 */}
 
-
-## テーブルにカラムを追加する
+## テーブルにカラムを追加する \{#adding-a-column-to-a-table\}
 
 ここでは `clickhouse-local` を使用します。
 
@@ -49,8 +48,7 @@ FROM events;
 └────────────┴────────┘
 ```
 
-
-## 新しいカラムを追加する
+## 新しいカラムを追加する \{#adding-a-new-column\}
 
 ここでは、`favoriteNumber` という名前の新しいカラムを `Float64` 型で追加するとします。
 これは、[`ALTER TABLE...ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 句を使って実行できます。
@@ -87,8 +85,7 @@ INSERT INTO events (name) VALUES ('Tyler');
 └────────────┴────────┴────────────────┘
 ```
 
-
-## 列のデフォルト値を変更する
+## 列のデフォルト値を変更する \{#modifying-a-columns-default-value\}
 
 `favoriteNumber` 列の型を [`ALTER TABLE...MODIFY COLUMN`](/sql-reference/statements/alter/column#modify-column) 句を使って別の型に変更すると、興味深い挙動が見られます。
 
@@ -147,8 +144,7 @@ INSERT INTO events (name) VALUES ('Tanya');
 
 `Tanya` には新しいデフォルト値 `21` が適用されますが、`Alexey` には以前のデフォルト値 `99` がそのまま残ります。
 
-
-## テーブル内のカラム位置の制御
+## テーブル内のカラム位置の制御 \{#controlling-column-position-in-table\}
 
 新しいカラムを追加すると、デフォルトではテーブルの最後に追加されます。
 `FIRST` 句と `AFTER` 句を使うことで、カラムを配置する位置を制御できます。

@@ -29,9 +29,9 @@ doc_type: 'reference'
 
 
 
-## Пример использования
+## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 Используем следующий TSV-файл с именем `football.tsv`:
 
@@ -62,7 +62,7 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 ```
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Считайте данные в формате `TabSeparatedWithNames`:
 

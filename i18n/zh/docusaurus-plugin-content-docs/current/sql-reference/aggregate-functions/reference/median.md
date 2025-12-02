@@ -6,7 +6,7 @@ title: 'median'
 doc_type: 'reference'
 ---
 
-# median
+# median {#median}
 
 `median*` 函数是对应 `quantile*` 函数的别名。它们用于计算数值型数据样本的中位数。
 

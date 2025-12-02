@@ -7,10 +7,9 @@ title: 'system.backup_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.backup&#95;log
+# system.backup&#95;log {#systembackup&#95;log}
 
 <SystemTableCloud />
 
@@ -57,7 +56,6 @@ BACKUP TABLE test_db.my_table TO Disk('backups_disk', '1.zip')
 ```sql
 SELECT * FROM system.backup_log WHERE id = 'e5b74ecb-f6f1-426a-80be-872f90043885' ORDER BY event_date, event_time_microseconds \G
 ```
-
 
 ```response
 Row 1:
@@ -159,7 +157,6 @@ bytes_read:              4290364870
 ```sql
 SELECT * FROM system.backups ORDER BY start_time
 ```
-
 
 ```response
 ┌─id───────────────────────────────────┬─name──────────────────────────┬─status─────────┬─error─┬──────────start_time─┬────────────end_time─┬─num_files─┬─total_size─┬─num_entries─┬─uncompressed_size─┬─compressed_size─┬─files_read─┬─bytes_read─┐

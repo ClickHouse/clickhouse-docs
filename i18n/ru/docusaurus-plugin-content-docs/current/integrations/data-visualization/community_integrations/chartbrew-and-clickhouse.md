@@ -18,12 +18,12 @@ import chartbrew_07 from '@site/static/images/integrations/data-visualization/ch
 import chartbrew_08 from '@site/static/images/integrations/data-visualization/chartbrew_08.png';
 import chartbrew_09 from '@site/static/images/integrations/data-visualization/chartbrew_09.png';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
 
-# Подключение Chartbrew к ClickHouse
+# Подключение Chartbrew к ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
@@ -74,7 +74,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. Создайте набор данных и выполните SQL-запрос
+## 3. Создайте набор данных и выполните SQL-запрос {#3-create-a-dataset-and-run-a-sql-query}
 
 1. Нажмите кнопку **Create dataset** или перейдите на вкладку **Datasets**, чтобы создать набор данных.
 2. Выберите подключение к ClickHouse, созданное ранее.

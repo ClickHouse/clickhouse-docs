@@ -7,6 +7,6 @@ title: 'CREATE 语句'
 doc_type: 'reference'
 ---
 
-# CREATE 查询
+# CREATE 查询 {#create-queries}
 
 CREATE 查询用于创建新的[数据库](/sql-reference/statements/create/database.md)、[表](/sql-reference/statements/create/table.md)和[视图](/sql-reference/statements/create/view.md)等对象。

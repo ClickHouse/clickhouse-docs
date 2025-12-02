@@ -7,20 +7,16 @@ keywords: ['EXCEPT', 'clause']
 doc_type: 'reference'
 ---
 
+# EXCEPT 子句 {#except-clause}
 
+> `EXCEPT` 子句仅返回存在于第一个查询结果中而不存在于第二个查询结果中的行。
 
-# EXCEPT 子句
+* 两个查询必须具有数量相同的列，且这些列的顺序和数据类型必须一致。
+* `EXCEPT` 的结果中可以包含重复行。如果不希望出现重复行，请使用 `EXCEPT DISTINCT`。
+* 如果未使用括号，多个 `EXCEPT` 语句按从左到右依次执行。
+* `EXCEPT` 运算符与 `UNION` 子句具有相同的优先级，且优先级低于 `INTERSECT` 子句。
 
-> `EXCEPT` 子句仅返回存在于第一个查询结果中而不存在于第二个查询结果中的行。 
-
-- 两个查询必须具有数量相同的列，且这些列的顺序和数据类型必须一致。
-- `EXCEPT` 的结果中可以包含重复行。如果不希望出现重复行，请使用 `EXCEPT DISTINCT`。
-- 如果未使用括号，多个 `EXCEPT` 语句按从左到右依次执行。 
-- `EXCEPT` 运算符与 `UNION` 子句具有相同的优先级，且优先级低于 `INTERSECT` 子句。
-
-
-
-## 语法
+## 语法 {#syntax}
 
 ```sql
 SELECT column1 [, column2 ]
@@ -44,12 +40,11 @@ FROM table1
 [WHERE condition]
 ```
 
-
-## 示例
+## 示例 {#examples}
 
 本节中的示例演示了 `EXCEPT` 子句的用法。
 
-### 使用 `EXCEPT` 子句过滤数字
+### 使用 `EXCEPT` 子句过滤数字 {#filtering-numbers-using-the-except-clause}
 
 下面是一个简单的示例，它返回 1 到 10 之间中*不*属于 3 到 8 的数字：
 
@@ -70,7 +65,7 @@ FROM numbers(3, 6)
 └────────┘
 ```
 
-### 使用 `EXCEPT()` 排除特定列
+### 使用 `EXCEPT()` 排除特定列 {#excluding-specific-columns-using-except}
 
 `EXCEPT()` 可用于快速从结果集中排除某些列。比如，如果我们想要从一个表中选择所有列，但排除其中的少数几列，可以像下面的示例那样编写查询：
 
@@ -98,7 +93,6 @@ LIMIT 5
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
 ```
-
 
 ┌─名称────────────────────┬─值──────────┬─是否修改─┬─最小值─┬─最大值─┬─类型────┬─是否废弃───┬─级别─────────┐
 
@@ -141,7 +135,6 @@ WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
 ````
-
 
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
@@ -196,7 +189,7 @@ WHERE price < 10;
 
 这意味着在我们持有的四种加密货币中，只有比特币从未跌破 10 美元（基于本示例中我们所拥有的有限数据）。
 
-### 使用 `EXCEPT DISTINCT`
+### 使用 `EXCEPT DISTINCT` {#using-except-and-intersect-with-cryptocurrency-data}
 
 请注意，在前一个查询的结果中，我们看到了多条比特币持仓记录。你可以在 `EXCEPT` 中添加 `DISTINCT`，以从结果中去除重复的行：
 

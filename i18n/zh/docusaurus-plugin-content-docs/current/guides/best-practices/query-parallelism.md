@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse 如何并行执行查询
+# ClickHouse 如何并行执行查询 {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度并行的方式执行查询，利用所有可用的 CPU 核心，将数据分布到各个处理通道，并且经常将硬件推至其性能极限。
  
@@ -66,7 +66,7 @@ ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度
 
 
 
-## 监控查询并行度
+## 监控查询并行度 {#monitoring-query-parallelism}
 
 使用这些工具来验证你的查询是否充分利用了可用的 CPU 资源，并在没有充分利用时进行诊断。
 
@@ -126,12 +126,12 @@ ClickHouse 的[内嵌 Web UI](/interfaces/http)（在 `/play` 端点可用）可
 
 注意：请从左到右阅读该可视化。每一行代表一条并行处理通道，它以数据块为单位进行流式处理，并应用过滤、聚合以及最终处理阶段等转换。在本例中，你可以看到与 `max_threads = 4` 设置对应的四条并行通道。
 
-### 在处理通道之间进行负载均衡
+### 在处理通道之间进行负载均衡 {#load-balancing-across-processing-lanes}
 
 请注意，物理计划中的 `Resize` 算子会[重新分区并重新分发](/academic_overview#4-2-multi-core-parallelization)数据块流到各个处理通道，以保持它们的利用率均衡。当不同数据范围中满足查询谓词的行数相差较大时，这种再平衡尤为重要，否则某些通道可能会过载，而其他通道则处于空闲状态。通过重新分配工作量，较快的通道可以有效帮助较慢的通道，从而优化整体查询执行时间。
 
 
-## 为什么 max&#95;threads 并不总是被严格遵守
+## 为什么 max&#95;threads 并不总是被严格遵守 {#why-max-threads-isnt-always-respected}
 
 如上所述，`n` 条并行处理通道的数量由 `max_threads` 参数控制，其默认值等于 ClickHouse 在该服务器上可用的 CPU 内核数量：
 

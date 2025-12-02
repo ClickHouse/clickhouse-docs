@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 Этот вариант предназначен для пользователей, у которых уже есть запущенный экземпляр ClickHouse с данными наблюдаемости и/или событий.
 
@@ -71,7 +71,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 Вы можете изменить [конфигурацию Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), чтобы добиться того же результата, что и в этом руководстве, удалив OTel collector и экземпляр ClickHouse из манифеста.
 
-## Коллектор OpenTelemetry ClickStack
+## Коллектор OpenTelemetry ClickStack {#otel-collector}
 
 Даже если вы управляете собственным коллектором OpenTelemetry, независимо от других компонентов стека, мы всё равно рекомендуем использовать дистрибутив коллектора ClickStack. Это гарантирует использование схемы по умолчанию и применение лучших практик для ингестии.
 

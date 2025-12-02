@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# url 表函数
+# url 表函数 {#url-table-function}
 
 `url` 函数根据给定的 `format` 和 `structure`，基于指定的 `URL` 创建一个表。
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 url(URL [,format] [,structure] [,headers])
@@ -43,7 +43,7 @@ url(URL [,format] [,structure] [,headers])
 
 
 
-## 示例
+## 示例 {#examples}
 
 从以 [CSV](/interfaces/formats/CSV) 格式响应的 HTTP 服务器获取一个包含 `String` 和 [UInt32](../../sql-reference/data-types/int-uint.md) 类型列的表的前 3 行。
 
@@ -77,7 +77,7 @@ SELECT * FROM test_table;
 
 
 
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径（`/name=value/`）中检测 Hive 风格的分区，并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以 `_` 作为前缀。
 

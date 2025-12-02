@@ -9,7 +9,7 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 
 
 
-# 通用 MariaDB 源设置指南
+# 通用 MariaDB 源设置指南 {#generic-mariadb-source-setup-guide}
 
 :::info
 
@@ -19,7 +19,7 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 
 
 
-## 启用二进制日志保留
+## 启用二进制日志保留 {#enable-binlog-retention}
 
 二进制日志包含对 MariaDB 服务器实例所做的数据修改的信息，是实现复制所必需的。
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# データスキッピングインデックスの操作
+# データスキッピングインデックスの操作 {#manipulating-data-skipping-indices}
 
 次の操作を行うことができます。
 

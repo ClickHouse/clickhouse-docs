@@ -6,7 +6,7 @@ title: 'ALL 子句'
 doc_type: 'reference'
 ---
 
-# ALL 子句
+# ALL 子句 {#all-clause}
 
 如果表中有多行匹配记录，则 `ALL` 会返回所有这些记录。`SELECT ALL` 与不带 `DISTINCT` 的 `SELECT` 完全相同。如果同时指定了 `ALL` 和 `DISTINCT`，则会抛出异常。
 

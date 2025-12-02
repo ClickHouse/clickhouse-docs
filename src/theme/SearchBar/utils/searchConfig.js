@@ -6,7 +6,7 @@ import { DEFAULT_SEARCH_PARAMS, URL_CONFIG } from '../searchConstants';
  */
 export const createDocTypeFilters = (docTypes) => {
   if (!docTypes) return [];
-  
+
   const types = Array.isArray(docTypes) ? docTypes : [docTypes];
   return types.map(type => `doc_type:${type}`);
 };
@@ -33,13 +33,13 @@ export function mergeFacetFilters(f1, f2) {
 export function createSearchParameters(props, contextualSearch, contextualSearchFacetFilters, docTypes = null) {
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const docTypeFilters = createDocTypeFilters(docTypes);
-  
+
   let facetFilters = configFacetFilters;
-  
+
   if (contextualSearch) {
     facetFilters = mergeFacetFilters(contextualSearchFacetFilters, facetFilters);
   }
-  
+
   if (docTypeFilters.length > 0) {
     facetFilters = mergeFacetFilters(facetFilters, docTypeFilters);
   }
@@ -49,8 +49,8 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
     facetFilters,
     // Add doc_type to DocSearch's default attributesToRetrieve
     attributesToRetrieve: [
-      "hierarchy.lvl0","hierarchy.lvl1","hierarchy.lvl2","hierarchy.lvl3","hierarchy.lvl4","hierarchy.lvl5","hierarchy.lvl6",
-      "content","type","url","doc_type"
+      "hierarchy.lvl0", "hierarchy.lvl1", "hierarchy.lvl2", "hierarchy.lvl3", "hierarchy.lvl4", "hierarchy.lvl5", "hierarchy.lvl6",
+      "content", "type", "url", "doc_type"
     ],
     ...DEFAULT_SEARCH_PARAMS,
   };
@@ -60,15 +60,73 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
  * Create navigator for handling search result clicks
  * @param {Object} history - React router history object
  * @param {RegExp} externalUrlRegex - Regex to match external URLs
+ * @param {string} currentLocale - Current locale
  * @returns {Object} - Navigator object
  */
-export function createSearchNavigator(history, externalUrlRegex) {
+export function createSearchNavigator(history, externalUrlRegex, currentLocale) {
   return {
     navigate({ itemUrl }) {
-      if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
-        window.location.href = itemUrl;
+      let url = itemUrl;
+
+      try {
+        let pathname, hash;
+
+        // Handle both absolute and relative URLs
+        if (itemUrl.startsWith('http://') || itemUrl.startsWith('https://')) {
+          // Absolute URL - parse it
+          const urlObj = new URL(itemUrl);
+          pathname = urlObj.pathname;
+          hash = urlObj.hash;
+        } else {
+          // Relative URL - split pathname and hash manually
+          const hashIndex = itemUrl.indexOf('#');
+          if (hashIndex !== -1) {
+            pathname = itemUrl.substring(0, hashIndex);
+            hash = itemUrl.substring(hashIndex);
+          } else {
+            pathname = itemUrl;
+            hash = '';
+          }
+        }
+
+        // Transform the pathname if it starts with /docs
+        if (currentLocale !== 'en') {
+          const prefix = `/docs/${currentLocale}`;
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        } else {
+          const prefix = '/docs';
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        }
+
+        url += hash;
+      } catch (e) {
+        // If parsing fails, use as-is
+      }
+
+      // If the URL is relative, prepend the locale-specific baseUrl
+      // This is needed because history.push expects the full path including baseUrl
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        // Construct the baseUrl based on locale
+        const baseUrl = currentLocale !== 'en' ? `/docs/${currentLocale}` : '/docs';
+
+        // Only prepend if the URL doesn't already start with the baseUrl
+        if (!url.startsWith(baseUrl)) {
+          url = baseUrl + url;
+        }
+      }
+
+      if (isRegexpStringMatch(externalUrlRegex, url)) {
+        window.location.href = url;
       } else {
-        history.push(itemUrl);
+        history.push(url);
       }
     },
   };
@@ -86,21 +144,68 @@ export function createSearchNavigator(history, externalUrlRegex) {
  */
 export function transformSearchItems(items, options) {
   const { transformItems, processSearchResultUrl, currentLocale, queryIDRef } = options;
-  
+
   const baseTransform = (items) => items.map((item, index) => {
+    let url = item.url;
+
+    // Algolia stores full URLs like https://clickhouse.com/docs/jp/tutorial
+    // We need to extract just the path relative to the baseUrl
+    // For non-English locales, baseUrl is /docs/{locale}/, so we want /tutorial
+    // For English, baseUrl is /docs/, so we want /tutorial
+
+    try {
+      // Parse the URL to safely extract the pathname and hash
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+      const hash = urlObj.hash;
+
+      if (currentLocale !== 'en') {
+        // Remove /docs/{locale} prefix, keeping the leading slash
+        // e.g., /docs/jp/tutorial -> /tutorial
+        const prefix = `/docs/${currentLocale}`;
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      } else {
+        // Remove /docs prefix, keeping the leading slash
+        // e.g., /docs/tutorial -> /tutorial
+        const prefix = '/docs';
+        if (pathname.startsWith(prefix)) {
+          url = pathname.substring(prefix.length) || '/';
+        } else {
+          url = pathname;
+        }
+      }
+
+      // Append the hash back to the URL
+      url += hash;
+    } catch (e) {
+      // If URL parsing fails, assume it's already a relative path
+      // and use the original transformation logic as fallback
+      if (currentLocale !== 'en') {
+        url = url.replace(`/docs/${currentLocale}/`, '/');
+      } else {
+        url = url.replace('/docs/', '/');
+      }
+    }
+
     const transformed = {
       ...item,
-      url: (URL_CONFIG.FORCE_ENGLISH_RESULTS && currentLocale === URL_CONFIG.DEFAULT_LOCALE) 
-        ? processSearchResultUrl(item.url) 
-        : item.url,
+      url,
       index,
       queryID: queryIDRef.current
     };
-    
+
     return transformed;
   });
 
-  const result = transformItems ? transformItems(items) : baseTransform(items);
-  
+  // Always apply base transformation first to fix URLs
+  const baseTransformed = baseTransform(items);
+
+  // Then optionally apply custom transformation on top
+  const result = transformItems ? transformItems(baseTransformed) : baseTransformed;
+
   return result;
 }

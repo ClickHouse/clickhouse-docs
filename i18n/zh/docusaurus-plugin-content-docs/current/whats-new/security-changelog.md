@@ -10,7 +10,7 @@ keywords: ['安全', 'CVE', '漏洞', '安全修复', '补丁']
 
 
 
-# 安全更新日志
+# 安全更新日志 {#security-changelog}
 
 
 

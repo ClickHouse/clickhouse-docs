@@ -52,7 +52,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 Например:
 
 ```shell
-# измените команду, чтобы примонтировать пути
+# измените команду, чтобы примонтировать пути {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

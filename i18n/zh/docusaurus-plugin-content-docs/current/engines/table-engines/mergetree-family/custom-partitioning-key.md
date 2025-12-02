@@ -7,9 +7,7 @@ title: '自定义分区键'
 doc_type: 'guide'
 ---
 
-
-
-# 自定义分区键
+# 自定义分区键 {#custom-partitioning-key}
 
 :::note
 在大多数情况下，无需使用分区键；在其他大多数情况下，除非是针对按天分区较为常见的可观测性场景，否则也不需要比“按月”更细粒度的分区键。
@@ -78,7 +76,6 @@ WHERE table = 'visits'
 
 `partition` 列包含分区的名称。在此示例中有两个分区：`201901` 和 `201902`。可以使用该列的值在 [ALTER ... PARTITION](../../../sql-reference/statements/alter/partition.md) 查询中指定分区名称。
 
-
 `name` 列包含分区数据 part 的名称。你可以在 [ALTER ATTACH PART](/sql-reference/statements/alter/partition#attach-partitionpart) 查询中使用该列来指定 part 的名称。
 
 下面我们来拆解这个 part 名称：`201901_1_9_2_11`：
@@ -134,16 +131,13 @@ drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  1 16:48 detached
 
 文件夹 &#39;201901&#95;1&#95;1&#95;0&#39;、&#39;201901&#95;1&#95;7&#95;1&#39; 等，是各个 part 的目录。每个 part 属于一个分区，并且只包含某一个月的数据（本示例中的表是按月分区的）。
 
-
 `detached` 目录包含通过 [DETACH](/sql-reference/statements/detach) 查询从表中分离出去的 part。损坏的 part 也会被移动到该目录，而不是直接删除。服务器不会使用 `detached` 目录中的这些 part。你可以在任何时候在该目录中添加、删除或修改数据——在你执行 [ATTACH](/sql-reference/statements/alter/partition#attach-partitionpart) 查询之前，服务器都不会察觉到这些更改。
 
 请注意，在正在运行的服务器上，你不能在文件系统中手动更改 part 的集合或其数据，因为服务器不会感知到这些变更。对于非复制表，你可以在服务器停止时进行此操作，但不推荐这样做。对于复制表，在任何情况下都不能更改 part 的集合。
 
 ClickHouse 允许你对分区执行操作：删除分区、在表之间复制分区，或者创建备份。所有操作的完整列表请参见 [Manipulations With Partitions and Parts](/sql-reference/statements/alter/partition) 一节。
 
-
-
-## 使用分区键进行 GROUP BY 优化
+## 使用分区键进行 GROUP BY 优化 {#group-by-optimisation-using-partition-key}
 
 对于某些表的分区键与查询的 GROUP BY 键的特定组合，可以针对每个分区独立执行聚合。
 这样在最后我们就不必合并所有执行线程产生的部分聚合结果，

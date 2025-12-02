@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server
+# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
 
 Это пример того, как создать агентское приложение, используя данные, хранящиеся в 
 ClickHouse. В нем используется [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
@@ -44,7 +44,7 @@ ClickHouse. В нем используется [ClickHouse MCP Server](https://g
 
 
 
-## Ручная установка зависимостей
+## Ручная установка зависимостей {#install-dependencies-manually}
 
 1. Установите зависимости:
 

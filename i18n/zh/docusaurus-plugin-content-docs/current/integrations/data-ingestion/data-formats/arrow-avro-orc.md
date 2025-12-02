@@ -10,13 +10,13 @@ doc_type: 'guide'
 
 
 
-# 在 ClickHouse 中处理 Avro、Arrow 和 ORC 数据
+# 在 ClickHouse 中处理 Avro、Arrow 和 ORC 数据 {#working-with-avro-arrow-and-orc-data-in-clickhouse}
 
 Apache 已发布了多种在分析环境中广泛使用的数据格式，其中包括流行的 [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/) 和 [ORC](https://orc.apache.org/)。ClickHouse 支持使用上述任意一种格式导入和导出数据。
 
 
 
-## 以 Avro 格式导入和导出
+## 以 Avro 格式导入和导出 {#importing-and-exporting-in-avro-format}
 
 ClickHouse 支持读取和写入 [Apache Avro](https://avro.apache.org/) 数据文件，这些文件在 Hadoop 系统中被广泛使用。
 
@@ -55,7 +55,7 @@ INTO OUTFILE 'export.avro'
 FORMAT Avro;
 ```
 
-### Avro 和 ClickHouse 数据类型
+### Avro 和 ClickHouse 数据类型 {#avro-and-clickhouse-data-types}
 
 在导入或导出 Avro 文件时，请注意[数据类型映射](/interfaces/formats/Avro#data-type-mapping)。从 Avro 文件加载数据时，请使用显式类型转换进行转换：
 
@@ -75,7 +75,7 @@ LIMIT 3;
 └───────┴──────────────┘
 ```
 
-### Kafka 中的 Avro 消息
+### Kafka 中的 Avro 消息 {#avro-messages-in-kafka}
 
 当 Kafka 消息使用 Avro 格式时，ClickHouse 可以使用 [AvroConfluent](/interfaces/formats/AvroConfluent) 格式和 [Kafka](/engines/table-engines/integrations/kafka.md) 引擎读取此类数据流：
 
@@ -93,7 +93,7 @@ kafka_format = 'AvroConfluent';
 ```
 
 
-## 使用 Arrow 格式
+## 使用 Arrow 格式 {#working-with-arrow-format}
 
 另一种列式数据格式是 [Apache Arrow](https://arrow.apache.org/)，ClickHouse 也支持使用它进行导入和导出。要从 [Arrow 文件](assets/data.arrow) 导入数据，我们使用 [Arrow](/interfaces/formats/Arrow) 格式：
 
@@ -113,7 +113,7 @@ FORMAT Arrow
 
 另外，请检查 [数据类型匹配](/interfaces/formats/Arrow#data-types-matching)，以确定是否有需要手动转换的数据类型。
 
-### Arrow 数据流
+### Arrow 数据流 {#arrow-data-streaming}
 
 [ArrowStream](/interfaces/formats/ArrowStream) 格式可用于处理 Arrow 流（用于内存中处理）。ClickHouse 可以读取和写入 Arrow 流。
 
@@ -148,7 +148,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 我们使用了 `arrow-stream` 作为 Arrow 流式数据的一个可能来源。
 
 
-## 导入和导出 ORC 数据
+## 导入和导出 ORC 数据 {#importing-and-exporting-orc-data}
 
 [Apache ORC](https://orc.apache.org/) 格式是一种面向列的存储格式，通常用于 Hadoop。ClickHouse 支持使用 [ORC 格式](/interfaces/formats/ORC) 导入和导出 [ORC 数据](assets/data.orc)：
 

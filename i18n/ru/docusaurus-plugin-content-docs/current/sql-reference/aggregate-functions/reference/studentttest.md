@@ -7,7 +7,7 @@ title: 'studentTTest'
 doc_type: 'reference'
 ---
 
-# studentTTest
+# studentTTest {#studentttest}
 
 Применяет t-критерий Стьюдента к выборкам из двух генеральных совокупностей.
 

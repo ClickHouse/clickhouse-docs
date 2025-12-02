@@ -15,7 +15,7 @@ import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
 
-# API キーの管理
+# API キーの管理 {#managing-api-keys}
 
 ClickHouse Cloud は OpenAPI を利用した API を提供しており、アカウントおよびサービスをプログラムから管理できます。
 

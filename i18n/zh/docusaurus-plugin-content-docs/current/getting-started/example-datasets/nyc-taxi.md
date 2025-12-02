@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 :::
 
 
-## 创建 `trips` 表
+## 创建 `trips` 表 {#create-the-table-trips}
 
 首先为出租车行程创建一张表：
 
@@ -125,7 +125,7 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## 示例查询
+## 示例查询 {#sample-queries}
 
 下面的查询是在上文所述的示例数据上执行的。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上针对完整数据集运行这些示例查询，只需将下面的查询修改为使用表 `nyc_taxi.trips`。
 
@@ -182,7 +182,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 下载预先生成的分区
+## 下载预先生成的分区 {#download-of-prepared-partitions}
 
 :::note
 以下步骤介绍原始数据集的信息，以及将预先生成的分区加载到自行管理的 ClickHouse 服务器环境中的方法。
@@ -195,9 +195,9 @@ ORDER BY passenger_count ASC
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
-# 验证校验和
+# 验证校验和 {#validate-the-checksum}
 $ md5sum trips_mergetree.tar
-# 校验和应为：f3b8d469b41d9a82da064ded7245d12c
+# 校验和应为：f3b8d469b41d9a82da064ded7245d12c {#checksum-should-be-equal-to-f3b8d469b41d9a82da064ded7245d12c}
 $ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # ClickHouse 数据目录的路径
 $ # 检查解压数据的权限，必要时进行修复
 $ sudo service clickhouse-server restart
@@ -209,7 +209,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 :::
 
 
-## 单机环境下的结果
+## 单机环境下的结果 {#results-on-single-server}
 
 问题 1：
 

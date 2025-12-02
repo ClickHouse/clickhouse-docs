@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# QUALIFY 子句
+# QUALIFY 子句 {#qualify-clause}
 
 用于过滤窗口函数的结果。它类似于 [WHERE](../../../sql-reference/statements/select/where.md) 子句，但不同之处在于，`WHERE` 在窗口函数计算之前执行，而 `QUALIFY` 则在窗口函数计算之后执行。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 示例
+## 示例 {#examples}
 
 示例：
 

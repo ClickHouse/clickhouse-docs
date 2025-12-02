@@ -7,9 +7,7 @@ title: 'DateTime64'
 doc_type: 'reference'
 ---
 
-
-
-# DateTime64
+# DateTime64 {#datetime64}
 
 カレンダー日付と一日の時刻で表現できる時点を、サブ秒精度を指定して保存できるデータ型です。
 
@@ -30,8 +28,7 @@ DateTime64(精度, [タイムゾーン])
 
 注記: 最大値に対する precision は 8 です。最大の 9 桁（ナノ秒）の precision を使用する場合、UTC におけるサポートされる最大値は `2262-04-11 23:47:16` です。
 
-
-## 例
+## 例 {#examples}
 
 1. `DateTime64` 型の列を持つテーブルを作成し、データを挿入する：
 
@@ -112,7 +109,6 @@ toDateTime64(timestamp, 3, 'Europe/London') AS lon_time,
 toDateTime64(timestamp, 3, 'Asia/Istanbul') AS istanbul_time
 FROM dt64;
 ```
-
 
 ```text
 ┌────────────────ロンドン_time─┬───────────イスタンブール_time─┐

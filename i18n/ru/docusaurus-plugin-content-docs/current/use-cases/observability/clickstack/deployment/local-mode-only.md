@@ -12,7 +12,7 @@ keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability'
 import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 Аналогично [all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose), этот единый Docker-образ включает все компоненты ClickStack:
 
@@ -30,7 +30,7 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 * Отладки
 * Разработки, где используется HyperDX
 
-## Этапы развертывания
+## Этапы развертывания {#deployment-steps}
 
 <br />
 

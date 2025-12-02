@@ -14,7 +14,6 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 {/* truncate */}
 
-
 ## 介绍 \{#introduction\}
 
 列式数据库会将每一列的数据独立存储。这样一来，在执行任意一次查询时，只需从磁盘读取该查询实际用到的列的数据。代价是：对整行产生影响的操作会相应变得更加昂贵。列式数据库也被称为面向列的数据库管理系统。ClickHouse 就是此类系统的一个典型示例。
@@ -23,9 +22,9 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 列式数据库的主要优势包括：
 
-- 在包含许多列的表中，仅使用少数列的查询。
-- 针对海量数据的聚合查询。
-- 按列进行数据压缩。
+* 在包含许多列的表中，仅使用少数列的查询。
+* 针对海量数据的聚合查询。
+* 按列进行数据压缩。
 
 ## 行式数据库 vs 列式数据库 \{#row-oriented-vs-column-oriented-databases\}
 

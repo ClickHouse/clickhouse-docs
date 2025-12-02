@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.users
+# system.users {#systemusers}
 
 Содержит список [учётных записей пользователей](../../guides/sre/user-management/index.md#user-account-management), созданных на сервере.
 

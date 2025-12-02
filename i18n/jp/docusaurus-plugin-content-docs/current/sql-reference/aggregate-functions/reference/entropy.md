@@ -6,7 +6,7 @@ title: 'entropy'
 doc_type: 'reference'
 ---
 
-# entropy
+# entropy {#entropy}
 
 列内の値に対して[シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))を計算します。
 

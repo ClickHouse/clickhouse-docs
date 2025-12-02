@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.settings&#95;profiles
+# system.settings&#95;profiles {#systemsettings_profiles}
 
 包含已配置的设置配置文件的属性。
 

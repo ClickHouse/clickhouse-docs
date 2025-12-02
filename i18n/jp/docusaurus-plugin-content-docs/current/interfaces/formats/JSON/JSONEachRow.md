@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 次のデータを含む JSON ファイル `football.json` を用意します：
 
@@ -48,7 +48,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
 
-### データの読み取り
+### データの読み取り {#reading-data}
 
 `JSONEachRow` 形式を使ってデータを読み込みます。
 

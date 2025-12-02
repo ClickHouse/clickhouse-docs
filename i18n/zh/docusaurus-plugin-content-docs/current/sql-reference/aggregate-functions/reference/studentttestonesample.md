@@ -7,7 +7,7 @@ title: 'studentTTestOneSample'
 doc_type: 'reference'
 ---
 
-# studentTTestOneSample
+# studentTTestOneSample {#studentttestonesample}
 
 对单个样本进行 Student t 检验，以确定该样本的均值是否不同于已知的总体均值。
 

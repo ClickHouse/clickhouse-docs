@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## 未使用主键的过滤示例
+## 未使用主键的过滤示例 {#example-filtering-without-using-primary-keys}
 
 创建表：
 
@@ -80,7 +80,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 预聚合查询示例
+## 预聚合查询示例 {#example-pre-aggregation-query}
 
 创建包含 Projection 的表：
 
@@ -158,7 +158,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 带有 `_part_offset` 字段的常规投影
+## 带有 `_part_offset` 字段的常规投影 {#normal-projection-with-part-offset-field}
 
 创建一个带有常规投影并使用 `_part_offset` 字段的表：
 
@@ -186,7 +186,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### 将 `_part_offset` 用作二级索引
+### 将 `_part_offset` 用作二级索引 {#normal-projection-secondary-index}
 
 `_part_offset` 字段在合并和变更操作过程中会保留其值，因此非常适合作为二级索引使用。我们可以在查询中加以利用：
 
@@ -203,7 +203,7 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# 投影操作
+# 投影操作 {#manipulating-projections}
 
 可以执行以下关于[投影](/engines/table-engines/mergetree-family/mergetree.md/#projections)的操作：
 

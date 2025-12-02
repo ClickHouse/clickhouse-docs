@@ -6,10 +6,9 @@ title: 'system.merges'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.merges
+# system.merges {#systemmerges}
 
 <SystemTableCloud />
 

@@ -30,7 +30,7 @@ ROLE を作成する [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLU
 
 
 
-## 例
+## 例 {#examples}
 
 ```sql
 CREATE ROLE accountant;

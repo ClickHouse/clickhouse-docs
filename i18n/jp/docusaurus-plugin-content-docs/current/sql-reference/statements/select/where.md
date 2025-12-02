@@ -9,7 +9,7 @@ keywords: ['WHERE']
 
 
 
-# WHERE 句
+# WHERE 句 {#where-clause}
 
 `WHERE` 句は、`SELECT` の [`FROM`](../../../sql-reference/statements/select/from.md) 句から得られるデータをフィルタリングするために使用します。
 
@@ -94,7 +94,7 @@ ClickHouse では、`UInt8` 列をブール条件として直接使用でき、`
 
 
 
-## リテラル、カラム、サブクエリを用いた式
+## リテラル、カラム、サブクエリを用いた式 {#expressions-with-literals-columns-subqueries}
 
 `WHERE` 句の後に続く式には、[リテラル](/sql-reference/syntax#literals)、カラム、またはサブクエリ（条件で使用される値を返す入れ子の `SELECT` 文）を含めることができます。
 
@@ -126,9 +126,9 @@ AND in&#95;stock = true
 AND name LIKE &#39;%Special%&#39;
 
 ````
-## 例            
+## 例             {#examples}
 
-### `NULL` のテスト                             
+### `NULL` のテスト                              {#examples-testing-for-null}
 
 `NULL` 値を含むクエリ:
 
@@ -149,7 +149,7 @@ SELECT * FROM t_null WHERE y != 0;
 └───┴───┘
 ```
 
-### 論理演算子を使用したデータのフィルタリング
+### 論理演算子を使用したデータのフィルタリング {#example-filtering-with-logical-operators}
 
 以下のテーブルとデータを使用します。
 
@@ -267,7 +267,7 @@ WHERE and(or(category = 'Electronics', price > 100), in_stock);
 
 SQL キーワード構文（`AND`、`OR`、`NOT`、`XOR`）の方が一般的に可読性は高いですが、関数構文は複雑な式や動的クエリを構築する際に有用です。
 
-### 条件としての UInt8 列の利用
+### 条件としての UInt8 列の利用 {#example-uint8-column-as-condition}
 
 [前の例](#example-filtering-with-logical-operators) のテーブルを用いて、列名をそのまま条件として使用できます：
 
@@ -285,7 +285,7 @@ WHERE in_stock
    └────┴─────────┴────────┴─────────────┴──────────┘
 ```
 
-### 比較演算子の使用
+### 比較演算子の使用 {#example-using-comparison-operators}
 
 以下の例では、上記の[例](#example-filtering-with-logical-operators)のテーブルとデータを使用します。簡潔にするため、結果の出力は省略しています。
 
@@ -360,11 +360,11 @@ SELECT * FROM products
 WHERE category = 'Electronics' AND in_stock = true;
 ```
 
-### パターンマッチングと条件式
+### パターンマッチングと条件式 {#examples-pattern-matching-and-conditional-expressions}
 
 以下の例では、上記の[例](#example-filtering-with-logical-operators)と同じテーブルとデータを使用します。説明を簡潔にするため、結果は省略します。
 
-#### LIKE の例
+#### LIKE の例 {#like-examples}
 
 
 ```sql
@@ -381,7 +381,7 @@ SELECT * FROM products WHERE name LIKE '____';
 -- 結果: Desk, Lamp
 ```
 
-#### ILIKE の使用例
+#### ILIKE の使用例 {#ilike-examples}
 
 ```sql
 -- 大文字小文字を区別しない 'LAPTOP' の検索
@@ -393,7 +393,7 @@ SELECT * FROM products WHERE name ILIKE 'l%';
 -- 結果: Laptop, Lamp
 ```
 
-#### IF の使用例
+#### IF の使用例 {#if-examples}
 
 ```sql
 -- カテゴリ別の価格閾値
@@ -409,7 +409,7 @@ WHERE if(in_stock, price > 100, true);
 -- (在庫ありで100ドル超の商品 または 在庫なしの全商品)
 ```
 
-#### multiIf の使用例
+#### multiIf の使用例 {#multiif-examples}
 
 ```sql
 -- カテゴリベースの複数条件
@@ -432,7 +432,7 @@ WHERE multiIf(
 -- 結果: Laptop, Chair, Monitor, Lamp
 ```
 
-#### CASE の例
+#### CASE の例 {#case-examples}
 
 **シンプルな CASE 式:**
 

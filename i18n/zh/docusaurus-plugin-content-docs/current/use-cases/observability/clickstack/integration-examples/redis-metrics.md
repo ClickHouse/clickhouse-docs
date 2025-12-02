@@ -240,10 +240,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 下载预生成的指标文件（包含 24 小时的 Redis Metrics，具有逼真模式）：
 ```bash
-# 下载 gauge 类型指标（内存、碎片率）
+# 下载 gauge 类型指标（内存、碎片率） {#expected-output-pong}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# 下载 sum 类型指标（命令数、连接数、keyspace 统计）
+# 下载 sum 类型指标（命令数、连接数、keyspace 统计） {#test-info-command-used-by-metrics-collector}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -353,7 +353,7 @@ docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 验证 collector 是否可以访问 Redis：
 
 ```bash
-# 从 ClickStack 容器中执行
+# 从 ClickStack 容器中执行 {#download-sum-metrics-commands-connections-keyspace-stats}
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # 预期输出：PONG
 ```
@@ -375,7 +375,7 @@ docker exec <容器> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 查找连接错误或认证失败
+# 查找连接错误或认证失败 {#load-gauge-metrics-memory-fragmentation}
 ```
 
 

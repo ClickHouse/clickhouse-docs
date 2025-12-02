@@ -28,7 +28,7 @@ doc_type: 'guide'
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 在更新大量数据时使用。此表引擎针对合并过程中的数据去重进行了优化。                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 在需要频繁更新单行记录，或需要维护随时间变化对象的最新状态的场景中使用。例如，用于跟踪用户活动或文章统计数据。                                       |
 
-## 更新变更
+## 更新变更 \{#update-mutations\}
 
 可以通过 `ALTER TABLE ... UPDATE` 命令发起更新变更，例如：
 
@@ -41,19 +41,18 @@ ALTER TABLE posts_temp
 
 在[更新变更](/sql-reference/statements/alter/update)中了解更多信息。
 
-
 ## 轻量级更新 \{#lightweight-updates\}
 
 轻量级更新是 ClickHouse 的一项功能，它通过“补丁分片（patch parts）”来更新行——这些是只包含已更新列和行的特殊数据分片，而不是像传统变更那样重写整个列。轻量级 `UPDATE` 的主要特性：
 
-- 使用标准的 `UPDATE` 语法，并立即创建补丁分片，而无需等待合并
-- 更新后的值会通过补丁应用即时在 `SELECT` 查询中可见，但只会在后续合并期间才被物理写入（物化）
-- 为小规模更新（最多约占表的 10%）而设计，具备可预期的延迟
-- 会给需要应用补丁的 `SELECT` 查询增加开销，但避免了重写整个列
+* 使用标准的 `UPDATE` 语法，并立即创建补丁分片，而无需等待合并
+* 更新后的值会通过补丁应用即时在 `SELECT` 查询中可见，但只会在后续合并期间才被物理写入（物化）
+* 为小规模更新（最多约占表的 10%）而设计，具备可预期的延迟
+* 会给需要应用补丁的 `SELECT` 查询增加开销，但避免了重写整个列
 
-更多详细信息请参考 ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
+更多详细信息请参考 [&quot;The Lightweight UPDATE Statement&quot;](/sql-reference/statements/update)
 
-## 即时更新
+## 即时更新 \{#on-the-fly-updates\}
 
 即时更新提供了一种机制，可以对行进行更新，使其立即生效，后续的 `SELECT` 查询会自动返回更新后的值（这会带来额外开销并降低查询性能）。这在效果上解决了普通变更操作在原子性方面的限制。下面给出一个示例：
 
@@ -90,8 +89,7 @@ WHERE Id = 404346
 
 进一步了解[即时更新](/guides/developer/on-the-fly-mutations)。
 
-
-## `CollapsingMergeTree`
+## `CollapsingMergeTree` \{#collapsing-merge-tree\}
 
 源于这样一个理念：更新操作代价高昂，而插入操作却可以被用来执行更新，
 [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 表引擎
@@ -138,7 +136,6 @@ HAVING sum(Sign) > 0
 的文档，以获得更全面的概览。
 :::
 
-
 ## 更多资源 \{#more-resources\}
 
-- [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

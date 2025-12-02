@@ -201,7 +201,7 @@ function myErrorHandler(error, req, res, next) {
 </TabItem>
 </Tabs>
 
-## 故障排除
+## 故障排除 {#troubleshooting}
 
 如果在使用 SDK 时遇到问题，可以通过将 `OTEL_LOG_LEVEL` 环境变量设置为 `debug` 来启用详细日志输出。
 
@@ -212,7 +212,7 @@ export OTEL_LOG_LEVEL=debug
 
 ## 高级埋点配置 {#advanced-instrumentation-configuration}
 
-### 捕获控制台日志
+### 捕获控制台日志 {#capture-console-logs}
 
 默认情况下，ClickStack SDK 会捕获控制台日志。可以通过将环境变量 `HDX_NODE_CONSOLE_CAPTURE` 设置为 0 来禁用此功能。
 
@@ -221,7 +221,7 @@ export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
 
-### 附加用户信息或元数据
+### 附加用户信息或元数据 {#attach-user-information-or-metadata}
 
 若要轻松为与给定属性或标识符（例如 user id 或 email）相关的所有事件添加标签，可以调用 `setTraceAttributes` 函数。该函数会在调用后，将声明的属性附加到与当前 trace 关联的每一条 log/span 上。建议在给定 request/trace 的生命周期中尽可能早地调用该函数（例如在 Express middleware 栈中尽量靠前的位置）。
 
@@ -327,7 +327,7 @@ initSDK({
 
 _`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，可以是任意你指定的名称。_
 
-### 启用异常捕获
+### 启用异常捕获 {#enabling-exception-capturing}
 
 要启用未捕获异常的捕获功能，需要将环境变量 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` 设置为 1。
 

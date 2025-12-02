@@ -6,7 +6,7 @@ title: 'system.numbers'
 doc_type: 'reference'
 ---
 
-# system.numbers
+# system.numbers {#systemnumbers}
 
 该表包含一个名为 `number` 的 `UInt64` 列，存储从零开始的几乎所有自然数。
 

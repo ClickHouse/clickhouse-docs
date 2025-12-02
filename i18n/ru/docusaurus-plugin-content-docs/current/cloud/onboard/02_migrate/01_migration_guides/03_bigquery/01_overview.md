@@ -12,7 +12,7 @@ import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
 
-# Сравнение ClickHouse Cloud и BigQuery 
+# Сравнение ClickHouse Cloud и BigQuery  {#comparing-clickhouse-cloud-and-bigquery}
 
 
 
@@ -186,7 +186,7 @@ ClickHouse использует стандартный SQL с множество
 
 
 
-## Массивы
+## Массивы {#arrays}
 
 По сравнению с восемью функциями работы с массивами в BigQuery, в ClickHouse доступно более 80 [встроенных функций для работы с массивами](/sql-reference/functions/array-functions), которые позволяют элегантно и просто моделировать и решать широкий круг задач.
 

@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 Отличается от [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) тем, что ClickHouse также возвращает информацию о прогрессе в формате JSON.
 
-## Пример использования
+## Пример использования {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

@@ -1,4 +1,4 @@
-# 使用 tgz 归档文件安装 ClickHouse
+# 使用 tgz 归档文件安装 ClickHouse {#install-clickhouse-using-tgz-archives}
 
 > 对于无法安装 `deb` 或 `rpm` 软件包的 Linux 发行版,建议使用官方预编译的 `tgz` 归档文件。
 
@@ -20,7 +20,7 @@
 
 
 
-## 获取最新的 ClickHouse 版本
+## 获取最新的 ClickHouse 版本 {#get-latest-version}
 
 从 GitHub 获取最新的 ClickHouse 版本，并将其保存到 `LATEST_VERSION` 变量中。
 
@@ -31,7 +31,7 @@ export LATEST_VERSION
 ```
 
 
-## 检测系统架构
+## 检测系统架构 {#detect-system-architecture}
 
 检测系统架构，并相应设置 ARCH 变量：
 
@@ -44,7 +44,7 @@ esac
 ```
 
 
-## 为每个 ClickHouse 组件下载 tar 包
+## 为每个 ClickHouse 组件下载 tar 包 {#download-tarballs}
 
 为每个 ClickHouse 组件下载 tar 包。该循环会优先尝试特定架构的
 软件包，如果不存在则退回到通用软件包。
@@ -66,7 +66,7 @@ done
 
 
 ```bash
-# 解压并安装 clickhouse-common-static 软件包
+# 解压并安装 clickhouse-common-static 软件包 {#extract-and-install-clickhouse-common-static-package}
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -76,7 +76,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# 提取并安装调试符号包
+# 提取并安装调试符号包 {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -86,7 +86,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# 解压并安装服务器软件包及配置
+# 解压并安装服务器软件包及配置 {#extract-and-install-server-package-with-configuration}
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
@@ -97,7 +97,7 @@ sudo /etc/init.d/clickhouse-server start  # 启动服务器
 
 
 ```bash
-# 提取并安装客户端软件包
+# 提取并安装客户端软件包 {#extract-and-install-client-package}
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

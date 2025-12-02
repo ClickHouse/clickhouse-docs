@@ -6,8 +6,6 @@ title: 'JSON 函数'
 doc_type: 'reference'
 ---
 
-
-
 ## JSON 函数的类型 {#types-of-functions}
 
 有两组函数用于解析 JSON：
@@ -87,7 +85,6 @@ SELECT json, JSONAllPaths(json) FROM test;
 └──────────────────────────────────────┴────────────────────┘
 ```
 
-
 ## JSONAllPathsWithTypes {#JSONAllPathsWithTypes}
 
 引入版本:v24.8
@@ -125,7 +122,6 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ {'a':'Array(Nullable(Int64))','c':'Date'} │
 └──────────────────────────────────────┴───────────────────────────────────────────┘
 ```
-
 
 ## JSONArrayLength {#JSONArrayLength}
 
@@ -166,7 +162,6 @@ SELECT
 └─────────────────────┴────────────────────────────┘
 ```
 
-
 ## JSONDynamicPaths {#JSONDynamicPaths}
 
 引入版本:v24.8
@@ -204,7 +199,6 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ ['a']                  │
 └──────────────────────────────────────┴────────────────────────┘
 ```
-
 
 ## JSONDynamicPathsWithTypes {#JSONDynamicPathsWithTypes}
 
@@ -244,7 +238,6 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 └──────────────────────────────────────┴─────────────────────────────────┘
 ```
 
-
 ## JSONExtract {#JSONExtract}
 
 引入版本:v19.14
@@ -281,7 +274,6 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 └──────────────────────────────────┘
 ```
 
-
 ## JSONExtractArrayRaw {#JSONExtractArrayRaw}
 
 引入版本:v20.1
@@ -317,7 +309,6 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 └──────────────────────────────┘
 ```
 
-
 ## JSONExtractArrayRawCaseInsensitive {#JSONExtractArrayRawCaseInsensitive}
 
 引入版本：v25.8
@@ -350,7 +341,6 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 ```response title=响应
 ['1','2','3']
 ```
-
 
 ## JSONExtractBool {#JSONExtractBool}
 
@@ -387,7 +377,6 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 └─────┘
 ```
 
-
 ## JSONExtractBoolCaseInsensitive {#JSONExtractBoolCaseInsensitive}
 
 引入版本:v25.8
@@ -420,7 +409,6 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 ```response title=响应
 1
 ```
-
 
 ## JSONExtractCaseInsensitive {#JSONExtractCaseInsensitive}
 
@@ -466,7 +454,6 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 [1,2,3]
 ```
 
-
 ## JSONExtractFloat {#JSONExtractFloat}
 
 引入版本:v20.1
@@ -502,7 +489,6 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 └─────┘
 ```
 
-
 ## JSONExtractFloatCaseInsensitive {#JSONExtractFloatCaseInsensitive}
 
 引入版本:v25.8
@@ -535,7 +521,6 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 ```response title=响应
 12.34
 ```
-
 
 ## JSONExtractInt {#JSONExtractInt}
 
@@ -571,7 +556,6 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 │ 200 │
 └─────┘
 ```
-
 
 ## JSONExtractIntCaseInsensitive {#JSONExtractIntCaseInsensitive}
 
@@ -616,7 +600,6 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 42
 ```
 
-
 ## JSONExtractKeys {#JSONExtractKeys}
 
 引入版本:v21.11
@@ -651,7 +634,6 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 │ ['a','b']   │
 └─────────────┘
 ```
-
 
 ## JSONExtractKeysAndValues {#JSONExtractKeysAndValues}
 
@@ -689,7 +671,6 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 └────────────────────────┘
 ```
 
-
 ## JSONExtractKeysAndValuesCaseInsensitive {#JSONExtractKeysAndValuesCaseInsensitive}
 
 引入版本：v25.8
@@ -723,7 +704,6 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 ```response title=响应
 [('Name','Alice'),('AGE','30')]
 ```
-
 
 ## JSONExtractKeysAndValuesRaw {#JSONExtractKeysAndValuesRaw}
 
@@ -760,7 +740,6 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 └──────────────────────────────────────┘
 ```
 
-
 ## JSONExtractKeysAndValuesRawCaseInsensitive {#JSONExtractKeysAndValuesRawCaseInsensitive}
 
 引入版本：v25.8
@@ -793,7 +772,6 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 ```response title=Response
 [('Name','"Alice"'),('AGE','30')]
 ```
-
 
 ## JSONExtractKeysCaseInsensitive {#JSONExtractKeysCaseInsensitive}
 
@@ -838,7 +816,6 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 ['name','AGE']
 ```
 
-
 ## JSONExtractRaw {#JSONExtractRaw}
 
 引入版本：v20.1
@@ -874,7 +851,6 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 └──────────────────┘
 ```
 
-
 ## JSONExtractRawCaseInsensitive {#JSONExtractRawCaseInsensitive}
 
 引入版本：v25.8
@@ -907,7 +883,6 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 ```response title=响应
 {"key":"value"}
 ```
-
 
 ## JSONExtractString {#JSONExtractString}
 
@@ -943,7 +918,6 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 │ hello │
 └───────┘
 ```
-
 
 ## JSONExtractStringCaseInsensitive {#JSONExtractStringCaseInsensitive}
 
@@ -988,7 +962,6 @@ SELECT JSONExtractStringCaseInsensitive('{"User": {"Name": "John"}}', 'user', 'n
 John
 ```
 
-
 ## JSONExtractUInt {#JSONExtractUInt}
 
 引入版本：v20.1
@@ -1024,7 +997,6 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 └─────┘
 ```
 
-
 ## JSONExtractUIntCaseInsensitive {#JSONExtractUIntCaseInsensitive}
 
 引入版本：v25.8
@@ -1057,7 +1029,6 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 ```response title=Response
 789
 ```
-
 
 ## JSONHas {#JSONHas}
 
@@ -1093,7 +1064,6 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 1
 0
 ```
-
 
 ## JSONLength {#JSONLength}
 
@@ -1131,7 +1101,6 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 1
 ```
 
-
 ## JSONMergePatch {#JSONMergePatch}
 
 引入版本：v23.10
@@ -1167,7 +1136,6 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 │ {"a":1,"name":"zoey"} │
 └───────────────────────┘
 ```
-
 
 ## JSONSharedDataPaths {#JSONSharedDataPaths}
 
@@ -1207,7 +1175,6 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 └──────────────────────────────────────┴───────────────────────────┘
 ```
 
-
 ## JSONSharedDataPathsWithTypes {#JSONSharedDataPathsWithTypes}
 
 引入版本:v24.8
@@ -1246,7 +1213,6 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 └──────────────────────────────────────┴─────────────────────────────────────┘
 ```
 
-
 ## JSONType {#JSONType}
 
 引入版本:v20.1
@@ -1283,7 +1249,6 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 1
 1
 ```
-
 
 ## JSON_EXISTS {#JSON_EXISTS}
 
@@ -1333,7 +1298,6 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 └──────────────────────────┘
 ```
 
-
 ## JSON_QUERY {#JSON_QUERY}
 
 引入版本:v21.8
@@ -1373,7 +1337,6 @@ SELECT toTypeName(JSON_QUERY('{"hello":2}', '$.hello'));
 [2]
 String
 ```
-
 
 ## JSON_VALUE {#JSON_VALUE}
 
@@ -1419,7 +1382,6 @@ world
 ᴺᵁᴸᴸ
 ```
 
-
 ## dynamicElement {#dynamicElement}
 
 引入版本：v24.1
@@ -1462,7 +1424,6 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 └───────────────┴────────────────┴─────────────────────────────┴────────────────────────────┴───────────────────────────────────┴───────────────────────────┴────────────────────────────────────┘
 ```
 
-
 ## dynamicType {#dynamicType}
 
 引入版本:v24.1
@@ -1504,7 +1465,6 @@ SELECT d, dynamicType(d) FROM test;
 └───────────────┴────────────────┘
 ```
 
-
 ## isDynamicElementInSharedData {#isDynamicElementInSharedData}
 
 引入版本：v24.1
@@ -1545,7 +1505,6 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 │ [1,2,3]       │ true                            │
 └───────────────┴─────────────────────────────────┘
 ```
-
 
 ## isValidJSON {#isValidJSON}
 
@@ -1602,7 +1561,6 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 0
 ```
 
-
 ## simpleJSONExtractBool {#simpleJSONExtractBool}
 
 引入版本:v21.4
@@ -1656,7 +1614,6 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 0
 0
 ```
-
 
 ## simpleJSONExtractFloat {#simpleJSONExtractFloat}
 
@@ -1712,7 +1669,6 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 5
 ```
 
-
 ## simpleJSONExtractInt {#simpleJSONExtractInt}
 
 引入版本：v21.4
@@ -1767,7 +1723,6 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 5
 ```
 
-
 ## simpleJSONExtractRaw {#simpleJSONExtractRaw}
 
 引入版本:v21.4
@@ -1818,7 +1773,6 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 5
 {"def":[1,2,3]}
 ```
-
 
 ## simpleJSONExtractString {#simpleJSONExtractString}
 
@@ -1872,7 +1826,6 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 
 ☺
 ```
-
 
 ## simpleJSONExtractUInt {#simpleJSONExtractUInt}
 
@@ -1928,7 +1881,6 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 5
 ```
 
-
 ## simpleJSONHas {#simpleJSONHas}
 
 引入版本:v21.4
@@ -1974,7 +1926,6 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 1
 0
 ```
-
 
 ## toJSONString {#toJSONString}
 

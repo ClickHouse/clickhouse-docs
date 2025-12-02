@@ -105,11 +105,11 @@ ClickHouse Cloud は現在、SCIM や IdP を介した自動プロビジョニ�
 
 
 
-## Infrastructure as Code と自動化
+## Infrastructure as Code と自動化 {#infrastructure-as-code}
 
 Infrastructure as Code（IaC）のプラクティスと API による自動化で ClickHouse Cloud を管理すると、デプロイメント構成に一貫性、バージョン管理、再現性を持たせることができます。
 
-### Terraform Provider
+### Terraform Provider {#terraform-provider}
 
 ClickHouse Cloud コンソールで作成した API キーを使用して、ClickHouse 用 Terraform プロバイダーを設定します。
 
@@ -135,7 +135,7 @@ Terraform プロバイダーは、サービスのプロビジョニング、IP �
 
 サービス構成やネットワークアクセス制御を含む包括的な例については、[Cloud API の利用方法に関する Terraform のサンプル](/knowledgebase/terraform_example) を参照してください。
 
-### Cloud API 連携
+### Cloud API 連携 {#cloud-api-integration}
 
 既存の自動化フレームワークを持つ組織は、Cloud API を通じて ClickHouse Cloud の管理を直接統合できます。API は、サービスのライフサイクル管理、ユーザー管理、バックアップ操作、および監視データの取得に対するプログラムによるアクセスを提供します。
 
@@ -149,11 +149,11 @@ Terraform プロバイダーは、サービスのプロビジョニング、IP �
 API 認証は Terraform と同じトークンベース方式を使用します。完全な API リファレンスおよび連携例については、[ClickHouse Cloud API](/cloud/manage/api/api-overview) ドキュメントを参照してください。
 
 
-## モニタリングと運用統合
+## モニタリングと運用統合 {#monitoring-integration}
 
 既存のモニタリング基盤に ClickHouse Cloud を接続することで、可視性を確保し、問題を事前に検知できます。
 
-### 組み込みモニタリング
+### 組み込みモニタリング {#built-in-monitoring}
 
 ClickHouse Cloud には、1 秒あたりのクエリ数、メモリ使用量、CPU 使用量、ストレージ使用率などのリアルタイムメトリクスを備えた高度なダッシュボードが用意されています。Cloud コンソールの Monitoring → Advanced dashboard からアクセスできます。特定のワークロードパターンやチームごとのリソース消費に合わせて、カスタムダッシュボードを作成できます。
 
@@ -161,7 +161,7 @@ ClickHouse Cloud には、1 秒あたりのクエリ数、メモリ使用量、C
 エンタープライズのインシデント管理システムとのプロアクティブなアラート連携や、自動的なコストモニタリングが不足していることがあります。組み込みダッシュボードは可視性を提供しますが、自動アラートには外部システムとの連携が必要です。
 :::
 
-### 本番環境でのアラート設定
+### 本番環境でのアラート設定 {#production-alerting}
 
 **組み込み機能**: ClickHouse Cloud は、課金イベント、スケーリングイベント、サービスの健全性に関する通知を、メール、UI、Slack 経由で提供します。コンソールの通知設定から、配信チャネルと通知の重要度を設定します。
 

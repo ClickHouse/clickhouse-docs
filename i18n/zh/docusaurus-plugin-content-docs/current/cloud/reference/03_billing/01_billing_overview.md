@@ -181,9 +181,9 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
 
 
 
-## 常见问题
+## 常见问题 {#faqs}
 
-### 什么是 ClickHouse Credit（CHC）？
+### 什么是 ClickHouse Credit（CHC）？ {#what-is-chc}
 
 ClickHouse Credit 是针对客户使用 ClickHouse Cloud 的一单位额度，等同于一（1）美元，并按 ClickHouse 届时发布的有效价目表进行折算。
 
@@ -191,27 +191,27 @@ ClickHouse Credit 是针对客户使用 ClickHouse Cloud 的一单位额度，�
 如果您通过 Stripe 支付账单，那么在您的 Stripe 发票上会看到 1 CHC 等于 0.01 美元。这是为了在 Stripe 上实现精确计费，因为 Stripe 无法针对我们标准 SKU（1 CHC = 1 美元）按非整数数量进行计费。
 :::
 
-### 在哪里可以找到旧版定价信息？
+### 在哪里可以找到旧版定价信息？ {#find-legacy-pricing}
 
 旧版定价信息可以在[这里](https://clickhouse.com/pricing?legacy=true)找到。
 
-### 计算资源是如何计量的？
+### 计算资源是如何计量的？ {#how-is-compute-metered}
 
 ClickHouse Cloud 以每分钟为单位计量计算资源，粒度为每 8GB 内存。
 计算费用会根据服务等级、区域和云服务提供商而变化。
 
-### 磁盘存储是如何计算的？
+### 磁盘存储是如何计算的？ {#how-is-storage-on-disk-calculated}
 
 ClickHouse Cloud 使用云对象存储，并根据存储在 ClickHouse 表中的数据压缩后大小来计量用量。
 存储费用在各服务等级之间相同，但会根据区域和云服务提供商而变化。
 
-### 备份是否计入总存储？
+### 备份是否计入总存储？ {#do-backups-count-toward-total-storage}
 
 存储和备份都会计入存储用量，并分别计费。
 所有服务默认保留一个备份，保留时间为一天。
 需要额外备份的用户可以在 Cloud 控制台的“设置”标签页中配置额外的[备份](/cloud/manage/backups/overview)。
 
-### 我该如何估算压缩比？
+### 我该如何估算压缩比？ {#how-do-i-estimate-compression}
 
 压缩率会因数据集而异。
 压缩率变化的程度取决于数据本身的可压缩性（高基数字段和低基数字段的数量），
@@ -228,12 +228,12 @@ FROM system.tables
 WHERE name = <你的表名>
 ```
 
-### 如果我有自管部署，ClickHouse 提供哪些工具来预估在云端运行服务的成本？
+### 如果我有自管部署，ClickHouse 提供哪些工具来预估在云端运行服务的成本？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
 
 ClickHouse 查询日志会捕获[关键指标](/operations/system-tables/query_log)，可用于估算在 ClickHouse Cloud 中运行工作负载的成本。
 关于从自管环境迁移到 ClickHouse Cloud 的详细信息，请参阅[迁移文档](/cloud/migration/clickhouse-to-cloud)，如有进一步问题，请联系 [ClickHouse Cloud 支持](https://console.clickhouse.cloud/support)。
 
-### ClickHouse Cloud 提供哪些计费选项？
+### ClickHouse Cloud 提供哪些计费选项？ {#what-billing-options-are-available-for-clickhouse-cloud}
 
 ClickHouse Cloud 支持以下计费选项：
 
@@ -245,11 +245,11 @@ ClickHouse Cloud 支持以下计费选项：
 用于 PAYG 的 ClickHouse Cloud credits 按 $0.01 为单位开具发票，使我们能够根据客户的实际使用量按部分 ClickHouse credits 收费。这不同于承诺支出型 ClickHouse credits，后者是以整 $1 为单位预付购买。
 :::
 
-### 我可以删除我的信用卡吗？
+### 我可以删除我的信用卡吗？ {#can-i-delete-my-credit-card}
 
 您无法在计费 UI 中移除信用卡，但可以随时更新。这有助于确保您的组织始终具有有效的付款方式。如果您需要移除信用卡，请联系 [ClickHouse Cloud 支持](https://console.clickhouse.cloud/support) 获取帮助。
 
-### 计费周期有多长？
+### 计费周期有多长？ {#how-long-is-the-billing-cycle}
 
 计费采用月度周期，开始日期为创建 ClickHouse Cloud 组织的日期。
 

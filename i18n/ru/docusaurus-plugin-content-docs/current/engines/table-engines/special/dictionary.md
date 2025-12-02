@@ -1,23 +1,19 @@
 ---
-description: 'Движок `Dictionary` отображает данные словаря как таблицу в ClickHouse.'
-sidebar_label: 'Dictionary'
+description: 'Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.'
+sidebar_label: 'Словарь'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
 title: 'Движок таблицы Dictionary'
 doc_type: 'reference'
 ---
 
+# Движок таблицы словаря {#dictionary-table-engine}
 
+Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) как таблицу ClickHouse.
 
-# Движок таблицы Dictionary
+## Пример {#example}
 
-Движок `Dictionary` представляет данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
-
-
-
-## Пример
-
-В качестве примера рассмотрим словарь `products` со следующей конфигурацией:
+Рассмотрим в качестве примера словарь `products` со следующей конфигурацией:
 
 ```xml
 <dictionaries>
@@ -50,7 +46,7 @@ doc_type: 'reference'
 </dictionaries>
 ```
 
-Запросите данные словаря:
+Выполните запрос к данным из словаря:
 
 ```sql
 SELECT
@@ -72,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-Вы можете использовать функцию [dictGet*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
+Вы можете использовать функции [dictGet*](/sql-reference/functions/ext-dict-functions), чтобы получить данные словаря в данном формате.
 
-Это представление неудобно, когда нужно получить сырые (raw) данные или выполнить операцию `JOIN`. В таких случаях можно использовать движок `Dictionary`, который отображает данные словаря в виде таблицы.
+Это представление не очень удобно, когда нужно получить необработанные данные или выполнить операцию `JOIN`. В таких случаях вы можете использовать движок `Dictionary`, который отображает данные словаря в виде таблицы.
 
 Синтаксис:
 
@@ -98,10 +94,10 @@ SELECT * FROM products LIMIT 1;
 
 ```text
 ┌────product_id─┬─title───────────┐
-│        152689 │ Некий товар     │
+│        152689 │ Some item       │
 └───────────────┴─────────────────┘
 ```
 
 **См. также**
 
-* [Функция dictionary](/sql-reference/table-functions/dictionary)
+* [Табличная функция `dictionary`](/sql-reference/table-functions/dictionary)

@@ -852,7 +852,7 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとに可変�
 
 
 
-## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types
+## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input_format_json_infer_array_of_dynamic_from_array_of_different_types}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -885,7 +885,7 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 デフォルトで有効です。
 
 
-## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings
+## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -944,7 +944,7 @@ JSON 内のフィールド階層の最大深さ。これは厳密な制限では
 
 
 
-## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings
+## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -998,7 +998,7 @@ JSON 入力フォーマットで、数値を文字列として解析すること
 
 
 
-## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings
+## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1034,7 +1034,7 @@ JSON 入力フォーマットにおいて、JSON 文字列に不正なエスケ�
 
 
 
-## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects
+## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1834,7 +1834,7 @@ Decimal 値を出力する際に、小数点以下の末尾のゼロも出力し
 
 
 
-## output&#95;format&#95;json&#95;array&#95;of&#95;rows
+## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output_format_json_array_of_rows}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1912,7 +1912,7 @@ JSON 出力形式での文字列出力におけるスラッシュ `/` のエス�
 
 
 
-## output&#95;format&#95;json&#95;pretty&#95;print
+## output&#95;format&#95;json&#95;pretty&#95;print {#output_format_json_pretty_print}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1993,7 +1993,7 @@ JSON 出力フォーマットにおける decimal 型値のクオート有無を
 
 
 
-## output&#95;format&#95;json&#95;quote&#95;denormals
+## output&#95;format&#95;json&#95;quote&#95;denormals {#output_format_json_quote_denormals}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2111,7 +2111,7 @@ JSON 出力フォーマットでの UTF-8 シーケンスの検証を制御し�
 
 
 
-## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters
+## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output_format_markdown_escape_special_characters}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2393,7 +2393,7 @@ Pretty 形式で ANSI エスケープシーケンスを使用します。0 - 無
 
 
 
-## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names
+## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output_format_pretty_display_footer_column_names}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2716,7 +2716,7 @@ regexp_tree 辞書に対して大文字・小文字を区別しないマッチ�
 
 
 
-## schema&#95;inference&#95;hints
+## schema&#95;inference&#95;hints {#schema_inference_hints}
 
 スキーマを持たないフォーマットに対して、スキーマ推論のヒントとして使用する列名と型の一覧です。
 

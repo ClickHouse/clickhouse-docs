@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.roles
+# system.roles {#systemroles}
 
 構成された[ロール](../../guides/sre/user-management/index.md#role-management)に関する情報を保持します。
 

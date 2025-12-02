@@ -6,10 +6,9 @@ title: 'system.query_metric_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.query&#95;metric&#95;log
+# system.query&#95;metric&#95;log {#systemquery&#95;metric&#95;log}
 
 <SystemTableCloud />
 

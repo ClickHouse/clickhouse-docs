@@ -27,7 +27,7 @@ import cp_advanced_settings from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# Интеграция с ClickHouse Cloud
+# Интеграция с ClickHouse Cloud {#integrating-with-clickhouse-cloud}
 
 
 

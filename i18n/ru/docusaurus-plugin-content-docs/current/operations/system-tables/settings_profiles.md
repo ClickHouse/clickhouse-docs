@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.settings&#95;profiles
+# system.settings&#95;profiles {#systemsettings_profiles}
 
 Содержит свойства определённых профилей настроек.
 

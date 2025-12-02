@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## Пример использования {#example-usage}
 
-### Вставка данных
+### Вставка данных {#inserting-data}
 
 :::tip
 Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически распознаёт заголовки в файлах CSV при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
@@ -71,7 +71,7 @@ INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
 
 
-### Чтение данных
+### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `CSVWithNames`:
 

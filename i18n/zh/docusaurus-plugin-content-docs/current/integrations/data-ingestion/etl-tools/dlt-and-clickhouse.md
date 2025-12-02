@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 dlt 连接到 ClickHouse
+# 将 dlt 连接到 ClickHouse {#connect-dlt-to-clickhouse}
 
 <PartnerBadge/>
 
@@ -18,9 +18,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 
-## 安装适用于 ClickHouse 的 dlt
+## 安装适用于 ClickHouse 的 dlt {#install-dlt-with-clickhouse}
 
-### 安装包含 ClickHouse 依赖的 `dlt` 库：
+### 安装包含 ClickHouse 依赖的 `dlt` 库： {#to-install-the-dlt-library-with-clickhouse-dependencies}
 
 ```bash
 pip install "dlt[clickhouse]"
@@ -99,7 +99,7 @@ dataset_table_separator = "___"          # 数据集表名与数据集之间的�
 
 
 ```bash
-# 将此配置保持在 toml 文件的顶部，在任何节（section）开始之前。
+# 将此配置保持在 toml 文件的顶部，在任何节（section）开始之前。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -156,7 +156,7 @@ ClickHouse 支持以下<a href="https://dlthub.com/docs/general-usage/schema#tab
 
 
 
-## 表引擎
+## 表引擎 {#table-engine}
 
 默认情况下，ClickHouse 中创建的表使用 `ReplicatedMergeTree` 表引擎。使用 ClickHouse 适配器时，可以通过 `table_engine_type` 指定其他表引擎：
 
@@ -176,7 +176,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `replicated_merge_tree`（默认）- 使用 `ReplicatedMergeTree` 引擎创建表
 
 
-## 暂存（staging）支持
+## 暂存（staging）支持 {#staging-support}
 
 ClickHouse 支持将 Amazon S3、Google Cloud Storage 和 Azure Blob Storage 用作文件暂存目标位置。
 
@@ -199,7 +199,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### 将 Google Cloud Storage 用作暂存区域
+### 将 Google Cloud Storage 用作暂存区域 {#using-google-cloud-storage-as-a-staging-area}
 
 在将数据加载到 ClickHouse 时，dlt 支持使用 Google Cloud Storage (GCS) 作为暂存区域。此功能由 ClickHouse 的 <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS table function</a> 自动处理，dlt 在内部会调用该函数。
 
@@ -240,10 +240,10 @@ dlt 会将这些凭据传递给 ClickHouse，由 ClickHouse 处理认证并访�
 * 使 filesystem 目标在 s3 兼容模式下与 gcs <a href="https://github.com/dlt-hub/dlt/issues/1272"> 正常工作</a>
 * Google Cloud Storage staging 区域<a href="https://github.com/dlt-hub/dlt/issues/1181"> 支持</a>
 
-### Dbt 支持
+### Dbt 支持 {#dbt-support}
 
 与 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> 的集成通常通过 dbt-clickhouse 提供支持。
 
-### `dlt` 状态同步
+### `dlt` 状态同步 {#syncing-of-dlt-state}
 
 此目标完全支持 <a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a> 状态同步。

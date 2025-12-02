@@ -6,7 +6,7 @@ title: 'uniqHLL12'
 doc_type: 'reference'
 ---
 
-# uniqHLL12
+# uniqHLL12 {#uniqhll12}
 
 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) アルゴリズムを使用して、引数の異なる値のおおよその個数を計算します。
 

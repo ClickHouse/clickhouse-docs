@@ -10,12 +10,11 @@ keywords: ['GeoJSON']
 
 {/* 途中で切り捨て */}
 
-
 ## 質問 \{#question\}
 
 ネストされたオブジェクト配列を含む GeoJSON をどのようにインポートすればよいですか？
 
-## 回答
+## 回答 \{#answer\}
 
 このチュートリアルでは、[こちら](https://opendata.esri.es/datasets/ComunidadSIG::municipios-ign/explore?location=39.536006%2C-0.303882%2C6.57)で公開されているオープンデータを使用します。データのコピーは[こちら](https://datasets-documentation.s3.eu-west-3.amazonaws.com/geoJSON/Municipios.geojson)からも入手できます。
 
@@ -91,7 +90,6 @@ order by id;
 結果セットを読みやすくするため、`features.geometry.coordinates` フィールドはコメントアウトしています。
 :::
 
-
 ```sql
 SELECT
     type AS type,
@@ -127,7 +125,6 @@ LIMIT 5
 5. データを挿入します。
 
 <br />
-
 
 ```sql
 INSERT INTO geojson
@@ -245,8 +242,7 @@ FROM geojson
 └──────────────────────┘
 ```
 
-
 ### まとめ \{#conclusion\}
 
-JSON の扱いは複雑な作業になることがあります。このチュートリアルでは、入れ子構造のオブジェクト配列によって、この作業がさらに難しくなるシナリオを取り上げました。  
+JSON の扱いは複雑な作業になることがあります。このチュートリアルでは、入れ子構造のオブジェクト配列によって、この作業がさらに難しくなるシナリオを取り上げました。\
 その他の JSON に関する要件については、[ドキュメント](https://clickhouse.com/docs/integrations/data-formats/json)を参照してください。

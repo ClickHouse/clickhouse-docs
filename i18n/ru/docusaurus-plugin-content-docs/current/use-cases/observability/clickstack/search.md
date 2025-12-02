@@ -12,7 +12,7 @@ keywords: ['clickstack', 'поиск', 'логи', 'наблюдаемость',
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
-import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
+import Tagging from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
 ClickStack позволяет выполнять полнотекстовый поиск по вашим событиям (логам и трейсам). Вы можете сразу начать поиск, просто вводя ключевые слова, которые присутствуют в ваших событиях. Например, если ваш лог содержит «Error», вы можете найти его, просто введя «Error» в строку поиска.
 

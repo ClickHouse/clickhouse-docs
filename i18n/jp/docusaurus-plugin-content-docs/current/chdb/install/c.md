@@ -9,15 +9,15 @@ doc_type: 'guide'
 
 
 
-# C および C++ 向け chDB
+# C および C++ 向け chDB {#chdb-for-c-and-c}
 
 chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、簡単なクエリから、永続的な接続やクエリ結果のストリーミングなどの高度な機能までサポートします。
 
 
 
-## インストール
+## インストール {#installation}
 
-### ステップ 1: libchdb をインストール
+### ステップ 1: libchdb をインストール {#install-libchdb}
 
 お使いのシステムに chDB ライブラリをインストールします。
 
@@ -25,7 +25,7 @@ chDB は、ClickHouse の機能をアプリケーションに直接組み込む�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ 2: ヘッダーをインクルードする
+### ステップ 2: ヘッダーをインクルードする {#include-headers}
 
 プロジェクトに chDB のヘッダーファイルをインクルードします：
 
@@ -33,18 +33,18 @@ curl -sL https://lib.chdb.io | bash
 #include <chdb.h>
 ```
 
-### ステップ 3: ライブラリのリンク
+### ステップ 3: ライブラリのリンク {#link-library}
 
 chDB ライブラリを用いてアプリケーションをコンパイルおよびリンクします：
 
 
 ```bash
-# Cコンパイル
+# Cコンパイル {#c-compilation}
 gcc -o myapp myapp.c -lchdb
 ```
 
 
-# C++のコンパイル
+# C++のコンパイル {#c-compilation}
 
 g++ -o myapp myapp.cpp -lchdb
 
@@ -52,9 +52,9 @@ g++ -o myapp myapp.cpp -lchdb
 ```
 
 
-## C の例
+## C の例 {#c-examples}
 
-### 基本的な接続とクエリ
+### 基本的な接続とクエリ {#basic-connection-queries}
 
 ```c
 #include <stdio.h>
@@ -103,7 +103,7 @@ int main() {
 }
 ```
 
-### ストリーミングクエリ
+### ストリーミングクエリ {#streaming-queries}
 
 ```c
 #include <stdio.h>
@@ -167,7 +167,7 @@ int main() {
 }
 ```
 
-### さまざまなデータ形式を扱う
+### さまざまなデータ形式を扱う {#data-formats}
 
 ```c
 #include <stdio.h>
@@ -210,7 +210,7 @@ return 0;
 ```
 
 
-## C++ の例
+## C++ の例 {#cpp-example}
 
 ```cpp
 #include <iostream>
@@ -294,7 +294,7 @@ int main() {
 ```
 
 
-## エラー処理のベストプラクティス
+## エラー処理のベストプラクティス {#error-handling}
 
 ```c
 #include <stdio.h>

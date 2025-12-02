@@ -6,10 +6,9 @@ title: 'system.asynchronous_metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;metrics
+# system.asynchronous&#95;metrics {#systemasynchronous_metrics}
 
 <SystemTableCloud />
 
@@ -45,7 +44,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 {/*- 与 system.events 和 system.metrics 不同，异步指标并不是在某个源代码文件中的简单列表里集中定义——
       它们和 src/Interpreters/ServerAsynchronousMetrics.cpp 中的逻辑混在一起。
       在这里专门将它们显式列出，便于读者查阅。 -*/ }
-
 
 ## 指标说明 {#metric-descriptions}
 
@@ -102,8 +100,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 从块设备请求的读操作中，由操作系统 I/O 调度器合并后的操作数量。这是一个系统级指标，包含宿主机上所有进程，而不仅仅是 clickhouse-server。来源：`/sys/block`。参见 https://www.kernel.org/doc/Documentation/block/stat.txt
 
 ### BlockReadOps_*name* {#blockreadops_name}
-
-
 
 ### BlockReadOps_*name* {#blockreadops_name}
 
@@ -189,8 +185,6 @@ ClickHouse 日志路径所在卷上已使用的字节数。
 
 ClickHouse 日志路径所在卷上已使用的 inode 数量。
 
-
-
 ### FilesystemMainPathAvailableBytes {#filesystemmainpathavailablebytes}
 
 主 ClickHouse 路径所挂载卷上可用的字节数。
@@ -275,8 +269,6 @@ MySQL 兼容协议服务器中的线程数。
 
 通过网络接口接收时发生错误的次数。该指标是系统级指标，包含主机上所有进程，而不仅仅是 clickhouse-server。
 
-
-
 ### NetworkReceivePackets_*name* {#networkreceivepackets_name}
 
 通过网络接口接收的网络数据包数量。这是一个系统级指标，包含主机上所有进程，而不仅仅是 clickhouse-server。
@@ -335,8 +327,6 @@ MySQL 兼容协议服务器中的线程数。
 
 ### OSGuestTimeCPU_*N* {#osguesttimecpu_n}
 
-
-
 在 Linux 内核控制下为来宾操作系统运行虚拟 CPU 所花费时间的比例（参见 `man procfs`）。这是一个系统级指标，包含主机上的所有进程，而不仅仅是 clickhouse-server。此指标对 ClickHouse 本身并无实际意义，但为完整性起见仍然保留。单个 CPU 核心的取值范围为 [0..1]。所有 CPU 核心的取值通过对它们求和计算，范围为 [0..num cores]。
 
 ### OSGuestTimeNormalized {#osguesttimenormalized}
@@ -374,8 +364,6 @@ CPU 核心未运行代码、且由于进程在等待 IO，OS 内核没有在该 
 ### OSIrqTime {#osirqtime}
 
 在 CPU 上处理硬件中断请求所花费时间的比例。这是一个系统级指标，包含主机上的所有进程，而不仅仅是 clickhouse-server。该指标数值过高可能表明硬件配置错误或非常高的网络负载。单个 CPU 核心的取值范围为 [0..1]。所有 CPU 核心的取值通过对它们求和计算，范围为 [0..num cores]。
-
-
 
 ### OSIrqTimeCPU_*N* {#osirqtimecpu_n}
 
@@ -429,8 +417,6 @@ CPU 核心运行高优先级用户态代码的时间占比。这是一个系统�
 
 等待 I/O 完成而被阻塞的线程数量（参见 `man procfs`）。这是一个系统级指标，包含主机上所有进程，而不仅仅是 clickhouse-server。
 
-
-
 ### OSProcessesCreated {#osprocessescreated}
 
 创建的进程数量。该指标是系统范围的，包含主机上的所有进程，而不仅仅是 clickhouse-server。
@@ -480,8 +466,6 @@ CPU 核心运行操作系统内核（system）代码的时间占比。该指标�
 OS 内核调度器所看到的“可运行”线程总数。
 
 ### OSThreadsTotal {#osthreadstotal}
-
-
 
 在操作系统内核调度器视角下的线程总数。
 
@@ -564,8 +548,6 @@ TCP 协议服务器中的线程数量（不包括 TLS）。
 ### TotalPrimaryKeyBytesInMemoryAllocated {#totalprimarykeybytesinmemoryallocated}
 
 为主键值预留的内存总量（以字节为单位）（仅考虑活动 part）。
-
-
 
 ### TotalRowsOfMergeTreeTables {#totalrowsofmergetreetables}
 

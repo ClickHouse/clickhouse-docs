@@ -64,7 +64,7 @@ runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted
 
 
 
-## ClickHouse を REST サービスとして利用する
+## ClickHouse を REST サービスとして利用する {#turning-clickhouse-to-a-rest-service}
 
 Azure Data Factory は、JSON 形式で HTTP 経由により外部システムへデータを送信することをサポートしています。この機能を利用して、[ClickHouse HTTP interface](https://clickhouse.com/docs/interfaces/http) を用い、データを直接 ClickHouse に挿入できます。
 詳細については、[ClickHouse HTTP Interface documentation](https://clickhouse.com/docs/interfaces/http) を参照してください。

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 機械学習関数
+# 機械学習関数 {#machine-learning-functions}
 
 
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 
 
 
-## naiveBayesClassifier
+## naiveBayesClassifier {#naivebayesclassifier}
 
 n-gram およびラプラス平滑化を用いる Naive Bayes モデルで入力テキストを分類します。モデルは使用前に ClickHouse 上で事前に設定されている必要があります。
 
@@ -70,7 +70,7 @@ SELECT naiveBayesClassifier('language', 'お元気ですか?');
 
 ***
 
-### 実装の詳細
+### 実装の詳細 {#implementation-details}
 
 **アルゴリズム**
 Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱うために [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing) を用います。n-gram の確率は [この資料](https://web.stanford.edu/~jurafsky/slp3/4.pdf) に基づきます。
@@ -85,7 +85,7 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 
 ***
 
-### モデル設定
+### モデル設定 {#model-configuration}
 
 言語検出用の Naive Bayes モデルを作成するためのサンプルソースコードは[こちら](https://github.com/nihalzp/ClickHouse-NaiveBayesClassifier-Models)にあります。
 

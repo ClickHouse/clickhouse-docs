@@ -10,60 +10,59 @@ keywords: ['Metrics', 'system.dashboards', 'system.custom_metrics']
 
 {/* 切り捨て */}
 
+## `system.dashboards` で使用されるメトリクスと `system.custom_metrics` 内の Prometheus メトリクスの対応表 \{#mapping-of-metrics-used-in-systemdashboards-to-prometheus-metrics-in-systemcustom&#95;metrics\}
 
-## `system.dashboards` で使用されるメトリクスと `system.custom_metrics` 内の Prometheus メトリクスの対応表 \{#mapping-of-metrics-used-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
+以下の表は、`system.dashboards` で使用されるメトリクスと `system.custom_metrics` 内の Prometheus メトリクスとの対応関係を示しています。\
+これは、`system.dashboards` に含まれるものと同じメトリクスを監視したいお客様にとって有用です。
 
-以下の表は、`system.dashboards` で使用されるメトリクスと `system.custom_metrics` 内の Prometheus メトリクスとの対応関係を示しています。  
-これは、`system.dashboards` に含まれるものと同じメトリクスを監視したいお客様にとって有用です。 
+### system.dashboards 内のメトリクスから system.custom&#95;metrics 内の Prometheus メトリクスへの対応表 \{#mapping-table-for-metrics-in-systemdashboards-to-prometheus-metrics-in-systemcustom&#95;metrics\}
 
-### system.dashboards 内のメトリクスから system.custom_metrics 内の Prometheus メトリクスへの対応表 \{#mapping-table-for-metrics-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
-
-ダッシュボード | タイトル | Prometheus メトリクス名 (system.custom_metrics)
+ダッシュボード | タイトル | Prometheus メトリクス名 (system.custom&#95;metrics)
 -- | -- | --
-Overview | クエリ/秒 | ClickHouseProfileEvents_Query
-Overview | CPU 使用率 (コア数) | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
-Overview | 実行中クエリ数 | ClickHouseMetrics_Query
-Overview | 実行中マージ数 | ClickHouseMetrics_Merge
-Overview | 選択バイト数/秒 | ClickHouseProfileEvents_SelectedBytes
-Overview | IO 待ち時間 | ClickHouseProfileEvents_OSIOWaitMicroseconds
-Overview | CPU 待ち時間 | ClickHouseProfileEvents_OSCPUWaitMicroseconds
-Overview | OS CPU 使用率 (ユーザ空間) | ClickHouseAsyncMetrics_OSUserTimeNormalized
-Overview | OS CPU 使用率 (カーネル) | ClickHouseAsyncMetrics_OSSystemTimeNormalized
-Overview | ディスクからの読み取り | ClickHouseProfileEvents_OSReadBytes
-Overview | ファイルシステムからの読み取り | ClickHouseProfileEvents_OSReadChars
-Overview | メモリ (追跡対象) | ClickHouseMetrics_MemoryTracking
-Overview | 負荷平均 (15 分) | ClickHouseAsyncMetrics_LoadAverage15
-Overview | 選択行数/秒 | ClickHouseProfileEvents_SelectedRows
-Overview | 挿入行数/秒 | ClickHouseProfileEvents_InsertedRows
-Overview | MergeTree パーツ総数 | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
-Overview | パーティションあたりの最大パーツ数 | ClickHouseAsyncMetrics_MaxPartCountForPartition
-Cloud overview | クエリ/秒 | ClickHouseProfileEvents_Query
-Cloud overview | CPU 使用率 (コア数) | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
-Cloud overview | 実行中クエリ数 | ClickHouseMetrics_Query
-Cloud overview | 実行中マージ数 | ClickHouseMetrics_Merge
-Cloud overview | 選択バイト数/秒 | ClickHouseProfileEvents_SelectedBytes
-Cloud overview | IO 待ち時間 (ローカル fs) | ClickHouseProfileEvents_OSIOWaitMicroseconds
-Cloud overview | S3 読み取り待ち時間 | ClickHouseProfileEvents_ReadBufferFromS3Microseconds
-Cloud overview | S3 読み取りエラー/秒 | ProfileEvent_ReadBufferFromS3RequestsErrors
-Cloud overview | CPU 待ち時間 | ClickHouseProfileEvents_OSCPUWaitMicroseconds
-Cloud overview | OS CPU 使用率 (ユーザ空間, 正規化) | ClickHouseAsyncMetrics_OSUserTimeNormalized
-Cloud overview | OS CPU 使用率 (カーネル, 正規化) | ClickHouseAsyncMetrics_OSSystemTimeNormalized
-Cloud overview | ディスクからの読み取り (バイト/秒) | ClickHouseProfileEvents_OSReadBytes
-Cloud overview | ファイルシステムからの読み取り (バイト/秒) | ClickHouseProfileEvents_OSReadChars
-Cloud overview | メモリ (追跡対象, バイト) | ClickHouseMetrics_MemoryTracking
-Cloud overview | 負荷平均 (15 分) | ClickHouseAsyncMetrics_LoadAverage15
-Cloud overview | 選択行数/秒 | ClickHouseProfileEvents_SelectedRows
-Cloud overview | 挿入行数/秒 | ClickHouseProfileEvents_InsertedRows
-Cloud overview | MergeTree パーツ総数 | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
-Cloud overview | パーティションあたりの最大パーツ数 | ClickHouseAsyncMetrics_MaxPartCountForPartition
-Cloud overview | S3 からの読み取り (バイト/秒) | ClickHouseProfileEvents_ReadBufferFromS3Bytes
-Cloud overview | ファイルシステムキャッシュサイズ | ClickHouseMetrics_FilesystemCacheSize
-Cloud overview | ディスク S3 の書き込みリクエスト/秒 | ClickHouseProfileEvents_DiskS3PutObject + ClickHouseProfileEvents_DiskS3UploadPart + ClickHouseProfileEvents_DiskS3CreateMultipartUpload + ClickHouseProfileEvents_DiskS3CompleteMultipartUpload
-Cloud overview | ディスク S3 の読み取りリクエスト/秒 | ClickHouseProfileEvents_DiskS3GetObject + ClickHouseProfileEvents_DiskS3HeadObject + ClickHouseProfileEvents_DiskS3ListObjects
-Cloud overview | FS キャッシュのヒット率 | ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes / (ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes + ClickHouseProfileEvents_CachedReadBufferReadFromSourceBytes)
-Cloud overview | ページキャッシュのヒット率 | greatest(0, (sum(ClickHouseProfileEvents_OSReadChars) - sum(ClickHouseProfileEvents_OSReadBytes)) /  (sum(ClickHouseProfileEvents_OSReadChars) + sum(ClickHouseProfileEvents_ReadBufferFromS3Bytes)))
-Cloud overview | ネットワーク受信バイト数/秒 | ClickHouseProfileEvents_NetworkReceiveBytes
-Cloud overview | ネットワーク送信バイト数/秒 | ClickHouseProfileEvents_NetworkSendBytes
+Overview | クエリ/秒 | ClickHouseProfileEvents&#95;Query
+Overview | CPU 使用率 (コア数) | ClickHouseProfileEvents&#95;OSCPUVirtualTimeMicroseconds
+Overview | 実行中クエリ数 | ClickHouseMetrics&#95;Query
+Overview | 実行中マージ数 | ClickHouseMetrics&#95;Merge
+Overview | 選択バイト数/秒 | ClickHouseProfileEvents&#95;SelectedBytes
+Overview | IO 待ち時間 | ClickHouseProfileEvents&#95;OSIOWaitMicroseconds
+Overview | CPU 待ち時間 | ClickHouseProfileEvents&#95;OSCPUWaitMicroseconds
+Overview | OS CPU 使用率 (ユーザ空間) | ClickHouseAsyncMetrics&#95;OSUserTimeNormalized
+Overview | OS CPU 使用率 (カーネル) | ClickHouseAsyncMetrics&#95;OSSystemTimeNormalized
+Overview | ディスクからの読み取り | ClickHouseProfileEvents&#95;OSReadBytes
+Overview | ファイルシステムからの読み取り | ClickHouseProfileEvents&#95;OSReadChars
+Overview | メモリ (追跡対象) | ClickHouseMetrics&#95;MemoryTracking
+Overview | 負荷平均 (15 分) | ClickHouseAsyncMetrics&#95;LoadAverage15
+Overview | 選択行数/秒 | ClickHouseProfileEvents&#95;SelectedRows
+Overview | 挿入行数/秒 | ClickHouseProfileEvents&#95;InsertedRows
+Overview | MergeTree パーツ総数 | ClickHouseAsyncMetrics&#95;TotalPartsOfMergeTreeTables
+Overview | パーティションあたりの最大パーツ数 | ClickHouseAsyncMetrics&#95;MaxPartCountForPartition
+Cloud overview | クエリ/秒 | ClickHouseProfileEvents&#95;Query
+Cloud overview | CPU 使用率 (コア数) | ClickHouseProfileEvents&#95;OSCPUVirtualTimeMicroseconds
+Cloud overview | 実行中クエリ数 | ClickHouseMetrics&#95;Query
+Cloud overview | 実行中マージ数 | ClickHouseMetrics&#95;Merge
+Cloud overview | 選択バイト数/秒 | ClickHouseProfileEvents&#95;SelectedBytes
+Cloud overview | IO 待ち時間 (ローカル fs) | ClickHouseProfileEvents&#95;OSIOWaitMicroseconds
+Cloud overview | S3 読み取り待ち時間 | ClickHouseProfileEvents&#95;ReadBufferFromS3Microseconds
+Cloud overview | S3 読み取りエラー/秒 | ProfileEvent&#95;ReadBufferFromS3RequestsErrors
+Cloud overview | CPU 待ち時間 | ClickHouseProfileEvents&#95;OSCPUWaitMicroseconds
+Cloud overview | OS CPU 使用率 (ユーザ空間, 正規化) | ClickHouseAsyncMetrics&#95;OSUserTimeNormalized
+Cloud overview | OS CPU 使用率 (カーネル, 正規化) | ClickHouseAsyncMetrics&#95;OSSystemTimeNormalized
+Cloud overview | ディスクからの読み取り (バイト/秒) | ClickHouseProfileEvents&#95;OSReadBytes
+Cloud overview | ファイルシステムからの読み取り (バイト/秒) | ClickHouseProfileEvents&#95;OSReadChars
+Cloud overview | メモリ (追跡対象, バイト) | ClickHouseMetrics&#95;MemoryTracking
+Cloud overview | 負荷平均 (15 分) | ClickHouseAsyncMetrics&#95;LoadAverage15
+Cloud overview | 選択行数/秒 | ClickHouseProfileEvents&#95;SelectedRows
+Cloud overview | 挿入行数/秒 | ClickHouseProfileEvents&#95;InsertedRows
+Cloud overview | MergeTree パーツ総数 | ClickHouseAsyncMetrics&#95;TotalPartsOfMergeTreeTables
+Cloud overview | パーティションあたりの最大パーツ数 | ClickHouseAsyncMetrics&#95;MaxPartCountForPartition
+Cloud overview | S3 からの読み取り (バイト/秒) | ClickHouseProfileEvents&#95;ReadBufferFromS3Bytes
+Cloud overview | ファイルシステムキャッシュサイズ | ClickHouseMetrics&#95;FilesystemCacheSize
+Cloud overview | ディスク S3 の書き込みリクエスト/秒 | ClickHouseProfileEvents&#95;DiskS3PutObject + ClickHouseProfileEvents&#95;DiskS3UploadPart + ClickHouseProfileEvents&#95;DiskS3CreateMultipartUpload + ClickHouseProfileEvents&#95;DiskS3CompleteMultipartUpload
+Cloud overview | ディスク S3 の読み取りリクエスト/秒 | ClickHouseProfileEvents&#95;DiskS3GetObject + ClickHouseProfileEvents&#95;DiskS3HeadObject + ClickHouseProfileEvents&#95;DiskS3ListObjects
+Cloud overview | FS キャッシュのヒット率 | ClickHouseProfileEvents&#95;CachedReadBufferReadFromCacheBytes / (ClickHouseProfileEvents&#95;CachedReadBufferReadFromCacheBytes + ClickHouseProfileEvents&#95;CachedReadBufferReadFromSourceBytes)
+Cloud overview | ページキャッシュのヒット率 | greatest(0, (sum(ClickHouseProfileEvents&#95;OSReadChars) - sum(ClickHouseProfileEvents&#95;OSReadBytes)) /  (sum(ClickHouseProfileEvents&#95;OSReadChars) + sum(ClickHouseProfileEvents&#95;ReadBufferFromS3Bytes)))
+Cloud overview | ネットワーク受信バイト数/秒 | ClickHouseProfileEvents&#95;NetworkReceiveBytes
+Cloud overview | ネットワーク送信バイト数/秒 | ClickHouseProfileEvents&#95;NetworkSendBytes
 
-関連リンク:  
+関連リンク:\
 https://clickhouse.com/docs/integrations/prometheus

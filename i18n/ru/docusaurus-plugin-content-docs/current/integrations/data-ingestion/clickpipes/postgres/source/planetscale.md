@@ -12,7 +12,7 @@ import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных PlanetScale for Postgres
+# Руководство по настройке источника данных PlanetScale for Postgres {#planetscale-for-postgres-source-setup-guide}
 
 :::info
 В настоящее время PlanetScale for Postgres находится в [программе раннего доступа](https://planetscale.com/postgres).
@@ -52,7 +52,7 @@ ClickPipes поддерживает Postgres, начиная с версии 12.
 
 
 
-## Создание пользователя с правами доступа и публикацией
+## Создание пользователя с правами доступа и публикацией {#creating-a-user-with-permissions-and-publication}
 
 Создадим нового пользователя для ClickPipes с необходимыми правами доступа, подходящими для CDC,
 а также создадим публикацию, которую будем использовать для репликации.

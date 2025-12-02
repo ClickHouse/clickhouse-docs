@@ -14,16 +14,15 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-
-# Быстрый старт с ClickHouse OSS
+# Быстрый старт с ClickHouse OSS \{#clickhouse-oss-quick-start\}
 
 > В этом кратком руководстве по быстрому старту вы за 8
-простых шагов настроите ClickHouse OSS. Вы скачаете подходящий бинарный файл для своей ОС,
-узнаете, как запускать сервер ClickHouse, и воспользуетесь клиентом ClickHouse, чтобы создать таблицу,
-затем вставите в неё данные и выполните запрос для выборки этих данных.
+> простых шагов настроите ClickHouse OSS. Вы скачаете подходящий бинарный файл для своей ОС,
+> узнаете, как запускать сервер ClickHouse, и воспользуетесь клиентом ClickHouse, чтобы создать таблицу,
+> затем вставите в неё данные и выполните запрос для выборки этих данных.
 
 <VerticalStepper>
-  ## Загрузка ClickHouse
+  ## Загрузка ClickHouse \{#download-the-binary\}
 
   ClickHouse работает нативно на Linux, FreeBSD и macOS, а на Windows — через
   [WSL](https://learn.microsoft.com/en-us/windows/wsl/about). Самый простой способ загрузить ClickHouse локально — выполнить
@@ -57,7 +56,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   Для пользователей Mac: Если вы получаете ошибки о том, что разработчик бинарного файла не может быть проверен, см. [&quot;Исправление ошибки проверки разработчика в MacOS&quot;](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos).
   :::
 
-  ## Запуск сервера
+  ## Запуск сервера \{#start-the-server\}
 
   Выполните следующую команду для запуска сервера ClickHouse:
 
@@ -69,7 +68,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   [уровень логирования по умолчанию](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose)
   установлен в `trace`, а не в `warning`.
 
-  ## Запуск клиента
+  ## Запуск клиента \{#start-the-client\}
 
   Используйте `clickhouse-client` для подключения к вашему сервису ClickHouse. Откройте новый
   терминал, перейдите в каталог, где сохранён бинарный файл `clickhouse`, и
@@ -85,7 +84,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   my-host :)
   ```
 
-  ## Создание таблицы
+  ## Создание таблицы \{#create-a-table\}
 
   Используйте `CREATE TABLE` для создания новой таблицы. Стандартные SQL DDL-команды работают в
   ClickHouse с одним дополнением — таблицы в ClickHouse требуют
@@ -104,7 +103,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   PRIMARY KEY (user_id, timestamp)
   ```
 
-  ## Вставка данных
+  ## Вставка данных \{#insert-data\}
 
   Вы можете использовать знакомую команду `INSERT INTO TABLE` с ClickHouse, но важно
   понимать, что каждая вставка в таблицу `MergeTree` приводит к созданию в хранилище
@@ -125,7 +124,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       (101, 'Гранулы — это наименьшие порции читаемых данных',      now() + 5,   3.14159 )
   ```
 
-  ## Запросы к новой таблице
+  ## Запросы к новой таблице \{#query-your-new-table\}
 
   Запрос `SELECT` можно написать так же, как в любой другой SQL-базе данных:
 
@@ -148,7 +147,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   4 строки в наборе. Прошло: 0.008 сек.
   ```
 
-  ## Вставка собственных данных
+  ## Вставка собственных данных \{#insert-your-own-data\}
 
   Следующий шаг — загрузить ваши данные в ClickHouse. Для приёма данных доступно множество [табличных функций](/sql-reference/table-functions/index.md)
   и [интеграций](/integrations). Примеры приведены на вкладках
@@ -366,7 +365,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
   </Tabs>
 
-  ## Исследование данных
+  ## Исследование данных \{#explore\}
 
   * Ознакомьтесь с разделом [Основные концепции](/managing-data/core-concepts), чтобы познакомиться с основами того, как ClickHouse работает «под капотом».
   * Ознакомьтесь с [углублённым руководством](tutorial.md), которое гораздо глубже раскрывает ключевые концепции и возможности ClickHouse.

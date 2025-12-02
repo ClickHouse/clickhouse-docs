@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MaterializedPostgreSQL 表引擎
+# MaterializedPostgreSQL 表引擎 {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
 
@@ -35,7 +35,7 @@ SET allow_experimental_materialized_postgresql_table=1
 如果需要使用多个表，强烈建议使用 [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) 数据库引擎而不是表引擎，并通过 `materialized_postgresql_tables_list` 设置来指定要复制的表（后续也可以添加数据库 `schema`）。在 CPU 占用、连接数以及远程 PostgreSQL 数据库中所占用的复制槽数量方面，这种方式都会更优。
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE postgresql_db.postgresql_replica (key UInt64, value UInt64)
@@ -64,7 +64,7 @@ PRIMARY KEY key;
 
 
 
-## 虚拟列
+## 虚拟列 {#virtual-columns}
 
 * `_version` — 事务计数器。类型：[UInt64](../../../sql-reference/data-types/int-uint.md)。
 

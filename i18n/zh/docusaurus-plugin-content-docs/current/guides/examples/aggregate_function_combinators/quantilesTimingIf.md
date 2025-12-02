@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 在这个示例中，我们将创建一个表，用于存储不同接口端点的 API 响应时间，
 并使用 `quantilesTimingIf` 来计算成功请求的响应时间分位数。

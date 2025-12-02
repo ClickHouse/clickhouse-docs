@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# dictionary テーブル関数
+# dictionary テーブル関数 {#dictionary-table-function}
 
 [dictionary](../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして扱います。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 dictionary('dict')
@@ -34,7 +34,7 @@ ClickHouse テーブルです。
 
 
 
-## 例
+## 例 {#examples}
 
 入力テーブル `dictionary_source_table`:
 

@@ -1,4 +1,4 @@
-## 测试管理员权限
+## 测试管理员权限 {#test-admin-privileges}
 
 先以用户 `default` 登出，然后以用户 `clickhouse_admin` 重新登录。
 
@@ -367,11 +367,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 
 
-## 故障排查
+## 故障排查 {#troubleshooting}
 
 在某些情况下，权限之间会相互交叉或组合，从而产生意外结果。可以使用以下命令配合管理员账号来帮助定位问题。
 
-### 列出某个用户的权限授予和角色
+### 列出某个用户的权限授予和角色 {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -385,7 +385,7 @@ SHOW GRANTS FOR row_and_column_user
 └──────────────────────────────────────────────────────────┘
 ```
 
-### 列出 ClickHouse 中的角色
+### 列出 ClickHouse 中的角色 {#list-roles-in-clickhouse}
 
 ```sql
 SHOW ROLES
@@ -400,7 +400,7 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### 查看策略
+### 查看策略 {#display-the-policies}
 
 ```sql
 SHOW ROW POLICIES
@@ -415,7 +415,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### 查看策略的定义和当前权限
+### 查看策略的定义和当前权限 {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -430,7 +430,7 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 ```
 
 
-## 管理角色、策略和用户的示例命令
+## 管理角色、策略和用户的示例命令 {#example-commands-to-manage-roles-policies-and-users}
 
 可以使用以下命令：
 
@@ -444,31 +444,31 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 请以管理员用户或 `default` 用户身份运行这些命令
 :::
 
-### 从角色中移除权限
+### 从角色中移除权限 {#remove-privilege-from-a-role}
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 ```
 
-### 删除策略
+### 删除策略 {#delete-a-policy}
 
 ```sql
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### 取消用户的角色分配
+### 取消用户的角色分配 {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### 删除角色
+### 删除角色 {#delete-a-role}
 
 ```sql
 DROP ROLE A_rows_users;
 ```
 
-### 删除用户
+### 删除用户 {#delete-a-user}
 
 ```sql
 DROP USER row_user;

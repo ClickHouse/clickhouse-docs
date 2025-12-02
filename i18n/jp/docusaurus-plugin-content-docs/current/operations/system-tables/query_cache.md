@@ -6,10 +6,9 @@ title: 'system.query_cache'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.query&#95;cache
+# system.query&#95;cache {#systemquery&#95;cache}
 
 <SystemTableCloud />
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 对数据跳过索引的操作
+# 对数据跳过索引的操作 {#manipulating-data-skipping-indices}
 
 可以执行以下操作：
 

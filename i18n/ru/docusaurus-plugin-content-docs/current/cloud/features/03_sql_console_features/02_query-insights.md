@@ -15,7 +15,7 @@ import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_dr
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
 
-# Аналитика запросов
+# Аналитика запросов {#query-insights}
 
 Возможность **Query Insights** упрощает работу со встроенным журналом запросов ClickHouse за счёт различных визуализаций и таблиц. Таблица `system.query_log` в ClickHouse является ключевым источником информации для оптимизации запросов, отладки и мониторинга общего состояния и производительности кластера.
 

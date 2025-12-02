@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# ODBC テーブルエンジン
+# ODBC テーブルエンジン {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -22,7 +22,7 @@ ODBC 接続を安全に実装するために、ClickHouse は別のプログラ�
 
 
 
-## テーブルを作成する
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -51,7 +51,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 これらのパラメータは、[named collections](operations/named-collections.md) を使用して指定することもできます。
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 **ODBC を介してローカルの MySQL インストールからデータを取得する**
 

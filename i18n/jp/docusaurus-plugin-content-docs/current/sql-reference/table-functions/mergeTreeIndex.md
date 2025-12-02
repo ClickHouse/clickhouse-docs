@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# mergeTreeIndex テーブル関数
+# mergeTreeIndex テーブル関数 {#mergetreeindex-table-function}
 
 MergeTree テーブルのインデックスおよびマークファイルの内容を表します。内部状態を調査する目的で使用できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
@@ -46,7 +46,7 @@ Marks 列には、データパーツに対象の列が存在しない場合、�
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 CREATE TABLE test_table

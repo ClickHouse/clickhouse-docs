@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# sqlite テーブル関数
+# sqlite テーブル関数 {#sqlite-table-function}
 
 [SQLite](../../engines/database-engines/sqlite.md) データベースに保存されているデータに対してクエリを実行できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
@@ -35,7 +35,7 @@ sqlite('db_path', 'table_name')
 
 
 
-## 例
+## 例 {#example}
 
 クエリ：
 

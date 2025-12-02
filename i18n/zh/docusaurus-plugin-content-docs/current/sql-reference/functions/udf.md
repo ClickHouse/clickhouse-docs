@@ -54,9 +54,9 @@ ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
 
 
 
-## 示例
+## 示例 {#examples}
 
-### 使用内联脚本的 UDF
+### 使用内联脚本的 UDF {#udf-inline}
 
 使用 XML 或 YAML 配置手动创建 `test_function_sum`，并将 `execute_direct` 显式设置为 `0`。
 
@@ -120,7 +120,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
-### 来自 Python 脚本的 UDF
+### 来自 Python 脚本的 UDF {#udf-python}
 
 在本示例中，我们创建一个 UDF，它从 `STDIN` 读取一个值，并将其作为字符串返回。
 
@@ -189,7 +189,7 @@ SELECT test_function_python(toUInt64(2));
 └─────────────────────────┘
 ```
 
-### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和
+### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和 {#udf-stdin}
 
 使用命名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
 
@@ -270,7 +270,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
-### 在 `command` 设置中使用参数
+### 在 `command` 设置中使用参数 {#udf-parameters-in-command}
 
 可执行类型的用户自定义函数可以在 `command` 设置中接受常量参数（这仅适用于 `executable` 类型的用户自定义函数）。
 还需要启用 `execute_direct` 选项，以避免出现 shell 参数展开带来的安全漏洞。
@@ -339,7 +339,7 @@ SELECT test_function_parameter_python(1)(2);
 └──────────────────────────────────────┘
 ```
 
-### 基于 shell 脚本的 UDF
+### 基于 shell 脚本的 UDF {#udf-shell-script}
 
 在本示例中，我们创建一个 shell 脚本，将每个值乘以 2。
 

@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных Aurora Postgres
+# Руководство по настройке источника данных Aurora Postgres {#aurora-postgres-source-setup-guide}
 
 
 
@@ -27,7 +27,7 @@ ClickPipes поддерживает Aurora PostgreSQL-Compatible Edition вер�
 
 
 
-## Включение логической репликации
+## Включение логической репликации {#enable-logical-replication}
 
 Вы можете пропустить этот раздел, если в вашем экземпляре Aurora уже настроены следующие параметры:
 

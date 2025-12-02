@@ -6,7 +6,7 @@ title: 'groupArrayMovingSum'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingSum
+# groupArrayMovingSum {#grouparraymovingsum}
 
 入力値の移動和を計算します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# 持续集成（CI）
+# 持续集成（CI） {#continuous-integration-ci}
 
 当你提交一个 pull request 时，ClickHouse 的[持续集成（CI）系统](tests.md#test-automation)会对你的代码运行一些自动检查。
 这会在代码仓库维护者（ClickHouse 团队成员）审查了你的代码并在 pull request 上添加 `can be tested` 标签之后进行。
@@ -75,26 +75,26 @@ git push
 
 
 
-## 样式检查
+## 样式检查 {#style-check}
 
 对代码库执行各种样式检查。
 
 *Style Check* 作业中包含的基础检查：
 
-##### cpp
+##### cpp {#cpp}
 
 使用 [`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) 脚本执行基于正则表达式的简单代码样式检查（也可以在本地运行）。\
 如果检查失败，请根据[代码样式指南](style.md)修复样式问题。
 
-##### codespell, aspell
+##### codespell, aspell {#codespell}
 
 检查语法错误和拼写错误。
 
-##### mypy
+##### mypy {#mypy}
 
 对 Python 代码执行静态类型检查。
 
-### 在本地运行样式检查作业
+### 在本地运行样式检查作业 {#running-style-check-locally}
 
 可以在 Docker 容器中本地运行完整的 *Style Check* 作业，命令如下：
 
@@ -112,14 +112,14 @@ python -m ci.praktika run "Style check" --test cpp
 除 Python 3 和 Docker 外，无需其他任何依赖。
 
 
-## 快速测试
+## 快速测试 {#fast-test}
 
 通常这是在 PR 上运行的第一个检查。
 它会构建 ClickHouse 并运行大部分[无状态功能测试](tests.md#functional-tests)，但会省略部分测试。
 如果该步骤失败，在修复之前不会启动后续检查。
 查看报告以确定哪些测试失败，然后按照[这里](/development/tests#running-a-test-locally)的说明在本地重现失败。
 
-#### 在本地运行快速测试：
+#### 在本地运行快速测试： {#running-fast-test-locally}
 
 ```sh
 python -m ci.praktika run "Fast test" [--test 测试名称]
@@ -129,11 +129,11 @@ python -m ci.praktika run "Fast test" [--test 测试名称]
 只需 Python 3 和 Docker，无需其他依赖。
 
 
-## 构建检查
+## 构建检查 {#build-check}
 
 以多种配置构建 ClickHouse，以便在后续步骤中使用。
 
-### 在本地运行构建
+### 在本地运行构建 {#running-builds-locally}
 
 可以在类似 CI 的本地环境中运行构建，使用：
 
@@ -143,7 +143,7 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 
 除了 Python 3 和 Docker 外不需要其他依赖。
 
-#### 可用构建任务
+#### 可用构建任务 {#available-build-jobs}
 
 构建任务名称与 CI 报告中的名称完全一致：
 
@@ -181,7 +181,7 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 
 **注意：** 对于不属于 “Other Architectures” 类别（该类别使用交叉编译）的构建，你本地机器的架构必须与构建类型一致，才能按照 `BUILD_JOB_NAME` 要求生成构建产物。
 
-#### 示例
+#### 示例 {#example-run-local}
 
 要在本地运行调试构建：
 

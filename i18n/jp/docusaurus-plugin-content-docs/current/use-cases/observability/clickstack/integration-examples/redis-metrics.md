@@ -240,10 +240,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 あらかじめ生成されたメトリクスファイルをダウンロードします（現実的なパターンを含む 24 時間分の Redis Metrics）:
 ```bash
-# ゲージメトリクスをダウンロード（メモリ、断片化率）
+# ゲージメトリクスをダウンロード（メモリ、断片化率） {#expected-output-pong}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# サムメトリクスをダウンロード（コマンド数、接続数、キー空間統計）
+# サムメトリクスをダウンロード（コマンド数、接続数、キー空間統計） {#test-info-command-used-by-metrics-collector}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -353,7 +353,7 @@ docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 collector から Redis にアクセスできることを確認してください：
 
 ```bash
-# ClickStackコンテナから
+# ClickStackコンテナから {#download-sum-metrics-commands-connections-keyspace-stats}
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # 期待される出力: PONG
 ```
@@ -375,7 +375,7 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 接続エラーまたは認証失敗を確認します
+# 接続エラーまたは認証失敗を確認します {#load-gauge-metrics-memory-fragmentation}
 ```
 
 

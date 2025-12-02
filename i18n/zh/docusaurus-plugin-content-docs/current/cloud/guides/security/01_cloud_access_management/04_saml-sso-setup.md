@@ -16,7 +16,7 @@ import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claim
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 配置 SAML SSO
+# 配置 SAML SSO {#saml-sso-setup}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 

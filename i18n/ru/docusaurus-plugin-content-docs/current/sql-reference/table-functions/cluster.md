@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Табличная функция clusterAllReplicas
+# Табличная функция clusterAllReplicas {#clusterallreplicas-table-function}
 
 Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
 
@@ -33,7 +33,7 @@ clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
 
-## Аргументы
+## Аргументы {#arguments}
 
 | Аргументы                    | Тип                                                                                                                                                               |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,7 +48,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 
 
 
-## Использование макросов
+## Использование макросов {#using_macros}
 
 `cluster_name` может содержать макросы — подстановки в фигурных скобках. Значение подстановки берётся из раздела [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
 

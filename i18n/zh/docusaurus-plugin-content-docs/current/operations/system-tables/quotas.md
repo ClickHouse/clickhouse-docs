@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.quotas
+# system.quotas {#systemquotas}
 
 包含有关[配额](../../operations/system-tables/quotas.md)的信息。
 

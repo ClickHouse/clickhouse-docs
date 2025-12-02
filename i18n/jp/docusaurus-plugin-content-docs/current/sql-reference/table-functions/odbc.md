@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# odbc テーブル関数
+# odbc テーブル関数 {#odbc-table-function}
 
 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されたテーブルを返します。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 odbc(データソース, 外部データベース, 外部テーブル)
@@ -40,7 +40,7 @@ ODBC 接続を安全に実装するために、ClickHouse は別プログラム�
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 **ODBC を介してローカルの MySQL インストールからデータを取得する**
 

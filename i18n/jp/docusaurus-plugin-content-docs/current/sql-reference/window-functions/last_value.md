@@ -7,7 +7,7 @@ title: 'last_value'
 doc_type: 'reference'
 ---
 
-# last&#95;value
+# last&#95;value {#last&#95;value}
 
 順序付けされたフレーム内で評価された最後の値を返します。デフォルトでは NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用すると、この動作を変更できます。
 

@@ -6,13 +6,9 @@ title: 'quantileExact 関数'
 doc_type: 'reference'
 ---
 
+# quantileExact 関数 {#quantileexact-functions}
 
-
-# quantileExact 関数
-
-
-
-## quantileExact
+## quantileExact {#quantileexact}
 
 数値データ列の[分位点 (quantile)](https://en.wikipedia.org/wiki/Quantile) を厳密に計算します。
 
@@ -76,8 +72,7 @@ SELECT quantileExact(number) FROM numbers(10)
 └───────────────────────┘
 ```
 
-
-## quantileExactLow
+## quantileExactLow {#quantileexactlow}
 
 `quantileExact` と同様に、数値データ列の正確な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
@@ -130,14 +125,13 @@ SELECT quantileExactLow(number) FROM numbers(10)
 
 結果：
 
-
 ```text
 ┌─quantileExactLow(number)─┐
 │                        4 │
 └──────────────────────────┘
 ```
 
-## quantileExactHigh
+## quantileExactHigh {#quantileexacthigh}
 
 `quantileExact` と同様に、数値データ系列の正確な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
@@ -188,8 +182,7 @@ SELECT quantileExactHigh(number) FROM numbers(10)
 └───────────────────────────┘
 ```
 
-
-## quantileExactExclusive
+## quantileExactExclusive {#quantileexactexclusive}
 
 数値データシーケンスの[分位点 (quantile)](https://en.wikipedia.org/wiki/Quantile) を厳密に計算します。
 
@@ -241,8 +234,7 @@ SELECT quantileExactExclusive(0.6)(x) FROM (SELECT number AS x FROM num);
 └────────────────────────────────┘
 ```
 
-
-## quantileExactInclusive
+## quantileExactInclusive {#quantileexactinclusive}
 
 数値データ系列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 

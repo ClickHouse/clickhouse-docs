@@ -16,10 +16,9 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-
 ## ClickHouse におけるパートマージとは？ \{#what-are-part-merges-in-clickhouse\}
 
-<br/>
+<br />
 
 ClickHouse は、クエリだけでなくインサートも[高速](/concepts/why-clickhouse-is-so-fast)です。その理由は、[ストレージレイヤ](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf) にあり、これは [LSM tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree) と同様の動作をします。
 
@@ -33,13 +32,13 @@ ClickHouse は、クエリだけでなくインサートも[高速](/concepts/wh
 
 次の図は、このバックグラウンドマージ処理の概要を示しています。
 
-<Image img={merges_01} size="lg" alt="PART MERGES"/>
+<Image img={merges_01} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 `merge level` は、追加のマージが行われるたびに 1 ずつ増加します。`0` のレベルは、そのパートが新しく、まだマージされていないことを意味します。より大きな ^^parts^^ にマージされた元の ^^parts^^ は [inactive](/operations/system-tables/parts) とマークされ、最終的には [設定可能](/operations/settings/merge-tree-settings#old_parts_lifetime) な時間（デフォルトでは 8 分）後に削除されます。時間の経過とともに、これによりマージされた ^^parts^^ の **木構造** が形成されます。これが [merge tree](/engines/table-engines/mergetree-family) テーブルという名称の由来です。
 
-## マージの監視
+## マージの監視 \{#monitoring-merges\}
 
 [テーブルパーツとは何か](/parts)の例では、ClickHouse がすべてのテーブル^^パーツ^^を [parts](/operations/system-tables/parts) システムテーブルで追跡していることを[示しました](/parts#monitoring-table-parts)。例に用いたテーブルについて、アクティブな各パーツごとのマージレベルと保存されている行数を取得するために、次のクエリを使用しました。
 
@@ -86,14 +85,13 @@ ClickHouse 24.10 では、組み込みの [monitoring dashboards](https://clickh
 
 ③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification)。
 
-
 ## 同時マージ \{#concurrent-merges\}
 
 1 つの ClickHouse サーバーでは、複数のバックグラウンド[マージスレッド](/operations/server-configuration-parameters/settings#background_pool_size)を使用して、パーツのマージを並行して実行します。
 
-<Image img={merges_02} size="lg" alt='パーツのマージ'/>
+<Image img={merges_02} size="lg" alt="パーツのマージ" />
 
-<br/>
+<br />
 
 各マージスレッドは次のループを実行します。
 
@@ -115,9 +113,9 @@ ClickHouse は、[前の例](/merges#concurrent-merges)で示したように、�
 
 下の図は、ClickHouse における単一のバックグラウンド[マージスレッド](/merges#concurrent-merges)が、（デフォルトでは[バーティカルマージ](/merges#memory-optimized-merges)なしで）^^パーツ^^をどのようにマージするかを示しています:
 
-<Image img={merges_03} size="lg" alt='パーツのマージ'/>
+<Image img={merges_03} size="lg" alt="パーツのマージ" />
 
-<br/>
+<br />
 
 パーツのマージは、次のステップで行われます:
 
@@ -139,9 +137,9 @@ ClickHouse は、[前の例](/merges#concurrent-merges)で示したように、�
 
 以下の図は、標準的な [MergeTree](/engines/table-engines/mergetree-family/mergetree) テーブルにおいて ^^パーツ^^ がどのようにマージされるかを示しています。
 
-<Image img={merges_04} size="lg" alt='PART MERGES'/>
+<Image img={merges_04} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 上の図にある DDL 文は、`MergeTree` テーブルを作成し、^^ソートキー^^ `(town, street)` を指定しています。これは、[ディスク上のデータがこれらのカラムでソートされ](/parts#what-are-table-parts-in-clickhouse)、それに応じて疎なプライマリインデックスが生成されることを意味します。
 
@@ -151,9 +149,9 @@ ClickHouse は、[前の例](/merges#concurrent-merges)で示したように、�
 
 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) テーブルにおけるパーツのマージ処理は [標準のマージ](/merges#standard-merges) と同様に動作しますが、各行について最新バージョンのみが保持され、古いバージョンは破棄されます。
 
-<Image img={merges_05} size="lg" alt='PART MERGES'/>
+<Image img={merges_05} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 上図の DDL ステートメントは、^^ソートキー^^ `(town, street, id)` を持つ `ReplacingMergeTree` テーブルを作成します。これは、ディスク上のデータがこれらのカラムでソートされ、そのソートに基づいてスパースなプライマリインデックスが生成されることを意味します。
 
@@ -161,15 +159,15 @@ ClickHouse は、[前の例](/merges#concurrent-merges)で示したように、�
 
 ただし、`ReplacingMergeTree` は同じ ^^ソートキー^^ を持つ重複行を削除し、それぞれを含むパーツの作成タイムスタンプに基づいて、最新の行のみを保持します。
 
-<br/>
+<br />
 
 ### 集計マージ \{#summing-merges\}
 
 数値データは、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) テーブルの ^^パーツ^^ がマージされる際に、自動的に集計されます。
 
-<Image img={merges_06} size="lg" alt='パーツのマージ'/>
+<Image img={merges_06} size="lg" alt="パーツのマージ" />
 
-<br/>
+<br />
 
 上の図の DDL ステートメントは、`town` を ^^ソートキー^^ とする `SummingMergeTree` テーブルを定義しています。これは、ディスク上のデータがこの列でソートされ、その列に基づいて疎な primary index が作成されることを意味します。
 
@@ -179,9 +177,9 @@ ClickHouse は、[前の例](/merges#concurrent-merges)で示したように、�
 
 上の `SummingMergeTree` テーブルの例は、[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) テーブルの特殊なバリアントであり、パーツのマージ時に [90 以上](/sql-reference/aggregate-functions/reference) の任意の集約関数を適用することで、[自動インクリメンタルなデータ変換](https://www.youtube.com/watch?v=QDAJTKZT8y4) を可能にします。
 
-<Image img={merges_07} size="lg" alt='PART MERGES'/>
+<Image img={merges_07} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
 上の図の DDL ステートメントは、`town` を ^^ソートキー^^ とする `AggregatingMergeTree` テーブルを作成します。これにより、ディスク上でこの列に基づいてデータがソートされ、対応する疎なプライマリインデックスが生成されます。
 

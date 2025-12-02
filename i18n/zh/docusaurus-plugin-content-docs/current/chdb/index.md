@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
 
-# chDB
+# chDB {#chdb}
 
 chDB 是一款由 [ClickHouse](https://github.com/clickhouse/clickhouse) 驱动的快速进程内 SQL OLAP 引擎。
 当你希望在程序中使用 ClickHouse 的强大功能，但又不想连接到 ClickHouse 服务器时，就可以使用 chDB。

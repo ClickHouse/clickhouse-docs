@@ -7,7 +7,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest
+# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
 
 2つの母集団から得られた標本に対してコルモゴロフ–スミルノフ検定を適用します。
 
@@ -109,10 +109,9 @@ FROM
 └─────────────────────────────────────────────────────────┘
 ```
 
-
 注記:
 P 値が 0.05 未満（信頼水準 95% において）であるため、帰無仮説は棄却されます。
 
 **関連項目**
 
-- [Kolmogorov-Smirnov test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+* [Kolmogorov-Smirnov test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)

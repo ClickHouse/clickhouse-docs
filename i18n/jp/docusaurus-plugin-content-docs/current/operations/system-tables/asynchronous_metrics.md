@@ -6,10 +6,9 @@ title: 'system.asynchronous_metrics'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;metrics
+# system.asynchronous&#95;metrics {#systemasynchronous_metrics}
 
 <SystemTableCloud />
 
@@ -45,7 +44,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 {/*- system.events や system.metrics と異なり、非同期メトリクスはソースコードファイル内に単純な一覧として定義されているわけではなく、
       src/Interpreters/ServerAsynchronousMetrics.cpp 内のロジックと混在して記述されています。
       読者の便宜のため、ここで明示的に列挙します。 -*/ }
-
 
 ## メトリクスの説明 {#metric-descriptions}
 
@@ -102,8 +100,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 ブロックデバイスに対して要求され、OS の I/O スケジューラによってマージされた読み取り操作の数。これはシステム全体のメトリクスであり、ホストマシン上のすべてのプロセス（clickhouse-server だけでなく）を含みます。ソース: `/sys/block`。https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 
 ### BlockReadOps_*name* {#blockreadops_name}
-
-
 
 ブロックデバイスに対して要求された読み取り処理の回数。これはシステム全体のメトリクスであり、clickhouse-server だけでなくホストマシン上のすべてのプロセスが含まれます。出典: `/sys/block`。https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください
 
@@ -186,8 +182,6 @@ ClickHouse のログパスがマウントされているボリューム上で使
 ### FilesystemLogsPathUsedINodes {#filesystemlogspathusedinodes}
 
 ClickHouse のログパスがマウントされているボリューム上で使用中の iノード数。
-
-
 
 ### FilesystemMainPathAvailableBytes {#filesystemmainpathavailablebytes}
 
@@ -273,8 +267,6 @@ MySQL 互換プロトコルのサーバーにおけるスレッド数。
 
 ネットワークインターフェイス経由での受信時にエラーが発生した回数。これはシステム全体のメトリクスであり、clickhouse-server だけでなくホストマシン上のすべてのプロセスが含まれます。
 
-
-
 ### NetworkReceivePackets_*name* {#networkreceivepackets_name}
 
  ネットワークインターフェイス経由で受信したネットワークパケット数。これはシステム全体のメトリクスであり、clickhouse-server だけでなくホストマシン上のすべてのプロセスを含みます。
@@ -333,8 +325,6 @@ Linux カーネルの制御下でゲスト OS 用の仮想 CPU を実行する�
 
 ### OSGuestTimeCPU_*N* {#osguesttimecpu_n}
 
-
-
 Linux カーネルの制御下で、ゲスト OS 向けの仮想 CPU を実行していた時間の比率です（`man procfs` を参照）。これはシステム全体のメトリクスであり、clickhouse-server だけでなくホストマシン上のすべてのプロセスが含まれます。このメトリクスは ClickHouse にとっては本質的ではありませんが、完全性のために用意されています。単一の CPU コアに対する値は [0..1] の範囲になります。すべての CPU コアに対する値は、各コアの値を合計して [0..num cores] の範囲で算出されます。
 
 ### OSGuestTimeNormalized {#osguesttimenormalized}
@@ -372,8 +362,6 @@ OS カーネルの観点から見た、CPU コアがアイドル状態（I/O 待
 ### OSIrqTime {#osirqtime}
 
 CPU 上でハードウェア割り込み処理を実行していた時間の比率です。これはシステム全体のメトリクスであり、clickhouse-server だけでなくホストマシン上のすべてのプロセスが含まれます。このメトリクスの値が高い場合は、ハードウェアの誤った構成、または非常に高いネットワーク負荷を示している可能性があります。単一の CPU コアに対する値は [0..1] の範囲になります。すべての CPU コアに対する値は、各コアの値を合計して [0..num cores] の範囲で算出されます。
-
-
 
 ### OSIrqTimeCPU_*N* {#osirqtimecpu_n}
 
@@ -427,8 +415,6 @@ CPU コアがより高い優先度でユーザ空間コードを実行してい�
 
 I/O の完了待ちでブロックされているスレッド数です（`man procfs` を参照）。これはシステム全体のメトリクスであり、ホストマシン上のすべてのプロセス（clickhouse-server だけではありません）を含みます。
 
-
-
 ### OSProcessesCreated {#osprocessescreated}
 
 作成されたプロセスの数。これはシステム全体のメトリクスであり、clickhouse-server だけでなく、ホストマシン上のすべてのプロセスが含まれます。
@@ -478,8 +464,6 @@ CPU コアが OS カーネル（システム）コードを実行していた時
 OS カーネルのスケジューラから見て「実行可能」となっているスレッドの総数。
 
 ### OSThreadsTotal {#osthreadstotal}
-
-
 
 OS カーネルのスケジューラから見たスレッドの総数。
 
@@ -562,8 +546,6 @@ TCP プロトコル（TLS なし）のサーバー内のスレッド数。
 ### TotalPrimaryKeyBytesInMemoryAllocated {#totalprimarykeybytesinmemoryallocated}
 
 プライマリキー値のために予約されているメモリ量（バイト単位）の合計（アクティブなパーツのみを対象）。
-
-
 
 ### TotalRowsOfMergeTreeTables {#totalrowsofmergetreetables}
 

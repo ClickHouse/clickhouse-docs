@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# fuzzQuery テーブル関数
+# fuzzQuery テーブル関数 {#fuzzquery-table-function}
 
 指定されたクエリ文字列にランダムなゆらぎを与えます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 fuzzQuery(query[, max_query_length[, random_seed]])
@@ -38,7 +38,7 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 SELECT * FROM fuzzQuery('SELECT materialize(\'a\' AS key) GROUP BY key') LIMIT 2;

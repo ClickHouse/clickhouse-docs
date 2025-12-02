@@ -6,7 +6,7 @@ title: 'quantileBFloat16'
 doc_type: 'reference'
 ---
 
-# quantileBFloat16Weighted
+# quantileBFloat16Weighted {#quantilebfloat16weighted}
 
 Как `quantileBFloat16`, но с учётом веса каждого элемента последовательности.
 

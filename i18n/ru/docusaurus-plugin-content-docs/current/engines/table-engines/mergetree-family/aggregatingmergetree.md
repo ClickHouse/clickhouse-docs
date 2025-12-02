@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Движок таблиц AggregatingMergeTree
+# Движок таблиц AggregatingMergeTree {#aggregatingmergetree-table-engine}
 
 Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и изменяет логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -80,7 +80,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## Пример агрегированного материализованного представления
+## Пример агрегированного материализованного представления {#example-of-an-aggregated-materialized-view}
 
 В этом примере предполагается, что у вас есть база данных под названием `test`. Создайте её, если она ещё не существует, с помощью приведённой ниже команды:
 

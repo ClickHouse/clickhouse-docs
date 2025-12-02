@@ -16,7 +16,7 @@ ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/for
 
 
 
-## 例
+## 例 {#examples}
 
 [HTTP インターフェース](../../interfaces/http.md)を使用する場合：
 

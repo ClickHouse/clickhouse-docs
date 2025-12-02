@@ -7,7 +7,7 @@ title: '削除済み行のマスクを適用する'
 doc_type: 'reference'
 ---
 
-# 削除された行のマスクを適用する
+# 削除された行のマスクを適用する {#apply-mask-of-deleted-rows}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]

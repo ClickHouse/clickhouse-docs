@@ -13,7 +13,7 @@ integration:
   - website: 'https://github.com/ClickHouse/clickhouse-connect'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';
 import superset_02 from '@site/static/images/integrations/data-visualization/superset_02.png';
@@ -29,7 +29,7 @@ import superset_12 from '@site/static/images/integrations/data-visualization/sup
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 将 Superset 连接到 ClickHouse
+# 将 Superset 连接到 ClickHouse {#connect-superset-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 

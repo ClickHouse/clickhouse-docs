@@ -12,8 +12,7 @@ keywords: ['clickstack', 'ttl', '数据保留', '生命周期', '存储管理']
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
-## ClickStack 中的 TTL
+## ClickStack 中的 TTL {#ttl-clickstack}
 
 生存时间（Time-to-Live，TTL）是 ClickStack 中实现高效数据保留与管理的关键特性，尤其适用于持续产生海量数据的场景。TTL 允许对较旧数据进行自动过期和删除，在无需人工干预的情况下实现存储的最优利用并维持良好性能。这一能力对于保持数据库精简、降低存储成本，以及通过聚焦最相关和最新的数据来确保查询始终快速高效至关重要。此外，它还能通过系统化地管理数据生命周期，帮助遵循数据保留策略，从而提升整个可观测性解决方案的可持续性和可扩展性。
 
@@ -63,7 +62,6 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 
 <Image img={observability_14} alt="Partitions" size="lg" />
 
-
 表结构还包含 `TTL TimestampTime + toIntervalDay(3)` 以及设置 `ttl_only_drop_parts = 1`。前者确保数据在超过 3 天后会被删除。设置 `ttl_only_drop_parts = 1` 则保证只删除“整块”已全部过期的数据分片（而不是尝试部分删除行）。在按天分区从而确保不同日期的数据不会被“合并”的前提下，可以高效地删除这些数据。
 
 :::important `ttl_only_drop_parts`
@@ -76,7 +74,7 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 正如上文所述，TTL 并不会立即执行，而是按一定调度周期执行。MergeTree 表设置 `merge_with_ttl_timeout` 用于设置带删除 TTL 的合并操作之间的最小重复间隔（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟；实际触发 TTL 合并可能需要更久。如果该值设置得过低，会触发大量“非计划”合并，消耗大量资源。可以通过执行命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制触发一次 TTL 过期处理。
 :::
 
-## 修改 TTL
+## 修改 TTL {#modifying-ttl}
 
 要修改 TTL，用户可以：
 
@@ -96,8 +94,7 @@ exporters:
    ttl: 72h
 ```
 
-
-### 列级 TTL
+### 列级 TTL {#column-level-ttl}
 
 上述示例是在表级别设置数据过期。用户也可以在列级别设置数据过期策略。随着数据随时间推移而老化，可以借此删除那些在排障与分析中带来的价值不足以抵消其保留所需资源开销的列。例如，我们建议保留 `Body` 列，以防后续添加了在写入时尚未被提取的新动态元数据，例如新的 Kubernetes 标签。经过一段时间（例如 1 个月）后，如果明显这些附加元数据并无实际用处，那么继续保留 `Body` 列的价值就有限了。
 

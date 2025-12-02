@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 基本示例
+### 基本示例 {#basic-example}
 
 来看一个示例。我们将创建一张包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
 

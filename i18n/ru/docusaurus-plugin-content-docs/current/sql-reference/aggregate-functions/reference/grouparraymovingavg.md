@@ -6,7 +6,7 @@ title: 'groupArrayMovingAvg'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingAvg
+# groupArrayMovingAvg {#grouparraymovingavg}
 
 Вычисляет скользящее среднее для входных значений.
 

@@ -6,7 +6,7 @@ title: 'sumMapWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumMapWithOverflow
+# sumMapWithOverflow {#summapwithoverflow}
 
 Подсчитывает сумму элементов массива `value` в соответствии с ключами, указанными в массиве `key`. Возвращает кортеж из двух массивов: ключи в отсортированном порядке и значения, суммированные для соответствующих ключей.
 Отличается от функции [sumMap](../reference/summap.md) тем, что выполняет суммирование с переполнением, то есть возвращает тот же тип данных для результата суммирования, что и тип данных аргумента.
@@ -83,7 +83,6 @@ GROUP BY timeslot
 ```
 
 Результат:
-
 
 ```text
    ┌────────────timeslot─┬─toTypeName(sumMap(statusMap.status, statusMap.requests))─┬─toTypeName(sumMapWithOverflow(statusMap.status, statusMap.requests))─┐

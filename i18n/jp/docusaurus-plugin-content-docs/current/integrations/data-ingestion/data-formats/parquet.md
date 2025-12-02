@@ -10,7 +10,7 @@ keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache p
 
 
 
-# ClickHouse での Parquet の利用
+# ClickHouse での Parquet の利用 {#working-with-parquet-in-clickhouse}
 
 Parquet は、データをカラム指向で効率的に保存できるファイル形式です。
 ClickHouse は、Parquet ファイルの読み取りと書き込みの両方をサポートします。
@@ -24,7 +24,7 @@ ClickHouse は、Parquet ファイルの読み取りと書き込みの両方を�
 
 
 
-## Parquet からのインポート
+## Parquet からのインポート {#importing-from-parquet}
 
 データをロードする前に、[file()](/sql-reference/functions/files.md/#file) 関数を使用して、[Parquet 形式のサンプルファイル](assets/data.parquet) の構造を確認できます。
 
@@ -64,7 +64,7 @@ LIMIT 3;
 :::
 
 
-## 既存テーブルへのインポート
+## 既存テーブルへのインポート {#importing-to-an-existing-table}
 
 Parquet データをインポートするためのテーブルを作成します。
 
@@ -103,7 +103,7 @@ LIMIT 5;
 ClickHouse が `date` 列の Parquet の文字列データを自動的に `Date` 型へ変換していることに注目してください。これは、ClickHouse がターゲットテーブルの列の型に基づいて自動的に型変換を行うためです。
 
 
-## ローカルファイルをリモートサーバーに挿入する
+## ローカルファイルをリモートサーバーに挿入する {#inserting-a-local-file-to-remote-server}
 
 ローカルの Parquet ファイルをリモートの ClickHouse サーバーに挿入したい場合は、次のようにファイルの内容を `clickhouse-client` にパイプすることで行えます。
 
@@ -112,7 +112,7 @@ clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
 
 
-## Parquet ファイルから新しいテーブルを作成する
+## Parquet ファイルから新しいテーブルを作成する {#creating-new-tables-from-parquet-files}
 
 ClickHouse は Parquet ファイルのスキーマを読み取ることができるため、テーブルを動的に作成できます。
 
@@ -141,7 +141,7 @@ DESCRIBE TABLE imported_from_parquet;
 デフォルトでは、ClickHouse はカラム名やデータ型、値に対して厳格に動作します。ただし、状況によっては、インポート時に存在しないカラムやサポートされていない値をスキップすることができます。これは [Parquet 設定](/interfaces/formats/Parquet#format-settings) で制御できます。
 
 
-## Parquet 形式へのエクスポート
+## Parquet 形式へのエクスポート {#exporting-to-parquet-format}
 
 :::tip
 ClickHouse Cloud で `INTO OUTFILE` を使用する場合、ファイルが書き込まれるマシン上で `clickhouse client` を使ってコマンドを実行する必要があります。
@@ -159,7 +159,7 @@ FORMAT Parquet
 これにより、作業ディレクトリに `export.parquet` ファイルが作成されます。
 
 
-## ClickHouse と Parquet のデータ型
+## ClickHouse と Parquet のデータ型 {#clickhouse-and-parquet-data-types}
 
 ClickHouse と Parquet のデータ型はほとんど同一ですが、[いくつか違いがあります](/interfaces/formats/Parquet#data-types-matching-parquet)。たとえば、ClickHouse は `DateTime` 型を Parquet 側の `int64` としてエクスポートします。その後それを ClickHouse にインポートし直すと、（[time.parquet ファイル](assets/time.parquet) のように）数値として表示されます：
 

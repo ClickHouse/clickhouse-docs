@@ -20,17 +20,16 @@ import data_sources from '@site/static/images/_snippets/data_sources.png';
 import select_data_source from '@site/static/images/_snippets/select_data_source.png';
 import client_details from '@site/static/images/_snippets/client_details.png';
 import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
+import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
-
-# Быстрый старт с ClickHouse Cloud
+# Быстрый старт с ClickHouse Cloud \{#clickhouse-cloud-quick-start\}
 
 > Самый быстрый и простой способ начать работу с ClickHouse — создать новый
-сервис в [ClickHouse Cloud](https://console.clickhouse.cloud). В этом руководстве по быстрому старту вы сможете настроить систему
-в три простых шага.
+> сервис в [ClickHouse Cloud](https://console.clickhouse.cloud). В этом руководстве по быстрому старту вы сможете настроить систему
+> в три простых шага.
 
 <VerticalStepper type="numbered">
-  ## Создайте сервис ClickHouse
+  ## Создайте сервис ClickHouse \{#1-create-a-clickhouse-service\}
 
   Чтобы создать бесплатный сервис ClickHouse в [ClickHouse Cloud](https://console.clickhouse.cloud), необходимо зарегистрироваться, выполнив следующие действия:
 
@@ -59,7 +58,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   Поздравляем! Ваш сервис ClickHouse Cloud запущен и работает, процесс подключения завершён. Продолжайте чтение, чтобы узнать, как начать приём данных и выполнять запросы к ним.
 
-  ## Подключение к ClickHouse
+  ## Подключение к ClickHouse \{#2-connect-to-clickhouse\}
 
   Существует два способа подключения к ClickHouse:
 
@@ -68,7 +67,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   <br />
 
-  ### Подключение через SQL-консоль
+  ### Подключение через SQL-консоль \{#connect-using-sql-console\}
 
   Для быстрого начала работы ClickHouse предоставляет веб-консоль SQL, на которую вы будете перенаправлены после завершения онбординга.
 
@@ -88,7 +87,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   Вот и всё — вы готовы начать использовать свой новый сервис ClickHouse!
 
-  ### Подключение приложения
+  ### Подключение приложения \{#connect-with-your-app\}
 
   Нажмите кнопку подключения в меню навигации. Откроется модальное окно с учетными данными для вашего сервиса и инструкциями по подключению с использованием вашего интерфейса или клиентских библиотек.
 
@@ -98,7 +97,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   Если вы не видите клиент для вашего языка программирования, ознакомьтесь со списком [интеграций](/integrations).
 
-  ## Добавление данных
+  ## Добавление данных \{#3-add-data\}
 
   ClickHouse эффективнее всего работает с данными! Существует несколько способов добавления данных, большинство из которых доступны на странице Data Sources в навигационном меню.
 
@@ -114,7 +113,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   * Загрузите файл — поддерживаемые форматы: JSON, CSV и TSV
   * Загрузка данных из файла по URL
 
-  ### ClickPipes
+  ### ClickPipes \{#clickpipes\}
 
   [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) — управляемая платформа интеграции, которая упрощает приём данных из различных источников до нескольких нажатий кнопок. Разработанная для самых требовательных рабочих нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочной потоковой передачи данных, так и для однократной загрузки.
 
@@ -122,7 +121,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   <br />
 
-  ### Добавление данных через SQL Console
+  ### Добавление данных через SQL Console \{#add-data-using-the-sql-console\}
 
   Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Для создания новой базы данных в ClickHouse используйте команду [`CREATE DATABASE`](../../sql-reference/statements/create/database.md):
 
@@ -163,7 +162,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   Существует множество движков таблиц на выбор, но для простой таблицы на одноузловом сервере ClickHouse оптимальным выбором будет [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md).
   :::
 
-  #### Краткое введение в первичные ключи
+  #### Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
 
   Прежде чем двигаться дальше, важно понять, как работают первичные ключи в ClickHouse (их реализация
   может оказаться неожиданной!):
@@ -183,7 +182,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   Для углубленного изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).
 
-  #### Вставка данных в таблицу
+  #### Вставка данных в таблицу \{#insert-data-into-your-table\}
 
   Вы можете использовать знакомую команду [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) в ClickHouse, но важно понимать, что каждая вставка в таблицу [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) приводит к созданию **части** в хранилище.
 
@@ -213,7 +212,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   SELECT * FROM helloworld.my_first_table
   ```
 
-  ### Добавление данных с помощью клиента ClickHouse
+  ### Добавление данных с помощью клиента ClickHouse \{#add-data-using-the-clickhouse-client\}
 
   Вы также можете подключиться к вашему сервису ClickHouse Cloud с помощью инструмента командной строки [**clickhouse client**](/interfaces/cli). Нажмите `Connect` в левом меню для доступа к этим данным. В диалоговом окне выберите `Native` из выпадающего списка:
 
@@ -293,7 +292,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   exit
   ```
 
-  ### Загрузка файла
+  ### Загрузка файла \{#upload-a-file\}
 
   Распространённая задача при начале работы с базой данных — загрузить имеющиеся данные из файлов. Мы предоставляем образцы данных онлайн, которые можно использовать для демонстрации работы с данными о кликах (clickstream) — они включают идентификатор пользователя, посещённый URL и временную метку события.
 
@@ -328,9 +327,9 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 ## Что дальше? \{#whats-next\}
 
-- В [руководстве](/tutorial.md) вы загрузите 2 миллиона строк в таблицу и выполните несколько аналитических запросов
-- У нас есть список [примеров наборов данных](/getting-started/index.md) с инструкциями по их загрузке
-- Посмотрите наше 25-минутное видео [Начало работы с ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
-- Если ваши данные поступают из внешнего источника, ознакомьтесь с [коллекцией руководств по интеграции](/integrations/index.mdx) по подключению к очередям сообщений, базам данных, пайплайнам и многому другому
-- Если вы используете инструмент визуализации (UI/BI), ознакомьтесь с [руководствами по подключению пользовательского интерфейса к ClickHouse](/integrations/data-visualization)
-- Руководство по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) содержит всё, что вам нужно знать о первичных ключах и о том, как их определять
+* В [руководстве](/tutorial.md) вы загрузите 2 миллиона строк в таблицу и выполните несколько аналитических запросов
+* У нас есть список [примеров наборов данных](/getting-started/index.md) с инструкциями по их загрузке
+* Посмотрите наше 25-минутное видео [Начало работы с ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
+* Если ваши данные поступают из внешнего источника, ознакомьтесь с [коллекцией руководств по интеграции](/integrations/index.mdx) по подключению к очередям сообщений, базам данных, пайплайнам и многому другому
+* Если вы используете инструмент визуализации (UI/BI), ознакомьтесь с [руководствами по подключению пользовательского интерфейса к ClickHouse](/integrations/data-visualization)
+* Руководство по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) содержит всё, что вам нужно знать о первичных ключах и о том, как их определять

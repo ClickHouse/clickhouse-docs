@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# 設定の概要
+# 設定の概要 {#settings-overview}
 
 
 
@@ -27,7 +27,7 @@ ClickHouse の設定には、大きく分けて 2 つのグループがありま
 
 
 
-## 既定値以外の設定の確認
+## 既定値以外の設定の確認 {#see-non-default-settings}
 
 既定値から変更されている設定を表示するには、`system.settings` テーブルをクエリします。
 

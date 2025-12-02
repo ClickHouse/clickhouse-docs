@@ -8,20 +8,20 @@
 
 
 
-## 安装
+## 安装 {#troubleshooting-installation-errors}
 
-### 无法通过 apt-get 从 ClickHouse 仓库获取 deb 包
+### 无法通过 apt-get 从 ClickHouse 仓库获取 deb 包 {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 * 检查防火墙设置。
 * 如果由于任何原因无法访问该仓库，请按照[安装指南](../getting-started/install.md)中的说明下载软件包，并使用 `sudo dpkg -i <packages>` 命令手动安装。您还需要安装 `tzdata` 软件包。
 
-### 无法通过 apt-get 从 ClickHouse 仓库更新 deb 包
+### 无法通过 apt-get 从 ClickHouse 仓库更新 deb 包 {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 * 当 GPG 密钥更改时，可能会出现此问题。
 
 请按照 [setup](../getting-started/install.md#setup-the-debian-repository) 页面中的说明更新仓库配置。
 
-### 运行 `apt-get update` 时收到不同的警告
+### 运行 `apt-get update` 时收到不同的警告 {#you-get-different-warnings-with-apt-get-update}
 
 * 完整的警告信息类似于以下几种情况之一：
 
@@ -53,7 +53,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 由于签名不正确，你无法通过 yum 获取软件包
+### 由于签名不正确，你无法通过 yum 获取软件包 {#you-cant-get-packages-with-yum-because-of-wrong-signature}
 
 可能的问题：缓存不正确；在 2022 年 9 月更新 GPG 密钥后，缓存可能已损坏。
 
@@ -66,7 +66,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 之后请按照[安装指南](../getting-started/install.md#from-rpm-packages)进行操作。
 
-### 无法运行 Docker 容器
+### 无法运行 Docker 容器 {#you-cant-run-docker-container}
 
 当你运行一个简单的命令 `docker run clickhouse/clickhouse-server` 时，它会崩溃并输出类似如下的堆栈跟踪：
 
@@ -99,14 +99,14 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 ```
 
 
-## 连接到服务器
+## 连接到服务器 {#troubleshooting-accepts-no-connections}
 
 可能出现的问题：
 
 * 服务器未运行。
 * 配置参数异常或错误。
 
-### 服务器未运行
+### 服务器未运行 {#server-is-not-running}
 
 **检查服务器是否正在运行**
 
@@ -175,7 +175,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 此命令会使用自动启动脚本的标准参数，以交互式应用程序的方式启动服务器。在此模式下，`clickhouse-server` 会在控制台输出所有事件消息。
 
-### 配置参数
+### 配置参数 {#configuration-parameters}
 
 请检查：
 
@@ -207,7 +207,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
   你可能使用了错误的用户名或密码。
 
 
-## 查询处理
+## 查询处理 {#troubleshooting-does-not-process-queries}
 
 如果 ClickHouse 无法处理查询，它会将错误描述发送给客户端。在 `clickhouse-client` 中，错误描述会显示在控制台中。如果使用 HTTP 接口，ClickHouse 会在响应体中返回错误描述。例如：
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 什么是 OLAP？
+# 什么是 OLAP？ {#what-is-olap}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing（联机分析处理）的缩写。这个术语范围很广，可以从两个角度来理解：技术角度和业务角度。在最高层面上，你可以简单地将这个短语反向理解：
 

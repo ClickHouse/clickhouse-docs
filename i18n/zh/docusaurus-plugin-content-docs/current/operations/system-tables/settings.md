@@ -6,9 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-
-
-# system.settings
+# system.settings {#systemsettings}
 
 包含当前用户会话参数设置信息。
 
@@ -85,7 +83,6 @@ alias_for:
 is_obsolete: 0
 tier:        生产环境
 ```
-
 
 Row 3:
 ──────

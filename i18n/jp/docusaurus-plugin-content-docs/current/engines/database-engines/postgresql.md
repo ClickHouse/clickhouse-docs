@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# PostgreSQL
+# PostgreSQL {#postgresql}
 
 リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続できます。ClickHouse と PostgreSQL 間でデータをやり取りするために、読み取りおよび書き込み操作（`SELECT` および `INSERT` クエリ）をサポートします。
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 
 
 
-## データベースの作成
+## データベースの作成 {#creating-a-database}
 
 ```sql
 CREATE DATABASE test_database
@@ -56,7 +56,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 
 
-## 利用例
+## 利用例 {#examples-of-use}
 
 ClickHouse 上のデータベースが PostgreSQL サーバーとデータを交換する例:
 

@@ -10,13 +10,13 @@ doc_type: 'reference'
 
 
 
-# mergeTreeProjection テーブル関数
+# mergeTreeProjection テーブル関数 {#mergetreeprojection-table-function}
 
 MergeTree テーブル内の特定のプロジェクションの内容を表します。内部の状態を調査・確認するために使用できます。
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 mergeTreeProjection(database, table, projection)
@@ -39,7 +39,7 @@ mergeTreeProjection(database, table, projection)
 
 
 
-## 使用例
+## 使用例 {#usage-example}
 
 ```sql
 CREATE TABLE test

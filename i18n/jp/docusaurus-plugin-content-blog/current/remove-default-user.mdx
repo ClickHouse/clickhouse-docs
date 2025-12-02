@@ -10,8 +10,7 @@ words: ['デフォルトユーザーの削除', 'ClickHouse Server']
 
 {/* 省略 */}
 
-
-## デフォルトユーザーの削除
+## デフォルトユーザーの削除 \{#removing-the-default-user\}
 
 :::note
 このガイドは ClickHouse Cloud には適用されません。
@@ -29,8 +28,7 @@ users:
 
 このファイルの場所は、ClickHouse をどのような方法でインストールしたかによって異なります。
 
-
-## 実行ファイルを直接実行する場合
+## 実行ファイルを直接実行する場合 \{#running-the-executable-directly\}
 
 ClickHouse を直接実行する場合（`clickhouse server`）、ファイルを `config.d` ディレクトリ配下に配置する必要があります。
 
@@ -56,8 +54,7 @@ localhost:9000 にユーザー default として接続中。
 Code: 516. DB::Exception: Received from localhost:9000. DB::Exception: default: 認証失敗: パスワードが正しくないか、該当する名前のユーザーが存在しません。
 ```
 
-
-## Docker またはインストール環境
+## Docker またはインストール環境 \{#docker-or-installed\}
 
 Docker で ClickHouse を実行している場合、またはマシンにインストールしている場合は、そのファイルを `/etc/clickhouse-server/users.d` ディレクトリ配下に配置する必要があります。
 

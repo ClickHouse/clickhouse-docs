@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# ORDER BY 子句
+# ORDER BY 子句 {#order-by-clause}
 
 `ORDER BY` 子句包含：
 
@@ -29,14 +29,14 @@ doc_type: 'reference'
 
 
 
-## 特殊值的排序
+## 特殊值的排序 {#sorting-of-special-values}
 
 对 `NaN` 和 `NULL` 的排序顺序有两种处理方式：
 
 * 默认情况下或使用 `NULLS LAST` 修饰符时：先是普通值，然后是 `NaN`，最后是 `NULL`。
 * 使用 `NULLS FIRST` 修饰符时：先是 `NULL`，然后是 `NaN`，最后是其他值。
 
-### 示例
+### 示例 {#example}
 
 对于下表
 
@@ -85,7 +85,7 @@ doc_type: 'reference'
 
 
 
-## 排序规则示例
+## 排序规则示例 {#collation-examples}
 
 仅使用 [String](../../../sql-reference/data-types/string.md) 值的示例：
 
@@ -297,7 +297,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 
 
-## 带 WITH FILL 修饰符的 ORDER BY 表达式
+## 带 WITH FILL 修饰符的 ORDER BY 表达式 {#order-by-expr-with-fill-modifier}
 
 该修饰符也可以与 [LIMIT ... WITH TIES 修饰符](/sql-reference/statements/select/limit#limit--with-ties-modifier) 组合使用。
 
@@ -635,7 +635,7 @@ SELECT n, source, inter FROM (
 ```
 
 
-## 按排序前缀分组填充
+## 按排序前缀分组填充 {#filling-grouped-by-sorting-prefix}
 
 在某些情况下，按特定列中取值相同的行分别独立进行填充会很有用——一个很好的示例就是在时间序列中填充缺失值。
 假设有如下的时间序列表：

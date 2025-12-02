@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-### データの挿入
+### データの挿入 {#inserting-data}
 
 以下のデータを含む JSON ファイル `football.json` を作成します:
 
@@ -51,7 +51,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNa
 ```
 
 
-### データの読み込み
+### データの読み込み {#reading-data}
 
 `JSONCompactEachRowWithNames` フォーマットを使用してデータを読み込みます。
 

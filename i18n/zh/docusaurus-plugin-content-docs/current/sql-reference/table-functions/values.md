@@ -20,7 +20,7 @@ Values 是不区分大小写的函数。也就是说，`VALUES` 或 `values` 都
 
 
 
-## 语法
+## 语法 {#syntax}
 
 `VALUES` 表函数的基本语法如下：
 
@@ -59,7 +59,7 @@ VALUES(
 
 
 
-## 示例
+## 示例 {#examples}
 
 ```sql title="Query"
 SELECT *

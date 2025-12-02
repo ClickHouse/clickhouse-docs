@@ -10,8 +10,7 @@ keywords: ['Пересечение частей', 'system.replicas']
 
 {/* обрезать */}
 
-
-## Почему это происходит
+## Почему это происходит \{#why-it-occurs\}
 
 Когда возникает эта ошибка, таблица отображается как доступная только для чтения, а в сообщении об ошибке указываются пересекающиеся части.
 
@@ -29,12 +28,11 @@ WHERE is_readonly = 1
 Код: 49. DB::Exception: Часть XXXXX пересекается с предыдущей частью YYYYY. Это баг или результат ручного вмешательства в данные ZooKeeper. (LOGICAL_ERROR) (версия 21.12.4.1 (официальная сборка))
 ```
 
-
 ## Причина ошибки \{#cause-of-the-error\}
 
 Эта ошибка может возникать из-за состояния гонки между `mergeSelectingTask` и повторной инициализацией очереди.
 
-## Решение
+## Решение \{#solution\}
 
 Выполните следующие запросы на всех репликах:
 
@@ -58,15 +56,14 @@ SYSTEM SYNC REPLICA table_name; -- Ожидает синхронизации к�
 Рекомендуется обновиться до последней версии ClickHouse.
 :::
 
-
 ## Дополнительные ресурсы \{#additional-resources\}
 
 Связанные pull request’ы и задачи в GitHub:
 
-- [ClickHouse/ClickHouse#34096](https://github.com/ClickHouse/ClickHouse/pull/34096)
-- [ClickHouse/ClickHouse#30651](https://github.com/ClickHouse/ClickHouse/pull/30651)
-- [ClickHouse/ClickHouse#31060](https://github.com/ClickHouse/ClickHouse/pull/31060)
-- [ClickHouse/ClickHouse#35863](https://github.com/ClickHouse/ClickHouse/issues/35863)
+* [ClickHouse/ClickHouse#34096](https://github.com/ClickHouse/ClickHouse/pull/34096)
+* [ClickHouse/ClickHouse#30651](https://github.com/ClickHouse/ClickHouse/pull/30651)
+* [ClickHouse/ClickHouse#31060](https://github.com/ClickHouse/ClickHouse/pull/31060)
+* [ClickHouse/ClickHouse#35863](https://github.com/ClickHouse/ClickHouse/issues/35863)
 
 ## Затронутые версии: \{#versions-affected\}
 

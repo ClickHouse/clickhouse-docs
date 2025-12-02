@@ -51,7 +51,7 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 
 
 
-## AS 句
+## AS 句 {#as-clause}
 
 同じテーブルおよび同じユーザーに対して、同時に複数のポリシーを有効にすることができます。そのため、複数のポリシーに含まれる条件を組み合わせる方法が必要になります。
 

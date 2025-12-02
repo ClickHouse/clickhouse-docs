@@ -33,7 +33,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
   这些操作的详细说明见下文。
 
 
-## ADD COLUMN
+## ADD COLUMN {#add-column}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] 列名 [类型] [默认表达式] [编解码器] [AFTER 目标列名 | FIRST]
@@ -70,7 +70,7 @@ Added3  UInt32
 ```
 
 
-## 删除列（DROP COLUMN）
+## 删除列（DROP COLUMN） {#drop-column}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -91,7 +91,7 @@ ALTER TABLE visits DROP COLUMN browser
 ```
 
 
-## 重命名列
+## 重命名列 {#rename-column}
 
 ```sql
 重命名列 [如果存在] name 为 new_name
@@ -108,7 +108,7 @@ ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
 
-## CLEAR COLUMN（清空列）
+## CLEAR COLUMN（清空列） {#clear-column}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
@@ -125,7 +125,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
 
-## 备注列
+## 备注列 {#comment-column}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] name '文本注释'
@@ -144,7 +144,7 @@ ALTER TABLE visits COMMENT COLUMN browser '此列显示访问站点所使用的�
 ```
 
 
-## 修改列
+## 修改列 {#modify-column}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -224,7 +224,7 @@ DESCRIBE users;
 :::
 
 
-## MODIFY COLUMN REMOVE
+## MODIFY COLUMN REMOVE {#modify-column-remove}
 
 移除某个列属性：`DEFAULT`、`ALIAS`、`MATERIALIZED`、`CODEC`、`COMMENT`、`TTL`、`SETTINGS`。
 
@@ -247,7 +247,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 * [REMOVE TTL](ttl.md)
 
 
-## MODIFY COLUMN MODIFY SETTING
+## MODIFY COLUMN MODIFY SETTING {#modify-column-modify-setting}
 
 修改列的设置。
 
@@ -266,7 +266,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 ```
 
 
-## MODIFY COLUMN RESET SETTING
+## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
 重置列的设置，同时从该表的 CREATE 查询中的列表达式里移除该设置的声明。
 
@@ -285,7 +285,7 @@ ALTER TABLE 表名 MODIFY COLUMN 列名 RESET SETTING max_compress_block_size;
 ```
 
 
-## MATERIALIZE COLUMN
+## MATERIALIZE COLUMN {#materialize-column}
 
 对具有 `DEFAULT` 或 `MATERIALIZED` 值表达式的列进行物化（materialize）。当使用 `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` 添加物化列时，现有行中缺少物化值的部分不会被自动填充。在添加或更新 `DEFAULT` 或 `MATERIALIZED` 表达式之后（这只会更新元数据而不会更改现有数据），可以使用 `MATERIALIZE COLUMN` 语句重写已有列数据。请注意，对排序键中的列进行物化是无效操作，因为这可能破坏排序顺序。
 其实现方式为一次[变更（mutation）](/sql-reference/statements/alter/index.md#mutations)。

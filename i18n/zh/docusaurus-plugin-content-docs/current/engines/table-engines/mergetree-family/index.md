@@ -7,9 +7,7 @@ title: 'MergeTree 引擎系列'
 doc_type: 'reference'
 ---
 
-
-
-# MergeTree 引擎家族
+# MergeTree 引擎家族 {#mergetree-engine-family}
 
 MergeTree 家族中的表引擎是 ClickHouse 数据存储能力的核心。它们提供了实现高可靠性和高性能数据检索的大部分特性：列式存储、自定义分区、稀疏主索引、二级数据跳过索引等。
 

@@ -21,7 +21,7 @@ import demo_data_links from '@site/static/images/integrations/data-visualization
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# クエリビルダー
+# クエリビルダー {#query-builder}
 
 <ClickHouseSupportedBadge/>
 
@@ -222,14 +222,14 @@ Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
 
 
 
-## マクロ
+## マクロ {#macros}
 
 マクロは、クエリに動的な SQL を追加するための簡単な方法です。
 クエリが ClickHouse サーバーに送信される前に、プラグインがマクロを展開し、完全な式に置き換えます。
 
 SQL Editor と Query Builder の両方で発行したクエリで、マクロを使用できます。
 
-### マクロの使用方法
+### マクロの使用方法 {#using-macros}
 
 マクロは、クエリ内の任意の位置に、必要に応じて複数回含めることができます。
 
@@ -255,7 +255,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 
 プラグインは、波括弧 `{}` を用いた記法にも対応しています。[パラメーター](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用します。
 
-### マクロ一覧
+### マクロ一覧 {#list-of-macros}
 
 これは、プラグインで利用可能なすべてのマクロの一覧です。
 

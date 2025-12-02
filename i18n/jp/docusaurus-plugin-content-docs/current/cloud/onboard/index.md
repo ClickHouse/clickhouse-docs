@@ -9,7 +9,7 @@ keywords: ['オンボーディング', 'はじめに', 'クラウド設定', '�
 
 
 
-# ClickHouse Cloud を始める
+# ClickHouse Cloud を始める {#get-started-with-clickhouse-cloud}
 
 ClickHouse Cloud を初めて使用する方で、どこから始めればよいかわからない場合、このドキュメントセクションでは、迅速に稼働させるために必要なすべての手順を説明します。ClickHouse Cloud を探索する過程で各ステップをガイドできるよう、この入門セクションを3つのサブセクションに分けて構成しています。
 

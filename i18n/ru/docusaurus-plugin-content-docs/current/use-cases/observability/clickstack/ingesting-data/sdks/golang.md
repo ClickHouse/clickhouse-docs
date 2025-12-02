@@ -27,7 +27,7 @@ ClickStack использует стандарт OpenTelemetry для сбора
 
 ## Первые шаги {#getting-started}
 
-### Установите пакеты инструментации OpenTelemetry
+### Установите пакеты инструментации OpenTelemetry {#install-opentelemetry}
 
 Чтобы установить пакеты OpenTelemetry и HyperDX для Go, используйте следующую команду. Рекомендуется ознакомиться с [актуальными пакетами инструментации](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) и установить необходимые пакеты, чтобы обеспечить корректную привязку информации о трассировках.
 
@@ -39,7 +39,7 @@ go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
 
-### Пример HTTP-сервера на базе стандартной библиотеки (net/http)
+### Пример HTTP-сервера на базе стандартной библиотеки (net/http) {#native-http-server-example}
 
 В этом примере используется `net/http/otelhttp`.
 
@@ -148,7 +148,7 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 ```
 
 
-### Пример приложения на Gin
+### Пример приложения на Gin {#gin-application-example}
 
 В этом примере используется `gin-gonic/gin`.
 
@@ -233,7 +233,7 @@ func main() {
 ```
 
 
-### Настройка переменных окружения
+### Настройка переменных окружения {#configure-environment-variables}
 
 Далее необходимо задать в оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 

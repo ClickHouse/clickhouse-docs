@@ -10,7 +10,7 @@ import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
 
-# 回填数据
+# 回填数据 {#backfilling-data}
 
 无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充物化视图时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
 
@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 
 
 
-## 示例数据集
+## 示例数据集 {#example-dataset}
 
 在本指南中，我们将一直使用一个 PyPI 数据集。该数据集中的每一行都表示一次使用 `pip` 等工具下载 Python 包的记录。
 
@@ -87,7 +87,7 @@ SETTINGS describe_compact_output = 1
 
 
 
-## 使用副本表和视图
+## 使用副本表和视图 {#using-duplicate-tables-and-views}
 
 在所有这些场景中，我们依赖“副本表和视图”的概念。这些表和视图是用于实时流式数据的那些表和视图的副本，使我们可以在隔离环境中执行回填操作，并且在发生故障时能够轻松恢复。比如，我们有如下主 `pypi` 表和物化视图，用于计算每个 Python 项目的下载次数：
 
@@ -265,7 +265,7 @@ ClickPipes 在从对象存储加载数据时会使用这种方法，自动创建
 :::
 
 
-## 场景 1：在现有数据摄取基础上回填数据
+## 场景 1：在现有数据摄取基础上回填数据 {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
 在此场景中，我们假设需要回填的数据并不在一个独立的 bucket 中，因此需要进行过滤。数据已经在持续写入，并且可以确定一个时间戳或单调递增的列，用于界定需要回填的历史数据起点。
 
@@ -329,7 +329,7 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::
 
 
-## 场景 2：向现有表添加物化视图
+## 场景 2：向现有表添加物化视图 {#scenario-2-adding-materialized-views-to-existing-tables}
 
 在已经填充了大量数据并且仍在持续插入数据的环境中，需要新增物化视图的情况并不少见。此时，如果能够利用时间戳或单调递增列来标识数据流中的某个时间点，将会非常有用，并且可以避免暂停数据摄取。在下面的示例中，我们假设两种情况都会存在，并优先采用不会中断摄取的方案。
 
@@ -337,7 +337,7 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 我们不建议在除小型数据集且已暂停摄取的场景之外，使用 [`POPULATE`](/sql-reference/statements/create/view#materialized-view) 命令对物化视图进行回填。该操作可能会遗漏在其源表中插入的部分行，因为物化视图是在 populate 阶段完成之后才创建的。此外，该 populate 操作会作用于全部数据，在大数据集上容易受到中断或内存限制的影响。
 :::
 
-### 存在时间戳或单调递增列
+### 存在时间戳或单调递增列 {#timestamp-or-monotonically-increasing-column-available}
 
 在这种情况下，我们建议在新的物化视图中添加一个过滤条件，仅保留那些时间大于某个将来的任意时间点的行。随后，可以从该时间点开始，使用主表中的历史数据对该物化视图进行回填。具体的回填方法取决于数据规模以及关联查询的复杂度。
 
@@ -421,7 +421,7 @@ Ok.
 
 我们在下文进一步探讨 (2)。
 
-#### 使用 Null table engine 填充物化视图
+#### 使用 Null table engine 填充物化视图 {#using-a-null-table-engine-for-filling-materialized-views}
 
 [Null table engine](/engines/table-engines/special/null) 提供了一种不会持久化数据的存储引擎（可以将其视为表引擎世界中的 `/dev/null`）。虽然这看起来有些矛盾，但对插入到该表引擎中的数据，物化视图仍然会执行。这样就允许在不持久化原始数据的情况下构建物化视图——从而避免 I/O 及相关存储开销。
 
@@ -470,7 +470,7 @@ Peak memory usage: 639.47 MiB.
 请注意，此处的内存使用量为 `639.47 MiB`。
 
 
-##### 调优性能和资源
+##### 调优性能和资源 {#tuning-performance--resources}
 
 在上述场景中，有多个因素会影响性能和资源使用情况。在尝试调优之前，建议先理解《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) 一节所详细说明的写入机制。总结如下：
 
@@ -531,7 +531,7 @@ Peak memory usage: 218.64 MiB.
 
 最后，请注意，减小块大小会产生更多的 part，并带来更大的合并压力。正如[此处](/integrations/s3/performance#be-aware-of-merges)所讨论的，应谨慎调整这些设置。
 
-### 没有时间戳或单调递增列
+### 没有时间戳或单调递增列 {#no-timestamp-or-monotonically-increasing-column}
 
 上述过程依赖于表中存在时间戳或单调递增列。在某些情况下，这样的列并不存在。此时，我们推荐以下流程，它复用前面概述的许多步骤，但需要用户暂停数据摄取。
 

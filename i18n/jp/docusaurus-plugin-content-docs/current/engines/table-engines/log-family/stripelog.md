@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# StripeLog テーブルエンジン
+# StripeLog テーブルエンジン {#stripelog-table-engine}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
 
-## テーブルの作成
+## テーブルの作成 {#table_engines-stripelog-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -53,7 +53,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## 使用例
+## 使用例 {#table_engines-stripelog-example-of-use}
 
 テーブルを作成：
 

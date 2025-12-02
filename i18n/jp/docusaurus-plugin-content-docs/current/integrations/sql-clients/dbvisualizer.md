@@ -10,37 +10,28 @@ integration:
   - category: 'sql_client'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# DbVisualizer を ClickHouse に接続する
+# DbVisualizer を ClickHouse に接続する {#connecting-dbvisualizer-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## DbVisualizer を起動またはダウンロードする {#start-or-download-dbvisualizer}
 
 DbVisualizer は https://www.dbvis.com/download/ から入手できます。
 
-
-
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. 組み込み JDBC ドライバー管理 {#2-built-in-jdbc-driver-management}
 
 DbVisualizer には、ClickHouse 用の最新の JDBC ドライバーが内蔵されています。最新リリースだけでなく、過去バージョンも含めた JDBC ドライバー管理機能が組み込まれています。
 
 <Image img={dbvisualizer_driver_manager} size="lg" border alt="ClickHouse JDBC ドライバー設定を表示している DbVisualizer ドライバー管理インターフェース" />
-
-
 
 ## 3. ClickHouse に接続する {#3-connect-to-clickhouse}
 
@@ -64,8 +55,6 @@ DbVisualizer でデータベースに接続するには、まず Database Connec
 
 :::tip
 データベースへの接続に問題がある場合のヒントについては、[接続の問題を解決する](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/)を参照してください。
-
-
 
 ## 詳細情報 {#learn-more}
 

@@ -13,8 +13,7 @@ import powerbi_error from "@site/static/images/knowledgebase/powerbi_odbc_authen
 
 {/* 截断 */}
 
-
-## 问题
+## 问题 \{#question\}
 
 当你尝试使用连接器从 Power BI 连接到 ClickHouse 时，会收到身份验证错误。
 
@@ -32,7 +31,6 @@ Code: 516. DB::Exception: default: 身份验证失败:密码不正确,或不存�
 
 <Image img={powerbi_error} size="md" alt="Power BI ODBC 身份验证错误对话框" border />
 
-
 ## Answer \{#answer\}
 
 将 ClickHouse ODBC Driver 更新到版本 [1.4.1](https://github.com/ClickHouse/clickhouse-odbc/releases/tag/1.4.1.20250523)。
@@ -41,6 +39,6 @@ Code: 516. DB::Exception: default: 身份验证失败:密码不正确,或不存�
 
 我们建议为该连接使用一个专用用户账号，并手动设置密码。如果您使用的是 ClickHouse Cloud，并且需要与 `default` 用户等效的管理员级访问权限，请创建一个新用户并为其分配 `default_role`。
 
-更多信息参见：  
-https://clickhouse.com/docs/operations/access-rights#user-account-management  
+更多信息参见：\
+https://clickhouse.com/docs/operations/access-rights#user-account-management\
 https://clickhouse.com/docs/cloud/security/cloud-access-management#database-roles

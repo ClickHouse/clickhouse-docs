@@ -16,7 +16,7 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 
 
-# 仓库
+# 仓库 {#warehouses}
 
 
 
@@ -133,7 +133,7 @@ _图 6 - 仓库中的读写服务和只读服务_
 
 
 
-## 限制
+## 限制 {#limitations}
 
 1. **主服务必须始终保持运行且不能被休眠（该限制会在 GA 正式发布后的一段时间内移除）。** 在私有预览期间以及 GA 之后的一段时间内，主服务（通常是你希望通过添加其他服务来扩展的现有服务）必须始终保持运行，并且会禁用休眠设置。如果至少存在一个次级服务，你将无法停止或休眠主服务。一旦所有次级服务都被移除，你就可以再次停止或休眠原始服务。
 

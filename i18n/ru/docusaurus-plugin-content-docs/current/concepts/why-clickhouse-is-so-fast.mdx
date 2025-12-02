@@ -18,7 +18,7 @@ doc_type: 'guide'
 
 ## Уровень хранения: одновременные вставки изолированы друг от друга \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 В ClickHouse каждая таблица состоит из нескольких «частей таблицы» (table parts). [Часть](/parts) создаётся каждый раз, когда пользователь вставляет данные в таблицу (оператор INSERT). Запрос всегда обрабатывает все части таблицы, которые существуют на момент его запуска.
 
@@ -30,7 +30,7 @@ doc_type: 'guide'
 
 ## Уровень хранения: одновременные операции INSERT и SELECT изолированы \{#storage-layer-concurrent-inserts-and-selects-are-isolated\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 Операции INSERT полностью изолированы от запросов SELECT, а слияние вставленных частей данных выполняется в фоновом режиме и не влияет на конкурентные запросы.
 
@@ -38,15 +38,15 @@ doc_type: 'guide'
 
 ## Уровень хранения: вычисления во время слияния \{#storage-layer-merge-time-computation\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 В отличие от других баз данных, ClickHouse обеспечивает лёгкую и эффективную запись данных, выполняя все дополнительные преобразования данных во фоновом процессе [merge](/merges). Примеры таких преобразований:
 
-- **Replacing merges** — сохраняют только самую последнюю версию строки во входных частях и отбрасывают все остальные версии этой строки. Replacing merges можно рассматривать как операцию очистки во время слияния.
+* **Replacing merges** — сохраняют только самую последнюю версию строки во входных частях и отбрасывают все остальные версии этой строки. Replacing merges можно рассматривать как операцию очистки во время слияния.
 
-- **Aggregating merges** — объединяют промежуточные состояния агрегации во входной части в новое агрегированное состояние. Хотя это может показаться сложным для понимания, по сути это просто реализация инкрементной агрегации.
+* **Aggregating merges** — объединяют промежуточные состояния агрегации во входной части в новое агрегированное состояние. Хотя это может показаться сложным для понимания, по сути это просто реализация инкрементной агрегации.
 
-- **TTL (time-to-live) merges** — сжимают, перемещают или удаляют строки на основе определённых временных правил.
+* **TTL (time-to-live) merges** — сжимают, перемещают или удаляют строки на основе определённых временных правил.
 
 Цель этих преобразований — перенести работу (вычисления) с момента выполнения пользовательских запросов на момент слияния. Это важно по двум причинам:
 
@@ -58,7 +58,7 @@ doc_type: 'guide'
 
 ## Уровень хранения: прореживание данных \{#storage-layer-data-pruning\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 На практике многие запросы повторяются, то есть выполняются без изменений или лишь с незначительными модификациями (например, с другими значениями параметров) через регулярные интервалы времени. Повторное выполнение одних и тех же или похожих запросов позволяет добавить индексы или реорганизовать данные так, чтобы часто выполняемые запросы получали к ним более быстрый доступ. Такой подход также известен как «прореживание данных» (data pruning), и ClickHouse предоставляет для этого три техники:
 
@@ -74,7 +74,7 @@ doc_type: 'guide'
 
 ## Уровень хранения: сжатие данных \{#storage-layer-data-compression\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 Помимо этого, уровень хранения ClickHouse дополнительно (и по желанию) может сжимать исходные данные таблиц, используя различные кодеки.
 
@@ -88,7 +88,7 @@ doc_type: 'guide'
 
 ## Передовой слой обработки запросов \{#state-of-the-art-query-processing-layer\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 Наконец, ClickHouse использует векторизованный слой обработки запросов, который максимально распараллеливает их выполнение, чтобы задействовать все ресурсы и обеспечить максимальную скорость и эффективность.
 
@@ -102,11 +102,11 @@ doc_type: 'guide'
 
 ## Скрупулёзное внимание к деталям \{#meticulous-attention-to-detail\}
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-> **"ClickHouse — это безумная система: у вас есть 20 версий хеш-таблицы. У вас есть все эти удивительные вещи, тогда как в большинстве систем есть одна хеш-таблица** **...** **ClickHouse показывает невероятную производительность, потому что в нём есть все эти специализированные компоненты"** [Andy Pavlo, профессор баз данных в CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+> **&quot;ClickHouse — это безумная система: у вас есть 20 версий хеш-таблицы. У вас есть все эти удивительные вещи, тогда как в большинстве систем есть одна хеш-таблица** **...** **ClickHouse показывает невероятную производительность, потому что в нём есть все эти специализированные компоненты&quot;** [Andy Pavlo, профессор баз данных в CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is\&t=3579s)
 
-То, что отличает ClickHouse [от других систем](https://www.youtube.com/watch?v=CAS2otEoerM), — это скрупулёзное внимание к низкоуровневой оптимизации. Создать базу данных, которая просто работает, — одно, но спроектировать её так, чтобы обеспечивать высокую скорость для разных типов запросов, структур данных, распределений и конфигураций индексов, — это уже область, где раскрывается искусство "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)".
+То, что отличает ClickHouse [от других систем](https://www.youtube.com/watch?v=CAS2otEoerM), — это скрупулёзное внимание к низкоуровневой оптимизации. Создать базу данных, которая просто работает, — одно, но спроектировать её так, чтобы обеспечивать высокую скорость для разных типов запросов, структур данных, распределений и конфигураций индексов, — это уже область, где раскрывается искусство &quot;[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU\&t=3579)&quot;.
 
 **Хеш-таблицы.** Возьмём хеш-таблицу как пример. Хеш-таблицы — ключевые структуры данных, которые используются в операциях `JOIN` и агрегациях. Программисту нужно учитывать следующие конструкторские решения:
 
@@ -142,4 +142,4 @@ VLDB — это международная конференция по очен�
 Алексей Миловидов, наш CTO и создатель ClickHouse, представил статью (слайды [здесь](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), после чего последовала сессия вопросов и ответов (время на неё очень быстро закончилось!).
 Запись доклада доступна здесь:
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

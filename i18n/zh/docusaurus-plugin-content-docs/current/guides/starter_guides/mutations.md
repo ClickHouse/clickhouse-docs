@@ -9,9 +9,7 @@ show_related_blogs: false
 doc_type: 'guide'
 ---
 
-
-
-# 使用变更操作更新和删除 ClickHouse 数据
+# 使用变更操作更新和删除 ClickHouse 数据 {#updating-and-deleting-clickhouse-data-with-mutations}
 
 尽管 ClickHouse 面向的是高吞吐量分析型工作负载，但在某些情况下仍然可以修改或删除已有数据。此类操作称为“变更（mutation）”，并通过 `ALTER TABLE` 命令执行。
 
@@ -19,9 +17,7 @@ doc_type: 'guide'
 如果需要频繁执行更新操作，建议在 ClickHouse 中使用[去重](../developer/deduplication.md)，这样可以在不生成变更事件的情况下更新和/或删除行。或者，使用[轻量级更新](/docs/sql-reference/statements/update)或[轻量级删除](/guides/developer/lightweight-delete)。
 :::
 
-
-
-## 更新数据
+## 更新数据 {#updating-data}
 
 使用 `ALTER TABLE...UPDATE` 命令更新表中的行：
 
@@ -61,8 +57,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 无法更新属于主键或排序键的列。
 :::
 
-
-## 删除数据
+## 删除数据 {#deleting-data}
 
 使用 `ALTER TABLE` 命令删除行：
 
@@ -90,8 +85,7 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 
 请参阅 [`DELETE` 语句](/sql-reference/statements/delete.md) 文档页面了解更多详细信息。
 
-
-## 轻量级删除
+## 轻量级删除 {#lightweight-deletes}
 
 另一种删除行的方式是使用 `DELETE FROM` 命令，这被称为**轻量级删除**。被删除的行会立即被标记为已删除，并会在之后的所有查询中自动被过滤掉，因此无需等待数据分片合并，也不需要使用 `FINAL` 关键字。数据清理会在后台以异步方式进行。
 

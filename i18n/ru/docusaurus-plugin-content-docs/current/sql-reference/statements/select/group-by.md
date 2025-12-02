@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Оператор GROUP BY
+# Оператор GROUP BY {#group-by-clause}
 
 Оператор `GROUP BY` переводит запрос `SELECT` в режим агрегации, который работает следующим образом:
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 
 
-## Обработка NULL
+## Обработка NULL {#null-processing}
 
 При группировке ClickHouse интерпретирует [NULL](/sql-reference/syntax#null) как значение, и `NULL == NULL`. Это отличается от обработки `NULL` в большинстве других контекстов.
 
@@ -57,7 +57,7 @@ doc_type: 'reference'
 Если указать в `GROUP BY` несколько ключей, в результате вы получите все комбинации выборки, как если бы `NULL` рассматривался как конкретное значение.
 
 
-## Модификатор ROLLUP
+## Модификатор ROLLUP {#rollup-modifier}
 
 Модификатор `ROLLUP` используется для вычисления промежуточных итогов для ключевых выражений в соответствии с их порядком в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
 
@@ -131,7 +131,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 * Параметр [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для обеспечения совместимости со стандартом SQL.
 
 
-## Модификатор CUBE
+## Модификатор CUBE {#cube-modifier}
 
 Модификатор `CUBE` используется для вычисления промежуточных итогов для каждой комбинации ключевых выражений в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
 
@@ -268,7 +268,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 
 
-## GROUP BY ALL
+## GROUP BY ALL {#group-by-all}
 
 `GROUP BY ALL` эквивалентен перечислению в предложении SELECT всех выражений, которые не являются агрегатными функциями.
 
@@ -317,7 +317,7 @@ GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
 
-## Примеры
+## Примеры {#examples}
 
 Пример:
 
@@ -345,7 +345,7 @@ GROUP BY domain
 Для каждого различного значения ключа оператор `GROUP BY` вычисляет набор значений агрегатных функций.
 
 
-## Модификатор GROUPING SETS
+## Модификатор GROUPING SETS {#grouping-sets-modifier}
 
 Это самый общий модификатор.
 Он позволяет вручную задавать несколько наборов ключей агрегации (grouping sets).

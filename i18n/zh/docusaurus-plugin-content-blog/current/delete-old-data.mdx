@@ -10,7 +10,6 @@ keywords: ['删除旧记录']
 
 {/* 截断 */}
 
-
 ## 简短回答是“是的” \{#the-short-answer-is-yes\}
 
 简短回答是“是的”。ClickHouse 提供了多种机制，可以通过删除旧数据来释放磁盘空间。每种机制都针对不同的场景设计。
@@ -27,7 +26,7 @@ TTL 不仅可以用于将数据移动到 [/dev/null](https://en.wikipedia.org/wi
 
 有关 [配置 TTL](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 的更多详细信息。
 
-## DELETE FROM
+## DELETE FROM \{#delete-from\}
 
 [DELETE FROM](https://clickhouse.com/docs/sql-reference/statements/delete) 允许在 ClickHouse 中运行标准的 DELETE 查询。在过滤子句中被选中的行会被标记为已删除，并从后续的结果集中移除。行的清理是异步进行的。
 
@@ -39,7 +38,6 @@ SET allow_experimental_lightweight_delete = true;
 ```
 
 :::
-
 
 ## ALTER DELETE \{#alter-delete\}
 

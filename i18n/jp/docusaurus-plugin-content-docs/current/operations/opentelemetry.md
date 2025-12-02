@@ -47,7 +47,7 @@ ClickHouse は、各クエリおよびクエリ計画や分散クエリなど一
 
 
 
-## 監視システムとの統合
+## 監視システムとの統合 {#integration-with-monitoring-systems}
 
 現時点では、ClickHouse から監視システムへトレースデータをエクスポートするための既製ツールは用意されていません。
 

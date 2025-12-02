@@ -14,7 +14,7 @@ import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/a
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Интеграция Azure Synapse с ClickHouse
+# Интеграция Azure Synapse с ClickHouse {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
@@ -43,7 +43,7 @@ Azure Synapse поддерживает три уровня [управления
 
 
 
-## Добавить ClickHouse как каталог
+## Добавить ClickHouse как каталог {#add-clickhouse-as-catalog}
 
 Существует несколько способов добавить конфигурации Spark в ваш сеанс:
 

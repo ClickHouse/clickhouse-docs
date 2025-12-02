@@ -20,16 +20,15 @@ import data_sources from '@site/static/images/_snippets/data_sources.png';
 import select_data_source from '@site/static/images/_snippets/select_data_source.png';
 import client_details from '@site/static/images/_snippets/client_details.png';
 import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
+import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
+# ClickHouse Cloud クイックスタート \{#clickhouse-cloud-quick-start\}
 
-# ClickHouse Cloud クイックスタート
-
-> ClickHouse を最も手早く簡単に使い始める方法は、[ClickHouse Cloud](https://console.clickhouse.cloud) で新しいサービスを作成することです。  
+> ClickHouse を最も手早く簡単に使い始める方法は、[ClickHouse Cloud](https://console.clickhouse.cloud) で新しいサービスを作成することです。\
 > このクイックスタートガイドでは、3 つの簡単なステップでセットアップする手順を説明します。
 
 <VerticalStepper type="numbered">
-  ## ClickHouseサービスを作成する
+  ## ClickHouseサービスを作成する \{#1-create-a-clickhouse-service\}
 
   [ClickHouse Cloud](https://console.clickhouse.cloud)で無料のClickHouseサービスを作成するには、以下の手順に従ってサインアップしてください：
 
@@ -58,7 +57,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   おめでとうございます！ClickHouse Cloudサービスが稼働し、オンボーディングが完了しました。データの取り込みとクエリの実行方法については、以下をご参照ください。
 
-  ## ClickHouseに接続する
+  ## ClickHouseに接続する \{#2-connect-to-clickhouse\}
 
   ClickHouseへの接続方法は2つあります:
 
@@ -67,7 +66,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   <br />
 
-  ### SQLコンソールを使用して接続する
+  ### SQLコンソールを使用して接続する \{#connect-using-sql-console\}
 
   迅速に開始するには、ClickHouseがWebベースのSQLコンソールを提供しており、オンボーディング完了後に自動的にリダイレクトされます。
 
@@ -87,7 +86,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   以上で完了です。新しいClickHouseサービスの使用を開始できます。
 
-  ### アプリケーションへの接続
+  ### アプリケーションへの接続 \{#connect-with-your-app\}
 
   ナビゲーションメニューから接続ボタンをクリックします。モーダルが開き、サービスの認証情報と、使用するインターフェースまたは言語クライアントでの接続手順が表示されます。
 
@@ -97,7 +96,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   ご使用の言語クライアントが表示されない場合は、[インテグレーション](/integrations)のリストを参照してください。
 
-  ## データを追加する
+  ## データを追加する \{#3-add-data\}
 
   ClickHouseはデータを取り込むことで真価を発揮します。データを追加する方法は複数あり、そのほとんどはナビゲーションメニューからアクセス可能なData Sourcesページで利用できます。
 
@@ -113,7 +112,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   * ファイルをアップロード - 対応形式は JSON、CSV、TSV です
   * ファイルURLからデータをアップロードする
 
-  ### ClickPipes
+  ### ClickPipes \{#clickpipes\}
 
   [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes)は、多様なソースからのデータ取り込みを数クリックで実現するマネージド統合プラットフォームです。 最も要求の厳しいワークロードに対応するよう設計されたClickPipesの堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を保証します。 ClickPipesは、長期的なストリーミングニーズや一回限りのデータロードジョブに使用できます。
 
@@ -121,7 +120,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   <br />
 
-  ### SQLコンソールを使用したデータの追加
+  ### SQLコンソールを使用したデータの追加 \{#add-data-using-the-sql-console\}
 
   多くのデータベース管理システムと同様に、ClickHouseはテーブルを論理的に**データベース**にグループ化します。ClickHouseで新しいデータベースを作成するには、[`CREATE DATABASE`](../../sql-reference/statements/create/database.md)コマンドを使用します。
 
@@ -162,7 +161,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   選択可能なテーブルエンジンは多数ありますが、単一ノードのClickHouseサーバー上のシンプルなテーブルには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)が最適な選択となるでしょう。
   :::
 
-  #### プライマリキーの簡単な紹介
+  #### プライマリキーの簡単な紹介 \{#a-brief-intro-to-primary-keys\}
 
   先に進む前に、ClickHouseにおけるプライマリキーの動作原理を理解しておくことが重要です（プライマリキーの実装は予想外に感じられるかもしれません）：
 
@@ -176,7 +175,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
   ClickHouseの中核概念について詳しく知るには、[&quot;コア概念&quot;](../../managing-data/core-concepts/index.md)を参照してください。
 
-  #### テーブルへのデータの挿入
+  #### テーブルへのデータの挿入 \{#insert-data-into-your-table\}
 
   ClickHouseでは、おなじみの[`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md)コマンドを使用できますが、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)テーブルへの各挿入により、ストレージ内に**パート**が作成されることを理解しておく必要があります。
 
@@ -206,7 +205,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   SELECT * FROM helloworld.my_first_table
   ```
 
-  ### ClickHouseクライアントを使用してデータを追加する
+  ### ClickHouseクライアントを使用してデータを追加する \{#add-data-using-the-clickhouse-client\}
 
   [**clickhouse client**](/interfaces/cli)というコマンドラインツールを使用して、ClickHouse Cloudサービスに接続することもできます。左側のメニューで`Connect`をクリックし、詳細情報にアクセスしてください。ダイアログのドロップダウンから`Native`を選択します:
 
@@ -286,7 +285,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
   exit
   ```
 
-  ### ファイルのアップロード
+  ### ファイルのアップロード \{#upload-a-file\}
 
   データベースの利用開始時によくあるタスクとして、既存のファイルに保存されているデータの挿入があります。クリックストリームデータを表すサンプルデータをオンラインで提供しており、これを挿入することができます。このデータには、ユーザーID、訪問されたURL、およびイベントのタイムスタンプが含まれています。
 
@@ -321,9 +320,9 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 ## 次のステップ \{#whats-next\}
 
-- [チュートリアル](/tutorial.md) では、テーブルに 200 万行を挿入し、いくつかの分析クエリを実行します
-- [サンプルデータセット](/getting-started/index.md) と、その挿入手順を一覧で提供しています
-- [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) の 25 分間の動画をご覧ください
-- データが外部ソースから来る場合は、メッセージキュー、データベース、パイプラインなどへの接続方法をまとめた[連携ガイド集](/integrations/index.mdx)を参照してください
-- UI/BI 可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization) を参照してください
-- [プライマリキー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーについて知っておくべきことと、その定義方法がすべて記載されています
+* [チュートリアル](/tutorial.md) では、テーブルに 200 万行を挿入し、いくつかの分析クエリを実行します
+* [サンプルデータセット](/getting-started/index.md) と、その挿入手順を一覧で提供しています
+* [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) の 25 分間の動画をご覧ください
+* データが外部ソースから来る場合は、メッセージキュー、データベース、パイプラインなどへの接続方法をまとめた[連携ガイド集](/integrations/index.mdx)を参照してください
+* UI/BI 可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization) を参照してください
+* [プライマリキー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーについて知っておくべきことと、その定義方法がすべて記載されています

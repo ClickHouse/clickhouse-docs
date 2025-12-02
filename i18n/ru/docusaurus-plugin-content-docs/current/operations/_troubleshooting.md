@@ -8,20 +8,20 @@
 
 
 
-## Установка
+## Установка {#troubleshooting-installation-errors}
 
-### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get
+### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 * Проверьте настройки брандмауэра.
 * Если вы по какой-либо причине не можете получить доступ к репозиторию, скачайте пакеты, как описано в статье [install guide](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
-### Невозможно обновить пакеты .deb из репозитория ClickHouse с помощью apt-get
+### Невозможно обновить пакеты .deb из репозитория ClickHouse с помощью apt-get {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 * Проблема может возникать, если ключ GPG был изменён.
 
 Используйте руководство со страницы [setup](../getting-started/install.md#setup-the-debian-repository) для обновления конфигурации репозитория.
 
-### При выполнении `apt-get update` появляются различные предупреждения
+### При выполнении `apt-get update` появляются различные предупреждения {#you-get-different-warnings-with-apt-get-update}
 
 * Полные тексты предупреждений могут быть следующими:
 
@@ -53,7 +53,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Не удаётся установить пакеты через yum из‑за неверной подписи
+### Не удаётся установить пакеты через yum из‑за неверной подписи {#you-cant-get-packages-with-yum-because-of-wrong-signature}
 
 Возможная причина: кэш повреждён, возможно, он сломался после обновления ключа GPG в сентябре 2022 года.
 
@@ -66,7 +66,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 После этого следуйте [руководству по установке](../getting-started/install.md#from-rpm-packages)
 
-### Не удаётся запустить Docker-контейнер
+### Не удаётся запустить Docker-контейнер {#you-cant-run-docker-container}
 
 Вы выполняете простой `docker run clickhouse/clickhouse-server`, и он аварийно завершается, выводя трассировку стека, похожую на следующую:
 
@@ -99,14 +99,14 @@ Poco::Exception. Code: 1000, e.code() = 0, системное исключени
 ```
 
 
-## Подключение к серверу
+## Подключение к серверу {#troubleshooting-accepts-no-connections}
 
 Возможные проблемы:
 
 * Сервер не запущен.
 * Некорректные или неожиданные параметры конфигурации.
 
-### Сервер не запущен
+### Сервер не запущен {#server-is-not-running}
 
 **Проверьте, запущен ли сервер**
 
@@ -175,7 +175,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 Эта команда запускает сервер как интерактивное приложение со стандартными параметрами скрипта автозапуска. В этом режиме `clickhouse-server` выводит все сообщения о событиях в консоль.
 
-### Параметры конфигурации
+### Параметры конфигурации {#configuration-parameters}
 
 Проверьте:
 
@@ -207,7 +207,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
   Возможно, вы используете неверное имя пользователя или пароль.
 
 
-## Обработка запросов
+## Обработка запросов {#troubleshooting-does-not-process-queries}
 
 Если ClickHouse не может выполнить запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получаете описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
 

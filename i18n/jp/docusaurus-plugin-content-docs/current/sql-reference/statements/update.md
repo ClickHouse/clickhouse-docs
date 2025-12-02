@@ -29,7 +29,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 値は `CAST` 演算子を使用して列の型にキャストされます。プライマリキーまたはパーティションキーの計算に使用されている列の更新はサポートされていません。
 
 
-## 例
+## 例 {#examples}
 
 ```sql
 UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
@@ -88,7 +88,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 
 
-## 更新権限
+## 更新権限 {#update-permissions}
 
 `UPDATE` には `ALTER UPDATE` 権限が必要です。特定のユーザーに対して特定のテーブルで `UPDATE` ステートメントを有効にするには、以下を実行します。
 

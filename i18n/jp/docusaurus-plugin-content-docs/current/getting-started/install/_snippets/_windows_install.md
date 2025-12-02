@@ -1,4 +1,4 @@
-# WSL を使って Windows に ClickHouse をインストールする
+# WSL を使って Windows に ClickHouse をインストールする {#install-clickhouse-on-windows-with-wsl}
 
 
 
@@ -11,7 +11,7 @@ WindowsにClickHouseをインストールする場合は、WSL（Windows Subsyst
 <VerticalStepper>
 
 
-## WSL をインストールする
+## WSL をインストールする {#install-wsl}
 
 Windows PowerShell を管理者権限で開き、次のコマンドを実行します。
 
@@ -26,7 +26,7 @@ Ubuntu 24.04.1 LTS へようこそ (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
 
-## curl を使ったスクリプトで ClickHouse をインストールする
+## curl を使ったスクリプトで ClickHouse をインストールする {#install-clickhouse-via-script-using-curl}
 
 curl を使ったスクリプトで ClickHouse をインストールするには、次のコマンドを実行します。
 
@@ -42,7 +42,7 @@ ClickHouseバイナリのダウンロードが完了しました。以下のコ�
 ```
 
 
-## clickhouse-local を起動する
+## clickhouse-local を起動する {#start-clickhouse-local}
 
 `clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を利用して、
 ローカルおよびリモートのファイルを設定なしで処理できます。テーブルデータは
@@ -56,7 +56,7 @@ ClickHouseバイナリのダウンロードが完了しました。以下のコ�
 ```
 
 
-## clickhouse-server を起動する
+## clickhouse-server を起動する {#start-clickhouse-server}
 
 データを永続化したい場合は、`clickhouse-server` を実行します。ClickHouse サーバーは次のコマンドで起動できます。
 

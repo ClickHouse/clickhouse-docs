@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# Оператор DISTINCT
+# Оператор DISTINCT {#distinct-clause}
 
 Если указан `SELECT DISTINCT`, в результате запроса останутся только уникальные строки. Таким образом, для каждого набора полностью совпадающих строк в результате останется только одна строка.
 
@@ -57,7 +57,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 ```
 
 
-## DISTINCT и ORDER BY
+## DISTINCT и ORDER BY {#distinct-and-order-by}
 
 ClickHouse поддерживает использование конструкций `DISTINCT` и `ORDER BY` для разных столбцов в одном запросе. Конструкция `DISTINCT` выполняется раньше, чем `ORDER BY`.
 

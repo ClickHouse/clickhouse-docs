@@ -24,7 +24,7 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 таких как магазины, рестораны, парки, игровые площадки и памятники. Он также включает
 дополнительные метаданные об этих местах, такие как категории и данные из социальных сетей.
 
-## Исследование данных
+## Исследование данных {#data-exploration}
 
 Для исследования данных мы будем использовать [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — небольшую утилиту командной строки,
 которая предоставляет полноценный движок ClickHouse. Также вы можете использовать
@@ -148,7 +148,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
 ```
 
 
-## Загрузка данных в ClickHouse
+## Загрузка данных в ClickHouse {#loading-the-data}
 
 Если вы хотите сохранять данные на диске, вы можете использовать `clickhouse-server`
 или ClickHouse Cloud.

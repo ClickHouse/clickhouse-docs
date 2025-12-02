@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.projection_parts_columns
+# system.projection_parts_columns {#systemprojection_parts_columns}
 
 此表包含 MergeTree 系列表中投影部件的列信息。
 

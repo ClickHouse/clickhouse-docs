@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# UUID
+# UUID {#uuid}
 
 通用唯一标识符（UUID）是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
@@ -92,7 +92,7 @@ ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functio
 
 
 
-## 使用示例
+## 使用示例 {#usage-example}
 
 **示例 1**
 

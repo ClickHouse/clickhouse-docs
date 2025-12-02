@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 以 [Prometheus 文本暴露格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)导出指标数据。
@@ -30,9 +28,7 @@ doc_type: 'reference'
 对于 `histogram` 和 `summary` 的 labels 有特殊要求，详情参见 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。  
 对标签为 `{'count':''}` 和 `{'sum':''}` 的行会应用特殊规则，它们分别会被转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
@@ -59,10 +55,9 @@ doc_type: 'reference'
 
 格式如下：
 
-
 ```text
-# HELP http_request_duration_seconds 请求持续时间的直方图。
-# TYPE http_request_duration_seconds histogram
+# HELP http_request_duration_seconds 请求持续时间的直方图。 {#help-http_request_duration_seconds-a-histogram-of-the-request-duration}
+# TYPE http_request_duration_seconds histogram {#type-http_request_duration_seconds-histogram}
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
 http_request_duration_seconds_bucket{le="0.5"} 129389
@@ -71,15 +66,15 @@ http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
 
-# HELP http_requests_total HTTP 请求总数
-# TYPE http_requests_total counter
+# HELP http_requests_total HTTP 请求总数 {#help-http_requests_total-total-number-of-http-requests}
+# TYPE http_requests_total counter {#type-http_requests_total-counter}
 http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-# HELP rpc_duration_seconds RPC 调用时长（秒）的概要。
-# TYPE rpc_duration_seconds summary
+# HELP rpc_duration_seconds RPC 调用时长（秒）的概要。 {#help-rpc_duration_seconds-a-summary-of-the-rpc-duration-in-seconds}
+# TYPE rpc_duration_seconds summary {#type-rpc_duration_seconds-summary}
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
 rpc_duration_seconds{quantile="0.5"} 4773
@@ -90,6 +85,5 @@ rpc_duration_seconds_count 2693
 
 something_weird{problem="division by zero"} +Inf -3982045
 ```
-
 
 ## 格式设置 {#format-settings}

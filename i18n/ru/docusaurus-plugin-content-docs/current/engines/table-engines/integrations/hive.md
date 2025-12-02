@@ -9,22 +9,19 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# Движок таблицы Hive {#hive-table-engine}
 
-# Движок таблицы Hive
-
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Движок Hive позволяет выполнять запросы `SELECT` к таблицам Hive в HDFS. В данный момент он поддерживает следующие форматы входных данных:
 
-- Text: поддерживает только простые скалярные типы столбцов, за исключением `binary`
+* Text: поддерживает только простые скалярные типы столбцов, за исключением `binary`
 
-- ORC: поддерживает простые скалярные типы столбцов, за исключением `char`; из сложных типов поддерживает только тип `array`
+* ORC: поддерживает простые скалярные типы столбцов, за исключением `char`; из сложных типов поддерживает только тип `array`
 
-- Parquet: поддерживает все простые скалярные типы столбцов; из сложных типов поддерживает только тип `array`
+* Parquet: поддерживает все простые скалярные типы столбцов; из сложных типов поддерживает только тип `array`
 
-
-
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -52,10 +49,9 @@ PARTITION BY expr
 
 * `table` — имя удалённой таблицы.
 
+## Пример использования {#usage-example}
 
-## Пример использования
-
-### Как использовать локальный кэш файловой системы HDFS
+### Как использовать локальный кэш файловой системы HDFS {#how-to-use-local-cache-for-hdfs-filesystem}
 
 Мы настоятельно рекомендуем включать локальное кэширование для удалённых файловых систем. Тесты производительности показывают, что при использовании кэша работа почти в 2 раза быстрее.
 
@@ -75,9 +71,9 @@ PARTITION BY expr
 * limit&#95;size: Обязательный параметр. Максимальный размер (в байтах) файлов локального кэша.
 * bytes&#95;read&#95;before&#95;flush: Объём данных (в байтах), который будет прочитан перед сбросом на локальную файловую систему при загрузке файла из удалённой файловой системы. Значение по умолчанию — 1 МБ.
 
-### Запрос к таблице Hive с форматом ввода ORC
+### Запрос к таблице Hive с форматом ввода ORC {#query-hive-table-with-orc-input-format}
 
-#### Создание таблицы в Hive
+#### Создание таблицы в Hive {#create-table-in-hive}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -125,8 +121,7 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### Создание таблицы в ClickHouse
-
+#### Создание таблицы в ClickHouse {#create-table-in-clickhouse}
 
 Таблица в ClickHouse, которая получает данные из созданной выше таблицы Hive:
 
@@ -199,9 +194,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Выполнение запроса к таблице Hive с форматом ввода Parquet
+### Выполнение запроса к таблице Hive с форматом ввода Parquet {#query-hive-table-with-parquet-input-format}
 
-#### Создание таблицы в Hive
+#### Создание таблицы в Hive {#create-table-in-hive-1}
 
 ```text
 hive >
@@ -240,7 +235,6 @@ LOCATION
 OK
 Затрачено времени: 0,51 секунд
 ```
-
 
 hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
 OK
@@ -329,7 +323,6 @@ day:                  2021-09-18
 
 #### Создание таблицы в Hive
 
-
 ```text
 hive >
 CREATE TABLE `test`.`test_text`(
@@ -377,7 +370,7 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### Создание таблицы в ClickHouse
+#### Создание таблицы в ClickHouse {#create-table-in-hive-2}
 
 Таблица в ClickHouse, получающая данные из таблицы Hive, созданной выше:
 
@@ -415,7 +408,6 @@ SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_heade
 
 Query id: 55b79d35-56de-45b9-8be6-57282fbf1f44
 ```
-
 
 Row 1:
 ──────

@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
 在这个示例中，我们将使用一个包含不同类别下用户兴趣的样例数据集来演示 `uniqArray` 的工作方式。我们会将它与 `uniq(arrayJoin())` 进行对比，以展示在统计唯一元素数量时的差异。
 

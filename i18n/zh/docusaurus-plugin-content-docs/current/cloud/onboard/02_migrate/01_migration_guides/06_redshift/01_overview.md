@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# 从 Amazon Redshift 迁移到 ClickHouse
+# 从 Amazon Redshift 迁移到 ClickHouse {#amazon-redshift-to-clickhouse-migration}
 
 > 本文档对如何将数据从 Amazon Redshift 迁移到 ClickHouse 进行简介。
 

@@ -6,7 +6,7 @@ title: 'sum'
 doc_type: 'reference'
 ---
 
-# sum
+# sum {#sum}
 
 计算总和。仅适用于数值。
 

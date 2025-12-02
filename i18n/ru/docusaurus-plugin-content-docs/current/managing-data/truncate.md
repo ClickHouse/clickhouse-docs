@@ -10,6 +10,6 @@ keywords: ['truncate', 'удаление данных', 'удалить данн
 
 Очищение (TRUNCATE) позволяет удалить данные из таблицы или базы данных, сохранив при этом саму таблицу или базу данных. Это облегчённая операция, которую нельзя отменить.
 
-import Truncate from '@site/docs/sql-reference/statements/truncate.md';
+import Truncate from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
 
 <Truncate />

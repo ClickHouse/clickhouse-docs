@@ -7,7 +7,7 @@ title: 'arrowFlight'
 doc_type: 'reference'
 ---
 
-# arrowFlight テーブル関数
+# arrowFlight テーブル関数 {#arrowflight-table-function}
 
 [Apache Arrow Flight](../../interfaces/arrowflight.md) サーバーで公開されているデータに対してクエリを実行できます。
 

@@ -13,136 +13,135 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
-# Spark 连接器
+# Spark 连接器 {#spark-connector}
 
-此连接器利用 ClickHouse 特有的优化功能，例如高级分区和谓词下推，以提升查询性能和数据处理效率。
-该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理其自己的 catalog。
+此连接器利用 ClickHouse 特有的优化（例如高级分区和谓词下推），以提升查询性能和数据处理效率。
+该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理其自身的 catalog。
 
-在 Spark 3.0 之前，Spark 缺少内置的 catalog 概念，因此用户通常依赖外部 catalog 系统，例如 Hive Metastore 或 AWS Glue。
-使用这些外部方案时，用户必须先手动注册数据源表，才能在 Spark 中访问它们。
-然而，自从 Spark 3.0 引入 catalog 概念之后，Spark 现在可以通过注册 catalog 插件来自动发现表。
+在 Spark 3.0 之前，Spark 不具备内置的 catalog 概念，因此用户通常依赖 Hive Metastore 或 AWS Glue 等外部 catalog 系统。
+使用这些外部方案时，用户必须在 Spark 中访问数据源表之前，先手动注册这些表。
+然而，自从 Spark 3.0 引入 catalog 概念后，Spark 现在可以通过注册 catalog 插件自动发现表。
 
-Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{database}.{table}` 标识。借助新的 catalog 功能，现在可以在单个 Spark 应用程序中添加并使用多个 catalog。
+Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{database}.{table}` 来标识。借助这一新的 catalog 功能，现在可以在单个 Spark 应用中添加并使用多个 catalog。
 
 <TOCInline toc={toc}></TOCInline>
 
-
-
 ## 先决条件 {#requirements}
 
-- Java 8 或 17
-- Scala 2.12 或 2.13
-- Apache Spark 3.3 或 3.4 或 3.5
-
-
+- Java 8 或 17（Spark 4.0 需要 Java 17 及以上版本）
+- Scala 2.12 或 2.13（Spark 4.0 仅支持 Scala 2.13）
+- Apache Spark 3.3、3.4、3.5 或 4.0
 
 ## 兼容性矩阵 {#compatibility-matrix}
 
-| 版本    | 兼容的 Spark 版本 | ClickHouse JDBC 版本 |
-|---------|-------------------|----------------------|
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
-| 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
-| 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
-| 0.4.0   | Spark 3.2, 3.3            | 无依赖                  |
-| 0.3.0   | Spark 3.2, 3.3            | 无依赖                  |
-| 0.2.1   | Spark 3.2                 | 无依赖                  |
-| 0.1.2   | Spark 3.2                 | 无依赖                  |
+| 版本    | 兼容的 Spark 版本         | ClickHouse JDBC 版本 |
+|---------|---------------------------|----------------------|
+| main    | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                |
+| 0.9.0   | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                |
+| 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                |
+| 0.7.3   | Spark 3.3, 3.4            | 0.4.6                |
+| 0.6.0   | Spark 3.3                 | 0.3.2-patch11        |
+| 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11        |
+| 0.4.0   | Spark 3.2, 3.3            | 无需依赖             |
+| 0.3.0   | Spark 3.2, 3.3            | 无需依赖             |
+| 0.2.1   | Spark 3.2                 | 无需依赖             |
+| 0.1.2   | Spark 3.2                 | 无需依赖             |
 
+## 安装与设置 {#installation--setup}
 
+要将 ClickHouse 与 Spark 集成，有多种安装方式，可适配不同的项目配置。
+你可以在项目的构建文件中（例如 Maven 的 `pom.xml` 或 SBT 的 `build.sbt`）直接添加 ClickHouse Spark connector 作为依赖。
+或者，你也可以将所需的 JAR 文件放入 `$SPARK_HOME/jars/` 目录，或在运行 `spark-submit` 命令时通过 `--jars` 参数将它们作为 Spark 选项直接传入。
+这两种方式都能确保 ClickHouse connector 在你的 Spark 环境中可用。
 
-## 安装与设置
-
-要将 ClickHouse 集成到 Spark 中，有多种安装方式可适配不同的项目环境。
-您可以在项目的构建文件中（例如 Maven 的 `pom.xml` 或 SBT 的 `build.sbt`）直接添加 ClickHouse Spark 连接器作为依赖。
-或者，也可以将所需的 JAR 文件放到 `$SPARK_HOME/jars/` 目录中，或者在使用 `spark-submit` 命令时，通过 `--jars` 参数作为 Spark 选项直接传入。
-这两种方式都可以确保在您的 Spark 环境中提供 ClickHouse 连接器。
-
-### 作为依赖导入
+### 作为依赖导入 {#import-as-a-dependency}
 
 <Tabs>
-  <TabItem value="Maven" label="Maven" default>
-    ```maven
-    <dependency>
-      <groupId>com.clickhouse.spark</groupId>
-      <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
-      <version>{{ stable_version }}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.clickhouse</groupId>
-      <artifactId>clickhouse-jdbc</artifactId>
-      <classifier>all</classifier>
-      <version>{{ clickhouse_jdbc_version }}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    ```
+<TabItem value="Maven" label="Maven" default>
 
-    如果您想使用 SNAPSHOT 版本，请添加以下仓库。
+```maven
+<dependency>
+  <groupId>com.clickhouse.spark</groupId>
+  <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
+  <version>{{ stable_version }}</version>
+</dependency>
+<dependency>
+  <groupId>com.clickhouse</groupId>
+  <artifactId>clickhouse-jdbc</artifactId>
+  <classifier>all</classifier>
+  <version>{{ clickhouse_jdbc_version }}</version>
+  <exclusions>
+    <exclusion>
+      <groupId>*</groupId>
+      <artifactId>*</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+```
 
-    ```maven
-    <repositories>
-      <repository>
-        <id>sonatype-oss-snapshots</id>
-        <name>Sonatype OSS Snapshots Repository</name>
-        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-      </repository>
-    </repositories>
-    ```
-  </TabItem>
+如果你需要使用 SNAPSHOT 版本，请添加以下仓库：
 
-  <TabItem value="Gradle" label="Gradle">
-    ```gradle
-    dependencies {
-      implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
-      implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
-    }
-    ```
+```maven
+<repositories>
+  <repository>
+    <id>sonatype-oss-snapshots</id>
+    <name>Sonatype OSS Snapshots Repository</name>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+  </repository>
+</repositories>
+```
 
-    如果您想使用 SNAPSHOT 版本，请添加以下仓库：
+</TabItem>
+<TabItem value="Gradle" label="Gradle">
 
-    ```gradle
-    repositries {
-      maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
-    }
-    ```
-  </TabItem>
+```gradle
+dependencies {
+  implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
+  implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
+}
+```
 
-  <TabItem value="SBT" label="SBT">
-    ```sbt
-    libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
-    libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
-    ```
-  </TabItem>
+如果你需要使用 SNAPSHOT 版本，请添加以下仓库：
 
-  <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
-    在使用 Spark 的 Shell 选项（Spark SQL CLI、Spark Shell CLI 和 Spark Submit 命令）时，可以通过传入所需的 JAR 来注册依赖：
+```gradle
+repositries {
+  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+}
+```
 
-    ```text
-    $SPARK_HOME/bin/spark-sql \
-      --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
-    ```
+</TabItem>
+<TabItem value="SBT" label="SBT">
 
-    如果您希望避免将 JAR 文件拷贝到 Spark 客户端节点上，可以改用以下方式：
+```sbt
+libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
+libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
+```
 
-    ```text
-      --repositories https://{maven-central-mirror or private-nexus-repo} \
-      --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
-    ```
+</TabItem>
+<TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
 
-    注意：对于仅 SQL 的使用场景，推荐在生产环境中使用 [Apache Kyuubi](https://github.com/apache/kyuubi)。
-  </TabItem>
+在使用 Spark 的 Shell 选项（Spark SQL CLI、Spark Shell CLI 和 Spark Submit 命令）时，可以通过在命令中传入所需的 JAR 包来注册依赖：
+
+```text
+$SPARK_HOME/bin/spark-sql \
+  --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
+```
+
+如果你希望避免将 JAR 文件复制到 Spark 客户端节点，可以改用以下方式：
+
+```text
+  --repositories https://{maven-central-mirror or private-nexus-repo} \
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
+```
+
+注意：对于仅 SQL 的使用场景，生产环境中推荐使用 [Apache Kyuubi](https://github.com/apache/kyuubi)。
+
+</TabItem>
 </Tabs>
 
-### 下载依赖库
+### 下载库文件 {#download-the-library}
 
-二进制 JAR 的命名规则为：
+二进制 JAR 的命名模式如下：
 
 ```bash
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
@@ -151,44 +150,42 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 你可以在 [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/) 中找到所有已发布的 JAR 文件，
 并在 [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/) 中找到所有每日构建的 SNAPSHOT JAR 文件。
 
-
 :::important
-务必包含带有 “all” classifier 的 [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，
-因为该 connector 依赖 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
-和 [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)——这两者都已经打包
-在 clickhouse-jdbc:all 中。
-或者，如果不想使用完整的 JDBC 包，也可以分别添加 [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
+务必包含带有 &quot;all&quot; 分类器的 [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，
+因为该连接器依赖于 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
+和 [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)——这两个依赖都已打包在
+clickhouse-jdbc:all 中。
+或者，如果你不希望使用完整的 JDBC 包，也可以分别添加 [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
 和 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)。
 
-无论采用哪种方式，请确保这些包的版本与
-[兼容性矩阵](#compatibility-matrix) 中列出的版本保持兼容。
+无论选择哪种方式，请确保这些包的版本彼此兼容，并符合
+[兼容性矩阵](#compatibility-matrix) 中的要求。
 :::
 
 
+## 注册 catalog（必需） {#register-the-catalog-required}
 
-## 注册 Catalog（必需）
+要访问 ClickHouse 表，需要使用以下配置创建一个新的 Spark catalog：
 
-要访问 ClickHouse 表，必须使用以下配置创建一个新的 Spark Catalog：
+| 属性                                           | 值                                        | 默认值            | 是否必需 |
+| -------------------------------------------- | ---------------------------------------- | -------------- | ---- |
+| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | Yes  |
+| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | No   |
+| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | No   |
+| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | No   |
+| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | No   |
+| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (empty string) | No   |
+| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | No   |
+| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | No   |
 
-| Property                                     | Value                                    | Default Value  | Required |
-| -------------------------------------------- | ---------------------------------------- | -------------- | -------- |
-| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | Yes      |
-| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | No       |
-| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | No       |
-| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | No       |
-| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | No       |
-| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (empty string) | No       |
-| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | No       |
-| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | No       |
-
-可以通过以下任一方式设置这些配置：
+可以通过以下任一方式配置这些设置：
 
 * 编辑或创建 `spark-defaults.conf`。
-* 将配置传递给 `spark-submit` 命令（或 `spark-shell` / `spark-sql` CLI 命令）。
+* 在 `spark-submit` 命令中传入配置（或在 `spark-shell` / `spark-sql` CLI 命令中传入）。
 * 在初始化上下文时添加配置。
 
 :::important
-在使用 ClickHouse 集群时，需要为每个实例设置唯一的 Catalog 名称。
+在使用 ClickHouse 集群时，需要为每个实例设置唯一的 catalog 名称。
 例如：
 
 ```text
@@ -211,14 +208,14 @@ spark.sql.catalog.clickhouse2.database       default
 spark.sql.catalog.clickhouse2.option.ssl     true
 ```
 
-通过这种方式，你可以在 Spark SQL 中通过 `clickhouse1.<ck_db>.<ck_table>` 访问 clickhouse1 实例中的 `<ck_db>.<ck_table>` 表，并通过 `clickhouse2.<ck_db>.<ck_table>` 访问 clickhouse2 实例中的 `<ck_db>.<ck_table>` 表。
+这样，你就可以在 Spark SQL 中通过 `clickhouse1.<ck_db>.<ck_table>` 访问 clickhouse1 的 `<ck_db>.<ck_table>` 表，并通过 `clickhouse2.<ck_db>.<ck_table>` 访问 clickhouse2 的 `<ck_db>.<ck_table>` 表。
 
 :::
 
 
-## ClickHouse Cloud 设置
+## ClickHouse Cloud 配置 {#clickhouse-cloud-settings}
 
-在连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请确保启用 SSL，并设置合适的 SSL 模式。例如：
+连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请务必启用 SSL，并设置相应的 SSL 模式。例如：
 
 ```text
 spark.sql.catalog.clickhouse.option.ssl        true
@@ -233,7 +230,7 @@ spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 
 ```java
 public static void main(String[] args) {
-        // 创建一个 Spark 会话
+        // 创建 Spark 会话
         SparkSession spark = SparkSession.builder()
                 .appName("example")
                 .master("local[*]")
@@ -333,156 +330,140 @@ df.show()
 </TabItem>
 </Tabs>
 
-
-
 ## 写入数据 {#write-data}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Java" label="Java" default>
+  <TabItem value="Java" label="Java" default>
+    ```java
+     public static void main(String[] args) throws AnalysisException {
 
-```java
- public static void main(String[] args) throws AnalysisException {
+            // 创建 Spark 会话
+            SparkSession spark = SparkSession.builder()
+                    .appName("example")
+                    .master("local[*]")
+                    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+                    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+                    .config("spark.sql.catalog.clickhouse.protocol", "http")
+                    .config("spark.sql.catalog.clickhouse.http_port", "8123")
+                    .config("spark.sql.catalog.clickhouse.user", "default")
+                    .config("spark.sql.catalog.clickhouse.password", "123456")
+                    .config("spark.sql.catalog.clickhouse.database", "default")
+                    .config("spark.clickhouse.write.format", "json")
+                    .getOrCreate();
 
-        // 创建 Spark 会话
-        SparkSession spark = SparkSession.builder()
-                .appName("example")
-                .master("local[*]")
-                .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-                .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-                .config("spark.sql.catalog.clickhouse.protocol", "http")
-                .config("spark.sql.catalog.clickhouse.http_port", "8123")
-                .config("spark.sql.catalog.clickhouse.user", "default")
-                .config("spark.sql.catalog.clickhouse.password", "123456")
-                .config("spark.sql.catalog.clickhouse.database", "default")
-                .config("spark.clickhouse.write.format", "json")
-                .getOrCreate();
+            // 定义 DataFrame 的架构
+            StructType schema = new StructType(new StructField[]{
+                    DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                    DataTypes.createStructField("name", DataTypes.StringType, false),
+            });
 
-        // 定义 DataFrame 的 schema
-        StructType schema = new StructType(new StructField[]{
-                DataTypes.createStructField("id", DataTypes.IntegerType, false),
-                DataTypes.createStructField("name", DataTypes.StringType, false),
-        });
+            List<Row> data = Arrays.asList(
+                    RowFactory.create(1, "Alice"),
+                    RowFactory.create(2, "Bob")
+            );
 
-        List<Row> data = Arrays.asList(
-                RowFactory.create(1, "Alice"),
-                RowFactory.create(2, "Bob")
-        );
+            // 创建 DataFrame
+            Dataset<Row> df = spark.createDataFrame(data, schema);
 
-        // 创建 DataFrame
-        Dataset<Row> df = spark.createDataFrame(data, schema);
+            df.writeTo("clickhouse.default.example_table").append();
 
-        df.writeTo("clickhouse.default.example_table").append();
+            spark.stop();
+        }
+    ```
+  </TabItem>
 
-        spark.stop();
+  <TabItem value="Scala" label="Scala">
+    ```java
+    object NativeSparkWrite extends App {
+      // 创建 Spark 会话
+      val spark: SparkSession = SparkSession.builder
+        .appName("example")
+        .master("local[*]")
+        .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+        .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+        .config("spark.sql.catalog.clickhouse.protocol", "http")
+        .config("spark.sql.catalog.clickhouse.http_port", "8123")
+        .config("spark.sql.catalog.clickhouse.user", "default")
+        .config("spark.sql.catalog.clickhouse.password", "123456")
+        .config("spark.sql.catalog.clickhouse.database", "default")
+        .config("spark.clickhouse.write.format", "json")
+        .getOrCreate
+
+      // 定义 DataFrame 的架构
+      val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+
+      val schema = List(
+        StructField("id", DataTypes.IntegerType, nullable = false),
+        StructField("name", StringType, nullable = true)
+      )
+      // 创建 DataFrame
+      val df: DataFrame = spark.createDataFrame(
+        spark.sparkContext.parallelize(rows),
+        StructType(schema)
+      )
+
+      df.writeTo("clickhouse.default.example_table").append()
+
+      spark.stop()
     }
-```
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+  <TabItem value="Python" label="Python">
+    ```python
+    from pyspark.sql import SparkSession
+    from pyspark.sql import Row
 
-```java
-object NativeSparkWrite extends App {
-  // 创建 Spark 会话
-  val spark: SparkSession = SparkSession.builder
-    .appName("example")
-    .master("local[*]")
-    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-    .config("spark.sql.catalog.clickhouse.protocol", "http")
-    .config("spark.sql.catalog.clickhouse.http_port", "8123")
-    .config("spark.sql.catalog.clickhouse.user", "default")
-    .config("spark.sql.catalog.clickhouse.password", "123456")
-    .config("spark.sql.catalog.clickhouse.database", "default")
-    .config("spark.clickhouse.write.format", "json")
-    .getOrCreate
+    # 可根据上述兼容性矩阵自由使用任何其他包组合。
+    packages = [
+        "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
+        "com.clickhouse:clickhouse-client:0.7.0",
+        "com.clickhouse:clickhouse-http-client:0.7.0",
+        "org.apache.httpcomponents.client5:httpclient5:5.2.1"
 
-  // 定义 DataFrame 的 schema
-  val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+    ]
 
-  val schema = List(
-    StructField("id", DataTypes.IntegerType, nullable = false),
-    StructField("name", StringType, nullable = true)
-  )
-  // 创建 DataFrame
-  val df: DataFrame = spark.createDataFrame(
-    spark.sparkContext.parallelize(rows),
-    StructType(schema)
-  )
+    spark = (SparkSession.builder
+             .config("spark.jars.packages", ",".join(packages))
+             .getOrCreate())
 
-  df.writeTo("clickhouse.default.example_table").append()
+    spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+    spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+    spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
+    spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
+    spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+    spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
+    spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+    spark.conf.set("spark.clickhouse.write.format", "json")
 
-  spark.stop()
-}
-```
+    # 创建 DataFrame
+    data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+    df = spark.createDataFrame(data)
 
-</TabItem>
-<TabItem value="Python" label="Python">
+    # 将 DataFrame 写入 ClickHouse
+    df.writeTo("clickhouse.default.example_table").append()
 
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql import Row
+    ```
+  </TabItem>
 
-```
-
-
-# 你也可以自由使用任何其他符合上述兼容性矩阵要求的包组合。
-packages = [
-    "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
-    "com.clickhouse:clickhouse-client:0.7.0",
-    "com.clickhouse:clickhouse-http-client:0.7.0",
-    "org.apache.httpcomponents.client5:httpclient5:5.2.1"
-
-]
-
-spark = (SparkSession.builder
-         .config("spark.jars.packages", ",".join(packages))
-         .getOrCreate())
-
-spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
-spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
-spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
-spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
-spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
-spark.conf.set("spark.clickhouse.write.format", "json")
-
-
-
-# 创建 DataFrame
-data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
-df = spark.createDataFrame(data)
-
-
-
-# 将 DataFrame 写入 ClickHouse
-
-df.writeTo("clickhouse.default.example_table").append()
-
-````
-
-</TabItem>
-<TabItem value="SparkSQL" label="Spark SQL">
-
-```sql
-    -- resultTable 是我们要插入到 clickhouse.default.example_table 的 Spark 中间 DataFrame
-   INSERT INTO TABLE clickhouse.default.example_table
-                SELECT * FROM resultTable;
-
-````
-
-</TabItem>
+  <TabItem value="SparkSQL" label="Spark SQL">
+    ```sql
+        -- resultTable 是我们要插入到 clickhouse.default.example_table 中的 Spark 中间数据框
+       INSERT INTO TABLE clickhouse.default.example_table
+                    SELECT * FROM resultTable;
+                    
+    ```
+  </TabItem>
 </Tabs>
-
 
 ## DDL 操作
 
-你可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
-Spark SQL 允许你像在 ClickHouse 中一样编写查询，
-因此你可以直接执行诸如 CREATE TABLE、TRUNCATE 等命令——无需修改，例如：
+可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
+Spark SQL 允许你以与在 ClickHouse 中相同的方式编写查询，
+因此可以直接执行诸如 CREATE TABLE、TRUNCATE 等命令——无需修改，例如：
 
 :::note
-使用 Spark SQL 时，每次只能执行一条语句。
+在使用 Spark SQL 时，每次只能执行一条语句。
 :::
 
 ```sql
@@ -493,8 +474,8 @@ USE clickhouse;
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,
-  m           INT       NOT NULL COMMENT 'part key',
-  id          BIGINT    NOT NULL COMMENT 'sort key',
+  m           INT       NOT NULL COMMENT '分区键',
+  id          BIGINT    NOT NULL COMMENT '排序键',
   value       STRING
 ) USING ClickHouse
 PARTITIONED BY (m)
@@ -505,16 +486,14 @@ TBLPROPERTIES (
 );
 ```
 
-上述示例演示了 Spark SQL 查询，你可以在应用程序中使用任意 API（如 Java、Scala、PySpark 或 shell）来运行这些查询。
+上述示例展示了 Spark SQL 查询，您可以在应用程序中通过任意 API（Java、Scala、PySpark 或 shell）运行这些查询。
 
 
 ## 配置 {#configurations}
 
-以下是该连接器中可调整的配置项：
+以下是连接器中可配置的参数：
 
 <br/>
-
-
 
 | 键                                                  | 默认                                               | 描述                                                                                                                                                                                                 | 自从    |
 | -------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
@@ -540,43 +519,39 @@ TBLPROPERTIES (
 | spark.clickhouse.write.retryInterval               | 10s                                              | 两次写入重试之间的时间间隔（以秒为单位）。                                                                                                                                                                              | 0.1.0 |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                              | 在写入失败时由 ClickHouse 服务器返回的可重试的错误码。                                                                                                                                                                  | 0.1.0 |
 
-
-
-
-
 ## 支持的数据类型 {#supported-data-types}
 
-本节说明 Spark 与 ClickHouse 之间的数据类型映射。下表提供了快速参考，便于在从 ClickHouse 读取数据到 Spark，或从 Spark 向 ClickHouse 插入数据时进行数据类型转换。
+本节概述了 Spark 与 ClickHouse 之间的数据类型映射。下表为从 ClickHouse 读取数据到 Spark，以及将 Spark 中的数据插入 ClickHouse 时的数据类型转换提供快速参考。
 
 ### 从 ClickHouse 读取数据到 Spark {#reading-data-from-clickhouse-into-spark}
 
 | ClickHouse 数据类型                                               | Spark 数据类型                 | 是否支持  | 是否为原始类型 | 说明                                               |
 |-------------------------------------------------------------------|--------------------------------|-----------|----------------|----------------------------------------------------|
-| `Nothing`                                                         | `NullType`                     | ✅         | Yes            |                                                    |
-| `Bool`                                                            | `BooleanType`                  | ✅         | Yes            |                                                    |
-| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | Yes            |                                                    |
-| `Int8`                                                            | `ByteType`                     | ✅         | Yes            |                                                    |
-| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | Yes            |                                                    |
-| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅         | Yes            |                                                    |
-| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | Yes            |                                                    |
-| `Float32`                                                         | `FloatType`                    | ✅         | Yes            |                                                    |
-| `Float64`                                                         | `DoubleType`                   | ✅         | Yes            |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | Yes            |                                                    |
-| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | Yes            | 由配置项 `READ_FIXED_STRING_AS` 控制               |
-| `Decimal`                                                         | `DecimalType`                  | ✅         | Yes            | 精度和小数位数最高支持到 `Decimal128`             |
-| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | Yes            |                                                    |
-| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅         | Yes            |                                                    |
-| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅         | Yes            |                                                    |
-| `Date`, `Date32`                                                  | `DateType`                     | ✅         | Yes            |                                                    |
-| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅         | Yes            |                                                    |
-| `Array`                                                           | `ArrayType`                    | ✅         | No             | 数组元素类型也会被转换                             |
-| `Map`                                                             | `MapType`                      | ✅         | No             | 键类型仅支持 `StringType`                          |
-| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | Yes            |                                                    |
-| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | Yes            |                                                    |
-| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No             | 会使用对应的具体区间类型                           |
+| `Nothing`                                                         | `NullType`                     | ✅         | 是             |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅         | 是             |                                                    |
+| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | 是             |                                                    |
+| `Int8`                                                            | `ByteType`                     | ✅         | 是             |                                                    |
+| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | 是             |                                                    |
+| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅         | 是             |                                                    |
+| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | 是             |                                                    |
+| `Float32`                                                         | `FloatType`                    | ✅         | 是             |                                                    |
+| `Float64`                                                         | `DoubleType`                   | ✅         | 是             |                                                    |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | 是             |                                                    |
+| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | 是             | 由配置 `READ_FIXED_STRING_AS` 控制                 |
+| `Decimal`                                                         | `DecimalType`                  | ✅         | 是             | 精度和小数位数最高支持到 `Decimal128`              |
+| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | 是             |                                                    |
+| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅         | 是             |                                                    |
+| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅         | 是             |                                                    |
+| `Date`, `Date32`                                                  | `DateType`                     | ✅         | 是             |                                                    |
+| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅         | 是             |                                                    |
+| `Array`                                                           | `ArrayType`                    | ✅         | 否             | 数组元素类型也会被转换                             |
+| `Map`                                                             | `MapType`                      | ✅         | 否             | 键类型仅支持 `StringType`                          |
+| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | 是             |                                                    |
+| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | 是             |                                                    |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | 否             | 会映射为对应的具体区间类型                         |
 | `Object`                                                          |                                | ❌         |                |                                                    |
 | `Nested`                                                          |                                | ❌         |                |                                                    |
-| `Tuple`                                                           |                                | ❌         |                |                                                    |
+| `Tuple`                                                           | `StructType`                   | ✅         | 否             | 同时支持具名和无名 tuple。具名 tuple 按名称映射到 struct 字段，无名 tuple 使用 `_1`、`_2` 等字段名。支持嵌套 struct 和 Nullable 字段 |
 | `Point`                                                           |                                | ❌         |                |                                                    |
 | `Polygon`                                                         |                                | ❌         |                |                                                    |
 | `MultiPolygon`                                                    |                                | ❌         |                |                                                    |
@@ -589,33 +564,31 @@ TBLPROPERTIES (
 
 ### 从 Spark 向 ClickHouse 插入数据 {#inserting-data-from-spark-into-clickhouse}
 
-
-
-| Spark 数据类型                      | ClickHouse 数据类型  | 是否支持 | 是否为基础类型 | 说明                                       |
-|-------------------------------------|----------------------|-----------|----------------|--------------------------------------------|
-| `BooleanType`                       | `UInt8`              | ✅         | 是             |                                            |
-| `ByteType`                          | `Int8`               | ✅         | 是             |                                            |
-| `ShortType`                         | `Int16`              | ✅         | 是             |                                            |
-| `IntegerType`                       | `Int32`              | ✅         | 是             |                                            |
-| `LongType`                         | `Int64`              | ✅         | 是             |                                            |
-| `FloatType`                         | `Float32`            | ✅         | 是             |                                            |
-| `DoubleType`                        | `Float64`            | ✅         | 是             |                                            |
-| `StringType`                        | `String`             | ✅         | 是             |                                            |
-| `VarcharType`                       | `String`             | ✅         | 是             |                                            |
-| `CharType`                          | `String`             | ✅         | 是             |                                            |
-| `DecimalType`                       | `Decimal(p, s)`      | ✅         | 是             | 精度和小数位数最高可达 `Decimal128`        |
-| `DateType`                          | `Date`               | ✅         | 是             |                                            |
-| `TimestampType`                     | `DateTime`           | ✅         | 是             |                                            |
-| `ArrayType`（list、tuple 或 array） | `Array`              | ✅         | 否             | 数组元素类型也会被转换                     |
-| `MapType`                           | `Map`                | ✅         | 否             | 键类型仅限于 `StringType`                  |
-| `Object`                            |                      | ❌         |                |                                            |
-| `Nested`                            |                      | ❌         |                |                                            |
-
-
+| Spark 数据类型                      | ClickHouse 数据类型 | 是否支持 | 是否为基本类型 | 说明                                  |
+|-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
+| `BooleanType`                       | `Bool`               | ✅         | 是           | 自版本 0.9.0 起映射为 `Bool` 类型（而非 `UInt8`） |
+| `ByteType`                          | `Int8`               | ✅         | 是           |                                        |
+| `ShortType`                         | `Int16`              | ✅         | 是           |                                        |
+| `IntegerType`                       | `Int32`              | ✅         | 是           |                                        |
+| `LongType`                         | `Int64`              | ✅         | 是           |                                        |
+| `FloatType`                         | `Float32`            | ✅         | 是           |                                        |
+| `DoubleType`                        | `Float64`            | ✅         | 是           |                                        |
+| `StringType`                        | `String`             | ✅         | 是           |                                        |
+| `VarcharType`                       | `String`             | ✅         | 是           |                                        |
+| `CharType`                          | `String`             | ✅         | 是           |                                        |
+| `DecimalType`                       | `Decimal(p, s)`      | ✅         | 是           | 精度和小数位数最高支持到 `Decimal128` |
+| `DateType`                          | `Date`               | ✅         | 是           |                                        |
+| `TimestampType`                     | `DateTime`           | ✅         | 是           |                                        |
+| `ArrayType` (list, tuple, or array) | `Array`              | ✅         | 否           | 数组元素类型也会被转换                |
+| `MapType`                           | `Map`                | ✅         | 否           | 键类型仅支持 `StringType`             |
+| `StructType`                        | `Tuple`              | ✅         | 否           | 转换为带字段名的 Tuple                |
+| `VariantType`                       | `VariantType`               | ❌         | 否          |  |
+| `Object`                            |                      | ❌         |              |                                        |
+| `Nested`                            |                      | ❌         |              |                                        |
 
 ## 贡献与支持 {#contributing-and-support}
 
-如果您希望为该项目做出贡献或报告任何问题，我们非常欢迎您的参与！
+如果您希望为该项目做出贡献或报告任何问题，我们非常欢迎您的反馈！
 请访问我们的 [GitHub 仓库](https://github.com/ClickHouse/spark-clickhouse-connector) 来提交 issue、提出改进建议或发起 pull request。
-我们欢迎所有贡献！在开始之前，请先查看仓库中的贡献指南。
+欢迎一切形式的贡献！在开始之前，请先查看仓库中的贡献指南。
 感谢您帮助改进我们的 ClickHouse Spark 连接器！

@@ -17,7 +17,7 @@ import dynamodb_map_columns from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# CDC из DynamoDB в ClickHouse
+# CDC из DynamoDB в ClickHouse {#cdc-from-dynamodb-to-clickhouse}
 
 <ExperimentalBadge/>
 
@@ -50,9 +50,9 @@ import Image from '@theme/IdealImage';
 
 
 
-## 3. Загрузка снимка в ClickHouse
+## 3. Загрузка снимка в ClickHouse {#3-load-the-snapshot-into-clickhouse}
 
-### Создайте необходимые таблицы
+### Создайте необходимые таблицы {#create-necessary-tables}
 
 Данные снимка из DynamoDB будут выглядеть примерно так:
 
@@ -115,7 +115,7 @@ ORDER BY id;
 * Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задаваемого в `ORDER BY`)
   * Строки с одинаковым ключом сортировки будут очищаться от дубликатов на основе столбца `version`.
 
-### Создание snapshot ClickPipe
+### Создание snapshot ClickPipe {#create-the-snapshot-clickpipe}
 
 Теперь вы можете создать ClickPipe для загрузки snapshot-данных из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage), но используйте следующие настройки:
 
@@ -146,7 +146,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 
 
-## 5. Очистка (необязательно)
+## 5. Очистка (необязательно) {#5-cleanup-optional}
 
 После завершения снапшотного ClickPipe вы можете удалить таблицу снимка и материализованное представление.
 

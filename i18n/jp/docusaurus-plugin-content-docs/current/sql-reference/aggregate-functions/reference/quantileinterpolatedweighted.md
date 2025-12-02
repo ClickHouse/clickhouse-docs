@@ -6,7 +6,7 @@ title: 'quantileInterpolatedWeighted'
 doc_type: 'reference'
 ---
 
-# quantileInterpolatedWeighted
+# quantileInterpolatedWeighted {#quantileinterpolatedweighted}
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を、各要素の重みを考慮した線形補間により計算します。
 

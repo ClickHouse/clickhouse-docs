@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) とは異なり、ClickHouseは進捗情報もJSON値として出力します。
 
-## 使用例
+## 使用例 {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

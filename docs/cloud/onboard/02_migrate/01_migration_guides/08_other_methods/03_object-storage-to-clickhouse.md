@@ -11,7 +11,7 @@ import object_storage_01 from '@site/static/images/integrations/migration/object
 
 # Move data from cloud object storage to ClickHouse Cloud
 
-<Image img={object_storage_01} size='md' alt='Migrating Self-managed ClickHouse' background='white' />
+<Image img={object_storage_01} size='md' alt='Migrating Self-managed ClickHouse'/>
 
 If you use a Cloud Object Storage as a data lake and wish to import this data into ClickHouse Cloud,
 or if your current database system is able to directly offload data into a Cloud Object Storage, then you can use one of the

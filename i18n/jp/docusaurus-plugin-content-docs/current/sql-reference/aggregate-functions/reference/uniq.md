@@ -6,7 +6,7 @@ title: 'uniq'
 doc_type: 'reference'
 ---
 
-# uniq
+# uniq {#uniq}
 
 引数に含まれる異なる値のおおよその個数を計算します。
 

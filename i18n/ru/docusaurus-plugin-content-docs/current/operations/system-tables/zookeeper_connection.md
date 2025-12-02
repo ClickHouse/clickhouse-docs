@@ -6,10 +6,9 @@ title: 'system.zookeeper_connection'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.zookeeper&#95;connection
+# system.zookeeper&#95;connection {#systemzookeeper&#95;connection}
 
 <SystemTableCloud />
 

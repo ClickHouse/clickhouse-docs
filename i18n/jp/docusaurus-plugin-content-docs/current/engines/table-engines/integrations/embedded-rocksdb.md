@@ -9,16 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# EmbeddedRocksDB テーブルエンジン
+# EmbeddedRocksDB テーブルエンジン {#embeddedrocksdb-table-engine}
 
 <CloudNotSupportedBadge />
 
 このエンジンを使用すると、ClickHouse を [RocksDB](http://rocksdb.org/) と統合できます。
 
-
-
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -59,8 +56,7 @@ ENGINE = EmbeddedRocksDB
 PRIMARY KEY key
 ```
 
-
-## メトリクス
+## メトリクス {#metrics}
 
 RocksDB の統計情報を提供する `system.rocksdb` というテーブルもあります。
 
@@ -76,8 +72,7 @@ FROM system.rocksdb
 └───────────────────────────┴───────┘
 ```
 
-
-## 設定
+## 設定 {#configuration}
 
 `config` を使用して、[rocksdb の任意のオプション](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) を変更することもできます。
 
@@ -107,10 +102,9 @@ FROM system.rocksdb
 `optimize_trivial_approximate_count_query = 1` を設定します。また、この設定は EmbeddedRocksDB エンジンにおける `system.tables` にも影響し、
 `total_rows` および `total_bytes` の近似値を表示するには、この設定を有効にしておく必要があります。
 
+## サポートされている操作 {#supported-operations}
 
-## サポートされている操作
-
-### 挿入
+### 挿入 {#inserts}
 
 新しい行が `EmbeddedRocksDB` に挿入されると、キーがすでに存在している場合は値が更新され、存在しない場合は新しいキーが作成されます。
 
@@ -120,7 +114,7 @@ FROM system.rocksdb
 INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
 ```
 
-### 削除
+### 削除 {#deletes}
 
 行は `DELETE` クエリまたは `TRUNCATE` クエリを使用して削除できます。
 
@@ -136,7 +130,7 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 テーブル test の全データを削除;
 ```
 
-### 更新
+### 更新 {#updates}
 
 値は `ALTER TABLE` クエリを使用して更新できます。主キーは変更できません。
 
@@ -144,7 +138,7 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
 
-### 結合
+### 結合 {#joins}
 
 EmbeddedRocksDB テーブルでは、特殊な `direct` 結合がサポートされています。
 この `direct` 結合ではメモリ内にハッシュテーブルを構築せず、
@@ -163,9 +157,9 @@ SET join_algorithm = 'direct, hash'
 `join_algorithm` が `direct, hash` に設定されている場合、可能なときは direct join が使用され、それ以外の場合は hash join が使用されます。
 :::
 
-#### 例
+#### 例 {#example}
 
-##### EmbeddedRocksDB テーブルを作成してデータを投入する
+##### EmbeddedRocksDB テーブルを作成してデータを投入する {#create-and-populate-an-embeddedrocksdb-table}
 
 ```sql
 CREATE TABLE rdb
@@ -187,7 +181,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### `rdb` テーブルと結合するためのテーブルを作成し、データを投入する
+##### `rdb` テーブルと結合するためのテーブルを作成し、データを投入する {#create-and-populate-a-table-to-join-with-table-rdb}
 
 ```sql
 CREATE TABLE t2
@@ -202,13 +196,13 @@ INSERT INTO t2 SELECT number AS k
 FROM numbers_mt(10)
 ```
 
-##### 結合アルゴリズムを `direct` に設定
+##### 結合アルゴリズムを `direct` に設定 {#set-the-join-algorithm-to-direct}
 
 ```sql
 SET join_algorithm = 'direct'
 ```
 
-##### INNER JOIN の例
+##### INNER JOIN の例 {#an-inner-join}
 
 ```sql
 SELECT *
@@ -233,7 +227,7 @@ ORDER BY key ASC
 └─────┴─────────┴────────┴────────┘
 ```
 
-### JOIN の詳細情報
+### JOIN の詳細情報 {#more-information-on-joins}
 
 * [`join_algorithm` 設定](/operations/settings/settings.md#join_algorithm)
 * [JOIN 句](/sql-reference/statements/select/join.md)

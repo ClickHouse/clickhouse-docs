@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Визуальные интерфейсы сторонних разработчиков
+# Визуальные интерфейсы сторонних разработчиков {#visual-interfaces-from-third-party-developers}
 
 
 

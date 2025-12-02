@@ -6,7 +6,7 @@ title: 'argMax'
 doc_type: 'reference'
 ---
 
-# argMax
+# argMax {#argmax}
 
 最大の `val` 値に対応する `arg` の値を計算します。最大値の `val` を持つ行が複数ある場合、どの行の `arg` が返されるかは決定的ではありません。
 `arg` 側と `max` 側はどちらも[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はいずれも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` 以外の値が存在する場合には `Null` 以外の値を返します。

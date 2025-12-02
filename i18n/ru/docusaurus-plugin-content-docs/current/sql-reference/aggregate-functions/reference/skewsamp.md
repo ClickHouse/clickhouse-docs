@@ -6,7 +6,7 @@ title: 'skewSamp'
 doc_type: 'reference'
 ---
 
-# skewSamp
+# skewSamp {#skewsamp}
 
 Вычисляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
 

@@ -7,10 +7,10 @@ title: 'system.iceberg_metadata_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.iceberg_metadata_log
+# system.iceberg_metadata_log {#systemiceberg_metadata_log}
 
 Таблица `system.iceberg_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Iceberg, прочитанных ClickHouse. Она предоставляет подробную информацию о каждом обработанном файле или записи метаданных, что полезно для отладки, аудита и анализа эволюции структуры таблиц Iceberg.
 
@@ -54,7 +54,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 
-## Управление подробностью журналирования
+## Управление подробностью журналирования {#controlling-log-verbosity}
 
 Вы можете управлять тем, какие события, связанные с метаданными, записываются в журнал, с помощью настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
@@ -84,7 +84,7 @@ WHERE query_id = '{previous_query_id}';
 
 См. дополнительную информацию в описании настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
-### Полезная информация
+### Полезная информация {#good-to-know}
 
 * Используйте `iceberg_metadata_log_level` на уровне запроса только тогда, когда вам нужно детально исследовать таблицу Iceberg. В противном случае вы можете заполнить таблицу логов избыточными метаданными и столкнуться с ухудшением производительности.
 * Таблица может содержать дублирующиеся записи, так как она предназначена в первую очередь для отладки и не гарантирует уникальность записей для каждой сущности.

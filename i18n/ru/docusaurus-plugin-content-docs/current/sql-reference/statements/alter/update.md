@@ -1,27 +1,27 @@
 ---
-description: 'Документация по операторам ALTER TABLE ... UPDATE'
+description: 'Документация по командам ALTER TABLE ... UPDATE'
 sidebar_label: 'UPDATE'
 sidebar_position: 40
 slug: /sql-reference/statements/alter/update
-title: 'Операторы ALTER TABLE ... UPDATE'
+title: 'Команды ALTER TABLE ... UPDATE'
 doc_type: 'reference'
 ---
 
 
 
-# Оператор ALTER TABLE ... UPDATE
+# Команды ALTER TABLE ... UPDATE {#alter-table-update-statements}
 
 ```sql
-ALTER TABLE [db.]table [ON CLUSTER cluster] ОБНОВИТЬ column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
+ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
 
-Выполняет операции над данными, удовлетворяющими указанному выражению фильтрации. Реализована как [мутация](/sql-reference/statements/alter/index.md#mutations).
+Манипулирует данными, которые соответствуют указанному фильтрующему выражению. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-:::note\
-Префикс `ALTER TABLE` делает этот синтаксис отличным от большинства других систем, поддерживающих SQL. Он призван подчеркнуть, что в отличие от аналогичных запросов в OLTP-базах данных это тяжёлая операция, не предназначенная для частого использования.
+:::note
+Префикс `ALTER TABLE` делает этот синтаксис отличающимся от большинства других систем, поддерживающих SQL. Он призван подчеркнуть, что, в отличие от похожих запросов в OLTP-базах данных, это ресурсоёмкая операция, не предназначенная для частого использования.
 :::
 
-`filter_expr` должно иметь тип `UInt8`. Этот запрос обновляет значения указанных столбцов на значения соответствующих выражений в строках, для которых `filter_expr` принимает ненулевое значение. Значения приводятся к типу столбца с помощью оператора `CAST`. Обновление столбцов, которые используются в вычислении первичного ключа или ключа партиционирования, не поддерживается.
+`filter_expr` должен иметь тип `UInt8`. Этот запрос обновляет значения указанных столбцов на значения соответствующих выражений в строках, для которых `filter_expr` принимает ненулевое значение. Значения приводятся к типу столбца с помощью оператора `CAST`. Обновление столбцов, используемых при вычислении первичного ключа или ключа партиции, не поддерживается.
 
 Один запрос может содержать несколько команд, разделённых запятыми.
 
@@ -30,10 +30,10 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] ОБНОВИТЬ column1 = expr1 [, 
 **См. также**
 
 * [Мутации](/sql-reference/statements/alter/index.md#mutations)
-* [Синхронность запросов ALTER](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
+* [Синхронность ALTER-запросов](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
 
 
-## Похожие материалы {#related-content}
+## Связанные материалы {#related-content}
 
-- Блог: [Обработка операций обновления и удаления в ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+- Блог: [Обработка обновлений и удалений в ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

@@ -8,16 +8,14 @@ title: '分析技巧'
 doc_type: 'guide'
 ---
 
+# 分析提示 {#analysis-tips}
 
-
-# 分析提示
-
-## MEDIAN() 和 PERCENTILE() 函数
+## MEDIAN() 和 PERCENTILE() 函数 {#median-and-percentile-functions}
 
 * 在 Live 模式下，自 connector v0.1.3 版本起，`MEDIAN()` 和 `PERCENTILE()` 函数使用 [ClickHouse quantile()() 函数](/sql-reference/aggregate-functions/reference/quantile/)，这在显著加快计算速度的同时，是基于抽样进行计算的。如果你希望获得精确的计算结果，请使用 `MEDIAN_EXACT()` 和 `PERCENTILE_EXACT()` 函数（基于 [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)）。
 * 在 Extract 模式下无法使用 MEDIAN&#95;EXACT() 和 PERCENTILE&#95;EXACT()，因为 MEDIAN() 和 PERCENTILE() 本身就是精确的（但较慢）。
 
-## 实时模式中计算字段的其他函数
+## 实时模式中计算字段的其他函数 {#additional-functions-for-calculated-fields-in-live-mode}
 
 ClickHouse 提供了大量数据分析函数——远超 Tableau 所支持的数量。 为方便用户,我们新增了可在 Live 模式下创建计算字段时使用的函数。 由于 Tableau 界面无法为这些函数添加描述,我们将在此处直接提供说明。
 

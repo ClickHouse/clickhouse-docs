@@ -17,7 +17,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 Это называется &quot;облегчённым `DELETE`&quot;, чтобы противопоставить его команде [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete), которая является тяжеловесным процессом.
 
 
-## Примеры
+## Примеры {#examples}
 
 ```sql
 -- Удаляет все строки из таблицы `hits`, где столбец `Title` содержит текст `hello`
@@ -66,7 +66,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
 
 
-## Права на удаление
+## Права на удаление {#delete-permissions}
 
 Для выполнения `DELETE` требуется привилегия `ALTER DELETE`. Чтобы разрешить выполнение операторов `DELETE` для определённой таблицы и пользователя, выполните следующую команду:
 

@@ -6,10 +6,9 @@ title: 'system.asynchronous_loader'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;loader
+# system.asynchronous&#95;loader {#systemasynchronous&#95;loader}
 
 <SystemTableCloud />
 
@@ -60,21 +59,29 @@ FORMAT Vertical
 * `is_ready` (`UInt8`) - ジョブは実行可能な状態で、ワーカーを待っています。
 * `elapsed` (`Float64`) - 実行開始から経過した秒数。ジョブが開始されていない場合は 0。ジョブが終了している場合は合計実行時間です。
 
-
 すべてのジョブには関連付けられたプールがあり、そのプール内で開始されます。各プールには一定の優先度と可変のワーカー最大数があります。優先度が高い（`priority` の値が小さい）ジョブが先に実行されます。少なくとも 1 つの高優先度ジョブが実行可能または実行中である間は、低優先度のジョブは開始されません。ジョブの優先度は（引き下げることはできませんが）優先扱いとすることで引き上げることができます。たとえば、テーブルのロードや起動のためのジョブは、受信したクエリがそのテーブルを必要とした場合に優先扱いされます。ジョブの実行中に優先扱いすることも可能ですが、その場合でもジョブは `execution_pool` から新たに割り当てられた `pool` へ移動されません。ジョブは優先度逆転を避けるために、新しいジョブを作成する際には `pool` を使用します。すでに開始されたジョブは高優先度ジョブによってプリエンプトされず、開始後は常に完了まで実行されます。
-- `pool_id` (`UInt64`) - 現在ジョブに割り当てられているプールの ID。
-- `pool` (`String`) - `pool_id` のプール名。
-- `priority` (`Int64`) - `pool_id` のプールの優先度。
-- `execution_pool_id` (`UInt64`) - ジョブが実行されているプールの ID。実行開始前に最初に割り当てられたプールと同じ。
-- `execution_pool` (`String`) - `execution_pool_id` のプール名。
-- `execution_priority` (`Int64`) - `execution_pool_id` のプールの優先度。
 
-- `ready_seqno` (`Nullable(UInt64)`) - 実行可能なジョブの場合に非 NULL。ワーカーは、自身のプールの実行待ちキューから次に実行するジョブを取得します。複数の実行可能ジョブがある場合、`ready_seqno` の値が最も小さいジョブが選択されます。
-- `waiters` (`UInt64`) - このジョブを待機しているスレッド数。
-- `exception` (`Nullable(String)`) - 失敗したジョブおよびキャンセルされたジョブの場合に非 NULL。クエリ実行中に発生したエラーメッセージ、またはこのジョブのキャンセルにつながったエラーと、その依存関係の失敗に関わるジョブ名のチェーンを保持します。
+* `pool_id` (`UInt64`) - 現在ジョブに割り当てられているプールの ID。
+
+* `pool` (`String`) - `pool_id` のプール名。
+
+* `priority` (`Int64`) - `pool_id` のプールの優先度。
+
+* `execution_pool_id` (`UInt64`) - ジョブが実行されているプールの ID。実行開始前に最初に割り当てられたプールと同じ。
+
+* `execution_pool` (`String`) - `execution_pool_id` のプール名。
+
+* `execution_priority` (`Int64`) - `execution_pool_id` のプールの優先度。
+
+* `ready_seqno` (`Nullable(UInt64)`) - 実行可能なジョブの場合に非 NULL。ワーカーは、自身のプールの実行待ちキューから次に実行するジョブを取得します。複数の実行可能ジョブがある場合、`ready_seqno` の値が最も小さいジョブが選択されます。
+
+* `waiters` (`UInt64`) - このジョブを待機しているスレッド数。
+
+* `exception` (`Nullable(String)`) - 失敗したジョブおよびキャンセルされたジョブの場合に非 NULL。クエリ実行中に発生したエラーメッセージ、またはこのジョブのキャンセルにつながったエラーと、その依存関係の失敗に関わるジョブ名のチェーンを保持します。
 
 ジョブのライフタイム中の時刻:
-- `schedule_time` (`DateTime64`) - ジョブが作成され、（通常はすべての依存関係とともに）実行予定としてスケジュールされた時刻。
-- `enqueue_time` (`Nullable(DateTime64)`) - ジョブが実行可能となり、そのプールの実行待ちキューに投入された時刻。ジョブがまだ実行可能でない場合は NULL。
-- `start_time` (`Nullable(DateTime64)`) - ワーカーが実行待ちキューからジョブを取り出して実行を開始した時刻。ジョブがまだ開始されていない場合は NULL。
-- `finish_time` (`Nullable(DateTime64)`) - ジョブの実行が完了した時刻。ジョブがまだ完了していない場合は NULL。
+
+* `schedule_time` (`DateTime64`) - ジョブが作成され、（通常はすべての依存関係とともに）実行予定としてスケジュールされた時刻。
+* `enqueue_time` (`Nullable(DateTime64)`) - ジョブが実行可能となり、そのプールの実行待ちキューに投入された時刻。ジョブがまだ実行可能でない場合は NULL。
+* `start_time` (`Nullable(DateTime64)`) - ワーカーが実行待ちキューからジョブを取り出して実行を開始した時刻。ジョブがまだ開始されていない場合は NULL。
+* `finish_time` (`Nullable(DateTime64)`) - ジョブの実行が完了した時刻。ジョブがまだ完了していない場合は NULL。

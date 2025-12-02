@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S)
+# Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S) {#decimal-decimalp-decimalp-s-decimal32s-decimal64s-decimal128s-decimal256s}
 
 有符号定点数，在执行加法、减法和乘法运算时保持精度。对于除法运算，最低有效数字会被直接截断（不进行四舍五入）。
 
@@ -73,7 +73,7 @@ Decimal 与 Float32/Float64 之间的运算未定义。如有需要，可以显�
 
 
 
-## 溢出检查
+## 溢出检查 {#overflow-checks}
 
 在对 Decimal 类型进行计算时，可能会发生整数溢出。小数部分中的多余位数会被直接截断（不会进行四舍五入）。整数部分中的多余位数会导致抛出异常。
 

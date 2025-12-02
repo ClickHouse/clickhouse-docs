@@ -52,9 +52,9 @@ doc_type: 'reference'
 
 
 
-## 示例用法
+## 示例用法 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用名为 `football.orc` 的 ORC 文件，其内容如下：
 
@@ -86,7 +86,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `ORC` 格式来读取数据：
 

@@ -6,7 +6,7 @@ title: 'UNDROP TABLE'
 doc_type: 'reference'
 ---
 
-# UNDROP TABLE
+# UNDROP TABLE {#undrop-table}
 
 Отменяет удаление таблицы.
 

@@ -7,7 +7,7 @@ title: '制約の操作'
 doc_type: 'reference'
 ---
 
-# 制約の操作
+# 制約の操作 {#manipulating-constraints}
 
 制約は次の構文で追加および削除できます。
 

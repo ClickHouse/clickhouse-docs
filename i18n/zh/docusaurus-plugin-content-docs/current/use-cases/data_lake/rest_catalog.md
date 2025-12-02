@@ -42,7 +42,7 @@ REST Catalog 是针对 Iceberg catalog 的标准化 API 规范，已被多种平
 1. **Docker 和 Docker Compose**：确保已安装并正在运行 Docker
 2. **示例配置**：可以使用各种 docker-compose 配置（参见下文“备用 Docker 镜像”）
 
-### 本地 REST Catalog 配置
+### 本地 REST Catalog 配置 {#setting-up-local-rest-catalog}
 
 你可以使用多种容器化的 REST catalog 实现，例如 **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**。它通过 docker-compose 提供了完整的 Spark + Iceberg + REST catalog 环境，非常适合用于测试 Iceberg 集成。
 
@@ -90,7 +90,7 @@ REST catalog 的配置要求必须先将示例数据加载到 Iceberg 表中。�
 :::
 
 
-### 连接到本地 REST Catalog
+### 连接到本地 REST Catalog {#connecting-to-local-rest-catalog}
 
 连接到 ClickHouse 容器：
 
@@ -112,7 +112,7 @@ SETTINGS
 ```
 
 
-## 使用 ClickHouse 查询 REST 目录表
+## 使用 ClickHouse 查询 REST 目录表 {#querying-rest-catalog-tables-using-clickhouse}
 
 连接建立完成后，就可以通过 REST 目录开始查询。例如：
 
@@ -196,7 +196,7 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## 将数据湖（Data Lake）中的数据加载到 ClickHouse
+## 将数据湖（Data Lake）中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 如果需要将 REST 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
 

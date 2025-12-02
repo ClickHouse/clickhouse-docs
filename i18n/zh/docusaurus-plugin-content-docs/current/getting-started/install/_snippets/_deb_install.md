@@ -1,35 +1,30 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 # 在 Debian/Ubuntu 上安装 ClickHouse {#install-from-deb-packages}
 
 > 建议在 **Debian** 或 **Ubuntu** 上使用官方预编译的 `deb` 安装包。
 
 <VerticalStepper>
 
-
 ## 配置 Debian 软件源 {#setup-the-debian-repository}
 
 要安装 ClickHouse，请运行以下命令：
 
-
-
 ```bash
-# 安装先决条件软件包
+# 安装先决条件软件包 {#install-prerequisite-packages}
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# 下载 ClickHouse 的 GPG 密钥并将其存储到密钥环中
+# 下载 ClickHouse 的 GPG 密钥并将其存储到密钥环中 {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# 获取系统架构
+# 获取系统架构 {#get-the-system-architecture}
 ARCH=$(dpkg --print-architecture)
 
-# 将 ClickHouse 仓库添加到 APT 软件源列表
+# 将 ClickHouse 仓库添加到 APT 软件源列表 {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# 更新 apt 软件包列表
+# 更新 apt 软件包列表 {#update-apt-package-lists}
 sudo apt-get update
 ```
 
@@ -40,40 +35,38 @@ sudo apt-get update
 <summary>用于安装 deb 软件包的旧分发方式</summary>
 
 ```bash
-# 安装前置依赖包
+# 安装前置依赖包 {#install-prerequisite-packages}
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# 添加 ClickHouse GPG 密钥用于验证软件包
+# 添加 ClickHouse GPG 密钥用于验证软件包 {#add-the-clickhouse-gpg-key-to-authenticate-packages}
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# 将 ClickHouse 软件仓库添加到 apt 源列表
+# 将 ClickHouse 软件仓库添加到 apt 源列表 {#add-the-clickhouse-repository-to-apt-sources}
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
 
-# 更新 apt 软件包列表
+# 更新 apt 软件包列表 {#update-apt-package-lists}
 sudo apt-get update
 
-# 安装 ClickHouse 服务端和客户端软件包
+# 安装 ClickHouse 服务端和客户端软件包 {#install-clickhouse-server-and-client-packages}
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# 启动 ClickHouse 服务
+# 启动 ClickHouse 服务 {#start-the-clickhouse-server-service}
 sudo service clickhouse-server start
 
-# 启动 ClickHouse 命令行客户端
-clickhouse-client # 如果已设置密码，请使用 &quot;clickhouse-client --password&quot;。
+# 启动 ClickHouse 命令行客户端 {#launch-the-clickhouse-command-line-client}
+clickhouse-client # 如果已设置密码,请使用 "clickhouse-client --password"。
 ```
 
 </details>
 
-
-## 安装 ClickHouse 服务端和客户端
+## 安装 ClickHouse 服务端和客户端 {#install-clickhouse-server-and-client}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
-
-## 启动 ClickHouse
+## 启动 ClickHouse {#start-clickhouse-server}
 
 要启动 ClickHouse 服务器，请运行：
 
@@ -93,8 +86,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-
-## 安装独立的 ClickHouse Keeper
+## 安装独立的 ClickHouse Keeper {#install-standalone-clickhouse-keeper}
 
 :::tip
 在生产环境中，我们强烈建议在专用节点上运行 ClickHouse Keeper。
@@ -108,7 +100,6 @@ clickhouse-client --password
 sudo apt-get install -y clickhouse-keeper
 ```
 
-
 ## 启用并启动 ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
 
 ```bash
@@ -118,7 +109,6 @@ sudo systemctl status clickhouse-keeper
 ```
 
 </VerticalStepper>
-
 
 ## 软件包 {#packages}
 

@@ -11,7 +11,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# Табличный движок Kafka
+# Табличный движок Kafka {#kafka-table-engine}
 
 :::tip
 Если вы используете ClickHouse Cloud, мы рекомендуем вместо этого использовать [ClickPipes](/integrations/clickpipes). ClickPipes нативно поддерживает приватные сетевые соединения, независимое масштабирование ресурсов для приёма данных и ресурсов кластера, а также всесторонний мониторинг при потоковой загрузке данных из Kafka в ClickHouse.
@@ -21,7 +21,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 - Организовывать отказоустойчивое хранилище.
 - Обрабатывать потоки по мере их поступления.
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -48,6 +48,7 @@ SETTINGS
     [kafka_poll_timeout_ms = 0,]
     [kafka_poll_max_batch_size = 0,]
     [kafka_flush_interval_ms = 0,]
+    [kafka_consumer_reschedule_ms = 0,]
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
@@ -60,34 +61,35 @@ SETTINGS
 
 * `kafka_broker_list` — список брокеров, разделённых запятыми (например, `localhost:9092`).
 * `kafka_topic_list` — список топиков Kafka.
-* `kafka_group_name` — группа потребителей Kafka. Смещения чтения отслеживаются для каждой группы отдельно. Если вы не хотите, чтобы сообщения дублировались в кластере, используйте одинаковое имя группы во всех местах.
-* `kafka_format` — формат сообщений. Использует ту же нотацию, что и SQL-функция `FORMAT`, например `JSONEachRow`. Для получения дополнительной информации см. раздел [Formats](../../../interfaces/formats.md).
+* `kafka_group_name` — группа потребителей Kafka. Смещения чтения отслеживаются отдельно для каждой группы. Если вы не хотите дублирования сообщений в кластере, используйте одно и то же имя группы везде.
+* `kafka_format` — формат сообщений. Использует ту же нотацию, что и SQL-функция `FORMAT`, например, `JSONEachRow`. Для получения дополнительной информации см. раздел [Formats](../../../interfaces/formats.md).
 
 Необязательные параметры:
 
 
-- `kafka_security_protocol` - Протокол, используемый для связи с брокерами. Возможные значения: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
-- `kafka_sasl_mechanism` - Механизм SASL, используемый для аутентификации. Возможные значения: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
-- `kafka_sasl_username` - Имя пользователя SASL для использования с механизмами `PLAIN` и `SASL-SCRAM-..`.
-- `kafka_sasl_password` - Пароль SASL для использования с механизмами `PLAIN` и `SASL-SCRAM-..`.
-- `kafka_schema` — Параметр, который необходимо использовать, если формат требует определения схемы. Например, [Cap'n Proto](https://capnproto.org/) требует путь к файлу схемы и имя корневого объекта `schema.capnp:Message`.
-- `kafka_schema_registry_skip_bytes` — Количество байтов, которые нужно пропустить в начале каждого сообщения при использовании реестра схем с заголовками-оболочками (например, AWS Glue Schema Registry с 19-байтовой оболочкой). Диапазон: `[0, 255]`. Значение по умолчанию: `0`.
-- `kafka_num_consumers` — Количество консьюмеров для таблицы. Укажите больше консьюмеров, если пропускной способности одного консьюмера недостаточно. Общее количество консьюмеров не должно превышать количество партиций в топике, так как только один консьюмер может быть назначен на партицию, и не должно быть больше числа физических ядер на сервере, где развернут ClickHouse. Значение по умолчанию: `1`.
-- `kafka_max_block_size` — Максимальный размер батча (в сообщениях) для операции poll. Значение по умолчанию: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size).
-- `kafka_skip_broken_messages` — Допустимое количество сообщений Kafka с несовместимой схемой на блок при разборе сообщений. Если `kafka_skip_broken_messages = N`, то движок пропускает *N* сообщений Kafka, которые не могут быть разобраны (сообщение соответствует строке данных). Значение по умолчанию: `0`.
-- `kafka_commit_every_batch` — Фиксировать (commit) каждый прочитанный и обработанный батч вместо одного коммита после записи целого блока. Значение по умолчанию: `0`.
-- `kafka_client_id` — Идентификатор клиента. По умолчанию пустой.
-- `kafka_poll_timeout_ms` — Таймаут для одной операции poll из Kafka. Значение по умолчанию: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms).
-- `kafka_poll_max_batch_size` — Максимальное количество сообщений, запрашиваемых за один poll Kafka. Значение по умолчанию: [max_block_size](/operations/settings/settings#max_block_size).
-- `kafka_flush_interval_ms` — Таймаут для сброса данных из Kafka. Значение по умолчанию: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms).
-- `kafka_thread_per_consumer` — Выделяет независимый поток для каждого консьюмера. При включении каждый консьюмер сбрасывает данные независимо и параллельно (в противном случае строки от нескольких консьюмеров будут объединяться в один блок). Значение по умолчанию: `0`.
-- `kafka_handle_error_mode` — Режим обработки ошибок для движка Kafka. Возможные значения: `default` (будет выброшено исключение, если не удалось разобрать сообщение), `stream` (текст исключения и исходное сообщение будут сохранены в виртуальных колонках `_error` и `_raw_message`), `dead_letter_queue` (данные, связанные с ошибкой, будут сохранены в `system.dead_letter_queue`).
-- `kafka_commit_on_select` — Фиксировать сообщения при выполнении запроса `SELECT`. Значение по умолчанию: `false`.
-- `kafka_max_rows_per_message` — Максимальное количество строк, записываемых в одно сообщение Kafka для построчных форматов. Значение по умолчанию: `1`.
-- `kafka_compression_codec` — Кодек сжатия, используемый при формировании сообщений. Поддерживаются: пустая строка, `none`, `gzip`, `snappy`, `lz4`, `zstd`. В случае пустой строки кодек сжатия не задаётся таблицей, поэтому будут использоваться значения из конфигурационных файлов или значение по умолчанию из `librdkafka`. Значение по умолчанию: пустая строка.
-- `kafka_compression_level` — Параметр уровня сжатия для алгоритма, выбранного в `kafka_compression_codec`. Более высокие значения обеспечивают лучшее сжатие за счёт большего использования CPU. Рабочий диапазон зависит от алгоритма: `[0-9]` для `gzip`; `[0-12]` для `lz4`; только `0` для `snappy`; `[0-12]` для `zstd`; `-1` = уровень сжатия по умолчанию, зависящий от кодека. Значение по умолчанию: `-1`.
+- `kafka_security_protocol` — Протокол, используемый для связи с брокерами. Возможные значения: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
+- `kafka_sasl_mechanism` — Механизм SASL, используемый для аутентификации. Возможные значения: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
+- `kafka_sasl_username` — Имя пользователя SASL для использования с механизмами `PLAIN` и `SASL-SCRAM-..`.
+- `kafka_sasl_password` — Пароль SASL для использования с механизмами `PLAIN` и `SASL-SCRAM-..`.
+- `kafka_schema` — Параметр, который должен использоваться, если формат требует определения схемы. Например, [Cap'n Proto](https://capnproto.org/) требует путь к файлу схемы и имя корневого объекта `schema.capnp:Message`.
+- `kafka_schema_registry_skip_bytes` — Количество байт, которые нужно пропустить с начала каждого сообщения при использовании реестра схем с envelope-заголовками (например, AWS Glue Schema Registry, который добавляет 19-байтовый envelope). Диапазон: `[0, 255]`. По умолчанию: `0`.
+- `kafka_num_consumers` — Количество консьюмеров на таблицу. Укажите больше консьюмеров, если пропускной способности одного консьюмера недостаточно. Общее количество консьюмеров не должно превышать количество партиций в топике, так как к каждой партиции может быть привязан только один консьюмер, и не должно быть больше числа физических ядер на сервере, где развернут ClickHouse. По умолчанию: `1`.
+- `kafka_max_block_size` — Максимальный размер пакета (в сообщениях) для одного poll. По умолчанию: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size).
+- `kafka_skip_broken_messages` — Допустимое количество несовместимых со схемой сообщений Kafka на блок для парсера. Если `kafka_skip_broken_messages = N`, то движок пропускает *N* сообщений Kafka, которые не могут быть разобраны (одно сообщение соответствует одной строке данных). По умолчанию: `0`.
+- `kafka_commit_every_batch` — Фиксировать (commit) каждый считанный и обработанный пакет вместо одного коммита после записи всего блока. По умолчанию: `0`.
+- `kafka_client_id` — Идентификатор клиента. По умолчанию пустая строка.
+- `kafka_poll_timeout_ms` — Таймаут для одного poll из Kafka. По умолчанию: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms).
+- `kafka_poll_max_batch_size` — Максимальное количество сообщений, извлекаемых за один poll из Kafka. По умолчанию: [max_block_size](/operations/settings/settings#max_block_size).
+- `kafka_flush_interval_ms` — Таймаут для сброса данных из Kafka. По умолчанию: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms).
+- `kafka_consumer_reschedule_ms` — Интервал повторного планирования, когда обработка потока Kafka застопорилась (например, когда нет доступных для чтения сообщений). Этот параметр управляет задержкой перед повторной попыткой опроса консьюмером. Не должен превышать `kafka_consumers_pool_ttl_ms`. По умолчанию: `500` миллисекунд.
+- `kafka_thread_per_consumer` — Выделять отдельный поток для каждого консьюмера. Если включено, каждый консьюмер сбрасывает данные независимо и параллельно (в противном случае строки от нескольких консьюмеров объединяются в один блок). По умолчанию: `0`.
+- `kafka_handle_error_mode` — Способ обработки ошибок для движка Kafka. Возможные значения: `default` (будет выброшено исключение, если не удалось разобрать сообщение), `stream` (сообщение об ошибке и исходное сообщение будут сохранены в виртуальных столбцах `_error` и `_raw_message`), `dead_letter_queue` (данные, связанные с ошибкой, будут сохранены в `system.dead_letter_queue`).
+- `kafka_commit_on_select` — Фиксировать сообщения при выполнении запроса `SELECT`. По умолчанию: `false`.
+- `kafka_max_rows_per_message` — Максимальное количество строк, записываемых в одно сообщение Kafka для форматов, основанных на строках. По умолчанию: `1`.
+- `kafka_compression_codec` — Кодек сжатия, используемый при публикации сообщений. Поддерживаются: пустая строка, `none`, `gzip`, `snappy`, `lz4`, `zstd`. В случае пустой строки кодек сжатия не задаётся таблицей, поэтому будут использованы значения из конфигурационных файлов или значение по умолчанию из `librdkafka`. По умолчанию: пустая строка.
+- `kafka_compression_level` — Параметр уровня сжатия для алгоритма, выбранного в `kafka_compression_codec`. Более высокие значения обеспечивают лучшее сжатие за счёт большего использования CPU. Допустимый диапазон зависит от алгоритма: `[0-9]` для `gzip`; `[0-12]` для `lz4`; только `0` для `snappy`; `[0-12]` для `zstd`; `-1` = уровень сжатия по умолчанию для конкретного кодека. По умолчанию: `-1`.
 
-Examples:
+Примеры:
 
 ```sql
   CREATE TABLE queue (
@@ -121,21 +123,21 @@ Examples:
   <summary>Устаревший способ создания таблицы</summary>
 
   :::note
-  Не используйте этот метод в новых проектах. По возможности переведите старые проекты на метод, описанный выше.
+  Не используйте этот способ в новых проектах. По возможности переведите старые проекты на метод, описанный выше.
   :::
 
   ```sql
   Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
   ```
 </details>
 
 :::info
-Табличный движок Kafka не поддерживает столбцы со [значением по умолчанию](/sql-reference/statements/create/table#default_values). Если вам нужны такие столбцы, вы можете добавить их на уровне материализованного представления (см. ниже).
+Табличный движок Kafka не поддерживает столбцы со [значениями по умолчанию](/sql-reference/statements/create/table#default_values). Если вам нужны такие столбцы, их можно добавить на уровне materialized view (см. ниже).
 :::
 
 
-## Описание
+## Описание {#description}
 
 Доставленные сообщения отслеживаются автоматически, поэтому каждое сообщение в группе учитывается только один раз. Если вам нужно получить данные дважды, создайте копию таблицы с другим именем группы.
 
@@ -186,7 +188,7 @@ Examples:
 Если вы хотите изменить целевую таблицу с помощью `ALTER`, рекомендуем отключить материализованное представление, чтобы избежать расхождений между целевой таблицей и данными из представления.
 
 
-## Конфигурация
+## Конфигурация {#configuration}
 
 Как и движок GraphiteMergeTree, движок Kafka поддерживает расширенную конфигурацию с использованием файла конфигурации ClickHouse. Вы можете использовать два ключа конфигурации: глобальный (в секции `<kafka>`) и на уровне топика (в секции `<kafka><kafka_topic>`). Сначала применяется глобальная конфигурация, а затем — конфигурация для конкретного топика (если она задана).
 
@@ -233,7 +235,7 @@ Examples:
 Список доступных параметров конфигурации приведён в [справочнике по конфигурации librdkafka](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md). Используйте символ подчёркивания (`_`) вместо точки в конфигурации ClickHouse. Например, `check.crcs=true` будет записано как `<check_crcs>true</check_crcs>`.
 
 
-### Поддержка Kerberos
+### Поддержка Kerberos {#kafka-kerberos-support}
 
 Для работы с Kafka с поддержкой Kerberos добавьте дочерний элемент `security_protocol` со значением `sasl_plaintext`. Этого достаточно при наличии действительного Kerberos ticket-granting ticket (TGT), уже полученного и закэшированного средствами операционной системы.
 ClickHouse может самостоятельно поддерживать учетные данные Kerberos с использованием файла keytab. Для этого используйте дочерние элементы `sasl_kerberos_service_name`, `sasl_kerberos_keytab` и `sasl_kerberos_principal`.
@@ -276,7 +278,7 @@ ClickHouse может самостоятельно поддерживать уч
 - Для построчных форматов количество строк в одном сообщении Kafka можно контролировать с помощью настройки `kafka_max_rows_per_message`.
 - Для блочных форматов мы не можем разделить блок на более мелкие части, но количество строк в одном блоке можно контролировать с помощью общего параметра настройки [max_block_size](/operations/settings/settings#max_block_size).
 
-## Движок для хранения зафиксированных смещений в ClickHouse Keeper
+## Движок для хранения зафиксированных смещений в ClickHouse Keeper {#engine-to-store-committed-offsets-in-clickhouse-keeper}
 
 <ExperimentalBadge />
 

@@ -9,7 +9,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 
-# Маршрутизация с учетом реплик
+# Маршрутизация с учетом реплик {#replica-aware-routing}
 
 <PrivatePreviewBadge/>
 

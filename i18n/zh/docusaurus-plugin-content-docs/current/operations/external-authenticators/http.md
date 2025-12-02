@@ -5,14 +5,13 @@ title: 'HTTP'
 doc_type: 'reference'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
 HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验证只能作为现有用户的外部验证方式，这些用户在 `users.xml` 或本地访问控制路径中定义。目前支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 身份验证方案。
 
-
-## HTTP 身份验证服务器定义
+## HTTP 身份验证服务器定义 {#http-auth-server-definition}
 
 要定义 HTTP 身份验证服务器，必须在 `config.xml` 中添加 `http_authentication_servers` 节。
 
@@ -63,7 +62,7 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
 
 本部分定义从客户端请求头中转发到外部 HTTP 认证服务的请求头列表。注意，请求头在匹配配置中的名称时不区分大小写，但转发时会保持原样，即不作修改。
 
-### 在 `users.xml` 中启用 HTTP 认证
+### 在 `users.xml` 中启用 HTTP 认证 {#enabling-http-auth-in-users-xml}
 
 要为用户启用 HTTP 认证，请在用户定义中指定 `http_authentication` 部分，而不是使用 `password` 或类似部分。
 
@@ -91,7 +90,7 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
 请注意，HTTP 认证不能与任何其他认证机制同时使用。若在配置中同时存在 `http_authentication` 和 `password` 等其他字段，将会导致 ClickHouse 被强制退出。
 :::
 
-### 使用 SQL 启用 HTTP 认证
+### 使用 SQL 启用 HTTP 认证 {#enabling-http-auth-using-sql}
 
 当在 ClickHouse 中启用 [基于 SQL 的访问控制和账户管理](/operations/access-rights#access-control-usage) 时，也可以使用 SQL 语句创建通过 HTTP 认证标识的用户。
 
@@ -105,6 +104,6 @@ CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server' SCHEME 'Basic'
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
 ```
 
-### 传递会话设置
+### 传递会话设置 {#passing-session-settings}
 
 如果来自 HTTP 身份验证服务器的响应体为 JSON 格式，并且包含 `settings` 子对象，ClickHouse 会尝试将其中的键值对解析为字符串值，并将它们设置为已通过验证用户当前会话的会话设置。如果解析失败，则会忽略来自服务器的响应体。

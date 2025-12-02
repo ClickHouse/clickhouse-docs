@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
 
 
-## Пример
+## Пример {#example}
 
 ```sql
 CREATE TABLE columns_transformers (i Int64, j Int16, k Int64) ENGINE = MergeTree ORDER by (i);

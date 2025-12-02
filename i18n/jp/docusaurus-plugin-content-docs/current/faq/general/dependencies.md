@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['dependencies', '3rd-party']
 ---
 
-# ClickHouse を実行する際に必要なサードパーティ製の依存関係はありますか？
+# ClickHouse を実行する際に必要なサードパーティ製の依存関係はありますか？ {#what-are-the-3rd-party-dependencies-for-running-clickhouse}
 
 ClickHouse には実行時の依存関係は一切ありません。完全に自己完結した単一バイナリアプリケーションとして配布されており、このアプリケーションだけでクラスタのすべての機能を提供します。クエリの処理に加え、クラスタ内のワーカーノードとして、RAFT コンセンサスアルゴリズムを提供する調整システムとして、さらにはクライアントやローカルクエリエンジンとして動作します。
 

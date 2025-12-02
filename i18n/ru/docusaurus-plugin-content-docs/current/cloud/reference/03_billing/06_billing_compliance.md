@@ -11,7 +11,7 @@ import billing_compliance from '@site/static/images/cloud/manage/billing_complia
 import Image from '@theme/IdealImage';
 
 
-# Соответствие биллинга ClickHouse Cloud нормативным требованиям
+# Соответствие биллинга ClickHouse Cloud нормативным требованиям {#clickhouse-cloud-billing-compliance}
 
 
 

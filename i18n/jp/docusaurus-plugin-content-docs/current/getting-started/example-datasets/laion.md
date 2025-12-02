@@ -11,7 +11,7 @@ keywords: ['サンプルデータセット', 'laion', '画像埋め込み', 'サ
 
 このデータセットには、画像の URL、画像および画像キャプションそれぞれの埋め込みベクトル、画像と画像キャプション間の類似度スコアに加え、画像の幅/高さ、ライセンス、NSFW フラグといったメタデータが含まれます。このデータセットを使って、ClickHouse における[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)を実演できます。
 
-## データ準備
+## データ準備 {#data-preparation}
 
 生データでは、埋め込みとメタデータは別々のファイルに保存されています。データ準備のステップでは、データをダウンロードしてファイルを結合し、
 CSV に変換して ClickHouse にインポートします。そのために、次の `download.sh` スクリプトを使用できます。
@@ -40,28 +40,28 @@ npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
-# 全ファイルを読み込み
+# 全ファイルを読み込み {#load-all-files}
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-# ファイルを結合
+# ファイルを結合 {#combine-files}
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-# ClickHouseへインポートする列
+# ClickHouseへインポートする列 {#columns-to-be-imported-into-clickhouse}
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
-# np.arraysをリストへ変換
+# np.arraysをリストへ変換 {#transform-nparrays-to-lists}
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# captionに様々な引用符が含まれる場合があるため、この回避策が必要
+# captionに様々な引用符が含まれる場合があるため、この回避策が必要 {#this-small-hack-is-needed-because-caption-sometimes-contains-all-kind-of-quotes}
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-# データをCSVファイルとしてエクスポート
+# データをCSVファイルとしてエクスポート {#export-data-as-csv-file}
 data.to_csv(str_i + '.csv', header=False)
 
-# 生データファイルを削除
+# 生データファイルを削除 {#removed-raw-data-files}
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
@@ -76,7 +76,7 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 （上記の Python スクリプトは非常に遅く（1 ファイルあたり約 2〜10 分）、大量のメモリを消費し（1 ファイルあたり 41 GB）、生成される CSV ファイルも大きい（各 10 GB）ため、注意してください。十分な RAM がある場合は、より高い並列度を得るために `-P1` の値を増やしてください。これでもまだ遅い場合は、より良いインジェスト手順を検討してください。たとえば .npy ファイルを Parquet に変換してから、残りの処理をすべて ClickHouse で行うなどです。）
 
 
-## テーブルを作成する
+## テーブルを作成する {#create-table}
 
 最初にインデックスなしでテーブルを作成するには、次を実行します。
 
@@ -105,7 +105,7 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 `id` 列はあくまで例示用のものであり、スクリプトによって一意ではない値が入力されている点に注意してください。
 
 
-## 総当たり方式でベクトル類似度検索を実行する
+## 総当たり方式でベクトル類似度検索を実行する {#run-a-brute-force-vector-similarity-search}
 
 総当たり方式の近似ベクトル検索を実行するには、次を実行します。
 
@@ -137,7 +137,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ```
 
 
-## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する
+## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
 ここでは、テーブルに 2 つのベクトル類似度インデックスを定義します。
 
@@ -194,7 +194,7 @@ HNSW インデックスは、HNSW パラメータを慎重に選定し、イン�
 
 通常は、新しい画像や新しい画像キャプションに対して埋め込みを作成し、そのデータ内で類似する画像／画像キャプションのペアを検索します。[UDF](/sql-reference/functions/udf) を使用すると、クライアント環境を離れることなく `target` ベクトルを作成できます。データ作成時と検索用の新しい埋め込みを生成する際には、同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤にもなっている `ViT-B/32` モデルを利用します。
 
-### テキスト埋め込み
+### テキスト埋め込み {#text-embeddings}
 
 まず、次の Python スクリプトを ClickHouse のデータパス配下にある `user_scripts/` ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
 
@@ -256,7 +256,7 @@ LIMIT 10
 `encode_text()` UDF 自体が計算を行い埋め込みベクトルを出力するまでに、数秒かかる場合があることに注意してください。
 
 
-### 画像埋め込み
+### 画像埋め込み {#image-embeddings}
 
 画像埋め込みも同様に作成できるように、ローカルにファイルとして保存されている画像の埋め込みを生成するための Python スクリプトを用意しています。
 
@@ -304,7 +304,7 @@ if __name__ == '__main__':
 検索用のサンプル画像を取得：
 
 ```shell
-# LEGOセットのランダムな画像を取得
+# LEGOセットのランダムな画像を取得 {#get-a-random-image-of-a-lego-set}
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 

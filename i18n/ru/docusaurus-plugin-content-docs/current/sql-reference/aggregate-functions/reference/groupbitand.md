@@ -6,7 +6,7 @@ title: 'groupBitAnd'
 doc_type: 'reference'
 ---
 
-# groupBitAnd
+# groupBitAnd {#groupbitand}
 
 Применяет побитовое `AND` к последовательности чисел.
 

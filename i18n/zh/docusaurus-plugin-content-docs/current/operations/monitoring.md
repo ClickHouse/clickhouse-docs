@@ -12,7 +12,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 
 
-# 监控
+# 监控 {#monitoring}
 
 :::note
 本指南中介绍的监控数据可在 ClickHouse Cloud 中获取。除了可以通过下文所述的内置仪表板查看外，基础和高级性能指标也都可以直接在主服务控制台中查看。

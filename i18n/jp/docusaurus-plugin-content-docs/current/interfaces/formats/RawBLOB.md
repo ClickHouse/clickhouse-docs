@@ -8,12 +8,12 @@ doc_type: 'reference'
 
 
 
-## 説明
+## 説明 {#description}
 
 `RawBLOB` 形式は、すべての入力データを単一の値として読み取ります。これは、[`String`](/sql-reference/data-types/string.md) 型またはそれに類似した単一フィールドのみを持つテーブルだけをパースできます。
 結果は区切り文字やエスケープなしのバイナリ形式として出力されます。2 つ以上の値が出力される場合、この形式はあいまいになり、データを読み戻すことは不可能になります。
 
-### Raw フォーマットの比較
+### Raw フォーマットの比較 {#raw-formats-comparison}
 
 以下は、`RawBLOB` と [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md) フォーマットの比較です。
 
@@ -46,7 +46,7 @@ doc_type: 'reference'
 ```
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 ```bash title="Query"
 $ clickhouse-client --query "CREATE TABLE {some_table} (a String) ENGINE = Memory;"

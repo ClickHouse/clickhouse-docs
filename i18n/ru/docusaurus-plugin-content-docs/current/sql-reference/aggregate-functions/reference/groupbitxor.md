@@ -6,7 +6,7 @@ title: 'groupBitXor'
 doc_type: 'reference'
 ---
 
-# groupBitXor
+# groupBitXor {#groupbitxor}
 
 Применяет операцию побитового `XOR` к серии чисел.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Clickhouse-disks
+# Clickhouse-disks {#clickhouse-disks}
 
 ClickHouse ディスクに対して、ファイルシステムのような操作を提供するユーティリティです。インタラクティブおよび非インタラクティブの両モードで動作します。
 

@@ -10,8 +10,7 @@ keywords: ['数据导出', 'INTO OUTFILE', 'File 表引擎']
 
 {/* 截断 */}
 
-
-## 使用 INTO OUTFILE 子句
+## 使用 INTO OUTFILE 子句 \{#using-into-outfile-clause\}
 
 在查询中添加 [INTO OUTFILE](https://clickhouse.com/docs/sql-reference/statements/select/into-outfile) 子句。
 
@@ -48,8 +47,7 @@ INTO OUTFILE 'taxi_rides.txt'
 FORMAT CSV
 ```
 
-
-## 使用 File 表引擎
+## 使用 File 表引擎 \{#using-a-file-engine-table\}
 
 另一种方式是使用 [File](https://clickhouse.com/docs/engines/table-engines/special/file) 表引擎，此时 ClickHouse 使用文件来存储数据。可以直接对该文件执行查询和插入操作。
 
@@ -79,8 +77,7 @@ INSERT INTO my_table VALUES
 使用 `File` 表引擎在文件系统上创建和查询文件非常方便，但请记住，`File` 表不是 `MergeTree` 表，因此无法享受 `MergeTree` 带来的全部优势。在需要以便于处理的格式从 ClickHouse 导出数据时，将 `File` 作为一种便捷工具来使用。
 :::
 
-
-## 使用命令行重定向
+## 使用命令行重定向 \{#using-command-line-redirection\}
 
 ```bash
 $ clickhouse-client --query "SELECT * from table" --format FormatName > result.txt

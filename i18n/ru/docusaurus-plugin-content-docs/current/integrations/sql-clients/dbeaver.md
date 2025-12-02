@@ -22,7 +22,7 @@ import dbeaver_query_log_select from '@site/static/images/integrations/sql-clien
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Подключение DBeaver к ClickHouse
+# Подключение DBeaver к ClickHouse {#connect-dbeaver-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 

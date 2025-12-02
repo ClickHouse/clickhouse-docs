@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# VersionedCollapsingMergeTree 表引擎
+# VersionedCollapsingMergeTree 表引擎 {#versionedcollapsingmergetree-table-engine}
 
 该引擎：
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 
 
-## 创建表
+## 创建表 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -39,7 +39,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关查询参数的详细说明，请参阅[查询说明](../../../sql-reference/statements/create/table.md)。
 
-### 引擎参数
+### 引擎参数 {#engine-parameters}
 
 ```sql
 VersionedCollapsingMergeTree(sign, version)
@@ -50,7 +50,7 @@ VersionedCollapsingMergeTree(sign, version)
 | `sign`    | 行类型列的列名：`1` 表示“state”行，`-1` 表示“cancel”行。 | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                 |
 | `version` | 对象状态版本列的列名。                              | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) |
 
-### 查询子句
+### 查询子句 {#query-clauses}
 
 在创建 `VersionedCollapsingMergeTree` 表时，需要与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。
 
@@ -82,9 +82,9 @@ VersionedCollapsingMergeTree(sign, version)
 </details>
 
 
-## 折叠
+## 折叠 {#table_engines_versionedcollapsingmergetree}
 
-### 数据
+### 数据 {#data}
 
 考虑这样一种情况：你需要为某个对象保存不断变化的数据。为某个对象仅保留一行记录，并在有变化时更新这一行是合理的。然而，对于 DBMS 来说，执行 `UPDATE` 操作代价高且速度慢，因为这需要在存储中重写数据。如果你需要快速写入数据，则不适合使用 `UPDATE`，但可以按如下方式顺序写入对象的变更。
 
@@ -130,7 +130,7 @@ VersionedCollapsingMergeTree(sign, version)
 2. 列中持续增长的长数组会因为写入负载而降低引擎效率。数据越简单直接，引擎效率越高。
 3. `SELECT` 结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要非常谨慎。对于不一致的数据，你可能会得到不可预测的结果，例如本应为非负指标（如会话深度）的负值。
 
-### 算法
+### 算法 {#table_engines-versionedcollapsingmergetree-algorithm}
 
 当 ClickHouse 合并数据分片时，会删除每一对具有相同主键和版本、但 `Sign` 不同的行。行的顺序无关紧要。
 
@@ -149,7 +149,7 @@ ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据
 
 
 
-## 使用示例
+## 使用示例 {#example-of-use}
 
 示例数据：
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Табличный движок Join
+# Табличный движок Join {#join-table-engine}
 
 Дополнительная подготовленная структура данных для использования в операциях [JOIN](/sql-reference/statements/select/join).
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -115,7 +115,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 
 
-## Примеры использования
+## Примеры использования {#example}
 
 Создание левой таблицы:
 

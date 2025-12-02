@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Типы столбцов
+# Типы столбцов {#column-types}
 
 См. раздел [Типы данных](/sql-reference/data-types/) для общей информации.
 
@@ -78,7 +78,7 @@ Tuple — это просто массив столбцов. Например, T
 
 
 
-## Nullable
+## Nullable {#nullable}
 
 `Nullable(T)` состоит из `Nulls ColUInt8` и `Values T` с одинаковым количеством строк.
 
@@ -102,7 +102,7 @@ Tuple — это просто массив столбцов. Например, T
 
 
 
-## Тип `LowCardinality`
+## Тип `LowCardinality` {#low-cardinality}
 
 `LowCardinality(T)` состоит из `Index T, Keys K`,
 где `K` — один из (`UInt8`, `UInt16`, `UInt32`, `UInt64`) в зависимости от размера индекса `Index`.

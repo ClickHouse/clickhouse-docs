@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## 使用示例
+## 使用示例 {#example-usage}
 
 ```sql title="Query"
 CREATE TABLE example (

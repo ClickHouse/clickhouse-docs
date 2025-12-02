@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# hdfsCluster 表函数
+# hdfsCluster 表函数 {#hdfscluster-table-function}
 
 允许在指定集群的多个节点上并行处理来自 HDFS 的文件。在发起节点上，它会与集群中所有节点建立连接，展开 HDFS 文件路径中的星号通配符，并动态分派每个文件。在工作节点上，它会向发起节点请求下一个要处理的任务并对其进行处理。该过程会重复进行，直到所有任务都完成。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 hdfsCluster(cluster_name, URI, format, structure)
@@ -39,7 +39,7 @@ hdfsCluster(cluster_name, URI, format, structure)
 
 
 
-## 示例
+## 示例 {#examples}
 
 1. 假设我们有一个名为 `cluster_simple` 的 ClickHouse 集群，并且在 HDFS 上有若干文件，其 URI 如下：
 

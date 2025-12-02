@@ -31,49 +31,49 @@ import Image from '@theme/IdealImage';
 
 
 ```bash
-# пользователи
+# пользователи {#users}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
 ```
 
 
-# posts
+# posts {#posts}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql < posts.sql
 
 
 
-# posthistory
+# posthistory {#posthistory}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
 
 
-# комментарии
+# комментарии {#comments}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
 
 
 
-# Голоса
+# Голоса {#votes}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql < votes.sql
 
 
 
-# Значки
+# Значки {#badges}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql < badges.sql
 
 
 
-# postlinks
+# postlinks {#postlinks}
 
 wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz)
 gzip -d postlinks.sql.gz
@@ -87,9 +87,9 @@ psql &lt; postlinks.sql
 ```
 
 
-## Миграция данных
+## Миграция данных {#migrating-data}
 
-### Репликация в режиме реального времени (CDC)
+### Репликация в режиме реального времени (CDC) {#real-time-replication-or-cdc}
 
 Обратитесь к этому [руководству](/integrations/clickpipes/postgres), чтобы настроить ClickPipes для PostgreSQL. В нём рассматриваются многие типы исходных экземпляров Postgres.
 
@@ -125,7 +125,7 @@ ORDER BY id;
 
 После настройки ClickPipes начинает миграцию всех данных из PostgreSQL в ClickHouse. В зависимости от сети и масштаба развертывания для набора данных Stack Overflow это должно занять всего несколько минут.
 
-### Ручная массовая загрузка с периодическими обновлениями
+### Ручная массовая загрузка с периодическими обновлениями {#initial-bulk-load-with-periodic-updates}
 
 При использовании ручного подхода первоначальная массовая загрузка набора данных может быть выполнена с помощью:
 

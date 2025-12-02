@@ -10,12 +10,11 @@ keywords: ['SET', 'ALTER', '用户', '查询', '会话']
 
 {/* 截断 */}
 
-
 ## 介绍 \{#introduction\}
 
 在 ClickHouse 中为用户配置设置有多种方式，具体取决于使用场景以及你希望该设置保持有效的时间。我们来看几个场景……
 
-## 为单个查询配置设置
+## 为单个查询配置设置 \{#configure-a-setting-for-a-single-query\}
 
 一个 `SELECT` 查询可以包含一个 `SETTINGS` 子句，你可以在其中定义任意数量的设置项。这些设置项只对该特定查询生效。例如：
 
@@ -27,8 +26,7 @@ SETTINGS max_threads = 8;
 
 对于此特定查询，最多会使用 8 个线程。
 
-
-## 为会话配置设置
+## 为会话配置设置 \{#configure-a-setting-for-a-session\}
 
 你可以使用 `SET` 子句为客户端会话的整个持续时间定义一个设置。这样做非常适合用于临时测试，或者在你希望某个设置只在少量查询执行期间生效、而不是更长时间存在的场景。
 
@@ -39,8 +37,7 @@ SELECT *
 FROM my_table;
 ```
 
-
-## 为特定用户配置设置
+## 为特定用户配置设置 \{#configure-a-setting-for-a-particular-user\}
 
 使用 `ALTER USER` 为单个用户专门定义设置。例如：
 

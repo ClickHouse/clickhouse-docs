@@ -10,8 +10,7 @@ keywords: ['PostgreSQL', 'Parquet', 'CSV', 'JSON']
 
 {/* 切り捨て */}
 
-
-## PostgreSQL データを Parquet、CSV、JSON にエクスポートする方法
+## PostgreSQL データを Parquet、CSV、JSON にエクスポートする方法 \{#how-to-export-postgresql-data-to-parquet-csv-or-json\}
 
 これは `clickhouse-local` を使えば簡単にできます：
 
@@ -26,8 +25,7 @@ keywords: ['PostgreSQL', 'Parquet', 'CSV', 'JSON']
 curl https://clickhouse.com/ | sh
 ```
 
-
-## PostgreSQL を Parquet にエクスポートする
+## PostgreSQL を Parquet にエクスポートする \{#export-postgresql-to-parquet\}
 
 `postgresql` テーブル関数を使用すると、リモートの PostgreSQL サーバー上に保存されているデータに対して `SELECT`（および `INSERT`）クエリを実行できます。たとえば、PostgreSQL のテーブルの全内容を参照するには次のようにします。
 
@@ -61,8 +59,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 出力ファイル名の拡張子が `.parquet` であるため、ClickHouse は Parquet 形式を使用すると解釈します。そのため、ここでは `FORMAT Parquet` 句を省略しています。
 :::
 
-
-## PostgreSQL を CSV にエクスポートする
+## PostgreSQL を CSV にエクスポートする \{#export-postgresql-to-csv\}
 
 出力ファイル名をより適切なものに指定する点を除けば、Parquet の場合と同じです。
 
@@ -80,8 +77,7 @@ INTO OUTFILE 'my_output_file.csv'"
 
 これで完了です。ClickHouse は出力ファイル名の `.csv` 拡張子を認識して、データをカンマ区切りで出力します。それ以外は、前述のコマンドとまったく同じです。
 
-
-## PostgreSQL を JSON にエクスポートする
+## PostgreSQL を JSON にエクスポートする \{#export-postgresql-to-json\}
 
 PostgreSQL から JSON へエクスポートするには、ファイル名を変えるだけで、ClickHouse がフォーマットを自動判別します。
 
@@ -118,8 +114,7 @@ FORMAT JSONEachRow"
 
 :::
 
-
-## PostgreSQL を別のプロセスにストリーミングする
+## PostgreSQL を別のプロセスにストリーミングする \{#stream-postgresql-to-another-process\}
 
 `INTO OUTFILE` を使用する代わりに、テーブル関数の結果を別のプロセスへストリーミング出力できます。構文を示す簡単な例として、Linux の `wc -l` コマンドを使って行数をカウントします：
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# Уровни ClickHouse Cloud
+# Уровни ClickHouse Cloud {#clickhouse-cloud-tiers}
 
 В ClickHouse Cloud доступно несколько уровней. 
 Уровни назначаются на уровне организации, поэтому все сервисы внутри организации относятся к одному и тому же уровню.

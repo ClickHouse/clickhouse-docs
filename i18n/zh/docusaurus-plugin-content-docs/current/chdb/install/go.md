@@ -9,15 +9,15 @@ doc_type: 'guide'
 
 
 
-# chDB for Go
+# chDB for Go {#chdb-for-go}
 
 chDB-go 为 chDB 提供 Go 语言绑定，使你能够在 Go 应用程序中直接运行 ClickHouse 查询，且完全不依赖任何外部组件。
 
 
 
-## 安装
+## 安装 {#installation}
 
-### 第 1 步：安装 libchdb
+### 第 1 步：安装 libchdb {#install-libchdb}
 
 首先安装 chDB 库：
 
@@ -25,7 +25,7 @@ chDB-go 为 chDB 提供 Go 语言绑定，使你能够在 Go 应用程序中直�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### 第 2 步：安装 chdb-go
+### 第 2 步：安装 chdb-go {#install-chdb-go}
 
 安装 Go 软件包：
 
@@ -49,25 +49,25 @@ chDB-go 包含一个用于快速查询的命令行界面（CLI）：
 
 
 ```bash
-# 简单查询
+# 简单查询 {#simple-query}
 ./chdb-go "SELECT 123"
 ```
 
 
-# 交互式模式
+# 交互式模式 {#interactive-mode}
 ./chdb-go
 
 
 
-# 启用持久化存储的交互式模式
+# 启用持久化存储的交互式模式 {#interactive-mode-with-persistent-storage}
 
 ./chdb-go --path /tmp/chdb
 
 ````
 
-### Go 库 - 快速开始               
+### Go 库 - 快速开始                {#quick-start}
 
-#### 无状态查询                     
+#### 无状态查询                      {#stateless-queries}
 
 对于简单的一次性查询：
 
@@ -89,7 +89,7 @@ func main() {
 }
 ````
 
-#### 基于会话的有状态查询
+#### 基于会话的有状态查询 {#stateful-queries}
 
 适用于需要持久状态的复杂查询：
 
@@ -142,7 +142,7 @@ func main() {
 }
 ```
 
-#### SQL 驱动接口
+#### SQL 驱动接口 {#sql-driver}
 
 chDB-go 实现了 Go 的 `database/sql` 接口：
 
@@ -181,7 +181,7 @@ func main() {
 }
 ```
 
-#### 针对大型数据集的流式查询
+#### 针对大型数据集的流式查询 {#query-streaming}
 
 对于无法全部放入内存的大型数据集，请使用流式查询：
 

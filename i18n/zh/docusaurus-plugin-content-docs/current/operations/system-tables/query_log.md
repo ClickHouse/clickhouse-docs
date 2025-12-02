@@ -6,10 +6,10 @@ title: 'system.query_log'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.query_log
+# system.query_log {#systemquery_log}
 
 <SystemTableCloud/>
 
@@ -139,7 +139,7 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 
 
 
-## 示例
+## 示例 {#examples}
 
 **基本示例**
 

@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 
 
-## 構文
+## 構文 {#syntax}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
 
 
-## 例
+## 例 {#example}
 
 ```sql
 CREATE TABLE columns_transformers (i Int64, j Int16, k Int64) ENGINE = MergeTree ORDER by (i);

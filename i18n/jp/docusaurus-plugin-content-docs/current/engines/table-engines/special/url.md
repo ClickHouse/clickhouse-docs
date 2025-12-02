@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 
 
-# URL テーブルエンジン
+# URL テーブルエンジン {#url-table-engine}
 
 リモートの HTTP/HTTPS サーバーとの間でデータをクエリします。このエンジンは [File](../../../engines/table-engines/special/file.md) エンジンに類似しています。
 
@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 
 
-## 例
+## 例 {#example}
 
 **1.** サーバー上に `url_engine_table` テーブルを作成します：
 

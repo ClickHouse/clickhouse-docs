@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# REVOKE 语句
+# REVOKE 语句 {#revoke-statement}
 
 从用户或角色撤销已授予的权限。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 **撤销用户权限**
 
@@ -40,7 +40,7 @@ REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | rol
 
 
 
-## 示例
+## 示例 {#examples}
 
 为用户账户 `john` 授予在除 `accounts` 数据库之外的所有数据库上执行 `SELECT` 的权限：
 

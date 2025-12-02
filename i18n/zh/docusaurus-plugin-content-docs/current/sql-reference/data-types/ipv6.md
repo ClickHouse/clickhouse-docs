@@ -7,13 +7,11 @@ title: 'IPv6'
 doc_type: 'reference'
 ---
 
-
-
-## IPv6
+## IPv6 {#ipv6}
 
 IPv6 地址。以大端序的 16 字节 UInt128 形式存储。
 
-### 基本用法
+### 基本用法 {#basic-usage}
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;

@@ -27,7 +27,7 @@ import cp_advanced_settings from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# 与 ClickHouse Cloud 集成
+# 与 ClickHouse Cloud 集成 {#integrating-with-clickhouse-cloud}
 
 
 

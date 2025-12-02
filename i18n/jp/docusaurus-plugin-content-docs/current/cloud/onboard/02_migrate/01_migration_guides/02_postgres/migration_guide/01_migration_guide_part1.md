@@ -31,49 +31,49 @@ Postgres から ClickHouse への典型的なマイグレーション例を示�
 
 
 ```bash
-# ユーザー
+# ユーザー {#users}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
 ```
 
 
-# posts
+# posts {#posts}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql < posts.sql
 
 
 
-# posthistory
+# posthistory {#posthistory}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
 
 
-# コメント
+# コメント {#comments}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
 
 
 
-# 投票
+# 投票 {#votes}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql < votes.sql
 
 
 
-# badges
+# badges {#badges}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql < badges.sql
 
 
 
-# postlinks
+# postlinks {#postlinks}
 
 wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz)
 gzip -d postlinks.sql.gz
@@ -87,9 +87,9 @@ ClickHouseにとっては小規模ですが、このデータセットはPostgre
 ```
 
 
-## データの移行
+## データの移行 {#migrating-data}
 
-### リアルタイムレプリケーション（CDC）
+### リアルタイムレプリケーション（CDC） {#real-time-replication-or-cdc}
 
 PostgreSQL 用の ClickPipes をセットアップするには、この[ガイド](/integrations/clickpipes/postgres)を参照してください。このガイドでは、さまざまな種類のソースとなる Postgres インスタンスを扱っています。
 
@@ -125,7 +125,7 @@ ORDER BY id;
 
 セットアップが完了すると、ClickPipes は PostgreSQL から ClickHouse へのすべてのデータ移行を開始します。ネットワークやデプロイメントの規模によって所要時間は異なりますが、Stack Overflow データセットであれば数分程度で完了するはずです。
 
-### 手動による一括ロードと定期更新
+### 手動による一括ロードと定期更新 {#initial-bulk-load-with-periodic-updates}
 
 手動アプローチを用いる場合、データセットの初回一括ロードは次の方法で実施できます。
 

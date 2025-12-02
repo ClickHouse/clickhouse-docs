@@ -19,24 +19,23 @@ import Image from '@theme/IdealImage';
 このトピックは ClickHouse Cloud には適用されません。ClickHouse Cloud では、[Parallel Replicas](/docs/deployment-guides/parallel-replicas) は従来のシェアードナッシング型 ClickHouse クラスターにおける複数シャードのように機能し、オブジェクトストレージがレプリカを[代替する](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability)ことで、高可用性とフォールトトレランスを実現します。
 :::
 
-
 ## ClickHouse におけるテーブルシャードとは？ \{#what-are-table-shards-in-clickhouse\}
 
-従来型の [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) アーキテクチャの ClickHouse クラスターでは、① データ量が単一サーバーで扱うには大きすぎる場合、または ② 単一サーバーではデータ処理が遅すぎる場合にシャーディングが行われます。次の図はケース ①、つまり [uk_price_paid_simple](/parts) テーブルが 1 台のマシンの容量を超えている状況を示しています：
+従来型の [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) アーキテクチャの ClickHouse クラスターでは、① データ量が単一サーバーで扱うには大きすぎる場合、または ② 単一サーバーではデータ処理が遅すぎる場合にシャーディングが行われます。次の図はケース ①、つまり [uk&#95;price&#95;paid&#95;simple](/parts) テーブルが 1 台のマシンの容量を超えている状況を示しています：
 
-<Image img={image_01} size="lg" alt='SHARDS'/>
+<Image img={image_01} size="lg" alt="SHARDS" />
 
-<br/>
+<br />
 
 このような場合、データはテーブルシャードという形で複数の ClickHouse サーバーに分割して配置できます：
 
-<Image img={image_02} size="lg" alt='SHARDS'/>
+<Image img={image_02} size="lg" alt="SHARDS" />
 
-<br/>
+<br />
 
 各 ^^shard^^ はデータの一部を保持し、独立してクエリ可能な通常の ClickHouse テーブルとして動作します。ただし、そのシャードに対するクエリで処理されるのは、そのシャードに含まれるサブセットのみであり、これはデータ分布によっては妥当なユースケースになり得ます。一般的には、（多くの場合サーバーごとに）[distributed table](/docs/engines/table-engines/special/distributed) が全データセットに対する統一的なビューを提供します。この distributed table 自体はデータを保持せず、すべてのシャードに **SELECT** クエリを転送して結果を集約し、**INSERT** をルーティングしてデータを均等に分散させます。
 
-## 分散テーブルの作成
+## 分散テーブルの作成 \{#distributed-table-creation\}
 
 **SELECT** クエリのフォワーディングと **INSERT** のルーティングを説明するために、2 台の ClickHouse サーバー上の 2 つのシャードに分割された、[テーブルパーツとは](/parts) で使用したサンプルテーブルを用います。まず、この構成に対応する **^^Distributed table^^** を作成するための DDL ステートメントを示します。
 
@@ -55,14 +54,13 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 [Distributed エンジンのパラメータ](/docs/engines/table-engines/special/distributed#distributed-parameters)として、^^cluster^^ 名 (`test_cluster`)、シャードされたターゲットテーブルのデータベース名 (`uk`)、そのターゲットテーブル名 (`uk_price_paid_simple`)、および INSERT ルーティング用の**シャーディングキー**を指定します。この例では、[rand](/sql-reference/functions/random-functions#rand) 関数を使用して、行を各シャードにランダムに割り当てます。ただし、ユースケースに応じて、複雑なものも含め任意の式をシャーディングキーとして利用できます。次のセクションでは、INSERT ルーティングがどのように動作するかを説明します。
 
-
 ## INSERT ルーティング \{#insert-routing\}
 
 次の図は、ClickHouse において ^^分散テーブル^^ への INSERT がどのように処理されるかを示しています。
 
-<Image img={image_03} size="lg" alt="シャード"/>
+<Image img={image_03} size="lg" alt="シャード" />
 
-<br/>
+<br />
 
 ① ^^分散テーブル^^ を対象とする INSERT（1 行のみ）が、テーブルをホストしている ClickHouse サーバーに、直接またはロードバランサー経由で送信されます。
 
@@ -74,9 +72,9 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 この図は、ClickHouse で ^^distributed table^^ を使用した場合に、SELECT クエリがどのように処理されるかを示しています。
 
-<Image img={image_04} size="lg" alt='SHARDS'/>
+<Image img={image_04} size="lg" alt="SHARDS" />
 
-<br/>
+<br />
 
 ① ^^distributed table^^ を対象とする SELECT 集約クエリが、対応する ClickHouse サーバーに送信されます（直接、またはロードバランサー経由）。
 
@@ -92,9 +90,9 @@ ClickHouse のレプリケーションは、複数サーバー間で **^^shard^^
 
 次の図は 6 台のサーバーからなる ClickHouse ^^cluster^^ を表しており、前述の 2 つのテーブルシャード `Shard-1` と `Shard-2` がそれぞれ 3 つのレプリカを持っています。この ^^cluster^^ に対してクエリが送信されます。
 
-<Image img={image_05} size="lg" alt='SHARDS'/>
+<Image img={image_05} size="lg" alt="SHARDS" />
 
-<br/>
+<br />
 
 クエリ処理はレプリカがない構成と同様に動作し、各 ^^shard^^ からは 1 つの ^^replica^^ だけがクエリを実行します。
 
@@ -114,4 +112,4 @@ ClickHouse のレプリケーションは、複数サーバー間で **^^shard^^
 
 また、ClickHouse のシャードとレプリカをより深く理解するには、次のチュートリアル動画も強く推奨します。
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

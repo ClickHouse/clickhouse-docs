@@ -17,12 +17,12 @@ import lightdash_03 from '@site/static/images/integrations/data-visualization/li
 import lightdash_04 from '@site/static/images/integrations/data-visualization/lightdash_04.png';
 import lightdash_05 from '@site/static/images/integrations/data-visualization/lightdash_05.png';
 import lightdash_06 from '@site/static/images/integrations/data-visualization/lightdash_06.png';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Lightdash
+# Lightdash {#lightdash}
 
 <PartnerBadge/>
 

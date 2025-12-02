@@ -21,7 +21,7 @@ doc_type: 'guide'
 
 
 
-## Создание таблицы
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -134,7 +134,7 @@ SSL-подключение:
 ```
 
 
-## Описание
+## Описание {#description}
 
 `SELECT` не особенно полезен для чтения сообщений (кроме отладки), потому что каждое сообщение может быть прочитано только один раз. Гораздо практичнее создавать потоки в реальном времени с помощью [материализованных представлений](../../../sql-reference/statements/create/view.md). Для этого:
 
@@ -199,7 +199,7 @@ SSL-подключение:
 
 
 
-## Использование JetStream
+## Использование JetStream {#using-jetstream}
 
 Прежде чем использовать движок NATS с NATS JetStream, необходимо создать поток NATS (stream) и устойчивого (durable) pull‑consumer&#39;а. Для этого можно использовать, например, утилиту `nats` из пакета [NATS CLI](https://github.com/nats-io/natscli):
 

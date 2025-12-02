@@ -7,6 +7,6 @@ title: 'ODBC 驱动程序'
 doc_type: 'reference'
 ---
 
-# ODBC 驱动程序
+# ODBC 驱动程序 {#odbc-driver}
 
 使用 [官方 ODBC 驱动程序](https://github.com/ClickHouse/clickhouse-odbc) 访问 ClickHouse 数据源。

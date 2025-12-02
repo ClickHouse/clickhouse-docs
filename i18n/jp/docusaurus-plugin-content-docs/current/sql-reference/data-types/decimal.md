@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S)
+# Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S) {#decimal-decimalp-decimalp-s-decimal32s-decimal64s-decimal128s-decimal256s}
 
 加算、減算、乗算の演算で精度を維持する符号付き固定小数点数です。除算では、小数点以下の末尾の桁は丸めずに切り捨てられます。
 
@@ -74,7 +74,7 @@ Decimal に対する一部の関数は、結果を Float64 として返します
 
 
 
-## オーバーフローのチェック
+## オーバーフローのチェック {#overflow-checks}
 
 Decimal で計算を行う際には、整数オーバーフローが発生する可能性があります。小数部の桁数が多すぎる場合は、余分な桁は切り捨てられます（丸めは行われません）。整数部の桁数が多すぎる場合は、例外がスローされます。
 

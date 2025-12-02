@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Табличная функция redis
+# Табличная функция redis {#redis-table-function}
 
 Эта табличная функция предназначена для интеграции ClickHouse с [Redis](https://redis.io/).
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
@@ -47,7 +47,7 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 
 
-## Пример использования
+## Пример использования {#usage-example}
 
 Чтение данных из Redis:
 

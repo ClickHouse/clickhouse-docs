@@ -15,14 +15,14 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse MCP サーバーを Ollama と連携して利用する
+# ClickHouse MCP サーバーを Ollama と連携して利用する {#using-clickhouse-mcp-server-with-ollama}
 
 > 本ガイドでは、ClickHouse MCP サーバーを Ollama と組み合わせて使用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
 
-## Ollama のインストール
+## Ollama のインストール {#install-ollama}
 
 Ollama は、大規模言語モデル (LLM) をローカル環境で実行するためのライブラリです。
 [多様なモデルが提供されており](https://ollama.com/library)、簡単に利用できます。
@@ -94,7 +94,7 @@ ollama show qwen3
 この出力から、デフォルトの qwen3 モデルにはおよそ80億個のパラメータがあることが分かります。
 
 
-## MCPHost をインストールする
+## MCPHost をインストールする {#install-mcphost}
 
 この記事の執筆時点（2025 年 7 月）では、Ollama を MCP サーバーで使用するためのネイティブな機能はありません。
 しかし、[MCPHost](https://github.com/mark3labs/mcphost) を利用することで、Ollama モデルを MCP サーバー上で実行できます。
@@ -109,7 +109,7 @@ go install github.com/mark3labs/mcphost@latest
 バイナリは `~/go/bin` にインストールされるため、そのディレクトリが PATH に含まれていることを確認する必要があります。
 
 
-## ClickHouse MCP サーバーの設定
+## ClickHouse MCP サーバーの設定 {#configure-clickhouse-mcp-server}
 
 MCPHost を使用して、YAML または JSON ファイルで MCP サーバーを構成できます。
 MCPHost はホームディレクトリ内で、次の順序で設定ファイルを探します：

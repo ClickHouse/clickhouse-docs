@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 
 
-# system.row&#95;policies
+# system.row&#95;policies {#systemrow_policies}
 
 包含针对某个特定表的过滤条件，以及需要应用此行级策略的角色和/或用户列表。
 

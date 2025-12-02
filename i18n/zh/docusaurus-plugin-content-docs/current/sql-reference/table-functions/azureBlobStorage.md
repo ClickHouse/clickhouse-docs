@@ -12,13 +12,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# azureBlobStorage 表函数
+# azureBlobStorage 表函数 {#azureblobstorage-table-function}
 
 提供类似表的接口，用于在 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 中查询/插入文件。此表函数类似于 [s3 函数](../../sql-reference/table-functions/s3.md)。
 
 
 
-## 语法
+## 语法 {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
@@ -49,7 +49,7 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 
 
 
-## 示例
+## 示例 {#examples}
 
 与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器进行本地 Azure 存储的开发。更多详情参见[此处](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。下面我们假设可以通过主机名 `azurite1` 访问 Azurite。
 
@@ -98,9 +98,9 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 
 
 
-## 分区写入
+## 分区写入 {#partitioned-write}
 
-### 分区策略
+### 分区策略 {#partition-strategy}
 
 仅支持 INSERT 语句。
 
@@ -124,7 +124,7 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```
 
 
-## use&#95;hive&#95;partitioning 设置
+## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
 这是一个设置，用于让 ClickHouse 在读取时解析 Hive 风格分区文件。它对写入没有任何影响。若要在读写两侧保持对称，请使用 `partition_strategy` 参数。
 
@@ -139,7 +139,7 @@ SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...
 ```
 
 
-## 使用共享访问签名 (SAS)
+## 使用共享访问签名 (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
 共享访问签名 (Shared Access Signature，SAS) 是一个 URI，用于授予对 Azure Storage 容器或文件的受限访问权限。使用它可以在不共享存储账户密钥的情况下，为存储账户资源提供限定时间的访问权限。详细信息请参阅[此处](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature)。
 

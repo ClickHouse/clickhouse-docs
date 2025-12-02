@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 このデータセットには、[huggingface.co](https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/) 上にある 26 個の `Parquet` ファイルが含まれています。ファイル名は `0.parquet`、`1.parquet`、…、`25.parquet` です。データセットのサンプル行を確認するには、この [Hugging Face ページ](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) を参照してください。
 
-## テーブルを作成する
+## テーブルを作成する {#create-table}
 
 記事 ID、タイトル、テキスト、および埋め込みベクトルを格納する `dbpedia` テーブルを作成します：
 
@@ -31,7 +31,7 @@ CREATE TABLE dbpedia
 ```
 
 
-## テーブルの読み込み
+## テーブルの読み込み {#load-table}
 
 すべての Parquet ファイルからデータセットを読み込むには、次のシェルコマンドを実行します。
 
@@ -74,7 +74,7 @@ FROM dbpedia
 _最近傍（nearest neighbours）_ とは、ユーザーのクエリに関連する結果となる文書、画像、その他のコンテンツを指します。
 取得された結果は、生成 AI アプリケーションにおける検索拡張生成（Retrieval Augmented Generation, RAG）の重要な入力となります。
 
-## 総当たり方式でベクトル類似度検索を実行する
+## 総当たり方式でベクトル類似度検索を実行する {#run-a-brute-force-vector-similarity-search}
 
 KNN（k-Nearest Neighbours）検索、または総当たり（ブルートフォース）検索では、データセット内の各ベクトルと
 検索用埋め込みベクトルとの距離を計算し、その距離を並べ替えて最も近いベクトル（近傍）を取得します。`dbpedia` データセットでは、
@@ -119,7 +119,7 @@ LIMIT 20
 また、実際の計算リソース使用量とストレージ帯域幅使用量を把握するため、OS ファイルキャッシュがコールドな状態および `max_threads=1` の条件でのクエリレイテンシも記録してください（それを基に、数百万ベクトル規模の本番データセットでの値を外挿します）。
 
 
-## ベクトル類似度インデックスを作成する
+## ベクトル類似度インデックスを作成する {#build-vector-similarity-index}
 
 `vector` 列にベクトル類似度インデックスを定義・作成するには、次の SQL を実行します。
 
@@ -134,7 +134,7 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 インデックスの構築および保存処理には、利用可能な CPU コア数やストレージ帯域幅によっては数分かかる場合があります。
 
 
-## ANN 検索を実行する
+## ANN 検索を実行する {#perform-ann-search}
 
 *Approximate Nearest Neighbours*（ANN、近似最近傍）とは、正確なベクトル検索よりもはるかに高速に結果を取得できる一群の手法（たとえば、グラフやランダムフォレストのような専用データ構造）を指します。結果の精度は、実用上はたいてい「十分よい」レベルです。多くの近似手法では、結果精度と検索時間のトレードオフを調整するためのパラメータが提供されています。
 
@@ -181,7 +181,7 @@ LIMIT 20
 ```
 
 
-## 検索クエリ用の埋め込みベクトルの生成
+## 検索クエリ用の埋め込みベクトルの生成 {#generating-embeddings-for-search-query}
 
 これまでに見てきた類似度検索クエリでは、`dbpedia` テーブル内に既に存在するベクトルの1つを検索ベクトルとして使用していました。実際のアプリケーションでは、検索ベクトルは、自然言語で記述されたものを含むユーザーの入力クエリに対して生成する必要があります。検索ベクトルは、データセット用の埋め込みベクトルを生成する際に使用したものと同じ LLM モデルを使って生成しなければなりません。
 
@@ -223,7 +223,7 @@ while True:
 ```
 
 
-## Q&amp;A デモアプリケーション
+## Q&amp;A デモアプリケーション {#q-and-a-demo-application}
 
 上記の例では、ClickHouse を用いたセマンティック検索とドキュメント検索を示しました。次に紹介するのは、非常にシンプルでありながら高い可能性を持つ生成 AI のサンプルアプリケーションです。
 

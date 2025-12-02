@@ -9,10 +9,9 @@ doc_type: 'reference'
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
+# Оператор WATCH {#watch-statement}
 
-# Оператор WATCH
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 Этот оператор устарел и будет удалён в будущем.
 

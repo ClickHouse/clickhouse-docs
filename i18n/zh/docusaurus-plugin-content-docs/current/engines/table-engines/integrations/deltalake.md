@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 
 
-# Delta Lake 表引擎
+# Delta Lake 表引擎 {#deltalake-table-engine}
 
 此引擎与 Amazon S3 中现有的 [Delta Lake](https://github.com/delta-io/delta) 表进行只读集成。
 
 
 
-## 创建表
+## 创建表 {#create-table}
 
 请注意，Delta Lake 表必须已存在于 S3 中，并且该命令不支持通过 DDL 参数创建新表。
 
@@ -55,7 +55,7 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
-### 数据缓存
+### 数据缓存 {#data-cache}
 
 `Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存机制。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
 

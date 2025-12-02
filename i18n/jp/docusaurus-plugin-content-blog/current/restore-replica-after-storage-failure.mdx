@@ -25,7 +25,7 @@ If you have configured a different data path, replace all instances of `/var/lib
 :::
 
 <VerticalStepper headerLevel="h2">
-  ## 正常なレプリカからアクセス設定をコピーする
+  ## 正常なレプリカからアクセス設定をコピーする \{#copy-access-config\}
 
   正常なレプリカ上で、ローカルユーザーを含む `access` フォルダの内容をコピーします:
 
@@ -33,7 +33,7 @@ If you have configured a different data path, replace all instances of `/var/lib
   /var/lib/clickhouse/access
   ```
 
-  ## 正常なレプリカから metadata フォルダをバックアップする
+  ## 正常なレプリカから metadata フォルダをバックアップする \{#back-up-the-metadata-folder-from-the-healthy-replica\}
 
   1. ClickHouse のデータディレクトリに移動します:
 
@@ -52,7 +52,7 @@ If you have configured a different data path, replace all instances of `/var/lib
   このコマンドにより、**metadata ファイル**とシンボリックリンク構造の両方がバックアップ内に保持されます。
   :::
 
-  ## 不調なレプリカ上で metadata をリストアする
+  ## 不調なレプリカ上で metadata をリストアする \{#restore-the-metadata-on-the-faulty-replica\}
 
   1. 生成された `backup.tar` ファイルを不調なレプリカにコピーします。
   2. ClickHouse のデータディレクトリで展開します:
@@ -62,7 +62,7 @@ If you have configured a different data path, replace all instances of `/var/lib
   tar -xvPf backup.tar
   ```
 
-  ## 強制リストア用フラグを作成する
+  ## 強制リストア用フラグを作成する \{#create-force-restore-flag\}
 
   他のレプリカからの自動データ同期をトリガーするため、次のフラグファイルを作成します:
 
@@ -70,7 +70,7 @@ If you have configured a different data path, replace all instances of `/var/lib
   sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
   ```
 
-  ## 不調なレプリカを再起動する
+  ## 不調なレプリカを再起動する \{#restart-faulty-replica\}
 
   1. 不調なノード上の ClickHouse サーバーを再起動します。
   2. サーバーログを確認し、正常なレプリカからパーツがダウンロードされていることを確認します:

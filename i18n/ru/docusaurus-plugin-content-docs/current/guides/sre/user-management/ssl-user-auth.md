@@ -10,9 +10,9 @@ keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management
 
 
 
-# Настройка аутентификации по пользовательскому SSL‑сертификату
+# Настройка аутентификации по пользовательскому SSL‑сертификату {#configuring-ssl-user-certificate-for-authentication}
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

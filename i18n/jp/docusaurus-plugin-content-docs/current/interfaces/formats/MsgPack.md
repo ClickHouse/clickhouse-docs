@@ -48,7 +48,7 @@ ClickHouse は [MessagePack](https://msgpack.org/) データファイルの読�
 
 
 
-## 使用例
+## 使用例 {#example-usage}
 
 「.msgpk」ファイルへの書き込み:
 

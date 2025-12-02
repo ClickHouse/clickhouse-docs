@@ -52,7 +52,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 例如：
 
 ```shell
-# 修改命令以挂载路径
+# 修改命令以挂载路径 {#modify-command-to-mount-paths}
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

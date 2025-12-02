@@ -1,39 +1,34 @@
 ---
-description: 'Документация по управлению выражением SAMPLE BY'
+description: 'Документация по изменению выражений ключа выборки SAMPLE BY'
 sidebar_label: 'SAMPLE BY'
 sidebar_position: 41
 slug: /sql-reference/statements/alter/sample-by
-title: 'Управление выражениями ключа выборки'
+title: 'Изменение выражений ключа выборки SAMPLE BY'
 doc_type: 'reference'
 ---
 
-
-
-# Работа с выражением SAMPLE BY
+# Работа с выражением SAMPLE BY {#manipulating-sample-by-expression}
 
 Доступны следующие операции:
 
-
-
-## ИЗМЕНЕНИЕ
+## MODIFY {#modify}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
-Команда изменяет [sampling key](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен содержать новый ключ выборки.
+Команда изменяет [sampling key](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен включать новый sampling key.
 
-
-## УДАЛИТЬ
+## REMOVE {#remove}
 
 ```sql
-ALTER TABLE [db].имя [ON CLUSTER кластер] REMOVE SAMPLE BY
+ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
 ```
 
-Эта команда удаляет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
+Команда удаляет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
 
-Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они изменяют только метаданные или удаляют файлы.
+Команды `MODIFY` и `REMOVE` являются малозатратными в том смысле, что они только изменяют метаданные или удаляют файлы.
 
-:::note\
-Эти команды работают только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
+:::note
+Работает только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
 :::

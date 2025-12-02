@@ -11,7 +11,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 
 
-# 監視
+# 監視 {#monitoring}
 
 :::note
 このガイドで説明している監視データは、ClickHouse Cloud で参照できます。以下で説明する組み込みダッシュボードで表示できるだけでなく、基本および高度なパフォーマンスメトリクスの両方をメインのサービスコンソールで直接確認することもできます。

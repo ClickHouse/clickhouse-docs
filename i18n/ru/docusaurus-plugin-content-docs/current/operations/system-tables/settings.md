@@ -6,9 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-
-
-# system.settings
+# system.settings {#systemsettings}
 
 Содержит информацию о настройках сессии для текущего пользователя.
 
@@ -85,7 +83,6 @@ alias_for:
 is_obsolete: 0
 tier:        Production
 ```
-
 
 Row 3:
 ──────

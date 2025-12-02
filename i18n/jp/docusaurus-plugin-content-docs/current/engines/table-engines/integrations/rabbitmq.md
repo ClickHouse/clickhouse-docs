@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 
 
-# RabbitMQ テーブルエンジン
+# RabbitMQ テーブルエンジン {#rabbitmq-table-engine}
 
 このエンジンを使用すると、ClickHouse を [RabbitMQ](https://www.rabbitmq.com) と統合できます。
 
@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 
 
-## テーブルの作成
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -131,7 +131,7 @@ RabbitMQ サーバーの設定は、ClickHouse の設定ファイルに追加す
 ```
 
 
-## 説明
+## 説明 {#description}
 
 各メッセージは一度しか読み取れないため、メッセージの読み取りに `SELECT` を使うのは（デバッグ用途を除き）あまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイム処理用のパイプラインを作成する方が実用的です。そのためには次の手順を実行します。
 

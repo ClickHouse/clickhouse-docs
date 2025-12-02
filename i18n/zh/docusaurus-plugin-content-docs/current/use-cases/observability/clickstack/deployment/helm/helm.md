@@ -12,7 +12,7 @@ keywords: ['ClickStack Helm 图表', '使用 Helm 进行 ClickHouse 部署', '�
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
-import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Helm 图表迁移
 如果您当前正在使用 `hdx-oss-v2` Helm 图表，请迁移到 `clickstack` Helm 图表。`hdx-oss-v2` 图表目前处于维护模式，将不再新增功能。所有新的开发工作都集中在 `clickstack` 图表上，它在提供相同功能的同时改进了命名并具有更清晰的结构组织。

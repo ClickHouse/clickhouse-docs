@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 
 
-# Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法
+# Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
 このガイドでは、[Agno](https://github.com/agno-agi/agno) を使って、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 
@@ -33,7 +33,7 @@ doc_type: 'guide'
 <VerticalStepper headerLevel="h2">
 
 
-## ライブラリをインストールする
+## ライブラリをインストールする {#install-libraries}
 
 以下のコマンドを実行して Agno ライブラリをインストールします。
 
@@ -44,7 +44,7 @@ pip install -q ipywidgets
 ```
 
 
-## 認証情報の設定
+## 認証情報の設定 {#setup-credentials}
 
 次に、Anthropic API キーを指定する必要があります：
 

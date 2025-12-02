@@ -16,7 +16,7 @@ doc_type: 'guide'
 
 
 
-## Вывод списка текущих процессов по пиковому потреблению памяти
+## Вывод списка текущих процессов по пиковому потреблению памяти {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -31,7 +31,7 @@ LIMIT 100;
 ```
 
 
-## Список метрик использования памяти
+## Список метрик использования памяти {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -46,7 +46,7 @@ ORDER BY
 ```
 
 
-## Список таблиц по текущему потреблению памяти
+## Список таблиц по текущему потреблению памяти {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -58,28 +58,28 @@ WHERE engine IN ('Memory','Set','Join');
 ```
 
 
-## Вывести общий объём памяти, используемой слияниями
+## Вывести общий объём памяти, используемой слияниями {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
 
-## Вывести общий объём памяти, используемой текущими процессами
+## Вывести общий объём памяти, используемой текущими процессами {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
 
-## Вывод общего объёма памяти, используемой словарями
+## Вывод общего объёма памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
 
-## Вывести общий объём памяти, используемый первичными ключами и гранулами индекса
+## Вывести общий объём памяти, используемый первичными ключами и гранулами индекса {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

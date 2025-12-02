@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 
 
-# Табличная функция loop
+# Табличная функция loop {#loop-table-function}
 
 
 
-## Синтаксис
+## Синтаксис {#syntax}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -37,7 +37,7 @@ SELECT ... FROM loop(other_table_function(...));
 
 
 
-## Примеры
+## Примеры {#examples}
 
 Получение данных из ClickHouse:
 

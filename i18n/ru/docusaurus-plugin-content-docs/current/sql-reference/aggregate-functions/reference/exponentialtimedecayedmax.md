@@ -7,9 +7,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-
-
-## exponentialTimeDecayedMax
+## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
 Возвращает максимальное значение между экспоненциально сглаженным скользящим средним, вычисленным в момент времени `t`, и его значением в момент `t-1`.
 
@@ -53,7 +51,6 @@ FROM
 ```
 
 Результат:
-
 
 ```response
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

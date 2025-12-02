@@ -6,10 +6,9 @@ title: 'system.asynchronous_loader'
 doc_type: 'reference'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
-# system.asynchronous&#95;loader
+# system.asynchronous&#95;loader {#systemasynchronous&#95;loader}
 
 <SystemTableCloud />
 
@@ -60,21 +59,29 @@ FORMAT Vertical
 * `is_ready` (`UInt8`) - 该作业已准备好执行，正在等待 worker。
 * `elapsed` (`Float64`) - 自开始执行以来经过的秒数。如果作业尚未开始，则为 0；如果作业已完成，则为总执行时间。
 
-
 每个作业都有一个关联的池，并在该池中启动。每个池都有固定的优先级以及可变的最大 worker 数量。优先级更高（`priority` 值更小）的作业会先运行。当至少存在一个更高优先级的就绪或正在执行的作业时，不会启动更低优先级的作业。可以提升作业优先级（但不能降低）。例如，如果传入查询需要某个表，则用于加载该表及启动流程的作业会被优先处理。在作业执行期间也可以提升其优先级，但作业不会从其 `execution_pool` 移动到新分配的 `pool`。该作业使用 `pool` 来创建新作业，以避免优先级反转问题。已启动的作业不会被更高优先级的作业抢占，并且在启动后总是会运行至完成。
-- `pool_id` (`UInt64`) - 当前分配给该作业的池的 ID。
-- `pool` (`String`) - `pool_id` 对应池的名称。
-- `priority` (`Int64`) - `pool_id` 对应池的优先级。
-- `execution_pool_id` (`UInt64`) - 执行该作业的池的 ID。在执行开始前等于最初分配的池。
-- `execution_pool` (`String`) - `execution_pool_id` 对应池的名称。
-- `execution_priority` (`Int64`) - `execution_pool_id` 对应池的优先级。
 
-- `ready_seqno` (`Nullable(UInt64)`) - 对于就绪作业为非空。worker 会从其池的就绪队列中拉取下一个要执行的作业。如果有多个就绪作业，则选择 `ready_seqno` 值最小的作业。
-- `waiters` (`UInt64`) - 正在等待该作业的线程数量。
-- `exception` (`Nullable(String)`) - 对于失败和被取消的作业为非空。包含在查询执行期间抛出的错误消息，或导致取消该作业的错误，以及因依赖失败而形成的作业名称链。
+* `pool_id` (`UInt64`) - 当前分配给该作业的池的 ID。
+
+* `pool` (`String`) - `pool_id` 对应池的名称。
+
+* `priority` (`Int64`) - `pool_id` 对应池的优先级。
+
+* `execution_pool_id` (`UInt64`) - 执行该作业的池的 ID。在执行开始前等于最初分配的池。
+
+* `execution_pool` (`String`) - `execution_pool_id` 对应池的名称。
+
+* `execution_priority` (`Int64`) - `execution_pool_id` 对应池的优先级。
+
+* `ready_seqno` (`Nullable(UInt64)`) - 对于就绪作业为非空。worker 会从其池的就绪队列中拉取下一个要执行的作业。如果有多个就绪作业，则选择 `ready_seqno` 值最小的作业。
+
+* `waiters` (`UInt64`) - 正在等待该作业的线程数量。
+
+* `exception` (`Nullable(String)`) - 对于失败和被取消的作业为非空。包含在查询执行期间抛出的错误消息，或导致取消该作业的错误，以及因依赖失败而形成的作业名称链。
 
 作业生命周期中的时间点：
-- `schedule_time` (`DateTime64`) - 作业被创建并被调度执行的时间（通常包括其所有依赖）。
-- `enqueue_time` (`Nullable(DateTime64)`) - 作业变为就绪并被加入其池的就绪队列的时间。如果作业尚未就绪，则为 Null。
-- `start_time` (`Nullable(DateTime64)`) - worker 从就绪队列中取出作业并开始执行的时间。如果作业尚未开始，则为 Null。
-- `finish_time` (`Nullable(DateTime64)`) - 作业执行结束的时间。如果作业尚未完成，则为 Null。
+
+* `schedule_time` (`DateTime64`) - 作业被创建并被调度执行的时间（通常包括其所有依赖）。
+* `enqueue_time` (`Nullable(DateTime64)`) - 作业变为就绪并被加入其池的就绪队列的时间。如果作业尚未就绪，则为 Null。
+* `start_time` (`Nullable(DateTime64)`) - worker 从就绪队列中取出作业并开始执行的时间。如果作业尚未开始，则为 Null。
+* `finish_time` (`Nullable(DateTime64)`) - 作业执行结束的时间。如果作业尚未完成，则为 Null。

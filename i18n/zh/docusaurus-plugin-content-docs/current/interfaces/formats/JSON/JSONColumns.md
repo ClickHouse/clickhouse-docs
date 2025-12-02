@@ -27,7 +27,7 @@ JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该�
 
 ## 使用示例 {#example-usage}
 
-### 插入数据
+### 插入数据 {#inserting-data}
 
 使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
@@ -49,7 +49,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
 
-### 读取数据
+### 读取数据 {#reading-data}
 
 使用 `JSONColumns` 格式来读取数据：
 
