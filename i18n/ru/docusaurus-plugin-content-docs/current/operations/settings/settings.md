@@ -2867,11 +2867,11 @@ FORMAT PrettyCompactMonoBlock
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="8" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "Новая экспериментальная настройка."}]}]}/>
 
-Количество бакетов по умолчанию для распределённого shuffle-hash-join.
+Количество бакетов по умолчанию для распределённого shuffle-hash join.
 
 ## distributed_plan_execute_locally {#distributed_plan_execute_locally} 
 

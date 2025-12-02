@@ -2866,11 +2866,11 @@ Distributed への INSERT クエリで read-only レプリカをスキップす�
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="8" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "新しい実験的な設定。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "実験的な新機能の設定。"}]}]}/>
 
-分散 shuffle-hash-join のバケット数のデフォルト値。
+分散シャッフルハッシュ結合におけるバケット数のデフォルト値。
 
 ## distributed_plan_execute_locally {#distributed_plan_execute_locally} 
 
