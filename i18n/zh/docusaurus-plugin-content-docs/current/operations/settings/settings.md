@@ -433,9 +433,9 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-允许显式对 Iceberg 表使用 `OPTIMIZE`。
+允许在 iceberg 表上显式使用 `OPTIMIZE` 命令。
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -10301,6 +10301,14 @@ S3Queue 的 Keeper 故障注入概率。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 序列化用于分布式处理的查询计划
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "新增设置"}]}]}/>
+
+在聚合期间对 String 类型的值进行序列化时，在末尾添加一个零字节。启用该设置以在对版本不兼容的集群执行查询时保持兼容性。
 
 ## session&#95;timezone {#session_timezone}
 
