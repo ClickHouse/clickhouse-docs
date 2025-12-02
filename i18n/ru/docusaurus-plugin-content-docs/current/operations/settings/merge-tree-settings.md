@@ -55,7 +55,7 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16384" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
 Начальный размер адаптивного буфера записи
 
@@ -391,9 +391,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
-Доступен только в ClickHouse Cloud. Максимальное количество гранул, которые можно записать в одну полосу в компактных частях
+Доступен только в ClickHouse Cloud. Максимальное число гранул, которые можно записать в одну полосу компактных частей.
 
 ## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
 
@@ -1087,15 +1087,15 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревшая настройка, не оказывает эффекта.
+Устаревшая настройка, не оказывает никакого эффекта.
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревшая настройка, не оказывает никакого эффекта.
+Устаревший параметр, не используется.
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
