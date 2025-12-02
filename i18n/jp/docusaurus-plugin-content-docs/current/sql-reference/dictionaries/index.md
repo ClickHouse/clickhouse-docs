@@ -435,12 +435,11 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 
 ### range&#95;hashed {#range_hashed}
 
-Dictionary は、範囲とそれに対応する値の順序付き配列を備えたハッシュテーブルの形式でメモリ内に格納されます。
+Dictionary は、範囲とそれに対応する値の順序付き配列を持つハッシュテーブル形式でメモリ上に保持されます。
 
-Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型です。
-このストレージ方式は hashed と同様に動作し、キーに加えて日付/時刻（任意の数値型）の範囲を使用できます。
+このストレージ方式は `hashed` と同様に動作し、キーに加えて日付/時刻（任意の数値型）の範囲も使用できます。
 
-例: テーブルには、各広告主の割引が次の形式で格納されています:
+例: このテーブルには、各広告主ごとの割引が次の形式で格納されています。
 
 ```text
 ┌─advertiser_id─┬─discount_start_date─┬─discount_end_date─┬─amount─┐
@@ -450,13 +449,13 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-日付範囲サンプルを利用するには、[structure](#dictionary-key-and-fields) 内で `range_min` と `range_max` 要素を定義します。これらの要素には、`name` と `type` の要素を含める必要があります（`type` が指定されていない場合は、デフォルトの型である Date が使用されます）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
+日付範囲のサンプルを使用するには、[structure](#dictionary-key-and-fields) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` の要素を含める必要があります（`type` が指定されていない場合、デフォルトの型である Date 型が使用されます）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
 
 :::note
 `range_min` と `range_max` の値は `Int64` 型に収まる必要があります。
 :::
 
-例：
+例:
 
 ```xml
 <layout>
@@ -496,26 +495,26 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-これらの辞書を扱うには、範囲を指定する追加の引数を `dictGet` 関数に渡す必要があります。
+これらのディクショナリを使用するには、`dictGet` 関数に、範囲を指定するための追加引数を渡す必要があります。
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
 ```
 
-クエリの例：
+クエリ例:
 
 ```sql
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-この関数は、指定された `id` について、渡された日付を含む日付範囲に対応する値を返します。
+この関数は、指定された `id` と、渡された日付を含む日付範囲に対応する値を返します。
 
-アルゴリズムの詳細:
+アルゴリズムの詳細は次のとおりです。
 
-* `id` が見つからないか、その `id` に対する範囲が見つからない場合は、その属性の型のデフォルト値を返します。
-* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返し、さらに複数の範囲が見つかった場合は `range_max` が最小の範囲を返し、それでも複数の範囲が見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムに 1 つの範囲を返します。
-* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返し、さらに複数の範囲が見つかった場合は `range_max` が最大の範囲を返し、それでも複数の範囲が見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムに 1 つの範囲を返します。
-* `range_max` が `NULL` の場合、その範囲は上限が開いた範囲になります。`NULL` は取り得る値の最大値として扱われます。`range_min` には下限が開いた値として `1970-01-01` または `0` (-MAX&#95;INT) を使用できます。
+* `id` が見つからない場合、またはその `id` に対応する範囲が見つからない場合、属性の型のデフォルト値を返します。
+* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返し、さらに複数見つかった場合は `range_max` が最小のものを返し、それでも複数見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムな範囲を返します。
+* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返し、さらに複数見つかった場合は `range_max` が最大のものを返し、それでも複数見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムな範囲を返します。
+* `range_max` が `NULL` の場合、その範囲は開区間です。`NULL` は取りうる最大値として扱われます。`range_min` については、開区間として `1970-01-01` か `0` (-MAX&#95;INT) を使用できます。
 
 設定例:
 
