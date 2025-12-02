@@ -435,9 +435,9 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка "}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
-Разрешает явное использование команды `OPTIMIZE` для таблиц Iceberg.
+Разрешает явное использование `OPTIMIZE` для таблиц Iceberg.
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -10340,6 +10340,14 @@ FORMAT Null;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 Сериализовать план запроса для распределённой обработки
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Сериализует значения типа String при агрегации с нулевым байтом в конце. Включите, чтобы сохранить совместимость при выполнении запросов к кластеру с несовместимыми версиями.
 
 ## session&#95;timezone {#session_timezone}
 
