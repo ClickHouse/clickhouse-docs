@@ -188,7 +188,7 @@ docker run --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 **Important:** If Redis is running in another container, use Docker networking:
@@ -205,7 +205,7 @@ docker run --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### Verify metrics in HyperDX {#verifying-metrics}
@@ -249,7 +249,7 @@ Start a ClickStack instance:
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 Wait approximately 30 seconds for ClickStack to fully start.

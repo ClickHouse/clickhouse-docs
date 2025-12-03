@@ -40,7 +40,7 @@ If you are managing your own OpenTelemetry collector in a standalone deployment 
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
@@ -71,8 +71,12 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note Image Name Update
+ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
+:::
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -169,7 +173,7 @@ docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 **Deploy with the standalone collector:**
@@ -182,7 +186,7 @@ docker run -d \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 :::note
@@ -412,7 +416,7 @@ In order to query the JSON type, support must also be enabled in the HyperDX app
 For example:
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 ### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
