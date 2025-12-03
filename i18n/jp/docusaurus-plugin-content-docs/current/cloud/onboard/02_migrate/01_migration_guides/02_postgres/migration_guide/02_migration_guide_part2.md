@@ -11,15 +11,11 @@ doc_type: 'guide'
 
 PostgreSQL 環境で使用しているほとんどの SQL クエリは、変更なしで ClickHouse 上でも実行でき、多くの場合より高速に動作します。
 
-
-
 ## CDC を使用した重複排除 {#deduplication-cdc}
 
 リアルタイムレプリケーションに CDC を用いる場合、更新や削除によって行が重複する可能性があることに注意してください。これに対処するために、ビューおよび Refreshable マテリアライズドビューを利用する手法が使えます。
 
 CDC を利用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へアプリケーションをできるだけスムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
-
-
 
 ## ClickHouse でクエリを最適化する {#optimize-queries-in-clickhouse}
 
@@ -136,7 +132,6 @@ Time: 112508.083 ms (01:52.508)
 
 可能であれば、ClickHouse の集約関数を活用してください。以下では、各年でもっとも多く閲覧された質問を求めるために [argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用する例を示します。
 
-
 ```sql
 --ClickHouse
 SELECT  toYear(CreationDate) AS Year,
@@ -236,7 +231,6 @@ LIMIT 5
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 ```
-
 
 5 行が返されました。経過時間: 0.247 秒。処理済み 5.08 百万行、155.73 MB (20.58 百万行/秒、630.61 MB/秒)。
 ピークメモリ使用量: 403.04 MiB。

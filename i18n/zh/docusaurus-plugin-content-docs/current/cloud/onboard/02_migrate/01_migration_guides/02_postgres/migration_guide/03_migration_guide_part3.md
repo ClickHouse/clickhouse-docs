@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 我们建议正在从 Postgres 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。本指南使用相同的 Stack Overflow 数据集，并基于 ClickHouse 的功能探索多种建模方案。
 
-
 ## ClickHouse 中的主键（排序键） {#primary-ordering-keys-in-clickhouse}
 
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找对应的概念。注意到 ClickHouse 支持 `PRIMARY KEY` 语法后，用户可能会倾向于直接沿用源 OLTP 数据库中的同一组键来定义表模式。这种做法并不合适。
@@ -46,8 +45,6 @@ import Image from '@theme/IdealImage';
 关于选择排序键时的考虑因素与步骤，并以 posts 表为示例，请参阅[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
 
 在使用 CDC 实时复制时，还需要考虑额外的约束条件。有关在 CDC 场景下如何自定义排序键的技术，请参考这篇[文档](/integrations/clickpipes/postgres/ordering_keys)。
-
-
 
 ## 分区 {#partitions}
 
@@ -117,7 +114,6 @@ ALTER TABLE posts
 查询返回 0 行。用时:0.103 秒。
 ```
 
-
 - **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，用户应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
 ### 分区使用建议 {#recommendations-for-partitions}
@@ -129,8 +125,6 @@ ALTER TABLE posts
 > 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着数据不断插入，part 的数量会增加。为了防止 part 数量过高（会导致要读取的文件增加，从而降低查询性能），系统会通过后台异步进程将多个 part 合并。如果 part 的数量超过预配置的上限，ClickHouse 会在插入时抛出异常——即 "too many parts" 错误。在正常运行下不应发生这种情况，只会在 ClickHouse 配置错误或使用方式不当（例如大量小批量插入操作）时出现。
 
 > 由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量相应增加，即 part 数量是分区数量的倍数。因此，高基数的分区键可能会导致上述错误，应当避免。
-
-
 
 ## 物化视图与投影 {#materialized-views-vs-projections}
 
@@ -231,7 +225,6 @@ FROM comments
 WHERE UserId = 8592047
 ```
 
-
 ┌─explain─────────────────────────────────────────────┐
 
 1. │ 表达式 ((Projection + ORDER BY 之前))                 │
@@ -272,7 +265,6 @@ WHERE UserId = 8592047
 有关更多详细信息,请参阅["投影"](/data-modeling/projections)
 :::
 ```
-
 
 ## 反规范化 {#denormalization}
 

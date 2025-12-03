@@ -17,7 +17,6 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
 
-
 ## Управление ролями {#managing-roles}
 
 Пользователю может быть назначено несколько ролей. Пользователи могут применять назначенные им роли в произвольных комбинациях с помощью оператора [SET ROLE](../../../sql-reference/statements/set-role.md). Итоговый набор привилегий представляет собой объединение всех привилегий всех применённых ролей. Если пользователю были выданы привилегии непосредственно на его учётную запись, они также объединяются с привилегиями, предоставленными ролями.
@@ -27,8 +26,6 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 Чтобы отозвать роль, используйте оператор [REVOKE](../../../sql-reference/statements/revoke.md).
 
 Чтобы удалить роль, используйте оператор [DROP ROLE](/sql-reference/statements/drop#drop-role). Удалённая роль автоматически отзывается у всех пользователей и ролей, которым она была назначена.
-
-
 
 ## Примеры {#examples}
 

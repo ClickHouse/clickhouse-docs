@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MaterializedPostgreSQL {#materializedpostgresql}
 
 <ExperimentalBadge />
@@ -34,7 +33,6 @@ SET allow_experimental_database_materialized_postgresql=1
 
 :::
 
-
 ## Создание базы данных {#creating-a-database}
 
 ```sql
@@ -48,7 +46,6 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `database` — имя базы данных PostgreSQL.
 * `user` — пользователь PostgreSQL.
 * `password` — пароль пользователя.
-
 
 ## Пример использования {#example-of-use}
 
@@ -65,7 +62,6 @@ SHOW TABLES FROM postgres_db;
 SELECT * FROM postgresql_db.postgres_table;
 ```
 
-
 ## Динамическое добавление новых таблиц в репликацию {#dynamically-adding-table-to-replication}
 
 После создания базы данных `MaterializedPostgreSQL` она не будет автоматически обнаруживать новые таблицы в соответствующей базе данных PostgreSQL. Такие таблицы можно добавить вручную:
@@ -78,7 +74,6 @@ ATTACH TABLE postgres_database.new_table;
 До версии 22.1 добавление таблицы в репликацию оставляло неудалённый временный слот репликации (с именем `{db_name}_ch_replication_slot_tmp`). Если вы подключаете таблицы в ClickHouse версии ниже 22.1, обязательно удалите этот слот вручную (`SELECT pg_drop_replication_slot('{db_name}_ch_replication_slot_tmp')`). В противном случае будет расти использование дискового пространства. Эта проблема исправлена в версии 22.1.
 :::
 
-
 ## Динамическое исключение таблиц из репликации {#dynamically-removing-table-from-replication}
 
 Можно исключить отдельные таблицы из репликации:
@@ -86,7 +81,6 @@ ATTACH TABLE postgres_database.new_table;
 ```sql
 DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
-
 
 ## Схема PostgreSQL {#schema}
 
@@ -135,7 +129,6 @@ SELECT * FROM database1.`schema2.table2`;
 
 Предупреждение: в данном случае точки в имени таблицы не допускаются.
 
-
 ## Требования {#requirements}
 
 1. Параметр [wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) должен иметь значение `logical`, а параметр `max_replication_slots` — значение не менее `2` в конфигурационном файле PostgreSQL.
@@ -169,7 +162,6 @@ WHERE oid = 'postgres_table'::regclass;
 :::note
 Репликация значений [**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) не поддерживается. Будет использоваться значение по умолчанию для данного типа данных.
 :::
-
 
 ## Настройки {#settings}
 
@@ -229,7 +221,6 @@ ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_bloc
 
 Использует уникальный идентификатор потребителя при репликации. Значение по умолчанию — `0`.
 Если установлено в `1`, позволяет настроить несколько таблиц `MaterializedPostgreSQL`, указывающих на одну и ту же таблицу `PostgreSQL`.
-
 
 ## Заметки {#notes}
 

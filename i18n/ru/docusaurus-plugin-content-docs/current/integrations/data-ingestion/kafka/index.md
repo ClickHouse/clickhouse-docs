@@ -13,13 +13,9 @@ integration:
   - category: 'data_ingestion'
 ---
 
-
-
 # Интеграция Kafka с ClickHouse {#integrating-kafka-with-clickhouse}
 
 [Apache Kafka](https://kafka.apache.org/) — это распределённая платформа потоковой передачи событий с открытым исходным кодом, используемая тысячами компаний для высокопроизводительных конвейеров данных, потоковой аналитики, интеграции данных и критически важных для бизнеса приложений. ClickHouse предоставляет несколько способов **чтения из** и **записи в** Kafka и другие брокеры, совместимые с Kafka API (например, Redpanda, Amazon MSK).
-
-
 
 ## Доступные варианты {#available-options}
 
@@ -90,8 +86,6 @@ Kafka Connect — это open source-фреймворк, который рабо
 * Поддерживает наиболее распространённые форматы сериализации (JSON, Avro, Protobuf)
 
 #### Начало работы {#kafka-table-engine-getting-started}
-
-
 
 Чтобы начать работу с движком таблиц Kafka, см. [справочную документацию](./kafka-table-engine.md).
 

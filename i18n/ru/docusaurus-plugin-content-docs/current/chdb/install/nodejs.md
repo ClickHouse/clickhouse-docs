@@ -7,20 +7,15 @@ keywords: ['chdb', 'nodejs', 'javascript', 'встраиваемая', 'clickhou
 doc_type: 'guide'
 ---
 
-
-
 # chDB для Node.js {#chdb-for-nodejs}
 
 chDB-node предоставляет биндинги chDB для Node.js, позволяя выполнять запросы к ClickHouse непосредственно в ваших Node.js-приложениях без каких-либо внешних зависимостей.
-
-
 
 ## Установка {#installation}
 
 ```bash
 npm install chdb
 ```
-
 
 ## Использование {#usage}
 
@@ -146,7 +141,6 @@ try {
 }
 ```
 
-
 ## Обработка ошибок {#error-handling}
 
 Всегда правильно обрабатывайте ошибки при работе с chDB:
@@ -191,7 +185,6 @@ function safeSessionQuery() {
 
 safeSessionQuery();
 ```
-
 
 ## Репозиторий на GitHub {#github-repository}
 

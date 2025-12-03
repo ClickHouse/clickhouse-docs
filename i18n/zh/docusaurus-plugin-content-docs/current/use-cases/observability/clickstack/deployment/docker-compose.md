@@ -33,7 +33,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 这些端口支持与多种遥测源集成，使 OpenTelemetry collector 能够在生产环境中满足多样化的摄取需求。
 
-
 ### 适用场景 {#suitable-for}
 
 * 本地测试
@@ -116,7 +115,6 @@ HYPERDX_OPAMP_PORT=4320
 # OTel/ClickHouse 配置 {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
-
 
 ### 配置 OpenTelemetry collector {#configuring-collector}
 

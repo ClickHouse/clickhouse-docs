@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 > このガイドでは、ClickHouse での配列の使い方と、よく使用される[配列関数](/sql-reference/functions/array-functions)のいくつかについて学びます。
 
-
-
 ## 配列の概要 {#array-basics}
 
 配列は、値をひとまとめにするインメモリのデータ構造です。
@@ -126,7 +124,6 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 ClickHouse では、配列インデックスが常に **1** から始まることを知っておくことが重要です。
 これは、他の多くのプログラミング言語で配列が 0 始まり（ゼロインデックス）であることに慣れている場合とは異なる点です。
 
-
 例えば、配列がある場合、次のように書くことでその先頭要素を取得できます。
 
 ```sql
@@ -162,7 +159,6 @@ SELECT string_array[0]
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## 配列関数 {#array-functions}
 
@@ -229,7 +225,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## 配列関数を使ったフライトデータの探索 {#exploring-flight-data-with-array-functions}
 
@@ -332,7 +327,6 @@ WITH arrayMap(
     ) AS statuses
 ```
 
-
 SELECT
 Origin,
 toStringCutToZero(Dest) AS Destination,
@@ -414,7 +408,6 @@ LIMIT 10
 これはクロスジョインを使って実行され、これらの空港のすべての組み合わせを生成します。
 その後、各ペアごとに `arrayIntersect` 関数を使って、両方の空港のリストに共通して現れる目的地を特定します。
 `length` 関数は、それらが共通して持つ目的地の数をカウントします。
-
 
 `a1.Origin < a2.Origin` という条件により、各ペアが 1 回だけ現れるようにしています。
 これがないと、同じ比較であるにもかかわらず、JFK-LAX と LAX-JFK の両方が別々の結果として返されてしまい、冗長になります。
@@ -504,7 +497,6 @@ WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
 GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
-
 
 ## 次のステップ {#next-steps}
 

@@ -18,7 +18,6 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # ClickHouse で marimo を使う {#using-marimo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -26,8 +25,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 [marimo](https://marimo.io/) は、SQL が組み込まれた Python 向けのオープンソースのリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古い状態としてマーク）し、コードと出力の一貫性を保つことで、バグの発生を未然に防ぎます。すべての marimo ノートブックはプレーンな Python コードとして保存され、スクリプトとして実行でき、アプリとしてデプロイできます。
 
 <Image img={marimo_connect} size="md" border alt="ClickHouse への接続" />
-
-
 
 ## 1. SQL サポート付きの marimo をインストールする {#install-marimo-sql}
 
@@ -37,7 +34,6 @@ marimo edit clickhouse_demo.py
 ```
 
 これにより、localhost を開いた Web ブラウザが起動します。
-
 
 ## 2. ClickHouse への接続 {#connect-to-clickhouse}
 
@@ -52,8 +48,6 @@ marimo エディタ左側のデータソースパネルを開き、「Add databa
 その後、接続を確立するために実行できるセルが追加されます。
 
 <Image img={run_cell} size="md" border alt="セルを実行して ClickHouse に接続" />
-
-
 
 ## 3. SQL を実行する {#run-sql}
 

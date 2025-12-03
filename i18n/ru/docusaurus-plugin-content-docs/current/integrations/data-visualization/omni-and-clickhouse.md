@@ -13,20 +13,15 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Omni {#omni}
 
 <PartnerBadge/>
 
 Omni может подключаться к ClickHouse Cloud или к локальному развертыванию ClickHouse через официальный источник данных ClickHouse.
 
-
-
 ## 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 

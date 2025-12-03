@@ -19,7 +19,6 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
 # 観測性のための Grafana と ClickHouse の利用 {#using-grafana-and-clickhouse-for-observability}
 
 Grafana は、ClickHouse における観測性データの推奨可視化ツールです。これは、Grafana 向け公式 ClickHouse プラグインを使用して実現します。インストール手順は[こちら](/integrations/grafana)を参照してください。
@@ -55,7 +54,6 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 クエリビルダーは、ユーザーがSQLを記述せずにクエリを簡単に変更できる手段を提供します。キーワードを含むログの検索を含めたフィルタリングは、クエリビルダーから実行できます。より複雑なクエリを記述したいユーザーは、SQLエディタに切り替えることができます。適切なカラムが返され、かつ Query Type として `logs` が選択されていれば、結果はログとしてレンダリングされます。ログのレンダリングに必要なカラムは[こちら](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)に記載されています。
 
-
 ### ログからトレースへ {#logs-to-traces}
 
 ログにトレース ID が含まれている場合、ユーザーは特定のログ行から対応するトレースへ遷移できると便利です。
@@ -84,7 +82,6 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 <Image img={observability_18} alt="Traces" size="lg" border />
 
 より複雑なクエリを記述したいユーザーは、`SQL Editor` に切り替えることができます。
-
 
 ### トレースの詳細を表示する {#view-trace-details}
 
@@ -120,7 +117,6 @@ LIMIT 1000
 
 <Image img={observability_19} alt="トレースの詳細" size="lg" border />
 
-
 ### トレースからログへの遷移 {#traces-to-logs}
 
 ログにトレース ID が含まれている場合、ユーザーはトレースから関連するログへ遷移できます。ログを表示するには、トレース ID をクリックして `View Logs` を選択します。これにより、デフォルトの OTel 列を前提として次のクエリが実行されます。
@@ -134,7 +130,6 @@ ORDER BY timestamp ASC LIMIT 1000
 ```
 
 <Image img={observability_20} alt="トレースからログへの切り替え" size="lg" border />
-
 
 ## ダッシュボード {#dashboards}
 
@@ -165,7 +160,6 @@ LIMIT 100000
 
 <Image img={observability_22} alt="時系列" size="lg" border />
 
-
 ### マルチラインチャート {#multi-line-charts}
 
 次の条件を満たすクエリでは、自動的にマルチラインチャートがレンダリングされます。
@@ -190,7 +184,6 @@ LIMIT 100000
 ```
 
 <Image img={observability_23} alt="複数の折れ線チャート" size="lg" border />
-
 
 ### 地理データの可視化 {#visualizing-geo-data}
 

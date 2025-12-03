@@ -32,7 +32,6 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
-
 ## 管理者以外のユーザー {#non-admin-users}
 
 ユーザーには必要な権限のみを付与し、全員を管理者ユーザーにすべきではありません。本ドキュメントの以降では、シナリオ例と必要なロールについて説明します。
@@ -172,13 +171,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 
-
     :::note
     テーブルにポリシーをアタッチすると、システムはそのポリシーを適用し、定義されたユーザーとロールのみがテーブルに対する操作を実行できます。その他のすべてのユーザーは、すべての操作が拒否されます。制限的な行ポリシーを他のユーザーに適用しないようにするには、他のユーザーとロールが通常のアクセスまたはその他のタイプのアクセスを持てるように、別のポリシーを定義する必要があります。
     :::
 
 </VerticalStepper>
-
 
 ## 検証 {#verification}
 
@@ -293,8 +290,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 </VerticalStepper>
 
-
-
 ## ユーザーとロールの変更 {#modifying-users-and-roles}
 
 ユーザーには、必要な権限の組み合わせを実現するために複数のロールを割り当てることができます。複数のロールを使用する場合、システムはそれらのロールを組み合わせて権限を決定し、その結果、ロールの権限は累積されます。
@@ -365,8 +360,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
    ```
 </VerticalStepper>
 
-
-
 ## トラブルシューティング {#troubleshooting}
 
 権限が重なり合ったり組み合わさったりして、予期しない結果を生む場合があります。そのようなときは、管理者アカウントを使用して次のコマンドを実行し、問題の原因を切り分けることができます。
@@ -429,7 +422,6 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## ロール、ポリシー、ユーザーを管理するためのコマンド例 {#example-commands-to-manage-roles-policies-and-users}
 
 次のコマンドは以下の目的で使用できます:
@@ -473,7 +465,6 @@ DROP ROLE A_rows_users;
 ```sql
 DROP USER row_user;
 ```
-
 
 ## まとめ {#summary}
 

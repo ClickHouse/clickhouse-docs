@@ -7,15 +7,11 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-
-
 # Начало работы с chDB {#getting-started-with-chdb}
 
 В этом руководстве мы разберёмся, как быстро начать работу с вариантом chDB для Python.
 Мы начнём с выполнения запроса к JSON‑файлу в S3, затем создадим таблицу в chDB на основе этого JSON‑файла и выполним несколько запросов к данным.
 Мы также посмотрим, как возвращать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas. 
-
-
 
 ## Настройка {#setup}
 
@@ -50,7 +46,6 @@ ipython
 ```bash
 pip install pandas pyarrow
 ```
-
 
 ## Запрос к JSON‑файлу в S3 {#querying-a-json-file-in-s3}
 
@@ -149,7 +144,6 @@ chdb.query(
 Это допустимо делать с переменными, определёнными в вашей программе, но не делайте этого с пользовательским вводом, иначе ваш запрос будет подвержен SQL‑инъекциям.
 :::
 
-
 ## Настройка формата вывода {#configuring-the-output-format}
 
 Формат вывода по умолчанию — `CSV`, но его можно изменить с помощью параметра `output_format`.
@@ -201,7 +195,6 @@ count(): uint64 not null
 is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
-
 
 ## Создание таблицы из JSON-файла {#creating-a-table-from-json-file}
 
@@ -309,7 +302,6 @@ sess.query(f"""
 )
 ```
 
-
 ## Выполнение запроса к таблице {#querying-a-table}
 
 Теперь давайте сделаем запрос к таблице:
@@ -348,7 +340,6 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-
 ## Выполнение запросов к DataFrame Pandas {#querying-a-pandas-dataframe}
 
 Затем мы можем выполнять запросы к этому DataFrame из chDB:
@@ -378,7 +369,6 @@ chdb.query(
 ```
 
 Также вы можете подробнее узнать о выполнении запросов к DataFrame в Pandas в [руководстве для разработчиков по запросам в Pandas](guides/querying-pandas.md).
-
 
 ## Дальнейшие шаги {#next-steps}
 

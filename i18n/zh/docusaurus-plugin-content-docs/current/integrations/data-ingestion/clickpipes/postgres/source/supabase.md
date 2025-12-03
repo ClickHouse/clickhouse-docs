@@ -11,7 +11,6 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-
 # Supabase 源配置指南 {#supabase-source-setup-guide}
 
 本文档介绍如何为在 ClickPipes 中使用而配置 Supabase Postgres。
@@ -21,8 +20,6 @@ import Image from '@theme/IdealImage';
 ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
-
-
 
 ## 创建具有权限和复制槽的用户 {#creating-a-user-with-permissions-and-replication-slot}
 
@@ -57,7 +54,6 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
 
-
 ## 增加 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
 :::warning
@@ -69,8 +65,6 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 如需更合理的参数取值建议，您可以联系 ClickPipes 团队。
 
 :::
-
-
 
 ## 在 Supabase 中使用的连接信息 {#connection-details-to-use-for-supabase}
 
@@ -86,8 +80,6 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
 
-
-
 ## 关于 RLS 的说明 {#note-on-rls}
 
 ClickPipes 使用的 Postgres 用户不能受到 RLS 策略的限制，否则可能会导致数据缺失。您可以通过运行下列命令来为该用户禁用 RLS 策略：
@@ -95,7 +87,6 @@ ClickPipes 使用的 Postgres 用户不能受到 RLS 策略的限制，否则可
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
 ```
-
 
 ## 下一步？ {#whats-next}
 

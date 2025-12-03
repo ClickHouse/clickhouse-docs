@@ -7,19 +7,13 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf {#quantilestimingif}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 для вычисления квантилей значений времени для строк, для которых условие истинно,
 с использованием агрегатной функции-комбинатора `quantilesTimingIf`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -84,7 +78,6 @@ GROUP BY endpoint;
 3. │ пользователи │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └─────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

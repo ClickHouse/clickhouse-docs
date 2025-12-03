@@ -7,13 +7,9 @@ title: 'Табличный движок AzureBlobStorage'
 doc_type: 'reference'
 ---
 
-
-
 # Табличный движок AzureBlobStorage {#azureblobstorage-table-engine}
 
 Этот движок предоставляет интеграцию с экосистемой [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
-
-
 
 ## Создание таблицы {#create-table}
 
@@ -60,15 +56,12 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение равно `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
-
-
 
 ## Аутентификация {#authentication}
 
@@ -131,7 +124,6 @@ arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2
 arthur :) select _path, * from azure_table;
 ```
 
-
 ┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
 
 1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
@@ -140,7 +132,6 @@ arthur :) select _path, * from azure_table;
 
 ```
 ```
-
 
 ## См. также {#see-also}
 

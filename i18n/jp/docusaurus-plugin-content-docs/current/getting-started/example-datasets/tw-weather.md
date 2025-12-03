@@ -59,7 +59,6 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # チェックサムは次と一致する必要があります: 1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
-
 ### 元の生データ {#original-raw-data}
 
 以下では、目的に応じて変換や加工を行うための元の生データをダウンロードする手順について説明します。
@@ -89,7 +88,6 @@ cat *.csv | md5sum
 # チェックサムは b26db404bf84d4063fac42e576464ce1 と一致する必要があります {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
-
 #### 台湾の気象観測所情報を取得する {#retrieve-the-taiwan-weather-stations}
 
 ```bash
@@ -98,7 +96,6 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 # オプション: UTF-8-BOMからUTF-8エンコーディングへ変換 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
-
 
 ## テーブルスキーマの作成 {#create-table-schema}
 
@@ -141,7 +138,6 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-
 ## ClickHouse への挿入 {#inserting-into-clickhouse}
 
 ### ローカルファイルからの挿入 {#inserting-from-local-file}
@@ -164,7 +160,6 @@ Ok.
 Peak memory usage: 583.23 MiB.
 ```
 
-
 ### URL からのデータ挿入 {#inserting-from-url}
 
 ```sql
@@ -174,7 +169,6 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 ```
 
 これをより高速化する方法の詳細については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事を参照してください。
-
 
 ## データ行数とサイズを確認する {#check-data-rows-and-sizes}
 
@@ -206,7 +200,6 @@ WHERE (`table` = 'tw_weather_data') AND active
 │ 2.13 GiB  │ 32.94 GiB         │
 └───────────┴───────────────────┘
 ```
-
 
 ## クエリ例 {#sample-queries}
 
@@ -256,7 +249,6 @@ GROUP BY StationId
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-
 ### Q2: 特定の期間・フィールド・気象観測所を指定した生データの取得 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
@@ -294,7 +286,6 @@ LIMIT 10
 
 10行を取得しました。経過時間: 0.009秒。処理済み: 91.70千行、2.33 MB (9.67百万行/秒、245.31 MB/秒)
 ```
-
 
 ## クレジット {#credits}
 

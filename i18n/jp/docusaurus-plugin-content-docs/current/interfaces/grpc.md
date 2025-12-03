@@ -7,11 +7,7 @@ title: 'gRPC インターフェイス'
 doc_type: 'reference'
 ---
 
-
-
 # gRPC インターフェース {#grpc-interface}
-
-
 
 ## はじめに {#grpc-interface-introduction}
 
@@ -27,8 +23,6 @@ ClickHouse は [gRPC](https://grpc.io/) インターフェースをサポート�
 - 外部テーブル
 
 このインターフェースの仕様は [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) に記載されています。
-
-
 
 ## gRPC 構成 {#grpc-interface-configuration}
 
@@ -65,7 +59,6 @@ gRPC インターフェイスを使用するには、メインの[サーバー�
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## 組み込みクライアント {#grpc-client}
 

@@ -291,8 +291,9 @@ SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0 1
 
 #### PROFILE {#instrument-add-profile}
 
-関数の `ENTRY` から `EXIT` までに要した時間を計測します。
-プロファイリングの結果は [`system.trace_log`](../../operations/system-tables/trace_log.md) に保存されます。
+関数の`ENTRY`から`EXIT`までの処理に要した時間を計測します。
+プロファイリング結果は [`system.trace_log`](../../operations/system-tables/trace_log.md) に保存され、
+[Chrome Event Trace Format](../../operations/system-tables/trace_log.md#chrome-event-trace-format) に変換できます。
 
 ```sql
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` PROFILE

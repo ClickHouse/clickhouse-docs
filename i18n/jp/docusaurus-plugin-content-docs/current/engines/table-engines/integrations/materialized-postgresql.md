@@ -10,7 +10,6 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MaterializedPostgreSQL テーブルエンジン {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
@@ -35,7 +34,6 @@ SET allow_experimental_materialized_postgresql_table=1
 
 複数のテーブルが必要な場合は、テーブルエンジンではなく [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) データベースエンジンを使用し、レプリケートするテーブルを指定する `materialized_postgresql_tables_list` 設定（将来的にはデータベースの `schema` も追加可能になる予定）を利用することを強く推奨します。これにより、CPU 使用量を抑えつつ、接続数およびリモート PostgreSQL データベース内のレプリケーションスロット数を減らすことができ、はるかに効率的になります。
 
-
 ## テーブルを作成する {#creating-a-table}
 
 ```sql
@@ -52,7 +50,6 @@ PRIMARY KEY key;
 * `user` — PostgreSQL ユーザー。
 * `password` — ユーザーのパスワード。
 
-
 ## 要件 {#requirements}
 
 1. PostgreSQL の設定ファイルにおいて、[wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) は値 `logical` に設定されており、`max_replication_slots` パラメータは少なくとも `2` に設定されている必要があります。
@@ -62,8 +59,6 @@ PRIMARY KEY key;
 3. [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)) データベースエンジンのみ使用できます。
 
 4. `MaterializedPostgreSQL` テーブルエンジンは、その実装で [pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html) PostgreSQL 関数を必要とするため、PostgreSQL バージョン 11 以上でのみ動作します。
-
-
 
 ## 仮想カラム {#virtual-columns}
 

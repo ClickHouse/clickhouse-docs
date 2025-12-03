@@ -9,13 +9,9 @@ score: 15
 doc_type: 'guide'
 ---
 
-
-
 # JSON の読み込み {#loading-json}
 
 次の例では、構造化および半構造化された JSON データを読み込むための、非常に単純なケースを示します。ネストされた構造を含む、より複雑な JSON については、ガイド [**JSON スキーマの設計**](/integrations/data-formats/json/schema) を参照してください。
-
-
 
 ## 構造化された JSON の読み込み {#loading-structured-json}
 
@@ -103,7 +99,6 @@ Ok.
 SELECT * FROM pypi LIMIT 2
 ```
 
-
 ┌───────date─┬─country&#95;code─┬─project────────────┬─type──┬─installer────┬─python&#95;minor─┬─system─┬─version─┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
@@ -122,7 +117,6 @@ FORMAT JSONEachRow
 ````
 
 これらの例では、`JSONEachRow` 形式の使用を想定しています。その他の一般的な JSON 形式もサポートされており、それらを取り込む例は[こちら](/integrations/data-formats/json/other-formats)にあります。
-
 
 ## セミ構造化 JSON の読み込み {#loading-semi-structured-json}
 
@@ -209,7 +203,6 @@ LIMIT 2
 * 厳密な型付けが現実的でないような、スキーマの柔軟性を必要とする。
 
 データ構造が既知で一貫している場合、データが JSON 形式であっても JSON 型が必要になることはほとんどありません。特に、次のようなデータであればなおさらです:
-
 
 * **既知のキーを持つフラットな構造**: 標準的なカラム型（例: String 型）を使用します。
 * **予測可能な入れ子構造**: これらの構造には Tuple 型、Array 型、Nested 型を使用します。

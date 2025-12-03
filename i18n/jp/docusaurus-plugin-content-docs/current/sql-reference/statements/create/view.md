@@ -11,12 +11,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # CREATE VIEW {#create-view}
 
 新しいビューを作成します。ビューには[通常ビュー](#normal-view)、[マテリアライズドビュー](#materialized-view)、[リフレッシュ可能なマテリアライズドビュー](#refreshable-materialized-view)、および[ウィンドウビュー](/sql-reference/statements/create/view#window-view)の種類があります。
-
-
 
 ## 標準表示 {#normal-view}
 
@@ -49,7 +46,6 @@ SELECT a, b, c FROM view
 SELECT a, b, c FROM (SELECT ...)
 ```
 
-
 ## パラメータ化ビュー {#parameterized-view}
 
 パラメータ化ビューは通常のビューと似ていますが、ただちには解決されないパラメータを指定して作成できます。これらのビューはテーブル関数で使用でき、その際はビュー名を関数名として指定し、パラメータ値をその引数として渡します。
@@ -63,7 +59,6 @@ CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Co
 ```sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
-
 
 ## マテリアライズドビュー {#materialized-view}
 
@@ -119,7 +114,6 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 
 ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view) を使用します。`DROP TABLE` も VIEW に対して動作します。
 
-
 ## SQL セキュリティ {#sql_security}
 
 `DEFINER` と `SQL SECURITY` を使用すると、ビューの背後で実行されるクエリを実行する際に、どの ClickHouse ユーザーを使用するかを指定できます。
@@ -166,7 +160,6 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
-
 ## ライブビュー {#live-view}
 
 <DeprecatedBadge/>
@@ -174,8 +167,6 @@ AS SELECT ...
 この機能は非推奨となっており、将来削除される予定です。
 
 参考までに、旧ドキュメントは[こちら](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)にあります。
-
-
 
 ## リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
 
@@ -246,7 +237,6 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 
 リフレッシュ可能なマテリアライズドビューが [Replicated database](../../../engines/database-engines/replicated.md) 内にある場合、各レプリカは互いに調整し、各スケジュールされた時刻には 1 つのレプリカだけがリフレッシュを実行するようにします。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) テーブルエンジンが必須であり、これによりすべてのレプリカがリフレッシュによって生成されたデータを参照できます。
 
 `APPEND` モードでは、`SETTINGS all_replicas = 1` を使用して調整を無効化できます。これにより、レプリカは互いに独立してリフレッシュを実行します。この場合、ReplicatedMergeTree は必須ではありません。
-
 
 非 `APPEND` モードでは、協調リフレッシュのみがサポートされます。非協調なリフレッシュを行いたい場合は、`Atomic` データベースと `CREATE ... ON CLUSTER` クエリを使用して、すべてのレプリカ上にリフレッシュ可能なマテリアライズドビューを作成します。
 
@@ -320,7 +310,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### その他の操作 {#other-operations}
 
-
 すべてのリフレッシュ可能なマテリアライズドビューのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
 
 リフレッシュを手動で停止、開始、トリガー、キャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views) を使用します。
@@ -330,8 +319,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 :::note
 豆知識: リフレッシュクエリは、リフレッシュ対象のビューから読み取ることができ、その場合はリフレッシュ前のバージョンのデータが見えます。これは、Conway's Game of Life（ライフゲーム）を実装できることを意味します: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
-
-
 
 ## ウィンドウビュー {#window-view}
 
@@ -393,7 +380,6 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 ```
 
 遅延して発火した際に出力される要素は、以前の計算結果が更新されたものとして扱う必要があります。ウィンドウの終了時に発火するのではなく、ウィンドウビューは遅延イベントが到着したタイミングで即座に発火します。そのため、同じウィンドウに対して複数の出力が生成されます。ユーザーはこれらの重複した結果を考慮に入れるか、重複排除する必要があります。
-
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用して、ウィンドウビューで指定されている `SELECT` クエリを変更できます。新しい `SELECT` クエリで得られるデータ構造は、`TO [db.]name` 句の有無にかかわらず、元の `SELECT` クエリと同一である必要があります。中間状態は再利用できないため、現在のウィンドウ内のデータは失われることに注意してください。
 
@@ -465,13 +451,10 @@ Window View は次のようなシナリオで有用です。
 * **Monitoring**: メトリクスログを時間単位で集計・計算し、その結果をターゲットテーブルに出力します。ダッシュボードはターゲットテーブルをソーステーブルとして利用できます。
 * **Analyzing**: 時間ウィンドウ内のデータを自動的に集計および前処理します。これは大量のログを分析する際に有用です。前処理によって複数のクエリにおける繰り返し計算が不要になり、クエリのレイテンシを低減できます。
 
-
 ## 関連コンテンツ {#related-content}
 
 - ブログ: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
 - ブログ: [ClickHouse を用いたオブザーバビリティソリューションの構築 第2部: トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
-
-
 
 ## 一時ビュー {#temporary-views}
 

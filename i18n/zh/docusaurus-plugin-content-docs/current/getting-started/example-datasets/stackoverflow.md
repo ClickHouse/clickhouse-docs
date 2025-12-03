@@ -21,7 +21,6 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 该数据集的模式说明可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
 
-
 ## 预置数据 {#pre-prepared-data}
 
 我们提供了一份 Parquet 格式的数据副本，内容更新至 2024 年 4 月。虽然从行数规模来看（6,000 万条帖子），这个数据集对 ClickHouse 来说并不算大，但其中包含了大量文本以及体积较大的 String 类型列。
@@ -31,7 +30,6 @@ CREATE DATABASE stackoverflow
 ```
 
 以下时间测试结果基于一个位于 `eu-west-2`、具有 96 GiB 内存和 24 个 vCPU 的 ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
-
 
 ### 文章 {#posts}
 
@@ -72,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 Posts 数据集也可以按年份获取，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### 投票 {#votes}
 
 ```sql
@@ -94,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 投票数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### 评论 {#comments}
 
@@ -118,7 +114,6 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 ```
 
 评论数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
-
 
 ### 用户 {#users}
 
@@ -146,7 +141,6 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-
 ### 徽章 {#badges}
 
 ```sql
@@ -167,7 +161,6 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 返回 0 行。用时:6.635 秒。已处理 5129 万行,797.05 MB(773 万行/秒,120.13 MB/秒)
 ```
 
-
 ### 文章链接 {#postlinks}
 
 ```sql
@@ -186,7 +179,6 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
-
 
 ### PostHistory {#posthistory}
 
@@ -212,7 +204,6 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-
 ## 原始数据集 {#original-dataset}
 
 原始数据集以压缩的 7-Zip XML 格式提供，可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 获取，文件前缀为 `stackoverflow.com*`。
@@ -230,7 +221,6 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
 这些文件大小可达 35GB，具体下载时间取决于网络状况，大约需要 30 分钟——下载服务器的限速约为 20 MB/秒。
-
 
 ### 转换为 JSON {#convert-to-json}
 
@@ -278,7 +268,6 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
-
 ## 示例查询 {#example-queries}
 
 下面是一些简单的查询示例，帮助你开始使用。
@@ -312,7 +301,6 @@ LIMIT 10
 峰值内存使用：224.03 MiB。
 ```
 
-
 ### 回答数最多的用户（活跃账户） {#user-with-the-most-answers-active-accounts}
 
 账户必须包含 `UserId`。
@@ -338,7 +326,6 @@ LIMIT 5
 返回 5 行。耗时：0.154 秒。处理了 35.83 百万行，193.39 MB（232.33 百万行/秒，1.25 GB/秒）。
 峰值内存使用：206.45 MiB。
 ```
-
 
 ### 阅读量最高的 ClickHouse 相关文章 {#clickhouse-related-posts-with-the-most-views}
 
@@ -369,7 +356,6 @@ LIMIT 10
 返回 10 行。用时:0.472 秒。处理了 5982 万行,1.91 GB(每秒 1.2663 亿行,4.03 GB/秒)。
 峰值内存使用量:240.01 MiB。
 ```
-
 
 ### 最具争议的帖子 {#most-controversial-posts}
 
@@ -404,7 +390,6 @@ LIMIT 3
 返回 3 行。用时:4.779 秒。已处理 2.988 亿行,3.16 GB(6252 万行/秒,661.05 MB/秒)。
 内存峰值:6.05 GiB。
 ```
-
 
 ## 致谢 {#attribution}
 

@@ -13,12 +13,9 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
 # 适用于 Azure Database for PostgreSQL 灵活服务器的源端设置指南 {#azure-flexible-server-for-postgres-source-setup-guide}
 
 ClickPipes 支持 Postgres 12 及更高版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -35,8 +32,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
 3. 此更改需要重启服务器。根据提示重启服务器。
 
 <Image img={restart} alt="在更改 wal_level 后重启服务器" size="lg" border/>
-
-
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
 
@@ -74,8 +69,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-
-
 ## 将 ClickPipes IP 地址添加到防火墙 {#add-clickpipes-ips-to-firewall}
 
 请按照以下步骤将 [ClickPipes IP 地址](../../index.md#list-of-static-ips) 添加到您的网络中。
@@ -84,8 +77,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
    Azure Flexible Server Postgres 的防火墙中；如果使用 SSH 隧道，则将其添加到 Jump Server/Bastion 的防火墙中。
 
 <Image img={firewall} alt="在 Azure Flexible Server for Postgres 中将 ClickPipes IP 地址添加到防火墙" size="lg"/>
-
-
 
 ## 后续步骤 {#whats-next}
 

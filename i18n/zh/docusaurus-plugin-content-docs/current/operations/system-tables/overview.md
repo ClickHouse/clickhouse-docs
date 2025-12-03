@@ -8,8 +8,6 @@ title: '系统表概述'
 doc_type: 'reference'
 ---
 
-
-
 ## 系统表概览 {#system-tables-introduction}
 
 系统表提供以下信息：
@@ -60,7 +58,6 @@ doc_type: 'reference'
 
 默认情况下，表的大小不设上限。要控制表的大小，可以使用 [TTL](/sql-reference/statements/alter/ttl) 设置来删除过期的日志记录，还可以使用 `MergeTree` 引擎表的分区功能。
 
-
 ## 系统指标的来源 {#system-tables-sources-of-system-metrics}
 
 为了收集系统指标，ClickHouse 服务器会使用：
@@ -86,8 +83,6 @@ doc_type: 'reference'
 在 Linux 内核 5.14.x 及之后的版本中，`OSIOWaitMicroseconds` 默认被禁用。
 可以通过执行 `sudo sysctl kernel.task_delayacct=1` 来启用它，或者在 `/etc/sysctl.d/` 中创建一个 `.conf` 文件，并写入 `kernel.task_delayacct = 1`。
 :::
-
-
 
 ## ClickHouse Cloud 中的 system 表 {#system-tables-in-clickhouse-cloud}
 
@@ -176,7 +171,6 @@ ORDER BY most_recent DESC
 └──────────────┴─────────────────────┘
 ```
 
-
 11 行数据。耗时：0.373 秒。已处理 644 万行，25.77 MB（每秒 1,729 万行，69.17 MB/s）。
 峰值内存使用：28.45 MiB。
 
@@ -249,12 +243,10 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 ```
 
-
 3 行数据。耗时：0.462 秒。已处理 7.94 百万行，31.75 MB（17.17 百万行/秒，68.67 MB/秒）。
 
 ```
 ```
-
 
 ## 相关内容 {#related-content}
 

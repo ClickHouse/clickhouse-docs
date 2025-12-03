@@ -56,7 +56,6 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-
 ### 选项 2：外部 Secret（推荐用于生产环境） {#external-clickhouse-secret}
 
 对于生产环境部署，如果希望将凭证与 Helm 配置分离：
@@ -174,7 +173,6 @@ hyperdx:
 
 有关连接 ClickHouse Cloud 的完整示例，请参阅[《创建 ClickHouse Cloud 连接》](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
-
 ## 外部 OTel collector {#external-otel-collector}
 
 如果你已经有现成的 OTel collector 基础设施：
@@ -193,7 +191,6 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 ```
 
 有关如何通过入口暴露 OTel collector 端点的说明，请参阅 [入口配置](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress)。
-
 
 ## 最小部署 {#minimal-deployment}
 
@@ -232,7 +229,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
-
 
 ## 后续步骤 {#next-steps}
 

@@ -7,19 +7,13 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # sumSimpleState {#sumsimplestate}
-
-
 
 ## 描述 {#description}
 
 可以将 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，以返回所有输入值的总和。它返回结果的类型为
 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -105,7 +99,6 @@ ORDER BY post_id ASC;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

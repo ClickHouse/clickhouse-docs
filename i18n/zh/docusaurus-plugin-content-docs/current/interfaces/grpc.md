@@ -7,11 +7,7 @@ title: 'gRPC 接口'
 doc_type: 'reference'
 ---
 
-
-
 # gRPC 接口 {#grpc-interface}
-
-
 
 ## 简介 {#grpc-interface-introduction}
 
@@ -27,8 +23,6 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
 - 外部表。
 
 接口规范定义在 [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) 中。
-
-
 
 ## gRPC 配置 {#grpc-interface-configuration}
 
@@ -65,7 +59,6 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## 内置客户端 {#grpc-client}
 

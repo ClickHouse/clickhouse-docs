@@ -117,7 +117,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 Если ZooKeeper не указан в конфигурационном файле, вы не сможете создавать реплицируемые таблицы, а любые существующие реплицируемые таблицы будут доступны только для чтения.
 
-
 ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
 
 Для каждого запроса `INSERT` в ZooKeeper добавляется примерно десять записей через несколько транзакций. (Более точно: для каждого вставленного блока данных; один запрос `INSERT` содержит один блок или один блок на `max_insert_block_size = 1048576` строк.) Это приводит к немного большему времени ожидания для `INSERT` по сравнению с нереплицируемыми таблицами. Но если вы следуете рекомендациям и вставляете данные пакетами не чаще одного `INSERT` в секунду, это не создаёт никаких проблем. Весь кластер ClickHouse, используемый для координации одного кластера ZooKeeper, в сумме обрабатывает несколько сотен запросов `INSERT` в секунду. Пропускная способность по вставке данных (количество строк в секунду) столь же высока, как и для нереплицируемых данных.
@@ -249,7 +248,6 @@ ORDER BY x;
 
 Чтобы удалить реплику, выполните `DROP TABLE`. Однако удаляется только одна реплика — та, которая находится на сервере, где вы выполняете запрос.
 
-
 ## Восстановление после сбоев {#recovery-after-failures}
 
 Если ClickHouse Keeper недоступен при запуске сервера, реплицируемые таблицы переключаются в режим только для чтения. Система периодически пытается подключиться к ClickHouse Keeper.
@@ -273,7 +271,6 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 ```
 
 Затем перезапустите сервер. При запуске сервер удаляет эти флаги и начинает восстановление.
-
 
 ## Восстановление после полной потери данных {#recovery-after-complete-data-loss}
 
@@ -321,7 +318,6 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 Переименуйте существующую таблицу MergeTree, затем создайте таблицу `ReplicatedMergeTree` со старым именем.
 Переместите данные из старой таблицы в подкаталог `detached` внутри каталога с данными новой таблицы (`/var/lib/clickhouse/data/db_name/table_name/`).
 Затем выполните `ALTER TABLE ATTACH PARTITION` на одной из реплик, чтобы добавить эти части в рабочий набор.
-
 
 ## Преобразование из ReplicatedMergeTree в MergeTree {#converting-from-replicatedmergetree-to-mergetree}
 

@@ -23,7 +23,6 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 `SET allow_database_iceberg = 1;`
 :::
 
-
 ## 收集 OneLake 所需信息 {#gathering-requirements}
 
 在 Microsoft Fabric 中查询数据表之前，你需要收集以下信息：
@@ -43,7 +42,6 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 SET allow_database_iceberg=1
 ```
 
-
 ### 连接 OneLake {#connect-onelake}
 
 ```sql
@@ -58,7 +56,6 @@ auth_scope = 'https://storage.azure.com/.default',
 onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
-
 
 ## 使用 ClickHouse 查询 OneLake {#querying-onelake-using-clickhouse}
 
@@ -120,7 +117,6 @@ source_file:           green_tripdata_2017-05.parquet
 
 要查看该表的 DDL：
 
-
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
@@ -154,7 +150,6 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    │↳ENGINE = Iceberg('abfss://<warehouse_id>@onelake.dfs.fabric.microsoft.com/<data_item_id>/Tables/year_2017/green_tripdata_2017') │
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 将数据湖中的数据导入 ClickHouse {#loading-data-from-onelake-into-clickhouse}
 

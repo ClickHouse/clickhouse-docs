@@ -9,12 +9,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.delta_lake_metadata_log {#systemdelta_lake_metadata_log}
 
 Таблица `system.delta_lake_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Delta Lake, которые читает ClickHouse. Она предоставляет подробную информацию о каждом файле метаданных, что полезно для отладки, аудита и понимания эволюции структуры таблиц Delta Lake.
-
-
 
 ## Назначение {#purpose}
 
@@ -23,8 +20,6 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 :::note
 Эта таблица предназначена в первую очередь для целей отладки.
 :::
-
-
 
 ## Столбцы {#columns}
 | Имя           | Тип      | Описание                                                                                   |
@@ -37,8 +32,6 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 | `content`      | [String](../../sql-reference/data-types/string.md)    | Содержимое в формате JSON (исходные метаданные из файла .json).       |
 
 <SystemTableCloud/>
-
-
 
 ## Управление уровнем детализации журналирования {#controlling-log-verbosity}
 

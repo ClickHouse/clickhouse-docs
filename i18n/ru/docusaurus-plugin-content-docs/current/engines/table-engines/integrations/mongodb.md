@@ -7,16 +7,12 @@ title: 'Движок таблицы MongoDB'
 doc_type: 'reference'
 ---
 
-
-
 # Табличный движок MongoDB {#mongodb-table-engine}
 
 Табличный движок MongoDB — это движок только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
 
 Поддерживаются только серверы MongoDB версии 3.6 и выше.
 [Seed list (`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) пока не поддерживается.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -59,7 +55,6 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `uri`         | URI подключения к серверу MongoDB.                                                                                                 |
 | `collection`  | Имя коллекции на удалённом сервере.                                                                                                |
 | `oid_columns` | Список имён столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
-
 
 ## Сопоставление типов {#types-mappings}
 
@@ -131,7 +126,6 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- теперь вернёт 1
 ```
 
-
 ## Поддерживаемые предложения {#supported-clauses}
 
 Поддерживаются только запросы с простыми выражениями (например, `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`).
@@ -156,7 +150,6 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 Это относится к `Date`, `Date32`, `DateTime`, `Bool`, `UUID`.
 
 :::
-
 
 ## Пример использования {#usage-example}
 
@@ -237,7 +230,6 @@ LIMIT 3;
 3. │ Дорога                 │    7.3 │
    └────────────────────────┴────────┘
 ```
-
 
 ## Диагностика и устранение неполадок {#troubleshooting}
 Сгенерированный запрос MongoDB можно увидеть в журналах с уровнем DEBUG.

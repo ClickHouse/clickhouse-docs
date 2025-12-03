@@ -6,8 +6,6 @@
 - [Обработка запросов](#troubleshooting-does-not-process-queries)
 - [Эффективность обработки запросов](#troubleshooting-too-slow)
 
-
-
 ## Установка {#troubleshooting-installation-errors}
 
 ### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
@@ -76,7 +74,6 @@ $ docker run -it clickhouse/clickhouse-server
 Poco::Exception. Code: 1000, e.code() = 0, системное исключение: невозможно создать поток, трассировка стека (при копировании этого сообщения всегда включайте строки, приведённые ниже):
 ```
 
-
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
 2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
@@ -97,7 +94,6 @@ Poco::Exception. Code: 1000, e.code() = 0, системное исключени
 Причина — устаревший демон Docker версии ниже `20.10.10`. Исправить это можно либо обновив Docker, либо запустив `docker run [--privileged | --security-opt seccomp=unconfined]`. Второй вариант несет риски для безопасности.
 
 ```
-
 
 ## Подключение к серверу {#troubleshooting-accepts-no-connections}
 
@@ -206,7 +202,6 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   Возможно, вы используете неверное имя пользователя или пароль.
 
-
 ## Обработка запросов {#troubleshooting-does-not-process-queries}
 
 Если ClickHouse не может выполнить запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получаете описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
@@ -219,7 +214,6 @@ Code: 47, e.displayText() = DB::Exception: Неизвестный идентиф
 Если запустить `clickhouse-client` с параметром `stack-trace`, ClickHouse вернёт стек вызовов сервера с описанием ошибки.
 
 Вы можете увидеть сообщение об обрыве соединения. В этом случае повторите запрос. Если соединение обрывается каждый раз при выполнении запроса, проверьте журналы сервера на наличие ошибок.
-
 
 ## Эффективность обработки запросов {#troubleshooting-too-slow}
 

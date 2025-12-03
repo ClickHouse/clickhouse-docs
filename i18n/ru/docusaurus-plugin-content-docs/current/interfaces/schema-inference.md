@@ -10,13 +10,9 @@ ClickHouse может автоматически определять струк
 В этом документе описано, когда используется автоматическое определение схемы, как оно работает с различными входными форматами и какие настройки
 его контролируют.
 
-
-
 ## Использование {#usage}
 
 Автоматическое определение схемы используется, когда ClickHouse должен прочитать данные в определённом формате, но их структура неизвестна.
-
-
 
 ## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). {#table-functions-file-s3-url-hdfs-azureblobstorage}
 
@@ -65,7 +61,6 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
 
 Если в запросе `CREATE TABLE` не указан список столбцов, структура таблицы будет автоматически определена по данным.
@@ -108,7 +103,6 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ## clickhouse-local {#clickhouse-local}
 
 У `clickhouse-local` есть необязательный параметр `-S/--structure`, задающий структуру входных данных. Если этот параметр не указан или имеет значение `auto`, структура будет определена по данным.
@@ -138,7 +132,6 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 3    32    Lana    ['fitness','reading','shopping']
 4    47    Brayan    ['movies','skydiving']
 ```
-
 
 ## Использование структуры из таблицы-вставки {#using-structure-from-insertion-table}
 
@@ -248,7 +241,6 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 В этом случае в запросе `SELECT` выполняются некоторые операции со столбцом `hobbies` перед его вставкой в таблицу, поэтому ClickHouse не может использовать структуру целевой таблицы и будет использовано автоматическое определение схемы.
 
-
 ## Кэш автоопределения схемы {#schema-inference-cache}
 
 Для большинства форматов ввода автоопределение схемы читает часть данных, чтобы определить их структуру, и этот процесс может занять некоторое время.
@@ -270,8 +262,6 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 **Примеры:**
 
 Попробуем определить структуру примерного набора данных из S3 `github-2022.ndjson.gz` и посмотрим, как работает кэш автоопределения схемы:
-
-
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
@@ -416,7 +406,6 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 └─────────┘
 ```
 
-
 ## Текстовые форматы {#text-formats}
 
 Для текстовых форматов ClickHouse читает данные построчно, извлекает значения столбцов в соответствии с форматом,
@@ -488,7 +477,6 @@ DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 Если массив содержит значения разных типов и параметр `input_format_json_infer_array_of_dynamic_from_array_of_different_types` включён (по умолчанию он включён), то его тип будет `Array(Dynamic)`:
 
 ```sql
@@ -554,7 +542,6 @@ Map:
 
 В JSON можно читать объекты, значения которых имеют один и тот же тип, как значения типа Map.
 Примечание: это будет работать только в том случае, если настройки `input_format_json_read_objects_as_strings` и `input_format_json_try_infer_named_tuples_from_objects` отключены.
-
 
 ```sql
 SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
@@ -642,7 +629,6 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Результат:
 
-
 ```response
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
@@ -716,7 +702,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 Эта настройка включена по умолчанию.
 
 Примечание: включение этой настройки будет иметь эффект только в том случае, если настройка `input_format_json_try_infer_named_tuples_from_objects` отключена.
-
 
 ```sql
 SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
@@ -819,7 +804,6 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 ##### input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
 
-
 Включение этого параметра позволяет использовать тип данных String для JSON-ключей, которые в выборке данных при определении схемы содержат только `Null`/`{}`/`[]`.
 В JSON-форматах любое значение может быть считано как String, если включены все соответствующие настройки (по умолчанию они включены), и мы можем избежать ошибок вида `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` при определении схемы, используя тип String для ключей с неизвестными типами.
 
@@ -885,7 +869,6 @@ DESC format(CSV, 'Hello world!,World hello!')
 ```
 
 Date и DateTime:
-
 
 ```sql
 DESC format(CSV, '"2020-01-01","2020-01-01 00:00:00","2022-01-01 00:00:00.000"')
@@ -958,7 +941,6 @@ DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
 │ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 Если ClickHouse не может определить тип значения в кавычках, потому что данные содержат только значения NULL, он будет интерпретировать его как String:
 
@@ -1065,7 +1047,6 @@ DESC format(CSV, '42,42.42');
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### TSV/TSKV {#tsv-tskv}
 
 В форматах TSV/TSKV ClickHouse извлекает значение столбца из строки в соответствии с табуляцией как разделителем, а затем разбирает извлечённое значение с помощью
@@ -1119,7 +1100,6 @@ DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 Массивы:
 
@@ -1192,7 +1172,6 @@ DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ',')
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 Если ClickHouse не может определить тип данных, потому что данные состоят только из значений NULL, он будет интерпретировать их как String:
 
@@ -1283,7 +1262,6 @@ $$)
 
 **Примеры:**
 
-
 Целые числа, вещественные числа, логические значения, строки:
 
 ```sql
@@ -1362,7 +1340,6 @@ DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 Вложенные массивы, кортежи и словари:
 
 ```sql
@@ -1437,7 +1414,6 @@ $$)
 ```
 
 Пример автоопределения заголовка (когда включён `input_format_custom_detect_header`):
-
 
 ```sql
 SET format_custom_row_before_delimiter = '<row_before_delimiter>',
@@ -1520,7 +1496,6 @@ SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
        format_regexp_escaping_rule = 'CSV'
 ```
 
-
 DESC format(Regexp, $$Line: value&#95;1=42, value&#95;2=&quot;Some string 1&quot;, value&#95;3=&quot;[1, NULL, 3]&quot;
 Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4, 5, NULL]&quot;$$)
 
@@ -1587,7 +1562,6 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 
 #### schema&#95;inference&#95;make&#95;columns&#95;nullable $ {#schema-inference-make-columns-nullable}
 
-
 Управляет приведением выводимых типов к `Nullable` при выводе схемы для форматов без информации о nullability. Возможные значения:
 
 * 0 — выводимый тип никогда не будет `Nullable`,
@@ -1653,7 +1627,6 @@ DESC format(JSONEachRow, $$
 │ hobbies │ Array(String) │              │                    │         │                  │                │
 └─────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 #### input&#95;format&#95;try&#95;infer&#95;integers {#input-format-try-infer-integers}
 
@@ -1733,7 +1706,6 @@ DESC format(JSONEachRow, $$
 
 **Примеры**
 
-
 ```sql
 SET input_format_try_infer_datetimes = 0;
 DESC format(JSONEachRow, $$
@@ -1803,7 +1775,6 @@ DESC format(JSONEachRow, $$
 ```
 
 Примечание: При разборе значений типов DateTime при выводе схемы учитывается настройка [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format)
-
 
 #### input&#95;format&#95;try&#95;infer&#95;dates {#input-format-try-infer-dates}
 
@@ -1878,7 +1849,6 @@ $$)
 │ c1   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Самоописывающиеся форматы {#self-describing-formats}
 
@@ -1969,7 +1939,6 @@ $$)
 
 В формате Avro ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
-
 | Тип данных Avro                     | Тип данных ClickHouse                                                           |
 |-------------------------------------|---------------------------------------------------------------------------------|
 | `boolean`                           | [Bool](../sql-reference/data-types/boolean.md)                                  |
@@ -2023,8 +1992,6 @@ $$)
 
 В формате Arrow ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
-
-
 | Тип данных Arrow                 | Тип данных ClickHouse                                    |
 |----------------------------------|----------------------------------------------------------|
 | `BOOL`                           | [Bool](../sql-reference/data-types/boolean.md)          |
@@ -2077,8 +2044,6 @@ $$)
 Формат Native используется внутри ClickHouse и содержит схему непосредственно в данных.
 При определении схемы ClickHouse считывает её из данных без каких-либо преобразований.
 
-
-
 ## Форматы с внешней схемой {#formats-with-external-schema}
 
 Такие форматы требуют наличия схемы, описывающей данные, в отдельном файле на определённом языке описания схем.
@@ -2125,8 +2090,6 @@ $$)
 | `struct`                             | [Tuple](../sql-reference/data-types/tuple.md)            |
 | `union(T, Void)`, `union(Void, T)`   | [Nullable(T)](../sql-reference/data-types/nullable.md)   |
 
-
-
 ## Строго типизированные бинарные форматы {#strong-typed-binary-formats}
 
 В таких форматах каждое сериализованное значение содержит информацию о своём типе (и, возможно, о своём имени), но нет информации о всей таблице.
@@ -2172,8 +2135,6 @@ $$)
 | `\x03` document                                                                               | [Named Tuple](../sql-reference/data-types/tuple.md)/[Map](../sql-reference/data-types/map.md) (с ключами типа String)        |
 
 По умолчанию все выведенные типы заключаются в `Nullable`, но это можно изменить с помощью настройки `schema_inference_make_columns_nullable`.
-
-
 
 ## Форматы с фиксированной схемой {#formats-with-constant-schema}
 
@@ -2226,7 +2187,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 │ json │ JSON │              │                    │         │                  │                │
 └──────┴──────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Режимы определения схемы {#schema-inference-modes}
 
@@ -2337,7 +2297,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 * Поскольку некоторые файлы могут не содержать некоторые столбцы из результирующей схемы, режим объединения (union) поддерживается только для форматов, которые умеют читать подмножество столбцов (таких как JSONEachRow, Parquet, TSVWithNames и т. д.) и не будет работать для других форматов (таких как CSV, TSV, JSONCompactEachRow и т. д.).
 * Если ClickHouse не может определить схему по одному из файлов, будет сгенерировано исключение.
 * Если у вас много файлов, чтение схемы из всех них может занять много времени.
-
 
 ## Автоматическое определение формата {#automatic-format-detection}
 

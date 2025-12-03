@@ -7,8 +7,6 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-
-
 # PostgreSQL {#postgresql}
 
 Позволяет подключаться к базам данных на удалённом сервере [PostgreSQL](https://www.postgresql.org). Поддерживает операции чтения и записи (запросы `SELECT` и `INSERT`) для обмена данными между ClickHouse и PostgreSQL.
@@ -16,8 +14,6 @@ doc_type: 'guide'
 Обеспечивает доступ в режиме реального времени к списку таблиц и их структуре на удалённом сервере PostgreSQL с помощью запросов `SHOW TABLES` и `DESCRIBE TABLE`.
 
 Поддерживает модификацию структуры таблиц (`ALTER TABLE ... ADD|DROP COLUMN`). Если параметр `use_table_cache` (см. параметры движка ниже) установлен в `1`, структура таблиц кэшируется и не проверяется на наличие изменений, но может быть обновлена с помощью запросов `DETACH` и `ATTACH`.
-
-
 
 ## Создание базы данных {#creating-a-database}
 
@@ -34,7 +30,6 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 * `password` — пароль пользователя.
 * `schema` — схема PostgreSQL.
 * `use_table_cache` — определяет, кэшируется ли структура таблицы базы данных. Необязательный параметр. Значение по умолчанию: `0`.
-
 
 ## Поддержка типов данных {#data_types-support}
 
@@ -53,8 +48,6 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)           |
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
-
-
 
 ## Примеры использования {#examples-of-use}
 
@@ -147,7 +140,6 @@ DESCRIBE TABLE test_database.test_table;
 │ data   │ Nullable(String)  │
 └────────┴───────────────────┘
 ```
-
 
 ## Связанные материалы {#related-content}
 

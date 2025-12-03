@@ -75,7 +75,6 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 
 （上面的 Python 脚本非常慢（每个文件大约需要 2–10 分钟），占用大量内存（每个文件 41 GB），且生成的 CSV 文件也很大（每个 10 GB），使用时请谨慎。如果你的 RAM 足够多，可以增大 `-P1` 的数值以提高并行度。如果这仍然太慢，可以考虑设计更好的摄取流程——例如先将 .npy 文件转换为 Parquet，然后使用 ClickHouse 完成其余处理。）
 
-
 ## 创建表 {#create-table}
 
 要先创建一个不带索引的表，运行：
@@ -103,7 +102,6 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
 请注意，`id` 列仅用于示例说明，脚本会向其中写入非唯一值。
-
 
 ## 运行基于暴力算法的向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
 
@@ -136,7 +134,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 返回 10 行。用时:4.605 秒。已处理 1.0038 亿行,309.98 GB(每秒 2180 万行,每秒 67.31 GB)
 ```
 
-
 ## 使用向量相似性索引执行近似向量相似性搜索 {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
 现在我们在该表上定义两个向量相似性索引。
@@ -167,7 +164,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 
 **结果**
 
-
 ```response
     ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
  1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
@@ -188,7 +184,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 查询延迟显著降低，因为最近邻是通过向量索引检索的。
 使用向量相似度索引进行向量相似度搜索时，返回的结果可能会与暴力搜索的结果略有差异。
 通过谨慎选择 HNSW 参数并评估索引质量，HNSW 索引有望实现接近 1 的召回率（与暴力搜索具有相同的准确性）。
-
 
 ## 使用 UDF 创建嵌入向量 {#creating-embeddings-with-udfs}
 
@@ -254,7 +249,6 @@ LIMIT 10
 ```
 
 请注意，`encode_text()` UDF 本身的计算可能需要几秒钟才能生成嵌入向量。
-
 
 ### 图像嵌入 {#image-embeddings}
 

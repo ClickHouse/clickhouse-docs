@@ -7,19 +7,13 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf {#countif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`count`](/sql-reference/aggregate-functions/reference/count)
 関数に適用すると、条件が真となる行の数を数えるための
 `countIf` 集約コンビネータ関数として利用できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -56,7 +50,6 @@ GROUP BY user_id;
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

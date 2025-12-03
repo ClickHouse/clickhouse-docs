@@ -36,7 +36,6 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-
 ### ネイティブ HTTP サーバーの例 (net/http) {#native-http-server-example}
 
 ここでは、`net/http/otelhttp` を使用します。
@@ -145,7 +144,6 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-
 ### Gin アプリケーションの例 {#gin-application-example}
 
 この例では、`gin-gonic/gin` を使用します。
@@ -229,7 +227,6 @@ func main() {
   router.Run(":7777")
 }
 ```
-
 
 ### 環境変数を設定する {#configure-environment-variables}
 

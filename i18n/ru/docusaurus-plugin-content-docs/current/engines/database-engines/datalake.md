@@ -6,16 +6,12 @@ title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
 
-
-
 # DataLakeCatalog {#datalakecatalog}
 
 Движок базы данных `DataLakeCatalog` позволяет подключить ClickHouse к внешним
 каталогам данных и выполнять запросы к данным в открытых табличных форматах без необходимости дублирования данных.
 Это превращает ClickHouse в мощный движок запросов, который бесшовно работает
 с инфраструктурой вашего существующего дата-лейка.
-
-
 
 ## Поддерживаемые каталоги {#supported-catalogs}
 
@@ -25,8 +21,6 @@ doc_type: 'reference'
 - **Databricks Unity Catalog** — для таблиц Delta Lake и Iceberg
 - **Hive Metastore** — традиционный каталог экосистемы Hadoop
 - **REST Catalogs** — любой каталог, поддерживающий спецификацию REST для Iceberg
-
-
 
 ## Создание базы данных {#creating-a-database}
 
@@ -64,7 +58,6 @@ SETTINGS
 | `aws_access_key_id`     | Идентификатор ключа доступа AWS для доступа к S3/Glue (если не используются выдаваемые учетные данные) |
 | `aws_secret_access_key` | Секретный ключ доступа AWS для доступа к S3/Glue (если не используются выдаваемые учетные данные)      |
 | `region`                | Регион AWS для сервиса (например, `us-east-1`)                                                         |
-
 
 ## Примеры {#examples}
 

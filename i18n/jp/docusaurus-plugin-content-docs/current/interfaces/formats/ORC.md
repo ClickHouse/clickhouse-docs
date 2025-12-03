@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 [Apache ORC](https://orc.apache.org/) は、[Hadoop](https://hadoop.apache.org/) エコシステムで広く使用されている列指向ストレージ形式です。
-
-
 
 ## データ型の対応関係 {#data-types-matching-orc}
 
@@ -49,8 +45,6 @@ doc_type: 'reference'
 - 上記以外の型はサポートされていません。
 - 配列はネスト可能であり、要素として `Nullable` 型の値を取ることができます。`Tuple` および `Map` 型もネスト可能です。
 - ClickHouse テーブルの列のデータ型は、対応する ORC データフィールドと一致している必要はありません。データを挿入する際、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルの列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -100,7 +94,6 @@ FORMAT ORC
 :::tip
 ORC はバイナリ形式のため、ターミナル上で人間が読める形で表示することはできません。`INTO OUTFILE` 句を使用して ORC ファイルとして出力してください。
 :::
-
 
 ## フォーマット設定 {#format-settings}
 

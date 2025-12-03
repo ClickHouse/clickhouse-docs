@@ -14,7 +14,6 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
 # Интерфейс MySQL {#mysql-interface}
 
 ClickHouse поддерживает сетевой протокол MySQL (MySQL wire protocol). Это позволяет отдельным клиентам, у которых нет нативных коннекторов для ClickHouse, использовать вместо них протокол MySQL. Работа была проверена со следующими BI-инструментами:
@@ -36,8 +35,6 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 Чтобы лучше поддерживать SQL-диалект указанных выше BI-инструментов, интерфейс MySQL в ClickHouse неявно выполняет запросы SELECT с настройкой [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias).
 Эту настройку нельзя отключить, и в редких пограничных случаях она может приводить к отличиям в поведении между запросами, отправленными в обычный интерфейс запросов ClickHouse и интерфейс запросов MySQL.
 ::::
-
-
 
 ## Включение интерфейса MySQL в ClickHouse Cloud {#enabling-the-mysql-interface-on-clickhouse-cloud}
 
@@ -62,8 +59,6 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 Скопируйте показанную строку подключения к MySQL.
 
 <Image img={mysql3} alt="Экран учетных данных — строка подключения" size="md"/>
-
-
 
 ## Создание нескольких пользователей MySQL в ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
@@ -117,7 +112,6 @@ ERROR 2013 (HY000): Потеряно соединение с сервером My
 
 В этом случае убедитесь, что имя пользователя имеет формат `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).
 
-
 ## Включение интерфейса MySQL в самостоятельно управляемом ClickHouse {#enabling-the-mysql-interface-on-self-managed-clickhouse}
 
 Добавьте параметр [mysql&#95;port](../operations/server-configuration-parameters/settings.md#mysql_port) в файл конфигурации сервера. Например, вы можете указать порт в новом XML-файле в папке `config.d/` [folder](../operations/configuration-files):
@@ -133,7 +127,6 @@ ERROR 2013 (HY000): Потеряно соединение с сервером My
 ```bash
 {} <Information> Application: Прослушивается протокол совместимости MySQL: 127.0.0.1:9004
 ```
-
 
 ## Подключение MySQL к ClickHouse {#connect-mysql-to-clickhouse}
 

@@ -7,18 +7,12 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-
-
 # sumMap {#summap}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
 для вычисления суммы значений в `Map` по каждому ключу с использованием агрегирующего комбинатора `sumMap`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -64,7 +58,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':80,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

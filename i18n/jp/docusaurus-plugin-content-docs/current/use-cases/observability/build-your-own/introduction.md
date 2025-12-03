@@ -11,7 +11,6 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-
 # オブザーバビリティのための ClickHouse 活用 {#using-clickhouse-for-observability}
 
 ## はじめに {#introduction}
@@ -85,7 +84,6 @@ Observability のユースケースには、ログ、トレース、メトリク
 :::note メトリクス
 ClickHouse はメトリクスデータの保存にも使用できますが、この柱については、Prometheus データフォーマットや PromQL のサポートなどの機能がまだ開発途上であり、ClickHouse における成熟度はそれほど高くありません。
 :::
-
 
 ### 分散トレーシング {#distributed-tracing}
 

@@ -7,14 +7,10 @@ title: 'ウィンドウ関数'
 doc_type: 'reference'
 ---
 
-
-
 # ウィンドウ関数 {#window-functions}
 
 ウィンドウ関数を使用すると、現在の行と関連する行の集合を対象に計算を実行できます。
 実行できる計算の一部は集約関数で行えるものと似ていますが、ウィンドウ関数では行が 1 つの結果行にグループ化されないため、各行は個別の行として返されます。
-
-
 
 ## 標準ウィンドウ関数 {#standard-window-functions}
 
@@ -36,8 +32,6 @@ ClickHouse は、ウィンドウおよびウィンドウ関数を定義するた
 | `lag/lead(value, offset)`                                                          | ✅ <br/> 次のいずれかの回避策も使用できます:<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`、または `lead` の場合は `following` を使用します。<br/> 2) ウィンドウフレームを考慮する、類似の `lagInFrame/leadInFrame` を使用します。`lag/lead` と同じ動作を得るには、`rows between unbounded preceding and unbounded following` を使用します。                                                                 |
 | ntile(buckets) | ✅ <br/> 次のようにウィンドウを指定します: (partition by x order by y rows between unbounded preceding and unbounded following)。 |
 
-
-
 ## ClickHouse固有のウィンドウ関数 {#clickhouse-specific-window-functions}
 
 以下のClickHouse固有のウィンドウ関数も提供されています：
@@ -50,7 +44,6 @@ ClickHouse は、ウィンドウおよびウィンドウ関数を定義するた
 
 - 1行目：`0`
 - $i$行目：${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$
-
 
 ## 構文 {#syntax}
 
@@ -96,7 +89,6 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - パーティション内で現在の行に順位を付けます（欠番なし）。
 * [`lagInFrame(x)`](./lagInFrame.md) - 順序付けられたフレーム内で、現在の行から指定された物理オフセットだけ前の行で評価された値を返します。
 * [`leadInFrame(x)`](./leadInFrame.md) - 順序付けられたフレーム内で、現在の行から指定されたオフセットだけ後ろの行で評価された値を返します。
-
 
 ## 例 {#examples}
 
@@ -196,7 +188,6 @@ SELECT
 FROM salaries;
 ```
 
-
 ```text
 ┌─player──────────┬─salary─┬─team──────────────────────┬─teamMax─┬───diff─┐
 │ Charles Juarez  │ 190000 │ New Coreystad Archdukes   │  190000 │      0 │
@@ -280,7 +271,6 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-
 ```sql
 -- 短縮形 - 境界式なし、ORDER BY なし
 -- `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` と同等
@@ -354,7 +344,6 @@ ORDER BY
 │        1 │     5 │     5 │ [1,2,3,4,5]        │ [1,2,3,4,5]  │
 └──────────┴───────┴───────┴────────────────────┴──────────────┘
 ```
-
 
 ```sql
 -- フレームはパーティションの先頭から現在行までに制限されるが、順序は降順
@@ -451,7 +440,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
 │        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
@@ -520,7 +508,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─frame&#95;values&#95;1─┬─second&#95;value─┐
 │ [1]            │         ᴺᵁᴸᴸ │
 │ [1,2]          │            2 │
@@ -531,7 +518,6 @@ ORDER BY
 
 ```
 ```
-
 
 ## 実例 {#real-world-examples}
 
@@ -646,7 +632,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
@@ -725,7 +710,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
@@ -769,7 +753,6 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ````
 
-
 ## 参考 {#references}
 
 ### GitHub Issues {#github-issues}
@@ -803,8 +786,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
-
-
 
 ## 関連コンテンツ {#related-content}
 

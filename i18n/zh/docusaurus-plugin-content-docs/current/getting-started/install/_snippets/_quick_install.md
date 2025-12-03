@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## 使用 curl 安装 ClickHouse {#install-clickhouse-using-curl}
 
 运行以下命令，为你的操作系统下载一个独立的二进制可执行文件。
@@ -17,7 +16,6 @@ curl https://clickhouse.com/ | sh
 Mac 用户：如果你遇到提示无法验证二进制文件开发者的错误，请参见[此文](/knowledgebase/fix-developer-verification-error-in-macos)。
 :::
 
-
 ## 启动 clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` 允许使用 ClickHouse 强大的 SQL 语法，在无需任何配置的情况下处理本地和远程文件。表数据会存储在临时位置，这意味着在重启 `clickhouse-local` 之后，先前创建的表将不再可用。
@@ -28,7 +26,6 @@ Mac 用户：如果你遇到提示无法验证二进制文件开发者的错误�
 ./clickhouse
 ```
 
-
 ## 启动 clickhouse-server {#start-clickhouse-server}
 
 如果您希望持久化存储数据，需要运行 `clickhouse-server`。您可以使用以下命令启动 ClickHouse 服务器：
@@ -36,7 +33,6 @@ Mac 用户：如果你遇到提示无法验证二进制文件开发者的错误�
 ```bash
 ./clickhouse server
 ```
-
 
 ## 启动 clickhouse-client {#start-clickhouse-client}
 

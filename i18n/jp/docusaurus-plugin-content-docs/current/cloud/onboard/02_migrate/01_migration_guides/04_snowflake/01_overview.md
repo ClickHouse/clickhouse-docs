@@ -12,7 +12,6 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-
 # Snowflake から ClickHouse への移行 {#snowflake-to-clickhouse-migration}
 
 > このドキュメントでは、Snowflake から ClickHouse へのデータ移行の概要を説明します。

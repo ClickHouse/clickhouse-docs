@@ -7,20 +7,15 @@ keywords: ['APPLY', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
 # APPLY 修飾子 {#apply}
 
 > クエリの外側のテーブル式によって返される各行に対して、任意の関数を呼び出せるようにします。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
-
 
 ## 例 {#example}
 

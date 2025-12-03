@@ -7,14 +7,10 @@ title: '窗口函数'
 doc_type: 'reference'
 ---
 
-
-
 # 窗口函数  {#window-functions}
 
 窗口函数可以在与当前行相关的一组行上执行计算。
 其中有些计算类似于使用聚合函数所能完成的计算，但窗口函数不会将多行合并为单个结果——每一行仍然会单独返回。
-
-
 
 ## 标准窗口函数 {#standard-window-functions}
 
@@ -36,8 +32,6 @@ ClickHouse 支持用于定义窗口和窗口函数的标准语法。下表说明
 | `lag/lead(value, offset)`                                                          | ✅ <br/> 你还可以使用以下任一变通方式：<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`，对于 `lead` 使用 `following` <br/> 2) 使用 `lagInFrame/leadInFrame`，其行为类似，但会遵循窗口帧定义。若要获得与 `lag/lead` 完全相同的行为，请使用 `rows between unbounded preceding and unbounded following`                                                                 |
 | `ntile(buckets)` | ✅ <br/> 以如下方式指定窗口：`partition by x order by y rows between unbounded preceding and unbounded following`。 |
 
-
-
 ## ClickHouse 特定窗口函数 {#clickhouse-specific-window-functions}
 
 ClickHouse 还提供以下特定窗口函数:
@@ -50,7 +44,6 @@ ClickHouse 还提供以下特定窗口函数:
 
 - 第 1 行为 `0`,
 - 第 $i$ 行为 ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
-
 
 ## 语法 {#syntax}
 
@@ -96,7 +89,6 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - 在其分区内对当前行进行连续排名，不存在空缺。
 * [`lagInFrame(x)`](./lagInFrame.md) - 返回在其有序窗口中，相对于当前行之前指定物理偏移量那一行计算得到的值。
 * [`leadInFrame(x)`](./leadInFrame.md) - 返回在其有序窗口中，相对于当前行之后指定偏移量那一行计算得到的值。
-
 
 ## 示例 {#examples}
 
@@ -196,7 +188,6 @@ SELECT
 FROM salaries;
 ```
 
-
 ```text
 ┌─球员────────────┬─薪水───┬─球队──────────────────────┬─队内最高┬───差额─┐
 │ Charles Juarez  │ 190000 │ New Coreystad Archdukes   │  190000 │      0 │
@@ -280,7 +271,6 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-
 ```sql
 -- 简写形式 - 无边界表达式,无 ORDER BY,
 -- 等同于 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
@@ -354,7 +344,6 @@ ORDER BY
 │        1 │     5 │     5 │ [1,2,3,4,5]        │ [1,2,3,4,5]  │
 └──────────┴───────┴───────┴────────────────────┴──────────────┘
 ```
-
 
 ```sql
 -- 框架范围从分区起始位置到当前行，但排序为倒序
@@ -451,7 +440,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
 │        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
@@ -520,7 +508,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─frame&#95;values&#95;1─┬─second&#95;value─┐
 │ [1]            │         ᴺᵁᴸᴸ │
 │ [1,2]          │            2 │
@@ -531,7 +518,6 @@ ORDER BY
 
 ```
 ```
-
 
 ## 实际案例 {#real-world-examples}
 
@@ -646,7 +632,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
@@ -725,7 +710,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
@@ -769,7 +753,6 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ````
 
-
 ## 参考资料 {#references}
 
 ### GitHub 议题 {#github-issues}
@@ -803,8 +786,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
-
-
 
 ## 相关内容 {#related-content}
 

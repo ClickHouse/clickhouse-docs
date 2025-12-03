@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-
-
 ## 説明 {#description}
 
 最初の行に列名が記載されている点が、[`TabSeparated`](./TabSeparated.md) 形式と異なります。
@@ -26,8 +24,6 @@ doc_type: 'reference'
 入力データ中の列は名前に基づいてテーブルの列にマッピングされ、さらに [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合は、不明な名前の列はスキップされます。
 それ以外の場合、最初の行はスキップされます。
 :::
-
-
 
 ## 使用例 {#example-usage}
 
@@ -94,6 +90,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 書式設定 {#format-settings}

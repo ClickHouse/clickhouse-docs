@@ -11,7 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-
 # 投影 {#projections}
 
 ## 简介 {#introduction}
@@ -154,7 +153,6 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
-
 
 ### 使用投影加速英国房价已付数据查询 {#using-projections-to-speed-up-UK-price-paid}
 
@@ -338,7 +336,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 返回 2 行。耗时：0.006 秒。
 ```
 
-
 ### 更多示例 {#further-examples}
 
 以下示例继续使用相同的英国价格数据集，对比使用和不使用投影的查询。
@@ -349,7 +346,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
-
 
 #### 构建 Projection {#build-projection}
 
@@ -383,7 +379,6 @@ SETTINGS mutations_sync = 1
 
 以下查询对比了启用和未启用投影时的性能。若要禁用投影功能，请使用设置 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections)，该设置默认是启用的。
 
-
 #### 查询 1：各年份的平均价格 {#average-price-projections}
 
 ```sql runnable
@@ -410,7 +405,6 @@ ORDER BY year ASC
 
 结果应该是相同的，但后一个示例的性能会更优！
 
-
 #### 查询 2：伦敦历年平均价格 {#average-price-london-projections}
 
 ```sql runnable
@@ -435,7 +429,6 @@ WHERE town = 'LONDON'
 GROUP BY year
 ORDER BY year ASC
 ```
-
 
 #### 查询 3：最昂贵的街区 {#most-expensive-neighborhoods-projections}
 
@@ -477,7 +470,6 @@ LIMIT 100
 ```
 
 同样，结果相同，但请注意第二个查询的执行性能有所提升。
-
 
 ### 在单个查询中组合投影 {#combining-projections}
 
@@ -584,7 +576,6 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 ```
 
 `EXPLAIN` 的输出（如上所示）自上而下展示了逻辑查询计划：
-
 
 | 行号 | 描述                                                                                              |
 |------|---------------------------------------------------------------------------------------------------|

@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Настройка конечных точек API для запросов {#setting-up-query-api-endpoints}
 
 Возможность **Query API Endpoints** позволяет создавать конечные точки API непосредственно из любого сохранённого SQL-запроса в консоли ClickHouse Cloud. Вы сможете обращаться к конечным точкам API по HTTP для выполнения своих сохранённых запросов без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
@@ -135,7 +134,6 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-
 ### HTTP-методы {#http-methods}
 
 | Метод | Сценарий использования | Параметры |
@@ -250,7 +248,6 @@ POST /query-endpoints/{queryEndpointId}/run
 ```sql
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
-
 
 #### Версия 1 {#version-1}
 
@@ -428,7 +425,6 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
   </TabItem>
 </Tabs>
 
-
 ### Запрос с массивом в переменных запроса, вставляющий данные в таблицу {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **SQL таблицы:**
@@ -492,7 +488,6 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
   </TabItem>
 </Tabs>
 
-
 ### Запрос с настройкой ClickHouse `max_threads`, равной 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **SQL для конечной точки Query API:**
@@ -538,7 +533,6 @@ SELECT * FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### Выполнить запрос и разобрать ответ как поток` {#request-and-parse-the-response-as-a-stream}
 
@@ -609,7 +603,6 @@ SELECT name, database FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### Вставка потока из файла в таблицу {#insert-a-stream-from-a-file-into-a-table}
 

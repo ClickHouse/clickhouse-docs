@@ -11,7 +11,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Хранимые процедуры и параметры запросов в ClickHouse {#stored-procedures-and-query-parameters-in-clickhouse}
 
 Если вы привыкли к традиционной реляционной базе данных, вы можете ожидать наличия в ClickHouse хранимых процедур и подготовленных запросов.
@@ -110,7 +109,6 @@ SELECT format_phone('5551234567');
 
 Полный синтаксис см. в [`CREATE FUNCTION`](/sql-reference/statements/create/function).
 
-
 #### Исполняемые UDF-функции {#executable-udfs}
 
 Для более сложной логики используйте исполняемые UDF-функции, которые вызывают внешние программы:
@@ -142,7 +140,6 @@ FROM customer_reviews;
 Исполняемые UDF-функции могут реализовывать произвольную логику на любом языке (Python, Node.js, Go и т. д.).
 
 Подробности см. в разделе [Исполняемые UDF](/sql-reference/functions/udf).
-
 
 ### Параметризованные представления {#parameterized-views}
 
@@ -201,7 +198,6 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-
 #### Типовые сценарии использования {#common-use-cases}
 
 * Динамическая фильтрация по диапазону дат
@@ -246,7 +242,6 @@ SELECT * FROM top_products_by_category(
 ```
 
 См. раздел [Параметризованные представления](/sql-reference/statements/create/view#parameterized-view) для получения дополнительной информации.
-
 
 ### Материализованные представления {#materialized-views}
 
@@ -301,7 +296,6 @@ WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
 ```
 
-
 #### Обновляемые материализованные представления {#refreshable-materialized-views}
 
 Для пакетной обработки по расписанию (например, для ночного запуска хранимых процедур):
@@ -327,7 +321,6 @@ WHERE month = toStartOfMonth(today());
 ```
 
 См. раздел [Cascading Materialized Views](/guides/developer/cascading-materialized-views) для более продвинутых паттернов.
-
 
 ### Внешняя оркестрация {#external-orchestration}
 
@@ -657,7 +650,6 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-
 #### Метод 2: с использованием параметров CLI
 
 ```bash
@@ -669,7 +661,6 @@ clickhouse-client \
              WHERE user_id = {user_id: UInt64}
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
-
 
 ### Синтаксис параметров {#parameter-syntax}
 
@@ -840,7 +831,6 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕР
 {statements: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
 ```
 
-
 ### Рекомендации по безопасности {#data-type-examples}
 
 **Всегда используйте параметры запроса для пользовательского ввода:**
@@ -877,7 +867,6 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ```
 
-
 ### Подготовленные выражения в протоколе MySQL
 
 [Интерфейс MySQL](/interfaces/mysql) в ClickHouse включает минимальную поддержку подготовленных выражений (`COM_STMT_PREPARE`, `COM_STMT_EXECUTE`, `COM_STMT_CLOSE`), в основном для обеспечения совместимости с инструментами вроде Tableau Online, которые оборачивают запросы в подготовленные выражения.
@@ -908,7 +897,6 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 Подробнее см. [документацию по интерфейсу MySQL](/interfaces/mysql) и [запись в блоге о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
-
 
 ## Резюме {#summary}
 

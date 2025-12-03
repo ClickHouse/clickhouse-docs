@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Команда GRANT {#grant-statement}
 
 - Предоставляет [привилегии](#privileges) учетным записям пользователей ClickHouse или ролям.
@@ -30,7 +29,6 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 Предложение `WITH GRANT OPTION` предоставляет `user` или `role` право выполнять запрос `GRANT`. Пользователи могут предоставлять привилегии того же уровня и уже по охвату, чем те, которыми они обладают.
 Предложение `WITH REPLACE OPTION` заменяет старые привилегии новыми для `user` или `role`; если оно не указано, привилегии добавляются.
 
-
 ## Синтаксис назначения роли {#assigning-role-syntax}
 
 ```sql
@@ -42,7 +40,6 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 
 Предложение `WITH ADMIN OPTION` предоставляет привилегию [ADMIN OPTION](#admin-option) для `user` или `role`.
 Предложение `WITH REPLACE OPTION` заменяет старые роли новыми для `user` или `role`; если оно не указано, новые роли добавляются к существующим.
-
 
 ## Синтаксис оператора GRANT CURRENT GRANTS {#grant-current-grants-syntax}
 
@@ -56,7 +53,6 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 
 Использование оператора `CURRENT GRANTS` позволяет выдать все указанные привилегии заданному пользователю или роли.
 Если ни одна привилегия не была указана, заданный пользователь или роль получит все доступные привилегии текущего пользователя (`CURRENT_USER`).
-
 
 ## Использование {#usage}
 
@@ -86,7 +82,6 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 :::
 
 Вы можете выдать несколько привилегий нескольким учётным записям в одном запросе. Запрос `GRANT SELECT, INSERT ON *.* TO john, robin` позволяет учётным записям `john` и `robin` выполнять запросы `INSERT` и `SELECT` ко всем таблицам во всех базах данных на сервере.
-
 
 ## Права с использованием подстановочных символов {#wildcard-grants}
 
@@ -138,7 +133,6 @@ GRANT SELECT ON foo*bar TO john -- некорректно
 GRANT SELECT ON *suffix TO john -- некорректно
 GRANT SELECT(foo) ON db.table* TO john -- некорректно
 ```
-
 
 ## Привилегии {#privileges}
 
@@ -399,7 +393,6 @@ GRANT SELECT(x,y) ON db.table TO john
 
 Эта привилегия позволяет `john` выполнять любые запросы `SELECT`, которые обращаются к данным из столбцов `x` и/или `y` таблицы `db.table`, например `SELECT x FROM db.table`. `john` не может выполнять `SELECT z FROM db.table`. Запрос `SELECT * FROM db.table` также недоступен. При выполнении этого запроса ClickHouse не возвращает никаких данных, даже `x` и `y`. Единственное исключение — если таблица содержит только столбцы `x` и `y`, в таком случае ClickHouse возвращает все данные.
 
-
 ### INSERT {#insert}
 
 Позволяет выполнять запросы [INSERT](../../sql-reference/statements/insert-into.md).
@@ -417,7 +410,6 @@ GRANT INSERT(x,y) ON db.table TO john
 ```
 
 Предоставленная привилегия позволяет пользователю `john` вставлять данные в столбцы `x` и/или `y` таблицы `db.table`.
-
 
 ### ALTER {#alter}
 
@@ -509,7 +501,6 @@ GRANT CLUSTER ON *.* TO <username>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
 </access_control_improvements>
 ```
-
 
 ### DROP {#drop}
 
@@ -736,7 +727,6 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 * **Частичный отзыв прав не допускается:** вы не можете отозвать только часть ранее выданного шаблона фильтра. Необходимо отозвать весь `GRANT` и при необходимости выдать его заново с новыми шаблонами.
 * **Выдача прав с использованием только `wildcard` не допускается:** вы не можете использовать `GRANT READ ON *('regexp')` или аналогичные шаблоны, состоящие только из `wildcard`. Должен быть указан конкретный источник.
-
 
 ### dictGet {#dictget}
 

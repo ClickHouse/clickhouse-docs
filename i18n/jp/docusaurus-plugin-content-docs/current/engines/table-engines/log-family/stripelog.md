@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # StripeLog テーブルエンジン {#stripelog-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -17,8 +16,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 このエンジンは Log エンジンファミリーに属します。Log エンジンの共通の特性と相違点については、[Log Engine Family](../../../engines/table-engines/log-family/index.md) の記事を参照してください。
 
 このエンジンは、少量のデータ（100 万行未満）を持つ多数のテーブルに書き込む必要があるシナリオで使用します。たとえば、このテーブルは、変換のために取り込まれるデータバッチを、各バッチをアトミックに処理する必要がある場合の保存先として使用できます。このテーブルタイプのインスタンスを最大 10 万個まで ClickHouse サーバー上で運用できます。多数のテーブルが必要な場合、このテーブルエンジンは [Log](./log.md) よりも優先して使用すべきです。ただし、その分読み取り効率は低下します。
-
-
 
 ## テーブルの作成 {#table_engines-stripelog-creating-a-table}
 
@@ -33,7 +30,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明をご覧ください。
 
-
 ## データの書き込み {#table_engines-stripelog-writing-the-data}
 
 `StripeLog` エンジンは、すべてのカラムを 1 つのファイルに保存します。各 `INSERT` クエリのたびに、ClickHouse はデータブロックをテーブルファイルの末尾に追記し、カラムを 1 つずつ書き込みます。
@@ -45,13 +41,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 `StripeLog` エンジンは `ALTER UPDATE` および `ALTER DELETE` 操作をサポートしません。
 
-
-
 ## データの読み取り {#table_engines-stripelog-reading-the-data}
 
 マーク付きファイルにより、ClickHouse はデータの読み取りを並列化できます。これにより、`SELECT` クエリは行を不定の順序で返します。行をソートするには、`ORDER BY` 句を使用してください。
-
-
 
 ## 使用例 {#table_engines-stripelog-example-of-use}
 

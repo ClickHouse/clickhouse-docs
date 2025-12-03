@@ -17,7 +17,6 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Kafka 指标 {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
@@ -48,12 +47,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 <VerticalStepper headerLevel="h4">
   #### 获取 ClickStack API 密钥
 
-  JMX Metric Gatherer 向 ClickStack 的 OTLP 端点发送数据,该端点需要进行身份验证。
+  JMX Metric Gatherer 将数据发送到 ClickStack 的 OTLP 端点，该端点需要进行身份验证。
 
-  1. 通过你的 ClickStack 地址打开 HyperDX（例如 [http://localhost:8080](http://localhost:8080)）
-  2. 如有需要，创建账号或登录
-  3. 前往 **Team Settings → API Keys**
-  4. 复制你的 **摄取 API key**
+  1. 通过你的 ClickStack URL 打开 HyperDX（例如 [http://localhost:8080](http://localhost:8080)）
+  2. 如有需要，先创建账户或登录
+  3. 进入 **Team Settings → API Keys**
+  4. 复制您的 **摄取 API key**
 
   <Image img={api_key} alt="ClickStack API 密钥" />
 
@@ -65,7 +64,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### 下载 OpenTelemetry JMX 指标收集器
 
-  下载 JMX Metric Gatherer JAR 文件:
+  下载 JMX Metric Gatherer JAR 文件：
 
   ```bash
   curl -L -o opentelemetry-jmx-metrics.jar \
@@ -74,7 +73,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### 验证 Kafka JMX 已启用
 
-  确保在 Kafka 代理上启用 JMX。对于 Docker 部署：
+  确保在您的 Kafka 代理上启用 JMX。对于 Docker 部署：
 
   ```yaml
   services:
@@ -83,13 +82,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
       environment:
         JMX_PORT: 9999
         KAFKA_JMX_HOSTNAME: kafka
-        # ... 其他 Kafka 配置
+        # ... other Kafka configuration
       ports:
         - "9092:9092"
         - "9999:9999"
   ```
 
-  对于非 Docker 部署,请在 Kafka 启动时设置这些参数:
+  对于非 Docker 部署,请在 Kafka 启动时设置以下内容:
 
   ```bash
   export JMX_PORT=9999
@@ -101,14 +100,14 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   netstat -an | grep 9999
   ```
 
-  #### 使用 Docker Compose 部署 JMX 指标采集器
+  #### 使用 Docker Compose 部署 JMX 指标收集器
 
-  此示例展示了包含 Kafka、JMX 指标收集器和 ClickStack 的完整配置。请根据您现有的部署调整服务名称和端点：
+  此示例展示了包含 Kafka、JMX 指标收集器和 ClickStack 的完整配置。请根据您现有的部署调整服务名称和端点:
 
   ```yaml
   services:
     clickstack:
-      image: docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+      image: clickhouse/clickstack-all-in-one:latest
       ports:
         - "8080:8080"
         - "4317:4317"
@@ -172,18 +171,18 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   **关键配置参数：**
 
-  * `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - JMX 连接 URL（使用 Kafka 的主机名）
-  * `otel.jmx.target.system=kafka` - 启用 Kafka 特定指标
+  * `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - JMX 连接 URL（使用你自己的 Kafka 主机名）
+  * `otel.jmx.target.system=kafka` - 启用 Kafka 专用指标
   * `http://clickstack:4318` - OTLP HTTP 端点（使用您的 ClickStack 主机名）
-  * `authorization=\${CLICKSTACK_API_KEY}` - 用于身份验证的 API 密钥（必需）
-  * `service.name=kafka,kafka.broker.id=broker-0` - 资源属性，用于过滤
-  * `10000` - 以毫秒为单位的采集间隔（10 秒）
+  * `authorization=\${CLICKSTACK_API_KEY}` - 用于身份验证的 API 密钥（必填）
+  * `service.name=kafka,kafka.broker.id=broker-0` - 用于过滤的资源属性
+  * `10000` - 采集间隔，单位为毫秒（10 秒）
 
   #### 在 HyperDX 中验证指标
 
-  登录 HyperDX 并确认指标数据正在流入：
+  登录 HyperDX 并确认指标正在流入：
 
-  1. 转到 Chart Explorer
+  1. 进入 Chart Explorer
   2. 搜索 `kafka.message.count` 或 `kafka.partition.count`
   3. 指标应每 10 秒出现一次
 
@@ -191,9 +190,9 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   * `kafka.message.count` - 处理的消息总数
   * `kafka.partition.count` - 分区总数
-  * `kafka.partition.under_replicated` - 在健康的集群中该值应为 0
-  * `kafka.network.io` - 网络吞吐量
-  * `kafka.request.time.*` - 请求延迟百分位
+  * `kafka.partition.under_replicated` - 在健康集群中应该为 0
+  * `kafka.network.io` - 网络 I/O 吞吐量
+  * `kafka.request.time.*` - 请求延迟百分位数
 
   生成活动并填充更多指标：
 
@@ -206,35 +205,35 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   ```
 
   :::note
-  在 Kafka 容器内运行 Kafka 客户端命令(kafka-topics、kafka-console-producer 等)时,需在命令前添加 `unset JMX_PORT &&` 前缀以防止 JMX 端口冲突。
+  在 Kafka 容器内运行 Kafka 客户端命令(如 kafka-topics、kafka-console-producer 等)时,需在命令前加上 `unset JMX_PORT &&` 以避免 JMX 端口冲突。
   :::
 </VerticalStepper>
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 Kafka 指标集成的用户，我们提供了一个预生成的数据集，其中包含具有逼真变化模式的 Kafka 指标。
+对于希望在配置生产系统之前先测试 Kafka Metrics 集成的用户，我们提供了一个预生成的数据集，其中包含具有真实流量特征的 Kafka 指标。
 
 <VerticalStepper headerLevel="h4">
 
 #### 下载示例指标数据集 {#download-sample}
 
-下载预生成的指标文件（包含 29 小时的 Kafka 指标，具有逼真的变化模式）：
+下载预生成的指标文件（包含 29 小时、具备真实流量模式的 Kafka 指标）：
 ```bash
-# 下载 gauge 指标（分区数量、队列大小、延迟、consumer lag）
+# 下载 gauge 指标（partition 数量、队列大小、延迟、consumer lag）
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-gauge.csv
 
 # 下载 sum 指标（消息速率、字节速率、请求数量）
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-sum.csv
 ```
 
-该数据集包含单 Broker 的电商 Kafka 集群的逼真指标模式：
-- **06:00-08:00：早晨高峰** - 从夜间基线开始的流量陡增
-- **10:00-10:15：闪购活动** - 流量剧增至正常水平的 3.5 倍
-- **11:30：部署事件** - consumer lag 激增 12 倍，并出现副本不足的分区
-- **14:00-15:30：购物高峰期** - 流量持续维持在基线的 2.8 倍
-- **17:00-17:30：下班后高峰** - 第二次流量峰值
-- **18:45：消费者再平衡** - 再平衡期间 consumer lag 激增 6 倍
-- **20:00-22:00：夜间回落** - 流量急剧下降回到夜间水平
+该数据集为单 broker 的电商 Kafka 集群提供了逼真的模式示例：
+- **06:00-08:00：早高峰** - 从夜间基线开始的陡峭流量上升
+- **10:00-10:15：限时抢购** - 流量剧增至正常水平的 3.5 倍
+- **11:30：部署事件** - consumer lag 激增 12 倍，并出现副本不足的 partition
+- **14:00-15:30：购物高峰** - 持续高流量，约为基线的 2.8 倍
+- **17:00-17:30：下班后流量高峰** - 次级流量峰值
+- **18:45：consumer 重新平衡** - 重新平衡期间 lag 激增 6 倍
+- **20:00-22:00：夜间回落** - 流量急剧下降至夜间水平
 
 #### 启动 ClickStack {#start-clickstack}
 
@@ -242,14 +241,14 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### 将指标加载到 ClickStack 中 {#load-metrics}
 
 将指标直接加载到 ClickHouse：
 ```bash
-# 加载 gauge 指标（分区数量、队列大小、延迟、consumer lag） {#send-test-messages}
+# 加载 gauge 指标（partition 数量、队列大小、延迟、consumer lag） {#send-test-messages}
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
@@ -260,12 +259,12 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
 
 #### 在 HyperDX 中验证指标 {#verify-demo-metrics}
 
-加载完成后，查看指标的最快方式是通过预先构建好的仪表板。
+加载完成后，查看指标的最快方式是使用预构建的仪表板。
 
 前往 [Dashboards and visualization](#dashboards) 部分，导入仪表板并一次性查看所有 Kafka 指标。
 
-:::note[Timezone Display]
-HyperDX 会以浏览器本地时区显示时间戳。演示数据时间范围为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**。请将时间范围设置为 **2025-11-04 16:00:00 - 2025-11-07 16:00:00**，以确保无论您身处何地都能看到演示指标。确认看到指标后，可以将时间范围缩小到 24 小时，以获得更清晰的可视化效果。
+:::note[时区显示]
+HyperDX 会以浏览器本地时区显示时间戳。演示数据的时间范围为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**。请将时间范围设置为 **2025-11-04 16:00:00 - 2025-11-07 16:00:00**，以确保无论你所在的时区如何，都能看到演示指标。确认能看到指标之后，可以再将时间范围收窄到 24 小时时段，以获得更清晰的可视化效果。
 :::
 
 </VerticalStepper>
@@ -349,7 +348,6 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-
 #### 身份验证错误 {#created-dashboard}
 
 如果您看到 `Authorization failed` 或 `401 Unauthorized`：
@@ -362,7 +360,6 @@ export CLICKSTACK_API_KEY=your-correct-api-key
 docker compose down
 docker compose up -d
 ```
-
 
 #### 使用 Kafka 客户端命令时端口冲突
 
@@ -377,7 +374,6 @@ docker compose up -d
 ```bash
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
-
 
 #### 网络连接问题 {#no-metrics}
 
@@ -396,7 +392,6 @@ docker network inspect <网络名称>
 # 从 JMX 导出器到 ClickStack {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
-
 
 ## 进入生产环境 {#going-to-production}
 

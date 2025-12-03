@@ -10,7 +10,6 @@ doc_type: '指南'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MaterializedPostgreSQL 表引擎 {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
@@ -34,7 +33,6 @@ SET allow_experimental_materialized_postgresql_table=1
 
 如果需要使用多个表，强烈建议使用 [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) 数据库引擎而不是表引擎，并通过 `materialized_postgresql_tables_list` 设置来指定要复制的表（后续也可以添加数据库 `schema`）。在 CPU 占用、连接数以及远程 PostgreSQL 数据库中所占用的复制槽数量方面，这种方式都会更优。
 
-
 ## 创建表 {#creating-a-table}
 
 ```sql
@@ -51,7 +49,6 @@ PRIMARY KEY key;
 * `user` — PostgreSQL 用户。
 * `password` — 用户密码。
 
-
 ## 要求 {#requirements}
 
 1. 在 PostgreSQL 配置文件中，[wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 设置必须为 `logical`，并且 `max_replication_slots` 参数的值至少为 `2`。
@@ -61,8 +58,6 @@ PRIMARY KEY key;
 3. 仅允许使用 [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)) 数据库。
 
 4. 由于实现依赖于 PostgreSQL 的 [pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html) 函数，`MaterializedPostgreSQL` 表引擎仅适用于 PostgreSQL 版本 >= 11。
-
-
 
 ## 虚拟列 {#virtual-columns}
 

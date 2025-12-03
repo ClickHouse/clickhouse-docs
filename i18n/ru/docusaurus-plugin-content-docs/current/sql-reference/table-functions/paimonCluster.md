@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Табличная функция paimonCluster {#paimoncluster-table-function}
 
 <ExperimentalBadge />
@@ -17,8 +16,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 Это расширение табличной функции [paimon](/sql-reference/table-functions/paimon.md).
 
 Позволяет обрабатывать файлы из Apache [Paimon](https://paimon.apache.org/) параллельно на множестве узлов заданного кластера. На инициаторе создаётся подключение ко всем узлам кластера, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут выполнены.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -30,7 +27,6 @@ paimonAzureCluster(cluster_name, connection_string|storage_account_url, containe
 paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 ```
 
-
 ## Аргументы {#arguments}
 
 - `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
@@ -39,8 +35,6 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 **Возвращаемое значение**
 
 Таблица с указанной структурой для чтения данных из кластера из указанной таблицы Paimon.
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 

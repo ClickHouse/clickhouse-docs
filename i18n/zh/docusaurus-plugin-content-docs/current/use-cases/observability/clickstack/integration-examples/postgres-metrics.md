@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 PostgreSQL 指标 {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
@@ -130,30 +129,30 @@ docker run -d \
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 PostgreSQL 指标集成的用户，我们提供了一个预先生成的数据集，其中包含逼真的 PostgreSQL 指标变化模式。
+对于希望在配置生产系统之前先测试 PostgreSQL 指标集成的用户，我们提供了一个预先生成的数据集，其中包含具有逼真模式的 PostgreSQL 指标。
 
-:::note[仅数据库级指标]
-此演示数据集仅包含数据库级指标，以保持示例数据轻量化。在监控真实 PostgreSQL 数据库时，表和索引指标会自动采集。
+:::note[仅数据库级别指标]
+此演示数据集仅包含数据库级别指标，以保持示例数据轻量化。在监控真实 PostgreSQL 数据库时，表和索引指标会自动采集。
 :::
 
 <VerticalStepper headerLevel="h4">
 
 #### 下载示例指标数据集 {#download-sample}
 
-下载预先生成的指标文件（包含 24 小时的 PostgreSQL 指标以及逼真的变化模式）：
+下载预先生成的指标文件（包含 24 小时、具有逼真模式的 PostgreSQL 指标）：
 
 ```bash
-# 下载 gauge 类型指标（连接数、数据库大小） {#download-gauge-metrics-connections-database-size}
+# Download gauge metrics (connections, database size) {#download-gauge-metrics-connections-database-size}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# 下载 sum 类型指标（提交、回滚、操作） {#download-sum-metrics-commits-rollbacks-operations}
+# Download sum metrics (commits, rollbacks, operations) {#download-sum-metrics-commits-rollbacks-operations}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
-该数据集包含逼真的模式：
-- **早晨连接高峰（08:00）** - 登录高峰
-- **缓存性能问题（11:00）** - Blocks_read 突增
-- **应用 Bug（14:00-14:30）** - 回滚率飙升至 15%
+该数据集包含一些逼真的模式示例：
+- **早晨连接峰值（08:00）** - 登录高峰
+- **缓存性能问题（11:00）** - Blocks_read 峰值
+- **应用程序 Bug（14:00-14:30）** - 回滚率激增至 15%
 - **死锁事件（14:15、16:30）** - 罕见死锁
 
 #### 启动 ClickStack {#start-clickstack}
@@ -163,33 +162,33 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```bash
 docker run -d --name clickstack-postgres-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-等待大约 30 秒，以便 ClickStack 完全启动。
+等待大约 30 秒，直至 ClickStack 完全启动。
 
 #### 将指标加载到 ClickStack 中 {#load-metrics}
 
 将指标直接加载到 ClickHouse 中：
 
 ```bash
-# 加载 gauge 类型指标 {#load-gauge-metrics}
+# Load gauge metrics {#load-gauge-metrics}
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# 加载 sum 类型指标 {#load-sum-metrics}
+# Load sum metrics {#load-sum-metrics}
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
 #### 在 HyperDX 中验证指标 {#verify-metrics-demo}
 
-加载完成后，查看指标的最快方式是使用预先构建的仪表盘。
+加载完成后，查看指标的最快方式是使用预构建的仪表板。
 
-前往 [仪表盘和可视化](#dashboards) 部分导入仪表盘，并一次性查看多项 PostgreSQL 指标。
+前往 [仪表板和可视化](#dashboards) 部分，导入仪表板并一次性查看多项 PostgreSQL 指标。
 
 :::note[时区显示]
-HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时间范围为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00（UTC）**。请将时间范围设置为 **2025-11-09 00:00:00 - 2025-11-12 00:00:00**，以确保无论你身处何地都能看到演示指标。确认能看到指标后，你可以将时间范围收窄到 24 小时，以获得更清晰的可视化效果。
+HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时间范围为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**。请将时间范围设置为 **2025-11-09 00:00:00 - 2025-11-12 00:00:00**，以确保无论您身在何处都能看到演示指标。确认能看到指标后，可以将范围收窄到 24 小时时段，以获得更清晰的可视化效果。
 :::
 
 </VerticalStepper>
@@ -241,7 +240,6 @@ docker exec <容器名称> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### HyperDX 中未显示任何指标 {#no-metrics}
 
 检查 PostgreSQL 是否可访问：
@@ -256,7 +254,6 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <容器> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
 ### 身份验证错误 {#auth-errors}
 
 确认密码是否配置正确：
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## 后续步骤 {#next-steps}
 

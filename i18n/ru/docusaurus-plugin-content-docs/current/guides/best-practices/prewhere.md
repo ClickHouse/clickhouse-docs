@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 
 import Image from '@theme/IdealImage';
 
-
 # Как работает оптимизация PREWHERE? {#how-does-the-prewhere-optimization-work}
 
 [Предложение PREWHERE](/sql-reference/statements/select/prewhere) — это оптимизация выполнения запроса в ClickHouse. Она уменьшает объём операций ввода-вывода и ускоряет выполнение запроса, избегая ненужного чтения данных и отфильтровывая лишние данные до чтения со встроенного диска столбцов, не участвующих в фильтрации.
 
 В этом руководстве объясняется, как работает PREWHERE, как измерить его влияние и как настроить его для наилучшей производительности.
-
-
 
 ## Обработка запроса без оптимизации PREWHERE {#query-processing-without-prewhere-optimization}
 
@@ -43,8 +40,6 @@ import Image from '@theme/IdealImage';
 ⑤ Оставшиеся фильтры затем применяются во время выполнения запроса.
 
 Как видно, без PREWHERE все потенциально подходящие столбцы загружаются до фильтрации, даже если фактически совпадает лишь небольшое количество строк.
-
-
 
 ## Как PREWHERE повышает эффективность запросов {#how-prewhere-improves-query-efficiency}
 
@@ -95,8 +90,6 @@ ClickHouse начинает обработку PREWHERE, ① читая выбр
 Обратите внимание, что ClickHouse обрабатывает одинаковое количество строк как в варианте запроса с PREWHERE, так и без него. Однако при применении оптимизаций PREWHERE нет необходимости загружать значения всех столбцов для каждой обрабатываемой строки.
 :::
 
-
-
 ## Оптимизация PREWHERE применяется автоматически {#prewhere-optimization-is-automatically-applied}
 
 Предложение PREWHERE можно добавить вручную, как показано в примере выше. Однако нет необходимости указывать PREWHERE вручную. Когда настройка [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) включена (по умолчанию true), ClickHouse автоматически переносит условия фильтрации из WHERE в PREWHERE, отдавая приоритет тем, которые сильнее всего уменьшают объём чтения.
@@ -106,8 +99,6 @@ ClickHouse начинает обработку PREWHERE, ① читая выбр
 Начиная с версии [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov) ClickHouse по умолчанию следует этой стратегии, сортируя столбцы фильтра PREWHERE для многошаговой обработки в порядке возрастания их несжатого размера.
 
 Начиная с версии [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), дополнительная статистика по столбцам позволяет ещё больше улучшить это поведение, выбирая порядок применения фильтров на основе фактической селективности данных, а не только размера столбца.
-
-
 
 ## Как измерить влияние PREWHERE {#how-to-measure-prewhere-impact}
 
@@ -213,7 +204,6 @@ SETTINGS send_logs_level = 'test';
 <Test> ... Выполнение действий prewhere на блоке: less(__table1.price, 10000_UInt16)
 ...
 ```
-
 
 ## Ключевые выводы {#key-takeaways}
 

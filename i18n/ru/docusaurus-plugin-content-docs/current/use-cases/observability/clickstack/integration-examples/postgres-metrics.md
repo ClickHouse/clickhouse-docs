@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг метрик PostgreSQL с помощью ClickStack {#postgres-metrics-clickstack}
 
 :::note[Кратко]
@@ -128,47 +127,47 @@ docker run -d \
 
 </VerticalStepper>
 
-## Демо-набор данных {#demo-dataset}
+## Демонстрационный набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию метрик PostgreSQL перед настройкой своих боевых систем, мы предоставляем заранее сгенерированный набор данных с реалистичными профилями метрик PostgreSQL.
+Для пользователей, которые хотят протестировать интеграцию метрик PostgreSQL перед настройкой своих производственных систем, мы предоставляем заранее сгенерированный набор данных с реалистичными паттернами метрик PostgreSQL.
 
 :::note[Только метрики на уровне базы данных]
-Этот демо-набор данных включает только метрики на уровне базы данных, чтобы сохранить небольшой объём примеров. Метрики таблиц и индексов собираются автоматически при мониторинге реальной базы данных PostgreSQL.
+Этот демонстрационный набор данных включает только метрики на уровне базы данных, чтобы сделать пример данных компактным. Метрики таблиц и индексов собираются автоматически при мониторинге реальной базы данных PostgreSQL.
 :::
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите пример набора метрик {#download-sample}
+#### Загрузка демонстрационного набора метрик {#download-sample}
 
-Скачайте заранее сгенерированные файлы метрик (24 часа метрик PostgreSQL с реалистичными профилями):
+Загрузите заранее сгенерированные файлы метрик (24 часа метрик PostgreSQL с реалистичными паттернами):
 
 ```bash
-# Скачивание gauge-метрик (соединения, размер базы данных) {#download-gauge-metrics-connections-database-size}
+# Загрузка gauge-метрик (подключения, размер базы данных) {#download-gauge-metrics-connections-database-size}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# Скачивание sum-метрик (коммиты, откаты, операции) {#download-sum-metrics-commits-rollbacks-operations}
+# Загрузка sum-метрик (коммиты, откаты, операции) {#download-sum-metrics-commits-rollbacks-operations}
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
-Набор данных включает реалистичные паттерны:
-- **Утренний всплеск соединений (08:00)** — массовый вход пользователей
-- **Проблема с производительностью кэша (11:00)** — всплеск Blocks_read
-- **Ошибка приложения (14:00–14:30)** — уровень откатов возрастает до 15%
-- **Инциденты взаимоблокировок (14:15, 16:30)** — редкие взаимоблокировки
+В набор данных заложены реалистичные сценарии:
+- **Утренний всплеск подключений (08:00)** — массовые логины
+- **Проблема с производительностью кеша (11:00)** — всплеск Blocks_read
+- **Ошибка приложения (14:00-14:30)** — доля откатов возрастает до 15%
+- **Инциденты дедлоков (14:15, 16:30)** — редкие дедлоки
 
-#### Запустите ClickStack {#start-clickstack}
+#### Запуск ClickStack {#start-clickstack}
 
 Запустите экземпляр ClickStack:
 
 ```bash
 docker run -d --name clickstack-postgres-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 Подождите примерно 30 секунд, чтобы ClickStack полностью запустился.
 
-#### Загрузите метрики в ClickStack {#load-metrics}
+#### Загрузка метрик в ClickStack {#load-metrics}
 
 Загрузите метрики напрямую в ClickHouse:
 
@@ -182,14 +181,14 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Проверьте метрики в HyperDX {#verify-metrics-demo}
+#### Проверка метрик в HyperDX {#verify-metrics-demo}
 
-После загрузки самый быстрый способ увидеть метрики — использовать преднастроенный дашборд.
+После загрузки самый быстрый способ просмотреть метрики — использовать преднастроенный дашборд.
 
 Перейдите к разделу [Dashboards and visualization](#dashboards), чтобы импортировать дашборд и просмотреть множество метрик PostgreSQL одновременно.
 
 :::note[Отображение часового пояса]
-HyperDX отображает временные метки в часовом поясе, настроенном в вашем браузере. Демо-данные охватывают период **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. Установите диапазон времени на **2025-11-09 00:00:00 - 2025-11-12 00:00:00**, чтобы гарантированно увидеть демо-метрики независимо от вашего местоположения. После того как вы увидите метрики, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
+HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. Установите диапазон времени на **2025-11-09 00:00:00 - 2025-11-12 00:00:00**, чтобы гарантированно увидеть демонстрационные метрики независимо от вашего местоположения. После того как вы увидите метрики, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
 :::
 
 </VerticalStepper>
@@ -241,7 +240,6 @@ docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### Метрики не отображаются в HyperDX {#no-metrics}
 
 Убедитесь, что есть доступ к PostgreSQL:
@@ -256,7 +254,6 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
 ### Ошибки аутентификации {#auth-errors}
 
 Убедитесь, что пароль указан верно:
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## Дальнейшие шаги {#next-steps}
 

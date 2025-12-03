@@ -7,13 +7,9 @@ title: 'view'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция view {#view-table-function}
 
 Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а содержит только указанный запрос `SELECT`. При чтении из таблицы ClickHouse выполняет этот запрос и удаляет из результата все ненужные столбцы.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -21,18 +17,13 @@ doc_type: 'reference'
 view(подзапрос)
 ```
 
-
 ## Аргументы {#arguments}
 
 - `subquery` — запрос типа `SELECT`.
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 - Таблица.
-
-
 
 ## Примеры {#examples}
 
@@ -73,7 +64,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```sql
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
-
 
 ## См. также {#related}
 

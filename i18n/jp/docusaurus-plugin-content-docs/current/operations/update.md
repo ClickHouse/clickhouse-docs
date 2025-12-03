@@ -6,16 +6,12 @@ title: 'セルフマネージド環境のアップグレード'
 doc_type: 'guide'
 ---
 
-
-
 ## ClickHouse アップグレードの概要 {#clickhouse-upgrade-overview}
 
 このドキュメントでは、次の内容を説明します:
 - 一般的なガイドライン
 - 推奨される計画
 - システム上のバイナリをアップグレードするための詳細
-
-
 
 ## 一般的なガイドライン {#general-guidelines}
 
@@ -51,8 +47,6 @@ ClickHouse では 1年間の互換性ウィンドウ（2つの LTS バージョ�
 - ダウンタイムを伴うアップグレード（すべてのサーバーを停止し、全サーバーをアップグレードしてから、すべてのサーバーを起動する）。
 - もしくは、中間バージョン（現在のバージョンから見て1年以内にリリースされた、より新しいバージョン）を経由してアップグレードする。
 
-
-
 ## 推奨プラン {#recommended-plan}
 
 以下は、ダウンタイムなしで ClickHouse をアップグレードするための推奨手順です。
@@ -82,7 +76,6 @@ hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  マージ後�
 ```
 
 :::
-
 
 ## ClickHouse サーバーバイナリのアップグレード手順 {#clickhouse-server-binary-upgrade-process}
 

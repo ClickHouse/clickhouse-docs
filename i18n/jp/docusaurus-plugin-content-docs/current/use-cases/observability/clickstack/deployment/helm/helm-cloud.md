@@ -34,7 +34,6 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-
 ### GKE に関するその他の考慮事項 {#other-gke-considerations}
 
 ```yaml
@@ -52,7 +51,6 @@ clickhouse:
       - "10.8.0.0/16"  # GKEで一般的に使用される範囲
       - "10.0.0.0/8"   # その他の設定用のフォールバック
 ```
-
 
 ## Amazon EKS {#amazon-eks}
 
@@ -79,7 +77,6 @@ hyperdx:
       enabled: true
 ```
 
-
 ## Azure AKS {#azure-aks}
 
 AKS にデプロイする場合:
@@ -96,7 +93,6 @@ clickhouse:
       - "10.244.0.0/16"  # 一般的な AKS ポッド CIDR
       - "10.0.0.0/8"
 ```
-
 
 ## 本番環境向けクラウド デプロイメント チェックリスト {#production-cloud-deployment-checklist}
 
@@ -127,7 +123,6 @@ hyperdx:
       memory: 4Gi
 ```
 
-
 ### 高可用性 {#high-availability}
 
 ```yaml
@@ -148,7 +143,6 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-
 ### 永続ストレージ {#persistent-storage}
 
 データを保持できるよう、PersistentVolume（永続ボリューム）が適切に構成されていることを確認します。
@@ -166,7 +160,6 @@ clickhouse:
 * **GKE**: `pd-ssd` または `pd-balanced`
 * **EKS**: `gp3` または `io2`
 * **AKS**: `managed-premium` または `managed-csi`
-
 
 ### ブラウザ互換性に関する注意事項 {#browser-compatibility-notes}
 

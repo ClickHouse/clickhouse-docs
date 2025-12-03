@@ -17,8 +17,6 @@ ClickHouse 中的 `CHECK TABLE` 查询用于对特定表或其分区执行校验
 该查询不会提升系统性能，如果未完全理解其影响，请不要执行该查询。
 :::
 
-
-
 ## 语法 {#syntax}
 
 查询的基本语法如下：
@@ -54,7 +52,6 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 在使用其他表引擎的表上执行该查询会引发 `NOT_IMPLEMENTED` 异常。
 
 `*Log` 家族中的引擎在发生故障时不提供自动数据恢复。使用 `CHECK TABLE` 查询来及时跟踪数据丢失情况。
-
 
 ## 示例 {#examples}
 
@@ -152,7 +149,6 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-
 ```text
 ┌─database─┬─table────┬─part_path───┬─is_passed─┬─message─┐
 │ default  │ t2       │ all_1_95_3  │         1 │         │
@@ -167,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## 如果数据已损坏 {#if-the-data-is-corrupted}
 

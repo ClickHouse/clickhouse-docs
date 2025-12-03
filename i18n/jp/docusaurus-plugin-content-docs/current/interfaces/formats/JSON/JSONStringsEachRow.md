@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 [`JSONEachRow`](./JSONEachRow.md) との違いは、データフィールドが型付きのJSON値ではなく文字列として出力される点だけです。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -65,7 +61,6 @@ FORMAT JSONStringsEachRow
 
 出力は JSON 形式です:
 
-
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
 {"date":"2022-04-30","season":"2021","home_team":"Swindon Town","away_team":"Barrow","home_team_goals":"2","away_team_goals":"1"}
@@ -85,6 +80,5 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
-
 
 ## フォーマット設定 {#format-settings}

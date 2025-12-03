@@ -7,18 +7,12 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf {#quantilestimingif}
-
-
 
 ## 描述 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 函数，使用 `quantilesTimingIf` 聚合组合器函数来计算满足条件为 true 的行的耗时值分位数。
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -83,7 +77,6 @@ GROUP BY endpoint;
 3. │ 用户     │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

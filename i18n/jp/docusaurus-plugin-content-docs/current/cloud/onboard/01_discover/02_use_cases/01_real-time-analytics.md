@@ -15,7 +15,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## リアルタイム分析とは？ {#what-is-real-time-analytics}
 
 リアルタイム分析とは、データが生成されると同時にエンドユーザーや
@@ -45,7 +44,6 @@ IoT（Internet of Things）センサーから計測値が出力されたこと�
 
 組織は、このようなイベントを集約・分析することで、顧客に関する洞察を得ることができます。これは従来、バッチ分析によって行われてきました。次のセクションでは、バッチ分析とリアルタイム分析を比較します。
 
-
 ## リアルタイム分析 vs バッチ分析 {#real-time-analytics-vs-batch-analytics}
 
 以下の図は、個々のイベントの観点から見た、典型的なバッチ分析システムの全体像を示しています。
@@ -59,8 +57,6 @@ IoT（Internet of Things）センサーから計測値が出力されたこと�
 <Image img={rta_1} size="md" border alt="リアルタイム分析の図" />
 
 これにより、イベントが生成されてからほとんど遅延なくインサイトを得ることができます。では、これはなぜ有用なのでしょうか？
-
-
 
 ## リアルタイム分析の利点 {#benefits-of-real-time-analytics}
 
@@ -81,8 +77,6 @@ IoT（Internet of Things）センサーから計測値が出力されたこと�
 ### 顧客体験の向上 {#improved-customer-experience}
 
 リアルタイム分析を利用すると、ビジネスは顧客の行動、好み、ニーズについて即時のインサイトを得ることができます。これにより、タイムリーな支援を提供し、やり取りをパーソナライズし、顧客を惹きつけ続ける、より魅力的な体験を創出できます。
-
-
 
 ## リアルタイム分析のユースケース {#real-time-analytics-use-cases}
 

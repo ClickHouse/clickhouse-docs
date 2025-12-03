@@ -16,16 +16,11 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # Aurora Postgres 源端配置指南 {#aurora-postgres-source-setup-guide}
-
-
 
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
 ClickPipes 支持 Aurora PostgreSQL-Compatible Edition 12 及以上版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 Aurora PostgreSQL" size="lg" border />
 
-
 ## 配置数据库用户 {#configure-database-user}
 
 以管理员用户连接到你的 Aurora PostgreSQL writer 实例，并执行以下命令：
@@ -100,8 +94,6 @@ postgres=> SHOW wal_sender_timeout ;
     ```sql
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
-
-
 
 ## 配置网络访问 {#configure-network-access}
 
@@ -136,8 +128,6 @@ postgres=> SHOW wal_sender_timeout ;
 1. 对于高可用部署，将应用程序配置为使用 Aurora writer 端点，该端点会自动指向当前的主实例。
 
 2. 如果使用跨区域复制，建议为每个区域分别配置独立的 ClickPipes，以降低延迟并提升容错能力。
-
-
 
 ## 接下来 {#whats-next}
 

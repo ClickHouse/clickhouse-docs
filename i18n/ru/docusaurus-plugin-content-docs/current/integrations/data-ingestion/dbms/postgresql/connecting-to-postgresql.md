@@ -289,7 +289,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
  psql -U clickhouse_user -W -d db1 -h <ваш_хост_postgresql>
 ```
 
-### 2. В ClickHouse
+### 2. В ClickHouse {#3-test-basic-replication}
 
 1. подключитесь к CLI ClickHouse
 

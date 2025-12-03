@@ -75,7 +75,6 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 
 （上記の Python スクリプトは非常に遅く（1 ファイルあたり約 2〜10 分）、大量のメモリを消費し（1 ファイルあたり 41 GB）、生成される CSV ファイルも大きい（各 10 GB）ため、注意してください。十分な RAM がある場合は、より高い並列度を得るために `-P1` の値を増やしてください。これでもまだ遅い場合は、より良いインジェスト手順を検討してください。たとえば .npy ファイルを Parquet に変換してから、残りの処理をすべて ClickHouse で行うなどです。）
 
-
 ## テーブルを作成する {#create-table}
 
 最初にインデックスなしでテーブルを作成するには、次を実行します。
@@ -103,7 +102,6 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
 `id` 列はあくまで例示用のものであり、スクリプトによって一意ではない値が入力されている点に注意してください。
-
 
 ## 総当たり方式でベクトル類似度検索を実行する {#run-a-brute-force-vector-similarity-search}
 
@@ -136,7 +134,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10行のセット。経過時間: 4.605秒。処理済み: 1億0038万行、309.98 GB (2180万行/秒、67.31 GB/秒)
 ```
 
-
 ## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
 ここでは、テーブルに 2 つのベクトル類似度インデックスを定義します。
@@ -167,7 +164,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 
 **結果**
 
-
 ```response
     ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
  1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
@@ -188,7 +184,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ベクトルインデックスを使用して最近傍を取得したため、クエリレイテンシが大幅に短縮されました。
 ベクトル類似度インデックスを用いたベクトル類似検索では、総当たり検索の結果とわずかに異なる結果が返される場合があります。
 HNSW インデックスは、HNSW パラメータを慎重に選定し、インデックス品質を評価することで、リコールを 1 に近づける（総当たり検索と同等の精度を達成する）ことが可能です。
-
 
 ## UDF を使用した埋め込みの作成 {#creating-embeddings-with-udfs}
 
@@ -254,7 +249,6 @@ LIMIT 10
 ```
 
 `encode_text()` UDF 自体が計算を行い埋め込みベクトルを出力するまでに、数秒かかる場合があることに注意してください。
-
 
 ### 画像埋め込み {#image-embeddings}
 

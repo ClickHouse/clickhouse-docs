@@ -6,8 +6,6 @@ title: 'ARRAY JOIN 子句'
 doc_type: 'reference'
 ---
 
-
-
 # ARRAY JOIN 子句 {#array-join-clause}
 
 对于包含数组列的表，一个常见操作是生成一个新表：在该新表中，原始数组列中的每个数组元素各占一行，而其他列的值会被复制重复。这是 `ARRAY JOIN` 子句的基本用例。
@@ -28,7 +26,6 @@ FROM <left_subquery>
 
 * `ARRAY JOIN` - 在默认情况下，`JOIN` 结果中不包含空数组。
 * `LEFT ARRAY JOIN` - `JOIN` 结果中会包含含有空数组的行。空数组的值被设置为数组元素类型的默认值（通常是 0、空字符串或 NULL）。
-
 
 ## 基本 ARRAY JOIN 示例 {#basic-array-join-examples}
 
@@ -151,7 +148,6 @@ ORDER BY Reaches DESC
 LIMIT 10
 ```
 
-
 ```text
 ┌──GoalID─┬─触达人数─┬─访问次数─┐
 │   53225 │    3214 │   1097 │
@@ -166,7 +162,6 @@ LIMIT 10
 │ 3271094 │    2256 │    812 │
 └─────────┴─────────┴────────┘
 ```
-
 
 ## 使用别名 {#using-aliases}
 
@@ -254,7 +249,6 @@ FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
-
 ```response
 ┌─s───────┬─arr─────┬─a─┬─b─────────┐
 │ Hello   │ [1,2]   │ 1 │ ['a','b'] │
@@ -266,7 +260,6 @@ SETTINGS enable_unaligned_array_join = 1;
 │ Goodbye │ []      │ 0 │ ['c']     │
 └─────────┴─────────┴───┴───────────┘
 ```
-
 
 ## ARRAY JOIN 与嵌套数据结构 {#array-join-with-nested-data-structure}
 
@@ -371,7 +364,6 @@ FROM nested_test
 ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 ```
 
-
 ```response
 ┌─s─────┬─n.x─┬─n.y─┬─nest.x──┬─nest.y─────┬─num─┐
 │ 你好 │   1 │  10 │ [1,2]   │ [10,20]    │   1 │
@@ -382,7 +374,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-
 ## 实现细节 {#implementation-details}
 
 在运行 `ARRAY JOIN` 时，查询的执行顺序会被优化。尽管在查询中 `ARRAY JOIN` 必须始终写在 [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 子句之前，但从技术上讲，它们可以按任意顺序执行，除非需要使用 `ARRAY JOIN` 的结果进行过滤。具体执行顺序由查询优化器决定。
@@ -392,8 +383,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 [短路函数求值](/operations/settings/settings#short_circuit_function_evaluation) 是一项功能，用于在特定函数（如 `if`、`multiIf`、`and` 和 `or`）中优化复杂表达式的执行。它可以防止在执行这些函数时出现潜在异常，例如除以零错误。
 
 `arrayJoin` 始终会被执行，且不支持短路函数求值。这是因为它是一个在查询分析和执行过程中与其他所有函数分开处理的特殊函数，并且需要额外的逻辑，而这些逻辑无法与短路函数执行配合使用。原因在于结果中的行数取决于 `arrayJoin` 的结果，实现对 `arrayJoin` 的惰性执行过于复杂且代价高昂。
-
-
 
 ## 相关内容 {#related-content}
 

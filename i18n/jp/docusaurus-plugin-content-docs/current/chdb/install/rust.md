@@ -7,13 +7,9 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bin
 doc_type: 'guide'
 ---
 
-
-
 # Rust 向け chDB {#chdb-for-rust}
 
 chDB-rust は chDB 向けの実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存関係なしに Rust アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
-
-
 
 ## インストール {#installation}
 
@@ -24,7 +20,6 @@ chDB ライブラリをインストールします。
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -114,7 +109,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-
 ## ビルドとテスト {#building-testing}
 
 ### プロジェクトをビルドする {#build-the-project}
@@ -136,7 +130,6 @@ cargo test
 * `bindgen` (v0.70.1) - C ヘッダーから FFI バインディングを生成
 * `tempdir` (v0.3.7) - テスト用の一時ディレクトリ処理
 * `thiserror` (v1) - エラー処理ユーティリティ
-
 
 ## エラー処理 {#error-handling}
 
@@ -163,7 +156,6 @@ match execute("SELECT 1", None) {
     }
 }
 ```
-
 
 ## GitHub リポジトリ {#github-repository}
 

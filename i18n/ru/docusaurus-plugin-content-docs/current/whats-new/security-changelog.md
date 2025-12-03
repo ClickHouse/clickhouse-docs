@@ -8,11 +8,7 @@ doc_type: 'changelog'
 keywords: ['безопасность', 'CVE', 'уязвимости', 'исправления безопасности', 'патчи']
 ---
 
-
-
 # Журнал изменений безопасности {#security-changelog}
-
-
 
 ## Исправлено в ClickHouse v25.1.5.5, 2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
 
@@ -26,8 +22,6 @@ ClickHouse Cloud не затронут данной уязвимостью.
 
 Благодарности: [Arseniy Dugin](https://github.com/ZerLes)
 
-
-
 ## Исправлено в ClickHouse v24.5, 2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
 
 ### [CVE-2024-6873](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-432f-r822-j66f) {#CVE-2024-6873}
@@ -40,8 +34,6 @@ ClickHouse Cloud использует иную схему версиониров
 
 Благодарности:  malacupa (независимый исследователь)
 
-
-
 ## Исправлено в ClickHouse v24.1, 2024-01-30 {#fixed-in-clickhouse-release-24-01-30}
 
 ### [CVE-2024-22412](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) {#CVE-2024-22412}
@@ -53,8 +45,6 @@ ClickHouse Cloud использует иную схему версиониров
 ClickHouse Cloud использует другую схему версионирования, и исправление для этой уязвимости было применено в v24.0.2.54535.
 
 Благодарности: Evan Johnson и Alan Braithwaite из команды Runreveal — дополнительную информацию можно найти в [их записи в блоге](https://blog.runreveal.com/cve-2024-22412-behind-the-bug-a-classic-caching-problem-in-the-clickhouse-query-cache/).
-
-
 
 ## Исправлено в ClickHouse v23.10.5.20, 2023-11-26 {#fixed-in-clickhouse-release-23-10-5-20-2023-11-26}
 
@@ -88,8 +78,6 @@ ClickHouse Cloud использует другую схему версионир
 
 Благодарности: malacupa (независимый исследователь)
 
-
-
 ## Исправлено в ClickHouse 22.9.1.2603, 2022-09-22 {#fixed-in-clickhouse-release-22-9-1-2603-2022-9-22}
 
 ### CVE-2022-44011 {#CVE-2022-44011}
@@ -107,8 +95,6 @@ ClickHouse Cloud использует другую схему версионир
 Исправление включено в версии 22.9.1.2603, 22.8.2.11, 22.7.4.16, 22.6.6.16, 22.3.12.19
 
 Благодарности: Kiojj (независимый исследователь)
-
-
 
 ## Исправлено в ClickHouse 21.10.2.15, 2021-10-18 {#fixed-in-clickhouse-release-21-10-2-215-2021-10-18}
 
@@ -154,8 +140,6 @@ ClickHouse Cloud использует другую схему версионир
 
 Благодарности: JFrog Security Research Team
 
-
-
 ## Исправлено в ClickHouse 21.4.3.21, 2021-04-12 {#fixed-in-clickhouse-release-21-4-3-21-2021-04-12}
 
 ### CVE-2021-25263 {#cve-2021-25263}
@@ -165,8 +149,6 @@ ClickHouse Cloud использует другую схему версионир
 Исправление вошло в версии 20.8.18.32-lts, 21.1.9.41-stable, 21.2.9.41-stable, 21.3.6.55-lts, 21.4.3.21-stable и более поздние.
 
 Благодарности: [Vyacheslav Egoshin](https://twitter.com/vegoshin)
-
-
 
 ## Исправлено в релизе ClickHouse 19.14.3.3, 2019-09-10 {#fixed-in-clickhouse-release-19-14-3-3-2019-09-10}
 
@@ -188,8 +170,6 @@ OOB read, OOB write и целочисленное переполнение (unde
 
 Благодарности: Eldar Zaitov из команды информационной безопасности Yandex
 
-
-
 ## Исправлено в релизе ClickHouse 19.13.6.1, 2019-09-20 {#fixed-in-clickhouse-release-19-13-6-1-2019-09-20}
 
 ### CVE-2019-18657 {#cve-2019-18657}
@@ -197,8 +177,6 @@ OOB read, OOB write и целочисленное переполнение (unde
 Табличная функция `url` содержала уязвимость, позволявшую злоумышленнику внедрять произвольные HTTP-заголовки в запрос.
 
 Благодарности: [Nikita Tikhomirov](https://github.com/NSTikhomirov)
-
-
 
 ## Исправлено в релизе ClickHouse 18.12.13, 2018-09-10 {#fixed-in-clickhouse-release-18-12-13-2018-09-10}
 
@@ -208,8 +186,6 @@ OOB read, OOB write и целочисленное переполнение (unde
 
 Авторы: Андрей Красичков из команды информационной безопасности Яндекса (Yandex Information Security Team)
 
-
-
 ## Исправлено в ClickHouse Release 18.10.3, 2018-08-13 {#fixed-in-clickhouse-release-18-10-3-2018-08-13}
 
 ### CVE-2018-14671 {#cve-2018-14671}
@@ -217,8 +193,6 @@ OOB read, OOB write и целочисленное переполнение (unde
 unixODBC позволял загружать произвольные разделяемые библиотеки (shared objects) из файловой системы, что приводило к уязвимости удалённого выполнения кода (Remote Code Execution, RCE).
 
 Благодарности: Андрей Красичков и Евгений Сидоров из команды информационной безопасности Яндекса
-
-
 
 ## Исправлено в релизе ClickHouse 1.1.54388 от 2018-06-28 {#fixed-in-clickhouse-release-1-1-54388-2018-06-28}
 
@@ -228,8 +202,6 @@ unixODBC позволял загружать произвольные разде
 
 Благодарности: Андрей Красичков из команды информационной безопасности Яндекса
 
-
-
 ## Исправлено в релизе ClickHouse 1.1.54390, 2018-07-06 {#fixed-in-clickhouse-release-1-1-54390-2018-07-06}
 
 ### CVE-2018-14669 {#cve-2018-14669}
@@ -237,8 +209,6 @@ unixODBC позволял загружать произвольные разде
 MySQL-клиент ClickHouse поддерживал функцию "LOAD DATA LOCAL INFILE", которая позволяла злоумышленному серверу MySQL читать произвольные файлы на подключённом сервере ClickHouse.
 
 Благодарности: Андрей Красичков и Евгений Сидоров, Команда информационной безопасности Яндекса
-
-
 
 ## Исправлено в релизе ClickHouse 1.1.54131, 2017-01-10 {#fixed-in-clickhouse-release-1-1-54131-2017-01-10}
 

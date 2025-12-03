@@ -29,7 +29,6 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Power BI {#power-bi}
 
 <ClickHouseSupportedBadge/>
@@ -50,8 +49,6 @@ Microsoft Power BI может выполнять запросы к данным 
 * [Выполнение запросов к данным из ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
 * [Настройка локального шлюза данных для Power BI Service](#power-bi-service)
 
-
-
 ## Предварительные требования {#prerequisites}
 
 ### Установка Power BI {#power-bi-installation}
@@ -68,8 +65,6 @@ Microsoft Power BI может выполнять запросы к данным 
 * Username — имя пользователя
 * Password — пароль пользователя
 * Database — имя базы данных на экземпляре, к которому вы хотите подключиться
-
-
 
 ## Power BI Desktop {#power-bi-desktop}
 
@@ -158,15 +153,11 @@ Microsoft Power BI может выполнять запросы к данным 
 После завершения импорта данные ClickHouse будут доступны в Power BI как обычно.
 <br/>
 
-
-
 ## Сервис Power BI {#power-bi-service}
 
 Чтобы использовать Microsoft Power BI Service, необходимо создать [локальный шлюз данных](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem).
 
 Подробную информацию по настройке пользовательских коннекторов см. в документации Microsoft о том, как [использовать пользовательские коннекторы данных с локальным шлюзом данных](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
-
-
 
 ## Драйвер ODBC (только импорт) {#odbc-driver-import-only}
 
@@ -236,8 +227,6 @@ Microsoft Power BI может выполнять запросы к данным 
 <br/>
 
 После завершения импорта данные из ClickHouse будут доступны в Power BI как обычно.
-
-
 
 ## Известные ограничения {#known-limitations}
 
