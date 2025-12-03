@@ -478,6 +478,15 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Data Lakes",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "sql-reference/datalakes" },
+      items: [
+      ],
+    },
   ],
 
   integrations: [
