@@ -14,7 +14,6 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack の各コンポーネントには、以下の設定オプションがあります。
 
-
 ## 設定の変更 {#modifying-settings}
 
 ### Docker {#docker}
@@ -24,7 +23,6 @@ ClickStack の各コンポーネントには、以下の設定オプションが
 ```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 ### Docker Compose {#docker-compose}
 
@@ -42,7 +40,6 @@ services:
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       # ... その他の設定
 ```
-
 
 ### Helm {#helm}
 
@@ -96,7 +93,6 @@ ingress:
     - name: CLICKHOUSE_USER
       value: abc
 ```
-
 
 ## HyperDX {#hyperdx}
 

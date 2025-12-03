@@ -59,7 +59,6 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # Контрольная сумма должна совпадать с: 1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
-
 ### Исходные сырые данные {#original-raw-data}
 
 Далее приведены сведения о шагах по загрузке исходных необработанных данных, которые затем можно преобразовать и конвертировать по своему усмотрению.
@@ -89,7 +88,6 @@ cat *.csv | md5sum
 # Контрольная сумма должна совпадать с: b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
-
 #### Получение данных метеостанций Тайваня {#retrieve-the-taiwan-weather-stations}
 
 ```bash
@@ -98,7 +96,6 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 # Опционально: Преобразование кодировки UTF-8-BOM в UTF-8 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
-
 
 ## Создание схемы таблицы {#create-table-schema}
 
@@ -141,7 +138,6 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-
 ## Вставка данных в ClickHouse {#inserting-into-clickhouse}
 
 ### Вставка данных из локального файла {#inserting-from-local-file}
@@ -164,7 +160,6 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 Пиковое использование памяти: 583.23 МиБ.
 ```
 
-
 ### Вставка из URL {#inserting-from-url}
 
 ```sql
@@ -174,7 +169,6 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 ```
 
 Чтобы узнать, как ускорить этот процесс, ознакомьтесь с нашей публикацией в блоге о [настройке загрузки больших объёмов данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
-
 
 ## Проверка числа строк и объёма данных {#check-data-rows-and-sizes}
 
@@ -206,7 +200,6 @@ WHERE (`table` = 'tw_weather_data') AND active
 │ 2.13 GiB  │ 32.94 GiB         │
 └───────────┴───────────────────┘
 ```
-
 
 ## Примеры запросов {#sample-queries}
 
@@ -256,7 +249,6 @@ GROUP BY StationId
 Получено 30 строк. Затрачено: 0,045 сек. Обработано 6,41 млн строк, 187,33 МБ (143,92 млн строк/сек., 4,21 ГБ/сек.)
 ```
 
-
 ### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
@@ -294,7 +286,6 @@ LIMIT 10
 
 Получено 10 строк. Затрачено: 0.009 сек. Обработано 91.70 тыс. строк, 2.33 МБ (9.67 млн. строк/сек., 245.31 МБ/сек.)
 ```
-
 
 ## Благодарности {#credits}
 

@@ -247,7 +247,7 @@ OK
 
 ````
 
-#### Создание таблицы в ClickHouse                                
+#### Создание таблицы в ClickHouse                                 {#create-table-in-clickhouse-1}
 
 Таблица в ClickHouse для получения данных из таблицы Hive, созданной выше:
 ```sql
@@ -319,9 +319,9 @@ day:                  2021-09-18
 Получена 1 строка. Прошло: 0.357 сек.
 ```
 
-### Запрос к таблице Hive с форматом ввода Text
+### Запрос к таблице Hive с форматом ввода Text {#query-hive-table-with-text-input-format}
 
-#### Создание таблицы в Hive
+#### Создание таблицы в Hive {#create-table-in-hive-2}
 
 ```text
 hive >

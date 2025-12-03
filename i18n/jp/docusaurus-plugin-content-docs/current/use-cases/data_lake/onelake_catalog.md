@@ -23,7 +23,6 @@ Microsoft OneLake は、レイクハウス向けに複数のテーブル形式�
 `SET allow_database_iceberg = 1;`
 :::
 
-
 ## OneLake の要件の収集 {#gathering-requirements}
 
 Microsoft Fabric でテーブルをクエリする前に、次の情報を収集する必要があります。
@@ -43,7 +42,6 @@ Microsoft Fabric でテーブルをクエリする前に、次の情報を収集
 SET allow_database_iceberg=1
 ```
 
-
 ### OneLakeに接続する {#connect-onelake}
 
 ```sql
@@ -58,7 +56,6 @@ auth_scope = 'https://storage.azure.com/.default',
 onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
-
 
 ## ClickHouse を使用した OneLake へのクエリ実行 {#querying-onelake-using-clickhouse}
 
@@ -120,7 +117,6 @@ ClickHouse は複数のネームスペースをサポートしていないため
 
 テーブルの DDL を確認するには：
 
-
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
@@ -154,7 +150,6 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    │↳ENGINE = Iceberg('abfss://<warehouse_id>@onelake.dfs.fabric.microsoft.com/<data_item_id>/Tables/year_2017/green_tripdata_2017') │
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## データレイクから ClickHouse へのデータ読み込み {#loading-data-from-onelake-into-clickhouse}
 

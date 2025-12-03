@@ -58,7 +58,6 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-
 ## EXPLAIN の種類 {#explain-types}
 
 - `AST` — 抽象構文木 (Abstract Syntax Tree)。
@@ -100,7 +99,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
@@ -146,7 +144,6 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-
 ### EXPLAIN QUERY TREE {#explain-query-tree}
 
 Settings:
@@ -175,7 +172,6 @@ QUERY id: 0
   JOIN TREE
     TABLE id: 3, table_name: default.test_table
 ```
-
 
 ### EXPLAIN PLAN {#explain-plan}
 
@@ -271,7 +267,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
-
 
 ```json
 [
@@ -401,7 +396,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-
 `actions` = 1 の場合、追加されるキーはステップタイプによって異なります。
 
 例:
@@ -461,7 +455,6 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
-
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
 設定:
@@ -494,7 +487,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
 クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
@@ -522,7 +514,6 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 

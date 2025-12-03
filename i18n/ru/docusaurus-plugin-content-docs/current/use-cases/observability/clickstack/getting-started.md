@@ -25,7 +25,6 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 Благодаря готовым Docker-образам начать работу с **ClickStack** очень просто. Эти образы собраны на основе официального Debian-пакета ClickHouse и доступны в нескольких вариантах для разных сценариев использования.
 
-
 ## Локальное развертывание {#local-deployment}
 
 Самый простой вариант — **единый образ** (single-image distribution), который включает все основные компоненты стека, упакованные вместе:

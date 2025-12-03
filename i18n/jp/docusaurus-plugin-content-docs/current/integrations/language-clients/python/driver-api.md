@@ -118,7 +118,6 @@ print(client.database)
 # 出力: 'github' {#output-github}
 ```
 
-
 ## クライアントのライフサイクルとベストプラクティス {#client-lifecycle-and-best-practices}
 
 ClickHouse Connect クライアントの作成は、接続の確立、サーバーのメタデータの取得、設定の初期化などを伴う負荷の高い処理です。最適なパフォーマンスを得るために、次のベストプラクティスに従ってください。
@@ -157,7 +156,6 @@ for i in range(1000):
     result = client.query('SELECT count() FROM users')
     client.close()
 ```
-
 
 ### マルチスレッドアプリケーション {#multi-threaded-applications}
 
@@ -216,7 +214,6 @@ def worker(thread_id):
     client.close()
 ```
 
-
 ### 適切なクリーンアップ {#proper-cleanup}
 
 シャットダウン時には必ずクライアントを閉じてください。`client.close()` は、クライアントが自身のプールマネージャーを所有している場合（たとえばカスタム TLS/プロキシオプションを指定して作成した場合）にのみ、クライアントを解放し、プールされた HTTP 接続を閉じます。デフォルトの共有プールを使用している場合は、`client.close_connections()` を使用してソケットを明示的に閉じてください。そうしない場合でも、接続はアイドル時間の経過およびプロセス終了時に自動的にクリーンアップされます。
@@ -235,7 +232,6 @@ finally:
 with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
     result = client.query('SELECT 1')
 ```
-
 
 ### 複数のクライアントを使用すべき場合 {#when-to-use-multiple-clients}
 
@@ -282,7 +278,6 @@ WHERE date >= '2022-10-01 15:20:05'
 :::warning
 サーバー側バインディングは、ClickHouse サーバーでは `SELECT` クエリでのみサポートされています。`ALTER`、`DELETE`、`INSERT`、およびその他の種類のクエリでは動作しません。将来的に変更される可能性があります。詳細については [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092) を参照してください。
 :::
-
 
 #### クライアントサイドバインディング {#client-side-binding}
 
@@ -348,7 +343,6 @@ DateTime64 引数（サブ秒精度を持つ ClickHouse の型）をバインド
 
 :::
 
-
 ### Settings 引数 {#settings-argument-1}
 
 すべての主要な ClickHouse Connect Client の「insert」および「select」メソッドは、指定した SQL ステートメントに対して ClickHouse サーバーの [ユーザー設定](/operations/settings/settings.md) を渡すための、省略可能な `settings` キーワード引数を受け取ります。`settings` 引数は辞書型である必要があります。各要素は ClickHouse の設定名と、その設定に対応する値です。値は、サーバーにクエリパラメータとして送信される際に文字列へ変換される点に注意してください。
@@ -363,7 +357,6 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
             'use_skip_indexes': False}
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
-
 
 ## Client `command` メソッド {#client-command-method}
 
@@ -408,7 +401,6 @@ print(result)
 client.command("DROP TABLE test_command")
 ```
 
-
 #### 単一値を返すシンプルなクエリ {#simple-queries-returning-single-values}
 
 ```python
@@ -426,7 +418,6 @@ version = client.command("SELECT version()")
 print(version)
 # 出力: "25.8.2.29" {#output-258229}
 ```
-
 
 #### パラメーター付きコマンド {#commands-with-parameters}
 
@@ -449,7 +440,6 @@ result = client.command(
 )
 ```
 
-
 #### 設定付きのコマンド {#commands-with-settings}
 
 ```python
@@ -463,7 +453,6 @@ result = client.command(
     settings={"optimize_throw_if_noop": 1}
 )
 ```
-
 
 ## Client `query` Method {#client-query-method}
 
@@ -512,7 +501,6 @@ print([col_type.name for col_type in result.column_types])
 # 出力: ['String', 'String'] {#output-string-string}
 ```
 
-
 #### クエリ結果へのアクセス {#accessing-query-results}
 
 ```python
@@ -547,7 +535,6 @@ print(result.first_row)
 # 出力: (0, "0") {#output-0-0}
 ```
 
-
 #### クライアントサイドパラメータを使用したクエリ {#query-with-client-side-parameters}
 
 ```python
@@ -566,7 +553,6 @@ parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
 ```
 
-
 #### サーバー側パラメータを使ったクエリ {#query-with-server-side-parameters}
 
 ```python
@@ -580,7 +566,6 @@ parameters = {"db": "system", "tbl": "query_log"}
 
 result = client.query(query, parameters=parameters)
 ```
-
 
 #### 設定付きクエリの実行 {#query-with-settings}
 
@@ -598,7 +583,6 @@ result = client.query(
     }
 )
 ```
-
 
 ### `QueryResult` オブジェクト {#the-queryresult-object}
 
@@ -675,7 +659,6 @@ data = [
 client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
-
 #### カラム指向の挿入 {#column-oriented-insert}
 
 ```python
@@ -692,7 +675,6 @@ data = [
 
 client.insert("users", data, column_names=["id", "name", "age"], column_oriented=True)
 ```
-
 
 #### 明示的な列型指定による INSERT {#insert-with-explicit-column-types}
 
@@ -716,7 +698,6 @@ client.insert(
 )
 ```
 
-
 #### 特定のデータベースに挿入する {#insert-into-specific-database}
 
 ```python
@@ -737,7 +718,6 @@ client.insert(
     database="production",
 )
 ```
-
 
 ## ファイルからの挿入 {#file-inserts}
 

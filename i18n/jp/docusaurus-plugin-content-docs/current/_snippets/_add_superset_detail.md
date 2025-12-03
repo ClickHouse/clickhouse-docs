@@ -13,7 +13,6 @@ Supersetは[Docker Composeを使用したローカルへのSupersetインスト�
 以下のコマンドは、GitHubリポジトリ`superset`のトップレベルディレクトリから実行してください。
 :::
 
-
 ## ClickHouse Connect の公式ドライバー {#official-clickhouse-connect-driver}
 
 Superset のデプロイメントで ClickHouse Connect ドライバーを利用できるようにするには、ローカルの requirements ファイルに追加します。
@@ -21,7 +20,6 @@ Superset のデプロイメントで ClickHouse Connect ドライバーを利用
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
-
 
 ## Mapbox {#mapbox}
 
@@ -34,7 +32,6 @@ API キーを Superset で利用できるようにします:
 ```bash
 echo "MAPBOX_API_KEY=pk.SAMPLE-実際のキーに置き換えてください" >> docker/.env-non-dev
 ```
-
 
 ## Superset バージョン 2.0.0 のデプロイ {#deploy-superset-version-200}
 

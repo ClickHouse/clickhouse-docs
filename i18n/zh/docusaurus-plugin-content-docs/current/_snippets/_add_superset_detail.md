@@ -13,7 +13,6 @@ Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://super
 以下命令需要在 GitHub 代码仓库 `superset` 的根目录下运行。
 :::
 
-
 ## 官方 ClickHouse Connect 驱动程序 {#official-clickhouse-connect-driver}
 
 要在 Superset 部署中启用 ClickHouse Connect 驱动程序，请将其添加到本地 requirements 文件中：
@@ -21,7 +20,6 @@ Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://super
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
-
 
 ## Mapbox {#mapbox}
 
@@ -34,7 +32,6 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```bash
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
-
 
 ## 部署 Superset 2.0.0 版本 {#deploy-superset-version-200}
 

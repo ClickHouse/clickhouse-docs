@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 
 > これは、PostgreSQL から ClickHouse への移行に関するガイドの **パート 1** です。具体例を用いて、リアルタイムレプリケーション（CDC）方式により効率的に移行を行う方法を示します。ここで扱う多くの概念は、PostgreSQL から ClickHouse への手動での一括データ転送にも適用できます。
 
-
 ## データセット {#dataset}
 
 Postgres から ClickHouse への典型的なマイグレーション例を示すサンプルデータセットとして、[こちら](/getting-started/example-datasets/stackoverflow) で説明している Stack Overflow データセットを使用します。これは、2008 年から 2024 年 4 月までに Stack Overflow 上で発生したすべての `post`、`vote`、`user`、`comment`、`badge` を含みます。このデータ用の PostgreSQL スキーマを以下に示します。
@@ -28,8 +27,6 @@ Postgres から ClickHouse への典型的なマイグレーション例を示�
 
 マイグレーション手順を検証する目的で、このデータセットを PostgreSQL インスタンスに読み込みたいユーザー向けに、DDL とともにダウンロード可能な `pg_dump` 形式のデータを用意しています。続いて、データロード用コマンドを以下に示します。
 
-
-
 ```bash
 # ユーザー {#users}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
@@ -37,41 +34,30 @@ gzip -d users.sql.gz
 psql < users.sql
 ```
 
-
 # posts {#posts}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql < posts.sql
-
-
 
 # posthistory {#posthistory}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
-
-
 # コメント {#comments}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
-
-
 
 # 投票 {#votes}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql < votes.sql
 
-
-
 # badges {#badges}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql < badges.sql
-
-
 
 # postlinks {#postlinks}
 
@@ -85,7 +71,6 @@ ClickHouseにとっては小規模ですが、このデータセットはPostgre
 
 > この例ではPostgresとClickHouseのパフォーマンス差を示すために完全なデータセットを使用していますが、以下に記載されているすべての手順は、小規模なサブセットでも同様に機能します。完全なデータセットをPostgresにロードする場合は[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記のスキーマで定義された外部キー制約により、PostgreSQL用の完全なデータセットには参照整合性を満たす行のみが含まれています。このような制約のない[Parquetバージョン](/getting-started/example-datasets/stackoverflow)は、必要に応じてClickHouseに直接ロードできます。
 ```
-
 
 ## データの移行 {#migrating-data}
 
@@ -144,7 +129,6 @@ SETTINGS describe_compact_output = 1
 PostgreSQL と ClickHouse 間のデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
 
 このスキーマに対して型を最適化する手順は、データが他のソース（例：S3 上の Parquet）からロードされている場合と同じです。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
-
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts

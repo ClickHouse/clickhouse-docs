@@ -12,7 +12,6 @@ import Image from '@theme/IdealImage';
 トランザクションデータベースは更新および削除を伴うトランザクションワークロードに最適化されていますが、OLAP データベースはそのような操作に対する保証は相対的に弱くなります。その代わりに、分析クエリを大幅に高速化するために、バッチで挿入される不変データ向けに最適化されています。ClickHouse はミューテーションによる更新操作と、行を削除する軽量な手段の両方を提供しますが、前述のとおりカラム指向の構造であるため、これらの操作は慎重にスケジュールする必要があります。これらの操作は非同期で処理され、単一スレッドで実行され、（更新の場合）ディスク上のデータを書き換える必要があります。そのため、多数の細かな変更には使用すべきではありません。
 上記のような使用パターンを避けつつ更新および削除対象の行ストリームを処理するために、ClickHouse のテーブルエンジンである ReplacingMergeTree を使用できます。
 
-
 ## 挿入行の自動アップサート {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree テーブルエンジン](/engines/table-engines/mergetree-family/replacingmergetree) を使用すると、ユーザーが同一行を複数回挿入し、そのうち 1 つを最新バージョンとして指定できるため、非効率な `ALTER` や `DELETE` 文を使用せずに行を更新できます。バックグラウンドプロセスによって、同じ行の古いバージョンが非同期に削除され、不変な挿入のみを用いて更新操作を効率的に模倣します。
@@ -51,7 +50,6 @@ SYSTEM SYNC REPLICA テーブル
 > ReplacingMergeTree を用いた削除の処理は、上記の条件でクリーンアップのための期間をスケジュールできる場合を除き、削除件数が少量から中程度（10% 未満）のテーブルにのみ推奨されます。
 
 > ヒント: 変更が発生しなくなった特定のパーティションに対して `OPTIMIZE FINAL CLEANUP` を実行することもできます。
-
 
 ## プライマリキー／重複排除キーの選択 {#choosing-a-primarydeduplication-key}
 
@@ -97,7 +95,6 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```
 
 `ORDER BY` キーとして `(PostTypeId, toDate(CreationDate), CreationDate, Id)` を使用します。各投稿に対して一意な `Id` 列によって、行の重複排除を行えるようにしています。要件に応じて、スキーマには `Version` 列と `Deleted` 列が追加されます。
-
 
 ## ReplacingMergeTree でのクエリ実行 {#querying-replacingmergetree}
 
@@ -210,7 +207,6 @@ FROM posts_updateable
 
 ここで得られる結果は、実行されたマージ処理によって変動します。重複した行があるため、ここで表示されている合計値が異なっていることがわかります。テーブルに `FINAL` を適用すると、正しい結果が得られます。
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
@@ -224,7 +220,6 @@ FINAL
 ピークメモリ使用量: 8.14 MiB。
 ```
 
-
 ## FINAL のパフォーマンス {#final-performance}
 
 `FINAL` 演算子は、クエリに対してわずかなパフォーマンス上のオーバーヘッドを伴います。
@@ -233,8 +228,6 @@ FINAL
 `WHERE` 条件でキー列をフィルタする場合、読み込まれて重複排除に渡されるデータ量は減少します。
 
 `WHERE` 条件でキー列を使用していない場合、`FINAL` 使用時には現時点で ClickHouse は `PREWHERE` 最適化を利用しません。この最適化は、フィルタ対象外の列に対して読み取る行数を削減することを目的としています。この `PREWHERE` をエミュレートし、その結果としてパフォーマンスの向上につながる可能性がある例は[こちら](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)にあります。
-
-
 
 ## ReplacingMergeTree でパーティションを活用する {#exploiting-partitions-with-replacingmergetree}
 
@@ -323,7 +316,6 @@ ORDER BY year ASC
 ```
 
 示したように、このケースではパーティショニングにより、重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリ性能が大幅に向上しました。
-
 
 ## マージ動作に関する考慮事項 {#merge-behavior-considerations}
 

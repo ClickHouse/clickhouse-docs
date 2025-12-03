@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 设置查询 API 端点 {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 功能允许您在 ClickHouse Cloud 控制台中直接基于任意已保存的 SQL 查询创建一个 API 端点。之后，您可以通过 HTTP 调用这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
@@ -136,7 +135,6 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-
 ### HTTP 方法 {#http-methods}
 
 | Method | Use Case | Parameters |
@@ -251,7 +249,6 @@ POST /query-endpoints/{queryEndpointId}/run
 ```sql
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
-
 
 #### 版本 1 {#version-1}
 
@@ -429,7 +426,6 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
   </TabItem>
 </Tabs>
 
-
 ### 在查询变量中使用数组向表中插入数据的请求 {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **表的 SQL：**
@@ -493,7 +489,6 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
   </TabItem>
 </Tabs>
 
-
 ### 将 ClickHouse 设置 `max_threads` 为 8 的请求 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **查询 API 端点的 SQL：**
@@ -539,7 +534,6 @@ SELECT * FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### 以流的形式发送请求并解析响应` {#request-and-parse-the-response-as-a-stream}
 
@@ -610,7 +604,6 @@ SELECT name, database FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### 从文件向表中插入数据流 {#insert-a-stream-from-a-file-into-a-table}
 

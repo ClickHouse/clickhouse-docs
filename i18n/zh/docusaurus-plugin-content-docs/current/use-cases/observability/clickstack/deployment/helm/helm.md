@@ -36,7 +36,6 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
 * TLS 和入口配置
 * Secrets 管理和认证设置
 
-
 ### 适用场景 {#suitable-for}
 
 * 概念验证（PoC）
@@ -262,7 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 对于在生产环境中使用基于 Secret 的配置、外部 OTel collector，或精简部署方案的场景，请参阅 [Deployment Options 指南](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options)。
 :::
 
-
 ## 生产环境说明
 
 默认情况下，该 chart 还会安装 ClickHouse 和 OTel collector。不过，在生产环境中，建议分别单独管理 ClickHouse 和 OTel collector。
@@ -282,7 +280,6 @@ helm install my-clickstack clickstack/clickstack \
 * [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - 入口、TLS 和 Secrets 管理
 * [云上部署](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - 云平台特定设置与生产环境检查清单
   :::
-
 
 ## 任务配置 {#task-configuration}
 
@@ -308,7 +305,6 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 helm search repo clickstack
 ```
 
-
 ## 卸载 ClickStack
 
 若要移除该部署：
@@ -319,7 +315,6 @@ helm uninstall my-clickstack
 
 这将删除与该发布关联的所有资源，但持久化数据（如有）可能会保留。
 
-
 ## 故障排查 {#troubleshooting}
 
 ### 查看日志
@@ -328,13 +323,11 @@ helm uninstall my-clickstack
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-
 ### 排查安装失败
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
-
 
 ### 验证部署
 
@@ -378,7 +371,6 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
-
 
 ## 相关文档 {#related-documentation}
 

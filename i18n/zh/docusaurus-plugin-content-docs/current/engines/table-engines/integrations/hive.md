@@ -247,7 +247,7 @@ OK
 
 ````
 
-#### 在 ClickHouse 中创建表
+#### 在 ClickHouse 中创建表 {#create-table-in-clickhouse-1}
 
 在 ClickHouse 中创建表,从上面创建的 Hive 表中获取数据:
 ```sql
@@ -319,9 +319,9 @@ day:                  2021-09-18
 返回 1 行。耗时: 0.357 秒。
 ```
 
-### 使用 Text 输入格式查询 Hive 表
+### 使用 Text 输入格式查询 Hive 表 {#query-hive-table-with-text-input-format}
 
-#### 在 Hive 中创建表
+#### 在 Hive 中创建表 {#create-table-in-hive-2}
 
 ```text
 hive >

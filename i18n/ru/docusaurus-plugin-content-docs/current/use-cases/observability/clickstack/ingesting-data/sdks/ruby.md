@@ -33,7 +33,6 @@ _Чтобы отправлять логи в ClickStack, используйте 
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-
 ### Настройка OpenTelemetry и форматтера логов {#configure-otel-logger-formatter}
 
 Далее необходимо инициализировать трассировочную инструментацию OpenTelemetry
@@ -74,7 +73,6 @@ Rails.application.configure do
   Rails.logger.info "Логгер инициализирован!! 🐱"
 end
 ```
-
 
 ### Настройка переменных окружения {#configure-environment-variables}
 

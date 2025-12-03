@@ -9,11 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Расширенное руководство {#advanced-tutorial}
-
-
 
 ## Overview {#overview}
 
@@ -24,7 +20,6 @@ doc_type: 'guide'
 Для выполнения данного руководства необходим доступ к работающему сервису ClickHouse. Инструкции см. в руководстве [Быстрый старт](/get-started/quick-start).
 
 <VerticalStepper>
-
 
 ## Создание новой таблицы {#create-a-new-table}
 
@@ -88,8 +83,6 @@ doc_type: 'guide'
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
     ```
-
-
 
 ## Добавьте набор данных {#add-the-dataset}
 
@@ -158,8 +151,6 @@ doc_type: 'guide'
     ```
 
     Этот запрос должен вернуть 1 999 657 строк.
-
-
 
 ## Анализ данных {#analyze-the-data}
 
@@ -267,8 +258,6 @@ doc_type: 'guide'
   <summary>Ожидаемый результат</summary>
   <p>
 
-
-
     ```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
@@ -340,8 +329,6 @@ doc_type: 'guide'
     </p>
   </details>
 
-
-
 7. Выберите поездки до аэропортов Ла-Гуардия или JFK:
     ```sql
     SELECT
@@ -381,8 +368,6 @@ doc_type: 'guide'
 
     </p>
     </details>
-
-
 
 ## Создание словаря {#create-a-dictionary}
 
@@ -467,7 +452,6 @@ LAYOUT(HASHED_ARRAY())
    ORDER BY total DESC
    ```
 
-
 Этот запрос подсчитывает количество поездок на такси по районам, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK. Результат выглядит следующим образом: обратите внимание, что есть довольно много поездок, для которых район посадки неизвестен:
 
 ```response
@@ -483,7 +467,6 @@ LAYOUT(HASHED_ARRAY())
 
 7 строк в наборе. Затрачено: 0.019 сек. Обработано 2.00 млн строк, 4.00 МБ (105.70 млн строк/сек., 211.40 МБ/сек.)
 ```
-
 
 ## Выполнение соединения {#perform-a-join}
 
@@ -536,7 +519,6 @@ LAYOUT(HASHED_ARRAY())
         :::
 
 </VerticalStepper>
-
 
 ## Дальнейшие шаги {#next-steps}
 

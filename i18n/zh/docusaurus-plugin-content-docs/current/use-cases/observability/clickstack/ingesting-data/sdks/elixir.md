@@ -35,7 +35,6 @@ def deps do
 end
 ```
 
-
 ### 配置 Logger {#configure-logger}
 
 在你的 `config.exs` 文件中添加以下配置：
@@ -47,7 +46,6 @@ config :logger,
   level: :info,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
-
 
 ### 配置环境变量 {#configure-environment-variables}
 

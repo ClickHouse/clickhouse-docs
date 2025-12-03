@@ -20,7 +20,6 @@ ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との統�
 Glue は多くの異なるテーブル形式をサポートしていますが、この統合でサポートされるのは Iceberg テーブルのみです。
 :::
 
-
 ## AWS で Glue を構成する {#configuring}
 
 Glue カタログに接続するには、カタログのリージョンを特定し、アクセスキーとシークレットキーを指定する必要があります。
@@ -42,7 +41,6 @@ SETTINGS
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
 ```
-
 
 ## ClickHouse から Glue データカタログをクエリする {#query-glue-catalog}
 
@@ -79,7 +77,6 @@ ClickHouse は複数のネームスペースをサポートしていないため
 ```sql
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
-
 
 ```sql title="Response"
 ┌─statement───────────────────────────────────────────────┐

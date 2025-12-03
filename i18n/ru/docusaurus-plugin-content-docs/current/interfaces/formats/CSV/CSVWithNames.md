@@ -70,7 +70,6 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
 
-
 ### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `CSVWithNames`:
@@ -103,7 +102,6 @@ FORMAT CSVWithNames
 "2022-05-07",2021,"Stevenage Borough","Salford City",4,2
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
-
 
 ## Настройки формата {#format-settings}
 

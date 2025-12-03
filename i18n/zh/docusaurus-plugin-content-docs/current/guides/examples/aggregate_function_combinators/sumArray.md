@@ -7,11 +7,7 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-
-
 # sumArray {#sumarray}
-
-
 
 ## 描述 {#description}
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 函数，从而通过 `sumArray` 聚合组合器函数计算数组中所有元素的总和。
 
 当需要计算数据集中多个数组中所有元素的总和时，`sumArray` 函数非常有用。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -51,7 +45,6 @@ GROUP BY date, category_sales;
 `sumArray` 函数会将每个 `category_sales` 数组中的所有元素相加。
 例如，在 `2024-01-01` 这一天，它将 `100 + 200 + 150` 相加得到 `450`。这与使用 `arraySum`
 得到的结果相同。
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

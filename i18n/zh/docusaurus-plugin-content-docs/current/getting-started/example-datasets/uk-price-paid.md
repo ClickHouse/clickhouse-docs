@@ -39,7 +39,6 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-
 ## 预处理并插入数据 {#preprocess-import-data}
 
 我们将使用 `url` 函数将数据流式写入 ClickHouse。首先需要对部分传入数据进行预处理，包括：
@@ -94,7 +93,6 @@ FROM url(
 
 等待数据插入完成；根据网络速度，这可能需要一到两分钟。
 
-
 ## 验证数据 {#validate-data}
 
 通过查看插入了多少行来验证是否生效：
@@ -114,7 +112,6 @@ WHERE name = 'uk_price_paid'
 
 请注意，这张表的大小只有 221.43 MiB！
 
-
 ## 运行一些查询 {#run-queries}
 
 我们来运行一些查询来分析数据：
@@ -132,7 +129,6 @@ GROUP BY year
 ORDER BY year
 ```
 
-
 ### 查询 2：伦敦每年的平均价格 {#average-price-london}
 
 ```sql runnable
@@ -148,7 +144,6 @@ ORDER BY year
 ```
 
 2020 年房价发生了点变化！不过这大概不算什么意外……
-
 
 ### 查询 3：最昂贵的街区 {#most-expensive-neighborhoods}
 
@@ -168,7 +163,6 @@ HAVING c >= 100
 ORDER BY price DESC
 LIMIT 100
 ```
-
 
 ## 使用投影（Projections）加速查询 {#speeding-up-queries-with-projections}
 

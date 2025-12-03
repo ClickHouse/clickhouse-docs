@@ -7,8 +7,6 @@ title: 'Движок таблицы Join'
 doc_type: 'reference'
 ---
 
-
-
 # Табличный движок Join {#join-table-engine}
 
 Дополнительная подготовленная структура данных для использования в операциях [JOIN](/sql-reference/statements/select/join).
@@ -16,8 +14,6 @@ doc_type: 'reference'
 :::note
 В ClickHouse Cloud, если ваш сервис был создан на версии раньше 25.4, необходимо установить параметр `compatibility` не ниже 25.4, выполнив команду `SET compatibility=25.4`.
 :::
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -30,7 +26,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
-
 
 ## Параметры движка {#engine-parameters}
 
@@ -47,8 +42,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `k1[, k2, ...]` – ключевые столбцы из предложения `USING`, по которым выполняется операция `JOIN`.
 
 Задавайте параметры `join_strictness` и `join_type` без кавычек, например `Join(ANY, LEFT, col1)`. Они должны соответствовать операции `JOIN`, для которой будет использоваться таблица. Если параметры не соответствуют, ClickHouse не выбрасывает исключение и может вернуть некорректные данные.
-
-
 
 ## Особенности и рекомендации {#specifics-and-recommendations}
 
@@ -112,8 +105,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Таблицы с движком `Join` не могут использоваться в операциях `GLOBAL JOIN`.
 
 Движок `Join` позволяет указать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в операторе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
-
-
 
 ## Примеры использования {#example}
 

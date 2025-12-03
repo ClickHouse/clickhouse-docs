@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # avgMergeState {#avgMergeState}
-
-
 
 ## 描述 {#description}
 
@@ -21,8 +18,6 @@ import TabItem from '@theme/TabItem';
 可用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态，
 并返回一个新的中间聚合状态。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -122,7 +117,6 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 针对每个层级，我们将编写三个查询：
 
-
 <Tabs>
   <TabItem value="Service level" label="服务级别" default>
     ```sql
@@ -212,7 +206,6 @@ ORDER BY datacenter;
 │ dc2        │                145 │
 └────────────┴────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

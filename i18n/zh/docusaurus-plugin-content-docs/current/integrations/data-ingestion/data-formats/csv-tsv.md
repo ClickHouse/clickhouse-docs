@@ -7,13 +7,9 @@ keywords: ['CSV 格式', 'TSV 格式', '逗号分隔值', '制表符分隔值', 
 doc_type: 'guide'
 ---
 
-
-
 # 在 ClickHouse 中处理 CSV 和 TSV 数据 {#working-with-csv-and-tsv-data-in-clickhouse}
 
 ClickHouse 支持从 CSV 导入数据并导出为 CSV。由于 CSV 文件在具体格式上可能有所不同，包括表头行、自定义分隔符以及转义符号，ClickHouse 提供了相应的格式和设置，以高效处理每种情况。
-
-
 
 ## 从 CSV 文件导入数据 {#importing-data-from-a-csv-file}
 
@@ -126,7 +122,6 @@ Joe,Nothing
 Nothing,70
 ```
 
-
 如果我们从这个文件加载数据，ClickHouse 会将 `Nothing` 当作字符串（这是正确的）：
 
 ```sql
@@ -161,7 +156,6 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
-
 ## TSV（制表符分隔）文件 {#tsv-tab-separated-files}
 
 制表符分隔的数据格式是一种常用的数据交换格式。要将 [TSV 文件](assets/data_small.tsv) 中的数据加载到 ClickHouse，需要使用 [TabSeparated](/interfaces/formats/TabSeparated) 格式：
@@ -175,7 +169,6 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ### 原始 TSV {#raw-tsv}
 
 有时，TSV 文件在保存时没有对制表符和换行符进行转义。这种情况下，应使用 [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) 来处理此类文件。
-
 
 ## 导出为 CSV {#exporting-to-csv}
 
@@ -264,7 +257,6 @@ FORMAT CSV
 SET output_format_csv_crlf_end_of_line = 1;
 ```
 
-
 ## 针对 CSV 文件的模式推断 {#schema-inference-for-csv-files}
 
 在很多情况下，我们可能会处理结构未知的 CSV 文件，因此需要确定各列应使用哪些数据类型。ClickHouse 默认会根据对给定 CSV 文件的分析来推断数据格式，这被称为“模式推断（Schema Inference）”。可以结合使用 `DESCRIBE` 语句和 [file()](/sql-reference/table-functions/file.md) 函数来查看推断出的数据类型：
@@ -326,7 +318,6 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 现在，ClickHouse 会根据（第二行）表头行来确定列类型，而不再依赖猜测。
 
-
 ## 自定义分隔符、分隔标记和转义规则 {#custom-delimiters-separators-and-escaping-rules}
 
 在更复杂的场景中，文本数据可以采用高度自定义的格式，但仍然保持一定的结构。ClickHouse 为此类场景提供了专用的 [CustomSeparated](/interfaces/formats/CustomSeparated) 格式，它允许设置自定义的转义规则、分隔符、行分隔符以及起始/结束符号。
@@ -365,7 +356,6 @@ LIMIT 3
 
 我们也可以使用 [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) 来正确导出和导入表头。要处理更复杂的情况，请查看 [regex and template](templates-regex.md) 格式。
 
-
 ## 处理大型 CSV 文件 {#working-with-large-csv-files}
 
 CSV 文件可能会很大，而 ClickHouse 能高效处理任意大小的文件。大型文件通常是压缩的，ClickHouse 可以直接处理，无需事先解压缩。我们可以在执行插入操作时使用 `COMPRESSION` 子句：
@@ -386,7 +376,6 @@ COMPRESSION 'gzip' FORMAT CSV
 ```
 
 这将生成压缩的 `data_csv.csv.gz` 文件。
-
 
 ## 其他格式 {#other-formats}
 

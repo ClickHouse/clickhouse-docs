@@ -7,18 +7,12 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-
-
 # maxMap {#maxmap}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) можно применить к функции [`max`](/sql-reference/aggregate-functions/reference/max),
 чтобы вычислять максимальное значение в Map по каждому ключу с использованием агрегатной функции-комбинатора `maxMap`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)

@@ -34,7 +34,6 @@ URL/クエリパラメータに関する注意:
 
 サポートされているオプションの全一覧については、以下のセクションにある [Connection arguments and Settings](driver-api.md#connection-arguments) を参照してください。これらは SQLAlchemy の DSN で指定することもできます。
 
-
 ## コアクエリ {#sqlalchemy-core-queries}
 
 このダイアレクトは、結合、フィルタリング、並べ替え、LIMIT/OFFSET、`DISTINCT` を伴う SQLAlchemy Core の `SELECT` クエリをサポートします。
@@ -67,7 +66,6 @@ from sqlalchemy import delete
 with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
-
 
 ## DDL とリフレクション {#sqlalchemy-ddl-reflection}
 
@@ -103,7 +101,6 @@ with engine.begin() as conn:
 
 反映された列には、サーバー上に存在する場合、`clickhousedb_default_type`、`clickhousedb_codec_expression`、`clickhousedb_ttl_expression` などのダイアレクト固有の属性が含まれます。
 
-
 ## INSERT（Core と基本的な ORM） {#sqlalchemy-inserts}
 
 INSERT は、SQLAlchemy Core 経由だけでなく、利便性のためにシンプルな ORM モデルを使っても実行できます。
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## 対象範囲と制限事項 {#scope-and-limitations}
 

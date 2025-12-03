@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 
 > Это **часть 1** руководства по миграции с PostgreSQL на ClickHouse. На практическом примере показано, как эффективно выполнить миграцию с использованием подхода репликации данных в режиме реального времени (CDC — фиксация изменений данных). Многие описанные концепции также применимы к ручной массовой передаче данных из PostgreSQL в ClickHouse.
 
-
 ## Набор данных {#dataset}
 
 В качестве примерного набора данных, демонстрирующего типичную миграцию из Postgres в ClickHouse, мы используем набор данных Stack Overflow, описанный [здесь](/getting-started/example-datasets/stackoverflow). Он содержит каждую запись типов `post`, `vote`, `user`, `comment` и `badge`, появившуюся на Stack Overflow с 2008 по апрель 2024 года. Схема PostgreSQL для этих данных показана ниже:
@@ -28,8 +27,6 @@ import Image from '@theme/IdealImage';
 
 Для пользователей, которые хотят загрузить этот набор данных в экземпляр PostgreSQL для тестирования шагов миграции, мы предоставили данные в формате `pg_dump` для скачивания вместе с DDL, а последующие команды загрузки данных приведены ниже:
 
-
-
 ```bash
 # пользователи {#users}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
@@ -37,41 +34,30 @@ gzip -d users.sql.gz
 psql < users.sql
 ```
 
-
 # posts {#posts}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql < posts.sql
-
-
 
 # posthistory {#posthistory}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
-
-
 # комментарии {#comments}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
-
-
 
 # Голоса {#votes}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql < votes.sql
 
-
-
 # Значки {#badges}
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql < badges.sql
-
-
 
 # postlinks {#postlinks}
 
@@ -85,7 +71,6 @@ psql &lt; postlinks.sql
 
 > Хотя результаты наших примеров используют полный набор данных для демонстрации различий в производительности между Postgres и ClickHouse, все описанные ниже шаги функционально идентичны при использовании меньшего подмножества. Пользователи, желающие загрузить полный набор данных в Postgres, могут ознакомиться с инструкциями [здесь](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==). Из-за ограничений внешних ключей, наложенных приведённой выше схемой, полный набор данных для PostgreSQL содержит только строки, соответствующие требованиям ссылочной целостности. При необходимости [версия в формате Parquet](/getting-started/example-datasets/stackoverflow) без таких ограничений может быть легко загружена непосредственно в ClickHouse.
 ```
-
 
 ## Миграция данных {#migrating-data}
 
@@ -144,7 +129,6 @@ SETTINGS describe_compact_output = 1
 Общий обзор сопоставления типов данных между PostgreSQL и ClickHouse приведён в [документации в приложении](/migrations/postgresql/appendix#data-type-mappings).
 
 Шаги по оптимизации типов для этой схемы идентичны шагам для случая, когда данные были загружены из других источников, например из Parquet в S3. Применение процесса, описанного в этом [альтернативном руководстве по использованию Parquet](/data-modeling/schema-design), приводит к следующей схеме:
-
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts

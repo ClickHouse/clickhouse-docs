@@ -7,8 +7,6 @@ title: 'Memory テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # Memory テーブルエンジン {#memory-table-engine}
 
 :::note
@@ -29,8 +27,6 @@ Memory エンジンは、クエリの外部データ用一時テーブル（「�
 
 Memory エンジンのテーブルサイズを制限するために上限および下限を指定でき、事実上、循環バッファとして動作させることができます（[Engine Parameters](#engine-parameters) を参照）。
 
-
-
 ## エンジンパラメーター {#engine-parameters}
 
 - `min_bytes_to_keep` — メモリテーブルにサイズ制限がある場合に保持する最小バイト数。
@@ -45,8 +41,6 @@ Memory エンジンのテーブルサイズを制限するために上限およ�
   - デフォルト値: `0`
 - `compress` — メモリ上のデータを圧縮するかどうか。
   - デフォルト値: `false`
-
-
 
 ## 使用方法 {#usage}
 
@@ -63,7 +57,6 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 ```
 
 **注意:** `bytes` と `rows` の両方の上限パラメータは同時に設定できますが、`max` と `min` のうち小さい方の値が優先されます。
-
 
 ## 例 {#examples}
 

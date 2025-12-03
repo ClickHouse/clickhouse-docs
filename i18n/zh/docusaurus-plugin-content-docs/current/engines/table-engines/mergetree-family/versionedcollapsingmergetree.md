@@ -7,8 +7,6 @@ title: 'VersionedCollapsingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # VersionedCollapsingMergeTree 表引擎 {#versionedcollapsingmergetree-table-engine}
 
 该引擎：
@@ -19,8 +17,6 @@ doc_type: 'reference'
 详细信息参见 [Collapsing](#table_engines_versionedcollapsingmergetree) 部分。
 
 该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)，并在数据部分合并算法中增加了对行进行折叠的逻辑。`VersionedCollapsingMergeTree` 与 [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md) 具有相同用途，但使用了不同的折叠算法，允许在多线程环境下以任意顺序插入数据。特别是，`Version` 列有助于在插入顺序不正确时仍能正确折叠行。相比之下，`CollapsingMergeTree` 只允许严格按顺序插入。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -81,7 +77,6 @@ VersionedCollapsingMergeTree(sign, version)
     列数据类型应为 `UInt*`。
 </details>
 
-
 ## 折叠 {#table_engines_versionedcollapsingmergetree}
 
 ### 数据 {#data}
@@ -136,7 +131,6 @@ VersionedCollapsingMergeTree(sign, version)
 
 当 ClickHouse 插入数据时，会按主键对行进行排序。如果 `Version` 列不在主键中，ClickHouse 会隐式地将其作为最后一个字段加入主键，并使用它进行排序。
 
-
 ## 选择数据 {#selecting-data}
 
 ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据部件中，甚至不保证在同一台物理服务器上。这对于数据写入以及之后的数据部件合并都成立。此外，ClickHouse 会使用多个线程处理 `SELECT` 查询，因此无法预测结果集中各行的顺序。这意味着，如果需要从 `VersionedCollapsingMergeTree` 表中获取完全“折叠”的数据，就必须进行聚合。
@@ -146,8 +140,6 @@ ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据
 可以通过这种方式计算的聚合函数包括 `count`、`sum` 和 `avg`。如果对象至少有一个未折叠状态，则可以计算聚合函数 `uniq`。无法计算聚合函数 `min` 和 `max`，因为 `VersionedCollapsingMergeTree` 不保存折叠状态的值历史。
 
 如果需要在不进行聚合的情况下以“折叠”的方式提取数据（例如，检查是否存在其最新值满足某些条件的行），可以在 `FROM` 子句中使用 `FINAL` 修饰符。这种方法效率较低，不应在大表上使用。
-
-
 
 ## 使用示例 {#example-of-use}
 

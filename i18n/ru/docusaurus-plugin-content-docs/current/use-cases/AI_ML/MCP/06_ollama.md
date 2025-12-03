@@ -14,13 +14,11 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-
 # Использование сервера ClickHouse MCP совместно с Ollama {#using-clickhouse-mcp-server-with-ollama}
 
 > В этом руководстве объясняется, как использовать сервер ClickHouse MCP совместно с Ollama.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Установите Ollama {#install-ollama}
 
@@ -93,7 +91,6 @@ ollama show qwen3
 
 Из этого вывода видно, что у модели qwen3 по умолчанию чуть больше 8 миллиардов параметров.
 
-
 ## Установите MCPHost {#install-mcphost}
 
 На момент написания этой инструкции (июль 2025 года) нет встроенной поддержки использования Ollama с MCP Servers.
@@ -107,7 +104,6 @@ go install github.com/mark3labs/mcphost@latest
 ```
 
 Исполняемый файл будет установлен в `~/go/bin`, поэтому нужно убедиться, что этот каталог входит в переменную окружения `PATH`.
-
 
 ## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
@@ -156,7 +152,6 @@ export CLICKHOUSE_PASSWORD=""
 :::note
 Теоретически вы должны иметь возможность указать эти переменные под ключом `environment` в конфигурационном файле MCP, но на практике это не работает.
 :::
-
 
 ## Running MCPHost {#running-mcphost}
 

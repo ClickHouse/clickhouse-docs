@@ -8,7 +8,6 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.metrics {#systemmetrics}
 
 <SystemTableCloud />
@@ -47,7 +46,6 @@ SELECT * FROM system.metrics LIMIT 10
 │ BackgroundMovePoolTask               │     0 │ BackgroundProcessingPool内の移動用アクティブタスク数                  │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## メトリクスの説明 {#metric-descriptions}
 
@@ -184,8 +182,6 @@ Distributed テーブルへの非同期挿入用ファイルのうち、破損�
 CacheDictionary スレッドプール内のスレッド数。
 
 ### CacheDictionaryThreadsActive {#cachedictionarythreadsactive}
-
-
 
 タスクを実行中の CacheDictionary スレッドプール内のスレッド数。
 
@@ -328,8 +324,6 @@ JIT コンパイルされたコードのキャッシュ内のエントリ総数�
 HTTP サーバーへの接続数。
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
-
-
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
 
@@ -487,8 +481,6 @@ MergeTreeDataSelectExecutor スレッドプール内のスレッド数。
 
 MergeTree パーツクリーナースレッドプール内のスレッド数。
 
-
-
 ### MergeTreePartsCleanerThreadsActive {#mergetreepartscleanerthreadsactive}
 
 タスクを実行中の、MergeTree パーツクリーナー用スレッドプール内のスレッド数。
@@ -645,8 +637,6 @@ ZooKeeper セッション喪失後の再初期化、または ZooKeeper 未設�
 
 レプリカへ送信中のデータパーツ数。
 
-
-
 ### RestartReplicaThreads {#restartreplicathreads}
 
 RESTART REPLICA スレッドプール内のスレッド数。
@@ -790,8 +780,6 @@ ZooKeeper におけるウォッチ（イベント購読）の数。
 ### ConcurrencyControlAcquired {#concurrencycontrolacquired}
 
 取得された CPU スロットの総数。
-
-
 
 ### ConcurrencyControlSoftLimit {#concurrencycontrolsoftlimit}
 

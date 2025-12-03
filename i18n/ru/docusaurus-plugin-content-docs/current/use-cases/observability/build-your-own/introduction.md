@@ -11,7 +11,6 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-
 # Использование ClickHouse для обеспечения наблюдаемости {#using-clickhouse-for-observability}
 
 ## Введение {#introduction}
@@ -85,7 +84,6 @@ import Image from '@theme/IdealImage';
 :::note Метрики
 Хотя ClickHouse может использоваться для хранения данных метрик, это направление в ClickHouse развито менее полно; ожидается поддержка таких возможностей, как формат данных Prometheus и язык запросов PromQL.
 :::
-
 
 ### Распределённая трассировка {#distributed-tracing}
 

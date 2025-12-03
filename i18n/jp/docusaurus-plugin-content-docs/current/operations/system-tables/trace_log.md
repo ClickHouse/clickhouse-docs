@@ -110,7 +110,9 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-プロファイリングデータは、次のクエリで Chrome の Event Trace Format に変換できます。クエリを `chrome_trace.sql` というファイルに保存します。
+# Chrome Event Trace Format への変換 {#chrome-event-trace-format}
+
+プロファイリングデータは、次のクエリで Chrome の Event Trace Format に変換できます。クエリを `chrome_trace.sql` ファイルとして保存してください。
 
 ```sql
 WITH traces AS (
@@ -139,15 +141,16 @@ SELECT
 FROM traces;
 ```
 
-そして、それを ClickHouse Client で実行し、`trace.json` ファイルとしてエクスポートします。このファイルは [Perfetto](https://ui.perfetto.dev/) または [speedscope](https://www.speedscope.app/) のいずれかでインポートできます。
+そして、それを ClickHouse Client で実行し、`trace.json` ファイルとしてエクスポートします。このファイルは [Perfetto](https://ui.perfetto.dev/) または [speedscope](https://www.speedscope.app/) を使ってインポートできます。
 
 ```bash
 echo $(clickhouse client --query "$(cat chrome_trace.sql)") > trace.json
 ```
 
-よりコンパクトだが情報量の少ないトレースにしたい場合は、スタック情報の部分を省略できます。
+トレースをよりコンパクトにしたい場合は（情報量は少なくなりますが）、スタック部分を省略できます。
 
 **関連項目**
 
-* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md) — 計測ポイントを追加または削除します。
-* [system.instrumentation](../../operations/system-tables/instrumentation.md) - 計測済みの関数を確認します。
+* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md#instrument) — 計測ポイントを追加・削除します。
+* [system.instrumentation](../../operations/system-tables/instrumentation.md) — 計測済みのポイントを確認します。
+* [system.symbols](../../operations/system-tables/symbols.md) — 計測ポイントを追加するためのシンボルを確認します。

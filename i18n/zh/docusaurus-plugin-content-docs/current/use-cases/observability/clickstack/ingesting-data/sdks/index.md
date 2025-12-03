@@ -60,7 +60,6 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-
 ## Kubernetes 集成 {#kubernetes-integration}
 
 所有 SDK 在 Kubernetes 环境中运行时，均支持自动关联 Kubernetes 元数据（pod 名称、命名空间等）。这使你可以：

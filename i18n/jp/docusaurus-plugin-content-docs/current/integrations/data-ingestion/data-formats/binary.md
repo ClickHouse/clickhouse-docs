@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # ClickHouse におけるネイティブ形式とバイナリ形式の利用 {#using-native-and-binary-formats-in-clickhouse}
 
 ClickHouse は複数のバイナリ形式をサポートしており、高いパフォーマンスと優れたスペース効率を実現します。バイナリ形式では、データがバイナリのまま保存されるため、文字エンコーディングの点でも安全です。
 
 このガイドでは、デモ用に some_data [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用します。お使いの ClickHouse インスタンスでも自由に再現して試してみてください。
-
-
 
 ## ネイティブ ClickHouse 形式でのエクスポート {#exporting-in-a-native-clickhouse-format}
 
@@ -77,7 +74,6 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-
 ## RowBinary へのエクスポート {#exporting-to-rowbinary}
 
 サポートされている別のバイナリ形式として [RowBinary](/interfaces/formats/RowBinary) があり、この形式を使うと、行単位でバイナリ表現されたデータのインポートおよびエクスポートが可能です。
@@ -121,7 +117,6 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-
 ## RawBLOB を使用した単一のバイナリ値のインポート {#importing-single-binary-value-using-rawblob}
 
 バイナリファイル全体を読み取り、その内容をテーブルのフィールドに保存したいとします。
@@ -161,7 +156,6 @@ FORMAT RawBLOB
 
 なお、`LIMIT 1` を使用する必要があるのは、複数の値をエクスポートするとファイルが破損してしまうためです。
 
-
 ## MessagePack {#messagepack}
 
 ClickHouse は、[MsgPack](/interfaces/formats/MsgPack) フォーマットを使用して [MessagePack](https://msgpack.org/) 形式でのインポートおよびエクスポートをサポートしています。MessagePack 形式でエクスポートするには、次のとおりです。
@@ -180,7 +174,6 @@ INSERT INTO sometable
 FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
-
 
 ## Protocol Buffers {#protocol-buffers}
 
@@ -208,7 +201,6 @@ SETTINGS format_schema = 'schema:MessageType'
 ```
 
 これはデータを [proto.bin](assets/proto.bin) ファイルに保存します。ClickHouse では Protobuf データおよびネストされたメッセージのインポートもサポートしています。単一の Protocol Buffer メッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle) の使用を検討してください（この場合、長さ区切りは省略されます）。
-
 
 ## Cap&#39;n Proto {#capn-proto}
 
@@ -240,7 +232,6 @@ SETTINGS format_schema = 'schema:PathStats'
 ```
 
 `Date` 列を `UInt32` にキャストして、[対応する型を揃える](/interfaces/formats/CapnProto#data_types-matching-capnproto)必要がある点に注意してください。
-
 
 ## その他のフォーマット {#other-formats}
 

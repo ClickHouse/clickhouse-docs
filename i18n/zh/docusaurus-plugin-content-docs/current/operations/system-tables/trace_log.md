@@ -110,7 +110,9 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-可以使用以下查询将性能分析数据转换为 Chrome 的事件跟踪格式（Event Trace Format）。将该查询保存为 `chrome_trace.sql` 文件：
+# 转换为 Chrome 事件跟踪格式 {#chrome-event-trace-format}
+
+可以使用以下查询将性能剖析数据转换为 Chrome 的 Event Trace Format。将该查询保存为 `chrome_trace.sql` 文件：
 
 ```sql
 WITH traces AS (
@@ -139,15 +141,16 @@ SELECT
 FROM traces;
 ```
 
-并使用 ClickHouse Client 执行它，将结果导出为一个 `trace.json` 文件，之后可以使用 [Perfetto](https://ui.perfetto.dev/) 或 [speedscope](https://www.speedscope.app/) 导入。
+并使用 ClickHouse Client 执行，将结果导出为一个 `trace.json` 文件，之后我们可以使用 [Perfetto](https://ui.perfetto.dev/) 或 [speedscope](https://www.speedscope.app/) 导入该文件。
 
 ```bash
 echo $(clickhouse client --query "$(cat chrome_trace.sql)") > trace.json
 ```
 
-如果希望获得更紧凑但信息量较少的 trace，我们可以省略 stack 部分。
+如果我们希望得到更紧凑但信息量更少的 trace，可以省略 stack 部分。
 
 **另请参阅**
 
-* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md) — 添加或移除插桩点。
-* [system.instrumentation](../../operations/system-tables/instrumentation.md) - 查看已插桩的函数。
+* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md#instrument) — 添加或删除插桩点。
+* [system.instrumentation](../../operations/system-tables/instrumentation.md) — 查看已插桩的点。
+* [system.symbols](../../operations/system-tables/symbols.md) — 查看符号以添加插桩点。

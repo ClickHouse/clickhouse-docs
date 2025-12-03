@@ -6,19 +6,13 @@ title: 'Функции quantiles'
 doc_type: 'reference'
 ---
 
-
-
 # Функции квантилей {#quantiles-functions}
-
-
 
 ## quantiles {#quantiles}
 
 Синтаксис: `quantiles(level1, level2, ...)(x)`
 
 Для всех функций квантилей существуют соответствующие функции `quantiles`: `quantiles`, `quantilesDeterministic`, `quantilesTiming`, `quantilesTimingWeighted`, `quantilesExact`, `quantilesExactWeighted`, `quantileExactWeightedInterpolated`, `quantileInterpolatedWeighted`, `quantilesTDigest`, `quantilesBFloat16`, `quantilesDD`. Эти функции вычисляют все квантили перечисленных уровней за один проход и возвращают массив полученных значений.
-
-
 
 ## quantilesExactExclusive {#quantilesexactexclusive}
 
@@ -72,7 +66,6 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## quantilesExactInclusive {#quantilesexactinclusive}
 
 Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) для числовой последовательности данных.
@@ -124,7 +117,6 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 │ [249.75,499.5,749.25,899.1,949.05,989.01,998.001]                   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## quantilesGK {#quantilesgk}
 

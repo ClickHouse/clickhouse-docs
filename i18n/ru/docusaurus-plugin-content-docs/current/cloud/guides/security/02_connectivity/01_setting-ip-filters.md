@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
-
 ## Настройка IP-фильтров {#setting-ip-filters}
 
 Списки IP-доступа фильтруют трафик к сервисам ClickHouse или по API-ключам, указывая, с каких исходных адресов разрешено подключение. Эти списки настраиваются отдельно для каждого сервиса и для каждого API-ключа. Списки можно задать при создании сервиса или API-ключа, а также изменить позднее.
@@ -20,15 +19,11 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 Если вы пропустите создание списка IP-доступа для сервиса ClickHouse Cloud, к этому сервису не будет разрешён никакой трафик. Если для списков IP-доступа сервисов ClickHouse установлено значение `Allow from anywhere`, ваш сервис может периодически переводиться из неактивного состояния в активное интернет-сканерами и краулерами, которые ищут публичные IP-адреса, что может привести к незначительным непредвиденным расходам.
 :::
 
-
-
 ## Подготовка {#prepare}
 
 Прежде чем начать, соберите IP-адреса или диапазоны, которые необходимо добавить в список доступа. Учтите удалённых сотрудников, места дежурств, VPN и т.п. Интерфейс управления списком доступа по IP принимает как отдельные адреса, так и записи в нотации CIDR.
 
 Нотация Classless Inter-domain Routing (CIDR) позволяет указывать диапазоны IP-адресов, меньшие, чем традиционные размеры масок подсетей классов A, B или C (/8, /16 или /24). [ARIN](https://account.arin.net/public/cidrCalculator) и ряд других организаций предоставляют калькуляторы CIDR при необходимости. Если вы хотите получить дополнительную информацию о нотации CIDR, ознакомьтесь с RFC [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html).
-
-
 
 ## Создание или изменение списка доступа по IP-адресам {#create-or-modify-an-ip-access-list}
 
@@ -90,8 +85,6 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 
 Чтобы применить внесённые изменения, нажмите **Save**.
 
-
-
 ## Проверка {#verification}
 
 После создания фильтра убедитесь, что можно подключиться к сервису из разрешённого диапазона, и что подключения из‑вне этого диапазона блокируются. Для проверки можно использовать простую команду `curl`:
@@ -117,7 +110,6 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
-
 
 ## Ограничения {#limitations}
 

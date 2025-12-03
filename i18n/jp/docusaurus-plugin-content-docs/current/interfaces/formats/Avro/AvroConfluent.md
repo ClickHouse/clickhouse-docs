@@ -15,7 +15,6 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 | -- | -- | ----- |
 | ✔  | ✗  |       |
 
-
 ## 説明 {#description}
 
 [Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコードを使用する行指向のシリアル化フォーマットです。`AvroConfluent` フォーマットは、[Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html)（またはその API 互換サービス）を用いてシリアル化された、単一オブジェクト形式の Avro でエンコードされた Kafka メッセージのデコードをサポートします。
@@ -61,7 +60,6 @@ format_avro_schema_registry_url = 'http://schema-registry-url';
 SELECT * FROM topic1_stream;
 ```
 
-
 #### Basic 認証の使用 {#using-basic-authentication}
 
 スキーマレジストリが Basic 認証を必要とする場合（例：Confluent Cloud を使用している場合）、`format_avro_schema_registry_url` 設定に URL エンコード済みの認証情報を指定できます。
@@ -80,7 +78,6 @@ kafka_group_name = 'group1',
 kafka_format = 'AvroConfluent',
 format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry-url';
 ```
-
 
 ## トラブルシューティング {#troubleshooting}
 

@@ -7,13 +7,9 @@ title: 'AzureBlobStorage 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # AzureBlobStorage 表引擎 {#azureblobstorage-table-engine}
 
 该引擎用于与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统集成。
-
-
 
 ## 创建表 {#create-table}
 
@@ -60,15 +56,12 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。
 - `_size` — 文件大小（字节数）。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
-
-
 
 ## 身份验证 {#authentication}
 
@@ -131,7 +124,6 @@ arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2
 arthur :) select _path, * from azure_table;
 ```
 
-
 ┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
 
 1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
@@ -140,7 +132,6 @@ arthur :) select _path, * from azure_table;
 
 ```
 ```
-
 
 ## 另请参阅 {#see-also}
 

@@ -8,13 +8,9 @@ doc_type: 'guide'
 keywords: ['форматы данных', 'шаблоны', 'regex', 'пользовательские форматы', 'парсинг']
 ---
 
-
-
 # Импорт и экспорт произвольных текстовых данных с помощью форматов Template и Regex в ClickHouse {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 Нам часто приходится работать с данными в произвольных текстовых форматах. Это может быть нестандартный формат, некорректный JSON или «сломанный» CSV. Использование стандартных парсеров, таких как CSV или JSON, в таких случаях не всегда работает. Но в ClickHouse для этого предусмотрены мощные форматы Template и Regex.
-
-
 
 ## Импорт на основе шаблона {#importing-based-on-a-template}
 
@@ -96,7 +92,6 @@ GROUP BY request
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
-
 
 ## Экспорт данных с использованием шаблонов {#exporting-data-using-templates}
 
@@ -202,7 +197,6 @@ FORMAT XML
 
 ```
 
-
 ## Импорт данных на основе регулярных выражений {#importing-data-based-on-regular-expressions}
 
 Формат [Regexp](/interfaces/formats/Regexp) предназначен для более сложных случаев, когда входные данные необходимо разбирать более сложным способом. Давайте разберём наш пример с файлом [error.log](assets/error.log), но на этот раз извлечём имя файла и протокол, чтобы сохранить их в отдельные столбцы. Для начала подготовим для этого новую таблицу:
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## Другие форматы {#other-formats}
 

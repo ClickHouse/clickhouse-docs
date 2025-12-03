@@ -25,14 +25,11 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Astrato 连接到 ClickHouse {#connecting-astrato-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 ClickHouse。这意味着你可以在 ClickHouse 行业领先的性能加持下访问所需的全部数据。
-
-
 
 ## 所需连接信息 {#connection-data-required}
 
@@ -43,8 +40,6 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 - 数据库凭证：用户名、密码
 
 <ConnectionDetails />
-
-
 
 ## 在 Astrato 中创建到 ClickHouse 的数据连接 {#creating-the-data-connection-to-clickhouse}
 
@@ -75,8 +70,6 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 如果创建了重复的数据源，会在数据源名称中添加时间戳。
 :::
 
-
-
 ## 创建语义模型 / 数据视图 {#creating-a-semantic-model--data-view}
 
 在我们的 Data View 编辑器中，您可以看到 ClickHouse 中的所有表（Tables）和模式（Schemas），请选择部分对象开始配置。
@@ -92,8 +85,6 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 **Astrato 会基于元数据智能推荐关联关系（joins）**，包括利用 ClickHouse 中的键（keys）。我们推荐的关联让您可以轻松上手，直接基于经过良好治理的 ClickHouse 数据开展工作，而无需重新搭建一套体系。我们还会向您展示 **关联质量（join quality）**，这样您就可以在 Astrato 中按需详细审阅所有推荐。
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Astrato 连接到 ClickHouse 用户访问" border />
-
-
 
 ## 创建仪表板 {#creating-a-dashboard}
 

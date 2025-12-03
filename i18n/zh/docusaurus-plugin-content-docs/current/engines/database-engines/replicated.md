@@ -7,15 +7,11 @@ title: 'Replicated'
 doc_type: 'reference'
 ---
 
-
-
 # Replicated {#replicated}
 
 该引擎基于 [Atomic](../../engines/database-engines/atomic.md) 引擎。它通过将 DDL 日志写入 ZooKeeper，并在给定数据库的所有副本上执行该日志，从而实现元数据复制。
 
 单个 ClickHouse 服务器可以同时运行并更新多个 Replicated 数据库。但是，同一 Replicated 数据库不能存在多个副本。
-
-
 
 ## 创建数据库 {#creating-a-database}
 
@@ -35,7 +31,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 对于 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) 表，如果未提供任何参数，则会使用默认参数：`/clickhouse/tables/{uuid}/{shard}` 和 `{replica}`。可以在服务器设置中通过 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) 和 [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name) 对其进行修改。宏 `{uuid}` 会展开为表的 uuid，`{shard}` 和 `{replica}` 会展开为服务器配置中的值，而不是数据库引擎参数中的值。不过在未来，将可以使用 Replicated 数据库的 `shard_name` 和 `replica_name`。
 
-
 ## 细节与建议 {#specifics-and-recommendations}
 
 使用 `Replicated` 数据库的 DDL 查询与 [ON CLUSTER](../../sql-reference/distributed-ddl.md) 查询的工作方式类似，但存在一些细微差别。
@@ -51,8 +46,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 允许执行 [`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md) 查询，但这些查询不会被复制。数据库引擎只会在当前副本上添加 / 拉取 / 删除分区或数据片段。不过，如果表本身使用的是 Replicated 表引擎，那么在使用 `ATTACH` 之后，数据会进行复制。
 
 如果您只需要配置集群而不需要维护表复制，请参考 [Cluster Discovery](../../operations/cluster-discovery.md) 功能。
-
-
 
 ## 使用示例 {#usage-example}
 
@@ -129,7 +122,6 @@ node4 :) CREATE DATABASE r UUID '<前一查询的 uuid>' ENGINE=Replicated('some
 
 集群配置如下：
 
-
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
 │ r       │     1     │      1      │   node3   │  127.0.0.1   │ 9002 │     0    │
@@ -151,7 +143,6 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 │ node4 │  [0,2,4,6,8]  │
 └───────┴───────────────┘
 ```
-
 
 ## 设置 {#settings}
 

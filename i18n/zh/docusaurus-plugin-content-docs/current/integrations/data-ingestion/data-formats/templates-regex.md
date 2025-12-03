@@ -8,13 +8,9 @@ doc_type: 'guide'
 keywords: ['数据格式', '模板', '正则表达式', '自定义格式', '解析']
 ---
 
-
-
 # 在 ClickHouse 中使用 Templates 和 Regex 导入与导出自定义文本数据 {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 我们经常需要处理自定义文本格式的数据，这些数据可能是非标准格式、无效的 JSON，或损坏的 CSV。在这些情况下，使用 CSV 或 JSON 等标准解析器并不总是可行。好在 ClickHouse 提供了功能强大的 Template 和 Regex 格式，可以很好地应对这些场景。
-
-
 
 ## 基于模板导入 {#importing-based-on-a-template}
 
@@ -96,7 +92,6 @@ GROUP BY request
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
-
 
 ## 使用模板导出数据 {#exporting-data-using-templates}
 
@@ -202,7 +197,6 @@ FORMAT XML
 
 ```
 
-
 ## 基于正则表达式导入数据 {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats/Regexp) 格式适用于需要以更复杂方式解析输入数据的场景。我们再次解析 [error.log](assets/error.log) 示例文件，不过这次要提取文件名和协议，并将它们保存到单独的列中。首先，为此准备一张新表：
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## 其他格式 {#other-formats}
 

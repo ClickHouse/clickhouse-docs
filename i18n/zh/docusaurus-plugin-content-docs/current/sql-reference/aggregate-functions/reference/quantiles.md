@@ -6,19 +6,13 @@ title: 'quantiles 函数'
 doc_type: 'reference'
 ---
 
-
-
 # 分位数函数 {#quantiles-functions}
-
-
 
 ## quantiles {#quantiles}
 
 语法：`quantiles(level1, level2, ...)(x)`
 
 所有分位数函数也都有对应的 `quantiles` 系列函数：`quantiles`、`quantilesDeterministic`、`quantilesTiming`、`quantilesTimingWeighted`、`quantilesExact`、`quantilesExactWeighted`、`quantileExactWeightedInterpolated`、`quantileInterpolatedWeighted`、`quantilesTDigest`、`quantilesBFloat16`、`quantilesDD`。这些函数在一次遍历中计算出所列各个分位水平的所有分位数，并返回包含结果值的数组。
-
-
 
 ## quantilesExactExclusive {#quantilesexactexclusive}
 
@@ -72,7 +66,6 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## quantilesExactInclusive {#quantilesexactinclusive}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
@@ -124,7 +117,6 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 │ [249.75,499.5,749.25,899.1,949.05,989.01,998.001]                   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## quantilesGK {#quantilesgk}
 

@@ -6,13 +6,9 @@ title: 'JSONStringsEachRowWithProgress'
 doc_type: 'reference'
 ---
 
-
-
 ## Описание {#description}
 
 Отличается от `JSONEachRow`/`JSONStringsEachRow` тем, что ClickHouse также возвращает сведения о прогрессе в формате JSON.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -22,6 +18,5 @@ doc_type: 'reference'
 {"row":{"num":44,"str":"привет","arr":[0,1,2,3]}}
 {"progress":{"read_rows":"3","read_bytes":"24","written_rows":"0","written_bytes":"0","total_rows_to_read":"3"}}
 ```
-
 
 ## Параметры форматирования {#format-settings}

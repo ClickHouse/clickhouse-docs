@@ -10,21 +10,17 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # url 表函数 {#url-table-function}
 
 `url` 函数根据给定的 `format` 和 `structure`，基于指定的 `URL` 创建一个表。
 
 `url` 函数可以在对 [URL](../../engines/table-engines/special/url.md) 表数据执行的 `SELECT` 和 `INSERT` 查询中使用。
 
-
-
 ## 语法 {#syntax}
 
 ```sql
 url(URL [,format] [,structure] [,headers])
 ```
-
 
 ## 参数 {#parameters}
 
@@ -35,13 +31,9 @@ url(URL [,format] [,structure] [,headers])
 | `structure` | 表结构，格式为 `'UserID UInt64, Name String'`。用于确定列名和列类型。类型： [String](../../sql-reference/data-types/string.md)。     |
 | `headers`   | 请求头，格式为 `'headers('key1'='value1', 'key2'='value2')'`。可用于为 HTTP 调用设置请求头。                                                  |
 
-
-
 ## 返回值 {#returned_value}
 
 一个具有指定格式和结构，并包含来自已定义 `URL` 的数据的表。
-
-
 
 ## 示例 {#examples}
 
@@ -59,13 +51,10 @@ INSERT INTO FUNCTION url('http://127.0.0.1:8123/?query=INSERT+INTO+test_table+FO
 SELECT * FROM test_table;
 ```
 
-
 ## URL 中的通配模式 {#globs-in-url}
 
 花括号 `{ }` 中的模式用于生成一组分片，或用于指定故障转移地址。受支持的模式类型及示例请参见 [remote](remote.md#globs-in-addresses) 函数的描述。
 模式中的字符 `|` 用于指定故障转移地址。故障转移地址会按照在模式中列出的顺序依次迭代。生成地址的数量受 [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
-
-
 
 ## 虚拟列 {#virtual-columns}
 
@@ -74,8 +63,6 @@ SELECT * FROM test_table;
 - `_size` — 资源以字节为单位的大小。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
 - `_headers` - HTTP 响应头部。类型：`Map(LowCardinality(String), LowCardinality(String))`。
-
-
 
 ## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
@@ -89,19 +76,14 @@ SELECT * FROM test_table;
 SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## 存储设置 {#storage-settings}
 
 - [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - 用于在读取时跳过空文件。默认禁用。
 - [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - 用于控制是否对 URI 中路径进行解码/编码。默认启用。
 
-
-
 ## 权限 {#permissions}
 
 `url` 函数需要 `CREATE TEMPORARY TABLE` 权限。因此，对于将 [readonly](/operations/settings/permissions-for-queries#readonly) 设置为 1 的用户，它将无法使用。至少需要 readonly = 2。
-
-
 
 ## 相关内容 {#related}
 

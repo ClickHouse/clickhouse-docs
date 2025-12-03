@@ -200,7 +200,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-
 ### データの読み込み {#reading-data}
 
 `JSONStrings` 形式を使用してデータを読み込みます。
@@ -212,7 +211,6 @@ FORMAT JSONStrings
 ```
 
 出力は JSON 形式で表示されます。
-
 
 ```json
 {

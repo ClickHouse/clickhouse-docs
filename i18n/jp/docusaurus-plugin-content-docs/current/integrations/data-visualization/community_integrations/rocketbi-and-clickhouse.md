@@ -30,7 +30,6 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 目標: Rocket.BI で最初のダッシュボードを構築する {#goal-build-your-first-dashboard-with-rocketbi}
 
 <CommunityMaintainedBadge/>
@@ -42,8 +41,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <br/>
 
 [こちらのリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
-
-
 
 ## インストール {#install}
 
@@ -63,7 +60,6 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 ブラウザを開き、`localhost:5050` にアクセスし、以下のアカウントでログインします：`hello@gmail.com/123456`
 
 ソースコードからのビルドや高度な設定については、[Rocket.BI README](https://github.com/datainsider-co/rocket-bi/blob/main/README.md) を参照してください。
-
 
 ## ダッシュボードを作成しましょう {#lets-build-the-dashboard}
 

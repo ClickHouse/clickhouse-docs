@@ -14,7 +14,6 @@ import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
 # Мониторинг ClickHouse Cloud {#cloud-monitoring}
 
 Это руководство предоставляет корпоративным командам, оценивающим ClickHouse Cloud, подробную информацию о возможностях мониторинга и наблюдаемости для продуктивных развертываний. Корпоративные клиенты часто спрашивают о встроенных возможностях мониторинга, интеграции с существующими стеками наблюдаемости, включая такие инструменты, как Datadog и AWS CloudWatch, а также о том, как возможности мониторинга ClickHouse Cloud соотносятся с развертываниями в self-hosted‑средах.

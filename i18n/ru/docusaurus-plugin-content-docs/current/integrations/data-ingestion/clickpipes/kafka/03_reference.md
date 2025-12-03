@@ -17,7 +17,6 @@ import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
-
 # Справочные материалы {#reference}
 
 ## Поддерживаемые источники данных {#supported-data-sources}

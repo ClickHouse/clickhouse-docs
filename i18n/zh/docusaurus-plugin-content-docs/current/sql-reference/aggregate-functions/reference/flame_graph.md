@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
 # flameGraph {#flamegraph}
 
 一种聚合函数，使用堆栈跟踪列表构建[火焰图（flamegraph）](https://www.brendangregg.com/flamegraphs.html)。输出字符串数组，可供 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 使用，以渲染火焰图的 SVG。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## 参数 {#parameters}
 
@@ -32,13 +27,9 @@ flameGraph(traces, [size], [ptr])
 仅显示尚未被释放的分配。未被映射的释放操作将被忽略。
 :::
 
-
-
 ## 返回值 {#returned-value}
 
 - 供 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 使用的字符串数组。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
-
-
 
 ## 示例 {#examples}
 

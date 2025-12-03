@@ -18,7 +18,6 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Databrain を ClickHouse に接続する {#connecting-databrain-to-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -31,15 +30,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 このガイドでは、Databrain を ClickHouse インスタンスに接続する手順を説明します。
 
-
-
 ## 前提条件 {#pre-requisites}
 
 - 独自のインフラストラクチャ上で、または [ClickHouse Cloud](https://clickhouse.com/) 上でホストされている ClickHouse データベース。
 - [Databrain アカウント](https://app.usedatabrain.com/users/sign-up)。
 - データソースを接続するための Databrain ワークスペース。
-
-
 
 ## Databrain を ClickHouse に接続する手順 {#steps-to-connect-databrain-to-clickhouse}
 
@@ -102,7 +97,6 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 `your_databrain_user` と `your_database` を、実際に使用するユーザー名とデータベース名に置き換えてください。
 
-
 ## ClickHouse で Databrain を使用する {#using-databrain-with-clickhouse}
 
 ### データを探索する {#explore-your-data}
@@ -152,8 +146,6 @@ Databrain は、ClickHouse を使用する際にいくつかの高度な機能�
 - **埋め込みアナリティクス**: ダッシュボードとメトリクスをアプリケーションに直接埋め込めます
 - **セマンティックレイヤー**: 再利用可能なデータモデルとビジネスロジックを作成できます
 
-
-
 ## トラブルシューティング {#troubleshooting}
 
 ### 接続に失敗する {#connection-fails}
@@ -174,8 +166,6 @@ ClickHouse に接続できない場合は、次の点を確認してください
 2. **マテリアライズドビューの作成**: 頻繁に参照される集約に対しては、ClickHouse にマテリアライズドビューを作成することを検討してください
 3. **適切なデータ型の使用**: ClickHouse のスキーマで最適なデータ型を使用していることを確認してください
 4. **インデックスの最適化**: ClickHouse のプライマリキーとスキップインデックスを活用してください
-
-
 
 ## さらに詳しく {#learn-more}
 

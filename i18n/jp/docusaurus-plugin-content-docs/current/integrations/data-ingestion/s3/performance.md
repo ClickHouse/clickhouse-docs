@@ -25,7 +25,6 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 挿入パフォーマンスを向上させるためにスレッド数やブロックサイズをチューニングする前に、まずは S3 への INSERT の仕組みを理解することをお勧めします。すでに INSERT の仕組みに慣れている場合や、すぐに役立つヒントだけを知りたい場合は、以下の[サンプルデータセット](/integrations/s3/performance#example-dataset)に進んでください。
 
-
 ## 挿入メカニズム（単一ノード） {#insert-mechanics-single-node}
 
 ハードウェアの規模に加えて、ClickHouse のデータ挿入メカニズム（単一ノード）のパフォーマンスとリソース使用量に影響を与える主な要因は 2 つあります。**挿入ブロックサイズ** と **挿入の並列度** です。
@@ -81,7 +80,6 @@ ClickHouse は、圧縮サイズが約 150 GiB に[到達](/operations/settings/
 ② メモリにロードされたブロックをマージして、より大きなブロックにします。
 ```
 
-
 ③ マージされたブロックをディスク上の新しいパートに書き込む。
 
 ① に戻る
@@ -118,12 +116,9 @@ s3 のようなテーブル関数では、グロブパターンを使って読�
 
 `s3` 関数およびテーブルの場合、個々のファイルの並列ダウンロードは [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) と [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) の値によって決まります。ファイルサイズが `2 * max_download_buffer_size` より大きい場合にのみ、ファイルは並列でダウンロードされます。デフォルトでは、`max_download_buffer_size` は 10MiB に設定されています。場合によっては、各ファイルが単一スレッドによってダウンロードされるようにすることを目的として、このバッファサイズを 50 MB（`max_download_buffer_size=52428800`）まで安全に増やすことができます。これにより、各スレッドが行う S3 呼び出しに要する時間を短縮でき、その結果として S3 の待ち時間も短縮されます。さらに、並列読み取りには小さすぎるファイルについてスループットを向上させるために、ClickHouse はそのようなファイルを非同期に先読みすることでデータを自動的にプリフェッチします。
 
-
 ## パフォーマンスの測定 {#measuring-performance}
 
 S3 テーブル関数を使用するクエリのパフォーマンス最適化は、次の 2 つのケースで必要になります。1 つ目は、S3 上のデータをその場に置いたままクエリする場合、すなわちデータは元の形式のまま S3 に残し、ClickHouse の計算リソースのみを使用するアドホッククエリの場合、2 つ目は、S3 から ClickHouse の MergeTree テーブルエンジンにデータを挿入する場合です。特に明記がない限り、以下の推奨事項は両方のシナリオに適用されます。
-
-
 
 ## ハードウェア規模の影響 {#impact-of-hardware-size}
 
@@ -137,13 +132,9 @@ S3 テーブル関数を使用するクエリのパフォーマンス最適化�
 
 したがって、取り込み全体のスループットにも影響します。
 
-
-
 ## リージョンのローカリティ {#region-locality}
 
 バケットが ClickHouse インスタンスと同じリージョンに存在することを確認してください。この簡単な最適化により、特に ClickHouse インスタンスを AWS のインフラストラクチャ上にデプロイしている場合、スループットが大幅に向上する可能性があります。
-
-
 
 ## フォーマット {#formats}
 
@@ -154,8 +145,6 @@ ClickHouse は、`s3` 関数および `S3` エンジンを使用して、S3 バ�
 * ブロックサイズは、大きなファイルの読み取りレイテンシにしばしば影響します。これは、たとえば先頭 N 行だけを返すなど、データをサンプリングする場合に顕著です。CSV や TSV のようなフォーマットでは、行の集合を返すためにファイルをパースする必要があります。Native や Parquet のようなフォーマットでは、この結果としてより高速なサンプリングが可能になります。
 * 各圧縮フォーマットには一長一短があり、多くの場合、圧縮率と速度、および圧縮・解凍それぞれの性能のバランスを取ります。CSV や TSV のような元のファイルを圧縮する場合、lz4 は圧縮率を犠牲にする代わりに、最速の解凍性能を提供します。Gzip は一般的に、読み取り速度がわずかに低下する代わりに、より高い圧縮率を実現します。Xz はこれをさらに推し進め、通常は最も高い圧縮率を提供しますが、圧縮および解凍の性能は最も低くなります。エクスポートする場合、Gz と lz4 は概ね同程度の圧縮速度を提供します。これを接続速度と比較して検討してください。解凍や圧縮が高速になることによる利点は、S3 バケットへの接続が遅いと簡単に相殺されてしまいます。
 * Native や Parquet のようなフォーマットでは、通常、圧縮のオーバーヘッドを正当化できません。これらのフォーマットは本質的にコンパクトであるため、データサイズ削減の効果は小さいことが多いです。圧縮および解凍に費やす時間は、ネットワーク転送時間を相殺することはほとんどありません。特に S3 はグローバルに利用可能であり、高いネットワーク帯域幅を持つため、なおさらです。
-
-
 
 ## 例となるデータセット {#example-dataset}
 
@@ -201,7 +190,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 :::info
 クエリを実行して読み取りを行う際、同じクエリを繰り返し実行した場合と比べて、最初のクエリが遅く見えることがよくあります。これは、S3 側のキャッシュと [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) の両方によるものです。後者はファイルに対して推論されたスキーマを保存するため、後続のアクセスではスキーマ推論ステップを省略でき、その結果クエリ時間を短縮できます。
 :::
-
 
 ## 読み取りにスレッドを使用する {#using-threads-for-reads}
 
@@ -249,7 +237,6 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
-
 ## INSERT におけるスレッド数とブロックサイズのチューニング {#tuning-threads-and-block-size-for-inserts}
 
 インジェスト性能を最大化するには、(1) INSERT のブロックサイズ、(2) INSERT の並列度を、(3) 利用可能な CPU コア数と RAM 量に基づいて選択・設定する必要があります。まとめると次のとおりです。
@@ -286,7 +273,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 ```
 
 示したように、これらの設定を調整することで、挿入パフォーマンスは `33%` 以上向上しました。単一ノードでのパフォーマンスをさらに向上できるかどうかは、読者の検証に委ねます。
-
 
 ## リソースおよびノードによるスケーリング {#scaling-with-resources-and-nodes}
 
@@ -365,7 +351,6 @@ FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws
 0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
-
 ファイルの読み込みではクエリ性能は向上しますが、挿入性能は改善されていないことに気付くでしょう。デフォルトでは、読み取りは `s3Cluster` を使って分散されますが、挿入はイニシエーターノードに対して行われます。これは、読み取り自体は各ノードで行われる一方で、得られた行は分散処理のためにイニシエーターノードへルーティングされることを意味します。高スループットなシナリオでは、これがボトルネックとなる可能性があります。これに対処するには、`s3cluster` 関数に対してパラメータ `parallel_distributed_insert_select` を設定します。
 
 これを `parallel_distributed_insert_select=2` に設定すると、各ノード上の分散エンジンの下位テーブルに対して、各シャードで `SELECT` および `INSERT` が実行されるようになります。
@@ -381,7 +366,6 @@ Peak memory usage: 11.75 GiB.
 ```
 
 予想どおり、これにより挿入パフォーマンスは 3 分の 1 に低下します。
-
 
 ## さらなるチューニング {#further-tuning}
 
@@ -415,7 +399,6 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 
 0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
-
 
 ## その他の注意事項 {#misc-notes}
 

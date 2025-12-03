@@ -30,7 +30,6 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Apache NiFi 连接到 ClickHouse {#connect-apache-nifi-to-clickhouse}
 
 <CommunityMaintainedBadge />
@@ -42,26 +41,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 准备连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-
-
 ## 下载并运行 Apache NiFi {#2-download-and-run-apache-nifi}
 
 对于全新部署，请从 https://nifi.apache.org/download.html 下载二进制文件，并通过运行 `./bin/nifi.sh start` 来启动
-
-
 
 ## 下载 ClickHouse JDBC 驱动程序 {#3-download-the-clickhouse-jdbc-driver}
 
 1. 访问 GitHub 上的 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 驱动程序发布页面</a>，并找到最新的 JDBC 发行版本
 2. 在该版本的发布内容中，点击 “Show all xx assets”，然后查找文件名中包含关键字 “shaded” 或 “all” 的 JAR 文件，例如 `clickhouse-jdbc-0.5.0-all.jar`
 3. 将该 JAR 文件放置在 Apache NiFi 可访问的文件夹中，并记录其绝对路径
-
-
 
 ## 添加 `DBCPConnectionPool` Controller Service 并配置其属性 {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
@@ -107,8 +99,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
     <Image img={nifi08} size="lg" border alt="Controller Services 列表中显示已启用的 ClickHouse JDBC 服务" />
 
-
-
 ## 使用 `ExecuteSQL` 处理器从表中读取数据 {#5-read-from-a-table-using-the-executesql-processor}
 
 1. 添加一个 `ExecuteSQL` 处理器，并配置相应的上游和下游处理器
@@ -133,8 +123,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 5. 将视图切换为 "formatted" 以查看输出 `FlowFile` 的结果
 
     <Image img={nifi12} size="lg" border alt="FlowFile 内容查看器，以 formatted 视图显示查询结果" />
-
-
 
 ## 使用 `MergeRecord` 和 `PutDatabaseRecord` 处理器写入表 {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 
