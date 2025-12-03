@@ -47,10 +47,10 @@ These ports enable integrations with a variety of telemetry sources and make the
 
 ### Clone the repo {#clone-the-repo}
 
-To deploy with Docker Compose clone the HyperDX repo, change into the directory and run `docker-compose up`:
+To deploy with Docker Compose clone the ClickStack repo, change into the directory and run `docker-compose up`:
 
 ```shell
-git clone git@github.com:hyperdxio/hyperdx.git
+git clone git@github.com:ClickHouse/clickstack.git
 docker compose up
 ```
 
@@ -91,18 +91,18 @@ user@example-host hyperdx % cat .env
 # Used by docker-compose.yml
 # Used by docker-compose.yml
 HDX_IMAGE_REPO=docker.hyperdx.io
-IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
 IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-LOCAL_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-local
+NEXT_LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
 LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
-ALL_IN_ONE_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-all-in-one
+NEXT_ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
 ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
-OTEL_COLLECTOR_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-otel-collector
+NEXT_OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
 OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
-CODE_VERSION=2.0.0-beta.16
-IMAGE_VERSION_SUB_TAG=.16
-IMAGE_VERSION=2-beta
+CODE_VERSION=2.8.0
+IMAGE_VERSION_SUB_TAG=.8.0
+IMAGE_VERSION=2
 IMAGE_NIGHTLY_TAG=2-nightly
+IMAGE_LATEST_TAG=latest
 
 # Set up domain URLs
 HYPERDX_API_PORT=8000 #optional (should not be taken by other services)
@@ -110,6 +110,7 @@ HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
+HYPERDX_BASE_PATH=
 
 # Otel/Clickhouse config
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
