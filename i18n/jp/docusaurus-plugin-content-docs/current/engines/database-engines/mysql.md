@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MySQL データベースエンジン {#mysql-database-engine}
 
 <CloudNotSupportedBadge />
@@ -24,8 +23,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - `CREATE TABLE`
 - `ALTER`
 
-
-
 ## データベースの作成 {#creating-a-database}
 
 ```sql
@@ -39,7 +36,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `database` — リモートデータベース名。
 * `user` — MySQL ユーザー。
 * `password` — ユーザーのパスワード。
-
 
 ## データ型サポート {#data_types-support}
 
@@ -63,8 +59,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 [Nullable](../../sql-reference/data-types/nullable.md) をサポートします。
 
-
-
 ## グローバル変数のサポート {#global-variables-support}
 
 互換性を高めるために、グローバル変数を MySQL 互換の `@@identifier` 形式で参照できます。
@@ -83,7 +77,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```sql
 SELECT @@version;
 ```
-
 
 ## 使用例 {#examples-of-use}
 

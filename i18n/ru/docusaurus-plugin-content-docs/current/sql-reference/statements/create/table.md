@@ -16,7 +16,6 @@ import TabItem from '@theme/TabItem';
 
 По умолчанию таблицы создаются только на текущем сервере. Распределенные DDL-запросы реализованы с помощью предложения `ON CLUSTER`, которое [описано отдельно](../../../sql-reference/distributed-ddl.md).
 
-
 ## Синтаксические формы {#syntax-forms}
 
 ### С явной схемой {#with-explicit-schema}
@@ -100,7 +99,6 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
-
 ## Модификаторы NULL и NOT NULL {#null-or-not-null-modifiers}
 
 Модификаторы `NULL` и `NOT NULL` после типа данных в определении столбца соответственно разрешают или запрещают делать его [Nullable](/sql-reference/data-types/nullable).
@@ -108,8 +106,6 @@ SELECT x, toTypeName(x) FROM t1;
 Если тип не является `Nullable` и указано `NULL`, он будет интерпретироваться как `Nullable`; если указано `NOT NULL`, то нет. Например, `INT NULL` — то же самое, что `Nullable(INT)`. Если тип уже является `Nullable` и заданы модификаторы `NULL` или `NOT NULL`, будет сгенерировано исключение.
 
 См. также настройку [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable).
-
-
 
 ## Значения по умолчанию {#default_values}
 
@@ -217,7 +213,6 @@ FROM test
 FORMAT Vertical;
 ```
 
-
 Строка 1:
 ──────
 id:         1
@@ -263,7 +258,6 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 └────┴────────────┴──────────┘
 ````
 
-
 ## Первичный ключ {#primary-key}
 
 Вы можете задать [первичный ключ](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries) при создании таблицы. Первичный ключ можно указать двумя способами:
@@ -293,7 +287,6 @@ PRIMARY KEY(expr1[, expr2,...]);
 :::tip
 Нельзя совмещать оба подхода в одном запросе.
 :::
-
 
 ## Ограничения {#constraints}
 
@@ -339,12 +332,9 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` **не обеспечивает выполнение ограничения**, он лишь информирует оптимизатор, что ограничение соблюдается. Если ограничение на самом деле не выполняется, результаты запросов могут быть некорректными. Поэтому следует использовать `ASSUME CONSTRAINT` только в том случае, если вы уверены, что ограничение действительно выполняется.
 
-
 ## Выражение TTL {#ttl-expression}
 
 Определяет срок хранения значений. Может быть задано только для таблиц семейства MergeTree. Для подробного описания см. раздел [TTL для столбцов и таблиц](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-
-
 
 ## Кодеки сжатия столбцов {#column_compression_codec}
 
@@ -427,7 +417,6 @@ ClickHouse поддерживает кодеки как общего, так и 
 
 `DEFLATE_QPL` — [алгоритм сжатия Deflate](https://github.com/intel/qpl), реализованный с помощью Intel® Query Processing Library. Применяются некоторые ограничения:
 
-
 - DEFLATE_QPL отключен по умолчанию и может использоваться только после включения параметра конфигурации [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec).
 - DEFLATE_QPL требует сборку ClickHouse, скомпилированную с использованием инструкций SSE 4.2 (по умолчанию это так). Подробнее см. в разделе [Сборка ClickHouse с DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl).
 - DEFLATE_QPL работает наилучшим образом, если в системе есть устройство разгрузки Intel® IAA (In-Memory Analytics Accelerator). Подробнее см. [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) и [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl).
@@ -454,8 +443,6 @@ ClickHouse поддерживает кодеки как общего, так и 
 `Gorilla(bytes_size)` — вычисляет XOR между текущим и предыдущим значением с плавающей точкой и записывает его в компактном двоичном формате. Чем меньше разница между последовательными значениями, то есть чем медленнее изменяется ряд значений, тем лучше коэффициент сжатия. Реализует алгоритм, используемый в Gorilla TSDB, расширяя его для поддержки 64-битных типов. Возможные значения `bytes_size`: 1, 2, 4, 8, значение по умолчанию — `sizeof(type)`, если оно равно 1, 2, 4 или 8. Во всех остальных случаях — 1. Дополнительные сведения см. в разделе 4.1 статьи [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078).
 
 #### FPC {#fpc}
-
-
 
 `FPC(level, float_size)` — последовательно предсказывает следующее значение с плавающей запятой в последовательности, выбирая лучший из двух предикторов, затем выполняет XOR фактического значения с предсказанным и сжимает результат, обрезая ведущие нули. Аналогично алгоритму Gorilla, это эффективно при хранении последовательности значений с плавающей запятой, которые изменяются медленно. Для 64-битных значений (`double`) FPC работает быстрее, чем Gorilla, для 32-битных значений производительность может отличаться. Возможные значения `level`: 1–28, значение по умолчанию — 12. Возможные значения `float_size`: 4, 8, значение по умолчанию — `sizeof(type)`, если тип — `Float`. Во всех остальных случаях — 4. Подробное описание алгоритма см. в статье [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf).
 
@@ -522,7 +509,6 @@ CREATE TABLE mytable
 ENGINE = MergeTree ORDER BY x;
 ```
 
-
 ## Временные таблицы {#temporary-tables}
 
 :::note
@@ -552,7 +538,6 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 В большинстве случаев временные таблицы не создаются вручную, а автоматически создаются при использовании внешних данных в запросе или для распределённого оператора `(GLOBAL) IN`. Для получения дополнительной информации см. соответствующие разделы.
 
 Вместо временных таблиц можно использовать таблицы с движком [ENGINE = Memory](../../../engines/table-engines/special/memory.md).
-
 
 ## REPLACE TABLE {#replace-table}
 
@@ -720,7 +705,6 @@ WHERE CounterID <12345;
   </TabItem>
 </Tabs>
 
-
 ## Предложение COMMENT {#comment-clause}
 
 При создании таблицы вы можете добавить к ней комментарий.
@@ -752,7 +736,6 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 │ t1   │ Временная таблица    │
 └──────┴──────────────────────┘
 ```
-
 
 ## Похожие материалы {#related-content}
 

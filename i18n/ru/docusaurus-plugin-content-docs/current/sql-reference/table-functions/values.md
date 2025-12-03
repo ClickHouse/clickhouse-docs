@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция Values {#values-table-function}
 
 Табличная функция `Values` позволяет создать временное хранилище и заполнить 
@@ -18,8 +16,6 @@ doc_type: 'reference'
 :::note
 Values — регистронезависимая функция. То есть `VALUES` и `values` одинаково допустимы.
 :::
-
-
 
 ## Синтаксис {#syntax}
 
@@ -40,7 +36,6 @@ VALUES(
 )
 ```
 
-
 ## Аргументы {#arguments}
 
 - `column1_name Type1, ...` (необязательный аргумент). [String](/sql-reference/data-types/string),
@@ -55,13 +50,9 @@ VALUES(
 для подробностей.
 :::
 
-
-
 ## Возвращаемое значение {#returned-value}
 
 - Возвращает временную таблицу, содержащую указанные значения.
-
-
 
 ## Примеры {#examples}
 
@@ -199,7 +190,6 @@ FROM VALUES(
 10. │ Isabella │
     └──────────┘
 ```
-
 
 ## См. также {#see-also}
 

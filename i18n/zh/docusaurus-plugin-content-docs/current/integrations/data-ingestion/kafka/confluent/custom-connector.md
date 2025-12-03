@@ -12,7 +12,6 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
 # 将 Confluent 平台与 ClickHouse 集成 {#integrating-confluent-platform-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -27,14 +26,10 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
   </iframe>
 </div>
 
-
-
 ## 前提条件 {#prerequisites}
 假定您已经熟悉：
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Platform 和[自定义连接器（Custom Connectors）](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html)。
-
-
 
 ## ClickHouse 官方 Kafka 连接器（适用于 Confluent Platform） {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 

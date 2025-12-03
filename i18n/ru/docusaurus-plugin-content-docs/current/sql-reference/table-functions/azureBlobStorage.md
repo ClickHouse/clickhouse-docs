@@ -12,19 +12,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Табличная функция azureBlobStorage {#azureblobstorage-table-function}
 
 Предоставляет табличный интерфейс для чтения и записи файлов в [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs). Эта табличная функция аналогична [функции s3](../../sql-reference/table-functions/s3.md).
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -42,13 +38,9 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 | `partition_columns_in_data_file`            | Необязательный параметр. Используется только со стратегией партиционирования `HIVE`. Указывает ClickHouse, следует ли ожидать, что столбцы партиции будут записаны в файл данных. Значение по умолчанию — `false`.                                                                                                                                                                                                                                                                         |
 | `extra_credentials`                         | Используйте `client_id` и `tenant_id` для аутентификации. Если указаны `extra_credentials`, они имеют приоритет над `account_name` и `account_key`.
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица заданной структуры для чтения данных из указанного файла или записи их в него.
-
-
 
 ## Примеры {#examples}
 
@@ -89,15 +81,12 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 └─────────┘
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-
-
 
 ## Запись с партиционированием {#partitioned-write}
 
@@ -124,7 +113,6 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
    └─────────────────────────────────────────────────────────────────────────────────┴────┴──────┴─────────┘
 ```
 
-
 ## настройка use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
 Это указание для ClickHouse при разборе файлов, партиционированных в стиле Hive, во время чтения. Оно не влияет на запись. Для симметричного чтения и записи используйте аргумент `partition_strategy`.
@@ -138,7 +126,6 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```sql
 SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
-
 
 ## Использование Shared Access Signatures (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
@@ -171,7 +158,6 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 
 Получена 1 строка. Прошло: 0,153 сек.
 ```
-
 
 ## См. также {#related}
 - [Движок таблицы AzureBlobStorage](engines/table-engines/integrations/azureBlobStorage.md)

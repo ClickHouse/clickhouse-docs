@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Импорт данных из различных форматов в ClickHouse {#importing-from-various-data-formats-to-clickhouse}
 
 В этом разделе документации вы найдёте примеры загрузки данных из различных типов файлов.

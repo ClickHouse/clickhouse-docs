@@ -13,8 +13,6 @@ doc_type: 'reference'
 В настоящее время [операции ввода-вывода на удалённых дисках](#disk_config) и [CPU](#cpu_scheduling) могут планироваться описанным методом. Для гибкой настройки ограничений по памяти см. [Memory overcommit](settings/memory-overcommit.md)
 :::
 
-
-
 ## Конфигурация диска {#disk_config}
 
 Чтобы включить планирование нагрузки ввода-вывода (I/O) для конкретного диска, необходимо создать ресурсы чтения (READ) и записи (WRITE):
@@ -71,7 +69,6 @@ CREATE RESOURCE all_io (READ ANY DISK, WRITE ANY DISK);
 
 Обратите внимание, что параметры конфигурации сервера имеют приоритет по сравнению с определением ресурсов с помощью SQL.
 
-
 ## Разметка рабочих нагрузок {#workload_markup}
 
 Запросы могут быть помечены с помощью настройки `workload`, чтобы различать различные рабочие нагрузки. Если `workload` не задан, используется значение «default». Обратите внимание, что вы можете указать другое значение с помощью профилей настроек. Ограничения настроек можно использовать, чтобы сделать значение `workload` постоянным, если вы хотите, чтобы все запросы пользователя помечались фиксированным значением настройки `workload`.
@@ -84,7 +81,6 @@ CREATE RESOURCE all_io (READ ANY DISK, WRITE ANY DISK);
 SELECT count() FROM my_table WHERE value = 42 SETTINGS workload = 'production'
 SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 ```
-
 
 ## Иерархия планирования ресурсов {#hierarchy}
 
@@ -164,7 +160,6 @@ graph TD
 </clickhouse>
 ```
 
-
 ## Классификаторы рабочих нагрузок {#workload_classifiers}
 
 :::warning
@@ -193,7 +188,6 @@ graph TD
     </workload_classifiers>
 </clickhouse>
 ```
-
 
 ## Иерархия рабочих нагрузок {#workloads}
 
@@ -236,7 +230,6 @@ CREATE OR REPLACE WORKLOAD all SETTINGS max_io_requests = 100, max_bytes_per_sec
 :::note
 Параметры рабочей нагрузки преобразуются в соответствующий набор узлов планировщика. За более низкоуровневыми деталями обратитесь к описанию [типов и параметров](#hierarchy) узлов планировщика.
 :::
-
 
 ## Планирование CPU {#cpu_scheduling}
 
@@ -289,12 +282,9 @@ CREATE WORKLOAD ингестия IN production
 Планирование слотов предоставляет способ управлять [конкурентностью запросов](/operations/settings/settings.md#max_threads), но не гарантирует справедливое распределение CPU-времени, за исключением случая, когда серверная настройка `cpu_slot_preemption` установлена в `true`. В противном случае справедливость обеспечивается на основе количества выделенных CPU-слотов между конкурирующими типами нагрузок. Это не подразумевает равное количество секунд CPU, потому что без вытеснения CPU-слот может удерживаться неограниченно долго. Поток захватывает слот в начале и освобождает его, когда работа завершена.
 :::
 
-
 :::note
 Объявление ресурса CPU отключает действие настроек [`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) и [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores). Вместо этого для ограничения количества CPU, выделенных для конкретной рабочей нагрузки, используется настройка рабочей нагрузки `max_concurrent_threads`. Чтобы добиться прежнего поведения, создайте только ресурс WORKER THREAD, установите `max_concurrent_threads` для рабочей нагрузки `all` равным тому же значению, что и `concurrent_threads_soft_limit_num`, и используйте настройку запроса `workload = "all"`. Эта конфигурация соответствует настройке [`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) со значением «fair_round_robin».
 :::
-
-
 
 ## Потоки и CPU {#threads_vs_cpus}
 
@@ -335,7 +325,6 @@ CREATE WORKLOAD development IN all SETTINGS max_cpu_share = 0.3
 Если вы хотите максимизировать использование CPU на сервере ClickHouse, избегайте использования `max_cpus` и `max_cpu_share` для корневой рабочей нагрузки `all`. Вместо этого задайте более высокое значение для `max_concurrent_threads`. Например, на системе с 8 CPU установите `max_concurrent_threads = 16`. Это позволит 8 потокам выполнять задачи, нагружающие CPU, в то время как другие 8 потоков будут обрабатывать операции ввода-вывода (I/O). Дополнительные потоки создадут нагрузку на CPU, обеспечив применение правил планирования. Напротив, установка `max_cpus = 8` никогда не создаст нагрузку на CPU, потому что сервер не может превысить доступные 8 CPU.
 :::
 
-
 ## Планирование слотов для запросов {#query_scheduling}
 
 Чтобы включить планирование слотов для запросов для рабочих нагрузок, создайте ресурс типа QUERY и задайте ограничение на количество одновременных запросов или запросов в секунду:
@@ -355,12 +344,9 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 Заблокированные запросы будут ожидать неограниченное время и не появятся в `SHOW PROCESSLIST`, пока все ограничения не будут соблюдены.
 :::
 
-
 ## Хранение рабочих нагрузок и ресурсов {#workload_entity_storage}
 
 Определения всех рабочих нагрузок и ресурсов в виде запросов `CREATE WORKLOAD` и `CREATE RESOURCE` сохраняются на постоянной основе либо на диске по пути `workload_path`, либо в ZooKeeper по пути `workload_zookeeper_path`. Для обеспечения согласованности между узлами рекомендуется хранение в ZooKeeper. В качестве альтернативы можно использовать клаузу `ON CLUSTER` совместно с хранением на диске.
-
-
 
 ## Рабочие нагрузки и ресурсы, задаваемые в конфигурации {#config_based_workloads}
 
@@ -394,7 +380,6 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 
 Другой сценарий использования — различная конфигурация для разных узлов в гетерогенном кластере.
 
-
 ## Строгий доступ к ресурсам {#strict_resource_access}
 
 Для принудительного применения политик планирования ресурсов ко всем запросам существует серверная настройка `throw_on_unknown_workload`. Если она установлена в `true`, каждый запрос обязан использовать корректную настройку запроса `workload`, в противном случае будет сгенерировано исключение `RESOURCE_ACCESS_DENIED`. Если она установлена в `false`, такой запрос не использует планировщик ресурсов, т.е. получает неограниченный доступ к любому `RESOURCE`. Настройка запроса `use_concurrency_control = 0` позволяет запросу обойти планировщик CPU и получить неограниченный доступ к CPU. Чтобы обеспечить планирование по CPU, создайте ограничение настройки, которое зафиксирует для `use_concurrency_control` константное значение только для чтения.
@@ -402,8 +387,6 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 :::note
 Не устанавливайте `throw_on_unknown_workload` в `true`, пока не будет выполнена команда `CREATE WORKLOAD default`. Это может привести к проблемам при запуске сервера, если во время старта будет выполнен запрос без явной настройки `workload`.
 :::
-
-
 
 ## См. также {#see-also}
 - [system.scheduler](/operations/system-tables/scheduler.md)

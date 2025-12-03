@@ -7,8 +7,6 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-
-
 # Map(K, V) {#mapk-v}
 
 Тип данных `Map(K, V)` хранит пары «ключ–значение».
@@ -67,7 +65,6 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
-
 ## Преобразование Tuple в Map {#converting-tuple-to-map}
 
 Значения типа `Tuple()` можно привести к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
@@ -87,7 +84,6 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 │ {1:'Готово',2:'Внимание',3:'Марш'} │
 └───────────────────────────────┘
 ```
-
 
 ## Чтение подстолбцов Map {#reading-subcolumns-of-map}
 
@@ -122,7 +118,6 @@ SELECT m.values FROM tab; -- то же, что mapValues(m)
 * Функция [map()](/sql-reference/functions/tuple-map-functions#map)
 * Функция [CAST()](/sql-reference/functions/type-conversion-functions#cast)
 * [-Map-комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
-
 
 ## Связанные материалы {#related-content}
 

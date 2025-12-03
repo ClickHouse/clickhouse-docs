@@ -24,7 +24,6 @@ Glue поддерживает множество различных формат
 интеграции доступны только таблицы Iceberg.
 :::
 
-
 ## Настройка Glue в AWS {#configuring}
 
 Чтобы подключиться к каталогу Glue, необходимо определить регион вашего 
@@ -48,7 +47,6 @@ SETTINGS
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
 ```
-
 
 ## Выполнение запросов к каталогу данных Glue с помощью ClickHouse {#query-glue-catalog}
 
@@ -87,7 +85,6 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```sql
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
-
 
 ```sql title="Response"
 ┌─statement───────────────────────────────────────────────┐

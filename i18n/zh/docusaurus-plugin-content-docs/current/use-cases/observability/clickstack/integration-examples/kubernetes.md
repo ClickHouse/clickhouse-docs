@@ -41,7 +41,6 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # 例如 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-
 ### 创建 DaemonSet 守护进程集配置 {#creating-the-daemonset-configuration}
 
 DaemonSet 守护进程集会从集群中的每个节点收集日志和指标，但不会收集 Kubernetes 事件或集群范围的指标。
@@ -155,7 +154,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ### 创建部署配置
 
 要收集 Kubernetes 事件和集群范围的指标，我们需要另外部署一个以 Deployment 方式运行的独立 OpenTelemetry collector。
@@ -231,7 +229,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ## 部署 OpenTelemetry 收集器
 
 现在可以使用
@@ -252,7 +249,6 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 ```
 
 现在，你的 Kubernetes 集群中的指标、日志和 Kubernetes 事件应该已经出现在 HyperDX 中了。
-
 
 ## 将资源标签转发到 pod（容器组）（推荐）
 

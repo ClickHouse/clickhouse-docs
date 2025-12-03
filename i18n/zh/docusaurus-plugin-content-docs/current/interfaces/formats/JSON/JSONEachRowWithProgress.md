@@ -26,5 +26,4 @@ doc_type: 'reference'
 {"progress":{"read_rows":"3","read_bytes":"24","written_rows":"0","written_bytes":"0","total_rows_to_read":"3"}}
 ```
 
-
 ## 格式设置 {#format-settings}

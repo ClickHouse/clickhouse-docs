@@ -34,7 +34,6 @@ with engine.begin() as conn:
 
 Полный список поддерживаемых параметров см. в разделе [Connection arguments and Settings](driver-api.md#connection-arguments) ниже. Их также можно передавать через DSN SQLAlchemy.
 
-
 ## Основные запросы {#sqlalchemy-core-queries}
 
 Диалект поддерживает `SELECT`-запросы SQLAlchemy Core с объединениями, фильтрацией, сортировкой, ограничениями и смещениями (LIMIT/OFFSET), а также `DISTINCT`.
@@ -67,7 +66,6 @@ from sqlalchemy import delete
 with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
-
 
 ## DDL и рефлексия {#sqlalchemy-ddl-reflection}
 
@@ -103,7 +101,6 @@ with engine.begin() as conn:
 
 Отражённые столбцы включают атрибуты, специфичные для диалекта, такие как `clickhousedb_default_type`, `clickhousedb_codec_expression` и `clickhousedb_ttl_expression`, если они заданы на сервере.
 
-
 ## Операции вставки (Core и базовый ORM) {#sqlalchemy-inserts}
 
 Операции вставки можно выполнять через SQLAlchemy Core, а также с помощью простых ORM-моделей для удобства.
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## Область применения и ограничения {#scope-and-limitations}
 

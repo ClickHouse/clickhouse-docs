@@ -31,14 +31,11 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Explo を ClickHouse に接続する {#connecting-explo-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 あらゆるプラットフォームで利用できる顧客向けアナリティクス。美しい可視化のために設計され、シンプルさを追求して実装されています。
-
-
 
 ## 目標 {#goal}
 
@@ -51,12 +48,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 まだ扱うデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選んでもよいでしょう。同じドキュメントカテゴリに、他にもいくつかのデータセットが掲載されています。
 :::
 
-
-
 ## 1. 接続情報を取得する {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  Explo を ClickHouse に接続する {#2--connect-explo-to-clickhouse}
 
@@ -91,8 +84,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
 `
 
-
-
 ## 3. ダッシュボードを作成する {#3-create-a-dashboard}
 
 1. 左側のナビゲーションバーから **Dashboard** タブを開きます。
@@ -107,8 +98,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-
-
 ## 4. SQL クエリを実行する {#4-run-a-sql-query}
 
 1. 右側のサイドバーで、スキーマ名の下に表示されているテーブル名を確認します。その後、データセットエディタに次のコマンドを入力します:
@@ -122,8 +111,6 @@ LIMIT 100
 2. 「Run」をクリックし、「Preview」タブに移動してデータを確認します。
 
 <Image img={explo_11} size="md" alt="Explo ダッシュボード" border />
-
-
 
 ## 5. チャートを作成する {#5-build-a-chart}
 
@@ -146,8 +133,6 @@ LIMIT 100
 5. これで、郡ごとの住宅の平均価格を示すチャートができました。
 
 <Image img={explo_15} size="md" alt="Explo ダッシュボード" />
-
-
 
 ## 詳細情報 {#learn-more}
 

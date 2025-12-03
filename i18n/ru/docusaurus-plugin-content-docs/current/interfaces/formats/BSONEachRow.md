@@ -114,7 +114,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
-
 ### Чтение данных {#reading-data}
 
 Считывайте данные в формате `BSONEachRow`:
@@ -128,7 +127,6 @@ FORMAT BSONEachRow
 :::tip
 BSON — это двоичный формат, который не отображается в человекочитаемом виде в терминале. Используйте `INTO OUTFILE` для вывода файлов BSON.
 :::
-
 
 ## Настройки формата {#format-settings}
 

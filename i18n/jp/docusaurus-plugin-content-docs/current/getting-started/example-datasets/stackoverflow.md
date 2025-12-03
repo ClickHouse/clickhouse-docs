@@ -21,7 +21,6 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)で確認できます。
 
-
 ## あらかじめ用意されたデータ {#pre-prepared-data}
 
 このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（6,000 万件の投稿）の点では ClickHouse にとっては小規模ですが、このデータセットには大量のテキストと大きな String 型カラムが含まれています。
@@ -31,7 +30,6 @@ CREATE DATABASE stackoverflow
 ```
 
 以下の計測結果は、`eu-west-2` に配置された 96 GiB・24 vCPU 構成の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
-
 
 ### 投稿 {#posts}
 
@@ -72,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 投稿データは年別のファイルとしても利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### 投票 {#votes}
 
 ```sql
@@ -94,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 投票データも年ごとに利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### コメント {#comments}
 
@@ -118,7 +114,6 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 ```
 
 コメントについても年ごとのデータが利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
-
 
 ### ユーザー {#users}
 
@@ -146,7 +141,6 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-
 ### バッジ {#badges}
 
 ```sql
@@ -167,7 +161,6 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-
 ### PostLinks {#postlinks}
 
 ```sql
@@ -186,7 +179,6 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
-
 
 ### PostHistory {#posthistory}
 
@@ -212,7 +204,6 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-
 ## 元のデータセット {#original-dataset}
 
 元のデータセットは、7zip 形式で圧縮された XML ファイルとして [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます。`stackoverflow.com*` というプレフィックスを持つファイルが対象です。
@@ -230,7 +221,6 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
 これらのファイルは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域が制限されており、おおよそ 20MB/秒が上限となります。
-
 
 ### JSON への変換 {#convert-to-json}
 
@@ -278,7 +268,6 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
-
 ## クエリ例 {#example-queries}
 
 ここから始めるための、いくつかの簡単なクエリです。
@@ -312,7 +301,6 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-
 ### 最も多く回答しているユーザー（アクティブなアカウント） {#user-with-the-most-answers-active-accounts}
 
 アカウントには `UserId` が必要です。
@@ -338,7 +326,6 @@ LIMIT 5
 5行を取得しました。経過時間: 0.154秒。処理済み: 3,583万行、193.39 MB (毎秒2億3,233万行、1.25 GB/秒)
 ピークメモリ使用量: 206.45 MiB。
 ```
-
 
 ### 閲覧数が多い ClickHouse 関連記事 {#clickhouse-related-posts-with-the-most-views}
 
@@ -369,7 +356,6 @@ LIMIT 10
 10行を取得しました。経過時間: 0.472秒。処理済み: 5982万行、1.91 GB (1億2663万行/秒、4.03 GB/秒)
 ピークメモリ使用量: 240.01 MiB。
 ```
-
 
 ### 最も物議を醸した投稿 {#most-controversial-posts}
 
@@ -404,7 +390,6 @@ LIMIT 3
 3行を取得。経過時間: 4.779秒。処理: 2億9880万行、3.16 GB (6252万行/秒、661.05 MB/秒)
 ピークメモリ使用量: 6.05 GiB。
 ```
-
 
 ## 謝辞 {#attribution}
 

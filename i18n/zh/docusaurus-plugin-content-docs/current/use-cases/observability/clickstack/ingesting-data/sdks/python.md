@@ -20,7 +20,6 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和链路追
 * **指标**
 * **链路追踪**
 
-
 ## 入门 {#getting-started}
 
 ### 安装 ClickStack OpenTelemetry 插桩包 {#install-clickstack-otel-instrumentation-package}
@@ -37,7 +36,6 @@ pip install hyperdx-opentelemetry
 opentelemetry-bootstrap -a install
 ```
 
-
 ### 配置环境变量 {#configure-environment-variables}
 
 接下来，需要在 shell 中配置以下环境变量，用于将遥测数据上报到 ClickStack：
@@ -50,7 +48,6 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，它可以是任意你希望的名称。*
 
-
 ### 使用 OpenTelemetry Python 代理运行应用程序 {#run-the-application-with-otel-python-agent}
 
 现在可以使用 OpenTelemetry Python 代理（`opentelemetry-instrument`）来运行该应用程序。
@@ -58,7 +55,6 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```shell
 opentelemetry-instrument python app.py
 ```
-
 
 #### 如果使用 `Gunicorn`、`uWSGI` 或 `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
 
@@ -107,7 +103,6 @@ def init_tracing():
 export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 ```
 
-
 ## 故障排查 {#troubleshooting}
 
 ### 由于日志级别设置导致日志未显示 {#logs-not-appearing-due-to-log-level}
@@ -121,7 +116,6 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 ```
-
 
 ### 导出到控制台 {#exporting-to-the-console}
 

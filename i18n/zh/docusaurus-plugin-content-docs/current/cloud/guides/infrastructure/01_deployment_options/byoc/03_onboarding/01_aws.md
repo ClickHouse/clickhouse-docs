@@ -16,7 +16,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## 接入流程 {#onboarding-process}
 
 客户可以通过联系[我们](https://clickhouse.com/cloud/bring-your-own-cloud)来发起接入流程。客户需要准备一个专用的 AWS 账号，并确认将要使用的 Region。目前，我们仅允许用户在 ClickHouse Cloud 支持的 Region 中启动 BYOC 服务。
@@ -82,7 +81,6 @@ module "clickhouse_onboarding" {
    如果您的 VPC 尚未配置 S3 网关终端节点，您需要创建一个，以在 VPC 与 Amazon S3 之间启用安全、私有的通信。通过该终端节点，您的 ClickHouse 服务可以在不经过公共互联网的情况下访问 S3。请参考下方截图中的示例配置。
 
 <br />
-
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 终端节点" background='black'/>
 
@@ -169,8 +167,6 @@ module "clickhouse_onboarding" {
 
 可选：在验证 peering 正常工作之后，您可以请求为 ClickHouse BYOC 删除公共负载均衡器。
 
-
-
 ## 升级流程 {#upgrade-process}
 
 我们会定期升级软件，包括 ClickHouse 数据库版本、ClickHouse Operator、EKS 以及其他组件。
@@ -180,8 +176,6 @@ module "clickhouse_onboarding" {
 :::note
 维护窗口不适用于安全补丁和漏洞修复。这类升级将作为周期外升级进行处理，并通过及时沟通协调合适的时间，从而将对运行的影响降至最低。
 :::
-
-
 
 ## CloudFormation IAM 角色 {#cloudformation-iam-roles}
 
@@ -216,8 +210,6 @@ Bootstrap IAM 角色具有以下权限：
 **K8s-control-plane** 和 **k8s-worker** 角色由 AWS EKS 服务来获取并使用（assume）。
 
 最后，**`data-plane-mgmt`** 允许一个 ClickHouse Cloud 控制平面组件对所需的自定义资源（例如 `ClickHouseCluster` 和 Istio Virtual Service/Gateway）进行协调（reconcile）。
-
-
 
 ## 网络边界 {#network-boundaries}
 

@@ -130,7 +130,6 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
 ## Операторы для работы с наборами данных {#operators-for-working-with-data-sets}
 
 См. [операторы IN](../../sql-reference/operators/in.md) и оператор [EXISTS](../../sql-reference/operators/exists.md).
@@ -205,7 +204,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-
 ## Операторы для работы с датами и временем {#operators-for-working-with-dates-and-times}
 
 ### EXTRACT {#extract}
@@ -271,7 +269,6 @@ FROM test.Orders;
 ```
 
 Дополнительные примеры можно найти в [tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql).
-
 
 ### INTERVAL {#interval}
 
@@ -347,7 +344,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
 * функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)
 
-
 ## Оператор логического AND {#logical-and-operator}
 
 Синтаксис `SELECT a AND b` — вычисляет логическую конъюнкцию выражений `a` и `b` с помощью функции [and](/sql-reference/functions/logical-functions#and).
@@ -383,7 +379,6 @@ END
 Если в выражении отсутствует конструкция `ELSE c`, значением по умолчанию является `NULL`.
 
 Функция `transform` не поддерживает значение `NULL`.
-
 
 ## Оператор конкатенации {#concatenation-operator}
 
@@ -434,7 +429,6 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 │          101 │
 └──────────────┘
 ```
-
 
 ### IS NOT NULL {#is_not_null}
 

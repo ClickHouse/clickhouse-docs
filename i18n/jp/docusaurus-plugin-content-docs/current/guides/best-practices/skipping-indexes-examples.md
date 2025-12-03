@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['スキップインデックス', 'データスキップ', 'パフォーマンス', 'インデックス作成', 'ベストプラクティス']
 ---
 
-
-
 # データスキップインデックスの例 {#data-skipping-index-examples}
 
 このページでは、ClickHouse のデータスキップインデックスの例をまとめ、各インデックスの定義方法、使用すべきタイミング、適用されているかを検証する方法を示します。これらの機能はすべて [MergeTree-family テーブル](/engines/table-engines/mergetree-family/mergetree) で動作します。
@@ -31,7 +29,6 @@ ClickHouse は 5 種類のスキップインデックスをサポートしてい
 | **tokenbf&#95;v1**                                  | フルテキスト検索用のトークンベース Bloom フィルタ |
 
 各セクションではサンプルデータを用いた例を示し、クエリ実行時にインデックスが利用されているかを確認する方法を説明します。
-
 
 ## MinMax インデックス {#minmax-index}
 
@@ -63,7 +60,6 @@ SELECT count() FROM events WHERE ts >= now() - 3600;
 
 `EXPLAIN` とプルーニングを用いた[具体例](/best-practices/use-data-skipping-indices-where-appropriate#example)を参照してください。
 
-
 ## Set インデックス {#set-index}
 
 ローカル（ブロック単位）のカーディナリティが低い場合に `set` インデックスを使用します。各ブロック内に多数の異なる値が存在する場合には効果がありません。
@@ -80,7 +76,6 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 作成／マテリアライズのワークフローと、その適用前後の効果は、[基本的な操作ガイド](/optimize/skipping-indexes#basic-operation)で確認できます。
 
-
 ## 汎用 Bloom フィルター（スカラー） {#generic-bloom-filter-scalar}
 
 `bloom_filter` インデックスは、「干し草の山から針を探すような」等価比較や IN によるメンバーシップ判定に適しています。偽陽性率（デフォルト 0.025）を指定するオプションのパラメータを受け取ります。
@@ -94,7 +89,6 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
-
 
 ## 部分文字列検索用の N-gram Bloom フィルター (ngrambf&#95;v1) {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
@@ -132,7 +126,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- 約13
 
 チューニングに関する完全なガイダンスについては、[パラメータのドキュメント](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)を参照してください。
 
-
 ## 単語ベース検索用の Token Bloom フィルタ (tokenbf&#95;v1) {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
 `tokenbf_v1` は、英数字以外の文字で区切られたトークンをインデックス化します。[`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` による単語パターン、または `=` / `IN` 演算子と併用して使用することを推奨します。`String`/`FixedString`/`Map` 型をサポートします。
@@ -151,7 +144,6 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
 トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#bloom-filters-for-text-search)を参照してください。
-
 
 ## CREATE TABLE 時にインデックスを追加する（複数の例） {#add-indexes-during-create-table-multiple-examples}
 
@@ -174,7 +166,6 @@ ENGINE = MergeTree
 ORDER BY u64;
 ```
 
-
 ## 既存データのマテリアライズと検証 {#materializing-on-existing-data-and-verifying}
 
 `MATERIALIZE` を使って既存のデータパーツにインデックスを追加し、以下のように `EXPLAIN` やトレースログでプルーニングの動作を確認できます。
@@ -190,7 +181,6 @@ SET send_logs_level = 'trace';
 ```
 
 この[具体的な minmax の例](/best-practices/use-data-skipping-indices-where-appropriate#example)は、EXPLAIN 出力の構造とプルーニング件数を示しています。
-
 
 ## スキップインデックスを使用すべき場合と避けるべき場合 {#when-use-and-when-to-avoid}
 
@@ -209,8 +199,6 @@ SET send_logs_level = 'trace';
 ある値がデータブロック内に一度でも出現すると、そのブロック全体を ClickHouse は読み取る必要があります。実運用に近いデータセットでインデックスを検証し、実際のパフォーマンス計測に基づいて粒度や型固有のパラメータを調整してください。
 :::
 
-
-
 ## 一時的にインデックスを無視または強制する {#temporarily-ignore-or-force-indexes}
 
 テストやトラブルシューティングの際に、個々のクエリごとに名前を指定して特定のインデックスを無効化できます。必要に応じてインデックスの使用を強制するための設定もあります。[`ignore_data_skipping_indices`](/operations/settings/settings#ignore_data_skipping_indices) を参照してください。
@@ -222,14 +210,11 @@ WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';
 ```
 
-
 ## 注意事項と留意点 {#notes-and-caveats}
 
 * スキップインデックスは [MergeTree ファミリーのテーブル](/engines/table-engines/mergetree-family/mergetree) でのみサポートされます。プルーニングはグラニュール／ブロックレベルで行われます。  
 * Bloom filter ベースのインデックスは確率的な仕組みです（誤検出により余分な読み取りが発生しますが、有効なデータを取り逃がすことはありません）。  
 * Bloom filter およびその他のスキップインデックスは `EXPLAIN` とトレースで検証し、プルーニング効果とインデックスサイズのバランスが取れるように粒度を調整してください。
-
-
 
 ## 関連ドキュメント {#related-docs}
 - [データスキッピングインデックスのガイド](/optimize/skipping-indexes)

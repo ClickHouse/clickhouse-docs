@@ -2,20 +2,22 @@
 slug: /use-cases/observability/clickstack/integration-guides
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack へのデータインジェスト - ClickHouse Observability Stack'
-title: 'インテグレーションガイド'
+description: 'ClickStack 向けデータインジェスト - ClickHouse オブザーバビリティスタック'
+title: '連携ガイド'
 doc_type: 'landing-page'
-keywords: ['ClickStack data ingestion', 'observability data ingestion', 'ClickStack integration guides']
+keywords: ['ClickStack データインジェスト', 'オブザーバビリティ データインジェスト', 'ClickStack 連携ガイド']
 ---
 
-ClickStack では、可観測性データを ClickHouse インスタンスに取り込むための複数の方法を提供しています。このセクションでは、さまざまなログ、トレース、メトリクスソース向けのクイックスタートガイドを掲載しています。
+ClickStack は、オブザーバビリティデータを ClickHouse インスタンスへインジェストするための複数の方法を提供しています。このセクションには、さまざまなログ・トレース・メトリクスソース向けのクイックスタートガイドが含まれます。
 
 :::note
-これらのインテグレーションガイドの一部では、手早くテストを行うために ClickStack に組み込まれている OpenTelemetry Collector を使用します。本番環境へのデプロイでは、独自の OTel collector を稼働させ、ClickStack の OTLP エンドポイントにデータを送信することを推奨します。本番向けの構成については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。
+これらの連携ガイドの一部では、簡単なテスト用に ClickStack の組み込み OpenTelemetry Collector を使用します。本番環境のデプロイメントでは、独自の OTel Collector を実行し、ClickStack の OTLP エンドポイントにデータを送信することを推奨します。本番構成については、[Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。
 :::
 
-| セクション | 説明 |
+| Section | Description |
 |------|-------------|
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Kafka メトリクス向けクイックスタートガイド |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Kafka メトリクス向けクイックスタートガイド |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka メトリクス向けクイックスタートガイド |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Kubernetes 向けクイックスタートガイド |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx ログ向けクイックスタートガイド |

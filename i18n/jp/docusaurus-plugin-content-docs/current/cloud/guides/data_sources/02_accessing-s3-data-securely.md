@@ -14,7 +14,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 この記事では、ClickHouse Cloud のお客様がロールベースのアクセス制御を利用して Amazon Simple Storage Service (S3) に認証し、データへ安全にアクセスする方法を示します。
 
-
 ## はじめに {#introduction}
 
 セキュアな S3 アクセスの設定に入る前に、その仕組みを理解しておくことが重要です。以下では、ClickHouse の各種サービスが、顧客の AWS アカウント内のロールを引き受けることで、プライベートな S3 バケットへアクセスできる仕組みの概要を示します。
@@ -129,7 +128,6 @@ IAM ポリシー（`{BUCKET_NAME}` をバケット名に置き換えてくださ
 ```
 
 4 - 作成後に新しい **IAM Role Arn** をコピーします。これは S3 バケットにアクセスするために必要なものです。
-
 
 ## ClickHouseAccess ロールを使用して S3 バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 

@@ -38,5 +38,4 @@ SET format_custom_escaping_rule = 'Quoted';
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpaces;
 ```
 
-
 ## フォーマット設定 {#format-settings}

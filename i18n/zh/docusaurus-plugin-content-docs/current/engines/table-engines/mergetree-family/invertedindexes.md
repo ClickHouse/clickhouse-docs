@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
 # 使用文本索引进行全文搜索 {#full-text-search-using-text-indexes}
 
 <PrivatePreviewBadge/>
@@ -19,8 +18,6 @@ ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.o
 这些标记由称为分词（tokenization）的过程生成。
 例如，ClickHouse 默认会将英文句子 "All cat like mice." 分词为 ["All", "cat", "like", "mice"]（注意末尾的句点会被忽略）。
 还可以使用更高级的分词器，例如针对日志数据的分词器。
-
-
 
 ## 创建文本索引 {#creating-a-text-index}
 
@@ -82,7 +79,6 @@ ORDER BY key
 通常可以通过按分隔字符串长度递减的顺序传入来实现这一点。
 如果分隔字符串碰巧构成一个[前缀码](https://en.wikipedia.org/wiki/Prefix_code)，则可以以任意顺序传入。
 :::
-
 
 :::warning
 目前不建议在非西方语言文本(例如中文)上构建文本索引。
@@ -173,7 +169,6 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 
 可选参数 `max_cardinality_for_embedded_postings`(默认值:16)指定基数阈值,低于该阈值时倒排列表应嵌入到字典块中。
 
-
 可选参数 `bloom_filter_false_positive_rate`(默认值:0.1)用于指定字典布隆过滤器的误报率。
 
 </details>
@@ -184,7 +179,6 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 ALTER TABLE tab DROP INDEX text_idx;
 ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
-
 
 ## 使用文本索引 {#using-a-text-index}
 
@@ -290,7 +284,6 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 函数 `hasToken` 和 `hasTokenOrNull` 是在与 `text` 索引配合使用时性能最优的函数。
 
 #### `hasAnyTokens` 和 `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
-
 
 函数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 和 [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 分别用于匹配给定 token 中的任意一个或全部。
 
@@ -411,7 +404,6 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 全
 解决方案是为 [Map](/sql-reference/data-types/map.md) 的键和值创建文本索引。
 当需要按字段名或属性类型检索日志时，可以使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 创建文本索引：
 
-
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
@@ -433,7 +425,6 @@ SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- 快速
 -- 查找来自特定 IP 的所有日志：
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 快速
 ```
-
 
 ## 性能调优 {#performance-tuning}
 
@@ -526,7 +517,6 @@ EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<ind
 
 #### 字典块缓存设置 {#caching-dictionary}
 
-
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 文本索引字典块缓存策略名称。                                                                                   |
@@ -551,8 +541,6 @@ EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<ind
 | [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | 最大缓存大小（字节）。                                                                                  |
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中反序列化倒排列表项的最大数量。                                                                    |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引倒排列表缓存中受保护队列大小占缓存总大小的比例。                                               |
-
-
 
 ## 实现细节 {#implementation}
 
@@ -580,8 +568,6 @@ Bloom 过滤器可以在待查询的 token 不包含在某个字典块中时提�
 所有 token 的倒排列表顺序存储在倒排列表文件中。
 为了节省空间，同时仍然支持快速的交集与并集操作，倒排列表被存储为 [roaring bitmaps](https://roaringbitmap.org/)。
 如果某个倒排列表的基数小于 16（可通过参数 `max_cardinality_for_embedded_postings` 配置），则会将其内嵌到字典中。
-
-
 
 ## 示例：Hacker News 数据集 {#hacker-news-dataset}
 
@@ -723,7 +709,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 └─────────┘
 ```
 
-
 1 行结果。耗时 0.015 秒。已处理 27.99 百万行数据，27.99 MB
 
 ````
@@ -807,7 +792,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 通过结合索引查询结果，直接读取的查询速度快了 34 倍（0.450s 对比 0.013s），并且避免读取 9.58 GB 的列数据。
 在这个特定场景下，`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` 是首选且更高效的写法。
-
 
 ## 相关内容 {#related-content}
 

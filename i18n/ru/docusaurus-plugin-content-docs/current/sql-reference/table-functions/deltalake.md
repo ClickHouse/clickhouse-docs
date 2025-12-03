@@ -8,13 +8,9 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция deltaLake {#deltalake-table-function}
 
 Предоставляет табличный интерфейс только для чтения к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -30,19 +26,14 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
-
 ## Аргументы {#arguments}
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
 `format` обозначает формат файлов данных в таблице Delta Lake.
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица с указанной структурой для чтения данных из указанной таблицы Delta Lake.
-
-
 
 ## Примеры {#examples}
 
@@ -64,7 +55,6 @@ LIMIT 2
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
@@ -72,8 +62,6 @@ LIMIT 2
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
-
-
 
 ## Связанные разделы {#related}
 

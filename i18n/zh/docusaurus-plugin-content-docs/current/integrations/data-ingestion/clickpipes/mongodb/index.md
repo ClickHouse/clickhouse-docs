@@ -17,7 +17,6 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-
 # 将数据从 MongoDB 摄取到 ClickHouse（使用 CDC） {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
 
 <BetaBadge/>
@@ -32,8 +31,6 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 你可以使用 ClickPipes 将 MongoDB 数据库中的数据摄取到 ClickHouse Cloud 中。源 MongoDB 数据库可以部署在本地，或者使用 MongoDB Atlas 等服务托管在云端。
 
-
-
 ## 前置条件 {#prerequisites}
 
 在开始之前，需要先确保 MongoDB 数据库已正确配置用于复制。配置步骤取决于 MongoDB 的部署方式，请按照下方相应的指南进行操作：
@@ -45,8 +42,6 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 3. [Amazon DocumentDB](./mongodb/source/documentdb)
 
 在完成源 MongoDB 数据库的设置之后，即可继续创建 ClickPipe。
-
-
 
 ## 创建 ClickPipe {#create-your-clickpipe}
 
@@ -115,13 +110,9 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
    <Image img={ch_permissions} alt="审核权限" size="lg" border/>
 
-
-
 ## 接下来该做什么？ {#whats-next}
 
 在使用 ClickPipe 将数据从 MongoDB 复制到 ClickHouse Cloud 之后，你可以将重点放在如何查询和建模数据以获得最佳性能。
-
-
 
 ## 注意事项 {#caveats}
 

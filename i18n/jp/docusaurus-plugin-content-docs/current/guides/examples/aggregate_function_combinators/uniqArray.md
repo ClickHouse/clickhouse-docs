@@ -7,11 +7,7 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArray {#uniqarray}
-
-
 
 ## 説明 {#description}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 すべての配列を通して一意な要素のおおよその数を計算します。
 
 `uniqArray` 関数は、データセット内の複数の配列にまたがる一意な要素を数える必要がある場合に有用です。これは `uniq(arrayJoin())` を使用するのと等価であり、`arrayJoin` が先に配列をフラット化し、その後に `uniq` が一意な要素を数えます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -57,7 +51,6 @@ FROM user_interests;
 1. │                      5 │                          5 │
    └────────────────────────┴────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

@@ -11,7 +11,6 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
 # Миграция из Snowflake в ClickHouse {#migrate-from-snowflake-to-clickhouse}
 
 > В этом руководстве описывается процесс миграции данных из Snowflake в ClickHouse.
@@ -22,7 +21,6 @@ import Image from '@theme/IdealImage';
 в ClickHouse.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Экспорт данных из Snowflake {#1-exporting-data-from-snowflake}
 
@@ -60,7 +58,6 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 ```
 
 Для набора данных объемом около 5 ТБ с максимальным размером файла 150 МБ и при использовании виртуального склада Snowflake типа 2X-Large, расположенного в том же регионе AWS `us-east-1`, копирование данных в бакет S3 займет примерно 30 минут.
-
 
 ## Импорт в ClickHouse {#2-importing-to-clickhouse}
 
@@ -107,7 +104,6 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Сопоставл�
 
 Вложенные структуры, такие как `some_file`, при выполнении операции COPY в Snowflake преобразуются в строки JSON. Импорт этих данных требует преобразования таких структур в тип `Tuple` при вставке в ClickHouse с использованием [функции JSONExtract](/sql-reference/functions/json-functions#JSONExtract), как показано выше.
 :::
-
 
 ## Проверка успешного экспорта данных {#3-testing-successful-data-export}
 

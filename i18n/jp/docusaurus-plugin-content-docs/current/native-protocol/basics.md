@@ -7,8 +7,6 @@ keywords: ['ネイティブプロトコル', 'TCPプロトコル', 'プロトコ
 doc_type: 'guide'
 ---
 
-
-
 # 基本 {#basics}
 
 :::note
@@ -22,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
 
-
 ## Varint {#varint}
 
 長さやパケットコードなどには、*unsigned varint* エンコード方式が使われます。
@@ -31,8 +28,6 @@ import TabItem from '@theme/TabItem';
 :::note
 *signed* varint は使用されません。
 :::
-
-
 
 ## String {#string}
 
@@ -119,8 +114,6 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-
-
 ## 整数 {#integers}
 
 :::tip
@@ -154,7 +147,6 @@ fmt.Println(d) // 1000
     ```
   </TabItem>
 </Tabs>
-
 
 ## Boolean {#boolean}
 

@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Использование формата Native и бинарных форматов в ClickHouse {#using-native-and-binary-formats-in-clickhouse}
 
 ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и эффективность использования дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
 
 Для демонстрации мы будем использовать [таблицу some_data](assets/some_data.sql) и [данные](assets/some_data.tsv); вы можете воспроизвести это в своём экземпляре ClickHouse.
-
-
 
 ## Экспорт в нативном формате ClickHouse {#exporting-in-a-native-clickhouse-format}
 
@@ -77,7 +74,6 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-
 ## Экспорт в RowBinary {#exporting-to-rowbinary}
 
 Ещё один поддерживаемый двоичный формат — [RowBinary](/interfaces/formats/RowBinary), который позволяет импортировать и экспортировать данные в виде строк в двоичном формате:
@@ -121,7 +117,6 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-
 ## Импорт одного двоичного значения с помощью RawBLOB {#importing-single-binary-value-using-rawblob}
 
 Предположим, что мы хотим прочитать весь двоичный файл и сохранить его в поле таблицы.
@@ -161,7 +156,6 @@ FORMAT RawBLOB
 
 Обратите внимание, что нам пришлось использовать `LIMIT 1`, так как экспорт более чем одного значения приведёт к повреждению файла.
 
-
 ## MessagePack {#messagepack}
 
 ClickHouse поддерживает импорт и экспорт данных в формат [MessagePack](https://msgpack.org/) с использованием формата [MsgPack](/interfaces/formats/MsgPack). Чтобы экспортировать данные в формат MessagePack:
@@ -180,7 +174,6 @@ INSERT INTO sometable
 FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
-
 
 ## Protocol Buffers {#protocol-buffers}
 
@@ -208,7 +201,6 @@ SETTINGS format_schema = 'schema:MessageType'
 ```
 
 Это сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, включая вложенные сообщения. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats/ProtobufSingle) для работы с одним сообщением Protocol Buffer (в этом случае разделители длины будут опущены).
-
 
 ## Cap&#39;n Proto {#capn-proto}
 
@@ -240,7 +232,6 @@ SETTINGS format_schema = 'schema:PathStats'
 ```
 
 Обратите внимание, что нам пришлось привести столбец `Date` к типу `UInt32`, чтобы [типы данных совпадали](/interfaces/formats/CapnProto#data_types-matching-capnproto).
-
 
 ## Другие форматы {#other-formats}
 

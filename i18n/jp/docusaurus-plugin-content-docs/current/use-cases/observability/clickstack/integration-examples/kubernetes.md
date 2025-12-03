@@ -41,7 +41,6 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # 例: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-
 ### デーモンセット構成の作成 {#creating-the-daemonset-configuration}
 
 デーモンセットは、クラスター内の各ノードからログとメトリクスを収集しますが、Kubernetes のイベントやクラスター全体のメトリクスは収集しません。
@@ -155,7 +154,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ### デプロイメント構成の作成
 
 Kubernetes のイベントとクラスター全体のメトリクスを収集するために、別の OpenTelemetry コレクターをデプロイメントとしてデプロイする必要があります。
@@ -231,7 +229,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ## OpenTelemetry collector のデプロイ
 
 OpenTelemetry collector は、Kubernetes クラスターに\
@@ -251,7 +248,6 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 ```
 
 これで、Kubernetes クラスターからのメトリクス、ログ、および Kubernetes イベントが HyperDX 上に表示されるようになっているはずです。
-
 
 ## リソースタグをポッドに転送する（推奨）
 

@@ -10,7 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java 客户端概览 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
@@ -151,7 +150,6 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
     </dependency>
 </dependencies>
 ```
-
 
 #### 配置日志记录 {#configuring-logging}
 

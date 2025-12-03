@@ -19,8 +19,6 @@ doc_type: 'reference'
 
 Все они настраиваются через схему данных.
 
-
-
 ## Выбор подходящего типа данных для оптимизации сжатия {#choose-the-right-data-type-to-optimize-compression}
 
 Рассмотрим набор данных Stack Overflow в качестве примера. Сравним статистику сжатия для следующих схем таблицы `posts`:
@@ -68,7 +66,6 @@ GROUP BY name
 <details>
    
 <summary>Примечание о компактных и широких частях</summary>
-
 
 Если вы видите значения `compressed_size` или `uncompressed_size`, равные `0`, это может быть связано с тем, что тип
 частей данных — `compact`, а не `wide` (см. описание `part_type` в [`system.parts`](/operations/system-tables/parts)).
@@ -145,7 +142,6 @@ GROUP BY name;
 
 Для получения общего размера таблицы можно упростить приведённый выше запрос:
 
-
 ```sql
 SELECT formatReadableSize(sum(data_compressed_bytes)) AS размер_сжатых_данных,
     formatReadableSize(sum(data_uncompressed_bytes)) AS размер_несжатых_данных,
@@ -186,7 +182,6 @@ WHERE `table` = 'posts_v3'
 GROUP BY name
 ```
 
-
 ┌─name──────────────────┬─compressed&#95;size─┬─uncompressed&#95;size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -214,7 +209,6 @@ GROUP BY name
 
 ```
 ```
-
 
 ## Выбор подходящего кодека сжатия столбцов {#choosing-the-right-column-compression-codec}
 
@@ -269,7 +263,6 @@ CREATE TABLE posts_v4
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
-
 
 Улучшения сжатия для этих столбцов приведены ниже:
 

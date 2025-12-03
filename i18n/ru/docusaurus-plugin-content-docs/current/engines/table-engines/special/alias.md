@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Движок таблицы Alias {#alias-table-engine}
 
 <ExperimentalBadge/>
@@ -40,7 +39,6 @@ ENGINE = Alias(target_db, target_table)
 :::note
 Таблица `Alias` не поддерживает явное определение столбцов. Столбцы автоматически наследуются от целевой таблицы. Это гарантирует, что таблица `Alias` всегда соответствует схеме целевой таблицы.
 :::
-
 
 ## Параметры движка {#engine-parameters}
 
@@ -109,7 +107,6 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-
 ### Межбазовый псевдоним {#cross-database-alias}
 
 Создайте псевдоним, ссылающийся на таблицу в другой базе данных:
@@ -137,7 +134,6 @@ CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
-
 
 ### Операции записи через алиас {#write-operations}
 
@@ -169,7 +165,6 @@ SELECT count() FROM metrics;  -- Возвращает 7
 SELECT count() FROM metrics_alias;  -- Возвращает 7
 ```
 
-
 ### Изменение схемы {#schema-modification}
 
 Операции ALTER изменяют схему целевой таблицы:
@@ -197,7 +192,6 @@ DESCRIBE users;
 │ email │ String │ DEFAULT      │ ''                 │
 └───────┴────────┴──────────────┴────────────────────┘
 ```
-
 
 ### Мутации данных {#data-mutations}
 
@@ -236,7 +230,6 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-
 ### Операции с партициями {#partition-operations}
 
 Для секционированных таблиц операции с партициями передаются далее:
@@ -267,7 +260,6 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
 SELECT count() FROM logs_alias;  -- Возвращает 3
 ```
-
 
 ### Оптимизация таблицы {#table-optimization}
 
@@ -302,7 +294,6 @@ WHERE database = currentDatabase()
   AND table = 'events' 
   AND active;  -- Возвращает 1
 ```
-
 
 ### Управление алиасами {#alias-management}
 

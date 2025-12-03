@@ -8,29 +8,19 @@ doc_type: 'guide'
 keywords: ['лучшие практики kafka', 'clickpipes', 'сжатие', 'аутентификация', 'масштабирование']
 ---
 
-
-
 # Рекомендации по лучшим практикам {#best-practices}
-
-
 
 ## Сжатие сообщений {#compression}
 
 Мы настоятельно рекомендуем использовать сжатие для ваших тем Kafka. Сжатие позволяет существенно сократить затраты на передачу данных практически без влияния на производительность.
 Чтобы узнать больше о сжатии сообщений в Kafka, рекомендуем начать с этого [руководства](https://www.confluent.io/blog/apache-kafka-message-compression/).
 
-
-
 ## Ограничения {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) не поддерживается.
 
-
-
 ## Семантика доставки {#delivery-semantics}
 ClickPipes for Kafka обеспечивает семантику доставки `at-least-once` (одна из наиболее распространённых моделей). Нам будет полезно получить вашу обратную связь по семантике доставки через [форму обратной связи](https://clickhouse.com/company/contact?loc=clickpipes). Если вам нужна семантика `exactly-once`, мы рекомендуем использовать наш официальный sink-коннектор [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse).
-
-
 
 ## Аутентификация {#authentication}
 
@@ -115,7 +105,6 @@ ClickPipes поддерживает следующие методы аутент
 
 ClickPipes для Kafka поддерживает загрузку пользовательских сертификатов для брокеров Kafka, использующих непубличные серверные сертификаты.
 Также поддерживается загрузка клиентских сертификатов и ключей для аутентификации на основе взаимного TLS (mTLS).
-
 
 ## Производительность {#performance}
 

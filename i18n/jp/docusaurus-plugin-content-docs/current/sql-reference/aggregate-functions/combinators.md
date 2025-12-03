@@ -7,13 +7,9 @@ title: '集約関数コンビネータ'
 doc_type: 'reference'
 ---
 
-
-
 # 集約関数のコンビネーター {#aggregate-function-combinators}
 
 集約関数の名前には、接尾辞を付けることができます。これにより、その集約関数の挙動が変化します。
-
-
 
 ## -If {#-if}
 
@@ -22,8 +18,6 @@ doc_type: 'reference'
 例: `sumIf(column, cond)`, `countIf(cond)`, `avgIf(x, cond)`, `quantilesTimingIf(level1, level2)(x, cond)`, `argMinIf(arg, val, cond)` など。
 
 条件付き集約関数を使用すると、サブクエリや `JOIN` を使わずに、複数の条件に対する集約値を同時に計算できます。たとえば、条件付き集約関数を用いてセグメント比較機能を実装できます。
-
-
 
 ## -Array {#-array}
 
@@ -34,8 +28,6 @@ doc_type: 'reference'
 例 2: `uniqArray(arr)` – すべての 'arr' 配列に含まれる一意な要素の数を数えます。これは、より簡単な方法として `uniq(arrayJoin(arr))` でも実行できますが、常にクエリに 'arrayJoin' を追加できるとは限りません。
 
 -If と -Array は組み合わせて使用できます。ただし、'Array' を先に、次に 'If' を付ける必要があります。例: `uniqArrayIf(arr, cond)`, `quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、'cond' 引数は配列型の引数にはなりません。
-
-
 
 ## -Map {#-map}
 
@@ -69,7 +61,6 @@ GROUP BY timeslot;
 │ 2000-01-01 00:01:00 │ {'d':10,'e':10,'f':20,'g':20}        │ {'d':10,'e':10,'f':10,'g':10}        │ {'d':10,'e':10,'f':10,'g':10}        │
 └─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## -SimpleState {#-simplestate}
 
@@ -105,7 +96,6 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 └──────────────────────────────────────┴───┘
 ```
 
-
 ## -State {#-state}
 
 このコンビネータを適用すると、集約関数は結果の値（[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数における一意な値の個数など）ではなく、集約の中間状態（`uniq` では、一意な値の数を計算するためのハッシュテーブル）を返します。これは `AggregateFunction(...)` 型であり、さらなる処理に利用したり、テーブルに保存して後から集約処理を完了させたりできます。
@@ -122,32 +112,22 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 - [-Merge](#-merge) コンビネータ
 - [-MergeState](#-mergestate) コンビネータ
 
-
-
 ## -Merge {#-merge}
 
 このコンビネータを適用すると、集約関数は引数として中間集約状態を受け取り、それらを結合して集約を完了し、その結果の値を返します。
-
-
 
 ## -MergeState {#-mergestate}
 
 `-Merge` コンビネータと同様に中間集約状態をマージします。ただし、結果の値は返さず、`-State` コンビネータと同様に中間集約状態を返します。
 
-
-
 ## -ForEach {#-foreach}
 
 テーブルに対する集約関数を、対応する配列要素ごとに集約を行い、その結果を配列で返す配列向けの集約関数に変換します。たとえば、配列 `[1, 2]`、`[3, 4, 5]`、`[6, 7]` に対する `sumForEach` は、対応する配列要素を加算した結果として `[10, 13, 5]` を返します。
-
-
 
 ## -Distinct {#-distinct}
 
 引数の一意な組み合わせごとに、集約は 1 回だけ行われます。重複する値は無視されます。
 例: `sum(DISTINCT x)`（または `sumDistinct(x)`）、`groupArray(DISTINCT x)`（または `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（または `corrStableDistinct(x, y)`）など。
-
-
 
 ## -OrDefault {#-ordefault}
 
@@ -208,7 +188,6 @@ FROM
 │                              0.00 │
 └───────────────────────────────────┘
 ```
-
 
 ## -OrNull {#-ornull}
 
@@ -272,7 +251,6 @@ FROM
 │                           ᴺᵁᴸᴸ │
 └────────────────────────────────┘
 ```
-
 
 ## -Resample {#-resample}
 
@@ -342,20 +320,15 @@ FROM people
 └────────┴───────────────────────────┘
 ```
 
-
 ## -ArgMin {#-argmin}
 
 接尾辞 -ArgMin は、任意の集約関数の名前に付加できます。この場合、その集約関数は追加の引数を 1 つ受け取り、この引数には任意の比較可能な式を指定できます。集約関数は、指定された追加の式が最小値となる行だけを処理します。
 
 例: `sumArgMin(column, expr)`, `countArgMin(expr)`, `avgArgMin(x, expr)` など。
 
-
-
 ## -ArgMax {#-argmax}
 
 サフィックス -ArgMin と同様ですが、指定された追加の式に対して最大値を持つ行だけを処理します。
-
-
 
 ## 関連コンテンツ {#related-content}
 

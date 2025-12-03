@@ -32,7 +32,6 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
-
 ## 非管理员用户 {#non-admin-users}
 
 用户应具备必要的权限，而非全部设为管理员用户。本文档的其余部分提供了示例场景及所需的角色配置。
@@ -172,13 +171,11 @@ CREATE USER row_user IDENTIFIED BY 'password';
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 
-
     :::note
     将策略附加到表时,系统将应用该策略,仅允许已定义的用户和角色对表执行操作,其他所有用户的任何操作都将被拒绝。为避免将限制性行策略应用于其他用户,必须定义另一个策略,以允许其他用户和角色进行常规访问或其他类型的访问。
     :::
 
 </VerticalStepper>
-
 
 ## 验证 {#verification}
 
@@ -293,8 +290,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 </VerticalStepper>
 
-
-
 ## 修改用户和角色 {#modifying-users-and-roles}
 
 可以为用户分配多个角色，以组合满足需求的权限。当使用多个角色时，系统会合并这些角色来确定最终权限，其结果是各角色的权限会累加生效。
@@ -365,8 +360,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
    ```
 </VerticalStepper>
 
-
-
 ## 故障排查 {#troubleshooting}
 
 在某些情况下，权限之间会相互交叉或组合，从而产生意外结果。可以使用以下命令配合管理员账号来帮助定位问题。
@@ -429,7 +422,6 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## 管理角色、策略和用户的示例命令 {#example-commands-to-manage-roles-policies-and-users}
 
 可以使用以下命令：
@@ -473,7 +465,6 @@ DROP ROLE A_rows_users;
 ```sql
 DROP USER row_user;
 ```
-
 
 ## 总结 {#summary}
 

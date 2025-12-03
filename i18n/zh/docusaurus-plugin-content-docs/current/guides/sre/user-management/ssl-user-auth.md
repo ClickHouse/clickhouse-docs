@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 ---
 
-
-
 # 配置用于身份验证的 SSL 用户证书 {#configuring-ssl-user-certificate-for-authentication}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
@@ -27,7 +25,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 > 我希望能够将我们的 NLB proxy protocol v2 配置为如下所示：`proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`。
 > :::
-
 
 ## 1. 创建 SSL 用户证书 {#1-create-ssl-user-certificates}
 
@@ -55,8 +52,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     ```bash
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
-
-
 
 ## 2. 创建 SQL 用户并授予权限 {#2-create-a-sql-user-and-grant-permissions}
 
@@ -96,8 +91,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     ```
     :::
 
-
-
 ## 3. 测试 {#3-testing}
 
 1. 将用户证书、用户密钥和 CA 证书复制到某个远程节点。
@@ -122,8 +115,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
     :::
 
-
-
 ## 4. 测试 HTTP {#4-testing-http}
 
 1. 将用户证书、用户私钥和 CA 证书复制到一个远程节点上。
@@ -146,8 +137,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     :::note
     请注意，这里没有指定密码。证书用来替代密码，这是 ClickHouse 对用户进行身份验证的方式。
     :::
-
-
 
 ## 摘要 {#summary}
 

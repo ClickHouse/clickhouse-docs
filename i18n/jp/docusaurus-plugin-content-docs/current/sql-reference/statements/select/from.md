@@ -6,8 +6,6 @@ title: 'FROM 句'
 doc_type: 'reference'
 ---
 
-
-
 # FROM 句 {#from-clause}
 
 `FROM` 句は、データを読み取る元となるソースを指定します。
@@ -28,7 +26,6 @@ doc_type: 'reference'
 FROM table
 SELECT *
 ```
-
 
 ## FINAL 修飾子 {#final-modifier}
 
@@ -77,7 +74,6 @@ SELECT x, y FROM mytable WHERE x > 1 SETTINGS final = 1;
 SET final = 1;
 SELECT x, y FROM mytable WHERE x > 1;
 ```
-
 
 ## 実装の詳細 {#implementation-details}
 

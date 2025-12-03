@@ -19,12 +19,9 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
 # Aurora MySQL 源端设置指南 {#aurora-mysql-source-setup-guide}
 
 本分步指南演示如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
-
-
 
 ## 启用二进制日志保留 {#enable-binlog-retention-aurora}
 
@@ -53,7 +50,6 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
 如果未设置该配置，或将其设置为过短的间隔，可能会导致二进制日志中出现间隙，从而削弱 ClickPipes 恢复复制的能力。
-
 
 ## 配置 binlog 设置 {#binlog-settings}
 
@@ -88,8 +84,6 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 <br/>
 然后，单击右上角的 **Save Changes**。您可能需要重启实例以使更改生效——判断是否需要重启的一种方法，是查看 Aurora 实例的 **Configuration** 选项卡中，参数组链接旁是否显示 `Pending reboot`。
 
-
-
 ## 启用 GTID 模式（推荐） {#gtid-mode}
 
 :::tip
@@ -110,8 +104,6 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 8. 重启实例以使更改生效。
 
 <Image img={enable_gtid} alt="已启用 GTID" size="lg" border/>
-
-
 
 ## 配置数据库用户 {#configure-database-user}
 
@@ -136,8 +128,6 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-
-
 ## 配置网络访问 {#configure-network-access}
 
 ### 基于 IP 的访问控制 {#ip-based-access-control}
@@ -151,8 +141,6 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 ### 通过 AWS PrivateLink 的私有访问 {#private-access-via-aws-privatelink}
 
 要通过私有网络连接到 Aurora MySQL 实例，可以使用 AWS PrivateLink。请按照 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes) 来完成连接配置。
-
-
 
 ## 下一步 {#whats-next}
 

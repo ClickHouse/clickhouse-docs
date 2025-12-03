@@ -9,7 +9,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 内存分配分析 {#allocation-profiling}
 
 ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全局分配器。Jemalloc 自带了一些用于内存分配采样和分析的工具。  
@@ -22,8 +21,6 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 对于更早的版本，请参阅[25.9 之前版本的内存分配分析](/operations/allocation-profiling-old.md)。
 
 :::
-
-
 
 ## 采样内存分配 {#sampling-allocations}
 
@@ -42,7 +39,6 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 :::warning 警告
 由于 ClickHouse 是一个内存分配密集型应用程序，jemalloc 采样可能会带来性能开销。
 :::
-
 
 ## 在 `system.trace_log` 中存储 jemalloc 采样数据 {#storing-jemalloc-samples-in-system-trace-log}
 
@@ -148,7 +144,6 @@ FROM
 
 我们可以利用该结果查看在该时间点上哪些位置的活跃内存分配最多：
 
-
 ```sql
 SELECT
     concat(
@@ -179,7 +174,6 @@ FROM
 GROUP BY ALL
 ORDER BY per_trace_sum ASC
 ```
-
 
 ## 刷新堆内存剖析文件 {#flushing-heap-profiles}
 
@@ -212,7 +206,6 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
 生成的文件名将由前缀、PID 和序列号组成。
-
 
 ## 分析堆内存剖析数据 {#analyzing-heap-profiles}
 
@@ -286,7 +279,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 另一个有用的工具是 [speedscope](https://www.speedscope.app/)，它使你能够以更直观、交互的方式分析收集到的调用栈。
 
-
 ## 分析器的其他选项 {#additional-options-for-profiler}
 
 `jemalloc` 提供了许多与分析器相关的选项。可以通过设置 `MALLOC_CONF` 环境变量来进行配置。
@@ -294,8 +286,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 如果你希望每分配 N 字节就导出一次堆分析概要，可以通过 `lg_prof_interval` 启用该功能。  
 
 建议查看 `jemalloc` 的[参考页面](https://jemalloc.net/jemalloc.3.html)以获取完整的选项列表。
-
-
 
 ## 其他资源 {#other-resources}
 

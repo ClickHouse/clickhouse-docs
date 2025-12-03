@@ -33,7 +33,6 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 
 これらのアクションについては、以下で詳しく説明します。
 
-
 ## ADD COLUMN（列を追加） {#add-column}
 
 ```sql
@@ -70,7 +69,6 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-
 ## DROP COLUMN {#drop-column}
 
 ```sql
@@ -91,7 +89,6 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-
 ## 列名を変更する {#rename-column}
 
 ```sql
@@ -108,7 +105,6 @@ RENAME COLUMN [IF EXISTS] name to new_name
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-
 ## CLEAR COLUMN {#clear-column}
 
 ```sql
@@ -124,7 +120,6 @@ CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ```sql
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
-
 
 ## COMMENT 列 {#comment-column}
 
@@ -143,7 +138,6 @@ COMMENT COLUMN [IF EXISTS] name 'テキストコメント'
 ```sql
 ALTER TABLE visits COMMENT COLUMN browser 'この列はサイトへのアクセスに使用されたブラウザを表示します。'
 ```
-
 
 ## MODIFY COLUMN {#modify-column}
 
@@ -224,7 +218,6 @@ DESCRIBE users;
 `Nullable` カラムを `Non-Nullable` に変更する際は注意してください。カラム内に `NULL` 値が含まれていないことを必ず確認してください。そうでない場合、そのカラムから読み込む際に問題が発生します。その場合の回避策としては、`KILL MUTATION` を実行して mutation を停止し、カラムを `Nullable` 型に戻してください。
 :::
 
-
 ## MODIFY COLUMN REMOVE {#modify-column-remove}
 
 次の列プロパティのいずれかを削除します: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`。
@@ -247,7 +240,6 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 * [REMOVE TTL](ttl.md)
 
-
 ## MODIFY COLUMN MODIFY SETTING — 列設定の変更 {#modify-column-modify-setting}
 
 列の設定を変更します。
@@ -266,7 +258,6 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-
 ## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
 列の設定をリセットします。また、テーブルの CREATE クエリ内の列式から、その設定の宣言も削除します。
@@ -284,7 +275,6 @@ ALTER TABLE テーブル名 MODIFY COLUMN カラム名 RESET SETTING 設定名,.
 ```sql
 ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
-
 
 ## MATERIALIZE COLUMN {#materialize-column}
 
@@ -345,7 +335,6 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 **関連項目**
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view)
-
 
 ## 制限事項 {#limitations}
 

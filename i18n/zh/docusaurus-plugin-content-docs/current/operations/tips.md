@@ -11,7 +11,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-
 ## CPU 频率调节策略 {#cpu-scaling-governor}
 
 应始终使用 `performance` 频率调节策略。`on-demand` 频率调节策略在持续高负载场景下的效果要差得多。
@@ -19,7 +18,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 ```bash
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
-
 
 ## CPU 限制 {#cpu-limitations}
 
@@ -40,7 +38,6 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 
 使用 `perf top` 观察内核在内存管理上的耗时。
 永久性 huge pages 也无需分配。
-
 
 ### 使用少于 16GB 内存时 {#using-less-than-16gb-of-ram}
 
@@ -100,7 +97,6 @@ $ echo 4096 | sudo tee /sys/block/md2/md/stripe_cache_size
 
 确保在操作系统中为 NVMe 和 SSD 磁盘启用了 [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\))（通常通过 cron 作业或 systemd 服务实现）。
 
-
 ## 文件系统 {#file-system}
 
 Ext4 是最可靠的选择。将挂载选项设置为 `noatime`。XFS 的表现也很好。
@@ -141,7 +137,6 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 之后运行 `sudo update-grub` 命令，然后重启系统以使其生效。
 
-
 ## 虚拟机管理程序配置 {#hypervisor-configuration}
 
 如果您使用 OpenStack，请设置
@@ -162,7 +157,6 @@ cpu_mode=host-passthrough
 
 这对于 ClickHouse 能够通过 `cpuid` 指令获取正确信息非常重要。
 否则，如果在较旧的 CPU 型号上运行虚拟机管理程序，可能会触发 `Illegal instruction` 崩溃。
-
 
 ## ClickHouse Keeper 和 ZooKeeper {#zookeeper}
 
@@ -246,7 +240,6 @@ dynamicConfigFile=/etc/zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}/conf/zoo.
 
 Java 版本：
 
-
 ```text
 openjdk 11.0.5-shenandoah 2019-10-15
 OpenJDK Runtime Environment (build 11.0.5-shenandoah+10-adhoc.heretic.src)
@@ -254,7 +247,6 @@ OpenJDK 64-Bit Server VM (build 11.0.5-shenandoah+10-adhoc.heretic.src, mixed mo
 ```
 
 JVM 参数：
-
 
 ```bash
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
@@ -315,7 +307,6 @@ script
         -Dzookeeper.root.logger=${ZOO_LOG4J_PROP} $ZOOMAIN $ZOOCFG
 end script
 ```
-
 
 ## Antivirus software {#antivirus-software}
 

@@ -7,11 +7,7 @@ title: 'クエリの複雑さの制限'
 doc_type: 'reference'
 ---
 
-
-
 # クエリの複雑さに関する制限 {#restrictions-on-query-complexity}
-
-
 
 ## 概要 {#overview}
 
@@ -27,22 +23,16 @@ ClickHouse は一般的に、各行ごとに制限をチェックするのでは
 データパーツが完全に処理された後でのみ制限をチェックします。
 このため、パーツの処理中に制限違反が発生する状況が起こり得ます。
 
-
-
 ## `overflow_mode` 設定 {#overflow_mode_setting}
 
 ほとんどの制限には `overflow_mode` 設定もあり、制限を超過した場合に何が起こるかを定義します。`overflow_mode` には次の 2 つの値を設定できます:
 - `throw`: 例外をスローする（デフォルト）。
 - `break`: クエリの実行を停止し、ソースデータが尽きたかのように途中までの結果を返します。
 
-
-
 ## `group_by_overflow_mode` 設定 {#group_by_overflow_mode_settings}
 
 `group_by_overflow_mode` 設定には `any` という値もあります:
 - `any` : 集合にすでに含まれているキーは集計を継続しますが、新しいキーは集合に追加しません。
-
-
 
 ## 設定一覧 {#relevant-settings}
 
@@ -52,8 +42,6 @@ ClickHouse は一般的に、各行ごとに制限をチェックするのでは
 「〜の最大量」に対する制限は値として `0` を指定でき、
 その場合は「無制限」であることを意味します。
 :::
-
-
 
 | 設定                                                                                                                     | 概要                                                                                                   |
 | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -111,8 +99,6 @@ ClickHouse は一般的に、各行ごとに制限をチェックするのでは
 | [`max_temporary_data_on_disk_size_for_query`](/operations/settings/settings#max_temporary_data_on_disk_size_for_query) | 同時実行中のすべてのクエリで、ディスク上の一時ファイルが使用するデータ量の最大値（バイト単位）。                                                     |
 | [`max_sessions_for_user`](/operations/settings/settings#max_sessions_for_user)                                         | 認証済みユーザー1人あたりの ClickHouse サーバーへの同時セッション数の上限。                                                         |
 | [`max_partitions_to_read`](/operations/settings/settings#max_partitions_to_read)                                       | 1つのクエリでアクセスできるパーティションの最大数を制限します。                                                                     |
-
-
 
 
 

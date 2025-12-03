@@ -48,7 +48,6 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-
 ## Использование {#usage}
 
 ### Вставка данных {#data-insertion}
@@ -83,7 +82,6 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` — формат будет ожидать одно значение аргумента агрегатной функции или, в случае нескольких аргументов, кортеж из них; это значение будет десериализовано для формирования соответствующего состояния.
 * `array` — формат будет ожидать Array значений, как описано в варианте `value` выше; все элементы массива будут агрегированы для формирования состояния.
 
-
 ### Выборка данных {#data-selection}
 
 При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY`
@@ -100,7 +98,6 @@ SELECT uniq(UserID) FROM table
 
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
-
 
 ## Пример использования {#usage-example}
 

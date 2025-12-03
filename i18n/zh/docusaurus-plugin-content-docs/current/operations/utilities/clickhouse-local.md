@@ -7,11 +7,7 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-local {#clickhouse-local}
-
-
 
 ## 何时使用 clickhouse-local 而不是 ClickHouse {#when-to-use-clickhouse-local-vs-clickhouse}
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 尽管 `clickhouse-local` 非常适合用于开发、测试以及文件处理，但它并不适合直接为终端用户或应用程序提供服务。在这些场景中，推荐使用开源的 [ClickHouse](/install)。ClickHouse 是一款功能强大的 OLAP 数据库，专为处理大规模分析型负载而设计。它能够对大型数据集上的复杂查询进行快速高效的处理，非常适合对高性能要求严格的生产环境。此外，ClickHouse 还提供了诸如复制、分片和高可用性等丰富特性，这些对于扩展以处理大规模数据集并为应用程序提供服务至关重要。如果你需要处理更大规模的数据集，或需要为终端用户或应用程序提供服务，我们建议使用开源的 ClickHouse，而不是 `clickhouse-local`。
 
 请阅读下面的文档，这些文档展示了 `clickhouse-local` 的示例用例，例如[查询本地文件](#query_data_in_file)或[读取 S3 中的 Parquet 文件](#query-data-in-a-parquet-file-in-aws-s3)。
-
-
 
 ## 下载 clickhouse-local {#download-clickhouse-local}
 
@@ -34,7 +28,6 @@ curl https://clickhouse.com/ | sh
 :::note
 您刚刚下载的二进制文件可以运行各种 ClickHouse 工具和实用工具。如果您想以数据库服务器的方式运行 ClickHouse，请查看 [快速入门](/get-started/quick-start)。
 :::
-
 
 ## 使用 SQL 查询文件中的数据 {#query_data_in_file}
 
@@ -107,7 +100,6 @@ FROM file('reviews.tsv')"
 ```response
 大富翁少年版桌游    5
 ```
-
 
 ## 在 AWS S3 中查询 Parquet 文件中的数据 {#query-data-in-a-parquet-file-in-aws-s3}
 
@@ -184,7 +176,6 @@ NORTHWOOD    THREE RIVERS    184    731609    ███████████�
 当你准备好将文件写入 ClickHouse 时，启动一个 ClickHouse 服务器，并将 `file` 和 `s3` 表函数的结果插入到一个 `MergeTree` 表中。更多详情请参阅[快速开始](/get-started/quick-start)。
 :::
 
-
 ## 格式转换 {#format-conversions}
 
 你可以使用 `clickhouse-local` 在不同格式之间进行数据转换。示例：
@@ -204,7 +195,6 @@ $ clickhouse-local --query "SELECT * FROM table" < data.json > data.csv
 ```bash
 $ clickhouse-local --copy < data.json > data.csv
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -250,7 +240,6 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-V`, `--version` — 打印版本信息并退出。
 
 此外，还为每个 ClickHouse 配置变量提供了对应的参数，这些参数通常比 `--config-file` 更常用。
-
 
 ## 示例 {#examples}
 
@@ -313,7 +302,6 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 相关内容 {#related-content-1}
 

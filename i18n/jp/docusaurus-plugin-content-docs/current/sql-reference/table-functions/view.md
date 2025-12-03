@@ -7,13 +7,9 @@ title: 'view'
 doc_type: 'reference'
 ---
 
-
-
 # view テーブル関数 {#view-table-function}
 
 副問い合わせをテーブルに変換します。この関数はビューを実装します（[CREATE VIEW](/sql-reference/statements/create/view) を参照）。生成されるテーブルはデータを保存せず、指定された `SELECT` クエリのみを保持します。テーブルから読み出すとき、ClickHouse はこのクエリを実行し、結果から不要なカラムをすべて削除します。
-
-
 
 ## 構文 {#syntax}
 
@@ -21,18 +17,13 @@ doc_type: 'reference'
 view(subquery)
 ```
 
-
 ## 引数 {#arguments}
 
 - `subquery` — `SELECT` クエリ。
 
-
-
 ## 戻り値 {#returned_value}
 
 - テーブル
-
-
 
 ## 例 {#examples}
 
@@ -73,7 +64,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```sql
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
-
 
 ## 関連項目 {#related}
 

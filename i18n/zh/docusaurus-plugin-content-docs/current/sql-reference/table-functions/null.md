@@ -7,13 +7,9 @@ title: 'null'
 doc_type: 'reference'
 ---
 
-
-
 # null 表函数 {#null-table-function}
 
 使用 [Null](../../engines/table-engines/special/null.md) 表引擎创建具有指定结构的临时表。根据 `Null` 引擎的特性，表数据会被忽略，并且该表会在查询执行完成后立即被删除。该函数用于方便编写测试和进行演示。
-
-
 
 ## 语法 {#syntax}
 
@@ -21,18 +17,13 @@ doc_type: 'reference'
 null('structure')
 ```
 
-
 ## 参数 {#argument}
 
 - `structure` — 列及其类型的列表。[String](../../sql-reference/data-types/string.md)。
 
-
-
 ## 返回值 {#returned_value}
 
 具有指定结构的临时 `Null` 引擎表。
-
-
 
 ## 示例 {#example}
 
@@ -49,7 +40,6 @@ CREATE TABLE t (x UInt64) ENGINE = Null;
 INSERT INTO t SELECT * FROM numbers_mt(1000000000);
 DROP TABLE IF EXISTS t;
 ```
-
 
 ## 相关 {#related}
 

@@ -18,12 +18,9 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Интеграция Luzmo и ClickHouse {#integrating-luzmo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## 1. Настройка подключения к ClickHouse {#1-setup-a-clickhouse-connection}
 
@@ -42,8 +39,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Обратитесь к примерам в нашей документации для разработчиков, чтобы узнать, как [создать подключение к ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) через наш API.
 
-
-
 ## 2. Добавьте наборы данных {#2-add-datasets}
 
 После подключения ClickHouse вы можете добавить наборы данных, как описано [здесь](https://academy.luzmo.com/article/ldx3iltg). Вы можете выбрать один или несколько наборов данных, доступных в вашем ClickHouse, и [связать](https://academy.luzmo.com/article/gkrx48x5) их в Luzmo, чтобы их можно было использовать вместе в одном дашборде. Также рекомендуем ознакомиться со статьёй [Подготовка данных к аналитике](https://academy.luzmo.com/article/u492qov0).
@@ -53,8 +48,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Теперь вы можете использовать свои наборы данных для создания красивых (встраиваемых) дашбордов или даже для работы ИИ-аналитика данных ([Luzmo IQ](https://luzmo.com/iq)), который сможет отвечать на вопросы ваших клиентов.
 
 <Image img={luzmo_03} size="md" alt="Пример дашборда Luzmo, показывающего несколько визуализаций данных из ClickHouse" border />
-
-
 
 ## Примечания по использованию {#usage-notes}
 

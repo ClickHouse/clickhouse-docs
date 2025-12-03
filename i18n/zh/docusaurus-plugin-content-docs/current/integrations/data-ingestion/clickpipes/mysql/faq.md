@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['MySQL ClickPipes 常见问题', 'ClickPipes MySQL 故障排查', 'MySQL ClickHouse 复制', 'ClickPipes MySQL 支持', 'MySQL CDC ClickHouse']
 ---
 
-
-
 # ClickPipes for MySQL 常见问题 {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe 是否支持 MariaDB？ {#does-the-clickpipe-support-mariadb}

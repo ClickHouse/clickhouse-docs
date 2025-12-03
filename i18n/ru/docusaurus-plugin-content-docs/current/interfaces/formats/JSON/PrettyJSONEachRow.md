@@ -13,20 +13,14 @@ doc_type: 'guide'
 |------|-------|-----------------------------------|
 | ✗    | ✔     | `PrettyJSONLines`, `PrettyNDJSON` |
 
-
-
 ## Описание {#description}
 
 Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется в читабельном виде с разделением по строкам и отступом в 4 пробела.
-
-
 
 ## Пример использования {#example-usage}
 ### Вставка данных {#inserting-data}
 
 Используем JSON-файл `football.json` со следующими данными:
-
-
 
 ```json
 {
@@ -185,7 +179,6 @@ FORMAT PrettyJSONEachRow
 
 Результат будет в формате JSON:
 
-
 ```json
 {
     "date": "2022-04-30",
@@ -324,8 +317,6 @@ FORMAT PrettyJSONEachRow
     "away_team_goals": 3
 }
 ```
-
-
 
 
 

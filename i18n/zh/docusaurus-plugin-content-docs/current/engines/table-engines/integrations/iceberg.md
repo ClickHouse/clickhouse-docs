@@ -7,8 +7,6 @@ title: 'Iceberg 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # Iceberg 表引擎 {#iceberg-table-engine}
 
 :::warning 
@@ -20,8 +18,6 @@ Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初�
 :::
 
 该引擎提供与现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成，支持位于 Amazon S3、Azure、HDFS 以及本地存储的表。
-
-
 
 ## 创建表 {#create-table}
 
@@ -40,7 +36,6 @@ CREATE TABLE iceberg_table_hdfs
 CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
-
 
 ## 引擎参数 {#engine-arguments}
 
@@ -74,12 +69,9 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ```
 
-
 ## 别名 {#aliases}
 
 表引擎 `Iceberg` 现在是 `IcebergS3` 的别名。
-
-
 
 ## 模式演进 {#schema-evolution}
 目前，借助 ClickHouse (CH)，可以读取随着时间推移发生模式变更的 Iceberg 表。当前支持读取曾经增加或删除列、以及列顺序发生变化的表。也可以将原本要求非空的列修改为允许为 NULL 的列。此外，还支持对简单类型进行允许的类型转换，即：  
@@ -91,19 +83,13 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 要读取一个在创建之后模式发生变更、并使用动态模式推断的表，请在创建该表时将 allow_dynamic_metadata_for_data_lakes 设置为 true。
 
-
-
 ## 分区裁剪 {#partition-pruning}
 
 ClickHouse 在对 Iceberg 表执行 SELECT 查询时支持分区裁剪，通过跳过无关的数据文件来优化查询性能。要启用分区裁剪，请设置 `use_iceberg_partition_pruning = 1`。有关 Iceberg 分区裁剪的更多信息，请参阅 https://iceberg.apache.org/spec/#partitioning 上的文档。
 
-
-
 ## 时间旅行 {#time-travel}
 
 ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间戳或快照 ID 下查询历史数据。
-
-
 
 ## 处理包含已删除行的表 {#deleted-rows}
 
@@ -242,7 +228,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 这是因为 `ALTER TABLE` 不会创建新的快照；对于当前表，Spark 会从最新的元数据文件中读取 `schema_id` 的值，而不是从快照中读取。
 
-
 #### 场景 3：历史与当前表结构差异 {#scenario-3}
 
 第二点是在进行时间旅行时，你无法获取表在尚未写入任何数据之前的状态：
@@ -263,7 +248,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 在 ClickHouse 中，其行为与 Spark 保持一致。你可以在概念上将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
-
 
 ## 元数据文件解析 {#metadata-file-resolution}
 
@@ -307,18 +291,13 @@ CREATE TABLE example_table ENGINE = Iceberg(
 
 **注意**：虽然 Iceberg Catalog 通常负责元数据解析，但 ClickHouse 中的 `Iceberg` 表引擎会直接将存储在 S3 中的文件解析为 Iceberg 表，这也是为什么理解这些解析规则很重要。
 
-
 ## 数据缓存 {#data-cache}
 
 `Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储类似的数据缓存功能。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
 
-
-
 ## 元数据缓存 {#metadata-cache}
 
 `Iceberg` 表引擎和表函数支持元数据缓存，用于存储清单文件、清单列表以及元数据 JSON 的信息。该缓存存储在内存中。此功能通过设置 `use_iceberg_metadata_files_cache` 进行控制，默认启用。
-
-
 
 ## 另请参阅 {#see-also}
 

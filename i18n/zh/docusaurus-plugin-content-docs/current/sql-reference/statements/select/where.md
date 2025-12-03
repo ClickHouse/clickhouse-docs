@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
-
-
 # WHERE 子句 {#where-clause}
 
 `WHERE` 子句允许过滤由 `SELECT` 的 [`FROM`](../../../sql-reference/statements/select/from.md) 子句返回的数据。
@@ -26,8 +24,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 即使没有显式指定 `PREWHERE` 子句，它默认也是启用的。
 :::
 
-
-
 ## 测试 `NULL` {#testing-for-null}
 
 如需判断某个值是否为 [`NULL`](/sql-reference/syntax#null)，请使用：
@@ -35,8 +31,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 - [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 否则，包含 `NULL` 的表达式将永远不会为真。
-
-
 
 ## 使用逻辑运算符过滤数据 {#filtering-data-with-logical-operators}
 
@@ -47,14 +41,10 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 - [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
 - [`xor()`](/sql-reference/functions/logical-functions#xor)
 
-
-
 ## 将 UInt8 列用作条件 {#using-uint8-columns-as-a-condition}
 
 在 ClickHouse 中，`UInt8` 列可以直接作为布尔条件使用，其中 `0` 表示 `false`，任意非零值（通常为 `1`）表示 `true`。
 此用法的示例见[下文](#example-uint8-column-as-condition)。
-
-
 
 ## 使用比较运算符 {#using-comparison-operators}
 
@@ -76,8 +66,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 | `a BETWEEN b AND c` | `a >= b AND a <= c` | 区间检查（包含端点） | `price BETWEEN 100 AND 500` |
 | `a NOT BETWEEN b AND c` | `a < b OR a > c` | 区间外检查 | `price NOT BETWEEN 100 AND 500` |
 
-
-
 ## 模式匹配和条件表达式 {#pattern-matching-and-conditional-expressions}
 
 除了比较运算符之外，还可以在 `WHERE` 子句中使用模式匹配和条件表达式。
@@ -91,8 +79,6 @@ PREWHERE 是一种用于更高效执行过滤的优化手段。
 | `CASE`      | `CASE WHEN ... THEN ... END`   | N/A            | Fast        | 符合 SQL 标准的条件逻辑          |
 
 请参见[“模式匹配和条件表达式”](#examples-pattern-matching-and-conditional-expressions)了解使用示例。
-
-
 
 ## 包含字面量、列或子查询的表达式 {#expressions-with-literals-columns-subqueries}
 
@@ -118,7 +104,6 @@ WHERE category = 'Electronics'
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
 ```
-
 
 -- 使用逻辑运算符组合三个条件
 WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
@@ -239,7 +224,6 @@ WHERE (category = 'Electronics' OR category = 'Furniture')
   AND in_stock = true
   AND price < 400;
 ```
-
 
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
@@ -365,7 +349,6 @@ WHERE category = 'Electronics' AND in_stock = true;
 下面的示例使用上文[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见，不展示结果。
 
 #### LIKE 示例 {#like-examples}
-
 
 ```sql
 -- 查找名称中包含 'o' 的产品

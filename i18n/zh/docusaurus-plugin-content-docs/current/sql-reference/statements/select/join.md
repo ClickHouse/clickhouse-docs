@@ -7,8 +7,6 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-
-
 # JOIN 子句 {#join-clause}
 
 `JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
@@ -23,7 +21,6 @@ FROM <left_table>
 ```
 
 `ON` 子句中的表达式和 `USING` 子句中的列称为“连接键”（join keys）。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
-
 
 ## 支持的 JOIN 类型 {#supported-types-of-join}
 
@@ -55,8 +52,6 @@ ClickHouse 还提供了额外的 join 类型：
 当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN`（不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`）。
 :::
 
-
-
 ## 设置 {#settings}
 
 可以使用 [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 设置来覆盖默认的 JOIN 类型。
@@ -73,8 +68,6 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 - [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)
 
 使用 `cross_to_inner_join_rewrite` 设置来定义当 ClickHouse 无法将 `CROSS JOIN` 重写为 `INNER JOIN` 时的行为。默认值为 `1`，此时允许 JOIN 继续执行，但会更慢。如果希望抛出错误，请将 `cross_to_inner_join_rewrite` 设为 `0`；若希望不执行 CROSS JOIN，而是强制重写所有逗号/CROSS JOIN，请将其设为 `2`。如果在值为 `2` 时重写失败，您将收到一条错误消息：“Please, try to simplify `WHERE` section”。
-
-
 
 ## ON 部分中的条件 {#on-section-conditions}
 
@@ -167,7 +160,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-
 默认情况下，支持非等号条件，只要这些条件中使用的列都来自同一张表。
 例如，`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`，因为 `t1.b > 0` 只使用了 `t1` 的列，而 `t2.b > t2.c` 只使用了 `t2` 的列。
 不过，你也可以尝试对类似 `t1.a = t2.key AND t1.b > t2.key` 这种条件的实验性支持，更多细节请参阅下方章节。
@@ -187,7 +179,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## 针对来自不同表的列使用非等值条件的 JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
@@ -238,7 +229,6 @@ key1    e    5    5    5            0    0    \N
 key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
-
 
 ## JOIN 键中的 NULL 值 {#null-values-in-join-keys}
 
@@ -294,7 +284,6 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 └─────────┴───────┘
 ```
 
-
 ## ASOF JOIN 用法 {#asof-join-usage}
 
 当你需要联接那些没有精确匹配的记录时，`ASOF JOIN` 非常有用。
@@ -348,7 +337,6 @@ USING (等值列_1, ... 等值列_N, asof_列)
 `ASOF JOIN` 仅在 `hash` 和 `full_sorting_merge` 连接算法中受支持。
 在 [Join](../../../engines/table-engines/special/join.md) 表引擎中**不**受支持。
 :::
-
 
 ## PASTE JOIN 用法 {#paste-join-usage}
 
@@ -408,7 +396,6 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
-
 ## 分布式 JOIN {#distributed-join}
 
 在包含分布式表的 JOIN 中，有两种执行方式：
@@ -417,8 +404,6 @@ SETTINGS max_block_size = 2;
 - 使用 `GLOBAL ... JOIN` 时，请求方服务器首先运行子查询以计算右表。这个临时表会被传递到每个远程服务器，然后在这些服务器上基于传输过来的临时数据执行查询。
 
 在使用 `GLOBAL` 时要小心。更多信息请参见[分布式子查询](/sql-reference/operators/in#distributed-subqueries)一节。
-
-
 
 ## 隐式类型转换 {#implicit-type-conversion}
 
@@ -461,7 +446,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
-
 
 ## 使用建议 {#usage-recommendations}
 
@@ -510,8 +494,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 当达到上述任一限制时，ClickHouse 会按照 [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置中的指示进行处理。
 
-
-
 ## 示例 {#examples}
 
 示例：
@@ -554,7 +536,6 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
-
 
 ## 相关内容 {#related-content}
 

@@ -7,8 +7,6 @@ title: 'PostgreSQL テーブルエンジン'
 doc_type: 'guide'
 ---
 
-
-
 # PostgreSQL テーブルエンジン {#postgresql-table-engine}
 
 PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
@@ -20,8 +18,6 @@ PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバー
 :::tip
 ClickHouse Cloud ユーザーには、Postgres データを ClickHouse にストリーミングする際に [ClickPipes](/integrations/clickpipes) の利用を推奨します。これは、インジェストとクラスタリソースをそれぞれ独立してスケールさせることで責務を分離しつつ、高パフォーマンスなデータ挿入をネイティブにサポートします。
 :::
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -72,7 +68,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-
 ## 実装の詳細 {#implementation-details}
 
 PostgreSQL 側での `SELECT` クエリは、読み取り専用の PostgreSQL トランザクション内で `COPY (SELECT ...) TO STDOUT` として実行され、各 `SELECT` クエリの後にコミットされます。
@@ -119,7 +114,6 @@ PostgreSQL の辞書ソースではレプリカの優先度指定がサポート
 </postgresql>
 </source>
 ```
-
 
 ## 使用例 {#usage-example}
 
@@ -229,7 +223,6 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 * [`postgresql` テーブル関数](../../../sql-reference/table-functions/postgresql.md)
 * [PostgreSQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)
-
 
 ## 関連コンテンツ {#related-content}
 

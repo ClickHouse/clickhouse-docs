@@ -36,7 +36,6 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-
 ### 原生 HTTP 服务器示例（net/http） {#native-http-server-example}
 
 在本示例中，我们将使用 `net/http/otelhttp` 包。
@@ -145,7 +144,6 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-
 ### Gin 应用程序示例 {#gin-application-example}
 
 在本示例中，我们将使用 `gin-gonic/gin`。
@@ -229,7 +227,6 @@ func main() {
   router.Run(":7777")
 }
 ```
-
 
 ### 配置环境变量 {#configure-environment-variables}
 

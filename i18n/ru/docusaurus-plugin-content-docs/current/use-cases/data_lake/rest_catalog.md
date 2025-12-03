@@ -32,7 +32,6 @@ REST Catalog — это стандартизированная специфик�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## Локальная среда разработки {#local-development-setup}
 
 Для локальной разработки и тестирования вы можете использовать контейнеризованную установку REST-каталога. Такой подход подходит для обучения, прототипирования и использования в средах разработки.
@@ -89,7 +88,6 @@ docker-compose logs -f
 Настройка REST-каталога требует, чтобы демонстрационные данные сначала были загружены в таблицы Iceberg. Убедитесь, что в среде Spark таблицы созданы и заполнены, прежде чем пытаться выполнять к ним запросы из ClickHouse. Доступность таблиц зависит от конкретной конфигурации docker-compose и скриптов загрузки демонстрационных данных.
 :::
 
-
 ### Подключение к локальному REST-каталогу {#connecting-to-local-rest-catalog}
 
 Подключитесь к своему контейнеру с ClickHouse:
@@ -110,7 +108,6 @@ SETTINGS
     storage_endpoint = 'http://minio:9000/lakehouse', 
     warehouse = 'demo'
 ```
-
 
 ## Выполнение запросов к таблицам REST‑каталога с помощью ClickHouse {#querying-rest-catalog-tables-using-clickhouse}
 
@@ -194,7 +191,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Загрузка данных из вашего озера данных (Data Lake) в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

@@ -27,7 +27,6 @@ React Native SDK для ClickStack позволяет инструментиро
 npm install @hyperdx/otel-react-native
 ```
 
-
 ### Инициализируйте ClickStack {#initialize-clickstack}
 
 Инициализируйте библиотеку как можно раньше в жизненном цикле приложения:
@@ -41,7 +40,6 @@ HyperDXRum.init({
   tracePropagationTargets: [/api.myapp.domain/i], // Укажите для связывания трассировок между фронтендом и бэкенд-запросами
 });
 ```
-
 
 ### Добавление информации о пользователе или метаданных (необязательно) {#attach-user-information-metadata}
 
@@ -63,7 +61,6 @@ HyperDXRum.setGlobalAttributes({
   // Другие пользовательские свойства...
 });
 ```
-
 
 ### Инструментирование более старых версий {#instrument-lower-versions}
 
@@ -110,7 +107,6 @@ module.exports = {
   },
 };
 ```
-
 
 ## Навигация между экранами {#view-navigation}
 

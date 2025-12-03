@@ -21,8 +21,6 @@ doc_type: 'reference'
 
 你可以在[此页面](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)中查看更多关于投影内部工作机制的技术细节。
 
-
-
 ## 未使用主键的过滤示例 {#example-filtering-without-using-primary-keys}
 
 创建表：
@@ -78,7 +76,6 @@ LIMIT 2
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
-
 
 ## 预聚合查询示例 {#example-pre-aggregation-query}
 
@@ -157,7 +154,6 @@ GROUP BY user_agent
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-
 ## 带有 `_part_offset` 字段的常规投影 {#normal-projection-with-part-offset-field}
 
 创建一个带有常规投影并使用 `_part_offset` 字段的表：
@@ -202,30 +198,21 @@ WHERE _part_starting_offset + _part_offset IN (
 SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
-
 # 投影操作 {#manipulating-projections}
 
 可以执行以下关于[投影](/engines/table-engines/mergetree-family/mergetree.md/#projections)的操作：
-
-
 
 ## ADD PROJECTION {#add-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] )` - 在表的元数据中添加投影定义。
 
-
-
 ## DROP PROJECTION {#drop-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - 从表的元数据中移除投影描述，并从磁盘中删除投影文件。以[变更](/sql-reference/statements/alter/index.md#mutations)的形式实现。
 
-
-
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` —— 此查询会在分区 `partition_name` 中重建投影 `name`。其实现方式为一次[变更操作](/sql-reference/statements/alter/index.md#mutations)。
-
-
 
 ## CLEAR PROJECTION {#clear-projection}
 

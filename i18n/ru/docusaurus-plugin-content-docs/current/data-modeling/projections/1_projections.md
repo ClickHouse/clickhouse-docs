@@ -11,7 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-
 # Проекции {#projections}
 
 ## Введение {#introduction}
@@ -189,7 +188,6 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
-
 
 ### Использование проекций для ускорения запросов к данным UK price paid {#using-projections-to-speed-up-UK-price-paid}
 
@@ -386,7 +384,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2 строки. Затрачено: 0.006 сек.
 ```
 
-
 ### Дополнительные примеры {#further-examples}
 
 В следующих примерах используется тот же набор данных с ценами в Великобритании, и сравниваются запросы с использованием проекций и без них.
@@ -397,7 +394,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
-
 
 #### Построим проекцию {#build-projection}
 
@@ -431,7 +427,6 @@ SETTINGS mutations_sync = 1
 
 Следующие запросы сравнивают производительность при использовании проекций и без них. Чтобы отключить использование проекций, мы используем настройку [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), которая включена по умолчанию.
 
-
 #### Запрос 1. Средняя годовая цена {#average-price-projections}
 
 ```sql runnable
@@ -458,7 +453,6 @@ ORDER BY year ASC
 
 Результат должен быть таким же, но производительность во втором примере будет лучше!
 
-
 #### Запрос 2. Средняя цена по годам в Лондоне {#average-price-london-projections}
 
 ```sql runnable
@@ -483,7 +477,6 @@ WHERE town = 'LONDON'
 GROUP BY year
 ORDER BY year ASC
 ```
-
 
 #### Запрос 3. Самые дорогие районы {#most-expensive-neighborhoods-projections}
 
@@ -525,7 +518,6 @@ LIMIT 100
 ```
 
 Результат по-прежнему тот же, но обратите внимание на улучшение производительности второго запроса.
-
 
 ### Комбинирование проекций в одном запросе {#combining-projections}
 
@@ -637,7 +629,6 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 ```
 
 Вывод `EXPLAIN` (показан выше) отображает логический план запроса, сверху вниз:
-
 
 | Номер строки | Описание                                                                                               |
 |--------------|--------------------------------------------------------------------------------------------------------|

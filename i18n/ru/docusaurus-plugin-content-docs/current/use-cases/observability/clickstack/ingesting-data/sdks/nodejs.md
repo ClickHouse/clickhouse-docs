@@ -23,7 +23,6 @@ ClickStack использует стандарт OpenTelemetry для сбора
 * **Трейсы**
 * **Исключения**
 
-
 ## Начало работы {#getting-started}
 
 ### Установка пакета инструментирования HyperDX OpenTelemetry {#install-hyperdx-opentelemetry-instrumentation-package}
@@ -216,7 +215,6 @@ function myErrorHandler(error, req, res, next) {
 export OTEL_LOG_LEVEL=debug
 ```
 
-
 ## Расширенная конфигурация инструментирования {#advanced-instrumentation-configuration}
 
 ### Сбор логов консоли {#capture-console-logs}
@@ -226,7 +224,6 @@ export OTEL_LOG_LEVEL=debug
 ```sh copy
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
-
 
 ### Прикрепление информации о пользователе или метаданных {#attach-user-information-or-metadata}
 
@@ -268,7 +265,6 @@ app.use((req, res, next) => {
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
-
 
 ### Google Cloud Run {#google-cloud-run}
 
@@ -361,7 +357,6 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
 После этого, чтобы автоматически перехватывать исключения в Express или Koa либо обрабатывать их вручную, следуйте инструкциям в разделе [Настройка сбора ошибок](#setup-error-collection) выше.
-
 
 ### Автоматически инструментируемые библиотеки {#auto-instrumented-libraries-2}
 

@@ -7,18 +7,12 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-
-
 # minMap {#minmap}
-
-
 
 ## 描述 {#description}
 
 可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`min`](/sql-reference/aggregate-functions/reference/min)
 函数，从而使用 `minMap` 聚合函数组合器按键计算 Map 中的最小值。
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

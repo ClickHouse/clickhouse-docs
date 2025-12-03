@@ -18,7 +18,6 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Шаблон Dataflow BigQuery to ClickHouse {#dataflow-bigquery-to-clickhouse-template}
 
 Шаблон BigQuery to ClickHouse представляет собой пакетный конвейер обработки данных, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
@@ -26,15 +25,11 @@ import TabItem from '@theme/TabItem';
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-
-
 ## Требования к конвейеру {#pipeline-requirements}
 
 * Исходная таблица BigQuery должна существовать.
 * Целевая таблица ClickHouse должна существовать.
 * Хост ClickHouse должен быть доступен с рабочих машин Dataflow.
-
-
 
 ## Параметры шаблона {#template-parameters}
 
@@ -60,13 +55,9 @@ import TabItem from '@theme/TabItem';
 | `queryTempDataset`      | Укажите существующий набор данных, в котором будет создана временная таблица для хранения результатов запроса. Например, `temp_dataset`.                                                                                                                                                                                                          |          |                                                                                                                                                                                                                                                                  |
 | `KMSEncryptionKey`      | При чтении из BigQuery с использованием источника-запроса используйте этот ключ Cloud KMS для шифрования всех создаваемых временных таблиц. Например, `projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`.                                                                                                         |          |                                                                                                                                                                                                                                                                  |
 
-
-
 :::note
 Значения по умолчанию для всех параметров `ClickHouseIO` описаны в разделе [коннектора Apache Beam `ClickHouseIO`](/integrations/apache-beam#clickhouseiowrite-parameters)
 :::
-
-
 
 ## Схема исходных и целевых таблиц {#source-and-target-tables-schema}
 
@@ -80,8 +71,6 @@ import TabItem from '@theme/TabItem';
 :::important
 При этом ваш набор данных BigQuery (таблица или результат запроса) должен иметь точно такие же имена столбцов, как и целевая таблица ClickHouse.
 :::
-
-
 
 ## Отображение типов данных {#data-types-mapping}
 
@@ -97,8 +86,6 @@ import TabItem from '@theme/TabItem';
 | [**String Type**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)               | [**String Type**](../../../sql-reference/data-types/string)     | В BigQuery все типы Int (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) являются синонимами типа `INT64`. Рекомендуется задать в ClickHouse корректный размер целочисленного типа, так как шаблон будет преобразовывать столбец на основе заданного типа столбца (`Int8`, `Int16`, `Int32`, `Int64`).                                                                                                      |
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | В BigQuery все типы Int (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) являются синонимами типа `INT64`. Рекомендуется задать в ClickHouse корректный размер целочисленного типа, так как шаблон будет преобразовывать столбец на основе заданного типа столбца (`Int8`, `Int16`, `Int32`, `Int64`). Шаблон также будет преобразовывать беззнаковые целочисленные типы, если они используются в таблице ClickHouse (`UInt8`, `UInt16`, `UInt32`, `UInt64`). |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | Поддерживаемые типы ClickHouse: `Float32` и `Float64`.                                                                                                                                                                                                                                                                                                                                                                 |
-
-
 
 ## Запуск шаблона {#running-the-template}
 
@@ -188,11 +175,7 @@ job:
 Перейдите на вкладку [Dataflow Jobs](https://console.cloud.google.com/dataflow/jobs) в Google Cloud Console,
 чтобы отслеживать статус задания. Там вы найдете подробную информацию о задании, включая прогресс и возможные ошибки:
 
-
-
 <Image img={dataflow_inqueue_job} size="lg" border alt="Консоль DataFlow с запущенным заданием BigQuery → ClickHouse" />
-
-
 
 ## Устранение неполадок {#troubleshooting}
 
@@ -202,8 +185,6 @@ job:
 
 * Увеличьте ресурсы экземпляра: обновите сервер ClickHouse до более мощного экземпляра с большим объёмом памяти, чтобы справляться с нагрузкой на обработку данных.
 * Уменьшите размер пакета: настройте размер пакета в конфигурации задания Dataflow так, чтобы отправлять меньшие порции данных в ClickHouse, снижая потребление памяти на пакет. Эти изменения помогают сбалансировать использование ресурсов во время ингестии данных.
-
-
 
 ## Исходный код шаблона {#template-source-code}
 

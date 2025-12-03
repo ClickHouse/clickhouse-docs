@@ -49,7 +49,6 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-
 ## 追踪 {#traces}
 
 ```sql
@@ -88,7 +87,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
-
 
 ## 指标 {#metrics}
 
@@ -130,7 +128,6 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### 求和（Sum）指标 {#sum}
 
 ```sql
@@ -170,7 +167,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ### 直方图指标 {#histogram}
 
@@ -215,7 +211,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ### 指数直方图 {#exponential-histograms}
 
@@ -270,7 +265,6 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### 汇总表 {#summary-table}
 
 ```sql
@@ -306,7 +300,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ## 会话 {#sessions}
 

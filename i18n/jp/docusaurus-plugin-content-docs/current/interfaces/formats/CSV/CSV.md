@@ -46,7 +46,6 @@ $ clickhouse-client --format_csv_delimiter="|" --query="INSERT INTO test.csv FOR
 照合に失敗し、かつ入力値が数値である場合は、この数値を ENUM ID と照合しようとします。
 入力データに ENUM ID のみが含まれている場合は、`ENUM` のパースを最適化するために、設定 [input&#95;format&#95;csv&#95;enum&#95;as&#95;number](/operations/settings/settings-formats.md/#input_format_csv_enum_as_number) を有効にすることを推奨します。
 
-
 ## 使用例 {#example-usage}
 
 ## フォーマット設定 {#format-settings}

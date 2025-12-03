@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 `Npy` 形式は、`.npy` ファイルから NumPy 配列を ClickHouse に読み込むために設計されています。
@@ -22,8 +20,6 @@ NumPy のファイル形式は、数値データの配列を効率的に保存�
 インポート時、ClickHouse は最上位の次元を、単一列を持つ行の配列として扱います。
 
 下表は、サポートされている Npy データ型と、それに対応する ClickHouse の型を示します。
-
-
 
 ## データ型の対応 {#data_types-matching}
 
@@ -41,8 +37,6 @@ NumPy のファイル形式は、数値データの配列を効率的に保存�
 | `f8`                     | [Float64](/sql-reference/data-types/float.md)           | `f8`                    |
 | `S`, `U`                 | [String](/sql-reference/data-types/string.md)           | `S`                     |
 |                          | [FixedString](/sql-reference/data-types/fixedstring.md) | `S`                     |
-
-
 
 ## 使用例 {#example-usage}
 
@@ -75,6 +69,5 @@ FROM file('example_array.npy', Npy)
 ```bash
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}
 ```
-
 
 ## 書式設定 {#format-settings}

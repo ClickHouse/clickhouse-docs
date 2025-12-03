@@ -7,11 +7,7 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayResample {#grouparrayresample}
-
-
 
 ## Описание {#description}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 и сформировать результирующий массив, выбирая по одному представительному значению 
 (соответствующему минимальному ключу) из точек данных, попадающих в каждый интервал.
 Он формирует укрупнённое (downsampled) представление данных вместо сбора всех значений.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -65,7 +59,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 │ [['Alice','Mary','Evelyn'],['David','Brian']] │
 └───────────────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

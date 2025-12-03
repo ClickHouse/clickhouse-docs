@@ -37,7 +37,6 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 
 另请参阅：[crates.io 页面](https://crates.io/crates/clickhouse)。
 
-
 ## Cargo 特性 {#cargo-features}
 
 * `lz4`（默认启用）— 启用 `Compression::Lz4` 和 `Compression::Lz4Hc(_)` 变体。启用后，除 `WATCH` 以外的所有查询默认使用 `Compression::Lz4`。
@@ -90,7 +89,6 @@ let client = Client::default()
     .with_database("test");
 ```
 
-
 ### HTTPS 或 ClickHouse Cloud 连接 {#https-or-clickhouse-cloud-connection}
 
 HTTPS 可以配合 `rustls-tls` 或 `native-tls` Cargo 特性使用。
@@ -115,7 +113,6 @@ let client = Client::default()
 另请参阅：
 
 * 客户端仓库中的 [ClickHouse Cloud HTTPS 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。该示例同样适用于自托管（本地部署）环境中的 HTTPS 连接。
-
 
 ### 选择行 {#selecting-rows}
 
@@ -152,7 +149,6 @@ while let Some(row) = cursor.next().await? { .. }
 在查询行数据时谨慎使用 `wait_end_of_query`，因为它可能会导致服务端更高的内存消耗，并且很可能会降低整体性能。
 :::
 
-
 ### 插入数据行 {#inserting-rows}
 
 ```rust
@@ -175,7 +171,6 @@ insert.end().await?;
 * 行将以流式方式逐步发送，以分散网络负载。
 * 仅当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时，ClickHouse 才会以原子方式插入该批次。
 
-
 ### 异步插入（服务端批量） {#async-insert-server-side-batching}
 
 你可以使用 [ClickHouse 异步插入](/optimize/asynchronous-inserts) 来避免在客户端对传入数据进行批量处理。只需在 `insert` 方法中提供 `async_insert` 选项（或者直接在 `Client` 实例上统一配置，使其对所有 `insert` 调用生效）即可。
@@ -190,7 +185,6 @@ let client = Client::default()
 另请参阅：
 
 * 客户端仓库中的 [异步插入示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
-
 
 ### Inserter 特性（客户端批量写入） {#inserter-feature-client-side-batching}
 
@@ -233,7 +227,6 @@ inserter.end().await?;
 
 :::
 
-
 ### 执行 DDL {#executing-ddls}
 
 对于单节点部署，只需按如下方式执行 DDL 语句即可：
@@ -252,7 +245,6 @@ client
     .await?;
 ```
 
-
 ### ClickHouse 设置 {#clickhouse-settings}
 
 可以使用 `with_option` 方法来应用多种 [ClickHouse 设置](/operations/settings/settings)。例如：
@@ -268,7 +260,6 @@ let numbers = client
 ```
 
 除了 `query` 之外，它也可以以类似方式用于 `insert` 和 `inserter` 方法；此外，还可以在 `Client` 实例上调用同一方法，为所有查询设置全局配置。
-
 
 ### Query ID {#query-id}
 
@@ -290,7 +281,6 @@ let numbers = client
 
 另请参阅：client 仓库中的 [query&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)。
 
-
 ### Session ID {#session-id}
 
 与 `query_id` 类似，你可以通过设置 `session_id` 在同一个会话中执行语句。`session_id` 可以在客户端级别进行全局设置，也可以在每次 `query`、`insert` 或 `inserter` 调用时单独设置。
@@ -307,7 +297,6 @@ let client = Client::default()
 
 另请参阅 client 仓库中的 [session&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs)。
 
-
 ### 自定义 HTTP 头部 {#custom-http-headers}
 
 如果你使用代理认证或需要传递自定义请求头，可以按如下方式进行：
@@ -319,7 +308,6 @@ let client = Client::default()
 ```
 
 另请参见客户端仓库中的 [自定义 HTTP 头示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs)。
-
 
 ### 自定义 HTTP 客户端 {#custom-http-client}
 
@@ -348,7 +336,6 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 :::
 
 另请参阅客户端仓库中的 [自定义 HTTP 客户端示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs)。
-
 
 ## 数据类型 {#data-types}
 
@@ -456,7 +443,6 @@ struct MyRow {
 }
 ```
 
-
 * `DateTime` 可与 `u32` 或其对应的 newtype 封装类型互相映射，用于表示自 UNIX 纪元以来经过的秒数。另一个受支持的类型是 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，通过 `serde::time::datetime` 提供支持，这需要启用 `time` 特性。
 
 ```rust
@@ -535,7 +521,6 @@ struct MyRow {
 
 * `Variant`、`Dynamic` 和（新的）`JSON` 数据类型目前尚不支持。
 
-
 ## 模拟 {#mocking}
 
 该 crate 提供了用于模拟 ClickHouse 服务器并测试 DDL、`SELECT`、`INSERT` 和 `WATCH` 查询的工具。可以通过启用 `test-util` 功能特性来使用此功能。**仅**将其作为开发依赖（dev-dependency）使用。
@@ -579,7 +564,6 @@ struct EventLog {
     id: u32
 }
 ```
-
 
 ## 已知限制 {#known-limitations}
 

@@ -23,7 +23,6 @@ Advanced Dashboard は、ClickHouse システムとその周辺環境につい�
 
 Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両方で利用できます。本記事では、Cloud で Advanced Dashboard を使用する方法を説明します。
 
-
 ## 高度なダッシュボードへのアクセス {#accessing-the-advanced-dashboard}
 
 高度なダッシュボードには、次の手順でアクセスできます。
@@ -32,8 +31,6 @@ Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両�
   * `Monitoring` → `Advanced dashboard`
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
-
-
 
 ## ネイティブの高度なダッシュボードへのアクセス {#accessing-the-native-advanced-dashboard}
 
@@ -50,8 +47,6 @@ Advanced Dashboard は ClickHouse OSS（Open Source Software）と Cloud の両�
 各ビジュアライゼーションには、その表示内容を構成するための SQL クエリが対応付けられています。ペンのアイコンをクリックすると、このクエリを編集できます。
 
 <Image img={EditVisualization} size="lg" alt="高度なダッシュボード"/>
-
-
 
 ## すぐに使える可視化 {#out-of-box-visualizations}
 
@@ -88,8 +83,6 @@ Advanced Dashboard のデフォルトチャートは、ClickHouse システム�
 | OS CPU Usage (Userspace)  | ユーザー空間コード実行時の CPU 使用率を示します                         |
 | OS CPU Usage (Kernel)     | カーネルコード実行時の CPU 使用率を示します                             |
 
-
-
 ## ClickHouse Cloud 固有 {#clickhouse-cloud-specific}
 
 ClickHouse Cloud はオブジェクトストレージ（S3 タイプ）を使ってデータを保存します。このインターフェイスを監視することで、問題の検知に役立ちます。
@@ -107,8 +100,6 @@ ClickHouse Cloud はオブジェクトストレージ（S3 タイプ）を使っ
 | Network send bytes/sec         | 送信ネットワークトラフィックの現在の速度              |
 | Network receive bytes/sec      | 受信ネットワークトラフィックの現在の速度              |
 | Concurrent network connections | 現在の同時ネットワーク接続数                          |
-
-
 
 ## 高度なダッシュボードを使用した問題の特定 {#identifying-issues-with-the-advanced-dashboard}
 
@@ -193,7 +184,6 @@ LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
 ```
-
 
 2 行目:
 ──────

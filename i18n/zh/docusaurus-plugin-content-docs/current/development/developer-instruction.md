@@ -31,7 +31,6 @@ sudo apt install git
 Git 速查表可在[此处](https://education.github.com/git-cheat-sheet-education.pdf)查阅。
 Git 详细手册在[此处](https://git-scm.com/book/en/v2)。
 
-
 ## 将仓库克隆到你的开发环境中 {#clone-the-repository-to-your-development-machine}
 
 首先，将源文件下载到你的工作环境中，也就是克隆该仓库：
@@ -91,7 +90,6 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 请不要直接使用 `git push`，否则你可能会推送到错误的远程仓库或错误的分支。
 最好显式指定远程和分支名，例如 `git push origin my_branch_name`。
 :::
-
 
 ## 编写代码 {#writing-code}
 
@@ -184,7 +182,6 @@ SELECT 'write your example query here';
 \```
 ````
 
-
 ## 使用测试数据 {#using-test-data}
 
 在开发 ClickHouse 时，经常需要加载接近真实的数据集。
@@ -205,7 +202,6 @@ SELECT 'write your example query here';
 ```
 
 在 clickhouse-client 中：
-
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;

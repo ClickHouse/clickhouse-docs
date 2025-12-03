@@ -13,7 +13,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # Интеграция Amazon MSK с ClickHouse {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -30,14 +29,10 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 > Примечание: Политика, показанная в видео, является избыточно разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
 
-
-
 ## Предварительные требования {#prerequisites}
 Мы предполагаем:
 * вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md), Amazon MSK и MSK Connectors. Рекомендуем руководство Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 * брокер MSK доступен из публичной сети. См. раздел [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) в Developer Guide.
-
-
 
 ## Официальный коннектор Kafka от ClickHouse для Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
@@ -72,7 +67,6 @@ exactlyOnce=true
 username=default
 schemas.enable=false
 ```
-
 
 ## Рекомендуемые разрешения IAM (минимально необходимые привилегии) {#iam-least-privilege}
 
@@ -144,7 +138,6 @@ schemas.enable=false
 
 См. также: [Рекомендации по работе с Kafka – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
-
 ## Настройка производительности {#performance-tuning}
 
 Один из способов повысить производительность — изменить размер пакета и количество записей, извлекаемых из Kafka, добавив следующее в конфигурацию **worker**:
@@ -163,7 +156,6 @@ consumer.max.partition.fetch.bytes=1048576
 
 Вы можете найти более подробную информацию (как по реализации, так и по другим аспектам) в официальной документации [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) и
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config).
-
 
 ## Заметки по сетевой конфигурации для MSK Connect {#notes-on-networking-for-msk-connect}
 

@@ -30,16 +30,19 @@ CREATE TABLE dbpedia
 
 ```
 
-
 ## Загрузка таблицы {#load-table}
 
 Чтобы загрузить набор данных из всех файлов Parquet, выполните следующую команду в оболочке:
 
 ```shell
-$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+for i in $(seq 0 25); do
+  echo "Обработка файла ${i}..."
+  clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+  echo "Файл ${i} обработан."
+done
 ```
 
-Также можно выполнить отдельные SQL‑запросы, как показано ниже, чтобы загрузить каждый из 25 файлов Parquet:
+Также можно выполнить отдельные SQL‑команды, как показано ниже, чтобы загрузить каждый из 25 файлов Parquet:
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -118,7 +121,6 @@ LIMIT 20
 Запишите задержку выполнения запроса, чтобы мы могли сравнить её с задержкой запроса для ANN (с использованием векторного индекса).
 Также зафиксируйте задержку выполнения запроса при холодном файловом кэше ОС и с `max_threads=1`, чтобы оценить реальное использование вычислительных ресурсов и пропускную способность подсистемы хранения (экстраполируйте это на производственный набор данных с миллионами векторов!).
 
-
 ## Создание индекса векторного сходства {#build-vector-similarity-index}
 
 Выполните следующий SQL-запрос, чтобы определить и построить индекс векторного сходства для столбца `vector`:
@@ -132,7 +134,6 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 Параметры и характеристики производительности при создании и поиске по индексу описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
 
 Построение и сохранение индекса может занять несколько минут в зависимости от количества доступных ядер CPU и пропускной способности подсистемы хранения.
-
 
 ## Выполнение ANN-поиска {#perform-ann-search}
 
@@ -179,7 +180,6 @@ LIMIT 20
 #highlight-next-line
 Получено 20 строк. Прошло: 0.025 сек. Обработано 32.03 тыс. строк, 2.10 МБ (1.29 млн строк/с., 84.80 МБ/с.)
 ```
-
 
 ## Генерация эмбеддингов для поискового запроса {#generating-embeddings-for-search-query}
 
@@ -228,7 +228,6 @@ while True:
         print(row[0], row[1], row[2])
         print("---------------")
 ```
-
 
 ## Демонстрационное приложение «Вопрос-ответ» {#q-and-a-demo-application}
 

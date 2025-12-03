@@ -6,11 +6,7 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # 名前付きコレクションを用いた ClickHouse と Kafka の統合 {#integrating-clickhouse-with-kafka-using-named-collections}
-
-
 
 ## はじめに {#introduction}
 
@@ -21,16 +17,12 @@ doc_type: 'guide'
 
 このガイドは、Apache Kafka 3.4.1 と ClickHouse 24.5.1 で検証されています。
 
-
-
 ## 前提条件 {#assumptions}
 
 このドキュメントでは、以下を前提としています。
 1. 稼働中の Kafka クラスター。
 2. セットアップ済みで稼働中の ClickHouse クラスター。
 3. SQL の基本的な知識と、ClickHouse および Kafka の設定に関する基本的な理解。
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -44,7 +36,6 @@ doc_type: 'guide'
 ```
 
 アクセス制御を有効にする方法の詳細については、[User Management Guide](./../../../guides/sre/user-management/index.md) を参照してください。
-
 
 ## 設定 {#configuration}
 
@@ -105,7 +96,6 @@ doc_type: 'guide'
 2. `<kafka>` の前のセクションには、ClickHouse の Kafka エンジンのパラメータが含まれます。パラメータの一覧については、[Kafka engine parameters](/engines/table-engines/integrations/kafka) を参照してください。
 3. `<kafka>` 内のセクションには、追加の Kafka 設定オプションが含まれます。利用可能なオプションの詳細については、[librdkafka configuration](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md) を参照してください。
 4. この例では、`SASL_SSL` セキュリティプロトコルと `PLAIN` メカニズムを使用しています。これらの設定は、利用している Kafka クラスター構成に応じて調整してください。
-
 
 ## テーブルとデータベースの作成 {#creating-tables-and-databases}
 
@@ -192,7 +182,6 @@ SELECT
     last_name
 FROM second_kafka_table;
 ```
-
 
 ## セットアップの検証 {#verifying-the-setup}
 

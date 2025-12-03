@@ -18,7 +18,6 @@ doc_type: 'guide'
 pip install chdb
 ```
 
-
 ## 使用方法 {#usage} 
 
 ### コマンドラインインターフェイス {#command-line-interface}
@@ -32,7 +31,6 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 # フォーマットを指定したクエリ {#query-with-formatting}
 python3 -m chdb "SELECT version()" JSON
 ```
-
 
 ### 基本的な Python の使い方 {#basic-python-usage}
 
@@ -48,7 +46,6 @@ print(f"読み取り行数: {result.rows_read()}")
 print(f"読み取りバイト数: {result.bytes_read()}")
 print(f"実行時間: {result.elapsed()} 秒")
 ```
-
 
 ### 接続ベースの API（推奨） {#connection-based-api}
 
@@ -84,7 +81,6 @@ cur.close()
 conn.close()
 ```
 
-
 ## データの入力方法 {#data-input}
 
 ### ファイルベースのデータソース {#file-based-data-sources}
@@ -118,7 +114,6 @@ result = chdb.query("""
 """, 'Pretty')
 ```
 
-
 ### 出力フォーマットの例 {#output-format-examples}
 
 ```python
@@ -138,7 +133,6 @@ print(json_result)
 pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
 print(pretty_result)
 ```
-
 
 ### DataFrame の操作 {#dataframe-operations}
 
@@ -163,7 +157,6 @@ print(result_df)
 summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
-
 
 #### Python テーブルエンジン（推奨） {#python-table-engine-recommended}
 
@@ -211,7 +204,6 @@ chdb.query("""
     ORDER BY score DESC
 """).show()
 ```
-
 
 ### ステートフル セッション {#stateful-sessions}
 
@@ -267,7 +259,6 @@ print(result)
 sess.close()  # オプション - オブジェクト削除時に自動クローズ
 ```
 
-
 ### 高度なセッション機能 {#advanced-session-features}
 
 ```python
@@ -287,7 +278,6 @@ result = sess.query("""
 ```
 
 こちらも参照してください: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)
-
 
 ### Python DB-API 2.0 インターフェイス {#python-db-api-20}
 
@@ -337,7 +327,6 @@ cursor.executemany(
 )
 ```
 
-
 ### ユーザー定義関数 (UDF) {#user-defined-functions}
 
 カスタム Python 関数で SQL を拡張できます。
@@ -378,7 +367,6 @@ result = query("""
 print(result)
 ```
 
-
 #### カスタムの戻り値型を持つ高度な UDF {#advanced-udf-custom-return-types}
 
 ```python
@@ -412,7 +400,6 @@ result = query("""
 """, "Pretty")
 print(result)
 ```
-
 
 #### UDF のベストプラクティス {#udf-best-practices}
 
@@ -448,7 +435,6 @@ query("""
     ) as extracted_name
 """)
 ```
-
 
 ### ストリーミングクエリ処理 {#streaming-queries}
 
@@ -520,7 +506,6 @@ stream.close()
 sess.close()
 ```
 
-
 ### Python テーブルエンジン {#python-table-engine}
 
 #### Pandas DataFrame をクエリする {#query-pandas-dataframes}
@@ -577,7 +562,6 @@ window_result = chdb.query("""
 """, "Pretty")
 print(window_result)
 ```
-
 
 #### PyReader を使用したカスタムデータソース {#custom-data-sources-pyreader}
 
@@ -686,7 +670,6 @@ complex_json = chdb.query("""
 print(complex_json)
 ````
 
-
 ## パフォーマンスと最適化 {#performance-optimization}
 
 ### ベンチマーク {#benchmarks}
@@ -771,7 +754,6 @@ for batch in batch_reader:
 stream.close()
 sess.close()
 ```
-
 
 ## GitHub リポジトリ {#github-repository}
 
