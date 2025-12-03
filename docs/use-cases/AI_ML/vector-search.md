@@ -30,10 +30,10 @@ import diagram_16 from '@site/static/images/use-cases/AI_ML/QBit/diagram_16.jpg'
 import diagram_17 from '@site/static/images/use-cases/AI_ML/QBit/diagram_17.jpg';
 
 In this guide, you will:
-- Get introduced to vector search
-- Learn about Approximate Nearest Neighbours (ANN)
-- Learn about Hierarchical Navigable Small World (HNSW)
+- Get introduced briefly to vector search
+- Learn about Approximate Nearest Neighbours (ANN) and Hierarchical Navigable Small World (HNSW)
 - Learn about Quantised Bit (QBit)
+- Use QBit to perform vector search using the DBPedia dataset
 
 ## Vector search primer {#vector-search-primer}
 
