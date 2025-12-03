@@ -15,7 +15,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 用户可以通过 [language SDKs](/use-cases/observability/clickstack/sdks) 将数据发送到该 collector，或者通过采集基础设施指标和日志的数据采集代理发送数据（例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel collector，或其他技术，如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/)）。
 
-
 ## 安装 ClickStack OpenTelemetry 收集器 {#installing-otel-collector}
 
 ClickStack OpenTelemetry 收集器包含在大多数 ClickStack 发行版中，包括：

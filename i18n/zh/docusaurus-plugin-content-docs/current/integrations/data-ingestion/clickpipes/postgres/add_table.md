@@ -11,12 +11,9 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-
 # 向 ClickPipe 添加特定表 {#adding-specific-tables-to-a-clickpipe}
 
 在某些场景下，将特定的表添加到某个 ClickPipe 中会非常有用。随着您的事务型或分析型工作负载不断扩展，这将成为一种常见需求。
-
-
 
 ## 将特定表添加到 ClickPipe 的步骤 {#add-tables-steps}
 

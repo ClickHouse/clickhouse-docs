@@ -1822,6 +1822,16 @@ true の場合、カラム定義内の AUTO_INCREMENT キーワードを無視�
 
 互換性設定: CREATE TABLE で照合順序を無視する
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+互換性のための設定です。有効にすると、署名付き URL のクエリパラメータ（例: X-Amz-*）を S3 キーに折り込み（従来の動作）、
+パス中では「?」がワイルドカードとして動作します。無効（デフォルト）の場合、署名付き URL のクエリパラメータは URL のクエリ部に保持され、
+「?」がワイルドカードとして解釈されないようにします。
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />

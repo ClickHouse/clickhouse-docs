@@ -21,7 +21,6 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse は標準 SQL の JOIN を完全にサポートしており、効率的なデータ分析が可能です。
 このガイドでは、正規化された [IMDB](https://en.wikipedia.org/wiki/IMDb) データセット（[relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) 由来）を用いた Venn 図とサンプルクエリを通じて、よく利用される代表的な JOIN の種類とその使い方を解説します。
 
-
 ## テストデータとリソース {#test-data-and-resources}
 
 テーブルの作成とロード手順は[こちら](/integrations/dbt/guides)にあります。
@@ -97,7 +96,6 @@ LIMIT 10;
 
 `INNER JOIN` の挙動は、次のいずれかの他の結合タイプを使用することで拡張または変更できます。
 
-
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
 `LEFT OUTER JOIN` は `INNER JOIN` と同様に動作しますが、左テーブル側で結合条件に一致しない行については、右テーブルのカラムに対して ClickHouse が[デフォルト値](/sql-reference/statements/create/table#default_values)を返します。
@@ -143,7 +141,6 @@ LIMIT 10;
 :::note
 `OUTER` キーワードは省略可能です。
 :::
-
 
 ## CROSS JOIN {#cross-join}
 
@@ -241,7 +238,6 @@ ALL
 
 そして、上で述べたように、`RIGHT OUTER JOIN` では `OUTER` キーワードを省略でき、さらにオプションの `ALL` キーワードを追加できるので、`ALL RIGHT JOIN` と書いても問題なく動作します。
 
-
 ## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
 
 `LEFT SEMI JOIN` クエリは、右テーブルに少なくとも 1 つの結合キーのマッチがある左テーブルの各行について、そのカラム値を返します。
@@ -280,7 +276,6 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-
 ## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
 
 `LEFT ANTI JOIN` は、左側のテーブルで一致しない行のすべてのカラム値を返します。
@@ -315,7 +310,6 @@ LIMIT 10;
 │ """アメリカン・ダッド"""                  │
 └───────────────────────────────────────────┘
 ```
-
 
 ## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
 
@@ -392,7 +386,6 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-
 ## ASOF JOIN {#asof-join}
 
 `ASOF JOIN` は、非完全一致のマッチングを行える機能を提供します。
@@ -449,7 +442,6 @@ final_price:        9645
 :::note
 `ASOF JOIN` では `ON` 句が必須であり、`AND` 句の非厳密な一致条件に加えて、厳密な一致条件を指定します。
 :::
-
 
 ## まとめ {#summary}
 

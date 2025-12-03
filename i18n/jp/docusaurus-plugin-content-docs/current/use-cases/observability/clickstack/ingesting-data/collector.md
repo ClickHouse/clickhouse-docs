@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 このページでは、公式の ClickStack OpenTelemetry (OTel) コレクターの設定に関する詳細を説明します。
 
-
 ## コレクターのロール {#collector-roles}
 
 OpenTelemetry コレクターは、主に 2 つのロールでデプロイできます:
@@ -56,7 +55,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を持つユーザーアカウントを使用する必要があります。
 
-
 ### 構成の変更 {#modifying-otel-collector-configuration}
 
 #### docker の使用 {#using-docker}
@@ -75,7 +73,6 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -100,7 +97,6 @@ Docker Compose を使用する際は、上記と同じ環境変数を使用し�
     networks:
       - internal
 ```
-
 
 ### 高度な設定 {#advanced-configuration}
 
@@ -197,7 +193,6 @@ docker run -d \
 
 より複雑な設定については、[ClickStack コレクターのデフォルト設定](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)および [ClickHouse exporter のドキュメント](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)を参照してください。
 
-
 #### 設定構造 {#configuration-structure}
 
 [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/)、[`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md)、[`processors`](https://opentelemetry.io/docs/collector/configuration/#processors) を含む OTel collector の構成方法の詳細については、[公式の OpenTelemetry Collector ドキュメント](https://opentelemetry.io/docs/collector/configuration) を参照してください。
@@ -227,7 +222,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 ```
 
 ここでは、collector がデータベース `otel` を使用するように設定されていることを前提としています。これは環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` で制御できます。[他の環境変数と同様に](#modifying-otel-collector-configuration)、collector を実行しているコンテナイメージにこの値を渡してください。
-
 
 ## 処理 - フィルタリング、変換、エンリッチメント {#processing-filtering-transforming-enriching}
 
@@ -308,7 +302,6 @@ service:
 すべての OTLP 通信で、[インジェスト API key を含む Authorization ヘッダー](#securing-the-collector) を必ず付与する必要がある点に注意してください。
 
 より高度な設定については、[OpenTelemetry Collector のドキュメント](https://opentelemetry.io/docs/collector/) を参照してください。
-
 
 ## 挿入の最適化 {#optimizing-inserts}
 
@@ -423,7 +416,6 @@ JSON 型のデータをクエリするには、環境変数 `BETA_CH_OTEL_JSON_S
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
 ```
-
 
 ### Map ベースのスキーマから JSON 型への移行 {#migrating-from-map-based-schemas-to-json}
 

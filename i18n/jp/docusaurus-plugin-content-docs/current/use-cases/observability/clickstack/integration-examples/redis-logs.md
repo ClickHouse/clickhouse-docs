@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した Redis ログの監視 {#redis-clickstack}
 
 :::note[TL;DR]
@@ -338,7 +337,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # filelog/Redis レシーバーの設定が表示されるはずです
 ```
 
-
 ### HyperDX にログが表示されない
 
 **Redis がログをファイルに書き出していることを確認する：**
@@ -378,7 +376,6 @@ docker volume inspect <volume-name>
 # 両方のコンテナにボリュームがマウントされているか確認する {#expected-output-should-show-file-size-and-permissions}
 ```
 
-
 ### ログが正しくパースされない場合
 
 **Redis のログ形式が期待されるパターンと一致していることを確認する:**
@@ -393,7 +390,6 @@ Redis のログ形式が異なる場合は、`regex_parser` オペレーター�
 
 * `pid:role timestamp level message`
 * 例: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## 次のステップ {#next-steps}
 

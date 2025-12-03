@@ -7,8 +7,6 @@ title: 'Табличный движок URL'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблицы URL {#url-table-engine}
 
 Выполняет чтение и запись данных на удалённый HTTP/HTTPS-сервер. Этот движок похож на движок [File](../../../engines/table-engines/special/file.md).
@@ -41,15 +39,11 @@ doc_type: 'reference'
 
 Например, для выражения движка `URL('http://localhost/test.gzip')` применяется метод сжатия `gzip`, но для `URL('http://localhost/test.fr')` сжатие не включается, поскольку суффикс `fr` не соответствует ни одному из указанных выше методов сжатия.
 
-
-
 ## Использование {#using-the-engine-in-the-clickhouse-server}
 
 Запросы `INSERT` и `SELECT` преобразуются соответственно в HTTP-запросы `POST` и `GET`. Для обработки `POST`-запросов удалённый сервер должен поддерживать [передачу с кодированием фрагментами (Chunked transfer encoding)](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
 
 Вы можете ограничить максимальное количество переходов по перенаправлениям для HTTP-запросов GET с помощью настройки [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects).
-
-
 
 ## Пример {#example}
 
@@ -96,7 +90,6 @@ SELECT * FROM url_engine_table
 └───────┴───────┘
 ```
 
-
 ## Подробности реализации {#details-of-implementation}
 
 - Возможны параллельные операции чтения и записи
@@ -105,8 +98,6 @@ SELECT * FROM url_engine_table
   - Индексы.
   - Репликация.
 
-
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к URL-ресурсу. Тип: `LowCardinality(String)`.
@@ -114,8 +105,6 @@ SELECT * FROM url_engine_table
 - `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_headers` — Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
-
-
 
 ## Настройки хранения {#storage-settings}
 

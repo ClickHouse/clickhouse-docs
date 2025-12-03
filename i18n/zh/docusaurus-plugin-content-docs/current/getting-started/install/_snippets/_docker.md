@@ -8,7 +8,6 @@ Docker 拉取命令：
 docker pull clickhouse/clickhouse-server
 ```
 
-
 ## 版本 {#versions}
 
 - `latest` 标签指向最新稳定分支的最新发布版本。
@@ -29,8 +28,6 @@ docker pull clickhouse/clickhouse-server
   [补丁](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468) 的 docker 版本 >= `20.10.10`。
   作为变通方案，可以改用 `docker run --security-opt seccomp=unconfined`，但这会带来安全风险。
 
-
-
 ## 如何使用该镜像 {#how-to-use-image}
 
 ### 启动服务器实例 {#start-server-instance}
@@ -44,7 +41,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 默认情况下，上面启动的服务器实例将以无密码的 `default` 用户身份运行。
 
 ### 从原生客户端连接到它 {#connect-to-it-from-native-client}
-
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
@@ -115,7 +111,6 @@ docker run -d \
 * `/etc/clickhouse-server/users.d/*.xml` - 用于调整用户设置的文件
 * `/docker-entrypoint-initdb.d/` - 包含数据库初始化脚本的文件夹（见下文）。
 
-
 ## Linux 能力 {#linear-capabilities}
 
 ClickHouse 提供了一些高级功能，这些功能需要启用若干 [Linux 能力（capabilities）](https://man7.org/linux/man-pages/man7/capabilities.7.html)。
@@ -130,7 +125,6 @@ docker run -d \
 
 如需了解更多信息，请参阅 [&quot;在 Docker 中配置 CAP&#95;IPC&#95;LOCK 和 CAP&#95;SYS&#95;NICE 权限&quot;](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker)
 
-
 ## 配置 {#configuration}
 
 该容器对外暴露 8123 端口用于 [HTTP 接口](https://clickhouse.com/docs/interfaces/http_interface/)，以及 9000 端口用于 [原生客户端](https://clickhouse.com/docs/interfaces/tcp/)。
@@ -144,7 +138,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 ```
 
 ### 以自定义用户身份启动服务器 {#start-server-custom-user}
-
 
 ```bash
 # $PWD/data/clickhouse 目录应存在且归当前用户所有 {#pwddataclickhouse-should-exist-and-be-owned-by-current-user}
@@ -179,7 +172,6 @@ docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLIC
 ```bash
 docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clickhouse-server
 ```
-
 
 ## 如何扩展此镜像 {#how-to-extend-image}
 

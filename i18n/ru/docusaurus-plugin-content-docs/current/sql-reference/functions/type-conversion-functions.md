@@ -6,11 +6,7 @@ title: 'Функции преобразования типов данных'
 doc_type: 'reference'
 ---
 
-
-
 # Функции преобразования типов {#type-conversion-functions}
-
-
 
 ## Общие проблемы при преобразовании данных {#common-issues-with-data-conversion}
 
@@ -54,7 +50,6 @@ SETTINGS cast_keep_nullable = 1
 └──────────────────┴─────────────────────┴──────────────────┘
 ```
 
-
 ## Примечания к функциям `toString` {#to-string-functions}
 
 Семейство функций `toString` позволяет выполнять преобразования между числами, строками (но не фиксированными строками), датами и датами со временем.
@@ -64,8 +59,6 @@ SETTINGS cast_keep_nullable = 1
 - При преобразовании дат в числа или наоборот дате соответствует количество дней, прошедших с начала эпохи Unix.
 - При преобразовании дат со временем в числа или наоборот дате со временем соответствует количество секунд, прошедших с начала эпохи Unix.
 - Функция `toString` с аргументом типа `DateTime` может принимать второй аргумент типа `String`, содержащий имя часового пояса, например: `Europe/Amsterdam`. В этом случае время форматируется в соответствии с указанным часовым поясом.
-
-
 
 ## Примечания о функциях `toDate`/`toDateTime` {#to-date-and-date-time-functions}
 
@@ -116,7 +109,6 @@ LIMIT 10
 
 См. также функцию [`toUnixTimestamp`](#toUnixTimestamp).
 
-
 ## toBool {#tobool}
 
 Преобразует входное значение в значение типа [`Bool`](../data-types/boolean.md). В случае ошибки вызывает исключение.
@@ -166,7 +158,6 @@ toBool('true'):          true
 toBool('false'):         false
 toBool('FALSE'):         false
 ```
-
 
 ## toInt8 {#toint8}
 
@@ -234,7 +225,6 @@ toInt8('-8'): -8
 * [`toInt8OrNull`](#toInt8OrNull).
 * [`toInt8OrDefault`](#toint8ordefault).
 
-
 ## toInt8OrZero {#toint8orzero}
 
 Как и функция [`toInt8`](#toint8), эта функция преобразует входное значение в значение типа [Int8](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -297,7 +287,6 @@ toInt8OrZero('abc'): 0
 * [`toInt8OrNull`](#toInt8OrNull).
 * [`toInt8OrDefault`](#toint8ordefault).
 
-
 ## toInt8OrNull {#toInt8OrNull}
 
 Подобно функции [`toInt8`](#toint8), эта функция преобразует входное значение к типу [Int8](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -359,7 +348,6 @@ toInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt8`](#toint8).
 * [`toInt8OrZero`](#toint8orzero).
 * [`toInt8OrDefault`](#toint8ordefault).
-
 
 ## toInt8OrDefault {#toint8ordefault}
 
@@ -428,7 +416,6 @@ toInt8OrDefault('abc', CAST('-1', 'Int8')): -1
 * [`toInt8OrZero`](#toint8orzero).
 * [`toInt8OrNull`](#toInt8OrNull).
 
-
 ## toInt16 {#toint16}
 
 Преобразует входное значение в значение типа [`Int16`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -495,7 +482,6 @@ toInt16('-16'):  -16
 * [`toInt16OrNull`](#toint16ornull).
 * [`toInt16OrDefault`](#toint16ordefault).
 
-
 ## toInt16OrZero {#toint16orzero}
 
 Аналогично функции [`toInt16`](#toint16), эта функция преобразует входное значение в значение типа [Int16](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -558,7 +544,6 @@ toInt16OrZero('abc'): 0
 * [`toInt16OrNull`](#toint16ornull).
 * [`toInt16OrDefault`](#toint16ordefault).
 
-
 ## toInt16OrNull {#toint16ornull}
 
 Как и [`toInt16`](#toint16), эта функция преобразует входное значение в значение типа [Int16](../data-types/int-uint.md), но при ошибке возвращает `NULL`.
@@ -620,7 +605,6 @@ toInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt16`](#toint16).
 * [`toInt16OrZero`](#toint16orzero).
 * [`toInt16OrDefault`](#toint16ordefault).
-
 
 ## toInt16OrDefault {#toint16ordefault}
 
@@ -689,7 +673,6 @@ toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
 * [`toInt16OrZero`](#toint16orzero).
 * [`toInt16OrNull`](#toint16ornull).
 
-
 ## toInt32 {#toint32}
 
 Преобразует входное значение в значение типа [`Int32`](../data-types/int-uint.md). В случае ошибки вызывает исключение.
@@ -756,7 +739,6 @@ toInt32('-32'):  -32
 * [`toInt32OrNull`](#toint32ornull).
 * [`toInt32OrDefault`](#toint32ordefault).
 
-
 ## toInt32OrZero {#toint32orzero}
 
 Подобно функции [`toInt32`](#toint32), эта функция преобразует входное значение к типу [Int32](../data-types/int-uint.md), но возвращает `0` в случае ошибки.
@@ -819,7 +801,6 @@ toInt32OrZero('abc'): 0
 * [`toInt32OrNull`](#toint32ornull).
 * [`toInt32OrDefault`](#toint32ordefault).
 
-
 ## toInt32OrNull {#toint32ornull}
 
 Аналогично функции [`toInt32`](#toint32), эта функция преобразует входное значение в значение типа [Int32](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -881,7 +862,6 @@ toInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt32`](#toint32).
 * [`toInt32OrZero`](#toint32orzero).
 * [`toInt32OrDefault`](#toint32ordefault).
-
 
 ## toInt32OrDefault {#toint32ordefault}
 
@@ -950,7 +930,6 @@ toInt32OrDefault('abc', CAST('-1', 'Int32')): -1
 * [`toInt32OrZero`](#toint32orzero).
 * [`toInt32OrNull`](#toint32ornull).
 
-
 ## toInt64 {#toint64}
 
 Преобразует входное значение в значение типа [`Int64`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -1017,7 +996,6 @@ toInt64('-64'):  -64
 * [`toInt64OrNull`](#toint64ornull).
 * [`toInt64OrDefault`](#toint64ordefault).
 
-
 ## toInt64OrZero {#toint64orzero}
 
 Как и [`toInt64`](#toint64), эта функция преобразует входное значение в значение типа [Int64](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -1080,7 +1058,6 @@ toInt64OrZero('abc'): 0
 * [`toInt64OrNull`](#toint64ornull).
 * [`toInt64OrDefault`](#toint64ordefault).
 
-
 ## toInt64OrNull {#toint64ornull}
 
 Аналогично функции [`toInt64`](#toint64), эта функция преобразует входное значение в значение типа [Int64](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -1142,7 +1119,6 @@ toInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt64`](#toint64).
 * [`toInt64OrZero`](#toint64orzero).
 * [`toInt64OrDefault`](#toint64ordefault).
-
 
 ## toInt64OrDefault {#toint64ordefault}
 
@@ -1211,7 +1187,6 @@ toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
 * [`toInt64OrZero`](#toint64orzero).
 * [`toInt64OrNull`](#toint64ornull).
 
-
 ## toInt128 {#toint128}
 
 Преобразует входное значение в значение типа [`Int128`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -1277,7 +1252,6 @@ toInt128('-128'): -128
 * [`toInt128OrNull`](#toint128ornull).
 * [`toInt128OrDefault`](#toint128ordefault).
 
-
 ## toInt128OrZero {#toint128orzero}
 
 Подобно функции [`toInt128`](#toint128), преобразует входное значение в значение типа [Int128](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -1340,7 +1314,6 @@ toInt128OrZero('abc'):  0
 * [`toInt128OrNull`](#toint128ornull).
 * [`toInt128OrDefault`](#toint128ordefault).
 
-
 ## toInt128OrNull {#toint128ornull}
 
 Как и [`toInt128`](#toint128), эта функция преобразует входное значение в значение типа [Int128](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
@@ -1402,7 +1375,6 @@ toInt128OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt128`](#toint128).
 * [`toInt128OrZero`](#toint128orzero).
 * [`toInt128OrDefault`](#toint128ordefault).
-
 
 ## toInt128OrDefault {#toint128ordefault}
 
@@ -1472,7 +1444,6 @@ toInt128OrDefault('abc', CAST('-1', 'Int128')):  -1
 * [`toInt128OrZero`](#toint128orzero).
 * [`toInt128OrNull`](#toint128ornull).
 
-
 ## toInt256 {#toint256}
 
 Преобразует входное значение в значение типа [`Int256`](../data-types/int-uint.md). В случае ошибки генерирует исключение.
@@ -1538,7 +1509,6 @@ toInt256('-256'):   -256
 * [`toInt256OrNull`](#toint256ornull).
 * [`toInt256OrDefault`](#toint256ordefault).
 
-
 ## toInt256OrZero {#toint256orzero}
 
 Как и [`toInt256`](#toint256), эта функция преобразует входное значение в значение типа [Int256](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -1601,7 +1571,6 @@ toInt256OrZero('abc'):  0
 * [`toInt256OrNull`](#toint256ornull).
 * [`toInt256OrDefault`](#toint256ordefault).
 
-
 ## toInt256OrNull {#toint256ornull}
 
 Подобно функции [`toInt256`](#toint256), эта функция преобразует входное значение в значение типа [Int256](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
@@ -1663,7 +1632,6 @@ toInt256OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt256`](#toint256).
 * [`toInt256OrZero`](#toint256orzero).
 * [`toInt256OrDefault`](#toint256ordefault).
-
 
 ## toInt256OrDefault {#toint256ordefault}
 
@@ -1732,7 +1700,6 @@ toInt256OrDefault('abc', CAST('-1', 'Int256')):  -1
 * [`toInt256OrZero`](#toint256orzero).
 * [`toInt256OrNull`](#toint256ornull).
 
-
 ## toUInt8 {#touint8}
 
 Преобразует входное значение в значение типа [`UInt8`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -1799,7 +1766,6 @@ toUInt8('8'): 8
 * [`toUInt8OrNull`](#touint8ornull).
 * [`toUInt8OrDefault`](#touint8ordefault).
 
-
 ## toUInt8OrZero {#touint8orzero}
 
 Как и [`toUInt8`](#touint8), эта функция преобразует входное значение в значение типа [UInt8](../data-types/int-uint.md), но при ошибке возвращает `0`.
@@ -1862,7 +1828,6 @@ toUInt8OrZero('abc'): 0
 * [`toUInt8OrNull`](#touint8ornull).
 * [`toUInt8OrDefault`](#touint8ordefault).
 
-
 ## toUInt8OrNull {#touint8ornull}
 
 Подобно функции [`toUInt8`](#touint8), эта функция преобразует входное значение в тип [UInt8](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -1924,7 +1889,6 @@ toUInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt8`](#touint8).
 * [`toUInt8OrZero`](#touint8orzero).
 * [`toUInt8OrDefault`](#touint8ordefault).
-
 
 ## toUInt8OrDefault {#touint8ordefault}
 
@@ -1993,7 +1957,6 @@ toUInt8OrDefault('abc', CAST('0', 'UInt8')): 0
 * [`toUInt8OrZero`](#touint8orzero).
 * [`toUInt8OrNull`](#touint8ornull).
 
-
 ## toUInt16 {#touint16}
 
 Преобразует входное значение в значение типа [`UInt16`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -2060,7 +2023,6 @@ toUInt16('16'):  16
 * [`toUInt16OrNull`](#touint16ornull).
 * [`toUInt16OrDefault`](#touint16ordefault).
 
-
 ## toUInt16OrZero {#touint16orzero}
 
 Аналогично функции [`toUInt16`](#touint16), эта функция преобразует входное значение в значение типа [UInt16](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -2123,7 +2085,6 @@ toUInt16OrZero('abc'): 0
 * [`toUInt16OrNull`](#touint16ornull).
 * [`toUInt16OrDefault`](#touint16ordefault).
 
-
 ## toUInt16OrNull {#touint16ornull}
 
 Аналогично функции [`toUInt16`](#touint16), эта функция преобразует входное значение в значение типа [UInt16](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -2185,7 +2146,6 @@ toUInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt16`](#touint16).
 * [`toUInt16OrZero`](#touint16orzero).
 * [`toUInt16OrDefault`](#touint16ordefault).
-
 
 ## toUInt16OrDefault {#touint16ordefault}
 
@@ -2254,7 +2214,6 @@ toUInt16OrDefault('abc', CAST('0', 'UInt16')): 0
 * [`toUInt16OrZero`](#touint16orzero).
 * [`toUInt16OrNull`](#touint16ornull).
 
-
 ## toUInt32 {#touint32}
 
 Преобразует входное значение в значение типа [`UInt32`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -2321,7 +2280,6 @@ toUInt32('32'):  32
 * [`toUInt32OrNull`](#touint32ornull).
 * [`toUInt32OrDefault`](#touint32ordefault).
 
-
 ## toUInt32OrZero {#touint32orzero}
 
 Аналогично функции [`toUInt32`](#touint32), преобразует входное значение в тип [UInt32](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -2385,7 +2343,6 @@ toUInt32OrZero('abc'): 0
 * [`toUInt32OrNull`](#touint32ornull).
 * [`toUInt32OrDefault`](#touint32ordefault).
 
-
 ## toUInt32OrNull {#touint32ornull}
 
 Как и [`toUInt32`](#touint32), эта функция преобразует входное значение в значение типа [UInt32](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -2448,7 +2405,6 @@ toUInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt32`](#touint32).
 * [`toUInt32OrZero`](#touint32orzero).
 * [`toUInt32OrDefault`](#touint32ordefault).
-
 
 ## toUInt32OrDefault {#touint32ordefault}
 
@@ -2517,7 +2473,6 @@ toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
 * [`toUInt32OrZero`](#touint32orzero).
 * [`toUInt32OrNull`](#touint32ornull).
 
-
 ## toUInt64 {#touint64}
 
 Преобразует входное значение в значение типа [`UInt64`](../data-types/int-uint.md). В случае ошибки вызывает исключение.
@@ -2584,7 +2539,6 @@ toUInt64('64'):  64
 * [`toUInt64OrNull`](#touint64ornull).
 * [`toUInt64OrDefault`](#touint64ordefault).
 
-
 ## toUInt64OrZero {#touint64orzero}
 
 Как и [`toUInt64`](#touint64), эта функция преобразует входное значение в значение типа [UInt64](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -2647,7 +2601,6 @@ toUInt64OrZero('abc'): 0
 * [`toUInt64OrNull`](#touint64ornull).
 * [`toUInt64OrDefault`](#touint64ordefault).
 
-
 ## toUInt64OrNull {#touint64ornull}
 
 Как и функция [`toUInt64`](#touint64), эта функция преобразует входное значение в значение типа [UInt64](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
@@ -2709,7 +2662,6 @@ toUInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt64`](#touint64).
 * [`toUInt64OrZero`](#touint64orzero).
 * [`toUInt64OrDefault`](#touint64ordefault).
-
 
 ## toUInt64OrDefault {#touint64ordefault}
 
@@ -2778,7 +2730,6 @@ toUInt64OrDefault('abc', CAST('0', 'UInt64')): 0
 * [`toUInt64OrZero`](#touint64orzero).
 * [`toUInt64OrNull`](#touint64ornull).
 
-
 ## toUInt128 {#touint128}
 
 Преобразует входное значение в значение типа [`UInt128`](../data-types/int-uint.md). В случае ошибки вызывает исключение.
@@ -2844,7 +2795,6 @@ toUInt128('128'): 128
 * [`toUInt128OrNull`](#touint128ornull).
 * [`toUInt128OrDefault`](#touint128ordefault).
 
-
 ## toUInt128OrZero {#touint128orzero}
 
 Подобно функции [`toUInt128`](#touint128), эта функция преобразует входное значение к типу [UInt128](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -2907,7 +2857,6 @@ toUInt128OrZero('abc'): 0
 * [`toUInt128OrNull`](#touint128ornull).
 * [`toUInt128OrDefault`](#touint128ordefault).
 
-
 ## toUInt128OrNull {#touint128ornull}
 
 Аналогично функции [`toUInt128`](#touint128), эта функция преобразует входное значение в значение типа [UInt128](../data-types/int-uint.md), но при возникновении ошибки возвращает `NULL`.
@@ -2969,7 +2918,6 @@ toUInt128OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt128`](#touint128).
 * [`toUInt128OrZero`](#touint128orzero).
 * [`toUInt128OrDefault`](#touint128ordefault).
-
 
 ## toUInt128OrDefault {#touint128ordefault}
 
@@ -3039,7 +2987,6 @@ toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
 * [`toUInt128OrZero`](#touint128orzero).
 * [`toUInt128OrNull`](#touint128ornull).
 
-
 ## toUInt256 {#touint256}
 
 Преобразует входное значение в значение типа [`UInt256`](../data-types/int-uint.md). В случае ошибки выбрасывает исключение.
@@ -3105,7 +3052,6 @@ toUInt256('256'):   256
 * [`toUInt256OrNull`](#touint256ornull).
 * [`toUInt256OrDefault`](#touint256ordefault).
 
-
 ## toUInt256OrZero {#touint256orzero}
 
 Как и функция [`toUInt256`](#touint256), эта функция преобразует входное значение в значение типа [UInt256](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
@@ -3168,7 +3114,6 @@ toUInt256OrZero('abc'): 0
 * [`toUInt256OrNull`](#touint256ornull).
 * [`toUInt256OrDefault`](#touint256ordefault).
 
-
 ## toUInt256OrNull {#touint256ornull}
 
 Как и функция [`toUInt256`](#touint256), эта функция преобразует входное значение в значение типа [UInt256](../data-types/int-uint.md), но при ошибке возвращает `NULL`.
@@ -3230,7 +3175,6 @@ toUInt256OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt256`](#touint256).
 * [`toUInt256OrZero`](#touint256orzero).
 * [`toUInt256OrDefault`](#touint256ordefault).
-
 
 ## toUInt256OrDefault {#touint256ordefault}
 
@@ -3299,7 +3243,6 @@ toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
 * [`toUInt256OrZero`](#touint256orzero).
 * [`toUInt256OrNull`](#touint256ornull).
 
-
 ## toFloat32 {#tofloat32}
 
 Преобразует входное значение в значение типа [`Float32`](../data-types/float.md). В случае ошибки выбрасывает исключение.
@@ -3357,7 +3300,6 @@ toFloat32('NaN'):  nan
 * [`toFloat32OrNull`](#tofloat32ornull).
 * [`toFloat32OrDefault`](#tofloat32ordefault).
 
-
 ## toFloat32OrZero {#tofloat32orzero}
 
 Как и функция [`toFloat32`](#tofloat32), эта функция преобразует входное значение к значению типа [Float32](../data-types/float.md), но в случае ошибки возвращает `0`.
@@ -3410,7 +3352,6 @@ toFloat32OrZero('abc'):  0
 * [`toFloat32OrNull`](#tofloat32ornull).
 * [`toFloat32OrDefault`](#tofloat32ordefault).
 
-
 ## toFloat32OrNull {#tofloat32ornull}
 
 Как и [`toFloat32`](#tofloat32), эта функция преобразует входное значение в тип [Float32](../data-types/float.md), но возвращает `NULL` в случае ошибки.
@@ -3462,7 +3403,6 @@ toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat32`](#tofloat32).
 * [`toFloat32OrZero`](#tofloat32orzero).
 * [`toFloat32OrDefault`](#tofloat32ordefault).
-
 
 ## toFloat32OrDefault {#tofloat32ordefault}
 
@@ -3521,7 +3461,6 @@ toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
 * [`toFloat32OrZero`](#tofloat32orzero).
 * [`toFloat32OrNull`](#tofloat32ornull).
 
-
 ## toFloat64 {#tofloat64}
 
 Преобразует входное значение в значение типа [`Float64`](../data-types/float.md). В случае ошибки выбрасывает исключение.
@@ -3579,7 +3518,6 @@ toFloat64('NaN'):  nan
 * [`toFloat64OrNull`](#tofloat64ornull).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
-
 ## toFloat64OrZero {#tofloat64orzero}
 
 Аналогично функции [`toFloat64`](#tofloat64), эта функция преобразует входное значение в значение типа [Float64](../data-types/float.md), но в случае ошибки возвращает `0`.
@@ -3632,7 +3570,6 @@ toFloat64OrZero('abc'):  0
 * [`toFloat64OrNull`](#tofloat64ornull).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
-
 ## toFloat64OrNull {#tofloat64ornull}
 
 Подобно [`toFloat64`](#tofloat64), эта функция преобразует входное значение в значение типа [Float64](../data-types/float.md), но в случае ошибки возвращает `NULL`.
@@ -3684,7 +3621,6 @@ toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat64`](#tofloat64).
 * [`toFloat64OrZero`](#tofloat64orzero).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
-
 
 ## toFloat64OrDefault {#tofloat64ordefault}
 
@@ -3743,7 +3679,6 @@ toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
 * [`toFloat64OrZero`](#tofloat64orzero).
 * [`toFloat64OrNull`](#tofloat64ornull).
 
-
 ## toBFloat16 {#tobfloat16}
 
 Преобразует входное значение в значение типа [`BFloat16`](/sql-reference/data-types/float#bfloat16).
@@ -3790,7 +3725,6 @@ SELECT toBFloat16('42.7');
 
 * [`toBFloat16OrZero`](#tobfloat16orzero).
 * [`toBFloat16OrNull`](#tobfloat16ornull).
-
 
 ## toBFloat16OrZero {#tobfloat16orzero}
 
@@ -3845,7 +3779,6 @@ SELECT toBFloat16OrZero('12.3456789');
 * [`toBFloat16`](#tobfloat16).
 * [`toBFloat16OrNull`](#tobfloat16ornull).
 
-
 ## toBFloat16OrNull {#tobfloat16ornull}
 
 Преобразует входное строковое значение в значение типа [`BFloat16`](/sql-reference/data-types/float#bfloat16),
@@ -3898,7 +3831,6 @@ SELECT toBFloat16OrNull('12.3456789');
 
 * [`toBFloat16`](#tobfloat16).
 * [`toBFloat16OrZero`](#tobfloat16orzero).
-
 
 ## toDate {#todate}
 
@@ -4003,7 +3935,6 @@ SELECT toDate(10000000000.)
 
 Функцию `toDate` можно также записать другими способами:
 
-
 ```sql
 SELECT
     now() AS time,
@@ -4017,7 +3948,6 @@ SELECT
 │ 2022-12-30 13:54:58 │    2022-12-30 │  2022-12-30 │          2022-12-30 │
 └─────────────────────┴───────────────┴─────────────┴─────────────────────┘
 ```
-
 
 ## toDateOrZero {#todateorzero}
 
@@ -4039,7 +3969,6 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 └────────────────────────────┴──────────────────┘
 ```
 
-
 ## toDateOrNull {#todateornull}
 
 То же, что и [toDate](#todate), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
@@ -4059,7 +3988,6 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 │                 2022-12-30 │             ᴺᵁᴸᴸ │
 └────────────────────────────┴──────────────────┘
 ```
-
 
 ## toDateOrDefault {#todateordefault}
 
@@ -4086,7 +4014,6 @@ SELECT toDateOrDefault('2022-12-30'), toDateOrDefault('', '2023-01-01'::Date);
 │                    2022-12-30 │                                      2023-01-01 │
 └───────────────────────────────┴─────────────────────────────────────────────────┘
 ```
-
 
 ## toDateTime {#todatetime}
 
@@ -4129,7 +4056,6 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 └───────────────────────────────────┴───────────────────────────────┘
 ```
 
-
 ## toDateTimeOrZero {#todatetimeorzero}
 
 То же, что и [toDateTime](#todatetime), но возвращает нижнюю границу типа [DateTime](../data-types/datetime.md), если передан недопустимый аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
@@ -4150,7 +4076,6 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 └─────────────────────────────────────────┴──────────────────────┘
 ```
 
-
 ## toDateTimeOrNull {#todatetimeornull}
 
 Такая же функция, как [toDateTime](#todatetime), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
@@ -4170,7 +4095,6 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 │                     2022-12-30 13:44:17 │                 ᴺᵁᴸᴸ │
 └─────────────────────────────────────────┴──────────────────────┘
 ```
-
 
 ## toDateTimeOrDefault {#todatetimeordefault}
 
@@ -4197,7 +4121,6 @@ SELECT toDateTimeOrDefault('2022-12-30 13:44:17'), toDateTimeOrDefault('', 'UTC'
 │                        2022-12-30 13:44:17 │                                                     2023-01-01 00:00:00 │
 └────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## toDate32 {#todate32}
 
@@ -4255,7 +4178,6 @@ SELECT toDate32(toDate('1899-01-01')) AS value, toTypeName(value);
 └────────────┴────────────────────────────────────────────┘
 ```
 
-
 ## toDate32OrZero {#todate32orzero}
 
 То же, что и [toDate32](#todate32), но возвращает минимальное значение типа [Date32](../data-types/date32.md), если передан некорректный аргумент.
@@ -4276,7 +4198,6 @@ SELECT toDate32OrZero('1899-01-01'), toDate32OrZero('');
 └──────────────────────────────┴────────────────────┘
 ```
 
-
 ## toDate32OrNull {#todate32ornull}
 
 То же, что и [toDate32](#todate32), но возвращает `NULL`, если получен некорректный аргумент.
@@ -4296,7 +4217,6 @@ SELECT toDate32OrNull('1955-01-01'), toDate32OrNull('');
 │                   1955-01-01 │               ᴺᵁᴸᴸ │
 └──────────────────────────────┴────────────────────┘
 ```
-
 
 ## toDate32OrDefault {#todate32ordefault}
 
@@ -4319,7 +4239,6 @@ SELECT
 │                                              1930-01-01 │                                                2020-01-01 │
 └─────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
-
 
 ## toDateTime64 {#todatetime64}
 
@@ -4391,7 +4310,6 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 └─────────────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## toDateTime64OrZero {#todatetime64orzero}
 
 Подобно функции [toDateTime64](#todatetime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но при некорректном аргументе возвращает минимальное значение [DateTime64](../data-types/datetime64.md).
@@ -4433,7 +4351,6 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 * [toDateTime64](#todatetime64).
 * [toDateTime64OrNull](#todatetime64ornull).
 * [toDateTime64OrDefault](#todatetime64ordefault).
-
 
 ## toDateTime64OrNull {#todatetime64ornull}
 
@@ -4478,7 +4395,6 @@ SELECT
 * [toDateTime64](#todatetime64).
 * [toDateTime64OrZero](#todatetime64orzero).
 * [toDateTime64OrDefault](#todatetime64ordefault).
-
 
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
@@ -4526,7 +4442,6 @@ SELECT
 * [toDateTime64](#todatetime64).
 * [toDateTime64OrZero](#todatetime64orzero).
 * [toDateTime64OrNull](#todatetime64ornull).
-
 
 ## toDecimal32 {#todecimal32}
 
@@ -4600,7 +4515,6 @@ type_c: Decimal(9, 3)
 * [`toDecimal32OrNull`](#todecimal32ornull).
 * [`toDecimal32OrDefault`](#todecimal32ordefault).
 
-
 ## toDecimal32OrZero {#todecimal32orzero}
 
 Как и [`toDecimal32`](#todecimal32), эта функция преобразует входное значение в значение типа [Decimal(9, S)](../data-types/decimal.md), но в случае ошибки возвращает `0`.
@@ -4666,7 +4580,6 @@ toTypeName(b): Decimal(9, 5)
 * [`toDecimal32OrNull`](#todecimal32ornull).
 * [`toDecimal32OrDefault`](#todecimal32ordefault).
 
-
 ## toDecimal32OrNull {#todecimal32ornull}
 
 Как и [`toDecimal32`](#todecimal32), эта функция преобразует входное значение в значение типа [Nullable(Decimal(9, S))](../data-types/decimal.md), но в случае ошибки возвращает `0`.
@@ -4731,7 +4644,6 @@ toTypeName(b): Nullable(Decimal(9, 5))
 * [`toDecimal32`](#todecimal32).
 * [`toDecimal32OrZero`](#todecimal32orzero).
 * [`toDecimal32OrDefault`](#todecimal32ordefault).
-
 
 ## toDecimal32OrDefault {#todecimal32ordefault}
 
@@ -4805,7 +4717,6 @@ toTypeName(b): Decimal(9, 0)
 * [`toDecimal32OrZero`](#todecimal32orzero).
 * [`toDecimal32OrNull`](#todecimal32ornull).
 
-
 ## toDecimal64 {#todecimal64}
 
 Преобразует входное значение в значение типа [`Decimal(18, S)`](../data-types/decimal.md) с масштабом `S`. В случае ошибки выбрасывает исключение.
@@ -4878,7 +4789,6 @@ type_c: Decimal(18, 3)
 * [`toDecimal64OrNull`](#todecimal64ornull).
 * [`toDecimal64OrDefault`](#todecimal64ordefault).
 
-
 ## toDecimal64OrZero {#todecimal64orzero}
 
 Как и [`toDecimal64`](#todecimal64), эта функция преобразует входное значение в значение типа [Decimal(18, S)](../data-types/decimal.md), но при ошибке возвращает `0`.
@@ -4944,7 +4854,6 @@ toTypeName(b): Decimal(18, 18)
 * [`toDecimal64OrNull`](#todecimal64ornull).
 * [`toDecimal64OrDefault`](#todecimal64ordefault).
 
-
 ## toDecimal64OrNull {#todecimal64ornull}
 
 Как и функция [`toDecimal64`](#todecimal64), эта функция преобразует входное значение в значение типа [Nullable(Decimal(18, S))](../data-types/decimal.md), но в случае ошибки возвращает `0`.
@@ -5009,7 +4918,6 @@ toTypeName(b): Nullable(Decimal(18, 18))
 * [`toDecimal64`](#todecimal64).
 * [`toDecimal64OrZero`](#todecimal64orzero).
 * [`toDecimal64OrDefault`](#todecimal64ordefault).
-
 
 ## toDecimal64OrDefault {#todecimal64ordefault}
 
@@ -5083,7 +4991,6 @@ toTypeName(b): Decimal(18, 0)
 * [`toDecimal64OrZero`](#todecimal64orzero).
 * [`toDecimal64OrNull`](#todecimal64ornull).
 
-
 ## toDecimal128 {#todecimal128}
 
 Преобразует входное значение в значение типа [`Decimal(38, S)`](../data-types/decimal.md) с масштабом `S`. В случае ошибки выбрасывает исключение.
@@ -5156,7 +5063,6 @@ type_c: Decimal(38, 3)
 * [`toDecimal128OrNull`](#todecimal128ornull).
 * [`toDecimal128OrDefault`](#todecimal128ordefault).
 
-
 ## toDecimal128OrZero {#todecimal128orzero}
 
 Аналогично функции [`toDecimal128`](#todecimal128), эта функция преобразует входное значение в тип [Decimal(38, S)](../data-types/decimal.md), но в случае ошибки возвращает `0`.
@@ -5222,7 +5128,6 @@ toTypeName(b): Decimal(38, 38)
 * [`toDecimal128OrNull`](#todecimal128ornull).
 * [`toDecimal128OrDefault`](#todecimal128ordefault).
 
-
 ## toDecimal128OrNull {#todecimal128ornull}
 
 Аналогично функции [`toDecimal128`](#todecimal128), эта функция преобразует входное значение в значение типа [Nullable(Decimal(38, S))](../data-types/decimal.md), однако в случае ошибки возвращает `0`.
@@ -5287,7 +5192,6 @@ toTypeName(b): Nullable(Decimal(38, 38))
 * [`toDecimal128`](#todecimal128).
 * [`toDecimal128OrZero`](#todecimal128orzero).
 * [`toDecimal128OrDefault`](#todecimal128ordefault).
-
 
 ## toDecimal128OrDefault {#todecimal128ordefault}
 
@@ -5361,7 +5265,6 @@ toTypeName(b): Decimal(38, 0)
 * [`toDecimal128OrZero`](#todecimal128orzero).
 * [`toDecimal128OrNull`](#todecimal128ornull).
 
-
 ## toDecimal256 {#todecimal256}
 
 Преобразует входное значение в значение типа [`Decimal(76, S)`](../data-types/decimal.md) с масштабом `S`. В случае ошибки выбрасывает исключение.
@@ -5434,7 +5337,6 @@ type_c: Decimal(76, 3)
 * [`toDecimal256OrNull`](#todecimal256ornull).
 * [`toDecimal256OrDefault`](#todecimal256ordefault).
 
-
 ## toDecimal256OrZero {#todecimal256orzero}
 
 Аналогично [`toDecimal256`](#todecimal256), эта функция преобразует входное значение в значение типа [Decimal(76, S)](../data-types/decimal.md), но в случае ошибки возвращает `0`.
@@ -5500,7 +5402,6 @@ toTypeName(b): Decimal(76, 76)
 * [`toDecimal256OrNull`](#todecimal256ornull).
 * [`toDecimal256OrDefault`](#todecimal256ordefault).
 
-
 ## toDecimal256OrNull {#todecimal256ornull}
 
 Как и [`toDecimal256`](#todecimal256), эта функция преобразует входное значение в значение типа [Nullable(Decimal(76, S))](../data-types/decimal.md), но при ошибке возвращает `0`.
@@ -5565,7 +5466,6 @@ toTypeName(b): Nullable(Decimal(76, 76))
 * [`toDecimal256`](#todecimal256).
 * [`toDecimal256OrZero`](#todecimal256orzero).
 * [`toDecimal256OrDefault`](#todecimal256ordefault).
-
 
 ## toDecimal256OrDefault {#todecimal256ordefault}
 
@@ -5639,7 +5539,6 @@ toTypeName(b): Decimal(76, 0)
 * [`toDecimal256OrZero`](#todecimal256orzero).
 * [`toDecimal256OrNull`](#todecimal256ornull).
 
-
 ## toString {#tostring}
 
 Преобразует значения в их строковое представление.
@@ -5684,7 +5583,6 @@ LIMIT 10;
 └─────────────────────┴───────────────────┴─────────────────────┘
 ```
 
-
 ## toFixedString {#tofixedstring}
 
 Преобразует аргумент типа [String](../data-types/string.md) в тип [FixedString(N)](../data-types/fixedstring.md) (строку фиксированной длины N).
@@ -5720,7 +5618,6 @@ SELECT toFixedString('foo', 8) AS s;
 │ foo\0\0\0\0\0 │
 └───────────────┘
 ```
-
 
 ## toStringCutToZero {#tostringcuttozero}
 
@@ -5762,7 +5659,6 @@ SELECT toFixedString('foo\0bar', 8) AS s, toStringCutToZero(s) AS s_cut;
 └────────────┴───────┘
 ```
 
-
 ## toDecimalString {#todecimalstring}
 
 Преобразует числовое значение в значение типа String с количеством дробных знаков в результирующей строке, заданным пользователем.
@@ -5800,7 +5696,6 @@ SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 │ 64.32000                                    │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## reinterpretAsUInt8 {#reinterpretasuint8}
 
@@ -5840,7 +5735,6 @@ SELECT
 └───┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt16 {#reinterpretasuint16}
 
 Выполняет байтовую переинтерпретацию, рассматривая входное значение как значение типа UInt16. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить тип входного значения, результат не имеет осмысленного значения.
@@ -5878,7 +5772,6 @@ SELECT
 │ 1 │ UInt8         │   1 │ UInt16          │
 └───┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsUInt32 {#reinterpretasuint32}
 
@@ -5918,7 +5811,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt64 {#reinterpretasuint64}
 
 Выполняет побайтовую переинтерпретацию, трактуя входное значение как значение типа UInt64. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить входной тип, результат не имеет смысла.
@@ -5956,7 +5848,6 @@ SELECT
 │ 257 │ UInt32        │ 257 │ UInt64          │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsUInt128 {#reinterpretasuint128}
 
@@ -5996,7 +5887,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt256 {#reinterpretasuint256}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа UInt256. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не имеет смысла.
@@ -6034,7 +5924,6 @@ SELECT
 │ 257 │ UInt128       │ 257 │ UInt256         │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt8 {#reinterpretasint8}
 
@@ -6074,7 +5963,6 @@ SELECT
 └───┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt16 {#reinterpretasint16}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа Int16. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить тип входного значения, результат будет произвольным.
@@ -6112,7 +6000,6 @@ SELECT
 │ 1 │ Int8          │   1 │ Int16           │
 └───┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt32 {#reinterpretasint32}
 
@@ -6152,7 +6039,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt64 {#reinterpretasint64}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа Int64. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат будет бессмысленным.
@@ -6190,7 +6076,6 @@ SELECT
 │ 257 │ Int32         │ 257 │ Int64           │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt128 {#reinterpretasint128}
 
@@ -6230,7 +6115,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt256 {#reinterpretasint256}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа Int256. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, полученное значение не имеет смысла.
@@ -6269,7 +6153,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsFloat32 {#reinterpretasfloat32}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа Float32. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может корректно представить исходное, результат не имеет смысла.
@@ -6304,7 +6187,6 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x);
 └────────────┴─────────────────────────┘
 ```
 
-
 ## reinterpretAsFloat64 {#reinterpretasfloat64}
 
 Выполняет побайтовую переинтерпретацию, рассматривая входное значение как значение типа Float64. В отличие от [`CAST`](#cast), функция не пытается сохранить исходное значение — если целевой тип не может представить входной тип, результат будет некорректным.
@@ -6338,7 +6220,6 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x);
 │ 4596373779694328218 │                     0.2 │
 └─────────────────────┴─────────────────────────┘
 ```
-
 
 ## reinterpretAsDate {#reinterpretasdate}
 
@@ -6380,7 +6261,6 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 └───────────────────────┴────────────────────────┘
 ```
 
-
 ## reinterpretAsDateTime {#reinterpretasdatetime}
 
 Эти функции принимают строку и интерпретируют байты, расположенные в начале строки, как число в порядке байтов хоста (little endian). Возвращают дату и время, интерпретируемые как количество секунд с начала эпохи Unix.
@@ -6421,7 +6301,6 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 └───────────────────────────┴────────────────────────────┘
 ```
 
-
 ## reinterpretAsString {#reinterpretasstring}
 
 Эта функция принимает число, дату или дату со временем и возвращает строку, содержащую байты, представляющие соответствующее значение в порядке байт хоста (little-endian). Нулевые байты удаляются с конца. Например, значение типа UInt32, равное 255, представляется строкой длиной один байт.
@@ -6458,7 +6337,6 @@ SELECT
 └────────────────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-
 ## reinterpretAsFixedString {#reinterpretasfixedstring}
 
 Эта функция принимает на вход число, дату или дату со временем и возвращает значение типа FixedString, содержащее байты, представляющие соответствующее значение в порядке байтов хоста (little-endian). Нулевые байты отбрасываются с конца. Например, значение типа UInt32, равное 255, — это FixedString длиной в один байт.
@@ -6494,7 +6372,6 @@ SELECT
 │ A                                                           │ A                                              │
 └─────────────────────────────────────────────────────────────┴────────────────────────────────────────────────┘
 ```
-
 
 ## reinterpretAsUUID {#reinterpretasuuid}
 
@@ -6556,7 +6433,6 @@ SELECT uuid = uuid2;
 └─────────────────────┘
 ```
 
-
 ## reinterpret {#reinterpret}
 
 Использует ту же последовательность байт в памяти для значения `x` и интерпретирует её как значение целевого типа.
@@ -6607,7 +6483,6 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 │ [5.626,6.626,5.626,6.626]  │
 └────────────────────────────┘
 ```
-
 
 ## CAST {#cast}
 
@@ -6714,7 +6589,6 @@ SELECT toTypeName(CAST(x, 'Nullable(UInt16)')) FROM t_null;
 
 * Настройка [cast&#95;keep&#95;nullable](../../operations/settings/settings.md/#cast_keep_nullable)
 
-
 ## accurateCast(x, T) {#accuratecastx-t}
 
 Преобразует `x` к типу данных `T`.
@@ -6748,7 +6622,6 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 ```response
 Код: 70. DB::Exception: Получено от localhost:9000. DB::Exception: Значение в столбце Int8 невозможно безопасно преобразовать в тип UInt8: При обработке accurateCast(-1, 'UInt8') AS uint8.
 ```
-
 
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
 
@@ -6801,7 +6674,6 @@ SELECT
 │  ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ         │
 └───────┴──────┴──────────────┘
 ```
-
 
 ## accurateCastOrDefault(x, T[, default&#95;value]) {#accuratecastordefaultx-t-default_value}
 
@@ -6859,7 +6731,6 @@ SELECT
 └───────┴───────────────┴──────┴──────────────┴──────────────┴──────────────────────┘
 ```
 
-
 ## toInterval {#toInterval}
 
 Создаёт значение типа данных [Interval](../../sql-reference/data-types/special-data-types/interval.md) из числового значения и единицы измерения интервала (например, &#39;second&#39; или &#39;day&#39;).
@@ -6907,7 +6778,6 @@ SELECT toDateTime('2025-01-01 00:00:00') + toInterval(1, 'hour')
 └────────────────────────────────────────────────────────────┘
 ```
 
-
 ## toIntervalYear {#tointervalyear}
 
 Возвращает интервал продолжительностью `n` лет типа данных [IntervalYear](../data-types/special-data-types/interval.md).
@@ -6944,7 +6814,6 @@ SELECT date + interval_to_year AS result
 │ 2025-06-15 │
 └────────────┘
 ```
-
 
 ## toIntervalQuarter {#tointervalquarter}
 
@@ -6983,7 +6852,6 @@ SELECT date + interval_to_quarter AS result
 └────────────┘
 ```
 
-
 ## toIntervalMonth {#tointervalmonth}
 
 Возвращает интервал длительностью `n` месяцев типа данных [IntervalMonth](../data-types/special-data-types/interval.md).
@@ -7020,7 +6888,6 @@ SELECT date + interval_to_month AS result
 │ 2024-07-15 │
 └────────────┘
 ```
-
 
 ## toIntervalWeek {#tointervalweek}
 
@@ -7059,7 +6926,6 @@ SELECT date + interval_to_week AS result
 └────────────┘
 ```
 
-
 ## toIntervalDay {#tointervalday}
 
 Возвращает интервал в `n` дней с типом данных [IntervalDay](../data-types/special-data-types/interval.md).
@@ -7096,7 +6962,6 @@ SELECT date + interval_to_days AS result
 │ 2024-06-20 │
 └────────────┘
 ```
-
 
 ## toIntervalHour {#tointervalhour}
 
@@ -7135,7 +7000,6 @@ SELECT date + interval_to_hours AS result
 └─────────────────────┘
 ```
 
-
 ## toIntervalMinute {#tointervalminute}
 
 Возвращает интервал в `n` минут типа данных [IntervalMinute](../data-types/special-data-types/interval.md).
@@ -7172,7 +7036,6 @@ SELECT date + interval_to_minutes AS result
 │ 2024-06-15 00:12:00 │
 └─────────────────────┘
 ```
-
 
 ## toIntervalSecond {#tointervalsecond}
 
@@ -7211,7 +7074,6 @@ SELECT date + interval_to_seconds AS result
 └─────────────────────┘
 ```
 
-
 ## toIntervalMillisecond {#tointervalmillisecond}
 
 Возвращает интервал продолжительностью `n` миллисекунд типа данных [IntervalMillisecond](../data-types/special-data-types/interval.md).
@@ -7248,7 +7110,6 @@ SELECT date + interval_to_milliseconds AS result
 │ 2024-06-15 00:00:00.030 │
 └─────────────────────────┘
 ```
-
 
 ## toIntervalMicrosecond {#tointervalmicrosecond}
 
@@ -7287,7 +7148,6 @@ SELECT date + interval_to_microseconds AS result
 └────────────────────────────┘
 ```
 
-
 ## toIntervalNanosecond {#tointervalnanosecond}
 
 Возвращает интервал в `n` наносекунд типа данных [IntervalNanosecond](../data-types/special-data-types/interval.md).
@@ -7324,7 +7184,6 @@ SELECT date + interval_to_nanoseconds AS result
 │ 2024-06-15 00:00:00.000000030 │
 └───────────────────────────────┘
 ```
-
 
 ## parseDateTime {#parsedatetime}
 
@@ -7366,20 +7225,15 @@ SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 Псевдоним: `TO_TIMESTAMP`.
 
-
 ## parseDateTimeOrZero {#parsedatetimeorzero}
 
 Аналогично функции [parseDateTime](#parsedatetime), за исключением того, что при встрече формата даты, который не может быть обработан, возвращает нулевую дату.
-
-
 
 ## parseDateTimeOrNull {#parsedatetimeornull}
 
 То же, что и [parseDateTime](#parsedatetime), за исключением того, что при встрече неподдерживаемого формата даты функция возвращает `NULL`.
 
 Псевдоним: `str_to_date`.
-
-
 
 ## parseDateTimeInJodaSyntax {#parsedatetimeinjodasyntax}
 
@@ -7421,18 +7275,13 @@ SELECT parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', '
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## parseDateTimeInJodaSyntaxOrZero {#parsedatetimeinjodasyntaxorzero}
 
 То же, что и [parseDateTimeInJodaSyntax](#parsedatetimeinjodasyntax), за исключением того, что при встрече с форматом даты, который не удаётся обработать, возвращает нулевую дату.
 
-
-
 ## parseDateTimeInJodaSyntaxOrNull {#parsedatetimeinjodasyntaxornull}
 
 Аналогично [parseDateTimeInJodaSyntax](#parsedatetimeinjodasyntax), за исключением того, что при обнаружении неподдерживаемого формата даты возвращает `NULL`.
-
-
 
 ## parseDateTime64 {#parsedatetime64}
 
@@ -7455,18 +7304,13 @@ parseDateTime64(str[, format[, timezone]])
 Возвращает значение типа [DateTime64](../data-types/datetime64.md), разобранное из входной строки в соответствии со строкой формата в стиле MySQL.
 Точность возвращаемого значения равна 6.
 
-
 ## parseDateTime64OrZero {#parsedatetime64orzero}
 
 То же, что и [parseDateTime64](#parsedatetime64), но при обнаружении неподдерживаемого формата даты возвращает нулевую дату.
 
-
-
 ## parseDateTime64OrNull {#parsedatetime64ornull}
 
 То же, что и [parseDateTime64](#parsedatetime64), но возвращает `NULL`, если встречает формат даты, который не может быть обработан.
-
-
 
 ## parseDateTime64InJodaSyntax {#parsedatetime64injodasyntax}
 
@@ -7489,18 +7333,13 @@ parseDateTime64InJodaSyntax(str[, format[, timezone]])
 Возвращает значение типа [DateTime64](../data-types/datetime64.md), полученное разбором входной строки в соответствии со строкой формата в стиле Joda.
 Точность возвращаемого значения равна количеству символов `S` в строке формата (но не более 6).
 
-
 ## parseDateTime64InJodaSyntaxOrZero {#parsedatetime64injodasyntaxorzero}
 
 Работает так же, как [parseDateTime64InJodaSyntax](#parsedatetime64injodasyntax), за исключением того, что при обнаружении формата даты, который не может быть обработан, возвращает нулевую дату.
 
-
-
 ## parseDateTime64InJodaSyntaxOrNull {#parsedatetime64injodasyntaxornull}
 
 То же, что и [parseDateTime64InJodaSyntax](#parsedatetime64injodasyntax), но возвращает `NULL`, если формат даты не может быть обработан.
-
-
 
 ## parseDateTimeBestEffort {#parsedatetimebesteffort}
 
@@ -7607,7 +7446,6 @@ SELECT toYear(now()) AS year, parseDateTimeBestEffort('10 20:19');
 
 Результат:
 
-
 ```response
 ┌─year─┬─parseDateTimeBestEffort('10 20:19')─┐
 │ 2023 │                 2023-01-10 20:19:00 │
@@ -7644,38 +7482,27 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 * [Анонс ISO 8601 от @xkcd](https://xkcd.com/1179/)
 * [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 
-
 ## parseDateTimeBestEffortUS {#parsedatetimebesteffortus}
 
 Эта функция ведёт себя как [parseDateTimeBestEffort](#parsedatetimebesteffort) для ISO-форматов даты, например `YYYY-MM-DD hh:mm:ss`, и других форматов даты, в которых компоненты месяца и дня могут быть однозначно извлечены, например `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh` или `YYYY-MM-DD hh:mm:ss ±h:mm`. Если компоненты месяца и дня не могут быть однозначно извлечены, например `MM/DD/YYYY`, `MM-DD-YYYY` или `MM-DD-YY`, по умолчанию используется американский формат даты вместо `DD/MM/YYYY`, `DD-MM-YYYY` или `DD-MM-YY`. В качестве исключения из последнего, если значение месяца больше 12 и не превышает 31, функция переходит к поведению [parseDateTimeBestEffort](#parsedatetimebesteffort), например `15/08/2020` интерпретируется как `2020-08-15`.
-
-
 
 ## parseDateTimeBestEffortOrNull {#parsedatetimebesteffortornull}
 ## parseDateTime32BestEffortOrNull {#parsedatetime32besteffortornull}
 
 Аналогично [parseDateTimeBestEffort](#parsedatetimebesteffort), за исключением того, что возвращает `NULL`, если встречает формат даты, который невозможно обработать.
 
-
-
 ## parseDateTimeBestEffortOrZero {#parsedatetimebesteffortorzero}
 ## parseDateTime32BestEffortOrZero {#parsedatetime32besteffortorzero}
 
 То же, что и [parseDateTimeBestEffort](#parsedatetimebesteffort), за исключением того, что при встрече с форматом даты, который невозможно обработать, возвращается нулевая дата или нулевое значение даты-времени.
 
-
-
 ## parseDateTimeBestEffortUSOrNull {#parsedatetimebesteffortusornull}
 
 То же, что и функция [parseDateTimeBestEffortUS](#parsedatetimebesteffortus), за исключением того, что она возвращает `NULL`, если встречает формат даты, который нельзя обработать.
 
-
-
 ## parseDateTimeBestEffortUSOrZero {#parsedatetimebesteffortusorzero}
 
 То же, что и функция [parseDateTimeBestEffortUS](#parsedatetimebesteffortus), за исключением того, что она возвращает нулевую дату (`1970-01-01`) или нулевую дату со временем (`1970-01-01 00:00:00`), если встречается формат даты, который не удаётся обработать.
-
-
 
 ## parseDateTime64BestEffort {#parsedatetime64besteffort}
 
@@ -7723,36 +7550,25 @@ FORMAT PrettyCompactMonoBlock;
 └────────────────────────────┴────────────────────────────────┘
 ```
 
-
 ## parseDateTime64BestEffortUS {#parsedatetime64besteffortus}
 
 Аналогична функции [parseDateTime64BestEffort](#parsedatetime64besteffort), за исключением того, что при неоднозначности она отдаёт предпочтение американскому формату даты (`MM/DD/YYYY` и т.д.).
-
-
 
 ## parseDateTime64BestEffortOrNull {#parsedatetime64besteffortornull}
 
 Работает так же, как [parseDateTime64BestEffort](#parsedatetime64besteffort), но возвращает `NULL`, если встречает формат даты, который не может быть обработан.
 
-
-
 ## parseDateTime64BestEffortOrZero {#parsedatetime64besteffortorzero}
 
 То же, что и [parseDateTime64BestEffort](#parsedatetime64besteffort), за исключением того, что при встрече с форматом даты, который не удаётся обработать, возвращает нулевую дату или нулевое значение даты и времени.
-
-
 
 ## parseDateTime64BestEffortUSOrNull {#parsedatetime64besteffortusornull}
 
 Аналогична функции [parseDateTime64BestEffort](#parsedatetime64besteffort), за исключением того, что при неоднозначности эта функция отдаёт предпочтение формату даты, принятому в США (`MM/DD/YYYY` и т. д.), и возвращает `NULL`, если встречает формат даты, который не может быть обработан.
 
-
-
 ## parseDateTime64BestEffortUSOrZero {#parsedatetime64besteffortusorzero}
 
 То же, что и [parseDateTime64BestEffort](#parsedatetime64besteffort), за исключением того, что при неоднозначной интерпретации эта функция предпочитает американский формат даты (`MM/DD/YYYY` и т. д.) и возвращает нулевую дату или нулевое значение дата-время, если встречает формат даты, который невозможно обработать.
-
-
 
 ## toLowCardinality {#tolowcardinality}
 
@@ -7789,7 +7605,6 @@ SELECT toLowCardinality('1');
 │ 1                     │
 └───────────────────────┘
 ```
-
 
 ## toUnixTimestamp {#toUnixTimestamp}
 
@@ -7838,7 +7653,6 @@ from_date:       1509840000
 from_date32:     1509840000
 ```
 
-
 ## toUnixTimestamp64Second {#tounixtimestamp64second}
 
 Преобразует `DateTime64` в значение типа `Int64` с фиксированной точностью до секунды. Входное значение масштабируется вверх или вниз в зависимости от его точности.
@@ -7877,7 +7691,6 @@ SELECT toUnixTimestamp64Second(dt64);
 │                    1234567891 │
 └───────────────────────────────┘
 ```
-
 
 ## toUnixTimestamp64Milli {#tounixtimestamp64milli}
 
@@ -7918,7 +7731,6 @@ SELECT toUnixTimestamp64Milli(dt64);
 └──────────────────────────────┘
 ```
 
-
 ## toUnixTimestamp64Micro {#tounixtimestamp64micro}
 
 Преобразует `DateTime64` в значение типа `Int64` с фиксированной микросекундной точностью. Входное значение соответствующим образом масштабируется (увеличивается или уменьшается) в зависимости от его точности.
@@ -7958,7 +7770,6 @@ SELECT toUnixTimestamp64Micro(dt64);
 └──────────────────────────────┘
 ```
 
-
 ## toUnixTimestamp64Nano {#tounixtimestamp64nano}
 
 Преобразует `DateTime64` в значение типа `Int64` с фиксированной наносекундной точностью. Входное значение масштабируется вверх или вниз в зависимости от его точности.
@@ -7997,7 +7808,6 @@ SELECT toUnixTimestamp64Nano(dt64);
 │               1234567891011 │
 └─────────────────────────────┘
 ```
-
 
 ## fromUnixTimestamp64Second {#fromunixtimestamp64second}
 
@@ -8041,7 +7851,6 @@ SELECT
 └─────────────────────┴──────────────────────┘
 ```
 
-
 ## fromUnixTimestamp64Milli {#fromunixtimestamp64milli}
 
 Преобразует значение типа `Int64` в значение типа `DateTime64` с фиксированной точностью до миллисекунд и необязательным указанием часового пояса. Входное значение соответствующим образом масштабируется вверх или вниз в зависимости от его точности.
@@ -8083,7 +7892,6 @@ SELECT
 │ 2024-12-11 16:53:08.123 │ DateTime64(3, 'UTC') │
 └─────────────────────────┴──────────────────────┘
 ```
-
 
 ## fromUnixTimestamp64Micro {#fromunixtimestamp64micro}
 
@@ -8127,7 +7935,6 @@ SELECT
 └────────────────────────────┴──────────────────────┘
 ```
 
-
 ## fromUnixTimestamp64Nano {#fromunixtimestamp64nano}
 
 Преобразует значение типа `Int64` в `DateTime64` с фиксированной точностью до наносекунд и необязательным указанием часового пояса. Входное значение масштабируется (увеличивается или уменьшается) в зависимости от его исходной точности.
@@ -8169,7 +7976,6 @@ SELECT
 │ 2024-12-11 16:53:08.123456789 │ DateTime64(9, 'UTC') │
 └───────────────────────────────┴──────────────────────┘
 ```
-
 
 ## formatRow {#formatrow}
 
@@ -8241,7 +8047,6 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 ```
 
 Примечание: в этой функции поддерживаются только строчно-ориентированные форматы.
-
 
 ## formatRowNoNewline {#formatrownonewline}
 

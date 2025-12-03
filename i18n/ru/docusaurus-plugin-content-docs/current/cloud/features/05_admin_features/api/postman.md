@@ -90,7 +90,6 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman11} size="md" alt="Идентификатор организации и идентификатор сервиса" border />
 
-
 ## Тестирование возможностей ClickHouse Cloud API {#test-the-clickhouse-cloud-api-functionalities}
 
 ### Тест «GET list of available organizations» {#test-get-list-of-available-organizations}

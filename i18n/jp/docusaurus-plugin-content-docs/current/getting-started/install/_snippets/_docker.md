@@ -10,7 +10,6 @@ Docker pull コマンド:
 docker pull clickhouse/clickhouse-server
 ```
 
-
 ## バージョン {#versions}
 
 - `latest` タグは、最新の安定ブランチの最新リリースを指します。
@@ -31,8 +30,6 @@ docker pull clickhouse/clickhouse-server
   [パッチ](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468) を含む Docker バージョン `20.10.10` 以上を必要とします。
   回避策としては、代わりに `docker run --security-opt seccomp=unconfined` を使用することもできますが、セキュリティ上のリスクがあります。
 
-
-
 ## このイメージの使い方 {#how-to-use-image}
 
 ### サーバーインスタンスを起動する {#start-server-instance}
@@ -46,7 +43,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 デフォルトでは、上記のサーバーインスタンスは、パスワードなしの `default` ユーザーとして実行されます。
 
 ### ネイティブクライアントから接続する {#connect-to-it-from-native-client}
-
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
@@ -117,7 +113,6 @@ docker run -d \
 * `/etc/clickhouse-server/users.d/*.xml` - ユーザー設定の調整用ファイル
 * `/docker-entrypoint-initdb.d/` - データベース初期化スクリプトを配置するフォルダー（後述）。
 
-
 ## Linux capabilities {#linear-capabilities}
 
 ClickHouse には、複数の [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html) の有効化を必要とする高度な機能があります。
@@ -132,7 +127,6 @@ docker run -d \
 
 詳細は [&quot;Docker における CAP&#95;IPC&#95;LOCK および CAP&#95;SYS&#95;NICE ケーパビリティの設定&quot;](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker) を参照してください。
 
-
 ## 設定 {#configuration}
 
 コンテナは [HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http_interface/) 用にポート 8123 を、[ネイティブクライアント](https://clickhouse.com/docs/interfaces/tcp/) 用にポート 9000 を公開します。
@@ -146,7 +140,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 ```
 
 ### 任意のユーザーとしてサーバーを起動する {#start-server-custom-user}
-
 
 ```bash
 # $PWD/data/clickhouse が存在し、現在のユーザーが所有者である必要があります {#pwddataclickhouse-should-exist-and-be-owned-by-current-user}
@@ -181,7 +174,6 @@ docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLIC
 ```bash
 docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clickhouse-server
 ```
-
 
 ## このイメージを拡張する方法 {#how-to-extend-image}
 

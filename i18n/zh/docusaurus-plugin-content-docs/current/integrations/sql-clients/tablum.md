@@ -17,12 +17,9 @@ import tablum_ch_2 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-3.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 TABLUM.IO 连接到 ClickHouse {#connecting-tablumio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## 打开 TABLUM.IO 启动页面 {#open-the-tablumio-startup-page}
 
@@ -30,15 +27,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   你可以通过 Docker 在 Linux 服务器上安装 TABLUM.IO 的自托管版本。
 :::
 
-
-
 ## 1. 注册或登录服务 {#1-sign-up-or-sign-in-to-the-service}
 
   首先，使用您的邮箱在 TABLUM.IO 注册，或者通过 Google 或 Facebook 账号快速登录。
 
 <Image img={tablum_ch_0} size="md" border alt="TABLUM.IO 登录页面" />
-
-
 
 ## 2. 添加 ClickHouse 连接器 {#2-add-a-clickhouse-connector}
 
@@ -54,15 +47,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={tablum_ch_1} size="lg" border alt="在 TABLUM.IO 中添加 ClickHouse 连接器" />
 
-
-
 ## 3. 选择连接器 {#3-select-the-connector}
 
 进入 **Dataset** 选项卡。在下拉列表中选择刚创建的 ClickHouse 连接器。在右侧面板中，您将看到可用的表和架构列表。
 
 <Image img={tablum_ch_2} size="lg" border alt="在 TABLUM.IO 中选择 ClickHouse 连接器" />
-
-
 
 ## 4. 输入 SQL 查询并运行 {#4-input-a-sql-query-and-run-it}
 
@@ -80,8 +69,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 * 对任意已加载的数据运行查询，而不受数据源限制，
 * 将查询结果共享为新的 ClickHouse 数据库。
 :::
-
-
 
 ## 了解更多 {#learn-more}
 

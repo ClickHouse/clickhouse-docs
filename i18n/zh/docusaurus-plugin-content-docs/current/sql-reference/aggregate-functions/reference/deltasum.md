@@ -6,8 +6,6 @@ title: 'deltaSum'
 doc_type: 'reference'
 ---
 
-
-
 # deltaSum {#deltasum}
 
 对相邻行之间的算术差值求和。如果差值为负数，则会被忽略。
@@ -73,7 +71,6 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 │                                2.25 │
 └─────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

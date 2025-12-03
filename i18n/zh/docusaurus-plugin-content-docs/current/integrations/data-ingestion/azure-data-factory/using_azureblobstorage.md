@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
 # 使用 ClickHouse 的 azureBlobStorage 表函数 {#using-azureBlobStorage-function}
 
 这是将数据从 Azure Blob Storage 或 Azure Data Lake Storage 复制到 ClickHouse 的最高效且最直接的方法之一。通过此表函数，可以让 ClickHouse 直接连接到 Azure 存储并按需读取数据。
@@ -20,8 +19,6 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 
 在本节中，我们将通过一个从 Azure Blob Storage 向 ClickHouse 传输数据的简单入门示例进行讲解，并介绍高效使用此函数时需要注意的重要事项。有关更多细节和高级选项，请参阅官方文档：
 [`azureBlobStorage` Table Function 文档页面](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-
-
 
 ## 获取 Azure Blob Storage 访问密钥 {#acquiring-azure-blob-storage-access-keys}
 
@@ -36,8 +33,6 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
    <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
 
 4. 复制该连接字符串——您将在 `azureBlobStorage` 表函数中将其作为参数使用。
-
-
 
 ## 从 Azure Blob Storage 查询数据 {#querying-the-data-from-azure-blob-storage}
 
@@ -67,7 +62,6 @@ SELECT * FROM azureBlobStorage(
 ```
 
 这使得可以高效地将外部数据导入 ClickHouse，而无需经过中间的 ETL 步骤。
-
 
 ## 使用 Environmental Sensors 数据集的简单示例 {#simple-example-using-the-environmental-sensors-dataset}
 
@@ -133,7 +127,6 @@ SETTINGS format_csv_delimiter = ';'
    ```
 
 存储在 Azure Blob Storage 中的 `2019-06_bmp180.csv.zst` 文件数据现已写入 sensors 表。
-
 
 ## 其他资源 {#additional-resources}
 

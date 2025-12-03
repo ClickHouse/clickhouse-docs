@@ -21,7 +21,6 @@ ClickStack 使用 OpenTelemetry 标准来采集遥测数据（日志 logs、指�
 * **Traces**
 * **Exceptions**
 
-
 ## 开始使用 {#getting-started}
 
 ### 安装 HyperDX OpenTelemetry Instrumentation 包 {#install-hyperdx-opentelemetry-instrumentation-package}
@@ -209,7 +208,6 @@ function myErrorHandler(error, req, res, next) {
 export OTEL_LOG_LEVEL=debug
 ```
 
-
 ## 高级埋点配置 {#advanced-instrumentation-configuration}
 
 ### 捕获控制台日志 {#capture-console-logs}
@@ -219,7 +217,6 @@ export OTEL_LOG_LEVEL=debug
 ```sh copy
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
-
 
 ### 附加用户信息或元数据 {#attach-user-information-or-metadata}
 
@@ -250,7 +247,6 @@ app.use((req, res, next) => {
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
-
 
 ### Google Cloud Run {#google-cloud-run}
 
@@ -336,7 +332,6 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
 随后，如需自动捕获来自 Express、Koa 的异常或手动捕获异常，请按照上文 [设置错误收集](#setup-error-collection) 一节中的说明进行配置。
-
 
 ### 自动插桩的库 {#auto-instrumented-libraries-2}
 

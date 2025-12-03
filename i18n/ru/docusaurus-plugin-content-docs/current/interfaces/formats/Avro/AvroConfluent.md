@@ -15,7 +15,6 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 | ---- | ----- | --------- |
 | ✔    | ✗     |           |
 
-
 ## Описание {#description}
 
 [Apache Avro](https://avro.apache.org/) — это строчно-ориентированный формат сериализации, который использует двоичное кодирование для эффективной обработки данных. Формат `AvroConfluent` поддерживает декодирование отдельных объектов — сообщений Kafka, закодированных в Avro и сериализованных с использованием [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html) (или API-совместимых сервисов).
@@ -61,7 +60,6 @@ format_avro_schema_registry_url = 'http://schema-registry-url';
 SELECT * FROM topic1_stream;
 ```
 
-
 #### Использование базовой аутентификации {#using-basic-authentication}
 
 Если для вашего реестра схем требуется базовая аутентификация (например, при использовании Confluent Cloud), вы можете указать URL-кодированные учетные данные в настройке `format_avro_schema_registry_url`.
@@ -80,7 +78,6 @@ kafka_group_name = 'group1',
 kafka_format = 'AvroConfluent',
 format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry-url';
 ```
-
 
 ## Диагностика неполадок {#troubleshooting}
 

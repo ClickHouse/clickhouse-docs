@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # JDBC テーブルエンジン {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -24,8 +23,6 @@ ClickHouse が [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) 
 JDBC 接続を実現するために、ClickHouse はデーモンとして実行する必要がある別のプログラム [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) を使用します。
 
 このエンジンは [Nullable](../../../sql-reference/data-types/nullable.md) データ型をサポートします。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -49,7 +46,6 @@ ENGINE = JDBC(datasource, external_database, external_table)
 * `external_table` — 外部データベース内のテーブル名、または `select * from table1 where column1=1` のような select クエリ。
 
 * これらのパラメータは、[名前付きコレクション](operations/named-collections.md)を使用して指定することもできます。
-
 
 ## 使用例 {#usage-example}
 
@@ -105,7 +101,6 @@ INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
-
 
 ## 関連項目 {#see-also}
 

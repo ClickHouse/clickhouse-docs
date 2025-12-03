@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
 
 多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、または略してベクトル検索と呼ばれます。
@@ -34,7 +33,6 @@ LIMIT <N>
 `&lt;DistanceFunction&gt;` は、参照点と格納されているすべての点との距離を計算します。
 この処理には、利用可能な任意の [distance function](/sql-reference/functions/distance-functions) を使用できます。
 `&lt;N&gt;` は、返すべき近傍点の数を指定します。
-
 
 ## 厳密なベクトル検索 {#exact-nearest-neighbor-search}
 
@@ -65,7 +63,6 @@ LIMIT 3;
 3. │  8 │ [0,2.2] │
    └────┴─────────┘
 ```
-
 
 ## 近似ベクトル検索 {#approximate-nearest-neighbor-search}
 
@@ -146,7 +143,6 @@ ORDER BY [...]
 すべての HNSW 固有パラメータのデフォルト値は、ほとんどのユースケースで良好に機能します。
 したがって、HNSW 固有パラメータのカスタマイズは推奨しません。
 
-
 さらなる制限があります:
 
 * ベクター類似度インデックスは、[Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) 型の列に対してのみ作成できます。`Array(Nullable(Float32))` や `Array(LowCardinality(Float32))` のような nullable や low-cardinality の浮動小数点数配列は使用できません。
@@ -219,7 +215,6 @@ SELECT クエリ内の距離関数がインデックス定義で指定されて�
 上級ユーザーは、検索時の候補リストのサイズを調整するために、[hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search)（HNSW のハイパーパラメータ「ef&#95;search」としても知られる）に任意の値を設定できます（例: `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
 この設定のデフォルト値である 256 は、ほとんどのユースケースで良好に機能します。
 この値を大きくすると精度は向上しますが、その分パフォーマンスが低下します。
-
 
 クエリでベクター類似性インデックスを使用する場合、ClickHouse は SELECT クエリで指定された LIMIT `<N>` が妥当な範囲内かどうかをチェックします。
 より具体的には、`<N>` が設定値 [max&#95;limit&#95;for&#95;vector&#95;search&#95;queries](../../../operations/settings/settings.md#max_limit_for_vector_search_queries)（デフォルト値は 100）より大きい場合はエラーが返されます。
@@ -308,7 +303,6 @@ ClickHouse は、2025 年のパーティション以外をすべてプルーニ�
 
 追加のフィルタ条件がインデックス（PRIMARY KEY インデックス、スキッピングインデックス）を使って評価できない場合、ClickHouse はポストフィルタリングを適用します。
 
-
 *追加のフィルターはプライマリキーインデックスを用いて評価できる*
 
 追加のフィルター条件が [プライマリキー](mergetree.md#primary-key) を用いて評価可能な場合（すなわち、プライマリキーのプレフィックスを構成している場合）、かつ
@@ -370,7 +364,6 @@ ClickHouse のスキップインデックスは一般的にグラニュールレ
 この最適化はデフォルトで有効になっており、設定 [vector&#95;search&#95;with&#95;rescoring](../../../operations/settings/settings#vector_search_with_rescoring) を参照してください。
 概要としては、ClickHouse が最も類似したベクターとその距離を仮想カラム `_distances` として利用可能にします。
 これを確認するには、`EXPLAIN header = 1` を付けてベクター検索クエリを実行します。
-
 
 ```sql
 EXPLAIN header = 1
@@ -444,7 +437,6 @@ CREATE TABLE tab(id Int32, vec Array(Float32) CODEC(NONE), INDEX idx vec TYPE ve
 
 **インデックス使用のチューニング**
 
-
 SELECT クエリでベクトル類似性インデックスを使用するには、それらをメインメモリにロードする必要があります。
 同じベクトル類似性インデックスが繰り返しメインメモリにロードされることを避けるため、ClickHouse はそのようなインデックス用の専用インメモリキャッシュを提供しています。
 このキャッシュが大きいほど、不要なロードの回数は少なくなります。
@@ -516,7 +508,6 @@ result = chclient.query(
     parameters = params)
 ```
 
-
 埋め込みベクトル（上記スニペットの `search_v`）は、非常に大きな次元数を持つ場合があります。
 たとえば、OpenAI は 1536 次元や 3072 次元の埋め込みベクトルを生成するモデルを提供しています。
 上記のコードでは、ClickHouse Python ドライバは埋め込みベクトルを人間が読める文字列に置き換え、その後 SELECT クエリ全体を文字列として送信します。
@@ -574,7 +565,6 @@ WHERE type = 'vector_similarity';
 しかし、ClickHouse はディスクからメモリへデータを読み込む際にグラニュールの粒度で処理するため、サブインデックスはマッチした行をグラニュール単位にまで拡張して扱います。
 これは、インデックスブロックの粒度でデータをスキップする通常のスキッピングインデックスとは異なります。
 
-
 `GRANULARITY` パラメータは、いくつのベクトル類似度サブインデックスを作成するかを決定します。
 より大きな `GRANULARITY` の値では、サブインデックスの数は少なくなる一方、それぞれのサブインデックスはより大きくなり、最終的にはあるカラム（またはカラムのデータパーツ）が単一のサブインデックスしか持たない状態になります。
 その場合、そのサブインデックスはカラム行全体に対する「グローバル」なビューを持ち、関連する行を含むカラム（パーツ）のすべてのグラニュールを直接返すことができます（そのようなグラニュールは最大でも `LIMIT [N]` 個です）。
@@ -630,7 +620,6 @@ ClickHouse は、これらの制約を解決する Quantized Bit (`QBit`) デー
 
 1. 元のフル精度データを保存する。
 2. クエリ時に量子化精度を指定できるようにする。
-
 
 これは、データをビットグループ化形式（すべてのベクトルの i 番目のビットをまとめて保存する形式）で保存することで実現され、要求された精度レベルだけを読み出せるようにします。これにより、量子化による I/O と計算量の削減による高速化の恩恵を受けつつ、必要に応じて元のデータをすべて利用可能な状態に保てます。最大精度が選択された場合、検索は厳密なもの（完全一致）になります。
 
@@ -715,7 +704,6 @@ ORDER BY distance;
 6. │ dog    │   3.17766975527459 │
    └────────┴────────────────────┘
 ```
-
 
 12 ビット量子化では、クエリ実行が高速化されつつ、距離を良好に近似できることに注目してください。相対的な順位付けも概ね一貫しており、依然として「apple」が最も近い一致となっています。
 

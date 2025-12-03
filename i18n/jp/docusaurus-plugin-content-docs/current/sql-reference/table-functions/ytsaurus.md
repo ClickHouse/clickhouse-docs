@@ -9,14 +9,11 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # ytsaurus テーブル関数 {#ytsaurus-table-function}
 
 <ExperimentalBadge/>
 
 このテーブル関数を使用すると、YTsaurus クラスターからデータを読み込むことができます。
-
-
 
 ## 構文 {#syntax}
 
@@ -29,7 +26,6 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 YTsaurus テーブル関数の使用を有効にするには、[allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) 設定を有効にします。
 `set allow_experimental_ytsaurus_table_function = 1` コマンドを実行します。
 :::
-
 
 ## 引数 {#arguments}
 

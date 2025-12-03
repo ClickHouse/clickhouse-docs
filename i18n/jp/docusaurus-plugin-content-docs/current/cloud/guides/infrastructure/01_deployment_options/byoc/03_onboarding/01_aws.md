@@ -16,7 +16,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## オンボーディングプロセス {#onboarding-process}
 
 お客様は、[こちら](https://clickhouse.com/cloud/bring-your-own-cloud) からお問い合わせいただくことで、オンボーディングプロセスを開始できます。専用の AWS アカウントと、利用予定のリージョンをあらかじめご用意いただく必要があります。現時点では、ClickHouse Cloud がサポートしているリージョンでのみ BYOC サービスを起動できます。
@@ -82,7 +81,6 @@ CloudFormation スタックを作成すると、クラウドコンソールか�
    VPC にまだ S3 ゲートウェイエンドポイントが構成されていない場合は、VPC と Amazon S3 間のセキュアでプライベートな通信を有効にするために、1 つ作成する必要があります。このエンドポイントにより、ClickHouse のサービスはパブリックインターネットを経由せずに S3 にアクセスできます。構成例については、以下のスクリーンショットを参照してください。
 
 <br />
-
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 エンドポイント" background='black'/>
 
@@ -169,8 +167,6 @@ ClickHouse にプライベートアクセスするために、ユーザーのピ
 
 任意ですが、ピアリングが正常に機能していることを確認した後に、ClickHouse BYOC のパブリックロードバランサーの削除を依頼できます。
 
-
-
 ## アップグレードプロセス {#upgrade-process}
 
 ClickHouse データベースバージョンのアップグレード、ClickHouse Operator、EKS などのコンポーネントを含め、ソフトウェアを定期的にアップグレードしています。
@@ -180,8 +176,6 @@ ClickHouse データベースバージョンのアップグレード、ClickHous
 :::note
 メンテナンスウィンドウは、セキュリティおよび脆弱性修正には適用されません。これらは通常のスケジュール外のアップグレードとして対応し、運用への影響を最小限に抑えられるよう、適切な時間を調整するためのタイムリーなコミュニケーションを行います。
 :::
-
-
 
 ## CloudFormation IAM ロール {#cloudformation-iam-roles}
 
@@ -216,8 +210,6 @@ CloudFormation で作成される `ClickHouseManagementRole` に加えて、コ�
 **K8s-control-plane** ロールと **k8s-worker** ロールは、AWS EKS サービスによって引き受けられることを意図したものです。
 
 最後に、**`data-plane-mgmt`** は、ClickHouse Cloud コントロールプレーンコンポーネントが `ClickHouseCluster` や Istio Virtual Service/Gateway などの必要なカスタムリソースを調整できるようにします。
-
-
 
 ## ネットワーク境界 {#network-boundaries}
 

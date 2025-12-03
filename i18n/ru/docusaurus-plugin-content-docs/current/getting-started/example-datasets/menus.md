@@ -30,7 +30,6 @@ md5sum 2021_08_01_07_01_17_data.tgz
 При необходимости замените ссылку на актуальную с [http://menus.nypl.org/data](http://menus.nypl.org/data).
 Размер загрузки составляет около 35 МБ.
 
-
 ## Распакуйте датасет {#unpack-dataset}
 
 ```bash
@@ -45,7 +44,6 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 * `Dish` — Информация о блюдах: название блюда вместе с некоторыми характеристиками.
 * `MenuPage` — Информация о страницах в меню, поскольку каждая страница относится к какому‑то меню.
 * `MenuItem` — Позиция меню. Блюдо вместе с его ценой на определённой странице меню: ссылки на блюдо и страницу меню.
-
 
 ## Создайте таблицы {#create-tables}
 
@@ -114,7 +112,6 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-
 ## Импортируйте данные {#import-data}
 
 Чтобы загрузить данные в ClickHouse, выполните следующую команду:
@@ -133,7 +130,6 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 Мы отключаем [input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default), так как в наших данных нет [NULL](/operations/settings/formats#input_format_null_as_default). В противном случае ClickHouse будет пытаться разбирать последовательности `\N`, и их можно перепутать с символом `\` в данных.
 
 Настройка [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) позволяет разбирать поля [DateTime](../../sql-reference/data-types/datetime.md) в широком диапазоне форматов. Например, будет распознан формат ISO-8601 без секунд, такой как &#39;2000-01-01 01:02&#39;. Без этой настройки разрешён только фиксированный формат DateTime.
-
 
 ## Денормализация данных {#denormalize-data}
 
@@ -187,7 +183,6 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-
 ## Проверьте данные {#validate-data}
 
 Запрос:
@@ -203,7 +198,6 @@ SELECT count() FROM menu_item_denorm;
 │ 1329175 │
 └─────────┘
 ```
-
 
 ## Выполните несколько запросов {#run-queries}
 
@@ -249,7 +243,6 @@ ORDER BY d ASC;
 
 Не воспринимайте это слишком всерьёз.
 
-
 ### Цены на бургеры {#query-burger-prices}
 
 Запрос:
@@ -287,7 +280,6 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-
 ### Водка {#query-vodka}
 
 Запрос:
@@ -321,7 +313,6 @@ ORDER BY d ASC;
 ```
 
 Чтобы получить «водку», нам нужно написать `ILIKE '%vodka%'`, и это, мягко говоря, звучит многозначительно.
-
 
 ### Икра {#query-caviar}
 
@@ -365,7 +356,6 @@ ORDER BY d ASC;
 ```
 
 Зато у них хотя бы есть икра с водкой. Очень неплохо.
-
 
 ## Онлайн-песочница {#playground}
 

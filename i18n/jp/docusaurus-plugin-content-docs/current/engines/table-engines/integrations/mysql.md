@@ -7,13 +7,9 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # MySQL テーブルエンジン {#mysql-table-engine}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -65,7 +61,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## 使用例 {#usage-example}
 
@@ -132,7 +127,6 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-
 ## 設定 {#mysql-settings}
 
 デフォルト設定は接続の再利用も行わないため、効率的とは言えません。以下の設定により、サーバーが 1 秒あたりに処理できるクエリ数を増やすことができます。
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - 正の整数。
 
 デフォルト値: `300`。
-
-
 
 ## 関連項目 {#see-also}
 

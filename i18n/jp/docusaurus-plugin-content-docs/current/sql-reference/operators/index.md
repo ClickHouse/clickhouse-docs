@@ -128,7 +128,6 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
 ## データセットを扱う演算子 {#operators-for-working-with-data-sets}
 
 [IN 演算子](../../sql-reference/operators/in.md)および[EXISTS 演算子](../../sql-reference/operators/exists.md)を参照してください。
@@ -203,7 +202,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-
 ## 日付と時刻を扱う演算子 {#operators-for-working-with-dates-and-times}
 
 ### EXTRACT {#extract}
@@ -269,7 +267,6 @@ FROM test.Orders;
 ```
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
-
 
 ### INTERVAL {#interval}
 
@@ -345,7 +342,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数
 
-
 ## 論理AND演算子 {#logical-and-operator}
 
 構文 `SELECT a AND b` — 関数 [and](/sql-reference/functions/logical-functions#and) を用いて、`a` と `b` の論理積を計算します。
@@ -381,7 +377,6 @@ END
 式に `ELSE c` 句がない場合、デフォルト値は `NULL` になります。
 
 `transform` 関数は `NULL` を処理できません。
-
 
 ## 連結演算子 {#concatenation-operator}
 
@@ -432,7 +427,6 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 │          101 │
 └──────────────┘
 ```
-
 
 ### IS NOT NULL {#is_not_null}
 

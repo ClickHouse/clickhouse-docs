@@ -41,7 +41,6 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # например: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-
 ### Создание конфигурации ДемонСета {#creating-the-daemonset-configuration}
 
 ДемонСет будет собирать логи и метрики с каждого узла в кластере, но не будет собирать события Kubernetes или метрики на уровне всего кластера.
@@ -155,7 +154,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ### Создание конфигурации развертывания
 
 Чтобы собирать события Kubernetes и метрики всего кластера, нам нужно развернуть отдельный коллектор OpenTelemetry в виде развертывания.
@@ -231,7 +229,6 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-
 ## Развертывание коллектора OpenTelemetry
 
 Теперь коллектор OpenTelemetry можно развернуть в вашем Kubernetes-кластере с помощью
@@ -251,7 +248,6 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 ```
 
 Теперь метрики, логи и события Kubernetes из вашего кластера должны появиться в HyperDX.
-
 
 ## Пересылка тегов ресурсов в поды (рекомендуется)
 

@@ -7,13 +7,9 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-
-
 # iceberg 表函数 {#iceberg-table-function}
 
 为存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Iceberg](https://iceberg.apache.org/) 表提供类似表的只读接口。
-
-
 
 ## 语法 {#syntax}
 
@@ -30,7 +26,6 @@ icebergHDFS(named_collection[, option=value [,..]])
 icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
-
 
 ## 参数 {#arguments}
 
@@ -50,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 ClickHouse 目前通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal` 表函数，以及 `IcebergS3`、`icebergAzure`、`IcebergHDFS` 和 `IcebergLocal` 表引擎，支持读取 Iceberg 格式 v1 和 v2 的数据。
 :::
-
 
 ## 定义命名集合 {#defining-a-named-collection}
 
@@ -75,7 +69,6 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-
 ## 模式演进 {#schema-evolution}
 
 目前，借助 CH，你可以读取其 schema 随时间发生变更的 Iceberg 表。我们当前支持读取以下类型的表：列被新增或删除，或者列的顺序发生变化。你也可以将某个原本不允许为 NULL 的列修改为允许为 NULL 的列。此外，我们支持对简单类型进行受支持的类型转换，具体包括： 
@@ -86,19 +79,13 @@ DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 
 目前，还不能对嵌套结构本身或数组和 Map 中元素的类型进行变更。
 
-
-
 ## 分区剪枝 {#partition-pruning}
 
 ClickHouse 在针对 Iceberg 表执行 SELECT 查询时支持分区剪枝，这有助于通过跳过无关的数据文件来优化查询性能。要启用分区剪枝，请设置 `use_iceberg_partition_pruning = 1`。有关 Iceberg 分区剪枝的更多信息，请参阅：https://iceberg.apache.org/spec/#partitioning。
 
-
-
 ## 时间回溯 {#time-travel}
 
 ClickHouse 为 Iceberg 表提供时间回溯功能，允许基于指定的时间戳或快照 ID 查询历史数据。
-
-
 
 ## 处理包含已删除行的表 {#deleted-rows}
 
@@ -239,7 +226,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 之所以会出现这种情况，是因为 `ALTER TABLE` 不会创建新的快照，而是对当前表，Spark 会从最新的元数据文件中读取 `schema_id` 的值，而不是从快照中读取。
 
-
 #### 场景 3：历史与当前表结构的差异 {#scenario-3}
 
 第二点是，在进行时间穿梭查询时，你无法获取表在写入任何数据之前的状态：
@@ -260,7 +246,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 在 ClickHouse 中，其行为与 Spark 一致。你可以在概念上将 Spark 的 SELECT 查询替换为 ClickHouse 的 SELECT 查询，二者的工作方式是相同的。
-
 
 ## 元数据文件解析 {#metadata-file-resolution}
 
@@ -304,18 +289,13 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **注意**：尽管 Iceberg Catalog 通常负责元数据解析，但 ClickHouse 中的 `iceberg` 表函数会直接将存储在 S3 中的文件解释为 Iceberg 表，因此理解这些解析规则非常重要。
 
-
 ## 元数据缓存 {#metadata-cache}
 
 `Iceberg` 表引擎和表函数支持将关于 manifest 文件、manifest 列表和元数据 JSON 的信息缓存在内存中。此功能由设置 `use_iceberg_metadata_files_cache` 控制，默认启用。
 
-
-
 ## 别名 {#aliases}
 
 表函数 `iceberg` 现在是 `icebergS3` 的别名。
-
-
 
 ## 虚拟列 {#virtual-columns}
 
@@ -324,8 +304,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 - `_size` — 文件大小（字节数）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
 - `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，则该值为 `NULL`。
-
-
 
 ## 写入 Iceberg 表 {#writes-into-iceberg-table}
 
@@ -447,7 +425,6 @@ y: 993
 z: ᴺᵁᴸᴸ
 ```
 
-
 ALTER TABLE iceberg&#95;writes&#95;example DROP COLUMN z;
 SHOW CREATE TABLE iceberg&#95;writes&#95;example;
 ┌─statement─────────────────────────────────────────────────┐
@@ -492,7 +469,6 @@ x: Ivanov
 y: 993
 ````
 
-
 ## 使用目录的表 {#iceberg-writes-catalogs}
 
 上面描述的所有写入功能，同样可以通过 REST 和 Glue 目录来使用。
@@ -502,7 +478,6 @@ y: 993
 CREATE TABLE `database_name.table_name`  ENGINE = IcebergS3('http://minio:9000/warehouse-rest/table_name/', 'minio_access_key', 'minio_secret_key')
 SETTINGS storage_catalog_type="rest", storage_warehouse="demo", object_storage_endpoint="http://minio:9000/warehouse-rest", storage_region="us-east-1", storage_catalog_url="http://rest:8181/v1",
 ```
-
 
 ## 另请参阅 {#see-also}
 

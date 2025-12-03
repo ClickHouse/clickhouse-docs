@@ -41,7 +41,6 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-
 ## 安装 Clang 编译器 {#install-the-clang-compiler}
 
 要在 Ubuntu/Debian 上安装 Clang，请使用 LLVM 的自动安装脚本，详见[此页面](https://apt.llvm.org/)。
@@ -54,7 +53,6 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 截至 2025 年 3 月，需要使用 Clang 19 或更高版本。
 不支持 GCC 或其他编译器。
-
 
 ## 安装 Rust 编译器（可选） {#install-the-rust-compiler-optional}
 
@@ -74,7 +72,6 @@ rustup toolchain install nightly-2025-07-07
 rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
-
 
 ## 构建 ClickHouse {#build-clickhouse}
 
@@ -134,7 +131,6 @@ cmake --build build  # 编译
 
 :::
 
-
 ## 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable}
 
 构建成功后，你可以在 `ClickHouse/<build_dir>/programs/` 中找到可执行文件：
@@ -149,7 +145,6 @@ ClickHouse 服务器会尝试在当前目录查找配置文件 `config.xml`。
 ```bash
 clickhouse client --host 127.0.0.1
 ```
-
 
 ## 高级选项 {#advanced-options}
 
@@ -168,7 +163,6 @@ Rust 需要网络连接。若要禁用 Rust 支持：
 ```sh
 cmake -DENABLE_RUST=OFF
 ```
-
 
 ### 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable-1}
 
@@ -190,7 +184,6 @@ sudo service clickhouse-server start
 sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
-
 
 ### 在任何 Linux 上构建 {#building-on-any-linux}
 
@@ -214,7 +207,6 @@ mkdir build
 cmake -S . -B build
 cmake --build build
 ```
-
 
 ### 在 Docker 中构建 {#building-in-docker}
 

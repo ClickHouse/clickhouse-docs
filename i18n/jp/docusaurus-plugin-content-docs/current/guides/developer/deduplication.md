@@ -11,7 +11,6 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
 # 重複排除の戦略 {#deduplication-strategies}
 
 **重複排除（Deduplication）** とは、***データセットから重複した行を削除する*** プロセスを指します。OLTP データベースでは、各行に一意のプライマリキーがあるため、これは容易に実現できますが、その代わり挿入処理は遅くなります。挿入される各行について、まず既存行の検索が必要となり、見つかった場合はそれを置き換える必要があるためです。
@@ -30,8 +29,6 @@ ClickHouse はデータ挿入における高速性を重視して設計されて
 
 </div>
 
-
-
 ## 重複排除のオプション {#options-for-deduplication}
 
 ClickHouse では、次のテーブルエンジンを用いて重複排除が実装されています。
@@ -41,8 +38,6 @@ ClickHouse では、次のテーブルエンジンを用いて重複排除が実
 2. 行の折りたたみ（Collapsing）: `CollapsingMergeTree` および `VersionedCollapsingMergeTree` テーブルエンジンは、既存の行を「キャンセル」して新しい行を挿入するロジックを使用します。これらは `ReplacingMergeTree` よりも実装が複雑ですが、データがすでにマージされているかどうかを意識せずにクエリや集計をよりシンプルに記述できます。これら 2 つのテーブルエンジンは、データを頻繁に更新する必要がある場合に有用です。
 
 以下で、これら 2 つの手法を順に解説します。詳細については、無料オンデマンドの [Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)を参照してください。
-
-
 
 ## Upsert に ReplacingMergeTree を使用する {#using-replacingmergetree-for-upserts}
 
@@ -133,7 +128,6 @@ SELECT *
 FROM hackernews_rmt
 ```
 
-
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
 │  2 │ ch_fan  │ This is post #2 │   200 │
@@ -171,7 +165,6 @@ GROUP BY (id, author, comment)
 上記のクエリのようにグループ化することは、クエリパフォーマンスの観点からは、`FINAL` キーワードを使用するよりも実際に効率的になる場合があります。
 
 [Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)では、この例をさらに掘り下げ、`ReplacingMergeTree` で `version` 列を使用する方法などについて解説しています。
-
 
 ## CollapsingMergeTree を使った頻繁に更新されるカラムの処理 {#using-collapsingmergetree-for-updating-columns-frequently}
 
@@ -257,7 +250,6 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 
 :::
-
 
 ## 複数スレッドからのリアルタイム更新 {#real-time-updates-from-multiple-threads}
 
@@ -348,7 +340,6 @@ FROM hackernews_views_vcmt
 ```
 
 `VersionedCollapsingMergeTree` テーブルは、複数のクライアントやスレッドから行を挿入する際に重複排除を行いたい場合に非常に便利です。
-
 
 ## なぜ行が重複排除されないのですか？ {#why-arent-my-rows-being-deduplicated}
 

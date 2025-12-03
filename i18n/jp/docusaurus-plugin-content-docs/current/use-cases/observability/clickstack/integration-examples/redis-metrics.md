@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した Redis メトリクスの監視 {#redis-metrics-clickstack}
 
 :::note[要約]
@@ -347,7 +346,6 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### HyperDX にメトリクスが表示されない
 
 collector から Redis にアクセスできることを確認してください：
@@ -378,7 +376,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 # 接続エラーまたは認証失敗を確認します {#load-gauge-metrics-memory-fragmentation}
 ```
 
-
 ### 認証エラー
 
 ログに認証エラーが表示されている場合:
@@ -403,7 +400,6 @@ receivers:
     password: ${env:REDIS_PASSWORD}
 ```
 
-
 ### ネットワーク接続の問題
 
 ClickStack が Redis に接続できない場合:
@@ -418,7 +414,6 @@ docker exec <clickstack-container> telnet redis 6379
 ```
 
 Docker Compose ファイルまたは `docker run` コマンドで、両方のコンテナが同一のネットワーク上に置かれるように構成してください。
-
 
 ## 次のステップ {#next-steps}
 

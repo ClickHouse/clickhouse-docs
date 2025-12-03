@@ -25,12 +25,9 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-
 # Интеграция Amazon Kinesis с ClickHouse Cloud {#integrating-amazon-kinesis-with-clickhouse-cloud}
 ## Предварительные требования {#prerequisite}
 Вы ознакомились с [введением в ClickPipes](./index.md) и настроили [учётные данные IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) или [роль IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Следуйте [руководству по доступу к Kinesis на основе ролей](./secure-kinesis.md), чтобы настроить роль для работы с ClickHouse Cloud.
-
-
 
 ## Создание вашего первого ClickPipe {#creating-your-first-clickpipe}
 
@@ -90,14 +87,10 @@ import Image from '@theme/IdealImage';
 
 10. **Поздравляем!** Вы успешно настроили свой первый ClickPipe. Если это потоковый ClickPipe, он будет постоянно работать, выполняя приём данных в реальном времени из удалённого источника данных. В противном случае приём будет выполнен пакетно и завершится.
 
-
-
 ## Поддерживаемые форматы данных {#supported-data-formats}
 
 Поддерживаемые форматы:
 - [JSON](/interfaces/formats/JSON)
-
-
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
@@ -130,8 +123,6 @@ import Image from '@theme/IdealImage';
 Поля JSON, которые всегда являются объектом JSON, можно сопоставить с целевым столбцом типа JSON. Вам потребуется вручную изменить
 целевой столбец на требуемый тип JSON, включая любые фиксированные или пропускаемые пути. 
 
-
-
 ## Виртуальные столбцы Kinesis {#kinesis-virtual-columns}
 
 Для потока Kinesis поддерживаются следующие виртуальные столбцы. При создании новой таблицы назначения виртуальные столбцы можно добавить с помощью кнопки `Add Column`.
@@ -146,13 +137,9 @@ import Image from '@theme/IdealImage';
 
 Поле _raw_message можно использовать в случаях, когда требуется только полная JSON-запись Kinesis (например, при использовании функций ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) для заполнения дочернего материализованного представления). Для таких конвейеров производительность ClickPipes может повыситься, если удалить все «невиртуальные» столбцы.
 
-
-
 ## Ограничения {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) не поддерживается.
-
-
 
 ## Производительность {#performance}
 
@@ -179,8 +166,6 @@ ClickPipes обеспечивает высокую доступность бла
 Независимо от количества работающих потребителей, отказоустойчивость обеспечивается архитектурой системы.
 Если потребитель или его базовая инфраструктура выходит из строя,
 ClickPipe автоматически перезапустит потребителя и продолжит обработку сообщений.
-
-
 
 ## Аутентификация {#authentication}
 

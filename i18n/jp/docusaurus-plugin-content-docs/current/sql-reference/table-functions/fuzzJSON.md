@@ -7,20 +7,15 @@ title: 'fuzzJSON'
 doc_type: 'reference'
 ---
 
-
-
 # fuzzJSON テーブル関数 {#fuzzjson-table-function}
 
 JSON 文字列にランダムな変化を加えて撹乱します。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 ```
-
 
 ## 引数 {#arguments}
 
@@ -41,13 +36,9 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 | `min_key_length` (UInt64)          | キーの最小長。少なくとも 1 である必要があります。                                          |
 | `max_key_length` (UInt64)          | キーの最大長。指定されている場合は `min_key_length` 以上である必要があります。            |
 
-
-
 ## 戻り値 {#returned_value}
 
 摂動された JSON 文字列を含む単一列のテーブルオブジェクト。
-
-
 
 ## 使用例 {#usage-example}
 

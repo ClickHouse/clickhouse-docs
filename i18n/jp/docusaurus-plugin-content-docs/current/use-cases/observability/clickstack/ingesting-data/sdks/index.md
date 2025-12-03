@@ -60,7 +60,6 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキ�
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-
 ## Kubernetes integration {#kubernetes-integration}
 
 すべての SDK は、Kubernetes 環境で実行されている場合、Kubernetes メタデータ（ポッド名、ネームスペースなど）との自動的な相関付けをサポートします。これにより、次のことが可能になります。

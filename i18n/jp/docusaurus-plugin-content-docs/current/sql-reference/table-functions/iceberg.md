@@ -7,13 +7,9 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-
-
 # iceberg テーブル関数 {#iceberg-table-function}
 
 Amazon S3、Azure、HDFS、またはローカルに保存された Apache [Iceberg](https://iceberg.apache.org/) テーブルに対する読み取り専用のテーブル形式インターフェイスを提供します。
-
-
 
 ## 構文 {#syntax}
 
@@ -30,7 +26,6 @@ icebergHDFS(named_collection[, option=value [,..]])
 icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -50,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 ClickHouse は現在、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLocal` テーブル関数および `IcebergS3`、`icebergAzure`、`IcebergHDFS`、`IcebergLocal` テーブルエンジンを通じて、Iceberg フォーマット v1 および v2 の読み取りをサポートしています。
 :::
-
 
 ## 名前付きコレクションの定義 {#defining-a-named-collection}
 
@@ -75,7 +69,6 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-
 ## スキーマ進化 {#schema-evolution}
 
 現時点では、CH の機能により、時間の経過とともにスキーマが変更された Iceberg テーブルを読み取ることができます。現在、列の追加・削除や列順の変更が行われたテーブルの読み取りをサポートしています。また、値が必須だった列を、NULL を許容する列に変更することもできます。加えて、単純型に対する許可された型変換もサポートしており、具体的には次のとおりです。  
@@ -86,19 +79,13 @@ DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 
 現時点では、ネストされた構造や、配列および Map 内の要素型を変更することはできません。
 
-
-
 ## パーティションプルーニング {#partition-pruning}
 
 ClickHouse は Iceberg テーブルに対する SELECT クエリ実行時のパーティションプルーニングをサポートしており、不要なデータファイルをスキップすることでクエリ パフォーマンスを最適化できます。パーティションプルーニングを有効にするには、`use_iceberg_partition_pruning = 1` を設定します。Iceberg のパーティションプルーニングの詳細については、https://iceberg.apache.org/spec/#partitioning を参照してください。
 
-
-
 ## タイムトラベル {#time-travel}
 
 ClickHouse は Iceberg テーブルに対するタイムトラベル機能をサポートしており、特定のタイムスタンプまたはスナップショット ID を指定して履歴データをクエリできます。
-
-
 
 ## 削除行を含むテーブルの処理 {#deleted-rows}
 
@@ -239,7 +226,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 これは、`ALTER TABLE` が新しいスナップショットを作成しない一方で、Spark は現在のテーブルに対して、スナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
 
-
 #### シナリオ 3:  過去と現在のスキーマの差異 {#scenario-3}
 
 2 つ目の制約は、タイムトラベルを行っても、テーブルにまだ一切データが書き込まれていない時点の状態は取得できないという点です。
@@ -260,7 +246,6 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 ClickHouse における動作は Spark と同様です。Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えるイメージで考えれば、同じように動作します。
-
 
 ## メタデータファイルの解決 {#metadata-file-resolution}
 
@@ -304,18 +289,13 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **注意**: 通常は Iceberg カタログがメタデータの解決を行いますが、ClickHouse の `iceberg` テーブル関数は S3 に保存されたファイルを Iceberg テーブルとして直接解釈します。そのため、これらの解決ルールを理解しておくことが重要です。
 
-
 ## メタデータキャッシュ {#metadata-cache}
 
 `Iceberg` テーブルエンジンおよびテーブル関数は、マニフェストファイル、マニフェストリスト、メタデータ JSON の情報を格納するメタデータキャッシュをサポートします。キャッシュはメモリ上に保存されます。この機能は `use_iceberg_metadata_files_cache` 設定で制御されており、デフォルトで有効になっています。
 
-
-
 ## 別名 {#aliases}
 
 テーブル関数 `iceberg` は、現在 `icebergS3` のエイリアスです。
-
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -324,8 +304,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 - `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` になります。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
 - `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合、値は `NULL` になります。
-
-
 
 ## Iceberg テーブルへの書き込み {#writes-into-iceberg-table}
 
@@ -447,7 +425,6 @@ y: 993
 z: ᴺᵁᴸᴸ
 ```
 
-
 ALTER TABLE iceberg&#95;writes&#95;example DROP COLUMN z;
 SHOW CREATE TABLE iceberg&#95;writes&#95;example;
 ┌─statement─────────────────────────────────────────────────┐
@@ -492,7 +469,6 @@ x: Ivanov
 y: 993
 ````
 
-
 ## カタログを利用するテーブル {#iceberg-writes-catalogs}
 
 前述のすべての書き込み機能は、REST カタログおよび Glue カタログでも利用できます。
@@ -502,7 +478,6 @@ y: 993
 CREATE TABLE `database_name.table_name`  ENGINE = IcebergS3('http://minio:9000/warehouse-rest/table_name/', 'minio_access_key', 'minio_secret_key')
 SETTINGS storage_catalog_type="rest", storage_warehouse="demo", object_storage_endpoint="http://minio:9000/warehouse-rest", storage_region="us-east-1", storage_catalog_url="http://rest:8181/v1",
 ```
-
 
 ## 関連項目 {#see-also}
 

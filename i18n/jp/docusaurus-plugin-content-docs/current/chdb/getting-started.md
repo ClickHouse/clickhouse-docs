@@ -7,15 +7,11 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-
-
 # chDB を使い始める {#getting-started-with-chdb}
 
 このガイドでは、Python 版の chDB を使って、すぐに使い始めるための手順を説明します。
 まず S3 上の JSON ファイルに対してクエリを実行し、その JSON ファイルを元に chDB 内にテーブルを作成し、データに対していくつかクエリを実行します。
 また、Apache Arrow や Pandas など、複数のフォーマットでクエリ結果を取得する方法を確認し、最後に Pandas の DataFrame をクエリする方法を学びます。 
-
-
 
 ## セットアップ {#setup}
 
@@ -50,7 +46,6 @@ ipython
 ```bash
 pip install pandas pyarrow
 ```
-
 
 ## S3 内の JSON ファイルをクエリする {#querying-a-json-file-in-s3}
 
@@ -149,7 +144,6 @@ chdb.query(
 これはプログラム内で定義した変数に対して行う分には問題ありませんが、ユーザーからの入力に対しては決して行わないでください。そうしないと、クエリが SQL インジェクション攻撃に対して無防備になります。
 :::
 
-
 ## 出力フォーマットの設定 {#configuring-the-output-format}
 
 デフォルトの出力フォーマットは `CSV` ですが、`output_format` パラメータで変更できます。
@@ -201,7 +195,6 @@ count(): uint64 not null
 is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
-
 
 ## JSON ファイルからテーブルを作成する {#creating-a-table-from-json-file}
 
@@ -309,7 +302,6 @@ sess.query(f"""
 )
 ```
 
-
 ## テーブルをクエリする {#querying-a-table}
 
 最後に、そのテーブルに対してクエリを実行してみましょう。
@@ -348,7 +340,6 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-
 ## Pandas データフレームをクエリする {#querying-a-pandas-dataframe}
 
 その後、chDB からその DataFrame に対してクエリを実行できます。
@@ -378,7 +369,6 @@ chdb.query(
 ```
 
 Pandas の DataFrame に対するクエリについては、[Querying Pandas developer guide](guides/querying-pandas.md) も参照してください。
-
 
 ## 次のステップ {#next-steps}
 

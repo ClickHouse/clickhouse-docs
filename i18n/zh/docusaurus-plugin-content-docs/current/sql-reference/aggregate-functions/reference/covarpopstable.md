@@ -6,8 +6,6 @@ title: 'covarPopStable'
 doc_type: 'reference'
 ---
 
-
-
 # covarPopStable {#covarpopstable}
 
 计算总体协方差的值：

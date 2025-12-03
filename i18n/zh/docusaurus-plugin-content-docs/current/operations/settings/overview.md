@@ -6,11 +6,7 @@ title: '设置概览'
 doc_type: 'reference'
 ---
 
-
-
 # 设置概览 {#settings-overview}
-
-
 
 ## 概览 {#overview}
 
@@ -24,8 +20,6 @@ ClickHouse 的设置主要分为两大类：
 - 会话设置
 
 二者的主要区别在于，全局服务器设置作用于整个 ClickHouse 服务器，而会话设置则作用于用户会话，甚至可以细化到单个查询。
-
-
 
 ## 查看非默认设置 {#see-non-default-settings}
 
@@ -53,7 +47,6 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 
 返回 1 行。耗时：0.002 秒。
 ```
-
 
 ## 延伸阅读 {#further-reading}
 

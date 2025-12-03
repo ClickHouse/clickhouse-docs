@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|-------|-----------|
 | ✔     | ✗     |           |
 
-
-
 ## Описание {#description}
 
 ClickHouse поддерживает чтение [дампов](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) MySQL.
@@ -25,8 +23,6 @@ ClickHouse поддерживает чтение [дампов](https://dev.mysq
 :::note
 Этот формат поддерживает автоматическое определение схемы: если дамп содержит запрос `CREATE` для указанной таблицы, структура определяется по нему, в противном случае схема определяется по данным запросов `INSERT`.
 :::
-
-
 
 ## Пример использования {#example-usage}
 
@@ -83,7 +79,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 │ 3 │
 └───┘
 ```
-
 
 ## Настройки формата {#format-settings}
 

@@ -11,8 +11,6 @@ keywords: ['ClickHouse Cloud', 'pricing', 'billing', 'cloud costs', 'compute pri
 ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network-data-transfer)（通过互联网和跨区域的出口流量）以及 [ClickPipes](/integrations/clickpipes) 的使用情况进行计费。
 若要了解哪些因素会影响您的账单，以及如何管理您的支出，请继续阅读。
 
-
-
 ## Amazon Web Services (AWS) 示例 {#amazon-web-services-aws-example}
 
 :::note
@@ -131,8 +129,6 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
 
 最适合：大规模、对业务至关重要且具有严格安全与合规需求的部署。
 
-
-
 **企业级服务**
 - 工作负载在约 100% 的时间内处于活跃状态
 - 1 TB 公网出口数据传输
@@ -178,8 +174,6 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
   </tr>
 </tbody>
 </table>
-
-
 
 ## 常见问题 {#faqs}
 
@@ -253,7 +247,6 @@ ClickHouse Cloud 支持以下计费选项：
 
 计费采用月度周期，开始日期为创建 ClickHouse Cloud 组织的日期。
 
-
 ### 如果我已经有一个有效的按需付费（PAYG）云市场订阅，然后又签署了承诺合同，我的承诺额度会先被消耗吗？ {#committed-credits-consumed-first-with-active-payg-subscription}
 
 会。用量将按以下付款方式的顺序进行结算：
@@ -313,8 +306,6 @@ ClickHouse Cloud 预付额度（无论是直接通过 ClickHouse 购买，还是
 任何预付额度未覆盖的超额部分必须通过信用卡支付或云市场的月度计费来结算。
 
 ### ClickHouse Cloud 的定价，在通过云服务商云市场付款与直接向 ClickHouse 支付之间是否有所不同？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
-
-
 
 通过 marketplace 计费和直接向 ClickHouse 注册在价格上没有差异。  
 在这两种情况下，您对 ClickHouse Cloud 的使用量都会以 ClickHouse Cloud Credits (CHCs) 为单位进行计量和跟踪，  
@@ -394,8 +385,6 @@ ClickHouse Cloud 预付额度（无论是直接通过 ClickHouse 购买，还是
 
 如果不使用仓库，您就必须为该数据科学家查询所需的全部内存付费。  
 然而，将两个服务组合到同一仓库并让其中一个处于空闲状态，有助于您节省成本。
-
-
 
 ## ClickPipes 定价 {#clickpipes-pricing}
 

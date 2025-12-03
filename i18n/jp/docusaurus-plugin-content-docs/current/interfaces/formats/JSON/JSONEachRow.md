@@ -47,7 +47,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-
 ### データの読み取り {#reading-data}
 
 `JSONEachRow` 形式を使ってデータを読み込みます。
@@ -81,6 +80,5 @@ FORMAT JSONEachRow
 ```
 
 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が 1 に設定されている場合、不明な名前のデータ列のインポートはスキップされます。
-
 
 ## 書式設定 {#format-settings}

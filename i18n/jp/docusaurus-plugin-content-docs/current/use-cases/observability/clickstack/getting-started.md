@@ -25,7 +25,6 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 事前にビルド済みの Docker イメージが提供されているおかげで、**ClickStack** を簡単に使い始めることができます。これらのイメージは公式の ClickHouse の Debian パッケージに基づいており、さまざまなユースケースに対応できるよう複数のディストリビューションで提供されています。
 
-
 ## ローカルデプロイメント {#local-deployment}
 
 最も簡単なオプションは、スタックのすべてのコアコンポーネントをひとつにまとめた **単一イメージのディストリビューション** です。

@@ -18,7 +18,6 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-
 # Claude DesktopでClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > 本ガイドでは、uvを使用してClaude DesktopにClickHouse MCPサーバーを設定し、
@@ -37,19 +36,14 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 <VerticalStepper headerLevel="h2">
 
-
 ## uv をインストールする {#install-uv}
 
 このガイドの手順に従うには、[uv](https://docs.astral.sh/uv/) をインストールする必要があります。
 uv を使用したくない場合は、別のパッケージマネージャーを使用するように MCP サーバーの設定を更新する必要があります。
 
-
-
 ## Claude Desktop のダウンロード {#download-claude-desktop}
 
 [Claude Desktop のウェブサイト](https://claude.ai/desktop) からダウンロードできる Claude Desktop アプリもインストールする必要があります。
-
-
 
 ## ClickHouse MCP サーバーの設定 {#configure-clickhouse-mcp-server}
 
@@ -112,7 +106,6 @@ MCP mcp-clickhouse: spawn uv ENOENT
 
 その場合は、`uv` へのフルパスを指定するように `command` を更新する必要があります。たとえば Cargo 経由でインストールした場合は、`/Users/&lt;username&gt;/.cargo/bin/uv` となります。
 :::
-
 
 ## Using ClickHouse MCP server {#using-clickhouse-mcp-server}
 

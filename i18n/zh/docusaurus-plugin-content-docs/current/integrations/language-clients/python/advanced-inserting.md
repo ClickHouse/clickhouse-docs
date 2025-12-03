@@ -31,7 +31,6 @@ assert qr[0][0] == 4
 
 `InsertContext` 包含在插入过程中会被更新的可变状态，因此并不是线程安全的。
 
-
 ### 写入格式 {#write-formats}
 
 当前仅对少量类型实现了写入格式支持。在大多数情况下，ClickHouse Connect 会尝试通过检查首个（非空）数据值的类型，自动推断列的正确写入格式。举例来说，如果要向 `DateTime` 列插入数据，并且该列的第一个插入值是一个 Python 整数，ClickHouse Connect 会在假定该值实际表示 Unix epoch 秒数的前提下，直接插入该整数值。
@@ -97,7 +96,6 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-
 #### PyArrow 表插入 {#pyarrow-table-insert}
 
 ```python
@@ -114,7 +112,6 @@ arrow_table = pa.table({
 
 client.insert_arrow("users", arrow_table)
 ```
-
 
 #### 基于 Arrow 的 DataFrame 插入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
 
@@ -133,7 +130,6 @@ df = pd.DataFrame({
 
 client.insert_df_arrow("users", df)
 ```
-
 
 ### 时区 {#time-zones}
 
@@ -176,7 +172,6 @@ print(*results.result_rows, sep="\n")
 使用 pytz 时，必须通过 `localize()` 方法为一个“朴素”（naive）的 datetime 对象附加时区信息。直接向 datetime 构造函数传入 `tzinfo=` 会导致使用错误的历史偏移量。对于 UTC，`tzinfo=pytz.UTC` 可以正常工作。更多信息请参阅 [pytz 文档](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic)。
 :::
 
-
 #### 不含时区信息的 datetime 对象 {#timezone-naive-datetime-objects}
 
 如果你插入一个不含时区信息的 Python `datetime.datetime` 对象（即没有 `tzinfo`），`.timestamp()` 方法会将其按系统本地时区进行解释。为避免歧义，建议：
@@ -201,7 +196,6 @@ naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
-
 
 #### 带有时区元数据的 DateTime 列 {#datetime-columns-with-timezone-metadata}
 
@@ -231,7 +225,6 @@ print(*results.result_rows, sep="\n")
 # 输出: {#output}
 # (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
-
 
 ## 文件插入 {#file-inserts}
 

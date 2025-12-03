@@ -1824,6 +1824,16 @@ UInt64, чтобы минимизировать публичную часть
 
 Совместимость: игнорировать COLLATION в CREATE TABLE
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Совместимость: при включении переносит параметры запроса предварительно подписанного URL (например, X-Amz-*) в ключ S3 (устаревшее поведение),
+так что «?» действует как подстановочный знак в пути. При отключении (по умолчанию) параметры запроса предварительно подписанного URL остаются в query-части URL,
+чтобы избежать интерпретации «?» как подстановочного знака.
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />

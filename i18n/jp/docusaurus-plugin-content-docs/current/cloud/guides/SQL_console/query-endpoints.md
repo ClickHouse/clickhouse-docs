@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # クエリ API エンドポイントのセットアップ {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
@@ -135,7 +134,6 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-
 ### HTTP メソッド {#http-methods}
 
 | メソッド | ユースケース | パラメータ |
@@ -250,7 +248,6 @@ POST /query-endpoints/{queryEndpointId}/run
 ```sql
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
-
 
 #### バージョン 1 {#version-1}
 
@@ -428,7 +425,6 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
   </TabItem>
 </Tabs>
 
-
 ### クエリ変数に配列を含む、テーブルにデータを挿入するリクエスト {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **テーブル定義の SQL:**
@@ -492,7 +488,6 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
   </TabItem>
 </Tabs>
 
-
 ### ClickHouse の設定 `max_threads` を 8 にしたリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **クエリ API エンドポイントの SQL:**
@@ -538,7 +533,6 @@ SELECT * FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
 
@@ -609,7 +603,6 @@ SELECT name, database FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### ファイルからテーブルにストリーム挿入する {#insert-a-stream-from-a-file-into-a-table}
 

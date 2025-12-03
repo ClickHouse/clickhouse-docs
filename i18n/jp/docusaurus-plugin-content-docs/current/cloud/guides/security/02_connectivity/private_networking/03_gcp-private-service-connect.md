@@ -21,7 +21,6 @@ import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/g
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
-
 # Private Service Connect {#private-service-connect}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
@@ -50,15 +49,11 @@ Private Service Connect (PSC) は、サービス利用者が自分の Virtual Pr
 1. 「Endpoint ID」を ClickHouse Cloud サービスに追加します。
 1. 「Endpoint ID」を ClickHouse サービスの許可リストに追加します。
 
-
-
 ## 注意 {#attention}
 ClickHouse は、GCP リージョン内で同じ公開されている [PSC エンドポイント](https://cloud.google.com/vpc/docs/private-service-connect) を再利用できるように、サービスをグループ化しようとします。ただし、このグループ化は保証されず、特に複数の ClickHouse 組織にサービスを分散している場合は当てはまらない可能性があります。
 すでに同じ ClickHouse 組織内の他のサービス向けに PSC を構成している場合は、そのグループ化によりほとんどの手順を省略できることが多く、最終ステップである「["Endpoint ID" を ClickHouse サービス許可リストに追加する](#add-endpoint-id-to-services-allow-list)」に直接進むことができます。
 
 Terraform の例は [こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/) を参照してください。
-
-
 
 ## 始める前に {#before-you-get-started}
 
@@ -98,7 +93,6 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 * [新しいキーを作成](/cloud/manage/openapi)するか、既存のキーを使用できます。
   :::
 
-
 ## Private Service Connect 用の GCP サービス アタッチメントと DNS 名を取得する {#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect}
 
 ### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console}
@@ -124,7 +118,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 `endpointServiceId` と `privateDnsHostname` をメモしておいてください。次の手順で使用します。
-
 
 ## サービスエンドポイントの作成 {#create-service-endpoint}
 
@@ -218,7 +211,6 @@ output "psc_connection_id" {
 `endpointServiceId`<sup>API</sup> または `Service name`<sup>console</sup> には、[Private Service Connect 用の GCP サービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) の手順で取得した値を使用します。
 :::
 
-
 ## エンドポイントのプライベート DNS 名を設定する {#set-private-dns-name-for-endpoint}
 
 :::note
@@ -226,8 +218,6 @@ DNS の構成方法にはさまざまなものがあります。ユースケー�
 :::
 
 [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) の手順で取得した「DNS 名」を、GCP Private Service Connect エンドポイントの IP アドレスを指すように設定する必要があります。これにより、VPC／ネットワーク内のサービスやコンポーネントが正しく名前解決できるようになります。
-
-
 
 ## Endpoint ID を ClickHouse Cloud 組織に追加する {#add-endpoint-id-to-clickhouse-cloud-organization}
 
@@ -288,7 +278,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-
 ## ClickHouse サービスの許可リストに「Endpoint ID」を追加する {#add-endpoint-id-to-services-allow-list}
 
 Private Service Connect で利用可能にしたい各インスタンスについて、許可リストに Endpoint ID を追加する必要があります。
@@ -343,7 +332,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-
 ## Private Service Connect を使用してインスタンスにアクセスする {#accessing-instance-using-private-service-connect}
 
 Private Link を有効にした各サービスには、パブリックエンドポイントとプライベートエンドポイントがあります。Private Link を使用して接続するには、プライベートエンドポイントを使用する必要があります。これは、[Private Service Connect 用の GCP サービスアタッチメントと DNS 名の取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) で取得した `privateDnsHostname` です。
@@ -370,7 +358,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 この例では、`xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` ホスト名への接続は Private Service Connect 経由になります。一方、`xxxxxxx.yy-xxxxN.gcp.clickhouse.cloud` ホスト名への接続はインターネット経由になります。
-
 
 ## トラブルシューティング {#troubleshooting}
 
@@ -403,7 +390,6 @@ DNS&#95;NAME - [Private Service Connect 用の GCP サービスアタッチメ�
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440
 ```
-
 
 ```response
 # highlight-next-line {#highlight-next-line}
@@ -446,7 +432,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
 > サービス指向の設計: プロデューササービスは、コンシューマ VPC ネットワークに対して 1 つの IP アドレスを公開するロードバランサを通じて公開されます。プロデューササービスにアクセスするコンシューマトラフィックは単方向であり、ピアリングされた VPC ネットワーク全体ではなく、サービス IP アドレスにのみアクセスできます。
 
 これを行うには、GCP VPC のファイアウォールルールを構成し、ClickHouse Cloud から社内／プライベートなデータベースサービスへの接続を許可します。[ClickHouse Cloud リージョンのデフォルトの送信 (egress) IP アドレス](/manage/data-sources/cloud-endpoints-api) と、[利用可能な静的 IP アドレス](https://api.clickhouse.cloud/static-ips.json) を確認してください。
-
 
 ## 詳細情報 {#more-information}
 

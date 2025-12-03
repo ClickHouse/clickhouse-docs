@@ -45,7 +45,6 @@ common.get_setting('invalid_setting_action')
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | HTTP ストリーミングクエリに使用されるインメモリバッファのサイズ（バイト単位）です。                                                                                                                                                      |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | True かつ pandas 2.x を使用している場合、datetime64/timedelta64 の dtype 解像度（例: &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;）を保持します。False（または pandas &lt;2.x の場合）は、互換性のためにナノ秒（&#39;ns&#39;）解像度に変換します。 |
 
-
 ## 圧縮 {#compression}
 
 ClickHouse Connect は、クエリ結果および挿入の両方に対して lz4、zstd、brotli、gzip 圧縮をサポートします。圧縮を使用する場合、一般的にネットワーク帯域幅／転送速度と CPU 使用率（クライアントおよびサーバー双方）の間のトレードオフが発生することを常に念頭に置いてください。

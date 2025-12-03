@@ -16,7 +16,6 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
-
 # 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
 <Image img={self_managed_01} size='lg' alt="迁移自管理 ClickHouse"/>
@@ -70,7 +69,6 @@ FROM system.tables
 WHERE database = 'db' AND table = 'table'
 ```
 
-
 ### 在目标 ClickHouse Cloud 系统上： {#on-the-destination-clickhouse-cloud-system}
 
 * 创建目标数据库：
@@ -117,7 +115,6 @@ INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
-
 
 ## 在 ClickHouse Cloud 服务之间迁移 {#migrating-between-clickhouse-cloud-services}
 

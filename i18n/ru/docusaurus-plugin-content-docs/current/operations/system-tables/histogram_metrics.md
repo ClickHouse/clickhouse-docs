@@ -8,7 +8,6 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # histogram&#95;metrics {#histogram_metrics}
 
 <SystemTableCloud />
@@ -40,7 +39,6 @@ SELECT
 FROM system.histogram_metrics
 FORMAT Prometheus
 ```
-
 
 ## Описания метрик {#metric_descriptions}
 

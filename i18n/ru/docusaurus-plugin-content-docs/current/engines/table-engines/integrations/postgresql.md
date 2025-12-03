@@ -7,8 +7,6 @@ title: 'Табличный движок PostgreSQL'
 doc_type: 'guide'
 ---
 
-
-
 # Движок таблиц PostgreSQL {#postgresql-table-engine}
 
 Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::tip
 Пользователям ClickHouse Cloud рекомендуется использовать [ClickPipes](/integrations/clickpipes) для потоковой передачи данных из Postgres в ClickHouse. Это обеспечивает встроенную поддержку высокопроизводительной вставки, при этом сохраняя разделение зон ответственности за счёт возможности независимо масштабировать ингестию и ресурсы кластера.
 :::
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -72,7 +68,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-
 ## Особенности реализации {#implementation-details}
 
 Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
@@ -119,7 +114,6 @@ CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgre
 </postgresql>
 </source>
 ```
-
 
 ## Пример использования {#usage-example}
 
@@ -229,7 +223,6 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 * [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
 * [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#mysql)
-
 
 ## Связанные материалы {#related-content}
 

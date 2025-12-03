@@ -7,11 +7,7 @@ title: 'Прокси-серверы от сторонних разработчи
 doc_type: 'reference'
 ---
 
-
-
 # Прокси-серверы сторонних разработчиков {#proxy-servers-from-third-party-developers}
-
-
 
 ## chproxy {#chproxy}
 
@@ -25,8 +21,6 @@ doc_type: 'reference'
 
 Реализован на Go.
 
-
-
 ## KittenHouse {#kittenhouse}
 
 [KittenHouse](https://github.com/VKCOM/kittenhouse) предназначен для использования в качестве локального прокси между ClickHouse и сервером приложения в тех случаях, когда буферизация данных INSERT на стороне приложения невозможна или неудобна.
@@ -38,8 +32,6 @@ doc_type: 'reference'
 - Балансировка нагрузки и проверка состояния.
 
 Реализован на Go.
-
-
 
 ## ClickHouse-Bulk {#clickhouse-bulk}
 

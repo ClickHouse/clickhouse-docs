@@ -55,7 +55,6 @@ Install-Package ClickHouse.Driver
 
 ***
 
-
 ## Быстрый старт {#quick-start}
 
 ```csharp
@@ -82,7 +81,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 ```
 
 ***
-
 
 ## Использование {#usage}
 
@@ -154,7 +152,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### Вставка данных {#inserting-data}
 
 Вставляйте данные с использованием параметризованных запросов:
@@ -177,7 +174,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 ```
 
 ***
-
 
 ### Массовая вставка {#bulk-insert}
 
@@ -221,7 +217,6 @@ Console.WriteLine($"Записано строк: {bulkCopy.RowsWritten}");
 
 ***
 
-
 ### Выполнение запросов SELECT {#performing-select-queries}
 
 Выполните запросы SELECT и обработайте результаты:
@@ -249,7 +244,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### Необработанный стриминг {#raw-streaming}
 
 ```csharp
@@ -262,7 +256,6 @@ var json = reader.ReadToEnd();
 ```
 
 ***
-
 
 ### Поддержка вложенных столбцов {#nested-columns}
 
@@ -289,7 +282,6 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ***
 
-
 ### Столбцы типа AggregateFunction {#aggregatefunction-columns}
 
 Столбцы типа `AggregateFunction(...)` нельзя напрямую использовать в запросах или при вставке данных.
@@ -307,7 +299,6 @@ SELECT uniqMerge(c) FROM t;
 ```
 
 ***
-
 
 ### Параметры SQL {#sql-parameters}
 
@@ -338,7 +329,6 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
   :::
 
 ***
-
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
@@ -455,7 +445,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 #### Использование appsettings.json {#logging-appsettings-config}
 
 Вы можете настроить уровни логирования с помощью стандартной системы конфигурации .NET:
@@ -485,7 +474,6 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
 await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
-
 
 #### Использование конфигурации в оперативной памяти {#logging-inmemory-config}
 
@@ -523,7 +511,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 ### Категории и источники {#logging-categories}
 
 Драйвер использует отдельные категории, чтобы вы могли точно настраивать уровни логирования для каждого компонента:
@@ -558,7 +545,6 @@ await connection.OpenAsync();
 * события открытия и закрытия подключений
 * отслеживание идентификаторов сессий
 
-
 ### Режим отладки: трассировка сети и диагностика {#logging-debugmode}
 
 Чтобы упростить диагностику сетевых проблем, библиотека драйвера предоставляет вспомогательный инструмент, позволяющий включить низкоуровневую трассировку внутренних сетевых механизмов .NET. Чтобы включить её, необходимо передать `LoggerFactory` с уровнем `Trace` и установить `EnableDebugMode` в значение `true` (или включить её вручную через класс `ClickHouse.Driver.Diagnostic.TraceHelper`). Предупреждение: это приведёт к генерации чрезвычайно подробных логов и повлияет на производительность. Не рекомендуется включать режим отладки в боевой (production) среде.
@@ -579,7 +565,6 @@ var settings = new ClickHouseClientSettings()
 ```
 
 ***
-
 
 ### Поддержка ORM и Dapper {#orm-support}
 

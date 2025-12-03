@@ -5,11 +5,7 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-
-
 # 分组 {#grouping}
-
-
 
 ## GROUPING {#grouping}
 
@@ -18,8 +14,6 @@ doc_type: 'reference'
 GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask）值。 
 - `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
 - `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
-
-
 
 ## GROUPING SETS {#grouping-sets}
 
@@ -141,7 +135,6 @@ GROUP BY
 
 查询返回 2 行。用时：0.352 秒。 
 ```
-
 
 ```sql
 SELECT
@@ -265,7 +258,6 @@ GROUP BY
 
 下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
 
-
 ```sql
 SELECT
    datacenter,
@@ -330,7 +322,6 @@ ORDER BY
 :::note
 当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
 :::
-
 
 ```sql
 SELECT

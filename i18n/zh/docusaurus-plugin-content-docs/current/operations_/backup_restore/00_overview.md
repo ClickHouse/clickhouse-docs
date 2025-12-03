@@ -13,7 +13,6 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 
 > 本节将对 ClickHouse 中的备份和恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
-
 ## 介绍 {#introduction}
 
 虽然[复制](/engines/table-engines/mergetree-family/replication)可以防止硬件故障，但它无法
@@ -48,8 +47,6 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 - 进行密码保护
 - 针对[系统表、日志表或访问管理表](#system-backups)进行备份
 
-
-
 ## 备份类型 {#backup-types}
 
 备份可以分为全量备份和增量备份。全量备份是数据的完整副本，而增量备份则是相对于上一次全量备份的数据变更（差异）部分。
@@ -61,16 +58,12 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 - 对于较大的数据库，或需要频繁且具成本效益地执行备份的场景，使用 **增量备份**。
 - **两者结合使用**，例如每周进行全量备份，每天进行增量备份。
 
-
-
 ## 同步备份与异步备份 {#synchronous-vs-asynchronous}
 
 `BACKUP` 和 `RESTORE` 命令也可以标记为 `ASYNC`。在这种情况下，
 备份命令会立即返回，备份过程在后台运行。
 如果命令未标记为 `ASYNC`，则备份过程是同步的，
 命令会阻塞直到备份完成。
-
-
 
 ## 并发与非并发备份 {#concurrent-vs-non-concurrent}
 
@@ -91,7 +84,6 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 
 这两个设置的默认值都是 true，因此默认情况下允许并发执行备份/恢复操作。 当在集群上将这些设置设为 false 时，任意时刻该集群上只允许运行一个备份或恢复操作。
 
-
 ## 压缩备份与未压缩备份 {#compressed-vs-uncompressed}
 
 ClickHouse 备份通过 `compression_method` 和 `compression_level` 设置来支持压缩。
@@ -104,7 +96,6 @@ BACKUP TABLE test.table
   SETTINGS compression_method='lzma', compression_level=3
 ```
 
-
 ## 使用命名集合 {#using-named-collections}
 
 命名集合允许你存储键值对（例如 S3 凭证、端点和设置），并在备份/恢复等操作中重复使用。
@@ -116,8 +107,6 @@ BACKUP TABLE test.table
 - 避免在查询日志中暴露凭证
 
 有关更多详细信息，请参阅[“命名集合”](/operations/named-collections)。
-
-
 
 ## 备份系统、日志或访问管理表 {#system-backups}
 
@@ -134,8 +123,6 @@ BACKUP TABLE test.table
 
 此功能仅适用于通过 SQL 命令管理的配置（称为 ["SQL-driven Access Control and Account Management"](/operations/access-rights#enabling-access-control)）。  
 在 ClickHouse 服务器配置文件中定义的访问配置（例如 `users.xml`）不会包含在备份中，也无法通过此方法恢复。
-
-
 
 ## 通用语法 {#syntax}
 
@@ -180,8 +167,6 @@ BACKUP TABLE test.table
 **Azure 特定设置**
 
 <AzureSettings/>
-
-
 
 ## 管理与故障排查 {#check-the-status-of-backups}
 

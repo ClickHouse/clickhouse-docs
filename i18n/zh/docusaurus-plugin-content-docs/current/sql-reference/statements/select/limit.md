@@ -42,7 +42,6 @@ LIMIT n, m
 
 在这两种形式中，`n` 和 `m` 都必须是非负整数。
 
-
 ## 负数 LIMIT {#negative-limits}
 
 使用负值从结果集的*末尾*选择行：
@@ -80,7 +79,6 @@ LIMIT n, m
 LIMIT 10 OFFSET 0.5    -- 从中点开始的 10 行
 LIMIT 10 OFFSET -20    -- 跳过最后 20 行后的 10 行
 ```
-
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}
 
@@ -128,7 +126,6 @@ SELECT * FROM (
 :::
 
 此修饰符可以与 [`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修饰符组合使用。
-
 
 ## 注意事项 {#considerations}
 

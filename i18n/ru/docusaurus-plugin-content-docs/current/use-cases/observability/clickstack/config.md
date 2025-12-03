@@ -14,7 +14,6 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 Для каждого компонента ClickStack доступны следующие параметры конфигурации:
 
-
 ## Изменение настроек {#modifying-settings}
 
 ### Docker {#docker}
@@ -24,7 +23,6 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 ```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 ### Docker Compose {#docker-compose}
 
@@ -42,7 +40,6 @@ services:
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       # ... прочие настройки
 ```
-
 
 ### Helm {#helm}
 
@@ -96,7 +93,6 @@ ingress:
     - name: CLICKHOUSE_USER
       value: abc
 ```
-
 
 ## HyperDX {#hyperdx}
 

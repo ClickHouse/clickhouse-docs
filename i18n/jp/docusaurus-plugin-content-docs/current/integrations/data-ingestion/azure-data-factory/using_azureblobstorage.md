@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
 # ClickHouse の azureBlobStorage テーブル関数の使用 {#using-azureBlobStorage-function}
 
 これは、Azure Blob Storage または Azure Data Lake Storage から ClickHouse へ
@@ -32,8 +31,6 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 [`azureBlobStorage` テーブル関数のドキュメントページ](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 を参照してください。
 
-
-
 ## Azure Blob Storage のアクセスキーの取得 {#acquiring-azure-blob-storage-access-keys}
 
 ClickHouse が Azure Blob Storage にアクセスできるようにするには、アクセスキー付きの接続文字列が必要です。
@@ -47,8 +44,6 @@ ClickHouse が Azure Blob Storage にアクセスできるようにするには�
    <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
 
 4. 接続文字列をコピーします。この接続文字列を azureBlobStorage テーブル関数のパラメータとして使用します。
-
-
 
 ## Azure Blob Storage 上のデータをクエリする {#querying-the-data-from-azure-blob-storage}
 
@@ -82,7 +77,6 @@ SELECT * FROM azureBlobStorage(
 ```
 
 これにより、中間の ETL ステップを挟むことなく、外部データを効率的に ClickHouse に取り込めます。
-
 
 ## Environmental Sensors データセットを使った簡単な例 {#simple-example-using-the-environmental-sensors-dataset}
 
@@ -152,7 +146,6 @@ Azure Blob Storage のような外部ソースに対してクエリを実行す�
 
 `sensors` テーブルには、Azure Blob Storage に保存されている `2019-06_bmp180.csv.zst`
 ファイルのデータが取り込まれました。
-
 
 ## 追加リソース {#additional-resources}
 

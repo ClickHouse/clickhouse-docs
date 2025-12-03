@@ -16,7 +16,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## Процесс подключения {#onboarding-process}
 
 Клиенты могут инициировать процесс подключения, связавшись с [нами](https://clickhouse.com/cloud/bring-your-own-cloud). Клиентам необходимо иметь отдельную учетную запись AWS и знать регион, который они будут использовать. В настоящее время пользователи могут запускать сервисы BYOC только в тех регионах, которые поддерживаются в ClickHouse Cloud.
@@ -82,7 +81,6 @@ module "clickhouse_onboarding" {
    Если в вашей VPC еще не настроен S3 Gateway Endpoint, необходимо создать его, чтобы обеспечить защищенное, приватное взаимодействие между вашей VPC и Amazon S3. Этот endpoint позволяет сервисам ClickHouse получать доступ к S3 без выхода в публичный интернет. Пожалуйста, обратитесь к скриншоту ниже для примера конфигурации.
 
 <br />
-
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpint" background='black'/>
 
@@ -169,8 +167,6 @@ module "clickhouse_onboarding" {
 
 Необязательно: после проверки работоспособности peering вы можете запросить отключение публичного балансировщика нагрузки для ClickHouse BYOC.
 
-
-
 ## Процесс обновления {#upgrade-process}
 
 Мы регулярно обновляем программное обеспечение, включая обновления версии базы данных ClickHouse, ClickHouse Operator, EKS и других компонентов.
@@ -180,8 +176,6 @@ module "clickhouse_onboarding" {
 :::note
 Окна обслуживания не распространяются на устранение уязвимостей и исправления, связанные с безопасностью. Они выполняются как внеплановые обновления; мы заблаговременно согласуем подходящее время, чтобы минимизировать влияние на эксплуатацию.
 :::
-
-
 
 ## Роли IAM для CloudFormation {#cloudformation-iam-roles}
 
@@ -216,8 +210,6 @@ module "clickhouse_onboarding" {
 Роли **K8s-control-plane** и **k8s-worker** предназначены для использования сервисами AWS EKS.
 
 Наконец, **`data-plane-mgmt`** позволяет компоненту Control Plane ClickHouse Cloud синхронизировать необходимые пользовательские ресурсы (Custom Resources), такие как `ClickHouseCluster` и Istio Virtual Service/Gateway.
-
-
 
 ## Границы сети {#network-boundaries}
 

@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## 描述 {#description}
 
 `Regex` 格式会根据提供的正则表达式，对导入数据的每一行进行解析。
@@ -28,8 +26,6 @@ doc_type: 'reference'
 每个匹配到的子模式内容会根据 [format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 设置，使用对应数据类型的解析方法进行解析。
 
 如果正则表达式未能匹配某一行，并且 [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 被设置为 1，则该行会被静默跳过。否则会抛出异常。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -66,7 +62,6 @@ SELECT * FROM imp_regex_table;
 │  3 │ [1,2,3] │ str3   │ 2020-01-03 │
 └────┴─────────┴────────┴────────────┘
 ```
-
 
 ## 格式设置 {#format-settings}
 

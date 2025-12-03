@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
 # 基于 TimescaleDB 的 Postgres 数据源配置指南 {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
-
-
 
 ## 背景 {#background}
 
@@ -34,13 +31,9 @@ Timescale Inc 还为 TimescaleDB 提供两种托管服务：
 Timescale hypertable 在多个方面的行为与常规 Postgres 表不同。这会给复制它们的过程带来一定的复杂性，
 因此对 Timescale hypertable 的复制能力应被视为**尽力而为（best effort）**。
 
-
-
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
 ClickPipes 支持 Postgres 12 及以上版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -55,8 +48,6 @@ ClickPipes 支持 Postgres 12 及以上版本。
 Timescale Cloud 不支持逻辑复制，而逻辑复制是以 CDC 模式使用 Postgres 管道所必需的。
 因此，Timescale Cloud 的用户只能通过 Postgres ClickPipe 对其数据执行一次性加载（`Initial Load Only`）。
 :::
-
-
 
 ## 配置 {#configuration}
 
@@ -107,7 +98,6 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 ```
 
 完成以上步骤后，即可[创建 ClickPipe](../index.md)。
-
 
 ## 配置网络访问 {#configure-network-access}
 

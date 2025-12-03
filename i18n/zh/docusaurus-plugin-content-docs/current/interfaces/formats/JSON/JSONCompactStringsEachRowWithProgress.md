@@ -47,5 +47,4 @@ FORMAT JSONCompactStringsEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-
 ## 格式设置 {#format-settings}

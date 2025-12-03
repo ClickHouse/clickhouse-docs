@@ -33,7 +33,6 @@ Docker Compose открывает дополнительные порты для
 
 Эти порты обеспечивают интеграцию с широким набором источников телеметрии и делают коллектор OpenTelemetry готовым к промышленной эксплуатации для различных сценариев ингестии.
 
-
 ### Подходит для {#suitable-for}
 
 * Локального тестирования
@@ -116,7 +115,6 @@ HYPERDX_OPAMP_PORT=4320
 # Конфигурация OTel/ClickHouse {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
-
 
 ### Настройка коллектора OTel {#configuring-collector}
 

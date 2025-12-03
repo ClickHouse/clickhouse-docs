@@ -5,11 +5,7 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
-
-
 # loop テーブル関数 {#loop-table-function}
-
-
 
 ## 構文 {#syntax}
 
@@ -20,7 +16,6 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-
 ## 引数 {#arguments}
 
 | 引数                        | 説明                                                                                                                 |
@@ -29,13 +24,9 @@ SELECT ... FROM loop(other_table_function(...));
 | `table`                     | テーブル名。                                                                                                         |
 | `other_table_function(...)` | 他のテーブル関数。この場合の例: `SELECT * FROM loop(numbers(10));` において、`other_table_function(...)` は `numbers(10)`。 |
 
-
-
 ## 戻り値 {#returned_values}
 
 クエリ結果を返し続ける無限ループ。
-
-
 
 ## 例 {#examples}
 

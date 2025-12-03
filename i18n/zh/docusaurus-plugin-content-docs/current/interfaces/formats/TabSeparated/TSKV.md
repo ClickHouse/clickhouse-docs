@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 类似于 [`TabSeparated`](./TabSeparated.md) 格式，但以 `name=value` 格式输出值。
@@ -56,7 +54,6 @@ x=1    y=\N
 在导入时，如果将设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`，则具有未知名称的列将被跳过。
 
 [NULL](/sql-reference/syntax.md) 会被格式化为 `\N`。
-
 
 ## 示例用法 {#example-usage}
 
@@ -102,7 +99,6 @@ FORMAT TSKV
 
 输出将采用制表符分隔格式，并包含两行表头：第一行为列名，第二行为列类型：
 
-
 ```tsv
 date=2022-04-30 season=2021     home_team=萨顿联队 away_team=布拉德福德城 home_team_goals=1       away_team_goals=4
 date=2022-04-30 season=2021     home_team=斯温登镇 away_team=巴罗        home_team_goals=2       away_team_goals=1
@@ -122,6 +118,5 @@ date=2022-05-07 season=2021     home_team=奥尔德姆竞技       away_team=克
 date=2022-05-07 season=2021     home_team=斯蒂夫尼奇自治市     away_team=索尔福德城  home_team_goals=4       away_team_goals=2
 date=2022-05-07 season=2021     home_team=沃尔索尔       away_team=斯温登镇  home_team_goals=0       away_team_goals=3
 ```
-
 
 ## 格式设置 {#format-settings}

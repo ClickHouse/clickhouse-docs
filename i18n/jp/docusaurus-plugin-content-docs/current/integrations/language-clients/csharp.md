@@ -55,7 +55,6 @@ Install-Package ClickHouse.Driver
 
 ***
 
-
 ## クイックスタート {#quick-start}
 
 ```csharp
@@ -82,7 +81,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 ```
 
 ***
-
 
 ## 使用方法 {#usage}
 
@@ -154,7 +152,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### データの挿入 {#inserting-data}
 
 パラメータ化されたクエリを使用してデータを挿入します。
@@ -177,7 +174,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 ```
 
 ***
-
 
 ### 一括挿入 {#bulk-insert}
 
@@ -221,7 +217,6 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 
 ***
 
-
 ### SELECT クエリの実行 {#performing-select-queries}
 
 SELECT クエリを実行して結果を処理します。
@@ -249,7 +244,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### 生データストリーミング {#raw-streaming}
 
 ```csharp
@@ -262,7 +256,6 @@ var json = reader.ReadToEnd();
 ```
 
 ***
-
 
 ### ネストされたカラムのサポート {#nested-columns}
 
@@ -289,7 +282,6 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ***
 
-
 ### AggregateFunction 列 {#aggregatefunction-columns}
 
 `AggregateFunction(...)` 型の列は、直接クエリしたりデータを挿入したりすることはできません。
@@ -307,7 +299,6 @@ SELECT uniqMerge(c) FROM t;
 ```
 
 ***
-
 
 ### SQL パラメータ {#sql-parameters}
 
@@ -338,7 +329,6 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
   :::
 
 ***
-
 
 ## サポートされているデータ型 {#supported-data-types}
 
@@ -455,7 +445,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 #### appsettings.json の使用 {#logging-appsettings-config}
 
 標準的な .NET の構成機能を使用してログレベルを設定できます。
@@ -485,7 +474,6 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
 await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
-
 
 #### インメモリ設定を使用する {#logging-inmemory-config}
 
@@ -523,7 +511,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 ### カテゴリと出力元 {#logging-categories}
 
 このドライバーは専用のカテゴリを使用しており、コンポーネントごとにログレベルをきめ細かく調整できます。
@@ -558,7 +545,6 @@ await connection.OpenAsync();
 * 接続のオープン／クローズ イベント
 * セッション ID の追跡
 
-
 ### デバッグモード: ネットワークトレースと診断 {#logging-debugmode}
 
 ネットワークに関する問題の診断を支援するために、ドライバーライブラリには .NET のネットワーク内部処理を低レベルでトレースできるヘルパー機能が含まれています。これを有効にするには、ログレベルを Trace に設定した LoggerFactory を渡し、EnableDebugMode を true に設定する必要があります（または `ClickHouse.Driver.Diagnostic.TraceHelper` クラスを使用して手動で有効化します）。警告: これは非常に冗長なログを大量に生成し、パフォーマンスに影響します。本番環境でデバッグモードを有効にすることは推奨されません。
@@ -579,7 +565,6 @@ var settings = new ClickHouseClientSettings()
 ```
 
 ***
-
 
 ### ORM &amp; Dapper サポート {#orm-support}
 

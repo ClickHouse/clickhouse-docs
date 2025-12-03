@@ -35,7 +35,6 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-
 # 在 Azure Data Factory 中使用 ClickHouse HTTP 接口 {#using-clickhouse-http-interface-in-azure-data-factory}
 
 [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
@@ -60,8 +59,6 @@ ClickHouse 的快速且便捷的方式。但在以下情况下，它可能并不
 [Create and configure a self-hosted integration
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
-
-
 
 ## 将 ClickHouse 打造成 REST 服务 {#turning-clickhouse-to-a-rest-service}
 
@@ -111,7 +108,6 @@ Service，为
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
 定义一个 Dataset，并创建一个 Copy Data 活动，将数据从 Azure 发送到 ClickHouse。
 
-
 ## 创建 Azure Data Factory 实例 {#create-an-azure-data-factory-instance}
 
 本指南假定您已拥有 Microsoft Azure 帐户，并且
@@ -138,8 +134,6 @@ Service，为
 
 部署成功完成后，您就可以开始使用新的 Azure
 Data Factory 实例了。
-
-
 
 ## 创建新的基于 REST 的 linked service {#-creating-new-rest-based-linked-service}
 
@@ -189,8 +183,6 @@ Data Factory 实例了。
     <Image img={adfLinkedServicesList} size="lg" alt="Linked Services 列表" border/>
 
 现在，你应该可以在列表中看到新注册的基于 REST 的 linked service。
-
-
 
 ## 为 ClickHouse HTTP 接口创建新数据集 {#creating-a-new-dataset-for-the-clickhouse-http-interface}
 
@@ -274,8 +266,6 @@ Server，或 Azure Data Factory 支持的其他文件格式。
 创建一个新的数据集，指向已上传的数据。点击 Publish all
 保存更改。
 
-
-
 ## 创建用于将数据传输到 ClickHouse 的 Copy Data 活动 {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
 
 现在我们已经配置好了输入和输出数据集，可以设置一个 **Copy Data**
@@ -309,8 +299,6 @@ Server，或 Azure Data Factory 支持的其他文件格式。
    <Image img={adfCopyDataDebugSuccess} size="lg" alt="Copy Data Debug 成功" border/>
 
 6. 完成后，点击 **Publish all** 以保存 pipeline 和数据集的更改。
-
-
 
 ## 其他资源 {#additional-resources-1}
 - [HTTP 接口](https://clickhouse.com/docs/interfaces/http)

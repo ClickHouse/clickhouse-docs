@@ -34,13 +34,11 @@ hyperdx:
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-
 ### 方法 2：`--set` フラグを指定した Helm upgrade による更新 {#api-key-set-flag}
 
 ```shell
 helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
-
 
 ### 変更を反映するためにポッドを再起動する {#restart-pods}
 
@@ -53,7 +51,6 @@ kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-cl
 :::note
 このチャートは、API キーを含む Kubernetes Secret（`<release-name>-app-secrets`）を自動的に作成します。外部 Secret を使用する場合を除き、追加の Secret 設定は不要です。
 :::
-
 
 ## シークレット管理 {#secret-management}
 
@@ -83,7 +80,6 @@ data:
 kubectl apply -f secrets.yaml
 ```
 
-
 ### カスタムシークレットの作成 {#creating-a-custom-secret}
 
 Kubernetes のカスタムシークレットを手動で作成します。
@@ -92,7 +88,6 @@ Kubernetes のカスタムシークレットを手動で作成します。
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
-
 
 ### values.yaml で Secret を参照する {#referencing-a-secret}
 
@@ -104,7 +99,6 @@ hyperdx:
         name: hyperdx-secret
         key: API_KEY
 ```
-
 
 ## イングレスのセットアップ {#ingress-setup}
 
@@ -123,7 +117,6 @@ hyperdx:
 :::note 重要な設定上の注意
 `hyperdx.frontendUrl` はイングレスのホスト名と一致させ、プロトコルを含めて設定してください（例: `https://hyperdx.yourdomain.com`）。これにより、生成されるすべてのリンク、クッキー、およびリダイレクトが正しく動作します。
 :::
-
 
 ### TLS (HTTPS) の有効化 {#enabling-tls}
 
@@ -148,7 +141,6 @@ hyperdx:
       enabled: true
       tlsSecretName: "hyperdx-tls"
 ```
-
 
 ### イングレス設定の例 {#example-ingress-configuration}
 
@@ -181,7 +173,6 @@ spec:
       secretName: hyperdx-tls
 ```
 
-
 ### よくあるイングレスの落とし穴 {#common-ingress-pitfalls}
 
 **パスとリライトの設定:**
@@ -206,7 +197,6 @@ spec:
 ```shell
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
-
 
 ## OTel collector のイングレス {#otel-collector-ingress}
 
@@ -244,7 +234,6 @@ hyperdx:
 OTEL collector を外部公開する必要がない場合は、この設定を省略できます。ほとんどのユーザーにとっては、通常のイングレス設定だけで十分です。
 :::
 
-
 ## イングレスのトラブルシューティング {#troubleshooting-ingress}
 
 **イングレスリソースを確認する：**
@@ -281,7 +270,6 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **ブラウザと CDN キャッシュのクリア:**
 
 * 設定変更後は、ブラウザキャッシュと CDN/プロキシキャッシュをクリアして、古いアセットが配信されるのを避ける
-
 
 ## 値のカスタマイズ {#customizing-values}
 
@@ -321,7 +309,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
 ```
-
 
 ## 次のステップ {#next-steps}
 

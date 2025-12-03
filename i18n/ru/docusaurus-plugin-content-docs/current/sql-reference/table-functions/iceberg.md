@@ -7,13 +7,9 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция iceberg {#iceberg-table-function}
 
 Предоставляет табличный интерфейс только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/) в Amazon S3, Azure, HDFS или локальном хранилище.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -30,7 +26,6 @@ icebergHDFS(named_collection[, option=value [,..]])
 icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -50,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 ClickHouse в настоящее время поддерживает чтение формата Iceberg версий v1 и v2 с помощью табличных функций `icebergS3`, `icebergAzure`, `icebergHDFS` и `icebergLocal`, а также табличных движков `IcebergS3`, `icebergAzure`, `IcebergHDFS` и `IcebergLocal`.
 :::
-
 
 ## Определение именованной коллекции {#defining-a-named-collection}
 
@@ -75,7 +69,6 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-
 ## Эволюция схемы {#schema-evolution}
 
 На данный момент с помощью ClickHouse вы можете читать таблицы Iceberg, схема которых изменялась со временем. Мы поддерживаем чтение таблиц, в которых столбцы добавлялись и удалялись, а их порядок изменялся. Вы также можете изменить столбец с обязательным значением на столбец, в котором допускается значение NULL. Дополнительно мы поддерживаем допустимое приведение типов для простых типов, а именно:  
@@ -86,19 +79,13 @@ DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 
 В настоящее время невозможно изменять вложенные структуры или типы элементов внутри массивов и структур map.
 
-
-
 ## Отсечение партиций {#partition-pruning}
 
 ClickHouse поддерживает отсечение партиций при выполнении запросов SELECT к таблицам Iceberg, что помогает оптимизировать производительность запросов за счёт пропуска нерелевантных файлов данных. Чтобы включить отсечение партиций, установите `use_iceberg_partition_pruning = 1`. Для получения дополнительной информации об отсечении партиций в Iceberg см. https://iceberg.apache.org/spec/#partitioning
 
-
-
 ## Time Travel {#time-travel}
 
 ClickHouse поддерживает механизм Time Travel для таблиц Iceberg, позволяющий выполнять запросы к историческим данным на указанную метку времени или по идентификатору снимка (snapshot).
-
-
 
 ## Обработка таблиц с удалёнными строками {#deleted-rows}
 
@@ -239,7 +226,6 @@ Note: Нельзя указывать параметры `iceberg_timestamp_ms` 
 
 Это происходит потому, что `ALTER TABLE` не создаёт новый снимок, но для текущей таблицы Spark использует значение `schema_id` из последнего файла метаданных, а не из снимка.
 
-
 #### Сценарий 3: различия между исторической и текущей схемами {#scenario-3}
 
 Второй момент заключается в том, что при использовании механизма time travel вы не можете получить состояние таблицы на момент до записи в неё каких-либо данных:
@@ -260,7 +246,6 @@ Note: Нельзя указывать параметры `iceberg_timestamp_ms` 
 ```
 
 В ClickHouse поведение аналогично Spark. Вы можете мысленно заменить запросы SELECT в Spark на запросы SELECT в ClickHouse — и всё будет работать так же.
-
 
 ## Определение файла метаданных {#metadata-file-resolution}
 
@@ -304,18 +289,13 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **Примечание**: Хотя Iceberg Catalogs обычно отвечают за разрешение метаданных, табличная функция `iceberg` в ClickHouse напрямую интерпретирует файлы, хранящиеся в S3, как таблицы Iceberg, поэтому важно понимать эти правила разрешения метаданных.
 
-
 ## Кэш метаданных {#metadata-cache}
 
 Движок таблицы и табличная функция `Iceberg` поддерживают кэш метаданных, в котором хранится информация о файлах манифеста, списке манифестов и JSON-файле метаданных. Кэш хранится в памяти. Эта возможность управляется настройкой `use_iceberg_metadata_files_cache`, которая по умолчанию включена.
 
-
-
 ## Псевдонимы {#aliases}
 
 Табличная функция `iceberg` теперь является алиасом функции `icebergS3`.
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 
@@ -324,8 +304,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение равно `NULL`.
-
-
 
 ## Запись в таблицы Iceberg {#writes-into-iceberg-table}
 
@@ -447,7 +425,6 @@ y: 993
 z: ᴺᵁᴸᴸ
 ```
 
-
 ALTER TABLE iceberg&#95;writes&#95;example DROP COLUMN z;
 SHOW CREATE TABLE iceberg&#95;writes&#95;example;
 ┌─statement─────────────────────────────────────────────────┐
@@ -492,7 +469,6 @@ x: Ivanov
 y: 993
 ````
 
-
 ## Таблица с каталогами {#iceberg-writes-catalogs}
 
 Все описанные выше возможности записи также доступны с REST- и Glue‑каталогами.
@@ -502,7 +478,6 @@ y: 993
 CREATE TABLE `database_name.table_name`  ENGINE = IcebergS3('http://minio:9000/warehouse-rest/table_name/', 'minio_access_key', 'minio_secret_key')
 SETTINGS storage_catalog_type="rest", storage_warehouse="demo", object_storage_endpoint="http://minio:9000/warehouse-rest", storage_region="us-east-1", storage_catalog_url="http://rest:8181/v1",
 ```
-
 
 ## См. также {#see-also}
 

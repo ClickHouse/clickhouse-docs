@@ -15,7 +15,6 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-
 # JDBC を使用して ClickHouse を外部データソースに接続する {#connecting-clickhouse-to-external-data-sources-with-jdbc}
 
 :::note
@@ -41,8 +40,6 @@ ClickHouse JDBC Bridge は、読み取りと書き込みの両方に使用でき
 4. 最新バージョンの **MySQL**（例: <a href="https://www.mysql.com" target="_blank">MySQL</a> バージョン >= 8）がインストールされ、稼働している
 5. 最新バージョンの **ClickHouse** が [インストール](/getting-started/install/install.mdx) され、稼働している
 :::
-
-
 
 ## ClickHouse JDBC Bridge をローカルにインストールする {#install-the-clickhouse-jdbc-bridge-locally}
 
@@ -106,7 +103,6 @@ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ClickHouse JDBC Bridge をフォアグラウンドモードで起動しました。Bridge を停止するには、先ほど開いた Unix シェルウィンドウをフォアグラウンドに切り替え、`CTRL+C` を押します。
 :::
 
-
 ## ClickHouse 内から JDBC 接続を使用する {#use-the-jdbc-connection-from-within-clickhouse}
 
 ClickHouse は、[jdbc テーブル関数](/sql-reference/table-functions/jdbc.md) または [JDBC テーブルエンジン](/engines/table-engines/integrations/jdbc.md) を使用して、MySQL のデータにアクセスできます。
@@ -140,7 +136,6 @@ SELECT * FROM mytable;
 
 ClickHouse JDBC エンジンテーブルのスキーマと、接続されている MySQL テーブルのスキーマは一致している必要があります。例えば、カラム名とその順序は同一でなければならず、カラムのデータ型も互換性がある必要があります。
 :::
-
 
 ## ClickHouse JDBC Bridge を外部にインストールする {#install-the-clickhouse-jdbc-bridge-externally}
 

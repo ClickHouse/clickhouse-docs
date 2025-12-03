@@ -8,13 +8,9 @@ keywords: ['Apache Avro', 'Apache Arrow', 'ORC 形式', 'カラムナ形式', '�
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse で Avro、Arrow、ORC データを扱う {#working-with-avro-arrow-and-orc-data-in-clickhouse}
 
 Apache は、分析環境で広く利用されている複数のデータ形式を提供しており、その中には広く利用されている [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/)、[Orc](https://orc.apache.org/) などが含まれます。ClickHouse では、これらのいずれの形式を用いたデータのインポートおよびエクスポートが可能です。
-
-
 
 ## Avro 形式でのインポートおよびエクスポート {#importing-and-exporting-in-avro-format}
 
@@ -92,7 +88,6 @@ kafka_group_name = 'some_group',
 kafka_format = 'AvroConfluent';
 ```
 
-
 ## Arrow フォーマットの利用 {#working-with-arrow-format}
 
 もう一つのカラムナフォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](assets/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
@@ -147,7 +142,6 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 
 Arrow ストリーミングデータのソースの一例として `arrow-stream` を使用しました。
 
-
 ## ORC データのインポートとエクスポート {#importing-and-exporting-orc-data}
 
 [Apache ORC](https://orc.apache.org/) は、主に Hadoop で使用される列指向ストレージ形式です。ClickHouse は、[ORC フォーマット](/interfaces/formats/ORC) を使用して [ORC データ](assets/data.orc) のインポートおよびエクスポートの両方をサポートしています。
@@ -164,7 +158,6 @@ FORMAT ORC;
 ```
 
 また、エクスポートおよびインポートを最適化するために、[データ型の対応](/interfaces/formats/ORC)や[追加設定](/interfaces/formats/Parquet#format-settings)も確認してください。
-
 
 ## 参考情報 {#further-reading}
 

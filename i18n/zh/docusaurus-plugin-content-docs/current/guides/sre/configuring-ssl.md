@@ -12,7 +12,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
 # 配置 SSL-TLS {#configuring-ssl-tls}
 
 <SelfManaged />
@@ -24,8 +23,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
 
 请参阅这篇[关于证书使用的基础教程](https://ubuntu.com/server/docs/security-certificates)，以获取入门级概览。
 :::
-
-
 
 ## 1. 创建 ClickHouse 部署 {#1-create-a-clickhouse-deployment}
 
@@ -40,8 +37,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
 :::note
 请参阅 [快速开始](/getting-started/install/install.mdx) 了解有关安装 ClickHouse 的更多详细信息。
 :::
-
-
 
 ## 2. 创建 SSL 证书 {#2-create-ssl-certificates}
 :::note
@@ -92,8 +87,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
     chnode1.crt: OK
     ```
 
-
-
 ## 3. 创建并配置用于存储证书和密钥的目录 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
@@ -123,8 +116,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
     -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
-
-
 
 ## 4. 使用 ClickHouse Keeper 配置基础集群环境 {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
@@ -228,8 +219,6 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
     </remote_servers>
     ```
 
-
-
 4. 定义宏值，以便创建用于测试的 ReplicatedMergeTree 表。在 `chnode1` 上：
     ```xml
     <macros>
@@ -245,8 +234,6 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
         <replica>replica_2</replica>
     </macros>
     ```
-
-
 
 ## 5. 在 ClickHouse 节点上配置 SSL-TLS 接口 {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 下面的设置在 ClickHouse 服务器的 `config.xml` 中进行配置。
@@ -347,15 +334,11 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
     </openSSL>
     ```
 
-
-
 6. 禁用 MySQL 和 PostgreSQL 的默认兼容端口：
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
-
-
 
 ## 6. 测试 {#6-testing}
 1. 依次启动所有节点：
@@ -397,8 +380,6 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
 3. 验证 ClickHouse Keeper 运行状况  
 典型的 [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) 命令在未使用 TLS 且通过 `echo` 调用时将无法使用，下面是如何结合 `openssl` 使用这些命令。
    - 使用 `openssl` 启动交互会话
-
-
 
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
@@ -509,7 +490,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    (2,'2022-04-02','def');
    ```
 
-
 8. 通过在 `chnode2` 上查看行数据来验证复制情况：
     ```sql
     SELECT * FROM repl_table
@@ -521,8 +501,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
-
-
 
 ## 总结 {#summary}
 

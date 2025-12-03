@@ -17,7 +17,6 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-
 # Руководство по настройке источника Google Cloud SQL Postgres {#google-cloud-sql-postgres-source-setup-guide}
 
 :::info
@@ -26,13 +25,9 @@ import Image from '@theme/IdealImage';
 
 :::
 
-
-
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
 Любая версия Postgres 12 и новее
-
-
 
 ## Включение логической репликации {#enable-logical-replication}
 
@@ -47,8 +42,6 @@ import Image from '@theme/IdealImage';
 <Image img={cloudsql_logical_decoding1} alt="Изменение cloudsql.logical_decoding на on" size="lg" border/>
 <Image img={cloudsql_logical_decoding2} alt="Изменены cloudsql.logical_decoding и wal_sender_timeout" size="lg" border/>
 <Image img={cloudsql_logical_decoding3} alt="Перезапуск сервера" size="lg" border/>
-
-
 
 ## Создание пользователя ClickPipes и выдача прав {#creating-clickpipes-user-and-granting-permissions}
 
@@ -82,8 +75,6 @@ import Image from '@theme/IdealImage';
 
 [//]: # (TODO Добавить SSH-туннелирование)
 
-
-
 ## Добавление IP-адресов ClickPipes в брандмауэр {#add-clickpipes-ips-to-firewall}
 
 Выполните следующие шаги, чтобы добавить IP-адреса ClickPipes в вашу сеть.
@@ -106,8 +97,6 @@ import Image from '@theme/IdealImage';
 
 <Image img={firewall1} alt="Добавление сетей ClickPipes в брандмауэр" size="lg" border/>
 <Image img={firewall2} alt="Сети ClickPipes добавлены в брандмауэр" size="lg" border/>
-
-
 
 ## Что дальше? {#whats-next}
 

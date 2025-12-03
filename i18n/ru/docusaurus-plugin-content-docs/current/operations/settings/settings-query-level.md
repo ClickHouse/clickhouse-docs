@@ -77,7 +77,6 @@ SELECT value FROM system.settings where name='async_insert';
 └─────────┘
 ```
 
-
 ## Пользовательские настройки {#custom_settings}
 
 В дополнение к общим [настройкам](/operations/settings/settings.md) пользователи могут задавать собственные настройки.
@@ -100,7 +99,6 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-
 ## Примеры {#examples}
 
 Во всех этих примерах значение настройки `async_insert` устанавливается в `1` и демонстрируется, как просматривать настройки в работающей системе.
@@ -116,7 +114,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-
 #### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment}
 
 ```sql
@@ -131,7 +128,6 @@ SETTINGS async_insert = 1
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### Использование SQL для создания профиля настроек и назначения его пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
@@ -150,7 +146,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 -- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
-
 
 ### Создание профиля настроек и пользователя с помощью XML {#using-xml-to-create-a-settings-profile-and-user}
 
@@ -180,7 +175,6 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-
 #### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
@@ -200,7 +194,6 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ### Назначьте настройку сеансу {#assign-a-setting-to-a-session}
 
 ```sql
@@ -214,7 +207,6 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-
 ### Назначение настройки в запросе {#assign-a-setting-during-a-query}
 
 ```sql
@@ -223,7 +215,6 @@ INSERT INTO YourTable
 SETTINGS async_insert=1
 VALUES (...)
 ```
-
 
 ## См. также {#see-also}
 

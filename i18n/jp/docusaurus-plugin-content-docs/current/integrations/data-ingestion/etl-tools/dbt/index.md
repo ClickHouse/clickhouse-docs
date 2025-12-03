@@ -15,12 +15,9 @@ integration:
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # dbt と ClickHouse の連携 {#integrate-dbt-clickhouse}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## dbt-clickhouse アダプター {#dbt-clickhouse-adapter}
 **dbt** (data build tool) は、アナリティクスエンジニアが単に SELECT ステートメントを書くことで、データウェアハウス内のデータを変換できるようにするツールです。dbt は、これらの SELECT ステートメントをテーブルやビューといったデータベース内のオブジェクトとしてマテリアライズし、[Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform) における T の部分を担います。ユーザーは、SELECT ステートメントによって定義されたモデルを作成できます。
@@ -30,8 +27,6 @@ dbt 内では、これらのモデルを相互参照してレイヤー化する�
 dbt は、[ClickHouse 公認アダプター](https://github.com/ClickHouse/dbt-clickhouse) を通じて ClickHouse と連携して動作します。
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
-
-
 
 ## サポートされている機能 {#supported-features}
 
@@ -57,8 +52,6 @@ dbt は、[ClickHouse 公認アダプター](https://github.com/ClickHouse/dbt-c
 dbt-core 1.9 までのすべての機能がサポートされています。近日中に、dbt-core 1.10 で追加された機能にも対応する予定です。
 
 このアダプターは現時点ではまだ [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 内では利用できませんが、近いうちに利用可能にする予定です。詳細についてはサポートまでお問い合わせください。
-
-
 
 ## 概念 {#concepts}
 
@@ -92,8 +85,6 @@ ClickHouse 向けの[現在のアダプタ](https://github.com/silentsokolov/dbt
 | Distributed table materialization       | はい（実験的）    | [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) を作成します。                                                                                                                                    |
 | Distributed incremental materialization | はい（実験的）    | distributed table と同じ考え方に基づく incremental モデルです。すべての戦略がサポートされているわけではない点に注意してください。詳細については[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
 | Dictionary materialization              | はい（実験的）    | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
-
-
 
 ## dbt と ClickHouse アダプターのセットアップ {#setup-of-dbt-and-the-clickhouse-adapter}
 
@@ -163,7 +154,6 @@ CD ステップは、本番の ClickHouse クラスターに対して `dbt build
 
 開発環境を同期した状態に保ち、古いデプロイメントに対してモデルを実行してしまうことを避けるために、[clone](https://docs.getdbt.com/reference/commands/clone) や [defer](https://docs.getdbt.com/reference/node-selection/defer) を利用できます。
 
-
 本番環境の運用に影響を与えないよう、テスト環境（いわゆるステージング環境）には専用の ClickHouse クラスターまたはサービスを使用することを推奨します。テスト環境が本番環境を適切に反映したものとなるよう、本番データのサブセットを使用し、かつ環境間でスキーマドリフトが発生しないような形で dbt を実行することが重要です。
 
 - テストで最新データが不要な場合は、本番データのバックアップをステージング環境に復元することができます。
@@ -172,8 +162,6 @@ CD ステップは、本番の ClickHouse クラスターに対して `dbt build
 CI テスト用に専用の環境を用意すると、本番環境に影響を与えずに手動テストを実施することもできます。例えば、この環境を BI ツールの接続先としてテストに利用することができます。
 
 デプロイ（つまり CD ステップ）の際には、本番デプロイ時のアーティファクトを使用して、変更のあったモデルのみを更新することを推奨します。そのためには、dbt のアーティファクト用にオブジェクトストレージ（例：S3）を中間ストレージとして設定しておく必要があります。このセットアップが完了したら、`dbt build --select state:modified+ --state path/to/last/deploy/state.json` のようなコマンドを実行することで、本番での前回の実行からの変更に基づいて、必要最小限のモデルのみを選択的に再構築できます。
-
-
 
 ## よくある問題のトラブルシューティング {#troubleshooting-common-issues}
 
@@ -189,8 +177,6 @@ dbt から ClickHouse へ接続する際に問題が発生する場合は、次�
 
 一部の処理は、特定の ClickHouse クエリが原因で、想定より長時間かかる場合があります。どのクエリの処理時間が長くなっているかをより詳しく把握するには、[ログレベル](https://docs.getdbt.com/reference/global-configs/logs#log-level)を `debug` に引き上げてください。これにより、各クエリに要した時間が出力されます。たとえば、dbt コマンドに `--log-level debug` を付与して実行することで実現できます。
 
-
-
 ## 制限事項 {#limitations}
 
 現在の dbt 向け ClickHouse アダプターには、ユーザーが認識しておくべきいくつかの制限事項があります。
@@ -201,8 +187,6 @@ dbt から ClickHouse へ接続する際に問題が発生する場合は、次�
 - Distributed テーブルを使用してモデルを表現するには、ユーザーが各ノード上に基礎となる Replicated テーブルを手動で作成する必要があります。その上に Distributed テーブルを作成できます。アダプターはクラスターの作成を管理しません。
 - dbt がデータベースにリレーション（テーブル/ビュー）を作成する場合、通常は `{{ database }}.{{ schema }}.{{ table/view id }}` の形式で作成します。ClickHouse にはスキーマの概念がありません。そのためアダプターは `{{schema}}.{{ table/view id }}` を使用し、ここで `schema` は ClickHouse のデータベースを意味します。
 - dbt でエフェメラルモデル/CTE を ClickHouse の INSERT 文中の `INSERT INTO` より前に配置すると動作しません。https://github.com/ClickHouse/ClickHouse/issues/30323 を参照してください。これはほとんどのモデルには影響しないはずですが、エフェメラルモデルをモデル定義やその他の SQL 文のどこに配置するかについては注意が必要です。 <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
-
-
 
 ## Fivetran {#fivetran}
 
