@@ -1,32 +1,37 @@
 ---
-slug: '/interfaces/formats/TabSeparatedRaw'
-description: 'Документация для формата TabSeparatedRaw'
-title: TabSeparatedRaw
-keywords: ['TabSeparatedRaw']
-doc_type: reference
-alias: 
+alias: ['TSVRaw', 'Raw']
+description: 'Документация по формату TabSeparatedRaw'
 input_format: true
+keywords: ['TabSeparatedRaw']
 output_format: true
+slug: /interfaces/formats/TabSeparatedRaw
+title: 'TabSeparatedRaw'
+doc_type: 'reference'
 ---
-| Input | Output | Alias           |
-|-------|--------|-----------------|
-| ✔     | ✔      | `TSVRaw`, `Raw` |
+
+| Входные данные | Выходные данные | Псевдоним       |
+|----------------|-----------------|-----------------|
+| ✔              | ✔               | `TSVRaw`, `Raw` |
+
+
 
 ## Описание {#description}
 
 Отличается от формата [`TabSeparated`](/interfaces/formats/TabSeparated) тем, что строки записываются без экранирования.
 
 :::note
-При парсинге с использованием этого формата табуляции или переносы строки не допускаются в каждом поле.
+При разборе этого формата символы табуляции и перевода строки внутри каждого поля не допускаются.
 :::
 
-Для сравнения формата `TabSeparatedRaw` и формата `RawBlob` смотрите: [Сравнение необработанных форматов](../RawBLOB.md/#raw-formats-comparison)
+Сравнение форматов `TabSeparatedRaw` и `RawBlob` см. в разделе [Сравнение форматов Raw](../RawBLOB.md/#raw-formats-comparison).
+
+
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя следующий файл tsv, названный `football.tsv`:
+Используем следующий TSV-файл с именем `football.tsv`:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -56,7 +61,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `TabSeparatedRaw`:
+Считайте данные в формате `TabSeparatedRaw`:
 
 ```sql
 SELECT *
@@ -64,7 +69,7 @@ FROM football
 FORMAT TabSeparatedRaw
 ```
 
-Выход будет в формате, разделенном табуляцией:
+Вывод будет в формате с разделителями-табуляциями:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -85,5 +90,6 @@ FORMAT TabSeparatedRaw
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
+
 
 ## Настройки формата {#format-settings}

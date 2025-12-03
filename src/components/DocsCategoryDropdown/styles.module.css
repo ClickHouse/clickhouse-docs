@@ -3,10 +3,14 @@
 .docsNavDropdownContainer {
   border-radius: 10px;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: var(--ch-nav-v2-link-color);
   width: fit-content;
-  padding: 8px; /* Keep original padding for non-dropdown items */
+  padding: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* Keep original padding for non-dropdown items */
 }
 
 /* Only remove padding for dropdown containers */
@@ -60,9 +64,11 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: -20px; /* Increased to bridge the gap better */
+  bottom: -20px;
+  /* Increased to bridge the gap better */
   width: 100%;
-  height: 20px; /* Increased to cover more area */
+  height: 20px;
+  /* Increased to cover more area */
   pointer-events: auto;
 }
 
@@ -83,15 +89,18 @@
   cursor: pointer;
 }
 
-.docsNavDropdownToolbarLink:hover, .docsNavDropdownToolbarTopLevelLink:hover {
+.docsNavDropdownToolbarLink:hover,
+.docsNavDropdownToolbarTopLevelLink:hover {
   color: black;
 }
 
-[data-theme="dark"] .docsNavDropdownToolbarLink, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink {
+[data-theme="dark"] .docsNavDropdownToolbarLink,
+[data-theme="dark"] .docsNavDropdownToolbarTopLevelLink {
   color: #C0C0C0;
 }
 
-[data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
+[data-theme="dark"] .docsNavDropdownToolbarLink:hover,
+[data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
   color: #FAFF69;
 }
 
@@ -113,11 +122,13 @@
 
 .docsNavDropdownMenu {
   position: absolute;
-  top: calc(100% + 4px); /* Reduced from + 8px to + 4px */
+  top: calc(100% + 4px);
+  /* Reduced from + 8px to + 4px */
   left: 0;
   z-index: 9999 !important;
-  min-width: 300px;
-  max-width: 600px;
+  min-width: 320px;
+  max-width: 650px;
+  width: max-content;
   background-color: white;
   border: 1px solid var(--click-color-stroke);
   filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
@@ -173,6 +184,9 @@
 .docsNavMenuHeader {
   font-size: 0.875rem;
   font-weight: bold;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 [data-theme="light"] .docsNavMenuHeader {
@@ -182,6 +196,10 @@
 .docsNavMenuDescription {
   font-size: 0.75rem;
   color: var(--ifm-toc-link-color);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.4;
 }
 
 .docsNavMenuDivider {
@@ -246,6 +264,9 @@
   font-size: 0.875rem;
   color: black;
   font-weight: bold;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 [data-theme="dark"] .docsNavItemTitle {
@@ -261,6 +282,10 @@
 .docsNavItemDescription {
   color: var(--ifm-toc-link-color);
   font-size: 0.75rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.4;
 }
 
 .docsNavDropdownMenu a {

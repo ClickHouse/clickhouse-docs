@@ -1,31 +1,35 @@
 ---
-'sidebar_label': '汎用MongoDB'
-'description': '任意のMongoDBインスタンスをClickPipesのソースとして設定する'
-'slug': '/integrations/clickpipes/mongodb/source/generic'
-'title': '汎用MongoDBソース設定ガイド'
-'doc_type': 'guide'
+sidebar_label: '汎用 MongoDB'
+description: '任意の MongoDB インスタンスを ClickPipes のソースとして構成する'
+slug: /integrations/clickpipes/mongodb/source/generic
+title: '汎用 MongoDB ソース設定ガイド'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
 
-# 一般的な MongoDB ソース設定ガイド
+
+# 汎用的な MongoDB ソースセットアップガイド {#generic-mongodb-source-setup-guide}
 
 :::info
 
-MongoDB Atlas を使用している場合は、特定のガイドを [こちら](./atlas) を参照してください。
+MongoDB Atlas を使用している場合は、[こちら](./atlas)の専用ガイドを参照してください。
 
 :::
 
-## oplog 保持の有効化 {#enable-oplog-retention}
 
-レプリケーションには最低 24 時間の oplog 保持が必要です。初回スナップショットが完了する前に oplog が切り捨てられないように、oplog 保持を 72 時間以上に設定することをお勧めします。
 
-現在の oplog 保持を確認するには、MongoDB シェルで次のコマンドを実行します（このコマンドを実行するには `clusterMonitor` 権限が必要です）:
+## oplog の保持を有効にする {#enable-oplog-retention}
+
+レプリケーションのためには、oplog を最低 24 時間保持する必要があります。初回スナップショットが完了する前に oplog が切り捨てられないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。
+
+現在の oplog の保持期間は、MongoDB シェルで次のコマンドを実行して確認できます（このコマンドを実行するには `clusterMonitor` ロールが必要です）:
 
 ```javascript
 db.getSiblingDB("admin").serverStatus().oplogTruncation.oplogMinRetentionHours
 ```
 
-oplog 保持を 72 時間に設定するには、レプリカセット内の各ノードで管理者ユーザーとして次のコマンドを実行します:
+oplog の保持期間を 72 時間に設定するには、レプリカセット内の各ノードで、管理者ユーザーとして次のコマンドを実行します。
 
 ```javascript
 db.adminCommand({
@@ -34,11 +38,12 @@ db.adminCommand({
 })
 ```
 
-`replSetResizeOplog` コマンドと oplog 保持に関する詳細は、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)を参照してください。
+`replSetResizeOplog` コマンドおよび oplog の保持に関する詳細は、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)を参照してください。
 
-## データベースユーザーの設定 {#configure-database-user}
 
-管理者ユーザーとして MongoDB インスタンスに接続し、MongoDB CDC ClickPipes 用のユーザーを作成するために次のコマンドを実行します:
+## データベースユーザーを設定する {#configure-database-user}
+
+管理者ユーザーとして MongoDB インスタンスに接続し、MongoDB CDC ClickPipes 用のユーザーを作成するために次のコマンドを実行します：
 
 ```javascript
 db.getSiblingDB("admin").createUser({
@@ -50,10 +55,12 @@ db.getSiblingDB("admin").createUser({
 
 :::note
 
-`clickpipes_user` と `some_secure_password` を希望するユーザー名とパスワードに置き換えることを確認してください。
+必ず `clickpipes_user` と `some_secure_password` を、ご希望のユーザー名とパスワードに置き換えてください。
 
 :::
 
-## 次は何をしますか？ {#whats-next}
 
-これで [ClickPipe を作成](../index.md)し、MongoDB インスタンスから ClickHouse Cloud へのデータの取り込みを開始できます。MongoDB インスタンスの設定時に使用した接続詳細をメモしておくことを忘れないでください。それらは ClickPipe 作成プロセス中に必要になります。
+## 次のステップ {#whats-next}
+
+これで、[ClickPipe を作成](../index.md)し、MongoDB インスタンスから ClickHouse Cloud へデータを取り込み始めることができます。
+ClickPipe の作成プロセスで必要になるため、MongoDB インスタンスのセットアップ時に使用した接続情報は必ず控えておいてください。

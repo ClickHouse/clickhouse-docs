@@ -1,19 +1,18 @@
 ---
-'description': '根据每个序列成员的权重，用确定的精度计算数字数据序列的分位数。'
-'sidebar_position': 181
-'slug': '/sql-reference/aggregate-functions/reference/quantiletimingweighted'
-'title': 'quantileTimingWeighted'
-'doc_type': 'reference'
+description: '在指定精度下，根据每个序列成员的权重计算数值数据序列的分位数。'
+sidebar_position: 181
+slug: /sql-reference/aggregate-functions/reference/quantiletimingweighted
+title: 'quantileTimingWeighted'
+doc_type: 'reference'
 ---
 
+# quantileTimingWeighted {#quantiletimingweighted}
 
-# quantileTimingWeighted
+在给定精度下，根据序列中每个成员的权重，计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-在确定的精度下，根据每个序列成员的权重计算数字数据序列的 [分位数](https://en.wikipedia.org/wiki/Quantile)。
+结果是确定性的（不依赖于查询的执行顺序）。该函数针对描述分布的序列进行了优化，例如网页加载时间或后端响应时间。
 
-结果是确定性的（不依赖于查询处理顺序）。该函数经过优化，用于处理描述分布的序列，如加载网页时间或后端响应时间。
-
-当在查询中使用多个 `quantile*` 函数且有不同的级别时，内部状态不会合并（即，查询工作效率低于可能的效率）。在这种情况下，请使用 [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 函数。
+在一个查询中使用带有不同 level 的多个 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率会低于最优情况）。在这种情况下，请使用 [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 函数。
 
 **语法**
 
@@ -21,40 +20,40 @@
 quantileTimingWeighted(level)(expr, weight)
 ```
 
-别名：`medianTimingWeighted`。
+Alias: `medianTimingWeighted`.
 
 **参数**
 
-- `level` — 分位数的级别。可选参数。范围在 0 到 1 之间的常量浮点数。我们建议使用范围在 `[0.01, 0.99]` 之间的 `level` 值。默认值：0.5。 在 `level=0.5` 时，函数计算 [中位数](https://en.wikipedia.org/wiki/Median)。
+* `level` — 分位数级别。可选参数。取值为 0 到 1 之间的常量浮点数。建议将 `level` 值设置在 `[0.01, 0.99]` 范围内。默认值：0.5。当 `level=0.5` 时，函数计算[中位数](https://en.wikipedia.org/wiki/Median)。
 
-- `expr` — 针对列值的 [表达式](/sql-reference/syntax#expressions)，返回一个 [Float\*](../../../sql-reference/data-types/float.md) 类型的数字。
+* `expr` — 针对列值计算的[表达式](/sql-reference/syntax#expressions)，返回 [Float*](../../../sql-reference/data-types/float.md) 类型的数值。
 
-        - 如果传递负值给函数，行为是未定义的。
-        - 如果值大于 30,000（页面加载时间超过 30 秒），则假定为 30,000。
+  * 如果向函数传入了负值，其行为未定义。
+  * 如果值大于 30,000（页面加载时间超过 30 秒），则会被视为 30,000。
 
-- `weight` — 包含序列元素权重的列。权重是数值出现次数。
+* `weight` — 序列元素权重所在的列。权重是该值的出现次数。
 
-**准确性**
+**精度**
 
-如果满足以下条件，则计算结果是准确的：
+在以下情况下，计算结果是精确的：
 
-- 值的总数不超过 5670。
-- 值的总数超过 5670，但页面加载时间小于 1024ms。
+* 值的总数不超过 5670。
+* 值的总数超过 5670，但页面加载时间小于 1024 ms。
 
-否则，计算结果会四舍五入到最接近的 16 ms 的倍数。
+否则，计算结果会被舍入到最接近的 16 ms 的倍数。
 
-:::note    
-对于计算页面加载时间的分位数，此函数比 [quantile](/sql-reference/aggregate-functions/reference/quantile) 更有效和准确。
+:::note
+对于页面加载时间分位数的计算，此函数比 [quantile](/sql-reference/aggregate-functions/reference/quantile) 更高效且更精确。
 :::
 
 **返回值**
 
-- 指定级别的分位数。
+* 指定级别的分位数。
 
 类型：`Float32`。
 
-:::note    
-如果没有值传递给函数（在使用 `quantileTimingIf` 时），将返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。其目的是将这些情况与结果为零的情况区分开。有关排序 `NaN` 值的说明，请参见 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
+:::note
+如果没有向函数传入任何值（在使用 `quantileTimingIf` 时），则会返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。这样做的目的是将这些情况与结果为零的情况区分开。关于 `NaN` 值排序的说明，参见 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
 :::
 
 **示例**
@@ -86,10 +85,9 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 └───────────────────────────────────────────────┘
 ```
 
+# quantilesTimingWeighted {#quantilestimingweighted}
 
-# quantilesTimingWeighted
-
-与 `quantileTimingWeighted` 相同，但接受多个参数的分位数级别，并返回填充多个分位数值的数组。
+与 `quantileTimingWeighted` 相同，但接受多个带有分位数水平的参数，并返回一个 Array，其中包含这些分位数对应的多个值。
 
 **示例**
 
@@ -120,7 +118,7 @@ SELECT quantilesTimingWeighted(0,5, 0.99)(response_time, weight) FROM t
 └───────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [median](/sql-reference/aggregate-functions/reference/median)
-- [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

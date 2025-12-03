@@ -1,53 +1,56 @@
 ---
-'title': 'Масштабирование DB ClickPipes через OpenAPI'
-'description': 'Документация по масштабированию DB ClickPipes через OpenAPI'
-'slug': '/integrations/clickpipes/postgres/scaling'
-'sidebar_label': 'Масштабирование'
-'doc_type': 'guide'
+title: 'Масштабирование DB ClickPipes через OpenAPI'
+description: 'Документация по масштабированию DB ClickPipes через OpenAPI'
+slug: /integrations/clickpipes/postgres/scaling
+sidebar_label: 'Масштабирование'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 ---
-:::caution Большинство пользователей не нуждаются в этом API
-Настройки по умолчанию для DB ClickPipes предназначены для обработки большинства рабочих нагрузок «из коробки». Если вы считаете, что ваша рабочая нагрузка требует масштабирования, откройте [техподдержку](https://clickhouse.com/support/program), и мы поможем вам настроить оптимальные параметры для вашего случая использования.
+
+:::caution Большинству пользователей этот API не понадобится
+Базовая конфигурация DB ClickPipes рассчитана на то, чтобы «из коробки» обрабатывать большинство нагрузок. Если вы считаете, что вашей нагрузке требуется масштабирование, откройте [запрос в поддержку](https://clickhouse.com/support/program), и мы поможем вам подобрать оптимальные настройки для вашего сценария.
 :::
 
 API масштабирования может быть полезен для:
-- Больших первоначальных загрузок (более 4 ТБ)
-- Быстрой миграции умеренного объема данных
-- Поддержки более 8 CDC ClickPipes на одной службе
 
-Перед попыткой масштабирования учтите:
-- Убедитесь, что исходная БД имеет достаточную доступную емкость
-- Сначала отрегулируйте [параллелизм и партиционирование первоначальной загрузки](/integrations/clickpipes/postgres/parallel_initial_load) при создании ClickPipe
-- Проверьте наличие [долговременных транзакций](/integrations/clickpipes/postgres/sync_control#transactions) на источнике, которые могут вызывать задержки CDC
+- Крупных начальных загрузок (свыше 4 ТБ)
+- Максимально быстрой миграции умеренных объёмов данных
+- Поддержки более 8 CDC ClickPipes в рамках одного сервиса
 
-**Увеличение масштаба пропорционально увеличит ваши вычислительные расходы на ClickPipes.** Если вы масштабируете только для первоначальных загрузок, важно уменьшить масштаб после завершения снимка, чтобы избежать неожиданных расходов. Для получения дополнительной информации о ценах смотрите [Цены на Postgres CDC](/cloud/reference/billing/clickpipes).
+Прежде чем увеличивать масштаб, учтите следующее:
 
-## Предварительные условия для этого процесса {#prerequisites}
+- Убедитесь, что в исходной БД достаточно доступных ресурсов
+- Сначала настройте [параллелизм и разбиение начальной загрузки](/integrations/clickpipes/postgres/parallel_initial_load) при создании ClickPipe
+- Проверьте наличие [долго выполняющихся транзакций](/integrations/clickpipes/postgres/sync_control#transactions) в источнике, которые могут вызывать задержки CDC
 
-Перед началом вам потребуется:
+**Увеличение масштаба пропорционально увеличит ваши расходы на вычислительные ресурсы ClickPipes.** Если вы масштабируете сервис только для начальных загрузок, важно уменьшить масштаб после завершения снимка, чтобы избежать непредвиденных затрат. Дополнительные сведения о ценах см. в разделе [Тарифы на Postgres CDC](/cloud/reference/billing/clickpipes).
 
-1. [Ключ API ClickHouse](/cloud/manage/openapi) с правами администратора на целевой службе ClickHouse Cloud.
-2. DB ClickPipe (Postgres, MySQL или MongoDB), созданный в службе в какой-то момент времени. Инфраструктура CDC создается вместе с первым ClickPipe, и конечные точки масштабирования становятся доступными с этого момента.
+## Предварительные требования для этого процесса {#prerequisites}
 
-## Шаги для масштабирования DB ClickPipes {#cdc-scaling-steps}
+Прежде чем начать, вам потребуется:
 
-Установите следующие переменные окружения перед выполнением любых команд:
+1. [API-ключ ClickHouse](/cloud/manage/openapi) с правами Admin для целевого сервиса ClickHouse Cloud.
+2. Конвейер ClickPipe для БД (Postgres, MySQL или MongoDB), уже созданный в сервисе. Инфраструктура CDC создаётся вместе с первым ClickPipe, и с этого момента становятся доступны API-эндпоинты масштабирования.
+
+## Порядок масштабирования DB ClickPipes {#cdc-scaling-steps}
+
+Перед выполнением команд задайте следующие переменные окружения:
 
 ```bash
-ORG_ID=<Your ClickHouse organization ID>
-SERVICE_ID=<Your ClickHouse service ID>
-KEY_ID=<Your ClickHouse key ID>
-KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<ID организации ClickHouse>
+SERVICE_ID=<ID сервиса ClickHouse>
+KEY_ID=<ID ключа ClickHouse>
+KEY_SECRET=<Секретный ключ ClickHouse>
 ```
 
-Получите текущую конфигурацию масштабирования (по желанию):
+Получите текущую конфигурацию масштабирования (при необходимости):
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-
-# example result:
+# пример результата: {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -58,7 +61,7 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-Установите желаемое масштабирование. Поддерживаемые конфигурации включают 1-24 ядра CPU с памятью (ГБ), установленной на уровне 4× числа ядер:
+Укажите требуемый уровень масштабирования. Поддерживаются конфигурации с 1–24 ядрами CPU и объёмом памяти (ГБ), равным 4× числу ядер:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
@@ -74,15 +77,14 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 -d @cdc_scaling.json | jq
 ```
 
-Подождите, пока конфигурация распространится (обычно 3-5 минут). После завершения масштабирования конечная точка GET отразит новые значения:
+Дождитесь применения конфигурации (обычно это занимает 3–5 минут). После завершения масштабирования GET-эндпоинт отобразит новые значения:
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-
-# example result:
+# пример результата: {#example-result}
 {
   "result": {
     "replicaCpuMillicores": 24000,

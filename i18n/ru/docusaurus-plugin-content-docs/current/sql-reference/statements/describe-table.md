@@ -1,12 +1,13 @@
 ---
-slug: '/sql-reference/statements/describe-table'
+description: 'Описание инструкции DESCRIBE TABLE'
 sidebar_label: 'DESCRIBE TABLE'
 sidebar_position: 42
-description: 'Документация для Describe Table'
+slug: /sql-reference/statements/describe-table
 title: 'DESCRIBE TABLE'
-doc_type: reference
+doc_type: 'reference'
 ---
-Возвращает информацию о колонках таблицы.
+
+Возвращает информацию о столбцах таблицы.
 
 **Синтаксис**
 
@@ -14,20 +15,20 @@ doc_type: reference
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-Оператор `DESCRIBE` возвращает строку для каждой колонки таблицы со следующими [String](../../sql-reference/data-types/string.md) значениями:
+Оператор `DESCRIBE` возвращает строку для каждого столбца таблицы со следующими значениями типа [String](../../sql-reference/data-types/string.md):
 
-- `name` — Имя колонки.
-- `type` — Тип колонки.
-- `default_type` — Оператор, который используется в [значении по умолчанию](/sql-reference/statements/create/table) колонки: `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если значение по умолчанию отсутствует, возвращается пустая строка.
-- `default_expression` — Выражение, указанное после оператора `DEFAULT`.
-- `comment` — [Комментарий к колонке](/sql-reference/statements/alter/column#comment-column).
-- `codec_expression` — [кодек](/sql-reference/statements/create/table#column_compression_codec), применяемый к колонке.
-- `ttl_expression` — Выражение [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-- `is_subcolumn` — Флаг, равный `1` для внутренних подколонок. Он включается в результат только если описание подколонок разрешено настройкой [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+* `name` — имя столбца.
+* `type` — тип столбца.
+* `default_type` — клауза, используемая в [выражении по умолчанию](/sql-reference/statements/create/table) столбца: `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
+* `default_expression` — выражение, указанное после клаузы `DEFAULT`.
+* `comment` — [комментарий столбца](/sql-reference/statements/alter/column#comment-column).
+* `codec_expression` — [кодек](/sql-reference/statements/create/table#column_compression_codec), применяемый к столбцу.
+* `ttl_expression` — выражение [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
+* `is_subcolumn` — флаг, равный `1` для внутренних подстолбцов. Включается в результат только в том случае, если описание подстолбцов включено настройкой [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
-Все колонки в [Nested](../../sql-reference/data-types/nested-data-structures/index.md) структурах данных описываются отдельно. Имя каждой колонки предшествуется именем родительской колонки и точкой.
+Все столбцы в структурах данных [Nested](../../sql-reference/data-types/nested-data-structures/index.md) описываются отдельно. Имя каждого столбца предваряется именем родительского столбца и точкой.
 
-Чтобы показать внутренние подколонки других типов данных, используйте настройку [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+Чтобы показать внутренние подстолбцы других типов данных, используйте настройку [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
 **Пример**
 
@@ -53,7 +54,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Второй запрос дополнительно показывает подколонки:
+Второй запрос дополнительно показывает подстолбцы:
 
 ```text
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
@@ -65,6 +66,6 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- Настройка [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+* Параметр [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).

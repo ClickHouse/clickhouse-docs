@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/welchttest'
-sidebar_label: welchTTest
+description: 'Применяет t‑критерий Уэлча к выборкам из двух генеральных совокупностей.'
+sidebar_label: 'welchTTest'
 sidebar_position: 214
-description: 'Применяет t-тест Уэлча к выборкам из двух популяций.'
-title: welchTTest
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/welchttest
+title: 'welchTTest'
+doc_type: 'reference'
 ---
-# welchTTest
 
-Применяет t-тест Уэлча к выборкам из двух популяций.
+# welchTTest {#welchttest}
+
+Применяет t-критерий Уэлча к выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
@@ -16,25 +17,26 @@ doc_type: reference
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неравные дисперсии.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке из первой совокупности. В противном случае оно относится к выборке из второй совокупности.
+Нулевая гипотеза заключается в том, что средние значения совокупностей равны. Предполагается нормальное распределение. Дисперсии совокупностей могут быть неравными.
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — Данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — Индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей запятой](../../../sql-reference/data-types/float.md).
+* `confidence_level` — Уровень доверия, используемый для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
-[Кортеж](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный `confidence_level`)
+[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный параметр `confidence_level`)
 
-- рассчитанный t-статистик. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
+* нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+* верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 
@@ -67,5 +69,5 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 
 **См. также**
 
-- [t-тест Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test)
-- [функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)
+* [t-критерий Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test)
+* [функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)

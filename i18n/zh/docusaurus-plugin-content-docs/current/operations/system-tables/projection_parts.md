@@ -1,82 +1,84 @@
 ---
-'description': '系统表包含关于 MergeTree 家族表的投影部分的信息。'
-'keywords':
-- 'system table'
-- 'projection_parts'
-'slug': '/operations/system-tables/projection_parts'
-'title': 'system.projection_parts'
-'doc_type': 'reference'
+description: '包含 MergeTree 系列表投影部件信息的系统表。'
+keywords: ['系统表', 'projection_parts']
+slug: /operations/system-tables/projection_parts
+title: 'system.projection_parts'
+doc_type: 'reference'
 ---
 
 
-# system.projection_parts
 
-此表包含有关 MergeTree 家族表的投影部分的信息。
+# system.projection_parts {#systemprojection_parts}
 
-## Columns {#columns}
+此表包含 MergeTree 系列引擎表的投影部件信息。
 
-| Column                                  | Description                                                                                                                                                                                                 | Type            |
-|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `partition`                             | 分区名称。                                                                                                                                                                                               | String          |
-| `name`                                  | 数据部分的名称。                                                                                                                                                                                         | String          |
-| `part_type`                             | 数据部分存储格式。可能值：宽格式（每列一个文件）和紧凑格式（所有列一个文件）。                                                                                                                               | String          |
-| `parent_name`                           | 源（父）数据部分的名称。                                                                                                                                                                               | String          |
-| `parent_uuid`                           | 源（父）数据部分的 UUID。                                                                                                                                                                               | UUID            |
-| `parent_part_type`                      | 源（父）数据部分存储格式。                                                                                                                                                                              | String          |
-| `active`                                | 指示数据部分是否处于活动状态的标志。如果数据部分是活动的，则它在一个表中使用。否则，它即将被删除。非活动数据部分在合并和变更操作后出现。                                                                 | UInt8           |
-| `marks`                                 | 标记数量。要获取数据部分中近似的行数，请将标记乘以索引粒度（通常为 8192）（此提示不适用于自适应粒度）。                                                                                                        | UInt64          |
-| `rows`                                  | 行数。                                                                                                                                                                                                    | UInt64          |
-| `bytes_on_disk`                         | 所有数据部分文件的总大小（以字节为单位）。                                                                                                                                                               | UInt64          |
-| `data_compressed_bytes`                 | 数据部分中压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。                                                                                                                               | UInt64          |
-| `data_uncompressed_bytes`               | 数据部分中未压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。                                                                                                                             | UInt64          |
-| `marks_bytes`                           | 包含标记的文件的大小。                                                                                                                                                                                  | UInt64          |
-| `parent_marks`                          | 源（父）部分中的标记数量。                                                                                                                                                                               | UInt64          |
-| `parent_rows`                           | 源（父）部分中的行数。                                                                                                                                                                                    | UInt64          |
-| `parent_bytes_on_disk`                  | 所有源（父）数据部分文件的总大小（以字节为单位）。                                                                                                                                                       | UInt64          |
-| `parent_data_compressed_bytes`          | 源（父）数据部分中压缩数据的总大小。                                                                                                                                                                     | UInt64          |
-| `parent_data_uncompressed_bytes`        | 源（父）数据部分中未压缩数据的总大小。                                                                                                                                                                   | UInt64          |
-| `parent_marks_bytes`                    | 源（父）数据部分中包含标记的文件的大小。                                                                                                                                                                | UInt64          |
-| `modification_time`                     | 数据部分目录的修改时间。这通常对应于数据部分创建的时间。                                                                                                                                               | DateTime        |
-| `remove_time`                           | 数据部分变为非活动状态的时间。                                                                                                                                                                         | DateTime        |
-| `refcount`                              | 数据部分使用的地方数量。大于 2 的值表示数据部分在查询或合并中被使用。                                                                                                                               | UInt32          |
-| `min_date`                              | 数据部分中日期键的最小值。                                                                                                                                                                              | Date            |
-| `max_date`                              | 数据部分中日期键的最大值。                                                                                                                                                                              | Date            |
-| `min_time`                              | 数据部分中日期和时间键的最小值。                                                                                                                                                                        | DateTime        |
-| `max_time`                              | 数据部分中日期和时间键的最大值。                                                                                                                                                                        | DateTime        |
-| `partition_id`                          | 分区的 ID。                                                                                                                                                                                               | String          |
-| `min_block_number`                      | 合并后构成当前部分的数据部分的最小数量。                                                                                                                                                                   | Int64           |
-| `max_block_number`                      | 合并后构成当前部分的数据部分的最大数量。                                                                                                                                                                  | Int64           |
-| `level`                                 | 合并树的深度。零表示当前部分是由插入而不是通过合并其他部分创建的。                                                                                                                                      | UInt32          |
-| `data_version`                          | 用于确定哪些变更应应用于数据部分的编号（版本高于 data_version 的变更）。                                                                                                                              | UInt64          |
-| `primary_key_bytes_in_memory`           | 主键值使用的内存量（以字节为单位）。                                                                                                                                                                         | UInt64          |
-| `primary_key_bytes_in_memory_allocated` | 为主键值保留的内存量（以字节为单位）。                                                                                                                                                                       | UInt64          |
-| `is_frozen`                             | 表示分区数据备份是否存在的标志。1，备份存在。0，备份不存在。                                                                                                                                             | UInt8           |
-| `database`                              | 数据库名称。                                                                                                                                                                                              | String          |
-| `table`                                 | 表名称。                                                                                                                                                                                                 | String          |
-| `engine`                                | 表引擎的名称（不含参数）。                                                                                                                                                                              | String          |
-| `disk_name`                             | 存储数据部分的磁盘名称。                                                                                                                                                                                  | String          |
-| `path`                                  | 数据部分文件的文件夹的绝对路径。                                                                                                                                                                          | String          |
-| `hash_of_all_files`                     | 压缩文件的 sipHash128。                                                                                                                                                                                    | String          |
-| `hash_of_uncompressed_files`            | 未压缩文件的 sipHash128（带标记的文件、索引文件等）。                                                                                                                                                       | String          |
-| `uncompressed_hash_of_compressed_files` | 压缩文件中数据的 sipHash128，就像它们是未压缩的一样。                                                                                                                                                     | String          |
-| `delete_ttl_info_min`                   | TTL DELETE 规则的日期和时间键的最小值。                                                                                                                                                                   | DateTime        |
-| `delete_ttl_info_max`                   | TTL DELETE 规则的日期和时间键的最大值。                                                                                                                                                                   | DateTime        |
-| `move_ttl_info.expression`              | 表达式数组。每个表达式定义一个 TTL MOVE 规则。                                                                                                                                                           | Array(String)   |
-| `move_ttl_info.min`                     | 日期和时间值数组。每个元素描述 TTL MOVE 规则的最小键值。                                                                                                                                                  | Array(DateTime) |
-| `move_ttl_info.max`                     | 日期和时间值数组。每个元素描述 TTL MOVE 规则的最大键值。                                                                                                                                                  | Array(DateTime) |
-| `default_compression_codec`             | 用于压缩此数据部分的编解码器的名称（当列没有显式编解码器时）。                                                                                                                                             | String          |
-| `recompression_ttl_info.expression`     | TTL 表达式。                                                                                                                                                                                               | Array(String)   |
-| `recompression_ttl_info.min`            | 本部分内计算的 TTL 表达式的最小值。用于了解我们是否至少有一行具有过期的 TTL。                                                                                                                                | Array(DateTime) |
-| `recompression_ttl_info.max`            | 本部分内计算的 TTL 表达式的最大值。用于了解我们是否所有行都具有过期的 TTL。                                                                                                                              | Array(DateTime) |
-| `group_by_ttl_info.expression`          | TTL 表达式。                                                                                                                                                                                               | Array(String)   |
-| `group_by_ttl_info.min`                 | 本部分内计算的 TTL 表达式的最小值。用于了解我们是否至少有一行具有过期的 TTL。                                                                                                                                | Array(DateTime) |
-| `group_by_ttl_info.max`                 | 本部分内计算的 TTL 表达式的最大值。用于了解我们是否所有行都具有过期的 TTL。                                                                                                                              | Array(DateTime) |
-| `rows_where_ttl_info.expression`        | TTL 表达式。                                                                                                                                                                                               | Array(String)   |
-| `rows_where_ttl_info.min`               | 本部分内计算的 TTL 表达式的最小值。用于了解我们是否至少有一行具有过期的 TTL。                                                                                                                                | Array(DateTime) |
-| `rows_where_ttl_info.max`               | 本部分内计算的 TTL 表达式的最大值。用于了解我们是否所有行都具有过期的 TTL。                                                                                                                              | Array(DateTime) |
-| `is_broken`                             | 投影部分是否损坏。                                                                                                                                                                                        | UInt8           |
-| `exception_code`                        | 说明投影部分损坏状态的异常消息。                                                                                                                                                                          | Int32           |
-| `exception`                             | 说明投影部分损坏状态的异常代码。                                                                                                                                                                          | String          |
-| `bytes`                                 | bytes_on_disk 的别名。                                                                                                                                                                                   | UInt64          |
-| `marks_size`                            | marks_bytes 的别名。                                                                                                                                                                                     | UInt64          |
-| `part_name`                             | name 的别名。                                                                                                                                                                                              | String          |                                                                                                                                       | ALIAS           | name |
+
+
+## 列 {#columns}
+
+
+
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — 分区名称。
+* `name` ([String](../../sql-reference/data-types/)) — 数据部分的名称。
+* `part_type` ([String](../../sql-reference/data-types/)) — 数据 part 的存储格式。可能的取值为：Wide（每列一个文件）和 Compact（所有列共用一个文件）。
+* `parent_name` ([String](../../sql-reference/data-types/)) — 源（父）数据部分的名称。
+* `parent_uuid` ([UUID](../../sql-reference/data-types/)) — 源（父）数据分片的 UUID。`
+* `parent_part_type` ([String](../../sql-reference/data-types/)) — 源（父）数据部分所使用的存储格式。
+* `active` ([UInt8](../../sql-reference/data-types/)) — 标志，用于指示该数据片段是否处于活动状态。若数据片段为活动状态，则会被表实际使用；否则即将被删除。非活动数据片段会在执行合并和变更操作后出现。
+* `marks` ([UInt64](../../sql-reference/data-types/)) — 标记数量。要估算某个数据部分中的行数，将标记数量乘以索引粒度（通常为 8192）（对于自适应粒度，此提示不适用）。
+* `rows` ([UInt64](../../sql-reference/data-types/)) — 行数。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 所有数据部分文件的总大小（字节）。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 数据部分中压缩数据的总大小。不包括辅助文件（例如标记文件）。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 数据分片中未压缩数据的总大小。不包括所有辅助文件（例如标记文件）。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 标记文件的字节大小。
+* `parent_marks` ([UInt64](../../sql-reference/data-types/)) — 源（父）分片中的标记数量。
+* `parent_rows` ([UInt64](../../sql-reference/data-types/)) — 源（父）数据部分中的行数。
+* `parent_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 所有源（父）数据分片文件以字节计的总大小。
+* `parent_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 源（父）数据部分中压缩数据的总大小。
+* `parent_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 源（父）数据部分中未压缩数据的总大小。
+* `parent_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 源（父）数据部分中标记文件的大小。
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — 存放该数据部分的目录的修改时间。通常对应于该数据部分的创建时间。
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — 数据部分变为非活动状态的时间。
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — 该数据部分被引用的次数。大于 2 的值表示该数据部分正被查询或合并操作使用。
+* `min_date`（[Date](../../sql-reference/data-types/)）— 数据部分中日期键的最小值。
+* `max_date` ([Date](../../sql-reference/data-types/)) — 数据部分中日期键的最大值。
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — 数据部分中日期时间键的最小值。
+* `max_time`（[DateTime](../../sql-reference/data-types/)） — 数据分片中日期和时间键的最大值。
+* `partition_id` ([String](../../sql-reference/data-types/)) — 分区 ID。
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — 合并生成当前数据部分时所包含的数据分片的最小编号。
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — 合并后组成当前数据分片的源数据分片数量上限。
+* `level` ([UInt32](../../sql-reference/data-types/)) — 合并树的深度。0 表示当前 part 是通过插入创建的，而不是通过合并其他 part 创建的。
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — 用于确定应对数据部分应用哪些变更操作的数值（会应用版本号高于 data&#95;version 的变更）。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主键值在内存中占用的字节数。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为主键值保留的内存（以字节计）。
+* `is_frozen` ([UInt8](../../sql-reference/data-types/)) — 指示分区数据备份是否存在的标志。1 表示备份存在，0 表示备份不存在。
+* `database` ([String](../../sql-reference/data-types/)) — 数据库名称。
+* `table` ([String](../../sql-reference/data-types/)) — 表名。
+* `engine` ([String](../../sql-reference/data-types/)) — 表引擎的名称（不含参数）。
+* `disk_name` ([String](../../sql-reference/data-types/)) — 存储该数据部分的数据盘名称。
+* `path` ([String](../../sql-reference/data-types/)) — 数据部件文件所在目录的绝对路径。
+* `hash_of_all_files` ([String](../../sql-reference/data-types/)) — 压缩后文件的 sipHash128 值。
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/)) — 未压缩文件（带标记的文件、索引文件等）的 sipHash128 哈希值。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/)) — 将压缩文件内容视为未压缩数据时计算得到的 sipHash128 哈希值。
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/)) — TTL DELETE 规则中日期时间键的最小值。
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/)) — TTL DELETE 规则中日期和时间键的最大值。
+* `move_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — 由表达式组成的数组。每个表达式定义一个 TTL MOVE 规则。
+* `move_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — 日期和时间值的数组。每个元素表示某条 TTL MOVE 规则对应的键的最小值。
+* `move_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — 日期和时间值的数组。每个元素表示某个 TTL MOVE 规则的最大键值。
+* `default_compression_codec` ([String](../../sql-reference/data-types/)) — 用于压缩该数据部分的编解码器名称（在列未显式指定编解码器时使用）。
+* `recompression_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — TTL 表达式。
+* `recompression_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — 在该分片中计算得到的 TTL 表达式的最小值。用于判断是否至少存在一行 TTL 已过期的记录。
+* `recompression_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — 此数据分片中计算得到的 TTL 表达式的最大值。用于判断是否已包含所有 TTL 已过期的行。
+* `group_by_ttl_info.expression` ([Array(String)](../../sql-reference/data-types/)) — TTL 表达式。
+* `group_by_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — 此数据片段内计算得到的 TTL 表达式的最小值。用于判断是否至少存在一行已过期 TTL 的数据。
+* `group_by_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — 此数据部分中计算得到的 TTL 表达式的最大值。用于判断是否已包含所有 TTL 已过期的行。
+* `rows_where_ttl_info.expression`（[Array(String)](../../sql-reference/data-types/)） — TTL 表达式。
+* `rows_where_ttl_info.min` ([Array(DateTime)](../../sql-reference/data-types/)) — 此数据部分中计算得到的 TTL 表达式的最小值。用于判断是否存在至少一行已过期 TTL 的记录。
+* `rows_where_ttl_info.max` ([Array(DateTime)](../../sql-reference/data-types/)) — 此数据片段中计算得到的 TTL 表达式的最大值。用于判断是否已包含所有 TTL 已过期的行。
+* `is_broken` ([UInt8](../../sql-reference/data-types/)) — 投影分片是否损坏
+* `exception_code` ([Int32](../../sql-reference/data-types/)) — 说明投影部件损坏状态的异常消息
+* `exception` ([String](../../sql-reference/data-types/)) — 用于说明投影部件损坏状态的异常代码
+
+{/*AUTOGENERATED_END*/ }

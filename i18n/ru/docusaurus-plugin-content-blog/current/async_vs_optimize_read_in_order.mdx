@@ -1,0 +1,216 @@
+---
+title: Синхронное чтение данных
+description: "Новая настройка `allow_asynchronous_read_from_io_pool_for_merge_tree` позволяет числу потоков чтения (стримов) превышать количество потоков в остальной части конвейера выполнения запроса."
+date: 2023-03-01
+tags: ['Настройки', 'Производительность и оптимизации']
+keywords: ['Синхронное', 'Асинхронное', 'Чтение данных']
+---
+
+import Image from "@theme/IdealImage";
+import sync_read from "@site/static/images/knowledgebase/sync_read.png";
+import async_read from "@site/static/images/knowledgebase/async_read.png";
+import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
+
+{frontMatter.description}
+
+{/* усечь */}
+
+## Синхронное чтение данных \{#synchronous-data-reading\}
+
+Новый параметр allow&#95;asynchronous&#95;read&#95;from&#95;io&#95;pool&#95;for&#95;merge&#95;tree позволяет использовать число потоков чтения (streams), превышающее число потоков в остальной части конвейера выполнения запроса.
+
+Обычно параметр [max&#95;threads](https://clickhouse.com/docs/operations/settings/settings/#settings-max_threads) [управляет](https://clickhouse.com/company/events/query-performance-introspection) числом параллельных потоков чтения и параллельных потоков обработки запроса:
+
+<Image img={sync_read} size="md" alt="Схема синхронного чтения данных" />
+
+Данные считываются «по порядку», столбец за столбцом, с диска.
+
+### Асинхронное чтение данных \{#asynchronous-data-reading\}
+
+Новая настройка [allow&#95;asynchronous&#95;read&#95;from&#95;io&#95;pool&#95;for&#95;merge&#95;tree](https://github.com/ClickHouse/ClickHouse/pull/43260) позволяет использовать больше потоков чтения (streams), чем потоков в остальном конвейере выполнения запроса, чтобы **ускорить холодные запросы на низкопроизводительных по CPU сервисах ClickHouse Cloud** и **повысить производительность запросов, ограниченных подсистемой ввода-вывода (I/O)**.
+Когда эта настройка включена, количество потоков чтения контролируется настройкой [max&#95;streams&#95;for&#95;merge&#95;tree&#95;reading](https://github.com/ClickHouse/ClickHouse/pull/43260):
+
+<Image img={async_read} size="md" alt="Диаграмма асинхронного чтения данных" />
+
+Данные читаются асинхронно, параллельно из разных столбцов.
+
+Обратите внимание, что существует также настройка [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) для настройки соотношения между количеством потоков чтения (streams) и количеством потоков в остальном конвейере выполнения запроса. Однако в бенчмарках она давала меньший эффект, чем настройка `max_streams_for_merge_tree_reading`.
+
+### А как насчёт optimize&#95;read&#95;in&#95;order? \{#what-about-optimize&#95;read&#95;in&#95;order\}
+
+С [оптимизацией optimize&#95;read&#95;in&#95;order](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading) ClickHouse может [избежать](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) пересортировки данных в памяти, если порядок сортировки в запросах отражает физический порядок данных на диске, **но для этого необходимо последовательное чтение данных (в отличие от асинхронного чтения)**:
+
+<Image img={optimize_read} size="md" alt="Диаграмма оптимизации чтения по порядку" />
+
+### optimize&#95;read&#95;in&#95;order имеет приоритет над асинхронным чтением \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
+
+Когда ClickHouse обнаруживает, что может быть применена оптимизация `optimize_read_in_order`, настройка `allow_asynchronous_read_from_io_pool_for_merge_tree` будет проигнорирована или отключена.
+
+### Пример, демонстрирующий все вышеперечисленное \{#example-demonstrating-all-of-the-above\}
+
+* Создайте и загрузите [таблицу UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
+
+* Проверьте установленное значение max&#95;threads (по умолчанию это количество ядер процессора, которые ClickHouse видит на узле, выполняющем запрос)
+
+```
+SELECT getSetting('max_threads');
+
+
+┌─getSetting('max_threads')─┐
+│                        10 │
+└───────────────────────────┘
+```
+
+* Проверьте конвейер запросов с использованием количества потоков по умолчанию как для чтения, так и для обработки данных
+
+```
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid;
+
+┌─explain──────────────────────┐
+│ (Expression)                 │
+│ ExpressionTransform × 10     │
+│   (ReadFromMergeTree)        │
+│   MergeTreeThread × 10 0 → 1 │
+└──────────────────────────────┘
+```
+
+* Проверьте конвейер обработки запроса с 60 асинхронными потоками чтения и стандартным количеством потоков для остальных этапов конвейера выполнения запроса
+
+```
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+SETTINGS
+    allow_asynchronous_read_from_io_pool_for_merge_tree = 1,
+    max_streams_for_merge_tree_reading = 60;
+
+
+┌─explain────────────────────────┐
+│ (Expression)                   │
+│ ExpressionTransform × 10       │
+│   (ReadFromMergeTree)          │
+│   Resize 60 → 10               │
+│     MergeTreeThread × 60 0 → 1 │
+└────────────────────────────────┘
+```
+
+* Проверьте конвейер обработки запросов с 20 потоками как для чтения, так и для обработки данных
+
+```
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+SETTINGS
+    max_threads = 20;
+
+
+┌─explain──────────────────────┐
+│ (Expression)                 │
+│ ExpressionTransform × 20     │
+│   (ReadFromMergeTree)        │
+│   MergeTreeThread × 20 0 → 1 │
+└──────────────────────────────┘
+```
+
+* Проверьте конвейер выполнения запроса с 60 асинхронными потоками чтения и 20 потоками для остальных стадий выполнения запроса
+
+```
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+SETTINGS
+    max_threads = 20,
+    allow_asynchronous_read_from_io_pool_for_merge_tree = 1,
+    max_streams_for_merge_tree_reading = 60;
+
+
+┌─explain────────────────────────┐
+│ (Expression)                   │
+│ ExpressionTransform × 20       │
+│   (ReadFromMergeTree)          │
+│   Resize 60 → 20               │
+│     MergeTreeThread × 60 0 → 1 │
+└────────────────────────────────┘
+```
+
+* Проверьте конвейер выполнения запроса с 60 асинхронными потоками чтения и 20 потоками для остальной части конвейера выполнения запроса,
+  когда может быть применена оптимизация `optimize_read_in_order`
+
+```
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+ORDER BY postcode1, postcode2
+SETTINGS
+    max_threads = 20,
+    allow_asynchronous_read_from_io_pool_for_merge_tree= 1,
+    max_streams_for_merge_tree_reading= 60;
+
+
+┌─explain───────────────────────────┐
+│ (Expression)                      │
+│ ExpressionTransform               │
+│   (Sorting)                       │
+│   MergingSortedTransform 20 → 1   │
+│     (Expression)                  │
+│     ExpressionTransform × 20      │
+│       (ReadFromMergeTree)         │
+│       MergeTreeInOrder × 20 0 → 1 │
+└───────────────────────────────────┘
+
+
+-- обратите внимание: это эквивалентно отключению allow_asynchronous_read_from_io_pool_for_merge_tree
+
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+ORDER BY postcode1, postcode2
+SETTINGS
+    max_threads = 20,
+    allow_asynchronous_read_from_io_pool_for_merge_tree = 0,
+    max_streams_for_merge_tree_reading = 0;
+
+
+┌─explain───────────────────────────┐
+│ (Expression)                      │
+│ ExpressionTransform               │
+│   (Sorting)                       │
+│   MergingSortedTransform 20 → 1   │
+│     (Expression)                  │
+│     ExpressionTransform × 20      │
+│       (ReadFromMergeTree)         │
+│       MergeTreeInOrder × 20 0 → 1 │
+└───────────────────────────────────┘
+
+-- обратите внимание: можно принудительно включить allow_asynchronous_read_from_io_pool_for_merge_tree, отключив optimize_read_in_order
+
+EXPLAIN PIPELINE
+SELECT *
+FROM uk_price_paid
+ORDER BY
+    postcode1 ASC,
+    postcode2 ASC
+SETTINGS
+    max_threads = 20,
+    allow_asynchronous_read_from_io_pool_for_merge_tree = 1,
+    max_streams_for_merge_tree_reading = 60,
+    optimize_read_in_order = 0;
+
+
+┌─explain──────────────────────────────┐
+│ (Expression)                         │
+│ ExpressionTransform                  │
+│   (Sorting)                          │
+│   MergingSortedTransform 20 → 1      │
+│     MergeSortingTransform × 20       │
+│       (Expression)                   │
+│       ExpressionTransform × 20       │
+│         (ReadFromMergeTree)          │
+│         Resize 60 → 20               │
+│           MergeTreeThread × 60 0 → 1 │
+└──────────────────────────────────────┘
+
+
+```

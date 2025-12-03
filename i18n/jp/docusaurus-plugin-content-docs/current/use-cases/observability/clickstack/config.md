@@ -1,50 +1,54 @@
 ---
-'slug': '/use-cases/observability/clickstack/config'
-'title': '設定オプション'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStack の設定オプション - ClickHouse 可観測スタック'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/config
+title: '設定オプション'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack（ClickHouse Observability Stack）の設定オプション'
+keywords: ['ClickStack の設定', 'オブザーバビリティ設定', 'HyperDX の設定', 'コレクター設定', '環境変数']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
 import hyperdx_25 from '@site/static/images/use-cases/observability/hyperdx-25.png';
 import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.png';
 
+ClickStack の各コンポーネントには、以下の設定オプションがあります。
 
-以下の設定オプションは、ClickStackの各コンポーネントに利用できます。
 
 ## 設定の変更 {#modifying-settings}
 
 ### Docker {#docker}
 
-[All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または[Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)を使用している場合、希望の設定を環境変数を介して指定します。たとえば：
+[All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) を使用している場合は、希望する設定値を環境変数として渡すだけです。例:
 
 ```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
+
 ### Docker Compose {#docker-compose}
 
-[Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) 配置ガイドを使用している場合、[`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) ファイルを使用して設定を変更できます。
+[Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) のデプロイメントガイドを使用している場合は、[`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) ファイルで設定を変更できます。
 
-または、[`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml) ファイル内で明示的に設定を上書きすることもできます。たとえば：
+または、[`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml) ファイル内で設定を明示的に上書きすることもできます。
 
 例:
+
 ```yaml
 services:
   app:
     environment:
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      # ... other settings
+      # ... その他の設定
 ```
+
 
 ### Helm {#helm}
 
-#### 値のカスタマイズ (オプション) {#customizing-values}
+#### 値のカスタマイズ（任意） {#customizing-values}
 
-`--set` フラグを使用して設定をカスタマイズできます。たとえば：
+たとえば、`--set` フラグを使用して次のように設定をカスタマイズできます。
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 \
@@ -62,13 +66,13 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
   --set env[0].value=abc
 ```
 
-または `values.yaml` を編集します。デフォルトの値を取得するには：
+または `values.yaml` を編集します。デフォルト値を取得するには、次のコマンドを実行します：
 
 ```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 
-設定の例：
+設定例：
 
 ```yaml
 replicaCount: 2
@@ -93,319 +97,320 @@ ingress:
       value: abc
 ```
 
+
 ## HyperDX {#hyperdx}
 
 ### データソース設定 {#datasource-settings}
 
-HyperDX は、各可観測性データタイプ/ピラーのソースをユーザーが定義することに依存しています：
+HyperDX は、各 Observability データタイプ/ピラーごとにソースをユーザーが定義することを前提としています:
 
 - `Logs`
 - `Traces`
 - `Metrics`
 - `Sessions`
 
-この設定は、`Team Settings -> Sources` 内のアプリケーションから行うことができます。以下にログの例を示します：
+この設定は、アプリケーション内の `Team Settings -> Sources` から行えます。以下は Logs の例です:
 
 <Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
 
-これらの各ソースは、作成時に指定されたテーブルと、HyperDXがデータをクエリできるカラムのセットを少なくとも1つ必要とします。
+各ソースでは、作成時に少なくとも 1 つのテーブルと、HyperDX がデータをクエリできるようにするための列セットを指定する必要があります。
 
-[デフォルトのOpenTelemetry (OTel) スキーマ](/observability/integrating-opentelemetry#out-of-the-box-schema)を使用してClickStackに付属している場合、これらのカラムは各ソースに対して自動的に推測できます。もし[スキーマを変更する](#clickhouse)か、カスタムスキーマを使用している場合は、ユーザーがこれらのマッピングを指定し、更新する必要があります。
+ClickStack とともに配布されている [デフォルトの OpenTelemetry (OTel) スキーマ](/observability/integrating-opentelemetry#out-of-the-box-schema) を使用している場合、これらの列は各ソースごとに自動的に推論されます。[スキーマを変更する](#clickhouse) 場合やカスタムスキーマを使用する場合は、ユーザーがこれらのマッピングを指定および更新する必要があります。
 
 :::note
-ClickStackに付属しているClickHouseのデフォルトスキーマは、[OTel コレクター用のClickHouseエクスポーター](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)によって作成されたスキーマです。これらのカラム名は、公式のOTel仕様に記載されているものと相関します。詳細は[こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/)を参照してください。
+ClickStack とともに配布されている ClickHouse のデフォルトスキーマは、[OTel collector 向け ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) によって作成されるスキーマです。これらのカラム名は、[こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/) に記載されている OTel 公式仕様と相関付けられています。
 :::
 
-各ソースに利用可能な設定は以下の通りです：
+各ソースで利用可能な設定は以下のとおりです:
 
-#### Logs {#logs}
+#### ログ {#logs}
 
-| 設定                        | 説明                                                                                                             | 必要 | デフォルトスキーマでの推測 | 推測される値                                      |
-|-------------------------------|-----------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------|
-| `Name`                        | ソース名。                                                                                                        | はい      | いいえ                          | –                                                   |
-| `Server Connection`           | サーバ接続名。                                                                                                | はい      | いいえ                          | `Default`                                             |
-| `Database`                    | ClickHouseデータベース名。                                                                                      | はい      | はい                         | `default`                                             |
-| `Table`                       | 対象のテーブル名。デフォルトスキーマを使用する場合は `otel_logs` に設定します。                                                                                                     | はい      | いいえ                         |                                            |
-| `Timestamp Column`            | 主キーの一部となる日時カラムまたは式。                                                                        | はい       | はい                         | `TimestampTime`                                       |
-| `Default Select`              | デフォルトの検索結果に表示されるカラム。                                                                       | はい       | はい                         | `Timestamp`, `ServiceName`, `SeverityText`, `Body`         |
-| `Service Name Expression`     | サービス名のための式またはカラム。                                                                             | はい       | はい                         | `ServiceName`                                         |
-| `Log Level Expression`        | ログレベルのための式またはカラム。                                                                            | はい       | はい                         | `SeverityText`                                        |
-| `Body Expression`             | ログメッセージのための式またはカラム。                                                                          | はい       | はい                         | `Body`                                                |
-| `Log Attributes Expression`   | カスタムログ属性のための式またはカラム。                                                                        | はい       | はい                         | `LogAttributes`                                       |
-| `Resource Attributes Expression` | リソースレベルの属性のための式またはカラム。                                                                   | はい       | はい                         | `ResourceAttributes`                                  |
-| `Displayed Timestamp Column`  | UI表示に使用されるタイムスタンプカラム。                                                                       | はい       | はい                         | `ResourceAttributes`                                  |
-| `Correlated Metric Source`    | 関連付けられたメトリクソース (例: HyperDX メトリクス)。                                                        | いいえ       | いいえ                          | –                                                   |
-| `Correlated Trace Source`     | 関連付けられたトレースソース (例: HyperDX トレース)。                                                          | いいえ       | いいえ                          | –                                                   |
-| `Trace Id Expression`         | トレースIDを抽出するための式またはカラム。                                                                     | はい       | はい                         | `TraceId`                                             |
-| `Span Id Expression`          | スパンIDを抽出するための式またはカラム。                                                                        | はい       | はい                         | `SpanId`                                              |
-| `Implicit Column Expression`  | フルテキスト検索に使用されるカラム (フィールドが指定されていない場合)。通常はログ本文。                      | はい       | はい                         | `Body`                                                |
+| Setting                        | Description                                                                                                             | Required | Inferred in Default Schema       | Inferred Value                                      |
+|-------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|----------------------------------|-----------------------------------------------------|
+| `Name`                        | ソース名。                                                                                                              | はい     | いいえ                           | –                                                   |
+| `Server Connection`           | サーバー接続名。                                                                                                        | はい     | いいえ                           | `Default`                                           |
+| `Database`                    | ClickHouse データベース名。                                                                                             | はい     | はい                             | `default`                                           |
+| `Table`                       | 対象テーブル名。デフォルトスキーマを使用する場合は `otel_logs` を指定します。                                           | はい     | いいえ                           |                                                     |
+| `Timestamp Column`            | プライマリキーの一部となる日時カラムまたは式。                                                                          | はい     | はい                             | `TimestampTime`                                     |
+| `Default Select`              | 既定の検索結果で表示されるカラム。                                                                                      | はい     | はい                             | `Timestamp`, `ServiceName`, `SeverityText`, `Body` |
+| `Service Name Expression`     | サービス名に使用する式またはカラム。                                                                                    | はい     | はい                             | `ServiceName`                                       |
+| `Log Level Expression`        | ログレベルに使用する式またはカラム。                                                                                    | はい     | はい                             | `SeverityText`                                      |
+| `Body Expression`             | ログメッセージに使用する式またはカラム。                                                                                | はい     | はい                             | `Body`                                              |
+| `Log Attributes Expression`   | カスタムログ属性に使用する式またはカラム。                                                                              | はい     | はい                             | `LogAttributes`                                     |
+| `Resource Attributes Expression` | リソースレベルの属性に使用する式またはカラム。                                                                       | はい     | はい                             | `ResourceAttributes`                                |
+| `Displayed Timestamp Column`  | UI 表示に使用されるタイムスタンプカラム。                                                                               | はい     | はい                             | `ResourceAttributes`                                |
+| `Correlated Metric Source`    | 相関付け用のメトリクスソース（例: HyperDX のメトリクス）。                                                              | いいえ   | いいえ                           | –                                                   |
+| `Correlated Trace Source`     | 相関付け用のトレースソース（例: HyperDX のトレース）。                                                                  | いいえ   | いいえ                           | –                                                   |
+| `Trace Id Expression`         | Trace ID を抽出するための式またはカラム。                                                                               | はい     | はい                             | `TraceId`                                           |
+| `Span Id Expression`          | Span ID を抽出するための式またはカラム。                                                                                | はい     | はい                             | `SpanId`                                            |
+| `Implicit Column Expression`  | フィールドが指定されていない場合に全文検索（Lucene 形式）で使用されるカラム。通常はログ本文。                           | はい     | はい                             | `Body`                                              |
 
-#### Traces {#traces}
+#### トレース {#traces}
 
-| 設定                          | 説明                                                                                                            | 必要 | デフォルトスキーマでの推測 | 推測される値         |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
-| `Name`                           | ソース名。                                                                                                        | はい      | いいえ                          | –                      |
-| `Server Connection`              | サーバ接続名。                                                                                                | はい      | いいえ                          | `Default`              |
-| `Database`                       | ClickHouseデータベース名。                                                                                      | はい      | はい                         | `default`                |
-| `Table`                          | 対象のテーブル名。デフォルトスキーマを使用する場合は `otel_traces` に設定します。                                                                                                   | はい      | はい                         |      -       |
-| `Timestamp Column`              | 主キーの一部となる日時カラムまたは式。                                                                        | はい      | はい                         | `Timestamp`              |
-| `Timestamp`                      | `Timestamp Column` のエイリアス。                                                                             | はい      | はい                         | `Timestamp`              |
-| `Default Select`                | デフォルトの検索結果に表示されるカラム。                                                                       | はい      | はい                         | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
-| `Duration Expression`           | スパンの持続時間を計算するための式。                                                                          | はい      | はい                         | `Duration`               |
-| `Duration Precision`            | 持続時間式の精度 (例: ナノ秒、マイクロ秒)。                                                                    | はい      | はい                         | ns                     |
-| `Trace Id Expression`           | トレースIDのための式またはカラム。                                                                              | はい      | はい                         | `TraceId`                |
-| `Span Id Expression`            | スパンIDのための式またはカラム。                                                                               | はい      | はい                         | `SpanId`                 |
-| `Parent Span Id Expression`     | 親スパンIDのための式またはカラム。                                                                              | はい      | はい                         | `ParentSpanId`           |
-| `Span Name Expression`          | スパン名のための式またはカラム。                                                                               | はい      | はい                         | `SpanName`               |
-| `Span Kind Expression`          | スパンの種類のための式またはカラム (例: クライアント、サーバー)。                                            | はい      | はい                         | `SpanKind`               |
-| `Correlated Log Source`         | オプション。関連付けられたログソース (例: HyperDX ログ)。                                                     | いいえ       | いいえ                          | –                      |
-| `Correlated Session Source`     | オプション。関連付けられたセッションソース。                                                                  | いいえ       | いいえ                          | –                      |
-| `Correlated Metric Source`      | オプション。関連付けられたメトリクソース (例: HyperDX メトリクス)。                                         | いいえ       | いいえ                          | –                      |
-| `Status Code Expression`        | スパンのステータスコードのための式。                                                                          | はい      | はい                         | `StatusCode`             |
-| `Status Message Expression`     | スパンのステータスメッセージのための式。                                                                      | はい      | はい                         | `StatusMessage`          |
-| `Service Name Expression`       | サービス名のための式またはカラム。                                                                             | はい      | はい                         | `ServiceName`            |
-| `Resource Attributes Expression`| リソースレベル属性のための式またはカラム。                                                                    | はい      | はい                         | `ResourceAttributes`     |
-| `Event Attributes Expression`   | イベント属性のための式またはカラム。                                                                          | はい      | はい                         | `SpanAttributes`         |
-| `Span Events Expression`        | スパンイベントを抽出するための式。通常は `Nested` タイプのカラムです。対応する言語SDKで例外スタックトレースをレンダリングできます。              | はい      | はい                         | `Events`                 |
-| `Implicit Column Expression`   | フルテキスト検索に使用されるカラム (フィールドが指定されていない場合)。通常はログの本文です。                 | はい  | はい  | `SpanName`|
+| Setting                          | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value         |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
+| `Name`                           | ソース名。                                                                                                              | Yes      | No                          | –                      |
+| `Server Connection`              | サーバー接続名。                                                                                                        | Yes      | No                          | `Default`              |
+| `Database`                       | ClickHouse のデータベース名。                                                                                           | Yes      | Yes                         | `default`                |
+| `Table`                          | 対象テーブル名。デフォルトスキーマを使用する場合は `otel_traces` を設定します。                                         | Yes      | Yes                         |      -       |
+| `Timestamp Column`              | プライマリキーの一部となる日時型のカラムまたは式。                                                                      | Yes      | Yes                         | `Timestamp`              |
+| `Timestamp`                      | `Timestamp Column` のエイリアス。                                                                                       | Yes      | Yes                         | `Timestamp`              |
+| `Default Select`                | デフォルトの検索結果で表示されるカラム。                                                                                | Yes      | Yes                         | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
+| `Duration Expression`           | スパンの継続時間を計算するための式。                                                                                    | Yes      | Yes                         | `Duration`               |
+| `Duration Precision`            | 継続時間式の精度（例: ナノ秒、マイクロ秒）。                                                                            | Yes      | Yes                         | ns                     |
+| `Trace Id Expression`           | Trace ID 用の式またはカラム。                                                                                           | Yes      | Yes                         | `TraceId`                |
+| `Span Id Expression`            | Span ID 用の式またはカラム。                                                                                            | Yes      | Yes                         | `SpanId`                 |
+| `Parent Span Id Expression`     | 親 Span ID 用の式またはカラム。                                                                                         | Yes      | Yes                         | `ParentSpanId`           |
+| `Span Name Expression`          | スパン名用の式またはカラム。                                                                                            | Yes      | Yes                         | `SpanName`               |
+| `Span Kind Expression`          | スパン種別（例: クライアント、サーバー）用の式またはカラム。                                                            | Yes      | Yes                         | `SpanKind`               |
+| `Correlated Log Source`         | 任意。リンクされたログソース（例: HyperDX のログ）。                                                                    | No       | No                          | –                      |
+| `Correlated Session Source`     | 任意。リンクされたセッションソース。                                                                                    | No       | No                          | –                      |
+| `Correlated Metric Source`      | 任意。リンクされたメトリクスソース（例: HyperDX のメトリクス）。                                                        | No       | No                          | –                      |
+| `Status Code Expression`        | スパンのステータスコード用の式。                                                                                        | Yes      | Yes                         | `StatusCode`             |
+| `Status Message Expression`     | スパンのステータスメッセージ用の式。                                                                                    | Yes      | Yes                         | `StatusMessage`          |
+| `Service Name Expression`       | サービス名用の式またはカラム。                                                                                          | Yes      | Yes                         | `ServiceName`            |
+| `Resource Attributes Expression`| リソースレベルの属性用の式またはカラム。                                                                                | Yes      | Yes                         | `ResourceAttributes`     |
+| `Event Attributes Expression`   | イベント属性用の式またはカラム。                                                                                        | Yes      | Yes                         | `SpanAttributes`         |
+| `Span Events Expression`        | スパンイベントを抽出するための式。通常は `Nested` 型カラムです。対応する言語 SDKs を使用している場合、例外スタックトレースのレンダリングが可能になります。 | Yes      | Yes                         | `Events`                 |
+| `Implicit Column Expression`   | フィールドが指定されていない場合に全文検索（Lucene 形式）に使用されるカラム。通常はログ本文です。  | Yes  | Yes  | `SpanName`|
 
-#### Metrics {#metrics}
+#### メトリクス {#metrics}
 
-| 設定               | 説明                                                                                                          | 必要 | デフォルトスキーマでの推測 | 推測される値              |
-|--------------------|---------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------|
-| `Name`             | ソース名。                                                                                                | はい      | いいえ                          | –                           |
-| `Server Connection`| サーバ接続名。                                                                                            | はい      | いいえ                          | `Default`                   |
-| `Database`         | ClickHouseデータベース名。                                                                                 | はい      | はい                         | `default`                   |
-| `Gauge Table`      | ガウジ型メトリクスを格納するテーブル。                                                                    | はい      | いいえ                          | `otel_metrics_gauge`        |
-| `Histogram Table`  | ヒストグラム型メトリクスを格納するテーブル。                                                              | はい      | いいえ                          | `otel_metrics_histogram`    |
-| `Sum Table`        | 合計型 (カウンター) メトリクスを格納するテーブル。                                                        | はい      | いいえ                          | `otel_metrics_sum`          |
-| `Correlated Log Source`| オプション。関連付けられたログソース (例: HyperDX ログ)。                                                | いいえ       | いいえ                          | –                           |
+| Setting               | Description                                                   | Required | Inferred in Default Schema      | Inferred Value       |
+|------------------------|---------------------------------------------------------------|----------|----------------------------------|----------------------|
+| `Name`                 | ソース名。                                                    | Yes      | No                               | –                    |
+| `Server Connection`    | サーバー接続名。                                              | Yes      | No                               | `Default`            |
+| `Database`             | ClickHouse データベース名。                                   | Yes      | Yes                              | `default`            |
+| `Gauge Table`          | ゲージ型メトリクスを保存するテーブル。                        | Yes      | No                               | `otel_metrics_gauge` |
+| `Histogram Table`      | ヒストグラム型メトリクスを保存するテーブル。                  | Yes      | No                               | `otel_metrics_histogram` |
+| `Sum Table`            | 合計型（カウンタ）メトリクスを保存するテーブル。              | Yes      | No                               | `otel_metrics_sum`   |
+| `Correlated Log Source`| オプション。相関付けられたログソース（例: HyperDX ログ）。    | No       | No                               | –                    |
 
-#### Sessions {#settings}
+#### セッション {#settings}
 
-| 設定                        | 説明                                                                                                    | 必要 | デフォルトスキーマでの推測 | 推測される値         |
-|-----------------------------|--------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
-| `Name`                      | ソース名。                                                                                            | はい      | いいえ                          | –                      |
-| `Server Connection`         | サーバ接続名。                                                                                         | はい      | いいえ                          | `Default`              |
-| `Database`                  | ClickHouseデータベース名。                                                                             | はい      | はい                         | `default`              |
-| `Table`                     | セッションデータの対象テーブル。デフォルトスキーマを使用する場合は `hyperdx_sessions` に設定します。                                      | はい      | はい                         | -      |
-| `Timestamp Column`          | 主キーの一部となる日時カラムまたは式。                                                                | はい      | はい                         | `TimestampTime`            |
-| `Log Attributes Expression` | セッションデータからログレベル属性を抽出するための式。                                               | はい      | はい                         | `LogAttributes`        |
-| `LogAttributes`             | ログ属性を格納するために使用されるエイリアスまたはフィールド参照。                                      | はい      | はい                         | `LogAttributes`        |
-| `Resource Attributes Expression` | リソースレベルメタデータを抽出するための式。                                                  | はい      | はい                         | `ResourceAttributes`   |
-| `Correlated Trace Source`   | オプション。セッション相関のための関連付けられたトレースソース。                                        | いいえ       | いいえ                          | –                      |
-| `Implicit Column Expression` | フルテキスト検索に使用されるカラム (フィールドが指定されていない場合)。                                   | はい      | はい                         | `Body` |
+| Setting                        | Description                                                                                         | Required | Inferred in Default Schema        | Inferred Value |
+|-------------------------------|-----------------------------------------------------------------------------------------------------|----------|-----------------------------------|----------------|
+| `Name`                        | ソース名。                                                                                          | Yes      | No                                | –              |
+| `Server Connection`           | サーバー接続名。                                                                                   | Yes      | No                                | `Default`      |
+| `Database`                    | ClickHouse のデータベース名。                                                                      | Yes      | Yes                               | `default`      |
+| `Table`                       | セッションデータの出力先となるテーブル。デフォルトスキーマを使用する場合は `hyperdx_sessions` に設定します。 | Yes      | Yes                               | -              |
+| `Timestamp Column`            | プライマリキーの一部となる日時型カラムまたは式。                                                  | Yes      | Yes                               | `TimestampTime`|
+| `Log Attributes Expression`   | セッションデータからログレベルの属性を抽出するための式。                                          | Yes      | Yes                               | `LogAttributes`|
+| `LogAttributes`               | ログ属性を保存するために使用されるエイリアスまたはフィールド参照。                                | Yes      | Yes                               | `LogAttributes`|
+| `Resource Attributes Expression` | リソースレベルのメタデータを抽出するための式。                                                 | Yes      | Yes                               | `ResourceAttributes` |
+| `Correlated Trace Source`     | オプション。セッションを相関付けるためにリンクするトレースソース。                                | No       | No                                | –              |
+| `Implicit Column Expression`  | フィールドが指定されていない場合に全文検索に使用されるカラム（例: Lucene 形式のクエリパース）。   | Yes      | Yes                               | `Body`         |
 
 ### 相関ソース {#correlated-sources}
 
-ClickStackでフルクロスソース相関を可能にするためには、ユーザーはログ、トレース、メトリクス、およびセッションのための相関ソースを設定する必要があります。これにより、HyperDXは関連データを関連付け、イベントをレンダリングする際に豊かなコンテキストを提供します。
+ClickStack でソース間の完全な相関付けを有効にするには、ログ、トレース、メトリクス、セッションに対して相関ソースを設定する必要があります。これにより、HyperDX は関連するデータを相関付けて、イベントをレンダリングする際に豊富なコンテキストを提供できます。
 
-- `Logs`: トレースやメトリクスと相関できます。
-- `Traces`: ログ、セッション、メトリクスと相関できます。
-- `Metrics`: ログと相関できます。
-- `Sessions`: トレースと相関できます。
+- `Logs`: トレースおよびメトリクスと相関付けることができます。
+- `Traces`: ログ、セッション、およびメトリクスと相関付けることができます。
+- `Metrics`: ログと相関付けることができます。
+- `Sessions`: トレースと相関付けることができます。
 
-これらの相関を設定することにより、HyperDXは例えば、トレースに関連するログを一緒にレンダリングしたり、セッションに関連するメトリクスの異常をサーフェスしたりすることができます。適切な設定により、統一感のある文脈的な可観測性体験が保証されます。
+これらの相関関係を設定すると、さまざまな機能が有効になります。例えば、HyperDX はトレースに関連するログを並べて表示したり、セッションに紐づくメトリクス異常を可視化したりできます。
 
-以下に、相関ソースで構成されたLogsソースの例を示します：
+例えば、以下は相関ソースを設定した Logs ソースの例です:
 
-<Image img={hyperdx_26} alt="HyperDX Source correlated" size="md"/>
+<Image img={hyperdx_26} alt="相関ソースが設定された HyperDX のソース" size="md"/>
 
-### アプリケーション設定 {#application-configuration-settings}
+### アプリケーションの構成設定 {#application-configuration-settings}
 
-:::note HyperDX in ClickHouse Cloud
-これらの設定は、ClickHouse CloudでHyperDXが管理されている場合には変更できません。
+:::note ClickHouse Cloud での HyperDX
+HyperDX が ClickHouse Cloud 上で管理されている場合、これらの設定は変更できません。
 :::
 
-- `HYPERDX_API_KEY`
-  - **デフォルト:** なし (必須)
-  - **説明:** HyperDX APIの認証キー。
-  - **ガイダンス:** 
-  - テレメトリーとロギングのために必要
-  - ローカル開発時には空でない値を使用できます
-  - 本番環境では安全でユニークなキーを使用してください
-  - アカウント作成後、チーム設定ページから入手できます
+* `HYPERDX_API_KEY`
+  * **Default:** なし（必須）
+  * **Description:** HyperDX API 用の認証キー。
+  * **Guidance:**
+  * テレメトリおよびログ送信に必須
+  * ローカル開発では、空でない任意の値を使用可能
+  * 本番環境では、安全で一意なキーを使用すること
+  * アカウント作成後にチーム設定ページから取得可能
+
+* `HYPERDX_LOG_LEVEL`
+  * **デフォルト:** `info`
+  * **説明:** ログ出力の詳細度レベルを設定します。
+  * **オプション:** `debug`, `info`, `warn`, `error`
+  * **ガイダンス:**
+  * 詳細なトラブルシューティングには `debug` を使用します。
+  * 通常運用には `info` を使用します。
+  * 本番環境ではログ量を減らすために `warn` または `error` を使用します。
+
+* `HYPERDX_API_PORT`
+  * **デフォルト:** `8000`
+  * **説明:** HyperDX API サーバー用のポート。
+  * **ガイダンス:**
+  * このポートがホスト環境で利用可能（空いている）であることを確認してください
+  * ポートが競合している場合は変更してください
+  * API クライアント設定で指定しているポートと一致させる必要があります
+
+* `HYPERDX_APP_PORT`
+  * **デフォルト:** `8000`
+  * **説明:** HyperDX フロントエンドアプリ用のポート。
+  * **ガイダンス:**
+  * このポートがホスト上で使用可能であることを確認してください
+  * ポートの競合がある場合は変更してください
+  * ブラウザからアクセス可能である必要があります
+
+* `HYPERDX_APP_URL`
+  * **Default:** `http://localhost`
+  * **Description:** フロントエンドアプリのベースURL。
+  * **Guidance:**
+  * 本番環境では使用するドメインに設定する
+  * プロトコル（http/https）を含める
+  * 末尾のスラッシュは含めない
+
+* `MONGO_URI`
+  * **デフォルト:** `mongodb://db:27017/hyperdx`
+  * **説明:** MongoDB の接続文字列。
+  * **ガイドライン:**
+  * Docker を用いたローカル開発ではデフォルトを使用する
+  * 本番環境では安全な接続文字列を使用する
+  * 必要に応じて認証情報を含める
+  * 例: `mongodb://user:pass@host:port/db`
+
+* `MINER_API_URL`
+  * **デフォルト:** `http://miner:5123`
+  * **説明:** ログパターンマイニングサービスの URL。
+  * **ガイドライン:**
+  * Docker を用いたローカル開発ではデフォルトを使用します
+  * 本番環境では miner サービスの URL を設定します
+  * API サービスからアクセス可能である必要があります
+
+* `FRONTEND_URL`
+  * **デフォルト:** `http://localhost:3000`
+  * **説明:** フロントエンドアプリのURL。
+  * **ガイダンス:**
+  * ローカル開発ではデフォルトを使用する
+  * 本番環境では利用するドメインを設定する
+  * APIサービスからアクセス可能である必要がある
+
+* `OTEL_SERVICE_NAME`
+  * **デフォルト:** `hdx-oss-api`
+  * **説明:** OpenTelemetry 計装用のサービス名です。
+  * **ガイダンス:**
+  * HyperDX が自己計装する場合に適用される HyperDX サービスには、内容が分かる名前を付けてください。
+  * テレメトリデータ内で HyperDX サービスを識別しやすくできます
+
+* `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
+  * **デフォルト:** `http://localhost:4318`
+  * **説明:** OpenTelemetry collector のエンドポイント。
+  * **ガイダンス:**
+  * HyperDX をセルフインストルメントする場合に関連します
+  * ローカル開発ではデフォルト値を使用します
+  * 本番では利用している collector の URL を設定します
+  * HyperDX サービスから到達可能である必要があります
+
+* `USAGE_STATS_ENABLED`
+  * **デフォルト:** `true`
+  * **説明:** 利用状況統計の収集を有効／無効にします。
+  * **ガイダンス:**
+  * 利用状況トラッキングを無効化するには `false` に設定します
+  * プライバシーに配慮が必要なデプロイメントで有用です
+  * プロダクト改善のため、デフォルトは `true` です
+
+* `IS_OSS`
+  * **Default:** `true`
+  * **Description:** OSS モードで実行しているかどうかを示します。
+  * **Guidance:**
+  * オープンソースのデプロイメントでは `true` のままにします
+  * エンタープライズ デプロイメントでは `false` に設定します
+  * 利用できる機能が変わります
+
+* `IS_LOCAL_MODE`
+  * **Default:** `false`
+  * **Description:** ローカルモードで実行しているかどうかを示します。
+  * **Guidance:**
+  * ローカル開発環境では `true` に設定します
+  * 一部の本番環境向け機能を無効化します
+  * テストおよび開発用途に便利です
+
+* `EXPRESS_SESSION_SECRET`
+  * **デフォルト:** `hyperdx is cool 👋`
+  * **説明:** Express のセッション管理用シークレット。
+  * **ガイダンス:**
+  * 本番環境では必ず変更すること
+  * 強度の高いランダムな文字列を使用すること
+  * シークレットを厳重に管理すること
+
+* `ENABLE_SWAGGER`
+  * **Default:** `false`
+  * **Description:** Swagger API ドキュメントの有効化を切り替えます。
+  * **Guidance:**
+  * API ドキュメントを有効化する場合は `true` に設定します
+  * 開発およびテスト環境で有用です
+  * 本番環境では無効化してください
+
+* `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
+  * **Default:** `false`
+  * **Description:** HyperDX における JSON 型のベータ版サポートを有効にします。OTel collector で JSON サポートを有効にするには、[`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) も参照してください。
+  * **Guidance:**
+  * `true` に設定すると、ClickStack で JSON サポートが有効になります。
+
+## OpenTelemetry collector {#otel-collector}
+
+詳しくは「[ClickStack OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)」を参照してください。
+
+- `CLICKHOUSE_ENDPOINT`
+  - **Default:** *なし（必須）*。スタンドアロンイメージの場合に必要です。All-in-one または Docker Compose ディストリビューションの場合は、統合された ClickHouse インスタンスが設定されます。
+  - **Description:** テレメトリデータをエクスポートする ClickHouse インスタンスの HTTPS URL。
+  - **Guidance:**
+    - ポートを含む完全な HTTPS エンドポイントである必要があります（例：`https://clickhouse.example.com:8443`）
+    - コレクターが ClickHouse にデータを送信するために必須です
+
+- `CLICKHOUSE_USER`
+  - **Default:** `default`
+  - **Description:** ClickHouse インスタンスで認証する際に使用するユーザー名。
+  - **Guidance:**
+    - ユーザーに `INSERT` および `CREATE TABLE` 権限が付与されていることを確認してください
+    - インジェスト専用のユーザーを作成することを推奨します
+
+- `CLICKHOUSE_PASSWORD`
+  - **Default:** *なし（認証が有効な場合は必須）*
+  - **Description:** 指定した ClickHouse ユーザーのパスワード。
+  - **Guidance:**
+    - ユーザーアカウントにパスワードが設定されている場合に必須です
+    - 本番環境のデプロイでは Secret などを用いて安全に保管してください
 
 - `HYPERDX_LOG_LEVEL`
-  - **デフォルト:** `info`
-  - **説明:** ロギングの詳細レベルを設定します。
-  - **オプション:** `debug`, `info`, `warn`, `error`
-  - **ガイダンス:**
-  - 詳細なトラブルシューティングには `debug` を使用します
-  - 通常の操作には `info` を使用します
-  - 本番環境では、ログ量を減らすために `warn` または `error` を使用します
+  - **Default:** `info`
+  - **Description:** コレクターのログの詳細レベル。
+  - **Guidance:**
+    - `debug`、`info`、`warn`、`error` などの値を指定できます
+    - トラブルシューティング時は `debug` を使用してください
 
-- `HYPERDX_API_PORT`
-  - **デフォルト:** `8000`
-  - **説明:** HyperDX APIサーバのポート。
-  - **ガイダンス:**
-  - このポートがホストで使用可能であることを確認してください
-  - ポートの競合がある場合には変更してください
-  - APIクライアント設定のポートと一致させる必要があります
+- `OPAMP_SERVER_URL`
+  - **Default:** *なし（必須）*。スタンドアロンイメージの場合に必要です。All-in-one または Docker Compose ディストリビューションの場合は、デプロイされた HyperDX インスタンスを指します。
+  - **Description:** コレクターを管理するために使用される OpAMP サーバー（例：HyperDX インスタンス）の URL。デフォルトではポート `4320` を使用します。
+  - **Guidance:**
+    - 自身の HyperDX インスタンスを指す必要があります
+    - 動的な設定とセキュアなインジェストを有効にします
 
-- `HYPERDX_APP_PORT`
-  - **デフォルト:** `8000`
-  - **説明:** HyperDXフロントエンドアプリのポート。
-  - **ガイダンス:**
-  - このポートがホストで使用可能であることを確認してください
-  - ポートの競合がある場合には変更してください
-  - ブラウザからアクセスできる必要があります
-
-- `HYPERDX_APP_URL`
-  - **デフォルト:** `http://localhost`
-  - **説明:** フロントエンドアプリのベースURL。
-  - **ガイダンス:**
-  - 本番環境ではあなたのドメインに設定してください
-  - プロトコルを含めてください (http/https)
-  - スラッシュを後ろに付けないでください
-
-- `MONGO_URI`
-  - **デフォルト:** `mongodb://db:27017/hyperdx`
-  - **説明:** MongoDB接続文字列。
-  - **ガイダンス:**
-  - Dockerでのローカル開発にはデフォルトを使用してください
-  - 本番環境では安全な接続文字列を使用してください
-  - 必要に応じて認証を含めてください
-  - 例: `mongodb://user:pass@host:port/db`
-
-- `MINER_API_URL`
-  - **デフォルト:** `http://miner:5123`
-  - **説明:** ログパターンマイニングサービスのURL。
-  - **ガイダンス:**
-  - Dockerでのローカル開発にはデフォルトを使用してください
-  - 本番環境ではマイナーサービスのURLに設定してください
-  - APIサービスからアクセスできる必要があります
-
-- `FRONTEND_URL`
-  - **デフォルト:** `http://localhost:3000`
-  - **説明:** フロントエンドアプリのURL。
-  - **ガイダンス:**
-  - ローカル開発ではデフォルトを使用してください
-  - 本番環境ではあなたのドメインに設定してください
-  - APIサービスからアクセスできる必要があります
-
-- `OTEL_SERVICE_NAME`
-  - **デフォルト:** `hdx-oss-api`
-  - **説明:** OpenTelemetryインストゥルメンテーションのサービス名。
-  - **ガイダンス:**
-  - HyperDXサービスのために説明的な名前を使用してください。HyperDXが自動計測を行う場合に適用されます。
-  - テレメトリデータにおいてHyperDXサービスを特定するのに役立ちます
-
-- `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
-  - **デフォルト:** `http://localhost:4318`
-  - **説明:** OpenTelemetryコレクターのエンドポイント。
-  - **ガイダンス:**
-  - 自動計測を行うHyperDXに該当します。
-  - ローカル開発ではデフォルトを使用してください
-  - 本番環境ではコレクターのURLに設定してください
-  - HyperDXサービスからアクセスできる必要があります
-
-- `USAGE_STATS_ENABLED`
-  - **デフォルト:** `true`
-  - **説明:** 使用統計の収集を切り替えます。
-  - **ガイダンス:**
-  - 使用追跡を無効にするには `false` に設定します
-  - プライバシーに敏感なデプロイメントに役立ちます
-  - 製品改善のためにデフォルトは `true` です
-
-- `IS_OSS`
-  - **デフォルト:** `true`
-  - **説明:** OSSモードで実行されているかどうかを示します。
-  - **ガイダンス:**
-  - オープンソースデプロイメントでは `true` のままにします
-  - エンタープライズデプロイメントでは `false` に設定します
-  - 機能の可用性に影響します
-
-- `IS_LOCAL_MODE`
-  - **デフォルト:** `false`
-  - **説明:** ローカルモードで実行されているかどうかを示します。
-  - **ガイダンス:**
-  - ローカル開発には `true` に設定します
-  - 特定の本番機能が無効になります
-  - テストと開発に役立ちます
-
-- `EXPRESS_SESSION_SECRET`
-  - **デフォルト:** `hyperdx is cool 👋`
-  - **説明:** Expressセッション管理のためのシークレット。
-  - **ガイダンス:**
-  - 本番環境では変更してください
-  - 強力でランダムな文字列を使用してください
-  - 秘密にして安全に保ってください
-
-- `ENABLE_SWAGGER`
-  - **デフォルト:** `false`
-  - **説明:** Swagger APIドキュメントを切り替えます。
-  - **ガイダンス:**
-  - APIドキュメントを有効にするには `true` に設定します
-  - 開発およびテストに役立ちます
-  - 本番環境では無効にしてください
-
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
-  - **デフォルト:** `false`
-  - **説明:** HyperDXにおけるJSON型のBetaサポートを有効にします。OTel コレクターでJSONサポートを有効にするには[`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector)も参照してください。
-  - **ガイダンス:**
-  - ClickStackにおけるJSONサポートを有効にするには `true` に設定します。
-
-## OpenTelemetryコレクター {#otel-collector}
-
-詳細については["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector)を参照してください。
-
-- `CLICKHOUSE_ENDPOINT`  
-  - **デフォルト:** スタンドアロンイメージの場合は*なし (必須)*。All-in-oneまたはDocker Compose配布の場合は統合されたClickHouseインスタンスに設定されています。
-  - **説明:** テレメトリーデータをエクスポートするためのClickHouseインスタンスのHTTPS URL。  
-  - **ガイダンス:**  
-    - ポートを含む完全なHTTPSエンドポイントである必要があります (例: `https://clickhouse.example.com:8443`)  
-    - コレクターがデータをClickHouseに送信するために必須です  
-
-- `CLICKHOUSE_USER`  
-  - **デフォルト:** `default`  
-  - **説明:** ClickHouseインスタンスに対する認証に使用されるユーザー名。  
-  - **ガイダンス:**  
-    - ユーザーが `INSERT` および `CREATE TABLE` 権限を持っていることを確認してください  
-    - 取り込み用に専用のユーザーを作成することを推奨します  
-
-- `CLICKHOUSE_PASSWORD`  
-  - **デフォルト:** *なし (認証が有効な場合は必須)*  
-  - **説明:** 指定されたClickHouseユーザーのパスワード。  
-  - **ガイダンス:**  
-    - ユーザーアカウントにパスワードが設定されている場合は必須です  
-    - 本番環境で安全に保管してください  
-
-- `HYPERDX_LOG_LEVEL`  
-  - **デフォルト:** `info`  
-  - **説明:** コレクターのログ詳細レベル。  
-  - **ガイダンス:**  
-    -  `debug`, `info`, `warn`, `error` などの値を受け入れます  
-    - トラブルシューティングの際は `debug` を使用します  
-
-- `OPAMP_SERVER_URL`  
-  - **デフォルト:** *なし (必須)* スタンドアロンイメージの場合。All-in-oneまたはDocker Compose配布の場合、デプロイされたHyperDXインスタンスを指します。
-  - **説明:** コレクターを管理するために使用されるOpAMPサーバのURL (例: HyperDXインスタンス)。デフォルトではポート `4320` です。
-  - **ガイダンス:**  
-    - あなたのHyperDXインスタンスを指す必要があります  
-    - 動的な設定と安全な取り込みを有効にします  
-
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  
-  - **デフォルト:** `default`  
-  - **説明:** コレクターがテレメトリーデータを書き込むClickHouseのデータベース。  
-  - **ガイダンス:**  
-    - カスタムデータベース名を使用する場合は設定してください  
-    - 指定されたユーザーがこのデータベースにアクセスできることを確認してください  
+- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  - **Default:** `default`
+  - **Description:** コレクターがテレメトリデータを書き込む ClickHouse データベース。
+  - **Guidance:**
+    - カスタムのデータベース名を使用する場合に設定します
+    - 指定したユーザーがこのデータベースにアクセスできることを確認してください
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
-  - **デフォルト:** `<空文字列>`
-  - **説明:** コレクターで有効にする機能フラグを有効にします。`--feature-gates=clickhouse.json`に設定すると、コレクター内でのJSON型のBetaサポートが有効になり、スキーマがその型で作成されます。HyperDXでのJSONサポートを有効にするには[`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx)も参照してください。
-  - **ガイダンス:**
-  - ClickStackにおけるJSONサポートを有効にするには `true` に設定します。
+  - **Default:** `<empty string>`
+  - **Description:** コレクターで有効にする feature flag を指定します。`--feature-gates=clickhouse.json` を設定すると、コレクターで JSON 型のベータサポートが有効になり、スキーマがその型で作成されるようになります。HyperDX で JSON サポートを有効にするには、[`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) も参照してください。
+  - **Guidance:**
+    - ClickStack で JSON サポートを有効にするには `true` を設定します。
 
 ## ClickHouse {#clickhouse}
 
-ClickStackはマルチテラバイトスケールに最適化されたデフォルトのClickHouse構成を提供しますが、ユーザーは仕事の負荷に合わせて変更および最適化することができます。
+ClickStack には、マルチテラバイト規模を想定したデフォルトの ClickHouse 構成が含まれていますが、ユーザーは自分たちのワークロードに合わせて自由に変更・最適化できます。
 
-ClickHouseを効果的に調整するためには、ユーザーは[parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards)などの主要なストレージの概念、および[merges](/merges)が挿入時にどのように発生するかを理解しておく必要があります。 [primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes)、およびデータスキッピングインデックスの基本を確認し、TTLライフサイクルなどの[データライフサイクル管理](/observability/managing-data)の技術を利用することをお勧めします。
+ClickHouse を効果的にチューニングするには、[parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards) といった主要なストレージの概念や、[merges](/merges) が挿入時にどのように行われるかを理解しておく必要があります。[primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes)、およびデータスキッピングインデックスの基礎と、TTL によるライフサイクル管理などの[データライフサイクル管理](/observability/managing-data)手法を確認しておくことを推奨します。
 
-ClickStackは[スキーマカスタマイズ](/use-cases/observability/schema-design)をサポートしており、ユーザーはカラムの型を変更したり、新しいフィールド (例えばログから) を抽出したり、コーデックや辞書を適用したり、プロジェクションを使用してクエリを加速したりすることができます。
+ClickStack は [schema customization](/use-cases/observability/schema-design) をサポートしており、ユーザーはカラム型の変更、（例: ログからの）新しいフィールドの抽出、codec と辞書の適用、そしてプロジェクションを用いたクエリの高速化を行えます。
 
-さらに、マテリアライズドビューを使用して、データがビューのソーステーブルに書き込まれ、アプリケーションがターゲットテーブルから読み取る限り、[取り込み時にデータを変換またはフィルタリングする](https://use-cases/observability/schema-design#materialized-columns)ことができます。
+さらに、ビューのソーステーブルにデータを書き込み、アプリケーションがターゲットテーブルを読み取る構成であれば、マテリアライズドビューを使用して[インジェスト時にデータを変換またはフィルタリング](/use-cases/observability/schema-design#materialized-columns)することができます。
 
-詳細については、スキーマ設計、インデックス戦略、およびデータ管理のベストプラクティスに関するClickHouseのドキュメントを参照してください。これらの多くはClickStackのデプロイメントに直接適用されます。
+詳細については、スキーマ設計、インデックス戦略、およびデータ管理のベストプラクティスに関する ClickHouse ドキュメントを参照してください。これらの多くは、そのまま ClickStack のデプロイメントにも適用できます。

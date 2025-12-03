@@ -1,12 +1,13 @@
 ---
-slug: '/sql-reference/statements/create/dictionary'
-sidebar_label: DICTIONARY
+description: 'Документация по словарю'
+sidebar_label: 'DICTIONARY'
 sidebar_position: 38
-description: 'Документация для Dictionary'
+slug: /sql-reference/statements/create/dictionary
 title: 'CREATE DICTIONARY'
-doc_type: reference
+doc_type: 'reference'
 ---
-Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+
+Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с указанными [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [схемой размещения](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
 ## Синтаксис {#syntax}
 
@@ -23,35 +24,36 @@ SOURCE(SOURCE_NAME([param1 value1 ... paramN valueN]))
 LAYOUT(LAYOUT_NAME([param_name param_value]))
 LIFETIME({MIN min_val MAX max_val | max_val})
 SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
-COMMENT 'Comment'
+COMMENT 'Комментарий'
 ```
 
-Структура словаря состоит из атрибутов. Атрибуты словаря определяются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
+Структура словаря включает атрибуты. Атрибуты словаря задаются так же, как столбцы таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
 
-Клауза `ON CLUSTER` позволяет создавать словарь на кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
+Конструкция `ON CLUSTER` позволяет создавать словарь на кластере, см. [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
-В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря можно указать один или несколько атрибутов в качестве ключей словаря.
+В зависимости от [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря один или несколько атрибутов могут использоваться в качестве ключей словаря.
 
 ## ИСТОЧНИК {#source}
 
-Источник для словаря может быть:
-- таблица в текущем сервисе ClickHouse
-- таблица в удаленном сервисе ClickHouse
-- файл, доступный по HTTP(S)
-- другая база данных
+Источником словаря может быть:
 
-### Создание словаря из таблицы в текущем сервисе ClickHouse {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+* таблица в текущем сервисе ClickHouse
+* таблица в удалённом сервисе ClickHouse
+* файл, доступный по HTTP(S)
+* другая база данных
+
+### Создайте словарь из таблицы в текущем сервисе ClickHouse {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
 
 Входная таблица `source_table`:
 
 ```text
 ┌─id─┬─value──┐
-│  1 │ First  │
-│  2 │ Second │
+│  1 │ Первый  │
+│  2 │ Второй │
 └────┴────────┘
 ```
 
-Создание словаря:
+Создание справочника:
 
 ```sql
 CREATE DICTIONARY id_value_dictionary
@@ -65,7 +67,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-Вывод словаря:
+Выведите словарь:
 
 ```sql
 SHOW CREATE DICTIONARY id_value_dictionary;
@@ -84,7 +86,7 @@ LAYOUT(FLAT())
 ```
 
 :::note
-При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) вы должны указать пользователя (`default` или любого другого пользователя с ролью `default_role`) и пароль при создании словаря.
+При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) при создании словаря необходимо указать пользователя (`default` или любого другого пользователя с ролью `default_role`) и пароль.
 :::
 
 ```sql
@@ -112,14 +114,14 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### Создание словаря из таблицы в удаленном сервисе ClickHouse {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### Создание словаря из таблицы в удалённом сервисе ClickHouse {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
 
-Входная таблица (в удаленном сервисе ClickHouse) `source_table`:
+Входная таблица (в удалённом сервисе ClickHouse) `source_table`:
 
 ```text
 ┌─id─┬─value──┐
-│  1 │ First  │
-│  2 │ Second │
+│  1 │ Первый  │
+│  2 │ Второй │
 └────┴────────┘
 ```
 
@@ -137,7 +139,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### Создание словаря из файла, доступного по HTTP(S) {#create-a-dictionary-from-a-file-available-by-https}
+### Создать словарь из файла, доступного по HTTP(S) {#create-a-dictionary-from-a-file-available-by-https}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -153,11 +155,11 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### Создание словаря из другой базы данных {#create-a-dictionary-from-another-database}
+### Создание словаря на основе другой базы данных {#create-a-dictionary-from-another-database}
 
-Пожалуйста, смотрите детали в [Источники словарей](/sql-reference/dictionaries#dbms).
+Подробности см. в разделе [Источники словарей](/sql-reference/dictionaries#dbms).
 
 **См. также**
 
-- Для получения дополнительной информации смотрите раздел [Словари](../../../sql-reference/dictionaries/index.md).
-- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — Эта таблица содержит информацию о [словарях](../../../sql-reference/dictionaries/index.md).
+* Дополнительные сведения см. в разделе [Словари](../../../sql-reference/dictionaries/index.md).
+* [system.dictionaries](../../../operations/system-tables/dictionaries.md) — эта таблица содержит информацию о [словахрях](../../../sql-reference/dictionaries/index.md).

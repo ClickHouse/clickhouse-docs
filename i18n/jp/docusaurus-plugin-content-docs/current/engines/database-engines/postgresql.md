@@ -1,20 +1,23 @@
 ---
-'description': 'リモートの PostgreSQL サーバー上のデータベースに接続することを許可します。'
-'sidebar_label': 'PostgreSQL'
-'sidebar_position': 40
-'slug': '/engines/database-engines/postgresql'
-'title': 'PostgreSQL'
-'doc_type': 'guide'
+description: 'リモート PostgreSQL サーバー上のデータベースへの接続を可能にします。'
+sidebar_label: 'PostgreSQL'
+sidebar_position: 40
+slug: /engines/database-engines/postgresql
+title: 'PostgreSQL'
+doc_type: 'guide'
 ---
 
 
-# PostgreSQL
 
-リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続することを許可します。ClickHouse と PostgreSQL の間でデータを交換するために、読み込みおよび書き込み操作（`SELECT` および `INSERT` クエリ）をサポートします。
+# PostgreSQL {#postgresql}
 
-`SHOW TABLES` および `DESCRIBE TABLE` クエリの助けを借りて、リモート PostgreSQL からのテーブルリストとテーブル構造へのリアルタイムアクセスを提供します。
+リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続できます。ClickHouse と PostgreSQL 間でデータをやり取りするために、読み取りおよび書き込み操作（`SELECT` および `INSERT` クエリ）をサポートします。
 
-テーブル構造の変更（`ALTER TABLE ... ADD|DROP COLUMN`）をサポートします。`use_table_cache` パラメータ（以下のエンジンパラメータを参照）が `1` に設定されている場合、テーブル構造はキャッシュされ、変更がチェックされませんが、`DETACH` および `ATTACH` クエリで更新できます。
+`SHOW TABLES` および `DESCRIBE TABLE` クエリを利用して、リモート PostgreSQL 上のテーブル一覧およびテーブル構造にリアルタイムでアクセスできます。
+
+テーブル構造の変更（`ALTER TABLE ... ADD|DROP COLUMN`）をサポートします。`use_table_cache` パラメータ（後述の Engine パラメータを参照）が `1` に設定されている場合、テーブル構造はキャッシュされ、変更されているかどうかのチェックは行われませんが、`DETACH` および `ATTACH` クエリで更新できます。
+
+
 
 ## データベースの作成 {#creating-a-database}
 
@@ -25,14 +28,15 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 **エンジンパラメータ**
 
-- `host:port` — PostgreSQL サーバーアドレス。
-- `database` — リモートデータベース名。
-- `user` — PostgreSQL ユーザー。
-- `password` — ユーザーパスワード。
-- `schema` — PostgreSQL スキーマ。
-- `use_table_cache` — データベースのテーブル構造がキャッシュされるかどうかを定義します。オプション。デフォルト値: `0`。
+* `host:port` — PostgreSQL サーバーのアドレス。
+* `database` — リモートデータベース名。
+* `user` — PostgreSQL ユーザー。
+* `password` — ユーザーのパスワード。
+* `schema` — PostgreSQL スキーマ。
+* `use_table_cache` — データベースのテーブル構造をキャッシュするかどうかを指定します。オプション。既定値: `0`。
 
-## データ型サポート {#data_types-support}
+
+## データ型のサポート {#data_types-support}
 
 | PostgreSQL       | ClickHouse                                                   |
 |------------------|--------------------------------------------------------------|
@@ -40,7 +44,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | TIMESTAMP        | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | REAL             | [Float32](../../sql-reference/data-types/float.md)           |
 | DOUBLE           | [Float64](../../sql-reference/data-types/float.md)           |
-| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)       |
+| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)         |
 | SMALLINT         | [Int16](../../sql-reference/data-types/int-uint.md)          |
 | INTEGER          | [Int32](../../sql-reference/data-types/int-uint.md)          |
 | BIGINT           | [Int64](../../sql-reference/data-types/int-uint.md)          |
@@ -50,9 +54,11 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
 
-## 使用例 {#examples-of-use}
 
-ClickHouse でのデータベース、PostgreSQL サーバーとのデータ交換:
+
+## 利用例 {#examples-of-use}
+
+ClickHouse 上のデータベースが PostgreSQL サーバーとデータを交換する例:
 
 ```sql
 CREATE DATABASE test_database
@@ -81,7 +87,7 @@ SHOW TABLES FROM test_database;
 └────────────┘
 ```
 
-PostgreSQL テーブルからのデータの読み込み:
+PostgreSQL テーブルからのデータ読み込み:
 
 ```sql
 SELECT * FROM test_database.test_table;
@@ -93,7 +99,7 @@ SELECT * FROM test_database.test_table;
 └────┴───────┘
 ```
 
-PostgreSQL テーブルへのデータの書き込み:
+PostgreSQL テーブルにデータを書き込む:
 
 ```sql
 INSERT INTO test_database.test_table VALUES (3,4);
@@ -107,17 +113,18 @@ SELECT * FROM test_database.test_table;
 └────────┴───────┘
 ```
 
-PostgreSQL でテーブル構造が変更されたと仮定します:
+PostgreSQL 側でテーブル構造を変更したとします。
 
 ```sql
 postgre> ALTER TABLE test_table ADD COLUMN data Text
 ```
 
-データベース作成時に `use_table_cache` パラメータが `1` に設定されていたため、ClickHouse のテーブル構造はキャッシュされ、したがって変更されませんでした:
+データベース作成時に `use_table_cache` パラメータが `1` に設定されていたため、ClickHouse のテーブル構造はキャッシュされており、その結果、変更は行われませんでした。
 
 ```sql
 DESCRIBE TABLE test_database.test_table;
 ```
+
 ```text
 ┌─name───┬─type──────────────┐
 │ id     │ Nullable(Integer) │
@@ -125,13 +132,14 @@ DESCRIBE TABLE test_database.test_table;
 └────────┴───────────────────┘
 ```
 
-テーブルをデタッチして再度アタッチすると、構造が更新されました:
+テーブルをデタッチして再度アタッチした後、構造が更新されました。
 
 ```sql
 DETACH TABLE test_database.test_table;
 ATTACH TABLE test_database.test_table;
 DESCRIBE TABLE test_database.test_table;
 ```
+
 ```text
 ┌─name───┬─type──────────────┐
 │ id     │ Nullable(Integer) │
@@ -140,7 +148,8 @@ DESCRIBE TABLE test_database.test_table;
 └────────┴───────────────────┘
 ```
 
+
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouse と PostgreSQL - データの天国での出会い - パート 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- ブログ: [ClickHouse と PostgreSQL - データの天国での出会い - パート 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

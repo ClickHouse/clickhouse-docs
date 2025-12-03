@@ -1,19 +1,18 @@
 ---
-'description': 'ALTER NAMED COLLECTION 的文档'
-'sidebar_label': 'NAMED COLLECTION'
-'slug': '/sql-reference/statements/alter/named-collection'
-'title': 'ALTER NAMED COLLECTION'
-'doc_type': 'reference'
+description: 'ALTER NAMED COLLECTION 语句文档'
+sidebar_label: 'NAMED COLLECTION（命名集合）'
+slug: /sql-reference/statements/alter/named-collection
+title: 'ALTER NAMED COLLECTION'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
+# ALTER NAMED COLLECTION {#alter-named-collection}
 
-# 修改命名集合
-
-此查询旨在修改已经存在的命名集合。
+此查询用于修改现有的命名集合。
 
 **语法**
 

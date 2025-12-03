@@ -1,24 +1,25 @@
 ---
-slug: '/interfaces/formats/JSONEachRow'
-description: 'Документация для формата JSONEachRow'
-title: JSONEachRow
+alias: ['JSONLines', 'NDJSON']
+description: 'Документация по формату JSONEachRow'
 keywords: ['JSONEachRow']
-doc_type: reference
-alias: 
+slug: /interfaces/formats/JSONEachRow
+title: 'JSONEachRow'
+doc_type: 'reference'
 ---
-| Input | Output | Alias                 |
-|-------|--------|-----------------------|
-| ✔     | ✔      | `JSONLines`, `NDJSON` |
+
+| Вход | Выход | Псевдоним            |
+|------|-------|----------------------|
+| ✔    | ✔     | `JSONLines`, `NDJSON` |
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку как отдельный объект JSON, разделённый переводом строки.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, отделённого символом новой строки.
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON-файл с следующими данными, именуемый как `football.json`:
+Используйте JSON-файл со следующими данными с именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -46,9 +47,10 @@ alias:
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
+
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONEachRow`:
+Прочитайте данные в формате `JSONEachRow`:
 
 ```sql
 SELECT *
@@ -56,7 +58,7 @@ FROM football
 FORMAT JSONEachRow
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -78,6 +80,7 @@ FORMAT JSONEachRow
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Импортирование колонок данных с неизвестными именами будет пропущено, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+Импорт столбцов с неизвестными именами будет пропускаться, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
 
-## Настройки формата {#format-settings}
+
+## Параметры форматирования {#format-settings}

@@ -1,34 +1,34 @@
 ---
-'description': '过去128年中，131百万行天气观察数据'
-'sidebar_label': '台湾历史天气数据集'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/tw-weather'
-'title': '台湾历史天气数据集'
-'doc_type': 'reference'
+description: '过去 128 年的 1.31 亿行气象观测数据'
+sidebar_label: '台湾历史天气数据集'
+slug: /getting-started/example-datasets/tw-weather
+title: '台湾历史天气数据集'
+doc_type: 'guide'
+keywords: ['示例数据集', 'weather', 'taiwan', '示例数据', '气候数据']
 ---
 
-这个数据集包含了过去128年的历史气象观测测量数据。每一行是某个时间点和气象站的测量结果。
+该数据集包含过去 128 年的历史气象观测数据。每一行对应某一时间点和气象观测站的一条测量记录。
 
-该数据集的来源可以在 [这里](https://github.com/Raingel/historical_weather) 找到，气象站编号的列表可以在 [这里](https://github.com/Raingel/weather_station_list) 找到。
+该数据集的来源在[此处](https://github.com/Raingel/historical_weather)，气象观测站编号列表可在[此处](https://github.com/Raingel/weather_station_list)找到。
 
-> 气象数据集的来源包括中央气象局建立的气象站（站点代码以C0、C1和4开头）以及农业委员会所属的农业气象站（站点代码不包含上述所提到的代码）：
+> 气象数据集来源包括由中央气象局设立的气象站（站号以 C0、C1 和 4 开头），以及隶属于农业委员会的农业气象站（站号为上述以外的编号）：
 
-    - StationId
+- StationId
     - MeasuredDate，观测时间
-    - StnPres，站点气压
+    - StnPres，测站气压
     - SeaPres，海平面气压
     - Td，露点温度
     - RH，相对湿度
-    - 其他可用元素
+    - 其他可用的气象要素
 
 ## 下载数据 {#downloading-the-data}
 
-- 一个 [预处理版本](#pre-processed-data) 的数据用于ClickHouse，经过清理、重构和丰富。该数据集覆盖1896年至2023年。
-- [下载原始原始数据](#original-raw-data) 并转换为ClickHouse所需的格式。希望添加自己列的用户可以探索或完善自己的方法。
+- 为 ClickHouse 准备的[预处理数据版本](#pre-processed-data)，已经过清洗、重构和富化。该数据集覆盖 1896 年至 2023 年。
+- [下载原始数据](#original-raw-data)并转换为 ClickHouse 所需的格式。希望添加自定义列的用户可以在此基础上探索或完善自己的方案。
 
 ### 预处理数据 {#pre-processed-data}
 
-该数据集已经从每行一个测量重构为每个气象站id和测量日期一行，即：
+该数据集也已经从“每行一条测量记录”的结构重组为“每个气象站 ID 与测量日期对应一行”的结构，即：
 
 ```csv
 StationId,MeasuredDate,StnPres,Tx,RH,WS,WD,WSGust,WDGust,Precp,GloblRad,TxSoil0cm,TxSoil5cm,TxSoil20cm,TxSoil50cm,TxSoil100cm,SeaPres,Td,PrecpHour,SunShine,TxSoil10cm,EvapA,Visb,UVI,Cloud Amount,TxSoil30cm,TxSoil200cm,TxSoil300cm,TxSoil500cm,VaporPressure
@@ -38,49 +38,44 @@ C0X100,2016-01-01 03:00:00,1021.3,15.8,74,1.5,353.0,,,,,,,,,,,,,,,,,,,,,,,
 C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```
 
-查询非常简便，并确保结果表较少稀疏，某些元素由于无法在该气象站测量而为null。
+可以很方便地进行查询，你会发现结果表的稀疏程度更低，但其中有些元素为 null，这是因为该气象站无法对它们进行观测和测量。
 
-该数据集可在以下Google CloudStorage位置获取。您可以将数据集下载到本地文件系统（然后使用ClickHouse客户端插入），或直接插入到ClickHouse中（请参见 [从URL插入](#inserting-from-url)）。
+此数据集可在以下 Google Cloud Storage 位置获取。你可以将数据集下载到本地文件系统（然后使用 ClickHouse 客户端插入），或者直接插入到 ClickHouse 中（参见 [Inserting from URL](#inserting-from-url)）。
 
-下载方法：
+下载方式如下：
 
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-
-# Option: Validate the checksum
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-
-# Checksum should be equal to: 11b484f5bd9ddafec5cfb131eb2dd008
+# 校验和应为:11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-
-# Option: Validate the checksum
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum daily_weather_preprocessed_1896_2023.csv
-
-# Checksum should be equal to: 1132248c78195c43d93f843753881754
+# 校验和应为:1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
 ```
 
-### 原始原始数据 {#original-raw-data}
 
-以下是关于下载原始原始数据以进行转换和转化的步骤的详细信息。
+### 原始数据 {#original-raw-data}
+
+以下内容介绍如何下载原始数据，以便按需进行转换和处理。
 
 #### 下载 {#download}
 
-要下载原始原始数据：
+要下载原始数据：
 
 ```bash
 mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-
-# Option: Validate the checksum
+# 可选:验证校验和 {#option-validate-the-checksum}
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-
-# Checksum should be equal to: b66b9f137217454d655e3004d7d1b51a
+# 校验和应为:b66b9f137217454d655e3004d7d1b51a {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -89,26 +84,25 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-
-# Option: Validate the checksum
+# 可选:验证校验和 {#option-validate-the-checksum}
 cat *.csv | md5sum
-
-# Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
+# 校验和应为:b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
 ```
 
-#### 获取台湾气象站 {#retrieve-the-taiwan-weather-stations}
+
+#### 获取台湾地区气象站列表 {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-
-# Option: Convert the UTF-8-BOM to UTF-8 encoding
+# 可选:将 UTF-8-BOM 转换为 UTF-8 编码 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
+
 ## 创建表结构 {#create-table-schema}
 
-在ClickHouse中创建MergeTree表（来自ClickHouse客户端）。
+使用 ClickHouse 客户端在 ClickHouse 中创建 MergeTree 表。
 
 ```bash
 CREATE TABLE tw_weather_data (
@@ -147,40 +141,44 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-## 插入数据到ClickHouse {#inserting-into-clickhouse}
+
+## 向 ClickHouse 插入数据 {#inserting-into-clickhouse}
 
 ### 从本地文件插入 {#inserting-from-local-file}
 
-可以通过以下方式从本地文件插入数据（来自ClickHouse客户端）：
+可以在 ClickHouse 客户端中通过以下方式从本地文件插入数据：
 
 ```sql
 INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_1896_2023.csv'
 ```
 
-其中`/path/to`表示磁盘上本地文件的特定用户路径。
+其中 `/path/to` 表示磁盘上本地文件的特定用户路径。
 
-在将数据插入到ClickHouse后，示例响应输出如下：
+向 ClickHouse 插入数据后，示例响应如下：
 
 ```response
-Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
+查询 ID: 90e4b524-6e14-4855-817c-7e6f98fbeabb
 
-Ok.
-131985329 rows in set. Elapsed: 71.770 sec. Processed 131.99 million rows, 10.06 GB (1.84 million rows/s., 140.14 MB/s.)
-Peak memory usage: 583.23 MiB.
+完成。
+结果集包含 131985329 行。耗时:71.770 秒。已处理 1.3199 亿行,10.06 GB(184 万行/秒,140.14 MB/秒)。
+峰值内存使用量:583.23 MiB。
 ```
 
-### 从URL插入 {#inserting-from-url}
+
+### 从 URL 插入数据 {#inserting-from-url}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
 FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/daily_weather_preprocessed_1896_2023.csv', 'CSVWithNames')
 
 ```
-要了解如何加快这一过程，请参见我们博客文章中的 [调优大量数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。
+
+如需了解如何加快这一过程，请参阅我们关于[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博文。
+
 
 ## 检查数据行和大小 {#check-data-rows-and-sizes}
 
-1. 让我们看看插入了多少行：
+1. 先查看已插入了多少行：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -189,11 +187,11 @@ FROM tw_weather_data;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 131.99 million                  │
+│ 1.3199亿                        │
 └─────────────────────────────────┘
 ```
 
-2. 让我们看看这个表占用了多少磁盘空间：
+2. 我们来看看这张表使用了多少磁盘空间：
 
 ```sql
 SELECT
@@ -209,9 +207,10 @@ WHERE (`table` = 'tw_weather_data') AND active
 └───────────┴───────────────────┘
 ```
 
-## 示例查询 {#sample-queries}
 
-### Q1: 获取每个气象站在特定年份的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+## 查询示例 {#sample-queries}
+
+### Q1: 查询指定年份中每个气象站的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -254,10 +253,11 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
+返回 30 行。用时:0.045 秒。已处理 641 万行,187.33 MB(1.4392 亿行/秒,4.21 GB/秒)。
 ```
 
-### Q2: 使用特定时间范围、字段和气象站的原始数据获取 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+
+### Q2: 在特定时间范围内按字段和气象站获取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT
@@ -292,11 +292,12 @@ LIMIT 10
 │  1028.3 │    ᴺᵁᴸᴸ │ 13.6 │ ᴺᵁᴸᴸ │ 91 │ 1.2 │ 273 │    4.4 │    256 │ -99.8 │     -99.8 │
 └─────────┴─────────┴──────┴──────┴────┴─────┴─────┴────────┴────────┴───────┴───────────┘
 
-10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
+返回 10 行。用时:0.009 秒。已处理 9.17 万行,2.33 MB(967 万行/秒,245.31 MB/秒)。
 ```
 
-## 感谢 {#credits}
 
-我们要感谢中央气象局和农业委员会的农业气象观测网络（站）在准备、清理和分配此数据集方面所做的努力。我们对此表示感谢。
+## 致谢 {#credits}
 
-Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. 面向应用的深度学习模型用于台湾水稻病害的早期预警。生态信息学 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]
+我们谨此感谢行政院农业委员会中央气象署及农业气象观测网（测站）在本数据集的准备、清洗和发布过程中所作出的贡献，谨致谢忱。
+
+Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. Application-oriented deep learning model for early warning of rice blast in Taiwan. Ecological Informatics 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]

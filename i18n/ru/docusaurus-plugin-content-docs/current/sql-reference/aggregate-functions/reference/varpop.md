@@ -1,13 +1,16 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/varPop'
+description: 'Вычисляет дисперсию генеральной совокупности.'
 sidebar_position: 210
-description: 'Вычисляет дисперсию по всему объему.'
-title: varPop
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/varPop
+title: 'varPop'
+doc_type: 'reference'
 ---
+
+
+
 ## varPop {#varpop}
 
-Вычисляет дисперсию по генеральной совокупности:
+Вычисляет дисперсию генеральной совокупности:
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n}
@@ -23,11 +26,11 @@ varPop(x)
 
 **Параметры**
 
-- `x`: Генеральная совокупность значений, для которых необходимо найти дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Совокупность значений, для которой вычисляется дисперсия. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal\*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Возвращает дисперсию по генеральной совокупности `x`. [`Float64`](../../data-types/float.md).
+- Дисперсия генеральной совокупности `x`. [`Float64`](../../data-types/float.md).
 
 **Пример**
 

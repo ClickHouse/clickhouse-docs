@@ -1,12 +1,12 @@
 [
-	{
-		"title": "Statements",
-		"description": "A list of available SQL statements in ClickHouse",
-		"url": "/docs/sql-reference/statements/"
-	},
-	{
-	"title": "Database and Table Engines",
-	"description": "Engines determine where and how your data is stored",
-	"url": "/docs/engines/table-engines"
-	}
+  {
+    "title": "ステートメント",
+    "description": "ClickHouse で利用可能な SQL 文の一覧",
+    "url": "/docs/sql-reference/statements/"
+  },
+  {
+    "title": "データベースおよびテーブルエンジン",
+    "description": "エンジンは、データをどこにどのように保存するかを決定します",
+    "url": "/docs/engines/table-engines"
+  }
 ]

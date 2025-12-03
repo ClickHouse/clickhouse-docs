@@ -51,6 +51,7 @@ On the next screen, click subscribe.
 
 :::note
 **Purchase order (PO) number** is optional and can be ignored.
+**There are two offers available on this listing.** If you choose the offer option for "ClickHouse Cloud - Pay As You Go Free Trial," you’ll be subscribing to a 30-day AWS-managed free trial. However, once the 30 days have passed, the listing subscription will end, and you’ll need to re-subscribe to the other "ClickHouse Cloud - Pay As You Go" offer option on this listing to continue using ClickHouse Pay As You Go.
 :::
 
 <Image img={aws_marketplace_payg_3} alt="AWS Marketplace subscribe" border/>

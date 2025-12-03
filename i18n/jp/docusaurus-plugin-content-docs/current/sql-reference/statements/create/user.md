@@ -1,15 +1,15 @@
 ---
-'description': 'ユーザーに関するドキュメント'
-'sidebar_label': 'USER'
-'sidebar_position': 39
-'slug': '/sql-reference/statements/create/user'
-'title': 'CREATE USER'
-'doc_type': 'reference'
+description: 'ユーザー用ドキュメント'
+sidebar_label: 'USER'
+sidebar_position: 39
+slug: /sql-reference/statements/create/user
+title: 'CREATE USER'
+doc_type: 'reference'
 ---
 
-Creates [ユーザーアカウント](../../../guides/sre/user-management/index.md#user-account-management).
+[ユーザーアカウント](../../../guides/sre/user-management/index.md#user-account-management)を作成します。
 
-Syntax:
+構文：
 
 ```sql
 CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER cluster_name]
@@ -24,191 +24,206 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [READONLY | WRITABLE] | PROFILE 'profile_name'] [,...]
 ```
 
-`ON CLUSTER` 句は、クラスタ内でユーザーを作成することを可能にします。詳しくは [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
+`ON CLUSTER` 句を使用すると、クラスター全体にユーザーを作成できます。詳しくは [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-## Identification {#identification}
 
-ユーザー識別の方法はいくつかあります：
+## 識別 {#identification}
 
-- `IDENTIFIED WITH no_password`
-- `IDENTIFIED WITH plaintext_password BY 'qwerty'`
-- `IDENTIFIED WITH sha256_password BY 'qwerty'` または `IDENTIFIED BY 'password'`
-- `IDENTIFIED WITH sha256_hash BY 'hash'` または `IDENTIFIED WITH sha256_hash BY 'hash' SALT 'salt'`
-- `IDENTIFIED WITH double_sha1_password BY 'qwerty'`
-- `IDENTIFIED WITH double_sha1_hash BY 'hash'`
-- `IDENTIFIED WITH bcrypt_password BY 'qwerty'`
-- `IDENTIFIED WITH bcrypt_hash BY 'hash'`
-- `IDENTIFIED WITH ldap SERVER 'server_name'`
-- `IDENTIFIED WITH kerberos` または `IDENTIFIED WITH kerberos REALM 'realm'`
-- `IDENTIFIED WITH ssl_certificate CN 'mysite.com:user'`
-- `IDENTIFIED WITH ssh_key BY KEY 'public_key' TYPE 'ssh-rsa', KEY 'another_public_key' TYPE 'ssh-ed25519'`
-- `IDENTIFIED WITH http SERVER 'http_server'` または `IDENTIFIED WITH http SERVER 'http_server' SCHEME 'basic'`
-- `IDENTIFIED BY 'qwerty'`
+ユーザーを識別する方法には、以下のようなものがあります:
 
-パスワードの複雑性要件は [config.xml](/operations/configuration-files) で編集できます。以下は、パスワードが少なくとも12文字以上で、1つの数字を含む必要があるという例の設定です。各パスワードの複雑性ルールは、パスワードに対してマッチする正規表現とルールの説明を必要とします。
+* `IDENTIFIED WITH no_password`
+* `IDENTIFIED WITH plaintext_password BY 'qwerty'`
+* `IDENTIFIED WITH sha256_password BY 'qwerty'` または `IDENTIFIED BY 'password'`
+* `IDENTIFIED WITH sha256_hash BY 'hash'` または `IDENTIFIED WITH sha256_hash BY 'hash' SALT 'salt'`
+* `IDENTIFIED WITH double_sha1_password BY 'qwerty'`
+* `IDENTIFIED WITH double_sha1_hash BY 'hash'`
+* `IDENTIFIED WITH bcrypt_password BY 'qwerty'`
+* `IDENTIFIED WITH bcrypt_hash BY 'hash'`
+* `IDENTIFIED WITH ldap SERVER 'server_name'`
+* `IDENTIFIED WITH kerberos` または `IDENTIFIED WITH kerberos REALM 'realm'`
+* `IDENTIFIED WITH ssl_certificate CN 'mysite.com:user'`
+* `IDENTIFIED WITH ssh_key BY KEY 'public_key' TYPE 'ssh-rsa', KEY 'another_public_key' TYPE 'ssh-ed25519'`
+* `IDENTIFIED WITH http SERVER 'http_server'` または `IDENTIFIED WITH http SERVER 'http_server' SCHEME 'basic'`
+* `IDENTIFIED BY 'qwerty'`
+
+パスワードの複雑性要件は [config.xml](/operations/configuration-files) で編集できます。以下は、パスワードを少なくとも 12 文字以上とし、1 つ以上の数字を含める必要がある設定例です。各パスワード複雑性ルールでは、パスワードと照合するための正規表現と、そのルールの説明を指定します。
 
 ```xml
 <clickhouse>
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>be at least 12 characters long</message>
+            <message>12文字以上であること</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>contain at least 1 numeric character</message>
+            <message>数字を1文字以上含むこと</message>
         </rule>
     </password_complexity>
 </clickhouse>
 ```
 
 :::note
-ClickHouse Cloud では、デフォルトでパスワードは次の複雑性要件を満たす必要があります：
-- 最低12文字
-- 少なくとも1つの数字を含む
-- 少なくとも1つの大文字を含む
-- 少なくとも1つの小文字を含む
-- 少なくとも1つの特殊文字を含む
-:::
+ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満たす必要があります。
 
-## Examples {#examples}
+* 12文字以上であること
+* 少なくとも1文字の数字を含むこと
+* 少なくとも1文字の大文字を含むこと
+* 少なくとも1文字の小文字を含むこと
+* 少なくとも1文字の特殊文字を含むこと
+  :::
 
-1. 次のユーザー名は `name1` であり、パスワードは必要ありません - これは明らかにセキュリティを提供しません：
 
-```sql
-CREATE USER name1 NOT IDENTIFIED
-```
+## 例 {#examples}
 
-2. プレーンテキストのパスワードを指定するには：
+1. 次のユーザー名は `name1` であり、パスワードは不要です。つまり、当然ながらセキュリティはほとんど確保されません。
 
-```sql
-CREATE USER name2 IDENTIFIED WITH plaintext_password BY 'my_password'
-```
+    ```sql
+    CREATE USER name1 NOT IDENTIFIED
+    ```
 
-    :::tip
-    パスワードは `/var/lib/clickhouse/access` のSQLテキストファイルに保存されるため、`plaintext_password` の使用はお勧めしません。次に示すように `sha256_password` を試してください...
-    :::
+2. プレーンテキストのパスワードを指定するには:
 
-3. 最も一般的なオプションは、SHA-256を使用してハッシュ化されたパスワードを使用することです。`IDENTIFIED WITH sha256_password` を指定する際に、ClickHouseが自動的にパスワードをハッシュ化します。例えば：
-
-```sql
-CREATE USER name3 IDENTIFIED WITH sha256_password BY 'my_password'
-```
-
-    `name3` ユーザーは `my_password` を使用してログインできますが、パスワードは上記のハッシュ値として保存されます。次のSQLファイルは `/var/lib/clickhouse/access` に作成され、サーバーが起動する際に実行されます：
-
-```bash
-/var/lib/clickhouse/access $ cat 3843f510-6ebd-a52d-72ac-e021686d8a93.sql
-ATTACH USER name3 IDENTIFIED WITH sha256_hash BY '0C268556C1680BEF0640AAC1E7187566704208398DA31F03D18C74F5C5BE5053' SALT '4FB16307F5E10048196966DD7E6876AE53DE6A1D1F625488482C75F14A5097C7';
-```
+    ```sql
+    CREATE USER name2 IDENTIFIED WITH plaintext_password BY 'my_password'
+    ```
 
     :::tip
-    既にユーザー名用のハッシュ値と対応するソルト値を作成している場合は、`IDENTIFIED WITH sha256_hash BY 'hash'` または `IDENTIFIED WITH sha256_hash BY 'hash' SALT 'salt'` を使用できます。`SALT` を使用した `sha256_hash` による識別では、ハッシュは 'パスワード' と 'ソルト' を連結したものから計算する必要があります。
+    パスワードは `/var/lib/clickhouse/access` の SQL テキストファイルに保存されるため、`plaintext_password` を使うのは推奨されません。代わりに、次の例で示すように `sha256_password` を使用してください。
     :::
 
-4. `double_sha1_password` は通常必要ありませんが、MySQLインターフェースのように必要とするクライアントとの作業時に役立ちます：
+3. 最も一般的なオプションは、SHA-256 でハッシュされたパスワードを使用する方法です。`IDENTIFIED WITH sha256_password` を指定すると、ClickHouse がパスワードをハッシュします。例えば:
 
-```sql
-CREATE USER name4 IDENTIFIED WITH double_sha1_password BY 'my_password'
-```
+    ```sql
+    CREATE USER name3 IDENTIFIED WITH sha256_password BY 'my_password'
+    ```
 
-    ClickHouseは次のクエリを生成し、実行します：
+    これで `name3` ユーザーは `my_password` を使ってログインできますが、パスワードは上記のハッシュ値として保存されます。次の SQL ファイルが `/var/lib/clickhouse/access` に作成され、サーバー起動時に実行されます。
 
-```response
-CREATE USER name4 IDENTIFIED WITH double_sha1_hash BY 'CCD3A959D6A004B9C3807B728BC2E55B67E10518'
-```
+    ```bash
+    /var/lib/clickhouse/access $ cat 3843f510-6ebd-a52d-72ac-e021686d8a93.sql
+    ATTACH USER name3 IDENTIFIED WITH sha256_hash BY '0C268556C1680BEF0640AAC1E7187566704208398DA31F03D18C74F5C5BE5053' SALT '4FB16307F5E10048196966DD7E6876AE53DE6A1D1F625488482C75F14A5097C7';
+    ```
 
-5. `bcrypt_password` はパスワードを保存するための最も安全なオプションです。これは、パスワードハッシュが侵害されてもブルートフォース攻撃に対して耐性のある [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) アルゴリズムを使用しています。
+    :::tip
+    すでに特定のユーザー名に対するハッシュ値と、それに対応する salt 値を作成済みの場合は、`IDENTIFIED WITH sha256_hash BY 'hash'` または `IDENTIFIED WITH sha256_hash BY 'hash' SALT 'salt'` を使用できます。`SALT` を使って `sha256_hash` で識別する場合、ハッシュは 'password' と 'salt' を連結した値から計算する必要があります。
+    :::
 
-```sql
-CREATE USER name5 IDENTIFIED WITH bcrypt_password BY 'my_password'
-```
+4. `double_sha1_password` は通常は不要ですが、(MySQL インターフェイスのような)それを必要とするクライアントを扱う際に便利です。
 
-    この方法では、パスワードの長さは72文字に制限されています。 
-    bcryptの作業係数パラメータは、ハッシュを計算しパスワードを確認するために必要な計算量と時間を定義し、サーバーの設定で変更できます：
+    ```sql
+    CREATE USER name4 IDENTIFIED WITH double_sha1_password BY 'my_password'
+    ```
 
-```xml
-<bcrypt_workfactor>12</bcrypt_workfactor>
-```
+    ClickHouse は次のクエリを生成して実行します。
 
-    作業係数は4から31の間で、デフォルトは12です。
+    ```response
+    CREATE USER name4 IDENTIFIED WITH double_sha1_hash BY 'CCD3A959D6A004B9C3807B728BC2E55B67E10518'
+    ```
+
+5. `bcrypt_password` はパスワードを保存する方法として最も安全なオプションです。[bcrypt](https://en.wikipedia.org/wiki/Bcrypt) アルゴリズムを使用しており、パスワードハッシュが漏洩した場合でも総当たり攻撃に対して強固です。
+
+    ```sql
+    CREATE USER name5 IDENTIFIED WITH bcrypt_password BY 'my_password'
+    ```
+
+    この方法では、パスワード長は 72 文字に制限されます。
+    ハッシュの計算およびパスワード検証に必要な計算量と時間を定義する bcrypt のワークファクター (work factor) パラメータは、サーバー設定で変更できます。
+
+    ```xml
+    <bcrypt_workfactor>12</bcrypt_workfactor>
+    ```
+
+    ワークファクターは 4〜31 の範囲で指定でき、デフォルト値は 12 です。
 
    :::warning
-   高頻度な認証が必要なアプリケーションの場合、
-   bcryptの計算オーバーヘッドを考慮して
-   代替の認証方法を検討してください。
+   高頻度で認証が発生するアプリケーションでは、
+   高いワークファクター時の bcrypt の計算オーバーヘッドを考慮し、
+   別の認証方式の利用も検討してください。
    :::
 6. 
-6. パスワードのタイプも省略できます：
+6. パスワードのタイプを省略することもできます。
 
-```sql
-CREATE USER name6 IDENTIFIED BY 'my_password'
-```
+    ```sql
+    CREATE USER name6 IDENTIFIED BY 'my_password'
+    ```
 
-    この場合、ClickHouseはサーバーの設定で指定されたデフォルトのパスワードタイプを使用します：
+    この場合、ClickHouse はサーバー設定で指定されたデフォルトのパスワードタイプを使用します。
 
-```xml
-<default_password_type>sha256_password</default_password_type>
-```
+    ```xml
+    <default_password_type>sha256_password</default_password_type>
+    ```
 
-    利用可能なパスワードタイプは： `plaintext_password`, `sha256_password`, `double_sha1_password` です。
+    利用可能なパスワードタイプは、`plaintext_password`、`sha256_password`、`double_sha1_password` です。
 
-7. 複数の認証方法を指定できます： 
+7. 複数の認証方式を指定することもできます。
 
-```sql
-CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
-```
+   ```sql
+   CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
+   ```
 
-注意：
-1. 古いバージョンのClickHouseは複数の認証方法の構文をサポートしていない場合があります。そのため、ClickHouseサーバーにそのようなユーザーがあり、サポートされていないバージョンにダウングレードされた場合、そのユーザーは使用できなくなり、一部のユーザー関連操作が失敗します。スムーズにダウングレードするには、ダウングレード前にすべてのユーザーを単一の認証方法を含むように設定する必要があります。あるいは、適切な手順なしでサーバーがダウングレードされた場合、問題のあるユーザーは削除する必要があります。
-2. `no_password` はセキュリティ上の理由から他の認証方法と共存できません。そのため、`no_password` はクエリ内で唯一の認証方法である場合にのみ指定できます。
 
-## User Host {#user-host}
 
-ユーザーホストは、ClickHouseサーバーに接続できるホストです。ホストは `HOST` クエリセクションで次の方法で指定できます：
+Notes:
+1. 古いバージョンの ClickHouse では、複数の認証方式を用いる構文をサポートしていない場合があります。そのため、ClickHouse サーバーにそのようなユーザーが存在した状態で、これをサポートしないバージョンにダウングレードすると、そのユーザーは利用不能になり、一部のユーザー関連の操作が失敗します。正常にダウングレードするには、ダウングレード前にすべてのユーザーが単一の認証方式のみを持つように設定しておく必要があります。あるいは、適切な手順を踏まずにサーバーをダウングレードしてしまった場合は、問題のあるユーザーを削除する必要があります。
+2. セキュリティ上の理由から、`no_password` は他の認証方式と同時に使用することはできません。したがって、クエリ内で `no_password` を指定できるのは、それが唯一の認証方式である場合に限られます。 
 
-- `HOST IP 'ip_address_or_subnetwork'` — ユーザーは指定されたIPアドレスまたは[サブネット](https://en.wikipedia.org/wiki/Subnetwork)からのみClickHouseサーバーに接続できます。例： `HOST IP '192.168.0.0/16'`、 `HOST IP '2001:DB8::/32'`。本番環境で使用するためには、`HOST IP` 要素（IPアドレスとそのマスク）のみを指定し、`host` や `host_regexp` を使用すると追加のレイテンシーが発生する可能性があります。
+
+
+## ユーザーホスト {#user-host}
+
+ユーザーホストとは、ClickHouse サーバーへの接続を確立できるホストを指します。ホストはクエリ内の `HOST` セクションで次のように指定できます。
+
+- `HOST IP 'ip_address_or_subnetwork'` — ユーザーは、指定された IP アドレスまたは[サブネットワーク](https://en.wikipedia.org/wiki/Subnetwork)からのみ ClickHouse サーバーに接続できます。例: `HOST IP '192.168.0.0/16'`, `HOST IP '2001:DB8::/32'`。本番環境では、`host` や `host_regexp` を使用すると追加のレイテンシが発生する可能性があるため、`HOST IP` 要素（IP アドレスとそのマスク）のみを指定することを推奨します。
 - `HOST ANY` — ユーザーは任意の場所から接続できます。これがデフォルトのオプションです。
-- `HOST LOCAL` — ユーザーはローカルでのみ接続できます。
-- `HOST NAME 'fqdn'` — ユーザーホストをFQDNとして指定できます。例： `HOST NAME 'mysite.com'`。
-- `HOST REGEXP 'regexp'` — ユーザーホストを指定する際に[正規表現 (pcre)](http://www.pcre.org/)を使用できます。例： `HOST REGEXP '.*\.mysite\.com'`。
-- `HOST LIKE 'template'` — ユーザーホストをフィルタリングするために[LIKE](/sql-reference/functions/string-search-functions#like)演算子を使用できます。例： `HOST LIKE '%'` は `HOST ANY` に相当し、 `HOST LIKE '%.mysite.com'` は `mysite.com` ドメイン内のすべてのホストをフィルタリングします。
+- `HOST LOCAL` — ユーザーはローカルからのみ接続できます。
+- `HOST NAME 'fqdn'` — ユーザーホストを FQDN として指定できます。例: `HOST NAME 'mysite.com'`。
+- `HOST REGEXP 'regexp'` — ユーザーホストの指定時に [pcre](http://www.pcre.org/) の正規表現を使用できます。例: `HOST REGEXP '.*\.mysite\.com'`。
+- `HOST LIKE 'template'` — ユーザーホストを絞り込むために [LIKE](/sql-reference/functions/string-search-functions#like) 演算子を使用できます。例えば、`HOST LIKE '%'` は `HOST ANY` と等価であり、`HOST LIKE '%.mysite.com'` は `mysite.com` ドメイン内のすべてのホストを対象にします。
 
-ホストを指定する別の方法は、ユーザー名の後に `@` 構文を使用することです。例：
+ホストを指定する別の方法として、ユーザー名の後に `@` 構文を使用する方法があります。例:
 
-- `CREATE USER mira@'127.0.0.1'` — `HOST IP` 構文に相当します。
-- `CREATE USER mira@'localhost'` — `HOST LOCAL` 構文に相当します。
-- `CREATE USER mira@'192.168.%.%'` — `HOST LIKE` 構文に相当します。
+- `CREATE USER mira@'127.0.0.1'` — `HOST IP` 構文と等価です。
+- `CREATE USER mira@'localhost'` — `HOST LOCAL` 構文と等価です。
+- `CREATE USER mira@'192.168.%.%'` — `HOST LIKE` 構文と等価です。
 
 :::tip
-ClickHouseは `user_name@'address'` を全体としてユーザー名として扱います。したがって、技術的には同じ `user_name` と異なる `@` の後の構造を持つ複数のユーザーを作成できますが、そのようにすることは推奨しません。
+ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として扱います。そのため、技術的には同じ `user_name` に対して、`@` の後ろの指定が異なる複数のユーザーを作成できます。ただし、そのような運用は推奨しません。
 :::
 
-## VALID UNTIL Clause {#valid-until-clause}
 
-認証方法の有効期限を指定するためのクローズです。文字列をパラメータとして受け付けます。日時には、`YYYY-MM-DD [hh:mm:ss] [timezone]` 形式を使用することをお勧めします。デフォルトで、このパラメータは `'infinity'` です。
-`VALID UNTIL` 句は、認証方法と共にのみ指定でき、クエリ内で認証方法が指定されていない場合に限ります。このシナリオでは、`VALID UNTIL` 句がすべての既存の認証方法に適用されます。
 
-例：
+## VALID UNTIL 句 {#valid-until-clause}
+
+認証方式に対して、有効期限日と、必要に応じて有効期限の時刻を指定できます。文字列をパラメーターとして受け取ります。日時の指定には `YYYY-MM-DD [hh:mm:ss] [timezone]` 形式を使用することを推奨します。デフォルトでは、このパラメーターは `'infinity'` です。
+`VALID UNTIL` 句は、クエリ内で認証方式が一切指定されていない場合を除き、認証方式と一緒にのみ指定できます。この場合、`VALID UNTIL` 句は既存のすべての認証方式に適用されます。
+
+例:
 
 - `CREATE USER name1 VALID UNTIL '2025-01-01'`
 - `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
 - `CREATE USER name1 VALID UNTIL 'infinity'`
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
-- `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01'`
+- `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-## GRANTEES Clause {#grantees-clause}
 
-このユーザーから[特権](../../../sql-reference/statements/grant.md#privileges)を受けることができるユーザーまたはロールを指定します。このユーザーが[GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax)で必要なアクセスをすべて持っている場合に限ります。`GRANTEES` 句のオプション：
 
-- `user` — このユーザーが特権を付与できるユーザーを指定します。
-- `role` — このユーザーが特権を付与できるロールを指定します。
-- `ANY` — このユーザーは任意のユーザーに特権を付与できます。デフォルト設定です。
-- `NONE` — このユーザーは誰にも特権を付与できません。
+## GRANTEES 句 {#grantees-clause}
 
-`EXCEPT` 式を使用して、任意のユーザーまたはロールを除外できます。例えば、 `CREATE USER user1 GRANTEES ANY EXCEPT user2`。これは、 `user1` が GRANT OPTION で付与された特権を持っている場合、それを `user2` 以外の誰にでも付与できることを意味します。
+このユーザーが、`GRANT OPTION` 付きで必要なすべてのアクセス権を付与されていることを条件に、このユーザーから [権限](../../../sql-reference/statements/grant.md#privileges) を付与されることが許可されているユーザーまたはロールを指定します。`GRANTEES` 句のオプションは次のとおりです。
 
-## Examples {#examples-1}
+- `user` — このユーザーが権限を付与できるユーザーを指定します。
+- `role` — このユーザーが権限を付与できるロールを指定します。
+- `ANY` — このユーザーは任意のユーザーに権限を付与できます。これがデフォルト設定です。
+- `NONE` — このユーザーは誰にも権限を付与できません。
+
+`EXCEPT` 式を使用して任意のユーザーやロールを除外できます。たとえば、`CREATE USER user1 GRANTEES ANY EXCEPT user2` のように指定します。これは、`user1` が `GRANT OPTION` 付きでいくつかの権限を付与されている場合、それらの権限を `user2` を除く全員に付与できることを意味します。
+
+さらに詳しくは [GRANT ステートメントの権限に関する項目](../../../sql-reference/statements/grant.md#privileges) と [GRANT OPTION の説明](../../../sql-reference/statements/grant.md#granting-privilege-syntax) を参照してください。
+
+
+
+## 例 {#examples-1}
 
 パスワード `qwerty` で保護されたユーザーアカウント `mira` を作成します：
 
@@ -216,35 +231,35 @@ ClickHouseは `user_name@'address'` を全体としてユーザー名として�
 CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty';
 ```
 
-`mira` は、ClickHouseサーバーが稼働するホストでクライアントアプリを開始する必要があります。
+`mira` は、ClickHouse サーバーが稼働しているホスト上でクライアントアプリケーションを起動する必要があります。
 
-ユーザーアカウント `john` を作成し、それにロールを割り当て、デフォルトのロールにします：
+ユーザーアカウント `john` を作成し、そのアカウントにロールを割り当て、これらのロールをデフォルトとして設定します。
 
 ```sql
 CREATE USER john DEFAULT ROLE role1, role2;
 ```
 
-ユーザーアカウント `john` を作成し、今後のロールをすべてデフォルトに設定します：
+ユーザーアカウント `john` を作成し、その後付与するすべてのロールをデフォルトロールとして設定します：
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL;
 ```
 
-将来的に、 `john` にいずれかのロールが割り当てられた場合、自動的にデフォルトになります。
+将来 `john` にロールを割り当てると、それらは自動的にデフォルトロールになります。
 
-ユーザーアカウント `john` を作成し、将来のすべてのロールを `role1` と `role2` を除いてデフォルトにします：
+ユーザーアカウント `john` を作成し、将来割り当てられるロールのうち `role1` と `role2` 以外はすべて自動的にデフォルトロールになるように設定します:
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ```
 
-ユーザーアカウント `john` を作成し、彼に `jack` アカウントのユーザーに特権を付与することを許可します：
+ユーザーアカウント `john` を作成し、`john` が自分の権限を `jack` アカウントのユーザーに付与できるようにします：
 
 ```sql
 CREATE USER john GRANTEES jack;
 ```
 
-クエリパラメータを使用してユーザーアカウント `john` を作成します：
+クエリパラメータを使用してユーザーアカウント `john` を作成します。
 
 ```sql
 SET param_user=john;

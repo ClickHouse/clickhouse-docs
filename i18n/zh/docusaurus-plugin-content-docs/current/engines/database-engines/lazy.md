@@ -1,18 +1,17 @@
 ---
-'description': '在最后访问后只将表保留在RAM中`expiration_time_in_seconds`秒。只能与Log类型表一起使用。'
-'sidebar_label': '懒惰'
-'sidebar_position': 20
-'slug': '/engines/database-engines/lazy'
-'title': '懒惰'
-'doc_type': 'reference'
+description: '使表在最近一次访问后的 `expiration_time_in_seconds` 秒内仅保留在 RAM 中。只能用于 Log 类型表。'
+sidebar_label: 'Lazy'
+sidebar_position: 20
+slug: /engines/database-engines/lazy
+title: 'Lazy'
+doc_type: 'reference'
 ---
 
+# Lazy {#lazy}
 
-# 懒惰
+只会在上次访问后的 `expiration_time_in_seconds` 秒内将表保留在 RAM 中。只能用于 *Log 表。
 
-在上次访问后，仅在 RAM 中保留表 `expiration_time_in_seconds` 秒。只能与 \*Log 表一起使用。
-
-它是为存储许多小型 \*Log 表而优化的，这些表之间的访问时间间隔较长。
+它针对存储大量小型 *Log 表进行了优化，这些表的访问之间存在较长的时间间隔。
 
 ## 创建数据库 {#creating-a-database}
 

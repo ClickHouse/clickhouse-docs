@@ -5,12 +5,12 @@
   # - landing pages
   # - indexing of the knowledgebase
 
-# Don't exit on errors - we want to collect them all
-set +e
+# During environment setup fail fast on errors
+set -e
 
 # Function to cleanup on exit
 cleanup() {
-    if [ -d "venv" ]; then
+    if [ "$USE_VENV" = true ]; then
         deactivate 2>/dev/null || true
         rm -rf venv
     fi
@@ -19,14 +19,36 @@ cleanup() {
 # Set trap to cleanup on exit (success or failure)
 trap cleanup EXIT
 
-# Check if virtual environment exists
+USE_VENV=false
+
+# Try to create a venv, if that fails fall back to installing package
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    python3 -m venv venv
+    if python3 -m venv venv 2>/tmp/venv_err.log; then
+        USE_VENV=true
+        echo "Using virtualenv at ./venv"
+    else
+        echo "Warning: could not create venv, falling back to user site-packages."
+        cat /tmp/venv_err.log
+        rm -rf venv
+    fi
+else
+    USE_VENV=true
+    echo "Reusing existing virtualenv at ./venv"
 fi
 
-source venv/bin/activate
-pip install -r scripts/table-of-contents-generator/requirements.txt
+if [ "$USE_VENV" = true ]; then
+    . venv/bin/activate
+    echo "Installing requirements into virtualenv..."
+    pip install -r scripts/table-of-contents-generator/requirements.txt
+else
+    echo "No working venv, installing requirements with python3 -m pip --user..."
+    python3 -m pip install --user -r scripts/table-of-contents-generator/requirements.txt
+fi
+
+# From here on don't exit on the first error, we want to collect which
+# TOC commands succeed and which fail.
+set +e
 
 # Define all TOC generation commands
 COMMANDS=(

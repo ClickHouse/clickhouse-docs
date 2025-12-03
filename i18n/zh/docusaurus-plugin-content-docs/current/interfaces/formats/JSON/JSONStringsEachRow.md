@@ -1,28 +1,31 @@
 ---
-'alias': []
-'description': 'JSONStringsEachRow 格式的文档'
-'input_format': false
-'keywords':
-- 'JSONStringsEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONStringsEachRow'
-'title': 'JSONStringsEachRow'
-'doc_type': 'reference'
+alias: []
+description: 'JSONStringsEachRow 格式文档'
+input_format: false
+keywords: ['JSONStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONStringsEachRow
+title: 'JSONStringsEachRow'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
+
+
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md) 的不同之处在于，数据字段以字符串形式输出，而不是以有类型的 JSON 值输出。
+与 [`JSONEachRow`](./JSONEachRow.md) 的唯一区别在于，数据字段会以字符串形式输出，而不是输出为带类型的 JSON 值。
+
+
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下数据的 JSON 文件，命名为 `football.json`：
+使用一个包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -52,7 +55,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 
 ### 读取数据 {#reading-data}
 
-使用 `JSONStringsEachRow` 格式读取数据：
+以 `JSONStringsEachRow` 格式读取数据：
 
 ```sql
 SELECT *
@@ -60,7 +63,8 @@ FROM football
 FORMAT JSONStringsEachRow
 ```
 
-输出将以 JSON 格式显示：
+输出将为 JSON 格式：
+
 
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
@@ -81,5 +85,6 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
+
 
 ## 格式设置 {#format-settings}

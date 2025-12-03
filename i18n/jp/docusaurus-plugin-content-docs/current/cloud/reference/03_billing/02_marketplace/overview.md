@@ -1,99 +1,96 @@
 ---
-'slug': '/cloud/marketplace/marketplace-billing'
-'title': 'マーケットプレイス請求'
-'description': 'AWS、GCP、そしてAzureマーケットプレイスを通じてClickHouse Cloudにサブスクライブします。'
-'keywords':
-- 'aws'
-- 'azure'
-- 'gcp'
-- 'google cloud'
-- 'marketplace'
-- 'billing'
-'doc_type': 'guide'
+slug: /cloud/marketplace/marketplace-billing
+title: 'マーケットプレイスでの課金'
+description: 'AWS、GCP、Azure のマーケットプレイスを通じて ClickHouse Cloud を契約できます。'
+keywords: ['aws', 'azure', 'gcp', 'google cloud', 'マーケットプレイス', '課金']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 
-You can subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplaces. This allows you to pay for ClickHouse Cloud through your existing cloud provider billing.
+AWS、GCP、Azure の各マーケットプレイス経由で ClickHouse Cloud を利用開始できます。これにより、既存のクラウドプロバイダーからの請求に ClickHouse Cloud の料金を含めることができます。
 
-You can either use pay-as-you-go (PAYG) or commit to a contract with ClickHouse Cloud through the marketplace. The billing will be handled by the cloud provider, and you will receive a single invoice for all your cloud services.
+マーケットプレイスを通じて、従量課金制 (PAYG) で利用するか、ClickHouse Cloud とのコミットメント契約を結ぶかを選択できます。請求はクラウドプロバイダー側で処理され、すべてのクラウドサービスをまとめた 1 枚の請求書を受け取ります。
 
-- [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)
-- [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)
-- [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)
-- [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
-- [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
-- [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)
+* [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)
+* [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)
+* [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)
+* [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
+* [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
+* [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
-## FAQs {#faqs}
 
-### How can I verify that my organization is connected to marketplace billing?​ {#how-can-i-verify-that-my-organization-is-connected-to-marketplace-billing}
+## よくある質問 (FAQs) {#faqs}
 
-In the ClickHouse Cloud console, navigate to **Billing**. You should see the name of the marketplace and the link in the **Payment details** section.
+### 自分の組織がマーケットプレイス課金に接続されていることはどのように確認できますか？​ {#how-can-i-verify-that-my-organization-is-connected-to-marketplace-billing}
 
-### I am an existing ClickHouse Cloud user. What happens when I subscribe to ClickHouse Cloud via AWS / GCP / Azure marketplace?​ {#i-am-an-existing-clickhouse-cloud-user-what-happens-when-i-subscribe-to-clickhouse-cloud-via-aws--gcp--azure-marketplace}
+ClickHouse Cloud コンソールで **Billing** に移動します。**Payment details** セクションにマーケットプレイス名とリンクが表示されているはずです。
 
-Signing up for ClickHouse Cloud from the cloud provider marketplace is a two step process:
-1. You first "subscribe" to ClickHouse Cloud on the cloud providers' marketplace portal.  After you have finished subscribing, you click on "Pay Now" or "Manage on Provider" (depending on the marketplace). This redirects you to ClickHouse Cloud.
-2. On Clickhouse Cloud you either register for a new account, or sign in with an existing account.  Either way, a new ClickHouse Cloud organization will be created for you which is tied to your marketplace billing.
+### 既存の ClickHouse Cloud ユーザーです。AWS / GCP / Azure マーケットプレイス経由で ClickHouse Cloud を購読するとどうなりますか？​ {#i-am-an-existing-clickhouse-cloud-user-what-happens-when-i-subscribe-to-clickhouse-cloud-via-aws--gcp--azure-marketplace}
 
-NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
+クラウドプロバイダーのマーケットプレイスから ClickHouse Cloud にサインアップする手順は 2 段階です:
+1. まずクラウドプロバイダーのマーケットプレイスポータルで ClickHouse Cloud を「購読 (subscribe)」します。購読が完了したら、「Pay Now」または「Manage on Provider」（マーケットプレイスによって異なります）をクリックします。これにより ClickHouse Cloud にリダイレクトされます。
+2. ClickHouse Cloud 上で新しいアカウントを登録するか、既存のアカウントでサインインします。どちらの場合でも、マーケットプレイス課金に紐づけられた新しい ClickHouse Cloud 組織が作成されます。
 
-You can switch between organizations from the bottom left menu of the ClickHouse Cloud console.
+注意: それ以前に ClickHouse Cloud にサインアップして作成された既存のサービスおよび組織はそのまま残り、マーケットプレイス課金には接続されません。ClickHouse Cloud では、同じアカウントを使用して複数の組織を管理でき、それぞれ異なる課金設定を持つことができます。
 
-### I am an existing ClickHouse Cloud user. What should I do if I want my existing services to be billed via marketplace?​ {#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace}
+ClickHouse Cloud コンソール左下のメニューから組織を切り替えることができます。
 
-You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
+### 既存の ClickHouse Cloud ユーザーです。既存のサービスをマーケットプレイス経由で課金したい場合はどうすればよいですか？​ {#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace}
 
-<Image img={marketplace_signup_and_org_linking} size='md' alt='Marketplace signup and org linking' border/>
+クラウドプロバイダーのマーケットプレイス経由で ClickHouse Cloud を購読する必要があります。マーケットプレイスでの購読が完了し、ClickHouse Cloud にリダイレクトされた後、既存の ClickHouse Cloud 組織をマーケットプレイス課金にリンクするオプションが表示されます。その時点以降、既存のリソースはマーケットプレイス経由で課金されるようになります。 
 
-You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
+<Image img={marketplace_signup_and_org_linking} size='md' alt='マーケットプレイスでのサインアップと組織のリンク' border/>
+
+組織の Billing ページから、課金がマーケットプレイスにリンクされていることを確認できます。問題が発生した場合は、[ClickHouse Cloud サポート](https://clickhouse.com/support/program) までお問い合わせください。
 
 :::note
-Your existing services and organizations from any prior ClickHouse Cloud signups will remain and not be connected to the marketplace billing.
+それ以前に ClickHouse Cloud にサインアップして作成された既存のサービスおよび組織はそのまま残り、マーケットプレイス課金には接続されません。
 :::
 
-### I subscribed to ClickHouse Cloud as a marketplace user. How can I unsubscribe?​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-how-can-i-unsubscribe}
+### マーケットプレイスユーザーとして ClickHouse Cloud を購読しました。どのように解約できますか？​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-how-can-i-unsubscribe}
 
-Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you will not be paying anything as ClickHouse Cloud doesn't have any recurring fees.
+ClickHouse Cloud の利用を停止し、既存の ClickHouse Cloud サービスをすべて削除するだけでも構いません。購読は有効なままですが、ClickHouse Cloud には継続課金がないため、料金は発生しません。
 
-If you want to unsubscribe, please navigate to the Cloud Provider console and cancel the subscription renewal there. Once the subscription ends, all existing services will be stopped and you will be prompted to add a credit card. If no card was added, after two weeks all existing services will be deleted.
+完全に解約したい場合は、クラウドプロバイダーのコンソールに移動して、そこでサブスクリプションの更新をキャンセルしてください。サブスクリプションが終了すると、既存のサービスはすべて停止され、クレジットカードの追加を求められます。カードが追加されない場合は、2 週間後に既存のサービスはすべて削除されます。
 
-### I subscribed to ClickHouse Cloud as a marketplace user, and then unsubscribed. Now I want to subscribe back, what is the process?​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process}
+### マーケットプレイスユーザーとして ClickHouse Cloud を購読し、その後解約しました。再度購読したい場合、手順はどうなりますか？​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process}
 
-In that case please subscribe to the ClickHouse Cloud as usual (see sections on subscribing to ClickHouse Cloud via the marketplace).
+その場合は、通常どおり ClickHouse Cloud を購読してください（マーケットプレイス経由での ClickHouse Cloud の購読に関するセクションを参照してください）。
 
-- For AWS marketplace a new ClickHouse Cloud organization will be created and connected to the marketplace.
-- For the GCP marketplace your old organization will be reactivated.
+- AWS Marketplace の場合、新しい ClickHouse Cloud 組織が作成され、マーケットプレイスに接続されます。
+- GCP Marketplace の場合、以前の組織が再アクティブ化されます。
 
-If you have any trouble with reactivating your marketplace org, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
+マーケットプレイス組織の再アクティブ化に問題がある場合は、[ClickHouse Cloud Support](https://clickhouse.com/support/program) までお問い合わせください。
 
-### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?​ {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
+### ClickHouse Cloud サービスのマーケットプレイスサブスクリプションに対する請求書にはどのようにアクセスできますか？​ {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
 
-- [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
-- [GCP Marketplace orders](https://console.cloud.google.com/marketplace/orders) (select the billing account that you used for subscription)
+- [AWS Billing コンソール](https://us-east-1.console.aws.amazon.com/billing/home)
+- [GCP Marketplace orders](https://console.cloud.google.com/marketplace/orders)（サブスクリプションに使用した請求先アカウントを選択）
 
-### Why do the dates on the Usage statements not match my Marketplace Invoice?​ {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
+### 利用状況ステートメントの日付がマーケットプレイスの請求書の日付と一致しないのはなぜですか？​ {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
 
-Marketplace billing follows the calendar month cycle. For example, for usage between December 1st and January 1st, an invoice will be generated between January 3rd and January 5th.
+マーケットプレイスの課金は暦月サイクルに従います。たとえば、12 月 1 日から 1 月 1 日までの利用分については、1 月 3 日から 1 月 5 日の間に請求書が発行されます。
 
-ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
 
-### Where can I find general billing information​? {#where-can-i-find-general-billing-information}
+ClickHouse Cloud の利用明細は、サインアップした日を起点とする 30 日間を対象に、利用量が計測・集計されてレポートされる、通常とは異なる課金サイクルに従います。
 
-Please see the [Billing overview page](/cloud/manage/billing).
+これらの日付が同一でない場合、利用期間と請求書発行日の間に差異が生じます。利用明細では、特定のサービスの利用状況が日単位で追跡されるため、ユーザーは明細を確認することでコストの内訳を把握できます。
 
-### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### 一般的な請求情報はどこで確認できますか？ {#where-can-i-find-general-billing-information}
 
-There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. In either case, your usage of  ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), which are metered in the same way and billed accordingly.
+[Billing overview page](/cloud/manage/billing) を参照してください。
 
-### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account or sub account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### クラウドプロバイダのマーケットプレイス経由で支払う場合と、ClickHouse に直接支払う場合で、ClickHouse Cloud の料金に違いはありますか？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
-A single ClickHouse organization can only be configured to bill to a single Cloud marketplace billing account or sub account.
+マーケットプレイス経由での課金と、ClickHouse に直接サインアップした場合の料金に違いはありません。どちらの場合も、ClickHouse Cloud の利用は ClickHouse Cloud Credits (CHC) によって計測され、同じ方法でメータリングおよび請求が行われます。
 
-### If my ClickHouse Organization is billed through a cloud marketplace committed spend agreement will I automatically move to PAYG billing when I run out of credits? {#automatically-move-to-PAYG-when-running-out-of-credit}
+### 単一のクラウドマーケットプレイスの請求アカウントまたはサブアカウント（AWS、GCP、Azure）に対して、複数の ClickHouse Organization を紐付けて請求することはできますか？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-If your marketplace committed spend contract is active and you run out of credits we will automatically move your organization to PAYG billing. However, when your existing contract expires, you will need to link a new marketplace contract to your organization or move your organization to direct billing via credit card.
+1 つの ClickHouse Organization は、1 つのクラウドマーケットプレイスの請求アカウントまたはサブアカウントにのみ紐付けて請求するよう構成できます。
+
+### ClickHouse Organization の請求がクラウドマーケットプレイスのコミットメント契約経由になっている場合、クレジットを使い切ると自動的に PAYG（従量課金）に切り替わりますか？ {#automatically-move-to-PAYG-when-running-out-of-credit}
+
+マーケットプレイスのコミットメント契約が有効な状態でそのクレジットを使い切った場合、組織は自動的に PAYG（従量課金）に切り替わります。ただし、既存の契約が期限切れになった際には、新しいマーケットプレイス契約を組織にリンクするか、クレジットカードによる直接課金に組織を移行する必要があります。 

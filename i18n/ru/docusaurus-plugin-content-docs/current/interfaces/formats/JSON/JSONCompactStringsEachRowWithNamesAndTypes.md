@@ -1,23 +1,24 @@
 ---
-slug: '/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes'
-description: 'Документация для формата JSONCompactStringsEachRowWithNamesAndTypes'
-title: JSONCompactStringsEachRowWithNamesAndTypes
+description: 'Документация по формату JSONCompactStringsEachRowWithNamesAndTypes'
 keywords: ['JSONCompactStringsEachRowWithNamesAndTypes']
-doc_type: reference
+slug: /interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes
+title: 'JSONCompactStringsEachRowWithNamesAndTypes'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
-Отличается от формата `JSONCompactEachRow` тем, что также выводит две строки заголовка с именами и типами колонок, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
+Отличается от формата `JSONCompactEachRow` тем, что дополнительно выводит две строки заголовка с именами и типами столбцов, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON файл со следующими данными, названный `football.json`:
+Используя JSON‑файл со следующими данными с именем `football.json`:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -41,15 +42,16 @@ doc_type: reference
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
+
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONCompactStringsEachRowWithNamesAndTypes`:
+Считывайте данные в формате `JSONCompactStringsEachRowWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -57,7 +59,7 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-Вывод будет в формате JSON:
+Выходные данные будут в формате JSON:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -81,15 +83,16 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
+
 ## Настройки формата {#format-settings}
 
 :::note
-Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в 1,
-колонки из входных данных будут сопоставлены с колонками из таблицы по их именам, колонки с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) равна 1,
+столбцы во входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) также равна 1.
 В противном случае первая строка будет пропущена.
 :::
 
 :::note
-Если настройка [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в 1,
-типы из входных данных будут сравниваться с типами соответствующих колонок из таблицы. В противном случае вторая строка будет пропущена.
+Если настройка [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) равна 1,
+типы во входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::

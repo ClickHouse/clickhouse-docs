@@ -1,16 +1,19 @@
 ---
-'description': '允许在存储在 SQLite DATABASE中的数据上执行查询。'
-'sidebar_label': 'sqlite'
-'sidebar_position': 185
-'slug': '/sql-reference/table-functions/sqlite'
-'title': 'sqlite'
-'doc_type': 'reference'
+description: '允许对存储在 SQLite 数据库中的数据进行查询。'
+sidebar_label: 'sqlite'
+sidebar_position: 185
+slug: /sql-reference/table-functions/sqlite
+title: 'sqlite'
+doc_type: 'reference'
 ---
 
 
-# sqlite 表函数
 
-允许对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
+# sqlite 表函数 {#sqlite-table-function}
+
+用于对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
+
+
 
 ## 语法 {#syntax}
 
@@ -18,14 +21,19 @@
 sqlite('db_path', 'table_name')
 ```
 
+
 ## 参数 {#arguments}
 
-- `db_path` — SQLite 数据库文件的路径。 [字符串](../../sql-reference/data-types/string.md)。
-- `table_name` — SQLite 数据库中表的名称。 [字符串](../../sql-reference/data-types/string.md)。
+- `db_path` — SQLite 数据库文件的路径。[String](../../sql-reference/data-types/string.md)。
+- `table_name` — SQLite 数据库中某个表的名称。[String](../../sql-reference/data-types/string.md)。
+
+
 
 ## 返回值 {#returned_value}
 
-- 一个与原始 `SQLite` 表具有相同列的表对象。
+- 一个表对象，其列与原始 `SQLite` 表相同。
+
+
 
 ## 示例 {#example}
 
@@ -44,6 +52,7 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 │ line3 │    3 │
 └───────┴──────┘
 ```
+
 
 ## 相关 {#related}
 

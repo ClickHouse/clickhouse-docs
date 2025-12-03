@@ -24,7 +24,7 @@ If you have configured a different data path, replace all instances of `/var/lib
 
 <VerticalStepper headerLevel="h2">
 
-## Copy access configuration from the healthy replica {#copy-access-config}
+## Copy access configuration from the healthy replica \{#copy-access-config\}
 
 Copy the contents of the `access` folder which contains local users from the healthy replica:
 
@@ -51,7 +51,7 @@ cd /var/lib/clickhouse
 This command ensures that both the **metadata files**, and the symlink architecture are preserved in the backup.
 :::
 
-## Restore the metadata on the faulty replica {#restore-the-metadata-on-the-faulty-replica}
+## Restore the metadata on the faulty replica \{#restore-the-metadata-on-the-faulty-replica\}
 
 1. Copy the generated `backup.tar` file to the faulty replica.
 2. Extract it to the ClickHouse data directory:
@@ -61,7 +61,7 @@ cd /var/lib/clickhouse/
 tar -xvPf backup.tar
 ```
 
-## Create the force restore flag {#create-force-restore-flag}
+## Create the force restore flag \{#create-force-restore-flag\}
 
 To trigger automatic data synchronization from other replicas, create the following flag:
 
@@ -69,7 +69,7 @@ To trigger automatic data synchronization from other replicas, create the follow
 sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 ```
 
-## Restart the faulty replica {#restart-faulty-replica}
+## Restart the faulty replica \{#restart-faulty-replica\}
 
 1. Restart the ClickHouse server on the faulty node.
 2. Check the server logs, you should observe parts being downloaded from the healthy replicas:

@@ -1,10 +1,11 @@
 ---
-'sidebar_label': 'SQL 控制台'
-'sidebar_position': 1
-'title': 'SQL 控制台'
-'slug': '/integrations/sql-clients/sql-console'
-'description': '了解 SQL 控制台'
-'doc_type': 'guide'
+sidebar_label: 'SQL 控制台'
+sidebar_position: 1
+title: 'SQL 控制台'
+slug: /integrations/sql-clients/sql-console
+description: '了解 SQL 控制台'
+doc_type: '指南'
+keywords: ['SQL 控制台', '查询界面', 'Web UI', 'SQL 编辑器', '云控制台']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -47,289 +48,302 @@ import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-que
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
 
-# SQL 控制台
+# SQL 控制台 {#sql-console}
 
-SQL 控制台是探索和查询您在 ClickHouse Cloud 中的数据库的最快和最简单的方法。您可以使用 SQL 控制台来：
+SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最简便方式。您可以使用 SQL 控制台：
 
-- 连接到您的 ClickHouse Cloud 服务
-- 查看、过滤和排序表数据
-- 执行查询并在短短几次点击中可视化结果数据
-- 与团队成员共享查询，并更有效地协作。
+- 连接到 ClickHouse Cloud 服务
+- 查看、筛选和排序表数据
+- 只需几次点击即可执行查询并将结果数据可视化
+- 与团队成员共享查询，从而更高效地协作
 
-## 探索表格 {#exploring-tables}
 
-### 查看表格列表和模式信息 {#viewing-table-list-and-schema-info}
 
-您 ClickHouse 实例中包含的表格概览可以在左侧边栏区域中找到。使用左侧栏顶部的数据库选择器查看特定数据库中的表格。
+## 浏览数据表 {#exploring-tables}
 
-<Image img={table_list_and_schema} size="lg" border alt="表格列表和模式视图显示左侧边栏中的数据库表格"/>
+### 查看数据表列表和表结构信息 {#viewing-table-list-and-schema-info}
 
-列表中的表格也可以展开以查看列和类型。
+可以在左侧边栏区域查看 ClickHouse 实例中包含的数据表概览。使用左侧顶部的数据库选择器查看特定数据库中的数据表。
 
-<Image img={view_columns} size="lg" border alt="展开的表格视图显示列名称和数据类型"/>
+<Image img={table_list_and_schema} size="lg" border alt="左侧边栏中显示数据库表的数据表列表和表结构视图"/>
 
-### 探索表格数据 {#exploring-table-data}
+列表中的数据表也可以展开，以查看列及其数据类型。
 
-单击列表中的一个表格以在新选项卡中打开。在表格视图中，数据可以轻松查看、选择和复制。请注意，结构和格式在复制粘贴到 Microsoft Excel 和 Google Sheets 等电子表格应用程序时会被保留。您可以使用页脚中的导航在表格数据的页面之间翻转（30 行递增分页）。
+<Image img={view_columns} size="lg" border alt="展开的数据表视图，显示列名和数据类型"/>
 
-<Image img={abc} size="lg" border alt="表格视图显示可以选择和复制的数据"/>
+### 浏览表数据 {#exploring-table-data}
+
+单击列表中的某个数据表，会在新标签页中打开该表。在表视图中，可以方便地查看、选择和复制数据。注意，当复制并粘贴到 Microsoft Excel、Google Sheets 等电子表格应用程序时，其结构和格式会被保留。您可以使用页脚中的导航在表数据分页之间切换（每页 30 行）。
+
+<Image img={abc} size="lg" border alt="表视图显示可被选择和复制的数据"/>
 
 ### 检查单元格数据 {#inspecting-cell-data}
 
-单元格检查工具可用于查看单个单元格中包含的大量数据。要打开它，请右键单击单元格并选择“检查单元格”。单元格检查器中的内容可以通过单击检查器内容右上角的复制图标来复制。
+可以使用单元格检查器工具查看单个单元格中包含的大量数据。要打开它，请右键单击某个单元格并选择“Inspect Cell”。可以通过单击检查器内容右上角的复制图标来复制单元格检查器中的内容。
 
 <Image img={inspecting_cell_content} size="lg" border alt="单元格检查器对话框显示所选单元格的内容"/>
 
-## 过滤和排序表格 {#filtering-and-sorting-tables}
+
+
+## 筛选和排序表格 {#filtering-and-sorting-tables}
 
 ### 排序表格 {#sorting-a-table}
 
-要在 SQL 控制台中排序表格，请打开一个表格并在工具栏中选择“排序”按钮。此按钮将打开一个菜单，允许您配置排序。您可以选择按某一列排序，并配置排序的顺序（升序或降序）。选择“应用”或按 Enter 键以排序您的表格。
+要在 SQL 控制台中对表格进行排序，打开一个表并选择工具栏中的“Sort”按钮。此按钮会打开一个菜单，用于配置排序方式。你可以选择要按其排序的列，并配置排序顺序（升序或降序）。选择“Apply”或按 Enter 键即可对表格进行排序。
 
-<Image img={sort_descending_on_column} size="lg" border alt="排序对话框显示按列进行降序排序的配置"/>
+<Image img={sort_descending_on_column} size="lg" border alt="排序对话框显示在某列上配置降序排序"/>
 
-SQL 控制台还允许您向表格添加多个排序。再次单击“排序”按钮以添加另一个排序。注意：排序按出现的顺序应用于排序窗格（从上到下）。要移除排序，只需单击排序旁边的“x”按钮。
+SQL 控制台还允许你为表格添加多个排序条件。再次单击“Sort”按钮可添加另一个排序条件。注意：排序条件会按它们在排序面板中出现的顺序（自上而下）依次应用。要移除某个排序条件，只需单击该排序条件旁边的“x”按钮。
 
-### 过滤表格 {#filtering-a-table}
+### 筛选表格 {#filtering-a-table}
 
-要在 SQL 控制台中过滤表格，请打开一个表格并选择“过滤”按钮。与排序一样，此按钮将打开一个菜单，允许您配置过滤器。您可以选择按某一列过滤并选择必要的条件。SQL 控制台智能地显示与列中包含的数据类型相对应的过滤选项。
+要在 SQL 控制台中对表格进行筛选，打开一个表并选择“Filter”按钮。与排序类似，此按钮会打开一个菜单，用于配置筛选条件。你可以选择要根据其进行筛选的列，并选择所需的条件。SQL 控制台会智能显示与该列中数据类型相对应的筛选选项。
 
-<Image img={filter_on_radio_column_equal_gsm} size="lg" border alt="过滤对话框显示配置使无线电列等于 GSM"/>
+<Image img={filter_on_radio_column_equal_gsm} size="lg" border alt="筛选对话框显示对 radio 列配置等于 GSM 的筛选条件"/>
 
-当您对过滤器满意时，可以选择“应用”以过滤数据。您还可以添加附加过滤器，如下所示。
+当你对筛选条件满意后，可以选择“Apply”来应用筛选。你还可以像下面所示那样添加额外的筛选条件。
 
-<Image img={add_more_filters} size="lg" border alt="对话框显示如何添加一个额外的范围大于 2000 的过滤器"/>
+<Image img={add_more_filters} size="lg" border alt="对话框显示如何添加一个大于 2000 的范围额外筛选条件"/>
 
-与排序功能类似，单击过滤器旁边的“x”按钮以移除它。
+与排序功能类似，单击筛选条件旁边的“x”按钮即可将其移除。
 
-### 同时过滤和排序 {#filtering-and-sorting-together}
+### 同时进行筛选和排序 {#filtering-and-sorting-together}
 
-SQL 控制台允许您同时过滤和排序表格。要做到这一点，请使用上述步骤添加所有所需的过滤器和排序，然后单击“应用”按钮。
+SQL 控制台允许你同时对表格进行筛选和排序。要实现这一点，请使用上述步骤添加所有需要的筛选条件和排序条件，然后单击“Apply”按钮。
 
-<Image img={filtering_and_sorting_together} size="lg" border alt="界面显示同时应用过滤和排序"/>
+<Image img={filtering_and_sorting_together} size="lg" border alt="界面显示同时应用筛选和排序"/>
 
-### 从过滤器和排序创建查询 {#creating-a-query-from-filters-and-sorts}
+### 从筛选和排序创建查询 {#creating-a-query-from-filters-and-sorts}
 
-SQL 控制台可以通过一次点击将您的排序和过滤器直接转换为查询。只需从工具栏中选择“创建查询”按钮，选择您想要的排序和过滤参数。单击“创建查询”后，将打开一个新查询选项卡，并预填充与您表格视图中包含的数据相对应的 SQL 命令。
+SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只需在配置好所需排序和筛选参数后，从工具栏中选择“Create Query”按钮。单击“Create query”后，将打开一个新的查询选项卡，并预先填充与当前表视图中数据相对应的 SQL 命令。
 
-<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="界面显示生成 SQL 的创建查询按钮"/>
+<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="界面显示 Create Query 按钮，它会根据筛选和排序生成 SQL"/>
 
 :::note
-在使用“创建查询”功能时，过滤器和排序不是必需的。
+在使用“Create Query”功能时，筛选和排序并不是必需的。
 :::
 
-您可以通过阅读 (link) 查询文档了解有关 SQL 控制台中查询的更多信息。
+你可以通过阅读 (link) 查询文档来进一步了解如何在 SQL 控制台中编写查询。
+
+
 
 ## 创建和运行查询 {#creating-and-running-a-query}
 
 ### 创建查询 {#creating-a-query}
 
-在 SQL 控制台中有两种方法可以创建新查询。
+在 SQL 控制台中有两种方式创建新查询：
 
-- 单击选项卡栏中的“+”按钮
-- 从左侧边栏查询列表中选择“新查询”按钮
+- 点击标签栏中的 “+” 按钮
+- 在左侧边栏的查询列表中选择 “New Query” 按钮
 
-<Image img={creating_a_query} size="lg" border alt="界面显示如何使用 + 按钮或新查询按钮创建新查询"/>
+<Image img={creating_a_query} size="lg" border alt="界面展示如何通过 + 按钮或 New Query 按钮创建新查询"/>
 
 ### 运行查询 {#running-a-query}
 
-要运行查询，请在 SQL 编辑器中输入您的 SQL 命令，然后单击“运行”按钮或使用快捷键 `cmd / ctrl + enter`。要顺序编写和运行多个命令，请确保在每个命令后添加分号。
+要运行查询，在 SQL 编辑器中输入 SQL 命令，然后点击 “Run” 按钮，或使用快捷键 `cmd / ctrl + enter`。若要顺序编写并运行多个命令，请确保在每个命令后添加分号。
 
-查询执行选项
-默认情况下，单击运行按钮将运行 SQL 编辑器中包含的所有命令。SQL 控制台支持另外两种查询执行选项：
+查询执行选项  
+默认情况下，点击 “Run” 按钮会运行 SQL 编辑器中包含的所有命令。SQL 控制台还支持另外两种查询执行选项：
 
-- 运行选定的命令
-- 运行光标处的命令
+- 运行选中的命令
+- 运行光标所在的命令
 
-要运行选定的命令，请突出显示所需的命令或命令序列，然后单击“运行”按钮（或使用 `cmd / ctrl + enter` 快捷键）。当存在选择时，您还可以从 SQL 编辑器上下文菜单中选择“运行所选”（通过右键单击编辑器中的任何位置打开）。
+要运行选中的命令，先选中所需的单个命令或一系列命令，然后点击 “Run” 按钮（或使用 `cmd / ctrl + enter` 快捷键）。当存在选中内容时，你也可以从 SQL 编辑器的上下文菜单中选择 “Run selected”（在编辑器任意位置右键打开菜单）。
 
-<Image img={run_selected_query} size="lg" border alt="界面显示如何运行 SQL 查询的选定部分"/>
+<Image img={run_selected_query} size="lg" border alt="界面展示如何运行选中的部分 SQL 查询"/>
 
 在当前光标位置运行命令可以通过两种方式实现：
 
-- 从扩展运行选项菜单中选择“在光标处”（或使用相应的 `cmd / ctrl + shift + enter` 键盘快捷键）
+- 从扩展运行选项菜单中选择 “At Cursor”（或使用对应的 `cmd / ctrl + shift + enter` 键盘快捷键）
 
-<Image img={run_at_cursor_2} size="lg" border alt="扩展运行选项菜单中的在光标处选项"/>
+<Image img={run_at_cursor_2} size="lg" border alt="扩展运行选项菜单中的 Run at cursor 选项"/>
 
-- 从 SQL 编辑器上下文菜单中选择“在光标处运行”
+- 在 SQL 编辑器的上下文菜单中选择 “Run at cursor”
 
-<Image img={run_at_cursor} size="lg" border alt="SQL 编辑器上下文菜单中的在光标处运行选项"/>
+<Image img={run_at_cursor} size="lg" border alt="SQL Editor 上下文菜单中的 Run at cursor 选项"/>
 
 :::note
-在执行时，光标位置的命令将闪烁黄色。
+执行时，光标所在位置的命令会短暂闪烁为黄色。
 :::
 
 ### 取消查询 {#canceling-a-query}
 
-在查询运行时，查询编辑器工具栏中的“运行”按钮将被“取消”按钮替换。只需单击此按钮或按 `Esc` 以取消查询。注意：已返回的任何结果在取消后将保留。
+当查询正在运行时，Query Editor 工具栏中的 “Run” 按钮会被 “Cancel” 按钮替换。只需点击此按钮或按下 `Esc` 即可取消查询。注意：任何已经返回的结果在取消后都会保留。
 
-<Image img={cancel_a_query} size="lg" border alt="查询执行期间出现的取消按钮"/>
+<Image img={cancel_a_query} size="lg" border alt="查询执行期间出现的 Cancel 按钮"/>
 
 ### 保存查询 {#saving-a-query}
 
-如果之前未命名，您的查询应称为“未命名查询”。单击查询名称以更改它。重命名查询将导致该查询被保存。
+如果之前没有命名，你的查询名称会显示为 “Untitled Query”。点击该名称即可对其重命名。重命名查询会触发保存该查询。
 
-<Image img={give_a_query_a_name} size="lg" border alt="界面显示如何将查询从未命名查询重命名"/>
+<Image img={give_a_query_a_name} size="lg" border alt="界面展示如何将查询从 Untitled Query 重命名"/>
 
-您还可以使用保存按钮或 `cmd / ctrl + s` 键盘快捷键保存查询。
+你也可以使用保存按钮或 `cmd / ctrl + s` 键盘快捷键来保存查询。
 
-<Image img={save_the_query} size="lg" border alt="查询编辑器工具栏中的保存按钮"/>
+<Image img={save_the_query} size="lg" border alt="Query Editor 工具栏中的保存按钮"/>
+
+
 
 ## 使用 GenAI 管理查询 {#using-genai-to-manage-queries}
 
-此功能允许用户将查询编写为自然语言问题，并让查询控制台根据可用表格的上下文创建 SQL 查询。GenAI 还可以帮助用户调试他们的查询。
+此功能允许用户以自然语言问题的形式编写查询，由查询控制台根据可用数据表的上下文生成 SQL 查询。GenAI 还可以帮助用户调试查询。
 
-有关 GenAI 的更多信息，请查看 [宣布 ClickHouse Cloud 中基于 GenAI 的查询建议的博客文章](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud)。
+有关 GenAI 的更多信息，请参阅博文：[Announcing GenAI powered query suggestions in ClickHouse Cloud](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud)。
 
-### 表格设置 {#table-setup}
+### 表准备 {#table-setup}
 
-让我们导入英国价格支付示例数据集并使用它来创建一些 GenAI 查询。
+我们来导入英国房价支付示例数据集，并用它来创建一些 GenAI 查询。
 
 1. 打开一个 ClickHouse Cloud 服务。
-1. 单击 _+_ 图标创建一个新查询。
+1. 点击 _+_ 图标创建一个新查询。
 1. 粘贴并运行以下代码：
 
-```sql
-CREATE TABLE uk_price_paid
-(
-    price UInt32,
-    date Date,
-    postcode1 LowCardinality(String),
-    postcode2 LowCardinality(String),
-    type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
-    is_new UInt8,
-    duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
-    addr1 String,
-    addr2 String,
-    street LowCardinality(String),
-    locality LowCardinality(String),
-    town LowCardinality(String),
-    district LowCardinality(String),
-    county LowCardinality(String)
-)
-ENGINE = MergeTree
-ORDER BY (postcode1, postcode2, addr1, addr2);
-```
+   ```sql
+   CREATE TABLE uk_price_paid
+   (
+       price UInt32,
+       date Date,
+       postcode1 LowCardinality(String),
+       postcode2 LowCardinality(String),
+       type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
+       is_new UInt8,
+       duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
+       addr1 String,
+       addr2 String,
+       street LowCardinality(String),
+       locality LowCardinality(String),
+       town LowCardinality(String),
+       district LowCardinality(String),
+       county LowCardinality(String)
+   )
+   ENGINE = MergeTree
+   ORDER BY (postcode1, postcode2, addr1, addr2);
+   ```
 
-   该查询应该在大约 1 秒内完成。完成后，您应该有一个名为 `uk_price_paid` 的空表格。
+   此查询大约需要 1 秒完成。完成后，您应当会得到一个名为 `uk_price_paid` 的空表。
 
 1. 创建一个新查询并粘贴以下查询：
 
-```sql
-INSERT INTO uk_price_paid
-WITH
-   splitByChar(' ', postcode) AS p
-SELECT
-    toUInt32(price_string) AS price,
-    parseDateTimeBestEffortUS(time) AS date,
-    p[1] AS postcode1,
-    p[2] AS postcode2,
-    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-    b = 'Y' AS is_new,
-    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-    addr1,
-    addr2,
-    street,
-    locality,
-    town,
-    district,
-    county
-FROM url(
-    'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-    'CSV',
-    'uuid_string String,
-    price_string String,
-    time String,
-    postcode String,
-    a String,
-    b String,
-    c String,
-    addr1 String,
-    addr2 String,
-    street String,
-    locality String,
-    town String,
-    district String,
-    county String,
-    d String,
-    e String'
-) SETTINGS max_http_get_redirects=10;
-```
+   ```sql
+   INSERT INTO uk_price_paid
+   WITH
+      splitByChar(' ', postcode) AS p
+   SELECT
+       toUInt32(price_string) AS price,
+       parseDateTimeBestEffortUS(time) AS date,
+       p[1] AS postcode1,
+       p[2] AS postcode2,
+       transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+       b = 'Y' AS is_new,
+       transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+       addr1,
+       addr2,
+       street,
+       locality,
+       town,
+       district,
+       county
+   FROM url(
+       'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+       'CSV',
+       'uuid_string String,
+       price_string String,
+       time String,
+       postcode String,
+       a String,
+       b String,
+       c String,
+       addr1 String,
+       addr2 String,
+       street String,
+       locality String,
+       town String,
+       district String,
+       county String,
+       d String,
+       e String'
+   ) SETTINGS max_http_get_redirects=10;
+   ```
 
-此查询从 `gov.uk` 网站获取数据集。此文件大小约为 ~4GB，因此此查询将需要几分钟才能完成。一旦 ClickHouse 处理了查询，您应该在 `uk_price_paid` 表中拥有整个数据集。
+此查询会从 `gov.uk` 网站获取数据集。该文件大小约为 4GB，因此该查询将需要几分钟才能完成。ClickHouse 处理完查询后，您应该会在 `uk_price_paid` 表中获得整个数据集。
 
 #### 查询创建 {#query-creation}
 
-让我们使用自然语言来创建一个查询。
+我们来使用自然语言创建一个查询。
 
-1. 选择 **uk_price_paid** 表，然后单击 **创建查询**。
-1. 单击 **生成 SQL**。您可能被要求接受将查询发送到 Chat-GPT。您必须选择 **我同意** 继续。
-1. 现在，您可以使用此提示输入自然语言查询，并让 ChatGPT 将其转换为 SQL 查询。在此示例中，我们将输入：
+1. 选择 **uk_price_paid** 表，然后点击 **Create Query**。
+1. 点击 **Generate SQL**。系统可能会要求您接受将查询发送到 ChatGPT。您必须选择 **I agree** 才能继续。
+1. 现在您可以在此提示框中输入自然语言查询，并让 ChatGPT 将其转换为 SQL 查询。本示例中我们将输入：
 
-   > 给我展示按年份分类的所有 uk_price_paid 交易的总价格和总数量。
+   > Show me the total price and total number of all uk_price_paid transactions by year.
 
-1. 控制台将生成我们所需的查询并在新选项卡中显示。在我们的示例中，GenAI 创建了以下查询：
+1. 控制台会生成我们所需的查询，并将其展示在一个新标签页中。在我们的示例中，GenAI 生成了如下查询：
 
-```sql
--- Show me the total price and total number of all uk_price_paid transactions by year.
-SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
-FROM uk_price_paid
-GROUP BY year(date)
-```
+   ```sql
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
+   ```
 
-1. 一旦您确认查询正确，请单击 **运行** 以执行它。
+1. 在您确认查询正确后，点击 **Run** 执行它。
 
 ### 调试 {#debugging}
 
-现在，让我们测试 GenAI 的查询调试功能。
+现在，我们来测试 GenAI 的查询调试能力。
 
-1. 单击 _+_ 图标创建一个新查询并粘贴以下代码：
+1. 点击 _+_ 图标创建一个新查询，并粘贴以下代码：
+
+
 
 ```sql
--- Show me the total price and total number of all uk_price_paid transactions by year.
-SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
-FROM uk_price_paid
-GROUP BY year(date)
+   -- 按年份显示 uk_price_paid 表中所有交易的总价格和总交易数。
+   SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
 ```
 
-1. 单击 **运行**。由于我们尝试从 `pricee` 中获取值而不是 `price`，查询失败。
-1. 单击 **修复查询**。
-1. GenAI 将尝试修复查询。在这种情况下，它将 `pricee` 更改为 `price`。它还意识到在这种情况下使用 `toYear` 是更好的函数。
-1. 选择 **应用** 以将建议的更改添加到查询中，然后单击 **运行**。
+1. 点击 **Run**。查询会失败，因为我们尝试从 `pricee` 而不是 `price` 中获取值。
+2. 点击 **Fix Query**。
+3. GenAI 会尝试修复查询。在这个例子中，它将 `pricee` 修改为 `price`，并判断在这种场景下使用 `toYear` 是更合适的函数。
+4. 选择 **Apply** 将建议的更改应用到查询中，然后点击 **Run**。
 
-请记住，GenAI 是一个实验性功能。在针对任何数据集运行由 GenAI 生成的查询时请谨慎。
+请注意，GenAI 是一项实验性功能。在对任何数据集运行由 GenAI 生成的查询时，请务必谨慎。
+
 
 ## 高级查询功能 {#advanced-querying-features}
 
 ### 搜索查询结果 {#searching-query-results}
 
-执行查询后，您可以使用结果窗格中的搜索输入快速搜索返回的结果集。此功能帮助预览其他 `WHERE` 子句的结果，或者仅仅检查确保特定数据包含在结果集中。在搜索输入中输入值后，结果窗格将更新并返回包含与输入值匹配的条目的记录。在此示例中，我们将查找 `hackernews` 表中所有包含 `ClickHouse` 的 `breakfast` 评论（不区分大小写）：
+在查询执行完成后，可以使用结果面板中的搜索框快速检索返回的结果集。此功能有助于预览新增 `WHERE` 子句的结果，或简单检查结果集中是否包含特定数据。向搜索框中输入值后，结果面板会更新并返回包含与输入值匹配条目的记录。在此示例中，我们将在 `hackernews` 表中查找所有评论内容包含 `ClickHouse`（不区分大小写）且出现 `breakfast` 的记录：
 
 <Image img={search_hn} size="lg" border alt="搜索 Hacker News 数据"/>
 
-注意：任何匹配输入值的字段都将返回。例如，上面截图中的第三条记录在 `by` 字段中不匹配 'breakfast'，但在 `text` 字段中确实匹配：
+注意：只要任意字段中匹配输入值，该记录都会被返回。例如，上方截图中的第三条记录在 `by` 字段中并不匹配 `breakfast`，但在 `text` 字段中匹配到了：
 
-<Image img={match_in_body} size="lg" border alt="正文中的匹配项"/>
+<Image img={match_in_body} size="lg" border alt="在正文中匹配"/>
 
 ### 调整分页设置 {#adjusting-pagination-settings}
 
-默认情况下，查询结果窗格将在单个页面上显示每个结果记录。对于较大的结果集，分页结果可能更方便查看。这可以使用结果窗格右下角的分页选择器实现：
+默认情况下，查询结果面板会在单个页面上显示所有结果记录。对于较大的结果集，为了更便于查看，可能希望对结果进行分页。可以使用结果面板右下角的分页选择器来完成此操作：
 
 <Image img={pagination} size="lg" border alt="分页选项"/>
 
-选择页面大小将立即将分页应用于结果集，并且导航选项将出现在结果窗格底部的中间位置。
+选择页面大小后，分页会立即应用到结果集，并且导航选项会显示在结果面板页脚的中间位置。
 
 <Image img={pagination_nav} size="lg" border alt="分页导航"/>
 
 ### 导出查询结果数据 {#exporting-query-result-data}
 
-查询结果集可以直接从 SQL 控制台轻松导出为 CSV 格式。为此，请打开结果窗格工具栏右侧的 `•••` 菜单，并选择“下载为 CSV”。
+可以直接在 SQL 控制台中将查询结果集轻松导出为 CSV 格式。为此，在结果面板工具栏右侧打开 `•••` 菜单，然后选择“Download as CSV”。
 
 <Image img={download_as_csv} size="lg" border alt="下载为 CSV"/>
 
+
+
 ## 可视化查询数据 {#visualizing-query-data}
 
-有些数据以图表形式更容易解释。您可以直接从 SQL 控制台快速从查询结果数据创建可视化图。在此示例中，我们将使用一个计算纽约市出租车行程每周统计的查询：
+某些数据以图表形式展示会更易于理解。你可以在 SQL 控制台中直接基于查询结果数据快速创建可视化，只需几次点击。作为示例，我们将使用一个查询来计算纽约市出租车行程的每周统计信息：
 
 ```sql
 SELECT
@@ -345,64 +359,65 @@ ORDER BY
    1 ASC
 ```
 
-<Image img={tabular_query_results} size="lg" border alt="表格查询结果"/>
+<Image img={tabular_query_results} size="lg" border alt="表格查询结果" />
 
-没有可视化，这些结果很难解释。让我们将它们转换为图表。
+在没有可视化的情况下，这些结果很难理解和分析。我们将它们转换成图表。
 
 ### 创建图表 {#creating-charts}
 
-要开始构建可视化，请从查询结果窗格工具栏中选择“图表”选项。图表配置窗格将出现：
+要开始构建可视化，请在查询结果面板的工具栏中选择 “Chart” 选项。此时会显示图表配置面板：
 
-<Image img={switch_from_query_to_chart} size="lg" border alt="从查询切换到图表"/>
+<Image img={switch_from_query_to_chart} size="lg" border alt="从查询切换到图表" />
 
-我们将首先创建一个简单的条形图，跟踪 `trip_total` 按 `week`。为此，我们将 `week` 字段拖到 x 轴上，并将 `trip_total` 字段拖到 y 轴上：
+我们先创建一个按 `week` 跟踪 `trip_total` 的简单柱状图。为此，将 `week` 字段拖到 x 轴，将 `trip_total` 字段拖到 y 轴：
 
-<Image img={trip_total_by_week} size="lg" border alt="按周统计旅行总额"/>
+<Image img={trip_total_by_week} size="lg" border alt="按周统计行程总额" />
 
-大多数图表类型支持在数值轴上使用多个字段。为了演示，我们将 `fare_total` 字段拖到 y 轴上：
+大多数图表类型都支持在数值轴上放置多个字段。为演示这一点，我们将 `fare_total` 字段再拖到 y 轴上：
 
-<Image img={bar_chart} size="lg" border alt="条形图"/>
+<Image img={bar_chart} size="lg" border alt="柱状图" />
 
 ### 自定义图表 {#customizing-charts}
 
-SQL 控制台支持十种图表类型，可以从图表配置窗格中的图表类型选择器中选择。例如，我们可以轻松地将先前的图表类型从条形图更改为面积图：
+SQL 控制台支持十种图表类型，可以在图表配置面板中的图表类型选择器中进行选择。例如，我们可以轻松地将前面的图表类型从柱状图 (Bar) 更改为面积图 (Area)：
 
-<Image img={change_from_bar_to_area} size="lg" border alt="将条形图更改为面积图"/>
+<Image img={change_from_bar_to_area} size="lg" border alt="从柱状图更改为面积图" />
 
-图表标题与提供数据的查询名称匹配。更新查询名称将导致图表标题也更新：
+图表标题与提供数据的查询名称一致。更新查询名称时，图表标题也会随之更新：
 
-<Image img={update_query_name} size="lg" border alt="更新查询名称"/>
+<Image img={update_query_name} size="lg" border alt="更新查询名称" />
 
-在图表配置窗格的“高级”部分中还可以调整许多更高级图表特性。为了开始，我们将调整以下设置：
+在图表配置面板的 “Advanced” 部分中，还可以调整许多更高级的图表特性。首先，我们将调整以下设置：
 
-- 副标题
-- 轴标题
-- x 轴标签方向
+* 副标题
+* 轴标题
+* x 轴的标签方向
 
-我们的图表将相应更新：
+图表会相应更新：
 
-<Image img={update_subtitle_etc} size="lg" border alt="更新副标题等."/>
+<Image img={update_subtitle_etc} size="lg" border alt="更新副标题等" />
 
-在某些情况下，可能需要独立调整每个字段的轴刻度。这也可以在“高级”部分的图表配置窗格中通过为轴范围指定最小值和最大值来实现。例如，上述图表看起来不错，但为了演示 `trip_total` 和 `fare_total` 字段之间的相关性，需要对轴范围进行一些调整：
+在某些情况下，可能需要分别调整每个字段的坐标轴范围。这也可以在图表配置面板的 “Advanced” 部分中，通过为轴范围指定最小值和最大值来实现。比如，上面的图表已经不错，但为了更好地展示 `trip_total` 和 `fare_total` 字段之间的相关性，需要对轴范围稍作调整：
 
-<Image img={adjust_axis_scale} size="lg" border alt="调整轴刻度"/>
+<Image img={adjust_axis_scale} size="lg" border alt="调整坐标轴刻度" />
+
 
 ## 共享查询 {#sharing-queries}
 
-SQL 控制台使您能够与团队共享查询。当查询被共享时，所有团队成员都可以查看和编辑该查询。共享查询是与团队协作的好方法。
+SQL 控制台支持你与团队共享查询。查询一旦共享，团队的所有成员都可以查看和编辑该查询。共享查询是与团队协作的有效方式。
 
-要共享查询，请单击查询工具栏中的“共享”按钮。
+要共享查询，请单击查询工具栏中的 “Share” 按钮。
 
-<Image img={sql_console_share} size="lg" border alt="查询工具栏中的共享按钮"/>
+<Image img={sql_console_share} size="lg" border alt="查询工具栏中的 Share 按钮"/>
 
-将打开一个对话框，允许您与团队的所有成员共享查询。如果您有多个团队，可以选择将查询共享给哪个团队。
+此时会弹出一个对话框，你可以在其中将查询共享给某个团队的所有成员。如果你隶属于多个团队，可以选择要将查询共享给哪个团队。
 
-<Image img={sql_console_edit_access} size="lg" border alt="编辑对共享查询访问权限的对话框"/>
+<Image img={sql_console_edit_access} size="lg" border alt="用于编辑共享查询访问权限的对话框"/>
 
-<Image img={sql_console_add_team} size="lg" border alt="将团队添加到共享查询的界面"/>
+<Image img={sql_console_add_team} size="lg" border alt="用于向共享查询添加团队的界面"/>
 
-<Image img={sql_console_edit_member} size="lg" border alt="编辑对共享查询的成员访问权限的界面"/>
+<Image img={sql_console_edit_member} size="lg" border alt="用于编辑成员对共享查询访问权限的界面"/>
 
-在某些情况下，可能需要独立调整每个字段的轴刻度。这也可以在“高级”部分的图表配置窗格中通过为轴范围指定最小值和最大值来实现。例如，上述图表看起来不错，但为了演示 `trip_total` 和 `fare_total` 字段之间的相关性，需要对轴范围进行一些调整：
+在某些情况下，可能需要分别调整每个字段的坐标轴刻度。你也可以在图表配置面板的 “Advanced” 部分，通过为坐标轴范围指定最小值和最大值来实现这一点。例如，上面的图表整体效果不错，但为了更好地展示 `trip_total` 和 `fare_total` 字段之间的相关性，需要对坐标轴范围进行一些调整：
 
-<Image img={sql_console_access_queries} size="lg" border alt="查询列表中的与我共享部分"/>
+<Image img={sql_console_access_queries} size="lg" border alt="查询列表中“Shared with me（与我共享）”部分"/>

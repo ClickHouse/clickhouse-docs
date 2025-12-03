@@ -1,28 +1,27 @@
 ---
-'alias': []
-'description': 'JSONCompactStringsフォーマットのDocumentation'
-'input_format': false
-'keywords':
-- 'JSONCompactStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStrings'
-'title': 'JSONCompactStrings'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactStrings フォーマットのドキュメント'
+input_format: false
+keywords: ['JSONCompactStrings']
+output_format: true
+slug: /interfaces/formats/JSONCompactStrings
+title: 'JSONCompactStrings'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 概要 {#description}
 
-`JSONCompactStrings` 形式は、[JSONStrings](./JSONStrings.md) とは異なり、データ行がオブジェクトではなく配列として出力される点のみが異なります。
+`JSONCompactStrings` フォーマットは、データ行がオブジェクトではなく配列として出力されるという点だけが、[JSONStrings](./JSONStrings.md) と異なります。
 
 ## 使用例 {#example-usage}
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`JSONCompactStrings` 形式を使用してデータを読み取ります:
+`JSONCompactStrings` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -30,7 +29,7 @@ FROM football
 FORMAT JSONCompactStrings
 ```
 
-出力はJSON形式になります:
+出力結果は JSON 形式になります：
 
 ```json
 {
@@ -94,4 +93,5 @@ FORMAT JSONCompactStrings
 }
 ```
 
-## 形式設定 {#format-settings}
+
+## 書式設定 {#format-settings}

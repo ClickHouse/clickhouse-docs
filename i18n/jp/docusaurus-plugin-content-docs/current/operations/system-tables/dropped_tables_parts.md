@@ -1,19 +1,17 @@
 ---
-'description': 'システム テーブルは、`system.dropped_tables` から削除されたテーブルの MergeTree パーツに関する情報を含んでいます。'
-'keywords':
-- 'system table'
-- 'dropped_tables_parts'
-'slug': '/operations/system-tables/dropped_tables_parts'
-'title': 'system.dropped_tables_parts'
-'doc_type': 'reference'
+description: '`system.dropped_tables` に含まれる削除済み MergeTree テーブルのパーツ情報を保持するシステムテーブル'
+keywords: ['system table', 'dropped_tables_parts']
+slug: /operations/system-tables/dropped_tables_parts
+title: 'system.dropped_tables_parts'
+doc_type: 'reference'
 ---
 
-Contains information about parts of [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) dropped tables from [system.dropped_tables](./dropped_tables.md)
+[system.dropped_tables](./dropped_tables.md) に含まれる削除済みの [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を保持します。
 
-The schema of this table is the same as [system.parts](./parts.md)
+このテーブルのスキーマは [system.parts](./parts.md) と同じです。
 
-**See Also**
+**関連項目**
 
-- [MergeTree family](../../engines/table-engines/mergetree-family/mergetree.md)
+- [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)
 - [system.parts](./parts.md)
 - [system.dropped_tables](./dropped_tables.md)

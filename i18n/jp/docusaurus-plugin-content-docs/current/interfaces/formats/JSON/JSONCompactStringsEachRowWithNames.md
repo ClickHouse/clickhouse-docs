@@ -1,28 +1,27 @@
 ---
-'alias': []
-'description': 'JSONCompactStringsEachRowWithNames フォーマットのドキュメント'
-'input_format': true
-'keywords':
-- 'JSONCompactStringsEachRowWithNames'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStringsEachRowWithNames'
-'title': 'JSONCompactStringsEachRowWithNames'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactStringsEachRowWithNames 形式に関するドキュメント'
+input_format: true
+keywords: ['JSONCompactStringsEachRowWithNames']
+output_format: true
+slug: /interfaces/formats/JSONCompactStringsEachRowWithNames
+title: 'JSONCompactStringsEachRowWithNames'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[`JSONCompactEachRow`](./JSONCompactEachRow.md) 形式とは異なり、[TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md) 形式のように、カラム名を持つヘッダー行も印刷されます。
+[`JSONCompactEachRow`](./JSONCompactEachRow.md) 形式とは異なり、[TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md) 形式と同様に、列名を含むヘッダー行も出力します。
 
-## 例の使用法 {#example-usage}
+## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のデータを持つ JSON ファイル `football.json` を使用します：
+次のデータを格納した JSON ファイルを `football.json` という名前で用意します。
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -45,15 +44,16 @@
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNames;
 ```
 
-### データの読み取り {#reading-data}
 
-`JSONCompactStringsEachRowWithNames` 形式を使用してデータを読み取ります：
+### データの読み込み {#reading-data}
+
+`JSONCompactStringsEachRowWithNames` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -61,7 +61,7 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNames
 ```
 
-出力は JSON 形式になります：
+出力は JSON 形式です：
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -84,8 +84,11 @@ FORMAT JSONCompactStringsEachRowWithNames
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-## 形式設定 {#format-settings}
+
+## フォーマット設定 {#format-settings}
 
 :::note
-[`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` に設定されている場合、入力データのカラムはテーブルのカラムに名前でマッピングされ、名前が不明なカラムは [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合はスキップされます。そうでない場合、最初の行はスキップされます。
+[`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) が `1` に設定されている場合、
+入力データの列は名前に基づいてテーブルの列にマッピングされ、[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合は、未知の名前を持つ列はスキップされます。
+それ以外の場合は、最初の行がスキップされます。
 :::

@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'Azure Flexible Server for Postgres'
-'description': '将 Azure Flexible Server for Postgres 设置为 ClickPipes 的数据源'
-'slug': '/integrations/clickpipes/postgres/source/azure-flexible-server-postgres'
-'title': 'Azure Flexible Server for Postgres 源设置指南'
-'doc_type': 'guide'
+sidebar_label: '适用于 Postgres 的 Azure Flexible Server'
+description: '将 Azure Flexible Server for Postgres 设置为 ClickPipes 的数据源'
+slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
+title: 'Azure Flexible Server for Postgres 源设置指南'
+keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
+doc_type: 'guide'
 ---
 
 import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';
@@ -13,71 +14,80 @@ import firewall from '@site/static/images/integrations/data-ingestion/clickpipes
 import Image from '@theme/IdealImage';
 
 
-# Azure 灵活服务器的 Postgres 源设置指南
+# 适用于 Azure Database for PostgreSQL 灵活服务器的源端设置指南 {#azure-flexible-server-for-postgres-source-setup-guide}
 
-ClickPipes 支持 Postgres 版本 12 及更高版本。
+ClickPipes 支持 Postgres 12 及更高版本。
+
+
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
-**如果 `wal_level` 被设置为 `logical`，您无需** 执行以下步骤。如果您是从其他数据复制工具迁移过来的，此设置通常会是预配置的。
+**如果** `wal_level` 已设置为 `logical`，**则无需**执行以下步骤。若你是从其他数据复制工具迁移过来，该设置通常已经预先配置好。
 
-1. 点击 **服务器参数** 部分
+1. 点击 **Server parameters** 部分
 
-<Image img={server_parameters} alt="Azure 灵活服务器中服务器参数" size="lg" border/>
+<Image img={server_parameters} alt="Azure Flexible Server for Postgres 中的 Server Parameters" size="lg" border/>
 
-2. 将 `wal_level` 编辑为 `logical`
+2. 将 `wal_level` 修改为 `logical`
 
-<Image img={wal_level} alt="在 Azure 灵活服务器中将 wal_level 更改为 logical" size="lg" border/>
+<Image img={wal_level} alt="在 Azure Flexible Server for Postgres 中将 wal_level 更改为 logical" size="lg" border/>
 
-3. 该更改将需要重新启动服务器。因此在请求时请重启。
+3. 此更改需要重启服务器。根据提示重启服务器。
 
-<Image img={restart} alt="更改 wal_level 后重启服务器" size="lg" border/>
+<Image img={restart} alt="在更改 wal_level 后重启服务器" size="lg" border/>
+
+
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
 
-通过管理员用户连接到您的 Azure 灵活服务器 Postgres，并运行以下命令：
+通过管理员用户连接到 Azure Flexible Server PostgreSQL，并运行以下命令：
 
-1. 为 ClickPipes 创建一个专用的 Postgres 用户。
+1. 创建一个专用于 ClickPipes 的 PostgreSQL 用户。
 
-```sql
-CREATE USER clickpipes_user PASSWORD 'some-password';
-```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
-2. 向 `clickpipes_user` 提供从您复制表的架构的只读访问权限。下面的示例展示了为 `public` 架构设置权限。如果您想要授予多个架构的访问权限，您可以为每个架构运行这三条命令。
+2. 为 `clickpipes_user` 提供对要进行表复制的模式（schema）的只读访问权限。下面的示例展示了如何为 `public` 模式设置权限。如果您想为多个模式授权，可以针对每个模式分别运行这三条命令。
 
-```sql
-GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
-3. 授予该用户复制权限：
+3. 为该用户授予复制权限：
 
-```sql
-ALTER ROLE clickpipes_user REPLICATION;
-```
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-4. 创建将用于将来创建 MIRROR（复制）的出版物。
+4. 创建一个 publication，将在后续用于创建 MIRROR（镜像复制）。
 
-```sql
-CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+   ```sql
+   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   ```
 
-5. 将 `clickpipes_user` 的 `wal_sender_timeout` 设置为 0
+5. 将 `clickpipes_user` 的 `wal_sender_timeout` 设置为 0。
 
-```sql
-ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-```
+   ```sql
+   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
+   ```
 
-## 将 ClickPipes IP 添加到防火墙 {#add-clickpipes-ips-to-firewall}
 
-请按照以下步骤将 [ClickPipes IP](../../index.md#list-of-static-ips) 添加到您的网络。
 
-1. 转到 **网络** 标签，并将 [ClickPipes IP](../../index.md#list-of-static-ips) 添加到您 Azure 灵活服务器 Postgres 的防火墙，或如果您正在使用 SSH 隧道，则添加到跳转服务器/堡垒主机。
+## 将 ClickPipes IP 地址添加到防火墙 {#add-clickpipes-ips-to-firewall}
 
-<Image img={firewall} alt="在 Azure 灵活服务器中将 ClickPipes IP 添加到防火墙" size="lg"/>
+请按照以下步骤将 [ClickPipes IP 地址](../../index.md#list-of-static-ips) 添加到您的网络中。
 
-## 接下来是什么？ {#whats-next}
+1. 转到 **Networking** 选项卡，将这些 [ClickPipes IP 地址](../../index.md#list-of-static-ips) 添加到
+   Azure Flexible Server Postgres 的防火墙中；如果使用 SSH 隧道，则将其添加到 Jump Server/Bastion 的防火墙中。
 
-您现在可以 [创建您的 ClickPipe](../index.md)，并开始将数据从您的 Postgres 实例导入 ClickHouse Cloud。
-请确保记下您在设置 Postgres 实例时使用的连接详细信息，因为在创建 ClickPipe 过程中您将需要它们。
+<Image img={firewall} alt="在 Azure Flexible Server for Postgres 中将 ClickPipes IP 地址添加到防火墙" size="lg"/>
+
+
+
+## 后续步骤 {#whats-next}
+
+现在你可以[创建你的 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
+请务必记录下在配置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 的过程中你将需要这些信息。

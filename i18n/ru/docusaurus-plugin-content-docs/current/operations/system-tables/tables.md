@@ -1,89 +1,90 @@
 ---
-slug: '/operations/system-tables/tables'
-description: 'Системная таблица, содержащая метаданные каждой таблицы, о которой'
-title: system.tables
+description: 'Системная таблица, содержащая метаданные каждой таблицы, известной серверу.'
 keywords: ['системная таблица', 'таблицы']
-doc_type: reference
+slug: /operations/system-tables/tables
+title: 'system.tables'
+doc_type: 'reference'
 ---
-# system.tables
 
-Содержит метаданные каждой таблицы, о которой сервер знает.
+# system.tables {#systemtables}
 
-[Отключенные](../../sql-reference/statements/detach.md) таблицы не отображаются в `system.tables`.
+Содержит метаданные для каждой таблицы, известной серверу.
 
-[Временные таблицы](../../sql-reference/statements/create/table.md#temporary-tables) видны в `system.tables` только в тех сессиях, где они были созданы. Они отображаются с пустым полем `database` и с включенным флагом `is_temporary`.
+[Отсоединённые](../../sql-reference/statements/detach.md) таблицы не отображаются в `system.tables`.
+
+[Временные таблицы](../../sql-reference/statements/create/table.md#temporary-tables) видны в `system.tables` только в тех сессиях, в которых они были созданы. Они отображаются с пустым полем `database` и с включённым флагом `is_temporary`.
 
 Столбцы:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
+* `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
+* `name` ([String](../../sql-reference/data-types/string.md)) — имя таблицы.
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы (атомарная база данных).
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы (база данных Atomic).
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) — Имя движка таблицы (без параметров).
+* `engine` ([String](../../sql-reference/data-types/string.md)) — Имя движка таблицы (без параметров).
 
-- `is_temporary` ([UInt8](../../sql-reference/data-types/int-uint.md)) - Флаг, который указывает, является ли таблица временной.
+* `is_temporary` ([UInt8](../../sql-reference/data-types/int-uint.md)) — флаг, указывающий, является ли таблица временной.
 
-- `data_paths` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Пути к данным таблицы в файловых системах.
+* `data_paths` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Пути к данным таблицы в файловой системе.
 
-- `metadata_path` ([String](../../sql-reference/data-types/string.md)) - Путь к метаданным таблицы в файловой системе.
+* `metadata_path` ([String](../../sql-reference/data-types/string.md)) - Путь к метаданным таблицы в файловой системе.
 
-- `metadata_modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - Время последнего изменения метаданных таблицы.
+* `metadata_modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - время последнего изменения метаданных таблицы.
 
-- `metadata_version` ([Int32](../../sql-reference/data-types/int-uint.md)) - Версия метаданных для таблицы ReplicatedMergeTree, 0 для не ReplicatedMergeTree таблиц.
+* `metadata_version` ([Int32](../../sql-reference/data-types/int-uint.md)) — версия метаданных для таблиц ReplicatedMergeTree, 0 для таблиц других типов.
 
-- `dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости базы данных.
+* `dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости от баз данных.
 
-- `dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости таблицы ([материализованные представления](/sql-reference/statements/create/view#materialized-view) текущей таблицы).
+* `dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости таблицы (материализованные [представления](/sql-reference/statements/create/view#materialized-view), зависящие от текущей таблицы).
 
-- `create_table_query` ([String](../../sql-reference/data-types/string.md)) - Запрос, который использовался для создания таблицы.
+* `create_table_query` ([String](../../sql-reference/data-types/string.md)) - Запрос, использованный для создания таблицы.
 
-- `engine_full` ([String](../../sql-reference/data-types/string.md)) - Параметры движка таблицы.
+* `engine_full` ([String](../../sql-reference/data-types/string.md)) - Параметры движка таблицы.
 
-- `as_select` ([String](../../sql-reference/data-types/string.md)) - Запрос `SELECT` для представления.
+* `as_select` ([String](../../sql-reference/data-types/string.md)) - запрос `SELECT` для представления.
 
-- `parameterized_view_parameters` ([Array](../../sql-reference/data-types/array.md) of [Tuple](../../sql-reference/data-types/tuple.md)) — Параметры параметризованного представления.
+* `parameterized_view_parameters` ([Array](../../sql-reference/data-types/array.md) типа [Tuple](../../sql-reference/data-types/tuple.md)) — параметры параметризованного представления.
 
-- `partition_key` ([String](../../sql-reference/data-types/string.md)) - Выражение ключа партиции, указанное в таблице.
+* `partition_key` ([String](../../sql-reference/data-types/string.md)) — выражение ключа партиционирования, заданное в таблице.
 
-- `sorting_key` ([String](../../sql-reference/data-types/string.md)) - Выражение ключа сортировки, указанное в таблице.
+* `sorting_key` ([String](../../sql-reference/data-types/string.md)) — выражение ключа сортировки, заданное для таблицы.
 
-- `primary_key` ([String](../../sql-reference/data-types/string.md)) - Выражение первичного ключа, указанное в таблице.
+* `primary_key` ([String](../../sql-reference/data-types/string.md)) — выражение первичного ключа, указанное для таблицы.
 
-- `sampling_key` ([String](../../sql-reference/data-types/string.md)) - Выражение ключа выборки, указанное в таблице.
+* `sampling_key` ([String](../../sql-reference/data-types/string.md)) — выражение ключа выборки, заданное в таблице.
 
-- `storage_policy` ([String](../../sql-reference/data-types/string.md)) - Политика хранения:
+* `storage_policy` ([String](../../sql-reference/data-types/string.md)) - Политика хранения:
 
-  - [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes)
-  - [Distributed](/engines/table-engines/special/distributed)
+  * [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes)
+  * [Distributed](/engines/table-engines/special/distributed)
 
-- `total_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество строк, если возможно быстро определить точное количество строк в таблице, иначе `NULL` (включая подлежащую таблицу `Buffer`).
+* `total_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее число строк, если можно быстро определить точное количество строк в таблице, иначе `NULL` (включая строки в базовой таблице `Buffer`).
 
-- `total_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество байтов, если возможно быстро определить точное количество байтов для таблицы на хранилище, иначе `NULL` (не включает любое подлежащее хранилище).
+* `total_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее число байт (включая индексы и проекции), если можно быстро определить точное количество байт для таблицы в хранилище, иначе `NULL` (не включает данные в каком-либо базовом хранилище).
 
-  - Если таблица хранит данные на диске, возвращает использованное пространство на диске (т.е. сжатое).
-  - Если таблица хранит данные в памяти, возвращает приблизительное количество использованных байтов в памяти.
+  * Если таблица хранит данные на диске, возвращает используемое место на диске (в сжатом виде).
+  * Если таблица хранит данные в памяти, возвращает приблизительный объём используемой памяти в байтах.
 
-- `total_bytes_uncompressed` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество несжатых байтов, если возможно быстро определить точное количество байтов по контрольным суммам частей для таблицы на хранилище, иначе `NULL` (не учитывает подлежащее хранилище (если такое имеется)).
+* `total_bytes_uncompressed` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество несжатых байт (включая индексы и проекции), если можно быстро определить точное количество байт по контрольным суммам кусков таблицы в хранилище, иначе `NULL` (не учитывает базовое хранилище, если оно есть).
 
-- `lifetime_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество строк, добавленных с момента запуска сервера (только для таблиц `Buffer`).
+* `lifetime_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — общее количество строк, вставленных с момента запуска сервера (только для таблиц `Buffer`).
 
-- `lifetime_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество байтов, добавленных с момента запуска сервера (только для таблиц `Buffer`).
+* `lifetime_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) - Общее количество байт, записанных операциями INSERT с момента запуска сервера (только для таблиц типа `Buffer`).
 
-- `comment` ([String](../../sql-reference/data-types/string.md)) - Комментарий для таблицы.
+* `comment` ([String](../../sql-reference/data-types/string.md)) - Комментарий к таблице.
 
-- `has_own_data` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, который указывает, хранит ли сама таблица какие-либо данные на диске или только обращается к какому-либо другому источнику.
+* `has_own_data` ([UInt8](../../sql-reference/data-types/int-uint.md)) — флаг, указывающий, хранит ли сама таблица данные на диске или только обращается к другому источнику.
 
-- `loading_dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости загрузки базы данных (список объектов, которые должны быть загружены до текущего объекта).
+* `loading_dependencies_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости при загрузке базы данных (список объектов, которые должны быть загружены до текущего объекта).
 
-- `loading_dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости загрузки таблицы (список объектов, которые должны быть загружены до текущего объекта).
+* `loading_dependencies_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимости загрузки таблицы (список объектов, которые должны быть загружены до текущего объекта).
 
-- `loading_dependent_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимая загружаемая база данных.
+* `loading_dependent_database` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Базы данных, от загрузки которых зависит текущая.
 
-- `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Зависимая загружаемая таблица.
+* `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - Таблица, от которой зависит загрузка.
 
-Таблица `system.tables` используется в реализации запроса `SHOW TABLES`.
+Таблица `system.tables` используется при реализации запроса `SHOW TABLES`.
 
 **Пример**
 

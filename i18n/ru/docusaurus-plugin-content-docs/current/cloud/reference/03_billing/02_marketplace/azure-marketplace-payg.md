@@ -1,14 +1,11 @@
 ---
-'slug': '/cloud/billing/marketplace/azure-marketplace-payg'
-'title': 'Azure Marketplace PAYG'
-'description': 'Подписывайтесь на ClickHouse Cloud через Azure Marketplace (PAYG).'
-'keywords':
-- 'azure'
-- 'marketplace'
-- 'billing'
-- 'PAYG'
-'doc_type': 'guide'
+slug: /cloud/billing/marketplace/azure-marketplace-payg
+title: 'Azure Marketplace: оплата по мере использования (PAYG)'
+description: 'Оформите подписку на ClickHouse Cloud через Azure Marketplace (PAYG).'
+keywords: ['azure', 'marketplace', 'billing', 'PAYG']
+doc_type: 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import azure_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-1.png';
 import azure_marketplace_payg_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-2.png';
@@ -25,127 +22,130 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-Начало работы с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через PAYG (оплата по мере использования) публичное предложение.
+Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) с использованием публичного предложения по модели PAYG (pay-as-you-go, оплата по мере использования).
 
-## Предварительные условия {#prerequisites}
 
-- Проект Azure, который имеет право на покупку, предоставлен вашим.billing администратором.
-- Для подписки на ClickHouse Cloud на Azure Marketplace вы должны войти в систему с учетной записью, которая имеет права на покупку, и выбрать соответствующий проект.
+## Предварительные требования {#prerequisites}
 
-1. Перейдите на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) и найдите ClickHouse Cloud. Убедитесь, что вы вошли в систему, чтобы иметь возможность купить предложение на рынке.
+- Проект Azure, для которого администратор биллинга включил права на совершение покупок.
+- Чтобы оформить подписку на ClickHouse Cloud в Azure Marketplace, вы должны войти под учетной записью с правами на совершение покупок и выбрать соответствующий проект.
 
-<br />
-
-<Image img={azure_marketplace_payg_1} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+1. Перейдите в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) и найдите ClickHouse Cloud. Убедитесь, что вы вошли в систему, чтобы иметь возможность приобрести предложение на маркетплейсе.
 
 <br />
 
-2. На странице списка продуктов нажмите **Получить сейчас**.
+<Image img={azure_marketplace_payg_1} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_2} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+2. На странице описания продукта нажмите **Get It Now**.
 
 <br />
 
-3. На следующем экране вам нужно будет указать имя, адрес электронной почты и информацию о местоположении.
+<Image img={azure_marketplace_payg_2} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_3} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+3. На следующем экране вам нужно будет указать имя, адрес электронной почты и местоположение.
 
 <br />
 
-4. На следующем экране нажмите **Подписаться**.
+<Image img={azure_marketplace_payg_3} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_4} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+4. На следующем экране нажмите **Subscribe**.
 
 <br />
 
-5. На следующем экране выберите подписку, группу ресурсов и местоположение группы ресурсов. Местоположение группы ресурсов не обязательно должно совпадать с местоположением, где вы планируете развернуть свои услуги на ClickHouse Cloud.
+<Image img={azure_marketplace_payg_4} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_5} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+5. На следующем экране выберите подписку, группу ресурсов и регион группы ресурсов. Регион группы ресурсов не обязан совпадать с регионом, в котором вы планируете запускать сервисы в ClickHouse Cloud.
 
 <br />
 
-6. Вам также нужно будет указать имя для подписки, а также выбрать срок оплаты из доступных вариантов. Вы можете выбрать установку **Периодической оплаты** включенной или выключенной. Если вы установите "выключенной", ваш контракт закончится по истечении срока оплаты, и ваши ресурсы будут демонтированы.
+<Image img={azure_marketplace_payg_5} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_6} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+6. Вам также нужно будет указать имя для подписки, а также выбрать срок действия из доступных вариантов. Вы можете включить или отключить **Recurring billing**. Если установить значение «off», ваш контракт завершится по окончании срока действия, а ваши ресурсы будут удалены.
 
 <br />
 
-7. Нажмите **"Просмотреть + подписаться"**.
-
-8. На следующем экране убедитесь, что всё выглядит правильно, и нажмите **Подписаться**.
+<Image img={azure_marketplace_payg_6} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_7} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+7. Нажмите **"Review + subscribe"**.
+
+8. На следующем экране убедитесь, что все указано верно, и нажмите **Subscribe**.
 
 <br />
 
-9. Обратите внимание, что на этом этапе вы подписались на подписку Azure ClickHouse Cloud, но вы еще не настроили свою учетную запись на ClickHouse Cloud. Следующие шаги необходимы и критичны для того, чтобы ClickHouse Cloud мог связаться с вашей подпиской Azure, чтобы ваша оплата производилась корректно через рынок Azure.
+<Image img={azure_marketplace_payg_7} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_8} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+9. Обратите внимание, что на этом этапе вы оформили подписку Azure на ClickHouse Cloud, но еще не настроили свою учетную запись в ClickHouse Cloud. Следующие шаги необходимы и критически важны для того, чтобы ClickHouse Cloud смог привязать вашу подписку Azure и выставлять счета корректно через Azure Marketplace.
 
 <br />
 
-10. Когда настройка Azure будет завершена, кнопка **Настроить учетную запись сейчас** должна стать активной.
+<Image img={azure_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={azure_marketplace_payg_9} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+10. После завершения настройки Azure кнопка **Configure account now** должна стать активной.
 
 <br />
 
-11. Нажмите на **Настроить учетную запись сейчас**.
+<Image img={azure_marketplace_payg_9} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-Вы получите электронное письмо, похожее на то, что указано ниже, с информацией о настройке вашей учетной записи:
+11. Нажмите **Configure account now**.
 
 <br />
 
-<Image img={azure_marketplace_payg_10} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+Вы получите электронное письмо, подобное приведенному ниже, с подробной информацией по настройке вашей учетной записи:
 
 <br />
 
-12. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Как только вы перейдете на ClickHouse Cloud, вы можете войти с существующей учетной записью или зарегистрироваться с новой учетной записью. Этот шаг очень важен, чтобы мы могли связать вашу организацию ClickHouse Cloud с выставлением счетов в Azure Marketplace.
-
-13. Обратите внимание, что если вы новый пользователь, вам также нужно будет предоставить некоторую основную информацию о вашем бизнесе. Смотрите скриншоты ниже.
+<Image img={azure_marketplace_payg_10} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+12. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. После перенаправления в ClickHouse Cloud вы можете войти под существующей учетной записью или зарегистрировать новую. Этот шаг очень важен, чтобы мы могли привязать вашу организацию ClickHouse Cloud к выставлению счетов через Azure Marketplace.
+
+13. Обратите внимание, что если вы новый пользователь, вам также нужно будет предоставить некоторую базовую информацию о вашем бизнесе. См. скриншоты ниже.
 
 <br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма информации о регистрации ClickHouse Cloud 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-Как только вы нажмете **Завершить регистрацию**, вы будете перенаправлены в вашу организацию в ClickHouse Cloud, где вы можете просмотреть экран выставления счетов, чтобы убедиться, что вы оплачиваетесь через Azure Marketplace и можете создать услуги.
+<Image img={aws_marketplace_payg_9} size="md" alt="Форма регистрации ClickHouse Cloud 2" border/>
 
 <br />
 
-<br />
-
-<Image img={azure_marketplace_payg_11} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+После того как вы нажмете **Complete sign up**, вы будете перенаправлены в свою организацию в ClickHouse Cloud, где сможете открыть страницу выставления счетов, чтобы убедиться, что оплата производится через Azure Marketplace, а также создавать сервисы.
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="Форма информации о регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_11} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
 <br />
 
-14. Если у вас возникли проблемы, пожалуйста, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).
+<br />
+
+<Image img={azure_marketplace_payg_12} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+
+
+
+<br />
+
+14. Если у вас возникнут какие-либо проблемы, обращайтесь в [нашу службу поддержки](https://clickhouse.com/support/program).

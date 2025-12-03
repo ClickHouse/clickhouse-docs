@@ -1,241 +1,237 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': 'DSPyを統合する'
-'title': 'DSPyとClickHouse MCPサーバーを使用してAIエージェントを構築する方法'
-'pagination_prev': null
-'pagination_next': null
-'description': 'DSPyとClickHouse MCPサーバーを使用してAIエージェントを構築する方法を学ぶ'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'DSPy'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
+sidebar_label: 'DSPy 連携'
+title: 'DSPy と ClickHouse MCP Server で AI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'DSPy と ClickHouse MCP Server で AI エージェントを構築する方法を解説します'
+keywords: ['ClickHouse', 'MCP', 'DSPy']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
-# AIエージェントをDSPyとClickHouse MCPサーバーで構築する方法
-
-このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph)を使用して、[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)と相互作用できるAIエージェントを構築する方法を説明します。このエージェントは、[ClickHouseのMCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を使用します。
+このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph) を使って、
+[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 
 ## 前提条件 {#prerequisites}
 
-- システムにPythonがインストールされている必要があります。
-- システムに`pip`がインストールされている必要があります。
-- AnthropicのAPIキー、または別のLLMプロバイダーのAPIキーが必要です。
+- システムに Python がインストールされている必要があります。
+- システムに `pip` がインストールされている必要があります。
+- Anthropic の API キー、または別の LLM プロバイダーの API キーが必要です。
 
-次の手順は、Python REPLまたはスクリプトを介して実行できます。
+以下の手順は、Python REPL からでも、スクリプトとしてでも実行できます。
 
-:::note 例のノートブック
-この例は、[例のリポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)のノートブックとして見つけることができます。
+:::note サンプルノートブック
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)内のノートブックとして参照できます。
 :::
 
 <VerticalStepper headerLevel="h2">
+  ## ライブラリのインストール
 
-## ライブラリをインストールする {#install-libraries}
+  `pip`を使用して以下のコマンドを実行し、必要なライブラリをインストールします：
 
-次のコマンドを`pip`を使用して実行し、必要なライブラリをインストールします。
+  ```shell
+  pip install -q --upgrade pip
+  pip install -q dspy
+  pip install -q mcp
+  ```
 
-```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
-```
+  ## 認証情報の設定
 
-## 資格情報を設定する {#setup-credentials}
+  次に、Anthropic APIキーを指定する必要があります:
 
-次に、AnthropicのAPIキーを提供する必要があります：
+  ```python
+  import os
+  os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Anthropic APIキーを入力:")
+  ```
 
-```python
-import os
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
-```
+  :::note 別のLLMプロバイダーを使用する場合
+  Anthropic APIキーをお持ちでない場合や、別のLLMプロバイダーを使用したい場合は、
+  [DSPyドキュメント](https://dspy.ai/#__tabbed_1_1)で認証情報の設定手順をご確認ください。
+  :::
 
-:::note 別のLLMプロバイダーを使用する
-AnthropicのAPIキーがなく、別のLLMプロバイダーを使用したい場合は、
-[ DSPyのドキュメント](https://dspy.ai/#__tabbed_1_1)で資格情報の設定に関する手順を見つけることができます。
-:::
+  次に、ClickHouse SQLプレイグラウンドに接続するための認証情報を定義します：
 
-次に、ClickHouse SQLプレイグラウンドに接続するために必要な資格情報を定義します：
+  ```python
+  env = {
+      "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+      "CLICKHOUSE_PORT": "8443",
+      "CLICKHOUSE_USER": "demo",
+      "CLICKHOUSE_PASSWORD": "",
+      "CLICKHOUSE_SECURE": "true"
+  }
+  ```
 
-```python
-env = {
-    "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-    "CLICKHOUSE_PORT": "8443",
-    "CLICKHOUSE_USER": "demo",
-    "CLICKHOUSE_PASSWORD": "",
-    "CLICKHOUSE_SECURE": "true"
-}
-```
+  ## MCPサーバーの初期化
 
-## MCPサーバーを初期化する {#initialize-mcp}
+  次に、ClickHouse MCP ServerをClickHouse SQLプレイグラウンドに接続するように設定します。
 
-次に、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドを指すように構成します。
+  ```python
+  from mcp import ClientSession, StdioServerParameters
+  from mcp.client.stdio import stdio_client
+  import dspy
 
-```python
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
-import dspy
+  server_params = StdioServerParameters(
+      command="uv",
+      args=[
+          'run',
+          '--with', 'mcp-clickhouse',
+          '--python', '3.13',
+          'mcp-clickhouse'
+      ],
+      env=env
+  )
+  ```
 
-server_params = StdioServerParameters(
-    command="uv",
-    args=[
-        'run',
-        '--with', 'mcp-clickhouse',
-        '--python', '3.13',
-        'mcp-clickhouse'
-    ],
-    env=env
-)
-```
+  ## LLMの初期化
 
-## LLMを初期化する {#initialize-llm}
+  次に、以下のコマンドでLLMを初期化します：
 
-次に、以下の行を使用してLLMを初期化します：
+  ```python
+  dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
+  ```
 
-```python
-dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
-```
+  ## エージェントを実行する
 
-## エージェントを実行する {#run-the-agent}
+  最後に、エージェントを初期化して実行します。
 
-最後に、エージェントを初期化して実行します：
+  ```python
+  class DataAnalyst(dspy.Signature):
+      """あなたはデータアナリストです。質問を受け取り、利用可能なツールを使用して回答してください。"""
 
-```python
-class DataAnalyst(dspy.Signature):
-    """You are a data analyst. You'll be asked questions and you need to try to answer them using the tools you have access to. """
+      user_request: str = dspy.InputField()
+      process_result: str = dspy.OutputField(
+          desc=(
+              "クエリへの回答"
+          )
+      )
 
-    user_request: str = dspy.InputField()
-    process_result: str = dspy.OutputField(
-        desc=(
-            "Answer to the query"
-        )
-    )
+  from utils import print_dspy_result
 
-from utils import print_dspy_result
+  async with stdio_client(server_params) as (read, write):
+      async with ClientSession(read, write) as session:
+          await session.initialize()
+          tools = await session.list_tools()
 
-async with stdio_client(server_params) as (read, write):
-    async with ClientSession(read, write) as session:
-        await session.initialize()
-        tools = await session.list_tools()
+          dspy_tools = []
+          for tool in tools.tools:
+              dspy_tools.append(dspy.Tool.from_mcp_tool(session, tool))
 
-        dspy_tools = []
-        for tool in tools.tools:
-            dspy_tools.append(dspy.Tool.from_mcp_tool(session, tool))
+          react = dspy.ReAct(DataAnalyst, tools=dspy_tools)
+          result = await react.acall(user_request="最も人気のあるAmazon製品カテゴリは何ですか")
+          print_dspy_result(result)
+  ```
 
-        react = dspy.ReAct(DataAnalyst, tools=dspy_tools)
-        result = await react.acall(user_request="What's the most popular Amazon product category")
-        print_dspy_result(result)
-```
+  ```response title="Response"
+  ================================================================================
+  🤖 DSPy ReAct 結果
+  ================================================================================
 
-```response title="Response"
-================================================================================
-🤖 DSPy ReAct Result
-================================================================================
+  📍 ステップ 1
+  ----------------------------------------
+  🧠 思考: Amazonの製品カテゴリに関する情報を見つけ、最も人気のあるカテゴリを特定する必要があります。まず、Amazon関連のデータがあるかどうかを確認するために、利用可能なデータベースを調査します。
 
-📍 STEP 1
-----------------------------------------
-🧠 THINKING: I need to find information about Amazon product categories and determine which one is most popular. First, I should explore what databases are available to see if there's any Amazon-related data.
+  🔧 ツール: list_databases
 
-🔧 TOOL: list_databases
+  📊 結果:
+     amazon
+  bluesky
+  country
+  covid
+  default
+  dns
+  environmental
+  food
+  forex
+  geo
+  git
+  github
+  hackernews
+  imdb
+  logs
+  metrica
+  mgbench
+  mta
+  noaa
+  nyc_taxi
+  nypd
+  ontime
+  opensky
+  otel
+  otel_v2
+  pypi
+  random
+  reddit
+  rubygems
+  sta...
 
-📊 RESULT:
-   amazon
-bluesky
-country
-covid
-default
-dns
-environmental
-food
-forex
-geo
-git
-github
-hackernews
-imdb
-logs
-metrica
-mgbench
-mta
-noaa
-nyc_taxi
-nypd
-ontime
-opensky
-otel
-otel_v2
-pypi
-random
-reddit
-rubygems
-sta...
+  📍 ステップ 2
+  ----------------------------------------
+  🧠 思考: 素晴らしい!「amazon」データベースが利用可能であることが確認できました。これはAmazonの製品カテゴリに関する情報を見つけるために必要なものです。amazonデータベース内のテーブルを調査して、どのようなデータが利用可能かを確認します。
 
-📍 STEP 2
-----------------------------------------
-🧠 THINKING: Great! I can see there's an "amazon" database available. This is exactly what I need to find information about Amazon product categories. Let me explore the tables in the amazon database to see what data is available.
+  🔧 ツール: list_tables
+     引数: {'database': 'amazon'}
 
-🔧 TOOL: list_tables
-   Args: {'database': 'amazon'}
+  📊 結果:
+     {
+    "database": "amazon",
+    "name": "amazon_reviews",
+    "comment": "",
+    "columns": [
+      {
+        "name": "review_date",
+        "type": "Date",
+        "default_type": "",
+        "default_expression": "",...
 
-📊 RESULT:
-   {
-  "database": "amazon",
-  "name": "amazon_reviews",
-  "comment": "",
-  "columns": [
-    {
-      "name": "review_date",
-      "type": "Date",
-      "default_type": "",
-      "default_expression": "",...
+  📍 ステップ 3
+  ----------------------------------------
+  🧠 思考: 完璧です!product_category列を含むamazon_reviewsテーブルを見つけました。このテーブルには1億5000万行を超えるAmazonレビューデータがあり、製品の人気度を適切に表現できるはずです。最も人気のあるAmazon製品カテゴリを見つけるには、カテゴリごとのレビュー数をカウントし、カウント数の降順で並べ替える必要があります。最も多くのレビューを持つカテゴリが最も人気があると見なされます。
 
-📍 STEP 3
-----------------------------------------
-🧠 THINKING: Perfect! I found the amazon_reviews table which contains a product_category column. This table has over 150 million rows of Amazon review data, which should give me a good representation of product popularity. To find the most popular Amazon product category, I need to count the number of reviews per category and order them by count in descending order. The category with the most reviews would be considered the most popular.
+  🔧 ツール: run_select_query
+     引数: {'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
 
-🔧 TOOL: run_select_query
-   Args: {'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
+  📊 結果:
+     1. Books: 19,530,930件のレビュー
+     2. Digital_Ebook_Purchase: 17,622,107件のレビュー
+     3. Wireless: 9,001,567件のレビュー
+     4. PC: 6,908,245件のレビュー
+     5. Home: 6,221,321件のレビュー
+     ... その他5件
 
-📊 RESULT:
-   1. Books: 19,530,930 reviews
-   2. Digital_Ebook_Purchase: 17,622,107 reviews
-   3. Wireless: 9,001,567 reviews
-   4. PC: 6,908,245 reviews
-   5. Home: 6,221,321 reviews
-   ... and 5 more
+  📍 ステップ 4
+  ----------------------------------------
+  🧠 思考: 完璧です!ユーザーの質問に対する答えが見つかりました。Amazonレビューデータに基づくと、「Books」が19,530,930件のレビューで最も人気のあるAmazon製品カテゴリであることが明確にわかります。次いで「Digital_Ebook_Purchase」が17,622,107件のレビューとなっています。データは、各カテゴリが受け取ったレビュー数に基づいて、製品カテゴリの人気度の明確なランキングを示しています。ユーザーの質問に答えるために必要なすべての情報が揃いました。
 
-📍 STEP 4
-----------------------------------------
-🧠 THINKING: Perfect! I have found the answer to the user's question. Based on the Amazon reviews data, I can clearly see that "Books" is the most popular Amazon product category with 19,530,930 reviews, followed by "Digital_Ebook_Purchase" with 17,622,107 reviews. The data shows a clear ranking of product categories by popularity based on the number of reviews each category has received. I now have all the information needed to answer the user's question.
+  🔧 ツール: finish
 
-🔧 TOOL: finish
+  📊 結果:
+     完了しました。
 
-📊 RESULT:
-   Completed.
+  🎯 推論
+  ----------------------------------------
+  最も人気のあるAmazon製品カテゴリに関する質問に答えるため、Amazonデータベースにアクセスし、1億5000万件を超えるレビューレコードを含む「amazon_reviews」というテーブルを見つけました。このテーブルには「product_category」列があり、レビュー数に基づいて製品の人気度を分析できます。製品カテゴリごとのレビュー数をカウントし、カウント数の降順で並べ替えるクエリを実行しました。ここでの前提は、より多くのレビューを持つカテゴリがより高い人気を示すということです。これは、より多くのレビューが通常、より多くの購入と顧客エンゲージメントに相関するためです。
 
-🎯 REASONING
-----------------------------------------
-To answer the question about the most popular Amazon product category, I accessed the Amazon database and found a table called "amazon_reviews" with over 150 million review records. This table contains a "product_category" column that allows me to analyze product popularity based on review volume. I ran a query to count the number of reviews per product category and ordered them by count in descending order. The assumption here is that categories with more reviews indicate higher popularity, as more reviews typically correlate with more purchases and customer engagement.
+  ✅ 最終結果
+  ----------------------------------------
+  1億5000万件を超えるレコードを含むAmazonレビューデータに基づくと、最も人気のあるAmazon製品カテゴリは**Books**で、19,530,930件のレビューがあります。
 
-✅ FINAL RESULT
-----------------------------------------
-Based on Amazon review data containing over 150 million records, the most popular Amazon product category is **Books** with 19,530,930 reviews. 
+  レビュー数による上位10のAmazon製品カテゴリは以下の通りです:
 
-Here are the top 10 most popular Amazon product categories by review count:
+  1. **Books** - 19,530,930件のレビュー
+  2. **Digital_Ebook_Purchase** - 17,622,107件のレビュー  
+  3. **Wireless** - 9,001,567件のレビュー
+  4. **PC** - 6,908,245件のレビュー
+  5. **Home** - 6,221,321件のレビュー
+  6. **Apparel** - 5,906,085件のレビュー
+  7. **Health & Personal Care** - 5,331,239件のレビュー
+  8. **Beauty** - 5,115,462件のレビュー
+  9. **Video DVD** - 5,069,014件のレビュー
+  10. **Mobile_Apps** - 5,033,164件のレビュー
 
-1. **Books** - 19,530,930 reviews
-2. **Digital_Ebook_Purchase** - 17,622,107 reviews  
-3. **Wireless** - 9,001,567 reviews
-4. **PC** - 6,908,245 reviews
-5. **Home** - 6,221,321 reviews
-6. **Apparel** - 5,906,085 reviews
-7. **Health & Personal Care** - 5,331,239 reviews
-8. **Beauty** - 5,115,462 reviews
-9. **Video DVD** - 5,069,014 reviews
-10. **Mobile_Apps** - 5,033,164 reviews
-
-It's interesting to note that Books and Digital Ebook Purchase (which are related categories) together account for over 37 million reviews, showing the strong popularity of reading materials on Amazon's platform.
-================================================================================
-```
+  興味深いことに、BooksとDigital Ebook Purchase(関連するカテゴリ)を合わせると3700万件を超えるレビューがあり、Amazonプラットフォームにおける読書資料の高い人気を示しています。
+  ================================================================================
+  ```
 </VerticalStepper>

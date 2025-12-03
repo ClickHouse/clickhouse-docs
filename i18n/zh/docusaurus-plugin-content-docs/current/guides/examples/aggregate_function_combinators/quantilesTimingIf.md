@@ -1,27 +1,29 @@
 ---
-'slug': '/examples/aggregate-function-combinators/quantilesTimingIf'
-'title': 'quantilesTimingIf'
-'description': '使用 quantilesTimingIf 组合器的示例'
-'keywords':
-- 'quantilesTiming'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'quantilesTimingIf'
-'sidebar_label': 'quantilesTimingIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
+title: 'quantilesTimingIf'
+description: 'quantilesTimingIf 组合器的使用示例'
+keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
+sidebar_label: 'quantilesTimingIf'
+doc_type: 'reference'
 ---
+
 
 
 # quantilesTimingIf {#quantilestimingif}
 
+
+
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 函数，以计算条件为真的行的时间值分位数，使用 `quantilesTimingIf` 聚合组合器函数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+函数，使用 `quantilesTimingIf` 聚合组合器函数来计算满足条件为 true 的行的耗时值分位数。
 
-## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个表，用于存储不同端点的 API 响应时间，我们将使用 `quantilesTimingIf` 计算成功请求的响应时间分位数。
+
+## 使用示例 {#example-usage}
+
+在这个示例中，我们将创建一个表，用于存储不同接口端点的 API 响应时间，
+并使用 `quantilesTimingIf` 来计算成功请求的响应时间分位数。
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -63,23 +65,26 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingIf` 函数将仅计算成功请求的分位数 (is_successful = 1)。返回的数组包含以下按顺序排列的分位数：
-- 0 (最小值)
-- 0.25 (第一个四分位数)
-- 0.5 (中位数)
-- 0.75 (第三个四分位数)
-- 0.95 (第95百分位数)
-- 0.99 (第99百分位数)
-- 1.0 (最大值)
+函数 `quantilesTimingIf` 只会对成功的请求（is&#95;successful = 1）计算分位数。
+返回的数组按以下顺序包含这些分位数：
+
+* 0（最小值）
+* 0.25（第一四分位数）
+* 0.5（中位数）
+* 0.75（第三四分位数）
+* 0.95（第 95 百分位数）
+* 0.99（第 99 百分位数）
+* 1.0（最大值）
 
 ```response title="Response"
-   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
-1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   ┌─端点─┬─响应时间分位数─────────────────────────────────────────────┐
+1. │ 订单     │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ 产品     │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ 用户     │ [nan, nan, nan, nan, nan, nan, nan]                                 │
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## 参见 {#see-also}
+
+## 另请参阅 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)

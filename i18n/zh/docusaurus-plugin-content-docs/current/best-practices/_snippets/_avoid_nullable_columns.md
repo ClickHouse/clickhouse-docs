@@ -1,6 +1,6 @@
-[`Nullable` 列](/sql-reference/data-types/nullable/) (例如 `Nullable(String)`) 会创建一个额外的 `UInt8` 类型的列。每当用户处理 `Nullable` 列时，必须处理此附加列。这会导致额外的存储空间占用，并几乎总是对性能产生负面影响。
+[`Nullable` 列](/sql-reference/data-types/nullable/)（例如 `Nullable(String)`）会创建一个单独的 `UInt8` 类型的列。每当用户对 Nullable 列进行操作时，都必须处理这个额外的列。这会占用额外的存储空间，并且几乎总会对性能产生负面影响。
 
-为了避免使用 `Nullable` 列，请考虑为该列设置默认值。例如，代替：
+为避免使用 `Nullable` 列，可以考虑为该列设置一个默认值。例如，可以使用以下方式来替代：
 
 ```sql
 CREATE TABLE default.sample
@@ -12,6 +12,7 @@ CREATE TABLE default.sample
 ENGINE = MergeTree
 ORDER BY x
 ```
+
 使用
 
 ```sql
@@ -25,4 +26,4 @@ ENGINE = MergeTree
 ORDER BY x
 ```
 
-考虑您的用例，默认值可能不合适。
+请结合你的使用场景进行评估，默认值可能并不适用。

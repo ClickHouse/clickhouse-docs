@@ -1,48 +1,59 @@
 ---
-'description': 'Offset に関するドキュメント'
-'sidebar_label': 'OFFSET'
-'slug': '/sql-reference/statements/select/offset'
-'title': 'OFFSET FETCH 句'
-'doc_type': 'reference'
+description: 'OFFSET のドキュメント'
+sidebar_label: 'OFFSET'
+slug: /sql-reference/statements/select/offset
+title: 'OFFSET FETCH 句'
+doc_type: 'reference'
 ---
 
-`OFFSET` と `FETCH` を使用すると、データを部分的に取得できます。これにより、単一のクエリで取得したい行のブロックを指定します。
+`OFFSET` と `FETCH` を使用すると、データを一定量ずつ取得できます。これらは、1 回のクエリで取得したい行のブロックを指定します。
 
 ```sql
 OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
 ```
 
-`offset_row_count` または `fetch_row_count` の値は、数値またはリテラル定数にできます。`fetch_row_count` を省略することもできます。デフォルトでは、1に等しくなります。
+`offset_row_count` または `fetch_row_count` の値には、数値またはリテラル定数を指定できます。`fetch_row_count` は省略可能で、省略した場合のデフォルト値は 1 です。
 
-`OFFSET` は、クエリ結果セットから行を返し始める前にスキップする行の数を指定します。
+`OFFSET` は、クエリの結果セットから行を返し始める前にスキップする行数を指定します。`OFFSET n` は結果の先頭から `n` 行をスキップします。
 
-`FETCH` は、クエリ結果に含まれる最大行数を指定します。
+負の `OFFSET` もサポートされます。`OFFSET -n` は結果の末尾から `n` 行をスキップします。
 
-`ONLY` オプションは、`OFFSET` によって省略された行に直後に続く行を返すために使用されます。この場合、`FETCH` は [LIMIT](../../../sql-reference/statements/select/limit.md) 句の代替として機能します。例えば、以下のクエリ
+小数の `OFFSET` もサポートされます。`OFFSET n` — 0 &lt; n &lt; 1 の場合、結果のうち先頭から n * 100% がスキップされます。
+
+例:
+• `OFFSET 0.1` - 結果の先頭 10% をスキップします。
+
+> **Note**
+> • この値は 1 未満かつ 0 より大きい [Float64](../../data-types/float.md) 型の数値でなければなりません。
+> • 計算の結果、小数の行数になった場合は、次の整数に切り上げられます。
+
+`FETCH` は、クエリの結果に含めることができる最大行数を指定します。
+
+`ONLY` オプションは、`OFFSET` によってスキップされた行に直後に続く行だけを返すために使用されます。この場合、`FETCH` は [LIMIT](../../../sql-reference/statements/select/limit.md) 句の代替となります。例えば、次のクエリでは
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-は、以下のクエリと同じです。
+クエリと同じです
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 ```
 
-`WITH TIES` オプションは、`ORDER BY` 句に基づいて結果セットの最後に位置する追加の行を返すために使用されます。たとえば、`fetch_row_count` が5に設定されているが、5行目の `ORDER BY` カラムの値に一致する追加の行が2行ある場合、結果セットには7行が含まれます。
+`WITH TIES` オプションは、`ORDER BY` 句に従った結果セットにおいて、最後の行と同じ順位となる追加の行も返すために使用されます。たとえば、`fetch_row_count` が 5 に設定されているが、5 行目の `ORDER BY` カラムの値と一致する行がさらに 2 行ある場合、結果セットには合計 7 行が含まれます。
 
-:::note    
-標準に従って、`OFFSET` 句は両方の句が存在する場合、`FETCH` 句の前に来なければなりません。
+:::note
+標準仕様によると、`OFFSET` 句と `FETCH` 句の両方が存在する場合は、`OFFSET` 句を `FETCH` 句より前に記述しなければなりません。
 :::
 
-:::note    
-実際のオフセットは、[offset](../../../operations/settings/settings.md#offset) 設定にも依存する場合があります。
+:::note
+実際のオフセットは、[`offset`](../../../operations/settings/settings.md#offset) 設定にも依存する可能性があります。
 :::
 
 ## 例 {#examples}
 
-入力テーブル:
+入力テーブル：
 
 ```text
 ┌─a─┬─b─┐
@@ -56,7 +67,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-`ONLY` オプションの使用例:
+`ONLY` オプションの使用方法:
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
@@ -72,7 +83,7 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 └───┴───┘
 ```
 
-`WITH TIES` オプションの使用例:
+`WITH TIES` オプションの使用方法：
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;

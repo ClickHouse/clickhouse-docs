@@ -1,24 +1,27 @@
 ---
-'description': '该引擎提供与现有 Apache Iceberg 表的只读集成，支持 Amazon S3、Azure、HDFS 和本地存储的表。'
-'sidebar_label': 'Iceberg'
-'sidebar_position': 90
-'slug': '/engines/table-engines/integrations/iceberg'
-'title': 'Iceberg 表引擎'
-'doc_type': 'reference'
+description: '此引擎提供与现有 Apache Iceberg 表的只读集成，这些表存储在 Amazon S3、Azure、HDFS 或本地。'
+sidebar_label: 'Iceberg'
+sidebar_position: 90
+slug: /engines/table-engines/integrations/iceberg
+title: 'Iceberg 表引擎'
+doc_type: 'reference'
 ---
+
 
 
 # Iceberg 表引擎 {#iceberg-table-engine}
 
 :::warning 
-我们建议使用 [Iceberg 表函数](/sql-reference/table-functions/iceberg.md) 来处理 ClickHouse 中的 Iceberg 数据。Iceberg 表函数目前提供了足够的功能，为 Iceberg 表提供了部分只读接口。
+我们建议在 ClickHouse 中处理 Iceberg 数据时使用 [Iceberg 表函数](/sql-reference/table-functions/iceberg.md)。Iceberg 表函数目前提供了足够的功能，并为 Iceberg 表提供部分只读接口。
 
-Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初并不是为了支持具有外部变更模式的表而设计的，这可能会影响 Iceberg 表引擎的功能。因此，某些适用于常规表的功能可能不可用或无法正常工作，尤其是在使用旧分析器时。
+Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初并非为支持其模式会在外部发生变化的表而设计，这可能会影响 Iceberg 表引擎的功能。因此，一些对常规表可用的特性在这里可能不可用，或者可能无法正确工作，尤其是在使用旧版分析器时。
 
-为了获得最佳兼容性，我们建议在继续改进对 Iceberg 表引擎的支持时使用 Iceberg 表函数。
+为了获得最佳兼容性，在我们持续改进对 Iceberg 表引擎的支持期间，建议优先使用 Iceberg 表函数。
 :::
 
-该引擎提供了与现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成，这些表存储在 Amazon S3、Azure、HDFS 以及本地。
+该引擎提供与现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成，支持位于 Amazon S3、Azure、HDFS 以及本地存储的表。
+
+
 
 ## 创建表 {#create-table}
 
@@ -38,12 +41,13 @@ CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
 
+
 ## 引擎参数 {#engine-arguments}
 
-参数的描述与引擎 `S3`、`AzureBlobStorage`、`HDFS` 和 `File` 中参数的描述相符。
-`format` 代表 Iceberg 表中数据文件的格式。
+参数说明与引擎 `S3`、`AzureBlobStorage`、`HDFS` 和 `File` 中参数的说明相同。\
+`format` 表示 Iceberg 表中数据文件的格式。
 
-引擎参数可以使用 [命名集合](../../../operations/named-collections.md) 指定。
+可以使用 [Named Collections](../../../operations/named-collections.md) 来指定引擎参数。
 
 ### 示例 {#example}
 
@@ -70,37 +74,48 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ```
 
+
 ## 别名 {#aliases}
 
 表引擎 `Iceberg` 现在是 `IcebergS3` 的别名。
 
-## 模式演变 {#schema-evolution}
-目前，借助 CH，您可以读取随时间变化的 iceberg 表的结构。我们当前支持读取添加和移除列及其顺序发生变化的表。您还可以更改必需值的列为允许 NULL 的列。此外，我们支持简单类型的允许类型转换，即：
+
+
+## 模式演进 {#schema-evolution}
+目前，借助 ClickHouse (CH)，可以读取随着时间推移发生模式变更的 Iceberg 表。当前支持读取曾经增加或删除列、以及列顺序发生变化的表。也可以将原本要求非空的列修改为允许为 NULL 的列。此外，还支持对简单类型进行允许的类型转换，即：  
 * int -> long
 * float -> double
-* decimal(P, S) -> decimal(P', S)，其中 P' > P。
+* decimal(P, S) -> decimal(P', S)，其中 P' > P。 
 
-目前，无法更改嵌套结构或数组和地图中的元素类型。
+目前尚不支持更改嵌套结构，或数组和 map 中元素的类型。
 
-要读取在创建后模式已变化的表并启用动态模式推断，请在创建表时将 allow_dynamic_metadata_for_data_lakes 设置为 true。
+要读取一个在创建之后模式发生变更、并使用动态模式推断的表，请在创建该表时将 allow_dynamic_metadata_for_data_lakes 设置为 true。
 
-## 分区修剪 {#partition-pruning}
 
-ClickHouse 在 SELECT 查询时支持 Iceberg 表的分区修剪，这有助于通过跳过不相关的数据文件来优化查询性能。要启用分区修剪，请设置 `use_iceberg_partition_pruning = 1`。有关 iceberg 分区修剪的更多信息，请访问 https://iceberg.apache.org/spec/#partitioning
+
+## 分区裁剪 {#partition-pruning}
+
+ClickHouse 在对 Iceberg 表执行 SELECT 查询时支持分区裁剪，通过跳过无关的数据文件来优化查询性能。要启用分区裁剪，请设置 `use_iceberg_partition_pruning = 1`。有关 Iceberg 分区裁剪的更多信息，请参阅 https://iceberg.apache.org/spec/#partitioning 上的文档。
+
+
 
 ## 时间旅行 {#time-travel}
 
-ClickHouse 支持 Iceberg 表的时间旅行，允许您使用特定的时间戳或快照 ID 查询历史数据。
+ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间戳或快照 ID 下查询历史数据。
 
-## 处理有已删除行的表 {#deleted-rows}
 
-目前，仅支持带有 [位置删除](https://iceberg.apache.org/spec/#position-delete-files) 的 Iceberg 表。
 
-以下删除方法 **不支持**：
-- [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
-- [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入）
+## 处理包含已删除行的表 {#deleted-rows}
+
+目前，仅支持带有 [position deletes](https://iceberg.apache.org/spec/#position-delete-files) 的 Iceberg 表。
+
+以下删除方式**不受支持**：
+
+* [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)（等值删除）
+* [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入的删除向量）
 
 ### 基本用法 {#basic-usage}
+
 ```sql
 SELECT * FROM example_table ORDER BY 1 
 SETTINGS iceberg_timestamp_ms = 1714636800000
@@ -111,66 +126,66 @@ SELECT * FROM example_table ORDER BY 1
 SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
-注意：您不能在同一查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
+注意：你不能在同一个查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
-### 重要考虑 {#important-considerations}
+### 重要注意事项 {#important-considerations}
 
-- **快照** 通常在以下情况下创建：
-  - 向表中写入新数据
-  - 执行某种数据压缩
+* **快照** 通常在以下情况下创建：
+  * 向表写入新数据时
+  * 执行某种数据压缩（compaction）操作时
 
-- **模式更改通常不创建快照** - 这导致在使用经历过模式演变的表时进行时间旅行时的重要行为。
+* **模式变更通常不会创建快照** —— 这会在对经过模式演进的表使用 time travel（时间穿梭查询）时产生一些需要注意的重要行为。
 
 ### 示例场景 {#example-scenarios}
 
-所有场景都是用 Spark 编写的，因为 CH 还不支持写入 Iceberg 表。
+所有场景都使用 Spark 编写，因为 ClickHouse（CH）目前尚不支持向 Iceberg 表写入数据。
 
-#### 场景 1：没有新快照的模式更改 {#scenario-1}
+#### 场景 1：仅发生模式变更但没有新的快照 {#scenario-1}
 
-考虑以下操作序列：
+考虑以下一系列操作：
 
 ```sql
- -- Create a table with two columns
-  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
-  order_number int, 
-  product_code string
-  ) 
-  USING iceberg 
-  OPTIONS ('format-version'='2')
+-- 创建一个包含两列的表
+ CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+ order_number int, 
+ product_code string
+ ) 
+ USING iceberg 
+ OPTIONS ('format-version'='2')
 
--- Insert data into the table
-  INSERT INTO spark_catalog.db.time_travel_example VALUES 
-    (1, 'Mars')
+-- 向表中插入数据
+ INSERT INTO spark_catalog.db.time_travel_example VALUES 
+   (1, 'Mars')
 
-  ts1 = now() // A piece of pseudo code
+ ts1 = now() // 一段伪代码
 
--- Alter table to add a new column
-  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+-- 修改表，添加一个新列
+ ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
 
-  ts2 = now()
+ ts2 = now()
 
--- Insert data into the table
-  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+-- 向表中插入数据
+ INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
-   ts3 = now()
+  ts3 = now()
 
--- Query the table at each timestamp
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
-
-+------------+------------+
-|order_number|product_code|
-+------------+------------+
-|           1|        Mars|
-+------------+------------+
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+-- 在各个时间点查询该表
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
-  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
++------------+------------+
+|order_number|product_code|
++------------+------------+
+|           1|        Mars|
++------------+------------+
+
+ SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -180,17 +195,17 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 +------------+------------+-----+
 ```
 
-在不同时间戳的查询结果：
+在不同时间点的查询结果：
 
-- 在 ts1 和 ts2：只有原来的两列出现
-- 在 ts3：出现三列，第一行的价格为 NULL
+* 在 ts1 和 ts2：只显示原来的两列
+* 在 ts3：显示全部三列，且第一行的 price 为 NULL
 
-#### 场景 2：历史与当前模式差异 {#scenario-2}
+#### 场景 2：历史表结构与当前表结构的差异 {#scenario-2}
 
-当前时刻的时间旅行查询可能显示与当前表不同的模式：
+在当前时刻执行的时间旅行查询，可能会显示与当前表不同的表结构：
 
 ```sql
--- Create a table
+-- 创建一个表
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number int, 
   product_code string
@@ -198,15 +213,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Insert initial data into the table
+-- 向表中插入初始数据
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- Alter table to add a new column
+-- 修改表，添加一个新列
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- Query the table at a current moment but using timestamp syntax
+-- 使用时间戳语法在当前时间点查询该表
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -216,7 +231,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     |           2|       Venus|
     +------------+------------+
 
--- Query the table at a current moment
+-- 在当前时间点查询该表
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -225,14 +240,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     +------------+------------+-----+
 ```
 
-这是因为 `ALTER TABLE` 不会创建新快照，但是对于当前表，Spark 从最新的元数据文件获取 `schema_id` 的值，而不是快照。
+这是因为 `ALTER TABLE` 不会创建新的快照；对于当前表，Spark 会从最新的元数据文件中读取 `schema_id` 的值，而不是从快照中读取。
 
-#### 场景 3：历史与当前模式差异 {#scenario-3}
 
-第二个问题是，在进行时间旅行时，您无法获取在没有任何数据写入之前表的状态：
+#### 场景 3：历史与当前表结构差异 {#scenario-3}
+
+第二点是在进行时间旅行时，你无法获取表在尚未写入任何数据之前的状态：
 
 ```sql
--- Create a table
+-- 创建表
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number int, 
   product_code string
@@ -242,40 +258,46 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
   ts = now();
 
--- Query the table at a specific timestamp
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
+-- 在指定时间戳查询该表
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- 将报错：找不到早于 ts 的快照。
 ```
 
-在 Clickhouse 中，该行为与 Spark 一致。您可以在脑中将 Spark 的 Select 查询替换为 Clickhouse 的 Select 查询，这样也能正常工作。
+在 ClickHouse 中，其行为与 Spark 保持一致。你可以在概念上将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
+
 
 ## 元数据文件解析 {#metadata-file-resolution}
-在 ClickHouse 中使用 `Iceberg` 表引擎时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。解析过程如下：
 
-### 候选者搜索 {#candidate-search}
+在 ClickHouse 中使用 `Iceberg` 表引擎时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。下面是该解析过程的具体流程：
+
+### 候选文件搜索 {#candidate-search}
 
 1. **直接路径指定**：
-* 如果设置了 `iceberg_metadata_file_path`，系统将使用此确切路径，并与 Iceberg 表目录路径结合。
-* 当提供此设置时，所有其他解析设置将被忽略。
+
+* 如果设置了 `iceberg_metadata_file_path`，系统会将该路径与 Iceberg 表目录路径组合使用，得到精确的文件路径。
+* 当提供该设置时，所有其他解析相关设置都会被忽略。
+
 2. **表 UUID 匹配**：
+
 * 如果指定了 `iceberg_metadata_table_uuid`，系统将：
-  * 仅查看 `metadata` 目录中的 `.metadata.json` 文件
-  * 筛选包含与您指定的 UUID（不区分大小写）匹配的 `table-uuid` 字段的文件
+  * 只检查 `metadata` 目录中的 `.metadata.json` 文件
+  * 过滤出其中 `table-uuid` 字段与所指定 UUID 匹配的文件（不区分大小写）
 
 3. **默认搜索**：
-* 如果未提供以上任何设置，则 `metadata` 目录中的所有 `.metadata.json` 文件都成为候选者
 
-### 选择最新文件 {#most-recent-file}
+* 如果上述设置都未提供，则 `metadata` 目录中的所有 `.metadata.json` 文件都将作为候选。
 
-在使用以上规则识别候选文件后，系统确定哪个是最新的：
+### 选择最新的文件 {#most-recent-file}
+
+根据上述规则确定候选文件后，系统会判断其中哪个是最新的文件：
 
 * 如果启用了 `iceberg_recent_metadata_file_by_last_updated_ms_field`：
-  * 选择具有最大 `last-updated-ms` 值的文件
+  * 会选择 `last-updated-ms` 值最大的文件
 
 * 否则：
-  * 选择版本号最高的文件
-  * （版本以 `V` 显示在格式为 `V.metadata.json` 或 `V-uuid.metadata.json` 的文件名中）
+  * 会选择版本号最高的文件
+  * （版本号在文件名中以 `V` 的形式出现，文件名格式如 `V.metadata.json` 或 `V-uuid.metadata.json`）
 
-**注意**：所有提到的设置都是引擎级设置，必须在表创建时指定，如下所示：
+**注意**：上述所有设置都是引擎级别设置，必须在创建表时进行指定，如下所示：
 
 ```sql
 CREATE TABLE example_table ENGINE = Iceberg(
@@ -283,16 +305,21 @@ CREATE TABLE example_table ENGINE = Iceberg(
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';
 ```
 
-**注意**：虽然 Iceberg Catalogs 通常处理元数据解析，但 ClickHouse 中的 `Iceberg` 表引擎直接将存储在 S3 中的文件解释为 Iceberg 表，因此理解这些解析规则非常重要。
+**注意**：虽然 Iceberg Catalog 通常负责元数据解析，但 ClickHouse 中的 `Iceberg` 表引擎会直接将存储在 S3 中的文件解析为 Iceberg 表，这也是为什么理解这些解析规则很重要。
+
 
 ## 数据缓存 {#data-cache}
 
-`Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存。请参见 [这里](../../../engines/table-engines/integrations/s3.md#data-cache)。
+`Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储类似的数据缓存功能。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
+
+
 
 ## 元数据缓存 {#metadata-cache}
 
-`Iceberg` 表引擎和表函数支持存储清单文件、清单列表和元数据 json 的元数据缓存。缓存存储在内存中。此功能由设置 `use_iceberg_metadata_files_cache` 控制，默认启用。
+`Iceberg` 表引擎和表函数支持元数据缓存，用于存储清单文件、清单列表以及元数据 JSON 的信息。该缓存存储在内存中。此功能通过设置 `use_iceberg_metadata_files_cache` 进行控制，默认启用。
 
-## 另请参见 {#see-also}
+
+
+## 另请参阅 {#see-also}
 
 - [iceberg 表函数](/sql-reference/table-functions/iceberg.md)

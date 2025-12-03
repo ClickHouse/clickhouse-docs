@@ -1,241 +1,236 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': '集成 DSPy'
-'title': '如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
-'pagination_prev': null
-'pagination_next': null
-'description': '学习如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'DSPy'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
+sidebar_label: '集成 DSPy'
+title: '如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
+pagination_prev: null
+pagination_next: null
+description: '了解如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
+keywords: ['ClickHouse', 'MCP', 'DSPy']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
-# 如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理
+在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 智能体，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互。
 
-在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 代理，该代理可以使用 [ClickHouse 的 SQL 游乐场](https://sql.clickhouse.com/) 与 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 进行交互。
+## 前置条件 {#prerequisites}
 
-## 前提条件 {#prerequisites}
+- 系统中已安装 Python。
+- 系统中已安装 `pip`。
+- 拥有一个 Anthropic API key，或其他 LLM 提供商的 API key。
 
-- 您需要在系统上安装 Python。
-- 您需要在系统上安装 `pip`。
-- 您需要一个 Anthropic API 密钥，或者来自其他 LLM 提供商的 API 密钥。
+你可以在 Python REPL 中或通过脚本来运行以下步骤。
 
-您可以在 Python REPL 中或通过脚本运行以下步骤。
-
-:::note 示例笔记本
-此示例可在 [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb) 中找到。
+:::note 示例 Notebook
+你可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)中以 Notebook 形式查看此示例。
 :::
 
 <VerticalStepper headerLevel="h2">
+  ## 安装依赖库
 
-## 安装库 {#install-libraries}
+  使用 `pip` 运行以下命令来安装所需的库：
 
-使用 `pip` 运行以下命令以安装所需的库：
+  ```shell
+  pip install -q --upgrade pip
+  pip install -q dspy
+  pip install -q mcp
+  ```
 
-```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
-```
+  ## 设置凭据
 
-## 设置凭据 {#setup-credentials}
+  接下来,您需要提供 Anthropic API 密钥:
 
-接下来，您需要提供您的 Anthropic API 密钥：
+  ```python
+  import os
+  os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("输入 Anthropic API 密钥:")
+  ```
 
-```python
-import os
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
-```
+  :::note 使用其他 LLM 提供商
+  如果您没有 Anthropic API 密钥且想使用其他 LLM 提供商,
+  可以在 [DSPy 文档](https://dspy.ai/#__tabbed_1_1)中查看凭据配置说明
+  :::
 
-:::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥，并且想使用其他 LLM 提供商，
-您可以在 [DSPy docs](https://dspy.ai/#__tabbed_1_1) 中找到设置凭据的说明。
-:::
+  接下来,定义连接到 ClickHouse SQL playground 所需的凭据:
 
-接下来，定义连接到 ClickHouse SQL 游乐场所需的凭据：
+  ```python
+  env = {
+      "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+      "CLICKHOUSE_PORT": "8443",
+      "CLICKHOUSE_USER": "demo",
+      "CLICKHOUSE_PASSWORD": "",
+      "CLICKHOUSE_SECURE": "true"
+  }
+  ```
 
-```python
-env = {
-    "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-    "CLICKHOUSE_PORT": "8443",
-    "CLICKHOUSE_USER": "demo",
-    "CLICKHOUSE_PASSWORD": "",
-    "CLICKHOUSE_SECURE": "true"
-}
-```
+  ## 初始化 MCP 服务器
 
-## 初始化 MCP 服务器 {#initialize-mcp}
+  现在配置 ClickHouse MCP Server 使其指向 ClickHouse SQL playground。
 
-现在配置 ClickHouse MCP 服务器，以指向 ClickHouse SQL 游乐场。
+  ```python
+  from mcp import ClientSession, StdioServerParameters
+  from mcp.client.stdio import stdio_client
+  import dspy
 
-```python
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
-import dspy
+  server_params = StdioServerParameters(
+      command="uv",
+      args=[
+          'run',
+          '--with', 'mcp-clickhouse',
+          '--python', '3.13',
+          'mcp-clickhouse'
+      ],
+      env=env
+  )
+  ```
 
-server_params = StdioServerParameters(
-    command="uv",
-    args=[
-        'run',
-        '--with', 'mcp-clickhouse',
-        '--python', '3.13',
-        'mcp-clickhouse'
-    ],
-    env=env
-)
-```
+  ## 初始化 LLM
 
-## 初始化 LLM {#initialize-llm}
+  接下来，使用以下代码行初始化 LLM：
 
-接下来，用以下行初始化 LLM：
+  ```python
+  dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
+  ```
 
-```python
-dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
-```
+  ## 运行 Agent
 
-## 运行代理 {#run-the-agent}
+  最后,初始化并运行 agent:
 
-最后，初始化并运行代理：
+  ```python
+  class DataAnalyst(dspy.Signature):
+      """你是一名数据分析师。你会收到问题,需要尝试使用可用的工具来回答这些问题。"""
 
-```python
-class DataAnalyst(dspy.Signature):
-    """You are a data analyst. You'll be asked questions and you need to try to answer them using the tools you have access to. """
+      user_request: str = dspy.InputField()
+      process_result: str = dspy.OutputField(
+          desc=(
+              "查询结果"
+          )
+      )
 
-    user_request: str = dspy.InputField()
-    process_result: str = dspy.OutputField(
-        desc=(
-            "Answer to the query"
-        )
-    )
+  from utils import print_dspy_result
 
-from utils import print_dspy_result
+  async with stdio_client(server_params) as (read, write):
+      async with ClientSession(read, write) as session:
+          await session.initialize()
+          tools = await session.list_tools()
 
-async with stdio_client(server_params) as (read, write):
-    async with ClientSession(read, write) as session:
-        await session.initialize()
-        tools = await session.list_tools()
+          dspy_tools = []
+          for tool in tools.tools:
+              dspy_tools.append(dspy.Tool.from_mcp_tool(session, tool))
 
-        dspy_tools = []
-        for tool in tools.tools:
-            dspy_tools.append(dspy.Tool.from_mcp_tool(session, tool))
+          react = dspy.ReAct(DataAnalyst, tools=dspy_tools)
+          result = await react.acall(user_request="亚马逊最受欢迎的产品类别是什么")
+          print_dspy_result(result)
+  ```
 
-        react = dspy.ReAct(DataAnalyst, tools=dspy_tools)
-        result = await react.acall(user_request="What's the most popular Amazon product category")
-        print_dspy_result(result)
-```
+  ```response title="Response"
+  ================================================================================
+  🤖 DSPy ReAct 结果
+  ================================================================================
 
-```response title="Response"
-================================================================================
-🤖 DSPy ReAct Result
-================================================================================
+  📍 步骤 1
+  ----------------------------------------
+  🧠 思考:我需要查找 Amazon 产品类别的相关信息,并确定哪个类别最受欢迎。首先,我应该查看有哪些可用的数据库,看看是否有 Amazon 相关的数据。
 
-📍 STEP 1
-----------------------------------------
-🧠 THINKING: I need to find information about Amazon product categories and determine which one is most popular. First, I should explore what databases are available to see if there's any Amazon-related data.
+  🔧 工具:list_databases
 
-🔧 TOOL: list_databases
+  📊 结果:
+     amazon
+  bluesky
+  country
+  covid
+  default
+  dns
+  environmental
+  food
+  forex
+  geo
+  git
+  github
+  hackernews
+  imdb
+  logs
+  metrica
+  mgbench
+  mta
+  noaa
+  nyc_taxi
+  nypd
+  ontime
+  opensky
+  otel
+  otel_v2
+  pypi
+  random
+  reddit
+  rubygems
+  sta...
 
-📊 RESULT:
-   amazon
-bluesky
-country
-covid
-default
-dns
-environmental
-food
-forex
-geo
-git
-github
-hackernews
-imdb
-logs
-metrica
-mgbench
-mta
-noaa
-nyc_taxi
-nypd
-ontime
-opensky
-otel
-otel_v2
-pypi
-random
-reddit
-rubygems
-sta...
+  📍 步骤 2
+  ----------------------------------------
+  🧠 思考:太好了!我看到有一个"amazon"数据库可用。这正是我查找 Amazon 产品类别信息所需要的。让我查看 amazon 数据库中的表,看看有哪些可用数据。
 
-📍 STEP 2
-----------------------------------------
-🧠 THINKING: Great! I can see there's an "amazon" database available. This is exactly what I need to find information about Amazon product categories. Let me explore the tables in the amazon database to see what data is available.
+  🔧 工具:list_tables
+     参数:{'database': 'amazon'}
 
-🔧 TOOL: list_tables
-   Args: {'database': 'amazon'}
+  📊 结果:
+     {
+    "database": "amazon",
+    "name": "amazon_reviews",
+    "comment": "",
+    "columns": [
+      {
+        "name": "review_date",
+        "type": "Date",
+        "default_type": "",
+        "default_expression": "",...
 
-📊 RESULT:
-   {
-  "database": "amazon",
-  "name": "amazon_reviews",
-  "comment": "",
-  "columns": [
-    {
-      "name": "review_date",
-      "type": "Date",
-      "default_type": "",
-      "default_expression": "",...
+  📍 步骤 3
+  ----------------------------------------
+  🧠 思考:完美!我找到了 amazon_reviews 表,其中包含 product_category 列。该表有超过 1.5 亿行 Amazon 评论数据,能够很好地反映产品的受欢迎程度。要找到最受欢迎的 Amazon 产品类别,我需要统计每个类别的评论数量,并按数量降序排列。评论数量最多的类别即为最受欢迎的类别。
 
-📍 STEP 3
-----------------------------------------
-🧠 THINKING: Perfect! I found the amazon_reviews table which contains a product_category column. This table has over 150 million rows of Amazon review data, which should give me a good representation of product popularity. To find the most popular Amazon product category, I need to count the number of reviews per category and order them by count in descending order. The category with the most reviews would be considered the most popular.
+  🔧 工具:run_select_query
+     参数:{'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
 
-🔧 TOOL: run_select_query
-   Args: {'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
+  📊 结果:
+     1. Books:19,530,930 条评论
+     2. Digital_Ebook_Purchase:17,622,107 条评论
+     3. Wireless:9,001,567 条评论
+     4. PC:6,908,245 条评论
+     5. Home:6,221,321 条评论
+     ... 以及另外 5 个
 
-📊 RESULT:
-   1. Books: 19,530,930 reviews
-   2. Digital_Ebook_Purchase: 17,622,107 reviews
-   3. Wireless: 9,001,567 reviews
-   4. PC: 6,908,245 reviews
-   5. Home: 6,221,321 reviews
-   ... and 5 more
+  📍 步骤 4
+  ----------------------------------------
+  🧠 思考:完美!我已经找到了用户问题的答案。根据 Amazon 评论数据,我可以清楚地看到"Books"是最受欢迎的 Amazon 产品类别,拥有 19,530,930 条评论,其次是"Digital_Ebook_Purchase",拥有 17,622,107 条评论。数据清晰地展示了基于评论数量的产品类别受欢迎程度排名。我现在已经掌握了回答用户问题所需的全部信息。
 
-📍 STEP 4
-----------------------------------------
-🧠 THINKING: Perfect! I have found the answer to the user's question. Based on the Amazon reviews data, I can clearly see that "Books" is the most popular Amazon product category with 19,530,930 reviews, followed by "Digital_Ebook_Purchase" with 17,622,107 reviews. The data shows a clear ranking of product categories by popularity based on the number of reviews each category has received. I now have all the information needed to answer the user's question.
+  🔧 工具:finish
 
-🔧 TOOL: finish
+  📊 结果:
+     已完成。
 
-📊 RESULT:
-   Completed.
+  🎯 推理过程
+  ----------------------------------------
+  为了回答关于最受欢迎的 Amazon 产品类别的问题,我访问了 Amazon 数据库,并找到了一个名为"amazon_reviews"的表,其中包含超过 1.5 亿条评论记录。该表包含"product_category"列,使我能够根据评论数量分析产品的受欢迎程度。我运行了一个查询来统计每个产品类别的评论数量,并按数量降序排列。这里的假设是,评论数量越多的类别表明受欢迎程度越高,因为更多的评论通常意味着更多的购买量和更高的客户参与度。
 
-🎯 REASONING
-----------------------------------------
-To answer the question about the most popular Amazon product category, I accessed the Amazon database and found a table called "amazon_reviews" with over 150 million review records. This table contains a "product_category" column that allows me to analyze product popularity based on review volume. I ran a query to count the number of reviews per product category and ordered them by count in descending order. The assumption here is that categories with more reviews indicate higher popularity, as more reviews typically correlate with more purchases and customer engagement.
+  ✅ 最终结果
+  ----------------------------------------
+  根据包含超过 1.5 亿条记录的 Amazon 评论数据,最受欢迎的 Amazon 产品类别是 **Books**,拥有 19,530,930 条评论。
 
-✅ FINAL RESULT
-----------------------------------------
-Based on Amazon review data containing over 150 million records, the most popular Amazon product category is **Books** with 19,530,930 reviews. 
+  以下是按评论数量排列的前 10 个最受欢迎的 Amazon 产品类别:
 
-Here are the top 10 most popular Amazon product categories by review count:
+  1. **Books** - 19,530,930 条评论
+  2. **Digital_Ebook_Purchase** - 17,622,107 条评论  
+  3. **Wireless** - 9,001,567 条评论
+  4. **PC** - 6,908,245 条评论
+  5. **Home** - 6,221,321 条评论
+  6. **Apparel** - 5,906,085 条评论
+  7. **Health & Personal Care** - 5,331,239 条评论
+  8. **Beauty** - 5,115,462 条评论
+  9. **Video DVD** - 5,069,014 条评论
+  10. **Mobile_Apps** - 5,033,164 条评论
 
-1. **Books** - 19,530,930 reviews
-2. **Digital_Ebook_Purchase** - 17,622,107 reviews  
-3. **Wireless** - 9,001,567 reviews
-4. **PC** - 6,908,245 reviews
-5. **Home** - 6,221,321 reviews
-6. **Apparel** - 5,906,085 reviews
-7. **Health & Personal Care** - 5,331,239 reviews
-8. **Beauty** - 5,115,462 reviews
-9. **Video DVD** - 5,069,014 reviews
-10. **Mobile_Apps** - 5,033,164 reviews
-
-It's interesting to note that Books and Digital Ebook Purchase (which are related categories) together account for over 37 million reviews, showing the strong popularity of reading materials on Amazon's platform.
-================================================================================
-```
+  值得注意的是,Books 和 Digital Ebook Purchase(这两个相关类别)合计超过 3700 万条评论,显示了阅读材料在 Amazon 平台上的强劲受欢迎程度。
+  ================================================================================
+  ```
 </VerticalStepper>

@@ -1,18 +1,19 @@
 ---
-'slug': '/managing-data/update_mutations'
-'sidebar_label': '更新突变'
-'title': '更新突变'
-'hide_title': false
-'description': '页面描述更新突变 - ALTER 查询通过更新操作来操纵表数据'
-'doc_type': 'reference'
+slug: /managing-data/update_mutations
+sidebar_label: '更新变更'
+title: '更新变更'
+hide_title: false
+description: '介绍更新变更的页面——通过 UPDATE 操作修改表数据的 ALTER 查询'
+doc_type: 'reference'
+keywords: ['update', 'mutations', 'alter table', 'data manipulation', 'modify data']
 ---
+
+更新变更是指通过更新操作来修改表数据的 `ALTER` 查询。最典型的就是 `ALTER TABLE UPDATE` 这类查询。执行此类查询会生成数据片段（data parts）的新变更版本。这意味着，对于变更之前已插入的所有数据，这些语句都会触发对整个数据片段的重写，从而产生大量写请求。
+
+:::info
+对于更新操作，可以通过使用 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 等专用表引擎来替代默认的 MergeTree 表引擎，从而避免产生大量写请求。
+:::
 
 import UpdateMutations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
 
-Update mutations refers to `ALTER` 查询，通过更新来操作表数据。最显著的是，类似于 `ALTER TABLE UPDATE` 的查询。执行此类查询将产生数据片段的新变更版本。这意味着这些语句将触发对所有在变更前插入的数据的整个数据片段进行重写，从而导致大量的写请求。
-
-:::info
-对于更新，您可以通过使用专业的表引擎来避免这些大量的写请求，例如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)，而不是使用默认的 MergeTree 表引擎。
-:::
-
-<UpdateMutations/>
+<UpdateMutations />

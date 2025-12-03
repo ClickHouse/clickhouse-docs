@@ -1,20 +1,19 @@
 ---
-'description': '`Dictionary` エンジンは、Dictionary データを ClickHouse テーブルとして表示します。'
-'sidebar_label': 'Dictionary'
-'sidebar_position': 20
-'slug': '/engines/table-engines/special/dictionary'
-'title': 'Dictionary テーブルエンジン'
-'doc_type': 'reference'
+description: '`Dictionary` エンジンは、Dictionary のデータを ClickHouse のテーブルとして表示します。'
+sidebar_label: 'Dictionary'
+sidebar_position: 20
+slug: /engines/table-engines/special/dictionary
+title: 'Dictionary テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# Dictionary テーブルエンジン {#dictionary-table-engine}
 
-# Dictionary table engine
+`Dictionary` エンジンは、[Dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして利用できるようにします。
 
-`Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。
+## 例 {#example}
 
-## Example {#example}
-
-例として、次の構成を持つ `products` の辞書を考えます。
+例として、次のように構成された `products` の Dictionary を考えます。
 
 ```xml
 <dictionaries>
@@ -47,7 +46,7 @@
 </dictionaries>
 ```
 
-辞書データをクエリします：
+Dictionary データをクエリします:
 
 ```sql
 SELECT
@@ -69,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-この形式で辞書データを取得するには、[dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用できます。
+[dictGet*](/sql-reference/functions/ext-dict-functions) 関数を使用して、この形式で Dictionary データを取得できます。
 
-このビューは、生データを取得したり、`JOIN` 操作を実行したりする必要がある場合には役に立ちません。そのため、辞書データをテーブル形式で表示する `Dictionary` エンジンを使用できます。
+このビューは、生データを取得したい場合や `JOIN` 演算を行う場合にはあまり役に立ちません。こうしたケースでは、Dictionary データをテーブルとして表示する `Dictionary` エンジンを使用できます。
 
 構文：
 
@@ -85,9 +84,9 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+では
 
-テーブルの内容を確認してください。
+テーブルの中身を確認してみましょう。
 
 ```sql
 SELECT * FROM products LIMIT 1;
@@ -99,6 +98,6 @@ SELECT * FROM products LIMIT 1;
 └───────────────┴─────────────────┘
 ```
 
-**See Also**
+**関連項目**
 
-- [Dictionary function](/sql-reference/table-functions/dictionary)
+* [Dictionary 関数](/sql-reference/table-functions/dictionary)

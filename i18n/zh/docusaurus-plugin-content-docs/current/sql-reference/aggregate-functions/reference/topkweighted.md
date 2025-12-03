@@ -1,15 +1,14 @@
 ---
-'description': '返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排列（而非按照值本身）。此外，还考虑了值的权重。'
-'sidebar_position': 203
-'slug': '/sql-reference/aggregate-functions/reference/topkweighted'
-'title': 'topKWeighted'
-'doc_type': 'reference'
+description: '返回指定列中近似出现最频繁值的数组。结果数组按值的近似出现频率降序排列（而不是按值本身排序）。此外，还会考虑值的权重。'
+sidebar_position: 203
+slug: /sql-reference/aggregate-functions/reference/topkweighted
+title: 'topKWeighted'
+doc_type: 'reference'
 ---
 
+# topKWeighted {#topkweighted}
 
-# topKWeighted
-
-返回指定列中约最常见值的数组。结果数组按值的近似频率降序排列（而不是按值本身）。此外，还考虑了值的权重。
+返回一个数组，其中包含指定列中近似出现频率最高的值。结果数组按照值的近似出现频率降序排列（而不是按值本身排序）。同时会考虑各个值的权重。
 
 **语法**
 
@@ -21,18 +20,18 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 
 **参数**
 
-- `N` — 要返回的元素数量。可选。默认值：10。
-- `load_factor` — 定义为值保留的单元格数量。如果 uniq(column) > N * load_factor，则 topK 函数的结果将是近似值。可选。默认值：3。
-- `counts` — 定义结果是否应该包含近似计数和误差值。
+* `N` — 要返回的元素个数。可选。默认值：10。
+* `load_factor` — 定义为存储值预留的单元格数量。如果 uniq(column) &gt; N * load&#95;factor，则 topK 函数的结果是近似值。可选。默认值：3。
+* `counts` — 定义结果中是否应包含近似计数和误差值。
 
 **参数说明**
 
-- `column` — 值。
-- `weight` — 权重。每个值在频率计算中计算 `weight` 次。[UInt64](../../../sql-reference/data-types/int-uint.md)。
+* `column` — 值。
+* `weight` — 权重。每个值在频率计算中按 `weight` 次计入。[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 
-返回具有最大近似权重总和的值的数组。
+返回一个数组，包含其权重近似总和最大的值。
 
 **示例**
 
@@ -68,6 +67,6 @@ FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10
 
 **另请参阅**
 
-- [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
-- [approx_top_k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)
-- [approx_top_sum](../../../sql-reference/aggregate-functions/reference/approxtopsum.md)
+* [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
+* [approx&#95;top&#95;k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)
+* [approx&#95;top&#95;sum](../../../sql-reference/aggregate-functions/reference/approxtopsum.md)

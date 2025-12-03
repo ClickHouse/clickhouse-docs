@@ -1,16 +1,16 @@
 ---
-'description': 'テーブル設定の操作に関するドキュメント'
-'sidebar_label': 'SETTING'
-'sidebar_position': 38
-'slug': '/sql-reference/statements/alter/setting'
-'title': 'テーブル設定の操作'
-'doc_type': 'reference'
+description: 'テーブル設定の操作に関するリファレンス'
+sidebar_label: 'SETTING'
+sidebar_position: 38
+slug: /sql-reference/statements/alter/setting
+title: 'テーブル設定の操作'
+doc_type: 'reference'
 ---
 
+# テーブル設定の操作 {#table-settings-manipulations}
 
-# テーブル設定の操作
-
-テーブル設定を変更するためのクエリのセットがあります。設定を変更したり、デフォルト値にリセットしたりできます。単一のクエリで複数の設定を同時に変更することができます。指定された名前の設定が存在しない場合、クエリは例外を発生させます。
+テーブル設定を変更するためのクエリが用意されています。設定を変更したり、デフォルト値にリセットしたりできます。1つのクエリで複数の設定を同時に変更できます。
+指定された名前の設定が存在しない場合、そのクエリは例外をスローします。
 
 **構文**
 
@@ -18,13 +18,13 @@
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
-:::note    
-これらのクエリは、[MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) テーブルにのみ適用できます。
+:::note
+これらのクエリは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) テーブルにのみ適用できます。
 :::
 
 ## MODIFY SETTING {#modify-setting}
 
-テーブル設定を変更します。
+テーブルの設定を変更します。
 
 **構文**
 
@@ -42,7 +42,7 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 
 ## RESET SETTING {#reset-setting}
 
-テーブル設定をデフォルト値にリセットします。設定がデフォルトの状態である場合、アクションは実行されません。
+テーブルの設定をデフォルト値にリセットします。設定がデフォルト状態の場合は、何も行われません。
 
 **構文**
 
@@ -61,4 +61,4 @@ ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 
 **関連項目**
 
-- [MergeTree 設定](../../../operations/settings/merge-tree-settings.md)
+* [MergeTree 設定](../../../operations/settings/merge-tree-settings.md)

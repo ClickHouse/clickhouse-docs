@@ -1,89 +1,84 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Java клиентская библиотека для связи с сервером БД через его протоколы. Текущая реализация поддерживает только [HTTP интерфейс](/interfaces/http). Библиотека предоставляет собственное API для отправки запросов на сервер.
+Клиентская библиотека на Java для взаимодействия с сервером БД через его протоколы. Текущая реализация поддерживает только [HTTP-интерфейс](/interfaces/http). Библиотека предоставляет собственный API для отправки запросов на сервер.
 
-:::warning Устаревание
-Эта библиотека скоро будет устаревшей. Используйте последнюю [Java Client](/integrations/language-clients/java/client/client.mdx) для новых проектов.
+:::warning Deprecation
+Эта библиотека скоро будет объявлена устаревшей. Для новых проектов используйте актуальный [Java Client](/integrations/language-clients/java/client/client.mdx).
 :::
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 <Tabs groupId="client-v1-setup">
-<TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+    <dependency>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-http-client</artifactId>
+        <version>0.7.2</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-http-client</artifactId>
-    <version>0.7.2</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+    implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation("com.clickhouse:clickhouse-http-client:0.7.2")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+    implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+    ```
+  </TabItem>
 </Tabs>
 
-С версии `0.5.0` драйвер использует новую клиентскую http библиотеку, которую необходимо добавить в зависимости.
+Начиная с версии `0.5.0` драйвер использует новую библиотеку HTTP‑клиента, которую необходимо добавить в качестве зависимости.
 
 <Tabs groupId="client-v1-http-client">
-<TabItem value="maven" label="Maven">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+    <dependency>
+        <groupId>org.apache.httpcomponents.client5</groupId>
+        <artifactId>httpclient5</artifactId>
+        <version>5.3.1</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
-<dependency>
-    <groupId>org.apache.httpcomponents.client5</groupId>
-    <artifactId>httpclient5</artifactId>
-    <version>5.3.1</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+    ```
+  </TabItem>
 </Tabs>
 
-## Инициализация {#initialization}
+## Инициализация \{#initialization\}
 
-Формат URL подключения: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, например:
+Формат URL-адреса подключения: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, например:
 
-- `http://localhost:8443?ssl=true&sslmode=NONE`
-- `https://(https://explorer@play.clickhouse.com:443`
+* `http://localhost:8443?ssl=true&sslmode=NONE`
+* `https://(https://explorer@play.clickhouse.com:443`
 
-Подключение к одному узлу:
+Подключиться к одному узлу:
 
 ```java showLineNumbers
 ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
 ```
-Подключение к кластеру с несколькими узлами:
+
+Подключитесь к кластеру с несколькими узлами:
 
 ```java showLineNumbers
 ClickHouseNodes servers = ClickHouseNodes.of(
@@ -91,7 +86,7 @@ ClickHouseNodes servers = ClickHouseNodes.of(
     + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
 ```
 
-## API запросов {#query-api}
+## API запросов \{#query-api\}
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -105,11 +100,27 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-## API потоковых запросов {#streaming-query-api}
+## API для потоковых запросов \{#streaming-query-api\}
 
-Смотрите [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            for (ClickHouseRecord r : response.records()) {
+            int num = r.getValue(0).asInteger();
+            // преобразование типа
+            String str = r.getValue(0).asString();
+            LocalDate date = r.getValue(0).asDate();
+        }
+}
+```
 
-## API вставок {#insert-api}
+См. [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
+
+## API вставки данных \{#insert-api\}
 
 ```java showLineNumbers
 
@@ -117,61 +128,59 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
      ClickHouseResponse response = client.read(servers).write()
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
-        .data(myInputStream) // `myInputStream` is source of data in RowBinary format
+        .data(myInputStream) // `myInputStream` служит источником данных в формате RowBinary
         .executeAndWait()) {
             ClickHouseResponseSummary summary = response.getSummary();
             summary.getWrittenRows();
 }
 ```
 
-Смотрите [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
+См. [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
-**RowBinary Кодирование**
+**Кодирование RowBinary**
 
-Формат RowBinary описан на его [странице](/interfaces/formats#rowbinarywithnamesandtypes).
+Формат RowBinary описан на отдельной [странице](/interfaces/formats/RowBinaryWithNamesAndTypes).
 
-Есть пример [кода](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
+См. пример [кода](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
 
-## Особенности {#features}
-### Сжатие {#compression}
+## Возможности \{#features\}
 
-Клиент по умолчанию будет использовать сжатие LZ4, для этого требуется следующая зависимость:
+### Сжатие \{#compression\}
+
+Клиент по умолчанию использует сжатие LZ4, для которого требуется следующая зависимость:
 
 <Tabs groupId="client-v1-compression-deps">
-<TabItem value="maven" label="Maven" >
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+    <dependency>
+        <groupId>org.lz4</groupId>
+        <artifactId>lz4-java</artifactId>
+        <version>1.8.0</version>
+    </dependency>
+    ```
+  </TabItem>
 
-```xml
-<!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
-<dependency>
-    <groupId>org.lz4</groupId>
-    <artifactId>lz4-java</artifactId>
-    <version>1.8.0</version>
-</dependency>
-```
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation("org.lz4:lz4-java:1.8.0")
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/org.lz4/lz4-java
-implementation("org.lz4:lz4-java:1.8.0")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/org.lz4/lz4-java
-implementation 'org.lz4:lz4-java:1.8.0'
-```
-
-</TabItem>
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation 'org.lz4:lz4-java:1.8.0'
+    ```
+  </TabItem>
 </Tabs>
 
-Вы можете выбрать использование gzip вместо этого, установив `compress_algorithm=gzip` в URL подключения.
+Вы можете вместо этого использовать gzip, указав `compress_algorithm=gzip` в URL-адресе подключения.
 
-Кроме того, вы можете отключить сжатие несколькими способами.
+Также можно отключить сжатие несколькими способами.
 
-1. Отключить, установив `compress=0` в URL подключения: `http://localhost:8123/default?compress=0`
+1. Отключить, указав `compress=0` в URL-адресе подключения: `http://localhost:8123/default?compress=0`
 2. Отключить через конфигурацию клиента:
 
 ```java showLineNumbers
@@ -181,11 +190,11 @@ ClickHouseClient client = ClickHouseClient.builder()
    .build();
 ```
 
-Смотрите [документацию по сжатию](/data-compression/compression-modes), чтобы узнать больше о различных вариантах сжатия.
+См. [документацию по сжатию](/data-compression/compression-modes), чтобы узнать больше о различных режимах сжатия.
 
-### Несколько запросов {#multiple-queries}
+### Несколько запросов \{#multiple-queries\}
 
-Выполните несколько запросов в рабочем потоке один за другим в одной сессии:
+Выполняйте несколько запросов в рабочем потоке последовательно в рамках одной сессии:
 
 ```java showLineNumbers
 CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
@@ -199,9 +208,9 @@ CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.sen
 List<ClickHouseResponseSummary> results = future.get();
 ```
 
-### Именованные параметры {#named-parameters}
+### Именованные параметры \{#named-parameters\}
 
-Вы можете передавать параметры по имени, а не полагаясь исключительно на их позицию в списке параметров. Эта возможность доступна с помощью функции `params`.
+Вы можете передавать параметры по имени, а не только по их порядку в списке параметров. Эта возможность реализована с помощью функции `params`.
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -216,7 +225,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 ```
 
 :::note Параметры
-Все сигнатуры `params`, содержащие тип `String` (`String`, `String[]`, `Map<String, String>`), предполагают, что переданные ключи являются действительными SQL строками ClickHouse. Например:
+Все сигнатуры `params` с типом `String` (`String`, `String[]`, `Map<String, String>`) предполагают, что передаваемые ключи являются корректными строками SQL ClickHouse. Например:
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -230,7 +239,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-Если вы предпочитаете не разбирать объекты String в SQL ClickHouse вручную, вы можете использовать вспомогательную функцию `ClickHouseValues.convertToSqlExpression`, расположенную в `com.clickhouse.data`:
+Если вы предпочитаете не парсить объекты String в SQL-выражения ClickHouse вручную, вы можете использовать вспомогательную функцию `ClickHouseValues.convertToSqlExpression`, расположенную в пакете `com.clickhouse.data`:
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -244,14 +253,14 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-В приведенном выше примере `ClickHouseValues.convertToSqlExpression` экранирует внутреннюю одинарную кавычку и окружает переменную действительными одинарными кавычками.
+В приведённом выше примере `ClickHouseValues.convertToSqlExpression` экранирует внутреннюю одинарную кавычку и заключит переменную в корректные одинарные кавычки.
 
 Другие типы, такие как `Integer`, `UUID`, `Array` и `Enum`, будут автоматически преобразованы внутри `params`.
 :::
 
-## Обнаружение узлов {#node-discovery}
+## Обнаружение узлов \{#node-discovery\}
 
-Java клиент предоставляет возможность автоматически обнаруживать узлы ClickHouse. Автообнаружение по умолчанию отключено. Чтобы вручную включить его, установите `auto_discovery` в `true`:
+Java-клиент предоставляет возможность автоматически обнаруживать узлы ClickHouse. Автообнаружение по умолчанию отключено. Чтобы включить его вручную, установите `auto_discovery` в `true`:
 
 ```java
 properties.setProperty("auto_discovery", "true");
@@ -263,57 +272,57 @@ properties.setProperty("auto_discovery", "true");
 jdbc:ch://my-server/system?auto_discovery=true
 ```
 
-Если автообнаружение включено, нет необходимости указывать все узлы ClickHouse в URL подключения. Узлы, указанные в URL, будут рассматриваться как начальные, и Java клиент автоматически обнаружит дополнительные узлы из системных таблиц и/или clickhouse-keeper или zookeeper.
+Если автообнаружение включено, нет необходимости указывать все узлы ClickHouse в URL-адресе подключения. Узлы, указанные в URL, будут рассматриваться как начальные (seed-узлы), а Java‑клиент автоматически обнаружит дополнительные узлы из системных таблиц и/или clickhouse-keeper или zookeeper.
 
-Следующие параметры отвечают за конфигурацию автообнаружения:
+Следующие параметры отвечают за настройку автообнаружения:
 
-| Свойство                | По умолчанию | Описание                                                                                           |
-|-------------------------|---------|-------------------------------------------------------------------------------------------------------|
-| auto_discovery          | `false` | Нужно ли клиенту обнаруживать дополнительные узлы из системных таблиц и/или clickhouse-keeper/zookeeper.  |
-| node_discovery_interval | `0`     | Интервал обнаружения узлов в миллисекундах, нулевое или отрицательное значение означает одноразовое обнаружение. |
-| node_discovery_limit    | `100`   | Максимальное количество узлов, которые могут быть обнаружены за раз; нулевое или отрицательное значение означает отсутствие ограничения.           |
+| Property                        | Default | Description                                                                                                                              |
+| ------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| auto&#95;discovery              | `false` | Должен ли клиент обнаруживать дополнительные узлы из системных таблиц и/или clickhouse-keeper/zookeeper.                                 |
+| node&#95;discovery&#95;interval | `0`     | Интервал обнаружения узлов в миллисекундах; нулевое или отрицательное значение означает однократное обнаружение.                         |
+| node&#95;discovery&#95;limit    | `100`   | Максимальное количество узлов, которые могут быть обнаружены за один раз; нулевое или отрицательное значение означает отсутствие лимита. |
 
-### Балансировка нагрузки {#load-balancing}
+### Балансировка нагрузки \{#load-balancing\}
 
-Java клиент выбирает узел ClickHouse для отправки запросов в соответствии с политикой балансировки нагрузки. В общем, политика балансировки нагрузки отвечает за следующие вещи:
+Java-клиент выбирает узел ClickHouse для отправки запросов в соответствии с политикой балансировки нагрузки. Как правило, политика балансировки нагрузки отвечает за следующие задачи:
 
 1. Получение узла из управляемого списка узлов.
-2. Управление состоянием узла.
-3. При желании запланировать фоновый процесс для обнаружения узлов (если автообнаружение включено) и выполнить проверку работоспособности.
+2. Управление статусом узла.
+3. При необходимости — планирование фонового процесса для обнаружения узлов (если включено автообнаружение) и выполнение проверки работоспособности.
 
-Вот список параметров для настройки балансировки нагрузки:
+Ниже приведён список опций для настройки балансировки нагрузки:
 
-| Свойство              | По умолчанию                                   | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| load_balancing_policy | `""`                                      | Политика балансировки нагрузки может быть одной из: <li>`firstAlive` - запрос отправляется первому здоровому узлу из управляемого списка узлов</li><li>`random` - запрос отправляется случайному узлу из управляемого списка узлов </li><li>`roundRobin` - запрос отправляется каждому узлу из управляемого списка узлов по очереди.</li><li>полное имя класса, реализующего `ClickHouseLoadBalancingPolicy` - пользовательская политика балансировки нагрузки</li>Если она не указана, запрос отправляется первому узлу из управляемого списка узлов |
-| load_balancing_tags   | `""`                                      | Теги балансировки нагрузки для фильтрации узлов. Запросы отправляются только на узлы, которые имеют указанные теги.                                                                                                                                                                                                                                                                                                                                                                                                      |
-| health_check_interval | `0`                                       | Интерал проверки работоспособности в миллисекундах, нулевое или отрицательное значение означает одноразовую проверку.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Метод проверки работоспособности. Может быть одним из: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - проверка с помощью запроса `select 1`</li> <li>`ClickHouseHealthCheckMethod.PING` - проверка, специфичная для протокола, которая обычно быстрее</li>                                                                                                                                                                                                                                                                                          |
-| node_check_interval   | `0`                                       | Интервал проверки узлов в миллисекундах, отрицательное число рассматривается как ноль. Статус узла проверяется, если прошел указанный промежуток времени с момента последней проверки.<br/>Разница между параметрами `health_check_interval` и `node_check_interval` заключается в том, что параметр `health_check_interval` планирует фоновую работу, которая проверяет статус списка узлов (всех или неисправных), но `node_check_interval` уточняет, сколько времени прошло с момента последней проверки для конкретного узла                |
-| check_all_nodes       | `false`                                   | Нужно ли проводить проверку работоспособности для всех узлов или только для неисправных.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| load&#95;balancing&#95;policy | `""`                                      | Политика балансировки нагрузки может быть одной из следующих: <li>`firstAlive` — запрос отправляется на первый рабочий узел из управляемого списка узлов</li><li>`random` — запрос отправляется на случайный узел из управляемого списка узлов</li><li>`roundRobin` — запросы по очереди отправляются на каждый узел из управляемого списка узлов</li><li>полностью квалифицированное имя класса, реализующего `ClickHouseLoadBalancingPolicy` — пользовательская политика балансировки нагрузки</li>Если политика не указана, запрос отправляется на первый узел из управляемого списка узлов |
+| load&#95;balancing&#95;tags   | `""`                                      | Теги балансировки нагрузки для фильтрации узлов. Запросы отправляются только на узлы, у которых есть указанные теги.                                                                                                                                                                                                                                                                                                                                                                                          |
+| health&#95;check&#95;interval | `0`                                       | Интервал проверки работоспособности в миллисекундах; нулевое или отрицательное значение означает однократную проверку.                                                                                                                                                                                                                                                                                                                                                                                        |
+| health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Метод проверки работоспособности. Может быть одним из следующих: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` — проверка с помощью запроса `select 1`</li> <li>`ClickHouseHealthCheckMethod.PING` — специфичная для протокола проверка, как правило, более быстрая</li>                                                                                                                                                                                                                                       |
+| node&#95;check&#95;interval   | `0`                                       | Интервал проверки узла в миллисекундах; отрицательное число трактуется как ноль. Статус узла проверяется, если с момента последней проверки прошло указанное количество времени.<br />Отличие между `health_check_interval` и `node_check_interval` состоит в том, что опция `health_check_interval` планирует фоновое задание, которое проверяет статус узлов (всех или только неисправных), тогда как `node_check_interval` задаёт минимальный интервал между проверками конкретного узла                |
+| check&#95;all&#95;nodes       | `false`                                   | Выполнять ли проверку работоспособности для всех узлов или только для неисправных.                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
-### Резервирование и повторные попытки {#failover-and-retry}
+### Отказоустойчивость и повторные попытки \{#failover-and-retry\}
 
-Java клиент предоставляет параметры конфигурации для настройки поведения резервирования и повторных попыток для неудачных запросов:
+Java-клиент предоставляет параметры конфигурации для настройки поведения отказоустойчивости и повторных попыток для неуспешных запросов:
 
-| Свойство                | По умолчанию | Описание                                                                                                                                                                                                                        |
+| Property                | Default | Description                                                                                                                                                                                                                        |
 |-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| failover                | `0`     | Максимальное количество попыток резервирования для запроса. Нулевое или отрицательное значение означает отсутствие резервирования. Резервирование отправляет неудавшийся запрос на другой узел (в соответствии с политикой балансировки нагрузки), чтобы восстановиться после неудачи. |
-| retry                   | `0`     | Максимальное количество повторных попыток для запроса. Нулевое или отрицательное значение означает отсутствие повторных попыток. Повторная попытка отправляет запрос на тот же узел и только если сервер ClickHouse возвращает код ошибки `NETWORK_ERROR`                               |
-| repeat_on_session_lock  | `true`  | Нужно ли повторять выполнение, когда сессия заблокирована до истечения времени (в соответствии с `session_timeout` или `connect_timeout`). Неудавшийся запрос повторяется, если сервер ClickHouse возвращает код ошибки `SESSION_IS_LOCKED`               |
+| failover                | `0`     | Максимальное количество переключений (failover) для одного запроса. Ноль или отрицательное значение означает отсутствие failover. При failover неуспешный запрос отправляется на другой узел (в соответствии с политикой балансировки нагрузки), чтобы восстановиться после сбоя. |
+| retry                   | `0`     | Максимальное количество повторных попыток для одного запроса. Ноль или отрицательное значение означает отсутствие повторных попыток. Повторная попытка отправляет запрос на тот же узел и выполняется только в том случае, если сервер ClickHouse возвращает код ошибки `NETWORK_ERROR`.                               |
+| repeat&#95;on&#95;session&#95;lock  | `true`  | Нужно ли повторять выполнение, когда сессия заблокирована, до истечения времени ожидания (в соответствии с `session_timeout` или `connect_timeout`). Неуспешный запрос повторяется, если сервер ClickHouse возвращает код ошибки `SESSION_IS_LOCKED`.               |
 
-### Добавление пользовательских http заголовков {#adding-custom-http-headers}
+### Добавление пользовательских HTTP-заголовков \{#adding-custom-http-headers\}
 
-Java клиент поддерживает транспортный уровень HTTP/S в случае, если мы хотим добавить пользовательские HTTP заголовки в запрос.
-Мы должны использовать свойство custom_http_headers, и заголовки должны разделяться запятой `,`. Ключ/значение заголовка должно быть разделено знаком `=`
+Java-клиент поддерживает транспортный уровень HTTP/S, поэтому при необходимости можно добавлять к запросу пользовательские HTTP-заголовки.
+Следует использовать свойство custom&#95;http&#95;headers; заголовки должны быть разделены запятыми (`,`), а ключ и значение заголовка — знаком равенства (`=`).
 
-## Поддержка Java Client {#java-client-support}
+## Поддержка клиента Java \{#java-client-support\}
 
 ```java
 options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
 ```
 
-## JDBC Драйвер {#jdbc-driver}
+## Драйвер JDBC \{#jdbc-driver\}
 
 ```java
 properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");

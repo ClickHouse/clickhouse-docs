@@ -1,22 +1,22 @@
 {
   "link.item.label.Trademark": {
     "message": "商标",
-    "description": "The label of footer link with label=Trademark linking to https://clickhouse.com/legal/trademark-policy"
+    "description": "页脚中标签为“Trademark”、指向 https://clickhouse.com/legal/trademark-policy 的链接的标签文本"
   },
   "link.item.label.Privacy": {
     "message": "隐私",
-    "description": "The label of footer link with label=Privacy linking to https://clickhouse.com/legal/privacy-policy"
+    "description": "页脚中标签为“Privacy”的链接，指向 https://clickhouse.com/legal/privacy-policy"
   },
   "link.item.label.Security": {
     "message": "安全",
-    "description": "The label of footer link with label=Security linking to https://trust.clickhouse.com/"
+    "description": "页脚中指向 https://trust.clickhouse.com/、标签为 “Security” 的链接文字标签"
   },
   "link.item.label.Terms of Service": {
     "message": "服务条款",
-    "description": "The label of footer link with label=Terms of Service linking to https://clickhouse.com/legal/agreements/terms-of-service"
+    "description": "页脚中标签为 label=Terms of Service 的链接，指向 https://clickhouse.com/legal/agreements/terms-of-service"
   },
   "copyright": {
     "message": "© 2016&ndash;2025 ClickHouse, Inc.",
-    "description": "The footer copyright"
+    "description": "页脚版权声明"
   }
 }

@@ -1,46 +1,45 @@
 ---
-'alias': []
-'description': 'JSONフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'JSON'
-'output_format': true
-'slug': '/interfaces/formats/JSON'
-'title': 'JSON'
-'doc_type': 'reference'
+alias: []
+description: 'JSON 形式に関するドキュメント'
+input_format: true
+keywords: ['JSON']
+output_format: true
+slug: /interfaces/formats/JSON
+title: 'JSON'
+doc_type: 'reference'
 ---
 
-
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`JSON`フォーマットは、データをJSON形式で読み込み、出力します。
+`JSON` フォーマットは、JSON 形式でデータの読み取りおよび出力を行います。
 
-`JSON`フォーマットは以下を返します：
+`JSON` フォーマットは次の内容を返します。
 
-| パラメータ                    | 説明                                                                                                                                                                                                                                      |
-|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `meta`                       | カラム名とタイプ。                                                                                                                                                                                                                        |
-| `data`                       | データテーブル                                                                                                                                                                                                                            |
-| `rows`                       | 出力行の合計数。                                                                                                                                                                                                                          |
-| `rows_before_limit_at_least` | LIMITなしであった場合の行数の下限推定。クエリがLIMITを含む場合にのみ出力されます。この推定は、制限変換前のクエリパイプラインで処理されたデータブロックから計算されますが、その後制限変換によって破棄されることがあります。クエリパイプラインでブロックが制限変換に到達しなかった場合、それらは推定に参加しません。|
-| `statistics`                 | `elapsed`、`rows_read`、`bytes_read`などの統計。                                                                                                                                                                                        |
-| `totals`                     | 総値（WITH TOTALSを使用している場合）。                                                                                                                                                                                                    |
-| `extremes`                   | 極値（extremesが1に設定されている場合）。                                                                                                                                                                                                |
+| Parameter                    | Description                                                                                                                                                                                                                                |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `meta`                       | 列名と型。                                                                                                                                                                                                                                  |
+| `data`                       | データテーブル。                                                                                                                                                                                                                           |
+| `rows`                       | 出力される行数の合計。                                                                                                                                                                                                                     |
+| `rows_before_limit_at_least` | `LIMIT` がなかった場合に存在し得る行数の下限推定値。クエリに `LIMIT` が含まれている場合にのみ出力されます。この推定値は、limit 変換の実行前にクエリパイプラインで処理されたデータブロックから計算されますが、その後 limit 変換によって破棄される可能性があります。クエリパイプラインでデータブロックが limit 変換に到達しなかった場合、それらは推定に含まれません。 |
+| `statistics`                 | `elapsed`、`rows_read`、`bytes_read` などの統計情報。                                                                                                                                                                                       |
+| `totals`                     | （`WITH TOTALS` を使用している場合の）合計値。                                                                                                                                                                                             |
+| `extremes`                   | （`extremes` が 1 に設定されている場合の）極値。                                                                                                                                                                                           |
 
-`JSON`タイプはJavaScriptと互換性があります。これを確保するために、一部の文字は追加でエスケープされます：
-- スラッシュ`/`は`\/`としてエスケープされます。
-- 一部のブラウザで破損する代替行の改行`U+2028`と`U+2029`は、`\uXXXX`としてエスケープされます。
-- ASCII制御文字はエスケープされます：バックスペース、フォームフィード、ラインフィード、キャリッジリターン、そして水平タブはそれぞれ`\b`、`\f`、`\n`、`\r`、`\t`で置き換えられ、残りの00-1F範囲のバイトも`\uXXXX`シーケンスを使用してエスケープされます。
-- 無効なUTF-8シーケンスは置換文字�に変更され、出力テキストは有効なUTF-8シーケンスで構成されます。
+`JSON` 型は JavaScript と互換性があります。この互換性を確保するため、いくつかの文字は追加でエスケープされます。
 
-JavaScriptとの互換性のために、Int64およびUInt64整数はデフォルトで二重引用符で囲まれます。
-引用符を除去するには、設定パラメーター[`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)を`0`に設定します。
+- スラッシュ `/` は `\/` としてエスケープされます。
+- 一部のブラウザで問題を引き起こす代替改行文字 `U+2028` および `U+2029` は `\uXXXX` としてエスケープされます。
+- ASCII 制御文字はエスケープされます。バックスペース、フォームフィード、ラインフィード、キャリッジリターン、および水平タブはそれぞれ `\b`、`\f`、`\n`、`\r`、`\t` に置き換えられ、さらに 00-1F の範囲の残りのバイトは `\uXXXX` シーケンスで表現されます。
+- 無効な UTF-8 シーケンスは代替文字 � に置き換えられ、出力テキストが有効な UTF-8 シーケンスのみで構成されるようにします。
 
-ClickHouseは[NULL](/sql-reference/syntax.md)をサポートしており、JSON出力では`null`として表示されます。出力に`+nan`、`-nan`、`+inf`、`-inf`値を有効にするには、[output_format_json_quote_denormals](/operations/settings/settings-formats.md/#output_format_json_quote_denormals)を`1`に設定します。
+JavaScript との互換性のため、Int64 および UInt64 整数はデフォルトで二重引用符で囲まれます。
+引用符を削除するには、設定パラメータ [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers) を `0` に設定します。
+
+ClickHouse は [NULL](/sql-reference/syntax.md) をサポートしており、JSON 出力では `null` として表示されます。出力で `+nan`、`-nan`、`+inf`、`-inf` の値を有効にするには、[`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) を `1` に設定します。
 
 ## 使用例 {#example-usage}
 
@@ -100,11 +99,12 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
+
 ## フォーマット設定 {#format-settings}
 
-JSON入力フォーマットについて、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata)が`1`に設定されている場合、入力データのメタデータにあるタイプが、テーブルの対応するカラムのタイプと比較されます。
+JSON 入力フォーマットの場合、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 設定が `1` に設定されていると、入力データ内のメタデータに含まれる型が、テーブル内の対応する列の型と照合されます。
 
 ## 関連項目 {#see-also}
 
-- [JSONEachRow](/interfaces/formats/JSONEachRow)フォーマット
-- [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)設定
+- [JSONEachRow](/interfaces/formats/JSONEachRow) フォーマット
+- [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows) 設定

@@ -1,14 +1,14 @@
 [
-	{
-		"title": "Quick Start",
-		"description": "Get up and running on ClickHouse in minutes, explore some sample data, and build your solution",
-		"url": "/docs/quick-start/",
-		"background": "cloud"
-	},
-	{
-	"title": "Tutorials and Sample Datasets",
-	"description": "From taxi rides to property prices, learn how to get data into ClickHouse and model it for query performance",
-	"url": "/docs/getting-started/example-datasets/",
-	"background": "cloud"
-	}
+  {
+    "title": "Краткое руководство",
+    "description": "Запустите ClickHouse за считанные минуты, изучите примеры данных и создайте собственное решение",
+    "url": "/docs/quick-start/",
+    "background": "облако"
+  },
+  {
+    "title": "Учебные руководства и примеры наборов данных",
+    "description": "От поездок на такси до цен на недвижимость — узнайте, как загружать данные в ClickHouse и моделировать их для эффективного выполнения запросов",
+    "url": "/docs/getting-started/example-datasets/",
+    "background": "облако"
+  }
 ]
