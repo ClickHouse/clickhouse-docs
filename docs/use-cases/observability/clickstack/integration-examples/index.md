@@ -16,6 +16,7 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 
 | Section | Description |
 |------|-------------|
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Quick start guide for JVM Metrics |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Quick start guide for Kafka Metrics |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Quick start guide for Kubernetes |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
