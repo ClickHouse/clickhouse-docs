@@ -16,7 +16,6 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_access/6_service_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
-
 # Настройка назначений ролей для SQL-консоли {#configuring-sql-console-role-assignments}
 
 > В этом руководстве описано, как настроить назначения ролей для SQL-консоли, которые определяют глобальные права доступа к консоли и функции, доступные пользователю в консоли Cloud.

@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## 配置 RPM 软件源 {#setup-the-rpm-repository}
 
 运行以下命令添加官方软件源：
@@ -23,7 +22,6 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 
 在以下步骤中，您可以根据所使用的包管理器，将 `yum install` 替换为 `zypper install`。
 
-
 ## 安装 ClickHouse 服务端和客户端 {#install-clickhouse-server-and-client-1}
 
 要安装 ClickHouse，请运行以下命令：
@@ -39,7 +37,6 @@ sudo yum install -y clickhouse-server clickhouse-client
 ```bash
 sudo yum install clickhouse-server-22.8.7.34
 ```
-
 
 ## 启动 ClickHouse 服务器 {#start-clickhouse-server-1}
 
@@ -63,7 +60,6 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-
 ## 安装独立的 ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
 
 :::tip
@@ -77,7 +73,6 @@ clickhouse-client --password
 ```bash
 sudo yum install -y clickhouse-keeper
 ```
-
 
 ## 启用并启动 ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
 

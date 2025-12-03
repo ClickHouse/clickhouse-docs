@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した PostgreSQL メトリクスの監視 {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
@@ -241,7 +240,6 @@ docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### HyperDX にメトリクスが表示されない場合 {#no-metrics}
 
 PostgreSQL にアクセスできることを確認してください。
@@ -256,7 +254,6 @@ OTel collector のログを確認します：
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
 ### 認証エラー {#auth-errors}
 
 パスワードが正しく設定されていることを確認してください：
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## 次のステップ {#next-steps}
 

@@ -82,5 +82,4 @@ LIMIT 3
 ピークメモリ使用量: 271.92 MiB。
 ```
 
-
 ## 書式設定 {#format-settings}

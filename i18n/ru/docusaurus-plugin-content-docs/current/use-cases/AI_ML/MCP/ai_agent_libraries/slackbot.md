@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать агента SlackBot с помощью ClickHouse MCP Server {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot).
@@ -22,8 +20,6 @@ doc_type: 'guide'
 Код этого примера доступен в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md).
 :::
 
-
-
 ## Предварительные требования {#prerequisites}
 
 - Необходимо установить [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
@@ -32,22 +28,17 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Создайте приложение Slack {#create-a-slack-app}
 
 1. Перейдите на [slack.com/apps](https://slack.com/apps) и нажмите `Create New App`.
 2. Выберите вариант `From scratch` и задайте имя приложению.
 3. Выберите рабочее пространство Slack.
 
-
-
 ## Установите приложение в рабочее пространство {#install-the-app-to-your-workspace}
 
 Далее добавьте созданное на предыдущем шаге приложение в рабочее пространство.
 Следуйте инструкциям из раздела ["Добавление приложений в рабочее пространство Slack"](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)
 в документации Slack.
-
-
 
 ## Настройка параметров приложения Slack {#configure-slack-app-settings}
 
@@ -74,8 +65,6 @@ doc_type: 'guide'
       - `message:im`
     - Сохраните изменения.
 
-
-
 ## Добавьте переменные окружения (`.env`) {#add-env-vars}
 
 Создайте файл `.env` в корне проекта со следующими переменными окружения, чтобы ваше приложение могло подключаться к [SQL-песочнице ClickHouse](https://sql.clickhouse.com/).
@@ -93,7 +82,6 @@ CLICKHOUSE_SECURE=true
 
 Вы можете настроить переменные ClickHouse для использования собственного сервера ClickHouse
 или облачного экземпляра, если хотите.
-
 
 ## Использование бота {#using-the-bot}
 

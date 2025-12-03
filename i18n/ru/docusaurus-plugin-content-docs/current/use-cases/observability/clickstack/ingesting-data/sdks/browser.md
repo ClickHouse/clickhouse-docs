@@ -27,7 +27,6 @@ import TabItem from '@theme/TabItem';
 * **Запросы XHR/Fetch/WebSocket**
 * **Исключения**
 
-
 ## Начало работы {#getting-started}
 
 <br/>
@@ -127,7 +126,6 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-
 ### Автоматический захват ошибок в React error boundary {#auto-capture-react-error-boundary-errors}
 
 Если вы используете React, вы можете автоматически перехватывать ошибки, которые возникают внутри
@@ -142,7 +140,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 // возникающие в любом его экземпляре.
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
-
 
 ### Отправка пользовательских действий {#send-custom-actions}
 
@@ -160,7 +157,6 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-
 ### Динамическое включение захвата сетевого трафика {#enable-network-capture-dynamically}
 
 Чтобы динамически включать или отключать захват сетевого трафика, вызывайте функцию `enableAdvancedNetworkCapture` или `disableAdvancedNetworkCapture` по мере необходимости.
@@ -168,7 +164,6 @@ HyperDX.addAction('Form-Completed', {
 ```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
-
 
 ### Включение измерения времени загрузки ресурсов для CORS-запросов {#enable-resource-timing-for-cors-requests}
 

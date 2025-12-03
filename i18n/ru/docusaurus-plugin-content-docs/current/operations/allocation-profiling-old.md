@@ -9,13 +9,10 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Профилирование выделения памяти для версий до 25.9 {#allocation-profiling-for-versions-before-259}
 
 ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для выборочного отслеживания и профилирования выделения памяти.  
 Для удобства профилирования выделения памяти предусмотрены команды `SYSTEM`, а также четырёхбуквенные (4LW) команды в Keeper.
-
-
 
 ## Сэмплирование выделений памяти и сброс профилей кучи {#sampling-allocations-and-flushing-heap-profiles}
 
@@ -54,7 +51,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profil
 ```
 
 К имени сгенерированного файла будет добавлен префикс PID и порядковый номер.
-
 
 ## Анализ профилей кучи {#analyzing-heap-profiles}
 
@@ -126,7 +122,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
 
-
 ## Управление профилировщиком выделений во время работы {#controlling-allocation-profiler-during-runtime}
 
 Если ClickHouse/Keeper запущен с включённым профилировщиком, становятся доступны дополнительные команды для отключения и включения профилирования выделений во время работы.
@@ -173,7 +168,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 Профилировщик можно будет включить позже.
 
-
 ## Дополнительные параметры профилировщика {#additional-options-for-profiler}
 
 В `jemalloc` доступно множество различных параметров, связанных с профилировщиком. Ими можно управлять через переменную окружения `MALLOC_CONF`.
@@ -181,8 +175,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 Если вы хотите сбрасывать профиль кучи каждые N байт, вы можете включить это с помощью `lg_prof_interval`.  
 
 Для получения полного списка параметров рекомендуется ознакомиться со [справочной страницей](https://jemalloc.net/jemalloc.3.html) `jemalloc`.
-
-
 
 ## Другие ресурсы {#other-resources}
 

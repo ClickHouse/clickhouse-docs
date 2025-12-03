@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-----------------------------------|
 | ✔     | ✔      | `TSVRawWithNames`, `RawWithNames` |
 
-
-
 ## 描述 {#description}
 
 与 [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 格式不同，
@@ -23,8 +21,6 @@ doc_type: 'reference'
 :::note
 使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -91,6 +87,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}

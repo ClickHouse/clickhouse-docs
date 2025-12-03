@@ -62,5 +62,4 @@ df2ec2f0669b000edff6adee264e7d68
 1 rows in set. Elapsed: 0.154 sec.
 ```
 
-
 ## 書式設定 {#format-settings}

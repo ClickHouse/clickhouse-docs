@@ -37,7 +37,6 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-
 ### 配置环境变量 {#configure-environment-variables}
 
 然后，你需要在 shell 环境中配置以下环境变量，以便将遥测数据上报到 ClickStack：
@@ -54,7 +53,6 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务，其值可以是任意名称。*
 
 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量中包含 API Key，您可以在 HyperDX 应用的 `Team Settings → API Keys` 中获取。
-
 
 ### 使用 OpenTelemetry Java Agent 运行应用程序 {#run-the-application-with-otel-java-agent}
 

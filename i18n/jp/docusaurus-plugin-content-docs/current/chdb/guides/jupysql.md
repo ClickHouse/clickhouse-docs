@@ -95,7 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## CSV ファイルのデータをクエリする
+## CSV ファイルのデータをクエリする {#querying-data-in-csv-files}
 
 `atp_rankings` というプレフィックスを持つファイルをいくつかダウンロードしました。
 スキーマを理解するために `DESCRIBE` 句を使って確認してみましょう。

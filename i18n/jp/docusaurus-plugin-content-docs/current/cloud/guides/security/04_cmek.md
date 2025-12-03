@@ -11,10 +11,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-
 # データの暗号化 {#data-encryption}
-
-
 
 ## ストレージレベルの暗号化 {#storage-encryption}
 
@@ -22,8 +19,6 @@ ClickHouse Cloud では、クラウドプロバイダー管理の AES 256 キー
 - [S3 向け AWS サーバーサイド暗号化](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [GCP におけるデフォルトの保存データ暗号化](https://cloud.google.com/docs/security/encryption/default-encryption)
 - [保存データ向け Azure ストレージ暗号化](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
-
-
 
 ## データベースレベルの暗号化 {#database-encryption}
 
@@ -111,15 +106,11 @@ CMEK をセットアップしたら、新しい KMS キーを作成して権限�
 
 #### KMS キーポーラー {#kms-key-poller}
 
-
-
 CMEK を使用している場合、指定された KMS キーが有効かどうかは 10 分ごとに検証されます。KMS キーへのアクセスができなくなった場合、ClickHouse サービスは停止します。サービスを再開するには、このガイドの手順に従って KMS キーへのアクセスを復旧し、その後サービスを再起動してください。
 
 ### バックアップと復元 {#backup-and-restore}
 
 バックアップは、関連付けられたサービスと同じキーを使用して暗号化されます。暗号化されたバックアップを復元すると、元のインスタンスと同じ KMS キーを使用する暗号化されたインスタンスが作成されます。必要に応じて、復元後に KMS キーをローテーションすることもできます。詳細は [Key Rotation](#key-rotation) を参照してください。
-
-
 
 ## パフォーマンス {#performance}
 

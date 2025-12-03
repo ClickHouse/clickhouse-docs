@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг логов Redis с помощью ClickStack {#redis-clickstack}
 
 :::note[Кратко]
@@ -338,7 +337,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # Должна отобразиться конфигурация вашего приёмника filelog/Redis
 ```
 
-
 ### В HyperDX не отображаются логи
 
 **Убедитесь, что Redis записывает логи в файл:**
@@ -378,7 +376,6 @@ docker volume inspect <volume-name>
 # Убедитесь, что том подключен к обоим контейнерам {#expected-output-should-show-file-size-and-permissions}
 ```
 
-
 ### Логи разбираются некорректно
 
 **Убедитесь, что формат логов Redis соответствует ожидаемому формату:**
@@ -393,7 +390,6 @@ tail -5 /var/log/redis/redis-server.log
 
 * `pid:role timestamp level message`
 * Пример: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## Дальнейшие шаги {#next-steps}
 

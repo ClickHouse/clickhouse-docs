@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------|
 | ✔     | ✔      | `TSV`  |
 
-
-
 ## 描述 {#description}
 
 在 TabSeparated 格式中，数据按行写入。每一行包含由制表符分隔的值。每个值后面都跟着一个制表符，除了该行的最后一个值，它后面跟的是换行符。在所有场景下都假定使用 Unix 风格换行符。最后一行的末尾也必须包含一个换行符。各个值以文本格式写入，不带引号，且特殊字符会被转义。
@@ -41,7 +39,6 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 2014-03-17      1031592
 2014-03-23      1406958
 ```
-
 
 ## 数据格式化 {#tabseparated-data-formatting}
 
@@ -108,7 +105,6 @@ SELECT * FROM nestedt FORMAT TSV
 1  [1]    ['a']
 ```
 
-
 ## 使用示例 {#example-usage}
 
 ### 插入数据 {#inserting-data}
@@ -172,7 +168,6 @@ FORMAT TabSeparated
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}
 

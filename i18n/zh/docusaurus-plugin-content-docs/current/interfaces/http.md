@@ -10,18 +10,13 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-
 # HTTP 接口 {#http-interface}
-
-
 
 ## 前置条件 {#prerequisites}
 
 要完成本文中的示例，你需要：
 - 一个处于运行状态的 ClickHouse 服务器实例
 - 已安装 `curl`。在 Ubuntu 或 Debian 上，运行 `sudo apt install curl`，或参阅此[文档](https://curl.se/download.html)获取安装说明。
-
-
 
 ## 概览 {#overview}
 
@@ -42,7 +37,6 @@ Ok.
 &quot;Ok.&quot; 是在 [`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response) 中定义的默认值，可根据需要进行修改。
 
 另请参阅：[HTTP 响应码注意事项](#http_response_codes_caveats)。
-
 
 ## Web 用户界面 {#web-ui}
 
@@ -69,7 +63,6 @@ Ok.
 $ curl 'http://localhost:8123/replicas_status'
 Ok.
 ```
-
 
 ## 通过 HTTP/HTTPS 查询 {#querying}
 
@@ -164,7 +157,6 @@ ECT 1
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
 ```
 
-
 ```response title="Response"
 {
     "meta":
@@ -221,7 +213,6 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 
 7
 ```
-
 
 ## 通过 HTTP/HTTPS 执行 INSERT 查询 {#insert-queries}
 
@@ -289,7 +280,6 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 对于成功但不返回数据表的请求，将返回空响应体。
 
-
 ## 压缩 {#compression}
 
 压缩可用于在传输大量数据时减少网络流量，也可用于创建直接以压缩形式保存的转储文件。
@@ -320,8 +310,6 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 :::info
 某些 HTTP 客户端可能会默认解压来自服务器的数据（例如使用 `gzip` 和 `deflate` 时），因此即使正确配置了压缩设置，仍有可能收到已解压的数据。
 :::
-
-
 
 ## 示例 {#examples-compression}
 
@@ -354,7 +342,6 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 2
 ```
 
-
 ## 默认数据库 {#default-database}
 
 你可以使用 `database` URL 参数或 `X-ClickHouse-Database` 请求头来指定默认数据库。
@@ -374,7 +361,6 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 ```
 
 默认情况下，服务器设置中登记的数据库会被用作默认数据库。开箱即用时，该数据库名为 `default`。另外，你也可以通过在表名前加上“数据库名.” 的方式来显式指定要使用的数据库。
-
 
 ## 认证 {#authentication}
 
@@ -436,7 +422,6 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [设置](/operations/settings/settings)
 * [SET](/sql-reference/statements/set)
 
-
 ## 在 HTTP 协议中使用 ClickHouse 会话 {#using-clickhouse-sessions-in-the-http-protocol}
 
 你也可以在 HTTP 协议中使用 ClickHouse 会话。为此，需要在请求中添加 `session_id` `GET` 参数。你可以使用任意字符串作为会话 ID。
@@ -478,7 +463,6 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 
 HTTP 接口允许传递外部数据（外部临时表）用于查询。更多信息请参见[“用于查询处理的外部数据”](/engines/table-engines/special/external-data)。
 
-
 ## 响应缓冲 {#response-buffering}
 
 可以在服务端启用响应缓冲。为此可使用以下 URL 参数：
@@ -504,7 +488,6 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 :::tip
 使用缓冲可以避免出现这样一种情况：在已经向客户端发送响应状态码和 HTTP 头之后，查询处理才发生错误。在这种情况下，错误消息会被写入响应正文的末尾，而在客户端只能在解析阶段才能检测到该错误。
 :::
-
 
 ## 使用查询参数设置角色 {#setting-role-with-query-parameters}
 
@@ -538,7 +521,6 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 ```
 
 在这种情况下，`?role=my_role&role=my_other_role` 与在执行该语句之前运行 `SET ROLE my_role, my_other_role` 的效果类似。
-
 
 ## HTTP 响应状态码注意事项 {#http_response_codes_caveats}
 
@@ -625,7 +607,6 @@ $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow
 0,0
 ```
 
-
 **异常**
 rumfyutuqkncbgau
 Code: 395. DB::Exception: 传递给 &#39;throwIf&#39; 函数的值为非零：在执行 &#39;FUNCTION throwIf(equals(&#95;&#95;table1.number, 2&#95;UInt8) :: 1) -&gt; throwIf(equals(&#95;&#95;table1.number, 2&#95;UInt8)) UInt8 : 0&#39; 时。(FUNCTION&#95;THROW&#95;IF&#95;VALUE&#95;IS&#95;NON&#95;ZERO) (version 25.11.1.1)
@@ -634,7 +615,6 @@ Code: 395. DB::Exception: 传递给 &#39;throwIf&#39; 函数的值为非零：�
 
 ```
 ```
-
 
 ## 参数化查询 {#cli-queries-with-parameters}
 
@@ -675,7 +655,6 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ['abc','123']
 ```
 
-
 ## 预定义的 HTTP 接口 {#predefined_http_interface}
 
 ClickHouse 通过 HTTP 接口支持特定查询。例如，可以通过以下方式向表中写入数据：
@@ -707,7 +686,6 @@ ClickHouse 还支持预定义 HTTP 接口（Predefined HTTP Interface），可�
 
 现在可以直接通过该 URL 请求 Prometheus 格式的数据：
 
-
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
 *   Trying ::1...
@@ -734,24 +712,17 @@ $ curl -v 'http://localhost:8123/predefined_query'
 "Query" 1
 ```
 
-
 # HELP "Merge" "后台正在执行的合并数量" {#help-merge-number-of-executing-background-merges}
 # TYPE "Merge" counter {#type-merge-counter}
 "Merge" 0
-
-
 
 # HELP "PartMutation" "Mutation 操作次数（ALTER DELETE/UPDATE）" {#help-partmutation-number-of-mutations-alter-deleteupdate}
 # TYPE "PartMutation" counter {#type-partmutation-counter}
 "PartMutation" 0
 
-
-
 # HELP "ReplicatedFetch" "正在从副本拉取的数据分片数量" {#help-replicatedfetch-number-of-data-parts-being-fetched-from-replica}
 # TYPE "ReplicatedFetch" counter {#type-replicatedfetch-counter}
 "ReplicatedFetch" 0
-
-
 
 # HELP &quot;ReplicatedSend&quot; &quot;正在发送到副本的数据分片数量&quot; {#help-replicatedsend-number-of-data-parts-being-sent-to-replicas}
 
@@ -824,7 +795,6 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 例如:
 ```
-
 
 ```yaml
 <http_handlers>
@@ -917,7 +887,6 @@ max_final_threads   2
 
 可以使用 `http_response_headers` 来设置内容类型，而无需使用 `content_type`。
 
-
 ```yaml
 <http_handlers>
         <rule>
@@ -1004,7 +973,6 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 ```
 
 要在发送给客户端的文件中查找内容：
-
 
 ```yaml
 <http_handlers>
@@ -1102,7 +1070,6 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 </clickhouse>
 ```
 
-
 ## HTTP 响应头 {#http-response-headers}
 
 ClickHouse 允许配置自定义的 HTTP 响应头，这些响应头可以应用于任何可配置的处理程序。可以通过 `http_response_headers` 设置这些响应头，该设置接受表示响应头名称及其值的键值对。此功能对于实现自定义安全响应头、CORS 策略，或在 ClickHouse HTTP 接口中统一满足其他 HTTP 响应头需求特别有用。
@@ -1138,7 +1105,6 @@ ClickHouse 允许配置自定义的 HTTP 响应头，这些响应头可以应用
     </http_handlers>
 </clickhouse>
 ```
-
 
 ## 在 HTTP 流式传输期间出现异常时返回合法的 JSON/XML 响应 {#valid-output-on-exception-http-streaming}
 

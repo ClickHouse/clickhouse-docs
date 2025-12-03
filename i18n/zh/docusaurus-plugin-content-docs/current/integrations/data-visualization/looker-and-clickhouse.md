@@ -18,19 +18,14 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Looker {#looker}
 
 <PartnerBadge/>
 
 Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管的 ClickHouse 部署。
 
-
-
 ## 1. 收集连接信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. 创建 ClickHouse 数据源 {#2-create-a-clickhouse-data-source}
 
@@ -55,8 +50,6 @@ Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或�
 <br/>
 
 现在，您应该可以将 ClickHouse 数据源关联到 Looker 项目中。
-
-
 
 ## 3. 已知限制 {#3-known-limitations}
 

@@ -11,7 +11,6 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 機能と設定 {#features-and-configurations}
 
 <ClickHouseSupportedBadge/>
@@ -19,8 +18,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 このセクションでは、dbt と ClickHouse の組み合わせで利用できる機能の一部について説明します。
 
 <TOCInline toc={toc}  maxHeadingLevel={3} />
-
-
 
 ## Profile.yml の設定 {#profile-yml-configurations}
 
@@ -82,7 +79,6 @@ dbt モデルのリレーション識別子 `database.schema.table` は ClickHou
 
 ### `quote_columns` の設定 {#setting-quote_columns}
 
-
 警告が出ないようにするため、`dbt_project.yml` 内で `quote_columns` に値を明示的に設定してください。詳細については、[quote&#95;columns に関するドキュメント](https://docs.getdbt.com/reference/resource-configs/quote_columns) を参照してください。
 
 ```yaml
@@ -132,7 +128,6 @@ dbt は read-after-insert 一貫性モデルに依存しています。これは
 
 * ClickHouse Cloud クラスターを使用している場合は、プロファイルの `custom_settings` プロパティに `select_sequential_consistency: 1` を設定するだけで構いません。この設定の詳細は[こちら](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)で確認できます。
 * 自前でホストしているクラスターを使用している場合は、すべての dbt リクエストが同じ ClickHouse レプリカに送信されるようにしてください。その上にロードバランサーがある場合は、常に同じレプリカに到達できるように、`replica aware routing` / `sticky sessions` メカニズムの利用を検討してください。ClickHouse Cloud 以外のクラスターで `select_sequential_consistency = 1` 設定を追加することは[推奨されません](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)。
-
 
 ## 機能に関する一般情報 {#general-information-about-features}
 
@@ -198,7 +193,6 @@ dbt は read-after-insert 一貫性モデルに依存しています。これは
 | Hive                   | [https://clickhouse.com/docs/en/engines/table-engines/integrations/hive](https://clickhouse.com/docs/en/engines/table-engines/integrations/hive)                                       |
 
 ### 実験的サポート対象のテーブルエンジン {#experimental-supported-table-engines}
-
 
 | Type              | Details                                                                                                                                               |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -268,7 +262,6 @@ select
 from {{ ref('user_events') }}
 group by event_type
 ```
-
 
 ## 機能 {#features}
 
@@ -379,7 +372,6 @@ dbt-clickhouse はデフォルトで、影響を受けない（削除されて�
 
 ##### Delete+Insert 戦略 {#delete-insert-strategy}
 
-
 ClickHouse はバージョン 22.8 で実験的機能として「lightweight deletes」を追加しました。Lightweight deletes は
 ALTER TABLE ... DELETE
 操作よりも大幅に高速であり、ClickHouse のデータパーツを書き換える必要がありません。インクリメンタル戦略 `delete+insert`
@@ -438,8 +430,6 @@ WHERE 句／フィルタで除外される場合には、最も高速なアプ�
 > 現在、insert_overwrite 戦略は分散マテリアライゼーションでは完全には動作しません。
 
 次のステップを実行します。
-
-
 
 1. インクリメンタルモデルのリレーションと同じ構造を持つステージング（一時）テーブルを作成します:
    `CREATE TABLE <staging> AS <target>`。
@@ -511,7 +501,6 @@ MV の作成時に履歴データをプリロードしたくない場合は、`c
 [Refreshable Materialized View](https://clickhouse.com/docs/en/materialized-view/refreshable-materialized-view) を利用するには、
 MV モデル内で必要に応じて次の設定を調整してください（これらの設定はすべて、
 refreshable 設定オブジェクト内に記述します）。
-
 
 | Option                        | Description                                                                               | Required | Default Value |
 | ----------------------------- | ----------------------------------------------------------------------------------------- | -------- | ------------- |
@@ -612,7 +601,6 @@ CREATE TABLE db.table on cluster cluster (
 
 #### 分散インクリメンタルモデルの例 {#distributed-incremental-model-example}
 
-
 ```sql
 {{
     config(
@@ -699,7 +687,6 @@ ClickHouse 固有のテーブルおよびビューを作成しやすくするた
 名前付き設定ディクショナリ（ディクショナリ名は必ず `s3` で終わる必要があります）から S3 テーブル関数のパラメータを
 設定することで動作します。マクロはまずプロファイルの `vars` 内でディクショナリを探し、その後モデル設定内を探します。
 ディクショナリには、S3 テーブル関数のパラメータを設定するために使用される、次のキーを含めることができます。
-
 
 | Argument Name         | Description                                                                                                                                                                                  |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -7,19 +7,13 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-
-
 # anyIf {#avgif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`any`](/sql-reference/aggregate-functions/reference/any)
 集約関数に適用して、指定した条件に一致する要素のうち、指定したカラム内で最初に出現したものを
 選択します。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -59,7 +53,6 @@ FROM sales;
 │          1 │          4 │
 └────────────┴────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)

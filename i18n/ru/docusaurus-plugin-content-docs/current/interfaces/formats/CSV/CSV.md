@@ -46,7 +46,6 @@ $ clickhouse-client --format_csv_delimiter="|" --query="INSERT INTO test.csv FOR
 Если это не удаётся и входное значение является числом, выполняется попытка сопоставить это число с идентификатором ENUM.
 Если входные данные содержат только идентификаторы ENUM, рекомендуется включить настройку [input&#95;format&#95;csv&#95;enum&#95;as&#95;number](/operations/settings/settings-formats.md/#input_format_csv_enum_as_number) для оптимизации разбора `ENUM`.
 
-
 ## Пример использования {#example-usage}
 
 ## Настройки формата {#format-settings}

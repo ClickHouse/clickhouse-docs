@@ -11,12 +11,9 @@ keywords: ['clickpipes', 'mongodb', 'CDC', 'データのインジェスト', '�
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-
 # 特定のテーブルを ClickPipe に追加する {#adding-specific-tables-to-a-clickpipe}
 
 ClickPipe に特定のテーブルを追加できると便利な場面があります。トランザクション処理や分析ワークロードがスケールするにつれて、こうしたニーズは一般的になっていきます。
-
-
 
 ## 特定のテーブルを ClickPipe に追加する手順 {#add-tables-steps}
 

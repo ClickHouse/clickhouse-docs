@@ -7,15 +7,11 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-
-
 # remote, remoteSecure テーブル関数 {#remote-remotesecure-table-function}
 
 テーブル関数 `remote` は、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成することなく、オンデマンドでリモートサーバーにアクセスできるようにします。テーブル関数 `remoteSecure` は、セキュアな接続を使用する点を除き `remote` と同じです。
 
 どちらの関数も `SELECT` および `INSERT` クエリで使用できます。
-
-
 
 ## 構文 {#syntax}
 
@@ -27,7 +23,6 @@ remoteSecure(addresses_expr, [db, table, user [, password], sharding_key])
 remoteSecure(addresses_expr, [db.table, user [, password], sharding_key])
 remoteSecure(named_collection[, option=value [,..]])
 ```
-
 
 ## パラメータ {#parameters}
 
@@ -42,13 +37,9 @@ remoteSecure(named_collection[, option=value [,..]])
 
 引数は [named collections](operations/named-collections.md)（名前付きコレクション）を使用して渡すこともできます。
 
-
-
 ## 戻り値 {#returned-value}
 
 リモートサーバー上にあるテーブルです。
-
-
 
 ## 使用方法 {#usage}
 
@@ -80,7 +71,6 @@ localhost
 ```text
 example01-01-1,example01-02-1
 ```
-
 
 ## 例 {#examples}
 
@@ -170,7 +160,6 @@ INSERT INTO FUNCTION
 remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
-
 
 ## グロブ {#globs-in-addresses}
 

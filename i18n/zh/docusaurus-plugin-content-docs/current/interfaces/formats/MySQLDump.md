@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-
-
 ## 描述 {#description}
 
 ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)。
@@ -25,8 +23,6 @@ ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com
 :::note
 此格式支持表结构推断：如果转储文件中包含该指定表的 `CREATE` 语句，则从中推断表结构；否则从 `INSERT` 语句中的数据推断表结构。
 :::
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -83,7 +79,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 │ 3 │
 └───┘
 ```
-
 
 ## 格式设置 {#format-settings}
 

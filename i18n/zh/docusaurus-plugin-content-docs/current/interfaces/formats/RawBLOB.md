@@ -6,8 +6,6 @@ title: 'RawBLOB'
 doc_type: 'reference'
 ---
 
-
-
 ## 描述 {#description}
 
 `RawBLOB` 格式会将所有输入数据读取为单个值。它只能用于解析仅包含一个 [`String`](/sql-reference/data-types/string.md) 类型或类似类型字段的表。
@@ -45,7 +43,6 @@ doc_type: 'reference'
 代码：108. DB::Exception：无可插入的数据
 ```
 
-
 ## 使用示例 {#example-usage}
 
 ```bash title="Query"
@@ -57,6 +54,5 @@ $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 ```text title="Response"
 f9725a22f9191e064120d718e26862a9  -
 ```
-
 
 ## 格式设置 {#format-settings}

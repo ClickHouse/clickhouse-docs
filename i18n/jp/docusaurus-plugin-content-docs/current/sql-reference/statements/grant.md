@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # GRANT 文 {#grant-statement}
 
 - ClickHouse のユーザーアカウントまたはロールに[権限](#privileges)を付与します。
@@ -30,7 +29,6 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 `WITH GRANT OPTION` 句は、`user` または `role` に `GRANT` クエリを実行する権限を付与します。ユーザーは、自分が持つスコープと同じ、またはそれよりも狭いスコープの権限を付与できます。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対する既存の権限を新しい権限に置き換えます。指定しない場合は、権限が追加されます。
 
-
 ## ロール割り当ての構文 {#assigning-role-syntax}
 
 ```sql
@@ -42,7 +40,6 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 
 `WITH ADMIN OPTION` 句は、`user` または `role` に [ADMIN OPTION](#admin-option) 権限を付与します。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対して既存のロールを新しいロールに置き換えます。指定されていない場合は、既存のロールにロールを追加します。
-
 
 ## GRANT CURRENT GRANTS 構文 {#grant-current-grants-syntax}
 
@@ -56,7 +53,6 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 
 `CURRENT GRANTS` ステートメントを使用すると、指定したユーザーまたはロールに、指定したすべての権限を付与できます。
 権限が 1 つも指定されていない場合、そのユーザーまたはロールには、`CURRENT_USER` に対して利用可能なすべての権限が付与されます。
-
 
 ## 使用方法 {#usage}
 
@@ -86,7 +82,6 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 :::
 
 1 つのクエリで複数のアカウントに複数の権限を付与できます。`GRANT SELECT, INSERT ON *.* TO john, robin` クエリは、アカウント `john` と `robin` に、サーバー上のすべてのデータベース内のすべてのテーブルに対して `INSERT` および `SELECT` クエリを実行することを許可します。
-
 
 ## ワイルドカードによる権限付与 {#wildcard-grants}
 
@@ -138,7 +133,6 @@ GRANT SELECT ON foo*bar TO john -- 誤り
 GRANT SELECT ON *suffix TO john -- 誤り
 GRANT SELECT(foo) ON db.table* TO john -- 誤り
 ```
-
 
 ## 権限 {#privileges}
 
@@ -399,7 +393,6 @@ GRANT SELECT(x,y) ON db.table TO john
 
 この権限により、`john` は `db.table` の `x` カラムおよび/または `y` カラムのデータを含む任意の `SELECT` クエリを実行できます。たとえば、`SELECT x FROM db.table` です。`john` は `SELECT z FROM db.table` を実行することはできません。`SELECT * FROM db.table` も実行できません。このクエリを処理する際、ClickHouse は `x` や `y` であっても一切データを返しません。唯一の例外は、テーブルが `x` と `y` カラムのみを含む場合であり、この場合は ClickHouse はすべてのデータを返します。
 
-
 ### INSERT {#insert}
 
 [INSERT](../../sql-reference/statements/insert-into.md) クエリの実行を許可します。
@@ -417,7 +410,6 @@ GRANT INSERT(x,y) ON db.table TO john
 ```
 
 付与された権限により、`john` は `db.table` の `x` カラムおよび `y` カラムの一方または両方にデータを挿入できます。
-
 
 ### ALTER {#alter}
 
@@ -509,7 +501,6 @@ GRANT CLUSTER ON *.* TO <username>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
 </access_control_improvements>
 ```
-
 
 ### DROP {#drop}
 
@@ -739,7 +730,6 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 * **部分的な取り消しはできません:** 付与したフィルターパターンの一部だけを取り消すことはできません。必要な場合は、付与全体をいったん取り消し、新しいパターンで改めて付与する必要があります。
 * **ワイルドカードを使用した GRANT はできません:** `GRANT READ ON *('regexp')` のような、ワイルドカードのみを用いたパターンは使用できません。必ず特定のソースを指定する必要があります。
-
 
 ### dictGet {#dictget}
 

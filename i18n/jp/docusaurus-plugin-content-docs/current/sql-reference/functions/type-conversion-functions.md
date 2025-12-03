@@ -6,11 +6,7 @@ title: '型変換関数'
 doc_type: 'reference'
 ---
 
-
-
 # 型変換関数 {#type-conversion-functions}
-
-
 
 ## データ変換時の一般的な問題 {#common-issues-with-data-conversion}
 
@@ -54,7 +50,6 @@ SETTINGS cast_keep_nullable = 1
 └──────────────────┴─────────────────────┴──────────────────┘
 ```
 
-
 ## `toString` 関数に関する注意事項 {#to-string-functions}
 
 `toString` ファミリーの関数は、数値、文字列（FixedString は除く）、日付、および日時の間での変換を行うための関数です。
@@ -64,8 +59,6 @@ SETTINGS cast_keep_nullable = 1
 - 日付と数値を相互に変換する場合、日付は Unix エポックの開始からの経過日数に対応します。
 - 日時と数値を相互に変換する場合、日時は Unix エポックの開始からの経過秒数に対応します。
 - `DateTime` 型の引数に対する `toString` 関数は、`Europe/Amsterdam` のようなタイムゾーン名を含む 2 つ目の String 型引数を取ることができます。この場合、時刻は指定されたタイムゾーンに従ってフォーマットされます。
-
-
 
 ## `toDate`/`toDateTime` 関数に関する注意事項 {#to-date-and-date-time-functions}
 
@@ -116,7 +109,6 @@ LIMIT 10
 
 [`toUnixTimestamp`](#toUnixTimestamp) 関数も参照してください。
 
-
 ## toBool {#tobool}
 
 入力値を [`Bool`](../data-types/boolean.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -166,7 +158,6 @@ toBool('true'):          true
 toBool('false'):         false
 toBool('FALSE'):         false
 ```
-
 
 ## toInt8 {#toint8}
 
@@ -234,7 +225,6 @@ toInt8('-8'): -8
 * [`toInt8OrNull`](#toInt8OrNull)。
 * [`toInt8OrDefault`](#toint8ordefault)。
 
-
 ## toInt8OrZero {#toint8orzero}
 
 [`toInt8`](#toint8) と同様に、この関数は入力値を [Int8](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -297,7 +287,6 @@ toInt8OrZero('abc'): 0
 * [`toInt8OrNull`](#toInt8OrNull).
 * [`toInt8OrDefault`](#toint8ordefault).
 
-
 ## toInt8OrNull {#toInt8OrNull}
 
 [`toInt8`](#toint8) と同様に、この関数は入力値を [Int8](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -359,7 +348,6 @@ toInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt8`](#toint8)。
 * [`toInt8OrZero`](#toint8orzero)。
 * [`toInt8OrDefault`](#toint8ordefault)。
-
 
 ## toInt8OrDefault {#toint8ordefault}
 
@@ -428,7 +416,6 @@ toInt8OrDefault('abc', CAST('-1', 'Int8')): -1
 * [`toInt8OrZero`](#toint8orzero)。
 * [`toInt8OrNull`](#toInt8OrNull)。
 
-
 ## toInt16 {#toint16}
 
 入力値を[`Int16`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合には例外をスローします。
@@ -495,7 +482,6 @@ toInt16('-16'):  -16
 * [`toInt16OrNull`](#toint16ornull)。
 * [`toInt16OrDefault`](#toint16ordefault)。
 
-
 ## toInt16OrZero {#toint16orzero}
 
 [`toInt16`](#toint16) と同様に、この関数は入力値を [Int16](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合には `0` を返します。
@@ -558,7 +544,6 @@ toInt16OrZero('abc'): 0
 * [`toInt16OrNull`](#toint16ornull)。
 * [`toInt16OrDefault`](#toint16ordefault)。
 
-
 ## toInt16OrNull {#toint16ornull}
 
 [`toInt16`](#toint16) と同様に、この関数は入力値を [Int16](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合には `NULL` を返します。
@@ -620,7 +605,6 @@ toInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt16`](#toint16).
 * [`toInt16OrZero`](#toint16orzero).
 * [`toInt16OrDefault`](#toint16ordefault).
-
 
 ## toInt16OrDefault {#toint16ordefault}
 
@@ -689,7 +673,6 @@ toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
 * [`toInt16OrZero`](#toint16orzero)。
 * [`toInt16OrNull`](#toint16ornull)。
 
-
 ## toInt32 {#toint32}
 
 入力値を[`Int32`](../data-types/int-uint.md)型の値に変換します。エラー時には例外をスローします。
@@ -756,7 +739,6 @@ toInt32('-32'):  -32
 * [`toInt32OrNull`](#toint32ornull)。
 * [`toInt32OrDefault`](#toint32ordefault)。
 
-
 ## toInt32OrZero {#toint32orzero}
 
 [`toInt32`](#toint32) と同様に、この関数は入力値を [Int32](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -819,7 +801,6 @@ toInt32OrZero('abc'): 0
 * [`toInt32OrNull`](#toint32ornull)。
 * [`toInt32OrDefault`](#toint32ordefault)。
 
-
 ## toInt32OrNull {#toint32ornull}
 
 [`toInt32`](#toint32) と同様に、この関数は入力値を [Int32](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -881,7 +862,6 @@ toInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt32`](#toint32).
 * [`toInt32OrZero`](#toint32orzero).
 * [`toInt32OrDefault`](#toint32ordefault).
-
 
 ## toInt32OrDefault {#toint32ordefault}
 
@@ -950,7 +930,6 @@ toInt32OrDefault('abc', CAST('-1', 'Int32')): -1
 * [`toInt32OrZero`](#toint32orzero).
 * [`toInt32OrNull`](#toint32ornull).
 
-
 ## toInt64 {#toint64}
 
 入力値を[`Int64`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を送出します。
@@ -1017,7 +996,6 @@ toInt64('-64'):  -64
 * [`toInt64OrNull`](#toint64ornull)。
 * [`toInt64OrDefault`](#toint64ordefault)。
 
-
 ## toInt64OrZero {#toint64orzero}
 
 [`toInt64`](#toint64) と同様に、この関数は入力値を [Int64](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -1080,7 +1058,6 @@ toInt64OrZero('abc'): 0
 * [`toInt64OrNull`](#toint64ornull).
 * [`toInt64OrDefault`](#toint64ordefault).
 
-
 ## toInt64OrNull {#toint64ornull}
 
 [`toInt64`](#toint64) と同様に、この関数は入力値を [Int64](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -1142,7 +1119,6 @@ toInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toInt64`](#toint64).
 * [`toInt64OrZero`](#toint64orzero).
 * [`toInt64OrDefault`](#toint64ordefault).
-
 
 ## toInt64OrDefault {#toint64ordefault}
 
@@ -1211,7 +1187,6 @@ toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
 * [`toInt64OrZero`](#toint64orzero).
 * [`toInt64OrNull`](#toint64ornull).
 
-
 ## toInt128 {#toint128}
 
 入力値を [`Int128`](../data-types/int-uint.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -1277,7 +1252,6 @@ toInt128('-128'): -128
 * [`toInt128OrNull`](#toint128ornull)。
 * [`toInt128OrDefault`](#toint128ordefault)。
 
-
 ## toInt128OrZero {#toint128orzero}
 
 [`toInt128`](#toint128) と同様に、この関数は入力値を [Int128](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -1340,7 +1314,6 @@ toInt128OrZero('abc'):  0
 * [`toInt128OrNull`](#toint128ornull)。
 * [`toInt128OrDefault`](#toint128ordefault)。
 
-
 ## toInt128OrNull {#toint128ornull}
 
 [`toInt128`](#toint128) と同様に、この関数は入力値を [Int128](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -1402,7 +1375,6 @@ toInt128OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt128`](#toint128).
 * [`toInt128OrZero`](#toint128orzero).
 * [`toInt128OrDefault`](#toint128ordefault).
-
 
 ## toInt128OrDefault {#toint128ordefault}
 
@@ -1472,7 +1444,6 @@ toInt128OrDefault('abc', CAST('-1', 'Int128')):  -1
 * [`toInt128OrZero`](#toint128orzero)。
 * [`toInt128OrNull`](#toint128ornull)。
 
-
 ## toInt256 {#toint256}
 
 入力値を[`Int256`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -1538,7 +1509,6 @@ toInt256('-256'):   -256
 * [`toInt256OrNull`](#toint256ornull)。
 * [`toInt256OrDefault`](#toint256ordefault)。
 
-
 ## toInt256OrZero {#toint256orzero}
 
 [`toInt256`](#toint256) と同様に、この関数は入力値を [Int256](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -1601,7 +1571,6 @@ toInt256OrZero('abc'):  0
 * [`toInt256OrNull`](#toint256ornull).
 * [`toInt256OrDefault`](#toint256ordefault).
 
-
 ## toInt256OrNull {#toint256ornull}
 
 [`toInt256`](#toint256) と同様に、この関数は入力値を型 [Int256](../data-types/int-uint.md) の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -1663,7 +1632,6 @@ toInt256OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toInt256`](#toint256)。
 * [`toInt256OrZero`](#toint256orzero)。
 * [`toInt256OrDefault`](#toint256ordefault)。
-
 
 ## toInt256OrDefault {#toint256ordefault}
 
@@ -1732,7 +1700,6 @@ toInt256OrDefault('abc', CAST('-1', 'Int256')):  -1
 * [`toInt256OrZero`](#toint256orzero)。
 * [`toInt256OrNull`](#toint256ornull)。
 
-
 ## toUInt8 {#touint8}
 
 入力値を [`UInt8`](../data-types/int-uint.md) 型の値に変換します。エラーが発生した場合には例外をスローします。
@@ -1799,7 +1766,6 @@ toUInt8('8'): 8
 * [`toUInt8OrNull`](#touint8ornull)。
 * [`toUInt8OrDefault`](#touint8ordefault)。
 
-
 ## toUInt8OrZero {#touint8orzero}
 
 [`toUInt8`](#touint8) と同様に、この関数は入力値を [UInt8](../data-types/int-uint.md) 型の値に変換しますが、エラー時には `0` を返します。
@@ -1862,7 +1828,6 @@ toUInt8OrZero('abc'): 0
 * [`toUInt8OrNull`](#touint8ornull)。
 * [`toUInt8OrDefault`](#touint8ordefault)。
 
-
 ## toUInt8OrNull {#touint8ornull}
 
 [`toUInt8`](#touint8) と同様に、この関数は入力値を [UInt8](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -1924,7 +1889,6 @@ toUInt8OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt8`](#touint8)。
 * [`toUInt8OrZero`](#touint8orzero)。
 * [`toUInt8OrDefault`](#touint8ordefault)。
-
 
 ## toUInt8OrDefault {#touint8ordefault}
 
@@ -1993,7 +1957,6 @@ toUInt8OrDefault('abc', CAST('0', 'UInt8')): 0
 * [`toUInt8OrZero`](#touint8orzero)。
 * [`toUInt8OrNull`](#touint8ornull)。
 
-
 ## toUInt16 {#touint16}
 
 入力値を[`UInt16`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -2060,7 +2023,6 @@ toUInt16('16'):  16
 * [`toUInt16OrNull`](#touint16ornull)。
 * [`toUInt16OrDefault`](#touint16ordefault)。
 
-
 ## toUInt16OrZero {#touint16orzero}
 
 [`toUInt16`](#touint16) と同様に、この関数は入力値を [UInt16](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -2123,7 +2085,6 @@ toUInt16OrZero('abc'): 0
 * [`toUInt16OrNull`](#touint16ornull).
 * [`toUInt16OrDefault`](#touint16ordefault).
 
-
 ## toUInt16OrNull {#touint16ornull}
 
 [`toUInt16`](#touint16) と同様に、この関数は入力値を [UInt16](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -2185,7 +2146,6 @@ toUInt16OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt16`](#touint16)。
 * [`toUInt16OrZero`](#touint16orzero)。
 * [`toUInt16OrDefault`](#touint16ordefault)。
-
 
 ## toUInt16OrDefault {#touint16ordefault}
 
@@ -2254,7 +2214,6 @@ toUInt16OrDefault('abc', CAST('0', 'UInt16')): 0
 * [`toUInt16OrZero`](#touint16orzero)。
 * [`toUInt16OrNull`](#touint16ornull)。
 
-
 ## toUInt32 {#touint32}
 
 入力値を [`UInt32`](../data-types/int-uint.md) 型に変換します。エラーが発生した場合は例外をスローします。
@@ -2321,7 +2280,6 @@ toUInt32('32'):  32
 * [`toUInt32OrNull`](#touint32ornull)。
 * [`toUInt32OrDefault`](#touint32ordefault)。
 
-
 ## toUInt32OrZero {#touint32orzero}
 
 [`toUInt32`](#touint32) と同様に、この関数は入力値を [UInt32](../data-types/int-uint.md) 型に変換しますが、エラーが発生した場合は `0` を返します。
@@ -2385,7 +2343,6 @@ toUInt32OrZero('abc'): 0
 * [`toUInt32OrNull`](#touint32ornull)。
 * [`toUInt32OrDefault`](#touint32ordefault)。
 
-
 ## toUInt32OrNull {#touint32ornull}
 
 [`toUInt32`](#touint32) と同様に、この関数は入力値を型 [UInt32](../data-types/int-uint.md) の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -2448,7 +2405,6 @@ toUInt32OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt32`](#touint32)。
 * [`toUInt32OrZero`](#touint32orzero)。
 * [`toUInt32OrDefault`](#touint32ordefault)。
-
 
 ## toUInt32OrDefault {#touint32ordefault}
 
@@ -2517,7 +2473,6 @@ toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
 * [`toUInt32OrZero`](#touint32orzero)
 * [`toUInt32OrNull`](#touint32ornull)
 
-
 ## toUInt64 {#touint64}
 
 入力値を [`UInt64`](../data-types/int-uint.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -2584,7 +2539,6 @@ toUInt64('64'):  64
 * [`toUInt64OrNull`](#touint64ornull)。
 * [`toUInt64OrDefault`](#touint64ordefault)。
 
-
 ## toUInt64OrZero {#touint64orzero}
 
 [`toUInt64`](#touint64) と同様に、この関数は入力値を [UInt64](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -2647,7 +2601,6 @@ toUInt64OrZero('abc'): 0
 * [`toUInt64OrNull`](#touint64ornull)。
 * [`toUInt64OrDefault`](#touint64ordefault)。
 
-
 ## toUInt64OrNull {#touint64ornull}
 
 [`toUInt64`](#touint64) と同様に、この関数は入力値を [UInt64](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -2709,7 +2662,6 @@ toUInt64OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt64`](#touint64)。
 * [`toUInt64OrZero`](#touint64orzero)。
 * [`toUInt64OrDefault`](#touint64ordefault)。
-
 
 ## toUInt64OrDefault {#touint64ordefault}
 
@@ -2778,7 +2730,6 @@ toUInt64OrDefault('abc', CAST('0', 'UInt64')): 0
 * [`toUInt64OrZero`](#touint64orzero).
 * [`toUInt64OrNull`](#touint64ornull).
 
-
 ## toUInt128 {#touint128}
 
 入力値を [`UInt128`](../data-types/int-uint.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -2844,7 +2795,6 @@ toUInt128('128'): 128
 * [`toUInt128OrNull`](#touint128ornull)。
 * [`toUInt128OrDefault`](#touint128ordefault)。
 
-
 ## toUInt128OrZero {#touint128orzero}
 
 [`toUInt128`](#touint128) と同様に、この関数は入力値を [UInt128](../data-types/int-uint.md) 型の値に変換しますが、エラー時には `0` を返します。
@@ -2907,7 +2857,6 @@ toUInt128OrZero('abc'): 0
 * [`toUInt128OrNull`](#touint128ornull)。
 * [`toUInt128OrDefault`](#touint128ordefault)。
 
-
 ## toUInt128OrNull {#touint128ornull}
 
 [`toUInt128`](#touint128) と同様に、この関数は入力値を [UInt128](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合には `NULL` を返します。
@@ -2969,7 +2918,6 @@ toUInt128OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt128`](#touint128).
 * [`toUInt128OrZero`](#touint128orzero).
 * [`toUInt128OrDefault`](#touint128ordefault).
-
 
 ## toUInt128OrDefault {#touint128ordefault}
 
@@ -3039,7 +2987,6 @@ toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
 * [`toUInt128OrZero`](#touint128orzero)。
 * [`toUInt128OrNull`](#touint128ornull)。
 
-
 ## toUInt256 {#touint256}
 
 入力値を[`UInt256`](../data-types/int-uint.md)型の値に変換します。エラーが発生すると例外をスローします。
@@ -3105,7 +3052,6 @@ toUInt256('256'):   256
 * [`toUInt256OrNull`](#touint256ornull)。
 * [`toUInt256OrDefault`](#touint256ordefault)。
 
-
 ## toUInt256OrZero {#touint256orzero}
 
 [`toUInt256`](#touint256) と同様に、この関数は入力値を [UInt256](../data-types/int-uint.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -3168,7 +3114,6 @@ toUInt256OrZero('abc'): 0
 * [`toUInt256OrNull`](#touint256ornull)。
 * [`toUInt256OrDefault`](#touint256ordefault)。
 
-
 ## toUInt256OrNull {#touint256ornull}
 
 [`toUInt256`](#touint256) と同様に、この関数は入力値を型 [UInt256](../data-types/int-uint.md) の値に変換しますが、エラーが発生した場合には `NULL` を返します。
@@ -3230,7 +3175,6 @@ toUInt256OrNull('abc'): ᴺᵁᴸᴸ
 * [`toUInt256`](#touint256).
 * [`toUInt256OrZero`](#touint256orzero).
 * [`toUInt256OrDefault`](#touint256ordefault).
-
 
 ## toUInt256OrDefault {#touint256ordefault}
 
@@ -3299,7 +3243,6 @@ toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
 * [`toUInt256OrZero`](#touint256orzero).
 * [`toUInt256OrNull`](#touint256ornull).
 
-
 ## toFloat32 {#tofloat32}
 
 入力値を [`Float32`](../data-types/float.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -3357,7 +3300,6 @@ toFloat32('NaN'):  nan
 * [`toFloat32OrNull`](#tofloat32ornull)。
 * [`toFloat32OrDefault`](#tofloat32ordefault)。
 
-
 ## toFloat32OrZero {#tofloat32orzero}
 
 [`toFloat32`](#tofloat32) と同様に、この関数は入力値を [Float32](../data-types/float.md) 型の値に変換しますが、エラー発生時には `0` を返します。
@@ -3410,7 +3352,6 @@ toFloat32OrZero('abc'):  0
 * [`toFloat32OrNull`](#tofloat32ornull).
 * [`toFloat32OrDefault`](#tofloat32ordefault).
 
-
 ## toFloat32OrNull {#tofloat32ornull}
 
 [`toFloat32`](#tofloat32) と同様に、この関数は入力値を [Float32](../data-types/float.md) 型の値に変換しますが、エラーが発生した場合には `NULL` を返します。
@@ -3462,7 +3403,6 @@ toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat32`](#tofloat32).
 * [`toFloat32OrZero`](#tofloat32orzero).
 * [`toFloat32OrDefault`](#tofloat32ordefault).
-
 
 ## toFloat32OrDefault {#tofloat32ordefault}
 
@@ -3521,7 +3461,6 @@ toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
 * [`toFloat32OrZero`](#tofloat32orzero).
 * [`toFloat32OrNull`](#tofloat32ornull).
 
-
 ## toFloat64 {#tofloat64}
 
 入力値を [`Float64`](../data-types/float.md) 型の値に変換します。エラーが発生した場合には例外をスローします。
@@ -3579,7 +3518,6 @@ toFloat64('NaN'):  nan
 * [`toFloat64OrNull`](#tofloat64ornull).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
-
 ## toFloat64OrZero {#tofloat64orzero}
 
 [`toFloat64`](#tofloat64) と同様に、この関数は入力値を [Float64](../data-types/float.md) 型の値に変換しますが、エラー時には `0` を返します。
@@ -3632,7 +3570,6 @@ toFloat64OrZero('abc'):  0
 * [`toFloat64OrNull`](#tofloat64ornull).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
 
-
 ## toFloat64OrNull {#tofloat64ornull}
 
 [`toFloat64`](#tofloat64) と同様に、この関数は入力値を [Float64](../data-types/float.md) 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
@@ -3684,7 +3621,6 @@ toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
 * [`toFloat64`](#tofloat64).
 * [`toFloat64OrZero`](#tofloat64orzero).
 * [`toFloat64OrDefault`](#tofloat64ordefault).
-
 
 ## toFloat64OrDefault {#tofloat64ordefault}
 
@@ -3743,7 +3679,6 @@ toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
 * [`toFloat64OrZero`](#tofloat64orzero).
 * [`toFloat64OrNull`](#tofloat64ornull).
 
-
 ## toBFloat16 {#tobfloat16}
 
 入力値を [`BFloat16`](/sql-reference/data-types/float#bfloat16) 型に変換します。
@@ -3790,7 +3725,6 @@ SELECT toBFloat16('42.7');
 
 * [`toBFloat16OrZero`](#tobfloat16orzero)。
 * [`toBFloat16OrNull`](#tobfloat16ornull)。
-
 
 ## toBFloat16OrZero {#tobfloat16orzero}
 
@@ -3845,7 +3779,6 @@ SELECT toBFloat16OrZero('12.3456789');
 * [`toBFloat16`](#tobfloat16)。
 * [`toBFloat16OrNull`](#tobfloat16ornull)。
 
-
 ## toBFloat16OrNull {#tobfloat16ornull}
 
 文字列の入力値を [`BFloat16`](/sql-reference/data-types/float#bfloat16) 型の値に変換します。
@@ -3898,7 +3831,6 @@ SELECT toBFloat16OrNull('12.3456789');
 
 * [`toBFloat16`](#tobfloat16)。
 * [`toBFloat16OrZero`](#tobfloat16orzero)。
-
 
 ## toDate {#todate}
 
@@ -4003,7 +3935,6 @@ SELECT toDate(10000000000.)
 
 関数 `toDate` は、別の表記でも記述できます。
 
-
 ```sql
 SELECT
     now() AS time,
@@ -4017,7 +3948,6 @@ SELECT
 │ 2022-12-30 13:54:58 │    2022-12-30 │  2022-12-30 │          2022-12-30 │
 └─────────────────────┴───────────────┴─────────────┴─────────────────────┘
 ```
-
 
 ## toDateOrZero {#todateorzero}
 
@@ -4039,7 +3969,6 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 └────────────────────────────┴──────────────────┘
 ```
 
-
 ## toDateOrNull {#todateornull}
 
 [toDate](#todate) と同様ですが、無効な引数を受け取った場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
@@ -4059,7 +3988,6 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 │                 2022-12-30 │             ᴺᵁᴸᴸ │
 └────────────────────────────┴──────────────────┘
 ```
-
 
 ## toDateOrDefault {#todateordefault}
 
@@ -4086,7 +4014,6 @@ SELECT toDateOrDefault('2022-12-30'), toDateOrDefault('', '2023-01-01'::Date);
 │                    2022-12-30 │                                      2023-01-01 │
 └───────────────────────────────┴─────────────────────────────────────────────────┘
 ```
-
 
 ## toDateTime {#todatetime}
 
@@ -4129,7 +4056,6 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 └───────────────────────────────────┴───────────────────────────────┘
 ```
 
-
 ## toDateTimeOrZero {#todatetimeorzero}
 
 [toDateTime](#todatetime) と同様ですが、無効な引数を受け取った場合は [DateTime](../data-types/datetime.md) の最小値を返します。[String](../data-types/string.md) 型の引数のみがサポートされています。
@@ -4150,7 +4076,6 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 └─────────────────────────────────────────┴──────────────────────┘
 ```
 
-
 ## toDateTimeOrNull {#todatetimeornull}
 
 [toDateTime](#todatetime) と同様ですが、無効な引数が渡された場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
@@ -4170,7 +4095,6 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 │                     2022-12-30 13:44:17 │                 ᴺᵁᴸᴸ │
 └─────────────────────────────────────────┴──────────────────────┘
 ```
-
 
 ## toDateTimeOrDefault {#todatetimeordefault}
 
@@ -4197,7 +4121,6 @@ SELECT toDateTimeOrDefault('2022-12-30 13:44:17'), toDateTimeOrDefault('', 'UTC'
 │                        2022-12-30 13:44:17 │                                                     2023-01-01 00:00:00 │
 └────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## toDate32 {#todate32}
 
@@ -4255,7 +4178,6 @@ SELECT toDate32(toDate('1899-01-01')) AS value, toTypeName(value);
 └────────────┴────────────────────────────────────────────┘
 ```
 
-
 ## toDate32OrZero {#todate32orzero}
 
 [toDate32](#todate32) と同様ですが、無効な引数を受け取った場合は [Date32](../data-types/date32.md) の最小値を返します。
@@ -4276,7 +4198,6 @@ SELECT toDate32OrZero('1899-01-01'), toDate32OrZero('');
 └──────────────────────────────┴────────────────────┘
 ```
 
-
 ## toDate32OrNull {#todate32ornull}
 
 [toDate32](#todate32) と同様ですが、無効な引数が渡された場合は `NULL` を返します。
@@ -4296,7 +4217,6 @@ SELECT toDate32OrNull('1955-01-01'), toDate32OrNull('');
 │                   1955-01-01 │               ᴺᵁᴸᴸ │
 └──────────────────────────────┴────────────────────┘
 ```
-
 
 ## toDate32OrDefault {#todate32ordefault}
 
@@ -4319,7 +4239,6 @@ SELECT
 │                                              1930-01-01 │                                                2020-01-01 │
 └─────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
-
 
 ## toDateTime64 {#todatetime64}
 
@@ -4391,7 +4310,6 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 └─────────────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## toDateTime64OrZero {#todatetime64orzero}
 
 [toDateTime64](#todatetime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、無効な引数を受け取った場合は [DateTime64](../data-types/datetime64.md) の最小値を返します。
@@ -4433,7 +4351,6 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 * [toDateTime64](#todatetime64)。
 * [toDateTime64OrNull](#todatetime64ornull)。
 * [toDateTime64OrDefault](#todatetime64ordefault)。
-
 
 ## toDateTime64OrNull {#todatetime64ornull}
 
@@ -4478,7 +4395,6 @@ SELECT
 * [toDateTime64](#todatetime64)
 * [toDateTime64OrZero](#todatetime64orzero)
 * [toDateTime64OrDefault](#todatetime64ordefault)
-
 
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
@@ -4526,7 +4442,6 @@ SELECT
 * [toDateTime64](#todatetime64)。
 * [toDateTime64OrZero](#todatetime64orzero)。
 * [toDateTime64OrNull](#todatetime64ornull)。
-
 
 ## toDecimal32 {#todecimal32}
 
@@ -4600,7 +4515,6 @@ type_c: Decimal(9, 3)
 * [`toDecimal32OrNull`](#todecimal32ornull)。
 * [`toDecimal32OrDefault`](#todecimal32ordefault)。
 
-
 ## toDecimal32OrZero {#todecimal32orzero}
 
 [`toDecimal32`](#todecimal32) と同様に、この関数は入力値を [Decimal(9, S)](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -4666,7 +4580,6 @@ toTypeName(b): Decimal(9, 5)
 * [`toDecimal32OrNull`](#todecimal32ornull).
 * [`toDecimal32OrDefault`](#todecimal32ordefault).
 
-
 ## toDecimal32OrNull {#todecimal32ornull}
 
 [`toDecimal32`](#todecimal32) と同様に、この関数は入力値を [Nullable(Decimal(9, S))](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合には `0` を返します。
@@ -4731,7 +4644,6 @@ toTypeName(b): Nullable(Decimal(9, 5))
 * [`toDecimal32`](#todecimal32)。
 * [`toDecimal32OrZero`](#todecimal32orzero)。
 * [`toDecimal32OrDefault`](#todecimal32ordefault)。
-
 
 ## toDecimal32OrDefault {#todecimal32ordefault}
 
@@ -4805,7 +4717,6 @@ toTypeName(b): Decimal(9, 0)
 * [`toDecimal32OrZero`](#todecimal32orzero).
 * [`toDecimal32OrNull`](#todecimal32ornull).
 
-
 ## toDecimal64 {#todecimal64}
 
 入力値をスケール `S` を持つ [`Decimal(18, S)`](../data-types/decimal.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -4878,7 +4789,6 @@ type_c: Decimal(18, 3)
 * [`toDecimal64OrNull`](#todecimal64ornull)。
 * [`toDecimal64OrDefault`](#todecimal64ordefault)。
 
-
 ## toDecimal64OrZero {#todecimal64orzero}
 
 [`toDecimal64`](#todecimal64) と同様に、この関数は入力値を [Decimal(18, S)](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -4944,7 +4854,6 @@ toTypeName(b): Decimal(18, 18)
 * [`toDecimal64OrNull`](#todecimal64ornull).
 * [`toDecimal64OrDefault`](#todecimal64ordefault).
 
-
 ## toDecimal64OrNull {#todecimal64ornull}
 
 [`toDecimal64`](#todecimal64) と同様に、この関数は入力値を [Nullable(Decimal(18, S))](../data-types/decimal.md) 型の値に変換します。ただし、エラーが発生した場合は `0` を返します。
@@ -5009,7 +4918,6 @@ toTypeName(b): Nullable(Decimal(18, 18))
 * [`toDecimal64`](#todecimal64)。
 * [`toDecimal64OrZero`](#todecimal64orzero)。
 * [`toDecimal64OrDefault`](#todecimal64ordefault)。
-
 
 ## toDecimal64OrDefault {#todecimal64ordefault}
 
@@ -5083,7 +4991,6 @@ toTypeName(b): Decimal(18, 0)
 * [`toDecimal64OrZero`](#todecimal64orzero)。
 * [`toDecimal64OrNull`](#todecimal64ornull)。
 
-
 ## toDecimal128 {#todecimal128}
 
 入力値をスケール `S` を持つ型 [`Decimal(38, S)`](../data-types/decimal.md) の値に変換します。エラーが発生した場合は例外を送出します。
@@ -5156,7 +5063,6 @@ type_c: Decimal(38, 3)
 * [`toDecimal128OrNull`](#todecimal128ornull).
 * [`toDecimal128OrDefault`](#todecimal128ordefault).
 
-
 ## toDecimal128OrZero {#todecimal128orzero}
 
 [`toDecimal128`](#todecimal128) と同様に、この関数は入力値を [Decimal(38, S)](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -5222,7 +5128,6 @@ toTypeName(b): Decimal(38, 38)
 * [`toDecimal128OrNull`](#todecimal128ornull)。
 * [`toDecimal128OrDefault`](#todecimal128ordefault)。
 
-
 ## toDecimal128OrNull {#todecimal128ornull}
 
 [`toDecimal128`](#todecimal128) と同様に、この関数は入力値を [Nullable(Decimal(38, S))](../data-types/decimal.md) 型の値に変換します。ただし、エラーが発生した場合は `0` を返します。
@@ -5287,7 +5192,6 @@ toTypeName(b): Nullable(Decimal(38, 38))
 * [`toDecimal128`](#todecimal128)。
 * [`toDecimal128OrZero`](#todecimal128orzero)。
 * [`toDecimal128OrDefault`](#todecimal128ordefault)。
-
 
 ## toDecimal128OrDefault {#todecimal128ordefault}
 
@@ -5361,7 +5265,6 @@ toTypeName(b): Decimal(38, 0)
 * [`toDecimal128OrZero`](#todecimal128orzero).
 * [`toDecimal128OrNull`](#todecimal128ornull).
 
-
 ## toDecimal256 {#todecimal256}
 
 入力値を、スケール `S` を持つ [`Decimal(76, S)`](../data-types/decimal.md) 型の値に変換します。エラーが発生した場合は例外をスローします。
@@ -5434,7 +5337,6 @@ type_c: Decimal(76, 3)
 * [`toDecimal256OrNull`](#todecimal256ornull)。
 * [`toDecimal256OrDefault`](#todecimal256ordefault)。
 
-
 ## toDecimal256OrZero {#todecimal256orzero}
 
 [`toDecimal256`](#todecimal256) と同様に、この関数は入力値を [Decimal(76, S)](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合は `0` を返します。
@@ -5500,7 +5402,6 @@ toTypeName(b): Decimal(76, 76)
 * [`toDecimal256OrNull`](#todecimal256ornull)。
 * [`toDecimal256OrDefault`](#todecimal256ordefault)。
 
-
 ## toDecimal256OrNull {#todecimal256ornull}
 
 [`toDecimal256`](#todecimal256) と同様に、この関数は入力値を [Nullable(Decimal(76, S))](../data-types/decimal.md) 型の値に変換しますが、エラーが発生した場合には `0` を返します。
@@ -5565,7 +5466,6 @@ toTypeName(b): Nullable(Decimal(76, 76))
 * [`toDecimal256`](#todecimal256).
 * [`toDecimal256OrZero`](#todecimal256orzero).
 * [`toDecimal256OrDefault`](#todecimal256ordefault).
-
 
 ## toDecimal256OrDefault {#todecimal256ordefault}
 
@@ -5639,7 +5539,6 @@ toTypeName(b): Decimal(76, 0)
 * [`toDecimal256OrZero`](#todecimal256orzero).
 * [`toDecimal256OrNull`](#todecimal256ornull).
 
-
 ## toString {#tostring}
 
 値を文字列表現に変換します。
@@ -5684,7 +5583,6 @@ LIMIT 10;
 └─────────────────────┴───────────────────┴─────────────────────┘
 ```
 
-
 ## toFixedString {#tofixedstring}
 
 [String](../data-types/string.md) 型の引数を [FixedString(N)](../data-types/fixedstring.md) 型（長さ N の固定長文字列）に変換します。
@@ -5720,7 +5618,6 @@ SELECT toFixedString('foo', 8) AS s;
 │ foo\0\0\0\0\0 │
 └───────────────┘
 ```
-
 
 ## toStringCutToZero {#tostringcuttozero}
 
@@ -5762,7 +5659,6 @@ SELECT toFixedString('foo\0bar', 8) AS s, toStringCutToZero(s) AS s_cut;
 └────────────┴───────┘
 ```
 
-
 ## toDecimalString {#todecimalstring}
 
 数値を、出力時の小数桁数をユーザーが指定できる `String` 型の値に変換します。
@@ -5800,7 +5696,6 @@ SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 │ 64.32000                                    │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## reinterpretAsUInt8 {#reinterpretasuint8}
 
@@ -5840,7 +5735,6 @@ SELECT
 └───┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt16 {#reinterpretasuint16}
 
 入力値を `UInt16` 型の値として扱い、バイト列の再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとは試みません。対象の型が入力の値を表現できない場合、出力される値は意味を持ちません。
@@ -5878,7 +5772,6 @@ SELECT
 │ 1 │ UInt8         │   1 │ UInt16          │
 └───┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsUInt32 {#reinterpretasuint32}
 
@@ -5918,7 +5811,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt64 {#reinterpretasuint64}
 
 入力値を `UInt64` 型の値として扱うことで、バイト列を再解釈します。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとは試みません。対象の型が入力値を表現できない場合、出力結果は意味を持ちません。
@@ -5956,7 +5848,6 @@ SELECT
 │ 257 │ UInt32        │ 257 │ UInt64          │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsUInt128 {#reinterpretasuint128}
 
@@ -5996,7 +5887,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsUInt256 {#reinterpretasuint256}
 
 入力値を `UInt256` 型の値として扱い、バイト単位で再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとはしません。対象の型が入力値を表現できない場合、出力は無意味な値になります。
@@ -6034,7 +5924,6 @@ SELECT
 │ 257 │ UInt128       │ 257 │ UInt256         │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt8 {#reinterpretasint8}
 
@@ -6074,7 +5963,6 @@ SELECT
 └───┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt16 {#reinterpretasint16}
 
 入力値を `Int16` 型の値として扱うことで、バイトレベルで再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとはしません。対象の型が入力の型を表現できない場合、出力は意味のない値になります。
@@ -6112,7 +6000,6 @@ SELECT
 │ 1 │ Int8          │   1 │ Int16           │
 └───┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt32 {#reinterpretasint32}
 
@@ -6152,7 +6039,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt64 {#reinterpretasint64}
 
 入力値を `Int64` 型の値として扱うことで、バイト列として再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとはしません。対象の型で入力値を表現できない場合、出力は意味のない値になります。
@@ -6190,7 +6076,6 @@ SELECT
 │ 257 │ Int32         │ 257 │ Int64           │
 └─────┴───────────────┴─────┴─────────────────┘
 ```
-
 
 ## reinterpretAsInt128 {#reinterpretasint128}
 
@@ -6230,7 +6115,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsInt256 {#reinterpretasint256}
 
 入力値を `Int256` 型の値として解釈し直し、バイト列の再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値の保持を試みません。対象の型が入力の型を表現できない場合、出力結果は無意味な値になります。
@@ -6269,7 +6153,6 @@ SELECT
 └─────┴───────────────┴─────┴─────────────────┘
 ```
 
-
 ## reinterpretAsFloat32 {#reinterpretasfloat32}
 
 入力値を Float32 型の値として解釈し、バイト列の再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとはしません。対象の型が入力の型を表現できない場合、出力には意味がありません。
@@ -6304,7 +6187,6 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x);
 └────────────┴─────────────────────────┘
 ```
 
-
 ## reinterpretAsFloat64 {#reinterpretasfloat64}
 
 入力値を `Float64` 型の値として扱い、バイト列の再解釈を行います。[`CAST`](#cast) と異なり、この関数は元の値を保持しようとはしません。対象の型が入力値の型を表現できない場合、出力は無意味な値になります。
@@ -6338,7 +6220,6 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x);
 │ 4596373779694328218 │                     0.2 │
 └─────────────────────┴─────────────────────────┘
 ```
-
 
 ## reinterpretAsDate {#reinterpretasdate}
 
@@ -6380,7 +6261,6 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 └───────────────────────┴────────────────────────┘
 ```
 
-
 ## reinterpretAsDateTime {#reinterpretasdatetime}
 
 これらの関数は文字列を受け取り、その文字列の先頭にあるバイト列をホスト順序（リトルエンディアン）の数値として解釈します。Unixエポックの開始時点からの経過秒数として解釈した日時を返します。
@@ -6421,7 +6301,6 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 └───────────────────────────┴────────────────────────────┘
 ```
 
-
 ## reinterpretAsString {#reinterpretasstring}
 
 この関数は数値、日付、または日時を受け取り、対応する値をホストのバイトオーダー（リトルエンディアン）で表したバイト列を含む文字列を返します。末尾の null バイトは削除されます。例えば、UInt32 型の値 255 は 1 バイト長の文字列になります。
@@ -6458,7 +6337,6 @@ SELECT
 └────────────────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-
 ## reinterpretAsFixedString {#reinterpretasfixedstring}
 
 この関数は数値、日付、または日時を受け取り、対応する値をホストのバイトオーダー（リトルエンディアン）で表すバイト列を含む `FixedString` を返します。末尾にあるヌルバイトは削除されます。たとえば、`UInt32` 型の値 255 は、長さ 1 バイトの `FixedString` になります。
@@ -6494,7 +6372,6 @@ SELECT
 │ A                                                           │ A                                              │
 └─────────────────────────────────────────────────────────────┴────────────────────────────────────────────────┘
 ```
-
 
 ## reinterpretAsUUID {#reinterpretasuuid}
 
@@ -6556,7 +6433,6 @@ SELECT uuid = uuid2;
 └─────────────────────┘
 ```
 
-
 ## reinterpret {#reinterpret}
 
 `x` の値のメモリ上のバイト列をそのまま利用し、それを変換先の型として再解釈します。
@@ -6607,7 +6483,6 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 │ [5.626,6.626,5.626,6.626]  │
 └────────────────────────────┘
 ```
-
 
 ## CAST {#cast}
 
@@ -6714,7 +6589,6 @@ SELECT toTypeName(CAST(x, 'Nullable(UInt16)')) FROM t_null;
 
 * [cast&#95;keep&#95;nullable](../../operations/settings/settings.md/#cast_keep_nullable) 設定
 
-
 ## accurateCast(x, T) {#accuratecastx-t}
 
 `x` をデータ型 `T` に変換します。
@@ -6748,7 +6622,6 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 ```response
 コード: 70. DB::Exception: localhost:9000 から受信。DB::Exception: Int8 列の値を UInt8 型に安全に変換できません: accurateCast(-1, 'UInt8') AS uint8 の処理中。
 ```
-
 
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
 
@@ -6801,7 +6674,6 @@ SELECT
 │  ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ         │
 └───────┴──────┴──────────────┘
 ```
-
 
 ## accurateCastOrDefault(x, T[, default&#95;value]) {#accuratecastordefaultx-t-default_value}
 
@@ -6859,7 +6731,6 @@ SELECT
 └───────┴───────────────┴──────┴──────────────┴──────────────┴──────────────────────┘
 ```
 
-
 ## toInterval {#toInterval}
 
 数値とインターバル単位（例：&#39;second&#39; や &#39;day&#39;）から [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型の値を作成します。
@@ -6907,7 +6778,6 @@ SELECT toDateTime('2025-01-01 00:00:00') + toInterval(1, 'hour')
 └────────────────────────────────────────────────────────────┘
 ```
 
-
 ## toIntervalYear {#tointervalyear}
 
 `n` 年を表すインターバル値を、データ型 [IntervalYear](../data-types/special-data-types/interval.md) として返します。
@@ -6944,7 +6814,6 @@ SELECT date + interval_to_year AS result
 │ 2025-06-15 │
 └────────────┘
 ```
-
 
 ## toIntervalQuarter {#tointervalquarter}
 
@@ -6983,7 +6852,6 @@ SELECT date + interval_to_quarter AS result
 └────────────┘
 ```
 
-
 ## toIntervalMonth {#tointervalmonth}
 
 データ型 [IntervalMonth](../data-types/special-data-types/interval.md) の `n` か月の間隔を返します。
@@ -7020,7 +6888,6 @@ SELECT date + interval_to_month AS result
 │ 2024-07-15 │
 └────────────┘
 ```
-
 
 ## toIntervalWeek {#tointervalweek}
 
@@ -7059,7 +6926,6 @@ SELECT date + interval_to_week AS result
 └────────────┘
 ```
 
-
 ## toIntervalDay {#tointervalday}
 
 `n` 日の時間間隔を表す [IntervalDay](../data-types/special-data-types/interval.md) 型の値を返します。
@@ -7096,7 +6962,6 @@ SELECT date + interval_to_days AS result
 │ 2024-06-20 │
 └────────────┘
 ```
-
 
 ## toIntervalHour {#tointervalhour}
 
@@ -7135,7 +7000,6 @@ SELECT date + interval_to_hours AS result
 └─────────────────────┘
 ```
 
-
 ## toIntervalMinute {#tointervalminute}
 
 データ型 [IntervalMinute](../data-types/special-data-types/interval.md) の `n` 分を表す間隔を返します。
@@ -7172,7 +7036,6 @@ Result: 結果:
 │ 2024-06-15 00:12:00 │
 └─────────────────────┘
 ```
-
 
 ## toIntervalSecond {#tointervalsecond}
 
@@ -7211,7 +7074,6 @@ SELECT date + interval_to_seconds AS result
 └─────────────────────┘
 ```
 
-
 ## toIntervalMillisecond {#tointervalmillisecond}
 
 `n` ミリ秒の間隔をデータ型 [IntervalMillisecond](../data-types/special-data-types/interval.md) で返します。
@@ -7248,7 +7110,6 @@ SELECT date + interval_to_milliseconds AS result
 │ 2024-06-15 00:00:00.030 │
 └─────────────────────────┘
 ```
-
 
 ## toIntervalMicrosecond {#tointervalmicrosecond}
 
@@ -7287,7 +7148,6 @@ SELECT date + interval_to_microseconds AS result
 └────────────────────────────┘
 ```
 
-
 ## toIntervalNanosecond {#tointervalnanosecond}
 
 `n` ナノ秒のインターバルをデータ型 [IntervalNanosecond](../data-types/special-data-types/interval.md) で返します。
@@ -7324,7 +7184,6 @@ SELECT date + interval_to_nanoseconds AS result
 │ 2024-06-15 00:00:00.000000030 │
 └───────────────────────────────┘
 ```
-
 
 ## parseDateTime {#parsedatetime}
 
@@ -7366,20 +7225,15 @@ SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 別名：`TO_TIMESTAMP`
 
-
 ## parseDateTimeOrZero {#parsedatetimeorzero}
 
 [parseDateTime](#parsedatetime) と同様ですが、処理できない日付形式に遭遇した場合は 0 の日時値を返します。
-
-
 
 ## parseDateTimeOrNull {#parsedatetimeornull}
 
 [parseDateTime](#parsedatetime) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 
 エイリアス: `str_to_date`。
-
-
 
 ## parseDateTimeInJodaSyntax {#parsedatetimeinjodasyntax}
 
@@ -7421,18 +7275,13 @@ SELECT parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', '
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## parseDateTimeInJodaSyntaxOrZero {#parsedatetimeinjodasyntaxorzero}
 
 [parseDateTimeInJodaSyntax](#parsedatetimeinjodasyntax) と同様ですが、処理できない日付形式に当たった場合は、ゼロ値の日付を返します。
 
-
-
 ## parseDateTimeInJodaSyntaxOrNull {#parsedatetimeinjodasyntaxornull}
 
 [parseDateTimeInJodaSyntax](#parsedatetimeinjodasyntax) と同様ですが、処理できない日付形式を検出した場合は `NULL` を返します。
-
-
 
 ## parseDateTime64 {#parsedatetime64}
 
@@ -7455,18 +7304,13 @@ parseDateTime64(str[, format[, timezone]])
 MySQL スタイルのフォーマット文字列に従って、入力文字列から解析された [DateTime64](../data-types/datetime64.md) 値を返します。
 返される値の精度は 6 桁です。
 
-
 ## parseDateTime64OrZero {#parsedatetime64orzero}
 
 [parseDateTime64](#parsedatetime64) と同様ですが、処理できない日付形式に遭遇した場合は、ゼロの日時を返します。
 
-
-
 ## parseDateTime64OrNull {#parsedatetime64ornull}
 
 [parseDateTime64](#parsedatetime64) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
-
-
 
 ## parseDateTime64InJodaSyntax {#parsedatetime64injodasyntax}
 
@@ -7489,18 +7333,13 @@ parseDateTime64InJodaSyntax(str[, format[, timezone]])
 入力文字列を Joda スタイルのフォーマット文字列に従って解析した [DateTime64](../data-types/datetime64.md) 値を返します。
 返される値の精度は、フォーマット文字列内の `S` プレースホルダーの数に等しくなります（ただし最大 6 まで）。
 
-
 ## parseDateTime64InJodaSyntaxOrZero {#parsedatetime64injodasyntaxorzero}
 
 [parseDateTime64InJodaSyntax](#parsedatetime64injodasyntax) と同様ですが、処理できない日付フォーマットに遭遇した場合は、ゼロの日時を返します。
 
-
-
 ## parseDateTime64InJodaSyntaxOrNull {#parsedatetime64injodasyntaxornull}
 
 [parseDateTime64InJodaSyntax](#parsedatetime64injodasyntax) と同様ですが、処理できない日付形式が指定された場合は `NULL` を返します。
-
-
 
 ## parseDateTimeBestEffort {#parsedatetimebesteffort}
 
@@ -7607,7 +7446,6 @@ SELECT toYear(now()) AS year, parseDateTimeBestEffort('10 20:19');
 
 結果:
 
-
 ```response
 ┌─year─┬─parseDateTimeBestEffort('10 20:19')─┐
 │ 2023 │                 2023-01-10 20:19:00 │
@@ -7644,38 +7482,27 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 * [@xkcd による ISO 8601 に関するアナウンス](https://xkcd.com/1179/)
 * [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 
-
 ## parseDateTimeBestEffortUS {#parsedatetimebesteffortus}
 
 この関数は、`YYYY-MM-DD hh:mm:ss` のような ISO の日付形式や、`YYYYMMDDhhmmss`、`YYYY-MM`、`DD hh`、`YYYY-MM-DD hh:mm:ss ±h:mm` など、月と日付の要素を曖昧さなしに抽出できるその他の日付形式に対しては、[parseDateTimeBestEffort](#parsedatetimebesteffort) と同様に動作します。`MM/DD/YYYY`、`MM-DD-YYYY`、`MM-DD-YY` のように月と日付の要素を一意に特定できない場合には、`DD/MM/YYYY`、`DD-MM-YYYY`、`DD-MM-YY` ではなく、米国式の日付形式を優先します。ただし例外として、月の値が 12 より大きく 31 以下の場合には、この関数は [parseDateTimeBestEffort](#parsedatetimebesteffort) の動作にフォールバックします。例えば、`15/08/2020` は `2020-08-15` として解析されます。
-
-
 
 ## parseDateTimeBestEffortOrNull {#parsedatetimebesteffortornull}
 ## parseDateTime32BestEffortOrNull {#parsedatetime32besteffortornull}
 
 [parseDateTimeBestEffort](#parsedatetimebesteffort) と同様ですが、処理できない日付形式に出会った場合は `NULL` を返します。
 
-
-
 ## parseDateTimeBestEffortOrZero {#parsedatetimebesteffortorzero}
 ## parseDateTime32BestEffortOrZero {#parsedatetime32besteffortorzero}
 
 [parseDateTimeBestEffort](#parsedatetimebesteffort) と同様ですが、処理できない形式の日付に遭遇した場合は、ゼロ日付またはゼロ日時を返します。
 
-
-
 ## parseDateTimeBestEffortUSOrNull {#parsedatetimebesteffortusornull}
 
 [parseDateTimeBestEffortUS](#parsedatetimebesteffortus) 関数と同様ですが、処理できない日付形式を検出した場合は `NULL` を返します。
 
-
-
 ## parseDateTimeBestEffortUSOrZero {#parsedatetimebesteffortusorzero}
 
 [parseDateTimeBestEffortUS](#parsedatetimebesteffortus) 関数と同様ですが、処理できない形式の日付を検出した場合に、ゼロ日付（`1970-01-01`）または時刻付きゼロ日付（`1970-01-01 00:00:00`）を返します。
-
-
 
 ## parseDateTime64BestEffort {#parsedatetime64besteffort}
 
@@ -7723,36 +7550,25 @@ FORMAT PrettyCompactMonoBlock;
 └────────────────────────────┴────────────────────────────────┘
 ```
 
-
 ## parseDateTime64BestEffortUS {#parsedatetime64besteffortus}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、あいまいさがある場合には、米国形式の日付（`MM/DD/YYYY` など）を優先して解釈します。
-
-
 
 ## parseDateTime64BestEffortOrNull {#parsedatetime64besteffortornull}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 
-
-
 ## parseDateTime64BestEffortOrZero {#parsedatetime64besteffortorzero}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、処理できない日付形式に遭遇した場合は、ゼロの日付またはゼロの日時を返します。
-
-
 
 ## parseDateTime64BestEffortUSOrNull {#parsedatetime64besteffortusornull}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同じですが、あいまいな場合には米国の日時形式（`MM/DD/YYYY` など）を優先的に解釈し、処理できない形式だった場合は `NULL` を返します。
 
-
-
 ## parseDateTime64BestEffortUSOrZero {#parsedatetime64besteffortusorzero}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、この関数はあいまいな場合に US の日付形式（`MM/DD/YYYY` など）を優先し、解釈できない日付形式に遭遇したときはゼロ日付またはゼロ日時を返します。
-
-
 
 ## toLowCardinality {#tolowcardinality}
 
@@ -7789,7 +7605,6 @@ SELECT toLowCardinality('1');
 │ 1                     │
 └───────────────────────┘
 ```
-
 
 ## toUnixTimestamp {#toUnixTimestamp}
 
@@ -7838,7 +7653,6 @@ from_date:       1509840000
 from_date32:     1509840000
 ```
 
-
 ## toUnixTimestamp64Second {#tounixtimestamp64second}
 
 `DateTime64` を秒単位の固定精度を持つ `Int64` 値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
@@ -7877,7 +7691,6 @@ SELECT toUnixTimestamp64Second(dt64);
 │                    1234567891 │
 └───────────────────────────────┘
 ```
-
 
 ## toUnixTimestamp64Milli {#tounixtimestamp64milli}
 
@@ -7918,7 +7731,6 @@ SELECT toUnixTimestamp64Milli(dt64);
 └──────────────────────────────┘
 ```
 
-
 ## toUnixTimestamp64Micro {#tounixtimestamp64micro}
 
 `DateTime64` を、マイクロ秒単位で固定精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケール変換（拡大または縮小）されます。
@@ -7958,7 +7770,6 @@ SELECT toUnixTimestamp64Micro(dt64);
 └──────────────────────────────┘
 ```
 
-
 ## toUnixTimestamp64Nano {#tounixtimestamp64nano}
 
 `DateTime64` をナノ秒精度に固定した `Int64` 値に変換します。入力値は、その精度に応じて適切にスケール変換（拡大または縮小）されます。
@@ -7997,7 +7808,6 @@ SELECT toUnixTimestamp64Nano(dt64);
 │               1234567891011 │
 └─────────────────────────────┘
 ```
-
 
 ## fromUnixTimestamp64Second {#fromunixtimestamp64second}
 
@@ -8041,7 +7851,6 @@ SELECT
 └─────────────────────┴──────────────────────┘
 ```
 
-
 ## fromUnixTimestamp64Milli {#fromunixtimestamp64milli}
 
 `Int64` を、固定のミリ秒単位の精度と任意のタイムゾーンを持つ `DateTime64` 値に変換します。入力値は、その精度に応じて適切にスケーリング（拡大または縮小）されます。
@@ -8083,7 +7892,6 @@ SELECT
 │ 2024-12-11 16:53:08.123 │ DateTime64(3, 'UTC') │
 └─────────────────────────┴──────────────────────┘
 ```
-
 
 ## fromUnixTimestamp64Micro {#fromunixtimestamp64micro}
 
@@ -8127,7 +7935,6 @@ SELECT
 └────────────────────────────┴──────────────────────┘
 ```
 
-
 ## fromUnixTimestamp64Nano {#fromunixtimestamp64nano}
 
 `Int64` をナノ秒精度の `DateTime64` 値に変換し、必要に応じてタイムゾーンを指定します。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
@@ -8169,7 +7976,6 @@ SELECT
 │ 2024-12-11 16:53:08.123456789 │ DateTime64(9, 'UTC') │
 └───────────────────────────────┴──────────────────────┘
 ```
-
 
 ## formatRow {#formatrow}
 
@@ -8241,7 +8047,6 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 ```
 
 注意: この関数では行ベースのフォーマットのみがサポートされています。
-
 
 ## formatRowNoNewline {#formatrownonewline}
 

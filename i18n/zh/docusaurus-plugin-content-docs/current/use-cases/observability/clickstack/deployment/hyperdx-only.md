@@ -23,7 +23,6 @@ HyperDX 可以独立于其余组件使用，并且兼容任意数据 schema—�
 
 在此模式下，数据摄取完全由用户自行负责。你可以使用自己部署的 OpenTelemetry collector、从客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 管道，或诸如 ClickPipes 等托管摄取服务，将数据摄取到 ClickHouse 中。这种方式提供了最大的灵活性，适合已经在运行 ClickHouse、并希望在其之上引入 HyperDX 以实现可视化、搜索和告警的团队。
 
-
 ### 适用对象 {#suitable-for}
 
 - 现有 ClickHouse 用户

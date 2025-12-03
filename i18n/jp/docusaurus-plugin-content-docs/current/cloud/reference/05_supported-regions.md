@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-
 # サポート対象の Cloud リージョン {#supported-cloud-regions}
 
 ## AWS リージョン {#aws-regions}

@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Redis 指标 {#redis-metrics-clickstack}
 
 :::note[TL;DR]
@@ -347,7 +346,6 @@ docker exec <容器名称> ls -lh /etc/otelcol-contrib/custom.config.yaml
 docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### 在 HyperDX 中没有显示指标
 
 验证 collector 是否可以访问 Redis：
@@ -378,7 +376,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 # 查找连接错误或认证失败 {#load-gauge-metrics-memory-fragmentation}
 ```
 
-
 ### 身份验证错误
 
 如果您在日志中看到身份验证错误：
@@ -403,7 +400,6 @@ receivers:
     password: ${env:REDIS_PASSWORD}
 ```
 
-
 ### 网络连通性问题
 
 如果 ClickStack 无法访问 Redis：
@@ -418,7 +414,6 @@ docker exec <clickstack-container> telnet redis 6379
 ```
 
 确保在 Docker Compose 文件或 `docker run` 命令中，将这两个容器加入同一网络。
-
 
 ## 后续步骤 {#next-steps}
 

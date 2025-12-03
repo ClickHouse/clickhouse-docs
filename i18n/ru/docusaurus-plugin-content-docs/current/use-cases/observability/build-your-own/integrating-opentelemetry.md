@@ -16,7 +16,6 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
-
 # Интеграция OpenTelemetry для сбора данных {#integrating-opentelemetry-for-data-collection}
 
 Любому решению в области наблюдаемости необходим механизм сбора и экспорта логов и трассировок. Для этой цели ClickHouse рекомендует [проект OpenTelemetry (OTel)](https://opentelemetry.io/).
@@ -111,7 +110,6 @@ OpenTelemetry состоит из ряда компонентов. Помимо 
 
 Мы рекомендуем использовать структурированное логирование и по возможности записывать логи в формате JSON (например, ndjson). Это упростит необходимую последующую обработку логов — либо до отправки в ClickHouse с помощью [Collector processors](https://opentelemetry.io/docs/collector/configuration/#processors), либо на этапе вставки с использованием материализованных представлений. Структурированные логи в конечном итоге сократят объем последующей обработки и снизят требуемое потребление CPU в вашем решении на базе ClickHouse.
 
-
 ### Пример {#example}
 
 В качестве примера мы предоставляем наборы данных с логами в структурированном (JSON) и неструктурированном виде, каждый примерно по 10 млн строк, доступные по следующим ссылкам:
@@ -165,7 +163,6 @@ service:
 
 При использовании структурированных логов сообщения на выходе будут иметь следующий вид:
 
-
 ```response
 LogRecord #98
 ObservedTimestamp: 2024-06-19 13:21:16.414259 +0000 UTC
@@ -204,7 +201,6 @@ Flags: 0
 В приведённых выше сообщениях нет полей `TraceID` или `SpanID`. Если они присутствуют, например, в случаях, когда пользователи реализуют [распределённое трассирование](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces), их можно извлечь из JSON, используя те же приёмы, которые показаны выше.
 
 Пользователям, которым необходимо собирать локальные файлы логов или логи Kubernetes, мы рекомендуем ознакомиться с параметрами конфигурации, доступными для [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration), а также с тем, как реализованы [отслеживание смещений (offsets)](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) и [обработка многострочных логов](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
-
 
 ## Сбор логов Kubernetes {#collecting-kubernetes-logs}
 
@@ -278,7 +274,6 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 Полная схема сообщений трассировки представлена [здесь](https://opentelemetry.io/docs/concepts/signals/traces/). Настоятельно рекомендуем ознакомиться с этой схемой.
 
-
 ## Обработка — фильтрация, преобразование и обогащение {#processing---filtering-transforming-and-enriching}
 
 Как было показано в предыдущем примере с установкой временной метки для события лога, пользователям, как правило, требуется фильтровать, преобразовывать и обогащать сообщения о событиях. Это можно сделать с помощью ряда возможностей в OpenTelemetry:
@@ -338,7 +333,6 @@ service:
 ```bash
 ./otelcol-contrib --config config-unstructured-logs-with-processor.yaml
 ```
-
 
 ## Экспорт в ClickHouse {#exporting-to-clickhouse}
 
@@ -402,7 +396,6 @@ service:
 
 Обратите внимание на следующие важные настройки:
 
-
 * **pipelines** - Конфигурация выше демонстрирует использование [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines), состоящих из набора receivers, processors и exporters, с отдельным конвейером для логов (logs) и трассировок (traces).
 * **endpoint** - Взаимодействие с ClickHouse настраивается с помощью параметра `endpoint`. Строка подключения `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` обеспечивает обмен по протоколу TCP. Если пользователи предпочитают HTTP по причинам, связанным с маршрутизацией трафика, измените эту строку подключения, как описано [здесь](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options). Полные детали подключения, включая возможность указать имя пользователя и пароль в этой строке подключения, описаны [здесь](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
@@ -429,7 +422,6 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
 После запуска убедитесь, что в журнале появились записи логов, выполнив простой запрос:
-
 
 ```sql
 SELECT *
@@ -491,7 +483,6 @@ Links.TraceState:   []
 Links.Attributes:   []
 ```
 
-
 ## Базовая схема {#out-of-the-box-schema}
 
 По умолчанию экспортер ClickHouse создаёт целевую таблицу для журналов, которая используется как для логов, так и для трейсов. Это можно отключить с помощью параметра `create_schema`. Кроме того, имена таблиц для логов и трейсов, по умолчанию `otel_logs` и `otel_traces`, можно изменить через указанные выше настройки.
@@ -539,7 +530,6 @@ SETTINGS ttl_only_drop_parts = 1
 Столбцы здесь соответствуют официальной спецификации OTel по логам, описанной [здесь](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
 
 Несколько важных замечаний по этой схеме:
-
 
 - По умолчанию таблица разбивается на партиции по дате с помощью `PARTITION BY toDate(Timestamp)`. Это делает удаление устаревших данных эффективным.
 - `TTL` задаётся через `TTL toDateTime(Timestamp) + toIntervalDay(3)` и соответствует значению, заданному в конфигурации коллектора. [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) означает, что удаляются только целые части, когда все строки в них устарели. Это эффективнее, чем удаление строк внутри частей, которое приводит к дорогостоящей операции удаления. Мы рекомендуем всегда устанавливать этот параметр. См. раздел [Управление данными с помощью TTL](/observability/managing-data#data-management-with-ttl-time-to-live) для получения дополнительной информации.
@@ -592,7 +582,6 @@ SETTINGS ttl_only_drop_parts = 1
 Как и ранее, это будет коррелировать со столбцами, соответствующими официальной спецификации OTel для трейсов, описанной [здесь](https://opentelemetry.io/docs/specs/otel/trace/api/). Здесь схема использует многие из тех же настроек, что и приведённая выше схема логов, с дополнительными столбцами `Link`, специфичными для спанов.
 
 Мы рекомендуем пользователям отключить автоматическое создание схемы и создавать таблицы вручную. Это позволяет изменять первичные и вторичные ключи, а также даёт возможность добавлять дополнительные столбцы для оптимизации производительности запросов. Для получения дополнительной информации см. раздел [Schema design](/use-cases/observability/schema-design).
-
 
 ## Оптимизация вставок {#optimizing-inserts}
 
@@ -692,7 +681,6 @@ service:
       exporters: [otlp]
 ```
 
-
 [clickhouse-gateway-config.yaml](https://www.otelbin.io/#config=receivers%3A*N__otlp%3A*N____protocols%3A*N____grpc%3A*N____endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_10000*N*Nexporters%3A*N__clickhouse%3A*N____endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*N____ttl%3A_96h*N____traces*_table*_name%3A_otel*_traces*N____logs*_table*_name%3A_otel*_logs*N____create*_schema%3A_true*N____timeout%3A_10s*N____database%3A_default*N____sending*_queue%3A*N____queue*_size%3A_10000*N____retry*_on*_failure%3A*N____enabled%3A_true*N____initial*_interval%3A_5s*N____max*_interval%3A_30s*N____max*_elapsed*_time%3A_300s*N*Nservice%3A*N__pipelines%3A*N____logs%3A*N______receivers%3A_%5Botlp%5D*N______processors%3A_%5Bbatch%5D*N______exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
@@ -739,7 +727,6 @@ service:
 Основной недостаток этой архитектуры — связанные с ней затраты и накладные расходы на управление набором коллекторов.
 
 В качестве примера управления более крупными архитектурами на основе шлюзов и связанных с этим уроков мы рекомендуем этот [блог‑пост](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
-
 
 ### Добавление Kafka {#adding-kafka}
 

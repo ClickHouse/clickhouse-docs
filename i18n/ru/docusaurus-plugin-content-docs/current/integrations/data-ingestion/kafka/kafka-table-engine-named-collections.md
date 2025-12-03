@@ -6,11 +6,7 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # Интеграция ClickHouse с Kafka с использованием именованных коллекций {#integrating-clickhouse-with-kafka-using-named-collections}
-
-
 
 ## Введение {#introduction}
 
@@ -21,16 +17,12 @@ doc_type: 'guide'
 
 Это руководство было проверено на Apache Kafka 3.4.1 и ClickHouse 24.5.1.
 
-
-
 ## Предварительные условия {#assumptions}
 
 В этом документе предполагается, что у вас уже есть:
 1. Работоспособный кластер Kafka.
 2. Развернутый и запущенный кластер ClickHouse.
 3. Базовые знания SQL и опыт работы с конфигурациями ClickHouse и Kafka.
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -44,7 +36,6 @@ doc_type: 'guide'
 ```
 
 См. руководство [User Management Guide](./../../../guides/sre/user-management/index.md) для получения подробной информации о включении управления доступом.
-
 
 ## Конфигурация {#configuration}
 
@@ -105,7 +96,6 @@ doc_type: 'guide'
 2. Раздел перед `<kafka>` содержит параметры движка Kafka в ClickHouse. Полный список параметров смотрите в разделе [параметры движка Kafka](/engines/table-engines/integrations/kafka).
 3. Раздел внутри `<kafka>` содержит расширенные параметры конфигурации Kafka. Дополнительные параметры смотрите в [документации по конфигурации librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
 4. В этом примере используется протокол безопасности `SASL_SSL` и механизм `PLAIN`. При необходимости скорректируйте эти параметры в соответствии с конфигурацией вашего кластера Kafka.
-
 
 ## Создание таблиц и баз данных {#creating-tables-and-databases}
 
@@ -192,7 +182,6 @@ SELECT
     last_name
 FROM second_kafka_table;
 ```
-
 
 ## Проверка настройки {#verifying-the-setup}
 

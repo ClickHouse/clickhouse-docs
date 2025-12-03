@@ -41,7 +41,6 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-
 ## Установите компилятор Clang {#install-the-clang-compiler}
 
 Чтобы установить Clang в Ubuntu/Debian, используйте автоматический скрипт установки LLVM, доступный [здесь](https://apt.llvm.org/).
@@ -54,7 +53,6 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 По состоянию на март 2025 года требуется Clang 19 или выше.
 Компилятор GCC и другие компиляторы не поддерживаются.
-
 
 ## Установка компилятора Rust (необязательно) {#install-the-rust-compiler-optional}
 
@@ -74,7 +72,6 @@ rustup toolchain install nightly-2025-07-07
 rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
-
 
 ## Сборка ClickHouse {#build-clickhouse}
 
@@ -134,7 +131,6 @@ cmake --build build  # компиляция
 
 :::
 
-
 ## Запуск исполняемого файла ClickHouse {#running-the-clickhouse-executable}
 
 После успешной сборки вы найдёте исполняемый файл в `ClickHouse/<build_dir>/programs/`:
@@ -149,7 +145,6 @@ cmake --build build  # компиляция
 ```bash
 clickhouse client --host 127.0.0.1
 ```
-
 
 ## Расширенные настройки {#advanced-options}
 
@@ -168,7 +163,6 @@ Rust требует подключения к интернету. Чтобы о�
 ```sh
 cmake -DENABLE_RUST=OFF
 ```
-
 
 ### Запуск исполняемого файла ClickHouse {#running-the-clickhouse-executable-1}
 
@@ -190,7 +184,6 @@ sudo service clickhouse-server start
 sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
-
 
 ### Сборка в любом дистрибутиве Linux {#building-on-any-linux}
 
@@ -214,7 +207,6 @@ mkdir build
 cmake -S . -B build
 cmake --build build
 ```
-
 
 ### Сборка в Docker {#building-in-docker}
 

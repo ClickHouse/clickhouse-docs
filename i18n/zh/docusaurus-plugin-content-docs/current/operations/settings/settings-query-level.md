@@ -74,7 +74,6 @@ SELECT value FROM system.settings where name='async_insert';
 └─────────┘
 ```
 
-
 ## 自定义设置 {#custom_settings}
 
 除了通用的[设置](/operations/settings/settings.md)之外，用户还可以定义自定义设置。
@@ -97,7 +96,6 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-
 ## 示例 {#examples}
 
 这些示例都将 `async_insert` 设置为 `1`，并展示如何在正在运行的系统中查看这些设置。
@@ -113,7 +111,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-
 #### 检查设置配置文件和分配 {#examine-the-settings-profile-and-assignment}
 
 ```sql
@@ -128,7 +125,6 @@ SHOW ACCESS
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### 使用 SQL 创建设置配置文件并分配给用户 {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
@@ -147,7 +143,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 -- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
-
 
 ### 使用 XML 创建设置配置文件及用户 {#using-xml-to-create-a-settings-profile-and-user}
 
@@ -177,7 +172,6 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-
 #### 查看设置配置文件及其分配 {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
@@ -197,7 +191,6 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ### 为会话指定设置 {#assign-a-setting-to-a-session}
 
 ```sql
@@ -211,7 +204,6 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-
 ### 在查询时指定设置 {#assign-a-setting-during-a-query}
 
 ```sql
@@ -220,7 +212,6 @@ INSERT INTO YourTable
 SETTINGS async_insert=1
 VALUES (...)
 ```
-
 
 ## 另请参阅 {#see-also}
 

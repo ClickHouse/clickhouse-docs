@@ -30,7 +30,6 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 Чтобы использовать `ALTER USER`, необходимо иметь привилегию [ALTER USER](../../../sql-reference/statements/grant.md#access-management).
 
-
 ## Клауза GRANTEES {#grantees-clause}
 
 Определяет пользователей или роли, которым разрешено получать [привилегии](../../../sql-reference/statements/grant.md#privileges) от этого пользователя при условии, что этому пользователю также выданы все необходимые привилегии с [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Параметры клаузы `GRANTEES`:
@@ -41,8 +40,6 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 - `NONE` — Этот пользователь не может выдавать привилегии никому.
 
 Вы можете исключить любого пользователя или роль с помощью выражения `EXCEPT`. Например, `ALTER USER user1 GRANTEES ANY EXCEPT user2`. Это означает, что если у `user1` есть какие‑то привилегии, выданные с `GRANT OPTION`, то он сможет выдавать эти привилегии кому угодно, кроме `user2`.
-
-
 
 ## Примеры {#examples}
 
@@ -103,7 +100,6 @@ ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '
 ```sql
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
-
 
 ## Оператор VALID UNTIL {#valid-until-clause}
 

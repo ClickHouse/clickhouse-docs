@@ -33,7 +33,6 @@ _要将日志发送到 ClickStack，请通过 [OpenTelemetry Collector](/use-cas
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-
 ### 配置 OpenTelemetry 和日志格式化器 {#configure-otel-logger-formatter}
 
 接下来，需要初始化 OpenTelemetry 的 tracing instrumentation，
@@ -72,7 +71,6 @@ Rails.application.configure do
   Rails.logger.info "日志记录器已初始化!! 🐱"
 end
 ```
-
 
 ### 配置环境变量 {#configure-environment-variables}
 

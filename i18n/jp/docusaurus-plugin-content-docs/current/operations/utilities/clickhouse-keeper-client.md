@@ -6,13 +6,9 @@ title: 'clickhouse-keeper-client ユーティリティ'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-keeper-client ユーティリティ {#clickhouse-keeper-client-utility}
 
 ネイティブプロトコルを使用して clickhouse-keeper と通信するためのクライアントアプリケーションです。
-
-
 
 ## オプション {#clickhouse-keeper-client}
 
@@ -27,8 +23,6 @@ doc_type: 'reference'
 -   `--log-level=LEVEL` — ログレベルを指定します。 デフォルト値: `information`。
 -   `--no-confirmation` — 指定した場合、いくつかのコマンドで確認を求めません。 インタラクティブモードではデフォルト値は `false`、クエリでは `true` です。
 -   `--help` — ヘルプメッセージを表示します。
-
-
 
 ## 例 {#clickhouse-keeper-client-example}
 
@@ -51,7 +45,6 @@ keeper foo bar
 / :) get 'keeper/api_version'
 2
 ```
-
 
 ## コマンド {#clickhouse-keeper-client-commands}
 

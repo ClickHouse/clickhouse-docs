@@ -17,7 +17,6 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使った Nginx トレースのモニタリング {#nginx-traces-clickstack}
 
 :::note[TL;DR]
@@ -328,7 +327,6 @@ OpenTelemetry 関連のエラーが発生していないか確認します。
 # アクセスログを確認してトラフィックを検証する {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
-
 
 ## 次のステップ {#next-steps}
 

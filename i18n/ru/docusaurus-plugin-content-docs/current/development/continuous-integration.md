@@ -7,8 +7,6 @@ title: 'Непрерывная интеграция (CI)'
 doc_type: 'reference'
 ---
 
-
-
 # Непрерывная интеграция (CI) {#continuous-integration-ci}
 
 Когда вы отправляете pull request, для вашего кода выполняются автоматические проверки системой ClickHouse [непрерывной интеграции (CI)](tests.md#test-automation).
@@ -28,14 +26,11 @@ git push
 
 Если вы не уверены, как поступить, обратитесь за помощью к мейнтейнеру проекта.
 
-
 ## Объединение с master {#merge-with-master}
 
 Проверяет, что PR может быть объединён с веткой master.
 Если это невозможно, проверка завершится с ошибкой `Cannot fetch mergecommit`.
 Чтобы пройти эту проверку, разрешите конфликт, как описано в [документации GitHub](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-on-github), или выполните слияние ветки `master` в ветку вашего pull request с помощью git.
-
-
 
 ## Проверка документации {#docs-check}
 
@@ -44,14 +39,10 @@ git push
 Наиболее вероятная причина — некорректная перекрёстная ссылка в документации.
 Перейдите к отчёту проверки и найдите сообщения `ERROR` и `WARNING`.
 
-
-
 ## Проверка описания {#description-check}
 
 Убедитесь, что описание вашего pull request соответствует шаблону [PULL_REQUEST_TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
 Вы должны указать категорию изменения для changelog (например, Bug Fix) и написать понятное пользователю сообщение, описывающее изменение, для [CHANGELOG.md](../whats-new/changelog/index.md)
-
-
 
 ## Docker-образ {#docker-image}
 
@@ -65,15 +56,11 @@ git push
 
 Дополнительные сведения о тестах можно найти в [документации по скриптам заданий CI](https://github.com/ClickHouse/ClickHouse/tree/master/ci/jobs/scripts/docker_server).
 
-
-
 ## Проверка маркера {#marker-check}
 
 Эта проверка означает, что система CI начала обрабатывать pull request.
 Когда у неё статус «pending», это означает, что ещё не все проверки были запущены.
 После того как все проверки будут запущены, её статус изменится на «success».
-
-
 
 ## Проверка стиля {#style-check}
 
@@ -111,7 +98,6 @@ python -m ci.praktika run "Style check" --test cpp
 Эти команды скачивают Docker-образ `clickhouse/style-test` и запускают задачу в контейнеризованной среде.
 Дополнительные зависимости не требуются — достаточно Python 3 и Docker.
 
-
 ## Быстрый тест {#fast-test}
 
 Обычно это первая проверка, которая запускается для PR.
@@ -127,7 +113,6 @@ python -m ci.praktika run "Fast test" [--test имя_теста]
 
 Эти команды загружают Docker-образ `clickhouse/fast-test` и запускают задачу в контейнеризированной среде.
 Никаких зависимостей, кроме Python 3 и Docker, не требуется.
-
 
 ## Проверка сборки {#build-check}
 
@@ -189,7 +174,6 @@ python -m ci.praktika run "<ИМЯ_ЗАДАНИЯ_СБОРКИ>"
 python -m ci.praktika run "Build (amd_debug)"
 ```
 
-
 Если описанный выше подход вам не подходит, используйте параметры cmake из лога сборки и следуйте [общему процессу сборки](../development/build.md).
 ## Functional stateless tests {#functional-stateless-tests}
 
@@ -198,20 +182,14 @@ python -m ci.praktika run "Build (amd_debug)"
 Обратите внимание, что для воспроизведения необходимо использовать правильную конфигурацию сборки — тест может падать под AddressSanitizer, но проходить в Debug.
 Скачайте бинарный файл со [страницы проверок сборки CI](/install/advanced) или соберите его локально.
 
-
-
 ## Интеграционные тесты {#integration-tests}
 
 Выполняет [интеграционные тесты](tests.md#integration-tests).
-
-
 
 ## Проверка исправления ошибки {#bugfix-validate-check}
 
 Проверяет, что либо добавлен новый тест (функциональный или интеграционный), либо есть изменённые тесты, которые падают при использовании бинарника, собранного из ветки master.
 Эта проверка запускается, когда у pull request есть метка "pr-bugfix".
-
-
 
 ## Стресс-тест {#stress-test}
 
@@ -221,21 +199,15 @@ python -m ci.praktika run "Build (amd_debug)"
     * Ознакомьтесь с отчетом, найдите журналы сервера и проверьте их на возможные причины
       ошибки.
 
-
-
 ## Проверка совместимости {#compatibility-check}
 
 Проверяет, запускается ли бинарный файл `clickhouse` на дистрибутивах со старыми версиями libc.
 Если проверка не проходит, обратитесь за помощью к мейнтейнеру.
 
-
-
 ## AST fuzzer {#ast-fuzzer}
 
 Выполняет случайно сгенерированные запросы для обнаружения ошибок в программе.
 Если он завершится с ошибкой, обратитесь за помощью к мейнтейнеру.
-
-
 
 ## Тесты производительности {#performance-tests}
 

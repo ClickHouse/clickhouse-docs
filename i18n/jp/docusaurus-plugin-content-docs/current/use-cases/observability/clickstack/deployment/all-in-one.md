@@ -23,7 +23,6 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 
 このオプションには認証が含まれており、ダッシュボード、アラート、保存済み検索をセッションやユーザーをまたいで保持できます。
 
-
 ### 適した用途 {#suitable-for}
 
 * デモ
@@ -79,7 +78,6 @@ docker run \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-
 ## 本番環境へのデプロイ {#deploying-to-production}
 
 次の理由から、このオプションを本番環境で使用することは推奨されません。
@@ -96,7 +94,6 @@ OpenTelemetry のポートは、ポートフォワーディングのフラグを
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 ## ClickHouse Cloud の使用 {#using-clickhouse-cloud}
 
@@ -115,7 +112,6 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 `CLICKHOUSE_ENDPOINT` には、ポート `8443` を含む ClickHouse Cloud の HTTPS エンドポイントを指定します。例えば `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443` のようになります。
 
 HyperDX UI に接続したら、[`Team Settings`](http://localhost:8080/team) に移動し、ClickHouse Cloud サービスへの接続を作成し、その後で必要なソースの設定を行います。フローの一例については[こちら](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
-
 
 ## OpenTelemetry collector の設定 {#configuring-collector}
 

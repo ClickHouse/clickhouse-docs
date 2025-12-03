@@ -22,7 +22,6 @@ ENGINE=MergeTree
 ORDER BY tuple();
 ```
 
-
 # 小数点以下2桁の乱数を 1 000 000 個生成し、float 型および decimal 型として保存する {#generate-1-000-000-random-numbers-with-2-decimal-places-and-store-them-as-a-float-and-as-a-decimal}
 
 INSERT INTO float&#95;vs&#95;decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
@@ -56,7 +55,6 @@ ClickHouse における浮動小数点数型には次のエイリアスがあり
 
 テーブルを作成する際、浮動小数点数に対して数値パラメータを指定できます（例: `FLOAT(12)`、`FLOAT(15, 22)`、`DOUBLE(12)`、`DOUBLE(4, 18)`）が、ClickHouse はこれらを無視します。
 
-
 ## 浮動小数点数を使用する {#using-floating-point-numbers}
 
 * 浮動小数点数での計算では、丸め誤差が発生することがあります。
@@ -74,7 +72,6 @@ SELECT 1 - 0.9
 * 計算結果は、計算方法（コンピュータシステムのプロセッサの種類およびアーキテクチャ）によって異なります。
 * 浮動小数点計算では、無限大（`Inf`）や &quot;not-a-number&quot;（`NaN`）といった値が結果として得られる場合があります。計算結果を処理する際には、この点を考慮する必要があります。
 * 文字列から浮動小数点数を解析する場合、結果が最も近い機械表現可能な数値にならないことがあります。
-
 
 ## NaN と Inf {#nan-and-inf}
 
@@ -117,7 +114,6 @@ SELECT 0 / 0
 ```
 
 `NaN` のソート規則については、[ORDER BY 句](../../sql-reference/statements/select/order-by.md) を参照してください。
-
 
 ## BFloat16 {#bfloat16}
 

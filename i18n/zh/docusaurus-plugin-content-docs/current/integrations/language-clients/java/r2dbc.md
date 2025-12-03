@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # R2DBC 驱动 {#r2dbc-driver}
 
 ## R2DBC 驱动程序 {#r2dbc-driver}
@@ -42,7 +41,6 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-
 ### 连接 ClickHouse {#connect-to-clickhouse}
 
 ```java showLineNumbers
@@ -52,7 +50,6 @@ ConnectionFactory connectionFactory = ConnectionFactories
     Mono.from(connectionFactory.create())
         .flatMapMany(connection -> connection
 ```
-
 
 ### 查询 {#query}
 
@@ -70,7 +67,6 @@ connection
     .doOnNext(System.out::println)
     .subscribe();
 ```
-
 
 ### 插入 {#insert}
 

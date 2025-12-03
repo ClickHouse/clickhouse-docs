@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## Загрузка и установка последней стабильной версии {#install-latest-stable}
 
 Необходимую версию можно скачать с помощью `curl` или `wget` из репозитория по адресу https://packages.clickhouse.com/tgz/.
@@ -18,8 +17,6 @@
 с постфиксом `-stable`.
 :::
 
-
-
 ## Получите последнюю версию ClickHouse {#get-latest-version}
 
 Получите последнюю версию ClickHouse с GitHub и сохраните её в переменной `LATEST_VERSION`.
@@ -29,7 +26,6 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
     grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -V -r | head -n 1)
 export LATEST_VERSION
 ```
-
 
 ## Определите архитектуру системы {#detect-system-architecture}
 
@@ -43,7 +39,6 @@ case $(uname -m) in
 esac
 ```
 
-
 ## Загрузка tar-архивов для каждого компонента ClickHouse {#download-tarballs}
 
 Скачайте tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается использовать пакеты, специфичные для архитектуры, затем при необходимости переходит к универсальным.
@@ -56,13 +51,10 @@ do
 done
 ```
 
-
 ## Извлечение и установка пакетов {#extract-and-install}
 
 Выполните следующие команды для распаковки и установки этих пакетов:
 - `clickhouse-common-static`
-
-
 
 ```bash
 # Извлечение и установка пакета clickhouse-common-static {#extract-and-install-clickhouse-common-static-package}
@@ -73,7 +65,6 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 * `clickhouse-common-static-dbg`
 
-
 ```bash
 # Извлеките и установите пакет отладочных символов {#extract-and-install-debug-symbols-package}
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
@@ -82,7 +73,6 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 ```
 
 * `clickhouse-server`
-
 
 ```bash
 # Извлечение и установка серверного пакета с конфигурацией {#extract-and-install-server-package-with-configuration}
@@ -93,7 +83,6 @@ sudo /etc/init.d/clickhouse-server start  # Запуск сервера
 ```
 
 * `clickhouse-client`
-
 
 ```bash
 # Извлечь и установить клиентский пакет {#extract-and-install-client-package}

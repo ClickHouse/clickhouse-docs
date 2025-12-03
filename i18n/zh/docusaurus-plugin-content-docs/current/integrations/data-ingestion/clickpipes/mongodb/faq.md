@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 ---
 
-
-
 # ClickPipes for MongoDB 常见问题解答 {#clickpipes-for-mongodb-faq}
 
 ### 我可以查询 JSON 数据类型中的单个字段吗？ {#can-i-query-for-individual-fields-in-the-json-datatype}
@@ -69,7 +67,6 @@ MongoDB 文档在 ClickHouse 中默认作为 JSON 类型进行复制，并保留
 ### 我应该使用哪种 read preference？ {#which-read-preference-should-i-use}
 
 应使用哪种 read preference 取决于你的具体用例。如果你希望尽量减轻主节点的负载，我们建议使用 `secondaryPreferred` read preference。如果你希望优化摄取延迟，我们建议使用 `primaryPreferred` read preference。更多详情请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1)。
-
 
 ### MongoDB ClickPipe 是否支持分片集群（Sharded Cluster）？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
 

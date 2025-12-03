@@ -7,17 +7,11 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # sumSimpleState {#sumsimplestate}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы по всем входным значениям. Результат имеет тип [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
-
-
 
 ## Пример использования {#example-usage}
 
@@ -104,7 +98,6 @@ ORDER BY post_id ASC;
 │       3 │                0 │                     1 │         -1 │
 └─────────┴──────────────────┴───────────────────────┴────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

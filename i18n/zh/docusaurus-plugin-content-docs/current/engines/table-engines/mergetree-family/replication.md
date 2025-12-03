@@ -116,7 +116,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 如果在配置文件中未配置 ZooKeeper，你将无法创建副本表，且任何已有的副本表都将变为只读。
 
-
 ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性能，查询速度与非复制表一样快。对于分布式复制表的查询，ClickHouse 的行为由 [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) 和 [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) 这两个设置控制。
 
 对于每个 `INSERT` 查询，会通过若干事务向 ZooKeeper 添加大约十条记录。（更精确地说，这是针对每个被插入的数据块；一个 INSERT 查询包含一个数据块，或者每 `max_insert_block_size = 1048576` 行一个数据块。）这会导致 `INSERT` 相比非复制表有略高的延迟。但如果遵循建议，以每秒不超过一个 `INSERT` 的批量方式插入数据，就不会产生任何问题。一个用于协调单个 ZooKeeper 集群的整个 ClickHouse 集群，总共每秒可处理数百个 `INSERT`。数据插入的吞吐量（每秒行数）与非复制数据一样高。
@@ -248,7 +247,6 @@ ORDER BY x;
 
 要删除一个副本，请运行 `DROP TABLE`。但这只会删除一个副本——也就是你运行该查询所在服务器上的那个副本。
 
-
 ## 故障后的恢复 {#recovery-after-failures}
 
 如果在服务器启动时 ClickHouse Keeper 不可用，复制表会切换为只读模式。系统会定期尝试连接 ClickHouse Keeper。
@@ -272,7 +270,6 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 ```
 
 随后重启服务器。服务器在启动时会删除这些标志文件并开始恢复。
-
 
 ## 完全数据丢失后的恢复 {#recovery-after-complete-data-loss}
 
@@ -320,7 +317,6 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 先重命名现有的 MergeTree 表，然后使用旧表名创建一个 `ReplicatedMergeTree` 表。
 将旧表中的数据移动到新表数据目录下的 `detached` 子目录中（`/var/lib/clickhouse/data/db_name/table_name/`）。
 然后在其中一个副本上运行 `ALTER TABLE ATTACH PARTITION`，将这些分区片段添加到正在使用的工作集中。
-
 
 ## 从 ReplicatedMergeTree 转换为 MergeTree {#converting-from-replicatedmergetree-to-mergetree}
 

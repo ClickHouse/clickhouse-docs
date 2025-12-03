@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: '指南'
 ---
 
-
-
 # 从多种数据格式导入到 ClickHouse {#importing-from-various-data-formats-to-clickhouse}
 
 在本节文档中，可以找到从各种文件类型加载数据的示例。

@@ -67,26 +67,26 @@ curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.by
 **サンプルレスポンス**
 
 ```bash
-# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes systemデータベースのディスク`s3disk`に格納されているバイト数
-# TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge
+# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes systemデータベースのディスク`s3disk`に格納されているバイト数 {#help-clickhouse_custommetric_storagesystemtabless3diskbytes-the-amount-of-bytes-stored-on-disk-s3disk-in-system-database}
+# TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge {#type-clickhouse_custommetric_storagesystemtabless3diskbytes-gauge}
 ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes{hostname="c-jet-ax-16-server-43d5baj-0"} 62660929
-# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts 破損したデタッチ済みパーツの数
-# TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge
+# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts 破損したデタッチ済みパーツの数 {#help-clickhouse_custommetric_numberofbrokendetachedparts-the-number-of-broken-detached-parts}
+# TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge {#type-clickhouse_custommetric_numberofbrokendetachedparts-gauge}
 ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの経過時間(秒)
-# TYPE ClickHouse_CustomMetric_LostPartCount gauge
+# HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの経過時間(秒) {#help-clickhouse_custommetric_lostpartcount-the-age-of-the-oldest-mutation-in-seconds}
+# TYPE ClickHouse_CustomMetric_LostPartCount gauge {#type-clickhouse_custommetric_lostpartcount-gauge}
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定ミスの可能性を示す
-# TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
+# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定ミスの可能性を示す {#help-clickhouse_custommetric_numberofwarnings-the-number-of-warnings-issued-by-the-server-it-usually-indicates-about-possible-misconfiguration}
+# TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge {#type-clickhouse_custommetric_numberofwarnings-gauge}
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
-# HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST
-# TYPE ClickHouseErrorMetric_FILE_DOESNT_EXIST counter
+# HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST {#help-clickhouseerrormetric_file_doesnt_exist-file_doesnt_exist}
+# TYPE ClickHouseErrorMetric_FILE_DOESNT_EXIST counter {#type-clickhouseerrormetric_file_doesnt_exist-counter}
 ClickHouseErrorMetric_FILE_DOESNT_EXIST{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 1
-# HELP ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE UNKNOWN_ACCESS_TYPE
-# TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter
+# HELP ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE UNKNOWN_ACCESS_TYPE {#help-clickhouseerrormetric_unknown_access_type-unknown_access_type}
+# TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter {#type-clickhouseerrormetric_unknown_access_type-counter}
 ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 8
-# HELP ClickHouse_CustomMetric_TotalNumberOfErrors 最後の再起動以降のサーバーエラーの総数
-# TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
+# HELP ClickHouse_CustomMetric_TotalNumberOfErrors 最後の再起動以降のサーバーエラーの総数 {#help-clickhouse_custommetric_totalnumberoferrors-the-total-number-of-errors-on-server-since-the-last-restart}
+# TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge {#type-clickhouse_custommetric_totalnumberoferrors-gauge}
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
 ```
 

@@ -5,11 +5,7 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция loop {#loop-table-function}
-
-
 
 ## Синтаксис {#syntax}
 
@@ -20,7 +16,6 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-
 ## Аргументы {#arguments}
 
 | Аргумент                    | Описание                                                                                                            |
@@ -29,13 +24,9 @@ SELECT ... FROM loop(other_table_function(...));
 | `table`                     | имя таблицы.                                                                                                         |
 | `other_table_function(...)` | другая табличная функция. Пример: `SELECT * FROM loop(numbers(10));` здесь `other_table_function(...)` — это `numbers(10)`. |
 
-
-
 ## Возвращаемые значения {#returned_values}
 
 Бесконечный цикл, возвращающий результаты запроса.
-
-
 
 ## Примеры {#examples}
 

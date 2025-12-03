@@ -30,16 +30,19 @@ CREATE TABLE dbpedia
 
 ```
 
+## 加载表数据 {#load-table}
 
-## 加载表 {#load-table}
-
-要从所有 Parquet 文件中加载数据集，请运行以下 Shell 命令：
+要从所有 Parquet 文件中加载数据集，请运行以下 shell 命令：
 
 ```shell
-$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+for i in $(seq 0 25); do
+  echo "正在处理文件 ${i}..."
+  clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+  echo "文件 ${i} 处理完成。"
+done
 ```
 
-或者，也可以按照下方所示分别执行 SQL 语句，逐个加载这 25 个 Parquet 文件：
+另外，也可以按下方所示分别运行 SQL 语句，来加载这 25 个 Parquet 文件中的每一个：
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -49,7 +52,7 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 
 ```
 
-确认 `dbpedia` 表中有 100 万行记录：
+确认 `dbpedia` 表中已有 100 万行数据：
 
 ```sql
 SELECT count(*)
@@ -115,7 +118,6 @@ LIMIT 20
 记下查询延迟，以便后续与 ANN（基于向量索引）的查询延迟进行比较。
 同时分别记录在 OS 文件缓存为冷状态时，以及在将 `max_threads` 设置为 1 时的查询延迟，以识别实际的计算资源占用和存储带宽使用情况（从而可以将结果推算到包含数百万向量的生产数据集！）
 
-
 ## 构建向量相似度索引 {#build-vector-similarity-index}
 
 运行以下 SQL，在 `vector` 列上定义并构建向量相似度索引：
@@ -129,7 +131,6 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 索引创建和搜索的参数及性能方面的考虑在[文档](../../engines/table-engines/mergetree-family/annindexes.md)中有详细说明。
 
 根据可用 CPU 核心数量和存储带宽的不同，构建并保存索引可能需要几分钟时间。
-
 
 ## 执行 ANN 搜索 {#perform-ann-search}
 
@@ -177,7 +178,6 @@ LIMIT 20
 返回 20 行。用时:0.025 秒。已处理 3.203 万行,2.10 MB(129 万行/秒,84.80 MB/秒)。
 ```
 
-
 ## 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
 
 目前为止看到的相似度搜索查询，都是使用 `dbpedia` 表中已有的向量之一作为搜索向量。在实际应用中，需要根据用户输入的查询（可能是自然语言）来生成搜索向量。搜索向量应当使用与为数据集生成嵌入向量时相同的 LLM 模型生成。
@@ -218,7 +218,6 @@ while True:
         print(row[0], row[1], row[2])
         print("---------------")
 ```
-
 
 ## 问答演示应用 {#q-and-a-demo-application}
 

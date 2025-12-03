@@ -7,11 +7,7 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-local {#clickhouse-local}
-
-
 
 ## clickhouse-local を使うときと ClickHouse を使うとき {#when-to-use-clickhouse-local-vs-clickhouse}
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 `clickhouse-local` は、開発およびテスト用途、ならびにファイル処理に非常に有用なツールですが、エンドユーザーやアプリケーションに対するサービス提供には適していません。これらのシナリオでは、オープンソースの [ClickHouse](/install) を使用することを推奨します。ClickHouse は、大規模な分析ワークロードを処理するように設計された強力な OLAP データベースです。大規模なデータセットに対する複雑なクエリを高速かつ効率的に処理できるため、高パフォーマンスが重要となる本番環境に最適です。加えて ClickHouse は、レプリケーション、シャーディング、高可用性など、大規模データセットの処理やアプリケーション提供に必要となるスケールアウトのための幅広い機能を提供します。より大きなデータセットを扱う必要がある場合や、エンドユーザーまたはアプリケーションに提供する必要がある場合は、`clickhouse-local` ではなくオープンソースの ClickHouse を使用することを推奨します。
 
 以下のドキュメントでは、[ローカルファイルのクエリ](#query_data_in_file) や [S3 上の Parquet ファイルの読み取り](#query-data-in-a-parquet-file-in-aws-s3) など、`clickhouse-local` の代表的なユースケースを示していますので、参照してください。
-
-
 
 ## clickhouse-local をダウンロードする {#download-clickhouse-local}
 
@@ -34,7 +28,6 @@ curl https://clickhouse.com/ | sh
 :::note
 ダウンロードしたばかりのバイナリは、さまざまな ClickHouse ツールやユーティリティを実行できます。ClickHouse をデータベースサーバーとして実行したい場合は、[クイックスタート](/get-started/quick-start)を参照してください。
 :::
-
 
 ## SQL を使用してファイル内のデータをクエリする {#query_data_in_file}
 
@@ -107,7 +100,6 @@ FROM file('reviews.tsv')"
 ```response
 Monopoly Junior Board Game    5
 ```
-
 
 ## AWS S3 内の Parquet ファイルをクエリする {#query-data-in-a-parquet-file-in-aws-s3}
 
@@ -184,7 +176,6 @@ NORTHWOOD    THREE RIVERS    184    731609    ███████████�
 ファイルを ClickHouse に取り込む準備ができたら、ClickHouse サーバーを起動して、`file` および `s3` テーブル関数の結果を `MergeTree` テーブルに挿入します。詳細については [Quick Start](/get-started/quick-start) を参照してください。
 :::
 
-
 ## フォーマット変換 {#format-conversions}
 
 `clickhouse-local` を使用して、異なるフォーマット間でデータを変換できます。例：
@@ -204,7 +195,6 @@ $ clickhouse-local --query "SELECT * FROM table" < data.json > data.csv
 ```bash
 $ clickhouse-local --copy < data.json > data.csv
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -250,7 +240,6 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-V`, `--version` — バージョン情報を表示して終了します。
 
 また、`--config-file` の代わりによく用いられる、各 ClickHouse 設定変数に対応する引数も用意されています。
-
 
 ## 例 {#examples}
 
@@ -313,7 +302,6 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 関連コンテンツ {#related-content-1}
 

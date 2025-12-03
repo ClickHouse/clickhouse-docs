@@ -30,7 +30,7 @@ curl -sL https://lib.chdb.io | bash
 ### ステップ 2: chDB-bun をインストールする {#install-chdb-bun}
 
 ```bash
-# GitHubリポジトリからインストールする
+# GitHubリポジトリからインストールする {#install-from-the-github-repository}
 bun add github:chdb-io/chdb-bun
 ```
 
@@ -44,11 +44,11 @@ bun run build
 ```
 ```
 
-## 使用方法
+## 使用方法 {#usage}
 
 chDB-bun は、1 回限りの処理向けのエフェメラルクエリと、データベースの状態を保持する永続セッションという 2 つのクエリモードをサポートしています。
 
-### エフェメラルクエリ
+### エフェメラルクエリ {#ephemeral-queries}
 
 永続的な状態を保持する必要がない、単純な一度限りのクエリには次を使用します:
 

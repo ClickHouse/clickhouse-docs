@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Redis 日志 {#redis-clickstack}
 
 :::note[要点速览]
@@ -337,7 +336,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # 应显示您的 filelog/Redis 接收器配置
 ```
 
-
 ### HyperDX 中没有日志显示
 
 **确保 Redis 正在将日志写入文件：**
@@ -377,7 +375,6 @@ docker volume inspect <volume-name>
 # 验证两个容器均已挂载该卷 {#expected-output-should-show-file-size-and-permissions}
 ```
 
-
 ### 日志解析不正确
 
 **检查 Redis 日志格式是否符合预期模式：**
@@ -392,7 +389,6 @@ tail -5 /var/log/redis/redis-server.log
 
 * `pid:role timestamp level message`
 * 示例：`12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## 后续步骤 {#next-steps}
 

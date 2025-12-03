@@ -7,18 +7,12 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-
-
 # sumIf {#sumif}
-
-
 
 ## 描述 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，使用 `sumIf` 聚合组合器函数计算条件为 true 的行的值之和。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -91,7 +85,6 @@ ORDER BY month;
 
 ### 按股票代码统计成交量 {#calculate-trading-volume}
 
-
 在这个示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 中提供的 `stock` 表，
 来统计 2006 年三家当时规模最大的科技公司按股票代码划分的交易量。
 
@@ -125,7 +118,6 @@ ORDER BY month;
 12. │ 2006-12-01 │ 603.95百万 │ 1.14十亿     │ 91.77百万  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

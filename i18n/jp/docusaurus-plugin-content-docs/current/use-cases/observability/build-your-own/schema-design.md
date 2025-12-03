@@ -13,7 +13,6 @@ import observability_12 from '@site/static/images/use-cases/observability/observ
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
 import Image from '@theme/IdealImage';
 
-
 # オブザーバビリティ向けスキーマ設計 {#designing-a-schema-for-observability}
 
 ログおよびトレースに対しては、常に独自のスキーマを作成することを推奨します。その理由は次のとおりです。
@@ -81,7 +80,6 @@ LIMIT 5
 :::note Prefer ClickHouse for parsing
 構造化ログの JSON 解析は、一般的に ClickHouse で実行することを推奨します。ClickHouse が最速の JSON 解析実装であると確信しています。ただし、ユーザーがログを他の送信先にも送信したい場合や、このロジックを SQL 側に持たせたくない場合があることも理解しています。
 :::
-
 
 ```sql
 SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
@@ -156,7 +154,6 @@ LIMIT 5
 ユーザーは、[こちら](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching) で説明しているように、OTel collector の processors や operators を使用して処理を行うこともできます。多くの場合、ユーザーは、ClickHouse の方が collector の processors よりも大幅にリソース効率が高く、高速であると感じるでしょう。すべてのイベント処理を SQL で行うことの主なデメリットは、ソリューションが ClickHouse に密結合してしまうことです。例えば、ユーザーは処理済みログを OTel collector から S3 などの別の宛先に送信したい場合があります。
 :::
 
-
 ### マテリアライズドカラム {#materialized-columns}
 
 マテリアライズドカラムは、他のカラムから構造を抽出するための最もシンプルな手段を提供します。この種のカラムの値は常に挿入時に計算され、INSERT クエリで明示的に指定することはできません。
@@ -224,7 +221,6 @@ Peak memory usage: 3.16 MiB.
 マテリアライズドカラムは、デフォルトでは `SELECT *` の結果には含まれません。これは、`SELECT *` の結果を常に INSERT 文を使ってそのままテーブルに挿入できるという不変性を保つためです。この挙動は `asterisk_include_materialized_columns=1` を設定することで変更でき、Grafana ではデータソース設定（`Additional Settings -> Custom Settings`）の中でこの設定を有効化できます。
 :::
 
-
 ## マテリアライズドビュー {#materialized-views}
 
 [マテリアライズドビュー](/materialized-views) は、ログおよびトレースに対して SQL によるフィルタリングや変換を適用する、より強力な手段を提供します。
@@ -267,7 +263,6 @@ CREATE TABLE otel_logs
 Null テーブルエンジンは強力な最適化機構で、`/dev/null` のようなものと考えることができます。このテーブル自体は一切データを保持しませんが、関連付けられたマテリアライズドビューは、行が破棄される前に挿入された行に対して引き続き実行されます。
 
 次のクエリを見てみましょう。これは行を保持したい形式に変換し、`LogAttributes` からすべてのカラムを抽出します（これはコレクターが `json_parser` オペレーターを使って設定したものと仮定します）。さらに、いくつかの単純な条件と[これらのカラム](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)の定義に基づいて `SeverityText` と `SeverityNumber` を設定します。この例では、`TraceId`、`SpanId`、`TraceFlags` などのカラムは無視し、値が設定されることが分かっているカラムだけを選択しています。
-
 
 ```sql
 SELECT
@@ -354,7 +349,6 @@ ORDER BY (ServiceName, Timestamp)
 スキーマを大幅に変更している点に注目してください。実際には、ユーザーは保持しておきたいトレース用のカラムや、`ResourceAttributes` カラム（通常は Kubernetes のメタデータを含みます）も持っていることが多いでしょう。Grafana はトレース関連のカラムを活用して、ログとトレース間のリンク機能を提供できます。詳しくは [「Grafana の利用」](/observability/grafana) を参照してください。
 :::
 
-
 以下では、`otel_logs` テーブルに対して上記の SELECT を実行し、その結果を `otel_logs_v2` に送るマテリアライズドビュー `otel_logs_mv` を作成します。
 
 ```sql
@@ -417,7 +411,6 @@ SeverityNumber:  9
 
 `Body` カラムから JSON 関数を使って列を抽出することで構成される、同等のマテリアライズドビューを次に示します。
 
-
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT  Body, 
@@ -439,7 +432,6 @@ SELECT  Body,
         multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
-
 
 ### 型に注意 {#beware-types}
 
@@ -494,7 +486,6 @@ groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','requ
 :::note ドットを避ける
 Map 型の列名でドットを使用することは推奨しません。将来的にその使用を非推奨とする可能性があります。代わりに `_` を使用してください。
 :::
-
 
 ## エイリアスの使用 {#using-aliases}
 
@@ -572,7 +563,6 @@ LIMIT 5
 :::note デフォルトでは ALIAS は除外されます
 デフォルトでは、`SELECT *` は ALIAS 列を除外します。この動作は、`asterisk_include_alias_columns=1` を設定することで無効にできます。
 :::
-
 
 ## 型の最適化 {#optimizing-types}
 
@@ -694,7 +684,6 @@ LIMIT 4;
 4 rows in set. Elapsed: 0.259 sec.
 ```
 
-
 :::note
 上記のクエリでは多くの処理が行われています。詳しく知りたい方は、この優れた[解説](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)を参照してください。そうでない場合は、上記のクエリが IP レンジに対して CIDR を計算していると理解してください。
 :::
@@ -775,7 +764,6 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 
 元のログデータセットに戻ると、上記を利用してログを国別に集計できます。以下では、先ほどのマテリアライズドビューの結果として得られたスキーマを使用しており、そこには抽出済みの `RemoteAddress` 列が含まれていることを前提としています。
 
-
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
         formatReadableQuantity(count()) AS num_requests
@@ -832,7 +820,6 @@ ORDER BY (ServiceName, Timestamp)
 :::
 
 上記の国情報と座標を利用することで、国ごとのグルーピングやフィルタリングにとどまらない可視化が可能になります。活用のヒントについては、「[地理情報データの可視化](/observability/grafana#visualizing-geo-data)」を参照してください。
-
 
 ### 正規表現辞書の使用（User-Agent の解析） {#using-regex-dictionaries-user-agent-parsing}
 
@@ -929,7 +916,6 @@ LAYOUT(regexp_tree);
 
 これらの辞書を読み込んだら、サンプルの User-Agent 文字列を指定して、この新しい辞書抽出機能をテストできます。
 
-
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
 SELECT
@@ -1006,7 +992,6 @@ ORDER BY (ServiceName, Timestamp, Status)
 
 コレクターを再起動し、これまでの手順どおりに構造化ログを取り込んだら、新たに抽出された Device、Browser、Os の各列に対してクエリを実行できるようになります。
 
-
 ```sql
 SELECT Device, Browser, Os
 FROM otel_logs_v2
@@ -1023,7 +1008,6 @@ Os:     ('Other','0','0','0')
 :::note 複雑な構造のための Tuple
 これらのユーザーエージェント列では Tuple を使用している点に注意してください。Tuple は、階層があらかじめ分かっている複雑な構造に対して推奨されます。サブカラムも、異なる型を許容しつつ、通常のカラムと同等のパフォーマンスを発揮します（Map のキーとは異なります）。
 :::
-
 
 ### さらに詳しく {#further-reading}
 
@@ -1111,7 +1095,6 @@ FINAL
 1行のセット。経過時間: 0.039秒
 ```
 
-
 ここでは、クエリ結果を保存することで、`otel_logs` の 1,000 万行から 113 行まで行数を効果的に削減しました。ここで重要なのは、新しいログが `otel_logs` テーブルに挿入されると、それぞれの時間帯に対応する新しい値が `bytes_per_hour` に書き込まれ、バックグラウンドで非同期に自動マージされる点です。1 時間あたり 1 行のみを保持することで、`bytes_per_hour` は常に小さく、かつ最新の状態に保たれます。
 
 行のマージは非同期で行われるため、ユーザーがクエリした時点では、1 時間あたり複数行が存在する可能性があります。クエリ時に未マージの行も必ずマージされるようにするには、次の 2 つの選択肢があります。
@@ -1164,7 +1147,6 @@ LIMIT 5
 :::note
 この高速化効果は、より大きなデータセットやより複雑なクエリではさらに大きくなる可能性があります。サンプルについては[こちら](https://github.com/ClickHouse/clickpy)を参照してください。
 :::
-
 
 #### さらに複雑な例 {#a-more-complex-example}
 
@@ -1244,7 +1226,6 @@ ORDER BY Hour DESC
 
 ここでは `FINAL` ではなく `GROUP BY` を使用していることに注意してください。
 
-
 ### 高速なルックアップのためのマテリアライズドビュー（インクリメンタル）の活用 {#using-materialized-views-incremental--for-fast-lookups}
 
 ユーザーは、`WHERE` 句や集約句で頻繁に使用されるカラムを含むように ClickHouse の並び替えキーを選択する際、自身のアクセスパターンを考慮する必要があります。Observability のユースケースでは、単一のカラム集合には収まらない多様なアクセスパターンが存在するため、これは制約になり得ます。この点は、デフォルトの OTel スキーマに組み込まれている例で示すのが最も分かりやすいでしょう。トレース用のデフォルトスキーマを考えてみましょう。
@@ -1316,7 +1297,6 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
-
 このビューにより、テーブル `otel_traces_trace_id_ts` には各トレースの最小および最大タイムスタンプが必ず保持されるようになります。このテーブルは `TraceId` で並べ替えられているため、これらのタイムスタンプを効率的に取得できます。これらのタイムスタンプの範囲は、メインの `otel_traces` テーブルをクエリする際に利用できます。より具体的には、トレースをその ID で取得する際、Grafana は次のクエリを使用します。
 
 ```sql
@@ -1349,7 +1329,6 @@ LIMIT 1000
 ここでの CTE は、トレース ID `ae9226c78d1d360601e6383928e4d22d` に対する最小・最大のタイムスタンプを特定し、その結果を用いてメインの `otel_traces` テーブルをフィルタリングし、対応する span を抽出しています。
 
 同様の手法は、同種のアクセスパターンにも適用できます。類似の例を Data Modeling の[こちら](/materialized-view/incremental-materialized-view#lookup-table)で説明しています。
-
 
 ### プロジェクションの使用 {#using-projections}
 
@@ -1459,7 +1438,6 @@ Peak memory usage: 27.85 MiB.
 ```
 
 上記の例では、先ほどのクエリで使用した列をプロジェクションで指定しています。これにより、指定したこれらの列のみがプロジェクションの一部としてディスク上に保存され、`Status` で並べ替えられます。代わりにここで `SELECT *` を使用した場合は、すべての列が保存されます。これは、任意の列の組み合わせを用いる、より多くのクエリがプロジェクションの恩恵を受けられる一方で、追加のストレージ使用量が発生することを意味します。ディスク容量と圧縮率の測定方法については、「[テーブルサイズと圧縮の測定](#measuring-table-size--compression)」を参照してください。
-
 
 ### Secondary/data skipping indices {#secondarydata-skipping-indices}
 
@@ -1616,7 +1594,6 @@ WHERE Referer LIKE '%ultra%'
 
 ブルームフィルターは一般的に、フィルターのサイズが対象カラム自体より小さい場合にのみ高速になります。フィルターのほうが大きい場合は、パフォーマンス向上はほとんど見込めません。次のクエリを使用して、フィルターのサイズとカラムのサイズを比較してください。
 
-
 ```sql
 SELECT
         name,
@@ -1653,7 +1630,6 @@ WHERE `table` = 'otel_logs_bloom'
 Bloom フィルターには、かなりのチューニングが必要になる場合があります。最適な設定を特定する際に有用な注意事項として、[こちら](/engines/table-engines/mergetree-family/mergetree#bloom-filter) に記載されている内容に従うことを推奨します。また、Bloom フィルターは挿入時やマージ時にコストが高くなる可能性があります。本番環境に Bloom フィルターを追加する前に、挿入パフォーマンスへの影響を評価してください。
 
 セカンダリスキップインデックスの詳細については、[こちら](/optimize/skipping-indexes#skip-index-functions) を参照してください。
-
 
 ### マップからの抽出 {#extracting-from-maps}
 

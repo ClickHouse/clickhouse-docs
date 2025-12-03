@@ -7,13 +7,9 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-
-
 # C および C++ 向け chDB {#chdb-for-c-and-c}
 
 chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、簡単なクエリから、永続的な接続やクエリ結果のストリーミングなどの高度な機能までサポートします。
-
-
 
 ## インストール {#installation}
 
@@ -37,12 +33,10 @@ curl -sL https://lib.chdb.io | bash
 
 chDB ライブラリを用いてアプリケーションをコンパイルおよびリンクします：
 
-
 ```bash
 # Cコンパイル {#c-compilation}
 gcc -o myapp myapp.c -lchdb
 ```
-
 
 # C++のコンパイル {#c-compilation}
 
@@ -50,7 +44,6 @@ g++ -o myapp myapp.cpp -lchdb
 
 ```
 ```
-
 
 ## C の例 {#c-examples}
 
@@ -194,7 +187,6 @@ int main() {
     chdb_destroy_query_result(json_result);
 ```
 
-
 // 整形表示
 chdb&#95;result* pretty&#95;result = chdb&#95;query(*conn, query, &quot;Pretty&quot;);
 printf(&quot;Pretty Result:\n%.*s\n\n&quot;,
@@ -208,7 +200,6 @@ return 0;
 
 ```
 ```
-
 
 ## C++ の例 {#cpp-example}
 
@@ -293,7 +284,6 @@ int main() {
 }
 ```
 
-
 ## エラー処理のベストプラクティス {#error-handling}
 
 ```c
@@ -340,7 +330,6 @@ cleanup:
     return return_code;
 }
 ```
-
 
 ## GitHub リポジトリ {#github-repository}
 

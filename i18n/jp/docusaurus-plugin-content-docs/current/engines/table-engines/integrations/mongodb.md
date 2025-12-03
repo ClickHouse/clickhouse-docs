@@ -7,16 +7,12 @@ title: 'MongoDB テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # MongoDB テーブルエンジン {#mongodb-table-engine}
 
 MongoDB エンジンは、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。
 
 MongoDB v3.6 以降のサーバーのみがサポートされています。
 [シードリスト（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) は現在サポートされていません。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -59,7 +55,6 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `uri`         | MongoDB サーバーの接続 URI。                              |
 | `collection`  | リモートコレクション名。                                      |
 | `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定します。既定では `_id` です。 |
-
 
 ## 型マッピング {#types-mappings}
 
@@ -131,7 +126,6 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- 1が出力されます
 ```
 
-
 ## サポートされている句 {#supported-clauses}
 
 単純な式を含むクエリのみがサポートされます（例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
@@ -156,7 +150,6 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 これは `Date`、`Date32`、`DateTime`、`Bool`、`UUID` の各型に適用されます。
 
 :::
-
 
 ## 使用例 {#usage-example}
 
@@ -237,7 +230,6 @@ LIMIT 3;
 3. │ ザ・ロード             │    7.3 │
    └────────────────────────┴────────┘
 ```
-
 
 ## トラブルシューティング {#troubleshooting}
 DEBUG レベルのログで生成された MongoDB クエリを確認できます。

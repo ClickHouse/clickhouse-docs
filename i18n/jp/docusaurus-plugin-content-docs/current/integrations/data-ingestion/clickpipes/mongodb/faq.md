@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'インジェスト', 'リアルタイム同期']
 ---
 
-
-
 # MongoDB 向け ClickPipes よくある質問 (FAQ) {#clickpipes-for-mongodb-faq}
 
 ### JSON データ型の個々のフィールドをクエリできますか？ {#can-i-query-for-individual-fields-in-the-json-datatype}
@@ -69,7 +67,6 @@ MongoDB からデータベース／テーブルを削除しても、ClickPipes �
 ### どの read preference を使用すべきですか？ {#which-read-preference-should-i-use}
 
 使用する read preference は、特定のユースケースによって異なります。プライマリノードへの負荷を最小化したい場合は、`secondaryPreferred` read preference の使用を推奨します。インジェスト遅延を最適化したい場合は、`primaryPreferred` read preference の使用を推奨します。詳細については、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1) を参照してください。
-
 
 ### MongoDB ClickPipe はシャードクラスタをサポートしていますか？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
 

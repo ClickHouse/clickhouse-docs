@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## Описание {#description}
 
 Формат `XML` предназначен только для вывода и не подходит для парсинга. 
@@ -25,8 +23,6 @@ doc_type: 'reference'
 В строковых значениях символы `<` и `&` экранируются как `<` и `&`.
 
 Массивы выводятся как `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи — как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -94,9 +90,6 @@ doc_type: 'reference'
 </result>
 ```
 
-
 ## Параметры форматирования {#format-settings}
-
-
 
 ## XML {#xml}

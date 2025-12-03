@@ -8,8 +8,6 @@ description: 'ClickHouse におけるデータ可視化について学ぶ'
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse でのデータの可視化 {#visualizing-data-in-clickhouse}
 
 <div class='vimeo-container'>
@@ -48,8 +46,6 @@ doc_type: 'guide'
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
-
-
 
 ## ClickHouse Cloud とデータ可視化ツールの互換性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 

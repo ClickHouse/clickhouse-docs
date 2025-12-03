@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## Описание {#description}
 
 Формат `Regex` разбирает каждую строку импортируемых данных в соответствии с заданным регулярным выражением.
@@ -28,8 +26,6 @@ doc_type: 'reference'
 Содержимое каждого совпавшего подвыражения разбирается способом, соответствующим его типу данных, в соответствии с настройкой [format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule).
 
 Если регулярное выражение не соответствует строке и параметр [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) равен 1, строка просто пропускается без ошибки. В противном случае генерируется исключение.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -66,7 +62,6 @@ SELECT * FROM imp_regex_table;
 │  3 │ [1,2,3] │ str3   │ 2020-01-03 │
 └────┴─────────┴────────┴────────────┘
 ```
-
 
 ## Настройки формата {#format-settings}
 

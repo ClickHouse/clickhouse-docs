@@ -17,7 +17,6 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Nginx 链路追踪 {#nginx-traces-clickstack}
 
 :::note[TL;DR]
@@ -328,7 +327,6 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 # 检查访问日志以确认流量 {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
-
 
 ## 后续步骤 {#next-steps}
 

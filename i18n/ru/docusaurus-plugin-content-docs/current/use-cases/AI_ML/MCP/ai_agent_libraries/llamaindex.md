@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установите библиотеки {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
@@ -42,7 +37,6 @@ doc_type: 'guide'
 pip install -q --upgrade pip
 pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
-
 
 ## Настройка учётных данных {#setup-credentials}
 
@@ -61,7 +55,6 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ A
 Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
 вы можете найти инструкции по настройке учетных данных в [документации LlamaIndex «LLMs»](https://docs.llamaindex.ai/en/stable/examples/)
 :::
-
 
 ## Инициализируйте MCP Server {#initialize-mcp-and-agent}
 
@@ -93,7 +86,6 @@ mcp_tool_spec = McpToolSpec(
 )
 ```
 
-
 tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
 
 ````
@@ -112,7 +104,6 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
 agent = AgentRunner(agent_worker)
 ````
 
-
 ## Инициализация LLM {#initialize-llm}
 
 Инициализируйте модель Claude Sonnet 4.0 следующим кодом:
@@ -121,7 +112,6 @@ agent = AgentRunner(agent_worker)
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```
-
 
 ## Запуск агента {#run-agent}
 

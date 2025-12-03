@@ -7,19 +7,13 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # minSimpleState {#minsimplestate}
-
-
 
 ## 説明 {#description}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを [`min`](/sql-reference/aggregate-functions/reference/min)
 関数に適用することで、すべての入力値の中での最小値を返すことができます。戻り値の型は
 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -151,7 +145,6 @@ ORDER BY location_id;
 
 これで期待どおりの結果が得られました。
 
-
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ 北部          │        3 │        8 │
@@ -164,7 +157,6 @@ ORDER BY location_id;
 :::note
 `SimpleState` を使用すると、部分集計状態を結合するために `Merge` コンビネータを使う必要がなくなります。
 :::
-
 
 ## 関連項目 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

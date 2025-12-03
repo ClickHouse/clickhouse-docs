@@ -49,7 +49,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 以 `JSONLines` 格式读取数据：
@@ -83,6 +82,5 @@ FORMAT JSONLines
 ```
 
 如果将 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1，则导入数据时会跳过名称未知的列。
-
 
 ## 格式设置 {#format-settings}

@@ -23,7 +23,6 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
 **ただし、この HyperDX のディストリビューションではユーザー認証は無効になっています**
 
-
 ### 適した用途 {#suitable-for}
 
 * デモ

@@ -19,7 +19,6 @@ import Image from '@theme/IdealImage';
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 動画プレイヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか {#when-should-refreshable-materialized-views-be-used}
 
 ClickHouse のインクリメンタルマテリアライズドビューは非常に強力であり、特に単一テーブルに対する集約を行うケースでは、リフレッシュ可能なマテリアライズドビューで用いられる手法よりもはるかに高いスケーラビリティを発揮するのが一般的です。データが挿入されるたびに各データブロックに対してのみ集約を計算し、そのインクリメンタルな状態を最終テーブルでマージすることで、クエリは常にデータの一部に対してのみ実行されます。この手法は理論上ペタバイト規模のデータまでスケールし、通常は推奨される手法です。
@@ -27,8 +26,6 @@ ClickHouse のインクリメンタルマテリアライズドビューは非常
 しかし、このインクリメンタルな処理が不要、または適用できないユースケースも存在します。問題によってはインクリメンタルなアプローチと両立しないものや、リアルタイム更新を必要とせず、定期的な再構築の方が適切なものがあります。例えば、インクリメンタルなアプローチと互換性のない複雑な `JOIN` を使用しているため、フルデータセットに対するビューの完全な再計算を定期的に行いたい場合などです。
 
 >  リフレッシュ可能なマテリアライズドビューは、非正規化のようなタスクを実行するバッチ処理を行うことができます。リフレッシュ可能なマテリアライズドビュー同士の間に依存関係を作成し、一方のビューが別のビューの結果に依存し、それが完了した後にのみ実行されるようにすることができます。これは、[dbt](https://www.getdbt.com/) ジョブのようなスケジュールされたワークフローや単純な DAG を置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係の設定方法については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) の `Dependencies` セクションを参照してください。
-
-
 
 ## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
@@ -50,7 +47,6 @@ SYSTEM REFRESH VIEW table_name_mv;
 ビューをキャンセル、停止、開始することもできます。
 詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
 
-
 ## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 リフレッシュ可能なマテリアライズドビューが最後にいつリフレッシュされたかを確認するには、次のように [`system.view_refreshes`](/operations/system-tables/view_refreshes) システムテーブルをクエリします。
@@ -68,7 +64,6 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-
 ## リフレッシュ間隔はどのように変更できますか？ {#how-can-i-change-the-refresh-rate}
 
 リフレッシュ可能なマテリアライズドビューのリフレッシュ間隔を変更するには、[`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 構文を使用します。
@@ -85,7 +80,6 @@ MODIFY REFRESH EVERY 30 SECONDS;
 │ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
-
 
 ## `APPEND` を使用して新しい行を追加する {#using-append-to-add-new-rows}
 
@@ -174,7 +168,6 @@ ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
 ```
 
-
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -188,7 +181,6 @@ FORMAT PrettyCompactMonoBlock
 
 ```
 ```
-
 
 ## 例 {#examples}
 
@@ -274,7 +266,6 @@ ORDER BY movies DESC
 LIMIT 5;
 ```
 
-
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
 │  45332 │ Mel Blanc    │        909 │ 5.7884792542982515 │            19 │            148 │ 2024-11-11 12:01:35 │
@@ -350,7 +341,6 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5
 ```
-
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐

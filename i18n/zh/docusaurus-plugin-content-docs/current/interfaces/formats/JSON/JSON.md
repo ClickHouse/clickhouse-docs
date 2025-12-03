@@ -99,7 +99,6 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-
 ## 格式设置 {#format-settings}
 
 对于 JSON 输入格式，如果将设置项 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 设为 `1`，

@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 > 本指南将介绍如何在 ClickHouse 中使用数组，以及一些最常用的[数组函数](/sql-reference/functions/array-functions)。
 
-
-
 ## 数组简介 {#array-basics}
 
 数组是一种内存中的数据结构，用于将多个值组合在一起。
@@ -126,7 +124,6 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 在 ClickHouse 中，需要注意数组索引始终从 **1** 开始。
 这可能不同于你习惯使用的其他编程语言，在那些语言中数组通常是从 0 开始编号的。
 
-
 例如，给定一个数组，可以这样选取该数组的第一个元素：
 
 ```sql
@@ -162,7 +159,6 @@ SELECT string_array[0]
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## 数组函数 {#array-functions}
 
@@ -229,7 +225,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## 使用数组函数探索航班数据 {#exploring-flight-data-with-array-functions}
 
@@ -331,7 +326,6 @@ WITH arrayMap(
     ) AS statuses
 ```
 
-
 SELECT
 Origin,
 toStringCutToZero(Dest) AS Destination,
@@ -413,7 +407,6 @@ LIMIT 10
 它通过使用交叉连接（cross join）实现这一点，该操作会生成这些机场的所有组合。
 然后，对每一对机场，使用 `arrayIntersect` 函数找出在两个机场目的地列表中都出现的目的地。
 `length` 函数则统计它们共有多少个相同的目的地。
-
 
 条件 `a1.Origin < a2.Origin` 确保每个机场对只出现一次。
 如果没有这个条件，你会同时得到 JFK-LAX 和 LAX-JFK 这两条单独的结果记录，而它们实际上表示的是同一组比较，因此是多余的。
@@ -502,7 +495,6 @@ WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
 GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
-
 
 ## 后续步骤 {#next-steps}
 

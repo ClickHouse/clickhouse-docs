@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 PostgreSQL 指标 {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
@@ -241,7 +240,6 @@ docker exec <容器名称> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### HyperDX 中未显示任何指标 {#no-metrics}
 
 检查 PostgreSQL 是否可访问：
@@ -256,7 +254,6 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <容器> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
 ### 身份验证错误 {#auth-errors}
 
 确认密码是否配置正确：
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## 后续步骤 {#next-steps}
 

@@ -8,29 +8,19 @@ doc_type: 'guide'
 keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩展性']
 ---
 
-
-
 # 最佳实践 {#best-practices}
-
-
 
 ## 消息压缩 {#compression}
 
 我们强烈建议为 Kafka 主题启用压缩。压缩几乎不会带来性能开销，却可以在数据传输成本上带来显著节省。
 要进一步了解 Kafka 中的消息压缩，我们建议从这篇[指南](https://www.confluent.io/blog/apache-kafka-message-compression/)开始阅读。
 
-
-
 ## 限制 {#limitations}
 
 - 不支持使用 [`DEFAULT`](/sql-reference/statements/create/table#default)。
 
-
-
 ## 投递语义 {#delivery-semantics}
 用于 Kafka 的 ClickPipes 提供 `at-least-once` 投递语义（这是最常用的方法之一）。欢迎您通过[联系表单](https://clickhouse.com/company/contact?loc=clickpipes)就投递语义向我们反馈意见。如果您需要 `exactly-once` 语义，建议使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink 连接器。
-
-
 
 ## 身份验证 {#authentication}
 
@@ -115,7 +105,6 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 
 用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
 同样也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
-
 
 ## 性能 {#performance}
 

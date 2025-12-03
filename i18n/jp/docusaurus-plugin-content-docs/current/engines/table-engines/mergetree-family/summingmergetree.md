@@ -7,15 +7,11 @@ title: 'SummingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # SummingMergeTree テーブルエンジン {#summingmergetree-table-engine}
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承しています。違いは、`SummingMergeTree` テーブルでデータパーツをマージする際に、ClickHouse が同じ主キー（より正確には同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、数値データ型のカラムの値を合計した 1 行に置き換える点です。ソートキーの構成によって、1 つのキー値に多数の行が対応する場合、これにより必要なストレージ容量を大幅に削減し、データ取得の高速化を実現できます。
 
 このエンジンは `MergeTree` と組み合わせて使用することを推奨します。生データ（完全なデータ）は `MergeTree` テーブルに保存し、集計済みデータの保存には `SummingMergeTree` を使用します（たとえばレポートを作成する場合など）。このようなアプローチにより、不適切に構成された主キーが原因で貴重なデータを失うことを防止できます。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -68,7 +64,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `columns` — 値を集計（合計）するカラム名を含むタプルです。省略可能なパラメータです。詳細は上記を参照してください。
 </details>
 
-
 ## 使用例 {#usage-example}
 
 次のテーブルを例にします。
@@ -101,7 +96,6 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 │   1 │          3 │
 └─────┴────────────┘
 ```
-
 
 ## データ処理 {#data-processing}
 
@@ -190,12 +184,9 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-
 データを取得する際は、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 関数を使用します。
 
 ネストされたデータ構造の場合、集計対象のカラムのタプル内で、その構造に含まれるカラムを個別に指定する必要はありません。
-
-
 
 ## 関連コンテンツ {#related-content}
 

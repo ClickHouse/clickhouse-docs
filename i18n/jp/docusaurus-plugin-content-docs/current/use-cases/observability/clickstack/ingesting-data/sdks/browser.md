@@ -27,7 +27,6 @@ ClickStack ブラウザ SDK を使用すると、フロントエンドアプリ�
 * **XHR/Fetch/Websocket リクエスト**
 * **例外**
 
-
 ## はじめに {#getting-started}
 
 <br/>
@@ -114,7 +113,6 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-
 ### React のエラーバウンダリで発生したエラーを自動捕捉する {#auto-capture-react-error-boundary-errors}
 
 React を使用している場合は、エラーバウンダリコンポーネントを `attachToReactErrorBoundary` 関数に渡すことで、そのエラーバウンダリ内で発生したエラーを自動的に捕捉できます。
@@ -127,7 +125,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 // 発生するエラーをキャプチャします。
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
-
 
 ### カスタムアクションの送信 {#send-custom-actions}
 
@@ -143,7 +140,6 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-
 ### ネットワークキャプチャを動的に有効にする {#enable-network-capture-dynamically}
 
 ネットワークキャプチャを動的に有効または無効にするには、必要に応じて `enableAdvancedNetworkCapture` または `disableAdvancedNetworkCapture` 関数を呼び出してください。
@@ -151,7 +147,6 @@ HyperDX.addAction('Form-Completed', {
 ```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
-
 
 ### CORS リクエスト向けのリソースタイミングを有効化する {#enable-resource-timing-for-cors-requests}
 

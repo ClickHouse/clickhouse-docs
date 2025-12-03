@@ -31,7 +31,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-
 ## Запуск {#running}
 
 Для эмуляции вам понадобится статический бинарник qemu-user для s390x. В Ubuntu его можно установить с помощью:
@@ -46,7 +45,6 @@ apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
 2
 ```
-
 
 ## Отладка {#debugging}
 
@@ -92,7 +90,6 @@ Process 1 stopped
    452
    453      /// PHDR cache is required for query profiler to work reliably
 ```
-
 
 ## Интеграция с Visual Studio Code {#visual-studio-code-integration}
 
@@ -140,7 +137,6 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-
 #### launch.json {#launchjson}
 
 ```json
@@ -159,7 +155,6 @@ toolchain:
 }
 ```
 
-
 #### settings.json {#settingsjson}
 
 Это также поместит разные сборки в разные подпапки в каталоге `build`.
@@ -171,7 +166,6 @@ toolchain:
 }
 ```
 
-
 #### run-debug.sh {#run-debugsh}
 
 ```sh
@@ -180,7 +174,6 @@ echo 'Запуск сеанса отладчика'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
-
 
 #### tasks.json {#tasksjson}
 

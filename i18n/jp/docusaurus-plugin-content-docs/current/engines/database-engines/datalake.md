@@ -6,16 +6,12 @@ title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
 
-
-
 # DataLakeCatalog {#datalakecatalog}
 
 `DataLakeCatalog` データベースエンジンを使用すると、ClickHouse を外部の
 データカタログに接続し、データを複製することなくオープンテーブルフォーマットのデータをクエリできます。
 これにより、ClickHouse は既存のデータレイクインフラストラクチャとシームレスに連携する
 強力なクエリエンジンになります。
-
-
 
 ## サポートされているカタログ {#supported-catalogs}
 
@@ -25,8 +21,6 @@ doc_type: 'reference'
 - **Databricks Unity Catalog** - Delta Lake および Iceberg テーブル向け
 - **Hive Metastore** - 従来の Hadoop エコシステム向けカタログ
 - **REST Catalogs** - Iceberg REST 仕様に準拠した任意のカタログ
-
-
 
 ## データベースの作成 {#creating-a-database}
 
@@ -64,7 +58,6 @@ catalog_type,
 | `aws_access_key_id`     | S3/Glue へのアクセス用 AWS アクセスキー ID（vended credentials を使用しない場合）                      |
 | `aws_secret_access_key` | S3/Glue へのアクセス用 AWS シークレットアクセスキー（vended credentials を使用しない場合）                   |
 | `region`                | サービスの AWS リージョン（例: `us-east-1`）                                                 |
-
 
 ## 例 {#examples}
 

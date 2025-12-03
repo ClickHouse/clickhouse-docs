@@ -7,14 +7,10 @@ title: 'Оконные функции'
 doc_type: 'reference'
 ---
 
-
-
 # Оконные функции  {#window-functions}
 
 Оконные функции позволяют выполнять вычисления над набором строк, связанных с текущей строкой.
 Часть таких вычислений аналогична тем, что можно выполнить с агрегатной функцией, но оконная функция не приводит к объединению строк в единый результирующий набор — отдельные строки по‑прежнему возвращаются.
-
-
 
 ## Стандартные оконные функции {#standard-window-functions}
 
@@ -36,8 +32,6 @@ ClickHouse поддерживает стандартную грамматику 
 | `lag/lead(value, offset)`                                                          | ✅ <br/> Вы также можете использовать один из следующих обходных решений:<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`, или `following` для `lead` <br/> 2) `lagInFrame/leadInFrame`, которые являются аналогами, но учитывают оконный фрейм. Чтобы получить поведение, идентичное `lag/lead`, используйте `rows between unbounded preceding and unbounded following`                                                                 |
 | ntile(buckets) | ✅ <br/> Задайте окно следующим образом: (partition by x order by y rows between unbounded preceding and unbounded following). |
 
-
-
 ## Оконные функции ClickHouse {#clickhouse-specific-window-functions}
 
 Также доступна следующая оконная функция ClickHouse:
@@ -50,7 +44,6 @@ ClickHouse поддерживает стандартную грамматику 
 
 - `0` для первой строки,
 - ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$ для $i$-й строки.
-
 
 ## Синтаксис {#syntax}
 
@@ -96,7 +89,6 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - Присваивает ранг текущей строке в её разделе без пропусков.
 * [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк раньше текущей строки в упорядоченном фрейме.
 * [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк позже текущей строки в упорядоченном фрейме.
-
 
 ## Примеры {#examples}
 
@@ -196,7 +188,6 @@ SELECT
 FROM salaries;
 ```
 
-
 ```text
 ┌─игрок───────────┬─зарплата─┬─команда───────────────────┬─максКоманды─┬───разница─┐
 │ Charles Juarez  │   190000 │ New Coreystad Archdukes   │      190000 │         0 │
@@ -280,7 +271,6 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-
 ```sql
 -- краткая форма — без выражения границ, без ORDER BY,
 -- эквивалент `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
@@ -354,7 +344,6 @@ ORDER BY
 │        1 │     5 │     5 │ [1,2,3,4,5]        │ [1,2,3,4,5]  │
 └──────────┴───────┴───────┴────────────────────┴──────────────┘
 ```
-
 
 ```sql
 -- фрейм ограничен началом партиции и текущей строкой, но порядок сортировки обратный
@@ -451,7 +440,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
 │        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
@@ -520,7 +508,6 @@ ORDER BY
     value ASC;
 ```
 
-
 ┌─frame&#95;values&#95;1─┬─second&#95;value─┐
 │ [1]            │         ᴺᵁᴸᴸ │
 │ [1,2]          │            2 │
@@ -531,7 +518,6 @@ ORDER BY
 
 ```
 ```
-
 
 ## Примеры из реальной практики {#real-world-examples}
 
@@ -646,7 +632,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
 (&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
@@ -725,7 +710,6 @@ CREATE TABLE sensors
 ENGINE = Memory;
 ```
 
-
 insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
@@ -769,7 +753,6 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ````
 
-
 ## Ссылки {#references}
 
 ### GitHub Issues {#github-issues}
@@ -803,8 +786,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
-
-
 
 ## Связанные материалы {#related-content}
 
