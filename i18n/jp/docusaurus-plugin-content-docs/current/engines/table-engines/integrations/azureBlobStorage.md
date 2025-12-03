@@ -7,13 +7,9 @@ title: 'AzureBlobStorage テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # AzureBlobStorage テーブルエンジン {#azureblobstorage-table-engine}
 
 このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合機能を提供します。
-
-
 
 ## テーブルを作成する {#create-table}
 
@@ -60,15 +56,12 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` になります。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
-
-
 
 ## 認証 {#authentication}
 
@@ -131,7 +124,6 @@ arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2
 arthur :) select _path, * from azure_table;
 ```
 
-
 ┌─&#95;path──────────────────────────────────────────────────────────────────────┬─年─┬─国─┬─カウンタ─┐
 
 1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
@@ -140,7 +132,6 @@ arthur :) select _path, * from azure_table;
 
 ```
 ```
-
 
 ## 関連項目 {#see-also}
 

@@ -7,19 +7,13 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf {#countif}
-
-
 
 ## 描述 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
 函数，从而通过 `countIf` 聚合函数组合器统计条件为 `true`
 的行数。
-
-
 
 ## 用法示例 {#example-usage}
 
@@ -56,7 +50,6 @@ GROUP BY user_id;
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

@@ -13,8 +13,6 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 在需要比其他标准格式更高的自定义能力时，
@@ -31,8 +29,6 @@ doc_type: 'guide'
 | `format_template_row_format`                                                                             | 指定[内联](#inline_specification)的行格式字符串。                                                                          |                                                                           
 | `format_template_resultset_format`                                                                       | 指定[内联](#inline_specification)的结果集格式字符串。                                                                      |
 | 某些其他格式的设置（例如使用 `JSON` 转义时的 `output_format_json_quote_64bit_integers`）                |                                                                                                                            |
-
-
 
 ## 设置和转义规则 {#settings-and-escaping-rules}
 
@@ -114,7 +110,6 @@ doc_type: 'guide'
 如果 `format_template_resultset` 设置为空字符串，则默认使用 `${data}`。
 :::
 
-
 对于 INSERT 查询，如果存在前缀或后缀（见示例），该格式允许省略某些列或字段。
 
 ### 内联指定 {#inline_specification}
@@ -131,8 +126,6 @@ doc_type: 'guide'
 - 使用 `format_template_row_format` 时，对应 [`format_template_row`](#format_template_row)。
 - 使用 `format_template_resultset_format` 时，对应 [`format_template_resultset`](#format_template_resultset)。
 :::
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -216,7 +209,6 @@ FORMAT Template
 ### 内联规格 {#in-line-specification}
 
 厌倦了手动编写和排版 Markdown 表格？在本示例中，我们将介绍如何使用 `Template` 格式和内联规格设置来完成一个简单任务——从 `system.formats` 表中 `SELECT` 出若干 ClickHouse 格式的名称，并将它们格式化为 Markdown 表格。通过使用 `Template` 格式以及 `format_template_row_format` 和 `format_template_resultset_format` 设置，即可轻松实现这一点。
-
 
 在之前的示例中，我们将结果集和行格式字符串放在单独的文件中，并分别通过设置 `format_template_resultset` 和 `format_template_row` 来指定这些文件的路径。这里我们会直接内联定义这些内容，因为我们的模板非常简单，只包含少量的 `|` 和 `-` 用于构造 Markdown 表格。我们将使用设置 `format_template_resultset_format` 来指定结果集模板字符串。为了生成表头，我们在 `${data}` 之前添加了 `|ClickHouse Formats|\n|---|\n`。我们使用设置 `format_template_row_format` 为每一行指定模板字符串 ``|`{0:XML}`|``。`Template` 格式会将按给定格式生成的行插入到占位符 `${data}` 中。在这个示例中我们只有一列，但如果你想添加更多列，可以在行模板字符串中添加 `{1:XML}`、`{2:XML}` 等，并根据需要选择合适的转义规则。在本示例中我们使用的是转义规则 `XML`。
 

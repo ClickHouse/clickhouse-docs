@@ -7,11 +7,7 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArray {#uniqarray}
-
-
 
 ## Описание {#description}
 
@@ -23,8 +19,6 @@ doc_type: 'reference'
 Функция `uniqArray` полезна, когда необходимо посчитать уникальные элементы во 
 множестве массивов в наборе данных. Она эквивалентна использованию `uniq(arrayJoin())`, где 
 `arrayJoin` сначала разворачивает массивы, а затем `uniq` считает уникальные элементы.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -60,7 +54,6 @@ FROM user_interests;
 1. │                      5 │                          5 │
    └────────────────────────┴────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

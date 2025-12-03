@@ -7,17 +7,11 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-
-
 # maxMap {#maxmap}
-
-
 
 ## 説明 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`max`](/sql-reference/aggregate-functions/reference/max) 関数に適用すると、`maxMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の最大値を計算できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -65,7 +59,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)

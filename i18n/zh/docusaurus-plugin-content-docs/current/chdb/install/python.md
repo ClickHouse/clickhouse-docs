@@ -18,7 +18,6 @@ doc_type: 'guide'
 pip install chdb
 ```
 
-
 ## 使用方法 {#usage} 
 
 ### 命令行界面 {#command-line-interface}
@@ -32,7 +31,6 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 # 格式化查询 {#query-with-formatting}
 python3 -m chdb "SELECT version()" JSON
 ```
-
 
 ### Python 基本用法 {#basic-python-usage}
 
@@ -48,7 +46,6 @@ print(f"读取行数：{result.rows_read()}")
 print(f"读取字节数：{result.bytes_read()}")
 print(f"执行时间：{result.elapsed()} 秒")
 ```
-
 
 ### 基于连接的 API（推荐使用） {#connection-based-api}
 
@@ -84,7 +81,6 @@ cur.close()
 conn.close()
 ```
 
-
 ## 数据接入方式 {#data-input}
 
 ### 基于文件的数据源 {#file-based-data-sources}
@@ -118,7 +114,6 @@ result = chdb.query("""
 """, 'Pretty')
 ```
 
-
 ### 输出格式示例 {#output-format-examples}
 
 ```python
@@ -138,7 +133,6 @@ print(json_result)
 pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
 print(pretty_result)
 ```
-
 
 ### DataFrame 操作 {#dataframe-operations}
 
@@ -163,7 +157,6 @@ print(result_df)
 summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
-
 
 #### Python 表引擎（推荐） {#python-table-engine-recommended}
 
@@ -211,7 +204,6 @@ chdb.query("""
     ORDER BY score DESC
 """).show()
 ```
-
 
 ### 有状态会话 {#stateful-sessions}
 
@@ -267,7 +259,6 @@ print(result)
 sess.close()  # 可选 - 对象删除时自动关闭
 ```
 
-
 ### 高级会话功能 {#advanced-session-features}
 
 ```python
@@ -287,7 +278,6 @@ result = sess.query("""
 ```
 
 另请参见：[test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
-
 
 ### Python DB-API 2.0 接口 {#python-db-api-20}
 
@@ -337,7 +327,6 @@ cursor.executemany(
 )
 ```
 
-
 ### 用户自定义函数（UDF） {#user-defined-functions}
 
 使用自定义 Python 函数扩展 SQL：
@@ -378,7 +367,6 @@ result = query("""
 print(result)
 ```
 
-
 #### 具有自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
 
 ```python
@@ -412,7 +400,6 @@ result = query("""
 """, "Pretty")
 print(result)
 ```
-
 
 #### UDF 最佳实践 {#udf-best-practices}
 
@@ -448,7 +435,6 @@ query("""
     ) as extracted_name
 """)
 ```
-
 
 ### 流式查询处理 {#streaming-queries}
 
@@ -520,7 +506,6 @@ stream.close()
 sess.close()
 ```
 
-
 ### Python 表引擎 {#python-table-engine}
 
 #### 查询 Pandas DataFrame 数据 {#query-pandas-dataframes}
@@ -577,7 +562,6 @@ window_result = chdb.query("""
 """, "Pretty")
 print(window_result)
 ```
-
 
 #### 使用 PyReader 的自定义数据源 {#custom-data-sources-pyreader}
 
@@ -686,7 +670,6 @@ complex_json = chdb.query("""
 print(complex_json)
 ````
 
-
 ## 性能和优化 {#performance-optimization}
 
 ### 基准测试 {#benchmarks}
@@ -771,7 +754,6 @@ for batch in batch_reader:
 stream.close()
 sess.close()
 ```
-
 
 ## GitHub 仓库 {#github-repository}
 

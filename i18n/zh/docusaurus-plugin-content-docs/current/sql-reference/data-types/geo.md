@@ -12,8 +12,6 @@ ClickHouse 支持用于表示地理对象（例如位置、区域等）的数据
 **另请参阅**
 - [简单地理要素的表示](https://en.wikipedia.org/wiki/GeoJSON)。
 
-
-
 ## Point {#point}
 
 `Point` 由其 X 和 Y 坐标表示，存储为 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
@@ -35,7 +33,6 @@ SELECT p, toTypeName(p) FROM geo_point;
 │ (10,10) │ Point         │
 └─────────┴───────────────┘
 ```
-
 
 ## 环 {#ring}
 
@@ -59,7 +56,6 @@ SELECT r, toTypeName(r) FROM geo_ring;
 └───────────────────────────────┴───────────────┘
 ```
 
-
 ## LineString {#linestring}
 
 `LineString` 是以点数组形式存储的一条线：[Array](array.md)([Point](#point))。
@@ -81,7 +77,6 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 │ [(0,0),(10,0),(10,10),(0,10)] │ LineString    │
 └───────────────────────────────┴───────────────┘
 ```
-
 
 ## MultiLineString {#multilinestring}
 
@@ -105,7 +100,6 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 └─────────────────────────────────────────────────────┴─────────────────┘
 ```
 
-
 ## Polygon {#polygon}
 
 `Polygon` 是一种带孔多边形，存储为由环组成的数组：[Array](array.md)([Ring](#ring))。外层数组的第一个元素是多边形的外边界，其后的所有元素表示孔。
@@ -128,7 +122,6 @@ Result：
 └───────────────────────────────────────────────────────────────┴────────────────┘
 ```
 
-
 ## MultiPolygon {#multipolygon}
 
 `MultiPolygon` 由多个多边形组成，并以多边形数组的形式存储：[Array](array.md)([Polygon](#polygon))。
@@ -150,7 +143,6 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 │ [[[(0,0),(10,0),(10,10),(0,10)]],[[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]]] │ MultiPolygon    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
-
 
 ## Geometry {#geometry}
 
@@ -199,7 +191,6 @@ SELECT * FROM geo_dst;
 5. │ [[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]]                                            │
    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 相关内容 {#related-content}
 

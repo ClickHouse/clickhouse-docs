@@ -9,13 +9,9 @@ score: 15
 doc_type: 'guide'
 ---
 
-
-
 # 加载 JSON {#loading-json}
 
 以下示例展示了一个非常简单的用例，用于加载结构化和半结构化 JSON 数据。对于更复杂的 JSON（包括嵌套结构），请参阅指南 [**设计 JSON 模式**](/integrations/data-formats/json/schema)。
-
-
 
 ## 加载结构化 JSON {#loading-structured-json}
 
@@ -103,7 +99,6 @@ Ok.
 SELECT * FROM pypi LIMIT 2
 ```
 
-
 ┌───────date─┬─country&#95;code─┬─project────────────┬─type──┬─installer────┬─python&#95;minor─┬─system─┬─version─┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
@@ -122,7 +117,6 @@ FORMAT JSONEachRow
 ````
 
 这些示例假定使用 `JSONEachRow` 格式。系统同样支持其他常见的 JSON 格式，加载这些格式的示例请参见[此处](/integrations/data-formats/json/other-formats)。
-
 
 ## 加载半结构化 JSON {#loading-semi-structured-json}
 
@@ -209,7 +203,6 @@ LIMIT 2
 * 需要灵活的模式（schema），而严格的类型约束不可行。
 
 如果你的数据结构是已知且稳定的，即使数据本身是 JSON 格式，也很少需要使用 `JSON` 类型。特别是当你的数据具有以下特征时：
-
 
 * **已知键的扁平结构**：使用标准列类型，例如 String。
 * **可预测的嵌套结构**：为这些结构使用 Tuple、Array 或 Nested 类型。

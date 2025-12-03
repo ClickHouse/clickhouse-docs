@@ -8,13 +8,9 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-
-
 # SQLite {#sqlite}
 
 [SQLite](https://www.sqlite.org/index.html) データベースに接続し、`INSERT` および `SELECT` クエリを実行して、ClickHouse と SQLite 間でデータを交換できるようにします。
-
-
 
 ## データベースの作成 {#creating-a-database}
 
@@ -27,7 +23,6 @@ doc_type: 'reference'
 
 * `db_path` — SQLite データベースファイルのパス。
 
-
 ## データ型のサポート {#data_types-support}
 
 |  SQLite   | ClickHouse                                              |
@@ -37,14 +32,10 @@ doc_type: 'reference'
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
 
-
-
 ## 詳細と推奨事項 {#specifics-and-recommendations}
 
 SQLite は、データベース全体（定義、テーブル、インデックス、および実データ）をホストマシン上の 1 つのクロスプラットフォームファイルとして保存します。書き込み中、SQLite はデータベースファイル全体をロックするため、書き込み操作は逐次的に実行されます。一方で、読み取り操作は並行して実行できます。
 SQLite には、サービスとしての管理（起動スクリプトなど）や、`GRANT` やパスワードに基づくアクセス制御は必要ありません。アクセス制御は、データベースファイル自体に付与されたファイルシステムのパーミッションによって行われます。
-
-
 
 ## 使用例 {#usage-example}
 

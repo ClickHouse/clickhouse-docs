@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 在 `Null` 格式下，不会输出任何内容。  
@@ -24,8 +22,6 @@ doc_type: 'reference'
 :::tip
 `Null` 格式可用于性能测试。
 :::
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -68,6 +64,5 @@ FORMAT Null
 ```response
 结果集包含 0 行。耗时：0.154 秒。
 ```
-
 
 ## 格式设置 {#format-settings}

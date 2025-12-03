@@ -10,7 +10,6 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
 # データ管理 {#managing-data}
 
 Observability 用の ClickHouse デプロイメントでは、必然的に大規模なデータセットを扱うことになり、それらを適切に管理する必要があります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
@@ -78,7 +77,6 @@ WHERE `table` = 'otel_logs'
 
 古いデータの保存用に、`otel_logs_archive` という別のテーブルを用意しておくこともできます。データはパーティション単位で効率的にこのテーブルへ移動でき（メタデータの変更だけで済みます）、処理されます。
 
-
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
 --アーカイブテーブルにデータを移動
@@ -145,7 +143,6 @@ ORDER BY c DESC
 この機能は、設定 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) を有効にした場合に TTL によって活用されます。詳細については [TTL（Time to Live）によるデータ管理](#data-management-with-ttl-time-to-live) を参照してください。
 :::
 
-
 ### アプリケーション {#applications}
 
 上記では、データをパーティション単位で効率的に移動および操作できることを示しました。実際には、ユーザーが Observability のユースケースでパーティション操作を最も頻繁に活用するのは、おそらく次の 2 つのシナリオです。
@@ -193,7 +190,6 @@ TTL は即時には適用されず、上記のとおりスケジュールに基�
 
 **Important: [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) の使用を推奨します**（デフォルトのスキーマで適用されます）。この設定が有効な場合、そのパーツ内のすべての行が期限切れになったときに、ClickHouse はパーツ全体を削除します。パーツ全体を削除することで（`ttl_only_drop_parts=0` の場合にリソース集約的なミューテーションによって行われる、TTL 対象行の部分的なクリーンアップではなく）、`merge_with_ttl_timeout` を短く設定しても、システムパフォーマンスへの影響を抑えることができます。データを TTL で有効期限を設定している単位（例: 日）と同じ単位でパーティション分割している場合、各パーツには自然とその定義された間隔のデータのみが含まれるようになります。これにより、`ttl_only_drop_parts=1` を効率的に適用できるようになります。
 
-
 ### カラムレベルの TTL {#column-level-ttl}
 
 上記の例では、テーブルレベルでデータの有効期限を設定しています。データはカラムレベルでも有効期限を設定できます。データが古くなるにつれ、調査における価値が、その保持に必要なリソースコストに見合わないカラムを削除するために活用できます。例えば、挿入時にまだ抽出されていない新しい動的メタデータ（例: 新しい Kubernetes ラベル）が追加される可能性に備えて、`Body` カラムを保持しておくことを推奨します。一定期間、例えば 1 か月が経過した後、この追加メタデータが有用ではないことが明らかになるかもしれません。その場合、`Body` カラムを保持し続ける価値は限定的です。
@@ -214,7 +210,6 @@ ORDER BY (ServiceName, Timestamp)
 :::note
 列レベルの TTL を指定する場合は、ユーザーが独自にスキーマを定義する必要があります。これは OTel collector では指定できません。
 :::
-
 
 ## データの再圧縮 {#recompressing-data}
 
@@ -253,7 +248,6 @@ TTL Timestamp + INTERVAL 4 DAY RECOMPRESS CODEC(ZSTD(3))
 :::
 
 TTL の設定に関する詳細と例については[こちら](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)を参照してください。テーブルやカラムに TTL を追加・変更する方法の例は[こちら](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)を参照してください。TTL によって hot-warm アーキテクチャのようなストレージ階層を実現する方法については、[ストレージ階層](#storage-tiers)を参照してください。
-
 
 ## ストレージ階層 {#storage-tiers}
 
@@ -351,7 +345,6 @@ LIMIT 5
 
 今後取り込まれるすべてのデータにこの値が挿入されるようにするため、以下のように `ALTER TABLE` 構文を使用してマテリアライズドビューを変更します。
 
-
 ```sql
 ALTER TABLE otel_logs_mv
         MODIFY QUERY
@@ -377,7 +370,6 @@ FROM otel_logs
 ```
 
 以降の行では、挿入時に `Size` 列に値が設定されます。
-
 
 ### 新しいテーブルを作成する {#create-new-tables}
 

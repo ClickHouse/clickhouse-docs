@@ -6,16 +6,12 @@ title: '自托管升级'
 doc_type: 'guide'
 ---
 
-
-
 ## ClickHouse 升级概览 {#clickhouse-upgrade-overview}
 
 本文档包含：
 - 通用指南
 - 推荐方案
 - 在系统上升级二进制文件的具体说明
-
-
 
 ## 一般指南 {#general-guidelines}
 
@@ -51,8 +47,6 @@ doc_type: 'guide'
 - 通过停机升级（停止所有 server、升级所有 server、重新启动所有 server）。
 - 或通过中间版本进行升级（选择一个比当前版本新但发布时间不超过一年的版本作为中间版本）。
 
-
-
 ## 推荐方案 {#recommended-plan}
 
 以下是实现 ClickHouse 零停机升级的推荐步骤：
@@ -81,7 +75,6 @@ MergeFromLogEntryTask: Code: 40. DB::Exception: 数据分片校验和不匹配:
 ```
 
 :::
-
 
 ## ClickHouse 服务器二进制升级流程 {#clickhouse-server-binary-upgrade-process}
 

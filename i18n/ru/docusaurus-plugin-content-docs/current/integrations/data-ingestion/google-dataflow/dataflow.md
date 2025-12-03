@@ -10,7 +10,6 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Интеграция Google Dataflow с ClickHouse {#integrating-google-dataflow-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -22,8 +21,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [Java runner](#1-java-runner)
 - [Готовые шаблоны](#2-predefined-templates)
 
-
-
 ## Java runner {#1-java-runner}
 [Java runner](./java-runner) позволяет реализовывать пользовательские конвейеры Dataflow с использованием интеграции Apache Beam SDK `ClickHouseIO`. Такой подход обеспечивает полную гибкость и контроль над логикой конвейера, позволяя адаптировать ETL‑процесс под конкретные требования.
 Однако этот вариант требует знаний программирования на Java и знакомства с фреймворком Apache Beam.
@@ -32,8 +29,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - Высокая степень гибкости настройки.
 - Оптимален для сложных или нетривиальных сценариев использования.
 - Требует написания кода и понимания API Beam.
-
-
 
 ## Предопределённые шаблоны {#2-predefined-templates}
 ClickHouse предлагает [предопределённые шаблоны](./templates), разработанные для конкретных сценариев использования, например импорта данных из BigQuery в ClickHouse. Эти шаблоны готовы к использованию и упрощают процесс интеграции, что делает их отличным выбором для пользователей, предпочитающих решение без написания кода.

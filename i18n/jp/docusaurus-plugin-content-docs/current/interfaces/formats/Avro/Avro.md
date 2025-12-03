@@ -15,7 +15,6 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | -- | -- | ----- |
 | ✔  | ✔  |       |
 
-
 ## 説明 {#description}
 
 [Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコーディングを使用する行指向のシリアル化フォーマットです。`Avro` フォーマットは、[Avro データファイル](https://avro.apache.org/docs/++version++/specification/#object-container-files) の読み書きをサポートします。このフォーマットは、スキーマを埋め込んだ自己記述型のメッセージを前提としています。Avro をスキーマレジストリと併用している場合は、[`AvroConfluent`](./AvroConfluent.md) フォーマットを参照してください。
@@ -54,7 +53,6 @@ ClickHouse テーブルのカラムのデータ型は、挿入される Avro デ
 
 データをインポートする際、スキーマ内でフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合は、エラーを発生させる代わりにデフォルト値が使用されます。
 
-
 ### Avro データの書き込み {#writing-avro-data}
 
 ClickHouse テーブルのデータを Avro ファイルに書き出すには、次のようにします。
@@ -69,7 +67,6 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 * 続く文字は `[A-Za-z0-9_]` のみであること
 
 Avro ファイルの出力圧縮と同期間隔は、それぞれ [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) 設定を使用して構成できます。
-
 
 ### Avro スキーマの推論 {#inferring-the-avro-schema}
 

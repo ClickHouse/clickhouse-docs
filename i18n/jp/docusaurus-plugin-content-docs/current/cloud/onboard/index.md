@@ -7,21 +7,16 @@ doc_type: 'guide'
 keywords: ['オンボーディング', 'はじめに', 'クラウド設定', 'クイックスタート', '概要']
 ---
 
-
-
 # ClickHouse Cloud を始める {#get-started-with-clickhouse-cloud}
 
 ClickHouse Cloud を初めて使用する方で、どこから始めればよいかわからない場合、このドキュメントセクションでは、迅速に稼働させるために必要なすべての手順を説明します。ClickHouse Cloud を探索する過程で各ステップをガイドできるよう、この入門セクションを3つのサブセクションに分けて構成しています。
 
 <VerticalStepper headerLevel="h2">
 
-
 ## ClickHouse Cloud を知る {#discover-clickhouse-cloud}
 
 - [ClickHouse Cloud が何であり、オープンソース版とどのように異なるかを学ぶ](/cloud/overview)
 - [ClickHouse Cloud の主なユースケースを把握する](/cloud/get-started/cloud/use-cases/overview)
-
-
 
 ## ClickHouse Cloud をセットアップする {#get-set-up-with-clickhouse-cloud}
 
@@ -30,8 +25,6 @@ ClickHouse Cloud が何かを理解したところで、ここからはデータ
 以下のトピックを扱います:
 
 - 各種プラットフォームからの[移行ガイド](/integrations/migration/overview)
-
-
 
 ## ClickHouse Cloudデプロイメントのチューニング {#evaluate-clickhouse-cloud}
 

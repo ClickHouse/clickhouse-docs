@@ -7,19 +7,13 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-
-
 # anyIf {#avgif}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
 для выбора первого встретившегося элемента из заданного столбца,
 который удовлетворяет указанному условию.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -59,7 +53,6 @@ FROM sales;
 │          1 │          4 │
 └────────────┴────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)

@@ -7,22 +7,17 @@ title: 'Табличная функция hudiCluster'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция hudiCluster {#hudicluster-table-function}
 
 Это расширение табличной функции [hudi](sql-reference/table-functions/hudi.md).
 
 Позволяет параллельно обрабатывать файлы из таблиц Apache [Hudi](https://hudi.apache.org/) в Amazon S3 на многих узлах заданного кластера. На инициирующем узле создаётся соединение со всеми узлами кластера, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициирующего узла следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут завершены.
 
-
-
 ## Синтаксис {#syntax}
 
 ```sql
 hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -35,13 +30,9 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 | `structure`                                  | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                            |
 | `compression`                                | Параметр является необязательным. Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия автоматически определяется по расширению файла.                                                                                                                                                                                             |
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица с указанной структурой для чтения данных кластера из заданной таблицы Hudi в S3.
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 
@@ -50,8 +41,6 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
-
-
 
 ## Смотрите также {#related}
 

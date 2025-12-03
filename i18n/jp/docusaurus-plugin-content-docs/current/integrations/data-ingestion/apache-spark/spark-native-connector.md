@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-
 # Spark コネクタ {#spark-connector}
 
 このコネクタは、高度なパーティショニングや述語プッシュダウンなど、ClickHouse 固有の最適化機能を活用して、
@@ -173,7 +172,6 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 [Compatibility Matrix](#compatibility-matrix) に従ってパッケージのバージョン互換性が取れていることを確認してください。
 :::
 
-
 ## カタログを登録する（必須） {#register-the-catalog-required}
 
 ClickHouse のテーブルへアクセスするには、以下の設定で新しい Spark カタログを構成する必要があります。
@@ -223,7 +221,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-
 ## ClickHouse Cloud の設定 {#clickhouse-cloud-settings}
 
 [ClickHouse Cloud](https://clickhouse.com) に接続する際は、SSL を有効にし、適切な SSL モードを設定してください。例えば、次のように指定します。
@@ -232,7 +229,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
-
 
 ## データの読み込み {#read-data}
 
@@ -499,7 +495,6 @@ TBLPROPERTIES (
 ```
 
 上記の例は Spark SQL クエリを示しており、Java や Scala、PySpark、シェルなどの任意の API からアプリケーション内で実行できます。
-
 
 ## 設定 {#configurations}
 

@@ -7,18 +7,12 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-
-
 # minMap {#minmap}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)
 для вычисления минимального значения в Map отдельно для каждого ключа с использованием агрегатной функции-комбинатора `minMap`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -66,7 +60,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

@@ -95,7 +95,6 @@ Enum（および Enum8 または Enum16）は、`oneof` で取り得るすべて
 ClickHouse は、`length-delimited` 形式で protobuf メッセージを入力および出力します。
 これは、各メッセージの前に、その長さを [可変長整数 (varint)](https://developers.google.com/protocol-buffers/docs/encoding#varints) として書き込む必要があることを意味します。
 
-
 ## 使用例 {#example-usage}
 
 ### データの読み取りと書き込み {#basic-examples}
@@ -118,7 +117,6 @@ message MessageType {
   repeated string phoneNumbers = 4;  
 };
 ```
-
 
 <details>
   <summary>バイナリファイルの生成</summary>
@@ -248,7 +246,6 @@ ENGINE = MergeTree()
 ORDER BY tuple()
 ```
 
-
 コマンドラインからテーブルにデータを挿入します：
 
 ```bash
@@ -262,7 +259,6 @@ SELECT * FROM test.protobuf_messages INTO OUTFILE 'protobuf_message_from_clickho
 ```
 
 Protobuf スキーマを使用して、ClickHouse からファイル `protobuf_message_from_clickhouse.bin` に書き出されたデータをデシリアライズできます。
-
 
 ### ClickHouse Cloud を使用したデータの読み取りと書き込み
 
@@ -291,7 +287,6 @@ ORDER BY tuple()
 * &#39;string&#39;: `format_schema` はスキーマ内容そのもの（リテラル）です。
 * &#39;query&#39;: `format_schema` はスキーマを取得するためのクエリです。
 
-
 ### `format_schema_source='string'`
 
 スキーマを文字列として指定して ClickHouse Cloud にデータを挿入するには、次のコマンドを実行します:
@@ -311,7 +306,6 @@ Aisha Khan 19920815 ['(555) 247-8903','(555) 612-3457']
 Javier Rodriguez 20001015 ['(555) 891-2046','(555) 738-5129']
 Mei Ling 19980616 ['(555) 956-1834','(555) 403-7682']
 ```
-
 
 ### `format_schema_source='query'`
 
@@ -349,7 +343,6 @@ Javier Rodriguez 20001015 ['(555) 891-2046','(555) 738-5129']
 Mei Ling 19980616 ['(555) 956-1834','(555) 403-7682']
 ```
 
-
 ### 自動生成スキーマの利用
 
 データ用の外部 Protobuf スキーマがない場合でも、自動生成されたスキーマを利用することで、Protobuf 形式でデータを出力/入力できます。
@@ -378,7 +371,6 @@ SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerat
 ```
 
 この場合、自動生成された Protobuf スキーマは `path/to/schema/schema.capnp` というファイルに保存されます。
-
 
 ### Protobuf キャッシュの削除 {#basic-examples-cloud}
 

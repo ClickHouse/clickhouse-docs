@@ -20,7 +20,6 @@ ClickHouse предоставляет штатный клиент командн
 Клиент предоставляет информацию о выполнении запросов в реальном времени с индикатором прогресса, количеством прочитанных строк, объёмом обработанных данных (в байтах) и временем выполнения запроса.
 Он поддерживает как [параметры командной строки](#command-line-options), так и [файлы конфигурации](#configuration_files).
 
-
 ## Установка {#install}
 
 Чтобы загрузить ClickHouse, выполните команду:
@@ -38,7 +37,6 @@ sudo ./clickhouse install
 Дополнительные варианты установки см. в разделе [Install ClickHouse](../getting-started/install/install.mdx).
 
 Различные версии клиента и сервера совместимы между собой, но некоторые функции могут быть недоступны в более старых клиентах. Рекомендуется использовать одну и ту же версию для клиента и сервера.
-
 
 ## Запуск {#run}
 
@@ -70,7 +68,6 @@ ClickHouse client version 24.12.2.29 (official build).
 | `--connection &lt;name&gt;`            | Имя преднастроенного подключения из [configuration file](#connection-credentials).                                                                                                              |
 
 Полный список параметров командной строки см. в разделе [Command Line Options](#command-line-options).
-
 
 ### Подключение к ClickHouse Cloud {#connecting-cloud}
 
@@ -123,7 +120,6 @@ ClickHouse client version 24.12.2.29 (official build).
 Чтобы сосредоточиться на синтаксисе запросов, в последующих примерах опущены параметры подключения (`--host`, `--port` и т. д.). Не забудьте добавить их, когда будете использовать команды.
 :::
 
-
 ## Интерактивный режим {#interactive-mode}
 
 ### Использование интерактивного режима {#using-interactive-mode}
@@ -167,7 +163,6 @@ ClickHouse Client основан на `replxx` (аналог `readline`), поэ
 * `quit` или `quit;`
 * `q`, `Q` или `:q`
 * `logout` или `logout;`
-
 
 ### Информация об обработке запроса {#processing-info}
 
@@ -247,7 +242,6 @@ $ echo "Hello\nGoodbye" | clickhouse-client --query "INSERT INTO messages FORMAT
 
 Когда указана опция `--query`, любой ввод данных добавляется к запросу после символа перевода строки.
 
-
 ### Загрузка CSV-файла в удалённый сервис ClickHouse {#cloud-example}
 
 В этом примере демонстрируется загрузка примерного набора данных из CSV-файла `cell_towers.csv` в существующую таблицу `cell_towers` в базе данных `default`:
@@ -260,7 +254,6 @@ clickhouse-client --host HOSTNAME.clickhouse.cloud \
   --query "INSERT INTO cell_towers FORMAT CSVWithNames" \
   < cell_towers.csv
 ```
-
 
 ### Примеры вставки данных из командной строки {#more-examples}
 
@@ -289,7 +282,6 @@ cat file.csv | clickhouse-client --database=test --query="INSERT INTO test FORMA
 
 В пакетном режиме формат данных по умолчанию — `TabSeparated` (см. [форматы](formats.md)).
 Вы можете указать формат в предложении `FORMAT` запроса, как показано в примере выше.
-
 
 ## Запросы с параметрами {#cli-queries-with-parameters}
 
@@ -333,7 +325,6 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 1 строка в наборе. Прошло: 0.006 сек.
 ```
 
-
 ### Синтаксис запроса {#cli-queries-with-parameters-syntax}
 
 В запросе указывайте значения, которые хотите подставлять с помощью параметров командной строки, заключая их в фигурные скобки в следующем формате:
@@ -347,7 +338,6 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 | `name`      | Идентификатор подстановочного параметра. Соответствующая опция командной строки — `--param_<name> = value`.                                                                                                                                                                                                                                                                                                                                                                 |
 | `data type` | [Тип данных](../sql-reference/data-types/index.md) параметра. <br /><br />Например, структура данных вида `(integer, ('string', integer))` может иметь тип данных `Tuple(UInt8, Tuple(String, UInt8))` (можно также использовать другие [целочисленные](../sql-reference/data-types/int-uint.md) типы). <br /><br />Также можно передавать в качестве параметров имя таблицы, имя базы данных и имена столбцов; в этом случае следует использовать тип данных `Identifier`. |
 
-
 ### Примеры {#cli-queries-with-parameters-examples}
 
 ```bash
@@ -357,7 +347,6 @@ $ clickhouse-client --param_tuple_in_tuple="(10, ('dt', 10))" \
 $ clickhouse-client --param_tbl="numbers" --param_db="system" --param_col="number" --param_alias="top_ten" \
     --query "SELECT {col:Identifier} as {alias:Identifier} FROM {db:Identifier}.{tbl:Identifier} LIMIT 10"
 ```
-
 
 ## Генерация SQL с помощью ИИ {#ai-sql-generation}
 
@@ -378,7 +367,6 @@ ClickHouse Client включает встроенную поддержку ИИ 
 1. Автоматически анализировать структуру вашей базы данных
 2. Генерировать соответствующий SQL‑запрос на основе обнаруженных таблиц и столбцов
 3. Сразу выполнять сгенерированный запрос
-
 
 ### Пример {#ai-sql-generation-example}
 
@@ -413,7 +401,6 @@ GROUP BY c.name
 ORDER BY order_count DESC
 ```
 
-
 ### Конфигурация {#ai-sql-generation-configuration}
 
 Для генерации SQL-запросов с помощью ИИ необходимо настроить поставщика ИИ в конфигурационном файле клиента ClickHouse. Вы можете использовать OpenAI, Anthropic или любой совместимый с OpenAI API-сервис.
@@ -437,7 +424,6 @@ clickhouse-client
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
-
 
 #### Файл конфигурации {#ai-sql-generation-configuration-file}
 
@@ -542,7 +528,6 @@ ai:
   provider: openai
   model: gpt-3.5-turbo
 ```
-
 
 ### Параметры {#ai-sql-generation-parameters}
 
@@ -650,7 +635,6 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 | `database`                     | Имя базы данных.                                                                                                                                                        | `default`             |
 | `query_parameters`             | Список пар «ключ–значение» `param1=value1[,&param2=value2], ...`. Для некоторых параметров значение не требуется. Имена параметров и значений чувствительны к регистру. | -                     |
 
-
 ### Примечания {#connection-string-notes}
 
 Если имя пользователя, пароль или база данных указаны в строке подключения, их нельзя указывать с помощью `--user`, `--password` или `--database` (и наоборот).
@@ -684,7 +668,6 @@ ClickHouse Client будет пытаться подключиться к эти
 * `hosts`
 * `database`
 * `query parameters`
-
 
 ### Примеры {#connection_string_examples}
 
@@ -766,7 +749,6 @@ clickhouse-client clickhouse://some_user%40some_mail.com@localhost:9000
 clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```
 
-
 ## Формат ID запроса {#query-id-format}
 
 В интерактивном режиме ClickHouse Client показывает ID для каждого запроса. По умолчанию ID имеет следующий формат:
@@ -793,7 +775,6 @@ ID запроса: 927f137d-00f1-4175-8914-0dd066365e96
 ```response
 speedscope:http://speedscope-host/#profileURL=qp%3Fid%3Dc8ecc783-e753-4b38-97f1-42cddfb98b7d
 ```
-
 
 ## Файлы конфигурации {#configuration_files}
 
@@ -894,7 +875,6 @@ $ clickhouse-client --max_threads 1
 ```
 
 Список настроек см. в разделе [Settings](../operations/settings/settings.md).
-
 
 ### Параметры форматирования {#command-line-options-formatting}
 

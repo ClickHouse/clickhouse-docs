@@ -7,17 +7,11 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-
-
 # avgMap {#avgmap}
-
-
 
 ## 説明 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`avgMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の値の算術平均を計算するために、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -65,7 +59,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':40,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## 安装 OpenTelemetry Lambda 层 {#installing-the-otel-lambda-layers}
 
 OpenTelemetry 项目提供了独立的 Lambda 层，用于：
@@ -196,7 +195,6 @@ service:
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
-
 
 ## 检查安装情况 {#checking-the-installation}
 

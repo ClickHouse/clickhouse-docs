@@ -288,8 +288,9 @@ SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0 1
 
 #### PROFILE {#instrument-add-profile}
 
-用于测量函数从 `ENTRY` 到 `EXIT` 之间的耗时。
-分析结果会存储在 [`system.trace_log`](../../operations/system-tables/trace_log.md) 中。
+测量函数从 `ENTRY` 到 `EXIT` 之间的耗时。
+分析结果存储在 [`system.trace_log`](../../operations/system-tables/trace_log.md) 中，并可转换为
+[Chrome Event Trace Format](../../operations/system-tables/trace_log.md#chrome-event-trace-format)。
 
 ```sql
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` PROFILE

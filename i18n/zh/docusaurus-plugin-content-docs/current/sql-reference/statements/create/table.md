@@ -16,7 +16,6 @@ import TabItem from '@theme/TabItem';
 
 默认情况下，表只会在当前服务器上创建。分布式 DDL 查询是通过 `ON CLUSTER` 子句实现的，该子句[单独说明](../../../sql-reference/distributed-ddl.md)。
 
-
 ## 语法形式 {#syntax-forms}
 
 ### 使用显式 Schema {#with-explicit-schema}
@@ -101,7 +100,6 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
-
 ## NULL 或 NOT NULL 修饰符 {#null-or-not-null-modifiers}
 
 在列定义中，可以在数据类型之后使用 `NULL` 和 `NOT NULL` 修饰符，用于指定该列是否可以为 [Nullable](/sql-reference/data-types/nullable) 类型。
@@ -109,8 +107,6 @@ SELECT x, toTypeName(x) FROM t1;
 如果类型本身不是 `Nullable`，并且指定了 `NULL`，则该类型会被视为 `Nullable`；如果指定了 `NOT NULL`，则不会。例如，`INT NULL` 等同于 `Nullable(INT)`。如果类型已经是 `Nullable`，却仍然指定了 `NULL` 或 `NOT NULL` 修饰符，则会抛出异常。
 
 另请参阅 [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) 设置。
-
-
 
 ## 默认值 {#default_values}
 
@@ -218,7 +214,6 @@ FROM test
 FORMAT Vertical;
 ```
 
-
 第 1 行:
 ──────
 id:         1
@@ -264,7 +259,6 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 └────┴────────────┴──────────┘
 ````
 
-
 ## 主键 {#primary-key}
 
 在创建表时，可以定义[主键](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)。主键可以通过两种方式指定：
@@ -294,7 +288,6 @@ PRIMARY KEY(expr1[, expr2,...]);
 :::tip
 无法在同一个查询中同时使用这两种方式。
 :::
-
 
 ## 约束 {#constraints}
 
@@ -340,12 +333,9 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` **并不会强制约束成立**，它只是告知优化器该约束被认为是成立的。如果该约束实际上并不成立，则查询结果可能会不正确。因此，仅当可以确定约束确实成立时，才应使用 `ASSUME CONSTRAINT`。
 
-
 ## TTL 表达式 {#ttl-expression}
 
 定义值的存储时间。只能为 MergeTree 系列的表指定。有关详细说明，请参阅[列和表的 TTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)。
-
-
 
 ## 列压缩编解码器 {#column_compression_codec}
 
@@ -428,7 +418,6 @@ ClickHouse 支持通用 codec 和专用 codec。
 
 `DEFLATE_QPL` — 由 Intel® Query Processing Library 实现的 [Deflate 压缩算法](https://github.com/intel/qpl)。存在一些限制：
 
-
 - 默认情况下，DEFLATE_QPL 是禁用的，只有在启用配置项 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) 后才能使用。
 - DEFLATE_QPL 要求 ClickHouse 在构建时启用 SSE 4.2 指令集（默认即为如此）。更多详情参见 [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl)。
 - 当系统具有 Intel® IAA（In-Memory Analytics Accelerator，内存内分析加速器）卸载设备时，DEFLATE_QPL 的效果最佳。更多详情参见 [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) 和 [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl)。
@@ -455,8 +444,6 @@ ClickHouse 支持通用 codec 和专用 codec。
 `Gorilla(bytes_size)` — 计算当前与前一个浮点值之间的按位异或（XOR），并以紧凑的二进制形式写入。连续值之间的差异越小，即序列值变化越缓慢，压缩率越好。实现了 Gorilla TSDB 中使用的算法，并扩展支持 64 位类型。可选的 `bytes_size` 值为：1、2、4、8，默认值为当其等于 1、2、4 或 8 时的 `sizeof(type)`；其他情况下默认为 1。更多信息参见 [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078) 的 4.1 节。
 
 #### FPC {#fpc}
-
-
 
 `FPC(level, float_size)` - 在序列中不断选择两个预测器中效果更好的一个来预测下一个浮点值，然后将实际值与预测值做 XOR，再对结果进行前导零压缩。类似于 Gorilla，当存储变化缓慢的一系列浮点值时，这种方式非常高效。对于 64 位值（double），FPC 比 Gorilla 更快；对于 32 位值，性能可能有所差异。`level` 可选值范围为 1-28，默认值为 12。`float_size` 可选值为 4、8，当类型是 Float 时默认值为 `sizeof(type)`，其他情况下为 4。关于该算法的详细描述，请参见 [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf)。
 
@@ -523,7 +510,6 @@ CREATE TABLE mytable
 ENGINE = MergeTree ORDER BY x;
 ```
 
-
 ## 临时表 {#temporary-tables}
 
 :::note
@@ -553,7 +539,6 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 在大多数情况下，临时表不是手动创建的，而是在查询中使用外部数据时，或者在执行分布式 `(GLOBAL) IN` 时自动创建。有关更多信息，请参阅相应章节。
 
 可以使用 [ENGINE = Memory](../../../engines/table-engines/special/memory.md) 引擎的表来替代临时表。
-
 
 ## REPLACE TABLE {#replace-table}
 
@@ -721,7 +706,6 @@ WHERE CounterID <12345;
   </TabItem>
 </Tabs>
 
-
 ## COMMENT 子句 {#comment-clause}
 
 在创建表时，可以为表添加注释。
@@ -753,7 +737,6 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 │ t1   │ 临时表          │
 └──────┴─────────────────┘
 ```
-
 
 ## 相关内容 {#related-content}
 

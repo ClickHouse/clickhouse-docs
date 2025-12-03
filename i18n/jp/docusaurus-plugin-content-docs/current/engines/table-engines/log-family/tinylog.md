@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # TinyLog テーブルエンジン {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -20,8 +19,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 クエリは単一ストリームで実行されます。言い換えると、このエンジンは比較的小さなテーブル（約 1,000,000 行まで）を想定しています。開く必要のあるファイル数が少ないため、[Log](../../../engines/table-engines/log-family/log.md) エンジンよりもシンプルであり、多数の小さなテーブルを扱う場合にはこのテーブルエンジンを使用するのが妥当です。
 
-
-
 ## 特性 {#characteristics}
 
 - **よりシンプルな構造**: Log エンジンとは異なり、TinyLog は mark ファイルを使用しません。これにより構造は単純になり複雑さは軽減されますが、大規模なデータセットに対するパフォーマンスの最適化は制限されます。
@@ -29,8 +26,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - **小さなテーブルに対して効率的**: TinyLog エンジンのシンプルさにより、多数の小さなテーブルを管理する際に有利であり、Log エンジンと比較して必要なファイル操作が少なくて済みます。
 
 Log エンジンとは異なり、TinyLog は mark ファイルを使用しません。これにより複雑さは軽減されますが、大規模なデータセットに対するパフォーマンスの最適化は制限されます。
-
-
 
 ## テーブルの作成 {#table_engines-tinylog-creating-a-table}
 
@@ -45,7 +40,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリについては、詳細な説明を参照してください。
 
-
 ## データの書き込み {#table_engines-tinylog-writing-the-data}
 
 `TinyLog` エンジンは、すべてのカラムを 1 つのファイルに保存します。各 `INSERT` クエリのたびに、ClickHouse はデータブロックをテーブルファイルの末尾に追記し、カラムを 1 つずつ書き込みます。
@@ -55,8 +49,6 @@ ClickHouse は各テーブルに対して次のファイルを作成します。
 - `<column>.bin`: 各カラム用のデータファイルで、シリアル化および圧縮されたデータが含まれます。
 
 `TinyLog` エンジンは、`ALTER UPDATE` および `ALTER DELETE` 操作をサポートしません。
-
-
 
 ## 使用例 {#table_engines-tinylog-example-of-use}
 

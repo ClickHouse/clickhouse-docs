@@ -143,7 +143,6 @@ ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | se
 
 (если на вашем сервере будет нехватка памяти или возникнут другие проблемы, удалите флаг `-P $(nproc)`)
 
-
 ## Импорт из сохранённой копии {#import-from-a-saved-copy}
 
 Также вы можете импортировать данные из сохранённой копии с помощью следующего запроса:
@@ -153,7 +152,6 @@ INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazo
 ```
 
 Снимок был создан 29.05.2022.
-
 
 ## Запросы {#queries}
 
@@ -334,7 +332,6 @@ GROUP BY Year;
 ```
 
 Q10.
-
 
 ```sql
 SELECT

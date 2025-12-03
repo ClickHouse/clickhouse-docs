@@ -23,7 +23,6 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 
 Этот вариант поддерживает аутентификацию, что позволяет сохранять дашборды, оповещения и сохранённые поисковые запросы между сеансами и пользователями.
 
-
 ### Подходит для {#suitable-for}
 
 * демонстраций
@@ -79,7 +78,6 @@ docker run \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-
 ## Развертывание в production‑среде {#deploying-to-production}
 
 Этот вариант не следует использовать в production‑среде по следующим причинам:
@@ -96,7 +94,6 @@ docker run \
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 ## Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
@@ -115,7 +112,6 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 `CLICKHOUSE_ENDPOINT` должен указывать на HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
 После подключения к интерфейсу HyperDX перейдите в [`Team Settings`](http://localhost:8080/team) и создайте подключение к вашему сервису ClickHouse Cloud, а затем настройте необходимые источники. Пример последовательности действий см. [здесь](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
-
 
 ## Настройка OTel collector {#configuring-collector}
 

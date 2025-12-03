@@ -19,7 +19,6 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 在 Grafana 中配置 ClickHouse 数据源 {#configuring-clickhouse-data-source-in-grafana}
 
 <ClickHouseSupportedBadge/>
@@ -62,7 +61,6 @@ secureJsonData:
 
 请注意，从 UI 中保存配置时会添加一个 `version` 属性。该属性表示配置保存时所使用的插件版本。
 
-
 ### HTTP 协议 {#http-protocol}
 
 如果选择通过 HTTP 协议连接，将会显示更多设置。
@@ -78,7 +76,6 @@ jsonData:
   # 不包括开头的斜杠
   path: additional/path/example
 ```
-
 
 #### 自定义 HTTP 头 {#custom-http-headers}
 
@@ -106,7 +103,6 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-
 ## 其他配置 {#additional-settings}
 
 以下附加配置为可选项。
@@ -124,7 +120,6 @@ jsonData:
   queryTimeout: 60   # 执行查询时的超时时间(秒)。默认值为 60。此配置需要用户具有相应权限,如果遇到权限错误,可尝试将其设置为 "0" 以禁用超时限制。
   validateSql: false # 设置为 true 时,将在 SQL 编辑器中验证 SQL 语句。
 ```
-
 
 ### OpenTelemetry {#opentelemetry}
 
@@ -164,7 +159,6 @@ jsonData:
     messageColumn: <string> # 日志的消息/内容。
 ```
 
-
 ### Traces {#traces}
 
 为了加快[构建追踪查询](./query-builder.md#traces)的速度，可以为追踪查询设置默认数据库/数据表以及列。这样会在查询构建器中预加载一条可直接运行的追踪搜索查询，从而使在 Explore 页面中浏览可观测性数据更加高效。
@@ -201,7 +195,6 @@ jsonData:
     serviceTagsColumn:   <string>    # 服务标签列。应为 map 类型。
 ```
 
-
 ### 列别名 {#column-aliases}
 
 列别名是一种便捷方式，可以使用不同的名称和类型来查询数据。
@@ -231,7 +224,6 @@ CREATE TABLE alias_example (
 表中定义的别名列在执行 `SELECT *` 时不会被返回，但可以通过服务器设置进行调整。
 
 更多信息请参阅 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
-
 
 #### 列别名表 {#column-alias-tables}
 
@@ -274,7 +266,6 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 <Image size="md" img={alias_table_select_example} alt="别名表示例查询" border />
 
 这两种类型的别名都可以用于执行复杂的类型转换或 JSON 字段提取。
-
 
 ## 所有 YAML 选项 {#all-yaml-options}
 

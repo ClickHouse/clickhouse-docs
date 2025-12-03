@@ -7,13 +7,9 @@ doc_type: 'guide'
 keywords: ['SQL 格式', '数据导出', '数据导入', '备份', 'SQL 转储']
 ---
 
-
-
 # 在 ClickHouse 中插入和导出 SQL 数据 {#inserting-and-dumping-sql-data-in-clickhouse}
 
 ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础架构中。其中一种方式是使用 SQL 转储文件在其他数据库与 ClickHouse 之间传输数据。
-
-
 
 ## 创建 SQL 转储 {#creating-sql-dumps}
 
@@ -57,7 +53,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```response
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
-
 
 ## 从 SQL 转储中插入数据 {#inserting-data-from-sql-dumps}
 
@@ -109,7 +104,6 @@ DESCRIBE TABLE table_from_mysql;
 │ hits  │ Nullable(UInt32) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## 其他格式 {#other-formats}
 

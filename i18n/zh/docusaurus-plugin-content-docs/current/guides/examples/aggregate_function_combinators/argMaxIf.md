@@ -7,11 +7,7 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMaxIf {#argmaxif}
-
-
 
 ## 描述 {#description}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 
 当需要在数据集中查找与最大值关联的值，但只针对满足特定
 条件的行时，`argMaxIf` 函数非常有用。
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -56,7 +50,6 @@ FROM product_sales;
 1. │ 笔记本电脑                │
    └──────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)

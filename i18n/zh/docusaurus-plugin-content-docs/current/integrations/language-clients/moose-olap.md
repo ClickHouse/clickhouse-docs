@@ -10,7 +10,6 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 使用 Moose OLAP 在 ClickHouse 上进行开发 {#developing-on-clickhouse-with-moose-olap}
 
 <CommunityMaintainedBadge/>

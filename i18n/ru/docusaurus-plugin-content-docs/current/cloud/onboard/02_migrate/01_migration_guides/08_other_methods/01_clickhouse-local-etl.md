@@ -17,7 +17,6 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-
 # Миграция в ClickHouse с использованием clickhouse-local {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
@@ -101,7 +100,6 @@ ClickHouse предоставляет интеграционные движки 
   CREATE DATABASE db
 ```
 
-
 #### Создайте таблицу-назначение с такой же схемой, как у таблицы MySQL: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
@@ -111,7 +109,6 @@ ClickHouse предоставляет интеграционные движки 
 :::note
 Схемы целевой таблицы ClickHouse Cloud и исходной таблицы MySQL должны соответствовать друг другу (имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми).
 :::
-
 
 ### На хосте с clickhouse-local: {#on-the-clickhouse-local-host-machine}
 
@@ -128,7 +125,6 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 На хосте `clickhouse-local` данные локально не сохраняются. Вместо этого данные считываются из исходной таблицы MySQL
 и затем сразу записываются в целевую таблицу в ClickHouse Cloud.
 :::
-
 
 ## Пример 2. Миграция с MySQL в ClickHouse Cloud с использованием JDBC bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 

@@ -15,7 +15,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
-
 ## Установка коллектора OpenTelemetry ClickStack {#installing-otel-collector}
 
 Коллектор OpenTelemetry ClickStack включён в большинство вариантов развёртывания ClickStack, включая:

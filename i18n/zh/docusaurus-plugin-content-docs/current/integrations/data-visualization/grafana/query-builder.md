@@ -20,7 +20,6 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 查询构建器 {#query-builder}
 
 <ClickHouseSupportedBadge/>
@@ -36,8 +35,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [时间序列](#time-series)：最适合构建时间序列查询。允许选择专用的时间列并添加聚合函数。
 - [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在配置了[默认值](./config.md#traces)的探索视图中效果最佳。
 - [SQL 编辑器](#sql-editor)：当你需要对查询进行完全控制时，可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
-
-
 
 ## 查询类型 {#query-types}
 
@@ -110,8 +107,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 如果数据集允许，请尝试通过将其设置为 `0` 来移除 `LIMIT` 子句。
 :::
 
-
-
 | Field | Description |
 |----|----|
 | Builder Mode  | 简单查询会排除 Aggregates 和 Group By，而聚合查询会包含这些选项。 |
@@ -164,8 +159,6 @@ Trace 查询类型支持 [data links](#data-links)。
 
 此查询类型会在 Trace Search 模式下使用表格视图渲染数据，在 Trace ID 模式下使用 trace 面板渲染数据。
 
-
-
 ## SQL 编辑器 {#sql-editor}
 
 对于过于复杂而无法通过查询构建器完成的查询，你可以使用 SQL 编辑器。
@@ -179,8 +172,6 @@ Trace 查询类型支持 [data links](#data-links)。
 该切换在仪表盘视图中同样会产生影响，尤其是在处理时间序列数据时。
 
 <Image size="md" img={demo_raw_sql_query} alt="原始 SQL 查询示例" border />
-
-
 
 ## 数据链接 {#data-links}
 
@@ -219,8 +210,6 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   从日志查询（左侧面板）查看 trace（右侧面板）的示例
   <Image size="md" img={demo_data_links} alt="数据链接跳转示例" border />
 </div>
-
-
 
 ## 宏 {#macros}
 

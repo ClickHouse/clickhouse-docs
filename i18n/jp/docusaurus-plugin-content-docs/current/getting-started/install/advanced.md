@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## ソースからコンパイルする {#compile-from-source}
 
 ClickHouse を手動でコンパイルするには、[Linux](/development/build.md) または [macOS](/development/build-osx.md) 向けの手順に従ってください。
@@ -29,7 +27,6 @@ ClickHouse を手動でコンパイルするには、[Linux](/development/build.
 ```
 
 Gentoo では、`emerge clickhouse` を実行するだけで、ソースから ClickHouse をインストールできます。
-
 
 ## CI で生成されたバイナリをインストールする {#install-a-ci-generated-binary}
 

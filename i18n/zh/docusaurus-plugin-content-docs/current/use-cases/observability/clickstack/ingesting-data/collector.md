@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 本页详细介绍如何配置官方 ClickStack OpenTelemetry（OTel）收集器。
 
-
 ## Collector 角色 {#collector-roles}
 
 OpenTelemetry collector 可以以两种主要角色进行部署：
@@ -56,7 +55,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 在生产环境中，用户应使用具有[相应凭据](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
 
-
 ### 修改配置 {#modifying-otel-collector-configuration}
 
 #### 使用 Docker {#using-docker}
@@ -75,7 +73,6 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -100,7 +97,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
     networks:
       - internal
 ```
-
 
 ### 高级配置 {#advanced-configuration}
 
@@ -197,7 +193,6 @@ docker run -d \
 
 对于更复杂的配置，请参阅[默认 ClickStack collector 配置](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)和 [ClickHouse exporter 文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
 
-
 #### 配置结构 {#configuration-structure}
 
 有关如何配置 OTel collector 的详细说明，包括 [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/)、[`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 和 [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors)，建议参考 [官方 OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/configuration)。
@@ -227,7 +222,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 ```
 
 这里假定 collector 已配置为使用数据库 `otel`。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该环境变量传递给运行 collector 的镜像，[方式与其他环境变量类似](#modifying-otel-collector-configuration)。
-
 
 ## 处理 —— 过滤、转换和富化 {#processing-filtering-transforming-enriching}
 
@@ -308,7 +302,6 @@ service:
 请注意，在任何 OTLP 通信中都需要包含[带有摄取 API key 的 Authorization 请求头](#securing-the-collector)。
 
 如需更高级的配置，我们建议参考 [OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/)。
-
 
 ## 优化插入 {#optimizing-inserts}
 
@@ -423,7 +416,6 @@ JSON 类型为 ClickStack 用户提供了以下优势：
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
 ```
-
 
 ### 从基于 Map 的模式迁移到 JSON 类型 {#migrating-from-map-based-schemas-to-json}
 

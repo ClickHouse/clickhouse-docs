@@ -29,7 +29,6 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Power BI {#power-bi}
 
 <ClickHouseSupportedBadge/>
@@ -50,8 +49,6 @@ Power BI では、Desktop 版でダッシュボードを作成し、それを Po
 * [Power BI Desktop での可視化のために ClickHouse からデータをクエリする](#query-and-visualise-data)
 * [Power BI Service 用のオンプレミス データ ゲートウェイをセットアップする](#power-bi-service)
 
-
-
 ## 前提条件 {#prerequisites}
 
 ### Power BI のインストール {#power-bi-installation}
@@ -68,8 +65,6 @@ ClickHouse インスタンスに接続するには、次の情報が必要です
 * Username - ユーザー名
 * Password - ユーザーのパスワード
 * Database - 接続対象インスタンス上のデータベース名
-
-
 
 ## Power BI desktop {#power-bi-desktop}
 
@@ -157,15 +152,11 @@ ClickHouse からデータをインポートします。
 インポートが完了すると、ClickHouse のデータは他のデータと同様に Power BI から利用できるようになります。
 <br/>
 
-
-
 ## Power BI サービス {#power-bi-service}
 
 Microsoft Power BI サービスを使用するには、[オンプレミス データ ゲートウェイ](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem) を作成する必要があります。
 
 カスタム コネクタの設定方法の詳細については、Microsoft のドキュメント「[オンプレミス データ ゲートウェイでカスタム データ コネクタを使用する](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)」を参照してください。
-
-
 
 ## ODBC ドライバー（インポート専用） {#odbc-driver-import-only}
 
@@ -234,8 +225,6 @@ Power BI Desktop の開始画面で「データの取得」をクリックしま
 <br/>
 
 インポートが完了すると、通常どおり Power BI から ClickHouse のデータにアクセスできるようになります。
-
-
 
 ## 既知の制限事項 {#known-limitations}
 

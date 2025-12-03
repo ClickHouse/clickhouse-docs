@@ -6,8 +6,6 @@ title: 'ARRAY JOIN 句'
 doc_type: 'reference'
 ---
 
-
-
 # ARRAY JOIN 句 {#array-join-clause}
 
 配列カラムを含むテーブルに対して、元の配列カラムの各要素ごとに 1 行を持つ新しいテーブルを生成し、その他のカラムの値は複製するという操作は一般的です。これは `ARRAY JOIN` 句が行う処理の基本的なケースです。
@@ -28,7 +26,6 @@ FROM <left_subquery>
 
 * `ARRAY JOIN` - 通常、空配列は `JOIN` の結果に含まれません。
 * `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値（通常は 0、空文字列、または NULL）に設定されます。
-
 
 ## 基本的な ARRAY JOIN の例 {#basic-array-join-examples}
 
@@ -151,7 +148,6 @@ ORDER BY Reaches DESC
 LIMIT 10
 ```
 
-
 ```text
 ┌──ゴールID─┬─到達数─┬─訪問数─┐
 │   53225 │    3214 │   1097 │
@@ -166,7 +162,6 @@ LIMIT 10
 │ 3271094 │    2256 │    812 │
 └─────────┴─────────┴────────┘
 ```
-
 
 ## エイリアスの使用 {#using-aliases}
 
@@ -254,7 +249,6 @@ FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
-
 ```response
 ┌─s───────┬─arr─────┬─a─┬─b─────────┐
 │ Hello   │ [1,2]   │ 1 │ ['a','b'] │
@@ -266,7 +260,6 @@ SETTINGS enable_unaligned_array_join = 1;
 │ Goodbye │ []      │ 0 │ ['c']     │
 └─────────┴─────────┴───┴───────────┘
 ```
-
 
 ## ネストされたデータ構造での ARRAY JOIN {#array-join-with-nested-data-structure}
 
@@ -371,7 +364,6 @@ FROM nested_test
 ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 ```
 
-
 ```response
 ┌─s─────┬─n.x─┬─n.y─┬─nest.x──┬─nest.y─────┬─num─┐
 │ Hello │   1 │  10 │ [1,2]   │ [10,20]    │   1 │
@@ -382,7 +374,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-
 ## 実装の詳細 {#implementation-details}
 
 `ARRAY JOIN` を実行する際、クエリの実行順序は最適化されます。クエリ内では `ARRAY JOIN` は常に [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 句より前に指定する必要がありますが、技術的には、`ARRAY JOIN` の結果がフィルタリングに使用されない限り、どの順序で実行されても問題ありません。処理順序はクエリオプティマイザによって制御されます。
@@ -392,8 +383,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 [ショートサーキット関数評価](/operations/settings/settings#short_circuit_function_evaluation) は、`if`、`multiIf`、`and`、`or` などの特定の関数において、複雑な式の実行を最適化するための機能です。これにより、ゼロ除算のような、これらの関数の実行中に発生しうる例外を防止します。
 
 `arrayJoin` は常に実行され、ショートサーキット関数評価をサポートしません。これは、クエリ解析および実行時に他のすべての関数とは別に処理される特殊な関数であり、ショートサーキット関数実行とは両立しない追加のロジックを必要とするためです。その理由は、結果の行数が `arrayJoin` の結果に依存しており、`arrayJoin` の遅延実行を実装するのはあまりに複雑かつ高コストであるためです。
-
-
 
 ## 関連コンテンツ {#related-content}
 

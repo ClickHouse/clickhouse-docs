@@ -7,19 +7,13 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayDistinct {#sumdistinct}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-foreach)
 можно применить к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum), чтобы создать массив
 различных значений аргументов.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -37,7 +31,6 @@ GROUP BY URLDomain
 ORDER BY URLDomain ASC
 LIMIT 20;
 ```
-
 
 ## См. также {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

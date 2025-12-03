@@ -23,7 +23,6 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 
 此选项集成了身份验证功能，支持在不同会话和用户之间持久化仪表板、告警和已保存的搜索。
 
-
 ### 适用场景 {#suitable-for}
 
 * 演示
@@ -79,7 +78,6 @@ docker run \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-
 ## 部署到生产环境 {#deploying-to-production}
 
 由于以下原因，此选项不应用于生产环境部署：
@@ -96,7 +94,6 @@ docker run \
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 ## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
@@ -115,7 +112,6 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 `CLICKHOUSE_ENDPOINT` 应为 ClickHouse Cloud 的 HTTPS 端点，并包含端口 `8443`，例如：`https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
 连接到 HyperDX UI 后，转到 [`Team Settings`](http://localhost:8080/team)，为你的 ClickHouse Cloud 服务创建一个连接，然后再创建所需的数据源。有关示例流程，请参见[此处](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
-
 
 ## 配置 OpenTelemetry collector {#configuring-collector}
 

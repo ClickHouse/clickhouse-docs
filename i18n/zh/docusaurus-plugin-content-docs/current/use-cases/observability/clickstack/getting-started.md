@@ -25,7 +25,6 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 由于提供了预构建好的 Docker 镜像，开始使用 **ClickStack** 十分简单。这些镜像基于官方的 ClickHouse Debian 软件包构建，并提供多种发行版本，以适配不同的使用场景。
 
-
 ## 本地部署 {#local-deployment}
 
 最简单的选项是使用包含该栈所有核心组件的**单镜像发行版**：

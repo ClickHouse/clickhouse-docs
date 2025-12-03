@@ -7,11 +7,7 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMaxIf {#argmaxif}
-
-
 
 ## Описание {#description}
 
@@ -22,8 +18,6 @@ doc_type: 'reference'
 Функция `argMaxIf` полезна, когда вам нужно найти значение, связанное с
 максимальным значением в наборе данных, но только для строк, которые удовлетворяют определённому
 условию.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -58,7 +52,6 @@ FROM product_sales;
 1. │ Ноутбук                  │
    └──────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)

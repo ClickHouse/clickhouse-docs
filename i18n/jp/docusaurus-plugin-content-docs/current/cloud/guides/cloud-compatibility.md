@@ -7,13 +7,9 @@ keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse Cloud 互換性ガイド {#clickhouse-cloud-compatibility-guide}
 
 このガイドでは、ClickHouse Cloud における機能面および運用面での挙動について概要を説明します。ClickHouse Cloud はオープンソース版 ClickHouse ディストリビューションをベースとしていますが、アーキテクチャや実装にはいくつか異なる点があります。背景情報として、[どのようにして ClickHouse Cloud を構築したか](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) を説明しているこのブログ記事も、興味深く参考になるはずです。
-
-
 
 ## ClickHouse Cloud のアーキテクチャ {#clickhouse-cloud-architecture}
 ClickHouse Cloud は、運用負荷を大幅に軽減し、大規模な ClickHouse の運用コストを削減します。デプロイメント規模を事前に見積もったり、高可用性のためのレプリケーションを構成したり、データを手動でシャーディングしたり、ワークロードの増加に応じてサーバーをスケールアップしたり、利用していないときにスケールダウンしたりする必要はありません — これらはすべて ClickHouse Cloud が代わりに行います。
@@ -25,8 +21,6 @@ ClickHouse Cloud は、運用負荷を大幅に軽減し、大規模な ClickHou
 - 変動する連続ワークロード向けの自動スケーリングはデフォルトで有効化されています。そのため、サービスの規模を事前に見積もったり、ワークロードの増加に応じてサーバーをスケールアップしたり、アクティビティが減少したときにサーバーを手動でスケールダウンしたりする必要はありません。
 - 断続的なワークロード向けのシームレスなハイバネーション機能はデフォルトで有効化されています。一定期間アイドル状態が続くとコンピュートリソースを自動的に一時停止し、新しいクエリが到着したときに透過的に再起動します。そのため、アイドルリソースに対して料金を支払う必要がありません。
 - 高度なスケーリングコントロールにより、追加のコスト管理のためにオートスケーリングの上限を設定したり、特定の性能要件を持つアプリケーション向けにコンピュートリソースを確保するためのオートスケーリングの下限を設定したりできます。
-
-
 
 ## 機能 {#capabilities}
 ClickHouse Cloud は、オープンソース版 ClickHouse に含まれる機能のうち厳選されたものへのアクセスを提供します。以下では、現時点で ClickHouse Cloud では無効化されている一部の機能について説明します。
@@ -107,8 +101,6 @@ SQLite、ODBC、JDBC、Redis、HDFS、Hive など一部の外部データベー�
 
 [Named collections](/operations/named-collections) は、現在 ClickHouse Cloud ではサポートされていません。
 
-
-
 ## 運用上のデフォルトと考慮事項 {#operational-defaults-and-considerations}
 以下は、ClickHouse Cloud サービスのデフォルト設定です。サービスの正しい動作を保証するため、一部の設定は固定されていますが、それ以外の設定は調整可能です。
 
@@ -130,8 +122,6 @@ ClickHouse Cloud は変動するワークロードに対応するようチュー
 
 ### 高度なセキュリティ管理 {#advanced-security-administration}
 ClickHouse サービスの作成時に、デフォルトのデータベースと、このデータベースに対して広範な権限を持つデフォルトユーザーが作成されます。この初期ユーザーは、追加のユーザーを作成し、それらのユーザーに対してこのデータベースへの権限を付与できます。これ以外に、Kerberos、LDAP、または SSL X.509 証明書認証を使用してデータベース内で以下のセキュリティ機能を有効化することは、現時点ではサポートされていません。
-
-
 
 ## ロードマップ {#roadmap}
 

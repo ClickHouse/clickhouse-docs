@@ -7,11 +7,7 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-
-
 # sumForEach {#sumforeach}
-
-
 
 ## Описание {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы преобразовать её из агрегатной
 функции, работающей со значениями строк, в агрегатную функцию, работающую со
 столбцами-массивами и применяющую агрегирование к каждому элементу массива по всем строкам.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -47,7 +41,6 @@ FROM metrica.hits
 GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
-
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

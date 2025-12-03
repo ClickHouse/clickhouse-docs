@@ -10,12 +10,9 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
 # 数据反规范化 {#denormalizing-data}
 
 在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
-
-
 
 ## 比较规范化与反规范化模式 {#comparing-normalized-vs-denormalized-schemas}
 
@@ -29,8 +26,6 @@ import Image from '@theme/IdealImage';
 
 一种由 NoSQL 方案推广的常见技术，是在缺乏 `JOIN` 支持的情况下对数据进行反规范化，将所有统计信息或相关行作为列和嵌套对象存储在父行上。例如，在博客的示例模式中，我们可以将所有 `Comments` 作为对象的 `Array` 存储在各自对应的帖子记录中。
 
-
-
 ## 何时使用反规范化 {#when-to-use-denormalization}
 
 通常情况下，我们建议在以下情形下进行反规范化：
@@ -43,8 +38,6 @@ import Image from '@theme/IdealImage';
 并非所有信息都需要反规范化——只需对那些需要被频繁访问的关键信息进行反规范化即可。
 
 反规范化工作可以在 ClickHouse 中完成，也可以在上游系统中完成，例如使用 Apache Flink。
-
-
 
 ## 避免对频繁更新的数据进行反规范化 {#avoid-denormalization-on-frequently-updated-data}
 
@@ -60,8 +53,6 @@ import Image from '@theme/IdealImage';
 <br />
 
 因此，更常见的做法是采用批量更新流程，定期重新加载所有反规范化后的对象。
-
-
 
 ## 反规范化的实践案例 {#practical-cases-for-denormalization}
 
@@ -149,7 +140,6 @@ LIMIT 5
 我们先使用以下命令插入数据：
 
 <p />
-
 
 ```sql
 CREATE TABLE users
@@ -251,7 +241,6 @@ ORDER BY c DESC LIMIT 5
 
 同样，这些链接也不是那种会非常频繁发生的事件：
 
-
 ```sql
 SELECT
   round(avg(c)) AS avg_votes_per_hr,
@@ -352,7 +341,6 @@ Peak memory usage: 6.98 GiB.
 
 > 注意这里的耗时。我们在大约 2 分钟内对 6600 万行数据完成了反规范化处理。正如我们稍后会看到的，这是一个可以进行调度的操作。
 
-
 请注意这里使用 `groupArray` 函数，在关联之前将 `PostLinks` 聚合为每个 `PostId` 对应的数组。然后将该数组过滤成两个子列表：`LinkedPosts` 和 `DuplicatePosts`，同时排除外连接产生的任何空结果。
 
 我们可以查询部分行来查看新的反规范化结构：
@@ -369,7 +357,6 @@ Row 1:
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## 编排和调度反规范化 {#orchestrating-and-scheduling-denormalization}
 

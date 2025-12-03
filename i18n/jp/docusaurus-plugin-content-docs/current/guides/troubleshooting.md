@@ -6,8 +6,6 @@ doc_type: 'guide'
 keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 'エラー', '診断']
 ---
 
-
-
 ## インストール {#installation}
 
 ### apt-key を使用して keyserver.ubuntu.com から GPG キーをインポートできない {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
@@ -77,7 +75,6 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
 その後は、[インストールガイド](/install/redhat)に従ってください
-
 
 ## サーバーへの接続 {#connecting-to-the-server}
 
@@ -180,7 +177,6 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
    * ユーザー名またはパスワードが間違っている可能性があります。
 
-
 ## クエリ処理 {#query-processing}
 
 ClickHouse がクエリを処理できない場合、エラー内容をクライアントに送信します。`clickhouse-client` では、コンソール上にエラー内容が表示されます。HTTP インターフェイスを使用している場合、ClickHouse はレスポンスボディ内にエラー内容を返します。例えば、次のようになります。
@@ -193,7 +189,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 `clickhouse-client` を `stack-trace` パラメータ付きで起動すると、ClickHouse はエラーの説明とともにサーバー側のスタックトレースを返します。
 
 接続が切断されたことを示すメッセージが表示されることがあります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーがないか確認してください。
-
 
 ## クエリ処理の効率 {#efficiency-of-query-processing}
 

@@ -17,7 +17,6 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # Руководство по настройке источника RDS MariaDB {#rds-mariadb-source-setup-guide}
 
 Это пошаговое руководство по настройке экземпляра RDS MariaDB для репликации его данных с помощью MySQL ClickPipe.
@@ -25,8 +24,6 @@ import Image from '@theme/IdealImage';
 :::info
 Рекомендуем также ознакомиться с разделом часто задаваемых вопросов по MySQL [здесь](/integrations/data-ingestion/clickpipes/mysql/faq.md). Страница с вопросами и ответами активно обновляется.
 :::
-
-
 
 ## Включение хранения двоичного лога {#enable-binlog-retention-rds}
 
@@ -49,7 +46,6 @@ Amazon RDS for MariaDB использует иной способ задания
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
-
 
 ## Настройка параметров binlog в группе параметров {#binlog-parameter-group-rds}
 
@@ -82,12 +78,8 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 Если у вас кластер MariaDB, указанные выше параметры будут находиться в группе параметров [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе параметров экземпляра БД.
 :::
 
-
-
 ## Включение режима GTID {#gtid-mode-rds}
 Global Transaction Identifiers (GTID) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию с использованием бинарных логов (binlog) и делают устранение неполадок более простым. В MariaDB режим GTID включён по умолчанию, поэтому от пользователя не требуется никаких дополнительных действий для его использования.
-
-
 
 ## Настройка пользователя базы данных {#configure-database-user-rds}
 
@@ -110,8 +102,6 @@ Global Transaction Identifiers (GTID) — это уникальные идент
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-
-
 
 ## Настройка сетевого доступа {#configure-network-access}
 

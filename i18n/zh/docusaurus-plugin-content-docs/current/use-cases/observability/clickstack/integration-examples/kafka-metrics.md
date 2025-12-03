@@ -17,7 +17,6 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Kafka 指标 {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
@@ -349,7 +348,6 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-
 #### 身份验证错误 {#created-dashboard}
 
 如果您看到 `Authorization failed` 或 `401 Unauthorized`：
@@ -362,7 +360,6 @@ export CLICKSTACK_API_KEY=your-correct-api-key
 docker compose down
 docker compose up -d
 ```
-
 
 #### 使用 Kafka 客户端命令时端口冲突
 
@@ -377,7 +374,6 @@ docker compose up -d
 ```bash
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
-
 
 #### 网络连接问题 {#no-metrics}
 
@@ -396,7 +392,6 @@ docker network inspect <网络名称>
 # 从 JMX 导出器到 ClickStack {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
-
 
 ## 进入生产环境 {#going-to-production}
 

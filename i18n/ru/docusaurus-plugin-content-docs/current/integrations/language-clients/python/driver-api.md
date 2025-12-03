@@ -118,7 +118,6 @@ print(client.database)
 # Результат: 'github' {#output-github}
 ```
 
-
 ## Жизненный цикл клиента и рекомендации по использованию {#client-lifecycle-and-best-practices}
 
 Создание клиента ClickHouse Connect — ресурсоёмкая операция, которая включает установление соединения, получение метаданных сервера и инициализацию настроек. Следуйте этим рекомендациям для обеспечения оптимальной производительности:
@@ -157,7 +156,6 @@ for i in range(1000):
     result = client.query('SELECT count() FROM users')
     client.close()
 ```
-
 
 ### Многопоточные приложения {#multi-threaded-applications}
 
@@ -216,7 +214,6 @@ def worker(thread_id):
     client.close()
 ```
 
-
 ### Корректная очистка {#proper-cleanup}
 
 Всегда закрывайте клиентов при завершении работы. Обратите внимание, что `client.close()` освобождает ресурсы клиента и закрывает HTTP‑соединения из пула только в том случае, если клиент владеет собственным пулом (например, когда он создан с пользовательскими параметрами TLS/прокси). Для стандартного общего пула используйте `client.close_connections()` для явной очистки сокетов; в противном случае соединения автоматически освобождаются по истечении времени простоя и при завершении процесса.
@@ -235,7 +232,6 @@ finally:
 with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
     result = client.query('SELECT 1')
 ```
-
 
 ### Когда использовать несколько клиентов {#when-to-use-multiple-clients}
 
@@ -282,7 +278,6 @@ WHERE date >= '2022-10-01 15:20:05'
 :::warning
 Привязка на стороне сервера поддерживается (сервером ClickHouse) только для запросов `SELECT`. Она не работает для `ALTER`, `DELETE`, `INSERT` или других типов запросов. В будущем это может измениться; см. [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092).
 :::
-
 
 #### Привязка на стороне клиента {#client-side-binding}
 
@@ -348,7 +343,6 @@ WHERE metric >= 35200.44
 
 :::
 
-
 ### Аргумент settings {#settings-argument-1}
 
 Все ключевые методы ClickHouse Connect Client &quot;insert&quot; и &quot;select&quot; принимают необязательный именованный аргумент `settings` для передачи [пользовательских настроек](/operations/settings/settings.md) ClickHouse для соответствующего SQL‑выражения. Аргумент `settings` должен быть словарём. Каждый элемент должен представлять собой имя настройки ClickHouse и её соответствующее значение. Учтите, что значения будут преобразованы в строки при отправке на сервер в виде параметров запроса.
@@ -363,7 +357,6 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
             'use_skip_indexes': False}
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
-
 
 ## Метод клиента `command` {#client-command-method}
 
@@ -408,7 +401,6 @@ print(result)
 client.command("DROP TABLE test_command")
 ```
 
-
 #### Простые запросы, возвращающие одно значение {#simple-queries-returning-single-values}
 
 ```python
@@ -426,7 +418,6 @@ version = client.command("SELECT version()")
 print(version)
 # Вывод: "25.8.2.29" {#output-258229}
 ```
-
 
 #### Команды с параметрами {#commands-with-parameters}
 
@@ -449,7 +440,6 @@ result = client.command(
 )
 ```
 
-
 #### Команды с настройками {#commands-with-settings}
 
 ```python
@@ -463,7 +453,6 @@ result = client.command(
     settings={"optimize_throw_if_noop": 1}
 )
 ```
-
 
 ## Метод клиента `query` {#client-query-method}
 
@@ -512,7 +501,6 @@ print([col_type.name for col_type in result.column_types])
 # Вывод: ['String', 'String'] {#output-string-string}
 ```
 
-
 #### Доступ к результатам запроса {#accessing-query-results}
 
 ```python
@@ -547,7 +535,6 @@ print(result.first_row)
 # Вывод: (0, "0") {#output-0-0}
 ```
 
-
 #### Запрос с клиентскими параметрами {#query-with-client-side-parameters}
 
 ```python
@@ -566,7 +553,6 @@ parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
 ```
 
-
 #### Запрос с серверными параметрами {#query-with-server-side-parameters}
 
 ```python
@@ -580,7 +566,6 @@ parameters = {"db": "system", "tbl": "query_log"}
 
 result = client.query(query, parameters=parameters)
 ```
-
 
 #### Запрос с параметрами {#query-with-settings}
 
@@ -598,7 +583,6 @@ result = client.query(
     }
 )
 ```
-
 
 ### Объект `QueryResult` {#the-queryresult-object}
 
@@ -675,7 +659,6 @@ data = [
 client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
-
 #### Вставка по столбцам {#column-oriented-insert}
 
 ```python
@@ -692,7 +675,6 @@ data = [
 
 client.insert("users", data, column_names=["id", "name", "age"], column_oriented=True)
 ```
-
 
 #### Вставка с явным указанием типов столбцов {#insert-with-explicit-column-types}
 
@@ -716,7 +698,6 @@ client.insert(
 )
 ```
 
-
 #### Вставка в конкретную базу данных {#insert-into-specific-database}
 
 ```python
@@ -737,7 +718,6 @@ client.insert(
     database="production",
 )
 ```
-
 
 ## Вставка из файлов {#file-inserts}
 

@@ -15,7 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
 # Confluent Cloud と ClickHouse との連携 {#integrating-confluent-cloud-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -30,14 +29,10 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-
-
 ## 前提条件 {#prerequisites}
 以下の内容について理解していることを前提とします:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
-
-
 
 ## Confluent Cloud 向け ClickHouse 公式 Kafka コネクタ {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 

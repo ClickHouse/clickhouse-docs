@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
 
-
 ## Роли коллектора {#collector-roles}
 
 Коллекторы OpenTelemetry могут быть развернуты в двух основных ролях:
@@ -56,7 +55,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 В продуктивной среде пользователям следует использовать учётную запись с [подходящими учетными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
 
-
 ### Изменение конфигурации {#modifying-otel-collector-configuration}
 
 #### Использование Docker {#using-docker}
@@ -75,7 +73,6 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
-
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -100,7 +97,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
     networks:
       - internal
 ```
-
 
 ### Расширенная конфигурация {#advanced-configuration}
 
@@ -197,7 +193,6 @@ docker run -d \
 
 Для более сложных конфигураций обратитесь к [стандартной конфигурации коллектора ClickStack](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) и к [документации по экспортёру ClickHouse](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
-
 #### Структура конфигурации {#configuration-structure}
 
 Подробную информацию о настройке OTel collector, включая [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) и [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), см. в [официальной документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/configuration).
@@ -227,7 +222,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 ```
 
 Предполагается, что коллектор настроен на использование базы данных `otel`. Этим можно управлять через переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Передайте её в образ контейнера с коллектором [аналогично другим переменным окружения](#modifying-otel-collector-configuration).
-
 
 ## Обработка — фильтрация, трансформация и обогащение {#processing-filtering-transforming-enriching}
 
@@ -308,7 +302,6 @@ service:
 Обратите внимание на необходимость добавлять [заголовок авторизации с вашим ключом API для приёма данных API key](#securing-the-collector) во все OTLP-запросы.
 
 Для более сложной конфигурации мы рекомендуем обратиться к [документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
-
 
 ## Оптимизация вставок {#optimizing-inserts}
 
@@ -423,7 +416,6 @@ OTel collector в составе ClickStack действует как экзем
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
 ```
-
 
 ### Миграция со схем на основе Map к типу JSON {#migrating-from-map-based-schemas-to-json}
 

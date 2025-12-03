@@ -9,14 +9,11 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Табличная функция ytsaurus {#ytsaurus-table-function}
 
 <ExperimentalBadge/>
 
 Табличная функция ytsaurus позволяет считывать данные из кластера YTsaurus.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -30,7 +27,6 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 с помощью параметра [allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_engine).
 Введите команду `set allow_experimental_ytsaurus_table_function = 1`.
 :::
-
 
 ## Аргументы {#arguments}
 

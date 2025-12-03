@@ -36,7 +36,6 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
 * TLS およびイングレスの設定
 * シークレット管理および認証設定
 
-
 ### 適した用途 {#suitable-for}
 
 * 検証・PoC
@@ -262,7 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 シークレットベースの設定、外部 OTel collector、または最小構成で本番環境にデプロイする場合は、[Deployment Options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) ガイドを参照してください。
 :::
 
-
 ## 本番環境向けの注意事項
 
 デフォルトでは、このチャートは ClickHouse と OTel collector もインストールするようになっています。ただし、本番環境では ClickHouse と OTel collector は別々に管理することが推奨されます。
@@ -282,7 +280,6 @@ helm install my-clickstack clickstack/clickstack \
 * [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - イングレス、TLS、およびシークレット管理
 * [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - クラウド固有の設定と本番環境チェックリスト
   :::
-
 
 ## タスク設定 {#task-configuration}
 
@@ -308,7 +305,6 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 helm search repo clickstack
 ```
 
-
 ## ClickStack のアンインストール
 
 デプロイメントを削除するには：
@@ -319,7 +315,6 @@ helm uninstall my-clickstack
 
 これにより、そのリリースに関連するすべてのリソースは削除されますが、永続データ（存在する場合）は残る可能性があります。
 
-
 ## トラブルシューティング {#troubleshooting}
 
 ### ログの確認
@@ -328,13 +323,11 @@ helm uninstall my-clickstack
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-
 ### インストール失敗時のデバッグ
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
-
 
 ### デプロイメントの検証
 
@@ -378,7 +371,6 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
-
 
 ## 関連ドキュメント {#related-documentation}
 

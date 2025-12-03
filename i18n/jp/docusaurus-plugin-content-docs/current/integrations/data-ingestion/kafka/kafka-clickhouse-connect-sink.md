@@ -10,7 +10,6 @@ keywords: ['ClickHouse Kafka Connect Sink', 'ClickHouse 用 Kafka コネクタ',
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
@@ -92,7 +91,6 @@ ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報�
 
 設定オプションの完全な一覧表:
 
-
 | Property Name                                   | Description                                                                                                                                                                                                                        | Default Value                                            |
 |-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 | `hostname` (Required)                           | サーバーのホスト名または IP アドレス                                                                                                                                                                                               | N/A                                                      |
@@ -123,8 +121,6 @@ ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報�
 | `ignorePartitionsWhenBatching`                  | insert 用にメッセージを収集する際にパーティションを無視する（ただし `exactlyOnce` が `false` の場合のみ）。パフォーマンス上の注意: Connector Task が多いほど、1 Task あたりに割り当てられる Kafka パーティションは少なくなり、効果が逓減しうる。 | `"false"`                                                |
 
 ### 対象テーブル {#target-tables}
-
-
 
 ClickHouse Connect Sink は Kafka のトピックからメッセージを読み取り、適切なテーブルに書き込みます。ClickHouse Connect Sink が書き込むのは既存のテーブルのみです。データの挿入を開始する前に、対象テーブルが ClickHouse 上に適切なスキーマで作成済みであることを必ず確認してください。
 
@@ -204,7 +200,6 @@ ClickHouse Kafka Connect Sink に送信される前に送信メッセージを�
 #### 複数のトピックを対象とした基本構成 {#basic-configuration-with-multiple-topics}
 
 コネクタは複数のトピックからデータを読み取ることができます
-
 
 ```json
 {
@@ -340,7 +335,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 * `byte-rate`: 1 秒あたりに送信されたバイト数の平均レート
 * `compression-rate`: 達成された圧縮率
 
-
 **パーティションレベルのメトリクス:**
 - `records-sent-total`: パーティションに送信されたレコードの総数
 - `bytes-sent-total`: パーティションに送信されたバイト数の総量
@@ -430,8 +424,6 @@ JMX メトリクスの詳細な定義および Prometheus との統合につい�
 - デフォルトのコネクタ設定で既にスループット要件を満たしている場合
 - ClickHouse クラスターが受信負荷を容易に処理できている場合
 
-
-
 #### データフローの理解 {#understanding-the-data-flow}
 
 チューニングを行う前に、コネクタ内でデータがどのように流れるかを理解しておくことが重要です。
@@ -467,23 +459,16 @@ Kafka Connect（フレームワーク）は、コネクタとは独立してバ�
 
 ClickHouse のパフォーマンスを最適化するには、より大きなバッチサイズを目標としてください。
 
-
-
 ```properties
 # ポーリング1回あたりのレコード数を増やす {#increase-the-number-of-records-per-poll}
 consumer.max.poll.records=5000
 ```
 
-
 # パーティションのフェッチサイズを増やす (5 MB) {#increase-the-partition-fetch-size-5-mb}
 consumer.max.partition.fetch.bytes=5242880
 
-
-
 # 任意: より多くのデータが揃うまで待つように最小フェッチサイズを増やす (1 MB) {#optional-increase-minimum-fetch-size-to-wait-for-more-data-1-mb}
 consumer.fetch.min.bytes=1048576
-
-
 
 # オプション: レイテンシがクリティカルな場合の待機時間を短縮する {#optional-reduce-wait-time-if-latency-is-critical}
 
@@ -580,7 +565,6 @@ consumer.fetch.max.wait.ms=300
 ##### Exactly-once セマンティクスを伴う非同期インサート {#async-inserts-with-exactly-once}
 
 `exactlyOnce=true` を非同期インサートと併用する場合:
-
 
 ```json
 {
@@ -685,7 +669,6 @@ SETTINGS
 
 **一般的なパフォーマンス問題**:
 
-
 | 症状                  | 考えられる原因              | 解決策                                                   |
 | ------------------- | -------------------- | ----------------------------------------------------- |
 | コンシューマーラグが大きい       | バッチが小さすぎる            | `max.poll.records` を増やし、async inserts を有効にする          |
@@ -782,7 +765,6 @@ SETTINGS
 * `SocketTimeoutException` - ソケットがタイムアウトしたときにスローされます。
 * `UnknownHostException` - ホスト名が解決できないときにスローされます。
 * `IOException` - ネットワークに問題がある場合にスローされます。
-
 
 #### 「すべてのデータが空/ゼロになっている」 {#all-my-data-is-blankzeroes}
 

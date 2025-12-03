@@ -30,7 +30,7 @@ curl -sL https://lib.chdb.io | bash
 ### 步骤 2：安装 chDB-bun {#install-chdb-bun}
 
 ```bash
-# 从 GitHub 仓库安装
+# 从 GitHub 仓库安装 {#install-from-the-github-repository}
 bun add github:chdb-io/chdb-bun
 ```
 
@@ -44,11 +44,11 @@ bun run build
 ```
 ```
 
-## 用法
+## 用法 {#usage}
 
 chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以及用于维护数据库状态的持久会话。
 
-### 临时查询
+### 临时查询 {#ephemeral-queries}
 
 适用于不需要保留状态的简单一次性查询：
 

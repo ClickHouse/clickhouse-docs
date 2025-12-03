@@ -25,7 +25,6 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 在通过调优线程数和块大小来提升插入性能之前，我们建议用户先了解 S3 插入的工作机制。如果你已经熟悉插入机制，或者只想快速获得一些调优建议，可以直接跳转到下面的[示例](/integrations/s3/performance#example-dataset)部分。
 
-
 ## 插入机制（单节点） {#insert-mechanics-single-node}
 
 在硬件配置之外，还有两个主要因素会影响 ClickHouse 单节点数据插入机制的性能和资源使用：**插入块大小** 和 **插入并行度**。
@@ -81,7 +80,6 @@ ClickHouse 会持续[合并 part](https://clickhouse.com/blog/asynchronous-data-
 ② 将内存中已加载的块合并成一个更大的块。
 ```
 
-
 ③ 将合并后的数据块写入磁盘中的一个新的 part。
 
 回到 ①
@@ -118,12 +116,9 @@ ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会
 
 对于 s3 函数和表，单个文件是否并行下载由 [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) 和 [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) 的取值决定。只有当文件大小大于 `2 * max_download_buffer_size` 时，文件才会被并行下载。默认情况下，`max_download_buffer_size` 设置为 10MiB。在某些情况下，可以放心地将该缓冲区大小增大到 50 MB（`max_download_buffer_size=52428800`），以确保每个文件由单个线程下载。这样可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。此外，对于过小而不适合并行读取的文件，为了提高吞吐量，ClickHouse 会通过异步预读此类文件来自动预取数据。
 
-
 ## 性能衡量 {#measuring-performance}
 
 在以下两种场景下，都需要对使用 S3 表函数的查询进行性能优化：一是数据不搬移、直接对其运行查询的场景，即仅使用 ClickHouse 计算资源、数据保持在 S3 中并保留原始格式的临时（即席）查询；二是将来自 S3 的数据插入到 ClickHouse MergeTree 表引擎中的场景。除非特别说明，以下建议适用于这两种场景。
-
-
 
 ## 硬件规模的影响 {#impact-of-hardware-size}
 
@@ -137,13 +132,9 @@ ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会
 
 从而影响整体的摄取吞吐量。
 
-
-
 ## 区域本地性 {#region-locality}
 
 请确保你的 bucket 与 ClickHouse 实例位于同一地域（region）。这个简单的优化可以显著提升吞吐性能，尤其是在你将 ClickHouse 实例部署在 AWS 基础设施上时。
-
-
 
 ## 格式 {#formats}
 
@@ -154,8 +145,6 @@ ClickHouse 可以使用 `s3` 函数和 `S3` 引擎，以[受支持的格式](/in
 * 对于大文件，块大小通常会影响读取延迟。如果你只是对数据进行采样，例如只返回前 N 行，这一点会尤为明显。对于 CSV 和 TSV 等格式，必须逐行解析文件才能返回一批行。而 Native 和 Parquet 等格式则可以实现更快速的采样。
 * 每种压缩格式都有其优缺点，通常在压缩率与速度之间权衡，并分别偏向压缩或解压缩方向的性能。如果对 CSV 或 TSV 等原始文件进行压缩，lz4 提供最快的解压缩性能，但牺牲了压缩率。Gzip 通常能获得更好的压缩率，但读取速度会略慢。Xz 在这方面更进一步，通常提供最佳压缩率，但压缩和解压缩性能最慢。如果是导出数据，Gz 和 lz4 的压缩速度相近。需要结合你的网络连接速度进行权衡。任何来自更快压缩或解压缩的收益，都可能轻易被到 S3 存储桶的较慢网络连接所抵消。
 * 对于 Native 或 Parquet 等格式，通常不值得再引入额外的压缩开销。数据大小的节省往往非常有限，因为这些格式本身已经非常紧凑。花在压缩和解压缩上的时间很难抵消网络传输时间——尤其是考虑到 S3 在全球范围内可用且通常具有较高的网络带宽。
-
-
 
 ## 示例数据集 {#example-dataset}
 
@@ -201,7 +190,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 :::info
 在读取查询结果时，初次执行的查询往往看起来比重复执行同一查询更慢。这通常是由于 S3 自身的缓存机制以及 [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) 所致。后者会存储针对文件推断出的 schema，从而在后续访问中跳过推断步骤，降低查询时间。
 :::
-
 
 ## 在读取中使用线程 {#using-threads-for-reads}
 
@@ -249,7 +237,6 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
-
 ## 为插入操作调优线程数与块大小 {#tuning-threads-and-block-size-for-inserts}
 
 为了获得最大的摄取性能，你必须基于以下三点进行选择：(1) 插入块大小；(2) 合适的插入并行度；(3) 可用 CPU 内核数和 RAM 容量。总结如下：
@@ -286,7 +273,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 ```
 
 如上所示，通过调整这些设置，插入性能提升了 `33%` 以上。我们将其留给读者自行尝试，看看能否进一步提升单节点性能。
-
 
 ## 基于资源和节点的扩展 {#scaling-with-resources-and-nodes}
 
@@ -365,7 +351,6 @@ FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws
 返回 0 行。用时：171.202 秒。已处理 5982 万行，24.03 GB（每秒 34.941 万行，140.37 MB/秒）
 ```
 
-
 读者会注意到，文件读取带来了查询性能的提升，但没有改善写入性能。默认情况下，尽管读取是通过 `s3Cluster` 分布式执行的，插入操作仍然是在发起请求的节点上进行的。这意味着，虽然每个节点都会参与读取，但生成的行会被路由回发起节点再进行分发。在高吞吐场景下，这可能成为瓶颈。为了解决这个问题，需要为 `s3cluster` 函数设置参数 `parallel_distributed_insert_select`。
 
 将其设置为 `parallel_distributed_insert_select=2`，可以确保 `SELECT` 和 `INSERT` 会在每个分片上执行，并针对每个节点上分布式引擎的底层表进行读写。
@@ -381,7 +366,6 @@ Peak memory usage: 11.75 GiB.
 ```
 
 如预期，这会使插入性能降低到原来的三分之一。
-
 
 ## 进一步调优 {#further-tuning}
 
@@ -415,7 +399,6 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 
 0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
-
 
 ## 其他注意事项 {#misc-notes}
 

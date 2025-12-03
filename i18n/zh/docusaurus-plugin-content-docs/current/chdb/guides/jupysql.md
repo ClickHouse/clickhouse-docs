@@ -95,7 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## 在 CSV 文件中查询数据
+## 在 CSV 文件中查询数据 {#querying-data-in-csv-files}
 
 我们已经下载了一批带有 `atp_rankings` 前缀的文件。
 让我们使用 `DESCRIBE` 子句来了解其表结构（schema）：

@@ -18,19 +18,14 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Looker {#looker}
 
 <PartnerBadge/>
 
 Looker может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse с помощью официального источника данных ClickHouse.
 
-
-
 ## 1. Получите параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 
@@ -55,8 +50,6 @@ Looker может подключаться к ClickHouse Cloud или локал
 <br/>
 
 Теперь вы сможете подключить источник данных ClickHouse к проекту Looker.
-
-
 
 ## 3. Известные ограничения {#3-known-limitations}
 

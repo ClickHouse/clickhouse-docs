@@ -27,7 +27,6 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
 # Azure Private Link {#azure-private-link}
 
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
@@ -54,15 +53,11 @@ Azure 通过 Private Link 支持跨区域连接。这使您能够在部署了 Cl
 ClickHouse Cloud Azure Private Link 已从使用 resourceGUID 切换为使用 Resource ID 筛选器。您仍然可以使用 resourceGUID（其具有向后兼容性），但我们建议切换到 Resource ID 筛选器。要迁移，只需使用 Resource ID 创建新的终结点，将其关联到服务，然后移除旧的基于 resourceGUID 的终结点。
 :::
 
-
-
 ## 注意 {#attention}
 ClickHouse 会尝试对您的服务进行分组，以便在同一 Azure 区域内复用同一个已发布的 [Private Link 服务](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview)。但无法保证始终能够实现这种分组，尤其是在您将服务分散到多个 ClickHouse 组织时。
 如果您已经在 ClickHouse 组织中的其他服务上配置了 Private Link，那么通常可以利用这一分组跳过大部分步骤，直接进行最后一步：[将 Private Endpoint Resource ID 添加到服务的允许列表](#add-private-endpoint-id-to-services-allow-list)。
 
 您可以在 ClickHouse 的 [Terraform Provider 仓库](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)中找到 Terraform 示例。
-
-
 
 ## 获取用于 Private Link 的 Azure 连接别名 {#obtain-azure-connection-alias-for-private-link}
 
@@ -108,7 +103,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 记录下 `endpointServiceId`。您将在下一步中用到它。
-
 
 ## 在 Azure 中创建专用终结点 {#create-private-endpoint-in-azure}
 
@@ -216,7 +210,6 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
 专用终结点资源 ID 可在 Azure 门户中查看。打开在上一步中创建的专用终结点，然后单击 **JSON 视图**：
 
-
 <Image img={azure_pe_view} size="lg" alt="Private Endpoint View" border />
 
 在 properties 属性中找到 `id` 字段，并复制其值：
@@ -228,8 +221,6 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 出于向后兼容的考虑，您仍然可以使用 resourceGUID。找到 `resourceGuid` 字段并复制该值：
 
 <Image img={azure_pe_resource_guid} size="lg" alt="Private Endpoint Resource GUID" border />
-
-
 
 ## 为 Private Link 配置 DNS {#setting-up-dns-for-private-link}
 
@@ -310,7 +301,6 @@ nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
 地址：10.0.0.4
 ```
 
-
 ## 将专用终结点资源 ID 添加到你的 ClickHouse Cloud 组织 {#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization}
 
 ### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-1}
@@ -379,7 +369,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-
 ## 将 Private Endpoint Resource ID 添加到服务的允许列表 {#add-private-endpoint-id-to-services-allow-list}
 
 默认情况下，即使 Private Link 连接已获批准并建立，ClickHouse Cloud 服务也无法通过 Private Link 连接访问。你需要为每个需要通过 Private Link 访问的服务显式添加对应的 Private Endpoint Resource ID。
@@ -443,7 +432,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-
 ## 使用 Private Link 访问 ClickHouse Cloud 服务 {#access-your-clickhouse-cloud-service-using-private-link}
 
 每个启用了 Private Link 的服务都具有一个公共端点和一个私有端点。要通过 Private Link 进行连接，您需要使用私有端点，即从[获取用于 Private Link 的 Azure 连接别名](#obtain-azure-connection-alias-for-private-link)中取得的 `privateDnsHostname`<sup>API</sup> 或 `DNS name`<sup>console</sup>。
@@ -486,7 +474,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 使用 `privateDnsHostname` 通过 Private Link 连接到您的 ClickHouse Cloud 服务。
 
-
 ## 故障排除 {#troubleshooting}
 
 ### 测试 DNS 配置 {#test-dns-setup}
@@ -525,7 +512,6 @@ OpenSSL 应该能够建立连接（在输出中可以看到 CONNECTED）。`errn
 openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
 ```
 
-
 ```response
 # highlight-next-line {#highlight-next-line}
 CONNECTED(00000003)
@@ -563,7 +549,6 @@ INSTANCE_ID=<实例 ID>
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
-
 
 ## 更多信息 {#more-information}
 

@@ -77,7 +77,6 @@ SELECT value FROM system.settings where name='async_insert';
 └─────────┘
 ```
 
-
 ## カスタム設定 {#custom_settings}
 
 共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義できます。
@@ -100,7 +99,6 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-
 ## 例 {#examples}
 
 これらの例はすべて、`async_insert` 設定の値を `1` に設定し、
@@ -117,7 +115,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-
 #### 設定プロファイルおよび割り当てを確認する {#examine-the-settings-profile-and-assignment}
 
 ```sql
@@ -132,7 +129,6 @@ SHOW ACCESS
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
@@ -151,7 +147,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 -- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
-
 
 ### XML を使用して設定プロファイルおよびユーザーを作成する {#using-xml-to-create-a-settings-profile-and-user}
 
@@ -181,7 +176,6 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-
 #### 設定プロファイルとその割り当てを確認する {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
@@ -201,7 +195,6 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ### セッションに設定を適用する {#assign-a-setting-to-a-session}
 
 ```sql
@@ -215,7 +208,6 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-
 ### クエリ実行時に設定を指定する {#assign-a-setting-during-a-query}
 
 ```sql
@@ -224,7 +216,6 @@ INSERT INTO YourTable
 SETTINGS async_insert=1
 VALUES (...)
 ```
-
 
 ## 関連項目 {#see-also}
 

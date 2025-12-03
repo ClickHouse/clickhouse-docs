@@ -9,20 +9,15 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
 # ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
 Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он задан ранее. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md), так и в результате запроса `SHOW CREATE DATABASE`.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
-
 
 ## Примеры {#examples}
 
@@ -73,7 +68,6 @@ WHERE  name = 'database_with_comment';
 │         │
 └─────────┘
 ```
-
 
 ## См. также {#related-content}
 

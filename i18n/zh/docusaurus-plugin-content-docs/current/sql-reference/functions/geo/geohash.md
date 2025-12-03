@@ -6,15 +6,11 @@ title: '用于处理 Geohash 的函数'
 doc_type: 'reference'
 ---
 
-
-
 ## Geohash {#geohash}
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash) 是一种地理编码系统，它将地球表面划分为网格状的区域（bucket），并将每个单元编码为由字母和数字组成的短字符串。它是一种分层数据结构，因此 geohash 字符串越长，表示的地理位置就越精确。
 
 如果需要手动将地理坐标转换为 geohash 字符串，可以使用 [geohash.org](http://geohash.co/)。
-
-
 
 ## geohashEncode {#geohashencode}
 
@@ -58,7 +54,6 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 └──────────────┘
 ```
 
-
 ## geohashDecode {#geohashdecode}
 
 将任意 [geohash](#geohash) 编码字符串解码为经度和纬度。
@@ -88,7 +83,6 @@ SELECT geohashDecode('ezs42') AS res;
 │ (-5.60302734375,42.60498046875) │
 └─────────────────────────────────┘
 ```
-
 
 ## geohashesInBox {#geohashesinbox}
 

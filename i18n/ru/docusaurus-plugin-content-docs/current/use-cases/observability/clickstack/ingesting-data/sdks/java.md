@@ -42,7 +42,6 @@ ClickStack использует стандарт OpenTelemetry для сбора
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-
 ### Настройте переменные окружения {#configure-environment-variables}
 
 Далее необходимо настроить в оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
@@ -59,7 +58,6 @@ OTEL_SERVICE_NAME='<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_С
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации сервиса в приложении HyperDX. Можно указать любое удобное имя.*
 
 Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
-
 
 ### Запустите приложение с Java-агентом OpenTelemetry {#run-the-application-with-otel-java-agent}
 

@@ -45,13 +45,11 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-
 ## MergeTree 设置 {#mergetree-settings}
 
 {/* 以下设置由以下脚本自动生成：
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
-
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
@@ -129,7 +127,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 在查询中使用 `ORDER BY time DESC` 时，会启用 `ReadInOrder`。
 
 **默认值：** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -625,7 +622,6 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
 
-
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
@@ -888,7 +884,6 @@ slower than inserts" exception."
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -925,7 +920,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300，parts&#95;to&#95;delay&#95;insert = 150，max&#95;delay&#95;to&#95;insert = 1，
 min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 会被延迟 `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` 毫秒。
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1531,7 +1525,6 @@ ClickHouse 会选择那个能在更大可用磁盘空闲空间范围内允许执
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
 
-
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
 <SettingsInfoBlock type="UInt64" default_value="10737418240" />
@@ -2062,7 +2055,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 

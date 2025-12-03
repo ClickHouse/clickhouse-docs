@@ -77,7 +77,6 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 
 クエリキャッシュのサイズ（バイト単位）、キャッシュエントリの最大数、および個々のキャッシュエントリの最大サイズ（バイト数およびレコード数）は、さまざまな[サーバー設定オプション](/operations/server-configuration-parameters/settings#query_cache)を使用して構成できます。
 
-
 ```xml
 <query_cache>
     <max_size_in_bytes>1073741824</max_size_in_bytes>
@@ -140,7 +139,6 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
 クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM DROP QUERY CACHE TAG 'tag'` 文を使用します。
-
 
 ClickHouse はテーブルデータを [max_block_size](/operations/settings/settings#max_block_size) 行ずつのブロック単位で読み取ります。フィルタリングや集約などの処理の結果、
 結果ブロックは通常は `max_block_size` よりかなり小さくなりますが、逆に `max_block_size` より大きくなる場合もあります。

@@ -247,7 +247,7 @@ OK
 
 ````
 
-#### ClickHouseでテーブルを作成する
+#### ClickHouseでテーブルを作成する {#create-table-in-clickhouse-1}
 
 上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル:
 ```sql
@@ -319,9 +319,9 @@ day:                  2021-09-18
 1行が結果セットに含まれています。経過時間: 0.357秒
 ```
 
-### Text 入力フォーマットを使用して Hive テーブルをクエリする
+### Text 入力フォーマットを使用して Hive テーブルをクエリする {#query-hive-table-with-text-input-format}
 
-#### Hive でテーブルを作成する
+#### Hive でテーブルを作成する {#create-table-in-hive-2}
 
 ```text
 hive >

@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Alias 表引擎 {#alias-table-engine}
 
 <ExperimentalBadge/>
@@ -39,7 +38,6 @@ ENGINE = Alias(target_db, target_table)
 :::note
 `Alias` 表不支持显式定义列。列会自动从目标表继承，从而确保该别名表始终与目标表的 schema 保持一致。
 :::
-
 
 ## 引擎参数 {#engine-parameters}
 
@@ -108,7 +106,6 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-
 ### 跨数据库别名 {#cross-database-alias}
 
 创建一个指向不同数据库中某个表的别名：
@@ -136,7 +133,6 @@ CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
-
 
 ### 通过别名执行写入操作 {#write-operations}
 
@@ -168,7 +164,6 @@ SELECT count() FROM metrics;  -- 返回 7
 SELECT count() FROM metrics_alias;  -- 返回 7
 ```
 
-
 ### 表结构修改 {#schema-modification}
 
 `ALTER` 操作用于修改目标表的表结构：
@@ -196,7 +191,6 @@ DESCRIBE users;
 │ email │ String │ DEFAULT      │ ''                 │
 └───────┴────────┴──────────────┴────────────────────┘
 ```
-
 
 ### 数据变更 {#data-mutations}
 
@@ -235,7 +229,6 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-
 ### 分区操作 {#partition-operations}
 
 对于分区表，分区操作将被转发：
@@ -266,7 +259,6 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
 SELECT count() FROM logs_alias;  -- 返回 3
 ```
-
 
 ### 表优化 {#table-optimization}
 
@@ -301,7 +293,6 @@ WHERE database = currentDatabase()
   AND table = 'events' 
   AND active;  -- 返回 1
 ```
-
 
 ### 别名管理 {#alias-management}
 

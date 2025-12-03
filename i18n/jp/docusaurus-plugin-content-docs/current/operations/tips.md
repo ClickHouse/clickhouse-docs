@@ -11,7 +11,6 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-
 ## CPU スケーリングガバナー {#cpu-scaling-governor}
 
 常に `performance` スケーリングガバナーを使用してください。`on-demand` スケーリングガバナーは、常時高負荷のワークロードではパフォーマンスが大きく低下します。
@@ -19,7 +18,6 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 ```bash
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
-
 
 ## CPU の制限事項 {#cpu-limitations}
 
@@ -40,7 +38,6 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 
 メモリ管理に費やされるカーネル時間を観測するには、`perf top` を使用します。
 恒久的なヒュージページを割り当てる必要もありません。
-
 
 ### 16GB 未満の RAM を使用する場合 {#using-less-than-16gb-of-ram}
 
@@ -102,7 +99,6 @@ HDD ではライトキャッシュを有効にします。
 
 OS で NVMe および SSD ディスクに対して [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\)) が有効になっていることを確認してください (通常は cron ジョブまたは systemd サービスとして実装されています)。
 
-
 ## ファイルシステム {#file-system}
 
 Ext4 が最も信頼性の高い選択肢です。マウントオプションとして `noatime` を設定してください。XFS も同様に問題なく動作します。
@@ -143,7 +139,6 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 その後、`sudo update-grub` コマンドを実行し、反映させるためにシステムを再起動してください。
 
-
 ## ハイパーバイザーの構成 {#hypervisor-configuration}
 
 OpenStack を使用している場合は、以下を設定します。
@@ -164,7 +159,6 @@ XML 設定で指定します。
 
 これは、ClickHouse が `cpuid` 命令によって正しい情報を取得できるようにするために重要です。
 そうしていない場合、古い CPU モデル上でハイパーバイザーを実行していると `Illegal instruction` エラーによりクラッシュする可能性があります。
-
 
 ## ClickHouse Keeper と ZooKeeper {#zookeeper}
 
@@ -254,7 +248,6 @@ dynamicConfigFile=/etc/zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}/conf/zoo.
 
 Java 版:
 
-
 ```text
 openjdk 11.0.5-shenandoah 2019-10-15
 OpenJDK Runtime Environment (build 11.0.5-shenandoah+10-adhoc.heretic.src)
@@ -262,7 +255,6 @@ OpenJDK 64-Bit Server VM (build 11.0.5-shenandoah+10-adhoc.heretic.src, mixed mo
 ```
 
 JVM パラメータ:
-
 
 ```bash
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
@@ -323,7 +315,6 @@ script
         -Dzookeeper.root.logger=${ZOO_LOG4J_PROP} $ZOOMAIN $ZOOCFG
 end script
 ```
-
 
 ## アンチウイルスソフトウェア {#antivirus-software}
 

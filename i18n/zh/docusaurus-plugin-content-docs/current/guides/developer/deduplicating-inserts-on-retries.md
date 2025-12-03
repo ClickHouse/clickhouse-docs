@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 当插入被重试时，ClickHouse 会尝试判断这些数据是否已经成功插入。如果插入的数据被标记为重复，ClickHouse 不会将其再次写入目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常插入一样。
 
-
-
 ## 限制 {#limitations}
 
 ### 不确定的插入状态 {#uncertain-insert-status}
@@ -21,8 +19,6 @@ doc_type: 'guide'
 ### 去重窗口限制 {#deduplication-window-limit}
 
 如果在重试过程中发生的其他插入操作次数超过 `*_deduplication_window`，则去重可能无法按预期工作。在这种情况下，相同的数据可能会被多次插入。
-
-
 
 ## 在重试插入时启用插入去重 {#enabling-insert-deduplication-on-retries}
 
@@ -38,8 +34,6 @@ doc_type: 'guide'
 
 将设置 `insert_deduplicate=1` 可在查询级别启用去重。请注意，如果你使用 `insert_deduplicate=0` 插入数据，即使之后在重试插入时使用 `insert_deduplicate=1`，这些数据也无法被去重。这是因为在使用 `insert_deduplicate=0` 进行插入时，不会为数据块写入 `block_id`。
 
-
-
 ## 插入去重的工作原理 {#how-insert-deduplication-works}
 
 当数据插入到 ClickHouse 时，ClickHouse 会根据行数和字节数将数据拆分为多个数据块（block）。
@@ -51,8 +45,6 @@ doc_type: 'guide'
 对于 `INSERT ... VALUES` 查询，插入数据被拆分成块的方式是确定性的，并由相关设置决定。因此，用户在重试插入时应当使用与初始操作相同的设置值。
 
 对于 `INSERT ... SELECT` 查询，关键在于查询的 `SELECT` 部分在每次执行时都返回相同顺序的相同数据。需要注意的是，这在实际使用中很难保证。为了在重试时确保数据顺序稳定，应当在查询的 `SELECT` 部分中定义精确的 `ORDER BY` 子句。请牢记，被选取的数据表在重试之间可能会被更新：结果数据可能发生变化，从而导致无法触发去重。此外，在插入大量数据的场景下，插入后产生的数据块数量有可能超出去重日志窗口的范围，此时 ClickHouse 将无法识别并对这些数据块进行去重。
-
-
 
 ## 使用物化视图进行插入去重 {#insert-deduplication-with-materialized-views}
 
@@ -68,8 +60,6 @@ doc_type: 'guide'
 启用 `insert_deduplicate=1` 时，插入的数据会在源表中被去重。将 `deduplicate_blocks_in_dependent_materialized_views=1` 设为开启，则会在依赖的物化视图目标表中额外启用去重。如果需要完整的去重效果，必须同时启用这两个设置。
 
 在向包含物化视图的表中插入数据块时，ClickHouse 会通过对一个字符串进行哈希来计算 `block_id`，该字符串由源表的 `block_id` 与其他标识符组合而成。这确保了在物化视图中的去重准确可靠，使得数据可以根据其最初的插入来进行区分，而不受在到达物化视图目标表之前所应用的任何转换的影响。
-
-
 
 ## 示例 {#examples}
 
@@ -216,7 +206,6 @@ FROM dst
 ORDER BY all;
 ```
 
-
 ┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
 │ from dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
 └────────────┴─────┴───────┴───────────┘
@@ -339,7 +328,6 @@ AS SELECT
     value AS value
 FROM dst;
 ```
-
 
 SET deduplicate&#95;blocks&#95;in&#95;dependent&#95;materialized&#95;views=1;
 
@@ -480,7 +468,6 @@ SELECT
 FROM dst
 ORDER BY all;
 ```
-
 
 ┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
 │ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │

@@ -21,14 +21,11 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # QuickSight {#quicksight}
 
 <ClickHouseSupportedBadge/>
 
 QuickSight は、公式の MySQL データソースと Direct Query モードを使用することで、MySQL インターフェイス経由でオンプレミス環境の ClickHouse（23.11 以降）に接続できます。
-
-
 
 ## オンプレミス ClickHouse サーバーのセットアップ {#on-premise-clickhouse-server-setup}
 
@@ -122,7 +119,6 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-
 ## QuickSight を ClickHouse に接続する {#connecting-quicksight-to-clickhouse}
 
 まず [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com) にアクセスし、Datasets セクションに移動して「New dataset」をクリックします。
@@ -162,8 +158,6 @@ UI の左下隅で「Direct Query」モードが選択されていることを�
 <br/>
 
 これで、データセットを公開して新しいビジュアライゼーションを作成できます。
-
-
 
 ## 既知の制限事項 {#known-limitations}
 

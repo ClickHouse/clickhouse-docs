@@ -17,7 +17,6 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した Kafka メトリクスの監視 {#kafka-metrics-clickstack}
 
 :::note[概要]
@@ -349,7 +348,6 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-
 #### 認証エラー {#created-dashboard}
 
 `Authorization failed` または `401 Unauthorized` が表示される場合:
@@ -362,7 +360,6 @@ export CLICKSTACK_API_KEY=実際のAPIキー
 docker compose down
 docker compose up -d
 ```
-
 
 #### Kafka クライアントコマンド使用時のポート競合
 
@@ -377,7 +374,6 @@ Kafka コンテナ内から Kafka コマンドを実行すると、次のよう�
 ```bash
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
-
 
 #### ネットワーク接続の問題 {#no-metrics}
 
@@ -396,7 +392,6 @@ docker network inspect <ネットワーク名>
 # JMXエクスポーターからClickStackへ {#check-environment-variable}
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
-
 
 ## 本番環境での運用 {#going-to-production}
 

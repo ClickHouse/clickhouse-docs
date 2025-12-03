@@ -42,7 +42,6 @@ LIMIT n, m
 
 どちらの形式でも、`n` と `m` は 0 以上の整数でなければなりません。
 
-
 ## 負の LIMIT {#negative-limits}
 
 負の値を使用して、結果セットの*末尾*から行を選択します。
@@ -80,7 +79,6 @@ LIMIT n, m
 LIMIT 10 OFFSET 0.5    -- 中間地点から10行
 LIMIT 10 OFFSET -20    -- 最後の20行をスキップした後の10行
 ```
-
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}
 
@@ -128,7 +126,6 @@ SELECT * FROM (
 :::
 
 この修飾子は、[`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修飾子と組み合わせて使用できます。
-
 
 ## 考慮事項 {#considerations}
 

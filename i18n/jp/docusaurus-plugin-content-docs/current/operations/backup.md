@@ -7,16 +7,12 @@ title: 'バックアップと復元'
 doc_type: 'guide'
 ---
 
-
-
 # バックアップと復元 {#backup-and-restore}
 
 - [ローカルディスクへのバックアップ](#backup-to-a-local-disk)
 - [S3 エンドポイントを使用したバックアップ／復元の設定](#configuring-backuprestore-to-use-an-s3-endpoint)
 - [S3 ディスクを使用したバックアップ／復元](#backuprestore-using-an-s3-disk)
 - [代替案](#alternatives)
-
-
 
 ## コマンドの概要 {#command-summary}
 
@@ -41,7 +37,6 @@ doc_type: 'guide'
 バージョン 23.4 より前の ClickHouse では、`ALL` は `RESTORE` コマンドにのみ適用されていました。
 :::
 
-
 ## 背景 {#background}
 
 [レプリケーション](../engines/table-engines/mergetree-family/replication.md) はハードウェア障害からの保護を提供しますが、人為的なミスからは保護しません。たとえば、データの誤削除、誤ったテーブルや誤ったクラスタ上のテーブルの削除、不正なデータ処理やデータ破損を引き起こすソフトウェアバグなどです。多くの場合、このようなミスはすべてのレプリカに影響します。ClickHouse には、特定の種類のミスを防ぐための組み込みの安全機構があります。たとえばデフォルトでは、[50 GB を超えるデータを含む MergeTree 系エンジンのテーブルを、そのまま DROP することはできません](/operations/settings/settings#max_table_size_to_drop)。しかし、これらの安全機構はあらゆるケースを網羅しているわけではなく、回避されてしまう可能性もあります。
@@ -53,8 +48,6 @@ doc_type: 'guide'
 :::note
 バックアップを取得しただけで一度も復元を試していない場合、いざというときに復元が正しく動作しない（少なくとも、ビジネスが許容できるよりも長い時間がかかる）可能性が高いことを忘れないでください。どのようなバックアップ手法を選択するにせよ、復元プロセスも必ず自動化し、予備の ClickHouse クラスタで定期的に復元演習を行ってください。
 :::
-
-
 
 ## ローカルディスクへのバックアップ {#backup-to-a-local-disk}
 
@@ -145,7 +138,6 @@ BACKUP TABLE test.table3 AS test.table4 TO Disk('backups', '2.zip')
 :::note
 増分バックアップはベースバックアップに依存します。増分バックアップからリストアできるようにするには、ベースバックアップを利用可能な状態で保持しておく必要があります。
 :::
-
 
 新しいデータを増分的に保存します。設定 `base_backup` により、以前のバックアップ `Disk('backups', 'd.zip')` 以降に追加されたデータが `Disk('backups', 'incremental-a.zip')` に保存されます。
 
@@ -264,7 +256,6 @@ end_time:          2022-08-30 09:21:46
 1行のセット。経過時間: 0.002秒
 ```
 
-
 `system.backups` テーブルに加えて、すべてのバックアップおよびリストア操作は、システムログテーブル [backup&#95;log](../operations/system-tables/backup_log.md) にも記録されます。
 
 ```sql
@@ -315,7 +306,6 @@ bytes_read:              0
 
 2 rows in set. Elapsed: 0.075 sec.
 ```
-
 
 ## S3 エンドポイントを使用するように BACKUP/RESTORE を構成する {#configuring-backuprestore-to-use-an-s3-endpoint}
 
@@ -409,7 +399,6 @@ RESTORE TABLE data AS data3 FROM S3('https://mars-doc-test.s3.amazonaws.com/back
 
 ### 件数を確認する {#verify-the-count}
 
-
 元のテーブル `data` には、1,000 行の挿入と 100 行の挿入の 2 回の INSERT が行われており、合計で 1,100 行になっています。復元されたテーブルに 1,100 行あることを確認します。
 
 ```sql
@@ -422,7 +411,6 @@ FROM data3
 │    1100 │
 └─────────┘
 ```
-
 
 ### 内容を検証する {#verify-the-content}
 
@@ -484,12 +472,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 * テーブルが S3 ストレージをバックエンドとしている場合、パーツを宛先バケットにコピーする際には、宛先側のクレデンシャルを用いて、`CopyObject` 呼び出しによる S3 のサーバーサイドコピーを試行します。認証エラーが発生した場合は、パーツを一度ダウンロードしてからアップロードするバッファ経由のコピー方式にフォールバックしますが、これは非常に非効率です。この場合、宛先バケットのクレデンシャルに、ソースバケットに対する `read` 権限が付与されていることを確認してください。
   :::
 
-
 ## 名前付きコレクションの使用 {#using-named-collections}
 
 名前付きコレクションは `BACKUP/RESTORE` のパラメータとして使用できます。例については [こちら](./named-collections.md#named-collections-for-backups) を参照してください。
-
-
 
 ## 代替案 {#alternatives}
 
@@ -514,8 +499,6 @@ ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用し
 
 このアプローチを自動化するためのサードパーティーツールが利用可能です: [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)。
 
-
-
 ## バックアップとリストアの並行実行を禁止するための設定 {#settings-to-disallow-concurrent-backuprestore}
 
 バックアップとリストアの並行実行を禁止するには、それぞれ次の設定を使用します。
@@ -531,7 +514,6 @@ ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用し
 
 両方のデフォルト値は true なので、デフォルトではバックアップ／リストアの並行実行が許可されています。
 これらの設定がクラスターで false に設定されている場合、そのクラスター上で同時に実行できるバックアップ／リストアは 1 つだけになります。
-
 
 ## AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
@@ -555,7 +537,6 @@ BACKUP TABLE data TO AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName
 RESTORE TABLE data AS data_restored FROM AzureBlobStorage('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     'testcontainer', 'data_backup');
 ```
-
 
 ## システムテーブルのバックアップ {#backup-up-system-tables}
 

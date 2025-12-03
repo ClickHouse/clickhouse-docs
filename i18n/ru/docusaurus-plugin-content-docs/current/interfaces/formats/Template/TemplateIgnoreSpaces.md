@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## Описание {#description}
 
 Аналогично формату [`Template`], но пропускает пробельные символы между разделителями и значениями во входном потоке. 
@@ -26,8 +24,6 @@ doc_type: 'reference'
 :::note
 Этот формат предназначен только для ввода.
 :::
-
-
 
 ## Пример использования {#example-usage}
 
@@ -49,6 +45,5 @@ FORMAT TemplateIgnoreSpaces
 ```text title="/some/path/row.format"
 {${}"SearchPhrase"${}:${}${phrase:JSON}${},${}"c"${}:${}${cnt:JSON}${}}
 ```
-
 
 ## Параметры форматирования {#format-settings}

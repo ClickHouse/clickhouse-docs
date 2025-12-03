@@ -8,8 +8,6 @@ title: 'gcs'
 doc_type: 'reference'
 ---
 
-
-
 # gcs 表函数 {#gcs-table-function}
 
 提供一个类表接口，用于在 [Google Cloud Storage（GCS）](https://cloud.google.com/storage/) 中执行 `SELECT` 和 `INSERT` 操作。需要具备 [`Storage Object User` IAM 角色](https://cloud.google.com/storage/docs/access-control/iam-roles)。
@@ -17,8 +15,6 @@ doc_type: 'reference'
 这是 [s3 表函数](../../sql-reference/table-functions/s3.md) 的别名。
 
 如果集群中有多个副本，可以改用 [s3Cluster 函数](../../sql-reference/table-functions/s3Cluster.md)（同样适用于 GCS）来并行化写入。
-
-
 
 ## 语法 {#syntax}
 
@@ -31,7 +27,6 @@ gcs(named_collection[, option=value [,..]])
 GCS 表函数通过 GCS XML API 和 HMAC 密钥与 Google Cloud Storage 集成。
 有关端点和 HMAC 的更多信息，请参阅 [Google 互操作性文档](https://cloud.google.com/storage/docs/interoperability)。
 :::
-
 
 ## 参数 {#arguments}
 
@@ -65,12 +60,9 @@ GCS 路径采用此格式，是因为 Google XML API 的 endpoint 与 JSON API �
 | `no_sign_request`             | 默认禁用。                                                                                                                                                               |
 | `expiration_window_seconds`   | 默认值为 120。                                                                                                                                                           |
 
-
 ## 返回值 {#returned_value}
 
 具有指定结构的表，用于从指定文件读取或向其写入数据。
-
-
 
 ## 示例 {#examples}
 
@@ -103,7 +95,6 @@ LIMIT 2;
 │       3 │       2 │       1 │
 └─────────┴─────────┴─────────┘
 ```
-
 
 ## 用法 {#usage}
 
@@ -198,7 +189,6 @@ SELECT count(*)
 FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
-
 ## 分区写入 {#partitioned-write}
 
 如果在向 `GCS` 表插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区值创建一个单独的文件。将数据拆分为多个独立文件有助于提升读操作的效率。
@@ -224,7 +214,6 @@ INSERT INTO TABLE FUNCTION
 ```
 
 因此，数据将被写入位于不同 bucket 中的三个文件：`my_bucket_1/file.csv`、`my_bucket_10/file.csv` 和 `my_bucket_20/file.csv`。
-
 
 ## 相关 {#related}
 - [S3 表函数](s3.md)

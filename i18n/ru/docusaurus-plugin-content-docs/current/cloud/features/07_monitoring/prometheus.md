@@ -15,7 +15,6 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
 # Интеграция с Prometheus {#prometheus-integration}
 
 Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через endpoint [ClickHouse Cloud API](/cloud/manage/api/api-overview), который позволяет пользователям безопасно подключаться и экспортировать метрики в свой сборщик метрик Prometheus. Эти метрики можно интегрировать с дашбордами, например, Grafana и Datadog, для визуализации.
@@ -58,7 +57,6 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
-
 
 ### Пример ответа {#sample-response}
 
@@ -187,7 +185,6 @@ scrape_configs:
 
 Обратите внимание, что для корректного заполнения метки `instance` параметр конфигурации `honor_labels` должен быть установлен в значение `true`. Кроме того, в приведённом выше примере `filtered_metrics` установлено в `true`, однако это значение следует настраивать в соответствии с предпочтениями пользователя.
 
-
 ## Интеграция с Grafana {#integrating-with-grafana}
 
 Существует два основных способа интеграции с Grafana:
@@ -260,7 +257,6 @@ prometheus.remote_write "metrics_service" {
 
 Обратите внимание: чтобы метка `instance` заполнялась корректно, параметр конфигурации `honor_labels` должен иметь значение `true`.
 
-
 ### Самостоятельно управляемая Grafana с Alloy {#grafana-self-managed-with-alloy}
 
 Пользователи, развернувшие Grafana самостоятельно, могут найти инструкции по установке агента Alloy [здесь](https://grafana.com/docs/alloy/latest/get-started/install/). Мы предполагаем, что Alloy настроен на отправку метрик Prometheus в нужное целевое назначение. Компонент `prometheus.scrape` ниже настраивает Alloy на опрос конечной точки ClickHouse Cloud Endpoint. Мы предполагаем, что `prometheus.remote_write` получает собранные метрики. При необходимости измените значение ключа `forward_to` на нужное целевое назначение.
@@ -292,7 +288,6 @@ prometheus.scrape "clickhouse_cloud" {
 <br />
 
 Обратите внимание, что параметр конфигурации `honor_labels` должен быть установлен в значение `true`, чтобы метка `instance` заполнялась корректно.
-
 
 ## Интеграция с Datadog {#integrating-with-datadog}
 

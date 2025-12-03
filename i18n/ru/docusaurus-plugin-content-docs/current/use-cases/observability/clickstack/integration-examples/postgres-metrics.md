@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг метрик PostgreSQL с помощью ClickStack {#postgres-metrics-clickstack}
 
 :::note[Кратко]
@@ -241,7 +240,6 @@ docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-
 ### Метрики не отображаются в HyperDX {#no-metrics}
 
 Убедитесь, что есть доступ к PostgreSQL:
@@ -256,7 +254,6 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-
 ### Ошибки аутентификации {#auth-errors}
 
 Убедитесь, что пароль указан верно:
@@ -270,7 +267,6 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
-
 
 ## Дальнейшие шаги {#next-steps}
 

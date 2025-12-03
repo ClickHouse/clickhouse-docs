@@ -11,15 +11,12 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Движок таблицы YTsaurus {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 Движок таблицы YTsaurus позволяет импортировать данные из кластера YTsaurus.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -46,7 +43,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 * `http_proxy_url` — URL HTTP-прокси YTsaurus.
 * `cypress_path` — Cypress-путь к источнику данных.
 * `oauth_token` — OAuth-токен.
-
 
 ## Пример использования {#usage-example}
 
@@ -76,7 +72,6 @@ SELECT * FROM yt_saurus;
  │ 10 │ 20 │
  └────┴────┘
 ```
-
 
 ## Типы данных {#data-types}
 

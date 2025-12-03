@@ -93,5 +93,4 @@ FORMAT JSONCompactStrings
 }
 ```
 
-
 ## Настройки форматирования {#format-settings}

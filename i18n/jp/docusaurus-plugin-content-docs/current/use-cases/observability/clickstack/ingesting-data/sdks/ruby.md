@@ -33,7 +33,6 @@ _ClickStack にログを送信するには、[OpenTelemetry collector](/use-case
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-
 ### OpenTelemetry とロガーフォーマッタを設定する {#configure-otel-logger-formatter}
 
 次に、OpenTelemetry のトレーシング用インストルメンテーションを初期化し、
@@ -74,7 +73,6 @@ Rails.application.configure do
   Rails.logger.info "ロガーを初期化しました !! 🐱"
 end
 ```
-
 
 ### 環境変数を設定する {#configure-environment-variables}
 

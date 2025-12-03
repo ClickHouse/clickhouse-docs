@@ -23,7 +23,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 **但是，此版本的 HyperDX 未启用用户认证功能**
 
-
 ### 适用场景 {#suitable-for}
 
 * 演示

@@ -11,7 +11,6 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 功能和配置 {#features-and-configurations}
 
 <ClickHouseSupportedBadge/>
@@ -19,8 +18,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 本节将介绍在 ClickHouse 中使用 dbt 时可用的一些功能。
 
 <TOCInline toc={toc}  maxHeadingLevel={3} />
-
-
 
 ## Profile.yml 配置 {#profile-yml-configurations}
 
@@ -76,7 +73,6 @@ dbt 模型关系标识符 `database.schema.table` 与 ClickHouse 不兼容，因
 
 ### 设置 `quote_columns` {#setting-quote_columns}
 
-
 为避免出现警告，请务必在 `dbt_project.yml` 中明确设置 `quote_columns` 的值。更多信息请参阅[有关 `quote_columns` 的文档](https://docs.getdbt.com/reference/resource-configs/quote_columns)。
 
 ```yaml
@@ -126,7 +122,6 @@ dbt 依赖写入后读取（read-after-insert）的一致性模型。如果无�
 
 * 如果你使用的是 ClickHouse Cloud 集群，只需在 profile 的 `custom_settings` 属性中设置 `select_sequential_consistency: 1`。你可以在[此处](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)找到关于该设置的更多信息。
 * 如果你使用的是自托管集群，请确保所有 dbt 请求都发送到同一个 ClickHouse 副本。如果其前面有负载均衡器，尝试使用 `replica aware routing` / `sticky sessions` 等机制，以始终访问同一副本。在 ClickHouse Cloud 之外的集群中添加设置 `select_sequential_consistency = 1`[是不推荐的](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency)。
-
 
 ## 功能概览 {#general-information-about-features}
 
@@ -193,7 +188,6 @@ dbt 依赖写入后读取（read-after-insert）的一致性模型。如果无�
 
 ### 实验性支持的表引擎 {#experimental-supported-table-engines}
 
-
 | 类型                | 详情                                                                                                                                                    |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Distributed Table | [https://clickhouse.com/docs/en/engines/table-engines/special/distributed](https://clickhouse.com/docs/en/engines/table-engines/special/distributed)。 |
@@ -257,7 +251,6 @@ select
 from {{ ref('user_events') }}
 group by event_type
 ```
-
 
 ## 功能 {#features}
 
@@ -365,7 +358,6 @@ dbt-clickhouse 默认会创建一个新的临时表，该表包含所有未受�
 
 ##### Delete+Insert 策略 {#delete-insert-strategy}
 
-
 ClickHouse 在 22.8 版本中新增了实验性功能 “lightweight deletes（轻量级删除）”。与 `ALTER TABLE ... DELETE`
 操作相比，轻量级删除要快得多，因为它不需要重写 ClickHouse 的 data parts。增量策略 `delete+insert`
 使用轻量级删除来实现
@@ -421,8 +413,6 @@ ClickHouse 在 22.8 版本中新增了实验性功能 “lightweight deletes（�
 > 目前，insert_overwrite 策略在分布式物化中尚未完全可用。
 
 执行以下步骤：
-
-
 
 1. 创建一个与增量模型关联关系具有相同结构的暂存（临时）表：
    `CREATE TABLE <staging> AS <target>`。
@@ -487,7 +477,6 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 要使用 [Refreshable Materialized View](https://clickhouse.com/docs/en/materialized-view/refreshable-materialized-view)，
 请在 MV 模型中按需调整以下配置（所有这些配置都应在一个 refreshable 配置对象中进行设置）：
-
 
 | Option                        | Description                                                                | Required | Default Value |
 | ----------------------------- | -------------------------------------------------------------------------- | -------- | ------------- |
@@ -594,7 +583,6 @@ Distributed 表仅在启用 full&#95;refresh 模式或表结构可能发生变�
 
 #### 分布式增量模型示例 {#distributed-incremental-model-example}
 
-
 ```sql
 {{
     config(
@@ -678,7 +666,6 @@ ClickHouse *仅* 支持在整个表/模型上的 `CHECK` 约束。不支持主�
 从具名配置字典（字典名称必须以 `s3` 结尾）中填充 S3 表函数参数。该宏会
 首先在配置文件的 `vars` 中查找该字典，然后在模型配置中查找。该字典可以包含
 用于填充 S3 表函数参数的以下任意键：
-
 
 | 参数名称               | 描述                                                                                                                                                                                         |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 
 import Image from '@theme/IdealImage';
 
-
 # PREWHERE 最適化はどのように動作しますか？ {#how-does-the-prewhere-optimization-work}
 
 [PREWHERE 句](/sql-reference/statements/select/prewhere) は、ClickHouse におけるクエリ実行の最適化機構です。不要なデータの読み取りを回避し、フィルタ条件に含まれない列をディスクから読み込む前に関係のないデータを除外することで、I/O を削減しクエリ速度を向上させます。
 
 このガイドでは、PREWHERE の仕組み、その効果の測定方法、そして最適なパフォーマンスを得るためのチューニング手法について説明します。
-
-
 
 ## PREWHERE 最適化なしの場合のクエリ処理 {#query-processing-without-prewhere-optimization}
 
@@ -43,8 +40,6 @@ import Image from '@theme/IdealImage';
 ⑤ 残りのフィルタは、その後のクエリ実行時に適用されます。
 
 ご覧のとおり、PREWHERE を使わない場合は、実際には少数の行しか一致しなくても、フィルタリングの前に候補となるすべての列がロードされます。
-
-
 
 ## PREWHERE はどのようにクエリ効率を改善するか {#how-prewhere-improves-query-efficiency}
 
@@ -95,8 +90,6 @@ ClickHouse は、① `town` カラムから選択されたグラニュールを�
 PREWHERE あり・なしの両方のクエリで、ClickHouse が処理する行数は同じである点に注意してください。ただし、PREWHERE 最適化が適用されている場合、処理するすべての行について、すべてのカラム値を読み込む必要はありません。
 :::
 
-
-
 ## PREWHERE 最適化は自動的に適用されます {#prewhere-optimization-is-automatically-applied}
 
 `PREWHERE` 句は、上記の例のように手動で追加できます。ただし、`PREWHERE` を明示的に記述する必要はありません。設定 [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) が有効な場合（デフォルトで true）、ClickHouse は `WHERE` から `PREWHERE` へフィルタ条件を自動的に移動し、読み取り量の削減効果が最も大きいものを優先します。
@@ -106,8 +99,6 @@ PREWHERE あり・なしの両方のクエリで、ClickHouse が処理する行
 ClickHouse はバージョン [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov) 以降、デフォルトでこの戦略に従い、`PREWHERE` フィルタ対象のカラムを非圧縮サイズの昇順で並べ替え、マルチステップ処理を行います。
 
 バージョン [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere) 以降では、任意でカラム統計情報を利用できるようになり、単なるカラムサイズではなく実際のデータ選択性に基づいてフィルタ処理の順序を決定することで、この最適化をさらに強化できます。
-
-
 
 ## PREWHERE の効果を測定する方法 {#how-to-measure-prewhere-impact}
 
@@ -213,7 +204,6 @@ SETTINGS send_logs_level = 'test';
 <Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
 ...
 ```
-
 
 ## 重要なポイント {#key-takeaways}
 

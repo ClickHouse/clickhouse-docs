@@ -13,8 +13,6 @@ doc_type: 'reference'
 |----------------|-----------------|-----------|
 | ✔              | ✔               |           |
 
-
-
 ## Описание {#description}
 
 Аналогичен формату [`TabSeparated`](./TabSeparated.md), но выводит значение в формате `name=value`.
@@ -57,7 +55,6 @@ x=1    y=\N
 если параметр [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в `1`.
 
 [NULL](/sql-reference/syntax.md) форматируется как `\N`.
-
 
 ## Пример использования {#example-usage}
 
@@ -103,7 +100,6 @@ FORMAT TSKV
 
 Результат будет в табличном формате с разделителем табуляцией и двумя строками заголовков для названий столбцов и их типов:
 
-
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
 date=2022-04-30 season=2021     home_team=Swindon Town  away_team=Barrow        home_team_goals=2       away_team_goals=1
@@ -123,6 +119,5 @@ date=2022-05-07 season=2021     home_team=Oldham Athletic       away_team=Crawle
 date=2022-05-07 season=2021     home_team=Stevenage Borough     away_team=Salford City  home_team_goals=4       away_team_goals=2
 date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  home_team_goals=0       away_team_goals=3
 ```
-
 
 ## Настройки форматирования {#format-settings}
