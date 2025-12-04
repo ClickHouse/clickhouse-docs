@@ -7,13 +7,9 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
 # odbc テーブル関数 {#odbc-table-function}
 
 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されたテーブルを返します。
-
-
 
 ## 構文 {#syntax}
 
@@ -22,7 +18,6 @@ odbc(データソース, 外部データベース, 外部テーブル)
 odbc(データソース, 外部テーブル)
 odbc(名前付きコレクション)
 ```
-
 
 ## 引数 {#arguments}
 
@@ -37,8 +32,6 @@ odbc(名前付きコレクション)
 ODBC 接続を安全に実装するために、ClickHouse は別プログラムである `clickhouse-odbc-bridge` を使用します。ODBC ドライバを `clickhouse-server` から直接ロードすると、ドライバの問題によって ClickHouse サーバーがクラッシュする可能性があります。ClickHouse は必要に応じて自動的に `clickhouse-odbc-bridge` を起動します。ODBC ブリッジプログラムは、`clickhouse-server` と同じパッケージからインストールされます。
 
 外部テーブルのうち値が `NULL` のフィールドは、基になるデータ型のデフォルト値に変換されます。たとえば、リモートの MySQL テーブルフィールドが `INT NULL` 型の場合、0（ClickHouse の `Int32` データ型におけるデフォルト値）に変換されます。
-
-
 
 ## 使用例 {#usage-example}
 
@@ -116,7 +109,6 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 

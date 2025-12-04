@@ -111,7 +111,9 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-Данные профилирования можно преобразовать в формат трассировки событий Chrome (Event Trace Format) с помощью следующего запроса. Сохраните запрос в файл `chrome_trace.sql`:
+## Преобразование в формат трассировки событий Chrome {#chrome-event-trace-format}
+
+Данные профилирования можно преобразовать в формат трассировки событий Chrome с помощью следующего запроса. Сохраните запрос в файл `chrome_trace.sql`:
 
 ```sql
 WITH traces AS (
@@ -140,15 +142,16 @@ SELECT
 FROM traces;
 ```
 
-И выполняем его с помощью клиента ClickHouse, чтобы экспортировать в файл `trace.json`, который затем можно импортировать либо в [Perfetto](https://ui.perfetto.dev/), либо в [speedscope](https://www.speedscope.app/).
+И выполнить его в ClickHouse Client, чтобы экспортировать результат в файл `trace.json`, который затем можно импортировать либо в [Perfetto](https://ui.perfetto.dev/), либо в [speedscope](https://www.speedscope.app/).
 
 ```bash
 echo $(clickhouse client --query "$(cat chrome_trace.sql)") > trace.json
 ```
 
-Мы можем опустить часть стека, если нам нужна более компактная, но менее информативная трассировка.
+Мы можем опустить часть со стеком, если хотим более компактную, но менее информативную трассировку.
 
 **См. также**
 
-* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md) — добавить или удалить точки инструментации.
-* [system.instrumentation](../../operations/system-tables/instrumentation.md) — просмотреть функции с включённой инструментацией.
+* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md#instrument) — Добавить или удалить точки инструментирования.
+* [system.instrumentation](../../operations/system-tables/instrumentation.md) — Просматривать проинструментированные точки.
+* [system.symbols](../../operations/system-tables/symbols.md) — Просматривать символы для добавления точек инструментирования.

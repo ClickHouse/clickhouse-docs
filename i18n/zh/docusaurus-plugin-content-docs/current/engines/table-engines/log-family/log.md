@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Log 表引擎 {#log-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -19,8 +18,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 `Log` 与 [TinyLog](../../../engines/table-engines/log-family/tinylog.md) 的不同之处在于，列文件旁还会存放一个较小的“标记（marks）”文件。这些标记会在每个数据块写入，包含偏移量，用于指示在跳过指定行数时应从文件的何处开始读取。由此可以在多个线程中读取表数据。
 对于并发数据访问，多个读操作可以同时执行，而写操作会阻塞读操作以及其他写操作。
 `Log` 引擎不支持索引。同样地，如果向表写入失败，表就会损坏，此时从表中读取会返回错误。`Log` 引擎适用于临时数据、只写一次的表，以及测试或演示用途。
-
-
 
 ## 创建表 {#table_engines-log-creating-a-table}
 
@@ -34,7 +31,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
-
 
 ## 写入数据 {#table_engines-log-writing-the-data}
 
@@ -51,13 +47,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2.    对于每一列，压缩后的数据会追加写入对应的 `<column>.bin` 文件。
 3.    在 `__marks.mrk` 文件中添加相应条目，用于记录新插入数据的偏移量和行数。
 
-
-
 ## 读取数据 {#table_engines-log-reading-the-data}
 
 带有标记的文件使得 ClickHouse 能够并行读取数据。这意味着 `SELECT` 查询会以不可预测的顺序返回行。使用 `ORDER BY` 子句对结果进行排序。
-
-
 
 ## 使用示例 {#table_engines-log-example-of-use}
 

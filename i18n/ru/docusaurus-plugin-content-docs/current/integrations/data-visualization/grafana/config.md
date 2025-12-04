@@ -19,7 +19,6 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Настройка источника данных ClickHouse в Grafana {#configuring-clickhouse-data-source-in-grafana}
 
 <ClickHouseSupportedBadge/>
@@ -62,7 +61,6 @@ secureJsonData:
 
 Обратите внимание, что свойство `version` добавляется, когда конфигурация сохраняется через пользовательский интерфейс. Оно показывает версию плагина, в которой была сохранена конфигурация.
 
-
 ### Протокол HTTP {#http-protocol}
 
 Если вы выберете подключение по протоколу HTTP, появятся дополнительные настройки.
@@ -78,7 +76,6 @@ jsonData:
   # исключает первую косую черту
   path: additional/path/example
 ```
-
 
 #### Пользовательские HTTP-заголовки {#custom-http-headers}
 
@@ -106,7 +103,6 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: значение защищенного заголовка
 ```
 
-
 ## Дополнительные настройки {#additional-settings}
 
 Эти дополнительные настройки не являются обязательными.
@@ -124,7 +120,6 @@ jsonData:
   queryTimeout: 60   # таймаут выполнения запроса в секундах. По умолчанию — 60. Требует соответствующих прав пользователя; при ошибке доступа установите значение "0" для отключения.
   validateSql: false # при значении true выполняется валидация SQL в редакторе SQL.
 ```
-
 
 ### OpenTelemetry {#opentelemetry}
 
@@ -164,7 +159,6 @@ jsonData:
     messageColumn: <string> # сообщение/содержимое лога.
 ```
 
-
 ### Трейсы {#traces}
 
 Чтобы ускорить [создание запросов для трейсов](./query-builder.md#traces), вы можете задать базу данных/таблицу по умолчанию, а также столбцы для запроса по трейсам. Это предварительно заполнит конструктор запросов исполняемым запросом поиска по трейсам, что делает работу на странице Explore быстрее для задач наблюдаемости.
@@ -201,7 +195,6 @@ jsonData:
     serviceTagsColumn:   <string>    # столбец тегов сервиса. Ожидается тип map.
 ```
 
-
 ### Псевдонимы столбцов {#column-aliases}
 
 Использование псевдонимов столбцов — удобный способ выполнять запросы к данным под другими именами и с другими типами.
@@ -231,7 +224,6 @@ CREATE TABLE alias_example (
 Псевдонимы, определённые на уровне таблицы, не возвращаются при `SELECT *`, но это поведение можно настроить в параметрах сервера.
 
 Для получения дополнительной информации см. документацию по типу столбца [ALIAS](/sql-reference/statements/create/table#alias).
-
 
 #### Таблицы с псевдонимами столбцов {#column-alias-tables}
 
@@ -274,7 +266,6 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 <Image size="md" img={alias_table_select_example} alt="Пример запроса к таблице-псевдониму" border />
 
 Оба варианта псевдонимов можно использовать для выполнения сложных преобразований типов или извлечения полей из JSON.
-
 
 ## Все параметры YAML {#all-yaml-options}
 

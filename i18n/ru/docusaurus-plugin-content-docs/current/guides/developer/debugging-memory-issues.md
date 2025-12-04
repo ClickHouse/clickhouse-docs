@@ -8,13 +8,9 @@ title: 'Диагностика проблем с памятью'
 doc_type: 'guide'
 ---
 
-
-
 # Отладка проблем с памятью {#debugging-memory-issues}
 
 При возникновении проблем с памятью или утечки памяти важно понимать, какие запросы и ресурсы потребляют значительный объём памяти. Ниже приведены запросы, которые помогут вам диагностировать проблемы с памятью, выявив, какие запросы, базы данных и таблицы можно оптимизировать:
-
-
 
 ## Вывод списка текущих процессов по пиковому потреблению памяти {#list-currently-running-processes-by-peak-memory}
 
@@ -30,7 +26,6 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-
 ## Список метрик использования памяти {#list-metrics-for-memory-usage}
 
 ```sql
@@ -45,7 +40,6 @@ ORDER BY
     value DESC;
 ```
 
-
 ## Список таблиц по текущему потреблению памяти {#list-tables-by-current-memory-usage}
 
 ```sql
@@ -57,13 +51,11 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-
 ## Вывести общий объём памяти, используемой слияниями {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
-
 
 ## Вывести общий объём памяти, используемой текущими процессами {#output-total-memory-used-by-currently-running-processes}
 
@@ -71,13 +63,11 @@ SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-
 ## Вывод общего объёма памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
-
 
 ## Вывести общий объём памяти, используемый первичными ключами и гранулами индекса {#output-total-memory-used-by-primary-keys}
 

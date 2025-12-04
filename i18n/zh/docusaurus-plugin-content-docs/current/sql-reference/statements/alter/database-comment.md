@@ -8,20 +8,15 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
 # ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
 添加、修改或删除数据库注释（无论之前是否已设置）。注释的变更会同时体现在 [`system.databases`](/operations/system-tables/databases.md) 表和 `SHOW CREATE DATABASE` 查询中。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
-
 
 ## 示例 {#examples}
 
@@ -72,7 +67,6 @@ WHERE  name = 'database_with_comment';
 │      │
 └──────┘
 ```
-
 
 ## 相关内容 {#related-content}
 

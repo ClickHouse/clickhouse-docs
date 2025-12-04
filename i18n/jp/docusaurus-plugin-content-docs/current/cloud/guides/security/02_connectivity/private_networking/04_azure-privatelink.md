@@ -27,7 +27,6 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
 # Azure Private Link {#azure-private-link}
 
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
@@ -54,15 +53,11 @@ Azure は Private Link 経由でリージョンをまたいだ接続をサポー
 ClickHouse Cloud の Azure PrivateLink は、`resourceGUID` から Resource ID フィルタの利用へ切り替わりました。後方互換性があるため、引き続き `resourceGUID` を使用できますが、Resource ID フィルタへの移行を推奨します。移行するには、Resource ID を使って新しいエンドポイントを作成し、それをサービスに関連付けてから、従来の `resourceGUID` ベースのエンドポイントを削除してください。
 :::
 
-
-
 ## 注意事項 {#attention}
 ClickHouse は、同じ Azure リージョン内で公開済みの [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) を再利用できるように、サービスをグループ化しようと試みます。ただし、このグループ化は保証されておらず、特にサービスを複数の ClickHouse 組織に分散している場合には、当てはまらないことがあります。
 すでに同じ ClickHouse 組織内の他のサービス向けに Private Link を構成済みの場合は、そのグループ化により多くの手順を省略できることがあり、最終手順である [Private Endpoint Resource ID をサービスの許可リストに追加する](#add-private-endpoint-id-to-services-allow-list) に直接進める場合があります。
 
 Terraform のサンプルは ClickHouse の [Terraform Provider リポジトリ](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/) を参照してください。
-
-
 
 ## Private Link 用の Azure 接続エイリアスを取得する {#obtain-azure-connection-alias-for-private-link}
 
@@ -108,7 +103,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 `endpointServiceId` をメモしておいてください。次の手順で使用します。
-
 
 ## Azure でプライベート エンドポイントを作成する {#create-private-endpoint-in-azure}
 
@@ -216,7 +210,6 @@ Private Link を使用するには、プライベート エンドポイント接
 
 プライベート エンドポイントのリソース ID は Azure ポータルで確認できます。前の手順で作成したプライベート エンドポイントを開き、**JSON View** をクリックします。
 
-
 <Image img={azure_pe_view} size="lg" alt="プライベート エンドポイントのビュー" border />
 
 プロパティ内で `id` フィールドを探し、この値をコピーします。
@@ -228,8 +221,6 @@ Private Link を使用するには、プライベート エンドポイント接
 後方互換性のために、引き続き resourceGUID を使用できます。`resourceGuid` フィールドを探し、この値をコピーします。
 
 <Image img={azure_pe_resource_guid} size="lg" alt="プライベート エンドポイントの Resource GUID" border />
-
-
 
 ## Private Link 用の DNS の設定 {#setting-up-dns-for-private-link}
 
@@ -310,7 +301,6 @@ Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
-
 ## プライベートエンドポイントのリソース ID を ClickHouse Cloud 組織に追加する {#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization}
 
 ### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console-1}
@@ -379,7 +369,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-
 ## プライベートエンドポイントの Resource ID をサービスの許可リストに追加する {#add-private-endpoint-id-to-services-allow-list}
 
 デフォルトでは、Private Link 接続が承認・確立されていても、ClickHouse Cloud サービスは Private Link 接続経由では利用できません。Private Link を使用して利用可能にする各サービスごとに、プライベートエンドポイントの Resource ID を明示的に追加する必要があります。
@@ -443,7 +432,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-
 ## Private Link を使用して ClickHouse Cloud サービスにアクセスする {#access-your-clickhouse-cloud-service-using-private-link}
 
 Private Link を有効にした各サービスには、パブリックエンドポイントとプライベートエンドポイントがあります。Private Link を使用して接続するには、[Private Link 用の Azure 接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link) で取得した `privateDnsHostname`<sup>API</sup> または `DNS name`<sup>console</sup> のプライベートエンドポイントを使用する必要があります。
@@ -486,7 +474,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 Private Link 経由で ClickHouse Cloud サービスに接続するには、`privateDnsHostname` を使用します。
 
-
 ## トラブルシューティング {#troubleshooting}
 
 ### DNS 設定のテスト {#test-dns-setup}
@@ -525,7 +512,6 @@ OpenSSL で接続できる必要があります（出力に CONNECTED と表示�
 openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
 ```
 
-
 ```response
 # highlight-next-line {#highlight-next-line}
 CONNECTED(00000003)
@@ -563,7 +549,6 @@ INSTANCE_ID=<インスタンスID>
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
-
 
 ## 詳細情報 {#more-information}
 

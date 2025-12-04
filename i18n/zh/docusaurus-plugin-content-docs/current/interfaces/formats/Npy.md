@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 `Npy` 格式用于将 `.npy` 文件中的 NumPy 数组加载到 ClickHouse 中。
@@ -22,8 +20,6 @@ NumPy 文件格式是一种用于高效存储数值数据数组的二进制格�
 在导入过程中，ClickHouse 将最外层维度视为由单列表组成的行数组。
 
 下表列出了受支持的 Npy 数据类型及其在 ClickHouse 中对应的类型：
-
-
 
 ## 数据类型对应关系 {#data_types-matching}
 
@@ -41,8 +37,6 @@ NumPy 文件格式是一种用于高效存储数值数据数组的二进制格�
 | `f8`                     | [Float64](/sql-reference/data-types/float.md)           | `f8`                     |
 | `S`, `U`                 | [String](/sql-reference/data-types/string.md)           | `S`                      |
 |                          | [FixedString](/sql-reference/data-types/fixedstring.md) | `S`                      |
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -75,6 +69,5 @@ FROM file('example_array.npy', Npy)
 ```bash
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}
 ```
-
 
 ## 格式设置 {#format-settings}

@@ -15,7 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
 # 将 Confluent Cloud 与 ClickHouse 集成 {#integrating-confluent-cloud-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -30,14 +29,10 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-
-
 ## 前提条件 {#prerequisites}
 我们假设您已经熟悉以下内容：
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
-
-
 
 ## ClickHouse 与 Confluent Cloud 的官方 Kafka 连接器 {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 

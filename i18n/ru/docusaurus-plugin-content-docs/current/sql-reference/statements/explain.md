@@ -58,7 +58,6 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-
 ## Типы EXPLAIN {#explain-types}
 
 - `AST` — абстрактное синтаксическое дерево.
@@ -100,7 +99,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
@@ -146,7 +144,6 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-
 ### EXPLAIN QUERY TREE {#explain-query-tree}
 
 Настройки:
@@ -176,21 +173,21 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-
 ### EXPLAIN PLAN {#explain-plan}
 
-Выводит шаги плана выполнения запроса.
+Выводит шаги плана запроса.
 
-Параметры:
+Настройки:
 
-* `header` — Выводит заголовок результата для шага. По умолчанию: 0.
-* `description` — Выводит описание шага. По умолчанию: 1.
-* `indexes` — Показывает используемые индексы, количество отфильтрованных частей и количество отфильтрованных гранул для каждого применённого индекса. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Начиная с ClickHouse &gt;= v25.9, этот запрос выдаёт осмысленный результат только при использовании с `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0`.
-* `projections` — Показывает все проанализированные проекции и их влияние на фильтрацию на уровне частей на основе условий первичного ключа проекции. Для каждой проекции этот раздел включает статистику, такую как количество частей, строк, меток и диапазонов, которые были проанализированы с использованием первичного ключа проекции. Он также показывает, сколько частей с данными было пропущено благодаря этой фильтрации без чтения самой проекции. По полю `description` можно определить, была ли проекция фактически использована для чтения или только проанализирована для фильтрации. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
-* `actions` — Выводит подробную информацию о действиях шага. По умолчанию: 0.
-* `json` — Выводит шаги плана запроса как строку в формате [JSON](/interfaces/formats/JSON). По умолчанию: 0. Рекомендуется использовать формат [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw), чтобы избежать лишнего экранирования.
-* `input_headers` — Выводит входные заголовки для шага. По умолчанию: 0. В основном полезно только для разработчиков для отладки проблем, связанных с несоответствием входных и выходных заголовков.
-* `column_structure` — Дополнительно выводит структуру столбцов в заголовках, помимо их имени и типа. По умолчанию: 0. В основном полезно только для разработчиков для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `header` — Печатает заголовок вывода для шага. По умолчанию: 0.
+* `description` — Печатает описание шага. По умолчанию: 1.
+* `indexes` — Показывает используемые индексы, количество отфильтрованных частей и количество отфильтрованных гранул для каждого применённого индекса. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Начиная с ClickHouse &gt;= v25.9, эта команда даёт содержательный вывод только при использовании вместе с `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0`.
+* `projections` — Показывает все проанализированные проекции и их влияние на фильтрацию на уровне частей на основе условий по первичному ключу проекции. Для каждой проекции этот раздел включает статистику, такую как количество частей, строк, меток и диапазонов, которые были обработаны с использованием её первичного ключа. Также показывает, сколько частей данных было пропущено благодаря этой фильтрации, без чтения из самой проекции. То, была ли проекция фактически использована для чтения или только проанализирована для фильтрации, можно определить по полю `description`. По умолчанию: 0. Поддерживается для таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+* `actions` — Печатает подробную информацию о действиях шага. По умолчанию: 0.
+* `json` — Печатает шаги плана запроса как строку в формате [JSON](/interfaces/formats/JSON). По умолчанию: 0. Рекомендуется использовать формат [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw), чтобы избежать лишнего экранирования.
+* `input_headers` - Печатает входные заголовки для шага. По умолчанию: 0. В основном полезно только разработчикам для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `column_structure` - Дополнительно печатает структуру столбцов в заголовках, помимо их имени и типа. По умолчанию: 0. В основном полезно только разработчикам для отладки проблем, связанных с несоответствием входных и выходных заголовков.
+* `distributed` — Показывает планы запросов, выполняемые на удалённых узлах для distributed таблиц или параллельных реплик. По умолчанию: 0.
 
 Когда `json=1`, имена шагов будут содержать дополнительный суффикс с уникальным идентификатором шага.
 
@@ -211,10 +208,10 @@ Union
 ```
 
 :::note
-Оценка стоимости шагов и всего запроса не поддерживается.
+Оценка стоимости шагов и запросов не поддерживается.
 :::
 
-Когда `json = 1`, план запроса представлен в формате JSON. Каждый узел — это словарь, который всегда содержит ключи `Node Type` и `Plans`. `Node Type` — это строка с именем шага. `Plans` — это массив с описаниями дочерних шагов. В зависимости от типа узла и настроек могут быть добавлены другие необязательные ключи.
+Когда `json = 1`, план запроса представляется в формате JSON. Каждый узел представляет собой словарь, который всегда содержит ключи `Node Type` и `Plans`. `Node Type` — строка с именем шага. `Plans` — массив с описаниями дочерних шагов. В зависимости от типа узла и настроек могут быть добавлены дополнительные необязательные ключи.
 
 Пример:
 
@@ -264,7 +261,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-При `header` = 1 к шагу добавляется ключ `Header` в виде массива столбцов.
+При значении `header` = 1 ключ `Header` добавляется к шагу в виде массива столбцов.
 
 Пример:
 
@@ -401,8 +398,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-
-При `actions` = 1 добавленные ключи зависят от типа шага.
+Если `actions` = 1, добавляемые ключи зависят от типа шага.
 
 Пример:
 
@@ -461,6 +457,50 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+При `distributed` = 1 вывод включает не только локальный план запроса, но и планы запросов, которые будут выполняться на удалённых узлах. Это полезно для анализа и отладки распределённых запросов.
+
+Пример с distributed таблицей:
+
+```sql
+EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
+```
+
+```sql
+Union
+  Expression ((Project names + (Projection + (Change column names to column identifiers + (Project names + Projection)))))
+    Filter ((WHERE + Change column names to column identifiers))
+      ReadFromSystemNumbers
+  Expression ((Project names + (Projection + Change column names to column identifiers)))
+    ReadFromRemote (Чтение с удалённой реплики)
+      Expression ((Project names + Projection))
+        Filter ((WHERE + Change column names to column identifiers))
+          ReadFromSystemNumbers
+```
+
+Пример с параллельными репликами:
+
+```sql
+SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
+
+EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
+```
+
+```sql
+Expression ((Названия проектов + Projection))
+  MergingAggregated
+    Union
+      Aggregating
+        Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+          ReadFromMergeTree (default.test_table)
+      ReadFromRemoteParallelReplicas
+        BlocksMarshalling
+          Aggregating
+            Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+              ReadFromMergeTree (default.test_table)
+```
+
+В обоих примерах план запроса показывает полный процесс выполнения, включая локальные и удалённые этапы.
+
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
@@ -494,7 +534,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
 Показывает приблизительное количество строк, меток и частей, которые нужно прочитать из таблиц при обработке запроса. Работает с таблицами семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree).
@@ -522,7 +561,6 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 

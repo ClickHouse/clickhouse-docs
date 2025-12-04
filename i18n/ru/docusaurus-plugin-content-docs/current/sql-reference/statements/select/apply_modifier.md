@@ -7,20 +7,15 @@ keywords: ['APPLY', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
 # Модификатор APPLY {#apply}
 
 > Позволяет выполнить функцию для каждой строки, возвращаемой внешним табличным выражением запроса.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
-
 
 ## Пример {#example}
 

@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------------------------------|
 |     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-
-
 ## 描述 {#description}
 
 与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于，第一行写入了列名。
@@ -26,8 +24,6 @@ doc_type: 'reference'
 则会根据名称将输入数据中的列映射到表中的列；如果将设置项 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
 否则，将跳过第一行。
 :::
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -94,6 +90,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}

@@ -50,7 +50,7 @@ import TabItem from '@theme/TabItem';
 <VerticalStepper headerLevel="h4">
   #### syslogファイルが存在することを確認する
 
-  まず、システムがsyslogファイルを書き込んでいることを確認します：
+  まず、システムがsyslogファイルを書き込んでいることを確認します:
 
   ```bash
   # syslogファイルの存在を確認（Linux）
@@ -59,7 +59,7 @@ import TabItem from '@theme/TabItem';
   # macOSの場合
   ls -la /var/log/system.log
 
-  # 最新のエントリを表示
+  # 最近のエントリを表示
   tail -20 /var/log/syslog
   ```
 
@@ -71,12 +71,12 @@ import TabItem from '@theme/TabItem';
 
   #### カスタムOTel collector設定を作成する
 
-  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することにより、ベースとなるOpenTelemetry Collectorの設定を拡張することができます。
+  ClickStackでは、カスタム設定ファイルをマウントし環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。
 
-  システムの設定を含む `host-logs-monitoring.yaml` ファイルを作成します：
+  システムの設定を含む`host-logs-monitoring.yaml`という名前のファイルを作成します：
 
   <Tabs groupId="os-type">
-    <TabItem value="modern-linux" label="モダン Linux（Ubuntu 24.04 以降）" default>
+    <TabItem value="modern-linux" label="最新 Linux（Ubuntu 24.04 以降）" default>
       ```yaml
       receivers:
         filelog/syslog:
@@ -198,33 +198,33 @@ import TabItem from '@theme/TabItem';
 
   <br />
 
-  全設定項目:
+  すべての設定:
 
-  * 標準的な場所から syslog ファイルを読み込む
-  * syslog 形式を解析して、タイムスタンプ、ホスト名、ユニット/サービス、PID、メッセージといった構造化フィールドを抽出する
-  * 元のログタイムスタンプを保持する
+  * 標準的なパスから syslog ファイルを読み込む
+  * syslog フォーマットを解析し、タイムスタンプ、ホスト名、ユニット／サービス、PID、メッセージといった構造化されたフィールドを抽出します
+  * 元のログのタイムスタンプを保持する
   * HyperDX でのフィルタリング用に `source: host-logs` 属性を追加する
-  * 専用パイプラインを使用してログを ClickHouse exporter に転送する
+  * 専用パイプラインを使用してログを ClickHouse エクスポーターに送信する
 
   :::note
 
-  * カスタム設定では、新しいレシーバーとパイプラインだけを定義します
-  * プロセッサー（`memory_limiter`、`transform`、`batch`）とエクスポーター（`clickhouse`）は、ベースの ClickStack 設定ですでに定義されているため、あとは名前で参照するだけです。
-  * 正規表現パーサーは、syslog フォーマットから systemd ユニット名、PID、その他のメタデータを抽出します
-  * この設定では、コレクターの再起動時にログを再取り込みしてしまうのを防ぐために `start_at: end` を使用します。テスト用途では、すぐに過去のログを確認できるように `start_at: beginning` に変更してください。
+  * カスタム設定では、新しい receivers と pipelines だけを定義します
+  * プロセッサー（`memory_limiter`、`transform`、`batch`）とエクスポーター（`clickhouse`）は、ベースの ClickStack 構成ですでに定義されているため、名前を指定するだけで利用できます
+  * regex パーサーは syslog 形式から systemd ユニット名、PID、その他のメタデータを抽出します
+  * この構成では、コレクターの再起動時にログを再取り込みしないように `start_at: end` を使用します。テスト目的では、履歴ログをすぐに確認できるように `start_at: beginning` に変更してください。
     :::
 
   #### ClickStackにカスタム設定を読み込むよう構成する
 
   既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の手順を実行してください:
 
-  1. カスタム設定ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
+  1. カスタム構成ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
   2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定します。
-  3. コレクターがログを読み取れるように、syslog ディレクトリをマウントします
+  3. コレクターが参照できるように syslog ディレクトリをマウントする
 
   ##### オプション1: Docker Compose
 
-  ClickStackのデプロイメント構成を更新してください:
+  ClickStackのデプロイメント設定を更新します：
 
   ```yaml
   services:
@@ -239,7 +239,7 @@ import TabItem from '@theme/TabItem';
         # ... その他のボリューム ...
   ```
 
-  ##### オプション2：Docker Run（オールインワンイメージ）
+  ##### オプション2: Docker Run（オールインワンイメージ）
 
   `docker run`でオールインワンイメージを使用している場合:
 
@@ -249,7 +249,7 @@ import TabItem from '@theme/TabItem';
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log:/var/log:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
@@ -260,19 +260,19 @@ import TabItem from '@theme/TabItem';
 
   設定完了後、HyperDXにログインし、ログが正常に送信されていることを確認してください：
 
-  1. 検索ビューに移動します
-  2. ソースを「Logs」に設定します
-  3. `source:host-logs` でフィルタしてホスト固有のログを表示します
-  4. `unit`、`hostname`、`pid`、`message` などのフィールドを含む構造化されたログエントリが表示されているはずです。
+  1. 検索ビューへ移動します
+  2. ソースを「Logs」に設定する
+  3. ホスト固有のログを表示するには、`source:host-logs` でフィルタリングします
+  4. `unit`、`hostname`、`pid`、`message` などのフィールドを含む構造化ログエントリが表示されているはずです。
 
   <Image img={search_view} alt="検索ビュー" />
 
   <Image img={log_view} alt="ログビュー" />
 </VerticalStepper>
 
-## デモ用データセット {#demo-dataset}
+## デモデータセット {#demo-dataset}
 
-本番環境を構成する前にホストログ連携をテストしたいユーザー向けに、現実的なパターンを含む事前生成済みのシステムログからなるサンプルデータセットを提供します。
+本番システムを設定する前にホストログのインテグレーションを試したいユーザー向けに、現実的なパターンを含む事前生成済みのシステムログのサンプルデータセットを提供します。
 
 <VerticalStepper headerLevel="h4">
 
@@ -286,16 +286,16 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 
 このデータセットには次の内容が含まれます:
 - システムのブートシーケンス
-- SSH ログインアクティビティ (成功・失敗の試行)
-- セキュリティインシデント (fail2ban による応答を伴うブルートフォース攻撃)
-- 計画メンテナンス (cron ジョブ、anacron)
-- サービスの再起動 (rsyslog)
-- カーネルメッセージとファイアウォールのアクティビティ
+- SSH ログインのアクティビティ（成功および失敗した試行）
+- セキュリティインシデント（fail2ban による応答を伴う総当たり攻撃）
+- 定期メンテナンス（cron ジョブ、anacron）
+- サービスの再起動（rsyslog）
+- カーネルメッセージおよびファイアウォールアクティビティ
 - 通常の運用と注目すべきイベントの混在
 
 #### テスト用 Collector 設定を作成する {#test-config}
 
-次の設定内容で `host-logs-demo.yaml` という名前のファイルを作成します:
+次の設定を含む `host-logs-demo.yaml` というファイルを作成します:
 
 ```yaml
 cat > host-logs-demo.yaml << 'EOF'
@@ -345,26 +345,26 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**このコマンドはログファイルをコンテナ内に直接マウントします。これは静的なデモデータを用いたテスト目的のために行っています。**
+**このコマンドはログファイルをコンテナに直接マウントします。これは静的なデモデータを用いたテスト目的で行っています。**
 :::
 
 #### HyperDX でログを確認する {#verify-demo-logs}
 
-ClickStack が起動したら、次の手順を実行します:
+ClickStack が起動したら:
 
-1. [HyperDX](http://localhost:8080/) を開き、自分のアカウントにログインします (アカウントをまだ持っていない場合は先に作成する必要があります)
+1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（アカウントをまだ持っていない場合は先に作成する必要があります）
 2. Search ビューに移動し、source を `Logs` に設定します
 3. 時間範囲を **2025-11-10 00:00:00 - 2025-11-13 00:00:00** に設定します
 
 <Image img={search_view} alt="Search ビュー"/>
-<Image img={log_view} alt="ログビュー"/>
+<Image img={log_view} alt="Log ビュー"/>
 
 :::note[タイムゾーン表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)** の期間をカバーしています。広めの時間範囲を指定しておくことで、どのロケーションからでもデモログが表示されるようにしています。ログが表示されたら、可視化を見やすくするために時間範囲を 24 時間に絞り込むことを推奨します。
+HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)** の範囲をカバーしています。広めの時間範囲を指定することで、どの地域からアクセスしてもデモログが表示されるようにしています。ログが表示されたら、可視化を見やすくするために範囲を 24 時間の期間に絞り込むことができます。
 :::
 
 </VerticalStepper>

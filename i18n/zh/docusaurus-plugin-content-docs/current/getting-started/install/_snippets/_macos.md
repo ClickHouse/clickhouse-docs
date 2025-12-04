@@ -3,12 +3,9 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-
-
 # 使用 Homebrew 安装 ClickHouse {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
-
 
 ## 使用社区 Homebrew 配方进行安装 {#install-using-community-homebrew-formula}
 
@@ -17,7 +14,6 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 ```bash
 brew install --cask clickhouse
 ```
-
 
 ## 在 macOS 中修复开发者验证错误 {#fix-developer-verification-error-macos}
 
@@ -87,7 +83,6 @@ clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ```
-
 
 ## 通过重新安装 ClickHouse 来解决此问题 {#fix-issue}
 

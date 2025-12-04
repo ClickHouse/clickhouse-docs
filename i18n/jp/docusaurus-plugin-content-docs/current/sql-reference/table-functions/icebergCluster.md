@@ -7,15 +7,11 @@ title: 'icebergCluster'
 doc_type: 'reference'
 ---
 
-
-
 # icebergCluster テーブル関数 {#icebergcluster-table-function}
 
 これは、[iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数の拡張です。
 
 指定されたクラスター内の複数のノードから Apache [Iceberg](https://iceberg.apache.org/) のファイルを並列処理できるようにします。イニシエーターはクラスター内のすべてのノードに接続し、各ファイルを動的に割り当てます。ワーカー ノードは、処理すべき次のタスクをイニシエーターに問い合わせてから、それを処理します。これは、すべてのタスクが完了するまで繰り返されます。
-
-
 
 ## 構文 {#syntax}
 
@@ -29,7 +25,6 @@ icebergAzureCluster(cluster_name, named_collection[, option=value [,..]])
 icebergHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -45,7 +40,6 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```sql
 SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 

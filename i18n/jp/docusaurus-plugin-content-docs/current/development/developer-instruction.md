@@ -31,7 +31,6 @@ sudo apt install git
 Git チートシートは [こちら](https://education.github.com/git-cheat-sheet-education.pdf) から入手できます。
 より詳細な Git マニュアルは [こちら](https://git-scm.com/book/en/v2) にあります。
 
-
 ## リポジトリを開発マシンにクローンする {#clone-the-repository-to-your-development-machine}
 
 まず、作業用マシンにソースファイルを取得するため、リポジトリをクローンします。
@@ -91,7 +90,6 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 `git push` をそのまま実行しないでください。誤ったリモートやブランチに push してしまう可能性があります。
 `git push origin my_branch_name` のように、リモート名とブランチ名を明示的に指定することを推奨します。
 :::
-
 
 ## コードを書く {#writing-code}
 
@@ -184,7 +182,6 @@ SELECT 'write your example query here';
 \```
 ````
 
-
 ## テストデータの利用 {#using-test-data}
 
 ClickHouse の開発では、実運用に近いデータセットを読み込む必要があります。
@@ -205,7 +202,6 @@ ClickHouse の開発では、実運用に近いデータセットを読み込む
 ```
 
 clickhouse-client で実行:
-
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;

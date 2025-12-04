@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Redis 日志 {#redis-clickstack}
 
 :::note[要点速览]
@@ -46,7 +45,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 <VerticalStepper headerLevel="h4">
   #### 验证 Redis 日志配置
 
-  首先，检查您的 Redis 日志配置。连接到 Redis 并检查日志文件位置:
+  首先,检查您的 Redis 日志配置。连接到 Redis 并检查日志文件位置:
 
   ```bash
   redis-cli CONFIG GET logfile
@@ -55,10 +54,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Redis 常见日志位置：
 
   * **Linux（apt/yum）**：`/var/log/redis/redis-server.log`
-  * **macOS（Homebrew）**: `/usr/local/var/log/redis.log`
-  * **Docker**：通常会将日志输出到 stdout，但也可以配置为写入 `/data/redis.log`
+  * **macOS（Homebrew）**：`/usr/local/var/log/redis.log`
+  * **Docker**：通常将日志写入 stdout，但也可以配置为写入 `/data/redis.log`
 
-  如果 Redis 正在将日志输出到 stdout,请通过更新 `redis.conf` 将其配置为写入文件:
+  如果 Redis 正在将日志输出到 stdout,请通过更新 `redis.conf` 配置文件将其改为写入文件:
 
   ```bash
   # 将日志记录到文件而非标准输出
@@ -71,10 +70,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   更改配置后,重新启动 Redis:
 
   ```bash
-  # 使用 systemd
+  # 使用 systemd 时
   sudo systemctl restart redis
 
-  # 使用 Docker
+  # 使用 Docker 时
   docker restart <redis-container>
   ```
 
@@ -122,25 +121,26 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   此配置：
 
-  * 从默认位置读取 Redis 日志
-  * 使用正则表达式解析 Redis 日志格式，以提取结构化字段（`pid`、`role`、`timestamp`、`log_level`、`message`）
-  * 添加 `source: redis` 属性，以便在 HyperDX 中进行筛选
+  * 从 Redis 日志的标准位置读取
+  * 使用正则表达式对 Redis 的日志格式进行解析，从中提取结构化字段（`pid`、`role`、`timestamp`、`log_level`、`message`）
+  * 添加 `source: redis` 属性，以便在 HyperDX 中进行过滤
   * 通过专用管道将日志转发到 ClickHouse exporter
 
   :::note
 
-  * 你只需要在自定义配置中定义新的 `receivers` 和 `pipelines`
-  * 处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已经在基础 ClickStack 配置中定义好，只需按名称引用即可。
+  * 只需在自定义配置中定义新的 receiver 和 pipeline 即可
+  * 处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已经在基础 ClickStack 配置中定义好，只需按名称引用它们即可。
   * `time_parser` 运算符从 Redis 日志中提取时间戳，以保留日志的原始时间
-  * 此配置使用 `start_at: beginning`，在 collector 启动时读取所有已有日志，使你可以立即看到日志。对于生产环境部署，如果希望在 collector 重启时避免重新摄取已有日志，请改为使用 `start_at: end`。
+  * 此配置使用 `start_at: beginning`，在 collector 启动时读取所有已有日志，使你可以立即查看日志。对于生产环境的部署，如需在 collector 重启时避免重新摄取日志，请将其改为 `start_at: end`。
+    :::
 
   #### 配置 ClickStack 加载自定义配置
 
   要在现有的 ClickStack 部署中启用自定义采集器配置，您必须：
 
-  1. 将自定义配置文件挂载到 `/etc/otelcol-contrib/custom.config.yaml`
+  1. 将自定义配置文件挂载到路径 `/etc/otelcol-contrib/custom.config.yaml`
   2. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-  3. 挂载 Redis 日志目录，以便采集器可以读取这些日志
+  3. 挂载 Redis 日志目录，以便采集器能够读取这些日志
 
   ##### 选项 1：Docker Compose
 
@@ -169,11 +169,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log/redis:/var/log/redis:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
-  确保 ClickStack 采集器具有读取 Redis 日志文件的相应权限。在生产环境中,使用只读挂载(`:ro`)并遵循最小权限原则。
+  确保 ClickStack 采集器具有读取 Redis 日志文件的相应权限。在生产环境中,请使用只读挂载(`:ro`)并遵循最小权限原则。
   :::
 
   #### 在 HyperDX 中验证日志
@@ -187,7 +187,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 Redis 集成的用户，我们提供了一个预生成的 Redis 日志演示数据集，日志模式接近真实生产场景。
+对于希望在配置生产系统之前先测试 Redis 集成的用户，我们提供了一份预生成的、具有接近真实使用模式的 Redis 日志示例数据集。
 
 <VerticalStepper headerLevel="h4">
 
@@ -209,7 +209,7 @@ receivers:
   filelog/redis:
     include:
       - /tmp/redis-demo/redis-server.log
-    start_at: beginning  # 为演示数据从文件开头开始读取
+    start_at: beginning  # 为演示数据从头开始读取
     operators:
       - type: regex_parser
         regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
@@ -251,23 +251,23 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/redis-server.log:/tmp/redis-demo/redis-server.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**这会将日志文件直接挂载到容器中。这仅用于基于静态演示数据的测试。**
+**这会将日志文件直接挂载到容器中。这样做是为了使用静态演示数据进行测试。**
 :::
 
 ## 在 HyperDX 中验证日志 {#verify-demo-logs}
 
-当 ClickStack 运行后：
+当 ClickStack 启动并运行后：
 
-1. 打开 [HyperDX](http://localhost:8080/) 并登录到您的账户（如果还没有账户，可能需要先创建一个）
-2. 进入 Search 视图，并将 source 设置为 `Logs`
+1. 打开 [HyperDX](http://localhost:8080/) 并登录到您的账户（可能需要先创建账户）
+2. 进入 Search 视图，将数据源设置为 `Logs`
 3. 将时间范围设置为 **2025-10-26 10:00:00 - 2025-10-29 10:00:00**
 
 :::note[时区显示]
-HyperDX 会使用浏览器的本地时区显示时间戳。演示数据的时间跨度为 **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**。这里使用较宽的时间范围，以确保无论您处于哪个时区，都能看到演示日志。看到日志后，您可以将范围缩小到 24 小时，以获得更清晰的可视化效果。
+HyperDX 会按浏览器的本地时区显示时间戳。演示数据覆盖的时间范围为 **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**。较宽的时间范围可以确保无论您位于哪个时区，都能看到演示日志。看到日志后，您可以将时间范围缩小到 24 小时，以获得更清晰的可视化效果。
 :::
 
 <Image img={log_view} alt="日志视图"/>
@@ -337,7 +337,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # 应显示您的 filelog/Redis 接收器配置
 ```
 
-
 ### HyperDX 中没有日志显示
 
 **确保 Redis 正在将日志写入文件：**
@@ -377,7 +376,6 @@ docker volume inspect <volume-name>
 # 验证两个容器均已挂载该卷 {#expected-output-should-show-file-size-and-permissions}
 ```
 
-
 ### 日志解析不正确
 
 **检查 Redis 日志格式是否符合预期模式：**
@@ -392,7 +390,6 @@ tail -5 /var/log/redis/redis-server.log
 
 * `pid:role timestamp level message`
 * 示例：`12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## 后续步骤 {#next-steps}
 

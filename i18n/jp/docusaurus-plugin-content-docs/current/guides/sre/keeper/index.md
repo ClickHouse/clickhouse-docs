@@ -9,8 +9,6 @@ title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse Keeper (clickhouse-keeper) {#clickhouse-keeper-clickhouse-keeper}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
@@ -39,7 +37,6 @@ ClickHouse Keeper は、ZooKeeper のスタンドアロン代替として、ま�
 
 ClickHouse Keeper の主な設定タグは `<keeper_server>` で、次のパラメータがあります。
 
-
 | Parameter                            | Description                                                                                                                                                                                                                                         | Default                                                                                                      |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | `tcp_port`                           | クライアントが接続するためのポート。                                                                                                                                                                                                               | `2181`                                                                                                       |
@@ -63,8 +60,6 @@ ClickHouse Keeper の主な設定タグは `<keeper_server>` で、次のパラ�
 #### 内部調停設定 {#internal-coordination-settings}
 
 内部調停設定は `<keeper_server>.<coordination_settings>` セクションに定義されており、次のパラメータを持ちます。
-
-
 
 | Parameter                          | Description                                                                                                                                                                                                              | Default                                                                                                      |
 |------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -100,8 +95,6 @@ ClickHouse Keeper の主な設定タグは `<keeper_server>` で、次のパラ�
 クォーラム全体に対する唯一のパラメータは `secure` であり、クォーラム参加者間の通信に対する暗号化接続を有効にします。ノード間の内部通信で SSL 接続が必要な場合はこのパラメータを `true` に設定し、それ以外の場合は未指定のままにできます。
 
 各 `<server>` に対する主なパラメータは次のとおりです。
-
-
 
 * `id` — クォーラム内のサーバー識別子。
 * `hostname` — このサーバーが配置されているホスト名。
@@ -186,7 +179,6 @@ echo mntr | nc localhost 9181
 ```response
 imok
 ```
-
 
 * `mntr`: クラスターの健全性を監視するために使用できる変数のリストを出力します。
 
@@ -295,7 +287,6 @@ configuration_change_tries_count=20
 
 * `envi`: 実行環境の詳細を表示
 
-
 ```response
 Environment:
 clickhouse.keeper.version=v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
@@ -396,7 +387,6 @@ check_not_exists    0
 
 * `pfev`: 収集されたすべてのイベントの値を返します。各イベントごとに、イベント名、イベント値、およびイベントの説明を返します。
 
-
 ```response
 FileOpen        62      オープンされたファイルの数。
 Seek    4       'lseek'関数が呼び出された回数。
@@ -472,7 +462,6 @@ Keeper クラスターで新しい機能を有効にしたい場合は、まず�
 Keeper を 25.7 以降にアップグレードする場合は、まずバージョン 24.9 以降にアップグレードしてから 25.7 以降に上げることを推奨します。
 :::
 
-
 ### ZooKeeper からの移行 {#migration-from-zookeeper}
 
 ZooKeeper から ClickHouse Keeper へのシームレスな移行はできません。ZooKeeper クラスターを停止し、データを変換してから ClickHouse Keeper を起動する必要があります。`clickhouse-keeper-converter` ツールを使用すると、ZooKeeper のログおよびスナップショットを ClickHouse Keeper のスナップショットに変換できます。このツールは ZooKeeper 3.4 より新しいバージョンでのみ動作します。移行の手順は次のとおりです。
@@ -527,7 +516,6 @@ ClickHouse Keeper は Raft を使用しているため、クラスタサイズ�
 5. 新しいノード上の Keeper インスタンスを 1 台ずつ起動し、次のノードを起動する前に、`mntr` が `zk_server_state` に対して `follower` を返すことを確認します。
 6. リカバリーモード中、リーダーノードは新しいノードとクォーラムを達成するまで `mntr` コマンドに対してエラーメッセージを返し、クライアントおよびフォロワーからのすべてのリクエストを拒否します。
 7. クォーラム達成後、リーダーノードは通常の動作モードに戻り、すべてのリクエストを受け付けるようになります。`mntr` を使用して Raft を検証すると、`zk_server_state` に対して `leader` が返されるはずです。
-
 
 ## Keeper でのディスクの使用 {#using-disks-with-keeper}
 
@@ -621,7 +609,6 @@ Keeper インスタンスのストレージ構成の一例は、次のように�
 
 次の設定は、以前の 2 ディスク構成から、まったく新しい単一ディスク構成へ移行する方法を示しています。
 
-
 ```xml
 <clickhouse>
     <keeper_server>
@@ -639,7 +626,6 @@ Keeper インスタンスのストレージ構成の一例は、次のように�
 起動時には、`log_local` および `log_s3_plain` 上のすべてのログファイルが `log_local2` ディスクに移動されます。
 また、`snapshot_local` および `snapshot_s3_plain` 上のすべてのスナップショットファイルが `snapshot_local2` ディスクに移動されます。
 
-
 ## ログキャッシュの設定 {#configuring-logs-cache}
 
 ディスクから読み取るデータ量を最小限に抑えるために、Keeper はログエントリをメモリにキャッシュします。
@@ -654,8 +640,6 @@ Keeper インスタンスのストレージ構成の一例は、次のように�
 `pfev` コマンドを使用して、それぞれのキャッシュおよびファイルから読み取られたログの量を確認できます。
 Prometheus エンドポイントのメトリクスを使用して、両方のキャッシュの現在のサイズを追跡することもできます。
 :::
-
-
 
 ## Prometheus {#prometheus}
 
@@ -695,7 +679,6 @@ curl 127.0.0.1:9363/metrics
 ```
 
 ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も参照してください。
-
 
 ## ClickHouse Keeper ユーザーガイド {#clickhouse-keeper-user-guide}
 
@@ -796,8 +779,6 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
     WHERE path IN ('/', '/clickhouse')
     ```
 
-
-
 テーブルは次のとおりです。
 
 ```response
@@ -864,7 +845,6 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
    ```sql
    CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
    ```
-
 
 2. `db1` データベース上に新しいテーブルを作成します。ここでも、`ON CLUSTER` 句によって両方のノード上にテーブルが作成されます。
     ```sql
@@ -961,8 +941,6 @@ ClickHouse Cloud における [Prometheus 連携](/integrations/prometheus) も�
 ### まとめ {#summary}
 
 このガイドでは、ClickHouse Keeper を使用してクラスタをセットアップする方法を説明しました。ClickHouse Keeper を使用すると、クラスタを構成し、シャード間でレプリケート可能な分散テーブルを定義できます。
-
-
 
 ## 一意のパスを使った ClickHouse Keeper の構成 {#configuring-clickhouse-keeper-with-unique-paths}
 
@@ -1073,7 +1051,6 @@ ORDER BY id
 
 Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 ```
-
 
 ┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
 │ chnode1.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
@@ -1208,7 +1185,6 @@ ENGINE = ReplicatedMergeTree
 ORDER BY id
 ```
 
-
 クエリ ID: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
 
 ┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
@@ -1284,7 +1260,6 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ## ClickHouse Keeper の動的再構成 {#reconfiguration}
 
 <SelfManaged />
@@ -1324,7 +1299,6 @@ server.3=zoo3:9234;participant;1
 
 `reconfig` コマンドを使用すると、新しいサーバーの追加、既存サーバーの削除、および既存サーバーの優先順位の変更が行えます。次に、`clickhouse-keeper-client` を使用した例を示します:
 
-
 ```bash
 # 新しいサーバーを2台追加 {#add-two-new-servers}
 reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
@@ -1336,12 +1310,10 @@ reconfig add "server.5=localhost:5123;participant;8"
 
 また、`kazoo` の例は次のとおりです。
 
-
 ```python
 # 2つの新しいサーバーを追加し、2つの他のサーバーを削除 {#add-two-new-servers-remove-two-other-servers}
 reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
 ```
-
 
 # 既存サーバーの優先度を 8 に変更 {#change-existing-server-priority-to-8}
 
@@ -1375,7 +1347,6 @@ Keeperの再構成実装には以下の注意事項があります:
 - `reconfig`コマンドはさまざまな理由で失敗する可能性があります。クラスターの状態を確認して、更新が適用されたかどうかを確認できます。
 ```
 
-
 ## 単一ノードの keeper をクラスタに変換する {#converting-a-single-node-keeper-into-a-cluster}
 
 実験用の単一ノード keeper をクラスタに拡張したい場合があります。3 ノードのクラスタの場合の手順を次に示します。
@@ -1389,8 +1360,6 @@ Keeperの再構成実装には以下の注意事項があります:
 - ノード 1 の Raft の設定を更新し、必要に応じて再起動します。
 
 この手順に慣れるための [sandbox リポジトリ](https://github.com/ClickHouse/keeper-extend-cluster) を用意しています。
-
-
 
 ## 未サポートの機能 {#unsupported-features}
 

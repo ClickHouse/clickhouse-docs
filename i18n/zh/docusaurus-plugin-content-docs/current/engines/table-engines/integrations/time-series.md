@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # TimeSeries 表引擎 {#timeseries-table-engine}
 
 <ExperimentalBadge />
@@ -30,7 +29,6 @@ metric_name2[...] = ...
 输入命令 `set allow_experimental_time_series_table = 1`。
 :::
 
-
 ## 语法 {#syntax}
 
 ```sql
@@ -40,7 +38,6 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
-
 
 ## 用法 {#usage}
 
@@ -54,7 +51,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
 * [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
-
 
 ## 目标表 {#target-tables}
 
@@ -102,8 +98,6 @@ _metrics_ 表包含关于已收集度量的一些信息，包括这些度量的�
 
 _metrics_ 表必须包含以下列：
 
-
-
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` or `LowCardinality(String)` | 指标族名称 |
@@ -113,8 +107,6 @@ _metrics_ 表必须包含以下列：
 
 插入到 `TimeSeries` 表中的任何一行实际上都会被写入这三个目标表中。  
 `TimeSeries` 表包含来自 [data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 三张表的所有列。
-
-
 
 ## 创建 {#creation}
 
@@ -200,7 +192,6 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
 ## 调整列类型 {#adjusting-column-types}
 
 在定义主表时，通过显式指定列类型，可以调整内部目标表中几乎任意列的类型。例如，
@@ -225,7 +216,6 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
 ## `id` 列 {#id-column}
 
 `id` 列包含标识符，每个标识符是根据指标名称与标签的组合计算得到的。
@@ -239,7 +229,6 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
-
 
 ## `tags` 与 `all_tags` 列 {#tags-and-all-tags}
 
@@ -272,7 +261,6 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
 ## 内部目标表的表引擎 {#inner-table-engines}
 
 默认情况下，内部目标表使用以下表引擎：
@@ -291,7 +279,6 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
-
 
 ## 外部目标表 {#external-target-tables}
 
@@ -314,7 +301,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## 设置 {#settings}
 
 下面是定义 `TimeSeries` 表时可以指定的设置列表：
@@ -326,8 +312,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `store_min_time_and_max_time` | Bool | true | 如果设置为 true，则表会为每个时间序列存储 `min_time` 和 `max_time` |
 | `aggregate_min_time_and_max_time` | Bool | true | 在创建内部目标 `tags` 表时，此开关允许将 `min_time` 列的类型从 `Nullable(DateTime64(3))` 替换为 `SimpleAggregateFunction(min, Nullable(DateTime64(3)))`，`max_time` 列同理 |
 | `filter_by_min_time_and_max_time` | Bool | true | 如果设置为 true，则表在过滤时间序列时会使用 `min_time` 和 `max_time` 列 |
-
-
 
 # 函数 {#functions}
 

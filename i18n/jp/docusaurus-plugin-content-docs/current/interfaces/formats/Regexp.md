@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## 説明 {#description}
 
 `Regex` フォーマットは、指定された正規表現に従って、インポートされたデータの各行をパースします。
@@ -28,8 +26,6 @@ doc_type: 'reference'
 マッチした各サブパターンの内容は、[format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 設定に従い、対応するデータ型のパース方法で処理されます。
 
 正規表現が行にマッチせず、かつ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されている場合、その行は何の通知もなくスキップされます。そうでない場合は、例外がスローされます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -66,7 +62,6 @@ SELECT * FROM imp_regex_table;
 │  3 │ [1,2,3] │ str3   │ 2020-01-03 │
 └────┴─────────┴────────┴────────────┘
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

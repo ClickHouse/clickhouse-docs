@@ -7,8 +7,6 @@ title: 'Табличный движок Set'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблицы Set {#set-table-engine}
 
 :::note

@@ -7,8 +7,6 @@ title: 'RabbitMQ テーブルエンジン'
 doc_type: 'guide'
 ---
 
-
-
 # RabbitMQ テーブルエンジン {#rabbitmq-table-engine}
 
 このエンジンを使用すると、ClickHouse を [RabbitMQ](https://www.rabbitmq.com) と統合できます。
@@ -17,8 +15,6 @@ doc_type: 'guide'
 
 - データフローをパブリッシュまたはサブスクライブできる。
 - ストリームを、利用可能になったタイミングで処理できる。
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -63,7 +59,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 オプションのパラメータ:
 
-
 - `rabbitmq_exchange_type` – RabbitMQ exchange の種類。`direct`、`fanout`、`topic`、`headers`、`consistent_hash` のいずれか。デフォルト: `fanout`。
 - `rabbitmq_routing_key_list` – ルーティングキーのカンマ区切りリスト。
 - `rabbitmq_schema` – フォーマットがスキーマ定義を必要とする場合に使用するパラメータ。たとえば [Cap'n Proto](https://capnproto.org/) では、スキーマファイルへのパスとルート `schema.capnp:Message` オブジェクトの名前が必要です。
@@ -97,8 +92,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 例:
 
-
-
 ```sql
   CREATE TABLE queue (
     key UInt64,
@@ -129,7 +122,6 @@ RabbitMQ サーバーの設定は、ClickHouse の設定ファイルに追加す
     <vhost>clickhouse</vhost>
  </rabbitmq>
 ```
-
 
 ## 説明 {#description}
 
@@ -192,7 +184,6 @@ INSERT クエリでは、公開された各メッセージに対して追加さ�
   SELECT key, value FROM daily ORDER BY key;
 ```
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_exchange_name` - RabbitMQ のエクスチェンジ名。データ型: `String`。
@@ -209,13 +200,9 @@ INSERT クエリでは、公開された各メッセージに対して追加さ�
 
 注意: `_raw_message` および `_error` 仮想カラムは、パース中に例外が発生した場合にのみ値が設定され、メッセージが正常にパースされた場合は常に `NULL` です。
 
-
-
 ## 注意事項 {#caveats}
 
 テーブル定義で [`DEFAULT`、`MATERIALIZED`、`ALIAS`] などの[デフォルトの列式](/sql-reference/statements/create/table.md/#default_values)を指定することはできますが、これらは無視されます。その代わり、各列には対応する型のデフォルト値が設定されます。
-
-
 
 ## データ形式のサポート {#data-formats-support}
 

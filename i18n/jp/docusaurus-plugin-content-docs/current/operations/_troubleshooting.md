@@ -6,8 +6,6 @@
 - [クエリ処理](#troubleshooting-does-not-process-queries)
 - [クエリ処理のパフォーマンス](#troubleshooting-too-slow)
 
-
-
 ## インストール {#troubleshooting-installation-errors}
 
 ### apt-get を使用して ClickHouse リポジトリから deb パッケージを取得できない {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
@@ -76,7 +74,6 @@ $ docker run -it clickhouse/clickhouse-server
 Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (このメッセージをコピーする際は、以下の行を必ず含めてください):
 ```
 
-
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
 2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
@@ -97,7 +94,6 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 原因は、`20.10.10`より古いバージョンのDockerデーモンです。修正するには、アップグレードするか、`docker run [--privileged | --security-opt seccomp=unconfined]`を実行してください。後者にはセキュリティ上の影響があります。
 
 ```
-
 
 ## サーバーへの接続 {#troubleshooting-accepts-no-connections}
 
@@ -206,7 +202,6 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   誤ったユーザー名またはパスワードを使用している可能性があります。
 
-
 ## クエリ処理 {#troubleshooting-does-not-process-queries}
 
 ClickHouse がクエリを処理できない場合、エラー内容の説明をクライアントに送信します。`clickhouse-client` を使用している場合は、コンソール上でエラー内容を確認できます。HTTP インターフェイスを使用している場合は、ClickHouse はレスポンスボディ内にエラーの説明を送信します。例えば次のとおりです。
@@ -219,7 +214,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 `clickhouse-client` を `stack-trace` パラメータを指定して起動すると、ClickHouse はエラーの説明とともにサーバーのスタックトレースを返します。
 
 接続が切断されたことを示すメッセージが表示される場合があります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーが出力されていないか確認してください。
-
 
 ## クエリ処理の効率 {#troubleshooting-too-slow}
 

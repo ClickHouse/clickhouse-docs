@@ -10,7 +10,6 @@ keywords: ['Приёмник ClickHouse Kafka Connect', 'коннектор Kafk
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
@@ -92,7 +91,6 @@ schemas.enable=false
 
 Полная таблица параметров конфигурации:
 
-
 | Property Name                                   | Description                                                                                                                                                                                                                        | Default Value                                            |
 |-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 | `hostname` (Required)                           | Имя хоста или IP-адрес сервера                                                                                                                                                                                                     | N/A                                                      |
@@ -123,8 +121,6 @@ schemas.enable=false
 | `ignorePartitionsWhenBatching`                  | Игнорирует раздел (partition) при сборе сообщений для вставки (но только если `exactlyOnce` имеет значение `false`). Примечание по производительности: чем больше задач коннектора, тем меньше разделов Kafka назначается на задачу — это может приводить к убывающей отдаче. | `"false"`                                                |
 
 ### Целевые таблицы {#target-tables}
-
-
 
 ClickHouse Connect Sink читает сообщения из топиков Kafka и записывает их в соответствующие таблицы. ClickHouse Connect Sink записывает данные в уже существующие таблицы. Пожалуйста, убедитесь, что целевая таблица с подходящей схемой создана в ClickHouse до начала вставки данных в неё.
 
@@ -204,7 +200,6 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 #### Базовая конфигурация с несколькими топиками {#basic-configuration-with-multiple-topics}
 
 Коннектор может потреблять данные из нескольких топиков.
-
 
 ```json
 {
@@ -340,7 +335,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 * `byte-rate`: Средняя скорость отправки данных в байтах в секунду
 * `compression-rate`: Достигнутый коэффициент сжатия
 
-
 **Метрики на уровне партиций:**
 - `records-sent-total`: Общее количество записей, отправленных в партицию
 - `bytes-sent-total`: Общее количество байт, отправленных в партицию
@@ -430,8 +424,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 - Стандартные настройки коннектора уже удовлетворяют требованиям по пропускной способности
 - Ваш кластер ClickHouse без труда справляется с входящей нагрузкой
 
-
-
 #### Понимание потока данных {#understanding-the-data-flow}
 
 Перед началом настройки важно понять, как данные проходят через коннектор:
@@ -467,23 +459,16 @@ Kafka Connect (фреймворк) выбирает сообщения из то
 
 Для оптимальной работы с ClickHouse ориентируйтесь на более крупные пакеты:
 
-
-
 ```properties
 # Увеличить количество записей за один опрос {#increase-the-number-of-records-per-poll}
 consumer.max.poll.records=5000
 ```
 
-
 # Увеличить размер выборки раздела до 5 МБ {#increase-the-partition-fetch-size-5-mb}
 consumer.max.partition.fetch.bytes=5242880
 
-
-
 # Необязательно: увеличьте минимальный размер получаемых данных, чтобы дожидаться большего объёма (1 МБ) {#optional-increase-minimum-fetch-size-to-wait-for-more-data-1-mb}
 consumer.fetch.min.bytes=1048576
-
-
 
 # Необязательно: уменьшите время ожидания, если задержка критична {#optional-reduce-wait-time-if-latency-is-critical}
 
@@ -580,7 +565,6 @@ consumer.fetch.max.wait.ms=300
 ##### Асинхронные вставки с семантикой exactly-once {#async-inserts-with-exactly-once}
 
 При использовании `exactlyOnce=true` с асинхронными вставками:
-
 
 ```json
 {
@@ -685,7 +669,6 @@ SETTINGS
 
 **Распространённые проблемы с производительностью**:
 
-
 | Симптом                           | Возможная причина                    | Решение                                                            |
 | --------------------------------- | ------------------------------------ | ------------------------------------------------------------------ |
 | Большое отставание consumer&#39;а | Слишком маленькие батчи              | Увеличьте `max.poll.records`, включите async inserts               |
@@ -782,7 +765,6 @@ SETTINGS
 * `SocketTimeoutException` — выбрасывается, когда соединение по сокету превышает таймаут.
 * `UnknownHostException` — выбрасывается, когда не удаётся разрешить имя хоста.
 * `IOException` — выбрасывается, когда возникает проблема с сетью.
-
 
 #### &quot;Все мои данные пустые/нули&quot; {#all-my-data-is-blankzeroes}
 

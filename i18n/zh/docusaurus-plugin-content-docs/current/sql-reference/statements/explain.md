@@ -58,7 +58,6 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-
 ## EXPLAIN 类型 {#explain-types}
 
 - `AST` — 抽象语法树。
@@ -100,7 +99,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
@@ -146,7 +144,6 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-
 ### EXPLAIN QUERY TREE {#explain-query-tree}
 
 设置：
@@ -176,25 +173,25 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-
 ### EXPLAIN PLAN {#explain-plan}
 
-输出查询计划的各个步骤。
+输出查询计划步骤。
 
-Settings:
+设置：
 
-* `header` — 输出每个步骤的表头。默认值：0。
-* `description` — 输出步骤描述。默认值：1。
-* `indexes` — 显示已使用的索引、为每个已应用索引所过滤的分区片段数量以及过滤的粒度数量。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。从 ClickHouse &gt;= v25.9 开始，仅当与 `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` 一起使用时，此语句才会输出有意义的结果。
-* `projections` — 显示所有已分析的投影，以及它们基于投影主键条件在分区片段级别上的过滤效果。对于每个投影，本节会包含根据该投影主键评估的分区片段数量、行数、标记数和范围数等统计信息。同时还会显示在不读取投影本身的情况下，由于该过滤而被跳过的数据分区片段数量。投影究竟是实际用于读取，还是仅用于过滤分析，可以通过 `description` 字段来判断。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。
-* `actions` — 输出有关步骤中各项操作的详细信息。默认值：0。
-* `json` — 以 [JSON](/interfaces/formats/JSON) 格式将查询计划步骤输出为一行。默认值：0。建议使用 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 格式，以避免不必要的转义。
-* `input_headers` - 输出每个步骤的输入表头。默认值：0。通常只对开发者调试与输入输出表头不匹配相关的问题有用。
-* `column_structure` - 在列名和类型的基础上，同时输出表头中列的结构。默认值：0。通常只对开发者调试与输入输出表头不匹配相关的问题有用。
+* `header` — 为每个步骤打印输出头部信息。默认值：0。
+* `description` — 打印步骤描述。默认值：1。
+* `indexes` — 显示已使用的索引、每个应用索引过滤的分区片段数量以及过滤的粒度数量。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。从 ClickHouse &gt;= v25.9 开始，仅在与 `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` 一起使用时，该语句才会输出有意义的结果。
+* `projections` — 显示所有已分析的投影，以及它们基于投影主键条件在分区片段级别过滤方面的效果。对于每个投影，本部分包含统计信息，例如使用该投影主键进行评估的分区片段、行、标记和范围数量。它还会显示由于该过滤而被跳过的数据分区片段数量，而无需从投影本身读取数据。投影是实际用于读取，还是仅用于过滤分析，可以通过 `description` 字段判断。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。
+* `actions` — 打印关于步骤执行行为的详细信息。默认值：0。
+* `json` — 以 [JSON](/interfaces/formats/JSON) 格式将查询计划步骤输出为一行。默认值：0。建议使用 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 格式以避免不必要的转义。
+* `input_headers` - 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `column_structure` - 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `distributed` — 显示在远程节点上针对分布式表或并行副本执行的查询计划。默认值：0。
 
 当 `json=1` 时，步骤名称将包含一个带有唯一步骤标识符的额外后缀。
 
-Example:
+示例：
 
 ```sql
 EXPLAIN SELECT sum(number) FROM numbers(10) GROUP BY number % 4;
@@ -211,10 +208,10 @@ Union
 ```
 
 :::note
-不支持对步骤和查询成本进行估算。
+不支持执行步骤和查询代价估算。
 :::
 
-当 `json = 1` 时，查询计划以 JSON 格式表示。每个节点是一个字典，始终包含键 `Node Type` 和 `Plans`。`Node Type` 是表示步骤名称的字符串，`Plans` 是一个包含子步骤描述的数组。根据节点类型和设置，还可以添加其他可选键。
+当 `json = 1` 时，查询计划以 JSON 格式表示。每个节点是一个字典对象，并且始终包含键 `Node Type` 和 `Plans`。`Node Type` 是表示步骤名称的字符串。`Plans` 是一个数组，包含子步骤的描述。根据节点类型和设置，还可以添加其他可选键。
 
 示例：
 
@@ -255,7 +252,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-当 `description` = 1 时，会向该步骤添加 `Description` 键：
+将 `description` 设为 1 时，会向该步骤添加 `Description` 键：
 
 ```json
 {
@@ -264,7 +261,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-当 `header` = 1 时，会在该步骤中新增一个名为 `Header` 的键，其值为列数组。
+当 `header` = 1 时，`Header` 键会作为列数组添加到该步骤中。
 
 示例：
 
@@ -401,8 +398,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-
-当 `actions` = 1 时，所添加的键取决于步骤类型。
+当 `actions` = 1 时，添加的键取决于步骤类型。
 
 示例：
 
@@ -461,6 +457,50 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+当 `distributed` = 1 时，输出不仅包含本地查询计划，还包含将在远程节点上执行的查询计划。这对于分析和调试分布式查询非常有用。
+
+分布式表示例：
+
+```sql
+EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
+```
+
+```sql
+联合
+  表达式 ((项目名称 + (投影 + (将列名更改为列标识符 + (项目名称 + 投影)))))
+    过滤器 ((WHERE + 将列名更改为列标识符))
+      从系统数字读取
+  表达式 ((项目名称 + (投影 + 将列名更改为列标识符)))
+    从远程读取 (从远程副本读取)
+      表达式 ((项目名称 + 投影))
+        过滤器 ((WHERE + 将列名更改为列标识符))
+          从系统数字读取
+```
+
+并行副本示例：
+
+```sql
+SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
+
+EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
+```
+
+```sql
+Expression ((Project names + Projection))
+  MergingAggregated
+    Union
+      Aggregating
+        Expression ((Before GROUP BY + Change column names to column identifiers))
+          ReadFromMergeTree (default.test_table)
+      ReadFromRemoteParallelReplicas
+        BlocksMarshalling
+          Aggregating
+            Expression ((Before GROUP BY + Change column names to column identifiers))
+              ReadFromMergeTree (default.test_table)
+```
+
+在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
+
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
@@ -494,7 +534,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
 显示在处理查询时预计将从表中读取的行数、标记数和分区片段数。适用于 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 系列表。
@@ -522,7 +561,6 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 

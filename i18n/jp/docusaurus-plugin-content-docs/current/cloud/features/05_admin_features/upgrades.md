@@ -15,7 +15,6 @@ import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_re
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
-
 # アップグレード {#upgrades}
 
 ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを定期的に実施します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/cloud) を参照してください。
@@ -26,8 +25,6 @@ ClickHouse Cloud を利用すると、パッチ適用やアップグレードに
 この変更の一環として、システムテーブルの履歴データは、アップグレードイベントの一部として最大 30 日間保持されます。さらに、AWS または GCP 上のサービスについては 2024 年 12 月 19 日より前、Azure 上のサービスについては 2025 年 1 月 14 日より前のシステムテーブルデータは、新しい組織ティアへの移行の一部として保持されません。
 :::
 
-
-
 ## バージョン互換性 {#version-compatibility}
 
 サービスを作成すると、その時点で ClickHouse Cloud 上で提供されている最新の ClickHouse バージョンが、そのサービスの [`compatibility`](/operations/settings/settings#compatibility) 設定として指定されます。
@@ -36,15 +33,11 @@ ClickHouse Cloud を利用すると、パッチ適用やアップグレードに
 
 サービスレベルのデフォルト `compatibility` 設定を自分で変更することはできません。サービスのデフォルト `compatibility` 設定に指定されているバージョンを変更したい場合は、[サポートに連絡](https://clickhouse.com/support/program)する必要があります。ただし、ユーザー、ロール、プロファイル、クエリ、またはセッションのレベルでは、`SET compatibility = '22.3'` をセッション内で実行したり、クエリ内で `SETTINGS compatibility = '22.3'` を指定したりするなど、標準的な ClickHouse の設定メカニズムを使用して `compatibility` 設定を上書きできます。
 
-
-
 ## メンテナンスモード {#maintenance-mode}
 
 サービスを更新する必要が生じる場合があり、その際にはスケーリングや自動休止などの一部機能を無効化する必要が生じることがあります。まれに、不具合が発生しているサービスに対して作業を行い、正常な状態に戻す必要が生じることもあります。このようなメンテナンス中は、サービスページに _"Maintenance in progress"_（メンテナンス中）というバナーが表示されます。この期間中でも、クエリの実行にはサービスを利用できる場合があります。
 
 サービスがメンテナンス中の時間について、料金が発生することはありません。_メンテナンスモード_ はまれにしか行われず、通常のサービスアップグレードと混同しないでください。
-
-
 
 ## リリースチャネル（アップグレードスケジュール） {#release-channels-upgrade-schedule}
 
@@ -111,8 +104,6 @@ Basic ティアのサービスは、高速リリースチャネルの直後に�
 - より高速なチャネルへ移行すると、サービスは直ちにアップグレードされます（例: スローから通常、通常から高速）。
 - より低速なチャネルへ移行してもサービスがダウングレードされることはなく、そのチャネルで新しいバージョンが利用可能になるまで現在のバージョンのまま維持されます（例: 通常からスロー、高速から通常またはスロー）。
 :::
-
-
 
 ## 予定されたアップグレード {#scheduled-upgrades}
 

@@ -6,20 +6,15 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-
-
 # flameGraph {#flamegraph}
 
 Агрегатная функция, которая строит [flamegraph](https://www.brendangregg.com/flamegraphs.html) на основе списка стек-трейсов. Возвращает массив строк, которые могут быть использованы утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG-графика flamegraph.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
-
 
 ## Параметры {#parameters}
 
@@ -32,13 +27,9 @@ flameGraph(traces, [size], [ptr])
 Показываются только те выделения, которые не были освобождены. Несопоставленные операции освобождения игнорируются.
 :::
 
-
-
 ## Возвращаемое значение {#returned-value}
 
 - Массив строк, предназначенный для использования с [утилитой flamegraph.pl](https://github.com/brendangregg/FlameGraph). [Array](../../data-types/array.md)([String](../../data-types/string.md)).
-
-
 
 ## Примеры {#examples}
 

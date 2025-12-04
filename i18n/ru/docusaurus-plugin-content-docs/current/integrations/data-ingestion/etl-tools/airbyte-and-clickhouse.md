@@ -24,7 +24,6 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Подключение Airbyte к ClickHouse {#connect-airbyte-to-clickhouse}
 
 <PartnerBadge />
@@ -49,7 +48,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Загрузка и запуск Airbyte {#1-download-and-run-airbyte}
 
 1. Airbyte работает в Docker и использует `docker-compose`. Убедитесь, что у вас установлены последние версии Docker.
@@ -69,8 +67,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
         :::note
         В качестве альтернативы вы можете зарегистрироваться и использовать <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
         :::
-
-
 
 ## Добавьте ClickHouse в качестве приемника данных {#2-add-clickhouse-as-a-destination}
 
@@ -103,7 +99,6 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 :::
 
-
 ## Добавьте датасет в качестве источника {#3-add-a-dataset-as-a-source}
 
 В качестве примерного датасета мы будем использовать <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">GitHub</a>). В этом руководстве мы используем подмножество этого датасета за январь 2022 года.
@@ -121,8 +116,6 @@ GRANT CREATE ON * TO my_airbyte_user;
     <Image img={airbyte05} size="lg" border alt="Создание источника ClickHouse в Airbyte" />
 
 3. Поздравляем! Теперь вы добавили файл-источник в Airbyte.
-
-
 
 ## Создайте подключение и загрузите набор данных в ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
@@ -155,8 +148,6 @@ GRANT CREATE ON * TO my_airbyte_user;
         Ответ должен выглядеть следующим образом:
         ```response
         Query id: 4f79c106-fe49-4145-8eba-15e1cb36d325
-
-
 
         ┌─extra─┬─mta&#95;tax─┬─VendorID─┬─RatecodeID─┬─tip&#95;amount─┬─airport&#95;fee─┬─fare&#95;amount─┬─DOLocationID─┬─PULocationID─┬─payment&#95;type─┬─tolls&#95;amount─┬─total&#95;amount─┬─trip&#95;distance─┬─passenger&#95;count─┬─store&#95;and&#95;fwd&#95;flag─┬─congestion&#95;surcharge─┬─tpep&#95;pickup&#95;datetime─┬─improvement&#95;surcharge─┬─tpep&#95;dropoff&#95;datetime─┬─&#95;airbyte&#95;ab&#95;id───────────────────────┬─────&#95;airbyte&#95;emitted&#95;at─┬─&#95;airbyte&#95;normalized&#95;at─┬─&#95;airbyte&#95;nyc&#95;taxi&#95;2022&#95;hashid────┐
 │ 0 │ 0.5 │ 2 │ 1 │ 2.03 │ 0 │ 17 │ 41 │ 162 │ 1 │ 0 │ 22.33 │ 4.25 │ 3 │ N │ 2.5 │ 2022-01-24T16:02:27 │ 0.3 │ 2022-01-24T16:22:23 │ 000022a5-3f14-4217-9938-5657f9041c8a │ 2022-07-19 04:35:31.000 │ 2022-07-19 04:39:20 │ 91F83E2A3AF3CA79E27BD5019FA7EC94 │

@@ -23,7 +23,6 @@ import Image from '@theme/IdealImage';
 
 高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
 
-
 ## 访问高级仪表板 {#accessing-the-advanced-dashboard}
 
 可以通过以下路径访问高级仪表板：
@@ -32,8 +31,6 @@ import Image from '@theme/IdealImage';
   * `Monitoring` → `Advanced dashboard`
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
-
-
 
 ## 访问原生高级仪表盘 {#accessing-the-native-advanced-dashboard}
 
@@ -50,8 +47,6 @@ import Image from '@theme/IdealImage';
 每个可视化视图都关联有一个用于填充数据的 SQL 查询。您可以点击铅笔图标来编辑此查询。
 
 <Image img={EditVisualization} size="lg" alt="Advanced dashboard"/>
-
-
 
 ## 开箱即用的可视化 {#out-of-box-visualizations}
 
@@ -86,8 +81,6 @@ Advanced Dashboard 中的默认图表旨在帮助你实时了解 ClickHouse 系�
 | OS CPU Usage (Userspace)  | 运行用户态代码的 CPU 使用率                                                |
 | OS CPU Usage (Kernel)     | 运行内核代码的 CPU 使用率                                                  |
 
-
-
 ## ClickHouse Cloud 特有指标 {#clickhouse-cloud-specific}
 
 ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接口有助于发现潜在问题。
@@ -105,8 +98,6 @@ ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接
 | Network send bytes/sec         | 跟踪当前出站网络流量速率                  |
 | Network receive bytes/sec      | 跟踪当前入站网络流量速率                  |
 | Concurrent network connections | 跟踪当前并发网络连接的数量                |
-
-
 
 ## 使用高级仪表板识别问题 {#identifying-issues-with-the-advanced-dashboard}
 
@@ -203,7 +194,6 @@ LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
 ```
-
 
 第 2 行：
 ──────

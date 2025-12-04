@@ -8,11 +8,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Snowflake SQL 変換ガイド {#snowflake-sql-translation-guide}
-
-
 
 ## データ型 {#data-types}
 
@@ -87,11 +83,7 @@ Snowflake では最適な圧縮を実現するために
 しています。また、Snowflake はこれらのデータ型に対して
 [サイズ制限を課しています](https://docs.snowflake.com/en/user-guide/semistructured-considerations#data-size-limitations)。
 
-
-
 ### 型リファレンス {#type-reference}
-
-
 
 | Snowflake                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | ClickHouse                                                                                                                          | 注記                                                                                                                                                                                                                                          |   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | - |
@@ -108,8 +100,6 @@ Snowflake では最適な圧縮を実現するために
 | [`ARRAY`](https://docs.snowflake.com/en/sql-reference/data-types-semistructured#array)                                                                                                                                                                                                                                                                                                                                                                                          | [`Array`](/sql-reference/data-types/array), [`Nested`](/sql-reference/data-types/nested-data-structures/nested)                     | Snowflake の `ARRAY` は、要素にスーパータイプである `VARIANT` を使用します。対照的に、ClickHouse ではこれらの要素は厳密に型付けされています。                                                                                                                                                 |   |
 | [`GEOGRAPHY`](https://docs.snowflake.com/en/sql-reference/data-types-geospatial#geography-data-type)                                                                                                                                                                                                                                                                                                                                                                            | [`Point`, `Ring`, `Polygon`, `MultiPolygon`](/sql-reference/data-types/geo)                                                         | Snowflake では座標系 (WGS 84) が固定されますが、ClickHouse ではクエリ実行時に座標系を適用します。                                                                                                                                                                            |   |
 | [`GEOMETRY`](https://docs.snowflake.com/en/sql-reference/data-types-geospatial#geometry-data-type)                                                                                                                                                                                                                                                                                                                                                                              | [`Point`, `Ring`, `Polygon`, `MultiPolygon`](/sql-reference/data-types/geo)                                                         |                                                                                                                                                                                                                                             |   |
-
-
 
 | ClickHouse Type   | Description                                                                                         |
 |-------------------|-----------------------------------------------------------------------------------------------------|

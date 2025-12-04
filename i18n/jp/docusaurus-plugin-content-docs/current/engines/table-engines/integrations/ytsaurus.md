@@ -11,15 +11,12 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # YTsaurus テーブルエンジン {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 YTsaurus テーブルエンジンを使用すると、YTsaurus クラスターからデータを取り込むことができます。
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -45,7 +42,6 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスター�
 * `http_proxy_url` — YTsaurus HTTP プロキシの URL。
 * `cypress_path` — データソースへの Cypress パス。
 * `oauth_token` — OAuth トークン。
-
 
 ## 使用例 {#usage-example}
 
@@ -75,7 +71,6 @@ SELECT * FROM yt_saurus;
  │ 10 │ 20 │
  └────┴────┘
 ```
-
 
 ## データ型 {#data-types}
 

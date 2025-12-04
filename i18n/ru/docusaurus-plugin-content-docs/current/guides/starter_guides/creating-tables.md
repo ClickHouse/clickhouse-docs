@@ -8,8 +8,6 @@ keywords: ['создание таблиц', 'CREATE TABLE', 'создание т
 doc_type: 'guide'
 ---
 
-
-
 # Создание таблиц в ClickHouse {#creating-tables-in-clickhouse}
 
 Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Используйте команду `CREATE DATABASE`, чтобы создать новую базу данных в ClickHouse:
@@ -51,7 +49,6 @@ PRIMARY KEY (user_id, timestamp)
 
 Существует множество движков, но для простой таблицы на одноузловом сервере ClickHouse, скорее всего, подойдёт [MergeTree](/engines/table-engines/mergetree-family/mergetree.md).
 :::
-
 
 ## Краткое введение в первичные ключи {#a-brief-intro-to-primary-keys}
 

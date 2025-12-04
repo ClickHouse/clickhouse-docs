@@ -39,10 +39,7 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
-
 # 将 EMQX 与 ClickHouse 集成 {#integrating-emqx-with-clickhouse}
-
-
 
 ## 连接 EMQX {#connecting-emqx}
 
@@ -60,8 +57,6 @@ import Image from '@theme/IdealImage';
 * 你正在使用 EMQX 或 EMQX Cloud 作为实时消息处理引擎，为大规模物联网设备提供事件流服务。
 * 你已经准备好了一个 ClickHouse Cloud 实例用于持久化设备数据。
 * 我们使用 [MQTT X](https://mqttx.app/) 作为 MQTT 客户端测试工具，连接到 EMQX Cloud 的部署并发布 MQTT 数据。你也可以使用其他任意方式连接到 MQTT 代理来完成相同工作。
-
-
 
 ## 获取 ClickHouse Cloud 服务 {#get-your-clickhouse-cloudservice}
 
@@ -101,7 +96,6 @@ PRIMARY KEY (client_id, timestamp)
 ```
 
 <Image img={clickhouse_cloud_6} size="lg" border alt="在 ClickHouse Cloud 中执行创建数据库和数据表的 SQL 查询" />
-
 
 ## 在 EMQX Cloud 上创建 MQTT 服务 {#create-an-mqtt-service-on-emqx-cloud}
 
@@ -150,8 +144,6 @@ EMQX Cloud 默认不允许匿名连接，所以你需要添加一个客户端凭
 <Image img={emqx_cloud_nat_gateway} size="lg" border alt="EMQX Cloud NAT 网关配置面板" />
 
 创建完成后，你会在该组件中看到公网 IP 地址。请注意，如果你在 ClickHouse Cloud 设置过程中选择了 “Connect from a specific location”，则需要将此 IP 地址添加到白名单中。
-
-
 
 ## 将 EMQX Cloud 与 ClickHouse Cloud 集成 {#integration-emqx-cloud-with-clickhouse-cloud}
 
@@ -232,7 +224,6 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 <Image img={data_integration_details} size="md" border alt="EMQX Cloud 数据集成规则详情，显示配置摘要" />
 
 发送到 `temp_hum/emqx` 主题的所有 MQTT 消息都会被持久化到你的 ClickHouse Cloud 数据库中。
-
 
 ## 将数据保存到 ClickHouse {#saving-data-into-clickhouse}
 

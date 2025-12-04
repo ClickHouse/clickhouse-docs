@@ -6,8 +6,6 @@ doc_type: 'guide'
 keywords: ['устранение неполадок', 'отладка', 'решение проблем', 'ошибки', 'диагностика']
 ---
 
-
-
 ## Установка {#installation}
 
 ### Не удаётся импортировать ключи GPG с keyserver.ubuntu.com с помощью apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
@@ -77,7 +75,6 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
 Затем следуйте [руководству по установке](/install/redhat)
-
 
 ## Подключение к серверу {#connecting-to-the-server}
 
@@ -180,7 +177,6 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
    * Возможно, вы используете неверное имя пользователя или пароль.
 
-
 ## Обработка запросов {#query-processing}
 
 Если ClickHouse не может выполнить запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получаете описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
@@ -193,7 +189,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 Если вы запускаете `clickhouse-client` с параметром `stack-trace`, ClickHouse возвращает стек вызовов сервера с описанием ошибки.
 
 Вы можете увидеть сообщение о разорванном соединении. В этом случае можно повторить запрос. Если соединение обрывается каждый раз при выполнении запроса, проверьте журналы сервера на наличие ошибок.
-
 
 ## Эффективность обработки запросов {#efficiency-of-query-processing}
 

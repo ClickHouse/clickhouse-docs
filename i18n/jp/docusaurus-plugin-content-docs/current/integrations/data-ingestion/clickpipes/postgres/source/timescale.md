@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
 # TimescaleDB 拡張付き Postgres ソースのセットアップガイド {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
-
-
 
 ## 背景 {#background}
 
@@ -35,13 +32,9 @@ Timescale のハイパーテーブルはいくつかの点で通常の Postgres 
 これはレプリケーション処理を複雑にするため、Timescale のハイパーテーブルをレプリケートする機能は
 **ベストエフォート**として扱うべきです。
 
-
-
 ## サポートされている Postgres バージョン {#supported-postgres-versions}
 
 ClickPipes は Postgres バージョン 12 以降に対応しています。
-
-
 
 ## 論理レプリケーションを有効化する {#enable-logical-replication}
 
@@ -56,8 +49,6 @@ TimescaleDB を含む Postgres インスタンスのデプロイ方法によっ�
 Timescale Cloud は論理レプリケーションをサポートしていません。論理レプリケーションは CDC モードの Postgres pipes に必要です。
 そのため、Timescale Cloud のユーザーは Postgres ClickPipe を使用したデータの一度きりのロード（`Initial Load Only`）のみ実行できます。
 :::
-
-
 
 ## 設定 {#configuration}
 
@@ -108,7 +99,6 @@ publication を手動で作成する場合は、パイプに追加する前に�
 ```
 
 これらの手順が完了すると、[ClickPipe を作成](../index.md)できるようになります。
-
 
 ## ネットワークアクセスの構成 {#configure-network-access}
 

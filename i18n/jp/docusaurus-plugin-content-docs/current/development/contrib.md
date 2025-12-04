@@ -7,8 +7,6 @@ title: 'サードパーティライブラリ'
 doc_type: 'reference'
 ---
 
-
-
 # サードパーティライブラリ {#third-party-libraries}
 
 ClickHouse は、さまざまな目的でサードパーティライブラリを利用します。たとえば、他のデータベースへの接続、ディスクへの保存／ディスクからの読み込み時のデータのデコード／エンコード、あるいは特定の SQL 関数の実装などです。
@@ -23,7 +21,6 @@ SELECT library_name, license_type, license_path FROM system.licenses ORDER BY li
 ビルドオプションによっては、一部のライブラリがコンパイルされず、その結果、実行時にそれらの機能を利用できない場合があります。
 
 [例](https://sql.clickhouse.com?query_id=478GCPU7LRTSZJBNY3EJT3)
-
 
 ## サードパーティライブラリの追加と保守 {#adding-and-maintaining-third-party-libraries}
 

@@ -28,14 +28,11 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Подключение Superset к ClickHouse {#connect-superset-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> — это платформа с открытым исходным кодом для исследования и визуализации данных, написанная на Python. Superset подключается к ClickHouse с помощью драйвера Python, предоставленного ClickHouse. Давайте посмотрим, как это работает...
-
-
 
 ## Цель {#goal}
 
@@ -48,12 +45,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать именно его. В той же категории документации есть и несколько других наборов данных.
 :::
 
-
-
 ## 1. Соберите параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. Установка драйвера {#2-install-the-driver}
 
@@ -64,8 +57,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
 2. Запустите (или перезапустите) Superset.
-
-
 
 ## 3. Подключение Superset к ClickHouse {#3-connect-superset-to-clickhouse}
 
@@ -89,8 +80,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 4. Нажмите кнопки **CONNECT**, а затем **FINISH**, чтобы завершить мастер настройки. После этого вы увидите свою базу данных в списке баз данных.
 
-
-
 ## 4. Добавьте набор данных {#4-add-a-dataset}
 
 1. Чтобы работать с данными ClickHouse в Superset, необходимо определить **_dataset_** (набор данных). В верхнем меню Superset выберите **Data**, затем **Datasets** в раскрывающемся меню.
@@ -101,8 +90,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <br/>
 
 3. Нажмите кнопку **ADD** в нижней части диалогового окна, и ваша таблица появится в списке наборов данных. Теперь вы готовы создавать дашборды и анализировать данные в ClickHouse!
-
-
 
 ## 5.  Создание диаграмм и дашборда в Superset {#5--creating-charts-and-a-dashboard-in-superset}
 

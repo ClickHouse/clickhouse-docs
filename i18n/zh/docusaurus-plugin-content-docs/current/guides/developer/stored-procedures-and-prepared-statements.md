@@ -11,7 +11,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # ClickHouse 中的存储过程和查询参数 {#stored-procedures-and-query-parameters-in-clickhouse}
 
 如果你之前使用的是传统关系型数据库，可能会在 ClickHouse 中寻找存储过程和预处理语句（prepared statements）。
@@ -110,7 +109,6 @@ SELECT format_phone('5551234567');
 
 完整语法请参阅 [`CREATE FUNCTION`](/sql-reference/statements/create/function)。
 
-
 #### 可执行 UDF {#executable-udfs}
 
 对于更复杂的逻辑，可以使用可执行 UDF 函数来调用外部程序：
@@ -142,7 +140,6 @@ FROM customer_reviews;
 可执行 UDF 可以使用任意语言（Python、Node.js、Go 等）来实现任意逻辑。
 
 有关详细信息，请参阅[可执行 UDF](/sql-reference/functions/udf)。
-
 
 ### 参数化视图 {#parameterized-views}
 
@@ -201,7 +198,6 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-
 #### 常见用例 {#common-use-cases}
 
 * 动态日期范围过滤
@@ -246,7 +242,6 @@ SELECT * FROM top_products_by_category(
 ```
 
 有关详细信息，请参阅[参数化视图](/sql-reference/statements/create/view#parameterized-view)部分。
-
 
 ### 物化视图 {#materialized-views}
 
@@ -301,7 +296,6 @@ WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
 ```
 
-
 #### 可刷新物化视图 {#refreshable-materialized-views}
 
 用于计划的批处理任务（例如每晚运行的存储过程）：
@@ -327,7 +321,6 @@ WHERE month = toStartOfMonth(today());
 ```
 
 有关更高级的用法，请参阅 [级联物化视图](/guides/developer/cascading-materialized-views)。
-
 
 ### 外部编排 {#external-orchestration}
 
@@ -603,7 +596,7 @@ WHERE month = toStartOfMonth(today());
 
 定义查询参数有两种方式：
 
-#### 方法 1：使用 `SET`
+#### 方法 1：使用 `SET` {#method-1-using-set}
 
 <details>
   <summary>示例表和数据</summary>
@@ -655,8 +648,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-
-#### 方法 2：使用 CLI 参数
+#### 方法 2：使用 CLI 参数 {#method-2-using-cli-parameters}
 
 ```bash
 clickhouse-client \
@@ -667,7 +659,6 @@ clickhouse-client \
              WHERE user_id = {user_id: UInt64}
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
-
 
 ### 参数语法 {#parameter-syntax}
 
@@ -838,7 +829,6 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- 不支持
 {statements: String};  -- 不支持
 ```
 
-
 ### 安全最佳实践 {#data-type-examples}
 
 **对所有用户输入一律使用查询参数：**
@@ -875,8 +865,7 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ```
 
-
-### MySQL 协议预处理语句
+### MySQL 协议预处理语句 {#mysql-protocol-prepared-statements}
 
 ClickHouse 的 [MySQL 接口](/interfaces/mysql) 对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）仅提供有限支持，主要用于兼容诸如 Tableau Online 这类会将查询包装为预处理语句的工具，以便建立连接。
 
@@ -906,7 +895,6 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 有关更多详情，请参阅 [MySQL 接口文档](/interfaces/mysql) 和 [关于 MySQL 支持的博客文章](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)。
-
 
 ## 总结 {#summary}
 

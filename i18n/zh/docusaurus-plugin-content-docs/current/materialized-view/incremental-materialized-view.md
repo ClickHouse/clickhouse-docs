@@ -10,7 +10,6 @@ doc_type: 'guide'
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-
 ## 背景 {#background}
 
 增量物化视图（Materialized Views）允许用户将计算成本从查询时转移到插入时，从而使 `SELECT` 查询更快。
@@ -22,8 +21,6 @@ import Image from '@theme/IdealImage';
 ClickHouse 中的物化视图会在其依赖的表有数据流入时实时更新，更像是持续更新的索引。这与其他数据库形成对比，在那些数据库中，物化视图通常是查询的静态快照，必须定期刷新（类似于 ClickHouse 的[可刷新的物化视图](/sql-reference/statements/create/view#refreshable-materialized-view)）。
 
 <Image img={materializedViewDiagram} size="md" alt="物化视图示意图"/>
-
-
 
 ## 示例 {#example}
 
@@ -107,7 +104,6 @@ GROUP BY Day
 
 这里的 `TO` 子句是关键，它表示结果将被发送到的目标，即 `up_down_votes_per_day`。
 
-
 我们可以通过之前的 INSERT 语句重新填充 `votes` 表：
 
 ```sql
@@ -180,7 +176,6 @@ LIMIT 10
 
 ### 更复杂的示例 {#a-more-complex-example}
 
-
 上面的示例使用物化视图按天计算并维护两个求和值。求和是维护部分聚合状态的最简单形式——当有新值到达时，我们只需将其累加到已有值上即可。不过，ClickHouse 的物化视图可以用于任意类型的聚合。
 
 假设我们希望针对每天的帖子计算一些统计信息：`Score` 的 99.9 百分位数，以及 `CommentCount` 的平均值。用于计算这些统计信息的查询可能如下所示：
@@ -239,7 +234,6 @@ GROUP BY Day
 
 现在我们为视图 `post_stats_per_day` 创建对应的目标表，用于存储这些部分聚合状态：
 
-
 ```sql
 CREATE TABLE post_stats_per_day
 (
@@ -278,7 +272,6 @@ LIMIT 10
 ```
 
 请注意，这里我们使用 `GROUP BY` 而不是 `FINAL`。
-
 
 ## 其他应用场景 {#other-applications}
 
@@ -372,7 +365,6 @@ WHERE PostId IN (
 └─────────────────────┘
 ```
 
-
 结果集包含 1 行。耗时：0.012 秒。已处理 88.61 千行，771.37 KB（7.09 百万行/秒，61.73 MB/秒）
 
 ```
@@ -382,7 +374,6 @@ WHERE PostId IN (
 物化视图可以链式连接(或级联),以构建复杂的工作流。
 有关更多信息,请参阅["级联物化视图"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)指南。
 ```
-
 
 ## 物化视图与 JOIN {#materialized-views-and-joins}
 
@@ -483,7 +474,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 如果我们想要查看某个特定用户获得的徽章，可以编写如下查询：
 
-
 ```sql
 SELECT *
 FROM daily_badges_by_user
@@ -540,7 +530,6 @@ WHERE DisplayName = 'gingerwizard'
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
 INSERT INTO users VALUES (23923286, 1, now(),  'brand_new_user', now(), 'UK', 1, 1, 0);
 ```
-
 
 ```sql
 SELECT *
@@ -629,7 +618,6 @@ SELECT * FROM mvw2;
 │  8 │
 └────┘
 ```
-
 
 #### 解释 {#explanation}
 
@@ -723,7 +711,6 @@ INSERT INTO badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 ```
 
-
 结果中有 0 行。查询耗时：132.118 秒。已处理 3.2343 亿行，4.69 GB（每秒 245 万行，35.49 MB/秒）。
 峰值内存占用：1.99 GiB。
 
@@ -738,7 +725,6 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 ````
 
 在上述操作中，只针对用户 ID `2936484` 从 `users` 表中检索到一行记录。此查找同样利用表的排序键 `Id` 进行了优化。
-
 
 ## 物化视图与 UNION ALL {#materialized-views-and-unions}
 
@@ -871,7 +857,6 @@ WHERE UserId = '2936484'
 GROUP BY UserId
 ```
 
-
 ┌─UserId──┬─description──────┬─activity&#95;type─┬───────────last&#95;activity─┐
 │ 2936484 │ 答案是 42        │ comment       │ 2025-04-15 09:56:19.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
@@ -967,7 +952,6 @@ GROUP BY UserId
 
 1 row in set. Elapsed: 0.006 sec.
 ```
-
 
 ## 并行处理与顺序处理 {#materialized-views-parallel-vs-sequential}
 
@@ -1094,7 +1078,6 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-
 尽管我们这里看到来自各个视图的行到达顺序是相同的，但这种顺序并没有任何保证——这一点从各行插入时间非常接近就可以看出。另外，也要注意插入性能已有所提升。
 
 ### 何时使用并行处理 {#materialized-views-when-to-use-parallel}
@@ -1118,8 +1101,6 @@ ORDER BY now ASC
 - 物化视图之间存在依赖关系
 - 你需要可预测、有序的执行
 - 你在调试或审计插入行为，并希望获得可确定的重放行为
-
-
 
 ## 物化视图与公用表表达式（CTE） {#materialized-views-common-table-expressions-ctes}
 
@@ -1211,7 +1192,6 @@ LIMIT 10
 * 物化视图仍然只会在向主源表插入数据时触发，但 CTE 会在每次插入时重新执行，这可能会带来不必要的开销，尤其是在被引用的表非常大的情况下。
 
 例如，
-
 
 ```sql
 WITH recent_users AS (

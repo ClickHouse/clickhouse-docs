@@ -7,8 +7,6 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'справочник'
 ---
 
-
-
 # Оператор JOIN {#join-clause}
 
 Оператор `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
@@ -23,7 +21,6 @@ FROM <left_table>
 ```
 
 Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
-
 
 ## Поддерживаемые типы JOIN {#supported-types-of-join}
 
@@ -55,8 +52,6 @@ FROM <left_table>
 Когда [join_algorithm](../../../operations/settings/settings.md#join_algorithm) установлен в значение `partial_merge`, `RIGHT JOIN` и `FULL JOIN` поддерживаются только со строгостью `ALL` (`SEMI`, `ANTI`, `ANY` и `ASOF` не поддерживаются).
 :::
 
-
-
 ## Настройки {#settings}
 
 Тип соединения по умолчанию можно переопределить с помощью настройки [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness).
@@ -73,8 +68,6 @@ FROM <left_table>
 - [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)
 
 Используйте настройку `cross_to_inner_join_rewrite`, чтобы задать поведение на случай, если ClickHouse не может переписать `CROSS JOIN` в `INNER JOIN`. Значение по умолчанию — `1`, при котором соединение продолжает выполняться, но будет работать медленнее. Установите `cross_to_inner_join_rewrite` в `0`, если вы хотите, чтобы генерировалась ошибка, и в `2` — чтобы не выполнять операции `CROSS JOIN`, а вместо этого принудительно переписывать все соединения через запятую/`CROSS JOIN`. Если при значении `2` переписать не удаётся, вы получите сообщение об ошибке: «Please, try to simplify `WHERE` section».
-
-
 
 ## Условия в секции ON {#on-section-conditions}
 
@@ -167,7 +160,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-
 По умолчанию условия с операторами неравенства поддерживаются, если в них используются столбцы из одной и той же таблицы.
 Например, `t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`, поскольку `t1.b > 0` использует столбцы только из `t1`, а `t2.b > t2.c` использует столбцы только из `t2`.
 Однако вы можете включить экспериментальную поддержку условий вида `t1.a = t2.key AND t1.b > t2.key`; подробности см. в разделе ниже.
@@ -187,7 +179,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## JOIN с условиями неравенства для столбцов из разных таблиц {#join-with-inequality-conditions-for-columns-from-different-tables}
 
@@ -238,7 +229,6 @@ key1    e    5    5    5            0    0    \N
 key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
-
 
 ## Значения NULL в ключах JOIN {#null-values-in-join-keys}
 
@@ -294,7 +284,6 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 └─────────┴───────┘
 ```
 
-
 ## Использование ASOF JOIN {#asof-join-usage}
 
 `ASOF JOIN` полезен, когда нужно соединить записи, для которых нет точного совпадения.
@@ -348,7 +337,6 @@ USING (столбец_равенства1, ... столбец_равенства
 `ASOF JOIN` поддерживается только алгоритмами соединения `hash` и `full_sorting_merge`.
 Он **не** поддерживается в табличном движке [Join](../../../engines/table-engines/special/join.md).
 :::
-
 
 ## Использование PASTE JOIN {#paste-join-usage}
 
@@ -408,7 +396,6 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
-
 ## Распределённый JOIN {#distributed-join}
 
 Существует два способа выполнить JOIN с участием распределённых таблиц:
@@ -417,8 +404,6 @@ SETTINGS max_block_size = 2;
 - При использовании `GLOBAL ... JOIN` сначала сервер, инициировавший запрос, выполняет подзапрос для вычисления правой таблицы. Эта временная таблица передаётся на каждый удалённый сервер, и на них выполняются запросы с использованием переданных временных данных.
 
 Будьте осторожны при использовании `GLOBAL`. Дополнительную информацию см. в разделе [Распределённые подзапросы](/sql-reference/operators/in#distributed-subqueries).
-
-
 
 ## Неявное преобразование типов {#implicit-type-conversion}
 
@@ -461,7 +446,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
-
 
 ## Рекомендации по использованию {#usage-recommendations}
 
@@ -510,8 +494,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 Когда достигается любой из этих лимитов, ClickHouse действует в соответствии с настройкой [join_overflow_mode](/operations/settings/settings#join_overflow_mode).
 
-
-
 ## Примеры {#examples}
 
 Пример:
@@ -554,7 +536,6 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
-
 
 ## Связанные материалы {#related-content}
 

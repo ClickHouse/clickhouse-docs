@@ -8,8 +8,6 @@ title: 'テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # テーブルエンジン {#table-engines}
 
 テーブルエンジン（テーブルの種類）は、次の点を決定します。
@@ -20,8 +18,6 @@ doc_type: 'reference'
 - インデックスが存在する場合の利用方法。
 - リクエストをマルチスレッドで実行できるかどうか。
 - データレプリケーションの設定。
-
-
 
 ## エンジンファミリー {#engine-families}
 
@@ -80,8 +76,6 @@ doc_type: 'reference'
 
 このファミリーに含まれるエンジン:
 
-
-
 | 特殊エンジン                                                   |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
@@ -100,8 +94,6 @@ doc_type: 'reference'
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
-
-
 
 ## 仮想列 {#table_engines-virtual_columns}
 

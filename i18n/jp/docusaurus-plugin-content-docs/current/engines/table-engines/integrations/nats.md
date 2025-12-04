@@ -7,8 +7,6 @@ title: 'NATS テーブルエンジン'
 doc_type: 'guide'
 ---
 
-
-
 # NATS テーブルエンジン {#redisstreams-engine}
 
 このエンジンを使用すると、ClickHouse を [NATS](https://nats.io/) と統合できます。
@@ -17,8 +15,6 @@ doc_type: 'guide'
 
 - メッセージのサブジェクトをパブリッシュまたはサブスクライブする。
 - 新しいメッセージを、到着し次第処理する。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -80,7 +76,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 SSL 接続:
 
-
 安全な接続を行うには、`nats_secure = 1` を使用します。
 使用しているライブラリのデフォルトの挙動では、確立された TLS 接続が十分に安全かどうかを検証しません。証明書が期限切れ、自署名、欠如、または無効である場合でも、接続はそのまま確立されてしまいます。証明書に対するより厳密な検証は、将来的に実装される可能性があります。
 
@@ -132,7 +127,6 @@ NATS サーバーの設定は、ClickHouse の設定ファイルに追加でき�
 </nats>
 ```
 
-
 ## 説明 {#description}
 
 各メッセージは一度しか読み取れないため、（デバッグを除いて）メッセージの読み取りに `SELECT` を使ってもあまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイムの処理フローを作成する方が実用的です。そのためには、次の手順を実行します。
@@ -174,7 +168,6 @@ NATS サーバーの設定は、ClickHouse の設定ファイルに追加でき�
 
 `ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアル化ビューを無効化しておくことを推奨します。
 
-
 ## 仮想列 {#virtual-columns}
 
 - `_subject` - NATS メッセージのサブジェクト。データ型: `String`。
@@ -186,8 +179,6 @@ NATS サーバーの設定は、ClickHouse の設定ファイルに追加でき�
 
 注意: `_raw_message` と `_error` の仮想列は、パース中に例外が発生した場合にのみ値が設定され、メッセージのパースが成功した場合は常に `NULL` になります。
 
-
-
 ## データフォーマットのサポート {#data-formats-support}
 
 NATS エンジンは、ClickHouse がサポートするすべての[フォーマット](../../../interfaces/formats.md)に対応しています。
@@ -195,8 +186,6 @@ NATS エンジンは、ClickHouse がサポートするすべての[フォーマ
 
 - 行ベースのフォーマットでは、1 つの NATS メッセージ内の行数は、`nats_max_rows_per_message` の設定で制御できます。
 - ブロックベースのフォーマットでは、ブロックをさらに小さな単位に分割することはできませんが、1 つのブロック内の行数は一般設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。
-
-
 
 ## JetStream の使用 {#using-jetstream}
 

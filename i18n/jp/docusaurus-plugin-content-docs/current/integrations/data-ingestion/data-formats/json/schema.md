@@ -12,7 +12,6 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
 # スキーマの設計 {#designing-your-schema}
 
 [スキーマ推論](/integrations/data-formats/json/inference) を使用すると、JSON データの初期スキーマを確立し、S3 上にあるなどの JSON データファイルをそのままクエリできますが、ユーザーは自分たちのデータに対して、最適化されたバージョン管理済みスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングする際の推奨アプローチについて説明します。
@@ -86,7 +85,6 @@ JSON のスキーマを定義する際の主なタスクは、各キーの値に
 * 新しいキーは `address` オブジェクトには追加されず（新しい address オブジェクトのみが追加される）、そのためこれは**静的**と見なせます。再帰的に展開していくと、`geo` を除くすべてのサブカラムはプリミティブ（かつ型 `String`）と見なせます。`geo` も 2 つの `Float32` カラム `lat` と `lon` を持つ静的な構造です。
 * `tags` カラムは**動的**です。このオブジェクトには任意の型・構造のタグが新たに追加されうると仮定します。
 * `company` オブジェクトは**静的**で、常に最大で指定された 3 つのキーのみを含みます。サブキー `name` と `catchPhrase` は型 `String` です。キー `labels` は**動的**です。このオブジェクトには任意のタグが新たに追加されうると仮定します。値は常に文字列型のキーと値のペアです。
-
 
 :::note
 数百から数千もの静的キーを持つ構造体は、これらの列を静的に宣言するのが現実的でないことが多いため、動的なものと見なすことができます。ただし、可能な箇所では、ストレージと推論の両方のオーバーヘッドを削減するために、不要な[パスをスキップ](#using-type-hints-and-skipping-paths)してください。
@@ -202,7 +200,6 @@ ENGINE = MergeTree
 ORDER BY company.name
 ```
 
-
 ### デフォルト値の扱い {#handling-default-values}
 
 JSON オブジェクトが構造化されていても、多くの場合は既知のキーの一部しか含まれない疎な形式になることがよくあります。幸い、`Tuple` 型では JSON ペイロード内のすべての列が必須というわけではありません。指定されていない場合にはデフォルト値が使用されます。
@@ -281,7 +278,6 @@ FORMAT PrettyJSONEachRow
 値が空であることと、指定されていないことを区別する必要がある場合は、[Nullable](/sql-reference/data-types/nullable) 型を使用できます。ただし、これらのカラムのストレージおよびクエリ性能に悪影響を与えるため、絶対に必要な場合を除き、[使用は避けてください](/best-practices/select-data-types#avoid-nullable-columns)。
 :::
 
-
 ### 新しいカラムの扱い {#handling-new-columns}
 
 JSON キーが静的な場合は構造化されたアプローチが最も簡単ですが、スキーマへの変更を事前に計画できる、つまり新しいキーがあらかじめ分かっており、それに応じてスキーマを変更できるのであれば、このアプローチはその場合でも引き続き使用できます。
@@ -358,7 +354,6 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## 半構造化・動的な構造の扱い {#handling-semi-structured-dynamic-structures}
 
@@ -486,7 +481,6 @@ JSON データが半構造化されており、キーが動的に追加された
 
 厳密なスキーマには、いくつかの利点があります。
 
-
 - **データバリデーション** – 厳密なスキーマを適用することで、特定の構造を除き、カラム爆発のリスクを回避できます。
 - **カラム爆発のリスク回避** - JSON 型はサブカラムを専用カラムとして保存することで潜在的に数千のカラムまでスケールできますが、その結果として過剰な数のカラムファイルが作成され、パフォーマンスに悪影響を与える「カラムファイル爆発」が発生する可能性があります。これを軽減するために、JSON で使用される基盤の [Dynamic 型](/sql-reference/data-types/dynamic) では、[`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータが提供されており、個別のカラムファイルとして保存される一意なパスの数を制限します。しきい値に達すると、それ以降のパスはコンパクトなエンコード形式を用いて共有カラムファイル内に保存され、柔軟なデータのインジェストをサポートしつつ、パフォーマンスとストレージ効率を維持します。ただし、この共有カラムファイルへのアクセスは、専用カラムほど高速ではありません。なお、JSON カラムは [type hints](#using-type-hints-and-skipping-paths) と併用できます。「ヒント付き」のカラムは、専用カラムと同等のパフォーマンスを提供します。
 - **パスおよび型のインスペクションの容易さ** - JSON 型は、推論された型やパスを判定するための [インスペクション関数](/sql-reference/data-types/newjson#introspection-functions) をサポートしていますが、`DESCRIBE` などを用いた静的な構造のほうが、確認・探索がより簡単な場合があります。
@@ -529,7 +523,6 @@ INSERT INTO people FORMAT JSONAsObject
 
 1行が挿入されました。経過時間: 0.004秒。
 ```
-
 
 ```sql
 SELECT *
@@ -615,7 +608,6 @@ SELECT json.name, json.email FROM people
 
 行に存在しない列は `NULL` として返されることに注意してください。
 
-
 さらに、同じパス内で型ごとに個別のサブカラムが作成されます。たとえば、`company.labels.type` には `String` と `Array(Nullable(String))` の両方に対してサブカラムが存在します。可能な場合は両方が返されますが、`.:` 構文を使用して特定のサブカラムを指定できます。
 
 ```sql
@@ -665,7 +657,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 対象の JSON 列 {#targeted-json-column}
 
@@ -741,7 +732,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 
 [Introspection 関数](/sql-reference/data-types/newjson#introspection-functions) を使用して、`company.labels` 列に対して推論されたパスと型を確認できます。
 
-
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
 FROM people
@@ -765,7 +755,6 @@ FORMAT PrettyJsonEachRow
 
 2行のセット。経過時間: 0.003秒
 ```
-
 
 ### 型ヒントの使用とパスのスキップ {#using-type-hints-and-skipping-paths}
 
@@ -839,7 +828,6 @@ FORMAT PrettyJsonEachRow
 ```
 
 さらに、[`SKIP` および `SKIP REGEXP`](/sql-reference/data-types/newjson) パラメータを使って、保存したくない JSON 内のパスをスキップすることで、保存容量を最小化し、不要なパスに対する無駄な推論を避けることができます。たとえば、上記のデータに対して 1 つの JSON カラムを使用する場合、`address` と `company` のパスをスキップできます。
-
 
 ```sql
 CREATE TABLE people
@@ -924,7 +912,6 @@ FORMAT PrettyJSONEachRow
 
 2行が返されました。経過時間: 0.004秒
 ```
-
 
 #### 型ヒントによるパフォーマンス最適化 {#optimizing-performance-with-type-hints}  
 

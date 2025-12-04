@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # ODBC 表引擎 {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -19,8 +18,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 为了安全地使用 ODBC 连接，ClickHouse 使用单独的程序 `clickhouse-odbc-bridge`。如果从 `clickhouse-server` 直接加载 ODBC 驱动程序，驱动程序的问题可能会导致 ClickHouse 服务器崩溃。ClickHouse 会在需要时自动启动 `clickhouse-odbc-bridge`。ODBC 桥接程序与 `clickhouse-server` 来自同一个安装包。
 
 该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -49,7 +46,6 @@ ENGINE = ODBC(数据源, external_database, external_table)
 * `external_table` — `external_database` 中表的名称。
 
 这些参数也可以通过[命名集合](operations/named-collections.md)传递。
-
 
 ## 使用示例 {#usage-example}
 
@@ -139,7 +135,6 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

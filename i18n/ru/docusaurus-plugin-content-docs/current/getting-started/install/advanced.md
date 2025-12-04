@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## Сборка из исходных кодов {#compile-from-source}
 
 Чтобы вручную собрать ClickHouse, следуйте инструкциям по сборке для [Linux](/development/build.md) или [macOS](/development/build-osx.md).
@@ -29,7 +27,6 @@ doc_type: 'guide'
 ```
 
 В Gentoo можно просто выполнить `emerge clickhouse`, чтобы установить ClickHouse из исходного кода.
-
 
 ## Установка бинарника, сгенерированного CI {#install-a-ci-generated-binary}
 

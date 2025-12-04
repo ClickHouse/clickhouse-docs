@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # 如何使用 ClickHouse MCP Server 构建 OpenAI Agent {#how-to-build-an-openai-agent-using-clickhouse-mcp-server}
 
 在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) agent，使其可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 交互。
@@ -19,8 +17,6 @@ doc_type: 'guide'
 :::note 示例笔记本
 该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中找到对应的笔记本。
 :::
-
-
 
 ## 前置条件 {#prerequisites}
 
@@ -32,7 +28,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 安装库 {#install-libraries}
 
 运行以下命令安装所需库：
@@ -41,7 +36,6 @@ doc_type: 'guide'
 pip install -q --upgrade pip
 pip install -q openai-agents
 ```
-
 
 ## 设置凭据 {#setup-credentials}
 
@@ -55,7 +49,6 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("输入 OpenAI API 密钥：")
 ```response title="Response"
 输入 OpenAI API 密钥:········
 ```
-
 
 ## 初始化 MCP Server 和 OpenAI 代理 {#initialize-mcp-and-agent}
 
@@ -154,7 +147,6 @@ async with MCPServerStdio(
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
-
 
 ```response title="响应"
 运行中：2025 年迄今为止最大的 GitHub 项目是什么？

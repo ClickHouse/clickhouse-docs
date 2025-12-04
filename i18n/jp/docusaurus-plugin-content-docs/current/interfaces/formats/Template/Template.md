@@ -13,8 +13,6 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 他の標準フォーマットでは対応できない、より高度なカスタマイズが必要な場合に、  
@@ -31,8 +29,6 @@ doc_type: 'guide'
 | `format_template_row_format`                                                                             | 行のフォーマット文字列を[インライン](#inline_specification)で指定します。                                                   |                                                                           
 | `format_template_resultset_format`                                                                       | 結果セットのフォーマット文字列を[インライン](#inline_specification)で指定します。                                           |
 | 他のフォーマットの一部の設定（例: `JSON` エスケープを使用する場合の `output_format_json_quote_64bit_integers` |                                                                                                                              |
-
-
 
 ## 設定とエスケープ規則 {#settings-and-escaping-rules}
 
@@ -115,7 +111,6 @@ Where:
 `format_template_resultset` 設定が空文字列の場合、デフォルト値として `${data}` が使用されます。
 :::
 
-
 挿入クエリでは、先頭または末尾を省略する場合（例を参照）、一部の列やフィールドをスキップできるフォーマットを利用できます。
 
 ### インライン指定 {#inline_specification}
@@ -130,8 +125,6 @@ Where:
 - `format_template_row_format` を使用する場合は [`format_template_row`](#format_template_row)。
 - `format_template_resultset_format` を使用する場合は [`format_template_resultset`](#format_template_resultset)。
 :::
-
-
 
 ## 使用例 {#example-usage}
 
@@ -215,7 +208,6 @@ FORMAT Template
 ### インライン指定 {#in-line-specification}
 
 Markdown テーブルを手作業で整形するのにうんざりしていませんか？この例では、`Template` フォーマットとインライン指定の設定を使って、簡単なタスクをどのように実現できるかを見ていきます。ここでは、`system.formats` テーブルからいくつかの ClickHouse フォーマット名を `SELECT` し、それらを Markdown テーブルとして整形します。これは、`Template` フォーマットと `format_template_row_format` および `format_template_resultset_format` 設定を使うことで容易に実現できます。
-
 
 前の例では、結果セットおよび行フォーマットの文字列を別ファイルに記述し、それらファイルへのパスをそれぞれ `format_template_resultset` および `format_template_row` 設定で指定しました。ここではテンプレートがごく単純で、Markdown テーブルを作るためのいくつかの `|` と `-` だけで構成されるため、インラインで指定します。結果セットのテンプレート文字列は、`format_template_resultset_format` 設定を使って指定します。テーブルヘッダを作るために、`${data}` の前に `|ClickHouse Formats|\n|---|\n` を追加しています。行に対しては、`format_template_row_format` 設定を使用し、テンプレート文字列 ``|`{0:XML}`|`` を指定します。`Template` フォーマットは、指定したフォーマットで整形した行をプレースホルダ `${data}` に挿入します。この例ではカラムは 1 つだけですが、もし追加したい場合は、行テンプレート文字列に `{1:XML}`、`{2:XML}` ... のように追記し、適切なエスケープルールを選択すればかまいません。この例ではエスケープルールとして `XML` を使用しています。
 

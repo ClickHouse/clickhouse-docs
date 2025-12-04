@@ -13,14 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 `LineAsStringWithNames` フォーマットは [`LineAsString`](./LineAsString.md) フォーマットに似ていますが、
 2 行のヘッダー行を出力します。1 行目は列名、2 行目は型です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -43,6 +39,5 @@ John    30
 Jane    25
 Peter    35
 ```
-
 
 ## フォーマット設定 {#format-settings}

@@ -50,7 +50,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNames;
 ```
 
-
 ### データの読み込み {#reading-data}
 
 `JSONCompactEachRowWithNames` フォーマットを使用してデータを読み込みます。
@@ -83,7 +82,6 @@ FORMAT JSONCompactEachRowWithNames
 ["2022-05-07", 2021, "Stevenage Borough", "Salford City", 4, 2]
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

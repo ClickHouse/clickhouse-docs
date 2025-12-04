@@ -7,8 +7,6 @@ keywords: ['原生协议', 'TCP 协议', '协议基础', '二进制协议', '客
 doc_type: 'guide'
 ---
 
-
-
 # 基础知识 {#basics}
 
 :::note
@@ -22,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 本文档描述了 ClickHouse TCP 客户端使用的二进制协议。
 
-
 ## Varint {#varint}
 
 对于长度、数据包代码以及其他场景，采用 *无符号 varint* 编码。
@@ -31,8 +28,6 @@ import TabItem from '@theme/TabItem';
 :::note
 *有符号* varint 不会被使用。
 :::
-
-
 
 ## 字符串 {#string}
 
@@ -119,8 +114,6 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-
-
 ## 整数 {#integers}
 
 :::tip
@@ -154,7 +147,6 @@ fmt.Println(d) // 1000
     ```
   </TabItem>
 </Tabs>
-
 
 ## 布尔值 {#boolean}
 

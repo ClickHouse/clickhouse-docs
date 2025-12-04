@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## Описание {#description}
 
 Формат `Npy` предназначен для загрузки массива NumPy из файла `.npy` в ClickHouse. 
@@ -22,8 +20,6 @@ doc_type: 'reference'
 Во время импорта ClickHouse рассматривает внешнюю размерность массива как массив строк с одним столбцом. 
 
 В таблице ниже приведены поддерживаемые типы данных Npy и соответствующие им типы в ClickHouse:
-
-
 
 ## Соответствие типов данных {#data_types-matching}
 
@@ -41,8 +37,6 @@ doc_type: 'reference'
 | `f8`                      | [Float64](/sql-reference/data-types/float.md)                 | `f8`                      |
 | `S`, `U`                  | [String](/sql-reference/data-types/string.md)                 | `S`                       |
 |                           | [FixedString](/sql-reference/data-types/fixedstring.md)       | `S`                       |
-
-
 
 ## Пример использования {#example-usage}
 
@@ -75,6 +69,5 @@ FROM file('example_array.npy', Npy)
 ```bash
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}
 ```
-
 
 ## Настройки формата {#format-settings}

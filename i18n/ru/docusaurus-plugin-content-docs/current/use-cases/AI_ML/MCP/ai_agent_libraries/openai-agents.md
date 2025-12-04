@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать агента OpenAI с использованием ClickHouse MCP Server {#how-to-build-an-openai-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента [OpenAI](https://github.com/openai/openai-agents-python), который
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установка библиотек {#install-libraries}
 
 Установите необходимую библиотеку, выполнив следующие команды:
@@ -42,7 +37,6 @@ doc_type: 'guide'
 pip install -q --upgrade pip
 pip install -q openai-agents
 ```
-
 
 ## Настройка учетных данных {#setup-credentials}
 
@@ -56,7 +50,6 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("Введите API-ключ Open
 ```response title="Response"
 Введите API-ключ OpenAI: ········
 ```
-
 
 ## Инициализация MCP Server и агента OpenAI {#initialize-mcp-and-agent}
 
@@ -155,7 +148,6 @@ async with MCPServerStdio(
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
-
 
 ```response title="Ответ"
 Выполняется: Какой самый крупный проект на GitHub на данный момент в 2025 году?

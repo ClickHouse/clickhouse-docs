@@ -19,13 +19,9 @@ title: '实践经验 - 调试洞见'
 description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-
-
 # ClickHouse 运维：社区调试洞见 {#clickhouse-operations-community-debugging-insights}
 *本指南是基于社区活动中总结出的经验与结论的一部分。想获取更多真实场景下的解决方案与洞见，可以[按具体问题浏览](./community-wisdom.md)。*
 *是否正为高昂的运维成本发愁？请查看[成本优化](./cost-optimization.md)社区洞见指南。*
-
-
 
 ## 关键系统表 {#essential-system-tables}
 
@@ -86,7 +82,6 @@ GROUP BY database, table
 ORDER BY count() DESC;
 ```
 
-
 ## 常见生产环境问题 {#common-production-issues}
 
 ### 磁盘空间问题 {#disk-space-problems}
@@ -125,7 +120,6 @@ WHERE is_done = 0;
 ```
 
 先在较小的数据集上验证模式变更。
-
 
 ## 内存与性能 {#memory-and-performance}
 
@@ -169,7 +163,6 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB 阈值
 **相关文档**
 
 * [自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key)
-
 
 ## 快速参考 {#quick-reference}
 

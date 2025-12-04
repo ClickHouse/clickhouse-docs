@@ -7,19 +7,13 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-
-
 # sumMap {#summap}
-
-
 
 ## 説明 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`sumMap`
 集約コンビネータ関数を使用して、各キーごとに Map 内の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum)
 関数に適用できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -67,7 +61,6 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':80,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

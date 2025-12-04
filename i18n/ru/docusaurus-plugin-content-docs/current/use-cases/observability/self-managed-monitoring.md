@@ -11,7 +11,6 @@ import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
 # Самостоятельно управляемый мониторинг {#cloud-monitoring}
 
 В этом руководстве корпоративным командам, оценивающим open source-версию ClickHouse, предоставляется исчерпывающая информация о возможностях мониторинга и наблюдаемости для продакшн-развертываний. Корпоративных клиентов часто интересуют функции мониторинга «из коробки», интеграция с существующими стеками наблюдаемости, включая такие инструменты, как Datadog и AWS CloudWatch, а также то, как возможности мониторинга ClickHouse соотносятся с мониторингом в самостоятельно развернутых инсталляциях.

@@ -10,12 +10,9 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
 # データの非正規化 {#denormalizing-data}
 
 データの非正規化は、フラット化されたテーブルを使用して `JOIN` を回避し、クエリのレイテンシーを最小限に抑えるために ClickHouse で用いられる手法です。
-
-
 
 ## 正規化スキーマと非正規化スキーマの比較 {#comparing-normalized-vs-denormalized-schemas}
 
@@ -29,8 +26,6 @@ import Image from '@theme/IdealImage';
 
 NoSQL ソリューションによって一般的になった手法として、`JOIN` をサポートしない場合にデータを非正規化し、すべての統計情報や関連行を親行上の列およびネストされたオブジェクトとして保存する、というものがあります。例えばブログ用のサンプルスキーマでは、すべての `Comments` を、それぞれの投稿上のオブジェクトの `Array` として保存できます。
 
-
-
 ## 非正規化を行うタイミング {#when-to-use-denormalization}
 
 一般的には、次のようなケースで非正規化を行うことを推奨します。
@@ -43,8 +38,6 @@ NoSQL ソリューションによって一般的になった手法として、`J
 すべての情報を非正規化する必要はなく、頻繁にアクセスする必要がある重要な情報だけを非正規化すれば十分です。
 
 非正規化の処理は、ClickHouse 内で行うことも、上流のシステム（例: Apache Flink）で行うこともできます。
-
-
 
 ## 頻繁に更新されるデータでの非正規化は避ける {#avoid-denormalization-on-frequently-updated-data}
 
@@ -60,8 +53,6 @@ ClickHouse では、非正規化はクエリ性能を最適化するためにユ
 <br />
 
 そのため、すべての非正規化済みオブジェクトを定期的に再ロードするバッチ更新プロセスのほうが一般的です。
-
-
 
 ## 非正規化の実用的なケース {#practical-cases-for-denormalization}
 
@@ -149,7 +140,6 @@ LIMIT 5
 まず、次のコマンドでデータを挿入します。
 
 <p />
-
 
 ```sql
 CREATE TABLE users
@@ -251,7 +241,6 @@ ORDER BY c DESC LIMIT 5
 
 同様に、これらのリンクも過度に頻繁に発生するイベントではありません。
 
-
 ```sql
 SELECT
   round(avg(c)) AS avg_votes_per_hr,
@@ -352,7 +341,6 @@ Peak memory usage: 6.98 GiB.
 
 > ここでは処理時間に注目してください。約 2 分で 6,600 万行を非正規化できました。後ほど説明するように、この処理はスケジュール実行が可能です。
 
-
 `PostId` ごとに `PostLinks` を 1 つの配列にまとめるため、結合前に `groupArray` 関数を使用している点に注意してください。この配列は、その後 `LinkedPosts` と `DuplicatePosts` という 2 つのサブリストにフィルタリングされ、外部結合によって生じた空の結果も除外されます。
 
 新しい非正規化構造を確認するために、いくつかの行を選択してみましょう。
@@ -369,7 +357,6 @@ Row 1:
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## 非正規化のオーケストレーションとスケジューリング {#orchestrating-and-scheduling-denormalization}
 

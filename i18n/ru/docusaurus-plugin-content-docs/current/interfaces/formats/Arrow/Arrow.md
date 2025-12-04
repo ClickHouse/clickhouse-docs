@@ -72,7 +72,6 @@ doc_type: 'reference'
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
 ### Выбор данных {#selecting-data}
 
 Вы можете выбрать данные из таблицы ClickHouse и сохранить их в файл формата Arrow с помощью следующей команды:
@@ -80,7 +79,6 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## Настройки формата {#format-settings}
 

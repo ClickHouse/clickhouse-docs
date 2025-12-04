@@ -7,15 +7,11 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-
-
 # remote、remoteSecure 表函数 {#remote-remotesecure-table-function}
 
 表函数 `remote` 允许按需访问远程服务器，即无需创建 [Distributed](../../engines/table-engines/special/distributed.md) 表。表函数 `remoteSecure` 与 `remote` 相同，只是通过安全连接进行访问。
 
 这两个函数都可以在 `SELECT` 和 `INSERT` 查询中使用。
-
-
 
 ## 语法 {#syntax}
 
@@ -27,7 +23,6 @@ remoteSecure(addresses_expr, [db, table, user [, password], sharding_key])
 remoteSecure(addresses_expr, [db.table, user [, password], sharding_key])
 remoteSecure(named_collection[, option=value [,..]])
 ```
-
 
 ## 参数 {#parameters}
 
@@ -42,13 +37,9 @@ remoteSecure(named_collection[, option=value [,..]])
 
 这些参数也可以通过 [命名集合](operations/named-collections.md) 传递。
 
-
-
 ## 返回值 {#returned-value}
 
 位于远程服务器上的数据表。
-
-
 
 ## 用法 {#usage}
 
@@ -80,7 +71,6 @@ localhost
 ```text
 example01-01-1,example01-02-1
 ```
-
 
 ## 示例 {#examples}
 
@@ -170,7 +160,6 @@ INSERT INTO FUNCTION
 remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
-
 
 ## 通配模式 {#globs-in-addresses}
 

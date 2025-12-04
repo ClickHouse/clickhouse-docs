@@ -7,13 +7,9 @@ title: 'Decimal、Decimal(P)、Decimal(P, S)、Decimal32(S)、Decimal64(S)、Dec
 doc_type: 'reference'
 ---
 
-
-
 # Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S) {#decimal-decimalp-decimalp-s-decimal32s-decimal64s-decimal128s-decimal256s}
 
 有符号定点数，在执行加法、减法和乘法运算时保持精度。对于除法运算，最低有效数字会被直接截断（不进行四舍五入）。
-
-
 
 ## 参数 {#parameters}
 
@@ -28,8 +24,6 @@ Decimal(P) 等价于 Decimal(P, 0)。类似地，语法 Decimal 等价于 Decima
 - P 在 \[ 19 : 38 \] 范围内 —— Decimal128(S)
 - P 在 \[ 39 : 76 \] 范围内 —— Decimal256(S)
 
-
-
 ## Decimal 值范围 {#decimal-value-ranges}
 
 - Decimal(P, S) - ( -1 \* 10^(P - S), 1 \* 10^(P - S) )
@@ -40,15 +34,11 @@ Decimal(P) 等价于 Decimal(P, 0)。类似地，语法 Decimal 等价于 Decima
 
 例如，Decimal32(4) 的取值范围为 -99999.9999 到 99999.9999，步长为 0.0001。
 
-
-
 ## 内部表示 {#internal-representation}
 
 在内部，数据表示为具有相应位宽的普通有符号整数。可在内存中存储的实际取值范围比上面指定的范围略大，只会在从字符串转换时进行范围检查。
 
 由于现代 CPU 并不原生支持 128 位和 256 位整数，对 Decimal128 和 Decimal256 的运算是通过仿真实现的。因此，Decimal128 和 Decimal256 的运行速度明显慢于 Decimal32/Decimal64。
-
-
 
 ## 运算和结果类型 {#operations-and-result-type}
 
@@ -70,8 +60,6 @@ scale 的规则：
 Decimal 与 Float32/Float64 之间的运算未定义。如有需要，可以显式使用 toDecimal32、toDecimal64、toDecimal128 或 toFloat32、toFloat64 内置函数对其中一个参数进行类型转换。请注意，结果会丢失精度，并且类型转换是计算开销较大的操作。
 
 某些作用于 Decimal 的函数会返回 Float64 结果（例如 var 或 stddev）。中间计算仍可能以 Decimal 进行，这可能导致在数值相同的前提下，使用 Float64 输入与使用 Decimal 输入得到的结果不同。
-
-
 
 ## 溢出检查 {#overflow-checks}
 

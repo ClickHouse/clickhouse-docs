@@ -8,8 +8,6 @@ title: 'executable'
 doc_type: 'reference'
 ---
 
-
-
 # 用于 UDF 的 `executable` 表函数 {#executable-table-function-for-udfs}
 
 `executable` 表函数会基于用户自定义函数（UDF）的输出创建一张表，该函数定义在一个向 **stdout** 输出行的脚本中。可执行脚本存储在 `users_scripts` 目录中，并且可以从任意数据源读取数据。请确保你的 ClickHouse 服务器具备运行该可执行脚本所需的全部软件包。例如，如果这是一个 Python 脚本，则要确保服务器已经安装了所需的 Python 包。
@@ -19,8 +17,6 @@ doc_type: 'reference'
 :::note
 普通 UDF 函数与 `executable` 表函数和 `Executable` 表引擎之间的一个关键区别在于，普通 UDF 函数不能改变行数。例如，如果输入是 100 行，则结果也必须返回 100 行。使用 `executable` 表函数或 `Executable` 表引擎时，你的脚本可以执行任意所需的数据转换，包括复杂聚合。
 :::
-
-
 
 ## 语法 {#syntax}
 
@@ -90,7 +86,6 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 └────┴────────────┘
 ```
 
-
 ## 设置 {#settings}
 
 - `send_chunk_header` - 控制在发送要处理的数据块之前，是否先发送行数。默认值为 `false`。
@@ -99,8 +94,6 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 - `command_termination_timeout` — 可执行脚本应包含主读写循环。在表函数被销毁后，管道会被关闭，可执行文件有 `command_termination_timeout` 秒的时间完成关闭，然后 ClickHouse 会向子进程发送 SIGTERM 信号。以秒为单位指定。默认值为 10。
 - `command_read_timeout` - 从命令的 stdout 读取数据的超时时间，单位为毫秒。默认值为 10000。
 - `command_write_timeout` - 向命令的 stdin 写入数据的超时时间，单位为毫秒。默认值为 10000。
-
-
 
 ## 将查询结果传递给脚本 {#passing-query-results-to-a-script}
 

@@ -7,19 +7,13 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf {#countif}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count)
 для подсчёта числа строк, удовлетворяющих условию,
 с помощью агрегатной функции-комбинатора `countIf`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -56,7 +50,6 @@ GROUP BY user_id;
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

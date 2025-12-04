@@ -33,7 +33,6 @@ Docker Compose は、デフォルトの `otel-collector` セットアップに�
 
 これらのポートにより、多様なテレメトリソースとの連携が可能になり、OpenTelemetry collector はさまざまなインジェスト要件に対応できる本番運用向けの構成になります。
 
-
 ### 適しているケース {#suitable-for}
 
 * ローカルでのテスト
@@ -116,7 +115,6 @@ HYPERDX_OPAMP_PORT=4320
 # OTel/ClickHouse 設定 {#otelclickhouse-config}
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
-
 
 ### OpenTelemetry collector の設定 {#configuring-collector}
 

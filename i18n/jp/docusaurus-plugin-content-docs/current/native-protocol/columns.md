@@ -7,13 +7,9 @@ keywords: ['ネイティブプロトコル 列型', '列型', 'データ型', '�
 doc_type: 'reference'
 ---
 
-
-
 # 列の型 {#column-types}
 
 データ型の一般的な説明については、[データ型](/sql-reference/data-types/) を参照してください。
-
-
 
 ## 数値型 {#numeric-types}
 
@@ -33,19 +29,13 @@ doc_type: 'reference'
 
 IEEE 754 のバイナリ表現による Float32 および Float64 型です。
 
-
-
 ## String {#string}
 
 単なる `String` の配列であり、各要素は (len, value) です。
 
-
-
 ## FixedString(N) {#fixedstringn}
 
 長さ N バイトのバイト列の配列。
-
-
 
 ## IP {#ip}
 
@@ -53,13 +43,9 @@ IPv4 は `UInt32` 数値型のエイリアスであり、`UInt32` として表�
 
 IPv6 は `FixedString(16)` のエイリアスであり、バイナリ形式で直接表現されます。
 
-
-
 ## Tuple {#tuple}
 
 Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) は、連続してエンコードされた 2 つのカラムにすぎません。
-
-
 
 ## Map {#map}
 
@@ -67,15 +53,11 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 
 `Keys` および `Values` 列の行数は、`Offsets` の末尾の値と同じになります。
 
-
-
 ## Array {#array}
 
 `Array(T)` は、`Offsets ColUInt64` と `Data T` の 2 列から構成されます。
 
 `Data` 内の行数は、`Offsets` の最後の値になります。
-
-
 
 ## Nullable {#nullable}
 
@@ -88,18 +70,13 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-
 ## UUID {#uuid}
 
 `FixedString(16)` の別名であり、UUID 値をバイナリ形式で表現します。
 
-
-
 ## Enum {#enum}
 
 `Int8` または `Int16` の別名ですが、それぞれの整数は特定の `String` 値にマッピングされます。
-
-
 
 ## `LowCardinality` 型 {#low-cardinality}
 
@@ -118,7 +95,6 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 // CardinalityKeyはIndexのサイズに応じて選択されます。すなわち、選択された型の最大値は
 // Index要素の任意のインデックスを表現可能である必要があります。
 ```
-
 
 ## Bool {#bool}
 

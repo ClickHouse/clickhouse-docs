@@ -30,16 +30,19 @@ CREATE TABLE dbpedia
 
 ```
 
-
 ## テーブルの読み込み {#load-table}
 
 すべての Parquet ファイルからデータセットを読み込むには、次のシェルコマンドを実行します。
 
 ```shell
-$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+for i in $(seq 0 25); do
+  echo "ファイル ${i} を処理中..."
+  clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+  echo "ファイル ${i} の処理が完了しました。"
+done
 ```
 
-別の方法として、以下のように個々の SQL ステートメントを実行して、25 個の Parquet ファイルそれぞれを読み込むこともできます。
+別の方法として、次に示すように個々の SQL 文を実行して、25 個の各 Parquet ファイルを読み込むこともできます。
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -118,7 +121,6 @@ LIMIT 20
 クエリレイテンシを記録しておき、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにします。
 また、実際の計算リソース使用量とストレージ帯域幅使用量を把握するため、OS ファイルキャッシュがコールドな状態および `max_threads=1` の条件でのクエリレイテンシも記録してください（それを基に、数百万ベクトル規模の本番データセットでの値を外挿します）。
 
-
 ## ベクトル類似度インデックスを作成する {#build-vector-similarity-index}
 
 `vector` 列にベクトル類似度インデックスを定義・作成するには、次の SQL を実行します。
@@ -132,7 +134,6 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 インデックス作成および検索のためのパラメータとパフォーマンス上の考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
 
 インデックスの構築および保存処理には、利用可能な CPU コア数やストレージ帯域幅によっては数分かかる場合があります。
-
 
 ## ANN 検索を実行する {#perform-ann-search}
 
@@ -180,7 +181,6 @@ LIMIT 20
 20行を取得しました。経過時間: 0.025秒。処理: 32.03千行、2.10 MB (1.29百万行/秒、84.80 MB/秒)
 ```
 
-
 ## 検索クエリ用の埋め込みベクトルの生成 {#generating-embeddings-for-search-query}
 
 これまでに見てきた類似度検索クエリでは、`dbpedia` テーブル内に既に存在するベクトルの1つを検索ベクトルとして使用していました。実際のアプリケーションでは、検索ベクトルは、自然言語で記述されたものを含むユーザーの入力クエリに対して生成する必要があります。検索ベクトルは、データセット用の埋め込みベクトルを生成する際に使用したものと同じ LLM モデルを使って生成しなければなりません。
@@ -221,7 +221,6 @@ while True:
         print(row[0], row[1], row[2])
         print("---------------")
 ```
-
 
 ## Q&amp;A デモアプリケーション {#q-and-a-demo-application}
 

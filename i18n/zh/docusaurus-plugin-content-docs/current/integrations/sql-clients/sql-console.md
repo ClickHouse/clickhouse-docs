@@ -47,7 +47,6 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
-
 # SQL 控制台 {#sql-console}
 
 SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最简便方式。您可以使用 SQL 控制台：
@@ -56,8 +55,6 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最�
 - 查看、筛选和排序表数据
 - 只需几次点击即可执行查询并将结果数据可视化
 - 与团队成员共享查询，从而更高效地协作
-
-
 
 ## 浏览数据表 {#exploring-tables}
 
@@ -82,8 +79,6 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最�
 可以使用单元格检查器工具查看单个单元格中包含的大量数据。要打开它，请右键单击某个单元格并选择“Inspect Cell”。可以通过单击检查器内容右上角的复制图标来复制单元格检查器中的内容。
 
 <Image img={inspecting_cell_content} size="lg" border alt="单元格检查器对话框显示所选单元格的内容"/>
-
-
 
 ## 筛选和排序表格 {#filtering-and-sorting-tables}
 
@@ -124,8 +119,6 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 :::
 
 你可以通过阅读 (link) 查询文档来进一步了解如何在 SQL 控制台中编写查询。
-
-
 
 ## 创建和运行查询 {#creating-and-running-a-query}
 
@@ -181,8 +174,6 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 你也可以使用保存按钮或 `cmd / ctrl + s` 键盘快捷键来保存查询。
 
 <Image img={save_the_query} size="lg" border alt="Query Editor 工具栏中的保存按钮"/>
-
-
 
 ## 使用 GenAI 管理查询 {#using-genai-to-manage-queries}
 
@@ -294,8 +285,6 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 
 1. 点击 _+_ 图标创建一个新查询，并粘贴以下代码：
 
-
-
 ```sql
    -- 按年份显示 uk_price_paid 表中所有交易的总价格和总交易数。
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
@@ -309,7 +298,6 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 4. 选择 **Apply** 将建议的更改应用到查询中，然后点击 **Run**。
 
 请注意，GenAI 是一项实验性功能。在对任何数据集运行由 GenAI 生成的查询时，请务必谨慎。
-
 
 ## 高级查询功能 {#advanced-querying-features}
 
@@ -338,8 +326,6 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 可以直接在 SQL 控制台中将查询结果集轻松导出为 CSV 格式。为此，在结果面板工具栏右侧打开 `•••` 菜单，然后选择“Download as CSV”。
 
 <Image img={download_as_csv} size="lg" border alt="下载为 CSV"/>
-
-
 
 ## 可视化查询数据 {#visualizing-query-data}
 
@@ -400,7 +386,6 @@ SQL 控制台支持十种图表类型，可以在图表配置面板中的图表�
 在某些情况下，可能需要分别调整每个字段的坐标轴范围。这也可以在图表配置面板的 “Advanced” 部分中，通过为轴范围指定最小值和最大值来实现。比如，上面的图表已经不错，但为了更好地展示 `trip_total` 和 `fare_total` 字段之间的相关性，需要对轴范围稍作调整：
 
 <Image img={adjust_axis_scale} size="lg" border alt="调整坐标轴刻度" />
-
 
 ## 共享查询 {#sharing-queries}
 

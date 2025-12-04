@@ -6,8 +6,6 @@ title: 'system.quotas'
 doc_type: 'reference'
 ---
 
-
-
 # system.quotas {#systemquotas}
 
 [クォータ](../../operations/system-tables/quotas.md)に関する情報を含みます。
@@ -29,8 +27,6 @@ Columns:
   - `1` — クォータは `apply_to_except` に列挙されたユーザーを除くすべてのユーザーに適用されます。
 - `apply_to_list` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — クォータを適用するユーザー名/[ロール](../../guides/sre/user-management/index.md#role-management)のリスト。
 - `apply_to_except` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — クォータを適用しないユーザー名/ロールのリスト。
-
-
 
 ## 関連項目 {#see-also}
 

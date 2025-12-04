@@ -7,13 +7,9 @@ title: 'Табличный движок Redis'
 doc_type: 'guide'
 ---
 
-
-
 # Табличный движок Redis {#redis-table-engine}
 
 Этот движок позволяет интегрировать ClickHouse с [Redis](https://redis.io/). Поскольку Redis использует модель ключ–значение (kv), настоятельно рекомендуется выполнять только точечные запросы, например `where k=xx` или `where k in (xx, xx)`.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -45,7 +41,6 @@ PRIMARY KEY(primary_key_name);
 :::note Filtering
 Запросы с `key equals` или `in filtering` будут оптимизированы до поиска по нескольким ключам в Redis. Если запросы выполняются без ключа фильтрации, будет выполнено полное сканирование таблицы, что является ресурсоёмкой операцией.
 :::
-
 
 ## Пример использования {#usage-example}
 
@@ -154,7 +149,6 @@ Join:
 ```sql
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
-
 
 ## Ограничения {#limitations}
 

@@ -7,13 +7,9 @@ title: 'prometheusQueryRange'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция prometheusQuery {#prometheusquery-table-function}
 
 Вычисляет запрос Prometheus, используя данные из таблицы TimeSeries в заданном интервале времени оценки.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -23,7 +19,6 @@ prometheusQueryRange(db_name.time_series_table, 'promql_query', start_time, end_
 prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, step)
 ```
 
-
 ## Аргументы {#arguments}
 
 - `db_name` - имя базы данных, в которой находится таблица TimeSeries.
@@ -32,8 +27,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 - `start_time` - время начала диапазона вычисления.
 - `end_time` - время окончания диапазона вычисления.
 - `step` - шаг, используемый для перебора времени вычисления от `start_time` до `end_time` (включительно).
-
-
 
 ## Возвращаемое значение {#returned_value}
 
@@ -45,8 +38,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 | matrix      | tags Array(Tuple(String, String)), time_series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, 'up[1m]') |
 | scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string      | string String | prometheusQuery(mytable, '"abc"') |
-
-
 
 ## Пример {#example}
 

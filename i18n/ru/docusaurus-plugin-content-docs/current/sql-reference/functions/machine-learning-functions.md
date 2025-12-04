@@ -6,29 +6,19 @@ title: 'Функции машинного обучения'
 doc_type: 'reference'
 ---
 
-
-
 # Функции машинного обучения {#machine-learning-functions}
-
-
 
 ## evalMLMethod {#evalmlmethod}
 
 Для предсказаний с использованием обученных регрессионных моделей используется функция `evalMLMethod`. См. ссылку в разделе `linearRegression`.
 
-
-
 ## stochasticLinearRegression {#stochasticlinearregression}
 
 Агрегатная функция [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression) реализует метод стохастического градиентного спуска с использованием линейной модели и функции потерь MSE. Использует `evalMLMethod` для предсказаний на новых данных.
 
-
-
 ## stochasticLogisticRegression {#stochasticlogisticregression}
 
 Агрегатная функция [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression) реализует метод стохастического градиентного спуска для задачи бинарной классификации. Использует `evalMLMethod` для предсказания по новым данным.
-
-
 
 ## naiveBayesClassifier {#naivebayesclassifier}
 
@@ -129,7 +119,6 @@ SELECT naiveBayesClassifier('language', 'Как дела?');
 | **priors** | Априорные вероятности классов (% документов, принадлежащих каждому классу)                                                  | 60% для класса 0, 40% для класса 1                       | Равномерное распределение |
 
 **Руководство по обучению модели**
-
 
 **Формат файла**
 В человекочитаемом формате, при `n=1` и режиме `token`, модель может выглядеть следующим образом:

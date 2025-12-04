@@ -11,7 +11,6 @@ doc_type: 'guide'
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-
 ## ClickHouse への挿入と OLTP データベースへの挿入の違い {#inserting-into-clickhouse-vs-oltp-databases}
 
 OLAP（Online Analytical Processing）データベースである ClickHouse は、高いパフォーマンスとスケーラビリティに最適化されており、最大で 1 秒間に数百万行のデータを挿入できます。
@@ -24,8 +23,6 @@ PostgreSQL は、複数バージョン同時実行制御（MVCC: Multi-Version C
 
 高い挿入性能を実現しつつ強い一貫性保証も維持するためには、ClickHouse にデータを挿入する際に、以下で説明するシンプルなルールに従う必要があります。
 これらのルールに従うことで、ユーザーが初めて ClickHouse を利用する際に、OLTP データベースで有効だった挿入戦略をそのまま再現しようとして直面しがちな問題を回避できます。
-
-
 
 ## Insert のベストプラクティス {#best-practices-for-inserts}
 
@@ -83,8 +80,6 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 :::note
 データはデータベースストレージにフラッシュされるまではクエリで検索できないことと、バッファフラッシュは設定可能であることに注意してください。
 
-
-
 非同期インサートの設定に関する詳細な情報は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)にあり、さらに深掘りした内容は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 :::
 
@@ -120,8 +115,6 @@ ClickHouse は、インサート時（およびクエリ時）に多くの[入�
 
 詳細については [HTTP Interface](/interfaces/http) を参照してください。
 
-
-
 ## 基本例 {#basic-example}
 
 ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用できます。入門ガイド「[Creating Tables in ClickHouse](./creating-tables)」で作成したテーブルにデータを挿入してみましょう。
@@ -150,7 +143,6 @@ user_id message                                             timestamp           
 102         よく使用するクエリに基づいてデータをソートしてください  2024-11-13 00:00:00     2.718
 ```
 
-
 ## Postgres からのデータロード {#loading-data-from-postgres}
 
 Postgres からデータをロードするには、次の方法を利用できます。
@@ -164,8 +156,6 @@ Postgres からデータをロードするには、次の方法を利用でき�
 :::note 大きなデータセットの挿入にお困りですか？
 大きなデータセットの挿入について支援が必要な場合や、ClickHouse Cloud にデータをインポートする際にエラーが発生した場合は、support@clickhouse.com までご連絡ください。サポートいたします。
 :::
-
-
 
 ## コマンドラインからデータを挿入する {#inserting-data-from-command-line}
 

@@ -118,7 +118,6 @@ print(client.database)
 # 输出：'github' {#output-github}
 ```
 
-
 ## 客户端生命周期和最佳实践 {#client-lifecycle-and-best-practices}
 
 创建一个 ClickHouse Connect 客户端是一个成本较高的操作，涉及建立连接、获取服务器元数据以及初始化设置。请遵循以下最佳实践以获得最优性能：
@@ -157,7 +156,6 @@ for i in range(1000):
     result = client.query('SELECT count() FROM users')
     client.close()
 ```
-
 
 ### 多线程应用 {#multi-threaded-applications}
 
@@ -216,7 +214,6 @@ def worker(thread_id):
     client.close()
 ```
 
-
 ### 正确清理 {#proper-cleanup}
 
 在关闭时务必关闭客户端。请注意，只有当客户端拥有其连接池管理器时（例如使用自定义 TLS/代理选项创建时），`client.close()` 才会销毁客户端实例并关闭连接池中的 HTTP 连接。对于默认的共享连接池，请使用 `client.close_connections()` 主动清理套接字；否则，连接会通过空闲超时以及在进程退出时自动回收。
@@ -235,7 +232,6 @@ finally:
 with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
     result = client.query('SELECT 1')
 ```
-
 
 ### 何时使用多个客户端 {#when-to-use-multiple-clients}
 
@@ -282,7 +278,6 @@ WHERE date >= '2022-10-01 15:20:05'
 :::warning
 服务器端绑定（由 ClickHouse 服务器提供）仅支持 `SELECT` 查询。当前不适用于 `ALTER`、`DELETE`、`INSERT` 或其他类型的查询。未来可能会有变化；参见 [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092)。
 :::
-
 
 #### 客户端绑定 {#client-side-binding}
 
@@ -348,7 +343,6 @@ WHERE metric >= 35200.44
 
 :::
 
-
 ### `settings` 参数 {#settings-argument-1}
 
 所有主要的 ClickHouse Connect Client `insert` 和 `select` 方法都接受一个可选的 `settings` 关键字参数，用于为所执行的 SQL 语句传递 ClickHouse 服务器的[用户设置](/operations/settings/settings.md)。`settings` 参数应为一个字典，其中每个条目为一个 ClickHouse 设置名称及其对应的值。请注意，这些值在作为查询参数发送到服务器时会被转换为字符串。
@@ -363,7 +357,6 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
             'use_skip_indexes': False}
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
-
 
 ## Client `command` 方法 {#client-command-method}
 
@@ -408,7 +401,6 @@ print(result)
 client.command("DROP TABLE test_command")
 ```
 
-
 #### 返回单个值的简单查询 {#simple-queries-returning-single-values}
 
 ```python
@@ -426,7 +418,6 @@ version = client.command("SELECT version()")
 print(version)
 # 输出："25.8.2.29" {#output-258229}
 ```
-
 
 #### 带参数的命令 {#commands-with-parameters}
 
@@ -449,7 +440,6 @@ result = client.command(
 )
 ```
 
-
 #### 包含设置的命令 {#commands-with-settings}
 
 ```python
@@ -463,7 +453,6 @@ result = client.command(
     settings={"optimize_throw_if_noop": 1}
 )
 ```
-
 
 ## Client `query` 方法 {#client-query-method}
 
@@ -512,7 +501,6 @@ print([col_type.name for col_type in result.column_types])
 # 输出： ['String', 'String'] {#output-string-string}
 ```
 
-
 #### 获取查询结果 {#accessing-query-results}
 
 ```python
@@ -547,7 +535,6 @@ print(result.first_row)
 # 输出： (0, "0") {#output-0-0}
 ```
 
-
 #### 使用客户端参数查询 {#query-with-client-side-parameters}
 
 ```python
@@ -566,7 +553,6 @@ parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
 ```
 
-
 #### 使用服务端参数查询 {#query-with-server-side-parameters}
 
 ```python
@@ -580,7 +566,6 @@ parameters = {"db": "system", "tbl": "query_log"}
 
 result = client.query(query, parameters=parameters)
 ```
-
 
 #### 带有设置的查询 {#query-with-settings}
 
@@ -598,7 +583,6 @@ result = client.query(
     }
 )
 ```
-
 
 ### `QueryResult` 对象 {#the-queryresult-object}
 
@@ -675,7 +659,6 @@ data = [
 client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
-
 #### 面向列的插入 {#column-oriented-insert}
 
 ```python
@@ -692,7 +675,6 @@ data = [
 
 client.insert("users", data, column_names=["id", "name", "age"], column_oriented=True)
 ```
-
 
 #### 显式指定列类型的插入 {#insert-with-explicit-column-types}
 
@@ -716,7 +698,6 @@ client.insert(
 )
 ```
 
-
 #### 插入到指定数据库 {#insert-into-specific-database}
 
 ```python
@@ -737,7 +718,6 @@ client.insert(
     database="production",
 )
 ```
-
 
 ## 文件插入 {#file-inserts}
 

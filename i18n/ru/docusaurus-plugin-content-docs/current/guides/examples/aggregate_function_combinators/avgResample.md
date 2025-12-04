@@ -7,11 +7,7 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## Описание {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 может быть применён к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
 для подсчёта значений указанного ключевого столбца в фиксированном количестве
 интервалов (`N`).
-
-
 
 ## Пример использования {#example-usage}
 
@@ -70,7 +64,6 @@ FROM avg_wage;
 │ [11.5,12.95]     │
 └──────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

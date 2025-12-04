@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### 将 Elastic Agent 作为 OpenTelemetry 收集器运行
+### 将 Elastic Agent 作为 OpenTelemetry 收集器运行 {#sending-data-via-vector}
 
 Elastic Agent 包含一个内置的 EDOT Collector，使你可以一次性为应用和基础设施添加观测能力，并将数据发送到多个厂商和后端。
 

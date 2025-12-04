@@ -17,7 +17,6 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-
 # Google Cloud SQL Postgres 源端设置指南 {#google-cloud-sql-postgres-source-setup-guide}
 
 :::info
@@ -26,13 +25,9 @@ import Image from '@theme/IdealImage';
 
 :::
 
-
-
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
 Postgres 12 及更高版本
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -47,8 +42,6 @@ Postgres 12 及更高版本
 <Image img={cloudsql_logical_decoding1} alt="将 cloudsql.logical_decoding 设置为 on" size="lg" border/>
 <Image img={cloudsql_logical_decoding2} alt="已设置 cloudsql.logical_decoding 和 wal_sender_timeout" size="lg" border/>
 <Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border/>
-
-
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
 
@@ -82,8 +75,6 @@ Postgres 12 及更高版本
 
 [//]: # (TODO Add SSH Tunneling)
 
-
-
 ## 将 ClickPipes IP 添加到防火墙 {#add-clickpipes-ips-to-firewall}
 
 请按照以下步骤将 ClickPipes 的 IP 添加到您的网络中。
@@ -106,8 +97,6 @@ Postgres 12 及更高版本
 
 <Image img={firewall1} alt="将 ClickPipes 网络添加到防火墙" size="lg" border/>
 <Image img={firewall2} alt="已将 ClickPipes 网络添加到防火墙" size="lg" border/>
-
-
 
 ## 下一步 {#whats-next}
 

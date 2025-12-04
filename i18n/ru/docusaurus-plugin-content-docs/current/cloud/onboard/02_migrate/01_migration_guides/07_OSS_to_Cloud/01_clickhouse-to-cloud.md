@@ -16,7 +16,6 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
-
 # Миграция между самоуправляемым ClickHouse и ClickHouse Cloud {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
 <Image img={self_managed_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
@@ -70,7 +69,6 @@ FROM system.tables
 WHERE database = 'db' AND table = 'table'
 ```
 
-
 ### На целевой системе ClickHouse Cloud: {#on-the-destination-clickhouse-cloud-system}
 
 * Создайте базу данных назначения:
@@ -117,7 +115,6 @@ INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
-
 
 ## Миграция между сервисами ClickHouse Cloud {#migrating-between-clickhouse-cloud-services}
 

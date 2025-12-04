@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## OpenTelemetry Lambda レイヤーのインストール {#installing-the-otel-lambda-layers}
 
 OpenTelemetry プロジェクトは、次の目的で個別の Lambda レイヤーを提供しています：
@@ -196,7 +195,6 @@ service:
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
-
 
 ## インストールの確認 {#checking-the-installation}
 

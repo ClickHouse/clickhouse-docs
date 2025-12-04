@@ -23,7 +23,6 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
 **ただし、この HyperDX のディストリビューションではユーザー認証は無効になっています**
 
-
 ### 適した用途 {#suitable-for}
 
 * デモ
@@ -35,33 +34,33 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 <br />
 
 <VerticalStepper headerLevel="h3">
-  ### Docker を使用してデプロイする
+  ### Docker でデプロイする
 
-  ローカルモードでは、HyperDX UI がポート 8080 で動作します。
+  ローカルモードでは、HyperDX UI がポート 8080 で起動します。
 
   ```shell
-  docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+  docker run -p 8080:8080 clickhouse/clickstack-local:latest
   ```
 
   ### HyperDX UI にアクセスする
 
-  [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
+  HyperDX UI にアクセスするには、[http://localhost:8080](http://localhost:8080) を開きます。
 
-  **このデプロイモードでは認証が有効になっていないため、ユーザーアカウントの作成を求められることはありません。**
+  **このデプロイモードでは認証が有効になっていないため、ユーザー作成画面は表示されません。**
 
-  ClickHouse Cloud など、ご自身の外部 ClickHouse クラスターに接続します。
+  外部の ClickHouse クラスター（例: ClickHouse Cloud）に接続します。
 
-  <Image img={hyperdx_2} alt="ログイン作成" size="md" />
+  <Image img={hyperdx_2} alt="ログイン情報を作成" size="md" />
 
-  ソースを作成し、デフォルト値はすべてそのまま保持したうえで、`Table` フィールドに `otel_logs` を設定します。その他の設定は自動検出されるため、`Save New Source` をクリックできます。
+  ソースを作成し、すべてのデフォルト値はそのままにして、`Table` フィールドに `otel_logs` を入力します。その他の設定は自動検出されるはずなので、`Save New Source` をクリックします。
 
-  <Image img={hyperdx_logs} alt="ログソースの作成" size="md" />
+  <Image img={hyperdx_logs} alt="ログソースを作成" size="md" />
 </VerticalStepper>
 
 <JSONSupport />
 
-ローカルモード専用イメージを使用する場合、ユーザーは `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターだけを設定すればよく、例えば次のように指定します。
+ローカルモード専用イメージの場合は、`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターを設定するだけで十分です（例: 環境変数として設定）。
 
 ```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
 ```

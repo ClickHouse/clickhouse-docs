@@ -7,13 +7,9 @@ title: 'prometheusQueryRange'
 doc_type: 'reference'
 ---
 
-
-
 # prometheusQuery 表函数 {#prometheusquery-table-function}
 
 在一段评估时间范围内，使用 TimeSeries 表中的数据执行 Prometheus 查询。
-
-
 
 ## 语法 {#syntax}
 
@@ -23,7 +19,6 @@ prometheusQueryRange(db_name.time_series_table, 'promql_query', start_time, end_
 prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, step)
 ```
 
-
 ## 参数 {#arguments}
 
 - `db_name` - TimeSeries 表所在数据库的名称。
@@ -32,8 +27,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 - `start_time` - 评估区间的开始时间。
 - `end_time` - 评估区间的结束时间。
 - `step` - 用于在从 `start_time` 到 `end_time`（含起止时间）范围内迭代评估时间的步长。
-
-
 
 ## 返回值 {#returned_value}
 
@@ -45,8 +38,6 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 | matrix      | tags Array(Tuple(String, String)), time_series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, 'up[1m]') |
 | scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string      | string String | prometheusQuery(mytable, '"abc"') |
-
-
 
 ## 示例 {#example}
 

@@ -50,7 +50,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNames;
 ```
 
-
 ### Чтение данных {#reading-data}
 
 Считайте данные в формате `JSONCompactStringsEachRowWithNames`:
@@ -83,7 +82,6 @@ FORMAT JSONCompactStringsEachRowWithNames
 ["2022-05-07", "2021", "Stevenage Borough", "Salford City", "4", "2"]
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
-
 
 ## Настройки формата {#format-settings}
 

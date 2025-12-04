@@ -7,8 +7,6 @@ title: 'Оператор ALTER TABLE ... DELETE'
 doc_type: 'reference'
 ---
 
-
-
 # Инструкция ALTER TABLE ... DELETE {#alter-table-delete-statement}
 
 ```sql
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 * [Мутации](/sql-reference/statements/alter/index.md#mutations)
 * [Синхронность запросов ALTER](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
-
 
 ## Связанные материалы {#related-content}
 

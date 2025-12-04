@@ -27,7 +27,6 @@ ClickStack 浏览器 SDK 允许你在前端应用中接入埋点，
 * **XHR/Fetch/Websocket 请求**
 * **异常（Exceptions）**
 
-
 ## 快速开始 {#getting-started}
 
 <br/>
@@ -116,7 +115,6 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-
 ### 自动捕获 React 错误边界中的错误 {#auto-capture-react-error-boundary-errors}
 
 如果你使用 React，可以通过将错误边界组件传入 `attachToReactErrorBoundary` 函数，自动捕获出现在 React 错误边界内的错误。
@@ -128,7 +126,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 // 这将接入 ErrorBoundary 组件并捕获其任何实例中发生的所有错误
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
-
 
 ### 发送自定义操作 {#send-custom-actions}
 
@@ -145,7 +142,6 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-
 ### 动态启用网络捕获 {#enable-network-capture-dynamically}
 
 要动态启用或禁用网络捕获，只需视需要调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数即可。
@@ -153,7 +149,6 @@ HyperDX.addAction('Form-Completed', {
 ```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
-
 
 ### 为 CORS 请求启用资源计时 {#enable-resource-timing-for-cors-requests}
 

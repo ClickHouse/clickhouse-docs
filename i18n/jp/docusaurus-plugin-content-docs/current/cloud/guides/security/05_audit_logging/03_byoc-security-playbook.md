@@ -7,19 +7,13 @@ doc_type: 'guide'
 keywords: ['byoc', 'セキュリティ', 'プレイブック', 'ベストプラクティス', 'コンプライアンス']
 ---
 
-
-
 # BYOC セキュリティプレイブック {#byoc-security-playbook}
 
 ClickHouse は Trust Center (https://trust.clickhouse.com) からダウンロード可能なセキュリティ共有責任モデルに基づいて、Bring Your Own Cloud (BYOC) を運用しています。以下の情報は、潜在的なセキュリティイベントを識別する方法の例として、BYOC のお客様向けに提供されています。お客様は、自身のセキュリティプログラムの観点からこの情報を検討し、追加の検知やアラートが有用かどうかを判断してください。
 
-
-
 ## ClickHouse の認証情報が漏洩した可能性がある場合 {#compromised-clickhouse-credentials}
 
 認証情報を悪用した攻撃を検出するためのクエリや、悪意のあるアクティビティを調査するためのクエリについては、[database audit log](/cloud/security/audit-logging/database-audit-log) のドキュメントを参照してください。
-
-
 
 ## アプリケーション層に対するサービス拒否攻撃 {#application-layer-dos-attack}
 
@@ -30,14 +24,11 @@ SELECT *
 FROM clusterAllReplicas('default',system.crash_log)
 ```
 
-
 ## 侵害された、ClickHouse によって作成された AWS ロール {#compromised-clickhouse-created-aws-roles}
 
 ClickHouse は、システム機能を有効にするためにあらかじめ作成されたロールを使用します。このセクションでは、お客様が CloudTrail を有効にした AWS を利用しており、CloudTrail ログにアクセスできることを前提としています。
 
 インシデントがロールの侵害によるものである可能性がある場合は、ClickHouse の IAM ロールおよびアクションに関連する CloudTrail と CloudWatch 内のアクティビティを確認してください。IAM ロールの一覧については、セットアップの一部として提供される [CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles) スタックまたは Terraform モジュールを参照してください。
-
-
 
 ## EKS クラスターへの不正アクセス {#unauthorized-access-eks-cluster}
 

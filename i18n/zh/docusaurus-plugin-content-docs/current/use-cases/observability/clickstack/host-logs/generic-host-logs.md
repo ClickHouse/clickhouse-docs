@@ -50,13 +50,13 @@ import TabItem from '@theme/TabItem';
 <VerticalStepper headerLevel="h4">
   #### 验证 syslog 文件是否存在
 
-  首先,验证系统是否正在写入 syslog 文件:
+  首先，验证您的系统是否正在写入 syslog 文件：
 
   ```bash
   # 检查 syslog 文件是否存在（Linux）
   ls -la /var/log/syslog /var/log/messages
 
-  # 或者在 macOS 上
+  # 或在 macOS 上
   ls -la /var/log/system.log
 
   # 查看最近的日志条目
@@ -66,17 +66,17 @@ import TabItem from '@theme/TabItem';
   常见 syslog 位置：
 
   * **Ubuntu/Debian**：`/var/log/syslog`
-  * **RHEL/CentOS/Fedora**：`/var/log/messages`
-  * **macOS**：`/var/log/system.log`
+  * **RHEL/CentOS/Fedora**: `/var/log/messages`
+  * **macOS**: `/var/log/system.log`
 
   #### 创建自定义 OTel collector 配置
 
   ClickStack 允许您通过挂载自定义配置文件和设置环境变量来扩展基础 OpenTelemetry Collector 配置。
 
-  创建名为 `host-logs-monitoring.yaml` 的文件,包含系统配置:
+  创建一个名为 `host-logs-monitoring.yaml` 的文件,包含您系统的配置:
 
   <Tabs groupId="os-type">
-    <TabItem value="modern-linux" label="现代 Linux（Ubuntu 24.04+）" default>
+    <TabItem value="modern-linux" label="现代版 Linux（Ubuntu 24.04+）" default>
       ```yaml
       receivers:
         filelog/syslog:
@@ -116,7 +116,7 @@ import TabItem from '@theme/TabItem';
       ```
     </TabItem>
 
-    <TabItem value="legacy-linux" label="传统 Linux（Ubuntu 20.04、RHEL、CentOS）">
+    <TabItem value="legacy-linux" label="传统版 Linux（Ubuntu 20.04、RHEL、CentOS）">
       ```yaml
       receivers:
         filelog/syslog:
@@ -201,26 +201,26 @@ import TabItem from '@theme/TabItem';
   所有配置：
 
   * 从默认位置读取 syslog 文件
-  * 解析 syslog 格式，以提取结构化字段（时间戳、主机名、单元/服务、PID、消息）
+  * 解析 syslog 格式，从中提取结构化字段（timestamp、hostname、unit/service、PID、message）
   * 保留日志的原始时间戳
-  * 在 HyperDX 中添加 `source: host-logs` 属性以便进行过滤
-  * 通过专用 pipeline 将日志路由到 ClickHouse 导出器
+  * 在 HyperDX 中添加 `source: host-logs` 属性以便进行筛选
+  * 经由专用管道将日志路由到 ClickHouse exporter
 
   :::note
 
   * 你只需要在自定义配置中定义新的 receiver 和 pipeline
-  * 处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已在 ClickStack 的基础配置中预先定义好——你只需按名称引用它们即可
-  * 该正则表达式解析器会从 syslog 格式中提取 systemd 单元名、PID 以及其他元数据。
-  * 此配置使用 `start_at: end`，以避免在 collector 重启后重新摄取日志。测试时，可将其改为 `start_at: beginning`，以便立即查看历史日志。
+  * 处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已在基础 ClickStack 配置中定义好，您只需按名称引用它们即可
+  * 该正则表达式解析器会从 syslog 格式中提取 systemd 单元名、PID 以及其他元数据
+  * 此配置将 `start_at` 设置为 `end`，以避免在 collector 重启时重复摄取日志。用于测试时，可将其改为 `start_at: beginning`，以便立即查看历史日志。
     :::
 
   #### 配置 ClickStack 加载自定义配置
 
   要在现有的 ClickStack 部署中启用自定义采集器配置，您必须：
 
-  1. 将自定义配置文件挂载为 `/etc/otelcol-contrib/custom.config.yaml`
-  2. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-  3. 将你的 syslog 目录挂载到容器中，以便采集器能够读取这些日志
+  1. 将自定义配置文件挂载到路径 `/etc/otelcol-contrib/custom.config.yaml`
+  2. 将环境变量设置为 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. 挂载 syslog 目录，使采集器可以读取这些日志
 
   ##### 选项 1：Docker Compose
 
@@ -249,7 +249,7 @@ import TabItem from '@theme/TabItem';
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log:/var/log:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
@@ -261,18 +261,18 @@ import TabItem from '@theme/TabItem';
   配置完成后,登录 HyperDX 并验证日志是否正常流入:
 
   1. 进入搜索视图
-  2. 将 Source 设置为“Logs”
-  3. 按 `source:host-logs` 过滤以查看主机级日志
-  4. 可以看到结构化的日志条目，其中包含 `unit`、`hostname`、`pid`、`message` 等字段。
+  2. 将 Source 设置为 Logs
+  3. 按 `source:host-logs` 过滤以查看主机相关日志
+  4. 你应该会看到结构化的日志条目，其中包含 `unit`、`hostname`、`pid`、`message` 等字段。
 
-  <Image img={search_view} alt="搜索界面" />
+  <Image img={search_view} alt="搜索视图" />
 
   <Image img={log_view} alt="日志视图" />
 </VerticalStepper>
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试主机日志集成的用户，我们提供了一个预生成的系统日志示例数据集，具有接近真实环境的日志模式。
+对于希望在配置生产系统之前先测试主机日志集成的用户，我们提供了一个预生成的系统日志示例数据集，其日志模式接近真实环境。
 
 <VerticalStepper headerLevel="h4">
 
@@ -284,18 +284,18 @@ import TabItem from '@theme/TabItem';
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
 ```
 
-该数据集包括：
+数据集包括：
 - 系统启动序列
-- SSH 登录活动（成功与失败尝试）
-- 安全事件（暴力破解攻击以及 fail2ban 响应）
-- 计划性维护任务（cron 作业、anacron）
+- SSH 登录活动（成功和失败尝试）
+- 安全事件（暴力破解攻击以及 fail2ban 的响应）
+- 计划维护任务（cron 作业、anacron）
 - 服务重启（rsyslog）
 - 内核消息和防火墙活动
-- 既包含正常运行日志，也包含重要事件
+- 正常运行日志与重要事件的混合
 
-#### 创建测试 collector 配置 {#test-config}
+#### 创建测试 Collector 配置 {#test-config}
 
-创建一个名为 `host-logs-demo.yaml` 的文件，并写入以下配置：
+创建名为 `host-logs-demo.yaml` 的文件，并填入以下配置：
 
 ```yaml
 cat > host-logs-demo.yaml << 'EOF'
@@ -345,26 +345,26 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**这会将日志文件直接挂载到容器中。此操作仅用于使用静态演示数据进行测试。**
+**这会将日志文件直接挂载到容器中。这样做是为了使用静态演示数据进行测试。**
 :::
 
 #### 在 HyperDX 中验证日志 {#verify-demo-logs}
 
 在 ClickStack 运行后：
 
-1. 打开 [HyperDX](http://localhost:8080/) 并登录到您的账户（如果还没有账户，可能需要先创建一个）
-2. 导航到 Search 视图，并将 source 设置为 `Logs`
+1. 打开 [HyperDX](http://localhost:8080/) 并登录到你的账号（你可能需要先创建账号）
+2. 进入搜索视图，并将 source 设置为 `Logs`
 3. 将时间范围设置为 **2025-11-10 00:00:00 - 2025-11-13 00:00:00**
 
 <Image img={search_view} alt="搜索视图"/>
 <Image img={log_view} alt="日志视图"/>
 
 :::note[时区显示]
-HyperDX 会按照浏览器本地时区显示时间戳。演示数据覆盖的时间范围为 **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**。使用较宽的时间范围可以确保无论您所在的时区如何，都能看到演示日志。在确认能看到日志后，可以将时间范围缩小到 24 小时，以获得更清晰的可视化效果。
+HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时间范围为 **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**。设置较宽的时间范围可以确保无论你身在何处都能看到演示日志。在看到日志之后，你可以将时间范围缩小到 24 小时，以获得更清晰的可视化效果。
 :::
 
 </VerticalStepper>

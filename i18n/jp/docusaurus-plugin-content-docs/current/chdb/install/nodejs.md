@@ -7,20 +7,15 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-
-
 # Node.js 向け chDB {#chdb-for-nodejs}
 
 chDB-node は chDB の Node.js バインディングを提供し、外部依存なしで Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
-
-
 
 ## インストール {#installation}
 
 ```bash
 npm install chdb
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -146,7 +141,6 @@ try {
 }
 ```
 
-
 ## エラー処理 {#error-handling}
 
 chDB を使用する際は、常にエラーを適切に処理してください。
@@ -191,7 +185,6 @@ function safeSessionQuery() {
 
 safeSessionQuery();
 ```
-
 
 ## GitHub リポジトリ {#github-repository}
 

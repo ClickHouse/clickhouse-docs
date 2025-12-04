@@ -10,7 +10,6 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 将 Google Dataflow 与 ClickHouse 集成 {#integrating-google-dataflow-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -21,8 +20,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [Java 运行器](#1-java-runner)
 - [预定义模板](#2-predefined-templates)
 
-
-
 ## Java runner {#1-java-runner}
 [Java runner](./java-runner) 允许用户使用集成了 `ClickHouseIO` 的 Apache Beam SDK 来实现自定义 Dataflow 管道。该方法为 pipeline 逻辑提供了高度的灵活性和控制力，使用户能够根据特定需求定制 ETL 流程。
 不过，该选项需要具备 Java 编程知识，并且熟悉 Apache Beam 框架。
@@ -31,8 +28,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - 高度可定制。
 - 适用于复杂或高级用例。
 - 需要编写代码并理解 Beam API。
-
-
 
 ## 预定义模板 {#2-predefined-templates}
 ClickHouse 提供了针对特定使用场景设计的[预定义模板](./templates)，例如将数据从 BigQuery 导入到 ClickHouse。这些模板开箱即用，可简化集成过程，非常适合偏好无代码解决方案的用户。

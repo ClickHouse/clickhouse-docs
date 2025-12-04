@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## Установка Lambda-слоёв OpenTelemetry {#installing-the-otel-lambda-layers}
 
 Проект OpenTelemetry предоставляет отдельные Lambda-слои для следующего:
@@ -196,7 +195,6 @@ service:
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
-
 
 ## Проверка установки {#checking-the-installation}
 

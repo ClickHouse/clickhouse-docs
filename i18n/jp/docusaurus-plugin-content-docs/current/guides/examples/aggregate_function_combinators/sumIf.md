@@ -7,19 +7,13 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-
-
 # sumIf {#sumif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは [`sum`](/sql-reference/aggregate-functions/reference/sum)
 関数に適用でき、条件が真となる行の値だけを合計する
 `sumIf` 集約コンビネーター関数を使用して計算できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -92,7 +86,6 @@ ORDER BY month;
 
 ### 株式銘柄別の取引量を計算する {#calculate-trading-volume}
 
-
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用し、
 2006 年における当時の大手テクノロジー企業 3 社の銘柄シンボルごとの取引量を算出します。
 
@@ -126,7 +119,6 @@ ORDER BY month;
 12. │ 2006-12-01 │ 6億395万 │ 11億4000万     │ 9177万  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

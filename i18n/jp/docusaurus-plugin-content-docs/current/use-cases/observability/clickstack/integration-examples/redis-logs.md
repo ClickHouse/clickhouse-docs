@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した Redis ログの監視 {#redis-clickstack}
 
 :::note[TL;DR]
@@ -52,23 +51,23 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   redis-cli CONFIG GET logfile
   ```
 
-  一般的なRedisログの場所：
+  Redisログの一般的な保存場所：
 
   * **Linux (apt/yum)**: `/var/log/redis/redis-server.log`
-  * **macOS（Homebrew）**: `/usr/local/var/log/redis.log`
-  * **Docker**: 通常は標準出力（stdout）にログ出力されますが、`/data/redis.log` に書き込むように設定することもできます。
+  * **macOS (Homebrew)**: `/usr/local/var/log/redis.log`
+  * **Docker**: 通常は標準出力（stdout）にログを書き出しますが、`/data/redis.log` に書き込むように設定することもできます
 
   Redisが標準出力にログを記録している場合は、`redis.conf`を更新してファイルに書き込むように設定します:
 
   ```bash
-  # stdoutではなくファイルにログを記録
+  # stdoutではなくファイルにログを出力
   logfile /var/log/redis/redis-server.log
 
-  # ログレベルを設定（オプション: debug, verbose, notice, warning）
+  # ログレベルを設定（オプション：debug、verbose、notice、warning）
   loglevel notice
   ```
 
-  設定変更後、Redisを再起動します：
+  設定を変更した後、Redisを再起動します:
 
   ```bash
   # systemd の場合
@@ -80,7 +79,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### カスタムOTel collector設定を作成する
 
-  ClickStackでは、カスタム設定ファイルをマウントし環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
+  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
 
   以下の設定で `redis-monitoring.yaml` という名前のファイルを作成します：
 
@@ -120,32 +119,31 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  この設定では：
+  この設定では:
 
-  * 標準の場所から Redis ログを読み取ります
-  * 正規表現で Redis のログ形式を解析し、構造化フィールド（`pid`、`role`、`timestamp`、`log_level`、`message`）を抽出します
+  * Redis のログをデフォルトの場所から読み取ります
+  * Redisのログフォーマットを正規表現で解析し、`pid`、`role`、`timestamp`、`log_level`、`message` といった構造化フィールドを抽出します
   * HyperDX でのフィルタリング用に `source: redis` 属性を追加します
   * 専用パイプラインを介してログを ClickHouse エクスポーターに転送する
 
   :::note
 
-  * カスタム設定では、新しい `receivers` と `pipelines` のみを定義します
-  * プロセッサ（`memory_limiter`、`transform`、`batch`）とエクスポーター（`clickhouse`）は、ClickStack のベース構成ですでに定義されているため、名前を指定するだけで利用できます
-  * `time_parser` オペレーターは、元のログ時刻を保持するために、Redis ログからタイムスタンプを抽出します
-  * この設定では、コレクター起動時に既存のすべてのログを読み取るために `start_at: beginning` を指定しており、ログをすぐに確認できます。本番環境のデプロイメントで、コレクターの再起動時にログを再度取り込むことを避けたい場合は、`start_at: end` に変更してください。
-    :::
+  * カスタム構成では、新しいレシーバーとパイプラインだけを定義します
+  * プロセッサ（`memory_limiter`、`transform`、`batch`）とエクスポーター（`clickhouse`）は、ClickStack のベース設定ですでに定義されているため、名前を指定して参照するだけで利用できます
+  * `time_parser` 演算子は、元のログのタイミングを保持するために、Redis ログからタイムスタンプを抽出します
+  * この構成では、コレクターの起動時に既存のすべてのログを読み取るために `start_at: beginning` を使用しており、ログをすぐに確認できます。本番デプロイメントでコレクターの再起動時にログを再取り込みしたくない場合は、`start_at: end` に変更してください。
 
   #### ClickStackにカスタム設定を読み込むよう構成する
 
   既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の手順を実行してください:
 
   1. カスタム設定ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
-  2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` に `/etc/otelcol-contrib/custom.config.yaml` を設定します
-  3. コレクターが Redis のログを読み取れるように、Redis のログディレクトリをマウントします
+  2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定します。
+  3. コレクターが読み込めるように、Redis のログディレクトリをマウントしてください
 
   ##### オプション1: Docker Compose
 
-  ClickStackのデプロイメント設定を更新します：
+  ClickStackのデプロイメント設定を更新してください:
 
   ```yaml
   services:
@@ -160,7 +158,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
         # ... other volumes ...
   ```
 
-  ##### オプション2：Docker Run（オールインワンイメージ）
+  ##### オプション2: Docker Run（オールインワンイメージ）
 
   Dockerでオールインワンイメージを使用している場合は、以下を実行します:
 
@@ -170,25 +168,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log/redis:/var/log/redis:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
-  ClickStackコレクターがRedisログファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント（`:ro`）を使用し、最小権限の原則に従ってください。
+  ClickStackコレクターがRedisログファイルを読み取るための適切な権限を持っていることを確認してください。本番環境では、読み取り専用マウント(`:ro`)を使用し、最小権限の原則に従ってください。
   :::
 
   #### HyperDXでのログの確認
 
-  設定完了後、HyperDXにログインし、ログが正常に取り込まれていることを確認してください:
+  設定完了後、HyperDXにログインし、ログが正常に取り込まれていることを確認してください：
 
   <Image img={log_view} alt="ログビュー" />
 
   <Image img={log} alt="ログ" />
 </VerticalStepper>
 
-## デモ用データセット {#demo-dataset}
+## デモデータセット {#demo-dataset}
 
-本番環境を構成する前に Redis 連携をテストしたいユーザー向けに、現実的なパターンを含む事前生成された Redis ログのサンプルデータセットを提供します。
+本番環境を設定する前に Redis 連携をテストしたいユーザー向けに、現実的なパターンを含む事前生成済みの Redis ログのサンプルデータセットを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
@@ -200,7 +198,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
 
-#### テスト用 collector 設定を作成する {#test-config}
+#### テスト用コレクター設定を作成する {#test-config}
 
 次の設定内容で `redis-demo.yaml` という名前のファイルを作成します:
 
@@ -210,7 +208,7 @@ receivers:
   filelog/redis:
     include:
       - /tmp/redis-demo/redis-server.log
-    start_at: beginning  # デモデータ向けに先頭から読み取る
+    start_at: beginning  # デモデータ用に先頭から読み取る
     operators:
       - type: regex_parser
         regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
@@ -244,7 +242,7 @@ EOF
 
 #### デモ設定で ClickStack を実行する {#run-demo}
 
-デモ用のログと設定を使って ClickStack を実行します:
+デモログとこの設定を使用して ClickStack を実行します:
 
 ```bash
 docker run --name clickstack-demo \
@@ -252,23 +250,23 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/redis-server.log:/tmp/redis-demo/redis-server.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**この手順ではログファイルをコンテナ内に直接マウントします。これは静的なデモデータを使ったテスト目的でのみ行います。**
+**これはログファイルをコンテナ内に直接マウントします。静的なデモデータを使ったテスト目的のために行っています。**
 :::
 
 ## HyperDX でログを確認する {#verify-demo-logs}
 
-ClickStack が起動したら、次の手順を実行します:
+ClickStack が起動したら、次の手順を実行します。
 
-1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（まだアカウントがない場合は先に作成してください）
-2. Search ビューに移動し、ソースを `Logs` に設定します
-3. タイムレンジを **2025-10-26 10:00:00 - 2025-10-29 10:00:00** に設定します
+1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（まだアカウントがない場合は、先に作成する必要があります）
+2. Search ビューに移動し、Source を `Logs` に設定します
+3. 時間範囲を **2025-10-26 10:00:00 - 2025-10-29 10:00:00** に設定します
 
-:::note[タイムゾーン表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** の範囲をカバーしています。広めのタイムレンジを指定することで、どのロケーションからでもデモログが表示されるようにしています。ログが表示されたら、可視化を見やすくするために範囲を 24 時間に絞り込むことができます。
+:::note[Timezone Display]
+HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** の期間をカバーしています。広めの時間範囲を指定することで、どのタイムゾーンからでもデモログを確認できるようにしています。ログが確認できたら、可視化を見やすくするために時間範囲を 24 時間に絞り込むことができます。
 :::
 
 <Image img={log_view} alt="ログビュー"/>
@@ -338,7 +336,6 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 # filelog/Redis レシーバーの設定が表示されるはずです
 ```
 
-
 ### HyperDX にログが表示されない
 
 **Redis がログをファイルに書き出していることを確認する：**
@@ -378,7 +375,6 @@ docker volume inspect <volume-name>
 # 両方のコンテナにボリュームがマウントされているか確認する {#expected-output-should-show-file-size-and-permissions}
 ```
 
-
 ### ログが正しくパースされない場合
 
 **Redis のログ形式が期待されるパターンと一致していることを確認する:**
@@ -393,7 +389,6 @@ Redis のログ形式が異なる場合は、`regex_parser` オペレーター�
 
 * `pid:role timestamp level message`
 * 例: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
-
 
 ## 次のステップ {#next-steps}
 

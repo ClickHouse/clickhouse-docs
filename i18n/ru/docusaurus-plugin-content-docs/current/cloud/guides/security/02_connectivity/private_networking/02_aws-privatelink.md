@@ -18,7 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
 # AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -69,13 +68,9 @@ ClickHouse Cloud поддерживает [межрегиональный Privat
 
 Примеры Terraform см. [здесь](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
-
-
 ## Важные замечания {#considerations}
 ClickHouse пытается группировать ваши сервисы, чтобы повторно использовать одну и ту же опубликованную [конечную точку сервиса](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) в пределах региона AWS. Однако такая группировка не гарантируется, особенно если вы распределяете свои сервисы между несколькими организациями ClickHouse.
 Если у вас уже настроен PrivateLink для других сервисов в вашей организации ClickHouse, во многих случаях вы можете пропустить большинство шагов благодаря такой группировке и перейти сразу к финальному шагу: добавьте «Endpoint ID» ClickHouse в список разрешённых для сервиса ClickHouse.
-
-
 
 ## Предварительные требования для этого процесса {#prerequisites}
 
@@ -83,8 +78,6 @@ ClickHouse пытается группировать ваши сервисы, ч
 
 1. Ваша учётная запись AWS.
 1. [API-ключ ClickHouse](/cloud/manage/openapi) с необходимыми правами для создания и управления частными конечными точками на стороне ClickHouse.
-
-
 
 ## Шаги {#steps}
 
@@ -177,7 +170,6 @@ jq .result
 <Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border />
 
 #### Вариант 2: AWS CloudFormation {#option-2-aws-cloudformation}
-
 
 Далее необходимо создать VPC Endpoint, используя `Service name`<sup>console</sup> или `endpointServiceId`<sup>API</sup>, полученные на шаге [Obtain Endpoint &quot;Service name&quot; ](#obtain-endpoint-service-info).
 Убедитесь, что вы используете соответствующие идентификаторы подсетей (subnet IDs), группы безопасности (security groups) и идентификатор VPC (VPC ID).
@@ -281,7 +273,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-
 Чтобы удалить идентификатор конечной точки из списка разрешённых конечных точек:
 
 ```bash
@@ -342,7 +333,6 @@ jq .result
 ```
 
 В этом примере соединение по имени хоста со значением `privateDnsHostname` будет маршрутизировано через PrivateLink, а соединение по имени хоста со значением `endpointServiceId` — через интернет.
-
 
 ## Устранение неполадок {#troubleshooting}
 
