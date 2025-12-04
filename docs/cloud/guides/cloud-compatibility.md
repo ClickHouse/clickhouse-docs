@@ -89,6 +89,57 @@ Federated queries with some external database and table engines, such as SQLite,
 
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
 
+#### Settings behavior {#udf-settings-behavior}
+
+:::warning Important
+UDFs in ClickHouse Cloud **do not inherit user-level settings**. They execute with default system settings.
+:::
+
+This means:
+- Session-level settings (set via `SET` statement) are not propagated to UDF execution context
+- User profile settings are not inherited by UDFs
+- Query-level settings do not apply within UDF execution
+
+**Example scenario:**
+
+```sql
+-- Set a user-level setting to allow expensive regex operations
+SET reject_expensive_hyperscan_regexps = 0;
+
+-- Create a UDF that uses regex pattern matching
+CREATE FUNCTION myRegexUDF AS (text) ->
+    multiMatchAllIndices(text, ['pattern1.*complex', 'pattern2.*complex']);
+
+-- This will FAIL with HYPERSCAN_CANNOT_SCAN_TEXT error
+-- The UDF executes with reject_expensive_hyperscan_regexps = 1 (default)
+SELECT myRegexUDF('some text to match');
+```
+
+In this example, even though `reject_expensive_hyperscan_regexps` is set to `0` at the session level, the UDF executes with the default value of `1`, causing expensive regex patterns to be rejected.
+
+**This behavior affects any setting override**, including:
+- Performance-related settings (e.g., `max_threads`, `max_memory_usage`)
+- Security settings (e.g., `reject_expensive_hyperscan_regexps`)
+- Behavior modifications (e.g., `allow_experimental_*` flags)
+- Resource limits
+
+**Workarounds:**
+
+1. **Use functions directly** instead of wrapping them in UDFs when you need specific settings:
+   ```sql
+   SET reject_expensive_hyperscan_regexps = 0;
+   SELECT multiMatchAllIndices(text, ['pattern1.*complex', 'pattern2.*complex'])
+   FROM my_table;
+   ```
+
+2. **Design UDFs to work within default setting constraints** by simplifying operations that require special settings.
+
+3. **Restructure queries** to avoid UDF dependency on setting overrides.
+
+**Why this happens:**
+
+UDFs execute in isolated contexts with default settings for security and performance consistency. This is intentional behavior in ClickHouse Cloud's architecture to ensure predictable and secure function execution across all users and workloads.
+
 ### Experimental features {#experimental-features}
 
 Experimental features are disabled in ClickHouse Cloud services to ensure the stability of service deployments.
