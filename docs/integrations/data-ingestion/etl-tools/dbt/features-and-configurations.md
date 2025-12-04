@@ -126,8 +126,8 @@ without `on cluster` clause for this model.
 #### Read-after-write Consistency {#read-after-write-consistency}
 
 dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
-- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
-- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
+- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
+- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
 
 ## General information about features {#general-information-about-features}
 
@@ -269,7 +269,7 @@ group by event_type
 
 ### Materialization: view {#materialization-view}
 
-A dbt model can be created as a [ClickHouse view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/)
+A dbt model can be created as a [ClickHouse view](/sql-reference/table-functions/view/)
 and configured using the following syntax:
 
 Project File (`dbt_project.yml`):
@@ -286,7 +286,7 @@ Or config block (`models/<model_name>.sql`):
 
 ### Materialization: table {#materialization-table}
 
-A dbt model can be created as a [ClickHouse table](https://clickhouse.com/docs/en/operations/system-tables/tables/) and
+A dbt model can be created as a [ClickHouse table](/operations/system-tables/tables/) and
 configured using the following syntax:
 
 Project File (`dbt_project.yml`):
@@ -500,7 +500,7 @@ If you prefer not to preload historical data during MV creation, you can disable
 
 #### Refreshable Materialized Views {#refreshable-materialized-views}
 
-To use [Refreshable Materialized View](https://clickhouse.com/docs/en/materialized-view/refreshable-materialized-view),
+To use [Refreshable Materialized View](/materialized-view/refreshable-materialized-view),
 please adjust the following configs as needed in your MV model (all these configs are supposed to be set inside a
 refreshable config object):
 
@@ -711,7 +711,7 @@ keys used to populate the parameters of the S3 table function:
 | structure             | The column structure of the data in bucket, as a list of name/datatype pairs, such as `['id UInt32', 'date DateTime', 'value String']`  If not provided ClickHouse will infer the structure. |
 | aws_access_key_id     | The S3 access key id.                                                                                                                                                                        |
 | aws_secret_access_key | The S3 secret key.                                                                                                                                                                           |
-| role_arn              | The ARN of a ClickhouseAccess IAM role to use to securely access the S3 objects. See this [documentation](https://clickhouse.com/docs/en/cloud/security/secure-s3) for more information.     |
+| role_arn              | The ARN of a ClickhouseAccess IAM role to use to securely access the S3 objects. See this [documentation](/cloud/data-sources/secure-s3) for more information.     |
 | compression           | The compression method used with the S3 objects.  If not provided ClickHouse will attempt to determine compression based on the file name.                                                   |
 
 See
@@ -727,3 +727,71 @@ dbt-clickhouse supports most of the cross database macros now included in `dbt C
   interpreted as a string, not a column name
 * Similarly, the `replace` SQL function in ClickHouse requires constant strings for the `old_chars` and `new_chars`
   parameters, so those parameters will be interpreted as strings rather than column names when invoking this macro.
+
+## Catalog Support {#catalog-support}
+
+### dbt Catalog Integration Status {#dbt-catalog-integration-status}
+
+dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature is not yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
+
+### ClickHouse Catalog Support {#clickhouse-catalog-support}
+
+ClickHouse recently added native support for Apache Iceberg tables and data catalogs. Most of the features are still `experimental`, but you can already use them if you use a recent ClickHouse version.
+
+* You can use ClickHouse to **query Iceberg tables stored in object storage** (S3, Azure Blob Storage, Google Cloud Storage) using the [Iceberg table engine](/engines/table-engines/integrations/iceberg) and [iceberg table function](/sql-reference/table-functions/iceberg).
+
+* Additionally, ClickHouse provides the [DataLakeCatalog database engine](/engines/database-engines/datalakecatalog), which enables **connection to external data catalogs** including AWS Glue Catalog, Databricks Unity Catalog, Hive Metastore, and REST Catalogs. This allows you to query open table format data (Iceberg, Delta Lake) directly from external catalogs without data duplication.
+
+### Workarounds for Working with Iceberg and Catalogs {#workarounds-iceberg-catalogs}
+
+You can read data from Iceberg tables or catalogs from your dbt project if you have already defined them in your ClickHouse cluster with the tools defined above. You can leverage the `source` functionality in dbt to reference these tables in your dbt projects. For example, if you want to access your tables in a REST Catalog, you can:
+
+1. **Create a database pointing to an external catalog:**
+
+```sql
+-- Example with REST Catalog
+SET allow_experimental_database_iceberg = 1;
+
+CREATE DATABASE iceberg_catalog
+ENGINE = DataLakeCatalog('http://rest:8181/v1', 'admin', 'password')
+SETTINGS 
+    catalog_type = 'rest', 
+    storage_endpoint = 'http://minio:9000/lakehouse', 
+    warehouse = 'demo'
+```
+
+2. **Define the catalog database and its tables as sources in dbt:** remember that the tables should already be available in ClickHouse
+
+```yaml
+version: 2
+
+sources:
+  - name: external_catalog
+    database: iceberg_catalog
+    tables:
+      - name: orders
+      - name: customers
+```
+
+3. **Use the catalog tables in your dbt models:**
+
+```sql
+SELECT 
+    o.order_id,
+    c.customer_name,
+    o.order_date
+FROM {{ source('external_catalog', 'orders') }} o
+INNER JOIN {{ source('external_catalog', 'customers') }} c
+    ON o.customer_id = c.customer_id
+```
+
+### Notes on the Workarounds {#benefits-workarounds}
+
+The good things about these workarounds are:
+* You'll have immediate access to different external table types and external catalogs without waiting for native dbt catalog integration.
+* You'll have a seamless migration path when native catalog support becomes available.
+
+But there are currently some limitations:
+* **Manual setup:** Iceberg tables and catalog databases must be created manually in ClickHouse before they can be referenced in dbt.
+* **No catalog-level DDL:** dbt cannot manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you will not be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
+* **Write operations:** Currently, writing into Iceberg/Data Catalog tables is limited. Check the ClickHouse documentation to understand which options are available.
