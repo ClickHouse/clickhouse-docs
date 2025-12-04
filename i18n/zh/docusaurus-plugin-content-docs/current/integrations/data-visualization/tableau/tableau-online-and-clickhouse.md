@@ -21,22 +21,15 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-
 # Tableau Online {#tableau-online}
 
 Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 环境。
 
-
-
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-
-
 ## 本地部署 ClickHouse 服务器安装与配置 {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
-
-
 
 ## 将 Tableau Online 连接到 ClickHouse（本地部署且不使用 SSL） {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
 
@@ -63,8 +56,6 @@ Tableau Online 会自动扫描数据库并提供可用表的列表。将所需�
 完成后，只需点击右上角的 “Publish As”，即可像往常一样在 Tableau Online 中使用新创建的数据集。
 
 注意：如果您想将 Tableau Online 与 Tableau Desktop 配合使用，并在二者之间共享 ClickHouse 数据集，请确保在 Tableau Desktop 中同样使用默认的 MySQL 连接器，并按照在 Data Source 下拉框中选择 MySQL 时显示的安装指南进行配置，该指南位于[此处](https://www.tableau.com/support/drivers)。如果您使用的是 M1 Mac，请查看[此故障排除帖](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) 以获取驱动安装的替代方案。
-
-
 
 ## 将 Tableau Online 连接到 ClickHouse（云端或本地部署，使用 SSL） {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
@@ -107,8 +98,6 @@ ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certi
 <br/>
 
 最后，点击 "Publish"，你嵌入了凭据的数据源会在 Tableau Online 中自动打开。
-
-
 
 ## 已知限制（ClickHouse 23.11） {#known-limitations-clickhouse-2311}
 

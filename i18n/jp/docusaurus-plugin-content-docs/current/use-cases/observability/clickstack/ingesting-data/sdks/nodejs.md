@@ -23,7 +23,6 @@ ClickStack は、テレメトリデータ（ログ、メトリクス、
 * **トレース**
 * **例外**
 
-
 ## はじめに {#getting-started}
 
 ### HyperDX OpenTelemetry インストルメンテーションパッケージのインストール {#install-hyperdx-opentelemetry-instrumentation-package}
@@ -212,7 +211,6 @@ SDK で問題が発生している場合は、`OTEL_LOG_LEVEL` 環境変数を `
 export OTEL_LOG_LEVEL=debug
 ```
 
-
 ## 高度な計装設定 {#advanced-instrumentation-configuration}
 
 ### コンソールログのキャプチャ {#capture-console-logs}
@@ -223,7 +221,6 @@ export OTEL_LOG_LEVEL=debug
 ```sh copy
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
-
 
 ### ユーザー情報やメタデータを付与する {#attach-user-information-or-metadata}
 
@@ -254,7 +251,6 @@ app.use((req, res, next) => {
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
-
 
 ### Google Cloud Run {#google-cloud-run}
 
@@ -346,7 +342,6 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
 その後、Express や Koa で発生した例外を自動的に収集したり、例外を手動で捕捉したりするには、上記の [Setup Error Collection](#setup-error-collection) セクションの手順に従ってください。
-
 
 ### 自動インストルメントされるライブラリ {#auto-instrumented-libraries-2}
 

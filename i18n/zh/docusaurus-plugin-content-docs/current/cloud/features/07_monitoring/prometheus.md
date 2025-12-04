@@ -15,7 +15,6 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
 # Prometheus 集成 {#prometheus-integration}
 
 该功能支持集成 [Prometheus](https://prometheus.io/) 来监控 ClickHouse Cloud 服务。Prometheus 指标通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 端点对外提供访问，用户可以安全连接并将指标导出到 Prometheus 指标采集器中。这些指标可以与仪表盘（例如 Grafana、Datadog）集成，用于可视化。
@@ -58,7 +57,6 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
-
 
 ### 示例响应 {#sample-response}
 
@@ -187,7 +185,6 @@ scrape_configs:
 
 请注意，必须将 `honor_labels` 配置参数设置为 `true`，才能正确填充实例标签。此外，上述示例中将 `filtered_metrics` 设置为 `true`，但实际应根据用户偏好进行配置。
 
-
 ## 与 Grafana 集成 {#integrating-with-grafana}
 
 用户可以通过两种主要方式与 Grafana 集成：
@@ -260,7 +257,6 @@ prometheus.remote_write "metrics_service" {
 
 请注意，必须将 `honor_labels` 配置参数设置为 `true`，才能使 instance 标签被正确填充。
 
-
 ### 使用 Alloy 的自托管 Grafana {#grafana-self-managed-with-alloy}
 
 Grafana 自托管用户可以在[此处](https://grafana.com/docs/alloy/latest/get-started/install/)找到安装 Alloy agent 的说明。我们假定用户已经将 Alloy 配置为将 Prometheus 指标发送到所需的目标端点。下面的 `prometheus.scrape` 组件会让 Alloy 抓取 ClickHouse Cloud 端点。我们假定 `prometheus.remote_write` 会接收已抓取的指标。如果该目标不存在，请将 `forward_to key` 调整为实际的目标端点。
@@ -292,7 +288,6 @@ prometheus.scrape "clickhouse_cloud" {
 <br />
 
 请注意，需要将 `honor_labels` 配置参数设置为 `true`，才能正确填充实例（`instance`）标签。
-
 
 ## 集成 Datadog {#integrating-with-datadog}
 

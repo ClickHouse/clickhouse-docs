@@ -7,8 +7,6 @@ title: 'ALTER TABLE ... UPDATE 文'
 doc_type: 'reference'
 ---
 
-
-
 # ALTER TABLE ... UPDATE 文 {#alter-table-update-statements}
 
 ```sql
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [Mutations](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER クエリの同期性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 設定
-
 
 ## 関連コンテンツ {#related-content}
 

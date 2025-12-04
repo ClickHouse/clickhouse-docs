@@ -7,18 +7,12 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # minSimpleState {#minsimplestate}
-
-
 
 ## 描述 {#description}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可以应用于 [`min`](/sql-reference/aggregate-functions/reference/min)
 函数，用于返回所有输入值中的最小值。它返回的结果类型为 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -150,7 +144,6 @@ ORDER BY location_id;
 
 现在可以看到预期的结果：
 
-
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ 北部          │        3 │        8 │
@@ -163,7 +156,6 @@ ORDER BY location_id;
 :::note
 使用 `SimpleState` 时，就不需要再使用 `Merge` 组合器来合并部分聚合状态。
 :::
-
 
 ## 另请参阅 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

@@ -31,7 +31,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-
 ## 运行 {#running}
 
 要进行仿真，你需要适用于 s390x 的 QEMU user static 静态二进制文件。在 Ubuntu 上可以通过以下命令安装：
@@ -46,7 +45,6 @@ apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
 2
 ```
-
 
 ## 调试 {#debugging}
 
@@ -92,7 +90,6 @@ Process 1 stopped
    452
    453      /// PHDR cache is required for query profiler to work reliably
 ```
-
 
 ## Visual Studio Code 集成 {#visual-studio-code-integration}
 
@@ -140,7 +137,6 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-
 #### launch.json {#launchjson}
 
 ```json
@@ -159,7 +155,6 @@ toolchain:
 }
 ```
 
-
 #### settings.json {#settingsjson}
 
 这也会将不同的构建产物放在 `build` 文件夹下的不同子文件夹中。
@@ -171,7 +166,6 @@ toolchain:
 }
 ```
 
-
 #### run-debug.sh {#run-debugsh}
 
 ```sh
@@ -180,7 +174,6 @@ echo '正在启动调试器会话'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
-
 
 #### tasks.json {#tasksjson}
 

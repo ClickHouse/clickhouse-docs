@@ -7,20 +7,15 @@ keywords: ['APPLY', 'modifier']
 doc_type: 'reference'
 ---
 
-
-
 # APPLY 修饰符 {#apply}
 
 > 允许对查询的外部表表达式返回的每一行调用某个函数。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
-
 
 ## 示例 {#example}
 

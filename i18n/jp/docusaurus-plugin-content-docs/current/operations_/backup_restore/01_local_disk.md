@@ -11,16 +11,11 @@ import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # ローカルディスクへのバックアップ／リストア {#backup-to-a-local-disk}
-
-
 
 ## 構文 {#syntax}
 
 <Syntax/>
-
-
 
 ## ディスク用のバックアップ先を構成する {#configure-backup-destinations-for-disk}
 
@@ -102,7 +97,6 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   代わりに一度ダウンロードしてからアップロードするため、非常に非効率です。このようなケースでは、
   この用途には `BACKUP ... TO S3(<endpoint>)` 構文の使用を推奨します。
   :::
-
 
 ## ローカルディスクへのバックアップ／リストアの使用例 {#usage-examples}
 
@@ -227,7 +221,6 @@ SETTINGS password='qwerty'
 tar アーカイブに対する機能は zip アーカイブの場合と同様ですが、tar アーカイブではパスワード保護はサポートされていません。さらに、tar アーカイブではさまざまな圧縮方式がサポートされています。
 
 テーブルを tar アーカイブとしてバックアップするには、次のようにします。
-
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')

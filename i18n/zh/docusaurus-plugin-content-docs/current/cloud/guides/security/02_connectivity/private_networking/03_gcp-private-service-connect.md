@@ -21,7 +21,6 @@ import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/g
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
-
 # Private Service Connect {#private-service-connect}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
@@ -50,15 +49,11 @@ Private Service Connect（PSC）是 Google Cloud 的一项网络功能，允许�
 1. 将“Endpoint ID”添加到 ClickHouse Cloud 服务。
 1. 将“Endpoint ID”添加到 ClickHouse 服务允许列表。
 
-
-
 ## 注意 {#attention}
 ClickHouse 会尝试对您的服务进行分组，以便在同一 GCP 区域内复用同一个已发布的 [PSC 端点](https://cloud.google.com/vpc/docs/private-service-connect)。但是，这种分组并不能得到保证，尤其是在您将服务分散到多个 ClickHouse 组织时。
 如果您已经在 ClickHouse 组织中为其他服务配置了 PSC，得益于这种分组，通常可以跳过大部分步骤，直接进入最后一步：[将“Endpoint ID”添加到 ClickHouse 服务允许列表](#add-endpoint-id-to-services-allow-list)。
 
 可以在[这里](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
-
-
 
 ## 开始之前 {#before-you-get-started}
 
@@ -98,7 +93,6 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 * 你可以[创建一个新密钥](/cloud/manage/openapi)或使用现有密钥。
   :::
 
-
 ## 获取用于 Private Service Connect 的 GCP 服务附件和 DNS 名称 {#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect}
 
 ### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console}
@@ -124,7 +118,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 请记录下 `endpointServiceId` 和 `privateDnsHostname`，在接下来的步骤中你将会用到它们。
-
 
 ## 创建服务端点 {#create-service-endpoint}
 
@@ -218,7 +211,6 @@ output "psc_connection_id" {
 使用在[获取用于 Private Service Connect 的 GCP 服务附件](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)步骤中获得的 `endpointServiceId`<sup>API</sup> 或 `Service name`<sup>console</sup>
 :::
 
-
 ## 为端点设置私有 DNS 名称 {#set-private-dns-name-for-endpoint}
 
 :::note
@@ -226,8 +218,6 @@ output "psc_connection_id" {
 :::
 
 您需要将在[获取用于 Private Service Connect 的 GCP 服务附件和 DNS 名称](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)步骤中得到的 DNS 名称指向 GCP Private Service Connect 端点的 IP 地址。这样可以确保您的 VPC/网络中的服务和组件能够正确解析该地址。
-
-
 
 ## 将 Endpoint ID 添加到 ClickHouse Cloud 组织 {#add-endpoint-id-to-clickhouse-cloud-organization}
 
@@ -288,7 +278,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-
 ## 将 &quot;Endpoint ID&quot; 添加到 ClickHouse 服务允许列表 {#add-endpoint-id-to-services-allow-list}
 
 您需要为每个需要通过 Private Service Connect 访问的实例，将一个 Endpoint ID 添加到其允许列表中。
@@ -343,7 +332,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-
 ## 使用 Private Service Connect 访问实例 {#accessing-instance-using-private-service-connect}
 
 每个启用了 Private Link 的服务都有一个公共端点和私有端点。要通过 Private Link 进行连接，您需要使用私有端点，该端点对应于在[获取用于 Private Service Connect 的 GCP 服务附件](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)中获得的 `privateDnsHostname`。
@@ -370,7 +358,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 在此示例中，对主机名 `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` 的连接会被路由到 Private Service Connect。与此同时，`xxxxxxx.yy-xxxxN.gcp.clickhouse.cloud` 的连接则会通过互联网进行路由。
-
 
 ## 故障排查 {#troubleshooting}
 
@@ -403,7 +390,6 @@ DNS&#95;NAME - 使用在[获取用于 Private Service Connect 的 GCP service at
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440
 ```
-
 
 ```response
 # highlight-next-line {#highlight-next-line}
@@ -446,7 +432,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
 > 面向服务的设计：服务提供方通过负载均衡器发布服务，该负载均衡器向服务使用方的 VPC 网络暴露单个 IP 地址。访问服务提供方服务的使用方流量是单向的，并且只能访问该服务的 IP 地址，而不能访问整个已对等的 VPC 网络。
 
 要实现这一点，请配置 GCP VPC 防火墙规则，允许从 ClickHouse Cloud 访问你的内部/私有数据库服务。请查看 [ClickHouse Cloud 各区域的默认出站 IP 地址](/manage/data-sources/cloud-endpoints-api)，以及[可用的静态 IP 地址](https://api.clickhouse.cloud/static-ips.json)。
-
 
 ## 更多信息 {#more-information}
 

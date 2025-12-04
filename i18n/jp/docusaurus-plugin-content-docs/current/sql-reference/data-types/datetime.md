@@ -7,8 +7,6 @@ title: 'DateTime'
 doc_type: 'reference'
 ---
 
-
-
 # DateTime {#datetime}
 
 カレンダー形式の日付と一日の時刻で表現できる、時間上の瞬間を保存します。
@@ -23,14 +21,11 @@ DateTime([timezone])
 
 精度: 1秒。
 
-
 ## 速度 {#speed}
 
 `Date` データ型は、_ほとんど_ の場合において `DateTime` より高速です。
 
 `Date` 型は 2 バイトのストレージを必要としますが、`DateTime` 型は 4 バイトを必要とします。ただし、圧縮時には、`Date` と `DateTime` のサイズ差はさらに大きくなります。これは、`DateTime` に含まれる分と秒が圧縮されにくいためです。`DateTime` ではなく `Date` でフィルタリングおよび集計を行う方が、高速です。
-
-
 
 ## 使用上の注意 {#usage-remarks}
 
@@ -47,8 +42,6 @@ DateTime([timezone])
 ClickHouse は、[date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format) 設定の値に応じて値を出力します。デフォルトでは `YYYY-MM-DD hh:mm:ss` 形式のテキストで出力されます。さらに、[formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 関数を使用して出力形式を変更できます。
 
 ClickHouse にデータを挿入する際には、[date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 設定の値に応じて、さまざまな形式の日付および時刻文字列を使用できます。
-
-
 
 ## 例 {#examples}
 
@@ -136,7 +129,6 @@ FROM dt
 
 タイムゾーン変換はメタデータのみを変更するため、この操作に計算コストは発生しません。
 
-
 ## タイムゾーンサポートの制限事項 {#limitations-on-time-zones-support}
 
 一部のタイムゾーンは完全にはサポートされていない場合があります。次のようなケースがあります。
@@ -150,8 +142,6 @@ UTC からのオフセットが 15 分の倍数ではない場合、時と分の
 同様の問題が、2010 年の Casey 南極基地にもあります。3 月 5 日 02:00 に時間を 3 時間戻しました。もしあなたが南極基地で作業している場合でも、安心して ClickHouse を使用できます。ただし、タイムゾーンを UTC に設定するか、若干の不正確さが生じうることを理解しておいてください。
 
 複数日にわたる時間のシフト。一部の太平洋の島々は、タイムゾーンのオフセットを UTC+14 から UTC-12 に変更しました。これは問題ありませんが、そのタイムゾーンを用いて、切り替えが行われた日の過去時点の計算を行うと、いくらかの不正確さが生じる可能性があります。
-
-
 
 ## 夏時間（DST）の扱い {#handling-daylight-saving-time-dst}
 
@@ -193,7 +183,6 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 この場合、ClickHouse は存在しない時刻 `2023-03-26 01:30:00` を、ひとつ前の時刻である `2023-03-26 00:30:00` にずらします。
-
 
 ## 関連項目 {#see-also}
 

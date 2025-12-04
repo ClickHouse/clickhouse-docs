@@ -14,7 +14,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 В этой статье показано, как клиенты ClickHouse Cloud могут использовать ролевой доступ для аутентификации в Amazon Simple Storage Service (S3) и безопасного доступа к своим данным.
 
-
 ## Введение {#introduction}
 
 Прежде чем переходить к настройке безопасного доступа к S3, важно понять, как это работает. Ниже приведён обзор того, как сервисы ClickHouse могут получать доступ к приватным S3‑бакетам, принимая на себя роль в аккаунте AWS клиента.
@@ -129,7 +128,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 ```
 
 4 - После создания скопируйте новый **IAM Role Arn**. Он понадобится для доступа к вашему S3-бакету.
-
 
 ## Доступ к бакету S3 с ролью ClickHouseAccess {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 

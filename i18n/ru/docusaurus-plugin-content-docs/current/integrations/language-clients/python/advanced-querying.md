@@ -31,7 +31,6 @@ assert result.result_set[1][0] == 'first_value2'
 
 Обратите внимание, что экземпляры `QueryContext` не являются потокобезопасными, однако в многопоточной среде можно получить их копию, вызвав метод `QueryContext.updated_copy`.
 
-
 ## Потоковые запросы {#streaming-queries}
 
 Клиент ClickHouse Connect предоставляет несколько методов для получения данных в виде потока (реализовано как генератор Python):
@@ -76,7 +75,6 @@ with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pi
 
 Вы можете использовать свойство `source` у `StreamContext` для доступа к родительскому объекту `QueryResult`, содержащему имена и типы столбцов.
 
-
 ### Типы потоков {#stream-types}
 
 Метод `query_column_block_stream` возвращает блок в виде последовательности данных столбцов, сохранённых в нативных типах данных Python. Используя приведённые выше запросы к `taxi_trips`, возвращаемые данные будут списком, каждый элемент которого — это другой список (или кортеж), содержащий все данные для соответствующего столбца. Таким образом, `block[0]` будет кортежем, содержащим только строки. Форматы, ориентированные на столбцы, чаще всего используются для выполнения агрегатных операций по всем значениям в столбце, например для суммирования общей стоимости поездок.
@@ -101,7 +99,6 @@ with df_stream:
 
 Наконец, метод `query_arrow_stream` возвращает результат в формате ClickHouse `ArrowStream` как объект `pyarrow.ipc.RecordBatchStreamReader`, обёрнутый в `StreamContext`. Каждая итерация потока возвращает PyArrow RecordBlock.
 
-
 ### Примеры потоковой обработки {#streaming-examples}
 
 #### Потоковая передача строк {#stream-rows}
@@ -122,7 +119,6 @@ with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.
         # ....
 ```
 
-
 #### Потоковая передача блоков строк {#stream-row-blocks}
 
 ```python
@@ -138,7 +134,6 @@ with client.query_row_block_stream("SELECT number, number * 2 FROM system.number
         # Получен блок из 65409 строк
         # Получен блок из 34591 строк
 ```
-
 
 #### Потоковая передача DataFrame из Pandas {#stream-pandas-dataframes}
 
@@ -166,7 +161,6 @@ with client.query_df_stream("SELECT number, toString(number) AS str FROM system.
         # 2   65411  65411
 ```
 
-
 #### Потоковая обработка пакетов Arrow {#stream-arrow-batches}
 
 ```python
@@ -183,7 +177,6 @@ with client.query_arrow_stream("SELECT * FROM large_table") as stream:
         # Получен пакет Arrow с 65409 строк
         # Получен пакет Arrow с 34591 строк
 ```
-
 
 ## Запросы с использованием NumPy, Pandas и Arrow {#numpy-pandas-and-arrow-queries}
 
@@ -214,7 +207,6 @@ print(np_array)
 #  [4 8]] {#4-8}
 ```
 
-
 ### Запросы Pandas {#pandas-queries}
 
 Метод `query_df` возвращает результаты запроса в виде объекта DataFrame библиотеки Pandas вместо `QueryResult` из ClickHouse Connect.
@@ -238,7 +230,6 @@ print(df)
 # 3       3        6 {#3-3-6}
 # 4       4        8 {#4-4-8}
 ```
-
 
 ### Запросы PyArrow {#pyarrow-queries}
 
@@ -265,7 +256,6 @@ print(arrow_table)
 # number: [[0,1,2]] {#number-012}
 # str: [["0","1","2"]] {#str-012}
 ```
-
 
 ### DataFrame на базе Arrow {#arrow-backed-dataframes}
 
@@ -316,7 +306,6 @@ with client.query_df_arrow_stream(
         # Получен пакет <class 'polars.dataframe.frame.DataFrame'> с 34591 строками и типами данных: [UInt64, String]
 ```
 
-
 #### Примечания и особенности {#notes-and-caveats}
 
 - Отображение типов Arrow: при возврате данных в формате Arrow ClickHouse сопоставляет свои типы с ближайшими поддерживаемыми типами Arrow. Некоторые типы ClickHouse не имеют нативного аналога в Arrow и возвращаются как «сырые» байты в полях Arrow (обычно `BINARY` или `FIXED_SIZE_BINARY`).
@@ -366,7 +355,6 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 Основной вывод: прикладной код должен выполнять эти преобразования в зависимости от возможностей выбранной библиотеки DataFrame и приемлемых компромиссов по производительности. Когда нативные для DataFrame преобразования недоступны, вариант с использованием чистого Python по‑прежнему остается рабочим.
 
-
 ## Форматы чтения {#read-formats}
 
 Форматы чтения управляют типами данных значений, возвращаемых методами клиента `query`, `query_np` и `query_df`. (`raw_query` и `query_arrow` не изменяют данные, получаемые из ClickHouse, поэтому управление форматом к ним не применяется.) Например, если формат чтения для UUID изменён с формата по умолчанию `native` на альтернативный формат `string`, запрос ClickHouse к столбцу `UUID` будет возвращать строковые значения (в стандартном формате RFC 1422 8-4-4-4-12), а не объекты Python UUID.
@@ -400,7 +388,6 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Возвращать значения IPv6 из столбца `dev_address` в виде строк {#return-ipv6-values-in-the-dev_address-column-as-strings}
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
-
 
 ### Параметры формата чтения (типы Python) {#read-format-options-python-types}
 
@@ -461,7 +448,6 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
 ```
 
 К исходному объекту `ExternalData` можно добавить дополнительные внешние файлы данных с помощью метода `add_file`, который принимает те же параметры, что и конструктор. При использовании HTTP все внешние данные передаются как часть загрузки файла в формате `multipart/form-data`.
-
 
 ## Часовые пояса {#time-zones}
 

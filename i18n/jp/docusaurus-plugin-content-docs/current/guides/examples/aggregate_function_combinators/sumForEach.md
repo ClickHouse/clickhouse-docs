@@ -7,18 +7,12 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-
-
 # sumForEach {#sumforeach}
-
-
 
 ## 説明 {#description}
 
 [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) コンビネーターを
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 集約関数に適用すると、行ごとの値に対して動作する集約関数を、配列型カラムに対して動作し、配列内の各要素ごとに複数行にわたって集約を適用する集約関数に変換できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -45,7 +39,6 @@ FROM metrica.hits
 GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

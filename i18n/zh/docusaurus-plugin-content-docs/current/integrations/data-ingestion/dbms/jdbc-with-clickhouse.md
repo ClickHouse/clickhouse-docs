@@ -15,7 +15,6 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-
 # 使用 JDBC 将 ClickHouse 连接到外部数据源 {#connecting-clickhouse-to-external-data-sources-with-jdbc}
 
 :::note
@@ -41,8 +40,6 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 4. 已安装并运行较新的 **MySQL** 版本（例如 <a href="https://www.mysql.com" target="_blank">MySQL</a> 版本 >= 8）
 5. 已安装并运行较新的 **ClickHouse** 版本（参见[安装指南](/getting-started/install/install.mdx)）
 :::
-
-
 
 ## 在本地安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-locally}
 
@@ -106,7 +103,6 @@ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 我们已在前台模式下启动了 ClickHouse JDBC Bridge。要停止该 Bridge，可以将上面的 Unix shell 窗口切换到前台，然后按下 `CTRL+C`。
 :::
 
-
 ## 在 ClickHouse 中使用 JDBC 连接 {#use-the-jdbc-connection-from-within-clickhouse}
 
 ClickHouse 现在可以通过使用 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎](/engines/table-engines/integrations/jdbc.md) 来访问 MySQL 数据。
@@ -140,7 +136,6 @@ SELECT * FROM mytable;
 
 ClickHouse JDBC 引擎表的 schema 必须与所连接的 MySQL 表的 schema 保持一致，例如列名及其顺序必须相同，且列的数据类型必须彼此兼容。
 :::
-
 
 ## 在外部安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
 

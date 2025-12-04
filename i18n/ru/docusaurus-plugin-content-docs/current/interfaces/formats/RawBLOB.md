@@ -6,8 +6,6 @@ title: 'RawBLOB'
 doc_type: 'reference'
 ---
 
-
-
 ## Описание {#description}
 
 Формат `RawBLOB` считывает все входные данные в одно значение. Можно разобрать только таблицу с одним полем типа [`String`](/sql-reference/data-types/string.md) или аналогичного типа.
@@ -45,7 +43,6 @@ doc_type: 'reference'
 Код: 108. DB::Exception: Отсутствуют данные для вставки
 ```
 
-
 ## Пример использования {#example-usage}
 
 ```bash title="Query"
@@ -57,6 +54,5 @@ $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 ```text title="Response"
 f9725a22f9191e064120d718e26862a9  -
 ```
-
 
 ## Параметры форматирования {#format-settings}

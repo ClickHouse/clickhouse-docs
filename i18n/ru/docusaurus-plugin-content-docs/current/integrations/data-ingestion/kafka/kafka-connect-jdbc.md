@@ -10,7 +10,6 @@ keywords: ['kafka', 'kafka connect', 'jdbc', 'интеграция', 'конве
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # JDBC connector {#jdbc-connector}
 
 :::note
@@ -54,8 +53,6 @@ JDBC Connector распространяется под [Confluent Community Lice
 
 Следующие параметры важны для использования JDBC-коннектора с ClickHouse. Полный список параметров можно найти [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html):
 
-
-
 * `_connection.url_` - должен иметь формат `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
 * `connection.user` - пользователь с правами записи в целевую базу данных
 * `table.name.format` - таблица ClickHouse, в которую выполняется вставка данных. Таблица должна уже существовать.
@@ -83,8 +80,6 @@ JDBC Connector распространяется под [Confluent Community Lice
 #### 4. Создание таблицы ClickHouse {#4-create-the-clickhouse-table}
 
 Убедитесь, что таблица создана, удалив её, если она уже существует из предыдущих примеров. Ниже приведён пример, совместимый с уменьшенным набором данных GitHub. Обратите внимание на отсутствие каких-либо типов Array или Map, которые в настоящее время не поддерживаются:
-
-
 
 ```sql
 CREATE TABLE github
@@ -149,7 +144,6 @@ SELECT count() FROM default.github;
 ```
 
 ### Рекомендуемые дополнительные материалы {#recommended-further-reading}
-
 
 * [Параметры конфигурации приёмника Kafka (Kafka Sink Configuration Parameters)](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Подробный разбор Kafka Connect – JDBC Source Connector (Kafka Connect Deep Dive – JDBC Source Connector)](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

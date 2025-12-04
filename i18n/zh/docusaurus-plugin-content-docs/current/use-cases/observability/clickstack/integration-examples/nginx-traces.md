@@ -17,7 +17,6 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Nginx 链路追踪 {#nginx-traces-clickstack}
 
 :::note[TL;DR]
@@ -174,56 +173,56 @@ sudo systemctl reload nginx
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 nginx trace 集成的用户，我们提供了一份预先生成的 Nginx Traces 演示数据集，包含逼真的流量模式。
+对于希望在配置生产系统之前测试 nginx trace 集成的用户，我们提供了一个预生成的 Nginx trace 示例数据集，包含接近真实的流量模式。
 
 <VerticalStepper headerLevel="h4">
 
 #### 启动 ClickStack {#start-clickstack}
 
-如果您尚未运行 ClickStack，请使用以下命令启动：
+如果你还没有运行 ClickStack，请通过以下命令启动：
 
 ```bash
 docker run --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-等待约 30 秒，让 ClickStack 完全初始化后再继续。
+在继续之前，请等待大约 30 秒，以便 ClickStack 完全初始化。
 
 - 端口 8080：HyperDX Web 界面
 - 端口 4317：OTLP gRPC 端点（由 nginx 模块使用）
-- 端口 4318：OTLP HTTP 端点（用于演示 traces）
+- 端口 4318：OTLP HTTP 端点（用于演示 trace）
 
 #### 下载示例数据集 {#download-sample}
 
-下载示例 traces 文件，并将时间戳更新为当前时间：
+下载示例 trace 文件，并将时间戳更新为当前时间：
 
 ```bash
-# 下载 traces {#download-the-traces}
+# Download the traces
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
-该数据集包括：
-- 1,000 个具有真实时序特征的 trace span
-- 9 个不同的 endpoint，具有不同的流量模式
-- 约 93% 成功率 (200)，约 3% 客户端错误 (404)，约 4% 服务器端错误 (500)
+该数据集包含：
+- 1,000 个具有真实时序的 trace span
+- 9 个不同的端点，具有不同的流量模式
+- ~93% 成功率（200），~3% 客户端错误（404），~4% 服务端错误（500）
 - 延迟范围从 10ms 到 800ms
-- 保留原始流量模式，并整体平移到当前时间
+- 保留原始流量模式，并平移到当前时间
 
-#### 将 traces 发送到 ClickStack {#send-traces}
+#### 将 trace 发送到 ClickStack {#send-traces}
 
-将您的 API key 设置为环境变量（如果尚未设置）：
+将你的 API key 设置为环境变量（如果尚未设置）：
 
 ```bash
 export CLICKSTACK_API_KEY=your-api-key-here
 ```
 
-**获取您的 API key：**
-1. 在您的 ClickStack URL 打开 HyperDX
-2. 导航到 Settings → API Keys
-3. 复制您的 **摄取 API key（Ingestion API Key）**
+**获取你的 API key：**
+1. 在你的 ClickStack URL 上打开 HyperDX
+2. 进入 Settings → API Keys
+3. 复制你的 **摄取 API key（Ingestion API Key）**
 
-然后将 traces 发送到 ClickStack：
+然后将 trace 发送到 ClickStack：
 
 ```bash
 curl -X POST http://localhost:4318/v1/traces \
@@ -233,24 +232,24 @@ curl -X POST http://localhost:4318/v1/traces \
 ```
 
 :::note[在 localhost 上运行]
-此演示假设 ClickStack 在本地 `localhost:4318` 上运行。对于远程实例，请将 `localhost` 替换为您的 ClickStack 主机名。
+此演示假设 ClickStack 在本地 `localhost:4318` 上运行。对于远程实例，请将 `localhost` 替换为你的 ClickStack 主机名。
 :::
 
-您应当会看到类似 `{"partialSuccess":{}}` 的响应，表示 traces 已成功发送。所有 1,000 条 trace 都会被摄取到 ClickStack 中。
+你应当看到类似 `{"partialSuccess":{}}` 的响应，表明 trace 已成功发送。全部 1,000 条 trace 都会被摄取到 ClickStack 中。
 
-#### 在 HyperDX 中验证 traces {#verify-demo-traces}
+#### 在 HyperDX 中验证 trace {#verify-demo-traces}
 
-1. 打开 [HyperDX](http://localhost:8080/) 并登录您的账号（如有需要，您可能需要先创建一个账号）
-2. 导航到 Search 视图，并将 source 设置为 `Traces`
+1. 打开 [HyperDX](http://localhost:8080/) 并登录你的账户（可能需要先创建账户）
+2. 进入 Search 视图，并将 source 设置为 `Traces`
 3. 将时间范围设置为 **2025-10-25 13:00:00 - 2025-10-28 13:00:00**
 
-在搜索视图中，您应当会看到如下内容：
+在搜索视图中，你应当能看到如下内容：
 
 :::note[时区显示]
-HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范围为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**。较宽的时间范围可以确保无论您身在何处，都能看到演示 traces。一旦看到这些 traces，您可以将范围缩小到 24 小时，以获得更清晰的可视化效果。
+HyperDX 会以浏览器本地时区显示时间戳。演示数据覆盖的时间为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**。使用较宽的时间范围可确保无论你身处何地，都能看到演示 trace。一旦看到 trace，你可以将范围缩小到 24 小时，以获得更清晰的可视化效果。
 :::
 
-<Image img={view_traces} alt="查看 Traces"/>
+<Image img={view_traces} alt="查看 trace"/>
 
 </VerticalStepper>
 
@@ -328,7 +327,6 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 # 检查访问日志以确认流量 {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
-
 
 ## 后续步骤 {#next-steps}
 

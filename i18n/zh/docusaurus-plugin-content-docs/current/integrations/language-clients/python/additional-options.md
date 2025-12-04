@@ -45,7 +45,6 @@ common.get_setting('invalid_setting_action')
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | 用于 HTTP 流式查询的“内存中”缓冲区大小（以字节为单位）。                                                                                                                                                     |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | 当为 True 且使用 pandas 2.x 时，会保留 datetime64/timedelta64 数据类型的分辨率（例如 &#39;s&#39;、&#39;ms&#39;、&#39;us&#39;、&#39;ns&#39;）。如果为 False（或在 pandas &lt;2.x 上），则为兼容性起见会强制转换为纳秒（&#39;ns&#39;）分辨率。 |
 
-
 ## 压缩 {#compression}
 
 ClickHouse Connect 支持对查询结果和插入数据使用 lz4、zstd、brotli 和 gzip 压缩。请始终牢记，启用压缩通常意味着在网络带宽/传输速度与 CPU 使用率（客户端和服务器端）之间进行权衡。

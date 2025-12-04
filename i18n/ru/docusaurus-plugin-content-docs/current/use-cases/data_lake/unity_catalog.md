@@ -29,7 +29,6 @@ Databricks поддерживает несколько форматов данн
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
-
 ## Настройка Unity в Databricks {#configuring-unity-in-databricks}
 
 Чтобы разрешить ClickHouse взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен на взаимодействие с внешним клиентом. Этого можно добиться, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
@@ -54,7 +53,6 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-
 ### Чтение данных из Iceberg {#read-iceberg}
 
 ```sql
@@ -63,7 +61,6 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
-
 
 ## Выполнение запросов к таблицам каталога Unity из ClickHouse {#querying-unity-catalog-tables-using-clickhouse}
 
@@ -154,7 +151,6 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
-
 
 ## Загрузка данных из озера данных в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

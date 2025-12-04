@@ -11,7 +11,6 @@ import ObservabilityIntegrations from '@site/i18n/jp/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
 # セルフマネージド環境での監視 {#cloud-monitoring}
 
 本ガイドでは、ClickHouse オープンソースを評価しているエンタープライズチーム向けに、本番デプロイメントにおける監視およびオブザーバビリティ機能に関する包括的な情報を提供します。エンタープライズ顧客からは、すぐに利用可能な監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、および ClickHouse の監視機能がセルフホスト型デプロイメントとどのように比較できるのか、といった点について頻繁に問い合わせがあります。

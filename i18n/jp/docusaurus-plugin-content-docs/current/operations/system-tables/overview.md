@@ -8,8 +8,6 @@ title: 'システムテーブルの概要'
 doc_type: 'reference'
 ---
 
-
-
 ## システムテーブルの概要 {#system-tables-introduction}
 
 システムテーブルは以下の情報を提供します:
@@ -60,7 +58,6 @@ doc_type: 'reference'
 
 デフォルトでは、テーブルの成長に上限はありません。テーブルサイズを制御するには、古くなったログレコードを削除するための [TTL](/sql-reference/statements/alter/ttl) 設定を使用できます。また、`MergeTree` エンジンを使用するテーブルのパーティション機能を利用することもできます。
 
-
 ## システムメトリクスの取得元 {#system-tables-sources-of-system-metrics}
 
 システムメトリクスを収集するために、ClickHouse サーバーは次を使用します。
@@ -86,8 +83,6 @@ procfs がシステムでサポートされていて有効化されている場�
 `OSIOWaitMicroseconds` は、Linux カーネル 5.14.x 以降ではデフォルトで無効になっています。
 `sudo sysctl kernel.task_delayacct=1` を実行するか、`/etc/sysctl.d/` に `kernel.task_delayacct = 1` を含む `.conf` ファイルを作成することで有効にできます。
 :::
-
-
 
 ## ClickHouse Cloud における system テーブル {#system-tables-in-clickhouse-cloud}
 
@@ -176,7 +171,6 @@ ORDER BY most_recent DESC
 └──────────────┴─────────────────────┘
 ```
 
-
 11 行が返されました。経過時間: 0.373 秒。処理行数: 644 万行、25.77 MB（毎秒 1,729 万行、69.17 MB）。
 ピークメモリ使用量: 28.45 MiB。
 
@@ -249,12 +243,10 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 ```
 
-
 3 行のセット。経過時間: 0.462 秒。処理した行数: 7.94 百万行、31.75 MB (17.17 百万行/秒、68.67 MB/秒)。
 
 ```
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

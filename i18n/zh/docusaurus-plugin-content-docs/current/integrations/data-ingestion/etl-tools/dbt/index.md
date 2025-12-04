@@ -20,9 +20,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-
-
 ## dbt-clickhouse 适配器 {#dbt-clickhouse-adapter}
+
 **dbt**（data build tool）让分析工程师只需编写 `SELECT` 语句即可对数据仓库中的数据进行转换。dbt 负责将这些 `SELECT` 语句物化为数据库中的表和视图对象——执行 [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform) 流程中的 T（Transform）。用户可以通过一个 `SELECT` 语句来定义模型。
 
 在 dbt 中，这些模型可以相互引用并分层，从而构建更高层次的概念。用于连接模型的样板 SQL 会被自动生成。此外，dbt 会识别模型之间的依赖关系，并利用有向无环图（DAG）确保按合适的顺序创建它们。
@@ -30,8 +29,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 dbt 通过一个 ClickHouse 官方适配器与 ClickHouse 集成：[dbt-clickhouse](https://github.com/ClickHouse/dbt-clickhouse)。
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
-
-
 
 ## 支持的特性 {#supported-features}
 
@@ -54,11 +51,9 @@ dbt 通过一个 ClickHouse 官方适配器与 ClickHouse 集成：[dbt-clickhou
 - [x] ClickHouse 特定列配置（Codec、TTL 等）
 - [x] ClickHouse 特定表设置（索引、projections 等）
 
-目前已支持截至 dbt-core 1.9 的所有特性。我们将在不久后补充对 dbt-core 1.10 中新增特性的支持。
+目前已支持截至 dbt-core 1.10 的所有特性，包括 `--sample` 标志，并且已修复所有弃用警告，为未来版本做好准备。dbt 1.10 中引入的 **Catalog 集成**（例如 Iceberg）在该适配器中尚未得到原生支持，但可以通过变通方案使用。详情请参阅 [Catalog 支持部分](/integrations/dbt/features-and-configurations#catalog-support)。
 
 该适配器目前尚不能在 [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 中使用，但我们预计很快会提供支持。若需要更多信息，请联系支持团队。
-
-
 
 ## 概念 {#concepts}
 
@@ -93,8 +88,6 @@ dbt 提供 4 种物化方式：
 | Distributed incremental 物化方式         | YES, Experimental | 基于与 distributed table 相同思路的增量模型。请注意并非所有策略都受支持，更多信息请访问[此处](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)。 |
 | Dictionary 物化方式                      | YES, Experimental | 创建一个 [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary)。                                                                                                         |
 
-
-
 ## 配置 dbt 和 ClickHouse 适配器 {#setup-of-dbt-and-the-clickhouse-adapter}
 
 ### 安装 dbt-core 和 dbt-clickhouse {#install-dbt-core-and-dbt-clickhouse}
@@ -104,6 +97,7 @@ dbt 提供了多种安装命令行界面（CLI）的方法，详细说明见 [�
 ```sh
 pip install dbt-core dbt-clickhouse
 ```
+
 
 ### 为 dbt 提供 ClickHouse 实例的连接详细信息。 {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
 
@@ -125,19 +119,21 @@ clickhouse-service:
       secure: True  # 使用 TLS(原生协议)或 HTTPS(HTTP 协议)
 ```
 
+
 ### 创建 dbt 项目 {#create-a-dbt-project}
 
-现在你可以在现有项目中使用此配置，或使用以下命令创建新项目：
+现在你可以在现有项目中使用此 profile，或使用以下命令创建新项目：
 
 ```sh
-dbt init <项目名称>
+dbt init project_name
 ```
 
-在 `project_name` 目录下，更新 `dbt_project.yml` 文件，指定用于连接 ClickHouse 服务器的 profile 名称。
+在 `project_name` 目录中，更新 `dbt_project.yml` 文件，指定用于连接到 ClickHouse 服务器的 profile 名称。
 
 ```yaml
 profile: 'clickhouse-service'
 ```
+
 
 ### 测试连接 {#test-connection}
 
@@ -157,12 +153,11 @@ profile: 'clickhouse-service'
 
 你的 CD 步骤可以非常简单，只需针对生产 ClickHouse 集群运行 `dbt build` 即可。
 
-#### 更完整的 CI/CD 阶段：使用最新数据，仅测试受影响的模型 {#more-complete-ci-stage}
+#### 更完善的 CI/CD 阶段：使用最新数据，仅测试受影响的模型 {#more-complete-ci-stage}
 
-一种常见策略是使用 [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) 作业，只重新部署被修改的模型（以及其上下游依赖）。这种方法利用生产运行生成的制品（例如 [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)）来缩短项目运行时间，并确保各环境之间的模式不会发生漂移。
+一种常见策略是使用 [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) 作业，仅重新部署已修改的模型（以及其上下游依赖）。该方法使用来自生产运行的工件（即 [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)）来缩短项目的运行时间，并确保各环境之间不会发生 schema 漂移。
 
-为了保持开发环境同步，并避免在过时的部署上运行模型，你可以使用 [clone](https://docs.getdbt.com/reference/commands/clone)，甚至使用 [defer](https://docs.getdbt.com/reference/node-selection/defer)。
-
+为了使各开发环境保持同步，并避免在过时的部署上运行模型，你可以使用 [clone](https://docs.getdbt.com/reference/commands/clone) 或者 [defer](https://docs.getdbt.com/reference/node-selection/defer)。
 
 我们建议在测试环境（即预发布环境）中使用独立的 ClickHouse 集群或服务，以避免影响生产环境的运行。为了确保测试环境具备代表性，重要的是要使用生产数据的一个子集，并以能够避免不同环境之间 schema 漂移的方式运行 dbt。
 
@@ -172,8 +167,6 @@ profile: 'clickhouse-service'
 为 CI 测试使用独立环境还可以让你在不影响生产环境的情况下执行手动测试。例如，你可能希望将某个 BI 工具指向该环境进行测试。
 
 对于部署（即 CD 步骤），我们建议使用生产部署生成的工件，仅更新已发生变更的模型。这需要将对象存储（例如 S3）配置为 dbt 工件的中间存储。一旦完成配置，你就可以运行类似 `dbt build --select state:modified+ --state path/to/last/deploy/state.json` 的命令，根据自上次在生产环境运行以来的变更，有选择地重建数量最少的必要模型。
-
-
 
 ## 排查常见问题 {#troubleshooting-common-issues}
 
@@ -189,8 +182,6 @@ profile: 'clickhouse-service'
 
 某些操作可能由于特定的 ClickHouse 查询而比预期花费更长时间。要进一步了解哪些查询耗时较长，可以将[日志级别](https://docs.getdbt.com/reference/global-configs/logs#log-level)设置为 `debug`——这会输出每个查询的耗时。例如，可以在 dbt 命令后追加 `--log-level debug` 来实现这一点。
 
-
-
 ## 限制 {#limitations}
 
 当前用于 dbt 的 ClickHouse 适配器存在若干限制，用户需要注意：
@@ -202,8 +193,6 @@ profile: 'clickhouse-service'
 - 当 dbt 在数据库中创建一个关系（表/视图）时，通常会以 `{{ database }}.{{ schema }}.{{ table/view id }}` 的形式创建。ClickHouse 没有 schema 的概念，因此适配器会使用 `{{schema}}.{{ table/view id }}`，其中 `schema` 对应 ClickHouse 中的数据库。
 - 如果在 ClickHouse 的 insert 语句中，将 ephemeral 模型/CTE 放在 `INSERT INTO` 之前，则它们无法工作，参见：https://github.com/ClickHouse/ClickHouse/issues/30323。对于大多数模型，这不应产生影响，但在定义模型以及编写其他 SQL 语句时，应谨慎放置 ephemeral 模型。 <!-- TODO 审查此限制，看起来对应的 issue 已经关闭，并且修复已在 24.10 中引入 -->
 
-
-
 ## Fivetran {#fivetran}
 
-`dbt-clickhouse` 连接器也可用于 [Fivetran 转换](https://fivetran.com/docs/transformations/dbt)，从而可以在 Fivetran 平台内直接使用 `dbt` 实现无缝集成和转换。
+`dbt-clickhouse` 连接器也可用于 [Fivetran 转换](https://fivetran.com/docs/transformations/dbt)，使你能够在 Fivetran 平台内直接使用 `dbt` 实现无缝集成与转换。

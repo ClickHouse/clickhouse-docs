@@ -34,7 +34,6 @@ with engine.begin() as conn:
 
 在下文的 [Connection arguments and Settings](driver-api.md#connection-arguments) 一节可以查看支持参数的完整列表。这些参数也可以通过 SQLAlchemy DSN 进行配置。
 
-
 ## 核心查询 {#sqlalchemy-core-queries}
 
 该方言支持 SQLAlchemy Core 的 `SELECT` 查询，包括联接、过滤、排序、限制/偏移以及 `DISTINCT`。
@@ -67,7 +66,6 @@ from sqlalchemy import delete
 with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
-
 
 ## DDL 和反射 {#sqlalchemy-ddl-reflection}
 
@@ -103,7 +101,6 @@ with engine.begin() as conn:
 
 如果服务器上存在这些属性，则反射出的列会包含方言特定的属性，例如 `clickhousedb_default_type`、`clickhousedb_codec_expression` 和 `clickhousedb_ttl_expression`。
 
-
 ## 插入（Core 和基础 ORM） {#sqlalchemy-inserts}
 
 插入既可以通过 SQLAlchemy Core 实现，也可以为方便起见使用简单的 ORM 模型来完成。
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## 范围和限制 {#scope-and-limitations}
 

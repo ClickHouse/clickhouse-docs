@@ -7,8 +7,6 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-
-
 # ALTER {#alter}
 
 ほとんどの `ALTER TABLE` クエリは、テーブルの設定またはデータを変更します。
@@ -51,8 +49,6 @@ doc_type: 'reference'
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | コメントがあらかじめ設定されていたかどうかに関係なく、テーブルのコメントを追加、変更、または削除します。 |
 | [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md) を変更します。                   |
 
-
-
 ## ミューテーション {#mutations}
 
 テーブルデータを変更するための `ALTER` クエリは、「ミューテーション」と呼ばれるメカニズムで実装されています。代表的なものは [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete.md) や [ALTER TABLE ... UPDATE](/sql-reference/statements/alter/update.md) です。これらは [MergeTree](/engines/table-engines/mergetree-family/index.md) テーブルにおけるマージと類似した非同期のバックグラウンドプロセスで、新しい「ミューテートされた」パーツのバージョンを生成します。
@@ -65,8 +61,6 @@ doc_type: 'reference'
 ミューテーションのクエリは、ミューテーションエントリが追加されるとすぐに応答を返します（レプリケートされたテーブルの場合は ZooKeeper に、非レプリケートテーブルの場合はファイルシステムに追加されます）。ミューテーション自体はシステムプロファイル設定を用いて非同期に実行されます。ミューテーションの進行状況を追跡するには、[`system.mutations`](/operations/system-tables/mutations) テーブルを使用できます。正常に送信されたミューテーションは、ClickHouse サーバーが再起動されても実行を継続します。一度送信されたミューテーションをロールバックする方法はありませんが、何らかの理由でミューテーションが停止している場合は、[`KILL MUTATION`](/sql-reference/statements/kill.md/#kill-mutation) クエリでキャンセルできます。
 
 完了したミューテーションのエントリはすぐには削除されません（保持されるエントリ数は `finished_mutations_to_keep` ストレージエンジンパラメータで決まります）。古いミューテーションエントリから順に削除されます。
-
-
 
 ## ALTER クエリの同期性 {#synchronicity-of-alter-queries}
 
@@ -81,8 +75,6 @@ doc_type: 'reference'
 :::note
 すべての `ALTER` クエリについて、`alter_sync = 2` であり、かつ一部のレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えて非アクティブな状態の場合、`UNFINISHED` という例外がスローされます。
 :::
-
-
 
 ## 関連コンテンツ {#related-content}
 

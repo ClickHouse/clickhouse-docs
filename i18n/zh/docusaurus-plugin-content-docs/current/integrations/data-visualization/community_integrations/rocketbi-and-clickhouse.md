@@ -30,7 +30,6 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 目标：使用 Rocket.BI 构建你的第一个仪表盘 {#goal-build-your-first-dashboard-with-rocketbi}
 
 <CommunityMaintainedBadge/>
@@ -42,8 +41,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <br/>
 
 你可以通过[此链接访问该仪表盘。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
-
-
 
 ## 安装 {#install}
 
@@ -63,7 +60,6 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 打开浏览器，访问 `localhost:5050`，使用以下账号登录：`hello@gmail.com/123456`
 
 如果你想从源码构建或进行高级配置，可以在这里查看 [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)。
-
 
 ## 让我们来构建仪表板 {#lets-build-the-dashboard}
 

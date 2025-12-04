@@ -31,7 +31,6 @@ assert result.result_set[1][0] == 'first_value2'
 
 `QueryContext` はスレッドセーフではありませんが、マルチスレッド環境で使用する場合は、`QueryContext.updated_copy` メソッドを呼び出してコピーを取得できます。
 
-
 ## ストリーミングクエリ {#streaming-queries}
 
 ClickHouse Connect Client は、ストリームとしてデータを取得するための複数のメソッド（Python のジェネレーターとして実装されています）を提供します。
@@ -76,7 +75,6 @@ with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pi
 
 `StreamContext` の `source` プロパティを使用して、親の `QueryResult` オブジェクトにアクセスできます。`QueryResult` には、列名やデータ型が含まれています。
 
-
 ### ストリームの種類 {#stream-types}
 
 `query_column_block_stream` メソッドは、ブロックをネイティブな Python データ型として保存されたカラムデータのシーケンスとして返します。上記の `taxi_trips` クエリを使用した場合、返されるデータはリストになり、そのリストの各要素は、対応するカラムのすべてのデータを含む別のリスト（またはタプル）になります。したがって `block[0]` は文字列だけを含むタプルになります。カラム指向フォーマットは、合計料金の合算のように、そのカラム内のすべての値に対する集約処理を行う用途で最もよく使用されます。
@@ -101,7 +99,6 @@ with df_stream:
 
 最後に、`query_arrow_stream` メソッドは、ClickHouse の `ArrowStream` 形式の結果を、`StreamContext` でラップされた `pyarrow.ipc.RecordBatchStreamReader` として返します。ストリームの各イテレーションでは、PyArrow の RecordBlock が返されます。
 
-
 ### ストリーミングの例 {#streaming-examples}
 
 #### 行のストリーミング {#stream-rows}
@@ -122,7 +119,6 @@ with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.
         # ....
 ```
 
-
 #### 行ブロックのストリーミング {#stream-row-blocks}
 
 ```python
@@ -138,7 +134,6 @@ with client.query_row_block_stream("SELECT number, number * 2 FROM system.number
         # Received block with 65409 rows
         # Received block with 34591 rows
 ```
-
 
 #### Pandas の DataFrame をストリーミングする {#stream-pandas-dataframes}
 
@@ -166,7 +161,6 @@ with client.query_df_stream("SELECT number, toString(number) AS str FROM system.
         # 2   65411  65411
 ```
 
-
 #### Arrow バッチのストリーミング {#stream-arrow-batches}
 
 ```python
@@ -183,7 +177,6 @@ with client.query_arrow_stream("SELECT * FROM large_table") as stream:
         # Received Arrow batch with 65409 rows
         # Received Arrow batch with 34591 rows
 ```
-
 
 ## NumPy、Pandas、Arrow クエリ {#numpy-pandas-and-arrow-queries}
 
@@ -214,7 +207,6 @@ print(np_array)
 #  [4 8]] {#4-8}
 ```
 
-
 ### Pandas クエリ {#pandas-queries}
 
 `query_df` メソッドは、ClickHouse Connect の `QueryResult` ではなく、Pandas の DataFrame としてクエリ結果を返します。
@@ -238,7 +230,6 @@ print(df)
 # 3       3        6 {#3-3-6}
 # 4       4        8 {#4-4-8}
 ```
-
 
 ### PyArrow クエリ {#pyarrow-queries}
 
@@ -265,7 +256,6 @@ print(arrow_table)
 # number: [[0,1,2]] {#number-012}
 # str: [["0","1","2"]] {#str-012}
 ```
-
 
 ### Arrow バックエンド DataFrame {#arrow-backed-dataframes}
 
@@ -316,7 +306,6 @@ with client.query_df_arrow_stream(
         # <class 'polars.dataframe.frame.DataFrame'> バッチを受信: 34591 行、データ型: [UInt64, String]
 ```
 
-
 #### 注意事項と補足 {#notes-and-caveats}
 
 - Arrow 型のマッピング: データを Arrow フォーマットで返す際、ClickHouse は型をサポートされている最も近い Arrow 型にマッピングします。一部の ClickHouse 型にはネイティブな Arrow の対応型がなく、その場合は Arrow フィールド内で生のバイト列として返されます（通常は `BINARY` または `FIXED_SIZE_BINARY`）。
@@ -366,7 +355,6 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 重要なポイントは、アプリケーションコードは、選択した DataFrame ライブラリの機能と許容可能なパフォーマンス上のトレードオフに基づいて、これらの変換を処理しなければならないということです。DataFrame ネイティブな変換が利用できない場合は、純粋な Python ベースのアプローチが引き続き選択肢として残ります。
 
-
 ## 読み取りフォーマット {#read-formats}
 
 読み取りフォーマットは、クライアントの `query`、`query_np`、`query_df` メソッドから返される値のデータ型を制御します（`raw_query` と `query_arrow` は ClickHouse から受信したデータを変更しないため、フォーマット制御は適用されません）。たとえば、UUID の読み取りフォーマットをデフォルトの `native` フォーマットから代替の `string` フォーマットに変更すると、UUID 型カラムに対する ClickHouse のクエリ結果は、Python の UUID オブジェクトではなく、（標準的な 8-4-4-4-12 の RFC 1422 形式を使用した）文字列値として返されます。
@@ -400,7 +388,6 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # `dev_address`列のIPv6値を文字列として返す {#return-ipv6-values-in-the-dev_address-column-as-strings}
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
-
 
 ### 読み取りフォーマットオプション（Python 型） {#read-format-options-python-types}
 
@@ -461,7 +448,6 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
 ```
 
 追加の外部データファイルは、コンストラクタと同じパラメータを受け取る `add_file` メソッドを使用して、最初に作成した `ExternalData` オブジェクトに追加できます。HTTPの場合、すべての外部データは `multipart/form-data` によるファイルアップロードの一部として送信されます。
-
 
 ## タイムゾーン {#time-zones}
 

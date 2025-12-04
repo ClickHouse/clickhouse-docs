@@ -10,7 +10,6 @@
 docker pull clickhouse/clickhouse-server
 ```
 
-
 ## Версии {#versions}
 
 - Тег `latest` указывает на последний релиз последней стабильной ветки.
@@ -31,8 +30,6 @@ docker pull clickhouse/clickhouse-server
   содержащей соответствующий [патч](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468). В качестве обходного решения можно
   использовать `docker run --security-opt seccomp=unconfined`, однако это имеет последствия для безопасности.
 
-
-
 ## Как использовать этот образ {#how-to-use-image}
 
 ### Запуск экземпляра сервера {#start-server-instance}
@@ -46,7 +43,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 По умолчанию описанный выше экземпляр сервера запускается от имени пользователя `default` без пароля.
 
 ### Подключение к нему из нативного клиента {#connect-to-it-from-native-client}
-
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
@@ -118,7 +114,6 @@ docker run -d \
 * `/etc/clickhouse-server/users.d/*.xml` - файлы с изменениями настроек пользователей
 * `/docker-entrypoint-initdb.d/` - каталог со скриптами инициализации базы данных (см. ниже).
 
-
 ## Возможности Linux {#linear-capabilities}
 
 У ClickHouse есть дополнительная функциональность, для работы которой требуется включить несколько [возможностей Linux (capabilities)](https://man7.org/linux/man-pages/man7/capabilities.7.html).
@@ -133,7 +128,6 @@ docker run -d \
 
 Дополнительные сведения см. в разделе [&quot;Настройка возможностей CAP&#95;IPC&#95;LOCK и CAP&#95;SYS&#95;NICE в Docker&quot;](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker)
 
-
 ## Конфигурация {#configuration}
 
 Контейнер открывает порт 8123 для [HTTP-интерфейса](https://clickhouse.com/docs/interfaces/http_interface/) и порт 9000 для [нативного клиента](https://clickhouse.com/docs/interfaces/tcp/).
@@ -147,7 +141,6 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 ```
 
 ### Запуск сервера от имени отдельного пользователя {#start-server-custom-user}
-
 
 ```bash
 # Директория $PWD/data/clickhouse должна существовать и принадлежать текущему пользователю {#pwddataclickhouse-should-exist-and-be-owned-by-current-user}
@@ -182,7 +175,6 @@ docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLIC
 ```bash
 docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clickhouse-server
 ```
-
 
 ## Как расширить этот образ {#how-to-extend-image}
 

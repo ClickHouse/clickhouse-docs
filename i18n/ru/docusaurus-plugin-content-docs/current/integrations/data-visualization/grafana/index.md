@@ -22,7 +22,6 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Плагин источника данных ClickHouse для Grafana {#clickhouse-data-source-plugin-for-grafana}
 
 <ClickHouseSupportedBadge/>

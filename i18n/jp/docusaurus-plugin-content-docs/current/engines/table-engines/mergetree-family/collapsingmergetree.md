@@ -8,11 +8,7 @@ title: 'CollapsingMergeTree テーブルエンジン'
 doc_type: 'guide'
 ---
 
-
-
 # CollapsingMergeTree テーブルエンジン {#collapsingmergetree-table-engine}
-
-
 
 ## 説明 {#description}
 
@@ -29,16 +25,12 @@ doc_type: 'guide'
 その結果として `SELECT` クエリの効率を高めることができます。
 :::
 
-
-
 ## パラメータ {#parameters}
 
 このテーブルエンジンのすべてのパラメータは、`Sign` パラメータを除き、
 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) における同名パラメータと同じ意味を持ちます。
 
 - `Sign` — 行の種別を示す列に付ける名前で、`1` は「状態」行、`-1` は「取消」行を表します。型: [Int8](/sql-reference/data-types/int-uint)。
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -79,7 +71,6 @@ ENGINE = CollapsingMergeTree(Sign)
 
 * クエリパラメータの説明については、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 * `CollapsingMergeTree` テーブルを作成する場合は、`MergeTree` テーブルを作成する場合と同じ [クエリ句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) が必要です。
-
 
 ## Collapsing {#table_engine-collapsingmergetree-collapsing}
 
@@ -147,7 +138,6 @@ ClickHouse がデータ[パーツ](/concepts/glossary#parts)をマージする�
 すなわち、`Sign` = `1` の「state」行と、`Sign` = `-1` の「cancel」行です。
 言い換えると、ClickHouse ではエントリが collapsing（折りたたみ）されます。
 
-
 各結果データパーツごとに、ClickHouse は次のように保存します。
 
 |  |                                                                                                                                     |
@@ -183,8 +173,6 @@ collapsing を最終確定させるには、`GROUP BY` 句と、`Sign` を考慮
 `FROM` 句に対して [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修飾子を使用できます。これは、結果を返す前にデータをマージします。
 `CollapsingMergeTree` では、各キーごとに最新の「state」行のみが返されます。
 :::
-
-
 
 ## 例 {#examples}
 
@@ -296,7 +284,6 @@ SELECT * FROM UAct FINAL
 負の値を指定できます。
 
 この例では、以下のサンプルデータを使用します。
-
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐

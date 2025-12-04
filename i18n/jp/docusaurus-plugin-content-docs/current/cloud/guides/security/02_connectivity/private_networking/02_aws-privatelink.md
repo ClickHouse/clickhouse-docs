@@ -18,7 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
 # AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -69,13 +68,9 @@ ClickHouse Cloud は、以下のリージョンからの [クロスリージョ�
 
 Terraform のサンプルは[こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)を参照してください。
 
-
-
 ## 重要な考慮事項 {#considerations}
 ClickHouse は、AWS リージョン内で同じ公開済みの [サービスエンドポイント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) を再利用できるよう、サービスをグループ化しようとします。ただし、このグループ化が常に保証されるわけではなく、特にサービスを複数の ClickHouse 組織に分散している場合には当てはまらないことがあります。
 すでに同じ ClickHouse 組織内の他のサービス向けに PrivateLink を構成済みの場合は、そのグループ化により多くの手順を省略できることが多く、最終ステップである「ClickHouse のエンドポイント ID を ClickHouse サービスの許可リストに追加する」に直接進むことができます。
-
-
 
 ## この手順の前提条件 {#prerequisites}
 
@@ -83,8 +78,6 @@ ClickHouse は、AWS リージョン内で同じ公開済みの [サービスエ
 
 1. 利用可能な AWS アカウント
 1. ClickHouse 側でプライベートエンドポイントを作成および管理するために必要な権限を持つ [ClickHouse API キー](/cloud/manage/openapi)
-
-
 
 ## 手順 {#steps}
 
@@ -177,7 +170,6 @@ VPC エンドポイントを作成したら、`Endpoint ID` の値を控えて�
 <Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC エンドポイント ID" border />
 
 #### オプション 2: AWS CloudFormation {#option-2-aws-cloudformation}
-
 
 次に、[エンドポイントの「Service name」を取得](#obtain-endpoint-service-info) の手順で取得した `Service name`<sup>console</sup> または `endpointServiceId`<sup>API</sup> を使用して、VPC エンドポイントを作成する必要があります。
 正しいサブネット ID、セキュリティグループ、および VPC ID を使用していることを確認してください。
@@ -281,7 +273,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-
 許可リストからエンドポイント ID を削除するには、次の手順を実行します。
 
 ```bash
@@ -342,7 +333,6 @@ jq .result
 ```
 
 この例では、`privateDnsHostname` の値に対応するホスト名での接続は PrivateLink 経由でルーティングされますが、`endpointServiceId` に対応するホスト名での接続はインターネット経由でルーティングされます。
-
 
 ## トラブルシューティング {#troubleshooting}
 

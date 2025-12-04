@@ -34,13 +34,11 @@ hyperdx:
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-
 ### 方法 2：通过带有 --set 参数的 helm upgrade 命令进行更新 {#api-key-set-flag}
 
 ```shell
 helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
-
 
 ### 重启 Pod（容器组）以应用更改 {#restart-pods}
 
@@ -53,7 +51,6 @@ kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-cl
 :::note
 该 chart 会使用你的 API key 自动创建一个名为 `<release-name>-app-secrets` 的 Kubernetes Secret。除非你打算使用外部 Secret，否则无需进行额外的 Secret 配置。
 :::
-
 
 ## Secret 管理 {#secret-management}
 
@@ -83,7 +80,6 @@ data:
 kubectl apply -f secrets.yaml
 ```
 
-
 ### 创建自定义 Secret {#creating-a-custom-secret}
 
 手动创建一个自定义的 Kubernetes Secret：
@@ -92,7 +88,6 @@ kubectl apply -f secrets.yaml
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=我的密钥
 ```
-
 
 ### 在 values.yaml 中引用 Secret {#referencing-a-secret}
 
@@ -104,7 +99,6 @@ hyperdx:
         name: hyperdx-secret
         key: API_KEY
 ```
-
 
 ## 入口配置 {#ingress-setup}
 
@@ -123,7 +117,6 @@ hyperdx:
 :::note 重要配置说明
 `hyperdx.frontendUrl` 应当与入口（Ingress）的主机名匹配，并且包含协议（例如：`https://hyperdx.yourdomain.com`）。这样可以确保所有生成的链接、cookie 和重定向都能正常工作。
 :::
-
 
 ### 启用 TLS（HTTPS） {#enabling-tls}
 
@@ -148,7 +141,6 @@ hyperdx:
       enabled: true
       tlsSecretName: "hyperdx-tls"
 ```
-
 
 ### 入口配置示例 {#example-ingress-configuration}
 
@@ -181,7 +173,6 @@ spec:
       secretName: hyperdx-tls
 ```
 
-
 ### 常见入口问题 {#common-ingress-pitfalls}
 
 **路径与重写配置：**
@@ -206,7 +197,6 @@ spec:
 ```shell
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
-
 
 ## OTel collector 入口 {#otel-collector-ingress}
 
@@ -244,7 +234,6 @@ hyperdx:
 如果不需要将 OTel collector 暴露到集群外部，可以跳过此配置。对于大多数用户，通用的入口配置已经足够。
 :::
 
-
 ## 入口故障排查 {#troubleshooting-ingress}
 
 **检查入口资源：**
@@ -281,7 +270,6 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **清理浏览器和 CDN 缓存：**
 
 * 变更之后，清理浏览器缓存以及任何 CDN/代理缓存，以避免使用陈旧的资源
-
 
 ## 自定义配置 {#customizing-values}
 
@@ -321,7 +309,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
 ```
-
 
 ## 后续步骤 {#next-steps}
 

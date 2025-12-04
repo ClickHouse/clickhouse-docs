@@ -10,19 +10,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # hdfs テーブル関数 {#hdfs-table-function}
 
 HDFS 上のファイルからテーブルを作成します。このテーブル関数は、[url](../../sql-reference/table-functions/url.md) および [file](../../sql-reference/table-functions/file.md) テーブル関数と同様です。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 hdfs(URI, format, structure)
 ```
-
 
 ## 引数 {#arguments}
 
@@ -31,8 +27,6 @@ hdfs(URI, format, structure)
 | `URI`     | HDFS 上のファイルへの相対 URI。ファイルパスは読み取り専用モードで次のグロブパターンをサポートします: `*`, `?`, `{abc,def}`, `{N..M}`。ここで `N`, `M` は数値、`'abc'`, `'def'` は文字列です。 |
 | `format`  | ファイルの[フォーマット](/sql-reference/formats)。                                                                                                                                |
 | `structure`| テーブルの構造。形式 `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                              |
-
-
 
 ## 返り値 {#returned_value}
 
@@ -54,7 +48,6 @@ LIMIT 2
 │       3 │       2 │       1 │
 └─────────┴─────────┴─────────┘
 ```
-
 
 ## パスでのグロブ {#globs_in_path}
 
@@ -110,15 +103,12 @@ SELECT count(*)
 FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32')
 ```
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL`。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL`。
-
-
 
 ## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
@@ -132,14 +122,11 @@ Hive スタイルのパーティショニングで作成された仮想列を使
 SELECT * FROM HDFS('hdfs://hdfs1:9000/data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## ストレージ設定 {#storage-settings}
 
 - [hdfs_truncate_on_insert](operations/settings/settings.md#hdfs_truncate_on_insert) - 挿入前にファイルを切り詰められるようにします。デフォルトでは無効です。
 - [hdfs_create_new_file_on_insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) - フォーマットにサフィックスがある場合、挿入ごとに新しいファイルを作成できるようにします。デフォルトでは無効です。
 - [hdfs_skip_empty_files](operations/settings/settings.md#hdfs_skip_empty_files) - 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。
-
-
 
 ## 関連項目 {#related}
 

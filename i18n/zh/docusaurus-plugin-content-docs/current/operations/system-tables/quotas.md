@@ -6,8 +6,6 @@ title: 'system.quotas'
 doc_type: 'reference'
 ---
 
-
-
 # system.quotas {#systemquotas}
 
 包含有关[配额](../../operations/system-tables/quotas.md)的信息。
@@ -29,8 +27,6 @@ doc_type: 'reference'
   - `1` — 配额应用于除 `apply_to_except` 中列出的用户之外的所有用户。
 - `apply_to_list` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 应应用配额的用户名/[角色](../../guides/sre/user-management/index.md#role-management)列表。
 - `apply_to_except` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 不应应用配额的用户名/角色列表。
-
-
 
 ## 另请参阅 {#see-also}
 

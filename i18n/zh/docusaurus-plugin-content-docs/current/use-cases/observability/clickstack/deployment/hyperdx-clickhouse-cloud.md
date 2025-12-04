@@ -38,7 +38,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 在此模式下，数据摄取完全由用户负责。您可以使用自托管的 OpenTelemetry collector、通过客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 流水线，或 ClickPipes（ClickHouse Cloud 的托管摄取服务）将数据摄取到 ClickHouse Cloud 中。这种方式是运行 ClickStack 最简单且性能最佳的方案。
 
-
 ### 适用场景 {#suitable-for}
 
 此部署模式在以下场景中尤为适用：

@@ -10,8 +10,6 @@ doc_type: 'reference'
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
-
-
 ## 説明 {#description}
 
 [`TabSeparated`](./TabSeparated.md) 形式とは異なり、最初の行にはカラム名が、2 行目にはカラム型が書き込まれます。
@@ -23,8 +21,6 @@ doc_type: 'reference'
 - [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 設定が `1` の場合、
 入力データの型はテーブル内の対応するカラムの型と比較されます。それ以外の場合、2 行目はスキップされます。
 :::
-
-
 
 ## 使用例 {#example-usage}
 
@@ -72,7 +68,6 @@ FORMAT TabSeparatedWithNamesAndTypes
 
 出力はタブ区切り形式となり、列名と型を表す 2 行のヘッダーが付きます。
 
-
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
 Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
@@ -94,6 +89,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## フォーマット設定 {#format-settings}

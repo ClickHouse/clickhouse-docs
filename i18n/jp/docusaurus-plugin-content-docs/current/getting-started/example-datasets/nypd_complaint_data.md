@@ -118,7 +118,6 @@ New Georeferenced Column Nullable(String)
 
 ここで、TSV ファイル内のカラムが、[dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションに記載されている名前と型と一致しているか確認してください。データ型はあまり厳密ではなく、数値フィールドはすべて `Nullable(Float64)`、それ以外のフィールドはすべて `Nullable(String)` になっています。データを保存するための ClickHouse テーブルを作成する際には、より適切でパフォーマンスに優れた型を指定できます。
 
-
 ### 適切なスキーマを決定する {#determine-the-proper-schema}
 
 各フィールドにどの型を使用すべきか判断するには、データがどのような内容かを把握しておく必要があります。たとえば、フィールド `JURISDICTION_CODE` は数値ですが、これは `UInt8` にすべきでしょうか、それとも `Enum` にすべきでしょうか、あるいは `Float64` が適切でしょうか？
@@ -209,7 +208,6 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 この執筆時点で使用しているデータセットでは、`PARK_NM` 列に含まれる公園および遊び場の値は数百種類しかありません。これは、`LowCardinality(String)` フィールド内の異なる文字列数を 10,000 未満に抑えることを推奨している [LowCardinality](/sql-reference/data-types/lowcardinality#description) のガイドラインと比較しても小さい数です。
 
-
 ### DateTime フィールド {#datetime-fields}
 
 [データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションによると、報告されたイベントの開始時刻と終了時刻を表す日時フィールドが用意されています。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認すると、これらのフィールドが常に値で埋められているかどうかを把握できます。
@@ -278,7 +276,6 @@ FORMAT PrettyCompact"
 └───────────────────┴───────────────────┘
 ```
 
-
 ## 計画を立てる {#make-a-plan}
 
 上記の調査結果に基づいて、次のようにします。
@@ -327,7 +324,6 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
-
 ## 日付と時刻の文字列を DateTime64 型に変換する {#convert-the-date-and-time-string-to-a-datetime64-type}
 
 このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。さらに、日付は `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式へ変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort) を使用して実行できます。
@@ -348,7 +344,6 @@ FORMAT PrettyCompact"
 上記の 2 行目と 3 行目には前のステップで連結した結果があり、4 行目と 5 行目でそれらの文字列を `DateTime64` にパースしています。苦情の終了時刻は必ずしも存在するとは限らないため、`parseDateTime64BestEffortOrNull` を使用します。
 
 結果:
-
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -383,7 +378,6 @@ FORMAT PrettyCompact"
 :::note
 上で `1925` として表示されている日付は、データの誤りが原因です。元のデータには、本来は `2019`〜`2022` であるべきところが `1019`〜`1022` となっているレコードがいくつか含まれています。これらは、64 ビットの `DateTime` で表現可能な最も古い日付が 1925 年 1 月 1 日であるため、その日付として保存されています。
 :::
-
 
 ## テーブルを作成する {#create-a-table}
 
@@ -484,7 +478,6 @@ CREATE TABLE NYPD_Complaint (
   ORDER BY ( borough, offense_description, date_reported )
 ```
 
-
 ### テーブルの主キーを確認する {#finding-the-primary-key-of-a-table}
 
 ClickHouse の `system` データベースのうち、特に `system.table` には、作成したばかりのテーブルに関するすべての情報が含まれています。次のクエリで、`ORDER BY`（ソートキー）と `PRIMARY KEY` を確認できます。
@@ -514,7 +507,6 @@ Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 
 1 行を取得しました。経過時間: 0.001 秒。
 ```
-
 
 ## データの前処理とインポート {#preprocess-import-data}
 
@@ -570,7 +562,6 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-client --query='INSERT INTO NYPD_Complaint FORMAT TSV'
 ```
 
-
 ## データを検証する {#validate-data}
 
 :::note
@@ -612,7 +603,6 @@ WHERE name = 'NYPD_Complaint'
 └─────────────────────────────────┘
 ```
 
-
 ## いくつかクエリを実行する {#run-queries}
 
 ### クエリ 1. 月別の苦情件数を比較する {#query-1-compare-the-number-of-complaints-by-month}
@@ -652,7 +642,6 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-
 ### クエリ 2. 区ごとの苦情件数の合計を比較する {#query-2-compare-total-number-of-complaints-by-borough}
 
 クエリ：
@@ -683,7 +672,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
-
 
 ## 次のステップ {#next-steps}
 

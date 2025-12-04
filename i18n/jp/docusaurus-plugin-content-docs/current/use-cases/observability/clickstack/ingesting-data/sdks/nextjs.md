@@ -25,7 +25,6 @@ ClickStack は、Next 13.2+ の
 セッションリプレイやブラウザー側のモニタリングを行いたい場合は、代わりに [Browser integration](/use-cases/observability/clickstack/sdks/browser) をインストールしてください。
 :::
 
-
 ## インストール {#installing}
 
 ### インストルメンテーションフックを有効化する（v15 以前では必須） {#enable-instrumentation-hook}
@@ -54,7 +53,6 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
-
 
 ### ClickHouse OpenTelemetry SDK のインストール {#install-sdk}
 
@@ -93,7 +91,6 @@ export async function register() {
 ```
 
 これにより、Next.js はあらゆるサーバーレス関数の呼び出しに対して OpenTelemetry のインストルメンテーションをインポートできるようになります。
-
 
 ### 環境変数を設定する {#configure-environment-variables}
 

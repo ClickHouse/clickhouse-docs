@@ -8,8 +8,6 @@ title: 'Движки таблиц'
 doc_type: 'reference'
 ---
 
-
-
 # Движки таблиц {#table-engines}
 
 Движок таблицы (тип таблицы) определяет:
@@ -20,8 +18,6 @@ doc_type: 'reference'
 - Использование индексов, если они есть.
 - Возможно ли многопоточное выполнение запросов.
 - Параметры репликации данных.
-
-
 
 ## Семейства движков {#engine-families}
 
@@ -80,8 +76,6 @@ doc_type: 'reference'
 
 Движки в семействе:
 
-
-
 | Специальные движки                                            |
 |---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
@@ -100,8 +94,6 @@ doc_type: 'reference'
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
-
-
 
 ## Виртуальные столбцы {#table_engines-virtual_columns}
 

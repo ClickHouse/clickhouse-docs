@@ -30,7 +30,6 @@ column_name QBit(element_type, dimension)
 * `element_type` – 每个向量元素的类型。允许的类型包括 `BFloat16`、`Float32` 和 `Float64`。
 * `dimension` – 每个向量中的元素数量。
 
-
 ## 创建 QBit {#creating-qbit}
 
 在表的列定义中使用 `QBit` 类型：
@@ -47,7 +46,6 @@ SELECT vec FROM test ORDER BY id;
 │ [9,10,11,12,13,14,15,16] │
 └──────────────────────────┘
 ```
-
 
 ## QBit 子列 {#qbit-subcolumns}
 
@@ -72,7 +70,6 @@ SELECT bin(vec.1) FROM test;
 * `BFloat16`: 16 个子列（1-16）
 * `Float32`: 32 个子列（1-32）
 * `Float64`: 64 个子列（1-64）
-
 
 ## 向量搜索函数 {#vector-search-functions}
 

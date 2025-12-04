@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-
 # Коннектор Spark {#spark-connector}
 
 Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как продвинутое разбиение на партиции и проталкивание предикатов (predicate pushdown), чтобы
@@ -173,7 +172,6 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 [матрицей совместимости](#compatibility-matrix).
 :::
 
-
 ## Зарегистрируйте каталог (обязательно) {#register-the-catalog-required}
 
 Чтобы получить доступ к своим таблицам ClickHouse, необходимо настроить новый каталог Spark со следующими параметрами:
@@ -223,7 +221,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-
 ## Настройки ClickHouse Cloud {#clickhouse-cloud-settings}
 
 При подключении к [ClickHouse Cloud](https://clickhouse.com) обязательно включите SSL и задайте необходимый режим SSL. Например:
@@ -232,7 +229,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
-
 
 ## Чтение данных {#read-data}
 
@@ -467,7 +463,7 @@ df.show()
   </TabItem>
 </Tabs>
 
-## Операции DDL
+## Операции DDL {#ddl-operations}
 
 Вы можете выполнять операции DDL в экземпляре ClickHouse с помощью Spark SQL, при этом все изменения немедленно сохраняются
 в ClickHouse.
@@ -499,7 +495,6 @@ TBLPROPERTIES (
 ```
 
 Приведённые выше примеры демонстрируют запросы Spark SQL, которые вы можете выполнять в своём приложении с использованием любого из API — Java, Scala, PySpark или оболочки.
-
 
 ## Конфигурации {#configurations}
 

@@ -7,11 +7,7 @@ title: 'Интерфейс gRPC'
 doc_type: 'reference'
 ---
 
-
-
 # Интерфейс gRPC {#grpc-interface}
-
-
 
 ## Введение {#grpc-interface-introduction}
 
@@ -27,8 +23,6 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
 - внешние таблицы.
 
 Спецификация интерфейса приведена в файле [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
-
-
 
 ## Настройка gRPC {#grpc-interface-configuration}
 
@@ -65,7 +59,6 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## Встроенный клиент {#grpc-client}
 

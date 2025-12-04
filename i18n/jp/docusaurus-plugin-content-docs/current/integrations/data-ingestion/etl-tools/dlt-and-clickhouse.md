@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # dlt を ClickHouse に接続する {#connect-dlt-to-clickhouse}
 
 <PartnerBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> は、Python スクリプトに組み込むことで、さまざまな（しばしば扱いづらい）データソースから、よく構造化されたライブデータセットへデータをロードできるオープンソースライブラリです。
-
-
 
 ## ClickHouse と併せて dlt をインストールする {#install-dlt-with-clickhouse}
 
@@ -25,7 +22,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ```bash
 pip install "dlt[clickhouse]"
 ```
-
 
 ## セットアップガイド {#setup-guide}
 
@@ -97,14 +93,12 @@ ClickHouseサーバーが`http_port`で指定されたポートでHTTP接続を�
 
 `clickhouse-driver`ライブラリで使用されるものと同様のデータベース接続文字列を渡すこともできます。上記の認証情報は次のようになります。
 
-
 ```bash
 # tomlファイルの先頭、セクション開始前に記述してください。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
 </VerticalStepper>
-
 
 ## 書き込みディスポジション {#write-disposition}
 
@@ -119,21 +113,15 @@ dlt ライブラリの書き込みディスポジションは、データを宛�
 
 **Append**: これはデフォルトのディスポジションです。`primary_key` フィールドを無視し、宛先にすでに存在するデータに対してデータを追記します。
 
-
-
 ## データロード {#data-loading}
 データは、データソースに応じて最も効率的な方法で ClickHouse にロードします。
 
 - ローカルファイルの場合、`clickhouse-connect` ライブラリを使用し、`INSERT` コマンドでファイルを ClickHouse のテーブルに直接ロードします。
 - `S3`、`Google Cloud Storage`、`Azure Blob Storage` などのリモートストレージ上のファイルの場合、ClickHouse の s3、gcs、azureBlobStorage などのテーブル関数を使用してファイルを読み込み、テーブルにデータを挿入します。
 
-
-
 ## データセット {#datasets}
 
 `Clickhouse` は 1 つのデータベース内で複数のデータセットをサポートしていませんが、`dlt` はさまざまな理由からデータセットに依存しています。`Clickhouse` を `dlt` と連携させるために、`Clickhouse` データベース内で `dlt` によって生成されるテーブル名には、設定可能な `dataset_table_separator` で区切られたデータセット名が接頭辞として付与されます。さらに、データを含まない特別なセンチネルテーブルが作成され、`dlt` が `Clickhouse` のデスティネーションに既に存在する仮想データセットを認識できるようにします。
-
-
 
 ## サポートされているファイル形式 {#supported-file-formats}
 
@@ -148,14 +136,10 @@ dlt ライブラリの書き込みディスポジションは、データを宛�
 5. `Clickhouse` は、既にデータが存在するテーブルに対して、NOT NULL のカラムを追加することを許可します。
 6. `Clickhouse` は、`float` または `double` データ型を使用した場合、特定の条件下で丸め誤差を生じることがあります。丸め誤差が許容できない場合は、必ず `decimal` データ型を使用してください。たとえば、ローダーのファイル形式を `jsonl` に設定した状態で値 12.7001 を `double` カラムにロードすると、必ず丸め誤差が発生します。
 
-
-
 ## サポートされているカラムヒント {#supported-column-hints}
 ClickHouse は、以下の<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">カラムヒント</a>をサポートしています。
 
 - `primary_key` - カラムがプライマリキーの一部であることを示します。複数のカラムにこのヒントを指定して、複合プライマリキーを作成できます。
-
-
 
 ## テーブルエンジン {#table-engine}
 
@@ -175,7 +159,6 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 
 * `merge_tree` - `MergeTree` エンジンを使用してテーブルを作成します
 * `replicated_merge_tree` (デフォルト) - `ReplicatedMergeTree` エンジンを使用してテーブルを作成します
-
 
 ## ステージングサポート {#staging-support}
 

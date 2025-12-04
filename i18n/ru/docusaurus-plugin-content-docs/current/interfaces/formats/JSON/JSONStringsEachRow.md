@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## Описание {#description}
 
 Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся как строки, а не как типизированные JSON-значения.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -65,7 +61,6 @@ FORMAT JSONStringsEachRow
 
 Вывод будет в формате JSON:
 
-
 ```json
 {"date":"2022-04-30","season":"2021","home_team":"Sutton United","away_team":"Bradford City","home_team_goals":"1","away_team_goals":"4"}
 {"date":"2022-04-30","season":"2021","home_team":"Swindon Town","away_team":"Barrow","home_team_goals":"2","away_team_goals":"1"}
@@ -85,6 +80,5 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Stevenage Borough","away_team":"Salford City","home_team_goals":"4","away_team_goals":"2"}
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
-
 
 ## Параметры форматирования {#format-settings}

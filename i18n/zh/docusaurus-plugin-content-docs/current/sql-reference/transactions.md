@@ -8,10 +8,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 事务（ACID）支持 {#transactional-acid-support}
-
-
 
 ## 案例 1：对 MergeTree* 系列中某张表的一个分区执行 INSERT {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
 
@@ -22,34 +19,24 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 持久性（Durable）：成功的 INSERT 在响应客户端之前会被写入文件系统，可以只写入单个副本，也可以写入多个副本（由 `insert_quorum` 设置控制），并且 ClickHouse 可以请求操作系统将文件系统数据同步到存储介质（由 `fsync_after_insert` 设置控制）。
 - 如果涉及物化视图，则可以通过一个语句向多个表执行 INSERT（即客户端的 INSERT 目标是一张带有关联物化视图的表）。
 
-
-
 ## 情况 2：对 MergeTree* 系列中的一个表执行跨多个分区的 INSERT {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
 
 与上述情况 1 相同，补充细节如下：
 - 如果表包含多个分区且 INSERT 涵盖多个分区，那么对每个分区的插入在各自分区内单独具备事务性
-
-
 
 ## 情况 3：向 MergeTree* 系列的一个分布式表执行 INSERT {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
 
 与上述情况 1 相同，但有以下区别：
 - 向 Distributed 表执行 INSERT 时，整体操作不具备事务性，而对每个分片的插入则是事务性的
 
-
-
 ## 案例 4：使用 Buffer 表 {#case-4-using-a-buffer-table}
 
 - 对 Buffer 表的插入操作不具备原子性、隔离性、一致性或持久性
-
-
 
 ## 案例 5：使用 async_insert {#case-5-using-async_insert}
 
 与上面的案例 1 相同，但有以下差异：
 - 即使启用了 `async_insert` 且 `wait_for_async_insert` 设置为 1（默认值），也可以保证原子性；但如果将 `wait_for_async_insert` 设置为 0，则不再保证原子性。
-
-
 
 ## 说明 {#notes}
 - 在以下情况下，客户端以某种数据格式插入的多行会被打包到同一个数据块中：
@@ -62,8 +49,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 在典型部署中，应启用写入到不同 AZ 的 insert_quorum 或启用 fsync，以确保插入具有持久性
 - ACID 语境下的“consistency”并不涵盖分布式系统的语义，参见 https://jepsen.io/consistency；这类语义由不同的设置（select_sequential_consistency）控制
 - 本说明未涵盖新的事务特性，该特性允许在多张表、物化视图上以及针对多个 SELECT 等执行完整功能的事务（参见下一节 “Transactions, Commit, and Rollback”）
-
-
 
 ## 事务、提交和回滚 {#transactions-commit-and-rollback}
 
@@ -203,7 +188,6 @@ ENGINE = MergeTree
 ORDER BY n
 ```
 
-
 ```response
 确认。
 ```
@@ -320,7 +304,6 @@ elapsed:     210.017820947
 is_readonly: 1
 state:       RUNNING
 ```
-
 
 ## 更多详情 {#more-details}
 

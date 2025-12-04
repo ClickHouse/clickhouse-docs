@@ -19,7 +19,6 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
 # Использование Grafana и ClickHouse для Observability {#using-grafana-and-clickhouse-for-observability}
 
 Grafana является предпочтительным инструментом визуализации данных Observability в ClickHouse. Это достигается с помощью официального плагина ClickHouse для Grafana. Пользователи могут следовать инструкциям по установке, приведённым [здесь](/integrations/grafana).
@@ -55,7 +54,6 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 Конструктор запросов предоставляет простой способ изменения запроса, избавляя пользователей от необходимости писать SQL. Фильтрацию, включая поиск логов, содержащих ключевые слова, можно выполнять прямо в конструкторе запросов. Пользователи, которым нужно писать более сложные запросы, могут переключиться в SQL-редактор. Если возвращаются необходимые столбцы и `logs` выбрано в качестве типа запроса (Query Type), результаты будут отображаться как логи. Требуемые столбцы для отображения логов перечислены [здесь](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
 
-
 ### Переход от логов к трассам {#logs-to-traces}
 
 Если логи содержат идентификаторы трассировок (trace IDs), пользователи могут переходить к соответствующей трассе для конкретной строки лога.
@@ -84,7 +82,6 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 <Image img={observability_18} alt="Трейсы" size="lg" border />
 
 Пользователи, желающие писать более сложные запросы, могут переключиться на `SQL Editor`.
-
 
 ### Просмотр деталей трейса {#view-trace-details}
 
@@ -120,7 +117,6 @@ LIMIT 1000
 
 <Image img={observability_19} alt="Сведения о трассировке" size="lg" border />
 
-
 ### Переход от трейсов к логам {#traces-to-logs}
 
 Если логи содержат идентификаторы трассировки (trace&#95;id), пользователи могут переходить от трейса к связанным с ним логам. Чтобы просмотреть логи, нажмите на trace&#95;id и выберите `View Logs`. Будет выполнен следующий запрос при условии использования стандартных столбцов OTel.
@@ -134,7 +130,6 @@ ORDER BY timestamp ASC LIMIT 1000
 ```
 
 <Image img={observability_20} alt="Переход от трейсов к логам" size="lg" border />
-
 
 ## Дашборды {#dashboards}
 
@@ -165,7 +160,6 @@ LIMIT 100000
 
 <Image img={observability_22} alt="Временные ряды" size="lg" border />
 
-
 ### Многолинейные графики {#multi-line-charts}
 
 Многолинейные графики будут автоматически построены для запроса, если соблюдаются следующие условия:
@@ -190,7 +184,6 @@ LIMIT 100000
 ```
 
 <Image img={observability_23} alt="Графики с несколькими линиями" size="lg" border />
-
 
 ### Визуализация геоданных {#visualizing-geo-data}
 

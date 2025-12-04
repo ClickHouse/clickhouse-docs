@@ -7,19 +7,13 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-
-
 # sumIf {#sumif}
-
-
 
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
 для вычисления суммы значений по строкам, для которых условие истинно,
 используя агрегатную функцию-комбинатор `sumIf`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -92,7 +86,6 @@ ORDER BY month;
 
 ### Рассчитать торговый объём по тикеру {#calculate-trading-volume}
 
-
 В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
 чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
 технологических компаний того времени.
@@ -127,7 +120,6 @@ ORDER BY month;
 12. │ 2006-12-01 │ 603.95 млн │ 1.14 млрд     │ 91.77 млн  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
-
 
 ## Смотрите также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

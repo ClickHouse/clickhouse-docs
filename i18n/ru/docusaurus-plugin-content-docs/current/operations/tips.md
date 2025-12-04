@@ -11,7 +11,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-
 ## Регулятор частоты CPU {#cpu-scaling-governor}
 
 Всегда используйте регулятор `performance`. Режим `on-demand` работает значительно хуже при постоянно высокой нагрузке.
@@ -19,7 +18,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 ```bash
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
-
 
 ## Ограничения по CPU {#cpu-limitations}
 
@@ -40,7 +38,6 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 
 Используйте `perf top`, чтобы отслеживать время, затрачиваемое в ядре на управление памятью.
 Постоянные большие страницы (huge pages) также не требуется выделять.
-
 
 ### Использование менее 16 ГБ ОЗУ {#using-less-than-16gb-of-ram}
 
@@ -101,7 +98,6 @@ $ echo 4096 | sudo tee /sys/block/md2/md/stripe_cache_size
 
 Убедитесь, что [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\)) включён для дисков NVMe и SSD в вашей ОС (обычно это реализуется с помощью задания cron или сервиса systemd).
 
-
 ## Файловая система {#file-system}
 
 Ext4 — наиболее надёжный вариант. Установите опцию монтирования `noatime`. XFS тоже хорошо подходит.
@@ -142,7 +138,6 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 После этого выполните команду `sudo update-grub`, затем перезагрузите систему, чтобы изменения вступили в силу.
 
-
 ## Настройка гипервизора {#hypervisor-configuration}
 
 Если вы используете OpenStack, задайте
@@ -163,7 +158,6 @@ cpu_mode=host-passthrough
 
 Это важно для того, чтобы ClickHouse мог получать корректную информацию из инструкции `cpuid`.
 В противном случае вы можете сталкиваться с аварийным завершением работы с ошибкой `Illegal instruction` при запуске гипервизора на старых моделях CPU.
-
 
 ## ClickHouse Keeper и ZooKeeper {#zookeeper}
 
@@ -254,7 +248,6 @@ dynamicConfigFile=/etc/zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}/conf/zoo.
 
 Версия для Java:
 
-
 ```text
 openjdk 11.0.5-shenandoah 2019-10-15
 OpenJDK Runtime Environment (build 11.0.5-shenandoah+10-adhoc.heretic.src)
@@ -262,7 +255,6 @@ OpenJDK 64-Bit Server VM (build 11.0.5-shenandoah+10-adhoc.heretic.src, mixed mo
 ```
 
 Параметры JVM:
-
 
 ```bash
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
@@ -323,7 +315,6 @@ script
         -Dzookeeper.root.logger=${ZOO_LOG4J_PROP} $ZOOMAIN $ZOOCFG
 end script
 ```
-
 
 ## Антивирусное программное обеспечение {#antivirus-software}
 

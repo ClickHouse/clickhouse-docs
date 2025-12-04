@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # avgMergeState {#avgMergeState}
-
-
 
 ## 説明 {#description}
 
@@ -21,8 +18,6 @@ import TabItem from '@theme/TabItem';
 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 関数に適用することで、型 `AverageFunction(avg, T)` の部分集約状態を結合し、
 新しい中間集約状態を返すことができます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -123,7 +118,6 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 各レベルごとに、3つのクエリを作成します。
 
-
 <Tabs>
   <TabItem value="Service level" label="サービスレベル" default>
     ```sql
@@ -213,7 +207,6 @@ ORDER BY datacenter;
 │ dc2        │                145 │
 └────────────┴────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

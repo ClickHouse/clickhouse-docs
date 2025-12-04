@@ -28,7 +28,6 @@ Databricks 为其湖仓（lakehouse）支持多种数据格式。借助 ClickHou
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
-
 ## 在 Databricks 中配置 Unity {#configuring-unity-in-databricks}
 
 为了允许 ClickHouse 与 Unity Catalog 交互，需要确保已将 Unity Catalog 配置为允许与外部读取方交互。可按照[“Enable external data access to Unity Catalog”](https://docs.databricks.com/aws/en/external-access/admin) 指南进行配置。
@@ -53,7 +52,6 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-
 ### 读取 Iceberg 表 {#read-iceberg}
 
 ```sql
@@ -62,7 +60,6 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
-
 
 ## 使用 ClickHouse 查询 Unity Catalog 中的表 {#querying-unity-catalog-tables-using-clickhouse}
 
@@ -153,7 +150,6 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
-
 
 ## 从数据湖将数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

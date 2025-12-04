@@ -1822,6 +1822,16 @@ Cloud 模式
 
 在 CREATE TABLE 中忽略排序规则的兼容性选项
 
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+兼容性：启用时，会将预签名 URL 的查询参数（例如 X-Amz-*）折叠并入 S3 键中（与旧版行为一致），
+因此 `?` 会在路径中充当通配符。禁用时（默认），预签名 URL 的查询参数会保留在 URL 查询部分，
+以避免将 `?` 解释为通配符。
+
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9405,6 +9415,14 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 - 0 - 禁用
 - 1 - 启用
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+在 JOIN 操作中从左表按顺序持续读取，以便供后续步骤使用。
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 

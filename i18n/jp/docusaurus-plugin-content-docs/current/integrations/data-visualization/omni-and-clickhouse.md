@@ -13,20 +13,15 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Omni {#omni}
 
 <PartnerBadge/>
 
 Omniは、公式の ClickHouse データソースを介して ClickHouse Cloud またはオンプレミス環境に接続できます。
 
-
-
 ## 1. 接続情報を準備する {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. ClickHouse データソースを作成する {#2-create-a-clickhouse-data-source}
 

@@ -34,7 +34,6 @@ Nessie — это транзакционный каталог с открыты�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## Локальная среда разработки {#local-development-setup}
 
 Для локальной разработки и тестирования вы можете использовать контейнеризованную среду Nessie. Такой подход идеально подходит для обучения, прототипирования и разработки.
@@ -148,7 +147,6 @@ docker-compose logs -f
 Конфигурация Nessie использует хранилище версий в памяти и требует, чтобы сначала в таблицы Iceberg были загружены примеры данных. Перед выполнением запросов к этим таблицам через ClickHouse убедитесь, что в среде они уже созданы и заполнены.
 :::
 
-
 ### Подключение к локальному каталогу Nessie {#connecting-to-local-nessie-catalog}
 
 Подключитесь к контейнеру ClickHouse:
@@ -166,7 +164,6 @@ CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
-
 
 ## Запросы к таблицам каталога Nessie с помощью ClickHouse {#querying-nessie-catalog-tables-using-clickhouse}
 
@@ -250,7 +247,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://localhost:9002/my-bucket/default/taxis/', 'admin', '[HIDDEN]')      │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Загрузка данных из вашего хранилища Data Lake в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

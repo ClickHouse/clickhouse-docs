@@ -10,7 +10,6 @@ keywords: ['ClickHouse Kafka Connect Sink', 'Kafka 连接器 ClickHouse', '官�
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
@@ -92,7 +91,6 @@ schemas.enable=false
 
 完整的配置选项表如下：
 
-
 | Property Name                                   | Description                                                                                                                                                                                                                        | Default Value                                            |
 |-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 | `hostname` (Required)                           | 服务器的主机名或 IP 地址                                                                                                                                                                                                           | N/A                                                      |
@@ -123,8 +121,6 @@ schemas.enable=false
 | `ignorePartitionsWhenBatching`                  | 在收集要插入的消息时忽略分区（仅当 `exactlyOnce` 为 `false` 时）。性能注意：Connector 任务越多，每个任务分配到的 Kafka 分区就越少——这可能会产生收益递减。                                                                        | `"false"`                                                |
 
 ### 目标表 {#target-tables}
-
-
 
 ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的表中。它只会向已存在的表写入数据。请确保在开始向目标表插入数据之前，已经在 ClickHouse 中创建了具有合适 schema 的目标表。
 
@@ -204,7 +200,6 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息，并将其写入相应的�
 #### 使用多个主题（topic）的基础配置 {#basic-configuration-with-multiple-topics}
 
 该连接器可以从多个主题（topic）中消费数据
-
 
 ```json
 {
@@ -340,7 +335,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 * `byte-rate`: 每秒发送字节的平均速率
 * `compression-rate`: 实际达到的压缩率
 
-
 **分区级指标：**
 - `records-sent-total`: 发送到该分区的记录总数
 - `bytes-sent-total`: 发送到该分区的字节总数
@@ -430,8 +424,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 - 默认的连接器设置已经满足你的吞吐量需求
 - 你的 ClickHouse 集群可以轻松处理当前的写入负载
 
-
-
 #### 理解数据流 {#understanding-the-data-flow}
 
 在进行调优之前，首先需要理解数据在 connector 中的流转方式：
@@ -467,23 +459,16 @@ Connector 从框架的缓冲区轮询消息：
 
 为了在 ClickHouse 上获得最佳性能，应尽量使用较大的批量：
 
-
-
 ```properties
 # 增加每次轮询的记录数量 {#increase-the-number-of-records-per-poll}
 consumer.max.poll.records=5000
 ```
 
-
 # 增大分区拉取大小上限（5 MB） {#increase-the-partition-fetch-size-5-mb}
 consumer.max.partition.fetch.bytes=5242880
 
-
-
 # 可选：将最小拉取大小增加到 1 MB，以便等待更多数据 {#optional-increase-minimum-fetch-size-to-wait-for-more-data-1-mb}
 consumer.fetch.min.bytes=1048576
-
-
 
 # 可选：如果对延迟非常敏感，可缩短等待时间 {#optional-reduce-wait-time-if-latency-is-critical}
 
@@ -580,7 +565,6 @@ consumer.fetch.max.wait.ms=300
 ##### 具有 exactly-once 语义的异步插入 {#async-inserts-with-exactly-once}
 
 在使用 `exactlyOnce=true` 进行异步插入时：
-
 
 ```json
 {
@@ -685,7 +669,6 @@ SETTINGS
 
 **常见性能问题**：
 
-
 | 症状                  | 可能原因      | 解决方案                                              |
 | ------------------- | --------- | ------------------------------------------------- |
 | 消费者延迟较高             | 批次过小      | 增加 `max.poll.records`，启用异步写入                      |
@@ -782,7 +765,6 @@ SETTINGS
 * `SocketTimeoutException` - 在 socket 超时时抛出。
 * `UnknownHostException` - 在无法解析主机名时抛出。
 * `IOException` - 在出现网络问题时抛出。
-
 
 #### “所有数据都是空值/0” {#all-my-data-is-blankzeroes}
 

@@ -11,7 +11,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # ClickHouse におけるストアドプロシージャとクエリパラメータ {#stored-procedures-and-query-parameters-in-clickhouse}
 
 従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
@@ -110,7 +109,6 @@ SELECT format_phone('5551234567');
 
 完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
 
-
 #### 実行可能 UDF {#executable-udfs}
 
 より複雑なロジックには、外部プログラムを呼び出す実行可能 UDF を使用します。
@@ -142,7 +140,6 @@ FROM customer_reviews;
 実行可能な UDF は、任意の言語（Python、Node.js、Go など）で任意の処理ロジックを実装できます。
 
 詳細については、[実行可能 UDF](/sql-reference/functions/udf) を参照してください。
-
 
 ### パラメーター化ビュー {#parameterized-views}
 
@@ -201,7 +198,6 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-
 #### 一般的なユースケース {#common-use-cases}
 
 * 動的な日付範囲によるフィルタリング
@@ -246,7 +242,6 @@ SELECT * FROM top_products_by_category(
 ```
 
 詳しくは、[Parameterized Views](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
-
 
 ### マテリアライズドビュー {#materialized-views}
 
@@ -301,7 +296,6 @@ WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
 ```
 
-
 #### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
 
 スケジュールされたバッチ処理（夜間に実行されるストアドプロシージャなど）の場合：
@@ -327,7 +321,6 @@ WHERE month = toStartOfMonth(today());
 ```
 
 高度なパターンについては、[カスケード型マテリアライズドビュー](/guides/developer/cascading-materialized-views)を参照してください。
-
 
 ### 外部オーケストレーション {#external-orchestration}
 
@@ -604,7 +597,7 @@ ClickHouse には、RDBMS の意味での従来型の「プリペアドステー
 
 クエリパラメータを指定する方法は 2 通りあります。
 
-#### 方法 1：`SET` を使用する
+#### 方法 1：`SET` を使用する {#method-1-using-set}
 
 <details>
   <summary>テーブルとデータの例</summary>
@@ -656,8 +649,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-
-#### 方法 2：CLI パラメーターを使用する
+#### 方法 2：CLI パラメーターを使用する {#method-2-using-cli-parameters}
 
 ```bash
 clickhouse-client \
@@ -668,7 +660,6 @@ clickhouse-client \
              WHERE user_id = {user_id: UInt64}
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
-
 
 ### パラメータ構文 {#parameter-syntax}
 
@@ -839,7 +830,6 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- サポート対�
 {statements: String};  -- サポート対象外
 ```
 
-
 ### セキュリティのベストプラクティス {#data-type-examples}
 
 **ユーザーからの入力には必ずクエリパラメータを使用すること：**
@@ -876,8 +866,7 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ```
 
-
-### MySQL プロトコルのプリペアドステートメント
+### MySQL プロトコルのプリペアドステートメント {#mysql-protocol-prepared-statements}
 
 ClickHouse の [MySQL インターフェイス](/interfaces/mysql) は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対して最小限のサポートのみを提供します。これは主に、クエリをプリペアドステートメントでラップする Tableau Online のようなツールとの接続性を確保するためのものです。
 
@@ -907,7 +896,6 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 詳細については、[MySQL インターフェイスのドキュメント](/interfaces/mysql) と [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey) を参照してください。
-
 
 ## 概要 {#summary}
 

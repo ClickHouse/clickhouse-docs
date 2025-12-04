@@ -11,7 +11,6 @@ doc_type: 'reference'
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
 
-
 # ClickPipes for Postgres 常见问题解答（FAQ） {#clickpipes-for-postgres-faq}
 
 ### 空闲状态如何影响我的 Postgres CDC ClickPipe？ {#how-does-idling-affect-my-postgres-cdc-clickpipe}
@@ -66,7 +65,6 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
      * eu-central-1
    * 详细配置说明请参见我们的 [PrivateLink 文档](/knowledgebase/aws-privatelink-setup-for-clickpipes)
    * 在不支持 PrivateLink 的区域，请使用 SSH 隧道
-
 
 ### 如何处理 UPDATE 和 DELETE？ {#how-do-you-handle-updates-and-deletes}
 
@@ -129,8 +127,6 @@ ClickPipes for Postgres 会将来自 Postgres 的 INSERT 和 UPDATE 以不同版
      ```
      使用此查询来识别异常长时间运行的事务。
 
-
-
 3. **维护或工具类操作（例如 `pg_repack`）**
    - 像 `pg_repack` 这样的工具可能会重写整个表，在短时间内生成大量 WAL 数据。
    - 将这些操作安排在流量较低的时段进行，或在运行期间密切监控 WAL 使用情况。
@@ -173,8 +169,6 @@ JSON 和 JSONB 列会在 ClickHouse 中复制为 String 类型。由于 ClickHou
 Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) 端点进行创建和管理。该功能目前处于 beta 阶段，API 参考文档可以在[这里](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta)找到。我们也在积极开发 Terraform 支持，以便创建 Postgres ClickPipes。
 
 ### 我该如何加速初始加载？ {#how-do-i-speed-up-my-initial-load}
-
-
 
 无法加速已经在运行中的初始加载。不过，可以通过调整某些设置来优化后续的初始加载。默认情况下，这些设置为 4 个并行线程，每个分区的快照行数为 100,000。这些属于高级设置，一般对大多数用例已足够。
 
@@ -243,7 +237,6 @@ WHERE
 
 ##### 适用于 PostgreSQL 10+ {#for-postgresql-10}
 
-
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
@@ -302,7 +295,6 @@ ClickHouse 出现 OOM 的一个常见原因是服务规格过小。这意味着�
 `invalid snapshot identifier` 错误发生在 ClickPipes 与 Postgres 数据库之间的连接中断时。该问题可能由网关超时、数据库重启或其他瞬时问题引起。
 
 建议在 Initial Load 正在进行时，不要对 Postgres 数据库执行任何具有破坏性的操作，例如升级或重启，并确保到数据库的网络连接稳定。
-
 
 要解决该问题，您可以在 ClickPipes 的 UI 中触发一次重新同步（resync）。这会从头重新启动初始加载流程。
 
@@ -366,7 +358,6 @@ PeerDB 目前存在一个限制：源表标识符中包含点（即 schema 名�
 可以。对于复制模式为 CDC 或 Snapshot + CDC 的 Postgres ClickPipe，你可以在创建 ClickPipe 时，在 `Advanced Settings` 部分打开下方的开关，让 ClickPipes 创建启用故障切换的 replication slot（复制槽）。请注意，使用该功能时，你的 Postgres 版本必须为 17 或更高。
 
 <Image img={failover_slot} border size="md" />
-
 
 如果源端按要求完成了配置，那么在故障转移到 Postgres 只读副本后，该复制槽会被保留，从而确保数据持续复制。了解更多信息请参见[此处](https://www.postgresql.org/docs/current/logical-replication-failover.html)。
 

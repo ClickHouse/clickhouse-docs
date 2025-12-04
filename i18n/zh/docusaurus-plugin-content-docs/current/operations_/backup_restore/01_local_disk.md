@@ -11,16 +11,11 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # 备份/恢复到磁盘 {#backup-to-a-local-disk}
-
-
 
 ## 语法 {#syntax}
 
 <Syntax/>
-
-
 
 ## 为磁盘配置备份目标 {#configure-backup-destinations-for-disk}
 
@@ -101,7 +96,6 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   将不会通过 `CopyObject` 调用将数据分片复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
   `BACKUP ... TO S3(&lt;endpoint&gt;)` 语法。
   :::
-
 
 ## 本地磁盘备份/恢复的使用示例 {#usage-examples}
 
@@ -221,7 +215,6 @@ SETTINGS password='qwerty'
 此外，tar 归档支持多种压缩方式。
 
 要将表备份为 tar 归档：
-
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')

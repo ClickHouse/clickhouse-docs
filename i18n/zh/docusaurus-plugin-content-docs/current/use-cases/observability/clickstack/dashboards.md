@@ -31,7 +31,6 @@ ClickStack 支持对事件进行可视化，并在 HyperDX 中内置了图表功
 
 可视化可以基于 traces、metrics、logs，或任意用户自定义的宽表事件 schema 创建。
 
-
 ## 创建可视化图表 {#creating-visualizations}
 
 HyperDX 中的 **Chart Explorer** 界面允许用户在时间维度上可视化指标、追踪和日志，从而轻松创建用于数据分析的快速可视化图表。该界面在创建仪表板时也会复用。下文将演示如何使用 Chart Explorer 创建一个可视化图表的完整流程。

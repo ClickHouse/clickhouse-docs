@@ -17,7 +17,6 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-
 # Google Cloud SQL Postgres ソースセットアップガイド {#google-cloud-sql-postgres-source-setup-guide}
 
 :::info
@@ -26,13 +25,9 @@ import Image from '@theme/IdealImage';
 
 :::
 
-
-
 ## サポートされている Postgres バージョン {#supported-postgres-versions}
 
 Postgres 12 以降のすべてのバージョン
-
-
 
 ## 論理レプリケーションを有効化する {#enable-logical-replication}
 
@@ -47,8 +42,6 @@ Postgres 12 以降のすべてのバージョン
 <Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding を on に変更" size="lg" border/>
 <Image img={cloudsql_logical_decoding2} alt="cloudsql.logical_decoding と wal_sender_timeout を変更" size="lg" border/>
 <Image img={cloudsql_logical_decoding3} alt="サーバーを再起動" size="lg" border/>
-
-
 
 ## ClickPipes ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
 
@@ -82,8 +75,6 @@ Postgres 12 以降のすべてのバージョン
 
 [//]: # (TODO SSH トンネリングを追加)
 
-
-
 ## ClickPipes の IP をファイアウォールに追加する {#add-clickpipes-ips-to-firewall}
 
 以下の手順に従って、ClickPipes の IP をネットワークに追加してください。
@@ -106,8 +97,6 @@ SSH Tunneling を使用している場合は、[ClickPipes の IP](../../index.m
 
 <Image img={firewall1} alt="ClickPipes のネットワークをファイアウォールに追加" size="lg" border/>
 <Image img={firewall2} alt="ClickPipes のネットワークがファイアウォールに追加された状態" size="lg" border/>
-
-
 
 ## 次のステップ {#whats-next}
 

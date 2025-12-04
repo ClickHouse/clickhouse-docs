@@ -21,7 +21,6 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 将 DBeaver 连接到 ClickHouse {#connect-dbeaver-to-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -32,8 +31,6 @@ DBeaver 提供多个版本。在本指南中，我们使用的是 [DBeaver Commu
 请使用 23.1.0 或更高版本的 DBeaver，以获得对 ClickHouse 中 `Nullable` 列的更佳支持。
 :::
 
-
-
 ## 1. 收集您的 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
 
 DBeaver 通过基于 HTTP(S) 的 JDBC 连接到 ClickHouse，您需要准备：
@@ -43,13 +40,9 @@ DBeaver 通过基于 HTTP(S) 的 JDBC 连接到 ClickHouse，您需要准备：
 - 用户名
 - 密码
 
-
-
 ## 2. 下载 DBeaver {#2-download-dbeaver}
 
 您可以从 https://dbeaver.io/download/ 下载 DBeaver
-
-
 
 ## 3. 添加数据库 {#3-add-a-database}
 
@@ -79,8 +72,6 @@ DBeaver 通过基于 HTTP(S) 的 JDBC 连接到 ClickHouse，您需要准备：
 
 <Image img={dbeaver_test_connection} size="md" border alt="测试连接" />
 
-
-
 ## 4. 查询 ClickHouse {#4-query-clickhouse}
 
 打开查询编辑器并执行查询。
@@ -92,8 +83,6 @@ DBeaver 通过基于 HTTP(S) 的 JDBC 连接到 ClickHouse，您需要准备：
 - 针对 `system.query_log` 的示例查询：
 
 <Image img={dbeaver_query_log_select} size="md" border alt="示例查询" />
-
-
 
 ## 后续步骤 {#next-steps}
 

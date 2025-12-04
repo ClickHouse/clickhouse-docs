@@ -9,7 +9,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # アロケーションプロファイリング {#allocation-profiling}
 
 ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用しています。jemalloc には、アロケーションのサンプリングおよびプロファイリング用のツールが付属しています。  
@@ -22,8 +21,6 @@ ClickHouse はグローバルアロケータとして [jemalloc](https://github.
 それ以前のバージョンについては、[25.9 より前のバージョン向けアロケーションプロファイリング](/operations/allocation-profiling-old.md) を参照してください。
 
 :::
-
-
 
 ## アロケーションのサンプリング {#sampling-allocations}
 
@@ -42,7 +39,6 @@ ClickHouse はグローバルアロケータとして [jemalloc](https://github.
 :::warning 警告
 ClickHouse はアロケーションが多いアプリケーションであるため、jemalloc のサンプリングによりパフォーマンス上のオーバーヘッドが発生する可能性があります。
 :::
-
 
 ## `system.trace_log` に jemalloc サンプルを保存する {#storing-jemalloc-samples-in-system-trace-log}
 
@@ -148,7 +144,6 @@ FROM
 
 その結果を使って、その時点でどこが最も活発に割り当てを行っていたかを確認できます。
 
-
 ```sql
 SELECT
     concat(
@@ -179,7 +174,6 @@ FROM
 GROUP BY ALL
 ORDER BY per_trace_sum ASC
 ```
-
 
 ## ヒーププロファイルのフラッシュ {#flushing-heap-profiles}
 
@@ -212,7 +206,6 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
 生成されるファイル名には、プレフィックスに続いて PID とシーケンス番号が付加されます。
-
 
 ## ヒーププロファイルの分析 {#analyzing-heap-profiles}
 
@@ -286,7 +279,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="�
 
 もう 1 つ便利なツールに [speedscope](https://www.speedscope.app/) があり、収集したスタックをよりインタラクティブに分析できます。
 
-
 ## プロファイラ用の追加オプション {#additional-options-for-profiler}
 
 `jemalloc` にはプロファイラに関連する多くのオプションがあり、`MALLOC_CONF` 環境変数を変更することで制御できます。
@@ -294,8 +286,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="�
 ヒーププロファイルを N バイトごとにダンプしたい場合は、`lg_prof_interval` を有効にします。  
 
 利用可能なオプションの完全な一覧については、`jemalloc` の [リファレンスページ](https://jemalloc.net/jemalloc.3.html) を参照してください。
-
-
 
 ## その他のリソース {#other-resources}
 

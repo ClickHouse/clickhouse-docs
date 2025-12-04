@@ -28,16 +28,14 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
   </iframe>
 </div>
 
-> Примечание: Политика, показанная в видео, является избыточно разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
-
-
+> Примечание: политика доступа, показанная в видео, является слишком разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
 
 ## Предварительные требования {#prerequisites}
+
 Мы предполагаем:
-* вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md), Amazon MSK и MSK Connectors. Рекомендуем руководство Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
-* брокер MSK доступен из публичной сети. См. раздел [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) в Developer Guide.
 
-
+* вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
+* вы знакомы с Amazon MSK и коннекторами MSK. Рекомендуем руководства Amazon MSK: [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
 ## Официальный коннектор Kafka от ClickHouse для Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 

@@ -72,7 +72,6 @@ ClickHouse テーブル列のデータ型は、対応する Arrow データフ�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
 ### データの選択 {#selecting-data}
 
 次のコマンドを使用して、ClickHouse のテーブルからデータを抽出し、Arrow 形式のファイルに保存できます。
@@ -80,7 +79,6 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

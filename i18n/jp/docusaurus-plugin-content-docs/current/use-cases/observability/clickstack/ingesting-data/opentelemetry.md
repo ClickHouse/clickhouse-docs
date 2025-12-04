@@ -15,7 +15,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。
 
-
 ## ClickStack OpenTelemetry コレクターのインストール {#installing-otel-collector}
 
 ClickStack OpenTelemetry コレクターは、次のものを含むほとんどの ClickStack ディストリビューションに同梱されています：

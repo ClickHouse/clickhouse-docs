@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL のトラブルシューティング', 'MySQL から ClickHouse へのレプリケーション', 'ClickPipes MySQL のサポート', 'MySQL CDC ClickHouse']
 ---
 
-
-
 # MySQL 向け ClickPipes FAQ {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe は MariaDB をサポートしていますか？  {#does-the-clickpipe-support-mariadb}

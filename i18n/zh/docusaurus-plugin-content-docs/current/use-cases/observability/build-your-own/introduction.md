@@ -11,7 +11,6 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-
 # 使用 ClickHouse 实现可观测性 {#using-clickhouse-for-observability}
 
 ## 引言 {#introduction}
@@ -85,7 +84,6 @@ import Image from '@theme/IdealImage';
 :::note Metrics
 虽然 ClickHouse 可以用于存储 metrics 数据，但在 ClickHouse 中，这一支柱目前尚不够成熟，对 Prometheus 数据格式和 PromQL 等特性的支持仍在完善中。
 :::
-
 
 ### 分布式追踪 {#distributed-tracing}
 

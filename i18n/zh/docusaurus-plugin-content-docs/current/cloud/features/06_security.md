@@ -7,15 +7,11 @@ doc_type: 'reference'
 keywords: ['安全', '云安全', '访问控制', '合规性', '数据保护']
 ---
 
-
-
 # ClickHouse Cloud 安全性 {#clickhouse-cloud-security}
 
 本文档详细介绍了用于保护 ClickHouse Cloud 组织和服务的安全选项和最佳实践。
 ClickHouse 致力于提供安全的分析型数据库解决方案，因此保护数据和服务的完整性是重中之重。
 本文所含信息涵盖多种方法，旨在帮助用户增强其 ClickHouse 环境的安全性。
-
-
 
 ## 云控制台身份认证 {#cloud-console-auth}
 
@@ -49,8 +45,6 @@ ClickHouse Cloud 支持通过 Google 或 Microsoft 进行社交身份认证，�
 
 了解更多[API 认证](/cloud/manage/openapi)。
 
-
-
 ## 数据库身份验证 {#database-auth}
 
 ### 数据库密码身份验证 {#db-password-auth}
@@ -64,8 +58,6 @@ ClickHouse 数据库用户密码符合 NIST 800-63B 标准进行配置，长度�
 可以将 ClickHouse 数据库用户配置为使用 SSH 身份验证。
 
 详细了解[SSH 身份验证](/cloud/security/manage-database-users#database-ssh)。
-
-
 
 ## 访问控制 {#access-control}
 
@@ -81,8 +73,6 @@ ClickHouse 数据库支持通过用户授权实现细粒度的权限管理和基
 
 了解更多关于 [数据库用户授权](/cloud/security/manage-database-users#database-permissions)。
 
-
-
 ## 网络安全 {#network-security}
 
 ### IP 过滤器 {#ip-filters}
@@ -96,8 +86,6 @@ ClickHouse 数据库支持通过用户授权实现细粒度的权限管理和基
 通过私有网络连接从 AWS、GCP 或 Azure 访问您的 ClickHouse 集群。
 
 详细了解 [私有网络连接](/cloud/security/connectivity/private-networking)。
-
-
 
 ## 加密 {#encryption}
 
@@ -119,8 +107,6 @@ ClickHouse Cloud Enterprise 客户可以使用自己的密钥进行数据库级�
 
 详细了解[客户管理加密密钥](/cloud/security/cmek#customer-managed-encryption-keys-cmek)。
 
-
-
 ## 审计与日志记录 {#auditing-logging}
 
 ### 控制台审计日志 {#console-audit-log}
@@ -140,8 +126,6 @@ ClickHouse Cloud Enterprise 客户可以使用自己的密钥进行数据库级�
 供安全团队管理 ClickHouse BYOC 实例时使用的示例检测查询。
 
 详细了解[BYOC 安全操作手册](/cloud/security/audit-logging/byoc-security-playbook)。
-
-
 
 ## 合规性 {#compliance}
 

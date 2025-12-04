@@ -15,7 +15,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## 什么是实时分析？ {#what-is-real-time-analytics}
 
 实时分析是指一种数据处理方式，可以在数据生成后几乎立刻向终端用户
@@ -46,7 +45,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 传统上，这通常是通过批量分析来完成的，在下一节中我们将比较
 批量分析与实时分析。
 
-
 ## 实时分析 vs 批量分析 {#real-time-analytics-vs-batch-analytics}
 
 下图展示了从单个事件的角度来看，一个典型的批量分析系统的样子：
@@ -60,8 +58,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 <Image img={rta_1} size="md" border alt="实时分析示意图" />
 
 现在，我们几乎可以在事件生成的同时从中获得洞见。那么，这有什么用呢？
-
-
 
 ## 实时分析的优势 {#benefits-of-real-time-analytics}
 
@@ -91,8 +87,6 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 借助实时分析，企业可以即时洞察客户行为、偏好和需求。这使企业能够提供及时
 的支持、个性化交互，并打造更具吸引力的体验，从而让客户持续回访。
-
-
 
 ## 实时分析用例 {#real-time-analytics-use-cases}
 

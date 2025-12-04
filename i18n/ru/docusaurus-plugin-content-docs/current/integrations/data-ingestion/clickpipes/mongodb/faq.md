@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'CDC', 'ингестия данных', 'синхронизация в режиме реального времени']
 ---
 
-
-
 # ClickPipes для MongoDB: часто задаваемые вопросы {#clickpipes-for-mongodb-faq}
 
 ### Могу ли я выполнять запросы к отдельным полям JSON? {#can-i-query-for-individual-fields-in-the-json-datatype}
@@ -69,7 +67,6 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 ### Какой read preference мне следует использовать? {#which-read-preference-should-i-use}
 
 Выбор режима read preference зависит от вашего конкретного варианта использования. Если вы хотите минимизировать нагрузку на основной (primary) узел, мы рекомендуем использовать режим `secondaryPreferred`. Если вы хотите оптимизировать задержку ингестии, мы рекомендуем использовать режим `primaryPreferred`. Подробности см. в [документации MongoDB](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1).
-
 
 ### Поддерживает ли MongoDB ClickPipe шардированный кластер? {#does-the-mongodb-clickpipe-support-sharded-cluster}
 

@@ -8,12 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.iceberg_metadata_log {#systemiceberg_metadata_log}
 
 `system.iceberg_metadata_log` 表记录了 ClickHouse 读取 Iceberg 表时的元数据访问和解析事件。它提供了每个已处理元数据文件或条目的详细信息，有助于调试、审计，以及理解 Iceberg 表结构的演变。
-
-
 
 ## 目的 {#purpose}
 
@@ -22,8 +19,6 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 :::note
 此表主要用于调试。
 :::
-
-
 
 ## 列 {#columns}
 
@@ -38,8 +33,6 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 | `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 格式的内容（来自 .json 的原始元数据、Avro 元数据或 Avro 条目）。              |
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | 文件中的行号（如适用）。对于 `ManifestListEntry` 和 `ManifestFileEntry` 类型的内容，该列存在。 |
 
-
-
 ## `content_type` 值 {#content-type-values}
 
 - `None`: 无内容。
@@ -50,8 +43,6 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `ManifestFileEntry`: Manifest 文件条目。
 
 <SystemTableCloud/>
-
-
 
 ## 控制日志详细程度 {#controlling-log-verbosity}
 
@@ -89,7 +80,6 @@ WHERE query_id = '{previous_query_id}';
 * 该表可能包含重复条目，因为它主要用于调试，并不保证每个实体的唯一性。
 * 如果使用的 `content_type` 比 `ManifestListMetadata` 更为详尽，则会对 manifest 列表禁用 Iceberg 元数据缓存。
 * 同样地，如果使用的 `content_type` 比 `ManifestFileMetadata` 更为详尽，则会对 manifest 文件禁用 Iceberg 元数据缓存。
-
 
 ## 另请参阅 {#see-also}
 - [Iceberg 表引擎](../../engines/table-engines/integrations/iceberg.md)

@@ -13,12 +13,9 @@ keywords: ['fivetran', '数据迁移', 'etl', 'ClickHouse 目标端', '自动化
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Fivetran 与 ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## 概览 {#overview}
 
@@ -42,16 +39,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-
-
 ## ClickHouse Cloud 目标 {#clickhouse-cloud-destination}
 
 请参阅 Fivetran 官网上的官方文档：
 
 - [ClickHouse 目标概览](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 目标设置指南](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
-
-
 
 ## 联系我们 {#contact-us}
 

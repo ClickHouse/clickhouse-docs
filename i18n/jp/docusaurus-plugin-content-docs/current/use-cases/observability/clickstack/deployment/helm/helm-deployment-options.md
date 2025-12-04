@@ -56,7 +56,6 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-
 ### オプション 2: 外部シークレット（本番環境で推奨） {#external-clickhouse-secret}
 
 認証情報を Helm の設定から分離しておきたい本番環境でのデプロイでは、次のようにします。
@@ -174,7 +173,6 @@ hyperdx:
 
 ClickHouse Cloud への接続手順の全体像については、[「ClickHouse Cloud 接続の作成」](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection) を参照してください。
 
-
 ## 外部 OTel collector {#external-otel-collector}
 
 既存の OTel collector インフラストラクチャがある場合は:
@@ -193,7 +191,6 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 ```
 
 イングレスを介して OTel collector のエンドポイントを公開する手順については、[Ingress 設定](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress)を参照してください。
-
 
 ## 最小限のデプロイメント {#minimal-deployment}
 
@@ -232,7 +229,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
-
 
 ## 次のステップ {#next-steps}
 

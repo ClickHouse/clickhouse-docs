@@ -17,7 +17,6 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
 # 使用 CDC 将数据从 MySQL 摄取到 ClickHouse {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
 
 <BetaBadge/>
@@ -27,8 +26,6 @@ import Image from '@theme/IdealImage';
 :::
 
 你可以使用 ClickPipes 将源 MySQL 数据库中的数据摄取到 ClickHouse Cloud。源 MySQL 数据库可以部署在本地环境，或托管在 Amazon RDS、Google Cloud SQL 等云服务上。
-
-
 
 ## 前置条件 {#prerequisites}
 
@@ -47,8 +44,6 @@ import Image from '@theme/IdealImage';
 6. [通用 MariaDB](./mysql/source/generic_maria)
 
 在完成源 MySQL 数据库的设置后，你可以继续创建 ClickPipe。
-
-
 
 ## 创建你的 ClickPipe {#create-your-clickpipe}
 
@@ -121,8 +116,6 @@ import Image from '@theme/IdealImage';
    <Image img={ch_permissions} alt="检查权限" size="lg" border/>
 
 最后，如需了解更多常见问题及其解决方法，请参阅 ["ClickPipes for MySQL FAQ"](/integrations/clickpipes/mysql/faq) 页面。
-
-
 
 ## 下一步操作 {#whats-next}
 

@@ -19,17 +19,12 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # 在 Retool 中连接 ClickHouse {#connecting-retool-to-clickhouse}
 
 <PartnerBadge/>
 
-
-
 ## 1. 收集连接信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. 创建 ClickHouse 资源 {#2-create-a-clickhouse-resource}
 

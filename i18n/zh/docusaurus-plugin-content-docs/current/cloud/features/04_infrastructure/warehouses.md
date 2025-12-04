@@ -15,10 +15,7 @@ import compute_7 from '@site/static/images/cloud/reference/compute-compute-7.png
 import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png';
 import Image from '@theme/IdealImage';
 
-
 # 仓库 {#warehouses}
-
-
 
 ## 什么是计算-计算分离？ {#what-is-compute-compute-separation}
 
@@ -51,8 +48,6 @@ _图 2 - ClickHouse Cloud 中的计算分离_
 
 你可以创建与现有服务共享同一数据的额外服务，或者从零开始创建一个包含多个共享同一数据的服务的新部署。
 
-
-
 ## 什么是仓库？ {#what-is-a-warehouse}
 
 在 ClickHouse Cloud 中，_仓库（warehouse）_ 是共享同一数据的一组服务。
@@ -74,8 +69,6 @@ _图 3 - 仓库示例_
 - ClickHouse 数据库版本
 
 您可以按照所属的仓库对服务进行排序。
-
-
 
 ## 访问控制 {#access-controls}
 
@@ -116,8 +109,6 @@ _图 6 - 仓库中的读写服务和只读服务_
 2. 当前，可刷新的物化视图会在仓库中的所有服务上执行，包括只读服务。不过，将来此行为会被更改，仅在读写（RW）服务上执行。
 :::
 
-
-
 ## 扩展 {#scaling}
 
 仓库中的每个服务都可以根据您的工作负载在以下方面进行调整：
@@ -126,12 +117,8 @@ _图 6 - 仓库中的读写服务和只读服务_
 - 服务是否应自动扩展
 - 服务在空闲时是否应被停用（不适用于组中的第一个服务——请参阅 **限制** 部分）
 
-
-
 ## 行为变化 {#changes-in-behavior}
 一旦为某个服务启用了 compute-compute（已创建至少一个次级服务），使用 `default` 集群名称调用 `clusterAllReplicas()` 函数时，将只会使用调用该函数的服务中的副本。也就是说，如果有两个服务连接到同一数据集，并且从服务 1 调用了 `clusterAllReplicas(default, system, processes)`，则只会显示运行在服务 1 上的进程。如有需要，仍然可以调用 `clusterAllReplicas('all_groups.default', system, processes)` 来访问所有副本。
-
-
 
 ## 限制 {#limitations}
 
@@ -154,21 +141,16 @@ SETTINGS distributed_ddl_task_timeout=0
 
 7. **当前每个 warehouse 最多支持 5 个服务（软限制）。** 如需在单个 warehouse 中配置超过 5 个服务，请联系支持团队。
 
-
 ## 定价 {#pricing}
 
 在同一个仓库（主服务和次服务）中，所有服务的计算费用相同。存储费用只计费一次——包含在第一个（原始）服务中。
 
 请参阅 [定价](https://clickhouse.com/pricing) 页面上的价格计算器，它可以根据您的工作负载大小和所选级别帮助估算成本。
 
-
-
 ## 备份 {#backups}
 
 - 由于同一仓库中的所有服务共享同一存储，因此只在主（初始）服务上执行备份。通过这种方式，可以备份该仓库中所有服务的数据。
 - 如果你从某个仓库的主服务还原备份，该备份会被还原到一个全新的服务，而不是还原到与现有仓库关联的服务上。还原完成后，你可以立即为这个新服务添加更多服务。
-
-
 
 ## 使用仓库 {#using-warehouses}
 

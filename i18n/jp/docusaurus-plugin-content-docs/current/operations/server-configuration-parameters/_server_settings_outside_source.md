@@ -33,7 +33,6 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 
 <SystemLogParameters />
 
-
 ## auth_use_forwarded_address {#auth_use_forwarded_address}
 
 プロキシ経由で接続しているクライアントに対して、認証に発信元アドレスを使用します。
@@ -42,15 +41,11 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 この設定は、転送されたアドレスが容易になりすまし可能であるため、細心の注意を払って使用する必要があります。このような認証を受け付けるサーバーには、信頼できるプロキシ経由のみでアクセスし、直接アクセスしないようにしてください。
 :::
 
-
-
 ## backups {#backups}
 
 [`BACKUP` および `RESTORE`](../backup.md) ステートメントの実行時に使用されるバックアップ関連の設定です。
 
 以下の設定はサブタグを使用して構成できます。
-
-
 
 {/* SQL
   WITH settings AS (
@@ -102,7 +97,6 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 </backups>
 ```
 
-
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
 [Bcrypt アルゴリズム](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/) を使用する `bcrypt_password` 認証タイプのワークファクターです。
@@ -118,7 +112,6 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 別の認証方式の採用を検討してください。
 :::
 
-
 ## table_engines_require_grant {#table_engines_require_grant}
 
 true に設定した場合、ユーザーが特定のエンジンを使用してテーブルを作成するには、対応する GRANT が必要になります（例: `GRANT TABLE ENGINE ON TinyLog to user`）。
@@ -126,8 +119,6 @@ true に設定した場合、ユーザーが特定のエンジンを使用して
 :::note
 デフォルトでは、後方互換性のため、特定のテーブルエンジンを指定してテーブルを作成する際の GRANT 要件は無視されますが、これを true に設定することでこの挙動を変更できます。
 :::
-
-
 
 ## builtin&#95;dictionaries&#95;reload&#95;interval {#builtin_dictionaries_reload_interval}
 
@@ -140,7 +131,6 @@ ClickHouse は、組み込みディクショナリを x 秒ごとに再読み込
 ```xml
 <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 ```
-
 
 ## 圧縮 {#compression}
 
@@ -196,7 +186,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
     </case>
 </compression>
 ```
-
 
 ## encryption {#encryption}
 
@@ -280,7 +269,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 上記の内容はすべて `aes_256_gcm_siv` にも適用できます（ただし、キーは 32 バイトである必要があります）。
 :::
 
-
 ## error&#95;log {#error_log}
 
 これはデフォルトでは無効です。
@@ -316,7 +304,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 
 <SystemLogParameters />
 
-
 ## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
 
 [カスタム設定](/operations/settings/query-level#custom_settings) に使用するプレフィックスのリスト。プレフィックスはカンマ区切りで指定する必要があります。
@@ -330,7 +317,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 **関連情報**
 
 * [カスタム設定](/operations/settings/query-level#custom_settings)
-
 
 ## core&#95;dump {#core_dump}
 
@@ -348,7 +334,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 </core_dump>
 ```
 
-
 ## default&#95;profile {#default_profile}
 
 デフォルトの設定プロファイルです。設定プロファイルは、`user_config` 設定で指定されたファイル内に定義されます。
@@ -358,7 +343,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 ```xml
 <default_profile>default</default_profile>
 ```
-
 
 ## dictionaries&#95;config {#dictionaries_config}
 
@@ -379,7 +363,6 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
 
-
 ## user&#95;defined&#95;executable&#95;functions&#95;config {#user_defined_executable_functions_config}
 
 実行可能なユーザー定義関数用の設定ファイルのパスです。
@@ -399,7 +382,6 @@ See also:
 <user_defined_executable_functions_config>*_function.xml</user_defined_executable_functions_config>
 ```
 
-
 ## format&#95;schema&#95;path {#format_schema_path}
 
 入力データ用のスキーマ（例：[CapnProto](/interfaces/formats/CapnProto) フォーマットのスキーマ）が格納されているディレクトリへのパス。
@@ -410,7 +392,6 @@ See also:
 <!-- 各種入力形式のスキーマファイルを格納するディレクトリ。 -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
-
 
 ## graphite {#graphite}
 
@@ -446,7 +427,6 @@ See also:
 </graphite>
 ```
 
-
 ## graphite&#95;rollup {#graphite_rollup}
 
 Graphite データを間引くための設定です。
@@ -475,7 +455,6 @@ Graphite データを間引くための設定です。
 </graphite_rollup_example>
 ```
 
-
 ## google&#95;protos&#95;path {#google_protos_path}
 
 Protobuf 型の proto ファイルを格納したディレクトリを指定します。
@@ -485,7 +464,6 @@ Protobuf 型の proto ファイルを格納したディレクトリを指定し�
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
 ```
-
 
 ## http&#95;handlers {#http_handlers}
 
@@ -552,7 +530,6 @@ Protobuf 型の proto ファイルを格納したディレクトリを指定し�
 </http_handlers>
 ```
 
-
 ## http&#95;server&#95;default&#95;response {#http_server_default_response}
 
 ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォルトで表示されるページです。
@@ -567,7 +544,6 @@ ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォル
   <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 </http_server_default_response>
 ```
-
 
 ## http&#95;options&#95;response {#http_options_response}
 
@@ -599,7 +575,6 @@ ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォル
 </http_options_response>
 ```
 
-
 ## hsts&#95;max&#95;age {#hsts_max_age}
 
 HSTS の有効期限（秒単位）。
@@ -613,7 +588,6 @@ HSTS の有効期限（秒単位）。
 ```xml
 <hsts_max_age>600000</hsts_max_age>
 ```
-
 
 ## mlock&#95;executable {#mlock_executable}
 
@@ -630,7 +604,6 @@ HSTS の有効期限（秒単位）。
 <mlock_executable>false</mlock_executable>
 ```
 
-
 ## include&#95;from {#include_from}
 
 置換設定を含むファイルへのパスです。XML と YAML の両方の形式がサポートされています。
@@ -642,7 +615,6 @@ HSTS の有効期限（秒単位）。
 ```xml
 <include_from>/etc/metrica.xml</include_from>
 ```
-
 
 ## interserver&#95;listen&#95;host {#interserver_listen_host}
 
@@ -664,7 +636,6 @@ Keeper が使用されている場合は、異なる Keeper インスタンス�
 
 デフォルト値:
 
-
 ## interserver&#95;http&#95;port {#interserver_http_port}
 
 ClickHouse サーバー間のデータ交換に使用するポート。
@@ -674,7 +645,6 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 ```xml
 <interserver_http_port>9009</interserver_http_port>
 ```
-
 
 ## interserver&#95;http&#95;host {#interserver_http_host}
 
@@ -690,7 +660,6 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 <interserver_http_host>example.clickhouse.com</interserver_http_host>
 ```
 
-
 ## interserver&#95;https&#95;port {#interserver_https_port}
 
 `HTTPS` 経由で ClickHouse サーバー間のデータを交換するためのポート。
@@ -701,7 +670,6 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 <interserver_https_port>9010</interserver_https_port>
 ```
 
-
 ## interserver&#95;https&#95;host {#interserver_https_host}
 
 [`interserver_http_host`](#interserver_http_host) と同様ですが、このホスト名は他のサーバーが `HTTPS` 経由でこのサーバーにアクセスする際に使用されます。
@@ -711,7 +679,6 @@ ClickHouse サーバー間のデータ交換に使用するポート。
 ```xml
 <interserver_https_host>example.clickhouse.com</interserver_https_host>
 ```
-
 
 ## interserver&#95;http&#95;credentials {#interserver_http_credentials}
 
@@ -767,7 +734,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 
 新しい認証情報がすべてのレプリカに適用されたら、古い認証情報は削除できます。
 
-
 ## ldap_servers {#ldap_servers}
 
 接続パラメータ付きの LDAP サーバーをここに列挙します。これにより次のことができます:
@@ -802,8 +768,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 
 例:
 
-
-
 ```xml
 <my_ldap_server>
     <host>localhost</host>
@@ -836,7 +800,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 </my_ad_server>
 ```
 
-
 ## listen&#95;host {#listen_host}
 
 リクエスト元ホストを制限します。サーバーがすべてのホストからのリクエストを受け付けるようにするには、`::` を指定します。
@@ -848,7 +811,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 <listen_host>127.0.0.1</listen_host>
 ```
 
-
 ## listen&#95;try {#listen_try}
 
 `listen` しようとした際に IPv6 または IPv4 ネットワークが利用できなくても、サーバーは終了しません。
@@ -858,7 +820,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 ```xml
 <listen_try>0</listen_try>
 ```
-
 
 ## listen&#95;reuse&#95;port {#listen_reuse_port}
 
@@ -873,7 +834,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 型:
 
 デフォルト:
-
 
 ## listen&#95;backlog {#listen_backlog}
 
@@ -894,7 +854,6 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 ```xml
 <listen_backlog>4096</listen_backlog>
 ```
-
 
 ## logger {#logger}
 
@@ -925,8 +884,6 @@ listen ソケットのバックログ（保留中の接続のキューサイズ�
 `log` および `errorLog` パスに含まれるファイル名部分では、以下のフォーマット指定子を使用して生成されるファイル名を制御できます (ディレクトリ部分では使用できません)。
 
 「Example」列では、`2023-07-06 18:32:07` のときの出力例を示しています。
-
-
 
 | 指定子  | 概要                                                                                                                      | 例                          |
 | ---- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------- |
@@ -1088,7 +1045,6 @@ JSON ログ出力を有効にするには、以下のスニペットを使用し
 
 ログプロパティは、そのプロパティをコメントアウトすることで省略できます。たとえば、ログに `query_id` を出力したくない場合は、`<query_id>` タグをコメントアウトします。
 
-
 ## send&#95;crash&#95;reports {#send_crash_reports}
 
 ClickHouse コア開発チームへクラッシュレポートを送信するための設定です。
@@ -1111,7 +1067,6 @@ Keys:
 </send_crash_reports>
 ```
 
-
 ## ssh&#95;server {#ssh_server}
 
 ホスト鍵の公開鍵部分は、最初に接続した際に SSH クライアント側の known&#95;hosts ファイルに書き込まれます。
@@ -1129,7 +1084,6 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 </ssh_server>
 ```
 
-
 ## tcp&#95;ssh&#95;port {#tcp_ssh_port}
 
 ユーザーが組み込みクライアントを使用して PTY 経由で接続し、対話的にクエリを実行できるようにする SSH サーバーのポートです。
@@ -1139,7 +1093,6 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 ```
-
 
 ## storage&#95;configuration {#storage_configuration}
 
@@ -1197,7 +1150,6 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 
 上記のサブタグでは、`policies` に対して次の設定を行います:
 
-
 | Setting                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `policy_name_N`              | ポリシー名。ポリシー名は一意でなければなりません。                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
@@ -1217,8 +1169,6 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 - _どの_ ボリュームにもこのパラメーターが設定されていない場合、その順序は設定ファイル内での記述順によって決まります。
 - ボリュームの優先度は同一である必要はありません。
 
-
-
 ## マクロ {#macros}
 
 レプリケーテッドテーブル向けのパラメータ置換です。
@@ -1232,7 +1182,6 @@ Host Key Configurations のコメントアウトを解除し、それぞれに�
 ```xml
 <macros incl="macros" optional="true" />
 ```
-
 
 ## replica&#95;group&#95;name {#replica_group_name}
 
@@ -1249,7 +1198,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 <replica_group_name>バックアップ</replica_group_name>
 ```
 
-
 ## remap&#95;executable {#remap_executable}
 
 ヒュージページを使用して、マシンコード（「text」）用のメモリを再割り当てするための設定です。
@@ -1263,7 +1211,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 ```xml
 <remap_executable>false</remap_executable>
 ```
-
 
 ## max&#95;open&#95;files {#max_open_files}
 
@@ -1279,7 +1226,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 <max_open_files>262144</max_open_files>
 ```
 
-
 ## max&#95;session&#95;timeout {#max_session_timeout}
 
 セッションの最大タイムアウト時間（秒）。
@@ -1289,7 +1235,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 ```xml
 <max_session_timeout>3600</max_session_timeout>
 ```
-
 
 ## merge&#95;tree {#merge_tree}
 
@@ -1304,7 +1249,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </merge_tree>
 ```
-
 
 ## metric&#95;log {#metric_log}
 
@@ -1341,7 +1285,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 
 <SystemLogParameters />
 
-
 ## replicated&#95;merge&#95;tree {#replicated_merge_tree}
 
 [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブル向けの微調整用設定です。この設定はより高い優先度を持ちます。
@@ -1355,7 +1298,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </replicated_merge_tree>
 ```
-
 
 ## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
 
@@ -1382,7 +1324,6 @@ DDL クエリは同一グループ内のレプリカに対してのみ待機し�
 </opentelemetry_span_log>
 ```
 
-
 ## openSSL {#openSSL}
 
 SSL クライアント／サーバーの設定。
@@ -1390,8 +1331,6 @@ SSL クライアント／サーバーの設定。
 SSL のサポートは `libpoco` ライブラリによって提供されます。利用可能な設定オプションについては、[SSLManager.h](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h) を参照してください。デフォルト値は [SSLManager.cpp](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/src/SSLManager.cpp) で確認できます。
 
 サーバー／クライアント設定用のキー:
-
-
 
 | オプション                         | 説明                                                                                                                                                                                                                                                                                                                              | デフォルト値                                                                                     |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
@@ -1446,7 +1385,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 </openSSL>
 ```
 
-
 ## part&#95;log {#part_log}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) に関連するイベントを記録するログです。たとえば、データの追加やマージなどです。ログを使用してマージアルゴリズムをシミュレートし、その特性を比較できます。マージ処理を可視化することもできます。
@@ -1470,7 +1408,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 </part_log>
 ```
 
-
 ## path {#path}
 
 データが格納されているディレクトリへのパス。
@@ -1484,7 +1421,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 ```xml
 <path>/var/lib/clickhouse/</path>
 ```
-
 
 ## processors&#95;profile&#95;log {#processors_profile_log}
 
@@ -1506,7 +1442,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
     <flush_on_crash>false</flush_on_crash>
 </processors_profile_log>
 ```
-
 
 ## prometheus {#prometheus}
 
@@ -1547,7 +1482,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
 curl 127.0.0.1:9363/metrics
 ```
 
-
 ## query&#95;log {#query_log}
 
 [log&#95;queries=1](../../operations/settings/settings.md) 設定が有効な場合に受信したクエリをログに記録するための設定です。
@@ -1572,7 +1506,6 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_log>
 ```
-
 
 ## query&#95;metric&#95;log {#query_metric_log}
 
@@ -1609,7 +1542,6 @@ curl 127.0.0.1:9363/metrics
 
 <SystemLogParameters />
 
-
 ## query&#95;cache {#query_cache}
 
 [クエリキャッシュ](../query-cache.md)の設定です。
@@ -1640,7 +1572,6 @@ curl 127.0.0.1:9363/metrics
 </query_cache>
 ```
 
-
 ## query&#95;thread&#95;log {#query_thread_log}
 
 [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads) が設定されたクエリのスレッドをログに記録するための設定です。
@@ -1666,7 +1597,6 @@ curl 127.0.0.1:9363/metrics
 </query_thread_log>
 ```
 
-
 ## query&#95;views&#95;log {#query_views_log}
 
 [log&#95;query&#95;views=1](/operations/settings/settings#log_query_views) 設定を指定して受信したクエリに応じて、ビュー（live、materialized など）をログに記録するための設定です。
@@ -1691,7 +1621,6 @@ curl 127.0.0.1:9363/metrics
     <flush_on_crash>false</flush_on_crash>
 </query_views_log>
 ```
-
 
 ## text&#95;log {#text_log}
 
@@ -1724,7 +1653,6 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
-
 ## trace&#95;log {#trace_log}
 
 [trace&#95;log](/operations/system-tables/trace_log) システムテーブルの動作設定。
@@ -1746,7 +1674,6 @@ curl 127.0.0.1:9363/metrics
     <symbolize>false</symbolize>
 </trace_log>
 ```
-
 
 ## asynchronous&#95;insert&#95;log {#asynchronous_insert_log}
 
@@ -1771,7 +1698,6 @@ curl 127.0.0.1:9363/metrics
     </asynchronous_insert_log>
 </clickhouse>
 ```
-
 
 ## crash&#95;log {#crash_log}
 
@@ -1810,7 +1736,6 @@ curl 127.0.0.1:9363/metrics
 </crash_log>
 ```
 
-
 ## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
 
 この設定は、カスタム（SQL から作成した）キャッシュディスクのキャッシュパスを指定します。
@@ -1829,7 +1754,6 @@ curl 127.0.0.1:9363/metrics
 ```xml
 <custom_cached_disks_base_directory>/var/lib/clickhouse/caches/</custom_cached_disks_base_directory>
 ```
-
 
 ## backup&#95;log {#backup_log}
 
@@ -1855,7 +1779,6 @@ curl 127.0.0.1:9363/metrics
 </clickhouse>
 ```
 
-
 ## blob&#95;storage&#95;log {#blob_storage_log}
 
 [`blob_storage_log`](../system-tables/blob_storage_log.md) システムテーブルに関する設定です。
@@ -1873,7 +1796,6 @@ curl 127.0.0.1:9363/metrics
     <ttl>event_date + INTERVAL 30 DAY</ttl>
 </blob_storage_log>
 ```
-
 
 ## query&#95;masking&#95;rules {#query_masking_rules}
 
@@ -1906,7 +1828,6 @@ curl 127.0.0.1:9363/metrics
 
 分散クエリの場合は、各サーバーを個別に設定する必要があります。そうしないと、他ノードに渡されるサブクエリはマスクされないまま保存されます。
 
-
 ## remote&#95;servers {#remote_servers}
 
 [Distributed](../../engines/table-engines/special/distributed.md) テーブルエンジンおよび `cluster` テーブル関数で使用されるクラスタの設定です。
@@ -1924,7 +1845,6 @@ curl 127.0.0.1:9363/metrics
 * [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
 * [クラスタディスカバリ](../../operations/cluster-discovery.md)
 * [Replicatedデータベースエンジン](../../engines/database-engines/replicated.md)
-
 
 ## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
 
@@ -1946,7 +1866,6 @@ URL 関連のストレージエンジンおよびテーブル関数で使用を�
 </remote_url_allow_hosts>
 ```
 
-
 ## timezone {#timezone}
 
 サーバーのタイムゾーンです。
@@ -1965,7 +1884,6 @@ UTC タイムゾーンまたは地理的位置を表す IANA 識別子として�
 
 * [session&#95;timezone](../settings/settings.md#session_timezone)
 
-
 ## tcp&#95;port {#tcp_port}
 
 TCP プロトコルでクライアントと通信するためのポート。
@@ -1976,7 +1894,6 @@ TCP プロトコルでクライアントと通信するためのポート。
 <tcp_port>9000</tcp_port>
 ```
 
-
 ## tcp&#95;port&#95;secure {#tcp_port_secure}
 
 クライアントとの安全な通信に使用する TCP ポートです。[OpenSSL](#openssl) の設定と併用します。
@@ -1986,7 +1903,6 @@ TCP プロトコルでクライアントと通信するためのポート。
 ```xml
 <tcp_port_secure>9440</tcp_port_secure>
 ```
-
 
 ## mysql&#95;port {#mysql_port}
 
@@ -2004,7 +1920,6 @@ MySQL プロトコル経由でクライアントと通信するためのポー�
 <mysql_port>9004</mysql_port>
 ```
 
-
 ## postgresql&#95;port {#postgresql_port}
 
 PostgreSQL プロトコル経由でクライアントと通信するためのポートです。
@@ -2021,18 +1936,13 @@ PostgreSQL プロトコル経由でクライアントと通信するためのポ
 <postgresql_port>9005</postgresql_port>
 ```
 
-
 ## mysql_require_secure_transport {#mysql_require_secure_transport}
 
 true に設定した場合、[mysql_port](#mysql_port) 経由のクライアントとの通信にはセキュアな接続が必須になります。`--ssl-mode=none` オプションでの接続は拒否されます。[OpenSSL](#openssl) の設定と併用してください。
 
-
-
 ## postgresql_require_secure_transport {#postgresql_require_secure_transport}
 
 true に設定すると、[postgresql_port](#postgresql_port) を介したクライアントとのセキュアな通信が必須となります。`sslmode=disable` オプションでの接続は拒否されます。[OpenSSL](#openssl) の設定と併用してください。
-
-
 
 ## tmp&#95;path {#tmp_path}
 
@@ -2049,7 +1959,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
-
 
 ## url&#95;scheme&#95;mappers {#url_scheme_mappers}
 
@@ -2071,7 +1980,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 </url_scheme_mappers>
 ```
 
-
 ## user&#95;files&#95;path {#user_files_path}
 
 ユーザーファイルを格納するディレクトリです。テーブル関数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md) で使用されます。
@@ -2081,7 +1989,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
-
 
 ## user&#95;scripts&#95;path {#user_scripts_path}
 
@@ -2097,7 +2004,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 
 デフォルト:
 
-
 ## user&#95;defined&#95;path {#user_defined_path}
 
 ユーザー定義ファイルを格納するディレクトリです。SQL のユーザー定義関数で使用されます。詳細は [SQL User Defined Functions](/sql-reference/functions/udf) を参照してください。
@@ -2107,7 +2013,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <user_defined_path>/var/lib/clickhouse/user_defined/</user_defined_path>
 ```
-
 
 ## users&#95;config {#users_config}
 
@@ -2123,7 +2028,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 ```xml
 <users_config>users.xml</users_config>
 ```
-
 
 ## access&#95;control&#95;improvements {#access_control_improvements}
 
@@ -2153,7 +2057,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 </access_control_improvements>
 ```
 
-
 ## s3queue&#95;log {#s3queue_log}
 
 `s3queue_log` システムテーブルの設定です。
@@ -2171,7 +2074,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
 </s3queue_log>
 ```
 
-
 ## dead&#95;letter&#95;queue {#dead_letter_queue}
 
 &#39;dead&#95;letter&#95;queue&#39; システムテーブルの設定です。
@@ -2188,7 +2090,6 @@ true に設定すると、[postgresql_port](#postgresql_port) を介したクラ
     <flush_interval_milliseconds>7500</flush_interval_milliseconds>
 </dead_letter_queue>
 ```
-
 
 ## zookeeper {#zookeeper}
 
@@ -2247,7 +2148,6 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 * [ZooKeeper プログラマー向けガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
 * [ClickHouse と ZooKeeper 間の通信をセキュアにする（オプション）](/operations/ssl-zookeeper)
 
-
 ## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper}
 
 ZooKeeper におけるデータパートヘッダーの保存方式を指定します。この設定は [`MergeTree`](/engines/table-engines/mergetree-family) ファミリーにのみ適用されます。次のいずれかで指定できます。
@@ -2272,8 +2172,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 
 この設定で既に保存されたデータパートヘッダーは、以前の（非コンパクトな）表現に戻すことはできません。
 :::
-
-
 
 ## distributed&#95;ddl {#distributed_ddl}
 
@@ -2319,7 +2217,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 </distributed_ddl>
 ```
 
-
 ## access_control_path {#access_control_path}
 
 ClickHouse サーバーが SQL コマンドで作成したユーザーおよびロールの設定ファイルを保存するディレクトリへのパス。
@@ -2327,8 +2224,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 **関連項目**
 
 - [アクセス制御とアカウント管理](/operations/access-rights#access-control-usage)
-
-
 
 ## allow&#95;plaintext&#95;password {#allow_plaintext_password}
 
@@ -2338,7 +2233,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 <allow_plaintext_password>1</allow_plaintext_password>
 ```
 
-
 ## allow&#95;no&#95;password {#allow_no_password}
 
 安全ではないパスワード種別 `no&#95;password` を許可するかどうかを設定します。
@@ -2346,7 +2240,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <allow_no_password>1</allow_no_password>
 ```
-
 
 ## allow&#95;implicit&#95;no&#95;password {#allow_implicit_no_password}
 
@@ -2356,7 +2249,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 <allow_implicit_no_password>1</allow_implicit_no_password>
 ```
 
-
 ## default&#95;session&#95;timeout {#default_session_timeout}
 
 セッションのデフォルトのタイムアウト時間（秒）。
@@ -2364,7 +2256,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <default_session_timeout>60</default_session_timeout>
 ```
-
 
 ## default&#95;password&#95;type {#default_password_type}
 
@@ -2380,7 +2271,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 ```xml
 <default_password_type>sha256_password</default_password_type>
 ```
-
 
 ## user&#95;directories {#user_directories}
 
@@ -2441,7 +2331,6 @@ ClickHouse サーバーが SQL コマンドで作成したユーザーおよび�
 </ldap>
 ```
 
-
 ## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
 
 追加で登録するカスタムトップレベルドメインのリストを定義します。各エントリは `<name>/path/to/file</name>` という形式です。
@@ -2458,7 +2347,6 @@ See also:
 
 * 関数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) およびそのバリエーション。\
   カスタムの TLD リスト名を受け取り、最初の有意なサブドメインまでのトップレベルサブドメインを含むドメイン部分を返します。
-
 
 ## proxy {#proxy}
 
@@ -2586,7 +2474,6 @@ ClickHouse はそれを使用し、次のテンプレートでプロキシ URI �
 
 プロキシ設定は次の順序で決定されます。
 
-
 | 順序 | 設定                     |
 |------|--------------------------|
 | 1.   | リモートプロキシリゾルバ |
@@ -2596,8 +2483,6 @@ ClickHouse はそれを使用し、次のテンプレートでプロキシ URI �
 ClickHouse は、リクエストプロトコルに対して最も優先度の高いリゾルバタイプを確認します。それが定義されていない場合は、
 環境リゾルバに到達するまで、次に優先度の高いリゾルバタイプを順に確認します。
 これにより、異なる種類のリゾルバタイプを組み合わせて使用することも可能になります。
-
-
 
 ## disable&#95;tunneling&#95;for&#95;https&#95;requests&#95;over&#95;http&#95;proxy {#disable_tunneling_for_https_requests_over_http_proxy}
 
@@ -2627,7 +2512,6 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 </proxy>
 ```
 
-
 ## workload&#95;path {#workload_path}
 
 すべての `CREATE WORKLOAD` クエリおよび `CREATE RESOURCE` クエリの保存先として使用されるディレクトリです。デフォルトでは、サーバーの作業ディレクトリ配下の `/workload/` フォルダが使用されます。
@@ -2643,7 +2527,6 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 * [ワークロード階層](/operations/workload-scheduling.md#workloads)
 * [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
 
-
 ## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
 
 ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および `CREATE RESOURCE` クエリの保存先として使用されます。一貫性を保つため、すべての SQL 定義はこの単一の znode に値として保存されます。デフォルトでは ZooKeeper は使用されず、定義は [ディスク](#workload_path) 上に保存されます。
@@ -2658,7 +2541,6 @@ ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および
 
 * [ワークロード階層](/operations/workload-scheduling.md#workloads)
 * [workload&#95;path](#workload_path)
-
 
 ## zookeeper&#95;log {#zookeeper_log}
 

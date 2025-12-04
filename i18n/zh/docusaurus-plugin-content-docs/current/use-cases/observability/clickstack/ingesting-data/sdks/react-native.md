@@ -26,7 +26,6 @@ ClickStack。这样，你就可以在同一时间轴上，将移动端的网络�
 npm install @hyperdx/otel-react-native
 ```
 
-
 ### 初始化 ClickStack {#initialize-clickstack}
 
 尽可能在应用程序生命周期的最早阶段初始化该库：
@@ -40,7 +39,6 @@ HyperDXRum.init({
   tracePropagationTargets: [/api.myapp.domain/i], // 设置以关联前端到后端请求的追踪
 });
 ```
-
 
 ### 附加用户信息或元数据（可选） {#attach-user-information-metadata}
 
@@ -57,7 +55,6 @@ HyperDXRum.setGlobalAttributes({
   // 其他自定义属性...
 });
 ```
-
 
 ### 为低版本进行埋点 {#instrument-lower-versions}
 
@@ -103,7 +100,6 @@ module.exports = {
   },
 };
 ```
-
 
 ## 视图导航 {#view-navigation}
 
