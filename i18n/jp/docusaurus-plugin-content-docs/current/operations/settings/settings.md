@@ -433,9 +433,9 @@ true に設定すると、実験的なテキストインデックスの使用を
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-Iceberg テーブルに対して `OPTIMIZE` を明示的に使用できるようにします。
+iceberg テーブルで 'OPTIMIZE' を明示的に使用できるようにします。
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -10306,6 +10306,14 @@ S3 テーブル関数使用時のスキーマ推論でキャッシュを使用�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 分散処理のためにクエリプランをシリアル化します
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+集約時に String 値を末尾にゼロバイト終端を付けてシリアライズします。互換性のないバージョンが混在するクラスタに対してクエリを実行する際の互換性を維持するために有効にします。
 
 ## session&#95;timezone {#session_timezone}
 
