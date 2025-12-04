@@ -16,8 +16,8 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 
 | Section | Description |
 |------|-------------|
-| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Quick start guide for Kafka Metrics |
-| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Quick start guide for Kafka Metrics |
+| [Generic Host Logs](/use-cases/observability/clickstack/integrations/host-logs) | Quick start guide for Generic Host Logs |
+| [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Quick start guide for EC2 Host Logs |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Quick start guide for Kafka Metrics |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Quick start guide for Kubernetes |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
