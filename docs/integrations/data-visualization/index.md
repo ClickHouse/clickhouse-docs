@@ -46,6 +46,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
+- [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## ClickHouse Cloud compatibility with data visualization tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
@@ -62,6 +63,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Holistics](./community_integrations/holistics-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Lightdash](./lightdash-and-clickhouse.md)      | Native connector | ✅      | ✅          | 
             |
 | [Looker](./looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./looker-and-clickhouse.md) for more details                    |
