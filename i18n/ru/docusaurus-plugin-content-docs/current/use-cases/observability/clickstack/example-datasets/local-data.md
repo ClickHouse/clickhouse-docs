@@ -23,154 +23,156 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud пользователям потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
 :::
 
-<VerticalStepper>
-  ## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
+<VerticalStepper headerLevel="h2">
 
-  Создайте файл `custom-local-config.yaml` со следующим содержимым:
+## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
 
-  ```yaml
-  receivers:
-    filelog:
-      include:
-        - /host/var/log/**/*.log        # Логи Linux с хоста
-        - /host/var/log/syslog
-        - /host/var/log/messages
-        - /host/private/var/log/*.log   # Логи macOS с хоста
-      start_at: beginning
-      resource:
-        service.name: "system-logs"     # Имя сервиса для системных логов
+Создайте файл `custom-local-config.yaml` со следующим содержимым:
 
-    hostmetrics:
-      collection_interval: 1s
-      scrapers:
-        cpu:
-          metrics:
-            system.cpu.time:
-              enabled: true
-            system.cpu.utilization:
-              enabled: true
-        memory:
-          metrics:
-            system.memory.usage:
-              enabled: true
-            system.memory.utilization:
-              enabled: true
-        filesystem:
-          metrics:
-            system.filesystem.usage:
-              enabled: true
-            system.filesystem.utilization:
-              enabled: true
-        paging:
-          metrics:
-            system.paging.usage:
-              enabled: true
-            system.paging.utilization:
-              enabled: true
-            system.paging.faults:
-              enabled: true
-        disk:
-        load:
-        network:
-        processes:
+```yaml
+receivers:
+  filelog:
+    include:
+      - /host/var/log/**/*.log        # Логи Linux с хоста
+      - /host/var/log/syslog
+      - /host/var/log/messages
+      - /host/private/var/log/*.log   # Логи macOS с хоста
+    start_at: beginning
+    resource:
+      service.name: "system-logs"     # Имя сервиса для системных логов
 
-  service:
-    pipelines:
-      logs/local:
-        receivers: [filelog]
-        processors:
-          - memory_limiter
-          - batch
-        exporters:
-          - clickhouse
-      metrics/hostmetrics:
-        receivers: [hostmetrics]
-        processors:
-          - memory_limiter
-          - batch
-        exporters:
-          - clickhouse
-  ```
+  hostmetrics:
+    collection_interval: 1s
+    scrapers:
+      cpu:
+        metrics:
+          system.cpu.time:
+            enabled: true
+          system.cpu.utilization:
+            enabled: true
+      memory:
+        metrics:
+          system.memory.usage:
+            enabled: true
+          system.memory.utilization:
+            enabled: true
+      filesystem:
+        metrics:
+          system.filesystem.usage:
+            enabled: true
+          system.filesystem.utilization:
+            enabled: true
+      paging:
+        metrics:
+          system.paging.usage:
+            enabled: true
+          system.paging.utilization:
+            enabled: true
+          system.paging.faults:
+            enabled: true
+      disk:
+      load:
+      network:
+      processes:
 
-  Данная конфигурация собирает системные журналы и метрики для систем OSX и Linux и отправляет результаты в ClickStack. Конфигурация расширяет коллектор ClickStack, добавляя новые приёмники и конвейеры — при этом используются существующий экспортёр `clickhouse` и процессоры (`memory_limiter`, `batch`), уже настроенные в базовом коллекторе ClickStack.
+service:
+  pipelines:
+    logs/local:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+    metrics/hostmetrics:
+      receivers: [hostmetrics]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+```
 
-  :::note Временные метки при ингестии
-  Данная конфигурация корректирует временные метки в процессе ингестии, присваивая каждому событию обновлённое значение времени. Пользователям следует [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) с помощью процессоров или операторов OTel в своих лог-файлах, чтобы обеспечить сохранение точного времени события.
+Данная конфигурация собирает системные журналы и метрики для систем OSX и Linux и отправляет результаты в ClickStack. Конфигурация расширяет коллектор ClickStack, добавляя новые приёмники и конвейеры — при этом используются существующий экспортёр `clickhouse` и процессоры (`memory_limiter`, `batch`), уже настроенные в базовом коллекторе ClickStack.
 
-  При такой настройке, если приёмник или процессор файлов настроен на чтение с начала файла, всем существующим записям журнала будет присвоена одинаковая скорректированная временная метка — время обработки, а не исходное время события. Любые новые события, добавляемые в файл, получат временные метки, приближённые к фактическому времени их генерации.
+:::note Временные метки при ингестии
+Данная конфигурация корректирует временные метки в процессе ингестии, присваивая каждому событию обновлённое значение времени. Пользователям следует [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) с помощью процессоров или операторов OTel в своих лог-файлах, чтобы обеспечить сохранение точного времени события.
 
-  Чтобы избежать такого поведения, установите начальную позицию в значение `end` в конфигурации приёмника. Это обеспечит приём только новых записей с временными метками, соответствующими фактическому времени их поступления.
-  :::
+При такой настройке, если приёмник или процессор файлов настроен на чтение с начала файла, всем существующим записям журнала будет присвоена одинаковая скорректированная временная метка — время обработки, а не исходное время события. Любые новые события, добавляемые в файл, получат временные метки, приближённые к фактическому времени их генерации.
 
-  Подробнее о структуре конфигурации OpenTelemetry (OTel) см. в [официальном руководстве](https://opentelemetry.io/docs/collector/configuration/).
+Чтобы избежать такого поведения, установите начальную позицию в значение `end` в конфигурации приёмника. Это обеспечит приём только новых записей с временными метками, соответствующими фактическому времени их поступления.
+:::
 
-  ## Запуск ClickStack с пользовательской конфигурацией {#start-clickstack}
+Подробнее о структуре конфигурации OpenTelemetry (OTel) см. в [официальном руководстве](https://opentelemetry.io/docs/collector/configuration/).
 
-  Выполните следующую команду docker для запуска универсального контейнера с вашей конфигурацией:
+## Запуск ClickStack с пользовательской конфигурацией {#start-clickstack}
 
-  ```shell
-  docker run -d --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    --user 0:0 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log:/host/var/log:ro \
-    -v /private/var/log:/host/private/var/log:ro \
-    clickhouse/clickstack-all-in-one:latest
-  ```
+Выполните следующую команду docker для запуска универсального контейнера с вашей конфигурацией:
 
-  :::note Пользователь root
-  Мы запускаем коллектор от имени пользователя root для доступа ко всем системным журналам — это необходимо для сбора журналов из защищённых путей в системах на базе Linux. Однако такой подход не рекомендуется для production-окружения. В production-средах OpenTelemetry Collector следует развёртывать как локальный агент только с минимальными правами, необходимыми для доступа к целевым источникам журналов.
+```shell
+docker run -d --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  --user 0:0 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
-  Обратите внимание, что мы монтируем `/var/log` хоста в `/host/var/log` внутри контейнера во избежание конфликтов с собственными лог-файлами контейнера.
-  :::
+:::note Пользователь root
+Мы запускаем коллектор от имени пользователя root для доступа ко всем системным журналам — это необходимо для сбора журналов из защищённых путей в системах на базе Linux. Однако такой подход не рекомендуется для production-окружения. В production-средах OpenTelemetry Collector следует развёртывать как локальный агент только с минимальными правами, необходимыми для доступа к целевым источникам журналов.
 
-  Если вы используете HyperDX в ClickHouse Cloud с отдельным коллектором, используйте эту команду:
+Обратите внимание, что мы монтируем `/var/log` хоста в `/host/var/log` внутри контейнера во избежание конфликтов с собственными лог-файлами контейнера.
+:::
 
-  ```shell
-  docker run -d \
-    -p 4317:4317 -p 4318:4318 \
-    --user 0:0 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
-    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log:/host/var/log:ro \
-    -v /private/var/log:/host/private/var/log:ro \
-    clickhouse/clickstack-otel-collector:latest
-  ```
+Если вы используете HyperDX в ClickHouse Cloud с отдельным коллектором, используйте эту команду:
 
-  Коллектор немедленно начнет сбор локальных системных журналов и метрик.
+```shell
+docker run -d \
+  -p 4317:4317 -p 4318:4318 \
+  --user 0:0 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  clickhouse/clickstack-otel-collector:latest
+```
 
-  ## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
+Коллектор немедленно начнет сбор локальных системных журналов и метрик.
 
-  Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
+## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
 
-  ## Изучение системных логов {#explore-system-logs}
+Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
 
-  В интерфейсе поиска должны отобразиться локальные системные логи. Разверните фильтры и выберите `system.log`:
+## Изучение системных логов {#explore-system-logs}
 
-  <Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
+В интерфейсе поиска должны отобразиться локальные системные логи. Разверните фильтры и выберите `system.log`:
 
-  ## Изучение системных метрик {#explore-system-metrics}
+<Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
 
-  Метрики можно изучать с помощью графиков.
+## Изучение системных метрик {#explore-system-metrics}
 
-  Перейдите в Chart Explorer через левое меню. Выберите источник `Metrics` и тип агрегации `Maximum`.
+Метрики можно изучать с помощью графиков.
 
-  В меню `Select a Metric` введите `memory`, затем выберите `system.memory.utilization (Gauge)`.
+Перейдите в Chart Explorer через левое меню. Выберите источник `Metrics` и тип агрегации `Maximum`.
 
-  Нажмите кнопку запуска, чтобы визуализировать использование памяти за период времени.
+В меню `Select a Metric` введите `memory`, затем выберите `system.memory.utilization (Gauge)`.
 
-  <Image img={hyperdx_21} alt="Использование памяти во времени" size="lg" />
+Нажмите кнопку запуска, чтобы визуализировать использование памяти за период времени.
 
-  Обратите внимание, что число возвращается как число с плавающей точкой `%`. Для более наглядного отображения выберите `Set number format`.
+<Image img={hyperdx_21} alt="Использование памяти во времени" size="lg" />
 
-  <Image img={hyperdx_22} alt="Формат числа" size="lg" />
+Обратите внимание, что число возвращается как число с плавающей точкой `%`. Для более наглядного отображения выберите `Set number format`.
 
-  В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
+<Image img={hyperdx_22} alt="Формат числа" size="lg" />
 
-  <Image img={hyperdx_23} alt="Память, % времени выполнения" size="lg" />
+В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
+
+<Image img={hyperdx_23} alt="Память, % времени выполнения" size="lg" />
+
 </VerticalStepper>
