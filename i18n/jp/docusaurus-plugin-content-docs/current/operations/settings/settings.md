@@ -10090,6 +10090,15 @@ S3 へのマルチパートアップロードでアップロードする各パ�
 
 S3 へのマルチパートアップロードでアップロードするパートの最小サイズ。
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+ファイルを走査する際に glob リストの代わりに利用するため、クエリフィルタから抽出できる `_path` 値の最大数です。
+0 を指定すると無効になります。
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10652,7 +10661,8 @@ FINAL 最適化中にパーツ範囲を交差するものと交差しないも�
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "デフォルトでは Kafka/RabbitMQ/FileLog への直接 SELECT を許可しない"}]}]}/>
 
-Kafka、RabbitMQ、FileLog、Redis Streams、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+materialized view がアタッチされていない場合、この設定を有効にするとデータを読み取れるようになります。通常は、読み取ったデータはキューから削除される点に注意してください。読み取ったデータを削除しないようにするには、関連するエンジンの設定を適切に構成する必要があります。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

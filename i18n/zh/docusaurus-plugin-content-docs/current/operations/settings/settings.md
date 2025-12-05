@@ -10085,6 +10085,15 @@ S3 分块上传的最大分块编号。
 
 在向 S3 执行分段上传时，每个上传分段的最小大小。
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting"}]}]}/>
+
+从查询过滤条件中提取 `_path` 值用于文件遍历（替代 glob 列举）的最大数量。
+0 表示禁用。
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10647,7 +10656,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "默认情况下不允许对 Kafka/RabbitMQ/FileLog 执行直接 SELECT"}]}]}/>
 
-允许对 Kafka、RabbitMQ、FileLog、Redis Streams 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+允许对 Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+如果没有附加的 materialized view，启用此设置后可以读取数据。请注意，已读取的数据通常会从队列中删除。为避免删除已读取的数据，应正确配置相关引擎的设置。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

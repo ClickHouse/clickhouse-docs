@@ -10,6 +10,8 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 
 # 字典 {#dictionaries}
 
@@ -1052,7 +1054,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
     ...
     <source>
       <source_type>
-        <!-- 数据源配置 -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1066,7 +1068,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- 数据源配置
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1107,6 +1109,8 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
+
 
 ### 本地文件 {#local-file}
 
@@ -1890,6 +1894,48 @@ SOURCE(POSTGRESQL(
 :::note
 `table` 或 `where` 字段不能与 `query` 字段同时使用。同时，`table` 和 `query` 字段中必须至少声明一个。
 :::
+
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+这是一个实验性特性，将来版本中可能会发生不向后兼容的变更。
+通过设置 [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)
+来启用 YTsaurus 字典源。
+:::
+
+设置示例：
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+或
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+设置字段：
+
+* `http_proxy_urls` – 指向 YTsaurus HTTP 代理的 URL。
+* `cypress_path` – 指向表数据源的 Cypress 路径。
+* `oauth_token` – OAuth 令牌。
+
 
 ### Null {#null}
 

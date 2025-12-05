@@ -9,12 +9,9 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 入力および出力データのフォーマット {#formats-for-input-and-output-data}
 
 ClickHouse は、一般的なテキスト形式およびバイナリ形式のほとんどをサポートしています。これにより、運用中のほぼあらゆるデータパイプラインに容易に統合し、ClickHouse の利点を活用できます。
-
-
 
 ## 入力フォーマット {#input-formats}
 
@@ -34,21 +31,15 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 完全版の [ベンチマーク分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient) を参照してください。
 テスト結果の全体像は、[FastFormats](https://fastformats.clickhouse.com/) のオンラインダッシュボードで確認できます。
 
-
-
 ## 出力形式 {#output-formats}
 
 出力としてサポートされている形式は、次の用途に使用されます:
 - `SELECT` クエリ結果の整形
 - ファイルベースのテーブルへの `INSERT` 操作の実行
 
-
-
 ## フォーマットの概要 {#formats-overview}
 
 サポートされているフォーマットは以下のとおりです。
-
-
 
 | フォーマット                                                                                                     | 入力 | 出力 |
 | ---------------------------------------------------------------------------------------------------------- | -- | -- |
@@ -139,11 +130,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 | [Markdown](./formats/Markdown.md)                                                                          | ✗  | ✔  |
 | [フォーム](./formats/Form.md)                                                                                  | ✔  | ✗  |
 
-
-
 ClickHouse の設定を使用して、一部のフォーマット処理パラメータを制御できます。詳細については、[Settings](/operations/settings/settings-formats.md) セクションを参照してください。
-
-
 
 ## フォーマットスキーマ {#formatschema}
 
@@ -159,8 +146,6 @@ ClickHouse の設定を使用して、一部のフォーマット処理パラメ
 
 [HTTP インターフェイス](/interfaces/http.md)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
 サーバー設定の [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) で指定されたディレクトリ内に存在している必要があります。
-
-
 
 ## エラーのスキップ {#skippingerrors}
 

@@ -2,22 +2,28 @@
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
 description: 'Пример использования комбинатора quantilesTimingIf'
-keywords: ['quantilesTiming', 'if', 'комбинатор', 'примеры', 'quantilesTimingIf']
+keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
+
+
 # quantilesTimingIf {#quantilestimingif}
+
+
 
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 для вычисления квантилей значений времени для строк, для которых условие истинно,
-с использованием агрегатной функции-комбинатора `quantilesTimingIf`.
+с помощью агрегатной функции-комбинатора `quantilesTimingIf`.
+
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит время ответа API для различных эндпоинтов
+В этом примере мы создадим таблицу, которая хранит время ответа API для разных эндпоинтов,
 и используем `quantilesTimingIf` для вычисления квантилей времени ответа для успешных запросов.
 
 ```sql title="Query"
@@ -72,13 +78,14 @@ GROUP BY endpoint;
 * 1.0 (максимум)
 
 ```response title="Response"
-   ┌─конечная_точка─┬─квантили_времени_отклика────────────────────────────────────────┐
-1. │ заказы   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ продукты │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ пользователи │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └─────────────────┴─────────────────────────────────────────────────────────────────────┘
+   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## См. также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
