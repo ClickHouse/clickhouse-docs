@@ -292,7 +292,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 - **20:00** - メモリプレッシャー（キーの削除が発生し始める）
 :::
 
-</VerticalStepper>
+</VerticalStepper headerLevel="h2">
 
 ## ダッシュボードと可視化 {#dashboards}
 
