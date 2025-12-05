@@ -144,13 +144,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   * `redis.connections.rejected` - 拒否された接続数
 
   :::note
-
   * カスタム設定では、新しい receiver、processor、pipeline のみを定義します
   * `memory_limiter` と `batch` の各 processor、および `clickhouse` exporter は、ベースの ClickStack 構成内ですでに定義されているため、名前を指定するだけで参照できます
   * `resource` プロセッサは、OpenTelemetry のセマンティック規約に従い、必須の `service.name` 属性を設定します
   * 認証付きの本番運用環境では、パスワードを環境変数 `${env:REDIS_PASSWORD}` に保存してください。
   * 必要に応じて `collection_interval` を調整します（デフォルトは 10s。値を小さくするとデータ量が増加します）
   * 複数の Redis インスタンスがある場合は、それらを区別するために `service.name` をカスタマイズしてください（例: `"redis-cache"`、`"redis-sessions"`）
+  :::
 
   #### ClickStackにカスタム設定を読み込ませる {#load-custom}
 
