@@ -10,6 +10,8 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 
 # Dictionaries {#dictionaries}
 
@@ -1053,7 +1055,7 @@ Dictionary を XML ファイルで構成する場合、設定は次のように�
     ...
     <source>
       <source_type>
-        <!-- ソースの設定 -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1067,7 +1069,7 @@ Dictionary を XML ファイルで構成する場合、設定は次のように�
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- ソースの設定
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1109,6 +1111,8 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
+
 
 ### ローカル ファイル {#local-file}
 
@@ -1892,6 +1896,47 @@ SOURCE(POSTGRESQL(
 :::note
 `table` フィールドまたは `where` フィールドは、`query` フィールドと同時に使用することはできません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず宣言する必要があります。
 :::
+
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+これは実験的な機能であり、今後のリリースで後方互換性のない変更が行われる可能性があります。
+YTsaurus を Dictionary ソースとして利用するには、設定 [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) を有効にします。
+:::
+
+設定例:
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+または
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+設定フィールド:
+
+* `http_proxy_urls` – YTsaurus HTTP プロキシへの URL。
+* `cypress_path` – テーブルのソースとなる Cypress パス。
+* `oauth_token` – OAuth トークン。
+
 
 ### Null {#null}
 

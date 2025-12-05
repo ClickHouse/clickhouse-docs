@@ -10123,6 +10123,15 @@ FORMAT Null;
 
 Минимальный размер части при многочастичной загрузке в S3.
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "Новая настройка"}]}]}/>
+
+Максимальное количество значений `_path`, которое может быть извлечено из фильтров запроса и использовано для итерации по файлам
+вместо перечисления файлов по glob-шаблону. Значение 0 означает, что настройка отключена.
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10687,7 +10696,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "По умолчанию не разрешать прямой SELECT для Kafka/RabbitMQ/FileLog"}]}]}/>
 
-Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Разрешает выполнение прямого запроса SELECT для движков Kafka, RabbitMQ, FileLog, Redis Streams, S3Queue, AzureQueue и NATS. При наличии подключённых materialized views выполнение запроса SELECT запрещено, даже если этот параметр включён.
+Если нет подключённых materialized views, включение этого параметра позволяет читать данные. Имейте в виду, что обычно прочитанные данные удаляются из очереди. Чтобы избежать удаления прочитанных данных, соответствующие настройки движка должны быть настроены должным образом.
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 

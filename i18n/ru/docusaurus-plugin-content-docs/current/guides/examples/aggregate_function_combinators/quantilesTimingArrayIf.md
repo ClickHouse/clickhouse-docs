@@ -7,18 +7,24 @@ sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
+
+
 # quantilesTimingArrayIf {#quantilestimingarrayif}
+
+
 
 ## Описание {#description}
 
-К комбинатору [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-можно применить функцию [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-для вычисления квантилей временных значений в массивах для строк, где условие истинно,
-используя агрегатную функцию-комбинатор `quantilesTimingArrayIf`.
+Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+могут быть применены к агрегатной функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+для вычисления квантилей значений времени в массивах для строк, где выполняется условие,
+с использованием агрегатного комбинатора `quantilesTimingArrayIf`.
+
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, в которой будет храниться время отклика API для разных эндпоинтов
+В этом примере мы создадим таблицу, которая хранит время отклика API для различных эндпоинтов
 и используем `quantilesTimingArrayIf` для вычисления квантилей времени отклика для успешных запросов.
 
 ```sql title="Query"
@@ -40,15 +46,15 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-Функция `quantilesTimingArrayIf` вычисляет квантили только для эндпоинтов с долей успешных запросов более 95%.
+Функция `quantilesTimingArrayIf` вычисляет квантили только для эндпоинтов с долей успешных запросов выше 95%.
 Возвращаемый массив содержит следующие квантили в следующем порядке:
 
 * 0 (минимум)
 * 0.25 (первый квартиль)
 * 0.5 (медиана)
 * 0.75 (третий квартиль)
-* 0.95 (95-й перцентиль)
-* 0.99 (99-й перцентиль)
+* 0.95 (95-й процентиль)
+* 0.99 (99-й процентиль)
 * 1.0 (максимум)
 
 ```response title="Response"
@@ -59,6 +65,7 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## См. также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

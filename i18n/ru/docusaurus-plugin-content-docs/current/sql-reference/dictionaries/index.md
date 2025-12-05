@@ -10,6 +10,8 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 
 # Словари {#dictionaries}
 
@@ -1055,7 +1057,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
     ...
     <source>
       <source_type>
-        <!-- Конфигурация источника -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1069,7 +1071,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Конфигурация источника
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1111,6 +1113,8 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
+
 
 ### Локальный файл {#local-file}
 
@@ -1894,6 +1898,48 @@ SOURCE(POSTGRESQL(
 :::note
 Поля `table` или `where` не могут использоваться вместе с полем `query`. При этом одно из полей `table` или `query` должно быть задано.
 :::
+
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+Это экспериментальная функция, которая может измениться в будущих релизах с нарушением обратной совместимости.
+Чтобы включить использование источника словаря YTsaurus,
+используйте настройку [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source).
+:::
+
+Пример настройки:
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+или
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+Поля конфигурации:
+
+* `http_proxy_urls` – URL HTTP-прокси YTsaurus.
+* `cypress_path` – путь Cypress к таблице-источнику.
+* `oauth_token` – OAuth-токен.
+
 
 ### Null {#null}
 

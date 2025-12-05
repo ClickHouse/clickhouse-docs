@@ -1,25 +1,30 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumMap'
 title: 'sumMap'
-description: 'sumMap コンビネータの使用例'
-keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
+description: 'sumMap コンビネーターの使用例'
+keywords: ['sum', 'map', 'コンビネーター', '例', 'sumMap']
 sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
+
+
 # sumMap {#summap}
+
+
 
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`sumMap`
-集約コンビネータ関数を使用して、各キーごとに Map 内の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum)
-関数に適用できます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、集約コンビネータ関数 `sumMap` を使用して [`sum`](/sql-reference/aggregate-functions/reference/sum)
+関数に適用でき、Map の各キーごとの値の合計を計算します。
+
+
 
 ## 使用例 {#example-usage}
 
-この例では、さまざまなタイムスロットごとにステータスコードとそのカウントを保持するテーブルを作成します。
-各行には、ステータスコードをキー、そのステータスコードに対応するカウントを値とする `Map` が含まれます。
-各タイムスロット内でステータスコードごとの合計カウントを計算するために `sumMap` を使用します。
+この例では、異なるタイムスロットごとにステータスコードとそのカウントを保存するテーブルを作成します。
+各行には、ステータスコードから対応するカウントへの Map が含まれます。
+`sumMap` を使用して、各タイムスロット内でステータスコードごとの合計カウントを計算します。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -41,7 +46,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`sumMap` 関数は、各タイムスロットごとにステータスコード別の合計件数を計算します。例えば次のとおりです:
+`sumMap` 関数は、各タイムスロット内の各ステータスコードに対する合計カウントを計算します。例えば次のとおりです:
 
 * タイムスロット &#39;2000-01-01 00:00:00&#39; の場合:
   * ステータス &#39;a&#39;: 15
@@ -62,6 +67,7 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
+
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Map コンビネータ`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

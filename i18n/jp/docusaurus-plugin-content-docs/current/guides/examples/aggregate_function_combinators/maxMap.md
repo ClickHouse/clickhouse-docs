@@ -7,17 +7,23 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
+
+
 # maxMap {#maxmap}
+
+
 
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`max`](/sql-reference/aggregate-functions/reference/max) 関数に適用すると、`maxMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の最大値を計算できます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`max`](/sql-reference/aggregate-functions/reference/max) 関数に適用すると、`maxMap` 集約コンビネータ関数を使用して、各キーごとの `Map` 内の最大値を計算できます。
+
+
 
 ## 使用例 {#example-usage}
 
-この例では、さまざまなタイムスロットごとにステータスコードとそのカウントを保存するテーブルを作成します。
-各行には、ステータスコードと対応するカウントの `Map` が含まれます。各タイムスロット内で各ステータスコードに対する最大カウントを求めるために
-`maxMap` を使用します。
+この例では、さまざまなタイムスロットに対するステータスコードとそのカウントを格納するテーブルを作成します。
+各行には、ステータスコードとそれに対応するカウントを保持する `Map` が含まれています。
+`maxMap` を使用して、各タイムスロット内でステータスコードごとの最大カウントを求めます。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -39,7 +45,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`maxMap` 関数は、各タイムスロット内の各ステータスコードごとに出現回数の最大値を求めます。例えば:
+`maxMap` 関数は、各タイムスロットごとに各ステータスコードの件数の最大値を求めます。例えば:
 
 * タイムスロット &#39;2000-01-01 00:00:00&#39; の場合:
   * ステータス &#39;a&#39;: 15
@@ -59,6 +65,7 @@ GROUP BY timeslot;
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
+
 
 ## 関連項目 {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
