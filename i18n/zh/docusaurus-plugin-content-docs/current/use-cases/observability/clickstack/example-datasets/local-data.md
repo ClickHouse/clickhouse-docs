@@ -24,6 +24,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 :::
 
 <VerticalStepper>
+
   ## 创建自定义 OpenTelemetry 配置 {#create-otel-configuration}
 
   创建一个 `custom-local-config.yaml` 文件,内容如下:
@@ -173,4 +174,5 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
   在随后的菜单中,从 `Output format` 下拉列表中选择 `Percentage`,然后点击 `Apply`。
 
   <Image img={hyperdx_23} alt="内存时间占比" size="lg" />
+
 </VerticalStepper>

@@ -24,6 +24,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 :::
 
 <VerticalStepper>
+
   ## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
 
   Создайте файл `custom-local-config.yaml` со следующим содержимым:
@@ -173,4 +174,5 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
   В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
 
   <Image img={hyperdx_23} alt="Память, % времени выполнения" size="lg" />
+
 </VerticalStepper>

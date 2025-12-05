@@ -24,6 +24,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 :::
 
 <VerticalStepper>
+
   ## カスタムOpenTelemetry設定を作成する {#create-otel-configuration}
 
   以下の内容で `custom-local-config.yaml` ファイルを作成します：
@@ -173,4 +174,5 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
   表示されたメニューで、`Output format`ドロップダウンから`Percentage`を選択し、`Apply`をクリックします。
 
   <Image img={hyperdx_23} alt="メモリに費やした時間の割合（％）" size="lg" />
+
 </VerticalStepper>

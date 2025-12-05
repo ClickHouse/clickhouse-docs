@@ -44,7 +44,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 - 認証を有効にしている場合の Redis パスワード
 
 <VerticalStepper headerLevel="h4">
-  #### Redis接続の確認
+
+  #### Redis接続の確認 {#verify-redis}
 
   まず、Redisに接続できること、およびINFOコマンドが機能することを確認します：
 
@@ -70,7 +71,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   * **Docker**: コンテナ名またはサービス名を指定します（例: `redis:6379`）
   * **リモート**: `<redis-host>:6379`
 
-  #### カスタムOTel collector設定を作成する
+  #### カスタムOTel collector設定を作成する {#custom-otel}
 
   ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetryコレクター設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
 
@@ -151,7 +152,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   * 必要に応じて `collection_interval` を調整します（デフォルトは 10s。値を小さくするとデータ量が増加します）
   * 複数の Redis インスタンスがある場合は、それらを区別するために `service.name` をカスタマイズしてください（例: `"redis-cache"`、`"redis-sessions"`）
 
-  #### ClickStackにカスタム設定を読み込ませる
+  #### ClickStackにカスタム設定を読み込ませる {#load-custom}
 
   既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の手順を実行してください:
 
@@ -159,7 +160,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定してください
   3. ClickStack と Redis 間のネットワーク接続を確保する
 
-  ##### オプション1: Docker Compose
+  ##### オプション1: Docker Compose {#docker-compose}
 
   ClickStackのデプロイメント設定を更新します:
 
@@ -187,7 +188,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
       # command: redis-server --requirepass your-redis-password
   ```
 
-  ##### オプション2：Docker run（オールインワンイメージ）
+  ##### オプション2：Docker run（オールインワンイメージ） {#all-in-one}
 
   `docker run`でオールインワンイメージを使用する場合：
 
@@ -217,7 +218,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     clickhouse/clickstack-all-in-one:latest
   ```
 
-  #### HyperDXでメトリクスを確認する
+  #### HyperDXでメトリクスを確認する {#verifying-metrics}
 
   設定完了後、HyperDXにログインし、メトリクスが正常に送信されていることを確認します：
 
@@ -226,6 +227,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   3. 設定した収集間隔でメトリクスのデータポイントが表示されるはずです
 
   {/* <Image img={metrics_view} alt="Redis メトリクスビュー"/> */ }
+
 </VerticalStepper>
 
 ## デモ用データセット {#demo-dataset}
@@ -325,7 +327,7 @@ ClickStack で Redis の監視を始めるにあたり、Redis Metrics 用の基
 
 ## トラブルシューティング {#troubleshooting}
 
-### カスタム設定が読み込まれない
+### カスタム設定が読み込まれない {#troubleshooting-not-loading}
 
 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` が正しく設定されていることを確認してください。
 
@@ -345,12 +347,12 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### HyperDX にメトリクスが表示されない
+### HyperDX にメトリクスが表示されない {#no-metrics}
 
 collector から Redis にアクセスできることを確認してください：
 
 ```bash
-# ClickStackコンテナから {#download-sum-metrics-commands-connections-keyspace-stats}
+# ClickStackコンテナから
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # 期待される出力: PONG
 ```
@@ -372,10 +374,10 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 接続エラーまたは認証失敗を確認します {#load-gauge-metrics-memory-fragmentation}
+# 接続エラーまたは認証失敗を確認します
 ```
 
-### 認証エラー
+### 認証エラー {#auth-errors}
 
 ログに認証エラーが表示されている場合:
 
@@ -399,7 +401,7 @@ receivers:
     password: ${env:REDIS_PASSWORD}
 ```
 
-### ネットワーク接続の問題
+### ネットワーク接続の問題 {#network-issues}
 
 ClickStack が Redis に接続できない場合:
 
