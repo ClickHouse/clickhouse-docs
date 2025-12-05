@@ -18,7 +18,6 @@ doc_type: 'guide'
 pip install chdb
 ```
 
-
 ## Использование {#usage} 
 
 ### Интерфейс командной строки {#command-line-interface}
@@ -32,7 +31,6 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 # Запрос с форматированием {#query-with-formatting}
 python3 -m chdb "SELECT version()" JSON
 ```
-
 
 ### Основы работы с Python {#basic-python-usage}
 
@@ -48,7 +46,6 @@ print(f"Прочитано строк: {result.rows_read()}")
 print(f"Прочитано байт: {result.bytes_read()}")
 print(f"Время выполнения: {result.elapsed()} секунд")
 ```
-
 
 ### API на основе подключений (рекомендуется) {#connection-based-api}
 
@@ -84,7 +81,6 @@ cur.close()
 conn.close()
 ```
 
-
 ## Методы ввода данных {#data-input}
 
 ### Файловые источники данных {#file-based-data-sources}
@@ -118,7 +114,6 @@ result = chdb.query("""
 """, 'Pretty')
 ```
 
-
 ### Примеры форматов вывода {#output-format-examples}
 
 ```python
@@ -138,7 +133,6 @@ print(json_result)
 pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
 print(pretty_result)
 ```
-
 
 ### Операции с DataFrame {#dataframe-operations}
 
@@ -163,7 +157,6 @@ print(result_df)
 summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
-
 
 #### Табличный движок Python (рекомендуется) {#python-table-engine-recommended}
 
@@ -211,7 +204,6 @@ chdb.query("""
     ORDER BY score DESC
 """).show()
 ```
-
 
 ### Сеансы с сохранением состояния {#stateful-sessions}
 
@@ -267,7 +259,6 @@ print(result)
 sess.close()  # Необязательно — автоматически закрывается при удалении объекта
 ```
 
-
 ### Расширенные возможности сессий {#advanced-session-features}
 
 ```python
@@ -287,7 +278,6 @@ result = sess.query("""
 ```
 
 См. также: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
-
 
 ### Интерфейс Python DB-API 2.0 {#python-db-api-20}
 
@@ -337,7 +327,6 @@ cursor.executemany(
 )
 ```
 
-
 ### Пользовательские функции (UDF) {#user-defined-functions}
 
 Расширяйте SQL с помощью пользовательских функций, написанных на Python:
@@ -378,7 +367,6 @@ result = query("""
 print(result)
 ```
 
-
 #### Продвинутые UDF с пользовательскими типами возвращаемых значений {#advanced-udf-custom-return-types}
 
 ```python
@@ -412,7 +400,6 @@ result = query("""
 """, "Pretty")
 print(result)
 ```
-
 
 #### Рекомендации по использованию UDF {#udf-best-practices}
 
@@ -448,7 +435,6 @@ query("""
     ) as extracted_name
 """)
 ```
-
 
 ### Потоковая обработка запросов {#streaming-queries}
 
@@ -520,7 +506,6 @@ stream.close()
 sess.close()
 ```
 
-
 ### Табличный движок Python {#python-table-engine}
 
 #### Выполнение запросов к DataFrame в Pandas {#query-pandas-dataframes}
@@ -577,7 +562,6 @@ window_result = chdb.query("""
 """, "Pretty")
 print(window_result)
 ```
-
 
 #### Пользовательские источники данных с PyReader {#custom-data-sources-pyreader}
 
@@ -686,7 +670,6 @@ complex_json = chdb.query("""
 print(complex_json)
 ````
 
-
 ## Производительность и оптимизация {#performance-optimization}
 
 ### Бенчмарки {#benchmarks}
@@ -771,7 +754,6 @@ for batch in batch_reader:
 stream.close()
 sess.close()
 ```
-
 
 ## Репозиторий GitHub {#github-repository}
 

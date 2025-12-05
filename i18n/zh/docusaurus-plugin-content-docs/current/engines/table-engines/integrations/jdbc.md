@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # JDBC 表引擎 {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -24,8 +23,6 @@ ClickHouse 推荐使用 ClickHouse 内置的表函数，作为临时（即席）
 为实现 JDBC 连接，ClickHouse 使用一个独立程序 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)，该程序应作为守护进程运行。
 
 该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
-
-
 
 ## 创建数据表 {#creating-a-table}
 
@@ -49,7 +46,6 @@ ENGINE = JDBC(数据源名称, 外部数据库, 外部表)
 * `external_table` — 外部数据库中表的名称，或者形如 `select * from table1 where column1=1` 的查询语句。
 
 * 这些参数也可以通过 [命名集合](operations/named-collections.md) 传递。
-
 
 ## 使用示例 {#usage-example}
 
@@ -105,7 +101,6 @@ INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
-
 
 ## 另请参阅 {#see-also}
 

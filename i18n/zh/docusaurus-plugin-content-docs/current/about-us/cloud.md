@@ -8,14 +8,10 @@ keywords: ['ClickHouse Cloud', '云数据库', '托管式 ClickHouse', 'Serverle
 doc_type: 'reference'
 ---
 
-
-
 # ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始作者打造的云服务。
 您可以通过[开始免费试用](https://console.clickhouse.cloud/signUp)来体验 ClickHouse Cloud。
-
-
 
 ## ClickHouse Cloud 的优势 {#clickhouse-cloud-benefits}
 
@@ -27,8 +23,6 @@ ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始
 - **透明定价**：只需为实际使用付费，并可通过资源预留和扩缩容控制来管理成本。
 - **总体拥有成本更低**：提供极佳的性价比，并将运维管理开销降至最低。
 - **广泛的生态系统**：可以继续使用你偏好的数据连接器、可视化工具、SQL 和各类语言客户端。
-
-
 
 {/*
   ## OSS 与 ClickHouse Cloud 对比                           
@@ -50,7 +44,6 @@ ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始
   | **Compute-compute separation** | 用户可以在独立于存储的前提下扩展计算资源，使团队与工作负载能够共享同一存储，同时保持各自独立的计算资源。这能确保某一工作负载的性能不会干扰另一工作负载，从而提升灵活性、性能与成本效率。         | ❌               | ✅                 |
   | **Managed services**           | 借助云托管服务，团队可以专注于业务成果、加速产品上市，而无需操心 ClickHouse 的容量规划、部署和维护等运维开销。                                                                                                   | ❌               | ✅                 |
   */ }
-
 
 ## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 

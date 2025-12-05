@@ -16,7 +16,6 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 Пользователи SQL-консоли создаются для каждого сеанса и аутентифицируются с использованием X.509-сертификатов, которые автоматически обновляются. Пользователь удаляется при завершении сеанса. При формировании списков доступа для аудита перейдите на вкладку Settings для соответствующего сервиса в консоли и учитывайте доступ через SQL-консоль помимо пользователей, уже существующих в базе данных. Если настроены пользовательские роли, доступ пользователя отражается в роли, имя которой оканчивается на имя пользователя.
 
-
 ## Пользователи и роли консоли SQL {#sql-console-users-and-roles}
 
 Базовые роли консоли SQL могут быть назначены пользователям с правами Service Read Only и Service Admin. Для получения дополнительной информации см. раздел [Manage SQL Console Role Assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments). В этом руководстве показано, как создать настраиваемую роль для пользователя консоли SQL.
@@ -52,8 +51,6 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 </VerticalStepper>
 
-
-
 ## Аутентификация в базе данных {#database-authentication}
 
 ### Идентификатор пользователя базы данных и пароль {#database-user-id--password}
@@ -79,7 +76,6 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 4. Используйте приватный ключ для аутентификации в сервисе.
 
 Подробное пошаговое руководство с примерами см. в статье [How to connect to ClickHouse Cloud using SSH keys](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) в нашей базе знаний.
-
 
 ## Права доступа к базе данных {#database-permissions}
 
@@ -160,7 +156,6 @@ GRANT default_role to userID;
 
   e. Нажмите на ссылку с числом пользователей, имеющих доступ к базе данных `There are # users with access to this service.`, чтобы просмотреть список пользователей.
 </VerticalStepper>
-
 
 ## Пользователи warehouse {#warehouse-users}
 

@@ -8,10 +8,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Поддержка транзакционности (ACID) {#transactional-acid-support}
-
-
 
 ## Случай 1: INSERT в один раздел одной таблицы семейства MergeTree* {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
 
@@ -22,34 +19,24 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - Durable (долговечность): успешный INSERT записывается в файловую систему до ответа клиенту, на одну реплику или несколько реплик (управляется настройкой `insert_quorum`), и ClickHouse может попросить ОС синхронизировать данные файловой системы с носителем (управляется настройкой `fsync_after_insert`).
 - INSERT в несколько таблиц одним оператором возможен, если задействованы материализованные представления (INSERT от клиента выполняется в таблицу, у которой есть связанные материализованные представления).
 
-
-
 ## Случай 2: INSERT в несколько партиций одной таблицы семейства MergeTree* {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
 
 Аналогично случаю 1 выше, с таким уточнением:
 - Если таблица имеет много партиций и INSERT затрагивает многие из них, то вставка в каждую партицию является самостоятельной транзакцией
-
-
 
 ## Случай 3: INSERT в одну распределённую таблицу семейства MergeTree* {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
 
 Аналогичен случаю 1 выше, но с одной особенностью:
 - операция INSERT в таблицу движка Distributed не является транзакционной в целом, тогда как вставка в каждый шард — транзакционная
 
-
-
 ## Случай 4: Использование таблицы Buffer {#case-4-using-a-buffer-table}
 
 - вставка в таблицы Buffer не обладает свойствами атомарности, изолированности, согласованности и долговечности
-
-
 
 ## Случай 5: Использование async_insert {#case-5-using-async_insert}
 
 То же, что и в случае 1 выше, со следующим уточнением:
 - атомарность обеспечивается даже если `async_insert` включён и `wait_for_async_insert` установлен в 1 (значение по умолчанию), но если `wait_for_async_insert` установлен в 0, то атомарность не гарантируется.
-
-
 
 ## Примечания {#notes}
 - строки, вставленные клиентом в некотором формате данных, упаковываются в один блок, когда:
@@ -62,8 +49,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - для обеспечения надёжной фиксации вставок в типовой конфигурации должно быть включено либо insert_quorum для разных зон доступности (AZ), либо fsync
 - «согласованность» в терминах ACID не охватывает семантику распределённых систем, см. https://jepsen.io/consistency; она управляется другими настройками (select_sequential_consistency)
 - это объяснение не охватывает новую функциональность транзакций, которая позволяет использовать полнофункциональные транзакции над несколькими таблицами, материализованными представлениями, для нескольких SELECT и т. д. (см. следующий раздел о Transactions, Commit и Rollback)
-
-
 
 ## Транзакции, фиксация (commit) и откат (rollback) {#transactions-commit-and-rollback}
 
@@ -204,7 +189,6 @@ ENGINE = MergeTree
 ORDER BY n
 ```
 
-
 ```response
 Ok.
 ```
@@ -321,7 +305,6 @@ elapsed:     210.017820947
 is_readonly: 1
 state:       RUNNING
 ```
-
 
 ## Подробности {#more-details}
 

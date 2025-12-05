@@ -43,7 +43,6 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-
 ## 使用方法 {#usage}
 
 ### 数据插入 {#data-insertion}
@@ -75,7 +74,6 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` - 该格式要求聚合函数参数的单个值，或者在参数为多个时，一个包含这些值的元组；这些值会被反序列化以构造相应的状态
 * `array` - 该格式要求一个值的 Array，如上面 `value` 选项所述；数组中的所有元素会被聚合以形成状态
 
-
 ### 数据选择 {#data-selection}
 
 从 `AggregatingMergeTree` 表中查询数据时，使用 `GROUP BY` 子句，
@@ -92,7 +90,6 @@ SELECT uniq(UserID) FROM table
 
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
-
 
 ## 使用示例 {#usage-example}
 

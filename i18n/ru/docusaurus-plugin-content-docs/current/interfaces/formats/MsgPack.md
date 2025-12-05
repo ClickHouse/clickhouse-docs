@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## Описание {#description}
 
 ClickHouse поддерживает чтение и запись файлов данных в формате [MessagePack](https://msgpack.org/).
-
-
 
 ## Соответствие типов данных {#data-types-matching}
 
@@ -46,8 +42,6 @@ ClickHouse поддерживает чтение и запись файлов д
 | `int 64`                                                           | [`Decimal64`](/sql-reference/data-types/decimal.md)                                               | `int 64`                         |
 | `bin 8`                                                            | [`Decimal128`/`Decimal256`](/sql-reference/data-types/decimal.md)                                   | `bin 8 `                         |
 
-
-
 ## Пример использования {#example-usage}
 
 Запись в файл «.msgpk»:
@@ -57,7 +51,6 @@ $ clickhouse-client --query="CREATE TABLE msgpack (array Array(UInt8)) ENGINE = 
 $ clickhouse-client --query="INSERT INTO msgpack VALUES ([0, 1, 2, 3, 42, 253, 254, 255]), ([255, 254, 253, 42, 3, 2, 1, 0])";
 $ clickhouse-client --query="SELECT * FROM msgpack FORMAT MsgPack" > tmp_msgpack.msgpk;
 ```
-
 
 ## Настройки формата {#format-settings}
 

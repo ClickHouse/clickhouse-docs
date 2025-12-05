@@ -13,14 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## Описание {#description}
 
 Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
 но выводит две строки заголовков: одну с именами столбцов, другую — с их типами.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -43,6 +39,5 @@ John    30
 Jane    25
 Peter    35
 ```
-
 
 ## Параметры формата {#format-settings}

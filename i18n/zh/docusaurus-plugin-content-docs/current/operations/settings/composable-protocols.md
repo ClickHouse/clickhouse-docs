@@ -23,7 +23,6 @@ doc_type: 'reference'
 </protocols>
 ```
 
-
 ### 配置协议层 {#basic-modules-define-protocol-layers}
 
 可以使用基本模块（basic modules）来定义协议层。例如，要定义一个
@@ -58,7 +57,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 `gRPC` 协议处理器尚未在 `Composable protocols` 中实现。
 :::
 
-
 ### 配置端点 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
 端点（监听端口）由 `<port>` 标签和可选的 `<host>` 标签表示。
@@ -81,7 +79,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 ```
 
 如果省略 `<host>` 标签，则会使用根级配置中的 `<listen_host>`。
-
 
 ### 配置层级序列 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
 
@@ -106,7 +103,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 </protocols>
 ```
 
-
 ### 将端点关联到层 {#endpoint-can-be-attached-to-any-layer}
 
 端点可以关联到任意层。例如，我们可以为 HTTP（端口 8123）和 HTTPS（端口 8443）定义端点：
@@ -129,7 +125,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 </protocols>
 ```
-
 
 ### 定义附加端点 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
 
@@ -159,7 +154,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 </protocols>
 ```
-
 
 ### 指定额外层参数 {#some-modules-can-contain-specific-for-its-layer-parameters}
 

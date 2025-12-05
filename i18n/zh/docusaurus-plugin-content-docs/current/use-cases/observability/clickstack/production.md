@@ -17,7 +17,6 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 在生产环境中部署 ClickStack 时，为确保安全性、稳定性以及正确配置，还需要额外考虑一些事项。
 
-
 ## 网络和端口安全 {#network-security}
 
 默认情况下，Docker Compose 会在宿主机上暴露端口，使其可以从容器外部访问——即使启用了 `ufw`（Uncomplicated Firewall，简易防火墙）之类的工具也是如此。这是由于 Docker 的网络栈设计所致，如果不进行专门配置，它可以绕过主机级防火墙规则。
@@ -37,7 +36,6 @@ ports:
 ```
 
 有关隔离容器和强化访问安全性的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
-
 
 ## 会话密钥配置 {#session-secret}
 
@@ -78,7 +76,6 @@ openssl rand -hex 32
 ```
 
 避免将机密信息提交到源代码版本控制系统中。在生产环境中，建议使用环境变量管理工具（例如 Docker Secrets、HashiCorp Vault，或按环境划分的 CI/CD 配置）来管理这些值。
-
 
 ## 安全摄取 {#secure-ingestion}
 

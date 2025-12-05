@@ -6,8 +6,6 @@
 - [查询处理](#troubleshooting-does-not-process-queries)
 - [查询效率](#troubleshooting-too-slow)
 
-
-
 ## 安装 {#troubleshooting-installation-errors}
 
 ### 无法通过 apt-get 从 ClickHouse 仓库获取 deb 包 {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
@@ -76,7 +74,6 @@ $ docker run -it clickhouse/clickhouse-server
 Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (复制此消息时,务必包含以下内容):
 ```
 
-
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
 2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
@@ -97,7 +94,6 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 原因是 Docker 守护进程版本低于 `20.10.10`。解决方法是升级 Docker 守护进程,或运行 `docker run [--privileged | --security-opt seccomp=unconfined]`。后者具有安全风险。
 
 ```
-
 
 ## 连接到服务器 {#troubleshooting-accepts-no-connections}
 
@@ -206,7 +202,6 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   你可能使用了错误的用户名或密码。
 
-
 ## 查询处理 {#troubleshooting-does-not-process-queries}
 
 如果 ClickHouse 无法处理查询，它会将错误描述发送给客户端。在 `clickhouse-client` 中，错误描述会显示在控制台中。如果使用 HTTP 接口，ClickHouse 会在响应体中返回错误描述。例如：
@@ -219,7 +214,6 @@ Code: 47, e.displayText() = DB::Exception: 未知标识符:a。注意您的查�
 如果使用 `stack-trace` 参数启动 `clickhouse-client`，ClickHouse 会连同错误描述一起返回服务器端的堆栈跟踪信息。
 
 你可能会看到一条有关连接断开的消息。在这种情况下，可以重试该查询。如果每次执行该查询时连接都会断开，请检查服务器端日志以查找错误。
-
 
 ## 查询处理效率 {#troubleshooting-too-slow}
 

@@ -7,8 +7,6 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-
-
 # Atomic  {#atomic}
 
 `Atomic` 引擎支持非阻塞的 [`DROP TABLE`](#drop-detach-table) 和 [`RENAME TABLE`](#rename-table) 查询，以及原子性的 [`EXCHANGE TABLES`](#exchange-tables) 查询。在开源 ClickHouse 中，默认使用 `Atomic` 数据库引擎。 
@@ -17,14 +15,11 @@ doc_type: 'reference'
 在 ClickHouse Cloud 中，默认使用 [`Shared` 数据库引擎](/cloud/reference/shared-catalog#shared-database-engine)，它同样支持上述操作。
 :::
 
-
-
 ## 创建数据库 {#creating-a-database}
 
 ```sql
 CREATE DATABASE test [ENGINE = Atomic] [SETTINGS disk=...];
 ```
-
 
 ## 具体说明和建议 {#specifics-and-recommendations}
 
@@ -87,7 +82,6 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 ```
 
 若未指定，默认使用在 `database_disk.disk` 中定义的磁盘。
-
 
 ## 另请参阅 {#see-also}
 

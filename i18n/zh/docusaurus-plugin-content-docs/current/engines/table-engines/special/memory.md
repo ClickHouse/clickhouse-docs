@@ -7,8 +7,6 @@ title: 'Memory 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # Memory 表引擎 {#memory-table-engine}
 
 :::note
@@ -29,8 +27,6 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
 
 可以指定上限和下限来限制 Memory 引擎表的大小，从而有效地使其充当一个环形缓冲区（参见 [Engine Parameters](#engine-parameters)）。
 
-
-
 ## 引擎参数 {#engine-parameters}
 
 - `min_bytes_to_keep` — 当内存表设置了大小上限时需要保留的最小字节数。
@@ -45,8 +41,6 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
   - 默认值：`0`
 - `compress` - 是否在内存中对数据进行压缩。
   - 默认值：`false`
-
-
 
 ## 使用说明 {#usage}
 
@@ -63,7 +57,6 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 ```
 
 **注意：** `bytes` 和 `rows` 的封顶参数可以同时设置，但会始终遵守由 `max` 和 `min` 所定义的最低限制。
-
 
 ## 示例 {#examples}
 

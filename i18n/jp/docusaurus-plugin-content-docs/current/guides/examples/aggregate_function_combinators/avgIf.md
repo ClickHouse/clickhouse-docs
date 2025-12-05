@@ -7,17 +7,11 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-
-
 # avgIf {#avgif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、`avgIf` 集約コンビネータ関数を使い、条件が真である行の値の算術平均を計算できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -52,7 +46,6 @@ FROM sales;
 1. │              193.88 │
    └─────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

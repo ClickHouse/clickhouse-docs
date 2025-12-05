@@ -31,7 +31,6 @@ assert qr[0][0] == 4
 
 `InsertContext` содержит изменяемое состояние, которое обновляется в процессе вставки, поэтому не является потокобезопасным.
 
-
 ### Форматы записи {#write-formats}
 
 Форматы записи в настоящее время реализованы только для ограниченного числа типов. В большинстве случаев ClickHouse Connect попытается автоматически определить корректный формат записи для столбца, проверяя тип первого значения данных, не равного `NULL`. Например, при вставке в столбец типа `DateTime`, если первое вставляемое значение столбца — целое число Python, ClickHouse Connect вставит это целочисленное значение напрямую, предполагая, что оно фактически представляет собой число секунд с начала эпохи Unix.
@@ -97,7 +96,6 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-
 #### Вставка из таблицы PyArrow {#pyarrow-table-insert}
 
 ```python
@@ -114,7 +112,6 @@ arrow_table = pa.table({
 
 client.insert_arrow("users", arrow_table)
 ```
-
 
 #### Вставка DataFrame на основе Arrow (pandas 2.x) {#arrow-backed-dataframe-insert-pandas-2}
 
@@ -133,7 +130,6 @@ df = pd.DataFrame({
 
 client.insert_df_arrow("users", df)
 ```
-
 
 ### Часовые пояса {#time-zones}
 
@@ -176,7 +172,6 @@ print(*results.result_rows, sep="\n")
 При использовании pytz необходимо вызывать метод `localize()`, чтобы добавить информацию о часовом поясе к наивному объекту datetime. Передача `tzinfo=` напрямую в конструктор datetime приведёт к использованию некорректных исторических смещений. Для UTC вариант `tzinfo=pytz.UTC` работает корректно. См. [документацию pytz](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) для получения дополнительной информации.
 :::
 
-
 #### Объекты datetime без часового пояса {#timezone-naive-datetime-objects}
 
 Если вы вставляете Python-объект `datetime.datetime` без часового пояса (без `tzinfo`), метод `.timestamp()` будет интерпретировать его как время в локальном часовом поясе системы. Чтобы избежать неоднозначности, рекомендуется:
@@ -201,7 +196,6 @@ naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
-
 
 #### Столбцы DateTime с метаданными часового пояса {#datetime-columns-with-timezone-metadata}
 
@@ -231,7 +225,6 @@ print(*results.result_rows, sep="\n")
 # Результат: {#output}
 # (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
 ```
-
 
 ## Вставка из файла {#file-inserts}
 

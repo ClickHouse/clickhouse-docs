@@ -35,7 +35,6 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-
 # Использование HTTP-интерфейса ClickHouse в Azure Data Factory {#using-clickhouse-http-interface-in-azure-data-factory}
 
 Табличная функция [`azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
@@ -62,8 +61,6 @@ Azure, Azure Data Factory отправляет данные в ClickHouse. Та�
 [Create and configure a self-hosted integration
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
-
-
 
 ## Превращение ClickHouse в REST‑сервис {#turning-clickhouse-to-a-rest-service}
 
@@ -123,7 +120,6 @@ Service к вашему экземпляру ClickHouse, определим Data
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
 и создадим действие Copy Data для отправки данных из Azure в ClickHouse.
 
-
 ## Создание экземпляра Azure Data Factory {#create-an-azure-data-factory-instance}
 
 В этом руководстве предполагается, что у вас есть доступ к учетной записи Microsoft Azure
@@ -150,8 +146,6 @@ Service к вашему экземпляру ClickHouse, определим Data
 
 После успешного завершения развертывания вы можете начать использовать новый экземпляр
 Azure Data Factory.
-
-
 
 ## Создание новой связанной службы на основе REST {#-creating-new-rest-based-linked-service}
 
@@ -201,8 +195,6 @@ Azure Data Factory.
     <Image img={adfLinkedServicesList} size="lg" alt="Список связанных служб" border/>
 
 Теперь в списке должна появиться вновь созданная связанная служба на основе REST.
-
-
 
 ## Создание нового набора данных для интерфейса ClickHouse HTTP {#creating-a-new-dataset-for-the-clickhouse-http-interface}
 
@@ -288,8 +280,6 @@ Azure Data Factory.
 Resources**. Создайте новый набор данных, указывающий на загруженные данные.
 Нажмите **Publish all**, чтобы сохранить изменения.
 
-
-
 ## Создание действия Copy Data для передачи данных в ClickHouse {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
 
 Теперь, когда мы настроили и входной, и выходной наборы данных, мы можем
@@ -330,8 +320,6 @@ Resources**. Создайте новый набор данных, указыва
    <Image img={adfCopyDataDebugSuccess} size="lg" alt="Успешная отладка Copy Data" border/>
 
 6. По завершении нажмите **Publish all**, чтобы сохранить изменения конвейера и наборов данных.
-
-
 
 ## Дополнительные ресурсы {#additional-resources-1}
 - [HTTP-интерфейс](https://clickhouse.com/docs/interfaces/http)

@@ -18,7 +18,6 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 marimo 与 ClickHouse 配合使用 {#using-marimo-with-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -26,8 +25,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 [marimo](https://marimo.io/) 是一个开源的 Python 响应式 notebook，内置 SQL。每当你运行某个单元格或与某个 UI 元素交互时，marimo 会自动运行受影响的单元格（或将其标记为需重新运行），以保持代码与输出的一致性，并提前避免错误。每个 marimo notebook 都以纯 Python 代码形式存储，可以作为脚本执行，也可以部署为应用。
 
 <Image img={marimo_connect} size="md" border alt="连接到 ClickHouse" />
-
-
 
 ## 1. 安装支持 SQL 的 marimo {#install-marimo-sql}
 
@@ -37,7 +34,6 @@ marimo edit clickhouse_demo.py
 ```
 
 这会在本机上打开一个指向 localhost 的浏览器窗口。
-
 
 ## 2. 连接到 ClickHouse。 {#connect-to-clickhouse}
 
@@ -52,8 +48,6 @@ marimo edit clickhouse_demo.py
 随后你将获得一个可运行的代码单元格，用于建立连接。
 
 <Image img={run_cell} size="md" border alt="运行单元格以连接到 ClickHouse" />
-
-
 
 ## 3. 运行 SQL {#run-sql}
 

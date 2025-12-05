@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 
 为了在处理包含更新和删除行的流式数据时避免上述使用模式，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
 
-
 ## 已插入行的自动 Upsert {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree 表引擎](/engines/table-engines/mergetree-family/replacingmergetree) 允许对行执行更新操作，而无需使用低效的 `ALTER` 或 `DELETE` 语句。它通过允许用户插入同一行的多个副本，并将其中一条标记为最新版本来实现这一点。随后，一个后台进程会异步移除同一行的旧版本，通过仅追加的不可变插入，高效地模拟更新操作。
@@ -54,7 +53,6 @@ SYSTEM SYNC REPLICA 表名
 > 仅当可以按照上述条件安排清理时，才建议在删除比例较低到中等（少于 10%）的表上使用 ReplacingMergeTree 处理删除操作。
 
 > 提示：用户也可以对不再会发生变更的选定分区执行 `OPTIMIZE FINAL CLEANUP`。
-
 
 ## 选择主键/去重键 {#choosing-a-primarydeduplication-key}
 
@@ -100,7 +98,6 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```
 
 我们使用 `(PostTypeId, toDate(CreationDate), CreationDate, Id)` 作为 `ORDER BY` 键。`Id` 列对每条帖子记录都是唯一的，从而支持对行进行去重。根据需要，在 schema 中添加了 `Version` 和 `Deleted` 列。
-
 
 ## 查询 ReplacingMergeTree {#querying-replacingmergetree}
 
@@ -213,7 +210,6 @@ FROM posts_updateable
 
 这里的结果会因已发生的合并而有所不同。我们可以看到，由于存在重复行，这里的总数不同。对该表使用 `FINAL` 可以得到正确的结果。
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
@@ -227,7 +223,6 @@ FINAL
 峰值内存使用: 8.14 MiB。
 ```
 
-
 ## FINAL 性能 {#final-performance}
 
 在查询中使用 `FINAL` 运算符确实会带来一定的性能开销。
@@ -237,8 +232,6 @@ FINAL
 
 如果 `WHERE` 条件未使用主键列，在使用 `FINAL` 时 ClickHouse 当前不会使用 `PREWHERE` 优化。
 该优化旨在减少为未参与过滤的列读取的行数。关于如何通过模拟 `PREWHERE` 从而潜在地提升性能的示例，请参见[此处](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)。
-
-
 
 ## 利用 ReplacingMergeTree 分区 {#exploiting-partitions-with-replacingmergetree}
 
@@ -327,7 +320,6 @@ ORDER BY year ASC
 ```
 
 如上所示，在本例中，通过在分区级别并行执行去重过程，分区显著提升了查询性能。
-
 
 ## 合并行为注意事项 {#merge-behavior-considerations}
 

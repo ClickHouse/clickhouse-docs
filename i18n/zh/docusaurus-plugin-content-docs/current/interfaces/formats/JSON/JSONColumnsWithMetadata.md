@@ -66,5 +66,4 @@ doc_type: 'reference'
 
 对于 `JSONColumnsWithMetadata` 输入格式，如果将 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 设置为 `1`，则会将输入数据中元数据中的类型与表中对应列的类型进行比较。
 
-
 ## 格式设置 {#format-settings}

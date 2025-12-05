@@ -21,12 +21,9 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
 # 使用 CDC 将数据从 Postgres 摄取到 ClickHouse {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
 
 你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -57,8 +54,6 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 :::
 
 在完成源端 Postgres 数据库的配置之后，您就可以继续创建 ClickPipe 了。
-
-
 
 ## 创建 ClickPipe {#creating-your-clickpipe}
 
@@ -137,8 +132,6 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
    <Image img={select_destination_db} alt="选择目标数据库" size="lg" border/>
 
-
-
 7. 你可以从源 Postgres 数据库中选择要复制的表。在选择表时，你还可以在目标 ClickHouse 数据库中重命名这些表，并排除特定列。
 
    :::warning
@@ -150,8 +143,6 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 8. 在权限下拉菜单中选择 “Full access” 角色，然后点击 “Complete Setup”。
 
    <Image img={ch_permissions} alt="检查权限" size="lg" border/>
-
-
 
 ## 接下来是什么？ {#whats-next}
 

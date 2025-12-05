@@ -117,7 +117,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 設定ファイルで ZooKeeper が設定されていない場合、レプリケーテッドテーブルを作成することはできず、既存のレプリケーテッドテーブルは読み取り専用になります。
 
-
 ZooKeeper は `SELECT` クエリでは使用されません。これは、レプリケーションが `SELECT` のパフォーマンスに影響せず、非レプリケートなテーブルと同じ速度でクエリが実行されるためです。分散レプリケートテーブルに対してクエリを実行する場合、ClickHouse の動作は [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) と [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) の設定で制御されます。
 
 各 `INSERT` クエリごとに、複数のトランザクションを通じておおよそ 10 個のエントリが ZooKeeper に追加されます。（より正確には、これは挿入される各データブロックごとであり、1 つの INSERT クエリには 1 ブロック、または `max_insert_block_size = 1048576` 行ごとに 1 ブロックが含まれます。）これにより、非レプリケートなテーブルと比べて `INSERT` のレイテンシがわずかに長くなります。ただし、1 秒あたり 1 回以下の `INSERT` でバッチ挿入するという推奨事項に従えば、問題は発生しません。1 つの ZooKeeper クラスターで調停される ClickHouse クラスター全体で、1 秒あたり数百件の `INSERTs` が行われます。データ挿入のスループット（1 秒あたりの行数）は、非レプリケートなデータの場合と同じく高いままです。
@@ -249,7 +248,6 @@ ORDER BY x;
 
 レプリカを削除するには、`DROP TABLE` を実行します。ただし、削除されるレプリカは 1 つだけであり、クエリを実行したサーバー上に存在するレプリカのみが削除されます。
 
-
 ## 障害発生後のリカバリ {#recovery-after-failures}
 
 サーバー起動時に ClickHouse Keeper が使用できない場合、レプリケーテッドテーブルは読み取り専用モードに切り替わります。システムは定期的に ClickHouse Keeper への接続を試行します。
@@ -273,7 +271,6 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 ```
 
 その後、サーバーを再起動します。起動時にサーバーはこれらのフラグを削除して、リカバリを開始します。
-
 
 ## 完全なデータ損失からの復旧 {#recovery-after-complete-data-loss}
 
@@ -321,7 +318,6 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 既存の MergeTree テーブルの名前を変更し、元の名前で `ReplicatedMergeTree` テーブルを作成します。
 古いテーブルから、新しいテーブルデータのディレクトリ（`/var/lib/clickhouse/data/db_name/table_name/`）内にある `detached` サブディレクトリへデータを移動します。
 その後、いずれか 1 つのレプリカで `ALTER TABLE ATTACH PARTITION` を実行して、これらのデータのパーツをワーキングセットに追加します。
-
 
 ## ReplicatedMergeTree から MergeTree への変換 {#converting-from-replicatedmergetree-to-mergetree}
 

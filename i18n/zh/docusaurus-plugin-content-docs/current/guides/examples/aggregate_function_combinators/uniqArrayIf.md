@@ -7,11 +7,7 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArrayIf {#uniqarrayif}
-
-
 
 ## 描述 {#description}
 
@@ -23,8 +19,6 @@ doc_type: 'reference'
 :::
 
 当需要根据特定条件统计数组中的唯一元素且不想使用 `arrayJoin` 时，此函数非常有用。
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -79,7 +73,6 @@ new_customer⋯ed_products:    2
 returning_customer_products: 2
 total_unique_products:       7
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

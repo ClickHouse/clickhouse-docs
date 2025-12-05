@@ -7,13 +7,9 @@ keywords: ['ClickHouse Cloud', '兼容性']
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse Cloud 兼容性指南 {#clickhouse-cloud-compatibility-guide}
 
 本指南概述在 ClickHouse Cloud 中在功能和运维方面可以预期的行为和特性。虽然 ClickHouse Cloud 构建于开源 ClickHouse 发行版之上，但在架构和实现上可能存在一些差异。你可能会对这篇关于[我们如何构建 ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) 的博客感兴趣，它可作为相关的背景阅读材料。
-
-
 
 ## ClickHouse Cloud 架构 {#clickhouse-cloud-architecture}
 ClickHouse Cloud 大幅简化了运维开销，并降低了大规模运行 ClickHouse 的成本。无需预先规划部署规模、为高可用性配置复制、手动对数据进行分片、在工作负载增加时扩容服务器，或在空闲时缩容服务器——这一切都由 ClickHouse Cloud 代为处理。
@@ -25,8 +21,6 @@ ClickHouse Cloud 大幅简化了运维开销，并降低了大规模运行 Click
 - 针对波动的持续性工作负载，自动伸缩默认启用，因此无需预先规划服务规模，也无需在工作负载增加时扩容服务器，或在活动减少时手动缩容服务器。
 - 针对间歇性工作负载的无缝休眠功能默认启用。系统会在一段时间无活动后自动暂停计算资源，并在有新查询到达时透明地重新启动它们，因此无需为闲置资源付费。
 - 高级伸缩控制允许设置自动伸缩的最大值以进一步控制成本，或设置自动伸缩的最小值，为具有特殊性能要求的应用程序预留计算资源。
-
-
 
 ## 能力 {#capabilities}
 ClickHouse Cloud 提供对开源版 ClickHouse 中一组精心筛选功能的访问。下文列出了当前在 ClickHouse Cloud 中被禁用的部分特性。
@@ -107,8 +101,6 @@ ClickHouse Cloud 支持 HTTPS、原生接口以及 [MySQL wire protocol](/interf
 
 [命名集合](/operations/named-collections) 目前在 ClickHouse Cloud 中尚不受支持。
 
-
-
 ## 默认运行配置与注意事项 {#operational-defaults-and-considerations}
 以下是 ClickHouse Cloud 服务的默认设置。在某些情况下，这些设置是固定的，以确保服务正确运行；在其他情况下，则可以进行调整。
 
@@ -130,8 +122,6 @@ ClickHouse Cloud 针对变化的工作负载进行了调优，因此目前大多
 
 ### 高级安全管理 {#advanced-security-administration}
 在创建 ClickHouse 服务的过程中，我们会创建一个默认数据库，以及一个对该数据库拥有广泛权限的默认用户。该初始用户可以创建其他用户，并为这些用户分配对此数据库的权限。除此之外，目前不支持在数据库中启用以下安全功能：使用 Kerberos、LDAP 或 SSL X.509 证书认证的安全机制。
-
-
 
 ## 路线图 {#roadmap}
 

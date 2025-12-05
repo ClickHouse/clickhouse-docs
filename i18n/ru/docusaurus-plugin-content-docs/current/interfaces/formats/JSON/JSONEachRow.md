@@ -47,7 +47,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-
 ### Чтение данных {#reading-data}
 
 Прочитайте данные в формате `JSONEachRow`:
@@ -81,6 +80,5 @@ FORMAT JSONEachRow
 ```
 
 Импорт столбцов с неизвестными именами будет пропускаться, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
-
 
 ## Параметры форматирования {#format-settings}

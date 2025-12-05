@@ -16,16 +16,11 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # RDS Postgres 数据源配置指南 {#rds-postgres-source-setup-guide}
-
-
 
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
 ClickPipes 支持 Postgres 12 及以上版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -70,7 +65,6 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
 
-
 ## 配置数据库用户 {#configure-database-user}
 
 以管理员用户身份连接到您的 RDS Postgres 实例，并执行以下命令：
@@ -101,8 +95,6 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-
-
 ## 配置网络访问 {#configure-network-access}
 
 ### 基于 IP 的访问控制 {#ip-based-access-control}
@@ -124,8 +116,6 @@ RDS Proxy 不支持逻辑复制类型的连接。如果你在 RDS 中使用动�
 2. 使用带有 EventBridge/SNS 的 RDS 事件通知：利用 AWS RDS 事件通知自动触发更新。
 3. 固定的 EC2 实例：部署一个 EC2 实例，作为轮询服务或基于 IP 的代理。
 4. 使用 Terraform 或 CloudFormation 等工具实现 IP 地址管理自动化。
-
-
 
 ## 下一步 {#whats-next}
 

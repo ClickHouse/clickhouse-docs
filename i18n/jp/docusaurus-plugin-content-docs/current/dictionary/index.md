@@ -10,7 +10,6 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
 # Dictionary {#dictionary}
 
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
@@ -86,7 +85,6 @@ Controversial_ratio: 0
 
 このクエリは高速ですが、良好なパフォーマンスを得るには `JOIN` を慎重に記述する必要があります。本来であれば、「SQL」を含む投稿だけに単純にフィルタリングし、その投稿のサブセットに対して `UpVote` と `DownVote` のカウントを確認してメトリクスを計算できるのが理想的です。
 
-
 #### Dictionary の適用 {#applying-a-dictionary}
 
 これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、ユーザーはデータサイズに留意しておく必要があります。ここで、`votes` テーブルのサイズを確認します：
@@ -152,7 +150,6 @@ WHERE name = 'votes_dict'
 
 特定の`PostId`に対する賛成票数と反対票数は、シンプルな`dictGet`関数で取得できるようになりました。以下の例では、投稿`11227902`の値を取得しています。
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 
@@ -182,7 +179,6 @@ LIMIT 3
 ```
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。
-
 
 ## クエリ時のエンリッチメント {#query-time-enrichment}
 
@@ -247,7 +243,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
 Peak memory usage: 248.84 MiB.
 ```
-
 
 ## インデックス時のエンリッチメント {#index-time-enrichment}
 
@@ -317,7 +312,6 @@ LIMIT 4
 4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
 Peak memory usage: 666.82 MiB.
 ```
-
 
 ## Dictionary の高度なトピック {#advanced-dictionary-topics}
 

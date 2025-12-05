@@ -16,7 +16,6 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
-
 # 自动伸缩 {#automatic-scaling}
 
 伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
@@ -26,8 +25,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 :::note
 Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。用户可以升级到 Scale 或 Enterprise 层级来对其服务进行伸缩。
 :::
-
-
 
 ## ClickHouse Cloud 中的扩缩容工作原理 {#how-scaling-works-in-clickhouse-cloud}
 
@@ -89,8 +86,6 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 不过，仍然可以通过联系支持团队对这些服务进行垂直扩缩容。
 :::
 
-
-
 ## 手动水平扩展 {#manual-horizontal-scaling}
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
@@ -129,8 +124,6 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 <Image img={scaling_memory_allocation} size="md" alt="内存扩展分配" border />
 
-
-
 ## 自动空闲 {#automatic-idling}
 在 **Settings** 页面中，你还可以选择是否允许在服务处于非活动状态时自动进入空闲，如上图所示（即服务当前未执行任何用户提交的查询时）。自动空闲可以降低服务成本，因为当服务暂停时，你无需为计算资源付费。
 
@@ -143,8 +136,6 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 :::danger 不应使用自动空闲的场景
 仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
 :::
-
-
 
 ## 处理工作负载峰值 {#handling-bursty-workloads}
 

@@ -55,7 +55,6 @@ Install-Package ClickHouse.Driver
 
 ***
 
-
 ## 快速入门 {#quick-start}
 
 ```csharp
@@ -82,7 +81,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 ```
 
 ***
-
 
 ## 使用方法 {#usage}
 
@@ -154,7 +152,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### 插入数据 {#inserting-data}
 
 使用参数化查询插入数据：
@@ -177,7 +174,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 ```
 
 ***
-
 
 ### 批量插入 {#bulk-insert}
 
@@ -221,7 +217,6 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 
 ***
 
-
 ### 执行 SELECT 查询 {#performing-select-queries}
 
 执行 SELECT 查询并处理其结果：
@@ -249,7 +244,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### 原始数据流 {#raw-streaming}
 
 ```csharp
@@ -262,7 +256,6 @@ var json = reader.ReadToEnd();
 ```
 
 ***
-
 
 ### 嵌套列支持 {#nested-columns}
 
@@ -289,7 +282,6 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ***
 
-
 ### AggregateFunction 列 {#aggregatefunction-columns}
 
 类型为 `AggregateFunction(...)` 的列不能直接进行查询或插入操作。
@@ -307,7 +299,6 @@ SELECT uniqMerge(c) FROM t;
 ```
 
 ***
-
 
 ### SQL 参数 {#sql-parameters}
 
@@ -338,7 +329,6 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
   :::
 
 ***
-
 
 ## 支持的数据类型 {#supported-data-types}
 
@@ -455,7 +445,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 #### 使用 appsettings.json {#logging-appsettings-config}
 
 可以使用标准的 .NET 配置来配置日志级别：
@@ -485,7 +474,6 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
 await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
-
 
 #### 使用内存配置 {#logging-inmemory-config}
 
@@ -523,7 +511,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 ### 分类与发射源 {#logging-categories}
 
 驱动程序使用专用日志分类，便于按组件精细调整日志级别：
@@ -558,7 +545,6 @@ await connection.OpenAsync();
 * 连接打开/关闭事件
 * 会话 ID 跟踪
 
-
 ### 调试模式：网络跟踪与诊断 {#logging-debugmode}
 
 为帮助诊断网络问题，驱动程序库提供了一个辅助工具，可启用对 .NET 网络内部机制的底层跟踪。要启用它，必须传入一个 LoggerFactory，并将日志级别设置为 Trace，同时将 EnableDebugMode 设置为 true（或者通过 `ClickHouse.Driver.Diagnostic.TraceHelper` 类手动启用）。警告：这会生成极其冗长的日志，并影响性能。不建议在生产环境中启用调试模式。
@@ -579,7 +565,6 @@ var settings = new ClickHouseClientSettings()
 ```
 
 ***
-
 
 ### ORM &amp; Dapper 支持 {#orm-support}
 

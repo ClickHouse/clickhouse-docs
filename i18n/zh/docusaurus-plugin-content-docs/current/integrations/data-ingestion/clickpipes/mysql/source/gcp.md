@@ -15,12 +15,9 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-
 # Cloud SQL for MySQL 源配置指南 {#cloud-sql-for-mysql-source-setup-guide}
 
 本文档是一个分步指南，介绍如何配置 Cloud SQL for MySQL 实例，以通过 MySQL ClickPipe 复制其数据。
-
-
 
 ## 启用二进制日志保留 {#enable-binlog-retention-gcp}
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息，且二进制日志文件是实现复制所必需的。
@@ -43,8 +40,6 @@ PITR 功能决定是否在 Google Cloud 中为 MySQL 启用二进制日志记录
 然后向下滚动到 `Flags` 部分并添加上述标志。
 
 <Image img={gcp_mysql_flags} alt="在 GCP 中设置 binlog 标志" size="lg" border/>
-
-
 
 ## 配置数据库用户 {#configure-database-user-gcp}
 
@@ -69,16 +64,12 @@ PITR 功能决定是否在 Google Cloud 中为 MySQL 启用二进制日志记录
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-
-
 ## 配置网络访问 {#configure-network-access-gcp-mysql}
 
 如果希望限制对 Cloud SQL 实例的网络访问，请将[文档中列出的静态 NAT IP 地址](../../index.md#list-of-static-ips) 添加到 Cloud SQL MySQL 实例的 IP 允许列表中。
 可以通过编辑该实例，或在 Cloud Console 侧边栏中进入 `Connections` 选项卡来完成此操作。
 
 <Image img={gcp_mysql_ip} alt="在 GCP MySQL 中进行 IP 允许列表配置" size="lg" border/>
-
-
 
 ## 下载并使用根 CA 证书 {#download-root-ca-certificate-gcp-mysql}
 要连接到 Cloud SQL 实例，您需要先下载根 CA 证书。

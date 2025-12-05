@@ -24,14 +24,11 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Metabase を ClickHouse に接続する {#connecting-metabase-to-clickhouse}
 
 <PartnerBadge/>
 
 Metabase は、データに関する疑問を解消するための、使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は、JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダに配置します。
-
-
 
 ## 目標 {#goal}
 
@@ -44,12 +41,8 @@ Metabase は、データに関する疑問を解消するための、使いや�
 作業に使えるデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選んでもよいでしょう。同じドキュメントカテゴリ内に、他にもいくつか利用できるデータセットがあります。
 :::
 
-
-
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2.  Metabase 用の ClickHouse プラグインをダウンロードする {#2--download-the-clickhouse-plugin-for-metabase}
 
@@ -62,8 +55,6 @@ Metabase は、データに関する疑問を解消するための、使いや�
 4. Metabase を起動（または再起動）して、ドライバが正しく読み込まれるようにします。
 
 5. <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a> で Metabase にアクセスします。初回起動時にはウェルカム画面が表示され、いくつかの質問に順に回答する必要があります。データベースの選択を求められた場合は、「**I'll add my data later**」を選択します。
-
-
 
 ## 3.  Metabase を ClickHouse に接続する {#3--connect-metabase-to-clickhouse}
 
@@ -83,8 +74,6 @@ Metabase は、データに関する疑問を解消するための、使いや�
 
 6. **Save** ボタンをクリックすると、Metabase がデータベース内のテーブルをスキャンします。
 
-
-
 ## 4. SQL クエリを実行する {#4-run-a-sql-query}
 
 1. 右上隅にある **Exit admin** ボタンをクリックして、**Admin settings** を閉じます。
@@ -96,8 +85,6 @@ Metabase は、データに関する疑問を解消するための、使いや�
 3. 例として、`uk_price_paid` というテーブルに対して、1995 年から 2022 年までの年ごとの平均支払価格を返す SQL クエリは次のようになります。
 
     <Image size="md" img={metabase_04} alt="UK price paid データに対するクエリを表示している Metabase の SQL エディタ" border />
-
-
 
 ## 5. 質問を作成する {#5-ask-a-question}
 
@@ -112,8 +99,6 @@ Metabase は、データに関する疑問を解消するための、使いや�
 3. 結果の下にある **Visualization** ボタンをクリックして、可視化を棒グラフ（または他の利用可能なオプション）に変更します。
 
     <Image size="md" img={metabase_08} alt="Greater Manchester における町ごとの平均価格を示す Metabase の円グラフ可視化" border />
-
-
 
 ## 詳細はこちら {#learn-more}
 

@@ -7,8 +7,6 @@ title: 'Distributed テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # Distributed テーブルエンジン {#distributed-table-engine}
 
 :::warning ClickHouse Cloud における Distributed エンジン
@@ -18,8 +16,6 @@ ClickHouse Cloud で Distributed テーブルエンジンを作成するには�
 
 Distributed エンジンを持つテーブル自体はデータを一切保存しませんが、複数のサーバーでの分散クエリ処理を可能にします。 
 読み取り処理は自動的に並列化されます。読み取り時には、リモートサーバー上にテーブルインデックスが存在する場合、それらが利用されます。
-
-
 
 ## テーブルの作成 {#distributed-creating-a-table}
 
@@ -57,7 +53,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * 例については [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) を参照
 
 ### Distributed 設定 {#distributed-settings}
-
 
 | Setting                                    | Description                                                                                                                                                    | Default value |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -100,7 +95,6 @@ SETTINGS
 `logs` クラスター内のすべてのサーバーに存在する `default.hits` テーブルからデータが読み出されます。データは読み出されるだけでなく、可能な範囲でリモートサーバー側で部分的に処理されます。例えば、`GROUP BY` を含むクエリの場合、データはリモートサーバー上で集約され、集約関数の中間状態がリクエスト元のサーバーに送信されます。その後、そのサーバーでデータがさらに集約されます。
 
 データベース名の代わりに、文字列を返す定数式を使用できます。例えば、`currentDatabase()` です。
-
 
 ## クラスター {#distributed-clusters}
 
@@ -166,7 +160,6 @@ SETTINGS
 
 各サーバーには、`host`、`port`、および必要に応じて `user`、`password`、`secure`、`compression`、`bind_host` のパラメータを指定します。
 
-
 | Parameter     | Description                                                                                                                                                                                                                                                                                                                              | Default Value |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
 | `host`        | リモートサーバーのアドレス。ドメイン名、IPv4 アドレス、または IPv6 アドレスを使用できます。ドメイン名を指定した場合、サーバー起動時に DNS リクエストが実行され、その結果はサーバーが稼働している間保持されます。DNS リクエストが失敗すると、サーバーは起動しません。DNS レコードを変更した場合は、サーバーを再起動してください。 | -            |
@@ -188,8 +181,6 @@ SETTINGS
 `Distributed` エンジンを使用すると、クラスターをローカルサーバーのように扱うことができます。ただし、クラスターの設定は動的に指定することはできず、サーバーの設定ファイルで構成しておく必要があります。通常、クラスター内のすべてのサーバーは同一のクラスター設定を持ちます（必須ではありません）。設定ファイル内のクラスターは、サーバーを再起動することなくオンザフライで更新されます。
 
 毎回未知のシャードやレプリカの集合に対してクエリを送信する必要がある場合、`Distributed` テーブルを作成する必要はありません。その代わりに `remote` テーブル関数を使用してください。詳細は [Table functions](../../../sql-reference/table-functions/index.md) セクションを参照してください。
-
-
 
 ## データの書き込み {#distributed-writing-data}
 
@@ -213,16 +204,12 @@ SETTINGS
 
 次のような場合には、シャーディング方式について検討する必要があります。
 
-
-
 - 特定のキーでデータを結合する（`IN` または `JOIN`）クエリを使用している場合、そのキーでデータがシャーディングされていれば、`GLOBAL IN` や `GLOBAL JOIN` よりもはるかに効率的なローカルな `IN` または `JOIN` を使用できます。
 - 多数のサーバー（数百台以上）を使用し、多数の小さなクエリ、たとえば個々のクライアント（ウェブサイト、広告主、パートナーなど）のデータに対するクエリを実行する場合。小さなクエリがクラスター全体に影響しないようにするには、1 クライアントのデータを 1 シャード上に配置するのが理にかなっています。あるいは、二段階のシャーディングを構成することもできます。クラスター全体を複数の「レイヤー」に分割し、レイヤーは複数のシャードから構成されるようにします。1 クライアントのデータは 1 つのレイヤー内に配置されますが、必要に応じてそのレイヤーにシャードを追加でき、データはそれらのシャード内でランダムに分散されます。各レイヤーに対して `Distributed` テーブルを作成し、グローバルなクエリ用に 1 つの共有の `Distributed` テーブルを作成します。
 
 データはバックグラウンドで書き込まれます。テーブルに `INSERT` されたとき、データブロックはローカルファイルシステムに書き込まれるだけです。データは可能な限り早くバックグラウンドでリモートサーバーへ送信されます。データ送信の周期は、[distributed_background_insert_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_sleep_time_ms) および [distributed_background_insert_max_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_max_sleep_time_ms) の設定で制御されます。`Distributed` エンジンは挿入されたデータを含むファイルを個別に送信しますが、[distributed_background_insert_batch](../../../operations/settings/settings.md#distributed_background_insert_batch) 設定を有効にすることで、ファイルのバッチ送信を有効化できます。この設定により、ローカルサーバーおよびネットワークリソースをより有効に活用することで、クラスターのパフォーマンスが向上します。テーブルディレクトリ `/var/lib/clickhouse/data/database/table/` にあるファイル（送信待ちデータ）の一覧を確認することで、データが正常に送信されているか確認する必要があります。バックグラウンドタスクを実行するスレッド数は、[background_distributed_schedule_pool_size](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 設定で指定できます。
 
 `Distributed` テーブルへの `INSERT` 実行後に、サーバーが消失した場合や（ハードウェア障害などにより）クラッシュして強制再起動された場合、挿入されたデータが失われる可能性があります。テーブルディレクトリ内で破損したデータパーツが検出されると、それは `broken` サブディレクトリに移動され、以後は使用されません。
-
-
 
 ## データの読み取り {#distributed-reading-data}
 
@@ -231,8 +218,6 @@ SETTINGS
 `max_parallel_replicas` オプションが有効な場合、クエリ処理は 1 つのシャード内のすべてのレプリカに対して並列化されます。詳細については、[max_parallel_replicas](../../../operations/settings/settings.md#max_parallel_replicas) セクションを参照してください。
 
 分散環境における `in` および `global in` クエリがどのように処理されるかの詳細については、[こちら](/sql-reference/operators/in#distributed-subqueries) のドキュメントを参照してください。
-
-
 
 ## 仮想カラム {#virtual-columns}
 

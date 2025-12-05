@@ -50,30 +50,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 <VerticalStepper headerLevel="h4">
   #### 配置 PostgreSQL 日志记录
 
-  PostgreSQL 支持多种日志格式。为了使用 OpenTelemetry 进行结构化解析,我们推荐使用 CSV 格式,它能提供一致且可解析的输出。
+  PostgreSQL 支持多种日志格式。为了使用 OpenTelemetry 进行结构化解析,我们建议使用 CSV 格式,它能提供一致且可解析的输出。
 
-  `postgresql.conf` 文件通常位于:
+  `postgresql.conf` 文件通常位于：
 
-  * **Linux（apt/yum）**: `/etc/postgresql/{version}/main/postgresql.conf`
+  * **Linux（apt/yum）**：`/etc/postgresql/{version}/main/postgresql.conf`
   * **macOS（Homebrew）**：`/usr/local/var/postgres/postgresql.conf` 或 `/opt/homebrew/var/postgres/postgresql.conf`
-  * **Docker**：通常通过环境变量或挂载的配置文件进行配置
+  * **Docker**：配置通常通过环境变量或挂载的配置文件来完成
 
-  在 `postgresql.conf` 中添加或修改这些设置：
+  在 `postgresql.conf` 中添加或修改以下设置：
 
   ```conf
-  # CSV 日志记录必需配置
+  # CSV 日志记录所需配置
   logging_collector = on
   log_destination = 'csvlog'
 
-  # 推荐配置:连接日志记录
+  # 推荐:连接日志记录
   log_connections = on
   log_disconnections = on
 
-  # 可选配置:根据监控需求调整
+  # 可选:根据监控需求进行调整
   #log_min_duration_statement = 1000  # 记录执行时间超过 1 秒的查询
   #log_statement = 'ddl'               # 记录 DDL 语句(CREATE、ALTER、DROP)
   #log_checkpoints = on                # 记录检查点活动
-  #log_lock_waits = on                 # 记录锁等待
+  #log_lock_waits = on                 # 记录锁争用
   ```
 
   :::note
@@ -83,10 +83,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   完成这些更改后,请重启 PostgreSQL:
 
   ```bash
-  # 对于 systemd
+  # 使用 systemd
   sudo systemctl restart postgresql
 
-  # 对于 Docker
+  # 使用 Docker
   docker restart
   ```
 
@@ -104,7 +104,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   ClickStack 允许您通过挂载自定义配置文件并设置环境变量来扩展 OpenTelemetry Collector 的基础配置。自定义配置会与 HyperDX 通过 OpAMP 管理的基础配置进行合并。
 
-  创建名为 `postgres-logs-monitoring.yaml` 的文件,使用以下配置:
+  创建名为 `postgres-logs-monitoring.yaml` 的文件,并添加以下配置:
 
   ```yaml
   receivers:
@@ -147,29 +147,29 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   此配置：
 
-  * 从默认位置读取 PostgreSQL CSV 日志
-  * 支持多行日志记录（错误通常会跨越多行）
-  * 解析包含所有标准 PostgreSQL 日志字段的 CSV 日志格式
+  * 从 PostgreSQL 日志的默认位置读取 CSV 日志
+  * 处理多行日志记录（错误信息往往会跨多行）
+  * 解析包含所有标准 PostgreSQL 日志字段的 CSV 格式
   * 提取时间戳以保留日志的原始时间
-  * 添加 `source: postgresql` 属性，用于在 HyperDX 中进行过滤
-  * 通过专用管道将日志路由至 ClickHouse exporter
+  * 添加 `source: postgresql` 属性，以便在 HyperDX 中进行过滤
+  * 将日志通过专用 pipeline 路由到 ClickHouse exporter
 
   :::note
 
-  * 只需在自定义配置中定义新的接收器和管道即可
-  * 在基础 ClickStack 配置中，处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已经定义好了——你只需通过名称引用它们即可
-  * `csv_parser` 算子会将所有标准 PostgreSQL CSV 日志字段提取为结构化属性。
-  * 此配置使用 `start_at: end`，以避免在 collector 重启后重新摄取日志。用于测试时，可将其改为 `start_at: beginning`，以便立即查看历史日志。
-  * 将 `include` 路径调整为与 PostgreSQL 日志目录的位置相匹配
+  * 你只需要在自定义配置中定义新的 `receivers` 和 `pipelines` 即可
+  * 处理器（`memory_limiter`、`transform`、`batch`）和导出器（`clickhouse`）已经在基础 ClickStack 配置中预先定义好，你只需按名称引用它们即可。
+  * `csv_parser` 运算符会将 PostgreSQL CSV 日志中的所有标准字段提取为结构化属性
+  * 此配置使用 `start_at: end`，以避免在 collector 重启后重复摄取日志。进行测试时，可改为 `start_at: beginning`，以便立即查看历史日志。
+  * 将 `include` 路径调整为与你的 PostgreSQL 日志目录路径一致
     :::
 
   #### 配置 ClickStack 加载自定义配置
 
   要在现有的 ClickStack 部署中启用自定义采集器配置，您必须：
 
-  1. 将自定义配置文件挂载到路径 `/etc/otelcol-contrib/custom.config.yaml`
-  2. 将环境变量 `CUSTOM_OTELCOL_CONFIG_FILE` 设置为 `/etc/otelcol-contrib/custom.config.yaml`
-  3. 挂载 PostgreSQL 日志目录，使收集器能够读取这些日志
+  1. 将自定义配置文件挂载到 `/etc/otelcol-contrib/custom.config.yaml`
+  2. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. 挂载 PostgreSQL 的日志目录，以便收集器可以读取这些日志
 
   ##### 选项 1：Docker Compose
 
@@ -185,7 +185,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
       volumes:
         - ./postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
         - /var/lib/postgresql:/var/lib/postgresql:ro
-        # ... 其他数据卷 ...
+        # ... 其他卷 ...
   ```
 
   ##### 选项 2:Docker Run(一体化镜像)
@@ -198,7 +198,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/postgres-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/lib/postgresql:/var/lib/postgresql:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
@@ -209,10 +209,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   配置完成后,登录 HyperDX 并验证日志是否正常流入:
 
-  1. 转到搜索视图
-  2. 将 Source 设为 Logs
-  3. 按 `source:postgresql` 过滤，查看 PostgreSQL 相关日志
-  4. 你应该会看到结构化的日志条目，其中包含 `user_name`、`database_name`、`error_severity`、`message`、`query` 等字段。
+  1. 进入搜索视图
+  2. 将 Source 设置为 Logs
+  3. 按 `source:postgresql` 进行过滤，以查看 PostgreSQL 特定日志
+  4. 你应当能看到结构化的日志条目，其中包含 `user_name`、`database_name`、`error_severity`、`message`、`query` 等字段。
 
   <Image img={logs_search_view} alt="日志搜索视图" />
 
@@ -221,7 +221,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 PostgreSQL 日志集成的用户，我们提供了一份预先生成的、模式接近真实场景的 PostgreSQL 日志示例数据集。
+对于希望在配置生产系统之前先测试 PostgreSQL 日志集成的用户，我们提供了一份预先生成、模式逼真的 PostgreSQL 日志示例数据集。
 
 <VerticalStepper headerLevel="h4">
 
@@ -233,9 +233,9 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### 创建测试采集器配置 {#test-config}
+#### 创建测试收集器配置 {#test-config}
 
-创建名为 `postgres-logs-demo.yaml` 的文件，并使用以下配置：
+创建名为 `postgres-logs-demo.yaml` 的文件，并填入以下配置：
 
 ```yaml
 cat > postgres-logs-demo.yaml << 'EOF'
@@ -288,24 +288,24 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/postgres-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/postgresql.log:/tmp/postgres-demo/postgresql.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### 在 HyperDX 中验证日志 {#verify-demo-logs}
 
-当 ClickStack 运行后：
+当 ClickStack 启动并运行后：
 
-1. 打开 [HyperDX](http://localhost:8080/) 并登录您的账户（如有需要，先创建一个账户）
+1. 打开 [HyperDX](http://localhost:8080/) 并登录您的账号（如有需要，先创建一个账号）
 2. 进入 Search 视图，将 source 设置为 `Logs`
 3. 将时间范围设置为 **2025-11-09 00:00:00 - 2025-11-12 00:00:00**
 
 :::note[时区显示]
-HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范围为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**。较宽的时间范围可以确保无论您身处何地都能看到演示日志。看到日志后，您可以将时间范围缩小到 24 小时，以获得更清晰的可视化效果。
+HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的时间为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**。这里使用较宽的时间范围，以确保无论您所在的时区如何，都能看到演示日志。确认能看到日志后，可以将范围缩小到 24 小时，以获得更清晰的可视化效果。
 :::
 
 <Image img={logs_search_view} alt="日志搜索视图"/>
 
-<Image img={log_view} alt="日志详情视图"/>
+<Image img={log_view} alt="日志视图"/>
 
 </VerticalStepper>
 

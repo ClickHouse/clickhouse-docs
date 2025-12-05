@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
 # テキストインデックスを使用した全文検索 {#full-text-search-using-text-indexes}
 
 <PrivatePreviewBadge/>
@@ -19,8 +18,6 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 トークンは、トークン化と呼ばれる処理によって生成されます。
 例えば、ClickHouse は英語の文 "All cat like mice." を、デフォルトでは ["All", "cat", "like", "mice"] のようにトークン化します（末尾のドットは無視される点に注意してください）。
 ログデータ向けなど、より高度なトークナイザーも利用できます。
-
-
 
 ## テキストインデックスの作成 {#creating-a-text-index}
 
@@ -82,7 +79,6 @@ ORDER BY key
 これは一般には、区切り文字列を長いものから短いものの順に渡すことで実現できます。
 区切り文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成している場合は、任意の順序で渡すことができます。
 :::
-
 
 :::warning
 現時点では、中国語などの非西洋言語のテキストに対してテキストインデックスを構築することは推奨されません。
@@ -173,7 +169,6 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 
 オプションパラメータ`max_cardinality_for_embedded_postings`(デフォルト:16)は、ポスティングリストを辞書ブロックに埋め込むべきカーディナリティの閾値を指定します。
 
-
 オプションパラメータ `bloom_filter_false_positive_rate`（デフォルト: 0.1）は、辞書ブルームフィルタの偽陽性率を指定します。
 
 </details>
@@ -184,7 +179,6 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 ALTER TABLE tab DROP INDEX text_idx;
 ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
-
 
 ## テキストインデックスの使用 {#using-a-text-index}
 
@@ -290,7 +284,6 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 関数 `hasToken` と `hasTokenOrNull` は、`text` インデックスと組み合わせて使用する関数として最も高いパフォーマンスを発揮します。
 
 #### `hasAnyTokens` と `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
-
 
 関数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) と [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) は、指定されたトークンの一部またはすべてにマッチします。
 
@@ -411,7 +404,6 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 低
 解決策は、[Map](/sql-reference/data-types/map.md) のキーと値に対してテキストインデックスを作成することです。
 フィールド名や属性タイプでログを検索する必要がある場合は、[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) を使用してテキストインデックスを作成します。
 
-
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
@@ -433,7 +425,6 @@ SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 -- 特定のIPアドレスからのログをすべて検索:
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 ```
-
 
 ## パフォーマンスチューニング {#performance-tuning}
 
@@ -526,7 +517,6 @@ Positions:
 
 #### ディクショナリブロックキャッシュの設定 {#caching-dictionary}
 
-
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | テキストインデックス辞書ブロックキャッシュのポリシー名。                                                          |
@@ -551,8 +541,6 @@ Positions:
 | [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | キャッシュの最大サイズ（バイト単位）。                                                                   |
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | キャッシュ内のデシリアライズ済みポスティングの最大数。                                                   |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | テキストインデックスのポスティングリストキャッシュにおける保護キューのサイズの、キャッシュ全体サイズに対する割合。 |
-
-
 
 ## 実装の詳細 {#implementation}
 
@@ -580,8 +568,6 @@ Index granules file (.idx) には、各辞書ブロックについて、その�
 すべてのトークンに対するポスティングリストは、postings lists file 内に連続して配置されます。
 ストレージ容量を節約しつつ、高速な積集合および和集合の演算を可能にするため、ポスティングリストは [roaring bitmaps](https://roaringbitmap.org/) として保存されます。
 ポスティングリストの基数が 16 未満の場合（パラメータ `max_cardinality_for_embedded_postings` で設定可能）、そのリストは辞書内に埋め込まれます。
-
-
 
 ## 例：Hackernews データセット {#hacker-news-dataset}
 
@@ -723,7 +709,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 └─────────┘
 ```
 
-
 1 行がセットに含まれています。経過時間: 0.015 秒。27.99 百万行、27.99 MB を処理しました。
 
 ````
@@ -807,7 +792,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 インデックスの結果を組み合わせることで、直接読み取りクエリは 34 倍高速 (0.450 秒対 0.013 秒) になり、9.58 GB のカラムデータを読み込む必要がなくなります。
 この特定のケースでは、`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` が推奨される、より効率的な構文です。
-
 
 ## 関連コンテンツ {#related-content}
 

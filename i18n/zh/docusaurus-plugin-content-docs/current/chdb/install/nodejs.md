@@ -7,20 +7,15 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-
-
 # 适用于 Node.js 的 chDB {#chdb-for-nodejs}
 
 chDB-node 为 chDB 提供了 Node.js 绑定，让你能够在 Node.js 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
-
-
 
 ## 安装 {#installation}
 
 ```bash
 npm 安装 chdb
 ```
-
 
 ## 用法 {#usage}
 
@@ -146,7 +141,6 @@ try {
 }
 ```
 
-
 ## 错误处理 {#error-handling}
 
 在使用 chDB 时，请务必妥善处理错误：
@@ -191,7 +185,6 @@ function safeSessionQuery() {
 
 safeSessionQuery();
 ```
-
 
 ## GitHub 仓库 {#github-repository}
 

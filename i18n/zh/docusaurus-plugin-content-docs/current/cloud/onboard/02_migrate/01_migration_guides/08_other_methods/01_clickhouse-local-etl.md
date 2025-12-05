@@ -17,7 +17,6 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-
 # 使用 clickhouse-local 迁移到 ClickHouse {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='lg' alt='迁移自管理 ClickHouse'/>
@@ -99,7 +98,6 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
   CREATE DATABASE db
 ```
 
-
 #### 创建一个与 MySQL 表具有相同 schema 的目标表： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
@@ -109,7 +107,6 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 :::note
 ClickHouse Cloud 目标表与源 MySQL 表的表结构必须保持一致（列名及顺序必须相同，且列的数据类型必须兼容）。
 :::
-
 
 ### 在 clickhouse-local 主机上： {#on-the-clickhouse-local-host-machine}
 
@@ -125,7 +122,6 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 :::note
 在 `clickhouse-local` 主机本地不会存储任何数据。相反，数据会从源 MySQL 表中读取，然后立即写入 ClickHouse Cloud 服务上的目标表。
 :::
-
 
 ## 示例 2：使用 JDBC Bridge 将 MySQL 迁移到 ClickHouse Cloud {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 

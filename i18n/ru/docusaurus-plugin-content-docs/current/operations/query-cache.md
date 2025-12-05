@@ -97,7 +97,6 @@ use_query_cache = true`), но при этом следует иметь в ви
 Размер кэша запросов в байтах, максимальное число записей в кэше и максимальный размер отдельных записей кэша (в байтах и в
 записях) можно настроить с помощью различных [параметров конфигурации сервера](/operations/server-configuration-parameters/settings#query_cache).
 
-
 ```xml
 <query_cache>
     <max_size_in_bytes>1073741824</max_size_in_bytes>
@@ -168,7 +167,6 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
 Чтобы удалить из кэша запросов только записи с тегом `tag`, можно использовать оператор `SYSTEM DROP QUERY CACHE TAG 'tag'`.
-
 
 ClickHouse читает данные таблиц блоками по [max_block_size](/operations/settings/settings#max_block_size) строк. Из‑за фильтрации, агрегации
 и т. д. результирующие блоки обычно значительно меньше, чем `max_block_size`, но встречаются и случаи, когда они существенно больше. Настройка

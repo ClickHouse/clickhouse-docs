@@ -14,7 +14,6 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-
 # 使用分析器理解查询执行 {#understanding-query-execution-with-the-analyzer}
 
 ClickHouse 可以以极高的速度处理查询，但查询的执行过程并不那么简单。下面我们来看看一个 `SELECT` 查询是如何执行的。为便于说明，我们先在 ClickHouse 的一张表中插入一些数据：
@@ -40,7 +39,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Explain query steps" size="md" />
 
 现在让我们看看在查询执行过程中，各个实体是如何协同工作的。我们将选取几个查询，然后使用 `EXPLAIN` 语句对它们进行分析。
-
 
 ## 解析器 {#parser}
 
@@ -72,7 +70,6 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 <Image img={analyzer2} alt="AST output" size="md" />
 
 每个节点都有相应的子节点，整棵树表示查询的整体结构。它是一种用于辅助处理查询的逻辑结构。对于最终用户而言（除非对查询执行感兴趣），它并不是特别有用；该工具主要供开发人员使用。
-
 
 ## Analyzer {#analyzer}
 
@@ -130,7 +127,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 通过对比两次执行，你可以看到别名和投影是如何被解析的。
-
 
 ## 规划器 {#planner}
 
@@ -205,7 +201,6 @@ FROM session_events
 GROUP BY type
 ```
 
-
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 表达式 ((Projection + ORDER BY 之前))                                                                                                       │
 │ 操作: INPUT :: 0 -&gt; type String : 0                                                                                                        │
@@ -247,7 +242,6 @@ GROUP BY type
 
 现在您可以查看所有正在使用的输入、函数、别名和数据类型。规划器将应用的部分优化可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)查看。
 ```
-
 
 ## 查询管道 {#query-pipeline}
 
@@ -363,7 +357,6 @@ GROUP BY type
 FORMAT TSV
 ```
 
-
 ```response
 digraph
 {
@@ -446,7 +439,6 @@ digraph
 <Image img={analyzer5} alt="并行图输出" size="md" />
 
 因此，执行器决定不并行执行这些操作，因为数据量还不够大。通过增加更多行之后，执行器就决定使用多线程进行处理，如图所示。
-
 
 ## 执行器 {#executor}
 

@@ -6,8 +6,6 @@ title: 'ParquetMetadata'
 doc_type: 'reference'
 ---
 
-
-
 ## 描述 {#description}
 
 用于读取 Parquet 文件元数据（https://parquet.apache.org/docs/file-format/metadata/）的特殊格式。它始终只输出一行，结构/内容如下：
@@ -46,8 +44,6 @@ doc_type: 'reference'
       - `distinct_count` - 列块中不同值的数量
       - `min` - 列块的最小值
       - `max` - 列块的最大值
-
-
 
 ## 使用示例 {#example-usage}
 

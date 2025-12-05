@@ -6,8 +6,6 @@ title: 'Предложение FROM'
 doc_type: 'reference'
 ---
 
-
-
 # Секция FROM {#from-clause}
 
 Секция `FROM` задаёт источник, из которого читаются данные:
@@ -28,7 +26,6 @@ doc_type: 'reference'
 FROM table
 SELECT *
 ```
-
 
 ## Модификатор FINAL {#final-modifier}
 
@@ -77,7 +74,6 @@ SELECT x, y FROM mytable WHERE x > 1 SETTINGS final = 1;
 SET final = 1;
 SELECT x, y FROM mytable WHERE x > 1;
 ```
-
 
 ## Подробности реализации {#implementation-details}
 

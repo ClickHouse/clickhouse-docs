@@ -25,7 +25,6 @@ ClickStack 可以从 Next.js 13.2 及以上版本的
 如果你在寻找会话回放或浏览器端监控，请改为安装 [Browser integration](/use-cases/observability/clickstack/sdks/browser)。
 :::
 
-
 ## 安装 {#installing}
 
 ### 启用 instrumentation hook（v15 及以下版本必需） {#enable-instrumentation-hook}
@@ -54,7 +53,6 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
-
 
 ### 安装 ClickHouse OpenTelemetry SDK {#install-sdk}
 
@@ -93,7 +91,6 @@ export async function register() {
 ```
 
 这将使 Next.js 能在调用任何 Serverless 函数时导入 OpenTelemetry 插桩。
-
 
 ### 配置环境变量 {#configure-environment-variables}
 

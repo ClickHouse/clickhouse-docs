@@ -20,7 +20,6 @@ ClickHouse 提供了一个原生命令行客户端，用于直接对 ClickHouse 
 该客户端通过进度条以及已读取行数、已处理字节数和查询执行时间，为查询执行提供实时反馈。
 它既支持[命令行选项](#command-line-options)，也支持[配置文件](#configuration_files)。
 
-
 ## 安装 {#install}
 
 若要下载 ClickHouse，请运行：
@@ -38,7 +37,6 @@ sudo ./clickhouse install
 有关更多安装选项，请参阅 [Install ClickHouse](../getting-started/install/install.mdx)。
 
 不同版本的客户端和服务器之间是兼容的，但某些功能在较旧的客户端中可能不可用。我们建议客户端和服务器使用相同的版本。
-
 
 ## 运行 {#run}
 
@@ -70,7 +68,6 @@ ClickHouse 客户端版本 24.12.2.29（官方构建）。
 | `--connection <name>`            | 来自[配置文件](#connection-credentials)的预配置连接详细信息名称。                                               |
 
 有关命令行选项的完整列表，请参阅[命令行选项](#command-line-options)。
-
 
 ### 连接到 ClickHouse Cloud {#connecting-cloud}
 
@@ -123,7 +120,6 @@ ClickHouse Cloud 服务的详细信息可在 ClickHouse Cloud 控制台中查看
 为了专注于查询语法，其余示例省略了连接详细信息（`--host`、`--port` 等）。在实际使用这些命令时，请记得补充这些参数。
 :::
 
-
 ## 交互模式 {#interactive-mode}
 
 ### 使用交互式模式 {#using-interactive-mode}
@@ -167,7 +163,6 @@ ClickHouse Client 基于 `replxx`（类似于 `readline`），因此支持常见
 * `quit` 或 `quit;`
 * `q`、`Q` 或 `:q`
 * `logout` 或 `logout;`
-
 
 ### 查询处理信息 {#processing-info}
 
@@ -247,7 +242,6 @@ $ echo "Hello\nGoodbye" | clickhouse-client --query "INSERT INTO messages FORMAT
 
 当指定 `--query` 时，所有输入内容都会在一个换行符之后被追加到请求中。
 
-
 ### 向远程 ClickHouse 服务插入 CSV 文件 {#cloud-example}
 
 本示例将示例数据集 CSV 文件 `cell_towers.csv` 插入到 `default` 数据库中已存在的 `cell_towers` 表中：
@@ -260,7 +254,6 @@ clickhouse-client --host HOSTNAME.clickhouse.cloud \
   --query "INSERT INTO cell_towers FORMAT CSVWithNames" \
   < cell_towers.csv
 ```
-
 
 ### 从命令行插入数据的示例 {#more-examples}
 
@@ -289,7 +282,6 @@ cat file.csv | clickhouse-client --database=test --query="INSERT INTO test FORMA
 
 在批量模式下，默认的数据[格式](formats.md)为 `TabSeparated`。
 您可以在查询的 `FORMAT` 子句中设置格式，如上例所示。
-
 
 ## 带参数的查询 {#cli-queries-with-parameters}
 
@@ -333,7 +325,6 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 结果集包含 1 行。耗时：0.006 秒。
 ```
 
-
 ### 查询语法 {#cli-queries-with-parameters-syntax}
 
 在查询中，将你希望通过命令行参数传入的值用大括号括起来，格式如下：
@@ -347,7 +338,6 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 | `name`      | 占位符标识符。对应的命令行选项为 `--param_<name> = value`。                                                                                                                                                                                                                                        |
 | `data type` | 参数的[数据类型](../sql-reference/data-types/index.md)。<br /><br />例如，类似 `(integer, ('string', integer))` 的数据结构可以使用 `Tuple(UInt8, Tuple(String, UInt8))` 数据类型（也可以采用其他[整数](../sql-reference/data-types/int-uint.md)类型）。<br /><br />也可以将表名、数据库名和列名作为参数传递，在这种情况下，则需要将其数据类型指定为 `Identifier`。 |
 
-
 ### 示例 {#cli-queries-with-parameters-examples}
 
 ```bash
@@ -357,7 +347,6 @@ $ clickhouse-client --param_tuple_in_tuple="(10, ('dt', 10))" \
 $ clickhouse-client --param_tbl="numbers" --param_db="system" --param_col="number" --param_alias="top_ten" \
     --query "SELECT {col:Identifier} as {alias:Identifier} FROM {db:Identifier}.{tbl:Identifier} LIMIT 10"
 ```
-
 
 ## 基于 AI 的 SQL 生成 {#ai-sql-generation}
 
@@ -378,7 +367,6 @@ AI 将会：
 1. 自动探索您的数据库结构（schema）
 2. 基于发现的表和列生成合适的 SQL 查询
 3. 立即执行生成的查询
-
 
 ### 示例 {#ai-sql-generation-example}
 
@@ -413,7 +401,6 @@ GROUP BY c.name
 ORDER BY order_count DESC
 ```
 
-
 ### 配置 {#ai-sql-generation-configuration}
 
 要使用 AI 生成 SQL，需要在 ClickHouse Client 配置文件中配置一个 AI 提供方。你可以使用 OpenAI、Anthropic，或任意与 OpenAI 兼容的 API 服务。
@@ -437,7 +424,6 @@ clickhouse-client
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
-
 
 #### 配置文件 {#ai-sql-generation-configuration-file}
 
@@ -542,7 +528,6 @@ ai:
   provider: openai
   model: gpt-3.5-turbo
 ```
-
 
 ### 参数 {#ai-sql-generation-parameters}
 
@@ -650,7 +635,6 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 | `database`         | 数据库名称。                                                                 | `default`        |
 | `query_parameters` | 键值对列表：`param1=value1[,&param2=value2], ...`。对于某些参数，可以不指定值。参数名称和值区分大小写。 | -                |
 
-
 ### 注意事项 {#connection-string-notes}
 
 如果在连接字符串中已经指定了用户名、密码或数据库，则不能再通过 `--user`、`--password` 或 `--database` 指定（反之亦然）。
@@ -684,7 +668,6 @@ ClickHouse 客户端会按顺序（从左到右）尝试连接这些主机。
 * `hosts`
 * `database`
 * `query parameters`
-
 
 ### 示例 {#connection_string_examples}
 
@@ -766,7 +749,6 @@ clickhouse-client clickhouse://some_user%40some_mail.com@localhost:9000
 clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```
 
-
 ## 查询 ID 格式 {#query-id-format}
 
 在交互模式下，ClickHouse 客户端会为每个查询显示其查询 ID。默认情况下，ID 的格式如下：
@@ -793,7 +775,6 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```response
 speedscope:http://speedscope-host/#profileURL=qp%3Fid%3Dc8ecc783-e753-4b38-97f1-42cddfb98b7d
 ```
-
 
 ## 配置文件 {#configuration_files}
 
@@ -894,7 +875,6 @@ $ clickhouse-client --max_threads 1
 ```
 
 有关所有设置的列表，请参阅[设置](../operations/settings/settings.md)。
-
 
 ### 格式选项 {#command-line-options-formatting}
 

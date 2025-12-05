@@ -42,7 +42,6 @@ LIMIT n, m
 
 В обоих вариантах `n` и `m` должны быть неотрицательными целыми числами.
 
-
 ## Отрицательные ограничения {#negative-limits}
 
 Выбирайте строки с *конца* набора результатов, используя отрицательные значения:
@@ -80,7 +79,6 @@ LIMIT n, m
 LIMIT 10 OFFSET 0.5    -- 10 строк, начиная с половины
 LIMIT 10 OFFSET -20    -- 10 строк после пропуска последних 20 строк
 ```
-
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}
 
@@ -128,7 +126,6 @@ SELECT * FROM (
 :::
 
 Этот модификатор можно комбинировать с модификатором [`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier).
-
 
 ## Особенности {#considerations}
 

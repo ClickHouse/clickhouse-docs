@@ -12,7 +12,6 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
 # Интеграция платформы Confluent с ClickHouse {#integrating-confluent-platform-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -27,14 +26,10 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
   </iframe>
 </div>
 
-
-
 ## Предварительные требования {#prerequisites}
 Мы исходим из того, что вы знакомы со следующим:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Платформой Confluent и [пользовательскими коннекторами (Custom Connectors)](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
-
-
 
 ## Официальный коннектор Kafka от ClickHouse для Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 

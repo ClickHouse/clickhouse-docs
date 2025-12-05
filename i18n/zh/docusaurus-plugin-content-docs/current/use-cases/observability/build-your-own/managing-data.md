@@ -10,7 +10,6 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
 # 管理数据 {#managing-data}
 
 为可观测性部署 ClickHouse 通常会涉及大规模数据集，而这些数据集需要妥善管理。ClickHouse 提供了多种功能来协助进行数据管理。
@@ -78,7 +77,6 @@ WHERE `table` = 'otel_logs'
 
 我们可能还会有一张名为 `otel_logs_archive` 的表，用于存储较旧的数据。可以通过分区将数据高效地移动到该表（这只是元数据层面的变更）。
 
-
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
 --将数据移至归档表
@@ -145,7 +143,6 @@ ORDER BY c DESC
 当使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 时，TTL 会使用此特性。有关更多详细信息，请参阅 [基于 TTL（生存时间）的数据管理](#data-management-with-ttl-time-to-live)。
 :::
 
-
 ### 应用场景 {#applications}
 
 上文展示了如何按分区高效地迁移和处理数据。在实际使用中，在可观测性场景下，用户最常利用分区操作的两种场景是：
@@ -193,7 +190,6 @@ TTL 不是立即应用，而是按计划执行，如上所述。MergeTree 表设
 
 **重要：我们推荐使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)**（默认模式中已应用）。启用该设置后，当一个数据分片中的所有行都已过期时，ClickHouse 会直接删除整个分片。相比于在 `ttl_only_drop_parts=0` 时通过资源消耗较大的 mutation 对 TTL 过期的行进行部分清理，删除整个分片可以缩短 `merge_with_ttl_timeout` 的时间，并降低对系统性能的影响。如果数据按与执行 TTL 过期相同的时间单位进行分区，例如按天分区，那么各个分片自然只会包含该时间区间的数据。这将确保可以高效地应用 `ttl_only_drop_parts=1`。
 
-
 ### 列级 TTL {#column-level-ttl}
 
 上面的示例是在表级别设置数据过期。用户也可以在列级别设置数据过期。随着数据变旧，可以用这种方式删除那些在排障或分析中价值不足以抵消其保留成本的列。例如，我们建议保留 `Body` 列，以防新增的动态元数据在插入时尚未被提取出来，比如一个新的 Kubernetes 标签。在经过一段时间（例如 1 个月）后，如果显然这些附加元数据并没有带来实际价值，那么继续保留 `Body` 列的意义就有限了。
@@ -214,7 +210,6 @@ ORDER BY (ServiceName, Timestamp)
 :::note
 指定列级 TTL 时，用户需要自行定义表结构（schema）。这一点无法通过 OTel collector 配置。
 :::
-
 
 ## 重新压缩数据 {#recompressing-data}
 
@@ -253,7 +248,6 @@ TTL Timestamp + INTERVAL 4 DAY RECOMPRESS CODEC(ZSTD(3))
 :::
 
 有关配置 TTL 的更多详细信息和示例，请参见[此处](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)。关于如何为表和列添加和修改 TTL 的示例，请参见[此处](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)。关于 TTL 如何支持诸如冷热分层架构等存储层级，请参见[存储层级](#storage-tiers)。
-
 
 ## 存储分层 {#storage-tiers}
 
@@ -351,7 +345,6 @@ LIMIT 5
 
 为了确保今后所有数据都会插入该值，我们可以按下面所示使用 `ALTER TABLE` 语法来修改我们的物化视图：
 
-
 ```sql
 ALTER TABLE otel_logs_mv
         MODIFY QUERY
@@ -377,7 +370,6 @@ FROM otel_logs
 ```
 
 之后插入的行会在写入时自动填充 `Size` 列。
-
 
 ### 创建新表 {#create-new-tables}
 

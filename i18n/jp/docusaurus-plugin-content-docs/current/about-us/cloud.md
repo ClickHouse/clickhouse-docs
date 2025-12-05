@@ -8,14 +8,10 @@ keywords: ['ClickHouse Cloud', 'クラウドデータベース', 'マネージ�
 doc_type: 'reference'
 ---
 
-
-
 # ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud は、人気の高いオープンソース OLAP データベースである ClickHouse の開発元によって提供されるクラウドサービスです。  
 [無料トライアルを開始](https://console.clickhouse.cloud/signUp)して ClickHouse Cloud を体験できます。
-
-
 
 ## ClickHouse Cloud の利点 {#clickhouse-cloud-benefits}
 
@@ -27,8 +23,6 @@ ClickHouse Cloud を利用する主な利点は次のとおりです。
 - **透明性の高い料金体系**: 実際に使用した分だけ支払えばよく、リソース予約やスケーリング制御も利用できます。
 - **総保有コスト (TCO)**: 価格対性能比に優れ、管理上のオーバーヘッドも最小限に抑えられます。
 - **幅広いエコシステム**: 既存のデータコネクタ、可視化ツール、SQL クライアントや各種言語クライアントをそのまま利用できます。
-
-
 
 {/*
   ## OSS と ClickHouse Cloud の比較                           
@@ -50,7 +44,6 @@ ClickHouse Cloud を利用する主な利点は次のとおりです。
   | **コンピュート間の分離**      | ユーザーはストレージとは独立してコンピュートリソースをスケールできるため、チームやワークロード間で同じストレージを共有しつつ、専用のコンピュートリソースを維持できます。これにより、一方のワークロードのパフォーマンスが他方に影響しないようにしつつ、柔軟性、パフォーマンス、コスト効率を高められます。                  | ❌               | ✅                 |
   | **マネージドサービス**        | クラウドマネージドサービスを利用することで、チームは ClickHouse のサイズ設定、セットアップ、保守といった運用上のオーバーヘッドを気にすることなく、ビジネス成果に集中し、市場投入までの時間を短縮できます。                                                                                               | ❌               | ✅                 |
   */ }
-
 
 ## ClickHouse Cloud はどのバージョンの ClickHouse を使用していますか？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 

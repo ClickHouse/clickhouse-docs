@@ -14,8 +14,6 @@ clickhouse-server のプロセス全体がクラッシュしてしまう可能�
 - デバッグがより簡単である
 - jdbc-bridge も同様の方法で実装できる
 
-
-
 ## 使用方法 {#usage}
 
 `clickhouse-server` は、このツールを ODBC テーブル関数および StorageODBC 内で使用します。
@@ -25,8 +23,6 @@ clickhouse-server のプロセス全体がクラッシュしてしまう可能�
   型は文字列とします。名前と型はスペース区切りで、行は改行区切りです。
 - `max_block_size` -- オプションのパラメータで、1 ブロックあたりの最大サイズを設定します。
 クエリは POST リクエストのボディで送信されます。応答は RowBinary 形式で返されます。
-
-
 
 ## 例： {#example}
 

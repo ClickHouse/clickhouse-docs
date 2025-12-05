@@ -43,7 +43,6 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
 在实践中，如果开启了去重并对同一插入执行重试——例如由于超时或网络中断——ClickHouse 可以安全地忽略重复记录。这有助于保持幂等性并避免数据被写入两次。不过，仍需注意，插入验证和 schema 解析仅在缓冲刷新时执行——因此错误（例如类型不匹配）只会在那个时间点才会暴露出来。
 
-
 ### 启用异步插入 {#enabling-asynchronous-inserts}
 
 可以为特定用户或特定查询启用异步插入：

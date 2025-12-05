@@ -15,7 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # ClickHouse JS {#clickhouse-js}
 
 ClickHouse へ接続するための公式の JS クライアントです。
@@ -66,7 +65,6 @@ Web 版のインストール：
 npm i @clickhouse/client-web
 ```
 
-
 ## ClickHouse との互換性 {#compatibility-with-clickhouse}
 
 | クライアントのバージョン | ClickHouse |
@@ -110,7 +108,6 @@ const client = createClient({
 ```
 
 クライアントインスタンスは、生成時に[あらかじめ構成](./js.md#configuration)できます。
-
 
 #### 設定 {#configuration}
 
@@ -190,7 +187,6 @@ createClient({
 })
 ```
 
-
 ### 接続 {#connecting}
 
 #### 接続情報を確認する {#gather-your-connection-details}
@@ -216,7 +212,6 @@ const client = createClient({
 ```
 
 クライアントリポジトリには、[ClickHouse Cloud にテーブルを作成する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)、[非同期インサートを使用する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts) など、環境変数を使用するサンプルが複数含まれており、そのほかにも多数の例があります。
-
 
 #### 接続プール（Node.js のみ） {#connection-pool-nodejs-only}
 
@@ -257,7 +252,6 @@ interface BaseQueryParams {
 }
 ```
 
-
 ### クエリメソッド {#query-method}
 
 これは、`SELECT` のようなレスポンスを返すほとんどのステートメントや、`CREATE TABLE` のような DDL を送信する際に使用し、`await` して結果を受け取る必要があります。返された結果セットは、アプリケーション側で利用されることを前提としています。
@@ -284,7 +278,6 @@ interface ClickHouseClient {
 :::tip
 `query` 内で FORMAT 句は指定せず、代わりに `format` パラメータを使用してください。
 :::
-
 
 #### 結果セットおよび行の抽象化 {#result-set-and-row-abstractions}
 
@@ -370,7 +363,6 @@ await new Promise((resolve, reject) => {
 **例:** (`Node.js` のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と置き換えて使用できます。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
 
-
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
@@ -429,7 +421,6 @@ while (true) {
 }
 ```
 
-
 ### Insert メソッド {#insert-method}
 
 これはデータを挿入するための基本的なメソッドです。
@@ -450,7 +441,6 @@ interface ClickHouseClient {
 空の配列が insert メソッドに渡された場合、insert 文はサーバーに送信されません。その代わり、メソッドは直ちに `{ query_id: '...', executed: false }` で resolve されます。このとき、メソッドのパラメータで `query_id` が指定されていなければ、結果では空文字列となります。クライアント側で生成されたランダムな UUID を返してしまうと、そのような `query_id` を持つクエリは `system.query_log` テーブルに存在しないため、かえって混乱を招く可能性があるためです。
 
 insert 文がサーバーに送信された場合、`executed` フラグは `true` になります。
-
 
 #### Node.js における insert メソッドとストリーミング {#insert-method-and-streaming-in-nodejs}
 
@@ -554,7 +544,6 @@ await client.insert({
 
 詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts)を参照してください。
 
-
 **例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts)。
 
 ```ts
@@ -564,7 +553,6 @@ await client.insert({
   format: 'JSONEachRow',
 })
 ```
-
 
 #### Web バージョンの制限事項 {#web-version-limitations}
 
@@ -592,7 +580,6 @@ interface InsertParams<T> extends BaseQueryParams {
 ```
 
 これは今後変更される可能性があります。あわせてこちらも参照してください: [すべてのクライアントメソッドに共通の基本パラメーター](./js.md#base-parameters-for-all-client-methods)。
-
 
 ### Command メソッド {#command-method}
 
@@ -664,7 +651,6 @@ await client.command({
 `abort_signal` によってリクエストがキャンセルされても、そのステートメントがサーバー側で実行されなかったことが保証されるわけではありません。
 :::
 
-
 ### Exec メソッド {#exec-method}
 
 `query`/`insert` に収まらないカスタムクエリがあり、
@@ -704,7 +690,6 @@ export interface QueryResult {
   query_id: string
 }
 ```
-
 
 ### Ping {#ping}
 
@@ -763,7 +748,6 @@ const result = await client.ping({ select: true, /* query_id、abort_signal、ht
 
 `ping` メソッドでは、標準的な `query` メソッドのパラメータのほとんどを指定できます。詳細は `PingParamsWithSelectQuery` の型定義を参照してください。
 
-
 ### Close（Node.js のみ） {#close-nodejs-only}
 
 開いているすべての接続を閉じ、リソースを解放します。Web 版では何も行われません。
@@ -771,7 +755,6 @@ const result = await client.ping({ select: true, /* query_id、abort_signal、ht
 ```ts
 await client.close()
 ```
-
 
 ## ファイルのストリーミング（Node.js のみ） {#streaming-files-nodejs-only}
 
@@ -901,7 +884,6 @@ await client.insert({
 
 ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)を参照してください。
 
-
 ### Decimal* 型の注意事項 {#decimal-types-caveats}
 
 `JSON*` 系のフォーマットを使用して Decimal 型の値を挿入できます。次のようにテーブルが定義されているとします：
@@ -952,7 +934,6 @@ await client.query({
 
 詳しくは[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts)を参照してください。
 
-
 ### 整数型: Int64, Int128, Int256, UInt64, UInt128, UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
 サーバーはこれらの値を数値として受け取ることができますが、これらの型の最大値は `Number.MAX_SAFE_INTEGER` よりも大きいため、整数オーバーフローを避ける目的で、`JSON*` ファミリーの出力フォーマットでは文字列として返されます。
@@ -982,7 +963,6 @@ const resultSet = await client.query({
 expect(await resultSet.json()).toEqual([ { number: 0 } ])
 ```
 
-
 ## ClickHouse 設定 {#clickhouse-settings}
 
 クライアントは [settings](/operations/settings/settings/) メカニズムを通じて ClickHouse の動作を調整できます。
@@ -1008,7 +988,6 @@ client.query({
 :::important
 クエリを実行するユーザーが、設定を変更するのに十分な権限を持っていることを確認してください。
 :::
-
 
 ## 高度なトピック {#advanced-topics}
 
@@ -1044,7 +1023,6 @@ await client.query({
 
 詳細については、[https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax) を参照してください。
 
-
 ### 圧縮 {#compression}
 
 注意: リクエスト圧縮は現在 Web 版では利用できません。レスポンス圧縮は通常どおり動作します。Node.js 版は両方をサポートしています。
@@ -1064,7 +1042,6 @@ createClient({
 
 * `response: true` は、ClickHouse サーバーに圧縮されたレスポンスボディで応答するよう指示します。デフォルト値: `response: false`
 * `request: true` は、クライアントから送信されるリクエストボディの圧縮を有効にします。デフォルト値: `request: false`
-
 
 ### ロギング（Node.js のみ） {#logging-nodejs-only}
 
@@ -1123,7 +1100,6 @@ const client = createClient({
 
 デフォルトの Logger 実装は[こちら](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts)で確認できます。
 
-
 ### TLS 証明書（Node.js のみ） {#tls-certificates-nodejs-only}
 
 Node.js クライアントは、オプションで基本（認証局のみ）および相互（認証局とクライアント証明書の両方）の TLS をサポートします。
@@ -1157,7 +1133,6 @@ const client = createClient({
 
 リポジトリ内の [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) および [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS の完全なサンプルコードを参照してください。
 
-
 ### Keep-alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
 
 このクライアントは、基盤となる HTTP エージェントで Keep-Alive をデフォルトで有効化しており、これにより確立済みのソケットが後続のリクエストで再利用され、`Connection: keep-alive` ヘッダーが送信されます。アイドル状態のソケットは、デフォルトでは 2500 ミリ秒間接続プール内に保持されます（このオプションの調整に関する[注意事項](./js.md#adjusting-idle_socket_ttl)を参照してください）。
@@ -1188,7 +1163,6 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 この場合、`keep_alive_timeout` は 10 秒なので、アイドル中のソケットをデフォルトより少し長く開いたままにしておくために、`keep_alive.idle_socket_ttl` を 9000 や 9500 ミリ秒まで増やしてみることができます。「Socket hang-up」エラーが発生しないか注意して監視し、このエラーが、クライアントより先にサーバー側が接続を切断していることを示すので、エラーが出なくなるまで値を下げて調整してください。
-
 
 #### トラブルシューティング {#troubleshooting}
 
@@ -1249,7 +1223,6 @@ const client = createClient({
 
 `readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) を参照してください。
 
-
 ### パス名付きプロキシ {#proxy-with-a-pathname}
 
 ClickHouse インスタンスがプロキシの背後にあり、たとえば [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server) のように URL にパス名が含まれている場合は、`pathname` 設定オプションとして `clickhouse_server` を指定してください（先頭のスラッシュの有無は問いません）。そうせずに `url` に直接含めた場合は、それが `database` オプションとして解釈されます。`/my_proxy/db` のように複数セグメントを含めることもできます。
@@ -1260,7 +1233,6 @@ const client = createClient({
   pathname: '/clickhouse_server',
 })
 ```
-
 
 ### 認証付きリバースプロキシ {#reverse-proxy-with-authentication}
 
@@ -1273,7 +1245,6 @@ const client = createClient({
   },
 })
 ```
-
 
 ### カスタム HTTP/HTTPS エージェント（実験的、Node.js のみ） {#custom-httphttps-agent-experimental-nodejs-only}
 
@@ -1355,7 +1326,6 @@ const client = createClient({
 ```
 
 証明書とカスタムの *HTTPS* Agent を併用する場合、TLS ヘッダーと競合するため、`set_basic_auth_header` 設定（1.2.0 で導入）でデフォルトの Authorization ヘッダーを無効化する必要がある可能性があります。TLS 関連のヘッダーはすべて手動で指定する必要があります。
-
 
 ## 既知の制限事項 (Node.js/web) {#known-limitations-nodejsweb}
 

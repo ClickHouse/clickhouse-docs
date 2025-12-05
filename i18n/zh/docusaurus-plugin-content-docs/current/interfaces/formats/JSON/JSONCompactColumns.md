@@ -44,7 +44,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 以 `JSONCompactColumns` 格式读取数据：
@@ -69,6 +68,5 @@ FORMAT JSONCompactColumns
 ```
 
 在该数据块中不存在的列会被填充为默认值（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）
-
 
 ## 格式设置 {#format-settings}

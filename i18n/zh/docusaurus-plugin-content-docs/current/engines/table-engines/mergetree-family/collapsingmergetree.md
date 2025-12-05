@@ -8,11 +8,7 @@ title: 'CollapsingMergeTree 表引擎'
 doc_type: 'guide'
 ---
 
-
-
 # CollapsingMergeTree 表引擎 {#collapsingmergetree-table-engine}
-
-
 
 ## 描述 {#description}
 
@@ -30,15 +26,11 @@ doc_type: 'guide'
 从而提高 `SELECT` 查询的效率。
 :::
 
-
-
 ## 参数 {#parameters}
 
 此表引擎的所有参数（`Sign` 参数除外）与 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 中的含义相同。
 
 - `Sign` — 行类型标记列的名称，其中 `1` 表示“状态”行，`-1` 表示“撤销”行。类型：[Int8](/sql-reference/data-types/int-uint)。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -79,7 +71,6 @@ ENGINE = CollapsingMergeTree(Sign)
 
 * 有关查询参数的说明，请参阅[查询说明](../../../sql-reference/statements/create/table.md)。
 * 创建 `CollapsingMergeTree` 表时，需要与创建 `MergeTree` 表时相同的[查询子句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
-
 
 ## 折叠 {#table_engine-collapsingmergetree-collapsing}
 
@@ -148,7 +139,6 @@ ENGINE = CollapsingMergeTree(Sign)
 一行 `Sign` = `1` 的 “state” 行和一行 `Sign` = `-1` 的 “cancel” 行。
 换言之，ClickHouse 会对这些记录进行折叠处理。
 
-
 对于每个生成的数据部分，ClickHouse 会保存：
 
 |  |                                                                                                                                     |
@@ -183,8 +173,6 @@ ClickHouse 使用多个线程处理 `SELECT` 查询，因此无法预测结果�
 可以在 `FROM` 子句中使用 [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修饰符。它会在返回结果之前合并数据。
 对于 CollapsingMergeTree，每个键只返回最新的状态行。
 :::
-
-
 
 ## 示例 {#examples}
 
@@ -295,7 +283,6 @@ SELECT * FROM UAct FINAL
 使其在不使用 `Sign` 列进行求和时抵消该行的先前版本。
 
 在本示例中，我们将使用下面的示例数据：
-
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐

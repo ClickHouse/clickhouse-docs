@@ -31,7 +31,6 @@ sudo apt install git
 Шпаргалку по Git можно найти [здесь](https://education.github.com/git-cheat-sheet-education.pdf).
 Подробное руководство по Git доступно [здесь](https://git-scm.com/book/en/v2).
 
-
 ## Клонируйте репозиторий на рабочую машину {#clone-the-repository-to-your-development-machine}
 
 Сначала скачайте исходные файлы на рабочую машину, то есть клонируйте репозиторий:
@@ -91,7 +90,6 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 Пожалуйста, не используйте просто `git push`: так вы можете отправить изменения не в тот удалённый репозиторий и/или не в ту ветку.
 Лучше явно указывать имена удалённого репозитория и ветки, например: `git push origin my_branch_name`.
 :::
-
 
 ## Написание кода {#writing-code}
 
@@ -184,7 +182,6 @@ SELECT 'write your example query here';
 \```
 ````
 
-
 ## Использование тестовых данных {#using-test-data}
 
 При разработке под ClickHouse часто требуется загрузка реалистичных наборов данных.
@@ -205,7 +202,6 @@ SELECT 'write your example query here';
 ```
 
 В clickhouse-client:
-
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;

@@ -36,7 +36,6 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 * Настройку TLS и Входного шлюза
 * Управление секретами и настройку аутентификации
 
-
 ### Подходит для {#suitable-for}
 
 * Пилотных проектов (proof of concept)
@@ -262,7 +261,6 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 Для продакшн-развертываний с конфигурацией на основе секретов, внешними экземплярами OTel collector или минимальными конфигурациями см. [руководство «Варианты развертывания»](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options).
 :::
 
-
 ## Примечания для продакшена
 
 По умолчанию этот chart также устанавливает ClickHouse и OTel collector. Однако для продакшена рекомендуется управлять ClickHouse и OTel collector отдельно.
@@ -282,7 +280,6 @@ helm install my-clickstack clickstack/clickstack \
 * [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — Входной шлюз, TLS и управление секретами
 * [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — облачные настройки и чек-лист для продакшна
   :::
-
 
 ## Конфигурация задач {#task-configuration}
 
@@ -308,7 +305,6 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 helm search repo clickstack
 ```
 
-
 ## Удаление ClickStack
 
 Чтобы удалить развертывание:
@@ -319,22 +315,19 @@ helm uninstall my-clickstack
 
 Это удалит все ресурсы, связанные с релизом, однако постоянные данные (если они есть) могут остаться.
 
-
 ## Устранение неполадок {#troubleshooting}
 
-### Проверка логов
+### Проверка логов {#customizing-values}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-
-### Устранение неполадок при неудачной установке
+### Устранение неполадок при неудачной установке {#using-secrets}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
 ```
-
 
 ### Проверка развертывания
 
@@ -378,7 +371,6 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
-
 
 ## См. также {#related-documentation}
 

@@ -99,7 +99,6 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-
 ## フォーマット設定 {#format-settings}
 
 JSON 入力フォーマットの場合、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 設定が `1` に設定されていると、入力データ内のメタデータに含まれる型が、テーブル内の対応する列の型と照合されます。

@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['容量规划', '硬件', '规格评估', '最佳实践', '性能']
 ---
 
-
-
 # 容量规划与硬件建议 {#sizing-and-hardware-recommendations}
 
 本指南介绍我们针对开源用户在硬件、计算资源、内存和磁盘配置方面的一般性建议。如果您希望简化部署，我们推荐使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，因为它能够根据您的工作负载自动扩缩并自适应调整，同时将与基础设施管理相关的成本降到最低。
@@ -22,8 +20,6 @@ keywords: ['容量规划', '硬件', '规格评估', '最佳实践', '性能']
 - 数据保留策略
 - 硬件成本
 - 维护成本
-
-
 
 ## 磁盘 {#disk}
 
@@ -38,8 +34,6 @@ keywords: ['容量规划', '硬件', '规格评估', '最佳实践', '性能']
 为降低成本，可以使用[通用型 SSD EBS 卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html)。
 
 还可以结合使用 SSD 和 HDD，构建[冷热分层（热/暖/冷）架构](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)。另一种选择是使用 [AWS S3](https://aws.amazon.com/s3/) 作为存储后端，以实现计算与存储分离。请参阅我们关于在开源 ClickHouse 中实现计算与存储分离的指南[此处](/guides/separation-storage-compute)。在 ClickHouse Cloud 中，计算与存储分离功能默认已提供。
-
-
 
 ## CPU {#cpu}
 
@@ -75,8 +69,6 @@ ClickHouse 并没有统一的 CPU 利用率目标。请使用 [iostat](https://l
 
 例如，在使用 M 型 CPU 时，我们建议每 25 个 CPU 核心预留 100 GB 内存。要确定适合你的应用的内存大小，需要对内存使用情况进行分析。你可以阅读[这篇关于调试内存问题的指南](/guides/developer/debugging-memory-issues)，或使用[内置可观测性仪表板](/operations/monitoring)来监控 ClickHouse。
 
-
-
 ## 内存 {#memory}
 
 与 CPU 的选择类似，内存与存储的比例以及内存与 CPU 的比例应根据具体用例来确定。
@@ -96,8 +88,6 @@ ClickHouse 并没有统一的 CPU 利用率目标。请使用 [iostat](https://l
 
 对于访问频繁的用例，例如面向客户的在线工作负载，我们建议使用更多内存，采用 1:30 到 1:50 的内存与存储比例。
 
-
-
 ## 副本 {#replicas}
 
 我们建议每个分片至少配置三个副本（或在使用 [Amazon EBS](https://aws.amazon.com/ebs/) 时配置两个副本）。此外，我们建议在增加额外副本（水平扩展）之前，先对所有副本进行纵向扩容。
@@ -105,8 +95,6 @@ ClickHouse 并没有统一的 CPU 利用率目标。请使用 [iostat](https://l
 ClickHouse 不会自动分片，对数据集重新分片将需要大量计算资源。因此，我们通常建议尽可能使用规格更大的服务器，以避免将来需要对数据重新分片。
 
 可以考虑使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，它可以自动伸缩，并允许根据具体用例轻松控制副本数量。
-
-
 
 ## 大规模工作负载示例配置 {#example-configurations-for-large-workloads}
 
@@ -178,8 +166,6 @@ ClickHouse 的配置高度取决于具体应用程序的需求。如果您希望
 
 ### Fortune 500 电信运营商（日志用例）{#fortune-500-telecom-operator-for-a-logging-use-case}
 
-
-
 <table>
     <tr>
         <td col="2"><strong><em>存储</em></strong></td>
@@ -235,8 +221,6 @@ ClickHouse 的配置高度取决于具体应用程序的需求。如果您希望
         <td>1:60</td>
     </tr>
 </table>
-
-
 
 ## 延伸阅读 {#further-reading}
 

@@ -7,11 +7,7 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-
-
 # sumArray {#sumarray}
-
-
 
 ## 説明 {#description}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 
 `sumArray` 関数は、データセット内の複数の配列にまたがるすべての要素の合計を
 計算する必要がある場合に有用です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -52,7 +46,6 @@ GROUP BY date, category_sales;
 `sumArray` 関数は、各 `category_sales` 配列内のすべての要素を合計します。
 たとえば、`2024-01-01` の場合は、`100 + 200 + 150 = 450` となります。これは
 `arraySum` と同じ結果です。
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
