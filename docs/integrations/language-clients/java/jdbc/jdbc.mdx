@@ -108,11 +108,23 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 :::note Server Settings
 
 All server settings should be prefixed with `clickhouse_setting_` (same as for the client [configuration](/integrations/language-clients/java/client#server-settings)).
+
+
+```java
+Properties config = new Properties();
+config.setProperty("user", "default");
+config.setProperty("password", getPassword());
+
+// set server setting
+config.put(ClientConfigProperties.serverSetting("allow_experimental_time_time64_type"), "1");
+
+Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", config);
+```
 :::
 
 ## Supported data types {#supported-data-types}
 
-JDBC Driver supports the same data formats as the underlying [java client](/integrations/language-clients/java/client/client.mdx).
+JDBC Driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,

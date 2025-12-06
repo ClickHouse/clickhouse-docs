@@ -167,7 +167,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets connection request timeout. This take effect only for getting connection from a pool. | `10000` | `connection_request_timeout` |
 | `setSocketTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets socket timeout that affects read and write operations | `0` | `socket_timeout` |
 | `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | `timeout` - timeout value<br/>`timeUnit` - time unit | Sets maximum execution timeout for queries | `0` | `max_execution_time` |
-| `retryOnFailures(ClientFaultCause ...causes)` | `causes` - enum constant of `ClientFaultCause` | Sets recoverable/retriable fault types. | `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` | `client_retry_on_failures` |
+| `retryOnFailures(ClientFaultCause ...causes)` | `causes` - enum constant of `ClientFaultCause` | Sets recoverable/retriable fault types. | `NoHttpResponse` `ConnectTimeout` `ConnectionRequestTimeout` | `client_retry_on_failures` |
 | `setMaxRetries(int maxRetries)` | `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures` | `3` | `retry` |
 
 </TabItem>
@@ -293,7 +293,7 @@ Server side settings can be set on the client level once while creation (see `se
 	...
 }
 ```
-When options are set via `setOption` method (either the `Client.Builder` or operation settings class) then server settings name should be prefixed with `clickhouse_setting_`. The `com.clickhouse.client.api.ClientConfigProperties#serverSetting()` may be handy in this case.
+⚠️ When options are set via `setOption` method (either the `Client.Builder` or operation settings class) then server settings name should be prefixed with `clickhouse_setting_`. The `com.clickhouse.client.api.ClientConfigProperties#serverSetting()` may be handy in this case.
 
 ### Custom HTTP Header
 
@@ -760,7 +760,7 @@ Complete examples code is stored in the repo in a 'example` [folder](https://git
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - example of how to use the client in a Spring Boot application.
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - example of how to use the client in Ktor (Kotlin) application.
 
-## Migration From V1 ( =< 0.7.x ) {#migration_from_v1}
+## Migration Guide {#migration_guide}
 
 
 Old client (V1) was using `com.clickhouse.client.ClickHouseClient#builder` as start point. The new client (V2) uses similar pattern with `com.clickhouse.client.api.Client.Builder`. Main
@@ -1006,9 +1006,36 @@ executor (see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecut
 - use any implementation of `java.io.InputStream`. V1 `com.clickhouse.data.ClickHouseInputStream` is supported but NOT recommended.
 - once end of input stream is detected it handled accordingly. Previously output stream of a request should be closed.
 
+__V1 Insert TSV formatted data.__
 ```java
+InputStream inData = getInData();
+ClickHouseRequest.Mutation request = client.read(server)
+        .write()
+        .table(tableName)
+        .format(ClickHouseFormat.TSV);
+ClickHouseConfig config = request.getConfig();
+CompletableFuture<ClickHouseResponse> future;
+try (ClickHousePipedOutputStream requestBody = ClickHouseDataStreamFactory.getInstance()
+        .createPipedOutputStream(config)) {
+    // start the worker thread which transfer data from the input into ClickHouse
+    future = request.data(requestBody.getInputStream()).execute();
 
-// V2 Insert TSV formatted data.
+    // Copy data from inData stream to requestBody stream
+
+    // We need to close the stream before getting a response
+    requestBody.close();
+
+    try (ClickHouseResponse response = future.get()) {
+        ClickHouseResponseSummary summary = response.getSummary();
+        Assert.assertEquals(summary.getWrittenRows(), numRows, "Num of written rows");
+    }
+}
+
+```
+
+__V2 Insert TSV formatted data.__
+
+```java
 InputStream inData = getInData();
 InsertSettings settings = new InsertSettings().setInputStreamCopyBufferSize(8198 * 2); // set copy buffer size
 try (InsertResponse response = client.insert(tableName, inData, ClickHouseFormat.TSV, settings).get(30, TimeUnit.SECONDS)) {
@@ -1019,7 +1046,8 @@ try (InsertResponse response = client.insert(tableName, inData, ClickHouseFormat
  // Handle exception
 }
 ```
-
+- there is a single method to call. No need to create an additional request object.
+- request body stream is closed automatically when all data is copied.
 - new low-level API is available `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`. `com.clickhouse.client.api.DataStreamWriter` is designed to implement custom data writing logic. For instance, reading data from a
 queue.
 
