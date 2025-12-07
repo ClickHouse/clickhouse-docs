@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # ClickHouse history {#clickhouse-history}
 
-ClickHouse was initially developed to power [Yandex.Metrica](https://metrica.yandex.com/), [the second largest web analytics platform in the world](http://w3techs.com/technologies/overview/traffic_analysis/all), and continues to be its core component. With more than 13 trillion records in the database and more than 20 billion events daily, ClickHouse allows generating custom reports on the fly directly from non-aggregated data. This article briefly covers the goals of ClickHouse in the early stages of its development.
+ClickHouse was initially developed to power [Yandex.Metrica](https://metrica.yandex.com/), [the second-largest web analytics platform in the world](http://w3techs.com/technologies/overview/traffic_analysis/all), and continues to be its core component. With more than 13 trillion records in the database and more than 20 billion events daily, ClickHouse allows generating custom reports on the fly directly from non-aggregated data. This article briefly covers the goals of ClickHouse in the early stages of its development.
 
 Yandex.Metrica builds customized reports on the fly based on hits and sessions, with arbitrary segments defined by the user. Doing so often requires building complex aggregates, such as the number of unique users, with new data for building reports arriving in real-time.
 
