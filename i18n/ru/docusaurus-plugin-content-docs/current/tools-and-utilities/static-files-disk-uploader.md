@@ -10,13 +10,14 @@ doc_type: 'guide'
 
 Формирует каталог данных, содержащий метаданные для указанной таблицы ClickHouse. Эти метаданные можно использовать для создания таблицы ClickHouse на другом сервере с набором данных только для чтения, размещённым на диске `web`.
 
-Не используйте этот инструмент для миграции данных. Вместо этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup).
+Не используйте этот инструмент для миграции данных. Вместо этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup/overview).
 
 ## Использование {#usage}
 
 ```bash
 $ clickhouse static-files-disk-uploader [args]
 ```
+
 
 ## Команды {#commands}
 
@@ -53,6 +54,7 @@ SELECT data_paths
 └───────────────────────────────────────────────────────┘
 ```
 
+
 ## Выгрузите каталог метаданных таблицы в локальную файловую систему {#output-table-metadata-directory-to-the-local-filesystem}
 
 Используя целевой каталог вывода `output` и заданный путь к метаданным, выполните следующую команду:
@@ -64,8 +66,9 @@ $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./st
 Если операция прошла успешно, вы увидите следующее сообщение, а в каталоге `output` будут находиться метаданные указанной таблицы:
 
 ```repsonse
-Путь к данным: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", целевой путь: "output"
+Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destination path: "output"
 ```
+
 
 ## Выгрузка каталога метаданных таблицы на внешний URL {#output-table-metadata-directory-to-an-external-url}
 
@@ -76,6 +79,7 @@ $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./st
 ```bash
 $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
 ```
+
 
 ## Использование каталога метаданных таблицы для создания таблицы ClickHouse {#using-the-table-metadata-directory-to-create-a-clickhouse-table}
 
