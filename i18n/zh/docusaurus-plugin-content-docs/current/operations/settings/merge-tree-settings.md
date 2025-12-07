@@ -510,7 +510,7 @@ Dynamic 数据类型的序列化版本，为兼容性所必需。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
 
 用于控制 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循
@@ -1261,6 +1261,17 @@ MergeTree 表中 PROJECTION 的最大数量。
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 控制该逻辑相对于分区中分区片段数量的触发时机。因子越大，响应就越滞后。
+
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 simple merge selector 启用启发式算法，以降低合并选择时的最大限制。
+这将增加并发合并的数量，有助于缓解 TOO_MANY_PARTS 错误，但同时也会提高写放大效应。
 
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 

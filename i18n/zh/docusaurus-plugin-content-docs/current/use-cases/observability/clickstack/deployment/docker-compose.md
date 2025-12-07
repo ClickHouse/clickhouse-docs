@@ -48,10 +48,10 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 ### 克隆仓库 {#clone-the-repo}
 
-要使用 Docker Compose 进行部署，先克隆 HyperDX 仓库，进入该目录并运行 `docker-compose up`：
+要使用 Docker Compose 进行部署，先克隆 ClickStack 仓库，进入该目录并运行 `docker-compose up`：
 
 ```shell
-git clone git@github.com:hyperdxio/hyperdx.git
+git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
@@ -61,7 +61,7 @@ docker compose up
 
 创建一个用户，并提供满足要求的用户名和密码。
 
-点击 `Create` 后，会为通过 Helm 图表部署的 ClickHouse 实例自动创建数据源。
+点击 `Create` 后，会为通过 Docker Compose 部署的 ClickHouse 实例自动创建数据源。
 
 :::note 覆盖默认连接
 您可以替换到集成 ClickHouse 实例的默认连接。有关详细信息，请参阅 ["Using ClickHouse Cloud"](#using-clickhouse-cloud)。
@@ -88,33 +88,30 @@ docker compose up
 用户可以通过环境变量文件来修改该栈的设置，例如使用的版本。
 
 ```shell
-user@example-host hyperdx % cat .env
-# 供 docker-compose.yml 使用 {#used-by-docker-composeyml}
-# 供 docker-compose.yml 使用 {#used-by-docker-composeyml}
-HDX_IMAGE_REPO=docker.hyperdx.io
-IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
-IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-LOCAL_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-local
-LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
-ALL_IN_ONE_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-all-in-one
-ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
-OTEL_COLLECTOR_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-otel-collector
-OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
-CODE_VERSION=2.0.0-beta.16
-IMAGE_VERSION_SUB_TAG=.16
-IMAGE_VERSION=2-beta
-IMAGE_NIGHTLY_TAG=2-nightly
+user@example-host clickstack % cat .env
 
-# 配置域名 URL {#set-up-domain-urls}
-HYPERDX_API_PORT=8000 # 可选（不应被其他服务占用）
+# Used by docker-compose.yml
+IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
+ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
+CODE_VERSION=2.8.0
+IMAGE_VERSION_SUB_TAG=.8.0
+IMAGE_VERSION=2
+IMAGE_NIGHTLY_TAG=2-nightly
+IMAGE_LATEST_TAG=latest
+
+# Set up domain URLs
+HYPERDX_API_PORT=8000 #optional (should not be taken by other services)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# OTel/ClickHouse 配置 {#otelclickhouse-config}
+# Otel/Clickhouse config
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
+
 
 ### 配置 OpenTelemetry collector {#configuring-collector}
 
@@ -124,13 +121,13 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 此发行版可以与 ClickHouse Cloud 一起使用。用户应当：
 
-* 从 `docker-compose.yaml` 文件中移除 ClickHouse 服务。如果只是测试，这一步是可选的，因为已部署的 ClickHouse 实例只是会被忽略——不过仍会占用本地资源。如果移除该服务，请确保同时移除对该服务的所有引用，例如 `depends_on`。
+* 从 `docker-compose.yml` 文件中移除 ClickHouse 服务。如果只是测试，这一步是可选的，因为已部署的 ClickHouse 实例只是会被忽略——不过仍会占用本地资源。如果移除该服务，请确保同时移除对该服务的所有引用，例如 `depends_on`。
 
 * 通过在 Compose 文件中设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`，修改 OTel collector 以使用 ClickHouse Cloud 实例。具体来说，将这些环境变量添加到 OTel collector 服务中：
 
   ```shell
   otel-collector:
-      image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
       environment:
         CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
         CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
@@ -155,25 +152,25 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 <JSONSupport />
 
-要进行这些设置，请修改 `docker-compose.yaml` 中相关的服务：
+要进行这些设置，请修改 `docker-compose.yml` 中相关的服务：
 
 ```yaml
   app:
-    image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     ports:
       - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
       - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
     environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # 启用 JSON
+      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
       FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # 为简洁起见省略部分内容
+    # truncated for brevity
 
   otel-collector:
-    image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # 启用 JSON
+      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
       CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # 为简洁起见省略部分内容
+      # truncated for brevity
 ```
