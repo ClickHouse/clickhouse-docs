@@ -19,7 +19,10 @@ As of April 2014, Yandex.Metrica was tracking about 12 billion events (page view
 ## Usage in Yandex.Metrica and other Yandex services {#usage-in-yandex-metrica-and-other-yandex-services}
 
 ClickHouse serves multiple purposes in Yandex.Metrica.
-Its main task is to build reports in online mode using non-aggregated data. It uses a cluster of 374 servers, which store over 20.3 trillion rows in the database. The volume of compressed data is about 2 PB, without accounting for duplicates and replicas. The volume of uncompressed data (in TSV format) would be approximately 17 PB.
+Its main task is to build reports in online mode using non-aggregated data.
+It uses a cluster of 374 servers, which store over 20.3 trillion rows in the database.
+The volume of compressed data is about 2 PB, without accounting for duplicates and replicas.
+The volume of uncompressed data (in TSV format) would be approximately 17 PB.
 
 ClickHouse also plays a key role in the following processes:
 
@@ -29,13 +32,13 @@ ClickHouse also plays a key role in the following processes:
 - Running queries for debugging the Yandex.Metrica engine.
 - Analyzing logs from the API and the user interface.
 
-Nowadays, there are a multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
+Nowadays, there are multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
 
 ## Aggregated and non-aggregated data {#aggregated-and-non-aggregated-data}
 
 There is a widespread opinion that to calculate statistics effectively, you must aggregate data since this reduces the volume of data.
 
-However data aggregation comes with a lot of limitations:
+However, data aggregation comes with a lot of limitations:
 
 - You must have a pre-defined list of required reports.
 - The user can't make custom reports.
