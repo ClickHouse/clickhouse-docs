@@ -10,6 +10,7 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
+
 # Режимы сжатия {#compression-modes}
 
 Протокол ClickHouse поддерживает сжатие **блоков данных** с контрольными суммами.

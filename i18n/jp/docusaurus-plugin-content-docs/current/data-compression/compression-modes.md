@@ -10,11 +10,12 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
+
 # 圧縮モード {#compression-modes}
 
 ClickHouse プロトコルは、チェックサム付きの **データブロック** の圧縮をサポートしています。
 どのモードを選ぶべきか迷う場合は、`LZ4` を使用してください。
-
+``
 :::tip
 利用可能な [カラム圧縮コーデック](/sql-reference/statements/create/table#column_compression_codec) について詳しく確認し、テーブル作成時または作成後にそれらを指定してください。
 :::

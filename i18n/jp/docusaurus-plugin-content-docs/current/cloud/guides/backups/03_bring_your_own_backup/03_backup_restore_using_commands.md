@@ -17,8 +17,6 @@ import TabItem from '@theme/TabItem';
 ユーザーは、`BACKUP` および `RESTORE` コマンドを使用してバックアップをストレージバケットにエクスポートできます。これは、[ユーザーインターフェイス経由](/cloud/manage/backups/backup-restore-via-ui)でバックアップや復元を行う方法に加えて利用できます。
 本ガイドでは、3 つすべての CSP 向けのコマンドを紹介します。
 
-
-
 ## 必要条件 {#requirements}
 
 ご自身の CSP ストレージバケットにバックアップをエクスポート／復元するには、次の情報が必要です：
@@ -46,12 +44,10 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-
-
 ## 特定のデータベースのバックアップ / リストア {#backup_restore_db}
 
 ここでは、*単一* のデータベースのバックアップおよびリストアの方法を示します。
-完全なバックアップおよびリストアコマンドについては、[バックアップコマンドの概要](/operations/backup#command-summary)を参照してください。
+完全なバックアップおよびリストアコマンドについては、[バックアップコマンドの概要](/operations/backup/overview#command-summary)を参照してください。
 
 ### AWS S3 {#aws-s3-bucket}
 
@@ -152,8 +148,6 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-
-
 ## サービス全体のバックアップ / リストア {#backup_restore_entire_service}
 
 サービス全体をバックアップするには、以下のコマンドを使用します。
@@ -195,8 +189,6 @@ FROM S3(
 ```
 </TabItem>
 </Tabs>
-
-
 
 ## FAQ {#backups-faq}
 
