@@ -86,7 +86,6 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 
 3. Входная таблица:
 
-
 ```text
 ┌─id─┬──────start─┬────────end─┐
 │ a  │ 2020-01-01 │ 2020-01-04 │

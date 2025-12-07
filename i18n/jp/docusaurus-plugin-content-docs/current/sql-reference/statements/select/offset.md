@@ -9,7 +9,11 @@ doc_type: 'reference'
 `OFFSET` と `FETCH` を使用すると、データを一定量ずつ取得できます。これらは、1 回のクエリで取得したい行のブロックを指定します。
 
 ```sql
-OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+-- SQL Standard style:
+[OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+
+-- MySQL/PostgreSQL style:
+[LIMIT [n, ]m] [OFFSET offset_row_count]
 ```
 
 `offset_row_count` または `fetch_row_count` の値には、数値またはリテラル定数を指定できます。`fetch_row_count` は省略可能で、省略した場合のデフォルト値は 1 です。
@@ -35,7 +39,7 @@ OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-クエリと同じです
+次のクエリと同じです
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
@@ -67,7 +71,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-`ONLY` オプションの使用方法:
+`ONLY` オプションの使用例：
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
@@ -83,7 +87,7 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 └───┴───┘
 ```
 
-`WITH TIES` オプションの使用方法：
+`WITH TIES` オプションの使用方法:
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;

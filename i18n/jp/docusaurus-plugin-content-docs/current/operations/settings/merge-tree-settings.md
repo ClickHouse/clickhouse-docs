@@ -522,7 +522,7 @@ Dynamic データ型のシリアル化バージョン。互換性のために必
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の両設定が、
@@ -1284,6 +1284,17 @@ Wide データパートへのマージ後には、このパート内の動的パ
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 パーティション内のパーツ数に応じて、このロジックがいつ適用されるかを制御します。係数が大きいほど、反応の開始はより遅くなります。
+
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+シンプルなマージセレクタに対して、マージ選択時の上限値を引き下げるヒューリスティックを有効にします。
+これにより同時に実行されるマージの数が増え、TOO_MANY_PARTS エラーの軽減に役立つ可能性がありますが、その一方で書き込み増幅も増加します。
 
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 

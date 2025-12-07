@@ -9,12 +9,9 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 输入和输出数据的格式 {#formats-for-input-and-output-data}
 
 ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以轻松集成到几乎任何现有的数据管道中，充分发挥 ClickHouse 的优势。
-
-
 
 ## 输入格式 {#input-formats}
 
@@ -34,21 +31,15 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 请阅读完整的[基准分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)。
 要查看完整测试结果，请访问 [FastFormats](https://fastformats.clickhouse.com/) 在线仪表盘。
 
-
-
 ## 输出格式 {#output-formats}
 
 支持的输出格式用于：
 - 组织 `SELECT` 查询的结果
 - 向以文件为后端的表执行 `INSERT` 操作
 
-
-
 ## 格式概览 {#formats-overview}
 
 受支持的格式有：
-
-
 
 | 格式                                                                                                         | 输入 | 输出 |
 | ---------------------------------------------------------------------------------------------------------- | -- | -- |
@@ -139,11 +130,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 | [Markdown](./formats/Markdown.md)                                                                          | ✗  | ✔  |
 | [表单](./formats/Form.md)                                                                                    | ✔  | ✗  |
 
-
-
 你可以通过 ClickHouse 的设置来控制某些格式处理参数。欲了解更多信息，请参阅[设置](/operations/settings/settings-formats.md)部分。
-
-
 
 ## 格式模式 {#formatschema}
 
@@ -160,8 +147,6 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 
 如果通过 [HTTP 接口](/interfaces/http.md) 进行数据输入或输出，则格式模式中指定的文件名
 必须位于服务器配置中由 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
-
-
 
 ## 跳过错误 {#skippingerrors}
 
